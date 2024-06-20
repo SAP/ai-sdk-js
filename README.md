@@ -2,6 +2,8 @@
 
 # ai-sdk-js
 
+This project is currently in an experimental state. All functionality and naming is subject to change.
+
 ## About this project
 
 Integrate chat completion into your business applications with SAP Cloud SDK for GenAI Hub. Leverage the Generative AI Hub of SAP AI Core to make use of templating, grounding, data masking, content filtering and more. Setup your SAP AI Core instance with SAP Cloud SDK for AI Core.
