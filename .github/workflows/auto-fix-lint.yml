@@ -1,0 +1,35 @@
+name: auto fix lint
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  checks: write
+  contents: write
+
+jobs:
+  fix-lint:
+    runs-on: [solinas]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # without the token, no other workflows will be triggered => https://github.com/stefanzweifel/git-auto-commit-action?tab=readme-ov-file#commits-made-by-this-action-do-not-trigger-new-workflow-runs
+          token: ${{ secrets.GANDALF_PAT }}
+      - uses: pnpm/action-setup@v3
+        with:
+          version: ${{ vars.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+          cache: 'pnpm'
+
+      - run: pnpm i --frozen-lockfile
+      - run: pnpm lint:fix
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: auto fix lint'
+          commit_author: ${{ vars.GANDALF_AUTHOR }}
