@@ -10,11 +10,11 @@ Instances of abusive, harassing, or otherwise unacceptable behavior may be repor
 
 We use GitHub to manage reviews of pull requests.
 
-* If you are a new contributor, see: [Steps to Contribute](#steps-to-contribute)
+- If you are a new contributor, see: [Steps to Contribute](#steps-to-contribute)
 
-* Before implementing your change, create an issue that describes the problem you would like to solve or the code that should be enhanced. Please note that you are willing to work on that issue.
+- Before implementing your change, create an issue that describes the problem you would like to solve or the code that should be enhanced. Please note that you are willing to work on that issue.
 
-* The team will review the issue and decide whether it should be implemented as a pull request. In that case, they will assign the issue to you. If the team decides against picking up the issue, the team will post a comment with an explanation.
+- The team will review the issue and decide whether it should be implemented as a pull request. In that case, they will assign the issue to you. If the team decides against picking up the issue, the team will post a comment with an explanation.
 
 ## Steps to Contribute
 
@@ -28,11 +28,11 @@ You are welcome to contribute code in order to fix a bug or to implement a new f
 
 The following rule governs code contributions:
 
-* Contributions must be licensed under the [Apache 2.0 License](./LICENSE)
-* Due to legal reasons, contributors will be asked to accept a Developer Certificate of Origin (DCO) when they create the first pull request to this project. This happens in an automated fashion during the submission process. SAP uses [the standard DCO text of the Linux Foundation](https://developercertificate.org/).
+- Contributions must be licensed under the [Apache 2.0 License](./LICENSE)
+- Due to legal reasons, contributors will be asked to accept a Developer Certificate of Origin (DCO) when they create the first pull request to this project. This happens in an automated fashion during the submission process. SAP uses [the standard DCO text of the Linux Foundation](https://developercertificate.org/).
 
 ## Issues and Planning
 
-* We use GitHub issues to track bugs and enhancement requests.
+- We use GitHub issues to track bugs and enhancement requests.
 
-* Please provide as much context as possible when you open an issue. The information you provide must be comprehensive enough to reproduce that issue for the assignee.
+- Please provide as much context as possible when you open an issue. The information you provide must be comprehensive enough to reproduce that issue for the assignee.
