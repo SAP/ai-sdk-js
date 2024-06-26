@@ -11,13 +11,14 @@ permissions:
 
 jobs:
   fix-lint:
-    runs-on: [solinas]
-
+    if: github.actor != 'dependabot[bot]' && !github.event.pull_request.head.repo.fork
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          # without the token, no other workflows will be triggered => https://github.com/stefanzweifel/git-auto-commit-action?tab=readme-ov-file#commits-made-by-this-action-do-not-trigger-new-workflow-runs
-          token: ${{ secrets.GANDALF_PAT }}
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
       - uses: pnpm/action-setup@v3
         with:
           version: ${{ vars.PNPM_VERSION }}
@@ -25,11 +26,14 @@ jobs:
         with:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           cache: 'pnpm'
-
       - run: pnpm i --frozen-lockfile
       - run: pnpm lint:fix
-
-      - uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: 'chore: auto fix lint'
-          commit_author: ${{ vars.GANDALF_AUTHOR }}
+      - name: Commit Changes if needed
+        run: |
+          diff=`git diff`
+          if [ ! -z "$diff" ]; then
+            git config --global user.email "cloud-sdk-js@github.com"
+            git config --global user.name "cloud-sdk-js"
+            git commit -m "Changes from lint:fix" -a
+            git push
+          fi
