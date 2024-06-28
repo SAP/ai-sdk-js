@@ -12,8 +12,8 @@ importers:
         specifier: ^3.15.0
         version: 3.15.0
       '@sap-cloud-sdk/http-client':
-        specifier: ^3.15.0
-        version: 3.15.0
+        specifier: ^3.16.0
+        version: 3.16.0
       '@sap-cloud-sdk/util':
         specifier: ^3.15.0
         version: 3.15.0
@@ -444,19 +444,28 @@ packages:
   '@sap-cloud-sdk/connectivity@3.15.0':
     resolution: {integrity: sha512-GBaK4ncOn7sUIx+9hAufqSKRo4hgmIJaYmGxpBLdW1l0yXcPx+BlMkZhxuNHjntQj+sghxuuUCD0zv+iEwLnlw==}
 
+  '@sap-cloud-sdk/connectivity@3.16.0':
+    resolution: {integrity: sha512-Aj9sO67a8TKJKMaBYuJX1euTyWQqnc28sYMgaRY5ZLQimIvOzT69L62gnnD05GUscPHiLD/J+24LiUavbEJMSw==}
+
   '@sap-cloud-sdk/eslint-config@3.15.0':
     resolution: {integrity: sha512-lPzsaWmC8R9oFoUkwF/1+Aa41cQQPHnIlN8PN3RZmLeduSWwkcY62cfBHa47Flkv/gJ/O5CcpfbMwhG9/MFZmA==}
     peerDependencies:
       eslint: ^8.0.0
 
-  '@sap-cloud-sdk/http-client@3.15.0':
-    resolution: {integrity: sha512-vs1N6006MxSMwphu4etpvrB8zWZhxLmdkLl5iOdDsz87gaAJee1pSj9jCmayNPi5KbVZOlfwVxFSvxeVpmMjjw==}
+  '@sap-cloud-sdk/http-client@3.16.0':
+    resolution: {integrity: sha512-qShXjGC8aO9rnffWBXu2ebQCgPMeSZ4SSwMfovPClCkCLhuDsJfBXQJ8NuHiDDktGQKcpjhrq2gSqEUnTgajeg==}
 
   '@sap-cloud-sdk/resilience@3.15.0':
     resolution: {integrity: sha512-wxKKMvoL2XeIi8LqAxLjE51KPg7FiS2GnV6vYjDY1k80JLpDYrGq1r6nS4nqxqcZCNbKMHKXhVasykgs2jiGYw==}
 
+  '@sap-cloud-sdk/resilience@3.16.0':
+    resolution: {integrity: sha512-SzozCAcjG5roUcT+jhs5a/q2/O3MrCLQBiM6Lytm2o5k/u3BNYyJ0TkniFQEpbzTpfjN+dAR1AtLB/xzCDtgfQ==}
+
   '@sap-cloud-sdk/util@3.15.0':
     resolution: {integrity: sha512-wcSefr7hiyJNmOIOjZVLRm3SQqSGvXhy/lp+kjyzlTunJdnsXSCGwuZU7jVuR/a2rZR8n2gcPJSSpRb/gn43FA==}
+
+  '@sap-cloud-sdk/util@3.16.0':
+    resolution: {integrity: sha512-pYVVdwbzOGlGwJQ5Yf8gemeA7uxxgclzUqZBlMicD9m0+SQ3qmhy31AmbWoFR2AuKHr2dShlxDfwIrsN1kxNRA==}
 
   '@sap/xsenv@5.1.0':
     resolution: {integrity: sha512-oJUiLnG2w6CdAHTL37hUO1UokPrxPzcVW+cg0zLhXZWb+KqNsgEYiMl2CccSW891HOKjMi/mVjkXTGvy7oQ/dQ==}
@@ -465,6 +474,10 @@ packages:
   '@sap/xssec@3.6.1':
     resolution: {integrity: sha512-OJouwIWClefpsJ8rVCziEydeDHDNOMA4hjsjw9OqolbbObaiYMMDRU0YJbPe7XL5JkLgrtt+CLCBCsNERxcCZg==}
     engines: {node: '>=14'}
+
+  '@sap/xssec@4.1.3':
+    resolution: {integrity: sha512-qhjvumYIPM6pvNVwYpzf+RwLPIn5xzuMUUt9znERqGMKvqbBY/qXpbPBquNt3CbR/ThS85kLFIiPOuXJTkr1Lg==}
+    engines: {node: '>=18'}
 
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
@@ -733,6 +746,9 @@ packages:
 
   axios@1.6.8:
     resolution: {integrity: sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==}
+
+  axios@1.7.2:
+    resolution: {integrity: sha512-2A8QhOMrbomlDuiLeK9XibIBzuHeRcqqNOHp0Cyp5EoJ1IFDh+XZH3A6BkXtv0K4gFGCI0Y4BM7B1wOEi0Rmgw==}
 
   babel-jest@30.0.0-alpha.5:
     resolution: {integrity: sha512-58KT2/OgHBdfOmM7FdDmWWVKrvrHborUpNys/tu0nnlTyfAqB/lRvqOGN4y8JFe6q9pdTf2AzxU5prFTDbxVMg==}
@@ -1802,6 +1818,10 @@ packages:
   jws@3.2.2:
     resolution: {integrity: sha512-YHlZCB6lMTllWDtSPHz/ZXTsi8S00usEV6v1tjq8tOUZzw7DpSDWVXjXDre6ed1w/pd495ODpHZYSdkRTsa0HA==}
 
+  jwt-decode@4.0.0:
+    resolution: {integrity: sha512-+KJGIyHgkGuIq3IEBNftfhW/LfWhXUIY6OmyVWjliu5KH1y0fw7VQ8YndE2O4qZdMSd9SqbnC8GOcZEy0Om7sA==}
+    engines: {node: '>=18'}
+
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
@@ -1964,6 +1984,15 @@ packages:
   node-cache@5.1.2:
     resolution: {integrity: sha512-t1QzWwnk4sjLWaQAS8CHgOJ+RAfmHpxFWmc36IWTiWHQfs0w5JDMBS1b1ZxQteo0vVVuWJvIUKHDkkeK7vIGCg==}
     engines: {node: '>= 8.0.0'}
+
+  node-fetch@2.7.0:
+    resolution: {integrity: sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==}
+    engines: {node: 4.x || >=6.0.0}
+    peerDependencies:
+      encoding: ^0.1.0
+    peerDependenciesMeta:
+      encoding:
+        optional: true
 
   node-int64@0.4.0:
     resolution: {integrity: sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==}
@@ -2414,6 +2443,9 @@ packages:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
 
+  tr46@0.0.3:
+    resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
+
   trim-newlines@3.0.1:
     resolution: {integrity: sha512-c1PTsA3tYrIsLGkJkzHF+w9F2EyxfXGo4UyJc4pFL++FMjnq0HJS69T3M7d//gKrFKwy429bouPescbjecU+Zw==}
     engines: {node: '>=8'}
@@ -2569,6 +2601,12 @@ packages:
 
   walker@1.0.8:
     resolution: {integrity: sha512-ts/8E8l5b7kY0vlWLewOkDXMmPdLcVV4GmOQLyxuSswIJsweeFZtAsMF7k1Nszz+TYBQrlYRmzOnr398y1JemQ==}
+
+  webidl-conversions@3.0.1:
+    resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
+
+  whatwg-url@5.0.0:
+    resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==}
 
   which-boxed-primitive@1.0.2:
     resolution: {integrity: sha512-bwZdv0AKLpplFY2KZRX6TvyuN7ojjr7lwkg6ml0roIy9YeuSr7JS372qlNW18UQYzgYK9ziGcerWqZOmEn9VNg==}
@@ -3192,6 +3230,20 @@ snapshots:
       - debug
       - supports-color
 
+  '@sap-cloud-sdk/connectivity@3.16.0':
+    dependencies:
+      '@sap-cloud-sdk/resilience': 3.16.0
+      '@sap-cloud-sdk/util': 3.16.0
+      '@sap/xsenv': 5.1.0
+      '@sap/xssec': 4.1.3
+      async-retry: 1.3.3
+      axios: 1.7.2
+      jsonwebtoken: 9.0.2
+    transitivePeerDependencies:
+      - debug
+      - encoding
+      - supports-color
+
   '@sap-cloud-sdk/eslint-config@3.15.0(@typescript-eslint/eslint-plugin@7.8.0(@typescript-eslint/parser@7.8.0(eslint@9.5.0)(typescript@5.5.2))(eslint@9.5.0)(typescript@5.5.2))(@typescript-eslint/parser@7.8.0(eslint@9.5.0)(typescript@5.5.2))(eslint@9.5.0)(prettier@3.3.2)(typescript@5.5.2)':
     dependencies:
       '@eslint/js': 9.2.0
@@ -3213,14 +3265,15 @@ snapshots:
       - supports-color
       - typescript
 
-  '@sap-cloud-sdk/http-client@3.15.0':
+  '@sap-cloud-sdk/http-client@3.16.0':
     dependencies:
-      '@sap-cloud-sdk/connectivity': 3.15.0
-      '@sap-cloud-sdk/resilience': 3.15.0
-      '@sap-cloud-sdk/util': 3.15.0
-      axios: 1.6.8(debug@4.3.5)
+      '@sap-cloud-sdk/connectivity': 3.16.0
+      '@sap-cloud-sdk/resilience': 3.16.0
+      '@sap-cloud-sdk/util': 3.16.0
+      axios: 1.7.2
     transitivePeerDependencies:
       - debug
+      - encoding
       - supports-color
 
   '@sap-cloud-sdk/resilience@3.15.0':
@@ -3232,9 +3285,29 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
+  '@sap-cloud-sdk/resilience@3.16.0':
+    dependencies:
+      '@sap-cloud-sdk/util': 3.16.0
+      async-retry: 1.3.3
+      axios: 1.7.2
+      opossum: 8.1.4
+    transitivePeerDependencies:
+      - debug
+
   '@sap-cloud-sdk/util@3.15.0':
     dependencies:
       axios: 1.6.8(debug@4.3.5)
+      chalk: 4.1.2
+      logform: 2.6.0
+      voca: 1.4.1
+      winston: 3.13.0
+      winston-transport: 4.7.0
+    transitivePeerDependencies:
+      - debug
+
+  '@sap-cloud-sdk/util@3.16.0':
+    dependencies:
+      axios: 1.7.2
       chalk: 4.1.2
       logform: 2.6.0
       voca: 1.4.1
@@ -3258,6 +3331,15 @@ snapshots:
       jsonwebtoken: 9.0.2
       node-rsa: 1.1.1
     transitivePeerDependencies:
+      - supports-color
+
+  '@sap/xssec@4.1.3':
+    dependencies:
+      debug: 4.3.5
+      jwt-decode: 4.0.0
+      node-fetch: 2.7.0
+    transitivePeerDependencies:
+      - encoding
       - supports-color
 
   '@sinclair/typebox@0.27.8': {}
@@ -3558,6 +3640,14 @@ snapshots:
       possible-typed-array-names: 1.0.0
 
   axios@1.6.8(debug@4.3.5):
+    dependencies:
+      follow-redirects: 1.15.6(debug@4.3.5)
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+
+  axios@1.7.2:
     dependencies:
       follow-redirects: 1.15.6(debug@4.3.5)
       form-data: 4.0.0
@@ -4901,6 +4991,8 @@ snapshots:
       jwa: 1.4.1
       safe-buffer: 5.2.1
 
+  jwt-decode@4.0.0: {}
+
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
@@ -5056,6 +5148,10 @@ snapshots:
   node-cache@5.1.2:
     dependencies:
       clone: 2.1.2
+
+  node-fetch@2.7.0:
+    dependencies:
+      whatwg-url: 5.0.0
 
   node-int64@0.4.0: {}
 
@@ -5500,6 +5596,8 @@ snapshots:
     dependencies:
       is-number: 7.0.0
 
+  tr46@0.0.3: {}
+
   trim-newlines@3.0.1: {}
 
   triple-beam@1.4.1: {}
@@ -5665,6 +5763,13 @@ snapshots:
   walker@1.0.8:
     dependencies:
       makeerror: 1.0.12
+
+  webidl-conversions@3.0.1: {}
+
+  whatwg-url@5.0.0:
+    dependencies:
+      tr46: 0.0.3
+      webidl-conversions: 3.0.1
 
   which-boxed-primitive@1.0.2:
     dependencies:
