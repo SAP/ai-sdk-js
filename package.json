@@ -34,7 +34,7 @@
     "@sap-cloud-sdk/eslint-config": "^3.14.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.9",
-    "eslint": "^9.0.0",
+    "eslint": "^9.6.0",
     "jest": "^30.0.0-alpha.3",
     "nock": "^13.5.4",
     "prettier": "^3.2.5",
