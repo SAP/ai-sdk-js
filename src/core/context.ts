@@ -1,10 +1,10 @@
-/* eslint-disable import/no-internal-modules */
 import { createLogger } from '@sap-cloud-sdk/util';
-import { Destination, Service } from '@sap-cloud-sdk/connectivity';
 import {
+  Destination,
+  Service,
   getServiceBinding,
-  serviceToDestinationTransformers
-} from '@sap-cloud-sdk/connectivity/internal.js';
+  transformServiceBindingToDestination
+} from '@sap-cloud-sdk/connectivity';
 
 const logger = createLogger({
   package: 'gen-ai-hub',
@@ -28,11 +28,12 @@ export async function getAiCoreDestination(): Promise<Destination> {
     }
   }
   // Uses the @internal SDK functionality to transform the service binding to a destination.
-  const aiCoreDestination = await serviceToDestinationTransformers[
-    aiCoreServiceBinding.label
-  ](aiCoreServiceBinding, {
-    useCache: true
-  });
+  const aiCoreDestination = await transformServiceBindingToDestination(
+    aiCoreServiceBinding,
+    {
+      useCache: true
+    }
+  );
   return aiCoreDestination;
 }
 
