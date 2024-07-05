@@ -6,8 +6,6 @@
   "license": "Apache-2.0",
   "private": true,
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "tsd": {
     "directory": "type-tests"
   },
@@ -18,12 +16,12 @@
     "dist/**/*.d.ts.map"
   ],
   "scripts": {
-    "postinstall": "pnpm compile",
+    "postinstall": "pnpm -r -w=false run compile",
     "compile": "tsc",
-    "test": "jest",
+    "test": "pnpm -r -w=false run test",
     "test:type": "tsd",
-    "lint": "eslint . && prettier . -c",
-    "lint:fix": "eslint . --fix && prettier . -w --log-level error"
+    "lint": "pnpm -r run lint",
+    "lint:fix": "pnpm -r run lint:fix"
   },
   "dependencies": {
     "@sap-cloud-sdk/connectivity": "^3.16.0",
