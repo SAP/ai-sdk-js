@@ -21,8 +21,8 @@
   "scripts": {
     "compile": "tsc",
     "test": "jest",
-    "lint": "eslint . && prettier . -c",
-    "lint:fix": "eslint . --fix && prettier . -w --log-level error"
+    "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
+    "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
     "@sap-cloud-sdk/http-client": "^3.16.0",

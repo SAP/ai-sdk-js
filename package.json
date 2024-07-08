@@ -18,7 +18,7 @@
   "scripts": {
     "postinstall": "pnpm -r -w=false run compile",
     "compile": "tsc",
-    "test": "pnpm -r -w=false run test",
+    "test": "pnpm -r run test",
     "test:type": "tsd",
     "lint": "pnpm -r run lint",
     "lint:fix": "pnpm -r run lint:fix"
