@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import nock from 'nock';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import { mockGetAiCoreDestination } from '../../../../../test-util/mock-context.js';
@@ -56,7 +57,13 @@ describe('openai client', () => {
       ...deploymentConfig
     };
     const mockResponse = fs.readFileSync(
-      'test-util/mock-data/openai-chat-completion-success-response.json',
+      path.join(
+        '..',
+        '..',
+        'test-util',
+        'mock-data',
+        'openai-chat-completion-success-response.json'
+      ),
       'utf8'
     );
 
@@ -87,7 +94,13 @@ describe('openai client', () => {
       ...deploymentConfig
     };
     const mockResponse = fs.readFileSync(
-      'test-util/mock-data/openai-error-response.json',
+      path.join(
+        '..',
+        '..',
+        'test-util',
+        'mock-data',
+        'openai-error-response.json'
+      ),
       'utf8'
     );
 
@@ -113,7 +126,13 @@ describe('openai client', () => {
       ...deploymentConfig
     };
     const mockResponse = fs.readFileSync(
-      'test-util/mock-data/openai-embeddings-success-response.json',
+      path.join(
+        '..',
+        '..',
+        'test-util',
+        'mock-data',
+        'openai-embeddings-success-response.json'
+      ),
       'utf8'
     );
 
@@ -143,7 +162,13 @@ describe('openai client', () => {
       ...deploymentConfig
     };
     const mockResponse = fs.readFileSync(
-      'test-util/mock-data/openai-error-response.json',
+      path.join(
+        '..',
+        '..',
+        'test-util',
+        'mock-data',
+        'openai-error-response.json'
+      ),
       'utf8'
     );
 
