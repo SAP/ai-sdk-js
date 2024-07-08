@@ -58,8 +58,6 @@ describe('openai client', () => {
     };
     const mockResponse = fs.readFileSync(
       path.join(
-        '..',
-        '..',
         'test-util',
         'mock-data',
         'openai-chat-completion-success-response.json'
@@ -95,8 +93,6 @@ describe('openai client', () => {
     };
     const mockResponse = fs.readFileSync(
       path.join(
-        '..',
-        '..',
         'test-util',
         'mock-data',
         'openai-error-response.json'
@@ -127,8 +123,6 @@ describe('openai client', () => {
     };
     const mockResponse = fs.readFileSync(
       path.join(
-        '..',
-        '..',
         'test-util',
         'mock-data',
         'openai-embeddings-success-response.json'
@@ -163,8 +157,6 @@ describe('openai client', () => {
     };
     const mockResponse = fs.readFileSync(
       path.join(
-        '..',
-        '..',
         'test-util',
         'mock-data',
         'openai-error-response.json'
