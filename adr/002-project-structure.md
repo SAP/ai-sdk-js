@@ -5,7 +5,7 @@
 - @ai-sdk-js/ai-core
     - AI Core generated client + types
     - Utility functions (if any)
-- @ai-sdk-js/get-ai-hub 
+- @ai-sdk-js/gen-ai-hub 
     - Orchestration generated client
     - Wrappers/Utility functions
     - Client for LLM Access (Azure Openai and its types (Chat/Embeddings))
