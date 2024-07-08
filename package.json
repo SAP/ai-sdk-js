@@ -4,17 +4,13 @@
   "description": "",
   "keywords": [],
   "license": "Apache-2.0",
+  "repository": "github:SAP/ai-sdk-js",
   "private": true,
   "type": "module",
+  "types": "type-tests",
   "tsd": {
     "directory": "type-tests"
   },
-  "files": [
-    "dist/**/*.js",
-    "dist/**/*.js.map",
-    "dist/**/*.d.ts",
-    "dist/**/*.d.ts.map"
-  ],
   "scripts": {
     "postinstall": "pnpm -r -w=false run compile",
     "compile": "tsc",

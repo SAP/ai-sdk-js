@@ -4,7 +4,7 @@ import {
   BaseLlmParameters,
   CustomRequestConfig,
   EndpointOptions
-} from '../packages/gen-ai-hub/src/core/http-client.js';
+} from '../src/core/http-client.js';
 
 const mockEndpoint: EndpointOptions = {
   url: 'mock-endpoint',

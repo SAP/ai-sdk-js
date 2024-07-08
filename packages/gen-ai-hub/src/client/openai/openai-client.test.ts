@@ -2,13 +2,13 @@ import fs from 'fs';
 import path from 'path';
 import nock from 'nock';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
-import { mockGetAiCoreDestination } from '../../../../../test-util/mock-context.js';
+import { mockGetAiCoreDestination } from '../../../test-util/mock-context.js';
 import {
   BaseLlmParameters,
   BaseLlmParametersWithDeploymentId,
   EndpointOptions
 } from '../../core/http-client.js';
-import { mockInference } from '../../../../../test-util/mock-http.js';
+import { mockInference } from '../../../test-util/mock-http.js';
 import { OpenAiClient } from './openai-client.js';
 import {
   OpenAiChatCompletionOutput,
