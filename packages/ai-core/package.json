@@ -1,10 +1,10 @@
 {
-  "name": "@ai-sdk-js/ai-core",
+  "name": "@sap-ai-sdk/ai-core",
   "version": "0.0.1",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
-    "ai-sdk-js",
+    "sap-ai-sdk",
     "ai-core"
   ],
   "type": "module",
