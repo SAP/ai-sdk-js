@@ -1,0 +1,36 @@
+{
+  "name": "@sap-ai-sdk/gen-ai-hub",
+  "version": "0.0.1",
+  "description": "",
+  "license": "Apache-2.0",
+  "keywords": [
+    "sap-ai-sdk",
+    "gen-ai-hub",
+    "orchestration",
+    "llm-access"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts",
+    "dist/**/*.d.ts.map"
+  ],
+  "scripts": {
+    "compile": "tsc",
+    "test": "jest",
+    "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
+    "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
+  },
+  "dependencies": {
+    "@sap-cloud-sdk/http-client": "^3.16.0",
+    "@sap-cloud-sdk/connectivity": "^3.16.0",
+    "@sap-cloud-sdk/util": "^3.16.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3",
+    "nock": "^13.5.4"
+  }
+}

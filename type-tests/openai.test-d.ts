@@ -1,12 +1,12 @@
 import { expectError, expectType } from 'tsd';
-import { OpenAiClient } from '../src/client/openai/openai-client.js';
+import { OpenAiClient } from '../packages/gen-ai-hub/src/client/openai/openai-client.js';
 import {
   OpenAiChatCompletionOutput,
   OpenAiEmbeddingOutput
-} from '../src/client/openai/openai-types.js';
+} from '../packages/gen-ai-hub/src/client/openai/openai-types.js'
 
 const client = new OpenAiClient();
-expectType<OpenAiClient>(client);
+expectType<OpenAiClient>(client );
 
 /**
  * Chat Completion.

@@ -1,29 +1,23 @@
 {
-  "name": "ai-sdk-js",
+  "name": "sap-ai-sdk",
   "version": "0.0.1",
   "description": "",
   "keywords": [],
   "license": "Apache-2.0",
+  "repository": "github:SAP/ai-sdk-js",
   "private": true,
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "types": "type-tests",
   "tsd": {
     "directory": "type-tests"
   },
-  "files": [
-    "dist/**/*.js",
-    "dist/**/*.js.map",
-    "dist/**/*.d.ts",
-    "dist/**/*.d.ts.map"
-  ],
   "scripts": {
-    "postinstall": "pnpm compile",
+    "postinstall": "pnpm -r -w=false run compile",
     "compile": "tsc",
-    "test": "jest",
+    "test": "pnpm -r run test",
     "test:type": "tsd",
-    "lint": "eslint . && prettier . -c",
-    "lint:fix": "eslint . --fix && prettier . -w --log-level error"
+    "lint": "pnpm -r run lint",
+    "lint:fix": "pnpm -r run lint:fix"
   },
   "dependencies": {
     "@sap-cloud-sdk/connectivity": "^3.16.0",
@@ -33,14 +27,14 @@
   "devDependencies": {
     "@sap-cloud-sdk/eslint-config": "^3.14.0",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.14.9",
+    "@types/node": "^20.14.10",
     "eslint": "^9.6.0",
     "jest": "^30.0.0-alpha.3",
     "nock": "^13.5.4",
     "prettier": "^3.2.5",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.5",
+    "typescript": "^5.5.3",
     "tsd": "^0.31.0"
   }
 }
