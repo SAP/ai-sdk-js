@@ -92,11 +92,7 @@ describe('openai client', () => {
       ...deploymentConfig
     };
     const mockResponse = fs.readFileSync(
-      path.join(
-        'test-util',
-        'mock-data',
-        'openai-error-response.json'
-      ),
+      path.join('test-util', 'mock-data', 'openai-error-response.json'),
       'utf8'
     );
 
@@ -156,11 +152,7 @@ describe('openai client', () => {
       ...deploymentConfig
     };
     const mockResponse = fs.readFileSync(
-      path.join(
-        'test-util',
-        'mock-data',
-        'openai-error-response.json'
-      ),
+      path.join('test-util', 'mock-data', 'openai-error-response.json'),
       'utf8'
     );
 
