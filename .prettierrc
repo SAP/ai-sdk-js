@@ -7,7 +7,7 @@
   "endOfLine": "lf",
   "overrides": [
     {
-      "files": "jest.config.ts",
+      "files": "jest.config.mjs",
       "options": {
         "trailingComma": "all"
       }
