@@ -22,34 +22,38 @@ export const ObjectStoreSecretApi = {
    * Retrieve a list of metadata of the stored secrets.
    *
    * @param queryParameters - Object containing the following keys: $top, $skip, $count.
+   * @param headerParameters - Object containing the following keys: Authorization, AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  kubesubmitV4ObjectStoreSecretsQuery: (queryParameters?: {
-    $top?: number;
-    $skip?: number;
-    $count?: boolean;
-  }) =>
+  kubesubmitV4ObjectStoreSecretsQuery: (
+    queryParameters?: { $top?: number; $skip?: number; $count?: boolean },
+    headerParameters?: { Authorization?: string; 'AI-Resource-Group'?: string }
+  ) =>
     new OpenApiRequestBuilder<ObjectStoreSecretStatusResponse>(
       'get',
       '/admin/objectStoreSecrets',
       {
-        queryParameters
+        queryParameters,
+        headerParameters
       }
     ),
   /**
    * Create a secret based on the configuration in the request body
    *
    * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: Authorization, AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   kubesubmitV4ObjectStoreSecretsCreate: (
-    body: ObjectStoreSecretWithSensitiveDataRequestForPostCall
+    body: ObjectStoreSecretWithSensitiveDataRequestForPostCall,
+    headerParameters?: { Authorization?: string; 'AI-Resource-Group'?: string }
   ) =>
     new OpenApiRequestBuilder<ObjectStoreSecretCreationResponse>(
       'post',
       '/admin/objectStoreSecrets',
       {
-        body
+        body,
+        headerParameters
       }
     ),
   /**
@@ -58,14 +62,19 @@ export const ObjectStoreSecretApi = {
    * The base64 encoded field for the stored secret is not returned.
    *
    * @param objectStoreName - Name of the object store for the secret.
+   * @param headerParameters - Object containing the following keys: Authorization, AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  kubesubmitV4ObjectStoreSecretsGet: (objectStoreName: string) =>
+  kubesubmitV4ObjectStoreSecretsGet: (
+    objectStoreName: string,
+    headerParameters?: { Authorization?: string; 'AI-Resource-Group'?: string }
+  ) =>
     new OpenApiRequestBuilder<ObjectStoreSecretStatus>(
       'get',
       '/admin/objectStoreSecrets/{objectStoreName}',
       {
-        pathParameters: { objectStoreName }
+        pathParameters: { objectStoreName },
+        headerParameters
       }
     ),
   /**
@@ -73,31 +82,39 @@ export const ObjectStoreSecretApi = {
    *
    * @param objectStoreName - Name of the object store for the secret.
    * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: Authorization, AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   kubesubmitV4ObjectStoreSecretsPatch: (
     objectStoreName: string,
-    body: ObjectStoreSecretWithSensitiveDataRequest
+    body: ObjectStoreSecretWithSensitiveDataRequest,
+    headerParameters?: { Authorization?: string; 'AI-Resource-Group'?: string }
   ) =>
     new OpenApiRequestBuilder<ObjectStoreSecretModificationResponse>(
       'patch',
       '/admin/objectStoreSecrets/{objectStoreName}',
       {
         pathParameters: { objectStoreName },
-        body
+        body,
+        headerParameters
       }
     ),
   /**
    * Delete a secret with the name of objectStoreName if it exists.
    * @param objectStoreName - Name of the object store for the secret.
+   * @param headerParameters - Object containing the following keys: Authorization, AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  kubesubmitV4ObjectStoreSecretsDelete: (objectStoreName: string) =>
+  kubesubmitV4ObjectStoreSecretsDelete: (
+    objectStoreName: string,
+    headerParameters?: { Authorization?: string; 'AI-Resource-Group'?: string }
+  ) =>
     new OpenApiRequestBuilder<ObjectStoreSecretDeletionResponse>(
       'delete',
       '/admin/objectStoreSecrets/{objectStoreName}',
       {
-        pathParameters: { objectStoreName }
+        pathParameters: { objectStoreName },
+        headerParameters
       }
     )
 };

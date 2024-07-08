@@ -13,22 +13,32 @@ export const ServiceApi = {
   /**
    * Retrieve a list of services for a given main tenant.
    *
+   * @param headerParameters - Object containing the following keys: Authorization.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  kubesubmitV4AiservicesGetAll: () =>
-    new OpenApiRequestBuilder<ServiceList>('get', '/admin/services'),
+  kubesubmitV4AiservicesGetAll: (headerParameters?: {
+    Authorization?: string;
+  }) =>
+    new OpenApiRequestBuilder<ServiceList>('get', '/admin/services', {
+      headerParameters
+    }),
   /**
    * Get an service of a given main tenant.
    *
    * @param serviceName - Name of the Service
+   * @param headerParameters - Object containing the following keys: Authorization.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  kubesubmitV4AiservicesGet: (serviceName: string) =>
+  kubesubmitV4AiservicesGet: (
+    serviceName: string,
+    headerParameters?: { Authorization?: string }
+  ) =>
     new OpenApiRequestBuilder<ExtendedService>(
       'get',
       '/admin/services/{serviceName}',
       {
-        pathParameters: { serviceName }
+        pathParameters: { serviceName },
+        headerParameters
       }
     )
 };

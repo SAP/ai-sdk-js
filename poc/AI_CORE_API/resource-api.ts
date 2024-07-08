@@ -16,24 +16,33 @@ import type {
 export const ResourceApi = {
   /**
    * Lists all hot spare nodes, used nodes and total nodes corresponding to tenant.
+   * @param headerParameters - Object containing the following keys: Authorization.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  kubesubmitV4ResourcesGet: () =>
+  kubesubmitV4ResourcesGet: (headerParameters?: { Authorization?: string }) =>
     new OpenApiRequestBuilder<ResourceGetResponse>(
       'get',
-      '/admin/resources/nodes'
+      '/admin/resources/nodes',
+      {
+        headerParameters
+      }
     ),
   /**
    * Set hot spare nodes corresponding to tenant at main tenant level.
    * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: Authorization.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  kubesubmitV4ResourcesPatch: (body: ResourcePatchBody) =>
+  kubesubmitV4ResourcesPatch: (
+    body: ResourcePatchBody,
+    headerParameters?: { Authorization?: string }
+  ) =>
     new OpenApiRequestBuilder<ResourcePatchResponse>(
       'patch',
       '/admin/resources/nodes',
       {
-        body
+        body,
+        headerParameters
       }
     )
 };

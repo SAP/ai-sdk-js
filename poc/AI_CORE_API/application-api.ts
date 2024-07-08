@@ -24,60 +24,76 @@ export const ApplicationApi = {
    * Return all Argo CD application data objects.
    *
    * @param queryParameters - Object containing the following keys: $top, $skip, $count.
+   * @param headerParameters - Object containing the following keys: Authorization.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  kubesubmitV4ApplicationsGetAll: (queryParameters?: {
-    $top?: number;
-    $skip?: number;
-    $count?: boolean;
-  }) =>
+  kubesubmitV4ApplicationsGetAll: (
+    queryParameters?: { $top?: number; $skip?: number; $count?: boolean },
+    headerParameters?: { Authorization?: string }
+  ) =>
     new OpenApiRequestBuilder<AllArgoCDApplicationData>(
       'get',
       '/admin/applications',
       {
-        queryParameters
+        queryParameters,
+        headerParameters
       }
     ),
   /**
    * Create an ArgoCD application to synchronise a repository.
    *
    * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: Authorization.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  kubesubmitV4ApplicationsCreate: (body: Body) =>
+  kubesubmitV4ApplicationsCreate: (
+    body: Body,
+    headerParameters?: { Authorization?: string }
+  ) =>
     new OpenApiRequestBuilder<ArgoCDApplicationCreationResponse>(
       'post',
       '/admin/applications',
       {
-        body
+        body,
+        headerParameters
       }
     ),
   /**
    * Returns the ArgoCD application health and sync status.
    *
    * @param applicationName - Name of the ArgoCD application
+   * @param headerParameters - Object containing the following keys: Authorization.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  kubesubmitV4ApplicationsGetStatus: (applicationName: string) =>
+  kubesubmitV4ApplicationsGetStatus: (
+    applicationName: string,
+    headerParameters?: { Authorization?: string }
+  ) =>
     new OpenApiRequestBuilder<ArgoCDApplicationStatus>(
       'get',
       '/admin/applications/{applicationName}/status',
       {
-        pathParameters: { applicationName }
+        pathParameters: { applicationName },
+        headerParameters
       }
     ),
   /**
    * Retrieve the ArgoCD application details.
    *
    * @param applicationName - Name of the ArgoCD application
+   * @param headerParameters - Object containing the following keys: Authorization.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  kubesubmitV4ApplicationsGet: (applicationName: string) =>
+  kubesubmitV4ApplicationsGet: (
+    applicationName: string,
+    headerParameters?: { Authorization?: string }
+  ) =>
     new OpenApiRequestBuilder<ArgoCDApplicationData>(
       'get',
       '/admin/applications/{applicationName}',
       {
-        pathParameters: { applicationName }
+        pathParameters: { applicationName },
+        headerParameters
       }
     ),
   /**
@@ -85,45 +101,58 @@ export const ApplicationApi = {
    *
    * @param applicationName - Name of the ArgoCD application
    * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: Authorization.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   kubesubmitV4ApplicationsUpdate: (
     applicationName: string,
-    body: ArgoCDApplicationBaseData
+    body: ArgoCDApplicationBaseData,
+    headerParameters?: { Authorization?: string }
   ) =>
     new OpenApiRequestBuilder<ArgoCDApplicationModificationResponse>(
       'patch',
       '/admin/applications/{applicationName}',
       {
         pathParameters: { applicationName },
-        body
+        body,
+        headerParameters
       }
     ),
   /**
    * Delete an ArgoCD application
    * @param applicationName - Name of the ArgoCD application
+   * @param headerParameters - Object containing the following keys: Authorization.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  kubesubmitV4ApplicationsDelete: (applicationName: string) =>
+  kubesubmitV4ApplicationsDelete: (
+    applicationName: string,
+    headerParameters?: { Authorization?: string }
+  ) =>
     new OpenApiRequestBuilder<ArgoCDApplicationDeletionResponse>(
       'delete',
       '/admin/applications/{applicationName}',
       {
-        pathParameters: { applicationName }
+        pathParameters: { applicationName },
+        headerParameters
       }
     ),
   /**
    * Schedules a refresh of the specified application that will be picked up by ArgoCD asynchronously
    *
    * @param applicationName - Name of the ArgoCD application
+   * @param headerParameters - Object containing the following keys: Authorization.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  kubesubmitV4ApplicationsRefresh: (applicationName: string) =>
+  kubesubmitV4ApplicationsRefresh: (
+    applicationName: string,
+    headerParameters?: { Authorization?: string }
+  ) =>
     new OpenApiRequestBuilder<ArgoCDApplicationRefreshResponse>(
       'post',
       '/admin/applications/{applicationName}/refresh',
       {
-        pathParameters: { applicationName }
+        pathParameters: { applicationName },
+        headerParameters
       }
     )
 };

@@ -12,18 +12,26 @@ import type { ScenarioList, Scenario, VersionList } from './schema';
 export const ScenarioApi = {
   /**
    * Retrieve a list of all available scenarios.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  scenarioQuery: () =>
-    new OpenApiRequestBuilder<ScenarioList>('get', '/lm/scenarios'),
+  scenarioQuery: (headerParameters: { 'AI-Resource-Group': string }) =>
+    new OpenApiRequestBuilder<ScenarioList>('get', '/lm/scenarios', {
+      headerParameters
+    }),
   /**
    * Retrieve details for a scenario specified by scenarioId.
    * @param scenarioId - Scenario identifier
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  scenarioGet: (scenarioId: string) =>
+  scenarioGet: (
+    scenarioId: string,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
     new OpenApiRequestBuilder<Scenario>('get', '/lm/scenarios/{scenarioId}', {
-      pathParameters: { scenarioId }
+      pathParameters: { scenarioId },
+      headerParameters
     }),
   /**
    * Retrieve a list of scenario versions based on the versions of executables
@@ -31,18 +39,21 @@ export const ScenarioApi = {
    *
    * @param scenarioId - Scenario identifier
    * @param queryParameters - Object containing the following keys: labelSelector.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   scenarioQueryVersions: (
     scenarioId: string,
-    queryParameters?: { labelSelector?: string[] }
+    queryParameters: { labelSelector?: string[] },
+    headerParameters: { 'AI-Resource-Group': string }
   ) =>
     new OpenApiRequestBuilder<VersionList>(
       'get',
       '/lm/scenarios/{scenarioId}/versions',
       {
         pathParameters: { scenarioId },
-        queryParameters
+        queryParameters,
+        headerParameters
       }
     )
 };

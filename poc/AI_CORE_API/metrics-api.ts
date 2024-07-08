@@ -22,33 +22,48 @@ export const MetricsApi = {
    * Use up to 10 execution IDs in a query parameter.
    *
    * @param queryParameters - Object containing the following keys: $filter, executionIds, $select.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  metricsFind: (queryParameters?: {
-    $filter?: string;
-    executionIds?: StringArray;
-    $select?: MetricSelectorPermissibleValues;
-  }) =>
+  metricsFind: (
+    queryParameters: {
+      $filter?: string;
+      executionIds?: StringArray;
+      $select?: MetricSelectorPermissibleValues;
+    },
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
     new OpenApiRequestBuilder<GetMetricResourceList>('get', '/lm/metrics', {
-      queryParameters
+      queryParameters,
+      headerParameters
     }),
   /**
    * Update or create metrics, tags, or labels associated with an execution.
    *
    * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  metricsPatch: (body: any) =>
+  metricsPatch: (
+    body: any,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
     new OpenApiRequestBuilder<any>('patch', '/lm/metrics', {
-      body
+      body,
+      headerParameters
     }),
   /**
    * Delete metrics, tags, or labels associated with an execution.
    * @param queryParameters - Object containing the following keys: executionId.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  metricsDelete: (queryParameters: { executionId: ExecutionId2 }) =>
+  metricsDelete: (
+    queryParameters: { executionId: ExecutionId2 },
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
     new OpenApiRequestBuilder<DeleteMetricsResponse>('delete', '/lm/metrics', {
-      queryParameters
+      queryParameters,
+      headerParameters
     })
 };

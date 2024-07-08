@@ -13,11 +13,16 @@ export const FileApi = {
   /**
    * Endpoint for downloading file. The path must point to an individual file.
    * @param path - path relative to the object store root URL in the secret
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  fileDownload: (path: string) =>
+  fileDownload: (
+    path: string,
+    headerParameters?: { 'AI-Resource-Group'?: string }
+  ) =>
     new OpenApiRequestBuilder<any>('get', '/lm/dataset/files/{path}', {
-      pathParameters: { path }
+      pathParameters: { path },
+      headerParameters
     }),
   /**
    * Endpoint for uploading file. The maximum file size depends on the actual implementation
@@ -40,12 +45,14 @@ export const FileApi = {
    * @param path - path relative to the object store root URL in the secret
    * @param body - Body of the file upload request
    * @param queryParameters - Object containing the following keys: overwrite.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   fileUpload: (
     path: string,
     body: any | undefined,
-    queryParameters?: { overwrite?: boolean }
+    queryParameters?: { overwrite?: boolean },
+    headerParameters?: { 'AI-Resource-Group'?: string }
   ) =>
     new OpenApiRequestBuilder<FileCreationResponse>(
       'put',
@@ -53,16 +60,22 @@ export const FileApi = {
       {
         pathParameters: { path },
         body,
-        queryParameters
+        queryParameters,
+        headerParameters
       }
     ),
   /**
    * Delete the file specified by the path parameter.
    * @param path - path relative to the object store root URL in the secret
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  fileDelete: (path: string) =>
+  fileDelete: (
+    path: string,
+    headerParameters?: { 'AI-Resource-Group'?: string }
+  ) =>
     new OpenApiRequestBuilder<any>('delete', '/lm/dataset/files/{path}', {
-      pathParameters: { path }
+      pathParameters: { path },
+      headerParameters
     })
 };
