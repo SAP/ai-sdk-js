@@ -34,6 +34,6 @@ jobs:
           if [ ! -z "$diff" ]; then
             git config --global user.email "cloud-sdk-js@github.com"
             git config --global user.name "cloud-sdk-js"
-            git commit -m "Changes from lint:fix" -a
+            git commit -m "fix: Changes from lint" -a
             git push
           fi

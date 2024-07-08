@@ -1,0 +1,31 @@
+{
+  "name": "@sap-ai-sdk/ai-core",
+  "version": "0.0.1",
+  "description": "",
+  "license": "Apache-2.0",
+  "keywords": [
+    "sap-ai-sdk",
+    "ai-core"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts",
+    "dist/**/*.d.ts.map"
+  ],
+  "scripts": {
+    "compile": "tsc",
+    "test": "jest",
+    "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
+    "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
+  },
+  "dependencies": {
+    "@sap-cloud-sdk/openapi": "^3.16.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3"
+  }
+}
