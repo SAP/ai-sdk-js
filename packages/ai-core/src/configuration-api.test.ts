@@ -6,16 +6,12 @@ import {
   ConfigurationCreationResponse,
   ConfigurationList,
   Configuration
-} from '../index.js';
+} from './index.js';
 
-describe('configuration unit tests', () => {
-  let destination: HttpDestination;
-
-  beforeAll(() => {
-    destination = {
-      url: 'https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2'
-    };
-  });
+describe('configuration', () => {
+  const destination: HttpDestination = {
+    url: 'https://ai.example.com'
+  };
 
   afterEach(() => {
     nock.cleanAll();

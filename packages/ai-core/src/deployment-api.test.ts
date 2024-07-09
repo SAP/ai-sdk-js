@@ -10,16 +10,12 @@ import {
   DeploymentApi,
   DeploymentModificationResponse,
   DeploymentTargetStatus
-} from '../index.js';
+} from './index.js';
 
-describe('deployment unit tests', () => {
-  let destination: HttpDestination;
-
-  beforeAll(() => {
-    destination = {
-      url: 'https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2'
-    };
-  });
+describe('deployment', () => {
+  const destination: HttpDestination = {
+    url: 'https://ai.example.com'
+  };
 
   afterEach(() => {
     nock.cleanAll();
@@ -38,7 +34,7 @@ describe('deployment unit tests', () => {
               configurationName: 'gpt-4-32k',
               createdAt: '2024-04-17T15:19:53Z',
               deploymentUrl:
-                'https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/d19b998f347341aa',
+                'https://ai.example.com/inference/deployments/d19b998f347341aa',
               details: {
                 resources: {
                   backend_details: {

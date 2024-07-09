@@ -6,16 +6,12 @@ import {
   ExecutionApi,
   ExecutionCreationResponse,
   ExecutionList
-} from '../index.js';
+} from './index.js';
 
-describe('execution unit tests', () => {
-  let destination: HttpDestination;
-
-  beforeAll(() => {
-    destination = {
-      url: 'https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2'
-    };
-  });
+describe('execution', () => {
+  const destination: HttpDestination = {
+    url: 'https://ai.example.com'
+  };
 
   afterEach(() => {
     nock.cleanAll();

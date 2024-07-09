@@ -1,15 +1,11 @@
 import nock from 'nock';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
-import { Scenario, ScenarioApi, ScenarioList } from '../index.js';
+import { Scenario, ScenarioApi, ScenarioList } from './index.js';
 
-describe('scenario unit tests', () => {
-  let destination: HttpDestination;
-
-  beforeAll(() => {
-    destination = {
-      url: 'https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2'
-    };
-  });
+describe('scenario', () => {
+  const destination: HttpDestination = {
+    url: 'https://ai.example.com'
+  };
 
   afterEach(() => {
     nock.cleanAll();
