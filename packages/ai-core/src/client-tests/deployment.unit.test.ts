@@ -9,7 +9,7 @@ import {
   DeploymentModificationRequest,
   DeploymentApi,
   DeploymentModificationResponse,
-  Status
+  DeploymentTargetStatus
 } from '../index.js';
 
 describe('deployment unit tests', () => {
@@ -146,7 +146,7 @@ describe('deployment unit tests', () => {
       );
 
     const deploymentPatchData: DeploymentModificationRequest = {
-      targetStatus: 'STOPPED'
+      targetStatus: 'STOPPED' as DeploymentTargetStatus
     };
 
     const result: DeploymentModificationResponse =
