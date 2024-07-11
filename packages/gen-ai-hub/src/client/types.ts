@@ -6,6 +6,6 @@ import {
 /**
  * Base LLM Output.
  */
-export type GenAiBaseLlmOutput =
+export type BaseLlmOutput =
   | OpenAiChatCompletionOutput
   | OpenAiEmbeddingOutput;

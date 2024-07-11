@@ -7,6 +7,5 @@ export {
 } from './client/index.js';
 export { CustomRequestConfig, BaseLlmParameters } from './core/index.js';
 export {
-  getOrchestrationClient,
-  OrchestrationClientRequest
+  GenAiHubClient
 } from './orchestration/index.js';
