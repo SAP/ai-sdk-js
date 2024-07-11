@@ -18,13 +18,13 @@ export class GenAiHubClient {
     }
   async chatCompletion(
     body: GenAiHubCompletionParameters,
-    requestConfig: CustomRequestConfig
+    requestConfig?: CustomRequestConfig
   ): Promise<CompletionPostResponse> {
     return DefaultApi.orchestrationV1EndpointsCreate({
       ...body,
       input_params: {}
     })
-    .addCustomRequestConfiguration(requestConfig)
+    .addCustomRequestConfiguration(requestConfig ?? {})
     .execute(this.destination,);
   }
 }
