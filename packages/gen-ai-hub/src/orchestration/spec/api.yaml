@@ -8,7 +8,7 @@ info:
   version: 0.0.1
 
 servers:
-  - url: "/v1"
+  - url: '/v1'
 
 tags:
   - name: Orchestrated Completion
@@ -23,32 +23,32 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CompletionPostRequest"
+              $ref: '#/components/schemas/CompletionPostRequest'
       responses:
         200:
-          description: "Successful response"
+          description: 'Successful response'
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CompletionPostResponse"
+                $ref: '#/components/schemas/CompletionPostResponse'
         400:
-          $ref: "#/components/responses/BadRequest"
+          $ref: '#/components/responses/BadRequest'
         default:
-          $ref: "#/components/responses/CommonError"
+          $ref: '#/components/responses/CommonError'
 
   /healthz:
     get:
       operationId: orchestration.v1.endpoints.healthz
       responses:
-        "200":
-          description: "Service is up and running."
+        '200':
+          description: 'Service is up and running.'
           content:
             text/plain:
               schema:
                 type: string
-                example: "OK"
-        "503":
-          description: "Service is unavailable."
+                example: 'OK'
+        '503':
+          description: 'Service is unavailable.'
           content:
             application/json:
               schema:
@@ -56,7 +56,7 @@ paths:
                 properties:
                   status:
                     type: string
-                    example: "Service Unavailable"
+                    example: 'Service Unavailable'
 
 components:
   schemas:
@@ -67,14 +67,14 @@ components:
         - input_params
       properties:
         orchestration_config:
-          $ref: "#/components/schemas/OrchestrationConfig"
+          $ref: '#/components/schemas/OrchestrationConfig'
         input_params:
           type: object
           additionalProperties:
-            $ref: "#/components/schemas/InputParamsEntry"
+            $ref: '#/components/schemas/InputParamsEntry'
         messages_history:
           description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
-          $ref: "#/components/schemas/ChatMessages"
+          $ref: '#/components/schemas/ChatMessages'
           default: []
         return_module_results:
           description: Whether to return module results, which returns detailed information about each module execution. Be careful with the content of the individual module results as they may contain unchecked user or model content.
@@ -84,7 +84,7 @@ components:
     ChatMessages:
       type: array
       items:
-        $ref: "#/components/schemas/ChatMessage"
+        $ref: '#/components/schemas/ChatMessage'
 
     ChatMessage:
       type: object
@@ -116,9 +116,9 @@ components:
           description: Results of each module. Only returned if return_module_results is true
           type: array
           items:
-            $ref: "#/components/schemas/ModuleResultsItem"
+            $ref: '#/components/schemas/ModuleResultsItem'
         orchestration_result:
-          $ref: "#/components/schemas/LLMModuleOutput"
+          $ref: '#/components/schemas/LLMModuleOutput'
 
     OrchestrationConfig:
       type: object
@@ -126,7 +126,7 @@ components:
         - module_configurations
       properties:
         module_configurations:
-          $ref: "#/components/schemas/ModuleConfigs"
+          $ref: '#/components/schemas/ModuleConfigs'
 
     ModuleConfigs:
       type: object
@@ -135,15 +135,15 @@ components:
         - templating_module_config
       properties:
         llm_module_config:
-          $ref: "#/components/schemas/LLMModuleConfig"
+          $ref: '#/components/schemas/LLMModuleConfig'
         templating_module_config:
-          $ref: "#/components/schemas/TemplatingModuleConfig"
+          $ref: '#/components/schemas/TemplatingModuleConfig'
         filtering_module_config:
-          $ref: "#/components/schemas/FilteringModuleConfig"
+          $ref: '#/components/schemas/FilteringModuleConfig'
         masking_module_config:
-          $ref: "#/components/schemas/MaskingModuleConfig"
+          $ref: '#/components/schemas/MaskingModuleConfig'
         grounding_module_config:
-          $ref: "#/components/schemas/GroundingModuleConfig"
+          $ref: '#/components/schemas/GroundingModuleConfig'
 
     ModuleResultsItem:
       type: object
@@ -160,9 +160,9 @@ components:
           type: boolean
         output:
           oneOf:
-            - $ref: "#/components/schemas/GenericModuleResult"
-            - $ref: "#/components/schemas/ChatMessages"
-            - $ref: "#/components/schemas/LLMModuleOutput"
+            - $ref: '#/components/schemas/GenericModuleResult'
+            - $ref: '#/components/schemas/ChatMessages'
+            - $ref: '#/components/schemas/LLMModuleOutput'
 
     # --- LLM MODULE ---
     LLMModuleConfig:
@@ -182,7 +182,7 @@ components:
           description: Version of the model to use
           example: 2023-05-15
           type: string
-          default: "latest"
+          default: 'latest'
 
     GenericModuleResult:
       type: object
@@ -227,9 +227,9 @@ components:
           type: array
           description: Choices
           items:
-            $ref: "#/components/schemas/LLMChoice"
+            $ref: '#/components/schemas/LLMChoice'
         usage:
-          $ref: "#/components/schemas/TokenUsage"
+          $ref: '#/components/schemas/TokenUsage'
 
     LLMChoice:
       type: object
@@ -242,7 +242,7 @@ components:
           type: integer
           description: Index of the choice
         message:
-          $ref: "#/components/schemas/ChatMessage"
+          $ref: '#/components/schemas/ChatMessage'
         logprobs:
           type: object
           description: Log probabilities
@@ -295,13 +295,13 @@ components:
       type: object
       properties:
         input:
-          $ref: "#/components/schemas/FilteringConfig"
+          $ref: '#/components/schemas/FilteringConfig'
           description: List of provider type and filters
         output:
-          $ref: "#/components/schemas/FilteringConfig"
+          $ref: '#/components/schemas/FilteringConfig'
           description: List of provider type and filters
       additionalProperties: false
-    
+
     FilteringConfig:
       type: object
       required:
@@ -310,7 +310,7 @@ components:
         filters:
           type: array
           items:
-            $ref: "#/components/schemas/Filter"
+            $ref: '#/components/schemas/Filter'
           description: Filters to be used
 
     Filter:
@@ -319,24 +319,24 @@ components:
       properties:
         type:
           description: Type of filtering service provider
-          $ref: "#/components/schemas/ProviderType"
+          $ref: '#/components/schemas/ProviderType'
         config:
           description: Filters classifiers to be used
           type: object
           oneOf:
-            - $ref: "#/components/schemas/AzureContentSafety"
+            - $ref: '#/components/schemas/AzureContentSafety'
 
     AzureContentSafety:
       type: object
       properties:
-        "Hate":
-          $ref: "#/components/schemas/AzureThreshold"
-        "SelfHarm":
-          $ref: "#/components/schemas/AzureThreshold"
-        "Sexual":
-          $ref: "#/components/schemas/AzureThreshold"
-        "Violence":
-          $ref: "#/components/schemas/AzureThreshold"
+        'Hate':
+          $ref: '#/components/schemas/AzureThreshold'
+        'SelfHarm':
+          $ref: '#/components/schemas/AzureThreshold'
+        'Sexual':
+          $ref: '#/components/schemas/AzureThreshold'
+        'Violence':
+          $ref: '#/components/schemas/AzureThreshold'
 
     ProviderType:
       type: string
@@ -355,39 +355,39 @@ components:
 
     MaskingModuleConfig:
       type: object
-      required: 
-      - masking
+      required:
+        - masking
       properties:
         masking:
-          $ref: "#/components/schemas/MaskingConfig"
-          description: List of masking providers and entities 
+          $ref: '#/components/schemas/MaskingConfig'
+          description: List of masking providers and entities
         unmasking:
-          $ref: "#/components/schemas/UnmaskingConfig"
+          $ref: '#/components/schemas/UnmaskingConfig'
           description: List of entities to unmask
       additionalProperties: false
 
     MaskingConfig:
       type: array
       items:
-        $ref: "#/components/schemas/Masking"
+        $ref: '#/components/schemas/Masking'
       description: Masking services to be used
 
     Masking:
       type: object
-      required: 
+      required:
         - type
         - entities
       properties:
-        type: 
-          description: "Type of masking service provider"
-          $ref: "#/components/schemas/MaskingProviderType"
+        type:
+          description: 'Type of masking service provider'
+          $ref: '#/components/schemas/MaskingProviderType'
         entities:
           description: List of entities to be masked
           type: array
           items:
             oneOf:
-              - $ref: "#/components/schemas/DPIEntities"
-              - $ref: "#/components/schemas/PresidioEntities"
+              - $ref: '#/components/schemas/DPIEntities'
+              - $ref: '#/components/schemas/PresidioEntities'
 
     MaskingProviderType:
       type: string
@@ -406,25 +406,25 @@ components:
         - profile-address
         - profile-sapids-internal
         - profile-sapids-public
-        - profile-url        
+        - profile-url
         - profile-iban
         - profile-credit-card-number
         - profile-passport
-        - profile-driverlicense 
-        - profile-nationality 
-        - profile-political-group 
+        - profile-driverlicense
+        - profile-nationality
+        - profile-political-group
         - profile-ethnicity
 
-        # TODO: add support for profile-username-password, profile-nationalid, profile-ssn, profile-religious-group 
+        # TODO: add support for profile-username-password, profile-nationalid, profile-ssn, profile-religious-group
 
     PresidioEntities:
       type: string
       enum:
         - URL
-        # TODO: Add all default entities of Presidio   
+        # TODO: Add all default entities of Presidio
 
-    UnmaskingConfig: 
-      required: 
+    UnmaskingConfig:
+      required:
         - entities
       properties:
         entities:
@@ -432,8 +432,8 @@ components:
           description: List of entities to be unmasked
           items:
             anyOf:
-              - $ref: "#/components/schemas/DPIEntities"
-              - $ref: "#/components/schemas/PresidioEntities"
+              - $ref: '#/components/schemas/DPIEntities'
+              - $ref: '#/components/schemas/PresidioEntities'
 
     # ---
 
@@ -461,7 +461,7 @@ components:
             filters:
               type: array
               items:
-                $ref: "#/components/schemas/GroundingFilter"
+                $ref: '#/components/schemas/GroundingFilter'
               description: Document grounding service filters to be used
             grounding_input_parameters:
               type: array
@@ -519,22 +519,22 @@ components:
         location:
           type: string
           description: Where the error occurred
-          example: "LLM Module"
+          example: 'LLM Module'
         module_results:
           type: array
           description: Results of each module up until the error
           items:
-            $ref: "#/components/schemas/ModuleResultsItem"
+            $ref: '#/components/schemas/ModuleResultsItem'
   responses:
     BadRequest:
       description: Bad Request
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorResponse"
+            $ref: '#/components/schemas/ErrorResponse'
     CommonError:
       description: Common Error
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorResponse"
+            $ref: '#/components/schemas/ErrorResponse'

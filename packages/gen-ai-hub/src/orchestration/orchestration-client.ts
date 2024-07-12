@@ -42,7 +42,7 @@ export class GenAiHubClient {
     return DefaultApi.orchestrationV1EndpointsCreate({
       ...data,
       input_params: {}
-      })
+    })
       .skipCsrfTokenFetching()
       .addCustomHeaders(requestConfig?.headers ?? {})
       .execute(this.destination);
