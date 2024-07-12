@@ -18,7 +18,9 @@ export const DefaultApi = {
    * @param body - Request body.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  orchestrationV1EndpointsCreate: (body: CompletionPostRequest) =>
+  orchestrationV1EndpointsCreate: (
+    body: CompletionPostRequest
+  ): OpenApiRequestBuilder<CompletionPostResponse> =>
     new OpenApiRequestBuilder<CompletionPostResponse>('post', '/completion', {
       body
     }),
@@ -26,6 +28,6 @@ export const DefaultApi = {
    * Create a request builder for execution of get requests to the '/healthz' endpoint.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  orchestrationV1EndpointsHealthz: () =>
+  orchestrationV1EndpointsHealthz: (): OpenApiRequestBuilder<any> =>
     new OpenApiRequestBuilder<any>('get', '/healthz')
 };

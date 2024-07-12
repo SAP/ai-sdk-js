@@ -6,6 +6,4 @@ import {
 /**
  * Base LLM Output.
  */
-export type BaseLlmOutput =
-  | OpenAiChatCompletionOutput
-  | OpenAiEmbeddingOutput;
+export type BaseLlmOutput = OpenAiChatCompletionOutput | OpenAiEmbeddingOutput;
