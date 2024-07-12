@@ -12,8 +12,8 @@
     "directory": "type-tests"
   },
   "scripts": {
-    "postinstall": "pnpm -r -w=false run compile",
-    "compile": "tsc",
+    "postinstall": "pnpm compile",
+    "compile": "pnpm -r -w=false run compile",
     "test": "pnpm -r run test",
     "test:type": "tsd",
     "lint": "pnpm -r run lint",
