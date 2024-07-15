@@ -8,7 +8,7 @@ import type { TokenUsage } from './token-usage.js';
 /**
  * Output of LLM module. Follows the OpenAI spec.
  */
-export type LLMModuleOutput = {
+export type LLMModuleResult = {
   /**
    * ID of the response.
    */

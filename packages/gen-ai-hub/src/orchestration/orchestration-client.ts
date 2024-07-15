@@ -11,7 +11,7 @@ import {
  */
 export type GenAiHubCompletionParameters = Pick<
   CompletionPostRequest,
-  'orchestration_config' | 'return_module_results'
+  'orchestration_config'
 >;
 
 /**

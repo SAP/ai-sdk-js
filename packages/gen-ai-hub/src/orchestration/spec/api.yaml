@@ -76,10 +76,6 @@ components:
           description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
           $ref: '#/components/schemas/ChatMessages'
           default: []
-        return_module_results:
-          description: Whether to return module results, which returns detailed information about each module execution. Be careful with the content of the individual module results as they may contain unchecked user or model content.
-          type: boolean
-          default: false
 
     ChatMessages:
       type: array
@@ -100,7 +96,6 @@ components:
     InputParamsEntry:
       oneOf:
         - type: string
-          maxLength: 130000 # round(32k context * 4 characters per token)
         - type: number
 
     CompletionPostResponse:
@@ -108,17 +103,15 @@ components:
       required:
         - request_id
         - orchestration_result
+        - module_results
       properties:
         request_id:
           description: ID of the request
           type: string
         module_results:
-          description: Results of each module. Only returned if return_module_results is true
-          type: array
-          items:
-            $ref: '#/components/schemas/ModuleResultsItem'
+          $ref: '#/components/schemas/ModuleResults'
         orchestration_result:
-          $ref: '#/components/schemas/LLMModuleOutput'
+          $ref: '#/components/schemas/LLMModuleResult'
 
     OrchestrationConfig:
       type: object
@@ -145,24 +138,30 @@ components:
         grounding_module_config:
           $ref: '#/components/schemas/GroundingModuleConfig'
 
-    ModuleResultsItem:
+    ModuleResults:
+      description: Results of each module.
       type: object
-      required:
-        - name
-        - was_configured
-        - output
+      additionalProperties: false
       properties:
-        name:
-          description: Name of the module
-          type: string
-        was_configured:
-          description: Whether the module was configured. If false, the module was not executed
-          type: boolean
-        output:
-          oneOf:
-            - $ref: '#/components/schemas/GenericModuleResult'
-            - $ref: '#/components/schemas/ChatMessages'
-            - $ref: '#/components/schemas/LLMModuleOutput'
+        grounding:
+          $ref: '#/components/schemas/GenericModuleResult'
+        templating:
+          $ref: '#/components/schemas/TemplatingModuleResult'
+        input_masking:
+          $ref: '#/components/schemas/GenericModuleResult'
+        input_filtering:
+          $ref: '#/components/schemas/GenericModuleResult'
+        llm:
+          $ref: '#/components/schemas/LLMModuleResult'
+        output_filtering:
+          $ref: '#/components/schemas/GenericModuleResult'
+        output_unmasking:
+          $ref: '#/components/schemas/GenericModuleResult'
+
+    TemplatingModuleResult:
+      type: object
+      additionalProperties: false
+      $ref: '#/components/schemas/ChatMessages'
 
     # --- LLM MODULE ---
     LLMModuleConfig:
@@ -197,7 +196,7 @@ components:
           type: object
           description: Additional data object from the module
 
-    LLMModuleOutput:
+    LLMModuleResult:
       type: object
       description: Output of LLM module. Follows the OpenAI spec.
       required:
@@ -280,17 +279,15 @@ components:
         - template
       properties:
         template:
-          description: A string to be formatted with values from input_params. The role `user` will be assigned to the message. If messages_history is provided, the templated message will be appended
-          example: "{​{ ?user_message }}\n{​{ ?context }}"
-          type: string
-          maxLength: 130000 # round(32k context * 4 characters per token)
+          description: A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
+          example: "{\n        \"role\": \"user\",\n        \"content\": \"input text: {​{ ?inputExample }}\"\n    }"
+          $ref: '#/components/schemas/ChatMessages'
         defaults:
           description: Optional default values for the template. If a parameter has no default it is required.
           example: '{"context": "I am a default context"}'
           type: object
 
     # --- Filtering Module ---
-
     FilteringModuleConfig:
       type: object
       properties:
@@ -415,13 +412,10 @@ components:
         - profile-political-group
         - profile-ethnicity
 
-        # TODO: add support for profile-username-password, profile-nationalid, profile-ssn, profile-religious-group
-
     PresidioEntities:
       type: string
       enum:
         - URL
-        # TODO: Add all default entities of Presidio
 
     UnmaskingConfig:
       required:
@@ -434,8 +428,6 @@ components:
             anyOf:
               - $ref: '#/components/schemas/DPIEntities'
               - $ref: '#/components/schemas/PresidioEntities'
-
-    # ---
 
     # --- Grounding Module ---
 
@@ -500,8 +492,6 @@ components:
           items:
             type: object
 
-    # ---
-
     ErrorResponse:
       type: object
       required:
@@ -521,10 +511,8 @@ components:
           description: Where the error occurred
           example: 'LLM Module'
         module_results:
-          type: array
-          description: Results of each module up until the error
-          items:
-            $ref: '#/components/schemas/ModuleResultsItem'
+          $ref: '#/components/schemas/ModuleResults'
+
   responses:
     BadRequest:
       description: Bad Request
