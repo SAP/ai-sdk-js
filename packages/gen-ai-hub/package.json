@@ -22,14 +22,17 @@
     "compile": "tsc",
     "test": "jest",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
-    "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
+    "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
+    "generate": "openapi-generator -i ./src/orchestration/spec/ -o ./src/orchestration/client"
   },
   "dependencies": {
     "@sap-cloud-sdk/http-client": "^3.16.0",
     "@sap-cloud-sdk/connectivity": "^3.16.0",
-    "@sap-cloud-sdk/util": "^3.16.0"
+    "@sap-cloud-sdk/util": "^3.16.0",
+    "@sap-cloud-sdk/openapi": "^3.16.0"
   },
   "devDependencies": {
+    "@sap-cloud-sdk/openapi-generator": "3.16.0",
     "typescript": "^5.5.3",
     "nock": "^13.5.4"
   }

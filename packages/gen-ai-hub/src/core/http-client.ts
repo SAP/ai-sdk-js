@@ -28,7 +28,10 @@ export interface BaseLlmParameters {
 /**
  * The type for parameters in custom request configuration.
  */
-export type CustomRequestConfig = Omit<HttpRequestConfig, 'body' | 'method'>;
+export type CustomRequestConfig = Omit<
+  HttpRequestConfig,
+  'body' | 'method' | 'url' | 'baseURL'
+>;
 
 /**
  * The options to call an endpoint.

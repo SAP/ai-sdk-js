@@ -1,0 +1,112 @@
+import nock from 'nock';
+import { HttpDestination } from '@sap-cloud-sdk/connectivity';
+import { CustomRequestConfig } from '../core/http-client.js';
+import {
+  GenAiHubClient,
+  GenAiHubCompletionParameters
+} from './orchestration-client.js';
+import { CompletionPostResponse } from './api/schema/index.js';
+
+describe('GenAiHubClient', () => {
+  const destination: HttpDestination = {
+    url: 'https://api.example.com',
+    authentication: 'NoAuthentication'
+  };
+
+  const response: CompletionPostResponse = {
+    request_id: 'some_id',
+    orchestration_result: {
+      id: '',
+      object: '',
+      created: 123,
+      model: 'gpt-35-turbo-16k',
+      choices: [],
+      usage: {
+        completion_tokens: 123,
+        prompt_tokens: 456,
+        total_tokens: 789
+      }
+    }
+  };
+
+  const data: GenAiHubCompletionParameters = {
+    orchestration_config: {
+      module_configurations: {
+        templating_module_config: {
+          template: 'Hello !'
+        },
+        llm_module_config: {
+          model_name: 'gpt-35-turbo-16k',
+          model_params: {
+            max_tokens: 50,
+            temperature: 0.1
+          }
+        },
+        return_module_results: false
+      }
+    }
+  };
+  const client = new GenAiHubClient(destination);
+
+  afterEach(() => {
+    nock.cleanAll();
+  });
+
+  it('should successfully call chatCompletion and return response', async () => {
+    nock('https://api.example.com', {
+      reqheaders: {
+        'ai-resource-group': 'default'
+      }
+    })
+      .post('/completion', {
+        ...data,
+        input_params: {}
+      })
+      .reply(200, response);
+
+    const result = await client.chatCompletion(data);
+
+    expect(result).toEqual(response);
+  });
+
+  it('calls chatCompletion with default + custom request config', async () => {
+    const customRequestConfig: CustomRequestConfig = {
+      headers: {
+        'X-Custom-Header': 'CustomValue'
+      }
+    };
+
+    nock('https://api.example.com', {
+      reqheaders: {
+        'ai-resource-group': 'default',
+        'X-Custom-Header': 'CustomValue'
+      }
+    })
+      .post('/completion', {
+        ...data,
+        input_params: {}
+      })
+      .reply(200, response);
+
+    const result = await client.chatCompletion(data, customRequestConfig);
+
+    expect(result).toEqual(response);
+  });
+
+  it('should handle errors from chatCompletion', async () => {
+    const errorMessage = 'Something went wrong';
+
+    nock('https://api.example.com', {
+      reqheaders: {
+        'ai-resource-group': 'default'
+      }
+    })
+      .post('/completion', {
+        ...data,
+        input_params: {}
+      })
+      .replyWithError(errorMessage);
+
+    await expect(client.chatCompletion(data)).rejects.toThrow(errorMessage);
+  });
+});
