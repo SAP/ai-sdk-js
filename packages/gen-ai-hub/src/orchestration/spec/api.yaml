@@ -1,0 +1,540 @@
+openapi: 3.0.0
+
+info:
+  title: Internal Orchestration Service API
+  description: SAP AI Core - Orchestration Service API
+  contact:
+    name: SAP AI Core
+  version: 0.0.1
+
+servers:
+  - url: '/v1'
+
+tags:
+  - name: Orchestrated Completion
+    description: Run an orchestrated completion inference request
+
+paths:
+  /completion:
+    post:
+      operationId: orchestration.v1.endpoints.create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompletionPostRequest'
+      responses:
+        200:
+          description: 'Successful response'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompletionPostResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        default:
+          $ref: '#/components/responses/CommonError'
+
+  /healthz:
+    get:
+      operationId: orchestration.v1.endpoints.healthz
+      responses:
+        '200':
+          description: 'Service is up and running.'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 'OK'
+        '503':
+          description: 'Service is unavailable.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'Service Unavailable'
+
+components:
+  schemas:
+    CompletionPostRequest:
+      type: object
+      required:
+        - orchestration_config
+        - input_params
+      properties:
+        orchestration_config:
+          $ref: '#/components/schemas/OrchestrationConfig'
+        input_params:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/InputParamsEntry'
+        messages_history:
+          description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
+          $ref: '#/components/schemas/ChatMessages'
+          default: []
+        return_module_results:
+          description: Whether to return module results, which returns detailed information about each module execution. Be careful with the content of the individual module results as they may contain unchecked user or model content.
+          type: boolean
+          default: false
+
+    ChatMessages:
+      type: array
+      items:
+        $ref: '#/components/schemas/ChatMessage'
+
+    ChatMessage:
+      type: object
+      required:
+        - role
+        - content
+      properties:
+        role:
+          type: string
+        content:
+          type: string
+
+    InputParamsEntry:
+      oneOf:
+        - type: string
+          maxLength: 130000 # round(32k context * 4 characters per token)
+        - type: number
+
+    CompletionPostResponse:
+      type: object
+      required:
+        - request_id
+        - orchestration_result
+      properties:
+        request_id:
+          description: ID of the request
+          type: string
+        module_results:
+          description: Results of each module. Only returned if return_module_results is true
+          type: array
+          items:
+            $ref: '#/components/schemas/ModuleResultsItem'
+        orchestration_result:
+          $ref: '#/components/schemas/LLMModuleOutput'
+
+    OrchestrationConfig:
+      type: object
+      required:
+        - module_configurations
+      properties:
+        module_configurations:
+          $ref: '#/components/schemas/ModuleConfigs'
+
+    ModuleConfigs:
+      type: object
+      required:
+        - llm_module_config
+        - templating_module_config
+      properties:
+        llm_module_config:
+          $ref: '#/components/schemas/LLMModuleConfig'
+        templating_module_config:
+          $ref: '#/components/schemas/TemplatingModuleConfig'
+        filtering_module_config:
+          $ref: '#/components/schemas/FilteringModuleConfig'
+        masking_module_config:
+          $ref: '#/components/schemas/MaskingModuleConfig'
+        grounding_module_config:
+          $ref: '#/components/schemas/GroundingModuleConfig'
+
+    ModuleResultsItem:
+      type: object
+      required:
+        - name
+        - was_configured
+        - output
+      properties:
+        name:
+          description: Name of the module
+          type: string
+        was_configured:
+          description: Whether the module was configured. If false, the module was not executed
+          type: boolean
+        output:
+          oneOf:
+            - $ref: '#/components/schemas/GenericModuleResult'
+            - $ref: '#/components/schemas/ChatMessages'
+            - $ref: '#/components/schemas/LLMModuleOutput'
+
+    # --- LLM MODULE ---
+    LLMModuleConfig:
+      type: object
+      required:
+        - model_name
+        - model_params
+      properties:
+        model_name:
+          description: Model name as in LLM Access configuration
+          example: gpt-4
+          type: string
+        model_params:
+          description: Model parameters
+          type: object
+        model_version:
+          description: Version of the model to use
+          example: 2023-05-15
+          type: string
+          default: 'latest'
+
+    GenericModuleResult:
+      type: object
+      description: Generic module result
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: Some message created from the module
+        data:
+          type: object
+          description: Additional data object from the module
+
+    LLMModuleOutput:
+      type: object
+      description: Output of LLM module. Follows the OpenAI spec.
+      required:
+        - id
+        - object
+        - created
+        - model
+        - choices
+        - usage
+      properties:
+        id:
+          type: string
+          description: ID of the response
+        object:
+          type: string
+          description: Object type
+        created:
+          type: integer
+          description: Unix timestamp
+        model:
+          type: string
+          description: Model name
+        system_fingerprint:
+          type: string
+          description: System fingerprint
+        choices:
+          type: array
+          description: Choices
+          items:
+            $ref: '#/components/schemas/LLMChoice'
+        usage:
+          $ref: '#/components/schemas/TokenUsage'
+
+    LLMChoice:
+      type: object
+      required:
+        - index
+        - message
+        - finish_reason
+      properties:
+        index:
+          type: integer
+          description: Index of the choice
+        message:
+          $ref: '#/components/schemas/ChatMessage'
+        logprobs:
+          type: object
+          description: Log probabilities
+          additionalProperties:
+            type: array
+            items:
+              type: number
+        finish_reason:
+          type: string
+          description: Reason for stopping the model
+
+    TokenUsage:
+      type: object
+      description: Usage of tokens in the response
+      required:
+        - completion_tokens
+        - prompt_tokens
+        - total_tokens
+      properties:
+        completion_tokens:
+          type: integer
+          description: Number of tokens used in the input
+        prompt_tokens:
+          type: integer
+          description: Number of tokens used in the output
+        total_tokens:
+          type: integer
+          description: Total number of tokens used
+
+    # --- Templating Module ---
+
+    TemplatingModuleConfig:
+      type: object
+      required:
+        - template
+      properties:
+        template:
+          description: A string to be formatted with values from input_params. The role `user` will be assigned to the message. If messages_history is provided, the templated message will be appended
+          example: "{​{ ?user_message }}\n{​{ ?context }}"
+          type: string
+          maxLength: 130000 # round(32k context * 4 characters per token)
+        defaults:
+          description: Optional default values for the template. If a parameter has no default it is required.
+          example: '{"context": "I am a default context"}'
+          type: object
+
+    # --- Filtering Module ---
+
+    FilteringModuleConfig:
+      type: object
+      properties:
+        input:
+          $ref: '#/components/schemas/FilteringConfig'
+          description: List of provider type and filters
+        output:
+          $ref: '#/components/schemas/FilteringConfig'
+          description: List of provider type and filters
+      additionalProperties: false
+
+    FilteringConfig:
+      type: object
+      required:
+        - filters
+      properties:
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Filter'
+          description: Filters to be used
+
+    Filter:
+      required:
+        - type
+      properties:
+        type:
+          description: Type of filtering service provider
+          $ref: '#/components/schemas/ProviderType'
+        config:
+          description: Filters classifiers to be used
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/AzureContentSafety'
+
+    AzureContentSafety:
+      type: object
+      properties:
+        'Hate':
+          $ref: '#/components/schemas/AzureThreshold'
+        'SelfHarm':
+          $ref: '#/components/schemas/AzureThreshold'
+        'Sexual':
+          $ref: '#/components/schemas/AzureThreshold'
+        'Violence':
+          $ref: '#/components/schemas/AzureThreshold'
+
+    ProviderType:
+      type: string
+      enum:
+        - azure_content_safety
+
+    AzureThreshold:
+      type: integer
+      enum:
+        - 0
+        - 2
+        - 4
+        - 6
+
+    # --- Masking module ---
+
+    MaskingModuleConfig:
+      type: object
+      required:
+        - masking
+      properties:
+        masking:
+          $ref: '#/components/schemas/MaskingConfig'
+          description: List of masking providers and entities
+        unmasking:
+          $ref: '#/components/schemas/UnmaskingConfig'
+          description: List of entities to unmask
+      additionalProperties: false
+
+    MaskingConfig:
+      type: array
+      items:
+        $ref: '#/components/schemas/Masking'
+      description: Masking services to be used
+
+    Masking:
+      type: object
+      required:
+        - type
+        - entities
+      properties:
+        type:
+          description: 'Type of masking service provider'
+          $ref: '#/components/schemas/MaskingProviderType'
+        entities:
+          description: List of entities to be masked
+          type: array
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/DPIEntities'
+              - $ref: '#/components/schemas/PresidioEntities'
+
+    MaskingProviderType:
+      type: string
+      enum:
+        - data_privacy_integration
+        - ms_presidio
+
+    DPIEntities:
+      description: Default entities supported by data privacy and integration service
+      type: string
+      enum:
+        - profile-person
+        - profile-org
+        - profile-email
+        - profile-phone
+        - profile-address
+        - profile-sapids-internal
+        - profile-sapids-public
+        - profile-url
+        - profile-iban
+        - profile-credit-card-number
+        - profile-passport
+        - profile-driverlicense
+        - profile-nationality
+        - profile-political-group
+        - profile-ethnicity
+
+        # TODO: add support for profile-username-password, profile-nationalid, profile-ssn, profile-religious-group
+
+    PresidioEntities:
+      type: string
+      enum:
+        - URL
+        # TODO: Add all default entities of Presidio
+
+    UnmaskingConfig:
+      required:
+        - entities
+      properties:
+        entities:
+          type: array
+          description: List of entities to be unmasked
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/DPIEntities'
+              - $ref: '#/components/schemas/PresidioEntities'
+
+    # ---
+
+    # --- Grounding Module ---
+
+    GroundingModuleConfig:
+      type: object
+      required:
+        - grounding_service
+      properties:
+        grounding_service:
+          type: string
+          enum:
+            - document_grounding_service
+        grounding_service_configuration:
+          type: object
+          required:
+            - secret_name
+            - grounding_input_parameters
+            - grounding_output_parameter
+          properties:
+            secret_name:
+              type: string
+              description: Secret name of the generic secret within Gen AI Hub containing document grounding service credentials
+            filters:
+              type: array
+              items:
+                $ref: '#/components/schemas/GroundingFilter'
+              description: Document grounding service filters to be used
+            grounding_input_parameters:
+              type: array
+              items:
+                type: string
+              description: Contains the input parameters used for grounding input questions
+            grounding_output_parameter:
+              type: string
+              description: Parameter name used for grounding output
+    GroundingFilter:
+      type: object
+      properties:
+        id:
+          type: string
+        search_configuration:
+          type: object
+        data_repositories:
+          type: array
+          items:
+            type: string
+        data_repository_type:
+          type: string
+          enum:
+            - vector
+            - help.sap.com
+        data_repository_metadata:
+          type: array
+          items:
+            type: object
+        document_metadata:
+          type: array
+          items:
+            type: object
+        chunk_metadata:
+          type: array
+          items:
+            type: object
+
+    # ---
+
+    ErrorResponse:
+      type: object
+      required:
+        - request_id
+        - code
+        - message
+        - location
+      properties:
+        request_id:
+          type: string
+        code:
+          type: integer
+        message:
+          type: string
+        location:
+          type: string
+          description: Where the error occurred
+          example: 'LLM Module'
+        module_results:
+          type: array
+          description: Results of each module up until the error
+          items:
+            $ref: '#/components/schemas/ModuleResultsItem'
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    CommonError:
+      description: Common Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
