@@ -1,11 +1,10 @@
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import { CustomRequestConfig } from '@sap-cloud-sdk/http-client';
-import { DefaultApi } from './api/default-api.js';
 import {
   CompletionPostRequest,
   CompletionPostResponse
 } from './api/schema/index.js';
-import { getAiCoreDestination, BaseLlmParameters, buildDeploymentUrl, executeRequest } from '../core/index.js';
+import { BaseLlmParameters, executeRequest } from '../core/index.js';
 
 /**
  * Input Parameters for GenAI hub chat completion.
