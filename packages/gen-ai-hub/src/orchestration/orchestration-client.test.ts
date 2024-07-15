@@ -9,6 +9,7 @@ import { CompletionPostResponse } from './api/schema/index.js';
 describe('GenAiHubClient', () => {
   const response: CompletionPostResponse = {
     request_id: 'some_id',
+    module_results: {},
     orchestration_result: {
       id: '',
       object: '',
@@ -28,7 +29,7 @@ describe('GenAiHubClient', () => {
     orchestration_config: {
       module_configurations: {
         templating_module_config: {
-          template: 'Hello !'
+          template: [{ role: 'user', content: 'Hello!' }]
         },
         llm_module_config: {
           model_name: 'gpt-35-turbo-16k',
@@ -36,8 +37,7 @@ describe('GenAiHubClient', () => {
             max_tokens: 50,
             temperature: 0.1
           }
-        },
-        return_module_results: false
+        }
       }
     }
   };
