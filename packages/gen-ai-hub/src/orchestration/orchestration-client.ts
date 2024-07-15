@@ -18,9 +18,6 @@ export type GenAiHubCompletionParameters = BaseLlmParameters & Pick<
  * Get the orchestration client.
  */
 export class GenAiHubClient {
-  destination: HttpDestination | undefined;
-  constructor() {
-  }
   /**
    * Creates a completion for the chat messages.
    * @param data - The input parameters for the chat completion.
