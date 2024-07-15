@@ -5,11 +5,12 @@ import {
   CompletionPostRequest,
   CompletionPostResponse
 } from './api/schema/index.js';
+import { getAiCoreDestination, BaseLlmParameters, buildDeploymentUrl, executeRequest } from '../core/index.js';
 
 /**
  * Input Parameters for GenAI hub chat completion.
  */
-export type GenAiHubCompletionParameters = Pick<
+export type GenAiHubCompletionParameters = BaseLlmParameters & Pick<
   CompletionPostRequest,
   'orchestration_config' | 'return_module_results'
 >;
@@ -18,9 +19,8 @@ export type GenAiHubCompletionParameters = Pick<
  * Get the orchestration client.
  */
 export class GenAiHubClient {
-  destination: HttpDestination;
-  constructor(destination: HttpDestination) {
-    this.destination = destination;
+  destination: HttpDestination | undefined;
+  constructor() {
   }
   /**
    * Creates a completion for the chat messages.
@@ -32,19 +32,11 @@ export class GenAiHubClient {
     data: GenAiHubCompletionParameters,
     requestConfig?: CustomRequestConfig
   ): Promise<CompletionPostResponse> {
-    this.destination = {
-      ...this.destination,
-      headers: {
-        'ai-resource-group': 'default',
-        ...this.destination?.headers
-      }
-    };
-    return DefaultApi.orchestrationV1EndpointsCreate({
-      ...data,
-      input_params: {}
-    })
-      .skipCsrfTokenFetching()
-      .addCustomHeaders(requestConfig?.headers ?? {})
-      .execute(this.destination);
+    const response = await executeRequest(
+      { url: '/completion' },
+      data,
+      requestConfig
+    );
+    return response.data;
   }
 }

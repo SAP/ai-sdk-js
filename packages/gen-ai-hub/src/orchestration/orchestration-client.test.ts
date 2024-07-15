@@ -8,11 +8,6 @@ import {
 import { CompletionPostResponse } from './api/schema/index.js';
 
 describe('GenAiHubClient', () => {
-  const destination: HttpDestination = {
-    url: 'https://api.example.com',
-    authentication: 'NoAuthentication'
-  };
-
   const response: CompletionPostResponse = {
     request_id: 'some_id',
     orchestration_result: {
@@ -30,6 +25,7 @@ describe('GenAiHubClient', () => {
   };
 
   const data: GenAiHubCompletionParameters = {
+    deploymentConfiguration: { deploymentId: 'deploymentId' },
     orchestration_config: {
       module_configurations: {
         templating_module_config: {
@@ -46,7 +42,7 @@ describe('GenAiHubClient', () => {
       }
     }
   };
-  const client = new GenAiHubClient(destination);
+  const client = new GenAiHubClient();
 
   afterEach(() => {
     nock.cleanAll();
@@ -61,7 +57,7 @@ describe('GenAiHubClient', () => {
       .post('/completion', {
         ...data,
         input_params: {}
-      })
+      } as any)
       .reply(200, response);
 
     const result = await client.chatCompletion(data);
@@ -85,7 +81,7 @@ describe('GenAiHubClient', () => {
       .post('/completion', {
         ...data,
         input_params: {}
-      })
+      } as any)
       .reply(200, response);
 
     const result = await client.chatCompletion(data, customRequestConfig);
