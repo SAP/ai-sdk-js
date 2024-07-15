@@ -1,5 +1,4 @@
 import nock from 'nock';
-import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import { CustomRequestConfig } from '../core/http-client.js';
 import {
   GenAiHubClient,

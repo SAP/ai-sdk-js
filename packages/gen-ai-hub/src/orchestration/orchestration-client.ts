@@ -1,18 +1,15 @@
-import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import { CustomRequestConfig } from '@sap-cloud-sdk/http-client';
+import { BaseLlmParameters, executeRequest } from '../core/index.js';
 import {
   CompletionPostRequest,
   CompletionPostResponse
 } from './api/schema/index.js';
-import { BaseLlmParameters, executeRequest } from '../core/index.js';
 
 /**
  * Input Parameters for GenAI hub chat completion.
  */
-export type GenAiHubCompletionParameters = BaseLlmParameters & Pick<
-  CompletionPostRequest,
-  'orchestration_config' | 'return_module_results'
->;
+export type GenAiHubCompletionParameters = BaseLlmParameters &
+  Pick<CompletionPostRequest, 'orchestration_config' | 'return_module_results'>;
 
 /**
  * Get the orchestration client.
