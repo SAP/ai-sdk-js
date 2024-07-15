@@ -39,6 +39,8 @@ jobs:
         with:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           cache: 'pnpm'
+      - name: REUSE Compliance Check
+        uses: fsfe/reuse-action@v4
       - run: pnpm i --frozen-lockfile
       # - run: pnpm build # might be needed in the future
       - run: pnpm lint
