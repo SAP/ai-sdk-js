@@ -8,10 +8,8 @@ import {
 /**
  * Input Parameters for GenAI hub chat completion.
  */
-export type GenAiHubCompletionParameters = BaseLlmParameters & Pick<
-  CompletionPostRequest,
-  'orchestration_config'
->;
+export type GenAiHubCompletionParameters = BaseLlmParameters &
+  Pick<CompletionPostRequest, 'orchestration_config'>;
 
 /**
  * Get the orchestration client.
