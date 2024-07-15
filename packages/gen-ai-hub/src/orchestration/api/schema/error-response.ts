@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { ModuleResultsItem } from './module-results-item.js';
+import type { ModuleResults } from './module-results.js';
 /**
  * Representation of the 'ErrorResponse' schema.
  */
@@ -19,5 +19,5 @@ export type ErrorResponse = {
   /**
    * Results of each module up until the error.
    */
-  module_results?: ModuleResultsItem[];
+  module_results?: ModuleResults;
 } & Record<string, any>;
