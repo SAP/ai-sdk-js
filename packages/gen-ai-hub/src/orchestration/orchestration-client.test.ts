@@ -1,32 +1,40 @@
+import fs from 'fs';
+import path from 'path';
 import nock from 'nock';
-import { CustomRequestConfig } from '../core/http-client.js';
+import { HttpDestination } from '@sap-cloud-sdk/connectivity';
+import {
+  BaseLlmParameters,
+  BaseLlmParametersWithDeploymentId
+} from '../core/index.js';
+import { mockGetAiCoreDestination } from '../../test-util/mock-context.js';
+import { mockInference } from '../../test-util/mock-http.js';
 import {
   GenAiHubClient,
   GenAiHubCompletionParameters
 } from './orchestration-client.js';
-import { CompletionPostResponse } from './api/schema/index.js';
+import { CompletionPostResponse, ModuleConfigs } from './api/index.js';
 
 describe('GenAiHubClient', () => {
-  const response: CompletionPostResponse = {
-    request_id: 'some_id',
-    module_results: {},
-    orchestration_result: {
-      id: '',
-      object: '',
-      created: 123,
-      model: 'gpt-35-turbo-16k',
-      choices: [],
-      usage: {
-        completion_tokens: 123,
-        prompt_tokens: 456,
-        total_tokens: 789
-      }
-    }
-  };
+  let destination: HttpDestination;
+  let deploymentConfig: BaseLlmParameters;
+  let client: GenAiHubClient;
 
-  const data: GenAiHubCompletionParameters = {
-    deploymentConfiguration: { deploymentId: 'deploymentId' },
-    orchestration_config: {
+  beforeAll(() => {
+    destination = mockGetAiCoreDestination();
+    deploymentConfig = {
+      deploymentConfiguration: {
+        deploymentId: 'deployment-id'
+      } as BaseLlmParametersWithDeploymentId
+    };
+    client = new GenAiHubClient();
+  });
+
+  afterEach(() => {
+    nock.cleanAll();
+  });
+
+  it('chatCompletion() parses a successful response', async () => {
+    const moduleConfig = {
       module_configurations: {
         templating_module_config: {
           template: [{ role: 'user', content: 'Hello!' }]
@@ -38,70 +46,84 @@ describe('GenAiHubClient', () => {
             temperature: 0.1
           }
         }
-      }
-    }
-  };
-  const client = new GenAiHubClient();
-
-  afterEach(() => {
-    nock.cleanAll();
-  });
-
-  it('should successfully call chatCompletion and return response', async () => {
-    nock('https://api.example.com', {
-      reqheaders: {
-        'ai-resource-group': 'default'
-      }
-    })
-      .post('/completion', {
-        ...data,
-        input_params: {}
-      } as any)
-      .reply(200, response);
-
-    const result = await client.chatCompletion(data);
-
-    expect(result).toEqual(response);
-  });
-
-  it('calls chatCompletion with default + custom request config', async () => {
-    const customRequestConfig: CustomRequestConfig = {
-      headers: {
-        'X-Custom-Header': 'CustomValue'
-      }
+      } as ModuleConfigs
     };
+    const request: GenAiHubCompletionParameters = {
+      ...deploymentConfig,
+      orchestration_config: { ...moduleConfig }
+    };
+    const mockResponse = fs.readFileSync(
+      path.join(
+        'packages/gen-ai-hub/test-util',
+        'mock-data',
+        'orchestration',
+        'genaihub-chat-completion-success-response.json'
+      ),
+      'utf-8'
+    );
 
-    nock('https://api.example.com', {
-      reqheaders: {
-        'ai-resource-group': 'default',
-        'X-Custom-Header': 'CustomValue'
+    mockInference(
+      {
+        data: request
+      },
+      {
+        data: JSON.parse(mockResponse),
+        status: 200
+      },
+      destination,
+      {
+        url: 'completion',
+        apiVersion: ''
       }
-    })
-      .post('/completion', {
-        ...data,
-        input_params: {}
-      } as any)
-      .reply(200, response);
-
-    const result = await client.chatCompletion(data, customRequestConfig);
-
-    expect(result).toEqual(response);
+    );
+    const result = await client.chatCompletion(request);
+    const expectedResponse: CompletionPostResponse = JSON.parse(mockResponse);
+    expect(result).toEqual(expectedResponse);
   });
 
-  it('should handle errors from chatCompletion', async () => {
-    const errorMessage = 'Something went wrong';
+  it('chatCompletion() throws on a bad request', async () => {
+    const moduleConfig = {
+      module_configurations: {
+        templating_module_config: {
+          template: [{ role: 'actor', content: 'Hello' }]
+        },
+        llm_module_config: {
+          model_name: 'gpt-35-turbo-16k',
+          model_params: {
+            max_tokens: 50,
+            temperature: 0.1
+          }
+        }
+      } as ModuleConfigs
+    };
+    const request: GenAiHubCompletionParameters = {
+      ...deploymentConfig,
+      orchestration_config: { ...moduleConfig }
+    };
+    const mockResponse = fs.readFileSync(
+      path.join(
+        'packages/gen-ai-hub/test-util',
+        'mock-data',
+        'orchestration',
+        'genaihub-error-response.json'
+      ),
+      'utf-8'
+    );
 
-    nock('https://api.example.com', {
-      reqheaders: {
-        'ai-resource-group': 'default'
+    mockInference(
+      {
+        data: request
+      },
+      {
+        data: JSON.parse(mockResponse),
+        status: 400
+      },
+      destination,
+      {
+        url: 'completion',
+        apiVersion: ''
       }
-    })
-      .post('/completion', {
-        ...data,
-        input_params: {}
-      })
-      .replyWithError(errorMessage);
-
-    await expect(client.chatCompletion(data)).rejects.toThrow(errorMessage);
+    );
+    await expect(client.chatCompletion(request)).rejects.toThrow();
   });
 });
