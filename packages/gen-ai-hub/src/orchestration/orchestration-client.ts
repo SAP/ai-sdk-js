@@ -28,9 +28,14 @@ export class GenAiHubClient {
     data: GenAiHubCompletionParameters,
     requestConfig?: CustomRequestConfig
   ): Promise<CompletionPostResponse> {
+    const dataWithInputParams = {
+      ...data,
+      input_params: {}
+    
+    };
     const response = await executeRequest(
       { url: '/completion' },
-      data,
+      dataWithInputParams,
       requestConfig
     );
     return response.data;
