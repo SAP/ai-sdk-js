@@ -28,7 +28,7 @@ describe('GenAiHubClient', () => {
     nock.cleanAll();
   });
 
-  it('chatCompletion() parses a successful response', async () => {
+  it(' calls chatCompletion and parses response', async () => {
     const module_configurations: ModuleConfigs = {
       templating_module_config: {
         template: [{ role: 'user', content: 'Hello!' }]
@@ -74,7 +74,7 @@ describe('GenAiHubClient', () => {
     expect(result).toEqual(expectedResponse);
   });
 
-  it('chatCompletion() throws on a bad request', async () => {
+  it('throws error for incorrect input parameters', async () => {
     const module_configurations: ModuleConfigs = {
       templating_module_config: {
         template: [{ role: 'actor', content: 'Hello' }]
