@@ -58,8 +58,6 @@ describe('openai client', () => {
     };
     const mockResponse = fs.readFileSync(
       path.join(
-        __dirname,
-        '../../..',
         'test-util',
         'mock-data',
         'openai',
@@ -96,8 +94,6 @@ describe('openai client', () => {
     };
     const mockResponse = fs.readFileSync(
       path.join(
-        __dirname,
-        '../../..',
         'test-util',
         'mock-data',
         'openai',
@@ -129,8 +125,6 @@ describe('openai client', () => {
     };
     const mockResponse = fs.readFileSync(
       path.join(
-        __dirname,
-        '../../..',
         'test-util',
         'mock-data',
         'openai',
@@ -166,8 +160,6 @@ describe('openai client', () => {
     };
     const mockResponse = fs.readFileSync(
       path.join(
-        __dirname,
-        '../../..',
         'test-util',
         'mock-data',
         'openai',
