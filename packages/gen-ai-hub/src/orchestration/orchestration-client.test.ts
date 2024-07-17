@@ -64,7 +64,7 @@ describe('GenAiHubClient', () => {
 
     mockInference(
       {
-        data: request
+        data: { ...request, input_params: {} }
       },
       {
         data: JSON.parse(mockResponse),
@@ -72,8 +72,7 @@ describe('GenAiHubClient', () => {
       },
       destination,
       {
-        url: 'completion',
-        apiVersion: ''
+        url: 'completion'
       }
     );
     const result = await client.chatCompletion(request);
@@ -112,7 +111,7 @@ describe('GenAiHubClient', () => {
 
     mockInference(
       {
-        data: request
+        data: { ...request, input_params: {} }
       },
       {
         data: JSON.parse(mockResponse),
@@ -120,8 +119,7 @@ describe('GenAiHubClient', () => {
       },
       destination,
       {
-        url: 'completion',
-        apiVersion: ''
+        url: 'completion'
       }
     );
     await expect(client.chatCompletion(request)).rejects.toThrow();
