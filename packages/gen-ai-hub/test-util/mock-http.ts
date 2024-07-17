@@ -1,5 +1,7 @@
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import nock from 'nock';
+import fs from 'fs';
+import path from 'path';
 import {
   BaseLlmParameters,
   CustomRequestConfig,
@@ -19,7 +21,6 @@ export function mockInference<D extends BaseLlmParameters>(
   response: {
     data: any;
     status?: number;
-    headers?: Record<string, string>;
   },
   destination: HttpDestination,
   endpoint: EndpointOptions = mockEndpoint
@@ -33,10 +34,21 @@ export function mockInference<D extends BaseLlmParameters>(
       authorization: `Bearer ${destination.authTokens?.[0].value}`
     }
   })
-    .post(
-      `/v2/inference/deployments/${deploymentConfiguration.deploymentId}/${url}`,
-      body as any
-    )
+    .post(`/v2/inference/deployments/${deploymentConfiguration.deploymentId}/${url}`, body as any)
     .query(apiVersion ? { 'api-version': apiVersion } : {})
     .reply(response.status, response.data);
+}
+
+export function parseMockResponse<T>(client: string, fileName: string): T {
+  const fileContent = fs.readFileSync(
+    path.join(
+      'test-util',
+      'mock-data',
+      client,
+      fileName
+    ),
+    'utf-8'
+  );
+
+  return JSON.parse(fileContent);
 }

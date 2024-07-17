@@ -1,25 +1,30 @@
-import fs from 'fs';
-import path from 'path';
 import nock from 'nock';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
-import { BaseLlmParametersWithDeploymentId } from '../core/index.js';
 import { mockGetAiCoreDestination } from '../../test-util/mock-context.js';
-import { mockInference } from '../../test-util/mock-http.js';
+import { mockInference, parseMockResponse } from '../../test-util/mock-http.js';
 import {
   GenAiHubClient,
   GenAiHubCompletionParameters
 } from './orchestration-client.js';
-import { CompletionPostResponse, ModuleConfigs } from './api/index.js';
+import { CompletionPostResponse, LLMModuleConfig, ModuleConfigs } from './api/index.js';
+import { clearXsuaaServices } from '@sap-cloud-sdk/connectivity/internal.js';
+import { BaseLlmParametersWithDeploymentId } from '../core/index.js';
 
 describe('GenAiHubClient', () => {
   let destination: HttpDestination;
-  let deploymentConfiguration: BaseLlmParametersWithDeploymentId;
   let client: GenAiHubClient;
+  let deploymentConfiguration: BaseLlmParametersWithDeploymentId = {
+    deploymentId: 'deployment-id'
+  };
+  let llm_module_config: LLMModuleConfig = {
+    model_name: 'gpt-35-turbo-16k',
+    model_params: {
+      max_tokens: 50,
+      temperature: 0.1
+    }
+  }
 
   beforeAll(() => {
-    deploymentConfiguration = {
-      deploymentId: 'deployment-id'
-    };
     destination = mockGetAiCoreDestination();
     client = new GenAiHubClient();
   });
@@ -27,41 +32,31 @@ describe('GenAiHubClient', () => {
   afterEach(() => {
     nock.cleanAll();
   });
+  
+  afterAll(() => {
+    clearXsuaaServices();
+  });
 
-  it(' calls chatCompletion and parses response', async () => {
+  it('calls chatCompletion with minimum configuration and parses response', async () => {
     const module_configurations: ModuleConfigs = {
       templating_module_config: {
         template: [{ role: 'user', content: 'Hello!' }]
       },
-      llm_module_config: {
-        model_name: 'gpt-35-turbo-16k',
-        model_params: {
-          max_tokens: 50,
-          temperature: 0.1
-        }
-      }
+      llm_module_config
     };
     const request: GenAiHubCompletionParameters = {
       deploymentConfiguration,
       orchestration_config: { module_configurations }
     };
 
-    const mockResponse = fs.readFileSync(
-      path.join(
-        'test-util',
-        'mock-data',
-        'orchestration',
-        'genaihub-chat-completion-success-response.json'
-      ),
-      'utf-8'
-    );
+    const mockResponse = parseMockResponse<CompletionPostResponse>('orchestration', 'genaihub-chat-completion-success-response.json')
 
     mockInference(
       {
         data: { ...request, input_params: {} }
       },
       {
-        data: JSON.parse(mockResponse),
+        data: mockResponse,
         status: 200
       },
       destination,
@@ -69,51 +64,50 @@ describe('GenAiHubClient', () => {
         url: 'completion'
       }
     );
-    const result = await client.chatCompletion(request);
-    const expectedResponse: CompletionPostResponse = JSON.parse(mockResponse);
-    expect(result).toEqual(expectedResponse);
+    expect(client.chatCompletion(request)).resolves.toEqual(mockResponse);
   });
 
-  it('throws error for incorrect input parameters', async () => {
+  it('sends message history together with templating config', async () => {
     const module_configurations: ModuleConfigs = {
       templating_module_config: {
-        template: [{ role: 'actor', content: 'Hello' }]
+        template: [{ role: 'user', content: 'What\'s my name?' }]
       },
-      llm_module_config: {
-        model_name: 'gpt-35-turbo-16k',
-        model_params: {
-          max_tokens: 50,
-          temperature: 0.1
-        }
-      }
+      llm_module_config
     };
     const request: GenAiHubCompletionParameters = {
       deploymentConfiguration,
-      orchestration_config: { module_configurations }
+      orchestration_config: { module_configurations },
+      messages_history: [
+        {
+          role: 'system',
+          content: 'You are a helpful assistant who remembers all details the user shares with you.'
+        },
+        {
+          role: 'user',
+          content: 'Hi! Im Bob'
+        },
+        {
+          role: 'assistant',
+          content: "Hi Bob, nice to meet you! I'm an AI assistant. I'll remember that your name is Bob as we continue our conversation."
+        }
+      ]
     };
-    const mockResponse = fs.readFileSync(
-      path.join(
-        'test-util',
-        'mock-data',
-        'orchestration',
-        'genaihub-error-response.json'
-      ),
-      'utf-8'
-    );
 
+    const mockResponse = parseMockResponse<CompletionPostResponse>('orchestration', 'genaihub-chat-completion-message-history.json')
     mockInference(
       {
         data: { ...request, input_params: {} }
       },
       {
-        data: JSON.parse(mockResponse),
-        status: 400
+        data: mockResponse,
+        status: 200
       },
       destination,
       {
         url: 'completion'
       }
     );
-    await expect(client.chatCompletion(request)).rejects.toThrow();
+
+    expect(client.chatCompletion(request)).resolves.toEqual(mockResponse);
   });
 });

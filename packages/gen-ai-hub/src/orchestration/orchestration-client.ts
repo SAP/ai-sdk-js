@@ -12,7 +12,7 @@ import {
  * Input Parameters for GenAI hub chat completion.
  */
 export type GenAiHubCompletionParameters = BaseLlmParameters &
-  Pick<CompletionPostRequest, 'orchestration_config'>;
+  Pick<CompletionPostRequest, 'orchestration_config' | 'messages_history'>;
 
 /**
  * Get the orchestration client.
