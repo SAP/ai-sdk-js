@@ -28,6 +28,9 @@ expectType<Promise<CompletionPostResponse>>(
   })
 );
 
+/**
+ * Chat Completion with the wrong ChatMessage role.
+ */
 expectError<Promise<CompletionPostResponse>>(
   client.chatCompletion({
     orchestration_config: {
@@ -71,6 +74,9 @@ expectError<Promise<CompletionPostResponse>>(
   })
 );
 
+/**
+ * Orchestration_config cannot be empty.
+ */
 expectError<any>(
   client.chatCompletion({
     deploymentConfiguration: { deploymentId: 'id' },
@@ -78,6 +84,9 @@ expectError<any>(
   })
 );
 
+/**
+ * Templating_module_config cannot be empty.
+ */
 expectError<any>(
   client.chatCompletion({
     deploymentConfiguration: { deploymentId: 'id' },
@@ -86,19 +95,24 @@ expectError<any>(
         templating_module_config: {},
         llm_module_config: {
           model_name: 'gpt-35-turbo-16k',
-          model_params: { }
+          model_params: {}
         }
       }
     }
   })
 );
 
+/**
+ * Model_name is mandatory in llm_module_config.
+ */
 expectError<any>(
   client.chatCompletion({
     deploymentConfiguration: { deploymentId: 'id' },
     orchestration_config: {
       module_configurations: {
-        templating_module_config: { template: [ { role: 'user', content: 'some content'}] },
+        templating_module_config: {
+          template: [{ role: 'user', content: 'some content' }]
+        },
         llm_module_config: {
           model_params: {
             max_tokens: 50
