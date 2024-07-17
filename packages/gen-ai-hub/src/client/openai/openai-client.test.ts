@@ -58,8 +58,9 @@ describe('openai client', () => {
     };
     const mockResponse = fs.readFileSync(
       path.join(
-        'packages/gen-ai-hub/test-util',
+        'test-util',
         'mock-data',
+        'openai',
         'openai-chat-completion-success-response.json'
       ),
       'utf8'
@@ -93,8 +94,9 @@ describe('openai client', () => {
     };
     const mockResponse = fs.readFileSync(
       path.join(
-        'packages/gen-ai-hub/test-util',
+        'test-util',
         'mock-data',
+        'openai',
         'openai-error-response.json'
       ),
       'utf8'
@@ -123,8 +125,9 @@ describe('openai client', () => {
     };
     const mockResponse = fs.readFileSync(
       path.join(
-        'packages/gen-ai-hub/test-util',
+        'test-util',
         'mock-data',
+        'openai',
         'openai-embeddings-success-response.json'
       ),
       'utf8'
@@ -157,8 +160,9 @@ describe('openai client', () => {
     };
     const mockResponse = fs.readFileSync(
       path.join(
-        'packages/gen-ai-hub/test-util',
+        'test-util',
         'mock-data',
+        'openai',
         'openai-error-response.json'
       ),
       'utf8'

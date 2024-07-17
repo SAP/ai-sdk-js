@@ -54,7 +54,7 @@ describe('GenAiHubClient', () => {
     };
     const mockResponse = fs.readFileSync(
       path.join(
-        'packages/gen-ai-hub/test-util',
+        'test-util',
         'mock-data',
         'orchestration',
         'genaihub-chat-completion-success-response.json'
@@ -102,7 +102,7 @@ describe('GenAiHubClient', () => {
     };
     const mockResponse = fs.readFileSync(
       path.join(
-        'packages/gen-ai-hub/test-util',
+        'test-util',
         'mock-data',
         'orchestration',
         'genaihub-error-response.json'
