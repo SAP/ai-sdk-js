@@ -12,8 +12,8 @@
     "directory": "type-tests"
   },
   "scripts": {
-    "postinstall": "pnpm -r -w=false run compile",
-    "compile": "tsc",
+    "postinstall": "pnpm compile",
+    "compile": "pnpm -r -w=false run compile",
     "test": "pnpm -r run test",
     "test:type": "tsd",
     "lint": "pnpm -r run lint",
@@ -27,12 +27,12 @@
   "devDependencies": {
     "@sap-cloud-sdk/eslint-config": "^3.14.0",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.14.10",
-    "eslint": "^9.6.0",
+    "@types/node": "^20.14.11",
+    "eslint": "^9.7.0",
     "jest": "^30.0.0-alpha.3",
     "nock": "^13.5.4",
-    "prettier": "^3.2.5",
-    "ts-jest": "^29.1.2",
+    "prettier": "^3.3.3",
+    "ts-jest": "^29.2.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.3",
     "tsd": "^0.31.0"
