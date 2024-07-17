@@ -50,7 +50,10 @@ describe('openai client', () => {
     it('parses a successful response', async () => {
       const prompt = {
         messages: [
-          { role: 'user', content: 'Where is the deepest place on earth located' }
+          {
+            role: 'user',
+            content: 'Where is the deepest place on earth located'
+          }
         ] as OpenAiChatMessage[]
       };
       const request: OpenAiChatCompletionParameters = {
@@ -65,7 +68,7 @@ describe('openai client', () => {
         ),
         'utf8'
       );
-  
+
       mockInference(
         {
           data: request
@@ -77,15 +80,15 @@ describe('openai client', () => {
         destination,
         chatCompletionEndpoint
       );
-  
+
       const result: OpenAiChatCompletionOutput =
         await new OpenAiClient().chatCompletion(request);
       const expectedResponse: OpenAiChatCompletionOutput =
         JSON.parse(mockResponse);
-  
+
       expect(result).toEqual(expectedResponse);
     });
-  
+
     it('throws on bad request', async () => {
       const prompt = { messages: [] };
       const request: OpenAiChatCompletionParameters = {
@@ -96,7 +99,7 @@ describe('openai client', () => {
         path.join('test-util', 'mock-data', 'openai-error-response.json'),
         'utf8'
       );
-  
+
       mockInference(
         {
           data: request
@@ -108,8 +111,10 @@ describe('openai client', () => {
         destination,
         chatCompletionEndpoint
       );
-  
-      await expect(new OpenAiClient().chatCompletion(request)).rejects.toThrow();
+
+      await expect(
+        new OpenAiClient().chatCompletion(request)
+      ).rejects.toThrow();
     });
   });
 
@@ -128,7 +133,7 @@ describe('openai client', () => {
         ),
         'utf8'
       );
-  
+
       mockInference(
         {
           data: request
@@ -140,14 +145,14 @@ describe('openai client', () => {
         destination,
         embeddingsEndpoint
       );
-  
+
       const result: OpenAiEmbeddingOutput = await new OpenAiClient().embeddings(
         request
       );
       const expectedResponse: OpenAiEmbeddingOutput = JSON.parse(mockResponse);
       expect(result).toEqual(expectedResponse);
     });
-  
+
     it('throws on bad request', async () => {
       const prompt = { input: [] };
       const request: OpenAiEmbeddingParameters = {
@@ -158,7 +163,7 @@ describe('openai client', () => {
         path.join('test-util', 'mock-data', 'openai-error-response.json'),
         'utf8'
       );
-  
+
       mockInference(
         {
           data: request
@@ -170,7 +175,7 @@ describe('openai client', () => {
         destination,
         embeddingsEndpoint
       );
-  
+
       await expect(new OpenAiClient().embeddings(request)).rejects.toThrow();
     });
   });
