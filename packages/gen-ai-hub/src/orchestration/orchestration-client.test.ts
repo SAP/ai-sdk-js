@@ -2,10 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import nock from 'nock';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
-import {
-  BaseLlmParameters,
-  BaseLlmParametersWithDeploymentId
-} from '../core/index.js';
+import { BaseLlmParametersWithDeploymentId } from '../core/index.js';
 import { mockGetAiCoreDestination } from '../../test-util/mock-context.js';
 import { mockInference } from '../../test-util/mock-http.js';
 import {
@@ -16,16 +13,14 @@ import { CompletionPostResponse, ModuleConfigs } from './api/index.js';
 
 describe('GenAiHubClient', () => {
   let destination: HttpDestination;
-  let deploymentConfig: BaseLlmParameters;
+  let deploymentConfiguration: BaseLlmParametersWithDeploymentId;
   let client: GenAiHubClient;
 
   beforeAll(() => {
-    destination = mockGetAiCoreDestination();
-    deploymentConfig = {
-      deploymentConfiguration: {
-        deploymentId: 'deployment-id'
-      } as BaseLlmParametersWithDeploymentId
+    deploymentConfiguration = {
+      deploymentId: 'deployment-id'
     };
+    destination = mockGetAiCoreDestination();
     client = new GenAiHubClient();
   });
 
@@ -34,24 +29,23 @@ describe('GenAiHubClient', () => {
   });
 
   it('chatCompletion() parses a successful response', async () => {
-    const moduleConfig = {
-      module_configurations: {
-        templating_module_config: {
-          template: [{ role: 'user', content: 'Hello!' }]
-        },
-        llm_module_config: {
-          model_name: 'gpt-35-turbo-16k',
-          model_params: {
-            max_tokens: 50,
-            temperature: 0.1
-          }
+    const module_configurations: ModuleConfigs = {
+      templating_module_config: {
+        template: [{ role: 'user', content: 'Hello!' }]
+      },
+      llm_module_config: {
+        model_name: 'gpt-35-turbo-16k',
+        model_params: {
+          max_tokens: 50,
+          temperature: 0.1
         }
-      } as ModuleConfigs
+      }
     };
     const request: GenAiHubCompletionParameters = {
-      ...deploymentConfig,
-      orchestration_config: { ...moduleConfig }
+      deploymentConfiguration,
+      orchestration_config: { module_configurations }
     };
+
     const mockResponse = fs.readFileSync(
       path.join(
         'test-util',
@@ -81,23 +75,21 @@ describe('GenAiHubClient', () => {
   });
 
   it('chatCompletion() throws on a bad request', async () => {
-    const moduleConfig = {
-      module_configurations: {
-        templating_module_config: {
-          template: [{ role: 'actor', content: 'Hello' }]
-        },
-        llm_module_config: {
-          model_name: 'gpt-35-turbo-16k',
-          model_params: {
-            max_tokens: 50,
-            temperature: 0.1
-          }
+    const module_configurations: ModuleConfigs = {
+      templating_module_config: {
+        template: [{ role: 'actor', content: 'Hello' }]
+      },
+      llm_module_config: {
+        model_name: 'gpt-35-turbo-16k',
+        model_params: {
+          max_tokens: 50,
+          temperature: 0.1
         }
-      } as ModuleConfigs
+      }
     };
     const request: GenAiHubCompletionParameters = {
-      ...deploymentConfig,
-      orchestration_config: { ...moduleConfig }
+      deploymentConfiguration,
+      orchestration_config: { module_configurations }
     };
     const mockResponse = fs.readFileSync(
       path.join(
