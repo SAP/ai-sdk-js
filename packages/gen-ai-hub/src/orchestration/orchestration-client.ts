@@ -31,7 +31,6 @@ export class GenAiHubClient {
     const dataWithInputParams = {
       ...data,
       input_params: {}
-    
     };
     const response = await executeRequest(
       { url: '/completion' },
