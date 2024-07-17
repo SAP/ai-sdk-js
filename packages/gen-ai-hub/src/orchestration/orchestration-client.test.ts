@@ -48,6 +48,8 @@ describe('GenAiHubClient', () => {
 
     const mockResponse = fs.readFileSync(
       path.join(
+        __dirname,
+        '../..',
         'test-util',
         'mock-data',
         'orchestration',
@@ -93,6 +95,8 @@ describe('GenAiHubClient', () => {
     };
     const mockResponse = fs.readFileSync(
       path.join(
+        __dirname,
+        '../..',
         'test-util',
         'mock-data',
         'orchestration',
