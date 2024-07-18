@@ -1,46 +1,6 @@
 {
-    "module_results": {
-      "llm": {
-        "choices": [
-          {
-            "finish_reason": "stop",
-            "index": 0,
-            "message": {
-              "content": "Your name is Bob.",
-              "role": "assistant"
-            }
-          }
-        ],
-        "created": 1721229750,
-        "id": "chatcmpl-9m0m6iwV6nY8IsW6jY622P6xISg3q",
-        "model": "gpt-35-turbo-16k",
-        "object": "chat.completion",
-        "usage": {
-          "completion_tokens": 5,
-          "prompt_tokens": 71,
-          "total_tokens": 76
-        }
-      },
-      "templating": [
-        {
-          "content": "You are a helpful assistant who remembers all details the user shares with you.",
-          "role": "system"
-        },
-        {
-          "content": "Hi! Im Bob",
-          "role": "user"
-        },
-        {
-          "content": "Hi Bob, nice to meet you! I'm an AI assistant. I'll remember that your name is Bob as we continue our conversation.",
-          "role": "assistant"
-        },
-        {
-          "content": "What's my name?",
-          "role": "user"
-        }
-      ]
-    },
-    "orchestration_result": {
+  "module_results": {
+    "llm": {
       "choices": [
         {
           "finish_reason": "stop",
@@ -61,5 +21,45 @@
         "total_tokens": 76
       }
     },
-    "request_id": "841b6d08-733c-47d4-bf9f-0c948e25cf01"
-  }
+    "templating": [
+      {
+        "content": "You are a helpful assistant who remembers all details the user shares with you.",
+        "role": "system"
+      },
+      {
+        "content": "Hi! Im Bob",
+        "role": "user"
+      },
+      {
+        "content": "Hi Bob, nice to meet you! I'm an AI assistant. I'll remember that your name is Bob as we continue our conversation.",
+        "role": "assistant"
+      },
+      {
+        "content": "What's my name?",
+        "role": "user"
+      }
+    ]
+  },
+  "orchestration_result": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "Your name is Bob.",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1721229750,
+    "id": "chatcmpl-9m0m6iwV6nY8IsW6jY622P6xISg3q",
+    "model": "gpt-35-turbo-16k",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 5,
+      "prompt_tokens": 71,
+      "total_tokens": 76
+    }
+  },
+  "request_id": "841b6d08-733c-47d4-bf9f-0c948e25cf01"
+}
