@@ -1,0 +1,53 @@
+{
+  "request_id": "request-id",
+  "module_results": {
+    "templating": [
+      {
+        "role": "user",
+        "content": "Hello!"
+      }
+    ],
+    "llm": {
+      "id": "llm-id",
+      "object": "chat.completion",
+      "created": 172,
+      "model": "gpt-35-turbo",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Hello! How can I assist you today?"
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "completion_tokens": 9,
+        "prompt_tokens": 9,
+        "total_tokens": 18
+      }
+    }
+  },
+  "orchestration_result": {
+    "id": "orchestration-id",
+    "object": "chat.completion",
+    "created": 172,
+    "model": "gpt-35-turbo",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Hello! How can I assist you today?"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 9,
+      "prompt_tokens": 9,
+      "total_tokens": 18
+    }
+  }
+}

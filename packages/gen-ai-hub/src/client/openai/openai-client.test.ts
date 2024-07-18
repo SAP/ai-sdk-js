@@ -64,6 +64,7 @@ describe('openai client', () => {
         path.join(
           'test-util',
           'mock-data',
+          'openai',
           'openai-chat-completion-success-response.json'
         ),
         'utf8'
@@ -96,7 +97,12 @@ describe('openai client', () => {
         ...deploymentConfig
       };
       const mockResponse = fs.readFileSync(
-        path.join('test-util', 'mock-data', 'openai-error-response.json'),
+        path.join(
+          'test-util',
+          'mock-data',
+          'openai',
+          'openai-error-response.json'
+        ),
         'utf8'
       );
 
@@ -129,6 +135,7 @@ describe('openai client', () => {
         path.join(
           'test-util',
           'mock-data',
+          'openai',
           'openai-embeddings-success-response.json'
         ),
         'utf8'
@@ -160,7 +167,12 @@ describe('openai client', () => {
         ...deploymentConfig
       };
       const mockResponse = fs.readFileSync(
-        path.join('test-util', 'mock-data', 'openai-error-response.json'),
+        path.join(
+          'test-util',
+          'mock-data',
+          'openai',
+          'openai-error-response.json'
+        ),
         'utf8'
       );
 
