@@ -46,140 +46,149 @@ describe('openai client', () => {
     nock.cleanAll();
   });
 
-  it('chatCompletion() parses a successful response', async () => {
-    const prompt = {
-      messages: [
-        { role: 'user', content: 'Where is the deepest place on earth located' }
-      ] as OpenAiChatMessage[]
-    };
-    const request: OpenAiChatCompletionParameters = {
-      ...prompt,
-      ...deploymentConfig
-    };
-    const mockResponse = fs.readFileSync(
-      path.join(
-        'test-util',
-        'mock-data',
-        'openai',
-        'openai-chat-completion-success-response.json'
-      ),
-      'utf8'
-    );
+  describe('chatCompletion', () => {
+    it('parses a successful response', async () => {
+      const prompt = {
+        messages: [
+          {
+            role: 'user',
+            content: 'Where is the deepest place on earth located'
+          }
+        ] as OpenAiChatMessage[]
+      };
+      const request: OpenAiChatCompletionParameters = {
+        ...prompt,
+        ...deploymentConfig
+      };
+      const mockResponse = fs.readFileSync(
+        path.join(
+          'test-util',
+          'mock-data',
+          'openai',
+          'openai-chat-completion-success-response.json'
+        ),
+        'utf8'
+      );
 
-    mockInference(
-      {
-        data: request
-      },
-      {
-        data: JSON.parse(mockResponse),
-        status: 200
-      },
-      destination,
-      chatCompletionEndpoint
-    );
+      mockInference(
+        {
+          data: request
+        },
+        {
+          data: JSON.parse(mockResponse),
+          status: 200
+        },
+        destination,
+        chatCompletionEndpoint
+      );
 
-    const result: OpenAiChatCompletionOutput =
-      await new OpenAiClient().chatCompletion(request);
-    const expectedResponse: OpenAiChatCompletionOutput =
-      JSON.parse(mockResponse);
+      const result: OpenAiChatCompletionOutput =
+        await new OpenAiClient().chatCompletion(request);
+      const expectedResponse: OpenAiChatCompletionOutput =
+        JSON.parse(mockResponse);
 
-    expect(result).toEqual(expectedResponse);
+      expect(result).toEqual(expectedResponse);
+    });
+
+    it('throws on bad request', async () => {
+      const prompt = { messages: [] };
+      const request: OpenAiChatCompletionParameters = {
+        ...prompt,
+        ...deploymentConfig
+      };
+      const mockResponse = fs.readFileSync(
+        path.join(
+          'test-util',
+          'mock-data',
+          'openai',
+          'openai-error-response.json'
+        ),
+        'utf8'
+      );
+
+      mockInference(
+        {
+          data: request
+        },
+        {
+          data: JSON.parse(mockResponse),
+          status: 400
+        },
+        destination,
+        chatCompletionEndpoint
+      );
+
+      await expect(
+        new OpenAiClient().chatCompletion(request)
+      ).rejects.toThrow();
+    });
   });
 
-  it('chatCompletion() throws on bad request', async () => {
-    const prompt = { messages: [] };
-    const request: OpenAiChatCompletionParameters = {
-      ...prompt,
-      ...deploymentConfig
-    };
-    const mockResponse = fs.readFileSync(
-      path.join(
-        'test-util',
-        'mock-data',
-        'openai',
-        'openai-error-response.json'
-      ),
-      'utf8'
-    );
+  describe('embeddings', () => {
+    it('parses a successful response', async () => {
+      const prompt = { input: ['AI is fascinating'] };
+      const request: OpenAiEmbeddingParameters = {
+        ...prompt,
+        ...deploymentConfig
+      };
+      const mockResponse = fs.readFileSync(
+        path.join(
+          'test-util',
+          'mock-data',
+          'openai',
+          'openai-embeddings-success-response.json'
+        ),
+        'utf8'
+      );
 
-    mockInference(
-      {
-        data: request
-      },
-      {
-        data: JSON.parse(mockResponse),
-        status: 400
-      },
-      destination,
-      chatCompletionEndpoint
-    );
+      mockInference(
+        {
+          data: request
+        },
+        {
+          data: JSON.parse(mockResponse),
+          status: 200
+        },
+        destination,
+        embeddingsEndpoint
+      );
 
-    await expect(new OpenAiClient().chatCompletion(request)).rejects.toThrow();
-  });
+      const result: OpenAiEmbeddingOutput = await new OpenAiClient().embeddings(
+        request
+      );
+      const expectedResponse: OpenAiEmbeddingOutput = JSON.parse(mockResponse);
+      expect(result).toEqual(expectedResponse);
+    });
 
-  it('embeddings() parses a successful response', async () => {
-    const prompt = { input: ['AI is fascinating'] };
-    const request: OpenAiEmbeddingParameters = {
-      ...prompt,
-      ...deploymentConfig
-    };
-    const mockResponse = fs.readFileSync(
-      path.join(
-        'test-util',
-        'mock-data',
-        'openai',
-        'openai-embeddings-success-response.json'
-      ),
-      'utf8'
-    );
+    it('throws on bad request', async () => {
+      const prompt = { input: [] };
+      const request: OpenAiEmbeddingParameters = {
+        ...prompt,
+        ...deploymentConfig
+      };
+      const mockResponse = fs.readFileSync(
+        path.join(
+          'test-util',
+          'mock-data',
+          'openai',
+          'openai-error-response.json'
+        ),
+        'utf8'
+      );
 
-    mockInference(
-      {
-        data: request
-      },
-      {
-        data: JSON.parse(mockResponse),
-        status: 200
-      },
-      destination,
-      embeddingsEndpoint
-    );
+      mockInference(
+        {
+          data: request
+        },
+        {
+          data: JSON.parse(mockResponse),
+          status: 400
+        },
+        destination,
+        embeddingsEndpoint
+      );
 
-    const result: OpenAiEmbeddingOutput = await new OpenAiClient().embeddings(
-      request
-    );
-    const expectedResponse: OpenAiEmbeddingOutput = JSON.parse(mockResponse);
-    expect(result).toEqual(expectedResponse);
-  });
-
-  it('embeddings() throws on bad request', async () => {
-    const prompt = { input: [] };
-    const request: OpenAiEmbeddingParameters = {
-      ...prompt,
-      ...deploymentConfig
-    };
-    const mockResponse = fs.readFileSync(
-      path.join(
-        'test-util',
-        'mock-data',
-        'openai',
-        'openai-error-response.json'
-      ),
-      'utf8'
-    );
-
-    mockInference(
-      {
-        data: request
-      },
-      {
-        data: JSON.parse(mockResponse),
-        status: 400
-      },
-      destination,
-      embeddingsEndpoint
-    );
-
-    await expect(new OpenAiClient().embeddings(request)).rejects.toThrow();
+      await expect(new OpenAiClient().embeddings(request)).rejects.toThrow();
+    });
   });
 });
