@@ -23,14 +23,19 @@ export const ExecutionApi = {
   /**
    * Trigger execution. Deprecated. Use POST /executions instead
    * @param configurationId - Configuration identifier
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  executionCreateDeprecated: (configurationId: string) =>
+  executionCreateDeprecated: (
+    configurationId: string,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
     new OpenApiRequestBuilder<ExecutionCreationResponse>(
       'post',
       '/lm/configurations/{configurationId}/executions',
       {
-        pathParameters: { configurationId }
+        pathParameters: { configurationId },
+        headerParameters
       }
     ),
   /**
@@ -40,98 +45,127 @@ export const ExecutionApi = {
    * With select parameter it is possible to select only status.
    *
    * @param queryParameters - Object containing the following keys: executableIds, configurationId, scenarioId, executionScheduleId, status, $top, $skip, $select.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  executionQuery: (queryParameters?: {
-    executableIds?: string[];
-    configurationId?: string;
-    scenarioId?: string;
-    executionScheduleId?: string;
-    status?:
-      | 'PENDING'
-      | 'RUNNING'
-      | 'COMPLETED'
-      | 'DEAD'
-      | 'STOPPING'
-      | 'STOPPED'
-      | 'UNKNOWN';
-    $top?: number;
-    $skip?: number;
-    $select?: 'status';
-  }) =>
+  executionQuery: (
+    queryParameters: {
+      executableIds?: string[];
+      configurationId?: string;
+      scenarioId?: string;
+      executionScheduleId?: string;
+      status?:
+        | 'PENDING'
+        | 'RUNNING'
+        | 'COMPLETED'
+        | 'DEAD'
+        | 'STOPPING'
+        | 'STOPPED'
+        | 'UNKNOWN';
+      $top?: number;
+      $skip?: number;
+      $select?: 'status';
+    },
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
     new OpenApiRequestBuilder<ExecutionList>('get', '/lm/executions', {
-      queryParameters
+      queryParameters,
+      headerParameters
     }),
   /**
    * Create an execution using the configuration specified by configurationId.
    * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  executionCreate: (body: EnactmentCreationRequest) =>
+  executionCreate: (
+    body: EnactmentCreationRequest,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
     new OpenApiRequestBuilder<ExecutionCreationResponse>(
       'post',
       '/lm/executions',
       {
-        body
+        body,
+        headerParameters
       }
     ),
   /**
    * Patch multiple executions' status to stopped or deleted.
    * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  executionBatchModify: (body: any) =>
+  executionBatchModify: (
+    body: any,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
     new OpenApiRequestBuilder<ExecutionBulkModificationResponse>(
       'patch',
       '/lm/executions',
       {
-        body
+        body,
+        headerParameters
       }
     ),
   /**
    * Retrieve details for execution with executionId.
    * @param executionId - Execution identifier
    * @param queryParameters - Object containing the following keys: $select.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   executionGet: (
     executionId: string,
-    queryParameters?: { $select?: 'status' }
+    queryParameters: { $select?: 'status' },
+    headerParameters: { 'AI-Resource-Group': string }
   ) =>
     new OpenApiRequestBuilder<ExecutionResponseWithDetails>(
       'get',
       '/lm/executions/{executionId}',
       {
         pathParameters: { executionId },
-        queryParameters
+        queryParameters,
+        headerParameters
       }
     ),
   /**
    * Update target status of the execution to stop an execution.
    * @param executionId - Execution identifier
    * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  executionModify: (executionId: string, body: ExecutionModificationRequest) =>
+  executionModify: (
+    executionId: string,
+    body: ExecutionModificationRequest,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
     new OpenApiRequestBuilder<ExecutionModificationResponse>(
       'patch',
       '/lm/executions/{executionId}',
       {
         pathParameters: { executionId },
-        body
+        body,
+        headerParameters
       }
     ),
   /**
    * Mark the execution with executionId as deleted.
    * @param executionId - Execution identifier
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  executionDelete: (executionId: string) =>
+  executionDelete: (
+    executionId: string,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
     new OpenApiRequestBuilder<ExecutionDeletionResponse>(
       'delete',
       '/lm/executions/{executionId}',
       {
-        pathParameters: { executionId }
+        pathParameters: { executionId },
+        headerParameters
       }
     ),
   /**
@@ -139,29 +173,35 @@ export const ExecutionApi = {
    * scenarioId, configurationId, executableIdsList or by execution status.
    *
    * @param queryParameters - Object containing the following keys: executableIds, configurationId, scenarioId, executionScheduleId, status.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  executionCount: (queryParameters?: {
-    executableIds?: string[];
-    configurationId?: string;
-    scenarioId?: string;
-    executionScheduleId?: string;
-    status?:
-      | 'PENDING'
-      | 'RUNNING'
-      | 'COMPLETED'
-      | 'DEAD'
-      | 'STOPPING'
-      | 'STOPPED'
-      | 'UNKNOWN';
-  }) =>
+  executionCount: (
+    queryParameters: {
+      executableIds?: string[];
+      configurationId?: string;
+      scenarioId?: string;
+      executionScheduleId?: string;
+      status?:
+        | 'PENDING'
+        | 'RUNNING'
+        | 'COMPLETED'
+        | 'DEAD'
+        | 'STOPPING'
+        | 'STOPPED'
+        | 'UNKNOWN';
+    },
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
     new OpenApiRequestBuilder<any>('get', '/lm/executions/$count', {
-      queryParameters
+      queryParameters,
+      headerParameters
     }),
   /**
    * Retrieve logs of an execution for getting insight into the execution results or failures.
    * @param executionId - Execution identifier
    * @param queryParameters - Object containing the following keys: $top, start, end, $order.
+   * @param headerParameters - Object containing the following keys: Authorization.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   kubesubmitV4ExecutionsGetLogs: (
@@ -171,14 +211,16 @@ export const ExecutionApi = {
       start?: string;
       end?: string;
       $order?: 'asc' | 'desc';
-    }
+    },
+    headerParameters?: { Authorization?: string }
   ) =>
     new OpenApiRequestBuilder<LogCommonResponse>(
       'get',
       '/lm/executions/{executionId}/logs',
       {
         pathParameters: { executionId },
-        queryParameters
+        queryParameters,
+        headerParameters
       }
     )
 };
