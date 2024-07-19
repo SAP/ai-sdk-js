@@ -8,6 +8,6 @@
  * Representation of the 'ChatMessage' schema.
  */
 export type ChatMessage = {
-  role: string;
+  role: 'user' | 'assistant' | 'system';
   content: string;
 } & Record<string, any>;
