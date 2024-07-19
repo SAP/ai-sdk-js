@@ -16,7 +16,7 @@ describe('execution', () => {
     nock.cleanAll();
   });
 
-  it('get execution parses a successful response', async () => {
+  it('parses a successful response for get request', async () => {
     const expectedResponse: ExecutionList = {
       count: 1,
       resources: [
@@ -50,8 +50,7 @@ describe('execution', () => {
       ]
     };
     nock(destination.url).get('/lm/executions').reply(200, expectedResponse, {
-      'Content-Type': 'application/json',
-      'AI-Resource-Group': 'default'
+      'Content-Type': 'application/json'
     });
 
     const result: ExecutionList = await ExecutionApi.executionQuery(
@@ -62,15 +61,14 @@ describe('execution', () => {
     expect(result).toEqual(expectedResponse);
   });
 
-  it('post execution parses a successful response', async () => {
+  it('parses a successful response for post request', async () => {
     const expectedResponse: ExecutionCreationResponse = {
       id: '8i9j0k1l',
       message: 'Execution acknowledged',
       url: 'ai://default/8i9j0k1l'
     };
     nock(destination.url).post('/lm/executions').reply(200, expectedResponse, {
-      'Content-Type': 'application/json',
-      'AI-Resource-Group': 'default'
+      'Content-Type': 'application/json'
     });
 
     const executionPostData: EnactmentCreationRequest = {

@@ -16,7 +16,7 @@ describe('artifact', () => {
     nock.cleanAll();
   });
 
-  it('get artifact parses a successful response', async () => {
+  it('parses a successful response for get request', async () => {
     const expectedResponse: ArtifactList = {
       count: 1,
       resources: [
@@ -34,8 +34,7 @@ describe('artifact', () => {
     };
 
     nock(destination.url).get('/lm/artifacts').reply(200, expectedResponse, {
-      'Content-Type': 'application/json',
-      'AI-Resource-Group': 'default'
+      'Content-Type': 'application/json'
     });
 
     const result: ArtifactList = await ArtifactApi.artifactQuery(
@@ -46,7 +45,7 @@ describe('artifact', () => {
     expect(result).toEqual(expectedResponse);
   });
 
-  it('post artifact parses a successful response', async () => {
+  it('parses a successful response for post request', async () => {
     const expectedResponse: ArtifactCreationResponse = {
       id: '3d2c1b0a',
       message: 'Artifact acknowledged',
@@ -54,8 +53,7 @@ describe('artifact', () => {
     };
 
     nock(destination.url).post('/lm/artifacts').reply(200, expectedResponse, {
-      'Content-Type': 'application/json',
-      'AI-Resource-Group': 'default'
+      'Content-Type': 'application/json'
     });
 
     const artifactPostData: ArtifactPostData = {

@@ -11,7 +11,7 @@ describe('scenario', () => {
     nock.cleanAll();
   });
 
-  it('get scenario parses a successful response', async () => {
+  it('parses a successful response for get request', async () => {
     const expectedResponse: ScenarioList = {
       count: 1,
       resources: [
@@ -31,8 +31,7 @@ describe('scenario', () => {
       ]
     };
     nock(destination.url).get('/lm/scenarios').reply(200, expectedResponse, {
-      'Content-Type': 'application/json',
-      'AI-Resource-Group': 'default'
+      'Content-Type': 'application/json'
     });
 
     const result: ScenarioList = await ScenarioApi.scenarioQuery({

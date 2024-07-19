@@ -20,7 +20,7 @@ describe('deployment', () => {
     nock.cleanAll();
   });
 
-  it('get deployment parses a successful response', async () => {
+  it('parses a successful response for get request', async () => {
     const expectedResponse: DeploymentList = {
       count: 1,
       resources: [
@@ -57,8 +57,7 @@ describe('deployment', () => {
     };
 
     nock(destination.url).get('/lm/deployments').reply(200, expectedResponse, {
-      'Content-Type': 'application/json',
-      'AI-Resource-Group': 'default'
+      'Content-Type': 'application/json'
     });
 
     const result: DeploymentList = await DeploymentApi.deploymentQuery(
@@ -69,7 +68,7 @@ describe('deployment', () => {
     expect(result).toEqual(expectedResponse);
   });
 
-  it('post deployment parses a successful response', async () => {
+  it('parses a successful response for post request', async () => {
     const expectedResponse: DeploymentCreationResponse = {
       deploymentUrl: '',
       id: '4e5f6g7h',
@@ -78,8 +77,7 @@ describe('deployment', () => {
     };
 
     nock(destination.url).post('/lm/deployments').reply(200, expectedResponse, {
-      'Content-Type': 'application/json',
-      'AI-Resource-Group': 'default'
+      'Content-Type': 'application/json'
     });
 
     const deploymentPostData: DeploymentCreationRequest = {
@@ -94,7 +92,7 @@ describe('deployment', () => {
     expect(result).toEqual(expectedResponse);
   });
 
-  it('patch deployment parses a successful response', async () => {
+  it('parses a successful response for patch request', async () => {
     const deploymentId = '4e5f6g7h';
     const expectedRequestBody = {
       targetStatus: 'STOPPED'
@@ -110,8 +108,7 @@ describe('deployment', () => {
         return true;
       })
       .reply(200, expectedResponse, {
-        'Content-Type': 'application/json',
-        'AI-Resource-Group': 'default'
+        'Content-Type': 'application/json'
       });
 
     const deploymentPatchData: DeploymentModificationRequest = {
@@ -126,7 +123,7 @@ describe('deployment', () => {
     expect(result).toEqual(expectedResponse);
   });
 
-  it('delete deployment parses a successful response', async () => {
+  it('parses a successful response for delete request', async () => {
     const deploymentId = '4e5f6g7h';
     const expectedResponse: DeploymentDeletionResponse = {
       id: '4e5f6g7h',
@@ -137,8 +134,7 @@ describe('deployment', () => {
     nock(destination.url)
       .delete(`/lm/deployments/${deploymentId}`)
       .reply(200, expectedResponse, {
-        'Content-Type': 'application/json',
-        'AI-Resource-Group': 'default'
+        'Content-Type': 'application/json'
       });
 
     const result: DeploymentDeletionResponse =
