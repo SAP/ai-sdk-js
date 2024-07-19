@@ -5,7 +5,8 @@ import { mockInference, parseMockResponse } from '../../test-util/mock-http.js';
 import { BaseLlmParametersWithDeploymentId } from '../core/index.js';
 import {
   GenAiHubClient,
-  GenAiHubCompletionParameters
+  GenAiHubCompletionParameters,
+  constructCompletionPostRequest
 } from './orchestration-client.js';
 import { CompletionPostResponse } from './api/index.js';
 
@@ -41,7 +42,10 @@ describe('GenAiHubClient', () => {
 
     mockInference(
       {
-        data: { ...request, input_params: {} }
+        data: {
+          deploymentConfiguration,
+          ...constructCompletionPostRequest(request)
+        }
       },
       {
         data: mockResponse,
@@ -86,7 +90,10 @@ describe('GenAiHubClient', () => {
     );
     mockInference(
       {
-        data: { ...request, input_params: {} }
+        data: {
+          deploymentConfiguration,
+          ...constructCompletionPostRequest(request)
+        }
       },
       {
         data: mockResponse,
