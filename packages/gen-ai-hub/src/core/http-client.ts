@@ -45,7 +45,7 @@ export interface EndpointOptions {
   /**
    * The API version to use.
    */
-  apiVersion: string;
+  apiVersion?: string;
 }
 /**
  * Executes a request to the AI Core service.
@@ -84,7 +84,7 @@ export async function executeRequest<D extends BaseLlmParameters>(
 }
 
 function mergeWithDefaultRequestConfig(
-  apiVersion: string,
+  apiVersion?: string,
   requestConfig?: CustomRequestConfig
 ): HttpRequestConfig {
   const defaultConfig: HttpRequestConfig = {
@@ -93,9 +93,7 @@ function mergeWithDefaultRequestConfig(
       'content-type': 'application/json',
       'ai-resource-group': 'default'
     },
-    params: {
-      'api-version': apiVersion
-    }
+    params: apiVersion ? { 'api-version': apiVersion } : {}
   };
   return {
     ...defaultConfig,

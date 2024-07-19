@@ -27,7 +27,7 @@ export async function getAiCoreDestination(): Promise<Destination> {
       );
     }
   }
-  // Uses the @internal SDK functionality to transform the service binding to a destination.
+
   const aiCoreDestination = await transformServiceBindingToDestination(
     aiCoreServiceBinding,
     {
