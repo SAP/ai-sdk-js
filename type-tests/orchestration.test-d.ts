@@ -132,10 +132,7 @@ expectError<any>(
           template: [{ role: 'test', content: 'some content' }]
         },
         llm_module_config: {
-          model_name: 'gpt-35-turbo-16k',
-          model_params: {
-            max_tokens: 50
-          }
+          model_name: 'gpt-35-turbo-16k'
         }
       }
     }
