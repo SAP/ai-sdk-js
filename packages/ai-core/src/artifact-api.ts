@@ -23,49 +23,62 @@ export const ArtifactApi = {
    * Search by substring of artifact name or description, if required.
    *
    * @param queryParameters - Object containing the following keys: scenarioId, executionId, name, kind, artifactLabelSelector, $top, $skip, $search, searchCaseInsensitive, $expand.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  artifactQuery: (queryParameters?: {
-    scenarioId?: string;
-    executionId?: string;
-    name?: Name_1;
-    kind?: 'model' | 'dataset' | 'resultset' | 'other';
-    artifactLabelSelector?: string[];
-    $top?: number;
-    $skip?: number;
-    $search?: string;
-    searchCaseInsensitive?: boolean;
-    $expand?: 'scenario';
-  }) =>
+  artifactQuery: (
+    queryParameters: {
+      scenarioId?: string;
+      executionId?: string;
+      name?: Name_1;
+      kind?: 'model' | 'dataset' | 'resultset' | 'other';
+      artifactLabelSelector?: string[];
+      $top?: number;
+      $skip?: number;
+      $search?: string;
+      searchCaseInsensitive?: boolean;
+      $expand?: 'scenario';
+    },
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
     new OpenApiRequestBuilder<ArtifactList>('get', '/lm/artifacts', {
-      queryParameters
+      queryParameters,
+      headerParameters
     }),
   /**
    * Register an artifact for use in a configuration, for example a model or a dataset.
    * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  artifactCreate: (body: ArtifactPostData) =>
+  artifactCreate: (
+    body: ArtifactPostData,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
     new OpenApiRequestBuilder<ArtifactCreationResponse>(
       'post',
       '/lm/artifacts',
       {
-        body
+        body,
+        headerParameters
       }
     ),
   /**
    * Retrieve details for artifact with artifactId.
    * @param artifactId - Artifact identifier
    * @param queryParameters - Object containing the following keys: $expand.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   artifactGet: (
     artifactId: string,
-    queryParameters?: { $expand?: 'scenario' }
+    queryParameters: { $expand?: 'scenario' },
+    headerParameters: { 'AI-Resource-Group': string }
   ) =>
     new OpenApiRequestBuilder<Artifact>('get', '/lm/artifacts/{artifactId}', {
       pathParameters: { artifactId },
-      queryParameters
+      queryParameters,
+      headerParameters
     }),
   /**
    * Retrieve  the number of available artifacts that match the specified filter criteria.
@@ -73,18 +86,23 @@ export const ArtifactApi = {
    * Search by substring of artifact name or description is also possible.
    *
    * @param queryParameters - Object containing the following keys: scenarioId, executionId, name, kind, $search, searchCaseInsensitive, artifactLabelSelector.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  artifactCount: (queryParameters?: {
-    scenarioId?: string;
-    executionId?: string;
-    name?: Name_1;
-    kind?: 'model' | 'dataset' | 'resultset' | 'other';
-    $search?: string;
-    searchCaseInsensitive?: boolean;
-    artifactLabelSelector?: string[];
-  }) =>
+  artifactCount: (
+    queryParameters: {
+      scenarioId?: string;
+      executionId?: string;
+      name?: Name_1;
+      kind?: 'model' | 'dataset' | 'resultset' | 'other';
+      $search?: string;
+      searchCaseInsensitive?: boolean;
+      artifactLabelSelector?: string[];
+    },
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
     new OpenApiRequestBuilder<any>('get', '/lm/artifacts/$count', {
-      queryParameters
+      queryParameters,
+      headerParameters
     })
 };

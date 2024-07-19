@@ -15,18 +15,21 @@ export const ExecutableApi = {
    *
    * @param scenarioId - Scenario identifier
    * @param queryParameters - Object containing the following keys: versionId.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   executableQuery: (
     scenarioId: string,
-    queryParameters?: { versionId?: string }
+    queryParameters: { versionId?: string },
+    headerParameters: { 'AI-Resource-Group': string }
   ) =>
     new OpenApiRequestBuilder<ExecutableList>(
       'get',
       '/lm/scenarios/{scenarioId}/executables',
       {
         pathParameters: { scenarioId },
-        queryParameters
+        queryParameters,
+        headerParameters
       }
     ),
   /**
@@ -35,14 +38,20 @@ export const ExecutableApi = {
    *
    * @param scenarioId - Scenario identifier
    * @param executableId - Executable identifier
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  executableGet: (scenarioId: string, executableId: string) =>
+  executableGet: (
+    scenarioId: string,
+    executableId: string,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
     new OpenApiRequestBuilder<Executable>(
       'get',
       '/lm/scenarios/{scenarioId}/executables/{executableId}',
       {
-        pathParameters: { scenarioId, executableId }
+        pathParameters: { scenarioId, executableId },
+        headerParameters
       }
     )
 };
