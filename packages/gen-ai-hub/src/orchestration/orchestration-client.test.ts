@@ -37,10 +37,6 @@ describe('GenAiHubClient', () => {
     nock.cleanAll();
   });
 
-  afterAll(() => {
-    clearXsuaaServices();
-  });
-
   it('calls chatCompletion with minimum configuration and parses response', async () => {
     const module_configurations: ModuleConfigs = {
       templating_module_config: {

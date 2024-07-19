@@ -11,8 +11,10 @@ import {
 } from '../../../test-util/mock-http.js';
 import { OpenAiClient } from './openai-client.js';
 import {
+  OpenAiChatCompletionOutput,
   OpenAiChatCompletionParameters,
   OpenAiChatMessage,
+  OpenAiEmbeddingOutput,
   OpenAiEmbeddingParameters
 } from './openai-types.js';
 
@@ -56,7 +58,7 @@ describe('openai client', () => {
         ...prompt,
         deploymentConfiguration
       };
-      const mockResponse = parseMockResponse(
+      const mockResponse = parseMockResponse<OpenAiChatCompletionOutput>(
         'openai',
         'openai-chat-completion-success-response.json'
       );
@@ -114,7 +116,7 @@ describe('openai client', () => {
         ...prompt,
         deploymentConfiguration
       };
-      const mockResponse = parseMockResponse(
+      const mockResponse = parseMockResponse<OpenAiEmbeddingOutput>(
         'openai',
         'openai-embeddings-success-response.json'
       );
