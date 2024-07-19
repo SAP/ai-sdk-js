@@ -4,15 +4,50 @@ import {
   CustomRequestConfig
 } from '../core/index.js';
 import {
+  ChatMessages,
   CompletionPostRequest,
-  CompletionPostResponse
+  CompletionPostResponse,
+  InputParamsEntry
 } from './api/schema/index.js';
 
+/**
+ * Input Parameters for Orchestration completion.
+ */
+export interface OrchestrationCompletionParameters {
+  /**
+   * The model name.
+   */
+  model_name: string;
+  /**
+   * The max tokens.
+   */
+  max_tokens?: number;
+  /**
+   * The temperature.
+   */
+  temperature?: number;
+  /**
+   * The model version.
+   */
+  model_version?: string;
+  /**
+   * The template.// Todo: refer llm_document.
+   */
+  template: ChatMessages;
+  /**
+   * The model name.// Todo: refer llm_document.
+   */
+  template_params?: Record<string, InputParamsEntry>;
+  /**
+   * The model name.// Todo: refer llm_document.
+   */
+  messages_history?: ChatMessages;
+}
 /**
  * Input Parameters for GenAI hub chat completion.
  */
 export type GenAiHubCompletionParameters = BaseLlmParameters &
-  Pick<CompletionPostRequest, 'orchestration_config' | 'messages_history'>;
+  OrchestrationCompletionParameters;
 
 /**
  * Get the orchestration client.
@@ -29,14 +64,39 @@ export class GenAiHubClient {
     requestConfig?: CustomRequestConfig
   ): Promise<CompletionPostResponse> {
     const dataWithInputParams = {
-      ...data,
-      input_params: {}
+      deploymentConfiguration: data.deploymentConfiguration,
+      ...this.constructCompletionPostRequest(data)
     };
+
     const response = await executeRequest(
       { url: '/completion' },
       dataWithInputParams,
       requestConfig
     );
     return response.data;
+  }
+
+  constructCompletionPostRequest(
+    input: GenAiHubCompletionParameters
+  ): CompletionPostRequest {
+    return {
+      orchestration_config: {
+        module_configurations: {
+          templating_module_config: {
+            template: input.template
+          },
+          llm_module_config: {
+            model_name: input.model_name,
+            model_params: {
+              ...(input?.max_tokens && { max_tokens: input.max_tokens }),
+              ...(input?.temperature && { temperature: input.temperature })
+            },
+            ...(input?.model_version && { model_version: input.model_version })
+          }
+        }
+      },
+      input_params: input?.template_params,
+      messages_history: input.messages_history
+    };
   }
 }
