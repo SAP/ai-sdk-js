@@ -30,9 +30,15 @@ describe('scenario', () => {
         }
       ]
     };
-    nock(destination.url).get('/lm/scenarios').reply(200, expectedResponse, {
-      'Content-Type': 'application/json'
-    });
+    nock(destination.url, {
+      reqheaders: {
+        'AI-Resource-Group': 'default'
+      }
+    })
+      .get('/lm/scenarios')
+      .reply(200, expectedResponse, {
+        'Content-Type': 'application/json'
+      });
 
     const result: ScenarioList = await ScenarioApi.scenarioQuery({
       'AI-Resource-Group': 'default'

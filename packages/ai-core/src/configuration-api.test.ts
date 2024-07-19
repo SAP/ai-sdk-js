@@ -41,7 +41,11 @@ describe('configuration', () => {
       ]
     };
 
-    nock(destination.url)
+    nock(destination.url, {
+      reqheaders: {
+        'AI-Resource-Group': 'default'
+      }
+    })
       .get('/lm/configurations')
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'
@@ -61,7 +65,11 @@ describe('configuration', () => {
       message: 'Configuration created'
     };
 
-    nock(destination.url)
+    nock(destination.url, {
+      reqheaders: {
+        'AI-Resource-Group': 'default'
+      }
+    })
       .post('/lm/configurations')
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'

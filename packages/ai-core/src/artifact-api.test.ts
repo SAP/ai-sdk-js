@@ -33,9 +33,15 @@ describe('artifact', () => {
       ]
     };
 
-    nock(destination.url).get('/lm/artifacts').reply(200, expectedResponse, {
-      'Content-Type': 'application/json'
-    });
+    nock(destination.url, {
+      reqheaders: {
+        'AI-Resource-Group': 'default'
+      }
+    })
+      .get('/lm/artifacts')
+      .reply(200, expectedResponse, {
+        'Content-Type': 'application/json'
+      });
 
     const result: ArtifactList = await ArtifactApi.artifactQuery(
       {},
@@ -52,9 +58,15 @@ describe('artifact', () => {
       url: 'ai://default/spam/data'
     };
 
-    nock(destination.url).post('/lm/artifacts').reply(200, expectedResponse, {
-      'Content-Type': 'application/json'
-    });
+    nock(destination.url, {
+      reqheaders: {
+        'AI-Resource-Group': 'default'
+      }
+    })
+      .post('/lm/artifacts')
+      .reply(200, expectedResponse, {
+        'Content-Type': 'application/json'
+      });
 
     const artifactPostData: ArtifactPostData = {
       description: 'dataset for training test',

@@ -56,9 +56,15 @@ describe('deployment', () => {
       ]
     };
 
-    nock(destination.url).get('/lm/deployments').reply(200, expectedResponse, {
-      'Content-Type': 'application/json'
-    });
+    nock(destination.url, {
+      reqheaders: {
+        'AI-Resource-Group': 'default'
+      }
+    })
+      .get('/lm/deployments')
+      .reply(200, expectedResponse, {
+        'Content-Type': 'application/json'
+      });
 
     const result: DeploymentList = await DeploymentApi.deploymentQuery(
       {},
@@ -76,9 +82,15 @@ describe('deployment', () => {
       status: 'UNKNOWN'
     };
 
-    nock(destination.url).post('/lm/deployments').reply(200, expectedResponse, {
-      'Content-Type': 'application/json'
-    });
+    nock(destination.url, {
+      reqheaders: {
+        'AI-Resource-Group': 'default'
+      }
+    })
+      .post('/lm/deployments')
+      .reply(200, expectedResponse, {
+        'Content-Type': 'application/json'
+      });
 
     const deploymentPostData: DeploymentCreationRequest = {
       configurationId: '3d2c1b0a'
@@ -101,7 +113,11 @@ describe('deployment', () => {
       id: '4e5f6g7h',
       message: 'Deployment modification scheduled'
     };
-    nock(destination.url)
+    nock(destination.url, {
+      reqheaders: {
+        'AI-Resource-Group': 'default'
+      }
+    })
       .patch(`/lm/deployments/${deploymentId}`, body => {
         expect(body).toEqual(expectedRequestBody);
         expect(body).not.toHaveProperty('scenarioId');
@@ -131,7 +147,11 @@ describe('deployment', () => {
       targetStatus: 'DELETED'
     };
 
-    nock(destination.url)
+    nock(destination.url, {
+      reqheaders: {
+        'AI-Resource-Group': 'default'
+      }
+    })
       .delete(`/lm/deployments/${deploymentId}`)
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'

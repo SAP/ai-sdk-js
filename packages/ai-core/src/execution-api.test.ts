@@ -49,9 +49,15 @@ describe('execution', () => {
         }
       ]
     };
-    nock(destination.url).get('/lm/executions').reply(200, expectedResponse, {
-      'Content-Type': 'application/json'
-    });
+    nock(destination.url, {
+      reqheaders: {
+        'AI-Resource-Group': 'default'
+      }
+    })
+      .get('/lm/executions')
+      .reply(200, expectedResponse, {
+        'Content-Type': 'application/json'
+      });
 
     const result: ExecutionList = await ExecutionApi.executionQuery(
       {},
@@ -67,9 +73,15 @@ describe('execution', () => {
       message: 'Execution acknowledged',
       url: 'ai://default/8i9j0k1l'
     };
-    nock(destination.url).post('/lm/executions').reply(200, expectedResponse, {
-      'Content-Type': 'application/json'
-    });
+    nock(destination.url, {
+      reqheaders: {
+        'AI-Resource-Group': 'default'
+      }
+    })
+      .post('/lm/executions')
+      .reply(200, expectedResponse, {
+        'Content-Type': 'application/json'
+      });
 
     const executionPostData: EnactmentCreationRequest = {
       configurationId: '8i9j0k1l'
