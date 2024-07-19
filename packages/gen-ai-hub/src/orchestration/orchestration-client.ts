@@ -83,7 +83,7 @@ export class GenAiHubClient {
       orchestration_config: {
         module_configurations: {
           templating_module_config: {
-            template: input.template
+            template: input.prompt_templates
           },
           llm_module_config: {
             model_name: input.model_name,
