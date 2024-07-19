@@ -33,7 +33,7 @@ export interface OrchestrationCompletionParameters {
   /**
    * The template.// Todo: refer llm_document.
    */
-  template: ChatMessages;
+  prompt_templates: ChatMessages;
   /**
    * The model name.// Todo: refer llm_document.
    */

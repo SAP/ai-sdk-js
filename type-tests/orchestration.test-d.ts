@@ -11,94 +11,62 @@ expectType<GenAiHubClient>(client);
 expectType<Promise<CompletionPostResponse>>(
   client.chatCompletion({
     deploymentConfiguration: { deploymentId: 'id' },
-    orchestration_config: {
-      module_configurations: {
-        templating_module_config: {
-          template: [{ role: 'user', content: 'Hello!' }]
-        },
-        llm_module_config: {
-          model_name: 'gpt-35-turbo-16k',
-          model_params: {
-            max_tokens: 50,
-            temperature: 0.1
-          }
-        }
-      }
-    }
+    prompt_templates: [{ role: 'user', content: 'Hello!' }],
+    model_name: 'gpt-35-turbo-16k'
   })
 );
 
 /**
- * Chat Completion with the wrong ChatMessage role.
+ * Chat Completion with optional parameters.
  */
-expectError<Promise<CompletionPostResponse>>(
-  client.chatCompletion({
-    orchestration_config: {
-      module_configurations: {
-        templating_module_config: {
-          template: [{ role: 'user', content: 'Hello!' }]
-        },
-        llm_module_config: {
-          model_name: 'gpt-35-turbo-16k',
-          model_params: {
-            max_tokens: 50,
-            temperature: 0.1
-          }
-        }
-      }
-    }
-  })
-);
-
-/**
- * Input params should not be set by the user.
- */
-expectError<Promise<CompletionPostResponse>>(
+expectType<Promise<CompletionPostResponse>>(
   client.chatCompletion({
     deploymentConfiguration: { deploymentId: 'id' },
-    orchestration_config: {
-      module_configurations: {
-        templating_module_config: {
-          template: [{ role: 'user', content: 'Hello!' }]
-        },
-        llm_module_config: {
-          model_name: 'gpt-35-turbo-16k',
-          model_params: {
-            max_tokens: 50,
-            temperature: 0.1
-          }
-        }
+    prompt_templates: [{ role: 'user', content: 'Hello!' }],
+    model_name: 'gpt-35-turbo-16k',
+    max_tokens: 50,
+    temperature: 0.1,
+    template_params: { input: 'Bob', name: 'Marley' },
+    messages_history: [
+      {
+        content:
+          'You are a helpful assistant who remembers all details the user shares with you.',
+        role: 'system'
+      },
+      {
+        content: 'Hi! Im Bob',
+        role: 'user'
       }
-    },
-    input_params: {}
+    ]
   })
 );
 
 /**
- * Orchestration_config cannot be empty.
+ * Deployment details are mandatory.
+ */
+expectError<Promise<CompletionPostResponse>>(
+  client.chatCompletion({
+    prompt_templates: [{ role: 'user', content: 'Hello!' }],
+    model_name: 'gpt-35-turbo-16k'
+  })
+);
+
+/**
+ * Orchestration completion parameters cannot be empty.
+ */
+expectError<any>(
+  client.chatCompletion({
+    deploymentConfiguration: { deploymentId: 'id' }
+  })
+);
+
+/**
+ * Prompt templates cannot be empty.
  */
 expectError<any>(
   client.chatCompletion({
     deploymentConfiguration: { deploymentId: 'id' },
-    orchestration_config: {}
-  })
-);
-
-/**
- * Templating_module_config cannot be empty.
- */
-expectError<any>(
-  client.chatCompletion({
-    deploymentConfiguration: { deploymentId: 'id' },
-    orchestration_config: {
-      module_configurations: {
-        templating_module_config: {},
-        llm_module_config: {
-          model_name: 'gpt-35-turbo-16k',
-          model_params: {}
-        }
-      }
-    }
+    model_name: 'gpt-35-turbo-16k'
   })
 );
 
@@ -108,33 +76,30 @@ expectError<any>(
 expectError<any>(
   client.chatCompletion({
     deploymentConfiguration: { deploymentId: 'id' },
-    orchestration_config: {
-      module_configurations: {
-        templating_module_config: {
-          template: [{ role: 'user', content: 'some content' }]
-        },
-        llm_module_config: {
-          model_params: {
-            max_tokens: 50
-          }
-        }
-      }
-    }
+    prompt_templates: [{ role: 'user', content: 'Hello!' }]
   })
 );
 
+/**
+ * Role in prompt template can only be user|assistant|system.
+ */
 expectError<any>(
   client.chatCompletion({
     deploymentConfiguration: { deploymentId: 'id' },
-    orchestration_config: {
-      module_configurations: {
-        templating_module_config: {
-          template: [{ role: 'test', content: 'some content' }]
-        },
-        llm_module_config: {
-          model_name: 'gpt-35-turbo-16k'
-        }
-      }
-    }
+    prompt_templates: [{ role: 'actor', content: 'Hello!' }],
+    model_name: 'gpt-35-turbo-16k'
+  })
+);
+
+/**
+ * Model parameters should adhere to OrchestrationCompletionParameters.
+ */
+expectType<Promise<CompletionPostResponse>>(
+  client.chatCompletion({
+    deploymentConfiguration: { deploymentId: 'id' },
+    prompt_templates: [{ role: 'user', content: 'Hello!' }],
+    model_name: 'gpt-35-turbo-16k',
+    max_tokens: '50',
+    temperature: '0.1'
   })
 );

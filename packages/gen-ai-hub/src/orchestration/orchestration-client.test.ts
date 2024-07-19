@@ -7,24 +7,13 @@ import {
   GenAiHubClient,
   GenAiHubCompletionParameters
 } from './orchestration-client.js';
-import {
-  CompletionPostResponse,
-  LLMModuleConfig,
-  ModuleConfigs
-} from './api/index.js';
+import { CompletionPostResponse } from './api/index.js';
 
 describe('GenAiHubClient', () => {
   let destination: HttpDestination;
   let client: GenAiHubClient;
   const deploymentConfiguration: BaseLlmParametersWithDeploymentId = {
     deploymentId: 'deployment-id'
-  };
-  const llm_module_config: LLMModuleConfig = {
-    model_name: 'gpt-35-turbo-16k',
-    model_params: {
-      max_tokens: 50,
-      temperature: 0.1
-    }
   };
 
   beforeAll(() => {
@@ -37,15 +26,12 @@ describe('GenAiHubClient', () => {
   });
 
   it('calls chatCompletion with minimum configuration and parses response', async () => {
-    const module_configurations: ModuleConfigs = {
-      templating_module_config: {
-        template: [{ role: 'user', content: 'Hello!' }]
-      },
-      llm_module_config
-    };
     const request: GenAiHubCompletionParameters = {
       deploymentConfiguration,
-      orchestration_config: { module_configurations }
+      model_name: 'gpt-35-turbo-16k',
+      max_tokens: 50,
+      temperature: 0.1,
+      prompt_templates: [{ role: 'user', content: 'Hello!' }]
     };
 
     const mockResponse = parseMockResponse<CompletionPostResponse>(
@@ -70,15 +56,12 @@ describe('GenAiHubClient', () => {
   });
 
   it('sends message history together with templating config', async () => {
-    const module_configurations: ModuleConfigs = {
-      templating_module_config: {
-        template: [{ role: 'user', content: "What's my name?" }]
-      },
-      llm_module_config
-    };
     const request: GenAiHubCompletionParameters = {
       deploymentConfiguration,
-      orchestration_config: { module_configurations },
+      model_name: 'gpt-35-turbo-16k',
+      max_tokens: 50,
+      temperature: 0.1,
+      prompt_templates: [{ role: 'user', content: "What's my name?" }],
       messages_history: [
         {
           role: 'system',
