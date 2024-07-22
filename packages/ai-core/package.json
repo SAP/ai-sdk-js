@@ -26,6 +26,6 @@
     "@sap-cloud-sdk/openapi": "^3.16.0"
   },
   "devDependencies": {
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.4"
   }
 }
