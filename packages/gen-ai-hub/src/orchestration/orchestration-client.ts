@@ -1,53 +1,9 @@
+import { executeRequest, CustomRequestConfig } from '../core/index.js';
+import { CompletionPostRequest } from './api/schema/index.js';
 import {
-  BaseLlmParameters,
-  executeRequest,
-  CustomRequestConfig
-} from '../core/index.js';
-import {
-  ChatMessages,
-  CompletionPostResponse,
-  CompletionPostRequest,
-  InputParamsEntry
-} from './api/schema/index.js';
-
-/**
- * Input Parameters for Orchestration completion.
- */
-export interface OrchestrationCompletionParameters {
-  /**
-   * The model name.
-   */
-  model_name: string;
-  /**
-   * The max tokens.
-   */
-  max_tokens?: number;
-  /**
-   * The temperature.
-   */
-  temperature?: number;
-  /**
-   * The model version.
-   */
-  model_version?: string;
-  /**
-   * The template.// Todo: refer llm_document.
-   */
-  prompt_templates: ChatMessages;
-  /**
-   * The model name.// Todo: refer llm_document.
-   */
-  template_params?: Record<string, InputParamsEntry>;
-  /**
-   * The model name.// Todo: refer llm_document.
-   */
-  messages_history?: ChatMessages;
-}
-/**
- * Input Parameters for GenAI hub chat completion.
- */
-export type GenAiHubCompletionParameters = BaseLlmParameters &
-  OrchestrationCompletionParameters;
+  GenAiHubCompletionParameters,
+  GenAiHubCompletionPostResponse
+} from './orchestration-types.js';
 
 /**
  * Get the orchestration client.
@@ -62,7 +18,7 @@ export class GenAiHubClient {
   async chatCompletion(
     data: GenAiHubCompletionParameters,
     requestConfig?: CustomRequestConfig
-  ): Promise<CompletionPostResponse> {
+  ): Promise<GenAiHubCompletionPostResponse> {
     const dataWithInputParams = {
       deploymentConfiguration: data.deploymentConfiguration,
       ...constructCompletionPostRequest(data)
@@ -87,19 +43,16 @@ export function constructCompletionPostRequest(
     orchestration_config: {
       module_configurations: {
         templating_module_config: {
-          template: input.prompt_templates
+          template: input.prompt.template
         },
-        llm_module_config: {
-          model_name: input.model_name,
-          model_params: {
-            ...(input?.max_tokens && { max_tokens: input.max_tokens }),
-            ...(input?.temperature && { temperature: input.temperature })
-          },
-          ...(input?.model_version && { model_version: input.model_version })
-        }
-      }
-    },
-    input_params: input?.template_params,
-    messages_history: input.messages_history
+        llm_module_config: input.llmConfig
+      },
+      ...(input.prompt.template_params && {
+        input_params: input.prompt.template_params
+      }),
+      ...(input.prompt.messages_history && {
+        messages_history: input.prompt.messages_history
+      })
+    }
   };
 }

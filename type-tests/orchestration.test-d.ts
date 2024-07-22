@@ -11,8 +11,13 @@ expectType<GenAiHubClient>(client);
 expectType<Promise<CompletionPostResponse>>(
   client.chatCompletion({
     deploymentConfiguration: { deploymentId: 'id' },
-    prompt_templates: [{ role: 'user', content: 'Hello!' }],
-    model_name: 'gpt-35-turbo-16k'
+    prompt: {
+      template: [{ role: 'user', content: 'Hello!' }]
+    },
+    llmConfig: {
+      model_name: 'gpt-35-turbo-16k',
+      model_params: {}
+    }
   })
 );
 
@@ -22,22 +27,24 @@ expectType<Promise<CompletionPostResponse>>(
 expectType<Promise<CompletionPostResponse>>(
   client.chatCompletion({
     deploymentConfiguration: { deploymentId: 'id' },
-    prompt_templates: [{ role: 'user', content: 'Hello!' }],
-    model_name: 'gpt-35-turbo-16k',
-    max_tokens: 50,
-    temperature: 0.1,
-    template_params: { input: 'Bob', name: 'Marley' },
-    messages_history: [
-      {
-        content:
-          'You are a helpful assistant who remembers all details the user shares with you.',
-        role: 'system'
-      },
-      {
-        content: 'Hi! Im Bob',
-        role: 'user'
-      }
-    ]
+    prompt: {
+      template: [{ role: 'user', content: 'Hello!' }],
+      messages_history: [
+        {
+          content:
+            'You are a helpful assistant who remembers all details the user shares with you.',
+          role: 'system'
+        },
+        {
+          content: 'Hi! Im Bob',
+          role: 'user'
+        }
+      ]
+    },
+    llmConfig: {
+      model_name: 'gpt-35-turbo-16k',
+      model_params: { max_tokens: 50, temperature: 0.1 }
+    }
   })
 );
 
@@ -46,8 +53,13 @@ expectType<Promise<CompletionPostResponse>>(
  */
 expectError<Promise<CompletionPostResponse>>(
   client.chatCompletion({
-    prompt_templates: [{ role: 'user', content: 'Hello!' }],
-    model_name: 'gpt-35-turbo-16k'
+    prompt: {
+      template: [{ role: 'user', content: 'Hello!' }]
+    },
+    llmConfig: {
+      model_name: 'gpt-35-turbo-16k',
+      model_params: {}
+    }
   })
 );
 
@@ -66,7 +78,10 @@ expectError<any>(
 expectError<any>(
   client.chatCompletion({
     deploymentConfiguration: { deploymentId: 'id' },
-    model_name: 'gpt-35-turbo-16k'
+    llmConfig: {
+      model_name: 'gpt-35-turbo-16k',
+      model_params: {}
+    }
   })
 );
 
@@ -76,7 +91,12 @@ expectError<any>(
 expectError<any>(
   client.chatCompletion({
     deploymentConfiguration: { deploymentId: 'id' },
-    prompt_templates: [{ role: 'user', content: 'Hello!' }]
+    prompt: {
+      template: [{ role: 'user', content: 'Hello!' }]
+    },
+    llmConfig: {
+      model_params: {}
+    }
   })
 );
 
@@ -86,20 +106,32 @@ expectError<any>(
 expectError<any>(
   client.chatCompletion({
     deploymentConfiguration: { deploymentId: 'id' },
-    prompt_templates: [{ role: 'actor', content: 'Hello!' }],
-    model_name: 'gpt-35-turbo-16k'
+    prompt: {
+      template: [{ role: 'actor', content: 'Hello!' }]
+    },
+    llmConfig: {
+      model_name: 'gpt-35-turbo-16k',
+      model_params: {}
+    }
   })
 );
 
 /**
- * Model parameters should adhere to OrchestrationCompletionParameters.
+ * Model parameters should adhere to OrchestrationCompletionParameters.// Todo: Check if additional checks can be added for model_params.
  */
 expectType<Promise<CompletionPostResponse>>(
   client.chatCompletion({
     deploymentConfiguration: { deploymentId: 'id' },
-    prompt_templates: [{ role: 'user', content: 'Hello!' }],
-    model_name: 'gpt-35-turbo-16k',
-    max_tokens: '50',
-    temperature: '0.1'
+    prompt: {
+      template: [{ role: 'user', content: 'Hello!' }]
+    },
+    llmConfig: {
+      model_name: 'gpt-35-turbo-16k',
+      model_params: {
+        max_tokens: 50,
+        temperature: 0.1,
+        random_property: 'random - value'
+      }
+    }
   })
 );
