@@ -13,11 +13,11 @@ export type GenAiHubCompletionParameters = BaseLlmParameters &
   OrchestrationCompletionParameters;
 
 /**
- * Response o for GenAI hub chat completion.
+ * Response for GenAI hub chat completion.
  */
-export type GenAiHubCompletionPostResponse = CompletionPostResponse;
+export type GenAiHubCompletionResponse = CompletionPostResponse;
 /**
- * Prompt object builder.
+ * Prompt Options.
  */
 export interface PromptOptions {
   /**
@@ -29,7 +29,7 @@ export interface PromptOptions {
    */
   template: ChatMessages;
   /**
-   * Template.
+   * Template Parameters.
    */
   template_params?: Record<string, InputParamsEntry>;
 }

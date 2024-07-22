@@ -2,7 +2,7 @@ import { executeRequest, CustomRequestConfig } from '../core/index.js';
 import { CompletionPostRequest } from './api/schema/index.js';
 import {
   GenAiHubCompletionParameters,
-  GenAiHubCompletionPostResponse
+  GenAiHubCompletionResponse
 } from './orchestration-types.js';
 
 /**
@@ -18,7 +18,7 @@ export class GenAiHubClient {
   async chatCompletion(
     data: GenAiHubCompletionParameters,
     requestConfig?: CustomRequestConfig
-  ): Promise<GenAiHubCompletionPostResponse> {
+  ): Promise<GenAiHubCompletionResponse> {
     const dataWithInputParams = {
       deploymentConfiguration: data.deploymentConfiguration,
       ...constructCompletionPostRequest(data)

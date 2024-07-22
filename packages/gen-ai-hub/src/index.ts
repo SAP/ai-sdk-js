@@ -9,5 +9,8 @@ export { CustomRequestConfig, BaseLlmParameters } from './core/index.js';
 export {
   GenAiHubClient,
   GenAiHubCompletionParameters,
-  CompletionPostResponse
+  GenAiHubCompletionResponse,
+  PromptOptions,
+  LlmConfig,
+  ChatMessages
 } from './orchestration/index.js';
