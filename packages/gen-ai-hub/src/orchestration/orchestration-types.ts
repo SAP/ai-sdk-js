@@ -13,7 +13,7 @@ export type GenAiHubCompletionParameters = BaseLlmParameters &
   OrchestrationCompletionParameters;
 
 /**
- * Response object for GenAI hub chat completion.
+ * Response o for GenAI hub chat completion.
  */
 export type GenAiHubCompletionPostResponse = CompletionPostResponse;
 /**
