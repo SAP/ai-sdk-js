@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@sap-cloud-sdk/openapi-generator": "3.16.0",
-    "typescript": "^5.5.3",
+    "typescript": "^5.5.4",
     "nock": "^13.5.4"
   }
 }
