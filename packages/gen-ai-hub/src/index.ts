@@ -6,4 +6,11 @@ export {
   OpenAiChatCompletionOutput
 } from './client/index.js';
 export { CustomRequestConfig, BaseLlmParameters } from './core/index.js';
-export { GenAiHubClient } from './orchestration/index.js';
+export {
+  GenAiHubClient,
+  GenAiHubCompletionParameters,
+  GenAiHubCompletionResponse,
+  PromptConfig,
+  LlmConfig,
+  ChatMessages
+} from './orchestration/index.js';

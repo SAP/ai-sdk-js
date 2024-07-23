@@ -1,18 +1,9 @@
+import { executeRequest, CustomRequestConfig } from '../core/index.js';
+import { CompletionPostRequest } from './api/schema/index.js';
 import {
-  BaseLlmParameters,
-  executeRequest,
-  CustomRequestConfig
-} from '../core/index.js';
-import {
-  CompletionPostRequest,
-  CompletionPostResponse
-} from './api/schema/index.js';
-
-/**
- * Input Parameters for GenAI hub chat completion.
- */
-export type GenAiHubCompletionParameters = BaseLlmParameters &
-  Pick<CompletionPostRequest, 'orchestration_config' | 'messages_history'>;
+  GenAiHubCompletionParameters,
+  GenAiHubCompletionResponse
+} from './orchestration-types.js';
 
 /**
  * Get the orchestration client.
@@ -27,11 +18,12 @@ export class GenAiHubClient {
   async chatCompletion(
     data: GenAiHubCompletionParameters,
     requestConfig?: CustomRequestConfig
-  ): Promise<CompletionPostResponse> {
+  ): Promise<GenAiHubCompletionResponse> {
     const dataWithInputParams = {
-      ...data,
-      input_params: {}
+      deploymentConfiguration: data.deploymentConfiguration,
+      ...constructCompletionPostRequest(data)
     };
+
     const response = await executeRequest(
       { url: '/completion' },
       dataWithInputParams,
@@ -39,4 +31,28 @@ export class GenAiHubClient {
     );
     return response.data;
   }
+}
+
+/**
+ * @internal
+ */
+export function constructCompletionPostRequest(
+  input: GenAiHubCompletionParameters
+): CompletionPostRequest {
+  return {
+    orchestration_config: {
+      module_configurations: {
+        templating_module_config: {
+          template: input.prompt.template
+        },
+        llm_module_config: input.llmConfig
+      },
+      ...(input.prompt.template_params && {
+        input_params: input.prompt.template_params
+      }),
+      ...(input.prompt.messages_history && {
+        messages_history: input.prompt.messages_history
+      })
+    }
+  };
 }

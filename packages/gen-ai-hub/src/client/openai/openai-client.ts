@@ -2,7 +2,7 @@ import {
   BaseLlmParameters,
   CustomRequestConfig,
   executeRequest
-} from '../../core/http-client.js';
+} from '../../core/index.js';
 import { BaseClient } from '../interface.js';
 import {
   OpenAiChatCompletionParameters,
