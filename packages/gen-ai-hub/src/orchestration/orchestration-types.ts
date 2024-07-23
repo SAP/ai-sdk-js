@@ -17,9 +17,9 @@ export type GenAiHubCompletionParameters = BaseLlmParameters &
  */
 export type GenAiHubCompletionResponse = CompletionPostResponse;
 /**
- * Prompt Options.
+ * Wrapper object to configure prompt.
  */
-export interface PromptOptions {
+export interface PromptConfig {
   /**
    * History.
    */
@@ -35,18 +35,18 @@ export interface PromptOptions {
 }
 
 /**
- * LlmOptions.
+ * Wrapper object to configure LLMModule.
  */
 export type LlmConfig = LLMModuleConfig;
 
 /**
- * Orchestration options.
+ * Wrapper object to encompass Orchestration options.
  */
 export interface OrchestrationCompletionParameters {
   /**
    * Prompt options.
    */
-  prompt: PromptOptions;
+  prompt: PromptConfig;
   /**
    * Llm configuration options.
    */

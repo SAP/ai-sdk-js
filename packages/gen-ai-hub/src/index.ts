@@ -10,7 +10,7 @@ export {
   GenAiHubClient,
   GenAiHubCompletionParameters,
   GenAiHubCompletionResponse,
-  PromptOptions,
+  PromptConfig,
   LlmConfig,
   ChatMessages
 } from './orchestration/index.js';
