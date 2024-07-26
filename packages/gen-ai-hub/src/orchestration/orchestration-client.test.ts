@@ -35,6 +35,24 @@ describe('GenAiHubClient', () => {
       },
       prompt: {
         template: [{ role: 'user', content: 'Hello!' }]
+      },
+      filterConfig: {
+        input: {
+          AzureContentSafety: {
+            Hate: 0,
+            SelfHarm: 2,
+            Sexual: 4,
+            Violence: 6
+          }
+        },
+        output: {
+          AzureContentSafety: {
+            Hate: 0,
+            SelfHarm: 2,
+            Sexual: 4,
+            Violence: 6
+          }
+        }
       }
     };
 

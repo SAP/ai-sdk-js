@@ -1,5 +1,6 @@
 import { BaseLlmParameters } from '../core/index.js';
 import {
+  AzureContentSafety,
   ChatMessages,
   CompletionPostResponse,
   InputParamsEntry,
@@ -40,15 +41,62 @@ export interface PromptConfig {
 export type LlmConfig = LLMModuleConfig;
 
 /**
+ * Wrapper object to configure Filters.
+ */
+export interface FilterConfig {
+  /**
+   * Input configuration for filtering provider.
+   */
+  input?: FilterServiceProvider | FilterServiceProvider[];
+  /**
+   * Output configuration for filtering provider.
+   */
+  output?: FilterServiceProvider | FilterServiceProvider[];
+}
+/**
+ * Wrapper object to configure the filter service provider.
+ */
+export interface FilterServiceProvider {
+  /**
+   * Azure filtering service provider.
+   */
+  AzureContentSafety: AzureContentSafety;
+}
+
+/**
+ * Azure content safety service provider.
+ */
+export interface AzureContentSafetyServiceProvider {
+  /**
+   * Azure content safety filter configuration.
+   */
+  AzureContentSafety?: AzureContentSafety;
+}
+
+/**
+ * Azure content safety service provider.
+ */
+export interface OpenAIContentSafetyServiceProvider {
+  /**
+   * Azure content safety filter configuration.
+   */
+  OpenAIContentSafety?: AzureContentSafety;
+}
+
+/**
  * Wrapper object to encompass Orchestration options.
  */
 export interface OrchestrationCompletionParameters {
   /**
-   * Prompt options.
+   * Prompt configuration options.
    */
   prompt: PromptConfig;
   /**
    * Llm configuration options.
    */
   llmConfig: LlmConfig;
+  /**
+   * Filter configuration options.
+   */
+  filterConfig?: FilterConfig;
 }
