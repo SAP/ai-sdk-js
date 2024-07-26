@@ -56,33 +56,12 @@ export interface FilterConfig {
 /**
  * Wrapper object to configure the filter service provider.
  */
-export interface FilterServiceProvider {
-  /**
-   * Azure filtering service provider.
-   */
-  AzureContentSafety: AzureContentSafety;
-}
-
-/**
- * Azure content safety service provider.
- */
-export interface AzureContentSafetyServiceProvider {
-  /**
-   * Azure content safety filter configuration.
-   */
-  AzureContentSafety?: AzureContentSafety;
-}
-
-/**
- * Azure content safety service provider.
- */
-export interface OpenAIContentSafetyServiceProvider {
-  /**
-   * Azure content safety filter configuration.
-   */
-  OpenAIContentSafety?: AzureContentSafety;
-}
-
+export type FilterServiceProvider =
+  | { AzureContentSafety: AzureContentSafety; SomeOtherServiceProvider?: never }
+  | {
+      SomeOtherServiceProvider: AzureContentSafety;
+      AzureContentSafety?: never;
+    };
 /**
  * Wrapper object to encompass Orchestration options.
  */

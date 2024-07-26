@@ -40,19 +40,19 @@ describe('GenAiHubClient', () => {
         input: {
           AzureContentSafety: {
             Hate: 0,
-            SelfHarm: 2,
-            Sexual: 4,
-            Violence: 6
+            SelfHarm: 2
           }
         },
-        output: {
-          AzureContentSafety: {
-            Hate: 0,
-            SelfHarm: 2,
-            Sexual: 4,
-            Violence: 6
+        output: [
+          {
+            AzureContentSafety: {
+              Hate: 0,
+              SelfHarm: 2,
+              Sexual: 4,
+              Violence: 6
+            }
           }
-        }
+        ]
       }
     };
 
