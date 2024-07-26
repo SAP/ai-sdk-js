@@ -35,30 +35,67 @@ describe('GenAiHubClient', () => {
       },
       prompt: {
         template: [{ role: 'user', content: 'Hello!' }]
-      },
-      filterConfig: {
-        input: {
-          AzureContentSafety: {
-            Hate: 0,
-            SelfHarm: 2
-          }
-        },
-        output: [
-          {
-            AzureContentSafety: {
-              Hate: 0,
-              SelfHarm: 2,
-              Sexual: 4,
-              Violence: 6
-            }
-          }
-        ]
       }
     };
 
     const mockResponse = parseMockResponse<CompletionPostResponse>(
       'orchestration',
       'genaihub-chat-completion-success-response.json'
+    );
+
+    mockInference(
+      {
+        data: {
+          deploymentConfiguration,
+          ...constructCompletionPostRequest(request)
+        }
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      destination,
+      {
+        url: 'completion'
+      }
+    );
+    expect(client.chatCompletion(request)).resolves.toEqual(mockResponse);
+  });
+
+  it('calls chatCompletion with filtering configuration and parses response', async () => {
+    const request: GenAiHubCompletionParameters = {
+      deploymentConfiguration,
+      llmConfig: {
+        model_name: 'gpt-35-turbo-16k',
+        model_params: { max_tokens: 50, temperature: 0.1 }
+      },
+      prompt: {
+        template: [
+          { role: 'user', content: 'Create {number} paraphrases of {phrase}' }
+        ],
+        template_params: { phrase: 'I hate you.', number: 3 }
+      },
+      filterConfig: {
+        input: {
+          azureContentSafety: {
+            Hate: 0,
+            SelfHarm: 2
+          }
+        },
+        output: {
+          azureContentSafety: {
+            Hate: 0,
+            SelfHarm: 2,
+            Sexual: 4,
+            Violence: 6
+          }
+        }
+      }
+    };
+
+    const mockResponse = parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'genaihub-chat-completion-filter-config.json'
     );
 
     mockInference(

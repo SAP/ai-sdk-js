@@ -4,7 +4,8 @@ import {
   ChatMessages,
   CompletionPostResponse,
   InputParamsEntry,
-  LLMModuleConfig
+  LLMModuleConfig,
+  ProviderType
 } from './api/index.js';
 
 /**
@@ -47,21 +48,27 @@ export interface FilterConfig {
   /**
    * Input configuration for filtering provider.
    */
-  input?: FilterServiceProvider | FilterServiceProvider[];
+  input?: FilterServiceProvider;
   /**
    * Output configuration for filtering provider.
    */
-  output?: FilterServiceProvider | FilterServiceProvider[];
+  output?: FilterServiceProvider;
 }
 /**
  * Wrapper object to configure the filter service provider.
  */
-export type FilterServiceProvider =
-  | { AzureContentSafety: AzureContentSafety; SomeOtherServiceProvider?: never }
-  | {
-      SomeOtherServiceProvider: AzureContentSafety;
-      AzureContentSafety?: never;
-    };
+export interface FilterServiceProvider {
+  /**
+   * Azure content safery filter service provider.
+   */
+  azureContentSafety?: AzureContentSafety;
+}
+/**
+ * Map of filter service providers.
+ */
+export const filterServiceProviders: { [key: string]: ProviderType } = {
+  azureContentSafety: 'azure_content_safety'
+};
 /**
  * Wrapper object to encompass Orchestration options.
  */

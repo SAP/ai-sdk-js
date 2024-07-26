@@ -1,0 +1,73 @@
+{
+  "request_id": "request-id",
+  "module_results": {
+    "templating": [
+      {
+        "role": "user",
+        "content": "Create {number} paraphrases of {phrase}"
+      }
+    ],
+    "input_filtering": {
+      "message": "Input filter passed successfully.",
+      "data": {
+        "original_service_response": {
+          "Hate": 0,
+          "SelfHarm": 0
+        }
+      }
+    },
+    "llm": {
+      "id": "chatcmpl-request-id",
+      "object": "chat.completion",
+      "created": 1722006045,
+      "model": "gpt-35-turbo-16k",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "I'm sorry, but I cannot generate a specific number of paraphrases without knowing the phrase you would like me to paraphrase. Could you please provide the phrase you would like me to work with?"
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "completion_tokens": 40,
+        "prompt_tokens": 17,
+        "total_tokens": 57
+      }
+    },
+    "output_filtering": {
+      "message": "Output filter passed successfully.",
+      "data": {
+        "original_service_response": {
+          "Hate": 0,
+          "SelfHarm": 0,
+          "Sexual": 0,
+          "Violence": 0
+        }
+      }
+    }
+  },
+  "orchestration_result": {
+    "id": "chatcmpl-request-id",
+    "object": "chat.completion",
+    "created": 1722006045,
+    "model": "gpt-35-turbo-16k",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "I'm sorry, but I cannot generate a specific number of paraphrases without knowing the phrase you would like me to paraphrase. Could you please provide the phrase you would like me to work with?"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 40,
+      "prompt_tokens": 17,
+      "total_tokens": 57
+    }
+  }
+}

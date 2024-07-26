@@ -1,6 +1,9 @@
 import { executeRequest, CustomRequestConfig } from '../core/index.js';
-import { CompletionPostRequest } from './api/schema/index.js';
+import { CompletionPostRequest, Filter } from './api/schema/index.js';
 import {
+  FilterConfig,
+  FilterServiceProvider,
+  filterServiceProviders,
   GenAiHubCompletionParameters,
   GenAiHubCompletionResponse
 } from './orchestration-types.js';
@@ -47,6 +50,10 @@ export function constructCompletionPostRequest(
         },
         llm_module_config: input.llmConfig
       },
+      ...(input.filterConfig &&
+        input.filterConfig?.input &&
+        input.filterConfig?.output &&
+        buildFilterConfig(input.filterConfig)),
       ...(input.prompt.template_params && {
         input_params: input.prompt.template_params
       }),
@@ -55,4 +62,27 @@ export function constructCompletionPostRequest(
       })
     }
   };
+}
+
+function buildFilterConfig(config: FilterConfig) {
+  const inputFilters = createFilters(config?.input);
+  const outputFilters = createFilters(config?.output);
+  if (inputFilters.length === 0 && outputFilters.length === 0) {
+    return;
+  }
+  return {
+    filtering_module_config: {
+      ...(inputFilters.length > 0 && { input: { filters: inputFilters } }),
+      ...(outputFilters.length > 0 && { output: { filters: outputFilters } })
+    }
+  };
+}
+
+function createFilters(config: FilterServiceProvider | undefined): Filter[] {
+  return config
+    ? Object.entries(config).map(([key, value]) => ({
+        type: filterServiceProviders[key],
+        config: value
+      }))
+    : [];
 }
