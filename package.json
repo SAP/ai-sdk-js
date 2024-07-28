@@ -27,7 +27,7 @@
   "devDependencies": {
     "@sap-cloud-sdk/eslint-config": "^3.14.0",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.14.12",
+    "@types/node": "^20.14.13",
     "eslint": "^9.7.0",
     "jest": "^30.0.0-alpha.3",
     "nock": "^13.5.4",
