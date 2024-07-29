@@ -14,6 +14,12 @@ Integrate chat completion into your business applications with SAP Cloud SDK for
 
 _Insert a short description what is required to get your project running..._
 
+# 📚 Documentation
+- [AI Core APIs](./docs/ai-core-APIs.md)
+## Pre-requisites for AI Core Deployment
+- [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup)
+- [Create a configuration in BTP](./docs/ai-core-APIs.md#L89)
+
 ## Support, Feedback, Contributing
 
 This project is open to feature requests/suggestions, bug reports etc. via [GitHub issues](https://github.com/SAP/ai-sdk-js/issues). Contribution and feedback are encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](CONTRIBUTING.md).
