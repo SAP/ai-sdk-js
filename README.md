@@ -17,8 +17,10 @@ _Insert a short description what is required to get your project running..._
 # 📚 Documentation
 - [AI Core APIs](./docs/ai-core-APIs.md)
 ## Pre-requisites for AI Core Deployment
-- [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup)
-- [Create a configuration in BTP](./docs/ai-core-APIs.md#L89)
+- Enable the AI Core service in BTP
+    - [More Info](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup)
+- Create a configuration in AI Core using the `/configuration` endpoint
+    - [Example Usage](./docs/ai-core-APIs.md#create-a-configuration)
 
 ## Support, Feedback, Contributing
 
