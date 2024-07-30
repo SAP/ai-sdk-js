@@ -1,7 +1,5 @@
 # Available APIs
 
-last updated: 24.07.2024
-
 ✅ Available and tested
 
 ❗Warning: The APIs not marked as tested in this section are in an experimental state. Use them at your own risk.
@@ -50,14 +48,16 @@ async function createArtifact() {
         scenarioId: 'foundation-models'
     }
 
-    const responseData: ArtifactCreationResponse = await ArtifactApi
-        .artifactCreate(requestBody, {'AI-Resource-Group': 'default'})
-        .execute(destination);
-    
-    if (!responseData) {
-        throw new Error("Artifact creation failed: received null or undefined response");
+    try {
+        const responseData: ArtifactCreationResponse = await ArtifactApi
+            .artifactCreate(requestBody, {'AI-Resource-Group': 'default'})
+            .execute(destination);
+        return responseData;
+    } catch (errorData) {
+        const apiError = errorData.response.data.error as ApiError;
+        console.error('Status code:', errorData.response.status);
+        throw new Error(`Artifact creation failed: ${apiError.message}`);     
     }
-    return responseData;
 }
 ```
 
@@ -65,14 +65,16 @@ async function createArtifact() {
 ```TypeScript
 async function listArtifact() {
 
-    const responseData: ArtifactList = await ArtifactApi
-        .artifactQuery({kind: 'dataset'}, {'AI-Resource-Group': 'i745181'})
-        .execute(destination);
-
-    if (!responseData) {
-        throw new Error("No Artifacts found.");
+    try {
+        const responseData: ArtifactList = await ArtifactApi
+            .artifactQuery({kind: 'dataset'}, {'AI-Resource-Group': 'default'})
+            .execute(destination);
+        return responseData;
+    } catch (errorData) {
+        const apiError = errorData.response.data.error as ApiError;
+        console.error('Status code:', errorData.response.status);
+        throw new Error(`Fetching artifacts failed: ${apiError.message}`);     
     }
-    return responseData;
 }
 ```
 
@@ -106,14 +108,16 @@ async function createConfiguration() {
         inputArtifactBindings: []
     }
 
-    const responseData: ConfigurationCreationResponse = await ConfigurationApi
-        .configurationCreate(requestBody, {'AI-Resource-Group': 'default'})
-        .execute(destination);
-
-    if (!responseData) {
-        throw new Error("Configuration creation failed: received null or undefined response");
+    try {
+        const responseData: ConfigurationCreationResponse = await ConfigurationApi
+            .configurationCreate(requestBody, {'AI-Resource-Group': 'default'})
+            .execute(destination);
+        return responseData;
+    } catch (errorData) {
+        const apiError = errorData.response.data.error as ApiError;
+        console.error('Status code:', errorData.response.status);
+        throw new Error(`Configuration creation failed: ${apiError.message}`);     
     }
-    return responseData;
 }   
 ```
 
@@ -138,15 +142,17 @@ async function createDeployment() {
     const requestBody: DeploymentCreationRequest = {
       configurationId: '0a1b2c3d-4e5f6g7h'
     };
-    const responseData: DeploymentCreationResponse = await DeploymentApi
-        .deploymentCreate(requestBody, {'AI-Resource-Group': 'default'})
-        .execute(destination);
     
-    if (!responseData) {
-      throw new Error("Deployment creation failed: received null or undefined response");
+    try{
+        const responseData: DeploymentCreationResponse = await DeploymentApi
+            .deploymentCreate(requestBody, {'AI-Resource-Group': 'default'})
+            .execute(destination);
+        return responseData;
+    } catch (errorData) {
+        const apiError = errorData.response.data.error as ApiError;
+        console.error('Status code:', errorData.response.status);
+        throw new Error(`Deployment creation failed: ${apiError.message}`);     
     }
-
-    return responseData;
 }
 ```
 ### Delete a Deployment
@@ -167,12 +173,24 @@ async function modifyDeployment() {
             targetStatus: 'STOPPED',
         };
         
-        await DeploymentApi
-            .deploymentModify(deploymentId, requestBody, {'AI-Resource-Group': 'default'})
-            .execute(destination);
+        try {
+            await DeploymentApi
+                .deploymentModify(deploymentId, requestBody, {'AI-Resource-Group': 'default'})
+                .execute(destination);
+        } catch (errorData) {
+            const apiError = errorData.response.data.error as ApiError;
+            console.error('Status code:', errorData.response.status);
+            throw new Error(`Deployment modification failed: ${apiError.message}`);     
+        }
     }
     // Wait a few seconds for the deployment to stop
-    return DeploymentApi.deploymentDelete(deploymentId, { 'AI-Resource-Group': 'default' }).execute(destination);
+    try {
+        return DeploymentApi.deploymentDelete(deploymentId, { 'AI-Resource-Group': 'default' }).execute(destination);
+    } catch (errorData) {
+        const apiError = errorData.response.data.error as ApiError;
+        console.error('Status code:', errorData.response.status);
+        throw new Error(`Deployment deletion failed: ${apiError.message}`);     
+    }
 }
 ```
 ## ExecutionApi
