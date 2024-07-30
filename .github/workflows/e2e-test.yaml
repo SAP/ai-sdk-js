@@ -1,0 +1,62 @@
+name: "E2E Test"
+on:
+  push:
+    branches:
+      - chore/e2e-test
+  workflow_dispatch:
+  schedule:
+    - cron: 0 22 * * *
+
+jobs:
+  e2e-test:
+    name: "Build, Deploy and Test"
+    runs-on: ubuntu-latest
+    env:
+      WGET_ARGS: "-qO- -S --content-on-error https://ai-sdk-js-e2e-test.cfapps.eu12-001.hana.ondemand.com"
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+      - name: "Setup Node"
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: "Setup Cloud Foundry"
+        uses: ./.github/actions/setup-cloud-foundry
+        with:
+          username: ${{ secrets.CF_USERNAME }}
+          password: ${{ secrets.CF_PASSWORD }}
+      - name: Create .env file
+        env:
+          aicore: ${{ secrets.AIRCORE_ENV_SECRET }}
+        run: echo "aicore='$aicore'" > .env
+      - name: "Build"
+        run: npm install
+      - name: "Deploy"
+        run: |
+          cd sample-code
+          cf push
+      - name: "Health Check"
+        run: |
+          wget "$WGET_ARGS/"
+      - name: "OpenAI Chat Completion"
+        run: |
+          wget "$WGET_ARGS/llm"
+      - name: "OpenAI Text Embedding"
+        run: |
+          wget "$WGET_ARGS/embedding"
+      - name: "Stop App"
+        if: always()
+        run: |
+          cf stop e2e-app-js
+      - name: "Slack Notification"
+        if: false
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          payload: |
+            {
+              "username": "GitHub E2E Test Runner",
+              "text": "⚠️ E2E Test Failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-js/actions/runs/${{ github.run_id }}|here>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK

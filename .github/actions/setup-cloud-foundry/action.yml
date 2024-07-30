@@ -1,0 +1,30 @@
+name: "Setup Cloud Foundy"
+description: "Install the Cloud Foundry CLI and login to the AI SDK development space"
+
+inputs:
+  username:
+    description: "The username of a technical user to login to Cloud Foundry"
+    required: true
+  password:
+    description: "The password of a technical user to login to Cloud Foundry"
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Install Cloud Foundry CLI
+      shell: bash
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
+        echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
+        sudo apt-get -qq update
+        sudo apt-get -qq install cf8-cli
+        echo "Installed CF CLI in version: $(cf -v)"
+    - name: Cloud Foundry Login
+      run: |
+        cf api https://api.cf.eu12-001.hana.ondemand.com/
+        cf login -u ${{ inputs.username }} -p ${{ inputs.password }} 
+        cf target -o 'AI_Core Potsdam_gen-ai-hub-sdk-8pengs8d' -s dev
+      shell: bash
