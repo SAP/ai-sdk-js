@@ -1,0 +1,43 @@
+name: publish-canary
+
+on:
+  schedule:
+    - cron: '0 1 * * *'
+  workflow_dispatch: ~
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: install and build
+        run: pnpm install
+
+      - name: prepare canary changeset
+        run: |
+          rm -f .changeset/*.md
+          cat <<EOT >> .changeset/canary-release-changeset.md                                                                                               130 ↵ i824643@FVFF604MQ05N
+          ---
+          '@sap-ai-sdk/ai-core': patch
+          '@sap-ai-sdk/gen-ai-hub': patch
+          ---
+
+          Canary release
+          EOT
+
+      - name: publish
+        run: |
+          date=`date +%Y%m%d%H%M%S`
+
+          pnpm changeset pre enter ${date}
+          pnpm changeset version
+          pnpm changeset pre exit
+          pnpm changeset publish --tag canary
