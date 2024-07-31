@@ -20,7 +20,7 @@
     "lint:fix": "pnpm -r run lint:fix"
   },
   "dependencies": {
-    "@sap-cloud-sdk/connectivity": "^3.16.0",
+    "@sap-cloud-sdk/connectivity": "^3.17.0",
     "@sap-cloud-sdk/http-client": "^3.16.0",
     "@sap-cloud-sdk/util": "^3.16.0"
   },
