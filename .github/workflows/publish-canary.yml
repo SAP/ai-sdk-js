@@ -42,3 +42,5 @@ jobs:
           pnpm changeset version
           pnpm changeset pre exit
           pnpm changeset publish --tag canary
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}
