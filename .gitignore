@@ -50,3 +50,4 @@ build/Release
 .env
 .env.test
 .env.local
+/pnpm-publish-summary.json
