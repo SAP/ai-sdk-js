@@ -12,8 +12,8 @@ importers:
         specifier: ^3.16.0
         version: 3.16.0
       '@sap-cloud-sdk/http-client':
-        specifier: ^3.16.0
-        version: 3.16.0
+        specifier: ^3.17.0
+        version: 3.17.0
       '@sap-cloud-sdk/util':
         specifier: ^3.16.0
         version: 3.16.0
@@ -68,8 +68,8 @@ importers:
         specifier: ^3.16.0
         version: 3.16.0
       '@sap-cloud-sdk/http-client':
-        specifier: ^3.16.0
-        version: 3.16.0
+        specifier: ^3.17.0
+        version: 3.17.0
       '@sap-cloud-sdk/openapi':
         specifier: ^3.16.0
         version: 3.16.0
@@ -476,6 +476,9 @@ packages:
   '@sap-cloud-sdk/connectivity@3.16.0':
     resolution: {integrity: sha512-Aj9sO67a8TKJKMaBYuJX1euTyWQqnc28sYMgaRY5ZLQimIvOzT69L62gnnD05GUscPHiLD/J+24LiUavbEJMSw==}
 
+  '@sap-cloud-sdk/connectivity@3.17.0':
+    resolution: {integrity: sha512-eZMEF5C1JKD0zJlGrLmb97yHMhl/1J9lNLqD68ORPtflWjMWhk0W8+74fl+xwVtaL4WFiaR1hBBKUHppoiReNg==}
+
   '@sap-cloud-sdk/eslint-config@3.16.0':
     resolution: {integrity: sha512-XnKWdK3AXoQwF+1j9Hg0QYPR3lKigOcA9xYvaO6p5QiPSkEcOYlkLE/lyTLRaJbDM6ilhyaJI6XDiVU/10eClA==}
     peerDependencies:
@@ -487,6 +490,9 @@ packages:
   '@sap-cloud-sdk/http-client@3.16.0':
     resolution: {integrity: sha512-qShXjGC8aO9rnffWBXu2ebQCgPMeSZ4SSwMfovPClCkCLhuDsJfBXQJ8NuHiDDktGQKcpjhrq2gSqEUnTgajeg==}
 
+  '@sap-cloud-sdk/http-client@3.17.0':
+    resolution: {integrity: sha512-ETfUOpE+Sf/2wgkWc08ievfxYuTFDB3RRw8cO3XOVugIPY7eBI2r7JtplhZfJ7z2Ru0IKL9f8h8zyugjp9iu/w==}
+
   '@sap-cloud-sdk/openapi-generator@3.16.0':
     resolution: {integrity: sha512-iZLwkHyr2Ik/yjrStMLT6Kw1Za2kKyoZYa0z+DmObgxmvOawYYlizZXalnJ5vHQQwKdM3Flt/A+xp9z3q2WuCg==}
     hasBin: true
@@ -497,15 +503,29 @@ packages:
   '@sap-cloud-sdk/resilience@3.16.0':
     resolution: {integrity: sha512-SzozCAcjG5roUcT+jhs5a/q2/O3MrCLQBiM6Lytm2o5k/u3BNYyJ0TkniFQEpbzTpfjN+dAR1AtLB/xzCDtgfQ==}
 
+  '@sap-cloud-sdk/resilience@3.17.0':
+    resolution: {integrity: sha512-pUvVgXCZZHTcvyhHN9sf/NmH0txPlxGL7pI3Ls+S8rtSImQIUrmkjt4mYC4DTIfBAJi4Wb7p2GXNaXzJDMGKZQ==}
+
   '@sap-cloud-sdk/util@3.16.0':
     resolution: {integrity: sha512-pYVVdwbzOGlGwJQ5Yf8gemeA7uxxgclzUqZBlMicD9m0+SQ3qmhy31AmbWoFR2AuKHr2dShlxDfwIrsN1kxNRA==}
+
+  '@sap-cloud-sdk/util@3.17.0':
+    resolution: {integrity: sha512-+0g3jFJP2gtozFQ+u3Ab2UqWMUlP6TaPunVzFyKtaC5Ea+erMGChstc2n2kTKk1JvjkUT+PqF1J+1K9jK7jS/Q==}
 
   '@sap/xsenv@5.1.0':
     resolution: {integrity: sha512-oJUiLnG2w6CdAHTL37hUO1UokPrxPzcVW+cg0zLhXZWb+KqNsgEYiMl2CccSW891HOKjMi/mVjkXTGvy7oQ/dQ==}
     engines: {node: ^18.0.0 || ^20.0.0}
 
+  '@sap/xsenv@5.2.0':
+    resolution: {integrity: sha512-okXo4LMIO/n3IqGWcOHVQd2J4o5oirynBfhm07wf5nkQYL0YE4oYOrhgkH2uZPd6hMNfjr0lAT0VS/tgO9lW6g==}
+    engines: {node: ^18.0.0 || ^20.0.0}
+
   '@sap/xssec@4.1.3':
     resolution: {integrity: sha512-qhjvumYIPM6pvNVwYpzf+RwLPIn5xzuMUUt9znERqGMKvqbBY/qXpbPBquNt3CbR/ThS85kLFIiPOuXJTkr1Lg==}
+    engines: {node: '>=18'}
+
+  '@sap/xssec@4.2.1':
+    resolution: {integrity: sha512-NEZ28d6Mns5AMTSB82I1iB5ESgZRJPgo33Z/paX3vpJuYji7aK7obWR9FeVMu1OYNAeXhg+44VLdw/AAc3BiJg==}
     engines: {node: '>=18'}
 
   '@sinclair/typebox@0.27.8':
@@ -1932,6 +1952,10 @@ packages:
     resolution: {integrity: sha512-1ulHeNPp6k/LD8H91o7VYFBng5i1BDE7HoKxVbZiGFidS1Rj65qcywLxX+pVfAPoQJEjRdvKcusKwOupHCVOVQ==}
     engines: {node: '>= 12.0.0'}
 
+  logform@2.6.1:
+    resolution: {integrity: sha512-CdaO738xRapbKIMVn2m4F6KTj4j7ooJ8POVnebSgKo3KBz5axNXRAL7ZdRjIV6NOr2Uf4vjtRkxrFETOioCqSA==}
+    engines: {node: '>= 12.0.0'}
+
   lru-cache@10.3.0:
     resolution: {integrity: sha512-CQl19J/g+Hbjbv4Y3mFNNXFEL/5t/KCg8POCuUqd4rMKjGG+j1ybER83hxV58zL+dFI1PTkt3GNFSHRt+d8qEQ==}
     engines: {node: 14 || >=16.14}
@@ -2729,8 +2753,16 @@ packages:
     resolution: {integrity: sha512-ajBj65K5I7denzer2IYW6+2bNIVqLGDHqDw3Ow8Ohh+vdW+rv4MZ6eiDvHoKhfJFZ2auyN8byXieDDJ96ViONg==}
     engines: {node: '>= 12.0.0'}
 
+  winston-transport@4.7.1:
+    resolution: {integrity: sha512-wQCXXVgfv/wUPOfb2x0ruxzwkcZfxcktz6JIMUaPLmcNhO4bZTwA/WtDWK74xV3F2dKu8YadrFv0qhwYjVEwhA==}
+    engines: {node: '>= 12.0.0'}
+
   winston@3.13.0:
     resolution: {integrity: sha512-rwidmA1w3SE4j0E5MuIufFhyJPBDG7Nu71RkZor1p2+qHvJSZ9GYDA81AyleQcZbh/+V6HjeBdfnTZJm9rSeQQ==}
+    engines: {node: '>= 12.0.0'}
+
+  winston@3.13.1:
+    resolution: {integrity: sha512-SvZit7VFNvXRzbqGHsv5KSmgbEYR5EiQfDAL9gxYkRqa934Hnk++zze0wANKtMHcy/gI4W/3xmSDwlhf865WGw==}
     engines: {node: '>= 12.0.0'}
 
   word-wrap@1.2.5:
@@ -3350,6 +3382,20 @@ snapshots:
       - encoding
       - supports-color
 
+  '@sap-cloud-sdk/connectivity@3.17.0':
+    dependencies:
+      '@sap-cloud-sdk/resilience': 3.17.0
+      '@sap-cloud-sdk/util': 3.17.0
+      '@sap/xsenv': 5.2.0
+      '@sap/xssec': 4.2.1
+      async-retry: 1.3.3
+      axios: 1.7.2
+      jsonwebtoken: 9.0.2
+    transitivePeerDependencies:
+      - debug
+      - encoding
+      - supports-color
+
   '@sap-cloud-sdk/eslint-config@3.16.0(@types/eslint@8.56.10)(@typescript-eslint/parser@7.15.0(eslint@9.8.0)(typescript@5.5.4))(eslint@9.8.0)(prettier@3.3.3)(typescript@5.5.4)':
     dependencies:
       '@eslint/js': 9.6.0
@@ -3373,7 +3419,7 @@ snapshots:
 
   '@sap-cloud-sdk/generator-common@3.16.0':
     dependencies:
-      '@sap-cloud-sdk/util': 3.16.0
+      '@sap-cloud-sdk/util': 3.17.0
       fast-levenshtein: 3.0.0
       fs-extra: 11.2.0
       glob: 10.4.2
@@ -3389,6 +3435,17 @@ snapshots:
       '@sap-cloud-sdk/connectivity': 3.16.0
       '@sap-cloud-sdk/resilience': 3.16.0
       '@sap-cloud-sdk/util': 3.16.0
+      axios: 1.7.2
+    transitivePeerDependencies:
+      - debug
+      - encoding
+      - supports-color
+
+  '@sap-cloud-sdk/http-client@3.17.0':
+    dependencies:
+      '@sap-cloud-sdk/connectivity': 3.17.0
+      '@sap-cloud-sdk/resilience': 3.17.0
+      '@sap-cloud-sdk/util': 3.17.0
       axios: 1.7.2
     transitivePeerDependencies:
       - debug
@@ -3430,6 +3487,15 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
+  '@sap-cloud-sdk/resilience@3.17.0':
+    dependencies:
+      '@sap-cloud-sdk/util': 3.17.0
+      async-retry: 1.3.3
+      axios: 1.7.2
+      opossum: 8.1.4
+    transitivePeerDependencies:
+      - debug
+
   '@sap-cloud-sdk/util@3.16.0':
     dependencies:
       axios: 1.7.2
@@ -3441,6 +3507,17 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
+  '@sap-cloud-sdk/util@3.17.0':
+    dependencies:
+      axios: 1.7.2
+      chalk: 4.1.2
+      logform: 2.6.1
+      voca: 1.4.1
+      winston: 3.13.1
+      winston-transport: 4.7.1
+    transitivePeerDependencies:
+      - debug
+
   '@sap/xsenv@5.1.0':
     dependencies:
       debug: 4.3.4
@@ -3449,7 +3526,24 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@sap/xsenv@5.2.0':
+    dependencies:
+      debug: 4.3.5
+      node-cache: 5.1.2
+      verror: 1.10.1
+    transitivePeerDependencies:
+      - supports-color
+
   '@sap/xssec@4.1.3':
+    dependencies:
+      debug: 4.3.5
+      jwt-decode: 4.0.0
+      node-fetch: 2.7.0
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+
+  '@sap/xssec@4.2.1':
     dependencies:
       debug: 4.3.5
       jwt-decode: 4.0.0
@@ -5178,6 +5272,15 @@ snapshots:
       safe-stable-stringify: 2.4.3
       triple-beam: 1.4.1
 
+  logform@2.6.1:
+    dependencies:
+      '@colors/colors': 1.6.0
+      '@types/triple-beam': 1.3.5
+      fecha: 4.2.3
+      ms: 2.1.3
+      safe-stable-stringify: 2.4.3
+      triple-beam: 1.4.1
+
   lru-cache@10.3.0: {}
 
   lru-cache@5.1.1:
@@ -6010,6 +6113,12 @@ snapshots:
       readable-stream: 3.6.2
       triple-beam: 1.4.1
 
+  winston-transport@4.7.1:
+    dependencies:
+      logform: 2.6.1
+      readable-stream: 3.6.2
+      triple-beam: 1.4.1
+
   winston@3.13.0:
     dependencies:
       '@colors/colors': 1.6.0
@@ -6023,6 +6132,20 @@ snapshots:
       stack-trace: 0.0.10
       triple-beam: 1.4.1
       winston-transport: 4.7.0
+
+  winston@3.13.1:
+    dependencies:
+      '@colors/colors': 1.6.0
+      '@dabh/diagnostics': 2.0.3
+      async: 3.2.5
+      is-stream: 2.0.1
+      logform: 2.6.1
+      one-time: 1.0.0
+      readable-stream: 3.6.2
+      safe-stable-stringify: 2.4.3
+      stack-trace: 0.0.10
+      triple-beam: 1.4.1
+      winston-transport: 4.7.1
 
   word-wrap@1.2.5: {}
 
