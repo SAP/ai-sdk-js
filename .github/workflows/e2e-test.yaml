@@ -9,7 +9,7 @@ on:
 
 jobs:
   e2e-test:
-    name: "Build, Deploy and Test"
+    name: "Build and Test"
     runs-on: ubuntu-latest
     env:
       WGET_ARGS: "-qO- -S --content-on-error"

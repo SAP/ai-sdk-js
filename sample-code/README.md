@@ -21,7 +21,7 @@ Call the test endpoints:
 * [Simple Chat Completion](localhost:8080/llm)
 * [Simple Embedding Call](localhost:8080/embedding)
 
-Deploy with:
+Deploy to CF with:
 
 1. `cf login` into your Cloud Foundry account
 2. `cf push`
