@@ -22,7 +22,7 @@
   "dependencies": {
     "@sap-cloud-sdk/connectivity": "^3.16.0",
     "@sap-cloud-sdk/http-client": "^3.16.0",
-    "@sap-cloud-sdk/util": "^3.16.0"
+    "@sap-cloud-sdk/util": "^3.17.0"
   },
   "devDependencies": {
     "@sap-cloud-sdk/eslint-config": "^3.14.0",

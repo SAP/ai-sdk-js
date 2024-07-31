@@ -15,8 +15,8 @@ importers:
         specifier: ^3.16.0
         version: 3.16.0
       '@sap-cloud-sdk/util':
-        specifier: ^3.16.0
-        version: 3.16.0
+        specifier: ^3.17.0
+        version: 3.17.0
     devDependencies:
       '@sap-cloud-sdk/eslint-config':
         specifier: ^3.14.0
@@ -74,8 +74,8 @@ importers:
         specifier: ^3.16.0
         version: 3.16.0
       '@sap-cloud-sdk/util':
-        specifier: ^3.16.0
-        version: 3.16.0
+        specifier: ^3.17.0
+        version: 3.17.0
     devDependencies:
       '@sap-cloud-sdk/openapi-generator':
         specifier: 3.16.0
@@ -499,6 +499,9 @@ packages:
 
   '@sap-cloud-sdk/util@3.16.0':
     resolution: {integrity: sha512-pYVVdwbzOGlGwJQ5Yf8gemeA7uxxgclzUqZBlMicD9m0+SQ3qmhy31AmbWoFR2AuKHr2dShlxDfwIrsN1kxNRA==}
+
+  '@sap-cloud-sdk/util@3.17.0':
+    resolution: {integrity: sha512-+0g3jFJP2gtozFQ+u3Ab2UqWMUlP6TaPunVzFyKtaC5Ea+erMGChstc2n2kTKk1JvjkUT+PqF1J+1K9jK7jS/Q==}
 
   '@sap/xsenv@5.1.0':
     resolution: {integrity: sha512-oJUiLnG2w6CdAHTL37hUO1UokPrxPzcVW+cg0zLhXZWb+KqNsgEYiMl2CccSW891HOKjMi/mVjkXTGvy7oQ/dQ==}
@@ -1932,6 +1935,10 @@ packages:
     resolution: {integrity: sha512-1ulHeNPp6k/LD8H91o7VYFBng5i1BDE7HoKxVbZiGFidS1Rj65qcywLxX+pVfAPoQJEjRdvKcusKwOupHCVOVQ==}
     engines: {node: '>= 12.0.0'}
 
+  logform@2.6.1:
+    resolution: {integrity: sha512-CdaO738xRapbKIMVn2m4F6KTj4j7ooJ8POVnebSgKo3KBz5axNXRAL7ZdRjIV6NOr2Uf4vjtRkxrFETOioCqSA==}
+    engines: {node: '>= 12.0.0'}
+
   lru-cache@10.3.0:
     resolution: {integrity: sha512-CQl19J/g+Hbjbv4Y3mFNNXFEL/5t/KCg8POCuUqd4rMKjGG+j1ybER83hxV58zL+dFI1PTkt3GNFSHRt+d8qEQ==}
     engines: {node: 14 || >=16.14}
@@ -2729,8 +2736,16 @@ packages:
     resolution: {integrity: sha512-ajBj65K5I7denzer2IYW6+2bNIVqLGDHqDw3Ow8Ohh+vdW+rv4MZ6eiDvHoKhfJFZ2auyN8byXieDDJ96ViONg==}
     engines: {node: '>= 12.0.0'}
 
+  winston-transport@4.7.1:
+    resolution: {integrity: sha512-wQCXXVgfv/wUPOfb2x0ruxzwkcZfxcktz6JIMUaPLmcNhO4bZTwA/WtDWK74xV3F2dKu8YadrFv0qhwYjVEwhA==}
+    engines: {node: '>= 12.0.0'}
+
   winston@3.13.0:
     resolution: {integrity: sha512-rwidmA1w3SE4j0E5MuIufFhyJPBDG7Nu71RkZor1p2+qHvJSZ9GYDA81AyleQcZbh/+V6HjeBdfnTZJm9rSeQQ==}
+    engines: {node: '>= 12.0.0'}
+
+  winston@3.13.1:
+    resolution: {integrity: sha512-SvZit7VFNvXRzbqGHsv5KSmgbEYR5EiQfDAL9gxYkRqa934Hnk++zze0wANKtMHcy/gI4W/3xmSDwlhf865WGw==}
     engines: {node: '>= 12.0.0'}
 
   word-wrap@1.2.5:
@@ -3339,7 +3354,7 @@ snapshots:
   '@sap-cloud-sdk/connectivity@3.16.0':
     dependencies:
       '@sap-cloud-sdk/resilience': 3.16.0
-      '@sap-cloud-sdk/util': 3.16.0
+      '@sap-cloud-sdk/util': 3.17.0
       '@sap/xsenv': 5.1.0
       '@sap/xssec': 4.1.3
       async-retry: 1.3.3
@@ -3373,7 +3388,7 @@ snapshots:
 
   '@sap-cloud-sdk/generator-common@3.16.0':
     dependencies:
-      '@sap-cloud-sdk/util': 3.16.0
+      '@sap-cloud-sdk/util': 3.17.0
       fast-levenshtein: 3.0.0
       fs-extra: 11.2.0
       glob: 10.4.2
@@ -3388,7 +3403,7 @@ snapshots:
     dependencies:
       '@sap-cloud-sdk/connectivity': 3.16.0
       '@sap-cloud-sdk/resilience': 3.16.0
-      '@sap-cloud-sdk/util': 3.16.0
+      '@sap-cloud-sdk/util': 3.17.0
       axios: 1.7.2
     transitivePeerDependencies:
       - debug
@@ -3400,7 +3415,7 @@ snapshots:
       '@apidevtools/swagger-parser': 10.1.0(openapi-types@12.1.3)
       '@sap-cloud-sdk/generator-common': 3.16.0
       '@sap-cloud-sdk/openapi': 3.16.0
-      '@sap-cloud-sdk/util': 3.16.0
+      '@sap-cloud-sdk/util': 3.17.0
       js-yaml: 4.1.0
       openapi-types: 12.1.3
       swagger2openapi: 7.0.8
@@ -3423,7 +3438,7 @@ snapshots:
 
   '@sap-cloud-sdk/resilience@3.16.0':
     dependencies:
-      '@sap-cloud-sdk/util': 3.16.0
+      '@sap-cloud-sdk/util': 3.17.0
       async-retry: 1.3.3
       axios: 1.7.2
       opossum: 8.1.4
@@ -3438,6 +3453,17 @@ snapshots:
       voca: 1.4.1
       winston: 3.13.0
       winston-transport: 4.7.0
+    transitivePeerDependencies:
+      - debug
+
+  '@sap-cloud-sdk/util@3.17.0':
+    dependencies:
+      axios: 1.7.2
+      chalk: 4.1.2
+      logform: 2.6.1
+      voca: 1.4.1
+      winston: 3.13.1
+      winston-transport: 4.7.1
     transitivePeerDependencies:
       - debug
 
@@ -5178,6 +5204,15 @@ snapshots:
       safe-stable-stringify: 2.4.3
       triple-beam: 1.4.1
 
+  logform@2.6.1:
+    dependencies:
+      '@colors/colors': 1.6.0
+      '@types/triple-beam': 1.3.5
+      fecha: 4.2.3
+      ms: 2.1.3
+      safe-stable-stringify: 2.4.3
+      triple-beam: 1.4.1
+
   lru-cache@10.3.0: {}
 
   lru-cache@5.1.1:
@@ -6006,7 +6041,13 @@ snapshots:
 
   winston-transport@4.7.0:
     dependencies:
-      logform: 2.6.0
+      logform: 2.6.1
+      readable-stream: 3.6.2
+      triple-beam: 1.4.1
+
+  winston-transport@4.7.1:
+    dependencies:
+      logform: 2.6.1
       readable-stream: 3.6.2
       triple-beam: 1.4.1
 
@@ -6016,13 +6057,27 @@ snapshots:
       '@dabh/diagnostics': 2.0.3
       async: 3.2.5
       is-stream: 2.0.1
-      logform: 2.6.0
+      logform: 2.6.1
       one-time: 1.0.0
       readable-stream: 3.6.2
       safe-stable-stringify: 2.4.3
       stack-trace: 0.0.10
       triple-beam: 1.4.1
-      winston-transport: 4.7.0
+      winston-transport: 4.7.1
+
+  winston@3.13.1:
+    dependencies:
+      '@colors/colors': 1.6.0
+      '@dabh/diagnostics': 2.0.3
+      async: 3.2.5
+      is-stream: 2.0.1
+      logform: 2.6.1
+      one-time: 1.0.0
+      readable-stream: 3.6.2
+      safe-stable-stringify: 2.4.3
+      stack-trace: 0.0.10
+      triple-beam: 1.4.1
+      winston-transport: 4.7.1
 
   word-wrap@1.2.5: {}
 
