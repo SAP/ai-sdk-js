@@ -12,7 +12,8 @@ jobs:
     name: "Build, Deploy and Test"
     runs-on: ubuntu-latest
     env:
-      WGET_ARGS: "-qO- -S --content-on-error localhost:8080"
+      WGET_ARGS: "-qO- -S --content-on-error"
+      WGET_URL: "localhost:8080"
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
@@ -38,21 +39,21 @@ jobs:
             sleep 1
             timeout=$((timeout - 1))
             if [ $timeout -le 0 ]; then
-              echo "Server did not start within the expected time."
+              echo "Server did not start within 15 seconds."
               exit 1
             fi
           done
       - name: "Health Check"
         run: |
-          wget "$WGET_ARGS/"
+          wget "$WGET_ARGS $WGET_URL/health"
       - name: "OpenAI Chat Completion"
         run: |
-          wget "$WGET_ARGS/llm"
+          wget "$WGET_ARGS $WGET_URL/llm"
       - name: "OpenAI Text Embedding"
         run: |
-          wget "$WGET_ARGS/embedding"
+          wget "$WGET_ARGS $WGET_URL/embedding"
       - name: "Slack Notification"
-        if: false
+        if: failure()
         uses: slackapi/slack-github-action@v1.26.0
         with:
           payload: |

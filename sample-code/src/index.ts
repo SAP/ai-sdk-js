@@ -5,7 +5,7 @@ import { clearXsuaaServices } from '@sap-cloud-sdk/connectivity/internal.js';
 const app = express();
 const port = 8080;
 
-app.get('/', (req, res) => {
+app.get(['/', '/health'], (req, res) => {
   res.send('Hello World! 🌍');
 });
 
