@@ -45,13 +45,13 @@ jobs:
           done
       - name: "Health Check"
         run: |
-          wget "$WGET_ARGS $WGET_URL/health"
+          wget "$WGET_ARGS" "$WGET_URL/health"
       - name: "OpenAI Chat Completion"
         run: |
-          wget "$WGET_ARGS $WGET_URL/llm"
+          wget "$WGET_ARGS" "$WGET_URL/llm"
       - name: "OpenAI Text Embedding"
         run: |
-          wget "$WGET_ARGS $WGET_URL/embedding"
+          wget "$WGET_ARGS" "$WGET_URL/embedding"
       - name: "Slack Notification"
         if: failure()
         uses: slackapi/slack-github-action@v1.26.0
