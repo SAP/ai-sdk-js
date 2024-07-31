@@ -12,29 +12,27 @@ jobs:
     name: "Build, Deploy and Test"
     runs-on: ubuntu-latest
     env:
-      WGET_ARGS: "-qO- -S --content-on-error https://ai-sdk-js-e2e-test.cfapps.eu12-001.hana.ondemand.com"
+      WGET_ARGS: "-qO- -S --content-on-error localhost:8080"
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
-      - name: "Setup Node"
-        uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v3
         with:
-          node-version: 20
-      - name: "Setup Cloud Foundry"
-        uses: ./.github/actions/setup-cloud-foundry
+          version: 9.5.0
+      - uses: actions/setup-node@v4
         with:
-          username: ${{ secrets.CF_USERNAME }}
-          password: ${{ secrets.CF_PASSWORD }}
+          node-version: 22
+          cache: 'pnpm'
+      - run: pnpm i --frozen-lockfile
       - name: Create .env file
         env:
           aicore: ${{ secrets.AIRCORE_ENV_SECRET }}
+        working-directory: ./sample-code
         run: echo "aicore='$aicore'" > .env
-      - name: "Build"
-        run: npm install
-      - name: "Deploy"
+      - name: "Start App"
+        working-directory: ./sample-code
         run: |
-          cd sample-code
-          cf push
+          pnpm run local
       - name: "Health Check"
         run: |
           wget "$WGET_ARGS/"
@@ -44,10 +42,6 @@ jobs:
       - name: "OpenAI Text Embedding"
         run: |
           wget "$WGET_ARGS/embedding"
-      - name: "Stop App"
-        if: always()
-        run: |
-          cf stop e2e-app-js
       - name: "Slack Notification"
         if: false
         uses: slackapi/slack-github-action@v1.26.0

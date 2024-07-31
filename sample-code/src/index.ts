@@ -1,5 +1,4 @@
 import express from 'express';
-import 'dotenv/config.js';
 import { chatCompletion, computeEmbedding } from './aiservice.js';
 import { clearXsuaaServices } from '@sap-cloud-sdk/connectivity/internal.js';
 

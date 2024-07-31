@@ -1,14 +1,9 @@
-# SAP AI SDK for JS E2E Test
+# Sample Code and E2E Test
 
 ![e2e-test](https://github.com/SAP/ai-sdk-js/actions/workflows/e2e-test.yml/badge.svg)
 
-E2E test app for the JS variant of the AI SDK.
-
-## Run the E2E Test
-
-Trigger the [GitHub Action](https://github.com/SAP/ai-sdk-js/actions/workflows/e2e-test.yml).
-
-To only run tests, without re-deploying the app, trigger the [test workflow](https://github.com/SAP/ai-sdk-js/actions/workflows/test.yml).
+Sample code to demonstrate the usage of the SAP AI SDK.
+Also used as basis for running E2E tests.
 
 ## Build, Run, Deploy Locally
 
@@ -30,3 +25,9 @@ Deploy with:
 
 1. `cf login` into your Cloud Foundry account
 2. `cf push`
+
+## Run the E2E Test
+
+Trigger the [GitHub Action](https://github.com/SAP/ai-sdk-js/actions/workflows/e2e-test.yml).
+
+To only run tests, without re-deploying the app, trigger the [test workflow](https://github.com/SAP/ai-sdk-js/actions/workflows/test.yml).
