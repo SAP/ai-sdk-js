@@ -1,6 +1,5 @@
 import express from 'express';
 import { chatCompletion, computeEmbedding } from './aiservice.js';
-import { clearXsuaaServices } from '@sap-cloud-sdk/connectivity/internal.js';
 
 const app = express();
 const port = 8080;
@@ -33,11 +32,6 @@ app.get('/embedding', (req, res) => {
 
 app.get('/orchestration', (req, res) => {
   res.status(418).send('Not implemented 🛠️');
-});
-
-app.get('/cleanup', (req, res) => {
-  clearXsuaaServices();
-  res.send('Cleanup Finished');
 });
 
 app.listen(port, () => {

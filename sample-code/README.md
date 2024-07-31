@@ -29,5 +29,3 @@ Deploy to CF with:
 ## Run the E2E Test
 
 Trigger the [GitHub Action](https://github.com/SAP/ai-sdk-js/actions/workflows/e2e-test.yml).
-
-To only run tests, without re-deploying the app, trigger the [test workflow](https://github.com/SAP/ai-sdk-js/actions/workflows/test.yml).
