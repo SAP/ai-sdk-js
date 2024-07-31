@@ -32,7 +32,16 @@ jobs:
       - name: "Start App"
         working-directory: ./sample-code
         run: |
-          pnpm run local
+          pnpm run local &
+          timeout=15
+          while ! nc -z localhost 8080; do
+            sleep 1
+            timeout=$((timeout - 1))
+            if [ $timeout -le 0 ]; then
+              echo "Server did not start within the expected time."
+              exit 1
+            fi
+          done
       - name: "Health Check"
         run: |
           wget "$WGET_ARGS/"
