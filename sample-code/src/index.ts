@@ -8,24 +8,30 @@ app.get(['/', '/health'], (req, res) => {
   res.send('Hello World! 🌍');
 });
 
-app.get('/llm', (req, res) => {
+app.get('/llm', async (req, res) => {
   try {
     res.send(await chatCompletion());
   } catch (error) {
     console.error(error);
-    res.status(500).send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+    res
+      .status(500)
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
   }
 });
 
-app.get('/embedding', (req, res) => {
-  computeEmbedding()
-    .then(_ => {
-      res.send("Number crunching success, got a nice vector.");
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Yikes, vibes are off apparently 😬 -> ' + error.message);
-    })
+app.get('/embedding', async (req, res) => {
+  try {
+    const result = await computeEmbedding();
+    if (result.length === 0) {
+      throw new Error('No embedding vector returned');
+    }
+    res.send('Number crunching success, got a nice vector.');
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+  }
 });
 
 app.get('/orchestration', (req, res) => {
