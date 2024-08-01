@@ -7,4 +7,4 @@ packages:
   # exclude packages that are inside test directories
   - '!poc/'
   - '!test-util'
-  - '!type-tests/'
+  - '!tests/'
