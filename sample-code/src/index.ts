@@ -9,14 +9,12 @@ app.get(['/', '/health'], (req, res) => {
 });
 
 app.get('/llm', (req, res) => {
-  chatCompletion()
-    .then((response) => {
-      res.send(response);
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Yikes, vibes are off apparently 😬 -> ' + error.message);
-    })
+  try {
+    res.send(await chatCompletion());
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+  }
 });
 
 app.get('/embedding', (req, res) => {
