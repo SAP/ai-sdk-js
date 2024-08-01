@@ -38,7 +38,10 @@ jobs:
         env:
           aicore: ${{ secrets[matrix.secret-name] }}
         working-directory: ./sample-code
-        run: echo "aicore='$aicore'" > .env
+        run: |
+          echo "aicore='$aicore'" > .env
+          url=$(echo "$aicore" | jq -r '.serviceurls.AI_API_URL' | sed 's|^https://||')
+          echo "Using AI Core ${{ matrix.environment }} instance on $url"
       - name: "Start App"
         working-directory: ./sample-code
         run: |
