@@ -26,7 +26,7 @@ jobs:
       - name: prepare canary changeset
         run: |
           rm -f .changeset/*.md || true
-          cat <<EOT >> .changeset/canary-release-changeset.md                                                                                               130 ↵ i824643@FVFF604MQ05N
+          cat <<EOT >> .changeset/canary-release-changeset.md
           ---
           '@sap-ai-sdk/ai-core': patch
           '@sap-ai-sdk/gen-ai-hub': patch
