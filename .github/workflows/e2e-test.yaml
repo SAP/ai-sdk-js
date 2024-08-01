@@ -31,7 +31,7 @@ jobs:
           version: ${{ vars.PNPM_VERSION }}
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           cache: 'pnpm'
       - run: pnpm i --frozen-lockfile
       - name: Create .env file
