@@ -38,14 +38,13 @@ export type CustomRequestConfig = Omit<
  */
 export interface EndpointOptions {
   /**
+   * The deployment ID to call.
+   */
+  deploymentId: string;
+  /**
    * The specific endpoint to call.
    */
-  url: string;
-
-  /**
-   * The API version to use.
-   */
-  apiVersion?: string;
+  path: string;
 }
 /**
  * Executes a request to the AI Core service.
@@ -54,29 +53,22 @@ export interface EndpointOptions {
  * @param requestConfig - The request configuration.
  * @returns The {@link HttpResponse} from the AI Core service.
  */
-export async function executeRequest<D extends BaseLlmParameters>(
+async function executeRequest(
   endpointOptions: EndpointOptions,
-  data: D,
+  data: any,
   requestConfig?: CustomRequestConfig
 ): Promise<HttpResponse> {
   const aiCoreDestination = await getAiCoreDestination();
-  const { deploymentConfiguration, ...body } = data;
-  const { url, apiVersion } = endpointOptions;
-
-  const mergedRequestConfig = {
-    ...mergeWithDefaultRequestConfig(apiVersion, requestConfig),
-    data: JSON.stringify(body)
-  };
 
   const targetUrl =
     aiCoreDestination.url +
     '/v2/inference/deployments/' +
-    deploymentConfiguration.deploymentId +
-    `/${removeLeadingSlashes(url)}`;
+    endpointOptions.deploymentId +
+    `/${removeLeadingSlashes(endpointOptions.path)}`;
 
   return executeHttpRequest(
     { ...aiCoreDestination, url: targetUrl },
-    mergedRequestConfig,
+    data,
     {
       fetchCsrfToken: false
     }
@@ -84,17 +76,9 @@ export async function executeRequest<D extends BaseLlmParameters>(
 }
 
 function mergeWithDefaultRequestConfig(
-  apiVersion?: string,
   requestConfig?: CustomRequestConfig
 ): HttpRequestConfig {
-  const defaultConfig: HttpRequestConfig = {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-      'ai-resource-group': 'default'
-    },
-    params: apiVersion ? { 'api-version': apiVersion } : {}
-  };
+  
   return {
     ...defaultConfig,
     ...requestConfig,

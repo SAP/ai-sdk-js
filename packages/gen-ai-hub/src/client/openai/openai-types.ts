@@ -1,5 +1,7 @@
 import { BaseLlmParameters } from '../../core/http-client.js';
 
+export type OpenAiModel = 'gpt-3.5-turbo' | 'gpt-4o' | 'ada-002';
+
 /**
  * OpenAI system message.
  */
@@ -254,8 +256,7 @@ export interface OpenAiCompletionParameters {
  * OpenAI chat completion input parameters.
  */
 export interface OpenAiChatCompletionParameters
-  extends OpenAiCompletionParameters,
-    BaseLlmParameters {
+  extends OpenAiCompletionParameters{
   /**
    * An array of system, user & assistant messages for chat completion.
    */

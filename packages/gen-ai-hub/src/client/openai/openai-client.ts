@@ -1,3 +1,4 @@
+import { HttpRequestConfig } from '@sap-cloud-sdk/http-client';
 import {
   BaseLlmParameters,
   CustomRequestConfig,
@@ -5,6 +6,7 @@ import {
 } from '../../core/index.js';
 import { BaseClient } from '../interface.js';
 import {
+  OpenAiModel,
   OpenAiChatCompletionParameters,
   OpenAiEmbeddingParameters,
   OpenAiEmbeddingOutput,
@@ -16,7 +18,7 @@ const apiVersion = '2024-02-01';
 /**
  * OpenAI GPT Client.
  */
-export class OpenAiClient implements BaseClient<BaseLlmParameters> {
+export class OpenAiClient {
   /**
    * Creates a completion for the chat messages.
    * @param data - The input parameters for the chat completion.
@@ -25,12 +27,14 @@ export class OpenAiClient implements BaseClient<BaseLlmParameters> {
    */
   async chatCompletion(
     data: OpenAiChatCompletionParameters,
+    model: OpenAiModel,
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiChatCompletionOutput> {
+    const deploymentId = '';
     const response = await executeRequest(
-      { url: '/chat/completions', apiVersion },
+      { deploymentId: deploymentId, path: '/chat/completions' },
       data,
-      requestConfig
+      this.mergeRequestConfig(requestConfig)
     );
     return response.data;
   }
@@ -50,5 +54,17 @@ export class OpenAiClient implements BaseClient<BaseLlmParameters> {
       requestConfig
     );
     return response.data;
+  }
+
+  mergeRequestConfig(requestConfig?: CustomRequestConfig): HttpRequestConfig {
+    return {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'ai-resource-group': 'default'
+      },
+      params: { 'api-version': apiVersion },
+      ...requestConfig
+    };
   }
 }
