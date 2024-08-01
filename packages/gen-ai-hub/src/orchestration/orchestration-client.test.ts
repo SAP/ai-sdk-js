@@ -8,6 +8,7 @@ import {
 } from './orchestration-client.js';
 import { CompletionPostResponse } from './api/index.js';
 import { OrchestrationCompletionParameters } from './orchestration-types.js';
+import { AiDeployment } from '../core/aicore.js';
 
 describe('GenAiHubClient', () => {
   let destination: HttpDestination;
@@ -39,19 +40,20 @@ describe('GenAiHubClient', () => {
       'genaihub-chat-completion-success-response.json'
     );
 
-    mockInference(
-      request,
-      {
+    mockInference({
+      request:{
         data: mockResponse,
-        status: 200
+        destination: destination,
+        endpoint: {
+          deploymentId: 'foo', path: '/completion'
+        }
       },
-      destination,
-      {
-        deploymentId: '',
-        path: 'completion'
-      }
+      response: {
+        status: 200,
+        data: mockResponse
+      }}
     );
-    expect(client.chatCompletion(input)).resolves.toEqual(mockResponse);
+    expect(client.chatCompletion(input, () => {deploymentId: 'foo'})).resolves.toEqual(mockResponse);
   });
 
   it('sends message history together with templating config', async () => {

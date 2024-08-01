@@ -6,7 +6,7 @@ import {
   EndpointOptions
 } from '../src/core/http-client.js';
 
-export function mockInference(
+export function mockInference(stub: {
   request: {
     endpoint: EndpointOptions,
     destination: HttpDestination,
@@ -16,21 +16,21 @@ export function mockInference(
   response: {
     status: number;
     data?: any;
-  }
+  }}
 ): nock.Scope {
 
-  return nock(request.destination.url, {
+  return nock(stub.request.destination.url, {
     reqheaders: {
       'ai-resource-group': 'default',
-      authorization: `Bearer ${request.destination.authTokens?.[0].value}`
+      authorization: `Bearer ${stub.request.destination.authTokens?.[0].value}`
     }
   })
     .post(
-      `/v2/inference/deployments/${request.endpoint.deploymentId!}/${request.endpoint.path}`,
-      request.data
+      `/v2/inference/deployments/${stub.request.endpoint.deploymentId!}/${stub.request.endpoint.path}`,
+      stub.request.data
     )
-    .query(request.query || {})
-    .reply(response.status, response.data);
+    .query(stub.request.query || {})
+    .reply(stub.response.status, stub.response.data);
 }
 
 export function parseMockResponse<T>(client: string, fileName: string): T {

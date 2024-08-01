@@ -1,5 +1,5 @@
 import { DeploymentApi } from '@sap-ai-sdk/ai-core';
-import { executeRequest, CustomRequestConfig } from '../core/index.js';
+import { executeRequest, CustomRequestConfig, DeploymentResolver, AiDeployment, resolveDeployment } from '../core/index.js';
 import { CompletionPostRequest, OrchestrationConfig } from './api/schema/index.js';
 import { OrchestrationCompletionParameters, OrchestrationResponse } from './orchestration-types.js';
 
@@ -14,18 +14,18 @@ export class OrchestrationService {
    * @returns The completion result.
    */
   async chatCompletion(
-    data: OrchestrationConfig,
+    data: OrchestrationCompletionParameters,
+    deploymentResolver: DeploymentResolver = () => resolveDeployment({ scenarioId: 'orchestration' }),
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationResponse> {
     const dataWithInputParams = {
-      deploymentConfiguration: data.deploymentConfiguration,
       ...constructCompletionPostRequest(data)
     };
-    const deploymentList = await DeploymentApi.deploymentQuery({scenarioId: 'orchestrtation'}, {"AI-Resource-Group": "default" })
-      .execute({destinationName: "aicore"});
-    const deploymentId = deploymentList['resources'][0].id;
+
+    const deployment =  typeof deploymentResolver === 'function' ? await deploymentResolver() : deploymentResolver;
+    
     const response = await executeRequest(
-      { deploymentId: deploymentId, path: '/completion' },
+      { deploymentId: deployment.id, path: '/completion' },
       dataWithInputParams,
       requestConfig
     );

@@ -1,8 +1,9 @@
 import { HttpRequestConfig } from '@sap-cloud-sdk/http-client';
-import { DeploymentApi } from '@sap-ai-sdk/ai-core';
 import {
   CustomRequestConfig,
-  executeRequest
+  DeploymentResolver,
+  executeRequest,
+  resolveDeployment
 } from '../../core/index.js';
 import {
   OpenAiChatCompletionParameters,
@@ -12,6 +13,7 @@ import {
   OpenAiChatModel,
   OpenAiEmbeddingModel
 } from './openai-types.js';
+import { get } from 'http';
 
 const apiVersion = '2024-02-01';
 
@@ -28,13 +30,12 @@ export class OpenAiClient {
   async chatCompletion(
     model: OpenAiChatModel,
     data: OpenAiChatCompletionParameters,
+    deploymentResolver: DeploymentResolver = getDeploymentResolver(model),
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiChatCompletionOutput> {
-    
-    const deploymentId = model.deploymentId!;
-
+    const deployment = typeof deploymentResolver === 'function' ? await deploymentResolver() : deploymentResolver;
     const response = await executeRequest(
-      { deploymentId: deploymentId, path: '/chat/completions' },
+      { deploymentId: deployment.id, path: '/chat/completions' },
       data,
       this.mergeRequestConfig(requestConfig)
     );
@@ -49,11 +50,12 @@ export class OpenAiClient {
   async embeddings(
     model: OpenAiEmbeddingModel,
     data: OpenAiEmbeddingParameters,
+    deploymentResolver: DeploymentResolver = getDeploymentResolver(model),
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiEmbeddingOutput> {
-    const deploymentId = model.deploymentId || 'TODO: implement lookup';
+    const deployment =  typeof deploymentResolver === 'function' ? await deploymentResolver() : deploymentResolver;
     const response = await executeRequest(
-      { deploymentId: deploymentId, path: '/embeddings' },
+      { deploymentId: deployment.id, path: '/embeddings' },
       data,
       this.mergeRequestConfig(requestConfig)
     );
@@ -72,3 +74,7 @@ export class OpenAiClient {
     };
   }
 }
+
+function getDeploymentResolver(model: OpenAiChatModel | OpenAiEmbeddingModel) {
+  return  () => resolveDeployment({ scenarioId: 'foundation-models', executableId: 'azure-openai', modelName: model.name, modelVersion: model.version });
+} 
