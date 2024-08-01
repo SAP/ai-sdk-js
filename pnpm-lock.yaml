@@ -64,6 +64,9 @@ importers:
 
   packages/gen-ai-hub:
     dependencies:
+      '@sap-ai-sdk/ai-core':
+        specifier: workspace:*
+        version: link:../ai-core
       '@sap-cloud-sdk/connectivity':
         specifier: ^3.17.0
         version: 3.17.0
@@ -473,9 +476,6 @@ packages:
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
 
-  '@sap-cloud-sdk/connectivity@3.16.0':
-    resolution: {integrity: sha512-Aj9sO67a8TKJKMaBYuJX1euTyWQqnc28sYMgaRY5ZLQimIvOzT69L62gnnD05GUscPHiLD/J+24LiUavbEJMSw==}
-
   '@sap-cloud-sdk/connectivity@3.17.0':
     resolution: {integrity: sha512-eZMEF5C1JKD0zJlGrLmb97yHMhl/1J9lNLqD68ORPtflWjMWhk0W8+74fl+xwVtaL4WFiaR1hBBKUHppoiReNg==}
 
@@ -515,17 +515,9 @@ packages:
   '@sap-cloud-sdk/util@3.17.0':
     resolution: {integrity: sha512-+0g3jFJP2gtozFQ+u3Ab2UqWMUlP6TaPunVzFyKtaC5Ea+erMGChstc2n2kTKk1JvjkUT+PqF1J+1K9jK7jS/Q==}
 
-  '@sap/xsenv@5.1.0':
-    resolution: {integrity: sha512-oJUiLnG2w6CdAHTL37hUO1UokPrxPzcVW+cg0zLhXZWb+KqNsgEYiMl2CccSW891HOKjMi/mVjkXTGvy7oQ/dQ==}
-    engines: {node: ^18.0.0 || ^20.0.0}
-
   '@sap/xsenv@5.2.0':
     resolution: {integrity: sha512-okXo4LMIO/n3IqGWcOHVQd2J4o5oirynBfhm07wf5nkQYL0YE4oYOrhgkH2uZPd6hMNfjr0lAT0VS/tgO9lW6g==}
     engines: {node: ^18.0.0 || ^20.0.0}
-
-  '@sap/xssec@4.1.3':
-    resolution: {integrity: sha512-qhjvumYIPM6pvNVwYpzf+RwLPIn5xzuMUUt9znERqGMKvqbBY/qXpbPBquNt3CbR/ThS85kLFIiPOuXJTkr1Lg==}
-    engines: {node: '>=18'}
 
   '@sap/xssec@4.2.1':
     resolution: {integrity: sha512-NEZ28d6Mns5AMTSB82I1iB5ESgZRJPgo33Z/paX3vpJuYji7aK7obWR9FeVMu1OYNAeXhg+44VLdw/AAc3BiJg==}
@@ -988,15 +980,6 @@ packages:
       supports-color:
         optional: true
 
-  debug@4.3.4:
-    resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
-    engines: {node: '>=6.0'}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-
   debug@4.3.5:
     resolution: {integrity: sha512-pt0bNEmneDIvdL1Xsd9oDQ/wrQRkXDT4AUWlNZNPKvW5x/jyO9VFXkJUP07vQ2upmw5PlaITaPKc31jK13V+jg==}
     engines: {node: '>=6.0'}
@@ -1423,13 +1406,17 @@ packages:
     resolution: {integrity: sha512-XxwI8EOhVQgWp6iDL+3b0r86f4d6AX6zSU55HfB4ydCEuXLXc5FcYeOu+nnGftS4TEju/11rt4KJPTMgbfmv4A==}
     engines: {node: '>=10.13.0'}
 
+  glob@10.4.2:
+    resolution: {integrity: sha512-GwMlUF6PkPo3Gk21UxkCohOv0PLcIXVtKyLlpEI28R/cO/4eNOdmLk3CMW1wROV/WR/EsZOWAfBbBOqYvs88/w==}
+    engines: {node: '>=16 || 14 >=14.18'}
+    hasBin: true
+
   glob@10.4.5:
     resolution: {integrity: sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==}
     hasBin: true
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    deprecated: Glob versions prior to v9 are no longer supported
 
   globals@11.12.0:
     resolution: {integrity: sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==}
@@ -1530,7 +1517,6 @@ packages:
 
   inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
-    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
 
   inherits@2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
@@ -3238,7 +3224,7 @@ snapshots:
       chalk: 4.1.2
       collect-v8-coverage: 1.0.2
       exit: 0.1.2
-      glob: 10.4.5
+      glob: 10.4.2
       graceful-fs: 4.2.11
       istanbul-lib-coverage: 3.2.2
       istanbul-lib-instrument: 6.0.3
@@ -3370,20 +3356,6 @@ snapshots:
 
   '@pkgr/core@0.1.1': {}
 
-  '@sap-cloud-sdk/connectivity@3.16.0':
-    dependencies:
-      '@sap-cloud-sdk/resilience': 3.16.0
-      '@sap-cloud-sdk/util': 3.16.0
-      '@sap/xsenv': 5.1.0
-      '@sap/xssec': 4.1.3
-      async-retry: 1.3.3
-      axios: 1.7.2
-      jsonwebtoken: 9.0.2
-    transitivePeerDependencies:
-      - debug
-      - encoding
-      - supports-color
-
   '@sap-cloud-sdk/connectivity@3.17.0':
     dependencies:
       '@sap-cloud-sdk/resilience': 3.17.0
@@ -3470,7 +3442,7 @@ snapshots:
 
   '@sap-cloud-sdk/openapi@3.16.0':
     dependencies:
-      '@sap-cloud-sdk/connectivity': 3.16.0
+      '@sap-cloud-sdk/connectivity': 3.17.0
       '@sap-cloud-sdk/http-client': 3.16.0
       '@sap-cloud-sdk/resilience': 3.16.0
       '@sap-cloud-sdk/util': 3.16.0
@@ -3494,16 +3466,7 @@ snapshots:
 
   '@sap-cloud-sdk/resilience@3.16.0':
     dependencies:
-      '@sap-cloud-sdk/util': 3.17.0
-      async-retry: 1.3.3
-      axios: 1.7.2
-      opossum: 8.1.4
-    transitivePeerDependencies:
-      - debug
-
-  '@sap-cloud-sdk/resilience@3.17.0':
-    dependencies:
-      '@sap-cloud-sdk/util': 3.17.0
+      '@sap-cloud-sdk/util': 3.16.0
       async-retry: 1.3.3
       axios: 1.7.2
       opossum: 8.1.4
@@ -3534,20 +3497,12 @@ snapshots:
     dependencies:
       axios: 1.7.2
       chalk: 4.1.2
-      logform: 2.6.1
+      logform: 2.6.0
       voca: 1.4.1
       winston: 3.13.1
       winston-transport: 4.7.1
     transitivePeerDependencies:
       - debug
-
-  '@sap/xsenv@5.1.0':
-    dependencies:
-      debug: 4.3.4
-      node-cache: 5.1.2
-      verror: 1.10.1
-    transitivePeerDependencies:
-      - supports-color
 
   '@sap/xsenv@5.2.0':
     dependencies:
@@ -3555,15 +3510,6 @@ snapshots:
       node-cache: 5.1.2
       verror: 1.10.1
     transitivePeerDependencies:
-      - supports-color
-
-  '@sap/xssec@4.1.3':
-    dependencies:
-      debug: 4.3.5
-      jwt-decode: 4.0.0
-      node-fetch: 2.7.0
-    transitivePeerDependencies:
-      - encoding
       - supports-color
 
   '@sap/xssec@4.2.1':
@@ -4095,10 +4041,6 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
-  debug@4.3.4:
-    dependencies:
-      ms: 2.1.2
-
   debug@4.3.5:
     dependencies:
       ms: 2.1.2
@@ -4582,6 +4524,15 @@ snapshots:
     dependencies:
       is-glob: 4.0.3
 
+  glob@10.4.2:
+    dependencies:
+      foreground-child: 3.2.1
+      jackspeak: 3.4.0
+      minimatch: 9.0.5
+      minipass: 7.1.2
+      package-json-from-dist: 1.0.0
+      path-scurry: 1.11.1
+
   glob@10.4.5:
     dependencies:
       foreground-child: 3.2.1
@@ -4887,7 +4838,7 @@ snapshots:
       chalk: 4.1.2
       ci-info: 4.0.0
       deepmerge: 4.3.1
-      glob: 10.4.5
+      glob: 10.4.2
       graceful-fs: 4.2.11
       jest-circus: 30.0.0-alpha.5
       jest-environment-node: 30.0.0-alpha.5
@@ -5076,7 +5027,7 @@ snapshots:
       chalk: 4.1.2
       cjs-module-lexer: 1.3.1
       collect-v8-coverage: 1.0.2
-      glob: 10.4.5
+      glob: 10.4.2
       graceful-fs: 4.2.11
       jest-haste-map: 30.0.0-alpha.5
       jest-message-util: 30.0.0-alpha.5
@@ -6162,7 +6113,7 @@ snapshots:
       '@dabh/diagnostics': 2.0.3
       async: 3.2.5
       is-stream: 2.0.1
-      logform: 2.6.1
+      logform: 2.6.0
       one-time: 1.0.0
       readable-stream: 3.6.2
       safe-stable-stringify: 2.4.3

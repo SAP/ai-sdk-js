@@ -2,7 +2,6 @@ import nock from 'nock';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import { mockGetAiCoreDestination } from '../../../test-util/mock-context.js';
 import {
-  BaseLlmParametersWithDeploymentId,
   EndpointOptions
 } from '../../core/http-client.js';
 import {
@@ -15,14 +14,12 @@ import {
   OpenAiChatCompletionParameters,
   OpenAiChatMessage,
   OpenAiEmbeddingOutput,
-  OpenAiEmbeddingParameters
+  OpenAiEmbeddingParameters,
+  OpenAiModels
 } from './openai-types.js';
 
 describe('openai client', () => {
   let destination: HttpDestination;
-  const deploymentConfiguration: BaseLlmParametersWithDeploymentId = {
-    deploymentId: 'deployment-id'
-  };
   let chatCompletionEndpoint: EndpointOptions;
   let embeddingsEndpoint: EndpointOptions;
 
@@ -30,13 +27,13 @@ describe('openai client', () => {
     destination = mockGetAiCoreDestination();
 
     chatCompletionEndpoint = {
-      url: 'chat/completions',
-      apiVersion: '2024-02-01'
+      deploymentId: 'deployment-id',
+      path: 'chat/completions'
     };
-
+    
     embeddingsEndpoint = {
-      url: 'embeddings',
-      apiVersion: '2024-02-01'
+      deploymentId: 'deployment-id',
+      path: 'embeddings'
     };
   });
 
@@ -46,6 +43,11 @@ describe('openai client', () => {
 
   describe('chatCompletion', () => {
     it('parses a successful response', async () => {
+      const mockResponse = parseMockResponse<OpenAiChatCompletionOutput>(
+        'openai',
+        'openai-chat-completion-success-response.json'
+      );
+
       const prompt = {
         messages: [
           {
@@ -54,28 +56,21 @@ describe('openai client', () => {
           }
         ] as OpenAiChatMessage[]
       };
-      const request: OpenAiChatCompletionParameters = {
-        ...prompt,
-        deploymentConfiguration
-      };
-      const mockResponse = parseMockResponse<OpenAiChatCompletionOutput>(
-        'openai',
-        'openai-chat-completion-success-response.json'
-      );
 
       mockInference(
         {
-          data: request
-        },
+          data: prompt,
+          query: { 'api-version': '2024-02-01' },
+          endpoint: chatCompletionEndpoint,
+          destination
+      },
         {
-          data: mockResponse,
-          status: 200
-        },
-        destination,
-        chatCompletionEndpoint
+          status: 200,
+          data: mockResponse
+        }
       );
 
-      expect(new OpenAiClient().chatCompletion(request)).resolves.toEqual(
+      expect(new OpenAiClient().chatCompletion(OpenAiModels.GPT4o, prompt)).resolves.toEqual(
         mockResponse
       );
     });

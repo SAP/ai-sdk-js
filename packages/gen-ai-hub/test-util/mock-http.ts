@@ -3,42 +3,33 @@ import path from 'path';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import nock from 'nock';
 import {
-  BaseLlmParameters,
-  CustomRequestConfig,
   EndpointOptions
 } from '../src/core/http-client.js';
 
-const mockEndpoint: EndpointOptions = {
-  url: 'mock-endpoint',
-  apiVersion: 'mock-api-version'
-};
-
-export function mockInference<D extends BaseLlmParameters>(
+export function mockInference(
   request: {
-    data: D;
-    requestConfig?: CustomRequestConfig;
+    endpoint: EndpointOptions,
+    destination: HttpDestination,
+    data?: any,
+    query?: Record<string, string>;
   },
   response: {
-    data: any;
-    status?: number;
-  },
-  destination: HttpDestination,
-  endpoint: EndpointOptions = mockEndpoint
+    status: number;
+    data?: any;
+  }
 ): nock.Scope {
-  const { deploymentConfiguration, ...body } = request.data;
-  const { url, apiVersion } = endpoint;
 
-  return nock(destination.url, {
+  return nock(request.destination.url, {
     reqheaders: {
       'ai-resource-group': 'default',
-      authorization: `Bearer ${destination.authTokens?.[0].value}`
+      authorization: `Bearer ${request.destination.authTokens?.[0].value}`
     }
   })
     .post(
-      `/v2/inference/deployments/${deploymentConfiguration.deploymentId}/${url}`,
-      body as any
+      `/v2/inference/deployments/${request.endpoint.deploymentId!}/${request.endpoint.path}`,
+      request.data
     )
-    .query(apiVersion ? { 'api-version': apiVersion } : {})
+    .query(request.query || {})
     .reply(response.status, response.data);
 }
 

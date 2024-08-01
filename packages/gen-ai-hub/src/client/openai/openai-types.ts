@@ -1,6 +1,16 @@
-import { BaseLlmParameters } from '../../core/http-client.js';
+import { ChatModel, EmbeddingModel } from "../../core/aicore.js";
 
-export type OpenAiModel = 'gpt-3.5-turbo' | 'gpt-4o' | 'ada-002';
+export const OpenAiModels = {
+  GPT4o: { name: 'gpt-4o', type: 'chat' } as OpenAiChatModel,
+  ADA002: { name: 'text-embedding-ada-002', type: 'embedding' } as OpenAiEmbeddingModel
+}
+
+export interface OpenAiChatModel extends ChatModel {
+  name: 'gpt-4o' | 'gpt-35-turbo';
+};
+export interface OpenAiEmbeddingModel extends EmbeddingModel {
+  name: 'text-embedding-ada-002';
+};
 
 /**
  * OpenAI system message.
@@ -316,7 +326,7 @@ export interface OpenAiChatCompletionParameters
 /**
  * OpenAI embedding input parameters.
  */
-export interface OpenAiEmbeddingParameters extends BaseLlmParameters {
+export interface OpenAiEmbeddingParameters {
   /**
    * Input text to get embeddings for, encoded as a string. The number of input tokens varies depending on what model you are using. Unless you're embedding code, we suggest replacing newlines (\n) in your input with a single space, as we have observed inferior results when newlines are present.
    */

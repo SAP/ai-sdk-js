@@ -1,14 +1,12 @@
+import { DeploymentApi } from '@sap-ai-sdk/ai-core';
 import { executeRequest, CustomRequestConfig } from '../core/index.js';
-import { CompletionPostRequest } from './api/schema/index.js';
-import {
-  GenAiHubCompletionParameters,
-  GenAiHubCompletionResponse
-} from './orchestration-types.js';
+import { CompletionPostRequest, OrchestrationConfig } from './api/schema/index.js';
+import { OrchestrationCompletionParameters, OrchestrationResponse } from './orchestration-types.js';
 
 /**
- * Get the orchestration client.
+ * A client for the orchestration service.
  */
-export class GenAiHubClient {
+export class OrchestrationService {
   /**
    * Creates a completion for the chat messages.
    * @param data - The input parameters for the chat completion.
@@ -16,16 +14,18 @@ export class GenAiHubClient {
    * @returns The completion result.
    */
   async chatCompletion(
-    data: GenAiHubCompletionParameters,
+    data: OrchestrationConfig,
     requestConfig?: CustomRequestConfig
-  ): Promise<GenAiHubCompletionResponse> {
+  ): Promise<OrchestrationResponse> {
     const dataWithInputParams = {
       deploymentConfiguration: data.deploymentConfiguration,
       ...constructCompletionPostRequest(data)
     };
-
+    const deploymentList = await DeploymentApi.deploymentQuery({scenarioId: 'orchestrtation'}, {"AI-Resource-Group": "default" })
+      .execute({destinationName: "aicore"});
+    const deploymentId = deploymentList['resources'][0].id;
     const response = await executeRequest(
-      { url: '/completion' },
+      { deploymentId: deploymentId, path: '/completion' },
       dataWithInputParams,
       requestConfig
     );
@@ -37,7 +37,7 @@ export class GenAiHubClient {
  * @internal
  */
 export function constructCompletionPostRequest(
-  input: GenAiHubCompletionParameters
+  input: OrchestrationCompletionParameters
 ): CompletionPostRequest {
   return {
     orchestration_config: {

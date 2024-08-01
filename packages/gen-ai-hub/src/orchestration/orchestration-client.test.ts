@@ -2,24 +2,20 @@ import nock from 'nock';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import { mockGetAiCoreDestination } from '../../test-util/mock-context.js';
 import { mockInference, parseMockResponse } from '../../test-util/mock-http.js';
-import { BaseLlmParametersWithDeploymentId } from '../core/index.js';
 import {
-  GenAiHubClient,
-  constructCompletionPostRequest
+  constructCompletionPostRequest,
+  OrchestrationService
 } from './orchestration-client.js';
 import { CompletionPostResponse } from './api/index.js';
-import { GenAiHubCompletionParameters } from './orchestration-types.js';
+import { OrchestrationCompletionParameters } from './orchestration-types.js';
 
 describe('GenAiHubClient', () => {
   let destination: HttpDestination;
-  let client: GenAiHubClient;
-  const deploymentConfiguration: BaseLlmParametersWithDeploymentId = {
-    deploymentId: 'deployment-id'
-  };
+  let client: OrchestrationService;
 
   beforeAll(() => {
     destination = mockGetAiCoreDestination();
-    client = new GenAiHubClient();
+    client = new OrchestrationService();
   });
 
   afterEach(() => {
@@ -27,8 +23,7 @@ describe('GenAiHubClient', () => {
   });
 
   it('calls chatCompletion with minimum configuration and parses response', async () => {
-    const request: GenAiHubCompletionParameters = {
-      deploymentConfiguration,
+    const input: OrchestrationCompletionParameters = {
       llmConfig: {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
@@ -37,6 +32,7 @@ describe('GenAiHubClient', () => {
         template: [{ role: 'user', content: 'Hello!' }]
       }
     };
+    const request = constructCompletionPostRequest(input);
 
     const mockResponse = parseMockResponse<CompletionPostResponse>(
       'orchestration',
@@ -44,22 +40,18 @@ describe('GenAiHubClient', () => {
     );
 
     mockInference(
-      {
-        data: {
-          deploymentConfiguration,
-          ...constructCompletionPostRequest(request)
-        }
-      },
+      request,
       {
         data: mockResponse,
         status: 200
       },
       destination,
       {
-        url: 'completion'
+        deploymentId: '',
+        path: 'completion'
       }
     );
-    expect(client.chatCompletion(request)).resolves.toEqual(mockResponse);
+    expect(client.chatCompletion(input)).resolves.toEqual(mockResponse);
   });
 
   it('sends message history together with templating config', async () => {

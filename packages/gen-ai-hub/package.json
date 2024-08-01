@@ -26,6 +26,7 @@
     "generate": "openapi-generator -i ./src/orchestration/spec/ -o ./src/orchestration/client"
   },
   "dependencies": {
+    "@sap-ai-sdk/ai-core": "workspace:*",
     "@sap-cloud-sdk/http-client": "^3.16.0",
     "@sap-cloud-sdk/connectivity": "^3.17.0",
     "@sap-cloud-sdk/util": "^3.16.0",

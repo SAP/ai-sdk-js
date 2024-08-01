@@ -1,16 +1,16 @@
 import { HttpRequestConfig } from '@sap-cloud-sdk/http-client';
+import { DeploymentApi } from '@sap-ai-sdk/ai-core';
 import {
-  BaseLlmParameters,
   CustomRequestConfig,
   executeRequest
 } from '../../core/index.js';
-import { BaseClient } from '../interface.js';
 import {
-  OpenAiModel,
   OpenAiChatCompletionParameters,
   OpenAiEmbeddingParameters,
   OpenAiEmbeddingOutput,
-  OpenAiChatCompletionOutput
+  OpenAiChatCompletionOutput,
+  OpenAiChatModel,
+  OpenAiEmbeddingModel
 } from './openai-types.js';
 
 const apiVersion = '2024-02-01';
@@ -26,11 +26,13 @@ export class OpenAiClient {
    * @returns The completion result.
    */
   async chatCompletion(
+    model: OpenAiChatModel,
     data: OpenAiChatCompletionParameters,
-    model: OpenAiModel,
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiChatCompletionOutput> {
-    const deploymentId = '';
+    
+    const deploymentId = model.deploymentId!;
+
     const response = await executeRequest(
       { deploymentId: deploymentId, path: '/chat/completions' },
       data,
@@ -45,13 +47,15 @@ export class OpenAiClient {
    * @returns The completion result.
    */
   async embeddings(
+    model: OpenAiEmbeddingModel,
     data: OpenAiEmbeddingParameters,
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiEmbeddingOutput> {
+    const deploymentId = model.deploymentId || 'TODO: implement lookup';
     const response = await executeRequest(
-      { url: '/embeddings', apiVersion },
+      { deploymentId: deploymentId, path: '/embeddings' },
       data,
-      requestConfig
+      this.mergeRequestConfig(requestConfig)
     );
     return response.data;
   }

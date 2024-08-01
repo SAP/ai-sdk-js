@@ -7,25 +7,6 @@ import {
 import { getAiCoreDestination } from './context.js';
 
 /**
- * Input parameters with Deployment ID.
- */
-export interface BaseLlmParametersWithDeploymentId {
-  /**
-   * Deployment ID of the model to use.
-   */
-  deploymentId: string;
-}
-/**
- * Base LLM Input Parameters.
- */
-export interface BaseLlmParameters {
-  /**
-   * Deployment configuration.
-   */
-  deploymentConfiguration: BaseLlmParametersWithDeploymentId;
-}
-
-/**
  * The type for parameters in custom request configuration.
  */
 export type CustomRequestConfig = Omit<
@@ -46,6 +27,7 @@ export interface EndpointOptions {
    */
   path: string;
 }
+
 /**
  * Executes a request to the AI Core service.
  * @param endpointOptions - The options to call an endpoint.
@@ -53,7 +35,7 @@ export interface EndpointOptions {
  * @param requestConfig - The request configuration.
  * @returns The {@link HttpResponse} from the AI Core service.
  */
-async function executeRequest(
+export async function executeRequest(
   endpointOptions: EndpointOptions,
   data: any,
   requestConfig?: CustomRequestConfig
@@ -73,22 +55,4 @@ async function executeRequest(
       fetchCsrfToken: false
     }
   );
-}
-
-function mergeWithDefaultRequestConfig(
-  requestConfig?: CustomRequestConfig
-): HttpRequestConfig {
-  
-  return {
-    ...defaultConfig,
-    ...requestConfig,
-    headers: {
-      ...defaultConfig.headers,
-      ...requestConfig?.headers
-    },
-    params: {
-      ...defaultConfig.params,
-      ...requestConfig?.params
-    }
-  };
 }
