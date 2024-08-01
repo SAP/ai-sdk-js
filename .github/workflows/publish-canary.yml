@@ -18,6 +18,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          # registry-url: 'https://registry.npmjs.org'
           cache: 'pnpm'
 
       - name: install and build
@@ -37,8 +38,8 @@ jobs:
 
       - name: publish
         run: |
+          cat .npmrc
           date=`date +%Y%m%d%H%M%S`
-
           pnpm changeset pre enter ${date}
           pnpm changeset version
           pnpm changeset pre exit
