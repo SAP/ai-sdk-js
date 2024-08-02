@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@sap-cloud-sdk/eslint-config": "^3.14.0",
+    "@types/debug": "^4.1.12",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.13",
     "debug": "^4.3.6",

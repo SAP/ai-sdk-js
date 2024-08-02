@@ -5,6 +5,7 @@ import nock from 'nock';
 import {
   EndpointOptions
 } from '../src/core/http-client.js';
+import { removeLeadingSlashes } from '@sap-cloud-sdk/util';
 
 export function mockInference(stub: {
   request: {
@@ -18,7 +19,6 @@ export function mockInference(stub: {
     data?: any;
   }}
 ): nock.Scope {
-
   return nock(stub.request.destination.url, {
     reqheaders: {
       'ai-resource-group': 'default',
@@ -26,7 +26,7 @@ export function mockInference(stub: {
     }
   })
     .post(
-      `/v2/inference/deployments/${stub.request.endpoint.deploymentId!}/${stub.request.endpoint.path}`,
+      `/v2/inference/deployments/${stub.request.endpoint.deploymentId}/${removeLeadingSlashes(stub.request.endpoint.path)}`,
       stub.request.data
     )
     .query(stub.request.query || {})

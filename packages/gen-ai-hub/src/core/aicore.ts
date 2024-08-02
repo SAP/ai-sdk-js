@@ -33,6 +33,7 @@ export async function resolveDeployment(opts: { scenarioId: string, executableId
     destination = await getAiCoreDestination();
   }
 
+  // TODO: add a cache
   try {
     var deploymentList = await DeploymentApi
       .deploymentQuery({ scenarioId: opts.scenarioId, status: "RUNNING", executableIds: opts.executableId ? [opts.executableId] : undefined }, { "AI-Resource-Group": "default" })
@@ -40,8 +41,7 @@ export async function resolveDeployment(opts: { scenarioId: string, executableId
   } catch (error) {
     throw new Error('Failed to fetch the list of deployments: ' + error);
   }
-
-const modelExtractor = (deployment: any) => { return deployment.details?.resources?.backend_details?.model; };
+  
   if (opts.modelName) {
     deploymentList = deploymentList.filter((deployment: any) => modelExtractor(deployment)?.modelName === opts.modelName);
   }
@@ -57,3 +57,5 @@ const modelExtractor = (deployment: any) => { return deployment.details?.resourc
   result.scenarioId = deployment.scenarioId;
   return result;
 }
+
+const modelExtractor = (deployment: any) => { return deployment.details?.resources?.backend_details?.model; };

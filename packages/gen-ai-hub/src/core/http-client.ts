@@ -54,7 +54,7 @@ export async function executeRequest(
       headers: {'content-type': 'application/json', 'ai-resource-group': 'default'},
       ...requestConfig,
       method: 'POST',
-      body: data
+      data: data
     },
     {
       fetchCsrfToken: false

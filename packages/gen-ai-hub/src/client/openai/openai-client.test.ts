@@ -57,7 +57,7 @@ describe('openai client', () => {
         ] as OpenAiChatMessage[]
       };
 
-      expect(new OpenAiClient().chatCompletion(OpenAiModels.GPT4o, prompt, { id: 'mock' })).resolves.toEqual(
+      expect(new OpenAiClient().chatCompletion(OpenAiModels.GPT4o, prompt, { id: 'mock', scenarioId: 'my-custom-scenario' })).resolves.toEqual(
         mockResponse
       );
     });
