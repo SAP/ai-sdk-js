@@ -9,11 +9,11 @@ Also used as basis for running E2E tests.
 
 Build the project with:
 
-1. `npm install`
+1. `pnpm install`
 2. Download a service key for your AI Core service instance
 3. Create a `.env` file in the sample-code directory
 4. Add an entry `aicore='<content-of-service-key>'`
-5. `npm run local`
+5. `pnpm run local`
 
 Call the test endpoints:
 
