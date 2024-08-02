@@ -54,6 +54,7 @@ export interface FilterConfig {
    */
   output?: FilterServiceProvider;
 }
+
 /**
  * Wrapper object to configure the filter service provider.
  */
@@ -63,26 +64,50 @@ export interface FilterServiceProvider {
    */
   azureContentSafety?: AzureContentSafety;
 }
+
 /**
  * Map of filter service providers.
  */
 export const filterServiceProviders: { [key: string]: ProviderType } = {
   azureContentSafety: 'azure_content_safety'
 };
+
+/** Temporary placeholder interface for Masking Config.*/
+export interface MaskingConfig {
+  /**
+   * Anonymize.
+   */
+  anonymize?: Record<string, any>;
+  /**
+   * Pseudonymize.
+   */
+  pseudonymize?: Record<string, any>;
+}
+
 /**
- * Wrapper object to encompass Orchestration options.
+ * Enum for possible orchestration config modules.
  */
-export interface OrchestrationCompletionParameters {
-  /**
-   * Prompt configuration options.
-   */
-  prompt: PromptConfig;
-  /**
-   * Llm configuration options.
-   */
-  llmConfig: LlmConfig;
-  /**
-   * Filter configuration options.
-   */
-  filterConfig?: FilterConfig;
+enum Module {
+  Filtering,
+  Masking
+}
+
+/**
+ * Wrapper object for filtering module configuration.
+ */
+export interface FilterModuleConfig {
+  /** Differentiator property. */
+  type: Module.Filtering;
+  /** Filtering configuration. */
+  filterConfig: FilterConfig;
+}
+
+/**
+ * Wrapper object for masking module configuration.
+ */
+export interface MaskingModuleConfig {
+  /** Differentiator property. */
+  type: Module.Masking;
+  /** Masking configuration. */
+  maskingConfig: MaskingConfig;
 }

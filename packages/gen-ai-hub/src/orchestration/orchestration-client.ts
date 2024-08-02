@@ -2,10 +2,12 @@ import { executeRequest, CustomRequestConfig } from '../core/index.js';
 import { CompletionPostRequest, Filter } from './api/schema/index.js';
 import {
   FilterConfig,
+  FilterModuleConfig,
   FilterServiceProvider,
   filterServiceProviders,
   GenAiHubCompletionParameters,
-  GenAiHubCompletionResponse
+  GenAiHubCompletionResponse,
+  MaskingModuleConfig
 } from './orchestration-types.js';
 
 /**
@@ -20,7 +22,8 @@ export class GenAiHubClient {
    */
   async chatCompletion(
     data: GenAiHubCompletionParameters,
-    requestConfig?: CustomRequestConfig
+    requestConfig?: CustomRequestConfig,
+    ...varags: [FilterModuleConfig | MaskingModuleConfig]
   ): Promise<GenAiHubCompletionResponse> {
     const dataWithInputParams = {
       deploymentConfiguration: data.deploymentConfiguration,
