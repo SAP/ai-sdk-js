@@ -12,7 +12,7 @@
   "scripts": {
     "start": "node --loader ts-node/esm src/index.ts",
     "local": "node --env-file=.env --loader ts-node/esm src/index.ts",
-    "build": "tsc",
+    "compile": "tsc",
     "dev": "tsc -w",
     "lint": "eslint . && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -w --log-level error"

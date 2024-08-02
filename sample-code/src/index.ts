@@ -12,7 +12,7 @@ app.get(['/', '/health'], (req, res) => {
 app.get('/llm', async (req, res) => {
   try {
     res.send(await chatCompletion());
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
     res
       .status(500)
@@ -27,7 +27,7 @@ app.get('/embedding', async (req, res) => {
       throw new Error('No embedding vector returned');
     }
     res.send('Number crunching success, got a nice vector.');
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
     res
       .status(500)
