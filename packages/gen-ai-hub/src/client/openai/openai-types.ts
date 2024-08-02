@@ -1,6 +1,7 @@
 import { ChatModel, EmbeddingModel } from "../../core/aicore.js";
 
 export const OpenAiModels = {
+  // TODO: figure out if these should be constants or functions, e.g. to allow for dynamic versioning
   GPT4o: { name: 'gpt-4o', type: 'chat', version: 'latest' } as OpenAiChatModel,
   ADA002: { name: 'text-embedding-ada-002', type: 'embedding', version: 'latest' } as OpenAiEmbeddingModel
 }

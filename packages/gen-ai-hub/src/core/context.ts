@@ -1,6 +1,7 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import {
   Destination,
+  HttpDestination,
   Service,
   getServiceBinding,
   transformServiceBindingToDestination
@@ -17,7 +18,7 @@ let aiCoreServiceBinding: Service | undefined;
  * Returns a destination object from AI Core service binding.
  * @returns The destination object.
  */
-export async function getAiCoreDestination(): Promise<Destination> {
+export async function getAiCoreDestination(): Promise<HttpDestination> {
   if (!aiCoreServiceBinding) {
     aiCoreServiceBinding =
       getAiCoreServiceKeyFromEnv() || getServiceBinding('aicore');
@@ -28,12 +29,13 @@ export async function getAiCoreDestination(): Promise<Destination> {
     }
   }
 
+  // TODO: is it intended this function returns Destination instead of HttpDestination?
   const aiCoreDestination = await transformServiceBindingToDestination(
     aiCoreServiceBinding,
     {
       useCache: true
     }
-  );
+  ) as HttpDestination;
   return aiCoreDestination;
 }
 

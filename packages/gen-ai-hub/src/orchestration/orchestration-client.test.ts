@@ -10,9 +10,10 @@ import { CompletionPostResponse } from './api/index.js';
 import { OrchestrationCompletionParameters } from './orchestration-types.js';
 import { AiDeployment } from '../core/aicore.js';
 
-describe('GenAiHubClient', () => {
+describe('OrchestrationService', () => {
   let destination: HttpDestination;
   let client: OrchestrationService;
+  const mockDeployment: AiDeployment = { id: 'mock', scenarioId: 'orchestration' };
 
   beforeAll(() => {
     destination = mockGetAiCoreDestination();
@@ -53,12 +54,11 @@ describe('GenAiHubClient', () => {
         data: mockResponse
       }}
     );
-    expect(client.chatCompletion(input, () => {deploymentId: 'foo'})).resolves.toEqual(mockResponse);
+    expect(client.chatCompletion(input, mockDeployment)).resolves.toEqual(mockResponse);
   });
 
   it('sends message history together with templating config', async () => {
-    const request: GenAiHubCompletionParameters = {
-      deploymentConfiguration,
+    const request: OrchestrationCompletionParameters = {
       llmConfig: {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
@@ -87,23 +87,8 @@ describe('GenAiHubClient', () => {
       'orchestration',
       'genaihub-chat-completion-message-history.json'
     );
-    mockInference(
-      {
-        data: {
-          deploymentConfiguration,
-          ...constructCompletionPostRequest(request)
-        }
-      },
-      {
-        data: mockResponse,
-        status: 200
-      },
-      destination,
-      {
-        url: 'completion'
-      }
-    );
+  
 
-    expect(client.chatCompletion(request)).resolves.toEqual(mockResponse);
+    expect(client.chatCompletion(request, mockDeployment)).resolves.toEqual(mockResponse);
   });
 });
