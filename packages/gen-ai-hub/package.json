@@ -24,7 +24,7 @@
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "openapi-generator -i ./src/orchestration/spec/ -o ./src/orchestration/client",
-    "postgenerate": "ts-node ../../scripts/fix-generated-paths.ts src/orechestration/api"
+    "postgenerate": "ts-node ../../scripts/update-imports.ts src/orechestration/api"
   },
   "dependencies": {
     "@sap-cloud-sdk/http-client": "^3.16.0",

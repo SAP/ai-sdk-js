@@ -21,7 +21,7 @@
     "test": "jest",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
-    "fix-generated-paths": "ts-node ../../scripts/fix-generated-paths.ts src"
+    "update-imports": "ts-node ../../scripts/update-imports.ts src"
   },
   "dependencies": {
     "@sap-cloud-sdk/openapi": "^3.16.0"
