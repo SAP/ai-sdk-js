@@ -14,4 +14,4 @@ updates:
         update-types: ['version-update:semver-major']
     groups:
       sap-cloud-sdk:
-        patterns: '@sap-cloud-sdk/*'
+        patterns: ['@sap-cloud-sdk/*']
