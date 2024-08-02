@@ -1,6 +1,6 @@
 import { DeploymentApi } from '@sap-ai-sdk/ai-core';
 import { getAiCoreDestination } from './context.js';
-import { Destination, HttpDestination } from '@sap-cloud-sdk/connectivity';
+import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 
 export interface ChatModel extends FoundationModel {
   type: 'chat';
@@ -41,7 +41,7 @@ export async function resolveDeployment(opts: { scenarioId: string, executableId
     throw new Error('Failed to fetch the list of deployments: ' + error);
   }
 
-  const modelExtractor = (deployment: any) => { return deployment.details?.resources?.backend_details?.model; };
+const modelExtractor = (deployment: any) => { return deployment.details?.resources?.backend_details?.model; };
   if (opts.modelName) {
     deploymentList = deploymentList.filter((deployment: any) => modelExtractor(deployment)?.modelName === opts.modelName);
   }

@@ -66,8 +66,7 @@ export class OpenAiClient {
     return {
       method: 'POST',
       headers: {
-        'content-type': 'application/json',
-        'ai-resource-group': 'default'
+        'content-type': 'application/json'
       },
       params: { 'api-version': apiVersion },
       ...requestConfig

@@ -50,7 +50,12 @@ export async function executeRequest(
 
   return executeHttpRequest(
     { ...aiCoreDestination, url: targetUrl },
-    data,
+    {
+      headers: {'content-type': 'application/json', 'ai-resource-group': 'default'},
+      ...requestConfig,
+      method: 'POST',
+      body: data
+    },
     {
       fetchCsrfToken: false
     }
