@@ -9,15 +9,19 @@ import {
 import { CompletionPostResponse } from './api/index.js';
 import { OrchestrationCompletionParameters } from './orchestration-types.js';
 import { AiDeployment } from '../core/aicore.js';
+import { EndpointOptions } from '../core/http-client.js';
 
 describe('OrchestrationService', () => {
   let destination: HttpDestination;
   let client: OrchestrationService;
-  const mockDeployment: AiDeployment = { id: 'mock', scenarioId: 'orchestration' };
+  let mockDeployment: AiDeployment;
+  let mockEndpoint: EndpointOptions;
 
   beforeAll(() => {
     destination = mockGetAiCoreDestination();
     client = new OrchestrationService();
+    mockDeployment = { id: 'mock', scenarioId: 'orchestration' };
+    mockEndpoint = { deploymentId: mockDeployment.id, path: '/completion' };
   });
 
   afterEach(() => {
@@ -45,9 +49,7 @@ describe('OrchestrationService', () => {
       request:{
         data: mockResponse,
         destination: destination,
-        endpoint: {
-          deploymentId: 'foo', path: '/completion'
-        }
+        endpoint: mockEndpoint
       },
       response: {
         status: 200,
@@ -88,6 +90,17 @@ describe('OrchestrationService', () => {
       'genaihub-chat-completion-message-history.json'
     );
   
+    mockInference({
+      request:{
+        data: mockResponse,
+        destination: destination,
+        endpoint: mockEndpoint
+      },
+      response: {
+        status: 200,
+        data: mockResponse
+      }}
+    );
 
     expect(client.chatCompletion(request, mockDeployment)).resolves.toEqual(mockResponse);
   });

@@ -11,21 +11,21 @@ expectType<OpenAiClient>(client );
 
 expectType<Promise<OpenAiChatCompletionOutput>>(
   client.chatCompletion(
-    { ...OpenAiModels.GPT4o, deploymentId: 'id' },
+    OpenAiModels.GPT_4o,
     { messages: [{ role: 'user', content: 'test prompt' }]
   })
 );
 
 expectError<any>(
   client.chatCompletion(
-    OpenAiModels.GPT4o,
-    { messages: [{ role: 'user', content: 'test prompt' }] })
+    OpenAiModels.GPT_4o,
+    { messages2: [{ role: 'user', content: 'test prompt' }] })
 );
 
 expectType<Promise<OpenAiEmbeddingOutput>>(
   client.embeddings(
-    { ...OpenAiModels.ADA002, deploymentId: 'id' },
+    OpenAiModels.ADA_002,
     { input: 'test input' })
 );
 
-expectError<any>(client.embeddings(OpenAiModels.ADA002, { input: 'test input' }));
+expectError<any>(client.embeddings(OpenAiModels.GPT_4, { input: 'test input' }));
