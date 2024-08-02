@@ -7,16 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      '@sap-cloud-sdk/connectivity':
-        specifier: ^3.17.0
-        version: 3.17.0
-      '@sap-cloud-sdk/http-client':
-        specifier: ^3.16.0
-        version: 3.17.0
-      '@sap-cloud-sdk/util':
-        specifier: ^3.16.0
-        version: 3.17.0
     devDependencies:
       '@sap-cloud-sdk/eslint-config':
         specifier: ^3.14.0
@@ -54,6 +44,9 @@ importers:
 
   packages/ai-core:
     dependencies:
+      '@sap-cloud-sdk/connectivity':
+        specifier: ^3.16.0
+        version: 3.17.0
       '@sap-cloud-sdk/openapi':
         specifier: ^3.16.0
         version: 3.17.0
@@ -68,9 +61,6 @@ importers:
         specifier: ^3.17.0
         version: 3.17.0
       '@sap-cloud-sdk/http-client':
-        specifier: ^3.16.0
-        version: 3.17.0
-      '@sap-cloud-sdk/openapi':
         specifier: ^3.16.0
         version: 3.17.0
       '@sap-cloud-sdk/util':

@@ -23,6 +23,7 @@
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
+    "@sap-cloud-sdk/connectivity": "^3.16.0",
     "@sap-cloud-sdk/openapi": "^3.16.0"
   },
   "devDependencies": {
