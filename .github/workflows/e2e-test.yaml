@@ -1,8 +1,5 @@
 name: "E2E Test"
 on:
-  push:
-    branches:
-      - chore/e2e-test
   workflow_dispatch:
   schedule:
     - cron: 0 22 * * *
@@ -65,7 +62,7 @@ jobs:
         run: |
           wget "$WGET_ARGS" "$WGET_URL/embedding"
       - name: "Slack Notification"
-        if: failure()
+        if: false
         uses: slackapi/slack-github-action@v1.26.0
         with:
           payload: |
