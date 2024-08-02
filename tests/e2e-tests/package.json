@@ -1,11 +1,13 @@
 {
 	"type": "module",
-	"name": "e2e-tests",
+	"name": "@sap-ai-sdk/e2e-tests",
 	"version": "0.0.1",
-	"peerDependencies": {
-		"@sap-ai-sdk/sample-code": "workspace:*"
+	"dependencies": {
+		"@sap-ai-sdk/sample-code": "workspace:^"
 	},
 	"scripts": {
+		"compile": "tsc",
+    "test": "jest",
 		"lint": "prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
 	}

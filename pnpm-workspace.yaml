@@ -5,6 +5,7 @@ packages:
   # sample code
   - 'sample-code'
   # exclude packages that are inside test directories
+  - '!tests/e2e-tests' # including the e2e tests makes causes pnpm to explode
   - '!poc/'
   - '!test-util'
-  - '!tests/'
+  - '!tests/type-tests'
