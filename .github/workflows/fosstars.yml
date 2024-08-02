@@ -1,0 +1,27 @@
+name: 'Fosstars (Security)'
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  fosstars-rating:
+    runs-on: ubuntu-latest
+    name: 'Security rating'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: SAP/fosstars-rating-core-action@v1.14.0
+        with:
+          token: '${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}'
+      - if: failure() || cancelled()
+        name: Slack Notify
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          payload: |
+            {
+              "username": "Fosstars Rating",
+              "text": "Fosstars rating <https://github.com/SAP/ai-sdk-js/actions/runs/${{ github.run_id }}|failed>.",
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
