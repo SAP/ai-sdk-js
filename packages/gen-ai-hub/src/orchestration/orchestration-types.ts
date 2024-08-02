@@ -87,7 +87,7 @@ export interface MaskingConfig {
 /**
  * Enum for possible orchestration config modules.
  */
-enum Module {
+export enum Module {
   Filtering,
   Masking
 }
@@ -110,4 +110,18 @@ export interface MaskingModuleConfig {
   type: Module.Masking;
   /** Masking configuration. */
   maskingConfig: MaskingConfig;
+}
+
+/**
+ * Wrapper object to encompass Orchestration options.
+ */
+export interface OrchestrationCompletionParameters {
+  /**
+   * Prompt configuration options.
+   */
+  prompt: PromptConfig;
+  /**
+   * Llm configuration options.
+   */
+  llmConfig: LlmConfig;
 }

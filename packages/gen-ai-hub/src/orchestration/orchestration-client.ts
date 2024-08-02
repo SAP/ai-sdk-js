@@ -7,7 +7,9 @@ import {
   filterServiceProviders,
   GenAiHubCompletionParameters,
   GenAiHubCompletionResponse,
-  MaskingModuleConfig
+  MaskingConfig,
+  MaskingModuleConfig,
+  Module
 } from './orchestration-types.js';
 
 /**
@@ -18,16 +20,32 @@ export class GenAiHubClient {
    * Creates a completion for the chat messages.
    * @param data - The input parameters for the chat completion.
    * @param requestConfig - Request configuration.
+   * @param varargs - Supply additional module configurations.
    * @returns The completion result.
    */
   async chatCompletion(
     data: GenAiHubCompletionParameters,
     requestConfig?: CustomRequestConfig,
-    ...varags: [FilterModuleConfig | MaskingModuleConfig]
+    ...varargs: (FilterModuleConfig | MaskingModuleConfig)[]
   ): Promise<GenAiHubCompletionResponse> {
+    let filterConfig: FilterConfig = {};
+    let maskingConfig: MaskingConfig = {};
+
+    varargs?.forEach(moduleConfig => {
+      switch (moduleConfig.type) {
+        case Module.Filtering:
+          filterConfig = moduleConfig.filterConfig;
+          break;
+        case Module.Masking:
+          maskingConfig = moduleConfig.maskingConfig;
+          break;
+        default:
+        // Todo: Add error handling
+      }
+    });
     const dataWithInputParams = {
       deploymentConfiguration: data.deploymentConfiguration,
-      ...constructCompletionPostRequest(data)
+      ...constructCompletionPostRequest(data, filterConfig, maskingConfig)
     };
 
     const response = await executeRequest(
@@ -43,7 +61,9 @@ export class GenAiHubClient {
  * @internal
  */
 export function constructCompletionPostRequest(
-  input: GenAiHubCompletionParameters
+  input: GenAiHubCompletionParameters,
+  filterConfig?: FilterConfig,
+  maskingConfig?: MaskingConfig
 ): CompletionPostRequest {
   return {
     orchestration_config: {
@@ -53,10 +73,10 @@ export function constructCompletionPostRequest(
         },
         llm_module_config: input.llmConfig
       },
-      ...(input.filterConfig &&
-        input.filterConfig?.input &&
-        input.filterConfig?.output &&
-        buildFilterConfig(input.filterConfig)),
+      ...(filterConfig &&
+        filterConfig?.input &&
+        filterConfig?.output &&
+        buildFilterConfig(filterConfig)),
       ...(input.prompt.template_params && {
         input_params: input.prompt.template_params
       }),
