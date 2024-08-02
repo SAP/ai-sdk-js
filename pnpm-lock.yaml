@@ -99,6 +99,16 @@ importers:
         specifier: ^4.19.2
         version: 4.19.2
 
+  tests/e2e-tests:
+    dependencies:
+      '@sap-ai-sdk/sample-code':
+        specifier: workspace:^
+        version: link:../../sample-code
+    devDependencies:
+      typescript:
+        specifier: ^5.5.4
+        version: 5.5.4
+
 packages:
 
   '@ampproject/remapping@2.3.0':

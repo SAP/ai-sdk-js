@@ -1,4 +1,4 @@
-import { chatCompletion } from "../../sample-code/src/aiservice.js";
+import { chatCompletion } from "@sap-ai-sdk/sample-code";
 
 describe("OpenAI Foundation Model Access", () => {
   it("should complete a chat", async () => {

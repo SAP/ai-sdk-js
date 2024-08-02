@@ -2,6 +2,9 @@
 import express from 'express';
 import { chatCompletion, computeEmbedding } from './aiservice.js';
 
+// exported for e2e tests
+export { chatCompletion, computeEmbedding } from './aiservice.js';
+
 const app = express();
 const port = 8080;
 
