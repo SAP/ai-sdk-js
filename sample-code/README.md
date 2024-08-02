@@ -21,11 +21,6 @@ Call the test endpoints:
 - [Simple Chat Completion](localhost:8080/llm)
 - [Simple Embedding Call](localhost:8080/embedding)
 
-Deploy to CF with:
-
-1. `cf login` into your Cloud Foundry account
-2. `cf push`
-
 ## Run the E2E Test
 
 Trigger the [GitHub Action](https://github.com/SAP/ai-sdk-js/actions/workflows/e2e-test.yml).
