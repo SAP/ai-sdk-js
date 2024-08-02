@@ -5,11 +5,11 @@
  */
 import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
 import type {
-  ConfigurationList,
-  ConfigurationBaseData,
-  ConfigurationCreationResponse,
-  Configuration
-} from './schema/index.js';
+  AiConfigurationList,
+  AiConfigurationBaseData,
+  AiConfigurationCreationResponse,
+  AiConfiguration
+} from './schema';
 /**
  * Representation of the 'ConfigurationApi'.
  * This API is part of the 'AI_CORE_API' service.
@@ -35,10 +35,14 @@ export const ConfigurationApi = {
     },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<ConfigurationList>('get', '/lm/configurations', {
-      queryParameters,
-      headerParameters
-    }),
+    new OpenApiRequestBuilder<AiConfigurationList>(
+      'get',
+      '/lm/configurations',
+      {
+        queryParameters,
+        headerParameters
+      }
+    ),
   /**
    * Create a new configuration linked to a specific scenario and executable for use in an execution
    * or deployment.
@@ -48,10 +52,10 @@ export const ConfigurationApi = {
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   configurationCreate: (
-    body: ConfigurationBaseData,
+    body: AiConfigurationBaseData,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<ConfigurationCreationResponse>(
+    new OpenApiRequestBuilder<AiConfigurationCreationResponse>(
       'post',
       '/lm/configurations',
       {
@@ -71,7 +75,7 @@ export const ConfigurationApi = {
     queryParameters: { $expand?: 'scenario' },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<Configuration>(
+    new OpenApiRequestBuilder<AiConfiguration>(
       'get',
       '/lm/configurations/{configurationId}',
       {

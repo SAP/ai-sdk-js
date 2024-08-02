@@ -4,7 +4,7 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
-import type { ServiceList, ExtendedService } from './schema/index.js';
+import type { BckndServiceList, BckndExtendedService } from './schema';
 /**
  * Representation of the 'ServiceApi'.
  * This API is part of the 'AI_CORE_API' service.
@@ -19,7 +19,7 @@ export const ServiceApi = {
   kubesubmitV4AiservicesGetAll: (headerParameters?: {
     Authorization?: string;
   }) =>
-    new OpenApiRequestBuilder<ServiceList>('get', '/admin/services', {
+    new OpenApiRequestBuilder<BckndServiceList>('get', '/admin/services', {
       headerParameters
     }),
   /**
@@ -33,7 +33,7 @@ export const ServiceApi = {
     serviceName: string,
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<ExtendedService>(
+    new OpenApiRequestBuilder<BckndExtendedService>(
       'get',
       '/admin/services/{serviceName}',
       {

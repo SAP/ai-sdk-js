@@ -5,11 +5,11 @@
  */
 import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
 import type {
-  ListGenericSecretsResponse,
-  GenericSecretPostBody,
-  GenericSecretDataResponse,
-  GenericSecretPatchBody
-} from './schema/index.js';
+  BckndListGenericSecretsResponse,
+  BckndGenericSecretPostBody,
+  BckndGenericSecretDataResponse,
+  BckndGenericSecretPatchBody
+} from './schema';
 /**
  * Representation of the 'SecretApi'.
  * This API is part of the 'AI_CORE_API' service.
@@ -29,7 +29,7 @@ export const SecretApi = {
       'AI-Tenant-Scope'?: boolean;
     }
   ) =>
-    new OpenApiRequestBuilder<ListGenericSecretsResponse>(
+    new OpenApiRequestBuilder<BckndListGenericSecretsResponse>(
       'get',
       '/admin/secrets',
       {
@@ -44,14 +44,14 @@ export const SecretApi = {
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   kubesubmitV4GenericSecretsCreate: (
-    body: GenericSecretPostBody,
+    body: BckndGenericSecretPostBody,
     headerParameters?: {
       Authorization?: string;
       'AI-Resource-Group'?: string;
       'AI-Tenant-Scope'?: boolean;
     }
   ) =>
-    new OpenApiRequestBuilder<GenericSecretDataResponse>(
+    new OpenApiRequestBuilder<BckndGenericSecretDataResponse>(
       'post',
       '/admin/secrets',
       {
@@ -68,14 +68,14 @@ export const SecretApi = {
    */
   kubesubmitV4GenericSecretsUpdate: (
     secretName: string,
-    body: GenericSecretPatchBody,
+    body: BckndGenericSecretPatchBody,
     headerParameters?: {
       Authorization?: string;
       'AI-Resource-Group'?: string;
       'AI-Tenant-Scope'?: boolean;
     }
   ) =>
-    new OpenApiRequestBuilder<GenericSecretDataResponse>(
+    new OpenApiRequestBuilder<BckndGenericSecretDataResponse>(
       'patch',
       '/admin/secrets/{secretName}',
       {

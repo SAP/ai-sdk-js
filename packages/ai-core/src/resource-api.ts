@@ -5,10 +5,10 @@
  */
 import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
 import type {
-  ResourceGetResponse,
-  ResourcePatchBody,
-  ResourcePatchResponse
-} from './schema/index.js';
+  BckndResourceGetResponse,
+  BckndResourcePatchBody,
+  BckndResourcePatchResponse
+} from './schema';
 /**
  * Representation of the 'ResourceApi'.
  * This API is part of the 'AI_CORE_API' service.
@@ -20,7 +20,7 @@ export const ResourceApi = {
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   kubesubmitV4ResourcesGet: (headerParameters?: { Authorization?: string }) =>
-    new OpenApiRequestBuilder<ResourceGetResponse>(
+    new OpenApiRequestBuilder<BckndResourceGetResponse>(
       'get',
       '/admin/resources/nodes',
       {
@@ -34,10 +34,10 @@ export const ResourceApi = {
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   kubesubmitV4ResourcesPatch: (
-    body: ResourcePatchBody,
+    body: BckndResourcePatchBody,
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<ResourcePatchResponse>(
+    new OpenApiRequestBuilder<BckndResourcePatchResponse>(
       'patch',
       '/admin/resources/nodes',
       {

@@ -5,12 +5,13 @@
  */
 import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
 import type {
-  GetMetricResourceList,
-  StringArray,
-  MetricSelectorPermissibleValues,
-  DeleteMetricsResponse,
-  ExecutionId2
-} from './schema/index.js';
+  TrckGetMetricResourceList,
+  TrckStringArray,
+  TrckmetricSelectorPermissibleValues,
+  TrckMetricResource,
+  TrckDeleteMetricsResponse,
+  TrckExecutionId
+} from './schema';
 /**
  * Representation of the 'MetricsApi'.
  * This API is part of the 'AI_CORE_API' service.
@@ -28,12 +29,12 @@ export const MetricsApi = {
   metricsFind: (
     queryParameters: {
       $filter?: string;
-      executionIds?: StringArray;
-      $select?: MetricSelectorPermissibleValues;
+      executionIds?: TrckStringArray;
+      $select?: TrckmetricSelectorPermissibleValues;
     },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<GetMetricResourceList>('get', '/lm/metrics', {
+    new OpenApiRequestBuilder<TrckGetMetricResourceList>('get', '/lm/metrics', {
       queryParameters,
       headerParameters
     }),
@@ -45,7 +46,7 @@ export const MetricsApi = {
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   metricsPatch: (
-    body: any,
+    body: TrckMetricResource,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
     new OpenApiRequestBuilder<any>('patch', '/lm/metrics', {
@@ -59,11 +60,15 @@ export const MetricsApi = {
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   metricsDelete: (
-    queryParameters: { executionId: ExecutionId2 },
+    queryParameters: { executionId: TrckExecutionId },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<DeleteMetricsResponse>('delete', '/lm/metrics', {
-      queryParameters,
-      headerParameters
-    })
+    new OpenApiRequestBuilder<TrckDeleteMetricsResponse>(
+      'delete',
+      '/lm/metrics',
+      {
+        queryParameters,
+        headerParameters
+      }
+    )
 };

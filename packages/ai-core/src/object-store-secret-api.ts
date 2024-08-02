@@ -5,14 +5,14 @@
  */
 import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
 import type {
-  ObjectStoreSecretStatusResponse,
-  ObjectStoreSecretWithSensitiveDataRequestForPostCall,
-  ObjectStoreSecretCreationResponse,
-  ObjectStoreSecretStatus,
-  ObjectStoreSecretWithSensitiveDataRequest,
-  ObjectStoreSecretModificationResponse,
-  ObjectStoreSecretDeletionResponse
-} from './schema/index.js';
+  BckndobjectStoreSecretStatusResponse,
+  BckndobjectStoreSecretWithSensitiveDataRequestForPostCall,
+  BckndobjectStoreSecretCreationResponse,
+  BckndobjectStoreSecretStatus,
+  BckndobjectStoreSecretWithSensitiveDataRequest,
+  BckndobjectStoreSecretModificationResponse,
+  BckndobjectStoreSecretDeletionResponse
+} from './schema';
 /**
  * Representation of the 'ObjectStoreSecretApi'.
  * This API is part of the 'AI_CORE_API' service.
@@ -29,7 +29,7 @@ export const ObjectStoreSecretApi = {
     queryParameters?: { $top?: number; $skip?: number; $count?: boolean },
     headerParameters?: { Authorization?: string; 'AI-Resource-Group'?: string }
   ) =>
-    new OpenApiRequestBuilder<ObjectStoreSecretStatusResponse>(
+    new OpenApiRequestBuilder<BckndobjectStoreSecretStatusResponse>(
       'get',
       '/admin/objectStoreSecrets',
       {
@@ -45,10 +45,10 @@ export const ObjectStoreSecretApi = {
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   kubesubmitV4ObjectStoreSecretsCreate: (
-    body: ObjectStoreSecretWithSensitiveDataRequestForPostCall,
+    body: BckndobjectStoreSecretWithSensitiveDataRequestForPostCall,
     headerParameters?: { Authorization?: string; 'AI-Resource-Group'?: string }
   ) =>
-    new OpenApiRequestBuilder<ObjectStoreSecretCreationResponse>(
+    new OpenApiRequestBuilder<BckndobjectStoreSecretCreationResponse>(
       'post',
       '/admin/objectStoreSecrets',
       {
@@ -69,7 +69,7 @@ export const ObjectStoreSecretApi = {
     objectStoreName: string,
     headerParameters?: { Authorization?: string; 'AI-Resource-Group'?: string }
   ) =>
-    new OpenApiRequestBuilder<ObjectStoreSecretStatus>(
+    new OpenApiRequestBuilder<BckndobjectStoreSecretStatus>(
       'get',
       '/admin/objectStoreSecrets/{objectStoreName}',
       {
@@ -87,10 +87,10 @@ export const ObjectStoreSecretApi = {
    */
   kubesubmitV4ObjectStoreSecretsPatch: (
     objectStoreName: string,
-    body: ObjectStoreSecretWithSensitiveDataRequest,
+    body: BckndobjectStoreSecretWithSensitiveDataRequest,
     headerParameters?: { Authorization?: string; 'AI-Resource-Group'?: string }
   ) =>
-    new OpenApiRequestBuilder<ObjectStoreSecretModificationResponse>(
+    new OpenApiRequestBuilder<BckndobjectStoreSecretModificationResponse>(
       'patch',
       '/admin/objectStoreSecrets/{objectStoreName}',
       {
@@ -109,7 +109,7 @@ export const ObjectStoreSecretApi = {
     objectStoreName: string,
     headerParameters?: { Authorization?: string; 'AI-Resource-Group'?: string }
   ) =>
-    new OpenApiRequestBuilder<ObjectStoreSecretDeletionResponse>(
+    new OpenApiRequestBuilder<BckndobjectStoreSecretDeletionResponse>(
       'delete',
       '/admin/objectStoreSecrets/{objectStoreName}',
       {

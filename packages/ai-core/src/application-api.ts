@@ -5,16 +5,16 @@
  */
 import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
 import type {
-  AllArgoCDApplicationData,
-  Body,
-  ArgoCDApplicationCreationResponse,
-  ArgoCDApplicationStatus,
-  ArgoCDApplicationData,
-  ArgoCDApplicationBaseData,
-  ArgoCDApplicationModificationResponse,
-  ArgoCDApplicationDeletionResponse,
-  ArgoCDApplicationRefreshResponse
-} from './schema/index.js';
+  BckndAllArgoCDApplicationData,
+  BckndArgoCDApplicationData,
+  BckndArgoCDApplicationDataRepoName,
+  BckndArgoCDApplicationCreationResponse,
+  BckndArgoCDApplicationStatus,
+  BckndArgoCDApplicationBaseData,
+  BckndArgoCDApplicationModificationResponse,
+  BckndArgoCDApplicationDeletionResponse,
+  BckndArgoCDApplicationRefreshResponse
+} from './schema';
 /**
  * Representation of the 'ApplicationApi'.
  * This API is part of the 'AI_CORE_API' service.
@@ -31,7 +31,7 @@ export const ApplicationApi = {
     queryParameters?: { $top?: number; $skip?: number; $count?: boolean },
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<AllArgoCDApplicationData>(
+    new OpenApiRequestBuilder<BckndAllArgoCDApplicationData>(
       'get',
       '/admin/applications',
       {
@@ -47,10 +47,10 @@ export const ApplicationApi = {
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   kubesubmitV4ApplicationsCreate: (
-    body: Body,
+    body: BckndArgoCDApplicationData | BckndArgoCDApplicationDataRepoName,
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<ArgoCDApplicationCreationResponse>(
+    new OpenApiRequestBuilder<BckndArgoCDApplicationCreationResponse>(
       'post',
       '/admin/applications',
       {
@@ -69,7 +69,7 @@ export const ApplicationApi = {
     applicationName: string,
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<ArgoCDApplicationStatus>(
+    new OpenApiRequestBuilder<BckndArgoCDApplicationStatus>(
       'get',
       '/admin/applications/{applicationName}/status',
       {
@@ -88,7 +88,7 @@ export const ApplicationApi = {
     applicationName: string,
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<ArgoCDApplicationData>(
+    new OpenApiRequestBuilder<BckndArgoCDApplicationData>(
       'get',
       '/admin/applications/{applicationName}',
       {
@@ -106,10 +106,10 @@ export const ApplicationApi = {
    */
   kubesubmitV4ApplicationsUpdate: (
     applicationName: string,
-    body: ArgoCDApplicationBaseData,
+    body: BckndArgoCDApplicationBaseData,
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<ArgoCDApplicationModificationResponse>(
+    new OpenApiRequestBuilder<BckndArgoCDApplicationModificationResponse>(
       'patch',
       '/admin/applications/{applicationName}',
       {
@@ -128,7 +128,7 @@ export const ApplicationApi = {
     applicationName: string,
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<ArgoCDApplicationDeletionResponse>(
+    new OpenApiRequestBuilder<BckndArgoCDApplicationDeletionResponse>(
       'delete',
       '/admin/applications/{applicationName}',
       {
@@ -147,7 +147,7 @@ export const ApplicationApi = {
     applicationName: string,
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<ArgoCDApplicationRefreshResponse>(
+    new OpenApiRequestBuilder<BckndArgoCDApplicationRefreshResponse>(
       'post',
       '/admin/applications/{applicationName}/refresh',
       {

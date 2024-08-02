@@ -2,9 +2,9 @@ import nock from 'nock';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import {
   ArtifactApi,
-  ArtifactCreationResponse,
-  ArtifactList,
-  ArtifactPostData
+  AiArtifactCreationResponse,
+  AiArtifactList,
+  AiArtifactPostData
 } from './index.js';
 
 describe('artifact', () => {
@@ -17,7 +17,7 @@ describe('artifact', () => {
   });
 
   it('parses a successful response for get request', async () => {
-    const expectedResponse: ArtifactList = {
+    const expectedResponse: AiArtifactList = {
       count: 1,
       resources: [
         {
@@ -43,7 +43,7 @@ describe('artifact', () => {
         'Content-Type': 'application/json'
       });
 
-    const result: ArtifactList = await ArtifactApi.artifactQuery(
+    const result: AiArtifactList = await ArtifactApi.artifactQuery(
       {},
       { 'AI-Resource-Group': 'default' }
     ).execute(destination);
@@ -52,7 +52,7 @@ describe('artifact', () => {
   });
 
   it('parses a successful response for post request', async () => {
-    const expectedResponse: ArtifactCreationResponse = {
+    const expectedResponse: AiArtifactCreationResponse = {
       id: '3d2c1b0a',
       message: 'Artifact acknowledged',
       url: 'ai://default/spam/data'
@@ -68,7 +68,7 @@ describe('artifact', () => {
         'Content-Type': 'application/json'
       });
 
-    const artifactPostData: ArtifactPostData = {
+    const AiArtifactPostData: AiArtifactPostData = {
       description: 'dataset for training test',
       kind: 'dataset',
       name: 'training-test-data',
@@ -76,8 +76,8 @@ describe('artifact', () => {
       url: 'ai://default/spam/data'
     };
 
-    const result: ArtifactCreationResponse = await ArtifactApi.artifactCreate(
-      artifactPostData,
+    const result: AiArtifactCreationResponse = await ArtifactApi.artifactCreate(
+      AiArtifactPostData,
       { 'AI-Resource-Group': 'default' }
     ).execute(destination);
 

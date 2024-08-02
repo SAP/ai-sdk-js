@@ -1,10 +1,10 @@
 import nock from 'nock';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import {
-  EnactmentCreationRequest,
+  AiEnactmentCreationRequest,
   ExecutionApi,
-  ExecutionCreationResponse,
-  ExecutionList
+  AiExecutionCreationResponse,
+  AiExecutionList
 } from './index.js';
 
 describe('execution', () => {
@@ -17,7 +17,7 @@ describe('execution', () => {
   });
 
   it('parses a successful response for get request', async () => {
-    const expectedResponse: ExecutionList = {
+    const expectedResponse: AiExecutionList = {
       count: 1,
       resources: [
         {
@@ -59,7 +59,7 @@ describe('execution', () => {
         'Content-Type': 'application/json'
       });
 
-    const result: ExecutionList = await ExecutionApi.executionQuery(
+    const result: AiExecutionList = await ExecutionApi.executionQuery(
       {},
       { 'AI-Resource-Group': 'default' }
     ).execute(destination);
@@ -68,7 +68,7 @@ describe('execution', () => {
   });
 
   it('parses a successful response for post request', async () => {
-    const expectedResponse: ExecutionCreationResponse = {
+    const expectedResponse: AiExecutionCreationResponse = {
       id: '8i9j0k1l',
       message: 'Execution acknowledged',
       url: 'ai://default/8i9j0k1l'
@@ -83,11 +83,11 @@ describe('execution', () => {
         'Content-Type': 'application/json'
       });
 
-    const executionPostData: EnactmentCreationRequest = {
+    const executionPostData: AiEnactmentCreationRequest = {
       configurationId: '8i9j0k1l'
     };
 
-    const result: ExecutionCreationResponse =
+    const result: AiExecutionCreationResponse =
       await ExecutionApi.executionCreate(executionPostData, {
         'AI-Resource-Group': 'default'
       }).execute(destination);

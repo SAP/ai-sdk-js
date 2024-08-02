@@ -1,6 +1,6 @@
 import nock from 'nock';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
-import { ScenarioApi, ScenarioList } from './index.js';
+import { ScenarioApi, AiScenarioList } from './index.js';
 
 describe('scenario', () => {
   const destination: HttpDestination = {
@@ -12,7 +12,7 @@ describe('scenario', () => {
   });
 
   it('parses a successful response for get request', async () => {
-    const expectedResponse: ScenarioList = {
+    const expectedResponse: AiScenarioList = {
       count: 1,
       resources: [
         {
@@ -40,7 +40,7 @@ describe('scenario', () => {
         'Content-Type': 'application/json'
       });
 
-    const result: ScenarioList = await ScenarioApi.scenarioQuery({
+    const result: AiScenarioList = await ScenarioApi.scenarioQuery({
       'AI-Resource-Group': 'default'
     }).execute(destination);
 

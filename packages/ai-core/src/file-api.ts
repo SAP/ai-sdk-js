@@ -4,7 +4,7 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
-import type { FileCreationResponse } from './schema/index.js';
+import type { DSetFileCreationResponse } from './schema';
 /**
  * Representation of the 'FileApi'.
  * This API is part of the 'AI_CORE_API' service.
@@ -54,7 +54,7 @@ export const FileApi = {
     queryParameters?: { overwrite?: boolean },
     headerParameters?: { 'AI-Resource-Group'?: string }
   ) =>
-    new OpenApiRequestBuilder<FileCreationResponse>(
+    new OpenApiRequestBuilder<DSetFileCreationResponse>(
       'put',
       '/lm/dataset/files/{path}',
       {

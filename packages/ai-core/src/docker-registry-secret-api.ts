@@ -5,13 +5,14 @@
  */
 import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
 import type {
-  DockerRegistrySecretStatus,
-  DockerRegistrySecretModificationResponse,
-  DockerRegistrySecretDeletionResponse,
-  DockerRegistrySecretStatusResponse,
-  Body1,
-  DockerRegistrySecretCreationResponse
-} from './schema/index.js';
+  BcknddockerRegistrySecretStatus,
+  BcknddockerRegistrySecretWithSensitiveDataRequest,
+  BcknddockerRegistrySecretModificationResponse,
+  BcknddockerRegistrySecretDeletionResponse,
+  BcknddockerRegistrySecretStatusResponse,
+  BcknddockerRegistryNameComponent,
+  BcknddockerRegistrySecretCreationResponse
+} from './schema';
 /**
  * Representation of the 'DockerRegistrySecretApi'.
  * This API is part of the 'AI_CORE_API' service.
@@ -28,7 +29,7 @@ export const DockerRegistrySecretApi = {
     dockerRegistryName: string,
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<DockerRegistrySecretStatus>(
+    new OpenApiRequestBuilder<BcknddockerRegistrySecretStatus>(
       'get',
       '/admin/dockerRegistrySecrets/{dockerRegistryName}',
       {
@@ -46,10 +47,10 @@ export const DockerRegistrySecretApi = {
    */
   kubesubmitV4DockerRegistrySecretsPatch: (
     dockerRegistryName: string,
-    body: any,
+    body: BcknddockerRegistrySecretWithSensitiveDataRequest,
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<DockerRegistrySecretModificationResponse>(
+    new OpenApiRequestBuilder<BcknddockerRegistrySecretModificationResponse>(
       'patch',
       '/admin/dockerRegistrySecrets/{dockerRegistryName}',
       {
@@ -68,7 +69,7 @@ export const DockerRegistrySecretApi = {
     dockerRegistryName: string,
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<DockerRegistrySecretDeletionResponse>(
+    new OpenApiRequestBuilder<BcknddockerRegistrySecretDeletionResponse>(
       'delete',
       '/admin/dockerRegistrySecrets/{dockerRegistryName}',
       {
@@ -87,7 +88,7 @@ export const DockerRegistrySecretApi = {
     queryParameters?: { $top?: number; $skip?: number; $count?: boolean },
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<DockerRegistrySecretStatusResponse>(
+    new OpenApiRequestBuilder<BcknddockerRegistrySecretStatusResponse>(
       'get',
       '/admin/dockerRegistrySecrets',
       {
@@ -103,10 +104,12 @@ export const DockerRegistrySecretApi = {
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   kubesubmitV4DockerRegistrySecretsCreate: (
-    body: Body1,
+    body: BcknddockerRegistrySecretWithSensitiveDataRequest & {
+      name: BcknddockerRegistryNameComponent;
+    } & Record<string, any>,
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<DockerRegistrySecretCreationResponse>(
+    new OpenApiRequestBuilder<BcknddockerRegistrySecretCreationResponse>(
       'post',
       '/admin/dockerRegistrySecrets',
       {

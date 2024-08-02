@@ -5,12 +5,12 @@
  */
 import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
 import type {
-  ArtifactList,
-  Name_1,
-  ArtifactPostData,
-  ArtifactCreationResponse,
-  Artifact
-} from './schema/index.js';
+  AiArtifactList,
+  AiArtifactName,
+  AiArtifactPostData,
+  AiArtifactCreationResponse,
+  AiArtifact
+} from './schema';
 /**
  * Representation of the 'ArtifactApi'.
  * This API is part of the 'AI_CORE_API' service.
@@ -30,7 +30,7 @@ export const ArtifactApi = {
     queryParameters: {
       scenarioId?: string;
       executionId?: string;
-      name?: Name_1;
+      name?: AiArtifactName;
       kind?: 'model' | 'dataset' | 'resultset' | 'other';
       artifactLabelSelector?: string[];
       $top?: number;
@@ -41,7 +41,7 @@ export const ArtifactApi = {
     },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<ArtifactList>('get', '/lm/artifacts', {
+    new OpenApiRequestBuilder<AiArtifactList>('get', '/lm/artifacts', {
       queryParameters,
       headerParameters
     }),
@@ -52,10 +52,10 @@ export const ArtifactApi = {
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   artifactCreate: (
-    body: ArtifactPostData,
+    body: AiArtifactPostData,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<ArtifactCreationResponse>(
+    new OpenApiRequestBuilder<AiArtifactCreationResponse>(
       'post',
       '/lm/artifacts',
       {
@@ -75,7 +75,7 @@ export const ArtifactApi = {
     queryParameters: { $expand?: 'scenario' },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<Artifact>('get', '/lm/artifacts/{artifactId}', {
+    new OpenApiRequestBuilder<AiArtifact>('get', '/lm/artifacts/{artifactId}', {
       pathParameters: { artifactId },
       queryParameters,
       headerParameters
@@ -93,7 +93,7 @@ export const ArtifactApi = {
     queryParameters: {
       scenarioId?: string;
       executionId?: string;
-      name?: Name_1;
+      name?: AiArtifactName;
       kind?: 'model' | 'dataset' | 'resultset' | 'other';
       $search?: string;
       searchCaseInsensitive?: boolean;

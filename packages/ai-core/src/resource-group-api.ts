@@ -5,13 +5,13 @@
  */
 import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
 import type {
-  ResourceGroupList,
-  ResourceGroupsPostRequest,
-  ResourceGroupBase,
-  ResourceGroup,
-  ResourceGroupPatchRequest,
-  ResourceGroupDeletionResponse
-} from './schema/index.js';
+  BckndResourceGroupList,
+  BckndResourceGroupsPostRequest,
+  BckndResourceGroupBase,
+  BckndResourceGroup,
+  BckndResourceGroupPatchRequest,
+  BckndResourceGroupDeletionResponse
+} from './schema';
 /**
  * Representation of the 'ResourceGroupApi'.
  * This API is part of the 'AI_CORE_API' service.
@@ -34,7 +34,7 @@ export const ResourceGroupApi = {
     },
     headerParameters?: { Authorization?: string; Prefer?: string }
   ) =>
-    new OpenApiRequestBuilder<ResourceGroupList>(
+    new OpenApiRequestBuilder<BckndResourceGroupList>(
       'get',
       '/admin/resourceGroups',
       {
@@ -50,10 +50,10 @@ export const ResourceGroupApi = {
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   kubesubmitV4ResourcegroupsCreate: (
-    body: ResourceGroupsPostRequest,
+    body: BckndResourceGroupsPostRequest,
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<ResourceGroupBase>(
+    new OpenApiRequestBuilder<BckndResourceGroupBase>(
       'post',
       '/admin/resourceGroups',
       {
@@ -72,7 +72,7 @@ export const ResourceGroupApi = {
     resourceGroupId: string,
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<ResourceGroup>(
+    new OpenApiRequestBuilder<BckndResourceGroup>(
       'get',
       '/admin/resourceGroups/{resourceGroupId}',
       {
@@ -90,7 +90,7 @@ export const ResourceGroupApi = {
    */
   kubesubmitV4ResourcegroupsPatch: (
     resourceGroupId: string,
-    body: ResourceGroupPatchRequest,
+    body: BckndResourceGroupPatchRequest,
     headerParameters?: { Authorization?: string }
   ) =>
     new OpenApiRequestBuilder<any>(
@@ -113,7 +113,7 @@ export const ResourceGroupApi = {
     resourceGroupId: string,
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<ResourceGroupDeletionResponse>(
+    new OpenApiRequestBuilder<BckndResourceGroupDeletionResponse>(
       'delete',
       '/admin/resourceGroups/{resourceGroupId}',
       {

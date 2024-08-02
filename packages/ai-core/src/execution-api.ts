@@ -5,39 +5,22 @@
  */
 import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
 import type {
-  ExecutionCreationResponse,
-  ExecutionList,
-  EnactmentCreationRequest,
-  ExecutionBulkModificationResponse,
-  ExecutionResponseWithDetails,
-  ExecutionModificationRequest,
-  ExecutionModificationResponse,
-  ExecutionDeletionResponse,
-  LogCommonResponse
-} from './schema/index.js';
+  AiExecutionList,
+  AiEnactmentCreationRequest,
+  AiExecutionCreationResponse,
+  AiExecutionBulkModificationRequest,
+  AiExecutionBulkModificationResponse,
+  AiExecutionResponseWithDetails,
+  AiExecutionModificationRequest,
+  AiExecutionModificationResponse,
+  AiExecutionDeletionResponse,
+  RTALogCommonResponse
+} from './schema';
 /**
  * Representation of the 'ExecutionApi'.
  * This API is part of the 'AI_CORE_API' service.
  */
 export const ExecutionApi = {
-  /**
-   * Trigger execution. Deprecated. Use POST /executions instead
-   * @param configurationId - Configuration identifier
-   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
-   * @returns The request builder, use the `execute()` method to trigger the request.
-   */
-  executionCreateDeprecated: (
-    configurationId: string,
-    headerParameters: { 'AI-Resource-Group': string }
-  ) =>
-    new OpenApiRequestBuilder<ExecutionCreationResponse>(
-      'post',
-      '/lm/configurations/{configurationId}/executions',
-      {
-        pathParameters: { configurationId },
-        headerParameters
-      }
-    ),
   /**
    * Retrieve a list of executions that match the specified filter criteria.
    * Filter criteria include a list of executableIds, a scenarioId, a configurationId, or a execution status.
@@ -68,7 +51,7 @@ export const ExecutionApi = {
     },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<ExecutionList>('get', '/lm/executions', {
+    new OpenApiRequestBuilder<AiExecutionList>('get', '/lm/executions', {
       queryParameters,
       headerParameters
     }),
@@ -79,10 +62,10 @@ export const ExecutionApi = {
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   executionCreate: (
-    body: EnactmentCreationRequest,
+    body: AiEnactmentCreationRequest,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<ExecutionCreationResponse>(
+    new OpenApiRequestBuilder<AiExecutionCreationResponse>(
       'post',
       '/lm/executions',
       {
@@ -97,10 +80,10 @@ export const ExecutionApi = {
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   executionBatchModify: (
-    body: any,
+    body: AiExecutionBulkModificationRequest,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<ExecutionBulkModificationResponse>(
+    new OpenApiRequestBuilder<AiExecutionBulkModificationResponse>(
       'patch',
       '/lm/executions',
       {
@@ -120,7 +103,7 @@ export const ExecutionApi = {
     queryParameters: { $select?: 'status' },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<ExecutionResponseWithDetails>(
+    new OpenApiRequestBuilder<AiExecutionResponseWithDetails>(
       'get',
       '/lm/executions/{executionId}',
       {
@@ -138,10 +121,10 @@ export const ExecutionApi = {
    */
   executionModify: (
     executionId: string,
-    body: ExecutionModificationRequest,
+    body: AiExecutionModificationRequest,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<ExecutionModificationResponse>(
+    new OpenApiRequestBuilder<AiExecutionModificationResponse>(
       'patch',
       '/lm/executions/{executionId}',
       {
@@ -160,7 +143,7 @@ export const ExecutionApi = {
     executionId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<ExecutionDeletionResponse>(
+    new OpenApiRequestBuilder<AiExecutionDeletionResponse>(
       'delete',
       '/lm/executions/{executionId}',
       {
@@ -214,7 +197,7 @@ export const ExecutionApi = {
     },
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<LogCommonResponse>(
+    new OpenApiRequestBuilder<RTALogCommonResponse>(
       'get',
       '/lm/executions/{executionId}/logs',
       {

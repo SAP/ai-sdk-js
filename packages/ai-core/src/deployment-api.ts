@@ -5,39 +5,22 @@
  */
 import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
 import type {
-  DeploymentCreationResponse,
-  DeploymentList,
-  DeploymentCreationRequest,
-  DeploymentBulkModificationResponse,
-  DeploymentResponseWithDetails,
-  DeploymentModificationRequest,
-  DeploymentModificationResponse,
-  DeploymentDeletionResponse,
-  LogCommonResponse
-} from './schema/index.js';
+  AiDeploymentList,
+  AiDeploymentCreationRequest,
+  AiDeploymentCreationResponse,
+  AiDeploymentBulkModificationRequest,
+  AiDeploymentBulkModificationResponse,
+  AiDeploymentResponseWithDetails,
+  AiDeploymentModificationRequest,
+  AiDeploymentModificationResponse,
+  AiDeploymentDeletionResponse,
+  RTALogCommonResponse
+} from './schema';
 /**
  * Representation of the 'DeploymentApi'.
  * This API is part of the 'AI_CORE_API' service.
  */
 export const DeploymentApi = {
-  /**
-   * Create deployment. Deprecated, use POST /deployments instead
-   * @param configurationId - Configuration identifier
-   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
-   * @returns The request builder, use the `execute()` method to trigger the request.
-   */
-  deploymentCreateDeprecated: (
-    configurationId: string,
-    headerParameters: { 'AI-Resource-Group': string }
-  ) =>
-    new OpenApiRequestBuilder<DeploymentCreationResponse>(
-      'post',
-      '/lm/configurations/{configurationId}/deployments',
-      {
-        pathParameters: { configurationId },
-        headerParameters
-      }
-    ),
   /**
    * Retrieve a list of deployments that match the specified filter criteria.
    * Filter criteria include a list of executableIds, a scenarioId, a configurationId, or a deployment status.
@@ -67,21 +50,23 @@ export const DeploymentApi = {
     },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<DeploymentList>('get', '/lm/deployments', {
+    new OpenApiRequestBuilder<AiDeploymentList>('get', '/lm/deployments', {
       queryParameters,
       headerParameters
     }),
   /**
-   * Create a deployment using the configuration specified by configurationId.
+   * Create a deployment using the configuration specified by configurationId after synchronously checking the
+   * correctness of the configuration.
+   *
    * @param body - Request body.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   deploymentCreate: (
-    body: DeploymentCreationRequest,
+    body: AiDeploymentCreationRequest,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<DeploymentCreationResponse>(
+    new OpenApiRequestBuilder<AiDeploymentCreationResponse>(
       'post',
       '/lm/deployments',
       {
@@ -96,10 +81,10 @@ export const DeploymentApi = {
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   deploymentBatchModify: (
-    body: any,
+    body: AiDeploymentBulkModificationRequest,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<DeploymentBulkModificationResponse>(
+    new OpenApiRequestBuilder<AiDeploymentBulkModificationResponse>(
       'patch',
       '/lm/deployments',
       {
@@ -119,7 +104,7 @@ export const DeploymentApi = {
     queryParameters: { $select?: 'status' },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<DeploymentResponseWithDetails>(
+    new OpenApiRequestBuilder<AiDeploymentResponseWithDetails>(
       'get',
       '/lm/deployments/{deploymentId}',
       {
@@ -129,7 +114,10 @@ export const DeploymentApi = {
       }
     ),
   /**
-   * Update target status of a deployment to stop a deployment or change the configuration to be used by the deployment. A change of configuration is only allowed for RUNNING and PENDING deployments.
+   * Update target status of a deployment to stop a deployment or change the configuration to be used by the
+   * deployment after synchronously checking the correctness of the configuration. A change of configuration is only
+   * allowed for RUNNING and PENDING deployments.
+   *
    * @param deploymentId - Deployment identifier
    * @param body - Request body.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
@@ -137,10 +125,10 @@ export const DeploymentApi = {
    */
   deploymentModify: (
     deploymentId: string,
-    body: DeploymentModificationRequest,
+    body: AiDeploymentModificationRequest,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<DeploymentModificationResponse>(
+    new OpenApiRequestBuilder<AiDeploymentModificationResponse>(
       'patch',
       '/lm/deployments/{deploymentId}',
       {
@@ -159,7 +147,7 @@ export const DeploymentApi = {
     deploymentId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<DeploymentDeletionResponse>(
+    new OpenApiRequestBuilder<AiDeploymentDeletionResponse>(
       'delete',
       '/lm/deployments/{deploymentId}',
       {
@@ -212,7 +200,7 @@ export const DeploymentApi = {
     },
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<LogCommonResponse>(
+    new OpenApiRequestBuilder<RTALogCommonResponse>(
       'get',
       '/lm/deployments/{deploymentId}/logs',
       {

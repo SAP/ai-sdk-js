@@ -5,14 +5,14 @@
  */
 import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
 import type {
-  ExecutionScheduleList,
-  ExecutionScheduleCreationData,
-  ExecutionScheduleCreationResponse,
-  ExecutionSchedule,
-  ExecutionScheduleModificationRequest,
-  ExecutionScheduleModificationResponse,
-  ExecutionScheduleDeletionResponse
-} from './schema/index.js';
+  AiExecutionScheduleList,
+  AiExecutionScheduleCreationData,
+  AiExecutionScheduleCreationResponse,
+  AiExecutionSchedule,
+  AiExecutionScheduleModificationRequest,
+  AiExecutionScheduleModificationResponse,
+  AiExecutionScheduleDeletionResponse
+} from './schema';
 /**
  * Representation of the 'ExecutionScheduleApi'.
  * This API is part of the 'AI_CORE_API' service.
@@ -36,7 +36,7 @@ export const ExecutionScheduleApi = {
     },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<ExecutionScheduleList>(
+    new OpenApiRequestBuilder<AiExecutionScheduleList>(
       'get',
       '/lm/executionSchedules',
       {
@@ -51,10 +51,10 @@ export const ExecutionScheduleApi = {
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   executionScheduleCreate: (
-    body: ExecutionScheduleCreationData,
+    body: AiExecutionScheduleCreationData,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<ExecutionScheduleCreationResponse>(
+    new OpenApiRequestBuilder<AiExecutionScheduleCreationResponse>(
       'post',
       '/lm/executionSchedules',
       {
@@ -72,7 +72,7 @@ export const ExecutionScheduleApi = {
     executionScheduleId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<ExecutionSchedule>(
+    new OpenApiRequestBuilder<AiExecutionSchedule>(
       'get',
       '/lm/executionSchedules/{executionScheduleId}',
       {
@@ -89,10 +89,10 @@ export const ExecutionScheduleApi = {
    */
   executionScheduleModify: (
     executionScheduleId: string,
-    body: ExecutionScheduleModificationRequest,
+    body: AiExecutionScheduleModificationRequest,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<ExecutionScheduleModificationResponse>(
+    new OpenApiRequestBuilder<AiExecutionScheduleModificationResponse>(
       'patch',
       '/lm/executionSchedules/{executionScheduleId}',
       {
@@ -111,7 +111,7 @@ export const ExecutionScheduleApi = {
     executionScheduleId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<ExecutionScheduleDeletionResponse>(
+    new OpenApiRequestBuilder<AiExecutionScheduleDeletionResponse>(
       'delete',
       '/lm/executionSchedules/{executionScheduleId}',
       {

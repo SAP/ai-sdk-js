@@ -2,9 +2,9 @@ import nock from 'nock';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import {
   ConfigurationApi,
-  ConfigurationBaseData,
-  ConfigurationCreationResponse,
-  ConfigurationList
+  AiConfigurationBaseData,
+  AiConfigurationCreationResponse,
+  AiConfigurationList
 } from './index.js';
 
 describe('configuration', () => {
@@ -17,7 +17,7 @@ describe('configuration', () => {
   });
 
   it('parses a successful response for get request', async () => {
-    const expectedResponse: ConfigurationList = {
+    const expectedResponse: AiConfigurationList = {
       count: 1,
       resources: [
         {
@@ -51,16 +51,17 @@ describe('configuration', () => {
         'Content-Type': 'application/json'
       });
 
-    const result: ConfigurationList = await ConfigurationApi.configurationQuery(
-      {},
-      { 'AI-Resource-Group': 'default' }
-    ).execute(destination);
+    const result: AiConfigurationList =
+      await ConfigurationApi.configurationQuery(
+        {},
+        { 'AI-Resource-Group': 'default' }
+      ).execute(destination);
 
     expect(result).toEqual(expectedResponse);
   });
 
   it('parses a successful response for post request', async () => {
-    const expectedResponse: ConfigurationCreationResponse = {
+    const expectedResponse: AiConfigurationCreationResponse = {
       id: '3d2c1b0a',
       message: 'Configuration created'
     };
@@ -75,7 +76,7 @@ describe('configuration', () => {
         'Content-Type': 'application/json'
       });
 
-    const configurationPostData: ConfigurationBaseData = {
+    const configurationPostData: AiConfigurationBaseData = {
       name: 'training-test-config',
       executableId: 'azure-openai',
       scenarioId: 'foundation-models',
@@ -87,7 +88,7 @@ describe('configuration', () => {
       ]
     };
 
-    const result: ConfigurationCreationResponse =
+    const result: AiConfigurationCreationResponse =
       await ConfigurationApi.configurationCreate(configurationPostData, {
         'AI-Resource-Group': 'default'
       }).execute(destination);

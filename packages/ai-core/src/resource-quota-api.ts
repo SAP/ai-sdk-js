@@ -5,9 +5,9 @@
  */
 import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
 import type {
-  CommonResourceQuotaResponse,
-  ExecutableResourceQuotaResponse
-} from './schema/index.js';
+  BckndCommonResourceQuotaResponse,
+  BckndExecutableResourceQuotaResponse
+} from './schema';
 /**
  * Representation of the 'ResourceQuotaApi'.
  * This API is part of the 'AI_CORE_API' service.
@@ -23,7 +23,7 @@ export const ResourceQuotaApi = {
     queryParameters?: { quotaOnly?: boolean },
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<CommonResourceQuotaResponse>(
+    new OpenApiRequestBuilder<BckndCommonResourceQuotaResponse>(
       'get',
       '/admin/resourceQuota/resourceGroups',
       {
@@ -41,7 +41,7 @@ export const ResourceQuotaApi = {
     queryParameters?: { quotaOnly?: boolean },
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<ExecutableResourceQuotaResponse>(
+    new OpenApiRequestBuilder<BckndExecutableResourceQuotaResponse>(
       'get',
       '/admin/resourceQuota/executables',
       {
@@ -59,7 +59,7 @@ export const ResourceQuotaApi = {
     queryParameters?: { quotaOnly?: boolean },
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<CommonResourceQuotaResponse>(
+    new OpenApiRequestBuilder<BckndCommonResourceQuotaResponse>(
       'get',
       '/admin/resourceQuota/applications',
       {
@@ -77,7 +77,7 @@ export const ResourceQuotaApi = {
     queryParameters?: { quotaOnly?: boolean },
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<CommonResourceQuotaResponse>(
+    new OpenApiRequestBuilder<BckndCommonResourceQuotaResponse>(
       'get',
       '/admin/resourceQuota/repositories',
       {
@@ -95,7 +95,7 @@ export const ResourceQuotaApi = {
     queryParameters?: { quotaOnly?: boolean },
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<CommonResourceQuotaResponse>(
+    new OpenApiRequestBuilder<BckndCommonResourceQuotaResponse>(
       'get',
       '/admin/resourceQuota/secrets',
       {
@@ -113,7 +113,7 @@ export const ResourceQuotaApi = {
     queryParameters?: { quotaOnly?: boolean },
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<CommonResourceQuotaResponse>(
+    new OpenApiRequestBuilder<BckndCommonResourceQuotaResponse>(
       'get',
       '/admin/resourceQuota/dockerRegistrySecrets',
       {

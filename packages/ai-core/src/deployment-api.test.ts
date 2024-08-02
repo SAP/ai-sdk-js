@@ -1,14 +1,14 @@
 import nock from 'nock';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import {
-  DeploymentCreationRequest,
-  DeploymentCreationResponse,
-  DeploymentDeletionResponse,
-  DeploymentList,
-  DeploymentModificationRequest,
+  AiDeploymentCreationRequest,
+  AiDeploymentCreationResponse,
+  AiDeploymentDeletionResponse,
+  AiDeploymentList,
+  AiDeploymentModificationRequest,
   DeploymentApi,
-  DeploymentModificationResponse,
-  DeploymentTargetStatus
+  AiDeploymentModificationResponse,
+  AiDeploymentTargetStatus
 } from './index.js';
 
 describe('deployment', () => {
@@ -21,7 +21,7 @@ describe('deployment', () => {
   });
 
   it('parses a successful response for get request', async () => {
-    const expectedResponse: DeploymentList = {
+    const expectedResponse: AiDeploymentList = {
       count: 1,
       resources: [
         {
@@ -66,7 +66,7 @@ describe('deployment', () => {
         'Content-Type': 'application/json'
       });
 
-    const result: DeploymentList = await DeploymentApi.deploymentQuery(
+    const result: AiDeploymentList = await DeploymentApi.deploymentQuery(
       {},
       { 'AI-Resource-Group': 'default' }
     ).execute(destination);
@@ -75,7 +75,7 @@ describe('deployment', () => {
   });
 
   it('parses a successful response for post request', async () => {
-    const expectedResponse: DeploymentCreationResponse = {
+    const expectedResponse: AiDeploymentCreationResponse = {
       deploymentUrl: '',
       id: '4e5f6g7h',
       message: 'Deployment scheduled',
@@ -92,11 +92,11 @@ describe('deployment', () => {
         'Content-Type': 'application/json'
       });
 
-    const deploymentPostData: DeploymentCreationRequest = {
+    const deploymentPostData: AiDeploymentCreationRequest = {
       configurationId: '3d2c1b0a'
     };
 
-    const result: DeploymentCreationResponse =
+    const result: AiDeploymentCreationResponse =
       await DeploymentApi.deploymentCreate(deploymentPostData, {
         'AI-Resource-Group': 'default'
       }).execute(destination);
@@ -109,7 +109,7 @@ describe('deployment', () => {
     const expectedRequestBody = {
       targetStatus: 'STOPPED'
     };
-    const expectedResponse: DeploymentModificationResponse = {
+    const expectedResponse: AiDeploymentModificationResponse = {
       id: '4e5f6g7h',
       message: 'Deployment modification scheduled'
     };
@@ -127,11 +127,11 @@ describe('deployment', () => {
         'Content-Type': 'application/json'
       });
 
-    const deploymentPatchData: DeploymentModificationRequest = {
-      targetStatus: 'STOPPED' as DeploymentTargetStatus
+    const deploymentPatchData: AiDeploymentModificationRequest = {
+      targetStatus: 'STOPPED' as AiDeploymentTargetStatus
     };
 
-    const result: DeploymentModificationResponse =
+    const result: AiDeploymentModificationResponse =
       await DeploymentApi.deploymentModify(deploymentId, deploymentPatchData, {
         'AI-Resource-Group': 'default'
       }).execute(destination);
@@ -141,7 +141,7 @@ describe('deployment', () => {
 
   it('parses a successful response for delete request', async () => {
     const deploymentId = '4e5f6g7h';
-    const expectedResponse: DeploymentDeletionResponse = {
+    const expectedResponse: AiDeploymentDeletionResponse = {
       id: '4e5f6g7h',
       message: 'Deletion scheduled',
       targetStatus: 'DELETED'
@@ -157,7 +157,7 @@ describe('deployment', () => {
         'Content-Type': 'application/json'
       });
 
-    const result: DeploymentDeletionResponse =
+    const result: AiDeploymentDeletionResponse =
       await DeploymentApi.deploymentDelete(deploymentId, {
         'AI-Resource-Group': 'default'
       }).execute(destination);

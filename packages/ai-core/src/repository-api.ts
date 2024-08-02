@@ -5,14 +5,14 @@
  */
 import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
 import type {
-  ArgoCDRepositoryDataResponse,
-  ArgoCDRepositoryData,
-  ArgoCDRepositoryCreationResponse,
-  ArgoCDRepositoryDetails,
-  ArgoCDRepositoryCredentials,
-  ArgoCDRepositoryModificationResponse,
-  ArgoCDRepositoryDeletionResponse
-} from './schema/index.js';
+  BckndArgoCDRepositoryDataResponse,
+  BckndArgoCDRepositoryData,
+  BckndArgoCDRepositoryCreationResponse,
+  BckndArgoCDRepositoryDetails,
+  BckndArgoCDRepositoryCredentials,
+  BckndArgoCDRepositoryModificationResponse,
+  BckndArgoCDRepositoryDeletionResponse
+} from './schema';
 /**
  * Representation of the 'RepositoryApi'.
  * This API is part of the 'AI_CORE_API' service.
@@ -28,7 +28,7 @@ export const RepositoryApi = {
     queryParameters?: { $top?: number; $skip?: number; $count?: boolean },
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<ArgoCDRepositoryDataResponse>(
+    new OpenApiRequestBuilder<BckndArgoCDRepositoryDataResponse>(
       'get',
       '/admin/repositories',
       {
@@ -43,10 +43,10 @@ export const RepositoryApi = {
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   kubesubmitV4RepositoriesCreate: (
-    body: ArgoCDRepositoryData,
+    body: BckndArgoCDRepositoryData,
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<ArgoCDRepositoryCreationResponse>(
+    new OpenApiRequestBuilder<BckndArgoCDRepositoryCreationResponse>(
       'post',
       '/admin/repositories',
       {
@@ -64,7 +64,7 @@ export const RepositoryApi = {
     repositoryName: string,
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<ArgoCDRepositoryDetails>(
+    new OpenApiRequestBuilder<BckndArgoCDRepositoryDetails>(
       'get',
       '/admin/repositories/{repositoryName}',
       {
@@ -82,10 +82,10 @@ export const RepositoryApi = {
    */
   kubesubmitV4RepositoriesUpdate: (
     repositoryName: string,
-    body: ArgoCDRepositoryCredentials,
+    body: BckndArgoCDRepositoryCredentials,
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<ArgoCDRepositoryModificationResponse>(
+    new OpenApiRequestBuilder<BckndArgoCDRepositoryModificationResponse>(
       'patch',
       '/admin/repositories/{repositoryName}',
       {
@@ -104,7 +104,7 @@ export const RepositoryApi = {
     repositoryName: string,
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<ArgoCDRepositoryDeletionResponse>(
+    new OpenApiRequestBuilder<BckndArgoCDRepositoryDeletionResponse>(
       'delete',
       '/admin/repositories/{repositoryName}',
       {

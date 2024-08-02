@@ -4,7 +4,7 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
-import type { ExecutableList, Executable } from './schema/index.js';
+import type { AiExecutableList, AiExecutable } from './schema';
 /**
  * Representation of the 'ExecutableApi'.
  * This API is part of the 'AI_CORE_API' service.
@@ -23,7 +23,7 @@ export const ExecutableApi = {
     queryParameters: { versionId?: string },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<ExecutableList>(
+    new OpenApiRequestBuilder<AiExecutableList>(
       'get',
       '/lm/scenarios/{scenarioId}/executables',
       {
@@ -46,7 +46,7 @@ export const ExecutableApi = {
     executableId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<Executable>(
+    new OpenApiRequestBuilder<AiExecutable>(
       'get',
       '/lm/scenarios/{scenarioId}/executables/{executableId}',
       {
