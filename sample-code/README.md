@@ -17,9 +17,9 @@ Build the project with:
 
 Call the test endpoints:
 
-* [Hello World](localhost:8080/)
-* [Simple Chat Completion](localhost:8080/llm)
-* [Simple Embedding Call](localhost:8080/embedding)
+- [Hello World](localhost:8080/)
+- [Simple Chat Completion](localhost:8080/llm)
+- [Simple Embedding Call](localhost:8080/embedding)
 
 Deploy to CF with:
 

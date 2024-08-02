@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/namespace
 import { OpenAiClient } from '@sap-ai-sdk/gen-ai-hub';
 
 const openAiClient = new OpenAiClient();
