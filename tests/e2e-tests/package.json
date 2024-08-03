@@ -3,23 +3,24 @@
 	"name": "@sap-ai-sdk/e2e-tests",
 	"version": "0.0.1",
 	"main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist/**/*.js",
-    "dist/**/*.js.map",
-    "dist/**/*.d.ts",
-    "dist/**/*.d.ts.map"
-  ],
+	"types": "./dist/index.d.ts",
+	"files": [
+		"dist/**/*.js",
+		"dist/**/*.js.map",
+		"dist/**/*.d.ts",
+		"dist/**/*.d.ts.map"
+	],
 	"dependencies": {
 		"@sap-ai-sdk/sample-code": "workspace:^"
 	},
 	"scripts": {
 		"compile": "tsc",
-    "test": "jest",
+		"e2e-test": "NODE_OPTIONS=--experimental-vm-modules jest",
 		"lint": "prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
-    "lint:fix": "prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
+		"lint:fix": "prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
 	},
 	"devDependencies": {
-    "typescript": "^5.5.4"
-  }
+		"dotenv": "^16.4.5",
+		"typescript": "^5.5.4"
+	}
 }
