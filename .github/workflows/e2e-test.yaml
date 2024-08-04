@@ -53,7 +53,6 @@ jobs:
       - name: "Execute E2E Tests"
         working-directory: ./tests/e2e-tests
         run: |
-          pnpm i
           pnpm run e2e-test
       - name: "Slack Notification"
         if: false
