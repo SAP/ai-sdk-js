@@ -99,19 +99,6 @@ importers:
         specifier: ^4.19.2
         version: 4.19.2
 
-  tests/e2e-tests:
-    dependencies:
-      '@sap-ai-sdk/sample-code':
-        specifier: workspace:^
-        version: link:../../sample-code
-    devDependencies:
-      dotenv:
-        specifier: ^16.4.5
-        version: 16.4.5
-      typescript:
-        specifier: ^5.5.4
-        version: 5.5.4
-
 packages:
 
   '@ampproject/remapping@2.3.0':
@@ -1154,10 +1141,6 @@ packages:
   doctrine@2.1.0:
     resolution: {integrity: sha512-35mSku4ZXK0vfCuHEDAwt55dg2jNajHZ1odvF+8SSr82EsZY4QmXfuWso8oEd8zRhVObSN18aM0CjSdoBX7zIw==}
     engines: {node: '>=0.10.0'}
-
-  dotenv@16.4.5:
-    resolution: {integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==}
-    engines: {node: '>=12'}
 
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
@@ -4437,8 +4420,6 @@ snapshots:
   doctrine@2.1.0:
     dependencies:
       esutils: 2.0.3
-
-  dotenv@16.4.5: {}
 
   eastasianwidth@0.2.0: {}
 
