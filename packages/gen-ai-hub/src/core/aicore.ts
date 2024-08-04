@@ -16,12 +16,9 @@ export interface FoundationModel {
   version: string;
 }
 
-export class AiDeployment {
+export interface AiDeployment {
   id: string;
   scenarioId?: string;
-  constructor(deploymentId: string) {
-    this.id = deploymentId;
-  }
 }
 
 export type DeploymentResolver = AiDeployment | (() => Promise<AiDeployment>);
@@ -52,10 +49,8 @@ export async function resolveDeployment(opts: { scenarioId: string, executableId
   if (deploymentList.length === 0) {
     throw new Error('No deployment matched the given criteria: ' + JSON.stringify(opts));
   }
-  const deployment = deploymentList[0];
-  const result = new AiDeployment(deployment.id)
-  result.scenarioId = deployment.scenarioId;
-  return result;
+  const { id, scenarioId } = deploymentList[0];
+	return { id, scenarioId };
 }
 
 const modelExtractor = (deployment: any) => { return deployment.details?.resources?.backend_details?.model; };
