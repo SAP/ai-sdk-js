@@ -166,7 +166,7 @@ const config = {
   // This option allows use of a custom test runner
   // testRunner: "jest-circus/runner",
 
-  extensionsToTreatAsEsm: ['.ts'],
+  // extensionsToTreatAsEsm: ['.ts'],
 
   // A map from regular expressions to paths to transformers
   transform: {
@@ -188,7 +188,7 @@ const config = {
   // unmockedModulePathPatterns: undefined,
 
   // Indicates whether each individual test should be reported during the run
-  verbose: true,
+  // verbose: true,
 
   // An array of regexp patterns that are matched against all source file paths before re-running tests in watch mode
   // watchPathIgnorePatterns: [],
