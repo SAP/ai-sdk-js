@@ -1,4 +1,7 @@
-import { GenAiHubClient, GenAiHubCompletionParameters } from '@sap-ai-sdk/gen-ai-hub';
+import {
+  GenAiHubClient,
+  GenAiHubCompletionParameters
+} from '@sap-ai-sdk/gen-ai-hub';
 import 'dotenv/config';
 
 describe('orchestration', () => {
@@ -14,7 +17,7 @@ describe('orchestration', () => {
       }
     };
     const response = await new GenAiHubClient().chatCompletion(request);
-    
+
     expect(response.module_results).toBeDefined();
     expect(response.orchestration_result.choices).not.toHaveLength(0);
   });
