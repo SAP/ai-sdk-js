@@ -11,7 +11,9 @@
     "dist/**/*.d.ts.map"
   ],
   "dependencies": {
-    "@sap-ai-sdk/sample-code": "workspace:^"
+    "@sap-ai-sdk/sample-code": "workspace:^",
+    "@sap-ai-sdk/gen-ai-hub": "workspace:^",
+    "@sap-ai-sdk/ai-core": "workspace:^"
   },
   "scripts": {
     "compile": "tsc",

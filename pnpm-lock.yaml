@@ -97,6 +97,12 @@ importers:
 
   tests/e2e-tests:
     dependencies:
+      '@sap-ai-sdk/ai-core':
+        specifier: workspace:^
+        version: link:../../packages/ai-core
+      '@sap-ai-sdk/gen-ai-hub':
+        specifier: workspace:^
+        version: link:../../packages/gen-ai-hub
       '@sap-ai-sdk/sample-code':
         specifier: workspace:^
         version: link:../../sample-code
