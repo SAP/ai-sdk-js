@@ -8,6 +8,7 @@ import {
   mockInference,
   parseMockResponse
 } from '../../../test-util/mock-http.js';
+import { AiDeployment } from '../../core/aicore.js';
 import { OpenAiClient } from './openai-client.js';
 import {
   OpenAiChatCompletionOutput,
@@ -15,7 +16,6 @@ import {
   OpenAiEmbeddingOutput,
   OpenAiModels
 } from './openai-types.js';
-import { AiDeployment } from '../../core/aicore.js';
 
 describe('openai client', () => {
   let destination: HttpDestination;
@@ -25,7 +25,7 @@ describe('openai client', () => {
 
   beforeAll(() => {
     destination = mockGetAiCoreDestination();
-    deployment = { id: 'mock', scenarioId: 'my-custom-scenario' }
+    deployment = { id: 'mock', scenarioId: 'my-custom-scenario' };
 
     chatCompletionEndpoint = {
       deploymentId: deployment.id,
@@ -60,9 +60,9 @@ describe('openai client', () => {
       mockInference({
         request: {
           endpoint: chatCompletionEndpoint,
-          destination: destination,
+          destination,
           data: prompt,
-          query: { 'api-version': '2024-02-01'}
+          query: { 'api-version': '2024-02-01' }
         }, response: {
           status: 200, data: mockResponse
         }
@@ -83,11 +83,11 @@ describe('openai client', () => {
       mockInference({
         request: {
           endpoint: chatCompletionEndpoint,
-          destination: destination
+          destination
         }, response: {
           status: 400, data: mockResponse
         }
-      })
+      });
 
       await expect(
         new OpenAiClient().chatCompletion(OpenAiModels.GPT_4o, prompt, deployment)
@@ -106,7 +106,7 @@ describe('openai client', () => {
       mockInference({
         request: {
           endpoint: embeddingsEndpoint,
-          destination: destination,
+          destination,
           data: prompt
         }, response: {
           status: 200, data: mockResponse
@@ -128,7 +128,7 @@ describe('openai client', () => {
       mockInference({
         request: {
           endpoint: embeddingsEndpoint,
-          destination: destination
+          destination
         }, response: {
           status: 400, data: mockResponse
         }

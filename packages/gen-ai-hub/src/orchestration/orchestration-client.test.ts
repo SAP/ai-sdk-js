@@ -2,14 +2,14 @@ import nock from 'nock';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import { mockGetAiCoreDestination } from '../../test-util/mock-context.js';
 import { mockInference, parseMockResponse } from '../../test-util/mock-http.js';
+import { AiDeployment } from '../core/aicore.js';
+import { EndpointOptions } from '../core/http-client.js';
 import {
   constructCompletionPostRequest,
   OrchestrationService
 } from './orchestration-client.js';
 import { CompletionPostResponse } from './api/index.js';
 import { OrchestrationCompletionParameters } from './orchestration-types.js';
-import { AiDeployment } from '../core/aicore.js';
-import { EndpointOptions } from '../core/http-client.js';
 
 describe('OrchestrationService', () => {
   let destination: HttpDestination;
@@ -48,13 +48,13 @@ describe('OrchestrationService', () => {
     mockInference({
       request:{
         data: mockResponse,
-        destination: destination,
+        destination,
         endpoint: mockEndpoint
       },
       response: {
         status: 200,
         data: mockResponse
-      }}
+      } }
     );
     expect(client.chatCompletion(input, mockDeployment)).resolves.toEqual(mockResponse);
   });
@@ -89,17 +89,17 @@ describe('OrchestrationService', () => {
       'orchestration',
       'genaihub-chat-completion-message-history.json'
     );
-  
+
     mockInference({
       request:{
         data: mockResponse,
-        destination: destination,
+        destination,
         endpoint: mockEndpoint
       },
       response: {
         status: 200,
         data: mockResponse
-      }}
+      } }
     );
 
     expect(client.chatCompletion(request, mockDeployment)).resolves.toEqual(mockResponse);

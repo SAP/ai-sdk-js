@@ -1,6 +1,5 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import {
-  Destination,
   HttpDestination,
   Service,
   getServiceBinding,

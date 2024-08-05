@@ -1,6 +1,5 @@
-import { DeploymentApi } from '@sap-ai-sdk/ai-core';
-import { executeRequest, CustomRequestConfig, DeploymentResolver, AiDeployment, resolveDeployment } from '../core/index.js';
-import { CompletionPostRequest, OrchestrationConfig } from './api/schema/index.js';
+import { executeRequest, CustomRequestConfig, DeploymentResolver, resolveDeployment } from '../core/index.js';
+import { CompletionPostRequest } from './api/schema/index.js';
 import { OrchestrationCompletionParameters, OrchestrationResponse } from './orchestration-types.js';
 
 /**
@@ -23,7 +22,7 @@ export class OrchestrationService {
     };
 
     const deployment =  typeof deploymentResolver === 'function' ? await deploymentResolver() : deploymentResolver;
-    
+
     const response = await executeRequest(
       { deploymentId: deployment.id, path: '/completion' },
       dataWithInputParams,

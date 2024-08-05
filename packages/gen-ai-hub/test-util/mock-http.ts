@@ -2,22 +2,22 @@ import fs from 'fs';
 import path from 'path';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import nock from 'nock';
+import { removeLeadingSlashes } from '@sap-cloud-sdk/util';
 import {
   EndpointOptions
 } from '../src/core/http-client.js';
-import { removeLeadingSlashes } from '@sap-cloud-sdk/util';
 
 export function mockInference(stub: {
   request: {
-    endpoint: EndpointOptions,
-    destination: HttpDestination,
-    data?: any,
+    endpoint: EndpointOptions;
+    destination: HttpDestination;
+    data?: any;
     query?: Record<string, string>;
-  },
+  };
   response: {
     status: number;
     data?: any;
-  }}
+  };}
 ): nock.Scope {
   return nock(stub.request.destination.url, {
     reqheaders: {

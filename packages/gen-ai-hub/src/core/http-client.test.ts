@@ -18,7 +18,7 @@ describe('http-client', () => {
       {
         request: {
           data: mockPrompt,
-          destination: destination,
+          destination,
           endpoint: mockEndpoint
         },
         response: {

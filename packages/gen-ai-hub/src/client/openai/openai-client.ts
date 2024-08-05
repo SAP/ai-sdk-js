@@ -13,7 +13,6 @@ import {
   OpenAiChatModel,
   OpenAiEmbeddingModel
 } from './openai-types.js';
-import { get } from 'http';
 
 const apiVersion = '2024-02-01';
 
@@ -76,4 +75,4 @@ export class OpenAiClient {
 
 function getDeploymentResolver(model: OpenAiChatModel | OpenAiEmbeddingModel) {
   return  () => resolveDeployment({ scenarioId: 'foundation-models', executableId: 'azure-openai', modelName: model.name, modelVersion: model.version });
-} 
+}
