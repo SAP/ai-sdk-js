@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/namespace
 import { OpenAiClient } from '@sap-ai-sdk/gen-ai-hub';
+import { OpenAiModels } from '@sap-ai-sdk/gen-ai-hub/dist/client/index.js';
 
 const openAiClient = new OpenAiClient();
 
@@ -14,10 +15,8 @@ const deployments: { [model: string]: string } = {
  * @returns The answer from GPT.
  */
 export function chatCompletion(): Promise<any> {
-  const config = getConfig('gpt-35-turbo');
   return openAiClient
-    .chatCompletion({
-      ...config,
+    .chatCompletion(OpenAiModels.GPT_35_TURBO,{
       messages: [{ role: 'user', content: 'What is the capital of France?' }]
     })
     .then(response => response.choices[0].message.content);
@@ -30,8 +29,7 @@ export function chatCompletion(): Promise<any> {
 export function computeEmbedding(): Promise<number[]> {
   const config = getConfig('ada');
   return openAiClient
-    .embeddings({
-      ...config,
+    .embeddings(OpenAiModels.ADA_002, {
       input: 'Hello, world!'
     })
     .then(response => response.data[0].embedding);
