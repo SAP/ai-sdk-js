@@ -5,8 +5,11 @@ import 'dotenv/config';
 
 describe('ai-core', () => {
   test.skip('should get deployments, but is currently broken', async () => {
-    const d = await getAiCoreDestination() as HttpDestination;
-    const deployments = await DeploymentApi.deploymentQuery({}, {"AI-Resource-Group": "default"} ).execute(d);
+    const d = (await getAiCoreDestination()) as HttpDestination;
+    const deployments = await DeploymentApi.deploymentQuery(
+      {},
+      { 'AI-Resource-Group': 'default' }
+    ).execute(d);
     expect(deployments).toBeDefined();
   });
 });
