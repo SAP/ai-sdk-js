@@ -10,7 +10,7 @@ on:
         description: 'Dist tag for the release. If you chose something different than "canary", make sure to delete it once it is not needed anymore.'
         type: string
         required: false
-        default: canary
+        default: 'canary'
 
 jobs:
   publish:
