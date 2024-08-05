@@ -14,13 +14,34 @@ Integrate chat completion into your business applications with SAP Cloud SDK for
 
 _Insert a short description what is required to get your project running..._
 
-# 📚 Documentation
-- [AI Core APIs](./docs/ai-core-APIs.md)
-## Pre-requisites for AI Core Deployment
-- Enable the AI Core service in BTP
-    - [More Info](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup)
-- Create a configuration in AI Core using the `/configuration` endpoint
-    - [Example Usage](./docs/ai-core-APIs.md#create-a-configuration)
+## Documentation
+
+## List of Available APIs
+We maintain a list of [currently available and tested AI Core APIs](./docs/list-tested-APIs.md)
+
+## Packages
+
+### @sap-ai-sdk/ai-core
+This package provides tools to manage your scenarios and workflows in SAP AI Core.
+
+- Streamline data preprocessing and model training pipelines
+- Execute batch inference jobs
+- Deploy inference endpoints for your trained models
+- Register custom Docker registries, sync AI content from your own git repositories, and register your own object storage for training data and model artifacts
+
+To install the SAP AI Core in your project, run:
+```
+$ npm install @sap-ai-sdk/ai-core
+```
+[See some example usage for the available APIs.](./packages/ai-core/README.md)
+
+### @sap-ai-sdk/gen-ai-hub
+This package incorporates generative AI into your AI activities in SAP AI Core and SAP AI Launchpad.
+
+To install the SAP Gen AI Hub in your project, run:
+```
+$ npm install @sap-ai-sdk/gen-ai-hub
+```
 
 ## Support, Feedback, Contributing
 
