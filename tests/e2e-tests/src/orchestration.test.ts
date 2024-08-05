@@ -5,7 +5,7 @@ import {
 import 'dotenv/config';
 
 describe('orchestration', () => {
-  test.skip('should complete a chat, but currently doesn\'t work', async () => {
+  test.skip("should complete a chat, but currently doesn't work", async () => {
     const request: GenAiHubCompletionParameters = {
       deploymentConfiguration: { deploymentId: 'db1d64d9f06be467' },
       llmConfig: {
