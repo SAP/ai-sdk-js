@@ -8,9 +8,15 @@ importers:
 
   .:
     devDependencies:
+      '@sap-cloud-sdk/connectivity':
+        specifier: ^3.17.0
+        version: 3.17.0
       '@sap-cloud-sdk/eslint-config':
-        specifier: ^3.14.0
+        specifier: ^3.17.0
         version: 3.17.0(@typescript-eslint/parser@7.18.0(eslint@9.8.0)(typescript@5.5.4))(eslint@9.8.0)(prettier@3.3.3)(typescript@5.5.4)
+      '@sap-cloud-sdk/http-client':
+        specifier: ^3.17.0
+        version: 3.17.0
       '@types/jest':
         specifier: ^29.5.12
         version: 29.5.12
@@ -45,10 +51,10 @@ importers:
   packages/ai-core:
     dependencies:
       '@sap-cloud-sdk/connectivity':
-        specifier: ^3.16.0
+        specifier: ^3.17.0
         version: 3.17.0
       '@sap-cloud-sdk/openapi':
-        specifier: ^3.16.0
+        specifier: ^3.17.0
         version: 3.17.0
     devDependencies:
       typescript:
@@ -61,14 +67,14 @@ importers:
         specifier: ^3.17.0
         version: 3.17.0
       '@sap-cloud-sdk/http-client':
-        specifier: ^3.16.0
+        specifier: ^3.17.0
         version: 3.17.0
       '@sap-cloud-sdk/util':
-        specifier: ^3.16.0
+        specifier: ^3.17.0
         version: 3.17.0
     devDependencies:
       '@sap-cloud-sdk/openapi-generator':
-        specifier: 3.17.0
+        specifier: ^3.17.0
         version: 3.17.0
       nock:
         specifier: ^13.5.4
