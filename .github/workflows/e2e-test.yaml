@@ -55,7 +55,7 @@ jobs:
         run: |
           pnpm run e2e-test
       - name: "Slack Notification"
-        if: false
+        if: failure()
         uses: slackapi/slack-github-action@v1.26.0
         with:
           payload: |
