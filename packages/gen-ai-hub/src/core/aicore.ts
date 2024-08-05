@@ -36,11 +36,19 @@ export async function resolveDeployment(opts: { scenarioId: string; executableId
     destination = await getAiCoreDestination();
   }
 
+  // TODO: is there a more elegant way to write this in TS?
+  let query: any;
+  if (opts.executableId) {
+    query = { scenarioId: opts.scenarioId, status: 'RUNNING', executableIds: [opts.executableId] }
+  } else {
+    query = { scenarioId: opts.scenarioId, status: 'RUNNING' }
+  }
+
   // TODO: add a cache
   let deploymentList: Deployment[];
   try {
     deploymentList = await DeploymentApi
-      .deploymentQuery({ scenarioId: opts.scenarioId, status: 'RUNNING', executableIds: opts.executableId ? [opts.executableId] : undefined }, { 'AI-Resource-Group': 'default' })
+      .deploymentQuery(query, { 'AI-Resource-Group': 'default' })
       .execute(destination).then((res) => res.resources);
   } catch (error) {
     throw new Error('Failed to fetch the list of deployments: ' + error);

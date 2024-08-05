@@ -1,7 +1,7 @@
 import nock from 'nock';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
-import { mockGetAiCoreDestination } from '../../test-util/mock-context.js';
-import { mockInference, parseMockResponse } from '../../test-util/mock-http.js';
+import { mockGetAiCoreDestination } from '../test-util/mock-context.js';
+import { mockInference, parseMockResponse } from '../test-util/mock-http.js';
 import { AiDeployment } from '../core/aicore.js';
 import { EndpointOptions } from '../core/http-client.js';
 import {
@@ -47,7 +47,7 @@ describe('OrchestrationService', () => {
 
     mockInference({
       request:{
-        data: mockResponse,
+        data: request,
         destination,
         endpoint: mockEndpoint
       },

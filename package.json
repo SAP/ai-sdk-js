@@ -24,6 +24,7 @@
     "@sap-cloud-sdk/connectivity": "^3.17.0",
     "@sap-cloud-sdk/http-client": "^3.17.0",
     "@types/jest": "^29.5.12",
+    "@jest/globals": "^29.5.12",
     "@types/node": "^20.14.14",
     "eslint": "^9.8.0",
     "jest": "^30.0.0-alpha.3",

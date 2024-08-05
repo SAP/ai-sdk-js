@@ -4,12 +4,12 @@ import { resolveDeployment } from './aicore';
 
 describe('AICore', () => {
   const destination: HttpDestination = {
-    url: '/'
+    url: 'http://foo.com/'
   };
 
   it('should be defined', () => {
-    nock('/v2')
-      .post(
+    nock('http://foo.com')
+      .get(
         '/lm/deployments'
       )
       .query({ 'scenarioId': 'foundation-models', 'status': 'RUNNING' })

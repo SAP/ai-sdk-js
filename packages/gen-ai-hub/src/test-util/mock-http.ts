@@ -5,7 +5,7 @@ import nock from 'nock';
 import { removeLeadingSlashes } from '@sap-cloud-sdk/util';
 import {
   EndpointOptions
-} from '../src/core/http-client.js';
+} from '../core/http-client.js';
 
 export function mockInference(stub: {
   request: {
