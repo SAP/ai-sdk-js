@@ -7,9 +7,9 @@
   "repository": "github:SAP/ai-sdk-js",
   "private": true,
   "type": "module",
-  "types": "type-tests",
+  "types": "tests/type-tests",
   "tsd": {
-    "directory": "type-tests"
+    "directory": "tests/type-tests"
   },
   "scripts": {
     "postinstall": "pnpm compile",

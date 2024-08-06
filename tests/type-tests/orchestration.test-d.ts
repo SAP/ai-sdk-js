@@ -1,6 +1,6 @@
 import { expectError, expectType } from 'tsd';
-import { GenAiHubClient } from '../packages/gen-ai-hub/src/orchestration/orchestration-client.js';
-import { CompletionPostResponse } from '../packages/gen-ai-hub/src/orchestration/index.js';
+import { GenAiHubClient } from '../../packages/gen-ai-hub/src/orchestration/orchestration-client.js';
+import { CompletionPostResponse } from '../../packages/gen-ai-hub/src/orchestration/index.js';
 
 const client = new GenAiHubClient();
 expectType<GenAiHubClient>(client);

@@ -1,6 +1,6 @@
 # Sample Code and E2E Test
 
-![e2e-test](https://github.com/SAP/ai-sdk-js/actions/workflows/e2e-test.yml/badge.svg)
+![e2e-test](https://github.com/SAP/ai-sdk-js/actions/workflows/e2e-test.yaml/badge.svg)
 
 Sample code to demonstrate the usage of the SAP AI SDK.
 Also used as basis for running E2E tests.
@@ -20,11 +20,6 @@ Call the test endpoints:
 - [Hello World](localhost:8080/)
 - [Simple Chat Completion](localhost:8080/llm)
 - [Simple Embedding Call](localhost:8080/embedding)
-
-Deploy to CF with:
-
-1. `cf login` into your Cloud Foundry account
-2. `cf push`
 
 ## Run the E2E Test
 
