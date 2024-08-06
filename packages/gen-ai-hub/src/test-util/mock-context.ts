@@ -4,7 +4,7 @@ import {
   ServiceCredentials
 } from '@sap-cloud-sdk/connectivity';
 import nock from 'nock';
-import * as context from '../src/core/context.js';
+import * as context from '../core/context.js';
 
 export const aiCoreServiceBinding = {
   label: 'aicore',
