@@ -1,5 +1,5 @@
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
-import { mockGetAiCoreDestination } from '../../test-util/mock-context.js';
+import { mockGetAiCoreDestination } from '../test-util/mock-context.js';
 import { mockInference } from '../../test-util/mock-http.js';
 import { executeRequest } from './http-client.js';
 
