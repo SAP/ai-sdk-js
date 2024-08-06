@@ -1,6 +1,6 @@
 {
   "name": "sap-ai-sdk",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "",
   "keywords": [],
   "license": "Apache-2.0",
@@ -20,6 +20,7 @@
     "lint:fix": "pnpm -r run lint:fix"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.7",
     "@sap-cloud-sdk/eslint-config": "^3.17.0",
     "@sap-cloud-sdk/connectivity": "^3.17.0",
     "@sap-cloud-sdk/http-client": "^3.17.0",
@@ -31,7 +32,7 @@
     "prettier": "^3.3.3",
     "ts-jest": "^29.2.4",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4",
-    "tsd": "^0.31.0"
+    "tsd": "^0.31.0",
+    "typescript": "^5.5.4"
   }
 }
