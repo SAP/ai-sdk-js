@@ -5,10 +5,7 @@ import {
   BaseLlmParametersWithDeploymentId,
   EndpointOptions
 } from '../../core/http-client.js';
-import {
-  mockInference,
-  parseMockResponse
-} from '../../test-util/mock-http.js';
+import { mockInference, parseMockResponse } from '../../test-util/mock-http.js';
 import { OpenAiClient } from './openai-client.js';
 import {
   OpenAiChatCompletionOutput,
