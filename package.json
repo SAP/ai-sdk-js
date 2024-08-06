@@ -1,15 +1,15 @@
 {
   "name": "sap-ai-sdk",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "",
   "keywords": [],
   "license": "Apache-2.0",
   "repository": "github:SAP/ai-sdk-js",
   "private": true,
   "type": "module",
-  "types": "type-tests",
+  "types": "tests/type-tests",
   "tsd": {
-    "directory": "type-tests"
+    "directory": "tests/type-tests"
   },
   "scripts": {
     "postinstall": "pnpm compile",
@@ -20,6 +20,7 @@
     "lint:fix": "pnpm -r run lint:fix"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.7",
     "@sap-cloud-sdk/eslint-config": "^3.17.0",
     "@sap-cloud-sdk/connectivity": "^3.17.0",
     "@sap-cloud-sdk/http-client": "^3.17.0",

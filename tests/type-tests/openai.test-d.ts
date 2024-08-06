@@ -1,10 +1,10 @@
 import { expectError, expectType } from 'tsd';
-import { OpenAiClient } from '../packages/gen-ai-hub/src/client/openai/openai-client.js';
+import { OpenAiClient } from '../../packages/gen-ai-hub/src/client/openai/openai-client.js';
 import {
   OpenAiChatCompletionOutput,
   OpenAiEmbeddingOutput,
   OpenAiModels,
-} from '../packages/gen-ai-hub/src/client/openai/openai-types.js'
+} from '../../packages/gen-ai-hub/src/client/openai/openai-types.js'
 
 const client = new OpenAiClient();
 expectType<OpenAiClient>(client );

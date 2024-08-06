@@ -53,3 +53,4 @@ build/Release
 
 # VS Code
 .vscode
+/pnpm-publish-summary.json

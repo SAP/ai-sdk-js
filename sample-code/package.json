@@ -1,17 +1,24 @@
 {
   "type": "module",
   "name": "@sap-ai-sdk/sample-code",
-  "version": "0.0.1",
+  "version": "0.0.0",
+  "private": "true",
   "dependencies": {
-    "@sap-ai-sdk/gen-ai-hub": "workspace:*",
+    "@sap-ai-sdk/gen-ai-hub": "workspace:^",
     "@types/express": "^4.17.21",
-    "express": "^4.19.2",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
+    "express": "^4.19.2"
   },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts",
+    "dist/**/*.d.ts.map"
+  ],
   "scripts": {
-    "start": "node --loader ts-node/esm src/index.ts",
-    "local": "node --env-file=.env --loader ts-node/esm src/index.ts",
+    "start": "node --loader ts-node/esm src/server.ts",
+    "local": "node --env-file=.env --loader ts-node/esm src/server.ts",
     "compile": "tsc",
     "dev": "tsc -w",
     "lint": "eslint . && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -c",

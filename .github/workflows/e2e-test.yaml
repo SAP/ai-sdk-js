@@ -1,8 +1,5 @@
 name: "E2E Test"
 on:
-  push:
-    branches:
-      - chore/e2e-test
   workflow_dispatch:
   schedule:
     - cron: 0 22 * * *
@@ -20,9 +17,6 @@ jobs:
             secret-name: AI_CORE_PRODUCTION
     name: "Build and Test"
     runs-on: ubuntu-latest
-    env:
-      WGET_ARGS: "-qO- -S --content-on-error"
-      WGET_URL: "localhost:8080"
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
@@ -37,12 +31,12 @@ jobs:
       - name: Create .env file
         env:
           aicore: ${{ secrets[matrix.secret-name] }}
-        working-directory: ./sample-code
         run: |
-          echo "aicore='$aicore'" > .env
+          echo "aicore='$aicore'" > sample-code/.env
+          echo "aicore='$aicore'" > tests/e2e-tests/.env
           url=$(echo "$aicore" | jq -r '.serviceurls.AI_API_URL' | sed 's|^https://||')
           echo "Using AI Core ${{ matrix.environment }} instance on $url"
-      - name: "Start App"
+      - name: "Check Sample App Starts Up"
         working-directory: ./sample-code
         run: |
           pnpm run local &
@@ -55,15 +49,11 @@ jobs:
               exit 1
             fi
           done
-      - name: "Health Check"
+          wget -qO- -S --content-on-error localhost:8080
+      - name: "Execute E2E Tests"
+        working-directory: ./tests/e2e-tests
         run: |
-          wget "$WGET_ARGS" "$WGET_URL/health"
-      - name: "OpenAI Chat Completion"
-        run: |
-          wget "$WGET_ARGS" "$WGET_URL/llm"
-      - name: "OpenAI Text Embedding"
-        run: |
-          wget "$WGET_ARGS" "$WGET_URL/embedding"
+          pnpm run e2e-test
       - name: "Slack Notification"
         if: failure()
         uses: slackapi/slack-github-action@v1.26.0

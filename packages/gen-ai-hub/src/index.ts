@@ -13,3 +13,4 @@ export {
   LlmConfig,
   ChatMessages
 } from './orchestration/index.js';
+export { getAiCoreDestination } from './core/index.js';

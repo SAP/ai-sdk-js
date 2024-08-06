@@ -4,7 +4,9 @@ packages:
   - 'packages/gen-ai-hub'
   # sample code
   - 'sample-code'
+  # e2e tests
+  - 'tests/e2e-tests'
   # exclude packages that are inside test directories
   - '!poc/'
   - '!test-util'
-  - '!type-tests/'
+  - '!tests/type-tests'
