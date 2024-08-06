@@ -3,7 +3,6 @@ name: publish-canary
 on:
   schedule:
     - cron: '0 1 * * *'
-  pull_request: ~
   workflow_dispatch:
     inputs:
       tag:
