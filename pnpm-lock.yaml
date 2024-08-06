@@ -16,7 +16,7 @@ importers:
         version: 3.17.0
       '@sap-cloud-sdk/eslint-config':
         specifier: ^3.17.0
-        version: 3.17.0(@typescript-eslint/parser@7.18.0(eslint@9.8.0)(typescript@5.5.4))(eslint@9.8.0)(prettier@3.3.3)(typescript@5.5.4)
+        version: 3.17.0(@types/eslint@7.29.0)(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@9.8.0)(typescript@5.5.4))(eslint@9.8.0)(typescript@5.5.4))(@typescript-eslint/parser@7.18.0(eslint@9.8.0)(typescript@5.5.4))(eslint@9.8.0)(prettier@3.3.3)(typescript@5.5.4)
       '@sap-cloud-sdk/http-client':
         specifier: ^3.17.0
         version: 3.17.0
@@ -40,7 +40,7 @@ importers:
         version: 3.3.3
       ts-jest:
         specifier: ^29.2.4
-        version: 29.2.4(@babel/core@7.25.2)(@jest/types@29.6.3)(jest@30.0.0-alpha.5(@types/node@20.14.14)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.5.4)))(typescript@5.5.4)
+        version: 29.2.4(@babel/core@7.25.2)(@jest/transform@30.0.0-alpha.5)(@jest/types@29.6.3)(babel-jest@30.0.0-alpha.5(@babel/core@7.25.2))(jest@30.0.0-alpha.5(@types/node@20.14.14)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.5.4)))(typescript@5.5.4)
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@20.14.14)(typescript@5.5.4)
@@ -53,9 +53,6 @@ importers:
 
   packages/ai-core:
     dependencies:
-      '@sap-cloud-sdk/connectivity':
-        specifier: ^3.17.0
-        version: 3.17.0
       '@sap-cloud-sdk/openapi':
         specifier: ^3.17.0
         version: 3.17.0
@@ -3932,16 +3929,16 @@ snapshots:
       - encoding
       - supports-color
 
-  '@sap-cloud-sdk/eslint-config@3.17.0(@typescript-eslint/parser@7.18.0(eslint@9.8.0)(typescript@5.5.4))(eslint@9.8.0)(prettier@3.3.3)(typescript@5.5.4)':
+  '@sap-cloud-sdk/eslint-config@3.17.0(@types/eslint@7.29.0)(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@9.8.0)(typescript@5.5.4))(eslint@9.8.0)(typescript@5.5.4))(@typescript-eslint/parser@7.18.0(eslint@9.8.0)(typescript@5.5.4))(eslint@9.8.0)(prettier@3.3.3)(typescript@5.5.4)':
     dependencies:
       '@eslint/js': 9.8.0
       eslint: 9.8.0
       eslint-config-prettier: 9.1.0(eslint@9.8.0)
       eslint-plugin-import: 2.29.1(@typescript-eslint/parser@7.18.0(eslint@9.8.0)(typescript@5.5.4))(eslint@9.8.0)
       eslint-plugin-jsdoc: 48.10.2(eslint@9.8.0)
-      eslint-plugin-prettier: 5.2.1(eslint-config-prettier@9.1.0(eslint@9.8.0))(eslint@9.8.0)(prettier@3.3.3)
+      eslint-plugin-prettier: 5.2.1(@types/eslint@7.29.0)(eslint-config-prettier@9.1.0(eslint@9.8.0))(eslint@9.8.0)(prettier@3.3.3)
       eslint-plugin-regex: 1.10.0(eslint@9.8.0)
-      eslint-plugin-unused-imports: 4.0.1(eslint@9.8.0)
+      eslint-plugin-unused-imports: 4.0.1(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@9.8.0)(typescript@5.5.4))(eslint@9.8.0)(typescript@5.5.4))(eslint@9.8.0)
       typescript-eslint: 7.18.0(eslint@9.8.0)(typescript@5.5.4)
     transitivePeerDependencies:
       - '@types/eslint'
@@ -4915,23 +4912,26 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-prettier@5.2.1(eslint-config-prettier@9.1.0(eslint@9.8.0))(eslint@9.8.0)(prettier@3.3.3):
+  eslint-plugin-prettier@5.2.1(@types/eslint@7.29.0)(eslint-config-prettier@9.1.0(eslint@9.8.0))(eslint@9.8.0)(prettier@3.3.3):
     dependencies:
       eslint: 9.8.0
       prettier: 3.3.3
       prettier-linter-helpers: 1.0.0
       synckit: 0.9.1
     optionalDependencies:
+      '@types/eslint': 7.29.0
       eslint-config-prettier: 9.1.0(eslint@9.8.0)
 
   eslint-plugin-regex@1.10.0(eslint@9.8.0):
     dependencies:
       eslint: 9.8.0
 
-  eslint-plugin-unused-imports@4.0.1(eslint@9.8.0):
+  eslint-plugin-unused-imports@4.0.1(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@9.8.0)(typescript@5.5.4))(eslint@9.8.0)(typescript@5.5.4))(eslint@9.8.0):
     dependencies:
       eslint: 9.8.0
       eslint-rule-composer: 0.3.0
+    optionalDependencies:
+      '@typescript-eslint/eslint-plugin': 7.18.0(@typescript-eslint/parser@7.18.0(eslint@9.8.0)(typescript@5.5.4))(eslint@9.8.0)(typescript@5.5.4)
 
   eslint-rule-composer@0.3.0: {}
 
@@ -6781,7 +6781,7 @@ snapshots:
     dependencies:
       typescript: 5.5.4
 
-  ts-jest@29.2.4(@babel/core@7.25.2)(@jest/types@29.6.3)(jest@30.0.0-alpha.5(@types/node@20.14.14)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.5.4)))(typescript@5.5.4):
+  ts-jest@29.2.4(@babel/core@7.25.2)(@jest/transform@30.0.0-alpha.5)(@jest/types@29.6.3)(babel-jest@30.0.0-alpha.5(@babel/core@7.25.2))(jest@30.0.0-alpha.5(@types/node@20.14.14)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.5.4)))(typescript@5.5.4):
     dependencies:
       bs-logger: 0.2.6
       ejs: 3.1.10
@@ -6796,7 +6796,9 @@ snapshots:
       yargs-parser: 21.1.1
     optionalDependencies:
       '@babel/core': 7.25.2
+      '@jest/transform': 30.0.0-alpha.5
       '@jest/types': 29.6.3
+      babel-jest: 30.0.0-alpha.5(@babel/core@7.25.2)
 
   ts-node@10.9.2(@types/node@20.14.14)(typescript@5.5.4):
     dependencies:
