@@ -5,11 +5,10 @@ export {
   OpenAiEmbeddingOutput,
   OpenAiChatCompletionOutput
 } from './client/index.js';
-export { CustomRequestConfig, BaseLlmParameters } from './core/index.js';
 export {
-  GenAiHubClient,
-  GenAiHubCompletionParameters,
-  GenAiHubCompletionResponse,
+  OrchestrationService,
+  OrchestrationConfig,
+  OrchestrationResponse,
   PromptConfig,
   LlmConfig,
   ChatMessages

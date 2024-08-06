@@ -1,6 +1,6 @@
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
-import { mockGetAiCoreDestination } from '../../test-util/mock-context.js';
-import { mockInference } from '../../test-util/mock-http.js';
+import { mockGetAiCoreDestination } from '../test-util/mock-context.js';
+import { mockInference } from '../test-util/mock-http.js';
 import { executeRequest } from './http-client.js';
 
 describe('http-client', () => {
@@ -13,26 +13,23 @@ describe('http-client', () => {
   it('should execute a request to the AI Core service', async () => {
     const mockPrompt = { prompt: 'some test prompt' };
     const mockPromptResponse = { completion: 'some test completion' };
-
+    const mockEndpoint = { deploymentId: 'id', path: '/mock-endpoint'  };
     const scope = mockInference(
       {
-        data: {
-          deploymentConfiguration: { deploymentId: 'deployment_id' },
-          prompt: 'some test prompt'
+        request: {
+          data: mockPrompt,
+          destination,
+          endpoint: mockEndpoint
+        },
+        response: {
+          status: 200,
+          data: mockPromptResponse
         }
-      },
-      {
-        data: mockPromptResponse,
-        status: 200
-      },
-      destination
+      }
     );
     const res = await executeRequest(
-      { url: '/mock-endpoint', apiVersion: 'mock-api-version' },
-      {
-        deploymentConfiguration: { deploymentId: 'deployment_id' },
-        ...mockPrompt
-      }
+      mockEndpoint,
+      mockPrompt
     );
 
     expect(scope.isDone()).toBe(true);

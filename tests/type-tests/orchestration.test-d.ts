@@ -10,7 +10,6 @@ expectType<GenAiHubClient>(client);
  */
 expectType<Promise<CompletionPostResponse>>(
   client.chatCompletion({
-    deploymentConfiguration: { deploymentId: 'id' },
     prompt: {
       template: [{ role: 'user', content: 'Hello!' }]
     },
@@ -26,7 +25,6 @@ expectType<Promise<CompletionPostResponse>>(
  */
 expectType<Promise<CompletionPostResponse>>(
   client.chatCompletion({
-    deploymentConfiguration: { deploymentId: 'id' },
     prompt: {
       template: [{ role: 'user', content: 'Hello!' }],
       messages_history: [
@@ -49,16 +47,12 @@ expectType<Promise<CompletionPostResponse>>(
 );
 
 /**
- * Deployment details are mandatory.
+ * LLM config is mandatory.
  */
 expectError<Promise<CompletionPostResponse>>(
   client.chatCompletion({
     prompt: {
       template: [{ role: 'user', content: 'Hello!' }]
-    },
-    llmConfig: {
-      model_name: 'gpt-35-turbo-16k',
-      model_params: {}
     }
   })
 );
@@ -67,9 +61,7 @@ expectError<Promise<CompletionPostResponse>>(
  * Orchestration completion parameters cannot be empty.
  */
 expectError<any>(
-  client.chatCompletion({
-    deploymentConfiguration: { deploymentId: 'id' }
-  })
+  client.chatCompletion({})
 );
 
 /**
@@ -77,7 +69,6 @@ expectError<any>(
  */
 expectError<any>(
   client.chatCompletion({
-    deploymentConfiguration: { deploymentId: 'id' },
     llmConfig: {
       model_name: 'gpt-35-turbo-16k',
       model_params: {}
@@ -90,7 +81,6 @@ expectError<any>(
  */
 expectError<any>(
   client.chatCompletion({
-    deploymentConfiguration: { deploymentId: 'id' },
     prompt: {
       template: [{ role: 'user', content: 'Hello!' }]
     },
@@ -105,7 +95,6 @@ expectError<any>(
  */
 expectError<any>(
   client.chatCompletion({
-    deploymentConfiguration: { deploymentId: 'id' },
     prompt: {
       template: [{ role: 'actor', content: 'Hello!' }]
     },
@@ -121,7 +110,6 @@ expectError<any>(
  */
 expectType<Promise<CompletionPostResponse>>(
   client.chatCompletion({
-    deploymentConfiguration: { deploymentId: 'id' },
     prompt: {
       template: [{ role: 'user', content: 'Hello!' }]
     },

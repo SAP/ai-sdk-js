@@ -1,14 +1,11 @@
-import { executeRequest, CustomRequestConfig } from '../core/index.js';
+import { executeRequest, CustomRequestConfig, DeploymentResolver, resolveDeployment } from '../core/index.js';
 import { CompletionPostRequest } from './api/schema/index.js';
-import {
-  GenAiHubCompletionParameters,
-  GenAiHubCompletionResponse
-} from './orchestration-types.js';
+import { OrchestrationCompletionParameters, OrchestrationResponse } from './orchestration-types.js';
 
 /**
- * Get the orchestration client.
+ * A client for the orchestration service.
  */
-export class GenAiHubClient {
+export class OrchestrationService {
   /**
    * Creates a completion for the chat messages.
    * @param data - The input parameters for the chat completion.
@@ -16,16 +13,18 @@ export class GenAiHubClient {
    * @returns The completion result.
    */
   async chatCompletion(
-    data: GenAiHubCompletionParameters,
+    data: OrchestrationCompletionParameters,
+    deploymentResolver: DeploymentResolver = () => resolveDeployment({ scenarioId: 'orchestration' }),
     requestConfig?: CustomRequestConfig
-  ): Promise<GenAiHubCompletionResponse> {
+  ): Promise<OrchestrationResponse> {
     const dataWithInputParams = {
-      deploymentConfiguration: data.deploymentConfiguration,
       ...constructCompletionPostRequest(data)
     };
 
+    const deployment =  typeof deploymentResolver === 'function' ? await deploymentResolver() : deploymentResolver;
+
     const response = await executeRequest(
-      { url: '/completion' },
+      { deploymentId: deployment.id, path: '/completion' },
       dataWithInputParams,
       requestConfig
     );
@@ -37,7 +36,7 @@ export class GenAiHubClient {
  * @internal
  */
 export function constructCompletionPostRequest(
-  input: GenAiHubCompletionParameters
+  input: OrchestrationCompletionParameters
 ): CompletionPostRequest {
   return {
     orchestration_config: {

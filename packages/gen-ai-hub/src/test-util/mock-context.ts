@@ -4,7 +4,12 @@ import {
   ServiceCredentials
 } from '@sap-cloud-sdk/connectivity';
 import nock from 'nock';
-import * as context from '../src/core/context.js';
+
+import { jest } from '@jest/globals';
+
+jest.mock('../core/context.js')
+import {getAiCoreDestination} from '../core/context.js';
+
 
 export const aiCoreServiceBinding = {
   label: 'aicore',
@@ -55,9 +60,7 @@ export function mockGetAiCoreDestination(
     ...createDestinationTokens()
   };
 
-  jest
-    .spyOn(context, 'getAiCoreDestination')
-    .mockResolvedValue(mockDestination);
+  (getAiCoreDestination as any).mockReturnValue(Promise.resolve(mockDestination));
 
   return mockDestination;
 }
