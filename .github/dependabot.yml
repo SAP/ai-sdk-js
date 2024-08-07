@@ -12,3 +12,6 @@ updates:
       # We only want to do major node updates on purpose, so don't create dependabot PRs for major versions
       - dependency-name: '@types/node'
         update-types: ['version-update:semver-major']
+    groups:
+      sap-cloud-sdk:
+        patterns: ['@sap-cloud-sdk/*']

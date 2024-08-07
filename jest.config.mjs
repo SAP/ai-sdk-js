@@ -97,7 +97,7 @@ const config = {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  preset: 'ts-jest',
+  preset: 'ts-jest/presets/default-esm',
 
   // Run tests from one or more projects
   // projects: undefined,
@@ -153,9 +153,9 @@ const config = {
   testMatch: ['**/*.test.ts'],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-  // testPathIgnorePatterns: [
-  //   "/node_modules/"
-  // ],
+  testPathIgnorePatterns: [
+    "./dist"
+  ],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   // testRegex: [],
@@ -165,6 +165,8 @@ const config = {
 
   // This option allows use of a custom test runner
   // testRunner: "jest-circus/runner",
+
+  // extensionsToTreatAsEsm: ['.ts'],
 
   // A map from regular expressions to paths to transformers
   transform: {
@@ -186,7 +188,7 @@ const config = {
   // unmockedModulePathPatterns: undefined,
 
   // Indicates whether each individual test should be reported during the run
-  // verbose: undefined,
+  // verbose: true,
 
   // An array of regexp patterns that are matched against all source file paths before re-running tests in watch mode
   // watchPathIgnorePatterns: [],

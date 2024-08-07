@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/ai-core",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
@@ -24,11 +24,10 @@
     "generate": "openapi-generator --options-per-service='./spec/options-per-service.json' --generateESM  --overwrite --input spec/AI_CORE_API.yaml --outputDir ."
   },
   "dependencies": {
-    "@sap-cloud-sdk/openapi-generator": "3.17.1-20240807090043.0",
-    "@sap-cloud-sdk/generator-common": "3.17.1-20240807090043.0",
-    "@sap-cloud-sdk/util": "3.17.1-20240807090043.0"
+    "@sap-cloud-sdk/openapi": "^3.18.0"
   },
   "devDependencies": {
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "@sap-cloud-sdk/openapi-generator": "3.18.0"
   }
 }
