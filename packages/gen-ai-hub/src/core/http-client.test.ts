@@ -1,7 +1,13 @@
-import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import { jest } from '@jest/globals';
+import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import { mockGetAiCoreDestination } from '../test-util/mock-context.js';
 import { mockInference } from '../test-util/mock-http.js';
+
+jest.unstable_mockModule('./context.js', () => ({
+  getAiCoreDestination: jest.fn(() =>
+    Promise.resolve(mockGetAiCoreDestination())
+  )
+}));
 const { executeRequest } = await import('./http-client.js');
 
 describe('http-client', () => {

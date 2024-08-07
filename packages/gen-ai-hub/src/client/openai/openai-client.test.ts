@@ -14,6 +14,11 @@ import {
   OpenAiEmbeddingOutput,
   OpenAiEmbeddingParameters
 } from './openai-types.js';
+jest.unstable_mockModule('../../core/context.js', () => ({
+  getAiCoreDestination: jest.fn(() =>
+    Promise.resolve(mockGetAiCoreDestination())
+  )
+}));
 const { OpenAiClient } = await import('./openai-client.js');
 
 describe('openai client', () => {

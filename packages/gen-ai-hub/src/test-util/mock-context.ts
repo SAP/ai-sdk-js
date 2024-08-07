@@ -4,13 +4,6 @@ import {
   ServiceCredentials
 } from '@sap-cloud-sdk/connectivity';
 import nock from 'nock';
-import { jest } from '@jest/globals';
-
-jest.unstable_mockModule('../core/context.js', () => ({
-  getAiCoreDestination: jest.fn(() =>
-    Promise.resolve(mockGetAiCoreDestination())
-  )
-}));
 
 export const aiCoreServiceBinding = {
   label: 'aicore',
