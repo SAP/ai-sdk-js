@@ -61,6 +61,19 @@ export function createFilterConfig(
   };
 }
 
+const createFilter = (
+  input: FilterWrapper | FilterWrapper[]
+): FilteringConfig => {
+  const filterArray: FilterWrapper[] = !Array.isArray(input) ? [input] : input;
+  const filterOutput: FilteringConfig = {
+    filters: filterArray.map(moduleConfig => ({
+      type: filterServiceProviders[moduleConfig.type],
+      config: moduleConfig.config
+    }))
+  };
+  return filterOutput;
+};
+
 /**
  * Convenience function to provide input filters to the orchestration service.
  * @param input - List of filters to be used for the input filtering.
@@ -74,16 +87,3 @@ export const createInputFilter = createFilter;
  * @returns - An array of filters.
  */
 export const createOutputFilter = createFilter;
-
-const createFilter = (
-  input: FilterWrapper | FilterWrapper[]
-): FilteringConfig => {
-  const filterArray: FilterWrapper[] = !Array.isArray(input) ? [input] : input;
-  const filterOutput: FilteringConfig = {
-    filters: filterArray.map(moduleConfig => ({
-      type: filterServiceProviders[moduleConfig.type],
-      config: moduleConfig.config
-    }))
-  };
-  return filterOutput;
-};
