@@ -3,8 +3,8 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiId } from './ai-id';
-import type { AiExecutionScheduleModificationResponseMessage } from './ai-execution-schedule-modification-response-message';
+import type { AiId } from './ai-id.js';
+import type { AiExecutionScheduleModificationResponseMessage } from './ai-execution-schedule-modification-response-message.js';
 /**
  * Representation of the 'AiExecutionScheduleModificationResponse' schema.
  */

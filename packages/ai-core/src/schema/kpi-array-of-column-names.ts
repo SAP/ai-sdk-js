@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { KpiColumnName } from './kpi-column-name';
+import type { KpiColumnName } from './kpi-column-name.js';
 /**
  * Representation of the 'KpiArrayOfColumnNames' schema.
  */

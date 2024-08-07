@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiBackendDetails } from './ai-backend-details';
+import type { AiBackendDetails } from './ai-backend-details.js';
 /**
  * Scaling details of a deployment
  * @example {

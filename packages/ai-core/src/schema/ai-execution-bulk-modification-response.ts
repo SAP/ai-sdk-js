@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiExecutionModificationResponseList } from './ai-execution-modification-response-list';
+import type { AiExecutionModificationResponseList } from './ai-execution-modification-response-list.js';
 /**
  * Response object with array of executions and its status
  */

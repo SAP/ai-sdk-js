@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiLogCommonResult } from './ai-log-common-result';
+import type { AiLogCommonResult } from './ai-log-common-result.js';
 /**
  * Representation of the 'AiLogCommonData' schema.
  */

@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiConfigurationId } from './ai-configuration-id';
+import type { AiConfigurationId } from './ai-configuration-id.js';
 /**
  * Request object for creating an execution or an deployment
  */

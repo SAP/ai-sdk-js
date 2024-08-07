@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiArtifactArray } from './ai-artifact-array';
+import type { AiArtifactArray } from './ai-artifact-array.js';
 /**
  * Representation of the 'AiArtifactList' schema.
  */

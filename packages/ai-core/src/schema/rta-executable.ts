@@ -3,12 +3,12 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { RTAExecutableId } from './rta-executable-id';
-import type { RTAScenarioId } from './rta-scenario-id';
-import type { RTAExecutableInputArtifactList } from './rta-executable-input-artifact-list';
-import type { RTAExecutableOutputArtifactList } from './rta-executable-output-artifact-list';
-import type { RTAExecutableParameterList } from './rta-executable-parameter-list';
-import type { RTALabelList } from './rta-label-list';
+import type { RTAExecutableId } from './rta-executable-id.js';
+import type { RTAScenarioId } from './rta-scenario-id.js';
+import type { RTAExecutableInputArtifactList } from './rta-executable-input-artifact-list.js';
+import type { RTAExecutableOutputArtifactList } from './rta-executable-output-artifact-list.js';
+import type { RTAExecutableParameterList } from './rta-executable-parameter-list.js';
+import type { RTALabelList } from './rta-label-list.js';
 /**
  * Entity having labels
  */

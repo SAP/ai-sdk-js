@@ -8,10 +8,10 @@ import type {
   BckndResourceGetResponse,
   BckndResourcePatchBody,
   BckndResourcePatchResponse
-} from './schema';
+} from './schema/index.js';
 /**
  * Representation of the 'ResourceApi'.
- * This API is part of the 'AI_CORE_API' service.
+ * This API is part of the 'src' service.
  */
 export const ResourceApi = {
   /**

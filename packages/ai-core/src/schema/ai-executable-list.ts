@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiExecutable } from './ai-executable';
+import type { AiExecutable } from './ai-executable.js';
 /**
  * Representation of the 'AiExecutableList' schema.
  */

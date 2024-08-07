@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { BckndService } from './bcknd-service';
+import type { BckndService } from './bcknd-service.js';
 /**
  * Representation of the 'BckndServiceList' schema.
  */

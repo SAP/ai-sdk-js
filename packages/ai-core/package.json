@@ -21,10 +21,12 @@
     "test": "jest",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
-    "update-imports": "ts-node ../../scripts/update-imports.ts src"
+    "generate": "openapi-generator --options-per-service='./spec/options-per-service.json' --generateESM  --overwrite --input spec/AI_CORE_API.yaml --outputDir ."
   },
   "dependencies": {
-    "@sap-cloud-sdk/openapi": "^3.16.0"
+    "@sap-cloud-sdk/openapi-generator": "3.17.1-20240807090043.0",
+    "@sap-cloud-sdk/generator-common": "3.17.1-20240807090043.0",
+    "@sap-cloud-sdk/util": "3.17.1-20240807090043.0"
   },
   "devDependencies": {
     "typescript": "^5.5.4"

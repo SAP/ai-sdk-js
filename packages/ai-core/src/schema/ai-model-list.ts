@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiModelBaseData } from './ai-model-base-data';
+import type { AiModelBaseData } from './ai-model-base-data.js';
 /**
  * Representation of the 'AiModelList' schema.
  */

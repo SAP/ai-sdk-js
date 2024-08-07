@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { BckndResourceGroup } from './bcknd-resource-group';
+import type { BckndResourceGroup } from './bcknd-resource-group.js';
 /**
  * Representation of the 'BckndResourceGroupList' schema.
  */

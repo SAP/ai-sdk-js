@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { TrckTag } from './trck-tag';
+import type { TrckTag } from './trck-tag.js';
 /**
  * a list of name-value object pairs associated with the execution/deployment. Tags are queryable.
  */

@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { MetaVersion } from './meta-version';
+import type { MetaVersion } from './meta-version.js';
 /**
  * There are (currently) the following types of execution engines  1) complete runtimes that offer executions and deployments, 2) runtimes that do only batch inference and therefore don't support deployments 3) runtimes that allow deployments, but with predefined models and therefore don't need executions 4) runtimes that have fixed endpoints and therefore only need listing deployments
  */

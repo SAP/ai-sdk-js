@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { TrckLabelName } from './trck-label-name';
+import type { TrckLabelName } from './trck-label-name.js';
 /**
  * a classifying phrase/name applied to a metric
  * @example {

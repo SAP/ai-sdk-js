@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiDeploymentModificationRequestList } from './ai-deployment-modification-request-list';
+import type { AiDeploymentModificationRequestList } from './ai-deployment-modification-request-list.js';
 /**
  * Request object for changing the target status of multiple deployments
  */

@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { TrckLabel } from './trck-label';
+import type { TrckLabel } from './trck-label.js';
 /**
  * a list of name-value object pairs associated with some metric.
  * @example [

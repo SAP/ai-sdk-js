@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { TrckGenericName } from './trck-generic-name';
+import type { TrckGenericName } from './trck-generic-name.js';
 /**
  * A dictionary of name-value pairs to support segregation at execution level.
  * @example {

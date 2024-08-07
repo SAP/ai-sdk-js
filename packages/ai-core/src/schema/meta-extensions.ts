@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { MetaVersion } from './meta-version';
+import type { MetaVersion } from './meta-version.js';
 /**
  * Representation of the 'MetaExtensions' schema.
  */

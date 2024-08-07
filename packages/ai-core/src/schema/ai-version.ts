@@ -3,9 +3,9 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiVersionDescription } from './ai-version-description';
-import type { AiVersionId } from './ai-version-id';
-import type { AiScenarioId } from './ai-scenario-id';
+import type { AiVersionDescription } from './ai-version-description.js';
+import type { AiVersionId } from './ai-version-id.js';
+import type { AiScenarioId } from './ai-scenario-id.js';
 /**
  * Representation of the 'AiVersion' schema.
  */

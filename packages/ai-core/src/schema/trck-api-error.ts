@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { TrckDetailsErrorResponse } from './trck-details-error-response';
+import type { TrckDetailsErrorResponse } from './trck-details-error-response.js';
 /**
  * Representation of the 'TrckApiError' schema.
  */

@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiVersion } from './ai-version';
+import type { AiVersion } from './ai-version.js';
 /**
  * Representation of the 'AiVersionList' schema.
  */

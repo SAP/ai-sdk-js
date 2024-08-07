@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiScenario } from './ai-scenario';
+import type { AiScenario } from './ai-scenario.js';
 /**
  * Representation of the 'AiScenarioList' schema.
  */

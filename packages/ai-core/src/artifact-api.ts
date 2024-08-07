@@ -10,10 +10,10 @@ import type {
   AiArtifactPostData,
   AiArtifactCreationResponse,
   AiArtifact
-} from './schema';
+} from './schema/index.js';
 /**
  * Representation of the 'ArtifactApi'.
- * This API is part of the 'AI_CORE_API' service.
+ * This API is part of the 'src' service.
  */
 export const ArtifactApi = {
   /**

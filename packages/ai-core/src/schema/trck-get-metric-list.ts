@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { TrckGetMetric } from './trck-get-metric';
+import type { TrckGetMetric } from './trck-get-metric.js';
 /**
  * Array of Metric items
  */

@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { TrckMlapiExecutionId } from './trck-mlapi-execution-id';
+import type { TrckMlapiExecutionId } from './trck-mlapi-execution-id.js';
 /**
  * ID of the deployment/execution
  * @example "aa97b177-9383-4934-8543-0f91b7a0283a"

@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiArtifactId } from './ai-artifact-id';
+import type { AiArtifactId } from './ai-artifact-id.js';
 /**
  * Required for execution
  * Result of activation

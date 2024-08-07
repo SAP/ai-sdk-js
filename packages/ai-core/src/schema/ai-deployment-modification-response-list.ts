@@ -3,8 +3,8 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiDeploymentModificationResponse } from './ai-deployment-modification-response';
-import type { AiApiErrorWithId } from './ai-api-error-with-id';
+import type { AiDeploymentModificationResponse } from './ai-deployment-modification-response.js';
+import type { AiApiErrorWithId } from './ai-api-error-with-id.js';
 /**
  * Representation of the 'AiDeploymentModificationResponseList' schema.
  */

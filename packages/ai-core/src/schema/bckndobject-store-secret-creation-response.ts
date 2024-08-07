@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { BckndobjectStoreSecretCreationResponseMessage } from './bckndobject-store-secret-creation-response-message';
+import type { BckndobjectStoreSecretCreationResponseMessage } from './bckndobject-store-secret-creation-response-message.js';
 /**
  * Message
  * @example "Created"

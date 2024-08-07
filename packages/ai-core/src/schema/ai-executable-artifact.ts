@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiLabelList } from './ai-label-list';
+import type { AiLabelList } from './ai-label-list.js';
 /**
  * Representation of the 'AiExecutableArtifact' schema.
  */

@@ -3,8 +3,8 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiId } from './ai-id';
-import type { AiDeploymentDeletionResponseMessage } from './ai-deployment-deletion-response-message';
+import type { AiId } from './ai-id.js';
+import type { AiDeploymentDeletionResponseMessage } from './ai-deployment-deletion-response-message.js';
 /**
  * Representation of the 'AiDeploymentDeletionResponse' schema.
  */

@@ -9,10 +9,10 @@ import type {
   AiConfigurationBaseData,
   AiConfigurationCreationResponse,
   AiConfiguration
-} from './schema';
+} from './schema/index.js';
 /**
  * Representation of the 'ConfigurationApi'.
- * This API is part of the 'AI_CORE_API' service.
+ * This API is part of the 'src' service.
  */
 export const ConfigurationApi = {
   /**

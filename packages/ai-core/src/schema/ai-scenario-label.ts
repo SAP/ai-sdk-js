@@ -3,8 +3,8 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiScenarioLabelKey } from './ai-scenario-label-key';
-import type { AiLabelValue } from './ai-label-value';
+import type { AiScenarioLabelKey } from './ai-scenario-label-key.js';
+import type { AiLabelValue } from './ai-label-value.js';
 /**
  * Representation of the 'AiScenarioLabel' schema.
  */

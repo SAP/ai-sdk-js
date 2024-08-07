@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { BckndArgoCDApplicationData } from './bcknd-argo-cd-application-data';
+import type { BckndArgoCDApplicationData } from './bcknd-argo-cd-application-data.js';
 /**
  * list of applications
  */

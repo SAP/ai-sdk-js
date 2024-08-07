@@ -3,8 +3,8 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { KpiArrayOfColumnNames } from './kpi-array-of-column-names';
-import type { KpiResultRowList } from './kpi-result-row-list';
+import type { KpiArrayOfColumnNames } from './kpi-array-of-column-names.js';
+import type { KpiResultRowList } from './kpi-result-row-list.js';
 /**
  * Representation of the 'KpiResultSet' schema.
  */

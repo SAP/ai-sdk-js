@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiLabel } from './ai-label';
+import type { AiLabel } from './ai-label.js';
 /**
  * Arbitrary labels as meta information
  */

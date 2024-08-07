@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { TrckGetMetricResource } from './trck-get-metric-resource';
+import type { TrckGetMetricResource } from './trck-get-metric-resource.js';
 /**
  * Representation of the 'TrckGetMetricResourceList' schema.
  */

@@ -3,9 +3,9 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { BckndServiceBrokerSecret } from './bcknd-service-broker-secret';
-import type { BckndServiceCapabilities } from './bcknd-service-capabilities';
-import type { BckndServiceServiceCatalog } from './bcknd-service-service-catalog';
+import type { BckndServiceBrokerSecret } from './bcknd-service-broker-secret.js';
+import type { BckndServiceCapabilities } from './bcknd-service-capabilities.js';
+import type { BckndServiceServiceCatalog } from './bcknd-service-service-catalog.js';
 /**
  * Representation of the 'BckndExtendedService' schema.
  */

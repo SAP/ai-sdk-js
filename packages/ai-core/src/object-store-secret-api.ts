@@ -12,10 +12,10 @@ import type {
   BckndobjectStoreSecretWithSensitiveDataRequest,
   BckndobjectStoreSecretModificationResponse,
   BckndobjectStoreSecretDeletionResponse
-} from './schema';
+} from './schema/index.js';
 /**
  * Representation of the 'ObjectStoreSecretApi'.
- * This API is part of the 'AI_CORE_API' service.
+ * This API is part of the 'src' service.
  */
 export const ObjectStoreSecretApi = {
   /**

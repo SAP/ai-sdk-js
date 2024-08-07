@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiDeploymentModificationRequestWithIdentifier } from './ai-deployment-modification-request-with-identifier';
+import type { AiDeploymentModificationRequestWithIdentifier } from './ai-deployment-modification-request-with-identifier.js';
 /**
  * Representation of the 'AiDeploymentModificationRequestList' schema.
  * @example [

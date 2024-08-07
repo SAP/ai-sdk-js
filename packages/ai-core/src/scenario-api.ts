@@ -4,10 +4,14 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
-import type { AiScenarioList, AiScenario, AiVersionList } from './schema';
+import type {
+  AiScenarioList,
+  AiScenario,
+  AiVersionList
+} from './schema/index.js';
 /**
  * Representation of the 'ScenarioApi'.
- * This API is part of the 'AI_CORE_API' service.
+ * This API is part of the 'src' service.
  */
 export const ScenarioApi = {
   /**

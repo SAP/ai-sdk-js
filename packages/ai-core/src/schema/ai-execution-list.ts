@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiExecution } from './ai-execution';
+import type { AiExecution } from './ai-execution.js';
 /**
  * Representation of the 'AiExecutionList' schema.
  */

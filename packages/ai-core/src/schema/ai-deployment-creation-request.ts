@@ -3,8 +3,8 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiDeploymentTimeToLive } from './ai-deployment-time-to-live';
-import type { AiConfigurationId } from './ai-configuration-id';
+import type { AiDeploymentTimeToLive } from './ai-deployment-time-to-live.js';
+import type { AiConfigurationId } from './ai-configuration-id.js';
 /**
  * Request object for creating an execution or an deployment
  */

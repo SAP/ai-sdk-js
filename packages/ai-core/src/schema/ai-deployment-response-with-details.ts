@@ -3,16 +3,16 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiDeploymentId } from './ai-deployment-id';
-import type { AiDeploymentUrl } from './ai-deployment-url';
-import type { AiConfigurationId } from './ai-configuration-id';
-import type { AiConfigurationName } from './ai-configuration-name';
-import type { AiScenarioId } from './ai-scenario-id';
-import type { AiDeploymentStatus } from './ai-deployment-status';
-import type { AiDeploymentStatusMessage } from './ai-deployment-status-message';
-import type { AiDeploymentTimeToLive } from './ai-deployment-time-to-live';
-import type { AiDeploymentDetails } from './ai-deployment-details';
-import type { AiDeploymentStatusDetails } from './ai-deployment-status-details';
+import type { AiDeploymentId } from './ai-deployment-id.js';
+import type { AiDeploymentUrl } from './ai-deployment-url.js';
+import type { AiConfigurationId } from './ai-configuration-id.js';
+import type { AiConfigurationName } from './ai-configuration-name.js';
+import type { AiScenarioId } from './ai-scenario-id.js';
+import type { AiDeploymentStatus } from './ai-deployment-status.js';
+import type { AiDeploymentStatusMessage } from './ai-deployment-status-message.js';
+import type { AiDeploymentTimeToLive } from './ai-deployment-time-to-live.js';
+import type { AiDeploymentDetails } from './ai-deployment-details.js';
+import type { AiDeploymentStatusDetails } from './ai-deployment-status-details.js';
 /**
  * Detail properties of the deployment
  */

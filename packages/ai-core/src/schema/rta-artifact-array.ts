@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { RTAArtifact } from './rta-artifact';
+import type { RTAArtifact } from './rta-artifact.js';
 /**
  * Representation of the 'RTAArtifactArray' schema.
  */

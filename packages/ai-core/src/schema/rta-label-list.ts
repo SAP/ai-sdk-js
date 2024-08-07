@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { RTALabel } from './rta-label';
+import type { RTALabel } from './rta-label.js';
 /**
  * Arbitrary labels as meta information
  */

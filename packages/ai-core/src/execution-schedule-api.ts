@@ -12,10 +12,10 @@ import type {
   AiExecutionScheduleModificationRequest,
   AiExecutionScheduleModificationResponse,
   AiExecutionScheduleDeletionResponse
-} from './schema';
+} from './schema/index.js';
 /**
  * Representation of the 'ExecutionScheduleApi'.
- * This API is part of the 'AI_CORE_API' service.
+ * This API is part of the 'src' service.
  */
 export const ExecutionScheduleApi = {
   /**

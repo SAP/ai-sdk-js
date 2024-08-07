@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { BckndArgoCDRepositoryDetails } from './bcknd-argo-cd-repository-details';
+import type { BckndArgoCDRepositoryDetails } from './bcknd-argo-cd-repository-details.js';
 /**
  * This represents a list of GitOps repositories for the tenant.
  */

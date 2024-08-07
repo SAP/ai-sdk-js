@@ -3,14 +3,14 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiExecutionId } from './ai-execution-id';
-import type { AiConfigurationId } from './ai-configuration-id';
-import type { AiConfigurationName } from './ai-configuration-name';
-import type { AiScenarioId } from './ai-scenario-id';
-import type { AiExecutionStatus } from './ai-execution-status';
-import type { AiExecutionStatusMessage } from './ai-execution-status-message';
-import type { AiArtifactArray } from './ai-artifact-array';
-import type { AiExecutionScheduleId } from './ai-execution-schedule-id';
+import type { AiExecutionId } from './ai-execution-id.js';
+import type { AiConfigurationId } from './ai-configuration-id.js';
+import type { AiConfigurationName } from './ai-configuration-name.js';
+import type { AiScenarioId } from './ai-scenario-id.js';
+import type { AiExecutionStatus } from './ai-execution-status.js';
+import type { AiExecutionStatusMessage } from './ai-execution-status-message.js';
+import type { AiArtifactArray } from './ai-artifact-array.js';
+import type { AiExecutionScheduleId } from './ai-execution-schedule-id.js';
 /**
  * Execution that may generate artifacts
  */

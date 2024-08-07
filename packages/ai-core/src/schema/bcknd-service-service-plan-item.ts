@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { BckndServiceServicePlanItemMetadata } from './bcknd-service-service-plan-item-metadata';
+import type { BckndServiceServicePlanItemMetadata } from './bcknd-service-service-plan-item-metadata.js';
 /**
  * Representation of the 'BckndServiceServicePlanItem' schema.
  */

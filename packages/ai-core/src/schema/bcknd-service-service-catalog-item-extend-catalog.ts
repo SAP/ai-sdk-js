@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { BckndServiceServicePlanItem } from './bcknd-service-service-plan-item';
+import type { BckndServiceServicePlanItem } from './bcknd-service-service-plan-item.js';
 /**
  * Representation of the 'BckndServiceServiceCatalogItemExtendCatalog' schema.
  */

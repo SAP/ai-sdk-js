@@ -3,13 +3,13 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { RTAScenarioId } from './rta-scenario-id';
-import type { RTAExecutableId } from './rta-executable-id';
-import type { RTADeploymentId } from './rta-deployment-id';
-import type { RTADeploymentUrl } from './rta-deployment-url';
-import type { RTALatestRunningTargetId } from './rta-latest-running-target-id';
-import type { RTATargetId } from './rta-target-id';
-import type { RTATtl } from './rta-ttl';
+import type { RTAScenarioId } from './rta-scenario-id.js';
+import type { RTAExecutableId } from './rta-executable-id.js';
+import type { RTADeploymentId } from './rta-deployment-id.js';
+import type { RTADeploymentUrl } from './rta-deployment-url.js';
+import type { RTALatestRunningTargetId } from './rta-latest-running-target-id.js';
+import type { RTATargetId } from './rta-target-id.js';
+import type { RTATtl } from './rta-ttl.js';
 /**
  * Detailed data about an inference-pipeline deployment
  */

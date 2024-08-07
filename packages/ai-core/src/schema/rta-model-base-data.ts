@@ -3,8 +3,8 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { RTAExecutableId } from './rta-executable-id';
-import type { RTAModelVersionList } from './rta-model-version-list';
+import type { RTAExecutableId } from './rta-executable-id.js';
+import type { RTAModelVersionList } from './rta-model-version-list.js';
 /**
  * Representation of the 'RTAModelBaseData' schema.
  */

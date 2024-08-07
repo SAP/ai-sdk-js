@@ -14,10 +14,10 @@ import type {
   BckndArgoCDApplicationModificationResponse,
   BckndArgoCDApplicationDeletionResponse,
   BckndArgoCDApplicationRefreshResponse
-} from './schema';
+} from './schema/index.js';
 /**
  * Representation of the 'ApplicationApi'.
- * This API is part of the 'AI_CORE_API' service.
+ * This API is part of the 'src' service.
  */
 export const ApplicationApi = {
   /**

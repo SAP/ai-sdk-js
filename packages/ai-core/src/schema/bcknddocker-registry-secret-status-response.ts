@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { BcknddockerRegistrySecretStatus } from './bcknddocker-registry-secret-status';
+import type { BcknddockerRegistrySecretStatus } from './bcknddocker-registry-secret-status.js';
 /**
  * This represents a list of meta-data of a stored secret. The 'data' field of the secret is never retrieved.
  */

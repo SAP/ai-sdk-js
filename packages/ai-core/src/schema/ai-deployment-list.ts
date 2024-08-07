@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiDeployment } from './ai-deployment';
+import type { AiDeployment } from './ai-deployment.js';
 /**
  * Representation of the 'AiDeploymentList' schema.
  */

@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { BckndGenericSecretData } from './bcknd-generic-secret-data';
+import type { BckndGenericSecretData } from './bcknd-generic-secret-data.js';
 /**
  * Representation of the 'BckndGenericSecretPatchBody' schema.
  */

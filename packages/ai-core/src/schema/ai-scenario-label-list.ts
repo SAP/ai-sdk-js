@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiScenarioLabel } from './ai-scenario-label';
+import type { AiScenarioLabel } from './ai-scenario-label.js';
 /**
  * Arbitrary labels as meta information
  */

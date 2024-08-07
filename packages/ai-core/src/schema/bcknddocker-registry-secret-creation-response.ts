@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { BcknddockerRegistrySecretCreationResponseMessage } from './bcknddocker-registry-secret-creation-response-message';
+import type { BcknddockerRegistrySecretCreationResponseMessage } from './bcknddocker-registry-secret-creation-response-message.js';
 /**
  * Message
  * @example "Created"

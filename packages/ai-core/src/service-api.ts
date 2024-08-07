@@ -4,10 +4,10 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
-import type { BckndServiceList, BckndExtendedService } from './schema';
+import type { BckndServiceList, BckndExtendedService } from './schema/index.js';
 /**
  * Representation of the 'ServiceApi'.
- * This API is part of the 'AI_CORE_API' service.
+ * This API is part of the 'src' service.
  */
 export const ServiceApi = {
   /**

@@ -4,10 +4,10 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
-import type { AiModelList } from './schema';
+import type { AiModelList } from './schema/index.js';
 /**
  * Representation of the 'ModelApi'.
- * This API is part of the 'AI_CORE_API' service.
+ * This API is part of the 'src' service.
  */
 export const ModelApi = {
   /**
