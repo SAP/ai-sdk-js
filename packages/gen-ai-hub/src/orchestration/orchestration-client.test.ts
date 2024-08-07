@@ -7,8 +7,13 @@ import {
   GenAiHubClient,
   constructCompletionPostRequest
 } from './orchestration-client.js';
-import { CompletionPostResponse } from './api/index.js';
+import { CompletionPostResponse, FilteringModuleConfig } from './api/index.js';
 import { GenAiHubCompletionParameters } from './orchestration-types.js';
+import {
+  createFilterConfig,
+  createInputFilter,
+  createOutputFilter
+} from './orchestration-filter-utility.js';
 
 describe('GenAiHubClient', () => {
   let destination: HttpDestination;
@@ -47,7 +52,7 @@ describe('GenAiHubClient', () => {
       {
         data: {
           deploymentConfiguration,
-          ...constructCompletionPostRequest(request)
+          ...constructCompletionPostRequest(request, {})
         }
       },
       {
@@ -74,24 +79,27 @@ describe('GenAiHubClient', () => {
           { role: 'user', content: 'Create {number} paraphrases of {phrase}' }
         ],
         template_params: { phrase: 'I hate you.', number: 3 }
-      },
-      filterConfig: {
-        input: {
-          azureContentSafety: {
-            Hate: 0,
-            SelfHarm: 2
-          }
-        },
-        output: {
-          azureContentSafety: {
-            Hate: 0,
-            SelfHarm: 2,
-            Sexual: 4,
-            Violence: 6
-          }
-        }
       }
     };
+
+    const filterConfig: FilteringModuleConfig = createFilterConfig(
+      createInputFilter({
+        type: 'azureContentSafety',
+        config: {
+          Hate: 2,
+          Violence: 4
+        }
+      }),
+      createOutputFilter({
+        type: 'azureContentSafety',
+        config: {
+          Hate: 0,
+          SelfHarm: 2,
+          Sexual: 2,
+          Violence: 2
+        }
+      })
+    );
 
     const mockResponse = parseMockResponse<CompletionPostResponse>(
       'orchestration',
@@ -102,7 +110,7 @@ describe('GenAiHubClient', () => {
       {
         data: {
           deploymentConfiguration,
-          ...constructCompletionPostRequest(request)
+          ...constructCompletionPostRequest(request, { filterConfig })
         }
       },
       {
@@ -114,7 +122,9 @@ describe('GenAiHubClient', () => {
         url: 'completion'
       }
     );
-    expect(client.chatCompletion(request)).resolves.toEqual(mockResponse);
+    expect(client.chatCompletion(request, { filterConfig })).resolves.toEqual(
+      mockResponse
+    );
   });
 
   it('sends message history together with templating config', async () => {
@@ -152,7 +162,7 @@ describe('GenAiHubClient', () => {
       {
         data: {
           deploymentConfiguration,
-          ...constructCompletionPostRequest(request)
+          ...constructCompletionPostRequest(request, {})
         }
       },
       {

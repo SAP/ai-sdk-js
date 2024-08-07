@@ -1,11 +1,10 @@
 import { BaseLlmParameters } from '../core/index.js';
 import {
-  AzureContentSafety,
   ChatMessages,
   CompletionPostResponse,
+  FilteringModuleConfig,
   InputParamsEntry,
-  LLMModuleConfig,
-  ProviderType
+  LLMModuleConfig
 } from './api/index.js';
 
 /**
@@ -42,34 +41,6 @@ export interface PromptConfig {
 export type LlmConfig = LLMModuleConfig;
 
 /**
- * Wrapper object to configure Filters.
- */
-export interface FilterConfig {
-  /**
-   * Input configuration for filtering provider.
-   */
-  input?: FilterServiceProvider;
-  /**
-   * Output configuration for filtering provider.
-   */
-  output?: FilterServiceProvider;
-}
-/**
- * Wrapper object to configure the filter service provider.
- */
-export interface FilterServiceProvider {
-  /**
-   * Azure content safery filter service provider.
-   */
-  azureContentSafety?: AzureContentSafety;
-}
-/**
- * Map of filter service providers.
- */
-export const filterServiceProviders: { [key: string]: ProviderType } = {
-  azureContentSafety: 'azure_content_safety'
-};
-/**
  * Wrapper object to encompass Orchestration options.
  */
 export interface OrchestrationCompletionParameters {
@@ -81,8 +52,14 @@ export interface OrchestrationCompletionParameters {
    * Llm configuration options.
    */
   llmConfig: LlmConfig;
+}
+
+/**
+ * Wrapper object for optional Orchestration module(s) configuration.
+ */
+export interface OrchestrationOptionalModuleConfig {
   /**
    * Filter configuration options.
    */
-  filterConfig?: FilterConfig;
+  filterConfig?: FilteringModuleConfig;
 }
