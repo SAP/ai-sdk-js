@@ -1,4 +1,5 @@
 import nock from 'nock';
+import { jest } from '@jest/globals';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import { mockGetAiCoreDestination } from '../../test-util/mock-context.js';
 import {
@@ -6,7 +7,6 @@ import {
   EndpointOptions
 } from '../../core/http-client.js';
 import { mockInference, parseMockResponse } from '../../test-util/mock-http.js';
-import { OpenAiClient } from './openai-client.js';
 import {
   OpenAiChatCompletionOutput,
   OpenAiChatCompletionParameters,
@@ -14,6 +14,7 @@ import {
   OpenAiEmbeddingOutput,
   OpenAiEmbeddingParameters
 } from './openai-types.js';
+const { OpenAiClient } = await import('./openai-client.js');
 
 describe('openai client', () => {
   let destination: HttpDestination;
@@ -39,6 +40,10 @@ describe('openai client', () => {
 
   afterEach(() => {
     nock.cleanAll();
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
   });
 
   describe('chatCompletion', () => {

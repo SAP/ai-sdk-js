@@ -1,13 +1,18 @@
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
+import { jest } from '@jest/globals';
 import { mockGetAiCoreDestination } from '../test-util/mock-context.js';
 import { mockInference } from '../test-util/mock-http.js';
-import { executeRequest } from './http-client.js';
+const { executeRequest } = await import('./http-client.js');
 
 describe('http-client', () => {
   let destination: HttpDestination;
 
   beforeAll(() => {
     destination = mockGetAiCoreDestination();
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
   });
 
   it('should execute a request to the AI Core service', async () => {

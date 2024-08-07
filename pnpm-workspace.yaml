@@ -7,6 +7,4 @@ packages:
   # e2e tests
   - 'tests/e2e-tests'
   # exclude packages that are inside test directories
-  - '!poc/'
-  - '!test-util'
   - '!tests/type-tests'
