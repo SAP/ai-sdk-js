@@ -4,7 +4,7 @@ import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import { mockGetAiCoreDestination } from '../test-util/mock-context.js';
 import { mockInference, parseMockResponse } from '../test-util/mock-http.js';
 import { BaseLlmParametersWithDeploymentId } from '../core/index.js';
-import { CompletionPostResponse, FilteringModuleConfig } from './api/index.js';
+import { CompletionPostResponse } from './api/index.js';
 import { GenAiHubCompletionParameters } from './orchestration-types.js';
 import {
   createFilterConfig,
@@ -87,24 +87,24 @@ describe('GenAiHubClient', () => {
           { role: 'user', content: 'Create {number} paraphrases of {phrase}' }
         ],
         template_params: { phrase: 'I hate you.', number: 3 }
-      }
+      },
+      filterConfig: createFilterConfig(
+        createInputFilter({
+          type: 'azureContentSafety',
+          config: {
+            Hate: 4,
+            SelfHarm: 2
+          }
+        }),
+        createOutputFilter({
+          type: 'azureContentSafety',
+          config: {
+            Sexual: 0,
+            Violence: 6
+          }
+        })
+      )
     };
-
-    const filterConfig: FilteringModuleConfig = createFilterConfig(
-      createInputFilter({
-        type: 'azureContentSafety',
-        config: { Hate: 4, SelfHarm: 4 }
-      }),
-      createOutputFilter({
-        type: 'azureContentSafety',
-        config: {
-          Hate: 0,
-          SelfHarm: 2,
-          Sexual: 2,
-          Violence: 2
-        }
-      })
-    );
     const mockResponse = parseMockResponse<CompletionPostResponse>(
       'orchestration',
       'genaihub-chat-completion-filter-config.json'
@@ -114,7 +114,7 @@ describe('GenAiHubClient', () => {
       {
         data: {
           deploymentConfiguration,
-          ...constructCompletionPostRequest(request, { filterConfig })
+          ...constructCompletionPostRequest(request)
         }
       },
       {
@@ -126,9 +126,7 @@ describe('GenAiHubClient', () => {
         url: 'completion'
       }
     );
-    expect(client.chatCompletion(request, { filterConfig })).resolves.toEqual(
-      mockResponse
-    );
+    expect(client.chatCompletion(request)).resolves.toEqual(mockResponse);
   });
 
   it('sends message history together with templating config', async () => {
@@ -166,7 +164,7 @@ describe('GenAiHubClient', () => {
       {
         data: {
           deploymentConfiguration,
-          ...constructCompletionPostRequest(request, {})
+          ...constructCompletionPostRequest(request)
         }
       },
       {

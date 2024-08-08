@@ -52,12 +52,6 @@ export interface OrchestrationCompletionParameters {
    * Llm configuration options.
    */
   llmConfig: LlmConfig;
-}
-
-/**
- * Wrapper object for optional Orchestration module(s) configuration.
- */
-export interface OrchestrationOptionalModuleConfig {
   /**
    * Filter configuration options.
    */

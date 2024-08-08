@@ -2,8 +2,7 @@ import { executeRequest, CustomRequestConfig } from '../core/index.js';
 import { CompletionPostRequest } from './api/schema/index.js';
 import {
   GenAiHubCompletionParameters,
-  GenAiHubCompletionResponse,
-  OrchestrationOptionalModuleConfig
+  GenAiHubCompletionResponse
 } from './orchestration-types.js';
 
 /**
@@ -19,12 +18,11 @@ export class GenAiHubClient {
    */
   async chatCompletion(
     data: GenAiHubCompletionParameters,
-    optionalModuleConfig?: OrchestrationOptionalModuleConfig,
     requestConfig?: CustomRequestConfig
   ): Promise<GenAiHubCompletionResponse> {
     const dataWithInputParams = {
       deploymentConfiguration: data.deploymentConfiguration,
-      ...constructCompletionPostRequest(data, optionalModuleConfig)
+      ...constructCompletionPostRequest(data)
     };
 
     const response = await executeRequest(
@@ -40,8 +38,7 @@ export class GenAiHubClient {
  * @internal
  */
 export function constructCompletionPostRequest(
-  input: GenAiHubCompletionParameters,
-  optionalModuleConfig: OrchestrationOptionalModuleConfig | undefined
+  input: GenAiHubCompletionParameters
 ): CompletionPostRequest {
   const result: CompletionPostRequest = {
     orchestration_config: {
@@ -51,8 +48,8 @@ export function constructCompletionPostRequest(
         },
         llm_module_config: input.llmConfig
       },
-      ...(optionalModuleConfig?.filterConfig && {
-        filtering_module_config: optionalModuleConfig.filterConfig
+      ...(input?.filterConfig && {
+        filtering_module_config: input.filterConfig
       }),
       ...(input.prompt.template_params && {
         input_params: input.prompt.template_params

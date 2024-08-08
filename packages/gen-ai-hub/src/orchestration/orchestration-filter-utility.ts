@@ -42,28 +42,25 @@ export type FilterWrapper =
 /**
  * Convenience function to provide filters to the orchestration service.
  * @param inputFilter - List of filters to be used for the input filtering.
- * @param outputFilter - List of filters to be used fot output filtering.
- * @returns Filter module configuration of the orchetration service.
+ * @param inputFilter.input - The input filtering configuration.
+ * @param outputFilter - List of filters to be used for output filtering.
+ * @param outputFilter.output - The output filtering configuration.
+ * @returns The filtering module configuration.
  */
 export function createFilterConfig(
-  /**
-   * List of filters to be used for the input filtering.
-   */
-  inputFilter?: FilteringConfig,
-  /**
-   * List of filters to be used fot output filtering.
-   */
-  outputFilter?: FilteringConfig
+  inputFilter?: { input: FilteringConfig },
+  outputFilter?: { output: FilteringConfig }
 ): FilteringModuleConfig {
   return {
-    ...(inputFilter ? { input: inputFilter } : {}),
-    ...(outputFilter ? { output: outputFilter } : {})
+    ...(inputFilter ? inputFilter : {}),
+    ...(outputFilter ? outputFilter : {})
   };
 }
 
 const createFilter = (
+  filterType: 'input' | 'output',
   input: FilterWrapper | FilterWrapper[]
-): FilteringConfig => {
+): { input: FilteringConfig } | { output: FilteringConfig } => {
   const filterArray: FilterWrapper[] = !Array.isArray(input) ? [input] : input;
   const filterOutput: FilteringConfig = {
     filters: filterArray.map(moduleConfig => ({
@@ -71,19 +68,27 @@ const createFilter = (
       config: moduleConfig.config
     }))
   };
-  return filterOutput;
+  return { [filterType]: filterOutput } as
+    | { input: FilteringConfig }
+    | { output: FilteringConfig };
 };
 
 /**
  * Convenience function to provide input filters to the orchestration service.
  * @param input - List of filters to be used for the input filtering.
- * @returns - An array of filters.
+ * @returns - An object with the input filtering configuration.
  */
-export const createInputFilter = createFilter;
+export const createInputFilter = (
+  input: FilterWrapper | FilterWrapper[]
+): { input: FilteringConfig } =>
+  createFilter('input', input) as { input: FilteringConfig };
 
 /**
  * Convenience function to provide output filters to the orchestration service.
  * @param output - List of filters to be used for the output filtering.
- * @returns - An array of filters.
+ * @returns - An object with the output filtering configuration.
  */
-export const createOutputFilter = createFilter;
+export const createOutputFilter = (
+  output: FilterWrapper | FilterWrapper[]
+): { output: FilteringConfig } =>
+  createFilter('output', output) as { output: FilteringConfig };
