@@ -7,7 +7,7 @@ import {
   BaseLlmParameters,
   CustomRequestConfig,
   EndpointOptions
-} from '../src/core/http-client.js';
+} from '../core/http-client.js';
 
 // Get the directory of this file
 const __filename = fileURLToPath(import.meta.url);
