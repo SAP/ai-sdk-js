@@ -6,10 +6,10 @@ import {
   AiDeploymentDeletionResponse,
   AiDeploymentList,
   AiDeploymentModificationRequest,
-  DeploymentApi,
   AiDeploymentModificationResponse,
   AiDeploymentTargetStatus
 } from './schema/index.js';
+import { DeploymentApi } from './deployment-api.js';
 
 describe('deployment', () => {
   const destination: HttpDestination = {
