@@ -5,7 +5,7 @@ import {
   AiArtifactCreationResponse,
   AiArtifactList,
   AiArtifactPostData
-} from './index.js';
+} from './schema/index.js';
 
 describe('artifact', () => {
   const destination: HttpDestination = {

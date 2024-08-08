@@ -5,7 +5,7 @@ import {
   ExecutionApi,
   AiExecutionCreationResponse,
   AiExecutionList
-} from './index.js';
+} from './schema/index.js';
 
 describe('execution', () => {
   const destination: HttpDestination = {

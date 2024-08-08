@@ -5,7 +5,7 @@ import {
   AiConfigurationBaseData,
   AiConfigurationCreationResponse,
   AiConfigurationList
-} from './index.js';
+} from './schema/index.js';
 
 describe('configuration', () => {
   const destination: HttpDestination = {

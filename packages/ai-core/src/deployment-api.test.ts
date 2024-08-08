@@ -9,7 +9,7 @@ import {
   DeploymentApi,
   AiDeploymentModificationResponse,
   AiDeploymentTargetStatus
-} from './index.js';
+} from './schema/index.js';
 
 describe('deployment', () => {
   const destination: HttpDestination = {
