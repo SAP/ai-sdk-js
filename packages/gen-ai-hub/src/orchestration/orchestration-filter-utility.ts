@@ -58,9 +58,8 @@ export function createFilterConfig(
 }
 
 const createFilter = (
-  filterType: 'input' | 'output',
   input: FilterWrapper | FilterWrapper[]
-): { input: FilteringConfig } | { output: FilteringConfig } => {
+): FilteringConfig => {
   const filterArray: FilterWrapper[] = !Array.isArray(input) ? [input] : input;
   const filterOutput: FilteringConfig = {
     filters: filterArray.map(moduleConfig => ({
@@ -68,9 +67,7 @@ const createFilter = (
       config: moduleConfig.config
     }))
   };
-  return { [filterType]: filterOutput } as
-    | { input: FilteringConfig }
-    | { output: FilteringConfig };
+  return filterOutput;
 };
 
 /**
@@ -80,8 +77,7 @@ const createFilter = (
  */
 export const createInputFilter = (
   input: FilterWrapper | FilterWrapper[]
-): { input: FilteringConfig } =>
-  createFilter('input', input) as { input: FilteringConfig };
+): { input: FilteringConfig } => ({ input: createFilter(input) });
 
 /**
  * Convenience function to provide output filters to the orchestration service.
@@ -90,5 +86,4 @@ export const createInputFilter = (
  */
 export const createOutputFilter = (
   output: FilterWrapper | FilterWrapper[]
-): { output: FilteringConfig } =>
-  createFilter('output', output) as { output: FilteringConfig };
+): { output: FilteringConfig } => ({ output: createFilter(output) });
