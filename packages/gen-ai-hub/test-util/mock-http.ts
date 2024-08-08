@@ -9,7 +9,7 @@ import {
   EndpointOptions
 } from '../src/core/http-client.js';
 
-// Get the directory name
+// Get the directory of this file
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
