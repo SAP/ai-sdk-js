@@ -40,6 +40,8 @@ export function constructCompletionPostRequest(
   input: GenAiHubCompletionParameters
 ): CompletionPostRequest {
   return {
+    // TODO: Properly implement input params
+    input_params: {},
     orchestration_config: {
       module_configurations: {
         templating_module_config: {
