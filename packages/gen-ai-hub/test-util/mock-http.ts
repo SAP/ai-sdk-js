@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import nock from 'nock';
 import {
@@ -7,6 +8,10 @@ import {
   CustomRequestConfig,
   EndpointOptions
 } from '../src/core/http-client.js';
+
+// Get the directory name
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const mockEndpoint: EndpointOptions = {
   url: 'mock-endpoint',
