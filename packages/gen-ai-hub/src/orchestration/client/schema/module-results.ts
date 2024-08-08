@@ -9,7 +9,7 @@ import type { LLMModuleResult } from './llm-module-result.js';
 /**
  * Results of each module.
  */
-export type ModuleResults = {
+export interface ModuleResults {
   grounding?: GenericModuleResult;
   templating?: TemplatingModuleResult;
   input_masking?: GenericModuleResult;
@@ -17,4 +17,4 @@ export type ModuleResults = {
   llm?: LLMModuleResult;
   output_filtering?: GenericModuleResult;
   output_unmasking?: GenericModuleResult;
-};
+}

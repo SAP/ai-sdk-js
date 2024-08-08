@@ -5,6 +5,6 @@
  */
 import type { Masking } from './masking.js';
 /**
- * Masking services to be used
+ * Masking services to be used.
  */
 export type MaskingConfig = Masking[];

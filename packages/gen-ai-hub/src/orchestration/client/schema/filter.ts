@@ -10,7 +10,7 @@ import type { ProviderType } from './provider-type.js';
 export type Filter = {
   type: ProviderType;
   /**
-   * Filters classifiers to be used
+   * Filters classifiers to be used.
    */
   config?: Record<string, any>;
 } & Record<string, any>;

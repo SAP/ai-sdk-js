@@ -9,16 +9,16 @@
  */
 export type LLMModuleConfig = {
   /**
-   * Model name as in LLM Access configuration
+   * Model name as in LLM Access configuration.
    * @example "gpt-4"
    */
   model_name: string;
   /**
-   * Model parameters
+   * Model parameters.
    */
   model_params: Record<string, any>;
   /**
-   * Version of the model to use
+   * Version of the model to use.
    * @example "2024-08-08T09:02:07.444Z"
    * Default: "latest".
    */

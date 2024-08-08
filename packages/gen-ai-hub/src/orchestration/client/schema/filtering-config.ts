@@ -9,7 +9,7 @@ import type { Filter } from './filter.js';
  */
 export type FilteringConfig = {
   /**
-   * Filters to be used
+   * Filters to be used.
    */
   filters: Filter[];
 } & Record<string, any>;

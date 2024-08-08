@@ -10,7 +10,7 @@ import type { PresidioEntities } from './presidio-entities.js';
  */
 export type UnmaskingConfig = {
   /**
-   * List of entities to be unmasked
+   * List of entities to be unmasked.
    */
   entities: DPIEntities | PresidioEntities[];
 } & Record<string, any>;

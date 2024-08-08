@@ -12,7 +12,7 @@ import type { PresidioEntities } from './presidio-entities.js';
 export type Masking = {
   type: MaskingProviderType;
   /**
-   * List of entities to be masked
+   * List of entities to be masked.
    */
   entities: DPIEntities | PresidioEntities[];
 } & Record<string, any>;

@@ -8,7 +8,7 @@ import type { UnmaskingConfig } from './unmasking-config.js';
 /**
  * Representation of the 'MaskingModuleConfig' schema.
  */
-export type MaskingModuleConfig = {
+export interface MaskingModuleConfig {
   masking: MaskingConfig;
   unmasking?: UnmaskingConfig;
-};
+}

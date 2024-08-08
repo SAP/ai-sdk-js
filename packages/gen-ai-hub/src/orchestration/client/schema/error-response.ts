@@ -12,7 +12,7 @@ export type ErrorResponse = {
   code: number;
   message: string;
   /**
-   * Where the error occurred
+   * Where the error occurred.
    * @example "LLM Module"
    */
   location: string;
