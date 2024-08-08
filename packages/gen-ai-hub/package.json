@@ -29,7 +29,8 @@
   "dependencies": {
     "@sap-cloud-sdk/http-client": "^3.18.0",
     "@sap-cloud-sdk/connectivity": "^3.18.0",
-    "@sap-cloud-sdk/util": "^3.18.0"
+    "@sap-cloud-sdk/util": "^3.18.0",
+    "@sap-cloud-sdk/openapi": "^3.18.0"
   },
   "devDependencies": {
     "@sap-cloud-sdk/openapi-generator": "^3.18.0",
