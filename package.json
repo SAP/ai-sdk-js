@@ -23,7 +23,7 @@
     "@changesets/cli": "^2.27.7",
     "@sap-cloud-sdk/eslint-config": "^3.18.0",
     "@sap-cloud-sdk/connectivity": "^3.18.0",
-    "@sap-cloud-sdk/http-client": "^3.18.0",
+    "@sap-ai-sdk/core": "workspace:^",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.14",
     "@jest/globals": "^29.5.12",

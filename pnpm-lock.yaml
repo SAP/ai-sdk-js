@@ -14,15 +14,15 @@ importers:
       '@jest/globals':
         specifier: ^29.5.12
         version: 29.7.0
+      '@sap-ai-sdk/core':
+        specifier: workspace:^
+        version: link:packages/core
       '@sap-cloud-sdk/connectivity':
         specifier: ^3.18.0
         version: 3.18.0
       '@sap-cloud-sdk/eslint-config':
         specifier: ^3.18.0
         version: 3.18.0(@types/eslint@8.56.10)(@typescript-eslint/parser@7.18.0(eslint@9.8.0)(typescript@5.5.4))(eslint@9.8.0)(prettier@3.3.3)(typescript@5.5.4)
-      '@sap-cloud-sdk/http-client':
-        specifier: ^3.18.0
-        version: 3.18.0
       '@types/jest':
         specifier: ^29.5.12
         version: 29.5.12
@@ -64,8 +64,27 @@ importers:
         specifier: ^5.5.4
         version: 5.5.4
 
+  packages/core:
+    dependencies:
+      '@sap-cloud-sdk/connectivity':
+        specifier: ^3.18.0
+        version: 3.18.0
+      '@sap-cloud-sdk/http-client':
+        specifier: ^3.18.0
+        version: 3.18.0
+      '@sap-cloud-sdk/util':
+        specifier: ^3.18.0
+        version: 3.18.0
+    devDependencies:
+      typescript:
+        specifier: ^5.5.4
+        version: 5.5.4
+
   packages/gen-ai-hub:
     dependencies:
+      '@sap-ai-sdk/core':
+        specifier: workspace:^
+        version: link:../core
       '@sap-cloud-sdk/connectivity':
         specifier: ^3.18.0
         version: 3.18.0
@@ -103,6 +122,9 @@ importers:
       '@sap-ai-sdk/ai-core':
         specifier: workspace:^
         version: link:../../packages/ai-core
+      '@sap-ai-sdk/core':
+        specifier: workspace:^
+        version: link:../../packages/core
       '@sap-ai-sdk/gen-ai-hub':
         specifier: workspace:^
         version: link:../../packages/gen-ai-hub

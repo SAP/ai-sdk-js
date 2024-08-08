@@ -7,7 +7,7 @@ import {
 } from '@sap-cloud-sdk/connectivity';
 
 const logger = createLogger({
-  package: 'gen-ai-hub',
+  package: 'core',
   messageContext: 'context'
 });
 

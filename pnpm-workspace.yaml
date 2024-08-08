@@ -2,6 +2,7 @@ packages:
   # all packages in direct subdirs of packages/
   - 'packages/ai-core'
   - 'packages/gen-ai-hub'
+  - 'packages/core'
   # sample code
   - 'sample-code'
   # e2e tests
