@@ -2,10 +2,10 @@ import nock from 'nock';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import {
   AiEnactmentCreationRequest,
-  ExecutionApi,
   AiExecutionCreationResponse,
   AiExecutionList
 } from './schema/index.js';
+import { ExecutionApi } from './execution-api.js';
 
 describe('execution', () => {
   const destination: HttpDestination = {

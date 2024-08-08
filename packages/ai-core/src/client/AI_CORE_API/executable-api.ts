@@ -7,7 +7,7 @@ import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
 import type { AiExecutableList, AiExecutable } from './schema/index.js';
 /**
  * Representation of the 'ExecutableApi'.
- * This API is part of the 'src' service.
+ * This API is part of the 'AI_CORE_API' service.
  */
 export const ExecutableApi = {
   /**

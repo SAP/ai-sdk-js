@@ -7,7 +7,7 @@ import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
 import type { BckndServiceList, BckndExtendedService } from './schema/index.js';
 /**
  * Representation of the 'ServiceApi'.
- * This API is part of the 'src' service.
+ * This API is part of the 'AI_CORE_API' service.
  */
 export const ServiceApi = {
   /**

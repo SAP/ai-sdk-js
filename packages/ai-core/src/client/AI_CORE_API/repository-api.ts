@@ -15,7 +15,7 @@ import type {
 } from './schema/index.js';
 /**
  * Representation of the 'RepositoryApi'.
- * This API is part of the 'src' service.
+ * This API is part of the 'AI_CORE_API' service.
  */
 export const RepositoryApi = {
   /**

@@ -10,7 +10,7 @@ import type {
 } from './schema/index.js';
 /**
  * Representation of the 'DefaultApi'.
- * This API is part of the 'client' service.
+ * This API is part of the 'api' service.
  */
 export const DefaultApi = {
   /**

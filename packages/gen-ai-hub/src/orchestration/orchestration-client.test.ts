@@ -4,7 +4,7 @@ import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import { mockGetAiCoreDestination } from '../test-util/mock-context.js';
 import { mockInference, parseMockResponse } from '../test-util/mock-http.js';
 import { BaseLlmParametersWithDeploymentId } from '../core/index.js';
-import { CompletionPostResponse } from './client/index.js';
+import { CompletionPostResponse } from './client/api/index.js';
 import { GenAiHubCompletionParameters } from './orchestration-types.js';
 jest.unstable_mockModule('../core/context.js', () => ({
   getAiCoreDestination: jest.fn(() =>

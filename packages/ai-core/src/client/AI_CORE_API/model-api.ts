@@ -7,7 +7,7 @@ import { OpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
 import type { AiModelList } from './schema/index.js';
 /**
  * Representation of the 'ModelApi'.
- * This API is part of the 'src' service.
+ * This API is part of the 'AI_CORE_API' service.
  */
 export const ModelApi = {
   /**

@@ -1,11 +1,11 @@
 import nock from 'nock';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import {
-  ArtifactApi,
   AiArtifactCreationResponse,
   AiArtifactList,
   AiArtifactPostData
 } from './schema/index.js';
+import { ArtifactApi } from './artifact-api.js';
 
 describe('artifact', () => {
   const destination: HttpDestination = {

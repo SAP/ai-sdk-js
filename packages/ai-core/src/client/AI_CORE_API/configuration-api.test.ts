@@ -1,11 +1,11 @@
 import nock from 'nock';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import {
-  ConfigurationApi,
   AiConfigurationBaseData,
   AiConfigurationCreationResponse,
   AiConfigurationList
 } from './schema/index.js';
+import { ConfigurationApi } from './configuration-api.js';
 
 describe('configuration', () => {
   const destination: HttpDestination = {

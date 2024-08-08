@@ -4,7 +4,7 @@ import {
   CompletionPostResponse,
   InputParamsEntry,
   LLMModuleConfig
-} from './client/index.js';
+} from './client/api/index.js';
 
 /**
  * Input Parameters for GenAI hub chat completion.
