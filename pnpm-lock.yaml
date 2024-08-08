@@ -66,9 +66,6 @@ importers:
 
   packages/gen-ai-hub:
     dependencies:
-      '@sap-ai-sdk/ai-core':
-        specifier: workspace:^
-        version: link:../ai-core
       '@sap-cloud-sdk/connectivity':
         specifier: ^3.18.0
         version: 3.18.0
