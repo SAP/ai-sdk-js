@@ -85,10 +85,7 @@ describe('GenAiHubClient', () => {
     const filterConfig: FilteringModuleConfig = createFilterConfig(
       createInputFilter({
         type: 'azureContentSafety',
-        config: {
-          Hate: 2,
-          Violence: 4
-        }
+        config: { Hate: 4, SelfHarm: 4 }
       }),
       createOutputFilter({
         type: 'azureContentSafety',
@@ -100,7 +97,6 @@ describe('GenAiHubClient', () => {
         }
       })
     );
-
     const mockResponse = parseMockResponse<CompletionPostResponse>(
       'orchestration',
       'genaihub-chat-completion-filter-config.json'
