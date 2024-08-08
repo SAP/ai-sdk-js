@@ -6,7 +6,7 @@ import {
   BaseLlmParameters,
   CustomRequestConfig,
   EndpointOptions
-} from '../src/core/http-client.js';
+} from '../core/http-client.js';
 
 const mockEndpoint: EndpointOptions = {
   url: 'mock-endpoint',
@@ -44,7 +44,7 @@ export function mockInference<D extends BaseLlmParameters>(
 
 export function parseMockResponse<T>(client: string, fileName: string): T {
   const fileContent = fs.readFileSync(
-    path.join('test-util', 'mock-data', client, fileName),
+    path.join('src', 'test-util', 'mock-data', client, fileName),
     'utf-8'
   );
 
