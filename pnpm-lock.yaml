@@ -75,6 +75,9 @@ importers:
       '@sap-cloud-sdk/http-client':
         specifier: ^3.18.0
         version: 3.18.0
+      '@sap-cloud-sdk/openapi':
+        specifier: ^3.18.0
+        version: 3.18.0
       '@sap-cloud-sdk/util':
         specifier: ^3.18.0
         version: 3.18.0
