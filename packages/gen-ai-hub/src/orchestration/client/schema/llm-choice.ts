@@ -9,16 +9,16 @@ import type { ChatMessage } from './chat-message.js';
  */
 export type LLMChoice = {
   /**
-   * Index of the choice.
+   * Index of the choice
    */
   index: number;
   message: ChatMessage;
   /**
-   * Log probabilities.
+   * Log probabilities
    */
   logprobs?: Record<string, number[]>;
   /**
-   * Reason for stopping the model.
+   * Reason for stopping the model
    */
   finish_reason: string;
 } & Record<string, any>;

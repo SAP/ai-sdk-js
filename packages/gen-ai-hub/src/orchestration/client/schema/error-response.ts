@@ -12,12 +12,9 @@ export type ErrorResponse = {
   code: number;
   message: string;
   /**
-   * Where the error occurred.
+   * Where the error occurred
    * @example "LLM Module"
    */
   location: string;
-  /**
-   * Results of each module up until the error.
-   */
   module_results?: ModuleResults;
 } & Record<string, any>;

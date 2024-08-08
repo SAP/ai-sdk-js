@@ -23,7 +23,7 @@
     "test": "jest",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
-    "generate": "openapi-generator -i ./src/orchestration/spec/ -o ./src/orchestration/client",
+    "generate:orchestration": "openapi-generator --options-per-service='./src/orchestration/spec/options-per-service.json' --overwrite --generateESM -i ./src/orchestration/spec/api.yaml -o ./src/orchestration",
     "postgenerate": "ts-node ../../scripts/update-imports.ts src/orechestration/api"
   },
   "dependencies": {

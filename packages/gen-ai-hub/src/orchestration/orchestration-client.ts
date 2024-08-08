@@ -1,5 +1,5 @@
 import { executeRequest, CustomRequestConfig } from '../core/index.js';
-import { CompletionPostRequest } from './api/schema/index.js';
+import { CompletionPostRequest } from './client/schema/index.js';
 import {
   GenAiHubCompletionParameters,
   GenAiHubCompletionResponse

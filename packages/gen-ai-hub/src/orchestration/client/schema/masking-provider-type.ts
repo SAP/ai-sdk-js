@@ -5,9 +5,6 @@
  */
 
 /**
- * Representation of the 'ChatMessage' schema.
+ * Representation of the 'MaskingProviderType' schema.
  */
-export type ChatMessage = {
-  role: 'user' | 'assistant' | 'system';
-  content: string;
-} & Record<string, any>;
+export type MaskingProviderType = 'data_privacy_integration' | 'ms_presidio';

@@ -5,19 +5,19 @@
  */
 
 /**
- * Usage of tokens in the response.
+ * Usage of tokens in the response
  */
 export type TokenUsage = {
   /**
-   * Number of tokens used in the input.
+   * Number of tokens used in the input
    */
   completion_tokens: number;
   /**
-   * Number of tokens used in the output.
+   * Number of tokens used in the output
    */
   prompt_tokens: number;
   /**
-   * Total number of tokens used.
+   * Total number of tokens used
    */
   total_tokens: number;
 } & Record<string, any>;

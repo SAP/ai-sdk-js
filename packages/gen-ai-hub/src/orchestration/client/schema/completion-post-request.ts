@@ -11,6 +11,6 @@ import type { ChatMessages } from './chat-messages.js';
  */
 export type CompletionPostRequest = {
   orchestration_config: OrchestrationConfig;
-  input_params?: Record<string, InputParamsEntry>;
+  input_params: Record<string, InputParamsEntry>;
   messages_history?: ChatMessages;
 } & Record<string, any>;

@@ -3,4 +3,8 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-export * from './schema/index.js';
+
+/**
+ * Representation of the 'ProviderType' schema.
+ */
+export type ProviderType = 'azure_content_safety';

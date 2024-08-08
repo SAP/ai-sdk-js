@@ -1,0 +1,6 @@
+{
+  "src/orchestration/spec/api.yaml": {
+    "packageName": "client",
+    "directoryName": "client"
+  }
+}

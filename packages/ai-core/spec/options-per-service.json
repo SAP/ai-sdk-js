@@ -1,6 +1,5 @@
 {
   "spec/AI_CORE_API.yaml": {
-    "packageName": "ai_core_api",
     "directoryName": "src"
   }
 }

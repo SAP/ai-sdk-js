@@ -10,27 +10,27 @@ import type { TokenUsage } from './token-usage.js';
  */
 export type LLMModuleResult = {
   /**
-   * ID of the response.
+   * ID of the response
    */
   id: string;
   /**
-   * Object type.
+   * Object type
    */
   object: string;
   /**
-   * Unix timestamp.
+   * Unix timestamp
    */
   created: number;
   /**
-   * Model name.
+   * Model name
    */
   model: string;
   /**
-   * System fingerprint.
+   * System fingerprint
    */
   system_fingerprint?: string;
   /**
-   * Choices.
+   * Choices
    */
   choices: LLMChoice[];
   usage: TokenUsage;

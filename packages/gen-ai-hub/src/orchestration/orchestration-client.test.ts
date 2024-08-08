@@ -7,7 +7,7 @@ import {
   GenAiHubClient,
   constructCompletionPostRequest
 } from './orchestration-client.js';
-import { CompletionPostResponse } from './api/index.js';
+import { CompletionPostResponse } from './client/index.js';
 import { GenAiHubCompletionParameters } from './orchestration-types.js';
 
 describe('GenAiHubClient', () => {
