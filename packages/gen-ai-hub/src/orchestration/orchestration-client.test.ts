@@ -1,29 +1,37 @@
 import nock from 'nock';
+import { jest } from '@jest/globals';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
-import { mockGetAiCoreDestination } from '../../test-util/mock-context.js';
-import { mockInference, parseMockResponse } from '../../test-util/mock-http.js';
+import { mockGetAiCoreDestination } from '../test-util/mock-context.js';
+import { mockInference, parseMockResponse } from '../test-util/mock-http.js';
 import { BaseLlmParametersWithDeploymentId } from '../core/index.js';
-import {
-  GenAiHubClient,
-  constructCompletionPostRequest
-} from './orchestration-client.js';
 import { CompletionPostResponse } from './client/index.js';
 import { GenAiHubCompletionParameters } from './orchestration-types.js';
+jest.unstable_mockModule('../core/context.js', () => ({
+  getAiCoreDestination: jest.fn(() =>
+    Promise.resolve(mockGetAiCoreDestination())
+  )
+}));
 
+const { GenAiHubClient, constructCompletionPostRequest } = await import(
+  './orchestration-client.js'
+);
 describe('GenAiHubClient', () => {
   let destination: HttpDestination;
-  let client: GenAiHubClient;
+  const client = new GenAiHubClient();
   const deploymentConfiguration: BaseLlmParametersWithDeploymentId = {
     deploymentId: 'deployment-id'
   };
 
   beforeAll(() => {
     destination = mockGetAiCoreDestination();
-    client = new GenAiHubClient();
   });
 
   afterEach(() => {
     nock.cleanAll();
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
   });
 
   it('calls chatCompletion with minimum configuration and parses response', async () => {

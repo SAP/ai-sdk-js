@@ -18,7 +18,7 @@
   ],
   "scripts": {
     "compile": "tsc",
-    "test": "jest",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "openapi-generator --options-per-service='./spec/options-per-service.json' --generateESM  --overwrite --input spec/AI_CORE_API.yaml --outputDir ."
