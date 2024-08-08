@@ -28,7 +28,7 @@
     "@types/node": "^20.14.14",
     "@jest/globals": "^29.5.12",
     "eslint": "^9.8.0",
-    "jest": "^30.0.0-alpha.3",
+    "jest": "^30.0.0-alpha.6",
     "nock": "^13.5.4",
     "prettier": "^3.3.3",
     "ts-jest": "^29.2.4",
