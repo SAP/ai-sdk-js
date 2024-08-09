@@ -60,7 +60,7 @@ describe('GenAiHubClient', () => {
       {
         data: {
           deploymentConfiguration,
-          ...constructCompletionPostRequest(request, {})
+          ...constructCompletionPostRequest(request)
         }
       },
       {

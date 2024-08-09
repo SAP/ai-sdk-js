@@ -57,12 +57,9 @@ export function createFilterConfig(
   };
 }
 
-const createFilter = (
-  input: FilterWrapper | FilterWrapper[]
-): FilteringConfig => {
-  const filterArray: FilterWrapper[] = !Array.isArray(input) ? [input] : input;
+const createFilter = (input: FilterWrapper[]): FilteringConfig => {
   const filterOutput: FilteringConfig = {
-    filters: filterArray.map(moduleConfig => ({
+    filters: input.map(moduleConfig => ({
       type: filterServiceProviders[moduleConfig.type],
       config: moduleConfig.config
     }))
@@ -71,19 +68,10 @@ const createFilter = (
 };
 
 /**
- * Convenience function to provide input filters to the orchestration service.
- * @param input - List of filters to be used for the input filtering.
- * @returns - An object with the input filtering configuration.
- */
-export const createInputFilter = (
-  input: FilterWrapper | FilterWrapper[]
-): { input: FilteringConfig } => ({ input: createFilter(input) });
-
-/**
  * Convenience function to provide output filters to the orchestration service.
  * @param output - List of filters to be used for the output filtering.
  * @returns - An object with the output filtering configuration.
  */
 export const createOutputFilter = (
-  output: FilterWrapper | FilterWrapper[]
+  ...output: FilterWrapper[]
 ): { output: FilteringConfig } => ({ output: createFilter(output) });
