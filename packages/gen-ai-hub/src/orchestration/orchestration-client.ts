@@ -12,7 +12,6 @@ export class GenAiHubClient {
   /**
    * Creates a completion for the chat messages.
    * @param data - The input parameters for the chat completion.
-   * @param optionalModuleConfig - Additional optional orchestration module configuration.
    * @param requestConfig - Request configuration.
    * @returns The completion result.
    */
