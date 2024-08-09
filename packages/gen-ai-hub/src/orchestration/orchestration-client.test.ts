@@ -3,7 +3,10 @@ import { jest } from '@jest/globals';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import { BaseLlmParametersWithDeploymentId } from '@sap-ai-sdk/core';
 import { mockGetAiCoreDestination } from '../../../../test-util/mock-context.js';
-import { mockInference, parseMockResponse } from '../../../../test-util/mock-http.js';
+import {
+  mockInference,
+  parseMockResponse
+} from '../../../../test-util/mock-http.js';
 import { CompletionPostResponse } from './client/api/index.js';
 import { GenAiHubCompletionParameters } from './orchestration-types.js';
 jest.unstable_mockModule('@sap-ai-sdk/core', () => ({

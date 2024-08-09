@@ -3,10 +3,10 @@ import {
   OpenAiClient,
   OpenAiChatCompletionOutput,
   OpenAiEmbeddingOutput
-} from '@sap-ai-sdk/gen-ai-hub'
+} from '@sap-ai-sdk/gen-ai-hub';
 
 const client = new OpenAiClient();
-expectType<OpenAiClient>(client );
+expectType<OpenAiClient>(client);
 
 /**
  * Chat Completion.
