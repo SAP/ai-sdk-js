@@ -1,11 +1,11 @@
 import nock from 'nock';
 import { jest } from '@jest/globals';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
-import { mockGetAiCoreDestination } from '../../../../../test-util/mock-context.js';
 import {
   BaseLlmParametersWithDeploymentId
 } from '@sap-ai-sdk/core';
 import { EndpointOptions } from '@sap-ai-sdk/core/src/http-client.js';
+import { mockGetAiCoreDestination } from '../../../../../test-util/mock-context.js';
 import { mockInference, parseMockResponse } from '../../../../../test-util/mock-http.js';
 import {
   OpenAiChatCompletionOutput,
