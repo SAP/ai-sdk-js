@@ -6,11 +6,7 @@ import { mockInference, parseMockResponse } from '../test-util/mock-http.js';
 import { BaseLlmParametersWithDeploymentId } from '../core/index.js';
 import { CompletionPostResponse } from './api/index.js';
 import { GenAiHubCompletionParameters } from './orchestration-types.js';
-import {
-  createFilterConfig,
-  createInputFilter,
-  createOutputFilter
-} from './orchestration-filter-utility.js';
+import { createAzureFilter } from './orchestration-filter-utility.js';
 jest.unstable_mockModule('../core/context.js', () => ({
   getAiCoreDestination: jest.fn(() =>
     Promise.resolve(mockGetAiCoreDestination())
@@ -88,22 +84,10 @@ describe('GenAiHubClient', () => {
         ],
         template_params: { phrase: 'I hate you.', number: 3 }
       },
-      filterConfig: createFilterConfig(
-        createInputFilter({
-          type: 'azureContentSafety',
-          config: {
-            Hate: 4,
-            SelfHarm: 2
-          }
-        }),
-        createOutputFilter({
-          type: 'azureContentSafety',
-          config: {
-            Sexual: 0,
-            Violence: 6
-          }
-        })
-      )
+      filterConfig: {
+        input: createAzureFilter({ Hate: 4, SelfHarm: 2 }),
+        output: createAzureFilter({ Sexual: 0, Violence: 4 })
+      }
     };
     const mockResponse = parseMockResponse<CompletionPostResponse>(
       'orchestration',
