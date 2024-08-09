@@ -1,5 +1,5 @@
 {
-  "request_id": "request-id",
+  "request_id": "anonymized-request-id",
   "module_results": {
     "templating": [
       {
@@ -17,9 +17,9 @@
       }
     },
     "llm": {
-      "id": "chatcmpl-request-id",
+      "id": "anonymized-id",
       "object": "chat.completion",
-      "created": 1722006045,
+      "created": 0,
       "model": "gpt-35-turbo-16k",
       "choices": [
         {
@@ -41,8 +41,6 @@
       "message": "Output filter passed successfully.",
       "data": {
         "original_service_response": {
-          "Hate": 0,
-          "SelfHarm": 0,
           "Sexual": 0,
           "Violence": 0
         }
@@ -50,9 +48,9 @@
     }
   },
   "orchestration_result": {
-    "id": "chatcmpl-request-id",
+    "id": "anonymized-id",
     "object": "chat.completion",
-    "created": 1722006045,
+    "created": 0,
     "model": "gpt-35-turbo-16k",
     "choices": [
       {

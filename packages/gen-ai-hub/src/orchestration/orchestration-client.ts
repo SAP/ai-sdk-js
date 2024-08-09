@@ -46,10 +46,9 @@ export function constructCompletionPostRequest(
           template: input.prompt.template
         },
         llm_module_config: input.llmConfig,
-        ...(input?.filterConfig &&
-          Object.keys(input.filterConfig).length > 0 && {
-            filtering_module_config: input.filterConfig
-          })
+        ...(input?.filterConfig && {
+          filtering_module_config: input.filterConfig
+        })
       }
     },
     input_params: input.prompt.template_params
