@@ -49,14 +49,14 @@ export function constructCompletionPostRequest(
       },
       ...(input?.filterConfig && {
         filtering_module_config: input.filterConfig
-      }),
-      ...(input.prompt.template_params && {
-        input_params: input.prompt.template_params
-      }),
-      ...(input.prompt.messages_history && {
-        messages_history: input.prompt.messages_history
       })
-    }
+    },
+    input_params: input.prompt.template_params
+      ? input.prompt.template_params
+      : {},
+    ...(input.prompt.messages_history && {
+      messages_history: input.prompt.messages_history
+    })
   };
   return result;
 }
