@@ -20,12 +20,14 @@
     "compile": "tsc",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
-    "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
+    "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
+    "generate": "openapi-generator --generateESM  --overwrite --input ./src/spec/AI_CORE_API.yaml --outputDir ./src/client && pnpm lint:fix"
   },
   "dependencies": {
     "@sap-cloud-sdk/openapi": "^3.18.0"
   },
   "devDependencies": {
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "@sap-cloud-sdk/openapi-generator": "^3.18.0"
   }
 }
