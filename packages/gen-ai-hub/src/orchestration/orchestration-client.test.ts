@@ -4,8 +4,12 @@ import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import { mockGetAiCoreDestination } from '../test-util/mock-context.js';
 import { mockInference, parseMockResponse } from '../test-util/mock-http.js';
 import { BaseLlmParametersWithDeploymentId } from '../core/index.js';
-import { CompletionPostResponse } from './client/api/index.js';
+import {
+  CompletionPostResponse,
+  FilteringModuleConfig
+} from './client/api/index.js';
 import { GenAiHubCompletionParameters } from './orchestration-types.js';
+import { createAzureFilter } from './orchestration-filter-utility.js';
 jest.unstable_mockModule('../core/context.js', () => ({
   getAiCoreDestination: jest.fn(() =>
     Promise.resolve(mockGetAiCoreDestination())
@@ -67,6 +71,75 @@ describe('GenAiHubClient', () => {
         url: 'completion'
       }
     );
+    expect(client.chatCompletion(request)).resolves.toEqual(mockResponse);
+  });
+
+  it('calls chatCompletion with filtering configuration and parses response', async () => {
+    const request: GenAiHubCompletionParameters = {
+      deploymentConfiguration,
+      llmConfig: {
+        model_name: 'gpt-35-turbo-16k',
+        model_params: { max_tokens: 50, temperature: 0.1 }
+      },
+      prompt: {
+        template: [
+          { role: 'user', content: 'Create {number} paraphrases of {phrase}' }
+        ],
+        template_params: { phrase: 'I hate you.', number: 3 }
+      },
+      filterConfig: {
+        input: createAzureFilter({ Hate: 4, SelfHarm: 2 }),
+        output: createAzureFilter({ Sexual: 0, Violence: 4 })
+      }
+    };
+    const mockResponse = parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'genaihub-chat-completion-filter-config.json'
+    );
+
+    mockInference(
+      {
+        data: {
+          deploymentConfiguration,
+          ...constructCompletionPostRequest(request)
+        }
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      destination,
+      {
+        url: 'completion'
+      }
+    );
+    expect(client.chatCompletion(request)).resolves.toEqual(mockResponse);
+
+    const originalOrchestrationServicefilterConfig: FilteringModuleConfig = {
+      input: {
+        filters: [
+          {
+            type: 'azure_content_safety',
+            config: {
+              Hate: 4,
+              SelfHarm: 2
+            }
+          }
+        ]
+      },
+      output: {
+        filters: [
+          {
+            type: 'azure_content_safety',
+            config: {
+              Sexual: 0,
+              Violence: 4
+            }
+          }
+        ]
+      }
+    };
+    request.filterConfig = originalOrchestrationServicefilterConfig;
     expect(client.chatCompletion(request)).resolves.toEqual(mockResponse);
   });
 
