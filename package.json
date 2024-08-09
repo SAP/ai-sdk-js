@@ -17,7 +17,8 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules pnpm -r run test",
     "test:type": "tsd",
     "lint": "pnpm -r run lint",
-    "lint:fix": "pnpm -r run lint:fix"
+    "lint:fix": "pnpm -r run lint:fix",
+    "generate": "pnpm -r run generate"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.7",

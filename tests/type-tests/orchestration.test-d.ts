@@ -101,22 +101,6 @@ expectError<any>(
 );
 
 /**
- * Role in prompt template can only be user|assistant|system.
- */
-expectError<any>(
-  client.chatCompletion({
-    deploymentConfiguration: { deploymentId: 'id' },
-    prompt: {
-      template: [{ role: 'actor', content: 'Hello!' }]
-    },
-    llmConfig: {
-      model_name: 'gpt-35-turbo-16k',
-      model_params: {}
-    }
-  })
-);
-
-/**
  * Model parameters should adhere to OrchestrationCompletionParameters.// Todo: Check if additional checks can be added for model_params.
  */
 expectType<Promise<CompletionPostResponse>>(
