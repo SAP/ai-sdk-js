@@ -4,9 +4,9 @@ import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import nock from 'nock';
 import {
   BaseLlmParameters,
-  CustomRequestConfig,
-  EndpointOptions
-} from '../core/http-client.js';
+  CustomRequestConfig
+} from '@sap-ai-sdk/core';
+import { EndpointOptions } from '@sap-ai-sdk/core/src/http-client.js';
 
 const mockEndpoint: EndpointOptions = {
   url: 'mock-endpoint',
@@ -42,6 +42,9 @@ export function mockInference<D extends BaseLlmParameters>(
     .reply(response.status, response.data);
 }
 
+/**
+ * @internal
+ */
 export function parseMockResponse<T>(client: string, fileName: string): T {
   const fileContent = fs.readFileSync(
     path.join('src', 'test-util', 'mock-data', client, fileName),

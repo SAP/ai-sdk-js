@@ -1,6 +1,6 @@
 import { HttpResponse } from '@sap-cloud-sdk/http-client';
 import { expectError, expectType } from 'tsd';
-import { executeRequest } from '../../packages/gen-ai-hub/src/core/http-client.js';
+import { executeRequest } from '@sap-ai-sdk/core';
 
 expectType<Promise<HttpResponse>>(
   executeRequest(

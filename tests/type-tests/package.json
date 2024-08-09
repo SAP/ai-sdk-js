@@ -1,0 +1,20 @@
+{
+  "name": "@sap-ai-sdk/type-tests",
+  "version": "0.0.0",
+  "description": "Tests to ensure correct types in the SAP AI SDK for JavaScript.",
+  "type": "module",
+  "private": true,
+  "types": "test",
+  "scripts": {
+    "test": "pnpm tsd",
+    "lint:fix": "prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
+  },
+  "tsd": {
+    "directory": "test"
+  },
+  "devDependencies": {
+    "@sap-ai-sdk/gen-ai-hub": "workspace:^",
+    "@sap-ai-sdk/core": "workspace:^",
+    "tsd": "^0.31.0"
+  }
+}

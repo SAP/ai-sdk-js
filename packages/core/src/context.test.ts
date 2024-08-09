@@ -1,7 +1,7 @@
 import {
   mockAiCoreEnvVariable,
   mockClientCredentialsGrantCall
-} from '../test-util/mock-context.js';
+} from '../../../test-util/mock-context.js';
 import { getAiCoreDestination } from './context.js';
 
 describe('context', () => {

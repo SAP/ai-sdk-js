@@ -45,6 +45,9 @@ export function mockAiCoreEnvVariable(): void {
   process.env['aicore'] = JSON.stringify(aiCoreServiceBinding.credentials);
 }
 
+/**
+ * @internal
+ */
 export function mockGetAiCoreDestination(
   destination = aiCoreDestination
 ): HttpDestination {

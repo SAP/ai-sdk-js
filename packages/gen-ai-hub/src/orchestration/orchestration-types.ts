@@ -1,4 +1,4 @@
-import { BaseLlmParameters } from '../core/index.js';
+import { BaseLlmParameters } from '@sap-ai-sdk/core';
 import {
   ChatMessages,
   CompletionPostResponse,

@@ -1,12 +1,13 @@
 import nock from 'nock';
 import { jest } from '@jest/globals';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
-import { mockGetAiCoreDestination } from '../../test-util/mock-context.js';
+import { BaseLlmParametersWithDeploymentId } from '@sap-ai-sdk/core';
+import { EndpointOptions } from '@sap-ai-sdk/core/src/http-client.js';
+import { mockGetAiCoreDestination } from '../../../../../test-util/mock-context.js';
 import {
-  BaseLlmParametersWithDeploymentId,
-  EndpointOptions
-} from '../../core/http-client.js';
-import { mockInference, parseMockResponse } from '../../test-util/mock-http.js';
+  mockInference,
+  parseMockResponse
+} from '../../../../../test-util/mock-http.js';
 import {
   OpenAiChatCompletionOutput,
   OpenAiChatCompletionParameters,
@@ -14,7 +15,7 @@ import {
   OpenAiEmbeddingOutput,
   OpenAiEmbeddingParameters
 } from './openai-types.js';
-jest.unstable_mockModule('../../core/context.js', () => ({
+jest.unstable_mockModule('@sap-ai-sdk/core', () => ({
   getAiCoreDestination: jest.fn(() =>
     Promise.resolve(mockGetAiCoreDestination())
   )

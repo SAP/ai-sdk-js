@@ -1,4 +1,4 @@
-import { executeRequest, CustomRequestConfig } from '../core/index.js';
+import { executeRequest, CustomRequestConfig } from '@sap-ai-sdk/core';
 import { CompletionPostRequest } from './client/api/schema/index.js';
 import {
   GenAiHubCompletionParameters,

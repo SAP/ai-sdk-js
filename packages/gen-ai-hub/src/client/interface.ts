@@ -1,4 +1,4 @@
-import { BaseLlmParameters, CustomRequestConfig } from '../core/http-client.js';
+import { BaseLlmParameters, CustomRequestConfig } from '@sap-ai-sdk/core';
 import { BaseLlmOutput } from './types.js';
 
 /**

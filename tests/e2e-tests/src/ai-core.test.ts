@@ -1,5 +1,5 @@
 import { DeploymentApi } from '@sap-ai-sdk/ai-core';
-import { getAiCoreDestination } from '@sap-ai-sdk/gen-ai-hub';
+import { getAiCoreDestination } from '@sap-ai-sdk/core';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import 'dotenv/config';
 
