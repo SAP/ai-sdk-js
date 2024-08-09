@@ -7,5 +7,7 @@ packages:
   - 'sample-code'
   # e2e tests
   - 'tests/e2e-tests'
+  # type tests
+  - 'tests/type-tests'
   # exclude packages that are inside test directories
-  - '!tests/type-tests'
+  

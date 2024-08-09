@@ -11,5 +11,6 @@ export {
   GenAiHubCompletionResponse,
   PromptConfig,
   LlmConfig,
-  ChatMessages
+  ChatMessages,
+  CompletionPostResponse
 } from './orchestration/index.js';
