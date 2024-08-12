@@ -47,6 +47,6 @@ jobs:
           pnpm changeset pre enter ${date}
           pnpm changeset version
           pnpm changeset pre exit
-          pnpm changeset publish --tag ${{ inputs.tag }}
+          pnpm changeset publish --tag ${{ github.event_name == 'schedule' && 'canary' || inputs.tag }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}
