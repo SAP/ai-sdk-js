@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import nock from 'nock';
 import {
@@ -7,6 +8,10 @@ import {
   CustomRequestConfig
 } from '@sap-ai-sdk/core';
 import { EndpointOptions } from '@sap-ai-sdk/core/src/http-client.js';
+
+// Get the directory of this file
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const mockEndpoint: EndpointOptions = {
   url: 'mock-endpoint',
@@ -47,7 +52,7 @@ export function mockInference<D extends BaseLlmParameters>(
  */
 export function parseMockResponse<T>(client: string, fileName: string): T {
   const fileContent = fs.readFileSync(
-    path.join('src', 'test-util', 'mock-data', client, fileName),
+    path.join(__dirname, 'mock-data', client, fileName),
     'utf-8'
   );
 
