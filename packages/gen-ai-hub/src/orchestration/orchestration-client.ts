@@ -1,5 +1,5 @@
 import { executeRequest, CustomRequestConfig } from '../core/index.js';
-import { CompletionPostRequest } from './api/schema/index.js';
+import { CompletionPostRequest } from './client/api/schema/index.js';
 import {
   GenAiHubCompletionParameters,
   GenAiHubCompletionResponse
@@ -40,6 +40,8 @@ export function constructCompletionPostRequest(
   input: GenAiHubCompletionParameters
 ): CompletionPostRequest {
   return {
+    // TODO: Properly implement input params
+    input_params: {},
     orchestration_config: {
       module_configurations: {
         templating_module_config: {

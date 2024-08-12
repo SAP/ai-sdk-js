@@ -17,7 +17,8 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules pnpm -r run test",
     "test:type": "tsd",
     "lint": "pnpm -r run lint",
-    "lint:fix": "pnpm -r run lint:fix"
+    "lint:fix": "pnpm -r run lint:fix",
+    "generate": "pnpm -r run generate"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.7",
@@ -25,10 +26,10 @@
     "@sap-cloud-sdk/connectivity": "^3.18.0",
     "@sap-cloud-sdk/http-client": "^3.18.0",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.14.14",
+    "@types/node": "^20.14.15",
     "@jest/globals": "^29.5.12",
-    "eslint": "^9.8.0",
-    "jest": "^30.0.0-alpha.3",
+    "eslint": "^9.9.0",
+    "jest": "^30.0.0-alpha.6",
     "nock": "^13.5.4",
     "prettier": "^3.3.3",
     "ts-jest": "^29.2.4",
