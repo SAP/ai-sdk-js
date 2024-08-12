@@ -19,16 +19,15 @@ export function azureContentFilter(
     };
   } else if (Object.keys(filter).length === 0) {
     throw new Error('Filter property cannot be an empty object');
+  } else {
+    inputFilterConfig = {
+      filters: [
+        {
+          type: 'azure_content_safety',
+          config: filter
+        }
+      ]
+    };
   }
-  else{
-  inputFilterConfig = {
-    filters: [
-      {
-        type: 'azure_content_safety',
-        config: filter
-      }
-    ]
-  };
-}
   return inputFilterConfig;
 }
