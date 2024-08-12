@@ -1,13 +1,11 @@
 import nock from 'nock';
-import { jest } from '@jest/globals';
-import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import { BaseLlmParametersWithDeploymentId } from '@sap-ai-sdk/core';
-import { EndpointOptions } from '@sap-ai-sdk/core/src/http-client.js';
-import { mockGetAiCoreDestination } from '../../../../../test-util/mock-context.js';
 import {
+  mockClientCredentialsGrantCall,
   mockInference,
   parseMockResponse
 } from '../../../../../test-util/mock-http.js';
+import { dummyToken } from '../../../../../test-util/mock-jwt.js';
 import {
   OpenAiChatCompletionOutput,
   OpenAiChatCompletionParameters,
@@ -15,41 +13,29 @@ import {
   OpenAiEmbeddingOutput,
   OpenAiEmbeddingParameters
 } from './openai-types.js';
-jest.unstable_mockModule('@sap-ai-sdk/core', () => ({
-  getAiCoreDestination: jest.fn(() =>
-    Promise.resolve(mockGetAiCoreDestination())
-  )
-}));
-const { OpenAiClient } = await import('./openai-client.js');
+import { OpenAiClient } from './openai-client.js';
 
 describe('openai client', () => {
-  let destination: HttpDestination;
   const deploymentConfiguration: BaseLlmParametersWithDeploymentId = {
     deploymentId: 'deployment-id'
   };
-  let chatCompletionEndpoint: EndpointOptions;
-  let embeddingsEndpoint: EndpointOptions;
+  const chatCompletionEndpoint = {
+    url: 'chat/completions',
+    apiVersion: '2024-02-01'
+  };
+  const embeddingsEndpoint = {
+    url: 'embeddings',
+    apiVersion: '2024-02-01'
+  };
+
+  const client = new OpenAiClient();
 
   beforeAll(() => {
-    destination = mockGetAiCoreDestination();
-
-    chatCompletionEndpoint = {
-      url: 'chat/completions',
-      apiVersion: '2024-02-01'
-    };
-
-    embeddingsEndpoint = {
-      url: 'embeddings',
-      apiVersion: '2024-02-01'
-    };
-  });
-
-  afterEach(() => {
-    nock.cleanAll();
+    mockClientCredentialsGrantCall({ access_token: dummyToken }, 200);
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    nock.cleanAll();
   });
 
   describe('chatCompletion', () => {
@@ -79,13 +65,11 @@ describe('openai client', () => {
           data: mockResponse,
           status: 200
         },
-        destination,
         chatCompletionEndpoint
       );
 
-      expect(new OpenAiClient().chatCompletion(request)).resolves.toEqual(
-        mockResponse
-      );
+      const response = await client.chatCompletion(request);
+      expect(response).toEqual(mockResponse);
     });
 
     it('throws on bad request', async () => {
@@ -107,13 +91,10 @@ describe('openai client', () => {
           data: mockResponse,
           status: 400
         },
-        destination,
         chatCompletionEndpoint
       );
 
-      await expect(
-        new OpenAiClient().chatCompletion(request)
-      ).rejects.toThrow();
+      expect(client.chatCompletion(request)).rejects.toThrow();
     });
   });
 
@@ -137,13 +118,10 @@ describe('openai client', () => {
           data: mockResponse,
           status: 200
         },
-        destination,
         embeddingsEndpoint
       );
-
-      expect(new OpenAiClient().embeddings(request)).resolves.toEqual(
-        mockResponse
-      );
+      const response = await client.embeddings(request);
+      expect(response).toEqual(mockResponse);
     });
 
     it('throws on bad request', async () => {
@@ -165,11 +143,10 @@ describe('openai client', () => {
           data: mockResponse,
           status: 400
         },
-        destination,
         embeddingsEndpoint
       );
 
-      expect(new OpenAiClient().embeddings(request)).rejects.toThrow();
+      expect(client.embeddings(request)).rejects.toThrow();
     });
   });
 });

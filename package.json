@@ -35,6 +35,8 @@
     "prettier": "^3.3.3",
     "ts-jest": "^29.2.4",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "jsonwebtoken": "^9.0.2",
+    "@types/jsonwebtoken": "^9.0.2"
   }
 }

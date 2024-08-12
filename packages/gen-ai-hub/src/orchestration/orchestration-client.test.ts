@@ -1,40 +1,30 @@
 import nock from 'nock';
-import { jest } from '@jest/globals';
-import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import { BaseLlmParametersWithDeploymentId } from '@sap-ai-sdk/core';
-import { mockGetAiCoreDestination } from '../../../../test-util/mock-context.js';
 import {
+  mockClientCredentialsGrantCall,
   mockInference,
   parseMockResponse
 } from '../../../../test-util/mock-http.js';
+import { dummyToken } from '../../../../test-util/mock-jwt.js';
 import { CompletionPostResponse } from './client/api/index.js';
 import { GenAiHubCompletionParameters } from './orchestration-types.js';
-jest.unstable_mockModule('@sap-ai-sdk/core', () => ({
-  getAiCoreDestination: jest.fn(() =>
-    Promise.resolve(mockGetAiCoreDestination())
-  )
-}));
+import {
+  GenAiHubClient,
+  constructCompletionPostRequest
+} from './orchestration-client.js';
 
-const { GenAiHubClient, constructCompletionPostRequest } = await import(
-  './orchestration-client.js'
-);
 describe('GenAiHubClient', () => {
-  let destination: HttpDestination;
   const client = new GenAiHubClient();
   const deploymentConfiguration: BaseLlmParametersWithDeploymentId = {
     deploymentId: 'deployment-id'
   };
 
   beforeAll(() => {
-    destination = mockGetAiCoreDestination();
-  });
-
-  afterEach(() => {
-    nock.cleanAll();
+    mockClientCredentialsGrantCall({ access_token: dummyToken }, 200);
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    nock.cleanAll();
   });
 
   it('calls chatCompletion with minimum configuration and parses response', async () => {
@@ -65,12 +55,12 @@ describe('GenAiHubClient', () => {
         data: mockResponse,
         status: 200
       },
-      destination,
       {
         url: 'completion'
       }
     );
-    expect(client.chatCompletion(request)).resolves.toEqual(mockResponse);
+    const response = await client.chatCompletion(request);
+    expect(response).toEqual(mockResponse);
   });
 
   it('sends message history together with templating config', async () => {
@@ -115,12 +105,11 @@ describe('GenAiHubClient', () => {
         data: mockResponse,
         status: 200
       },
-      destination,
       {
         url: 'completion'
       }
     );
-
-    expect(client.chatCompletion(request)).resolves.toEqual(mockResponse);
+    const response = await client.chatCompletion(request);
+    expect(response).toEqual(mockResponse);
   });
 });

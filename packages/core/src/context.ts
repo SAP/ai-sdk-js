@@ -2,6 +2,7 @@ import { createLogger } from '@sap-cloud-sdk/util';
 import {
   Destination,
   Service,
+  ServiceCredentials,
   getServiceBinding,
   transformServiceBindingToDestination
 } from '@sap-cloud-sdk/connectivity';
@@ -31,7 +32,8 @@ export async function getAiCoreDestination(): Promise<Destination> {
   const aiCoreDestination = await transformServiceBindingToDestination(
     aiCoreServiceBinding,
     {
-      useCache: true
+      useCache: true,
+      jwt: { zid: 'dummy-tenant' }
     }
   );
   return aiCoreDestination;
@@ -52,7 +54,9 @@ function getAiCoreServiceKeyFromEnv(): Service | undefined {
   }
 }
 
-function parseServiceKeyFromEnv(aiCoreEnv: string | undefined) {
+function parseServiceKeyFromEnv(
+  aiCoreEnv: string | undefined
+): ServiceCredentials | undefined {
   if (aiCoreEnv) {
     try {
       return JSON.parse(aiCoreEnv);

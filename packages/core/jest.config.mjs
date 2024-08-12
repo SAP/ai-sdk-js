@@ -7,9 +7,9 @@ const coreConfig = {
       'ts-jest',
       {
         tsconfig: '../../tsconfig.test.json',
-        useESM: true
-      }
-    ]
+        useESM: true,
+      },
+    ],
   },
 };
 
