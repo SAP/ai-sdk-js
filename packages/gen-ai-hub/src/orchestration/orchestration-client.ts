@@ -52,9 +52,9 @@ export function constructCompletionPostRequest(
           })
       }
     },
-    input_params: input.prompt.template_params
-      ? input.prompt.template_params
-      : {},
+    ...(input.prompt.template_params && {
+      input_params: input.prompt.template_params
+    }),
     ...(input.prompt.messages_history && {
       messages_history: input.prompt.messages_history
     })
