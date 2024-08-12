@@ -123,6 +123,36 @@ describe('Filter utility', () => {
     ).toEqual(expectedFilterConfig);
   });
 
+  it('use defaults for filter configuration', async () => {
+    const filterConfig: FilteringModuleConfig = {
+      input: azureContentFilter(),
+      output: azureContentFilter()
+    };
+    genaihubCompletionParameters.filterConfig = filterConfig;
+    const completionPostRequest: CompletionPostRequest =
+      constructCompletionPostRequest(genaihubCompletionParameters);
+    const expectedFilterConfig: FilteringModuleConfig = {
+      input: {
+        filters: [
+          {
+            type: 'azure_content_safety'
+          }
+        ]
+      },
+      output: {
+        filters: [
+          {
+            type: 'azure_content_safety'
+          }
+        ]
+      }
+    };
+    expect(
+      completionPostRequest.orchestration_config.module_configurations
+        .filtering_module_config
+    ).toEqual(expectedFilterConfig);
+  });
+
   it('skips filter configuration', async () => {
     const filterConfig: FilteringModuleConfig = {};
     genaihubCompletionParameters.filterConfig = filterConfig;
@@ -131,7 +161,7 @@ describe('Filter utility', () => {
     expect(
       completionPostRequest.orchestration_config.module_configurations
         .filtering_module_config
-    ).toBeUndefined;
+    ).toBeUndefined();
   });
 
   it('throw error when configuring empty filter', async () => {

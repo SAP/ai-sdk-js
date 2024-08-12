@@ -6,12 +6,22 @@ import { AzureContentSafety, FilteringConfig } from './client/api/index.js';
  * @returns An object with the Azure filtering configuration.
  */
 export function azureContentFilter(
-  filter: AzureContentSafety
+  filter: AzureContentSafety = { default: undefined }
 ): FilteringConfig {
-  if (Object.keys(filter).length === 0) {
+  let inputFilterConfig: FilteringConfig;
+  if (filter.default === undefined) {
+    inputFilterConfig = {
+      filters: [
+        {
+          type: 'azure_content_safety'
+        }
+      ]
+    };
+  } else if (Object.keys(filter).length === 0) {
     throw new Error('Filter property cannot be an empty object');
   }
-  const inputFilterConfig: FilteringConfig = {
+  else{
+  inputFilterConfig = {
     filters: [
       {
         type: 'azure_content_safety',
@@ -19,5 +29,6 @@ export function azureContentFilter(
       }
     ]
   };
+}
   return inputFilterConfig;
 }
