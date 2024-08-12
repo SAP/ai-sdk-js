@@ -6,7 +6,7 @@ const aiCoreConfig = {
     '^.+\\.ts$': [
       'ts-jest',
       {
-        tsconfig: 'tsconfig.test.json',
+        tsconfig: '../../tsconfig.test.json',
         useESM: true
       }
     ]
