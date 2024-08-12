@@ -9,7 +9,7 @@ import {
   FilteringModuleConfig
 } from './client/api/index.js';
 import { GenAiHubCompletionParameters } from './orchestration-types.js';
-import { createAzureFilter } from './orchestration-filter-utility.js';
+import { azureContentFilter } from './orchestration-filter-utility.js';
 jest.unstable_mockModule('../core/context.js', () => ({
   getAiCoreDestination: jest.fn(() =>
     Promise.resolve(mockGetAiCoreDestination())
@@ -88,8 +88,8 @@ describe('GenAiHubClient', () => {
         template_params: { phrase: 'I hate you.', number: 3 }
       },
       filterConfig: {
-        input: createAzureFilter({ Hate: 4, SelfHarm: 2 }),
-        output: createAzureFilter({ Sexual: 0, Violence: 4 })
+        input: azureContentFilter({ Hate: 4, SelfHarm: 2 }),
+        output: azureContentFilter({ Sexual: 0, Violence: 4 })
       }
     };
     const mockResponse = parseMockResponse<CompletionPostResponse>(
