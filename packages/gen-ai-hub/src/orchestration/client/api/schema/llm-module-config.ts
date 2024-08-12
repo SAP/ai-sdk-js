@@ -19,7 +19,7 @@ export type LLMModuleConfig = {
   model_params: Record<string, any>;
   /**
    * Version of the model to use.
-   * @example "2024-08-08T14:36:04.617Z"
+   * @example "2024-08-12T10:11:17.042Z"
    * Default: "latest".
    */
   model_version?: string;
