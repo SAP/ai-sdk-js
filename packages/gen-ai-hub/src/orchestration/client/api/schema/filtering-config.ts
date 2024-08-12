@@ -3,13 +3,14 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { Filter } from './filter.js';
+import type { FilterConfig } from './filter-config.js';
 /**
  * Representation of the 'FilteringConfig' schema.
  */
 export type FilteringConfig = {
   /**
-   * Filters to be used.
+   * Configuration for content filtering services that should be used for the given filtering step (input filtering or output filtering).
+   * Min Items: 1.
    */
-  filters: Filter[];
+  filters: FilterConfig[];
 } & Record<string, any>;

@@ -64,7 +64,6 @@ components:
       type: object
       required:
         - orchestration_config
-        - input_params
       properties:
         orchestration_config:
           $ref: '#/components/schemas/OrchestrationConfig'
@@ -159,8 +158,6 @@ components:
           $ref: '#/components/schemas/GenericModuleResult'
 
     TemplatingModuleResult:
-      type: object
-      additionalProperties: false
       $ref: '#/components/schemas/ChatMessages'
 
     # --- LLM MODULE ---
@@ -305,26 +302,34 @@ components:
         - filters
       properties:
         filters:
+          description: Configuration for content filtering services that should be used for the given filtering step (input filtering or output filtering).
           type: array
+          minItems: 1
           items:
-            $ref: '#/components/schemas/Filter'
-          description: Filters to be used
+            $ref: '#/components/schemas/FilterConfig'
 
-    Filter:
+    FilterConfig:
+      oneOf:
+        - $ref: '#/components/schemas/AzureContentSafetyFilterConfig'
+
+    AzureContentSafetyFilterConfig:
+      type: object
       required:
         - type
       properties:
         type:
-          description: Type of filtering service provider
-          $ref: '#/components/schemas/ProviderType'
+          description: String represents name of the filter provider
+          type: string
+          enum:
+            - azure_content_safety
         config:
-          description: Filters classifiers to be used
-          type: object
+          description: Filter configuration for Azure Content Azure Content Safety
           oneOf:
             - $ref: '#/components/schemas/AzureContentSafety'
 
     AzureContentSafety:
       type: object
+      additionalProperties: false
       properties:
         'Hate':
           $ref: '#/components/schemas/AzureThreshold'
@@ -334,11 +339,6 @@ components:
           $ref: '#/components/schemas/AzureThreshold'
         'Violence':
           $ref: '#/components/schemas/AzureThreshold'
-
-    ProviderType:
-      type: string
-      enum:
-        - azure_content_safety
 
     AzureThreshold:
       type: integer
