@@ -47,8 +47,8 @@ export function constructCompletionPostRequest(
         },
         llm_module_config: input.llmConfig,
         ...(Object.keys(input?.filterConfig || {}).length && {
-            filtering_module_config: input.filterConfig
-          })
+          filtering_module_config: input.filterConfig
+        })
       }
     },
     ...(input.prompt.template_params && {
