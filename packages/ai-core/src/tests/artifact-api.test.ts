@@ -4,8 +4,8 @@ import {
   AiArtifactCreationResponse,
   AiArtifactList,
   AiArtifactPostData
-} from './schema/index.js';
-import { ArtifactApi } from './artifact-api.js';
+} from '../client/AI_CORE_API/schema/index.js';
+import { ArtifactApi } from '../client/AI_CORE_API/artifact-api.js';
 
 describe('artifact', () => {
   const destination: HttpDestination = {
@@ -68,7 +68,7 @@ describe('artifact', () => {
         'Content-Type': 'application/json'
       });
 
-    const AiArtifactPostData: AiArtifactPostData = {
+    const aiArtifactPostData: AiArtifactPostData = {
       description: 'dataset for training test',
       kind: 'dataset',
       name: 'training-test-data',
@@ -77,7 +77,7 @@ describe('artifact', () => {
     };
 
     const result: AiArtifactCreationResponse = await ArtifactApi.artifactCreate(
-      AiArtifactPostData,
+      aiArtifactPostData,
       { 'AI-Resource-Group': 'default' }
     ).execute(destination);
 

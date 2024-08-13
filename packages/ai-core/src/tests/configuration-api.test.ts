@@ -4,8 +4,8 @@ import {
   AiConfigurationBaseData,
   AiConfigurationCreationResponse,
   AiConfigurationList
-} from './schema/index.js';
-import { ConfigurationApi } from './configuration-api.js';
+} from '../client/AI_CORE_API/schema/index.js';
+import { ConfigurationApi } from '../client/AI_CORE_API/configuration-api.js';
 
 describe('configuration', () => {
   const destination: HttpDestination = {

@@ -4,8 +4,8 @@ import {
   AiEnactmentCreationRequest,
   AiExecutionCreationResponse,
   AiExecutionList
-} from './schema/index.js';
-import { ExecutionApi } from './execution-api.js';
+} from '../client/AI_CORE_API/schema/index.js';
+import { ExecutionApi } from '../client/AI_CORE_API/execution-api.js';
 
 describe('execution', () => {
   const destination: HttpDestination = {
