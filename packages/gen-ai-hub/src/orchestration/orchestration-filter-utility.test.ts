@@ -124,7 +124,7 @@ describe('Filter utility', () => {
     ).toEqual(expectedFilterConfig);
   });
 
-  it('use defaults for filter configuration', async () => {
+  it('omits filters if not set, async () => {
     const filterConfig: FilteringModuleConfig = {
       input: azureContentFilter(),
       output: azureContentFilter()
