@@ -45,7 +45,10 @@ export function constructCompletionPostRequest(
         templating_module_config: {
           template: input.prompt.template
         },
-        llm_module_config: input.llmConfig
+        llm_module_config: input.llmConfig,
+        ...(Object.keys(input?.filterConfig || {}).length && {
+          filtering_module_config: input.filterConfig
+        })
       }
     },
     ...(input.prompt.template_params && {
@@ -55,4 +58,5 @@ export function constructCompletionPostRequest(
       messages_history: input.prompt.messages_history
     })
   };
+  return result;
 }
