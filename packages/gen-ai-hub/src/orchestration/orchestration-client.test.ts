@@ -97,7 +97,6 @@ describe('GenAiHubClient', () => {
         data: mockResponse,
         status: 200
       },
-      destination,
       {
         url: 'completion'
       }
@@ -159,7 +158,6 @@ describe('GenAiHubClient', () => {
         data: mockResponse,
         status: 200
       },
-      destination,
       {
         url: 'completion'
       }
