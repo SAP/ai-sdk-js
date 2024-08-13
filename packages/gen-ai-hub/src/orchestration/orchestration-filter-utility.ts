@@ -19,5 +19,4 @@ export function azureContentFilter(
       }
     ]
   };
-  return inputFilterConfig;
 }
