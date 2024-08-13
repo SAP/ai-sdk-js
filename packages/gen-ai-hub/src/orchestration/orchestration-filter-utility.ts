@@ -11,7 +11,7 @@ export function azureContentFilter(
   if (filter && !Object.keys(filter).length) {
     throw new Error('Filter property cannot be an empty object');
   }
-  const inputFilterConfig: FilteringConfig = {
+  return {
     filters: [
       {
         type: 'azure_content_safety',
