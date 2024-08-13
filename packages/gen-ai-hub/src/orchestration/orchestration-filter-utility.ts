@@ -8,7 +8,7 @@ import { AzureContentSafety, FilteringConfig } from './client/api/index.js';
 export function azureContentFilter(
   filter?: AzureContentSafety
 ): FilteringConfig {
-  if (filter && Object.keys(filter).length === 0) {
+  if (filter && !Object.keys(filter).length) {
     throw new Error('Filter property cannot be an empty object');
   }
   const inputFilterConfig: FilteringConfig = {
