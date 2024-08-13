@@ -58,5 +58,4 @@ export function constructCompletionPostRequest(
       messages_history: input.prompt.messages_history
     })
   };
-  return result;
 }
