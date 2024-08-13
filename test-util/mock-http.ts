@@ -47,7 +47,7 @@ export function createDestinationTokens(
         value: token,
         type: 'bearer',
         expiresIn,
-        http_header: { key: 'Authorization', value: `Bearer ${token}` },
+        http_header: { key: 'authorization', value: `Bearer ${token}` },
         error: null
       }
     ]
