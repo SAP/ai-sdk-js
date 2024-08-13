@@ -124,7 +124,7 @@ describe('Filter utility', () => {
     ).toEqual(expectedFilterConfig);
   });
 
-  it('omits filters if not set, async () => {
+  it('omits filters if not set', async () => {
     const filterConfig: FilteringModuleConfig = {
       input: azureContentFilter(),
       output: azureContentFilter()
@@ -171,6 +171,8 @@ describe('Filter utility', () => {
         azureContentFilter({});
       }
     };
-    expect(createFilterConfig).toThrow;
+    expect(createFilterConfig).toThrow(
+      'Filter property cannot be an empty object'
+    );
   });
 });
