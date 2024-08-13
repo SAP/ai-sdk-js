@@ -7,9 +7,9 @@ import type { AzureThreshold } from './azure-threshold.js';
 /**
  * Representation of the 'AzureContentSafety' schema.
  */
-export type AzureContentSafety = {
+export interface AzureContentSafety {
   Hate?: AzureThreshold;
   SelfHarm?: AzureThreshold;
   Sexual?: AzureThreshold;
   Violence?: AzureThreshold;
-} & Record<string, any>;
+}
