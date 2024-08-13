@@ -14,6 +14,9 @@ importers:
       '@jest/globals':
         specifier: ^29.5.12
         version: 29.7.0
+      '@sap-ai-sdk/core':
+        specifier: workspace:^
+        version: link:packages/core
       '@sap-cloud-sdk/connectivity':
         specifier: ^3.18.0
         version: 3.18.0
@@ -26,6 +29,9 @@ importers:
       '@types/jest':
         specifier: ^29.5.12
         version: 29.5.12
+      '@types/jsonwebtoken':
+        specifier: ^9.0.2
+        version: 9.0.6
       '@types/node':
         specifier: ^20.14.15
         version: 20.14.15
@@ -35,6 +41,9 @@ importers:
       jest:
         specifier: ^30.0.0-alpha.6
         version: 30.0.0-alpha.6(@types/node@20.14.15)(ts-node@10.9.2(@types/node@20.14.15)(typescript@5.5.4))
+      jsonwebtoken:
+        specifier: ^9.0.2
+        version: 9.0.2
       nock:
         specifier: ^13.5.4
         version: 13.5.4
@@ -47,9 +56,6 @@ importers:
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@20.14.15)(typescript@5.5.4)
-      tsd:
-        specifier: ^0.31.0
-        version: 0.31.1
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -67,8 +73,27 @@ importers:
         specifier: ^5.5.4
         version: 5.5.4
 
+  packages/core:
+    dependencies:
+      '@sap-cloud-sdk/connectivity':
+        specifier: ^3.18.0
+        version: 3.18.0
+      '@sap-cloud-sdk/http-client':
+        specifier: ^3.18.0
+        version: 3.18.0
+      '@sap-cloud-sdk/util':
+        specifier: ^3.18.0
+        version: 3.18.0
+    devDependencies:
+      typescript:
+        specifier: ^5.5.4
+        version: 5.5.4
+
   packages/gen-ai-hub:
     dependencies:
+      '@sap-ai-sdk/core':
+        specifier: workspace:^
+        version: link:../core
       '@sap-cloud-sdk/connectivity':
         specifier: ^3.18.0
         version: 3.18.0
@@ -109,6 +134,9 @@ importers:
       '@sap-ai-sdk/ai-core':
         specifier: workspace:^
         version: link:../../packages/ai-core
+      '@sap-ai-sdk/core':
+        specifier: workspace:^
+        version: link:../../packages/core
       '@sap-ai-sdk/gen-ai-hub':
         specifier: workspace:^
         version: link:../../packages/gen-ai-hub
@@ -119,6 +147,18 @@ importers:
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
+
+  tests/type-tests:
+    devDependencies:
+      '@sap-ai-sdk/core':
+        specifier: workspace:^
+        version: link:../../packages/core
+      '@sap-ai-sdk/gen-ai-hub':
+        specifier: workspace:^
+        version: link:../../packages/gen-ai-hub
+      tsd:
+        specifier: ^0.31.0
+        version: 0.31.1
 
 packages:
 
@@ -726,6 +766,9 @@ packages:
 
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
+
+  '@types/jsonwebtoken@9.0.6':
+    resolution: {integrity: sha512-/5hndP5dCjloafCXns6SZyESp3Ldq7YjH3zwzwczYnjxIT0Fqzk5ROSYVGfFyczIue7IUEj8hkvLbPoLQ18vQw==}
 
   '@types/mime@1.3.5':
     resolution: {integrity: sha512-/pyBZWSLD2n0dcHE3hq8s8ZvcETHtEuF+3E7XVt0Ig2nvsVQXdghHVcEkIWjy9A0wKfTn97a/PSDYohKIlnP/w==}
@@ -4302,7 +4345,7 @@ snapshots:
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 20.14.14
+      '@types/node': 20.14.15
 
   '@types/eslint@7.29.0':
     dependencies:
@@ -4356,6 +4399,10 @@ snapshots:
 
   '@types/json5@0.0.29': {}
 
+  '@types/jsonwebtoken@9.0.6':
+    dependencies:
+      '@types/node': 20.14.15
+
   '@types/mime@1.3.5': {}
 
   '@types/minimist@1.2.5': {}
@@ -4381,7 +4428,7 @@ snapshots:
   '@types/send@0.17.4':
     dependencies:
       '@types/mime': 1.3.5
-      '@types/node': 20.14.14
+      '@types/node': 20.14.15
 
   '@types/serve-static@1.15.7':
     dependencies:
