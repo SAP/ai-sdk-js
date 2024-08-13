@@ -154,7 +154,7 @@ describe('Filter utility', () => {
     ).toEqual(expectedFilterConfig);
   });
 
-  it('skips filter configuration', async () => {
+  it('omits filter configuration if not set', async () => {
     const filterConfig: FilteringModuleConfig = {};
     genaihubCompletionParameters.filterConfig = filterConfig;
     const completionPostRequest: CompletionPostRequest =
