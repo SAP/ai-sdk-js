@@ -10,7 +10,7 @@
   "scripts": {
     "postinstall": "pnpm compile",
     "compile": "pnpm -r -w=false run compile",
-    "test:unit": "NODE_OPTIONS=--experimental-vm-modules pnpm -r -F=./packages/** test",
+    "test:unit": "pnpm -r -F=./packages/** test",
     "test:type": "pnpm -F=@sap-ai-sdk/type-tests test",
     "test:e2e": "pnpm -F=@sap-ai-sdk/e2e-tests test",
     "lint": "pnpm -r run lint",

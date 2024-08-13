@@ -1,7 +1,5 @@
 import config from '../../jest.config.mjs';
-const coreConfig = {
+export default {
   ...config,
   displayName: 'core',
 };
-
-export default coreConfig;

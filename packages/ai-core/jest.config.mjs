@@ -1,7 +1,5 @@
 import config from '../../jest.config.mjs';
-const aiCoreConfig = {
+export default {
   ...config,
   displayName: 'ai-core',
 };
-
-export default aiCoreConfig;

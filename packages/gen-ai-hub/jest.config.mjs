@@ -1,7 +1,5 @@
 import config from '../../jest.config.mjs';
-const genAiConfig = {
+export default {
   ...config,
   displayName: 'gen-ai-hub',
 };
-
-export default genAiConfig;
