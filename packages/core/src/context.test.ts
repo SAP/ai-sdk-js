@@ -6,6 +6,7 @@ describe('context', () => {
   afterEach(() => {
     nock.cleanAll();
   });
+
   it('should throw if client credentials are not fetched', async () => {
     mockClientCredentialsGrantCall(
       {
