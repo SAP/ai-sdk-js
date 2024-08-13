@@ -39,22 +39,24 @@ export class GenAiHubClient {
 export function constructCompletionPostRequest(
   input: GenAiHubCompletionParameters
 ): CompletionPostRequest {
-  return {
-    // TODO: Properly implement input params
-    input_params: {},
+  const result: CompletionPostRequest = {
     orchestration_config: {
       module_configurations: {
         templating_module_config: {
           template: input.prompt.template
         },
-        llm_module_config: input.llmConfig
-      },
-      ...(input.prompt.template_params && {
-        input_params: input.prompt.template_params
-      }),
-      ...(input.prompt.messages_history && {
-        messages_history: input.prompt.messages_history
-      })
-    }
+        llm_module_config: input.llmConfig,
+        ...(Object.keys(input?.filterConfig || {}).length && {
+          filtering_module_config: input.filterConfig
+        })
+      }
+    },
+    ...(input.prompt.template_params && {
+      input_params: input.prompt.template_params
+    }),
+    ...(input.prompt.messages_history && {
+      messages_history: input.prompt.messages_history
+    })
   };
+  return result;
 }
