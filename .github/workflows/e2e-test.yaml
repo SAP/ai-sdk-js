@@ -10,9 +10,10 @@ jobs:
       fail-fast: false
       matrix:
         environment: [staging, production]
-        include:
+        # disabled, because currently staging is behind production
+        exclude:
           - environment: staging
-            secret-name: AI_CORE_STAGING
+        include:
           - environment: production
             secret-name: AI_CORE_PRODUCTION
     name: "Build and Test"
