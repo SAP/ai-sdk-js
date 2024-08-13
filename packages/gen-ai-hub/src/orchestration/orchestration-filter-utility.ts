@@ -15,7 +15,7 @@ export function azureContentFilter(
     filters: [
       {
         type: 'azure_content_safety',
-        ...(filter ? { config: filter } : {})
+        ...(filter && { config: filter })
       }
     ]
   };
