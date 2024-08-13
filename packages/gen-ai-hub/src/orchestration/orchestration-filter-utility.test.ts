@@ -78,6 +78,7 @@ describe('Filter utility', () => {
         .filtering_module_config
     ).toEqual(expectedFilterConfig);
   });
+
   it('constructs filter configuration with both input and ouput', async () => {
     const filterConfig: FilteringModuleConfig = {
       input: azureContentFilter({
