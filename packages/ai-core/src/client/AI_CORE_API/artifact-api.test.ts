@@ -1,18 +1,17 @@
 import nock from 'nock';
-import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import {
   AiArtifactCreationResponse,
   AiArtifactList,
   AiArtifactPostData
 } from './schema/index.js';
 import { ArtifactApi } from './artifact-api.js';
+import { aiCoreDestination, mockClientCredentialsGrantCall } from '../../../../../test-util/mock-http.js';
 
 describe('artifact', () => {
-  const destination: HttpDestination = {
-    url: 'https://ai.example.com'
-  };
-
-  afterEach(() => {
+  beforeAll(() => {
+    mockClientCredentialsGrantCall();
+  })
+  afterAll(() => {
     nock.cleanAll();
   });
 
@@ -33,7 +32,7 @@ describe('artifact', () => {
       ]
     };
 
-    nock(destination.url, {
+    nock(aiCoreDestination.url, {
       reqheaders: {
         'AI-Resource-Group': 'default'
       }
@@ -46,7 +45,7 @@ describe('artifact', () => {
     const result: AiArtifactList = await ArtifactApi.artifactQuery(
       {},
       { 'AI-Resource-Group': 'default' }
-    ).execute(destination);
+    ).execute();
 
     expect(result).toEqual(expectedResponse);
   });
@@ -58,7 +57,7 @@ describe('artifact', () => {
       url: 'ai://default/spam/data'
     };
 
-    nock(destination.url, {
+    nock(aiCoreDestination.url, {
       reqheaders: {
         'AI-Resource-Group': 'default'
       }
@@ -79,7 +78,7 @@ describe('artifact', () => {
     const result: AiArtifactCreationResponse = await ArtifactApi.artifactCreate(
       AiArtifactPostData,
       { 'AI-Resource-Group': 'default' }
-    ).execute(destination);
+    ).execute();
 
     expect(result).toEqual(expectedResponse);
   });

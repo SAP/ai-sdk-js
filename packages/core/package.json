@@ -18,14 +18,15 @@
   ],
   "scripts": {
     "compile": "tsc",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test": "set NODE_OPTIONS=--experimental-vm-modules &&  jest",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
     "@sap-cloud-sdk/http-client": "^3.18.0",
     "@sap-cloud-sdk/connectivity": "^3.18.0",
-    "@sap-cloud-sdk/util": "^3.18.0"
+    "@sap-cloud-sdk/util": "^3.18.0",
+    "@sap-cloud-sdk/openapi": "file:./sap-cloud-sdk-openapi-v3.18.0.tgz"
   },
   "devDependencies": {
     "typescript": "^5.5.4"

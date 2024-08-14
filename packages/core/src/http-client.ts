@@ -30,7 +30,7 @@ export interface BaseLlmParameters {
  */
 export type CustomRequestConfig = Omit<
   HttpRequestConfig,
-  'body' | 'method' | 'url' | 'baseURL'
+  'body' | 'url' | 'baseURL'
 >;
 
 /**
@@ -70,9 +70,7 @@ export async function executeRequest<D extends BaseLlmParameters>(
 
   const targetUrl =
     aiCoreDestination.url +
-    '/v2/inference/deployments/' +
-    deploymentConfiguration.deploymentId +
-    `/${removeLeadingSlashes(url)}`;
+    `/v2/${removeLeadingSlashes(url)}`;
 
   return executeHttpRequest(
     { ...aiCoreDestination, url: targetUrl },
@@ -88,7 +86,7 @@ function mergeWithDefaultRequestConfig(
   requestConfig?: CustomRequestConfig
 ): HttpRequestConfig {
   const defaultConfig: HttpRequestConfig = {
-    method: 'POST',
+    method: 'post',
     headers: {
       'content-type': 'application/json',
       'ai-resource-group': 'default'

@@ -19,7 +19,7 @@
   },
   "scripts": {
     "compile": "tsc",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test": "NODE_OPTIONS=--experimental-vm-modules &&  jest",
     "lint": "prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },

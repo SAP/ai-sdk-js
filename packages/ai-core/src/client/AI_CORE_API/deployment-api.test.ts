@@ -10,13 +10,13 @@ import {
   AiDeploymentTargetStatus
 } from './schema/index.js';
 import { DeploymentApi } from './deployment-api.js';
+import { aiCoreDestination, mockClientCredentialsGrantCall } from '../../../../../test-util/mock-http.js';
 
 describe('deployment', () => {
-  const destination: HttpDestination = {
-    url: 'https://ai.example.com'
-  };
-
-  afterEach(() => {
+  beforeAll(() => {
+    mockClientCredentialsGrantCall();
+  })
+  afterAll(() => {
     nock.cleanAll();
   });
 
@@ -56,7 +56,7 @@ describe('deployment', () => {
       ]
     };
 
-    nock(destination.url, {
+    nock(aiCoreDestination.url, {
       reqheaders: {
         'AI-Resource-Group': 'default'
       }
@@ -69,7 +69,7 @@ describe('deployment', () => {
     const result: AiDeploymentList = await DeploymentApi.deploymentQuery(
       {},
       { 'AI-Resource-Group': 'default' }
-    ).execute(destination);
+    ).execute();
 
     expect(result).toEqual(expectedResponse);
   });
@@ -82,7 +82,7 @@ describe('deployment', () => {
       status: 'UNKNOWN'
     };
 
-    nock(destination.url, {
+    nock(aiCoreDestination.url, {
       reqheaders: {
         'AI-Resource-Group': 'default'
       }
@@ -99,7 +99,7 @@ describe('deployment', () => {
     const result: AiDeploymentCreationResponse =
       await DeploymentApi.deploymentCreate(deploymentPostData, {
         'AI-Resource-Group': 'default'
-      }).execute(destination);
+      }).execute();
 
     expect(result).toEqual(expectedResponse);
   });
@@ -113,7 +113,7 @@ describe('deployment', () => {
       id: '4e5f6g7h',
       message: 'Deployment modification scheduled'
     };
-    nock(destination.url, {
+    nock(aiCoreDestination.url, {
       reqheaders: {
         'AI-Resource-Group': 'default'
       }
@@ -134,7 +134,7 @@ describe('deployment', () => {
     const result: AiDeploymentModificationResponse =
       await DeploymentApi.deploymentModify(deploymentId, deploymentPatchData, {
         'AI-Resource-Group': 'default'
-      }).execute(destination);
+      }).execute();
 
     expect(result).toEqual(expectedResponse);
   });
@@ -147,7 +147,7 @@ describe('deployment', () => {
       targetStatus: 'DELETED'
     };
 
-    nock(destination.url, {
+    nock(aiCoreDestination.url, {
       reqheaders: {
         'AI-Resource-Group': 'default'
       }
@@ -160,7 +160,7 @@ describe('deployment', () => {
     const result: AiDeploymentDeletionResponse =
       await DeploymentApi.deploymentDelete(deploymentId, {
         'AI-Resource-Group': 'default'
-      }).execute(destination);
+      }).execute();
 
     expect(result).toEqual(expectedResponse);
   });

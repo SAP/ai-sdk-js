@@ -69,8 +69,8 @@ export function getMockedAiCoreDestination(
 }
 
 export function mockClientCredentialsGrantCall(
-  response: any,
-  responseCode: number,
+  response: any = { access_token: dummyToken },
+  responseCode: number = 200,
   serviceCredentials: ServiceCredentials = aiCoreServiceBinding.credentials,
   delay = 0
 ): nock.Scope {

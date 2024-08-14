@@ -62,9 +62,9 @@ importers:
 
   packages/ai-core:
     dependencies:
-      '@sap-cloud-sdk/openapi':
-        specifier: ^3.18.0
-        version: 3.18.0
+      '@sap-ai-sdk/core':
+        specifier: workspace:^
+        version: link:../core
     devDependencies:
       '@sap-cloud-sdk/openapi-generator':
         specifier: ^3.18.0
@@ -81,6 +81,9 @@ importers:
       '@sap-cloud-sdk/http-client':
         specifier: ^3.18.0
         version: 3.18.0
+      '@sap-cloud-sdk/openapi':
+        specifier: file:./sap-cloud-sdk-openapi-v3.18.0.tgz
+        version: file:packages/core/sap-cloud-sdk-openapi-v3.18.0.tgz
       '@sap-cloud-sdk/util':
         specifier: ^3.18.0
         version: 3.18.0
@@ -665,6 +668,10 @@ packages:
   '@sap-cloud-sdk/openapi@3.18.0':
     resolution: {integrity: sha512-77MglZx3z/xNWJUlX2AP106BNQkIYOyAS47WLtMjWCHd2TEjWXEItxzIKkOAOcdvKkxGzxhDWgYfGMuElC0AvQ==}
 
+  '@sap-cloud-sdk/openapi@file:packages/core/sap-cloud-sdk-openapi-v3.18.0.tgz':
+    resolution: {integrity: sha512-JGZoe6eCuS6JwzNetXxpwMo5E1Er3vMFr+zxfiIGa3SD1vTu96xSyVwTwziw7Phie6enZLfDW6kW3pTTyqG3Dw==, tarball: file:packages/core/sap-cloud-sdk-openapi-v3.18.0.tgz}
+    version: 3.18.0
+
   '@sap-cloud-sdk/resilience@3.18.0':
     resolution: {integrity: sha512-WlOspYmrOz5tYI/4agrmDkYdrxzFW4IbJfHhi2rsnTDzqd4dfsLmuoDgBiCZkgfgsGPSRYrYllnaFqJRRxGTKA==}
 
@@ -1011,6 +1018,9 @@ packages:
 
   axios@1.7.3:
     resolution: {integrity: sha512-Ar7ND9pU99eJ9GpoGQKhKf58GpUOgnzuaB7ueNQ5BMi0p+LZ5oaEnfF999fAArcTIBwXTCHAmGcHOZJaWPq9Nw==}
+
+  axios@1.7.4:
+    resolution: {integrity: sha512-DukmaFRnY6AzAALSH4J2M3k6PkaC+MfaAGdEERRWcC9q3/TWQwLpHR8ZRLKTdQ3aBDL64EdluRDjJqKw+BPZEw==}
 
   babel-jest@30.0.0-alpha.6:
     resolution: {integrity: sha512-WOQkqpBz2q8d/AT6D6rZXW5xnKHDmk3kIukaXlzUyoBBIvLh1SEvi2RGS4fboEtS0kNkyL+zf1rSfkt5OCIgmw==}
@@ -4254,11 +4264,23 @@ snapshots:
       - encoding
       - supports-color
 
+  '@sap-cloud-sdk/openapi@file:packages/core/sap-cloud-sdk-openapi-v3.18.0.tgz':
+    dependencies:
+      '@sap-cloud-sdk/connectivity': 3.18.0
+      '@sap-cloud-sdk/http-client': 3.18.0
+      '@sap-cloud-sdk/resilience': 3.18.0
+      '@sap-cloud-sdk/util': 3.18.0
+      axios: 1.7.4
+    transitivePeerDependencies:
+      - debug
+      - encoding
+      - supports-color
+
   '@sap-cloud-sdk/resilience@3.18.0':
     dependencies:
       '@sap-cloud-sdk/util': 3.18.0
       async-retry: 1.3.3
-      axios: 1.7.3
+      axios: 1.7.4
       opossum: 8.1.4
     transitivePeerDependencies:
       - debug
@@ -4668,6 +4690,14 @@ snapshots:
       possible-typed-array-names: 1.0.0
 
   axios@1.7.3:
+    dependencies:
+      follow-redirects: 1.15.6
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+
+  axios@1.7.4:
     dependencies:
       follow-redirects: 1.15.6
       form-data: 4.0.0

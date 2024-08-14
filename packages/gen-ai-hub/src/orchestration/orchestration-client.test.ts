@@ -5,7 +5,6 @@ import {
   mockInference,
   parseMockResponse
 } from '../../../../test-util/mock-http.js';
-import { dummyToken } from '../../../../test-util/mock-jwt.js';
 import { CompletionPostResponse } from './client/api/index.js';
 import { GenAiHubCompletionParameters } from './orchestration-types.js';
 import {
@@ -20,7 +19,7 @@ describe('GenAiHubClient', () => {
   };
 
   beforeAll(() => {
-    mockClientCredentialsGrantCall({ access_token: dummyToken }, 200);
+    mockClientCredentialsGrantCall();
   });
 
   afterAll(() => {

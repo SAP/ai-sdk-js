@@ -5,7 +5,6 @@ import {
   mockInference,
   parseMockResponse
 } from '../../../../../test-util/mock-http.js';
-import { dummyToken } from '../../../../../test-util/mock-jwt.js';
 import {
   OpenAiChatCompletionOutput,
   OpenAiChatCompletionParameters,
@@ -31,7 +30,7 @@ describe('openai client', () => {
   const client = new OpenAiClient();
 
   beforeAll(() => {
-    mockClientCredentialsGrantCall({ access_token: dummyToken }, 200);
+    mockClientCredentialsGrantCall();
   });
 
   afterAll(() => {

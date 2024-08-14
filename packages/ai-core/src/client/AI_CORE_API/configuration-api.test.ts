@@ -6,13 +6,13 @@ import {
   AiConfigurationList
 } from './schema/index.js';
 import { ConfigurationApi } from './configuration-api.js';
+import { aiCoreDestination, mockClientCredentialsGrantCall } from '../../../../../test-util/mock-http.js';
 
 describe('configuration', () => {
-  const destination: HttpDestination = {
-    url: 'https://ai.example.com'
-  };
-
-  afterEach(() => {
+   beforeAll(() => {
+    mockClientCredentialsGrantCall();
+  })
+  afterAll(() => {
     nock.cleanAll();
   });
 
@@ -41,7 +41,7 @@ describe('configuration', () => {
       ]
     };
 
-    nock(destination.url, {
+    nock(aiCoreDestination.url, {
       reqheaders: {
         'AI-Resource-Group': 'default'
       }
@@ -55,7 +55,7 @@ describe('configuration', () => {
       await ConfigurationApi.configurationQuery(
         {},
         { 'AI-Resource-Group': 'default' }
-      ).execute(destination);
+      ).execute();
 
     expect(result).toEqual(expectedResponse);
   });
@@ -66,7 +66,7 @@ describe('configuration', () => {
       message: 'Configuration created'
     };
 
-    nock(destination.url, {
+    nock(aiCoreDestination.url, {
       reqheaders: {
         'AI-Resource-Group': 'default'
       }
@@ -91,7 +91,7 @@ describe('configuration', () => {
     const result: AiConfigurationCreationResponse =
       await ConfigurationApi.configurationCreate(configurationPostData, {
         'AI-Resource-Group': 'default'
-      }).execute(destination);
+      }).execute();
 
     expect(result).toEqual(expectedResponse);
   });

@@ -1,18 +1,17 @@
 import nock from 'nock';
-import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import {
   AiEnactmentCreationRequest,
   AiExecutionCreationResponse,
   AiExecutionList
 } from './schema/index.js';
 import { ExecutionApi } from './execution-api.js';
+import { aiCoreDestination, mockClientCredentialsGrantCall } from '../../../../../test-util/mock-http.js';
 
 describe('execution', () => {
-  const destination: HttpDestination = {
-    url: 'https://ai.example.com'
-  };
-
-  afterEach(() => {
+  beforeAll(() => {
+    mockClientCredentialsGrantCall();
+  })
+  afterAll(() => {
     nock.cleanAll();
   });
 
@@ -49,7 +48,7 @@ describe('execution', () => {
         }
       ]
     };
-    nock(destination.url, {
+    nock(aiCoreDestination.url, {
       reqheaders: {
         'AI-Resource-Group': 'default'
       }
@@ -62,7 +61,7 @@ describe('execution', () => {
     const result: AiExecutionList = await ExecutionApi.executionQuery(
       {},
       { 'AI-Resource-Group': 'default' }
-    ).execute(destination);
+    ).execute();
 
     expect(result).toEqual(expectedResponse);
   });
@@ -73,7 +72,7 @@ describe('execution', () => {
       message: 'Execution acknowledged',
       url: 'ai://default/8i9j0k1l'
     };
-    nock(destination.url, {
+    nock(aiCoreDestination.url, {
       reqheaders: {
         'AI-Resource-Group': 'default'
       }
@@ -90,7 +89,7 @@ describe('execution', () => {
     const result: AiExecutionCreationResponse =
       await ExecutionApi.executionCreate(executionPostData, {
         'AI-Resource-Group': 'default'
-      }).execute(destination);
+      }).execute();
 
     expect(result).toEqual(expectedResponse);
   });

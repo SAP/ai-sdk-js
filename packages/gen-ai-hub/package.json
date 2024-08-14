@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "compile": "tsc",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test": "set NODE_OPTIONS=--experimental-vm-modules &&  jest",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "pnpm generate:orchestration",
