@@ -29,11 +29,11 @@ describe('openai client', () => {
 
   const client = new OpenAiClient();
 
-  beforeAll(() => {
+  beforeEach(() => {
     mockClientCredentialsGrantCall();
   });
 
-  afterAll(() => {
+  afterEach(() => {
     nock.cleanAll();
   });
 
