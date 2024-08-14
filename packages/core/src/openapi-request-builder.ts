@@ -12,9 +12,9 @@ export class OpenApiRequestBuilder<ResponseT> extends CloudSDKOpenApiRequestBuil
     }
 
    /**
-   * Execute request and get the response data. Use this to conveniently access the data of a service without technical information about the response.
-   * @returns A promise resolving to the requested return type.
-   */
+    * Execute request and get the response data. Use this to conveniently access the data of a service without technical information about the response.
+    * @returns A promise resolving to the requested return type.
+    */
     async execute(): Promise<ResponseT> {
         const response = await this.executeRaw();
         if ('data' in response) {
