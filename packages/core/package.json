@@ -26,7 +26,7 @@
     "@sap-cloud-sdk/http-client": "^3.18.0",
     "@sap-cloud-sdk/connectivity": "^3.18.0",
     "@sap-cloud-sdk/util": "^3.18.0",
-    "@sap-cloud-sdk/openapi": "file:./sap-cloud-sdk-openapi-v3.18.0.tgz"
+    "@sap-cloud-sdk/openapi": "^3.18.0"
   },
   "devDependencies": {
     "typescript": "^5.5.4"
