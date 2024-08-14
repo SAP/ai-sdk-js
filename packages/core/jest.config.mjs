@@ -1,5 +1,5 @@
-import config from '../../jest.test.config.mjs';
+import unitTestConfig from '../../jest.test.config.mjs';
 export default {
-  ...config,
+  ...unitTestConfig,
   displayName: 'core',
 };
