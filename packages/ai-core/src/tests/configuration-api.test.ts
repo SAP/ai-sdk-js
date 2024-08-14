@@ -5,13 +5,16 @@ import {
   AiConfigurationList,
   ConfigurationApi
 } from '../client/AI_CORE_API/index.js';
-import { aiCoreDestination, mockClientCredentialsGrantCall } from '../../../../test-util/mock-http.js';
+import {
+  aiCoreDestination,
+  mockClientCredentialsGrantCall
+} from '../../../../test-util/mock-http.js';
 
 describe('configuration', () => {
-   beforeAll(() => {
+  beforeEach(() => {
     mockClientCredentialsGrantCall();
-  })
-  afterAll(() => {
+  });
+  afterEach(() => {
     nock.cleanAll();
   });
 
@@ -45,7 +48,7 @@ describe('configuration', () => {
         'AI-Resource-Group': 'default'
       }
     })
-      .get('/lm/configurations')
+      .get('/v2/lm/configurations')
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'
       });
@@ -70,7 +73,7 @@ describe('configuration', () => {
         'AI-Resource-Group': 'default'
       }
     })
-      .post('/lm/configurations')
+      .post('/v2/lm/configurations')
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'
       });

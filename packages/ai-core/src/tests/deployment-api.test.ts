@@ -9,14 +9,16 @@ import {
   AiDeploymentTargetStatus,
   DeploymentApi
 } from '../client/AI_CORE_API/index.js';
-import { aiCoreDestination, mockClientCredentialsGrantCall } from '../../../../test-util/mock-http.js';
-
+import {
+  aiCoreDestination,
+  mockClientCredentialsGrantCall
+} from '../../../../test-util/mock-http.js';
 
 describe('deployment', () => {
-  beforeAll(() => {
+  beforeEach(() => {
     mockClientCredentialsGrantCall();
-  })
-  afterAll(() => {
+  });
+  afterEach(() => {
     nock.cleanAll();
   });
 
@@ -61,7 +63,7 @@ describe('deployment', () => {
         'AI-Resource-Group': 'default'
       }
     })
-      .get('/lm/deployments')
+      .get('/v2/lm/deployments')
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'
       });
@@ -87,7 +89,7 @@ describe('deployment', () => {
         'AI-Resource-Group': 'default'
       }
     })
-      .post('/lm/deployments')
+      .post('/v2/lm/deployments')
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'
       });
@@ -118,7 +120,7 @@ describe('deployment', () => {
         'AI-Resource-Group': 'default'
       }
     })
-      .patch(`/lm/deployments/${deploymentId}`, body => {
+      .patch(`/v2/lm/deployments/${deploymentId}`, body => {
         expect(body).toEqual(expectedRequestBody);
         expect(body).not.toHaveProperty('scenarioId');
         return true;
@@ -152,7 +154,7 @@ describe('deployment', () => {
         'AI-Resource-Group': 'default'
       }
     })
-      .delete(`/lm/deployments/${deploymentId}`)
+      .delete(`/v2/lm/deployments/${deploymentId}`)
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'
       });

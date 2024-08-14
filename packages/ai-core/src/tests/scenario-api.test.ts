@@ -1,12 +1,15 @@
 import nock from 'nock';
 import { ScenarioApi, AiScenarioList } from '../client/AI_CORE_API/index.js';
-import { aiCoreDestination, mockClientCredentialsGrantCall } from '../../../../test-util/mock-http.js';
+import {
+  aiCoreDestination,
+  mockClientCredentialsGrantCall
+} from '../../../../test-util/mock-http.js';
 
 describe('scenario', () => {
-  beforeAll(() => {
+  beforeEach(() => {
     mockClientCredentialsGrantCall();
-  })
-  afterAll(() => {
+  });
+  afterEach(() => {
     nock.cleanAll();
   });
 
@@ -34,7 +37,7 @@ describe('scenario', () => {
         'AI-Resource-Group': 'default'
       }
     })
-      .get('/lm/scenarios')
+      .get('/v2/lm/scenarios')
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'
       });

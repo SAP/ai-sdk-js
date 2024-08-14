@@ -6,8 +6,7 @@ describe('ai-core', () => {
     const deployments = await DeploymentApi.deploymentQuery(
       {},
       { 'AI-Resource-Group': 'default' }
-    )
-    .execute();
+    ).execute();
     expect(deployments).toBeDefined();
   });
 });

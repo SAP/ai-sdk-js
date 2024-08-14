@@ -5,13 +5,16 @@ import {
   AiExecutionList,
   ExecutionApi
 } from '../client/AI_CORE_API/index.js';
-import { aiCoreDestination, mockClientCredentialsGrantCall } from '../../../../test-util/mock-http.js';
+import {
+  aiCoreDestination,
+  mockClientCredentialsGrantCall
+} from '../../../../test-util/mock-http.js';
 
 describe('execution', () => {
-  beforeAll(() => {
+  beforeEach(() => {
     mockClientCredentialsGrantCall();
-  })
-  afterAll(() => {
+  });
+  afterEach(() => {
     nock.cleanAll();
   });
 
@@ -53,7 +56,7 @@ describe('execution', () => {
         'AI-Resource-Group': 'default'
       }
     })
-      .get('/lm/executions')
+      .get('/v2/lm/executions')
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'
       });
@@ -77,7 +80,7 @@ describe('execution', () => {
         'AI-Resource-Group': 'default'
       }
     })
-      .post('/lm/executions')
+      .post('/v2/lm/executions')
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'
       });

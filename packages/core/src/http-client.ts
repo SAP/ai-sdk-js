@@ -60,6 +60,7 @@ export async function executeRequest<D extends BaseLlmParameters>(
   requestConfig?: CustomRequestConfig
 ): Promise<HttpResponse> {
   const aiCoreDestination = await getAiCoreDestination();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { deploymentConfiguration, ...body } = data;
   const { url, apiVersion } = endpointOptions;
 
@@ -68,9 +69,7 @@ export async function executeRequest<D extends BaseLlmParameters>(
     data: JSON.stringify(body)
   };
 
-  const targetUrl =
-    aiCoreDestination.url +
-    `/v2/${removeLeadingSlashes(url)}`;
+  const targetUrl = aiCoreDestination.url + `/v2/${removeLeadingSlashes(url)}`;
 
   return executeHttpRequest(
     { ...aiCoreDestination, url: targetUrl },

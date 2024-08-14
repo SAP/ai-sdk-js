@@ -105,7 +105,7 @@ export function mockInference<D extends BaseLlmParameters>(
     }
   })
     .post(
-      `/v2/inference/deployments/${deploymentConfiguration.deploymentId}/${url}`,
+      `/v2/${url}`,
       body as any
     )
     .query(apiVersion ? { 'api-version': apiVersion } : {})
