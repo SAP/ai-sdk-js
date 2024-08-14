@@ -1,7 +1,6 @@
 import nock from 'nock';
 import { HttpDestination } from '@sap-cloud-sdk/connectivity';
-import { AiScenarioList } from './schema/index.js';
-import { ScenarioApi } from './scenario-api.js';
+import { ScenarioApi, AiScenarioList } from '../client/AI_CORE_API/index.js';
 
 describe('scenario', () => {
   const destination: HttpDestination = {

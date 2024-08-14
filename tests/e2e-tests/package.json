@@ -14,11 +14,12 @@
   "dependencies": {
     "@sap-ai-sdk/sample-code": "workspace:^",
     "@sap-ai-sdk/gen-ai-hub": "workspace:^",
-    "@sap-ai-sdk/ai-core": "workspace:^"
+    "@sap-ai-sdk/ai-core": "workspace:^",
+    "@sap-ai-sdk/core": "workspace:^"
   },
   "scripts": {
     "compile": "tsc",
-    "e2e-test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },

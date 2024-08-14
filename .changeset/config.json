@@ -7,5 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": []
+  "ignore": ["@sap-ai-sdk/sample-code", "@sap-ai-sdk/e2e-tests", "@sap-ai-sdk/type-tests"]
 }

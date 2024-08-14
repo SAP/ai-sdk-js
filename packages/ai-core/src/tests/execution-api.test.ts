@@ -3,9 +3,9 @@ import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import {
   AiEnactmentCreationRequest,
   AiExecutionCreationResponse,
-  AiExecutionList
-} from './schema/index.js';
-import { ExecutionApi } from './execution-api.js';
+  AiExecutionList,
+  ExecutionApi
+} from '../client/AI_CORE_API/index.js';
 
 describe('execution', () => {
   const destination: HttpDestination = {

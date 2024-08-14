@@ -35,6 +35,7 @@ jobs:
           cat <<EOT >> .changeset/canary-release-changeset.md
           ---
           '@sap-ai-sdk/ai-core': patch
+          '@sap-ai-sdk/core': patch
           '@sap-ai-sdk/gen-ai-hub': patch
           ---
 

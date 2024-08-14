@@ -1,5 +1,5 @@
 {
-  "name": "@sap-ai-sdk/ai-core",
+  "name": "@sap-ai-sdk/core",
   "version": "0.0.0",
   "description": "",
   "license": "Apache-2.0",
@@ -20,14 +20,14 @@
     "compile": "tsc",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
-    "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
-    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/AI_CORE_API.yaml -o ./src/client && pnpm lint:fix"
+    "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
-    "@sap-cloud-sdk/openapi": "^3.18.0"
+    "@sap-cloud-sdk/http-client": "^3.18.0",
+    "@sap-cloud-sdk/connectivity": "^3.18.0",
+    "@sap-cloud-sdk/util": "^3.18.0"
   },
   "devDependencies": {
-    "typescript": "^5.5.4",
-    "@sap-cloud-sdk/openapi-generator": "^3.18.0"
+    "typescript": "^5.5.4"
   }
 }

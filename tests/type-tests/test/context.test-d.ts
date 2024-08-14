@@ -1,5 +1,5 @@
 import { Destination } from '@sap-cloud-sdk/connectivity';
 import { expectType } from 'tsd';
-import { getAiCoreDestination } from '../../packages/gen-ai-hub/src/core/context.js';
+import { getAiCoreDestination } from '@sap-ai-sdk/core';
 
 expectType<Promise<Destination>>(getAiCoreDestination());

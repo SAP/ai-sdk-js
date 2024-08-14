@@ -2,7 +2,7 @@ import {
   BaseLlmParameters,
   CustomRequestConfig,
   executeRequest
-} from '../../core/index.js';
+} from '@sap-ai-sdk/core';
 import { BaseClient } from '../interface.js';
 import {
   OpenAiChatCompletionParameters,
