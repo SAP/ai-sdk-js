@@ -7,9 +7,9 @@ import {
   AiDeploymentList,
   AiDeploymentModificationRequest,
   AiDeploymentModificationResponse,
-  AiDeploymentTargetStatus
-} from '../client/AI_CORE_API/schema/index.js';
-import { DeploymentApi } from '../client/AI_CORE_API/deployment-api.js';
+  AiDeploymentTargetStatus,
+  DeploymentApi
+} from '../client/AI_CORE_API/index.js';
 
 describe('deployment', () => {
   const destination: HttpDestination = {

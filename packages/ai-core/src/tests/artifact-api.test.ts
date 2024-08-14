@@ -3,9 +3,9 @@ import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import {
   AiArtifactCreationResponse,
   AiArtifactList,
-  AiArtifactPostData
-} from '../client/AI_CORE_API/schema/index.js';
-import { ArtifactApi } from '../client/AI_CORE_API/artifact-api.js';
+  AiArtifactPostData,
+  ArtifactApi
+} from '../client/AI_CORE_API/index.js';
 
 describe('artifact', () => {
   const destination: HttpDestination = {

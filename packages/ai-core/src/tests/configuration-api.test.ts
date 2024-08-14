@@ -3,9 +3,9 @@ import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import {
   AiConfigurationBaseData,
   AiConfigurationCreationResponse,
-  AiConfigurationList
-} from '../client/AI_CORE_API/schema/index.js';
-import { ConfigurationApi } from '../client/AI_CORE_API/configuration-api.js';
+  AiConfigurationList,
+  ConfigurationApi
+} from '../client/AI_CORE_API/index.js';
 
 describe('configuration', () => {
   const destination: HttpDestination = {
