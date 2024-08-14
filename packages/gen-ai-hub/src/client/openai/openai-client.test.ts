@@ -30,11 +30,11 @@ describe('openai client', () => {
 
   const client = new OpenAiClient();
 
-  beforeAll(() => {
+  beforeEach(() => {
     mockClientCredentialsGrantCall({ access_token: dummyToken }, 200);
   });
 
-  afterAll(() => {
+  afterEach(() => {
     nock.cleanAll();
   });
 

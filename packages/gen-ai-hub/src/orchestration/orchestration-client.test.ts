@@ -19,11 +19,11 @@ describe('GenAiHubClient', () => {
     deploymentId: 'deployment-id'
   };
 
-  beforeAll(() => {
+  beforeEach(() => {
     mockClientCredentialsGrantCall({ access_token: dummyToken }, 200);
   });
 
-  afterAll(() => {
+  afterEach(() => {
     nock.cleanAll();
   });
 
@@ -101,7 +101,8 @@ describe('GenAiHubClient', () => {
         url: 'completion'
       }
     );
-    expect(client.chatCompletion(request)).resolves.toEqual(mockResponse);
+    const response = await client.chatCompletion(request);
+    expect(response).toEqual(mockResponse);
   });
 
   it('calls chatCompletion with filtering configuration', async () => {
@@ -162,7 +163,8 @@ describe('GenAiHubClient', () => {
         url: 'completion'
       }
     );
-    expect(client.chatCompletion(request)).resolves.toEqual(mockResponse);
+    const response = await client.chatCompletion(request);
+    expect(response).toEqual(mockResponse);
   });
 
   it('sends message history together with templating config', async () => {
