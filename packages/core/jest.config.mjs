@@ -3,4 +3,3 @@ export default {
   ...config,
   displayName: 'core',
 };
-
