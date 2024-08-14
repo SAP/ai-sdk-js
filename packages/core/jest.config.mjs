@@ -1,5 +1,6 @@
-import config from '../../jest.config.mjs';
+import config from '../../jest.test.config.mjs';
 export default {
   ...config,
   displayName: 'core',
 };
+
