@@ -16,7 +16,7 @@ describe('context', () => {
       401
     );
     await expect(getAiCoreDestination()).rejects.toThrow(
-      /Could not fetch client credentials token for service of type "AICORE_SERVICE_KEY"/
+      /Could not fetch client credentials token for service of type "aicore"/
     );
   });
 });

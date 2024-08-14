@@ -62,7 +62,7 @@ function parseServiceKeyFromEnv(
       return JSON.parse(aiCoreEnv);
     } catch (err) {
       throw new Error(
-        'Error in parsing service key from the "aicore" environment variable.',
+        'Error in parsing service key from the "AICORE_SERVICE_KEY" environment variable.',
         { cause: err }
       );
     }
