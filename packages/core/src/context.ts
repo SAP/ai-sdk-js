@@ -32,8 +32,7 @@ export async function getAiCoreDestination(): Promise<Destination> {
   const aiCoreDestination = await transformServiceBindingToDestination(
     aiCoreServiceBinding,
     {
-      useCache: true,
-      jwt: { zid: 'dummy-tenant' }
+      useCache: true
     }
   );
   return aiCoreDestination;
