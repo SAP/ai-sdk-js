@@ -1,12 +1,11 @@
 import nock from 'nock';
-import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import {
   AiConfigurationBaseData,
   AiConfigurationCreationResponse,
-  AiConfigurationList
-} from './schema/index.js';
-import { ConfigurationApi } from './configuration-api.js';
-import { aiCoreDestination, mockClientCredentialsGrantCall } from '../../../../../test-util/mock-http.js';
+  AiConfigurationList,
+  ConfigurationApi
+} from '../client/AI_CORE_API/index.js';
+import { aiCoreDestination, mockClientCredentialsGrantCall } from '../../../../test-util/mock-http.js';
 
 describe('configuration', () => {
    beforeAll(() => {

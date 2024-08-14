@@ -1,5 +1,4 @@
 import nock from 'nock';
-import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import {
   AiDeploymentCreationRequest,
   AiDeploymentCreationResponse,
@@ -7,10 +6,11 @@ import {
   AiDeploymentList,
   AiDeploymentModificationRequest,
   AiDeploymentModificationResponse,
-  AiDeploymentTargetStatus
-} from './schema/index.js';
-import { DeploymentApi } from './deployment-api.js';
-import { aiCoreDestination, mockClientCredentialsGrantCall } from '../../../../../test-util/mock-http.js';
+  AiDeploymentTargetStatus,
+  DeploymentApi
+} from '../client/AI_CORE_API/index.js';
+import { aiCoreDestination, mockClientCredentialsGrantCall } from '../../../../test-util/mock-http.js';
+
 
 describe('deployment', () => {
   beforeAll(() => {

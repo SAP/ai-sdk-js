@@ -2,10 +2,10 @@ import nock from 'nock';
 import {
   AiEnactmentCreationRequest,
   AiExecutionCreationResponse,
-  AiExecutionList
-} from './schema/index.js';
-import { ExecutionApi } from './execution-api.js';
-import { aiCoreDestination, mockClientCredentialsGrantCall } from '../../../../../test-util/mock-http.js';
+  AiExecutionList,
+  ExecutionApi
+} from '../client/AI_CORE_API/index.js';
+import { aiCoreDestination, mockClientCredentialsGrantCall } from '../../../../test-util/mock-http.js';
 
 describe('execution', () => {
   beforeAll(() => {

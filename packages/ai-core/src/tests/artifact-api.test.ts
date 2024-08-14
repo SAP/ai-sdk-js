@@ -2,10 +2,10 @@ import nock from 'nock';
 import {
   AiArtifactCreationResponse,
   AiArtifactList,
-  AiArtifactPostData
-} from './schema/index.js';
-import { ArtifactApi } from './artifact-api.js';
-import { aiCoreDestination, mockClientCredentialsGrantCall } from '../../../../../test-util/mock-http.js';
+  AiArtifactPostData,
+  ArtifactApi
+} from '../client/AI_CORE_API/index.js';
+import { aiCoreDestination, mockClientCredentialsGrantCall } from '../../../../test-util/mock-http.js';
 
 describe('artifact', () => {
   beforeAll(() => {
@@ -67,7 +67,7 @@ describe('artifact', () => {
         'Content-Type': 'application/json'
       });
 
-    const AiArtifactPostData: AiArtifactPostData = {
+    const aiArtifactPostData: AiArtifactPostData = {
       description: 'dataset for training test',
       kind: 'dataset',
       name: 'training-test-data',
@@ -76,7 +76,7 @@ describe('artifact', () => {
     };
 
     const result: AiArtifactCreationResponse = await ArtifactApi.artifactCreate(
-      AiArtifactPostData,
+      aiArtifactPostData,
       { 'AI-Resource-Group': 'default' }
     ).execute();
 

@@ -34,7 +34,7 @@ const mockEndpoint: EndpointOptions = {
 };
 
 export function mockAiCoreEnvVariable(): void {
-  process.env['aicore'] = JSON.stringify(aiCoreServiceBinding.credentials);
+  process.env['AICORE_SERVICE_KEY'] = JSON.stringify(aiCoreServiceBinding.credentials);
 }
 
 export function createDestinationTokens(

@@ -24,7 +24,7 @@
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "pnpm generate:orchestration",
-    "generate:orchestration": "openapi-generator --overwrite --generateESM -i ./src/orchestration/spec/api.yaml -o ./src/orchestration/client && pnpm lint:fix"
+    "generate:orchestration": "openapi-generator --generateESM --clearOutputDir -i ./src/orchestration/spec/api.yaml -o ./src/orchestration/client && pnpm lint:fix"
   },
   "dependencies": {
     "@sap-ai-sdk/core": "workspace:^",
