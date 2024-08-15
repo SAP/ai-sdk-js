@@ -19,11 +19,11 @@ describe('openai client', () => {
     deploymentId: 'deployment-id'
   };
   const chatCompletionEndpoint = {
-    url: 'chat/completions',
+    url: `/inference/deployments/${deploymentConfiguration.deploymentId}/chat/completions`,
     apiVersion: '2024-02-01'
   };
   const embeddingsEndpoint = {
-    url: 'embeddings',
+    url: `/inference/deployments/${deploymentConfiguration.deploymentId}/embeddings`,
     apiVersion: '2024-02-01'
   };
 

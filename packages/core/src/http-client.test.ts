@@ -6,10 +6,10 @@ import {
 import { executeRequest } from './http-client.js';
 
 describe('http-client', () => {
-  beforeAll(() => {
+  beforeEach(() => {
     mockClientCredentialsGrantCall();
   });
-  afterAll(() => {
+  afterEach(() => {
     nock.cleanAll();
   });
   it('should execute a request to the AI Core service', async () => {

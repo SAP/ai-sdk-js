@@ -53,7 +53,7 @@ describe('artifact', () => {
     expect(result).toEqual(expectedResponse);
   });
 
-  xit('parses a successful response for post request', async () => {
+  it('parses a successful response for post request', async () => {
     const expectedResponse: AiArtifactCreationResponse = {
       id: '3d2c1b0a',
       message: 'Artifact acknowledged',

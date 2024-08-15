@@ -103,8 +103,7 @@ export function mockInference<D extends BaseLlmParameters>(
       'ai-resource-group': 'default',
       authorization: `Bearer ${destination.authTokens?.[0].value}`
     }
-  })
-    .post(
+  }).post(
       `/v2/${url}`,
       body as any
     )
