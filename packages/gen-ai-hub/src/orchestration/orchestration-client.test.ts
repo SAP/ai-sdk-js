@@ -55,7 +55,7 @@ describe('GenAiHubClient', () => {
         status: 200
       },
       {
-        url: `/inference/deployments/${deploymentConfiguration.deploymentId}/completion`
+        url: `inference/deployments/${deploymentConfiguration.deploymentId}/completion`
       }
     );
     const response = await client.chatCompletion(request);
@@ -97,7 +97,7 @@ describe('GenAiHubClient', () => {
         status: 200
       },
       {
-        url: `/inference/deployments/${deploymentConfiguration.deploymentId}/completion`
+        url: `inference/deployments/${deploymentConfiguration.deploymentId}/completion`
       }
     );
     const response = await client.chatCompletion(request);
@@ -159,7 +159,7 @@ describe('GenAiHubClient', () => {
         status: 200
       },
       {
-        url: `/inference/deployments/${deploymentConfiguration.deploymentId}/completion`
+        url: `inference/deployments/${deploymentConfiguration.deploymentId}/completion`
       }
     );
     const response = await client.chatCompletion(request);
@@ -209,7 +209,7 @@ describe('GenAiHubClient', () => {
         status: 200
       },
       {
-        url: `/inference/deployments/${deploymentConfiguration.deploymentId}/completion`
+        url: `inference/deployments/${deploymentConfiguration.deploymentId}/completion`
       }
     );
     const response = await client.chatCompletion(request);
