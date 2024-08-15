@@ -1,5 +1,5 @@
-import unitTestConfig from '../../jest.test.config.js';
+import config from '../../jest.config.mjs';
 export default {
-  ...unitTestConfig,
+  ...config,
   displayName: 'ai-core',
 };
