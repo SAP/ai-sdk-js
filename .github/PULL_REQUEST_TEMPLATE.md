@@ -15,6 +15,6 @@ Please provide a short description of what your change does and why it is needed
 - [ ] Functionality scope stated & covered
 - [ ] Tests cover the scope above
 - [ ] Error handling created / updated & covered by the tests above
-- [ ] Aligned changes with the Java SDK
+- [ ] ~Aligned changes with the Java SDK~
 - [ ] Documentation updated
 - [ ] ~Release notes updated~
