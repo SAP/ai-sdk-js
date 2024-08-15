@@ -4,4 +4,12 @@ export default {
   globalSetup: undefined,
   globalTeardown: undefined,
   displayName: 'e2e-tests',
+  transform: {
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        useESM: true,
+      },
+    ],
+  },
 };
