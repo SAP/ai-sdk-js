@@ -20,14 +20,6 @@ export class OpenApiRequestBuilder<
     super(method, pathPattern, parameters);
   }
 
-    /**
-   * Skip fetching csrf token for this request, which is typically useful when the csrf token is not required.
-   * @returns The request builder itself, to facilitate method chaining.
-   */
-    skipCsrfTokenFetching(): never {
-        throw new Error('skipCsrfTokenFetching should not be called on SubClass');
-      }
-
   /**
    * Execute request and get the response data. Use this to conveniently access the data of a service without technical information about the response.
    * @returns A promise resolving to the requested return type.
