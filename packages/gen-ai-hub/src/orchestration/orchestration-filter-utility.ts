@@ -20,3 +20,15 @@ export function azureContentFilter(
     ]
   };
 }
+
+/**
+ * Utilty providing convenience functions to create filtering configurations.
+ */
+export const FilterUtility = {
+  /**
+   * Convenience function to create Azure filters.
+   * @param filter - Filtering configuration for Azure filter. If skipped, the default Azure filter configuration is used.
+   * @returns An object with the Azure filtering configuration.
+   */
+  azureContentFilter
+};

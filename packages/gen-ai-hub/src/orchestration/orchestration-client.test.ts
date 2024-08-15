@@ -12,7 +12,10 @@ import {
   GenAiHubClient,
   constructCompletionPostRequest
 } from './orchestration-client.js';
-import { azureContentFilter } from './orchestration-filter-utility.js';
+import {
+  azureContentFilter,
+  FilterUtility
+} from './orchestration-filter-utility.js';
 describe('GenAiHubClient', () => {
   const client = new GenAiHubClient();
   const deploymentConfiguration: BaseLlmParametersWithDeploymentId = {
@@ -78,7 +81,7 @@ describe('GenAiHubClient', () => {
       },
       filterConfig: {
         input: azureContentFilter({ Hate: 4, SelfHarm: 2 }),
-        output: azureContentFilter({ Sexual: 0, Violence: 4 })
+        output: FilterUtility.azureContentFilter({ Sexual: 0, Violence: 4 })
       }
     };
     const mockResponse = parseMockResponse<CompletionPostResponse>(

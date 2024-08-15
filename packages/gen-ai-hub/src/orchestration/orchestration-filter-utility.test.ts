@@ -3,7 +3,10 @@ import {
   FilteringModuleConfig
 } from './client/api/index.js';
 import { constructCompletionPostRequest } from './orchestration-client.js';
-import { azureContentFilter } from './orchestration-filter-utility.js';
+import {
+  azureContentFilter,
+  FilterUtility
+} from './orchestration-filter-utility.js';
 import { GenAiHubCompletionParameters } from './orchestration-types.js';
 
 describe('Filter utility', () => {
@@ -81,13 +84,13 @@ describe('Filter utility', () => {
 
   it('constructs filter configuration with both input and ouput', async () => {
     const filterConfig: FilteringModuleConfig = {
-      input: azureContentFilter({
+      input: FilterUtility.azureContentFilter({
         Hate: 4,
         SelfHarm: 0,
         Sexual: 2,
         Violence: 6
       }),
-      output: azureContentFilter({ Sexual: 2, Violence: 6 })
+      output: FilterUtility.azureContentFilter({ Sexual: 2, Violence: 6 })
     };
     const expectedFilterConfig: FilteringModuleConfig = {
       input: {
