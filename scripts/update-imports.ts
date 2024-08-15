@@ -48,8 +48,6 @@ if (!rootDir) {
   process.exit(1);
 }
 
-console.log(rootDir);
-
 traverseDirectory(path.resolve(rootDir))
   .then(() => console.log('All files processed successfully.'))
   .catch(err => console.error('Error processing files:', err));

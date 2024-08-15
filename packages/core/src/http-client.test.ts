@@ -29,7 +29,7 @@ describe('http-client', () => {
       }
     );
     const res = await executeRequest(
-      { url: 'deployment_id/mock-endpoint', apiVersion: 'mock-api-version' },
+      { url: 'mock-endpoint', apiVersion: 'mock-api-version' },
       {
         deploymentConfiguration: { deploymentId: 'deployment_id' },
         ...mockPrompt
