@@ -82,8 +82,8 @@ importers:
         specifier: ^3.18.0
         version: 3.18.0
       '@sap-cloud-sdk/openapi':
-        specifier: file:./sap-cloud-sdk-openapi-v3.18.0.tgz
-        version: file:packages/core/sap-cloud-sdk-openapi-v3.18.0.tgz
+        specifier: ^3.18.0
+        version: 3.18.0
       '@sap-cloud-sdk/util':
         specifier: ^3.18.0
         version: 3.18.0
@@ -667,10 +667,6 @@ packages:
 
   '@sap-cloud-sdk/openapi@3.18.0':
     resolution: {integrity: sha512-77MglZx3z/xNWJUlX2AP106BNQkIYOyAS47WLtMjWCHd2TEjWXEItxzIKkOAOcdvKkxGzxhDWgYfGMuElC0AvQ==}
-
-  '@sap-cloud-sdk/openapi@file:packages/core/sap-cloud-sdk-openapi-v3.18.0.tgz':
-    resolution: {integrity: sha512-JGZoe6eCuS6JwzNetXxpwMo5E1Er3vMFr+zxfiIGa3SD1vTu96xSyVwTwziw7Phie6enZLfDW6kW3pTTyqG3Dw==, tarball: file:packages/core/sap-cloud-sdk-openapi-v3.18.0.tgz}
-    version: 3.18.0
 
   '@sap-cloud-sdk/resilience@3.18.0':
     resolution: {integrity: sha512-WlOspYmrOz5tYI/4agrmDkYdrxzFW4IbJfHhi2rsnTDzqd4dfsLmuoDgBiCZkgfgsGPSRYrYllnaFqJRRxGTKA==}
@@ -4253,18 +4249,6 @@ snapshots:
       - supports-color
 
   '@sap-cloud-sdk/openapi@3.18.0':
-    dependencies:
-      '@sap-cloud-sdk/connectivity': 3.18.0
-      '@sap-cloud-sdk/http-client': 3.18.0
-      '@sap-cloud-sdk/resilience': 3.18.0
-      '@sap-cloud-sdk/util': 3.18.0
-      axios: 1.7.4
-    transitivePeerDependencies:
-      - debug
-      - encoding
-      - supports-color
-
-  '@sap-cloud-sdk/openapi@file:packages/core/sap-cloud-sdk-openapi-v3.18.0.tgz':
     dependencies:
       '@sap-cloud-sdk/connectivity': 3.18.0
       '@sap-cloud-sdk/http-client': 3.18.0
