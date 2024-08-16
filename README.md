@@ -36,9 +36,9 @@ To install the SAP AI Core in your project, run:
 ```
 $ npm install @sap-ai-sdk/ai-core
 ```
-[See some example usage for the available APIs.](./packages/ai-core/README.md)
 
 ### @sap-ai-sdk/gen-ai-hub
+
 This package incorporates generative AI into your AI activities in SAP AI Core and SAP AI Launchpad.
 
 To install the SAP Gen AI Hub in your project, run:
@@ -49,6 +49,38 @@ $ npm install @sap-ai-sdk/gen-ai-hub
 ## SAP AI SDK Sample Project
 
 We have created a sample project which demonstrates the usage of the different clients in SAP AI SDK for TypeScript/JavaScript. The [project README](./sample-code/README.md) outlines the set-up needed to build and run it locally.
+
+## Running tests
+
+If you're using the Jest Runner extension in Visual Studio Code, you'll need to add the following settings to your `settings.json` file before running the tests from VSCode:
+
+```
+ "jestrunner.debugOptions": {
+    "runtimeArgs": ["--experimental-vm-modules"]
+  },
+  "jestrunner.jestCommand": "NODE_OPTIONS=--experimental-vm-modules node 'node_modules/jest/bin/jest.js'",
+```
+
+You can run our tests either with:
+```
+pnpm test:unit
+pnpm test:type
+```
+
+or use the jest runnner extension directly from your IDE.
+
+
+### Running E2E tests locally
+
+Before running the E2E tests, ensure that you have a `.env` file located in `tests/e2e-tests` folder.
+
+Inside the `.env` file, define an `AICORE_SERVICE_KEY` variable and initialize it with the service binding of `aicore`. You can obtain this binding from the `VCAP_SERVICES` environment variable or from the service key defined in your BTP subaccount.
+
+To run the tests, use the following command:
+
+```
+pnpm test:e2e
+```
 
 ## Support, Feedback, Contribution
 

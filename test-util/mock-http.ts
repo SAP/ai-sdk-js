@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { DestinationAuthToken, HttpDestination, ServiceCredentials } from '@sap-cloud-sdk/connectivity';
 import nock from 'nock';
 import {
@@ -8,6 +9,10 @@ import {
 } from '@sap-ai-sdk/core';
 import { EndpointOptions } from '@sap-ai-sdk/core/src/http-client.js';
 import { dummyToken } from './mock-jwt.js';
+
+// Get the directory of this file
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export const aiCoreDestination = {
   url: 'https://api.ai.ml.hana.ondemand.com'
@@ -117,9 +122,8 @@ export function mockInference<D extends BaseLlmParameters>(
  */
 export function parseMockResponse<T>(client: string, fileName: string): T {
   const fileContent = fs.readFileSync(
-    path.join('test', client, fileName),
+    path.join(__dirname, '..', 'packages', 'gen-ai-hub', 'test', client, fileName),
     'utf-8'
   );
-
   return JSON.parse(fileContent);
 }

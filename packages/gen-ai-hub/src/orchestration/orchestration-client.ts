@@ -39,7 +39,7 @@ export class GenAiHubClient {
 export function constructCompletionPostRequest(
   input: GenAiHubCompletionParameters
 ): CompletionPostRequest {
-  const result: CompletionPostRequest = {
+  return {
     orchestration_config: {
       module_configurations: {
         templating_module_config: {
@@ -58,5 +58,4 @@ export function constructCompletionPostRequest(
       messages_history: input.prompt.messages_history
     })
   };
-  return result;
 }
