@@ -54,9 +54,9 @@ export interface EndpointOptions {
  * @param requestConfig - The request configuration.
  * @returns The {@link HttpResponse} from the AI Core service.
  */
-export async function executeRequest<D extends BaseLlmParameters>(
+export async function executeRequest<Data extends BaseLlmParameters>(
   endpointOptions: EndpointOptions,
-  data: D,
+  data: Data,
   requestConfig?: CustomRequestConfig
 ): Promise<HttpResponse> {
   const aiCoreDestination = await getAiCoreDestination();
