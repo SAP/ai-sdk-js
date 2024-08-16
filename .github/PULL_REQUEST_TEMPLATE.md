@@ -13,7 +13,7 @@ Please provide a short description of what your change does and why it is needed
 ## Definition of Done
 
 - [ ] Functionality scope stated & covered
-- [ ] Tests cover the scope above
+- [ ] Code is tested (Unit, E2E)
 - [ ] Error handling created / updated & covered by the tests above
 - [ ] ~Aligned changes with the Java SDK~
 - [ ] Documentation updated
