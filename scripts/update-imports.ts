@@ -18,7 +18,6 @@ async function processApiFile(filePath: string) {
   await writeFile(filePath, updatedContent);
 }
 
-
 // Function to recursively traverse the directory and apply transformations
 async function traverseDirectory(dirPath: string): Promise<void> {
   const files = await fs.readdir(dirPath);
@@ -28,7 +27,7 @@ async function traverseDirectory(dirPath: string): Promise<void> {
 
     try {
         const stat = await fs.stat(filePath);
-  
+
         if (stat.isDirectory() && path.basename(filePath) !== 'schema') {
           await traverseDirectory(filePath); // Recursive traversal for directories
         } else if (stat.isFile() && file !== 'index.ts') {
