@@ -15,6 +15,26 @@ Integrate chat completion into your business applications with SAP Cloud SDK for
 
 _Insert a short description what is required to get your project running..._
 
+## Running tests
+
+If you're using the Jest Runner extension in Visual Studio Code, you'll need to add the following settings to your `settings.json` file before running the tests from VSCode:
+
+```
+ "jestrunner.debugOptions": {
+    "runtimeArgs": ["--experimental-vm-modules"]
+  },
+  "jestrunner.jestCommand": "NODE_OPTIONS=--experimental-vm-modules node 'node_modules/jest/bin/jest.js'",
+```
+
+You can run our tests either with:
+```
+pnpm test:unit
+pnpm test:type
+```
+
+or use the jest runnner extension directly from your IDE.
+
+
 ### Running E2E tests locally
 
 Before running the E2E tests, ensure that you have a `.env` file located in `tests/e2e-tests` folder.
@@ -27,14 +47,6 @@ To run the tests, use the following command:
 pnpm test:e2e
 ```
 
-If you're using the Jest Runner extension in Visual Studio Code, you'll also need to add the following settings to your `settings.json` file before running the tests from VSCode:
-
-```
- "jestrunner.debugOptions": {
-    "runtimeArgs": ["--experimental-vm-modules"]
-  },
-  "jestrunner.jestCommand": "NODE_OPTIONS=--experimental-vm-modules node 'node_modules/jest/bin/jest.js'",
-```
 
 ## Support, Feedback, Contributing
 
