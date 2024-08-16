@@ -17,7 +17,7 @@ _Insert a short description what is required to get your project running..._
 
 ### Running E2E tests locally
 
-Before running the E2E tests, ensure that you have a `.env` file located in the project's root directory.
+Before running the E2E tests, ensure that you have a `.env` file located in `tests/e2e-tests` folder.
 
 Inside the `.env` file, define an `AICORE_SERVICE_KEY` variable and initialize it with the service binding of `aicore`. You can obtain this binding from the `VCAP_SERVICES` environment variable or from the service key defined in your BTP subaccount.
 

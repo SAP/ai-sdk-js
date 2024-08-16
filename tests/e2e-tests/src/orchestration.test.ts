@@ -9,7 +9,7 @@ import {
 // Pick .env file from root directory
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 describe('orchestration', () => {
   it('should complete a chat', async () => {

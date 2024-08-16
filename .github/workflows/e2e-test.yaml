@@ -34,7 +34,7 @@ jobs:
           AICORE_SERVICE_KEY: ${{ secrets[matrix.secret-name] }}
         run: |
           echo "AICORE_SERVICE_KEY='$AICORE_SERVICE_KEY'" > sample-code/.env
-          echo "AICORE_SERVICE_KEY='$AICORE_SERVICE_KEY'" > .env
+          echo "AICORE_SERVICE_KEY='$AICORE_SERVICE_KEY'" > tests/e2e-tests/.env
           url=$(echo "$AICORE_SERVICE_KEY" | jq -r '.serviceurls.AI_API_URL' | sed 's|^https://||')
           echo "Using AI Core ${{ matrix.environment }} instance on $url"
       - name: "Check Sample App Starts Up"
