@@ -1,25 +1,33 @@
-## Pre-requisites for AI Core Deployment
+# @sap-ai-sdk/ai-core
+
+This package provides tools to manage your scenarios and workflows in SAP AI Core.
+
+Streamline data preprocessing and model training pipelines
+Execute batch inference jobs
+Deploy inference endpoints for your trained models
+Register custom Docker registries, sync AI content from your own git repositories, and register your own object storage for training data and model artifacts
+
+### Installation
+
+```
+$ npm install @sap-ai-sdk/ai-core
+```
+
+## Pre-requisites
 
 - [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup)
 - Create a configuration in AI Core using the `/configuration` endpoint
   - [Example Usage](#create-a-configuration)
 
-## ArtifactApi
 
-### Defined in
+## List of Available APIs
+We maintain a list of [currently available and tested AI Core APIs](https://github.com/SAP/ai-sdk-js/blob/main/docs/list-tested-APIs.md)
+  
+## Usage
 
-[packages/ai-core/src/artifact-api.ts](../packages/ai-core/src/artifact-api.ts)
+### ArtifactApi
 
-### Methods
-
-- artifactQuery
-- artifactCreate
-- artifactGet
-- artifactCount
-
-Some use case examples are listed below.
-
-### Create an Artifact
+#### Create an Artifact
 
 ```TypeScript
 async function createArtifact() {
@@ -34,7 +42,7 @@ async function createArtifact() {
     try {
         const responseData: ArtifactCreationResponse = await ArtifactApi
             .artifactCreate(requestBody, {'AI-Resource-Group': 'default'})
-            .execute(destination);
+            .execute();
         return responseData;
     } catch (errorData) {
         const apiError = errorData.response.data.error as ApiError;
@@ -44,22 +52,9 @@ async function createArtifact() {
 }
 ```
 
-## ConfigurationApi
+### ConfigurationApi
 
-### Defined in
-
-[packages/ai-core/src/configuration-api.ts](../packages/ai-core/src/configuration-api.ts)
-
-### Methods
-
-- configurationQuery
-- configurationCreate
-- configurationGet
-- configuratoinCount
-
-Some use case examples are listed below.
-
-### Create a Configuration
+#### Create a Configuration
 
 ```TypeScript
 async function createConfiguration() {
@@ -83,7 +78,7 @@ async function createConfiguration() {
     try {
         const responseData: ConfigurationCreationResponse = await ConfigurationApi
             .configurationCreate(requestBody, {'AI-Resource-Group': 'default'})
-            .execute(destination);
+            .execute();
         return responseData;
     } catch (errorData) {
         const apiError = errorData.response.data.error as ApiError;
@@ -93,26 +88,9 @@ async function createConfiguration() {
 }
 ```
 
-## DeploymentApi
+### DeploymentApi
 
-### Defined in
-
-[packages/ai-core/src/deployment-api.ts](../packages/ai-core/src/deployment-api.ts)
-
-### Methods
-
-- deploymentQuery
-- deploymentCreate
-- deploymentGet
-- deploymentModify
-- deploymentBatchModify
-- deploymentDelete
-- deploymentCount
-- kubesubmitV4DeploymentsGetLogs
-
-Some use case examples are listed below.
-
-### Create a Deployment
+#### Create a Deployment
 
 ```TypeScript
 async function createDeployment() {
@@ -124,7 +102,7 @@ async function createDeployment() {
     try{
         const responseData: DeploymentCreationResponse = await DeploymentApi
             .deploymentCreate(requestBody, {'AI-Resource-Group': 'default'})
-            .execute(destination);
+            .execute();
         return responseData;
     } catch (errorData) {
         const apiError = errorData.response.data.error as ApiError;
@@ -134,7 +112,7 @@ async function createDeployment() {
 }
 ```
 
-### Delete a Deployment
+#### Delete a Deployment
 
 Only deployments with `targetStatus: STOPPED` can be deleted. So a modification request must be sent before deletion can occur.
 
@@ -145,7 +123,7 @@ async function modifyDeployment() {
 
     const deployment: DeploymentResponseWithDetails = await DeploymentApi
         .deploymentGet(deploymentId, {}, {'AI-Resource-Group': 'default'})
-        .execute(destination);
+        .execute();
 
     if(deployment.targetStatus === 'RUNNING') {
         // Only RUNNING deployments can be STOPPED.
@@ -156,7 +134,7 @@ async function modifyDeployment() {
         try {
             await DeploymentApi
                 .deploymentModify(deploymentId, requestBody, {'AI-Resource-Group': 'default'})
-                .execute(destination);
+                .execute();
         } catch (errorData) {
             const apiError = errorData.response.data.error as ApiError;
             console.error('Status code:', errorData.response.status);
@@ -165,7 +143,7 @@ async function modifyDeployment() {
     }
     // Wait a few seconds for the deployment to stop
     try {
-        return DeploymentApi.deploymentDelete(deploymentId, { 'AI-Resource-Group': 'default' }).execute(destination);
+        return DeploymentApi.deploymentDelete(deploymentId, { 'AI-Resource-Group': 'default' }).execute();
     } catch (errorData) {
         const apiError = errorData.response.data.error as ApiError;
         console.error('Status code:', errorData.response.status);
@@ -174,31 +152,12 @@ async function modifyDeployment() {
 }
 ```
 
-## ExecutionApi
+## Support, Feedback, Contribution
 
-### Defined in
+This project is open to feature requests/suggestions, bug reports etc. via [GitHub issues](https://github.com/SAP/ai-sdk-js/issues). 
 
-[packages/ai-core/src/execution-api.ts](../packages/ai-core/src/execution-api.ts)
+Contribution and feedback are encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](https://github.com/SAP/ai-sdk-js/blob/main/CONTRIBUTING.md).
 
-### Methods
+## License
 
-- executionQuery
-- executionCreate
-- executionBatchModify
-- executionGet
-- executionModify
-- executionDelete
-- executionCount
-- kubesubmitV4ExecutionsGetLogs
-
-## ScenarioApi
-
-### Defined in
-
-[packages/ai-core/src/scenario-api.ts](../packages/ai-core/src/scenario-api.ts)
-
-### Methods
-
-- scenarioQuery
-- scenarioGet
-- scenarioQueryVersions
+The SAP AI SDK is released under the [Apache License Version 2.0.](http://www.apache.org/licenses/)

@@ -1,28 +1,30 @@
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP/ai-sdk-js)](https://api.reuse.software/info/github.com/SAP/ai-sdk-js)
 [![Fosstars security rating](https://github.com/SAP/ai-sdk-js/blob/fosstars/fosstars_badge.svg)](https://github.com/SAP/ai-sdk-js/blob/fosstars/fosstars_report.md)
 
-# ai-sdk-js
+# SAP AI SDK
 
-## Disclaimer
+Integrate chat completion into your business applications with SAP Cloud SDK for GenAI Hub. Leverage the Generative AI Hub of SAP AI Core to make use of templating, grounding, data masking, content filtering and more. Setup your SAP AI Core instance with SAP Cloud SDK for AI Core. :warning:
+
+## Disclaimer ⚠️
 
 This project is currently in an experimental state. All functionality and naming is subject to change. Use at your own discretion.
 
-## About this project
-
-Integrate chat completion into your business applications with SAP Cloud SDK for GenAI Hub. Leverage the Generative AI Hub of SAP AI Core to make use of templating, grounding, data masking, content filtering and more. Setup your SAP AI Core instance with SAP Cloud SDK for AI Core.
-
-## Requirements and Setup
-
-_Insert a short description what is required to get your project running..._
-
-## Documentation
-
-## List of Available APIs
-We maintain a list of [currently available and tested AI Core APIs](./docs/list-tested-APIs.md)
+## Table of Contents
+- [Packages](#packages)
+  - [@sap-ai-sdk/ai-core](#sap-ai-sdk-ai-core)
+  - [@sap-ai-sdk/gen-ai-hub](#sap-ai-sdk-gen-ai-hub)
+- [Sample Project](#sample-project)
+- [Support, Feedback](#support-feedback-contribution)
+- [Contribute](#contribute)
+- [Links](#links)
+- [License](#license)
 
 ## Packages
 
+This project publishes multiple packages and is managed using [pnpm](https://pnpm.io/)
+
 ### @sap-ai-sdk/ai-core
+
 This package provides tools to manage your scenarios and workflows in SAP AI Core.
 
 - Streamline data preprocessing and model training pipelines
@@ -44,9 +46,15 @@ To install the SAP Gen AI Hub in your project, run:
 $ npm install @sap-ai-sdk/gen-ai-hub
 ```
 
-## Support, Feedback, Contributing
+## SAP AI SDK Sample Project
 
-This project is open to feature requests/suggestions, bug reports etc. via [GitHub issues](https://github.com/SAP/ai-sdk-js/issues). Contribution and feedback are encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](CONTRIBUTING.md).
+We have created a sample project which demonstrates the usage of the different clients in SAP AI SDK for TypeScript/JavaScript. The [project README](./sample-code/README.md) outlines the set-up needed to build and run it locally.
+
+## Support, Feedback, Contribution
+
+This project is open to feature requests/suggestions, bug reports etc. via [GitHub issues](https://github.com/SAP/ai-sdk-js/issues). 
+
+Contribution and feedback are encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](CONTRIBUTING.md).
 
 ## Security / Disclosure
 
