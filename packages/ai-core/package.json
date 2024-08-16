@@ -21,10 +21,11 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
-    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/AI_CORE_API.yaml -o ./src/client && pnpm lint:fix"
+    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/AI_CORE_API.yaml -o ./src/client && pnpm update-imports && pnpm lint:fix",
+    "update-imports": "node --no-warnings --loader ts-node/esm ../../scripts/update-imports.ts ./src/client/AI_CORE_API"
   },
   "dependencies": {
-    "@sap-cloud-sdk/openapi": "^3.18.0"
+    "@sap-ai-sdk/core": "workspace:^"
   },
   "devDependencies": {
     "typescript": "^5.5.4",

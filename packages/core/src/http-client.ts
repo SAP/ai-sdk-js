@@ -30,7 +30,7 @@ export interface BaseLlmParameters {
  */
 export type CustomRequestConfig = Omit<
   HttpRequestConfig,
-  'body' | 'method' | 'url' | 'baseURL'
+  'body' | 'url' | 'baseURL'
 >;
 
 /**
@@ -54,12 +54,13 @@ export interface EndpointOptions {
  * @param requestConfig - The request configuration.
  * @returns The {@link HttpResponse} from the AI Core service.
  */
-export async function executeRequest<D extends BaseLlmParameters>(
+export async function executeRequest<Data extends BaseLlmParameters>(
   endpointOptions: EndpointOptions,
-  data: D,
+  data: Data,
   requestConfig?: CustomRequestConfig
 ): Promise<HttpResponse> {
   const aiCoreDestination = await getAiCoreDestination();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { deploymentConfiguration, ...body } = data;
   const { url, apiVersion } = endpointOptions;
 
@@ -68,11 +69,7 @@ export async function executeRequest<D extends BaseLlmParameters>(
     data: JSON.stringify(body)
   };
 
-  const targetUrl =
-    aiCoreDestination.url +
-    '/v2/inference/deployments/' +
-    deploymentConfiguration.deploymentId +
-    `/${removeLeadingSlashes(url)}`;
+  const targetUrl = aiCoreDestination.url + `/v2/${removeLeadingSlashes(url)}`;
 
   return executeHttpRequest(
     { ...aiCoreDestination, url: targetUrl },
@@ -88,7 +85,7 @@ function mergeWithDefaultRequestConfig(
   requestConfig?: CustomRequestConfig
 ): HttpRequestConfig {
   const defaultConfig: HttpRequestConfig = {
-    method: 'POST',
+    method: 'post',
     headers: {
       'content-type': 'application/json',
       'ai-resource-group': 'default'

@@ -2,8 +2,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { DeploymentApi } from '@sap-ai-sdk/ai-core';
-import { getAiCoreDestination } from '@sap-ai-sdk/core';
-import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import 'dotenv/config';
 
 // Pick .env file from root directory
@@ -12,12 +10,11 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 describe('ai-core', () => {
-  test.skip('should get deployments, but is currently broken', async () => {
-    const d = (await getAiCoreDestination()) as HttpDestination;
+  it('should get deployments', async () => {
     const deployments = await DeploymentApi.deploymentQuery(
       {},
       { 'AI-Resource-Group': 'default' }
-    ).execute(d);
+    ).execute();
     expect(deployments).toBeDefined();
   });
 });

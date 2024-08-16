@@ -3,7 +3,7 @@ import { mockClientCredentialsGrantCall } from '../../../test-util/mock-http.js'
 import { getAiCoreDestination } from './context.js';
 
 describe('context', () => {
-  afterEach(() => {
+  afterAll(() => {
     nock.cleanAll();
   });
 

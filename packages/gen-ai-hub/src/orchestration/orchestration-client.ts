@@ -25,7 +25,9 @@ export class GenAiHubClient {
     };
 
     const response = await executeRequest(
-      { url: '/completion' },
+      {
+        url: `/inference/deployments/${data.deploymentConfiguration.deploymentId}/completion`
+      },
       dataWithInputParams,
       requestConfig
     );
