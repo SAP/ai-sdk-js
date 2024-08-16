@@ -17,10 +17,10 @@ $ npm install @sap-ai-sdk/ai-core
 
 - [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup)
 - Project configured with Node.js v20 or higher and native ESM support enabled
-- For testing your application locally: 
-    - Download a service key for your AI Core service instance
-    - Create a `.env` file in the sample-code directory
-    - Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`
+- For testing your application locally:
+  - Download a service key for your AI Core service instance
+  - Create a `.env` file in the sample-code directory
+  - Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`
 
 ## List of Available APIs
 
