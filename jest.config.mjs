@@ -1,8 +1,13 @@
+import { fileURLToPath } from 'url';
+import path from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 /**
  * For a detailed explanation regarding each configuration property, visit:
  * https://jestjs.io/docs/configuration.
  */
-
 const config = {
   // All imported modules in your tests should be mocked automatically
   // automock: false,
@@ -54,10 +59,10 @@ const config = {
   // forceCoverageMatch: [],
 
   // A path to a module which exports an async function that is triggered once before all test suites
-   globalSetup: '../../global-test-setup.ts',
+  globalSetup: path.resolve(__dirname, 'global-test-setup.ts'),
 
   // A path to a module which exports an async function that is triggered once after all test suites
-   globalTeardown: '../../global-test-teardown.ts',
+  globalTeardown: path.resolve(__dirname, 'global-test-teardown.ts'),
 
   // A set of global variables that need to be available in all test environments
   // globals: {},
@@ -153,9 +158,7 @@ const config = {
   testMatch: ['**/*.test.ts'],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-  testPathIgnorePatterns: [
-    "./dist"
-  ],
+  testPathIgnorePatterns: ['./dist'],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   // testRegex: [],
@@ -174,7 +177,7 @@ const config = {
       'ts-jest',
       {
         useESM: true,
-        tsconfig: '../../tsconfig.test.json',
+        tsconfig: path.resolve(__dirname, 'tsconfig.test.json'),
       },
     ],
   },
