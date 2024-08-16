@@ -14,7 +14,7 @@ async function writeFile(filePath: string, data: string): Promise<void> {
 
 async function processApiFile(filePath: string) {
     const content = await readFile(filePath);
-    const updatedContent = content.replace(/import \{ OpenApiRequestBuilder \} from '@sap-cloud-sdk\/openapi';/g, "import { OpenApiRequestBuilder } from '@sap-ai-sdk\/core';");
+    const updatedContent = content.replace(/import \{ OpenApiRequestBuilder \} from '@sap-cloud-sdk\/openapi';/g, "import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';");
   await writeFile(filePath, updatedContent);
 }
 
