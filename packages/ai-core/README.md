@@ -19,10 +19,10 @@ $ npm install @sap-ai-sdk/ai-core
 - Create a configuration in AI Core using the `/configuration` endpoint
   - [Example Usage](#create-a-configuration)
 
-
 ## List of Available APIs
+
 We maintain a list of [currently available and tested AI Core APIs](https://github.com/SAP/ai-sdk-js/blob/main/docs/list-tested-APIs.md)
-  
+
 ## Usage
 
 ### ArtifactApi
@@ -154,7 +154,7 @@ async function modifyDeployment() {
 
 ## Support, Feedback, Contribution
 
-This project is open to feature requests/suggestions, bug reports etc. via [GitHub issues](https://github.com/SAP/ai-sdk-js/issues). 
+This project is open to feature requests/suggestions, bug reports etc. via [GitHub issues](https://github.com/SAP/ai-sdk-js/issues).
 
 Contribution and feedback are encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](https://github.com/SAP/ai-sdk-js/blob/main/CONTRIBUTING.md).
 
