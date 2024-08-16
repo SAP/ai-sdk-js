@@ -50,3 +50,7 @@ build/Release
 .env
 .env.test
 .env.local
+
+# VS Code
+.vscode
+/pnpm-publish-summary.json

@@ -3,12 +3,23 @@ import flatConfig from '@sap-cloud-sdk/eslint-config/flat-config.js';
 export default [
   ...flatConfig,
   {
-    ignores: ['**/dist/**/*', '**/coverage/**/*', 'packages/ai-core/src/'],
+    // Estlint flat config is not supported by eslint-plugin-import.
+    // https://github.com/import-js/eslint-plugin-import/issues/2556
+    rules: { 'import/namespace': 'off'}
   },
   {
-    files: ['**/test-util/**/*.ts'],
+    ignores: ['**/dist/**/*', '**/coverage/**/*', 'packages/ai-core/src/client/**/*'],
+  },
+  {
+    files: ['**/test-util/**/*.ts', '**/packages/gen-ai-hub/src/orchestration/client/**/*'],
     rules: {
       'jsdoc/require-jsdoc': 'off'
+    }
+  },
+  {
+    files: ['**/packages/gen-ai-hub/src/orchestration/client/api/default-api.ts'],
+    rules: {
+      '@typescript-eslint/explicit-module-boundary-types': 'off'
     }
   }
 ];

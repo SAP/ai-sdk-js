@@ -1,4 +1,4 @@
-import { BaseLlmParameters } from '../../core/http-client.js';
+import { BaseLlmParameters } from '@sap-ai-sdk/core';
 
 /**
  * OpenAI system message.

@@ -1,0 +1,29 @@
+{
+  "type": "module",
+  "name": "@sap-ai-sdk/e2e-tests",
+  "version": "0.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "private": "true",
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts",
+    "dist/**/*.d.ts.map"
+  ],
+  "dependencies": {
+    "@sap-ai-sdk/sample-code": "workspace:^",
+    "@sap-ai-sdk/gen-ai-hub": "workspace:^",
+    "@sap-ai-sdk/ai-core": "workspace:^",
+    "@sap-ai-sdk/core": "workspace:^"
+  },
+  "scripts": {
+    "compile": "tsc",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "lint": "prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
+    "lint:fix": "prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5"
+  }
+}

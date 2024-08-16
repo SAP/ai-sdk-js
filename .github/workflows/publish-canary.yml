@@ -1,0 +1,51 @@
+name: publish-canary
+
+on:
+  schedule:
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Dist tag for the release. If you chose something different than "canary", make sure to delete it once it is not needed anymore.'
+        type: string
+        required: false
+        default: 'canary'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: ${{ vars.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'pnpm'
+
+      - name: install and build
+        run: pnpm install
+
+      - name: prepare canary changeset
+        run: |
+          rm -f .changeset/*.md || true
+          cat <<EOT >> .changeset/canary-release-changeset.md
+          ---
+          '@sap-ai-sdk/core': patch
+          ---
+
+          Canary release
+          EOT
+
+      - name: publish
+        run: |
+          date=`date +%Y%m%d%H%M%S`
+          pnpm changeset pre enter ${date}
+          pnpm changeset version
+          pnpm changeset pre exit
+          pnpm changeset publish --tag ${{ github.event_name == 'schedule' && 'canary' || inputs.tag }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}

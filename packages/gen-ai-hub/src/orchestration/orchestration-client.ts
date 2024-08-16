@@ -1,5 +1,5 @@
-import { executeRequest, CustomRequestConfig } from '../core/index.js';
-import { CompletionPostRequest } from './api/schema/index.js';
+import { executeRequest, CustomRequestConfig } from '@sap-ai-sdk/core';
+import { CompletionPostRequest } from './client/api/schema/index.js';
 import {
   GenAiHubCompletionParameters,
   GenAiHubCompletionResponse
@@ -39,20 +39,24 @@ export class GenAiHubClient {
 export function constructCompletionPostRequest(
   input: GenAiHubCompletionParameters
 ): CompletionPostRequest {
-  return {
+  const result: CompletionPostRequest = {
     orchestration_config: {
       module_configurations: {
         templating_module_config: {
           template: input.prompt.template
         },
-        llm_module_config: input.llmConfig
-      },
-      ...(input.prompt.template_params && {
-        input_params: input.prompt.template_params
-      }),
-      ...(input.prompt.messages_history && {
-        messages_history: input.prompt.messages_history
-      })
-    }
+        llm_module_config: input.llmConfig,
+        ...(Object.keys(input?.filterConfig || {}).length && {
+          filtering_module_config: input.filterConfig
+        })
+      }
+    },
+    ...(input.prompt.template_params && {
+      input_params: input.prompt.template_params
+    }),
+    ...(input.prompt.messages_history && {
+      messages_history: input.prompt.messages_history
+    })
   };
+  return result;
 }

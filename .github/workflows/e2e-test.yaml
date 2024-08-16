@@ -1,8 +1,5 @@
 name: "E2E Test"
 on:
-  push:
-    branches:
-      - chore/e2e-test
   workflow_dispatch:
   schedule:
     - cron: 0 22 * * *
@@ -13,16 +10,14 @@ jobs:
       fail-fast: false
       matrix:
         environment: [staging, production]
-        include:
+        # disabled, because currently staging is behind production
+        exclude:
           - environment: staging
-            secret-name: AI_CORE_STAGING
+        include:
           - environment: production
             secret-name: AI_CORE_PRODUCTION
     name: "Build and Test"
     runs-on: ubuntu-latest
-    env:
-      WGET_ARGS: "-qO- -S --content-on-error"
-      WGET_URL: "localhost:8080"
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
@@ -36,13 +31,13 @@ jobs:
       - run: pnpm i --frozen-lockfile
       - name: Create .env file
         env:
-          aicore: ${{ secrets[matrix.secret-name] }}
-        working-directory: ./sample-code
+          AICORE_SERVICE_KEY: ${{ secrets[matrix.secret-name] }}
         run: |
-          echo "aicore='$aicore'" > .env
-          url=$(echo "$aicore" | jq -r '.serviceurls.AI_API_URL' | sed 's|^https://||')
+          echo "AICORE_SERVICE_KEY='$AICORE_SERVICE_KEY'" > sample-code/.env
+          echo "AICORE_SERVICE_KEY='$AICORE_SERVICE_KEY'" > tests/e2e-tests/.env
+          url=$(echo "$AICORE_SERVICE_KEY" | jq -r '.serviceurls.AI_API_URL' | sed 's|^https://||')
           echo "Using AI Core ${{ matrix.environment }} instance on $url"
-      - name: "Start App"
+      - name: "Check Sample App Starts Up"
         working-directory: ./sample-code
         run: |
           pnpm run local &
@@ -55,15 +50,9 @@ jobs:
               exit 1
             fi
           done
-      - name: "Health Check"
-        run: |
-          wget "$WGET_ARGS" "$WGET_URL/health"
-      - name: "OpenAI Chat Completion"
-        run: |
-          wget "$WGET_ARGS" "$WGET_URL/llm"
-      - name: "OpenAI Text Embedding"
-        run: |
-          wget "$WGET_ARGS" "$WGET_URL/embedding"
+          wget -qO- -S --content-on-error localhost:8080
+      - name: "Execute E2E Tests"
+        run: pnpm test:e2e
       - name: "Slack Notification"
         if: failure()
         uses: slackapi/slack-github-action@v1.26.0

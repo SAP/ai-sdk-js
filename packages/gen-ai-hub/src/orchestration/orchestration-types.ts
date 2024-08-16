@@ -1,10 +1,11 @@
-import { BaseLlmParameters } from '../core/index.js';
+import { BaseLlmParameters } from '@sap-ai-sdk/core';
 import {
   ChatMessages,
   CompletionPostResponse,
+  FilteringModuleConfig,
   InputParamsEntry,
   LLMModuleConfig
-} from './api/index.js';
+} from './client/api/index.js';
 
 /**
  * Input Parameters for GenAI hub chat completion.
@@ -44,11 +45,15 @@ export type LlmConfig = LLMModuleConfig;
  */
 export interface OrchestrationCompletionParameters {
   /**
-   * Prompt options.
+   * Prompt configuration options.
    */
   prompt: PromptConfig;
   /**
    * Llm configuration options.
    */
   llmConfig: LlmConfig;
+  /**
+   * Filter configuration options.
+   */
+  filterConfig?: FilteringModuleConfig;
 }

@@ -1,32 +1,33 @@
 import nock from 'nock';
-import { HttpDestination } from '@sap-cloud-sdk/connectivity';
-import { mockGetAiCoreDestination } from '../../test-util/mock-context.js';
-import { mockInference, parseMockResponse } from '../../test-util/mock-http.js';
-import { BaseLlmParametersWithDeploymentId } from '../core/index.js';
+import { BaseLlmParametersWithDeploymentId } from '@sap-ai-sdk/core';
+import {
+  mockClientCredentialsGrantCall,
+  mockInference,
+  parseMockResponse
+} from '../../../../test-util/mock-http.js';
+import { dummyToken } from '../../../../test-util/mock-jwt.js';
+import { CompletionPostResponse } from './client/api/index.js';
+import { GenAiHubCompletionParameters } from './orchestration-types.js';
 import {
   GenAiHubClient,
   constructCompletionPostRequest
 } from './orchestration-client.js';
-import { CompletionPostResponse } from './api/index.js';
-import { GenAiHubCompletionParameters } from './orchestration-types.js';
-
+import { azureContentFilter } from './orchestration-filter-utility.js';
 describe('GenAiHubClient', () => {
-  let destination: HttpDestination;
-  let client: GenAiHubClient;
+  const client = new GenAiHubClient();
   const deploymentConfiguration: BaseLlmParametersWithDeploymentId = {
     deploymentId: 'deployment-id'
   };
 
-  beforeAll(() => {
-    destination = mockGetAiCoreDestination();
-    client = new GenAiHubClient();
+  beforeEach(() => {
+    mockClientCredentialsGrantCall({ access_token: dummyToken }, 200);
   });
 
   afterEach(() => {
     nock.cleanAll();
   });
 
-  it('calls chatCompletion with minimum configuration and parses response', async () => {
+  it('calls chatCompletion with minimum configuration', async () => {
     const request: GenAiHubCompletionParameters = {
       deploymentConfiguration,
       llmConfig: {
@@ -54,12 +55,116 @@ describe('GenAiHubClient', () => {
         data: mockResponse,
         status: 200
       },
-      destination,
       {
         url: 'completion'
       }
     );
-    expect(client.chatCompletion(request)).resolves.toEqual(mockResponse);
+    const response = await client.chatCompletion(request);
+    expect(response).toEqual(mockResponse);
+  });
+
+  it('calls chatCompletion with filter configuration supplied using convenience function', async () => {
+    const request: GenAiHubCompletionParameters = {
+      deploymentConfiguration,
+      llmConfig: {
+        model_name: 'gpt-35-turbo-16k',
+        model_params: { max_tokens: 50, temperature: 0.1 }
+      },
+      prompt: {
+        template: [
+          { role: 'user', content: 'Create {number} paraphrases of {phrase}' }
+        ],
+        template_params: { phrase: 'I hate you.', number: 3 }
+      },
+      filterConfig: {
+        input: azureContentFilter({ Hate: 4, SelfHarm: 2 }),
+        output: azureContentFilter({ Sexual: 0, Violence: 4 })
+      }
+    };
+    const mockResponse = parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'genaihub-chat-completion-filter-config.json'
+    );
+
+    mockInference(
+      {
+        data: {
+          deploymentConfiguration,
+          ...constructCompletionPostRequest(request)
+        }
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'completion'
+      }
+    );
+    const response = await client.chatCompletion(request);
+    expect(response).toEqual(mockResponse);
+  });
+
+  it('calls chatCompletion with filtering configuration', async () => {
+    const request: GenAiHubCompletionParameters = {
+      deploymentConfiguration,
+      llmConfig: {
+        model_name: 'gpt-35-turbo-16k',
+        model_params: { max_tokens: 50, temperature: 0.1 }
+      },
+      prompt: {
+        template: [
+          { role: 'user', content: 'Create {number} paraphrases of {phrase}' }
+        ],
+        template_params: { phrase: 'I hate you.', number: 3 }
+      },
+      filterConfig: {
+        input: {
+          filters: [
+            {
+              type: 'azure_content_safety',
+              config: {
+                Hate: 4,
+                SelfHarm: 2
+              }
+            }
+          ]
+        },
+        output: {
+          filters: [
+            {
+              type: 'azure_content_safety',
+              config: {
+                Sexual: 0,
+                Violence: 4
+              }
+            }
+          ]
+        }
+      }
+    };
+    const mockResponse = parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'genaihub-chat-completion-filter-config.json'
+    );
+
+    mockInference(
+      {
+        data: {
+          deploymentConfiguration,
+          ...constructCompletionPostRequest(request)
+        }
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'completion'
+      }
+    );
+    const response = await client.chatCompletion(request);
+    expect(response).toEqual(mockResponse);
   });
 
   it('sends message history together with templating config', async () => {
@@ -104,12 +209,11 @@ describe('GenAiHubClient', () => {
         data: mockResponse,
         status: 200
       },
-      destination,
       {
         url: 'completion'
       }
     );
-
-    expect(client.chatCompletion(request)).resolves.toEqual(mockResponse);
+    const response = await client.chatCompletion(request);
+    expect(response).toEqual(mockResponse);
   });
 });
