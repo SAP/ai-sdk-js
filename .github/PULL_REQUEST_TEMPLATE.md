@@ -4,12 +4,6 @@ AI/gen-ai-hub-sdk-js-backlog#ISSUENUMBER.
 
 <!-- Please provide a description of what your change does and why it is needed. -->
 
-### Feature scope:
- 
-- [ ] Task1 
-- [ ] Task2 
-  - [ ] SubTask1 
-
 ## Definition of Done
 
 - [ ] Functionality scope stated & covered
