@@ -26,7 +26,7 @@ export class OpenApiRequestBuilder<
      */
     async executeRaw(): Promise<HttpResponse> {
       const { url, data, ...rest } = await this.requestConfig();
-      // TODO: Add fetchCsrfToken logic. Need to change executeRequest param type.
+      // TODO: Remove explicit url! once we updated the type in the Cloud SDK, since url is always defined.
       return executeRequest(
         { url: url! },
         { deploymentConfiguration: {}, ...data },
