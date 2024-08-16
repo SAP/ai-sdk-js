@@ -20,6 +20,22 @@ export class OpenApiRequestBuilder<
     super(method, pathPattern, parameters);
   }
 
+    /**
+     * Execute request and get the response data. Use this to conveniently access the data of a service without technical information about the response.
+     * @returns A promise resolving to an HttpResponse.
+     */
+    async executeRaw(): Promise<HttpResponse> {
+      const { url, data, ...rest } = await this.requestConfig();
+      // TODO: Add fetchCsrfToken logic. Need to change executeRequest param type.
+      return executeRequest(
+        { url: url! },
+        { deploymentConfiguration: {}, ...data },
+        {
+          ...rest
+        }
+      );
+    }
+
   /**
    * Execute request and get the response data. Use this to conveniently access the data of a service without technical information about the response.
    * @returns A promise resolving to the requested return type.
@@ -31,22 +47,6 @@ export class OpenApiRequestBuilder<
     }
     throw new Error(
       'Could not access response data. Response was not an axios response.'
-    );
-  }
-
-  /**
-   * Execute request and get the response data. Use this to conveniently access the data of a service without technical information about the response.
-   * @returns A promise resolving to an HttpResponse.
-   */
-  async executeRaw(): Promise<HttpResponse> {
-    const { url, data, ...rest } = await this.requestConfig();
-    // TODO: Add fetchCsrfToken logic. Need to change executeRequest param type.
-    return executeRequest(
-      { url: url! },
-      { deploymentConfiguration: {}, ...data },
-      {
-        ...rest
-      }
     );
   }
 }
