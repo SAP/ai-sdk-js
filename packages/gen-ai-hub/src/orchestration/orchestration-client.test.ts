@@ -5,7 +5,6 @@ import {
   mockInference,
   parseMockResponse
 } from '../../../../test-util/mock-http.js';
-import { dummyToken } from '../../../../test-util/mock-jwt.js';
 import { CompletionPostResponse } from './client/api/index.js';
 import { GenAiHubCompletionParameters } from './orchestration-types.js';
 import {
@@ -21,7 +20,7 @@ describe('GenAiHubClient', () => {
   };
 
   beforeEach(() => {
-    mockClientCredentialsGrantCall({ access_token: dummyToken }, 200);
+    mockClientCredentialsGrantCall();
   });
 
   afterEach(() => {
@@ -57,7 +56,7 @@ describe('GenAiHubClient', () => {
         status: 200
       },
       {
-        url: 'completion'
+        url: `inference/deployments/${deploymentConfiguration.deploymentId}/completion`
       }
     );
     const response = await client.chatCompletion(request);
@@ -99,7 +98,7 @@ describe('GenAiHubClient', () => {
         status: 200
       },
       {
-        url: 'completion'
+        url: `inference/deployments/${deploymentConfiguration.deploymentId}/completion`
       }
     );
     const response = await client.chatCompletion(request);
@@ -161,7 +160,7 @@ describe('GenAiHubClient', () => {
         status: 200
       },
       {
-        url: 'completion'
+        url: `inference/deployments/${deploymentConfiguration.deploymentId}/completion`
       }
     );
     const response = await client.chatCompletion(request);
@@ -211,7 +210,7 @@ describe('GenAiHubClient', () => {
         status: 200
       },
       {
-        url: 'completion'
+        url: `inference/deployments/${deploymentConfiguration.deploymentId}/completion`
       }
     );
     const response = await client.chatCompletion(request);

@@ -3,12 +3,11 @@ import {
   mockClientCredentialsGrantCall,
   mockInference
 } from '../../../test-util/mock-http.js';
-import { dummyToken } from '../../../test-util/mock-jwt.js';
 import { executeRequest } from './http-client.js';
 
 describe('http-client', () => {
-  beforeAll(() => {
-    mockClientCredentialsGrantCall({ access_token: dummyToken }, 200);
+  beforeEach(() => {
+    mockClientCredentialsGrantCall();
   });
   afterEach(() => {
     nock.cleanAll();
@@ -30,7 +29,7 @@ describe('http-client', () => {
       }
     );
     const res = await executeRequest(
-      { url: '/mock-endpoint', apiVersion: 'mock-api-version' },
+      { url: 'mock-endpoint', apiVersion: 'mock-api-version' },
       {
         deploymentConfiguration: { deploymentId: 'deployment_id' },
         ...mockPrompt
