@@ -2,7 +2,7 @@
 
 AI/gen-ai-hub-sdk-js-backlog#ISSUENUMBER.
 
-Please provide a short description of what your change does and why it is needed.
+<!-- Please provide a description of what your change does and why it is needed. -->
 
 ### Feature scope:
  
