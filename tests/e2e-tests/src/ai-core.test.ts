@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 describe('ai-core', () => {
-  test.skip('should get deployments, but is currently broken', async () => {
+  test('should get deployments', async () => {
     const deployments = await DeploymentApi.deploymentQuery(
       {},
       { 'AI-Resource-Group': 'default' }
