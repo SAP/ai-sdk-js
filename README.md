@@ -15,6 +15,39 @@ Integrate chat completion into your business applications with SAP Cloud SDK for
 
 _Insert a short description what is required to get your project running..._
 
+## Running tests
+
+If you're using the Jest Runner extension in Visual Studio Code, you'll need to add the following settings to your `settings.json` file before running the tests from VSCode:
+
+```
+ "jestrunner.debugOptions": {
+    "runtimeArgs": ["--experimental-vm-modules"]
+  },
+  "jestrunner.jestCommand": "NODE_OPTIONS=--experimental-vm-modules node 'node_modules/jest/bin/jest.js'",
+```
+
+You can run our tests either with:
+```
+pnpm test:unit
+pnpm test:type
+```
+
+or use the jest runnner extension directly from your IDE.
+
+
+### Running E2E tests locally
+
+Before running the E2E tests, ensure that you have a `.env` file located in `tests/e2e-tests` folder.
+
+Inside the `.env` file, define an `AICORE_SERVICE_KEY` variable and initialize it with the service binding of `aicore`. You can obtain this binding from the `VCAP_SERVICES` environment variable or from the service key defined in your BTP subaccount.
+
+To run the tests, use the following command:
+
+```
+pnpm test:e2e
+```
+
+
 ## Support, Feedback, Contributing
 
 This project is open to feature requests/suggestions, bug reports etc. via [GitHub issues](https://github.com/SAP/ai-sdk-js/issues). Contribution and feedback are encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](CONTRIBUTING.md).

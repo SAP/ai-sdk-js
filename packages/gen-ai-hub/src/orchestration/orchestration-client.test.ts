@@ -12,6 +12,7 @@ import {
   constructCompletionPostRequest
 } from './orchestration-client.js';
 import { azureContentFilter } from './orchestration-filter-utility.js';
+
 describe('GenAiHubClient', () => {
   const client = new GenAiHubClient();
   const deploymentConfiguration: BaseLlmParametersWithDeploymentId = {
