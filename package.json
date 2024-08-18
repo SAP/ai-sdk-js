@@ -27,7 +27,7 @@
     "@sap-cloud-sdk/http-client": "^3.18.1",
     "@sap-ai-sdk/core": "workspace:^",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.14.15",
+    "@types/node": "^20.16.0",
     "@jest/globals": "^29.5.12",
     "eslint": "^9.9.0",
     "jest": "^30.0.0-alpha.6",
