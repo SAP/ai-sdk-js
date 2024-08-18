@@ -12,5 +12,5 @@ export {
   CompletionPostResponse,
   PromptConfig,
   LlmConfig,
-  ChatMessages,
+  ChatMessages
 } from './orchestration/index.js';

@@ -17,9 +17,4 @@ expectError<any>(
   )
 );
 
-expectError<any>(
-  executeRequest(
-    {},
-    { prompt: 'test prompt' }
-  )
-);
+expectError<any>(executeRequest({}, { prompt: 'test prompt' }));

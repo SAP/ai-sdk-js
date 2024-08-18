@@ -1,24 +1,67 @@
+// TODO: docs
+/* eslint-disable */
 export const OpenAiModels = {
   // TODO: figure out if these should be constants or functions, e.g. to allow for dynamic versioning
-  GPT_4o: { name: 'gpt-4o', type: 'chat', version: 'latest' } as OpenAiChatModel,
+  GPT_4o: {
+    name: 'gpt-4o',
+    type: 'chat',
+    version: 'latest'
+  } as OpenAiChatModel,
   GPT_4: { name: 'gpt-4', type: 'chat', version: 'latest' } as OpenAiChatModel,
-  GPT_4_32K: { name: 'gpt-4-32k', type: 'chat', version: 'latest' } as OpenAiChatModel,
-  GPT_35_TURBO: { name: 'gpt-35-turbo', type: 'chat', version: 'latest' } as OpenAiChatModel,
-  GPT_35_TURBO_0125: { name: 'gpt-35-turbo-0125', type: 'chat', version: 'latest' } as OpenAiChatModel,
-  GPT_35_TURBO_16K: { name: 'gpt-35-turbo-16k', type: 'chat', version: 'latest' } as OpenAiChatModel,
-  ADA_002: { name: 'text-embedding-ada-002', type: 'embedding', version: 'latest' } as OpenAiEmbeddingModel,
-  TEXT_EMBEDDING_3_SMALL: { name: 'text-embedding-3-small', type: 'embedding', version: 'latest' } as OpenAiEmbeddingModel,
-  TEXT_EMBEDDING_3_LARGE: { name: 'text-embedding-3-large', type: 'embedding', version: 'latest' } as OpenAiEmbeddingModel,
+  GPT_4_32K: {
+    name: 'gpt-4-32k',
+    type: 'chat',
+    version: 'latest'
+  } as OpenAiChatModel,
+  GPT_35_TURBO: {
+    name: 'gpt-35-turbo',
+    type: 'chat',
+    version: 'latest'
+  } as OpenAiChatModel,
+  GPT_35_TURBO_0125: {
+    name: 'gpt-35-turbo-0125',
+    type: 'chat',
+    version: 'latest'
+  } as OpenAiChatModel,
+  GPT_35_TURBO_16K: {
+    name: 'gpt-35-turbo-16k',
+    type: 'chat',
+    version: 'latest'
+  } as OpenAiChatModel,
+  ADA_002: {
+    name: 'text-embedding-ada-002',
+    type: 'embedding',
+    version: 'latest'
+  } as OpenAiEmbeddingModel,
+  TEXT_EMBEDDING_3_SMALL: {
+    name: 'text-embedding-3-small',
+    type: 'embedding',
+    version: 'latest'
+  } as OpenAiEmbeddingModel,
+  TEXT_EMBEDDING_3_LARGE: {
+    name: 'text-embedding-3-large',
+    type: 'embedding',
+    version: 'latest'
+  } as OpenAiEmbeddingModel
 };
 
 export interface OpenAiChatModel {
-  name: 'gpt-4o' | 'gpt-4' | 'gpt-4-32k' | 'gpt-35-turbo' | 'gpt-35-turbo-0125' | 'gpt-35-turbo-16k';
+  name:
+    | 'gpt-4o'
+    | 'gpt-4'
+    | 'gpt-4-32k'
+    | 'gpt-35-turbo'
+    | 'gpt-35-turbo-0125'
+    | 'gpt-35-turbo-16k';
   version: 'latest';
-};
+}
 export interface OpenAiEmbeddingModel {
-  name: 'text-embedding-ada-002' | 'text-embedding-3-small' | 'text-embedding-3-large';
+  name:
+    | 'text-embedding-ada-002'
+    | 'text-embedding-3-small'
+    | 'text-embedding-3-large';
   version: 'latest';
-};
+}
 
 /**
  * OpenAI system message.
@@ -274,7 +317,7 @@ export interface OpenAiCompletionParameters {
  * OpenAI chat completion input parameters.
  */
 export interface OpenAiChatCompletionParameters
-  extends OpenAiCompletionParameters{
+  extends OpenAiCompletionParameters {
   /**
    * An array of system, user & assistant messages for chat completion.
    */

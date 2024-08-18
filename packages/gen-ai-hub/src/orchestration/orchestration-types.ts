@@ -1,6 +1,5 @@
 import {
   ChatMessages,
-  CompletionPostResponse,
   FilteringModuleConfig,
   InputParamsEntry,
   LLMModuleConfig

@@ -1,6 +1,5 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import {
-  Destination,
   HttpDestination,
   Service,
   ServiceCredentials,
@@ -30,12 +29,12 @@ export async function getAiCoreDestination(): Promise<HttpDestination> {
     }
   }
 
-  const aiCoreDestination = await transformServiceBindingToDestination(
+  const aiCoreDestination = (await transformServiceBindingToDestination(
     aiCoreServiceBinding,
     {
       useCache: true
     }
-  ) as HttpDestination;
+  )) as HttpDestination;
   return aiCoreDestination;
 }
 

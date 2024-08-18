@@ -1,5 +1,8 @@
 import { expectError, expectType } from 'tsd';
-import { OrchestrationClient, CompletionPostResponse } from '@sap-ai-sdk/gen-ai-hub';
+import {
+  OrchestrationClient,
+  CompletionPostResponse
+} from '@sap-ai-sdk/gen-ai-hub';
 
 const client = new OrchestrationClient();
 expectType<OrchestrationClient>(client);
@@ -48,9 +51,7 @@ expectType<Promise<CompletionPostResponse>>(
 /**
  * Orchestration completion parameters cannot be empty.
  */
-expectError<any>(
-  client.chatCompletion({})
-);
+expectError<any>(client.chatCompletion({}));
 
 /**
  * Prompt templates cannot be empty.

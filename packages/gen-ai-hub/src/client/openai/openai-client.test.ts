@@ -15,11 +15,11 @@ import { OpenAiClient } from './openai-client.js';
 
 describe('openai client', () => {
   const chatCompletionEndpoint = {
-    url: `inference/deployments/1234/chat/completions`,
+    url: 'inference/deployments/1234/chat/completions',
     apiVersion: '2024-02-01'
   };
   const embeddingsEndpoint = {
-    url: `inference/deployments/1234/embeddings`,
+    url: 'inference/deployments/1234/embeddings',
     apiVersion: '2024-02-01'
   };
 
@@ -43,7 +43,7 @@ describe('openai client', () => {
           }
         ] as OpenAiChatMessage[]
       };
-      
+
       const mockResponse = parseMockResponse<OpenAiChatCompletionOutput>(
         'openai',
         'openai-chat-completion-success-response.json'
@@ -60,7 +60,11 @@ describe('openai client', () => {
         chatCompletionEndpoint
       );
 
-      const response = await client.chatCompletion(OpenAiModels.GPT_4o, prompt, '1234');
+      const response = await client.chatCompletion(
+        OpenAiModels.GPT_4o,
+        prompt,
+        '1234'
+      );
       expect(response).toEqual(mockResponse);
     });
 
@@ -82,13 +86,17 @@ describe('openai client', () => {
         chatCompletionEndpoint
       );
 
-      await expect(client.chatCompletion(OpenAiModels.GPT_4o, prompt, '1234')).rejects.toThrow('status code 400');
+      await expect(
+        client.chatCompletion(OpenAiModels.GPT_4o, prompt, '1234')
+      ).rejects.toThrow('status code 400');
     });
   });
 
   describe('embeddings', () => {
     it('parses a successful response', async () => {
-      const prompt = { input: ['AI is fascinating'] } as OpenAiEmbeddingParameters;
+      const prompt = {
+        input: ['AI is fascinating']
+      } as OpenAiEmbeddingParameters;
       const mockResponse = parseMockResponse<OpenAiEmbeddingOutput>(
         'openai',
         'openai-embeddings-success-response.json'
@@ -104,7 +112,11 @@ describe('openai client', () => {
         },
         embeddingsEndpoint
       );
-      const response = await client.embeddings(OpenAiModels.ADA_002, prompt, '1234');
+      const response = await client.embeddings(
+        OpenAiModels.ADA_002,
+        prompt,
+        '1234'
+      );
       expect(response).toEqual(mockResponse);
     });
 
@@ -126,7 +138,9 @@ describe('openai client', () => {
         embeddingsEndpoint
       );
 
-      await expect(client.embeddings(OpenAiModels.ADA_002, prompt, '1234')).rejects.toThrow('status code 400');
+      await expect(
+        client.embeddings(OpenAiModels.ADA_002, prompt, '1234')
+      ).rejects.toThrow('status code 400');
     });
   });
 });
