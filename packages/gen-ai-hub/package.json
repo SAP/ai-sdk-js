@@ -28,13 +28,13 @@
   },
   "dependencies": {
     "@sap-ai-sdk/core": "workspace:^",
-    "@sap-cloud-sdk/http-client": "^3.18.0",
-    "@sap-cloud-sdk/connectivity": "^3.18.0",
-    "@sap-cloud-sdk/util": "^3.18.0",
-    "@sap-cloud-sdk/openapi": "^3.18.0"
+    "@sap-cloud-sdk/http-client": "^3.18.1",
+    "@sap-cloud-sdk/connectivity": "^3.18.1",
+    "@sap-cloud-sdk/util": "^3.18.1",
+    "@sap-cloud-sdk/openapi": "^3.18.1"
   },
   "devDependencies": {
-    "@sap-cloud-sdk/openapi-generator": "^3.18.0",
+    "@sap-cloud-sdk/openapi-generator": "^3.18.1",
     "typescript": "^5.5.4",
     "nock": "^13.5.4"
   }
