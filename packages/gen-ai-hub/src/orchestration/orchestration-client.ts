@@ -1,14 +1,14 @@
 import { executeRequest, CustomRequestConfig } from '@sap-ai-sdk/core';
-import { CompletionPostRequest } from './client/api/schema/index.js';
+import { CompletionPostRequest, CompletionPostResponse, OrchestrationConfig } from './client/api/schema/index.js';
 import {
-  GenAiHubCompletionParameters,
-  GenAiHubCompletionResponse
+  OrchestrationCompletionParameters
 } from './orchestration-types.js';
+import { DeploymentResolver, resolveDeployment } from '../core.js';
 
 /**
  * Get the orchestration client.
  */
-export class GenAiHubClient {
+export class OrchestrationClient {
   /**
    * Creates a completion for the chat messages.
    * @param data - The input parameters for the chat completion.
@@ -16,19 +16,18 @@ export class GenAiHubClient {
    * @returns The completion result.
    */
   async chatCompletion(
-    data: GenAiHubCompletionParameters,
+    data: OrchestrationCompletionParameters,
+    deploymentResolver: DeploymentResolver = () => resolveDeployment({ scenarioId: 'orchestration' }),
     requestConfig?: CustomRequestConfig
-  ): Promise<GenAiHubCompletionResponse> {
-    const dataWithInputParams = {
-      deploymentConfiguration: data.deploymentConfiguration,
-      ...constructCompletionPostRequest(data)
-    };
+  ): Promise<CompletionPostResponse> {
+    const body = constructCompletionPostRequest(data);
+    const deployment = typeof deploymentResolver === 'function' ? (await deploymentResolver()).id : deploymentResolver;
 
     const response = await executeRequest(
       {
-        url: `/inference/deployments/${data.deploymentConfiguration.deploymentId}/completion`
+        url: `/inference/deployments/${deployment}/completion`
       },
-      dataWithInputParams,
+      body,
       requestConfig
     );
     return response.data;
@@ -39,7 +38,7 @@ export class GenAiHubClient {
  * @internal
  */
 export function constructCompletionPostRequest(
-  input: GenAiHubCompletionParameters
+  input: OrchestrationCompletionParameters
 ): CompletionPostRequest {
   return {
     orchestration_config: {

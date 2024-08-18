@@ -94,6 +94,9 @@ importers:
 
   packages/gen-ai-hub:
     dependencies:
+      '@sap-ai-sdk/ai-core':
+        specifier: workspace:^
+        version: link:../ai-core
       '@sap-ai-sdk/core':
         specifier: workspace:^
         version: link:../core

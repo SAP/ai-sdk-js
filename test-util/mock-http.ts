@@ -89,9 +89,9 @@ export function mockClientCredentialsGrantCall(
     .reply(responseCode, response);
 }
 
-export function mockInference<D extends BaseLlmParameters>(
+export function mockInference(
   request: {
-    data: D;
+    data: any;
     requestConfig?: CustomRequestConfig;
   },
   response: {
@@ -100,7 +100,6 @@ export function mockInference<D extends BaseLlmParameters>(
   },
   endpoint: EndpointOptions = mockEndpoint
 ): nock.Scope {
-  const { deploymentConfiguration, ...body } = request.data;
   const { url, apiVersion } = endpoint;
   const destination = getMockedAiCoreDestination();
   return nock(destination.url, {
@@ -108,9 +107,9 @@ export function mockInference<D extends BaseLlmParameters>(
       'ai-resource-group': 'default',
       authorization: `Bearer ${destination.authTokens?.[0].value}`
     }
-  }).post(
-      `/v2/${url}`,
-      body as any
+  })
+    .post(`/v2/${url}`,
+      request.data
     )
     .query(apiVersion ? { 'api-version': apiVersion } : {})
     .reply(response.status, response.data);

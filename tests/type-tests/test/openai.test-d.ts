@@ -2,7 +2,8 @@ import { expectError, expectType } from 'tsd';
 import {
   OpenAiClient,
   OpenAiChatCompletionOutput,
-  OpenAiEmbeddingOutput
+  OpenAiEmbeddingOutput,
+  OpenAiModels
 } from '@sap-ai-sdk/gen-ai-hub';
 
 const client = new OpenAiClient();
@@ -12,14 +13,9 @@ expectType<OpenAiClient>(client);
  * Chat Completion.
  */
 expectType<Promise<OpenAiChatCompletionOutput>>(
-  client.chatCompletion({
-    deploymentConfiguration: { deploymentId: 'id' },
-    messages: [{ role: 'user', content: 'test prompt' }]
-  })
-);
-
-expectError<any>(
-  client.chatCompletion({
+  client.chatCompletion(
+    OpenAiModels.GPT_35_TURBO,
+    {
     messages: [{ role: 'user', content: 'test prompt' }]
   })
 );
@@ -28,10 +24,9 @@ expectError<any>(
  * Embeddings.
  */
 expectType<Promise<OpenAiEmbeddingOutput>>(
-  client.embeddings({
-    deploymentConfiguration: { deploymentId: 'id' },
+  client.embeddings(OpenAiModels.ADA_002,{
     input: 'test input'
   })
 );
 
-expectError<any>(client.embeddings({ input: 'test input' }));
+expectError<any>(client.embeddings(OpenAiModels.GPT_35_TURBO,{ input: 'test input' }));

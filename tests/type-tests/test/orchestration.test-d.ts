@@ -1,15 +1,14 @@
 import { expectError, expectType } from 'tsd';
-import { GenAiHubClient, CompletionPostResponse } from '@sap-ai-sdk/gen-ai-hub';
+import { OrchestrationClient, CompletionPostResponse } from '@sap-ai-sdk/gen-ai-hub';
 
-const client = new GenAiHubClient();
-expectType<GenAiHubClient>(client);
+const client = new OrchestrationClient();
+expectType<OrchestrationClient>(client);
 
 /**
  * Chat Completion.
  */
 expectType<Promise<CompletionPostResponse>>(
   client.chatCompletion({
-    deploymentConfiguration: { deploymentId: 'id' },
     prompt: {
       template: [{ role: 'user', content: 'Hello!' }]
     },
@@ -25,7 +24,6 @@ expectType<Promise<CompletionPostResponse>>(
  */
 expectType<Promise<CompletionPostResponse>>(
   client.chatCompletion({
-    deploymentConfiguration: { deploymentId: 'id' },
     prompt: {
       template: [{ role: 'user', content: 'Hello!' }],
       messages_history: [
@@ -48,27 +46,10 @@ expectType<Promise<CompletionPostResponse>>(
 );
 
 /**
- * Deployment details are mandatory.
- */
-expectError<Promise<CompletionPostResponse>>(
-  client.chatCompletion({
-    prompt: {
-      template: [{ role: 'user', content: 'Hello!' }]
-    },
-    llmConfig: {
-      model_name: 'gpt-35-turbo-16k',
-      model_params: {}
-    }
-  })
-);
-
-/**
  * Orchestration completion parameters cannot be empty.
  */
 expectError<any>(
-  client.chatCompletion({
-    deploymentConfiguration: { deploymentId: 'id' }
-  })
+  client.chatCompletion({})
 );
 
 /**
@@ -76,7 +57,6 @@ expectError<any>(
  */
 expectError<any>(
   client.chatCompletion({
-    deploymentConfiguration: { deploymentId: 'id' },
     llmConfig: {
       model_name: 'gpt-35-turbo-16k',
       model_params: {}
@@ -89,7 +69,6 @@ expectError<any>(
  */
 expectError<any>(
   client.chatCompletion({
-    deploymentConfiguration: { deploymentId: 'id' },
     prompt: {
       template: [{ role: 'user', content: 'Hello!' }]
     },
@@ -104,7 +83,6 @@ expectError<any>(
  */
 expectType<Promise<CompletionPostResponse>>(
   client.chatCompletion({
-    deploymentConfiguration: { deploymentId: 'id' },
     prompt: {
       template: [{ role: 'user', content: 'Hello!' }]
     },

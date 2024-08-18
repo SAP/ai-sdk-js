@@ -20,6 +20,6 @@ expectError<any>(
 expectError<any>(
   executeRequest(
     {},
-    { deploymentConfiguration: { deploymentId: 'id' }, prompt: 'test prompt' }
+    { prompt: 'test prompt' }
   )
 );

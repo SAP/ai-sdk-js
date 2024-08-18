@@ -3,14 +3,14 @@ export {
   OpenAiChatCompletionParameters,
   OpenAiEmbeddingParameters,
   OpenAiEmbeddingOutput,
-  OpenAiChatCompletionOutput
+  OpenAiChatCompletionOutput,
+  OpenAiModels
 } from './client/index.js';
 export {
-  GenAiHubClient,
-  GenAiHubCompletionParameters,
-  GenAiHubCompletionResponse,
+  OrchestrationClient,
+  OrchestrationCompletionParameters,
+  CompletionPostResponse,
   PromptConfig,
   LlmConfig,
   ChatMessages,
-  CompletionPostResponse
 } from './orchestration/index.js';

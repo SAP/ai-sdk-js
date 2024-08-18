@@ -2,8 +2,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import {
-  GenAiHubClient,
-  GenAiHubCompletionParameters
+  OrchestrationClient,
+  OrchestrationCompletionParameters
 } from '@sap-ai-sdk/gen-ai-hub';
 
 // Pick .env file from root directory
@@ -13,8 +13,7 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 describe('orchestration', () => {
   it('should complete a chat', async () => {
-    const request: GenAiHubCompletionParameters = {
-      deploymentConfiguration: { deploymentId: 'db1d64d9f06be467' },
+    const request: OrchestrationCompletionParameters = {
       llmConfig: {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
@@ -23,7 +22,7 @@ describe('orchestration', () => {
         template: [{ role: 'user', content: 'Hello!' }]
       }
     };
-    const response = await new GenAiHubClient().chatCompletion(request);
+    const response = await new OrchestrationClient().chatCompletion(request);
 
     expect(response.module_results).toBeDefined();
     expect(response.orchestration_result.choices).not.toHaveLength(0);

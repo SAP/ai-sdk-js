@@ -1,23 +1,19 @@
 import nock from 'nock';
-import { BaseLlmParametersWithDeploymentId } from '@sap-ai-sdk/core';
 import {
   mockClientCredentialsGrantCall,
   mockInference,
   parseMockResponse
 } from '../../../../test-util/mock-http.js';
 import { CompletionPostResponse } from './client/api/index.js';
-import { GenAiHubCompletionParameters } from './orchestration-types.js';
 import {
-  GenAiHubClient,
+  OrchestrationClient,
   constructCompletionPostRequest
 } from './orchestration-client.js';
 import { azureContentFilter } from './orchestration-filter-utility.js';
+import { OrchestrationCompletionParameters } from './orchestration-types.js';
 
 describe('GenAiHubClient', () => {
-  const client = new GenAiHubClient();
-  const deploymentConfiguration: BaseLlmParametersWithDeploymentId = {
-    deploymentId: 'deployment-id'
-  };
+  const client = new OrchestrationClient();
 
   beforeEach(() => {
     mockClientCredentialsGrantCall();
@@ -28,8 +24,7 @@ describe('GenAiHubClient', () => {
   });
 
   it('calls chatCompletion with minimum configuration', async () => {
-    const request: GenAiHubCompletionParameters = {
-      deploymentConfiguration,
+    const request = {
       llmConfig: {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
@@ -46,26 +41,22 @@ describe('GenAiHubClient', () => {
 
     mockInference(
       {
-        data: {
-          deploymentConfiguration,
-          ...constructCompletionPostRequest(request)
-        }
+        data: constructCompletionPostRequest(request)
       },
       {
         data: mockResponse,
         status: 200
       },
       {
-        url: `inference/deployments/${deploymentConfiguration.deploymentId}/completion`
+        url: `inference/deployments/1234/completion`
       }
     );
-    const response = await client.chatCompletion(request);
+    const response = await client.chatCompletion(request, '1234');
     expect(response).toEqual(mockResponse);
   });
 
   it('calls chatCompletion with filter configuration supplied using convenience function', async () => {
-    const request: GenAiHubCompletionParameters = {
-      deploymentConfiguration,
+    const request = {
       llmConfig: {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
@@ -88,26 +79,22 @@ describe('GenAiHubClient', () => {
 
     mockInference(
       {
-        data: {
-          deploymentConfiguration,
-          ...constructCompletionPostRequest(request)
-        }
+        data: constructCompletionPostRequest(request)
       },
       {
         data: mockResponse,
         status: 200
       },
       {
-        url: `inference/deployments/${deploymentConfiguration.deploymentId}/completion`
+        url: `inference/deployments/1234/completion`
       }
     );
-    const response = await client.chatCompletion(request);
+    const response = await client.chatCompletion(request, '1234');
     expect(response).toEqual(mockResponse);
   });
 
   it('calls chatCompletion with filtering configuration', async () => {
-    const request: GenAiHubCompletionParameters = {
-      deploymentConfiguration,
+    const request = {
       llmConfig: {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
@@ -142,7 +129,7 @@ describe('GenAiHubClient', () => {
           ]
         }
       }
-    };
+    } as OrchestrationCompletionParameters;
     const mockResponse = parseMockResponse<CompletionPostResponse>(
       'orchestration',
       'genaihub-chat-completion-filter-config.json'
@@ -150,26 +137,22 @@ describe('GenAiHubClient', () => {
 
     mockInference(
       {
-        data: {
-          deploymentConfiguration,
-          ...constructCompletionPostRequest(request)
-        }
+        data: constructCompletionPostRequest(request)
       },
       {
         data: mockResponse,
         status: 200
       },
       {
-        url: `inference/deployments/${deploymentConfiguration.deploymentId}/completion`
+        url: `inference/deployments/1234/completion`
       }
     );
-    const response = await client.chatCompletion(request);
+    const response = await client.chatCompletion(request, '1234');
     expect(response).toEqual(mockResponse);
   });
 
   it('sends message history together with templating config', async () => {
-    const request: GenAiHubCompletionParameters = {
-      deploymentConfiguration,
+    const request = {
       llmConfig: {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
@@ -200,20 +183,18 @@ describe('GenAiHubClient', () => {
     );
     mockInference(
       {
-        data: {
-          deploymentConfiguration,
-          ...constructCompletionPostRequest(request)
-        }
+        data:
+          constructCompletionPostRequest(request)
       },
       {
         data: mockResponse,
         status: 200
       },
       {
-        url: `inference/deployments/${deploymentConfiguration.deploymentId}/completion`
+        url: `inference/deployments/1234/completion`
       }
     );
-    const response = await client.chatCompletion(request);
+    const response = await client.chatCompletion(request, '1234');
     expect(response).toEqual(mockResponse);
   });
 });

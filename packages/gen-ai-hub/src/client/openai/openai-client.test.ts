@@ -1,5 +1,4 @@
 import nock from 'nock';
-import { BaseLlmParametersWithDeploymentId } from '@sap-ai-sdk/core';
 import {
   mockClientCredentialsGrantCall,
   mockInference,
@@ -7,23 +6,20 @@ import {
 } from '../../../../../test-util/mock-http.js';
 import {
   OpenAiChatCompletionOutput,
-  OpenAiChatCompletionParameters,
   OpenAiChatMessage,
   OpenAiEmbeddingOutput,
-  OpenAiEmbeddingParameters
+  OpenAiEmbeddingParameters,
+  OpenAiModels
 } from './openai-types.js';
 import { OpenAiClient } from './openai-client.js';
 
 describe('openai client', () => {
-  const deploymentConfiguration: BaseLlmParametersWithDeploymentId = {
-    deploymentId: 'deployment-id'
-  };
   const chatCompletionEndpoint = {
-    url: `inference/deployments/${deploymentConfiguration.deploymentId}/chat/completions`,
+    url: `inference/deployments/1234/chat/completions`,
     apiVersion: '2024-02-01'
   };
   const embeddingsEndpoint = {
-    url: `inference/deployments/${deploymentConfiguration.deploymentId}/embeddings`,
+    url: `inference/deployments/1234/embeddings`,
     apiVersion: '2024-02-01'
   };
 
@@ -47,10 +43,7 @@ describe('openai client', () => {
           }
         ] as OpenAiChatMessage[]
       };
-      const request: OpenAiChatCompletionParameters = {
-        ...prompt,
-        deploymentConfiguration
-      };
+      
       const mockResponse = parseMockResponse<OpenAiChatCompletionOutput>(
         'openai',
         'openai-chat-completion-success-response.json'
@@ -58,7 +51,7 @@ describe('openai client', () => {
 
       mockInference(
         {
-          data: request
+          data: prompt
         },
         {
           data: mockResponse,
@@ -67,16 +60,12 @@ describe('openai client', () => {
         chatCompletionEndpoint
       );
 
-      const response = await client.chatCompletion(request);
+      const response = await client.chatCompletion(OpenAiModels.GPT_4o, prompt, '1234');
       expect(response).toEqual(mockResponse);
     });
 
     it('throws on bad request', async () => {
       const prompt = { messages: [] };
-      const request: OpenAiChatCompletionParameters = {
-        ...prompt,
-        deploymentConfiguration
-      };
       const mockResponse = parseMockResponse(
         'openai',
         'openai-error-response.json'
@@ -84,7 +73,7 @@ describe('openai client', () => {
 
       mockInference(
         {
-          data: request
+          data: prompt
         },
         {
           data: mockResponse,
@@ -93,17 +82,13 @@ describe('openai client', () => {
         chatCompletionEndpoint
       );
 
-      expect(client.chatCompletion(request)).rejects.toThrow();
+      await expect(client.chatCompletion(OpenAiModels.GPT_4o, prompt, '1234')).rejects.toThrow('status code 400');
     });
   });
 
   describe('embeddings', () => {
     it('parses a successful response', async () => {
-      const prompt = { input: ['AI is fascinating'] };
-      const request: OpenAiEmbeddingParameters = {
-        ...prompt,
-        deploymentConfiguration
-      };
+      const prompt = { input: ['AI is fascinating'] } as OpenAiEmbeddingParameters;
       const mockResponse = parseMockResponse<OpenAiEmbeddingOutput>(
         'openai',
         'openai-embeddings-success-response.json'
@@ -111,7 +96,7 @@ describe('openai client', () => {
 
       mockInference(
         {
-          data: request
+          data: prompt
         },
         {
           data: mockResponse,
@@ -119,16 +104,12 @@ describe('openai client', () => {
         },
         embeddingsEndpoint
       );
-      const response = await client.embeddings(request);
+      const response = await client.embeddings(OpenAiModels.ADA_002, prompt, '1234');
       expect(response).toEqual(mockResponse);
     });
 
     it('throws on bad request', async () => {
       const prompt = { input: [] };
-      const request: OpenAiEmbeddingParameters = {
-        ...prompt,
-        deploymentConfiguration
-      };
       const mockResponse = parseMockResponse(
         'openai',
         'openai-error-response.json'
@@ -136,7 +117,7 @@ describe('openai client', () => {
 
       mockInference(
         {
-          data: request
+          data: prompt
         },
         {
           data: mockResponse,
@@ -145,7 +126,7 @@ describe('openai client', () => {
         embeddingsEndpoint
       );
 
-      expect(client.embeddings(request)).rejects.toThrow();
+      await expect(client.embeddings(OpenAiModels.ADA_002, prompt, '1234')).rejects.toThrow('status code 400');
     });
   });
 });
