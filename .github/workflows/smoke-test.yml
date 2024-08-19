@@ -29,7 +29,7 @@ jobs:
       #     echo "Using AI Core ${{ matrix.environment }} instance on $url"
       - uses: vchrisb/setup-cf@v0
         with:
-          api: ${{ secrets.CF_API_URL }}
+          api: ${{ vars.CF_API_URL }}
           username: ${{ secrets.CF_USER }}
           password: ${{ secrets.CF_PASSWORD }}
           org: ${{ vars.CF_ORG }}
