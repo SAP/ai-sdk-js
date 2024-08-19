@@ -34,8 +34,7 @@ jobs:
           password: ${{ secrets.CF_PASSWORD }}
           org: ${{ vars.CF_ORG }}
           space: ${{ vars.CF_SPACE }}
-      - run: |
-          cf apps
-          pnpm smoke-test run cf push
+      - run: cf push
+        working-directory: tests/smoke-test
       - name: smoke test
         run: pnpm test:smoke
