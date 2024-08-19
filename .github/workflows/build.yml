@@ -44,6 +44,7 @@ jobs:
       - run: pnpm i --frozen-lockfile
       # - run: pnpm build # might be needed in the future
       - run: pnpm lint
+      - run: pnpm check:cjs
 
   build:
     runs-on: ubuntu-latest
