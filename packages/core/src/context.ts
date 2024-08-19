@@ -32,18 +32,17 @@ export async function getAiCoreDestination(): Promise<Destination> {
   const aiCoreDestination = await transformServiceBindingToDestination(
     aiCoreServiceBinding,
     {
-      useCache: true,
-      jwt: { zid: 'dummy-tenant' }
+      useCache: true
     }
   );
   return aiCoreDestination;
 }
 
 function getAiCoreServiceKeyFromEnv(): Service | undefined {
-  const credentials = parseServiceKeyFromEnv(process.env['aicore']);
+  const credentials = parseServiceKeyFromEnv(process.env['AICORE_SERVICE_KEY']);
   if (credentials) {
     logger.info(
-      'Found a service key in environment variable "aicore". Using a service key is recommended for local testing only. Bind the AI Core service to the application for productive usage.'
+      'Found a service key in environment variable "AICORE_SERVICE_KEY". Using a service key is recommended for local testing only. Bind the AI Core service to the application for productive usage.'
     );
     return {
       credentials,
@@ -62,7 +61,7 @@ function parseServiceKeyFromEnv(
       return JSON.parse(aiCoreEnv);
     } catch (err) {
       throw new Error(
-        'Error in parsing service key from the "aicore" environment variable.',
+        'Error in parsing service key from the "AICORE_SERVICE_KEY" environment variable.',
         { cause: err }
       );
     }

@@ -5,7 +5,6 @@ import {
   mockInference,
   parseMockResponse
 } from '../../../../../test-util/mock-http.js';
-import { dummyToken } from '../../../../../test-util/mock-jwt.js';
 import {
   OpenAiChatCompletionOutput,
   OpenAiChatCompletionParameters,
@@ -20,21 +19,21 @@ describe('openai client', () => {
     deploymentId: 'deployment-id'
   };
   const chatCompletionEndpoint = {
-    url: 'chat/completions',
+    url: `inference/deployments/${deploymentConfiguration.deploymentId}/chat/completions`,
     apiVersion: '2024-02-01'
   };
   const embeddingsEndpoint = {
-    url: 'embeddings',
+    url: `inference/deployments/${deploymentConfiguration.deploymentId}/embeddings`,
     apiVersion: '2024-02-01'
   };
 
   const client = new OpenAiClient();
 
-  beforeAll(() => {
-    mockClientCredentialsGrantCall({ access_token: dummyToken }, 200);
+  beforeEach(() => {
+    mockClientCredentialsGrantCall();
   });
 
-  afterAll(() => {
+  afterEach(() => {
     nock.cleanAll();
   });
 

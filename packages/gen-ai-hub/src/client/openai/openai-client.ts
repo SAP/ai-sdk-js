@@ -28,7 +28,10 @@ export class OpenAiClient implements BaseClient<BaseLlmParameters> {
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiChatCompletionOutput> {
     const response = await executeRequest(
-      { url: '/chat/completions', apiVersion },
+      {
+        url: `/inference/deployments/${data.deploymentConfiguration.deploymentId}/chat/completions`,
+        apiVersion
+      },
       data,
       requestConfig
     );
@@ -45,7 +48,10 @@ export class OpenAiClient implements BaseClient<BaseLlmParameters> {
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiEmbeddingOutput> {
     const response = await executeRequest(
-      { url: '/embeddings', apiVersion },
+      {
+        url: `/inference/deployments/${data.deploymentConfiguration.deploymentId}/embeddings`,
+        apiVersion
+      },
       data,
       requestConfig
     );

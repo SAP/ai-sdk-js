@@ -5,7 +5,6 @@ import {
   mockInference,
   parseMockResponse
 } from '../../../../test-util/mock-http.js';
-import { dummyToken } from '../../../../test-util/mock-jwt.js';
 import { CompletionPostResponse } from './client/api/index.js';
 import { GenAiHubCompletionParameters } from './orchestration-types.js';
 import {
@@ -13,17 +12,18 @@ import {
   constructCompletionPostRequest
 } from './orchestration-client.js';
 import { azureContentFilter } from './orchestration-filter-utility.js';
+
 describe('GenAiHubClient', () => {
   const client = new GenAiHubClient();
   const deploymentConfiguration: BaseLlmParametersWithDeploymentId = {
     deploymentId: 'deployment-id'
   };
 
-  beforeAll(() => {
-    mockClientCredentialsGrantCall({ access_token: dummyToken }, 200);
+  beforeEach(() => {
+    mockClientCredentialsGrantCall();
   });
 
-  afterAll(() => {
+  afterEach(() => {
     nock.cleanAll();
   });
 
@@ -56,7 +56,7 @@ describe('GenAiHubClient', () => {
         status: 200
       },
       {
-        url: 'completion'
+        url: `inference/deployments/${deploymentConfiguration.deploymentId}/completion`
       }
     );
     const response = await client.chatCompletion(request);
@@ -98,10 +98,11 @@ describe('GenAiHubClient', () => {
         status: 200
       },
       {
-        url: 'completion'
+        url: `inference/deployments/${deploymentConfiguration.deploymentId}/completion`
       }
     );
-    expect(client.chatCompletion(request)).resolves.toEqual(mockResponse);
+    const response = await client.chatCompletion(request);
+    expect(response).toEqual(mockResponse);
   });
 
   it('calls chatCompletion with filtering configuration', async () => {
@@ -159,10 +160,11 @@ describe('GenAiHubClient', () => {
         status: 200
       },
       {
-        url: 'completion'
+        url: `inference/deployments/${deploymentConfiguration.deploymentId}/completion`
       }
     );
-    expect(client.chatCompletion(request)).resolves.toEqual(mockResponse);
+    const response = await client.chatCompletion(request);
+    expect(response).toEqual(mockResponse);
   });
 
   it('sends message history together with templating config', async () => {
@@ -208,7 +210,7 @@ describe('GenAiHubClient', () => {
         status: 200
       },
       {
-        url: 'completion'
+        url: `inference/deployments/${deploymentConfiguration.deploymentId}/completion`
       }
     );
     const response = await client.chatCompletion(request);

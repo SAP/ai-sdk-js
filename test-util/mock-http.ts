@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { DestinationAuthToken, HttpDestination, ServiceCredentials } from '@sap-cloud-sdk/connectivity';
 import nock from 'nock';
 import {
@@ -8,6 +9,10 @@ import {
 } from '@sap-ai-sdk/core';
 import { EndpointOptions } from '@sap-ai-sdk/core/src/http-client.js';
 import { dummyToken } from './mock-jwt.js';
+
+// Get the directory of this file
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export const aiCoreDestination = {
   url: 'https://api.ai.ml.hana.ondemand.com'
@@ -34,7 +39,7 @@ const mockEndpoint: EndpointOptions = {
 };
 
 export function mockAiCoreEnvVariable(): void {
-  process.env['aicore'] = JSON.stringify(aiCoreServiceBinding.credentials);
+  process.env['AICORE_SERVICE_KEY'] = JSON.stringify(aiCoreServiceBinding.credentials);
 }
 
 export function createDestinationTokens(
@@ -69,8 +74,8 @@ export function getMockedAiCoreDestination(
 }
 
 export function mockClientCredentialsGrantCall(
-  response: any,
-  responseCode: number,
+  response: any = { access_token: dummyToken },
+  responseCode: number = 200,
   serviceCredentials: ServiceCredentials = aiCoreServiceBinding.credentials,
   delay = 0
 ): nock.Scope {
@@ -103,9 +108,8 @@ export function mockInference<D extends BaseLlmParameters>(
       'ai-resource-group': 'default',
       authorization: `Bearer ${destination.authTokens?.[0].value}`
     }
-  })
-    .post(
-      `/v2/inference/deployments/${deploymentConfiguration.deploymentId}/${url}`,
+  }).post(
+      `/v2/${url}`,
       body as any
     )
     .query(apiVersion ? { 'api-version': apiVersion } : {})
@@ -117,9 +121,8 @@ export function mockInference<D extends BaseLlmParameters>(
  */
 export function parseMockResponse<T>(client: string, fileName: string): T {
   const fileContent = fs.readFileSync(
-    path.join('test', client, fileName),
+    path.join(__dirname, '..', 'packages', 'gen-ai-hub', 'test', client, fileName),
     'utf-8'
   );
-
   return JSON.parse(fileContent);
 }

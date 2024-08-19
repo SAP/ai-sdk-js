@@ -1,17 +1,19 @@
 import nock from 'nock';
-import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import {
   AiArtifactCreationResponse,
   AiArtifactList,
-  AiArtifactPostData
-} from './schema/index.js';
-import { ArtifactApi } from './artifact-api.js';
+  AiArtifactPostData,
+  ArtifactApi
+} from '../client/AI_CORE_API/index.js';
+import {
+  aiCoreDestination,
+  mockClientCredentialsGrantCall
+} from '../../../../test-util/mock-http.js';
 
 describe('artifact', () => {
-  const destination: HttpDestination = {
-    url: 'https://ai.example.com'
-  };
-
+  beforeEach(() => {
+    mockClientCredentialsGrantCall();
+  });
   afterEach(() => {
     nock.cleanAll();
   });
@@ -33,12 +35,12 @@ describe('artifact', () => {
       ]
     };
 
-    nock(destination.url, {
+    nock(aiCoreDestination.url, {
       reqheaders: {
         'AI-Resource-Group': 'default'
       }
     })
-      .get('/lm/artifacts')
+      .get('/v2/lm/artifacts')
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'
       });
@@ -46,7 +48,7 @@ describe('artifact', () => {
     const result: AiArtifactList = await ArtifactApi.artifactQuery(
       {},
       { 'AI-Resource-Group': 'default' }
-    ).execute(destination);
+    ).execute();
 
     expect(result).toEqual(expectedResponse);
   });
@@ -58,17 +60,17 @@ describe('artifact', () => {
       url: 'ai://default/spam/data'
     };
 
-    nock(destination.url, {
+    nock(aiCoreDestination.url, {
       reqheaders: {
         'AI-Resource-Group': 'default'
       }
     })
-      .post('/lm/artifacts')
+      .post('/v2/lm/artifacts')
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'
       });
 
-    const AiArtifactPostData: AiArtifactPostData = {
+    const aiArtifactPostData: AiArtifactPostData = {
       description: 'dataset for training test',
       kind: 'dataset',
       name: 'training-test-data',
@@ -77,9 +79,9 @@ describe('artifact', () => {
     };
 
     const result: AiArtifactCreationResponse = await ArtifactApi.artifactCreate(
-      AiArtifactPostData,
+      aiArtifactPostData,
       { 'AI-Resource-Group': 'default' }
-    ).execute(destination);
+    ).execute();
 
     expect(result).toEqual(expectedResponse);
   });

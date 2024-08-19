@@ -10,5 +10,5 @@ export default async function mockAiCoreEnvVariable(): Promise<void> {
           AI_API_URL: 'https://api.ai.ml.hana.ondemand.com'
         }
       };
-    process.env['aicore'] = JSON.stringify(aiCoreServiceCredentials);
+    process.env['AICORE_SERVICE_KEY'] = JSON.stringify(aiCoreServiceCredentials);
 }
