@@ -1,7 +1,6 @@
 // TODO: docs
 /* eslint-disable */
 export const OpenAiModels = {
-  // TODO: figure out if these should be constants or functions, e.g. to allow for dynamic versioning
   GPT_4o: {
     name: 'gpt-4o',
     type: 'chat',
@@ -45,6 +44,18 @@ export const OpenAiModels = {
   } as OpenAiEmbeddingModel
 };
 
+// alternative to OpenAiModels
+export class OpenAiModels2 {
+  static GPT_4o(version: 'latest' | '0613' = 'latest'): OpenAiChatModel {
+    return {
+      name: 'gpt-4o',
+      type: 'chat',
+      version: version
+    };
+  }
+  private constructor() {}
+}
+
 export interface OpenAiChatModel {
   name:
     | 'gpt-4o'
@@ -53,14 +64,16 @@ export interface OpenAiChatModel {
     | 'gpt-35-turbo'
     | 'gpt-35-turbo-0125'
     | 'gpt-35-turbo-16k';
-  version: 'latest';
+  version: string;
+  type: 'chat';
 }
 export interface OpenAiEmbeddingModel {
   name:
     | 'text-embedding-ada-002'
     | 'text-embedding-3-small'
     | 'text-embedding-3-large';
-  version: 'latest';
+  version: string;
+  type: 'embedding';
 }
 
 /**
