@@ -42,7 +42,7 @@ export const OpenAiModels = {
     type: 'embedding',
     version: 'latest'
   } as OpenAiEmbeddingModel
-};
+} as const;
 
 // alternative to OpenAiModels
 export class OpenAiModels2 {
