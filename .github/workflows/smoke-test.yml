@@ -27,6 +27,8 @@ jobs:
       #     echo "aicore='$aicore'" > tests/e2e-tests/.env
       #     url=$(echo "$aicore" | jq -r '.serviceurls.AI_API_URL' | sed 's|^https://||')
       #     echo "Using AI Core ${{ matrix.environment }} instance on $url"
+      - name: debug
+        run: ls -la
       - uses: vchrisb/setup-cf@v0
         with:
           api: ${{ vars.CF_API_URL }}
