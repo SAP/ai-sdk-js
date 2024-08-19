@@ -27,12 +27,7 @@ jobs:
       #     echo "aicore='$aicore'" > tests/e2e-tests/.env
       #     url=$(echo "$aicore" | jq -r '.serviceurls.AI_API_URL' | sed 's|^https://||')
       #     echo "Using AI Core ${{ matrix.environment }} instance on $url"
-      - name: setup app
-        run: |
-          pnpm run create-deployment
-          pnpm run compile
       - uses: vchrisb/setup-cf@v0
-        name: deloy to CF
         with:
           api: ${{ secrets.CF_API_URL }}
           username: ${{ secrets.CF_USER }}

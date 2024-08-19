@@ -6,6 +6,6 @@
     "tsBuildInfoFile": "./dist/.tsbuildinfo",
     "composite": true
   },
-  "include": ["**/*.ts"],
-  "exclude": ["dist/**/*", "node_modules/**/*"]
+  "include": ["deployment/**/*.ts"],
+  "exclude": ["dist/**/*", "node_modules/**/*", "test/**/*"]
 }
