@@ -11,14 +11,18 @@
     "postinstall": "pnpm compile",
     "compile": "pnpm -r -w=false run compile",
     "test:unit": "pnpm -r -F=./packages/** test",
-    "test:type": "pnpm -F=@sap-ai-sdk/type-tests test",
-    "test:e2e": "pnpm -F=@sap-ai-sdk/e2e-tests test",
+    "test:type": "pnpm type-tests test",
+    "test:e2e": "pnpm e2e-tests test",
+    "test:smoke": "pnpm smoke-test test",
     "lint": "pnpm -r run lint",
     "lint:fix": "pnpm -r run lint:fix",
     "generate": "pnpm -r run generate",
     "ai-core": "pnpm -F=@sap-ai-sdk/ai-core",
     "gen-ai-hub": "pnpm -F=@sap-ai-sdk/gen-ai-hub",
-    "core": "pnpm -F=@sap-ai-sdk/core"
+    "core": "pnpm -F=@sap-ai-sdk/core",
+    "e2e-tests": "pnpm -F=@sap-ai-sdk/e2e-tests",
+    "type-tests": "pnpm -F=@sap-ai-sdk/type-tests",
+    "smoke-test": "pnpm -F=@sap-ai-sdk/smoke-test"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.7",

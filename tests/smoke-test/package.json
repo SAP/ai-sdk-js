@@ -5,25 +5,24 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "private": "true",
-  "files": [
-    "dist/**/*.js",
-    "dist/**/*.js.map",
-    "dist/**/*.d.ts",
-    "dist/**/*.d.ts.map"
-  ],
-  "dependencies": {
-    "@sap-ai-sdk/gen-ai-hub": "canary",
-    "@sap-ai-sdk/ai-core": "canary",
-    "@types/express": "^4.17.21",
-    "express": "^4.19.2"
-  },
   "scripts": {
+    "start": "node dist/server.js",
     "compile": "tsc",
+    "create-deployment": "rm -rf deployment dist && cp -r ../../sample-code/src ./deployment && cp ./package.json ./deployment",
+    "cf-login": "dotenv -- bash -c 'cf login -a \"$CF_API_URL\" -u \"$CF_USER\" -p \"$CF_PASSWORD\" -o \"$CF_ORG\" -s \"$CF_SPACE\"'",
+    "cf-push": "cf push",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
+  "dependencies": {
+    "@sap-ai-sdk/ai-core": "canary",
+    "@sap-ai-sdk/gen-ai-hub": "canary",
+    "@types/express": "^4.17.21",
+    "express": "^4.19.2"
+  },
   "devDependencies": {
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "dotenv-cli": "^7.4.2"
   }
 }

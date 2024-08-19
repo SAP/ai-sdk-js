@@ -1,4 +1,5 @@
 name: 'Fosstars (Security)'
+
 on:
   workflow_dispatch:
   schedule:

@@ -1,11 +1,12 @@
-name: "E2E Test"
+name: e2e tests
+
 on:
   workflow_dispatch:
   schedule:
     - cron: 0 22 * * *
 
 jobs:
-  e2e-test:
+  e2e-tests:
     strategy:
       fail-fast: false
       matrix:
@@ -16,10 +17,10 @@ jobs:
         include:
           - environment: production
             secret-name: AI_CORE_PRODUCTION
-    name: "Build and Test"
+    name: 'Build and Test'
     runs-on: ubuntu-latest
     steps:
-      - name: "Checkout repository"
+      - name: 'Checkout repository'
         uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
         with:
@@ -37,7 +38,7 @@ jobs:
           echo "aicore='$aicore'" > tests/e2e-tests/.env
           url=$(echo "$aicore" | jq -r '.serviceurls.AI_API_URL' | sed 's|^https://||')
           echo "Using AI Core ${{ matrix.environment }} instance on $url"
-      - name: "Check Sample App Starts Up"
+      - name: 'Check Sample App Starts Up'
         working-directory: ./sample-code
         run: |
           pnpm run local &
@@ -51,9 +52,9 @@ jobs:
             fi
           done
           wget -qO- -S --content-on-error localhost:8080
-      - name: "Execute E2E Tests"
+      - name: 'Execute E2E Tests'
         run: pnpm test:e2e
-      - name: "Slack Notification"
+      - name: 'Slack Notification'
         if: failure()
         uses: slackapi/slack-github-action@v1.26.0
         with:
