@@ -27,8 +27,6 @@ jobs:
       #     echo "aicore='$aicore'" > tests/e2e-tests/.env
       #     url=$(echo "$aicore" | jq -r '.serviceurls.AI_API_URL' | sed 's|^https://||')
       #     echo "Using AI Core ${{ matrix.environment }} instance on $url"
-      - name: debug
-        run: ls -la
       - uses: vchrisb/setup-cf@v0
         with:
           api: ${{ vars.CF_API_URL }}
@@ -36,6 +34,8 @@ jobs:
           password: ${{ secrets.CF_PASSWORD }}
           org: ${{ vars.CF_ORG }}
           space: ${{ vars.CF_SPACE }}
-      - run: pnpm smoke-test run cf push
+      - run: |
+          cf apps
+          pnpm smoke-test run cf push
       - name: smoke test
         run: pnpm test:smoke
