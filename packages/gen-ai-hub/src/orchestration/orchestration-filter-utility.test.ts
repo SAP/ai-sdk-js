@@ -4,13 +4,10 @@ import {
 } from './client/api/index.js';
 import { constructCompletionPostRequest } from './orchestration-client.js';
 import { azureContentFilter } from './orchestration-filter-utility.js';
-import { GenAiHubCompletionParameters } from './orchestration-types.js';
+import { OrchestrationCompletionParameters } from './orchestration-types.js';
 
 describe('Filter utility', () => {
-  const genaihubCompletionParameters: GenAiHubCompletionParameters = {
-    deploymentConfiguration: {
-      deploymentId: 'deployment-id'
-    },
+  const input: OrchestrationCompletionParameters = {
     llmConfig: {
       model_name: 'gpt-35-turbo-16k',
       model_params: { max_tokens: 50, temperature: 0.1 }
@@ -24,7 +21,7 @@ describe('Filter utility', () => {
   };
 
   afterEach(() => {
-    genaihubCompletionParameters.filterConfig = undefined;
+    input.filterConfig = undefined;
   });
 
   it('constructs filter configuration with only input', async () => {
@@ -44,9 +41,9 @@ describe('Filter utility', () => {
         ]
       }
     };
-    genaihubCompletionParameters.filterConfig = filterConfig;
+    input.filterConfig = filterConfig;
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(genaihubCompletionParameters);
+      constructCompletionPostRequest(input);
     expect(
       completionPostRequest.orchestration_config.module_configurations
         .filtering_module_config
@@ -70,9 +67,9 @@ describe('Filter utility', () => {
         ]
       }
     };
-    genaihubCompletionParameters.filterConfig = filterConfig;
+    input.filterConfig = filterConfig;
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(genaihubCompletionParameters);
+      constructCompletionPostRequest(input);
     expect(
       completionPostRequest.orchestration_config.module_configurations
         .filtering_module_config
@@ -115,9 +112,9 @@ describe('Filter utility', () => {
         ]
       }
     };
-    genaihubCompletionParameters.filterConfig = filterConfig;
+    input.filterConfig = filterConfig;
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(genaihubCompletionParameters);
+      constructCompletionPostRequest(input);
     expect(
       completionPostRequest.orchestration_config.module_configurations
         .filtering_module_config
@@ -129,9 +126,9 @@ describe('Filter utility', () => {
       input: azureContentFilter(),
       output: azureContentFilter()
     };
-    genaihubCompletionParameters.filterConfig = filterConfig;
+    input.filterConfig = filterConfig;
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(genaihubCompletionParameters);
+      constructCompletionPostRequest(input);
     const expectedFilterConfig: FilteringModuleConfig = {
       input: {
         filters: [
@@ -156,9 +153,9 @@ describe('Filter utility', () => {
 
   it('omits filter configuration if not set', async () => {
     const filterConfig: FilteringModuleConfig = {};
-    genaihubCompletionParameters.filterConfig = filterConfig;
+    input.filterConfig = filterConfig;
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(genaihubCompletionParameters);
+      constructCompletionPostRequest(input);
     expect(
       completionPostRequest.orchestration_config.module_configurations
         .filtering_module_config

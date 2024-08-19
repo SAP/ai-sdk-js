@@ -29,7 +29,7 @@ export class OpenApiRequestBuilder<
     // TODO: Remove explicit url! once we updated the type in the Cloud SDK, since url is always defined.
     return executeRequest(
       { url: url! },
-      { deploymentConfiguration: {}, ...data },
+      data,
       {
         ...rest
       }

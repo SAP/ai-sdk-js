@@ -1,30 +1,20 @@
 import { CompletionPostRequest } from './client/api/index.js';
 import { constructCompletionPostRequest } from './orchestration-client.js';
 import { azureContentFilter } from './orchestration-filter-utility.js';
-import { GenAiHubCompletionParameters } from './orchestration-types.js';
+import { OrchestrationCompletionParameters } from './orchestration-types.js';
 
 describe('constructCompletionPostRequest()', () => {
-  const genaihubCompletionParameters: GenAiHubCompletionParameters = {
-    deploymentConfiguration: {
-      deploymentId: 'deployment-id'
-    },
-    llmConfig: {
-      model_name: 'gpt-35-turbo-16k',
-      model_params: { max_tokens: 50, temperature: 0.1 }
-    },
-    prompt: {
-      template: [{ role: 'user', content: 'Hi' }]
-    }
-  };
+  let input: OrchestrationCompletionParameters;
 
   beforeEach(() => {
-    genaihubCompletionParameters.llmConfig = {
-      model_name: 'gpt-35-turbo-16k',
-      model_params: { max_tokens: 50, temperature: 0.1 }
-    };
-    genaihubCompletionParameters.prompt = {
-      template: [{ role: 'user', content: 'Hi' }]
-    };
+    input = {
+      llmConfig: {
+        model_name: 'gpt-35-turbo-16k',
+        model_params: { max_tokens: 50, temperature: 0.1 }
+      }, prompt: {
+        template: [{ role: 'user', content: 'Hi' }]
+      }
+    }
   });
 
   it('with model configuration and prompt template', async () => {
@@ -42,12 +32,12 @@ describe('constructCompletionPostRequest()', () => {
       }
     };
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(genaihubCompletionParameters);
+      constructCompletionPostRequest(input);
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
   it('with model configuration, prompt template and template params', async () => {
-    genaihubCompletionParameters.prompt = {
+    input.prompt = {
       template: [
         { role: 'user', content: 'Create {number} paraphrases of {phrase}' }
       ],
@@ -73,16 +63,16 @@ describe('constructCompletionPostRequest()', () => {
       input_params: { phrase: 'I hate you.', number: 3 }
     };
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(genaihubCompletionParameters);
+      constructCompletionPostRequest(input);
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
   it('with model name, empty model parameters and prompt template', async () => {
-    genaihubCompletionParameters.llmConfig = {
+    input.llmConfig = {
       model_name: 'gpt-35-turbo-16k',
       model_params: {}
     };
-    genaihubCompletionParameters.filterConfig = {};
+    input.filterConfig = {};
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
@@ -102,12 +92,12 @@ describe('constructCompletionPostRequest()', () => {
       }
     };
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(genaihubCompletionParameters);
+      constructCompletionPostRequest(input);
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
   it('with model configuration, prompt template and message history', async () => {
-    genaihubCompletionParameters.prompt = {
+    input.prompt = {
       template: [{ role: 'user', content: "What's my name?" }],
       messages_history: [
         {
@@ -161,12 +151,12 @@ describe('constructCompletionPostRequest()', () => {
       ]
     };
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(genaihubCompletionParameters);
+      constructCompletionPostRequest(input);
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
   it('with model configuration, prompt template and filter configuration', async () => {
-    genaihubCompletionParameters.filterConfig = {
+    input.filterConfig = {
       input: azureContentFilter({ Hate: 4, SelfHarm: 0 })
     };
     const expectedCompletionPostRequest: CompletionPostRequest = {
@@ -201,12 +191,12 @@ describe('constructCompletionPostRequest()', () => {
       }
     };
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(genaihubCompletionParameters);
+      constructCompletionPostRequest(input);
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
   it('with model configuration, prompt template empty filter configuration', async () => {
-    genaihubCompletionParameters.filterConfig = {};
+    input.filterConfig = {};
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
@@ -226,7 +216,7 @@ describe('constructCompletionPostRequest()', () => {
       }
     };
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(genaihubCompletionParameters);
+      constructCompletionPostRequest(input);
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 });
