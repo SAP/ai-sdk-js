@@ -18,10 +18,10 @@ app.get(['/', '/health'], (req, res) => {
 
 app.get('/orchestration', async (req, res) => {
   try {
-    // res.send(await orchestrationChatCompletionMin());
+    res.send(await orchestrationChatCompletionMin());
     // res.send((await orchestrationChatCompletionTemplate()).replaceAll('\n', '<br/>'));
     // res.send((await orchestrationChatCompletionTemplateComplex()).replaceAll('\n', '<br/>'));
-    res.send(await orchestrationChatCompletionContentFilter());
+    // res.send(await orchestrationChatCompletionContentFilter());
   } catch (error: any) {
     console.error(error);
     res
