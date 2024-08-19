@@ -4,8 +4,14 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "tsBuildInfoFile": "./dist/.tsbuildinfo",
-    "composite": true
+    "composite": true,
+    "lib": [
+      "esnext"
+    ]
   },
-  "include": ["src/**/*.ts"],
+  "include": [
+    "src/**/*.ts",
+    "../node_modules/@types/node/globals.d.ts"
+  ],
   "exclude": ["dist/**/*", "**/*.test.ts", "node_modules/**/*"]
 }
