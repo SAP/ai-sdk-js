@@ -30,7 +30,7 @@ export interface BaseLlmParameters {
  */
 export type CustomRequestConfig = Omit<
   HttpRequestConfig,
-  'body' | 'url' | 'baseURL'
+  'data' | 'url' | 'baseURL'
 >;
 
 /**

@@ -10,6 +10,7 @@ export {
   OrchestrationClient,
   OrchestrationCompletionParameters,
   CompletionPostResponse,
+  azureContentFilter,
   PromptConfig,
   LlmConfig,
   ChatMessages
