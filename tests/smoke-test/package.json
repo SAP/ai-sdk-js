@@ -9,7 +9,7 @@
     "start": "node dist/server.js",
     "precompile": "pnpm create-deployment",
     "compile": "tsc",
-    "create-deployment": "rm -rf deployment dist && cp -r ../../sample-code/src ./deployment && cp ./package.json ./deployment",
+    "create-deployment": "rm -rf deployment && cp -r ../../sample-code/src ./deployment",
     "cf-login": "dotenv -- bash -c 'cf login -a \"$CF_API_URL\" -u \"$CF_USER\" -p \"$CF_PASSWORD\" -o \"$CF_ORG\" -s \"$CF_SPACE\"'",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
