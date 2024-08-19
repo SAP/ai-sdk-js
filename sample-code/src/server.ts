@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import express from 'express';
 import { chatCompletion, computeEmbedding } from './aiservice.js';
+import { orchestrationCompletion } from './orchestration.js';
 
 const app = express();
 const port = 8080;
@@ -35,8 +36,15 @@ app.get('/embedding', async (req, res) => {
   }
 });
 
-app.get('/orchestration', (req, res) => {
-  res.status(418).send('Not implemented 🛠️');
+app.get('/orchestration', async (req, res) => {
+  try {
+    res.send(await orchestrationCompletion());
+  } catch (error: any) {
+    console.error(error);
+    res
+      .status(500)
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+  }
 });
 
 app.listen(port, () => {

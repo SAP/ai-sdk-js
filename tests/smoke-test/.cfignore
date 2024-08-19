@@ -1,0 +1,4 @@
+coverage/
+jest.config.mjs
+tsconfig.json
+.env
