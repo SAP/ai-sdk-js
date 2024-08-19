@@ -11,7 +11,6 @@
     "compile": "tsc",
     "create-deployment": "rm -rf deployment dist && cp -r ../../sample-code/src ./deployment && cp ./package.json ./deployment",
     "cf-login": "dotenv -- bash -c 'cf login -a \"$CF_API_URL\" -u \"$CF_USER\" -p \"$CF_PASSWORD\" -o \"$CF_ORG\" -s \"$CF_SPACE\"'",
-    "cf-push": "cf push",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"

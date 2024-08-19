@@ -36,6 +36,6 @@ jobs:
           password: ${{ secrets.CF_PASSWORD }}
           org: ${{ vars.CF_ORG }}
           space: ${{ vars.CF_SPACE }}
-      - run: pnpm smoke-test run cf-push
+      - run: pnpm smoke-test run cf push
       - name: smoke test
         run: pnpm test:smoke
