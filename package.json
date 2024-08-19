@@ -10,6 +10,7 @@
   "scripts": {
     "postinstall": "pnpm compile",
     "compile": "pnpm -r -w=false run compile",
+    "compile:cjs": "pnpm -r -F=./packages/** run compile:cjs",
     "test:unit": "pnpm -r -F=./packages/** test",
     "test:type": "pnpm -F=@sap-ai-sdk/type-tests test",
     "test:e2e": "pnpm -F=@sap-ai-sdk/e2e-tests test",
