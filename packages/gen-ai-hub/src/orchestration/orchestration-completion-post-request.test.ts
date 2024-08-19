@@ -11,10 +11,11 @@ describe('constructCompletionPostRequest()', () => {
       llmConfig: {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
-      }, prompt: {
+      },
+      prompt: {
         template: [{ role: 'user', content: 'Hi' }]
       }
-    }
+    };
   });
 
   it('with model configuration and prompt template', async () => {

@@ -27,13 +27,9 @@ export class OpenApiRequestBuilder<
   async executeRaw(): Promise<HttpResponse> {
     const { url, data, ...rest } = await this.requestConfig();
     // TODO: Remove explicit url! once we updated the type in the Cloud SDK, since url is always defined.
-    return executeRequest(
-      { url: url! },
-      data,
-      {
-        ...rest
-      }
-    );
+    return executeRequest({ url: url! }, data, {
+      ...rest
+    });
   }
 
   /**
