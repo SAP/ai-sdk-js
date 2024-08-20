@@ -122,6 +122,9 @@ importers:
 
   sample-code:
     dependencies:
+      '@sap-ai-sdk/ai-core':
+        specifier: workspace:^
+        version: link:../packages/ai-core
       '@sap-ai-sdk/gen-ai-hub':
         specifier: workspace:^
         version: link:../packages/gen-ai-hub

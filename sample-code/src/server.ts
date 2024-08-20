@@ -47,6 +47,17 @@ app.get('/orchestration', async (req, res) => {
   }
 });
 
+app.get('/ai-core/get-deployments', async (req, res) => {
+  try {
+    res.send(await chatCompletion());
+  } catch (error: any) {
+    console.error(error);
+    res
+      .status(500)
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
