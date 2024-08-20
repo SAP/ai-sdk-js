@@ -3,5 +3,5 @@ export default {
   ...config,
   globalSetup: undefined,
   globalTeardown: undefined,
-  displayName: 'smoke-tests,
+  displayName: 'smoke-tests',
 };
