@@ -19,14 +19,6 @@ jobs:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           cache: 'pnpm'
       - run: pnpm i --frozen-lockfile
-      # - name: Create .env file
-      #   env:
-      #     aicore: ${{ secrets[matrix.secret-name] }}
-      #   run: |
-      #     echo "aicore='$aicore'" > sample-code/.env
-      #     echo "aicore='$aicore'" > tests/e2e-tests/.env
-      #     url=$(echo "$aicore" | jq -r '.serviceurls.AI_API_URL' | sed 's|^https://||')
-      #     echo "Using AI Core ${{ matrix.environment }} instance on $url"
       - uses: vchrisb/setup-cf@v0
         with:
           api: ${{ vars.CF_API_URL }}
