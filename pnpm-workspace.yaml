@@ -6,4 +6,4 @@ packages:
   - 'sample-code'
   - 'tests/e2e-tests'
   - 'tests/type-tests'
-  - 'tests/smoke-test'
+  - 'tests/smoke-tests'

@@ -54,4 +54,4 @@ build/Release
 # VS Code
 .vscode
 /pnpm-publish-summary.json
-/tests/smoke-test/deployment
+/tests/smoke-tests/deployment

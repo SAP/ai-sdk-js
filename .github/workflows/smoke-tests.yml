@@ -7,7 +7,7 @@ on:
     - cron: 0 22 * * *
 
 jobs:
-  smoke-test:
+  smoke-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,6 +27,6 @@ jobs:
           org: ${{ vars.CF_ORG }}
           space: ${{ vars.CF_SPACE }}
       - run: cf push
-        working-directory: tests/smoke-test
+        working-directory: tests/smoke-tests
       - name: smoke test
         run: pnpm test:smoke

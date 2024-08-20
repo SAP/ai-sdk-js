@@ -13,7 +13,7 @@
     "test:unit": "pnpm -r -F=./packages/** test",
     "test:type": "pnpm type-tests test",
     "test:e2e": "pnpm e2e-tests test",
-    "test:smoke": "pnpm smoke-test test",
+    "test:smoke": "pnpm smoke-tests test",
     "lint": "pnpm -r run lint",
     "lint:fix": "pnpm -r run lint:fix",
     "generate": "pnpm -r run generate",
@@ -22,25 +22,25 @@
     "core": "pnpm -F=@sap-ai-sdk/core",
     "e2e-tests": "pnpm -F=@sap-ai-sdk/e2e-tests",
     "type-tests": "pnpm -F=@sap-ai-sdk/type-tests",
-    "smoke-test": "pnpm -F=@sap-ai-sdk/smoke-test"
+    "smoke-tests": "pnpm -F=@sap-ai-sdk/smoke-tests"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.7",
+    "@jest/globals": "^29.5.12",
     "@sap-cloud-sdk/eslint-config": "^3.18.1",
     "@sap-cloud-sdk/connectivity": "^3.18.1",
     "@sap-cloud-sdk/http-client": "^3.18.1",
     "@sap-ai-sdk/core": "workspace:^",
     "@types/jest": "^29.5.12",
+    "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "^20.16.0",
-    "@jest/globals": "^29.5.12",
     "eslint": "^9.9.0",
     "jest": "^30.0.0-alpha.6",
+    "jsonwebtoken": "^9.0.2",
     "nock": "^13.5.4",
     "prettier": "^3.3.3",
     "ts-jest": "^29.2.4",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4",
-    "jsonwebtoken": "^9.0.2",
-    "@types/jsonwebtoken": "^9.0.2"
+    "typescript": "^5.5.4"
   }
 }

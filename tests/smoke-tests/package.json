@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "name": "@sap-ai-sdk/smoke-test",
+  "name": "@sap-ai-sdk/smoke-tests",
   "version": "0.0.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
