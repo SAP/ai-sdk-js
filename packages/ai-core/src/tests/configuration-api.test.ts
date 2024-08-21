@@ -1,17 +1,19 @@
 import nock from 'nock';
-import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import {
   AiConfigurationBaseData,
   AiConfigurationCreationResponse,
   AiConfigurationList,
   ConfigurationApi
 } from '../client/AI_CORE_API/index.js';
+import {
+  aiCoreDestination,
+  mockClientCredentialsGrantCall
+} from '../../../../test-util/mock-http.js';
 
 describe('configuration', () => {
-  const destination: HttpDestination = {
-    url: 'https://ai.example.com'
-  };
-
+  beforeEach(() => {
+    mockClientCredentialsGrantCall();
+  });
   afterEach(() => {
     nock.cleanAll();
   });
@@ -41,12 +43,12 @@ describe('configuration', () => {
       ]
     };
 
-    nock(destination.url, {
+    nock(aiCoreDestination.url, {
       reqheaders: {
         'AI-Resource-Group': 'default'
       }
     })
-      .get('/lm/configurations')
+      .get('/v2/lm/configurations')
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'
       });
@@ -55,7 +57,7 @@ describe('configuration', () => {
       await ConfigurationApi.configurationQuery(
         {},
         { 'AI-Resource-Group': 'default' }
-      ).execute(destination);
+      ).execute();
 
     expect(result).toEqual(expectedResponse);
   });
@@ -66,12 +68,12 @@ describe('configuration', () => {
       message: 'Configuration created'
     };
 
-    nock(destination.url, {
+    nock(aiCoreDestination.url, {
       reqheaders: {
         'AI-Resource-Group': 'default'
       }
     })
-      .post('/lm/configurations')
+      .post('/v2/lm/configurations')
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'
       });
@@ -91,7 +93,7 @@ describe('configuration', () => {
     const result: AiConfigurationCreationResponse =
       await ConfigurationApi.configurationCreate(configurationPostData, {
         'AI-Resource-Group': 'default'
-      }).execute(destination);
+      }).execute();
 
     expect(result).toEqual(expectedResponse);
   });

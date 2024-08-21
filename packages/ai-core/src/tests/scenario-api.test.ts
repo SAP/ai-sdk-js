@@ -1,12 +1,14 @@
 import nock from 'nock';
-import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import { ScenarioApi, AiScenarioList } from '../client/AI_CORE_API/index.js';
+import {
+  aiCoreDestination,
+  mockClientCredentialsGrantCall
+} from '../../../../test-util/mock-http.js';
 
 describe('scenario', () => {
-  const destination: HttpDestination = {
-    url: 'https://ai.example.com'
-  };
-
+  beforeEach(() => {
+    mockClientCredentialsGrantCall();
+  });
   afterEach(() => {
     nock.cleanAll();
   });
@@ -30,19 +32,19 @@ describe('scenario', () => {
         }
       ]
     };
-    nock(destination.url, {
+    nock(aiCoreDestination.url, {
       reqheaders: {
         'AI-Resource-Group': 'default'
       }
     })
-      .get('/lm/scenarios')
+      .get('/v2/lm/scenarios')
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'
       });
 
     const result: AiScenarioList = await ScenarioApi.scenarioQuery({
       'AI-Resource-Group': 'default'
-    }).execute(destination);
+    }).execute();
 
     expect(result).toEqual(expectedResponse);
   });

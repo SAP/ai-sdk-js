@@ -1,5 +1,4 @@
 import nock from 'nock';
-import { HttpDestination } from '@sap-cloud-sdk/connectivity';
 import {
   AiDeploymentCreationRequest,
   AiDeploymentCreationResponse,
@@ -10,12 +9,15 @@ import {
   AiDeploymentTargetStatus,
   DeploymentApi
 } from '../client/AI_CORE_API/index.js';
+import {
+  aiCoreDestination,
+  mockClientCredentialsGrantCall
+} from '../../../../test-util/mock-http.js';
 
 describe('deployment', () => {
-  const destination: HttpDestination = {
-    url: 'https://ai.example.com'
-  };
-
+  beforeEach(() => {
+    mockClientCredentialsGrantCall();
+  });
   afterEach(() => {
     nock.cleanAll();
   });
@@ -56,12 +58,12 @@ describe('deployment', () => {
       ]
     };
 
-    nock(destination.url, {
+    nock(aiCoreDestination.url, {
       reqheaders: {
         'AI-Resource-Group': 'default'
       }
     })
-      .get('/lm/deployments')
+      .get('/v2/lm/deployments')
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'
       });
@@ -69,7 +71,7 @@ describe('deployment', () => {
     const result: AiDeploymentList = await DeploymentApi.deploymentQuery(
       {},
       { 'AI-Resource-Group': 'default' }
-    ).execute(destination);
+    ).execute();
 
     expect(result).toEqual(expectedResponse);
   });
@@ -82,12 +84,12 @@ describe('deployment', () => {
       status: 'UNKNOWN'
     };
 
-    nock(destination.url, {
+    nock(aiCoreDestination.url, {
       reqheaders: {
         'AI-Resource-Group': 'default'
       }
     })
-      .post('/lm/deployments')
+      .post('/v2/lm/deployments')
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'
       });
@@ -99,7 +101,7 @@ describe('deployment', () => {
     const result: AiDeploymentCreationResponse =
       await DeploymentApi.deploymentCreate(deploymentPostData, {
         'AI-Resource-Group': 'default'
-      }).execute(destination);
+      }).execute();
 
     expect(result).toEqual(expectedResponse);
   });
@@ -113,12 +115,12 @@ describe('deployment', () => {
       id: '4e5f6g7h',
       message: 'Deployment modification scheduled'
     };
-    nock(destination.url, {
+    nock(aiCoreDestination.url, {
       reqheaders: {
         'AI-Resource-Group': 'default'
       }
     })
-      .patch(`/lm/deployments/${deploymentId}`, body => {
+      .patch(`/v2/lm/deployments/${deploymentId}`, body => {
         expect(body).toEqual(expectedRequestBody);
         expect(body).not.toHaveProperty('scenarioId');
         return true;
@@ -134,7 +136,7 @@ describe('deployment', () => {
     const result: AiDeploymentModificationResponse =
       await DeploymentApi.deploymentModify(deploymentId, deploymentPatchData, {
         'AI-Resource-Group': 'default'
-      }).execute(destination);
+      }).execute();
 
     expect(result).toEqual(expectedResponse);
   });
@@ -147,12 +149,12 @@ describe('deployment', () => {
       targetStatus: 'DELETED'
     };
 
-    nock(destination.url, {
+    nock(aiCoreDestination.url, {
       reqheaders: {
         'AI-Resource-Group': 'default'
       }
     })
-      .delete(`/lm/deployments/${deploymentId}`)
+      .delete(`/v2/lm/deployments/${deploymentId}`)
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'
       });
@@ -160,7 +162,7 @@ describe('deployment', () => {
     const result: AiDeploymentDeletionResponse =
       await DeploymentApi.deploymentDelete(deploymentId, {
         'AI-Resource-Group': 'default'
-      }).execute(destination);
+      }).execute();
 
     expect(result).toEqual(expectedResponse);
   });

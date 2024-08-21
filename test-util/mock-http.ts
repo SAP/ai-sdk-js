@@ -74,8 +74,8 @@ export function getMockedAiCoreDestination(
 }
 
 export function mockClientCredentialsGrantCall(
-  response: any,
-  responseCode: number,
+  response: any = { access_token: dummyToken },
+  responseCode: number = 200,
   serviceCredentials: ServiceCredentials = aiCoreServiceBinding.credentials,
   delay = 0
 ): nock.Scope {
@@ -108,9 +108,8 @@ export function mockInference<D extends BaseLlmParameters>(
       'ai-resource-group': 'default',
       authorization: `Bearer ${destination.authTokens?.[0].value}`
     }
-  })
-    .post(
-      `/v2/inference/deployments/${deploymentConfiguration.deploymentId}/${url}`,
+  }).post(
+      `/v2/${url}`,
       body as any
     )
     .query(apiVersion ? { 'api-version': apiVersion } : {})
