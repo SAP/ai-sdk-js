@@ -58,7 +58,7 @@ export class OpenAiModels2 {
 
 /**
  *
- * Alternative proposal for referencing models.
+ * Alternative proposal for referencing models.OpenAiChatAssistantMessage
  *
  */
 export type OpenAiChatModelMM =

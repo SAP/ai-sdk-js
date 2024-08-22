@@ -1,14 +1,12 @@
 import nock from 'nock';
 import {
   mockClientCredentialsGrantCall,
-  mockAiCoreEnvVariable,
   aiCoreDestination
 } from '../../../../test-util/mock-http.js';
 import { resolveDeployment } from './deployment-resolver.js';
 
 describe('Deployment resolver', () => {
   beforeEach(() => {
-    mockAiCoreEnvVariable();
     mockClientCredentialsGrantCall();
   });
 

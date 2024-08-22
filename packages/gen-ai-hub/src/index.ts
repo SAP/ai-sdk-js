@@ -1,11 +1,4 @@
-export {
-  OpenAiClient,
-  OpenAiChatCompletionParameters,
-  OpenAiEmbeddingParameters,
-  OpenAiEmbeddingOutput,
-  OpenAiChatCompletionOutput,
-  OpenAiModels
-} from './client/index.js';
+export * from './client/index.js';
 export {
   OrchestrationClient,
   OrchestrationCompletionParameters,
