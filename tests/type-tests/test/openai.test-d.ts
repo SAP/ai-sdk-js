@@ -2,7 +2,7 @@ import { expectError, expectType } from 'tsd';
 import {
   OpenAiClient,
   OpenAiChatCompletionOutput,
-  OpenAiEmbeddingOutput,
+  OpenAiEmbeddingOutput
 } from '@sap-ai-sdk/gen-ai-hub';
 
 const client = new OpenAiClient();
@@ -26,6 +26,4 @@ expectType<Promise<OpenAiEmbeddingOutput>>(
   })
 );
 
-expectError<any>(
-  client.embeddings('gpt-35-turbo', { input: 'test input' })
-);
+expectError<any>(client.embeddings('gpt-35-turbo', { input: 'test input' }));
