@@ -10,8 +10,7 @@
     "llm-access"
   ],
   "type": "module",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/index.js",
+  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist/**/*.js",
@@ -19,13 +18,6 @@
     "dist/**/*.d.ts",
     "dist/**/*.d.ts.map"
   ],
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/cjs/index.js",
-      "types": "./dist/index.d.ts"
-    }
-  },
   "scripts": {
     "compile": "tsc",
     "compile:cjs": "tsc -p tsconfig.cjs.json",
