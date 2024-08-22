@@ -6,6 +6,7 @@ export {
   OpenAiChatCompletionOutput
 } from './client/index.js';
 export {
+  azureContentFilter,
   GenAiHubClient,
   GenAiHubCompletionParameters,
   GenAiHubCompletionResponse,

@@ -1,11 +1,18 @@
+import path from 'path';
+import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
 import {
   GenAiHubClient,
   GenAiHubCompletionParameters
 } from '@sap-ai-sdk/gen-ai-hub';
-import 'dotenv/config';
+
+// Pick .env file from root directory
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 describe('orchestration', () => {
-  test.skip("should complete a chat, but currently doesn't work", async () => {
+  it('should complete a chat', async () => {
     const request: GenAiHubCompletionParameters = {
       deploymentConfiguration: { deploymentId: 'db1d64d9f06be467' },
       llmConfig: {

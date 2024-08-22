@@ -25,7 +25,9 @@ export class GenAiHubClient {
     };
 
     const response = await executeRequest(
-      { url: '/completion' },
+      {
+        url: `/inference/deployments/${data.deploymentConfiguration.deploymentId}/completion`
+      },
       dataWithInputParams,
       requestConfig
     );
@@ -39,7 +41,7 @@ export class GenAiHubClient {
 export function constructCompletionPostRequest(
   input: GenAiHubCompletionParameters
 ): CompletionPostRequest {
-  const result: CompletionPostRequest = {
+  return {
     orchestration_config: {
       module_configurations: {
         templating_module_config: {
@@ -58,5 +60,4 @@ export function constructCompletionPostRequest(
       messages_history: input.prompt.messages_history
     })
   };
-  return result;
 }
