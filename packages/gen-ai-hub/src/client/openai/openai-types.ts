@@ -1,6 +1,6 @@
-// TODO: docs
-/* eslint-disable */
-
+/**
+ * Available OpenAI models for chat completion.
+ */
 export type OpenAiChatModel =
   | 'gpt-4o'
   | 'gpt-4'
@@ -9,6 +9,9 @@ export type OpenAiChatModel =
   | 'gpt-35-turbo-0125'
   | 'gpt-35-turbo-16k';
 
+/**
+ * OpenAI embedding models.
+ */
 export type OpenAiEmbeddingModel =
   | 'text-embedding-ada-002'
   | 'text-embedding-3-small'

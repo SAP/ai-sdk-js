@@ -16,7 +16,7 @@ import {
 const apiVersion = '2024-02-01';
 
 /**
- * OpenAI GPT Client.
+ * OpenAI Client.
  */
 export class OpenAiClient {
   /**
@@ -85,13 +85,12 @@ async function resolveOpenAiDeployment(
   }
   const llm =
     typeof model === 'string' ? { name: model, version: 'latest' } : model;
-  return (
-    await resolveDeployment({
-      scenarioId: 'foundation-models',
-      executableId: 'azure-openai',
-      model: llm
-    })
-  ).id;
+  const deployment = await resolveDeployment({
+    scenarioId: 'foundation-models',
+    executableId: 'azure-openai',
+    model: llm
+  });
+  return deployment.id;
 }
 
 function mergeRequestConfig(

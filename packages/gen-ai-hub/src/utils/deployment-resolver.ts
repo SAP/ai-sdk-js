@@ -4,20 +4,34 @@ import {
   AiDeploymentStatus
 } from '@sap-ai-sdk/ai-core';
 
-// TODO: docs
-/* eslint-disable */
-
+/**
+ * A deployment resolver can be either a deployment ID or a function that returns a full deployment object.
+ */
 export type DeploymentResolver = DeploymentId | (() => Promise<AiDeployment>);
+/**
+ * A deployment ID is a string that uniquely identifies a deployment.
+ */
 export type DeploymentId = string;
-export type FoundationModel = { name: string; version?: string };
+/**
+ * A foundation model is identifier by its name and potentially a version.
+ */
+export interface FoundationModel {
+  /**
+   * The name of the model.
+   */
+  name: string;
+  /**
+   * The version of the model.
+   */
+  version?: string;
+}
 
-// TODO: figure out what the best search criteria are
 /**
  * Query the AI Core service for a deployment that matches the given criteria. If more than one deployment matches the criteria, the first one is returned.
+ * @param opts - The options for the deployment resolution.
  * @param opts.scenarioId - The scenario ID of the deployment.
  * @param opts.executableId - The executable of the deployment.
- * @param opts.modelName - The name of the model of the deployment.
- * @param opts.modelVersion - The version of the model of the deployment.
+ * @param opts.model - The name and potentially version of the model to look for.
  * @returns An AiDeployment, if a deployment was found, fails otherwise.
  */
 export async function resolveDeployment(opts: {
