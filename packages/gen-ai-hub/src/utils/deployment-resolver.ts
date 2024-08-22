@@ -1,4 +1,8 @@
-import { DeploymentApi, AiDeployment } from '@sap-ai-sdk/ai-core';
+import {
+  DeploymentApi,
+  AiDeployment,
+  AiDeploymentStatus
+} from '@sap-ai-sdk/ai-core';
 
 // TODO: docs
 /* eslint-disable */
@@ -21,45 +25,35 @@ export async function resolveDeployment(opts: {
   modelName?: string;
   modelVersion?: string;
 }): Promise<AiDeployment> {
-  // TODO: is there a more elegant way to write this in TS?
-  let query: any;
-  if (opts.executableId) {
-    query = {
-      scenarioId: opts.scenarioId,
-      status: 'RUNNING',
-      executableIds: [opts.executableId]
-    };
-  } else {
-    query = { scenarioId: opts.scenarioId, status: 'RUNNING' };
-  }
+  const query = {
+    scenarioId: opts.scenarioId,
+    status: 'RUNNING' as AiDeploymentStatus,
+    ...(opts.executableId && { executableIds: [opts.executableId] })
+  };
 
-  // TODO: add a cache
+  // TODO: add a cache: https://github.tools.sap/AI/gen-ai-hub-sdk-js-backlog/issues/78
   let deploymentList: AiDeployment[];
+  const { deploymentQuery } = DeploymentApi;
+  const resourceGroup = {'AI-Resource-Group': 'default'};
   try {
-    deploymentList = await DeploymentApi.deploymentQuery(query, {
-      'AI-Resource-Group': 'default'
-    })
-      .execute()
-      .then(res => res.resources);
+    deploymentList = (await deploymentQuery(query,resourceGroup).execute()).resources;
   } catch (error) {
     throw new Error('Failed to fetch the list of deployments: ' + error);
   }
 
   if (opts.modelName) {
     deploymentList = deploymentList.filter(
-      (deployment: any) =>
-        modelExtractor(deployment)?.modelName === opts.modelName
+      deployment => modelExtractor(deployment)?.name === opts.modelName
     );
   }
   if (opts.modelVersion) {
-    // feature idea: smart handling of 'latest' version
+    // feature idea: smart handling of 'latest' version: treat 'latest' and the highest version number as the same
     deploymentList = deploymentList.filter(
-      (deployment: any) =>
-        modelExtractor(deployment)?.modelVersion === opts.modelVersion
+      deployment =>
+        modelExtractor(deployment)?.version === opts.modelVersion
     );
   }
   if (deploymentList.length === 0) {
-    // TODO: return undefined instead?
     throw new Error(
       'No deployment matched the given criteria: ' + JSON.stringify(opts)
     );
@@ -67,5 +61,5 @@ export async function resolveDeployment(opts: {
   return deploymentList[0];
 }
 
-const modelExtractor = (deployment: any) =>
+const modelExtractor = (deployment: AiDeployment) =>
   deployment.details?.resources?.backend_details?.model;

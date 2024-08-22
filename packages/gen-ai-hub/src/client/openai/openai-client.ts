@@ -1,6 +1,6 @@
 import { HttpRequestConfig } from '@sap-cloud-sdk/http-client';
 import { CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
-import { DeploymentResolver, resolveDeployment } from '../../core.js';
+import { DeploymentResolver, resolveDeployment } from '../../utils/deployment-resolver.js';
 import {
   OpenAiChatCompletionParameters,
   OpenAiEmbeddingParameters,
