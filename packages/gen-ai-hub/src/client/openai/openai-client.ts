@@ -33,7 +33,10 @@ export class OpenAiClient {
     deploymentResolver?: DeploymentResolver,
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiChatCompletionOutput> {
-    const deploymentId = await resolveOpenAiDeployment(model, deploymentResolver);
+    const deploymentId = await resolveOpenAiDeployment(
+      model,
+      deploymentResolver
+    );
     const response = await executeRequest(
       {
         url: `/inference/deployments/${deploymentId}/chat/completions`,
@@ -60,7 +63,10 @@ export class OpenAiClient {
     deploymentResolver?: DeploymentResolver,
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiEmbeddingOutput> {
-    const deploymentId = await resolveOpenAiDeployment(model, deploymentResolver);
+    const deploymentId = await resolveOpenAiDeployment(
+      model,
+      deploymentResolver
+    );
     const response = await executeRequest(
       { url: `/inference/deployments/${deploymentId}/embeddings`, apiVersion },
       data,
@@ -88,7 +94,9 @@ async function resolveOpenAiDeployment(
   ).id;
 }
 
-function mergeRequestConfig(requestConfig?: CustomRequestConfig): HttpRequestConfig {
+function mergeRequestConfig(
+  requestConfig?: CustomRequestConfig
+): HttpRequestConfig {
   return {
     method: 'POST',
     headers: {
