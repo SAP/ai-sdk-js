@@ -46,6 +46,7 @@ describe('constructCompletionPostRequest()', () => {
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
+  // Todo: Adapt the test after Cloud SDK fix for: https://github.com/SAP/cloud-sdk-backlog/issues/1234
   it('with model configuration and empty template', async () => {
     genaihubCompletionParameters.prompt.template = [];
     const expectedCompletionPostRequest: CompletionPostRequest = {
@@ -262,6 +263,7 @@ describe('constructCompletionPostRequest()', () => {
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
+  // Todo: Adapt the test after Cloud SDK fix for: https://github.com/SAP/cloud-sdk-backlog/issues/1234
   it('with model configuration, prompt template empty filter configuration', async () => {
     genaihubCompletionParameters.filterConfig = {};
     const expectedCompletionPostRequest: CompletionPostRequest = {
