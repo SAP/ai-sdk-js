@@ -56,6 +56,40 @@ export class OpenAiModels2 {
   private constructor() {}
 }
 
+/**
+ *
+ * Alternative proposal for referencing models.
+ *
+ */
+export type OpenAiChatModelMM =
+  | 'gpt-4o'
+  | 'gpt-4'
+  | 'gpt-4-32k'
+  | 'gpt-35-turbo'
+  | 'gpt-35-turbo-0125'
+  | 'gpt-35-turbo-16k';
+
+export type OpenAiEmbeddingModelMM =
+  | 'text-embedding-ada-002'
+  | 'text-embedding-3-small'
+  | 'text-embedding-3-large';
+
+// example chat completion API with version
+function chatCompletion(
+  model: OpenAiChatModelMM | { name: OpenAiChatModelMM; version: string }
+) {}
+
+//example usage with default 'latest' version
+chatCompletion('gpt-4o');
+
+//example usage with specific version
+chatCompletion({ name: 'gpt-4o', version: '2024-08-22' });
+/**
+ *
+ * End alternative proposal.
+ *
+ */
+
 export interface OpenAiChatModel {
   name:
     | 'gpt-4o'
