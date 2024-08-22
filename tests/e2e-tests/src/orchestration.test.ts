@@ -20,7 +20,18 @@ describe('orchestration', () => {
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
       prompt: {
-        template: [{ role: 'user', content: 'Hello!' }]
+        template: [
+          {
+            role: 'user',
+            content:
+              'Create {{?number}} of paraphrases of {{?phrase1}} and {{?phrase2}}'
+          }
+        ],
+        template_params: {
+          number: '3',
+          phrase1: 'I love coffee.',
+          phrase2: 'I dislike cats'
+        }
       }
     };
     const response = await new GenAiHubClient().chatCompletion(request);
