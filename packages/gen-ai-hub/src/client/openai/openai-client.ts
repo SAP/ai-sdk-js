@@ -33,14 +33,14 @@ export class OpenAiClient {
     deploymentResolver?: DeploymentResolver,
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiChatCompletionOutput> {
-    const deployment = await resolveOpenAiDeployment(model, deploymentResolver);
+    const deploymentId = await resolveOpenAiDeployment(model, deploymentResolver);
     const response = await executeRequest(
       {
-        url: `/inference/deployments/${deployment}/chat/completions`,
+        url: `/inference/deployments/${deploymentId}/chat/completions`,
         apiVersion
       },
       data,
-      this.mergeRequestConfig(requestConfig)
+      mergeRequestConfig(requestConfig)
     );
     return response.data;
   }
@@ -60,24 +60,13 @@ export class OpenAiClient {
     deploymentResolver?: DeploymentResolver,
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiEmbeddingOutput> {
-    const deployment = await resolveOpenAiDeployment(model, deploymentResolver);
+    const deploymentId = await resolveOpenAiDeployment(model, deploymentResolver);
     const response = await executeRequest(
-      { url: `/inference/deployments/${deployment}/embeddings`, apiVersion },
+      { url: `/inference/deployments/${deploymentId}/embeddings`, apiVersion },
       data,
-      this.mergeRequestConfig(requestConfig)
+      mergeRequestConfig(requestConfig)
     );
     return response.data;
-  }
-
-  mergeRequestConfig(requestConfig?: CustomRequestConfig): HttpRequestConfig {
-    return {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json'
-      },
-      params: { 'api-version': apiVersion },
-      ...requestConfig
-    };
   }
 }
 
@@ -97,4 +86,15 @@ async function resolveOpenAiDeployment(
       model: llm
     })
   ).id;
+}
+
+function mergeRequestConfig(requestConfig?: CustomRequestConfig): HttpRequestConfig {
+  return {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json'
+    },
+    params: { 'api-version': apiVersion },
+    ...requestConfig
+  };
 }
