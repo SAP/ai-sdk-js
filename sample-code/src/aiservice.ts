@@ -10,13 +10,9 @@ const openAiClient = new OpenAiClient();
  * @returns The answer from GPT.
  */
 export async function chatCompletion(): Promise<string> {
-  const response = await openAiClient.chatCompletion(
-    'gpt-35-turbo',
-    {
-      messages: [{ role: 'user', content: 'What is the capital of France?' }]
-    },
-    '1234'
-  );
+  const response = await openAiClient.chatCompletion('gpt-35-turbo', {
+    messages: [{ role: 'user', content: 'What is the capital of France?' }]
+  });
   const assistantMessage = response.choices[0]
     .message as OpenAiChatAssistantMessage;
   return assistantMessage.content!;
