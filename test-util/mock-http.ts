@@ -5,9 +5,8 @@ import { DestinationAuthToken, HttpDestination, ServiceCredentials } from '@sap-
 import nock from 'nock';
 import {
   BaseLlmParameters,
-  CustomRequestConfig
-} from '@sap-ai-sdk/core';
-import { EndpointOptions } from '@sap-ai-sdk/core/src/http-client.js';
+  CustomRequestConfig,
+  EndpointOptions } from '@sap-ai-sdk/core';
 import { dummyToken } from './mock-jwt.js';
 
 // Get the directory of this file
