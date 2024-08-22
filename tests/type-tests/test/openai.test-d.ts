@@ -3,7 +3,6 @@ import {
   OpenAiClient,
   OpenAiChatCompletionOutput,
   OpenAiEmbeddingOutput,
-  OpenAiModels
 } from '@sap-ai-sdk/gen-ai-hub';
 
 const client = new OpenAiClient();
@@ -13,7 +12,7 @@ expectType<OpenAiClient>(client);
  * Chat Completion.
  */
 expectType<Promise<OpenAiChatCompletionOutput>>(
-  client.chatCompletion(OpenAiModels.GPT_35_TURBO, {
+  client.chatCompletion('gpt-4', {
     messages: [{ role: 'user', content: 'test prompt' }]
   })
 );
@@ -22,11 +21,11 @@ expectType<Promise<OpenAiChatCompletionOutput>>(
  * Embeddings.
  */
 expectType<Promise<OpenAiEmbeddingOutput>>(
-  client.embeddings(OpenAiModels.ADA_002, {
+  client.embeddings('text-embedding-ada-002', {
     input: 'test input'
   })
 );
 
 expectError<any>(
-  client.embeddings(OpenAiModels.GPT_35_TURBO, { input: 'test input' })
+  client.embeddings('gpt-35-turbo', { input: 'test input' })
 );
