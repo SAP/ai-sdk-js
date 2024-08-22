@@ -4,6 +4,8 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+pnpmfileChecksum: npnjno6go7hyivfolifkve5zla
+
 importers:
 
   .:
@@ -154,21 +156,15 @@ importers:
         specifier: ^16.4.5
         version: 16.4.5
 
-  tests/smoke-test:
+  tests/smoke-tests:
     dependencies:
-      '@sap-ai-sdk/ai-core':
-        specifier: canary
-        version: 0.0.1-20240820013011.0
-      '@sap-ai-sdk/gen-ai-hub':
-        specifier: canary
-        version: 0.0.1-20240820013011.0
-      '@types/express':
-        specifier: ^4.17.21
-        version: 4.17.21
       express:
         specifier: ^4.19.2
         version: 4.19.2
     devDependencies:
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.21
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -667,15 +663,6 @@ packages:
   '@pkgr/core@0.1.1':
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
-
-  '@sap-ai-sdk/ai-core@0.0.1-20240820013011.0':
-    resolution: {integrity: sha512-42BoQ9rEp+WzSwhW4dypI2vGf9vjfE83uOnMs2HHPxxEmJJ017/a6UVy0g4zY7URGcoe4K8BcMVrgtkNmEwDgQ==}
-
-  '@sap-ai-sdk/core@0.0.1-20240820013011.0':
-    resolution: {integrity: sha512-G4ptbWGIryQId/81XXGukY8RQJHKuF9zYLblyUgxltL2gAG7oC8PHJXqvDCCbfVmlLvxyc1ENr3+e5bsP5p5BQ==}
-
-  '@sap-ai-sdk/gen-ai-hub@0.0.1-20240820013011.0':
-    resolution: {integrity: sha512-8HKlLlM7ZH1R0r8d982TIH6IRuyQwankGdI3emMgOeDoiI+b03C/g/0eA+IJ3dNb+bEBBcbd0q77wfOiPzHENg==}
 
   '@sap-cloud-sdk/connectivity@3.18.1':
     resolution: {integrity: sha512-HCOBlq4kc1ZgctyEYFnslC5kOMuQ6OLanfMvVWK7mGvs6WscitegZS1R+IojUVmbRW8wWrnE1rrpd7yMXnZlhg==}
@@ -4203,37 +4190,6 @@ snapshots:
     optional: true
 
   '@pkgr/core@0.1.1': {}
-
-  '@sap-ai-sdk/ai-core@0.0.1-20240820013011.0':
-    dependencies:
-      '@sap-ai-sdk/core': 0.0.1-20240820013011.0
-    transitivePeerDependencies:
-      - debug
-      - encoding
-      - supports-color
-
-  '@sap-ai-sdk/core@0.0.1-20240820013011.0':
-    dependencies:
-      '@sap-cloud-sdk/connectivity': 3.18.1
-      '@sap-cloud-sdk/http-client': 3.18.1
-      '@sap-cloud-sdk/openapi': 3.18.1
-      '@sap-cloud-sdk/util': 3.18.1
-    transitivePeerDependencies:
-      - debug
-      - encoding
-      - supports-color
-
-  '@sap-ai-sdk/gen-ai-hub@0.0.1-20240820013011.0':
-    dependencies:
-      '@sap-ai-sdk/core': 0.0.1-20240820013011.0
-      '@sap-cloud-sdk/connectivity': 3.18.1
-      '@sap-cloud-sdk/http-client': 3.18.1
-      '@sap-cloud-sdk/openapi': 3.18.1
-      '@sap-cloud-sdk/util': 3.18.1
-    transitivePeerDependencies:
-      - debug
-      - encoding
-      - supports-color
 
   '@sap-cloud-sdk/connectivity@3.18.1':
     dependencies:

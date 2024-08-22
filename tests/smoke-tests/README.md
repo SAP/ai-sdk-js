@@ -32,3 +32,7 @@ To run the tests, run:
 ```
 pnpm test:smoke
 ```
+
+## Running the app locally
+
+
