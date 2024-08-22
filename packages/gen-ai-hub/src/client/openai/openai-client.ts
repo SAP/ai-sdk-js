@@ -2,7 +2,6 @@ import { HttpRequestConfig } from '@sap-cloud-sdk/http-client';
 import { CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
 import {
   DeploymentResolver,
-  FoundationModel,
   resolveDeployment
 } from '../../utils/deployment-resolver.js';
 import {
@@ -54,7 +53,9 @@ export class OpenAiClient {
    * @returns The completion result.
    */
   async embeddings(
-    model: OpenAiEmbeddingModel | { name: OpenAiEmbeddingModel; version: string },
+    model:
+      | OpenAiEmbeddingModel
+      | { name: OpenAiEmbeddingModel; version: string },
     data: OpenAiEmbeddingParameters,
     deploymentResolver?: DeploymentResolver,
     requestConfig?: CustomRequestConfig
@@ -80,15 +81,20 @@ export class OpenAiClient {
   }
 }
 
-async function resolveOpenAiDeployment(model: string | { name: string; version: string }, resolver?: DeploymentResolver) {
+async function resolveOpenAiDeployment(
+  model: string | { name: string; version: string },
+  resolver?: DeploymentResolver
+) {
   if (typeof resolver === 'string') {
     return resolver;
   }
-  const llm = typeof model === 'string' ? { name: model, version: 'latest' } : model;
-  return (await resolveDeployment({
-          scenarioId: 'foundation-models',
-          executableId: 'azure-openai',
-          model: llm
-        })
-      ).id;
+  const llm =
+    typeof model === 'string' ? { name: model, version: 'latest' } : model;
+  return (
+    await resolveDeployment({
+      scenarioId: 'foundation-models',
+      executableId: 'azure-openai',
+      model: llm
+    })
+  ).id;
 }

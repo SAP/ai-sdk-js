@@ -53,7 +53,7 @@ export async function resolveDeployment(opts: {
       );
     }
   }
-  
+
   if (deploymentList.length === 0) {
     throw new Error(
       'No deployment matched the given criteria: ' + JSON.stringify(opts)

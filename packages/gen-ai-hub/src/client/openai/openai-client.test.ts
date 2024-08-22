@@ -8,7 +8,7 @@ import {
   OpenAiChatCompletionOutput,
   OpenAiChatMessage,
   OpenAiEmbeddingOutput,
-  OpenAiEmbeddingParameters,
+  OpenAiEmbeddingParameters
 } from './openai-types.js';
 import { OpenAiClient } from './openai-client.js';
 
