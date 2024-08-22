@@ -9,6 +9,7 @@ import {
 
 export type DeploymentResolver = DeploymentId | (() => Promise<AiDeployment>);
 export type DeploymentId = string;
+export type FoundationModel = { name: string; version?: string };
 
 // TODO: figure out what the best search criteria are
 /**
@@ -22,8 +23,7 @@ export type DeploymentId = string;
 export async function resolveDeployment(opts: {
   scenarioId: string;
   executableId?: string;
-  modelName?: string;
-  modelVersion?: string;
+  model?: FoundationModel;
 }): Promise<AiDeployment> {
   const query = {
     scenarioId: opts.scenarioId,
@@ -42,17 +42,18 @@ export async function resolveDeployment(opts: {
     throw new Error('Failed to fetch the list of deployments: ' + error);
   }
 
-  if (opts.modelName) {
+  if (opts.model) {
     deploymentList = deploymentList.filter(
-      deployment => modelExtractor(deployment)?.name === opts.modelName
+      deployment => extractModel(deployment)?.name === opts.model!.name
     );
+    if (opts.model.version) {
+      // feature idea: smart handling of 'latest' version: treat 'latest' and the highest version number as the same
+      deploymentList = deploymentList.filter(
+        deployment => extractModel(deployment)?.version === opts.model!.version
+      );
+    }
   }
-  if (opts.modelVersion) {
-    // feature idea: smart handling of 'latest' version: treat 'latest' and the highest version number as the same
-    deploymentList = deploymentList.filter(
-      deployment => modelExtractor(deployment)?.version === opts.modelVersion
-    );
-  }
+  
   if (deploymentList.length === 0) {
     throw new Error(
       'No deployment matched the given criteria: ' + JSON.stringify(opts)
@@ -61,5 +62,5 @@ export async function resolveDeployment(opts: {
   return deploymentList[0];
 }
 
-const modelExtractor = (deployment: AiDeployment) =>
+const extractModel = (deployment: AiDeployment) =>
   deployment.details?.resources?.backend_details?.model;

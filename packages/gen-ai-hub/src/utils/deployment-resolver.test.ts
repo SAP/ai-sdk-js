@@ -28,7 +28,7 @@ describe('Deployment resolver', () => {
     it('should return the deployment with the correct model name', async () => {
       const { id, configurationId } = await resolveDeployment({
         scenarioId: 'foundation-models',
-        modelName: 'gpt-4o'
+        model: {name: 'gpt-4o'}
       });
       expect(id).toBe('2');
       expect(configurationId).toBe('c2');
@@ -36,7 +36,7 @@ describe('Deployment resolver', () => {
     it('should return the deployment with the correct model name', async () => {
       const { id, configurationId } = await resolveDeployment({
         scenarioId: 'foundation-models',
-        modelVersion: '0613'
+        model: {name: 'gpt-4o', version: '0613'}
       });
       expect(id).toBe('2');
       expect(configurationId).toBe('c2');
@@ -45,7 +45,7 @@ describe('Deployment resolver', () => {
       await expect(
         resolveDeployment({
           scenarioId: 'foundation-models',
-          modelName: 'not existing'
+          model: {name: 'not existing'}
         })
       ).rejects.toThrow('No deployment matched the given criteria');
     });
@@ -53,8 +53,7 @@ describe('Deployment resolver', () => {
       await expect(
         resolveDeployment({
           scenarioId: 'foundation-models',
-          modelName: 'gpt-4o',
-          modelVersion: 'not existing'
+          model: {name: 'gpt-4o', version: 'not existing'}
         })
       ).rejects.toThrow('No deployment matched the given criteria');
     });

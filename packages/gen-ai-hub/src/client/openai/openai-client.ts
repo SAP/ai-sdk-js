@@ -2,6 +2,7 @@ import { HttpRequestConfig } from '@sap-cloud-sdk/http-client';
 import { CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
 import {
   DeploymentResolver,
+  FoundationModel,
   resolveDeployment
 } from '../../utils/deployment-resolver.js';
 import {
@@ -28,15 +29,12 @@ export class OpenAiClient {
    * @returns The completion result.
    */
   async chatCompletion(
-    model: OpenAiChatModel,
+    model: OpenAiChatModel | { name: OpenAiChatModel; version: string },
     data: OpenAiChatCompletionParameters,
-    deploymentResolver: DeploymentResolver = getDeploymentResolver(model),
+    deploymentResolver?: DeploymentResolver,
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiChatCompletionOutput> {
-    const deployment =
-      typeof deploymentResolver === 'function'
-        ? (await deploymentResolver()).id
-        : deploymentResolver;
+    const deployment = await resolveOpenAiDeployment(model, deploymentResolver);
     const response = await executeRequest(
       {
         url: `/inference/deployments/${deployment}/chat/completions`,
@@ -56,15 +54,12 @@ export class OpenAiClient {
    * @returns The completion result.
    */
   async embeddings(
-    model: OpenAiEmbeddingModel,
+    model: OpenAiEmbeddingModel | { name: OpenAiEmbeddingModel; version: string },
     data: OpenAiEmbeddingParameters,
-    deploymentResolver: DeploymentResolver = getDeploymentResolver(model),
+    deploymentResolver?: DeploymentResolver,
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiEmbeddingOutput> {
-    const deployment =
-      typeof deploymentResolver === 'function'
-        ? (await deploymentResolver()).id
-        : deploymentResolver;
+    const deployment = await resolveOpenAiDeployment(model, deploymentResolver);
     const response = await executeRequest(
       { url: `/inference/deployments/${deployment}/embeddings`, apiVersion },
       data,
@@ -85,12 +80,15 @@ export class OpenAiClient {
   }
 }
 
-function getDeploymentResolver(model: OpenAiChatModel | OpenAiEmbeddingModel) {
-  return () =>
-    resolveDeployment({
-      scenarioId: 'foundation-models',
-      executableId: 'azure-openai',
-      modelName: model.name,
-      modelVersion: model.version
-    });
+async function resolveOpenAiDeployment(model: string | { name: string; version: string }, resolver?: DeploymentResolver) {
+  if (typeof resolver === 'string') {
+    return resolver;
+  }
+  const llm = typeof model === 'string' ? { name: model, version: 'latest' } : model;
+  return (await resolveDeployment({
+          scenarioId: 'foundation-models',
+          executableId: 'azure-openai',
+          model: llm
+        })
+      ).id;
 }

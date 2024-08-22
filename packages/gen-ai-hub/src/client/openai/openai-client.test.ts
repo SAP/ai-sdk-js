@@ -9,7 +9,6 @@ import {
   OpenAiChatMessage,
   OpenAiEmbeddingOutput,
   OpenAiEmbeddingParameters,
-  OpenAiModels
 } from './openai-types.js';
 import { OpenAiClient } from './openai-client.js';
 
@@ -61,7 +60,7 @@ describe('openai client', () => {
       );
 
       const response = await client.chatCompletion(
-        OpenAiModels.GPT_4o,
+        'gpt-35-turbo',
         prompt,
         '1234'
       );
@@ -87,7 +86,7 @@ describe('openai client', () => {
       );
 
       await expect(
-        client.chatCompletion(OpenAiModels.GPT_4o, prompt, '1234')
+        client.chatCompletion('gpt-4', prompt, '1234')
       ).rejects.toThrow('status code 400');
     });
   });
@@ -113,7 +112,7 @@ describe('openai client', () => {
         embeddingsEndpoint
       );
       const response = await client.embeddings(
-        OpenAiModels.ADA_002,
+        'text-embedding-ada-002',
         prompt,
         '1234'
       );
@@ -139,7 +138,7 @@ describe('openai client', () => {
       );
 
       await expect(
-        client.embeddings(OpenAiModels.ADA_002, prompt, '1234')
+        client.embeddings('text-embedding-3-large', prompt, '1234')
       ).rejects.toThrow('status code 400');
     });
   });
