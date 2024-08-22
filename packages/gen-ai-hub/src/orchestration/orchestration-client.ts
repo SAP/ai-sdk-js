@@ -1,5 +1,8 @@
 import { executeRequest, CustomRequestConfig } from '@sap-ai-sdk/core';
-import { DeploymentResolver, resolveDeployment } from '../utils/deployment-resolver.js';
+import {
+  DeploymentResolver,
+  resolveDeployment
+} from '../utils/deployment-resolver.js';
 import {
   CompletionPostRequest,
   CompletionPostResponse

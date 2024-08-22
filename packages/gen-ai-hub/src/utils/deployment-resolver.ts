@@ -34,9 +34,10 @@ export async function resolveDeployment(opts: {
   // TODO: add a cache: https://github.tools.sap/AI/gen-ai-hub-sdk-js-backlog/issues/78
   let deploymentList: AiDeployment[];
   const { deploymentQuery } = DeploymentApi;
-  const resourceGroup = {'AI-Resource-Group': 'default'};
+  const resourceGroup = { 'AI-Resource-Group': 'default' };
   try {
-    deploymentList = (await deploymentQuery(query,resourceGroup).execute()).resources;
+    deploymentList = (await deploymentQuery(query, resourceGroup).execute())
+      .resources;
   } catch (error) {
     throw new Error('Failed to fetch the list of deployments: ' + error);
   }
@@ -49,8 +50,7 @@ export async function resolveDeployment(opts: {
   if (opts.modelVersion) {
     // feature idea: smart handling of 'latest' version: treat 'latest' and the highest version number as the same
     deploymentList = deploymentList.filter(
-      deployment =>
-        modelExtractor(deployment)?.version === opts.modelVersion
+      deployment => modelExtractor(deployment)?.version === opts.modelVersion
     );
   }
   if (deploymentList.length === 0) {
