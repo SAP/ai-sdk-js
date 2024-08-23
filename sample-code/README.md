@@ -13,7 +13,7 @@ Build the project with:
 2. Download a service key for your AI Core service instance
 3. Create a `.env` file in the sample-code directory
 4. Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`
-5. `pnpm run local`
+5. `pnpm local`
 
 Call the test endpoints:
 
