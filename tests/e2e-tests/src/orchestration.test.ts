@@ -20,12 +20,27 @@ describe('orchestration', () => {
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
       prompt: {
-        template: [{ role: 'user', content: 'Hello!' }]
+        template: [
+          {
+            role: 'user',
+            content:
+              'Create {{?number}} paraphrases of {{?phrase1}} and {{?phrase2}}'
+          }
+        ],
+        template_params: {
+          number: '3',
+          phrase1: 'I love coffee',
+          phrase2: 'I dislike cats'
+        }
       }
     };
     const response = await new GenAiHubClient().chatCompletion(request);
 
     expect(response.module_results).toBeDefined();
+    expect(response.module_results.templating).not.toHaveLength(0);
+    expect(response.module_results.templating?.[0].content).toBe(
+      'Create 3 paraphrases of I love coffee and I dislike cats'
+    );
     expect(response.orchestration_result.choices).not.toHaveLength(0);
   });
 });
