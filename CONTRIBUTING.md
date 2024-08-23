@@ -54,7 +54,7 @@ $ pnpm ai-core test
 As this project is written in TypeScript, it will be consumable by other TypeScript projects. We use `tsd` to test that our resulting API meets our expectations.
 The type tests are located at [`tests/type-tests`](./tests/type-tests).
 
-To run the integration tests, execute:
+To run the type tests, execute:
 
 ```bash
 $ pnpm test:type
