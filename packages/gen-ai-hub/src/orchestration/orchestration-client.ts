@@ -16,7 +16,7 @@ export class OrchestrationClient {
   /**
    * Creates a completion for the chat messages.
    * @param data - The input parameters for the chat completion.
-   * @param deploymentResolver - A deployment id or a function to retrieve it.
+   * @param deploymentResolver - A deployment ID or a function to retrieve it.
    * @param requestConfig - Request configuration.
    * @returns The completion result.
    */
