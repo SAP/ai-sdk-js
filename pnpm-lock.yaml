@@ -14,9 +14,15 @@ importers:
       '@jest/globals':
         specifier: ^29.5.12
         version: 29.7.0
+      '@sap-ai-sdk/ai-core':
+        specifier: workspace:^
+        version: link:packages/ai-core
       '@sap-ai-sdk/core':
         specifier: workspace:^
         version: link:packages/core
+      '@sap-ai-sdk/gen-ai-hub':
+        specifier: workspace:^
+        version: link:packages/gen-ai-hub
       '@sap-cloud-sdk/connectivity':
         specifier: ^3.18.1
         version: 3.18.1
