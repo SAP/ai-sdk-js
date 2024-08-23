@@ -37,10 +37,34 @@ describe('constructCompletionPostRequest()', () => {
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
+  // Todo: Adapt the test after Cloud SDK fix for: https://github.com/SAP/cloud-sdk-backlog/issues/1234
+  it('with model configuration and empty template', async () => {
+    genaihubCompletionParameters.prompt.template = [];
+    const expectedCompletionPostRequest: CompletionPostRequest = {
+      orchestration_config: {
+        module_configurations: {
+          templating_module_config: {
+            template: []
+          },
+          llm_module_config: {
+            model_name: 'gpt-35-turbo-16k',
+            model_params: { max_tokens: 50, temperature: 0.1 }
+          }
+        }
+      }
+    };
+    const completionPostRequest: CompletionPostRequest =
+      constructCompletionPostRequest(genaihubCompletionParameters);
+    expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
+  });
+
   it('with model configuration, prompt template and template params', async () => {
     input.prompt = {
       template: [
-        { role: 'user', content: 'Create {number} paraphrases of {phrase}' }
+        {
+          role: 'user',
+          content: 'Create {{?number}} paraphrases of {{?phrase}}'
+        }
       ],
       template_params: { phrase: 'I hate you.', number: 3 }
     };
@@ -51,7 +75,7 @@ describe('constructCompletionPostRequest()', () => {
             template: [
               {
                 role: 'user',
-                content: 'Create {number} paraphrases of {phrase}'
+                content: 'Create {{?number}} paraphrases of {{?phrase}}'
               }
             ]
           },
@@ -65,6 +89,40 @@ describe('constructCompletionPostRequest()', () => {
     };
     const completionPostRequest: CompletionPostRequest =
       constructCompletionPostRequest(input);
+    expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
+  });
+
+  it('with model configuration, prompt template and empty template params', async () => {
+    genaihubCompletionParameters.prompt = {
+      template: [
+        {
+          role: 'user',
+          content: 'Create {{?number}} paraphrases of {{?phrase}}'
+        }
+      ],
+      template_params: {}
+    };
+    const expectedCompletionPostRequest: CompletionPostRequest = {
+      orchestration_config: {
+        module_configurations: {
+          templating_module_config: {
+            template: [
+              {
+                role: 'user',
+                content: 'Create {{?number}} paraphrases of {{?phrase}}'
+              }
+            ]
+          },
+          llm_module_config: {
+            model_name: 'gpt-35-turbo-16k',
+            model_params: { max_tokens: 50, temperature: 0.1 }
+          }
+        }
+      },
+      input_params: {}
+    };
+    const completionPostRequest: CompletionPostRequest =
+      constructCompletionPostRequest(genaihubCompletionParameters);
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
@@ -196,6 +254,7 @@ describe('constructCompletionPostRequest()', () => {
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
+  // Todo: Adapt the test after Cloud SDK fix for: https://github.com/SAP/cloud-sdk-backlog/issues/1234
   it('with model configuration, prompt template empty filter configuration', async () => {
     input.filterConfig = {};
     const expectedCompletionPostRequest: CompletionPostRequest = {

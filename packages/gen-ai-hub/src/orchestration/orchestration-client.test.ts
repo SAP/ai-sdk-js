@@ -63,7 +63,10 @@ describe('GenAiHubClient', () => {
       },
       prompt: {
         template: [
-          { role: 'user', content: 'Create {number} paraphrases of {phrase}' }
+          {
+            role: 'user',
+            content: 'Create {{?number}} paraphrases of {{?phrase}}'
+          }
         ],
         template_params: { phrase: 'I hate you.', number: 3 }
       },
@@ -101,7 +104,10 @@ describe('GenAiHubClient', () => {
       },
       prompt: {
         template: [
-          { role: 'user', content: 'Create {number} paraphrases of {phrase}' }
+          {
+            role: 'user',
+            content: 'Create {{?number}} paraphrases of {{?phrase}}'
+          }
         ],
         template_params: { phrase: 'I hate you.', number: 3 }
       },
