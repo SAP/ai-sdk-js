@@ -1,56 +1,63 @@
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP/ai-sdk-js)](https://api.reuse.software/info/github.com/SAP/ai-sdk-js)
 [![Fosstars security rating](https://github.com/SAP/ai-sdk-js/blob/fosstars/fosstars_badge.svg)](https://github.com/SAP/ai-sdk-js/blob/fosstars/fosstars_report.md)
 
-# ai-sdk-js
-
-## Disclaimer
-
-This project is currently in an experimental state. All functionality and naming is subject to change. Use at your own discretion.
-
-## About this project
+# SAP Cloud SDK for AI
 
 Integrate chat completion into your business applications with SAP Cloud SDK for GenAI Hub. Leverage the Generative AI Hub of SAP AI Core to make use of templating, grounding, data masking, content filtering and more. Setup your SAP AI Core instance with SAP Cloud SDK for AI Core.
 
-## Requirements and Setup
+## Disclaimer ⚠️
 
-_Insert a short description what is required to get your project running..._
+This project is currently in an experimental state. All functionality and naming is subject to change. Use at your own discretion.
 
-## Running tests
+## Table of Contents
 
-If you're using the Jest Runner extension in Visual Studio Code, you'll need to add the following settings to your `settings.json` file before running the tests from VSCode:
+- [Packages](#packages)
+  - [@sap-ai-sdk/ai-core](#sap-ai-sdk-ai-core)
+  - [@sap-ai-sdk/gen-ai-hub](#sap-ai-sdk-gen-ai-hub)
+- [Sample Project](#sap-cloud-sdk-for-ai-sample-project)
+- [Support, Feedback](#support-feedback-contribution)
+- [Contribute](#contribute)
+- [Links](#links)
+- [License](#license)
 
-```
- "jestrunner.debugOptions": {
-    "runtimeArgs": ["--experimental-vm-modules"]
-  },
-  "jestrunner.jestCommand": "NODE_OPTIONS=--experimental-vm-modules node 'node_modules/jest/bin/jest.js'",
-```
+## Packages
 
-You can run our tests either with:
-```
-pnpm test:unit
-pnpm test:type
-```
+This project publishes multiple packages and is managed using [pnpm](https://pnpm.io/)
 
-or use the jest runnner extension directly from your IDE.
+### @sap-ai-sdk/ai-core
 
+This package provides tools to manage your scenarios and workflows in SAP AI Core.
 
-### Running E2E tests locally
+- Streamline data preprocessing and model training pipelines.
+- Execute batch inference jobs.
+- Deploy inference endpoints for your trained models.
+- Register custom Docker registries, sync AI content from your own git repositories, and register your own object storage for training data and model artifacts.
 
-Before running the E2E tests, ensure that you have a `.env` file located in `tests/e2e-tests` folder.
-
-Inside the `.env` file, define an `AICORE_SERVICE_KEY` variable and initialize it with the service binding of `aicore`. You can obtain this binding from the `VCAP_SERVICES` environment variable or from the service key defined in your BTP subaccount.
-
-To run the tests, use the following command:
+To install the AI Core package in your project, run:
 
 ```
-pnpm test:e2e
+$ npm install @sap-ai-sdk/ai-core
 ```
 
+### @sap-ai-sdk/gen-ai-hub
 
-## Support, Feedback, Contributing
+This package incorporates generative AI into your AI activities in SAP AI Core and SAP AI Launchpad.
 
-This project is open to feature requests/suggestions, bug reports etc. via [GitHub issues](https://github.com/SAP/ai-sdk-js/issues). Contribution and feedback are encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](CONTRIBUTING.md).
+To install the  Gen AI Hub package in your project, run:
+```
+$ npm install @sap-ai-sdk/gen-ai-hub
+```
+
+## SAP Cloud SDK for AI Sample Project
+
+We have created a sample project demonstrating the different clients' usage of the SAP Cloud SDK for AI for TypeScript/JavaScript. The [project README](./sample-code/README.md) outlines the set-up needed to build and run it locally.
+
+
+## Support, Feedback, Contribution
+
+This project is open to feature requests/suggestions, bug reports etc. via [GitHub issues](https://github.com/SAP/ai-sdk-js/issues). 
+
+Contribution and feedback are encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](CONTRIBUTING.md).
 
 ## Security / Disclosure
 
