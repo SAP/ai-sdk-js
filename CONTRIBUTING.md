@@ -13,8 +13,6 @@ Once you are ready to make a change, please test it appropriately, create a pull
 
 This project contains multiple packages, that are managed using pnpm workspaces.
 Productive packages are located in the `packages` directory, test packages are located in the `tests` directory. 
-All dependencies that are used in more than one of the packages are hoisted into the root project.
-Dependencies that occur only once, the binaries will be placed in the `node_modules` of that specific package.
 Some of the packages are interdependent, therefore pnpm install won't work from within those packages. Run `pnpm install` in the root directory instead.
 
 ## Testing
