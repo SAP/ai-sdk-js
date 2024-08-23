@@ -14,7 +14,7 @@ This project is currently in an experimental state. All functionality and naming
 - [Packages](#packages)
   - [@sap-ai-sdk/ai-core](#sap-ai-sdk-ai-core)
   - [@sap-ai-sdk/gen-ai-hub](#sap-ai-sdk-gen-ai-hub)
-- [Sample Project](#sample-project)
+- [Sample Project](#sap-cloud-sdk-for-ai-sample-project)
 - [Support, Feedback](#support-feedback-contribution)
 - [Contribute](#contribute)
 - [Links](#links)
@@ -33,7 +33,8 @@ This package provides tools to manage your scenarios and workflows in SAP AI Cor
 - Deploy inference endpoints for your trained models.
 - Register custom Docker registries, sync AI content from your own git repositories, and register your own object storage for training data and model artifacts.
 
-To install the SAP AI Core in your project, run:
+To install the AI Core package in your project, run:
+
 ```
 $ npm install @sap-ai-sdk/ai-core
 ```
@@ -42,7 +43,7 @@ $ npm install @sap-ai-sdk/ai-core
 
 This package incorporates generative AI into your AI activities in SAP AI Core and SAP AI Launchpad.
 
-To install the SAP Gen AI Hub in your project, run:
+To install the  Gen AI Hub package in your project, run:
 ```
 $ npm install @sap-ai-sdk/gen-ai-hub
 ```

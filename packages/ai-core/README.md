@@ -2,10 +2,10 @@
 
 This package provides tools to manage your scenarios and workflows in SAP AI Core.
 
-- Streamline data preprocessing and model training pipelines
-- Execute batch inference jobs
-- Deploy inference endpoints for your trained models
-- Register custom Docker registries, sync AI content from your own git repositories, and register your own object storage for training data and model artifacts
+- Streamline data preprocessing and model training pipelines.
+- Execute batch inference jobs.
+- Deploy inference endpoints for your trained models.
+- Register custom Docker registries, sync AI content from your own git repositories, and register your own object storage for training data and model artifacts.
 
 ### Installation
 
@@ -15,12 +15,12 @@ $ npm install @sap-ai-sdk/ai-core
 
 ## Pre-requisites
 
-- [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup)
-- Project configured with Node.js v20 or higher and native ESM support enabled
+- [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
+- Project configured with Node.js v20 or higher and native ESM support enabled.
 - For testing your application locally:
-  - Download a service key for your AI Core service instance
-  - Create a `.env` file in the sample-code directory
-  - Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`
+  - Download a service key for your AI Core service instance.
+  - Create a `.env` file in the sample-code directory.
+  - Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`.
 
 ## List of Available APIs
 
@@ -28,7 +28,7 @@ We maintain a list of [currently available and tested AI Core APIs](https://gith
 
 ## Usage
 
-The examples below demonstrate the usage of the most commonly used APIs in AI Core.
+The examples below demonstrate the usage of the most commonly used APIs in SAP AI Core.
 
 ### ArtifactApi
 
