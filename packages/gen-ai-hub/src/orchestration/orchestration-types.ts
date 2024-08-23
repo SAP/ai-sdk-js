@@ -1,22 +1,10 @@
-import { BaseLlmParameters } from '@sap-ai-sdk/core';
 import {
   ChatMessages,
-  CompletionPostResponse,
   FilteringModuleConfig,
   InputParamsEntry,
   LLMModuleConfig
 } from './client/api/index.js';
 
-/**
- * Input Parameters for GenAI hub chat completion.
- */
-export type GenAiHubCompletionParameters = BaseLlmParameters &
-  OrchestrationCompletionParameters;
-
-/**
- * Response for GenAI hub chat completion.
- */
-export type GenAiHubCompletionResponse = CompletionPostResponse;
 /**
  * Wrapper object to configure prompt.
  */

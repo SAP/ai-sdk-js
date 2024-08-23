@@ -1,17 +1,10 @@
+export * from './client/index.js';
 export {
-  OpenAiClient,
-  OpenAiChatCompletionParameters,
-  OpenAiEmbeddingParameters,
-  OpenAiEmbeddingOutput,
-  OpenAiChatCompletionOutput
-} from './client/index.js';
-export {
+  OrchestrationClient,
+  OrchestrationCompletionParameters,
+  CompletionPostResponse,
   azureContentFilter,
-  GenAiHubClient,
-  GenAiHubCompletionParameters,
-  GenAiHubCompletionResponse,
   PromptConfig,
   LlmConfig,
-  ChatMessages,
-  CompletionPostResponse
+  ChatMessages
 } from './orchestration/index.js';
