@@ -28,10 +28,10 @@ This project publishes multiple packages and is managed using [pnpm](https://pnp
 
 This package provides tools to manage your scenarios and workflows in SAP AI Core.
 
-- Streamline data preprocessing and model training pipelines
-- Execute batch inference jobs
-- Deploy inference endpoints for your trained models
-- Register custom Docker registries, sync AI content from your own git repositories, and register your own object storage for training data and model artifacts
+- Streamline data preprocessing and model training pipelines.
+- Execute batch inference jobs.
+- Deploy inference endpoints for your trained models.
+- Register custom Docker registries, sync AI content from your own git repositories, and register your own object storage for training data and model artifacts.
 
 To install the SAP AI Core in your project, run:
 ```
