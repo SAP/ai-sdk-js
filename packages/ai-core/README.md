@@ -2,10 +2,10 @@
 
 This package provides tools to manage your scenarios and workflows in SAP AI Core.
 
-Streamline data preprocessing and model training pipelines
-Execute batch inference jobs
-Deploy inference endpoints for your trained models
-Register custom Docker registries, sync AI content from your own git repositories, and register your own object storage for training data and model artifacts
+- Streamline data preprocessing and model training pipelines
+- Execute batch inference jobs
+- Deploy inference endpoints for your trained models
+- Register custom Docker registries, sync AI content from your own git repositories, and register your own object storage for training data and model artifacts
 
 ### Installation
 
@@ -27,6 +27,8 @@ $ npm install @sap-ai-sdk/ai-core
 We maintain a list of [currently available and tested AI Core APIs](https://github.com/SAP/ai-sdk-js/blob/main/docs/list-tested-APIs.md)
 
 ## Usage
+
+The examples below demonstrate the usage of the most commonly used APIs in AI Core.
 
 ### ArtifactApi
 
