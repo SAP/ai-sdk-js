@@ -57,13 +57,15 @@ export async function resolveDeployment(opts: {
   }
 
   if (opts.model) {
+    const modelName = opts.model.name;
     deploymentList = deploymentList.filter(
-      deployment => extractModel(deployment)?.name === opts.model!.name
+      deployment => extractModel(deployment)?.name === modelName
     );
     if (opts.model.version) {
+      const modelVersion = opts.model.version;
       // feature idea: smart handling of 'latest' version: treat 'latest' and the highest version number as the same
       deploymentList = deploymentList.filter(
-        deployment => extractModel(deployment)?.version === opts.model!.version
+        deployment => extractModel(deployment)?.version === modelVersion
       );
     }
   }
