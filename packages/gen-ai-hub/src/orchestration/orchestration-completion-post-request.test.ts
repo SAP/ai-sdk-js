@@ -39,7 +39,7 @@ describe('constructCompletionPostRequest()', () => {
 
   // Todo: Adapt the test after Cloud SDK fix for: https://github.com/SAP/cloud-sdk-backlog/issues/1234
   it('with model configuration and empty template', async () => {
-    genaihubCompletionParameters.prompt.template = [];
+    input.prompt.template = [];
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
@@ -54,7 +54,7 @@ describe('constructCompletionPostRequest()', () => {
       }
     };
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(genaihubCompletionParameters);
+      constructCompletionPostRequest(input);
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
@@ -93,7 +93,7 @@ describe('constructCompletionPostRequest()', () => {
   });
 
   it('with model configuration, prompt template and empty template params', async () => {
-    genaihubCompletionParameters.prompt = {
+    input.prompt = {
       template: [
         {
           role: 'user',
@@ -122,7 +122,7 @@ describe('constructCompletionPostRequest()', () => {
       input_params: {}
     };
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(genaihubCompletionParameters);
+      constructCompletionPostRequest(input);
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
