@@ -23,9 +23,9 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.7",
-    "@sap-cloud-sdk/eslint-config": "^3.18.1",
-    "@sap-cloud-sdk/connectivity": "^3.18.1",
-    "@sap-cloud-sdk/http-client": "^3.18.1",
+    "@sap-cloud-sdk/eslint-config": "^3.19.0",
+    "@sap-cloud-sdk/connectivity": "^3.19.0",
+    "@sap-cloud-sdk/http-client": "^3.19.0",
     "@sap-ai-sdk/ai-core": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/gen-ai-hub": "workspace:^",
