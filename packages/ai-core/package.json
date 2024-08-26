@@ -18,6 +18,7 @@
   ],
   "scripts": {
     "compile": "tsc",
+    "compile:cjs": "tsc -p tsconfig.cjs.json",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
@@ -29,6 +30,6 @@
   },
   "devDependencies": {
     "typescript": "^5.5.4",
-    "@sap-cloud-sdk/openapi-generator": "^3.18.1"
+    "@sap-cloud-sdk/openapi-generator": "^3.19.0"
   }
 }

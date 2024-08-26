@@ -8,7 +8,7 @@ export default [
     rules: { 'import/namespace': 'off'}
   },
   {
-    ignores: ['**/dist/**/*', '**/coverage/**/*', 'packages/ai-core/src/client/**/*'],
+    ignores: ['**/*.d.ts', '**/dist/**/*', '**/coverage/**/*', 'packages/ai-core/src/client/**/*'],
   },
   {
     files: ['**/test-util/**/*.ts', '**/packages/gen-ai-hub/src/orchestration/client/**/*'],

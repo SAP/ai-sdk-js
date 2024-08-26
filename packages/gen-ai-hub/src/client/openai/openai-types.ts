@@ -1,4 +1,21 @@
-import { BaseLlmParameters } from '@sap-ai-sdk/core';
+/**
+ * Available OpenAI models for chat completion.
+ */
+export type OpenAiChatModel =
+  | 'gpt-4o'
+  | 'gpt-4'
+  | 'gpt-4-32k'
+  | 'gpt-35-turbo'
+  | 'gpt-35-turbo-0125'
+  | 'gpt-35-turbo-16k';
+
+/**
+ * OpenAI embedding models.
+ */
+export type OpenAiEmbeddingModel =
+  | 'text-embedding-ada-002'
+  | 'text-embedding-3-small'
+  | 'text-embedding-3-large';
 
 /**
  * OpenAI system message.
@@ -254,8 +271,7 @@ export interface OpenAiCompletionParameters {
  * OpenAI chat completion input parameters.
  */
 export interface OpenAiChatCompletionParameters
-  extends OpenAiCompletionParameters,
-    BaseLlmParameters {
+  extends OpenAiCompletionParameters {
   /**
    * An array of system, user & assistant messages for chat completion.
    */
@@ -315,7 +331,7 @@ export interface OpenAiChatCompletionParameters
 /**
  * OpenAI embedding input parameters.
  */
-export interface OpenAiEmbeddingParameters extends BaseLlmParameters {
+export interface OpenAiEmbeddingParameters {
   /**
    * Input text to get embeddings for, encoded as a string. The number of input tokens varies depending on what model you are using. Unless you're embedding code, we suggest replacing newlines (\n) in your input with a single space, as we have observed inferior results when newlines are present.
    */

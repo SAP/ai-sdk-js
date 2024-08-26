@@ -14,19 +14,22 @@
     "dist/**/*.js",
     "dist/**/*.js.map",
     "dist/**/*.d.ts",
-    "dist/**/*.d.ts.map"
+    "dist/**/*.d.ts.map",
+    "internal.js",
+    "internal.d.ts"
   ],
   "scripts": {
     "compile": "tsc",
+    "compile:cjs": "tsc -p tsconfig.cjs.json",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
-    "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
+    "lint": "eslint \"**/*.ts\" && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
+    "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
-    "@sap-cloud-sdk/http-client": "^3.18.1",
-    "@sap-cloud-sdk/connectivity": "^3.18.1",
-    "@sap-cloud-sdk/util": "^3.18.1",
-    "@sap-cloud-sdk/openapi": "^3.18.1"
+    "@sap-cloud-sdk/http-client": "^3.19.0",
+    "@sap-cloud-sdk/connectivity": "^3.19.0",
+    "@sap-cloud-sdk/util": "^3.19.0",
+    "@sap-cloud-sdk/openapi": "^3.19.0"
   },
   "devDependencies": {
     "typescript": "^5.5.4"

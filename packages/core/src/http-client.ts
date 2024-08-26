@@ -54,19 +54,17 @@ export interface EndpointOptions {
  * @param requestConfig - The request configuration.
  * @returns The {@link HttpResponse} from the AI Core service.
  */
-export async function executeRequest<Data extends BaseLlmParameters>(
+export async function executeRequest(
   endpointOptions: EndpointOptions,
-  data: Data,
+  data: any,
   requestConfig?: CustomRequestConfig
 ): Promise<HttpResponse> {
   const aiCoreDestination = await getAiCoreDestination();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { deploymentConfiguration, ...body } = data;
   const { url, apiVersion } = endpointOptions;
 
   const mergedRequestConfig = {
     ...mergeWithDefaultRequestConfig(apiVersion, requestConfig),
-    data: JSON.stringify(body)
+    data: JSON.stringify(data)
   };
 
   const targetUrl = aiCoreDestination.url + `/v2/${removeLeadingSlashes(url)}`;

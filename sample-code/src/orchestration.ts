@@ -1,6 +1,6 @@
 import {
   type CompletionPostResponse,
-  GenAiHubClient
+  OrchestrationClient
 } from '@sap-ai-sdk/gen-ai-hub';
 
 /**
@@ -8,16 +8,18 @@ import {
  * @returns The answer from the orchestration service in Gen AI Hub.
  */
 export function orchestrationCompletion(): Promise<CompletionPostResponse> {
-  const genAiHubClient = new GenAiHubClient();
+  const orchestrationClient = new OrchestrationClient();
 
-  return genAiHubClient.chatCompletion({
-    deploymentConfiguration: { deploymentId: 'db1d64d9f06be467' },
-    llmConfig: {
-      model_name: 'gpt-4-32k',
-      model_params: {}
+  return orchestrationClient.chatCompletion(
+    {
+      llmConfig: {
+        model_name: 'gpt-4-32k',
+        model_params: {}
+      },
+      prompt: {
+        template: [{ role: 'user', content: 'What is the capital of France?' }]
+      }
     },
-    prompt: {
-      template: [{ role: 'user', content: 'What is the capital of France?' }]
-    }
-  });
+    'db1d64d9f06be467'
+  );
 }

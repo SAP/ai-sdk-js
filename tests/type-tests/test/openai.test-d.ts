@@ -12,14 +12,7 @@ expectType<OpenAiClient>(client);
  * Chat Completion.
  */
 expectType<Promise<OpenAiChatCompletionOutput>>(
-  client.chatCompletion({
-    deploymentConfiguration: { deploymentId: 'id' },
-    messages: [{ role: 'user', content: 'test prompt' }]
-  })
-);
-
-expectError<any>(
-  client.chatCompletion({
+  client.chatCompletion('gpt-4', {
     messages: [{ role: 'user', content: 'test prompt' }]
   })
 );
@@ -28,10 +21,9 @@ expectError<any>(
  * Embeddings.
  */
 expectType<Promise<OpenAiEmbeddingOutput>>(
-  client.embeddings({
-    deploymentConfiguration: { deploymentId: 'id' },
+  client.embeddings('text-embedding-ada-002', {
     input: 'test input'
   })
 );
 
-expectError<any>(client.embeddings({ input: 'test input' }));
+expectError<any>(client.embeddings('gpt-35-turbo', { input: 'test input' }));
