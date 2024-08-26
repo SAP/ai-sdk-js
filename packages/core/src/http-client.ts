@@ -30,8 +30,17 @@ export interface BaseLlmParameters {
  */
 export type CustomRequestConfig = Pick<
   HttpRequestConfig,
-  'headers' | 'params' | 'method' | 'middleware' | 'maxContentLength' | 'proxy' | 'httpAgent' | 'httpsAgent' | 'parameterEncoder'
-> & Record<string, any>;
+  | 'headers'
+  | 'params'
+  | 'method'
+  | 'middleware'
+  | 'maxContentLength'
+  | 'proxy'
+  | 'httpAgent'
+  | 'httpsAgent'
+  | 'parameterEncoder'
+> &
+  Record<string, any>;
 
 /**
  * The options to call an endpoint.
