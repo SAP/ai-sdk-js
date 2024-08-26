@@ -35,11 +35,14 @@ pnpm test:smoke
 
 ## Running the app locally
 
-Download a service key for your AI Core service instance from SAP BTP.
+This is currently not possible.
+We will fix this soon.
+
+<!-- Download a service key for your AI Core service instance from SAP BTP.
 Create a `.env.local` file in the sample-code directory and add the service key under`AICORE_SERVICE_KEY`.
 Run:
 
 ```bash
 pnpm smoke-tests create-deployment
 pnpm smoke-tests local
-```
+``` -->
