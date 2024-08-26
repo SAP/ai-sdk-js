@@ -5,8 +5,16 @@ import { executeRequest } from '@sap-ai-sdk/core';
 expectType<Promise<HttpResponse>>(
   executeRequest(
     { url: 'https://example.com', apiVersion: 'v1' },
-    { headers: { 'Content-Type': 'application/json' } }
+    { deploymentConfiguration: { deploymentId: 'test-id' } }
   )
 );
 
 expectError<any>(executeRequest({}, { prompt: 'test prompt' }));
+
+expectError<Promise<HttpResponse>>(
+  executeRequest(
+    { url: 'https://example.com', apiVersion: 'v1' },
+    { deploymentConfiguration: { deploymentId: 'test-id' } },
+    { headers: { 'Content-Type': 'application/json' } }
+  )
+);
