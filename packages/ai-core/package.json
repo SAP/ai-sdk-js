@@ -16,6 +16,17 @@
     "dist/**/*.d.ts",
     "dist/**/*.d.ts.map"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./internal": {
+      "import": "./dist/internal.js",
+      "require": "./dist/cjs/internal.js"
+    }
+  },
   "scripts": {
     "compile": "tsc",
     "compile:cjs": "tsc -p tsconfig.cjs.json",
