@@ -83,7 +83,7 @@ interface DeploymentResolutionOptions {
   /**
    * The name and potentially version of the model to look for.
    */
-  model: FoundationModel;
+  model?: FoundationModel;
   /**
    * The executable ID of the deployment.
    */

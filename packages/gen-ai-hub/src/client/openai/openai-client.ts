@@ -1,6 +1,6 @@
 import { type HttpRequestConfig } from '@sap-cloud-sdk/http-client';
 import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
-import { pickValueIgnoreCase } from '@sap-cloud-sdk/util';
+import { mergeIgnoreCase, pickValueIgnoreCase } from '@sap-cloud-sdk/util';
 import {
   type DeploymentConfiguration,
   type FoundationModel,
@@ -100,16 +100,21 @@ function translateToFoundationModel(
   };
 }
 
-// TODO: merge headers and query params too?!
 function mergeRequestConfig(
   requestConfig?: CustomRequestConfig
 ): HttpRequestConfig {
   return {
     method: 'POST',
-    headers: {
-      'content-type': 'application/json'
-    },
-    params: { 'api-version': apiVersion },
+    headers: mergeIgnoreCase(
+      {
+        'content-type': 'application/json'
+      },
+      requestConfig?.headers
+    ),
+    params: mergeIgnoreCase(
+      { 'api-version': apiVersion },
+      requestConfig?.params
+    ),
     ...requestConfig
   };
 }
