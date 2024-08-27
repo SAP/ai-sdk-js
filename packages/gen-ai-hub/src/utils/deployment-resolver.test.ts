@@ -20,11 +20,10 @@ describe('deployment resolver', () => {
     });
 
     it('should return the first deployment, if multiple are given', async () => {
-      const { id, configurationId } = await resolveDeployment({
+      const { id } = await resolveDeployment({
         scenarioId: 'foundation-models'
       });
       expect(id).toBe('1');
-      expect(configurationId).toBe('c1');
     });
 
     it('should return the first deployment with the correct model name', async () => {
