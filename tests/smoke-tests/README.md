@@ -6,7 +6,7 @@ The sample application is running on Cloud Foundry and uses the current canary v
 
 ## Deploying a new version of the sample code app
 
-The sample code app is deployed to SAP BTP nightly.
+The sample application is deployed to SAP BTP nightly.
 To deploy a new version of the sample code app manually, make sure to provide your own `.env` file in the `test/smoke-tests` subdirectory with the following environment variables:
 
 - CF_API_URL
