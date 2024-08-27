@@ -1,16 +1,20 @@
-import { HttpRequestConfig } from '@sap-cloud-sdk/http-client';
-import { CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
+import { type HttpRequestConfig } from '@sap-cloud-sdk/http-client';
+import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
+import { pickValueIgnoreCase } from '@sap-cloud-sdk/util';
 import {
-  DeploymentResolver,
+  type DeploymentConfiguration,
+  type FoundationModel,
+  isDeploymentIdConfiguration,
+  ModelConfiguration,
   resolveDeployment
 } from '../../utils/deployment-resolver.js';
 import {
-  OpenAiChatCompletionParameters,
-  OpenAiEmbeddingParameters,
-  OpenAiEmbeddingOutput,
-  OpenAiChatCompletionOutput,
-  OpenAiChatModel,
-  OpenAiEmbeddingModel
+  type OpenAiChatCompletionParameters,
+  type OpenAiEmbeddingParameters,
+  type OpenAiEmbeddingOutput,
+  type OpenAiChatCompletionOutput,
+  type OpenAiChatModel,
+  type OpenAiEmbeddingModel
 } from './openai-types.js';
 
 const apiVersion = '2024-02-01';
@@ -21,21 +25,19 @@ const apiVersion = '2024-02-01';
 export class OpenAiClient {
   /**
    * Creates a completion for the chat messages.
-   * @param model - The model to use for the chat completion.
+   * @param deploymentConfig - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
    * @param data - The input parameters for the chat completion.
-   * @param deploymentResolver - A deployment id or a function to retrieve it.
    * @param requestConfig - The request configuration.
    * @returns The completion result.
    */
   async chatCompletion(
-    model: OpenAiChatModel | { name: OpenAiChatModel; version: string },
+    deploymentConfig: DeploymentConfiguration<OpenAiChatModel>,
     data: OpenAiChatCompletionParameters,
-    deploymentResolver?: DeploymentResolver,
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiChatCompletionOutput> {
-    const deploymentId = await resolveOpenAiDeployment(
-      model,
-      deploymentResolver
+    const deploymentId = await getDeploymentId(
+      deploymentConfig,
+      requestConfig
     );
     const response = await executeRequest(
       {
@@ -47,26 +49,20 @@ export class OpenAiClient {
     );
     return response.data;
   }
+
   /**
    * Creates an embedding vector representing the given text.
-   * @param model - The model to use for the embedding computation.
+   * @param deploymentConfig - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
    * @param data - The text to embed.
-   * @param deploymentResolver - A deployment id or a function to retrieve it.
    * @param requestConfig - The request configuration.
    * @returns The completion result.
    */
   async embeddings(
-    model:
-      | OpenAiEmbeddingModel
-      | { name: OpenAiEmbeddingModel; version: string },
+    deploymentConfig: DeploymentConfiguration<OpenAiEmbeddingModel>,
     data: OpenAiEmbeddingParameters,
-    deploymentResolver?: DeploymentResolver,
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiEmbeddingOutput> {
-    const deploymentId = await resolveOpenAiDeployment(
-      model,
-      deploymentResolver
-    );
+    const deploymentId = await getDeploymentId(deploymentConfig);
     const response = await executeRequest(
       { url: `/inference/deployments/${deploymentId}/embeddings`, apiVersion },
       data,
@@ -76,23 +72,38 @@ export class OpenAiClient {
   }
 }
 
-async function resolveOpenAiDeployment(
-  model: string | { name: string; version: string },
-  resolver?: DeploymentResolver
+async function getDeploymentId(
+  deploymentConfig: DeploymentConfiguration,
+  requestConfig?: CustomRequestConfig
 ) {
-  if (typeof resolver === 'string') {
-    return resolver;
+  if (isDeploymentIdConfiguration(deploymentConfig)) {
+    return deploymentConfig.deploymentId;
   }
-  const llm =
-    typeof model === 'string' ? { name: model, version: 'latest' } : model;
-  const deployment = await resolveDeployment({
-    scenarioId: 'foundation-models',
-    executableId: 'azure-openai',
-    model: llm
-  });
-  return deployment.id;
+
+  return (
+    await resolveDeployment({
+      scenarioId: 'foundation-models',
+      executableId: 'azure-openai',
+      model: translateToFoundationModel(deploymentConfig),
+      groupId: pickValueIgnoreCase(requestConfig?.headers, 'ai-resource-group')
+    })
+  ).id;
 }
 
+function translateToFoundationModel(
+  modelConfig: ModelConfiguration
+): FoundationModel {
+  if (typeof modelConfig === 'string') {
+    return { name: modelConfig };
+  }
+
+  return {
+    name: modelConfig.modelName,
+    ...(modelConfig.modelVersion && { version: modelConfig.modelVersion })
+  };
+}
+
+// TODO: merge headers and query params too?!
 function mergeRequestConfig(
   requestConfig?: CustomRequestConfig
 ): HttpRequestConfig {
