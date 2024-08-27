@@ -105,6 +105,7 @@ function mergeRequestConfig(
 ): HttpRequestConfig {
   return {
     method: 'POST',
+    ...requestConfig,
     headers: mergeIgnoreCase(
       {
         'content-type': 'application/json'
@@ -114,7 +115,6 @@ function mergeRequestConfig(
     params: mergeIgnoreCase(
       { 'api-version': apiVersion },
       requestConfig?.params
-    ),
-    ...requestConfig
+    )
   };
 }
