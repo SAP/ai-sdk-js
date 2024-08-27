@@ -19,6 +19,7 @@ jobs:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           cache: 'pnpm'
       - run: pnpm i --frozen-lockfile
+      - run: pnpm smoke-tests create-deployment
       - uses: vchrisb/setup-cf@v0
         with:
           api: ${{ vars.CF_API_URL }}
