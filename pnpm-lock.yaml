@@ -4,6 +4,8 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+pnpmfileChecksum: fb3vh7gyjzvxzzal7fbygn3ogm
+
 importers:
 
   .:
@@ -131,6 +133,9 @@ importers:
 
   sample-code:
     dependencies:
+      '@sap-ai-sdk/ai-core':
+        specifier: workspace:^
+        version: link:../packages/ai-core
       '@sap-ai-sdk/gen-ai-hub':
         specifier: workspace:^
         version: link:../packages/gen-ai-hub
@@ -159,6 +164,28 @@ importers:
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
+
+  tests/smoke-tests:
+    dependencies:
+      '@sap-ai-sdk/ai-core':
+        specifier: canary
+        version: 0.0.1-20240826013038.0
+      '@sap-ai-sdk/gen-ai-hub':
+        specifier: canary
+        version: 0.0.1-20240826013038.0
+      express:
+        specifier: ^4.19.2
+        version: 4.19.2
+    devDependencies:
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.21
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
+      dotenv-cli:
+        specifier: ^7.4.2
+        version: 7.4.2
 
   tests/type-tests:
     devDependencies:
@@ -651,6 +678,15 @@ packages:
   '@pkgr/core@0.1.1':
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
+
+  '@sap-ai-sdk/ai-core@0.0.1-20240826013038.0':
+    resolution: {integrity: sha512-3GMpB+kEYkba4MSduJwR4ahHLIAh9DqYIHAqNKFB1eZ4QjBMNX/XhffJfDPYMDkoczCScOrZ9t2VGGzuu8BXmw==}
+
+  '@sap-ai-sdk/core@0.0.1-20240826013038.0':
+    resolution: {integrity: sha512-XEFbjaId45yaRM7Z/K1gxeDi/d+SpNw67cZTojtfyBvyLErbhU8e4ISdAsl6cYfmRvt+ArYf6KKT51HQvC8FWw==}
+
+  '@sap-ai-sdk/gen-ai-hub@0.0.1-20240826013038.0':
+    resolution: {integrity: sha512-8Y0X7nVf/UZf/IqKYTRxQFkoixhqRGifsqfm7RSs1PU+es+aALTMlkNgCwZ5mHsf4XrgGV7Pf+IHTA1ssL530g==}
 
   '@sap-cloud-sdk/connectivity@3.19.0':
     resolution: {integrity: sha512-fmA+oCv2MsoKVi9f2NiPzUCdBmCqxeytHNVHtBhy17qcuv52X4Vrz/ygYwB1j1EDJSl3OggxovV3F1ox223mhg==}
@@ -1339,6 +1375,14 @@ packages:
   doctrine@2.1.0:
     resolution: {integrity: sha512-35mSku4ZXK0vfCuHEDAwt55dg2jNajHZ1odvF+8SSr82EsZY4QmXfuWso8oEd8zRhVObSN18aM0CjSdoBX7zIw==}
     engines: {node: '>=0.10.0'}
+
+  dotenv-cli@7.4.2:
+    resolution: {integrity: sha512-SbUj8l61zIbzyhIbg0FwPJq6+wjbzdn9oEtozQpZ6kW2ihCcapKVZj49oCT3oPM+mgQm+itgvUQcG5szxVrZTA==}
+    hasBin: true
+
+  dotenv-expand@10.0.0:
+    resolution: {integrity: sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==}
+    engines: {node: '>=12'}
 
   dotenv@16.4.5:
     resolution: {integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==}
@@ -4160,6 +4204,38 @@ snapshots:
 
   '@pkgr/core@0.1.1': {}
 
+  '@sap-ai-sdk/ai-core@0.0.1-20240826013038.0':
+    dependencies:
+      '@sap-ai-sdk/core': 0.0.1-20240826013038.0
+    transitivePeerDependencies:
+      - debug
+      - encoding
+      - supports-color
+
+  '@sap-ai-sdk/core@0.0.1-20240826013038.0':
+    dependencies:
+      '@sap-cloud-sdk/connectivity': 3.19.0
+      '@sap-cloud-sdk/http-client': 3.19.0
+      '@sap-cloud-sdk/openapi': 3.19.0
+      '@sap-cloud-sdk/util': 3.19.0
+    transitivePeerDependencies:
+      - debug
+      - encoding
+      - supports-color
+
+  '@sap-ai-sdk/gen-ai-hub@0.0.1-20240826013038.0':
+    dependencies:
+      '@sap-ai-sdk/ai-core': 0.0.1-20240826013038.0
+      '@sap-ai-sdk/core': 0.0.1-20240826013038.0
+      '@sap-cloud-sdk/connectivity': 3.19.0
+      '@sap-cloud-sdk/http-client': 3.19.0
+      '@sap-cloud-sdk/openapi': 3.19.0
+      '@sap-cloud-sdk/util': 3.19.0
+    transitivePeerDependencies:
+      - debug
+      - encoding
+      - supports-color
+
   '@sap-cloud-sdk/connectivity@3.19.0':
     dependencies:
       '@sap-cloud-sdk/resilience': 3.19.0
@@ -4986,6 +5062,15 @@ snapshots:
   doctrine@2.1.0:
     dependencies:
       esutils: 2.0.3
+
+  dotenv-cli@7.4.2:
+    dependencies:
+      cross-spawn: 7.0.3
+      dotenv: 16.4.5
+      dotenv-expand: 10.0.0
+      minimist: 1.2.8
+
+  dotenv-expand@10.0.0: {}
 
   dotenv@16.4.5: {}
 

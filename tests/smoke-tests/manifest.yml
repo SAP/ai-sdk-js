@@ -1,0 +1,10 @@
+applications:
+  - name: smoke-test-app
+    path: .
+    memory: 256M
+    buildpacks:
+      - nodejs_buildpack
+    services:
+      - default_aicore
+    routes:
+      - route: 'smoke-test-app.cfapps.eu12-001.hana.ondemand.com'
