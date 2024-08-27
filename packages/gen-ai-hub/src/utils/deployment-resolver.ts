@@ -81,13 +81,13 @@ interface DeploymentResolutionOptions {
    */
   scenarioId: string;
   /**
+   * The name and potentially version of the model to look for.
+   */
+  model: FoundationModel;
+  /**
    * The executable ID of the deployment.
    */
   executableId?: string;
-  /**
-   * The name and potentially version of the model to look for.
-   */
-  model?: FoundationModel;
   /**
    * The group ID of the deployment.
    */

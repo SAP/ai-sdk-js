@@ -4,8 +4,8 @@ import { pickValueIgnoreCase } from '@sap-cloud-sdk/util';
 import {
   type DeploymentConfiguration,
   type FoundationModel,
+  type ModelConfiguration,
   isDeploymentIdConfiguration,
-  ModelConfiguration,
   resolveDeployment
 } from '../../utils/deployment-resolver.js';
 import {
@@ -25,20 +25,17 @@ const apiVersion = '2024-02-01';
 export class OpenAiClient {
   /**
    * Creates a completion for the chat messages.
-   * @param deploymentConfig - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
    * @param data - The input parameters for the chat completion.
+   * @param deploymentConfig - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
    * @param requestConfig - The request configuration.
    * @returns The completion result.
    */
   async chatCompletion(
-    deploymentConfig: DeploymentConfiguration<OpenAiChatModel>,
     data: OpenAiChatCompletionParameters,
+    deploymentConfig: DeploymentConfiguration<OpenAiChatModel>,
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiChatCompletionOutput> {
-    const deploymentId = await getDeploymentId(
-      deploymentConfig,
-      requestConfig
-    );
+    const deploymentId = await getDeploymentId(deploymentConfig, requestConfig);
     const response = await executeRequest(
       {
         url: `/inference/deployments/${deploymentId}/chat/completions`,
@@ -52,14 +49,14 @@ export class OpenAiClient {
 
   /**
    * Creates an embedding vector representing the given text.
-   * @param deploymentConfig - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
    * @param data - The text to embed.
+   * @param deploymentConfig - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
    * @param requestConfig - The request configuration.
    * @returns The completion result.
    */
   async embeddings(
-    deploymentConfig: DeploymentConfiguration<OpenAiEmbeddingModel>,
     data: OpenAiEmbeddingParameters,
+    deploymentConfig: DeploymentConfiguration<OpenAiEmbeddingModel>,
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiEmbeddingOutput> {
     const deploymentId = await getDeploymentId(deploymentConfig);
