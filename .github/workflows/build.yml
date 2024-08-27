@@ -46,23 +46,10 @@ jobs:
       - run: pnpm lint
       - run: pnpm compile:cjs
 
-  build:
-    runs-on: ubuntu-latest
-    needs: [test, checks]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2
-        with:
-          version: ${{ vars.PNPM_VERSION }}
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
-          cache: 'pnpm'
-      - run: pnpm i --frozen-lockfile
   dependabot:
     runs-on: ubuntu-latest
     if: ${{ github.actor == 'dependabot[bot]' && github.event_name == 'pull_request' }}
-    needs: [test, checks, build]
+    needs: [test, checks]
     permissions:
       pull-requests: write
       contents: write
