@@ -2,7 +2,7 @@
 
 The purpose of the smoke tests is to find obvious issues in the e2e process of using the SAP Cloud SDK for AI libs.
 
-The sample code app is running on Cloud Foundry and uses the current canary version of the SAP Cloud SDK for AI.
+The sample application is running on Cloud Foundry and uses the current canary version of the SAP Cloud SDK for AI.
 
 ## Deploying a new version of the sample code app
 
