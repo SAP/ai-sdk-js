@@ -2,6 +2,7 @@
 import express from 'express';
 import { chatCompletion, computeEmbedding } from './aiservice.js';
 import { orchestrationCompletion } from './orchestration.js';
+import { getDeployments } from './ai-core.js';
 
 const app = express();
 const port = 8080;
@@ -49,7 +50,7 @@ app.get('/orchestration', async (req, res) => {
 
 app.get('/ai-core/get-deployments', async (req, res) => {
   try {
-    res.send(await chatCompletion());
+    res.send(await getDeployments());
   } catch (error: any) {
     console.error(error);
     res
