@@ -19,7 +19,8 @@
     "generate": "pnpm -r run generate",
     "ai-core": "pnpm -F=@sap-ai-sdk/ai-core",
     "gen-ai-hub": "pnpm -F=@sap-ai-sdk/gen-ai-hub",
-    "core": "pnpm -F=@sap-ai-sdk/core"
+    "core": "pnpm -F=@sap-ai-sdk/core",
+    "check:public-api": "pnpm -F=@sap-ai-sdk/gen-ai-hub public:check-api"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.7",

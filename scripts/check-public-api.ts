@@ -11,9 +11,9 @@ import { CompilerOptions } from 'typescript';
 import {
   readCompilerOptions,
   readIncludeExcludeWithDefaults,
-  transpileDirectory
+  transpileDirectory,
+  defaultPrettierConfig
 } from '@sap-cloud-sdk/generator-common/internal.js';
-import { defaultPrettierConfig } from '@sap-cloud-sdk/generator-common/dist/file-writer';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -48,7 +48,7 @@ function paths(pathToPackage: string): {
     pathToSource: join(pathToPackage, 'src'),
     pathToTsConfig: join(pathToPackage, 'tsconfig.json'),
     pathToNodeModules: join(pathToPackage, 'node_modules'),
-    pathCompiled: join(pathToPackage, 'dist'),
+    pathCompiled: 'dist',
   };
 }
 
@@ -136,7 +136,7 @@ export async function checkApiOfPackage(pathToPackage: string): Promise<void> {
         prettierOptions: defaultPrettierConfig,
         usePrettier: false
       }
-    }, includeExclude);
+    }, { exclude: includeExclude?.exclude!, include: ['**/*.ts'] });
     await checkBarrelRecursive(pathToSource);
 
     const indexFilePath = join(pathToSource, 'index.ts');
