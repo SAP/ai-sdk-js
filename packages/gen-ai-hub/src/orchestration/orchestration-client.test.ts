@@ -6,8 +6,10 @@ import {
 } from '../../../../test-util/mock-http.js';
 import { CompletionPostResponse } from './client/api/index.js';
 import {
+  MessageContent,
   OrchestrationClient,
-  constructCompletionPostRequest
+  constructCompletionPostRequest,
+  parseMessageContent
 } from './orchestration-client.js';
 import { azureContentFilter } from './orchestration-filter-utility.js';
 import { OrchestrationCompletionParameters } from './orchestration-types.js';
@@ -202,4 +204,82 @@ describe('GenAiHubClient', () => {
     const response = await client.chatCompletion(request, '1234');
     expect(response).toEqual(mockResponse);
   });
+
+  describe('proposals', () => {
+    const request = {
+      llmConfig: {
+        model_name: 'gpt-35-turbo-16k',
+        model_params: { max_tokens: 50, temperature: 0.1 }
+      },
+      prompt: {
+        template: [{ role: 'user', content: "What's my name?" }],
+        messages_history: [
+          {
+            role: 'system',
+            content:
+              'You are a helpful assistant who remembers all details the user shares with you.'
+          },
+          {
+            role: 'user',
+            content: 'Hi! Im Bob'
+          },
+          {
+            role: 'assistant',
+            content:
+              "Hi Bob, nice to meet you! I'm an AI assistant. I'll remember that your name is Bob as we continue our conversation."
+          }
+        ]
+      }
+    };
+    it('proposal 1', async () => {
+      const mockResponse = parseMockResponse<CompletionPostResponse>(
+        'orchestration',
+        'genaihub-chat-completion-message-history.json'
+      );
+      mockInference(
+        {
+          data: constructCompletionPostRequest(request)
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/completion'
+        }
+      );
+      const response = await client.chatCompletion(request, '1234');
+      const orchResponseIndex = parseMessageContent(response, 0) as MessageContent;
+  
+      expect(orchResponseIndex.content).toBe("Your name is Bob.");
+      expect(orchResponseIndex.finish_reason).toBe('stop');
+  
+      const orchResponseAll = parseMessageContent(response) as MessageContent[];
+      expect(orchResponseAll).toHaveLength(2);
+      expect(orchResponseAll[0].content).toBe("Your name is Bob.");
+      expect(orchResponseAll[0].finish_reason).toBe('stop');
+    });
+  
+    it('proposal 2', async () => {
+        // Example usage of the new API function
+      const responseWrapper = await new OrchestrationClient().chatCompletionProposal2(request, '1234');
+    
+      const { choices, id, usage } = await new OrchestrationClient().chatCompletionProposal2(request, '1234');
+      // Access content and finish_reason of a specific choice
+      const { content, finish_reason } = responseWrapper.getChoiceFields(0);
+      console.log(content); // Output: "Your name is Bob."
+      console.log(finish_reason); // Output: "stop"
+    
+      // Access the original response object
+      const rawResponse = responseWrapper.getRawResponse();
+      console.log(rawResponse);
+    
+      // Directly access orchestration_result properties
+      console.log(responseWrapper.id);
+      console.log(responseWrapper.choices);
+      console.log(responseWrapper.usage);
+    });
+  });
+
+
 });

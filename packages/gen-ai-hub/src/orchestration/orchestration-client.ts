@@ -8,6 +8,7 @@ import {
   CompletionPostResponse
 } from './client/api/schema/index.js';
 import { OrchestrationCompletionParameters } from './orchestration-types.js';
+import { OrchestrationResponse } from './orchestration-response-wrapper.js';
 
 /**
  * Get the orchestration client.
@@ -41,6 +42,26 @@ export class OrchestrationClient {
     );
     return response.data;
   }
+
+  // Update the API function to return the class instance
+  async chatCompletionProposal2(
+    data: OrchestrationCompletionParameters,
+    deploymentResolver: DeploymentResolver = () => resolveDeployment({ scenarioId: 'orchestration' }),
+    requestConfig?: CustomRequestConfig
+  ): Promise<OrchestrationResponse> {
+    const body = constructCompletionPostRequest(data);
+    const deployment =
+      typeof deploymentResolver === 'function' ? (await deploymentResolver()).id : deploymentResolver;
+  
+    const response = await executeRequest(
+      {
+        url: `/inference/deployments/${deployment}/completion`
+      },
+      body,
+      requestConfig
+    );
+    return new OrchestrationResponse(response); // Return instance of the new class
+  }
 }
 
 /**
@@ -69,3 +90,36 @@ export function constructCompletionPostRequest(
     })
   };
 }
+
+export interface MessageContent {
+  content: string;
+  finish_reason: string;
+}
+
+/**
+ * Parses the orchestration response and returns the content and finish reason of the choice.
+ * @param response - The orchestration response.
+ * @param choiceIndex - The index of the choice to parse. If 'all', returns all choices.
+ * @returns The content and finish reason of the choice.
+ */
+export function parseMessageContent(response: CompletionPostResponse, choiceIndex?: number): MessageContent | MessageContent[] {
+  const choices = response.orchestration_result.choices;
+
+  if(choiceIndex === undefined) {
+    return choices.map(choice => ({
+      content: choice.message.content,
+      finish_reason: choice.finish_reason
+    }));
+  }
+
+  if (choiceIndex < 0 || choiceIndex >= choices.length) {
+    throw new Error('Invalid choice index.');
+  }
+
+  const choice = choices[choiceIndex];
+  return { 
+    content: choice.message.content,
+    finish_reason: choice.finish_reason 
+  };
+}
+
