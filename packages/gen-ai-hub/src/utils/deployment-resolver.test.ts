@@ -82,7 +82,7 @@ describe('deployment resolver', () => {
     ).rejects.toThrow('No deployment matched the given criteria');
   });
 
-  it('should consider group ID', async () => {
+  it('should consider custom resource group', async () => {
     nock(aiCoreDestination.url, {
       reqheaders: {
         'ai-resource-group': 'otherId'
