@@ -29,7 +29,9 @@
     },
     "dependencies": {
       "@sap-ai-sdk/ai-core": "workspace:^",
-      "@sap-ai-sdk/gen-ai-hub": "workspace:^"
+      "@sap-ai-sdk/gen-ai-hub": "workspace:^",
+      "@langchain/core": "^0.2.30",
+      "@langchain/openai": "^0.2.8"
     },
     "devDependencies": {
       "typescript": "^5.5.4",
