@@ -32,7 +32,11 @@ export class OpenAiClient {
     modelDeployment: ModelDeployment<OpenAiChatModel>,
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiChatCompletionOutput> {
-    const deploymentId = await getDeploymentId(modelDeployment, requestConfig);
+    const deploymentId = await getDeploymentId(
+      modelDeployment,
+      'azure-openai',
+      requestConfig
+    );
     const response = await executeRequest(
       {
         url: `/inference/deployments/${deploymentId}/chat/completions`,
@@ -56,7 +60,11 @@ export class OpenAiClient {
     modelDeployment: ModelDeployment<OpenAiEmbeddingModel>,
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiEmbeddingOutput> {
-    const deploymentId = await getDeploymentId(modelDeployment);
+    const deploymentId = await getDeploymentId(
+      modelDeployment,
+      'azure-openai',
+      requestConfig
+    );
     const response = await executeRequest(
       { url: `/inference/deployments/${deploymentId}/embeddings`, apiVersion },
       data,

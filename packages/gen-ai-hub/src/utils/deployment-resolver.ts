@@ -148,11 +148,13 @@ function extractModel(
 /**
  * Get the deployment ID for a given model deployment configuration and executable ID.
  * @param modelDeployment - The model deployment configuration.
+ * @param executableId - The executable ID.
  * @param requestConfig - The request configuration.
  * @returns The ID of the deployment, if found.
  */
 export async function getDeploymentId(
   modelDeployment: ModelDeployment,
+  executableId: string,
   requestConfig?: CustomRequestConfig
 ): Promise<string> {
   if (isDeploymentIdConfiguration(modelDeployment)) {
@@ -162,7 +164,7 @@ export async function getDeploymentId(
   return (
     await resolveDeployment({
       scenarioId: 'foundation-models',
-      executableId: 'azure-openai',
+      executableId,
       model: translateToFoundationModel(modelDeployment),
       groupId: pickValueIgnoreCase(requestConfig?.headers, 'ai-resource-group')
     })
