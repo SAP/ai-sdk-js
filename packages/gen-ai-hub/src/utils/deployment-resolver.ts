@@ -1,7 +1,9 @@
 import { DeploymentApi, AiDeployment } from '@sap-ai-sdk/ai-core';
+import { CustomRequestConfig } from '@sap-ai-sdk/core';
+import { pickValueIgnoreCase } from '@sap-cloud-sdk/util';
 
 /**
- * The deployment configuration when using a model. It can be either the name of the model or an object containing the name and version of the model.
+ * The model deployment configuration when using a model. It can be either the name of the model or an object containing the name and version of the model.
  * @typeParam ModelNameT - String literal type representing the name of the model.
  */
 export type ModelConfiguration<ModelNameT = string> =
@@ -20,7 +22,7 @@ export type ModelConfiguration<ModelNameT = string> =
 /**
  * The deployment configuration when using a deployment ID.
  */
-export interface DeploymentId {
+export interface DeploymentIdConfiguration {
   /**
    * The deployment ID.
    */
@@ -33,7 +35,7 @@ export interface DeploymentId {
  */
 export type ModelDeployment<ModelNameT = string> =
   | ModelConfiguration<ModelNameT>
-  | DeploymentId;
+  | DeploymentIdConfiguration;
 
 /**
  * Type guard to check if the given deployment configuration is a deployment ID configuration.
@@ -42,7 +44,7 @@ export type ModelDeployment<ModelNameT = string> =
  */
 export function isDeploymentIdConfiguration(
   deploymentConfig: ModelDeployment
-): deploymentConfig is DeploymentId {
+): deploymentConfig is DeploymentIdConfiguration {
   return (
     typeof deploymentConfig === 'object' && 'deploymentId' in deploymentConfig
   );
@@ -141,4 +143,41 @@ function extractModel(
   deployment: AiDeployment
 ): Partial<FoundationModel> | undefined {
   return deployment.details?.resources?.backend_details?.model;
+}
+
+/**
+ * Get the deployment ID for a given model deployment configuration and executable ID.
+ * @param modelDeployment - The model deployment configuration.
+ * @param requestConfig - The request configuration.
+ * @returns The ID of the deployment, if found.
+ */
+export async function getDeploymentId(
+  modelDeployment: ModelDeployment,
+  requestConfig?: CustomRequestConfig
+): Promise<string> {
+  if (isDeploymentIdConfiguration(modelDeployment)) {
+    return modelDeployment.deploymentId;
+  }
+
+  return (
+    await resolveDeployment({
+      scenarioId: 'foundation-models',
+      executableId: 'azure-openai',
+      model: translateToFoundationModel(modelDeployment),
+      groupId: pickValueIgnoreCase(requestConfig?.headers, 'ai-resource-group')
+    })
+  ).id;
+}
+
+function translateToFoundationModel(
+  modelConfig: ModelConfiguration
+): FoundationModel {
+  if (typeof modelConfig === 'string') {
+    return { name: modelConfig };
+  }
+
+  return {
+    name: modelConfig.modelName,
+    ...(modelConfig.modelVersion && { version: modelConfig.modelVersion })
+  };
 }
