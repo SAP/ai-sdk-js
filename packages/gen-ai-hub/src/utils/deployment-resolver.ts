@@ -20,7 +20,7 @@ export type ModelConfiguration<ModelNameT = string> =
 /**
  * The deployment configuration when using a deployment ID.
  */
-export interface DeploymentIdConfiguration {
+export interface DeploymentId {
   /**
    * The deployment ID.
    */
@@ -31,9 +31,9 @@ export interface DeploymentIdConfiguration {
  * The deployment configuration can be either a model configuration or a deployment ID configuration.
  * @typeParam ModelNameT - String literal type representing the name of the model.
  */
-export type DeploymentConfiguration<ModelNameT = string> =
+export type ModelDeployment<ModelNameT = string> =
   | ModelConfiguration<ModelNameT>
-  | DeploymentIdConfiguration;
+  | DeploymentId;
 
 /**
  * Type guard to check if the given deployment configuration is a deployment ID configuration.
@@ -41,22 +41,12 @@ export type DeploymentConfiguration<ModelNameT = string> =
  * @returns `true` if the configuration is a deployment ID configuration, `false` otherwise.
  */
 export function isDeploymentIdConfiguration(
-  deploymentConfig: DeploymentConfiguration
-): deploymentConfig is DeploymentIdConfiguration {
+  deploymentConfig: ModelDeployment
+): deploymentConfig is DeploymentId {
   return (
     typeof deploymentConfig === 'object' && 'deploymentId' in deploymentConfig
   );
 }
-
-/**
- * A deployment resolver can be either a deployment ID or a function that returns a full deployment object.
- */
-export type DeploymentResolver = DeploymentId | (() => Promise<AiDeployment>);
-
-/**
- * A deployment ID is a string that uniquely identifies a deployment.
- */
-export type DeploymentId = string;
 
 /**
  * A foundation model is identified by its name and potentially a version.

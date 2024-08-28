@@ -2,9 +2,9 @@ import { type HttpRequestConfig } from '@sap-cloud-sdk/http-client';
 import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
 import { mergeIgnoreCase, pickValueIgnoreCase } from '@sap-cloud-sdk/util';
 import {
-  type DeploymentConfiguration,
+  type ModelDeployment,
   type FoundationModel,
-  type ModelConfiguration,
+  type Model,
   isDeploymentIdConfiguration,
   resolveDeployment
 } from '../../utils/deployment-resolver.js';
@@ -32,7 +32,7 @@ export class OpenAiClient {
    */
   async chatCompletion(
     data: OpenAiChatCompletionParameters,
-    deploymentConfig: DeploymentConfiguration<OpenAiChatModel>,
+    deploymentConfig: ModelDeployment<OpenAiChatModel>,
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiChatCompletionOutput> {
     const deploymentId = await getDeploymentId(deploymentConfig, requestConfig);
@@ -56,7 +56,7 @@ export class OpenAiClient {
    */
   async embeddings(
     data: OpenAiEmbeddingParameters,
-    deploymentConfig: DeploymentConfiguration<OpenAiEmbeddingModel>,
+    deploymentConfig: ModelDeployment<OpenAiEmbeddingModel>,
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiEmbeddingOutput> {
     const deploymentId = await getDeploymentId(deploymentConfig);
@@ -70,7 +70,7 @@ export class OpenAiClient {
 }
 
 async function getDeploymentId(
-  deploymentConfig: DeploymentConfiguration,
+  deploymentConfig: ModelDeployment,
   requestConfig?: CustomRequestConfig
 ) {
   if (isDeploymentIdConfiguration(deploymentConfig)) {
@@ -87,9 +87,7 @@ async function getDeploymentId(
   ).id;
 }
 
-function translateToFoundationModel(
-  modelConfig: ModelConfiguration
-): FoundationModel {
+function translateToFoundationModel(modelConfig: Model): FoundationModel {
   if (typeof modelConfig === 'string') {
     return { name: modelConfig };
   }
