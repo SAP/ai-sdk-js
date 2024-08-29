@@ -41,7 +41,7 @@ export class OpenAiClient {
         apiVersion
       },
       data,
-      mergeRequestConfig(requestConfig)
+      requestConfig
     );
     return response.data;
   }
