@@ -1,37 +1,45 @@
 import { executeRequest, CustomRequestConfig } from '@sap-ai-sdk/core';
 import { pickValueIgnoreCase } from '@sap-cloud-sdk/util';
-import { resolveDeployment } from '../utils/deployment-resolver.js';
+import {
+  DeploymentIdConfiguration,
+  resolveDeployment
+} from '../utils/deployment-resolver.js';
 import {
   CompletionPostRequest,
   CompletionPostResponse
 } from './client/api/schema/index.js';
-import { OrchestrationCompletionParameters } from './orchestration-types.js';
+import { OrchestrationModuleConfig, Prompt } from './orchestration-types.js';
 
 /**
  * Get the orchestration client.
  */
 export class OrchestrationClient {
+  // TODO: either use the deploymentId from here or only allow setting it through the request config path
+  // TODO: document constructor
+  constructor(
+    private config: OrchestrationModuleConfig,
+    private deploymentIdConfig?: DeploymentIdConfiguration
+  ) {}
+
   /**
    * Creates a completion for the chat messages.
-   * @param data - The input parameters for the chat completion.
-   * @param deploymentId - A deployment ID or undefined to retrieve it based on the given model.
+   * @param prompt - Prompt configuration.
    * @param requestConfig - Request configuration.
    * @returns The completion result.
    */
   async chatCompletion(
-    data: OrchestrationCompletionParameters,
-    deploymentId?: string,
+    prompt: Prompt,
     requestConfig?: CustomRequestConfig
   ): Promise<CompletionPostResponse> {
-    const body = constructCompletionPostRequest(data);
-    deploymentId =
-      deploymentId ??
+    const body = constructCompletionPostRequest(this.config, prompt);
+    const deploymentId =
+      this.deploymentIdConfig?.deploymentId ??
       (
         await resolveDeployment({
           scenarioId: 'orchestration',
           model: {
-            name: data.llmConfig.model_name,
-            version: data.llmConfig.model_version
+            name: this.config.llmConfig.model_name,
+            version: this.config.llmConfig.model_version
           },
           resourceGroup: pickValueIgnoreCase(
             requestConfig?.headers,
@@ -55,25 +63,26 @@ export class OrchestrationClient {
  * @internal
  */
 export function constructCompletionPostRequest(
-  input: OrchestrationCompletionParameters
+  config: OrchestrationModuleConfig,
+  prompt: Prompt
 ): CompletionPostRequest {
   return {
     orchestration_config: {
       module_configurations: {
         templating_module_config: {
-          template: input.prompt.template
+          template: config.templatingConfig.template
         },
-        llm_module_config: input.llmConfig,
-        ...(Object.keys(input?.filterConfig || {}).length && {
-          filtering_module_config: input.filterConfig
+        llm_module_config: config.llmConfig,
+        ...(Object.keys(config?.filterConfig || {}).length && {
+          filtering_module_config: config.filterConfig
         })
       }
     },
-    ...(input.prompt.template_params && {
-      input_params: input.prompt.template_params
+    ...(prompt.inputParams && {
+      input_params: prompt.inputParams
     }),
-    ...(input.prompt.messages_history && {
-      messages_history: input.prompt.messages_history
+    ...(prompt.messagesHistory && {
+      messages_history: prompt.messagesHistory
     })
   };
 }

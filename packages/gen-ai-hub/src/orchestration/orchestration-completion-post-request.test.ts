@@ -1,10 +1,10 @@
 import { CompletionPostRequest } from './client/api/index.js';
 import { constructCompletionPostRequest } from './orchestration-client.js';
 import { azureContentFilter } from './orchestration-filter-utility.js';
-import { OrchestrationCompletionParameters } from './orchestration-types.js';
+import { OrchestrationModuleConfig } from './orchestration-types.js';
 
 describe('constructCompletionPostRequest()', () => {
-  let input: OrchestrationCompletionParameters;
+  let input: OrchestrationModuleConfig;
 
   beforeEach(() => {
     input = {

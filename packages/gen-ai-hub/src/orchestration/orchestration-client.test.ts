@@ -10,7 +10,7 @@ import {
   constructCompletionPostRequest
 } from './orchestration-client.js';
 import { azureContentFilter } from './orchestration-filter-utility.js';
-import { OrchestrationCompletionParameters } from './orchestration-types.js';
+import { OrchestrationModuleConfig } from './orchestration-types.js';
 
 describe('GenAiHubClient', () => {
   const client = new OrchestrationClient();
@@ -135,7 +135,7 @@ describe('GenAiHubClient', () => {
           ]
         }
       }
-    } as OrchestrationCompletionParameters;
+    } as OrchestrationModuleConfig;
     const mockResponse = parseMockResponse<CompletionPostResponse>(
       'orchestration',
       'genaihub-chat-completion-filter-config.json'
