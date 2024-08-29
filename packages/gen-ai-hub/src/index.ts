@@ -34,7 +34,7 @@ export type {
 export { isDeploymentIdConfiguration, getDeploymentId } from './utils/index.js';
 
 export type {
-  OrchestrationModuleConfig as OrchestrationCompletionParameters,
+  OrchestrationModuleConfig,
   CompletionPostResponse,
   PromptConfig,
   LlmConfig,
