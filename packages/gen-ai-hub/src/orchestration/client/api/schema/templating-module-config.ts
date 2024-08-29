@@ -10,7 +10,7 @@ import type { ChatMessages } from './chat-messages.js';
  *   "template": [
  *     {
  *       "role": "user",
- *       "content": "How can the freatures of AI in SAP BTP specifially {​{?groundingOutput}}, be applied to {​{?inputContext}}"
+ *       "content": "How can the features of AI in SAP BTP specifially {{?groundingOutput}}, be applied to {{?inputContext}}"
  *     }
  *   ],
  *   "defaults": {
