@@ -8,8 +8,7 @@ import type {
   OpenAiEmbeddingParameters,
   OpenAiEmbeddingOutput,
   OpenAiChatCompletionOutput,
-  OpenAiChatModel,
-  OpenAiEmbeddingModel
+  OpenAiChatModel
 } from './openai-types.js';
 
 const apiVersion = '2024-02-01';

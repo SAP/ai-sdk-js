@@ -66,5 +66,10 @@ export type {
 } from './orchestration/index.js';
 export {
   OrchestrationClient,
-  azureContentFilter
+  OrchestrationModuleConfig as OrchestrationCompletionParameters,
+  CompletionPostResponse,
+  azureContentFilter,
+  PromptConfig,
+  LlmConfig,
+  ChatMessages
 } from './orchestration/index.js';

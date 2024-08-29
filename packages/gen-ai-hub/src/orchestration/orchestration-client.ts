@@ -34,13 +34,13 @@ export class OrchestrationClient {
     const body = constructCompletionPostRequest(this.config, prompt);
     const deploymentId =
       this.deploymentIdConfig?.deploymentId ??
-      (await resolveDeployment({
+      (await resolveDeploymentId({
         scenarioId: 'orchestration',
         resourceGroup: pickValueIgnoreCase(
           requestConfig?.headers,
           'ai-resource-group'
         )
-      })).id;
+      }));
 
     const response = await executeRequest(
       {
