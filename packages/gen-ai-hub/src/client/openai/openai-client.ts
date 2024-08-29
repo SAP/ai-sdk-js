@@ -1,6 +1,4 @@
-import { type HttpRequestConfig } from '@sap-cloud-sdk/http-client';
 import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
-import { mergeIgnoreCase } from '@sap-cloud-sdk/util';
 import {
   getDeploymentId,
   type ModelDeployment
@@ -68,27 +66,8 @@ export class OpenAiClient {
     const response = await executeRequest(
       { url: `/inference/deployments/${deploymentId}/embeddings`, apiVersion },
       data,
-      mergeRequestConfig(requestConfig)
+      requestConfig
     );
     return response.data;
   }
-}
-
-function mergeRequestConfig(
-  requestConfig?: CustomRequestConfig
-): HttpRequestConfig {
-  return {
-    method: 'POST',
-    ...requestConfig,
-    headers: mergeIgnoreCase(
-      {
-        'content-type': 'application/json'
-      },
-      requestConfig?.headers
-    ),
-    params: mergeIgnoreCase(
-      { 'api-version': apiVersion },
-      requestConfig?.params
-    )
-  };
 }
