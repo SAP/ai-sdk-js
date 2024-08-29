@@ -1,8 +1,6 @@
 import { executeRequest, CustomRequestConfig } from '@sap-ai-sdk/core';
-import {
-  DeploymentResolver,
-  resolveDeployment
-} from '../utils/deployment-resolver.js';
+import { pickValueIgnoreCase } from '@sap-cloud-sdk/util';
+import { resolveDeployment } from '../utils/deployment-resolver.js';
 import {
   CompletionPostRequest,
   CompletionPostResponse
@@ -16,25 +14,35 @@ export class OrchestrationClient {
   /**
    * Creates a completion for the chat messages.
    * @param data - The input parameters for the chat completion.
-   * @param deploymentResolver - A deployment ID or a function to retrieve it.
+   * @param deploymentId - A deployment ID or undefined to retrieve it based on the given model.
    * @param requestConfig - Request configuration.
    * @returns The completion result.
    */
   async chatCompletion(
     data: OrchestrationCompletionParameters,
-    deploymentResolver: DeploymentResolver = () =>
-      resolveDeployment({ scenarioId: 'orchestration' }),
+    deploymentId?: string,
     requestConfig?: CustomRequestConfig
   ): Promise<CompletionPostResponse> {
     const body = constructCompletionPostRequest(data);
-    const deployment =
-      typeof deploymentResolver === 'function'
-        ? (await deploymentResolver()).id
-        : deploymentResolver;
+    deploymentId =
+      deploymentId ??
+      (
+        await resolveDeployment({
+          scenarioId: 'orchestration',
+          model: {
+            name: data.llmConfig.model_name,
+            version: data.llmConfig.model_version
+          },
+          resourceGroup: pickValueIgnoreCase(
+            requestConfig?.headers,
+            'ai-resource-group'
+          )
+        })
+      ).id;
 
     const response = await executeRequest(
       {
-        url: `/inference/deployments/${deployment}/completion`
+        url: `/inference/deployments/${deploymentId}/completion`
       },
       body,
       requestConfig

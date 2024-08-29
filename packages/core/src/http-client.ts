@@ -1,4 +1,4 @@
-import { removeLeadingSlashes } from '@sap-cloud-sdk/util';
+import { mergeIgnoreCase, removeLeadingSlashes } from '@sap-cloud-sdk/util';
 import {
   executeHttpRequest,
   HttpRequestConfig,
@@ -102,13 +102,13 @@ function mergeWithDefaultRequestConfig(
   return {
     ...defaultConfig,
     ...requestConfig,
-    headers: {
+    headers: mergeIgnoreCase({
       ...defaultConfig.headers,
       ...requestConfig?.headers
-    },
-    params: {
+    }),
+    params: mergeIgnoreCase({
       ...defaultConfig.params,
       ...requestConfig?.params
-    }
+    })
   };
 }
