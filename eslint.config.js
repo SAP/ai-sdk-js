@@ -21,5 +21,11 @@ export default [
     rules: {
       '@typescript-eslint/explicit-module-boundary-types': 'off'
     }
+  },
+  {
+    files: ['packages/langchain/**/*.ts'],
+    rules: {
+      'import/no-internal-modules': 'off'
+    }
   }
 ];

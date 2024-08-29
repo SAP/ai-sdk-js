@@ -3,6 +3,7 @@ packages:
   - 'packages/ai-core'
   - 'packages/gen-ai-hub'
   - 'packages/core'
+  - 'packages/langchain'
   - 'sample-code'
   - 'tests/e2e-tests'
   - 'tests/type-tests'

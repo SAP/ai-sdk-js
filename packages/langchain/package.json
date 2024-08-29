@@ -34,7 +34,7 @@
       "@langchain/openai": "^0.2.8"
     },
     "devDependencies": {
-      "typescript": "^5.5.4",
+      "typescript": "^5.5.4"
     }
-  }
+}
   
