@@ -111,7 +111,7 @@ describe('deployment resolver', () => {
     const { id } = await resolveDeployment({
       scenarioId: 'foundation-models',
       model: { name: 'gpt-4o' },
-      groupId: 'otherId'
+      resourceGroup: 'otherId'
     });
 
     expect(id).toBe('5');

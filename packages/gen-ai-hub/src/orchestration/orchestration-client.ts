@@ -1,4 +1,5 @@
 import { executeRequest, CustomRequestConfig } from '@sap-ai-sdk/core';
+import { pickValueIgnoreCase } from '@sap-cloud-sdk/util';
 import { resolveDeployment } from '../utils/deployment-resolver.js';
 import {
   CompletionPostRequest,
@@ -31,7 +32,11 @@ export class OrchestrationClient {
           model: {
             name: data.llmConfig.model_name,
             version: data.llmConfig.model_version
-          }
+          },
+          resourceGroup: pickValueIgnoreCase(
+            requestConfig?.headers,
+            'ai-resource-group'
+          )
         })
       ).id;
 

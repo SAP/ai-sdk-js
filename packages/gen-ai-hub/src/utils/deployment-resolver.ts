@@ -81,9 +81,9 @@ interface DeploymentResolutionOptions {
    */
   executableId?: string;
   /**
-   * The group ID of the deployment.
+   * The resource group of the deployment.
    */
-  groupId?: string;
+  resourceGroup?: string;
 }
 
 /**
@@ -121,7 +121,7 @@ export async function resolveDeployment(
 async function getAllDeployments(
   opts: DeploymentResolutionOptions
 ): Promise<AiDeployment[]> {
-  const { scenarioId, executableId, groupId = 'default' } = opts;
+  const { scenarioId, executableId, resourceGroup = 'default' } = opts;
   // TODO: add a cache: https://github.tools.sap/AI/gen-ai-hub-sdk-js-backlog/issues/78
   try {
     return (
@@ -131,7 +131,7 @@ async function getAllDeployments(
           status: 'RUNNING',
           ...(executableId && { executableIds: [executableId] })
         },
-        { 'AI-Resource-Group': groupId }
+        { 'AI-Resource-Group': resourceGroup }
       ).execute()
     ).resources;
   } catch (error) {
@@ -166,7 +166,10 @@ export async function getDeploymentId(
       scenarioId: 'foundation-models',
       executableId,
       model: translateToFoundationModel(modelDeployment),
-      groupId: pickValueIgnoreCase(requestConfig?.headers, 'ai-resource-group')
+      resourceGroup: pickValueIgnoreCase(
+        requestConfig?.headers,
+        'ai-resource-group'
+      )
     })
   ).id;
 }
