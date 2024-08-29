@@ -5,7 +5,7 @@
  */
 import type { AzureThreshold } from './azure-threshold.js';
 /**
- * Representation of the 'AzureContentSafety' schema.
+ * Filter configuration for Azure Content Safety.
  */
 export interface AzureContentSafety {
   Hate?: AzureThreshold;

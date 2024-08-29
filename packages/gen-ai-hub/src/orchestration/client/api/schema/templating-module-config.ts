@@ -6,12 +6,25 @@
 import type { ChatMessages } from './chat-messages.js';
 /**
  * Representation of the 'TemplatingModuleConfig' schema.
+ * @example {
+ *   "template": [
+ *     {
+ *       "role": "user",
+ *       "content": "How can the freatures of AI in SAP BTP specifially {​{?groundingOutput}}, be applied to {​{?inputContext}}"
+ *     }
+ *   ],
+ *   "defaults": {
+ *     "inputContext": "The default text that will be used in the template if inputContext is not set"
+ *   }
+ * }
  */
 export type TemplatingModuleConfig = {
+  /**
+   * A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
+   */
   template: ChatMessages;
   /**
    * Optional default values for the template. If a parameter has no default it is required.
-   * @example "{\"context\": \"I am a default context\"}"
    */
   defaults?: Record<string, any>;
 } & Record<string, any>;

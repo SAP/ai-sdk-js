@@ -8,12 +8,11 @@ import type { GroundingFilter } from './grounding-filter.js';
  * Representation of the 'GroundingModuleConfig' schema.
  */
 export type GroundingModuleConfig = {
+  /**
+   * @example "document_grounding_service"
+   */
   grounding_service: 'document_grounding_service';
   grounding_service_configuration?: {
-    /**
-     * Secret name of the generic secret within Gen AI Hub containing document grounding service credentials.
-     */
-    secret_name: string;
     /**
      * Document grounding service filters to be used.
      */
@@ -24,6 +23,7 @@ export type GroundingModuleConfig = {
     grounding_input_parameters: string[];
     /**
      * Parameter name used for grounding output.
+     * @example "groundingOutput"
      */
     grounding_output_parameter: string;
   } & Record<string, any>;
