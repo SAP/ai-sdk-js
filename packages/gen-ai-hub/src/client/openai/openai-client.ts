@@ -5,13 +5,13 @@ import {
   getDeploymentId,
   type ModelDeployment
 } from '../../utils/deployment-resolver.js';
-import {
-  type OpenAiChatCompletionParameters,
-  type OpenAiEmbeddingParameters,
-  type OpenAiEmbeddingOutput,
-  type OpenAiChatCompletionOutput,
-  type OpenAiChatModel,
-  type OpenAiEmbeddingModel
+import type {
+  OpenAiChatCompletionParameters,
+  OpenAiEmbeddingParameters,
+  OpenAiEmbeddingOutput,
+  OpenAiChatCompletionOutput,
+  OpenAiChatModel,
+  OpenAiEmbeddingModel
 } from './openai-types.js';
 
 const apiVersion = '2024-02-01';
