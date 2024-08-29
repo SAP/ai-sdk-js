@@ -1,7 +1,7 @@
 export * from './client/index.js';
 export {
   OrchestrationClient,
-  OrchestrationModuleConfig as OrchestrationCompletionParameters,
+  OrchestrationModuleConfig,
   CompletionPostResponse,
   azureContentFilter,
   PromptConfig,
