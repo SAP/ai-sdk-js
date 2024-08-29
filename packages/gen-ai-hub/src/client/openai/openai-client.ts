@@ -8,8 +8,7 @@ import type {
   OpenAiEmbeddingParameters,
   OpenAiEmbeddingOutput,
   OpenAiChatCompletionOutput,
-  OpenAiChatModel,
-  OpenAiEmbeddingModel
+  OpenAiChatModel
 } from './openai-types.js';
 
 const apiVersion = '2024-02-01';
@@ -18,20 +17,22 @@ const apiVersion = '2024-02-01';
  * OpenAI Client.
  */
 export class OpenAiClient {
+  // TODO: document constructor
+  //* @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
+  constructor(private modelDeployment: ModelDeployment<OpenAiChatModel>) {}
+
   /**
    * Creates a completion for the chat messages.
    * @param data - The input parameters for the chat completion.
-   * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
    * @param requestConfig - The request configuration.
    * @returns The completion result.
    */
   async chatCompletion(
     data: OpenAiChatCompletionParameters,
-    modelDeployment: ModelDeployment<OpenAiChatModel>,
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiChatCompletionOutput> {
     const deploymentId = await getDeploymentId(
-      modelDeployment,
+      this.modelDeployment,
       'azure-openai',
       requestConfig
     );
@@ -49,17 +50,15 @@ export class OpenAiClient {
   /**
    * Creates an embedding vector representing the given text.
    * @param data - The text to embed.
-   * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
    * @param requestConfig - The request configuration.
    * @returns The completion result.
    */
   async embeddings(
     data: OpenAiEmbeddingParameters,
-    modelDeployment: ModelDeployment<OpenAiEmbeddingModel>,
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiEmbeddingOutput> {
     const deploymentId = await getDeploymentId(
-      modelDeployment,
+      this.modelDeployment,
       'azure-openai',
       requestConfig
     );

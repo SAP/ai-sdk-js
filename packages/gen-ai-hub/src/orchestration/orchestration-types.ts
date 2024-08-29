@@ -1,40 +1,40 @@
 import {
   ChatMessages,
   FilteringModuleConfig,
-  LLMModuleConfig
+  LLMModuleConfig,
+  TemplatingModuleConfig
 } from './client/api/index.js';
 
 /**
- * Wrapper object to configure prompt.
+ * Prompt configuration.
  */
-export interface PromptConfig {
+export interface Prompt {
   /**
    * History.
    */
-  messages_history?: ChatMessages;
+  messagesHistory?: ChatMessages;
+
   /**
-   * Template.
+   * Template parameters.
    */
-  template: ChatMessages;
-  /**
-   * Template Parameters.
-   */
-  template_params?: Record<string, string>;
+  inputParams?: Record<string, InputParamsEntry>;
 }
 
+// TODO: why do we have this extra type? and if there is a reason, why does it not apply to the filtering module?
 /**
- * Wrapper object to configure LLMModule.
+ * LLMModule configuration.
  */
 export type LlmConfig = LLMModuleConfig;
 
 /**
- * Wrapper object to encompass Orchestration options.
+ * Orchestration module configuration.
  */
-export interface OrchestrationCompletionParameters {
+export interface OrchestrationModuleConfig {
+  // TODO: remove "config" for all the configs below
   /**
-   * Prompt configuration options.
+   * Templating configuration options.
    */
-  prompt: PromptConfig;
+  templatingConfig: TemplatingModuleConfig;
   /**
    * Llm configuration options.
    */

@@ -4,10 +4,10 @@ import {
 } from './client/api/index.js';
 import { constructCompletionPostRequest } from './orchestration-client.js';
 import { azureContentFilter } from './orchestration-filter-utility.js';
-import { OrchestrationCompletionParameters } from './orchestration-types.js';
+import { OrchestrationModuleConfig } from './orchestration-types.js';
 
 describe('Filter utility', () => {
-  const input: OrchestrationCompletionParameters = {
+  const input: OrchestrationModuleConfig = {
     llmConfig: {
       model_name: 'gpt-35-turbo-16k',
       model_params: { max_tokens: 50, temperature: 0.1 }
