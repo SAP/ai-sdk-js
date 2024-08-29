@@ -39,14 +39,14 @@ export type ModelDeployment<ModelNameT = string> =
 
 /**
  * Type guard to check if the given deployment configuration is a deployment ID configuration.
- * @param deploymentConfig - Configuration to check.
+ * @param modelDeployment - Configuration to check.
  * @returns `true` if the configuration is a deployment ID configuration, `false` otherwise.
  */
 export function isDeploymentIdConfiguration(
-  deploymentConfig: ModelDeployment
-): deploymentConfig is DeploymentIdConfiguration {
+  modelDeployment: ModelDeployment
+): modelDeployment is DeploymentIdConfiguration {
   return (
-    typeof deploymentConfig === 'object' && 'deploymentId' in deploymentConfig
+    typeof modelDeployment === 'object' && 'deploymentId' in modelDeployment
   );
 }
 
