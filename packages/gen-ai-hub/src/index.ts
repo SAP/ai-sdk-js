@@ -66,7 +66,7 @@ export type {
 } from './orchestration/index.js';
 export {
   OrchestrationClient,
-  OrchestrationModuleConfig as OrchestrationCompletionParameters,
+  OrchestrationModuleConfig,
   CompletionPostResponse,
   azureContentFilter,
   PromptConfig,
