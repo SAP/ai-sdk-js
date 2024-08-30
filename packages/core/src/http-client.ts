@@ -1,4 +1,4 @@
-import { removeLeadingSlashes } from '@sap-cloud-sdk/util';
+import { mergeIgnoreCase, removeLeadingSlashes } from '@sap-cloud-sdk/util';
 import {
   executeHttpRequest,
   HttpRequestConfig,
@@ -28,10 +28,19 @@ export interface BaseLlmParameters {
 /**
  * The type for parameters in custom request configuration.
  */
-export type CustomRequestConfig = Omit<
+export type CustomRequestConfig = Pick<
   HttpRequestConfig,
-  'data' | 'url' | 'baseURL'
->;
+  | 'headers'
+  | 'params'
+  | 'method'
+  | 'middleware'
+  | 'maxContentLength'
+  | 'proxy'
+  | 'httpAgent'
+  | 'httpsAgent'
+  | 'parameterEncoder'
+> &
+  Record<string, any>;
 
 /**
  * The options to call an endpoint.
@@ -93,13 +102,13 @@ function mergeWithDefaultRequestConfig(
   return {
     ...defaultConfig,
     ...requestConfig,
-    headers: {
+    headers: mergeIgnoreCase({
       ...defaultConfig.headers,
       ...requestConfig?.headers
-    },
-    params: {
+    }),
+    params: mergeIgnoreCase({
       ...defaultConfig.params,
       ...requestConfig?.params
-    }
+    })
   };
 }

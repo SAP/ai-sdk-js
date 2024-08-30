@@ -1,0 +1,32 @@
+name: smoke test
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 22 * * *
+
+jobs:
+  smoke-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: ${{ vars.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+          cache: 'pnpm'
+      - run: pnpm i --frozen-lockfile
+      - run: pnpm smoke-tests create-deployment
+      - uses: vchrisb/setup-cf@v0
+        with:
+          api: ${{ vars.CF_API_URL }}
+          username: ${{ secrets.CF_USER }}
+          password: ${{ secrets.CF_PASSWORD }}
+          org: ${{ vars.CF_ORG }}
+          space: ${{ vars.CF_SPACE }}
+      - run: cf push
+        working-directory: tests/smoke-tests
+      - name: smoke test
+        run: pnpm test:smoke

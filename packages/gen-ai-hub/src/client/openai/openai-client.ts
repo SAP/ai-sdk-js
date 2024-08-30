@@ -1,10 +1,9 @@
-import { HttpRequestConfig } from '@sap-cloud-sdk/http-client';
-import { CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
+import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
 import {
-  DeploymentResolver,
-  resolveDeployment
+  getDeploymentId,
+  type ModelDeployment
 } from '../../utils/deployment-resolver.js';
-import {
+import type {
   OpenAiChatCompletionParameters,
   OpenAiEmbeddingParameters,
   OpenAiEmbeddingOutput,
@@ -21,21 +20,20 @@ const apiVersion = '2024-02-01';
 export class OpenAiClient {
   /**
    * Creates a completion for the chat messages.
-   * @param model - The model to use for the chat completion.
    * @param data - The input parameters for the chat completion.
-   * @param deploymentResolver - A deployment id or a function to retrieve it.
+   * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
    * @param requestConfig - The request configuration.
    * @returns The completion result.
    */
   async chatCompletion(
-    model: OpenAiChatModel | { name: OpenAiChatModel; version: string },
     data: OpenAiChatCompletionParameters,
-    deploymentResolver?: DeploymentResolver,
+    modelDeployment: ModelDeployment<OpenAiChatModel>,
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiChatCompletionOutput> {
-    const deploymentId = await resolveOpenAiDeployment(
-      model,
-      deploymentResolver
+    const deploymentId = await getDeploymentId(
+      modelDeployment,
+      'azure-openai',
+      requestConfig
     );
     const response = await executeRequest(
       {
@@ -43,65 +41,33 @@ export class OpenAiClient {
         apiVersion
       },
       data,
-      mergeRequestConfig(requestConfig)
+      requestConfig
     );
     return response.data;
   }
+
   /**
    * Creates an embedding vector representing the given text.
-   * @param model - The model to use for the embedding computation.
    * @param data - The text to embed.
-   * @param deploymentResolver - A deployment id or a function to retrieve it.
+   * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
    * @param requestConfig - The request configuration.
    * @returns The completion result.
    */
   async embeddings(
-    model:
-      | OpenAiEmbeddingModel
-      | { name: OpenAiEmbeddingModel; version: string },
     data: OpenAiEmbeddingParameters,
-    deploymentResolver?: DeploymentResolver,
+    modelDeployment: ModelDeployment<OpenAiEmbeddingModel>,
     requestConfig?: CustomRequestConfig
   ): Promise<OpenAiEmbeddingOutput> {
-    const deploymentId = await resolveOpenAiDeployment(
-      model,
-      deploymentResolver
+    const deploymentId = await getDeploymentId(
+      modelDeployment,
+      'azure-openai',
+      requestConfig
     );
     const response = await executeRequest(
       { url: `/inference/deployments/${deploymentId}/embeddings`, apiVersion },
       data,
-      mergeRequestConfig(requestConfig)
+      requestConfig
     );
     return response.data;
   }
-}
-
-async function resolveOpenAiDeployment(
-  model: string | { name: string; version: string },
-  resolver?: DeploymentResolver
-) {
-  if (typeof resolver === 'string') {
-    return resolver;
-  }
-  const llm =
-    typeof model === 'string' ? { name: model, version: 'latest' } : model;
-  const deployment = await resolveDeployment({
-    scenarioId: 'foundation-models',
-    executableId: 'azure-openai',
-    model: llm
-  });
-  return deployment.id;
-}
-
-function mergeRequestConfig(
-  requestConfig?: CustomRequestConfig
-): HttpRequestConfig {
-  return {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json'
-    },
-    params: { 'api-version': apiVersion },
-    ...requestConfig
-  };
 }

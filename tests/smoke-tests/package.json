@@ -1,0 +1,30 @@
+{
+  "type": "module",
+  "name": "@sap-ai-sdk/smoke-tests",
+  "version": "0.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "private": "true",
+  "scripts": {
+    "start": "node dist/server.js",
+    "local": "node --env-file=.env.local dist/server.js",
+    "create-deployment": "rm -rf dist && cp -r ../../sample-code/dist dist",
+    "cf-login": "dotenv -- bash -c 'cf login -a \"$CF_API_URL\" -u \"$CF_USER\" -p \"$CF_PASSWORD\" -o \"$CF_ORG\" -s \"$CF_SPACE\"'",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
+    "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
+  },
+  "engines": {
+    "node": "^20"
+  },
+  "dependencies": {
+    "@sap-ai-sdk/ai-core": "canary",
+    "@sap-ai-sdk/gen-ai-hub": "canary",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "dotenv": "^16.4.5",
+    "dotenv-cli": "^7.4.2"
+  }
+}

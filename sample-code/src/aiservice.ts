@@ -10,9 +10,12 @@ const openAiClient = new OpenAiClient();
  * @returns The answer from GPT.
  */
 export async function chatCompletion(): Promise<string> {
-  const response = await openAiClient.chatCompletion('gpt-35-turbo', {
-    messages: [{ role: 'user', content: 'What is the capital of France?' }]
-  });
+  const response = await openAiClient.chatCompletion(
+    {
+      messages: [{ role: 'user', content: 'What is the capital of France?' }]
+    },
+    'gpt-35-turbo'
+  );
   const assistantMessage = response.choices[0]
     .message as OpenAiChatAssistantMessage;
   return assistantMessage.content!;
@@ -23,8 +26,12 @@ export async function chatCompletion(): Promise<string> {
  * @returns An embedding vector.
  */
 export async function computeEmbedding(): Promise<number[]> {
-  const response = await openAiClient.embeddings('text-embedding-ada-002', {
-    input: 'Hello, world!'
-  });
+  const response = await openAiClient.embeddings(
+    {
+      input: 'Hello, world!'
+    },
+    'text-embedding-ada-002'
+  );
+
   return response.data[0].embedding;
 }
