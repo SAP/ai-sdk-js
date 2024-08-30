@@ -1,7 +1,6 @@
 import {
   ChatMessages,
   FilteringModuleConfig,
-  InputParamsEntry,
   LLMModuleConfig,
   TemplatingModuleConfig
 } from './client/api/index.js';
@@ -18,7 +17,7 @@ export interface Prompt {
   /**
    * Template parameters.
    */
-  inputParams?: Record<string, InputParamsEntry>;
+  inputParams?: Record<string, string>;
 }
 
 // TODO: why do we have this extra type? and if there is a reason, why does it not apply to the filtering module?

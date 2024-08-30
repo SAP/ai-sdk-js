@@ -4,13 +4,12 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import type { DPIEntities } from './dpi-entities.js';
-import type { PresidioEntities } from './presidio-entities.js';
 /**
- * Representation of the 'UnmaskingConfig' schema.
+ * Representation of the 'DPIEntityConfig' schema.
  */
-export type UnmaskingConfig = {
+export type DPIEntityConfig = {
   /**
-   * List of entities to be unmasked.
+   * Type of entity to be masked.
    */
-  entities: DPIEntities | PresidioEntities[];
+  type: DPIEntities;
 } & Record<string, any>;
