@@ -9,5 +9,4 @@
     "include": ["src/**/*.ts"],
     "exclude": ["dist/**/*", "test/**/*", "**/*.test.ts", "node_modules/**/*"],
     "references": [{ "path": "../gen-ai-hub" }]
-  }
-  
+}
