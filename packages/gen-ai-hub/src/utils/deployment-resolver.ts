@@ -159,9 +159,10 @@ async function getAllDeployments(
  * @internal
  */
 export function extractModel(
+  // TODO: this type does not seem to be correct (backend_details => backendDetails), check why
   deployment: AiDeployment
 ): FoundationModel | undefined {
-  const model = deployment.details?.resources?.backendDetails?.model;
+  const model = deployment.details?.resources?.backend_details?.model;
   if (isFoundationModel(model)) {
     return model;
   }
