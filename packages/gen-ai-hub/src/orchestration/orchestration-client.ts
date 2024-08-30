@@ -28,7 +28,7 @@ export class OrchestrationClient {
    * @returns The completion result.
    */
   async chatCompletion(
-    prompt: Prompt,
+    prompt?: Prompt,
     requestConfig?: CustomRequestConfig
   ): Promise<CompletionPostResponse> {
     const body = constructCompletionPostRequest(this.config, prompt);
@@ -58,7 +58,7 @@ export class OrchestrationClient {
  */
 export function constructCompletionPostRequest(
   config: OrchestrationModuleConfig,
-  prompt: Prompt
+  prompt?: Prompt
 ): CompletionPostRequest {
   return {
     orchestration_config: {
@@ -72,10 +72,10 @@ export function constructCompletionPostRequest(
         })
       }
     },
-    ...(prompt.inputParams && {
+    ...(prompt?.inputParams && {
       input_params: prompt.inputParams
     }),
-    ...(prompt.messagesHistory && {
+    ...(prompt?.messagesHistory && {
       messages_history: prompt.messagesHistory
     })
   };

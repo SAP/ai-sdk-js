@@ -8,7 +8,8 @@ import type {
   OpenAiEmbeddingParameters,
   OpenAiEmbeddingOutput,
   OpenAiChatCompletionOutput,
-  OpenAiChatModel
+  OpenAiChatModel,
+  OpenAiEmbeddingModel
 } from './openai-types.js';
 
 const apiVersion = '2024-02-01';
@@ -19,7 +20,11 @@ const apiVersion = '2024-02-01';
 export class OpenAiClient {
   // TODO: document constructor
   //* @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
-  constructor(private modelDeployment: ModelDeployment<OpenAiChatModel>) {}
+  constructor(
+    private modelDeployment: ModelDeployment<
+      OpenAiChatModel | OpenAiEmbeddingModel
+    >
+  ) {}
 
   /**
    * Creates a completion for the chat messages.

@@ -36,7 +36,6 @@ export { isDeploymentIdConfiguration, getDeploymentId } from './utils/index.js';
 export type {
   OrchestrationModuleConfig,
   CompletionPostResponse,
-  PromptConfig,
   LlmConfig,
   ChatMessages,
   TokenUsage,
