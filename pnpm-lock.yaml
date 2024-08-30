@@ -31,7 +31,13 @@ importers:
       '@sap-cloud-sdk/eslint-config':
         specifier: ^3.20.0
         version: 3.20.0(@types/eslint@8.56.10)(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@9.9.1)(typescript@5.5.4))(eslint@9.9.1)(typescript@5.5.4))(@typescript-eslint/parser@7.18.0(eslint@9.9.1)(typescript@5.5.4))(eslint@9.9.1)(prettier@3.3.3)(typescript@5.5.4)
+      '@sap-cloud-sdk/generator-common':
+        specifier: ^3.20.0
+        version: 3.20.0
       '@sap-cloud-sdk/http-client':
+        specifier: ^3.20.0
+        version: 3.20.0
+      '@sap-cloud-sdk/util':
         specifier: ^3.20.0
         version: 3.20.0
       '@types/jest':
@@ -49,6 +55,9 @@ importers:
       eslint:
         specifier: ^9.9.1
         version: 9.9.1
+      glob:
+        specifier: ^10.4.3
+        version: 10.4.5
       jest:
         specifier: ^30.0.0-alpha.6
         version: 30.0.0-alpha.6(@types/node@20.16.2)(ts-node@10.9.2(@types/node@20.16.2)(typescript@5.5.4))

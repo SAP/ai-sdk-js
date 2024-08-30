@@ -291,7 +291,7 @@ export async function checkBarrelRecursive(cwd: string): Promise<void> {
   (await readdir(cwd, { withFileTypes: true }))
     .filter(dirent => dirent.isDirectory())
     .forEach(async subDir => {
-      if (subDir.name !== '__snapshots__') {
+      if (['__snapshot__', 'spec'].includes(subDir.name)) {
         await checkBarrelRecursive(join(cwd, subDir.name));
       }
     });
