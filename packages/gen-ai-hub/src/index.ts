@@ -4,7 +4,6 @@ export {
   OrchestrationCompletionParameters,
   CompletionPostResponse,
   azureContentFilter,
-  PromptConfig,
   LlmConfig,
   ChatMessages
 } from './orchestration/index.js';

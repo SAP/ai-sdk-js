@@ -1,6 +1,7 @@
 import { DeploymentApi, AiDeployment } from '@sap-ai-sdk/ai-core';
 import { CustomRequestConfig } from '@sap-ai-sdk/core';
 import { pickValueIgnoreCase } from '@sap-cloud-sdk/util';
+import { deploymentIdCache } from './deployment-id-cache.js';
 
 /**
  * The model deployment configuration when using a model. It can be either the name of the model or an object containing the name and version of the model.
@@ -64,10 +65,17 @@ export interface FoundationModel {
   version?: string;
 }
 
+function isFoundationModel(
+  model: Partial<FoundationModel> | undefined
+): model is FoundationModel {
+  return typeof model === 'object' && 'name' in model;
+}
+
 /**
  * The options for the deployment resolution.
+ * @internal
  */
-interface DeploymentResolutionOptions {
+export interface DeploymentResolutionOptions {
   /**
    * The scenario ID of the deployment.
    */
@@ -87,14 +95,19 @@ interface DeploymentResolutionOptions {
 }
 
 /**
- * Query the AI Core service for a deployment that matches the given criteria. If more than one deployment matches the criteria, the first one is returned.
+ * Query the AI Core service for a deployment that matches the given criteria. If more than one deployment matches the criteria, the first one's ID is returned.
  * @param opts - The options for the deployment resolution.
  * @returns A promise of a deployment, if a deployment was found, fails otherwise.
  */
-export async function resolveDeployment(
+export async function resolveDeploymentId(
   opts: DeploymentResolutionOptions
-): Promise<AiDeployment> {
+): Promise<string> {
   const { model } = opts;
+
+  const cachedId = deploymentIdCache.get(opts);
+  if (cachedId) {
+    return cachedId;
+  }
 
   let deployments = await getAllDeployments(opts);
 
@@ -115,7 +128,7 @@ export async function resolveDeployment(
       'No deployment matched the given criteria: ' + JSON.stringify(opts)
     );
   }
-  return deployments[0];
+  return deployments[0].id;
 }
 
 async function getAllDeployments(
@@ -139,10 +152,19 @@ async function getAllDeployments(
   }
 }
 
-function extractModel(
+/**
+ * Get the model information from a deployment.
+ * @param deployment - AI core model deployment.
+ * @returns The model information.
+ * @internal
+ */
+export function extractModel(
   deployment: AiDeployment
-): Partial<FoundationModel> | undefined {
-  return deployment.details?.resources?.backend_details?.model;
+): FoundationModel | undefined {
+  const model = deployment.details?.resources?.backendDetails?.model;
+  if (isFoundationModel(model)) {
+    return model;
+  }
 }
 
 /**
@@ -161,17 +183,15 @@ export async function getDeploymentId(
     return modelDeployment.deploymentId;
   }
 
-  return (
-    await resolveDeployment({
-      scenarioId: 'foundation-models',
-      executableId,
-      model: translateToFoundationModel(modelDeployment),
-      resourceGroup: pickValueIgnoreCase(
-        requestConfig?.headers,
-        'ai-resource-group'
-      )
-    })
-  ).id;
+  return resolveDeploymentId({
+    scenarioId: 'foundation-models',
+    executableId,
+    model: translateToFoundationModel(modelDeployment),
+    resourceGroup: pickValueIgnoreCase(
+      requestConfig?.headers,
+      'ai-resource-group'
+    )
+  });
 }
 
 function translateToFoundationModel(

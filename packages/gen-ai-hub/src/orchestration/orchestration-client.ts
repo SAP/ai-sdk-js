@@ -2,6 +2,10 @@ import { executeRequest, CustomRequestConfig } from '@sap-ai-sdk/core';
 import { pickValueIgnoreCase } from '@sap-cloud-sdk/util';
 import { resolveDeployment } from '../utils/deployment-resolver.js';
 import {
+  DeploymentIdConfiguration,
+  resolveDeploymentId
+} from '../utils/deployment-resolver.js';
+import {
   CompletionPostRequest,
   CompletionPostResponse
 } from './client/api/schema/index.js';
@@ -30,6 +34,19 @@ export class OrchestrationClient {
         await resolveDeployment({
           scenarioId: 'orchestration',
           model: {
+            name: this.config.llmConfig.model_name,
+            version: this.config.llmConfig.model_version
+          },
+          resourceGroup: pickValueIgnoreCase(
+            requestConfig?.headers,
+            'ai-resource-group'
+          )
+        })
+      ).id;
+      (
+        await resolveDeployment({
+          scenarioId: 'orchestration',
+          model: {
             name: data.llmConfig.model_name,
             version: data.llmConfig.model_version
           },
@@ -39,6 +56,17 @@ export class OrchestrationClient {
           )
         })
       ).id;
+      (await resolveDeploymentId({
+        scenarioId: 'orchestration',
+        model: {
+          name: data.llmConfig.model_name,
+          version: data.llmConfig.model_version
+        },
+        resourceGroup: pickValueIgnoreCase(
+          requestConfig?.headers,
+          'ai-resource-group'
+        )
+      }));
 
     const response = await executeRequest(
       {
