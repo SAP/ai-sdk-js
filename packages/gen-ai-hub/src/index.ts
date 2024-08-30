@@ -69,7 +69,6 @@ export {
   OrchestrationModuleConfig,
   CompletionPostResponse,
   azureContentFilter,
-  PromptConfig,
   LlmConfig,
   ChatMessages
 } from './orchestration/index.js';
