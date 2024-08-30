@@ -31,12 +31,12 @@ export type {
   DeploymentIdConfiguration,
   FoundationModel,
   ModelConfiguration
-} from './utils/index.js'
+} from './utils/index.js';
 export {
   isDeploymentIdConfiguration,
   getDeploymentId,
   resolveDeployment
-} from './utils/index.js'
+} from './utils/index.js';
 
 export type {
   OrchestrationCompletionParameters,
@@ -74,4 +74,7 @@ export type {
   AzureContentSafety,
   AzureContentSafetyFilterConfig
 } from './orchestration/index.js';
-export { OrchestrationClient, azureContentFilter } from './orchestration/index.js';
+export {
+  OrchestrationClient,
+  azureContentFilter
+} from './orchestration/index.js';
