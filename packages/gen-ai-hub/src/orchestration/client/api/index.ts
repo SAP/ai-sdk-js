@@ -3,6 +3,4 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-export * from './orchestration-completion-api.js';
-export * from './orchestration-healthz-api.js';
 export * from './schema/index.js';

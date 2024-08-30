@@ -8,7 +8,7 @@ info:
   version: 0.0.1
 
 servers:
-  - url: "/v1"
+  - url: '/v1'
 
 tags:
   - name: Orchestrated Completion
@@ -25,18 +25,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CompletionPostRequest"
+              $ref: '#/components/schemas/CompletionPostRequest'
       responses:
         200:
-          description: "Successful response"
+          description: 'Successful response'
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CompletionPostResponse"
+                $ref: '#/components/schemas/CompletionPostResponse'
         400:
-          $ref: "#/components/responses/BadRequest"
+          $ref: '#/components/responses/BadRequest'
         default:
-          $ref: "#/components/responses/CommonError"
+          $ref: '#/components/responses/CommonError'
 
   /healthz:
     get:
@@ -44,15 +44,15 @@ paths:
         - OrchestrationHealthz
       operationId: orchestration.v1.endpoints.healthz
       responses:
-        "200":
-          description: "Service is up and running."
+        '200':
+          description: 'Service is up and running.'
           content:
             text/plain:
               schema:
                 type: string
-                example: "OK"
-        "503":
-          description: "Service is unavailable."
+                example: 'OK'
+        '503':
+          description: 'Service is unavailable.'
           content:
             application/json:
               schema:
@@ -60,7 +60,7 @@ paths:
                 properties:
                   status:
                     type: string
-                    example: "Service Unavailable"
+                    example: 'Service Unavailable'
 
 components:
   schemas:
@@ -70,23 +70,23 @@ components:
         - orchestration_config
       properties:
         orchestration_config:
-          $ref: "#/components/schemas/OrchestrationConfig"
+          $ref: '#/components/schemas/OrchestrationConfig'
         input_params:
           type: object
           example:
-            groundingInput: "What is SAP Joule?"
-            inputContext: "optimizing supply chain management"
+            groundingInput: 'What is SAP Joule?'
+            inputContext: 'optimizing supply chain management'
           additionalProperties:
             type: string
         messages_history:
           allOf:
-            - $ref: "#/components/schemas/ChatMessages"
+            - $ref: '#/components/schemas/ChatMessages'
           description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
 
     ChatMessages:
       type: array
       items:
-        $ref: "#/components/schemas/ChatMessage"
+        $ref: '#/components/schemas/ChatMessage'
 
     ChatMessage:
       type: object
@@ -99,7 +99,7 @@ components:
           example: user
         content:
           type: string
-          example: "What is SAP S/4HANA?"
+          example: 'What is SAP S/4HANA?'
 
     CompletionPostResponse:
       type: object
@@ -111,11 +111,11 @@ components:
         request_id:
           description: ID of the request
           type: string
-          example: "d4a67ea1-2bf9-4df7-8105-d48203ccff76"
+          example: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
         module_results:
-          $ref: "#/components/schemas/ModuleResults"
+          $ref: '#/components/schemas/ModuleResults'
         orchestration_result:
-          $ref: "#/components/schemas/LLMModuleResult"
+          $ref: '#/components/schemas/LLMModuleResult'
 
     OrchestrationConfig:
       type: object
@@ -123,7 +123,7 @@ components:
         - module_configurations
       properties:
         module_configurations:
-          $ref: "#/components/schemas/ModuleConfigs"
+          $ref: '#/components/schemas/ModuleConfigs'
 
     ModuleConfigs:
       type: object
@@ -132,15 +132,15 @@ components:
         - templating_module_config
       properties:
         llm_module_config:
-          $ref: "#/components/schemas/LLMModuleConfig"
+          $ref: '#/components/schemas/LLMModuleConfig'
         templating_module_config:
-          $ref: "#/components/schemas/TemplatingModuleConfig"
+          $ref: '#/components/schemas/TemplatingModuleConfig'
         filtering_module_config:
-          $ref: "#/components/schemas/FilteringModuleConfig"
+          $ref: '#/components/schemas/FilteringModuleConfig'
         masking_module_config:
-          $ref: "#/components/schemas/MaskingModuleConfig"
+          $ref: '#/components/schemas/MaskingModuleConfig'
         grounding_module_config:
-          $ref: "#/components/schemas/GroundingModuleConfig"
+          $ref: '#/components/schemas/GroundingModuleConfig'
 
     ModuleResults:
       description: Results of each module.
@@ -148,21 +148,21 @@ components:
       additionalProperties: false
       properties:
         grounding:
-          $ref: "#/components/schemas/GenericModuleResult"
+          $ref: '#/components/schemas/GenericModuleResult'
         templating:
-          $ref: "#/components/schemas/ChatMessages"
+          $ref: '#/components/schemas/ChatMessages'
         input_masking:
-          $ref: "#/components/schemas/GenericModuleResult"
+          $ref: '#/components/schemas/GenericModuleResult'
         input_filtering:
-          $ref: "#/components/schemas/GenericModuleResult"
+          $ref: '#/components/schemas/GenericModuleResult'
         llm:
-          $ref: "#/components/schemas/LLMModuleResult"
+          $ref: '#/components/schemas/LLMModuleResult'
         output_filtering:
-          $ref: "#/components/schemas/GenericModuleResult"
+          $ref: '#/components/schemas/GenericModuleResult'
         output_unmasking:
           type: array
           items:
-            $ref: "#/components/schemas/LLMChoice"
+            $ref: '#/components/schemas/LLMChoice'
 
     # --- LLM MODULE ---
     LLMModuleConfig:
@@ -173,7 +173,7 @@ components:
       properties:
         model_name:
           description: Model name as in LLM Access configuration
-          example: "gpt-4"
+          example: 'gpt-4'
           type: string
         model_params:
           description: Model parameters
@@ -187,7 +187,7 @@ components:
         model_version:
           description: Version of the model to use
           type: string
-          default: "latest"
+          default: 'latest'
 
     GenericModuleResult:
       type: object
@@ -217,7 +217,7 @@ components:
         id:
           type: string
           description: ID of the response
-          example: "chatcmpl-9rO0aLoPKY7RtqkWi1317bazHEVFr"
+          example: 'chatcmpl-9rO0aLoPKY7RtqkWi1317bazHEVFr'
         object:
           type: string
           description: Object type
@@ -229,18 +229,18 @@ components:
         model:
           type: string
           description: Model name
-          example: "gpt-4"
+          example: 'gpt-4'
         system_fingerprint:
           type: string
           description: System fingerprint
-          example: "fp_44709d6fcb"
+          example: 'fp_44709d6fcb'
         choices:
           type: array
           description: Choices
           items:
-            $ref: "#/components/schemas/LLMChoice"
+            $ref: '#/components/schemas/LLMChoice'
         usage:
-          $ref: "#/components/schemas/TokenUsage"
+          $ref: '#/components/schemas/TokenUsage'
 
     LLMChoice:
       type: object
@@ -254,7 +254,7 @@ components:
           description: Index of the choice
           example: 0
         message:
-          $ref: "#/components/schemas/ChatMessage"
+          $ref: '#/components/schemas/ChatMessage'
         logprobs:
           type: object
           description: Log probabilities
@@ -297,7 +297,7 @@ components:
       properties:
         template:
           allOf:
-            - $ref: "#/components/schemas/ChatMessages"
+            - $ref: '#/components/schemas/ChatMessages'
           description: A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
         defaults:
           description: Optional default values for the template. If a parameter has no default it is required.
@@ -305,7 +305,7 @@ components:
       example:
         template:
           - role: user
-            content: "How can the features of AI in SAP BTP specifially {{?groundingOutput}}, be applied to {{?inputContext}}"
+            content: 'How can the features of AI in SAP BTP specifially {{?groundingOutput}}, be applied to {{?inputContext}}'
         defaults:
           inputContext: The default text that will be used in the template if inputContext is not set
 
@@ -315,11 +315,11 @@ components:
       properties:
         input:
           allOf:
-            - $ref: "#/components/schemas/FilteringConfig"
+            - $ref: '#/components/schemas/FilteringConfig'
           description: List of provider type and filters
         output:
           allOf:
-            - $ref: "#/components/schemas/FilteringConfig"
+            - $ref: '#/components/schemas/FilteringConfig'
           description: List of provider type and filters
       additionalProperties: false
 
@@ -333,11 +333,11 @@ components:
           type: array
           minItems: 1
           items:
-            $ref: "#/components/schemas/FilterConfig"
+            $ref: '#/components/schemas/FilterConfig'
 
     FilterConfig:
       oneOf:
-        - $ref: "#/components/schemas/AzureContentSafetyFilterConfig"
+        - $ref: '#/components/schemas/AzureContentSafetyFilterConfig'
 
     AzureContentSafetyFilterConfig:
       type: object
@@ -351,21 +351,21 @@ components:
             - azure_content_safety
           example: azure_content_safety
         config:
-          $ref: "#/components/schemas/AzureContentSafety"
+          $ref: '#/components/schemas/AzureContentSafety'
 
     AzureContentSafety:
       description: Filter configuration for Azure Content Safety
       type: object
       additionalProperties: false
       properties:
-        "Hate":
-          $ref: "#/components/schemas/AzureThreshold"
-        "SelfHarm":
-          $ref: "#/components/schemas/AzureThreshold"
-        "Sexual":
-          $ref: "#/components/schemas/AzureThreshold"
-        "Violence":
-          $ref: "#/components/schemas/AzureThreshold"
+        'Hate':
+          $ref: '#/components/schemas/AzureThreshold'
+        'SelfHarm':
+          $ref: '#/components/schemas/AzureThreshold'
+        'Sexual':
+          $ref: '#/components/schemas/AzureThreshold'
+        'Violence':
+          $ref: '#/components/schemas/AzureThreshold'
 
     AzureThreshold:
       type: integer
@@ -387,13 +387,13 @@ components:
           type: array
           minItems: 1
           items:
-            $ref: "#/components/schemas/MaskingProviderConfig"
+            $ref: '#/components/schemas/MaskingProviderConfig'
           description: List of masking service providers
       additionalProperties: false
 
     MaskingProviderConfig:
       oneOf:
-        - $ref: "#/components/schemas/DPIConfig"
+        - $ref: '#/components/schemas/DPIConfig'
 
     DPIConfig:
       type: object
@@ -402,7 +402,7 @@ components:
         - method
         - entities
       properties:
-        type: 
+        type:
           description: Type of masking service provider
           type: string
           enum:
@@ -418,7 +418,7 @@ components:
           type: array
           minItems: 1
           items:
-            $ref: "#/components/schemas/DPIEntityConfig"
+            $ref: '#/components/schemas/DPIEntityConfig'
 
     DPIEntityConfig:
       type: object
@@ -428,7 +428,7 @@ components:
         type:
           description: Type of entity to be masked
           allOf:
-            - $ref: "#/components/schemas/DPIEntities"
+            - $ref: '#/components/schemas/DPIEntities'
 
     DPIEntities:
       description: Default entities supported by data privacy and integration service
@@ -481,7 +481,7 @@ components:
             filters:
               type: array
               items:
-                $ref: "#/components/schemas/GroundingFilter"
+                $ref: '#/components/schemas/GroundingFilter'
               description: Document grounding service filters to be used
             grounding_input_parameters:
               type: array
@@ -498,7 +498,7 @@ components:
       properties:
         id:
           type: string
-          example: "string"
+          example: 'string'
         search_configuration:
           type: object
           example: {}
@@ -506,7 +506,7 @@ components:
           type: array
           items:
             type: string
-          example: ["*"]
+          example: ['*']
         data_repository_type:
           type: string
           enum:
@@ -539,7 +539,7 @@ components:
       properties:
         request_id:
           type: string
-          example: "d4a67ea1-2bf9-4df7-8105-d48203ccff76"
+          example: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
         code:
           type: integer
           example: 400
@@ -549,9 +549,9 @@ components:
         location:
           type: string
           description: Where the error occurred
-          example: "LLM Module"
+          example: 'LLM Module'
         module_results:
-          $ref: "#/components/schemas/ModuleResults"
+          $ref: '#/components/schemas/ModuleResults'
 
   responses:
     BadRequest:
@@ -559,10 +559,10 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorResponse"
+            $ref: '#/components/schemas/ErrorResponse'
     CommonError:
       description: Common Error
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorResponse"
+            $ref: '#/components/schemas/ErrorResponse'
