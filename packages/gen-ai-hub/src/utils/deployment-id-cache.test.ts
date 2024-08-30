@@ -111,7 +111,7 @@ function mockAiDeployment(id: string, model?: Partial<FoundationModel>) {
   return {
     id,
     details: {
-      resources: { backendDetails }
+      resources: { backend_details: backendDetails }
     }
   } as unknown as AiDeployment;
 }
