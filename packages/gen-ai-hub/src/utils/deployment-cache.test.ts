@@ -17,7 +17,7 @@ describe('deployment cache', () => {
       id: 'deployment-id',
       details: {
         resources: {
-          backend_details: { model: { name: 'gpt-4o', version: 'latest' } }
+          backendDetails: { model: { name: 'gpt-4o', version: 'latest' } }
         }
       }
     } as unknown as AiDeployment);
@@ -121,7 +121,7 @@ function mockAiDeployment(id: string, model?: Partial<FoundationModel>) {
   return {
     id,
     details: {
-      resources: { backend_details: backendDetails }
+      resources: { backendDetails }
     }
   } as unknown as AiDeployment;
 }
