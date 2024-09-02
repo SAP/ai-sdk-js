@@ -1,6 +1,6 @@
 import { executeRequest, CustomRequestConfig } from '@sap-ai-sdk/core';
 import { pickValueIgnoreCase } from '@sap-cloud-sdk/util';
-import { resolveDeployment } from '../utils/deployment-resolver.js';
+import { resolveDeploymentId } from '../utils/deployment-resolver.js';
 import {
   CompletionPostRequest,
   CompletionPostResponse
@@ -26,19 +26,17 @@ export class OrchestrationClient {
     const body = constructCompletionPostRequest(data);
     deploymentId =
       deploymentId ??
-      (
-        await resolveDeployment({
-          scenarioId: 'orchestration',
-          model: {
-            name: data.llmConfig.model_name,
-            version: data.llmConfig.model_version
-          },
-          resourceGroup: pickValueIgnoreCase(
-            requestConfig?.headers,
-            'ai-resource-group'
-          )
-        })
-      ).id;
+      (await resolveDeploymentId({
+        scenarioId: 'orchestration',
+        model: {
+          name: data.llmConfig.model_name,
+          version: data.llmConfig.model_version
+        },
+        resourceGroup: pickValueIgnoreCase(
+          requestConfig?.headers,
+          'ai-resource-group'
+        )
+      }));
 
     const response = await executeRequest(
       {

@@ -1,9 +1,11 @@
 import nock from 'nock';
+import { AiDeployment } from '@sap-ai-sdk/ai-core';
 import {
   mockClientCredentialsGrantCall,
   aiCoreDestination
 } from '../../../../test-util/mock-http.js';
-import { resolveDeployment } from './deployment-resolver.js';
+import { resolveDeploymentId } from './deployment-resolver.js';
+import { deploymentCache } from './deployment-cache.js';
 
 describe('deployment resolver', () => {
   beforeEach(() => {
@@ -19,15 +21,19 @@ describe('deployment resolver', () => {
       mockResponse();
     });
 
+    afterEach(() => {
+      deploymentCache.clear();
+    });
+
     it('should return the first deployment, if multiple are given', async () => {
-      const { id } = await resolveDeployment({
+      const id = await resolveDeploymentId({
         scenarioId: 'foundation-models'
       });
       expect(id).toBe('1');
     });
 
     it('should return the first deployment with the correct model name', async () => {
-      const { id } = await resolveDeployment({
+      const id = await resolveDeploymentId({
         scenarioId: 'foundation-models',
         model: { name: 'gpt-4o' }
       });
@@ -35,16 +41,27 @@ describe('deployment resolver', () => {
     });
 
     it('should return the deployment with the correct model name and version', async () => {
-      const { id } = await resolveDeployment({
+      const id = await resolveDeploymentId({
         scenarioId: 'foundation-models',
         model: { name: 'gpt-4o', version: '0613' }
       });
       expect(id).toBe('2');
     });
 
+    it('should retrieve deployment from cache if available', async () => {
+      const opts = {
+        scenarioId: 'foundation-models',
+        model: { name: 'gpt-4o', version: '0613' }
+      };
+      deploymentCache.set(opts, { id: '1' } as AiDeployment);
+      const id = await resolveDeploymentId(opts);
+      expect(id).toBe('1');
+      expect(nock.isDone()).toBe(false);
+    });
+
     it('should throw in case no deployment with the given model name is found', async () => {
       await expect(
-        resolveDeployment({
+        resolveDeploymentId({
           scenarioId: 'foundation-models',
           model: { name: 'not existing' }
         })
@@ -53,7 +70,7 @@ describe('deployment resolver', () => {
 
     it('should throw in case no deployment with the given model and version is found', async () => {
       await expect(
-        resolveDeployment({
+        resolveDeploymentId({
           scenarioId: 'foundation-models',
           model: { name: 'gpt-4o', version: 'not existing' }
         })
@@ -75,7 +92,7 @@ describe('deployment resolver', () => {
       });
 
     await expect(
-      resolveDeployment({
+      resolveDeploymentId({
         scenarioId: 'foundation-models',
         model: { name: 'gpt-4o', version: '0613' }
       })
@@ -108,7 +125,7 @@ describe('deployment resolver', () => {
         ]
       });
 
-    const { id } = await resolveDeployment({
+    const id = await resolveDeploymentId({
       scenarioId: 'foundation-models',
       model: { name: 'gpt-4o' },
       resourceGroup: 'otherId'
