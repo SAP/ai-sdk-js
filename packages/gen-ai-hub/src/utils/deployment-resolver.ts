@@ -1,7 +1,8 @@
-import { DeploymentApi, AiDeployment } from '@sap-ai-sdk/ai-core';
+import { DeploymentApi, type AiDeployment } from '@sap-ai-sdk/ai-core';
 import { CustomRequestConfig } from '@sap-ai-sdk/core';
 import { pickValueIgnoreCase } from '@sap-cloud-sdk/util';
-import { deploymentIdCache } from './deployment-id-cache.js';
+import { deploymentIdCache } from './deployment-cache.js';
+import { extractModel, type FoundationModel } from './model.js';
 
 /**
  * The model deployment configuration when using a model. It can be either the name of the model or an object containing the name and version of the model.
@@ -52,26 +53,6 @@ export function isDeploymentIdConfiguration(
 }
 
 /**
- * A foundation model is identified by its name and potentially a version.
- */
-export interface FoundationModel {
-  /**
-   * The name of the model.
-   */
-  name: string;
-  /**
-   * The version of the model.
-   */
-  version?: string;
-}
-
-function isFoundationModel(
-  model: Partial<FoundationModel> | undefined
-): model is FoundationModel {
-  return typeof model === 'object' && 'name' in model;
-}
-
-/**
  * The options for the deployment resolution.
  * @internal
  */
@@ -104,9 +85,9 @@ export async function resolveDeploymentId(
 ): Promise<string> {
   const { model } = opts;
 
-  const cachedId = deploymentIdCache.get(opts);
-  if (cachedId) {
-    return cachedId;
+  const cachedDeployment = deploymentIdCache.get(opts);
+  if (cachedDeployment?.id) {
+    return cachedDeployment.id;
   }
 
   let deployments = await getAllDeployments(opts);
@@ -149,22 +130,6 @@ async function getAllDeployments(
     ).resources;
   } catch (error) {
     throw new Error('Failed to fetch the list of deployments: ' + error);
-  }
-}
-
-/**
- * Get the model information from a deployment.
- * @param deployment - AI core model deployment.
- * @returns The model information.
- * @internal
- */
-export function extractModel(
-  // TODO: this type does not seem to be correct (backend_details => backendDetails), check why
-  deployment: AiDeployment
-): FoundationModel | undefined {
-  const model = deployment.details?.resources?.backend_details?.model;
-  if (isFoundationModel(model)) {
-    return model;
   }
 }
 

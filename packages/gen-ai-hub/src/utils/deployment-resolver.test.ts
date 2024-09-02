@@ -1,10 +1,11 @@
 import nock from 'nock';
+import { AiDeployment } from '@sap-ai-sdk/ai-core';
 import {
   mockClientCredentialsGrantCall,
   aiCoreDestination
 } from '../../../../test-util/mock-http.js';
 import { resolveDeploymentId } from './deployment-resolver.js';
-import { deploymentIdCache } from './deployment-id-cache.js';
+import { deploymentIdCache } from './deployment-cache.js';
 
 describe('deployment resolver', () => {
   beforeEach(() => {
@@ -52,7 +53,7 @@ describe('deployment resolver', () => {
         scenarioId: 'foundation-models',
         model: { name: 'gpt-4o', version: '0613' }
       };
-      deploymentIdCache.set(opts, '1');
+      deploymentIdCache.set(opts, { id: '1' } as AiDeployment);
       const id = await resolveDeploymentId(opts);
       expect(id).toBe('1');
       expect(nock.isDone()).toBe(false);

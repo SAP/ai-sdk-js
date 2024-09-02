@@ -1,24 +1,34 @@
-import { AiDeployment } from '@sap-ai-sdk/ai-core';
-import { deploymentIdCache } from './deployment-id-cache.js';
-import { FoundationModel } from './deployment-resolver.js';
+import { type AiDeployment } from '@sap-ai-sdk/ai-core';
+import { deploymentIdCache } from './deployment-cache.js';
+import { FoundationModel } from './model.js';
 
 describe('deployment id cache', () => {
   afterEach(() => {
     deploymentIdCache.clear();
   });
 
-  it('should cache the deployment ID', () => {
+  it('should cache the deployment', () => {
     const opts = {
       scenarioId: 'foundation-models',
       executableId: 'execution-id',
       model: { name: 'gpt-4o', version: 'latest' }
     };
-    deploymentIdCache.set(opts, 'deployment-id');
+    deploymentIdCache.set(opts, {
+      id: 'deployment-id',
+      details: {
+        resources: {
+          backend_details: { model: { name: 'gpt-4o', version: 'latest' } }
+        }
+      }
+    } as unknown as AiDeployment);
 
-    expect(deploymentIdCache.get(opts)).toEqual('deployment-id');
+    expect(deploymentIdCache.get(opts)).toEqual({
+      id: 'deployment-id',
+      model: { name: 'gpt-4o', version: 'latest' }
+    });
   });
 
-  it('should cache all deployment IDs independent of potentially given models', () => {
+  it('should cache all deployments independent of potentially given models', () => {
     const opts = {
       scenarioId: 'foundation-models',
       model: { name: 'gpt-4o', version: 'latest' }
@@ -43,7 +53,7 @@ describe('deployment id cache', () => {
           name: 'gpt-35-turbo',
           version: 'latest'
         }
-      })
+      })?.id
     ).toEqual('deployment-id1');
     expect(
       deploymentIdCache.get({
@@ -52,11 +62,11 @@ describe('deployment id cache', () => {
           name: 'gpt-35-turbo',
           version: '123'
         }
-      })
+      })?.id
     ).toEqual('deployment-id2');
   });
 
-  it('should cache only the first deployment IDs for equal models and versions', () => {
+  it('should cache only the first deployments for equal models and versions', () => {
     const opts = {
       scenarioId: 'foundation-models'
     };
@@ -70,11 +80,11 @@ describe('deployment id cache', () => {
       deploymentIdCache.get({
         ...opts,
         model: { name: 'gpt-4o', version: 'latest' }
-      })
+      })?.id
     ).toEqual('deployment-id1');
   });
 
-  it('should cache only the first deployment IDs for equal models and no versions', () => {
+  it('should cache only the first deployments for equal models and no versions', () => {
     const opts = {
       scenarioId: 'foundation-models'
     };
@@ -88,7 +98,7 @@ describe('deployment id cache', () => {
       deploymentIdCache.get({
         ...opts,
         model: { name: 'gpt-4o' }
-      })
+      })?.id
     ).toEqual('deployment-id1');
   });
 
@@ -102,7 +112,7 @@ describe('deployment id cache', () => {
       mockAiDeployment('deployment-id2', { version: 'latest' })
     ]);
 
-    expect(deploymentIdCache.get(opts)).toEqual('deployment-id1');
+    expect(deploymentIdCache.get(opts)?.id).toEqual('deployment-id1');
   });
 });
 
