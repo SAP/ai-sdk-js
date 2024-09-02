@@ -5,17 +5,14 @@ import { ChatResult } from '@langchain/core/outputs';
 import { StructuredTool } from '@langchain/core/tools';
 import { ChatOpenAI, ChatOpenAICallOptions, OpenAIChatInput } from '@langchain/openai';
 import { zodToJsonSchema } from 'zod-to-json-schema';
-import { OpenAiClient } from '@sap-ai-sdk/gen-ai-hub';
+import { OpenAiChatAssistantMessage, OpenAiChatModel, OpenAiChatToolMessage, OpenAiClient } from '@sap-ai-sdk/gen-ai-hub';
 import { BTPBaseLLMParameters } from '../../client/base.js';
 import {
-  BTPOpenAIGPTAssistantMessage,
   BTPOpenAIGPTChatCompletionResult,
-  BTPOpenAIGPTChatModel,
   BTPOpenAIGPTFunction,
   BTPOpenAIGPTFunctionCall,
   BTPOpenAIGPTMessage,
   BTPOpenAIGPTTool,
-  BTPOpenAIGPTToolMessage,
 } from '../../client/openai.js';
 import { BTPLLMError } from '../../core/error.js';
 
@@ -24,7 +21,7 @@ import { BTPLLMError } from '../../core/error.js';
  */
 export interface BTPOpenAIGPTChatInput
   extends Omit<OpenAIChatInput, 'modelName' | 'openAIApiKey' | 'streaming'>,
-    BTPBaseLLMParameters<BTPOpenAIGPTChatModel>,
+    BTPBaseLLMParameters<OpenAiChatModel>,
     BaseChatModelParams {}
 
 /**
@@ -45,7 +42,7 @@ export class BTPOpenAIGPTChat extends ChatOpenAI implements BTPOpenAIGPTChatInpu
 
   private btpOpenAIClient: OpenAiClient;
 
-  deployment_id: BTPOpenAIGPTChatModel;
+  deployment_id: OpenAiChatModel;
 
   constructor(fields?: Partial<BTPOpenAIGPTChatInput>) {
     super({ ...fields, openAIApiKey: 'dummy' });
@@ -194,24 +191,24 @@ export class BTPOpenAIGPTChat extends ChatOpenAI implements BTPOpenAIGPTChatInpu
   protected mapBTPOpenAIMessagesToChatResult(res: BTPOpenAIGPTChatCompletionResult): ChatResult {
     return {
       generations: res.choices.map((c) => ({
-          text: (c.message as BTPOpenAIGPTAssistantMessage).content || '',
+          text: (c.message as OpenAiChatAssistantMessage).content || '',
           message: new AIMessage({
-            content: (c.message as BTPOpenAIGPTAssistantMessage).content || '',
+            content: (c.message as OpenAiChatAssistantMessage).content || '',
             additional_kwargs: {
               finish_reason: c.finish_reason,
               index: c.index,
               logprobs: c.logprobs,
-              function_call: (c.message as BTPOpenAIGPTAssistantMessage).function_call, // add `function_call` parameter
-              tool_calls: (c.message as BTPOpenAIGPTAssistantMessage).tool_calls,
-              tool_call_id: (c.message as BTPOpenAIGPTToolMessage).tool_call_id,
+              function_call: (c.message as OpenAiChatAssistantMessage).function_call, // add `function_call` parameter
+              tool_calls: (c.message as OpenAiChatAssistantMessage).tool_calls,
+              tool_call_id: (c.message as OpenAiChatToolMessage).tool_call_id,
             },
           }),
           generationInfo: {
             finish_reason: c.finish_reason,
             index: c.index,
             logprobs: c.logprobs,
-            function_call: (c.message as BTPOpenAIGPTAssistantMessage).function_call, // add `function_call` parameter
-            tool_calls: (c.message as BTPOpenAIGPTAssistantMessage).tool_calls,
+            function_call: (c.message as OpenAiChatAssistantMessage).function_call, // add `function_call` parameter
+            tool_calls: (c.message as OpenAiChatAssistantMessage).tool_calls,
           },
         })),
       llmOutput: {
