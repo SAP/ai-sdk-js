@@ -1,7 +1,9 @@
 import { HttpResponse } from "@sap-cloud-sdk/http-client";
 import { CompletionPostResponse } from "./client/api/schema/index.js";
 
-// Define a wrapper class to expose utility methods and properties
+/**
+ * Respresentation of Orchestration response.
+ */
 export class OrchestrationResponse {
   public data: CompletionPostResponse
   constructor(private rawResponse: HttpResponse,) {

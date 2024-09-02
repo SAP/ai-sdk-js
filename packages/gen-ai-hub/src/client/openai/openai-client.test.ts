@@ -5,12 +5,12 @@ import {
   parseMockResponse
 } from '../../../../../test-util/mock-http.js';
 import {
-  OpenAiChatCompletionOutput,
   OpenAiChatMessage,
   OpenAiEmbeddingOutput,
   OpenAiEmbeddingParameters
 } from './openai-types.js';
 import { OpenAiClient } from './openai-client.js';
+import { OpenAiChatCompletionResponse } from './openai-response.js';
 
 describe('openai client', () => {
   const chatCompletionEndpoint = {
@@ -43,7 +43,7 @@ describe('openai client', () => {
         ] as OpenAiChatMessage[]
       };
 
-      const mockResponse = parseMockResponse<OpenAiChatCompletionOutput>(
+      const mockResponse = parseMockResponse<OpenAiChatCompletionResponse>(
         'openai',
         'openai-chat-completion-success-response.json'
       );
@@ -62,7 +62,7 @@ describe('openai client', () => {
       const response = await client.chatCompletion(prompt, {
         deploymentId: '1234'
       });
-      expect(response).toEqual(mockResponse);
+      expect(response).toEqual(mockResponse.data);
     });
 
     it('throws on bad request', async () => {

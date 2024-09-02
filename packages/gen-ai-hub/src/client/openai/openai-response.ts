@@ -1,7 +1,9 @@
 import { HttpResponse } from "@sap-cloud-sdk/http-client";
 import { OpenAiChatCompletionOutput } from "./openai-types.js";
 
-// Define a wrapper class to expose utility methods and properties
+/**
+ * Open AI chat completion response.
+ */
 export class OpenAiChatCompletionResponse {
   public data: OpenAiChatCompletionOutput
   constructor(private rawResponse: HttpResponse,) {
