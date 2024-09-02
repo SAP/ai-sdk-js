@@ -116,18 +116,19 @@ async function getAllDeployments(
   opts: DeploymentResolutionOptions
 ): Promise<AiDeployment[]> {
   const { scenarioId, executableId, resourceGroup = 'default' } = opts;
-  // TODO: add a cache: https://github.tools.sap/AI/gen-ai-hub-sdk-js-backlog/issues/78
   try {
-    return (
-      await DeploymentApi.deploymentQuery(
-        {
-          scenarioId,
-          status: 'RUNNING',
-          ...(executableId && { executableIds: [executableId] })
-        },
-        { 'AI-Resource-Group': resourceGroup }
-      ).execute()
-    ).resources;
+    const { resources } = await DeploymentApi.deploymentQuery(
+      {
+        scenarioId,
+        status: 'RUNNING',
+        ...(executableId && { executableIds: [executableId] })
+      },
+      { 'AI-Resource-Group': resourceGroup }
+    ).execute();
+
+    deploymentCache.setAll(opts, resources);
+
+    return resources;
   } catch (error) {
     throw new Error('Failed to fetch the list of deployments: ' + error);
   }

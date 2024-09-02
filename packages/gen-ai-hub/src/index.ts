@@ -29,14 +29,9 @@ export { OpenAiClient } from './client/index.js';
 export type {
   ModelDeployment,
   DeploymentIdConfiguration,
-  FoundationModel,
   ModelConfiguration
 } from './utils/index.js';
-export {
-  isDeploymentIdConfiguration,
-  getDeploymentId,
-  resolveDeployment
-} from './utils/index.js';
+export { isDeploymentIdConfiguration, getDeploymentId } from './utils/index.js';
 
 export type {
   OrchestrationCompletionParameters,
