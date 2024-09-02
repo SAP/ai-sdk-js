@@ -8,7 +8,7 @@ import {
   CompletionPostResponse
 } from './client/api/schema/index.js';
 import { OrchestrationCompletionParameters } from './orchestration-types.js';
-import { OrchestrationResponse } from './orchestration-response-wrapper.js';
+import { OrchestrationResponse } from './orchestration-response.js';
 
 /**
  * Get the orchestration client.
@@ -26,7 +26,7 @@ export class OrchestrationClient {
     deploymentResolver: DeploymentResolver = () =>
       resolveDeployment({ scenarioId: 'orchestration' }),
     requestConfig?: CustomRequestConfig
-  ): Promise<CompletionPostResponse> {
+  ): Promise<OrchestrationResponse> {
     const body = constructCompletionPostRequest(data);
     const deployment =
       typeof deploymentResolver === 'function'
@@ -40,27 +40,8 @@ export class OrchestrationClient {
       body,
       requestConfig
     );
-    return response.data;
-  }
 
-  // Update the API function to return the class instance
-  async chatCompletionProposal2(
-    data: OrchestrationCompletionParameters,
-    deploymentResolver: DeploymentResolver = () => resolveDeployment({ scenarioId: 'orchestration' }),
-    requestConfig?: CustomRequestConfig
-  ): Promise<OrchestrationResponse> {
-    const body = constructCompletionPostRequest(data);
-    const deployment =
-      typeof deploymentResolver === 'function' ? (await deploymentResolver()).id : deploymentResolver;
-  
-    const response = await executeRequest(
-      {
-        url: `/inference/deployments/${deployment}/completion`
-      },
-      body,
-      requestConfig
-    );
-    return new OrchestrationResponse(response); // Return instance of the new class
+    return new OrchestrationResponse(response);
   }
 }
 
@@ -89,37 +70,5 @@ export function constructCompletionPostRequest(
       messages_history: input.prompt.messages_history
     })
   };
-}
-
-export interface MessageContent {
-  content: string;
-  finish_reason: string;
-}
-
-/**
- * Parses the orchestration response and returns the content and finish reason of the choice.
- * @param response - The orchestration response.
- * @param choiceIndex - The index of the choice to parse.
- * @returns The content and finish reason of the choice.
- */
-export function parseMessageContent(response: CompletionPostResponse, choiceIndex?: number): MessageContent[] {
-  const choices = response.orchestration_result.choices;
-
-  if(choiceIndex === undefined) {
-    return choices.map(choice => ({
-      content: choice.message.content,
-      finish_reason: choice.finish_reason
-    }));
-  }
-
-  if (choiceIndex < 0 || choiceIndex >= choices.length) {
-    throw new Error('Invalid choice index.');
-  }
-
-  const choice = choices[choiceIndex];
-  return [{ 
-    content: choice.message.content,
-    finish_reason: choice.finish_reason 
-  }];
 }
 

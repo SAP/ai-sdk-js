@@ -12,6 +12,7 @@ import {
   OpenAiChatModel,
   OpenAiEmbeddingModel
 } from './openai-types.js';
+import { OpenAiChatCompletionResponse } from './openai-response.js';
 
 const apiVersion = '2024-02-01';
 
@@ -32,7 +33,7 @@ export class OpenAiClient {
     data: OpenAiChatCompletionParameters,
     deploymentResolver?: DeploymentResolver,
     requestConfig?: CustomRequestConfig
-  ): Promise<OpenAiChatCompletionOutput> {
+  ): Promise<OpenAiChatCompletionResponse> {
     const deploymentId = await resolveOpenAiDeployment(
       model,
       deploymentResolver
@@ -45,7 +46,7 @@ export class OpenAiClient {
       data,
       mergeRequestConfig(requestConfig)
     );
-    return response.data;
+    return new OpenAiChatCompletionResponse(response);
   }
   /**
    * Creates an embedding vector representing the given text.

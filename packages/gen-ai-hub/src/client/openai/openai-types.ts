@@ -345,7 +345,7 @@ export interface OpenAiEmbeddingParameters {
 /**
  * Usage statistics for the completion request.
  */
-interface OpenAiUsage {
+export interface OpenAiUsage {
   /**
    * Tokens consumed for output text completion.
    */
@@ -438,7 +438,7 @@ interface OpenAiChatCompletionChoice extends OpenAiCompletionChoice {
   /**
    * Completion chat message.
    */
-  message: OpenAiChatMessage;
+  message: OpenAiChatAssistantMessage;
 }
 
 /**
