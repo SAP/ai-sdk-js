@@ -1,11 +1,13 @@
 import nock from 'nock';
+import { AiDeployment } from '@sap-ai-sdk/ai-core';
 import {
   mockClientCredentialsGrantCall,
   aiCoreDestination
 } from '../../../../test-util/mock-http.js';
-import { resolveDeployment } from './deployment-resolver.js';
+import { resolveDeploymentId } from './deployment-resolver.js';
+import { deploymentCache } from './deployment-cache.js';
 
-describe('Deployment resolver', () => {
+describe('deployment resolver', () => {
   beforeEach(() => {
     mockClientCredentialsGrantCall();
   });
@@ -18,40 +20,57 @@ describe('Deployment resolver', () => {
     beforeEach(() => {
       mockResponse();
     });
+
+    afterEach(() => {
+      deploymentCache.clear();
+    });
+
     it('should return the first deployment, if multiple are given', async () => {
-      const { id, configurationId } = await resolveDeployment({
+      const id = await resolveDeploymentId({
         scenarioId: 'foundation-models'
       });
       expect(id).toBe('1');
-      expect(configurationId).toBe('c1');
     });
-    it('should return the deployment with the correct model name', async () => {
-      const { id, configurationId } = await resolveDeployment({
+
+    it('should return the first deployment with the correct model name', async () => {
+      const id = await resolveDeploymentId({
         scenarioId: 'foundation-models',
         model: { name: 'gpt-4o' }
       });
-      expect(id).toBe('2');
-      expect(configurationId).toBe('c2');
+      expect(id).toBe('1');
     });
-    it('should return the deployment with the correct model name', async () => {
-      const { id, configurationId } = await resolveDeployment({
+
+    it('should return the deployment with the correct model name and version', async () => {
+      const id = await resolveDeploymentId({
         scenarioId: 'foundation-models',
         model: { name: 'gpt-4o', version: '0613' }
       });
       expect(id).toBe('2');
-      expect(configurationId).toBe('c2');
     });
+
+    it('should retrieve deployment from cache if available', async () => {
+      const opts = {
+        scenarioId: 'foundation-models',
+        model: { name: 'gpt-4o', version: '0613' }
+      };
+      deploymentCache.set(opts, { id: '1' } as AiDeployment);
+      const id = await resolveDeploymentId(opts);
+      expect(id).toBe('1');
+      expect(nock.isDone()).toBe(false);
+    });
+
     it('should throw in case no deployment with the given model name is found', async () => {
       await expect(
-        resolveDeployment({
+        resolveDeploymentId({
           scenarioId: 'foundation-models',
           model: { name: 'not existing' }
         })
       ).rejects.toThrow('No deployment matched the given criteria');
     });
-    it('should throw in case no deployment with the given model version is found', async () => {
+
+    it('should throw in case no deployment with the given model and version is found', async () => {
       await expect(
-        resolveDeployment({
+        resolveDeploymentId({
           scenarioId: 'foundation-models',
           model: { name: 'gpt-4o', version: 'not existing' }
         })
@@ -73,8 +92,46 @@ describe('Deployment resolver', () => {
       });
 
     await expect(
-      resolveDeployment({ scenarioId: 'foundation-models' })
+      resolveDeploymentId({
+        scenarioId: 'foundation-models',
+        model: { name: 'gpt-4o', version: '0613' }
+      })
     ).rejects.toThrow('No deployment matched the given criteria');
+  });
+
+  it('should consider custom resource group', async () => {
+    nock(aiCoreDestination.url, {
+      reqheaders: {
+        'ai-resource-group': 'otherId'
+      }
+    })
+      .get('/v2/lm/deployments')
+      .query({ scenarioId: 'foundation-models', status: 'RUNNING' })
+      .reply(200, {
+        resources: [
+          {
+            id: '5',
+            details: {
+              resources: {
+                backend_details: {
+                  model: {
+                    name: 'gpt-4o',
+                    version: 'latest'
+                  }
+                }
+              }
+            }
+          }
+        ]
+      });
+
+    const id = await resolveDeploymentId({
+      scenarioId: 'foundation-models',
+      model: { name: 'gpt-4o' },
+      resourceGroup: 'otherId'
+    });
+
+    expect(id).toBe('5');
   });
 });
 
@@ -87,32 +144,22 @@ function mockResponse() {
     .get('/v2/lm/deployments')
     .query({ scenarioId: 'foundation-models', status: 'RUNNING' })
     .reply(200, {
-      count: 1,
       resources: [
         {
-          configurationId: 'c1',
           id: '1',
-          deploymentUrl: 'https://foo.com/v2/inference/deployments/1',
           details: {
             resources: {
               backend_details: {
                 model: {
-                  name: 'gpt-4-32k',
+                  name: 'gpt-4o',
                   version: 'latest'
                 }
               }
-            },
-            scaling: {
-              backend_details: {}
             }
-          },
-          lastOperation: 'CREATE',
-          status: 'RUNNING'
+          }
         },
         {
-          configurationId: 'c2',
           id: '2',
-          deploymentUrl: 'https://foo.com/v2/inference/deployments/2',
           details: {
             resources: {
               backend_details: {
@@ -122,8 +169,7 @@ function mockResponse() {
                 }
               }
             }
-          },
-          status: 'RUNNING'
+          }
         }
       ]
     });

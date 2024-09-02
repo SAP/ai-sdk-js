@@ -59,11 +59,9 @@ describe('openai client', () => {
         chatCompletionEndpoint
       );
 
-      const response = await client.chatCompletion(
-        'gpt-35-turbo',
-        prompt,
-        '1234'
-      );
+      const response = await client.chatCompletion(prompt, {
+        deploymentId: '1234'
+      });
       expect(response).toEqual(mockResponse);
     });
 
@@ -86,7 +84,7 @@ describe('openai client', () => {
       );
 
       await expect(
-        client.chatCompletion('gpt-4', prompt, '1234')
+        client.chatCompletion(prompt, { deploymentId: '1234' })
       ).rejects.toThrow('status code 400');
     });
   });
@@ -111,11 +109,9 @@ describe('openai client', () => {
         },
         embeddingsEndpoint
       );
-      const response = await client.embeddings(
-        'text-embedding-ada-002',
-        prompt,
-        '1234'
-      );
+      const response = await client.embeddings(prompt, {
+        deploymentId: '1234'
+      });
       expect(response).toEqual(mockResponse);
     });
 
@@ -138,7 +134,7 @@ describe('openai client', () => {
       );
 
       await expect(
-        client.embeddings('text-embedding-3-large', prompt, '1234')
+        client.embeddings(prompt, { deploymentId: '1234' })
       ).rejects.toThrow('status code 400');
     });
   });
