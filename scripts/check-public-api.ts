@@ -8,6 +8,7 @@ import { glob } from 'glob';
 import { createLogger, flatten, unixEOL } from '@sap-cloud-sdk/util';
 import mock from 'mock-fs';
 import { CompilerOptions } from 'typescript';
+/* eslint-disable-next-line no-restricted-imports */
 import {
   readCompilerOptions,
   readIncludeExcludeWithDefaults,
