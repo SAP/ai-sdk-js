@@ -39,6 +39,7 @@
     "@sap-ai-sdk/gen-ai-hub": "workspace:^",
     "@types/jest": "^29.5.12",
     "@types/jsonwebtoken": "^9.0.2",
+    "@types/mock-fs": "^4.13.4",
     "@types/node": "^20.16.3",
     "eslint": "^9.9.1",
     "glob": "^10.4.3",

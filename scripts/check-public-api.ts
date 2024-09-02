@@ -1,6 +1,6 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
-import { join, resolve, parse, basename, dirname, sep, posix } from 'path';
+import { join, resolve, parse, basename, dirname } from 'path';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { promises, existsSync } from 'fs';
@@ -310,7 +310,6 @@ export async function exportAllInBarrel(
     const dirContents = (
       await glob('*', {
         ignore: [
-          '**/*.spec.ts',
           '**/*.test.ts',
           '__snapshots__',
           'spec',
