@@ -76,6 +76,6 @@ function transformDeploymentForCache(deployment: AiDeployment): Deployment {
  * Cache for deployments.
  * @internal
  */
-export const deploymentIdCache = createDeploymentCache(
+export const deploymentCache = createDeploymentCache(
   new Cache(5 * 60 * 1000) // 5 minutes
 );

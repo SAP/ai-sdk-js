@@ -5,7 +5,7 @@ import {
   aiCoreDestination
 } from '../../../../test-util/mock-http.js';
 import { resolveDeploymentId } from './deployment-resolver.js';
-import { deploymentIdCache } from './deployment-cache.js';
+import { deploymentCache } from './deployment-cache.js';
 
 describe('deployment resolver', () => {
   beforeEach(() => {
@@ -22,7 +22,7 @@ describe('deployment resolver', () => {
     });
 
     afterEach(() => {
-      deploymentIdCache.clear();
+      deploymentCache.clear();
     });
 
     it('should return the first deployment, if multiple are given', async () => {
@@ -53,7 +53,7 @@ describe('deployment resolver', () => {
         scenarioId: 'foundation-models',
         model: { name: 'gpt-4o', version: '0613' }
       };
-      deploymentIdCache.set(opts, { id: '1' } as AiDeployment);
+      deploymentCache.set(opts, { id: '1' } as AiDeployment);
       const id = await resolveDeploymentId(opts);
       expect(id).toBe('1');
       expect(nock.isDone()).toBe(false);

@@ -1,7 +1,7 @@
 import { DeploymentApi, type AiDeployment } from '@sap-ai-sdk/ai-core';
 import { CustomRequestConfig } from '@sap-ai-sdk/core';
 import { pickValueIgnoreCase } from '@sap-cloud-sdk/util';
-import { deploymentIdCache } from './deployment-cache.js';
+import { deploymentCache } from './deployment-cache.js';
 import { extractModel, type FoundationModel } from './model.js';
 
 /**
@@ -85,7 +85,7 @@ export async function resolveDeploymentId(
 ): Promise<string> {
   const { model } = opts;
 
-  const cachedDeployment = deploymentIdCache.get(opts);
+  const cachedDeployment = deploymentCache.get(opts);
   if (cachedDeployment?.id) {
     return cachedDeployment.id;
   }

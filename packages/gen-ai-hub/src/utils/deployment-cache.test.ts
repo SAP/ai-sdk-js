@@ -1,10 +1,10 @@
 import { type AiDeployment } from '@sap-ai-sdk/ai-core';
-import { deploymentIdCache } from './deployment-cache.js';
+import { deploymentCache } from './deployment-cache.js';
 import { FoundationModel } from './model.js';
 
-describe('deployment id cache', () => {
+describe('deployment cache', () => {
   afterEach(() => {
-    deploymentIdCache.clear();
+    deploymentCache.clear();
   });
 
   it('should cache the deployment', () => {
@@ -13,7 +13,7 @@ describe('deployment id cache', () => {
       executableId: 'execution-id',
       model: { name: 'gpt-4o', version: 'latest' }
     };
-    deploymentIdCache.set(opts, {
+    deploymentCache.set(opts, {
       id: 'deployment-id',
       details: {
         resources: {
@@ -22,7 +22,7 @@ describe('deployment id cache', () => {
       }
     } as unknown as AiDeployment);
 
-    expect(deploymentIdCache.get(opts)).toEqual({
+    expect(deploymentCache.get(opts)).toEqual({
       id: 'deployment-id',
       model: { name: 'gpt-4o', version: 'latest' }
     });
@@ -34,7 +34,7 @@ describe('deployment id cache', () => {
       model: { name: 'gpt-4o', version: 'latest' }
     };
 
-    deploymentIdCache.setAll(opts, [
+    deploymentCache.setAll(opts, [
       mockAiDeployment('deployment-id1', {
         name: 'gpt-35-turbo',
         version: 'latest'
@@ -45,9 +45,9 @@ describe('deployment id cache', () => {
       })
     ]);
 
-    expect(deploymentIdCache.get(opts)).toBeUndefined();
+    expect(deploymentCache.get(opts)).toBeUndefined();
     expect(
-      deploymentIdCache.get({
+      deploymentCache.get({
         ...opts,
         model: {
           name: 'gpt-35-turbo',
@@ -56,7 +56,7 @@ describe('deployment id cache', () => {
       })?.id
     ).toEqual('deployment-id1');
     expect(
-      deploymentIdCache.get({
+      deploymentCache.get({
         ...opts,
         model: {
           name: 'gpt-35-turbo',
@@ -71,13 +71,13 @@ describe('deployment id cache', () => {
       scenarioId: 'foundation-models'
     };
 
-    deploymentIdCache.setAll(opts, [
+    deploymentCache.setAll(opts, [
       mockAiDeployment('deployment-id1', { name: 'gpt-4o', version: 'latest' }),
       mockAiDeployment('deployment-id2', { name: 'gpt-4o', version: 'latest' })
     ]);
 
     expect(
-      deploymentIdCache.get({
+      deploymentCache.get({
         ...opts,
         model: { name: 'gpt-4o', version: 'latest' }
       })?.id
@@ -89,13 +89,13 @@ describe('deployment id cache', () => {
       scenarioId: 'foundation-models'
     };
 
-    deploymentIdCache.setAll(opts, [
+    deploymentCache.setAll(opts, [
       mockAiDeployment('deployment-id1', { name: 'gpt-4o' }),
       mockAiDeployment('deployment-id2', { name: 'gpt-4o' })
     ]);
 
     expect(
-      deploymentIdCache.get({
+      deploymentCache.get({
         ...opts,
         model: { name: 'gpt-4o' }
       })?.id
@@ -107,12 +107,12 @@ describe('deployment id cache', () => {
       scenarioId: 'foundation-models'
     };
 
-    deploymentIdCache.setAll(opts, [
+    deploymentCache.setAll(opts, [
       mockAiDeployment('deployment-id1'),
       mockAiDeployment('deployment-id2', { version: 'latest' })
     ]);
 
-    expect(deploymentIdCache.get(opts)?.id).toEqual('deployment-id1');
+    expect(deploymentCache.get(opts)?.id).toEqual('deployment-id1');
   });
 });
 
