@@ -55,7 +55,7 @@ function createDeploymentCache(cache: Cache<Deployment>) {
       deployments: AiDeployment[]
     ): void => {
       // go backwards to cache the first deployment ID for each model
-      deployments.reverse().forEach(deployment => {
+      [...deployments].reverse().forEach(deployment => {
         cache.set(getCacheKey({ ...opts, model: extractModel(deployment) }), {
           entry: transformDeploymentForCache(deployment)
         });
