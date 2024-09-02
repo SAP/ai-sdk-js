@@ -17,6 +17,8 @@ tags:
 paths:
   /completion:
     post:
+      tags:
+        - OrchestrationCompletion
       operationId: orchestration.v1.endpoints.create
       requestBody:
         required: true
@@ -38,6 +40,8 @@ paths:
 
   /healthz:
     get:
+      tags:
+        - OrchestrationHealthz
       operationId: orchestration.v1.endpoints.healthz
       responses:
         '200':
@@ -69,12 +73,15 @@ components:
           $ref: '#/components/schemas/OrchestrationConfig'
         input_params:
           type: object
+          example:
+            groundingInput: 'What is SAP Joule?'
+            inputContext: 'optimizing supply chain management'
           additionalProperties:
-            $ref: '#/components/schemas/InputParamsEntry'
+            type: string
         messages_history:
+          allOf:
+            - $ref: '#/components/schemas/ChatMessages'
           description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
-          $ref: '#/components/schemas/ChatMessages'
-          default: []
 
     ChatMessages:
       type: array
@@ -89,13 +96,10 @@ components:
       properties:
         role:
           type: string
+          example: user
         content:
           type: string
-
-    InputParamsEntry:
-      oneOf:
-        - type: string
-        - type: number
+          example: 'What is SAP S/4HANA?'
 
     CompletionPostResponse:
       type: object
@@ -107,6 +111,7 @@ components:
         request_id:
           description: ID of the request
           type: string
+          example: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
         module_results:
           $ref: '#/components/schemas/ModuleResults'
         orchestration_result:
@@ -145,7 +150,7 @@ components:
         grounding:
           $ref: '#/components/schemas/GenericModuleResult'
         templating:
-          $ref: '#/components/schemas/TemplatingModuleResult'
+          $ref: '#/components/schemas/ChatMessages'
         input_masking:
           $ref: '#/components/schemas/GenericModuleResult'
         input_filtering:
@@ -155,10 +160,9 @@ components:
         output_filtering:
           $ref: '#/components/schemas/GenericModuleResult'
         output_unmasking:
-          $ref: '#/components/schemas/GenericModuleResult'
-
-    TemplatingModuleResult:
-      $ref: '#/components/schemas/ChatMessages'
+          type: array
+          items:
+            $ref: '#/components/schemas/LLMChoice'
 
     # --- LLM MODULE ---
     LLMModuleConfig:
@@ -169,14 +173,19 @@ components:
       properties:
         model_name:
           description: Model name as in LLM Access configuration
-          example: gpt-4
+          example: 'gpt-4'
           type: string
         model_params:
           description: Model parameters
           type: object
+          example:
+            max_tokens: 300
+            temperature: 0.1
+            frequency_penalty: 0
+            presence_penalty: 0
+            n: 2
         model_version:
           description: Version of the model to use
-          example: 2023-05-15
           type: string
           default: 'latest'
 
@@ -189,6 +198,7 @@ components:
         message:
           type: string
           description: Some message created from the module
+          example: Input to LLM is masked successfully.
         data:
           type: object
           description: Additional data object from the module
@@ -207,18 +217,23 @@ components:
         id:
           type: string
           description: ID of the response
+          example: 'chatcmpl-9rO0aLoPKY7RtqkWi1317bazHEVFr'
         object:
           type: string
           description: Object type
+          example: chat.completion
         created:
           type: integer
           description: Unix timestamp
+          example: 1722510700
         model:
           type: string
           description: Model name
+          example: 'gpt-4'
         system_fingerprint:
           type: string
           description: System fingerprint
+          example: 'fp_44709d6fcb'
         choices:
           type: array
           description: Choices
@@ -237,6 +252,7 @@ components:
         index:
           type: integer
           description: Index of the choice
+          example: 0
         message:
           $ref: '#/components/schemas/ChatMessage'
         logprobs:
@@ -248,7 +264,8 @@ components:
               type: number
         finish_reason:
           type: string
-          description: Reason for stopping the model
+          description: "Reason the model stopped generating tokens. 'stop' if the model hit a natural stop point or a provided stop sequence, 'length' if the maximum token number was reached, 'content_filter' if content was omitted due to a filter enforced by the LLM model provider or the content filtering module"
+          example: stop
 
     TokenUsage:
       type: object
@@ -261,12 +278,15 @@ components:
         completion_tokens:
           type: integer
           description: Number of tokens used in the input
+          example: 20
         prompt_tokens:
           type: integer
           description: Number of tokens used in the output
+          example: 30
         total_tokens:
           type: integer
           description: Total number of tokens used
+          example: 50
 
     # --- Templating Module ---
 
@@ -276,23 +296,30 @@ components:
         - template
       properties:
         template:
+          allOf:
+            - $ref: '#/components/schemas/ChatMessages'
           description: A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
-          example: "{\n        \"role\": \"user\",\n        \"content\": \"input text: {​{ ?inputExample }}\"\n    }"
-          $ref: '#/components/schemas/ChatMessages'
         defaults:
           description: Optional default values for the template. If a parameter has no default it is required.
-          example: '{"context": "I am a default context"}'
           type: object
+      example:
+        template:
+          - role: user
+            content: 'How can the features of AI in SAP BTP specifially {{?groundingOutput}}, be applied to {{?inputContext}}'
+        defaults:
+          inputContext: The default text that will be used in the template if inputContext is not set
 
     # --- Filtering Module ---
     FilteringModuleConfig:
       type: object
       properties:
         input:
-          $ref: '#/components/schemas/FilteringConfig'
+          allOf:
+            - $ref: '#/components/schemas/FilteringConfig'
           description: List of provider type and filters
         output:
-          $ref: '#/components/schemas/FilteringConfig'
+          allOf:
+            - $ref: '#/components/schemas/FilteringConfig'
           description: List of provider type and filters
       additionalProperties: false
 
@@ -322,12 +349,12 @@ components:
           type: string
           enum:
             - azure_content_safety
+          example: azure_content_safety
         config:
-          description: Filter configuration for Azure Content Azure Content Safety
-          oneOf:
-            - $ref: '#/components/schemas/AzureContentSafety'
+          $ref: '#/components/schemas/AzureContentSafety'
 
     AzureContentSafety:
+      description: Filter configuration for Azure Content Safety
       type: object
       additionalProperties: false
       properties:
@@ -347,50 +374,61 @@ components:
         - 2
         - 4
         - 6
+      example: 0
 
     # --- Masking module ---
 
     MaskingModuleConfig:
       type: object
       required:
-        - masking
+        - masking_providers
       properties:
-        masking:
-          $ref: '#/components/schemas/MaskingConfig'
-          description: List of masking providers and entities
-        unmasking:
-          $ref: '#/components/schemas/UnmaskingConfig'
-          description: List of entities to unmask
+        masking_providers:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/MaskingProviderConfig'
+          description: List of masking service providers
       additionalProperties: false
 
-    MaskingConfig:
-      type: array
-      items:
-        $ref: '#/components/schemas/Masking'
-      description: Masking services to be used
+    MaskingProviderConfig:
+      oneOf:
+        - $ref: '#/components/schemas/DPIConfig'
 
-    Masking:
+    DPIConfig:
       type: object
       required:
         - type
+        - method
         - entities
       properties:
         type:
-          description: 'Type of masking service provider'
-          $ref: '#/components/schemas/MaskingProviderType'
+          description: Type of masking service provider
+          type: string
+          enum:
+            - sap_data_privacy_integration
+        method:
+          description: Type of masking method to be used
+          type: string
+          enum:
+            - anonymization
+            - pseudonymization
         entities:
           description: List of entities to be masked
           type: array
+          minItems: 1
           items:
-            oneOf:
-              - $ref: '#/components/schemas/DPIEntities'
-              - $ref: '#/components/schemas/PresidioEntities'
+            $ref: '#/components/schemas/DPIEntityConfig'
 
-    MaskingProviderType:
-      type: string
-      enum:
-        - data_privacy_integration
-        - ms_presidio
+    DPIEntityConfig:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          description: Type of entity to be masked
+          allOf:
+            - $ref: '#/components/schemas/DPIEntities'
 
     DPIEntities:
       description: Default entities supported by data privacy and integration service
@@ -398,36 +436,29 @@ components:
       enum:
         - profile-person
         - profile-org
+        - profile-university
+        - profile-location
         - profile-email
         - profile-phone
         - profile-address
         - profile-sapids-internal
         - profile-sapids-public
         - profile-url
+        - profile-username-password
+        - profile-nationalid
         - profile-iban
+        - profile-ssn
         - profile-credit-card-number
         - profile-passport
         - profile-driverlicense
         - profile-nationality
+        - profile-religious-group
         - profile-political-group
-        - profile-ethnicity
-
-    PresidioEntities:
-      type: string
-      enum:
-        - URL
-
-    UnmaskingConfig:
-      required:
-        - entities
-      properties:
-        entities:
-          type: array
-          description: List of entities to be unmasked
-          items:
-            anyOf:
-              - $ref: '#/components/schemas/DPIEntities'
-              - $ref: '#/components/schemas/PresidioEntities'
+        - profile-pronouns-gender
+        - profile-gender
+        - profile-sexual-orientation
+        - profile-trade-union
+        - profile-sensitive-data
 
     # --- Grounding Module ---
 
@@ -440,16 +471,13 @@ components:
           type: string
           enum:
             - document_grounding_service
+          example: document_grounding_service
         grounding_service_configuration:
           type: object
           required:
-            - secret_name
             - grounding_input_parameters
             - grounding_output_parameter
           properties:
-            secret_name:
-              type: string
-              description: Secret name of the generic secret within Gen AI Hub containing document grounding service credentials
             filters:
               type: array
               items:
@@ -459,38 +487,47 @@ components:
               type: array
               items:
                 type: string
+                example: groundingInput
               description: Contains the input parameters used for grounding input questions
             grounding_output_parameter:
               type: string
               description: Parameter name used for grounding output
+              example: groundingOutput
     GroundingFilter:
       type: object
       properties:
         id:
           type: string
+          example: 'string'
         search_configuration:
           type: object
+          example: {}
         data_repositories:
           type: array
           items:
             type: string
+          example: ['*']
         data_repository_type:
           type: string
           enum:
             - vector
             - help.sap.com
+          example: help.sap.com
         data_repository_metadata:
           type: array
           items:
             type: object
+          example: []
         document_metadata:
           type: array
           items:
             type: object
+          example: []
         chunk_metadata:
           type: array
           items:
             type: object
+          example: []
 
     ErrorResponse:
       type: object
@@ -502,10 +539,13 @@ components:
       properties:
         request_id:
           type: string
+          example: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
         code:
           type: integer
+          example: 400
         message:
           type: string
+          example: "Model name must be one of ['gpt-4', ...]"
         location:
           type: string
           description: Where the error occurred
