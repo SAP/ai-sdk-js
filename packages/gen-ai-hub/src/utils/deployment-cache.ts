@@ -58,7 +58,6 @@ function createDeploymentCache(cache: Cache<Deployment>) {
     ): void => {
       // go backwards to cache the first deployment ID for each model
       deployments.reverse().forEach(deployment => {
-        // TODO: move extractModel out of deployment resolver to avoid circular dependency
         cache.set(getCacheKey({ ...opts, model: extractModel(deployment) }), {
           entry: transformDeploymentForCache(deployment)
         });
