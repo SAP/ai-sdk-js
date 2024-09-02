@@ -8,6 +8,12 @@
  * Representation of the 'ChatMessage' schema.
  */
 export type ChatMessage = {
+  /**
+   * @example "user"
+   */
   role: string;
+  /**
+   * @example "What is SAP S/4HANA?"
+   */
   content: string;
 } & Record<string, any>;

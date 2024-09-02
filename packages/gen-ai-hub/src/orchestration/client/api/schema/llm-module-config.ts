@@ -15,11 +15,17 @@ export type LLMModuleConfig = {
   model_name: string;
   /**
    * Model parameters.
+   * @example {
+   *   "max_tokens": 300,
+   *   "temperature": 0.1,
+   *   "frequency_penalty": 0,
+   *   "presence_penalty": 0,
+   *   "n": 2
+   * }
    */
   model_params: Record<string, any>;
   /**
-   * Version of the model to use.
-   * @example "2024-08-12T10:11:17.042Z"
+   * Version of the model to use
    * Default: "latest".
    */
   model_version?: string;

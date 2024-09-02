@@ -1,7 +1,6 @@
 import {
   ChatMessages,
   FilteringModuleConfig,
-  InputParamsEntry,
   LLMModuleConfig
 } from './client/api/index.js';
 
@@ -20,7 +19,7 @@ export interface PromptConfig {
   /**
    * Template Parameters.
    */
-  template_params?: Record<string, InputParamsEntry>;
+  template_params?: Record<string, string>;
 }
 
 /**

@@ -27,5 +27,8 @@ export default [
     rules: {
       'import/no-internal-modules': 'off'
     }
+  },
+  {
+    ignores: ['**/dist-cjs/**/*']
   }
 ];

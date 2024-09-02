@@ -18,7 +18,8 @@ export type LLMChoice = {
    */
   logprobs?: Record<string, number[]>;
   /**
-   * Reason for stopping the model.
+   * Reason the model stopped generating tokens. 'stop' if the model hit a natural stop point or a provided stop sequence, 'length' if the maximum token number was reached, 'content_filter' if content was omitted due to a filter enforced by the LLM model provider or the content filtering module.
+   * @example "stop"
    */
   finish_reason: string;
 } & Record<string, any>;

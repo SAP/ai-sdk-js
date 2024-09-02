@@ -68,7 +68,7 @@ describe('GenAiHubClient', () => {
             content: 'Create {{?number}} paraphrases of {{?phrase}}'
           }
         ],
-        template_params: { phrase: 'I hate you.', number: 3 }
+        template_params: { phrase: 'I hate you.', number: '3' }
       },
       filterConfig: {
         input: azureContentFilter({ Hate: 4, SelfHarm: 2 }),
@@ -109,7 +109,7 @@ describe('GenAiHubClient', () => {
             content: 'Create {{?number}} paraphrases of {{?phrase}}'
           }
         ],
-        template_params: { phrase: 'I hate you.', number: 3 }
+        template_params: { phrase: 'I hate you.', number: '3' }
       },
       filterConfig: {
         input: {

@@ -10,6 +10,7 @@
 export type GenericModuleResult = {
   /**
    * Some message created from the module.
+   * @example "Input to LLM is masked successfully."
    */
   message: string;
   /**
