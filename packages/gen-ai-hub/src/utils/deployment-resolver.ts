@@ -79,6 +79,7 @@ export interface DeploymentResolutionOptions {
  * Query the AI Core service for a deployment that matches the given criteria. If more than one deployment matches the criteria, the first one's ID is returned.
  * @param opts - The options for the deployment resolution.
  * @returns A promise of a deployment, if a deployment was found, fails otherwise.
+ * @internal
  */
 export async function resolveDeploymentId(
   opts: DeploymentResolutionOptions
