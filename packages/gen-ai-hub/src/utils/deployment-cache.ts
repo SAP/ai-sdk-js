@@ -5,11 +5,11 @@ import { extractModel, type FoundationModel } from './model.js';
 
 function getCacheKey({
   scenarioId,
-  executableId,
+  executableId = '',
   model,
   resourceGroup = 'default'
 }: DeploymentResolutionOptions) {
-  return `${scenarioId}-${executableId ?? ''}-${model?.name ?? ''}-${model?.version ?? ''}-${resourceGroup}`;
+  return `${scenarioId}-${executableId}-${model?.name ?? ''}-${model?.version ?? ''}-${resourceGroup}`;
 }
 
 interface Deployment {
