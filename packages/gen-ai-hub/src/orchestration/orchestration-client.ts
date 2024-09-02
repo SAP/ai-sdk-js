@@ -99,10 +99,10 @@ export interface MessageContent {
 /**
  * Parses the orchestration response and returns the content and finish reason of the choice.
  * @param response - The orchestration response.
- * @param choiceIndex - The index of the choice to parse. If 'all', returns all choices.
+ * @param choiceIndex - The index of the choice to parse.
  * @returns The content and finish reason of the choice.
  */
-export function parseMessageContent(response: CompletionPostResponse, choiceIndex?: number): MessageContent | MessageContent[] {
+export function parseMessageContent(response: CompletionPostResponse, choiceIndex?: number): MessageContent[] {
   const choices = response.orchestration_result.choices;
 
   if(choiceIndex === undefined) {
@@ -117,9 +117,9 @@ export function parseMessageContent(response: CompletionPostResponse, choiceInde
   }
 
   const choice = choices[choiceIndex];
-  return { 
+  return [{ 
     content: choice.message.content,
     finish_reason: choice.finish_reason 
-  };
+  }];
 }
 

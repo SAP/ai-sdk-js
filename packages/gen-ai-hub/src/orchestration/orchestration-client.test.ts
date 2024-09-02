@@ -249,12 +249,12 @@ describe('GenAiHubClient', () => {
         }
       );
       const response = await client.chatCompletion(request, '1234');
-      const orchResponseIndex = parseMessageContent(response, 0) as MessageContent;
+      const orchResponseIndex = parseMessageContent(response, 0);
   
-      expect(orchResponseIndex.content).toBe("Your name is Bob.");
-      expect(orchResponseIndex.finish_reason).toBe('stop');
+      expect(orchResponseIndex[0].content).toBe("Your name is Bob.");
+      expect(orchResponseIndex[0].finish_reason).toBe('stop');
   
-      const orchResponseAll = parseMessageContent(response) as MessageContent[];
+      const orchResponseAll = parseMessageContent(response);
       expect(orchResponseAll).toHaveLength(2);
       expect(orchResponseAll[0].content).toBe("Your name is Bob.");
       expect(orchResponseAll[0].finish_reason).toBe('stop');
