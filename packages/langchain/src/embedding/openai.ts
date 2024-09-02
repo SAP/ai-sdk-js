@@ -1,8 +1,7 @@
 import { BaseLLMParams } from '@langchain/core/language_models/llms';
 import { OpenAIEmbeddingsParams, OpenAIEmbeddings } from '@langchain/openai';
-import { OpenAiClient } from '@sap-ai-sdk/gen-ai-hub';
+import { OpenAiClient, OpenAiEmbeddingModel, OpenAiEmbeddingParameters } from '@sap-ai-sdk/gen-ai-hub';
 import { BTPBaseLLMParameters } from '../../client/base.js';
-import { BTPOpenAIGPTEmbeddingParameters, BTPOpenAIGPTEmbeddingModel } from '../../client/openai.js';
 import { chunkArray } from '../../core/utils.js';
 
 /**
@@ -10,16 +9,15 @@ import { chunkArray } from '../../core/utils.js';
  */
 export interface BTPOpenAIGPTEmbeddingInput
   extends Omit<OpenAIEmbeddingsParams, 'modelName'>,
-    BTPBaseLLMParameters<BTPOpenAIGPTEmbeddingModel>,
+    BTPBaseLLMParameters<OpenAiEmbeddingModel>,
     BaseLLMParams {}
 
 /**
  * OpenAI GPT Language Model Wrapper to embed texts.
  */
 export class BTPOpenAIGPTEmbedding extends OpenAIEmbeddings implements BTPOpenAIGPTEmbeddingInput {
+  deployment_id: OpenAiEmbeddingModel;
   private btpOpenAIClient: OpenAiClient;
-
-  deployment_id: BTPOpenAIGPTEmbeddingModel;
 
   constructor(fields?: Partial<BTPOpenAIGPTEmbeddingInput>) {
     super({ ...fields, openAIApiKey: 'dummy' });
@@ -48,7 +46,7 @@ export class BTPOpenAIGPTEmbedding extends OpenAIEmbeddings implements BTPOpenAI
     return resArr[0].embedding;
   }
 
-  private async createEmbedding(query: BTPOpenAIGPTEmbeddingParameters['input']) {
+  private async createEmbedding(query: OpenAiEmbeddingParameters['input']) {
     const res = await this.caller.callWithOptions({}, () =>
       this.btpOpenAIClient.embeddings(query, this.deployment_id),
     );
