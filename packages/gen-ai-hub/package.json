@@ -27,7 +27,8 @@
     "lint": "eslint \"**/*.ts\" && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "pnpm generate:orchestration",
-    "generate:orchestration": "openapi-generator --generateESM --clearOutputDir -i ./src/orchestration/spec/api.yaml -o ./src/orchestration/client && pnpm lint:fix"
+    "generate:orchestration": "openapi-generator --generateESM --clearOutputDir -i ./src/orchestration/spec/api.yaml -o ./src/orchestration/client && pnpm lint:fix",
+    "check:public-api": "node --loader ts-node/esm ../../scripts/check-public-api-cli.ts"
   },
   "dependencies": {
     "@sap-ai-sdk/core": "workspace:^",
