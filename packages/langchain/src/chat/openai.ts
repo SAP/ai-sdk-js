@@ -5,15 +5,18 @@ import { ChatResult } from '@langchain/core/outputs';
 import { StructuredTool } from '@langchain/core/tools';
 import { ChatOpenAI, ChatOpenAICallOptions, OpenAIChatInput } from '@langchain/openai';
 import { zodToJsonSchema } from 'zod-to-json-schema';
-import { OpenAiChatAssistantMessage, OpenAiChatModel, OpenAiChatToolMessage, OpenAiClient } from '@sap-ai-sdk/gen-ai-hub';
-import { BTPBaseLLMParameters } from '../../client/base.js';
 import {
-  BTPOpenAIGPTChatCompletionResult,
-  BTPOpenAIGPTFunction,
-  BTPOpenAIGPTFunctionCall,
-  BTPOpenAIGPTMessage,
-  BTPOpenAIGPTTool,
-} from '../../client/openai.js';
+  OpenAiChatAssistantMessage,
+  OpenAiChatModel,
+  OpenAiChatToolMessage,
+  OpenAiClient,
+  OpenAiChatCompletionFunction,
+  OpenAiChatFunctionCall,
+  OpenAiChatMessage,
+  OpenAiChatCompletionTool,
+  OpenAiChatCompletionOutput
+} from '@sap-ai-sdk/gen-ai-hub';
+import { BTPBaseLLMParameters } from '../../client/base.js';
 import { BTPLLMError } from '../../core/error.js';
 
 /**
@@ -29,9 +32,9 @@ export interface BTPOpenAIGPTChatInput
  */
 interface BTPOpenAIChatCallOptions
   extends Omit<ChatOpenAICallOptions, 'promptIndex' | 'functions' | 'function_call' | 'tools'> {
-  functions?: BTPOpenAIGPTFunction[];
-  function_call?: BTPOpenAIGPTFunctionCall;
-  tools?: BTPOpenAIGPTTool[];
+  functions?: OpenAiChatCompletionFunction[];
+  function_call?: OpenAiChatFunctionCall;
+  tools?: OpenAiChatCompletionTool[];
 }
 
 /**
@@ -40,11 +43,10 @@ interface BTPOpenAIChatCallOptions
 export class BTPOpenAIGPTChat extends ChatOpenAI implements BTPOpenAIGPTChatInput {
   declare CallOptions: BTPOpenAIChatCallOptions;
 
+  deployment_id: OpenAiChatModel;
   private btpOpenAIClient: OpenAiClient;
 
-  deployment_id: OpenAiChatModel;
-
-  constructor(fields?: Partial<BTPOpenAIGPTChatInput>) {
+  constructor(fields: BTPOpenAIGPTChatInput) {
     super({ ...fields, openAIApiKey: 'dummy' });
 
     this.deployment_id = fields?.deployment_id ?? 'gpt-35-turbo';
@@ -125,9 +127,9 @@ export class BTPOpenAIGPTChat extends ChatOpenAI implements BTPOpenAIGPTChatInpu
   }
 
   /**
-   * Maps a LangChain {@link StructuredTool} to {@link BTPOpenAIGPTFunction}.
+   * Maps a LangChain {@link StructuredTool} to {@link OpenAiChatCompletionFunction}.
    */
-  protected mapToolToBTPOpenAIFunction(tool: StructuredTool): BTPOpenAIGPTFunction {
+  protected mapToolToBTPOpenAIFunction(tool: StructuredTool): OpenAiChatCompletionFunction {
     return {
       name: tool.name,
       description: tool.description,
@@ -136,9 +138,9 @@ export class BTPOpenAIGPTChat extends ChatOpenAI implements BTPOpenAIGPTChatInpu
   }
 
   /**
-   * Maps a LangChain {@link StructuredTool} to {@link BTPOpenAIGPTTool}.
+   * Maps a LangChain {@link StructuredTool} to {@link OpenAiChatCompletionTool}.
    */
-  protected mapToolToBTPOpenAITool(tool: StructuredTool): BTPOpenAIGPTTool {
+  protected mapToolToBTPOpenAITool(tool: StructuredTool): OpenAiChatCompletionTool {
     return {
       type: 'function',
       function: {
@@ -152,7 +154,7 @@ export class BTPOpenAIGPTChat extends ChatOpenAI implements BTPOpenAIGPTChatInpu
   /**
    * Maps a {@link BaseMessage} to OpenAI's Message Role.
    */
-  protected mapBaseMessageToRole(message: BaseMessage): BTPOpenAIGPTMessage['role'] {
+  protected mapBaseMessageToRole(message: BaseMessage): OpenAiChatMessage['role'] {
     switch (message._getType()) {
       case 'ai':
         return 'assistant';
@@ -165,7 +167,7 @@ export class BTPOpenAIGPTChat extends ChatOpenAI implements BTPOpenAIGPTChatInpu
       case 'tool':
         return 'tool';
       case 'generic':
-        return (message as ChatMessage).role as BTPOpenAIGPTMessage['role'];
+        return (message as ChatMessage).role as OpenAiChatMessage['role'];
       default:
         throw new BTPLLMError(`Unknown message type: ${message._getType()}`);
     }
@@ -174,7 +176,7 @@ export class BTPOpenAIGPTChat extends ChatOpenAI implements BTPOpenAIGPTChatInpu
   /**
    * Maps {@link BaseMessage} to OpenAI Messages.
    */
-  protected mapBaseMessageToBTPOpenAIMessage(message: BaseMessage): BTPOpenAIGPTMessage {
+  protected mapBaseMessageToBTPOpenAIMessage(message: BaseMessage): OpenAiChatMessage {
     return {
       content: message.content,
       name: message.name,
@@ -182,13 +184,13 @@ export class BTPOpenAIGPTChat extends ChatOpenAI implements BTPOpenAIGPTChatInpu
       function_call: message.additional_kwargs.function_call,
       tool_calls: message.additional_kwargs.tool_calls,
       tool_call_id: (message as ToolMessage).tool_call_id,
-    } as BTPOpenAIGPTMessage;
+    } as OpenAiChatMessage;
   }
 
   /**
    * Maps OpenAI messages to LangChain's {@link ChatResult}.
    */
-  protected mapBTPOpenAIMessagesToChatResult(res: BTPOpenAIGPTChatCompletionResult): ChatResult {
+  protected mapBTPOpenAIMessagesToChatResult(res: OpenAiChatCompletionOutput): ChatResult {
     return {
       generations: res.choices.map((c) => ({
           text: (c.message as OpenAiChatAssistantMessage).content || '',
