@@ -45,6 +45,8 @@ jobs:
       # - run: pnpm build # might be needed in the future
       - run: pnpm lint
       - run: pnpm compile:cjs
+      - run: pnpm check:public-api
+        name: Check public api
 
   dependabot:
     runs-on: ubuntu-latest
