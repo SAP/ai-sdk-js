@@ -1,31 +1,43 @@
 import { BaseLLMParams } from '@langchain/core/language_models/llms';
 import { OpenAIEmbeddingsParams, OpenAIEmbeddings } from '@langchain/openai';
-import { OpenAiClient, OpenAiEmbeddingModel, OpenAiEmbeddingParameters } from '@sap-ai-sdk/gen-ai-hub';
-import { BTPBaseLLMParameters } from '../../client/base.js';
-import { chunkArray } from '../../core/utils.js';
+import { OpenAiClient, OpenAiEmbeddingModel, OpenAiEmbeddingOutput, OpenAiEmbeddingParameters } from '@sap-ai-sdk/gen-ai-hub';
+import { chunkArray } from '../util/index.js';
 
 /**
  * Input for Text generation for OpenAI GPT.
  */
-export interface BTPOpenAIGPTEmbeddingInput
+export interface OpenAIEmbeddingInput
   extends Omit<OpenAIEmbeddingsParams, 'modelName'>,
-    BTPBaseLLMParameters<OpenAiEmbeddingModel>,
-    BaseLLMParams {}
+    BaseLLMParams {
+      /**
+       * The name of the model.
+       */
+      modelName: OpenAiEmbeddingModel;
+      /**
+       * The name of the model. Alias for `modelName`.
+       */
+      model: OpenAiEmbeddingModel;
+      /**
+       * The version of the model.
+       */
+      modelVersion?: string;
+    }
 
 /**
  * OpenAI GPT Language Model Wrapper to embed texts.
  */
-export class OpenAIGPTEmbedding extends OpenAIEmbeddings implements BTPOpenAIGPTEmbeddingInput {
-  deployment_id: OpenAiEmbeddingModel;
+export class OpenAIEmbedding extends OpenAIEmbeddings implements OpenAIEmbeddingInput {
+  modelName: OpenAiEmbeddingModel;
+  model: OpenAiEmbeddingModel;
+
   private btpOpenAIClient: OpenAiClient;
 
-  constructor(fields?: Partial<BTPOpenAIGPTEmbeddingInput>) {
+  constructor(fields: OpenAIEmbeddingInput) {
     super({ ...fields, openAIApiKey: 'dummy' });
 
-    this.deployment_id = fields?.deployment_id ?? 'text-embedding-ada-002-v2';
-
-    // LLM client
     this.btpOpenAIClient = new OpenAiClient();
+    this.model = fields.model;
+    this.modelName = fields.modelName;
   }
 
   override async embedDocuments(documents: string[]): Promise<number[][]> {
@@ -35,21 +47,24 @@ export class OpenAIGPTEmbedding extends OpenAIEmbeddings implements BTPOpenAIGPT
     );
     const embeddings: number[][] = [];
     for await (const promptChunk of chunkedPrompts) {
-      const resArr = await this.createEmbedding(promptChunk);
-      resArr.forEach((res) => embeddings.push(res.embedding));
+      const resArr = await this.createEmbedding({ input: promptChunk });
+      resArr.data.forEach((res) => embeddings.push(res.embedding));
     }
     return embeddings;
   }
 
   override async embedQuery(query: string): Promise<number[]> {
-    const resArr = await this.createEmbedding(this.stripNewLines ? query.replace(/\n/g, ' ') : query);
-    return resArr[0].embedding;
+    const resArr = await this.createEmbedding(
+      {
+        input: this.stripNewLines ? query.replace(/\n/g, ' ') : query,
+      });
+    return resArr.data[0].embedding;
   }
 
-  private async createEmbedding(query: OpenAiEmbeddingParameters['input']) {
+  private async createEmbedding(query: OpenAiEmbeddingParameters): Promise<OpenAiEmbeddingOutput> {
     const res = await this.caller.callWithOptions({}, () =>
-      this.btpOpenAIClient.embeddings(query, this.deployment_id),
+      this.btpOpenAIClient.embeddings(query, this.model),
     );
-    return res.data;
+    return res;
   }
 }
