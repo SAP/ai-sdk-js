@@ -189,6 +189,8 @@ export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
 
   /**
    * Maps a LangChain {@link StructuredTool} to {@link OpenAiChatCompletionFunction}.
+   * @param tool - Base class for Tools that accept input of any shape defined by a Zod schema.
+   * @returns The OpenAI Chat Completion Function.
    */
   protected mapToolToBTPOpenAIFunction(tool: StructuredTool): OpenAiChatCompletionFunction {
     return {
@@ -200,6 +202,8 @@ export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
 
   /**
    * Maps a LangChain {@link StructuredTool} to {@link OpenAiChatCompletionTool}.
+   * @param tool - Base class for Tools that accept input of any shape defined by a Zod schema.
+   * @returns The OpenAI Chat Completion Tool.
    */
   protected mapToolToOpenAITool(tool: StructuredTool): OpenAiChatCompletionTool {
     return {
@@ -214,6 +218,8 @@ export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
 
   /**
    * Maps a {@link BaseMessage} to OpenAI's Message Role.
+   * @param message - The message to map.
+   * @returns The OpenAI Message Role.
    */
   protected mapBaseMessageToRole(message: BaseMessage): OpenAiChatMessage['role'] {
     switch (message._getType()) {
@@ -236,6 +242,8 @@ export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
 
   /**
    * Maps {@link BaseMessage} to OpenAI Messages.
+   * @param message - The message to map.
+   * @returns The OpenAI Chat Message.
    */
   protected mapBaseMessageToOpenAIChatMessage(message: BaseMessage): OpenAiChatMessage {
     return {
@@ -250,6 +258,8 @@ export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
 
   /**
    * Maps OpenAI messages to LangChain's {@link ChatResult}.
+   * @param res - The OpenAI Chat Completion Output.
+   * @returns The LangChain Chat Result.
    */
   protected mapResponseToChatResult(res: OpenAiChatCompletionOutput): ChatResult {
     return {
