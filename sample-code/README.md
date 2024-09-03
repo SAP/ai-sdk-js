@@ -1,6 +1,6 @@
 # Sample Code and E2E Test
 
-![e2e-test](https://github.com/SAP/ai-sdk-js/actions/workflows/e2e-test.yaml/badge.svg)
+![e2e-test](https://github.com/SAP/ai-sdk-js/actions/workflows/e2e-tests.yaml/badge.svg)
 
 Sample code to demonstrate the usage of the SAP AI SDK.
 Also used as basis for running E2E tests.

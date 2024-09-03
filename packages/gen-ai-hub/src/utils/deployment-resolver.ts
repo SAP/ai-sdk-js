@@ -1,6 +1,8 @@
-import { DeploymentApi, AiDeployment } from '@sap-ai-sdk/ai-core';
+import { DeploymentApi, type AiDeployment } from '@sap-ai-sdk/ai-core';
 import { CustomRequestConfig } from '@sap-ai-sdk/core';
 import { pickValueIgnoreCase } from '@sap-cloud-sdk/util';
+import { deploymentCache } from './deployment-cache.js';
+import { extractModel, type FoundationModel } from './model.js';
 
 /**
  * The model deployment configuration when using a model. It can be either the name of the model or an object containing the name and version of the model.
@@ -51,23 +53,10 @@ export function isDeploymentIdConfiguration(
 }
 
 /**
- * A foundation model is identified by its name and potentially a version.
- */
-export interface FoundationModel {
-  /**
-   * The name of the model.
-   */
-  name: string;
-  /**
-   * The version of the model.
-   */
-  version?: string;
-}
-
-/**
  * The options for the deployment resolution.
+ * @internal
  */
-interface DeploymentResolutionOptions {
+export interface DeploymentResolutionOptions {
   /**
    * The scenario ID of the deployment.
    */
@@ -87,14 +76,20 @@ interface DeploymentResolutionOptions {
 }
 
 /**
- * Query the AI Core service for a deployment that matches the given criteria. If more than one deployment matches the criteria, the first one is returned.
+ * Query the AI Core service for a deployment that matches the given criteria. If more than one deployment matches the criteria, the first one's ID is returned.
  * @param opts - The options for the deployment resolution.
  * @returns A promise of a deployment, if a deployment was found, fails otherwise.
+ * @internal
  */
-export async function resolveDeployment(
+export async function resolveDeploymentId(
   opts: DeploymentResolutionOptions
-): Promise<AiDeployment> {
+): Promise<string> {
   const { model } = opts;
+
+  const cachedDeployment = deploymentCache.get(opts);
+  if (cachedDeployment?.id) {
+    return cachedDeployment.id;
+  }
 
   let deployments = await getAllDeployments(opts);
 
@@ -115,34 +110,29 @@ export async function resolveDeployment(
       'No deployment matched the given criteria: ' + JSON.stringify(opts)
     );
   }
-  return deployments[0];
+  return deployments[0].id;
 }
 
 async function getAllDeployments(
   opts: DeploymentResolutionOptions
 ): Promise<AiDeployment[]> {
   const { scenarioId, executableId, resourceGroup = 'default' } = opts;
-  // TODO: add a cache: https://github.tools.sap/AI/gen-ai-hub-sdk-js-backlog/issues/78
   try {
-    return (
-      await DeploymentApi.deploymentQuery(
-        {
-          scenarioId,
-          status: 'RUNNING',
-          ...(executableId && { executableIds: [executableId] })
-        },
-        { 'AI-Resource-Group': resourceGroup }
-      ).execute()
-    ).resources;
+    const { resources } = await DeploymentApi.deploymentQuery(
+      {
+        scenarioId,
+        status: 'RUNNING',
+        ...(executableId && { executableIds: [executableId] })
+      },
+      { 'AI-Resource-Group': resourceGroup }
+    ).execute();
+
+    deploymentCache.setAll(opts, resources);
+
+    return resources;
   } catch (error) {
     throw new Error('Failed to fetch the list of deployments: ' + error);
   }
-}
-
-function extractModel(
-  deployment: AiDeployment
-): Partial<FoundationModel> | undefined {
-  return deployment.details?.resources?.backend_details?.model;
 }
 
 /**
@@ -161,17 +151,15 @@ export async function getDeploymentId(
     return modelDeployment.deploymentId;
   }
 
-  return (
-    await resolveDeployment({
-      scenarioId: 'foundation-models',
-      executableId,
-      model: translateToFoundationModel(modelDeployment),
-      resourceGroup: pickValueIgnoreCase(
-        requestConfig?.headers,
-        'ai-resource-group'
-      )
-    })
-  ).id;
+  return resolveDeploymentId({
+    scenarioId: 'foundation-models',
+    executableId,
+    model: translateToFoundationModel(modelDeployment),
+    resourceGroup: pickValueIgnoreCase(
+      requestConfig?.headers,
+      'ai-resource-group'
+    )
+  });
 }
 
 function translateToFoundationModel(
