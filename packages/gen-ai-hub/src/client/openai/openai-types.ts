@@ -434,7 +434,10 @@ interface OpenAiCompletionChoice {
   content_filter_results?: OpenAiContentFilterPromptResults;
 }
 
-interface OpenAiChatCompletionChoice extends OpenAiCompletionChoice {
+/**
+ * OpenAI chat completion choice.
+ */
+export interface OpenAiChatCompletionChoice extends OpenAiCompletionChoice {
   /**
    * Completion chat message.
    */

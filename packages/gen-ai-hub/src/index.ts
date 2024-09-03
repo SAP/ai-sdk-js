@@ -11,6 +11,7 @@ export type {
   OpenAiChatCompletionTool,
   OpenAiChatFunctionCall,
   OpenAiChatToolCall,
+  OpenAiChatCompletionChoice,
   OpenAiCompletionParameters,
   OpenAiChatCompletionParameters,
   OpenAiEmbeddingParameters,
