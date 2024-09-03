@@ -7,7 +7,6 @@ import { ChatOpenAI, ChatOpenAICallOptions, OpenAIChatInput } from '@langchain/o
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import {
   OpenAiChatAssistantMessage,
-  OpenAiChatModel,
   OpenAiChatToolMessage,
   OpenAiClient,
   OpenAiChatCompletionFunction,
@@ -17,7 +16,7 @@ import {
   OpenAiChatCompletionOutput,
   OpenAiChatCompletionParameters,
   DeploymentIdConfiguration,
-  ModelDeployment
+  OpenAiChatModel
 } from '@sap-ai-sdk/gen-ai-hub';
 
 /**
@@ -30,7 +29,7 @@ export interface OpenAIChatModelInterface
       /**
        * The deployment ID of the model.
        */
-      deploymentId?: DeploymentIdConfiguration;
+      deploymentId?: string;
       /**
        * The version of the model.
        */
@@ -53,7 +52,18 @@ export type OpenAIChatModelInput = Omit<OpenAIChatInput,
   | 'streaming'> &
   Omit<OpenAiChatCompletionParameters, 'messages'> &
   BaseChatModelParams &
-  ModelDeployment<OpenAiChatModel>;
+  DeploymentIdConfiguration &
+  {
+    /**
+     * The name of the model.
+     */
+    modelName: OpenAiChatModel;
+    /**
+     * The version of the model.
+     */
+    modelVersion?: string;
+    deploymentId?: string;
+  };
 
 /**
  * Chat Call options.
@@ -68,10 +78,10 @@ interface OpenAIChatCallOptions
 /**
  * OpenAI Language Model Wrapper to generate texts.
  */
-export class OpenAIChatModel extends ChatOpenAI implements OpenAIChatModelInterface {
+export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
   declare CallOptions: OpenAIChatCallOptions;
 
-  deploymentId?: DeploymentIdConfiguration;
+  deploymentId?: string;
   modelVersion?: string;
   private btpOpenAIClient: OpenAiClient;
 
@@ -95,7 +105,7 @@ export class OpenAIChatModel extends ChatOpenAI implements OpenAIChatModelInterf
       topP
     });
 
-    this.deploymentId = fields.deploymenId;
+    this.deploymentId = fields.deploymentId;
     this.modelVersion = fields.modelVersion;
 
     // LLM client
