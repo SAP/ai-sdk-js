@@ -14,17 +14,46 @@ import {
   OpenAiChatFunctionCall,
   OpenAiChatMessage,
   OpenAiChatCompletionTool,
-  OpenAiChatCompletionOutput
+  OpenAiChatCompletionOutput,
+  OpenAiChatCompletionParameters,
+  DeploymentIdConfiguration,
+  ModelDeployment
 } from '@sap-ai-sdk/gen-ai-hub';
-import { BTPBaseLLMParameters } from '../../client/base.js';
 
 /**
  * Input for Text generation for OpenAI GPT.
  */
-export interface OpenAIGPTChatInput
-  extends Omit<OpenAIChatInput, 'modelName' | 'openAIApiKey' | 'streaming'>,
-    BTPBaseLLMParameters<OpenAiChatModel>,
-    BaseChatModelParams {}
+export interface OpenAIChatModelInterface
+  extends Omit<OpenAIChatInput, 'openAIApiKey' | 'streaming'>,
+    Omit<OpenAiChatCompletionParameters, 'n' | 'stop' | 'messages' | 'temperature'>,
+    BaseChatModelParams {
+      /**
+       * The deployment ID of the model.
+       */
+      deploymentId?: DeploymentIdConfiguration;
+      /**
+       * The version of the model.
+       */
+      modelVersion?: string;
+    }
+
+/**
+ * Input for Text generation for OpenAI GPT.
+ */
+export type OpenAIChatModelInput = Omit<OpenAIChatInput,
+  'frequencyPenalty'
+  | 'presencePenalty'
+  | 'topP'
+  | 'temperature'
+  | 'stop'
+  | 'n'
+  | 'modelName'
+  | 'model'
+  | 'openAIApiKey'
+  | 'streaming'> &
+  Omit<OpenAiChatCompletionParameters, 'messages'> &
+  BaseChatModelParams &
+  ModelDeployment<OpenAiChatModel>;
 
 /**
  * Chat Call options.
@@ -39,16 +68,35 @@ interface OpenAIChatCallOptions
 /**
  * OpenAI Language Model Wrapper to generate texts.
  */
-export class OpenAIGPTChat extends ChatOpenAI implements OpenAIGPTChatInput {
+export class OpenAIChatModel extends ChatOpenAI implements OpenAIChatModelInterface {
   declare CallOptions: OpenAIChatCallOptions;
 
-  deployment_id: OpenAiChatModel;
+  deploymentId?: DeploymentIdConfiguration;
+  modelVersion?: string;
   private btpOpenAIClient: OpenAiClient;
 
-  constructor(fields: OpenAIGPTChatInput) {
-    super({ ...fields, openAIApiKey: 'dummy' });
+  constructor(fields: OpenAIChatModelInput) {
+    const defaultValues = new ChatOpenAI();
+    const n = fields.n ?? defaultValues.n;
+    const stop = fields.stop ? Array.isArray(fields.stop) ? fields.stop : [fields.stop] : defaultValues.stop;
+    const temperature = fields.temperature ?? defaultValues.temperature;
+    const frequencyPenalty = fields.frequency_penalty ?? defaultValues.frequencyPenalty;
+    const presencePenalty = fields.presence_penalty ?? defaultValues.presencePenalty;
+    const topP = fields.top_p ?? defaultValues.topP;
 
-    this.deployment_id = fields?.deployment_id ?? 'gpt-35-turbo';
+    super({
+      ...fields,
+      n,
+      stop,
+      temperature,
+      openAIApiKey: 'dummy',
+      frequencyPenalty,
+      presencePenalty,
+      topP
+    });
+
+    this.deploymentId = fields.deploymenId;
+    this.modelVersion = fields.modelVersion;
 
     // LLM client
     this.btpOpenAIClient = new OpenAiClient();
@@ -93,7 +141,7 @@ export class OpenAIGPTChat extends ChatOpenAI implements OpenAIGPTChatInput {
         this.btpOpenAIClient.chatCompletion(
           {
             messages: messages.map(this.mapBaseMessageToOpenAIChatMessage.bind(this)),
-            deployment_id: this.deployment_id,
+            deployment_id: this.deploymentId,
             max_tokens: this.maxTokens === -1 ? undefined : this.maxTokens,
             temperature: this.temperature,
             top_p: this.topP,
@@ -113,7 +161,11 @@ export class OpenAIGPTChat extends ChatOpenAI implements OpenAIGPTChatInput {
             seed: options?.seed,
             ...this.modelKwargs,
           },
-          this.deployment_id
+          {
+            modelName: this.modelName ?? this.model,
+            deploymentId: this.deploymentId,
+            modelVersion: this.modelVersion
+          },
         ),
     );
 
