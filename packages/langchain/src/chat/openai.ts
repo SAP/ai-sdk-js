@@ -21,7 +21,7 @@ import { BTPBaseLLMParameters } from '../../client/base.js';
 /**
  * Input for Text generation for OpenAI GPT.
  */
-export interface BTPOpenAIGPTChatInput
+export interface OpenAIGPTChatInput
   extends Omit<OpenAIChatInput, 'modelName' | 'openAIApiKey' | 'streaming'>,
     BTPBaseLLMParameters<OpenAiChatModel>,
     BaseChatModelParams {}
@@ -29,7 +29,7 @@ export interface BTPOpenAIGPTChatInput
 /**
  * Chat Call options.
  */
-interface BTPOpenAIChatCallOptions
+interface OpenAIChatCallOptions
   extends Omit<ChatOpenAICallOptions, 'promptIndex' | 'functions' | 'function_call' | 'tools'> {
   functions?: OpenAiChatCompletionFunction[];
   function_call?: OpenAiChatFunctionCall;
@@ -39,13 +39,13 @@ interface BTPOpenAIChatCallOptions
 /**
  * OpenAI Language Model Wrapper to generate texts.
  */
-export class BTPOpenAIGPTChat extends ChatOpenAI implements BTPOpenAIGPTChatInput {
-  declare CallOptions: BTPOpenAIChatCallOptions;
+export class OpenAIGPTChat extends ChatOpenAI implements OpenAIGPTChatInput {
+  declare CallOptions: OpenAIChatCallOptions;
 
   deployment_id: OpenAiChatModel;
   private btpOpenAIClient: OpenAiClient;
 
-  constructor(fields: BTPOpenAIGPTChatInput) {
+  constructor(fields: OpenAIGPTChatInput) {
     super({ ...fields, openAIApiKey: 'dummy' });
 
     this.deployment_id = fields?.deployment_id ?? 'gpt-35-turbo';
@@ -54,9 +54,9 @@ export class BTPOpenAIGPTChat extends ChatOpenAI implements BTPOpenAIGPTChatInpu
     this.btpOpenAIClient = new OpenAiClient();
   }
 
-  override get callKeys(): (keyof BTPOpenAIChatCallOptions)[] {
+  override get callKeys(): (keyof OpenAIChatCallOptions)[] {
     return [
-      ...(super.callKeys as (keyof BTPOpenAIChatCallOptions)[]),
+      ...(super.callKeys as (keyof OpenAIChatCallOptions)[]),
       'options',
       'function_call',
       'functions',
@@ -226,8 +226,3 @@ export class BTPOpenAIGPTChat extends ChatOpenAI implements BTPOpenAIGPTChatInpu
     };
   }
 }
-
-/**
- * @deprecated Use {@link BTPOpenAIGPTChat} instead.
- */
-export const BTPOpenAIChat = BTPOpenAIGPTChat;

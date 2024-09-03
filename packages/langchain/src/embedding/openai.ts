@@ -15,7 +15,7 @@ export interface BTPOpenAIGPTEmbeddingInput
 /**
  * OpenAI GPT Language Model Wrapper to embed texts.
  */
-export class BTPOpenAIGPTEmbedding extends OpenAIEmbeddings implements BTPOpenAIGPTEmbeddingInput {
+export class OpenAIGPTEmbedding extends OpenAIEmbeddings implements BTPOpenAIGPTEmbeddingInput {
   deployment_id: OpenAiEmbeddingModel;
   private btpOpenAIClient: OpenAiClient;
 
@@ -53,8 +53,3 @@ export class BTPOpenAIGPTEmbedding extends OpenAIEmbeddings implements BTPOpenAI
     return res.data;
   }
 }
-
-/**
- * @deprecated Use {@link BTPOpenAIGPTEmbedding} instead.
- */
-export const BTPOpenAIEmbedding = BTPOpenAIGPTEmbedding;
