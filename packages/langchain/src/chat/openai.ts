@@ -17,7 +17,6 @@ import {
   OpenAiChatCompletionOutput
 } from '@sap-ai-sdk/gen-ai-hub';
 import { BTPBaseLLMParameters } from '../../client/base.js';
-import { BTPLLMError } from '../../core/error.js';
 
 /**
  * Input for Text generation for OpenAI GPT.
@@ -93,7 +92,7 @@ export class BTPOpenAIGPTChat extends ChatOpenAI implements BTPOpenAIGPTChatInpu
       () =>
         this.btpOpenAIClient.chatCompletion(
           {
-            messages: messages.map(this.mapBaseMessageToBTPOpenAIMessage.bind(this)),
+            messages: messages.map(this.mapBaseMessageToOpenAIChatMessage.bind(this)),
             deployment_id: this.deployment_id,
             max_tokens: this.maxTokens === -1 ? undefined : this.maxTokens,
             temperature: this.temperature,
@@ -107,7 +106,7 @@ export class BTPOpenAIGPTChat extends ChatOpenAI implements BTPOpenAIGPTChatInpu
               ? options?.functions.map(this.mapToolToBTPOpenAIFunction.bind(this))
               : options?.functions,
             tools: isStructuredToolArray(options?.tools)
-              ? options?.tools.map(this.mapToolToBTPOpenAITool.bind(this))
+              ? options?.tools.map(this.mapToolToOpenAITool.bind(this))
               : options?.tools,
             tool_choice: options?.tool_choice,
             response_format: options?.response_format,
@@ -123,7 +122,7 @@ export class BTPOpenAIGPTChat extends ChatOpenAI implements BTPOpenAIGPTChatInpu
       typeof res.choices[0].message.content === 'string' ? res.choices[0].message.content : '',
     );
 
-    return this.mapBTPOpenAIMessagesToChatResult(res);
+    return this.mapResponseToChatResult(res);
   }
 
   /**
@@ -140,7 +139,7 @@ export class BTPOpenAIGPTChat extends ChatOpenAI implements BTPOpenAIGPTChatInpu
   /**
    * Maps a LangChain {@link StructuredTool} to {@link OpenAiChatCompletionTool}.
    */
-  protected mapToolToBTPOpenAITool(tool: StructuredTool): OpenAiChatCompletionTool {
+  protected mapToolToOpenAITool(tool: StructuredTool): OpenAiChatCompletionTool {
     return {
       type: 'function',
       function: {
@@ -169,14 +168,14 @@ export class BTPOpenAIGPTChat extends ChatOpenAI implements BTPOpenAIGPTChatInpu
       case 'generic':
         return (message as ChatMessage).role as OpenAiChatMessage['role'];
       default:
-        throw new BTPLLMError(`Unknown message type: ${message._getType()}`);
+        throw new Error(`Unknown message type: ${message._getType()}`);
     }
   }
 
   /**
    * Maps {@link BaseMessage} to OpenAI Messages.
    */
-  protected mapBaseMessageToBTPOpenAIMessage(message: BaseMessage): OpenAiChatMessage {
+  protected mapBaseMessageToOpenAIChatMessage(message: BaseMessage): OpenAiChatMessage {
     return {
       content: message.content,
       name: message.name,
@@ -190,7 +189,7 @@ export class BTPOpenAIGPTChat extends ChatOpenAI implements BTPOpenAIGPTChatInpu
   /**
    * Maps OpenAI messages to LangChain's {@link ChatResult}.
    */
-  protected mapBTPOpenAIMessagesToChatResult(res: OpenAiChatCompletionOutput): ChatResult {
+  protected mapResponseToChatResult(res: OpenAiChatCompletionOutput): ChatResult {
     return {
       generations: res.choices.map((c) => ({
           text: (c.message as OpenAiChatAssistantMessage).content || '',
