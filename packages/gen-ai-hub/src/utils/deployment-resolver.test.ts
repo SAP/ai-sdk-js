@@ -29,7 +29,7 @@ describe('deployment resolver', () => {
       const id = await resolveDeploymentId({
         scenarioId: 'foundation-models'
       });
-      expect(id).toBe('1');
+      expect(id).toEqual('1');
     });
 
     it('should return the first deployment with the correct model name', async () => {
@@ -37,7 +37,7 @@ describe('deployment resolver', () => {
         scenarioId: 'foundation-models',
         model: { name: 'gpt-4o' }
       });
-      expect(id).toBe('1');
+      expect(id).toEqual('1');
     });
 
     it('should return the deployment with the correct model name and version', async () => {
@@ -45,7 +45,7 @@ describe('deployment resolver', () => {
         scenarioId: 'foundation-models',
         model: { name: 'gpt-4o', version: '0613' }
       });
-      expect(id).toBe('2');
+      expect(id).toEqual('2');
     });
 
     it('should retrieve deployment from cache if available', async () => {
@@ -55,8 +55,8 @@ describe('deployment resolver', () => {
       };
       deploymentCache.set(opts, { id: '1' } as AiDeployment);
       const id = await resolveDeploymentId(opts);
-      expect(id).toBe('1');
-      expect(nock.isDone()).toBe(false);
+      expect(id).toEqual('1');
+      expect(nock.isDone()).toEqual(false);
     });
 
     it('should throw in case no deployment with the given model name is found', async () => {
@@ -131,7 +131,7 @@ describe('deployment resolver', () => {
       resourceGroup: 'otherId'
     });
 
-    expect(id).toBe('5');
+    expect(id).toEqual('5');
   });
 });
 
