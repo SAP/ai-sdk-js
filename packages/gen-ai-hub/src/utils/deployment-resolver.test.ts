@@ -101,30 +101,10 @@ describe('deployment resolver', () => {
   });
 
   it('should consider custom resource group', async () => {
-    nock(aiCoreDestination.url, {
-      reqheaders: {
-        'ai-resource-group': 'otherId'
-      }
-    })
-      .get('/v2/lm/deployments')
-      .query({ scenarioId: 'foundation-models', status: 'RUNNING' })
-      .reply(200, {
-        resources: [
-          {
-            id: '5',
-            details: {
-              resources: {
-                backend_details: {
-                  model: {
-                    name: 'gpt-4o',
-                    version: 'latest'
-                  }
-                }
-              }
-            }
-          }
-        ]
-      });
+    mockDeploymentsList(
+      { scenarioId: 'foundation-models', resourceGroup: 'otherId' },
+      { id: '5', model: { name: 'gpt-4o', version: 'latest' } }
+    );
 
     const id = await resolveDeploymentId({
       scenarioId: 'foundation-models',

@@ -126,7 +126,7 @@ export function mockDeploymentsList(
   const nockOpts = opts?.resourceGroup
     ? {
         reqheaders: {
-          'ai-resource-group': 'default'
+          'ai-resource-group': opts?.resourceGroup
         }
       }
     : undefined;
@@ -141,7 +141,7 @@ export function mockDeploymentsList(
     .reply(200, {
       resources: deployments.map(({ id, model }) => ({
         id,
-        details: { resources: { backend_details: { model } } }
+        details: { resources: { backendDetails: { model } } }
       }))
     });
 }
