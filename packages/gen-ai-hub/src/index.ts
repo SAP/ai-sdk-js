@@ -7,6 +7,11 @@ export type {
   OpenAiChatAssistantMessage,
   OpenAiChatToolMessage,
   OpenAiChatFunctionMessage,
+  OpenAiCompletionChoice,
+  OpenAiErrorBase,
+  OpenAiChatCompletionChoice,
+  OpenAiCompletionOutput,
+  OpenAiUsage,
   OpenAiChatCompletionFunction,
   OpenAiChatCompletionTool,
   OpenAiChatFunctionCall,
@@ -14,7 +19,6 @@ export type {
   OpenAiCompletionParameters,
   OpenAiChatCompletionParameters,
   OpenAiEmbeddingParameters,
-  OpenAiCompletionOutput,
   OpenAiChatCompletionOutput,
   OpenAiPromptFilterResult,
   OpenAiContentFilterResultsBase,
@@ -31,7 +35,6 @@ export type {
   DeploymentIdConfiguration,
   ModelConfiguration
 } from './utils/index.js';
-export { isDeploymentIdConfiguration, getDeploymentId } from './utils/index.js';
 
 export type {
   OrchestrationCompletionParameters,
