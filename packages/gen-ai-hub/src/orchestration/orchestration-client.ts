@@ -2,7 +2,7 @@ import { executeRequest, CustomRequestConfig } from '@sap-ai-sdk/core';
 import { pickValueIgnoreCase } from '@sap-cloud-sdk/util';
 import {
   DeploymentIdConfiguration,
-  resolveDeployment
+  resolveDeploymentId
 } from '../utils/deployment-resolver.js';
 import {
   CompletionPostRequest,

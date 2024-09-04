@@ -64,11 +64,8 @@ export type {
   AzureContentSafety,
   AzureContentSafetyFilterConfig
 } from './orchestration/index.js';
+
 export {
   OrchestrationClient,
-  OrchestrationModuleConfig,
-  CompletionPostResponse,
-  azureContentFilter,
-  LlmConfig,
-  ChatMessages
+  azureContentFilter
 } from './orchestration/index.js';
