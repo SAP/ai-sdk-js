@@ -27,7 +27,7 @@
     "check:public-api": "pnpm -r check:public-api"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.27.7",
+    "@changesets/cli": "^2.27.8",
     "@jest/globals": "^29.5.12",
     "@sap-cloud-sdk/eslint-config": "^3.20.0",
     "@sap-cloud-sdk/connectivity": "^3.20.0",
