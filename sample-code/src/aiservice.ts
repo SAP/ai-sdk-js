@@ -1,6 +1,7 @@
 import {
   OpenAiChatAssistantMessage,
-  OpenAiClient
+  OpenAiChatClient,
+  OpenAiEmbeddingClient
 } from '@sap-ai-sdk/gen-ai-hub';
 
 /**
@@ -8,7 +9,7 @@ import {
  * @returns The answer from GPT.
  */
 export async function chatCompletion(): Promise<string> {
-  const response = await new OpenAiClient('gpt-35-turbo').chatCompletion({
+  const response = await new OpenAiChatClient('gpt-35-turbo').run({
     messages: [{ role: 'user', content: 'What is the capital of France?' }]
   });
   const assistantMessage = response.choices[0]
@@ -21,7 +22,9 @@ export async function chatCompletion(): Promise<string> {
  * @returns An embedding vector.
  */
 export async function computeEmbedding(): Promise<number[]> {
-  const response = await new OpenAiClient('text-embedding-ada-002').embeddings({
+  const response = await new OpenAiEmbeddingClient(
+    'text-embedding-ada-002'
+  ).run({
     input: 'Hello, world!'
   });
 

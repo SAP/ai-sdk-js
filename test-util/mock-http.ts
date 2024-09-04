@@ -1,12 +1,15 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { DestinationAuthToken, HttpDestination, ServiceCredentials } from '@sap-cloud-sdk/connectivity';
-import nock from 'nock';
 import {
-  BaseLlmParameters,
-  CustomRequestConfig,
-  EndpointOptions } from '@sap-ai-sdk/core';
+  DestinationAuthToken,
+  HttpDestination,
+  ServiceCredentials
+} from '@sap-cloud-sdk/connectivity';
+import nock from 'nock';
+import { CustomRequestConfig, EndpointOptions } from '@sap-ai-sdk/core';
+import { FoundationModel } from '../packages/gen-ai-hub/src/utils/model.js';
+import { DeploymentResolutionOptions } from '../packages/gen-ai-hub/src/internal.js';
 import { dummyToken } from './mock-jwt.js';
 
 // Get the directory of this file
@@ -38,7 +41,9 @@ const mockEndpoint: EndpointOptions = {
 };
 
 export function mockAiCoreEnvVariable(): void {
-  process.env['AICORE_SERVICE_KEY'] = JSON.stringify(aiCoreServiceBinding.credentials);
+  process.env['AICORE_SERVICE_KEY'] = JSON.stringify(
+    aiCoreServiceBinding.credentials
+  );
 }
 
 export function createDestinationTokens(
@@ -107,9 +112,7 @@ export function mockInference(
       authorization: `Bearer ${destination.authTokens?.[0].value}`
     }
   })
-    .post(`/v2/${url}`,
-      request.data
-    )
+    .post(`/v2/${url}`, request.data)
     .query(apiVersion ? { 'api-version': apiVersion } : {})
     .reply(response.status, response.data);
 }
@@ -117,9 +120,47 @@ export function mockInference(
 /**
  * @internal
  */
+export function mockDeploymentsList(
+  opts: DeploymentResolutionOptions,
+  ...deployments: { id: string; model?: FoundationModel }[]
+): nock.Scope {
+  const nockOpts = opts?.resourceGroup
+    ? {
+        reqheaders: {
+          'ai-resource-group': 'default'
+        }
+      }
+    : undefined;
+  const query = {
+    status: 'RUNNING',
+    scenarioId: opts.scenarioId,
+    ...(opts.executableId && { executableIds: [opts.executableId] })
+  };
+  return nock(aiCoreDestination.url, nockOpts)
+    .get('/v2/lm/deployments')
+    .query(query)
+    .reply(200, {
+      resources: deployments.map(({ id, model }) => ({
+        id,
+        details: { resources: { backend_details: { model } } }
+      }))
+    });
+}
+
+/**
+ * @internal
+ */
 export function parseMockResponse<T>(client: string, fileName: string): T {
   const fileContent = fs.readFileSync(
-    path.join(__dirname, '..', 'packages', 'gen-ai-hub', 'test', client, fileName),
+    path.join(
+      __dirname,
+      '..',
+      'packages',
+      'gen-ai-hub',
+      'test',
+      client,
+      fileName
+    ),
     'utf-8'
   );
   return JSON.parse(fileContent);

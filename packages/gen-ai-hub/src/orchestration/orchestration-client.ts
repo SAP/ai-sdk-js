@@ -1,9 +1,5 @@
 import { executeRequest, CustomRequestConfig } from '@sap-ai-sdk/core';
-import { pickValueIgnoreCase } from '@sap-cloud-sdk/util';
-import {
-  DeploymentIdConfiguration,
-  resolveDeploymentId
-} from '../utils/deployment-resolver.js';
+import { resolveDeploymentId } from '../utils/deployment-resolver.js';
 import {
   CompletionPostRequest,
   CompletionPostResponse
@@ -14,11 +10,10 @@ import { OrchestrationModuleConfig, Prompt } from './orchestration-types.js';
  * Get the orchestration client.
  */
 export class OrchestrationClient {
-  // TODO: either use the deploymentId from here or only allow setting it through the request config path
   // TODO: document constructor
   constructor(
     private config: OrchestrationModuleConfig,
-    private deploymentIdConfig?: DeploymentIdConfiguration
+    private deploymentIdConfig?: { resourceGroup: string } // DeploymentIdConfiguration
   ) {}
 
   /**
@@ -32,15 +27,10 @@ export class OrchestrationClient {
     requestConfig?: CustomRequestConfig
   ): Promise<CompletionPostResponse> {
     const body = constructCompletionPostRequest(this.config, prompt);
-    const deploymentId =
-      this.deploymentIdConfig?.deploymentId ??
-      (await resolveDeploymentId({
-        scenarioId: 'orchestration',
-        resourceGroup: pickValueIgnoreCase(
-          requestConfig?.headers,
-          'ai-resource-group'
-        )
-      }));
+    const deploymentId = await resolveDeploymentId({
+      scenarioId: 'orchestration',
+      resourceGroup: this.deploymentIdConfig?.resourceGroup
+    });
 
     const response = await executeRequest(
       {

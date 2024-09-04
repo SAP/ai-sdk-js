@@ -1,6 +1,4 @@
 import { DeploymentApi, type AiDeployment } from '@sap-ai-sdk/ai-core';
-import { CustomRequestConfig } from '@sap-ai-sdk/core';
-import { pickValueIgnoreCase } from '@sap-cloud-sdk/util';
 import { deploymentCache } from './deployment-cache.js';
 import { extractModel, type FoundationModel } from './model.js';
 
@@ -32,12 +30,24 @@ export interface DeploymentIdConfiguration {
 }
 
 /**
+ * The deployment configuration when using a deployment ID.
+ */
+export interface ResourceGroupConfiguration {
+  /**
+   * The resource group of the deployment.
+   */
+  resourceGroup?: string;
+}
+
+/**
  * The deployment configuration can be either a model configuration or a deployment ID configuration.
  * @typeParam ModelNameT - String literal type representing the name of the model.
  */
-export type ModelDeployment<ModelNameT = string> =
+export type ModelDeployment<ModelNameT = string> = (
   | ModelConfiguration<ModelNameT>
-  | DeploymentIdConfiguration;
+  | DeploymentIdConfiguration
+) &
+  ResourceGroupConfiguration;
 
 /**
  * Type guard to check if the given deployment configuration is a deployment ID configuration.
@@ -139,13 +149,11 @@ async function getAllDeployments(
  * Get the deployment ID for a given model deployment configuration and executable ID using the 'foundation-models' scenario.
  * @param modelDeployment - The model deployment configuration.
  * @param executableId - The executable ID.
- * @param requestConfig - The request configuration.
  * @returns The ID of the deployment, if found.
  */
 export async function getDeploymentId(
   modelDeployment: ModelDeployment,
-  executableId: string,
-  requestConfig?: CustomRequestConfig
+  executableId: string
 ): Promise<string> {
   if (isDeploymentIdConfiguration(modelDeployment)) {
     return modelDeployment.deploymentId;
@@ -155,10 +163,7 @@ export async function getDeploymentId(
     scenarioId: 'foundation-models',
     executableId,
     model: translateToFoundationModel(modelDeployment),
-    resourceGroup: pickValueIgnoreCase(
-      requestConfig?.headers,
-      'ai-resource-group'
-    )
+    resourceGroup: modelDeployment.resourceGroup
   });
 }
 

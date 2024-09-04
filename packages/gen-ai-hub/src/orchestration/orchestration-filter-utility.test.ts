@@ -6,22 +6,23 @@ import { constructCompletionPostRequest } from './orchestration-client.js';
 import { azureContentFilter } from './orchestration-filter-utility.js';
 import { OrchestrationModuleConfig } from './orchestration-types.js';
 
-describe('Filter utility', () => {
-  const input: OrchestrationModuleConfig = {
+describe('filter utility', () => {
+  const config: OrchestrationModuleConfig = {
     llmConfig: {
       model_name: 'gpt-35-turbo-16k',
       model_params: { max_tokens: 50, temperature: 0.1 }
     },
-    prompt: {
+    templatingConfig: {
       template: [
         { role: 'user', content: 'Create {number} paraphrases of {phrase}' }
-      ],
-      template_params: { phrase: 'I hate you.', number: '3' }
+      ]
     }
   };
 
+  const prompt = { inputParams: { phrase: 'I hate you.', number: '3' } };
+
   afterEach(() => {
-    input.filterConfig = undefined;
+    config.filterConfig = undefined;
   });
 
   it('constructs filter configuration with only input', async () => {
@@ -41,9 +42,9 @@ describe('Filter utility', () => {
         ]
       }
     };
-    input.filterConfig = filterConfig;
+    config.filterConfig = filterConfig;
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(input);
+      constructCompletionPostRequest(config, prompt);
     expect(
       completionPostRequest.orchestration_config.module_configurations
         .filtering_module_config
@@ -67,16 +68,16 @@ describe('Filter utility', () => {
         ]
       }
     };
-    input.filterConfig = filterConfig;
+    config.filterConfig = filterConfig;
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(input);
+      constructCompletionPostRequest(config, prompt);
     expect(
       completionPostRequest.orchestration_config.module_configurations
         .filtering_module_config
     ).toEqual(expectedFilterConfig);
   });
 
-  it('constructs filter configuration with both input and ouput', async () => {
+  it('constructs filter configuration with both input and output', async () => {
     const filterConfig: FilteringModuleConfig = {
       input: azureContentFilter({
         Hate: 4,
@@ -112,9 +113,9 @@ describe('Filter utility', () => {
         ]
       }
     };
-    input.filterConfig = filterConfig;
+    config.filterConfig = filterConfig;
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(input);
+      constructCompletionPostRequest(config, prompt);
     expect(
       completionPostRequest.orchestration_config.module_configurations
         .filtering_module_config
@@ -126,9 +127,9 @@ describe('Filter utility', () => {
       input: azureContentFilter(),
       output: azureContentFilter()
     };
-    input.filterConfig = filterConfig;
+    config.filterConfig = filterConfig;
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(input);
+      constructCompletionPostRequest(config, prompt);
     const expectedFilterConfig: FilteringModuleConfig = {
       input: {
         filters: [
@@ -153,9 +154,9 @@ describe('Filter utility', () => {
 
   it('omits filter configuration if not set', async () => {
     const filterConfig: FilteringModuleConfig = {};
-    input.filterConfig = filterConfig;
+    config.filterConfig = filterConfig;
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(input);
+      constructCompletionPostRequest(config, prompt);
     expect(
       completionPostRequest.orchestration_config.module_configurations
         .filtering_module_config
