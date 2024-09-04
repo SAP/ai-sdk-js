@@ -3,10 +3,7 @@ import { BaseMessage } from '@langchain/core/messages';
 import { ChatResult } from '@langchain/core/outputs';
 import { StructuredTool } from '@langchain/core/tools';
 import { ChatOpenAI } from '@langchain/openai';
-import {
-  OpenAiClient,
-  OpenAiChatModel
-} from '@sap-ai-sdk/gen-ai-hub';
+import { OpenAiClient, OpenAiChatModel } from '@sap-ai-sdk/gen-ai-hub';
 import {
   mapBaseMessageToOpenAIChatMessage,
   mapResponseToChatResult,
@@ -34,10 +31,16 @@ export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
   constructor(fields: OpenAIChatModelInput) {
     const defaultValues = new ChatOpenAI();
     const n = fields.n ?? defaultValues.n;
-    const stop = fields.stop ? Array.isArray(fields.stop) ? fields.stop : [fields.stop] : defaultValues.stop;
+    const stop = fields.stop
+      ? Array.isArray(fields.stop)
+        ? fields.stop
+        : [fields.stop]
+      : defaultValues.stop;
     const temperature = fields.temperature ?? defaultValues.temperature;
-    const frequencyPenalty = fields.frequency_penalty ?? defaultValues.frequencyPenalty;
-    const presencePenalty = fields.presence_penalty ?? defaultValues.presencePenalty;
+    const frequencyPenalty =
+      fields.frequency_penalty ?? defaultValues.frequencyPenalty;
+    const presencePenalty =
+      fields.presence_penalty ?? defaultValues.presencePenalty;
     const topP = fields.top_p ?? defaultValues.topP;
     const model = defaultValues.model;
     const modelName = model;
@@ -70,7 +73,7 @@ export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
       'tools',
       'tool_choice',
       'response_format',
-      'seed',
+      'seed'
     ];
   }
 
@@ -87,14 +90,21 @@ export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
   override async _generate(
     messages: BaseMessage[],
     options: this['CallOptions'],
-    runManager?: CallbackManagerForLLMRun,
+    runManager?: CallbackManagerForLLMRun
   ): Promise<ChatResult> {
-    function isStructuredToolArray(tools?: unknown[]): tools is StructuredTool[] {
-      return tools !== undefined && tools.every((tool) => Array.isArray((tool as StructuredTool).lc_namespace));
+    function isStructuredToolArray(
+      tools?: unknown[]
+    ): tools is StructuredTool[] {
+      return (
+        tools !== undefined &&
+        tools.every(tool =>
+          Array.isArray((tool as StructuredTool).lc_namespace)
+        )
+      );
     }
     const res = await this.caller.callWithOptions(
       {
-        signal: options.signal,
+        signal: options.signal
       },
       () =>
         this.btpOpenAIClient.chatCompletion(
@@ -117,19 +127,21 @@ export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
             tool_choice: options?.tool_choice,
             response_format: options?.response_format,
             seed: options?.seed,
-            ...this.modelKwargs,
+            ...this.modelKwargs
           },
           {
             modelName: this.modelName ?? this.model,
             deploymentId: this.deploymentId,
             modelVersion: this.modelVersion
-          },
-        ),
+          }
+        )
     );
 
     // currently BTP LLM Proxy for OpenAI doesn't support streaming
     await runManager?.handleLLMNewToken(
-      typeof res.choices[0].message.content === 'string' ? res.choices[0].message.content : '',
+      typeof res.choices[0].message.content === 'string'
+        ? res.choices[0].message.content
+        : ''
     );
 
     return mapResponseToChatResult(res);
