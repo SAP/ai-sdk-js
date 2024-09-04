@@ -95,7 +95,8 @@ function mergeWithDefaultRequestConfig(
     method: 'post',
     headers: {
       'content-type': 'application/json',
-      'ai-resource-group': 'default'
+      'ai-resource-group': 'default',
+      'ai-client-type': 'AI SDK JavaScript'
     },
     params: apiVersion ? { 'api-version': apiVersion } : {}
   };

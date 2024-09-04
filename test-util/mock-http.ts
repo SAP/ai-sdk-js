@@ -4,8 +4,6 @@ import { fileURLToPath } from 'url';
 import { DestinationAuthToken, HttpDestination, ServiceCredentials } from '@sap-cloud-sdk/connectivity';
 import nock from 'nock';
 import {
-  BaseLlmParameters,
-  CustomRequestConfig,
   EndpointOptions } from '@sap-ai-sdk/core';
 import { dummyToken } from './mock-jwt.js';
 
@@ -91,7 +89,6 @@ export function mockClientCredentialsGrantCall(
 export function mockInference(
   request: {
     data: any;
-    requestConfig?: CustomRequestConfig;
   },
   response: {
     data: any;
