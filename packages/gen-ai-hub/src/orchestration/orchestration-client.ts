@@ -1,5 +1,8 @@
 import { executeRequest, CustomRequestConfig } from '@sap-ai-sdk/core';
-import { resolveDeploymentId } from '../utils/deployment-resolver.js';
+import {
+  resolveDeploymentId,
+  ResourceGroupConfiguration
+} from '../utils/deployment-resolver.js';
 import {
   CompletionPostRequest,
   CompletionPostResponse
@@ -13,7 +16,7 @@ export class OrchestrationClient {
   // TODO: document constructor
   constructor(
     private config: OrchestrationModuleConfig,
-    private deploymentIdConfig?: { resourceGroup: string } // DeploymentIdConfiguration
+    private deploymentConfig?: ResourceGroupConfiguration // DeploymentIdConfiguration
   ) {}
 
   /**
@@ -29,7 +32,7 @@ export class OrchestrationClient {
     const body = constructCompletionPostRequest(this.config, prompt);
     const deploymentId = await resolveDeploymentId({
       scenarioId: 'orchestration',
-      resourceGroup: this.deploymentIdConfig?.resourceGroup
+      resourceGroup: this.deploymentConfig?.resourceGroup
     });
 
     const response = await executeRequest(

@@ -65,7 +65,8 @@ export type {
   ChatMessage,
   AzureThreshold,
   AzureContentSafety,
-  AzureContentSafetyFilterConfig
+  AzureContentSafetyFilterConfig,
+  Prompt
 } from './orchestration/index.js';
 
 export {
