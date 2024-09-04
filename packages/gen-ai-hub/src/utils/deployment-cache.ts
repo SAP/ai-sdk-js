@@ -55,7 +55,7 @@ function createDeploymentCache(cache: Cache<Deployment>) {
       deployments: AiDeployment[]
     ): void => {
       // go backwards to cache the first deployment ID for each model
-      const cacheEntries = [...deployments]
+      [...deployments]
         .reverse()
         .map(deployment => transformDeploymentForCache(deployment))
         .flatMap(entry => {
@@ -69,13 +69,12 @@ function createDeploymentCache(cache: Cache<Deployment>) {
             entries.push({ id: entry.id, model: { name: entry.model.name } });
           }
           return entries;
+        })
+        .forEach(entry => {
+          cache.set(getCacheKey({ ...opts, model: entry.model }), {
+            entry
+          });
         });
-
-      cacheEntries.forEach(entry => {
-        cache.set(getCacheKey({ ...opts, model: entry.model }), {
-          entry
-        });
-      });
     },
     clear: () => cache.clear()
   };
