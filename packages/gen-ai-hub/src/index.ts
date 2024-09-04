@@ -58,13 +58,12 @@ export type {
   DPIEntities,
   DPIEntityConfig,
   DPIConfig,
-  CompletionPostRequest,
   ChatMessage,
   AzureThreshold,
   AzureContentSafety,
-  AzureContentSafetyFilterConfig
-} from './orchestration/index.js';
-export {
-  OrchestrationClient,
+  AzureContentSafetyFilterConfig,
+  CompletionPostRequest,
   azureContentFilter
 } from './orchestration/index.js';
+
+export { OrchestrationClient } from './orchestration/index.js';
