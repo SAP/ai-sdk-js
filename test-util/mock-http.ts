@@ -7,7 +7,7 @@ import {
   ServiceCredentials
 } from '@sap-cloud-sdk/connectivity';
 import nock from 'nock';
-import { CustomRequestConfig, EndpointOptions } from '@sap-ai-sdk/core';
+import { EndpointOptions } from '@sap-ai-sdk/core';
 import { FoundationModel } from '../packages/gen-ai-hub/src/utils/model.js';
 import { DeploymentResolutionOptions } from '../packages/gen-ai-hub/src/internal.js';
 import { dummyToken } from './mock-jwt.js';
@@ -96,7 +96,6 @@ export function mockClientCredentialsGrantCall(
 export function mockInference(
   request: {
     data: any;
-    requestConfig?: CustomRequestConfig;
   },
   response: {
     data: any;

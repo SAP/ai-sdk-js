@@ -54,7 +54,7 @@ export type ModelDeployment<ModelNameT = string> = (
  * @param modelDeployment - Configuration to check.
  * @returns `true` if the configuration is a deployment ID configuration, `false` otherwise.
  */
-export function isDeploymentIdConfiguration(
+function isDeploymentIdConfiguration(
   modelDeployment: ModelDeployment
 ): modelDeployment is DeploymentIdConfiguration {
   return (
@@ -150,6 +150,7 @@ async function getAllDeployments(
  * @param modelDeployment - The model deployment configuration.
  * @param executableId - The executable ID.
  * @returns The ID of the deployment, if found.
+ * @internal
  */
 export async function getDeploymentId(
   modelDeployment: ModelDeployment,
