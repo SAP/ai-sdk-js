@@ -16,7 +16,7 @@ describe('http-client', () => {
     const mockPrompt = { prompt: 'some test prompt' };
     const mockPromptResponse = { completion: 'some test completion' };
 
-    nock(aiCoreDestination.url, {
+    const scope = nock(aiCoreDestination.url, {
       reqheaders: {
         'ai-resource-group': 'default',
         'ai-client-type': 'AI SDK JavaScript'
@@ -30,7 +30,7 @@ describe('http-client', () => {
       { url: '/some/endpoint', apiVersion: 'mock-api-version' },
       mockPrompt
     );
-
+    expect(scope.isDone()).toBe(true);
     expect(res.status).toBe(200);
     expect(res.data).toEqual(mockPromptResponse);
   }, 10000);
