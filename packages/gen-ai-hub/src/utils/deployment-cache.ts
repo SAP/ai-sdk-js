@@ -64,11 +64,12 @@ function createDeploymentCache(cache: Cache<Deployment>) {
           ...(entry.model
             ? [{ id: entry.id, model: { name: entry.model.name } }]
             : [])
-        ]).forEach(entry => {
-        cache.set(getCacheKey({ ...opts, model: entry.model }), {
-          entry
+        ])
+        .forEach(entry => {
+          cache.set(getCacheKey({ ...opts, model: entry.model }), {
+            entry
+          });
         });
-      });
     },
     clear: () => cache.clear()
   };
