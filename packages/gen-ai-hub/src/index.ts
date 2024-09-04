@@ -33,7 +33,8 @@ export { OpenAiChatClient, OpenAiEmbeddingClient } from './client/index.js';
 export type {
   ModelDeployment,
   DeploymentIdConfiguration,
-  ModelConfiguration
+  ModelConfiguration,
+  ResourceGroupConfiguration
 } from './utils/index.js';
 
 export type {
