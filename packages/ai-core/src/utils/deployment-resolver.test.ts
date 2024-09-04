@@ -1,10 +1,10 @@
 import nock from 'nock';
-import { AiDeployment } from '@sap-ai-sdk/ai-core';
 import {
   mockClientCredentialsGrantCall,
   aiCoreDestination,
   mockDeploymentsList
 } from '../../../../test-util/mock-http.js';
+import { AiDeployment } from '../client/AI_CORE_API/index.js';
 import { resolveDeploymentId } from './deployment-resolver.js';
 import { deploymentCache } from './deployment-cache.js';
 
