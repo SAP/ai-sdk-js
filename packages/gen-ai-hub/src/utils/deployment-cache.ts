@@ -58,18 +58,13 @@ function createDeploymentCache(cache: Cache<Deployment>) {
       const cacheEntries = [...deployments]
         .reverse()
         .map(deployment => transformDeploymentForCache(deployment))
-        .flatMap(entry => {
-          const entries = [entry];
-          // if the entry has a model, also cache it without model and version
-          if (entry.model) {
-            entries.push({ id: entry.id });
-          }
-          // if the entry has a model version, also cache it for without model version
-          if (entry.model?.version) {
-            entries.push({ id: entry.id, model: { name: entry.model.name } });
-          }
-          return entries;
-        });
+        .flatMap(entry => [
+          entry,
+          { id: entry.id },
+          ...(entry.model
+            ? [{ id: entry.id, model: { name: entry.model.name } }]
+            : [])
+        ]);
 
       cacheEntries.forEach(entry => {
         cache.set(getCacheKey({ ...opts, model: entry.model }), {
