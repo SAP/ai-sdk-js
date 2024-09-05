@@ -30,6 +30,14 @@ export interface OpenAIChatModelInterface
    * The version of the model.
    */
   modelVersion?: string;
+  /**
+   * The deployment ID of the model.
+   */
+  deploymentId?: string;
+  /**
+   * The resource group of the model.
+   */
+  resourceGroup?: string;
 }
 
 /**
@@ -58,6 +66,14 @@ export type OpenAIChatModelInput = Omit<
      * The version of the model.
      */
     modelVersion?: string;
+    /**
+     * The deployment ID of the model.
+     */
+    deploymentId?: string;
+    /**
+     * The resource group of the model.
+     */
+    resourceGroup?: string;
   };
 
 /**

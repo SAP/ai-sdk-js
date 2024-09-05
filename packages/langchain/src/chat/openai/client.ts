@@ -3,7 +3,7 @@ import { BaseMessage } from '@langchain/core/messages';
 import { ChatResult } from '@langchain/core/outputs';
 import { StructuredTool } from '@langchain/core/tools';
 import { ChatOpenAI } from '@langchain/openai';
-import { OpenAiClient, OpenAiChatModel } from '@sap-ai-sdk/gen-ai-hub';
+import { OpenAiChatClient, OpenAiChatModel } from '@sap-ai-sdk/gen-ai-hub';
 import {
   mapBaseMessageToOpenAIChatMessage,
   mapResponseToChatResult,
@@ -24,9 +24,10 @@ export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
 
   deploymentId?: string;
   modelVersion?: string;
+  resourceGroup?: string;
   modelName: OpenAiChatModel;
   model: OpenAiChatModel;
-  private btpOpenAIClient: OpenAiClient;
+  private btpOpenAIClient: OpenAiChatClient;
 
   constructor(fields: OpenAIChatModelInput) {
     const defaultValues = new ChatOpenAI();
@@ -43,12 +44,10 @@ export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
       fields.presence_penalty ?? defaultValues.presencePenalty;
     const topP = fields.top_p ?? defaultValues.topP;
     const model = defaultValues.model;
-    const modelName = model;
 
     super({
       ...fields,
       model,
-      modelName,
       n,
       stop,
       temperature,
@@ -61,8 +60,17 @@ export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
     this.model = fields.modelName;
     this.modelName = fields.modelName;
     this.modelVersion = fields.modelVersion;
+    this.deploymentId = fields.deploymentId;
+    this.resourceGroup = fields.resourceGroup;
 
-    this.btpOpenAIClient = new OpenAiClient();
+    this.btpOpenAIClient = new OpenAiChatClient(
+      {
+         modelName: this.modelName,
+         modelVersion: this.modelVersion,
+         deploymentId: this.deploymentId,
+         resourceGroup: this.resourceGroup,
+      }
+    );
   }
 
   override get callKeys(): (keyof OpenAIChatCallOptions)[] {
@@ -107,7 +115,7 @@ export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
         signal: options.signal
       },
       () =>
-        this.btpOpenAIClient.chatCompletion(
+        this.btpOpenAIClient.run(
           {
             messages: messages.map(mapBaseMessageToOpenAIChatMessage),
             max_tokens: this.maxTokens === -1 ? undefined : this.maxTokens,
@@ -128,11 +136,6 @@ export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
             response_format: options?.response_format,
             seed: options?.seed,
             ...this.modelKwargs
-          },
-          {
-            modelName: this.modelName ?? this.model,
-            deploymentId: this.deploymentId,
-            modelVersion: this.modelVersion
           }
         )
     );
