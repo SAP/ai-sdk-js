@@ -345,7 +345,7 @@ export interface OpenAiEmbeddingParameters {
 /**
  * Usage statistics for the completion request.
  */
-interface OpenAiUsage {
+export interface OpenAiUsage {
   /**
    * Tokens consumed for output text completion.
    */
@@ -419,7 +419,10 @@ export interface OpenAiPromptFilterResult {
   content_filter_results?: OpenAiContentFilterPromptResults;
 }
 
-interface OpenAiCompletionChoice {
+/**
+ * OpenAI completion choice.
+ */
+export interface OpenAiCompletionChoice {
   /**
    * Reason for finish.
    */
@@ -514,9 +517,15 @@ export interface OpenAiContentFilterDetectedResult
 /**
  * OpenAI error.
  */
-interface OpenAiErrorBase {
+export interface OpenAiErrorBase {
+  /**
+   * Error code.
+   */
   code?: string;
 
+  /**
+   * Error message.
+   */
   message?: string;
 }
 

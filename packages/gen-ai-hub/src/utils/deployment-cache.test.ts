@@ -28,42 +28,65 @@ describe('deployment cache', () => {
     });
   });
 
-  it('should cache all deployments independent of potentially given models', () => {
-    const opts = {
-      scenarioId: 'foundation-models',
-      model: { name: 'gpt-4o', version: 'latest' }
-    };
+  describe('should cache all deployments independent of potentially given models', () => {
+    beforeEach(() => {
+      deploymentCache.setAll(
+        {
+          scenarioId: 'foundation-models',
+          model: { name: 'gpt-4o', version: 'latest' }
+        },
+        [
+          mockAiDeployment('deployment-id1', {
+            name: 'gpt-35-turbo',
+            version: 'latest'
+          }),
+          mockAiDeployment('deployment-id2', {
+            name: 'gpt-35-turbo',
+            version: '123'
+          })
+        ]
+      );
+    });
 
-    deploymentCache.setAll(opts, [
-      mockAiDeployment('deployment-id1', {
-        name: 'gpt-35-turbo',
-        version: 'latest'
-      }),
-      mockAiDeployment('deployment-id2', {
-        name: 'gpt-35-turbo',
-        version: '123'
-      })
-    ]);
+    it('cache nothing for unlisted model names', () => {
+      expect(
+        deploymentCache.get({
+          scenarioId: 'foundation-models',
+          model: { name: 'gpt-4o', version: 'latest' }
+        })
+      ).toBeUndefined();
+    });
 
-    expect(deploymentCache.get(opts)).toBeUndefined();
-    expect(
-      deploymentCache.get({
-        ...opts,
-        model: {
-          name: 'gpt-35-turbo',
-          version: 'latest'
-        }
-      })?.id
-    ).toEqual('deployment-id1');
-    expect(
-      deploymentCache.get({
-        ...opts,
-        model: {
-          name: 'gpt-35-turbo',
-          version: '123'
-        }
-      })?.id
-    ).toEqual('deployment-id2');
+    it('retrieve the deployment matching the model name and version', () => {
+      expect(
+        deploymentCache.get({
+          scenarioId: 'foundation-models',
+          model: {
+            name: 'gpt-35-turbo',
+            version: '123'
+          }
+        })?.id
+      ).toEqual('deployment-id2');
+    });
+
+    it('retrieve the first deployment matching the model name when version is missing', () => {
+      expect(
+        deploymentCache.get({
+          scenarioId: 'foundation-models',
+          model: {
+            name: 'gpt-35-turbo'
+          }
+        })?.id
+      ).toEqual('deployment-id1');
+    });
+
+    it('retrieve the deployment when model is missing', () => {
+      expect(
+        deploymentCache.get({
+          scenarioId: 'foundation-models'
+        })?.id
+      ).toEqual('deployment-id1');
+    });
   });
 
   it('should cache only the first deployments for equal models and versions', () => {
