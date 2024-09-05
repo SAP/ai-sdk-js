@@ -40,7 +40,7 @@ describe('orchestration', () => {
     expect(response.data.orchestration_result.choices).not.toHaveLength(0);
     expect(response.getContent()).toBe(expect.any(String));
     expect(response.getFinishReason()).toBe(expect.any(String));
-    expect(response.getUsageTokens()).toMatchObject({
+    expect(response.getTokenUsage()).toMatchObject({
       total_tokens: expect.any(Number),
       prompt_tokens: expect.any(Number),
       completion_tokens: expect.any(Number)
