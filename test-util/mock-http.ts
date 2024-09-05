@@ -7,9 +7,11 @@ import {
   ServiceCredentials
 } from '@sap-cloud-sdk/connectivity';
 import nock from 'nock';
-import { EndpointOptions } from '@sap-ai-sdk/core';
-import { FoundationModel } from '../packages/ai-core/src/utils/model.js';
-import { DeploymentResolutionOptions } from '../packages/ai-core/src/internal.js';
+import { type EndpointOptions } from '@sap-ai-sdk/core';
+import {
+  type FoundationModel,
+  type DeploymentResolutionOptions
+} from '@sap-ai-sdk/ai-core/internal.js';
 import { dummyToken } from './mock-jwt.js';
 
 // Get the directory of this file
@@ -39,12 +41,6 @@ const mockEndpoint: EndpointOptions = {
   url: 'mock-endpoint',
   apiVersion: 'mock-api-version'
 };
-
-export function mockAiCoreEnvVariable(): void {
-  process.env['AICORE_SERVICE_KEY'] = JSON.stringify(
-    aiCoreServiceBinding.credentials
-  );
-}
 
 export function createDestinationTokens(
   token: string = dummyToken,

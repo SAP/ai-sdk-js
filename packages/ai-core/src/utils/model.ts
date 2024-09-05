@@ -1,7 +1,7 @@
 import { AiDeployment } from '../client/AI_CORE_API/index.js';
 
 /**
- * A foundation model is identified by its name and potentially a version.
+ * A foundation model is identified by its name and optionally a version.
  * @internal
  */
 export interface FoundationModel {

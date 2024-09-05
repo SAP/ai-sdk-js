@@ -14,9 +14,14 @@ import { OrchestrationModuleConfig, Prompt } from './orchestration-types.js';
  */
 export class OrchestrationClient {
   // TODO: document constructor
+  /**
+   * Creates an instance of the orchestration client.
+   * @param config - Orchestration module configuration.
+   * @param deploymentConfig - Deployment configuration.
+   */
   constructor(
     private config: OrchestrationModuleConfig,
-    private deploymentConfig?: ResourceGroupConfiguration // DeploymentIdConfiguration
+    private deploymentConfig?: ResourceGroupConfiguration
   ) {}
 
   /**

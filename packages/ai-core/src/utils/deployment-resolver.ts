@@ -6,21 +6,19 @@ import { deploymentCache } from './deployment-cache.js';
 import { extractModel, type FoundationModel } from './model.js';
 
 /**
- * The model deployment configuration when using a model. It can be either the name of the model or an object containing the name and version of the model.
+ * The model deployment configuration when using a model.
  * @typeParam ModelNameT - String literal type representing the name of the model.
  */
-export type ModelConfiguration<ModelNameT = string> =
-  | ModelNameT
-  | {
-      /**
-       * The name of the model.
-       */
-      modelName: ModelNameT;
-      /**
-       * The version of the model.
-       */
-      modelVersion?: string;
-    };
+export interface ModelConfiguration<ModelNameT = string> {
+  /**
+   * The name of the model.
+   */
+  modelName: ModelNameT;
+  /**
+   * The version of the model.
+   */
+  modelVersion?: string;
+}
 
 /**
  * The deployment configuration when using a deployment ID.
@@ -33,7 +31,7 @@ export interface DeploymentIdConfiguration {
 }
 
 /**
- * The deployment configuration when using a deployment ID.
+ * The deployment configuration when using a resource group.
  */
 export interface ResourceGroupConfiguration {
   /**
@@ -43,14 +41,13 @@ export interface ResourceGroupConfiguration {
 }
 
 /**
- * The deployment configuration can be either a model configuration or a deployment ID configuration.
+ * The configuration of a model deployment.
  * @typeParam ModelNameT - String literal type representing the name of the model.
  */
 export type ModelDeployment<ModelNameT = string> = (
-  | ModelConfiguration<ModelNameT>
-  | DeploymentIdConfiguration
-) &
-  ResourceGroupConfiguration;
+  | ModelNameT
+  | ((ModelConfiguration<ModelNameT> | DeploymentIdConfiguration) &
+      ResourceGroupConfiguration);
 
 /**
  * Type guard to check if the given deployment configuration is a deployment ID configuration.
@@ -163,11 +160,16 @@ export async function getDeploymentId(
     return modelDeployment.deploymentId;
   }
 
+  const model =
+    typeof modelDeployment === 'string'
+      ? { modelName: modelDeployment }
+      : modelDeployment;
+
   return resolveDeploymentId({
     scenarioId: 'foundation-models',
     executableId,
-    model: translateToFoundationModel(modelDeployment),
-    resourceGroup: modelDeployment.resourceGroup
+    model: translateToFoundationModel(model),
+    resourceGroup: model.resourceGroup
   });
 }
 

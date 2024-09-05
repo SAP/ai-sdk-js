@@ -2,7 +2,7 @@ import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
 import {
   getDeploymentId,
   type ModelDeployment
-} from '@sap-ai-sdk/ai-core/internal.js';
+} from '../../utils/deployment-resolver.js';
 import type {
   OpenAiChatCompletionParameters,
   OpenAiChatCompletionOutput,
@@ -12,11 +12,13 @@ import type {
 const apiVersion = '2024-02-01';
 
 /**
- * OpenAI Client.
+ * OpenAI client for chat completion.
  */
 export class OpenAiChatClient {
-  // TODO: document constructor
-  //* @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
+  /**
+   * Creates an instance of the OpenAI chat client.
+   * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
+   */
   constructor(private modelDeployment: ModelDeployment<OpenAiChatModel>) {}
 
   /**
