@@ -316,6 +316,7 @@ export async function exportAllInBarrel(
           '**/*.test.ts',
           '__snapshots__',
           'spec',
+          'tests',
           'internal.ts',
           'index.ts',
           'cli.ts',
