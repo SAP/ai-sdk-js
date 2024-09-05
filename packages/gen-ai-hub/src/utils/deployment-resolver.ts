@@ -43,8 +43,14 @@ export interface ResourceGroupConfiguration {
  */
 export type ModelDeployment<ModelNameT = string> =
   | ModelNameT
-  | ((ModelConfiguration<ModelNameT> | DeploymentIdConfiguration) &
-      ResourceGroupConfiguration);
+  | ConfigurationOptions<ModelNameT>;
+
+/**
+ * The configuration options for a model deployment.
+ * @typeParam ModelNameT - String literal type representing the name of the model.
+ */
+export type ConfigurationOptions<ModelNameT> = (ModelConfiguration<ModelNameT> | DeploymentIdConfiguration) &
+ResourceGroupConfiguration;
 
 /**
  * Type guard to check if the given deployment configuration is a deployment ID configuration.

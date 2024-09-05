@@ -1,6 +1,7 @@
 import { BaseChatModelParams } from '@langchain/core/language_models/chat_models';
 import { ChatOpenAICallOptions, OpenAIChatInput } from '@langchain/openai';
 import {
+  ConfigurationOptions,
   OpenAiChatCompletionParameters,
   OpenAiChatModel
 } from '@sap-ai-sdk/gen-ai-hub';
@@ -11,34 +12,13 @@ import {
 export interface OpenAIChatModelInterface
   extends Omit<
       OpenAIChatInput,
-      'openAIApiKey' | 'streaming' | 'model' | 'modelName'
+      'openAIApiKey' | 'streaming'
     >,
     Omit<
       OpenAiChatCompletionParameters,
       'n' | 'stop' | 'messages' | 'temperature'
     >,
-    BaseChatModelParams {
-  /**
-   * The name of the model.
-   */
-  modelName: OpenAiChatModel;
-  /**
-   * The name of the model. Alias for `modelName`.
-   */
-  model: OpenAiChatModel;
-  /**
-   * The version of the model.
-   */
-  modelVersion?: string;
-  /**
-   * The deployment ID of the model.
-   */
-  deploymentId?: string;
-  /**
-   * The resource group of the model.
-   */
-  resourceGroup?: string;
-}
+    BaseChatModelParams {}
 
 /**
  * Input for Text generation for OpenAI GPT.
@@ -57,24 +37,8 @@ export type OpenAIChatModelInput = Omit<
   | 'streaming'
 > &
   Omit<OpenAiChatCompletionParameters, 'messages'> &
-  BaseChatModelParams & {
-    /**
-     * The name of the model.
-     */
-    modelName: OpenAiChatModel;
-    /**
-     * The version of the model.
-     */
-    modelVersion?: string;
-    /**
-     * The deployment ID of the model.
-     */
-    deploymentId?: string;
-    /**
-     * The resource group of the model.
-     */
-    resourceGroup?: string;
-  };
+  BaseChatModelParams &
+  ConfigurationOptions<OpenAiChatModel>;
 
 /**
  * Chat Call options.

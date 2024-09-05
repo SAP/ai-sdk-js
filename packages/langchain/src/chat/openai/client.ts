@@ -3,7 +3,7 @@ import { BaseMessage } from '@langchain/core/messages';
 import { ChatResult } from '@langchain/core/outputs';
 import { StructuredTool } from '@langchain/core/tools';
 import { ChatOpenAI } from '@langchain/openai';
-import { OpenAiChatClient, OpenAiChatModel } from '@sap-ai-sdk/gen-ai-hub';
+import { OpenAiChatClient } from '@sap-ai-sdk/gen-ai-hub';
 import {
   mapBaseMessageToOpenAIChatMessage,
   mapResponseToChatResult,
@@ -21,12 +21,6 @@ import {
  */
 export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
   declare CallOptions: OpenAIChatCallOptions;
-
-  deploymentId?: string;
-  modelVersion?: string;
-  resourceGroup?: string;
-  modelName: OpenAiChatModel;
-  model: OpenAiChatModel;
   private btpOpenAIClient: OpenAiChatClient;
 
   constructor(fields: OpenAIChatModelInput) {
@@ -43,11 +37,12 @@ export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
     const presencePenalty =
       fields.presence_penalty ?? defaultValues.presencePenalty;
     const topP = fields.top_p ?? defaultValues.topP;
-    const model = defaultValues.model;
+    const modelName = fields.modelName ?? defaultValues.modelName;
 
     super({
       ...fields,
-      model,
+      modelName,
+      model: modelName,
       n,
       stop,
       temperature,
@@ -57,20 +52,15 @@ export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
       topP
     });
 
-    this.model = fields.modelName;
-    this.modelName = fields.modelName;
-    this.modelVersion = fields.modelVersion;
-    this.deploymentId = fields.deploymentId;
-    this.resourceGroup = fields.resourceGroup;
-
-    this.btpOpenAIClient = new OpenAiChatClient(
+    this.btpOpenAIClient = fields.modelName ? new OpenAiChatClient(
       {
-         modelName: this.modelName,
-         modelVersion: this.modelVersion,
-         deploymentId: this.deploymentId,
-         resourceGroup: this.resourceGroup,
-      }
-    );
+         modelName:  fields.modelName,
+         modelVersion: fields.modelVersion,
+         resourceGroup: fields.resourceGroup,
+      }) : new OpenAiChatClient({
+        deploymentId: fields.deploymentId,
+        resourceGroup: fields.resourceGroup
+      });
   }
 
   override get callKeys(): (keyof OpenAIChatCallOptions)[] {
