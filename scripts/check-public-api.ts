@@ -1,14 +1,12 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
-import { join, resolve, parse, basename, dirname } from 'path';
-import path from 'path';
+import path, { join, resolve, parse, basename, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { promises, existsSync } from 'fs';
 import { glob } from 'glob';
 import { createLogger, flatten, unixEOL } from '@sap-cloud-sdk/util';
 import mock from 'mock-fs';
 import { CompilerOptions } from 'typescript';
-/* eslint-disable-next-line no-restricted-imports */
 import {
   readCompilerOptions,
   readIncludeExcludeWithDefaults,
@@ -49,7 +47,7 @@ function paths(pathToPackage: string): {
     pathToSource: join(pathToPackage, 'src'),
     pathToTsConfig: join(pathToPackage, 'tsconfig.json'),
     pathToNodeModules: join(pathToPackage, 'node_modules'),
-    pathCompiled: 'dist',
+    pathCompiled: 'dist'
   };
 }
 
@@ -129,15 +127,19 @@ export async function checkApiOfPackage(pathToPackage: string): Promise<void> {
     mockFileSystem(pathToPackage);
     const opts = await getCompilerOptions(pathToPackage);
     const includeExclude = await readIncludeExcludeWithDefaults(pathToTsConfig);
-    await transpileDirectory(pathToSource, {
-      compilerOptions: opts,
-      // We have things in our sources like  `#!/usr/bin/env node` in CLI `.js` files which is not working with parser of prettier.
-      createFileOptions: {
-        overwrite: true,
-        prettierOptions: defaultPrettierConfig,
-        usePrettier: false
-      }
-    }, { exclude: includeExclude?.exclude!, include: ['**/*.ts'] });
+    await transpileDirectory(
+      pathToSource,
+      {
+        compilerOptions: opts,
+        // We have things in our sources like  `#!/usr/bin/env node` in CLI `.js` files which is not working with parser of prettier.
+        createFileOptions: {
+          overwrite: true,
+          prettierOptions: defaultPrettierConfig,
+          usePrettier: false
+        }
+      },
+      { exclude: includeExclude?.exclude!, include: ['**/*.ts'] }
+    );
     // await checkBarrelRecursive(pathToSource);
 
     const indexFilePath = join(pathToSource, 'index.ts');
@@ -250,6 +252,17 @@ export function parseBarrelFile(fileContent: string, regex: RegExp): string[] {
   return flatten(groups.map(group => group.split(',')));
 }
 
+// TODO: currently this is called in one place to fix a very specific issue for the AI Core API
+// For some reason parsing the barrel file looks at "{ SOMETHING } from '." only, which is not enough and even wrong because it does also look at imports, not only exports
+export function parseOtherExports(fileContent: string): string[] {
+  const normalized = fileContent.replace(/\s+/g, ' ');
+  const groups = [
+    ...captureGroupsFromGlobalRegex(/export const (\w+)/g, normalized),
+    ...captureGroupsFromGlobalRegex(/export type (\w+)/g, normalized)
+  ];
+  return flatten(groups.map(group => group.split(',')));
+}
+
 function checkInternalReExports(fileContent: string, filePath: string): void {
   const internalReExports = parseBarrelFile(
     fileContent,
@@ -268,9 +281,12 @@ export async function parseIndexFile(filePath: string): Promise<string[]> {
   const cwd = dirname(filePath);
   const fileContent = await readFile(filePath, 'utf-8');
   checkInternalReExports(fileContent, filePath);
-  const localExports = parseBarrelFile(fileContent, regexExportedIndex);
+  const localExports = [
+    ...parseBarrelFile(fileContent, regexExportedIndex),
+    ...parseOtherExports(fileContent)
+  ];
   const starFiles = captureGroupsFromGlobalRegex(
-    /export \* from '([\w\/.-]+)'/g,
+    /export \* from '([\w/.-]+)'/g,
     fileContent
   );
   const starFileExports = await Promise.all(

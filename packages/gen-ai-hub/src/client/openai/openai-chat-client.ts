@@ -2,7 +2,7 @@ import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
 import {
   getDeploymentId,
   type ModelDeployment
-} from '../../utils/deployment-resolver.js';
+} from '@sap-ai-sdk/ai-core/internal.js';
 import type {
   OpenAiChatCompletionParameters,
   OpenAiChatCompletionOutput,
