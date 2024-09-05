@@ -9,7 +9,6 @@ export type {
   OpenAiChatFunctionMessage,
   OpenAiCompletionChoice,
   OpenAiErrorBase,
-  OpenAiChatCompletionChoice,
   OpenAiCompletionOutput,
   OpenAiUsage,
   OpenAiChatCompletionFunction,
