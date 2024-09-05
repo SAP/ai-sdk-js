@@ -36,7 +36,7 @@ expectType<OpenAiChatCompletionOutput>(
 
 expectType<string | null>(
   (
-    new OpenAiChatClient('gpt-4').run({
+    await new OpenAiChatClient('gpt-4').run({
       messages: [{ role: 'user', content: 'test prompt' }]
     })
   ).getContent()
@@ -44,7 +44,7 @@ expectType<string | null>(
 
 expectType<string | null>(
   (
-    new OpenAiChatClient('gpt-4').run({
+    await new OpenAiChatClient('gpt-4').run({
       messages: [{ role: 'user', content: 'test prompt' }]
     })
   ).getFinishReason()
@@ -52,10 +52,10 @@ expectType<string | null>(
 
 expectType<OpenAiUsage>(
   (
-    new OpenAiChatClient('gpt-4').run({
+    await new OpenAiChatClient('gpt-4').run({
       messages: [{ role: 'user', content: 'test prompt' }]
     })
-  ).getUsageTokens()
+  ).getTokenUsage()
 );
 
 /**

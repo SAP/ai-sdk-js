@@ -74,7 +74,7 @@ expectType<TokenUsage>(
         model_params: {}
       }
     }).chatCompletion()
-  ).getUsageTokens()
+  ).getTokenUsage()
 );
 
 /**
