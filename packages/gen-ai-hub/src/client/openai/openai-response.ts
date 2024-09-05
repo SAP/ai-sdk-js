@@ -18,9 +18,9 @@ export class OpenAiChatCompletionResponse {
 
   /**
    * Usage of tokens in the response.
-   * @returns The usage tokens.
+   * @returns Token usage.
    */
-  getUsageTokens(): OpenAiUsage {
+  getTokenUsage(): OpenAiUsage {
     return this.data.usage;
   }
   /**
