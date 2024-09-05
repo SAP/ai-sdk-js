@@ -177,9 +177,7 @@ export function checkIndexFileExists(indexFilePath: string): void {
 export async function typeDescriptorPaths(cwd: string): Promise<string[]> {
   const files = await glob('**/*.d.ts', { cwd });
   return files
-    .filter(file => 
-      !file.endsWith('index.d.ts') &&
-      !file.startsWith('client\\AI_CORE_API\\'))
+    .filter(file => !file.endsWith('index.d.ts'))
     .map(file => join(cwd, file));
 }
 
@@ -274,7 +272,7 @@ export async function parseIndexFile(filePath: string): Promise<string[]> {
   const starFiles = captureGroupsFromGlobalRegex(
     /export \* from '([\w\/.-]+)'/g,
     fileContent
-  ).filter(file => file !== './client/AI_CORE_API/index.js');
+  );
   const starFileExports = await Promise.all(
     starFiles.map(async relativeFilePath => {
       const fullPath = resolve(cwd, relativeFilePath);
