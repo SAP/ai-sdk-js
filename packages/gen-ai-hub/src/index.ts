@@ -24,7 +24,7 @@ export type {
   OpenAiContentFilterSeverityResult,
   OpenAiEmbeddingOutput
 } from './client/index.js';
-export { OpenAiClient } from './client/index.js';
+export { OpenAiClient, OpenAiChatCompletionResponse } from './client/index.js';
 
 export type {
   ModelDeployment,
@@ -67,5 +67,6 @@ export type {
 } from './orchestration/index.js';
 export {
   OrchestrationClient,
+  OrchestrationResponse,
   azureContentFilter
 } from './orchestration/index.js';

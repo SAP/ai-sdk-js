@@ -7,10 +7,10 @@ import {
  * Ask GPT about the capital of France.
  * @returns The answer from the orchestration service in Gen AI Hub.
  */
-export function orchestrationCompletion(): Promise<CompletionPostResponse> {
+export async function orchestrationCompletion(): Promise<CompletionPostResponse> {
   const orchestrationClient = new OrchestrationClient();
 
-  return orchestrationClient.chatCompletion(
+  const response = await orchestrationClient.chatCompletion(
     {
       llmConfig: {
         model_name: 'gpt-4-32k',
@@ -22,4 +22,5 @@ export function orchestrationCompletion(): Promise<CompletionPostResponse> {
     },
     'db1d64d9f06be467'
   );
+  return response.data;
 }
