@@ -53,13 +53,13 @@ expectType<Promise<OpenAiChatCompletionOutput>>(
       tool_choice: {
         type: 'function',
         function: {
-          name: 'function 1',
+          name: 'function 1'
         }
       }
     },
     {
       params: {
-        'apiVersion': '2024-02-01'
+        apiVersion: '2024-02-01'
       }
     }
   )
@@ -78,15 +78,17 @@ expectType<Promise<OpenAiEmbeddingOutput>>(
  * Embeddings with optional parameters.
  */
 expectType<Promise<OpenAiEmbeddingOutput>>(
-  new OpenAiEmbeddingClient('text-embedding-ada-002').run({
-    input: ['test input 1', 'test input 2'],
-    user: 'some-guid'
-  },
-  {
-    params: {
-      'apiVersion': '2024-02-01'
+  new OpenAiEmbeddingClient('text-embedding-ada-002').run(
+    {
+      input: ['test input 1', 'test input 2'],
+      user: 'some-guid'
+    },
+    {
+      params: {
+        apiVersion: '2024-02-01'
+      }
     }
-  })
+  )
 );
 
 expectError<any>(new OpenAiEmbeddingClient('gpt-35-turbo'));

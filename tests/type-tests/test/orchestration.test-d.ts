@@ -33,47 +33,52 @@ expectType<Promise<CompletionPostResponse>>(
     },
     filterConfig: {
       input: {
-        filters: [{
-          type: 'azure_content_safety',
-          config: {
-            Hate: 0,
-            SelfHarm: 2,
-            Sexual: 4,
-            Violence: 6
+        filters: [
+          {
+            type: 'azure_content_safety',
+            config: {
+              Hate: 0,
+              SelfHarm: 2,
+              Sexual: 4,
+              Violence: 6
+            }
           }
-        }]
+        ]
       },
       output: {
-        filters: [{
-          type: 'azure_content_safety',
-          config: {
-            Hate: 6,
-            SelfHarm: 4,
-            Sexual: 2,
-            Violence: 0
+        filters: [
+          {
+            type: 'azure_content_safety',
+            config: {
+              Hate: 6,
+              SelfHarm: 4,
+              Sexual: 2,
+              Violence: 0
+            }
           }
-        }]
+        ]
       }
     }
-  }).chatCompletion({
-    messagesHistory: [
-      {
-        content:
-          'You are a helpful assistant who remembers all details the user shares with you.',
-        role: 'system'
-      },
-      {
-        content: 'Hi! Im {{?name}}',
-        role: 'user'
+  }).chatCompletion(
+    {
+      messagesHistory: [
+        {
+          content:
+            'You are a helpful assistant who remembers all details the user shares with you.',
+          role: 'system'
+        },
+        {
+          content: 'Hi! Im {{?name}}',
+          role: 'user'
+        }
+      ],
+      inputParams: {
+        name: 'Bob'
       }
-    ],
-    inputParams: {
-      name: 'Bob'
-    }
-  },
+    },
     {
       params: {
-        'apiVersion': '2024-02-01'
+        apiVersion: '2024-02-01'
       }
     }
   )
