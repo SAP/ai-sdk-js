@@ -32,7 +32,6 @@ export type CustomRequestConfig = Pick<
   HttpRequestConfig,
   | 'headers'
   | 'params'
-  | 'method'
   | 'middleware'
   | 'maxContentLength'
   | 'proxy'

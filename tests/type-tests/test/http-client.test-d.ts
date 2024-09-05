@@ -11,7 +11,7 @@ expectType<Promise<HttpResponse>>(
 
 expectError<any>(executeRequest({}, { prompt: 'test prompt' }));
 
-expectError<Promise<HttpResponse>>(
+expectType<Promise<HttpResponse>>(
   executeRequest(
     { url: 'https://example.com', apiVersion: 'v1' },
     { deploymentConfiguration: { deploymentId: 'test-id' } },
