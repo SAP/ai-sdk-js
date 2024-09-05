@@ -1,18 +1,16 @@
-import { OpenAiClient } from '@sap-ai-sdk/gen-ai-hub';
-
-const openAiClient = new OpenAiClient();
+import {
+  OpenAiChatClient,
+  OpenAiEmbeddingClient
+} from '@sap-ai-sdk/gen-ai-hub';
 
 /**
  * Ask GPT about the capital of France.
  * @returns The answer from GPT.
  */
 export async function chatCompletion(): Promise<string> {
-  const response = await openAiClient.chatCompletion(
-    {
-      messages: [{ role: 'user', content: 'What is the capital of France?' }]
-    },
-    'gpt-35-turbo'
-  );
+  const response = await new OpenAiChatClient('gpt-35-turbo').run({
+    messages: [{ role: 'user', content: 'What is the capital of France?' }]
+  });
   return response.getContent()!;
 }
 
@@ -21,12 +19,11 @@ export async function chatCompletion(): Promise<string> {
  * @returns An embedding vector.
  */
 export async function computeEmbedding(): Promise<number[]> {
-  const response = await openAiClient.embeddings(
-    {
-      input: 'Hello, world!'
-    },
+  const response = await new OpenAiEmbeddingClient(
     'text-embedding-ada-002'
-  );
+  ).run({
+    input: 'Hello, world!'
+  });
 
   return response.data[0].embedding;
 }

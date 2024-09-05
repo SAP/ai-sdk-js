@@ -1,68 +1,60 @@
 import { expectError, expectType } from 'tsd';
 import {
-  OpenAiClient,
+  OpenAiChatCompletionOutput,
   OpenAiEmbeddingOutput,
+  OpenAiChatClient,
+  OpenAiEmbeddingClient,
   OpenAiChatCompletionResponse,
-  OpenAiUsage,
-  OpenAiChatCompletionOutput
+  OpenAiUsage
 } from '@sap-ai-sdk/gen-ai-hub';
-
-const client = new OpenAiClient();
-expectType<OpenAiClient>(client);
 
 /**
  * Chat Completion.
  */
 expectType<Promise<OpenAiChatCompletionResponse>>(
-  client.chatCompletion(
-    {
-      messages: [{ role: 'user', content: 'test prompt' }]
-    },
-    'gpt-4'
-  )
+  new OpenAiChatClient('gpt-4').run({
+    messages: [{ role: 'user', content: 'test prompt' }]
+  })
+);
+
+/**
+ * Chat Completion with invalid model.
+ */
+expectError(
+  new OpenAiChatClient('unknown').run({
+    messages: [{ role: 'user', content: 'test prompt' }]
+  })
 );
 
 expectType<OpenAiChatCompletionOutput>(
   (
-    await client.chatCompletion(
-      {
-        messages: [{ role: 'user', content: 'test prompt' }]
-      },
-      'gpt-4'
-    )
+    await new OpenAiChatClient('gpt-4').run({
+      messages: [{ role: 'user', content: 'test prompt' }]
+    })
   ).data
 );
 
 expectType<string | null>(
   (
-    await client.chatCompletion(
-      {
-        messages: [{ role: 'user', content: 'test prompt' }]
-      },
-      'gpt-4'
-    )
+    new OpenAiChatClient('gpt-4').run({
+      messages: [{ role: 'user', content: 'test prompt' }]
+    })
   ).getContent()
 );
 
 expectType<string | null>(
   (
-    await client.chatCompletion(
-      {
-        messages: [{ role: 'user', content: 'test prompt' }]
-      },
-      'gpt-4'
-    )
+    new OpenAiChatClient('gpt-4').run({
+      messages: [{ role: 'user', content: 'test prompt' }]
+    })
   ).getFinishReason()
 );
 
 expectType<OpenAiUsage>(
   (
-    await client.chatCompletion(
-      {
-        messages: [{ role: 'user', content: 'test prompt' }]
-      },
-      'gpt-4'
-    )
+    new OpenAiChatClient('gpt-4').run({
+      messages: [{ role: 'user', content: 'test prompt' }]
+    })
   ).getUsageTokens()
 );
 
@@ -70,12 +62,9 @@ expectType<OpenAiUsage>(
  * Embeddings.
  */
 expectType<Promise<OpenAiEmbeddingOutput>>(
-  client.embeddings(
-    {
-      input: 'test input'
-    },
-    'text-embedding-ada-002'
-  )
+  new OpenAiEmbeddingClient('text-embedding-ada-002').run({
+    input: 'test input'
+  })
 );
 
-expectError<any>(client.embeddings({ input: 'test input' }, 'gpt-35-turbo'));
+expectError<any>(new OpenAiEmbeddingClient('gpt-35-turbo'));

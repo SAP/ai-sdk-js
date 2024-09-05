@@ -1,23 +1,22 @@
 import nock from 'nock';
 import {
   mockClientCredentialsGrantCall,
+  mockDeploymentsList,
   mockInference,
   parseMockResponse
 } from '../../../../test-util/mock-http.js';
 import { CompletionPostResponse } from './client/api/index.js';
 import {
-  OrchestrationClient,
-  constructCompletionPostRequest
+  constructCompletionPostRequest,
+  OrchestrationClient
 } from './orchestration-client.js';
 import { azureContentFilter } from './orchestration-filter-utility.js';
-import { OrchestrationCompletionParameters } from './orchestration-types.js';
 import { OrchestrationResponse } from './orchestration-response.js';
 
-describe('GenAiHubClient', () => {
-  const client = new OrchestrationClient();
-
+describe('orchestration service client', () => {
   beforeEach(() => {
     mockClientCredentialsGrantCall();
+    mockDeploymentsList({ scenarioId: 'orchestration' }, { id: '1234' });
   });
 
   afterEach(() => {
@@ -25,12 +24,12 @@ describe('GenAiHubClient', () => {
   });
 
   it('calls chatCompletion with minimum configuration', async () => {
-    const request = {
+    const config = {
       llmConfig: {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
-      prompt: {
+      templatingConfig: {
         template: [{ role: 'user', content: 'Hello!' }]
       }
     };
@@ -42,7 +41,7 @@ describe('GenAiHubClient', () => {
 
     mockInference(
       {
-        data: constructCompletionPostRequest(request)
+        data: constructCompletionPostRequest(config)
       },
       {
         data: mockResponse,
@@ -52,7 +51,7 @@ describe('GenAiHubClient', () => {
         url: 'inference/deployments/1234/completion'
       }
     );
-    const response = await client.chatCompletion(request, '1234');
+    const response = await new OrchestrationClient(config).chatCompletion();
 
     expect(response).toBeInstanceOf(OrchestrationResponse);
     expect(response.data).toEqual(mockResponse);
@@ -62,24 +61,26 @@ describe('GenAiHubClient', () => {
   });
 
   it('calls chatCompletion with filter configuration supplied using convenience function', async () => {
-    const request = {
+    const config = {
       llmConfig: {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
-      prompt: {
+      templatingConfig: {
         template: [
           {
             role: 'user',
             content: 'Create {{?number}} paraphrases of {{?phrase}}'
           }
-        ],
-        template_params: { phrase: 'I hate you.', number: '3' }
+        ]
       },
       filterConfig: {
         input: azureContentFilter({ Hate: 4, SelfHarm: 2 }),
         output: azureContentFilter({ Sexual: 0, Violence: 4 })
       }
+    };
+    const prompt = {
+      inputParams: { phrase: 'I hate you.', number: '3' }
     };
     const mockResponse = parseMockResponse<CompletionPostResponse>(
       'orchestration',
@@ -88,7 +89,7 @@ describe('GenAiHubClient', () => {
 
     mockInference(
       {
-        data: constructCompletionPostRequest(request)
+        data: constructCompletionPostRequest(config, prompt)
       },
       {
         data: mockResponse,
@@ -98,33 +99,34 @@ describe('GenAiHubClient', () => {
         url: 'inference/deployments/1234/completion'
       }
     );
-    const response = await client.chatCompletion(request, '1234');
+    const response = await new OrchestrationClient(config).chatCompletion(
+      prompt
+    );
     expect(response.data).toEqual(mockResponse);
   });
 
   it('calls chatCompletion with filtering configuration', async () => {
-    const request = {
+    const config = {
       llmConfig: {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
-      prompt: {
+      templatingConfig: {
         template: [
           {
             role: 'user',
             content: 'Create {{?number}} paraphrases of {{?phrase}}'
           }
-        ],
-        template_params: { phrase: 'I hate you.', number: '3' }
+        ]
       },
       filterConfig: {
         input: {
           filters: [
             {
-              type: 'azure_content_safety',
+              type: 'azure_content_safety' as const,
               config: {
-                Hate: 4,
-                SelfHarm: 2
+                Hate: 4 as const,
+                SelfHarm: 2 as const
               }
             }
           ]
@@ -132,16 +134,17 @@ describe('GenAiHubClient', () => {
         output: {
           filters: [
             {
-              type: 'azure_content_safety',
+              type: 'azure_content_safety' as const,
               config: {
-                Sexual: 0,
-                Violence: 4
+                Sexual: 0 as const,
+                Violence: 4 as const
               }
             }
           ]
         }
       }
-    } as OrchestrationCompletionParameters;
+    };
+    const prompt = { inputParams: { phrase: 'I hate you.', number: '3' } };
     const mockResponse = parseMockResponse<CompletionPostResponse>(
       'orchestration',
       'genaihub-chat-completion-filter-config.json'
@@ -149,7 +152,7 @@ describe('GenAiHubClient', () => {
 
     mockInference(
       {
-        data: constructCompletionPostRequest(request)
+        data: constructCompletionPostRequest(config, prompt)
       },
       {
         data: mockResponse,
@@ -159,17 +162,19 @@ describe('GenAiHubClient', () => {
         url: 'inference/deployments/1234/completion'
       }
     );
-    const response = await client.chatCompletion(request, '1234');
+    const response = await new OrchestrationClient(config).chatCompletion(
+      prompt
+    );
     expect(response.data).toEqual(mockResponse);
   });
 
   it('sends message history together with templating config', async () => {
-    const request = {
+    const config = {
       llmConfig: {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
-      prompt: {
+      templatingConfig: {
         template: [{ role: 'user', content: "What's my name?" }],
         messages_history: [
           {
@@ -195,7 +200,7 @@ describe('GenAiHubClient', () => {
     );
     mockInference(
       {
-        data: constructCompletionPostRequest(request)
+        data: constructCompletionPostRequest(config)
       },
       {
         data: mockResponse,
@@ -205,7 +210,7 @@ describe('GenAiHubClient', () => {
         url: 'inference/deployments/1234/completion'
       }
     );
-    const response = await client.chatCompletion(request, '1234');
+    const response = await new OrchestrationClient(config).chatCompletion();
     expect(response.data).toEqual(mockResponse);
   });
 });

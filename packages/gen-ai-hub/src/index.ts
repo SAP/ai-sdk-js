@@ -28,18 +28,18 @@ export type {
   OpenAiContentFilterSeverityResult,
   OpenAiEmbeddingOutput
 } from './client/index.js';
-export { OpenAiClient, OpenAiChatCompletionResponse } from './client/index.js';
+export { OpenAiChatClient, OpenAiEmbeddingClient, OpenAiChatCompletionResponse } from './client/index.js';
 
 export type {
   ModelDeployment,
   DeploymentIdConfiguration,
-  ModelConfiguration
+  ModelConfiguration,
+  ResourceGroupConfiguration
 } from './utils/index.js';
 
 export type {
-  OrchestrationCompletionParameters,
+  OrchestrationModuleConfig,
   CompletionPostResponse,
-  PromptConfig,
   LlmConfig,
   ChatMessages,
   TokenUsage,
@@ -66,8 +66,10 @@ export type {
   ChatMessage,
   AzureThreshold,
   AzureContentSafety,
-  AzureContentSafetyFilterConfig
+  AzureContentSafetyFilterConfig,
+  Prompt
 } from './orchestration/index.js';
+
 export {
   OrchestrationClient,
   OrchestrationResponse,
