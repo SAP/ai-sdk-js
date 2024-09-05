@@ -7,7 +7,7 @@ import {
 } from '@sap-ai-sdk/gen-ai-hub';
 
 /**
- * Chat Completion.
+ * Chat completion.
  */
 expectType<Promise<OpenAiChatCompletionOutput>>(
   new OpenAiChatClient('gpt-4').run({
@@ -25,11 +25,67 @@ expectError(
 );
 
 /**
+ * Chat completion with optional properties.
+ */
+expectType<Promise<OpenAiChatCompletionOutput>>(
+  new OpenAiChatClient({
+    modelName: 'gpt-4',
+    modelVersion: 'latest'
+  }).run(
+    {
+      messages: [{ role: 'user', content: 'test prompt' }],
+      response_format: {
+        type: 'text'
+      },
+      seed: 42,
+      tools: [
+        {
+          type: 'function',
+          function: {
+            name: 'function 1',
+            description: 'description 1',
+            parameters: {
+              param1: 'value1'
+            }
+          }
+        }
+      ],
+      tool_choice: {
+        type: 'function',
+        function: {
+          name: 'function 1',
+        }
+      }
+    },
+    {
+      params: {
+        'apiVersion': '2024-02-01'
+      }
+    }
+  )
+);
+
+/**
  * Embeddings.
  */
 expectType<Promise<OpenAiEmbeddingOutput>>(
   new OpenAiEmbeddingClient('text-embedding-ada-002').run({
     input: 'test input'
+  })
+);
+
+/**
+ * Embeddings with optional properties.
+ */
+expectType<Promise<OpenAiEmbeddingOutput>>(
+  new OpenAiEmbeddingClient('text-embedding-ada-002').run({
+    input: ['test input 1', 'test input 2'],
+    user: 'some-guid'
+  },
+  {
+    params: {
+      'apiVersion': '2024-02-01'
+    }
   })
 );
 
