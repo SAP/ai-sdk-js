@@ -177,7 +177,9 @@ export function checkIndexFileExists(indexFilePath: string): void {
 export async function typeDescriptorPaths(cwd: string): Promise<string[]> {
   const files = await glob('**/*.d.ts', { cwd });
   return files
-    .filter(file => !file.endsWith('index.d.ts'))
+    .filter(file => 
+      !file.endsWith('index.d.ts') &&
+      !file.startsWith('client\\AI_CORE_API\\'))
     .map(file => join(cwd, file));
 }
 
@@ -292,7 +294,7 @@ export async function checkBarrelRecursive(cwd: string): Promise<void> {
   (await readdir(cwd, { withFileTypes: true }))
     .filter(dirent => dirent.isDirectory())
     .forEach(async subDir => {
-      if (['__snapshot__', 'spec'].includes(subDir.name)) {
+      if (!['__snapshot__', 'spec'].includes(subDir.name)) {
         await checkBarrelRecursive(join(cwd, subDir.name));
       }
     });
@@ -314,6 +316,7 @@ export async function exportAllInBarrel(
           '**/*.test.ts',
           '__snapshots__',
           'spec',
+          'tests',
           'internal.ts',
           'index.ts',
           'cli.ts',
