@@ -31,13 +31,6 @@ export type {
 export { OpenAiChatClient, OpenAiEmbeddingClient } from './client/index.js';
 
 export type {
-  ModelDeployment,
-  DeploymentIdConfiguration,
-  ModelConfiguration,
-  ResourceGroupConfiguration
-} from './utils/index.js';
-
-export type {
   OrchestrationModuleConfig,
   CompletionPostResponse,
   LlmConfig,
