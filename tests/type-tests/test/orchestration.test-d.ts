@@ -30,6 +30,30 @@ expectType<Promise<CompletionPostResponse>>(
     llmConfig: {
       model_name: 'gpt-35-turbo-16k',
       model_params: { max_tokens: 50, temperature: 0.1 }
+    },
+    filterConfig: {
+      input: {
+        filters: [{
+          type: 'azure_content_safety',
+          config: {
+            Hate: 0,
+            SelfHarm: 2,
+            Sexual: 4,
+            Violence: 6
+          }
+        }]
+      },
+      output: {
+        filters: [{
+          type: 'azure_content_safety',
+          config: {
+            Hate: 6,
+            SelfHarm: 4,
+            Sexual: 2,
+            Violence: 0
+          }
+        }]
+      }
     }
   }).chatCompletion({
     messagesHistory: [
@@ -39,11 +63,20 @@ expectType<Promise<CompletionPostResponse>>(
         role: 'system'
       },
       {
-        content: 'Hi! Im Bob',
+        content: 'Hi! Im {{?name}}',
         role: 'user'
       }
-    ]
-  })
+    ],
+    inputParams: {
+      name: 'Bob'
+    }
+  },
+    {
+      params: {
+        'apiVersion': '2024-02-01'
+      }
+    }
+  )
 );
 
 /**
