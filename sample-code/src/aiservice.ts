@@ -13,8 +13,7 @@ export async function chatCompletion(): Promise<string> {
     },
     'gpt-35-turbo'
   );
-  const assistantMessage = response.getContent();
-  return assistantMessage!;
+  return response.getContent()!;
 }
 
 /**
