@@ -252,6 +252,17 @@ export function parseBarrelFile(fileContent: string, regex: RegExp): string[] {
   return flatten(groups.map(group => group.split(',')));
 }
 
+// TODO: currently this is called in one place to fix a very specific issue for the AI Core API
+// For some reason parsing the barrel file looks at "{ SOMETHING } from '." only, which is not enough and even wrong because it does also look at imports, not only exports
+export function parseOtherExports(fileContent: string): string[] {
+  const normalized = fileContent.replace(/\s+/g, ' ');
+  const groups = [
+    ...captureGroupsFromGlobalRegex(/export const (\w+)/g, normalized),
+    ...captureGroupsFromGlobalRegex(/export type (\w+)/g, normalized)
+  ];
+  return flatten(groups.map(group => group.split(',')));
+}
+
 function checkInternalReExports(fileContent: string, filePath: string): void {
   const internalReExports = parseBarrelFile(
     fileContent,
@@ -270,9 +281,12 @@ export async function parseIndexFile(filePath: string): Promise<string[]> {
   const cwd = dirname(filePath);
   const fileContent = await readFile(filePath, 'utf-8');
   checkInternalReExports(fileContent, filePath);
-  const localExports = parseBarrelFile(fileContent, regexExportedIndex);
+  const localExports = [
+    ...parseBarrelFile(fileContent, regexExportedIndex),
+    ...parseOtherExports(fileContent)
+  ];
   const starFiles = captureGroupsFromGlobalRegex(
-    /export \* from '([\w\/.-]+)'/g,
+    /export \* from '([\w/.-]+)'/g,
     fileContent
   );
   const starFileExports = await Promise.all(
