@@ -1,9 +1,7 @@
 import { executeRequest, CustomRequestConfig } from '@sap-ai-sdk/core';
 import { pickValueIgnoreCase } from '@sap-cloud-sdk/util';
 import { resolveDeploymentId } from '../utils/deployment-resolver.js';
-import {
-  CompletionPostRequest
-} from './client/api/schema/index.js';
+import { CompletionPostRequest } from './client/api/schema/index.js';
 import { OrchestrationCompletionParameters } from './orchestration-types.js';
 import { OrchestrationResponse } from './orchestration-response.js';
 
@@ -72,4 +70,3 @@ export function constructCompletionPostRequest(
     })
   };
 }
-

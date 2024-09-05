@@ -7,7 +7,6 @@ import type {
   OpenAiChatCompletionParameters,
   OpenAiEmbeddingParameters,
   OpenAiEmbeddingOutput,
-  OpenAiChatCompletionOutput,
   OpenAiChatModel,
   OpenAiEmbeddingModel
 } from './openai-types.js';

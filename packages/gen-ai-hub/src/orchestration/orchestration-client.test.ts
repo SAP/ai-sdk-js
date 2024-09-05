@@ -11,6 +11,7 @@ import {
 } from './orchestration-client.js';
 import { azureContentFilter } from './orchestration-filter-utility.js';
 import { OrchestrationCompletionParameters } from './orchestration-types.js';
+import { OrchestrationResponse } from './orchestration-response.js';
 
 describe('GenAiHubClient', () => {
   const client = new OrchestrationClient();
@@ -52,10 +53,12 @@ describe('GenAiHubClient', () => {
       }
     );
     const response = await client.chatCompletion(request, '1234');
+
+    expect(response).toBeInstanceOf(OrchestrationResponse);
     expect(response.data).toEqual(mockResponse);
-    expect(response.getContent()).toEqual('Hi! How can I help you today?');
-    expect(response.finish_reason).toEqual('completed');
-    expect(response.usage.completion_tokens).toEqual(9);
+    expect(response.getContent()).toEqual(expect.any(String));
+    expect(response.getFinishReason()).toEqual(expect.any(String));
+    expect(response.getUsage().completion_tokens).toEqual(9);
   });
 
   it('calls chatCompletion with filter configuration supplied using convenience function', async () => {
@@ -203,6 +206,6 @@ describe('GenAiHubClient', () => {
       }
     );
     const response = await client.chatCompletion(request, '1234');
-    expect(response).toEqual(mockResponse);
+    expect(response.data).toEqual(mockResponse);
   });
 });

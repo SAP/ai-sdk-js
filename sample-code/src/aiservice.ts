@@ -1,6 +1,4 @@
-import {
-  OpenAiClient
-} from '@sap-ai-sdk/gen-ai-hub';
+import { OpenAiClient } from '@sap-ai-sdk/gen-ai-hub';
 
 const openAiClient = new OpenAiClient();
 

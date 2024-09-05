@@ -62,7 +62,11 @@ describe('openai client', () => {
       const response = await client.chatCompletion(prompt, {
         deploymentId: '1234'
       });
-      expect(response).toEqual(mockResponse.data);
+
+      expect(response).toBeInstanceOf(OpenAiChatCompletionResponse);
+      expect(response.data).toEqual(mockResponse);
+      expect(response.getContent()).toEqual(expect.any(String));
+      expect(response.getFinishReason()).toEqual(expect.any(String));
     });
 
     it('throws on bad request', async () => {
