@@ -15,8 +15,10 @@ const apiVersion = '2024-02-01';
  * OpenAI client for embeddings.
  */
 export class OpenAiEmbeddingClient {
-  // TODO: document constructor
-  //* @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
+  /**
+   * Creates an instance of the OpenAI embedding client.
+   * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
+   */
   constructor(private modelDeployment: ModelDeployment<OpenAiEmbeddingModel>) {}
 
   /**

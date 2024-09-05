@@ -16,11 +16,11 @@ export class OrchestrationClient {
   /**
    * Creates an instance of the orchestration client.
    * @param config - Orchestration module configuration.
-   * @param deploymentConfig 
+   * @param deploymentConfig - Deployment configuration.
    */
   constructor(
     private config: OrchestrationModuleConfig,
-    private deploymentConfig?: ResourceGroupConfiguration // DeploymentIdConfiguration
+    private deploymentConfig?: ResourceGroupConfiguration
   ) {}
 
   /**
