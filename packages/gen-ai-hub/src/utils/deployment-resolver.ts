@@ -28,7 +28,7 @@ export interface DeploymentIdConfiguration {
 }
 
 /**
- * The deployment configuration when using a deployment ID.
+ * The deployment configuration when using a resource group.
  */
 export interface ResourceGroupConfiguration {
   /**
@@ -38,7 +38,7 @@ export interface ResourceGroupConfiguration {
 }
 
 /**
- * The deployment configuration can be either a model configuration or a deployment ID configuration.
+ * The configuration of a model deployment.
  * @typeParam ModelNameT - String literal type representing the name of the model.
  */
 export type ModelDeployment<ModelNameT = string> =

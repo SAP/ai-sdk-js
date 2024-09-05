@@ -7,9 +7,11 @@ import {
   ServiceCredentials
 } from '@sap-cloud-sdk/connectivity';
 import nock from 'nock';
-import { EndpointOptions } from '@sap-ai-sdk/core';
-import { FoundationModel } from '../packages/gen-ai-hub/src/utils/model.js';
-import { DeploymentResolutionOptions } from '../packages/gen-ai-hub/src/internal.js';
+import { type EndpointOptions } from '@sap-ai-sdk/core';
+import {
+  type FoundationModel,
+  type DeploymentResolutionOptions
+} from '@sap-ai-sdk/gen-ai-hub/internal.js';
 import { dummyToken } from './mock-jwt.js';
 
 // Get the directory of this file

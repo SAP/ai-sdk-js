@@ -1,7 +1,7 @@
 import { AiDeployment } from '@sap-ai-sdk/ai-core';
 
 /**
- * A foundation model is identified by its name and potentially a version.
+ * A foundation model is identified by its name and optionally a version.
  * @internal
  */
 export interface FoundationModel {
