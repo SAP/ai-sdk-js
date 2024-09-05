@@ -23,7 +23,7 @@ expectType<Promise<OrchestrationResponse>>(
 
 expectType<CompletionPostResponse>(
   (
-   await new OrchestrationClient({
+    await new OrchestrationClient({
       templatingConfig: {
         template: [{ role: 'user', content: 'Hello!' }]
       },
