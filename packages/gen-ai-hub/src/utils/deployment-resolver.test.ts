@@ -2,7 +2,8 @@ import nock from 'nock';
 import { AiDeployment } from '@sap-ai-sdk/ai-core';
 import {
   mockClientCredentialsGrantCall,
-  aiCoreDestination
+  aiCoreDestination,
+  mockDeploymentsList
 } from '../../../../test-util/mock-http.js';
 import { resolveDeploymentId } from './deployment-resolver.js';
 import { deploymentCache } from './deployment-cache.js';
@@ -100,30 +101,10 @@ describe('deployment resolver', () => {
   });
 
   it('should consider custom resource group', async () => {
-    nock(aiCoreDestination.url, {
-      reqheaders: {
-        'ai-resource-group': 'otherId'
-      }
-    })
-      .get('/v2/lm/deployments')
-      .query({ scenarioId: 'foundation-models', status: 'RUNNING' })
-      .reply(200, {
-        resources: [
-          {
-            id: '5',
-            details: {
-              resources: {
-                backend_details: {
-                  model: {
-                    name: 'gpt-4o',
-                    version: 'latest'
-                  }
-                }
-              }
-            }
-          }
-        ]
-      });
+    mockDeploymentsList(
+      { scenarioId: 'foundation-models', resourceGroup: 'otherId' },
+      { id: '5', model: { name: 'gpt-4o', version: 'latest' } }
+    );
 
     const id = await resolveDeploymentId({
       scenarioId: 'foundation-models',
@@ -136,41 +117,9 @@ describe('deployment resolver', () => {
 });
 
 function mockResponse() {
-  nock(aiCoreDestination.url, {
-    reqheaders: {
-      'ai-resource-group': 'default'
-    }
-  })
-    .get('/v2/lm/deployments')
-    .query({ scenarioId: 'foundation-models', status: 'RUNNING' })
-    .reply(200, {
-      resources: [
-        {
-          id: '1',
-          details: {
-            resources: {
-              backend_details: {
-                model: {
-                  name: 'gpt-4o',
-                  version: 'latest'
-                }
-              }
-            }
-          }
-        },
-        {
-          id: '2',
-          details: {
-            resources: {
-              backend_details: {
-                model: {
-                  name: 'gpt-4o',
-                  version: '0613'
-                }
-              }
-            }
-          }
-        }
-      ]
-    });
+  mockDeploymentsList(
+    { scenarioId: 'foundation-models' },
+    { id: '1', model: { name: 'gpt-4o', version: 'latest' } },
+    { id: '2', model: { name: 'gpt-4o', version: '0613' } }
+  );
 }

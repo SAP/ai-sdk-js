@@ -8,18 +8,15 @@ import {
  * @returns The answer from the orchestration service in Gen AI Hub.
  */
 export function orchestrationCompletion(): Promise<CompletionPostResponse> {
-  const orchestrationClient = new OrchestrationClient();
-
-  return orchestrationClient.chatCompletion(
-    {
-      llmConfig: {
-        model_name: 'gpt-4-32k',
-        model_params: {}
-      },
-      prompt: {
-        template: [{ role: 'user', content: 'What is the capital of France?' }]
-      }
+  const orchestrationClient = new OrchestrationClient({
+    llmConfig: {
+      model_name: 'gpt-4-32k',
+      model_params: {}
     },
-    'db1d64d9f06be467'
-  );
+    templatingConfig: {
+      template: [{ role: 'user', content: 'What is the capital of France?' }]
+    }
+  });
+
+  return orchestrationClient.chatCompletion();
 }
