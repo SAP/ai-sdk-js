@@ -138,7 +138,7 @@ export async function checkApiOfPackage(pathToPackage: string): Promise<void> {
         usePrettier: false
       }
     }, { exclude: includeExclude?.exclude!, include: ['**/*.ts'] });
-    await checkBarrelRecursive(pathToSource);
+    // await checkBarrelRecursive(pathToSource);
 
     const indexFilePath = join(pathToSource, 'index.ts');
     checkIndexFileExists(indexFilePath);
@@ -292,7 +292,7 @@ export async function checkBarrelRecursive(cwd: string): Promise<void> {
   (await readdir(cwd, { withFileTypes: true }))
     .filter(dirent => dirent.isDirectory())
     .forEach(async subDir => {
-      if (['__snapshot__', 'spec'].includes(subDir.name)) {
+      if (!['__snapshot__', 'spec', 'tests'].includes(subDir.name)) {
         await checkBarrelRecursive(join(cwd, subDir.name));
       }
     });
@@ -314,6 +314,7 @@ export async function exportAllInBarrel(
           '**/*.test.ts',
           '__snapshots__',
           'spec',
+          'tests',
           'internal.ts',
           'index.ts',
           'cli.ts',

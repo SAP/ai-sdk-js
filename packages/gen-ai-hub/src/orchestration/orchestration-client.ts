@@ -1,38 +1,43 @@
 import { executeRequest, CustomRequestConfig } from '@sap-ai-sdk/core';
-import { pickValueIgnoreCase } from '@sap-cloud-sdk/util';
-import { resolveDeploymentId } from '../utils/deployment-resolver.js';
+import {
+  resolveDeploymentId,
+  ResourceGroupConfiguration
+} from '../utils/deployment-resolver.js';
 import {
   CompletionPostRequest,
   CompletionPostResponse
 } from './client/api/schema/index.js';
-import { OrchestrationCompletionParameters } from './orchestration-types.js';
+import { OrchestrationModuleConfig, Prompt } from './orchestration-types.js';
 
 /**
  * Get the orchestration client.
  */
 export class OrchestrationClient {
   /**
+   * Creates an instance of the orchestration client.
+   * @param config - Orchestration module configuration.
+   * @param deploymentConfig - Deployment configuration.
+   */
+  constructor(
+    private config: OrchestrationModuleConfig,
+    private deploymentConfig?: ResourceGroupConfiguration
+  ) {}
+
+  /**
    * Creates a completion for the chat messages.
-   * @param data - The input parameters for the chat completion.
-   * @param deploymentId - A deployment ID or undefined to retrieve it based on the given model.
+   * @param prompt - Prompt configuration.
    * @param requestConfig - Request configuration.
    * @returns The completion result.
    */
   async chatCompletion(
-    data: OrchestrationCompletionParameters,
-    deploymentId?: string,
+    prompt?: Prompt,
     requestConfig?: CustomRequestConfig
   ): Promise<CompletionPostResponse> {
-    const body = constructCompletionPostRequest(data);
-    deploymentId =
-      deploymentId ??
-      (await resolveDeploymentId({
-        scenarioId: 'orchestration',
-        resourceGroup: pickValueIgnoreCase(
-          requestConfig?.headers,
-          'ai-resource-group'
-        )
-      }));
+    const body = constructCompletionPostRequest(this.config, prompt);
+    const deploymentId = await resolveDeploymentId({
+      scenarioId: 'orchestration',
+      resourceGroup: this.deploymentConfig?.resourceGroup
+    });
 
     const response = await executeRequest(
       {
@@ -49,25 +54,26 @@ export class OrchestrationClient {
  * @internal
  */
 export function constructCompletionPostRequest(
-  input: OrchestrationCompletionParameters
+  config: OrchestrationModuleConfig,
+  prompt?: Prompt
 ): CompletionPostRequest {
   return {
     orchestration_config: {
       module_configurations: {
         templating_module_config: {
-          template: input.prompt.template
+          template: config.templatingConfig.template
         },
-        llm_module_config: input.llmConfig,
-        ...(Object.keys(input?.filterConfig || {}).length && {
-          filtering_module_config: input.filterConfig
+        llm_module_config: config.llmConfig,
+        ...(Object.keys(config?.filterConfig || {}).length && {
+          filtering_module_config: config.filterConfig
         })
       }
     },
-    ...(input.prompt.template_params && {
-      input_params: input.prompt.template_params
+    ...(prompt?.inputParams && {
+      input_params: prompt.inputParams
     }),
-    ...(input.prompt.messages_history && {
-      messages_history: input.prompt.messages_history
+    ...(prompt?.messagesHistory && {
+      messages_history: prompt.messagesHistory
     })
   };
 }
