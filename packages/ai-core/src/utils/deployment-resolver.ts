@@ -44,7 +44,7 @@ export interface ResourceGroupConfiguration {
  * The configuration of a model deployment.
  * @typeParam ModelNameT - String literal type representing the name of the model.
  */
-export type ModelDeployment<ModelNameT = string> = (
+export type ModelDeployment<ModelNameT = string> =
   | ModelNameT
   | ((ModelConfiguration<ModelNameT> | DeploymentIdConfiguration) &
       ResourceGroupConfiguration);
