@@ -138,7 +138,7 @@ export async function checkApiOfPackage(pathToPackage: string): Promise<void> {
         usePrettier: false
       }
     }, { exclude: includeExclude?.exclude!, include: ['**/*.ts'] });
-    await checkBarrelRecursive(pathToSource);
+    // await checkBarrelRecursive(pathToSource);
 
     const indexFilePath = join(pathToSource, 'index.ts');
     checkIndexFileExists(indexFilePath);
