@@ -28,10 +28,6 @@ export class OrchestrationClient {
       deploymentId ??
       (await resolveDeploymentId({
         scenarioId: 'orchestration',
-        model: {
-          name: data.llmConfig.model_name,
-          version: data.llmConfig.model_version
-        },
         resourceGroup: pickValueIgnoreCase(
           requestConfig?.headers,
           'ai-resource-group'
