@@ -1,7 +1,9 @@
 import { expectError, expectType } from 'tsd';
 import {
   OrchestrationClient,
-  CompletionPostResponse
+  CompletionPostResponse,
+  OrchestrationResponse,
+  TokenUsage
 } from '@sap-ai-sdk/gen-ai-hub';
 
 const client = new OrchestrationClient();
@@ -10,7 +12,7 @@ expectType<OrchestrationClient>(client);
 /**
  * Chat Completion.
  */
-expectType<Promise<CompletionPostResponse>>(
+expectType<Promise<OrchestrationResponse>>(
   client.chatCompletion({
     prompt: {
       template: [{ role: 'user', content: 'Hello!' }]
@@ -22,10 +24,66 @@ expectType<Promise<CompletionPostResponse>>(
   })
 );
 
+expectType<CompletionPostResponse>(
+  (
+    await client.chatCompletion({
+      prompt: {
+        template: [{ role: 'user', content: 'Hello!' }]
+      },
+      llmConfig: {
+        model_name: 'gpt-35-turbo-16k',
+        model_params: {}
+      }
+    })
+  ).data
+);
+
+expectType<string | undefined>(
+  (
+    await client.chatCompletion({
+      prompt: {
+        template: [{ role: 'user', content: 'Hello!' }]
+      },
+      llmConfig: {
+        model_name: 'gpt-35-turbo-16k',
+        model_params: {}
+      }
+    })
+  ).getContent()
+);
+
+expectType<string | undefined>(
+  (
+    await client.chatCompletion({
+      prompt: {
+        template: [{ role: 'user', content: 'Hello!' }]
+      },
+      llmConfig: {
+        model_name: 'gpt-35-turbo-16k',
+        model_params: {}
+      }
+    })
+  ).getFinishReason()
+);
+
+expectType<TokenUsage>(
+  (
+    await client.chatCompletion({
+      prompt: {
+        template: [{ role: 'user', content: 'Hello!' }]
+      },
+      llmConfig: {
+        model_name: 'gpt-35-turbo-16k',
+        model_params: {}
+      }
+    })
+  ).getUsageTokens()
+);
+
 /**
  * Chat Completion with optional parameters.
  */
-expectType<Promise<CompletionPostResponse>>(
+expectType<Promise<OrchestrationResponse>>(
   client.chatCompletion({
     prompt: {
       template: [{ role: 'user', content: 'Hello!' }],
@@ -82,7 +140,7 @@ expectError<any>(
 /**
  * Model parameters should adhere to OrchestrationCompletionParameters.// Todo: Check if additional checks can be added for model_params.
  */
-expectType<Promise<CompletionPostResponse>>(
+expectType<Promise<OrchestrationResponse>>(
   client.chatCompletion({
     prompt: {
       template: [{ role: 'user', content: 'Hello!' }]

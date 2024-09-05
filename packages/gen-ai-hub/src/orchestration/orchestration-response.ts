@@ -25,7 +25,7 @@ export class OrchestrationResponse {
    * Usage of tokens in the response.
    * @returns The usage tokens.
    */
-  getUsage(): TokenUsage {
+  getUsageTokens(): TokenUsage {
     return this.data.orchestration_result.usage;
   }
   /**

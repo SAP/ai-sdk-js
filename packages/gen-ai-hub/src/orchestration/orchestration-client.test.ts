@@ -58,7 +58,7 @@ describe('GenAiHubClient', () => {
     expect(response.data).toEqual(mockResponse);
     expect(response.getContent()).toEqual(expect.any(String));
     expect(response.getFinishReason()).toEqual(expect.any(String));
-    expect(response.getUsage().completion_tokens).toEqual(9);
+    expect(response.getUsageTokens().completion_tokens).toEqual(9);
   });
 
   it('calls chatCompletion with filter configuration supplied using convenience function', async () => {
