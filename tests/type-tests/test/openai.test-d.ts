@@ -16,6 +16,15 @@ expectType<Promise<OpenAiChatCompletionOutput>>(
 );
 
 /**
+ * Chat Completion with invalid model.
+ */
+expectError(
+  new OpenAiChatClient('unknown').run({
+    messages: [{ role: 'user', content: 'test prompt' }]
+  })
+);
+
+/**
  * Embeddings.
  */
 expectType<Promise<OpenAiEmbeddingOutput>>(
