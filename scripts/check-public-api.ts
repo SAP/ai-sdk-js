@@ -274,7 +274,7 @@ export async function parseIndexFile(filePath: string): Promise<string[]> {
   const starFiles = captureGroupsFromGlobalRegex(
     /export \* from '([\w\/.-]+)'/g,
     fileContent
-  );
+  ).filter(file => file !== './client/AI_CORE_API/index.js');
   const starFileExports = await Promise.all(
     starFiles.map(async relativeFilePath => {
       const fullPath = resolve(cwd, relativeFilePath);
@@ -294,7 +294,7 @@ export async function checkBarrelRecursive(cwd: string): Promise<void> {
   (await readdir(cwd, { withFileTypes: true }))
     .filter(dirent => dirent.isDirectory())
     .forEach(async subDir => {
-      if (!['__snapshot__', 'spec'].includes(subDir.name)) {
+      if (!['__snapshot__', 'spec', 'tests'].includes(subDir.name)) {
         await checkBarrelRecursive(join(cwd, subDir.name));
       }
     });
