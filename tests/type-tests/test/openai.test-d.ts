@@ -25,7 +25,7 @@ expectError(
 );
 
 /**
- * Chat completion with optional properties.
+ * Chat completion with optional parameters.
  */
 expectType<Promise<OpenAiChatCompletionOutput>>(
   new OpenAiChatClient({
@@ -75,7 +75,7 @@ expectType<Promise<OpenAiEmbeddingOutput>>(
 );
 
 /**
- * Embeddings with optional properties.
+ * Embeddings with optional parameters.
  */
 expectType<Promise<OpenAiEmbeddingOutput>>(
   new OpenAiEmbeddingClient('text-embedding-ada-002').run({
