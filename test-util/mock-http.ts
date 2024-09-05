@@ -42,12 +42,6 @@ const mockEndpoint: EndpointOptions = {
   apiVersion: 'mock-api-version'
 };
 
-export function mockAiCoreEnvVariable(): void {
-  process.env['AICORE_SERVICE_KEY'] = JSON.stringify(
-    aiCoreServiceBinding.credentials
-  );
-}
-
 export function createDestinationTokens(
   token: string = dummyToken,
   expiresIn?: string
