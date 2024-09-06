@@ -6,7 +6,6 @@ import {
   TokenUsage
 } from '@sap-ai-sdk/orchestration';
 
-
 /**
  * Chat Completion.
  */

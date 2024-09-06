@@ -34,14 +34,8 @@ export type {
   Prompt
 } from './orchestration-types.js';
 
-export {
-  OrchestrationClient
-} from './orchestration-client.js';
+export { OrchestrationClient } from './orchestration-client.js';
 
-export {
-  azureContentFilter
-} from './orchestration-filter-utility.js';
+export { azureContentFilter } from './orchestration-filter-utility.js';
 
-export {
-  OrchestrationResponse
-} from './orchestration-response.js';
+export { OrchestrationResponse } from './orchestration-response.js';

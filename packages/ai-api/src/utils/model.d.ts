@@ -4,14 +4,14 @@ import { AiDeployment } from '../client/AI_CORE_API/index.js';
  * @internal
  */
 export interface FoundationModel {
-    /**
-     * The name of the model.
-     */
-    name: string;
-    /**
-     * The version of the model.
-     */
-    version?: string;
+  /**
+   * The name of the model.
+   */
+  name: string;
+  /**
+   * The version of the model.
+   */
+  version?: string;
 }
 /**
  * Get the model information from a deployment.
@@ -19,5 +19,7 @@ export interface FoundationModel {
  * @returns The model information.
  * @internal
  */
-export declare function extractModel(deployment: AiDeployment): FoundationModel | undefined;
+export declare function extractModel(
+  deployment: AiDeployment
+): FoundationModel | undefined;
 //# sourceMappingURL=model.d.ts.map
