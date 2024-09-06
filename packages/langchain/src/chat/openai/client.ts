@@ -1,16 +1,16 @@
 import { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import { BaseMessage } from '@langchain/core/messages';
-import { ChatResult } from '@langchain/core/outputs';
-import { StructuredTool } from '@langchain/core/tools';
+import type { ChatResult } from '@langchain/core/outputs';
 import { ChatOpenAI } from '@langchain/openai';
 import { OpenAiChatClient } from '@sap-ai-sdk/gen-ai-hub';
 import {
+  isStructuredToolArray,
   mapBaseMessageToOpenAIChatMessage,
   mapResponseToChatResult,
   mapToolToOpenAIFunction,
   mapToolToOpenAITool
 } from './util.js';
-import {
+import type {
   OpenAIChatModelInput,
   OpenAIChatModelInterface,
   OpenAIChatCallOptions
@@ -21,47 +21,30 @@ import {
  */
 export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
   declare CallOptions: OpenAIChatCallOptions;
-  private btpOpenAIClient: OpenAiChatClient;
+  private openAiChatClient: OpenAiChatClient;
 
   constructor(fields: OpenAIChatModelInput) {
     const defaultValues = new ChatOpenAI();
-    const n = fields.n ?? defaultValues.n;
     const stop = fields.stop
       ? Array.isArray(fields.stop)
         ? fields.stop
         : [fields.stop]
       : defaultValues.stop;
-    const temperature = fields.temperature ?? defaultValues.temperature;
-    const frequencyPenalty =
-      fields.frequency_penalty ?? defaultValues.frequencyPenalty;
-    const presencePenalty =
-      fields.presence_penalty ?? defaultValues.presencePenalty;
-    const topP = fields.top_p ?? defaultValues.topP;
-    // add typeguard for assignment
-    const modelName = fields.modelName ?? defaultValues.modelName;
 
     super({
+      temperature: defaultValues.temperature,
+      modelName: defaultValues.modelName,
+      model: defaultValues.model,
+      n: defaultValues.n,
+      frequencyPenalty: defaultValues.frequencyPenalty,
+      presencePenalty: defaultValues.presencePenalty,
+      topP: defaultValues.topP,
       ...fields,
-      modelName,
-      model: modelName,
-      n,
       stop,
-      temperature,
       openAIApiKey: 'dummy',
-      frequencyPenalty,
-      presencePenalty,
-      topP
     });
 
-    this.btpOpenAIClient = fields.modelName ? new OpenAiChatClient(
-      {
-         modelName:  fields.modelName,
-         modelVersion: fields.modelVersion,
-         resourceGroup: fields.resourceGroup,
-      }) : new OpenAiChatClient({
-        deploymentId: fields.deploymentId,
-        resourceGroup: fields.resourceGroup
-      });
+    this.openAiChatClient = new OpenAiChatClient({ ...fields });
   }
 
   override get callKeys(): (keyof OpenAIChatCallOptions)[] {
@@ -91,22 +74,12 @@ export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
     options: this['CallOptions'],
     runManager?: CallbackManagerForLLMRun
   ): Promise<ChatResult> {
-    function isStructuredToolArray(
-      tools?: unknown[]
-    ): tools is StructuredTool[] {
-      return (
-        tools !== undefined &&
-        tools.every(tool =>
-          Array.isArray((tool as StructuredTool).lc_namespace)
-        )
-      );
-    }
     const res = await this.caller.callWithOptions(
       {
         signal: options.signal
       },
       () =>
-        this.btpOpenAIClient.run(
+        this.openAiChatClient.run(
           {
             messages: messages.map(mapBaseMessageToOpenAIChatMessage),
             max_tokens: this.maxTokens === -1 ? undefined : this.maxTokens,

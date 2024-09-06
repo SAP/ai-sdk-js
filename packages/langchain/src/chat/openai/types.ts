@@ -1,6 +1,6 @@
-import { BaseChatModelParams } from '@langchain/core/language_models/chat_models';
-import { ChatOpenAICallOptions, OpenAIChatInput } from '@langchain/openai';
-import {
+import type { BaseChatModelParams } from '@langchain/core/language_models/chat_models';
+import type { ChatOpenAICallOptions, OpenAIChatInput } from '@langchain/openai';
+import type {
   ConfigurationOptions,
   OpenAiChatCompletionParameters,
   OpenAiChatModel

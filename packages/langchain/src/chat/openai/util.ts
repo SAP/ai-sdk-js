@@ -6,15 +6,10 @@ import {
 } from '@langchain/core/messages';
 import { ChatResult } from '@langchain/core/outputs';
 import { StructuredTool } from '@langchain/core/tools';
-import {
-  OpenAiChatAssistantMessage,
-  OpenAiChatCompletionChoice,
-  OpenAiChatCompletionFunction,
-  OpenAiChatCompletionOutput,
-  OpenAiChatCompletionTool,
-  OpenAiChatMessage,
-  OpenAiChatToolMessage
-} from '@sap-ai-sdk/gen-ai-hub';
+import type { OpenAiChatAssistantMessage, OpenAiChatCompletionChoice,
+  OpenAiChatCompletionFunction, OpenAiChatCompletionOutput, OpenAiChatCompletionTool,
+  OpenAiChatToolMessage, OpenAiChatMessage
+ } from '@sap-ai-sdk/gen-ai-hub';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 
 /**
@@ -135,4 +130,20 @@ export function mapBaseMessageToOpenAIChatMessage(
     tool_calls: message.additional_kwargs.tool_calls,
     tool_call_id: (message as ToolMessage).tool_call_id
   } as OpenAiChatMessage;
+}
+
+/**
+ * Checks if a given array is a structured tool array.
+ * @param tools - The array to check.
+ * @returns Whether the array is a structured tool array.
+ */
+export function isStructuredToolArray(
+  tools?: unknown[]
+): tools is StructuredTool[] {
+  return (
+    tools !== undefined &&
+    tools.every(tool =>
+      Array.isArray((tool as StructuredTool).lc_namespace)
+    )
+  );
 }
