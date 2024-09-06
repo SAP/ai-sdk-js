@@ -2,7 +2,7 @@ import { parseMockResponse } from '../../../../../test-util/mock-http';
 import { OpenAiChatCompletionResponse } from './openai-response';
 import { OpenAiChatCompletionOutput } from './openai-types';
 
-describe('OpenAi Response', () => {
+describe('OpenAI response', () => {
   const mockResponse = parseMockResponse<OpenAiChatCompletionOutput>(
     'openai',
     'openai-chat-completion-success-response.json'
