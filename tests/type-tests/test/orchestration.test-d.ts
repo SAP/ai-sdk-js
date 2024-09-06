@@ -1,13 +1,15 @@
 import { expectError, expectType } from 'tsd';
 import {
   OrchestrationClient,
-  CompletionPostResponse
+  CompletionPostResponse,
+  OrchestrationResponse,
+  TokenUsage
 } from '@sap-ai-sdk/gen-ai-hub';
 
 /**
  * Chat Completion.
  */
-expectType<Promise<CompletionPostResponse>>(
+expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient({
     templatingConfig: {
       template: [{ role: 'user', content: 'Hello!' }]
@@ -19,10 +21,66 @@ expectType<Promise<CompletionPostResponse>>(
   }).chatCompletion()
 );
 
+expectType<CompletionPostResponse>(
+  (
+    await new OrchestrationClient({
+      templatingConfig: {
+        template: [{ role: 'user', content: 'Hello!' }]
+      },
+      llmConfig: {
+        model_name: 'gpt-35-turbo-16k',
+        model_params: {}
+      }
+    }).chatCompletion()
+  ).data
+);
+
+expectType<string | undefined>(
+  (
+    await new OrchestrationClient({
+      templatingConfig: {
+        template: [{ role: 'user', content: 'Hello!' }]
+      },
+      llmConfig: {
+        model_name: 'gpt-35-turbo-16k',
+        model_params: {}
+      }
+    }).chatCompletion()
+  ).getContent()
+);
+
+expectType<string | undefined>(
+  (
+    await new OrchestrationClient({
+      templatingConfig: {
+        template: [{ role: 'user', content: 'Hello!' }]
+      },
+      llmConfig: {
+        model_name: 'gpt-35-turbo-16k',
+        model_params: {}
+      }
+    }).chatCompletion()
+  ).getFinishReason()
+);
+
+expectType<TokenUsage>(
+  (
+    await new OrchestrationClient({
+      templatingConfig: {
+        template: [{ role: 'user', content: 'Hello!' }]
+      },
+      llmConfig: {
+        model_name: 'gpt-35-turbo-16k',
+        model_params: {}
+      }
+    }).chatCompletion()
+  ).getTokenUsage()
+);
+
 /**
  * Chat Completion with optional parameters.
  */
-expectType<Promise<CompletionPostResponse>>(
+expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient({
     templatingConfig: {
       template: [{ role: 'user', content: 'Hello!' }]
@@ -80,7 +138,7 @@ expectError<any>(
 /**
  * Model parameters should adhere to OrchestrationCompletionParameters.// Todo: Check if additional checks can be added for model_params.
  */
-expectType<Promise<CompletionPostResponse>>(
+expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient({
     templatingConfig: {
       template: [{ role: 'user', content: 'Hello!' }]
