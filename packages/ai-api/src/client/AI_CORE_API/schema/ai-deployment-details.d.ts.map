@@ -1,1 +1,0 @@
-{"version":3,"file":"ai-deployment-details.d.ts","sourceRoot":"","sources":["ai-deployment-details.ts"],"names":[],"mappings":"AAKA,OAAO,KAAK,EAAE,gBAAgB,EAAE,MAAM,yBAAyB,CAAC;AAChE,OAAO,KAAK,EAAE,kBAAkB,EAAE,MAAM,2BAA2B,CAAC;AACpE;;;;GAIG;AACH,MAAM,MAAM,mBAAmB,GAAG;IAChC,OAAO,CAAC,EAAE,gBAAgB,CAAC;IAC3B,SAAS,CAAC,EAAE,kBAAkB,CAAC;CAChC,GAAG,MAAM,CAAC,MAAM,EAAE,GAAG,CAAC,CAAC"}

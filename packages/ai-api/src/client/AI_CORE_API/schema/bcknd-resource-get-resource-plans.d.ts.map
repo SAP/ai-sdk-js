@@ -1,1 +1,0 @@
-{"version":3,"file":"bcknd-resource-get-resource-plans.d.ts","sourceRoot":"","sources":["bcknd-resource-get-resource-plans.ts"],"names":[],"mappings":"AAMA;;GAEG;AACH,MAAM,MAAM,6BAA6B,GAAG,MAAM,CAChD,MAAM,EACN;IACE,WAAW,EAAE,MAAM,CAAC;IACpB,SAAS,EAAE,MAAM,CAAC;CACnB,GAAG,MAAM,CAAC,MAAM,EAAE,GAAG,CAAC,CACxB,CAAC"}

@@ -1,1 +1,0 @@
-{"version":3,"file":"trck-custom-info-object.d.ts","sourceRoot":"","sources":["trck-custom-info-object.ts"],"names":[],"mappings":"AAKA,OAAO,KAAK,EAAE,eAAe,EAAE,MAAM,wBAAwB,CAAC;AAC9D,OAAO,KAAK,EAAE,wBAAwB,EAAE,MAAM,mCAAmC,CAAC;AAClF;;;;;;GAMG;AACH,MAAM,MAAM,oBAAoB,GAAG;IACjC,IAAI,EAAE,eAAe,CAAC;IACtB,KAAK,EAAE,wBAAwB,CAAC;CACjC,GAAG,MAAM,CAAC,MAAM,EAAE,GAAG,CAAC,CAAC"}

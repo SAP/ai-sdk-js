@@ -1,1 +1,0 @@
-{"version":3,"file":"kpi-api.d.ts","sourceRoot":"","sources":["kpi-api.ts"],"names":[],"mappings":"AAKA,OAAO,EAAE,qBAAqB,EAAE,MAAM,kBAAkB,CAAC;AACzD,OAAO,KAAK,EAAE,YAAY,EAAE,aAAa,EAAE,MAAM,mBAAmB,CAAC;AACrE;;;GAGG;AACH,eAAO,MAAM,MAAM;IACjB;;;;;;OAMG;+BACwB;QAAE,OAAO,CAAC,EAAE,GAAG,CAAC,aAAa,CAAC,CAAA;KAAE;CAI5D,CAAC"}

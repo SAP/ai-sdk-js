@@ -1,1 +1,0 @@
-{"version":3,"file":"ai-scenario-label.d.ts","sourceRoot":"","sources":["ai-scenario-label.ts"],"names":[],"mappings":"AAKA,OAAO,KAAK,EAAE,kBAAkB,EAAE,MAAM,4BAA4B,CAAC;AACrE,OAAO,KAAK,EAAE,YAAY,EAAE,MAAM,qBAAqB,CAAC;AACxD;;GAEG;AACH,MAAM,MAAM,eAAe,GAAG;IAC5B,GAAG,EAAE,kBAAkB,CAAC;IACxB,KAAK,EAAE,YAAY,CAAC;CACrB,GAAG,MAAM,CAAC,MAAM,EAAE,GAAG,CAAC,CAAC"}
