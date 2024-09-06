@@ -14,7 +14,7 @@ const logger = createLogger({
  */
 export class OrchestrationResponse {
   /**
-   * The typed completion post response.
+   * The completion post response.
    */
   public readonly data: CompletionPostResponse;
   constructor(public readonly rawResponse: HttpResponse) {

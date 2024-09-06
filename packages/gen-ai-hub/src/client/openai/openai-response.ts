@@ -12,7 +12,7 @@ const logger = createLogger({
  */
 export class OpenAiChatCompletionResponse {
   /**
-   * The typed chat completion response.
+   * The chat completion response.
    */
   public readonly data: OpenAiChatCompletionOutput;
   constructor(public readonly rawResponse: HttpResponse) {
