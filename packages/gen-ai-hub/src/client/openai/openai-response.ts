@@ -23,6 +23,7 @@ export class OpenAiChatCompletionResponse {
   getTokenUsage(): OpenAiUsage {
     return this.data.usage;
   }
+
   /**
    * Reason for stopping the model.
    * @returns The finish reason.
