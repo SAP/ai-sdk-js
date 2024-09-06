@@ -100,7 +100,7 @@ export interface OpenAiChatAssistantMessage {
   /**
    * Message content.
    */
-  content: string | null;
+  content?: string;
   /**
    * Function which is called.
    * @deprecated In favor of `tool_calls`.
@@ -426,7 +426,7 @@ export interface OpenAiCompletionChoice {
   /**
    * Reason for finish.
    */
-  finish_reason: string | null;
+  finish_reason?: string;
   /**
    * Index of choice.
    */

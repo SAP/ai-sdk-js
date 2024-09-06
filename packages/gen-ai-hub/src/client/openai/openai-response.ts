@@ -26,10 +26,15 @@ export class OpenAiChatCompletionResponse {
 
   /**
    * Reason for stopping the model.
+   * @param choiceIndex - The index of the choice to parse.
    * @returns The finish reason.
    */
-  getFinishReason(): string | null {
-    return this.data.choices[0].finish_reason;
+  getFinishReason(choiceIndex = 0): string | undefined {
+    if (choiceIndex < 0 || choiceIndex >= this.data.choices.length) {
+      logger.error(`${choiceIndex} is not a valid choice index.`);
+      return;
+    }
+    return this.data.choices[choiceIndex].finish_reason;
   }
 
   /**
@@ -37,11 +42,11 @@ export class OpenAiChatCompletionResponse {
    * @param choiceIndex - The index of the choice to parse.
    * @returns The message content.
    */
-  getContent(choiceIndex: number = 0): string | null {
+  getContent(choiceIndex = 0): string | undefined {
     const choices = this.data.choices;
     if (choiceIndex < 0 || choiceIndex >= choices.length) {
       logger.error(`${choiceIndex} is not a valid choice index.`);
-      return null;
+      return;
     }
     return choices[choiceIndex].message.content;
   }
