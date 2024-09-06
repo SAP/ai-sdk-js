@@ -11,6 +11,9 @@ const logger = createLogger({
  * Open AI chat completion response.
  */
 export class OpenAiChatCompletionResponse {
+  /**
+   * The typed chat completion response.
+   */
   public readonly data: OpenAiChatCompletionOutput;
   constructor(public readonly rawResponse: HttpResponse) {
     this.data = rawResponse.data;
@@ -25,7 +28,7 @@ export class OpenAiChatCompletionResponse {
   }
 
   /**
-   * Reason for stopping the model.
+   * Reason for stopping the completion.
    * @param choiceIndex - The index of the choice to parse.
    * @returns The finish reason.
    */
