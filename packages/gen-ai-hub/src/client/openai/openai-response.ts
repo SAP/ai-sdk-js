@@ -8,7 +8,7 @@ const logger = createLogger({
 });
 
 /**
- * Open AI chat completion response.
+ * OpenAI chat completion response.
  */
 export class OpenAiChatCompletionResponse {
   /**
