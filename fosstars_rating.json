@@ -244,9 +244,9 @@
         }
       }
     },
-    "value" : 6.765548033526757,
+    "value" : 4.951922799422799,
     "weight" : 1.0,
-    "confidence" : 9.645390070921987,
+    "confidence" : 7.179487179487181,
     "usedValues" : [ {
       "type" : "ScoreValue",
       "score" : {
@@ -1262,22 +1262,19 @@
         "type" : "UnpatchedVulnerabilitiesScore",
         "name" : "How well vulnerabilities are patched"
       },
-      "value" : 10.0,
+      "value" : 0.0,
       "weight" : 0.5,
-      "confidence" : 10.0,
+      "confidence" : 0.0,
       "usedValues" : [ {
-        "type" : "VulnerabilitiesValue",
+        "type" : "UnknownValue",
         "feature" : {
           "type" : "VulnerabilitiesFeature",
           "name" : "Info about vulnerabilities in open-source project"
         },
-        "vulnerabilities" : {
-          "entries" : [ ]
-        },
         "explanation" : [ ]
       } ],
-      "explanation" : [ "No unpatched vulnerabilities found which is good" ],
-      "isUnknown" : false,
+      "explanation" : [ ],
+      "isUnknown" : true,
       "isNotApplicable" : false,
       "feature" : {
         "type" : "UnpatchedVulnerabilitiesScore",
@@ -1339,7 +1336,7 @@
           "type" : "PositiveIntegerFeature",
           "name" : "Number of commits in the last three months"
         },
-        "number" : 109,
+        "number" : 116,
         "explanation" : [ ]
       }, {
         "type" : "IntegerValue",
@@ -1350,7 +1347,7 @@
         "number" : 5,
         "explanation" : [ ]
       } ],
-      "explanation" : [ "109 commits in the last 3 months results to 10.00 points", "5 contributors increase the score value from 10.00 to 12.00" ],
+      "explanation" : [ "116 commits in the last 3 months results to 10.00 points", "5 contributors increase the score value from 10.00 to 12.00" ],
       "isUnknown" : false,
       "isNotApplicable" : false,
       "feature" : {
@@ -1519,17 +1516,14 @@
         },
         "name" : "Assesses security testing and vulnerability discovery"
       },
-      "value" : 10.0,
+      "value" : 0.0,
       "weight" : 0.6,
-      "confidence" : 10.0,
+      "confidence" : 5.0,
       "usedValues" : [ {
-        "type" : "VulnerabilitiesValue",
+        "type" : "UnknownValue",
         "feature" : {
           "type" : "VulnerabilitiesFeature",
           "name" : "Info about vulnerabilities in open-source project"
-        },
-        "vulnerabilities" : {
-          "entries" : [ ]
         },
         "explanation" : [ ]
       }, {
@@ -2727,5 +2721,5 @@
       }
     }
   },
-  "label" : [ "OssSecurityRating$SecurityLabel", "GOOD" ]
+  "label" : [ "OssSecurityRating$SecurityLabel", "UNCLEAR" ]
 }
