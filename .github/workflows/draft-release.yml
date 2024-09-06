@@ -21,12 +21,13 @@ jobs:
 
       - name: install and build
         run: pnpm install --frozen-lockfile
-      - uses: sap/cloud-sdk-js/.github/actions/get-changelog@main
-        name: Get Changelog
-        id: get-changelog
+      # - uses: sap/cloud-sdk-js/.github/actions/get-changelog@main
+      #   name: Get Changelog
+      #   id: get-changelog
       - uses: ncipollo/release-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           draft: true
+          generateReleaseNotes: true
           body: ${{ steps.get-changelog.outputs.changelog }}
