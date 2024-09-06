@@ -1,11 +1,11 @@
-import { parseMockResponse } from '../../../../test-util/mock-http';
+import { parseMockResponse } from '../../../test-util/mock-http';
 import { CompletionPostResponse } from './client/api';
 import { OrchestrationResponse } from './orchestration-response';
 
 describe('OrchestrationResponse', () => {
   const mockResponse = parseMockResponse<CompletionPostResponse>(
     'orchestration',
-    'genaihub-chat-completion-success-response.json'
+    'orchestration-chat-completion-success-response.json'
   );
   const rawResponse = {
     data: mockResponse,
