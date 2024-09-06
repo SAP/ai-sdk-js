@@ -30,4 +30,5 @@ jobs:
         with:
           draft: true
           generateReleaseNotes: true
+          tag: test
           # body: ${{ steps.get-changelog.outputs.changelog }}
