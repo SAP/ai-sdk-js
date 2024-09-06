@@ -1,11 +1,11 @@
-# @sap-ai-sdk/gen-ai-hub
+# @sap-ai-sdk/orchestration
 
-This package incorporates generative AI into your AI activities in SAP AI Core and SAP AI Launchpad.
+This package incorporates generative AI orchestration capabilities into your AI activities in SAP AI Core and SAP AI Launchpad.
 
 ### Installation
 
 ```
-$ npm install @sap-ai-sdk/gen-ai-hub
+$ npm install @sap-ai-sdk/orchestration
 ```
 
 ## Pre-requisites

@@ -2,7 +2,7 @@ import { expectError, expectType } from 'tsd';
 import {
   OrchestrationClient,
   CompletionPostResponse
-} from '@sap-ai-sdk/gen-ai-hub';
+} from '@sap-ai-sdk/orchestration';
 
 /**
  * Chat Completion.

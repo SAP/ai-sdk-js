@@ -4,7 +4,7 @@ import {
   OpenAiEmbeddingOutput,
   OpenAiChatClient,
   OpenAiEmbeddingClient
-} from '@sap-ai-sdk/gen-ai-hub';
+} from '@sap-ai-sdk/foundation-models';
 
 /**
  * Chat Completion.

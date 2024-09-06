@@ -2,7 +2,7 @@ import {
   OpenAiChatAssistantMessage,
   OpenAiChatClient,
   OpenAiEmbeddingClient
-} from '@sap-ai-sdk/gen-ai-hub';
+} from '@sap-ai-sdk/foundation-models';
 
 /**
  * Ask GPT about the capital of France.

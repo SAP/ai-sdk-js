@@ -3,7 +3,7 @@ import {
   mockClientCredentialsGrantCall,
   mockInference,
   parseMockResponse
-} from '../../../../../test-util/mock-http.js';
+} from '../../../../test-util/mock-http.js';
 import {
   OpenAiEmbeddingOutput,
   OpenAiEmbeddingParameters
@@ -31,7 +31,7 @@ describe('openai embedding client', () => {
       input: ['AI is fascinating']
     } as OpenAiEmbeddingParameters;
     const mockResponse = parseMockResponse<OpenAiEmbeddingOutput>(
-      'openai',
+      'foundation-models',
       'openai-embeddings-success-response.json'
     );
 
@@ -52,7 +52,7 @@ describe('openai embedding client', () => {
   it('throws on bad request', async () => {
     const prompt = { input: [] };
     const mockResponse = parseMockResponse(
-      'openai',
+      'foundation-models',
       'openai-error-response.json'
     );
 

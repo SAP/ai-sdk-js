@@ -149,10 +149,7 @@ export function parseMockResponse<T>(client: string, fileName: string): T {
   const fileContent = fs.readFileSync(
     path.join(
       __dirname,
-      '..',
-      'packages',
-      'gen-ai-hub',
-      'test',
+      'data',
       client,
       fileName
     ),

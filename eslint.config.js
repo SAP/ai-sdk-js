@@ -26,7 +26,7 @@ export default [
   {
     files: [
       '**/test-util/**/*.ts',
-      '**/packages/gen-ai-hub/src/orchestration/client/**/*'
+      '**/packages/orchestration/src/client/**/*'
     ],
     rules: {
       'jsdoc/require-jsdoc': 'off'
@@ -34,7 +34,7 @@ export default [
   },
   {
     files: [
-      '**/packages/gen-ai-hub/src/orchestration/client/api/default-api.ts'
+      '**/packages/orchestration/src/client/api/default-api.ts'
     ],
     rules: {
       '@typescript-eslint/explicit-module-boundary-types': 'off'

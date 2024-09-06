@@ -1,7 +1,7 @@
 import {
   type CompletionPostResponse,
   OrchestrationClient
-} from '@sap-ai-sdk/gen-ai-hub';
+} from '@sap-ai-sdk/orchestration';
 
 /**
  * Ask GPT about the capital of France.

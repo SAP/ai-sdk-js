@@ -3,7 +3,7 @@ import {
   mockClientCredentialsGrantCall,
   mockInference,
   parseMockResponse
-} from '../../../../../test-util/mock-http.js';
+} from '../../../../test-util/mock-http.js';
 import {
   OpenAiChatCompletionOutput,
   OpenAiChatMessage
@@ -37,7 +37,7 @@ describe('openai chat client', () => {
     };
 
     const mockResponse = parseMockResponse<OpenAiChatCompletionOutput>(
-      'openai',
+      'foundation-models',
       'openai-chat-completion-success-response.json'
     );
 
@@ -59,7 +59,7 @@ describe('openai chat client', () => {
   it('throws on bad request', async () => {
     const prompt = { messages: [] };
     const mockResponse = parseMockResponse(
-      'openai',
+      'foundation-models',
       'openai-error-response.json'
     );
 

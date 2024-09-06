@@ -18,8 +18,9 @@
     "node": "^20"
   },
   "dependencies": {
-    "@sap-ai-sdk/ai-core": "canary",
-    "@sap-ai-sdk/gen-ai-hub": "canary",
+    "@sap-ai-sdk/ai-api": "canary",
+    "@sap-ai-sdk/foundation-models": "canary",
+    "@sap-ai-sdk/orchestration": "canary",
     "express": "^4.19.2"
   },
   "devDependencies": {

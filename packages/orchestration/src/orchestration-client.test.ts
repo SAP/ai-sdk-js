@@ -4,7 +4,7 @@ import {
   mockDeploymentsList,
   mockInference,
   parseMockResponse
-} from '../../../../test-util/mock-http.js';
+} from '../../../test-util/mock-http.js';
 import { CompletionPostResponse } from './client/api/index.js';
 import {
   constructCompletionPostRequest,
@@ -35,7 +35,7 @@ describe('orchestration service client', () => {
 
     const mockResponse = parseMockResponse<CompletionPostResponse>(
       'orchestration',
-      'genaihub-chat-completion-success-response.json'
+      'orchestration-chat-completion-success-response.json'
     );
 
     mockInference(
@@ -78,7 +78,7 @@ describe('orchestration service client', () => {
     };
     const mockResponse = parseMockResponse<CompletionPostResponse>(
       'orchestration',
-      'genaihub-chat-completion-filter-config.json'
+      'orchestration-chat-completion-filter-config.json'
     );
 
     mockInference(
@@ -141,7 +141,7 @@ describe('orchestration service client', () => {
     const prompt = { inputParams: { phrase: 'I hate you.', number: '3' } };
     const mockResponse = parseMockResponse<CompletionPostResponse>(
       'orchestration',
-      'genaihub-chat-completion-filter-config.json'
+      'orchestration-chat-completion-filter-config.json'
     );
 
     mockInference(
@@ -190,7 +190,7 @@ describe('orchestration service client', () => {
     };
     const mockResponse = parseMockResponse<CompletionPostResponse>(
       'orchestration',
-      'genaihub-chat-completion-message-history.json'
+      'orchestration-chat-completion-message-history.json'
     );
     mockInference(
       {

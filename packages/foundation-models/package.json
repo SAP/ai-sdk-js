@@ -1,12 +1,11 @@
 {
-  "name": "@sap-ai-sdk/gen-ai-hub",
+  "name": "@sap-ai-sdk/foundation-models",
   "version": "0.0.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
     "sap-ai-sdk",
-    "gen-ai-hub",
-    "orchestration",
+    "foundation-models",
     "llm-access"
   ],
   "type": "module",
@@ -26,8 +25,6 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint \"**/*.ts\" && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
-    "generate": "pnpm generate:orchestration",
-    "generate:orchestration": "openapi-generator --generateESM --clearOutputDir -i ./src/orchestration/spec/api.yaml -o ./src/orchestration/client && pnpm lint:fix",
     "check:public-api": "node --loader ts-node/esm ../../scripts/check-public-api-cli.ts"
   },
   "dependencies": {

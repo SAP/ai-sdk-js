@@ -19,7 +19,8 @@
     "lint:fix": "pnpm -r run lint:fix",
     "generate": "pnpm -r run generate",
     "ai-api": "pnpm -F=@sap-ai-sdk/ai-api",
-    "gen-ai-hub": "pnpm -F=@sap-ai-sdk/gen-ai-hub",
+    "foundation-models": "pnpm -F=@sap-ai-sdk/foundation-models",
+    "orchestration": "pnpm -F=@sap-ai-sdk/orchestration",
     "core": "pnpm -F=@sap-ai-sdk/core",
     "e2e-tests": "pnpm -F=@sap-ai-sdk/e2e-tests",
     "type-tests": "pnpm -F=@sap-ai-sdk/type-tests",
@@ -36,7 +37,8 @@
     "@sap-cloud-sdk/util": "^3.20.0",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
-    "@sap-ai-sdk/gen-ai-hub": "workspace:^",
+    "@sap-ai-sdk/foundation-models": "workspace:^",
+    "@sap-ai-sdk/orchestration": "workspace:^",
     "@types/jest": "^29.5.12",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/mock-fs": "^4.13.4",
@@ -51,5 +53,6 @@
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
-  }
+  },
+  "packageManager": "pnpm@9.9.0+sha1.3edbe440f4e570aa8f049adbd06b9483d55cc2d2"
 }
