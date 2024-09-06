@@ -5,7 +5,7 @@
   "license": "Apache-2.0",
   "keywords": [
     "sap-ai-sdk",
-    "ai-api"
+    "ai-core"
   ],
   "type": "module",
   "main": "./dist/index.js",
