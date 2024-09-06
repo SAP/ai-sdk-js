@@ -10,7 +10,7 @@ const logger = createLogger({
   messageContext: 'orchestration-response'
 });
 /**
- * Respresentation of Orchestration response.
+ * Representation of an Orchestration response.
  */
 export class OrchestrationResponse {
   /**
