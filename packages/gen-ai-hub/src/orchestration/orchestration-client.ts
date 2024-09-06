@@ -3,9 +3,7 @@ import {
   resolveDeploymentId,
   ResourceGroupConfiguration
 } from '@sap-ai-sdk/ai-core/internal.js';
-import {
-  CompletionPostRequest
-} from './client/api/schema/index.js';
+import { CompletionPostRequest } from './client/api/schema/index.js';
 import { OrchestrationModuleConfig, Prompt } from './orchestration-types.js';
 import { OrchestrationResponse } from './orchestration-response.js';
 
