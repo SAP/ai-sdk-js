@@ -12,7 +12,7 @@ This project is currently in an experimental state. All functionality and naming
 ## Table of Contents
 
 - [Packages](#packages)
-  - [@sap-ai-sdk/ai-core](#sap-ai-sdk-ai-core)
+  - [@sap-ai-sdk/ai-api](#sap-ai-sdk-ai-api)
   - [@sap-ai-sdk/gen-ai-hub](#sap-ai-sdk-gen-ai-hub)
 - [Sample Project](#sap-cloud-sdk-for-ai-sample-project)
 - [Support, Feedback](#support-feedback-contribution)
@@ -24,7 +24,7 @@ This project is currently in an experimental state. All functionality and naming
 
 This project publishes multiple packages and is managed using [pnpm](https://pnpm.io/)
 
-### @sap-ai-sdk/ai-core
+### @sap-ai-sdk/ai-api
 
 This package provides tools to manage your scenarios and workflows in SAP AI Core.
 
@@ -36,7 +36,7 @@ This package provides tools to manage your scenarios and workflows in SAP AI Cor
 To install the AI Core package in your project, run:
 
 ```
-$ npm install @sap-ai-sdk/ai-core
+$ npm install @sap-ai-sdk/ai-api
 ```
 
 ### @sap-ai-sdk/gen-ai-hub

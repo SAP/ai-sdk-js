@@ -1,0 +1,1 @@
+{"version":3,"file":"bcknd-error-response.d.ts","sourceRoot":"","sources":["bcknd-error-response.ts"],"names":[],"mappings":"AAKA,OAAO,KAAK,EAAE,UAAU,EAAE,MAAM,kBAAkB,CAAC;AACnD;;GAEG;AACH,MAAM,MAAM,kBAAkB,GAAG;IAC/B,KAAK,CAAC,EAAE,UAAU,CAAC;CACpB,GAAG,MAAM,CAAC,MAAM,EAAE,GAAG,CAAC,CAAC"}

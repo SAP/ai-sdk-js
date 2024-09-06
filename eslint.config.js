@@ -20,7 +20,7 @@ export default [
       '**/*.d.ts',
       '**/dist/**/*',
       '**/coverage/**/*',
-      'packages/ai-core/src/client/**/*'
+      'packages/ai-api/src/client/**/*'
     ]
   },
   {

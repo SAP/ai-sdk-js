@@ -1,0 +1,1 @@
+{"version":3,"file":"rta-log-common-result-item.d.ts","sourceRoot":"","sources":["rta-log-common-result-item.ts"],"names":[],"mappings":"AAKA,OAAO,KAAK,EAAE,YAAY,EAAE,MAAM,oBAAoB,CAAC;AACvD,OAAO,KAAK,EAAE,UAAU,EAAE,MAAM,kBAAkB,CAAC;AACnD;;GAEG;AACH,MAAM,MAAM,sBAAsB,GAAG;IACnC,SAAS,CAAC,EAAE,YAAY,CAAC;IACzB,GAAG,CAAC,EAAE,UAAU,CAAC;CAClB,GAAG,MAAM,CAAC,MAAM,EAAE,GAAG,CAAC,CAAC"}

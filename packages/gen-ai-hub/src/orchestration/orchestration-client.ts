@@ -2,7 +2,7 @@ import { executeRequest, CustomRequestConfig } from '@sap-ai-sdk/core';
 import {
   resolveDeploymentId,
   ResourceGroupConfiguration
-} from '@sap-ai-sdk/ai-core/internal.js';
+} from '@sap-ai-sdk/ai-api/internal.js';
 import {
   CompletionPostRequest,
   CompletionPostResponse

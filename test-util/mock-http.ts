@@ -11,7 +11,7 @@ import { type EndpointOptions } from '@sap-ai-sdk/core';
 import {
   type FoundationModel,
   type DeploymentResolutionOptions
-} from '@sap-ai-sdk/ai-core/internal.js';
+} from '@sap-ai-sdk/ai-api/internal.js';
 import { dummyToken } from './mock-jwt.js';
 
 // Get the directory of this file

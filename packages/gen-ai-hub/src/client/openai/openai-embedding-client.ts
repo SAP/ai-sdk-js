@@ -2,7 +2,7 @@ import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
 import {
   getDeploymentId,
   type ModelDeployment
-} from '@sap-ai-sdk/ai-core/internal.js';
+} from '@sap-ai-sdk/ai-api/internal.js';
 import type {
   OpenAiEmbeddingParameters,
   OpenAiEmbeddingOutput,

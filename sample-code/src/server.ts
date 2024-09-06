@@ -2,7 +2,7 @@
 import express from 'express';
 import { chatCompletion, computeEmbedding } from './aiservice.js';
 import { orchestrationCompletion } from './orchestration.js';
-import { getDeployments } from './ai-core.js';
+import { getDeployments } from './ai-api.js';
 
 const app = express();
 const port = 8080;
@@ -48,7 +48,7 @@ app.get('/orchestration', async (req, res) => {
   }
 });
 
-app.get('/ai-core/get-deployments', async (req, res) => {
+app.get('/ai-api/get-deployments', async (req, res) => {
   try {
     res.send(await getDeployments());
   } catch (error: any) {

@@ -1,0 +1,1 @@
+{"version":3,"file":"ai-api-error-with-id.d.ts","sourceRoot":"","sources":["ai-api-error-with-id.ts"],"names":[],"mappings":"AAKA,OAAO,KAAK,EAAE,IAAI,EAAE,MAAM,YAAY,CAAC;AACvC,OAAO,KAAK,EAAE,UAAU,EAAE,MAAM,mBAAmB,CAAC;AACpD;;GAEG;AACH,MAAM,MAAM,gBAAgB,GAAG;IAC7B,EAAE,EAAE,IAAI,CAAC;IACT,KAAK,EAAE,UAAU,CAAC;CACnB,GAAG,MAAM,CAAC,MAAM,EAAE,GAAG,CAAC,CAAC"}

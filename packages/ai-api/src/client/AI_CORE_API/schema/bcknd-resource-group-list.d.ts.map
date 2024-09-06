@@ -1,0 +1,1 @@
+{"version":3,"file":"bcknd-resource-group-list.d.ts","sourceRoot":"","sources":["bcknd-resource-group-list.ts"],"names":[],"mappings":"AAKA,OAAO,KAAK,EAAE,kBAAkB,EAAE,MAAM,2BAA2B,CAAC;AACpE;;GAEG;AACH,MAAM,MAAM,sBAAsB,GAAG;IACnC;;OAEG;IACH,KAAK,EAAE,MAAM,CAAC;IACd,SAAS,EAAE,kBAAkB,EAAE,CAAC;CACjC,GAAG,MAAM,CAAC,MAAM,EAAE,GAAG,CAAC,CAAC"}
