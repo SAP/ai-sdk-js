@@ -32,9 +32,8 @@ export class OpenAiChatCompletionResponse {
   getFinishReason(choiceIndex = 0): string | undefined {
     if (choiceIndex < 0 || choiceIndex >= this.data.choices.length) {
       logger.error(`${choiceIndex} is not a valid choice index.`);
-      return;
     }
-    return this.data.choices[choiceIndex].finish_reason;
+    return this.data.choices[choiceIndex]?.finish_reason;
   }
 
   /**
@@ -46,8 +45,7 @@ export class OpenAiChatCompletionResponse {
     const choices = this.data.choices;
     if (choiceIndex < 0 || choiceIndex >= choices.length) {
       logger.error(`${choiceIndex} is not a valid choice index.`);
-      return;
     }
-    return choices[choiceIndex].message.content;
+    return choices[choiceIndex]?.message?.content;
   }
 }
