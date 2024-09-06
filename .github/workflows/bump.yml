@@ -1,0 +1,33 @@
+name: bump
+
+on:
+  workflow_dispatch:
+    inputs:
+      majorVersion:
+        description: Mandatory, when bumping a major version. Semver compatible version string (X.Y.Z). Must not be set for patch and minor version releases.
+        required: false
+
+env:
+  INPUT_MAJOR_VERSION: ${{ inputs.majorVersion }}
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: ${{ vars.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - name: Setup git
+        run: |
+          git config --global user.email "ai-sdk-js@github.com"
+          git config --global user.name "ai-sdk-js"
+      - name: Bump version
+        run: changeset version
+      - name: Push
+        run: git push --follow-tags
