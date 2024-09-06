@@ -3,13 +3,15 @@ import {
   OpenAiChatCompletionOutput,
   OpenAiEmbeddingOutput,
   OpenAiChatClient,
-  OpenAiEmbeddingClient
+  OpenAiEmbeddingClient,
+  OpenAiChatCompletionResponse,
+  OpenAiUsage
 } from '@sap-ai-sdk/foundation-models';
 
 /**
  * Chat Completion.
  */
-expectType<Promise<OpenAiChatCompletionOutput>>(
+expectType<Promise<OpenAiChatCompletionResponse>>(
   new OpenAiChatClient('gpt-4').run({
     messages: [{ role: 'user', content: 'test prompt' }]
   })
@@ -22,6 +24,38 @@ expectError(
   new OpenAiChatClient('unknown').run({
     messages: [{ role: 'user', content: 'test prompt' }]
   })
+);
+
+expectType<OpenAiChatCompletionOutput>(
+  (
+    await new OpenAiChatClient('gpt-4').run({
+      messages: [{ role: 'user', content: 'test prompt' }]
+    })
+  ).data
+);
+
+expectType<string | undefined>(
+  (
+    await new OpenAiChatClient('gpt-4').run({
+      messages: [{ role: 'user', content: 'test prompt' }]
+    })
+  ).getContent()
+);
+
+expectType<string | undefined>(
+  (
+    await new OpenAiChatClient('gpt-4').run({
+      messages: [{ role: 'user', content: 'test prompt' }]
+    })
+  ).getFinishReason()
+);
+
+expectType<OpenAiUsage>(
+  (
+    await new OpenAiChatClient('gpt-4').run({
+      messages: [{ role: 'user', content: 'test prompt' }]
+    })
+  ).getTokenUsage()
 );
 
 /**

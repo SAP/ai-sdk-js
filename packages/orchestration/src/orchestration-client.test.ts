@@ -11,6 +11,7 @@ import {
   OrchestrationClient
 } from './orchestration-client.js';
 import { azureContentFilter } from './orchestration-filter-utility.js';
+import { OrchestrationResponse } from './orchestration-response.js';
 
 describe('orchestration service client', () => {
   beforeEach(() => {
@@ -51,7 +52,12 @@ describe('orchestration service client', () => {
       }
     );
     const response = await new OrchestrationClient(config).chatCompletion();
-    expect(response).toEqual(mockResponse);
+
+    expect(response).toBeInstanceOf(OrchestrationResponse);
+    expect(response.data).toEqual(mockResponse);
+    expect(response.getContent()).toEqual(expect.any(String));
+    expect(response.getFinishReason()).toEqual(expect.any(String));
+    expect(response.getTokenUsage().completion_tokens).toEqual(9);
   });
 
   it('calls chatCompletion with filter configuration supplied using convenience function', async () => {
@@ -96,7 +102,7 @@ describe('orchestration service client', () => {
     const response = await new OrchestrationClient(config).chatCompletion(
       prompt
     );
-    expect(response).toEqual(mockResponse);
+    expect(response.data).toEqual(mockResponse);
   });
 
   it('calls chatCompletion with filtering configuration', async () => {
@@ -159,7 +165,7 @@ describe('orchestration service client', () => {
     const response = await new OrchestrationClient(config).chatCompletion(
       prompt
     );
-    expect(response).toEqual(mockResponse);
+    expect(response.data).toEqual(mockResponse);
   });
 
   it('sends message history together with templating config', async () => {
@@ -205,6 +211,6 @@ describe('orchestration service client', () => {
       }
     );
     const response = await new OrchestrationClient(config).chatCompletion();
-    expect(response).toEqual(mockResponse);
+    expect(response.data).toEqual(mockResponse);
   });
 });

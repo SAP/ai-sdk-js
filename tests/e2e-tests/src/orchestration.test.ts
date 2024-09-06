@@ -32,11 +32,10 @@ describe('orchestration', () => {
       }
     });
 
-    expect(response.module_results).toBeDefined();
-    expect(response.module_results.templating).not.toHaveLength(0);
-    expect(response.module_results.templating?.[0].content).toBe(
-      'Create 3 paraphrases of I love coffee and I dislike cats'
-    );
-    expect(response.orchestration_result.choices).not.toHaveLength(0);
+    expect(response.data.module_results).toBeDefined();
+    expect(response.data.module_results.templating).not.toHaveLength(0);
+    expect(response.data.orchestration_result.choices).not.toHaveLength(0);
+    expect(response.getContent()).toBe(expect.any(String));
+    expect(response.getFinishReason()).toBe('stop');
   });
 });

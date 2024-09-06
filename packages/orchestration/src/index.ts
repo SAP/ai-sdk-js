@@ -28,7 +28,7 @@ export type {
   AzureContentSafetyFilterConfig
 } from './client/api/index.js';
 
-export {
+export type {
   OrchestrationModuleConfig,
   LlmConfig,
   Prompt
@@ -41,3 +41,7 @@ export {
 export {
   azureContentFilter
 } from './orchestration-filter-utility.js';
+
+export {
+  OrchestrationResponse
+} from './orchestration-response.js';

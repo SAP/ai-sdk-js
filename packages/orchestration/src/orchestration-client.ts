@@ -3,11 +3,9 @@ import {
   resolveDeploymentId,
   ResourceGroupConfiguration
 } from '@sap-ai-sdk/ai-api/internal.js';
-import {
-  CompletionPostRequest,
-  CompletionPostResponse
-} from './client/api/schema/index.js';
+import { CompletionPostRequest } from './client/api/schema/index.js';
 import { OrchestrationModuleConfig, Prompt } from './orchestration-types.js';
+import { OrchestrationResponse } from './orchestration-response.js';
 
 /**
  * Get the orchestration client.
@@ -32,7 +30,7 @@ export class OrchestrationClient {
   async chatCompletion(
     prompt?: Prompt,
     requestConfig?: CustomRequestConfig
-  ): Promise<CompletionPostResponse> {
+  ): Promise<OrchestrationResponse> {
     const body = constructCompletionPostRequest(this.config, prompt);
     const deploymentId = await resolveDeploymentId({
       scenarioId: 'orchestration',
@@ -46,7 +44,8 @@ export class OrchestrationClient {
       body,
       requestConfig
     );
-    return response.data;
+
+    return new OrchestrationResponse(response);
   }
 }
 

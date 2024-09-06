@@ -1,5 +1,5 @@
 import {
-  type CompletionPostResponse,
+  CompletionPostResponse,
   OrchestrationClient
 } from '@sap-ai-sdk/orchestration';
 
@@ -7,7 +7,7 @@ import {
  * Ask GPT about the capital of France.
  * @returns The answer from the orchestration service in Gen AI Hub.
  */
-export function orchestrationCompletion(): Promise<CompletionPostResponse> {
+export async function orchestrationCompletion(): Promise<CompletionPostResponse> {
   const orchestrationClient = new OrchestrationClient({
     llmConfig: {
       model_name: 'gpt-4-32k',
@@ -18,5 +18,6 @@ export function orchestrationCompletion(): Promise<CompletionPostResponse> {
     }
   });
 
-  return orchestrationClient.chatCompletion();
+  const response = await orchestrationClient.chatCompletion();
+  return response.data;
 }
