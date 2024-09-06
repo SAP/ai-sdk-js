@@ -34,7 +34,7 @@ expectType<OpenAiChatCompletionOutput>(
   ).data
 );
 
-expectType<string | null>(
+expectType<string | undefined>(
   (
     await new OpenAiChatClient('gpt-4').run({
       messages: [{ role: 'user', content: 'test prompt' }]
@@ -42,7 +42,7 @@ expectType<string | null>(
   ).getContent()
 );
 
-expectType<string | null>(
+expectType<string | undefined>(
   (
     await new OpenAiChatClient('gpt-4').run({
       messages: [{ role: 'user', content: 'test prompt' }]
