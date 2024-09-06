@@ -37,6 +37,7 @@ export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
     const presencePenalty =
       fields.presence_penalty ?? defaultValues.presencePenalty;
     const topP = fields.top_p ?? defaultValues.topP;
+    // add typeguard for assignment
     const modelName = fields.modelName ?? defaultValues.modelName;
 
     super({
