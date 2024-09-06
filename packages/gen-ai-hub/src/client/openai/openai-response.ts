@@ -33,9 +33,7 @@ export class OpenAiChatCompletionResponse {
    * @returns The finish reason.
    */
   getFinishReason(choiceIndex = 0): string | undefined {
-    if (choiceIndex < 0 || choiceIndex >= this.data.choices.length) {
-      logger.error(`${choiceIndex} is not a valid choice index.`);
-    }
+    this.logInvalidChoiceIndex(choiceIndex);
     return this.data.choices[choiceIndex]?.finish_reason;
   }
 
@@ -45,10 +43,13 @@ export class OpenAiChatCompletionResponse {
    * @returns The message content.
    */
   getContent(choiceIndex = 0): string | undefined {
-    const choices = this.data.choices;
-    if (choiceIndex < 0 || choiceIndex >= choices.length) {
-      logger.error(`${choiceIndex} is not a valid choice index.`);
+    this.logInvalidChoiceIndex(choiceIndex);
+    return this.data.choices[choiceIndex]?.message?.content;
+  }
+
+  private logInvalidChoiceIndex(choiceIndex: number): void {
+    if (choiceIndex < 0 || choiceIndex >= this.data.choices.length) {
+      logger.error(`Choice index ${choiceIndex} is out of bounds.`);
     }
-    return choices[choiceIndex]?.message?.content;
   }
 }

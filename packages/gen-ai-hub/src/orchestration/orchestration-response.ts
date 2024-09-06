@@ -34,7 +34,7 @@ export class OrchestrationResponse {
    * @returns The finish reason.
    */
   getFinishReason(choiceIndex = 0): string | undefined {
-    this.validateChoiceIndex(choiceIndex);
+    this.logInvalidChoiceIndex(choiceIndex);
     return this.getChoices()[choiceIndex]?.finish_reason;
   }
 
@@ -44,7 +44,7 @@ export class OrchestrationResponse {
    * @returns The message content.
    */
   getContent(choiceIndex = 0): string | undefined {
-    this.validateChoiceIndex(choiceIndex);
+    this.logInvalidChoiceIndex(choiceIndex);
     if (
       this.getChoices()[choiceIndex]?.message?.content === '' &&
       this.getChoices()[choiceIndex]?.finish_reason === 'content_filter'
@@ -60,7 +60,7 @@ export class OrchestrationResponse {
     return this.data.orchestration_result.choices;
   }
 
-  private validateChoiceIndex(choiceIndex: number): void {
+  private logInvalidChoiceIndex(choiceIndex: number): void {
     if (choiceIndex < 0 || choiceIndex >= this.getChoices().length) {
       logger.error(`Choice index ${choiceIndex} is out of bounds.`);
     }
