@@ -12,14 +12,13 @@ import {
 } from './util.js';
 import type {
   OpenAIChatModelInput,
-  OpenAIChatModelInterface,
   OpenAIChatCallOptions
 } from './types.js';
 
 /**
  * OpenAI Language Model Wrapper to generate texts.
  */
-export class OpenAIChat extends ChatOpenAI implements OpenAIChatModelInterface {
+export class OpenAIChat extends ChatOpenAI {
   declare CallOptions: OpenAIChatCallOptions;
   private openAiChatClient: OpenAiChatClient;
 

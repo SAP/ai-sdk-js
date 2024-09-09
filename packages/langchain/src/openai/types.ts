@@ -1,24 +1,13 @@
 import type { BaseChatModelParams } from '@langchain/core/language_models/chat_models';
-import type { ChatOpenAICallOptions, OpenAIChatInput } from '@langchain/openai';
+import { BaseLLMParams } from '@langchain/core/language_models/llms';
+import type { ChatOpenAICallOptions, OpenAIChatInput, OpenAIEmbeddingsParams } from '@langchain/openai';
 import type {
   ConfigurationOptions,
   OpenAiChatCompletionParameters,
-  OpenAiChatModel
+  OpenAiChatModel,
+  OpenAiEmbeddingModel,
+  OpenAiEmbeddingParameters
 } from '@sap-ai-sdk/gen-ai-hub';
-
-/**
- * Input for Text generation for OpenAI GPT.
- */
-export interface OpenAIChatModelInterface
-  extends Omit<
-      OpenAIChatInput,
-      'openAIApiKey' | 'streaming'
-    >,
-    Omit<
-      OpenAiChatCompletionParameters,
-      'n' | 'stop' | 'messages' | 'temperature'
-    >,
-    BaseChatModelParams {}
 
 /**
  * Input for Text generation for OpenAI GPT.
@@ -57,3 +46,11 @@ export interface OpenAIChatCallOptions
       OpenAiChatCompletionParameters,
       'tool_choice' | 'functions' | 'tools' | 'response_format'
     > {}
+
+/**
+ * Input for Text generation for OpenAI GPT.
+ */
+export type OpenAIEmbeddingInput = Omit<OpenAIEmbeddingsParams, 'modelName'> &
+OpenAiEmbeddingParameters &
+ConfigurationOptions<OpenAiEmbeddingModel> &
+BaseLLMParams;

@@ -1,51 +1,22 @@
-import { BaseLLMParams } from '@langchain/core/language_models/llms';
-import { OpenAIEmbeddingsParams, OpenAIEmbeddings } from '@langchain/openai';
+import { OpenAIEmbeddings } from '@langchain/openai';
 import {
   OpenAiEmbeddingClient,
-  OpenAiEmbeddingModel,
   OpenAiEmbeddingOutput,
   OpenAiEmbeddingParameters
 } from '@sap-ai-sdk/gen-ai-hub';
-import { chunkArray } from '../util/index.js';
-
-/**
- * Input for Text generation for OpenAI GPT.
- */
-export interface OpenAIEmbeddingInput
-  extends Omit<OpenAIEmbeddingsParams, 'modelName'>,
-    BaseLLMParams {
-  /**
-   * The name of the model.
-   */
-  modelName: OpenAiEmbeddingModel;
-  /**
-   * The name of the model. Alias for `modelName`.
-   */
-  model: OpenAiEmbeddingModel;
-  /**
-   * The version of the model.
-   */
-  modelVersion?: string;
-}
+import { chunkArray } from './util.js';
+import { OpenAIEmbeddingInput } from './types.js';
 
 /**
  * OpenAI GPT Language Model Wrapper to embed texts.
  */
-export class OpenAIEmbedding
-  extends OpenAIEmbeddings
-  implements OpenAIEmbeddingInput
-{
-  modelName: OpenAiEmbeddingModel;
-  model: OpenAiEmbeddingModel;
-
+export class OpenAIEmbedding extends OpenAIEmbeddings {
   private btpOpenAIClient: OpenAiEmbeddingClient;
 
   constructor(fields: OpenAIEmbeddingInput) {
     super({ ...fields, openAIApiKey: 'dummy' });
 
     this.btpOpenAIClient = new OpenAiEmbeddingClient({ ...fields });
-    this.model = fields.model;
-    this.modelName = fields.modelName;
   }
 
   override async embedDocuments(documents: string[]): Promise<number[][]> {
