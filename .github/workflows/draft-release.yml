@@ -1,7 +1,6 @@
 name: draft-release
 
 on:
-  pull_request: ~
   push:
     tags: ['v*']
 
@@ -30,6 +29,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           draft: true
-          tag: test
           body: 'SAP Cloud SDK for AI Beta release'
           # body: ${{ steps.get-changelog.outputs.changelog }}
