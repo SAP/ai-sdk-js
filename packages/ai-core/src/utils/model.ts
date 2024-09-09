@@ -1,4 +1,4 @@
-import { AiDeployment } from '@sap-ai-sdk/ai-core';
+import { AiDeployment } from '../client/AI_CORE_API/index.js';
 
 /**
  * A foundation model is identified by its name and optionally a version.

@@ -1,5 +1,4 @@
 import {
-  OpenAiChatAssistantMessage,
   OpenAiChatClient,
   OpenAiEmbeddingClient
 } from '@sap-ai-sdk/gen-ai-hub';
@@ -12,9 +11,7 @@ export async function chatCompletion(): Promise<string> {
   const response = await new OpenAiChatClient('gpt-35-turbo').run({
     messages: [{ role: 'user', content: 'What is the capital of France?' }]
   });
-  const assistantMessage = response.choices[0]
-    .message as OpenAiChatAssistantMessage;
-  return assistantMessage.content!;
+  return response.getContent()!;
 }
 
 /**

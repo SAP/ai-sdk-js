@@ -2,12 +2,12 @@ import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
 import {
   getDeploymentId,
   type ModelDeployment
-} from '../../utils/deployment-resolver.js';
+} from '@sap-ai-sdk/ai-core/internal.js';
 import type {
   OpenAiChatCompletionParameters,
-  OpenAiChatCompletionOutput,
   OpenAiChatModel
 } from './openai-types.js';
+import { OpenAiChatCompletionResponse } from './openai-response.js';
 
 const apiVersion = '2024-02-01';
 
@@ -30,7 +30,7 @@ export class OpenAiChatClient {
   async run(
     data: OpenAiChatCompletionParameters,
     requestConfig?: CustomRequestConfig
-  ): Promise<OpenAiChatCompletionOutput> {
+  ): Promise<OpenAiChatCompletionResponse> {
     const deploymentId = await getDeploymentId(
       this.modelDeployment,
       'azure-openai'
@@ -43,6 +43,6 @@ export class OpenAiChatClient {
       data,
       requestConfig
     );
-    return response.data;
+    return new OpenAiChatCompletionResponse(response);
   }
 }

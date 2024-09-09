@@ -1,4 +1,4 @@
-import { type AiDeployment } from '@sap-ai-sdk/ai-core';
+import { type AiDeployment } from '../client/AI_CORE_API/index.js';
 import { deploymentCache } from './deployment-cache.js';
 import { FoundationModel } from './model.js';
 
