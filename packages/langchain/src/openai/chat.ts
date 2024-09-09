@@ -31,13 +31,7 @@ export class OpenAIChat extends ChatOpenAI {
       : defaultValues.stop;
 
     super({
-      temperature: defaultValues.temperature,
-      modelName: defaultValues.modelName,
-      model: defaultValues.model,
-      n: defaultValues.n,
-      frequencyPenalty: defaultValues.frequencyPenalty,
-      presencePenalty: defaultValues.presencePenalty,
-      topP: defaultValues.topP,
+      ...defaultValues,
       ...fields,
       stop,
       openAIApiKey: 'dummy',
@@ -110,6 +104,6 @@ export class OpenAIChat extends ChatOpenAI {
         : ''
     );
 
-    return mapResponseToChatResult(res);
+    return mapResponseToChatResult(res.data);
   }
 }

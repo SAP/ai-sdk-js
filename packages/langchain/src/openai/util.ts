@@ -6,10 +6,10 @@ import {
 } from '@langchain/core/messages';
 import { ChatResult } from '@langchain/core/outputs';
 import { StructuredTool } from '@langchain/core/tools';
-import type { OpenAiChatAssistantMessage, OpenAiChatCompletionChoice,
+import type { OpenAiChatCompletionChoice,
   OpenAiChatCompletionFunction, OpenAiChatCompletionTool,
   OpenAiChatToolMessage, OpenAiChatMessage,
-  OpenAiChatCompletionResponse
+  OpenAiChatCompletionOutput
  } from '@sap-ai-sdk/gen-ai-hub';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 
@@ -66,6 +66,7 @@ export function mapBaseMessageToRole(
     case 'tool':
       return 'tool';
     case 'generic':
+      // TODO: refactor?
       return (message as ChatMessage).role as OpenAiChatMessage['role'];
     default:
       throw new Error(`Unknown message type: ${message._getType()}`);
@@ -78,38 +79,39 @@ export function mapBaseMessageToRole(
  * @returns The LangChain Chat Result.
  */
 export function mapResponseToChatResult(
-  res: OpenAiChatCompletionResponse
+  res: OpenAiChatCompletionOutput
 ): ChatResult {
   return {
-    generations: res.data.choices.map((c: OpenAiChatCompletionChoice) => ({
-      text: (c.message as OpenAiChatAssistantMessage).content || '',
+    generations: res.choices.map((choice: OpenAiChatCompletionChoice) => ({
+      text: choice.message.content || '',
       message: new AIMessage({
-        content: (c.message as OpenAiChatAssistantMessage).content || '',
+        content: choice.message.content || '',
         additional_kwargs: {
-          finish_reason: c.finish_reason,
-          index: c.index,
-          function_call: (c.message as OpenAiChatAssistantMessage)
+          finish_reason: choice.finish_reason,
+          index: choice.index,
+          function_call: choice.message
             .function_call, // add `function_call` parameter
-          tool_calls: (c.message as OpenAiChatAssistantMessage).tool_calls,
-          tool_call_id: (c.message as OpenAiChatToolMessage).tool_call_id
+          tool_calls: choice.message.tool_calls,
+          // TODO: refactor?
+          tool_call_id: (choice.message as OpenAiChatToolMessage).tool_call_id
         }
       }),
       generationInfo: {
-        finish_reason: c.finish_reason,
-        index: c.index,
-        function_call: (c.message as OpenAiChatAssistantMessage).function_call, // add `function_call` parameter
-        tool_calls: (c.message as OpenAiChatAssistantMessage).tool_calls
+        finish_reason: choice.finish_reason,
+        index: choice.index,
+        function_call: choice.message.function_call, // add `function_call` parameter
+        tool_calls: choice.message.tool_calls
       }
     })),
     llmOutput: {
-      created: res.data.created,
-      id: res.data.id,
-      model: res.data.model,
-      object: res.data.object,
+      created: res.created,
+      id: res.id,
+      model: res.model,
+      object: res.object,
       tokenUsage: {
-        completionTokens: res.data.usage.completion_tokens,
-        promptTokens: res.data.usage.prompt_tokens,
-        totalTokens: res.data.usage.total_tokens
+        completionTokens: res.usage.completion_tokens,
+        promptTokens: res.usage.prompt_tokens,
+        totalTokens: res.usage.total_tokens
       }
     }
   };
@@ -129,6 +131,7 @@ export function mapBaseMessageToOpenAIChatMessage(
     role: mapBaseMessageToRole(message),
     function_call: message.additional_kwargs.function_call,
     tool_calls: message.additional_kwargs.tool_calls,
+    // TODO: refactor?
     tool_call_id: (message as ToolMessage).tool_call_id
   } as OpenAiChatMessage;
 }
