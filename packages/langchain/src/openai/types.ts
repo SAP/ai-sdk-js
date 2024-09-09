@@ -54,7 +54,10 @@ export interface OpenAIChatCallOptions
 /**
  * Input for Text generation for OpenAI GPT.
  */
-export type OpenAIEmbeddingInput = Omit<OpenAIEmbeddingsParams, 'modelName'> &
+export type OpenAIEmbeddingInput = Omit<
+  OpenAIEmbeddingsParams,
+  'modelName' | 'model'
+> &
   OpenAiEmbeddingParameters &
   ConfigurationOptions<OpenAiEmbeddingModel> &
   BaseLLMParams;

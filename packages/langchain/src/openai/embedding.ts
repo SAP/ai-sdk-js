@@ -14,7 +14,7 @@ export class OpenAIEmbedding extends AzureOpenAIEmbeddings {
   private btpOpenAIClient: OpenAiEmbeddingClient;
 
   constructor(fields: OpenAIEmbeddingInput) {
-    super({ ...fields });
+    super({ ...fields, azureOpenAIApiKey: 'dummy' });
 
     this.btpOpenAIClient = new OpenAiEmbeddingClient({ ...fields });
   }

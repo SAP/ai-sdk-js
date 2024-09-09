@@ -8,3 +8,4 @@ packages:
   - 'tests/e2e-tests'
   - 'tests/type-tests'
   - 'tests/smoke-tests'
+  

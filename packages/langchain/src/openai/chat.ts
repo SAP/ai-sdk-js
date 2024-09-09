@@ -1,7 +1,7 @@
 import { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import { BaseMessage } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
-import { AzureChatOpenAI, ChatOpenAI } from '@langchain/openai';
+import { AzureChatOpenAI, AzureOpenAI } from '@langchain/openai';
 import { OpenAiChatClient } from '@sap-ai-sdk/gen-ai-hub';
 import {
   isStructuredToolArray,
@@ -20,17 +20,17 @@ export class OpenAIChat extends AzureChatOpenAI {
   private openAiChatClient: OpenAiChatClient;
 
   constructor(fields: OpenAIChatModelInput) {
-    const defaultValues = new ChatOpenAI();
+    const defaultValues = new AzureOpenAI();
     const stop = fields.stop
       ? Array.isArray(fields.stop)
         ? fields.stop
         : [fields.stop]
       : defaultValues.stop;
-
     super({
       ...defaultValues,
       ...fields,
       stop,
+      azureOpenAIApiKey: 'dummy',
       openAIApiKey: 'dummy'
     });
 
