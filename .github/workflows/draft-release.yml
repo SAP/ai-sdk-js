@@ -21,6 +21,7 @@ jobs:
 
       - name: install and build
         run: pnpm install --frozen-lockfile
+      # TODO: Reuse step for GA release
       # - uses: sap/cloud-sdk-js/.github/actions/get-changelog@main
       #   name: Get Changelog
       #   id: get-changelog
@@ -29,6 +30,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           draft: true
-          generateReleaseNotes: true
           tag: test
+          body: 'SAP Cloud SDK for AI Beta release'
           # body: ${{ steps.get-changelog.outputs.changelog }}
