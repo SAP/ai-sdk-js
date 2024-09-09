@@ -1,7 +1,7 @@
 import { BaseLLMParams } from '@langchain/core/language_models/llms';
 import { OpenAIEmbeddingsParams, OpenAIEmbeddings } from '@langchain/openai';
 import {
-  OpenAiClient,
+  OpenAiEmbeddingClient,
   OpenAiEmbeddingModel,
   OpenAiEmbeddingOutput,
   OpenAiEmbeddingParameters
@@ -38,12 +38,12 @@ export class OpenAIEmbedding
   modelName: OpenAiEmbeddingModel;
   model: OpenAiEmbeddingModel;
 
-  private btpOpenAIClient: OpenAiClient;
+  private btpOpenAIClient: OpenAiEmbeddingClient;
 
   constructor(fields: OpenAIEmbeddingInput) {
     super({ ...fields, openAIApiKey: 'dummy' });
 
-    this.btpOpenAIClient = new OpenAiClient();
+    this.btpOpenAIClient = new OpenAiEmbeddingClient({ ...fields });
     this.model = fields.model;
     this.modelName = fields.modelName;
   }
@@ -74,7 +74,7 @@ export class OpenAIEmbedding
     query: OpenAiEmbeddingParameters
   ): Promise<OpenAiEmbeddingOutput> {
     const res = await this.caller.callWithOptions({}, () =>
-      this.btpOpenAIClient.embeddings(query, this.model)
+      this.btpOpenAIClient.run(query)
     );
     return res;
   }
