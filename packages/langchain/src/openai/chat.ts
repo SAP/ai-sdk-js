@@ -2,7 +2,7 @@ import { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import { BaseMessage } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
 import { AzureChatOpenAI, AzureOpenAI } from '@langchain/openai';
-import { OpenAiChatClient } from '@sap-ai-sdk/gen-ai-hub';
+import { OpenAiChatClient } from '@sap-ai-sdk/foundation-models';
 import {
   isStructuredToolArray,
   mapBaseMessageToOpenAIChatMessage,

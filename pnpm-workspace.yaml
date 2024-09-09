@@ -1,7 +1,8 @@
 packages:
   # all packages in direct subdirs of packages/
-  - 'packages/ai-core'
-  - 'packages/gen-ai-hub'
+  - 'packages/ai-api'
+  - 'packages/foundation-models'
+  - 'packages/orchestration'
   - 'packages/core'
   - 'packages/langchain'
   - 'sample-code'

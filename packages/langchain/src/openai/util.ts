@@ -12,7 +12,7 @@ import type {
   OpenAiChatCompletionTool,
   OpenAiChatMessage,
   OpenAiChatCompletionOutput
-} from '@sap-ai-sdk/gen-ai-hub';
+} from '@sap-ai-sdk/foundation-models';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 
 /**

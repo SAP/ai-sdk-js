@@ -13,8 +13,9 @@
   ],
   "dependencies": {
     "@sap-ai-sdk/sample-code": "workspace:^",
-    "@sap-ai-sdk/gen-ai-hub": "workspace:^",
-    "@sap-ai-sdk/ai-core": "workspace:^",
+    "@sap-ai-sdk/foundation-models": "workspace:^",
+    "@sap-ai-sdk/orchestration": "workspace:^",
+    "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^"
   },
   "scripts": {

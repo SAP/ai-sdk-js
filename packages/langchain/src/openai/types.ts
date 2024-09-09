@@ -10,8 +10,8 @@ import type {
   OpenAiChatModel,
   OpenAiEmbeddingModel,
   OpenAiEmbeddingParameters
-} from '@sap-ai-sdk/gen-ai-hub';
-import type { ConfigurationOptions } from '@sap-ai-sdk/ai-core';
+} from '@sap-ai-sdk/foundation-models';
+import type { ConfigurationOptions } from '@sap-ai-sdk/ai-api';
 
 /**
  * Input for Text generation for OpenAI GPT.

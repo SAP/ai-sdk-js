@@ -11,20 +11,23 @@ This project is currently in an experimental state. All functionality and naming
 
 ## Table of Contents
 
+- [Disclaimer ⚠️](#disclaimer-️)
+- [Table of Contents](#table-of-contents)
 - [Packages](#packages)
-  - [@sap-ai-sdk/ai-core](#sap-ai-sdk-ai-core)
-  - [@sap-ai-sdk/gen-ai-hub](#sap-ai-sdk-gen-ai-hub)
-- [Sample Project](#sap-cloud-sdk-for-ai-sample-project)
-- [Support, Feedback](#support-feedback-contribution)
-- [Contribute](#contribute)
-- [Links](#links)
-- [License](#license)
+  - [@sap-ai-sdk/ai-api](#sap-ai-sdkai-api)
+  - [@sap-ai-sdk/foundation-models](#sap-ai-sdkfoundation-models)
+  - [@sap-ai-sdk/orchestration](#sap-ai-sdkorchestration)
+- [SAP Cloud SDK for AI Sample Project](#sap-cloud-sdk-for-ai-sample-project)
+- [Support, Feedback, Contribution](#support-feedback-contribution)
+- [Security / Disclosure](#security--disclosure)
+- [Code of Conduct](#code-of-conduct)
+- [Licensing](#licensing)
 
 ## Packages
 
 This project publishes multiple packages and is managed using [pnpm](https://pnpm.io/)
 
-### @sap-ai-sdk/ai-core
+### @sap-ai-sdk/ai-api
 
 This package provides tools to manage your scenarios and workflows in SAP AI Core.
 
@@ -36,16 +39,25 @@ This package provides tools to manage your scenarios and workflows in SAP AI Cor
 To install the AI Core package in your project, run:
 
 ```
-$ npm install @sap-ai-sdk/ai-core
+$ npm install @sap-ai-sdk/ai-api
 ```
 
-### @sap-ai-sdk/gen-ai-hub
+### @sap-ai-sdk/foundation-models
 
-This package incorporates generative AI into your AI activities in SAP AI Core and SAP AI Launchpad.
+This package incorporates generative AI foundation models into your AI activities in SAP AI Core and SAP AI Launchpad.
 
 To install the  Gen AI Hub package in your project, run:
 ```
-$ npm install @sap-ai-sdk/gen-ai-hub
+$ npm install @sap-ai-sdk/foundation-models
+```
+
+### @sap-ai-sdk/orchestration
+
+This package incorporates generative AI orchestration capabilities into your AI activities in SAP AI Core and SAP AI Launchpad.
+
+To install the  Gen AI Hub package in your project, run:
+```
+$ npm install @sap-ai-sdk/orchestration
 ```
 
 ## SAP Cloud SDK for AI Sample Project

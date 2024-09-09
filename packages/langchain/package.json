@@ -28,8 +28,8 @@
     "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
-    "@sap-ai-sdk/ai-core": "workspace:^",
-    "@sap-ai-sdk/gen-ai-hub": "workspace:^",
+    "@sap-ai-sdk/ai-api": "workspace:^",
+    "@sap-ai-sdk/foundation-models": "workspace:^",
     "@langchain/core": "^0.2.30",
     "@langchain/openai": "^0.2.8",
     "zod-to-json-schema": "^3.23.2"

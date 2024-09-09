@@ -1,7 +1,7 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-import { OrchestrationClient } from '@sap-ai-sdk/gen-ai-hub';
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 // Pick .env file from root directory
 const __filename = fileURLToPath(import.meta.url);

@@ -3,7 +3,7 @@ import {
   OpenAiEmbeddingClient,
   OpenAiEmbeddingOutput,
   OpenAiEmbeddingParameters
-} from '@sap-ai-sdk/gen-ai-hub';
+} from '@sap-ai-sdk/foundation-models';
 import { chunkArray } from './util.js';
 import { OpenAIEmbeddingInput } from './types.js';
 
