@@ -2,12 +2,14 @@ import type { BaseChatModelParams } from '@langchain/core/language_models/chat_m
 import { BaseLLMParams } from '@langchain/core/language_models/llms';
 import type { ChatOpenAICallOptions, OpenAIChatInput, OpenAIEmbeddingsParams } from '@langchain/openai';
 import type {
-  ConfigurationOptions,
   OpenAiChatCompletionParameters,
   OpenAiChatModel,
   OpenAiEmbeddingModel,
   OpenAiEmbeddingParameters
 } from '@sap-ai-sdk/gen-ai-hub';
+import type {
+  ConfigurationOptions
+}from '@sap-ai-sdk/ai-core';
 
 /**
  * Input for Text generation for OpenAI GPT.

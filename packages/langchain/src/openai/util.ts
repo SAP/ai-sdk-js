@@ -7,8 +7,9 @@ import {
 import { ChatResult } from '@langchain/core/outputs';
 import { StructuredTool } from '@langchain/core/tools';
 import type { OpenAiChatAssistantMessage, OpenAiChatCompletionChoice,
-  OpenAiChatCompletionFunction, OpenAiChatCompletionOutput, OpenAiChatCompletionTool,
-  OpenAiChatToolMessage, OpenAiChatMessage
+  OpenAiChatCompletionFunction, OpenAiChatCompletionTool,
+  OpenAiChatToolMessage, OpenAiChatMessage,
+  OpenAiChatCompletionResponse
  } from '@sap-ai-sdk/gen-ai-hub';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 
@@ -77,10 +78,10 @@ export function mapBaseMessageToRole(
  * @returns The LangChain Chat Result.
  */
 export function mapResponseToChatResult(
-  res: OpenAiChatCompletionOutput
+  res: OpenAiChatCompletionResponse
 ): ChatResult {
   return {
-    generations: res.choices.map((c: OpenAiChatCompletionChoice) => ({
+    generations: res.data.choices.map((c: OpenAiChatCompletionChoice) => ({
       text: (c.message as OpenAiChatAssistantMessage).content || '',
       message: new AIMessage({
         content: (c.message as OpenAiChatAssistantMessage).content || '',
@@ -101,14 +102,14 @@ export function mapResponseToChatResult(
       }
     })),
     llmOutput: {
-      created: res.created,
-      id: res.id,
-      model: res.model,
-      object: res.object,
+      created: res.data.created,
+      id: res.data.id,
+      model: res.data.model,
+      object: res.data.object,
       tokenUsage: {
-        completionTokens: res.usage.completion_tokens,
-        promptTokens: res.usage.prompt_tokens,
-        totalTokens: res.usage.total_tokens
+        completionTokens: res.data.usage.completion_tokens,
+        promptTokens: res.data.usage.prompt_tokens,
+        totalTokens: res.data.usage.total_tokens
       }
     }
   };

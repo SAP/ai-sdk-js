@@ -105,8 +105,8 @@ export class OpenAIChat extends ChatOpenAI {
 
     // currently BTP LLM Proxy for OpenAI doesn't support streaming
     await runManager?.handleLLMNewToken(
-      typeof res.choices[0].message.content === 'string'
-        ? res.choices[0].message.content
+      typeof res.data.choices[0].message.content === 'string'
+        ? res.data.choices[0].message.content
         : ''
     );
 
