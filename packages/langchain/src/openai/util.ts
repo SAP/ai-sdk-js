@@ -6,10 +6,13 @@ import {
 } from '@langchain/core/messages';
 import { ChatResult } from '@langchain/core/outputs';
 import { StructuredTool } from '@langchain/core/tools';
-import type { OpenAiChatCompletionChoice,
-  OpenAiChatCompletionFunction, OpenAiChatCompletionTool, OpenAiChatMessage,
+import type {
+  OpenAiChatCompletionChoice,
+  OpenAiChatCompletionFunction,
+  OpenAiChatCompletionTool,
+  OpenAiChatMessage,
   OpenAiChatCompletionOutput
- } from '@sap-ai-sdk/gen-ai-hub';
+} from '@sap-ai-sdk/gen-ai-hub';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 
 /**
@@ -88,10 +91,9 @@ export function mapResponseToChatResult(
         additional_kwargs: {
           finish_reason: choice.finish_reason,
           index: choice.index,
-          function_call: choice.message
-            .function_call,
+          function_call: choice.message.function_call,
           tool_calls: choice.message.tool_calls,
-          tool_call_id: '',
+          tool_call_id: ''
         }
       }),
       generationInfo: {
@@ -129,7 +131,8 @@ export function mapBaseMessageToOpenAIChatMessage(
     role: mapBaseMessageToRole(message),
     function_call: message.additional_kwargs.function_call,
     tool_calls: message.additional_kwargs.tool_calls,
-    tool_call_id: message._getType() === 'tool' ? (message as ToolMessage).tool_call_id : ''
+    tool_call_id:
+      message._getType() === 'tool' ? (message as ToolMessage).tool_call_id : ''
   } as OpenAiChatMessage;
 }
 
@@ -143,9 +146,7 @@ export function isStructuredToolArray(
 ): tools is StructuredTool[] {
   return (
     tools !== undefined &&
-    tools.every(tool =>
-      Array.isArray((tool as StructuredTool).lc_namespace)
-    )
+    tools.every(tool => Array.isArray((tool as StructuredTool).lc_namespace))
   );
 }
 

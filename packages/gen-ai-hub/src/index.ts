@@ -29,7 +29,11 @@ export type {
   OpenAiEmbeddingOutput
 } from './client/index.js';
 
-export { OpenAiChatClient, OpenAiEmbeddingClient, OpenAiChatCompletionResponse } from './client/index.js';
+export {
+  OpenAiChatClient,
+  OpenAiEmbeddingClient,
+  OpenAiChatCompletionResponse
+} from './client/index.js';
 
 export type {
   OrchestrationModuleConfig,

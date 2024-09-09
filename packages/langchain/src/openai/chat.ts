@@ -10,10 +10,7 @@ import {
   mapToolToOpenAIFunction,
   mapToolToOpenAITool
 } from './util.js';
-import type {
-  OpenAIChatModelInput,
-  OpenAIChatCallOptions
-} from './types.js';
+import type { OpenAIChatModelInput, OpenAIChatCallOptions } from './types.js';
 
 /**
  * OpenAI Language Model Wrapper to generate texts.
@@ -34,7 +31,7 @@ export class OpenAIChat extends ChatOpenAI {
       ...defaultValues,
       ...fields,
       stop,
-      openAIApiKey: 'dummy',
+      openAIApiKey: 'dummy'
     });
 
     this.openAiChatClient = new OpenAiChatClient({ ...fields });
@@ -72,29 +69,27 @@ export class OpenAIChat extends ChatOpenAI {
         signal: options.signal
       },
       () =>
-        this.openAiChatClient.run(
-          {
-            messages: messages.map(mapBaseMessageToOpenAIChatMessage),
-            max_tokens: this.maxTokens === -1 ? undefined : this.maxTokens,
-            temperature: this.temperature,
-            top_p: this.topP,
-            logit_bias: this.logitBias,
-            n: this.n,
-            stop: options?.stop ?? this.stop,
-            presence_penalty: this.presencePenalty,
-            frequency_penalty: this.frequencyPenalty,
-            functions: isStructuredToolArray(options?.functions)
-              ? options?.functions.map(mapToolToOpenAIFunction)
-              : options?.functions,
-            tools: isStructuredToolArray(options?.tools)
-              ? options?.tools.map(mapToolToOpenAITool)
-              : options?.tools,
-            tool_choice: options?.tool_choice,
-            response_format: options?.response_format,
-            seed: options?.seed,
-            ...this.modelKwargs
-          }
-        )
+        this.openAiChatClient.run({
+          messages: messages.map(mapBaseMessageToOpenAIChatMessage),
+          max_tokens: this.maxTokens === -1 ? undefined : this.maxTokens,
+          temperature: this.temperature,
+          top_p: this.topP,
+          logit_bias: this.logitBias,
+          n: this.n,
+          stop: options?.stop ?? this.stop,
+          presence_penalty: this.presencePenalty,
+          frequency_penalty: this.frequencyPenalty,
+          functions: isStructuredToolArray(options?.functions)
+            ? options?.functions.map(mapToolToOpenAIFunction)
+            : options?.functions,
+          tools: isStructuredToolArray(options?.tools)
+            ? options?.tools.map(mapToolToOpenAITool)
+            : options?.tools,
+          tool_choice: options?.tool_choice,
+          response_format: options?.response_format,
+          seed: options?.seed,
+          ...this.modelKwargs
+        })
     );
 
     // currently BTP LLM Proxy for OpenAI doesn't support streaming
