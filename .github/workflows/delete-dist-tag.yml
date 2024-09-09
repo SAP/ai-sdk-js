@@ -21,7 +21,8 @@ jobs:
 
       - name: delete dist tag
         run: |
-          npm dist-tag rm @sap-ai-sdk/gen-ai-hub ${{ inputs.tag }}
-          npm dist-tag rm @sap-ai-sdk/ai-core ${{ inputs.tag }}
+          npm dist-tag rm @sap-ai-sdk/ai-api ${{ inputs.tag }}
+          npm dist-tag rm @sap-ai-sdk/foundation-models ${{ inputs.tag }}
+          npm dist-tag rm @sap-ai-sdk/orchestration ${{ inputs.tag }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}

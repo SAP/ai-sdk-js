@@ -16,15 +16,18 @@ importers:
       '@jest/globals':
         specifier: ^29.5.12
         version: 29.7.0
-      '@sap-ai-sdk/ai-core':
+      '@sap-ai-sdk/ai-api':
         specifier: workspace:^
-        version: link:packages/ai-core
+        version: link:packages/ai-api
       '@sap-ai-sdk/core':
         specifier: workspace:^
         version: link:packages/core
-      '@sap-ai-sdk/gen-ai-hub':
+      '@sap-ai-sdk/foundation-models':
         specifier: workspace:^
-        version: link:packages/gen-ai-hub
+        version: link:packages/foundation-models
+      '@sap-ai-sdk/orchestration':
+        specifier: workspace:^
+        version: link:packages/orchestration
       '@sap-cloud-sdk/connectivity':
         specifier: ^3.20.0
         version: 3.20.0
@@ -83,7 +86,7 @@ importers:
         specifier: ^5.5.4
         version: 5.5.4
 
-  packages/ai-core:
+  packages/ai-api:
     dependencies:
       '@sap-ai-sdk/core':
         specifier: workspace:^
@@ -115,11 +118,42 @@ importers:
         specifier: ^5.5.4
         version: 5.5.4
 
-  packages/gen-ai-hub:
+  packages/foundation-models:
     dependencies:
-      '@sap-ai-sdk/ai-core':
+      '@sap-ai-sdk/ai-api':
         specifier: workspace:^
-        version: link:../ai-core
+        version: link:../ai-api
+      '@sap-ai-sdk/core':
+        specifier: workspace:^
+        version: link:../core
+      '@sap-cloud-sdk/connectivity':
+        specifier: ^3.20.0
+        version: 3.20.0
+      '@sap-cloud-sdk/http-client':
+        specifier: ^3.20.0
+        version: 3.20.0
+      '@sap-cloud-sdk/openapi':
+        specifier: ^3.20.0
+        version: 3.20.0
+      '@sap-cloud-sdk/util':
+        specifier: ^3.20.0
+        version: 3.20.0
+    devDependencies:
+      '@sap-cloud-sdk/openapi-generator':
+        specifier: ^3.20.0
+        version: 3.20.0
+      nock:
+        specifier: ^13.5.5
+        version: 13.5.5
+      typescript:
+        specifier: ^5.5.4
+        version: 5.5.4
+
+  packages/orchestration:
+    dependencies:
+      '@sap-ai-sdk/ai-api':
+        specifier: workspace:^
+        version: link:../ai-api
       '@sap-ai-sdk/core':
         specifier: workspace:^
         version: link:../core
@@ -148,12 +182,15 @@ importers:
 
   sample-code:
     dependencies:
-      '@sap-ai-sdk/ai-core':
+      '@sap-ai-sdk/ai-api':
         specifier: workspace:^
-        version: link:../packages/ai-core
-      '@sap-ai-sdk/gen-ai-hub':
+        version: link:../packages/ai-api
+      '@sap-ai-sdk/foundation-models':
         specifier: workspace:^
-        version: link:../packages/gen-ai-hub
+        version: link:../packages/foundation-models
+      '@sap-ai-sdk/orchestration':
+        specifier: workspace:^
+        version: link:../packages/orchestration
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.21
@@ -163,15 +200,18 @@ importers:
 
   tests/e2e-tests:
     dependencies:
-      '@sap-ai-sdk/ai-core':
+      '@sap-ai-sdk/ai-api':
         specifier: workspace:^
-        version: link:../../packages/ai-core
+        version: link:../../packages/ai-api
       '@sap-ai-sdk/core':
         specifier: workspace:^
         version: link:../../packages/core
-      '@sap-ai-sdk/gen-ai-hub':
+      '@sap-ai-sdk/foundation-models':
         specifier: workspace:^
-        version: link:../../packages/gen-ai-hub
+        version: link:../../packages/foundation-models
+      '@sap-ai-sdk/orchestration':
+        specifier: workspace:^
+        version: link:../../packages/orchestration
       '@sap-ai-sdk/sample-code':
         specifier: workspace:^
         version: link:../../sample-code
@@ -182,12 +222,15 @@ importers:
 
   tests/smoke-tests:
     dependencies:
-      '@sap-ai-sdk/ai-core':
-        specifier: canary
-        version: 0.0.1-20240908013037.0
-      '@sap-ai-sdk/gen-ai-hub':
-        specifier: canary
-        version: 0.0.1-20240908013037.0
+      '@sap-ai-sdk/ai-api':
+        specifier: workspace:^
+        version: link:../../packages/ai-api
+      '@sap-ai-sdk/foundation-models':
+        specifier: workspace:^
+        version: link:../../packages/foundation-models
+      '@sap-ai-sdk/orchestration':
+        specifier: workspace:^
+        version: link:../../packages/orchestration
       express:
         specifier: ^4.19.2
         version: 4.19.2
@@ -207,9 +250,12 @@ importers:
       '@sap-ai-sdk/core':
         specifier: workspace:^
         version: link:../../packages/core
-      '@sap-ai-sdk/gen-ai-hub':
+      '@sap-ai-sdk/foundation-models':
         specifier: workspace:^
-        version: link:../../packages/gen-ai-hub
+        version: link:../../packages/foundation-models
+      '@sap-ai-sdk/orchestration':
+        specifier: workspace:^
+        version: link:../../packages/orchestration
       tsd:
         specifier: ^0.31.2
         version: 0.31.2
@@ -701,15 +747,6 @@ packages:
   '@pkgr/core@0.1.1':
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
-
-  '@sap-ai-sdk/ai-core@0.0.1-20240908013037.0':
-    resolution: {integrity: sha512-HGOwd3JZoFjEe+9FlX+kzEDmEK6fvorHDZwcdUa9qSaI751ehujXseGIFYJbY/aoraRQhIu4sy9WNyXW2VIvYA==}
-
-  '@sap-ai-sdk/core@0.0.1-20240908013037.0':
-    resolution: {integrity: sha512-AtRVCdH7nUKM+nYHbqODiip/ltiSit7flyndqULcxMNtNDgKGg5euw9YJJO9gj169slif7uAjmlVZLzASLKEtQ==}
-
-  '@sap-ai-sdk/gen-ai-hub@0.0.1-20240908013037.0':
-    resolution: {integrity: sha512-PIBNipBGY/mZP+qdSbPV3KooTg6hYdNjBz5spn2sRETCwmfqlvuVjJL2PPa3nkHyaskzOmg5Wz8T/WxuDGs1xw==}
 
   '@sap-cloud-sdk/connectivity@3.20.0':
     resolution: {integrity: sha512-H9jWH6+owUu0vDiz1WWgB+o/1LzFnmmvELUHakdQSU1n930giPOBT9wwCmdbQgsQ+MJ4G6GURyqo9eKberBdXg==}
@@ -4239,38 +4276,6 @@ snapshots:
     optional: true
 
   '@pkgr/core@0.1.1': {}
-
-  '@sap-ai-sdk/ai-core@0.0.1-20240908013037.0':
-    dependencies:
-      '@sap-ai-sdk/core': 0.0.1-20240908013037.0
-    transitivePeerDependencies:
-      - debug
-      - encoding
-      - supports-color
-
-  '@sap-ai-sdk/core@0.0.1-20240908013037.0':
-    dependencies:
-      '@sap-cloud-sdk/connectivity': 3.20.0
-      '@sap-cloud-sdk/http-client': 3.20.0
-      '@sap-cloud-sdk/openapi': 3.20.0
-      '@sap-cloud-sdk/util': 3.20.0
-    transitivePeerDependencies:
-      - debug
-      - encoding
-      - supports-color
-
-  '@sap-ai-sdk/gen-ai-hub@0.0.1-20240908013037.0':
-    dependencies:
-      '@sap-ai-sdk/ai-core': 0.0.1-20240908013037.0
-      '@sap-ai-sdk/core': 0.0.1-20240908013037.0
-      '@sap-cloud-sdk/connectivity': 3.20.0
-      '@sap-cloud-sdk/http-client': 3.20.0
-      '@sap-cloud-sdk/openapi': 3.20.0
-      '@sap-cloud-sdk/util': 3.20.0
-    transitivePeerDependencies:
-      - debug
-      - encoding
-      - supports-color
 
   '@sap-cloud-sdk/connectivity@3.20.0':
     dependencies:

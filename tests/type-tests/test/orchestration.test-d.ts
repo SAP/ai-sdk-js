@@ -4,7 +4,7 @@ import {
   CompletionPostResponse,
   OrchestrationResponse,
   TokenUsage
-} from '@sap-ai-sdk/gen-ai-hub';
+} from '@sap-ai-sdk/orchestration';
 
 /**
  * Chat Completion.

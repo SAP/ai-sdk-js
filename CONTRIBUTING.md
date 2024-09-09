@@ -41,10 +41,10 @@ You can run all unit tests by executing:
 $ pnpm test:unit
 ```
 
-To run unit tests for a specific package add the workspace name to the command. For the ai-core package this would be:
+To run unit tests for a specific package add the workspace name to the command. For the ai-api package this would be:
 
 ```bash
-$ pnpm ai-core test
+$ pnpm ai-api test
 ```
 
 ### Type Tests
@@ -63,7 +63,7 @@ $ pnpm test:type
 The E2E tests are based on a locally running server providing a REST interface using OpenAPI.
 This server is used by the E2E tests located at [tests/e2e-tests](./test-packages/e2e-tests).
 
-**Attention** The imports in the E2E tests use the root packages e.g. `@sap-ai-sdk/ai-core` to mimic the way a customer would use it.
+**Attention** The imports in the E2E tests use the root packages e.g. `@sap-ai-sdk/ai-api` to mimic the way a customer would use it.
 So if you made code changes in one of the packages you need to run `pnpm compile` to make the changes take effect.
 
 Before running the E2E tests, ensure that you have a `.env` file located in `tests/e2e-tests` folder.
