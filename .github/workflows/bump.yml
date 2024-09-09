@@ -28,7 +28,7 @@ jobs:
           git config --global user.email "ai-sdk-js@github.com"
           git config --global user.name "ai-sdk-js"
       - name: Bump version
-        run: changeset version
+        run: pnpm changeset version
       - name: Remove changelog files - (TODO) Remove this step when changeset version is fixed
         run: rm -rf **/CHANGELOG.md
       - name: Push
