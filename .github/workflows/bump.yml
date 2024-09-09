@@ -35,4 +35,5 @@ jobs:
       - name: Remove changelog files - (TODO) Remove this step when changeset version is fixed
         run: rm -rf **/CHANGELOG.md
       - name: Push
-        run: git push --follow-tags
+        run: |
+          git push --follow-tags
