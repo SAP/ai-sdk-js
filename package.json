@@ -43,7 +43,7 @@
     "@types/jsonwebtoken": "^9.0.2",
     "@types/mock-fs": "^4.13.4",
     "@types/node": "^20.16.5",
-    "eslint": "^9.9.1",
+    "eslint": "^9.10.0",
     "glob": "^11.0.0",
     "jest": "^30.0.0-alpha.6",
     "jsonwebtoken": "^9.0.2",
