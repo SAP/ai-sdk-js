@@ -7,8 +7,7 @@ import {
 import { ChatResult } from '@langchain/core/outputs';
 import { StructuredTool } from '@langchain/core/tools';
 import type { OpenAiChatCompletionChoice,
-  OpenAiChatCompletionFunction, OpenAiChatCompletionTool,
-  OpenAiChatToolMessage, OpenAiChatMessage,
+  OpenAiChatCompletionFunction, OpenAiChatCompletionTool, OpenAiChatMessage,
   OpenAiChatCompletionOutput
  } from '@sap-ai-sdk/gen-ai-hub';
 import { zodToJsonSchema } from 'zod-to-json-schema';
@@ -90,16 +89,15 @@ export function mapResponseToChatResult(
           finish_reason: choice.finish_reason,
           index: choice.index,
           function_call: choice.message
-            .function_call, // add `function_call` parameter
+            .function_call,
           tool_calls: choice.message.tool_calls,
-          // TODO: refactor?
-          tool_call_id: (choice.message as OpenAiChatToolMessage).tool_call_id
+          tool_call_id: '',
         }
       }),
       generationInfo: {
         finish_reason: choice.finish_reason,
         index: choice.index,
-        function_call: choice.message.function_call, // add `function_call` parameter
+        function_call: choice.message.function_call,
         tool_calls: choice.message.tool_calls
       }
     })),
@@ -131,8 +129,7 @@ export function mapBaseMessageToOpenAIChatMessage(
     role: mapBaseMessageToRole(message),
     function_call: message.additional_kwargs.function_call,
     tool_calls: message.additional_kwargs.tool_calls,
-    // TODO: refactor?
-    tool_call_id: (message as ToolMessage).tool_call_id
+    tool_call_id: message._getType() === 'tool' ? (message as ToolMessage).tool_call_id : ''
   } as OpenAiChatMessage;
 }
 
