@@ -1,7 +1,7 @@
 import { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import { BaseMessage } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
-import { ChatOpenAI } from '@langchain/openai';
+import { AzureChatOpenAI, ChatOpenAI } from '@langchain/openai';
 import { OpenAiChatClient } from '@sap-ai-sdk/gen-ai-hub';
 import {
   isStructuredToolArray,
@@ -15,7 +15,7 @@ import type { OpenAIChatModelInput, OpenAIChatCallOptions } from './types.js';
 /**
  * OpenAI Language Model Wrapper to generate texts.
  */
-export class OpenAIChat extends ChatOpenAI {
+export class OpenAIChat extends AzureChatOpenAI {
   declare CallOptions: OpenAIChatCallOptions;
   private openAiChatClient: OpenAiChatClient;
 

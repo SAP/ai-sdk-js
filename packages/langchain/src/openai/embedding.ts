@@ -1,4 +1,4 @@
-import { OpenAIEmbeddings } from '@langchain/openai';
+import { AzureOpenAIEmbeddings } from '@langchain/openai';
 import {
   OpenAiEmbeddingClient,
   OpenAiEmbeddingOutput,
@@ -10,11 +10,11 @@ import { OpenAIEmbeddingInput } from './types.js';
 /**
  * OpenAI GPT Language Model Wrapper to embed texts.
  */
-export class OpenAIEmbedding extends OpenAIEmbeddings {
+export class OpenAIEmbedding extends AzureOpenAIEmbeddings {
   private btpOpenAIClient: OpenAiEmbeddingClient;
 
   constructor(fields: OpenAIEmbeddingInput) {
-    super({ ...fields, openAIApiKey: 'dummy' });
+    super({ ...fields });
 
     this.btpOpenAIClient = new OpenAiEmbeddingClient({ ...fields });
   }
