@@ -102,13 +102,7 @@ function mergeWithDefaultRequestConfig(
   return {
     ...defaultConfig,
     ...requestConfig,
-    headers: mergeIgnoreCase(
-      defaultConfig.headers,
-      requestConfig?.headers
-    ),
-    params: mergeIgnoreCase(
-      defaultConfig.params,
-      requestConfig?.params
-    )
+    headers: mergeIgnoreCase(defaultConfig.headers, requestConfig?.headers),
+    params: mergeIgnoreCase(defaultConfig.params, requestConfig?.params)
   };
 }
