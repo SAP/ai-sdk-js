@@ -22,7 +22,7 @@ jobs:
           version: ${{ vars.PNPM_VERSION }}
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           registry-url: 'https://registry.npmjs.org'
           cache: 'pnpm'
 
