@@ -39,15 +39,7 @@ export class OpenAIChat extends AzureChatOpenAI {
   }
 
   override get callKeys(): (keyof OpenAIChatCallOptions)[] {
-    return [
-      ...(super.callKeys as (keyof OpenAIChatCallOptions)[]),
-      'options',
-      'functions',
-      'tools',
-      'tool_choice',
-      'response_format',
-      'seed'
-    ];
+    return [...(super.callKeys as (keyof OpenAIChatCallOptions)[])];
   }
 
   override get lc_secrets(): { [key: string]: string } | undefined {
