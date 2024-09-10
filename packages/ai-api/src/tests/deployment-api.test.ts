@@ -89,7 +89,7 @@ describe('deployment', () => {
         'AI-Resource-Group': 'default',
         'some-test-header': 'test-header-value',
         'content-type': 'application/json',
-        'ai-client-type': 'AI SD JavaScript'
+        'ai-client-type': 'AI SDK JavaScript'
       }
     })
       .post('/v2/lm/deployments')
