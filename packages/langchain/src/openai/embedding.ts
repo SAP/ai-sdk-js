@@ -14,6 +14,7 @@ export class OpenAIEmbedding extends AzureOpenAIEmbeddings {
   private btpOpenAIClient: OpenAiEmbeddingClient;
 
   constructor(fields: OpenAIEmbeddingInput) {
+    // overrides the apikey value as it is not applicable in BTP
     super({ ...fields, azureOpenAIApiKey: 'dummy' });
 
     this.btpOpenAIClient = new OpenAiEmbeddingClient({ ...fields });

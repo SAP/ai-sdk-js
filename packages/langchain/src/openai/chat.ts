@@ -30,7 +30,7 @@ export class OpenAIChat extends AzureChatOpenAI {
       ...defaultValues,
       ...fields,
       stop,
-      // overrides the apikey values as not applicable in BTP
+      // overrides the apikey values as they are not applicable for BTP
       azureOpenAIApiKey: 'dummy',
       openAIApiKey: 'dummy'
     });
@@ -43,12 +43,12 @@ export class OpenAIChat extends AzureChatOpenAI {
   }
 
   override get lc_secrets(): { [key: string]: string } | undefined {
-    // overrides default keys as not applicable in BTP
+    // overrides default keys as they are not applicable for BTP
     return {};
   }
 
   override get lc_aliases(): Record<string, string> {
-    // overrides default keys as not applicable in BTP
+    // overrides default keys as they are not applicable for BTP
     return {};
   }
 
