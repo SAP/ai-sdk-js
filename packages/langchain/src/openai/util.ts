@@ -19,6 +19,7 @@ import { zodToJsonSchema } from 'zod-to-json-schema';
  * Maps a LangChain {@link StructuredTool} to {@link OpenAiChatCompletionFunction}.
  * @param tool - Base class for Tools that accept input of any shape defined by a Zod schema.
  * @returns The OpenAI Chat Completion Function.
+ * @internal
  */
 export function mapToolToOpenAIFunction(
   tool: StructuredTool
@@ -34,6 +35,7 @@ export function mapToolToOpenAIFunction(
  * Maps a LangChain {@link StructuredTool} to {@link OpenAiChatCompletionTool}.
  * @param tool - Base class for Tools that accept input of any shape defined by a Zod schema.
  * @returns The OpenAI Chat Completion Tool.
+ * @internal
  */
 export function mapToolToOpenAITool(
   tool: StructuredTool
@@ -52,6 +54,7 @@ export function mapToolToOpenAITool(
  * Maps a {@link BaseMessage} to OpenAI's Message Role.
  * @param message - The message to map.
  * @returns The OpenAI Message Role.
+ * @internal
  */
 export function mapBaseMessageToRole(
   message: BaseMessage
@@ -79,6 +82,7 @@ export function mapBaseMessageToRole(
  * Maps OpenAI messages to LangChain's {@link ChatResult}.
  * @param res - The OpenAI Chat Completion Output.
  * @returns The LangChain Chat Result.
+ * @internal
  */
 export function mapResponseToChatResult(
   res: OpenAiChatCompletionOutput
@@ -121,6 +125,7 @@ export function mapResponseToChatResult(
  * Maps {@link BaseMessage} to OpenAI Messages.
  * @param message - The message to map.
  * @returns The OpenAI Chat Message.
+ * @internal
  */
 export function mapBaseMessageToOpenAIChatMessage(
   message: BaseMessage
@@ -140,6 +145,7 @@ export function mapBaseMessageToOpenAIChatMessage(
  * Checks if a given array is a structured tool array.
  * @param tools - The array to check.
  * @returns Whether the array is a structured tool array.
+ * @internal
  */
 export function isStructuredToolArray(
   tools?: unknown[]
@@ -155,6 +161,7 @@ export function isStructuredToolArray(
  * @param arr - Input array to be chunked.
  * @param chunkSize - Size of each chunk.
  * @returns Array of chunks.
+ * @internal
  */
 export const chunkArray = <T>(arr: T[], chunkSize: number): T[][] =>
   arr.reduce((chunks, elem, index) => {

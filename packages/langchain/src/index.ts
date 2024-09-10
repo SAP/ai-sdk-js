@@ -1,1 +1,6 @@
-export * from './openai/index.js';
+export { OpenAIChat, OpenAIEmbedding } from './openai/index.js';
+export type {
+  OpenAIChatModelInput,
+  OpenAIEmbeddingInput,
+  OpenAIChatCallOptions
+} from './openai/index.js';

@@ -30,6 +30,7 @@ export class OpenAIChat extends AzureChatOpenAI {
       ...defaultValues,
       ...fields,
       stop,
+      // overrides the apikey values as not applicable in BTP
       azureOpenAIApiKey: 'dummy',
       openAIApiKey: 'dummy'
     });
@@ -92,7 +93,7 @@ export class OpenAIChat extends AzureChatOpenAI {
         })
     );
 
-    // currently BTP LLM Proxy for OpenAI doesn't support streaming
+    // we currently do not support streaming
     await runManager?.handleLLMNewToken(
       typeof res.data.choices[0].message.content === 'string'
         ? res.data.choices[0].message.content
