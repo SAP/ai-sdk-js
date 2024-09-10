@@ -91,6 +91,9 @@ importers:
       '@sap-ai-sdk/core':
         specifier: workspace:^
         version: link:../core
+      '@sap-cloud-sdk/util':
+        specifier: ^3.20.0
+        version: 3.20.0
     devDependencies:
       '@sap-cloud-sdk/openapi-generator':
         specifier: ^3.20.0

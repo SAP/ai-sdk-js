@@ -8,8 +8,7 @@ import type {
 import type {
   OpenAiChatCompletionParameters,
   OpenAiChatModel,
-  OpenAiEmbeddingModel,
-  OpenAiEmbeddingParameters
+  OpenAiEmbeddingModel
 } from '@sap-ai-sdk/foundation-models';
 import type { ConfigurationOptions } from '@sap-ai-sdk/ai-api';
 
@@ -58,6 +57,5 @@ export type OpenAIEmbeddingInput = Omit<
   OpenAIEmbeddingsParams,
   'modelName' | 'model'
 > &
-  OpenAiEmbeddingParameters &
   ConfigurationOptions<OpenAiEmbeddingModel> &
   BaseLLMParams;

@@ -32,8 +32,15 @@
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@langchain/core": "^0.2.30",
-    "@langchain/openai": "^0.2.8",
     "zod-to-json-schema": "^3.23.2"
+  },
+  "peerDependencies": {
+    "@langchain/openai": "^0.2.8"
+  },
+  "peerDependenciesMeta": {
+    "@langchain/openai": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "typescript": "^5.5.4"

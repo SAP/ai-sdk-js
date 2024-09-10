@@ -1,10 +1,10 @@
+import { Xor } from '@sap-cloud-sdk/util';
 import {
   type AiDeployment,
   DeploymentApi
 } from '../client/AI_CORE_API/index.js';
 import { deploymentCache } from './deployment-cache.js';
 import { extractModel, type FoundationModel } from './model.js';
-
 /**
  * The model deployment configuration when using a model.
  * @typeParam ModelNameT - String literal type representing the name of the model.
@@ -52,10 +52,10 @@ export type ModelDeployment<ModelNameT = string> =
  * The configuration options for a model deployment.
  * @typeParam ModelNameT - String literal type representing the name of the model.
  */
-export type ConfigurationOptions<ModelNameT> = (
-  | ModelConfiguration<ModelNameT>
-  | DeploymentIdConfiguration
-) &
+export type ConfigurationOptions<ModelNameT> = Xor<
+  ModelConfiguration<ModelNameT>,
+  DeploymentIdConfiguration
+> &
   ResourceGroupConfiguration;
 
 /**
