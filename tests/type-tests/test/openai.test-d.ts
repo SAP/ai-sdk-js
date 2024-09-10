@@ -18,9 +18,9 @@ expectType<Promise<OpenAiChatCompletionResponse>>(
 );
 
 /**
- * Chat Completion with invalid model.
+ * Chat Completion with custom model.
  */
-expectError(
+expectType(
   new OpenAiChatClient('unknown').run({
     messages: [{ role: 'user', content: 'test prompt' }]
   })
@@ -67,4 +67,4 @@ expectType<Promise<OpenAiEmbeddingOutput>>(
   })
 );
 
-expectError<any>(new OpenAiEmbeddingClient('gpt-35-turbo'));
+expectType<OpenAiEmbeddingClient>(new OpenAiEmbeddingClient('unknown'));
