@@ -76,7 +76,7 @@ describe('deployment', () => {
     expect(result).toEqual(expectedResponse);
   });
 
-  it('parses a successful response for post request', async () => {
+  it('parses a successful response for post request with required headers', async () => {
     const expectedResponse: AiDeploymentCreationResponse = {
       deploymentUrl: '',
       id: '4e5f6g7h',
@@ -87,7 +87,9 @@ describe('deployment', () => {
     nock(aiCoreDestination.url, {
       reqheaders: {
         'AI-Resource-Group': 'default',
-        Authentication: 'test-auth'
+        'some-test-header': 'test-header-value',
+        'content-type': 'application/json',
+        'ai-client-type': 'AI SD JavaScript'
       }
     })
       .post('/v2/lm/deployments')
@@ -103,7 +105,7 @@ describe('deployment', () => {
       await DeploymentApi.deploymentCreate(deploymentPostData, {
         'AI-Resource-Group': 'default'
       })
-        .addCustomHeaders({ Authentication: 'test-auth' })
+        .addCustomHeaders({ 'some-test-header': 'test-header-value' })
         .execute();
 
     expect(result).toEqual(expectedResponse);
