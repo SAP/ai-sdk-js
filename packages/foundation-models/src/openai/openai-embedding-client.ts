@@ -1,11 +1,15 @@
-import { type CustomRequestConfig, type AzureOpenAiEmbeddingModel, executeRequest } from '@sap-ai-sdk/core';
+import {
+  type CustomRequestConfig,
+  type AzureOpenAiEmbeddingModel,
+  executeRequest
+} from '@sap-ai-sdk/core';
 import {
   getDeploymentId,
   type ModelDeployment
 } from '@sap-ai-sdk/ai-api/internal.js';
 import type {
   OpenAiEmbeddingParameters,
-  OpenAiEmbeddingOutput,
+  OpenAiEmbeddingOutput
 } from './openai-types.js';
 
 const apiVersion = '2024-02-01';
@@ -18,7 +22,9 @@ export class OpenAiEmbeddingClient {
    * Creates an instance of the OpenAI embedding client.
    * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
    */
-  constructor(private modelDeployment: ModelDeployment<AzureOpenAiEmbeddingModel>) {}
+  constructor(
+    private modelDeployment: ModelDeployment<AzureOpenAiEmbeddingModel>
+  ) {}
 
   /**
    * Creates an embedding vector representing the given text.

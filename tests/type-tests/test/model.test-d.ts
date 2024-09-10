@@ -1,4 +1,8 @@
-import { ChatModel, AzureOpenAiChatModel, EmbeddingModel } from '@sap-ai-sdk/core';
+import {
+  ChatModel,
+  AzureOpenAiChatModel,
+  EmbeddingModel
+} from '@sap-ai-sdk/core';
 
 expect<ChatModel>('custom-model');
 expect<AzureOpenAiChatModel>('custom-model');
