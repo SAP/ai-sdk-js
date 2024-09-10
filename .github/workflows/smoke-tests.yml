@@ -30,3 +30,6 @@ jobs:
         working-directory: tests/smoke-tests
       - name: smoke test
         run: pnpm test:smoke
+      - name: shutdown
+        if: always()
+        run: cf stop smoke-test-app
