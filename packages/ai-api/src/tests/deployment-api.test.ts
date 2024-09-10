@@ -86,12 +86,13 @@ describe('deployment', () => {
 
     nock(aiCoreDestination.url, {
       reqheaders: {
-        'AI-Resource-Group': 'default'
+        'AI-Resource-Group': 'default',
+        'Authentication': 'test-auth'
       }
     })
       .post('/v2/lm/deployments')
       .reply(200, expectedResponse, {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       });
 
     const deploymentPostData: AiDeploymentCreationRequest = {
@@ -101,7 +102,7 @@ describe('deployment', () => {
     const result: AiDeploymentCreationResponse =
       await DeploymentApi.deploymentCreate(deploymentPostData, {
         'AI-Resource-Group': 'default'
-      }).execute();
+      }).addCustomHeaders({'Authentication': 'test-auth'}).execute();
 
     expect(result).toEqual(expectedResponse);
   });
