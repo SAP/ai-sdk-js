@@ -17,4 +17,12 @@ describe('ai-api', () => {
     ).execute();
     expect(deployments).toBeDefined();
   });
+
+  it('should create a deployment', async () => {
+    const responseData = await DeploymentApi.deploymentCreate(
+      {configurationId: '8e2ff27f-d65e-48c4-9b21-1bb2709abfd1'}, 
+      {'AI-Resource-Group': 'i745181'}
+    ).execute();
+    expect(responseData).toBeDefined();
+  });
 });
