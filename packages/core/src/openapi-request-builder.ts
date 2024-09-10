@@ -28,7 +28,15 @@ export class OpenApiRequestBuilder<
     const { url, data, ...rest } = await this.requestConfig();
     // TODO: Remove explicit url! once we updated the type in the Cloud SDK, since url is always defined.
     return executeRequest({ url: url! }, data, {
-      ...rest
+      ...rest,
+      headers: {
+        ...rest.headers?.requestConfig,
+        ...rest.headers?.custom
+      },
+      params: {
+        ...rest.params?.requestConfig,
+        ...rest.params?.custom
+      }
     });
   }
 
