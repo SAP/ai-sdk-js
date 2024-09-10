@@ -33,3 +33,15 @@ jobs:
       - name: shutdown
         if: always()
         run: cf stop smoke-test-app
+      - name: 'Slack Notification'
+        if: failure()
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          payload: |
+            {
+              "username": "GitHub E2E Test Runner",
+              "text": "⚠️ Smoke Test Failed 🚭! Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-js/actions/runs/${{ github.run_id }}|here>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
