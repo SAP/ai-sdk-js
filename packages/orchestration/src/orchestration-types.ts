@@ -1,3 +1,4 @@
+import { ChatModel } from '@sap-ai-sdk/core';
 import {
   ChatMessages,
   FilteringModuleConfig,
@@ -20,11 +21,13 @@ export interface Prompt {
   inputParams?: Record<string, string>;
 }
 
-// TODO: why do we have this extra type? and if there is a reason, why does it not apply to the filtering module?
 /**
  * LLMModule configuration.
  */
-export type LlmConfig = LLMModuleConfig;
+export type LlmConfig = LLMModuleConfig & {
+  /** */
+  model_name: ChatModel;
+};
 
 /**
  * Orchestration module configuration.
