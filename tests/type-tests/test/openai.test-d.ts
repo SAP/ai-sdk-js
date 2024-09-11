@@ -61,7 +61,7 @@ expectType<OpenAiUsage>(
 /**
  * Chat completion with optional parameters.
  */
-expectType<Promise<OpenAiChatCompletionOutput>>(
+expectType<Promise<OpenAiChatCompletionResponse>>(
   new OpenAiChatClient({
     modelName: 'gpt-4',
     modelVersion: 'latest'
