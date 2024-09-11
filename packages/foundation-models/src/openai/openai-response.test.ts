@@ -36,7 +36,7 @@ describe('OpenAI response', () => {
   it('should return default choice index with convenience functions', () => {
     expect(openAiChatClientResponse.getFinishReason()).toBe('stop');
     expect(openAiChatClientResponse.getContent()).toBe(
-      "The deepest place on Earth is located in the western Pacific Ocean. It's called the Mariana Trench."
+      'The deepest place on Earth is located in the Western Pacific Ocean and is known as the Mariana Trench.'
     );
   });
 
