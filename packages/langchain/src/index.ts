@@ -1,4 +1,4 @@
-export { OpenAIChat, OpenAIEmbedding } from './openai/index.js';
+export { OpenAiChatClient, OpenAiEmbeddingClient } from './openai/index.js';
 export type {
   OpenAIChatModelInput,
   OpenAIEmbeddingInput,

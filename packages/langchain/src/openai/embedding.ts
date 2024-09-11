@@ -1,6 +1,6 @@
 import { AzureOpenAIEmbeddings } from '@langchain/openai';
 import {
-  OpenAiEmbeddingClient,
+  OpenAiEmbeddingClient as OpenAiEmbeddingClientBase,
   OpenAiEmbeddingOutput,
   OpenAiEmbeddingParameters
 } from '@sap-ai-sdk/foundation-models';
@@ -10,14 +10,14 @@ import { OpenAIEmbeddingInput } from './types.js';
 /**
  * OpenAI GPT Language Model Wrapper to embed texts.
  */
-export class OpenAIEmbedding extends AzureOpenAIEmbeddings {
-  private btpOpenAIClient: OpenAiEmbeddingClient;
+export class OpenAiEmbeddingClient extends AzureOpenAIEmbeddings {
+  private btpOpenAIClient: OpenAiEmbeddingClientBase;
 
   constructor(fields: OpenAIEmbeddingInput) {
     // overrides the apikey value as it is not applicable in BTP
     super({ ...fields, azureOpenAIApiKey: 'dummy' });
 
-    this.btpOpenAIClient = new OpenAiEmbeddingClient({ ...fields });
+    this.btpOpenAIClient = new OpenAiEmbeddingClientBase({ ...fields });
   }
 
   override async embedDocuments(documents: string[]): Promise<number[][]> {

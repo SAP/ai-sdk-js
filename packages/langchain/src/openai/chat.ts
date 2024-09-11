@@ -2,7 +2,7 @@ import { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import { BaseMessage } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
 import { AzureChatOpenAI, AzureOpenAI } from '@langchain/openai';
-import { OpenAiChatClient } from '@sap-ai-sdk/foundation-models';
+import { OpenAiChatClient as OpenAiChatClientBase } from '@sap-ai-sdk/foundation-models';
 import {
   isStructuredToolArray,
   mapBaseMessageToOpenAIChatMessage,
@@ -15,9 +15,9 @@ import type { OpenAIChatModelInput, OpenAIChatCallOptions } from './types.js';
 /**
  * OpenAI Language Model Wrapper to generate texts.
  */
-export class OpenAIChat extends AzureChatOpenAI {
+export class OpenAiChatClient extends AzureChatOpenAI {
   declare CallOptions: OpenAIChatCallOptions;
-  private openAiChatClient: OpenAiChatClient;
+  private openAiChatClient: OpenAiChatClientBase;
 
   constructor(fields: OpenAIChatModelInput) {
     const defaultValues = new AzureOpenAI();
@@ -36,7 +36,7 @@ export class OpenAIChat extends AzureChatOpenAI {
       apiKey: 'dummy'
     });
 
-    this.openAiChatClient = new OpenAiChatClient({ ...fields });
+    this.openAiChatClient = new OpenAiChatClientBase({ ...fields });
   }
 
   override get callKeys(): (keyof OpenAIChatCallOptions)[] {
