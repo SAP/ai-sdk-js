@@ -17,7 +17,7 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 describe('AI Core APIs', () => {
   describe('DeploymentAPI', () => {
-    const MAX_RETRIES = 25;
+    const MAX_RETRIES = 30;
     const RETRY_INTERVAL = 5000;
     let createdDeploymentId: string | undefined;
     let initialState: AiDeploymentList | undefined;
@@ -78,7 +78,7 @@ describe('AI Core APIs', () => {
       expect(runningDeployment.status).toBe('RUNNING');
       expect(runningDeployment.deploymentUrl).toBeTruthy();
       createdDeploymentId = runningDeployment.id;
-    }, 120000);
+    }, 180000);
 
     it('should modify the deployment to stop it', async () => {
       expect(createdDeploymentId).toBeDefined();
@@ -97,7 +97,7 @@ describe('AI Core APIs', () => {
         'STOPPED'
       );
       expect(stoppedDeployment.status).toBe('STOPPED');
-    }, 90000);
+    }, 180000);
 
     it('should delete the deployment', async () => {
       const deleteResponse = await DeploymentApi.deploymentDelete(
