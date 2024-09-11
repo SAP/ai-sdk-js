@@ -27,6 +27,9 @@ export type OpenAIChatModelInput = Omit<
   | 'model'
   | 'openAIApiKey'
   | 'streaming'
+  | 'azureOpenAIApiKey'
+  | 'openAIApiKey'
+  | 'apiKey'
 > &
   Omit<OpenAiChatCompletionParameters, 'messages'> &
   BaseChatModelParams &
@@ -55,7 +58,7 @@ export interface OpenAIChatCallOptions
  */
 export type OpenAIEmbeddingInput = Omit<
   OpenAIEmbeddingsParams,
-  'modelName' | 'model'
+  'modelName' | 'model' | 'azureOpenAIApiKey' | 'apiKey'
 > &
   ConfigurationOptions<OpenAiEmbeddingModel> &
   BaseLLMParams;

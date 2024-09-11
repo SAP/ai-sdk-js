@@ -32,7 +32,8 @@ export class OpenAIChat extends AzureChatOpenAI {
       stop,
       // overrides the apikey values as they are not applicable for BTP
       azureOpenAIApiKey: 'dummy',
-      openAIApiKey: 'dummy'
+      openAIApiKey: 'dummy',
+      apiKey: 'dummy'
     });
 
     this.openAiChatClient = new OpenAiChatClient({ ...fields });
