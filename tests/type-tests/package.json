@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/type-tests",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Tests to ensure correct types in the SAP AI SDK for JavaScript.",
   "type": "module",
   "private": true,
@@ -13,7 +13,8 @@
     "directory": "test"
   },
   "devDependencies": {
-    "@sap-ai-sdk/gen-ai-hub": "workspace:^",
+    "@sap-ai-sdk/foundation-models": "workspace:^",
+    "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
     "tsd": "^0.31.2"
   }

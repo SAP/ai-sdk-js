@@ -1,0 +1,81 @@
+{
+  "request_id": "c0fcfb38-ef61-4fe3-a403-c3205237b6ba",
+  "module_results": {
+    "templating": [
+      {
+        "role": "system",
+        "content": "You are a helpful assistant who remembers all details the user shares with you."
+      },
+      {
+        "role": "user",
+        "content": "Hi! Im Bob"
+      },
+      {
+        "role": "assistant",
+        "content": "Hi Bob, nice to meet you! I'm an AI assistant. I'll remember that your name is Bob as we continue our conversation."
+      },
+      {
+        "role": "user",
+        "content": "What is my name"
+      }
+    ],
+    "llm": {
+      "id": "chatcmpl-A1CB6j0yGKuiP9SOMIPVsuSsVia0m",
+      "object": "chat.completion",
+      "created": 1724848504,
+      "model": "gpt-35-turbo-16k",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Your name is Bob."
+          },
+          "finish_reason": "stop"
+        },
+        {
+          "index": 1,
+          "message": {
+            "role": "assistant",
+            "content": "Your name is Bob."
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "completion_tokens": 10,
+        "prompt_tokens": 70,
+        "total_tokens": 80
+      }
+    }
+  },
+  "orchestration_result": {
+    "id": "chatcmpl-A1CB6j0yGKuiP9SOMIPVsuSsVia0m",
+    "object": "chat.completion",
+    "created": 1724848504,
+    "model": "gpt-35-turbo-16k",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Your name is Bob."
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "index": 1,
+        "message": {
+          "role": "assistant",
+          "content": "Your name is Bob."
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 10,
+      "prompt_tokens": 70,
+      "total_tokens": 80
+    }
+  }
+}

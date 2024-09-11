@@ -1,0 +1,43 @@
+{
+  "name": "@sap-ai-sdk/foundation-models",
+  "version": "0.1.0",
+  "description": "",
+  "license": "Apache-2.0",
+  "keywords": [
+    "sap-ai-sdk",
+    "foundation-models",
+    "llm-access"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts",
+    "dist/**/*.d.ts.map",
+    "internal.js",
+    "internal.d.ts"
+  ],
+  "scripts": {
+    "compile": "tsc",
+    "compile:cjs": "tsc -p tsconfig.cjs.json",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "lint": "eslint \"**/*.ts\" && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
+    "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
+    "check:public-api": "node --loader ts-node/esm ../../scripts/check-public-api-cli.ts"
+  },
+  "dependencies": {
+    "@sap-ai-sdk/core": "workspace:^",
+    "@sap-ai-sdk/ai-api": "workspace:^",
+    "@sap-cloud-sdk/http-client": "^3.20.0",
+    "@sap-cloud-sdk/connectivity": "^3.20.0",
+    "@sap-cloud-sdk/util": "^3.20.0",
+    "@sap-cloud-sdk/openapi": "^3.20.0"
+  },
+  "devDependencies": {
+    "@sap-cloud-sdk/openapi-generator": "^3.20.0",
+    "typescript": "^5.5.4",
+    "nock": "^13.5.5"
+  }
+}
