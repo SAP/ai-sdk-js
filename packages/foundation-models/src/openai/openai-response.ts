@@ -1,6 +1,7 @@
 import { HttpResponse } from '@sap-cloud-sdk/http-client';
 import { createLogger } from '@sap-cloud-sdk/util';
 import { OpenAiChatCompletionOutput, OpenAiUsage } from './openai-types.js';
+import { openAiChatCompletionOutputSchema } from './openai-types-schema.js';
 
 const logger = createLogger({
   package: 'gen-ai-hub',
@@ -16,7 +17,7 @@ export class OpenAiChatCompletionResponse {
    */
   public readonly data: OpenAiChatCompletionOutput;
   constructor(public readonly rawResponse: HttpResponse) {
-    this.data = rawResponse.data;
+    this.data = openAiChatCompletionOutputSchema.parse(rawResponse.data);
   }
 
   /**
