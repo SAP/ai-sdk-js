@@ -1,6 +1,6 @@
 # @sap-ai-sdk/langchain
 
-This package contains langchain compliant models, based on the @sap-ai-sdk clients.
+This package contains Langchain compliant models, based on the @sap-ai-sdk clients.
 
 ### Installation
 
@@ -21,7 +21,7 @@ $ npm install @langchain/openai // if you want to use OpenAI models
 
 ## Usage
 
-All client's comply with [langchain's interface](https://python.langchain.com/v0.2/api_reference/openai/chat_models/langchain_openai.chat_models.azure.AzureChatOpenAI.html#langchain_openai.chat_models.azure.AzureChatOpenAI), therefore you should be able to use them as per usual.
+All client's comply with [Langchain's interface](https://python.langchain.com/v0.2/api_reference/openai/chat_models/langchain_openai.chat_models.azure.AzureChatOpenAI.html#langchain_openai.chat_models.azure.AzureChatOpenAI), therefore you should be able to use them as per usual.
 
 The only difference is in the initialization of the client, where you have th option to pass either:
 
@@ -48,17 +48,20 @@ Instead, the credentials in the binding are used to call SAP's LLM Proxy.
 We offer two types of clients for OpenAI models.
 Currenty these are chat and embedding models.
 
+All clients assume the same set of default values as [Langchain's default OpenAI client](https://www.npmjs.com/package/@langchain/openai) does.
+
 #### Chat
 
 There are two common APIs, `.invoke()` for simple text completion and `.generate()` for chat completion.
-You can also combine them with the usual langchain functionality, e.g. prompt templates.
+You can also combine them with the usual Langchain functionality, e.g. prompt templates.
 
 A simple text completion might look like:
 
 ##### Initialization
 
 ```ts
-const chatClient = new OpenAIChatClient({ modelName: 'gpt-4o' });
+import { OpenAiChatClient } from '@sap-ai-sdk/langchain'
+const chatClient = new OpenAiChatClient({ modelName: 'gpt-4o' });
 ```
 
 ##### Usage
@@ -86,7 +89,9 @@ Below are two examples.
 ##### Initialization
 
 ```ts
-const embeddingClient = new OpenAIEmbeddingClient({
+import { OpenAiEmbeddingClient } from '@sap-ai-sdk/langchain'
+
+const embeddingClient = new OpenAiEmbeddingClient({
   modelName: 'text-embedding-ada-002'
 });
 ```

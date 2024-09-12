@@ -74,7 +74,6 @@ export function mapBaseMessageToRole(
     case 'tool':
       return 'tool';
     case 'generic':
-      // TODO: refactor?
       return (message as ChatMessage).role as OpenAiChatMessage['role'];
     default:
       throw new Error(`Unknown message type: ${message._getType()}`);
