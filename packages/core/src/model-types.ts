@@ -45,8 +45,3 @@ export type AwsBedrockChatModel = LiteralUnion<
 export type ChatModel = LiteralUnion<
   AzureOpenAiChatModel | GcpVertexAiChatModel | AwsBedrockChatModel
 >;
-
-/**
- * All available models for embeddings.
- */
-export type EmbeddingModel = LiteralUnion<AzureOpenAiEmbeddingModel>;
