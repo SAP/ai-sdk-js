@@ -44,8 +44,8 @@ importers:
         specifier: ^3.20.0
         version: 3.20.0
       '@types/jest':
-        specifier: ^29.5.12
-        version: 29.5.12
+        specifier: ^29.5.13
+        version: 29.5.13
       '@types/jsonwebtoken':
         specifier: ^9.0.2
         version: 9.0.6
@@ -224,13 +224,13 @@ importers:
     dependencies:
       '@sap-ai-sdk/ai-api':
         specifier: canary
-        version: 0.1.1-20240911013049.0
+        version: 0.1.1-20240912013039.0
       '@sap-ai-sdk/foundation-models':
         specifier: canary
-        version: 0.1.1-20240911013049.0
+        version: 0.1.1-20240912013039.0
       '@sap-ai-sdk/orchestration':
         specifier: canary
-        version: 0.1.1-20240911013049.0
+        version: 0.1.1-20240912013039.0
       express:
         specifier: ^4.21.0
         version: 4.21.0
@@ -748,17 +748,17 @@ packages:
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
 
-  '@sap-ai-sdk/ai-api@0.1.1-20240911013049.0':
-    resolution: {integrity: sha512-Oya9yOw5hqNxNeDIxkk5tpGQNZwv8vlm+bgMsSQmx+jE+cL1drIAn5/f8kl5j6jhzUOeYTxQ4n+pL6eDoAYLCg==}
+  '@sap-ai-sdk/ai-api@0.1.1-20240912013039.0':
+    resolution: {integrity: sha512-S1rePmkw0QVrs9xopu31+B51upIpavxe7wiUy+0wfOsT2VsTvNT7TiJfEWWCnZilcwIejZUKGiuvBDTTuu530g==}
 
-  '@sap-ai-sdk/core@0.1.1-20240911013049.0':
-    resolution: {integrity: sha512-9ueeq8DbHEB3SlZeeoh06gwYRI9sIlqAkGjpGe7xAcjCZCjKYBi4aaDoobdqioVa/kcpk1/p3k1NeYjijF/zCg==}
+  '@sap-ai-sdk/core@0.1.1-20240912013039.0':
+    resolution: {integrity: sha512-LzNQ1nFHc54Y0rTELccNPl22Z+j0gEQGjgHpETPvcZc++qGnJ34VFDKcgJJH0ZGOJDuVnDtmVaOW6vMfmNwOTQ==}
 
-  '@sap-ai-sdk/foundation-models@0.1.1-20240911013049.0':
-    resolution: {integrity: sha512-H3YxuxlHlZHMpdRR+FzqIBKvtF+9BHRfxt66uuD+Fr4L43VL9IlINVrA+sNYoj9ztIzyyaUSk092tsA4Cs9ytw==}
+  '@sap-ai-sdk/foundation-models@0.1.1-20240912013039.0':
+    resolution: {integrity: sha512-sbCwvklbMtQUX6VIgTiwf6BjRO2cUoiB1VUZrbzaw5q3WI72cIxXXkkyt1HHagpSgN7wXGg5STAIco6QBat9Mw==}
 
-  '@sap-ai-sdk/orchestration@0.1.1-20240911013049.0':
-    resolution: {integrity: sha512-p9EldDsodNXXlOMwFAAdPWsCLHL8DUYzoKDMceeCnPn3TcKfWj30rsa9PvP/rZvtb1A2C04ZmHJBjvd/bs/59Q==}
+  '@sap-ai-sdk/orchestration@0.1.1-20240912013039.0':
+    resolution: {integrity: sha512-sk3+BjnDHUwC/tEUVZF5jGiqaBQDhf2ZdTiWO61NDRjsRL+LIoqrpTHOwDz/hVvLtRY9mgPTf8jWeRqnAPx+dQ==}
 
   '@sap-cloud-sdk/connectivity@3.20.0':
     resolution: {integrity: sha512-H9jWH6+owUu0vDiz1WWgB+o/1LzFnmmvELUHakdQSU1n930giPOBT9wwCmdbQgsQ+MJ4G6GURyqo9eKberBdXg==}
@@ -874,8 +874,8 @@ packages:
   '@types/istanbul-reports@3.0.4':
     resolution: {integrity: sha512-pk2B1NWalF9toCRu6gjBzR69syFjP4Od8WRAX+0mmf9lAjCRicLOWc+ZrxZHx/0XRjotgkF9t6iaMJ+aXcOdZQ==}
 
-  '@types/jest@29.5.12':
-    resolution: {integrity: sha512-eDC8bTvT/QhYdxJAulQikueigY5AsdBRH2yDKW3yveW7svY3+DzN84/2NUgkw10RTiJbWqZrTtoGVdYlvFJdLw==}
+  '@types/jest@29.5.13':
+    resolution: {integrity: sha512-wd+MVEZCHt23V0/L642O5APvspWply/rGY5BcW4SUETo2UzPU3Z26qr8jC2qxpimI2jjx9h7+2cj2FwIr01bXg==}
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
@@ -2809,9 +2809,6 @@ packages:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
 
-  picocolors@1.0.1:
-    resolution: {integrity: sha512-anP1Z8qwhkbmu7MFP5iTt+wQKXgwzf7zTyGlcdzabySa9vd0Xt392U0rVmz9poOaBj0uHJKyyo9/upk0HrEQew==}
-
   picocolors@1.1.0:
     resolution: {integrity: sha512-TQ92mBOW0l3LeMeyLV6mzy/kWr8lkd/hp3mTg7wYK7zJhuBStmGMBG0BdeDZS/dZx1IukaX6Bk11zcln25o1Aw==}
 
@@ -3544,7 +3541,7 @@ snapshots:
   '@babel/code-frame@7.24.7':
     dependencies:
       '@babel/highlight': 7.24.7
-      picocolors: 1.0.1
+      picocolors: 1.1.0
 
   '@babel/compat-data@7.24.7': {}
 
@@ -3645,7 +3642,7 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.7
       chalk: 2.4.2
       js-tokens: 4.0.0
-      picocolors: 1.0.1
+      picocolors: 1.1.0
 
   '@babel/parser@7.24.7':
     dependencies:
@@ -4293,15 +4290,15 @@ snapshots:
 
   '@pkgr/core@0.1.1': {}
 
-  '@sap-ai-sdk/ai-api@0.1.1-20240911013049.0':
+  '@sap-ai-sdk/ai-api@0.1.1-20240912013039.0':
     dependencies:
-      '@sap-ai-sdk/core': 0.1.1-20240911013049.0
+      '@sap-ai-sdk/core': 0.1.1-20240912013039.0
     transitivePeerDependencies:
       - debug
       - encoding
       - supports-color
 
-  '@sap-ai-sdk/core@0.1.1-20240911013049.0':
+  '@sap-ai-sdk/core@0.1.1-20240912013039.0':
     dependencies:
       '@sap-cloud-sdk/connectivity': 3.20.0
       '@sap-cloud-sdk/http-client': 3.20.0
@@ -4312,10 +4309,10 @@ snapshots:
       - encoding
       - supports-color
 
-  '@sap-ai-sdk/foundation-models@0.1.1-20240911013049.0':
+  '@sap-ai-sdk/foundation-models@0.1.1-20240912013039.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 0.1.1-20240911013049.0
-      '@sap-ai-sdk/core': 0.1.1-20240911013049.0
+      '@sap-ai-sdk/ai-api': 0.1.1-20240912013039.0
+      '@sap-ai-sdk/core': 0.1.1-20240912013039.0
       '@sap-cloud-sdk/connectivity': 3.20.0
       '@sap-cloud-sdk/http-client': 3.20.0
       '@sap-cloud-sdk/openapi': 3.20.0
@@ -4325,10 +4322,10 @@ snapshots:
       - encoding
       - supports-color
 
-  '@sap-ai-sdk/orchestration@0.1.1-20240911013049.0':
+  '@sap-ai-sdk/orchestration@0.1.1-20240912013039.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 0.1.1-20240911013049.0
-      '@sap-ai-sdk/core': 0.1.1-20240911013049.0
+      '@sap-ai-sdk/ai-api': 0.1.1-20240912013039.0
+      '@sap-ai-sdk/core': 0.1.1-20240912013039.0
       '@sap-cloud-sdk/connectivity': 3.20.0
       '@sap-cloud-sdk/http-client': 3.20.0
       '@sap-cloud-sdk/openapi': 3.20.0
@@ -4559,7 +4556,7 @@ snapshots:
     dependencies:
       '@types/istanbul-lib-report': 3.0.3
 
-  '@types/jest@29.5.12':
+  '@types/jest@29.5.13':
     dependencies:
       expect: 29.7.0
       pretty-format: 29.7.0
@@ -6858,8 +6855,6 @@ snapshots:
 
   path-type@4.0.0: {}
 
-  picocolors@1.0.1: {}
-
   picocolors@1.1.0: {}
 
   picomatch@2.3.1: {}
@@ -7448,7 +7443,7 @@ snapshots:
     dependencies:
       browserslist: 4.23.1
       escalade: 3.1.2
-      picocolors: 1.0.1
+      picocolors: 1.1.0
 
   uri-js@4.4.1:
     dependencies:
