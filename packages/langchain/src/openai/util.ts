@@ -163,11 +163,12 @@ export function isStructuredToolArray(
  * @returns Array of chunks.
  * @internal
  */
-export const chunkArray = <T>(arr: T[], chunkSize: number): T[][] =>
-  arr.reduce((chunks, elem, index) => {
+export function chunkArray(arr: string[], chunkSize: number): string[][] {
+  return arr.reduce((chunks, elem, index) => {
     const chunkIndex = Math.floor(index / chunkSize);
     const chunk = chunks[chunkIndex] || [];
 
     chunks[chunkIndex] = chunk.concat([elem]);
     return chunks;
-  }, [] as T[][]);
+  }, [] as string[][]);
+}

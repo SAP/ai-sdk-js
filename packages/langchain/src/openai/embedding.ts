@@ -21,7 +21,7 @@ export class OpenAiEmbeddingClient extends AzureOpenAIEmbeddings {
   }
 
   override async embedDocuments(documents: string[]): Promise<number[][]> {
-    const chunkedPrompts = chunkArray<string>(
+    const chunkedPrompts = chunkArray(
       this.stripNewLines
         ? documents.map(t => t.replace(/\n/g, ' '))
         : documents,
