@@ -88,20 +88,58 @@ expectType<Promise<OrchestrationResponse>>(
     llmConfig: {
       model_name: 'gpt-35-turbo-16k',
       model_params: { max_tokens: 50, temperature: 0.1 }
-    }
-  }).chatCompletion({
-    messagesHistory: [
-      {
-        content:
-          'You are a helpful assistant who remembers all details the user shares with you.',
-        role: 'system'
+    },
+    filterConfig: {
+      input: {
+        filters: [
+          {
+            type: 'azure_content_safety',
+            config: {
+              Hate: 0,
+              SelfHarm: 2,
+              Sexual: 4,
+              Violence: 6
+            }
+          }
+        ]
       },
-      {
-        content: 'Hi! Im Bob',
-        role: 'user'
+      output: {
+        filters: [
+          {
+            type: 'azure_content_safety',
+            config: {
+              Hate: 6,
+              SelfHarm: 4,
+              Sexual: 2,
+              Violence: 0
+            }
+          }
+        ]
       }
-    ]
-  })
+    }
+  }).chatCompletion(
+    {
+      messagesHistory: [
+        {
+          content:
+            'You are a helpful assistant who remembers all details the user shares with you.',
+          role: 'system'
+        },
+        {
+          content: 'Hi! Im {{?name}}',
+          role: 'user'
+        }
+      ],
+      inputParams: {
+        name: 'Bob'
+      }
+    },
+    {
+      params: {
+        apiVersion: '2024-02-01'
+      }
+    }
+  )
 );
 
 /**
