@@ -7,7 +7,8 @@ import type {
   OpenAiChatCompletionParameters,
   OpenAiChatModel
 } from './openai-types.js';
-import { OpenAiChatCompletionResponse } from './openai-response.js';
+import { openAiChatCompletionOutputSchema } from './openai-types-schema.js';
+import { OpenAiChatCompletionResponse } from './openai-chat-completion-response.js';
 
 const apiVersion = '2024-02-01';
 
@@ -43,6 +44,6 @@ export class OpenAiChatClient {
       data,
       requestConfig
     );
-    return new OpenAiChatCompletionResponse(response);
+    return new OpenAiChatCompletionResponse(response, openAiChatCompletionOutputSchema);
   }
 }

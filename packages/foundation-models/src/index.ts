@@ -30,6 +30,5 @@ export type {
 } from './openai/index.js';
 export {
   OpenAiChatClient,
-  OpenAiEmbeddingClient,
-  OpenAiChatCompletionResponse
+  OpenAiEmbeddingClient
 } from './openai/index.js';

@@ -86,6 +86,16 @@ export async function executeRequest(
   );
 }
 
+/**
+ * Parse HTTP response data with Zod schema.
+ * @param httpResponse - Raw HTTP response.
+ * @param zodSchema - Zod schema.
+ * @returns Type-checked response data at runtime.
+ */
+export function parseHttpResponse<ReturnT>(httpResponse: HttpResponse, zodSchema: any): ReturnT {
+  return zodSchema.parse(httpResponse.data);
+}
+
 function mergeWithDefaultRequestConfig(
   apiVersion?: string,
   requestConfig?: CustomRequestConfig

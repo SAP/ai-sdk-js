@@ -46,7 +46,7 @@ describe('openai embedding client', () => {
       embeddingsEndpoint
     );
     const response = await client.run(prompt);
-    expect(response).toEqual(mockResponse);
+    expect(response.data).toEqual(mockResponse);
   });
 
   it('throws on bad request', async () => {
