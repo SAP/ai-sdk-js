@@ -56,11 +56,13 @@ You can also combine them with the usual langchain functionality, e.g. prompt te
 A simple text completion might look like:
 
 ##### Initialization
+
 ```ts
 const chatClient = new OpenAIChatClient({ modelName: 'gpt-4o' });
 ```
 
 ##### Usage
+
 ```ts
 const response = await chatClient.invoke("What's the capital of France?'");
 ```
@@ -82,17 +84,22 @@ Documents have to be represented as an array of strings.
 Below are two examples.
 
 ##### Initialization
+
 ```ts
-const embeddingClient = new OpenAIEmbeddingClient({ modelName: 'text-embedding-ada-002' });
+const embeddingClient = new OpenAIEmbeddingClient({
+  modelName: 'text-embedding-ada-002'
+});
 ```
 
 ##### Usage
+
 ```ts
-const embeddedText = await embeddingClient.embedQuery('Paris is the capitol of France.');
-const embeddedDocument = await embeddingClient.embedDocuments([
-  'Page 1: Paris is the capitol of France.',
-  'Page 2: It is a beautiful city.'
-]);
+const embeddingClient = new OpenAIEmbeddingClient({
+  modelName: 'text-embedding-ada-002'
+});
+const embeddedText = await embeddingClient.embedQuery(
+  'Paris is the capitol of France.'
+);
 ```
 
 ## Support, Feedback, Contribution
