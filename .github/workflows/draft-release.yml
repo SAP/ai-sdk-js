@@ -2,6 +2,8 @@ name: draft-release
 
 on:
   push:
+    branches:
+      - ga-release
     tags: ['v*']
 
 jobs:
