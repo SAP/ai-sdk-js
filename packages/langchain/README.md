@@ -94,12 +94,16 @@ const embeddingClient = new OpenAIEmbeddingClient({
 ##### Usage
 
 ```ts
-const embeddingClient = new OpenAIEmbeddingClient({
-  modelName: 'text-embedding-ada-002'
-});
 const embeddedText = await embeddingClient.embedQuery(
   'Paris is the capitol of France.'
 );
+```
+
+```ts
+const embeddedDocument = await embeddingClient.embedDocuments([
+  'Page 1: Paris is the capitol of France.',
+  'Page 2: It is a beautiful city.'
+]);
 ```
 
 ## Support, Feedback, Contribution
