@@ -21,9 +21,9 @@ $ npm install @langchain/openai // if you want to use OpenAI models
 
 ## Usage
 
-All client's comply with langchains interface, therefore you should be able to use them as per usual.
+All client's comply with [langchain's interface](https://python.langchain.com/v0.2/api_reference/openai/chat_models/langchain_openai.chat_models.azure.AzureChatOpenAI.html#langchain_openai.chat_models.azure.AzureChatOpenAI), therefore you should be able to use them as per usual.
 
-The only difference is in the initialization of the client, where you have to option to pass either:
+The only difference is in the initialization of the client, where you have th option to pass either:
 
 ```ts
     modelName: string,
@@ -40,9 +40,13 @@ or
     ...others
 ```
 
-Below are are the usage of OpenAI's chat and embedding client.
+If you pass API Keys they are ignored, since you're not inteded to call the vendor's endpoints directly.
+Instead, the credentials in the binding are used to call SAP's LLM Proxy.
 
 ### OpenAI
+
+We offer two types of clients for OpenAI models.
+Currenty these are chat and embedding models.
 
 #### Chat
 
@@ -52,32 +56,32 @@ You can also combine them with the usual langchain functionality, e.g. prompt te
 A simple text completion might look like:
 
 ```ts
-const client = new OpenAIChat({ modelName: 'gpt-4o' });
+const chatClient = new OpenAIChatClient({ modelName: 'gpt-4o' });
 
-const response = await client.invoke("What's the capital of france?'");
+const response = await chatClient.invoke("What's the capital of France?'");
 ```
 
 A chat completion example might be:
 
 ```ts
-const response = await client.generate([
-  [new SystemMessage('You are acting super cool.')],
-  [new HumanMessage('Whats up')]
+const response = await chatClient.generate([
+  [new SystemMessage('You are an IT support agent answering questions.')],
+  [new HumanMessage('Why is my internet not working?')]
 ]);
 ```
 
 #### Embedding
 
-You have the option to either embed a text, or a document (an array of strings).
+You have the option to either embed a text, or a document, which has to be represented as an array of strings.
 
 Below are two examples.
 
 ```ts
-const client = new OpenAIEmbedding({ modelName: 'text-embedding-ada-002' });
-const embedding = await client.embedQuery('Paris is the capitol of France');
-const embeddedDocument = await client.embedDocuments([
-  'Page 1: Paris is the capitol of France',
-  'Page 2: It is a beautiful city'
+const embeddingClient = new OpenAIEmbeddingClient({ modelName: 'text-embedding-ada-002' });
+const embeddedText = await embeddingClient.embedQuery('Paris is the capitol of France.');
+const embeddedDocument = await embeddingClient.embedDocuments([
+  'Page 1: Paris is the capitol of France.',
+  'Page 2: It is a beautiful city.'
 ]);
 ```
 
