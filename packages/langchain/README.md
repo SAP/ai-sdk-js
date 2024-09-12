@@ -77,8 +77,12 @@ You have the option to either embed a text, or a document, which has to be repre
 Below are two examples.
 
 ```ts
-const embeddingClient = new OpenAIEmbeddingClient({ modelName: 'text-embedding-ada-002' });
-const embeddedText = await embeddingClient.embedQuery('Paris is the capitol of France.');
+const embeddingClient = new OpenAIEmbeddingClient({
+  modelName: 'text-embedding-ada-002'
+});
+const embeddedText = await embeddingClient.embedQuery(
+  'Paris is the capitol of France.'
+);
 const embeddedDocument = await embeddingClient.embedDocuments([
   'Page 1: Paris is the capitol of France.',
   'Page 2: It is a beautiful city.'
