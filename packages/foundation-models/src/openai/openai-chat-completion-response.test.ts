@@ -1,7 +1,6 @@
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
 import { OpenAiChatCompletionResponse } from './openai-chat-completion-response.js';
 import { OpenAiChatCompletionOutput } from './openai-types.js';
-import { openAiChatCompletionOutputSchema } from './openai-types-schema.js';
 
 describe('OpenAI chat completion response', () => {
   const mockResponse = parseMockResponse<OpenAiChatCompletionOutput>(
@@ -14,10 +13,7 @@ describe('OpenAI chat completion response', () => {
     headers: {},
     request: {}
   };
-  const response = new OpenAiChatCompletionResponse(
-    rawResponse,
-    openAiChatCompletionOutputSchema
-  );
+  const response = new OpenAiChatCompletionResponse(rawResponse);
 
   it('should return the completion response', () => {
     expect(response.data).toStrictEqual(mockResponse);

@@ -1,6 +1,5 @@
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
 import { OpenAiChatCompletionOutput } from './openai-types.js';
-import { openAiEmbeddingOutputSchema } from './openai-types-schema.js';
 import { OpenAiEmbeddingResponse } from './openai-embedding-response.js';
 
 describe('OpenAI embedding response', () => {
@@ -14,10 +13,7 @@ describe('OpenAI embedding response', () => {
     headers: {},
     request: {}
   };
-  const response = new OpenAiEmbeddingResponse(
-    rawResponse,
-    openAiEmbeddingOutputSchema
-  );
+  const response = new OpenAiEmbeddingResponse(rawResponse);
 
   it('should return the embedding response', () => {
     expect(response.data).toStrictEqual(mockResponse);

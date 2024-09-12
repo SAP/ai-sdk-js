@@ -8,7 +8,6 @@ import {
   type ModelDeployment
 } from '@sap-ai-sdk/ai-api/internal.js';
 import type { OpenAiEmbeddingParameters } from './openai-types.js';
-import { openAiEmbeddingOutputSchema } from './openai-types-schema.js';
 import { OpenAiEmbeddingResponse } from './openai-embedding-response.js';
 
 const apiVersion = '2024-02-01';
@@ -45,6 +44,6 @@ export class OpenAiEmbeddingClient {
       data,
       requestConfig
     );
-    return new OpenAiEmbeddingResponse(response, openAiEmbeddingOutputSchema);
+    return new OpenAiEmbeddingResponse(response);
   }
 }
