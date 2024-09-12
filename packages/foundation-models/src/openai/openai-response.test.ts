@@ -18,11 +18,11 @@ describe('OpenAI response', () => {
   );
 
   it('should initialize with raw response', () => {
-    expect(openAiChatClientResponse.rawResponse).toBe(rawResponse);
+    expect(openAiChatClientResponse.rawResponse).toStrictEqual(rawResponse);
   });
 
   it('should return the completion response', () => {
-    expect(openAiChatClientResponse.data).toBe(mockResponse);
+    expect(openAiChatClientResponse.data).toStrictEqual(mockResponse);
   });
 
   it('should get token usage', () => {
@@ -34,8 +34,8 @@ describe('OpenAI response', () => {
   });
 
   it('should return default choice index with convenience functions', () => {
-    expect(openAiChatClientResponse.getFinishReason()).toBe('stop');
-    expect(openAiChatClientResponse.getContent()).toBe(
+    expect(openAiChatClientResponse.getFinishReason()).toStrictEqual('stop');
+    expect(openAiChatClientResponse.getContent()).toStrictEqual(
       'The deepest place on Earth is located in the Western Pacific Ocean and is known as the Mariana Trench.'
     );
   });

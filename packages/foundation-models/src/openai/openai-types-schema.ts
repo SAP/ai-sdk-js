@@ -195,7 +195,7 @@ export const openAiContentFilterResultsBaseSchema = z.object({
   sexual: openAiContentFilterSeverityResultSchema.optional(),
   violence: openAiContentFilterSeverityResultSchema.optional(),
   hate: openAiContentFilterSeverityResultSchema.optional(),
-  selfHarm: openAiContentFilterSeverityResultSchema.optional(),
+  self_harm: openAiContentFilterSeverityResultSchema.optional(),
   profanity: openAiContentFilterDetectedResultSchema.optional(),
   error: openAiErrorBaseSchema.optional()
 });
@@ -233,5 +233,5 @@ export const openAiChatCompletionChoiceSchema =
 export const openAiChatCompletionOutputSchema =
   openAiCompletionOutputSchema.extend({
     choices: z.array(openAiChatCompletionChoiceSchema),
-    system_fingerprint: z.string()
+    system_fingerprint: z.string().nullable()
   });

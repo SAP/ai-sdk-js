@@ -20,12 +20,13 @@
     "internal.d.ts"
   ],
   "scripts": {
-    "compile": "tsc",
+    "compile": "pnpm generate-zod && tsc",
     "compile:cjs": "tsc -p tsconfig.cjs.json",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint \"**/*.ts\" && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
-    "check:public-api": "node --loader ts-node/esm ../../scripts/check-public-api-cli.ts"
+    "check:public-api": "node --loader ts-node/esm ../../scripts/check-public-api-cli.ts",
+    "generate-zod": "ts-to-zod src/openai/openai-types.ts src/openai/openai-types-schema.ts"
   },
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",

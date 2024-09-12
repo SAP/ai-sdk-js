@@ -402,7 +402,7 @@ export interface OpenAiChatCompletionOutput extends OpenAiCompletionOutput {
    * This fingerprint represents the backend configuration that the model runs with.
    * Can be used in conjunction with the `seed` request parameter to understand when backend changes have been made that might impact determinism.
    */
-  system_fingerprint: string;
+  system_fingerprint: string | null;
 }
 
 /**
@@ -469,7 +469,7 @@ export interface OpenAiContentFilterResultsBase {
   /**
    * Intolerant content filter result.
    */
-  selfHarm?: OpenAiContentFilterSeverityResult;
+  self_harm?: OpenAiContentFilterSeverityResult;
 
   /**
    * Profanity content filter result.
