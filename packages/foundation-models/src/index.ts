@@ -1,6 +1,4 @@
 export type {
-  OpenAiChatModel,
-  OpenAiEmbeddingModel,
   OpenAiChatMessage,
   OpenAiChatSystemMessage,
   OpenAiChatUserMessage,
