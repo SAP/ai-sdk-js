@@ -40,7 +40,7 @@ or
     ...others
 ```
 
-If you pass API Keys they are ignored, since you're not inteded to call the vendor's endpoints directly.
+If you pass API keys they are ignored, since you're not inteded to call the vendor's endpoints directly.
 Instead, the credentials in the binding are used to call SAP's LLM Proxy.
 
 ### OpenAI
@@ -55,9 +55,13 @@ You can also combine them with the usual langchain functionality, e.g. prompt te
 
 A simple text completion might look like:
 
+##### Initialization
 ```ts
 const chatClient = new OpenAIChatClient({ modelName: 'gpt-4o' });
+```
 
+##### Usage
+```ts
 const response = await chatClient.invoke("What's the capital of France?'");
 ```
 
@@ -72,12 +76,18 @@ const response = await chatClient.generate([
 
 #### Embedding
 
-You have the option to either embed a text, or a document, which has to be represented as an array of strings.
+You have the option to either embed a text or a document.
+Documents have to be represented as an array of strings.
 
 Below are two examples.
 
+##### Initialization
 ```ts
 const embeddingClient = new OpenAIEmbeddingClient({ modelName: 'text-embedding-ada-002' });
+```
+
+##### Usage
+```ts
 const embeddedText = await embeddingClient.embedQuery('Paris is the capitol of France.');
 const embeddedDocument = await embeddingClient.embedDocuments([
   'Page 1: Paris is the capitol of France.',
