@@ -8,7 +8,10 @@ import {
  * @returns The answer from GPT.
  */
 export async function chatCompletion(): Promise<string> {
-  const response = await new OpenAiChatClient('gpt-35-turbo').run({
+  const response = await new OpenAiChatClient({
+    deploymentId: 'test',
+    modelName: 'gpt-35-turbo'
+  }).run({
     messages: [{ role: 'user', content: 'What is the capital of France?' }]
   });
   return response.getContent()!;
