@@ -11,9 +11,12 @@ import type {
   OpenAiChatCompletionFunction,
   OpenAiChatCompletionTool,
   OpenAiChatMessage,
-  OpenAiChatCompletionOutput
+  OpenAiChatCompletionOutput,
+  OpenAiChatCompletionParameters
 } from '@sap-ai-sdk/foundation-models';
 import { zodToJsonSchema } from 'zod-to-json-schema';
+import { OpenAiChatClient } from './chat.js';
+import { OpenAIChatCallOptions } from './types.js';
 
 /**
  * Maps a LangChain {@link StructuredTool} to {@link OpenAiChatCompletionFunction}.
@@ -171,4 +174,40 @@ export function chunkArray(arr: string[], chunkSize: number): string[][] {
     chunks[chunkIndex] = chunk.concat([elem]);
     return chunks;
   }, [] as string[][]);
+}
+
+/**
+ * Maps the langchain's input interface to our own client's input interface
+ * @param client The Langchain OpenAI client
+ * @param options The Langchain call options
+ * @param messages The messages to be send
+ * @returns A AI SDK compatibile request
+ * @internal
+ */
+export function mapLangchainToAiClient(
+  client: OpenAiChatClient,
+  options: OpenAIChatCallOptions,
+  messages: BaseMessage[]
+): OpenAiChatCompletionParameters {
+  return {
+    messages: messages.map(mapBaseMessageToOpenAIChatMessage),
+    max_tokens: client.maxTokens === -1 ? undefined : client.maxTokens,
+    temperature: client.temperature,
+    top_p: client.topP,
+    logit_bias: client.logitBias,
+    n: client.n,
+    stop: options?.stop ?? client.stop,
+    presence_penalty: client.presencePenalty,
+    frequency_penalty: client.frequencyPenalty,
+    functions: isStructuredToolArray(options?.functions)
+      ? options?.functions.map(mapToolToOpenAIFunction)
+      : options?.functions,
+    tools: isStructuredToolArray(options?.tools)
+      ? options?.tools.map(mapToolToOpenAITool)
+      : options?.tools,
+    tool_choice: options?.tool_choice,
+    response_format: options?.response_format,
+    seed: options?.seed,
+    ...client.modelKwargs
+  };
 }

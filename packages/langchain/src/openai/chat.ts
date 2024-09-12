@@ -3,13 +3,7 @@ import { BaseMessage } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
 import { AzureChatOpenAI, AzureOpenAI } from '@langchain/openai';
 import { OpenAiChatClient as OpenAiChatClientBase } from '@sap-ai-sdk/foundation-models';
-import {
-  isStructuredToolArray,
-  mapBaseMessageToOpenAIChatMessage,
-  mapResponseToChatResult,
-  mapToolToOpenAIFunction,
-  mapToolToOpenAITool
-} from './util.js';
+import { mapLangchainToAiClient, mapResponseToChatResult } from './util.js';
 import type { OpenAIChatModelInput, OpenAIChatCallOptions } from './types.js';
 
 /**
@@ -63,27 +57,9 @@ export class OpenAiChatClient extends AzureChatOpenAI {
         signal: options.signal
       },
       () =>
-        this.openAiChatClient.run({
-          messages: messages.map(mapBaseMessageToOpenAIChatMessage),
-          max_tokens: this.maxTokens === -1 ? undefined : this.maxTokens,
-          temperature: this.temperature,
-          top_p: this.topP,
-          logit_bias: this.logitBias,
-          n: this.n,
-          stop: options?.stop ?? this.stop,
-          presence_penalty: this.presencePenalty,
-          frequency_penalty: this.frequencyPenalty,
-          functions: isStructuredToolArray(options?.functions)
-            ? options?.functions.map(mapToolToOpenAIFunction)
-            : options?.functions,
-          tools: isStructuredToolArray(options?.tools)
-            ? options?.tools.map(mapToolToOpenAITool)
-            : options?.tools,
-          tool_choice: options?.tool_choice,
-          response_format: options?.response_format,
-          seed: options?.seed,
-          ...this.modelKwargs
-        })
+        this.openAiChatClient.run(
+          mapLangchainToAiClient(this, options, messages)
+        )
     );
 
     // we currently do not support streaming
