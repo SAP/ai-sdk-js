@@ -60,7 +60,7 @@ A simple text completion might look like:
 ##### Initialization
 
 ```ts
-import { OpenAiChatClient } from '@sap-ai-sdk/langchain'
+import { OpenAiChatClient } from '@sap-ai-sdk/langchain';
 const chatClient = new OpenAiChatClient({ modelName: 'gpt-4o' });
 ```
 
@@ -89,7 +89,7 @@ Below are two examples.
 ##### Initialization
 
 ```ts
-import { OpenAiEmbeddingClient } from '@sap-ai-sdk/langchain'
+import { OpenAiEmbeddingClient } from '@sap-ai-sdk/langchain';
 
 const embeddingClient = new OpenAiEmbeddingClient({
   modelName: 'text-embedding-ada-002'
