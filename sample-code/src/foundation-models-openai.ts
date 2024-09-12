@@ -11,7 +11,7 @@ export async function chatCompletion(): Promise<string> {
   const response = await new OpenAiChatClient('gpt-35-turbo').run({
     messages: [{ role: 'user', content: 'What is the capital of France?' }]
   });
-  return response.data.choices[0].message.content!;
+  return response.getContent()!;
 }
 
 /**
@@ -25,5 +25,5 @@ export async function computeEmbedding(): Promise<number[]> {
     input: 'Hello, world!'
   });
 
-  return response.data.data[0].embedding;
+  return response.getEmbedding()!;
 }
