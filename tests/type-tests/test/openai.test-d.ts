@@ -1,10 +1,10 @@
-import { expectError, expectType } from 'tsd';
+import { expectType } from 'tsd';
 import {
   OpenAiChatCompletionOutput,
-  OpenAiEmbeddingOutput,
   OpenAiChatClient,
   OpenAiEmbeddingClient,
   OpenAiChatCompletionResponse,
+  OpenAiEmbeddingResponse,
   OpenAiUsage
 } from '@sap-ai-sdk/foundation-models';
 
@@ -102,7 +102,7 @@ expectType<Promise<OpenAiChatCompletionResponse>>(
 /**
  * Embeddings.
  */
-expectType<Promise<OpenAiEmbeddingOutput>>(
+expectType<Promise<OpenAiEmbeddingResponse>>(
   new OpenAiEmbeddingClient('text-embedding-ada-002').run({
     input: 'test input'
   })
@@ -113,7 +113,7 @@ expectType<OpenAiEmbeddingClient>(new OpenAiEmbeddingClient('unknown'));
 /**
  * Embeddings with optional parameters.
  */
-expectType<Promise<OpenAiEmbeddingOutput>>(
+expectType<Promise<OpenAiEmbeddingResponse>>(
   new OpenAiEmbeddingClient('text-embedding-ada-002').run(
     {
       input: ['test input 1', 'test input 2'],
