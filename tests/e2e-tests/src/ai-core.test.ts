@@ -7,7 +7,6 @@ import {
   DeploymentApi,
   ScenarioApi
 } from '@sap-ai-sdk/ai-api';
-import 'dotenv/config';
 import _ from 'lodash';
 
 // Pick .env file from root directory
@@ -32,15 +31,14 @@ describe('AI Core APIs', () => {
           {},
           { 'AI-Resource-Group': 'i745181' }
         ).execute();
-
         if (deploymentDetail.status === targetStatus) {
           return deploymentDetail;
         }
-
         await new Promise(resolve => setTimeout(resolve, RETRY_INTERVAL));
       }
       throw new Error(
-        `Deployment did not reach ${targetStatus} status within the expected time.`
+        `Deployment ${deploymentId} did not reach ${targetStatus} status within the expected time. ` +
+          'Please manually stop and delete the deployment.'
       );
     }
 
@@ -74,7 +72,6 @@ describe('AI Core APIs', () => {
         createResponse.id,
         'RUNNING'
       );
-
       expect(runningDeployment.status).toBe('RUNNING');
       expect(runningDeployment.deploymentUrl).toBeTruthy();
       createdDeploymentId = runningDeployment.id;
@@ -96,10 +93,13 @@ describe('AI Core APIs', () => {
         createdDeploymentId!,
         'STOPPED'
       );
+
       expect(stoppedDeployment.status).toBe('STOPPED');
     }, 180000);
 
     it('should delete the deployment', async () => {
+      expect(createdDeploymentId).toBeDefined();
+
       const deleteResponse = await DeploymentApi.deploymentDelete(
         createdDeploymentId!,
         { 'AI-Resource-Group': 'i745181' }
@@ -110,6 +110,8 @@ describe('AI Core APIs', () => {
     });
 
     afterAll(async () => {
+      expect(createdDeploymentId).toBeDefined();
+
       await new Promise(r => setTimeout(r, 20000));
       const queryResponse = await DeploymentApi.deploymentQuery(
         {},
