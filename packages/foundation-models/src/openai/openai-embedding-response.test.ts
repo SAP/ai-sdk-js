@@ -14,7 +14,10 @@ describe('OpenAI embedding response', () => {
     headers: {},
     request: {}
   };
-  const response = new OpenAiEmbeddingResponse(rawResponse, openAiEmbeddingOutputSchema);
+  const response = new OpenAiEmbeddingResponse(
+    rawResponse,
+    openAiEmbeddingOutputSchema
+  );
 
   it('should return the embedding response', () => {
     expect(response.data).toStrictEqual(mockResponse);

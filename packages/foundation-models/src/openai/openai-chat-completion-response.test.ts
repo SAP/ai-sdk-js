@@ -14,7 +14,10 @@ describe('OpenAI chat completion response', () => {
     headers: {},
     request: {}
   };
-  const response = new OpenAiChatCompletionResponse(rawResponse, openAiChatCompletionOutputSchema);
+  const response = new OpenAiChatCompletionResponse(
+    rawResponse,
+    openAiChatCompletionOutputSchema
+  );
 
   it('should return the completion response', () => {
     expect(response.data).toStrictEqual(mockResponse);

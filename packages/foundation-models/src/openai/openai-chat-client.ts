@@ -7,9 +7,7 @@ import {
   getDeploymentId,
   type ModelDeployment
 } from '@sap-ai-sdk/ai-api/internal.js';
-import type {
-  OpenAiChatCompletionParameters
-} from './openai-types.js';
+import type { OpenAiChatCompletionParameters } from './openai-types.js';
 import { openAiChatCompletionOutputSchema } from './openai-types-schema.js';
 import { OpenAiChatCompletionResponse } from './openai-chat-completion-response.js';
 
@@ -47,6 +45,9 @@ export class OpenAiChatClient {
       data,
       requestConfig
     );
-    return new OpenAiChatCompletionResponse(response, openAiChatCompletionOutputSchema);
+    return new OpenAiChatCompletionResponse(
+      response,
+      openAiChatCompletionOutputSchema
+    );
   }
 }

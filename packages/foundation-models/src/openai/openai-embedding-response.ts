@@ -10,7 +10,13 @@ export class OpenAiEmbeddingResponse {
    * The embedding response.
    */
   public readonly data: OpenAiEmbeddingOutput;
-  constructor(public readonly rawResponse: HttpResponse, zodSchema: any) {
-    this.data = parseHttpResponse<OpenAiEmbeddingOutput>(rawResponse, zodSchema);
+  constructor(
+    public readonly rawResponse: HttpResponse,
+    zodSchema: any
+  ) {
+    this.data = parseHttpResponse<OpenAiEmbeddingOutput>(
+      rawResponse,
+      zodSchema
+    );
   }
 }

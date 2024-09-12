@@ -92,7 +92,10 @@ export async function executeRequest(
  * @param zodSchema - Zod schema.
  * @returns Type-checked response data at runtime.
  */
-export function parseHttpResponse<ReturnT>(httpResponse: HttpResponse, zodSchema: any): ReturnT {
+export function parseHttpResponse<ReturnT>(
+  httpResponse: HttpResponse,
+  zodSchema: any
+): ReturnT {
   return zodSchema.parse(httpResponse.data);
 }
 

@@ -2,7 +2,7 @@ export type {
   BaseLlmParametersWithDeploymentId,
   BaseLlmParameters,
   CustomRequestConfig,
-  EndpointOptions,
+  EndpointOptions
 } from './http-client.js';
 export { executeRequest, parseHttpResponse } from './http-client.js';
 export { getAiCoreDestination } from './context.js';

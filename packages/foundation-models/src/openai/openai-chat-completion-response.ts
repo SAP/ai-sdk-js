@@ -16,8 +16,14 @@ export class OpenAiChatCompletionResponse {
    * The chat completion response.
    */
   public readonly data: OpenAiChatCompletionOutput;
-  constructor(public readonly rawResponse: HttpResponse, zodSchema: any) {
-    this.data = parseHttpResponse<OpenAiChatCompletionOutput>(rawResponse, zodSchema);
+  constructor(
+    public readonly rawResponse: HttpResponse,
+    zodSchema: any
+  ) {
+    this.data = parseHttpResponse<OpenAiChatCompletionOutput>(
+      rawResponse,
+      zodSchema
+    );
   }
 
   /**

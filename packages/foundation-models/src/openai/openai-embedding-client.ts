@@ -7,9 +7,7 @@ import {
   getDeploymentId,
   type ModelDeployment
 } from '@sap-ai-sdk/ai-api/internal.js';
-import type {
-  OpenAiEmbeddingParameters,
-} from './openai-types.js';
+import type { OpenAiEmbeddingParameters } from './openai-types.js';
 import { openAiEmbeddingOutputSchema } from './openai-types-schema.js';
 import { OpenAiEmbeddingResponse } from './openai-embedding-response.js';
 

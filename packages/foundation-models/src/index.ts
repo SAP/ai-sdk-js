@@ -26,7 +26,4 @@ export type {
   OpenAiContentFilterSeverityResult,
   OpenAiEmbeddingOutput
 } from './openai/index.js';
-export {
-  OpenAiChatClient,
-  OpenAiEmbeddingClient
-} from './openai/index.js';
+export { OpenAiChatClient, OpenAiEmbeddingClient } from './openai/index.js';
