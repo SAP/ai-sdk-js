@@ -1,6 +1,6 @@
 export { OpenAiChatClient, OpenAiEmbeddingClient } from './openai/index.js';
 export type {
-  OpenAIChatModelInput,
-  OpenAIEmbeddingInput,
-  OpenAIChatCallOptions
+  OpenAiChatModelInput,
+  OpenAiEmbeddingInput,
+  OpenAiChatCallOptions
 } from './openai/index.js';
