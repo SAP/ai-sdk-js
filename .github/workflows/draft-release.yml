@@ -20,7 +20,7 @@ jobs:
 
       - name: install and build
         run: pnpm install --frozen-lockfile
-      - uses: sap/cloud-sdk-js/.github/actions/merge-changelogs@merge-changelogs
+      - uses: sap/cloud-sdk-js/.github/actions/merge-changelogs@main
         name: merge changelogs
         id: merge-changelogs
       - uses: ncipollo/release-action@v1

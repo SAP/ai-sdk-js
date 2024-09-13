@@ -23,12 +23,12 @@ jobs:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
-      - uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@merge-changelogs
+      - uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
         name: bump version
         id: bump
         with:
           majorVersion: ${{ inputs.majorVersion }}
-      - uses: sap/cloud-sdk-js/.github/actions/commit-and-tag@merge-changelogs
+      - uses: sap/cloud-sdk-js/.github/actions/commit-and-tag@main
         name: Commit and tag
         with:
           version: ${{ steps.bump.outputs.version }}
