@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Mapping Functions should parse an OpenAi response to a (Langchain) chat response 1`] = `
+{
+  "generations": [
+    {
+      "generationInfo": {
+        "finish_reason": "stop",
+        "function_call": undefined,
+        "index": 0,
+        "tool_calls": undefined,
+      },
+      "message": {
+        "id": [
+          "langchain_core",
+          "messages",
+          "AIMessage",
+        ],
+        "kwargs": {
+          "additional_kwargs": {
+            "finish_reason": "stop",
+            "function_call": undefined,
+            "index": 0,
+            "tool_call_id": "",
+            "tool_calls": undefined,
+          },
+          "content": "The deepest place on Earth is located in the Western Pacific Ocean and is known as the Mariana Trench.",
+          "invalid_tool_calls": [],
+          "response_metadata": {},
+          "tool_calls": [],
+        },
+        "lc": 1,
+        "type": "constructor",
+      },
+      "text": "The deepest place on Earth is located in the Western Pacific Ocean and is known as the Mariana Trench.",
+    },
+  ],
+  "llmOutput": {
+    "created": 1725457796,
+    "id": "chatcmpl-A3kgOwg9B6j87n0IkoCFCUCxRSwQZ",
+    "model": "gpt-4-32k",
+    "object": "chat.completion",
+    "tokenUsage": {
+      "completionTokens": 22,
+      "promptTokens": 15,
+      "totalTokens": 37,
+    },
+  },
+}
+`;

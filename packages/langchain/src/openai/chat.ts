@@ -14,7 +14,7 @@ export class OpenAiChatClient extends AzureChatOpenAI {
   private openAiChatClient: OpenAiChatClientBase;
 
   constructor(fields: OpenAiChatModelInput) {
-    const defaultValues = new AzureOpenAI();
+    const defaultValues = new AzureOpenAI({ apiKey: 'dummy' });
     const stop = fields.stop
       ? Array.isArray(fields.stop)
         ? fields.stop
@@ -25,8 +25,8 @@ export class OpenAiChatClient extends AzureChatOpenAI {
       ...fields,
       stop,
       // overrides the apikey values as they are not applicable for BTP
-      azureOpenAIApiKey: 'dummy',
-      openAIApiKey: 'dummy',
+      azureOpenAIApiKey: undefined,
+      openAIApiKey: undefined,
       apiKey: 'dummy'
     });
 

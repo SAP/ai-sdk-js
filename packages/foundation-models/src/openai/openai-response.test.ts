@@ -1,6 +1,6 @@
-import { parseMockResponse } from '../../../../test-util/mock-http';
-import { OpenAiChatCompletionResponse } from './openai-response';
-import { OpenAiChatCompletionOutput } from './openai-types';
+import { parseMockResponse } from '../../../../test-util/mock-http.js';
+import { OpenAiChatCompletionResponse } from './openai-response.js';
+import { OpenAiChatCompletionOutput } from './openai-types.js';
 
 describe('OpenAI response', () => {
   const mockResponse = parseMockResponse<OpenAiChatCompletionOutput>(
