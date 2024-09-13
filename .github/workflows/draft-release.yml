@@ -25,7 +25,6 @@ jobs:
       - uses: sap/cloud-sdk-js/.github/actions/merge-changelogs@merge-changelogs
         name: Merge changelogs
         id: merge-changelogs
-
       - uses: ncipollo/release-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
