@@ -13,9 +13,9 @@ import type {
 import type { ConfigurationOptions } from '@sap-ai-sdk/ai-api';
 
 /**
- * Input for Text generation for OpenAI GPT.
+ * Input for Text generation for OpenAi GPT.
  */
-export type OpenAIChatModelInput = Omit<
+export type OpenAiChatModelInput = Omit<
   OpenAIChatInput,
   | 'frequencyPenalty'
   | 'presencePenalty'
@@ -38,7 +38,7 @@ export type OpenAIChatModelInput = Omit<
 /**
  * Chat Call options.
  */
-export interface OpenAIChatCallOptions
+export interface OpenAiChatCallOptions
   extends Omit<
       ChatOpenAICallOptions,
       | 'tool_choice'
@@ -54,9 +54,9 @@ export interface OpenAIChatCallOptions
     > {}
 
 /**
- * Input for Text generation for OpenAI GPT.
+ * Input for Text generation for OpenAi GPT.
  */
-export type OpenAIEmbeddingInput = Omit<
+export type OpenAiEmbeddingInput = Omit<
   OpenAIEmbeddingsParams,
   'modelName' | 'model' | 'azureOpenAIApiKey' | 'apiKey'
 > &

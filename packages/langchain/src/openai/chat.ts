@@ -4,16 +4,16 @@ import type { ChatResult } from '@langchain/core/outputs';
 import { AzureChatOpenAI, AzureOpenAI } from '@langchain/openai';
 import { OpenAiChatClient as OpenAiChatClientBase } from '@sap-ai-sdk/foundation-models';
 import { mapLangchainToAiClient, mapResponseToChatResult } from './util.js';
-import type { OpenAIChatModelInput, OpenAIChatCallOptions } from './types.js';
+import type { OpenAiChatModelInput, OpenAiChatCallOptions } from './types.js';
 
 /**
  * OpenAI Language Model Wrapper to generate texts.
  */
 export class OpenAiChatClient extends AzureChatOpenAI {
-  declare CallOptions: OpenAIChatCallOptions;
+  declare CallOptions: OpenAiChatCallOptions;
   private openAiChatClient: OpenAiChatClientBase;
 
-  constructor(fields: OpenAIChatModelInput) {
+  constructor(fields: OpenAiChatModelInput) {
     const defaultValues = new AzureOpenAI();
     const stop = fields.stop
       ? Array.isArray(fields.stop)
@@ -33,8 +33,8 @@ export class OpenAiChatClient extends AzureChatOpenAI {
     this.openAiChatClient = new OpenAiChatClientBase({ ...fields });
   }
 
-  override get callKeys(): (keyof OpenAIChatCallOptions)[] {
-    return [...(super.callKeys as (keyof OpenAIChatCallOptions)[])];
+  override get callKeys(): (keyof OpenAiChatCallOptions)[] {
+    return [...(super.callKeys as (keyof OpenAiChatCallOptions)[])];
   }
 
   override get lc_secrets(): { [key: string]: string } | undefined {

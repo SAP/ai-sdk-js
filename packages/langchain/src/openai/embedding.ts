@@ -5,7 +5,7 @@ import {
   OpenAiEmbeddingParameters
 } from '@sap-ai-sdk/foundation-models';
 import { chunkArray } from './util.js';
-import { OpenAIEmbeddingInput } from './types.js';
+import { OpenAiEmbeddingInput } from './types.js';
 
 /**
  * OpenAI GPT Language Model Wrapper to embed texts.
@@ -13,7 +13,7 @@ import { OpenAIEmbeddingInput } from './types.js';
 export class OpenAiEmbeddingClient extends AzureOpenAIEmbeddings {
   private btpOpenAIClient: OpenAiEmbeddingClientBase;
 
-  constructor(fields: OpenAIEmbeddingInput) {
+  constructor(fields: OpenAiEmbeddingInput) {
     // overrides the apikey value as it is not applicable in BTP
     super({ ...fields, azureOpenAIApiKey: 'dummy' });
 

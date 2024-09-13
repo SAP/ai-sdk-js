@@ -16,7 +16,7 @@ import type {
 } from '@sap-ai-sdk/foundation-models';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { OpenAiChatClient } from './chat.js';
-import { OpenAIChatCallOptions } from './types.js';
+import { OpenAiChatCallOptions } from './types.js';
 
 /**
  * Maps a LangChain {@link StructuredTool} to {@link OpenAiChatCompletionFunction}.
@@ -24,7 +24,7 @@ import { OpenAIChatCallOptions } from './types.js';
  * @returns The OpenAI Chat Completion Function.
  * @internal
  */
-export function mapToolToOpenAIFunction(
+export function mapToolToOpenAiFunction(
   tool: StructuredTool
 ): OpenAiChatCompletionFunction {
   return {
@@ -40,7 +40,7 @@ export function mapToolToOpenAIFunction(
  * @returns The OpenAI Chat Completion Tool.
  * @internal
  */
-export function mapToolToOpenAITool(
+export function mapToolToOpenAiTool(
   tool: StructuredTool
 ): OpenAiChatCompletionTool {
   return {
@@ -129,7 +129,7 @@ export function mapResponseToChatResult(
  * @returns The OpenAI Chat Message.
  * @internal
  */
-export function mapBaseMessageToOpenAIChatMessage(
+export function mapBaseMessageToOpenAiChatMessage(
   message: BaseMessage
 ): OpenAiChatMessage {
   return {
@@ -185,11 +185,11 @@ export function chunkArray(arr: string[], chunkSize: number): string[][] {
  */
 export function mapLangchainToAiClient(
   client: OpenAiChatClient,
-  options: OpenAIChatCallOptions,
+  options: OpenAiChatCallOptions,
   messages: BaseMessage[]
 ): OpenAiChatCompletionParameters {
   return {
-    messages: messages.map(mapBaseMessageToOpenAIChatMessage),
+    messages: messages.map(mapBaseMessageToOpenAiChatMessage),
     max_tokens: client.maxTokens === -1 ? undefined : client.maxTokens,
     temperature: client.temperature,
     top_p: client.topP,
@@ -199,10 +199,10 @@ export function mapLangchainToAiClient(
     presence_penalty: client.presencePenalty,
     frequency_penalty: client.frequencyPenalty,
     functions: isStructuredToolArray(options?.functions)
-      ? options?.functions.map(mapToolToOpenAIFunction)
+      ? options?.functions.map(mapToolToOpenAiFunction)
       : options?.functions,
     tools: isStructuredToolArray(options?.tools)
-      ? options?.tools.map(mapToolToOpenAITool)
+      ? options?.tools.map(mapToolToOpenAiTool)
       : options?.tools,
     tool_choice: options?.tool_choice,
     response_format: options?.response_format,
