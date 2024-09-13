@@ -29,6 +29,6 @@
     "@sap-ai-sdk/langchain": "workspace:^",
     "@langchain/core": "^0.2.30",
     "@types/express": "^4.17.21",
-    "express": "^4.19.2"
+    "express": "^4.21.0"
   }
 }
