@@ -26,8 +26,7 @@ jobs:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
-      - run: ls /home/runner/work/ai-sdk-js/ai-sdk-js
-      - run: ls /home/runner/work/ai-sdk-js
+      - run: ls /home/runner/work/ai-sdk-js/ai-sdk-js/.changeset
       - name: Setup git
         run: |
           git config --global user.email "ai-sdk-js@github.com"
