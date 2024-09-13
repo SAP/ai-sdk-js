@@ -5,9 +5,7 @@ import type {
   OpenAIChatInput,
   OpenAIEmbeddingsParams
 } from '@langchain/openai';
-import type {
-  OpenAiChatCompletionParameters,
-} from '@sap-ai-sdk/foundation-models';
+import type { OpenAiChatCompletionParameters } from '@sap-ai-sdk/foundation-models';
 import type {
   AzureOpenAiChatModel,
   AzureOpenAiEmbeddingModel

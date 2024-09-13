@@ -1,11 +1,18 @@
 // mapResponseToChatResult
 // mapLangchainToAiClient
 
-import {  OpenAiChatClient as OpenAiChatClientBase, OpenAiChatCompletionOutput } from '@sap-ai-sdk/foundation-models';
+import {
+  OpenAiChatClient as OpenAiChatClientBase,
+  OpenAiChatCompletionOutput
+} from '@sap-ai-sdk/foundation-models';
 import { jest } from '@jest/globals';
 import nock from 'nock';
 import { HumanMessage } from '@langchain/core/messages';
-import { mockClientCredentialsGrantCall, mockInference, parseMockResponse } from '../../../../test-util/mock-http.js';
+import {
+  mockClientCredentialsGrantCall,
+  mockInference,
+  parseMockResponse
+} from '../../../../test-util/mock-http.js';
 import { mapResponseToChatResult } from './util.js';
 import { OpenAiChatClient } from './chat.js';
 
@@ -35,7 +42,9 @@ const prompt = {
   frequency_penalty: 0
 };
 
-const langchainPrompt = new HumanMessage('Where is the deepest place on earth located');
+const langchainPrompt = new HumanMessage(
+  'Where is the deepest place on earth located'
+);
 
 const request = {
   frequency_penalty: 0,
