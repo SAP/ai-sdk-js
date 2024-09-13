@@ -1,17 +1,23 @@
 // mapResponseToChatResult
 // mapLangchainToAiClient
 
+import { OpenAiChatCompletionOutput } from '@sap-ai-sdk/foundation-models';
+import { parseMockResponse } from '../../../../test-util/mock-http.js';
+import { mapResponseToChatResult } from './util.js';
+
 describe('Mapping Functions', () => {
-    const testObject = {};
-    it('should complete a chat', async () => {
-      const result = await generate();
-      expect(result).toBeDefined();
-      expect(result).toContain('Paris');
+    const openAiMockResponse = parseMockResponse<OpenAiChatCompletionOutput>(
+        'foundation-models',
+        'openai-chat-completion-success-response.json'
+    );
+    it('should parse an OpenAi response to a (Langchain) chat response', async () => {
+      const result = mapResponseToChatResult(openAiMockResponse);
+      expect(result).toMatchInlineSnapshot();
     });
 
-    it('should compute an embedding vector', async () => {
-      const result = await embedQuery();
-      expect(result).toBeDefined();
-      expect(result).not.toHaveLength(0);
-    });
+    // it('should compute an embedding vector', async () => {
+    //   const result = await embedQuery();
+    //   expect(result).toBeDefined();
+    //   expect(result).not.toHaveLength(0);
+    // });
   });
