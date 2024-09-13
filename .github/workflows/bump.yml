@@ -23,7 +23,6 @@ jobs:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
-      - run: ls /home/runner/work/ai-sdk-js/ai-sdk-js/.changeset
       - uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@merge-changelogs
         name: Bump version
         id: bump
