@@ -28,5 +28,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           draft: true
-          # body: 'SAP Cloud SDK for AI Beta release'
           body: ${{ steps.merge-changelogs.outputs.changelog }}
