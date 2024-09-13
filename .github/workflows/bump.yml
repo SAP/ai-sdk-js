@@ -1,6 +1,9 @@
 name: bump
 
 on:
+  # TODO: remove this before merge
+  push:
+    branches: ['ga-release']
   workflow_dispatch:
     inputs:
       majorVersion:
