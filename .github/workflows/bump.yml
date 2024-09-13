@@ -17,7 +17,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
-          ref: 'main'
+          # TODO: add this back before merge
+          # ref: 'main'
       - uses: pnpm/action-setup@v3
         with:
           version: ${{ vars.PNPM_VERSION }}
