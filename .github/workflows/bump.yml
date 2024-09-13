@@ -24,7 +24,7 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@merge-changelogs
-        name: Bump version
+        name: bump version
         id: bump
         with:
           majorVersion: ${{ inputs.majorVersion }}
