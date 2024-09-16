@@ -29,7 +29,9 @@ export class AzureOpenAiEmbeddingClient extends AzureOpenAIEmbeddings {
     );
     const embeddings: number[][] = [];
     for await (const promptChunk of chunkedPrompts) {
-      const embeddingResponse = await this.createEmbedding({ input: promptChunk });
+      const embeddingResponse = await this.createEmbedding({
+        input: promptChunk
+      });
       embeddingResponse.data.forEach(entry => embeddings.push(entry.embedding));
     }
     return embeddings;
