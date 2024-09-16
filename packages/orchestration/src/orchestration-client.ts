@@ -1,7 +1,7 @@
 import { executeRequest, CustomRequestConfig } from '@sap-ai-sdk/core';
 import {
   resolveDeploymentId,
-  ResourceGroupConfiguration
+  ResourceGroupConfig
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { CompletionPostRequest } from './client/api/schema/index.js';
 import { OrchestrationModuleConfig, Prompt } from './orchestration-types.js';
@@ -18,7 +18,7 @@ export class OrchestrationClient {
    */
   constructor(
     private config: OrchestrationModuleConfig,
-    private deploymentConfig?: ResourceGroupConfiguration
+    private deploymentConfig?: ResourceGroupConfig
   ) {}
 
   /**
