@@ -1,5 +1,8 @@
 import { HumanMessage } from '@langchain/core/messages';
-import { AzureOpenAiChatClient, AzureOpenAiEmbeddingClient } from '@sap-ai-sdk/langchain';
+import {
+  AzureOpenAiChatClient,
+  AzureOpenAiEmbeddingClient
+} from '@sap-ai-sdk/langchain';
 
 /**
  * Ask GPT about the capital of France.
