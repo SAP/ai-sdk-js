@@ -120,9 +120,11 @@ The OpenAI client can be used to send chat completion or embedding requests to t
 npm install @sap-ai-sdk/foundation-models
 ```
 
-#### Simple Chat completion
+#### Chat completion example
 
 ```TS
+import { OpenAiChatClient } from '@sap-ai-sdk/foundation-models';
+
 const client = new OpenAiChatClient({ deploymentId: 'd123456abcdefg' });
 const response = await client.run({
       messages: [
@@ -135,6 +137,17 @@ const response = await client.run({
 ```
 
 It is also possible to create a chat client by passing a `modelName`instead of the `deploymentId`.
+
+#### Embedding example
+
+```TS
+import { OpenAiEmbeddingClient } from '@sap-ai-sdk/foundation-models';
+
+const client = new OpenAiEmbeddingClient('text-embedding-ada-002');
+const response = await client.run({
+      input: ['AI is fascinating']
+    });
+```
 
 ## Support, Feedback, Contribution
 
