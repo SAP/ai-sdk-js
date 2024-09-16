@@ -17,9 +17,54 @@ $ npm install @sap-ai-sdk/foundation-models
   - Create a `.env` file in the sample-code directory.
   - Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`.
 
-## Usage
+## OpenAI client
 
-<!-- Details to be added -->
+The OpenAI client can be used to send chat completion or embedding requests to the OpenAI model deployed in SAP Generative AI Hub.
+
+### Prerequisites
+
+- A deployed OpenAI model in SAP Generative AI Hub.
+  - You can use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to SAP Generative AI Hub.
+- `sap-ai-sdk/foundation-models` package installed in your project.
+
+### Chat completion Client Usage
+
+```TS
+import { OpenAiChatClient } from '@sap-ai-sdk/foundation-models';
+
+const client = new OpenAiChatClient('gpt-35-turbo');
+const response = await client.run({
+      messages: [
+        {
+          role: 'user',
+          content: 'Where is the deepest place on earth located'
+        }
+      ]
+    })
+const responseContent = response.getContent();
+```
+
+It is also possible to create a chat client by passing a `deploymentId` instead of a `modelName`.
+
+On the response obtained from the client, you could also use convenience functions like `getContent()`, `getFinishReason()` and `getTokenUsage()` to get easy access to the certain parts of the response.
+
+### Embedding Client Usage
+
+```TS
+import { OpenAiEmbeddingClient } from '@sap-ai-sdk/foundation-models';
+
+const client = new OpenAiEmbeddingClient({ deploymentId: 'd123456abcdefg' });
+const response = await client.run({
+      input: 'AI is fascinating'
+    });
+const embedding = response.data[0]?.embedding;
+```
+
+It is also possible to create an embedding client by passing a `modelName` instead of a `deploymentId`.
+
+## Caching
+
+The deployment information which includes deployment id and properties like model name and model version is also cached by default for 5 mins. So, if you create an OpenAI client with a `modelName`, the deployment information is fetched from the cache if it is available.
 
 ## Support, Feedback, Contribution
 
