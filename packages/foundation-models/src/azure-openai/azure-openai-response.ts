@@ -1,6 +1,9 @@
 import { HttpResponse } from '@sap-cloud-sdk/http-client';
 import { createLogger } from '@sap-cloud-sdk/util';
-import { AzureOpenAiChatCompletionOutput, AzureOpenAiUsage } from './azure-openai-types.js';
+import {
+  AzureOpenAiChatCompletionOutput,
+  AzureOpenAiUsage
+} from './azure-openai-types.js';
 
 const logger = createLogger({
   package: 'gen-ai-hub',

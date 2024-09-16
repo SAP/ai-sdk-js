@@ -374,7 +374,8 @@ export interface AzureOpenAiCompletionOutput {
 /**
  * Azure OpenAI chat completion output.
  */
-export interface AzureOpenAiChatCompletionOutput extends AzureOpenAiCompletionOutput {
+export interface AzureOpenAiChatCompletionOutput
+  extends AzureOpenAiCompletionOutput {
   /**
    * Array of result candidates.
    */
@@ -421,7 +422,8 @@ export interface AzureOpenAiCompletionChoice {
 /**
  * Azure OpenAI chat completion choice.
  */
-export interface AzureOpenAiChatCompletionChoice extends AzureOpenAiCompletionChoice {
+export interface AzureOpenAiChatCompletionChoice
+  extends AzureOpenAiCompletionChoice {
   /**
    * Completion chat message.
    */

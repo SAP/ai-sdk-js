@@ -108,7 +108,9 @@ expectType<Promise<AzureOpenAiEmbeddingOutput>>(
   })
 );
 
-expectType<AzureOpenAiEmbeddingClient>(new AzureOpenAiEmbeddingClient('unknown'));
+expectType<AzureOpenAiEmbeddingClient>(
+  new AzureOpenAiEmbeddingClient('unknown')
+);
 
 /**
  * Embeddings with optional parameters.
