@@ -8,6 +8,7 @@ export type {
   ModuleConfigs,
   MaskingModuleConfig,
   MaskingProviderConfig,
+  // TODO: decide whether these types need to be renamed
   LLMModuleResult,
   LLMModuleConfig,
   LLMChoice,
@@ -30,7 +31,7 @@ export type {
 
 export type {
   OrchestrationModuleConfig,
-  LlmModuleConfig as LlmConfig,
+  LlmModuleConfig,
   Prompt
 } from './orchestration-types.js';
 
