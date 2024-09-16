@@ -29,7 +29,7 @@ app.get('/llm', async (req, res) => {
 app.get('/embedding', async (req, res) => {
   try {
     const result = await computeEmbedding();
-    if (result.length === 0) {
+    if (!result.length) {
       throw new Error('No embedding vector returned');
     }
     res.send('Number crunching success, got a nice vector.');
@@ -77,7 +77,7 @@ app.get('/langchain/chat', async (req, res) => {
 app.get('/langchain/embedding', async (req, res) => {
   try {
     const result = await embedQuery();
-    if (result.length === 0) {
+    if (!result.length) {
       throw new Error('No embedding vector returned');
     }
     res.send('Number crunching success, got a nice vector.');

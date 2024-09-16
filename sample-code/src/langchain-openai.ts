@@ -1,12 +1,12 @@
 import { HumanMessage } from '@langchain/core/messages';
-import { OpenAiChatClient, OpenAiEmbeddingClient } from '@sap-ai-sdk/langchain';
+import { AzureOpenAiChatClient, AzureOpenAiEmbeddingClient } from '@sap-ai-sdk/langchain';
 
 /**
  * Ask GPT about the capital of France.
  * @returns The answer from GPT.
  */
 export async function generate(): Promise<string> {
-  const client = new OpenAiChatClient({ modelName: 'gpt-35-turbo' });
+  const client = new AzureOpenAiChatClient({ modelName: 'gpt-35-turbo' });
   const response = await client.generate([
     [new HumanMessage('What is the capital of France?')]
   ]);
@@ -18,7 +18,7 @@ export async function generate(): Promise<string> {
  * @returns An embedding vector.
  */
 export async function embedQuery(): Promise<number[]> {
-  const client = new OpenAiEmbeddingClient({
+  const client = new AzureOpenAiEmbeddingClient({
     modelName: 'text-embedding-ada-002'
   });
   return client.embedQuery('Hello, world!');

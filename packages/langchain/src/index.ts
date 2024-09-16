@@ -1,4 +1,7 @@
-export { AzureOpenAiChatClient, AzureOpenAiEmbeddingClient } from './openai/index.js';
+export {
+  AzureOpenAiChatClient,
+  AzureOpenAiEmbeddingClient
+} from './openai/index.js';
 export type {
   OpenAiChatModelInput,
   OpenAiEmbeddingInput,

@@ -20,8 +20,8 @@ import { OpenAiChatCallOptions } from './types.js';
 
 /**
  * Maps a LangChain {@link StructuredTool} to {@link OpenAiChatCompletionFunction}.
- * @param tool - Base class for Tools that accept input of any shape defined by a Zod schema.
- * @returns The OpenAI Chat Completion Function.
+ * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
+ * @returns The OpenAI chat completion function.
  * @internal
  */
 export function mapToolToOpenAiFunction(
@@ -36,8 +36,8 @@ export function mapToolToOpenAiFunction(
 
 /**
  * Maps a LangChain {@link StructuredTool} to {@link OpenAiChatCompletionTool}.
- * @param tool - Base class for Tools that accept input of any shape defined by a Zod schema.
- * @returns The OpenAI Chat Completion Tool.
+ * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
+ * @returns The OpenAI chat completion tool.
  * @internal
  */
 export function mapToolToOpenAiTool(
@@ -45,18 +45,14 @@ export function mapToolToOpenAiTool(
 ): OpenAiChatCompletionTool {
   return {
     type: 'function',
-    function: {
-      name: tool.name,
-      description: tool.description,
-      parameters: zodToJsonSchema(tool.schema)
-    }
+    function: mapToolToOpenAiFunction(tool)
   };
 }
 
 /**
- * Maps a {@link BaseMessage} to OpenAI's Message Role.
+ * Maps a {@link BaseMessage} to OpenAI's message role.
  * @param message - The message to map.
- * @returns The OpenAI Message Role.
+ * @returns The OpenAI meessage Role.
  * @internal
  */
 export function mapBaseMessageToRole(
@@ -82,8 +78,8 @@ export function mapBaseMessageToRole(
 
 /**
  * Maps OpenAI messages to LangChain's {@link ChatResult}.
- * @param res - The OpenAI Chat Completion Output.
- * @returns The LangChain Chat Result.
+ * @param res - The OpenAI chat completion output.
+ * @returns The LangChain chat result.
  * @internal
  */
 export function mapResponseToChatResult(
@@ -124,9 +120,9 @@ export function mapResponseToChatResult(
 }
 
 /**
- * Maps {@link BaseMessage} to OpenAI Messages.
+ * Maps {@link BaseMessage} to OpenAI messages.
  * @param message - The message to map.
- * @returns The OpenAI Chat Message.
+ * @returns The OpenAI chat Message.
  * @internal
  */
 export function mapBaseMessageToOpenAiChatMessage(
@@ -149,7 +145,7 @@ export function mapBaseMessageToOpenAiChatMessage(
  * @returns The value as an array, undefined if the input is falsy, or the original array if input is already an array.
  */
 export function toArrayOrUndefined<T>(value?: T | T[]): T[] | undefined {
-  if(value === undefined) {
+  if (value === undefined) {
     return undefined;
   }
   return Array.isArray(value) ? value : [value];
@@ -164,16 +160,15 @@ export function toArrayOrUndefined<T>(value?: T | T[]): T[] | undefined {
 export function isStructuredToolArray(
   tools?: unknown[]
 ): tools is StructuredTool[] {
-  return (
-    tools !== undefined &&
-    tools.every(tool => Array.isArray((tool as StructuredTool).lc_namespace))
+  return !!tools?.every(tool =>
+    Array.isArray((tool as StructuredTool).lc_namespace)
   );
 }
 
 /**
- * Maps Langchain's input interface to our own client's input interface
- * @param client The Langchain OpenAI client
- * @param options The Langchain call options
+ * Maps LangChain's input interface to our own client's input interface
+ * @param client The LangChain OpenAI client
+ * @param options The LangChain call options
  * @param messages The messages to be send
  * @returns An AI SDK compatibile request
  * @internal

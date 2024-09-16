@@ -11,13 +11,13 @@ import { OpenAiEmbeddingInput } from './types.js';
  * OpenAI GPT Language Model Wrapper to embed texts.
  */
 export class AzureOpenAiEmbeddingClient extends AzureOpenAIEmbeddings {
-  private btpOpenAIClient: OpenAiEmbeddingClientBase;
+  private btpOpenAiClient: OpenAiEmbeddingClientBase;
 
   constructor(fields: OpenAiEmbeddingInput) {
     // overrides the apikey value as it is not applicable in BTP
     super({ ...fields, apiKey: 'dummy', azureOpenAIApiKey: undefined });
 
-    this.btpOpenAIClient = new OpenAiEmbeddingClientBase({ ...fields });
+    this.btpOpenAiClient = new OpenAiEmbeddingClientBase({ ...fields });
   }
 
   override async embedDocuments(documents: string[]): Promise<number[][]> {
@@ -46,7 +46,7 @@ export class AzureOpenAiEmbeddingClient extends AzureOpenAIEmbeddings {
     query: OpenAiEmbeddingParameters
   ): Promise<OpenAiEmbeddingOutput> {
     return this.caller.callWithOptions({}, () =>
-      this.btpOpenAIClient.run(query)
+      this.btpOpenAiClient.run(query)
     );
   }
 }

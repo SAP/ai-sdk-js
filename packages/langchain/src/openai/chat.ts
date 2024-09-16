@@ -3,7 +3,11 @@ import { BaseMessage } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
 import { AzureChatOpenAI, AzureOpenAI } from '@langchain/openai';
 import { OpenAiChatClient as OpenAiChatClientBase } from '@sap-ai-sdk/foundation-models';
-import { mapLangchainToAiClient, mapResponseToChatResult, toArrayOrUndefined } from './util.js';
+import {
+  mapLangchainToAiClient,
+  mapResponseToChatResult,
+  toArrayOrUndefined
+} from './util.js';
 import type { OpenAiChatModelInput, OpenAiChatCallOptions } from './types.js';
 
 /**
