@@ -5,7 +5,8 @@ import {
   OpenAiChatClient,
   OpenAiEmbeddingClient,
   OpenAiChatCompletionResponse,
-  OpenAiUsage
+  OpenAiUsage,
+  AzureOpenAiChatModel
 } from '@sap-ai-sdk/foundation-models';
 
 /**
@@ -126,3 +127,6 @@ expectType<Promise<OpenAiEmbeddingOutput>>(
     }
   )
 );
+
+expect<AzureOpenAiChatModel>('custom-model');
+expect<AzureOpenAiChatModel>('gpt-4-32k');

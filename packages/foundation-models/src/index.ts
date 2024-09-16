@@ -31,3 +31,7 @@ export {
   OpenAiEmbeddingClient,
   OpenAiChatCompletionResponse
 } from './openai/index.js';
+export {
+  AzureOpenAiChatModel,
+  AzureOpenAiEmbeddingModel
+} from './model-types.js';
