@@ -14,7 +14,7 @@ import {
   parseMockResponse
 } from '../../../../test-util/mock-http.js';
 import { mapResponseToChatResult } from './util.js';
-import { OpenAiChatClient } from './chat.js';
+import { AzureOpenAiChatClient } from './chat.js';
 
 const openAiMockResponse = parseMockResponse<OpenAiChatCompletionOutput>(
   'foundation-models',
@@ -98,7 +98,7 @@ describe('Mapping Functions', () => {
       chatCompletionEndpoint
     );
 
-    const client = new OpenAiChatClient({ deploymentId: '1234' });
+    const client = new AzureOpenAiChatClient({ deploymentId: '1234' });
     const runSpy = jest.spyOn(OpenAiChatClientBase.prototype, 'run');
     await client.generate([[langchainPrompt]]);
     expect(runSpy).toHaveBeenCalledWith(request);

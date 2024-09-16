@@ -15,7 +15,7 @@ import type {
   OpenAiChatCompletionParameters
 } from '@sap-ai-sdk/foundation-models';
 import { zodToJsonSchema } from 'zod-to-json-schema';
-import { OpenAiChatClient } from './chat.js';
+import { AzureOpenAiChatClient } from './chat.js';
 import { OpenAiChatCallOptions } from './types.js';
 
 /**
@@ -144,6 +144,18 @@ export function mapBaseMessageToOpenAiChatMessage(
 }
 
 /**
+ * Converts a value to an array or returns undefined.
+ * @param value - The value to convert.
+ * @returns The value as an array, undefined if the input is falsy, or the original array if input is already an array.
+ */
+export function toArrayOrUndefined<T>(value?: T | T[]): T[] | undefined {
+  if(value === undefined) {
+    return undefined;
+  }
+  return Array.isArray(value) ? value : [value];
+}
+
+/**
  * Checks if a given array is a structured tool array.
  * @param tools - The array to check.
  * @returns Whether the array is a structured tool array.
@@ -159,15 +171,15 @@ export function isStructuredToolArray(
 }
 
 /**
- * Maps the langchain's input interface to our own client's input interface
+ * Maps Langchain's input interface to our own client's input interface
  * @param client The Langchain OpenAI client
  * @param options The Langchain call options
  * @param messages The messages to be send
- * @returns A AI SDK compatibile request
+ * @returns An AI SDK compatibile request
  * @internal
  */
 export function mapLangchainToAiClient(
-  client: OpenAiChatClient,
+  client: AzureOpenAiChatClient,
   options: OpenAiChatCallOptions,
   messages: BaseMessage[]
 ): OpenAiChatCompletionParameters {

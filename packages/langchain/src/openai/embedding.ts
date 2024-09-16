@@ -10,7 +10,7 @@ import { OpenAiEmbeddingInput } from './types.js';
 /**
  * OpenAI GPT Language Model Wrapper to embed texts.
  */
-export class OpenAiEmbeddingClient extends AzureOpenAIEmbeddings {
+export class AzureOpenAiEmbeddingClient extends AzureOpenAIEmbeddings {
   private btpOpenAIClient: OpenAiEmbeddingClientBase;
 
   constructor(fields: OpenAiEmbeddingInput) {
@@ -45,9 +45,8 @@ export class OpenAiEmbeddingClient extends AzureOpenAIEmbeddings {
   private async createEmbedding(
     query: OpenAiEmbeddingParameters
   ): Promise<OpenAiEmbeddingOutput> {
-    const res = await this.caller.callWithOptions({}, () =>
+    return this.caller.callWithOptions({}, () =>
       this.btpOpenAIClient.run(query)
     );
-    return res;
   }
 }

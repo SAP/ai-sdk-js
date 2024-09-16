@@ -3,31 +3,26 @@ import { BaseMessage } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
 import { AzureChatOpenAI, AzureOpenAI } from '@langchain/openai';
 import { OpenAiChatClient as OpenAiChatClientBase } from '@sap-ai-sdk/foundation-models';
-import { mapLangchainToAiClient, mapResponseToChatResult } from './util.js';
+import { mapLangchainToAiClient, mapResponseToChatResult, toArrayOrUndefined } from './util.js';
 import type { OpenAiChatModelInput, OpenAiChatCallOptions } from './types.js';
 
 /**
  * OpenAI Language Model Wrapper to generate texts.
  */
-export class OpenAiChatClient extends AzureChatOpenAI {
+export class AzureOpenAiChatClient extends AzureChatOpenAI {
   declare CallOptions: OpenAiChatCallOptions;
   private openAiChatClient: OpenAiChatClientBase;
 
   constructor(fields: OpenAiChatModelInput) {
     const defaultValues = new AzureOpenAI({ apiKey: 'dummy' });
-    const stop = fields.stop
-      ? Array.isArray(fields.stop)
-        ? fields.stop
-        : [fields.stop]
-      : defaultValues.stop;
+    const stop = toArrayOrUndefined<string>(fields.stop);
     super({
       ...defaultValues,
       ...fields,
       stop,
       // overrides the apikey values as they are not applicable for BTP
       azureOpenAIApiKey: undefined,
-      openAIApiKey: undefined,
-      apiKey: 'dummy'
+      openAIApiKey: undefined
     });
 
     this.openAiChatClient = new OpenAiChatClientBase({ ...fields });
