@@ -5,11 +5,11 @@ import { OrchestrationModuleConfig } from './orchestration-types.js';
 
 describe('constructCompletionPostRequest()', () => {
   const defaultConfig: OrchestrationModuleConfig = {
-    llmConfig: {
+    llm: {
       model_name: 'gpt-35-turbo-16k',
       model_params: { max_tokens: 50, temperature: 0.1 }
     },
-    templatingConfig: {
+    templating: {
       template: [{ role: 'user', content: 'Hi' }]
     }
   };
@@ -18,8 +18,8 @@ describe('constructCompletionPostRequest()', () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: defaultConfig.templatingConfig,
-          llm_module_config: defaultConfig.llmConfig
+          templating_module_config: defaultConfig.templating,
+          llm_module_config: defaultConfig.llm
         }
       }
     };
@@ -35,7 +35,7 @@ describe('constructCompletionPostRequest()', () => {
       orchestration_config: {
         module_configurations: {
           templating_module_config: config.templatingConfig,
-          llm_module_config: config.llmConfig
+          llm_module_config: config.llm
         }
       }
     };
@@ -61,7 +61,7 @@ describe('constructCompletionPostRequest()', () => {
       orchestration_config: {
         module_configurations: {
           templating_module_config: config.templatingConfig,
-          llm_module_config: config.llmConfig
+          llm_module_config: config.llm
         }
       },
       input_params: inputParams
@@ -88,7 +88,7 @@ describe('constructCompletionPostRequest()', () => {
       orchestration_config: {
         module_configurations: {
           templating_module_config: config.templatingConfig,
-          llm_module_config: config.llmConfig
+          llm_module_config: config.llm
         }
       },
       input_params: inputParams
@@ -101,17 +101,17 @@ describe('constructCompletionPostRequest()', () => {
   it('with model name, empty model parameters and prompt template', async () => {
     const config = {
       ...defaultConfig,
-      llmConfig: {
+      llm: {
         model_name: 'gpt-35-turbo-16k',
         model_params: {}
       },
-      filterConfig: {}
+      filtering: {}
     };
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: config.templatingConfig,
-          llm_module_config: config.llmConfig
+          templating_module_config: config.templating,
+          llm_module_config: config.llm
         }
       }
     };
@@ -147,7 +147,7 @@ describe('constructCompletionPostRequest()', () => {
       orchestration_config: {
         module_configurations: {
           templating_module_config: config.templatingConfig,
-          llm_module_config: config.llmConfig
+          llm_module_config: config.llm
         }
       },
       messages_history: messagesHistory
@@ -160,16 +160,16 @@ describe('constructCompletionPostRequest()', () => {
   it('with model configuration, prompt template and filter configuration', async () => {
     const config = {
       ...defaultConfig,
-      filterConfig: {
+      filtering: {
         input: azureContentFilter({ Hate: 4, SelfHarm: 0 })
       }
     };
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: config.templatingConfig,
-          llm_module_config: config.llmConfig,
-          filtering_module_config: config.filterConfig
+          templating_module_config: config.templating,
+          llm_module_config: config.llm,
+          filtering_module_config: config.filtering
         }
       }
     };
@@ -180,12 +180,12 @@ describe('constructCompletionPostRequest()', () => {
 
   // TODO: Adapt the test after Cloud SDK fix for: https://github.com/SAP/cloud-sdk-backlog/issues/1234
   it('with model configuration, prompt template empty filter configuration', async () => {
-    const config = { ...defaultConfig, filterConfig: {} };
+    const config = { ...defaultConfig, filtering: {} };
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: config.templatingConfig,
-          llm_module_config: config.llmConfig
+          templating_module_config: config.templating,
+          llm_module_config: config.llm
         }
       }
     };

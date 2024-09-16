@@ -14,7 +14,7 @@ expectType<Promise<OrchestrationResponse>>(
     templatingConfig: {
       template: [{ role: 'user', content: 'Hello!' }]
     },
-    llmConfig: {
+    llm: {
       model_name: 'gpt-35-turbo-16k',
       model_params: {}
     }
@@ -27,7 +27,7 @@ expectType<CompletionPostResponse>(
       templatingConfig: {
         template: [{ role: 'user', content: 'Hello!' }]
       },
-      llmConfig: {
+      llm: {
         model_name: 'gpt-35-turbo-16k',
         model_params: {}
       }
@@ -41,7 +41,7 @@ expectType<string | undefined>(
       templatingConfig: {
         template: [{ role: 'user', content: 'Hello!' }]
       },
-      llmConfig: {
+      llm: {
         model_name: 'gpt-35-turbo-16k',
         model_params: {}
       }
@@ -55,7 +55,7 @@ expectType<string | undefined>(
       templatingConfig: {
         template: [{ role: 'user', content: 'Hello!' }]
       },
-      llmConfig: {
+      llm: {
         model_name: 'gpt-35-turbo-16k',
         model_params: {}
       }
@@ -69,7 +69,7 @@ expectType<TokenUsage>(
       templatingConfig: {
         template: [{ role: 'user', content: 'Hello!' }]
       },
-      llmConfig: {
+      llm: {
         model_name: 'gpt-35-turbo-16k',
         model_params: {}
       }
@@ -85,11 +85,11 @@ expectType<Promise<OrchestrationResponse>>(
     templatingConfig: {
       template: [{ role: 'user', content: 'Hello!' }]
     },
-    llmConfig: {
+    llm: {
       model_name: 'gpt-35-turbo-16k',
       model_params: { max_tokens: 50, temperature: 0.1 }
     },
-    filterConfig: {
+    filtering: {
       input: {
         filters: [
           {
@@ -152,7 +152,7 @@ expectError<any>(new OrchestrationClient({}).chatCompletion());
  */
 expectError<any>(
   new OrchestrationClient({
-    llmConfig: {
+    llm: {
       model_name: 'gpt-35-turbo-16k',
       model_params: {}
     }
@@ -167,7 +167,7 @@ expectError<any>(
     templatingConfig: {
       template: [{ role: 'user', content: 'Hello!' }]
     },
-    llmConfig: {
+    llm: {
       model_params: {}
     }
   }).chatCompletion()
@@ -181,7 +181,7 @@ expectType<Promise<OrchestrationResponse>>(
     templatingConfig: {
       template: [{ role: 'user', content: 'Hello!' }]
     },
-    llmConfig: {
+    llm: {
       model_name: 'gpt-35-turbo-16k',
       model_params: {
         max_tokens: 50,

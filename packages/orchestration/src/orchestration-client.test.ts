@@ -25,7 +25,7 @@ describe('orchestration service client', () => {
 
   it('calls chatCompletion with minimum configuration', async () => {
     const config = {
-      llmConfig: {
+      llm: {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
@@ -62,7 +62,7 @@ describe('orchestration service client', () => {
 
   it('calls chatCompletion with filter configuration supplied using convenience function', async () => {
     const config = {
-      llmConfig: {
+      llm: {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
@@ -74,7 +74,7 @@ describe('orchestration service client', () => {
           }
         ]
       },
-      filterConfig: {
+      filtering: {
         input: azureContentFilter({ Hate: 4, SelfHarm: 2 }),
         output: azureContentFilter({ Sexual: 0, Violence: 4 })
       }
@@ -107,7 +107,7 @@ describe('orchestration service client', () => {
 
   it('calls chatCompletion with filtering configuration', async () => {
     const config = {
-      llmConfig: {
+      llm: {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
@@ -119,7 +119,7 @@ describe('orchestration service client', () => {
           }
         ]
       },
-      filterConfig: {
+      filtering: {
         input: {
           filters: [
             {
@@ -170,7 +170,7 @@ describe('orchestration service client', () => {
 
   it('sends message history together with templating config', async () => {
     const config = {
-      llmConfig: {
+      llm: {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },

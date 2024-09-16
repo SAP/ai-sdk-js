@@ -60,11 +60,11 @@ export function constructCompletionPostRequest(
     orchestration_config: {
       module_configurations: {
         templating_module_config: {
-          template: config.templatingConfig.template
+          template: config.templating.template
         },
-        llm_module_config: config.llmConfig,
-        ...(Object.keys(config?.filterConfig || {}).length && {
-          filtering_module_config: config.filterConfig
+        llm_module_config: config.llm,
+        ...(Object.keys(config?.filtering || {}).length && {
+          filtering_module_config: config.filtering
         })
       }
     },
