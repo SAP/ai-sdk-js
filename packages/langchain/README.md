@@ -1,4 +1,4 @@
-# @sap-ai-sdk/langchain
+# @sap-ai-sdk/LangChain
 
 This package contains Langchain compliant models, based on the @sap-ai-sdk clients.
 
@@ -21,9 +21,9 @@ $ npm install @langchain/openai // if you want to use OpenAI models
 
 ## Usage
 
-All client's comply with [Langchain's interface](https://python.langchain.com/v0.2/api_reference/openai/chat_models/langchain_openai.chat_models.azure.AzureChatOpenAI.html#langchain_openai.chat_models.azure.AzureChatOpenAI), therefore you should be able to use them as per usual.
+All clients comply with [LangChain's interface](https://python.langchain.com/v0.2/api_reference/openai/chat_models/langchain_openai.chat_models.azure.AzureChatOpenAI.html#langchain_openai.chat_models.azure.AzureChatOpenAI).
 
-The only difference is in the initialization of the client, where you have th option to pass either:
+To initialize the client, you can pass either:
 
 ```ts
     modelName: string,
@@ -32,7 +32,7 @@ The only difference is in the initialization of the client, where you have th op
     ...others
 ```
 
-or
+or alternatively:
 
 ```ts
     deploymentId: string,
@@ -40,20 +40,19 @@ or
     ...others
 ```
 
-If you pass API keys they are ignored, since you're not inteded to call the vendor's endpoints directly.
+If you pass API keys, they are ignored, as it is not intended to call the vendor's endpoints directly.
 Instead, the credentials in the binding are used to call SAP's LLM Proxy.
 
 ### OpenAI
 
-We offer two types of clients for OpenAI models.
-Currenty these are chat and embedding models.
+We offer two types of clients for OpenAI models: chat and embedding.
 
-All clients assume the same set of default values as [Langchain's default OpenAI client](https://www.npmjs.com/package/@langchain/openai) does.
+All clients assume the same set of default values as [LangChain's default OpenAI client](https://www.npmjs.com/package/@langchain/openai) does.
 
 #### Chat
 
 There are two common APIs, `.invoke()` for simple text completion and `.generate()` for chat completion.
-You can also combine them with the usual Langchain functionality, e.g. prompt templates.
+You can also combine them with the usual LangChain functionality, e.g. prompt templates.
 
 A simple text completion might look like:
 

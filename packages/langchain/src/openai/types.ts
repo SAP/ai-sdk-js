@@ -13,7 +13,7 @@ import type {
 import type { ConfigurationOptions } from '@sap-ai-sdk/ai-api';
 
 /**
- * Input for Text generation for OpenAi GPT.
+ * Input type for OpenAI Chat models.
  */
 export type OpenAiChatModelInput = Omit<
   OpenAIChatInput,
@@ -36,7 +36,7 @@ export type OpenAiChatModelInput = Omit<
   ConfigurationOptions<AzureOpenAiChatModel>;
 
 /**
- * Chat Call options.
+ * Chat model call options for OpenAI.
  */
 export interface OpenAiChatCallOptions
   extends Omit<
@@ -54,7 +54,7 @@ export interface OpenAiChatCallOptions
     > {}
 
 /**
- * Input for Text generation for OpenAi GPT.
+ * Input type for OpenAI Embedding models.
  */
 export type OpenAiEmbeddingInput = Omit<
   OpenAIEmbeddingsParams,

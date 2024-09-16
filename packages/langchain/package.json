@@ -5,9 +5,7 @@
   "license": "Apache-2.0",
   "keywords": [
     "sap-ai-sdk",
-    "gen-ai-hub",
-    "orchestration",
-    "llm-access"
+    "langchain"
   ],
   "type": "module",
   "main": "./dist/index.js",
@@ -32,7 +30,8 @@
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@langchain/core": "^0.2.30",
-    "zod-to-json-schema": "^3.23.2"
+    "zod-to-json-schema": "^3.23.2",
+    "@sap-cloud-sdk/util": "^3.20.0"
   },
   "peerDependencies": {
     "@langchain/openai": "^0.2.8"

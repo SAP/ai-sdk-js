@@ -4,7 +4,7 @@ import {
   OpenAiEmbeddingOutput,
   OpenAiEmbeddingParameters
 } from '@sap-ai-sdk/foundation-models';
-import { chunkArray } from './util.js';
+import { splitInChunks } from '@sap-cloud-sdk/util';
 import { OpenAiEmbeddingInput } from './types.js';
 
 /**
@@ -21,7 +21,7 @@ export class OpenAiEmbeddingClient extends AzureOpenAIEmbeddings {
   }
 
   override async embedDocuments(documents: string[]): Promise<number[][]> {
-    const chunkedPrompts = chunkArray(
+    const chunkedPrompts = splitInChunks<string>(
       this.stripNewLines
         ? documents.map(t => t.replace(/\n/g, ' '))
         : documents,

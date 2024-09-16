@@ -159,23 +159,6 @@ export function isStructuredToolArray(
 }
 
 /**
- * Chunk an array into smaller arrays of specified chunk size.
- * @param arr - Input array to be chunked.
- * @param chunkSize - Size of each chunk.
- * @returns Array of chunks.
- * @internal
- */
-export function chunkArray(arr: string[], chunkSize: number): string[][] {
-  return arr.reduce((chunks, elem, index) => {
-    const chunkIndex = Math.floor(index / chunkSize);
-    const chunk = chunks[chunkIndex] || [];
-
-    chunks[chunkIndex] = chunk.concat([elem]);
-    return chunks;
-  }, [] as string[][]);
-}
-
-/**
  * Maps the langchain's input interface to our own client's input interface
  * @param client The Langchain OpenAI client
  * @param options The Langchain call options

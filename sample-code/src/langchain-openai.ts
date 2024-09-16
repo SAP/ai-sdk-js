@@ -21,7 +21,5 @@ export async function embedQuery(): Promise<number[]> {
   const client = new OpenAiEmbeddingClient({
     modelName: 'text-embedding-ada-002'
   });
-  const response = await client.embedQuery('Hello, world!');
-
-  return response;
+  return client.embedQuery('Hello, world!');
 }
