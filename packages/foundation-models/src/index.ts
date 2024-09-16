@@ -24,7 +24,9 @@ export type {
   OpenAiContentFilterResultBase,
   OpenAiContentFilterDetectedResult,
   OpenAiContentFilterSeverityResult,
-  OpenAiEmbeddingOutput
+  OpenAiEmbeddingOutput,
+  AzureOpenAiChatModel,
+  AzureOpenAiEmbeddingModel
 } from './openai/index.js';
 export {
   OpenAiChatClient,
