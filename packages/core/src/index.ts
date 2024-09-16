@@ -1,6 +1,4 @@
 export type {
-  BaseLlmParametersWithDeploymentId,
-  BaseLlmParameters,
   CustomRequestConfig,
   EndpointOptions
 } from './http-client.js';
