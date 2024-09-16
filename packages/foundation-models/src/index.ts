@@ -34,4 +34,4 @@ export {
 export {
   AzureOpenAiChatModel,
   AzureOpenAiEmbeddingModel
-} from './model-types.js';
+} from './openai/model-types.js';

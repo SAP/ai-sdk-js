@@ -3,7 +3,7 @@ import {
   getDeploymentId,
   type ModelDeployment
 } from '@sap-ai-sdk/ai-api/internal.js';
-import type { AzureOpenAiEmbeddingModel } from '../model-types.js';
+import type { AzureOpenAiEmbeddingModel } from './model-types.js';
 import type {
   OpenAiEmbeddingParameters,
   OpenAiEmbeddingOutput
