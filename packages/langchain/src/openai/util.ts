@@ -143,6 +143,7 @@ export function mapBaseMessageToOpenAiChatMessage(
  * Converts a value to an array or returns undefined.
  * @param value - The value to convert.
  * @returns The value as an array, undefined if the input is falsy, or the original array if input is already an array.
+ * @internal
  */
 export function toArrayOrUndefined<T>(value?: T | T[]): T[] | undefined {
   if (value === undefined) {

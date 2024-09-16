@@ -46,13 +46,13 @@ export interface ResourceGroupConfiguration {
  */
 export type ModelDeployment<ModelNameT = string> =
   | ModelNameT
-  | ConfigurationOptions<ModelNameT>;
+  | ModelDeploymentConfig<ModelNameT>;
 
 /**
  * The configuration options for a model deployment.
  * @typeParam ModelNameT - String literal type representing the name of the model.
  */
-export type ConfigurationOptions<ModelNameT> = Xor<
+export type ModelDeploymentConfig<ModelNameT> = Xor<
   ModelConfiguration<ModelNameT>,
   DeploymentIdConfiguration
 > &

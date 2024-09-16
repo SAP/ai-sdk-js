@@ -30,9 +30,10 @@ app.get('/embedding', async (req, res) => {
   try {
     const result = await computeEmbedding();
     if (!result.length) {
-      throw new Error('No embedding vector returned');
+      res.status(500).send('No embedding vector returned.');
+    } else {
+      res.send('Number crunching success, got a nice vector.');
     }
-    res.send('Number crunching success, got a nice vector.');
   } catch (error: any) {
     console.error(error);
     res
@@ -78,9 +79,10 @@ app.get('/langchain/embedding', async (req, res) => {
   try {
     const result = await embedQuery();
     if (!result.length) {
-      throw new Error('No embedding vector returned');
+      res.status(500).send('No embedding vector returned.');
+    } else {
+      res.send('Number crunching success, got a nice vector.');
     }
-    res.send('Number crunching success, got a nice vector.');
   } catch (error: any) {
     console.error(error);
     res

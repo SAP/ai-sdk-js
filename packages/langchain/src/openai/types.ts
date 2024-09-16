@@ -10,7 +10,7 @@ import type {
   AzureOpenAiChatModel,
   AzureOpenAiEmbeddingModel
 } from '@sap-ai-sdk/core';
-import type { ConfigurationOptions } from '@sap-ai-sdk/ai-api';
+import type { ModelDeploymentConfig } from '@sap-ai-sdk/ai-api';
 
 /**
  * Input type for OpenAI Chat models.
@@ -33,7 +33,7 @@ export type OpenAiChatModelInput = Omit<
 > &
   Omit<OpenAiChatCompletionParameters, 'messages'> &
   BaseChatModelParams &
-  ConfigurationOptions<AzureOpenAiChatModel>;
+  ModelDeploymentConfig<AzureOpenAiChatModel>;
 
 /**
  * Chat model call options for OpenAI.
@@ -60,5 +60,5 @@ export type OpenAiEmbeddingInput = Omit<
   OpenAIEmbeddingsParams,
   'modelName' | 'model' | 'azureOpenAIApiKey' | 'apiKey'
 > &
-  ConfigurationOptions<AzureOpenAiEmbeddingModel> &
+  ModelDeploymentConfig<AzureOpenAiEmbeddingModel> &
   BaseLLMParams;

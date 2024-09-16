@@ -29,17 +29,17 @@ export class AzureOpenAiEmbeddingClient extends AzureOpenAIEmbeddings {
     );
     const embeddings: number[][] = [];
     for await (const promptChunk of chunkedPrompts) {
-      const resArr = await this.createEmbedding({ input: promptChunk });
-      resArr.data.forEach(res => embeddings.push(res.embedding));
+      const embeddingResponse = await this.createEmbedding({ input: promptChunk });
+      embeddingResponse.data.forEach(entry => embeddings.push(entry.embedding));
     }
     return embeddings;
   }
 
   override async embedQuery(query: string): Promise<number[]> {
-    const resArr = await this.createEmbedding({
+    const embeddingResponse = await this.createEmbedding({
       input: this.stripNewLines ? query.replace(/\n/g, ' ') : query
     });
-    return resArr.data[0].embedding;
+    return embeddingResponse.data[0].embedding;
   }
 
   private async createEmbedding(

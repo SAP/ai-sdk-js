@@ -1,6 +1,3 @@
-// mapResponseToChatResult
-// mapLangchainToAiClient
-
 import {
   OpenAiChatClient as OpenAiChatClientBase,
   OpenAiChatCompletionOutput
