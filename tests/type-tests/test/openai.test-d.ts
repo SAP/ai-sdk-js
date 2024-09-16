@@ -6,7 +6,7 @@ import {
   OpenAiChatClient,
   OpenAiEmbeddingClient,
   OpenAiChatCompletionResponse,
-  OpenAiUsage,
+  OpenAiUsage
 } from '@sap-ai-sdk/foundation-models';
 
 /**
