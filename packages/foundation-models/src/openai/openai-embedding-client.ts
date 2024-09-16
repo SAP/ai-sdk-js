@@ -1,9 +1,8 @@
-import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
+import { type CustomRequestConfig, type AzureOpenAiEmbeddingModel, executeRequest } from '@sap-ai-sdk/core';
 import {
   getDeploymentId,
   type ModelDeployment
 } from '@sap-ai-sdk/ai-api/internal.js';
-import type { AzureOpenAiEmbeddingModel } from './model-types.js';
 import type {
   OpenAiEmbeddingParameters,
   OpenAiEmbeddingOutput

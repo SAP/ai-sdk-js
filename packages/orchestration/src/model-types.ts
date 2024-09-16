@@ -1,5 +1,5 @@
 import {
-  AicoreOpensourceChatModel,
+  AiCoreOpenSourceChatModel,
   AwsBedrockChatModel,
   AzureOpenAiChatModel,
   GcpVertexAiChatModel
@@ -8,10 +8,8 @@ import {
 /**
  * Supported chat models for orchestration.
  */
-export type ChatModel = Exclude<
-  | AzureOpenAiChatModel
+export type ChatModel =
+  | Exclude<AzureOpenAiChatModel, 'gpt-4o-mini'>
   | GcpVertexAiChatModel
   | AwsBedrockChatModel
-  | AicoreOpensourceChatModel,
-  'gpt-4o-mini'
->;
+  | AiCoreOpenSourceChatModel;

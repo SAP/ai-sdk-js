@@ -1,4 +1,5 @@
-import { expectError, expectType } from 'tsd';
+import { expectType } from 'tsd';
+import { type AzureOpenAiChatModel } from '@sap-ai-sdk/core';
 import {
   OpenAiChatCompletionOutput,
   OpenAiEmbeddingOutput,
@@ -6,7 +7,6 @@ import {
   OpenAiEmbeddingClient,
   OpenAiChatCompletionResponse,
   OpenAiUsage,
-  AzureOpenAiChatModel
 } from '@sap-ai-sdk/foundation-models';
 
 /**

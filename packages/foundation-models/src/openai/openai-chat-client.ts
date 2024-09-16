@@ -1,9 +1,8 @@
-import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
+import { type CustomRequestConfig, type AzureOpenAiChatModel, executeRequest } from '@sap-ai-sdk/core';
 import {
   getDeploymentId,
   type ModelDeployment
 } from '@sap-ai-sdk/ai-api/internal.js';
-import type { AzureOpenAiChatModel } from './model-types.js';
 import type { OpenAiChatCompletionParameters } from './openai-types.js';
 import { OpenAiChatCompletionResponse } from './openai-response.js';
 

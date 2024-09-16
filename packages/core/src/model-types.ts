@@ -37,8 +37,8 @@ export type AwsBedrockChatModel = LiteralUnion<
 >;
 
 /**
- * Aicore Opensource models for chat completion.
+ * AI Core open source models for chat completion.
  */
-export type AicoreOpensourceChatModel = LiteralUnion<
+export type AiCoreOpenSourceChatModel = LiteralUnion<
   'mistralai--mixtral-8x7b-instruct-v01' | 'meta--llama3-70b-instruct'
 >;
