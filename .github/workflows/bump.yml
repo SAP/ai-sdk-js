@@ -7,9 +7,6 @@ on:
         description: Mandatory, when bumping a major version. Semver compatible version string (X.Y.Z). Must not be set for patch and minor version releases.
         required: false
 
-env:
-  INPUT_MAJOR_VERSION: ${{ inputs.majorVersion }}
-
 jobs:
   bump:
     runs-on: ubuntu-latest
@@ -18,7 +15,7 @@ jobs:
         with:
           token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           ref: 'main'
-      - uses: pnpm/action-setup@v2
+      - uses: pnpm/action-setup@v3
         with:
           version: ${{ vars.PNPM_VERSION }}
       - uses: actions/setup-node@v4
@@ -26,14 +23,13 @@ jobs:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
-      - name: Setup git
-        run: |
-          git config --global user.email "ai-sdk-js@github.com"
-          git config --global user.name "ai-sdk-js"
-      - name: Bump version
-        run: pnpm changeset version
-      - name: Remove changelog files - (TODO) Remove this step when changeset version is fixed
-        run: rm -rf **/CHANGELOG.md
-      - name: Push
-        run: |
-          git push --follow-tags
+      - uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
+        name: bump version
+        id: bump
+        with:
+          majorVersion: ${{ inputs.majorVersion }}
+      - uses: sap/cloud-sdk-js/.github/actions/commit-and-tag@main
+        name: Commit and tag
+        with:
+          version: ${{ steps.bump.outputs.version }}
+          user-name: sap-ai-sdk
