@@ -20,7 +20,7 @@
     "internal.d.ts"
   ],
   "scripts": {
-    "compile": "tsc",
+    "compile": "pnpm run generate-zod && tsc",
     "compile:cjs": "tsc -p tsconfig.cjs.json",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint \"**/*.ts\" && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
