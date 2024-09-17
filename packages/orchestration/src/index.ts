@@ -8,7 +8,6 @@ export type {
   ModuleConfigs,
   MaskingModuleConfig,
   MaskingProviderConfig,
-  // TODO: decide whether these types need to be renamed
   LLMModuleResult,
   LLMModuleConfig,
   LLMChoice,
