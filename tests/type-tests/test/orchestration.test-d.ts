@@ -3,7 +3,8 @@ import {
   OrchestrationClient,
   CompletionPostResponse,
   OrchestrationResponse,
-  TokenUsage
+  TokenUsage,
+  ChatModel
 } from '@sap-ai-sdk/orchestration';
 
 /**
@@ -191,3 +192,6 @@ expectType<Promise<OrchestrationResponse>>(
     }
   }).chatCompletion()
 );
+
+expect<ChatModel>('custom-model');
+expect<ChatModel>('gemini-1.0-pro');
