@@ -4,7 +4,6 @@ import {
   AzureOpenAiChatCompletionOutput,
   AzureOpenAiUsage
 } from './azure-openai-types.js';
-import { azureOpenAiChatCompletionOutputSchema } from './azure-openai-types-schema.js';
 
 const logger = createLogger({
   package: 'gen-ai-hub',
@@ -21,7 +20,7 @@ export class AzureOpenAiChatCompletionResponse {
   public readonly data: AzureOpenAiChatCompletionOutput;
 
   constructor(public readonly rawResponse: HttpResponse) {
-    this.data = azureOpenAiChatCompletionOutputSchema.parse(rawResponse.data);
+    this.data = rawResponse.data;
   }
 
   /**

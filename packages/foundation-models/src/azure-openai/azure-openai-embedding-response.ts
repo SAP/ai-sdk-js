@@ -1,7 +1,6 @@
 import { HttpResponse } from '@sap-cloud-sdk/http-client';
 import { createLogger } from '@sap-cloud-sdk/util';
 import { AzureOpenAiEmbeddingOutput } from './azure-openai-types.js';
-import { azureOpenAiEmbeddingOutputSchema } from './azure-openai-types-schema.js';
 
 const logger = createLogger({
   package: 'gen-ai-hub',
@@ -18,7 +17,7 @@ export class AzureOpenAiEmbeddingResponse {
   public readonly data: AzureOpenAiEmbeddingOutput;
 
   constructor(public readonly rawResponse: HttpResponse) {
-    this.data = azureOpenAiEmbeddingOutputSchema.parse(rawResponse.data);
+    this.data = rawResponse.data;
   }
 
   /**

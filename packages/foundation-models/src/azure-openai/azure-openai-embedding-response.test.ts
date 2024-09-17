@@ -1,9 +1,9 @@
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
-import { AzureOpenAiChatCompletionOutput } from './azure-openai-types.js';
 import { AzureOpenAiEmbeddingResponse } from './azure-openai-embedding-response.js';
+import { azureOpenAiEmbeddingOutputSchema } from './azure-openai-types-schema.js';
 
 describe('Azure OpenAI embedding response', () => {
-  const mockResponse = parseMockResponse<AzureOpenAiChatCompletionOutput>(
+  const mockResponse = parseMockResponse<AzureOpenAiEmbeddingResponse>(
     'foundation-models',
     'azure-openai-embeddings-success-response.json'
   );
@@ -16,6 +16,7 @@ describe('Azure OpenAI embedding response', () => {
   const response = new AzureOpenAiEmbeddingResponse(rawResponse);
 
   it('should return the embedding response', () => {
-    expect(response.data).toStrictEqual(mockResponse);
+    const data = azureOpenAiEmbeddingOutputSchema.parse(response.data);
+    expect(data).toStrictEqual(mockResponse);
   });
 });
