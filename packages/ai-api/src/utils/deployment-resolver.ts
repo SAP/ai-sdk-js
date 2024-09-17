@@ -53,7 +53,7 @@ export type ModelDeployment<ModelNameT = string> =
  * @param modelDeployment - Configuration to check.
  * @returns `true` if the configuration is a deployment ID configuration, `false` otherwise.
  */
-function isDeploymentIdConfiguration(
+function isDeploymentIdConfig(
   modelDeployment: ModelDeployment
 ): modelDeployment is DeploymentIdConfig {
   return (
@@ -155,7 +155,7 @@ export async function getDeploymentId(
   modelDeployment: ModelDeployment,
   executableId: string
 ): Promise<string> {
-  if (isDeploymentIdConfiguration(modelDeployment)) {
+  if (isDeploymentIdConfig(modelDeployment)) {
     return modelDeployment.deploymentId;
   }
 
