@@ -8,9 +8,8 @@ export type {
   ModuleConfigs,
   MaskingModuleConfig,
   MaskingProviderConfig,
-  LLMModuleResult,
-  LLMModuleConfig,
-  LLMChoice,
+  LlmModuleResult,
+  LlmChoice,
   GroundingModuleConfig,
   GroundingFilter,
   GenericModuleResult,
@@ -18,15 +17,15 @@ export type {
   FilteringConfig,
   FilterConfig,
   ErrorResponse,
-  DPIEntities,
-  DPIEntityConfig,
-  DPIConfig,
+  DpiEntities,
+  DpiEntityConfig,
+  DpiConfig,
   CompletionPostRequest,
   ChatMessage,
   AzureThreshold,
   AzureContentSafety,
   AzureContentSafetyFilterConfig
-} from './client/api/index.js';
+} from './client/api/schema/index.js';
 
 export type {
   OrchestrationModuleConfig,
