@@ -9,7 +9,6 @@ export type {
   MaskingModuleConfig,
   MaskingProviderConfig,
   LlmModuleResult,
-  LlmModuleConfig,
   LlmChoice,
   GroundingModuleConfig,
   GroundingFilter,

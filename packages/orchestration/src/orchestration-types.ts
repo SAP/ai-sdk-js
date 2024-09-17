@@ -2,7 +2,7 @@ import { ChatModel } from './model-types.js';
 import {
   ChatMessages,
   FilteringModuleConfig,
-  LlmModuleConfig,
+  LlmModuleConfig as OriginalLlmModuleConfig,
   TemplatingModuleConfig
 } from './client/api/schema/index.js';
 
@@ -22,9 +22,9 @@ export interface Prompt {
 }
 
 /**
- * LLMModule configuration.
+ * LLM module configuration.
  */
-export type LlmConfig = LlmModuleConfig & {
+export type LlmModuleConfig = OriginalLlmModuleConfig & {
   /** */
   model_name: ChatModel;
 };

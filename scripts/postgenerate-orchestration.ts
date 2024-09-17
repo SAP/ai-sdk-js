@@ -1,14 +1,15 @@
 /* eslint-disable no-console */
 import { resolve } from 'node:path';
+import { camelCase, pascalCase } from '@sap-cloud-sdk/util';
 import { transformFilesInDirectory } from './util.js';
 
-const correctedNames = [
-  ['LLMModuleResult', 'LlmModuleResult'],
-  ['LLMModuleConfig', 'LlmModuleConfig'],
-  ['LLMChoice', 'LlmChoice'],
-  ['DPIEntities', 'DpiEntities'],
-  ['DPIEntityConfig', 'DpiEntityConfig'],
-  ['DPIConfig', 'DpiConfig']
+const namesToCorrect = [
+  'LLMModuleResult',
+  'LLMModuleConfig',
+  'LLMChoice',
+  'DPIEntities',
+  'DPIEntityConfig',
+  'DPIConfig'
 ];
 
 // Entry point: Get the root directory from command-line arguments
@@ -20,9 +21,12 @@ if (!rootDir) {
 }
 
 transformFilesInDirectory(resolve(rootDir), file =>
-  correctedNames.reduce(
-    (newFile, [wrongName, correctName]) =>
-      newFile.replace(new RegExp(`\\b${wrongName}\\b`, 'g'), correctName),
+  namesToCorrect.reduce(
+    (newFile, wrongName) =>
+      newFile.replace(
+        new RegExp(`\\b${wrongName}\\b`, 'g'),
+        pascalCase(camelCase(wrongName))
+      ),
     file
   )
 )
