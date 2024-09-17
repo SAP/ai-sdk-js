@@ -1,4 +1,4 @@
-import { ChatModel } from '@sap-ai-sdk/core';
+import { ChatModel } from './model-types.js';
 import {
   ChatMessages,
   FilteringModuleConfig,

@@ -1,14 +1,11 @@
-import {
-  type CustomRequestConfig,
-  type AzureOpenAiEmbeddingModel,
-  executeRequest
-} from '@sap-ai-sdk/core';
+import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
 import {
   getDeploymentId,
   type ModelDeployment
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { AzureOpenAiEmbeddingResponse } from './azure-openai-embedding-response.js';
 import type { AzureOpenAiEmbeddingParameters } from './azure-openai-types.js';
+import type { AzureOpenAiEmbeddingModel } from './model-types.js';
 
 const apiVersion = '2024-02-01';
 

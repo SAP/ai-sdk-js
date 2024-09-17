@@ -1,5 +1,6 @@
 import { expectType } from 'tsd';
 import {
+  type AzureOpenAiChatModel,
   AzureOpenAiChatCompletionOutput,
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient,
@@ -129,3 +130,6 @@ expectType<Promise<AzureOpenAiEmbeddingResponse>>(
     }
   )
 );
+
+expect<AzureOpenAiChatModel>('custom-model');
+expect<AzureOpenAiChatModel>('gpt-4-32k');
