@@ -1,41 +1,35 @@
 /* eslint-disable no-console */
-import * as fs from 'fs/promises';
-import * as path from 'path';
-
-// Function to read a file and return its contents
-async function readFile(filePath: string): Promise<string> {
-  return fs.readFile(filePath, 'utf-8');
-}
-
-// Function to write data to a file
-async function writeFile(filePath: string, data: string): Promise<void> {
-  await fs.writeFile(filePath, data, 'utf-8');
-}
+import { readdir, stat } from 'node:fs/promises';
+import { join, basename, resolve } from 'node:path';
+import { transformFile } from './util.js';
 
 async function processApiFile(filePath: string) {
-    const content = await readFile(filePath);
-    const updatedContent = content.replace(/import \{ OpenApiRequestBuilder \} from '@sap-cloud-sdk\/openapi';/g, "import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';");
-  await writeFile(filePath, updatedContent);
+  return transformFile(filePath, file =>
+    file.replace(
+      /import \{ OpenApiRequestBuilder \} from '@sap-cloud-sdk\/openapi';/g,
+      "import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';"
+    )
+  );
 }
 
 // Function to recursively traverse the directory and apply transformations
 async function traverseDirectory(dirPath: string): Promise<void> {
-  const files = await fs.readdir(dirPath);
+  const files = await readdir(dirPath);
 
   for (const file of files) {
-    const filePath = path.join(dirPath, file);
+    const filePath = join(dirPath, file);
 
     try {
-        const stat = await fs.stat(filePath);
+      const { isDirectory, isFile } = await stat(filePath);
 
-        if (stat.isDirectory() && path.basename(filePath) !== 'schema') {
-          await traverseDirectory(filePath); // Recursive traversal for directories
-        } else if (stat.isFile() && file !== 'index.ts') {
-          await processApiFile(filePath); // Process files named 'index.ts'
-        }
-      } catch (err) {
-        console.error(`Error processing ${filePath}:`, err);
+      if (isDirectory() && basename(filePath) !== 'schema') {
+        await traverseDirectory(filePath); // Recursive traversal for directories
+      } else if (isFile() && file !== 'index.ts') {
+        await processApiFile(filePath); // Process files named 'index.ts'
       }
+    } catch (err) {
+      console.error(`Error processing ${filePath}:`, err);
+    }
   }
 }
 
@@ -47,6 +41,6 @@ if (!rootDir) {
   process.exit(1);
 }
 
-traverseDirectory(path.resolve(rootDir))
+traverseDirectory(resolve(rootDir))
   .then(() => console.log('All files processed successfully.'))
   .catch(err => console.error('Error processing files:', err));
