@@ -41,7 +41,7 @@ export class AzureOpenAiChatCompletionResponse {
   }
 
   /**
-   * Parses the OpenAI response and returns the content.
+   * Parses the Azure OpenAI response and returns the content.
    * @param choiceIndex - The index of the choice to parse.
    * @returns The message content.
    */
