@@ -52,7 +52,7 @@ export function mapToolToOpenAiTool(
 /**
  * Maps a {@link BaseMessage} to OpenAI's message role.
  * @param message - The message to map.
- * @returns The OpenAI meessage Role.
+ * @returns The OpenAI message Role.
  * @internal
  */
 export function mapBaseMessageToRole(
@@ -187,8 +187,6 @@ export function mapLangchainToAiClient(
     logit_bias: client.logitBias,
     n: client.n,
     stop: options?.stop ?? client.stop,
-    presence_penalty: client.presencePenalty,
-    frequency_penalty: client.frequencyPenalty,
     functions: isStructuredToolArray(options?.functions)
       ? options?.functions.map(mapToolToOpenAiFunction)
       : options?.functions,

@@ -1,46 +1,35 @@
-import { AzureOpenAIEmbeddings } from '@langchain/openai';
 import {
   OpenAiEmbeddingClient as OpenAiEmbeddingClientBase,
   OpenAiEmbeddingOutput,
   OpenAiEmbeddingParameters
 } from '@sap-ai-sdk/foundation-models';
-import { splitInChunks } from '@sap-cloud-sdk/util';
+import { Embeddings } from '@langchain/core/embeddings';
 import { OpenAiEmbeddingInput } from './types.js';
 
 /**
  * OpenAI GPT Language Model Wrapper to embed texts.
  */
-export class AzureOpenAiEmbeddingClient extends AzureOpenAIEmbeddings {
-  private btpOpenAiClient: OpenAiEmbeddingClientBase;
+export class AzureOpenAiEmbeddingClient extends Embeddings {
+  private openAiEmbeddingClient: OpenAiEmbeddingClientBase;
 
   constructor(fields: OpenAiEmbeddingInput) {
-    // overrides the apikey value as it is not applicable in BTP
-    super({ ...fields, apiKey: 'dummy', azureOpenAIApiKey: undefined });
+    super(fields);
 
-    this.btpOpenAiClient = new OpenAiEmbeddingClientBase({ ...fields });
+    this.openAiEmbeddingClient = new OpenAiEmbeddingClientBase(fields);
   }
 
   override async embedDocuments(documents: string[]): Promise<number[][]> {
-    const chunkedPrompts = splitInChunks<string>(
-      this.stripNewLines
-        ? documents.map(t => t.replace(/\n/g, ' '))
-        : documents,
-      this.batchSize
+    return Promise.all(
+      documents
+        .map(async document => (await this.createEmbedding({ input: document })).data
+          .map(embeddingResponse => embeddingResponse.embedding)
+          .flat()
+        )
     );
-    const embeddings: number[][] = [];
-    for await (const promptChunk of chunkedPrompts) {
-      const embeddingResponse = await this.createEmbedding({
-        input: promptChunk
-      });
-      embeddingResponse.data.forEach(entry => embeddings.push(entry.embedding));
-    }
-    return embeddings;
   }
 
-  override async embedQuery(query: string): Promise<number[]> {
-    const embeddingResponse = await this.createEmbedding({
-      input: this.stripNewLines ? query.replace(/\n/g, ' ') : query
-    });
+  override async embedQuery(input: string): Promise<number[]> {
+    const embeddingResponse = await this.createEmbedding({ input });
     return embeddingResponse.data[0].embedding;
   }
 
@@ -48,7 +37,7 @@ export class AzureOpenAiEmbeddingClient extends AzureOpenAIEmbeddings {
     query: OpenAiEmbeddingParameters
   ): Promise<OpenAiEmbeddingOutput> {
     return this.caller.callWithOptions({}, () =>
-      this.btpOpenAiClient.run(query)
+      this.openAiEmbeddingClient.run(query)
     );
   }
 }

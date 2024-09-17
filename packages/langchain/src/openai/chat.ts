@@ -1,49 +1,31 @@
 import { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import { BaseMessage } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
-import { AzureChatOpenAI, AzureOpenAI } from '@langchain/openai';
 import { OpenAiChatClient as OpenAiChatClientBase } from '@sap-ai-sdk/foundation-models';
+import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import {
   mapLangchainToAiClient,
-  mapResponseToChatResult,
-  toArrayOrUndefined
+  mapResponseToChatResult
 } from './util.js';
 import type { OpenAiChatModelInput, OpenAiChatCallOptions } from './types.js';
 
 /**
  * OpenAI Language Model Wrapper to generate texts.
  */
-export class AzureOpenAiChatClient extends AzureChatOpenAI {
+export class AzureOpenAiChatClient extends BaseChatModel {
   declare CallOptions: OpenAiChatCallOptions;
   private openAiChatClient: OpenAiChatClientBase;
-
   constructor(fields: OpenAiChatModelInput) {
-    const defaultValues = new AzureOpenAI({ apiKey: 'dummy' });
-    const stop = toArrayOrUndefined<string>(fields.stop);
-    super({
-      ...defaultValues,
-      ...fields,
-      stop,
-      // overrides the apikey values as they are not applicable for BTP
-      azureOpenAIApiKey: undefined,
-      openAIApiKey: undefined
-    });
+    super(fields);
+    this.openAiChatClient = new OpenAiChatClientBase(fields);
+  }
 
-    this.openAiChatClient = new OpenAiChatClientBase({ ...fields });
+  _llmType(): string {
+    return 'azure_openai';
   }
 
   override get callKeys(): (keyof OpenAiChatCallOptions)[] {
     return [...(super.callKeys as (keyof OpenAiChatCallOptions)[])];
-  }
-
-  override get lc_secrets(): { [key: string]: string } | undefined {
-    // overrides default keys as they are not applicable for BTP
-    return {};
-  }
-
-  override get lc_aliases(): Record<string, string> {
-    // overrides default keys as they are not applicable for BTP
-    return {};
   }
 
   override async _generate(

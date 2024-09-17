@@ -17,7 +17,7 @@ $ npm install @langchain/openai // if you want to use OpenAI models
 
 ## Usage
 
-All clients comply with [LangChain's interface](https://python.langchain.com/v0.2/api_reference/openai/chat_models/langchain_openai.chat_models.azure.AzureChatOpenAI.html#langchain_openai.chat_models.azure.AzureChatOpenAI).
+All clients comply with [LangChain's interface](https://js.langchain.com/docs/introduction).
 
 To initialize the client, you can pass either:
 

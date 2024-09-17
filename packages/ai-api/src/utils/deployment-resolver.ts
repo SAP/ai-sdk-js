@@ -1,4 +1,3 @@
-import { Xor } from '@sap-cloud-sdk/util';
 import {
   type AiDeployment,
   DeploymentApi
@@ -46,17 +45,8 @@ export interface ResourceGroupConfiguration {
  */
 export type ModelDeployment<ModelNameT = string> =
   | ModelNameT
-  | ModelDeploymentConfig<ModelNameT>;
-
-/**
- * The configuration options for a model deployment.
- * @typeParam ModelNameT - String literal type representing the name of the model.
- */
-export type ModelDeploymentConfig<ModelNameT> = Xor<
-  ModelConfiguration<ModelNameT>,
-  DeploymentIdConfiguration
-> &
-  ResourceGroupConfiguration;
+  | ((ModelConfiguration<ModelNameT> | DeploymentIdConfiguration) &
+      ResourceGroupConfiguration);
 
 /**
  * Type guard to check if the given deployment configuration is a deployment ID configuration.

@@ -5,5 +5,4 @@ export type {
   DeploymentIdConfiguration,
   ModelConfiguration,
   ResourceGroupConfiguration,
-  ModelDeploymentConfig
 } from './utils/index.js';
