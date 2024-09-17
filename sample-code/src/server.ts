@@ -3,7 +3,7 @@ import express from 'express';
 import {
   chatCompletion,
   computeEmbedding
-} from './foundation-models-openai.js';
+} from './foundation-models-azure-openai.js';
 import { orchestrationCompletion } from './orchestration.js';
 import { getDeployments } from './ai-api.js';
 
