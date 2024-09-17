@@ -30,11 +30,14 @@ describe('constructCompletionPostRequest()', () => {
 
   // TODO: Adapt the test after Cloud SDK fix for: https://github.com/SAP/cloud-sdk-backlog/issues/1234
   it('with model configuration and empty template', async () => {
-    const config = { ...defaultConfig, templatingConfig: { template: [] } };
+    const config: OrchestrationModuleConfig = {
+      ...defaultConfig,
+      templating: { template: [] }
+    };
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: config.templatingConfig,
+          templating_module_config: config.templating,
           llm_module_config: config.llm
         }
       }
@@ -45,9 +48,9 @@ describe('constructCompletionPostRequest()', () => {
   });
 
   it('with model configuration, prompt template and template params', async () => {
-    const config = {
+    const config: OrchestrationModuleConfig = {
       ...defaultConfig,
-      templatingConfig: {
+      templating: {
         template: [
           {
             role: 'user',
@@ -60,7 +63,7 @@ describe('constructCompletionPostRequest()', () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: config.templatingConfig,
+          templating_module_config: config.templating,
           llm_module_config: config.llm
         }
       },
@@ -72,9 +75,9 @@ describe('constructCompletionPostRequest()', () => {
   });
 
   it('with model configuration, prompt template and empty template params', async () => {
-    const config = {
+    const config: OrchestrationModuleConfig = {
       ...defaultConfig,
-      templatingConfig: {
+      templating: {
         template: [
           {
             role: 'user',
@@ -87,7 +90,7 @@ describe('constructCompletionPostRequest()', () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: config.templatingConfig,
+          templating_module_config: config.templating,
           llm_module_config: config.llm
         }
       },
@@ -99,7 +102,7 @@ describe('constructCompletionPostRequest()', () => {
   });
 
   it('with model name, empty model parameters and prompt template', async () => {
-    const config = {
+    const config: OrchestrationModuleConfig = {
       ...defaultConfig,
       llm: {
         model_name: 'gpt-35-turbo-16k',
@@ -121,9 +124,9 @@ describe('constructCompletionPostRequest()', () => {
   });
 
   it('with model configuration, prompt template and message history', async () => {
-    const config = {
+    const config: OrchestrationModuleConfig = {
       ...defaultConfig,
-      templatingConfig: {
+      templating: {
         template: [{ role: 'user', content: "What's my name?" }]
       }
     };
@@ -146,7 +149,7 @@ describe('constructCompletionPostRequest()', () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: config.templatingConfig,
+          templating_module_config: config.templating,
           llm_module_config: config.llm
         }
       },
@@ -158,7 +161,7 @@ describe('constructCompletionPostRequest()', () => {
   });
 
   it('with model configuration, prompt template and filter configuration', async () => {
-    const config = {
+    const config: OrchestrationModuleConfig = {
       ...defaultConfig,
       filtering: {
         input: azureContentFilter({ Hate: 4, SelfHarm: 0 })
@@ -180,7 +183,10 @@ describe('constructCompletionPostRequest()', () => {
 
   // TODO: Adapt the test after Cloud SDK fix for: https://github.com/SAP/cloud-sdk-backlog/issues/1234
   it('with model configuration, prompt template empty filter configuration', async () => {
-    const config = { ...defaultConfig, filtering: {} };
+    const config: OrchestrationModuleConfig = {
+      ...defaultConfig,
+      filtering: {}
+    };
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
