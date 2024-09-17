@@ -32,5 +32,6 @@ export type {
 export {
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient,
-  AzureOpenAiChatCompletionResponse
+  AzureOpenAiChatCompletionResponse,
+  AzureOpenAiEmbeddingResponse
 } from './azure-openai/index.js';

@@ -3,11 +3,9 @@ import {
   getDeploymentId,
   type ModelDeployment
 } from '@sap-ai-sdk/ai-api/internal.js';
+import { AzureOpenAiEmbeddingResponse } from './azure-openai-embedding-response.js';
+import type { AzureOpenAiEmbeddingParameters } from './azure-openai-types.js';
 import type { AzureOpenAiEmbeddingModel } from './model-types.js';
-import type {
-  AzureOpenAiEmbeddingParameters,
-  AzureOpenAiEmbeddingOutput
-} from './azure-openai-types.js';
 
 const apiVersion = '2024-02-01';
 
@@ -19,6 +17,7 @@ export class AzureOpenAiEmbeddingClient {
    * Creates an instance of the Azure OpenAI embedding client.
    * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
    */
+
   constructor(
     private modelDeployment: ModelDeployment<AzureOpenAiEmbeddingModel>
   ) {}
@@ -32,7 +31,7 @@ export class AzureOpenAiEmbeddingClient {
   async run(
     data: AzureOpenAiEmbeddingParameters,
     requestConfig?: CustomRequestConfig
-  ): Promise<AzureOpenAiEmbeddingOutput> {
+  ): Promise<AzureOpenAiEmbeddingResponse> {
     const deploymentId = await getDeploymentId(
       this.modelDeployment,
       'azure-openai'
@@ -42,6 +41,6 @@ export class AzureOpenAiEmbeddingClient {
       data,
       requestConfig
     );
-    return response.data;
+    return new AzureOpenAiEmbeddingResponse(response);
   }
 }
