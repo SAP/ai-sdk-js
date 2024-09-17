@@ -138,9 +138,6 @@ importers:
       '@sap-cloud-sdk/util':
         specifier: ^3.20.0
         version: 3.20.0
-      zod:
-        specifier: ^3.23.8
-        version: 3.23.8
     devDependencies:
       '@sap-cloud-sdk/openapi-generator':
         specifier: ^3.20.0
@@ -154,6 +151,9 @@ importers:
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
 
   packages/orchestration:
     dependencies:
