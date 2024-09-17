@@ -11,7 +11,7 @@ import {
  */
 expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient({
-    templatingConfig: {
+    templating: {
       template: [{ role: 'user', content: 'Hello!' }]
     },
     llm: {
@@ -24,7 +24,7 @@ expectType<Promise<OrchestrationResponse>>(
 expectType<CompletionPostResponse>(
   (
     await new OrchestrationClient({
-      templatingConfig: {
+      templating: {
         template: [{ role: 'user', content: 'Hello!' }]
       },
       llm: {
@@ -38,7 +38,7 @@ expectType<CompletionPostResponse>(
 expectType<string | undefined>(
   (
     await new OrchestrationClient({
-      templatingConfig: {
+      templating: {
         template: [{ role: 'user', content: 'Hello!' }]
       },
       llm: {
@@ -52,7 +52,7 @@ expectType<string | undefined>(
 expectType<string | undefined>(
   (
     await new OrchestrationClient({
-      templatingConfig: {
+      templating: {
         template: [{ role: 'user', content: 'Hello!' }]
       },
       llm: {
@@ -66,7 +66,7 @@ expectType<string | undefined>(
 expectType<TokenUsage>(
   (
     await new OrchestrationClient({
-      templatingConfig: {
+      templating: {
         template: [{ role: 'user', content: 'Hello!' }]
       },
       llm: {
@@ -82,7 +82,7 @@ expectType<TokenUsage>(
  */
 expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient({
-    templatingConfig: {
+    templating: {
       template: [{ role: 'user', content: 'Hello!' }]
     },
     llm: {
@@ -164,7 +164,7 @@ expectError<any>(
  */
 expectError<any>(
   new OrchestrationClient({
-    templatingConfig: {
+    templating: {
       template: [{ role: 'user', content: 'Hello!' }]
     },
     llm: {
@@ -178,7 +178,7 @@ expectError<any>(
  */
 expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient({
-    templatingConfig: {
+    templating: {
       template: [{ role: 'user', content: 'Hello!' }]
     },
     llm: {
