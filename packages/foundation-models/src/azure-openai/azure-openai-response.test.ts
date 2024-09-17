@@ -18,7 +18,9 @@ describe('Azure OpenAI response', () => {
   );
 
   it('should initialize with raw response', () => {
-    expect(azureOpenAiChatClientResponse.rawResponse).toStrictEqual(rawResponse);
+    expect(azureOpenAiChatClientResponse.rawResponse).toStrictEqual(
+      rawResponse
+    );
   });
 
   it('should return the completion response', () => {
