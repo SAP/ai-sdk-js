@@ -7,7 +7,6 @@ import {
   DeploymentApi,
   ScenarioApi
 } from '@sap-ai-sdk/ai-api';
-import _ from 'lodash';
 
 // Pick .env file from root directory
 const __filename = fileURLToPath(import.meta.url);
@@ -44,8 +43,9 @@ describe('AI Core APIs', () => {
 
     const sanitizedState = (state: AiDeploymentList | undefined) => ({
       ...state,
-      resources: state?.resources.map(resource =>
-        _.omit(resource, ['modifiedAt'])
+      resources: state?.resources.map(
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        ({ modifiedAt, ...rest }) => rest
       )
     });
 
