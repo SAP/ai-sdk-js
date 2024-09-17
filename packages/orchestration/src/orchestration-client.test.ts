@@ -12,6 +12,7 @@ import {
 } from './orchestration-client.js';
 import { azureContentFilter } from './orchestration-filter-utility.js';
 import { OrchestrationResponse } from './orchestration-response.js';
+import { OrchestrationModuleConfig } from './orchestration-types.js';
 
 describe('orchestration service client', () => {
   beforeEach(() => {
@@ -24,7 +25,7 @@ describe('orchestration service client', () => {
   });
 
   it('calls chatCompletion with minimum configuration', async () => {
-    const config = {
+    const config: OrchestrationModuleConfig = {
       llm: {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
@@ -61,7 +62,7 @@ describe('orchestration service client', () => {
   });
 
   it('calls chatCompletion with filter configuration supplied using convenience function', async () => {
-    const config = {
+    const config: OrchestrationModuleConfig = {
       llm: {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
@@ -106,7 +107,7 @@ describe('orchestration service client', () => {
   });
 
   it('calls chatCompletion with filtering configuration', async () => {
-    const config = {
+    const config: OrchestrationModuleConfig = {
       llm: {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
@@ -169,7 +170,7 @@ describe('orchestration service client', () => {
   });
 
   it('sends message history together with templating config', async () => {
-    const config = {
+    const config: OrchestrationModuleConfig = {
       llm: {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
