@@ -1,5 +1,5 @@
 import { parseMockResponse } from '../../../test-util/mock-http';
-import { CompletionPostResponse } from './client/api';
+import { CompletionPostResponse } from './client/api/schema/index.js';
 import { OrchestrationResponse } from './orchestration-response';
 
 describe('OrchestrationResponse', () => {
