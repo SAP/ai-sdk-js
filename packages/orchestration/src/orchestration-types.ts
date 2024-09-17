@@ -38,7 +38,7 @@ export interface OrchestrationModuleConfig {
    */
   templating: TemplatingModuleConfig;
   /**
-   * Llm module configuration.
+   * LLM module configuration.
    */
   llm: LlmModuleConfig;
   /**
