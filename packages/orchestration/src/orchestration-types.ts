@@ -24,7 +24,7 @@ export interface Prompt {
 /**
  * LLMModule configuration.
  */
-export type LlmConfig = LLMModuleConfig & {
+export type LlmModuleConfig = LLMModuleConfig & {
   /** */
   model_name: ChatModel;
 };
@@ -33,17 +33,16 @@ export type LlmConfig = LLMModuleConfig & {
  * Orchestration module configuration.
  */
 export interface OrchestrationModuleConfig {
-  // TODO: remove "config" for all the configs below
   /**
-   * Templating configuration options.
+   * Templating module configuration.
    */
-  templatingConfig: TemplatingModuleConfig;
+  templating: TemplatingModuleConfig;
   /**
-   * Llm configuration options.
+   * LLM module configuration.
    */
-  llmConfig: LlmConfig;
+  llm: LlmModuleConfig;
   /**
-   * Filter configuration options.
+   * Filtering module configuration.
    */
-  filterConfig?: FilteringModuleConfig;
+  filtering?: FilteringModuleConfig;
 }

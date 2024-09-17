@@ -30,7 +30,7 @@ export type {
 
 export type {
   OrchestrationModuleConfig,
-  LlmConfig,
+  LlmModuleConfig,
   Prompt
 } from './orchestration-types.js';
 
