@@ -3,34 +3,53 @@ import { BaseMessage } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
 import { OpenAiChatClient as OpenAiChatClientBase } from '@sap-ai-sdk/foundation-models';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
+import { AzureOpenAiChatModel } from '@sap-ai-sdk/core';
 import {
   mapLangchainToAiClient,
   mapResponseToChatResult
 } from './util.js';
-import type { OpenAiChatModelInput, OpenAiChatCallOptions } from './types.js';
+import type { OpenAiChatCallOptions, OpenAiChatModelInput } from './types.js';
 
 /**
  * OpenAI Language Model Wrapper to generate texts.
  */
-export class AzureOpenAiChatClient extends BaseChatModel {
-  declare CallOptions: OpenAiChatCallOptions;
+export class AzureOpenAiChatClient extends BaseChatModel<OpenAiChatCallOptions> implements OpenAiChatModelInput {
+  modelName: AzureOpenAiChatModel;
+  modelVersion?: string;
+  resourceGroup?: string;
+  temperature?: number;
+  top_p?: number;
+  logit_bias?: Record<string, unknown>;
+  user?: string;
+  n?: number;
+  presence_penalty?: number;
+  frequency_penalty?: number;
+  stop?: string | string[];
   private openAiChatClient: OpenAiChatClientBase;
+
   constructor(fields: OpenAiChatModelInput) {
     super(fields);
     this.openAiChatClient = new OpenAiChatClientBase(fields);
+    this.modelName = fields.modelName;
+    this.modelVersion = fields.modelVersion;
+    this.resourceGroup = fields.resourceGroup;
+    this.temperature = fields.temperature;
+    this.top_p = fields.top_p;
+    this.logit_bias = fields.logit_bias;
+    this.user = fields.user;
+    this.n = fields.n;
+    this.stop = fields.stop;
+    this.presence_penalty = fields.presence_penalty;
+    this.frequency_penalty = fields.frequency_penalty;
   }
 
   _llmType(): string {
     return 'azure_openai';
   }
 
-  override get callKeys(): (keyof OpenAiChatCallOptions)[] {
-    return [...(super.callKeys as (keyof OpenAiChatCallOptions)[])];
-  }
-
   override async _generate(
     messages: BaseMessage[],
-    options: this['CallOptions'],
+    options: typeof this.ParsedCallOptions,
     runManager?: CallbackManagerForLLMRun
   ): Promise<ChatResult> {
     const res = await this.caller.callWithOptions(

@@ -181,10 +181,10 @@ export function mapLangchainToAiClient(
 ): OpenAiChatCompletionParameters {
   return {
     messages: messages.map(mapBaseMessageToOpenAiChatMessage),
-    max_tokens: client.maxTokens === -1 ? undefined : client.maxTokens,
+    max_tokens: client.maxTokens === -1 ? undefined : client.max_tokens,
     temperature: client.temperature,
-    top_p: client.topP,
-    logit_bias: client.logitBias,
+    top_p: client.top_p,
+    logit_bias: client.logit_bias,
     n: client.n,
     stop: options?.stop ?? client.stop,
     functions: isStructuredToolArray(options?.functions)

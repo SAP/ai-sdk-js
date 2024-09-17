@@ -7,7 +7,7 @@ import { Embeddings } from '@langchain/core/embeddings';
 import { OpenAiEmbeddingInput } from './types.js';
 
 /**
- * OpenAI GPT Language Model Wrapper to embed texts.
+ * OpenAI GPT Embedding Model Wrapper to embed texts.
  */
 export class AzureOpenAiEmbeddingClient extends Embeddings {
   private openAiEmbeddingClient: OpenAiEmbeddingClientBase;
@@ -19,13 +19,10 @@ export class AzureOpenAiEmbeddingClient extends Embeddings {
   }
 
   override async embedDocuments(documents: string[]): Promise<number[][]> {
-    return Promise.all(
-      documents
-        .map(async document => (await this.createEmbedding({ input: document })).data
-          .map(embeddingResponse => embeddingResponse.embedding)
-          .flat()
-        )
+    const documentEmbeddings = await Promise.all(
+      documents.map(document => this.createEmbedding({ input: document }))
     );
+    return documentEmbeddings.map(embedding => embedding.data.map(entry => entry.embedding)).flat();
   }
 
   override async embedQuery(input: string): Promise<number[]> {
