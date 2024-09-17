@@ -26,6 +26,7 @@
     "lint": "eslint \"**/*.ts\" && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/api.yaml -o ./src/client && pnpm lint:fix",
+    "postgenerate": "node --no-warnings --loader ts-node/esm ../../scripts/postgenerate-orchestration.ts ./src/client/api",
     "check:public-api": "node --loader ts-node/esm ../../scripts/check-public-api-cli.ts"
   },
   "dependencies": {
