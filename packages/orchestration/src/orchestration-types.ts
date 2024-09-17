@@ -2,9 +2,9 @@ import { ChatModel } from '@sap-ai-sdk/core';
 import {
   ChatMessages,
   FilteringModuleConfig,
-  LLMModuleConfig,
+  LlmModuleConfig,
   TemplatingModuleConfig
-} from './client/api/index.js';
+} from './client/api/schema/index.js';
 
 /**
  * Prompt configuration.
@@ -24,7 +24,7 @@ export interface Prompt {
 /**
  * LLMModule configuration.
  */
-export type LlmConfig = LLMModuleConfig & {
+export type LlmConfig = LlmModuleConfig & {
   /** */
   model_name: ChatModel;
 };

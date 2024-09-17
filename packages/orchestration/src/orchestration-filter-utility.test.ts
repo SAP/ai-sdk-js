@@ -1,7 +1,7 @@
 import {
   CompletionPostRequest,
   FilteringModuleConfig
-} from './client/api/index.js';
+} from './client/api/schema/index.js';
 import { constructCompletionPostRequest } from './orchestration-client.js';
 import { azureContentFilter } from './orchestration-filter-utility.js';
 import { OrchestrationModuleConfig } from './orchestration-types.js';

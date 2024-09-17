@@ -33,14 +33,6 @@ export default [
     }
   },
   {
-    files: [
-      '**/packages/orchestration/src/client/api/default-api.ts'
-    ],
-    rules: {
-      '@typescript-eslint/explicit-module-boundary-types': 'off'
-    }
-  },
-  {
     ignores: ['**/dist-cjs/**/*']
   }
 ];

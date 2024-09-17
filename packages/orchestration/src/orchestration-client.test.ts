@@ -5,7 +5,7 @@ import {
   mockInference,
   parseMockResponse
 } from '../../../test-util/mock-http.js';
-import { CompletionPostResponse } from './client/api/index.js';
+import { CompletionPostResponse } from './client/api/schema/index.js';
 import {
   constructCompletionPostRequest,
   OrchestrationClient
