@@ -4,7 +4,7 @@ import { z } from 'zod';
 /**
  * @internal
  */
-export const openAiChatSystemMessageSchema = z.object({
+export const azureOpenAiChatSystemMessageSchema = z.object({
   role: z.literal('system'),
   name: z.string().optional(),
   content: z.string()
@@ -13,7 +13,7 @@ export const openAiChatSystemMessageSchema = z.object({
 /**
  * @internal
  */
-export const openAiChatUserMessageSchema = z.object({
+export const azureOpenAiChatUserMessageSchema = z.object({
   role: z.literal('user'),
   name: z.string().optional(),
   content: z.union([
@@ -45,7 +45,7 @@ export const openAiChatUserMessageSchema = z.object({
 /**
  * @internal
  */
-export const openAiChatFunctionCallSchema = z.object({
+export const azureOpenAiChatFunctionCallSchema = z.object({
   name: z.string(),
   arguments: z.string()
 });
@@ -53,16 +53,16 @@ export const openAiChatFunctionCallSchema = z.object({
 /**
  * @internal
  */
-export const openAiChatToolCallSchema = z.object({
+export const azureOpenAiChatToolCallSchema = z.object({
   id: z.string(),
   type: z.literal('function'),
-  function: openAiChatFunctionCallSchema
+  function: azureOpenAiChatFunctionCallSchema
 });
 
 /**
  * @internal
  */
-export const openAiChatToolMessageSchema = z.object({
+export const azureOpenAiChatToolMessageSchema = z.object({
   role: z.literal('tool'),
   content: z.string(),
   tool_call_id: z.string()
@@ -71,7 +71,7 @@ export const openAiChatToolMessageSchema = z.object({
 /**
  * @internal
  */
-export const openAiChatFunctionMessageSchema = z.object({
+export const azureOpenAiChatFunctionMessageSchema = z.object({
   role: z.literal('function'),
   content: z.string().nullable(),
   name: z.string()
@@ -80,18 +80,18 @@ export const openAiChatFunctionMessageSchema = z.object({
 /**
  * @internal
  */
-export const openAiChatAssistantMessageSchema = z.object({
+export const azureOpenAiChatAssistantMessageSchema = z.object({
   role: z.literal('assistant'),
   name: z.string().optional(),
   content: z.string().optional(),
-  function_call: openAiChatFunctionCallSchema.optional(),
-  tool_calls: z.array(openAiChatToolCallSchema).optional()
+  function_call: azureOpenAiChatFunctionCallSchema.optional(),
+  tool_calls: z.array(azureOpenAiChatToolCallSchema).optional()
 });
 
 /**
  * @internal
  */
-export const openAiChatCompletionFunctionSchema = z.object({
+export const azureOpenAiChatCompletionFunctionSchema = z.object({
   name: z.string(),
   description: z.string().optional(),
   parameters: z.record(z.unknown())
@@ -100,15 +100,15 @@ export const openAiChatCompletionFunctionSchema = z.object({
 /**
  * @internal
  */
-export const openAiChatCompletionToolSchema = z.object({
+export const azureOpenAiChatCompletionToolSchema = z.object({
   type: z.literal('function'),
-  function: openAiChatCompletionFunctionSchema
+  function: azureOpenAiChatCompletionFunctionSchema
 });
 
 /**
  * @internal
  */
-export const openAiCompletionParametersSchema = z.object({
+export const azureOpenAiCompletionParametersSchema = z.object({
   max_tokens: z.number().optional(),
   temperature: z.number().optional(),
   top_p: z.number().optional(),
@@ -123,18 +123,18 @@ export const openAiCompletionParametersSchema = z.object({
 /**
  * @internal
  */
-export const openAiChatMessageSchema = z.union([
-  openAiChatSystemMessageSchema,
-  openAiChatUserMessageSchema,
-  openAiChatAssistantMessageSchema,
-  openAiChatToolMessageSchema,
-  openAiChatFunctionMessageSchema
+export const azureOpenAiChatMessageSchema = z.union([
+  azureOpenAiChatSystemMessageSchema,
+  azureOpenAiChatUserMessageSchema,
+  azureOpenAiChatAssistantMessageSchema,
+  azureOpenAiChatToolMessageSchema,
+  azureOpenAiChatFunctionMessageSchema
 ]);
 
 /**
  * @internal
  */
-export const openAiEmbeddingParametersSchema = z.object({
+export const azureOpenAiEmbeddingParametersSchema = z.object({
   input: z.union([z.array(z.string()), z.string()]),
   user: z.string().optional()
 });
@@ -142,7 +142,7 @@ export const openAiEmbeddingParametersSchema = z.object({
 /**
  * @internal
  */
-export const openAiUsageSchema = z.object({
+export const azureOpenAiUsageSchema = z.object({
   completion_tokens: z.number(),
   prompt_tokens: z.number(),
   total_tokens: z.number()
@@ -151,7 +151,7 @@ export const openAiUsageSchema = z.object({
 /**
  * @internal
  */
-export const openAiErrorBaseSchema = z.object({
+export const azureOpenAiErrorBaseSchema = z.object({
   code: z.string().optional(),
   message: z.string().optional()
 });
@@ -159,23 +159,23 @@ export const openAiErrorBaseSchema = z.object({
 /**
  * @internal
  */
-export const openAiContentFilterResultBaseSchema = z.object({
+export const azureOpenAiContentFilterResultBaseSchema = z.object({
   filtered: z.boolean()
 });
 
 /**
  * @internal
  */
-export const openAiContentFilterDetectedResultSchema =
-  openAiContentFilterResultBaseSchema.extend({
+export const azureOpenAiContentFilterDetectedResultSchema =
+  azureOpenAiContentFilterResultBaseSchema.extend({
     detected: z.boolean()
   });
 
 /**
  * @internal
  */
-export const openAiContentFilterSeverityResultSchema =
-  openAiContentFilterResultBaseSchema.extend({
+export const azureOpenAiContentFilterSeverityResultSchema =
+  azureOpenAiContentFilterResultBaseSchema.extend({
     severity: z.union([
       z.literal('safe'),
       z.literal('low'),
@@ -187,7 +187,7 @@ export const openAiContentFilterSeverityResultSchema =
 /**
  * @internal
  */
-export const openAiEmbeddingOutputSchema = z.object({
+export const azureOpenAiEmbeddingOutputSchema = z.object({
   object: z.literal('list'),
   model: z.string(),
   data: z.tuple([
@@ -206,9 +206,9 @@ export const openAiEmbeddingOutputSchema = z.object({
 /**
  * @internal
  */
-export const openAiChatCompletionParametersSchema =
-  openAiCompletionParametersSchema.extend({
-    messages: z.array(openAiChatMessageSchema),
+export const azureOpenAiChatCompletionParametersSchema =
+  azureOpenAiCompletionParametersSchema.extend({
+    messages: z.array(azureOpenAiChatMessageSchema),
     response_format: z
       .object({
         type: z
@@ -217,8 +217,8 @@ export const openAiChatCompletionParametersSchema =
       })
       .optional(),
     seed: z.number().optional(),
-    functions: z.array(openAiChatCompletionFunctionSchema).optional(),
-    tools: z.array(openAiChatCompletionToolSchema).optional(),
+    functions: z.array(azureOpenAiChatCompletionFunctionSchema).optional(),
+    tools: z.array(azureOpenAiChatCompletionToolSchema).optional(),
     tool_choice: z
       .union([
         z.literal('none'),
@@ -236,65 +236,65 @@ export const openAiChatCompletionParametersSchema =
 /**
  * @internal
  */
-export const openAiContentFilterResultsBaseSchema = z.object({
-  sexual: openAiContentFilterSeverityResultSchema.optional(),
-  violence: openAiContentFilterSeverityResultSchema.optional(),
-  hate: openAiContentFilterSeverityResultSchema.optional(),
-  self_harm: openAiContentFilterSeverityResultSchema.optional(),
-  profanity: openAiContentFilterDetectedResultSchema.optional(),
-  error: openAiErrorBaseSchema.optional()
+export const azureOpenAiContentFilterResultsBaseSchema = z.object({
+  sexual: azureOpenAiContentFilterSeverityResultSchema.optional(),
+  violence: azureOpenAiContentFilterSeverityResultSchema.optional(),
+  hate: azureOpenAiContentFilterSeverityResultSchema.optional(),
+  self_harm: azureOpenAiContentFilterSeverityResultSchema.optional(),
+  profanity: azureOpenAiContentFilterDetectedResultSchema.optional(),
+  error: azureOpenAiErrorBaseSchema.optional()
 });
 
 /**
  * @internal
  */
-export const openAiContentFilterPromptResultsSchema =
-  openAiContentFilterResultsBaseSchema.extend({
-    jailbreak: openAiContentFilterDetectedResultSchema.optional()
+export const azureOpenAiContentFilterPromptResultsSchema =
+  azureOpenAiContentFilterResultsBaseSchema.extend({
+    jailbreak: azureOpenAiContentFilterDetectedResultSchema.optional()
   });
 
 /**
  * @internal
  */
-export const openAiPromptFilterResultSchema = z.object({
+export const azureOpenAiPromptFilterResultSchema = z.object({
   prompt_index: z.number().optional(),
-  content_filter_results: openAiContentFilterPromptResultsSchema.optional()
+  content_filter_results: azureOpenAiContentFilterPromptResultsSchema.optional()
 });
 
 /**
  * @internal
  */
-export const openAiCompletionOutputSchema = z.object({
+export const azureOpenAiCompletionOutputSchema = z.object({
   created: z.number(),
   id: z.string(),
   model: z.string(),
   object: z.union([z.literal('chat.completion'), z.literal('text_completion')]),
-  usage: openAiUsageSchema,
-  prompt_filter_results: z.array(openAiPromptFilterResultSchema).optional()
+  usage: azureOpenAiUsageSchema,
+  prompt_filter_results: z.array(azureOpenAiPromptFilterResultSchema).optional()
 });
 
 /**
  * @internal
  */
-export const openAiCompletionChoiceSchema = z.object({
+export const azureOpenAiCompletionChoiceSchema = z.object({
   finish_reason: z.string().optional(),
   index: z.number(),
-  content_filter_results: openAiContentFilterPromptResultsSchema.optional()
+  content_filter_results: azureOpenAiContentFilterPromptResultsSchema.optional()
 });
 
 /**
  * @internal
  */
-export const openAiChatCompletionChoiceSchema =
-  openAiCompletionChoiceSchema.extend({
-    message: openAiChatAssistantMessageSchema
+export const azureOpenAiChatCompletionChoiceSchema =
+  azureOpenAiCompletionChoiceSchema.extend({
+    message: azureOpenAiChatAssistantMessageSchema
   });
 
 /**
  * @internal
  */
-export const openAiChatCompletionOutputSchema =
-  openAiCompletionOutputSchema.extend({
-    choices: z.array(openAiChatCompletionChoiceSchema),
+export const azureOpenAiChatCompletionOutputSchema =
+  azureOpenAiCompletionOutputSchema.extend({
+    choices: z.array(azureOpenAiChatCompletionChoiceSchema),
     system_fingerprint: z.string().nullable()
   });

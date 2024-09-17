@@ -5,18 +5,18 @@ import {
   parseMockResponse
 } from '../../../../test-util/mock-http.js';
 import {
-  OpenAiChatCompletionOutput,
-  OpenAiChatMessage
-} from './openai-types.js';
-import { OpenAiChatClient } from './openai-chat-client.js';
+  AzureOpenAiEmbeddingOutput,
+  AzureOpenAiEmbeddingParameters
+} from './azure-openai-types.js';
+import { AzureOpenAiEmbeddingClient } from './azure-openai-embedding-client.js';
 
-describe('openai chat client', () => {
-  const chatCompletionEndpoint = {
-    url: 'inference/deployments/1234/chat/completions',
+describe('Azure OpenAI embedding client', () => {
+  const embeddingsEndpoint = {
+    url: 'inference/deployments/1234/embeddings',
     apiVersion: '2024-02-01'
   };
 
-  const client = new OpenAiChatClient({ deploymentId: '1234' });
+  const client = new AzureOpenAiEmbeddingClient({ deploymentId: '1234' });
 
   beforeEach(() => {
     mockClientCredentialsGrantCall();
@@ -28,17 +28,11 @@ describe('openai chat client', () => {
 
   it('parses a successful response', async () => {
     const prompt = {
-      messages: [
-        {
-          role: 'user',
-          content: 'Where is the deepest place on earth located'
-        }
-      ] as OpenAiChatMessage[]
-    };
-
-    const mockResponse = parseMockResponse<OpenAiChatCompletionOutput>(
+      input: ['AI is fascinating']
+    } as AzureOpenAiEmbeddingParameters;
+    const mockResponse = parseMockResponse<AzureOpenAiEmbeddingOutput>(
       'foundation-models',
-      'openai-chat-completion-success-response.json'
+      'azure-openai-embeddings-success-response.json'
     );
 
     mockInference(
@@ -49,18 +43,17 @@ describe('openai chat client', () => {
         data: mockResponse,
         status: 200
       },
-      chatCompletionEndpoint
+      embeddingsEndpoint
     );
-
     const response = await client.run(prompt);
     expect(response.data).toEqual(mockResponse);
   });
 
   it('throws on bad request', async () => {
-    const prompt = { messages: [] };
+    const prompt = { input: [] };
     const mockResponse = parseMockResponse(
       'foundation-models',
-      'openai-error-response.json'
+      'azure-openai-error-response.json'
     );
 
     mockInference(
@@ -71,7 +64,7 @@ describe('openai chat client', () => {
         data: mockResponse,
         status: 400
       },
-      chatCompletionEndpoint
+      embeddingsEndpoint
     );
 
     await expect(client.run(prompt)).rejects.toThrow('status code 400');

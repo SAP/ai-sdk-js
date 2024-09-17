@@ -1,27 +1,28 @@
 import { HttpResponse } from '@sap-cloud-sdk/http-client';
 import { createLogger } from '@sap-cloud-sdk/util';
-import { OpenAiEmbeddingOutput } from './openai-types.js';
-import { openAiEmbeddingOutputSchema } from './openai-types-schema.js';
+import { AzureOpenAiEmbeddingOutput } from './azure-openai-types.js';
+import { azureOpenAiEmbeddingOutputSchema } from './azure-openai-types-schema.js';
 
 const logger = createLogger({
   package: 'gen-ai-hub',
-  messageContext: 'openai-embedding-response'
+  messageContext: 'azure-openai-embedding-response'
 });
 
 /**
- * OpenAI embedding response.
+ * Azure OpenAI embedding response.
  */
-export class OpenAiEmbeddingResponse {
+export class AzureOpenAiEmbeddingResponse {
   /**
    * The embedding response.
    */
-  public readonly data: OpenAiEmbeddingOutput;
+  public readonly data: AzureOpenAiEmbeddingOutput;
+
   constructor(public readonly rawResponse: HttpResponse) {
-    this.data = openAiEmbeddingOutputSchema.parse(rawResponse.data);
+    this.data = azureOpenAiEmbeddingOutputSchema.parse(rawResponse.data);
   }
 
   /**
-   * Parses the Open AI response and returns the embedding.
+   * Parses the Azure OpenAI response and returns the embedding.
    * @param dataIndex - The index of the data to parse.
    * @returns The message content.
    */

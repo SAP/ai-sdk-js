@@ -1,31 +1,34 @@
 import { HttpResponse } from '@sap-cloud-sdk/http-client';
 import { createLogger } from '@sap-cloud-sdk/util';
-import { OpenAiChatCompletionOutput, OpenAiUsage } from './openai-types.js';
-import { openAiChatCompletionOutputSchema } from './openai-types-schema.js';
+import {
+  AzureOpenAiChatCompletionOutput,
+  AzureOpenAiUsage
+} from './azure-openai-types.js';
+import { azureOpenAiChatCompletionOutputSchema } from './azure-openai-types-schema.js';
 
 const logger = createLogger({
   package: 'gen-ai-hub',
-  messageContext: 'openai-chat-completion-response'
+  messageContext: 'azure-openai-chat-completion-response'
 });
 
 /**
- * OpenAI chat completion response.
+ * Azure OpenAI chat completion response.
  */
-export class OpenAiChatCompletionResponse {
+export class AzureOpenAiChatCompletionResponse {
   /**
    * The chat completion response.
    */
-  public readonly data: OpenAiChatCompletionOutput;
+  public readonly data: AzureOpenAiChatCompletionOutput;
 
   constructor(public readonly rawResponse: HttpResponse) {
-    this.data = openAiChatCompletionOutputSchema.parse(rawResponse.data);
+    this.data = azureOpenAiChatCompletionOutputSchema.parse(rawResponse.data);
   }
 
   /**
    * Usage of tokens in the response.
    * @returns Token usage.
    */
-  getTokenUsage(): OpenAiUsage {
+  getTokenUsage(): AzureOpenAiUsage {
     return this.data.usage;
   }
 
@@ -40,7 +43,7 @@ export class OpenAiChatCompletionResponse {
   }
 
   /**
-   * Parses the Open AI response and returns the content.
+   * Parses the Azure OpenAI response and returns the content.
    * @param choiceIndex - The index of the choice to parse.
    * @returns The message content.
    */

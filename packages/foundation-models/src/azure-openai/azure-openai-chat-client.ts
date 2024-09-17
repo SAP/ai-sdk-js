@@ -1,49 +1,49 @@
 import {
   type CustomRequestConfig,
-  type AzureOpenAiEmbeddingModel,
+  type AzureOpenAiChatModel,
   executeRequest
 } from '@sap-ai-sdk/core';
 import {
   getDeploymentId,
   type ModelDeployment
 } from '@sap-ai-sdk/ai-api/internal.js';
-import type { OpenAiEmbeddingParameters } from './openai-types.js';
-import { OpenAiEmbeddingResponse } from './openai-embedding-response.js';
+import type { AzureOpenAiChatCompletionParameters } from './azure-openai-types.js';
+import { AzureOpenAiChatCompletionResponse } from './azure-openai-chat-completion-response.js';
 
 const apiVersion = '2024-02-01';
 
 /**
- * OpenAI client for embeddings.
+ * Azure OpenAI client for chat completion.
  */
-export class OpenAiEmbeddingClient {
+export class AzureOpenAiChatClient {
   /**
-   * Creates an instance of the OpenAI embedding client.
+   * Creates an instance of the Azure OpenAI chat client.
    * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
    */
-
-  constructor(
-    private modelDeployment: ModelDeployment<AzureOpenAiEmbeddingModel>
-  ) {}
+  constructor(private modelDeployment: ModelDeployment<AzureOpenAiChatModel>) {}
 
   /**
-   * Creates an embedding vector representing the given text.
-   * @param data - The text to embed.
+   * Creates a completion for the chat messages.
+   * @param data - The input parameters for the chat completion.
    * @param requestConfig - The request configuration.
    * @returns The completion result.
    */
   async run(
-    data: OpenAiEmbeddingParameters,
+    data: AzureOpenAiChatCompletionParameters,
     requestConfig?: CustomRequestConfig
-  ): Promise<OpenAiEmbeddingResponse> {
+  ): Promise<AzureOpenAiChatCompletionResponse> {
     const deploymentId = await getDeploymentId(
       this.modelDeployment,
       'azure-openai'
     );
     const response = await executeRequest(
-      { url: `/inference/deployments/${deploymentId}/embeddings`, apiVersion },
+      {
+        url: `/inference/deployments/${deploymentId}/chat/completions`,
+        apiVersion
+      },
       data,
       requestConfig
     );
-    return new OpenAiEmbeddingResponse(response);
+    return new AzureOpenAiChatCompletionResponse(response);
   }
 }

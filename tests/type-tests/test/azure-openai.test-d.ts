@@ -1,18 +1,18 @@
 import { expectType } from 'tsd';
 import {
-  OpenAiChatCompletionOutput,
-  OpenAiChatClient,
-  OpenAiEmbeddingClient,
-  OpenAiChatCompletionResponse,
-  OpenAiEmbeddingResponse,
-  OpenAiUsage
+  AzureOpenAiChatCompletionOutput,
+  AzureOpenAiChatClient,
+  AzureOpenAiEmbeddingClient,
+  AzureOpenAiChatCompletionResponse,
+  AzureOpenAiEmbeddingResponse,
+  AzureOpenAiUsage
 } from '@sap-ai-sdk/foundation-models';
 
 /**
  * Chat completion.
  */
-expectType<Promise<OpenAiChatCompletionResponse>>(
-  new OpenAiChatClient('gpt-4').run({
+expectType<Promise<AzureOpenAiChatCompletionResponse>>(
+  new AzureOpenAiChatClient('gpt-4').run({
     messages: [{ role: 'user', content: 'test prompt' }]
   })
 );
@@ -21,14 +21,14 @@ expectType<Promise<OpenAiChatCompletionResponse>>(
  * Chat Completion with custom model.
  */
 expectType(
-  new OpenAiChatClient('unknown').run({
+  new AzureOpenAiChatClient('unknown').run({
     messages: [{ role: 'user', content: 'test prompt' }]
   })
 );
 
-expectType<OpenAiChatCompletionOutput>(
+expectType<AzureOpenAiChatCompletionOutput>(
   (
-    await new OpenAiChatClient('gpt-4').run({
+    await new AzureOpenAiChatClient('gpt-4').run({
       messages: [{ role: 'user', content: 'test prompt' }]
     })
   ).data
@@ -36,7 +36,7 @@ expectType<OpenAiChatCompletionOutput>(
 
 expectType<string | undefined>(
   (
-    await new OpenAiChatClient('gpt-4').run({
+    await new AzureOpenAiChatClient('gpt-4').run({
       messages: [{ role: 'user', content: 'test prompt' }]
     })
   ).getContent()
@@ -44,15 +44,15 @@ expectType<string | undefined>(
 
 expectType<string | undefined>(
   (
-    await new OpenAiChatClient('gpt-4').run({
+    await new AzureOpenAiChatClient('gpt-4').run({
       messages: [{ role: 'user', content: 'test prompt' }]
     })
   ).getFinishReason()
 );
 
-expectType<OpenAiUsage>(
+expectType<AzureOpenAiUsage>(
   (
-    await new OpenAiChatClient('gpt-4').run({
+    await new AzureOpenAiChatClient('gpt-4').run({
       messages: [{ role: 'user', content: 'test prompt' }]
     })
   ).getTokenUsage()
@@ -61,8 +61,8 @@ expectType<OpenAiUsage>(
 /**
  * Chat completion with optional parameters.
  */
-expectType<Promise<OpenAiChatCompletionResponse>>(
-  new OpenAiChatClient({
+expectType<Promise<AzureOpenAiChatCompletionResponse>>(
+  new AzureOpenAiChatClient({
     modelName: 'gpt-4',
     modelVersion: 'latest'
   }).run(
@@ -102,19 +102,22 @@ expectType<Promise<OpenAiChatCompletionResponse>>(
 /**
  * Embeddings.
  */
-expectType<Promise<OpenAiEmbeddingResponse>>(
-  new OpenAiEmbeddingClient('text-embedding-ada-002').run({
+
+expectType<Promise<AzureOpenAiEmbeddingResponse>>(
+  new AzureOpenAiEmbeddingClient('text-embedding-ada-002').run({
     input: 'test input'
   })
 );
 
-expectType<OpenAiEmbeddingClient>(new OpenAiEmbeddingClient('unknown'));
+expectType<AzureOpenAiEmbeddingClient>(
+  new AzureOpenAiEmbeddingClient('unknown')
+);
 
 /**
  * Embeddings with optional parameters.
  */
-expectType<Promise<OpenAiEmbeddingResponse>>(
-  new OpenAiEmbeddingClient('text-embedding-ada-002').run(
+expectType<Promise<AzureOpenAiEmbeddingResponse>>(
+  new AzureOpenAiEmbeddingClient('text-embedding-ada-002').run(
     {
       input: ['test input 1', 'test input 2'],
       user: 'some-guid'

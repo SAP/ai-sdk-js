@@ -1,11 +1,11 @@
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
-import { OpenAiChatCompletionResponse } from './openai-chat-completion-response.js';
-import { OpenAiChatCompletionOutput } from './openai-types.js';
+import { AzureOpenAiChatCompletionResponse } from './azure-openai-chat-completion-response.js';
+import { AzureOpenAiChatCompletionOutput } from './azure-openai-types.js';
 
 describe('OpenAI chat completion response', () => {
-  const mockResponse = parseMockResponse<OpenAiChatCompletionOutput>(
+  const mockResponse = parseMockResponse<AzureOpenAiChatCompletionOutput>(
     'foundation-models',
-    'openai-chat-completion-success-response.json'
+    'azure-openai-chat-completion-success-response.json'
   );
   const rawResponse = {
     data: mockResponse,
@@ -13,7 +13,7 @@ describe('OpenAI chat completion response', () => {
     headers: {},
     request: {}
   };
-  const response = new OpenAiChatCompletionResponse(rawResponse);
+  const response = new AzureOpenAiChatCompletionResponse(rawResponse);
 
   it('should return the completion response', () => {
     expect(response.data).toStrictEqual(mockResponse);
