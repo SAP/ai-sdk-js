@@ -19,7 +19,7 @@ $ npm install @sap-ai-sdk/foundation-models
 
 ## OpenAI client
 
-The OpenAI client can be used to send chat completion or embedding requests to the OpenAI model deployed in SAP Generative AI Hub.
+The OpenAI client can be used to send chat completion or embedding requests to OpenAI models deployed in SAP Generative AI Hub.
 
 ### Prerequisites
 
