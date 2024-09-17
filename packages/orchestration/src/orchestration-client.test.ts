@@ -29,7 +29,7 @@ describe('orchestration service client', () => {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
-      templatingConfig: {
+      templating: {
         template: [{ role: 'user', content: 'Hello!' }]
       }
     };
@@ -66,7 +66,7 @@ describe('orchestration service client', () => {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
-      templatingConfig: {
+      templating: {
         template: [
           {
             role: 'user',
@@ -111,7 +111,7 @@ describe('orchestration service client', () => {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
-      templatingConfig: {
+      templating: {
         template: [
           {
             role: 'user',
@@ -174,7 +174,7 @@ describe('orchestration service client', () => {
         model_name: 'gpt-35-turbo-16k',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
-      templatingConfig: {
+      templating: {
         template: [{ role: 'user', content: "What's my name?" }],
         messages_history: [
           {
