@@ -5,7 +5,10 @@ import { transformFilesInDirectory } from './util.js';
 const correctedNames = [
   ['LLMModuleResult', 'LlmModuleResult'],
   ['LLMModuleConfig', 'LlmModuleConfig'],
-  ['LLMChoice', 'LlmChoice']
+  ['LLMChoice', 'LlmChoice'],
+  ['DPIEntities', 'DpiEntities'],
+  ['DPIEntityConfig', 'DpiEntityConfig'],
+  ['DPIConfig', 'DpiConfig']
 ];
 
 // Entry point: Get the root directory from command-line arguments
@@ -19,7 +22,7 @@ if (!rootDir) {
 transformFilesInDirectory(resolve(rootDir), file =>
   correctedNames.reduce(
     (newFile, [wrongName, correctName]) =>
-      newFile.replace(new Regexp(`${wrongName}`, 'g'), correctName),
+      newFile.replace(new RegExp(`\b${wrongName}\b`, 'g'), correctName),
     file
   )
 )
