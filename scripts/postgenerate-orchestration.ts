@@ -22,7 +22,7 @@ if (!rootDir) {
 transformFilesInDirectory(resolve(rootDir), file =>
   correctedNames.reduce(
     (newFile, [wrongName, correctName]) =>
-      newFile.replace(new RegExp(`\b${wrongName}\b`, 'g'), correctName),
+      newFile.replace(new RegExp(`\\b${wrongName}\\b`, 'g'), correctName),
     file
   )
 )
