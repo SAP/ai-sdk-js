@@ -1,7 +1,6 @@
 import {
   AIMessage,
   BaseMessage,
-  ChatMessage,
   ToolMessage
 } from '@langchain/core/messages';
 import { ChatResult } from '@langchain/core/outputs';
@@ -69,8 +68,6 @@ export function mapBaseMessageToRole(
       return 'function';
     case 'tool':
       return 'tool';
-    case 'generic':
-      return (message as ChatMessage).role as OpenAiChatMessage['role'];
     default:
       throw new Error(`Unknown message type: ${message._getType()}`);
   }
@@ -181,7 +178,7 @@ export function mapLangchainToAiClient(
 ): OpenAiChatCompletionParameters {
   return {
     messages: messages.map(mapBaseMessageToOpenAiChatMessage),
-    max_tokens: client.maxTokens === -1 ? undefined : client.max_tokens,
+    max_tokens: client.max_tokens === -1 ? undefined : client.max_tokens,
     temperature: client.temperature,
     top_p: client.top_p,
     logit_bias: client.logit_bias,
@@ -195,7 +192,6 @@ export function mapLangchainToAiClient(
       : options?.tools,
     tool_choice: options?.tool_choice,
     response_format: options?.response_format,
-    seed: options?.seed,
-    ...client.modelKwargs
+    seed: options?.seed
   };
 }

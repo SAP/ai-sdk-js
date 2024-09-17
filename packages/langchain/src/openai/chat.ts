@@ -8,12 +8,12 @@ import {
   mapLangchainToAiClient,
   mapResponseToChatResult
 } from './util.js';
-import type { OpenAiChatCallOptions, OpenAiChatModelInput } from './types.js';
+import type { OpenAiChatCallOptions, OpenAiChatModelParams } from './types.js';
 
 /**
  * OpenAI Language Model Wrapper to generate texts.
  */
-export class AzureOpenAiChatClient extends BaseChatModel<OpenAiChatCallOptions> implements OpenAiChatModelInput {
+export class AzureOpenAiChatClient extends BaseChatModel<OpenAiChatCallOptions> implements OpenAiChatModelParams {
   modelName: AzureOpenAiChatModel;
   modelVersion?: string;
   resourceGroup?: string;
@@ -25,9 +25,10 @@ export class AzureOpenAiChatClient extends BaseChatModel<OpenAiChatCallOptions> 
   presence_penalty?: number;
   frequency_penalty?: number;
   stop?: string | string[];
+  max_tokens?: number;
   private openAiChatClient: OpenAiChatClientBase;
 
-  constructor(fields: OpenAiChatModelInput) {
+  constructor(fields: OpenAiChatModelParams) {
     super(fields);
     this.openAiChatClient = new OpenAiChatClientBase(fields);
     this.modelName = fields.modelName;
@@ -41,6 +42,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<OpenAiChatCallOptions> 
     this.stop = fields.stop;
     this.presence_penalty = fields.presence_penalty;
     this.frequency_penalty = fields.frequency_penalty;
+    this.max_tokens = fields.max_tokens;
   }
 
   _llmType(): string {
@@ -58,7 +60,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<OpenAiChatCallOptions> 
       },
       () =>
         this.openAiChatClient.run(
-          mapLangchainToAiClient(this, options, messages)
+          mapLangchainToAiClient(this, options, messages), options
         )
     );
 
@@ -72,3 +74,4 @@ export class AzureOpenAiChatClient extends BaseChatModel<OpenAiChatCallOptions> 
     return mapResponseToChatResult(res.data);
   }
 }
+
