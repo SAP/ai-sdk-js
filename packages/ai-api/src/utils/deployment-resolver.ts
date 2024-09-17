@@ -9,7 +9,7 @@ import { extractModel, type FoundationModel } from './model.js';
  * The model deployment configuration when using a model.
  * @typeParam ModelNameT - String literal type representing the name of the model.
  */
-export interface ModelConfiguration<ModelNameT = string> {
+export interface ModelConfig<ModelNameT = string> {
   /**
    * The name of the model.
    */
@@ -23,7 +23,7 @@ export interface ModelConfiguration<ModelNameT = string> {
 /**
  * The deployment configuration when using a deployment ID.
  */
-export interface DeploymentIdConfiguration {
+export interface DeploymentIdConfig {
   /**
    * The deployment ID.
    */
@@ -33,7 +33,7 @@ export interface DeploymentIdConfiguration {
 /**
  * The deployment configuration when using a resource group.
  */
-export interface ResourceGroupConfiguration {
+export interface ResourceGroupConfig {
   /**
    * The resource group of the deployment.
    */
@@ -46,17 +46,16 @@ export interface ResourceGroupConfiguration {
  */
 export type ModelDeployment<ModelNameT = string> =
   | ModelNameT
-  | ((ModelConfiguration<ModelNameT> | DeploymentIdConfiguration) &
-      ResourceGroupConfiguration);
+  | ((ModelConfig<ModelNameT> | DeploymentIdConfig) & ResourceGroupConfig);
 
 /**
  * Type guard to check if the given deployment configuration is a deployment ID configuration.
  * @param modelDeployment - Configuration to check.
  * @returns `true` if the configuration is a deployment ID configuration, `false` otherwise.
  */
-function isDeploymentIdConfiguration(
+function isDeploymentIdConfig(
   modelDeployment: ModelDeployment
-): modelDeployment is DeploymentIdConfiguration {
+): modelDeployment is DeploymentIdConfig {
   return (
     typeof modelDeployment === 'object' && 'deploymentId' in modelDeployment
   );
@@ -156,7 +155,7 @@ export async function getDeploymentId(
   modelDeployment: ModelDeployment,
   executableId: string
 ): Promise<string> {
-  if (isDeploymentIdConfiguration(modelDeployment)) {
+  if (isDeploymentIdConfig(modelDeployment)) {
     return modelDeployment.deploymentId;
   }
 
@@ -173,9 +172,7 @@ export async function getDeploymentId(
   });
 }
 
-function translateToFoundationModel(
-  modelConfig: ModelConfiguration
-): FoundationModel {
+function translateToFoundationModel(modelConfig: ModelConfig): FoundationModel {
   if (typeof modelConfig === 'string') {
     return { name: modelConfig };
   }

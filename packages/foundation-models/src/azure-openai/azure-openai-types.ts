@@ -384,7 +384,7 @@ export interface AzureOpenAiChatCompletionOutput
    * This fingerprint represents the backend configuration that the model runs with.
    * Can be used in conjunction with the `seed` request parameter to understand when backend changes have been made that might impact determinism.
    */
-  system_fingerprint: string;
+  system_fingerprint: string | null;
 }
 
 /**
@@ -452,7 +452,7 @@ export interface AzureOpenAiContentFilterResultsBase {
   /**
    * Intolerant content filter result.
    */
-  selfHarm?: AzureOpenAiContentFilterSeverityResult;
+  self_harm?: AzureOpenAiContentFilterSeverityResult;
 
   /**
    * Profanity content filter result.

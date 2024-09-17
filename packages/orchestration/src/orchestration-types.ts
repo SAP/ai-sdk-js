@@ -1,4 +1,4 @@
-import { ChatModel } from '@sap-ai-sdk/core';
+import { ChatModel } from './model-types.js';
 import {
   ChatMessages,
   FilteringModuleConfig,
@@ -33,17 +33,16 @@ export type LlmConfig = LlmModuleConfig & {
  * Orchestration module configuration.
  */
 export interface OrchestrationModuleConfig {
-  // TODO: remove "config" for all the configs below
   /**
-   * Templating configuration options.
+   * Templating module configuration.
    */
-  templatingConfig: TemplatingModuleConfig;
+  templating: TemplatingModuleConfig;
   /**
-   * Llm configuration options.
+   * LLM module configuration.
    */
-  llmConfig: LlmConfig;
+  llm: LlmModuleConfig;
   /**
-   * Filter configuration options.
+   * Filtering module configuration.
    */
-  filterConfig?: FilteringModuleConfig;
+  filtering?: FilteringModuleConfig;
 }

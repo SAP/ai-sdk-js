@@ -1,14 +1,11 @@
-import {
-  type CustomRequestConfig,
-  type AzureOpenAiChatModel,
-  executeRequest
-} from '@sap-ai-sdk/core';
+import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
 import {
   getDeploymentId,
   type ModelDeployment
 } from '@sap-ai-sdk/ai-api/internal.js';
+import type { AzureOpenAiChatModel } from './model-types.js';
 import type { AzureOpenAiChatCompletionParameters } from './azure-openai-types.js';
-import { AzureOpenAiChatCompletionResponse } from './azure-openai-response.js';
+import { AzureOpenAiChatCompletionResponse } from './azure-openai-chat-completion-response.js';
 
 const apiVersion = '2024-02-01';
 
