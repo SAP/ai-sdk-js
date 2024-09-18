@@ -94,20 +94,16 @@ async function orchestrationCompletionFiltering(): Promise<string | undefined> {
     }
   });
 
-  // Call the orchestration service.
-  const response = await orchestrationClient.chatCompletion({
-    inputParams: { input: 'I hate you!' }
-  });
-  if (response.rawResponse.status !== 200) {
-    // Handle the case where the input was filtered (or another error occurred).
-    return response.data.module_results.input_filtering?.message;
-  }
   try {
+    // Call the orchestration service.
+    const response = await orchestrationClient.chatCompletion({
+      inputParams: { input: 'I hate you!' }
+    });
     // Access the response content.
     return response.getContent();
-  } catch (error) {
+  } catch (error: any) {
     // Handle the case where the output was filtered.
-    return `The output was filtered. Finish reason: ${response.getFinishReason()}`;
+    return `Error: ${error.message}`;
   }
 }
 
