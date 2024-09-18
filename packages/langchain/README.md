@@ -1,4 +1,4 @@
-# @sap-ai-sdk/LangChain
+# @sap-ai-sdk/langchain
 
 This package contains Langchain compliant models, based on the @sap-ai-sdk clients.
 

@@ -121,15 +121,15 @@ export function mapResponseToChatResult(
 function mapBaseMessageToOpenAiChatMessage(
   message: BaseMessage
 ): OpenAiChatMessage {
-  return {
+  return removeUndefinedProperties<OpenAiChatMessage>({
     content: message.content,
     name: message.name,
     role: mapBaseMessageToRole(message),
     function_call: message.additional_kwargs.function_call,
     tool_calls: message.additional_kwargs.tool_calls,
     tool_call_id:
-      message._getType() === 'tool' ? (message as ToolMessage).tool_call_id : ''
-  } as OpenAiChatMessage;
+      message._getType() === 'tool' ? (message as ToolMessage).tool_call_id : undefined
+  } as OpenAiChatMessage);
 }
 
 /**
@@ -175,7 +175,7 @@ export function mapLangchainToAiClient(
   options: OpenAiChatCallOptions,
   messages: BaseMessage[]
 ): OpenAiChatCompletionParameters {
-  return {
+  return removeUndefinedProperties<OpenAiChatCompletionParameters>({
     messages: messages.map(mapBaseMessageToOpenAiChatMessage),
     max_tokens: client.max_tokens === -1 ? undefined : client.max_tokens,
     temperature: client.temperature,
@@ -192,5 +192,15 @@ export function mapLangchainToAiClient(
     tool_choice: mapToolChoice(options?.tool_choice),
     response_format: options?.response_format,
     seed: options?.seed
-  };
+  });
+}
+
+function removeUndefinedProperties<T extends object>(obj: T): T {
+  const result = { ...obj };
+  for (const key in result) {
+    if (result[key as keyof T] === undefined) {
+      delete result[key as keyof T];
+    }
+  }
+  return result;
 }
