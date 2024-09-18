@@ -23,7 +23,7 @@ The Azure OpenAI client allows you to send chat completion or embedding requests
 
 To make a generative AI model available for use, you need to create a deployment. You can create a deployment for each model and model version, as well as for each resource group that you want to use with generative AI hub.
 
-After the deployment is complete, you have a `deploymentUrl`, which can be used across your organization to access the model.
+After the deployment is complete, you have a `deploymentUrl`, which can be used to access the model.
 
 ### Prerequisites
 
@@ -114,10 +114,15 @@ const response = new AzureOpenAiChatClient({ deploymentId: 'd1234' }).run({
 
 ### Azure OpenAI Embedding client usage
 
-```TS
-import { OpenAiEmbeddingClient } from '@sap-ai-sdk/foundation-models';
+Use the `AzureOpenAiEmbeddingClient` to send chat completion requests to an OpenAI model deployed in SAP generative AI hub.
+You can pass the model name as a parameter to the client, the sdk will implicitly fetch the deployment ID for the model from the AI Core service and use it to send the request.
 
-const client = new OpenAiEmbeddingClient('text-embedding-ada-002');
+The deployment information which includes deployment ID and properties like model name and model version is also cached by default for 5 mins so that performance is not impacted by fetching the deployment information for every request.
+
+```TS
+import { AzureOpenAiEmbeddingClient } from '@sap-ai-sdk/foundation-models';
+
+const client = new AzureOpenAiEmbeddingClient('text-embedding-ada-002');
 const response = await client.run({
   input: 'AI is fascinating'
 });
@@ -129,9 +134,9 @@ const embedding = response.getEmbedding();
 In case you want to obtain the model by using the ID of your deployment on your own you can pass it instead of a model name.
 
 ```TS
-import { OpenAiEmbeddingClient } from '@sap-ai-sdk/foundation-models';
+import { AzureOpenAiEmbeddingClient } from '@sap-ai-sdk/foundation-models';
 
-const response = new OpenAiEmbeddingClient({ deploymentId: 'd1234' }).run({
+const response = new AzureOpenAiEmbeddingClient({ deploymentId: 'd1234' }).run({
   messages: [
     {
       'role':'user',
@@ -140,8 +145,6 @@ const response = new OpenAiEmbeddingClient({ deploymentId: 'd1234' }).run({
   ]
 });
 ```
-
-It is also possible to create an embedding client by passing a `modelName` instead of a `deploymentId`.
 
 ## Support, Feedback, Contribution
 
