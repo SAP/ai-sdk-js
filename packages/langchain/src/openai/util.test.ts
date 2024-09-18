@@ -1,6 +1,6 @@
 import {
   AzureOpenAiChatClient as AzureOpenAiChatClientBase,
-  OpenAiChatCompletionOutput
+  AzureOpenAiChatCompletionOutput
 } from '@sap-ai-sdk/foundation-models';
 import { jest } from '@jest/globals';
 import nock from 'nock';
@@ -14,7 +14,7 @@ import {
 import { mapResponseToChatResult } from './util.js';
 import { AzureOpenAiChatClient } from './chat.js';
 
-const openAiMockResponse = parseMockResponse<OpenAiChatCompletionOutput>(
+const openAiMockResponse = parseMockResponse<AzureOpenAiChatCompletionOutput>(
   'foundation-models',
   'openai-chat-completion-success-response.json'
 );
@@ -55,12 +55,12 @@ describe('Mapping Functions', () => {
     nock.cleanAll();
   });
 
-  it('should parse an OpenAi response to a (Langchain) chat response', async () => {
+  it('should parse an OpenAI response to a (LangChain) chat response', async () => {
     const result = mapResponseToChatResult(openAiMockResponse);
     expect(result).toMatchSnapshot();
   });
 
-  it('should parse a Langchain input to an ai sdk input', async () => {
+  it('should parse a LangChain input to an AI SDK input', async () => {
     mockDeploymentsList(
       { scenarioId: 'foundation-models', executableId: 'azure-openai' },
       { id: '1234', model: { name: 'gpt-35-turbo' } }
