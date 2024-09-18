@@ -13,7 +13,7 @@ import { zodToJsonSchema } from 'zod-to-json-schema';
 import { AzureOpenAiChatClient } from './chat.js';
 import {
   LangChainToolChoice,
-  OpenAiChatCallOptions,
+  AzureOpenAiChatCallOptions,
   ToolChoice
 } from './types.js';
 
@@ -149,10 +149,6 @@ function isStructuredToolArray(tools?: unknown[]): tools is StructuredTool[] {
 function mapToolChoice(
   toolChoice?: LangChainToolChoice
 ): ToolChoice | undefined {
-  if (!toolChoice) {
-    return undefined;
-  }
-
   if (toolChoice === 'auto' || toolChoice === 'none') {
     return toolChoice;
   }
@@ -175,7 +171,7 @@ function mapToolChoice(
  */
 export function mapLangchainToAiClient(
   client: AzureOpenAiChatClient,
-  options: OpenAiChatCallOptions,
+  options: AzureOpenAiChatCallOptions,
   messages: BaseMessage[]
 ): AzureOpenAiChatCompletionParameters {
   return removeUndefinedProperties<AzureOpenAiChatCompletionParameters>({

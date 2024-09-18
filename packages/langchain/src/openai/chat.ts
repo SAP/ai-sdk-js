@@ -5,14 +5,14 @@ import { AzureOpenAiChatClient as AzureOpenAiChatClientBase } from '@sap-ai-sdk/
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { AzureOpenAiChatModel } from '@sap-ai-sdk/core';
 import { mapLangchainToAiClient, mapResponseToChatResult } from './util.js';
-import type { OpenAiChatCallOptions, OpenAiChatModelParams } from './types.js';
+import type { AzureOpenAiChatCallOptions, AzureOpenAiChatModelParams } from './types.js';
 
 /**
- * OpenAI Language Model Wrapper to generate texts.
+ * OpenAI language model wrapper to generate texts.
  */
 export class AzureOpenAiChatClient
-  extends BaseChatModel<OpenAiChatCallOptions>
-  implements OpenAiChatModelParams
+  extends BaseChatModel<AzureOpenAiChatCallOptions>
+  implements AzureOpenAiChatModelParams
 {
   modelName: AzureOpenAiChatModel;
   modelVersion?: string;
@@ -28,7 +28,7 @@ export class AzureOpenAiChatClient
   max_tokens?: number;
   private openAiChatClient: AzureOpenAiChatClientBase;
 
-  constructor(fields: OpenAiChatModelParams) {
+  constructor(fields: AzureOpenAiChatModelParams) {
     super(fields);
     this.openAiChatClient = new AzureOpenAiChatClientBase(fields);
     this.modelName = fields.modelName;

@@ -4,14 +4,14 @@ import {
 } from '@sap-ai-sdk/foundation-models';
 import { Embeddings } from '@langchain/core/embeddings';
 import { AzureOpenAiChatModel } from '@sap-ai-sdk/core';
-import { OpenAiEmbeddingModelParams } from './types.js';
+import { AzureOpenAiEmbeddingModelParams } from './types.js';
 
 /**
  * OpenAI GPT Embedding Model Wrapper to embed texts.
  */
 export class AzureOpenAiEmbeddingClient
   extends Embeddings
-  implements OpenAiEmbeddingModelParams
+  implements AzureOpenAiEmbeddingModelParams
 {
   modelName: AzureOpenAiChatModel;
   modelVersion?: string;
@@ -19,7 +19,7 @@ export class AzureOpenAiEmbeddingClient
 
   private openAiEmbeddingClient: AzureOpenAiEmbeddingClientBase;
 
-  constructor(fields: OpenAiEmbeddingModelParams) {
+  constructor(fields: AzureOpenAiEmbeddingModelParams) {
     super(fields);
     this.openAiEmbeddingClient = new AzureOpenAiEmbeddingClientBase(fields);
     this.modelName = fields.modelName;

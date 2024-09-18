@@ -3,7 +3,7 @@ export {
   AzureOpenAiEmbeddingClient
 } from './openai/index.js';
 export type {
-  OpenAiChatModelParams,
-  OpenAiEmbeddingModelParams,
-  OpenAiChatCallOptions
+  AzureOpenAiChatModelParams,
+  AzureOpenAiEmbeddingModelParams,
+  AzureOpenAiChatCallOptions
 } from './openai/index.js';
