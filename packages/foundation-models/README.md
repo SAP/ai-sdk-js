@@ -55,8 +55,8 @@ import { OpenAiEmbeddingClient } from '@sap-ai-sdk/foundation-models';
 
 const client = new OpenAiEmbeddingClient({ deploymentId: 'd123456abcdefg' });
 const response = await client.run({
-      input: 'AI is fascinating'
-    });
+  input: 'AI is fascinating'
+});
 const embedding = response.data[0]?.embedding;
 ```
 
