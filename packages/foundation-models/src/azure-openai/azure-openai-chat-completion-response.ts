@@ -4,7 +4,7 @@ import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference
 
 const logger = createLogger({
   package: 'gen-ai-hub',
-  messageContext: 'azure-openai-response'
+  messageContext: 'azure-openai-chat-completion-response'
 });
 
 /**

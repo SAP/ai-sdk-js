@@ -1,6 +1,7 @@
 import { expectType } from 'tsd';
 import {
-  AzureOpenAiEmbeddingOutput,
+  AzureOpenAiChatModel,
+  AzureOpenAiEmbeddingResponse,
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient,
   AzureOpenAiChatCompletionResponse,
@@ -102,7 +103,8 @@ expectType<Promise<AzureOpenAiChatCompletionResponse>>(
 /**
  * Embeddings.
  */
-expectType<Promise<AzureOpenAiEmbeddingOutput>>(
+
+expectType<Promise<AzureOpenAiEmbeddingResponse>>(
   new AzureOpenAiEmbeddingClient('text-embedding-ada-002').run({
     input: 'test input'
   })
@@ -115,7 +117,7 @@ expectType<AzureOpenAiEmbeddingClient>(
 /**
  * Embeddings with optional parameters.
  */
-expectType<Promise<AzureOpenAiEmbeddingOutput>>(
+expectType<Promise<AzureOpenAiEmbeddingResponse>>(
   new AzureOpenAiEmbeddingClient('text-embedding-ada-002').run(
     {
       input: ['test input 1', 'test input 2'],
@@ -128,3 +130,6 @@ expectType<Promise<AzureOpenAiEmbeddingOutput>>(
     }
   )
 );
+
+expect<AzureOpenAiChatModel>('custom-model');
+expect<AzureOpenAiChatModel>('gpt-4-32k');

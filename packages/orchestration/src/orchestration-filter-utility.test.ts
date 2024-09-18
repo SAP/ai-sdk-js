@@ -1,18 +1,18 @@
 import {
   CompletionPostRequest,
   FilteringModuleConfig
-} from './client/api/index.js';
+} from './client/api/schema/index.js';
 import { constructCompletionPostRequest } from './orchestration-client.js';
 import { azureContentFilter } from './orchestration-filter-utility.js';
 import { OrchestrationModuleConfig } from './orchestration-types.js';
 
 describe('filter utility', () => {
   const config: OrchestrationModuleConfig = {
-    llmConfig: {
+    llm: {
       model_name: 'gpt-35-turbo-16k',
       model_params: { max_tokens: 50, temperature: 0.1 }
     },
-    templatingConfig: {
+    templating: {
       template: [
         { role: 'user', content: 'Create {number} paraphrases of {phrase}' }
       ]
@@ -22,11 +22,11 @@ describe('filter utility', () => {
   const prompt = { inputParams: { phrase: 'I hate you.', number: '3' } };
 
   afterEach(() => {
-    config.filterConfig = undefined;
+    config.filtering = undefined;
   });
 
   it('constructs filter configuration with only input', async () => {
-    const filterConfig: FilteringModuleConfig = {
+    const filtering: FilteringModuleConfig = {
       input: azureContentFilter({ Hate: 4, SelfHarm: 0 })
     };
     const expectedFilterConfig: FilteringModuleConfig = {
@@ -42,7 +42,7 @@ describe('filter utility', () => {
         ]
       }
     };
-    config.filterConfig = filterConfig;
+    config.filtering = filtering;
     const completionPostRequest: CompletionPostRequest =
       constructCompletionPostRequest(config, prompt);
     expect(
@@ -52,7 +52,7 @@ describe('filter utility', () => {
   });
 
   it('constructs filter configuration with only output', async () => {
-    const filterConfig: FilteringModuleConfig = {
+    const filtering: FilteringModuleConfig = {
       output: azureContentFilter({ Sexual: 2, Violence: 6 })
     };
     const expectedFilterConfig: FilteringModuleConfig = {
@@ -68,7 +68,7 @@ describe('filter utility', () => {
         ]
       }
     };
-    config.filterConfig = filterConfig;
+    config.filtering = filtering;
     const completionPostRequest: CompletionPostRequest =
       constructCompletionPostRequest(config, prompt);
     expect(
@@ -78,7 +78,7 @@ describe('filter utility', () => {
   });
 
   it('constructs filter configuration with both input and output', async () => {
-    const filterConfig: FilteringModuleConfig = {
+    const filtering: FilteringModuleConfig = {
       input: azureContentFilter({
         Hate: 4,
         SelfHarm: 0,
@@ -113,7 +113,7 @@ describe('filter utility', () => {
         ]
       }
     };
-    config.filterConfig = filterConfig;
+    config.filtering = filtering;
     const completionPostRequest: CompletionPostRequest =
       constructCompletionPostRequest(config, prompt);
     expect(
@@ -123,11 +123,11 @@ describe('filter utility', () => {
   });
 
   it('omits filters if not set', async () => {
-    const filterConfig: FilteringModuleConfig = {
+    const filtering: FilteringModuleConfig = {
       input: azureContentFilter(),
       output: azureContentFilter()
     };
-    config.filterConfig = filterConfig;
+    config.filtering = filtering;
     const completionPostRequest: CompletionPostRequest =
       constructCompletionPostRequest(config, prompt);
     const expectedFilterConfig: FilteringModuleConfig = {
@@ -153,8 +153,8 @@ describe('filter utility', () => {
   });
 
   it('omits filter configuration if not set', async () => {
-    const filterConfig: FilteringModuleConfig = {};
-    config.filterConfig = filterConfig;
+    const filtering: FilteringModuleConfig = {};
+    config.filtering = filtering;
     const completionPostRequest: CompletionPostRequest =
       constructCompletionPostRequest(config, prompt);
     expect(

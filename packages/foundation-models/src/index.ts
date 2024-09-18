@@ -2,10 +2,12 @@ export type {
   AzureOpenAiEmbeddingParameters,
   AzureOpenAiEmbeddingOutput
 } from './azure-openai/index.js';
+
 export {
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient,
-  AzureOpenAiChatCompletionResponse
+  AzureOpenAiChatCompletionResponse,
+  AzureOpenAiEmbeddingResponse
 } from './azure-openai/index.js';
 
 export type {
