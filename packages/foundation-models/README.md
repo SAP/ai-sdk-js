@@ -34,13 +34,11 @@ import { OpenAiChatClient } from '@sap-ai-sdk/foundation-models';
 
 const client = new OpenAiChatClient('gpt-35-turbo');
 const response = await client.run({
-      messages: [
-        {
-          role: 'user',
-          content: 'Where is the deepest place on earth located'
-        }
-      ]
-    })
+  messages: [{
+    role: 'user',
+    content: 'Where is the deepest place on earth located'
+  }]
+});
 const responseContent = response.getContent();
 ```
 
