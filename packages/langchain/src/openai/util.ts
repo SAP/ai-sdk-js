@@ -2,12 +2,12 @@ import { AIMessage, BaseMessage, ToolMessage } from '@langchain/core/messages';
 import { ChatResult } from '@langchain/core/outputs';
 import { StructuredTool } from '@langchain/core/tools';
 import type {
-  OpenAiChatCompletionChoice,
-  OpenAiChatCompletionFunction,
-  OpenAiChatCompletionTool,
-  OpenAiChatMessage,
-  OpenAiChatCompletionOutput,
-  OpenAiChatCompletionParameters
+  AzureOpenAiChatCompletionChoice,
+  AzureOpenAiChatCompletionFunction,
+  AzureOpenAiChatCompletionTool,
+  AzureOpenAiChatMessage,
+  AzureOpenAiChatCompletionOutput,
+  AzureOpenAiChatCompletionParameters
 } from '@sap-ai-sdk/foundation-models';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { AzureOpenAiChatClient } from './chat.js';
@@ -18,13 +18,13 @@ import {
 } from './types.js';
 
 /**
- * Maps a LangChain {@link StructuredTool} to {@link OpenAiChatCompletionFunction}.
+ * Maps a LangChain {@link StructuredTool} to {@link AzureOpenAiChatCompletionFunction}.
  * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
  * @returns The OpenAI chat completion function.
  */
 function mapToolToOpenAiFunction(
   tool: StructuredTool
-): OpenAiChatCompletionFunction {
+): AzureOpenAiChatCompletionFunction {
   return {
     name: tool.name,
     description: tool.description,
@@ -33,11 +33,11 @@ function mapToolToOpenAiFunction(
 }
 
 /**
- * Maps a LangChain {@link StructuredTool} to {@link OpenAiChatCompletionTool}.
+ * Maps a LangChain {@link StructuredTool} to {@link AzureOpenAiChatCompletionTool}.
  * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
  * @returns The OpenAI chat completion tool.
  */
-function mapToolToOpenAiTool(tool: StructuredTool): OpenAiChatCompletionTool {
+function mapToolToOpenAiTool(tool: StructuredTool): AzureOpenAiChatCompletionTool {
   return {
     type: 'function',
     function: mapToolToOpenAiFunction(tool)
@@ -49,7 +49,7 @@ function mapToolToOpenAiTool(tool: StructuredTool): OpenAiChatCompletionTool {
  * @param message - The message to map.
  * @returns The OpenAI message Role.
  */
-function mapBaseMessageToRole(message: BaseMessage): OpenAiChatMessage['role'] {
+function mapBaseMessageToRole(message: BaseMessage): AzureOpenAiChatMessage['role'] {
   switch (message._getType()) {
     case 'ai':
       return 'assistant';
@@ -73,10 +73,10 @@ function mapBaseMessageToRole(message: BaseMessage): OpenAiChatMessage['role'] {
  * @internal
  */
 export function mapResponseToChatResult(
-  res: OpenAiChatCompletionOutput
+  res: AzureOpenAiChatCompletionOutput
 ): ChatResult {
   return {
-    generations: res.choices.map((choice: OpenAiChatCompletionChoice) => ({
+    generations: res.choices.map((choice: AzureOpenAiChatCompletionChoice) => ({
       text: choice.message.content || '',
       message: new AIMessage({
         content: choice.message.content || '',
@@ -114,11 +114,11 @@ export function mapResponseToChatResult(
  * @param message - The message to map.
  * @returns The OpenAI chat Message.
  */
-function mapBaseMessageToOpenAiChatMessage(
+function mapBaseMessageToAzureOpenAiChatMessage(
   message: BaseMessage
-): OpenAiChatMessage {
+): AzureOpenAiChatMessage {
   // TODO: remove type casting, improve message.content handling
-  return removeUndefinedProperties<OpenAiChatMessage>({
+  return removeUndefinedProperties<AzureOpenAiChatMessage>({
     content: message.content,
     name: message.name,
     role: mapBaseMessageToRole(message),
@@ -128,7 +128,7 @@ function mapBaseMessageToOpenAiChatMessage(
       message._getType() === 'tool'
         ? (message as ToolMessage).tool_call_id
         : undefined
-  } as OpenAiChatMessage);
+  } as AzureOpenAiChatMessage);
 }
 
 /**
@@ -173,9 +173,9 @@ export function mapLangchainToAiClient(
   client: AzureOpenAiChatClient,
   options: OpenAiChatCallOptions,
   messages: BaseMessage[]
-): OpenAiChatCompletionParameters {
-  return removeUndefinedProperties<OpenAiChatCompletionParameters>({
-    messages: messages.map(mapBaseMessageToOpenAiChatMessage),
+): AzureOpenAiChatCompletionParameters {
+  return removeUndefinedProperties<AzureOpenAiChatCompletionParameters>({
+    messages: messages.map(mapBaseMessageToAzureOpenAiChatMessage),
     max_tokens: client.max_tokens === -1 ? undefined : client.max_tokens,
     temperature: client.temperature,
     top_p: client.top_p,

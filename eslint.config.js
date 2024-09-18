@@ -26,7 +26,8 @@ export default [
   {
     files: [
       '**/test-util/**/*.ts',
-      '**/packages/orchestration/src/client/**/*'
+      '**/packages/orchestration/src/client/**/*',
+      'packages/foundation-models/src/openai/openai-types-schema.ts'
     ],
     rules: {
       'jsdoc/require-jsdoc': 'off'

@@ -45,3 +45,4 @@ describe('OpenAI response', () => {
     expect(openAiChatClientResponse.getContent(1)).toBeUndefined();
   });
 });
+

@@ -1,7 +1,6 @@
 import {
-  OpenAiEmbeddingClient as OpenAiEmbeddingClientBase,
-  OpenAiEmbeddingOutput,
-  OpenAiEmbeddingParameters
+  AzureOpenAiEmbeddingClient as AzureOpenAiEmbeddingClientBase,
+  AzureOpenAiEmbeddingParameters
 } from '@sap-ai-sdk/foundation-models';
 import { Embeddings } from '@langchain/core/embeddings';
 import { AzureOpenAiChatModel } from '@sap-ai-sdk/core';
@@ -18,35 +17,31 @@ export class AzureOpenAiEmbeddingClient
   modelVersion?: string;
   resourceGroup?: string;
 
-  private openAiEmbeddingClient: OpenAiEmbeddingClientBase;
+  private openAiEmbeddingClient: AzureOpenAiEmbeddingClientBase;
 
   constructor(fields: OpenAiEmbeddingModelParams) {
     super(fields);
-    this.openAiEmbeddingClient = new OpenAiEmbeddingClientBase(fields);
+    this.openAiEmbeddingClient = new AzureOpenAiEmbeddingClientBase(fields);
     this.modelName = fields.modelName;
     this.modelVersion = fields.modelVersion;
     this.resourceGroup = fields.resourceGroup;
   }
 
   override async embedDocuments(documents: string[]): Promise<number[][]> {
-    const documentEmbeddings = await Promise.all(
+    return Promise.all(
       documents.map(document => this.createEmbedding({ input: document }))
     );
-    return documentEmbeddings
-      .map(embedding => embedding.data.map(entry => entry.embedding))
-      .flat();
   }
 
   override async embedQuery(input: string): Promise<number[]> {
-    const embeddingResponse = await this.createEmbedding({ input });
-    return embeddingResponse.data[0].embedding;
+    return this.createEmbedding({ input });
   }
 
   private async createEmbedding(
-    query: OpenAiEmbeddingParameters
-  ): Promise<OpenAiEmbeddingOutput> {
-    return this.caller.callWithOptions({}, () =>
-      this.openAiEmbeddingClient.run(query)
+    query: AzureOpenAiEmbeddingParameters
+  ): Promise<number[]> {
+    return this.caller.callWithOptions({}, async () =>
+      (await this.openAiEmbeddingClient.run(query)).getEmbedding() ?? []
     );
   }
 }

@@ -1,7 +1,7 @@
 import { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import { BaseMessage } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
-import { OpenAiChatClient as OpenAiChatClientBase } from '@sap-ai-sdk/foundation-models';
+import { AzureOpenAiChatClient as AzureOpenAiChatClientBase } from '@sap-ai-sdk/foundation-models';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { AzureOpenAiChatModel } from '@sap-ai-sdk/core';
 import { mapLangchainToAiClient, mapResponseToChatResult } from './util.js';
@@ -26,11 +26,11 @@ export class AzureOpenAiChatClient
   frequency_penalty?: number;
   stop?: string | string[];
   max_tokens?: number;
-  private openAiChatClient: OpenAiChatClientBase;
+  private openAiChatClient: AzureOpenAiChatClientBase;
 
   constructor(fields: OpenAiChatModelParams) {
     super(fields);
-    this.openAiChatClient = new OpenAiChatClientBase(fields);
+    this.openAiChatClient = new AzureOpenAiChatClientBase(fields);
     this.modelName = fields.modelName;
     this.modelVersion = fields.modelVersion;
     this.resourceGroup = fields.resourceGroup;

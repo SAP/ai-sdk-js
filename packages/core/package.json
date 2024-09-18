@@ -27,10 +27,10 @@
     "check:public-api": "node --loader ts-node/esm ../../scripts/check-public-api-cli.ts"
   },
   "dependencies": {
-    "@sap-cloud-sdk/http-client": "^3.20.0",
     "@sap-cloud-sdk/connectivity": "^3.20.0",
-    "@sap-cloud-sdk/util": "^3.20.0",
-    "@sap-cloud-sdk/openapi": "^3.20.0"
+    "@sap-cloud-sdk/http-client": "^3.20.0",
+    "@sap-cloud-sdk/openapi": "^3.20.0",
+    "@sap-cloud-sdk/util": "^3.20.0"
   },
   "devDependencies": {
     "typescript": "^5.5.4"

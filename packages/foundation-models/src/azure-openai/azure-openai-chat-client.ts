@@ -1,23 +1,20 @@
-import {
-  type CustomRequestConfig,
-  type AzureOpenAiChatModel,
-  executeRequest
-} from '@sap-ai-sdk/core';
+import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
 import {
   getDeploymentId,
   type ModelDeployment
 } from '@sap-ai-sdk/ai-api/internal.js';
-import type { OpenAiChatCompletionParameters } from './openai-types.js';
-import { OpenAiChatCompletionResponse } from './openai-response.js';
+import type { AzureOpenAiChatModel } from './model-types.js';
+import type { AzureOpenAiChatCompletionParameters } from './azure-openai-types.js';
+import { AzureOpenAiChatCompletionResponse } from './azure-openai-chat-completion-response.js';
 
 const apiVersion = '2024-02-01';
 
 /**
- * OpenAI client for chat completion.
+ * Azure OpenAI client for chat completion.
  */
-export class OpenAiChatClient {
+export class AzureOpenAiChatClient {
   /**
-   * Creates an instance of the OpenAI chat client.
+   * Creates an instance of the Azure OpenAI chat client.
    * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
    */
   constructor(private modelDeployment: ModelDeployment<AzureOpenAiChatModel>) {}
@@ -29,9 +26,9 @@ export class OpenAiChatClient {
    * @returns The completion result.
    */
   async run(
-    data: OpenAiChatCompletionParameters,
+    data: AzureOpenAiChatCompletionParameters,
     requestConfig?: CustomRequestConfig
-  ): Promise<OpenAiChatCompletionResponse> {
+  ): Promise<AzureOpenAiChatCompletionResponse> {
     const deploymentId = await getDeploymentId(
       this.modelDeployment,
       'azure-openai'
@@ -44,6 +41,6 @@ export class OpenAiChatClient {
       data,
       requestConfig
     );
-    return new OpenAiChatCompletionResponse(response);
+    return new AzureOpenAiChatCompletionResponse(response);
   }
 }

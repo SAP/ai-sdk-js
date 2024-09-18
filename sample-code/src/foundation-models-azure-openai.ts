@@ -1,6 +1,6 @@
 import {
-  OpenAiChatClient,
-  OpenAiEmbeddingClient
+  AzureOpenAiChatClient,
+  AzureOpenAiEmbeddingClient
 } from '@sap-ai-sdk/foundation-models';
 
 /**
@@ -8,7 +8,7 @@ import {
  * @returns The answer from GPT.
  */
 export async function chatCompletion(): Promise<string> {
-  const response = await new OpenAiChatClient('gpt-35-turbo').run({
+  const response = await new AzureOpenAiChatClient('gpt-35-turbo').run({
     messages: [{ role: 'user', content: 'What is the capital of France?' }]
   });
   return response.getContent()!;
@@ -19,11 +19,11 @@ export async function chatCompletion(): Promise<string> {
  * @returns An embedding vector.
  */
 export async function computeEmbedding(): Promise<number[]> {
-  const response = await new OpenAiEmbeddingClient(
+  const response = await new AzureOpenAiEmbeddingClient(
     'text-embedding-ada-002'
   ).run({
     input: 'Hello, world!'
   });
 
-  return response.data[0].embedding;
+  return response.getEmbedding()!;
 }

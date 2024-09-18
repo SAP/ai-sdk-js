@@ -1,5 +1,5 @@
 import {
-  OpenAiChatClient as OpenAiChatClientBase,
+  AzureOpenAiChatClient as AzureOpenAiChatClientBase,
   OpenAiChatCompletionOutput
 } from '@sap-ai-sdk/foundation-models';
 import { jest } from '@jest/globals';
@@ -78,7 +78,7 @@ describe('Mapping Functions', () => {
     );
 
     const client = new AzureOpenAiChatClient({ modelName: 'gpt-35-turbo' });
-    const runSpy = jest.spyOn(OpenAiChatClientBase.prototype, 'run');
+    const runSpy = jest.spyOn(AzureOpenAiChatClientBase.prototype, 'run');
     await client.generate([[langchainPrompt]]);
     expect(runSpy).toHaveBeenCalledWith(request, undefined);
   });

@@ -5,9 +5,9 @@
  */
 import type { ChatMessage } from './chat-message.js';
 /**
- * Representation of the 'LLMChoice' schema.
+ * Representation of the 'LlmChoice' schema.
  */
-export type LLMChoice = {
+export type LlmChoice = {
   /**
    * Index of the choice.
    */
