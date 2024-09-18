@@ -40,9 +40,8 @@ export type AzureOpenAiChatCallOptions = BaseChatModelCallOptions &
 /**
  * Input type for OpenAI embedding models.
  */
-export type AzureOpenAiEmbeddingModelParams = ModelConfig<AzureOpenAiChatModel> &
-  ResourceGroupConfig &
-  BaseLLMParams;
+export type AzureOpenAiEmbeddingModelParams =
+  ModelConfig<AzureOpenAiChatModel> & ResourceGroupConfig & BaseLLMParams;
 
 /**
  * OpenAI toolchoice type.
