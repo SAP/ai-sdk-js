@@ -119,17 +119,15 @@ export function mockDeploymentsList(
   opts: DeploymentResolutionOptions,
   ...deployments: { id: string; model?: FoundationModel }[]
 ): nock.Scope {
-  const nockOpts = opts?.resourceGroup
-    ? {
-        reqheaders: {
-          'ai-resource-group': opts?.resourceGroup
-        }
-      }
-    : undefined;
+  const nockOpts = {
+    reqheaders: {
+      'ai-resource-group': opts?.resourceGroup  ?? 'default',
+    }
+  };
   const query = {
     status: 'RUNNING',
     scenarioId: opts.scenarioId,
-    ...(opts.executableId && { executableIds: [opts.executableId] })
+    ...(opts.executableId && { executableIds: [opts.executableId].toString() })
   };
   return nock(aiCoreDestination.url, nockOpts)
     .get('/v2/lm/deployments')
