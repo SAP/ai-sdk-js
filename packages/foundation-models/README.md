@@ -80,8 +80,11 @@ const response = await client.run({
       role: 'user',
       content: 'Can you remind me, What is my name?'
     }
-  ]
+  ],
+  max_tokens: 100,
+  temperature: 0.0
 });
+
 const responseContent = response.getContent();
 const tokenUsage = response.getTokenUsage();
 
@@ -94,6 +97,8 @@ logger.info(
 ```
 
 You can see that one can send multiple messages in a single request.
+Some parameters like `max_tokens` and `temperature` can be also be passed to the request to control the completion behavior.
+Refer to `AzureOpenAiChatCompletionParameters` interface for more parameters that can be passed to the chat completion request.
 This is useful in providing a history of the conversation to the model.
 
 #### Obtaining a client using deployment ID
@@ -103,7 +108,7 @@ In case you want to obtain the model by using the ID of your deployment on your 
 ```TS
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
 
-const response = new AzureOpenAiChatClient({ deploymentId: 'd1234' }).run({
+const response = await new AzureOpenAiChatClient({ deploymentId: 'd1234' }).run({
   messages: [
     {
       'role':'user',
@@ -137,7 +142,7 @@ In case you want to obtain the model by using the ID of your deployment on your 
 ```TS
 import { AzureOpenAiEmbeddingClient } from '@sap-ai-sdk/foundation-models';
 
-const response = new AzureOpenAiEmbeddingClient({ deploymentId: 'd1234' }).run({
+const response = await new AzureOpenAiEmbeddingClient({ deploymentId: 'd1234' }).run({
   messages: [
     {
       'role':'user',
