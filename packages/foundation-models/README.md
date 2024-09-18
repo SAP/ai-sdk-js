@@ -17,11 +17,12 @@ $ npm install @sap-ai-sdk/foundation-models
   - Create a `.env` file in the sample-code directory.
   - Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`.
 
-## Azure OpenAI client
+## Azure OpenAI Client
 
 The Azure OpenAI client allows you to send chat completion or embedding requests to OpenAI models deployed in SAP generative AI hub.
 
-To make a generative AI model available for use, you need to create a deployment. You can create a deployment for each model and model version, as well as for each resource group that you want to use with generative AI hub.
+To make a generative AI model available for use, you need to create a deployment.
+You can create a deployment for each model and model version, as well as for each resource group that you want to use with generative AI hub.
 
 After the deployment is complete, you have a `deploymentUrl`, which can be used to access the model.
 
@@ -31,7 +32,7 @@ After the deployment is complete, you have a `deploymentUrl`, which can be used 
   - You can use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core)
 - `sap-ai-sdk/foundation-models` package installed in your project.
 
-### Azure OpenAI chat client usage
+### Usage of Azure OpenAI Chat Client
 
 Use the `AzureOpenAiChatClient` to send chat completion requests to an OpenAI model deployed in SAP generative AI hub.
 You can pass the model name as a parameter to the client, the sdk will implicitly fetch the deployment ID for the model from the AI Core service and use it to send the request.
@@ -97,7 +98,7 @@ This is useful in providing a history of the conversation to the model.
 
 #### Obtaining a client using deployment ID
 
-In case you want to obtain the model by using the ID of your deployment on your own you can pass it instead of a model name.
+In case you want to obtain the model by using the ID of your deployment on your own you can pass it instead of a model name:
 
 ```TS
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
@@ -112,7 +113,7 @@ const response = new AzureOpenAiChatClient({ deploymentId: 'd1234' }).run({
 });
 ```
 
-### Azure OpenAI Embedding client usage
+### Usage of Azure OpenAI Embedding Client
 
 Use the `AzureOpenAiEmbeddingClient` to send chat completion requests to an OpenAI model deployed in SAP generative AI hub.
 You can pass the model name as a parameter to the client, the sdk will implicitly fetch the deployment ID for the model from the AI Core service and use it to send the request.
@@ -131,7 +132,7 @@ const embedding = response.getEmbedding();
 
 #### Obtaining a client using deployment ID
 
-In case you want to obtain the model by using the ID of your deployment on your own you can pass it instead of a model name.
+In case you want to obtain the model by using the ID of your deployment on your own you can pass it instead of a model name:
 
 ```TS
 import { AzureOpenAiEmbeddingClient } from '@sap-ai-sdk/foundation-models';
