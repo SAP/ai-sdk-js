@@ -5,7 +5,10 @@ import { AzureOpenAiChatClient as AzureOpenAiChatClientBase } from '@sap-ai-sdk/
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { AzureOpenAiChatModel } from '@sap-ai-sdk/core';
 import { mapLangchainToAiClient, mapResponseToChatResult } from './util.js';
-import type { AzureOpenAiChatCallOptions, AzureOpenAiChatModelParams } from './types.js';
+import type {
+  AzureOpenAiChatCallOptions,
+  AzureOpenAiChatModelParams
+} from './types.js';
 
 /**
  * OpenAI language model wrapper to generate texts.

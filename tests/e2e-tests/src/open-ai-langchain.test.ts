@@ -1,7 +1,12 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-import { complexInvoke, embedDocument, embedQuery, simpleInvoke } from '@sap-ai-sdk/sample-code';
+import {
+  complexInvoke,
+  embedDocument,
+  embedQuery,
+  simpleInvoke
+} from '@sap-ai-sdk/sample-code';
 
 // Pick .env file from root directory
 const __filename = fileURLToPath(import.meta.url);

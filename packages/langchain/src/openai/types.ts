@@ -3,7 +3,7 @@ import type {
   BaseChatModelParams
 } from '@langchain/core/language_models/chat_models';
 import { BaseLLMParams } from '@langchain/core/language_models/llms';
-import type { AzureOpenAiChatCompletionParameters, AzureOpenAiEmbeddingModel } from '@sap-ai-sdk/foundation-models';
+import type { AzureOpenAiChatCompletionParameters } from '@sap-ai-sdk/foundation-models';
 import type {
   AzureOpenAiChatModel,
   CustomRequestConfig
@@ -40,9 +40,8 @@ export type AzureOpenAiChatCallOptions = BaseChatModelCallOptions &
 /**
  * Input type for OpenAI embedding models.
  */
-export type AzureOpenAiEmbeddingModelParams = ModelConfig<AzureOpenAiEmbeddingModel> &
-  ResourceGroupConfig &
-  BaseLLMParams;
+export type AzureOpenAiEmbeddingModelParams =
+  ModelConfig<AzureOpenAiChatModel> & ResourceGroupConfig & BaseLLMParams;
 
 /**
  * OpenAI toolchoice type.

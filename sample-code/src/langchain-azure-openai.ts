@@ -23,11 +23,14 @@ export async function complexInvoke(): Promise<string> {
   const client = new AzureOpenAiChatClient({ modelName: 'gpt-35-turbo' });
   const promptTemplate = ChatPromptTemplate.fromMessages([
     ['system', 'Answer the following in {language}:'],
-    ['user', '{text}'],
+    ['user', '{text}']
   ]);
   const parser = new StringOutputParser();
   const llmChain = promptTemplate.pipe(client).pipe(parser);
-  return llmChain.invoke({ language: 'german', text: 'What is the capital of France?' });
+  return llmChain.invoke({
+    language: 'german',
+    text: 'What is the capital of France?'
+  });
 }
 
 /**
@@ -49,8 +52,5 @@ export async function embedDocument(): Promise<number[][]> {
   const client = new AzureOpenAiEmbeddingClient({
     modelName: 'text-embedding-ada-002'
   });
-  return client.embedDocuments([
-    'Hello, world!',
-    'Goodbye, world!'
-  ]);
+  return client.embedDocuments(['Hello, world!', 'Goodbye, world!']);
 }
