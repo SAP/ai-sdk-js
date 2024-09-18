@@ -60,7 +60,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<OpenAiChatCallOptions> 
       },
       () =>
         this.openAiChatClient.run(
-          mapLangchainToAiClient(this, options, messages), options
+          mapLangchainToAiClient(this, options, messages), options.requestConfig
         )
     );
 

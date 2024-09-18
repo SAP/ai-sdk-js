@@ -6,8 +6,6 @@ This package contains Langchain compliant models, based on the @sap-ai-sdk clien
 
 ```
 $ npm install @sap-ai-sdk/langchain
-
-$ npm install @langchain/openai // if you want to use OpenAI models
 ```
 
 ## Pre-requisites
@@ -42,8 +40,6 @@ Instead, the credentials in the binding are used to call SAP's LLM Proxy.
 ### OpenAI
 
 We offer two types of clients for OpenAI models: chat and embedding.
-
-All clients assume the same set of default values as [LangChain's default OpenAI client](https://www.npmjs.com/package/@langchain/openai) does.
 
 #### Chat
 

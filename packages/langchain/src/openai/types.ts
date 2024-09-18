@@ -18,7 +18,9 @@ export type OpenAiChatModelParams = Omit<OpenAiChatCompletionParameters, 'messag
 /**
  * Chat model call options for OpenAI.
  */
-export type OpenAiChatCallOptions = CustomRequestConfig & BaseChatModelCallOptions;
+export type OpenAiChatCallOptions = BaseChatModelCallOptions & {
+  requestConfig?: CustomRequestConfig;
+};
 
 /**
  * Input type for OpenAI embedding models.

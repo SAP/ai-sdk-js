@@ -33,14 +33,6 @@
     "zod-to-json-schema": "^3.23.2",
     "@sap-cloud-sdk/util": "^3.20.0"
   },
-  "peerDependencies": {
-    "@langchain/openai": "^0.3.0"
-  },
-  "peerDependenciesMeta": {
-    "@langchain/openai": {
-      "optional": true
-    }
-  },
   "devDependencies": {
     "typescript": "^5.5.4"
   }
