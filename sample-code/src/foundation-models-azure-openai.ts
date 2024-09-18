@@ -25,5 +25,5 @@ export async function computeEmbedding(): Promise<number[]> {
     input: 'Hello, world!'
   });
 
-  return response.data[0].embedding;
+  return response.getEmbedding()!;
 }

@@ -9,9 +9,11 @@ describe('http-client', () => {
   beforeEach(() => {
     mockClientCredentialsGrantCall();
   });
+
   afterEach(() => {
     nock.cleanAll();
   });
+
   it('should execute a request to the AI Core service', async () => {
     const mockPrompt = { prompt: 'some test prompt' };
     const mockPromptResponse = { completion: 'some test completion' };

@@ -3,11 +3,11 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { DPIEntityConfig } from './dpi-entity-config.js';
+import type { DpiEntityConfig } from './dpi-entity-config.js';
 /**
- * Representation of the 'DPIConfig' schema.
+ * Representation of the 'DpiConfig' schema.
  */
-export type DPIConfig = {
+export type DpiConfig = {
   /**
    * Type of masking service provider.
    */
@@ -20,5 +20,5 @@ export type DPIConfig = {
    * List of entities to be masked
    * Min Items: 1.
    */
-  entities: DPIEntityConfig[];
+  entities: DpiEntityConfig[];
 } & Record<string, any>;

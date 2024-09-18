@@ -2,7 +2,7 @@ export * from './client/AI_CORE_API/index.js';
 
 export type {
   ModelDeployment,
-  DeploymentIdConfiguration,
-  ModelConfiguration,
-  ResourceGroupConfiguration
+  DeploymentIdConfig,
+  ModelConfig,
+  ResourceGroupConfig
 } from './utils/index.js';

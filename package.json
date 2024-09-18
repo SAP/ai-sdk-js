@@ -30,15 +30,15 @@
   "devDependencies": {
     "@changesets/cli": "^2.27.8",
     "@jest/globals": "^29.5.12",
-    "@sap-cloud-sdk/eslint-config": "^3.20.0",
-    "@sap-cloud-sdk/connectivity": "^3.20.0",
-    "@sap-cloud-sdk/generator-common": "^3.20.0",
-    "@sap-cloud-sdk/http-client": "^3.20.0",
-    "@sap-cloud-sdk/util": "^3.20.0",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
+    "@sap-cloud-sdk/connectivity": "^3.21.0",
+    "@sap-cloud-sdk/eslint-config": "^3.21.0",
+    "@sap-cloud-sdk/generator-common": "^3.21.0",
+    "@sap-cloud-sdk/http-client": "^3.21.0",
+    "@sap-cloud-sdk/util": "^3.21.0",
     "@types/jest": "^29.5.13",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/mock-fs": "^4.13.4",
@@ -52,6 +52,6 @@
     "prettier": "^3.3.3",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4"
+    "typescript": "^5.6.2"
   }
 }
