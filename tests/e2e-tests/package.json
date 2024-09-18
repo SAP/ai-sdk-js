@@ -25,7 +25,6 @@
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "devDependencies": {
-    "@types/lodash": "^4.17.7",
     "dotenv": "^16.4.5"
   }
 }
