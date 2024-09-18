@@ -1,15 +1,15 @@
-import { CompletionPostRequest } from './client/api/index.js';
+import { CompletionPostRequest } from './client/api/schema/index.js';
 import { constructCompletionPostRequest } from './orchestration-client.js';
 import { azureContentFilter } from './orchestration-filter-utility.js';
 import { OrchestrationModuleConfig } from './orchestration-types.js';
 
 describe('constructCompletionPostRequest()', () => {
   const defaultConfig: OrchestrationModuleConfig = {
-    llmConfig: {
+    llm: {
       model_name: 'gpt-35-turbo-16k',
       model_params: { max_tokens: 50, temperature: 0.1 }
     },
-    templatingConfig: {
+    templating: {
       template: [{ role: 'user', content: 'Hi' }]
     }
   };
@@ -18,8 +18,8 @@ describe('constructCompletionPostRequest()', () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: defaultConfig.templatingConfig,
-          llm_module_config: defaultConfig.llmConfig
+          templating_module_config: defaultConfig.templating,
+          llm_module_config: defaultConfig.llm
         }
       }
     };
@@ -30,12 +30,15 @@ describe('constructCompletionPostRequest()', () => {
 
   // TODO: Adapt the test after Cloud SDK fix for: https://github.com/SAP/cloud-sdk-backlog/issues/1234
   it('with model configuration and empty template', async () => {
-    const config = { ...defaultConfig, templatingConfig: { template: [] } };
+    const config: OrchestrationModuleConfig = {
+      ...defaultConfig,
+      templating: { template: [] }
+    };
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: config.templatingConfig,
-          llm_module_config: config.llmConfig
+          templating_module_config: config.templating,
+          llm_module_config: config.llm
         }
       }
     };
@@ -45,9 +48,9 @@ describe('constructCompletionPostRequest()', () => {
   });
 
   it('with model configuration, prompt template and template params', async () => {
-    const config = {
+    const config: OrchestrationModuleConfig = {
       ...defaultConfig,
-      templatingConfig: {
+      templating: {
         template: [
           {
             role: 'user',
@@ -60,8 +63,8 @@ describe('constructCompletionPostRequest()', () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: config.templatingConfig,
-          llm_module_config: config.llmConfig
+          templating_module_config: config.templating,
+          llm_module_config: config.llm
         }
       },
       input_params: inputParams
@@ -72,9 +75,9 @@ describe('constructCompletionPostRequest()', () => {
   });
 
   it('with model configuration, prompt template and empty template params', async () => {
-    const config = {
+    const config: OrchestrationModuleConfig = {
       ...defaultConfig,
-      templatingConfig: {
+      templating: {
         template: [
           {
             role: 'user',
@@ -87,8 +90,8 @@ describe('constructCompletionPostRequest()', () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: config.templatingConfig,
-          llm_module_config: config.llmConfig
+          templating_module_config: config.templating,
+          llm_module_config: config.llm
         }
       },
       input_params: inputParams
@@ -99,19 +102,19 @@ describe('constructCompletionPostRequest()', () => {
   });
 
   it('with model name, empty model parameters and prompt template', async () => {
-    const config = {
+    const config: OrchestrationModuleConfig = {
       ...defaultConfig,
-      llmConfig: {
+      llm: {
         model_name: 'gpt-35-turbo-16k',
         model_params: {}
       },
-      filterConfig: {}
+      filtering: {}
     };
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: config.templatingConfig,
-          llm_module_config: config.llmConfig
+          templating_module_config: config.templating,
+          llm_module_config: config.llm
         }
       }
     };
@@ -121,9 +124,9 @@ describe('constructCompletionPostRequest()', () => {
   });
 
   it('with model configuration, prompt template and message history', async () => {
-    const config = {
+    const config: OrchestrationModuleConfig = {
       ...defaultConfig,
-      templatingConfig: {
+      templating: {
         template: [{ role: 'user', content: "What's my name?" }]
       }
     };
@@ -146,8 +149,8 @@ describe('constructCompletionPostRequest()', () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: config.templatingConfig,
-          llm_module_config: config.llmConfig
+          templating_module_config: config.templating,
+          llm_module_config: config.llm
         }
       },
       messages_history: messagesHistory
@@ -158,18 +161,18 @@ describe('constructCompletionPostRequest()', () => {
   });
 
   it('with model configuration, prompt template and filter configuration', async () => {
-    const config = {
+    const config: OrchestrationModuleConfig = {
       ...defaultConfig,
-      filterConfig: {
+      filtering: {
         input: azureContentFilter({ Hate: 4, SelfHarm: 0 })
       }
     };
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: config.templatingConfig,
-          llm_module_config: config.llmConfig,
-          filtering_module_config: config.filterConfig
+          templating_module_config: config.templating,
+          llm_module_config: config.llm,
+          filtering_module_config: config.filtering
         }
       }
     };
@@ -180,12 +183,15 @@ describe('constructCompletionPostRequest()', () => {
 
   // TODO: Adapt the test after Cloud SDK fix for: https://github.com/SAP/cloud-sdk-backlog/issues/1234
   it('with model configuration, prompt template empty filter configuration', async () => {
-    const config = { ...defaultConfig, filterConfig: {} };
+    const config: OrchestrationModuleConfig = {
+      ...defaultConfig,
+      filtering: {}
+    };
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: config.templatingConfig,
-          llm_module_config: config.llmConfig
+          templating_module_config: config.templating,
+          llm_module_config: config.llm
         }
       }
     };
