@@ -1,6 +1,6 @@
 import { expectType } from 'tsd';
 import {
-  AzureOpenAiChatModel,
+  type AzureOpenAiChatModel,
   AzureOpenAiEmbeddingResponse,
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient,

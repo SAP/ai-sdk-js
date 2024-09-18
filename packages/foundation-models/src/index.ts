@@ -1,4 +1,6 @@
 export type {
+  AzureOpenAiChatModel,
+  AzureOpenAiEmbeddingModel,
   AzureOpenAiEmbeddingParameters,
   AzureOpenAiEmbeddingOutput
 } from './azure-openai/index.js';
