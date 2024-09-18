@@ -13,8 +13,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-describe('AI Core APIs', () => {
-  describe('DeploymentAPI', () => {
+describe('AI APIs', () => {
+  describe('DeploymentApi', () => {
     const MAX_RETRIES = 30;
     const RETRY_INTERVAL = 5000;
     let createdDeploymentId: string | undefined;
@@ -28,7 +28,7 @@ describe('AI Core APIs', () => {
         const deploymentDetail = await DeploymentApi.deploymentGet(
           deploymentId,
           {},
-          { 'AI-Resource-Group': 'i745181' }
+          { 'AI-Resource-Group': 'ai-sdk-js-e2e' }
         ).execute();
         if (deploymentDetail.status === targetStatus) {
           return deploymentDetail;
@@ -52,7 +52,7 @@ describe('AI Core APIs', () => {
     beforeAll(async () => {
       const queryResponse = await DeploymentApi.deploymentQuery(
         {},
-        { 'AI-Resource-Group': 'i745181' }
+        { 'AI-Resource-Group': 'ai-sdk-js-e2e' }
       ).execute();
       expect(queryResponse).toBeDefined();
       initialState = queryResponse;
@@ -60,8 +60,8 @@ describe('AI Core APIs', () => {
 
     it('should create a deployment and wait for it to run', async () => {
       const createResponse = await DeploymentApi.deploymentCreate(
-        { configurationId: '8e2ff27f-d65e-48c4-9b21-1bb2709abfd1' },
-        { 'AI-Resource-Group': 'i745181' }
+        { configurationId: '54cc966d-8bc1-44ab-a9dc-658d59ef205d' },
+        { 'AI-Resource-Group': 'ai-sdk-js-e2e' }
       ).execute();
 
       expect(createResponse).toBeDefined();
@@ -83,7 +83,7 @@ describe('AI Core APIs', () => {
       const modifyResponse = await DeploymentApi.deploymentModify(
         createdDeploymentId!,
         { targetStatus: 'STOPPED' },
-        { 'AI-Resource-Group': 'i745181' }
+        { 'AI-Resource-Group': 'ai-sdk-js-e2e' }
       ).execute();
 
       expect(modifyResponse).toBeDefined();
@@ -102,7 +102,7 @@ describe('AI Core APIs', () => {
 
       const deleteResponse = await DeploymentApi.deploymentDelete(
         createdDeploymentId!,
-        { 'AI-Resource-Group': 'i745181' }
+        { 'AI-Resource-Group': 'ai-sdk-js-e2e' }
       ).execute();
 
       expect(deleteResponse).toBeDefined();
@@ -115,7 +115,7 @@ describe('AI Core APIs', () => {
       await new Promise(r => setTimeout(r, 20000));
       const queryResponse = await DeploymentApi.deploymentQuery(
         {},
-        { 'AI-Resource-Group': 'i745181' }
+        { 'AI-Resource-Group': 'ai-sdk-js-e2e' }
       ).execute();
       expect(queryResponse).toBeDefined();
 
@@ -125,10 +125,10 @@ describe('AI Core APIs', () => {
     }, 30000);
   });
 
-  describe('ScenarioAPI', () => {
+  describe('ScenarioApi', () => {
     it('should get list of available scenarios', async () => {
       const scenarios = await ScenarioApi.scenarioQuery({
-        'AI-Resource-Group': 'default'
+        'AI-Resource-Group': 'ai-sdk-js-e2e'
       }).execute();
 
       expect(scenarios).toBeDefined();
