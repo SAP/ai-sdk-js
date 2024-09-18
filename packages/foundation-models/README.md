@@ -19,12 +19,12 @@ $ npm install @sap-ai-sdk/foundation-models
 
 ## Azure OpenAI Client
 
-The Azure OpenAI client allows you to send chat completion or embedding requests to OpenAI models deployed in SAP generative AI hub.
-
 To make a generative AI model available for use, you need to create a deployment.
 You can create a deployment for each model and model version, as well as for each resource group that you want to use with generative AI hub.
 
 After the deployment is complete, you have a `deploymentUrl`, which can be used to access the model.
+
+The Azure OpenAI client allows you to send chat completion or embedding requests to OpenAI models deployed in SAP generative AI hub.
 
 ### Prerequisites
 
@@ -100,7 +100,7 @@ You can see that one can send multiple messages in a single request.
 This is useful in providing a history of the conversation to the model.
 
 Some parameters like `max_tokens` and `temperature` can be also be passed to the request to control the completion behavior.
-Refer to `AzureOpenAiChatCompletionParameters` interface for more parameters that can be passed to the chat completion request.
+Refer to `AzureOpenAiChatCompletionParameters` interface for knowing more parameters that can be passed to the chat completion request.
 
 #### Obtaining a client using deployment ID
 
@@ -127,7 +127,7 @@ const client = new AzureOpenAiChatClient({ deploymentId: 'd1234' , resourceGroup
 
 ### Usage of Azure OpenAI Embedding Client
 
-Use the `AzureOpenAiEmbeddingClient` to send chat completion requests to an OpenAI model deployed in SAP generative AI hub.
+Use the `AzureOpenAiEmbeddingClient` to send embedding requests to an OpenAI model deployed in SAP generative AI hub.
 You can pass the model name as a parameter to the client, the sdk will implicitly fetch the deployment ID for the model from the AI Core service and use it to send the request.
 
 The deployment information which includes deployment ID and properties like model name and model version is also cached by default for 5 mins so that performance is not impacted by fetching the deployment information for every request.
