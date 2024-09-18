@@ -9,18 +9,16 @@ import { getAiCoreDestination } from './context.js';
 /**
  * The type for parameters in custom request configuration.
  */
-export type CustomRequestConfig = Partial<
-  Pick<
-    HttpRequestConfig,
-    | 'headers'
-    | 'params'
-    | 'middleware'
-    | 'maxContentLength'
-    | 'proxy'
-    | 'httpAgent'
-    | 'httpsAgent'
-    | 'parameterEncoder'
-  >
+export type CustomRequestConfig = Pick<
+  HttpRequestConfig,
+  | 'headers'
+  | 'params'
+  | 'middleware'
+  | 'maxContentLength'
+  | 'proxy'
+  | 'httpAgent'
+  | 'httpsAgent'
+  | 'parameterEncoder'
 > &
   Record<string, any>;
 
