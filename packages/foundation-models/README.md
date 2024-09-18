@@ -17,22 +17,22 @@ $ npm install @sap-ai-sdk/foundation-models
   - Create a `.env` file in the sample-code directory.
   - Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`.
 
-## OpenAI client
+## Azure OpenAI client
 
-The OpenAI client can be used to send chat completion or embedding requests to OpenAI models deployed in SAP Generative AI Hub.
+The Azure OpenAI client can be used to send chat completion or embedding requests to OpenAI models deployed in SAP generative AI hub.
 
 ### Prerequisites
 
-- A deployed OpenAI model in SAP Generative AI Hub.
-  - You can use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to SAP Generative AI Hub.
+- A deployed OpenAI model in SAP generative AI hub.
+  - You can use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to SAP generative AI hub.
 - `sap-ai-sdk/foundation-models` package installed in your project.
 
-### Chat completion Client Usage
+### Azure OpenAI chat client usage
 
 ```TS
-import { OpenAiChatClient } from '@sap-ai-sdk/foundation-models';
+import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
 
-const client = new OpenAiChatClient('gpt-35-turbo');
+const client = new AzureOpenAiChatClient('gpt-35-turbo');
 const response = await client.run({
       messages: [
         {
@@ -48,7 +48,7 @@ It is also possible to create a chat client by passing a `deploymentId` instead 
 
 On the response obtained from the client, you could also use convenience functions like `getContent()`, `getFinishReason()` and `getTokenUsage()` to get easy access to the certain parts of the response.
 
-### Embedding Client Usage
+### Azure OpenAI Embedding client usage
 
 ```TS
 import { OpenAiEmbeddingClient } from '@sap-ai-sdk/foundation-models';
