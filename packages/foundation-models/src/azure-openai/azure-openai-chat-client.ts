@@ -7,10 +7,10 @@ import {
   getDeploymentId,
   type ModelDeployment
 } from '@sap-ai-sdk/ai-api/internal.js';
-import type { AzureOpenAiChatCompletionParameters } from './azure-openai-types.js';
 import { AzureOpenAiChatCompletionResponse } from './azure-openai-response.js';
+import type { AzureOpenAiCreateChatCompletionRequest } from './client/inference/schema/index.js';
 
-const apiVersion = '2024-02-01';
+const apiVersion = '2024-06-01';
 
 /**
  * Azure OpenAI client for chat completion.
@@ -29,7 +29,7 @@ export class AzureOpenAiChatClient {
    * @returns The completion result.
    */
   async run(
-    data: AzureOpenAiChatCompletionParameters,
+    data: AzureOpenAiCreateChatCompletionRequest,
     requestConfig?: CustomRequestConfig
   ): Promise<AzureOpenAiChatCompletionResponse> {
     const deploymentId = await getDeploymentId(

@@ -4,11 +4,8 @@ import {
   mockInference,
   parseMockResponse
 } from '../../../../test-util/mock-http.js';
-import {
-  AzureOpenAiChatCompletionOutput,
-  AzureOpenAiChatMessage
-} from './azure-openai-types.js';
 import { AzureOpenAiChatClient } from './azure-openai-chat-client.js';
+import type { AzureOpenAiChatCompletionRequestMessageUser, AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.js';
 
 describe('Azure OpenAI chat client', () => {
   const chatCompletionEndpoint = {
@@ -33,10 +30,10 @@ describe('Azure OpenAI chat client', () => {
           role: 'user',
           content: 'Where is the deepest place on earth located'
         }
-      ] as AzureOpenAiChatMessage[]
+      ] as AzureOpenAiChatCompletionRequestMessageUser[]
     };
 
-    const mockResponse = parseMockResponse<AzureOpenAiChatCompletionOutput>(
+    const mockResponse = parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
       'foundation-models',
       'azure-openai-chat-completion-success-response.json'
     );
