@@ -28,9 +28,9 @@ const prompt = {
   messages: [
     {
       role: 'user',
-      content: 'Where is the deepest place on earth located',
+      content: 'Where is the deepest place on earth located'
     }
-  ],
+  ]
 };
 
 const langchainPrompt = new HumanMessage(
@@ -41,9 +41,9 @@ const request = {
   messages: [
     {
       role: 'user',
-      content: 'Where is the deepest place on earth located',
+      content: 'Where is the deepest place on earth located'
     }
-  ],
+  ]
 };
 
 describe('Mapping Functions', () => {
@@ -80,6 +80,6 @@ describe('Mapping Functions', () => {
     const client = new AzureOpenAiChatClient({ modelName: 'gpt-35-turbo' });
     const runSpy = jest.spyOn(OpenAiChatClientBase.prototype, 'run');
     await client.generate([[langchainPrompt]]);
-    expect(runSpy).toHaveBeenCalledWith(request);
+    expect(runSpy).toHaveBeenCalledWith(request, undefined);
   });
 });

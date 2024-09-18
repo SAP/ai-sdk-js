@@ -1,8 +1,4 @@
-import {
-  AIMessage,
-  BaseMessage,
-  ToolMessage
-} from '@langchain/core/messages';
+import { AIMessage, BaseMessage, ToolMessage } from '@langchain/core/messages';
 import { ChatResult } from '@langchain/core/outputs';
 import { StructuredTool } from '@langchain/core/tools';
 import type {
@@ -15,7 +11,11 @@ import type {
 } from '@sap-ai-sdk/foundation-models';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { AzureOpenAiChatClient } from './chat.js';
-import { LangChainToolChoice, OpenAiChatCallOptions, ToolChoice } from './types.js';
+import {
+  LangChainToolChoice,
+  OpenAiChatCallOptions,
+  ToolChoice
+} from './types.js';
 
 /**
  * Maps a LangChain {@link StructuredTool} to {@link OpenAiChatCompletionFunction}.
@@ -37,9 +37,7 @@ function mapToolToOpenAiFunction(
  * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
  * @returns The OpenAI chat completion tool.
  */
-function mapToolToOpenAiTool(
-  tool: StructuredTool
-): OpenAiChatCompletionTool {
+function mapToolToOpenAiTool(tool: StructuredTool): OpenAiChatCompletionTool {
   return {
     type: 'function',
     function: mapToolToOpenAiFunction(tool)
@@ -51,9 +49,7 @@ function mapToolToOpenAiTool(
  * @param message - The message to map.
  * @returns The OpenAI message Role.
  */
-function mapBaseMessageToRole(
-  message: BaseMessage
-): OpenAiChatMessage['role'] {
+function mapBaseMessageToRole(message: BaseMessage): OpenAiChatMessage['role'] {
   switch (message._getType()) {
     case 'ai':
       return 'assistant';
@@ -121,6 +117,7 @@ export function mapResponseToChatResult(
 function mapBaseMessageToOpenAiChatMessage(
   message: BaseMessage
 ): OpenAiChatMessage {
+  // TODO: remove type casting, improve message.content handling
   return removeUndefinedProperties<OpenAiChatMessage>({
     content: message.content,
     name: message.name,
@@ -128,7 +125,9 @@ function mapBaseMessageToOpenAiChatMessage(
     function_call: message.additional_kwargs.function_call,
     tool_calls: message.additional_kwargs.tool_calls,
     tool_call_id:
-      message._getType() === 'tool' ? (message as ToolMessage).tool_call_id : undefined
+      message._getType() === 'tool'
+        ? (message as ToolMessage).tool_call_id
+        : undefined
   } as OpenAiChatMessage);
 }
 
@@ -137,15 +136,15 @@ function mapBaseMessageToOpenAiChatMessage(
  * @param tools - The array to check.
  * @returns Whether the array is a structured tool array.
  */
-function isStructuredToolArray(
-  tools?: unknown[]
-): tools is StructuredTool[] {
+function isStructuredToolArray(tools?: unknown[]): tools is StructuredTool[] {
   return !!tools?.every(tool =>
     Array.isArray((tool as StructuredTool).lc_namespace)
   );
 }
 
-function mapToolChoice(toolChoice?: LangChainToolChoice): ToolChoice | undefined {
+function mapToolChoice(
+  toolChoice?: LangChainToolChoice
+): ToolChoice | undefined {
   if (!toolChoice) {
     return undefined;
   }

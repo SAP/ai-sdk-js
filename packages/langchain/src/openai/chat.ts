@@ -4,16 +4,16 @@ import type { ChatResult } from '@langchain/core/outputs';
 import { OpenAiChatClient as OpenAiChatClientBase } from '@sap-ai-sdk/foundation-models';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { AzureOpenAiChatModel } from '@sap-ai-sdk/core';
-import {
-  mapLangchainToAiClient,
-  mapResponseToChatResult
-} from './util.js';
+import { mapLangchainToAiClient, mapResponseToChatResult } from './util.js';
 import type { OpenAiChatCallOptions, OpenAiChatModelParams } from './types.js';
 
 /**
  * OpenAI Language Model Wrapper to generate texts.
  */
-export class AzureOpenAiChatClient extends BaseChatModel<OpenAiChatCallOptions> implements OpenAiChatModelParams {
+export class AzureOpenAiChatClient
+  extends BaseChatModel<OpenAiChatCallOptions>
+  implements OpenAiChatModelParams
+{
   modelName: AzureOpenAiChatModel;
   modelVersion?: string;
   resourceGroup?: string;
@@ -60,7 +60,8 @@ export class AzureOpenAiChatClient extends BaseChatModel<OpenAiChatCallOptions> 
       },
       () =>
         this.openAiChatClient.run(
-          mapLangchainToAiClient(this, options, messages), options.requestConfig
+          mapLangchainToAiClient(this, options, messages),
+          options.requestConfig
         )
     );
 
@@ -74,4 +75,3 @@ export class AzureOpenAiChatClient extends BaseChatModel<OpenAiChatCallOptions> 
     return mapResponseToChatResult(res.data);
   }
 }
-

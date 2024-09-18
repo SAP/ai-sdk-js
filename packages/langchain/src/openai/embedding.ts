@@ -10,7 +10,10 @@ import { OpenAiEmbeddingModelParams } from './types.js';
 /**
  * OpenAI GPT Embedding Model Wrapper to embed texts.
  */
-export class AzureOpenAiEmbeddingClient extends Embeddings implements OpenAiEmbeddingModelParams {
+export class AzureOpenAiEmbeddingClient
+  extends Embeddings
+  implements OpenAiEmbeddingModelParams
+{
   modelName: AzureOpenAiChatModel;
   modelVersion?: string;
   resourceGroup?: string;
@@ -29,7 +32,9 @@ export class AzureOpenAiEmbeddingClient extends Embeddings implements OpenAiEmbe
     const documentEmbeddings = await Promise.all(
       documents.map(document => this.createEmbedding({ input: document }))
     );
-    return documentEmbeddings.map(embedding => embedding.data.map(entry => entry.embedding)).flat();
+    return documentEmbeddings
+      .map(embedding => embedding.data.map(entry => entry.embedding))
+      .flat();
   }
 
   override async embedQuery(input: string): Promise<number[]> {

@@ -1,16 +1,25 @@
-import type { BaseChatModelCallOptions, BaseChatModelParams } from '@langchain/core/language_models/chat_models';
+import type {
+  BaseChatModelCallOptions,
+  BaseChatModelParams
+} from '@langchain/core/language_models/chat_models';
 import { BaseLLMParams } from '@langchain/core/language_models/llms';
 import type { OpenAiChatCompletionParameters } from '@sap-ai-sdk/foundation-models';
 import type {
   AzureOpenAiChatModel,
   CustomRequestConfig
 } from '@sap-ai-sdk/core';
-import type { ModelConfiguration, ResourceGroupConfiguration } from '@sap-ai-sdk/ai-api';
+import type {
+  ModelConfiguration,
+  ResourceGroupConfiguration
+} from '@sap-ai-sdk/ai-api';
 
 /**
  * Input type for OpenAI chat models.
  */
-export type OpenAiChatModelParams = Omit<OpenAiChatCompletionParameters, 'messages'> &
+export type OpenAiChatModelParams = Omit<
+  OpenAiChatCompletionParameters,
+  'messages' | 'response_format' | 'seed' | 'functions' | 'tools' | 'tool_choice'
+> &
   BaseChatModelParams &
   ModelConfiguration<AzureOpenAiChatModel> &
   ResourceGroupConfiguration;
@@ -18,16 +27,21 @@ export type OpenAiChatModelParams = Omit<OpenAiChatCompletionParameters, 'messag
 /**
  * Chat model call options for OpenAI.
  */
-export type OpenAiChatCallOptions = BaseChatModelCallOptions & {
-  requestConfig?: CustomRequestConfig;
-};
+export type OpenAiChatCallOptions = BaseChatModelCallOptions &
+  Pick<
+    OpenAiChatCompletionParameters,
+    'response_format' | 'seed' | 'functions' | 'tools' | 'tool_choice'
+  > & {
+    requestConfig?: CustomRequestConfig;
+  };
 
 /**
  * Input type for OpenAI embedding models.
  */
-export type OpenAiEmbeddingModelParams = ModelConfiguration<AzureOpenAiChatModel> &
-  ResourceGroupConfiguration &
-  BaseLLMParams;
+export type OpenAiEmbeddingModelParams =
+  ModelConfiguration<AzureOpenAiChatModel> &
+    ResourceGroupConfiguration &
+    BaseLLMParams;
 
 /**
  * OpenAI toolchoice type.
