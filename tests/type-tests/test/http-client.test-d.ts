@@ -3,10 +3,7 @@ import { expectError, expectType } from 'tsd';
 import { executeRequest } from '@sap-ai-sdk/core';
 
 expectType<Promise<HttpResponse>>(
-  executeRequest(
-    { url: 'https://example.com', apiVersion: 'v1' },
-    { deploymentConfiguration: { deploymentId: 'test-id' } }
-  )
+  executeRequest({ url: 'https://example.com', apiVersion: 'v1' }, {})
 );
 
 expectError<any>(executeRequest({}, { prompt: 'test prompt' }));
@@ -14,7 +11,7 @@ expectError<any>(executeRequest({}, { prompt: 'test prompt' }));
 expectType<Promise<HttpResponse>>(
   executeRequest(
     { url: 'https://example.com', apiVersion: 'v1' },
-    { deploymentConfiguration: { deploymentId: 'test-id' } },
+    {},
     { headers: { 'Content-Type': 'application/json' } }
   )
 );

@@ -9,11 +9,11 @@ import {
  */
 export async function orchestrationCompletion(): Promise<CompletionPostResponse> {
   const orchestrationClient = new OrchestrationClient({
-    llmConfig: {
+    llm: {
       model_name: 'gpt-4-32k',
       model_params: {}
     },
-    templatingConfig: {
+    templating: {
       template: [{ role: 'user', content: 'What is the capital of France?' }]
     }
   });

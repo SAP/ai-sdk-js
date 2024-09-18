@@ -1,7 +1,7 @@
 import { executeRequest, CustomRequestConfig } from '@sap-ai-sdk/core';
 import {
   resolveDeploymentId,
-  ResourceGroupConfiguration
+  ResourceGroupConfig
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { CompletionPostRequest } from './client/api/schema/index.js';
 import { OrchestrationModuleConfig, Prompt } from './orchestration-types.js';
@@ -18,7 +18,7 @@ export class OrchestrationClient {
    */
   constructor(
     private config: OrchestrationModuleConfig,
-    private deploymentConfig?: ResourceGroupConfiguration
+    private deploymentConfig?: ResourceGroupConfig
   ) {}
 
   /**
@@ -60,11 +60,11 @@ export function constructCompletionPostRequest(
     orchestration_config: {
       module_configurations: {
         templating_module_config: {
-          template: config.templatingConfig.template
+          template: config.templating.template
         },
-        llm_module_config: config.llmConfig,
-        ...(Object.keys(config?.filterConfig || {}).length && {
-          filtering_module_config: config.filterConfig
+        llm_module_config: config.llm,
+        ...(Object.keys(config?.filtering || {}).length && {
+          filtering_module_config: config.filtering
         })
       }
     },

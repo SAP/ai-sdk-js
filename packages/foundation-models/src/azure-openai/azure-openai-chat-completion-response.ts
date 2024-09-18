@@ -7,7 +7,7 @@ import {
 
 const logger = createLogger({
   package: 'gen-ai-hub',
-  messageContext: 'azure-openai-response'
+  messageContext: 'azure-openai-chat-completion-response'
 });
 
 /**
@@ -18,6 +18,7 @@ export class AzureOpenAiChatCompletionResponse {
    * The chat completion response.
    */
   public readonly data: AzureOpenAiChatCompletionOutput;
+
   constructor(public readonly rawResponse: HttpResponse) {
     this.data = rawResponse.data;
   }

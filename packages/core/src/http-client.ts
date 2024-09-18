@@ -7,25 +7,6 @@ import {
 import { getAiCoreDestination } from './context.js';
 
 /**
- * Input parameters with Deployment ID.
- */
-export interface BaseLlmParametersWithDeploymentId {
-  /**
-   * Deployment ID of the model to use.
-   */
-  deploymentId: string;
-}
-/**
- * Base LLM Input Parameters.
- */
-export interface BaseLlmParameters {
-  /**
-   * Deployment configuration.
-   */
-  deploymentConfiguration: BaseLlmParametersWithDeploymentId;
-}
-
-/**
  * The type for parameters in custom request configuration.
  */
 export type CustomRequestConfig = Pick<
