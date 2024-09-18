@@ -97,9 +97,10 @@ logger.info(
 ```
 
 You can see that one can send multiple messages in a single request.
+This is useful in providing a history of the conversation to the model.
+
 Some parameters like `max_tokens` and `temperature` can be also be passed to the request to control the completion behavior.
 Refer to `AzureOpenAiChatCompletionParameters` interface for more parameters that can be passed to the chat completion request.
-This is useful in providing a history of the conversation to the model.
 
 #### Obtaining a client using deployment ID
 
@@ -116,6 +117,12 @@ const response = await new AzureOpenAiChatClient({ deploymentId: 'd1234' }).run(
     }
   ]
 });
+```
+
+You could also pass the [resource group](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) name to the client along with the deployment ID:
+
+```TS
+const client = new AzureOpenAiChatClient({ deploymentId: 'd1234' , resourceGroup: 'rg1234' })
 ```
 
 ### Usage of Azure OpenAI Embedding Client
@@ -150,6 +157,12 @@ const response = await new AzureOpenAiEmbeddingClient({ deploymentId: 'd1234' })
     }
   ]
 });
+```
+
+You could also pass the [resource group](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) name to the client along with the deployment ID:
+
+```TS
+const client = new AzureOpenAiEmbeddingClient({ deploymentId: 'd1234' , resourceGroup: 'rg1234' })
 ```
 
 ## Support, Feedback, Contribution
