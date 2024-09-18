@@ -20,9 +20,9 @@
     "internal.d.ts"
   ],
   "scripts": {
-    "compile": "pnpm run generate-zod && tsc",
+    "compile": "tsc",
     "compile:cjs": "tsc -p tsconfig.cjs.json",
-    "test": "pnpm run generate-zod && NODE_OPTIONS=--experimental-vm-modules jest",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint \"**/*.ts\" && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "check:public-api": "node --loader ts-node/esm ../../scripts/check-public-api-cli.ts",
@@ -34,10 +34,10 @@
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^3.20.0",
-    "@sap-cloud-sdk/http-client": "^3.20.0",
-    "@sap-cloud-sdk/openapi": "^3.20.0",
-    "@sap-cloud-sdk/util": "^3.20.0"
+    "@sap-cloud-sdk/connectivity": "^3.21.0",
+    "@sap-cloud-sdk/http-client": "^3.21.0",
+    "@sap-cloud-sdk/openapi": "^3.21.0",
+    "@sap-cloud-sdk/util": "^3.21.0"
   },
   "devDependencies": {
     "nock": "^13.5.5",
