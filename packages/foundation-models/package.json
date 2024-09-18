@@ -26,7 +26,8 @@
     "lint": "eslint \"**/*.ts\" && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "check:public-api": "node --loader ts-node/esm ../../scripts/check-public-api-cli.ts",
-    "generate-zod": "ts-to-zod src/azure-openai/azure-openai-types.ts src/azure-openai/azure-openai-types-schema.ts && sed -i 's|export const|\\/**\\n * @internal\\n *\\/\\nexport const|' src/azure-openai/azure-openai-types-schema.ts"
+    "generate-zod": "ts-to-zod src/azure-openai/azure-openai-types.ts src/azure-openai/azure-openai-types-schema.ts",
+    "postgenerate-zod": "sed -i'' -e \"s|export const|\\/**\\n * @internal\\n *\\/\\nexport const|\" src/azure-openai/azure-openai-types-schema.ts"
   },
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
