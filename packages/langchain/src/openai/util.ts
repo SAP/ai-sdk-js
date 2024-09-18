@@ -37,7 +37,9 @@ function mapToolToOpenAiFunction(
  * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
  * @returns The OpenAI chat completion tool.
  */
-function mapToolToOpenAiTool(tool: StructuredTool): AzureOpenAiChatCompletionTool {
+function mapToolToOpenAiTool(
+  tool: StructuredTool
+): AzureOpenAiChatCompletionTool {
   return {
     type: 'function',
     function: mapToolToOpenAiFunction(tool)
@@ -49,7 +51,9 @@ function mapToolToOpenAiTool(tool: StructuredTool): AzureOpenAiChatCompletionToo
  * @param message - The message to map.
  * @returns The OpenAI message Role.
  */
-function mapBaseMessageToRole(message: BaseMessage): AzureOpenAiChatMessage['role'] {
+function mapBaseMessageToRole(
+  message: BaseMessage
+): AzureOpenAiChatMessage['role'] {
   switch (message._getType()) {
     case 'ai':
       return 'assistant';

@@ -8,17 +8,19 @@ import type {
   AzureOpenAiChatModel,
   CustomRequestConfig
 } from '@sap-ai-sdk/core';
-import type {
-  ModelConfig,
-  ResourceGroupConfig
-} from '@sap-ai-sdk/ai-api';
+import type { ModelConfig, ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
 
 /**
  * Input type for OpenAI chat models.
  */
 export type OpenAiChatModelParams = Omit<
   AzureOpenAiChatCompletionParameters,
-  'messages' | 'response_format' | 'seed' | 'functions' | 'tools' | 'tool_choice'
+  | 'messages'
+  | 'response_format'
+  | 'seed'
+  | 'functions'
+  | 'tools'
+  | 'tool_choice'
 > &
   BaseChatModelParams &
   ModelConfig<AzureOpenAiChatModel> &
@@ -38,8 +40,7 @@ export type OpenAiChatCallOptions = BaseChatModelCallOptions &
 /**
  * Input type for OpenAI embedding models.
  */
-export type OpenAiEmbeddingModelParams =
-  ModelConfig<AzureOpenAiChatModel> &
+export type OpenAiEmbeddingModelParams = ModelConfig<AzureOpenAiChatModel> &
   ResourceGroupConfig &
   BaseLLMParams;
 

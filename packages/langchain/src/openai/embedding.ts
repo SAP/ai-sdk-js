@@ -40,8 +40,10 @@ export class AzureOpenAiEmbeddingClient
   private async createEmbedding(
     query: AzureOpenAiEmbeddingParameters
   ): Promise<number[]> {
-    return this.caller.callWithOptions({}, async () =>
-      (await this.openAiEmbeddingClient.run(query)).getEmbedding() ?? []
+    return this.caller.callWithOptions(
+      {},
+      async () =>
+        (await this.openAiEmbeddingClient.run(query)).getEmbedding() ?? []
     );
   }
 }
