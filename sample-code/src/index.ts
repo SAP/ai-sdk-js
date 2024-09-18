@@ -4,4 +4,4 @@ export {
   computeEmbedding
 } from './foundation-models-azure-openai.js';
 
-export { embedQuery, generate } from './langchain-azure-openai.js';
+export { embedQuery, embedDocument, simpleInvoke, complexInvoke } from './langchain-azure-openai.js';
