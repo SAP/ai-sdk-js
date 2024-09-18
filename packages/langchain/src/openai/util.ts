@@ -15,15 +15,14 @@ import type {
 } from '@sap-ai-sdk/foundation-models';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { AzureOpenAiChatClient } from './chat.js';
-import { OpenAiChatCallOptions } from './types.js';
+import { LangChainToolChoice, OpenAiChatCallOptions, ToolChoice } from './types.js';
 
 /**
  * Maps a LangChain {@link StructuredTool} to {@link OpenAiChatCompletionFunction}.
  * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
  * @returns The OpenAI chat completion function.
- * @internal
  */
-export function mapToolToOpenAiFunction(
+function mapToolToOpenAiFunction(
   tool: StructuredTool
 ): OpenAiChatCompletionFunction {
   return {
@@ -37,9 +36,8 @@ export function mapToolToOpenAiFunction(
  * Maps a LangChain {@link StructuredTool} to {@link OpenAiChatCompletionTool}.
  * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
  * @returns The OpenAI chat completion tool.
- * @internal
  */
-export function mapToolToOpenAiTool(
+function mapToolToOpenAiTool(
   tool: StructuredTool
 ): OpenAiChatCompletionTool {
   return {
@@ -52,9 +50,8 @@ export function mapToolToOpenAiTool(
  * Maps a {@link BaseMessage} to OpenAI's message role.
  * @param message - The message to map.
  * @returns The OpenAI message Role.
- * @internal
  */
-export function mapBaseMessageToRole(
+function mapBaseMessageToRole(
   message: BaseMessage
 ): OpenAiChatMessage['role'] {
   switch (message._getType()) {
@@ -120,9 +117,8 @@ export function mapResponseToChatResult(
  * Maps {@link BaseMessage} to OpenAI messages.
  * @param message - The message to map.
  * @returns The OpenAI chat Message.
- * @internal
  */
-export function mapBaseMessageToOpenAiChatMessage(
+function mapBaseMessageToOpenAiChatMessage(
   message: BaseMessage
 ): OpenAiChatMessage {
   return {
@@ -137,30 +133,33 @@ export function mapBaseMessageToOpenAiChatMessage(
 }
 
 /**
- * Converts a value to an array or returns undefined.
- * @param value - The value to convert.
- * @returns The value as an array, undefined if the input is falsy, or the original array if input is already an array.
- * @internal
- */
-export function toArrayOrUndefined<T>(value?: T | T[]): T[] | undefined {
-  if (value === undefined) {
-    return undefined;
-  }
-  return Array.isArray(value) ? value : [value];
-}
-
-/**
  * Checks if a given array is a structured tool array.
  * @param tools - The array to check.
  * @returns Whether the array is a structured tool array.
- * @internal
  */
-export function isStructuredToolArray(
+function isStructuredToolArray(
   tools?: unknown[]
 ): tools is StructuredTool[] {
   return !!tools?.every(tool =>
     Array.isArray((tool as StructuredTool).lc_namespace)
   );
+}
+
+function mapToolChoice(toolChoice?: LangChainToolChoice): ToolChoice | undefined {
+  if (!toolChoice) {
+    return undefined;
+  }
+
+  if (toolChoice === 'auto' || toolChoice === 'none') {
+    return toolChoice;
+  }
+
+  if (typeof toolChoice === 'string') {
+    return {
+      type: 'function',
+      function: { name: toolChoice }
+    };
+  }
 }
 
 /**
@@ -190,7 +189,7 @@ export function mapLangchainToAiClient(
     tools: isStructuredToolArray(options?.tools)
       ? options?.tools.map(mapToolToOpenAiTool)
       : options?.tools,
-    tool_choice: options?.tool_choice,
+    tool_choice: mapToolChoice(options?.tool_choice),
     response_format: options?.response_format,
     seed: options?.seed
   };

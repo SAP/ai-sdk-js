@@ -18,8 +18,7 @@ export type OpenAiChatModelParams = Omit<OpenAiChatCompletionParameters, 'messag
 /**
  * Chat model call options for OpenAI.
  */
-export interface OpenAiChatCallOptions
-  extends CustomRequestConfig, BaseChatModelCallOptions {};
+export type OpenAiChatCallOptions = CustomRequestConfig & BaseChatModelCallOptions;
 
 /**
  * Input type for OpenAI embedding models.
@@ -27,3 +26,30 @@ export interface OpenAiChatCallOptions
 export type OpenAiEmbeddingModelParams = ModelConfiguration<AzureOpenAiChatModel> &
   ResourceGroupConfiguration &
   BaseLLMParams;
+
+/**
+ * OpenAI toolchoice type.
+ */
+export type ToolChoice =
+  | 'none'
+  | 'auto'
+  | {
+      /**
+       * The type of the tool.
+       */
+      type: 'function';
+      /**
+       * Use to force the model to call a specific function.
+       */
+      function: {
+        /**
+         * The name of the function to call.
+         */
+        name: string;
+      };
+    };
+
+/**
+ * LangChain's toolchoice type.
+ */
+export type LangChainToolChoice = string | Record<string, any> | 'auto' | 'any';
