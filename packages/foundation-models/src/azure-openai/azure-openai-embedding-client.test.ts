@@ -7,13 +7,14 @@ import {
 import {
   AzureOpenAiEmbeddingOutput,
   AzureOpenAiEmbeddingParameters
-} from './azure-openai-types.js';
+} from './azure-openai-embedding-types.js';
 import { AzureOpenAiEmbeddingClient } from './azure-openai-embedding-client.js';
+import { apiVersion } from './model-types.js';
 
 describe('Azure OpenAI embedding client', () => {
   const embeddingsEndpoint = {
     url: 'inference/deployments/1234/embeddings',
-    apiVersion: '2024-02-01'
+    apiVersion
   };
 
   const client = new AzureOpenAiEmbeddingClient({ deploymentId: '1234' });

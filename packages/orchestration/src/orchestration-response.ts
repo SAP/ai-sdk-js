@@ -6,7 +6,7 @@ import {
 } from './client/api/schema/index.js';
 
 const logger = createLogger({
-  package: 'gen-ai-hub',
+  package: 'orchestration',
   messageContext: 'orchestration-response'
 });
 

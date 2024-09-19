@@ -1,13 +1,8 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
-import dotenv from 'dotenv';
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 import { orchestrationCompletionMasking } from '@sap-ai-sdk/sample-code';
+import { loadEnv } from './utils/load-env.js';
 
-// Pick .env file from e2e root directory
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
+loadEnv();
 
 describe('orchestration', () => {
   it('should complete a chat', async () => {
