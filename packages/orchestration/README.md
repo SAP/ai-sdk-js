@@ -116,7 +116,7 @@ logger.info(
 
 #### Content Filtering
 
-Use the Orchestration client with filtering to restrict the type of content that is passed to and received from a generative AI model.
+Use the orchestration client with filtering to restrict the type of content that is passed to and received from a generative AI model.
 
 This feature enables you always filter both input and the output of a model based on content safety criteria.
 
