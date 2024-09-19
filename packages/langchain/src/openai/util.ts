@@ -2,12 +2,12 @@ import { AIMessage, BaseMessage, ToolMessage } from '@langchain/core/messages';
 import { ChatResult } from '@langchain/core/outputs';
 import { StructuredTool } from '@langchain/core/tools';
 import type {
-  AzureOpenAiChatCompletionChoice,
   AzureOpenAiChatCompletionFunction,
   AzureOpenAiChatCompletionTool,
-  AzureOpenAiChatMessage,
-  AzureOpenAiChatCompletionOutput,
-  AzureOpenAiChatCompletionParameters
+  AzureOpenAiChatCompletionRequestMessage,
+  AzureOpenAiCreateChatCompletionResponse,
+  AzureOpenAiCreateChatCompletionRequest,
+  AzureOpenAiChatCompletionFunctionParameters
 } from '@sap-ai-sdk/foundation-models';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { AzureOpenAiChatClient } from './chat.js';
@@ -43,7 +43,11 @@ type LangChainToolChoice = string | Record<string, any> | 'auto' | 'any';
  */
 function mapToolToOpenAiFunction(
   tool: StructuredTool
-): AzureOpenAiChatCompletionFunction {
+): {
+  description?: string;
+  name: string;
+  parameters: AzureOpenAiChatCompletionFunctionParameters;
+} & Record<string, any> {
   return {
     name: tool.name,
     description: tool.description,
@@ -72,8 +76,8 @@ function mapToolToOpenAiTool(
  */
 function mapBaseMessageToRole(
   message: BaseMessage
-): AzureOpenAiChatMessage['role'] {
-  const messageTypeToRoleMap = new Map<string, AzureOpenAiChatMessage['role']>([
+): AzureOpenAiChatCompletionRequestMessage['role'] {
+  const messageTypeToRoleMap = new Map<string, AzureOpenAiChatCompletionRequestMessage['role']>([
     ['human', 'user'],
     ['ai', 'assistant'],
     ['system', 'system'],
@@ -90,32 +94,32 @@ function mapBaseMessageToRole(
 }
 
 /**
- * Maps {@link AzureOpenAiChatCompletionOutput} to LangChain's {@link ChatResult}.
- * @param completionResponse - The {@link AzureOpenAiChatCompletionOutput} response.
+ * Maps {@link AzureOpenAiCreateChatCompletionResponse} to LangChain's {@link ChatResult}.
+ * @param completionResponse - The {@link AzureOpenAiCreateChatCompletionResponse} response.
  * @returns The LangChain {@link ChatResult}
  * @internal
  */
 export function mapOutputToChatResult(
-  completionResponse: AzureOpenAiChatCompletionOutput
+  completionResponse: AzureOpenAiCreateChatCompletionResponse
 ): ChatResult {
   return {
-    generations: completionResponse.choices.map((choice: AzureOpenAiChatCompletionChoice) => ({
-      text: choice.message.content || '',
+    generations: completionResponse.choices.map((choice: typeof completionResponse['choices'][0]) => ({
+      text: choice.message?.content || '',
       message: new AIMessage({
-        content: choice.message.content || '',
+        content: choice.message?.content || '',
         additional_kwargs: {
           finish_reason: choice.finish_reason,
           index: choice.index,
-          function_call: choice.message.function_call,
-          tool_calls: choice.message.tool_calls,
+          function_call: choice.message?.function_call,
+          tool_calls: choice.message?.tool_calls,
           tool_call_id: ''
         }
       }),
       generationInfo: {
         finish_reason: choice.finish_reason,
         index: choice.index,
-        function_call: choice.message.function_call,
-        tool_calls: choice.message.tool_calls
+        function_call: choice.message?.function_call,
+        tool_calls: choice.message?.tool_calls
       }
     })),
     llmOutput: {
@@ -124,9 +128,9 @@ export function mapOutputToChatResult(
       model: completionResponse.model,
       object: completionResponse.object,
       tokenUsage: {
-        completionTokens: completionResponse.usage.completion_tokens,
-        promptTokens: completionResponse.usage.prompt_tokens,
-        totalTokens: completionResponse.usage.total_tokens
+        completionTokens: completionResponse.usage?.completion_tokens || 0,
+        promptTokens: completionResponse.usage?.prompt_tokens || 0,
+        totalTokens: completionResponse.usage?.total_tokens || 0
       }
     }
   };
@@ -139,9 +143,9 @@ export function mapOutputToChatResult(
  */
 function mapBaseMessageToAzureOpenAiChatMessage(
   message: BaseMessage
-): AzureOpenAiChatMessage {
+): AzureOpenAiChatCompletionRequestMessage {
   // TODO: remove type casting, improve message.content handling
-  return removeUndefinedProperties<AzureOpenAiChatMessage>({
+  return removeUndefinedProperties<AzureOpenAiChatCompletionRequestMessage>({
     name: message.name,
     content: message.content,
     role: mapBaseMessageToRole(message),
@@ -151,14 +155,14 @@ function mapBaseMessageToAzureOpenAiChatMessage(
   });
 }
 
-function mapBaseMessageToContent(baseMessage: BaseMessage): AzureOpenAiChatMessage['content'] {
+function mapBaseMessageToContent(baseMessage: BaseMessage): AzureOpenAiChatCompletionRequestMessage['content'] {
   if (typeof baseMessage.content === 'object' && ('text' in baseMessage.content || 'image_url' in baseMessage.content)) {
     const { text, image_url, ...rest } = baseMessage.content;
     if (rest) {
       return;
     }
   }
-  return baseMessage.content as AzureOpenAiChatMessage['content'];
+  return baseMessage.content as AzureOpenAiChatCompletionRequestMessage['content'];
 }
 
 function isStructuredToolArray(tools?: unknown[]): tools is StructuredTool[] {
@@ -200,8 +204,8 @@ export function mapLangchainToAiClient(
   client: AzureOpenAiChatClient,
   options: AzureOpenAiChatCallOptions & { promptIndex?: number },
   messages: BaseMessage[]
-): AzureOpenAiChatCompletionParameters {
-  return removeUndefinedProperties<AzureOpenAiChatCompletionParameters>({
+): AzureOpenAiCreateChatCompletionRequest {
+  return removeUndefinedProperties<AzureOpenAiCreateChatCompletionRequest>({
     messages: messages.map(mapBaseMessageToAzureOpenAiChatMessage),
     max_tokens: client.max_tokens === -1 ? undefined : client.max_tokens,
     temperature: client.temperature,

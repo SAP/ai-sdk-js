@@ -3,7 +3,7 @@ import type {
   BaseChatModelParams
 } from '@langchain/core/language_models/chat_models';
 import { BaseLLMParams } from '@langchain/core/language_models/llms';
-import type { AzureOpenAiChatCompletionParameters } from '@sap-ai-sdk/foundation-models';
+import type { AzureOpenAiCreateChatCompletionRequest } from '@sap-ai-sdk/foundation-models';
 import type {
   AzureOpenAiChatModel,
   CustomRequestConfig
@@ -14,7 +14,7 @@ import type { ModelConfig, ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
  * Input type for {@link AzureOpenAiChatClient} initialization.
  */
 export type AzureOpenAiChatModelParams = Omit<
-  AzureOpenAiChatCompletionParameters,
+  AzureOpenAiCreateChatCompletionRequest,
   | 'messages'
   | 'response_format'
   | 'seed'
@@ -31,7 +31,7 @@ export type AzureOpenAiChatModelParams = Omit<
  */
 export type AzureOpenAiChatCallOptions = BaseChatModelCallOptions &
   Pick<
-    AzureOpenAiChatCompletionParameters,
+    AzureOpenAiCreateChatCompletionRequest,
     'response_format' | 'seed' | 'functions' | 'tools' | 'tool_choice'
   > & {
     requestConfig?: CustomRequestConfig;

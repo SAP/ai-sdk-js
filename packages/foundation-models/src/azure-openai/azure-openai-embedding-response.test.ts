@@ -1,6 +1,6 @@
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
 import { AzureOpenAiEmbeddingResponse } from './azure-openai-embedding-response.js';
-import { azureOpenAiEmbeddingOutputSchema } from './azure-openai-types-schema.js';
+import { azureOpenAiEmbeddingOutputSchema } from './ts-to-zod/azure-openai-embedding-types.zod.js';
 
 describe('Azure OpenAI embedding response', () => {
   const mockResponse = parseMockResponse<AzureOpenAiEmbeddingResponse>(

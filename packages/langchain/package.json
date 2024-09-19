@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/langchain",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "LangChain clients based on the @sap-ai-sdk",
   "license": "Apache-2.0",
   "keywords": [

@@ -47,9 +47,9 @@ app.get('/embedding', async (req, res) => {
   }
 });
 
-app.get('/orchestration', async (req, res) => {
+app.get('/orchestration/:sampleCase', async (req, res) => {
   try {
-    res.send(await orchestrationCompletion());
+    res.send(await orchestrationCompletion(req.params.sampleCase));
   } catch (error: any) {
     console.error(error);
     res
