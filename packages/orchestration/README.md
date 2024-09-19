@@ -8,15 +8,6 @@ This package provides generative AI orchestration capabilities, integrating seam
 $ npm install @sap-ai-sdk/orchestration
 ```
 
-## Prerequisites
-
-- [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
-- Project configured with Node.js v20 or higher and native ESM support enabled.
-- For testing your application locally:
-  - Download a service key for your AI Core service instance.
-  - Create a `.env` file in the sample-code directory.
-  - Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`.
-
 ## Orchestration Client
 
 The orchestration client provides essential features like templating and content filtering, which are often required in business AI scenarios:
@@ -25,7 +16,7 @@ The orchestration client provides essential features like templating and content
 - **Content filtering** lets you restrict the type of content sent to or received from a generative AI model.
 
 To interact with generative AI models compatible with the orchestration service, use the orchestration client.
-More details about orchestration are available [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration-workflow).
+Find more details about orchestration [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration-workflow).
 
 To utilize orchestration capabilities, you need to create a deployment.
 Once the deployment is complete, you'll have a `deploymentUrl` to access the orchestration service.
@@ -33,11 +24,15 @@ For details, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-servic
 
 ### Prerequisites
 
-Ensure the following are in place:
-
+- [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
+- Project configured with Node.js v20 or higher and native ESM support enabled.
+- For testing your application locally (Optional):
+  - Download a service key for your AI Core service instance.
+  - Create a `.env` file in the sample-code directory.
+  - Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`.
 - At least one orchestration-compatible deployment for a generative AI model is running.
   - You can use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to the SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
-- A deployment for orchestration is created. For details, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration).
+- A deployment for orchestration is created. For details, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration). If deployment for orchestration already exists, skip this step.
 - The `@sap-ai-sdk/orchestration` package is installed in your project.
 
 ### Orchestration Client
