@@ -117,7 +117,7 @@ Use the orchestration client with filtering to restrict the type of content that
 This feature enables you always filter both input and the output of a model based on content safety criteria.
 
 ```TS
-import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+import { OrchestrationClient, buildAzureContentFilter } from '@sap-ai-sdk/orchestration';
 
 const filter = buildAzureContentFilter({ Hate: 2, Violence: 4 });
 const orchestrationClient = new OrchestrationClient({
@@ -144,7 +144,9 @@ try {
 }
 ```
 
-The Azure content filter supports four categories: `Hate`, `Violence`, `Sexual`, and `SelfHarm`. Each category can be configured with severity levels of 0, 2, 4, or 6.
+`buildAzureContentFilter()` is a convenience function that creates an Azure content filter configuration based on the provided inputs.
+The Azure content filter supports four categories: `Hate`, `Violence`, `Sexual`, and `SelfHarm`.
+Each category can be configured with severity levels of 0, 2, 4, or 6.
 
 ## Support, Feedback, Contribution
 
