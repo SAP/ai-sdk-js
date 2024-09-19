@@ -42,30 +42,3 @@ export type AzureOpenAiChatCallOptions = BaseChatModelCallOptions &
  */
 export type AzureOpenAiEmbeddingModelParams =
   ModelConfig<AzureOpenAiChatModel> & ResourceGroupConfig & BaseLLMParams;
-
-/**
- * OpenAI toolchoice type.
- */
-export type ToolChoice =
-  | 'none'
-  | 'auto'
-  | {
-      /**
-       * The type of the tool.
-       */
-      type: 'function';
-      /**
-       * Use to force the model to call a specific function.
-       */
-      function: {
-        /**
-         * The name of the function to call.
-         */
-        name: string;
-      };
-    };
-
-/**
- * LangChain's toolchoice type.
- */
-export type LangChainToolChoice = string | Record<string, any> | 'auto' | 'any';

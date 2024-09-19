@@ -12,10 +12,32 @@ import type {
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { AzureOpenAiChatClient } from './chat.js';
 import {
-  LangChainToolChoice,
   AzureOpenAiChatCallOptions,
-  ToolChoice
 } from './types.js';
+
+type ToolChoice =
+  | 'none'
+  | 'auto'
+  | {
+      /**
+       * The type of the tool.
+       */
+      type: 'function';
+      /**
+       * Use to force the model to call a specific function.
+       */
+      function: {
+        /**
+         * The name of the function to call.
+         */
+        name: string;
+      };
+    };
+
+/**
+ * LangChain's toolchoice type.
+ */
+type LangChainToolChoice = string | Record<string, any> | 'auto' | 'any';
 
 /**
  * Maps a LangChain {@link StructuredTool} to {@link AzureOpenAiChatCompletionFunction}.
@@ -123,8 +145,8 @@ function mapBaseMessageToAzureOpenAiChatMessage(
 ): AzureOpenAiChatMessage {
   // TODO: remove type casting, improve message.content handling
   return removeUndefinedProperties<AzureOpenAiChatMessage>({
-    content: message.content,
     name: message.name,
+    content: message.content,
     role: mapBaseMessageToRole(message),
     function_call: message.additional_kwargs.function_call,
     tool_calls: message.additional_kwargs.tool_calls,
@@ -132,7 +154,18 @@ function mapBaseMessageToAzureOpenAiChatMessage(
       message._getType() === 'tool'
         ? (message as ToolMessage).tool_call_id
         : undefined
-  } as AzureOpenAiChatMessage);
+  });
+}
+
+function mapBaseMessageToContent(baseMessage: BaseMessage): AzureOpenAiChatMessage['content'] {
+  if (typeof baseMessage.content === 'object' && ('text' in baseMessage.content || 'image_url' in baseMessage.content)) {
+    const { text, image_url, ...rest } = baseMessage.content;
+    if (rest) {
+      // log warning
+      return;
+    }
+  }
+  return baseMessage.content as AzureOpenAiChatMessage['content'];
 }
 
 /**

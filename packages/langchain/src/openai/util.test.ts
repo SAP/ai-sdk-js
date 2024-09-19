@@ -1,6 +1,6 @@
-import { AzureOpenAiChatCompletionOutput } from '@sap-ai-sdk/foundation-models';
+import { AzureOpenAiChatCompletionOutput, AzureOpenAiChatCompletionParameters } from '@sap-ai-sdk/foundation-models';
 import nock from 'nock';
-import { HumanMessage } from '@langchain/core/messages';
+import { BaseMessage, HumanMessage } from '@langchain/core/messages';
 import {
   mockClientCredentialsGrantCall,
   parseMockResponse
@@ -28,11 +28,11 @@ describe('Mapping Functions', () => {
   });
 
   it('should parse a LangChain input to an AI SDK input', async () => {
-    const langchainPrompt = [
+    const langchainPrompt: BaseMessage[] = [
       new HumanMessage('Where is the deepest place on earth located')
     ];
 
-    const request = {
+    const request: AzureOpenAiChatCompletionParameters = {
       messages: [
         {
           role: 'user',
