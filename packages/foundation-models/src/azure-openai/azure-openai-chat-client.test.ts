@@ -6,11 +6,12 @@ import {
 } from '../../../../test-util/mock-http.js';
 import { AzureOpenAiChatClient } from './azure-openai-chat-client.js';
 import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.js';
+import { apiVersion } from './model-types.js';
 
 describe('Azure OpenAI chat client', () => {
   const chatCompletionEndpoint = {
     url: 'inference/deployments/1234/chat/completions',
-    apiVersion: '2024-06-01'
+    apiVersion
   };
 
   const client = new AzureOpenAiChatClient({ deploymentId: '1234' });
