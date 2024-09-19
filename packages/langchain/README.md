@@ -17,7 +17,7 @@ $ npm install @sap-ai-sdk/langchain
 ```
 
 ## Pre-requisites
-- [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
+- [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Bind the service to your application.
 - Ensure the project is configured with Node.js v20 or higher, along with native ESM support.
 - For testing your application locally:
