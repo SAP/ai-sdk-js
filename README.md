@@ -3,7 +3,7 @@
 
 # SAP Cloud SDK for AI
 
-Integrate chat completion into your business applications with SAP Cloud SDK for GenAI Hub. Leverage the Generative AI Hub of SAP AI Core to make use of templating, grounding, data masking, content filtering and more. Setup your SAP AI Core instance with SAP Cloud SDK for AI Core.
+Integrate chat completion into your business applications with SAP Cloud SDK for AI. Leverage the generative AI hub of SAP AI Core to make use of templating, grounding, data masking, content filtering and more. Setup your SAP AI Core instance with SAP Cloud SDK for AI Core.
 
 ## Disclaimer ⚠️
 
@@ -27,6 +27,16 @@ This project is currently in an experimental state. All functionality and naming
 
 This project publishes multiple packages and is managed using [pnpm](https://pnpm.io/)
 
+### @sap-ai-sdk/orchestration
+
+This package incorporates generative AI [orchestration](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration) capabilities into your AI activities in SAP AI Core and SAP AI Launchpad.
+
+#### Installation
+
+```
+$ npm install @sap-ai-sdk/orchestration
+```
+
 ### @sap-ai-sdk/ai-api
 
 This package provides tools to manage your scenarios and workflows in SAP AI Core.
@@ -36,7 +46,7 @@ This package provides tools to manage your scenarios and workflows in SAP AI Cor
 - Deploy inference endpoints for your trained models.
 - Register custom Docker registries, sync AI content from your own git repositories, and register your own object storage for training data and model artifacts.
 
-To install the AI Core package in your project, run:
+#### Installation
 
 ```
 $ npm install @sap-ai-sdk/ai-api
@@ -46,28 +56,19 @@ $ npm install @sap-ai-sdk/ai-api
 
 This package incorporates generative AI foundation models into your AI activities in SAP AI Core and SAP AI Launchpad.
 
-To install the  Gen AI Hub package in your project, run:
+#### Installation
+
 ```
 $ npm install @sap-ai-sdk/foundation-models
-```
-
-### @sap-ai-sdk/orchestration
-
-This package incorporates generative AI orchestration capabilities into your AI activities in SAP AI Core and SAP AI Launchpad.
-
-To install the  Gen AI Hub package in your project, run:
-```
-$ npm install @sap-ai-sdk/orchestration
 ```
 
 ## SAP Cloud SDK for AI Sample Project
 
 We have created a sample project demonstrating the different clients' usage of the SAP Cloud SDK for AI for TypeScript/JavaScript. The [project README](./sample-code/README.md) outlines the set-up needed to build and run it locally.
 
-
 ## Support, Feedback, Contribution
 
-This project is open to feature requests/suggestions, bug reports etc. via [GitHub issues](https://github.com/SAP/ai-sdk-js/issues). 
+This project is open to feature requests/suggestions, bug reports etc. via [GitHub issues](https://github.com/SAP/ai-sdk-js/issues).
 
 Contribution and feedback are encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](CONTRIBUTING.md).
 

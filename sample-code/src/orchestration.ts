@@ -1,6 +1,6 @@
 import {
   OrchestrationClient,
-  azureContentFilter
+  buildAzureContentFilter
 } from '@sap-ai-sdk/orchestration';
 
 /**
@@ -79,7 +79,7 @@ async function orchestrationCompletionTemplate(): Promise<string | undefined> {
  * @returns The message content from the orchestration service in the generative AI hub.
  */
 async function orchestrationCompletionFiltering(): Promise<string | undefined> {
-  const filter = azureContentFilter({ Hate: 0, Violence: 0 });
+  const filter = buildAzureContentFilter({ Hate: 0, Violence: 0 });
   const orchestrationClient = new OrchestrationClient({
     llm: {
       model_name: 'gpt-4-32k',
