@@ -8,7 +8,7 @@ import {
  * @param filter - Filtering configuration for Azure filter. If skipped, the default Azure content filter configuration is used.
  * @returns An object with the Azure filtering configuration.
  */
-export function createAzureContentFilter(
+export function buildAzureContentFilter(
   filter?: AzureContentSafety
 ): FilteringConfig {
   if (filter && !Object.keys(filter).length) {

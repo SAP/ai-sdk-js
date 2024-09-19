@@ -35,7 +35,7 @@ export type {
 
 export { OrchestrationClient } from './orchestration-client.js';
 
-export { createAzureContentFilter } from './orchestration-filter-utility.js';
+export { buildAzureContentFilter } from './orchestration-filter-utility.js';
 
 export { OrchestrationResponse } from './orchestration-response.js';
 

@@ -1,6 +1,6 @@
 import { CompletionPostRequest } from './client/api/schema/index.js';
 import { constructCompletionPostRequest } from './orchestration-client.js';
-import { createAzureContentFilter } from './orchestration-filter-utility.js';
+import { buildAzureContentFilter } from './orchestration-filter-utility.js';
 import { OrchestrationModuleConfig } from './orchestration-types.js';
 
 describe('constructCompletionPostRequest()', () => {
@@ -164,7 +164,7 @@ describe('constructCompletionPostRequest()', () => {
     const config: OrchestrationModuleConfig = {
       ...defaultConfig,
       filtering: {
-        input: createAzureContentFilter({ Hate: 4, SelfHarm: 0 })
+        input: buildAzureContentFilter({ Hate: 4, SelfHarm: 0 })
       }
     };
     const expectedCompletionPostRequest: CompletionPostRequest = {
