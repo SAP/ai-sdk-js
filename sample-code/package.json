@@ -28,7 +28,7 @@
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/langchain": "workspace:^",
     "@langchain/openai": "0.3.0",
-    "@langchain/core": "0.3.1",
+    "@langchain/core": "0.3.3",
     "@types/express": "^4.17.21",
     "express": "^4.21.0"
   }
