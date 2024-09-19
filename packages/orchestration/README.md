@@ -41,7 +41,7 @@ Use the orchestration client to configure different modules like templating and 
 
 #### Templating
 
-Use the orchestration client with templating to pass a prompt with placeholders, that are filled with input parameters during a chat completion request.
+Use the orchestration client with templating to pass a prompt with placeholders that are replaced with input parameters during a chat completion request.
 
 You can vary the prompt based on the input parameters.
 
