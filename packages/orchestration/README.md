@@ -125,7 +125,7 @@ This feature enables you always filter both input and the output of a model base
 ```TS
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
-const filter = azureContentFilter({ Hate: 2, Violence: 4 });
+const filter = buildAzureContentFilter({ Hate: 2, Violence: 4 });
 const orchestrationClient = new OrchestrationClient({
   llm: {
     model_name: 'gpt-4-32k',
@@ -150,7 +150,7 @@ try {
 }
 ```
 
-The `azureContentFilter` supports four categories: `Hate`, `Violence`, `Sexual`, and `SelfHarm`. Each category can be configured with severity levels of 0, 2, 4, or 6.
+The Azure Content Filter supports four categories: `Hate`, `Violence`, `Sexual`, and `SelfHarm`. Each category can be configured with severity levels of 0, 2, 4, or 6.
 
 ## Support, Feedback, Contribution
 
