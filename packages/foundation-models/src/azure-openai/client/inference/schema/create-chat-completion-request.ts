@@ -21,8 +21,8 @@ export type AzureOpenAiCreateChatCompletionRequest =
      */
     messages: AzureOpenAiChatCompletionRequestMessage[];
     /**
-     * The configuration entries for Azure OpenAI chat extensions that use them.
-     * This additional specification is only compatible with Azure OpenAI.
+     *   The configuration entries for Azure OpenAI chat extensions that use them.
+     *   This additional specification is only compatible with Azure OpenAI.
      */
     data_sources?: AzureOpenAiAzureChatExtensionConfiguration[];
     /**

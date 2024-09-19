@@ -5,9 +5,7 @@ import {
   parseMockResponse
 } from '../../../../test-util/mock-http.js';
 import { AzureOpenAiChatClient } from './azure-openai-chat-client.js';
-import type {
-  AzureOpenAiCreateChatCompletionResponse
-} from './client/inference/schema/index.js';
+import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.js';
 
 describe('Azure OpenAI chat client', () => {
   const chatCompletionEndpoint = {
