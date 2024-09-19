@@ -110,7 +110,7 @@ async function orchestrationCompletionFiltering(): Promise<string | undefined> {
 }
 
 /**
- * Ask to write an email and mask the email address.
+ * Ask to write an email while masking personal information.
  * @returns The message content from the orchestration service in the generative AI hub.
  */
 export async function orchestrationCompletionMasking(): Promise<
@@ -135,29 +135,16 @@ export async function orchestrationCompletionMasking(): Promise<
         {
           type: 'sap_data_privacy_integration',
           method: 'pseudonymization',
-          entities: [
-            {
-              type: 'profile-email'
-            },
-            { type: 'profile-person' }
-          ]
+          entities: [{ type: 'profile-email' }, { type: 'profile-person' }]
         }
       ]
     }
   });
 
-  try {
-    // Call the orchestration service.
-    const response = await orchestrationClient.chatCompletion({
-      inputParams: { user: 'Alice Anderson', email: 'alice.anderson@sap.com' }
-    });
-    console.log(JSON.stringify(response.data));
-    // Access the response content.
-    return response.getContent();
-  } catch (error: any) {
-    // Handle the case where the output was filtered.
-    return `Error: ${error.message}`;
-  }
+  const response = await orchestrationClient.chatCompletion({
+    inputParams: { user: 'Alice Anderson', email: 'alice.anderson@sap.com' }
+  });
+  return response.getContent();
 }
 /**
  * Ask about the capital of France and send along custom request configuration.
