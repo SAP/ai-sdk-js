@@ -29,7 +29,7 @@ The Azure OpenAI client allows you to send chat completion or embedding requests
 ### Prerequisites
 
 - A deployed OpenAI model in SAP generative AI hub.
-  - You can use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core)
+  - You can use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
 - `sap-ai-sdk/foundation-models` package installed in your project.
 
 ### Usage of Azure OpenAI Chat Client
