@@ -2,7 +2,7 @@
 "@sap-ai-sdk/orchestration": major
 ---
 
-[New Functionality] Introduce a new Orchestration client for consuming the following features of the Orchestration service:
-- Harmonized LLM access via orchestration
-- Use client side prompt templates
-- Configure content filtering
+[New Functionality] Introduce orchestration client for consuming the following features of the orchestration service:
+- harmonized LLM access via orchestration
+- client side prompt templates
+- content filtering

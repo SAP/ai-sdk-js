@@ -1,5 +1,4 @@
 ---
 '@sap-ai-sdk/ai-api': major
 ---
-[New Functionality] Provide an Http Wrapper for consuming the [AI Core Rest APIs](https://api.sap.com/api/AI_CORE_API/overview).
-Thanks to the SAP Cloud SDK OpenAPI Generator, which is used for generating the client.
+[New Functionality] Provide an HTTP wrapper to consume the [AI Core Rest APIs](https://api.sap.com/api/AI_CORE_API/overview). It is powered by the SAP Cloud SDK OpenAPI generator.
