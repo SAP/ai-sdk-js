@@ -3,10 +3,11 @@ import { AzureOpenAiChatCompletionResponse } from './azure-openai-chat-completio
 import { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.js';
 
 describe('OpenAI chat completion response', () => {
-  const mockResponse = parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
-    'foundation-models',
-    'azure-openai-chat-completion-success-response.json'
-  );
+  const mockResponse =
+    parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
+      'foundation-models',
+      'azure-openai-chat-completion-success-response.json'
+    );
   const rawResponse = {
     data: mockResponse,
     status: 200,

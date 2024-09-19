@@ -7,6 +7,12 @@
     "composite": true
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["dist/**/*", "test/**/*", "**/*.test.ts", "node_modules/**/*", "src/**/ts-to-zod/*.zod.ts"],
+  "exclude": [
+    "dist/**/*",
+    "test/**/*",
+    "**/*.test.ts",
+    "node_modules/**/*",
+    "src/**/ts-to-zod/*.zod.ts"
+  ],
   "references": [{ "path": "../core" }]
 }
