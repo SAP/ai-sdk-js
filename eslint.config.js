@@ -35,6 +35,12 @@ export default [
     }
   },
   {
+    files: ['packages/langchain/**/*.ts'],
+    rules: {
+      'import/no-internal-modules': 'off'
+    }
+  },
+  {
     files: ['packages/foundation-models/src/azure-openai/client/inference/schema/*.ts'],
     rules: {
       'jsdoc/check-indentation': 'off'
