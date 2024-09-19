@@ -11,7 +11,6 @@ This package provides LangChain model clients, built on top of the `@sap-ai-sdk`
 4. [Support, Feedback, Contribution](#support-feedback-contribution)
 5. [License](#license)
 
-
 ## Installation
 ```
 $ npm install @sap-ai-sdk/langchain
@@ -27,8 +26,8 @@ $ npm install @sap-ai-sdk/langchain
   - Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`.
 
 ## Usage
+This package provides both chat and embedding clients, currently supporting Azure OpenAI.
 All clients comply with [LangChain's interface](https://js.langchain.com/docs/introduction).
-We offer chat and embedding clients, currently only for Azure OpenAI.
 
 ### Client Initialization
 To initialize a client, you only need to provide the model name:
@@ -70,7 +69,7 @@ const promptTemplate = ChatPromptTemplate.fromMessages([
 ]);
 const parser = new StringOutputParser();
 const llmChain = promptTemplate.pipe(client).pipe(parser);
-const response = llmChain.invoke({
+const response = await llmChain.invoke({
   language: 'german',
   text: 'What is the capital of France?'
 });

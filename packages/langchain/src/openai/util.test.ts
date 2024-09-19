@@ -5,7 +5,7 @@ import {
   mockClientCredentialsGrantCall,
   parseMockResponse
 } from '../../../../test-util/mock-http.js';
-import { mapLangchainToAiClient, mapResponseToChatResult } from './util.js';
+import { mapLangchainToAiClient, mapOutputToChatResult } from './util.js';
 import { AzureOpenAiChatClient } from './chat.js';
 
 const openAiMockResponse = parseMockResponse<AzureOpenAiChatCompletionOutput>(
@@ -23,7 +23,7 @@ describe('Mapping Functions', () => {
   });
 
   it('should parse an OpenAI response to a (LangChain) chat response', async () => {
-    const result = mapResponseToChatResult(openAiMockResponse);
+    const result = mapOutputToChatResult(openAiMockResponse);
     expect(result).toMatchSnapshot();
   });
 

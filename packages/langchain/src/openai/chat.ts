@@ -4,14 +4,14 @@ import type { ChatResult } from '@langchain/core/outputs';
 import { AzureOpenAiChatClient as AzureOpenAiChatClientBase } from '@sap-ai-sdk/foundation-models';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { AzureOpenAiChatModel } from '@sap-ai-sdk/core';
-import { mapLangchainToAiClient, mapResponseToChatResult } from './util.js';
+import { mapLangchainToAiClient, mapOutputToChatResult } from './util.js';
 import type {
   AzureOpenAiChatCallOptions,
   AzureOpenAiChatModelParams
 } from './types.js';
 
 /**
- * OpenAI language model wrapper to generate texts.
+ * LangChain chat client for Azure OpenAI consumption on SAP BTP.
  */
 export class AzureOpenAiChatClient
   extends BaseChatModel<AzureOpenAiChatCallOptions>
@@ -73,6 +73,6 @@ export class AzureOpenAiChatClient
       typeof res.getContent() === 'string' ? (res.getContent() as string) : ''
     );
 
-    return mapResponseToChatResult(res.data);
+    return mapOutputToChatResult(res.data);
   }
 }

@@ -7,7 +7,7 @@ import { AzureOpenAiChatModel } from '@sap-ai-sdk/core';
 import { AzureOpenAiEmbeddingModelParams } from './types.js';
 
 /**
- * OpenAI GPT Embedding Model Wrapper to embed texts.
+ * LangChain embedding client for Azure OpenAI consumption on SAP BTP.
  */
 export class AzureOpenAiEmbeddingClient
   extends Embeddings

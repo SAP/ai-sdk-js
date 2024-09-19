@@ -34,9 +34,6 @@ type ToolChoice =
       };
     };
 
-/**
- * LangChain's toolchoice type.
- */
 type LangChainToolChoice = string | Record<string, any> | 'auto' | 'any';
 
 /**
@@ -69,9 +66,9 @@ function mapToolToOpenAiTool(
 }
 
 /**
- * Maps a {@link BaseMessage} to OpenAI's message role.
- * @param message - The message to map.
- * @returns The OpenAI message Role.
+ * Maps a {@link BaseMessage} to{@link AzureOpenAiChatMessage} message role.
+ * @param message - The {@link BaseMessage} to map.
+ * @returns The {@link AzureOpenAiChatMessage} message Role.
  */
 function mapBaseMessageToRole(
   message: BaseMessage
@@ -93,16 +90,16 @@ function mapBaseMessageToRole(
 }
 
 /**
- * Maps OpenAI messages to LangChain's {@link ChatResult}.
- * @param res - The OpenAI chat completion output.
- * @returns The LangChain chat result.
+ * Maps {@link AzureOpenAiChatCompletionOutput} to LangChain's {@link ChatResult}.
+ * @param completionResponse - The {@link AzureOpenAiChatCompletionOutput} response.
+ * @returns The LangChain {@link ChatResult}
  * @internal
  */
-export function mapResponseToChatResult(
-  res: AzureOpenAiChatCompletionOutput
+export function mapOutputToChatResult(
+  completionResponse: AzureOpenAiChatCompletionOutput
 ): ChatResult {
   return {
-    generations: res.choices.map((choice: AzureOpenAiChatCompletionChoice) => ({
+    generations: completionResponse.choices.map((choice: AzureOpenAiChatCompletionChoice) => ({
       text: choice.message.content || '',
       message: new AIMessage({
         content: choice.message.content || '',
@@ -122,23 +119,23 @@ export function mapResponseToChatResult(
       }
     })),
     llmOutput: {
-      created: res.created,
-      id: res.id,
-      model: res.model,
-      object: res.object,
+      created: completionResponse.created,
+      id: completionResponse.id,
+      model: completionResponse.model,
+      object: completionResponse.object,
       tokenUsage: {
-        completionTokens: res.usage.completion_tokens,
-        promptTokens: res.usage.prompt_tokens,
-        totalTokens: res.usage.total_tokens
+        completionTokens: completionResponse.usage.completion_tokens,
+        promptTokens: completionResponse.usage.prompt_tokens,
+        totalTokens: completionResponse.usage.total_tokens
       }
     }
   };
 }
 
 /**
- * Maps {@link BaseMessage} to OpenAI messages.
+ * Maps {@link BaseMessage} to {@link AzureOpenAiChatMessage}.
  * @param message - The message to map.
- * @returns The OpenAI chat Message.
+ * @returns The {@link AzureOpenAiChatMessage}.
  */
 function mapBaseMessageToAzureOpenAiChatMessage(
   message: BaseMessage
@@ -150,10 +147,7 @@ function mapBaseMessageToAzureOpenAiChatMessage(
     role: mapBaseMessageToRole(message),
     function_call: message.additional_kwargs.function_call,
     tool_calls: message.additional_kwargs.tool_calls,
-    tool_call_id:
-      message._getType() === 'tool'
-        ? (message as ToolMessage).tool_call_id
-        : undefined
+    tool_call_id: mapToolCallId(message)
   });
 }
 
@@ -168,15 +162,16 @@ function mapBaseMessageToContent(baseMessage: BaseMessage): AzureOpenAiChatMessa
   return baseMessage.content as AzureOpenAiChatMessage['content'];
 }
 
-/**
- * Checks if a given array is a structured tool array.
- * @param tools - The array to check.
- * @returns Whether the array is a structured tool array.
- */
 function isStructuredToolArray(tools?: unknown[]): tools is StructuredTool[] {
   return !!tools?.every(tool =>
     Array.isArray((tool as StructuredTool).lc_namespace)
   );
+}
+
+function mapToolCallId(message: BaseMessage): string | undefined {
+  if (message._getType() === 'tool') {
+    return (message as ToolMessage).tool_call_id;
+  }
 }
 
 function mapToolChoice(
@@ -195,9 +190,9 @@ function mapToolChoice(
 }
 
 /**
- * Maps LangChain's input interface to our own client's input interface
- * @param client The LangChain OpenAI client
- * @param options The LangChain call options
+ * Maps LangChain's input interface to the AI SDK client's input interface
+ * @param client The LangChain Azure OpenAI client
+ * @param options The {@link AzureOpenAiChatCallOptions}
  * @param messages The messages to be send
  * @returns An AI SDK compatibile request
  * @internal
