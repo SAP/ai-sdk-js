@@ -47,11 +47,10 @@ const chatClient = new AzureOpenAiChatClient({
 });
 ```
 
-### Chat Clients
+### Chat Client
 The chat clients allow you to interact with Azure OpenAI chat models, accessible via SAP Gen AI Hub. 
-To invoke the client, you only have a to pass a prompt.
+To invoke the client, you only have a to pass a prompt:
 
-#### Simple Example
 ```ts
 const response = await chatClient.invoke("What's the capital of France?");
 ```
@@ -75,7 +74,7 @@ const response = await llmChain.invoke({
 });
 ```
 
-### Embedding Clients
+### Embedding Client
 Embedding clients allow embedding either text or documents (represented as arrays of strings).
 
 #### Embed Text

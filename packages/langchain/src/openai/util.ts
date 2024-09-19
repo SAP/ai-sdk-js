@@ -73,20 +73,20 @@ function mapToolToOpenAiTool(
 function mapBaseMessageToRole(
   message: BaseMessage
 ): AzureOpenAiChatMessage['role'] {
-  switch (message._getType()) {
-    case 'ai':
-      return 'assistant';
-    case 'human':
-      return 'user';
-    case 'system':
-      return 'system';
-    case 'function':
-      return 'function';
-    case 'tool':
-      return 'tool';
-    default:
-      throw new Error(`Unknown message type: ${message._getType()}`);
+  const messageTypeToRoleMap = new Map<string, AzureOpenAiChatMessage['role']>([
+    ['human', 'user'],
+    ['ai', 'assistant'],
+    ['system', 'system'],
+    ['function', 'function'],
+    ['tool', 'tool']
+  ]);
+
+  const messageType = message._getType();
+  const role = messageTypeToRoleMap.get(messageType);
+  if(!role) {
+    throw new Error(`Unsupported message type: ${messageType}`);
   }
+  return role;
 }
 
 /**
@@ -155,7 +155,6 @@ function mapBaseMessageToContent(baseMessage: BaseMessage): AzureOpenAiChatMessa
   if (typeof baseMessage.content === 'object' && ('text' in baseMessage.content || 'image_url' in baseMessage.content)) {
     const { text, image_url, ...rest } = baseMessage.content;
     if (rest) {
-      // log warning
       return;
     }
   }

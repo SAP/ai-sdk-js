@@ -68,9 +68,11 @@ export class AzureOpenAiChatClient
         )
     );
 
+    const content = res.getContent();
+
     // we currently do not support streaming
     await runManager?.handleLLMNewToken(
-      typeof res.getContent() === 'string' ? (res.getContent() as string) : ''
+      typeof content === 'string' ? content : ''
     );
 
     return mapOutputToChatResult(res.data);

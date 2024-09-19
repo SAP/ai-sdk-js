@@ -34,14 +34,6 @@ export default [
     }
   },
   {
-    files: [
-      '**/packages/orchestration/src/client/api/default-api.ts'
-    ],
-    rules: {
-      '@typescript-eslint/explicit-module-boundary-types': 'off'
-    }
-  },
-  {
     files: ['packages/langchain/**/*.ts'],
     rules: {
       'import/no-internal-modules': 'off'
