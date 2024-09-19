@@ -96,7 +96,7 @@ logger.info(
 
 ```
 
-It is possible to send multiple messages in a single request. 
+It is possible to send multiple messages in a single request.
 This feature is useful for providing a history of the conversation to the model.
 
 Pass parameters like `max_tokens` and `temperature` to the request to control the completion behavior.
