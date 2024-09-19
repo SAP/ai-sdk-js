@@ -1,11 +1,11 @@
-import { loadEnv } from './utils/load-env.js';
-import { resourceGroup } from './utils/ai-api-utils.js';
 import retry from 'async-retry';
 import {
   AiDeployment,
   AiDeploymentList,
   DeploymentApi
 } from '@sap-ai-sdk/ai-api';
+import { loadEnv } from './utils/load-env.js';
+import { resourceGroup } from './utils/ai-api-utils.js';
 
 loadEnv();
 
@@ -28,20 +28,24 @@ describe('DeploymentApi', () => {
       { 'AI-Resource-Group': resourceGroup }
     ).execute();
 
-    expect(createResponse).toEqual(expect.objectContaining({
-      message: 'Deployment scheduled.',
-      id: expect.anything()
-    }));
+    expect(createResponse).toEqual(
+      expect.objectContaining({
+        message: 'Deployment scheduled.',
+        id: expect.anything()
+      })
+    );
 
     const runningDeployment = await waitForDeploymentToReachStatus(
       createResponse.id,
       'RUNNING'
     );
 
-    expect(runningDeployment).toEqual(expect.objectContaining({
-      status: 'RUNNING',
-      deploymentUrl: expect.any(String)
-    }));
+    expect(runningDeployment).toEqual(
+      expect.objectContaining({
+        status: 'RUNNING',
+        deploymentUrl: expect.any(String)
+      })
+    );
 
     createdDeploymentId = runningDeployment.id;
   }, 180000);
@@ -55,30 +59,35 @@ describe('DeploymentApi', () => {
       { 'AI-Resource-Group': resourceGroup }
     ).execute();
 
-    expect(modifyResponse).toEqual(expect.objectContaining({
-      message: 'Deployment modification scheduled'
-    }));
+    expect(modifyResponse).toEqual(
+      expect.objectContaining({
+        message: 'Deployment modification scheduled'
+      })
+    );
 
     const stoppedDeployment = await waitForDeploymentToReachStatus(
       deploymentId,
       'STOPPED'
     );
 
-    expect(stoppedDeployment).toEqual(expect.objectContaining({
-      status: 'STOPPED'
-    }));
+    expect(stoppedDeployment).toEqual(
+      expect.objectContaining({
+        status: 'STOPPED'
+      })
+    );
   }, 180000);
 
   it('should delete the deployment', async () => {
     const deploymentId = getDeploymentId(createdDeploymentId);
-    const deleteResponse = await DeploymentApi.deploymentDelete(
-      deploymentId,
-      { 'AI-Resource-Group': resourceGroup }
-    ).execute();
+    const deleteResponse = await DeploymentApi.deploymentDelete(deploymentId, {
+      'AI-Resource-Group': resourceGroup
+    }).execute();
 
-    expect(deleteResponse).toEqual(expect.objectContaining({
-      message: 'Deletion scheduled'
-    }));
+    expect(deleteResponse).toEqual(
+      expect.objectContaining({
+        message: 'Deletion scheduled'
+      })
+    );
   });
 
   afterAll(async () => {
@@ -107,7 +116,7 @@ const sanitizedState = (state: AiDeploymentList | undefined) => ({
 
 function getDeploymentId(id: string | undefined): string {
   if (id === undefined) {
-    throw new Error("deploymentId is not defined.");
+    throw new Error('deploymentId is not defined.');
   }
   return id;
 }

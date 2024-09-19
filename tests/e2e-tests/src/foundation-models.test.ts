@@ -1,5 +1,5 @@
-import { loadEnv } from './utils/load-env.js';
 import { chatCompletion, computeEmbedding } from '@sap-ai-sdk/sample-code';
+import { loadEnv } from './utils/load-env.js';
 
 loadEnv();
 

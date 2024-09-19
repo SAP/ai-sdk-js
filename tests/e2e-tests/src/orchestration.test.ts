@@ -1,5 +1,5 @@
-import { loadEnv } from './utils/load-env.js';
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+import { loadEnv } from './utils/load-env.js';
 
 loadEnv();
 
