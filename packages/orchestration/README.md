@@ -44,7 +44,6 @@ Ensure the following are in place:
 
 Use the orchestration client to configure different modules like templating and content filtering along with sending chat completion requests to an orchestration compatible generative AI model.
 
-You can pass configuration information like for example the LLM to be used for inference and template, as a parameter to the client.
 
 #### Orchestration client with Templating
 
