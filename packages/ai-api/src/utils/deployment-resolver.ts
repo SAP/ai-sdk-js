@@ -4,6 +4,7 @@ import {
 } from '../client/AI_CORE_API/index.js';
 import { deploymentCache } from './deployment-cache.js';
 import { extractModel, type FoundationModel } from './model.js';
+
 /**
  * The model deployment configuration when using a model.
  * @typeParam ModelNameT - String literal type representing the name of the model.

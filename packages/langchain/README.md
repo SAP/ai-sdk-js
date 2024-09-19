@@ -17,7 +17,7 @@ $ npm install @sap-ai-sdk/langchain
 ```
 
 ## Pre-requisites
-- [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
+- [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Bind the service to your application.
 - Ensure the project is configured with Node.js v20 or higher, along with native ESM support.
 - For testing your application locally:
@@ -30,7 +30,7 @@ This package provides both chat and embedding clients, currently supporting Azur
 All clients comply with [LangChain's interface](https://js.langchain.com/docs/introduction).
 
 ### Client Initialization
-To initialize a client, you only need to provide the model name:
+To initialize a client, provide the model name:
 
 ```ts
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
