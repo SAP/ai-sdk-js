@@ -99,7 +99,8 @@ const orchestrationClient = new OrchestrationClient({
   }
 });
 
-const responseContent = await orchestrationClient.chatCompletion().getContent();
+const response = await orchestrationClient.chatCompletion();
+const responseContent = response.getContent();
 const tokenUsage = response.getTokenUsage();
 
 logger.info(
