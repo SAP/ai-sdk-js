@@ -1,6 +1,6 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
-import path, { join, resolve, parse, basename, dirname } from 'path';
+import path, { join, resolve, parse, basename, dirname, posix, sep } from 'path';
 import { fileURLToPath } from 'url';
 import { promises, existsSync } from 'fs';
 import { glob } from 'glob';
@@ -85,11 +85,18 @@ function compareApisAndLog(
   verbose: boolean
 ): boolean {
   let setsAreEqual = true;
+  const schemaPathRegex = /.*\/client\/[^/]+\/schema\/[^/]+\.ts$/;
 
   allExportedTypes.forEach(exportedType => {
     if (
       !allExportedIndex.find(nameInIndex => exportedType.name === nameInIndex)
     ) {
+      if (exportedType.path.split(sep).join(posix.sep).match(schemaPathRegex)) {
+        logger.warn(
+          `The ${exportedType.type} "${exportedType.name}" in file: ${exportedType.path} is not exported in the index.ts.`
+        );
+        return;
+      }
       logger.error(
         `The ${exportedType.type} "${exportedType.name}" in file: ${exportedType.path} is neither listed in the index.ts nor marked as internal.`
       );
