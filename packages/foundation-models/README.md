@@ -8,15 +8,6 @@ This package incorporates generative AI foundation models into your AI activitie
 $ npm install @sap-ai-sdk/foundation-models
 ```
 
-## Pre-requisites
-
-- [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
-- Project configured with Node.js v20 or higher and native ESM support enabled.
-- For testing your application locally:
-  - Download a service key for your AI Core service instance.
-  - Create a `.env` file in the sample-code directory.
-  - Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`.
-
 ## Azure OpenAI Client
 
 To make a generative AI model available for use, you need to create a deployment.
@@ -28,6 +19,8 @@ The Azure OpenAI client allows you to send chat completion or embedding requests
 
 ### Prerequisites
 
+- [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
+- Project configured with Node.js v20 or higher and native ESM support enabled.
 - A deployed OpenAI model in SAP generative AI hub.
   - You can use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
 - `sap-ai-sdk/foundation-models` package installed in your project.

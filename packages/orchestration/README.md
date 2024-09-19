@@ -26,10 +26,6 @@ For details, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-servic
 
 - [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Project configured with Node.js v20 or higher and native ESM support enabled.
-- For testing the application locally (Optional):
-  - Download a service key for your AI Core service instance.
-  - Create a `.env` file in the sample-code directory.
-  - Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`.
 - At least one orchestration-compatible deployment for a generative AI model is running.
   - You can use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to the SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
 - A deployment for orchestration is created. For details, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration). If deployment for orchestration already exists, skip this step.
