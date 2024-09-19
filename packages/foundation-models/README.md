@@ -35,7 +35,7 @@ The Azure OpenAI client allows you to send chat completion or embedding requests
 ### Usage of Azure OpenAI Chat Client
 
 Use the `AzureOpenAiChatClient` to send chat completion requests to an OpenAI model deployed in SAP generative AI hub.
-You can pass the model name as a parameter to the client, the sdk will implicitly fetch the deployment ID for the model from the AI Core service and use it to send the request.
+You can pass the model name as a parameter to the client, the SDK will implicitly fetch the deployment ID for the model from the AI Core service and use it to send the request.
 
 The deployment information which includes deployment ID and properties like model name and model version is also cached by default for 5 mins so that performance is not impacted by fetching the deployment information for every request.
 
