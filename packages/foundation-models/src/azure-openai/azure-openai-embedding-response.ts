@@ -1,9 +1,9 @@
 import { HttpResponse } from '@sap-cloud-sdk/http-client';
 import { createLogger } from '@sap-cloud-sdk/util';
-import { AzureOpenAiEmbeddingOutput } from './azure-openai-types.js';
+import { AzureOpenAiEmbeddingOutput } from './azure-openai-embedding-types.js';
 
 const logger = createLogger({
-  package: 'gen-ai-hub',
+  package: 'foundation-models',
   messageContext: 'azure-openai-embedding-response'
 });
 

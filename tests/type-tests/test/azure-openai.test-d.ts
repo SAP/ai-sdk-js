@@ -1,12 +1,12 @@
 import { expectType } from 'tsd';
 import {
   type AzureOpenAiChatModel,
-  AzureOpenAiChatCompletionOutput,
+  AzureOpenAiEmbeddingResponse,
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient,
   AzureOpenAiChatCompletionResponse,
-  AzureOpenAiEmbeddingResponse,
-  AzureOpenAiUsage
+  AzureOpenAiCreateChatCompletionResponse,
+  AzureOpenAiCompletionUsage
 } from '@sap-ai-sdk/foundation-models';
 
 /**
@@ -27,7 +27,7 @@ expectType(
   })
 );
 
-expectType<AzureOpenAiChatCompletionOutput>(
+expectType<AzureOpenAiCreateChatCompletionResponse>(
   (
     await new AzureOpenAiChatClient('gpt-4').run({
       messages: [{ role: 'user', content: 'test prompt' }]
@@ -35,7 +35,7 @@ expectType<AzureOpenAiChatCompletionOutput>(
   ).data
 );
 
-expectType<string | undefined>(
+expectType<string | undefined | null>(
   (
     await new AzureOpenAiChatClient('gpt-4').run({
       messages: [{ role: 'user', content: 'test prompt' }]
@@ -51,7 +51,7 @@ expectType<string | undefined>(
   ).getFinishReason()
 );
 
-expectType<AzureOpenAiUsage>(
+expectType<AzureOpenAiCompletionUsage | undefined>(
   (
     await new AzureOpenAiChatClient('gpt-4').run({
       messages: [{ role: 'user', content: 'test prompt' }]

@@ -32,7 +32,6 @@
     "@sap-ai-sdk/core": "workspace:^"
   },
   "devDependencies": {
-    "typescript": "^5.6.2",
-    "@sap-cloud-sdk/openapi-generator": "^3.21.0"
+    "typescript": "^5.6.2"
   }
 }
