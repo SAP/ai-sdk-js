@@ -161,7 +161,7 @@ function mapBaseMessageToAzureOpenAiChatMessage(
 
 type Role = 'system' | 'user' | 'assistant' | 'tool' | 'function';
 
-type ContentType<T extends Role> = 
+type ContentType<T extends Role> =
   T extends 'system' ? AzureOpenAiChatCompletionRequestMessageSystem['content'] :
   T extends 'user' ? AzureOpenAiChatCompletionRequestMessageUser['content'] :
   T extends 'assistant' ? AzureOpenAiChatCompletionRequestMessageAssistant['content'] :
@@ -178,9 +178,9 @@ function mapRoleAndContent(baseMessage: BaseMessage): RoleAndContent {
   if (!['system', 'user', 'assistant', 'tool', 'function'].includes(role)) {
     throw new Error(`Unsupported message role: ${role}`);
   }
-  return { 
-    role, 
-    content: baseMessage.content as ContentType<typeof role> 
+  return {
+    role,
+    content: baseMessage.content as ContentType<typeof role>
   } as RoleAndContent;
 }
 
