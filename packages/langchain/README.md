@@ -33,8 +33,12 @@ All clients comply with [LangChain's interface](https://js.langchain.com/docs/in
 To initialize a client, provide the model name:
 
 ```ts
-import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
+import { AzureOpenAiChatClient, AzureOpenAiEmbeddingClient } from '@sap-ai-sdk/langchain';
+
+// For a chat client
 const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
+// For an embedding client
+const embeddingClient = new AzureOpenAiEmbeddingClient({ modelName: 'gpt-4o' });
 ```
 
 In addition to the default parameters of the model vendor (e.g. OpenAI) and LangChain, there are additional parameters, which you can use to narrow down the search for the model you want to use:

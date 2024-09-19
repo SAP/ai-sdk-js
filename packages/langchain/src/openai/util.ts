@@ -1,13 +1,17 @@
 import { AIMessage, BaseMessage, ToolMessage } from '@langchain/core/messages';
 import { ChatResult } from '@langchain/core/outputs';
 import { StructuredTool } from '@langchain/core/tools';
-import type {
-  AzureOpenAiChatCompletionFunction,
-  AzureOpenAiChatCompletionTool,
-  AzureOpenAiChatCompletionRequestMessage,
-  AzureOpenAiCreateChatCompletionResponse,
-  AzureOpenAiCreateChatCompletionRequest,
-  AzureOpenAiChatCompletionFunctionParameters
+import {
+  type AzureOpenAiChatCompletionTool,
+  type AzureOpenAiChatCompletionRequestMessage,
+  type AzureOpenAiCreateChatCompletionResponse,
+  type AzureOpenAiCreateChatCompletionRequest,
+  type AzureOpenAiChatCompletionFunctionParameters,
+  AzureOpenAiChatCompletionRequestMessageSystem,
+  AzureOpenAiChatCompletionRequestMessageUser,
+  AzureOpenAiChatCompletionRequestMessageAssistant,
+  AzureOpenAiChatCompletionRequestMessageTool,
+  AzureOpenAiChatCompletionRequestMessageFunction,
 } from '@sap-ai-sdk/foundation-models';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { AzureOpenAiChatClient } from './chat.js';
@@ -144,25 +148,40 @@ export function mapOutputToChatResult(
 function mapBaseMessageToAzureOpenAiChatMessage(
   message: BaseMessage
 ): AzureOpenAiChatCompletionRequestMessage {
-  // TODO: remove type casting, improve message.content handling
   return removeUndefinedProperties<AzureOpenAiChatCompletionRequestMessage>({
     name: message.name,
-    content: message.content,
-    role: mapBaseMessageToRole(message),
+    ...mapRoleAndContent(message),
     function_call: message.additional_kwargs.function_call,
     tool_calls: message.additional_kwargs.tool_calls,
     tool_call_id: mapToolCallId(message)
   });
 }
 
-function mapBaseMessageToContent(baseMessage: BaseMessage): AzureOpenAiChatCompletionRequestMessage['content'] {
-  if (typeof baseMessage.content === 'object' && ('text' in baseMessage.content || 'image_url' in baseMessage.content)) {
-    const { text, image_url, ...rest } = baseMessage.content;
-    if (rest) {
-      return;
-    }
+// The following types are used to match a role to its specific content, otherwise TypeScript would not be able to infer the content type.
+
+type Role = 'system' | 'user' | 'assistant' | 'tool' | 'function';
+
+type ContentType<T extends Role> = 
+  T extends 'system' ? AzureOpenAiChatCompletionRequestMessageSystem['content'] :
+  T extends 'user' ? AzureOpenAiChatCompletionRequestMessageUser['content'] :
+  T extends 'assistant' ? AzureOpenAiChatCompletionRequestMessageAssistant['content'] :
+  T extends 'tool' ? AzureOpenAiChatCompletionRequestMessageTool['content'] :
+  T extends 'function' ? AzureOpenAiChatCompletionRequestMessageFunction['content'] :
+  never;
+
+type RoleAndContent = {
+  [T in Role]: { role: T; content: ContentType<T> }
+}[Role];
+
+function mapRoleAndContent(baseMessage: BaseMessage): RoleAndContent {
+  const role = mapBaseMessageToRole(baseMessage);
+  if (!['system', 'user', 'assistant', 'tool', 'function'].includes(role)) {
+    throw new Error(`Unsupported message role: ${role}`);
   }
-  return baseMessage.content as AzureOpenAiChatCompletionRequestMessage['content'];
+  return { 
+    role, 
+    content: baseMessage.content as ContentType<typeof role> 
+  } as RoleAndContent;
 }
 
 function isStructuredToolArray(tools?: unknown[]): tools is StructuredTool[] {
@@ -171,10 +190,11 @@ function isStructuredToolArray(tools?: unknown[]): tools is StructuredTool[] {
   );
 }
 
-function mapToolCallId(message: BaseMessage): string | undefined {
-  if (message._getType() === 'tool') {
-    return (message as ToolMessage).tool_call_id;
-  }
+/**
+ * Has to return an empty string to match one of the types of {@link AzureOpenAiChatCompletionRequestMessage}.
+ */
+function mapToolCallId(message: BaseMessage): string {
+  return message._getType() === 'tool' ? (message as ToolMessage).tool_call_id : '';
 }
 
 function mapToolChoice(
