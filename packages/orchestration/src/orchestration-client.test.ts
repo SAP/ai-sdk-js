@@ -10,7 +10,7 @@ import {
   constructCompletionPostRequest,
   OrchestrationClient
 } from './orchestration-client.js';
-import { azureContentFilter } from './orchestration-filter-utility.js';
+import { buildAzureContentFilter } from './orchestration-filter-utility.js';
 import { OrchestrationResponse } from './orchestration-response.js';
 import { OrchestrationModuleConfig } from './orchestration-types.js';
 
@@ -76,8 +76,8 @@ describe('orchestration service client', () => {
         ]
       },
       filtering: {
-        input: azureContentFilter({ Hate: 4, SelfHarm: 2 }),
-        output: azureContentFilter({ Sexual: 0, Violence: 4 })
+        input: buildAzureContentFilter({ Hate: 4, SelfHarm: 2 }),
+        output: buildAzureContentFilter({ Sexual: 0, Violence: 4 })
       }
     };
     const prompt = {
