@@ -106,7 +106,7 @@ Refer to `AzureOpenAiChatCompletionParameters` interface for knowing more parame
 
 [Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
 
-You can also obtain a model on your own by using a resource group and ID of your deployment instead of a model name:
+You can use the deployment ID and resource group as an alternative to obtaining a model by using the model name.
 
 ```TS
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
