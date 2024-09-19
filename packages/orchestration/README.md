@@ -104,6 +104,14 @@ const response = await orchestrationClient.chatCompletion({
       ]
     });
 const responseContent = response.getContent();
+```
+
+##### Token Usage
+
+To get the token usage details of the orchestration request, use the following snippet:
+Remember to initialize a logger before using it.
+
+```TS
 const tokenUsage = response.getTokenUsage();
 
 logger.info(

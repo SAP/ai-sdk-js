@@ -179,23 +179,7 @@ describe('orchestration service client', () => {
         template: [{ role: 'user', content: "What's my name?" }]
       }
     };
-    const mockResponse = parseMockResponse<CompletionPostResponse>(
-      'orchestration',
-      'orchestration-chat-completion-message-history.json'
-    );
-    mockInference(
-      {
-        data: constructCompletionPostRequest(config)
-      },
-      {
-        data: mockResponse,
-        status: 200
-      },
-      {
-        url: 'inference/deployments/1234/completion'
-      }
-    );
-    const response = await new OrchestrationClient(config).chatCompletion({
+    const prompt = {
       messagesHistory: [
         {
           role: 'system',
@@ -212,7 +196,28 @@ describe('orchestration service client', () => {
             "Hi Bob, nice to meet you! I'm an AI assistant. I'll remember that your name is Bob as we continue our conversation."
         }
       ]
-    });
+    };
+
+    const mockResponse = parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'orchestration-chat-completion-message-history.json'
+    );
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, prompt)
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    const response = await new OrchestrationClient(config).chatCompletion(
+      prompt
+    );
     expect(response.data).toEqual(mockResponse);
   });
 });
