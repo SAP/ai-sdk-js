@@ -20,7 +20,8 @@ export default [
       '**/*.d.ts',
       '**/dist/**/*',
       '**/coverage/**/*',
-      'packages/ai-api/src/client/**/*'
+      'packages/ai-api/src/client/**/*',
+      'packages/foundation-models/src/azure-openai/client/inference/schema/on-your-data-system-assigned-managed-identity-authentication-options.ts',
     ]
   },
   {
@@ -31,6 +32,12 @@ export default [
     ],
     rules: {
       'jsdoc/require-jsdoc': 'off'
+    }
+  },
+  {
+    files: ['packages/foundation-models/src/azure-openai/client/inference/schema/*.ts'],
+    rules: {
+      'jsdoc/check-indentation': 'off'
     }
   },
   {

@@ -9,7 +9,7 @@ describe('Smoke Test', () => {
 
   it('orchestration client retrieves completion results', async () => {
     await expect(
-      fetch(`${smokeTestRoute}/orchestration`)
+      fetch(`${smokeTestRoute}/orchestration/simple`)
     ).resolves.toHaveProperty('status', 200);
   });
 });

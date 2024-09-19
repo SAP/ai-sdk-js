@@ -6,7 +6,7 @@ import {
 } from './client/api/schema/index.js';
 
 const logger = createLogger({
-  package: 'gen-ai-hub',
+  package: 'orchestration',
   messageContext: 'orchestration-response'
 });
 
@@ -41,6 +41,7 @@ export class OrchestrationResponse {
 
   /**
    * Parses the orchestration response and returns the content.
+   * If the response was filtered, an error is thrown.
    * @param choiceIndex - The index of the choice to parse.
    * @returns The message content.
    */

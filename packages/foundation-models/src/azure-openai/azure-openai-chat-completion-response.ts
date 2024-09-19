@@ -1,12 +1,9 @@
 import { HttpResponse } from '@sap-cloud-sdk/http-client';
 import { createLogger } from '@sap-cloud-sdk/util';
-import {
-  AzureOpenAiChatCompletionOutput,
-  AzureOpenAiUsage
-} from './azure-openai-types.js';
+import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.js';
 
 const logger = createLogger({
-  package: 'gen-ai-hub',
+  package: 'foundation-models',
   messageContext: 'azure-openai-chat-completion-response'
 });
 
@@ -17,8 +14,7 @@ export class AzureOpenAiChatCompletionResponse {
   /**
    * The chat completion response.
    */
-  public readonly data: AzureOpenAiChatCompletionOutput;
-
+  public readonly data: AzureOpenAiCreateChatCompletionResponse;
   constructor(public readonly rawResponse: HttpResponse) {
     this.data = rawResponse.data;
   }
@@ -27,7 +23,7 @@ export class AzureOpenAiChatCompletionResponse {
    * Usage of tokens in the response.
    * @returns Token usage.
    */
-  getTokenUsage(): AzureOpenAiUsage {
+  getTokenUsage(): this['data']['usage'] {
     return this.data.usage;
   }
 
@@ -36,7 +32,9 @@ export class AzureOpenAiChatCompletionResponse {
    * @param choiceIndex - The index of the choice to parse.
    * @returns The finish reason.
    */
-  getFinishReason(choiceIndex = 0): string | undefined {
+  getFinishReason(
+    choiceIndex = 0
+  ): this['data']['choices'][0]['finish_reason'] {
     this.logInvalidChoiceIndex(choiceIndex);
     return this.data.choices[choiceIndex]?.finish_reason;
   }
@@ -46,7 +44,7 @@ export class AzureOpenAiChatCompletionResponse {
    * @param choiceIndex - The index of the choice to parse.
    * @returns The message content.
    */
-  getContent(choiceIndex = 0): string | undefined {
+  getContent(choiceIndex = 0): string | undefined | null {
     this.logInvalidChoiceIndex(choiceIndex);
     return this.data.choices[choiceIndex]?.message?.content;
   }
