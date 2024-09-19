@@ -37,7 +37,7 @@ For details, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-servic
 
 ### Orchestration Client
 
-Use the orchestration client to configure different modules like templating and content filtering along with sending chat completion requests to an orchestration compatible generative AI model.
+Use the orchestration client to configure different modules like templating and content filtering along with sending chat completion requests to an orchestration-compatible generative AI model.
 
 #### Templating
 
