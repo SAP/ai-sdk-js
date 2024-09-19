@@ -10,8 +10,6 @@ export type {
   MaskingProviderConfig,
   LlmModuleResult,
   LlmChoice,
-  GroundingModuleConfig,
-  GroundingFilter,
   GenericModuleResult,
   FilteringModuleConfig,
   FilteringConfig,
@@ -35,7 +33,7 @@ export type {
 
 export { OrchestrationClient } from './orchestration-client.js';
 
-export { azureContentFilter } from './orchestration-filter-utility.js';
+export { buildAzureContentFilter } from './orchestration-filter-utility.js';
 
 export { OrchestrationResponse } from './orchestration-response.js';
 
