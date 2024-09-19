@@ -114,7 +114,7 @@ logger.info(
 );
 ```
 
-#### Orchestration client with Content Filtering
+#### Content Filtering
 
 Use the Orchestration client with filtering to restrict the type of content that is passed to and received from a generative AI model.
 
