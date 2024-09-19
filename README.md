@@ -29,7 +29,7 @@ This project publishes multiple packages and is managed using [pnpm](https://pnp
 
 ### @sap-ai-sdk/orchestration
 
-This package incorporates generative AI orchestration capabilities into your AI activities in SAP AI Core and SAP AI Launchpad.
+This package incorporates generative AI [orchestration](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration) capabilities into your AI activities in SAP AI Core and SAP AI Launchpad.
 
 #### Installation
 
