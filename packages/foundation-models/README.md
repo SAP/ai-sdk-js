@@ -96,8 +96,8 @@ logger.info(
 
 ```
 
-You can see that one can send multiple messages in a single request.
-This is useful in providing a history of the conversation to the model.
+It is possible to send multiple messages in a single request. 
+This feature is useful for providing a history of the conversation to the model.
 
 Pass parameters like `max_tokens` and `temperature` to the request to control the completion behavior.
 Refer to `AzureOpenAiChatCompletionParameters` interface for knowing more parameters that can be passed to the chat completion request.
