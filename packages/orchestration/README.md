@@ -45,7 +45,7 @@ Ensure the following are in place:
 Use the orchestration client to configure different modules like templating and content filtering along with sending chat completion requests to an orchestration compatible generative AI model.
 
 
-#### Orchestration client with Templating
+#### Templating
 
 Use the Orchestration client with templating to pass a prompt with placeholders, that can be filled during a chat completion request with the input parameters.
 
