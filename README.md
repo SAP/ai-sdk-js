@@ -51,6 +51,12 @@ $ npm install @sap-ai-sdk/ai-api
 
 This package incorporates generative AI foundation models into your AI activities in SAP AI Core and SAP AI Launchpad.
 
+#### Installation
+
+```
+$ npm install @sap-ai-sdk/foundation-models
+```
+
 ### @sap-ai-sdk/langchain
 
 This package provides LangChain model clients, built on top of the foundation model clients of the SAP Cloud SDK for AI.
@@ -59,12 +65,6 @@ This package provides LangChain model clients, built on top of the foundation mo
 
 ```
 $ npm install @sap-ai-sdk/langchain
-```
-
-#### Installation
-
-```
-$ npm install @sap-ai-sdk/foundation-models
 ```
 
 ## SAP Cloud SDK for AI Sample Project
