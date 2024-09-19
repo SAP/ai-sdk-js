@@ -4,10 +4,8 @@ import {
   type ModelDeployment
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { AzureOpenAiEmbeddingResponse } from './azure-openai-embedding-response.js';
-import type { AzureOpenAiEmbeddingParameters } from './azure-openai-types.js';
-import type { AzureOpenAiEmbeddingModel } from './model-types.js';
-
-const apiVersion = '2024-02-01';
+import type { AzureOpenAiEmbeddingParameters } from './azure-openai-embedding-types.js';
+import { apiVersion, type AzureOpenAiEmbeddingModel } from './model-types.js';
 
 /**
  * Azure OpenAI client for embeddings.
