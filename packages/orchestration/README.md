@@ -48,7 +48,7 @@ Use the orchestration client to configure different modules like templating and 
 
 Use the orchestration client with templating to pass a prompt with placeholders, that are filled with input parameters during a chat completion request.
 
-This feature enables you to vary the prompt based on the input parameters.
+You can vary the prompt based on the input parameters.
 
 ```TS
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
