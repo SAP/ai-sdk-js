@@ -22,7 +22,7 @@ $ npm install @sap-ai-sdk/langchain
 - Ensure the project is configured with Node.js v20 or higher, along with native ESM support.
 - For testing your application locally:
   - Download a service key for your AI Core service instance.
-  - Create a `.env` file in the sample-code directory.
+  - Create a `.env` file in the root of your directory.
   - Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`.
 
 ## Usage
@@ -37,7 +37,7 @@ import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
 const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
 ```
 
-In addition to the default parameters of the model vendor (e.g. OpenAI) and LangChain, there are also SDK-specific parameters, which you can use to narrow down the search for the model you want to use:
+In addition to the default parameters of the model vendor (e.g. OpenAI) and LangChain, there are also additional parameters, which you can use to narrow down the search for the model you want to use:
 
 ```ts
 const chatClient = new AzureOpenAiChatClient({
@@ -48,7 +48,7 @@ const chatClient = new AzureOpenAiChatClient({
 ```
 
 ### Chat Client
-The chat clients allow you to interact with Azure OpenAI chat models, accessible via SAP Gen AI Hub. 
+The chat clients allow you to interact with Azure OpenAI chat models, accessible via the generative AI hub of SAP AI Core. 
 To invoke the client, you only have a to pass a prompt:
 
 ```ts
@@ -98,4 +98,4 @@ This project is open to feature requests/suggestions, bug reports etc. via [GitH
 Contribution and feedback are encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](https://github.com/SAP/ai-sdk-js/blob/main/CONTRIBUTING.md).
 
 ## License
-The SAP Cloud SDK for AI is released under the [Apache License Version 2.0.](http://www.apache.org/licenses/)
+The SAP Cloud SDK for AI is released under the [Apache License Version 2.0.](http://www.apache.org/licenses/).
