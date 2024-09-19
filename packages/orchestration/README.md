@@ -13,7 +13,7 @@ $ npm install @sap-ai-sdk/orchestration
 The orchestration client provides essential features like templating and content filtering, which are often required in business AI scenarios:
 
 - **Templating** allows composing prompts with placeholders that can be filled during a chat completion request.
-- **Content filtering** lets you restrict the type of content sent to or received from a generative AI model.
+- **Content filtering** lets you restrict the content sent to or received from a generative AI model.
 
 To interact with generative AI models compatible with the orchestration service, use the orchestration client.
 Find more details about orchestration [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration-workflow).
@@ -112,7 +112,7 @@ logger.info(
 
 #### Content Filtering
 
-Use the orchestration client with filtering to restrict the type of content that is passed to and received from a generative AI model.
+Use the orchestration client with filtering to restrict content that is passed to and received from a generative AI model.
 
 This feature allows filtering both the [input](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-orchestration#content-filtering-on-input) and [output](<(https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-orchestration#content-filtering-on-input)>) of a model based on content safety criteria.
 
