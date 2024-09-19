@@ -11,6 +11,7 @@ Integrate chat completion into your business applications with SAP Cloud SDK for
   - [@sap-ai-sdk/ai-api](#sap-ai-sdkai-api)
   - [@sap-ai-sdk/foundation-models](#sap-ai-sdkfoundation-models)
   - [@sap-ai-sdk/orchestration](#sap-ai-sdkorchestration)
+  - [@sap-ai-sdk/langchain](#sap-ai-sdklangchain)
 - [SAP Cloud SDK for AI Sample Project](#sap-cloud-sdk-for-ai-sample-project)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [Security / Disclosure](#security--disclosure)
@@ -49,6 +50,16 @@ $ npm install @sap-ai-sdk/ai-api
 ### @sap-ai-sdk/foundation-models
 
 This package incorporates generative AI foundation models into your AI activities in SAP AI Core and SAP AI Launchpad.
+
+### @sap-ai-sdk/langchain
+
+This package provides LangChain model clients, built on top of the foundation model clients of the SAP Cloud SDK for AI.
+
+#### Installation
+
+```
+$ npm install @sap-ai-sdk/langchain
+```
 
 #### Installation
 
