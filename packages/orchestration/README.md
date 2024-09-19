@@ -117,7 +117,7 @@ logger.info(
 
 Use the orchestration client with filtering to restrict content that is passed to and received from a generative AI model.
 
-This feature allows filtering both the [input](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-orchestration#content-filtering-on-input) and [output](<(https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-orchestration#content-filtering-on-input)>) of a model based on content safety criteria.
+This feature allows filtering both the [input](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-orchestration#content-filtering-on-input) and [output](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-orchestration#content-filtering-on-input) of a model based on content safety criteria.
 
 ```TS
 import { OrchestrationClient, buildAzureContentFilter } from '@sap-ai-sdk/orchestration';
