@@ -1,5 +1,5 @@
 # @sap-ai-sdk/langchain
-This package provides LangChain model clients, built on top of the `@sap-ai-sdk`.
+This package provides LangChain model clients, built on top of the foundation model clients of the SAP Cloud SDK for AI.
 
 ## Table of Contents
 1. [Installation](#installation)
@@ -37,7 +37,7 @@ import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
 const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
 ```
 
-In addition to the default parameters of the model vendor (e.g. OpenAI) and LangChain, there are also additional parameters, which you can use to narrow down the search for the model you want to use:
+In addition to the default parameters of the model vendor (e.g. OpenAI) and LangChain, there are additional parameters, which you can use to narrow down the search for the model you want to use:
 
 ```ts
 const chatClient = new AzureOpenAiChatClient({
