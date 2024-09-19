@@ -81,25 +81,28 @@ const orchestrationClient = new OrchestrationClient({
   templating: {
     template: [
       { role: 'user', content: 'What is my name?' }
-    ],
-    messages_history: [
-      {
-        role: 'system',
-        content: 'You are a helpful assistant who remembers all details the user shares with you.'
-      },
-      {
-        role: 'user',
-        content: 'Hi! I am Bob'
-      },
-      {
-        role: 'assistant',
-        content: 'Hi Bob, nice to meet you! I am an AI assistant. I will remember that your name is Bob as we continue our conversation.'
-      }
     ]
   }
 });
 
-const response = await orchestrationClient.chatCompletion();
+const response = await orchestrationClient.chatCompletion({
+      messagesHistory: [
+        {
+          role: 'system',
+          content:
+            'You are a helpful assistant who remembers all details the user shares with you.'
+        },
+        {
+          role: 'user',
+          content: 'Hi! Im Bob'
+        },
+        {
+          role: 'assistant',
+          content:
+            "Hi Bob, nice to meet you! I'm an AI assistant. I'll remember that your name is Bob as we continue our conversation."
+        }
+      ]
+    });
 const responseContent = response.getContent();
 const tokenUsage = response.getTokenUsage();
 

@@ -176,23 +176,7 @@ describe('orchestration service client', () => {
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
       templating: {
-        template: [{ role: 'user', content: "What's my name?" }],
-        messages_history: [
-          {
-            role: 'system',
-            content:
-              'You are a helpful assistant who remembers all details the user shares with you.'
-          },
-          {
-            role: 'user',
-            content: 'Hi! Im Bob'
-          },
-          {
-            role: 'assistant',
-            content:
-              "Hi Bob, nice to meet you! I'm an AI assistant. I'll remember that your name is Bob as we continue our conversation."
-          }
-        ]
+        template: [{ role: 'user', content: "What's my name?" }]
       }
     };
     const mockResponse = parseMockResponse<CompletionPostResponse>(
@@ -211,7 +195,24 @@ describe('orchestration service client', () => {
         url: 'inference/deployments/1234/completion'
       }
     );
-    const response = await new OrchestrationClient(config).chatCompletion();
+    const response = await new OrchestrationClient(config).chatCompletion({
+      messagesHistory: [
+        {
+          role: 'system',
+          content:
+            'You are a helpful assistant who remembers all details the user shares with you.'
+        },
+        {
+          role: 'user',
+          content: 'Hi! Im Bob'
+        },
+        {
+          role: 'assistant',
+          content:
+            "Hi Bob, nice to meet you! I'm an AI assistant. I'll remember that your name is Bob as we continue our conversation."
+        }
+      ]
+    });
     expect(response.data).toEqual(mockResponse);
   });
 });
