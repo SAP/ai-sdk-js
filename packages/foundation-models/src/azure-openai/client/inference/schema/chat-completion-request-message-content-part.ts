@@ -3,10 +3,13 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AzureOpenAiChatCompletionRequestMessageContentPartType } from './chat-completion-request-message-content-part-type.js';
+import type { AzureOpenAiChatCompletionRequestMessageContentPartText } from './chat-completion-request-message-content-part-text.js';
+import type { AzureOpenAiChatCompletionRequestMessageContentPartImage } from './chat-completion-request-message-content-part-image.js';
 /**
  * Representation of the 'AzureOpenAiChatCompletionRequestMessageContentPart' schema.
  */
-export type AzureOpenAiChatCompletionRequestMessageContentPart = {
-  type: AzureOpenAiChatCompletionRequestMessageContentPartType;
-} & Record<string, any>;
+export type AzureOpenAiChatCompletionRequestMessageContentPart =
+  | ({ type: 'text' } & AzureOpenAiChatCompletionRequestMessageContentPartText)
+  | ({
+      type: 'image_url';
+    } & AzureOpenAiChatCompletionRequestMessageContentPartImage);
