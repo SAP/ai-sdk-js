@@ -11,13 +11,11 @@ import {
   AzureOpenAiChatCompletionRequestMessageUser,
   AzureOpenAiChatCompletionRequestMessageAssistant,
   AzureOpenAiChatCompletionRequestMessageTool,
-  AzureOpenAiChatCompletionRequestMessageFunction,
+  AzureOpenAiChatCompletionRequestMessageFunction
 } from '@sap-ai-sdk/foundation-models';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { AzureOpenAiChatClient } from './chat.js';
-import {
-  AzureOpenAiChatCallOptions,
-} from './types.js';
+import { AzureOpenAiChatCallOptions } from './types.js';
 
 type ToolChoice =
   | 'none'
@@ -45,9 +43,7 @@ type LangChainToolChoice = string | Record<string, any> | 'auto' | 'any';
  * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
  * @returns The OpenAI chat completion function.
  */
-function mapToolToOpenAiFunction(
-  tool: StructuredTool
-): {
+function mapToolToOpenAiFunction(tool: StructuredTool): {
   description?: string;
   name: string;
   parameters: AzureOpenAiChatCompletionFunctionParameters;
@@ -81,7 +77,10 @@ function mapToolToOpenAiTool(
 function mapBaseMessageToRole(
   message: BaseMessage
 ): AzureOpenAiChatCompletionRequestMessage['role'] {
-  const messageTypeToRoleMap = new Map<string, AzureOpenAiChatCompletionRequestMessage['role']>([
+  const messageTypeToRoleMap = new Map<
+    string,
+    AzureOpenAiChatCompletionRequestMessage['role']
+  >([
     ['human', 'user'],
     ['ai', 'assistant'],
     ['system', 'system'],
@@ -91,7 +90,7 @@ function mapBaseMessageToRole(
 
   const messageType = message._getType();
   const role = messageTypeToRoleMap.get(messageType);
-  if(!role) {
+  if (!role) {
     throw new Error(`Unsupported message type: ${messageType}`);
   }
   return role;
@@ -107,25 +106,27 @@ export function mapOutputToChatResult(
   completionResponse: AzureOpenAiCreateChatCompletionResponse
 ): ChatResult {
   return {
-    generations: completionResponse.choices.map((choice: typeof completionResponse['choices'][0]) => ({
-      text: choice.message?.content || '',
-      message: new AIMessage({
-        content: choice.message?.content || '',
-        additional_kwargs: {
+    generations: completionResponse.choices.map(
+      (choice: (typeof completionResponse)['choices'][0]) => ({
+        text: choice.message?.content || '',
+        message: new AIMessage({
+          content: choice.message?.content || '',
+          additional_kwargs: {
+            finish_reason: choice.finish_reason,
+            index: choice.index,
+            function_call: choice.message?.function_call,
+            tool_calls: choice.message?.tool_calls,
+            tool_call_id: ''
+          }
+        }),
+        generationInfo: {
           finish_reason: choice.finish_reason,
           index: choice.index,
           function_call: choice.message?.function_call,
-          tool_calls: choice.message?.tool_calls,
-          tool_call_id: ''
+          tool_calls: choice.message?.tool_calls
         }
-      }),
-      generationInfo: {
-        finish_reason: choice.finish_reason,
-        index: choice.index,
-        function_call: choice.message?.function_call,
-        tool_calls: choice.message?.tool_calls
-      }
-    })),
+      })
+    ),
     llmOutput: {
       created: completionResponse.created,
       id: completionResponse.id,
@@ -161,16 +162,20 @@ function mapBaseMessageToAzureOpenAiChatMessage(
 
 type Role = 'system' | 'user' | 'assistant' | 'tool' | 'function';
 
-type ContentType<T extends Role> =
-  T extends 'system' ? AzureOpenAiChatCompletionRequestMessageSystem['content'] :
-  T extends 'user' ? AzureOpenAiChatCompletionRequestMessageUser['content'] :
-  T extends 'assistant' ? AzureOpenAiChatCompletionRequestMessageAssistant['content'] :
-  T extends 'tool' ? AzureOpenAiChatCompletionRequestMessageTool['content'] :
-  T extends 'function' ? AzureOpenAiChatCompletionRequestMessageFunction['content'] :
-  never;
+type ContentType<T extends Role> = T extends 'system'
+  ? AzureOpenAiChatCompletionRequestMessageSystem['content']
+  : T extends 'user'
+    ? AzureOpenAiChatCompletionRequestMessageUser['content']
+    : T extends 'assistant'
+      ? AzureOpenAiChatCompletionRequestMessageAssistant['content']
+      : T extends 'tool'
+        ? AzureOpenAiChatCompletionRequestMessageTool['content']
+        : T extends 'function'
+          ? AzureOpenAiChatCompletionRequestMessageFunction['content']
+          : never;
 
 type RoleAndContent = {
-  [T in Role]: { role: T; content: ContentType<T> }
+  [T in Role]: { role: T; content: ContentType<T> };
 }[Role];
 
 function mapRoleAndContent(baseMessage: BaseMessage): RoleAndContent {
@@ -192,9 +197,12 @@ function isStructuredToolArray(tools?: unknown[]): tools is StructuredTool[] {
 
 /**
  * Has to return an empty string to match one of the types of {@link AzureOpenAiChatCompletionRequestMessage}.
+ * @internal
  */
 function mapToolCallId(message: BaseMessage): string {
-  return message._getType() === 'tool' ? (message as ToolMessage).tool_call_id : '';
+  return message._getType() === 'tool'
+    ? (message as ToolMessage).tool_call_id
+    : '';
 }
 
 function mapToolChoice(

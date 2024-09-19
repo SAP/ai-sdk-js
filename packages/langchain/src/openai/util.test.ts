@@ -1,4 +1,7 @@
-import { AzureOpenAiCreateChatCompletionResponse, AzureOpenAiCreateChatCompletionRequest } from '@sap-ai-sdk/foundation-models';
+import {
+  AzureOpenAiCreateChatCompletionResponse,
+  AzureOpenAiCreateChatCompletionRequest
+} from '@sap-ai-sdk/foundation-models';
 import nock from 'nock';
 import { BaseMessage, HumanMessage } from '@langchain/core/messages';
 import {
@@ -8,10 +11,11 @@ import {
 import { mapLangchainToAiClient, mapOutputToChatResult } from './util.js';
 import { AzureOpenAiChatClient } from './chat.js';
 
-const openAiMockResponse = parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
-  'foundation-models',
-  'azure-openai-chat-completion-success-response.json'
-);
+const openAiMockResponse =
+  parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
+    'foundation-models',
+    'azure-openai-chat-completion-success-response.json'
+  );
 
 describe('Mapping Functions', () => {
   beforeEach(() => {
