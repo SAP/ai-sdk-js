@@ -3,7 +3,7 @@ import { createLogger } from '@sap-cloud-sdk/util';
 import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.js';
 
 const logger = createLogger({
-  package: 'gen-ai-hub',
+  package: 'foundation-models',
   messageContext: 'azure-openai-chat-completion-response'
 });
 

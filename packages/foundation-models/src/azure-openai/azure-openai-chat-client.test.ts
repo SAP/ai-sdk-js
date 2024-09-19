@@ -13,7 +13,7 @@ import type {
 describe('Azure OpenAI chat client', () => {
   const chatCompletionEndpoint = {
     url: 'inference/deployments/1234/chat/completions',
-    apiVersion: '2024-02-01'
+    apiVersion: '2024-06-01'
   };
 
   const client = new AzureOpenAiChatClient({ deploymentId: '1234' });
