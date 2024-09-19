@@ -102,7 +102,7 @@ This feature is useful for providing a history of the conversation to the model.
 Pass parameters like `max_tokens` and `temperature` to the request to control the completion behavior.
 Refer to `AzureOpenAiChatCompletionParameters` interface for knowing more parameters that can be passed to the chat completion request.
 
-#### Obtaining a client using Resource Groups
+#### Obtaining a Client using Resource Groups
 
 [Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
 
