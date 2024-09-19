@@ -56,7 +56,7 @@ const responseContent = response.getContent();
 
 ```
 
-To send a chat completion request with system messages use:
+Use the following snippet to send a chat completion request with system messages:
 
 ```TS
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
