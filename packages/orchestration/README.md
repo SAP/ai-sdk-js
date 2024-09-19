@@ -24,25 +24,25 @@ Orchestration combines content generation with a set of functions like templatin
 Templating lets you compose a prompt with placeholders that are filled during the chat completion request.
 Content filtering lets you restrict the type of content that is passed to and received from a generative AI model.
 
-The Orchestration client allows you to send chat completion requests to generative AI models that are compatible with the orchestration service.
-More details about Orchestration can be found [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration-workflow).
+The orchestration client allows you to send chat completion requests to generative AI models that are compatible with the orchestration service.
+More details about orchestration can be found [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration-workflow).
 
 To make use of the orchestration capabilities, you need to create a deployment.
 After the deployment is complete, you have a `deploymentUrl`, which can be used to access the orchestration service.
-Further details about creating a deployment for the Orchestration can be found [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration)
+Further details about creating a deployment for the orchestration can be found [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration)
 
 ### Prerequisites
 
 - At least one orchestration-compatible deployment for a generative AI model is running.
   - You can use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core)
-- A deployment is created for Orchestration. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration)
+- A deployment is created for orchestration. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration)
 - `sap-ai-sdk/orchestration` package installed in your project.
 
 ### Usage of Orchestration Client
 
-Use the `OrchestrationClient` to configure different modules like templating, content filtering etc. along with sending chat completion requests to an orchestration compatible generative AI model.
+Use the `OrchestrationClient` to configure different modules like templating and content filtering along with sending chat completion requests to an orchestration compatible generative AI model.
 
-You can pass configuration information like for example the LLM to be used for inference and template as a parameter to the client.
+You can pass configuration information like for example the LLM to be used for inference and template, as a parameter to the client.
 
 #### Orchestration client with Templating
 
