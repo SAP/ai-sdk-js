@@ -30,7 +30,7 @@ This package provides both chat and embedding clients, currently supporting Azur
 All clients comply with [LangChain's interface](https://js.langchain.com/docs/introduction).
 
 ### Client Initialization
-To initialize a client, you only need to provide the model name:
+To initialize a client, provide the model name:
 
 ```ts
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
