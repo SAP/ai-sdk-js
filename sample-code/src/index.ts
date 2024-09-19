@@ -2,4 +2,4 @@
 export {
   chatCompletion,
   computeEmbedding
-} from './foundation-models-openai.js';
+} from './foundation-models-azure-openai.js';

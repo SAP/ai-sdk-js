@@ -5,9 +5,9 @@
  */
 
 /**
- * Representation of the 'LLMModuleConfig' schema.
+ * Representation of the 'LlmModuleConfig' schema.
  */
-export type LLMModuleConfig = {
+export type LlmModuleConfig = {
   /**
    * Model name as in LLM Access configuration.
    * @example "gpt-4"

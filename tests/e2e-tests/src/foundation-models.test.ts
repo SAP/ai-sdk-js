@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-describe('OpenAI Foundation Model Access', () => {
+describe('Azure OpenAI Foundation Model Access', () => {
   it('should complete a chat', async () => {
     const result = await chatCompletion();
     expect(result).toBeDefined();

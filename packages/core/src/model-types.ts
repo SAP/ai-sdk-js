@@ -9,7 +9,6 @@ export type AzureOpenAiChatModel = LiteralUnion<
   | 'gpt-4'
   | 'gpt-4-32k'
   | 'gpt-35-turbo'
-  | 'gpt-35-turbo-0125'
   | 'gpt-35-turbo-16k'
 >;
 
@@ -24,15 +23,13 @@ export type AzureOpenAiEmbeddingModel = LiteralUnion<
  * GCP Vertex AI models for chat completion.
  */
 export type GcpVertexAiChatModel = LiteralUnion<
-  'gemini-1.0-pro' | 'gemini-1.5-pro' | 'gemini-1.5-flash' | 'chat-bison'
+  'gemini-1.0-pro' | 'gemini-1.5-pro' | 'gemini-1.5-flash'
 >;
 
 /**
  * AWS Bedrock models for chat completion.
  */
 export type AwsBedrockChatModel = LiteralUnion<
-  | 'amazon--titan-text-express'
-  | 'amazon--titan-text-lite'
   | 'anthropic--claude-3-haiku'
   | 'anthropic--claude-3-opus'
   | 'anthropic--claude-3-sonnet'
@@ -40,8 +37,8 @@ export type AwsBedrockChatModel = LiteralUnion<
 >;
 
 /**
- * All available models for chat completion.
+ * AI Core open source models for chat completion.
  */
-export type ChatModel = LiteralUnion<
-  AzureOpenAiChatModel | GcpVertexAiChatModel | AwsBedrockChatModel
+export type AiCoreOpenSourceChatModel = LiteralUnion<
+  'mistralai--mixtral-8x7b-instruct-v01' | 'meta--llama3-70b-instruct'
 >;
