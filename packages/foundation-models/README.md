@@ -102,14 +102,16 @@ This is useful in providing a history of the conversation to the model.
 Some parameters like `max_tokens` and `temperature` can be also be passed to the request to control the completion behavior.
 Refer to `AzureOpenAiChatCompletionParameters` interface for knowing more parameters that can be passed to the chat completion request.
 
-#### Obtaining a client using deployment ID
+#### Obtaining a client using Resource Groups
 
-In case you want to obtain the model by using the ID of your deployment on your own you can pass it instead of a model name:
+[Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
+
+You can also obtain a model on your own by using a resource group and ID of your deployment instead of a model name:
 
 ```TS
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
 
-const response = await new AzureOpenAiChatClient({ deploymentId: 'd1234' }).run({
+const response = await new AzureOpenAiChatClient({ deploymentId: 'd1234' , resourceGroup: 'rg1234' }).run({
   messages: [
     {
       'role':'user',
@@ -117,12 +119,7 @@ const response = await new AzureOpenAiChatClient({ deploymentId: 'd1234' }).run(
     }
   ]
 });
-```
 
-You could also pass the [resource group](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) name to the client along with the deployment ID:
-
-```TS
-const client = new AzureOpenAiChatClient({ deploymentId: 'd1234' , resourceGroup: 'rg1234' })
 ```
 
 ### Usage of Azure OpenAI Embedding Client
@@ -140,26 +137,10 @@ const response = await client.run({
   input: 'AI is fascinating'
 });
 const embedding = response.getEmbedding();
+
 ```
 
-#### Obtaining a client using deployment ID
-
-In case you want to obtain the model by using the ID of your deployment on your own you can pass it instead of a model name:
-
-```TS
-import { AzureOpenAiEmbeddingClient } from '@sap-ai-sdk/foundation-models';
-
-const response = await new AzureOpenAiEmbeddingClient({ deploymentId: 'd1234' }).run({
-  messages: [
-    {
-      'role':'user',
-      'content': 'Where is the deepest place on earth located?'
-    }
-  ]
-});
-```
-
-You could also pass the [resource group](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) name to the client along with the deployment ID:
+Like in [Azure OpenAI Chat client](#obtaining-a-client-using-resource-groups), you could also pass the [resource group](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) name to the client along with the deployment ID instead of the model name.
 
 ```TS
 const client = new AzureOpenAiEmbeddingClient({ deploymentId: 'd1234' , resourceGroup: 'rg1234' })
