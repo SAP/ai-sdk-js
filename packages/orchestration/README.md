@@ -148,7 +148,7 @@ try {
 }
 ```
 
-The Azure Content Filter supports four categories: `Hate`, `Violence`, `Sexual`, and `SelfHarm`. Each category can be configured with severity levels of 0, 2, 4, or 6.
+The Azure content filter supports four categories: `Hate`, `Violence`, `Sexual`, and `SelfHarm`. Each category can be configured with severity levels of 0, 2, 4, or 6.
 
 ## Support, Feedback, Contribution
 
