@@ -25,13 +25,6 @@ describe('orchestration', () => {
       }
     });
 
-    const tokenUsage = response.getTokenUsage();
-
-    console.log(
-      `Total tokens consumed by the request: ${tokenUsage.total_tokens}\n` +
-        `Input prompt tokens consumed: ${tokenUsage.prompt_tokens}\n` +
-        `Output text completion tokens consumed: ${tokenUsage.completion_tokens}\n`
-    );
     expect(response.data.module_results).toBeDefined();
     expect(response.data.module_results.templating).not.toHaveLength(0);
     expect(response.data.orchestration_result.choices).not.toHaveLength(0);
