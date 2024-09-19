@@ -65,6 +65,9 @@ export function constructCompletionPostRequest(
         llm_module_config: config.llm,
         ...(Object.keys(config?.filtering || {}).length && {
           filtering_module_config: config.filtering
+        }),
+        ...(Object.keys(config?.masking || {}).length && {
+          masking_module_config: config.masking
         })
       }
     },

@@ -2,6 +2,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+import { orchestrationCompletionMasking } from '@sap-ai-sdk/sample-code';
 
 // Pick .env file from e2e root directory
 const __filename = fileURLToPath(import.meta.url);
@@ -35,5 +36,10 @@ describe('orchestration', () => {
     expect(response.data.orchestration_result.choices).not.toHaveLength(0);
     expect(response.getContent()).toEqual(expect.any(String));
     expect(response.getFinishReason()).toEqual('stop');
+  });
+
+  it('should complete a chat with masking', async () => {
+    const result = await orchestrationCompletionMasking();
+    expect(result).toEqual(expect.any(String));
   });
 });
