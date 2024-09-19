@@ -73,7 +73,7 @@ const response = await client.run({
       content: 'Hi, my name is Isa'
     },
     {
-      role: 'system',
+      role: 'assistant',
       content: 'Hi Isa! It is nice to meet you. Is there anything I can help you with today?'
     },
     {
