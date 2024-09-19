@@ -1,12 +1,7 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
-import dotenv from 'dotenv';
+import { loadEnv } from './utils/load-env.js';
 import { chatCompletion, computeEmbedding } from '@sap-ai-sdk/sample-code';
 
-// Pick .env file from root directory
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
+loadEnv();
 
 describe('Azure OpenAI Foundation Model Access', () => {
   it('should complete a chat', async () => {
