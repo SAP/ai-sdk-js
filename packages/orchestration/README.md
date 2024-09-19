@@ -1,6 +1,6 @@
 # @sap-ai-sdk/orchestration
 
-This package provides generative AI orchestration capabilities, integrating seamlessly with SAP AI Core and SAP AI Launchpad to enhance your AI workflows.
+This package incorporates generative AI orchestration capabilities into your AI activities in SAP AI Core and SAP AI Launchpad.
 
 ### Installation
 
@@ -26,7 +26,7 @@ For details, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-servic
 
 - [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Project configured with Node.js v20 or higher and native ESM support enabled.
-- For testing your application locally (Optional):
+- For testing the application locally (Optional):
   - Download a service key for your AI Core service instance.
   - Create a `.env` file in the sample-code directory.
   - Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`.
@@ -114,7 +114,7 @@ logger.info(
 
 Use the orchestration client with filtering to restrict the type of content that is passed to and received from a generative AI model.
 
-This feature enables you always filter both input and the output of a model based on content safety criteria.
+This feature enables filtering both [input](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-orchestration#content-filtering-on-input) and the [output](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-orchestration#content-filtering-on-input) of a model based on a content safety criteria.
 
 ```TS
 import { OrchestrationClient, buildAzureContentFilter } from '@sap-ai-sdk/orchestration';
