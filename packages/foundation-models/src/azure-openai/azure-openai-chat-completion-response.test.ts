@@ -1,6 +1,7 @@
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
 import { AzureOpenAiChatCompletionResponse } from './azure-openai-chat-completion-response.js';
 import { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.js';
+import { azureOpenAiCreateChatCompletionResponseSchema } from './ts-to-zod/create-chat-completion-response.zod.js';
 
 describe('OpenAI chat completion response', () => {
   const mockResponse =
@@ -17,7 +18,7 @@ describe('OpenAI chat completion response', () => {
   const response = new AzureOpenAiChatCompletionResponse(rawResponse);
 
   it('should return the completion response', () => {
-    // TODO: Use zod schema to validate the response
-    expect(response.data).toStrictEqual(mockResponse);
+    const data = azureOpenAiCreateChatCompletionResponseSchema.parse(response.data);
+    expect(data).toStrictEqual(mockResponse);
   });
 });
