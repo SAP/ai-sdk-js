@@ -52,7 +52,5 @@ module.exports = ${JSON.stringify(config, null, 2)};
   }
 }
 
-logger.info(process.argv.slice(2));
-
 // Run the main function
 main(process.argv.slice(2));
