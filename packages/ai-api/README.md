@@ -18,8 +18,9 @@ We maintain a list of [currently available and tested AI Core APIs](https://gith
    - [Create a Configuration](#create-a-configuration)
    - [Create a Deployment](#create-a-deployment)
    - [Delete a Deployment](#delete-a-deployment)
-4. [Support, Feedback, Contribution](#support-feedback-contribution)
-5. [License](#license)
+4. [Local Testing](#local-testing)
+5. [Support, Feedback, Contribution](#support-feedback-contribution)
+6. [License](#license)
 
 ## Installation
 
@@ -156,6 +157,10 @@ async function modifyDeployment() {
     }
 }
 ```
+
+## Local Testing
+
+Refer [here](../../README.md#local-testing) for local testing instructions.
 
 ## Support, Feedback, Contribution
 

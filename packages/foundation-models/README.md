@@ -11,8 +11,9 @@ This package incorporates generative AI foundation models into your AI activitie
    - [Azure OpenAI Client](#azure-openai-client)
      - [Chat Client](#chat-client)
      - [Embedding Client](#embedding-client)
-4. [Support, Feedback, Contribution](#support-feedback-contribution)
-5. [License](#license)
+4. [Local Testing](#local-testing)
+5. [Support, Feedback, Contribution](#support-feedback-contribution)
+6. [License](#license)
 
 ## Installation
 
@@ -139,6 +140,10 @@ const response = await embeddingClient.run({
 });
 const embedding = response.getEmbedding();
 ```
+
+## Local Testing
+
+Refer [here](../../README.md#local-testing) for local testing instructions.
 
 ## Support, Feedback, Contribution
 

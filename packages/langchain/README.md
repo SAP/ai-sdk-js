@@ -10,8 +10,9 @@ This package provides LangChain model clients built on top of the foundation mod
    - [Client Initialization](#client-initialization)
    - [Chat Client](#chat-client)
    - [Embedding Client](#embedding-client)
-4. [Support, Feedback, Contribution](#support-feedback-contribution)
-5. [License](#license)
+4. [Local Testing](#local-testing)     
+5. [Support, Feedback, Contribution](#support-feedback-contribution)
+6. [License](#license)
 
 ## Installation
 
@@ -109,6 +110,10 @@ const embeddedDocument = await embeddingClient.embedDocuments([
   'Page 2: It is a beautiful city.'
 ]);
 ```
+
+## Local Testing
+
+Refer [here](../../README.md#local-testing) for local testing instructions.
 
 ## Support, Feedback, Contribution
 

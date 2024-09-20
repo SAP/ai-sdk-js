@@ -13,6 +13,7 @@ Integrate chat completion into your business applications with SAP Cloud SDK for
   - [@sap-ai-sdk/orchestration](#sap-ai-sdkorchestration)
   - [@sap-ai-sdk/langchain](#sap-ai-sdklangchain)
 - [SAP Cloud SDK for AI Sample Project](#sap-cloud-sdk-for-ai-sample-project)
+- [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [Security / Disclosure](#security--disclosure)
 - [Code of Conduct](#code-of-conduct)
@@ -70,6 +71,16 @@ $ npm install @sap-ai-sdk/langchain
 ## SAP Cloud SDK for AI Sample Project
 
 We have created a sample project demonstrating the different clients' usage of the SAP Cloud SDK for AI for TypeScript/JavaScript. The [project README](./sample-code/README.md) outlines the set-up needed to build and run it locally.
+
+## Local Testing
+
+To test SAP Cloud SDK for AI features locally while building your application, follow these steps:
+
+- Download a service key for your AI Core service instance.
+- Create a `.env` file in the root of your application.
+- Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`.
+
+Adding a `.env` file ensures that the SDK uses the service key to interact with the AI Core service, allowing you to test all the clients like orchestration, OpenAI locally, provided you have the deployments for orchestration and OpenAI in SAP BTP.
 
 ## Support, Feedback, Contribution
 

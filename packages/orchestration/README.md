@@ -10,8 +10,9 @@ This package incorporates generative AI orchestration capabilities into your AI 
 4. [Usage](#usage)
    - [Templating](#templating)
    - [Content Filtering](#content-filtering)
-5. [Support, Feedback, Contribution](#support-feedback-contribution)
-6. [License](#license)
+5. [Local Testing](#local-testing)   
+6. [Support, Feedback, Contribution](#support-feedback-contribution)
+7. [License](#license)
 
 ## Installation
 
@@ -161,6 +162,10 @@ try {
 `buildAzureContentFilter()` is a convenience function that creates an Azure content filter configuration based on the provided inputs.
 The Azure content filter supports four categories: `Hate`, `Violence`, `Sexual`, and `SelfHarm`.
 Each category can be configured with severity levels of 0, 2, 4, or 6.
+
+## Local Testing
+
+Refer [here](../../README.md#local-testing) for local testing instructions.
 
 ## Support, Feedback, Contribution
 
