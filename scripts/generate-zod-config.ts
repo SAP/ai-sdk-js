@@ -13,12 +13,12 @@ interface TsToZodConfig {
 };
 
 async function main(args: string[]) {
-  if (args.length !== 3) {
-    logger.error('Usage: node --loader ts-node/esm generate-zod-config.ts <input> <output-schema> <output-config>');
+  if (args.length !== 2) {
+    logger.error('Usage: node --loader ts-node/esm generate-zod-config.ts <input> <output-schema>');
     process.exit(1);
   }
 
-  const [input, outputSchema, outputConfig] = args;
+  const [input, outputSchema] = args;
   try {
     // Find all .ts files based on the glob path provided
     const files = glob.sync(input);
@@ -43,7 +43,7 @@ module.exports = ${JSON.stringify(config, null, 2)};
 `;
 
     // Write the config file to the specified outputConfig path
-    const configFilePath = path.join(outputConfig, 'ts-to-zod.config.cjs');
+    const configFilePath = path.join(process.cwd(), 'ts-to-zod.config.cjs');
     await fs.writeFile(configFilePath, configContent, 'utf8');
 
     logger.info(`Configuration file generated at ${configFilePath}`);

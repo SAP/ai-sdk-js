@@ -28,7 +28,7 @@
     "check:public-api": "node --loader ts-node/esm ../../scripts/check-public-api-cli.ts",
     "generate:azure-openai": "openapi-generator --generateESM --clearOutputDir -i ./src/azure-openai/spec/inference.yaml -o ./src/azure-openai/client --schemaPrefix AzureOpenAi",
     "postgenerate:azure-openai": "rm ./src/azure-openai/client/inference/*.ts && pnpm lint:fix",
-    "generate-zod-config": "node --loader ts-node/esm ../../scripts/generate-zod-config.ts './src/azure-openai/client/inference/schema/*.ts' ./src/azure-openai/ts-to-zod ./",
+    "generate-zod-config": "node --loader ts-node/esm ../../scripts/generate-zod-config.ts './src/azure-openai/client/inference/schema/*.ts' ./src/azure-openai/ts-to-zod",
     "generate-zod": "pnpm generate-zod-config && ts-to-zod --all --skipValidation"
   },
   "dependencies": {

@@ -29,7 +29,7 @@
     "postgenerate": "rm ./src/client/api/*.ts && pnpm rename-generated-files && pnpm lint:fix",
     "rename-generated-files": "node --no-warnings --loader ts-node/esm ../../scripts/postgenerate-orchestration.ts ./src/client/api",
     "check:public-api": "node --loader ts-node/esm ../../scripts/check-public-api-cli.ts",
-    "generate-zod-config": "node --loader ts-node/esm ../../scripts/generate-zod-config.ts './src/client/api/schema/*.ts' ./src/ts-to-zod ./",
+    "generate-zod-config": "node --loader ts-node/esm ../../scripts/generate-zod-config.ts './src/client/api/schema/*.ts' ./src/ts-to-zod",
     "generate-zod": "pnpm generate-zod-config && ts-to-zod --all --skipValidation"
   },
   "dependencies": {
