@@ -97,7 +97,13 @@ importers:
       '@sap-ai-sdk/core':
         specifier: workspace:^
         version: link:../core
+      '@sap-cloud-sdk/connectivity':
+        specifier: ^3.21.0
+        version: 3.21.0
     devDependencies:
+      nock:
+        specifier: ^13.5.5
+        version: 13.5.5
       typescript:
         specifier: ^5.6.2
         version: 5.6.2
@@ -117,6 +123,9 @@ importers:
         specifier: ^3.21.0
         version: 3.21.0
     devDependencies:
+      nock:
+        specifier: ^13.5.5
+        version: 13.5.5
       typescript:
         specifier: ^5.6.2
         version: 5.6.2
@@ -129,13 +138,7 @@ importers:
       '@sap-ai-sdk/core':
         specifier: workspace:^
         version: link:../core
-      '@sap-cloud-sdk/connectivity':
-        specifier: ^3.21.0
-        version: 3.21.0
       '@sap-cloud-sdk/http-client':
-        specifier: ^3.21.0
-        version: 3.21.0
-      '@sap-cloud-sdk/openapi':
         specifier: ^3.21.0
         version: 3.21.0
       '@sap-cloud-sdk/util':
@@ -163,6 +166,9 @@ importers:
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../ai-api
+      '@sap-ai-sdk/core':
+        specifier: workspace:^
+        version: link:../core
       '@sap-ai-sdk/foundation-models':
         specifier: workspace:^
         version: link:../foundation-models
@@ -170,6 +176,9 @@ importers:
         specifier: ^3.23.2
         version: 3.23.3(zod@3.23.8)
     devDependencies:
+      nock:
+        specifier: ^13.5.5
+        version: 13.5.5
       typescript:
         specifier: ^5.5.4
         version: 5.6.2
@@ -182,13 +191,7 @@ importers:
       '@sap-ai-sdk/core':
         specifier: workspace:^
         version: link:../core
-      '@sap-cloud-sdk/connectivity':
-        specifier: ^3.21.0
-        version: 3.21.0
       '@sap-cloud-sdk/http-client':
-        specifier: ^3.21.0
-        version: 3.21.0
-      '@sap-cloud-sdk/openapi':
         specifier: ^3.21.0
         version: 3.21.0
       '@sap-cloud-sdk/util':
@@ -207,9 +210,6 @@ importers:
       '@langchain/core':
         specifier: 0.3.3
         version: 0.3.3(openai@4.61.1(zod@3.23.8))
-      '@langchain/openai':
-        specifier: 0.3.0
-        version: 0.3.0(@langchain/core@0.3.3(openai@4.61.1(zod@3.23.8)))
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../packages/ai-api
@@ -234,12 +234,6 @@ importers:
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../../packages/ai-api
-      '@sap-ai-sdk/core':
-        specifier: workspace:^
-        version: link:../../packages/core
-      '@sap-ai-sdk/foundation-models':
-        specifier: workspace:^
-        version: link:../../packages/foundation-models
       '@sap-ai-sdk/orchestration':
         specifier: workspace:^
         version: link:../../packages/orchestration
@@ -296,6 +290,12 @@ importers:
       '@sap-ai-sdk/orchestration':
         specifier: workspace:^
         version: link:../../packages/orchestration
+      '@sap-cloud-sdk/connectivity':
+        specifier: ^3.21.0
+        version: 3.21.0
+      '@sap-cloud-sdk/http-client':
+        specifier: ^3.21.0
+        version: 3.21.0
       tsd:
         specifier: ^0.31.2
         version: 0.31.2
@@ -751,12 +751,6 @@ packages:
   '@langchain/core@0.3.3':
     resolution: {integrity: sha512-WAtkmhbdl2T41qzimTzhb3pXCHQxO4onqxzPxgdf3KftQdTwLq0YYBDhozRMZLNAd/+cfH0ymZGaZSsnc9Ogsg==}
     engines: {node: '>=18'}
-
-  '@langchain/openai@0.3.0':
-    resolution: {integrity: sha512-yXrz5Qn3t9nq3NQAH2l4zZOI4ev2CFdLC5kvmi5SdW4bggRuM40SXTUAY3VRld4I5eocYfk82VbrlA+6dvN5EA==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      '@langchain/core': '>=0.2.26 <0.4.0'
 
   '@manypkg/find-root@1.1.0':
     resolution: {integrity: sha512-mki5uBvhHzO8kYYix/WRy2WX8S3B5wdVSc9D6KcU5lQNglP2yt58/VfLuAK49glRXChosY8ap2oJ1qgma3GUVA==}
@@ -4708,16 +4702,6 @@ snapshots:
     transitivePeerDependencies:
       - openai
 
-  '@langchain/openai@0.3.0(@langchain/core@0.3.3(openai@4.61.1(zod@3.23.8)))':
-    dependencies:
-      '@langchain/core': 0.3.3(openai@4.61.1(zod@3.23.8))
-      js-tiktoken: 1.0.14
-      openai: 4.61.1(zod@3.23.8)
-      zod: 3.23.8
-      zod-to-json-schema: 3.23.3(zod@3.23.8)
-    transitivePeerDependencies:
-      - encoding
-
   '@manypkg/find-root@1.1.0':
     dependencies:
       '@babel/runtime': 7.25.0
@@ -5061,12 +5045,14 @@ snapshots:
     dependencies:
       '@types/node': 20.16.5
       form-data: 4.0.0
+    optional: true
 
   '@types/node@12.20.55': {}
 
   '@types/node@18.19.50':
     dependencies:
       undici-types: 5.26.5
+    optional: true
 
   '@types/node@20.16.5':
     dependencies:
@@ -5234,6 +5220,7 @@ snapshots:
   abort-controller@3.0.0:
     dependencies:
       event-target-shim: 5.0.1
+    optional: true
 
   accepts@1.3.8:
     dependencies:
@@ -5253,6 +5240,7 @@ snapshots:
   agentkeepalive@4.5.0:
     dependencies:
       humanize-ms: 1.2.1
+    optional: true
 
   ajv-draft-04@1.0.0(ajv@8.16.0):
     optionalDependencies:
@@ -6127,7 +6115,8 @@ snapshots:
 
   etag@1.8.1: {}
 
-  event-target-shim@5.0.1: {}
+  event-target-shim@5.0.1:
+    optional: true
 
   eventemitter3@4.0.7: {}
 
@@ -6311,7 +6300,8 @@ snapshots:
       cross-spawn: 7.0.3
       signal-exit: 4.1.0
 
-  form-data-encoder@1.7.2: {}
+  form-data-encoder@1.7.2:
+    optional: true
 
   form-data@4.0.0:
     dependencies:
@@ -6323,6 +6313,7 @@ snapshots:
     dependencies:
       node-domexception: 1.0.0
       web-streams-polyfill: 4.0.0-beta.3
+    optional: true
 
   forwarded@0.2.0: {}
 
@@ -6512,6 +6503,7 @@ snapshots:
   humanize-ms@1.2.1:
     dependencies:
       ms: 2.1.3
+    optional: true
 
   iconv-lite@0.4.24:
     dependencies:
@@ -7439,7 +7431,8 @@ snapshots:
     dependencies:
       clone: 2.1.2
 
-  node-domexception@1.0.0: {}
+  node-domexception@1.0.0:
+    optional: true
 
   node-fetch-h2@2.3.0:
     dependencies:
@@ -7571,6 +7564,7 @@ snapshots:
       zod: 3.23.8
     transitivePeerDependencies:
       - encoding
+    optional: true
 
   openapi-types@12.1.3: {}
 
@@ -8347,7 +8341,8 @@ snapshots:
       has-symbols: 1.0.3
       which-boxed-primitive: 1.0.2
 
-  undici-types@5.26.5: {}
+  undici-types@5.26.5:
+    optional: true
 
   undici-types@6.19.6: {}
 
@@ -8404,7 +8399,8 @@ snapshots:
     dependencies:
       defaults: 1.0.4
 
-  web-streams-polyfill@4.0.0-beta.3: {}
+  web-streams-polyfill@4.0.0-beta.3:
+    optional: true
 
   webidl-conversions@3.0.1: {}
 
