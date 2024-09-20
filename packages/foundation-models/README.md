@@ -86,7 +86,6 @@ const responseContent = response.getContent();
 Multiple messages can be sent in a single request, enabling the model to reference the conversation history.
 Include parameters like `max_tokens` and `temperature` in the request to control the completion behavior:
 
-
 ```TS
 const response = await chatClient.run({
   messages: [

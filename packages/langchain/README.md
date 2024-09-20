@@ -60,7 +60,6 @@ const chatClient = new AzureOpenAiChatClient({
 });
 ```
 
-
 ### Chat Client
 
 The chat client allows you to interact with Azure OpenAI chat models, accessible via the generative AI hub of SAP AI Core.
