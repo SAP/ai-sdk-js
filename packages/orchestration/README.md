@@ -10,7 +10,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
 4. [Usage](#usage)
    - [Templating](#templating)
    - [Content Filtering](#content-filtering)
-5. [Local Testing](#local-testing)   
+5. [Local Testing](#local-testing)
 6. [Support, Feedback, Contribution](#support-feedback-contribution)
 7. [License](#license)
 

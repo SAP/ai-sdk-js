@@ -10,7 +10,7 @@ This package provides LangChain model clients built on top of the foundation mod
    - [Client Initialization](#client-initialization)
    - [Chat Client](#chat-client)
    - [Embedding Client](#embedding-client)
-4. [Local Testing](#local-testing)     
+4. [Local Testing](#local-testing)
 5. [Support, Feedback, Contribution](#support-feedback-contribution)
 6. [License](#license)
 
