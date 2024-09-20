@@ -11,8 +11,8 @@ This package incorporates generative AI foundation models into your AI activitie
    - [Azure OpenAI Client](#azure-openai-client)
       - [Chat Client](#chat-client)
       - [Embedding Client](#embedding-client)
-5. [Support, Feedback, Contribution](#support-feedback-contribution)
-6. [License](#license)
+4. [Support, Feedback, Contribution](#support-feedback-contribution)
+5. [License](#license)
 
 ## Installation
 
@@ -25,16 +25,13 @@ $ npm install @sap-ai-sdk/foundation-models
 - [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Project configured with Node.js v20 or higher and native ESM support enabled.
 - A deployed OpenAI model in SAP Generative AI hub.
-  - Use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to SAP Generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
+  - Use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
+   Deployment can be set up for each model and model version, as well as a resource group intended for use with the generative AI hub.
+  - Once a deployment is complete, the model can be accessed via the `deploymentUrl`
 
 ## Usage
 
-To use a generative AI model, you need to create a deployment.
-A deployment can be set up for each model and model version, as well as a resource group intended for use with the generative AI hub.
-
-Once a deployment is complete, the model can be accessed via the `deploymentUrl`
-
-#### Client Initialization
+### Client Initialization
 
 You can pass the model name as a parameter to a client, the SDK will implicitly fetch the deployment ID for the model from the AI Core service and use it in the request.
 
