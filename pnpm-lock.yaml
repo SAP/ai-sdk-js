@@ -170,6 +170,13 @@ importers:
       '@sap-cloud-sdk/util':
         specifier: ^3.21.0
         version: 3.21.0
+    devDependencies:
+      ts-to-zod:
+        specifier: ^3.13.0
+        version: 3.13.0
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
 
   sample-code:
     dependencies:

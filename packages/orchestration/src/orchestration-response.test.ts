@@ -1,6 +1,7 @@
 import { parseMockResponse } from '../../../test-util/mock-http';
 import { CompletionPostResponse } from './client/api/schema/index.js';
 import { OrchestrationResponse } from './orchestration-response';
+import { completionPostResponseSchema } from './ts-to-zod/completion-post-response.zod.js';
 
 describe('OrchestrationResponse', () => {
   const mockResponse = parseMockResponse<CompletionPostResponse>(
@@ -20,7 +21,8 @@ describe('OrchestrationResponse', () => {
   });
 
   it('should return the completion response', () => {
-    expect(orchestrationResponse.data).toBe(mockResponse);
+    const data = completionPostResponseSchema.parse(orchestrationResponse.data);
+    expect(data).toStrictEqual(mockResponse);
   });
 
   it('should get token usage', () => {

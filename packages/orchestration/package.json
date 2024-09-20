@@ -22,18 +22,24 @@
   "scripts": {
     "compile": "tsc",
     "compile:cjs": "tsc -p tsconfig.cjs.json",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test": "pnpm generate-zod && NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint \"**/*.ts\" && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/api.yaml -o ./src/client",
     "postgenerate": "rm ./src/client/api/*.ts && pnpm rename-generated-files && pnpm lint:fix",
     "rename-generated-files": "node --no-warnings --loader ts-node/esm ../../scripts/postgenerate-orchestration.ts ./src/client/api",
-    "check:public-api": "node --loader ts-node/esm ../../scripts/check-public-api-cli.ts"
+    "check:public-api": "node --loader ts-node/esm ../../scripts/check-public-api-cli.ts",
+    "generate-zod-config": "node --loader ts-node/esm ../../scripts/generate-zod-config.ts './src/client/api/schema/*.ts' ./src/ts-to-zod ./",
+    "generate-zod": "pnpm generate-zod-config && ts-to-zod --all --skipValidation"
   },
   "dependencies": {
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-cloud-sdk/http-client": "^3.21.0",
     "@sap-cloud-sdk/util": "^3.21.0"
+  },
+  "devDependencies": {
+    "ts-to-zod": "^3.13.0",
+    "zod": "^3.23.8"
   }
 }
