@@ -44,9 +44,12 @@ jobs:
       - run: pnpm i --frozen-lockfile
       # - run: pnpm build # might be needed in the future
       - run: pnpm lint
-      - run: pnpm compile:cjs
-      - run: pnpm check:public-api
-        name: Check public api
+      - name: Check CommonJS compatibility
+        run: pnpm compile:cjs
+      - name: Check public api
+        run: pnpm check:public-api
+      - name: Check dependencies
+        run: pnpm check:deps
 
   dependabot:
     runs-on: ubuntu-latest
