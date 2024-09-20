@@ -47,7 +47,6 @@ import {
 const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
 // For an embedding client
 const embeddingClient = new AzureOpenAiEmbeddingClient({ modelName: 'gpt-4o' });
-
 ```
 
 [Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
@@ -55,7 +54,10 @@ const embeddingClient = new AzureOpenAiEmbeddingClient({ modelName: 'gpt-4o' });
 The deployment ID and resource group can be used as an alternative to the model name for obtaining a model.
 
 ```ts
-const chatClient = new AzureOpenAiChatClient({ deploymentId: 'd1234' , resourceGroup: 'rg1234' })
+const chatClient = new AzureOpenAiChatClient({
+  deploymentId: 'd1234',
+  resourceGroup: 'rg1234'
+});
 ```
 
 ### Azure OpenAI Client
@@ -80,7 +82,6 @@ const response = await chatClient.run({
 });
 
 const responseContent = response.getContent();
-
 ```
 
 Multiple messages can be sent in a single request, enabling the model to reference the conversation history.
@@ -99,7 +100,8 @@ const response = await chatClient.run({
     },
     {
       role: 'assistant',
-      content: 'Hi Isa! It is nice to meet you. Is there anything I can help you with today?'
+      content:
+        'Hi Isa! It is nice to meet you. Is there anything I can help you with today?'
     },
     {
       role: 'user',
@@ -115,10 +117,9 @@ const tokenUsage = response.getTokenUsage();
 
 logger.info(
   `Total tokens consumed by the request: ${tokenUsage.total_tokens}\n` +
-  `Input prompt tokens consumed: ${tokenUsage.prompt_tokens}\n` +
-  `Output text completion tokens consumed: ${tokenUsage.completion_tokens}\n`
+    `Input prompt tokens consumed: ${tokenUsage.prompt_tokens}\n` +
+    `Output text completion tokens consumed: ${tokenUsage.completion_tokens}\n`
 );
-
 ```
 
 Refer to `AzureOpenAiChatCompletionParameters` interface for other parameters that can be passed to the chat completion request.
@@ -130,12 +131,13 @@ Use the `AzureOpenAiEmbeddingClient` to send embedding requests to an OpenAI mod
 ```ts
 import { AzureOpenAiEmbeddingClient } from '@sap-ai-sdk/foundation-models';
 
-const embeddingClient = new AzureOpenAiEmbeddingClient('text-embedding-ada-002');
+const embeddingClient = new AzureOpenAiEmbeddingClient(
+  'text-embedding-ada-002'
+);
 const response = await embeddingClient.run({
   input: 'AI is fascinating'
 });
 const embedding = response.getEmbedding();
-
 ```
 
 ## Support, Feedback, Contribution

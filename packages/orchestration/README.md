@@ -80,9 +80,7 @@ const orchestrationClient = new OrchestrationClient({
     model_params: { max_tokens: 50, temperature: 0.1 }
   },
   templating: {
-    template: [
-      { role: 'user', content: 'What is my name?' }
-    ]
+    template: [{ role: 'user', content: 'What is my name?' }]
   }
 });
 
@@ -116,8 +114,8 @@ const tokenUsage = response.getTokenUsage();
 
 logger.info(
   `Total tokens consumed by the request: ${tokenUsage.total_tokens}\n` +
-  `Input prompt tokens consumed: ${tokenUsage.prompt_tokens}\n` +
-  `Output text completion tokens consumed: ${tokenUsage.completion_tokens}\n`
+    `Input prompt tokens consumed: ${tokenUsage.prompt_tokens}\n` +
+    `Output text completion tokens consumed: ${tokenUsage.completion_tokens}\n`
 );
 ```
 
@@ -130,7 +128,10 @@ Use the orchestration client with filtering to restrict content that is passed t
 This feature allows filtering both the [input](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-orchestration#content-filtering-on-input) and [output](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-orchestration#content-filtering-on-input) of a model based on content safety criteria.
 
 ```ts
-import { OrchestrationClient, buildAzureContentFilter } from '@sap-ai-sdk/orchestration';
+import {
+  OrchestrationClient,
+  buildAzureContentFilter
+} from '@sap-ai-sdk/orchestration';
 
 const filter = buildAzureContentFilter({ Hate: 2, Violence: 4 });
 const orchestrationClient = new OrchestrationClient({
