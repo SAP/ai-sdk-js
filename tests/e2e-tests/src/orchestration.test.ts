@@ -1,34 +1,50 @@
-import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+import {
+  orchestrationChatCompletion,
+  orchestrationTemplating,
+  orchestrationInputFiltering,
+  orchestrationOutputFiltering,
+  orchestrationRequestConfig
+} from '@sap-ai-sdk/sample-code';
+import { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 import { loadEnv } from './utils/load-env.js';
 
 loadEnv();
 
 describe('orchestration', () => {
-  it('should complete a chat', async () => {
-    const response = await new OrchestrationClient({
-      llm: {
-        model_name: 'gpt-35-turbo-16k',
-        model_params: { max_tokens: 50, temperature: 0.1 }
-      },
-      templating: {
-        template: [
-          {
-            role: 'user',
-            content: 'Create {{?number}} paraphrases of {{?phrase1}}'
-          }
-        ]
-      }
-    }).chatCompletion({
-      inputParams: {
-        number: '3',
-        phrase1: 'I love coffee'
-      }
-    });
-
+  const assertContent = (response: OrchestrationResponse) => {
     expect(response.data.module_results).toBeDefined();
     expect(response.data.module_results.templating).not.toHaveLength(0);
     expect(response.data.orchestration_result.choices).not.toHaveLength(0);
     expect(response.getContent()).toEqual(expect.any(String));
     expect(response.getFinishReason()).toEqual('stop');
+  };
+  it('should complete a chat', async () => {
+    const response = await orchestrationChatCompletion();
+
+    assertContent(response);
+  });
+
+  it('should complete a chat with a template', async () => {
+    const response = await orchestrationTemplating();
+
+    assertContent(response);
+  });
+
+  it('should trigger an input filter', async () => {
+    await orchestrationInputFiltering();
+  });
+  it('should trigger an output filter', async () => {
+    const response = await orchestrationOutputFiltering();
+
+    expect(response.data.module_results).toBeDefined();
+    expect(response.data.module_results.output_filtering!.data).toBeDefined();
+    expect(response.getContent).toThrow(Error);
+    expect(response.getFinishReason()).toEqual('content_filter');
+  });
+
+  it('should allow for custom request parameters', async () => {
+    const response = await orchestrationRequestConfig();
+
+    assertContent(response);
   });
 });

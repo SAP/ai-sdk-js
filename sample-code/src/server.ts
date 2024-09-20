@@ -1,10 +1,17 @@
 /* eslint-disable no-console */
 import express from 'express';
+import { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 import {
   chatCompletion,
   computeEmbedding
 } from './foundation-models-azure-openai.js';
-import { orchestrationCompletion } from './orchestration.js';
+import {
+  orchestrationChatCompletion,
+  orchestrationTemplating,
+  orchestrationInputFiltering,
+  orchestrationOutputFiltering,
+  orchestrationRequestConfig
+} from './orchestration.js';
 import { getDeployments } from './ai-api.js';
 import {
   complexInvoke,
@@ -48,8 +55,31 @@ app.get('/embedding', async (req, res) => {
 });
 
 app.get('/orchestration/:sampleCase', async (req, res) => {
+  const sampleCase = req.params.sampleCase;
+  const func =
+    sampleCase === 'simple'
+      ? orchestrationChatCompletion
+      : sampleCase === 'template'
+        ? orchestrationTemplating
+        : sampleCase === 'inputFiltering'
+          ? orchestrationInputFiltering
+          : sampleCase === 'outpttFiltering'
+            ? orchestrationOutputFiltering
+            : sampleCase === 'requestConfig'
+              ? orchestrationRequestConfig
+              : orchestrationChatCompletion;
+
   try {
-    res.send(await orchestrationCompletion(req.params.sampleCase));
+    const result = (await func()) as OrchestrationResponse;
+    if (sampleCase === 'inputFiltering') {
+      res.send('Input filter applied successfully');
+    } else if (sampleCase === 'outputFiltering') {
+      res.send(
+        `Output filter applied successfully with threshold results: ${result.data.module_results.output_filtering!.data!}`
+      );
+    } else {
+      res.send(result.getContent());
+    }
   } catch (error: any) {
     console.error(error);
     res
