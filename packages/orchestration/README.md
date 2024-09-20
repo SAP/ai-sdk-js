@@ -165,7 +165,7 @@ Each category can be configured with severity levels of 0, 2, 4, or 6.
 
 ## Local Testing
 
-Refer [here](../../README.md#local-testing) for local testing instructions.
+For local testing instuctions, refer [here](../../README.md#local-testing).
 
 ## Support, Feedback, Contribution
 
