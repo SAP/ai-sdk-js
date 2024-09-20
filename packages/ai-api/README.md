@@ -32,7 +32,6 @@ $ npm install @sap-ai-sdk/ai-api
 - [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-api/sap-ai-api-service-guide/initial-setup).
 - Project configured with Node.js v20 or higher and native ESM support enabled.
 
-
 ## Usage
 
 The examples below demonstrate the usage of the most commonly used APIs in SAP AI Core.

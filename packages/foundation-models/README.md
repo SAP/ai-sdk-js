@@ -9,10 +9,10 @@ This package incorporates generative AI foundation models into your AI activitie
 3. [Usage](#usage)
    - [Client Initialization](#client-initialization)
    - [Azure OpenAI Client](#azure-openai-client)
-      - [Chat Client](#chat-client)
-      - [Embedding Client](#embedding-client)
-5. [Support, Feedback, Contribution](#support-feedback-contribution)
-6. [License](#license)
+     - [Chat Client](#chat-client)
+     - [Embedding Client](#embedding-client)
+4. [Support, Feedback, Contribution](#support-feedback-contribution)
+5. [License](#license)
 
 ## Installation
 
@@ -88,7 +88,6 @@ const responseContent = response.getContent();
 
 Multiple messages can be sent in a single request, enabling the model to reference the conversation history.
 Include parameters like `max_tokens` and `temperature` in the request to control the completion behavior:
-
 
 ```TS
 const response = await chatClient.run({
