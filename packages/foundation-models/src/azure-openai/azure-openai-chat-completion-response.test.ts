@@ -18,7 +18,9 @@ describe('OpenAI chat completion response', () => {
   const response = new AzureOpenAiChatCompletionResponse(rawResponse);
 
   it('should return the completion response', () => {
-    const data = azureOpenAiCreateChatCompletionResponseSchema.parse(response.data);
+    const data = azureOpenAiCreateChatCompletionResponseSchema.parse(
+      response.data
+    );
     expect(data).toStrictEqual(mockResponse);
   });
 });

@@ -2,3 +2,4 @@ node_modules/
 dist/
 coverage/
 pnpm-lock.yaml
+ts-to-zod.config.cjs
