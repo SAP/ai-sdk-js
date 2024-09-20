@@ -37,7 +37,7 @@ You can pass the model name as a parameter to a client, the SDK will implicitly 
 
 By default, the SDK caches the deployment information, including the deployment ID, model name, and version, for 5 minutes to avoid performance issues from fetching this data with each request.
 
-```TS
+```ts
 import {
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient
@@ -54,7 +54,7 @@ const embeddingClient = new AzureOpenAiEmbeddingClient({ modelName: 'gpt-4o' });
 
 The deployment ID and resource group can be used as an alternative to the model name for obtaining a model.
 
-```TS
+```ts
 const chatClient = new AzureOpenAiChatClient({ deploymentId: 'd1234' , resourceGroup: 'rg1234' })
 ```
 
@@ -66,7 +66,7 @@ The Azure OpenAI client can then be used to send chat completion or embedding re
 
 Use the `AzureOpenAiChatClient` to send chat completion requests to an OpenAI model deployed in SAP generative AI hub.
 
-```TS
+```ts
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
 
 const chatClient = new AzureOpenAiChatClient('gpt-4o');
@@ -86,7 +86,7 @@ const responseContent = response.getContent();
 Multiple messages can be sent in a single request, enabling the model to reference the conversation history.
 Include parameters like `max_tokens` and `temperature` in the request to control the completion behavior:
 
-```TS
+```ts
 const response = await chatClient.run({
   messages: [
     {
@@ -127,7 +127,7 @@ Refer to `AzureOpenAiChatCompletionParameters` interface for other parameters th
 
 Use the `AzureOpenAiEmbeddingClient` to send embedding requests to an OpenAI model deployed in SAP generative AI hub.
 
-```TS
+```ts
 import { AzureOpenAiEmbeddingClient } from '@sap-ai-sdk/foundation-models';
 
 const embeddingClient = new AzureOpenAiEmbeddingClient('text-embedding-ada-002');

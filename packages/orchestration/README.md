@@ -47,7 +47,7 @@ The client allows you to configure various modules, such as templating and conte
 Use the orchestration client with templating to pass a prompt containing placeholders that will be replaced with input parameters during a chat completion request.
 This allows for variations in the prompt based on the input parameters.
 
-```TS
+```ts
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
@@ -72,7 +72,7 @@ const responseContent = response.getContent();
 It is possible to provide a history of a conversation to the model.
 Use the following snippet to send a chat completion request with history and a system message:
 
-```TS
+```ts
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
@@ -112,7 +112,7 @@ const responseContent = response.getContent();
 
 To retrieve the token usage details of the orchestration request, use the following snippet:
 
-```TS
+```ts
 const tokenUsage = response.getTokenUsage();
 
 logger.info(
@@ -130,7 +130,7 @@ Use the orchestration client with filtering to restrict content that is passed t
 
 This feature allows filtering both the [input](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-orchestration#content-filtering-on-input) and [output](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-orchestration#content-filtering-on-input) of a model based on content safety criteria.
 
-```TS
+```ts
 import { OrchestrationClient, buildAzureContentFilter } from '@sap-ai-sdk/orchestration';
 
 const filter = buildAzureContentFilter({ Hate: 2, Violence: 4 });
