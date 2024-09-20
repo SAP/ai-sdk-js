@@ -1,6 +1,6 @@
 {
   "name": "sap-ai-sdk",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "",
   "keywords": [],
   "license": "Apache-2.0",
@@ -22,6 +22,7 @@
     "foundation-models": "pnpm -F=@sap-ai-sdk/foundation-models",
     "orchestration": "pnpm -F=@sap-ai-sdk/orchestration",
     "core": "pnpm -F=@sap-ai-sdk/core",
+    "langchain": "pnpm -F=@sap-ai-sdk/langchain",
     "e2e-tests": "pnpm -F=@sap-ai-sdk/e2e-tests",
     "type-tests": "pnpm -F=@sap-ai-sdk/type-tests",
     "smoke-tests": "pnpm -F=@sap-ai-sdk/smoke-tests",

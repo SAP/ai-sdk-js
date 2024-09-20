@@ -1,11 +1,11 @@
 {
-  "name": "@sap-ai-sdk/core",
+  "name": "@sap-ai-sdk/langchain",
   "version": "1.0.0",
-  "description": "",
+  "description": "LangChain clients based on the @sap-ai-sdk",
   "license": "Apache-2.0",
   "keywords": [
     "sap-ai-sdk",
-    "ai-core"
+    "langchain"
   ],
   "type": "module",
   "main": "./dist/index.js",
@@ -27,12 +27,12 @@
     "check:public-api": "node --loader ts-node/esm ../../scripts/check-public-api-cli.ts"
   },
   "dependencies": {
-    "@sap-cloud-sdk/connectivity": "^3.21.0",
-    "@sap-cloud-sdk/http-client": "^3.21.0",
-    "@sap-cloud-sdk/openapi": "^3.21.0",
-    "@sap-cloud-sdk/util": "^3.21.0"
+    "@sap-ai-sdk/ai-api": "workspace:^",
+    "@sap-ai-sdk/foundation-models": "workspace:^",
+    "@langchain/core": "0.3.3",
+    "zod-to-json-schema": "^3.23.2"
   },
   "devDependencies": {
-    "typescript": "^5.6.2"
+    "typescript": "^5.5.4"
   }
 }

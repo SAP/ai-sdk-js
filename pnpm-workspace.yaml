@@ -4,6 +4,7 @@ packages:
   - 'packages/foundation-models'
   - 'packages/orchestration'
   - 'packages/core'
+  - 'packages/langchain'
   - 'sample-code'
   - 'tests/e2e-tests'
   - 'tests/type-tests'
