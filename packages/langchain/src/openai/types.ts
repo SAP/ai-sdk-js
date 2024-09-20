@@ -3,11 +3,11 @@ import type {
   BaseChatModelParams
 } from '@langchain/core/language_models/chat_models';
 import { BaseLLMParams } from '@langchain/core/language_models/llms';
-import type { AzureOpenAiCreateChatCompletionRequest } from '@sap-ai-sdk/foundation-models';
 import type {
-  AzureOpenAiChatModel,
-  CustomRequestConfig
-} from '@sap-ai-sdk/core';
+  AzureOpenAiCreateChatCompletionRequest,
+  AzureOpenAiChatModel
+} from '@sap-ai-sdk/foundation-models';
+import type { CustomRequestConfig } from '@sap-ai-sdk/core';
 import type { ModelConfig, ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
 
 /**
