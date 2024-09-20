@@ -32,9 +32,5 @@
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@langchain/core": "0.3.3",
     "zod-to-json-schema": "^3.23.2"
-  },
-  "devDependencies": {
-    "nock": "^13.5.5",
-    "typescript": "^5.5.4"
   }
 }

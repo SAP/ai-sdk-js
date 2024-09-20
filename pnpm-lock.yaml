@@ -100,13 +100,6 @@ importers:
       '@sap-cloud-sdk/connectivity':
         specifier: ^3.21.0
         version: 3.21.0
-    devDependencies:
-      nock:
-        specifier: ^13.5.5
-        version: 13.5.5
-      typescript:
-        specifier: ^5.6.2
-        version: 5.6.2
 
   packages/core:
     dependencies:
@@ -122,13 +115,6 @@ importers:
       '@sap-cloud-sdk/util':
         specifier: ^3.21.0
         version: 3.21.0
-    devDependencies:
-      nock:
-        specifier: ^13.5.5
-        version: 13.5.5
-      typescript:
-        specifier: ^5.6.2
-        version: 5.6.2
 
   packages/foundation-models:
     dependencies:
@@ -145,15 +131,9 @@ importers:
         specifier: ^3.21.0
         version: 3.21.0
     devDependencies:
-      nock:
-        specifier: ^13.5.5
-        version: 13.5.5
       ts-to-zod:
         specifier: ^3.13.0
         version: 3.13.0
-      typescript:
-        specifier: ^5.6.2
-        version: 5.6.2
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -175,13 +155,6 @@ importers:
       zod-to-json-schema:
         specifier: ^3.23.2
         version: 3.23.3(zod@3.23.8)
-    devDependencies:
-      nock:
-        specifier: ^13.5.5
-        version: 13.5.5
-      typescript:
-        specifier: ^5.5.4
-        version: 5.6.2
 
   packages/orchestration:
     dependencies:
@@ -197,13 +170,6 @@ importers:
       '@sap-cloud-sdk/util':
         specifier: ^3.21.0
         version: 3.21.0
-    devDependencies:
-      nock:
-        specifier: ^13.5.5
-        version: 13.5.5
-      typescript:
-        specifier: ^5.6.2
-        version: 5.6.2
 
   sample-code:
     dependencies:
