@@ -14,7 +14,7 @@ interface TsToZodConfig {
 
 async function main(args: string[]) {
   if (args.length !== 3) {
-    logger.error('Usage: ts-node generate-zod-config.ts <input> <output-schema> <output-config>');
+    logger.error('Usage: node --loader ts-node/esm generate-zod-config.ts <input> <output-schema> <output-config>');
     process.exit(1);
   }
 
