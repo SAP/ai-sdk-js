@@ -1,15 +1,15 @@
 # @sap-ai-sdk/langchain
 
-This package provides LangChain model clients, built on top of the foundation model clients of the SAP Cloud SDK for AI.
+This package provides LangChain model clients built on top of the foundation model clients of the SAP Cloud SDK for AI.
 
 ## Table of Contents
 
 1. [Installation](#installation)
-2. [Pre-requisites](#pre-requisites)
+2. [Prerequisites](#prerequisites)
 3. [Usage](#usage)
    - [Client Initialization](#client-initialization)
-   - [Chat Clients](#chat-clients)
-   - [Embedding Clients](#embedding-clients)
+   - [Chat Client](#chat-client)
+   - [Embedding Client](#embedding-client)
 4. [Support, Feedback, Contribution](#support-feedback-contribution)
 5. [License](#license)
 
@@ -19,7 +19,7 @@ This package provides LangChain model clients, built on top of the foundation mo
 $ npm install @sap-ai-sdk/langchain
 ```
 
-## Pre-requisites
+## Prerequisites
 
 - [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Bind the service to your application.
@@ -31,7 +31,7 @@ $ npm install @sap-ai-sdk/langchain
 
 ## Usage
 
-This package provides both chat and embedding clients, currently supporting Azure OpenAI.
+This package offers both chat and embedding clients, currently supporting Azure OpenAI.
 All clients comply with [LangChain's interface](https://js.langchain.com/docs/introduction).
 
 ### Client Initialization
@@ -50,7 +50,7 @@ const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
 const embeddingClient = new AzureOpenAiEmbeddingClient({ modelName: 'gpt-4o' });
 ```
 
-In addition to the default parameters of the model vendor (e.g. OpenAI) and LangChain, there are additional parameters, which you can use to narrow down the search for the model you want to use:
+In addition to the default parameters of the model vendor (e.g. OpenAI) and LangChain, additional parameters can be used to help narrow down the search for the desired model:
 
 ```ts
 const chatClient = new AzureOpenAiChatClient({
@@ -60,10 +60,11 @@ const chatClient = new AzureOpenAiChatClient({
 });
 ```
 
+
 ### Chat Client
 
-The chat clients allow you to interact with Azure OpenAI chat models, accessible via the generative AI hub of SAP AI Core.
-To invoke the client, you only have a to pass a prompt:
+The chat client allows you to interact with Azure OpenAI chat models, accessible via the generative AI hub of SAP AI Core.
+To invoke the client, simply pass a prompt:
 
 ```ts
 const response = await chatClient.invoke("What's the capital of France?");
