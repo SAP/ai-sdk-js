@@ -26,7 +26,8 @@
     "e2e-tests": "pnpm -F=@sap-ai-sdk/e2e-tests",
     "type-tests": "pnpm -F=@sap-ai-sdk/type-tests",
     "smoke-tests": "pnpm -F=@sap-ai-sdk/smoke-tests",
-    "check:public-api": "pnpm -r check:public-api"
+    "check:public-api": "pnpm -r check:public-api",
+    "check:deps": "pnpm -r -F !./tests/smoke-tests exec depcheck"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.8",
@@ -39,12 +40,13 @@
     "@sap-cloud-sdk/eslint-config": "^3.21.0",
     "@sap-cloud-sdk/generator-common": "^3.21.0",
     "@sap-cloud-sdk/http-client": "^3.21.0",
-    "@sap-cloud-sdk/util": "^3.21.0",
     "@sap-cloud-sdk/openapi-generator": "^3.21.0",
+    "@sap-cloud-sdk/util": "^3.21.0",
     "@types/jest": "^29.5.13",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/mock-fs": "^4.13.4",
     "@types/node": "^20.16.5",
+    "depcheck": "^1.4.7",
     "eslint": "^9.10.0",
     "glob": "^11.0.0",
     "jest": "^30.0.0-alpha.6",
