@@ -21,6 +21,7 @@
     "@langchain/core": "0.3.3",
     "@sap-ai-sdk/ai-api": "canary",
     "@sap-ai-sdk/foundation-models": "canary",
+    "@sap-ai-sdk/langchain": "canary",
     "@sap-ai-sdk/orchestration": "canary",
     "express": "^4.21.0"
   },
