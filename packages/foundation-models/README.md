@@ -5,7 +5,7 @@ This package incorporates generative AI foundation models into your AI activitie
 ## Table of Contents
 
 1. [Installation](#installation)
-2. [Pre-requisites](#pre-requisites)
+2. [Prerequisites](#prerequisites)
 3. [Usage](#usage)
    - [Client Initialization](#client-initialization)
    - [Azure OpenAI Client](#azure-openai-client)
