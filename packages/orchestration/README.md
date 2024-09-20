@@ -69,6 +69,23 @@ const response = await orchestrationClient.chatCompletion({
 const responseContent = response.getContent();
 ```
 
+#### Passing a custom request configuration
+
+To pass custom request configuration, for example additional headers to be passed to the client, use the following snippet:
+
+```ts
+const response = await orchestrationClient.chatCompletion(
+  {
+    inputParams: { country: 'France' }
+  },
+  {
+    headers: { 'x-custom-header': 'custom-value' }
+  }
+);
+```
+
+#### Passing message history
+
 It is possible to provide a history of a conversation to the model.
 Use the following snippet to send a chat completion request with history and a system message:
 
@@ -106,6 +123,10 @@ const response = await orchestrationClient.chatCompletion({
 const responseContent = response.getContent();
 ```
 
+#### Retrieving data from the response
+
+//Todo
+
 #### Token Usage
 
 To retrieve the token usage details of the orchestration request, use the following snippet:
@@ -121,6 +142,27 @@ logger.info(
 ```
 
 Remember to initialize a logger before using it.
+
+#### Using Resource Groups
+
+[Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
+
+The resource group can be used as an additional parameter to pick the right orchestration deployment.
+
+```ts
+const orchestrationClient = new OrchestrationClient(
+  {
+    llm: {
+      model_name: 'gpt-4-32k',
+      model_params: { max_tokens: 50, temperature: 0.1 }
+    },
+    templating: {
+      template: [{ role: 'user', content: 'What is my name?' }]
+    }
+  },
+  { resourceGroup: 'rg1234' }
+);
+```
 
 ### Content Filtering
 
