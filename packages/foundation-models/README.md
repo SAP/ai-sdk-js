@@ -9,8 +9,8 @@ This package incorporates generative AI foundation models into your AI activitie
 3. [Usage](#usage)
    - [Client Initialization](#client-initialization)
    - [Azure OpenAI Client](#azure-openai-client)
-      - [Chat Client](#chat-client)
-      - [Embedding Client](#embedding-client)
+     - [Chat Client](#chat-client)
+     - [Embedding Client](#embedding-client)
 4. [Support, Feedback, Contribution](#support-feedback-contribution)
 5. [License](#license)
 
@@ -26,7 +26,7 @@ $ npm install @sap-ai-sdk/foundation-models
 - Project configured with Node.js v20 or higher and native ESM support enabled.
 - A deployed OpenAI model in SAP Generative AI hub.
   - Use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
-   Deployment can be set up for each model and model version, as well as a resource group intended for use with the generative AI hub.
+    Deployment can be set up for each model and model version, as well as a resource group intended for use with the generative AI hub.
   - Once a deployment is complete, the model can be accessed via the `deploymentUrl`
 
 ## Usage

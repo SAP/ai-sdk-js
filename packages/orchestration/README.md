@@ -7,11 +7,11 @@ This package incorporates generative AI orchestration capabilities into your AI 
 1. [Installation](#installation)
 2. [Prerequisites](#prerequisites)
 3. [Orchestration Service](#orchestration-service)
-3. [Usage](#usage)
+4. [Usage](#usage)
    - [Templating](#templating)
    - [Content Filtering](#content-filtering)
-4. [Support, Feedback, Contribution](#support-feedback-contribution)
-5. [License](#license)
+5. [Support, Feedback, Contribution](#support-feedback-contribution)
+6. [License](#license)
 
 ## Installation
 
@@ -24,9 +24,8 @@ $ npm install @sap-ai-sdk/orchestration
 - [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Project configured with Node.js v20 or higher and native ESM support enabled.
 - An orchestration deployment is running.
-  - Use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to create a deployment for orchestration to the SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration). 
+  - Use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to create a deployment for orchestration to the SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration).
   - Once a deployment is complete, the orchestration service can be accessed via the `deploymentUrl`.
-
 
 ## Orchestration Service
 
