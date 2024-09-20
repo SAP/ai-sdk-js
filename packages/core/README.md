@@ -9,7 +9,7 @@ They are primarily designed for internal usage.
 $ npm install @sap-ai-sdk/core
 ```
 
-### Usage
+## Usage
 
 The core package is not intended for direct usage.
 

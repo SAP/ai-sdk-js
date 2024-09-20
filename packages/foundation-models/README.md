@@ -2,41 +2,77 @@
 
 This package incorporates generative AI foundation models into your AI activities in SAP AI Core and SAP AI Launchpad.
 
-### Installation
+## Table of Contents
+
+1. [Installation](#installation)
+2. [Prerequisites](#prerequisites)
+3. [Usage](#usage)
+   - [Client Initialization](#client-initialization)
+   - [Azure OpenAI Client](#azure-openai-client)
+     - [Chat Client](#chat-client)
+     - [Embedding Client](#embedding-client)
+4. [Support, Feedback, Contribution](#support-feedback-contribution)
+5. [License](#license)
+
+## Installation
 
 ```
 $ npm install @sap-ai-sdk/foundation-models
 ```
 
-## Azure OpenAI Client
-
-To make a generative AI model available for use, you need to create a deployment.
-You can create a deployment for each model and model version, as well as for each resource group that you want to use with generative AI hub.
-
-After the deployment is complete, you have a `deploymentUrl`, which can be used to access the model.
-
-The Azure OpenAI client allows you to send chat completion or embedding requests to OpenAI models deployed in SAP generative AI hub.
-
-### Prerequisites
+## Prerequisites
 
 - [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Project configured with Node.js v20 or higher and native ESM support enabled.
-- A deployed OpenAI model in SAP generative AI hub.
-  - You can use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
-- `sap-ai-sdk/foundation-models` package installed in your project.
+- A deployed OpenAI model in SAP Generative AI hub.
+  - Use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
+    Deployment can be set up for each model and model version, as well as a resource group intended for use with the generative AI hub.
+  - Once a deployment is complete, the model can be accessed via the `deploymentUrl`
 
-### Usage of Azure OpenAI Chat Client
+## Usage
+
+### Client Initialization
+
+You can pass the model name as a parameter to a client, the SDK will implicitly fetch the deployment ID for the model from the AI Core service and use it in the request.
+
+By default, the SDK caches the deployment information, including the deployment ID, model name, and version, for 5 minutes to avoid performance issues from fetching this data with each request.
+
+```ts
+import {
+  AzureOpenAiChatClient,
+  AzureOpenAiEmbeddingClient
+} from '@sap-ai-sdk/foundation-models';
+
+// For a chat client
+const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
+// For an embedding client
+const embeddingClient = new AzureOpenAiEmbeddingClient({ modelName: 'gpt-4o' });
+```
+
+[Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
+
+The deployment ID and resource group can be used as an alternative to the model name for obtaining a model.
+
+```ts
+const chatClient = new AzureOpenAiChatClient({
+  deploymentId: 'd1234',
+  resourceGroup: 'rg1234'
+});
+```
+
+### Azure OpenAI Client
+
+The Azure OpenAI client can then be used to send chat completion or embedding requests to models deployed in the SAP generative AI hub.
+
+#### Chat Client
 
 Use the `AzureOpenAiChatClient` to send chat completion requests to an OpenAI model deployed in SAP generative AI hub.
-You can pass the model name as a parameter to the client, the SDK will implicitly fetch the deployment ID for the model from the AI Core service and use it to send the request.
 
-By default, the SDK caches the deployment information, which includes the deployment ID and properties such as the model name and model version, for 5 minutes to prevent performance impact from fetching the deployment information for every request.
-
-```TS
+```ts
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
 
-const client = new AzureOpenAiChatClient('gpt-35-turbo');
-const response = await client.run({
+const chatClient = new AzureOpenAiChatClient('gpt-4o');
+const response = await chatClient.run({
   messages: [
     {
       role: 'user',
@@ -46,16 +82,13 @@ const response = await client.run({
 });
 
 const responseContent = response.getContent();
-
 ```
 
-Use the following snippet to send a chat completion request with system messages:
+Multiple messages can be sent in a single request, enabling the model to reference the conversation history.
+Include parameters like `max_tokens` and `temperature` in the request to control the completion behavior:
 
-```TS
-import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
-
-const client = new AzureOpenAiChatClient('gpt-35-turbo');
-const response = await client.run({
+```ts
+const response = await chatClient.run({
   messages: [
     {
       role: 'system',
@@ -67,7 +100,8 @@ const response = await client.run({
     },
     {
       role: 'assistant',
-      content: 'Hi Isa! It is nice to meet you. Is there anything I can help you with today?'
+      content:
+        'Hi Isa! It is nice to meet you. Is there anything I can help you with today?'
     },
     {
       role: 'user',
@@ -83,60 +117,27 @@ const tokenUsage = response.getTokenUsage();
 
 logger.info(
   `Total tokens consumed by the request: ${tokenUsage.total_tokens}\n` +
-  `Input prompt tokens consumed: ${tokenUsage.prompt_tokens}\n` +
-  `Output text completion tokens consumed: ${tokenUsage.completion_tokens}\n`
+    `Input prompt tokens consumed: ${tokenUsage.prompt_tokens}\n` +
+    `Output text completion tokens consumed: ${tokenUsage.completion_tokens}\n`
 );
-
 ```
 
-It is possible to send multiple messages in a single request.
-This feature is useful for providing a history of the conversation to the model.
+Refer to `AzureOpenAiChatCompletionParameters` interface for other parameters that can be passed to the chat completion request.
 
-Pass parameters like `max_tokens` and `temperature` to the request to control the completion behavior.
-Refer to `AzureOpenAiChatCompletionParameters` interface for knowing more parameters that can be passed to the chat completion request.
-
-#### Obtaining a Client using Resource Groups
-
-[Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
-
-You can use the deployment ID and resource group as an alternative to obtaining a model by using the model name.
-
-```TS
-import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
-
-const response = await new AzureOpenAiChatClient({ deploymentId: 'd1234' , resourceGroup: 'rg1234' }).run({
-  messages: [
-    {
-      'role':'user',
-      'content': 'What is the capital of France?'
-    }
-  ]
-});
-
-```
-
-### Usage of Azure OpenAI Embedding Client
+#### Embedding Client
 
 Use the `AzureOpenAiEmbeddingClient` to send embedding requests to an OpenAI model deployed in SAP generative AI hub.
-You can pass the model name as a parameter to the client, the SDK will implicitly fetch the deployment ID for the model from the AI Core service and use it to send the request.
 
-By default, the SDK caches the deployment information, which includes the deployment ID and properties such as the model name and model version, for 5 minutes to prevent performance impact from fetching the deployment information for every request.
-
-```TS
+```ts
 import { AzureOpenAiEmbeddingClient } from '@sap-ai-sdk/foundation-models';
 
-const client = new AzureOpenAiEmbeddingClient('text-embedding-ada-002');
-const response = await client.run({
+const embeddingClient = new AzureOpenAiEmbeddingClient(
+  'text-embedding-ada-002'
+);
+const response = await embeddingClient.run({
   input: 'AI is fascinating'
 });
 const embedding = response.getEmbedding();
-
-```
-
-Like in [Azure OpenAI Chat client](#obtaining-a-client-using-resource-groups), you could also pass the [resource group](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) name to the client along with the deployment ID instead of the model name.
-
-```TS
-const client = new AzureOpenAiEmbeddingClient({ deploymentId: 'd1234' , resourceGroup: 'rg1234' })
 ```
 
 ## Support, Feedback, Contribution
