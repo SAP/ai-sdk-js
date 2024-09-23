@@ -35,7 +35,7 @@ If applicable, add screenshots to help explain your problem.
 If applicable, add code snippets as examples to help explain your problem. Please remove sensitive information.
 
 **Log file**
-If applicable, add your log file or related error message. Again, please remove your sensitive information.
+If applicable, add your log file or related error message. Again, please remove sensitive information.
 
 **Impact / Priority**
 
