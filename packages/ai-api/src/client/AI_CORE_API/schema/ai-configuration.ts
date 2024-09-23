@@ -9,6 +9,7 @@ import type { AiScenarioId } from './ai-scenario-id.js';
 import type { AiParameterArgumentBindingList } from './ai-parameter-argument-binding-list.js';
 import type { AiArtifactArgumentBindingList } from './ai-artifact-argument-binding-list.js';
 import type { AiConfigurationId } from './ai-configuration-id.js';
+import type { AiScenario } from './ai-scenario.js';
 /**
  * Representation of the 'AiConfiguration' schema.
  */
@@ -24,5 +25,5 @@ export type AiConfiguration = {
    * Format: "date-time".
    */
   createdAt: string;
-  scenario?: Record<string, any>;
+  scenario?: AiScenario | any | null;
 } & Record<string, any>;

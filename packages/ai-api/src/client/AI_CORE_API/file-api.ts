@@ -20,7 +20,7 @@ export const FileApi = {
     path: string,
     headerParameters?: { 'AI-Resource-Group'?: string }
   ) =>
-    new OpenApiRequestBuilder<any>('get', '/lm/dataset/files/{path}', {
+    new OpenApiRequestBuilder<string>('get', '/lm/dataset/files/{path}', {
       pathParameters: { path },
       headerParameters
     }),
@@ -50,7 +50,7 @@ export const FileApi = {
    */
   fileUpload: (
     path: string,
-    body: any | undefined,
+    body: string | undefined,
     queryParameters?: { overwrite?: boolean },
     headerParameters?: { 'AI-Resource-Group'?: string }
   ) =>

@@ -11,6 +11,7 @@ import type { AiArtifactId } from './ai-artifact-id.js';
 import type { AiScenarioId } from './ai-scenario-id.js';
 import type { AiConfigurationId } from './ai-configuration-id.js';
 import type { AiExecutionId } from './ai-execution-id.js';
+import type { AiScenario } from './ai-scenario.js';
 /**
  * Base data of the artifact; this is the data that can be provided when the artifact is created; `name` and `kind` are required because they constitute important semantic filtering criteria for use in training / inference executables (`name` is a semantic handle of the artifact within a scenario and `kind` specifies the type of usage, e.g. you would only want to allow models in the model operator).
  *
@@ -38,5 +39,5 @@ export type AiArtifact = {
    * Format: "date-time".
    */
   modifiedAt: string;
-  scenario?: Record<string, any>;
+  scenario?: AiScenario | any | null;
 } & Record<string, any>;
