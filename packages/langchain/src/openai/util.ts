@@ -231,7 +231,7 @@ function mapToolChoice(
 export function mapLangchainToAiClient(
   client: AzureOpenAiChatClient,
   messages: BaseMessage[],
-  options?: AzureOpenAiChatCallOptions & { promptIndex?: number },
+  options?: AzureOpenAiChatCallOptions & { promptIndex?: number }
 ): AzureOpenAiCreateChatCompletionRequest {
   return removeUndefinedProperties<AzureOpenAiCreateChatCompletionRequest>({
     messages: messages.map(mapBaseMessageToAzureOpenAiChatMessage),
