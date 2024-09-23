@@ -1,0 +1,22 @@
+name: setup
+
+inputs:
+  node-version:
+    type: string
+    default: ${{ vars.PNPM_VERSION }}
+  pnpm-version:
+    type: string
+    default: ${{ vars.DEFAULT_NODE_VERSION }}
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/checkout@v4
+    - uses: pnpm/action-setup@v3
+      with:
+        version: ${{ inputs.pnpm-version }}
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: 'pnpm'
+    - run: pnpm i --frozen-lockfile
