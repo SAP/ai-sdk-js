@@ -48,8 +48,8 @@ describe('Mapping Functions', () => {
     const defaultOptions = { signal: undefined, promptIndex: 0 };
     const mapping = mapLangchainToAiClient(
       client,
-      defaultOptions,
-      langchainPrompt
+      langchainPrompt,
+      defaultOptions
     );
     expect(mapping).toMatchObject(request);
   });
