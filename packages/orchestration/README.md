@@ -44,7 +44,7 @@ Find more details about orchestration workflow [here](https://help.sap.com/docs/
 Leverage the orchestration service capabilities by using the orchestration client.
 The client allows you to configure various modules, such as templating and content filtering, while sending chat completion requests to an orchestration-compatible generative AI model.
 
-You can find all sample code here.
+In addition to the examples below, you can find more **sample code** [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/orchestration.ts).
 
 ### Templating
 

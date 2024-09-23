@@ -72,7 +72,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       res.send('Input filter applied successfully');
     } else if (sampleCase === 'outputFiltering') {
       res.send(
-        `Output filter applied successfully with threshold results: ${result.data.module_results.output_filtering!.data!}`
+        `Output filter applied successfully with threshold results: ${JSON.stringify(result.data.module_results.output_filtering!.data!)}`
       );
     } else {
       res.send(result.getContent());
