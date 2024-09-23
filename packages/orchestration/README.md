@@ -84,7 +84,7 @@ const response = await orchestrationClient.chatCompletion(
 );
 ```
 
-#### Passing message history
+#### Passing a Message History
 
 It is possible to provide a history of a conversation to the model.
 Use the following snippet to send a chat completion request with history and a system message:
