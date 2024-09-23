@@ -56,7 +56,6 @@ build/Release
 .vscode
 /pnpm-publish-summary.json
 /tests/smoke-tests/deployment
-/packages/foundation-models/src/azure-openai/azure-openai-types-schema.ts-e
 
 # Zod generated files
 ts-to-zod
