@@ -7,15 +7,18 @@ inputs:
   pnpm-version:
     description: 'PNPM version'
     default: '9'
+  pnpm-install-args:
+    description: 'Arguments to pass to pnpm install'
+    default: '--frozen-lockfile'
   ref:
     description: 'The GitHub ref to checkout'
     default: ${{ github.ref }}
   token:
     description: 'The GitHub token to use for checkout'
     default: ${{ github.token }}
-  pnpm-install-args:
-    description: 'Arguments to pass to pnpm install'
-    default: '--frozen-lockfile'
+  fetch-depth:
+    description: 'The depth of history to fetch'
+    default: '0'
 
 runs:
   using: 'composite'
@@ -24,6 +27,7 @@ runs:
       with:
         ref: ${{ inputs.ref }}
         token: ${{ inputs.token }}
+        fetch-depth: ${{ inputs.fetch-depth }}
     - uses: pnpm/action-setup@v3
       with:
         version: ${{ inputs.pnpm-version }}
