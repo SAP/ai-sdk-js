@@ -161,34 +161,34 @@ You can anonymize or pseudonomize the prompt using the data masking capabilities
 
 ```ts
 const orchestrationClient = new OrchestrationClient({
-    llm: {
-      model_name: 'gpt-4-32k',
-      model_params: {}
-    },
-    templating: {
-      template: [
-        {
-          role: 'user',
-          content:
-            'Please write an email to {{?user}} ({{?email}}), informing them about the amazing capabilities of generative AI! Be brief and concise, write at most 6 sentences.'
-        }
-      ]
-    },
-    masking: {
-      masking_providers: [
-        {
-          type: 'sap_data_privacy_integration',
-          method: 'pseudonymization',
-          entities: [{ type: 'profile-email' }, { type: 'profile-person' }]
-        }
-      ]
-    }
-  });
+  llm: {
+    model_name: 'gpt-4-32k',
+    model_params: {}
+  },
+  templating: {
+    template: [
+      {
+        role: 'user',
+        content:
+          'Please write an email to {{?user}} ({{?email}}), informing them about the amazing capabilities of generative AI! Be brief and concise, write at most 6 sentences.'
+      }
+    ]
+  },
+  masking: {
+    masking_providers: [
+      {
+        type: 'sap_data_privacy_integration',
+        method: 'pseudonymization',
+        entities: [{ type: 'profile-email' }, { type: 'profile-person' }]
+      }
+    ]
+  }
+});
 
-  const response = await orchestrationClient.chatCompletion({
-    inputParams: { user: 'Alice Anderson', email: 'alice.anderson@sap.com' }
-  });
-  return response.getContent();
+const response = await orchestrationClient.chatCompletion({
+  inputParams: { user: 'Alice Anderson', email: 'alice.anderson@sap.com' }
+});
+return response.getContent();
 ```
 
 ## Support, Feedback, Contribution
