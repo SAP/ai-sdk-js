@@ -4,14 +4,17 @@ This package incorporates generative AI orchestration capabilities into your AI 
 
 ## Table of Contents
 
-1. [Installation](#installation)
-2. [Prerequisites](#prerequisites)
-3. [Orchestration Service](#orchestration-service)
-4. [Usage](#usage)
-   - [Templating](#templating)
-   - [Content Filtering](#content-filtering)
-5. [Support, Feedback, Contribution](#support-feedback-contribution)
-6. [License](#license)
+- [@sap-ai-sdk/orchestration](#sap-ai-sdkorchestration)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+    - [Prerequisites](#prerequisites)
+  - [Orchestration Service](#orchestration-service)
+  - [Usage](#usage)
+    - [Templating](#templating)
+      - [Token Usage](#token-usage)
+    - [Content Filtering](#content-filtering)
+  - [Support, Feedback, Contribution](#support-feedback-contribution)
+  - [License](#license)
 
 ## Installation
 
@@ -40,6 +43,8 @@ Find more details about orchestration workflow [here](https://help.sap.com/docs/
 
 Leverage the orchestration service capabilities by using the orchestration client.
 The client allows you to configure various modules, such as templating and content filtering, while sending chat completion requests to an orchestration-compatible generative AI model.
+
+You can find all sample code here.
 
 ### Templating
 
