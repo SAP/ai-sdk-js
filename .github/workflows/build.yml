@@ -16,7 +16,7 @@ jobs:
         node-version: ${{ fromJSON(vars.SUPPORTED_NODE_VERSIONS) }}
 
     steps:
-      - uses: ./.github/workflows/setup.yml
+      - uses: ./.github/actions/setup.yml
         with:
           node-version: ${{ matrix.node-version }}
       - run: pnpm i --frozen-lockfile
