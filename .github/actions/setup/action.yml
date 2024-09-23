@@ -31,5 +31,5 @@ runs:
       with:
         node-version: ${{ inputs.node-version }}
         cache: 'pnpm'
-    - run: pnpm install ${{ pnpm-install-args }}
+    - run: pnpm install ${{ inputs.pnpm-install-args }}
       shell: bash
