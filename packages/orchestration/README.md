@@ -69,7 +69,7 @@ const response = await orchestrationClient.chatCompletion({
 const responseContent = response.getContent();
 ```
 
-#### Passing a custom request configuration
+#### Customizing the Request Configuration
 
 To pass custom request configuration, for example additional headers to be passed to the client, use the following snippet:
 
