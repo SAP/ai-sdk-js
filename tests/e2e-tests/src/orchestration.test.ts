@@ -18,6 +18,7 @@ describe('orchestration', () => {
     expect(response.getContent()).toEqual(expect.any(String));
     expect(response.getFinishReason()).toEqual('stop');
   };
+
   it('should complete a chat', async () => {
     const response = await orchestrationChatCompletion();
 
@@ -33,6 +34,7 @@ describe('orchestration', () => {
   it('should trigger an input filter', async () => {
     await orchestrationInputFiltering();
   });
+
   it('should trigger an output filter', async () => {
     const response = await orchestrationOutputFiltering();
 
