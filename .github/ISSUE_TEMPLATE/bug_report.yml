@@ -19,6 +19,11 @@ body:
     attributes:
       label: "Steps to Reproduce"
       description: "Steps to reproduce the behavior."
+      placeholder: |
+        1. Set up ...
+        2. Execute ...
+        3. Confirm ...
+        4. See error
     validations:
       required: true
   - type: textarea
