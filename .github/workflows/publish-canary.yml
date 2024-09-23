@@ -16,18 +16,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
+      - uses: sap/ai-sdk-js/.github/actions/setup@scripts
         with:
-          version: ${{ vars.PNPM_VERSION }}
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'pnpm'
-
-      - name: install and build
-        run: pnpm install
+          pnpm-install-args: ''
 
       - name: prepare canary changeset
         run: |

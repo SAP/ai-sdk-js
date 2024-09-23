@@ -8,18 +8,7 @@ jobs:
   draft-github-release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
-        with:
-          version: ${{ vars.PNPM_VERSION }}
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'pnpm'
-
-      - name: install and build
-        run: pnpm install --frozen-lockfile
+      - uses: sap/ai-sdk-js/.github/actions/setup@scripts
       - uses: sap/cloud-sdk-js/.github/actions/merge-changelogs@main
         name: merge changelogs
         id: merge-changelogs
