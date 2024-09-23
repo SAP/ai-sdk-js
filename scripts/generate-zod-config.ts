@@ -1,6 +1,6 @@
-import { promises as fs } from 'fs';
-import * as path from 'path';
-import * as glob from 'glob';
+import { writeFile } from 'node:fs/promises';
+import { basename, relative, join } from 'node:path';
+import { glob } from 'glob';
 import { createLogger } from '@sap-cloud-sdk/util';
 
 const logger = createLogger('generate-zod-config');
@@ -21,12 +21,12 @@ async function main(args: string[]) {
   const [input, outputSchema] = args;
   try {
     // Find all .ts files based on the glob path provided
-    const files = glob.sync(input);
+    const files = await glob(input);
 
     const config: TsToZodConfig[] = files.map(file => {
-      const configName = path.basename(file, '.ts');
-      const relativeInputPath = path.relative(process.cwd(), file);
-      const outputFilePath = path.join(outputSchema, `${configName}.zod.ts`);
+      const configName = basename(file, '.ts');
+      const relativeInputPath = relative(process.cwd(), file);
+      const outputFilePath = join(outputSchema, `${configName}.zod.ts`);
       return {
         name: configName,
         input: relativeInputPath,
@@ -43,8 +43,8 @@ module.exports = ${JSON.stringify(config, null, 2)};
 `;
 
     // Write the config file to the specified outputConfig path
-    const configFilePath = path.join(process.cwd(), 'ts-to-zod.config.cjs');
-    await fs.writeFile(configFilePath, configContent, 'utf8');
+    const configFilePath = join(process.cwd(), 'ts-to-zod.config.cjs');
+    await writeFile(configFilePath, configContent, 'utf8');
 
     logger.info(`Configuration file generated at ${configFilePath}`);
   } catch (error) {
