@@ -136,10 +136,16 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
     logger.info(
       `Result from output content filter: ${result.data.module_results.output_filtering!.message}`
     );
-    logger.info('The original response from the LLM was as follows: ' + result.data.module_results.llm?.choices[0].message.content);
+    logger.info(
+      'The original response from the LLM was as follows: ' +
+        result.data.module_results.llm?.choices[0].message.content
+    );
     return result;
   }
-  throw new Error('Output was not filtered as expected. The LLM response was: ' + result.getContent());
+  throw new Error(
+    'Output was not filtered as expected. The LLM response was: ' +
+      result.getContent()
+  );
 }
 
 /**
