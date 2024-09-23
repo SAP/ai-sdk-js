@@ -18,6 +18,9 @@ runs:
   using: 'composite'
   steps:
     - uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.ref }}
+        token: ${{ inputs.token }}
     - uses: pnpm/action-setup@v3
       with:
         version: ${{ inputs.pnpm-version }}
