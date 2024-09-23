@@ -7,6 +7,9 @@ inputs:
   pnpm-version:
     description: 'PNPM version'
     default: '9'
+  ref:
+    description: 'The github ref to checkout'
+    default: ${{ github.ref }}
 
 runs:
   using: 'composite'

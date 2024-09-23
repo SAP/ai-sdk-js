@@ -16,7 +16,7 @@ jobs:
         node-version: ${{ fromJSON(vars.SUPPORTED_NODE_VERSIONS) }}
 
     steps:
-      - uses: ./.github/actions/setup@scripts
+      - uses: sap/ai-sdk-js/.github/actions/setup@scripts
         with:
           node-version: ${{ matrix.node-version }}
       - run: pnpm i --frozen-lockfile
@@ -26,15 +26,7 @@ jobs:
   checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/actions/setup@scripts
-      # - uses: actions/checkout@v4
-      # - uses: pnpm/action-setup@v3
-      #   with:
-      #     version: ${{ vars.PNPM_VERSION }}
-      # - uses: actions/setup-node@v4
-      #   with:
-      #     node-version: ${{ vars.DEFAULT_NODE_VERSION }}
-      #     cache: 'pnpm'
+      - uses: sap/ai-sdk-js/.github/actions/setup@scripts
       - name: REUSE Compliance Check
         uses: fsfe/reuse-action@v4
       - run: pnpm i --frozen-lockfile
