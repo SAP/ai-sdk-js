@@ -8,8 +8,11 @@ inputs:
     description: 'PNPM version'
     default: '9'
   ref:
-    description: 'The github ref to checkout'
+    description: 'The GitHub ref to checkout'
     default: ${{ github.ref }}
+  token:
+    description: 'The GitHub token to use for checkout'
+    default: ${{ github.token }}
 
 runs:
   using: 'composite'
