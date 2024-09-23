@@ -1,0 +1,17 @@
+name: Question
+description: Ask a question about the SAP Cloud SDK for AI (JavaScript / TypeScript).
+title: '<title>'
+labels: 
+  - question
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please note that this repository is for JavaScript / TypeScript related issues only. 
+        If you have a question about the SAP Cloud SDK for AI (Java), open a GitHub issue here: https://github.com/SAP/ai-sdk-java/issues/new/choose
+  - type: textarea
+    attributes:
+      label: "Describe the Question"
+      description: A clear and concise description of your question.
+    validations:
+      required: true
