@@ -160,7 +160,7 @@ async function modifyDeployment() {
 
 ## Local Testing
 
-For local testing instuctions, refer [here](../../README.md#local-testing).
+For local testing, refer to [here](../../README.md#local-testing).
 
 ## Support, Feedback, Contribution
 
