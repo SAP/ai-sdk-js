@@ -1,12 +1,12 @@
 name: setup
-
+description: Setup repo, node and pnpm.
 inputs:
   node-version:
-    type: string
-    default: ${{ vars.PNPM_VERSION }}
+    description: 'Node.js version'
+    default: '20'
   pnpm-version:
-    type: string
-    default: ${{ vars.DEFAULT_NODE_VERSION }}
+    description: 'PNPM version'
+    default: '9'
 
 runs:
   using: 'composite'
@@ -20,3 +20,4 @@ runs:
         node-version: ${{ inputs.node-version }}
         cache: 'pnpm'
     - run: pnpm i --frozen-lockfile
+      shell: bash
