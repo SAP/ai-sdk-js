@@ -36,10 +36,13 @@ body:
   - type: textarea
     attributes:
       label: "Used Versions"
-      description: |
-        - Node version via `node -v`
-        - NPM version via `npm -v`
-        - SAP Cloud SDK for AI version you used as dependency
+      description: "Provide versions used in the project."
+      value: |
+        - Node version via `node -v`: ...
+        - NPM version via `npm -v: ...
+        - SAP Cloud SDK for AI version:
+          - ...
+          - ...
     validations:
       required: true
   - type: textarea
