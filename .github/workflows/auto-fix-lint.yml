@@ -16,6 +16,7 @@ jobs:
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@scripts
         with:
+          ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
       - run: pnpm lint:fix
       - name: Commit Changes if needed

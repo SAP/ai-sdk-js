@@ -31,7 +31,7 @@ export class AzureOpenAiChatClient {
       this.modelDeployment,
       'azure-openai'
     );
-    const response =  await executeRequest(
+    const response = await executeRequest(
       {
         url: `/inference/deployments/${deploymentId}/chat/completions`,
         apiVersion
