@@ -11,19 +11,19 @@ body:
         If you have a question about the SAP Cloud SDK for AI (Java), open a GitHub issue here: https://github.com/SAP/ai-sdk-java/issues/new/choose
   - type: textarea
     attributes:
-      label: "Describe the problem"
+      label: "Describe the Problem"
       description: A clear and concise description of what the problem is, e.g., I'm always frustrated when [...]
     validations:
       required: true
   - type: textarea
     attributes:
-      label: "Propose a solution"
+      label: "Propose a Solution"
       description: A clear and concise description of what you want to happen.
     validations:
       required: true
   - type: textarea
     attributes:
-      label: "Describe alternatives"
+      label: "Describe Alternatives"
       description: A clear and concise description of any alternative solutions or features you've considered.
     validations:
       required: false
@@ -59,7 +59,7 @@ body:
       required: false
   - type: textarea
     attributes:
-      label: "Additional context"
+      label: "Additional Context"
       description: "Add any other context about the feature request here."
     validations:
       required: false
