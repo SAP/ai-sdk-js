@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
-      - uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@v4
         with:
           version: ${{ vars.PNPM_VERSION }}
       - uses: actions/setup-node@v4

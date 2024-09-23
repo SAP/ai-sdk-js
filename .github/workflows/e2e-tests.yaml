@@ -22,7 +22,7 @@ jobs:
     steps:
       - name: 'Checkout repository'
         uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@v4
         with:
           version: ${{ vars.PNPM_VERSION }}
       - uses: actions/setup-node@v4
@@ -56,7 +56,7 @@ jobs:
         run: pnpm test:e2e
       - name: 'Slack Notification'
         if: failure()
-        uses: slackapi/slack-github-action@v1.26.0
+        uses: slackapi/slack-github-action@v1.27.0
         with:
           payload: |
             {

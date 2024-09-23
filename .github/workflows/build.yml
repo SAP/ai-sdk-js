@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@v4
         with:
           version: ${{ vars.PNPM_VERSION }}
       - uses: actions/setup-node@v4
@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@v4
         with:
           version: ${{ vars.PNPM_VERSION }}
       - uses: actions/setup-node@v4
@@ -44,9 +44,12 @@ jobs:
       - run: pnpm i --frozen-lockfile
       # - run: pnpm build # might be needed in the future
       - run: pnpm lint
-      - run: pnpm compile:cjs
-      - run: pnpm check:public-api
-        name: Check public api
+      - name: Check CommonJS compatibility
+        run: pnpm compile:cjs
+      - name: Check public API
+        run: pnpm check:public-api
+      - name: Check dependencies
+        run: pnpm check:deps
 
   dependabot:
     runs-on: ubuntu-latest
@@ -58,7 +61,7 @@ jobs:
     steps:
       - name: Dependabot metadata
         id: metadata
-        uses: dependabot/fetch-metadata@v1.3.6
+        uses: dependabot/fetch-metadata@v2.2.0
         with:
           github-token: '${{ secrets.GITHUB_TOKEN }}'
       - name: Approve a PR
