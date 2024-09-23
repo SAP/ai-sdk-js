@@ -1,7 +1,6 @@
 version: 2
 updates:
   - package-ecosystem: npm
-    target-branch: main
     directory: '/'
     schedule:
       interval: daily
@@ -15,3 +14,9 @@ updates:
     groups:
       sap-cloud-sdk:
         patterns: ['@sap-cloud-sdk/*']
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      time: '01:00'
+      timezone: 'Europe/Berlin'
