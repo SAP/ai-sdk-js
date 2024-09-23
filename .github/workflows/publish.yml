@@ -9,17 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: ${{ vars.PNPM_VERSION }}
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
-
+      - uses: sap/ai-sdk-js/.github/actions/setup@main
       - name: publish
         run: |
           yarn changeset publish

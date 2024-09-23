@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: SAP Cloud SDK for AI (Java) issues
+    url: https://github.com/SAP/ai-sdk-java/issues/new/choose
+    about: Please report issues concerning the SAP Cloud SDK for AI (Java) here.
