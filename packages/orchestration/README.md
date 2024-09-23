@@ -123,7 +123,7 @@ const response = await orchestrationClient.chatCompletion({
 const responseContent = response.getContent();
 ```
 
-#### Retrieving data from the response
+#### Retrieving Data from the Response
 
 //Todo
 
