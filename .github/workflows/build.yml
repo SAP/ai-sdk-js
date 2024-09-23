@@ -46,7 +46,7 @@ jobs:
       - run: pnpm lint
       - name: Check CommonJS compatibility
         run: pnpm compile:cjs
-      - name: Check public api
+      - name: Check public API
         run: pnpm check:public-api
       - name: Check dependencies
         run: pnpm check:deps
