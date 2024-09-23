@@ -21,7 +21,7 @@ inputs:
     default: ${{ github.token }}
   fetch-depth:
     description: 'The depth of history to fetch'
-    default: '0'
+    default: '1'
 
 runs:
   using: 'composite'
