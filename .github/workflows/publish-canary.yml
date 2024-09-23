@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@scripts
+      - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
           pnpm-install-args: ''
 

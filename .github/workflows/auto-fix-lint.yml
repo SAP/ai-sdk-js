@@ -14,7 +14,7 @@ jobs:
     if: github.actor != 'dependabot[bot]' && !github.event.pull_request.head.repo.fork
     runs-on: ubuntu-latest
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@scripts
+      - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
