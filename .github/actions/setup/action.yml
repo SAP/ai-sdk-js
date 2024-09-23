@@ -19,9 +19,6 @@ inputs:
   token:
     description: 'The GitHub token to use for checkout'
     default: ${{ github.token }}
-  fetch-depth:
-    description: 'The depth of history to fetch'
-    default: '1'
 
 runs:
   using: 'composite'
@@ -30,7 +27,6 @@ runs:
       with:
         ref: ${{ inputs.ref }}
         token: ${{ inputs.token }}
-        fetch-depth: ${{ inputs.fetch-depth }}
     - uses: pnpm/action-setup@v3
       with:
         version: ${{ inputs.pnpm-version }}
