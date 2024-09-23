@@ -143,7 +143,7 @@ const embedding = response.getEmbedding();
 
 ## Local Testing
 
-For local testing instuctions, refer [here](../../README.md#local-testing).
+For local testing instuctions, refer to [here](../../README.md#local-testing).
 
 ## Support, Feedback, Contribution
 

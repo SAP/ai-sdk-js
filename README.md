@@ -85,8 +85,7 @@ We have created a sample project demonstrating the different clients' usage of t
 To test SAP Cloud SDK for AI features locally while building your application, follow these steps:
 
 - Download a service key for your AI Core service instance.
-- Create a `.env` file in the root of your application.
-- Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`.
+- Set the downloaded service key as the `AICORE_SERVICE_KEY` environment variable in your local environment.
 
 By adding the `.env` file, the SDK uses the service key to interact with the AI Core service. This setup allows you to test clients such as orchestration and OpenAI locally, provided you have deployments for orchestration and OpenAI in SAP BTP.
 
