@@ -13,6 +13,9 @@ inputs:
   token:
     description: 'The GitHub token to use for checkout'
     default: ${{ github.token }}
+  pnpm-install-args:
+    description: 'Arguments to pass to pnpm install'
+    default: '--frozen-lockfile'
 
 runs:
   using: 'composite'
@@ -28,5 +31,5 @@ runs:
       with:
         node-version: ${{ inputs.node-version }}
         cache: 'pnpm'
-    - run: pnpm i --frozen-lockfile
+    - run: pnpm install ${{ pnpm-install-args }}
       shell: bash
