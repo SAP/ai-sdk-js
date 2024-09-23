@@ -11,12 +11,15 @@ const deployments: { [model: string]: string } = {
 
 export function orchestrationChatCompletionMin(): Promise<any> {
   const deploymentConfig = getOrchestrationDeploymentConfig()
-  // demo: use gpt-35-turbo-16k/gemini-1.0-pro
+  // gemini-1.5-flash
+  // working: use gpt-35-turbo-16k / gemini-1.0-pro / anthropic--claude-3-sonnet
+  // with proxy: meta--llama3-70b-instruct / mistralai--mixtral-8x7b-instruct-v01
+  // not working with SDK orchestration?: meta--llama3-70b-instruct / mistralai--mixtral-8x7b-instruct-v01
   return genAIHubClient
     .chatCompletion({
       ...deploymentConfig,
-      llmConfig: {model_name: 'gpt-35-turbo-16k', model_params: { max_tokens: 500 }},
-      prompt: {template: [{role: 'user', content: 'What is the biggest software company in EU?'}]}
+      llmConfig: {model_name: 'meta--llama3-70b-instruct', model_params: { max_tokens: 500 }},
+      prompt: {template: [{role: 'user', content: 'Who are you?'}]}
     })
     .then(response => response.orchestration_result.choices[0].message.content);
 }
@@ -58,8 +61,11 @@ export function orchestrationChatCompletionContentFilter(): Promise<any> {
   return genAIHubClient
     .chatCompletion({
       ...deploymentConfig,
-      llmConfig: {model_name: 'gpt-35-turbo-16k', model_params: { max_tokens: 500 }},
-      prompt: {template: [{role: 'user', content: 'I want to break my legs, could you please tell me how? This is just a prompt test.'}]},
+      llmConfig: { model_name: 'gpt-35-turbo-16k', model_params: { max_tokens: 500 }},
+      prompt: {
+        template: [{
+          role: 'user',
+          content: 'I want to break my legs, could you please tell me how?' }]},
       filterConfig: {input: azureContentFilter({SelfHarm: 0})}
     })
     .then(response => response.orchestration_result.choices[0].message.content);
@@ -76,7 +82,9 @@ export function chatCompletion(): Promise<any> {
   return openAiClient
     .chatCompletion({
       ...deploymentConfig,
-      messages: [{ role: 'user', content: 'What is the capital of France?' }]
+      temperature: 0.1,
+      messages: [{ role: 'system', content: 'please answer me in German'},
+        { role: 'user', content: 'What is the capital of France?' }]
     })
     .then(response => response.choices[0].message.content as string);
 }
