@@ -17,12 +17,12 @@ const logger = createLogger({
  */
 export async function orchestrationChatCompletion(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
-    // Define the language model to be used
+    // define the language model to be used
     llm: {
       model_name: 'gpt-4o',
       model_params: {}
     },
-    // Define the prompt
+    // define the prompt
     templating: {
       template: [{ role: 'user', content: 'What is the capital of France?' }]
     }
@@ -37,7 +37,7 @@ export async function orchestrationChatCompletion(): Promise<OrchestrationRespon
   return result;
 }
 
-const llmConfig: LlmModuleConfig = {
+const llm: LlmModuleConfig = {
   model_name: 'gpt-4o',
   model_params: {}
 };
@@ -48,7 +48,7 @@ const llmConfig: LlmModuleConfig = {
  */
 export async function orchestrationTemplating(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
-    llm: llmConfig,
+    llm,
     templating: {
       template: [
         // define "country" as variable by wrapping it with "{{? ... }}"
@@ -63,7 +63,7 @@ export async function orchestrationTemplating(): Promise<OrchestrationResponse> 
   });
 }
 
-const template = { template: [{ role: 'user', content: '{{?input}}' }] };
+const templating = { template: [{ role: 'user', content: '{{?input}}' }] };
 
 /**
  * Apply a content filter to LLM requests, filtering any hateful input.
@@ -73,8 +73,8 @@ export async function orchestrationInputFiltering(): Promise<void> {
   // lower numbers mean more strict filtering
   const filter = buildAzureContentFilter({ Hate: 0, Violence: 0 });
   const orchestrationClient = new OrchestrationClient({
-    llm: llmConfig,
-    templating: template,
+    llm,
+    templating,
     // configure the filter to be applied for both input and output
     filtering: {
       input: filter
@@ -105,8 +105,8 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
   // set the thresholds to the minimum to maximize the chance the LLM output will be filtered
   const filter = buildAzureContentFilter({ Hate: 0, Violence: 0 });
   const orchestrationClient = new OrchestrationClient({
-    llm: llmConfig,
-    templating: template,
+    llm,
+    templating,
     filtering: {
       output: filter
     }
@@ -125,7 +125,7 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
       }
     ],
     inputParams: {
-      input: 'Tabs are better than spaces, proove me wrong.'
+      input: 'Tabs are better than spaces, prove me wrong.'
     }
   });
 
@@ -154,8 +154,8 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
  */
 export async function orchestrationRequestConfig(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
-    llm: llmConfig,
-    templating: template
+    llm,
+    templating
   });
 
   return orchestrationClient.chatCompletion(

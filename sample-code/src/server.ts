@@ -56,21 +56,18 @@ app.get('/embedding', async (req, res) => {
 
 app.get('/orchestration/:sampleCase', async (req, res) => {
   const sampleCase = req.params.sampleCase;
-  const func =
-    sampleCase === 'simple'
-      ? orchestrationChatCompletion
-      : sampleCase === 'template'
-        ? orchestrationTemplating
-        : sampleCase === 'inputFiltering'
-          ? orchestrationInputFiltering
-          : sampleCase === 'outpttFiltering'
-            ? orchestrationOutputFiltering
-            : sampleCase === 'requestConfig'
-              ? orchestrationRequestConfig
-              : orchestrationChatCompletion;
+  const testCase =
+    {
+      simple: orchestrationChatCompletion,
+      template: orchestrationTemplating,
+      inputFiltering: orchestrationInputFiltering,
+      outputFiltering: orchestrationOutputFiltering,
+      requestConfig: orchestrationRequestConfig,
+      default: orchestrationChatCompletion
+    }[sampleCase] || orchestrationChatCompletion;
 
   try {
-    const result = (await func()) as OrchestrationResponse;
+    const result = (await testCase()) as OrchestrationResponse;
     if (sampleCase === 'inputFiltering') {
       res.send('Input filter applied successfully');
     } else if (sampleCase === 'outputFiltering') {
