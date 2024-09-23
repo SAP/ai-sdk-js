@@ -159,7 +159,7 @@ Each category can be configured with severity levels of 0, 2, 4, or 6.
 
 You can anonymize or pseudonomize the prompt using the data masking capabilities of the orchestration service.
 
-```TS
+```ts
 const orchestrationClient = new OrchestrationClient({
     llm: {
       model_name: 'gpt-4-32k',
