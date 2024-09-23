@@ -2,4 +2,4 @@
 '@sap-ai-sdk/orchestration': minor
 ---
 
-[New Functionality] Add Support for Data Masking capabilities of Orchestration
+[New Functionality] Add support for the data masking capabilities of the orchestration service.
