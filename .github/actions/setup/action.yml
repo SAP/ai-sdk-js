@@ -4,6 +4,9 @@ inputs:
   node-version:
     description: 'Node.js version'
     default: '20'
+  registry-url:
+    description: 'The registry URL to use for npm packages'
+    default: 'https://registry.npmjs.org'
   pnpm-version:
     description: 'PNPM version'
     default: '9'
@@ -34,6 +37,7 @@ runs:
     - uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.node-version }}
+        registry-url: ${{ inputs.registry-url }}
         cache: 'pnpm'
     - run: pnpm install ${{ inputs.pnpm-install-args }}
       shell: bash
