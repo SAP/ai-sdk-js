@@ -1,34 +1,42 @@
 # @sap-ai-sdk/ai-api
 
-This package provides tools to manage your scenarios and workflows in SAP AI Core.
+This package provides tools to manage scenarios and workflows in SAP AI Core.
 
 - Streamline data preprocessing and model training pipelines.
 - Execute batch inference jobs.
-- Deploy inference endpoints for your trained models.
-- Register custom Docker registries, sync AI content from your own git repositories, and register your own object storage for training data and model artifacts.
+- Deploy inference endpoints for trained models.
+- Register custom Docker registries, sync AI content from Git repositories, and register object storage for training data and model artifacts.
 
-### Installation
+We maintain a list of [currently available and tested AI Core APIs](https://github.com/SAP/ai-sdk-js/blob/main/docs/list-tested-APIs.md)
+
+## Table of Contents
+
+1. [Installation](#installation)
+2. [Prerequisites](#prerequisites)
+3. [Usage](#usage)
+   - [Create an Artifact](#create-an-artifact)
+   - [Create a Configuration](#create-a-configuration)
+   - [Create a Deployment](#create-a-deployment)
+   - [Delete a Deployment](#delete-a-deployment)
+4. [Support, Feedback, Contribution](#support-feedback-contribution)
+5. [License](#license)
+
+## Installation
 
 ```
 $ npm install @sap-ai-sdk/ai-api
 ```
 
-## Pre-requisites
+## Prerequisites
 
 - [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-api/sap-ai-api-service-guide/initial-setup).
 - Project configured with Node.js v20 or higher and native ESM support enabled.
-
-## List of Available APIs
-
-We maintain a list of [currently available and tested AI Core APIs](https://github.com/SAP/ai-sdk-js/blob/main/docs/list-tested-APIs.md)
 
 ## Usage
 
 The examples below demonstrate the usage of the most commonly used APIs in SAP AI Core.
 
-### ArtifactApi
-
-#### Create an Artifact
+### Create an Artifact
 
 ```TypeScript
 async function createArtifact() {
@@ -53,9 +61,7 @@ async function createArtifact() {
 }
 ```
 
-### ConfigurationApi
-
-#### Create a Configuration
+### Create a Configuration
 
 ```TypeScript
 async function createConfiguration() {
@@ -89,9 +95,7 @@ async function createConfiguration() {
 }
 ```
 
-### DeploymentApi
-
-#### Create a Deployment
+### Create a Deployment
 
 ```TypeScript
 async function createDeployment() {
@@ -113,7 +117,7 @@ async function createDeployment() {
 }
 ```
 
-#### Delete a Deployment
+### Delete a Deployment
 
 Only deployments with `targetStatus: STOPPED` can be deleted. So a modification request must be sent before deletion can occur.
 
@@ -161,4 +165,4 @@ Contribution and feedback are encouraged and always welcome. For more informatio
 
 ## License
 
-The SAP Cloud SDK for AI is released under the [Apache License Version 2.0.](http://www.apache.org/licenses/)
+The SAP Cloud SDK for AI is released under the [Apache License Version 2.0.](http://www.apache.org/licenses/).
