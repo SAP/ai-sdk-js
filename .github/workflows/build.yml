@@ -27,6 +27,7 @@ jobs:
       - run: pnpm i --frozen-lockfile
       - run: pnpm test:unit
       - run: pnpm test:type
+      - run: pnpm test:schema
 
   checks:
     runs-on: ubuntu-latest
