@@ -111,11 +111,12 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
       output: filter
     }
   });
-  // trigger the output filter
-  // note: reliably triggering the output filter is a bit of a challenge
-  // LLMs are fine-tuned to not respond with explicit or hateful content
-  // Instead, they often respond with something like "Sorry, I can't assist with that" when asked to generate explicit content
-  // The following prompt seems to work well with GPT-4o, but may not work with other models
+  /**
+   * Trigger the output filter.
+   * Note: reliably triggering the output filter is a bit of a challenge. LLMs are fine-tuned to not respond with explicit or hateful content.
+   * Instead, they often respond with something like "Sorry, I can't assist with that" when asked to generate explicit content.
+   * The following prompt seems to work well with GPT-4o, producing enough explicit language to trigger the output filter, but may not work equally well with other models.
+   */
   const result = await orchestrationClient.chatCompletion({
     messagesHistory: [
       {
