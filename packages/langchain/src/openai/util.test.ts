@@ -48,7 +48,7 @@ describe('Mapping Functions', () => {
         {
           role: 'tool',
           content: 'Test Content',
-          tool_call_id: 'test-id',
+          tool_call_id: 'test-id'
         }
       ],
       tools: [{ type: 'function', function: { name: 'test', parameters: {} } }],
@@ -62,13 +62,9 @@ describe('Mapping Functions', () => {
       ...defaultOptions,
       tools: [{ type: 'function', function: { name: 'test', parameters: {} } }],
       tool_choice: 'auto',
-      functions: [{ name: 'random' }, { name: 'test' }],
+      functions: [{ name: 'random' }, { name: 'test' }]
     };
-    const mapping = mapLangchainToAiClient(
-      client,
-      langchainPrompt,
-      options
-    );
+    const mapping = mapLangchainToAiClient(client, langchainPrompt, options);
     expect(mapping).toMatchObject(request);
   });
 });

@@ -200,9 +200,7 @@ function isStructuredToolArray(tools?: unknown[]): tools is StructuredTool[] {
  * @internal
  */
 function mapToolCallId(message: BaseMessage): string {
-  return ToolMessage.isInstance(message)
-    ? message.tool_call_id
-    : '';
+  return ToolMessage.isInstance(message) ? message.tool_call_id : '';
 }
 
 function mapToolChoice(
