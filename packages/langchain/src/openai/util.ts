@@ -180,9 +180,6 @@ type RoleAndContent = {
 
 function mapRoleAndContent(baseMessage: BaseMessage): RoleAndContent {
   const role = mapBaseMessageToRole(baseMessage);
-  if (!['system', 'user', 'assistant', 'tool', 'function'].includes(role)) {
-    throw new Error(`Unsupported message role: ${role}`);
-  }
   return {
     role,
     content: baseMessage.content as ContentType<typeof role>

@@ -2,10 +2,12 @@ import {
   AzureOpenAiCreateChatCompletionResponse,
   AzureOpenAiCreateChatCompletionRequest
 } from '@sap-ai-sdk/foundation-models';
-import nock from 'nock';
-import { BaseMessage, ToolMessage } from '@langchain/core/messages';
 import {
-  mockClientCredentialsGrantCall,
+  BaseMessage,
+  RemoveMessage,
+  ToolMessage
+} from '@langchain/core/messages';
+import {
   parseMockResponse
 } from '../../../../test-util/mock-http.js';
 import { mapLangchainToAiClient, mapOutputToChatResult } from './util.js';
@@ -25,14 +27,6 @@ const defaultOptions = {
 };
 
 describe('Mapping Functions', () => {
-  beforeEach(() => {
-    mockClientCredentialsGrantCall();
-  });
-
-  afterEach(() => {
-    nock.cleanAll();
-  });
-
   it('should parse an OpenAI response to a (LangChain) chat response', async () => {
     const result = mapOutputToChatResult(openAiMockResponse);
     expect(result).toMatchSnapshot();
@@ -66,5 +60,15 @@ describe('Mapping Functions', () => {
     };
     const mapping = mapLangchainToAiClient(client, langchainPrompt, options);
     expect(mapping).toMatchObject(request);
+  });
+
+  it('throws an error if the message role is not supported', async () => {
+    const langchainPrompt: BaseMessage[] = [
+      new RemoveMessage({ id: 'test-id' })
+    ];
+    const client = new AzureOpenAiChatClient({ modelName: 'gpt-35-turbo' });
+    expect(() =>
+      mapLangchainToAiClient(client, langchainPrompt, defaultOptions)
+    ).toThrowErrorMatchingInlineSnapshot('"Unsupported message type: remove"');
   });
 });
