@@ -48,15 +48,15 @@ describe('Mapping Functions', () => {
       functions: [{ name: 'random' }, { name: 'test' }]
     };
     const client = new AzureOpenAiChatClient({ modelName: 'gpt-35-turbo' });
-    const options: AzureOpenAiChatCallOptions & {
-      promptIndex?: number;
-    } = {
-      ...defaultOptions,
+    const options: AzureOpenAiChatCallOptions = {
       tools: [{ type: 'function', function: { name: 'test', parameters: {} } }],
       tool_choice: 'auto',
       functions: [{ name: 'random' }, { name: 'test' }]
     };
-    const mapping = mapLangchainToAiClient(client, langchainPrompt, options);
+    const mapping = mapLangchainToAiClient(client, langchainPrompt, {
+      ...defaultOptions,
+      ...options
+    });
     expect(mapping).toMatchObject(request);
   });
 

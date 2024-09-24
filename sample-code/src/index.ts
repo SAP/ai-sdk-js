@@ -5,8 +5,7 @@ export {
 } from './foundation-models-azure-openai.js';
 
 export {
-  embedQuery,
-  embedDocument,
   simpleInvoke,
-  complexInvoke
+  complexInvoke,
+  ragInvoke
 } from './langchain-azure-openai.js';

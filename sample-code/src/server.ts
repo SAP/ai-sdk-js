@@ -8,8 +8,7 @@ import { orchestrationCompletion } from './orchestration.js';
 import { getDeployments } from './ai-api.js';
 import {
   complexInvoke,
-  embedDocument,
-  embedQuery,
+  ragInvoke,
   simpleInvoke
 } from './langchain-azure-openai.js';
 
@@ -91,30 +90,9 @@ app.get('/langchain/complex-chat', async (req, res) => {
   }
 });
 
-app.get('/langchain/embed-query', async (req, res) => {
+app.get('/langchain/retrieval-augmented-generation', async (req, res) => {
   try {
-    const result = await embedQuery();
-    if (!result.length) {
-      res.status(500).send('No embedding vector returned.');
-    } else {
-      res.send('Number crunching success, got a nice vector.');
-    }
-  } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
-  }
-});
-
-app.get('/langchain/embed-document', async (req, res) => {
-  try {
-    const result = await embedDocument();
-    if (!result.length) {
-      res.status(500).send('No embedding vector returned.');
-    } else {
-      res.send('Number crunching success, got a nice vector.');
-    }
+    res.send(await ragInvoke());
   } catch (error: any) {
     console.error(error);
     res

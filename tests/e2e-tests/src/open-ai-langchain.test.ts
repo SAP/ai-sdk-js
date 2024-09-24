@@ -3,10 +3,8 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import {
   complexInvoke,
-  embedDocument,
-  embedQuery,
   simpleInvoke
-} from '@sap-ai-sdk/sample-code';
+, ragInvoke } from '@sap-ai-sdk/sample-code';
 
 // Pick .env file from root directory
 const __filename = fileURLToPath(import.meta.url);
@@ -24,13 +22,8 @@ describe('Langchain OpenAI Access', () => {
     expect(result).toContain('Paris');
   });
 
-  it('should compute an embedding vector based on a string', async () => {
-    const result = await embedQuery();
-    expect(result).not.toHaveLength(0);
-  });
-
-  it('should compute an embedding vector based on a string array', async () => {
-    const result = await embedDocument();
-    expect(result).not.toHaveLength(0);
+  it('executes an invoke based on an embedding vector from our orchestration readme', async () => {
+    const result = await ragInvoke();
+    expect(result).toContain('client');
   });
 });
