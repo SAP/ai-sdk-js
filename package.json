@@ -15,6 +15,7 @@
     "test:type": "pnpm type-tests test",
     "test:e2e": "pnpm e2e-tests test",
     "test:smoke": "pnpm smoke-tests test",
+    "test:schema": "pnpm schema-tests test",
     "lint": "pnpm -r run lint",
     "lint:fix": "pnpm -r run lint:fix",
     "generate": "pnpm -r run generate",
@@ -26,6 +27,7 @@
     "e2e-tests": "pnpm -F=@sap-ai-sdk/e2e-tests",
     "type-tests": "pnpm -F=@sap-ai-sdk/type-tests",
     "smoke-tests": "pnpm -F=@sap-ai-sdk/smoke-tests",
+    "schema-tests": "pnpm -F=@sap-ai-sdk/schema-tests",
     "check:public-api": "pnpm -r check:public-api",
     "check:deps": "pnpm -r -F !./tests/smoke-tests exec depcheck --ignores nock --quiet"
   },
@@ -56,8 +58,6 @@
     "prettier": "^3.3.3",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.2",
-    "ts-to-zod": "^3.13.0",
-    "zod": "^3.23.8"
+    "typescript": "^5.6.2"
   }
 }

@@ -59,4 +59,3 @@ build/Release
 
 # Zod generated files
 ts-to-zod
-ts-to-zod.config.cjs

@@ -22,8 +22,7 @@ export default [
       '**/coverage/**/*',
       'packages/ai-api/src/client/**/*',
       'packages/foundation-models/src/azure-openai/client/inference/schema/on-your-data-system-assigned-managed-identity-authentication-options.ts',
-      '**/*.zod.ts',
-      '**/ts-to-zod.config.cjs'
+      '**/*.zod.ts'
     ]
   },
   {

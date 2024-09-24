@@ -15,7 +15,6 @@ describe('Azure OpenAI embedding response', () => {
   const response = new AzureOpenAiEmbeddingResponse(rawResponse);
 
   it('should return the embedding response', () => {
-    // TODO: Add zod schema check here once embedding response is generated from spec
     expect(response.data).toStrictEqual(mockResponse);
   });
 });
