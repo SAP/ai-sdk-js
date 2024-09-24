@@ -69,6 +69,8 @@ const response = await orchestrationClient.chatCompletion({
 const responseContent = response.getContent();
 ```
 
+`response.getContent()` is a convenience method that parses the response and returns the model's output as a string.
+
 #### Customizing the Request Configuration
 
 To customize the request configuration, for example if you want to pass additional headers to the client, use the second parameter in the `chatCompletion()` method:
@@ -125,9 +127,15 @@ const responseContent = response.getContent();
 
 #### Retrieving Data from the Response
 
-//Todo
+In addition to `response.getContent()`, you can use other available convenience methods to retrieve the finish and token usage. 
+Use `response.rawReason` to access the complete HTTP response from the orchestration service.
 
-#### Token Usage
+##### Finish Reason
+
+```ts
+const finishReason = response.getFinishReason();
+```
+##### Token Usage
 
 To retrieve the token usage details of the orchestration request, use the following snippet:
 
