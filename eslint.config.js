@@ -26,8 +26,7 @@ export default [
   {
     files: [
       '**/test-util/**/*.ts',
-      '**/packages/orchestration/src/client/**/*',
-      '**/packages/foundation-models/src/azure-openai/client/**/*',
+      '**/packages/**/client/**/*',
       '**/*.zod.ts'
     ],
     rules: {
@@ -47,7 +46,7 @@ export default [
     }
   },
   {
-    files: ['packages/**/*/schema/*.ts'],
+    files: ['**/packages/**/client/**/*.ts'],
     rules: {
       '@typescript-eslint/consistent-type-definitions': 'off'
     }
