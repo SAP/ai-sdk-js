@@ -230,16 +230,25 @@ function mapToolChoice(
  */
 export function mapLangchainToAiClient(
   client: AzureOpenAiChatClient,
-  options: AzureOpenAiChatCallOptions & { promptIndex?: number },
-  messages: BaseMessage[]
+  messages: BaseMessage[],
+  options?: AzureOpenAiChatCallOptions & { promptIndex?: number }
 ): AzureOpenAiCreateChatCompletionRequest {
   return removeUndefinedProperties<AzureOpenAiCreateChatCompletionRequest>({
     messages: messages.map(mapBaseMessageToAzureOpenAiChatMessage),
     max_tokens: client.max_tokens === -1 ? undefined : client.max_tokens,
+    presence_penalty: client.presence_penalty,
+    frequency_penalty: client.frequency_penalty,
     temperature: client.temperature,
     top_p: client.top_p,
     logit_bias: client.logit_bias,
-    n: client.n,
+    user: client.user,
+    data_sources: options?.data_sources,
+    n: options?.n,
+    response_format: options?.response_format,
+    seed: options?.seed,
+    logprobs: options?.logprobs,
+    top_logprobs: options?.top_logprobs,
+    function_call: options?.function_call,
     stop: options?.stop ?? client.stop,
     functions: isStructuredToolArray(options?.functions)
       ? options?.functions.map(mapToolToOpenAiFunction)
@@ -247,9 +256,7 @@ export function mapLangchainToAiClient(
     tools: isStructuredToolArray(options?.tools)
       ? options?.tools.map(mapToolToOpenAiTool)
       : options?.tools,
-    tool_choice: mapToolChoice(options?.tool_choice),
-    response_format: options?.response_format,
-    seed: options?.seed
+    tool_choice: mapToolChoice(options?.tool_choice)
   });
 }
 

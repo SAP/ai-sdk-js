@@ -1,0 +1,39 @@
+name: setup
+description: Setup repo, node and pnpm.
+inputs:
+  node-version:
+    description: 'Node.js version'
+    default: '20'
+  registry-url:
+    description: 'The registry URL to use for npm packages'
+    default: 'https://registry.npmjs.org'
+  pnpm-version:
+    description: 'PNPM version'
+    default: '9'
+  pnpm-install-args:
+    description: 'Arguments to pass to pnpm install'
+    default: '--frozen-lockfile'
+  ref:
+    description: 'The GitHub ref to checkout'
+    default: ${{ github.ref }}
+  token:
+    description: 'The GitHub token to use for checkout'
+    default: ${{ github.token }}
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.ref }}
+        token: ${{ inputs.token }}
+    - uses: pnpm/action-setup@v4
+      with:
+        version: ${{ inputs.pnpm-version }}
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        registry-url: ${{ inputs.registry-url }}
+        cache: 'pnpm'
+    - run: pnpm install ${{ inputs.pnpm-install-args }}
+      shell: bash

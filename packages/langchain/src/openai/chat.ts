@@ -20,11 +20,10 @@ export class AzureOpenAiChatClient
   modelName: AzureOpenAiChatModel;
   modelVersion?: string;
   resourceGroup?: string;
-  temperature?: number;
-  top_p?: number;
-  logit_bias?: Record<string, unknown>;
+  temperature?: number | null;
+  top_p?: number | null;
+  logit_bias?: Record<string, any> | null | undefined;
   user?: string;
-  n?: number;
   presence_penalty?: number;
   frequency_penalty?: number;
   stop?: string | string[];
@@ -41,7 +40,6 @@ export class AzureOpenAiChatClient
     this.top_p = fields.top_p;
     this.logit_bias = fields.logit_bias;
     this.user = fields.user;
-    this.n = fields.n;
     this.stop = fields.stop;
     this.presence_penalty = fields.presence_penalty;
     this.frequency_penalty = fields.frequency_penalty;
@@ -63,7 +61,7 @@ export class AzureOpenAiChatClient
       },
       () =>
         this.openAiChatClient.run(
-          mapLangchainToAiClient(this, options, messages),
+          mapLangchainToAiClient(this, messages, options),
           options.requestConfig
         )
     );
