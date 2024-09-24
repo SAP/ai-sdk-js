@@ -20,14 +20,14 @@ export default [
       '**/*.d.ts',
       '**/dist/**/*',
       '**/coverage/**/*',
-      'packages/ai-api/src/client/**/*',
-      'packages/foundation-models/src/azure-openai/client/inference/schema/on-your-data-system-assigned-managed-identity-authentication-options.ts',
+      'packages/ai-api/src/client/**/*'
     ]
   },
   {
     files: [
       '**/test-util/**/*.ts',
       '**/packages/orchestration/src/client/**/*',
+      '**/packages/foundation-models/src/azure-openai/client/**/*',
       '**/*.zod.ts'
     ],
     rules: {
@@ -44,6 +44,12 @@ export default [
     files: ['packages/foundation-models/src/azure-openai/client/inference/schema/*.ts'],
     rules: {
       'jsdoc/check-indentation': 'off'
+    }
+  },
+  {
+    files: ['packages/**/*/schema/*.ts'],
+    rules: {
+      '@typescript-eslint/consistent-type-definitions': 'off'
     }
   },
   {
