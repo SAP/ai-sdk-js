@@ -200,8 +200,8 @@ function isStructuredToolArray(tools?: unknown[]): tools is StructuredTool[] {
  * @internal
  */
 function mapToolCallId(message: BaseMessage): string {
-  return message._getType() === 'tool'
-    ? (message as ToolMessage).tool_call_id
+  return ToolMessage.isInstance(message)
+    ? message.tool_call_id
     : '';
 }
 
