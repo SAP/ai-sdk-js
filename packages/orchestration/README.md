@@ -127,7 +127,7 @@ const responseContent = response.getContent();
 
 #### Retrieving Data from the Response
 
-In addition to `response.getContent()`, you can use other available convenience methods to retrieve the finish and token usage. 
+In addition to `response.getContent()`, you can use other available convenience methods to retrieve the finish and token usage.
 Use `response.rawReason` to access the complete HTTP response from the orchestration service.
 
 ##### Finish Reason
@@ -135,6 +135,7 @@ Use `response.rawReason` to access the complete HTTP response from the orchestra
 ```ts
 const finishReason = response.getFinishReason();
 ```
+
 ##### Token Usage
 
 To retrieve the token usage details of the orchestration request, use the following snippet:
