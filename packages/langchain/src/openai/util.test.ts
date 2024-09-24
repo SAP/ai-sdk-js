@@ -7,9 +7,7 @@ import {
   RemoveMessage,
   ToolMessage
 } from '@langchain/core/messages';
-import {
-  parseMockResponse
-} from '../../../../test-util/mock-http.js';
+import { parseMockResponse } from '../../../../test-util/mock-http.js';
 import { mapLangchainToAiClient, mapOutputToChatResult } from './util.js';
 import { AzureOpenAiChatClient } from './chat.js';
 import { AzureOpenAiChatCallOptions } from './types.js';
