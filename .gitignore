@@ -56,6 +56,3 @@ build/Release
 .vscode
 /pnpm-publish-summary.json
 /tests/smoke-tests/deployment
-
-# Zod generated files
-ts-to-zod

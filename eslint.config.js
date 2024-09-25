@@ -21,8 +21,7 @@ export default [
       '**/dist/**/*',
       '**/coverage/**/*',
       'packages/ai-api/src/client/**/*',
-      'packages/foundation-models/src/azure-openai/client/inference/schema/on-your-data-system-assigned-managed-identity-authentication-options.ts',
-      '**/*.zod.ts'
+      'packages/foundation-models/src/azure-openai/client/inference/schema/on-your-data-system-assigned-managed-identity-authentication-options.ts'
     ]
   },
   {
