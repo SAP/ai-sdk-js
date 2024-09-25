@@ -5,7 +5,7 @@ export {
 } from './foundation-models-azure-openai.js';
 
 export {
-  simpleInvoke,
-  complexInvoke,
-  ragInvoke
+  invoke,
+  invokeChain,
+  invokeRagChain
 } from './langchain-azure-openai.js';
