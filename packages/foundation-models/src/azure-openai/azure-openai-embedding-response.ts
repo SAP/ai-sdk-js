@@ -23,7 +23,7 @@ export class AzureOpenAiEmbeddingResponse {
   /**
    * Parses the Azure OpenAI response and returns the embedding.
    * @param dataIndex - The index of the data to parse.
-   * @returns The message content.
+   * @returns The embedding vector.
    */
   getEmbedding(dataIndex = 0): number[] | undefined {
     this.logInvalidDataIndex(dataIndex);
