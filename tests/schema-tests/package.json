@@ -7,12 +7,14 @@
   "types": "test",
   "scripts": {
     "test": "pnpm generate-schema && NODE_OPTIONS=--experimental-vm-modules jest",
+    "posttest": "find . -type d -name 'ts-to-zod' -exec rm -r {} +",
     "lint:fix": "prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate-config:azure-openai": "node --loader ts-node/esm ../../scripts/generate-zod-config.ts \"../../packages/foundation-models/src/azure-openai/client/inference/schema/*.ts\" ./test/foundation-models/azure-openai/ts-to-zod",
     "generate-config:orchestration": "node --loader ts-node/esm ../../scripts/generate-zod-config.ts \"../../packages/orchestration/src/client/api/schema/*.ts\" ./test/orchestration/ts-to-zod",
-    "generate-schema:azure-openai": "pnpm generate-config:azure-openai && pnpm ts-to-zod --all --skipValidation && rm ./ts-to-zod.config.cjs",
-    "generate-schema:orchestration": "pnpm generate-config:orchestration && pnpm ts-to-zod --all --skipValidation && rm ./ts-to-zod.config.cjs",
-    "generate-schema": "pnpm generate-schema:azure-openai && pnpm generate-schema:orchestration"
+    "generate-schema:azure-openai": "pnpm generate-config:azure-openai && pnpm ts-to-zod --all --skipValidation",
+    "generate-schema:orchestration": "pnpm generate-config:orchestration && pnpm ts-to-zod --all --skipValidation",
+    "generate-schema": "pnpm generate-schema:azure-openai && pnpm generate-schema:orchestration",
+    "postgenerate-schema": "rm ./ts-to-zod.config.cjs"
   },
   "dependencies": {
     "zod": "^3.23.8"
