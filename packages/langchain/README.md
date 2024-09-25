@@ -40,7 +40,6 @@ Each model, model version, and resource group allows for a one-time deployment.
 
 Consequently, each deployment ID and resource group uniquely map to a combination of model and model version within the `foundation-models` scenario.
 
-
 ## Usage
 
 This package offers both chat and embedding clients, currently supporting Azure OpenAI.
