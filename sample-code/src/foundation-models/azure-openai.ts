@@ -12,7 +12,7 @@ const logger = createLogger({
 });
 
 /**
- * Ask Azure OpenAI gpt-35-turbo model about the capital of France.
+ * Ask Azure OpenAI model about the capital of France.
  * @returns The response from Azure OpenAI containing the response content.
  */
 export async function chatCompletion(): Promise<AzureOpenAiChatCompletionResponse> {
