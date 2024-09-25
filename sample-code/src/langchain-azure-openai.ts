@@ -59,28 +59,34 @@ export async function invokeChain(): Promise<string> {
 }
 
 /**
- * Invoke a request combined with an embedding.
+ * Perform retrieval augmeneted generation with the chat and embedding LangChain clients.
  * @returns The answer from GPT.
  */
 export async function invokeRagChain(): Promise<string> {
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
   const resourcePath = resolve(__dirname, '../resources/orchestration.md');
-  const loader = new TextLoader(resourcePath);
 
+  // Create a text loader and load the document
+  const loader = new TextLoader(resourcePath);
   const docs = await loader.load();
 
+  // Create a text splitter and split the document
   const textSplitter = new RecursiveCharacterTextSplitter({
     chunkSize: 2000,
     chunkOverlap: 200
   });
-  const embeddingClient = new AzureOpenAiEmbeddingClient({ modelName: 'text-embedding-ada-002', maxRetries: 0 });
   const splits = await textSplitter.splitDocuments(docs);
+
+  // Initialize the embedding client with 0 retries for fast testing
+  const embeddingClient = new AzureOpenAiEmbeddingClient({ modelName: 'text-embedding-ada-002', maxRetries: 0 });
+
+  // Create a vector store from the document
   const vectorStore = await MemoryVectorStore.fromDocuments(
     splits,
     embeddingClient
   );
 
-  const retriever = vectorStore.asRetriever();
+  // Create a prompt template
   const promptTemplate = ChatPromptTemplate.fromTemplate(
     `You are an assistant for question-answering tasks.
       Use the following pieces of retrieved context to answer the question.
@@ -92,16 +98,24 @@ export async function invokeRagChain(): Promise<string> {
       Context: {context}
       Answer:`
   );
+
+  // Initialize the chat client with 0 retries for fast testing
   const llm = new AzureOpenAiChatClient({ modelName: 'gpt-35-turbo', maxRetries: 0 });
 
+  // Create a chain to combine an LLM call with the prompt template and output parser
   const ragChain = await createStuffDocumentsChain({
     llm,
     prompt: promptTemplate,
     outputParser: new StringOutputParser()
   });
 
+  // Create a retriever from the vector store
+  const retriever = vectorStore.asRetriever();
+
+  // Create a prompt
   const prompt = 'How do you use templating in the SAP Orchestration client?';
 
+  // Invoke the chat client combined with the prompt, prompt template, output parser and vector store context
   return ragChain.invoke({
     question: prompt,
     context: await retriever.invoke(prompt)
