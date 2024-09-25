@@ -29,7 +29,7 @@
     "smoke-tests": "pnpm -F=@sap-ai-sdk/smoke-tests",
     "schema-tests": "pnpm -F=@sap-ai-sdk/schema-tests",
     "check:public-api": "pnpm -r check:public-api",
-    "check:deps": "pnpm -r -F !./tests/smoke-tests exec depcheck --ignores nock --quiet"
+    "check:deps": "pnpm -r -F !./tests/smoke-tests -F !./tests/schema-tests exec depcheck --ignores nock --quiet"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.8",
