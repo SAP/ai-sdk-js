@@ -2,28 +2,32 @@ openapi: 3.0.0
 info:
   title: AI Core
   description:
-    "Provides tools to manage your scenarios and workflows in SAP AI Core.\
-    \ Execute pipelines as a batch job, for example to pre-process or train your models,\
-    \ or perform batch inference.  Serve inference requests of trained models. Deploy\
-    \ а trained machine learning model as a web service to serve inference requests\
-    \ with high performance.  Register your own Docker registry, synchronize your\
-    \ AI content from your own git repository, and register your own object store\
-    \ for training data and trained models.\n"
-  version: 2.32.1
+    "Provides tools to manage your scenarios and workflows in SAP AI Core.
+    Execute pipelines as a batch job, for example to pre-process or train your models,
+    or perform batch inference.  Serve inference requests of trained models. Deploy
+    а trained machine learning model as a web service to serve inference requests
+    with high performance.  Register your own Docker registry, synchronize your AI
+    content from your own git repository, and register your own object store for training
+    data and trained models.\n"
+  version: 2.34.0
 x-sap-shortText:
   Create and manage AI scenarios, trainings, deployments, and artifacts
   in SAP AI Core.
 servers:
-  - url: https://api.ai.{region}.aws.ml.hana.ondemand.com/v2
+  - url: https://api.ai.{region}.ml.hana.ondemand.com/v2
     description: Production endpoint for SAP AI Core
     variables:
       region:
         enum:
-          - prod.eu-central-1
-          - prodeuonly.eu-central-1
-          - prod.us-east-1
-          - prod.ap-northeast-1
-          - prod.ap-southeast-2
+          - prod.eu-central-1.aws
+          - prodeuonly.eu-central-1.aws
+          - prod.us-east-1.aws
+          - prod.ap-northeast-1.aws
+          - prod.ap-southeast-2.aws
+          - prod-eu20.westeurope.azure
+          - prod-us21.eastus.azure
+          - prod-eu30.europe-west3.gcp
+          - prod-us30.us-central1.gcp
         default: prod.eu-central-1
 externalDocs:
   description: Documentation for SAP AI Core
@@ -801,9 +805,10 @@ paths:
   /lm/scenarios/{scenarioId}/models:
     parameters:
       - $ref: '#/components/parameters/AiscenarioId'
+      - $ref: '#/components/parameters/AiresourceGroupHeader'
     get:
       tags:
-        - Model
+        - Scenario
       summary: Get information about all models available in LLM global scenario
       description: Retrieve information about all models available in LLM global scenario
       operationId: models.get
@@ -988,9 +993,9 @@ paths:
 
         '
       description:
-        "Retrieve metrics, labels, or tags according to filter conditions.\
-        \ \nOne query parameter is mandatory, either execution ID or filter. \nUse\
-        \ up to 10 execution IDs in a query parameter.\n"
+        "Retrieve metrics, labels, or tags according to filter conditions.
+        \nOne query parameter is mandatory, either execution ID or filter. \nUse up
+        to 10 execution IDs in a query parameter.\n"
       tags:
         - Metrics
       parameters:
@@ -1063,9 +1068,9 @@ paths:
         - $ref: '#/components/parameters/KpiquerySelect'
       summary: Get KPIs
       description:
-        "Retrieve the number of executions, artifacts, and deployments\
-        \ \nfor each resource group, scenario, and executable. The columns to be returned\
-        \ can be specified in a query parameter.\n"
+        "Retrieve the number of executions, artifacts, and deployments
+        \nfor each resource group, scenario, and executable. The columns to be returned
+        can be specified in a query parameter.\n"
       operationId: kpi.get
       responses:
         '200':
@@ -1103,18 +1108,18 @@ paths:
       summary: Upload file (size <= 100Mb)
       operationId: file.upload
       description:
-        "Endpoint for uploading file. The maximum file size depends on\
-        \ the actual implementation \nbut must not exceed 100MB. The actual file size\
-        \ limit can be obtained by querying \nthe AI API Runtime Capabilities Endpoint\
-        \ and checking the limits in the section of the `fileUpload` extension.\n\n\
-        Path cannot be a prefix, it must be a path to an object.\nClients may group\
-        \ the objects in any manner they choose by specifying path prefixes.\n\nAllowed\
-        \ mime-types will be decided by the implementation.\nContent-Type header can\
-        \ be set to \"application/octet-stream\" but the implementation is responsible\
-        \ \nfor detecting the actual mime type and checking against the allowed list\
-        \ of mime types. \nFor security reasons, implementations cannot trust the\
-        \ mime type sent by the client.\n\nExample URLs: \n/files/dar/schemas/schema.json\
-        \ \n/files/icr/datasets/training/20201001/20201001-01.csv \n/files/icr/datasets/training/20201001/20201001-02.csv\
+        "Endpoint for uploading file. The maximum file size depends on
+        the actual implementation \nbut must not exceed 100MB. The actual file size
+        limit can be obtained by querying \nthe AI API Runtime Capabilities Endpoint
+        and checking the limits in the section of the `fileUpload` extension.\n\n
+        Path cannot be a prefix, it must be a path to an object.\nClients may group
+        the objects in any manner they choose by specifying path prefixes.\n\nAllowed
+        mime-types will be decided by the implementation.\nContent-Type header can
+        be set to \"application/octet-stream\" but the implementation is responsible
+        \nfor detecting the actual mime type and checking against the allowed list
+        of mime types. \nFor security reasons, implementations cannot trust the mime
+        type sent by the client.\n\nExample URLs: \n/files/dar/schemas/schema.json
+        \n/files/icr/datasets/training/20201001/20201001-01.csv \n/files/icr/datasets/training/20201001/20201001-02.csv\
         \  \n/files/mask-detection/training/mask-detection-20210301.tar.gz"
       parameters:
         - $ref: '#/components/parameters/DSetoverwrite'
@@ -1231,6 +1236,8 @@ paths:
                 $ref: '#/components/schemas/BckndobjectStoreSecretStatusResponse'
         '400':
           $ref: '#/components/responses/BckndBadRequest'
+        '404':
+          $ref: '#/components/responses/BckndNotFound'
         default:
           $ref: '#/components/responses/BckndCommonError'
   /admin/objectStoreSecrets/{objectStoreName}:
@@ -1243,9 +1250,14 @@ paths:
         - Object Store Secret
       summary: Returns the of metadata of secrets which match the query parameter.
       description:
-        "This retrieves the metadata of the stored secret which match the\
-        \ parameter objectStoreName. \nThe fetched secret is constructed like objectStoreName-object-store-secret\
-        \ \nThe base64 encoded field for the stored secret is not returned.\n"
+        'This retrieves the metadata of the stored secret which match the
+        parameter objectStoreName.
+
+        The fetched secret is constructed like objectStoreName-object-store-secret
+
+        The base64 encoded field for the stored secret is not returned.
+
+        '
       operationId: kubesubmit.v4.object_store_secrets.get
       responses:
         '200':
@@ -1377,6 +1389,8 @@ paths:
                 $ref: '#/components/schemas/BckndListGenericSecretsResponse'
         '400':
           $ref: '#/components/responses/BckndBadRequest'
+        '404':
+          $ref: '#/components/responses/BckndNotFound'
         default:
           $ref: '#/components/responses/BckndCommonError'
   /admin/secrets/{secretName}:
@@ -2387,6 +2401,29 @@ paths:
                 $ref: '#/components/schemas/BckndCommonResourceQuotaResponse'
         default:
           $ref: '#/components/responses/BckndCommonError'
+  /admin/resourceQuota/deployments:
+    parameters:
+      - $ref: '#/components/parameters/BckndtokenHeader'
+      - $ref: '#/components/parameters/BckndquotaOnly'
+    get:
+      tags:
+        - Resource Quota
+      summary: Get the quota for deployments
+      description: Get the details about quota and usage for deployments
+      operationId: kubesubmit.v4.resource_quota.get_deployment_quota
+      responses:
+        '200':
+          description: A resource quota object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BckndDeploymentResourceQuotaResponse'
+        '400':
+          $ref: '#/components/responses/BckndBadRequest'
+        default:
+          $ref: '#/components/responses/BckndCommonError'
+        '404':
+          $ref: '#/components/responses/BckndNotFound'
 components:
   securitySchemes:
     Oauth2:
@@ -2399,6 +2436,2066 @@ components:
           tokenUrl: https://(subdomain_identity_zone).authentication.(host)/oauth/token
           scopes: {}
   schemas:
+    RTAId:
+      type: string
+      pattern: ^[\w.-]{4,64}$
+      example: aa97b177-9383-4934-8543-0f91a7a0283a
+      description: Generic ID
+    RTATtl:
+      type: string
+      pattern: ^[0-9]+[m,M,h,H,d,D]$
+      example: 24H
+      description: TTL value of deployment
+    RTALabelList:
+      type: array
+      description: Arbitrary labels as meta information
+      items:
+        $ref: '#/components/schemas/RTALabel'
+    RTAArtifactLabelList:
+      type: array
+      description: Arbitrary labels as meta information
+      items:
+        $ref: '#/components/schemas/RTAArtifactLabel'
+    RTALabel:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          type: string
+          example: ai.sap.com/scenarioName
+          pattern: ^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)*ai\.sap\.com\/[\w\.-]+$
+        value:
+          type: string
+          maxLength: 5000
+    RTAArtifactLabel:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          type: string
+          example: ext.ai.sap.com/s4hana-version
+          pattern: ^ext\.ai\.sap\.com\/[\w\.-]+$
+          maxLength: 256
+        value:
+          type: string
+          maxLength: 5000
+    RTACreationResponseMessage:
+      type: string
+      description: Message
+      example: Created
+    RTAScenarioId:
+      type: string
+      pattern: ^[\w.-]{4,64}$
+      example: aa97b177-9383-4934-8543-0f91a7a0283a
+      description: ID of the scenario
+    RTAScenario:
+      type: object
+      description: Entity having labels
+      required:
+        - id
+        - name
+        - createdAt
+        - modifiedAt
+      properties:
+        id:
+          $ref: '#/components/schemas/RTAScenarioId'
+        name:
+          type: string
+          maxLength: 256
+          description: Name of the scenario
+        description:
+          type: string
+          maxLength: 5000
+          description: Description of the scenario
+        labels:
+          $ref: '#/components/schemas/RTALabelList'
+        createdAt:
+          type: string
+          description: Timestamp of resource creation
+          format: date-time
+        modifiedAt:
+          type: string
+          format: date-time
+          description: Timestamp of latest resource modification
+    RTAExecutableId:
+      type: string
+      pattern: ^[\w.-]{4,64}$
+      example: aa97b177-9383-4934-8543-0f91a7a0283a
+      description: ID of the executable
+    RTAExecutable:
+      description: Entity having labels
+      type: object
+      required:
+        - id
+        - name
+        - scenarioId
+        - deployable
+        - createdAt
+        - modifiedAt
+      properties:
+        id:
+          $ref: '#/components/schemas/RTAExecutableId'
+        name:
+          type: string
+          description: Name of the executable
+        description:
+          type: string
+          description: Description of the executable
+        scenarioId:
+          $ref: '#/components/schemas/RTAScenarioId'
+        inputArtifacts:
+          $ref: '#/components/schemas/RTAExecutableInputArtifactList'
+        outputArtifacts:
+          $ref: '#/components/schemas/RTAExecutableOutputArtifactList'
+        parameters:
+          $ref: '#/components/schemas/RTAExecutableParameterList'
+        deployable:
+          type: boolean
+          description: Whether this pipeline is deployable
+          example: false
+        labels:
+          $ref: '#/components/schemas/RTALabelList'
+        createdAt:
+          type: string
+          description: Timestamp of resource creation
+          format: date-time
+        modifiedAt:
+          type: string
+          format: date-time
+          description: Timestamp of latest resource modification
+    RTAExecutableParameterList:
+      type: array
+      description: Executable parameters
+      items:
+        $ref: '#/components/schemas/RTAExecutableParameter'
+    RTAExecutableParameter:
+      type: object
+      description: Argument of an executable
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Name of the signature argument
+        description:
+          type: string
+          maxLength: 5000
+          description: Description of the signature argument
+        default:
+          type: string
+          description: Default value of the signature argument
+        type:
+          type: string
+          enum:
+            - string
+          description: Type of the signature argument
+    RTAExecutableInputArtifactList:
+      type: array
+      description: List of Artifacts that the executable expects as input artifacts
+      items:
+        $ref: '#/components/schemas/RTAExecutableArtifact'
+    RTAExecutableOutputArtifactList:
+      type: array
+      description:
+        List of Artifacts that the executable will produce. If storage
+        is not managed internally, a storage location will have to be specified when
+        triggering an execution
+      items:
+        $ref: '#/components/schemas/RTAExecutableArtifact'
+    RTAExecutableArtifact:
+      type: object
+      description: Input or output artifact
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Name of the signature argument
+        description:
+          type: string
+          maxLength: 5000
+          description: Description of the signature argument
+        kind:
+          type: string
+          description: Kind of the artifact, i.e. model or dataset
+        labels:
+          $ref: '#/components/schemas/RTAArtifactLabelList'
+    RTAModelBaseData:
+      type: object
+      required:
+        - model
+        - executableId
+        - description
+        - versions
+      properties:
+        model:
+          type: string
+          description: Name of the model
+        executableId:
+          $ref: '#/components/schemas/RTAExecutableId'
+        description:
+          type: string
+          description: Description of the model and its capabilities
+        versions:
+          $ref: '#/components/schemas/RTAModelVersionList'
+    RTAModelVersionList:
+      type: array
+      description: List of model versions that the model object has
+      items:
+        $ref: '#/components/schemas/RTAModelVersion'
+    RTAModelVersion:
+      type: object
+      description:
+        Model version information including whether it is latest version,
+        its deprecation status and retirement date
+      required:
+        - name
+        - isLatest
+        - deprecated
+        - retirementDate
+      properties:
+        name:
+          type: string
+          description: Name of model version
+        isLatest:
+          type: boolean
+          description: Displays whether it is the latest version offered for the model
+        deprecated:
+          type: boolean
+          description: Deprecation status of model
+        retirementDate:
+          type: string
+          description: Retirement date of model in ISO 8601 timestamp
+    RTAArtifact:
+      description: Entity having labels
+      type: object
+      required:
+        - name
+        - url
+        - executionId
+        - kind
+        - createdAt
+      properties:
+        name:
+          type: string
+          maxLength: 256
+          description:
+            Name of the artifact; this is used for dependent pipelines
+            to resolve an artifact
+        executionId:
+          $ref: '#/components/schemas/RTAExecutionId'
+        url:
+          $ref: '#/components/schemas/RTAArtifactUrl'
+        signature:
+          $ref: '#/components/schemas/RTAArtifactSignature'
+        kind:
+          type: string
+          enum:
+            - model
+            - dataset
+            - resultset
+            - other
+          description: Kind of the artifact, i.e. model or dataset
+        labels:
+          $ref: '#/components/schemas/RTALabelList'
+        createdAt:
+          type: string
+          description: Timestamp of resource creation
+          format: date-time
+    RTAArtifactName:
+      type: string
+      maxLength: 256
+    RTAArtifactUrl:
+      type: string
+      pattern: ([a-z0-9-]+):\/\/.+
+      maxLength: 1024
+      example: s3://some_bucket/some_path
+      description: "Reference to the location of the artifact.
+
+        Note, the credentials will be found in a secret called
+
+        'some_bucket-object_store_secret'. If not provided, a default will be assumed.
+
+        "
+    RTAArtifactSignature:
+      type: string
+      maxLength: 256
+    RTAArtifactArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/RTAArtifact'
+    RTADeployment:
+      type: object
+      description: Detailed data about an inference-pipeline deployment
+      required:
+        - scenarioId
+        - executableId
+        - createdAt
+        - modifiedAt
+      properties:
+        scenarioId:
+          $ref: '#/components/schemas/RTAScenarioId'
+        executableId:
+          $ref: '#/components/schemas/RTAExecutableId'
+        id:
+          $ref: '#/components/schemas/RTADeploymentId'
+        deploymentUrl:
+          $ref: '#/components/schemas/RTADeploymentUrl'
+        latestRunningTargetId:
+          $ref: '#/components/schemas/RTALatestRunningTargetId'
+        targetId:
+          $ref: '#/components/schemas/RTATargetId'
+        ttl:
+          $ref: '#/components/schemas/RTATtl'
+        status:
+          type: string
+          description: Deployment status
+          enum:
+            - PENDING
+            - RUNNING
+            - COMPLETED
+            - DEAD
+            - UNKNOWN
+            - DELETING
+        statusMessage:
+          type: string
+          description: Deployment status message
+          maxLength: 256
+        lastOperation:
+          type: string
+          description:
+            Reflection of user's action on deployment. The value will be
+            CREATE after user sends POST - create deployment, UPDATE after user sends
+            PATCH - update deployment, and DELETE after user sends DELETE - delete
+            deployment
+          enum:
+            - CREATE
+            - UPDATE
+            - CASCADE-UPDATE
+            - DELETE
+        createdAt:
+          type: string
+          description: Timestamp of resource creation
+          format: date-time
+        modifiedAt:
+          type: string
+          format: date-time
+          description: Timestamp of latest resource modification
+    RTADeploymentId:
+      type: string
+      pattern: ^[\w.-]{4,64}$
+      example: aa97b177-9383-4934-8543-0f91a7a0283a
+      description: ID of the deployment
+    RTATargetId:
+      type: string
+      pattern: ^[\w.-]{4,64}$
+      example: aa97b177-9383-4934-8543-0f91a7a0283a
+      description:
+        Client provided reference, with which the status of a PATCHed deployment
+        can be tracked
+    RTALatestRunningTargetId:
+      type: string
+      pattern: ^[\w.-]{4,64}$
+      example: aa97b177-9383-4934-8543-0f91a7a0283a
+      description: Target ID of the latest running deployment
+    RTADeploymentUrl:
+      description: Consumption URL of the pipeline deployment
+      type: string
+      format: url
+    RTADeploymentCreationResponseMessage:
+      type: string
+      description: Message
+      example: Deployment scheduled
+    RTADeploymentCascadeUpdateResponseMessage:
+      type: string
+      description: Message
+      example: Deployment Cascade Update scheduled
+    RTADeploymentDeletionResponseMessage:
+      type: string
+      description: Message
+      example: Deployment deletion scheduled
+    RTADeploymentModificationResponseMessage:
+      type: string
+      description: Message
+      example: Deployment modification scheduled
+    RTADeploymentStatusDetails:
+      type: object
+      description: Current status details of the deployment
+    RTADeploymentDetails:
+      type: object
+      properties:
+        scaling:
+          $ref: '#/components/schemas/RTABackendDetails'
+        resources:
+          $ref: '#/components/schemas/RTABackendDetails'
+    RTABackendDetails:
+      type: object
+      properties:
+        backendDetails:
+          type: object
+          description: Current details of the deployment
+    RTAExecution:
+      type: object
+      description: Execution
+      required:
+        - scenarioId
+        - executableId
+        - createdAt
+        - modifiedAt
+      properties:
+        scenarioId:
+          $ref: '#/components/schemas/RTAScenarioId'
+        executableId:
+          $ref: '#/components/schemas/RTAExecutableId'
+        id:
+          $ref: '#/components/schemas/RTAExecutionId'
+        status:
+          type: string
+          description: Status of the execution
+          enum:
+            - PENDING
+            - RUNNING
+            - COMPLETED
+            - DEAD
+            - STOPPING
+            - STOPPED
+            - UNKNOWN
+          example: COMPLETED
+        statusMessage:
+          type: string
+          description: Execution status message
+          maxLength: 256
+        submissionTimestamp:
+          type: string
+          description: Timestamp of execution submission
+          format: date-time
+          example: '2017-09-15T12:01:06Z'
+          nullable: true
+        startTimestamp:
+          type: string
+          description: Timestamp of execution start
+          format: date-time
+          example: '2017-09-15T12:01:06Z'
+          nullable: true
+        finishTimestamp:
+          type: string
+          description: Timestamp of execution finish
+          format: date-time
+          example: '2017-09-15T12:01:06Z'
+          nullable: true
+        createdAt:
+          type: string
+          description: Timestamp of resource creation
+          format: date-time
+        modifiedAt:
+          type: string
+          format: date-time
+          description: Timestamp of latest resource modification
+    RTAInputArtifactArgumentBinding:
+      type: object
+      required:
+        - name
+        - url
+      properties:
+        name:
+          $ref: '#/components/schemas/RTAArtifactName'
+        url:
+          $ref: '#/components/schemas/RTAArtifactUrl'
+        signature:
+          $ref: '#/components/schemas/RTAArtifactSignature'
+      description: Required for execution
+    RTAOutputArtifactArgumentBinding:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          $ref: '#/components/schemas/RTAArtifactName'
+        url:
+          $ref: '#/components/schemas/RTAArtifactUrl'
+      description: Result of execution
+    RTAExecutableArgumentBinding:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          type: string
+          maxLength: 256
+        value:
+          type: string
+      description: 'Required for execution
+
+        Result of activation
+
+        '
+    RTAExecutionId:
+      type: string
+      pattern: ^[\w.-]{4,64}$
+      example: aa97b177-9383-4934-8543-0f91a7a0283a
+      description: ID of the execution
+    RTAExecutionCreationResponseMessage:
+      type: string
+      description: Message
+      example: Execution scheduled
+    RTAExecutionModificationResponseMessage:
+      type: string
+      description: Message
+      example: Execution modification scheduled
+    RTAExecutionDeletionResponseMessage:
+      type: string
+      description: Message
+      example: Execution deletion scheduled
+    RTAExecutionStatusDetails:
+      type: object
+      description: Current status details of the execution
+    RTALogCommonResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/RTALogCommonData'
+      description: 'A common log query response.
+
+        '
+    RTALogCommonData:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/RTALogCommonResult'
+    RTALogCommonResult:
+      type: array
+      items:
+        $ref: '#/components/schemas/RTALogCommonResultItem'
+    RTALogCommonResultItem:
+      type: object
+      description: Common log record.
+      properties:
+        timestamp:
+          $ref: '#/components/schemas/RTAtimestamp'
+        msg:
+          $ref: '#/components/schemas/RTAmessage'
+    RTAtimestamp:
+      description: Datetime in RFC 3339.
+      type: string
+      format: date-time
+      example: '2021-05-19T00:00:14.347+00:00'
+    RTAmessage:
+      description: message content.
+      type: string
+    RTAErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/RTAError'
+    RTAError:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: Descriptive error code (not http status code)
+        message:
+          type: string
+          description: Plaintext error description
+          example: something went wrong
+        requestId:
+          type: string
+          description: ID of the individual request
+        target:
+          type: string
+          description: Invoked URL
+        details:
+          description: Optional details of the error message
+          type: object
+    DSetUrl:
+      type: string
+      format: url
+      example: https://download.example.com/test/file.bin
+    DSetError:
+      description: Error Response
+      type: object
+      properties:
+        code:
+          type: string
+          minLength: 1
+        message:
+          type: string
+          minLength: 1
+        target:
+          type: string
+          minLength: 1
+        requestId:
+          type: string
+        details:
+          type: array
+          uniqueItems: true
+          minItems: 0
+          items:
+            required:
+              - code
+              - message
+            properties:
+              code:
+                type: string
+                minLength: 1
+              message:
+                type: string
+                minLength: 1
+      required:
+        - code
+        - message
+      x-examples:
+        example-1:
+          code: '03021655'
+          message: Bad request encountered. Please try again with possible-solution-here.
+          target: /url/path
+          requestId: 9832bf934f3743v3948v3
+          details:
+            - code: '01041211'
+              message: Optional nested error message.
+    DSetFileCreationResponse:
+      description: Response for successful file creation
+      type: object
+      required:
+        - message
+        - url
+      properties:
+        message:
+          type: string
+          description: File creation response message
+          example: File creation acknowledged
+        url:
+          $ref: '#/components/schemas/DSetUrl'
+    AiScenario:
+      type: object
+      description:
+        'An ML Scenario consists of a number of executables. E.g., there
+        can be one or several training executables, an inference (deployment) executable.
+        An ML Scenario is versioned.
+
+        '
+      required:
+        - name
+        - id
+        - createdAt
+        - modifiedAt
+      properties:
+        name:
+          type: string
+          maxLength: 256
+          description: Name of the scenario
+        description:
+          type: string
+          maxLength: 5000
+          description: Description of the scenario
+        labels:
+          $ref: '#/components/schemas/AiScenarioLabelList'
+        id:
+          $ref: '#/components/schemas/AiScenarioId'
+        createdAt:
+          type: string
+          description: Timestamp of resource creation
+          format: date-time
+        modifiedAt:
+          type: string
+          format: date-time
+          description: Timestamp of latest resource modification
+    AiScenarioLabelList:
+      type: array
+      description: Arbitrary labels as meta information
+      items:
+        $ref: '#/components/schemas/AiScenarioLabel'
+    AiLabelList:
+      type: array
+      description: Arbitrary labels as meta information
+      items:
+        $ref: '#/components/schemas/AiLabel'
+    AiScenarioLabel:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          $ref: '#/components/schemas/AiScenarioLabelKey'
+        value:
+          $ref: '#/components/schemas/AiLabelValue'
+    AiLabel:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          $ref: '#/components/schemas/AiLabelKey'
+        value:
+          $ref: '#/components/schemas/AiLabelValue'
+    AiLabelValue:
+      type: string
+      maxLength: 5000
+    AiScenarioLabelKey:
+      type: string
+      example: scenarios.ai.sap.com/s4hana-version
+      maxLength: 256
+      pattern: ^(scenarios|ext)\.ai\.sap\.com\/[\w\.-]+$
+    AiLabelKey:
+      type: string
+      example: ext.ai.sap.com/s4hana-version
+      maxLength: 256
+      pattern: ^ext\.ai\.sap\.com\/[\w\.-]+$
+    AiScenarioId:
+      type: string
+      pattern: ^[\w.-]{4,64}$
+      example: aa97b177-9383-4934-8543-0f91a7a0283a
+      description: ID of the scenario
+    AiScenarioList:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Number of the resource instances in the list
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/AiScenario'
+      required:
+        - count
+        - resources
+    AiModelList:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Number of the resource instances in the list
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/AiModelBaseData'
+      required:
+        - count
+        - resources
+    AiModelBaseData:
+      type: object
+      required:
+        - model
+        - executableId
+        - description
+        - versions
+      properties:
+        model:
+          type: string
+          description: Name of the model
+        executableId:
+          $ref: '#/components/schemas/AiExecutableId'
+        description:
+          type: string
+          description: Description of the model and its capabilities
+        versions:
+          $ref: '#/components/schemas/AiModelVersionList'
+    AiModelVersionList:
+      type: array
+      description: List of model versions that the model object has
+      items:
+        $ref: '#/components/schemas/AiModelVersion'
+    AiModelVersion:
+      type: object
+      description: Model version information including whether it is latest version
+      required:
+        - name
+        - isLatest
+      properties:
+        name:
+          type: string
+          description: Name of model version
+        isLatest:
+          type: boolean
+          description: Displays whether it is the latest version offered for the model
+    AiVersion:
+      type: object
+      required:
+        - id
+        - createdAt
+        - modifiedAt
+      properties:
+        description:
+          $ref: '#/components/schemas/AiVersionDescription'
+        id:
+          $ref: '#/components/schemas/AiVersionId'
+        scenarioId:
+          $ref: '#/components/schemas/AiScenarioId'
+        createdAt:
+          type: string
+          description: Timestamp of resource creation
+          format: date-time
+        modifiedAt:
+          type: string
+          format: date-time
+          description: Timestamp of latest resource modification
+    AiVersionList:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Number of the resource instances in the list
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/AiVersion'
+      required:
+        - count
+        - resources
+    AiExecutable:
+      description:
+        'An ML executable consists of a set of ML tasks, flows between
+        tasks, dependencies between tasks, models (or model versions?).
+
+        '
+      type: object
+      required:
+        - name
+        - id
+        - versionId
+        - deployable
+        - createdAt
+        - modifiedAt
+      properties:
+        labels:
+          $ref: '#/components/schemas/AiLabelList'
+        name:
+          type: string
+          description: Name of the executable
+        description:
+          type: string
+          description: Description of the executable
+        id:
+          $ref: '#/components/schemas/AiExecutableId'
+        scenarioId:
+          $ref: '#/components/schemas/AiScenarioId'
+        versionId:
+          $ref: '#/components/schemas/AiVersionId'
+        parameters:
+          $ref: '#/components/schemas/AiExecutableParameterList'
+        inputArtifacts:
+          $ref: '#/components/schemas/AiExecutableArtifactList'
+        outputArtifacts:
+          $ref: '#/components/schemas/AiExecutableArtifactList'
+        deployable:
+          type: boolean
+          description: Whether this executable is deployable
+          example: false
+        createdAt:
+          type: string
+          description: Timestamp of resource creation
+          format: date-time
+        modifiedAt:
+          type: string
+          format: date-time
+          description: Timestamp of latest resource modification
+    AiExecutableId:
+      type: string
+      pattern: ^[\w.-]{4,64}$
+      example: aa97b177-9383-4934-8543-0f91a7a0283a
+      description: ID of the executable
+    AiExecutableList:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Number of the resource instances in the list
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/AiExecutable'
+      required:
+        - count
+        - resources
+    AiExecutableParameter:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Name of the executable parameter
+        description:
+          type: string
+          description: Description of the signature argument
+        default:
+          type: string
+          description: Default value of the signature argument
+        type:
+          type: string
+          enum:
+            - string
+          description: Type of the executable parameter
+    AiExecutableParameterList:
+      type: array
+      description: Executable parameters
+      items:
+        $ref: '#/components/schemas/AiExecutableParameter'
+    AiExecutableArtifact:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Name of the executable input artifacts
+        kind:
+          type: string
+          description: Artifact kind (model, dataset, other)
+        description:
+          type: string
+          description: Description of the signature argument
+        labels:
+          $ref: '#/components/schemas/AiLabelList'
+    AiExecutableArtifactList:
+      type: array
+      description: Executable parameters
+      items:
+        $ref: '#/components/schemas/AiExecutableArtifact'
+    AiConfiguration:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/AiConfigurationName'
+        executableId:
+          $ref: '#/components/schemas/AiExecutableId'
+        scenarioId:
+          $ref: '#/components/schemas/AiScenarioId'
+        parameterBindings:
+          $ref: '#/components/schemas/AiParameterArgumentBindingList'
+        inputArtifactBindings:
+          $ref: '#/components/schemas/AiArtifactArgumentBindingList'
+        id:
+          $ref: '#/components/schemas/AiConfigurationId'
+        createdAt:
+          type: string
+          description: Timestamp of resource creation
+          format: date-time
+        scenario:
+          type: object
+          nullable: true
+          anyOf:
+            - $ref: '#/components/schemas/AiScenario'
+            - {}
+      required:
+        - name
+        - executableId
+        - scenarioId
+        - id
+        - createdAt
+    AiConfigurationBaseData:
+      type: object
+      required:
+        - name
+        - executableId
+        - scenarioId
+      properties:
+        name:
+          $ref: '#/components/schemas/AiConfigurationName'
+        executableId:
+          $ref: '#/components/schemas/AiExecutableId'
+        scenarioId:
+          $ref: '#/components/schemas/AiScenarioId'
+        parameterBindings:
+          $ref: '#/components/schemas/AiParameterArgumentBindingList'
+        inputArtifactBindings:
+          $ref: '#/components/schemas/AiArtifactArgumentBindingList'
+    AiConfigurationName:
+      type: string
+      pattern: ^[\w\s.!?,;:\[\](){}<>"'=+*/\\^&%@~$#|-]*$
+      maxLength: 256
+      description: Name of the configuration
+    AiConfigurationId:
+      type: string
+      pattern: ^[\w.-]{4,64}$
+      example: aa97b177-9383-4934-8543-0f91a7a0283a
+      description: ID of the configuration
+    AiParameterArgumentBinding:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          type: string
+          maxLength: 256
+        value:
+          type: string
+          maxLength: 5000
+      description: 'Required for execution
+
+        Result of activation
+
+        '
+    AiParameterArgumentBindingList:
+      type: array
+      maxItems: 1000
+      items:
+        $ref: '#/components/schemas/AiParameterArgumentBinding'
+    AiArtifactArgumentBinding:
+      type: object
+      required:
+        - key
+        - artifactId
+      properties:
+        key:
+          type: string
+          maxLength: 256
+        artifactId:
+          $ref: '#/components/schemas/AiArtifactId'
+      description: 'Required for execution
+
+        Result of activation
+
+        '
+    AiArtifactArgumentBindingList:
+      type: array
+      maxItems: 1000
+      items:
+        $ref: '#/components/schemas/AiArtifactArgumentBinding'
+    AiConfigurationList:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Number of the resource instances in the list
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/AiConfiguration'
+      required:
+        - count
+        - resources
+    AiConfigurationCreationResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/AiId'
+        message:
+          $ref: '#/components/schemas/AiConfigurationCreationResponseMessage'
+      required:
+        - id
+        - message
+    AiConfigurationCreationResponseMessage:
+      type: string
+      description: Message
+      example: Configuration created
+    AiDeploymentTargetStatus:
+      type: string
+      description: Status
+      enum:
+        - STOPPED
+      example: STOPPED
+    AiDeploymentStatus:
+      type: string
+      description: Deployment status
+      enum:
+        - PENDING
+        - RUNNING
+        - COMPLETED
+        - DEAD
+        - STOPPING
+        - STOPPED
+        - UNKNOWN
+      example: COMPLETED
+    AiDeploymentStatusMessage:
+      type: string
+      description: Deployment status message
+      maxLength: 256
+    AiDeploymentStatusDetails:
+      type: object
+      description: Current status details of the deployment
+    AiExecutionStatus:
+      type: string
+      description: Execution status
+      enum:
+        - PENDING
+        - RUNNING
+        - COMPLETED
+        - DEAD
+        - STOPPING
+        - STOPPED
+        - UNKNOWN
+      example: COMPLETED
+    AiExecutionStatusMessage:
+      type: string
+      description: Execution status message
+      maxLength: 256
+    AiExecutionStatusDetails:
+      type: object
+      description: Current status details of the execution
+    AiExecution:
+      type: object
+      description: Execution that may generate artifacts
+      properties:
+        id:
+          $ref: '#/components/schemas/AiExecutionId'
+        configurationId:
+          $ref: '#/components/schemas/AiConfigurationId'
+        configurationName:
+          $ref: '#/components/schemas/AiConfigurationName'
+        executableId:
+          $ref: '#/components/schemas/AiExecutableId'
+        scenarioId:
+          $ref: '#/components/schemas/AiScenarioId'
+        targetStatus:
+          type: string
+          description: Target status of the execution
+          enum:
+            - COMPLETED
+            - RUNNING
+            - STOPPED
+            - DELETED
+          example: STOPPED
+        status:
+          $ref: '#/components/schemas/AiExecutionStatus'
+        statusMessage:
+          $ref: '#/components/schemas/AiExecutionStatusMessage'
+        outputArtifacts:
+          $ref: '#/components/schemas/AiArtifactArray'
+        executionScheduleId:
+          $ref: '#/components/schemas/AiExecutionScheduleId'
+        createdAt:
+          type: string
+          description: Timestamp of resource creation
+          format: date-time
+        modifiedAt:
+          type: string
+          format: date-time
+          description: Timestamp of latest resource modification
+        submissionTime:
+          type: string
+          format: date-time
+          description: Timestamp of job submitted
+        startTime:
+          type: string
+          format: date-time
+          description: Timestamp of job status changed to RUNNING
+        completionTime:
+          type: string
+          format: date-time
+          description: Timestamp of job status changed to COMPLETED/DEAD/STOPPED
+      required:
+        - id
+        - configurationId
+        - status
+        - createdAt
+        - modifiedAt
+    AiExecutionId:
+      type: string
+      pattern: ^[\w.-]{4,64}$
+      example: aa97b177-9383-4934-8543-0f91a7a0283a
+      description: ID of the execution
+    AiExecutionList:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Number of the resource instances in the list
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/AiExecution'
+      required:
+        - count
+        - resources
+    AiExecutionCreationResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/AiId'
+        message:
+          $ref: '#/components/schemas/AiExecutionCreationResponseMessage'
+        status:
+          $ref: '#/components/schemas/AiExecutionStatus'
+      required:
+        - id
+        - message
+    AiExecutionCreationResponseMessage:
+      type: string
+      description: Message
+      example: Execution scheduled
+    AiExecutionModificationRequest:
+      type: object
+      description:
+        Request object for changing the target status of an execution (currently
+        only STOPPED is supported)
+      required:
+        - targetStatus
+      properties:
+        targetStatus:
+          type: string
+          description:
+            Desired target status of the execution (currently only STOPPED
+            is supported)
+          enum:
+            - STOPPED
+    AiExecutionModificationRequestWithIdentifier:
+      required:
+        - targetStatus
+        - id
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/AiExecutionId'
+        targetStatus:
+          type: string
+          description:
+            Desired target status of the execution (currently STOPPED and
+            DELETED are supported)
+          enum:
+            - STOPPED
+            - DELETED
+      description:
+        Request object for changing the target status of an execution (currently
+        STOPPED and DELETED are supported)
+    AiExecutionModificationRequestList:
+      type: array
+      items:
+        $ref: '#/components/schemas/AiExecutionModificationRequestWithIdentifier'
+      uniqueItems: true
+      minItems: 1
+      maxItems: 100
+      example:
+        - id: aa97b177-9383-4934-8543-0f91a7a0283a
+          targetStatus: STOPPED
+        - id: qweq32131-qwee-1231-8543-0f91a7a2e2e
+          targetStatus: DELETED
+    AiExecutionBulkModificationRequest:
+      type: object
+      description: Request object to change status of multiple executions
+      properties:
+        executions:
+          $ref: '#/components/schemas/AiExecutionModificationRequestList'
+    AiExecutionModificationResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/AiId'
+        message:
+          $ref: '#/components/schemas/AiExecutionModificationResponseMessage'
+      required:
+        - id
+        - message
+    AiExecutionModificationResponseList:
+      type: array
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/AiExecutionModificationResponse'
+          - $ref: '#/components/schemas/AiApiErrorWithId'
+    AiExecutionBulkModificationResponse:
+      type: object
+      description: Response object with array of executions and its status
+      properties:
+        executions:
+          $ref: '#/components/schemas/AiExecutionModificationResponseList'
+    AiExecutionDeletionResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/AiId'
+        message:
+          $ref: '#/components/schemas/AiExecutionDeletionResponseMessage'
+      required:
+        - id
+        - message
+    AiExecutionDeletionResponseMessage:
+      type: string
+      description: Message
+      example: Execution deletion scheduled
+    AiExecutionModificationResponseMessage:
+      type: string
+      description: Message
+      example: Execution modification scheduled
+    AiExecutionResponseWithDetails:
+      type: object
+      description: Execution that may generate artifacts
+      properties:
+        id:
+          $ref: '#/components/schemas/AiExecutionId'
+        configurationId:
+          $ref: '#/components/schemas/AiConfigurationId'
+        configurationName:
+          $ref: '#/components/schemas/AiConfigurationName'
+        executableId:
+          $ref: '#/components/schemas/AiExecutableId'
+        scenarioId:
+          $ref: '#/components/schemas/AiScenarioId'
+        targetStatus:
+          type: string
+          description: Target status of the execution
+          enum:
+            - COMPLETED
+            - RUNNING
+            - STOPPED
+            - DELETED
+          example: STOPPED
+        status:
+          $ref: '#/components/schemas/AiExecutionStatus'
+        statusMessage:
+          $ref: '#/components/schemas/AiExecutionStatusMessage'
+        outputArtifacts:
+          $ref: '#/components/schemas/AiArtifactArray'
+        executionScheduleId:
+          $ref: '#/components/schemas/AiExecutionScheduleId'
+        createdAt:
+          type: string
+          description: Timestamp of resource creation
+          format: date-time
+        modifiedAt:
+          type: string
+          format: date-time
+          description: Timestamp of latest resource modification
+        submissionTime:
+          type: string
+          format: date-time
+          description: Timestamp of job submitted
+        startTime:
+          type: string
+          format: date-time
+          description: Timestamp of job status changed to RUNNING
+        completionTime:
+          type: string
+          format: date-time
+          description: Timestamp of job status changed to COMPLETED/DEAD/STOPPED
+        statusDetails:
+          $ref: '#/components/schemas/AiExecutionStatusDetails'
+      required:
+        - id
+        - configurationId
+        - status
+        - createdAt
+        - modifiedAt
+    AiExecutionSchedule:
+      type: object
+      description: Data about execution schedule
+      required:
+        - configurationId
+        - cron
+        - name
+        - createdAt
+        - modifiedAt
+      properties:
+        cron:
+          $ref: '#/components/schemas/AiCron'
+        name:
+          maxLength: 256
+          type: string
+          description: Name of the execution schedule
+        configurationId:
+          $ref: '#/components/schemas/AiConfigurationId'
+        start:
+          type: string
+          description:
+            Timestamp, defining when the executions should start running
+            periodically, defaults to now
+          format: date-time
+        end:
+          type: string
+          description: Timestamp, defining when the executions should stop running
+          format: date-time
+        id:
+          $ref: '#/components/schemas/AiExecutionScheduleId'
+        status:
+          $ref: '#/components/schemas/AiExecutionScheduleStatus'
+        createdAt:
+          type: string
+          description: Timestamp of resource creation
+          format: date-time
+        modifiedAt:
+          type: string
+          format: date-time
+          description: Timestamp of latest resource modification
+    AiExecutionScheduleId:
+      type: string
+      pattern: ^[\w.-]{4,64}$
+      example: aa97b177-9383-4934-8543-0f91a7a0283a
+      description: ID of the execution schedule
+    AiExecutionScheduleStatus:
+      type: string
+      description: Execution Schedule Status
+      enum:
+        - ACTIVE
+        - INACTIVE
+      example: ACTIVE
+    AiCron:
+      type: string
+      description: Cron defining the schedule to run the executions.
+      example: 0 0 0 1 *
+    AiExecutionScheduleCreationData:
+      type: object
+      description: Start and end an execution schedule.
+      properties:
+        cron:
+          $ref: '#/components/schemas/AiCron'
+        name:
+          maxLength: 256
+          type: string
+          description: Name of the execution schedule
+        configurationId:
+          $ref: '#/components/schemas/AiConfigurationId'
+        start:
+          type: string
+          description:
+            Timestamp, defining when the executions should start running
+            periodically, defaults to now
+          format: date-time
+        end:
+          type: string
+          description: Timestamp, defining when the executions should stop running
+          format: date-time
+      required:
+        - configurationId
+        - cron
+        - name
+    AiExecutionScheduleList:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Number of the resource instances in the list
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/AiExecutionSchedule'
+      required:
+        - count
+        - resources
+    AiExecutionScheduleModificationRequest:
+      type: object
+      description: Request object for changing the execution schedule
+      properties:
+        cron:
+          $ref: '#/components/schemas/AiCron'
+        start:
+          type: string
+          description:
+            Timestamp, defining when the executions should start running
+            periodically, defaults to now
+          format: date-time
+        end:
+          type: string
+          description: Timestamp, defining when the executions should stop running
+          format: date-time
+        configurationId:
+          $ref: '#/components/schemas/AiConfigurationId'
+        status:
+          $ref: '#/components/schemas/AiExecutionScheduleStatus'
+    AiExecutionScheduleModificationResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/AiId'
+        message:
+          $ref: '#/components/schemas/AiExecutionScheduleModificationResponseMessage'
+      required:
+        - id
+        - message
+    AiExecutionScheduleModificationResponseMessage:
+      type: string
+      description: Message
+      example: Execution Schedule modified
+    AiExecutionScheduleDeletionResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/AiId'
+        message:
+          $ref: '#/components/schemas/AiExecutionScheduleDeletionResponseMessage'
+      required:
+        - id
+        - message
+    AiExecutionScheduleDeletionResponseMessage:
+      type: string
+      description: Message
+      example: Execution Schedule deleted
+    AiExecutionScheduleCreationResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/AiId'
+        message:
+          $ref: '#/components/schemas/AiExecutionScheduleCreationResponseMessage'
+      required:
+        - id
+        - message
+    AiExecutionScheduleCreationResponseMessage:
+      type: string
+      description: Message
+      example: Execution Schedule created
+    AiDeployment:
+      type: object
+      description: Detailed data about a deployment
+      properties:
+        id:
+          $ref: '#/components/schemas/AiDeploymentId'
+        deploymentUrl:
+          $ref: '#/components/schemas/AiDeploymentUrl'
+        configurationId:
+          $ref: '#/components/schemas/AiConfigurationId'
+        configurationName:
+          $ref: '#/components/schemas/AiConfigurationName'
+        executableId:
+          $ref: '#/components/schemas/AiExecutableId'
+        scenarioId:
+          $ref: '#/components/schemas/AiScenarioId'
+        status:
+          $ref: '#/components/schemas/AiDeploymentStatus'
+        statusMessage:
+          $ref: '#/components/schemas/AiDeploymentStatusMessage'
+        targetStatus:
+          type: string
+          description: Deployment target status
+          enum:
+            - RUNNING
+            - STOPPED
+            - DELETED
+        lastOperation:
+          type: string
+          description: Last operation applied to this deployment.
+          anyOf:
+            - enum:
+                - CREATE
+                - UPDATE
+                - DELETE
+                - CASCADE-UPDATE
+            - {}
+        latestRunningConfigurationId:
+          type: string
+          pattern: ^[\w.-]{4,64}$
+          example: aa97b177-9383-4934-8543-0f91a7a0283a
+          description:
+            configurationId that was running before a PATCH operation has
+            modified the configurationId of the deployment. This can be used for a
+            manual rollback in case the new configurationId results in a DEAD deployment
+        ttl:
+          $ref: '#/components/schemas/AiDeploymentTimeToLive'
+        details:
+          $ref: '#/components/schemas/AiDeploymentDetails'
+        createdAt:
+          type: string
+          description: Timestamp of resource creation
+          format: date-time
+        modifiedAt:
+          type: string
+          format: date-time
+          description: Timestamp of latest resource modification
+        submissionTime:
+          type: string
+          format: date-time
+          description: Timestamp of job submitted
+        startTime:
+          type: string
+          format: date-time
+          description: Timestamp of job status changed to RUNNING
+        completionTime:
+          type: string
+          format: date-time
+          description: Timestamp of job status changed to COMPLETED/DEAD/STOPPED
+      required:
+        - id
+        - configurationId
+        - status
+        - createdAt
+        - modifiedAt
+    AiDeploymentId:
+      type: string
+      pattern: ^[\w.-]{4,64}$
+      example: aa97b177-9383-4934-8543-0f91a7a0283a
+      description: ID of the deployment
+    AiDeploymentUrl:
+      description: Consumption URL of the deployment
+      type: string
+      format: url
+    AiDeploymentList:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Number of the resource instances in the list
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/AiDeployment'
+      required:
+        - count
+        - resources
+    AiDeploymentCreationResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/AiId'
+        message:
+          $ref: '#/components/schemas/AiDeploymentCreationResponseMessage'
+        deploymentUrl:
+          $ref: '#/components/schemas/AiDeploymentUrl'
+        status:
+          $ref: '#/components/schemas/AiExecutionStatus'
+        ttl:
+          $ref: '#/components/schemas/AiDeploymentTimeToLive'
+      required:
+        - id
+        - message
+    AiDeploymentCreationResponseMessage:
+      type: string
+      description: Message
+      example: Deployment scheduled
+    AiEnactmentCreationRequest:
+      type: object
+      description: Request object for creating an execution or an deployment
+      required:
+        - configurationId
+      properties:
+        configurationId:
+          $ref: '#/components/schemas/AiConfigurationId'
+    AiDeploymentCreationRequest:
+      type: object
+      description: Request object for creating an execution or an deployment
+      required:
+        - configurationId
+      properties:
+        ttl:
+          $ref: '#/components/schemas/AiDeploymentTimeToLive'
+        configurationId:
+          $ref: '#/components/schemas/AiConfigurationId'
+    AiDeploymentModificationRequest:
+      type: object
+      description:
+        Request object for changing the target status of a deployment (currently
+        only STOPPED is supported)
+      properties:
+        targetStatus:
+          $ref: '#/components/schemas/AiDeploymentTargetStatus'
+        configurationId:
+          $ref: '#/components/schemas/AiConfigurationId'
+    AiDeploymentModificationRequestWithIdentifier:
+      type: object
+      required:
+        - targetStatus
+        - id
+      properties:
+        id:
+          $ref: '#/components/schemas/AiDeploymentId'
+        targetStatus:
+          type: string
+          description: Deployment target status
+          enum:
+            - STOPPED
+            - DELETED
+      description:
+        Request object for changing the target status of a deployment (
+        STOPPED and DELETED are supported)
+    AiDeploymentModificationRequestList:
+      type: array
+      items:
+        $ref: '#/components/schemas/AiDeploymentModificationRequestWithIdentifier'
+      uniqueItems: true
+      minItems: 1
+      maxItems: 100
+      example:
+        - id: aa97b177-9383-4934-8543-0f91a7a0283a
+          targetStatus: STOPPED
+        - id: qweq32131-qwee-1231-8543-0f91a7a2e2e
+          targetStatus: DELETED
+    AiDeploymentBulkModificationRequest:
+      type: object
+      description: Request object for changing the target status of multiple deployments
+      properties:
+        deployments:
+          $ref: '#/components/schemas/AiDeploymentModificationRequestList'
+    AiDeploymentModificationResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/AiId'
+        message:
+          $ref: '#/components/schemas/AiDeploymentModificationResponseMessage'
+      required:
+        - id
+        - message
+    AiDeploymentModificationResponseList:
+      type: array
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/AiDeploymentModificationResponse'
+          - $ref: '#/components/schemas/AiApiErrorWithId'
+    AiDeploymentBulkModificationResponse:
+      type: object
+      description: Response object with array of deployments
+      properties:
+        deployments:
+          $ref: '#/components/schemas/AiDeploymentModificationResponseList'
+    AiDeploymentDeletionResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/AiId'
+        message:
+          $ref: '#/components/schemas/AiDeploymentDeletionResponseMessage'
+      required:
+        - id
+        - message
+    AiDeploymentModificationResponseMessage:
+      type: string
+      description: Message
+      example: Deployment modification scheduled
+    AiDeploymentDeletionResponseMessage:
+      type: string
+      description: Message
+      example: Deployment deletion scheduled
+    AiDeploymentResponseWithDetails:
+      type: object
+      description: Detail properties of the deployment
+      properties:
+        id:
+          $ref: '#/components/schemas/AiDeploymentId'
+        deploymentUrl:
+          $ref: '#/components/schemas/AiDeploymentUrl'
+        configurationId:
+          $ref: '#/components/schemas/AiConfigurationId'
+        configurationName:
+          $ref: '#/components/schemas/AiConfigurationName'
+        executableId:
+          $ref: '#/components/schemas/AiExecutableId'
+        scenarioId:
+          $ref: '#/components/schemas/AiScenarioId'
+        status:
+          $ref: '#/components/schemas/AiDeploymentStatus'
+        statusMessage:
+          $ref: '#/components/schemas/AiDeploymentStatusMessage'
+        targetStatus:
+          type: string
+          description: Deployment target status
+          enum:
+            - RUNNING
+            - STOPPED
+            - DELETED
+        lastOperation:
+          type: string
+          description: Last operation applied to this deployment.
+          anyOf:
+            - enum:
+                - CREATE
+                - UPDATE
+                - DELETE
+                - CASCADE-UPDATE
+            - {}
+        latestRunningConfigurationId:
+          type: string
+          pattern: ^[\w.-]{4,64}$
+          example: aa97b177-9383-4934-8543-0f91a7a0283a
+          description:
+            configurationId that was running before a PATCH operation has
+            modified the configurationId of the deployment. This can be used for a
+            manual rollback in case the new configurationId results in a DEAD deployment
+        ttl:
+          $ref: '#/components/schemas/AiDeploymentTimeToLive'
+        details:
+          $ref: '#/components/schemas/AiDeploymentDetails'
+        createdAt:
+          type: string
+          description: Timestamp of resource creation
+          format: date-time
+        modifiedAt:
+          type: string
+          format: date-time
+          description: Timestamp of latest resource modification
+        submissionTime:
+          type: string
+          format: date-time
+          description: Timestamp of job submitted
+        startTime:
+          type: string
+          format: date-time
+          description: Timestamp of job status changed to RUNNING
+        completionTime:
+          type: string
+          format: date-time
+          description: Timestamp of job status changed to COMPLETED/DEAD/STOPPED
+        statusDetails:
+          $ref: '#/components/schemas/AiDeploymentStatusDetails'
+      required:
+        - id
+        - configurationId
+        - status
+        - createdAt
+        - modifiedAt
+    AiBackendDetails:
+      type: object
+      description: backend-specific details of the deployment
+    AiScalingDetails:
+      type: object
+      description: Scaling details of a deployment
+      example:
+        backendDetails:
+          predictor:
+            minReplicas: 0
+            maxReplicas: 2
+            runningReplicas: 1
+      properties:
+        backendDetails:
+          $ref: '#/components/schemas/AiBackendDetails'
+    AiResourcesDetails:
+      type: object
+      description: Resources details of a deployment
+      example:
+        backendDetails:
+          predictor:
+            resourcePlan: starter
+      properties:
+        backendDetails:
+          $ref: '#/components/schemas/AiBackendDetails'
+    AiDeploymentDetails:
+      type: object
+      description:
+        'Detail information about a deployment (including predefined sections:
+        `scaling` and `resources`).
+
+        JSON String representation of this object is limited to 5000 characters
+
+        '
+      properties:
+        scaling:
+          $ref: '#/components/schemas/AiScalingDetails'
+        resources:
+          $ref: '#/components/schemas/AiResourcesDetails'
+    AiDeploymentTimeToLive:
+      type: string
+      description:
+        Time to live for a deployment. Its value can be either null or
+        a number followed by the unit (any of following values, minutes(m|M), hours(h|H)
+        or days(d|D))
+      nullable: true
+      pattern: ^[0-9]+[m,M,h,H,d,D]$
+      example: 24H
+    AiArtifact:
+      description:
+        'Base data of the artifact; this is the data that can be provided
+        when the artifact is created; `name` and `kind` are required because they
+        constitute important semantic filtering criteria for use in training / inference
+        executables (`name` is a semantic handle of the artifact within a scenario
+        and `kind` specifies the type of usage, e.g. you would only want to allow
+        models in the model operator).
+
+        '
+      type: object
+      properties:
+        labels:
+          $ref: '#/components/schemas/AiLabelList'
+        name:
+          $ref: '#/components/schemas/AiArtifactName'
+        kind:
+          type: string
+          enum:
+            - model
+            - dataset
+            - resultset
+            - other
+          description: Kind of the artifact, i.e. model or dataset
+        url:
+          $ref: '#/components/schemas/AiArtifactUrl'
+        description:
+          $ref: '#/components/schemas/AiArtifactDescription'
+        id:
+          $ref: '#/components/schemas/AiArtifactId'
+        scenarioId:
+          $ref: '#/components/schemas/AiScenarioId'
+        configurationId:
+          $ref: '#/components/schemas/AiConfigurationId'
+        executionId:
+          $ref: '#/components/schemas/AiExecutionId'
+        createdAt:
+          type: string
+          description: Timestamp of resource creation
+          format: date-time
+        modifiedAt:
+          type: string
+          format: date-time
+          description: Timestamp of latest resource modification
+        scenario:
+          type: object
+          nullable: true
+          anyOf:
+            - $ref: '#/components/schemas/AiScenario'
+            - {}
+      required:
+        - name
+        - kind
+        - url
+        - id
+        - scenarioId
+        - createdAt
+        - modifiedAt
+    AiArtifactDescription:
+      type: string
+      maxLength: 5000
+      description: Description of the artifact
+    AiArtifactPostData:
+      type: object
+      description:
+        'Base data of the artifact; this is the data that can be provided
+        when the artifact is created; `name` and `kind` are required because they
+        constitute important semantic filtering criteria for use in training / inference
+        executables (`name` is a semantic handle of the artifact within a scenario
+        and `kind` specifies the type of usage, e.g. you would only want to allow
+        models in the model operator).
+
+        '
+      required:
+        - name
+        - kind
+        - url
+        - scenarioId
+      properties:
+        labels:
+          $ref: '#/components/schemas/AiLabelList'
+        name:
+          $ref: '#/components/schemas/AiArtifactName'
+        kind:
+          type: string
+          enum:
+            - model
+            - dataset
+            - resultset
+            - other
+          description: Kind of the artifact, i.e. model or dataset
+        url:
+          $ref: '#/components/schemas/AiArtifactUrl'
+        description:
+          $ref: '#/components/schemas/AiArtifactDescription'
+        scenarioId:
+          $ref: '#/components/schemas/AiScenarioId'
+    AiArtifactCreationResponse:
+      type: object
+      required:
+        - id
+        - message
+        - url
+      properties:
+        id:
+          $ref: '#/components/schemas/AiId'
+        message:
+          $ref: '#/components/schemas/AiArtifactCreationResponseMessage'
+        url:
+          $ref: '#/components/schemas/AiArtifactUrl'
+    AiArtifactCreationResponseMessage:
+      type: string
+      description: Message
+      example: Artifact acknowledged
+    AiArtifactId:
+      type: string
+      pattern: ^[\w.-]{4,64}$
+      example: aa97b177-9383-4934-8543-0f91a7a0283a
+      description: ID of the artifact
+    AiArtifactName:
+      type: string
+      pattern: ^[\w\s.!?,;:\[\](){}<>"'=+*/\\^&%@~$#|-]*$
+      maxLength: 256
+      description: Name of the artifact
+    AiArtifactUrl:
+      type: string
+      pattern: ([a-z0-9-]+):\/\/.+
+      maxLength: 1024
+      example: https://example.com/some_path
+      description: 'Reference to the location of the artifact.
+
+        '
+    AiArtifactList:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Number of the resource instances in the list
+        resources:
+          $ref: '#/components/schemas/AiArtifactArray'
+      required:
+        - count
+        - resources
+    AiArtifactArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/AiArtifact'
+    AiLogCommonData:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/AiLogCommonResult'
+    AiLogCommonResult:
+      type: array
+      items:
+        $ref: '#/components/schemas/AiLogCommonResultItem'
+    AiLogCommonResultItem:
+      type: object
+      description: Common log record.
+      properties:
+        timestamp:
+          description: Datetime in RFC 3339.
+          type: string
+          format: date-time
+          example: '2021-05-19T00:00:14.347+00:00'
+        msg:
+          description: message content.
+          type: string
+    AiId:
+      type: string
+      pattern: ^[\w.-]{4,64}$
+      example: aa97b177-9383-4934-8543-0f91a7a0283a
+      description: Generic ID
+    AiVersionId:
+      description: Version ID
+      type: string
+    AiVersionDescription:
+      type: string
+      maxLength: 5000
+      example: This is version v1
+      description: Version description
+    AiCreationResponseMessage:
+      type: string
+      description: Message
+      example: Created
+    AiUrl:
+      type: string
+      format: url
+    AiApiErrorWithId:
+      type: object
+      required:
+        - id
+        - error
+      properties:
+        id:
+          $ref: '#/components/schemas/AiId'
+        error:
+          $ref: '#/components/schemas/AiApiError'
+    AiApiError:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: Descriptive error code (not http status code)
+        message:
+          type: string
+          description: Plaintext error description
+        requestId:
+          type: string
+          description: ID of the individual request
+        target:
+          type: string
+          description: Invoked URL
+        details:
+          description: Optional details of the error message
+          type: object
     BckndId:
       type: string
       pattern: ^[\w.-]{4,64}$
@@ -3517,50 +5614,49 @@ components:
               properties:
                 AI_API_URL:
                   type: string
+    BckndDeploymentResourceQuotaResponse:
+      type: object
+      required:
+        - quotas
+      properties:
+        usage:
+          $ref: '#/components/schemas/BckndDeploymentUsage'
+        quotas:
+          type: array
+          items:
+            $ref: '#/components/schemas/BckndDeploymentQuotaItem'
     BckndDeploymentUsage:
       type: object
       required:
         - count
-        - resourcePlans
+        - items
       properties:
         count:
           type: integer
-        resourcePlans:
+        items:
           type: array
           items:
             $ref: '#/components/schemas/BckndUsageResourcePlanItem'
     BckndUsageResourcePlanItem:
       type: object
       required:
-        - plan
-        - count
-        - usage
-      properties:
-        plan:
-          type: string
-        count:
-          type: integer
-        usage:
-          type: array
-          items:
-            $ref: '#/components/schemas/BckndNestedUsageItem'
-    BckndNestedUsageItem:
-      type: object
-      required:
         - id
-        - usage
       properties:
         id:
+          type: string
+        resourcePlanType:
+          type: string
+        configuredMaxReplicas:
           type: integer
-        usage:
-          type: array
-          items:
-            $ref: '#/components/schemas/BckndKeyValuePair'
+    BckndDeploymentQuotaItem:
+      type: object
+      properties:
+        resourcePlanType:
+          type: string
+        deploymentQuota:
+          $ref: '#/components/schemas/BckndDeploymentQuota'
     BckndDeploymentQuota:
       type: object
-      required:
-        - maxCount
-        - maxReplicaPerDeployment
       properties:
         maxCount:
           type: integer
@@ -3569,16 +5665,6 @@ components:
             the maximum allowed number
           example: 10
         maxReplicaPerDeployment:
-          type: integer
-    BckndKeyValuePair:
-      type: object
-      required:
-        - key
-        - value
-      properties:
-        key:
-          type: string
-        value:
           type: integer
     BckndCommonResourceQuotaResponse:
       type: object
@@ -3691,1809 +5777,6 @@ components:
           type: string
           description: Plaintext error description
           example: something went wrong
-        requestId:
-          type: string
-          description: ID of the individual request
-        target:
-          type: string
-          description: Invoked URL
-        details:
-          description: Optional details of the error message
-          type: object
-    KpiColumnName:
-      readOnly: true
-      type: string
-      description: Name of the Column
-      anyOf:
-        - enum:
-            - ResourceGroup
-            - Scenario
-            - Executable
-            - Executions
-            - Artifacts
-            - Deployments
-        - {}
-    KpiArrayOfColumnNames:
-      uniqueItems: true
-      type: array
-      readOnly: true
-      items:
-        $ref: '#/components/schemas/KpiColumnName'
-    KpiAggregationAttribute:
-      type: string
-      title: Aggregation Attribute
-      readOnly: true
-    KpiCountAggregate:
-      type: integer
-      title: CountAggregate
-      format: int64
-      minimum: 0
-      x-examples: {}
-      readOnly: true
-    KpiResultRow:
-      type: array
-      title: ResultRow
-      uniqueItems: false
-      x-examples: {}
-      description: ''
-      items:
-        $ref: '#/components/schemas/KpiResultRowItem'
-      readOnly: true
-    KpiResultRowItem:
-      title: ResultRowItem
-      anyOf:
-        - $ref: '#/components/schemas/KpiAggregationAttribute'
-        - $ref: '#/components/schemas/KpiCountAggregate'
-      x-examples: {}
-    KpiResultRowList:
-      title: ResultRowList
-      type: array
-      items:
-        $ref: '#/components/schemas/KpiResultRow'
-    KpiResultSet:
-      type: object
-      title: ResultSet
-      x-examples:
-        example-1:
-          header:
-            - ResourceGroup
-            - Executions
-            - Artifacts
-            - Deployments
-          rows:
-            - - 00112233-4455-6677-8899-aabbccddeeff
-              - 30
-              - 30
-              - 3
-      additionalProperties: false
-      minProperties: 2
-      maxProperties: 2
-      properties:
-        header:
-          $ref: '#/components/schemas/KpiArrayOfColumnNames'
-        rows:
-          $ref: '#/components/schemas/KpiResultRowList'
-      readOnly: true
-    KpiApiError:
-      type: object
-      required:
-        - code
-        - message
-      properties:
-        code:
-          type: string
-          description: Descriptive error code (not http status code)
-        message:
-          type: string
-          description: Plaintext error description
-        requestId:
-          type: string
-          description: ID of the individual request
-        target:
-          type: string
-          description: Invoked URL
-        details:
-          description: Optional details of the error message
-          type: object
-    DSetUrl:
-      type: string
-      format: url
-      example: https://download.example.com/test/file.bin
-    DSetError:
-      description: Error Response
-      type: object
-      properties:
-        code:
-          type: string
-          minLength: 1
-        message:
-          type: string
-          minLength: 1
-        target:
-          type: string
-          minLength: 1
-        requestId:
-          type: string
-        details:
-          type: array
-          uniqueItems: true
-          minItems: 0
-          items:
-            required:
-              - code
-              - message
-            properties:
-              code:
-                type: string
-                minLength: 1
-              message:
-                type: string
-                minLength: 1
-      required:
-        - code
-        - message
-      x-examples:
-        example-1:
-          code: '03021655'
-          message: Bad request encountered. Please try again with possible-solution-here.
-          target: /url/path
-          requestId: 9832bf934f3743v3948v3
-          details:
-            - code: '01041211'
-              message: Optional nested error message.
-    DSetFileCreationResponse:
-      description: Response for successful file creation
-      type: object
-      required:
-        - message
-        - url
-      properties:
-        message:
-          type: string
-          description: File creation response message
-          example: File creation acknowledged
-        url:
-          $ref: '#/components/schemas/DSetUrl'
-    MetaCapabilities:
-      type: object
-      required:
-        - aiApi
-      properties:
-        runtimeIdentifier:
-          type: string
-          example: aicore
-          description: The name of the runtime
-        runtimeApiVersion:
-          $ref: '#/components/schemas/MetaVersion'
-        description:
-          type: string
-        aiApi:
-          $ref: '#/components/schemas/MetaAiApi'
-        extensions:
-          $ref: '#/components/schemas/MetaExtensions'
-    MetaExtensions:
-      type: object
-      properties:
-        analytics:
-          type: object
-          required:
-            - version
-          properties:
-            version:
-              $ref: '#/components/schemas/MetaVersion'
-        resourceGroups:
-          type: object
-          required:
-            - version
-          properties:
-            version:
-              $ref: '#/components/schemas/MetaVersion'
-        dataset:
-          type: object
-          properties:
-            version:
-              $ref: '#/components/schemas/MetaVersion'
-            capabilities:
-              description: List of Dataset extension capabilities
-              type: object
-              properties:
-                upload:
-                  description: Support for uploading of files
-                  type: boolean
-                  default: true
-                download:
-                  description: Support for downloading of files
-                  type: boolean
-                  default: true
-                delete:
-                  description: Support for deletion of files
-                  type: boolean
-                  default: true
-            limits:
-              type: object
-              properties:
-                maxUploadFileSize:
-                  type: integer
-                  description:
-                    Max size (in bytes) of a single uploaded file allowed
-                    by this runtime per resource group.
-                  default: 104857600
-                maxFilesPerDataset:
-                  description: Max number of files per dataset. <0 means unlimited.
-                  type: integer
-                  default: -1
-                acceptedContentTypes:
-                  type: array
-                  items:
-                    type: string
-                    pattern: ^\w+\/([\w+-]\.)?[\w.-]+(\+[\w-]+)*$
-          required:
-            - version
-        metrics:
-          type: object
-          properties:
-            version:
-              $ref: '#/components/schemas/MetaVersion'
-            capabilities:
-              description: List of Metrics extension capabilities
-              type: object
-              properties:
-                extendedResults:
-                  description: Support for returning extended results
-                  type: boolean
-                  default: false
-          required:
-            - version
-    MetaAiApi:
-      description:
-        There are (currently) the following types of execution engines  1)
-        complete runtimes that offer executions and deployments, 2) runtimes that
-        do only batch inference and therefore don't support deployments 3) runtimes
-        that allow deployments, but with predefined models and therefore don't need
-        executions 4) runtimes that have fixed endpoints and therefore only need listing
-        deployments
-      type: object
-      properties:
-        version:
-          $ref: '#/components/schemas/MetaVersion'
-        capabilities:
-          type: object
-          properties:
-            multitenant:
-              type: boolean
-              description:
-                true-> AI API implementation supports resource groups (Main
-                Tenant scenario), false-> implementation does not support resource
-                groups (Service Tenant scenario)
-              default: true
-            shareable:
-              type: boolean
-              description:
-                true-> clients can use just one instance (global static
-                models), false-> clients should avoid sharing an instance
-              default: true
-            staticDeployments:
-              type: boolean
-              description:
-                There are static always running endpoints that can be used
-                for inference without the need to do user deployments.
-              default: true
-            userDeployments:
-              type: boolean
-              description:
-                Services that only support batch inference typically neither
-                allow listing nor creation of deployments. For these, userDeployments
-                == false
-              default: true
-            userExecutions:
-              type: boolean
-              default: true
-            timeToLiveDeployments:
-              type: boolean
-              default: false
-            executionSchedules:
-              type: boolean
-              default: false
-            logs:
-              type: object
-              properties:
-                executions:
-                  type: boolean
-                  default: true
-                deployments:
-                  type: boolean
-                  default: true
-            bulkUpdates:
-              type: object
-              description:
-                Services that support patch on /executions and /deployments
-                to change targetStatus of multiple executions and deployments.
-              properties:
-                executions:
-                  type: boolean
-                  default: false
-                deployments:
-                  type: boolean
-                  default: false
-        limits:
-          type: object
-          properties:
-            executions:
-              type: object
-              properties:
-                maxRunningCount:
-                  description:
-                    Max nr of executions allowed by this runtime per resource
-                    group. <0 means unlimited.
-                  type: integer
-                  default: -1
-            deployments:
-              type: object
-              properties:
-                maxRunningCount:
-                  description:
-                    Max nr of deployments allowed by this runtime per resource
-                    group. <0 means unlimited.
-                  type: integer
-                  default: -1
-            timeToLiveDeployments:
-              type: object
-              properties:
-                minimum:
-                  type: string
-                  default: 10m
-                maximum:
-                  type: string
-                  default: '-1'
-      required:
-        - version
-    MetaVersion:
-      example: 1.2.3
-      type: string
-      pattern: ^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$
-    MetaAPIVersion:
-      type: object
-      properties:
-        versionId:
-          type: string
-          description: API version identifier
-          example: v1
-        url:
-          type: string
-          description: URL of the API version
-          example: https://api.example.com/v1
-        description:
-          type: string
-          description: version description
-          example: Example API
-      description: API version description
-    MetaApiError:
-      type: object
-      required:
-        - code
-        - message
-      properties:
-        code:
-          type: string
-          description: Descriptive error code (not http status code)
-        message:
-          type: string
-          description: Plaintext error description
-        requestId:
-          type: string
-          description: ID of the individual request
-        target:
-          type: string
-          description: Invoked URL
-        details:
-          description: Optional details of the error message
-          type: object
-    AiScenario:
-      type: object
-      description:
-        'An ML Scenario consists of a number of executables. E.g., there
-        can be one or several training executables, an inference (deployment) executable.
-        An ML Scenario is versioned.
-
-        '
-      required:
-        - name
-        - id
-        - createdAt
-        - modifiedAt
-      properties:
-        name:
-          type: string
-          maxLength: 256
-          description: Name of the scenario
-        description:
-          type: string
-          maxLength: 5000
-          description: Description of the scenario
-        labels:
-          $ref: '#/components/schemas/AiScenarioLabelList'
-        id:
-          $ref: '#/components/schemas/AiScenarioId'
-        createdAt:
-          type: string
-          description: Timestamp of resource creation
-          format: date-time
-        modifiedAt:
-          type: string
-          format: date-time
-          description: Timestamp of latest resource modification
-    AiScenarioLabelList:
-      type: array
-      description: Arbitrary labels as meta information
-      items:
-        $ref: '#/components/schemas/AiScenarioLabel'
-    AiLabelList:
-      type: array
-      description: Arbitrary labels as meta information
-      items:
-        $ref: '#/components/schemas/AiLabel'
-    AiScenarioLabel:
-      type: object
-      required:
-        - key
-        - value
-      properties:
-        key:
-          $ref: '#/components/schemas/AiScenarioLabelKey'
-        value:
-          $ref: '#/components/schemas/AiLabelValue'
-    AiLabel:
-      type: object
-      required:
-        - key
-        - value
-      properties:
-        key:
-          $ref: '#/components/schemas/AiLabelKey'
-        value:
-          $ref: '#/components/schemas/AiLabelValue'
-    AiLabelValue:
-      type: string
-      maxLength: 5000
-    AiScenarioLabelKey:
-      type: string
-      example: scenarios.ai.sap.com/s4hana-version
-      maxLength: 256
-      pattern: ^(scenarios|ext)\.ai\.sap\.com\/[\w\.-]+$
-    AiLabelKey:
-      type: string
-      example: ext.ai.sap.com/s4hana-version
-      maxLength: 256
-      pattern: ^ext\.ai\.sap\.com\/[\w\.-]+$
-    AiScenarioId:
-      type: string
-      pattern: ^[\w.-]{4,64}$
-      example: aa97b177-9383-4934-8543-0f91a7a0283a
-      description: ID of the scenario
-    AiScenarioList:
-      type: object
-      properties:
-        count:
-          type: integer
-          description: Number of the resource instances in the list
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/AiScenario'
-      required:
-        - count
-        - resources
-    AiModelList:
-      type: object
-      properties:
-        count:
-          type: integer
-          description: Number of the resource instances in the list
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/AiModelBaseData'
-      required:
-        - count
-        - resources
-    AiModelBaseData:
-      type: object
-      required:
-        - model
-        - executableId
-        - description
-        - versions
-      properties:
-        model:
-          type: string
-          description: Name of the model
-        executableId:
-          $ref: '#/components/schemas/AiExecutableId'
-        description:
-          type: string
-          description: Description of the model and its capabilities
-        versions:
-          $ref: '#/components/schemas/AiModelVersionList'
-    AiModelVersionList:
-      type: array
-      description: List of model versions that the model object has
-      items:
-        $ref: '#/components/schemas/AiModelVersion'
-    AiModelVersion:
-      type: object
-      description: Model version information including whether it is latest version
-      required:
-        - name
-        - isLatest
-      properties:
-        name:
-          type: string
-          description: Name of model version
-        isLatest:
-          type: boolean
-          description: Displays whether it is the latest version offered for the model
-    AiVersion:
-      type: object
-      required:
-        - id
-        - createdAt
-        - modifiedAt
-      properties:
-        description:
-          $ref: '#/components/schemas/AiVersionDescription'
-        id:
-          $ref: '#/components/schemas/AiVersionId'
-        scenarioId:
-          $ref: '#/components/schemas/AiScenarioId'
-        createdAt:
-          type: string
-          description: Timestamp of resource creation
-          format: date-time
-        modifiedAt:
-          type: string
-          format: date-time
-          description: Timestamp of latest resource modification
-    AiVersionList:
-      type: object
-      properties:
-        count:
-          type: integer
-          description: Number of the resource instances in the list
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/AiVersion'
-      required:
-        - count
-        - resources
-    AiExecutable:
-      description:
-        'An ML executable consists of a set of ML tasks, flows between
-        tasks, dependencies between tasks, models (or model versions?).
-
-        '
-      type: object
-      required:
-        - name
-        - id
-        - versionId
-        - deployable
-        - createdAt
-        - modifiedAt
-      properties:
-        labels:
-          $ref: '#/components/schemas/AiLabelList'
-        name:
-          type: string
-          description: Name of the executable
-        description:
-          type: string
-          description: Description of the executable
-        id:
-          $ref: '#/components/schemas/AiExecutableId'
-        scenarioId:
-          $ref: '#/components/schemas/AiScenarioId'
-        versionId:
-          $ref: '#/components/schemas/AiVersionId'
-        parameters:
-          $ref: '#/components/schemas/AiExecutableParameterList'
-        inputArtifacts:
-          $ref: '#/components/schemas/AiExecutableArtifactList'
-        outputArtifacts:
-          $ref: '#/components/schemas/AiExecutableArtifactList'
-        deployable:
-          type: boolean
-          description: Whether this executable is deployable
-          example: false
-        createdAt:
-          type: string
-          description: Timestamp of resource creation
-          format: date-time
-        modifiedAt:
-          type: string
-          format: date-time
-          description: Timestamp of latest resource modification
-    AiExecutableId:
-      type: string
-      pattern: ^[\w.-]{4,64}$
-      example: aa97b177-9383-4934-8543-0f91a7a0283a
-      description: ID of the executable
-    AiExecutableList:
-      type: object
-      properties:
-        count:
-          type: integer
-          description: Number of the resource instances in the list
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/AiExecutable'
-      required:
-        - count
-        - resources
-    AiExecutableParameter:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          type: string
-          description: Name of the executable parameter
-        description:
-          type: string
-          description: Description of the signature argument
-        default:
-          type: string
-          description: Default value of the signature argument
-        type:
-          type: string
-          enum:
-            - string
-          description: Type of the executable parameter
-    AiExecutableParameterList:
-      type: array
-      description: Executable parameters
-      items:
-        $ref: '#/components/schemas/AiExecutableParameter'
-    AiExecutableArtifact:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          type: string
-          description: Name of the executable input artifacts
-        kind:
-          type: string
-          description: Artifact kind (model, dataset, other)
-        description:
-          type: string
-          description: Description of the signature argument
-        labels:
-          $ref: '#/components/schemas/AiLabelList'
-    AiExecutableArtifactList:
-      type: array
-      description: Executable parameters
-      items:
-        $ref: '#/components/schemas/AiExecutableArtifact'
-    AiConfiguration:
-      type: object
-      properties:
-        name:
-          $ref: '#/components/schemas/AiConfigurationName'
-        executableId:
-          $ref: '#/components/schemas/AiExecutableId'
-        scenarioId:
-          $ref: '#/components/schemas/AiScenarioId'
-        parameterBindings:
-          $ref: '#/components/schemas/AiParameterArgumentBindingList'
-        inputArtifactBindings:
-          $ref: '#/components/schemas/AiArtifactArgumentBindingList'
-        id:
-          $ref: '#/components/schemas/AiConfigurationId'
-        createdAt:
-          type: string
-          description: Timestamp of resource creation
-          format: date-time
-        scenario:
-          type: object
-          nullable: true
-          anyOf:
-            - $ref: '#/components/schemas/AiScenario'
-            - {}
-      required:
-        - name
-        - executableId
-        - scenarioId
-        - id
-        - createdAt
-    AiConfigurationBaseData:
-      type: object
-      required:
-        - name
-        - executableId
-        - scenarioId
-      properties:
-        name:
-          $ref: '#/components/schemas/AiConfigurationName'
-        executableId:
-          $ref: '#/components/schemas/AiExecutableId'
-        scenarioId:
-          $ref: '#/components/schemas/AiScenarioId'
-        parameterBindings:
-          $ref: '#/components/schemas/AiParameterArgumentBindingList'
-        inputArtifactBindings:
-          $ref: '#/components/schemas/AiArtifactArgumentBindingList'
-    AiConfigurationName:
-      type: string
-      pattern: ^[\w\s.!?,;:\[\](){}<>"'=+*/\\^&%@~$#|-]*$
-      maxLength: 256
-      description: Name of the configuration
-    AiConfigurationId:
-      type: string
-      pattern: ^[\w.-]{4,64}$
-      example: aa97b177-9383-4934-8543-0f91a7a0283a
-      description: ID of the configuration
-    AiParameterArgumentBinding:
-      type: object
-      required:
-        - key
-        - value
-      properties:
-        key:
-          type: string
-          maxLength: 256
-        value:
-          type: string
-          maxLength: 5000
-      description: 'Required for execution
-
-        Result of activation
-
-        '
-    AiParameterArgumentBindingList:
-      type: array
-      maxItems: 1000
-      items:
-        $ref: '#/components/schemas/AiParameterArgumentBinding'
-    AiArtifactArgumentBinding:
-      type: object
-      required:
-        - key
-        - artifactId
-      properties:
-        key:
-          type: string
-          maxLength: 256
-        artifactId:
-          $ref: '#/components/schemas/AiArtifactId'
-      description: 'Required for execution
-
-        Result of activation
-
-        '
-    AiArtifactArgumentBindingList:
-      type: array
-      maxItems: 1000
-      items:
-        $ref: '#/components/schemas/AiArtifactArgumentBinding'
-    AiConfigurationList:
-      type: object
-      properties:
-        count:
-          type: integer
-          description: Number of the resource instances in the list
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/AiConfiguration'
-      required:
-        - count
-        - resources
-    AiConfigurationCreationResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/AiId'
-        message:
-          $ref: '#/components/schemas/AiConfigurationCreationResponseMessage'
-      required:
-        - id
-        - message
-    AiConfigurationCreationResponseMessage:
-      type: string
-      description: Message
-      example: Configuration created
-    AiDeploymentTargetStatus:
-      type: string
-      description: Status
-      enum:
-        - STOPPED
-      example: STOPPED
-    AiDeploymentStatus:
-      type: string
-      description: Deployment status
-      enum:
-        - PENDING
-        - RUNNING
-        - COMPLETED
-        - DEAD
-        - STOPPING
-        - STOPPED
-        - UNKNOWN
-      example: COMPLETED
-    AiDeploymentStatusMessage:
-      type: string
-      description: Deployment status message
-      maxLength: 256
-    AiDeploymentStatusDetails:
-      type: object
-      description: Current status details of the deployment
-    AiExecutionStatus:
-      type: string
-      description: Execution status
-      enum:
-        - PENDING
-        - RUNNING
-        - COMPLETED
-        - DEAD
-        - STOPPING
-        - STOPPED
-        - UNKNOWN
-      example: COMPLETED
-    AiExecutionStatusMessage:
-      type: string
-      description: Execution status message
-      maxLength: 256
-    AiExecutionStatusDetails:
-      type: object
-      description: Current status details of the execution
-    AiExecution:
-      type: object
-      description: Execution that may generate artifacts
-      properties:
-        id:
-          $ref: '#/components/schemas/AiExecutionId'
-        configurationId:
-          $ref: '#/components/schemas/AiConfigurationId'
-        configurationName:
-          $ref: '#/components/schemas/AiConfigurationName'
-        scenarioId:
-          $ref: '#/components/schemas/AiScenarioId'
-        targetStatus:
-          type: string
-          description: Target status of the execution
-          enum:
-            - COMPLETED
-            - RUNNING
-            - STOPPED
-            - DELETED
-          example: STOPPED
-        status:
-          $ref: '#/components/schemas/AiExecutionStatus'
-        statusMessage:
-          $ref: '#/components/schemas/AiExecutionStatusMessage'
-        outputArtifacts:
-          $ref: '#/components/schemas/AiArtifactArray'
-        executionScheduleId:
-          $ref: '#/components/schemas/AiExecutionScheduleId'
-        createdAt:
-          type: string
-          description: Timestamp of resource creation
-          format: date-time
-        modifiedAt:
-          type: string
-          format: date-time
-          description: Timestamp of latest resource modification
-        submissionTime:
-          type: string
-          format: date-time
-          description: Timestamp of job submitted
-        startTime:
-          type: string
-          format: date-time
-          description: Timestamp of job status changed to RUNNING
-        completionTime:
-          type: string
-          format: date-time
-          description: Timestamp of job status changed to COMPLETED/DEAD/STOPPED
-      required:
-        - id
-        - configurationId
-        - status
-        - createdAt
-        - modifiedAt
-    AiExecutionId:
-      type: string
-      pattern: ^[\w.-]{4,64}$
-      example: aa97b177-9383-4934-8543-0f91a7a0283a
-      description: ID of the execution
-    AiExecutionList:
-      type: object
-      properties:
-        count:
-          type: integer
-          description: Number of the resource instances in the list
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/AiExecution'
-      required:
-        - count
-        - resources
-    AiExecutionCreationResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/AiId'
-        message:
-          $ref: '#/components/schemas/AiExecutionCreationResponseMessage'
-        status:
-          $ref: '#/components/schemas/AiExecutionStatus'
-      required:
-        - id
-        - message
-    AiExecutionCreationResponseMessage:
-      type: string
-      description: Message
-      example: Execution scheduled
-    AiExecutionModificationRequest:
-      type: object
-      description:
-        Request object for changing the target status of an execution (currently
-        only STOPPED is supported)
-      required:
-        - targetStatus
-      properties:
-        targetStatus:
-          type: string
-          description:
-            Desired target status of the execution (currently only STOPPED
-            is supported)
-          enum:
-            - STOPPED
-    AiExecutionModificationRequestWithIdentifier:
-      required:
-        - targetStatus
-        - id
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/AiExecutionId'
-        targetStatus:
-          type: string
-          description:
-            Desired target status of the execution (currently STOPPED and
-            DELETED are supported)
-          enum:
-            - STOPPED
-            - DELETED
-      description:
-        Request object for changing the target status of an execution (currently
-        STOPPED and DELETED are supported)
-    AiExecutionModificationRequestList:
-      type: array
-      items:
-        $ref: '#/components/schemas/AiExecutionModificationRequestWithIdentifier'
-      uniqueItems: true
-      minItems: 1
-      maxItems: 100
-      example:
-        - id: aa97b177-9383-4934-8543-0f91a7a0283a
-          targetStatus: STOPPED
-        - id: qweq32131-qwee-1231-8543-0f91a7a2e2e
-          targetStatus: DELETED
-    AiExecutionBulkModificationRequest:
-      type: object
-      description: Request object to change status of multiple executions
-      properties:
-        executions:
-          $ref: '#/components/schemas/AiExecutionModificationRequestList'
-    AiExecutionModificationResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/AiId'
-        message:
-          $ref: '#/components/schemas/AiExecutionModificationResponseMessage'
-      required:
-        - id
-        - message
-    AiExecutionModificationResponseList:
-      type: array
-      items:
-        oneOf:
-          - $ref: '#/components/schemas/AiExecutionModificationResponse'
-          - $ref: '#/components/schemas/AiApiErrorWithId'
-    AiExecutionBulkModificationResponse:
-      type: object
-      description: Response object with array of executions and its status
-      properties:
-        executions:
-          $ref: '#/components/schemas/AiExecutionModificationResponseList'
-    AiExecutionDeletionResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/AiId'
-        message:
-          $ref: '#/components/schemas/AiExecutionDeletionResponseMessage'
-      required:
-        - id
-        - message
-    AiExecutionDeletionResponseMessage:
-      type: string
-      description: Message
-      example: Execution deletion scheduled
-    AiExecutionModificationResponseMessage:
-      type: string
-      description: Message
-      example: Execution modification scheduled
-    AiExecutionResponseWithDetails:
-      type: object
-      description: Execution that may generate artifacts
-      properties:
-        id:
-          $ref: '#/components/schemas/AiExecutionId'
-        configurationId:
-          $ref: '#/components/schemas/AiConfigurationId'
-        configurationName:
-          $ref: '#/components/schemas/AiConfigurationName'
-        scenarioId:
-          $ref: '#/components/schemas/AiScenarioId'
-        targetStatus:
-          type: string
-          description: Target status of the execution
-          enum:
-            - COMPLETED
-            - RUNNING
-            - STOPPED
-            - DELETED
-          example: STOPPED
-        status:
-          $ref: '#/components/schemas/AiExecutionStatus'
-        statusMessage:
-          $ref: '#/components/schemas/AiExecutionStatusMessage'
-        outputArtifacts:
-          $ref: '#/components/schemas/AiArtifactArray'
-        executionScheduleId:
-          $ref: '#/components/schemas/AiExecutionScheduleId'
-        createdAt:
-          type: string
-          description: Timestamp of resource creation
-          format: date-time
-        modifiedAt:
-          type: string
-          format: date-time
-          description: Timestamp of latest resource modification
-        submissionTime:
-          type: string
-          format: date-time
-          description: Timestamp of job submitted
-        startTime:
-          type: string
-          format: date-time
-          description: Timestamp of job status changed to RUNNING
-        completionTime:
-          type: string
-          format: date-time
-          description: Timestamp of job status changed to COMPLETED/DEAD/STOPPED
-        statusDetails:
-          $ref: '#/components/schemas/AiExecutionStatusDetails'
-      required:
-        - id
-        - configurationId
-        - status
-        - createdAt
-        - modifiedAt
-    AiExecutionSchedule:
-      type: object
-      description: Data about execution schedule
-      required:
-        - configurationId
-        - cron
-        - name
-        - createdAt
-        - modifiedAt
-      properties:
-        cron:
-          $ref: '#/components/schemas/AiCron'
-        name:
-          maxLength: 256
-          type: string
-          description: Name of the execution schedule
-        configurationId:
-          $ref: '#/components/schemas/AiConfigurationId'
-        start:
-          type: string
-          description:
-            Timestamp, defining when the executions should start running
-            periodically, defaults to now
-          format: date-time
-        end:
-          type: string
-          description: Timestamp, defining when the executions should stop running
-          format: date-time
-        id:
-          $ref: '#/components/schemas/AiExecutionScheduleId'
-        status:
-          $ref: '#/components/schemas/AiExecutionScheduleStatus'
-        createdAt:
-          type: string
-          description: Timestamp of resource creation
-          format: date-time
-        modifiedAt:
-          type: string
-          format: date-time
-          description: Timestamp of latest resource modification
-    AiExecutionScheduleId:
-      type: string
-      pattern: ^[\w.-]{4,64}$
-      example: aa97b177-9383-4934-8543-0f91a7a0283a
-      description: ID of the execution schedule
-    AiExecutionScheduleStatus:
-      type: string
-      description: Execution Schedule Status
-      enum:
-        - ACTIVE
-        - INACTIVE
-      example: ACTIVE
-    AiCron:
-      type: string
-      description: Cron defining the schedule to run the executions.
-      example: 0 0 0 1 *
-    AiExecutionScheduleCreationData:
-      type: object
-      description: Start and end an execution schedule.
-      properties:
-        cron:
-          $ref: '#/components/schemas/AiCron'
-        name:
-          maxLength: 256
-          type: string
-          description: Name of the execution schedule
-        configurationId:
-          $ref: '#/components/schemas/AiConfigurationId'
-        start:
-          type: string
-          description:
-            Timestamp, defining when the executions should start running
-            periodically, defaults to now
-          format: date-time
-        end:
-          type: string
-          description: Timestamp, defining when the executions should stop running
-          format: date-time
-      required:
-        - configurationId
-        - cron
-        - name
-    AiExecutionScheduleList:
-      type: object
-      properties:
-        count:
-          type: integer
-          description: Number of the resource instances in the list
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/AiExecutionSchedule'
-      required:
-        - count
-        - resources
-    AiExecutionScheduleModificationRequest:
-      type: object
-      description: Request object for changing the execution schedule
-      properties:
-        cron:
-          $ref: '#/components/schemas/AiCron'
-        start:
-          type: string
-          description:
-            Timestamp, defining when the executions should start running
-            periodically, defaults to now
-          format: date-time
-        end:
-          type: string
-          description: Timestamp, defining when the executions should stop running
-          format: date-time
-        configurationId:
-          $ref: '#/components/schemas/AiConfigurationId'
-        status:
-          $ref: '#/components/schemas/AiExecutionScheduleStatus'
-    AiExecutionScheduleModificationResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/AiId'
-        message:
-          $ref: '#/components/schemas/AiExecutionScheduleModificationResponseMessage'
-      required:
-        - id
-        - message
-    AiExecutionScheduleModificationResponseMessage:
-      type: string
-      description: Message
-      example: Execution Schedule modified
-    AiExecutionScheduleDeletionResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/AiId'
-        message:
-          $ref: '#/components/schemas/AiExecutionScheduleDeletionResponseMessage'
-      required:
-        - id
-        - message
-    AiExecutionScheduleDeletionResponseMessage:
-      type: string
-      description: Message
-      example: Execution Schedule deleted
-    AiExecutionScheduleCreationResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/AiId'
-        message:
-          $ref: '#/components/schemas/AiExecutionScheduleCreationResponseMessage'
-      required:
-        - id
-        - message
-    AiExecutionScheduleCreationResponseMessage:
-      type: string
-      description: Message
-      example: Execution Schedule created
-    AiDeployment:
-      type: object
-      description: Detailed data about a deployment
-      properties:
-        id:
-          $ref: '#/components/schemas/AiDeploymentId'
-        deploymentUrl:
-          $ref: '#/components/schemas/AiDeploymentUrl'
-        configurationId:
-          $ref: '#/components/schemas/AiConfigurationId'
-        configurationName:
-          $ref: '#/components/schemas/AiConfigurationName'
-        scenarioId:
-          $ref: '#/components/schemas/AiScenarioId'
-        status:
-          $ref: '#/components/schemas/AiDeploymentStatus'
-        statusMessage:
-          $ref: '#/components/schemas/AiDeploymentStatusMessage'
-        targetStatus:
-          type: string
-          description: Deployment target status
-          enum:
-            - RUNNING
-            - STOPPED
-            - DELETED
-        lastOperation:
-          type: string
-          description: Last operation applied to this deployment.
-          anyOf:
-            - enum:
-                - CREATE
-                - UPDATE
-                - DELETE
-                - CASCADE-UPDATE
-            - {}
-        latestRunningConfigurationId:
-          type: string
-          pattern: ^[\w.-]{4,64}$
-          example: aa97b177-9383-4934-8543-0f91a7a0283a
-          description:
-            configurationId that was running before a PATCH operation has
-            modified the configurationId of the deployment. This can be used for a
-            manual rollback in case the new configurationId results in a DEAD deployment
-        ttl:
-          $ref: '#/components/schemas/AiDeploymentTimeToLive'
-        details:
-          $ref: '#/components/schemas/AiDeploymentDetails'
-        createdAt:
-          type: string
-          description: Timestamp of resource creation
-          format: date-time
-        modifiedAt:
-          type: string
-          format: date-time
-          description: Timestamp of latest resource modification
-        submissionTime:
-          type: string
-          format: date-time
-          description: Timestamp of job submitted
-        startTime:
-          type: string
-          format: date-time
-          description: Timestamp of job status changed to RUNNING
-        completionTime:
-          type: string
-          format: date-time
-          description: Timestamp of job status changed to COMPLETED/DEAD/STOPPED
-      required:
-        - id
-        - configurationId
-        - status
-        - createdAt
-        - modifiedAt
-    AiDeploymentId:
-      type: string
-      pattern: ^[\w.-]{4,64}$
-      example: aa97b177-9383-4934-8543-0f91a7a0283a
-      description: ID of the deployment
-    AiDeploymentUrl:
-      description: Consumption URL of the deployment
-      type: string
-      format: url
-    AiDeploymentList:
-      type: object
-      properties:
-        count:
-          type: integer
-          description: Number of the resource instances in the list
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/AiDeployment'
-      required:
-        - count
-        - resources
-    AiDeploymentCreationResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/AiId'
-        message:
-          $ref: '#/components/schemas/AiDeploymentCreationResponseMessage'
-        deploymentUrl:
-          $ref: '#/components/schemas/AiDeploymentUrl'
-        status:
-          $ref: '#/components/schemas/AiExecutionStatus'
-        ttl:
-          $ref: '#/components/schemas/AiDeploymentTimeToLive'
-      required:
-        - id
-        - message
-    AiDeploymentCreationResponseMessage:
-      type: string
-      description: Message
-      example: Deployment scheduled
-    AiEnactmentCreationRequest:
-      type: object
-      description: Request object for creating an execution or an deployment
-      required:
-        - configurationId
-      properties:
-        configurationId:
-          $ref: '#/components/schemas/AiConfigurationId'
-    AiDeploymentCreationRequest:
-      type: object
-      description: Request object for creating an execution or an deployment
-      required:
-        - configurationId
-      properties:
-        ttl:
-          $ref: '#/components/schemas/AiDeploymentTimeToLive'
-        configurationId:
-          $ref: '#/components/schemas/AiConfigurationId'
-    AiDeploymentModificationRequest:
-      type: object
-      description:
-        Request object for changing the target status of a deployment (currently
-        only STOPPED is supported)
-      properties:
-        targetStatus:
-          $ref: '#/components/schemas/AiDeploymentTargetStatus'
-        configurationId:
-          $ref: '#/components/schemas/AiConfigurationId'
-    AiDeploymentModificationRequestWithIdentifier:
-      type: object
-      required:
-        - targetStatus
-        - id
-      properties:
-        id:
-          $ref: '#/components/schemas/AiDeploymentId'
-        targetStatus:
-          type: string
-          description: Deployment target status
-          enum:
-            - STOPPED
-            - DELETED
-      description:
-        Request object for changing the target status of a deployment (
-        STOPPED and DELETED are supported)
-    AiDeploymentModificationRequestList:
-      type: array
-      items:
-        $ref: '#/components/schemas/AiDeploymentModificationRequestWithIdentifier'
-      uniqueItems: true
-      minItems: 1
-      maxItems: 100
-      example:
-        - id: aa97b177-9383-4934-8543-0f91a7a0283a
-          targetStatus: STOPPED
-        - id: qweq32131-qwee-1231-8543-0f91a7a2e2e
-          targetStatus: DELETED
-    AiDeploymentBulkModificationRequest:
-      type: object
-      description: Request object for changing the target status of multiple deployments
-      properties:
-        deployments:
-          $ref: '#/components/schemas/AiDeploymentModificationRequestList'
-    AiDeploymentModificationResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/AiId'
-        message:
-          $ref: '#/components/schemas/AiDeploymentModificationResponseMessage'
-      required:
-        - id
-        - message
-    AiDeploymentModificationResponseList:
-      type: array
-      items:
-        oneOf:
-          - $ref: '#/components/schemas/AiDeploymentModificationResponse'
-          - $ref: '#/components/schemas/AiApiErrorWithId'
-    AiDeploymentBulkModificationResponse:
-      type: object
-      description: Response object with array of deployments
-      properties:
-        deployments:
-          $ref: '#/components/schemas/AiDeploymentModificationResponseList'
-    AiDeploymentDeletionResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/AiId'
-        message:
-          $ref: '#/components/schemas/AiDeploymentDeletionResponseMessage'
-      required:
-        - id
-        - message
-    AiDeploymentModificationResponseMessage:
-      type: string
-      description: Message
-      example: Deployment modification scheduled
-    AiDeploymentDeletionResponseMessage:
-      type: string
-      description: Message
-      example: Deployment deletion scheduled
-    AiDeploymentResponseWithDetails:
-      type: object
-      description: Detail properties of the deployment
-      properties:
-        id:
-          $ref: '#/components/schemas/AiDeploymentId'
-        deploymentUrl:
-          $ref: '#/components/schemas/AiDeploymentUrl'
-        configurationId:
-          $ref: '#/components/schemas/AiConfigurationId'
-        configurationName:
-          $ref: '#/components/schemas/AiConfigurationName'
-        scenarioId:
-          $ref: '#/components/schemas/AiScenarioId'
-        status:
-          $ref: '#/components/schemas/AiDeploymentStatus'
-        statusMessage:
-          $ref: '#/components/schemas/AiDeploymentStatusMessage'
-        targetStatus:
-          type: string
-          description: Deployment target status
-          enum:
-            - RUNNING
-            - STOPPED
-            - DELETED
-        lastOperation:
-          type: string
-          description: Last operation applied to this deployment.
-          anyOf:
-            - enum:
-                - CREATE
-                - UPDATE
-                - DELETE
-                - CASCADE-UPDATE
-            - {}
-        latestRunningConfigurationId:
-          type: string
-          pattern: ^[\w.-]{4,64}$
-          example: aa97b177-9383-4934-8543-0f91a7a0283a
-          description:
-            configurationId that was running before a PATCH operation has
-            modified the configurationId of the deployment. This can be used for a
-            manual rollback in case the new configurationId results in a DEAD deployment
-        ttl:
-          $ref: '#/components/schemas/AiDeploymentTimeToLive'
-        details:
-          $ref: '#/components/schemas/AiDeploymentDetails'
-        createdAt:
-          type: string
-          description: Timestamp of resource creation
-          format: date-time
-        modifiedAt:
-          type: string
-          format: date-time
-          description: Timestamp of latest resource modification
-        submissionTime:
-          type: string
-          format: date-time
-          description: Timestamp of job submitted
-        startTime:
-          type: string
-          format: date-time
-          description: Timestamp of job status changed to RUNNING
-        completionTime:
-          type: string
-          format: date-time
-          description: Timestamp of job status changed to COMPLETED/DEAD/STOPPED
-        statusDetails:
-          $ref: '#/components/schemas/AiDeploymentStatusDetails'
-      required:
-        - id
-        - configurationId
-        - status
-        - createdAt
-        - modifiedAt
-    AiBackendDetails:
-      type: object
-      description: backend-specific details of the deployment
-    AiScalingDetails:
-      type: object
-      description: Scaling details of a deployment
-      example:
-        backendDetails:
-          predictor:
-            minReplicas: 0
-            maxReplicas: 2
-            runningReplicas: 1
-      properties:
-        backendDetails:
-          $ref: '#/components/schemas/AiBackendDetails'
-    AiResourcesDetails:
-      type: object
-      description: Resources details of a deployment
-      example:
-        backendDetails:
-          predictor:
-            resourcePlan: starter
-      properties:
-        backendDetails:
-          $ref: '#/components/schemas/AiBackendDetails'
-    AiDeploymentDetails:
-      type: object
-      description:
-        'Detail information about a deployment (including predefined sections:
-        `scaling` and `resources`).
-
-        JSON String representation of this object is limited to 5000 characters
-
-        '
-      properties:
-        scaling:
-          $ref: '#/components/schemas/AiScalingDetails'
-        resources:
-          $ref: '#/components/schemas/AiResourcesDetails'
-    AiDeploymentTimeToLive:
-      type: string
-      description:
-        Time to live for a deployment. Its value can be either null or
-        a number followed by the unit (any of following values, minutes(m|M), hours(h|H)
-        or days(d|D))
-      nullable: true
-      pattern: ^[0-9]+[m,M,h,H,d,D]$
-      example: 24H
-    AiArtifact:
-      description:
-        'Base data of the artifact; this is the data that can be provided
-        when the artifact is created; `name` and `kind` are required because they
-        constitute important semantic filtering criteria for use in training / inference
-        executables (`name` is a semantic handle of the artifact within a scenario
-        and `kind` specifies the type of usage, e.g. you would only want to allow
-        models in the model operator).
-
-        '
-      type: object
-      properties:
-        labels:
-          $ref: '#/components/schemas/AiLabelList'
-        name:
-          $ref: '#/components/schemas/AiArtifactName'
-        kind:
-          type: string
-          enum:
-            - model
-            - dataset
-            - resultset
-            - other
-          description: Kind of the artifact, i.e. model or dataset
-        url:
-          $ref: '#/components/schemas/AiArtifactUrl'
-        description:
-          $ref: '#/components/schemas/AiArtifactDescription'
-        id:
-          $ref: '#/components/schemas/AiArtifactId'
-        scenarioId:
-          $ref: '#/components/schemas/AiScenarioId'
-        configurationId:
-          $ref: '#/components/schemas/AiConfigurationId'
-        executionId:
-          $ref: '#/components/schemas/AiExecutionId'
-        createdAt:
-          type: string
-          description: Timestamp of resource creation
-          format: date-time
-        modifiedAt:
-          type: string
-          format: date-time
-          description: Timestamp of latest resource modification
-        scenario:
-          type: object
-          nullable: true
-          anyOf:
-            - $ref: '#/components/schemas/AiScenario'
-            - {}
-      required:
-        - name
-        - kind
-        - url
-        - id
-        - scenarioId
-        - createdAt
-        - modifiedAt
-    AiArtifactDescription:
-      type: string
-      maxLength: 5000
-      description: Description of the artifact
-    AiArtifactPostData:
-      type: object
-      description:
-        'Base data of the artifact; this is the data that can be provided
-        when the artifact is created; `name` and `kind` are required because they
-        constitute important semantic filtering criteria for use in training / inference
-        executables (`name` is a semantic handle of the artifact within a scenario
-        and `kind` specifies the type of usage, e.g. you would only want to allow
-        models in the model operator).
-
-        '
-      required:
-        - name
-        - kind
-        - url
-        - scenarioId
-      properties:
-        labels:
-          $ref: '#/components/schemas/AiLabelList'
-        name:
-          $ref: '#/components/schemas/AiArtifactName'
-        kind:
-          type: string
-          enum:
-            - model
-            - dataset
-            - resultset
-            - other
-          description: Kind of the artifact, i.e. model or dataset
-        url:
-          $ref: '#/components/schemas/AiArtifactUrl'
-        description:
-          $ref: '#/components/schemas/AiArtifactDescription'
-        scenarioId:
-          $ref: '#/components/schemas/AiScenarioId'
-    AiArtifactCreationResponse:
-      type: object
-      required:
-        - id
-        - message
-        - url
-      properties:
-        id:
-          $ref: '#/components/schemas/AiId'
-        message:
-          $ref: '#/components/schemas/AiArtifactCreationResponseMessage'
-        url:
-          $ref: '#/components/schemas/AiArtifactUrl'
-    AiArtifactCreationResponseMessage:
-      type: string
-      description: Message
-      example: Artifact acknowledged
-    AiArtifactId:
-      type: string
-      pattern: ^[\w.-]{4,64}$
-      example: aa97b177-9383-4934-8543-0f91a7a0283a
-      description: ID of the artifact
-    AiArtifactName:
-      type: string
-      pattern: ^[\w\s.!?,;:\[\](){}<>"'=+*/\\^&%@~$#|-]*$
-      maxLength: 256
-      description: Name of the artifact
-    AiArtifactUrl:
-      type: string
-      pattern: ([a-z0-9-]+):\/\/.+
-      maxLength: 1024
-      example: https://example.com/some_path
-      description: 'Reference to the location of the artifact.
-
-        '
-    AiArtifactList:
-      type: object
-      properties:
-        count:
-          type: integer
-          description: Number of the resource instances in the list
-        resources:
-          $ref: '#/components/schemas/AiArtifactArray'
-      required:
-        - count
-        - resources
-    AiArtifactArray:
-      type: array
-      items:
-        $ref: '#/components/schemas/AiArtifact'
-    AiLogCommonData:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/AiLogCommonResult'
-    AiLogCommonResult:
-      type: array
-      items:
-        $ref: '#/components/schemas/AiLogCommonResultItem'
-    AiLogCommonResultItem:
-      type: object
-      description: Common log record.
-      properties:
-        timestamp:
-          description: Datetime in RFC 3339.
-          type: string
-          format: date-time
-          example: '2021-05-19T00:00:14.347+00:00'
-        msg:
-          description: message content.
-          type: string
-    AiId:
-      type: string
-      pattern: ^[\w.-]{4,64}$
-      example: aa97b177-9383-4934-8543-0f91a7a0283a
-      description: Generic ID
-    AiVersionId:
-      description: Version ID
-      type: string
-    AiVersionDescription:
-      type: string
-      maxLength: 5000
-      example: This is version v1
-      description: Version description
-    AiCreationResponseMessage:
-      type: string
-      description: Message
-      example: Created
-    AiUrl:
-      type: string
-      format: url
-    AiApiErrorWithId:
-      type: object
-      required:
-        - id
-        - error
-      properties:
-        id:
-          $ref: '#/components/schemas/AiId'
-        error:
-          $ref: '#/components/schemas/AiApiError'
-    AiApiError:
-      type: object
-      required:
-        - code
-        - message
-      properties:
-        code:
-          type: string
-          description: Descriptive error code (not http status code)
-        message:
-          type: string
-          description: Plaintext error description
         requestId:
           type: string
           description: ID of the individual request
@@ -5736,9 +6019,9 @@ components:
       minLength: 1
       type: string
       example:
-        "[{'Predicted': 'False',\t'Actual': 'False','value': 34},{'Predicted':\
-        \ 'False','Actual': 'True',\t'value': 124}, {'Predicted': 'True','Actual':\
-        \ 'False','value': 165},{\t'Predicted': 'True','Actual': 'True','value': 36}]"
+        "[{'Predicted': 'False',\t'Actual': 'False','value': 34},{'Predicted':
+        'False','Actual': 'True',\t'value': 124}, {'Predicted': 'True','Actual': 'False','value':
+        165},{\t'Predicted': 'True','Actual': 'True','value': 36}]"
     TrckMlapiExecutionId:
       description: Generic ID
       pattern: ^[\w.-]{4,64}$
@@ -5798,553 +6081,220 @@ components:
         - value2
       items:
         type: string
-    RTAId:
-      type: string
-      pattern: ^[\w.-]{4,64}$
-      example: aa97b177-9383-4934-8543-0f91a7a0283a
-      description: Generic ID
-    RTATtl:
-      type: string
-      pattern: ^[0-9]+[m,M,h,H,d,D]$
-      example: 24H
-      description: TTL value of deployment
-    RTALabelList:
-      type: array
-      description: Arbitrary labels as meta information
-      items:
-        $ref: '#/components/schemas/RTALabel'
-    RTAArtifactLabelList:
-      type: array
-      description: Arbitrary labels as meta information
-      items:
-        $ref: '#/components/schemas/RTAArtifactLabel'
-    RTALabel:
+    MetaCapabilities:
       type: object
       required:
-        - key
-        - value
+        - aiApi
       properties:
-        key:
+        runtimeIdentifier:
           type: string
-          example: ai.sap.com/scenarioName
-          pattern: ^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)*ai\.sap\.com\/[\w\.-]+$
-        value:
-          type: string
-          maxLength: 5000
-    RTAArtifactLabel:
-      type: object
-      required:
-        - key
-        - value
-      properties:
-        key:
-          type: string
-          example: ext.ai.sap.com/s4hana-version
-          pattern: ^ext\.ai\.sap\.com\/[\w\.-]+$
-          maxLength: 256
-        value:
-          type: string
-          maxLength: 5000
-    RTACreationResponseMessage:
-      type: string
-      description: Message
-      example: Created
-    RTAScenarioId:
-      type: string
-      pattern: ^[\w.-]{4,64}$
-      example: aa97b177-9383-4934-8543-0f91a7a0283a
-      description: ID of the scenario
-    RTAScenario:
-      type: object
-      description: Entity having labels
-      required:
-        - id
-        - name
-        - createdAt
-        - modifiedAt
-      properties:
-        id:
-          $ref: '#/components/schemas/RTAScenarioId'
-        name:
-          type: string
-          maxLength: 256
-          description: Name of the scenario
+          example: aicore
+          description: The name of the runtime
+        runtimeApiVersion:
+          $ref: '#/components/schemas/MetaVersion'
         description:
           type: string
-          maxLength: 5000
-          description: Description of the scenario
-        labels:
-          $ref: '#/components/schemas/RTALabelList'
-        createdAt:
-          type: string
-          description: Timestamp of resource creation
-          format: date-time
-        modifiedAt:
-          type: string
-          format: date-time
-          description: Timestamp of latest resource modification
-    RTAExecutableId:
-      type: string
-      pattern: ^[\w.-]{4,64}$
-      example: aa97b177-9383-4934-8543-0f91a7a0283a
-      description: ID of the executable
-    RTAExecutable:
-      description: Entity having labels
-      type: object
-      required:
-        - id
-        - name
-        - scenarioId
-        - deployable
-        - createdAt
-        - modifiedAt
-      properties:
-        id:
-          $ref: '#/components/schemas/RTAExecutableId'
-        name:
-          type: string
-          description: Name of the executable
-        description:
-          type: string
-          description: Description of the executable
-        scenarioId:
-          $ref: '#/components/schemas/RTAScenarioId'
-        inputArtifacts:
-          $ref: '#/components/schemas/RTAExecutableInputArtifactList'
-        outputArtifacts:
-          $ref: '#/components/schemas/RTAExecutableOutputArtifactList'
-        parameters:
-          $ref: '#/components/schemas/RTAExecutableParameterList'
-        deployable:
-          type: boolean
-          description: Whether this pipeline is deployable
-          example: false
-        labels:
-          $ref: '#/components/schemas/RTALabelList'
-        createdAt:
-          type: string
-          description: Timestamp of resource creation
-          format: date-time
-        modifiedAt:
-          type: string
-          format: date-time
-          description: Timestamp of latest resource modification
-    RTAExecutableParameterList:
-      type: array
-      description: Executable parameters
-      items:
-        $ref: '#/components/schemas/RTAExecutableParameter'
-    RTAExecutableParameter:
-      type: object
-      description: Argument of an executable
-      required:
-        - name
-      properties:
-        name:
-          type: string
-          description: Name of the signature argument
-        description:
-          type: string
-          maxLength: 5000
-          description: Description of the signature argument
-        default:
-          type: string
-          description: Default value of the signature argument
-        type:
-          type: string
-          enum:
-            - string
-          description: Type of the signature argument
-    RTAExecutableInputArtifactList:
-      type: array
-      description: List of Artifacts that the executable expects as input artifacts
-      items:
-        $ref: '#/components/schemas/RTAExecutableArtifact'
-    RTAExecutableOutputArtifactList:
-      type: array
-      description:
-        List of Artifacts that the executable will produce. If storage
-        is not managed internally, a storage location will have to be specified when
-        triggering an execution
-      items:
-        $ref: '#/components/schemas/RTAExecutableArtifact'
-    RTAExecutableArtifact:
-      type: object
-      description: Input or output artifact
-      required:
-        - name
-      properties:
-        name:
-          type: string
-          description: Name of the signature argument
-        description:
-          type: string
-          maxLength: 5000
-          description: Description of the signature argument
-        kind:
-          type: string
-          description: Kind of the artifact, i.e. model or dataset
-        labels:
-          $ref: '#/components/schemas/RTAArtifactLabelList'
-    RTAModelBaseData:
-      type: object
-      required:
-        - model
-        - executableId
-        - description
-        - versions
-      properties:
-        model:
-          type: string
-          description: Name of the model
-        executableId:
-          $ref: '#/components/schemas/RTAExecutableId'
-        description:
-          type: string
-          description: Description of the model and its capabilities
-        versions:
-          $ref: '#/components/schemas/RTAModelVersionList'
-    RTAModelVersionList:
-      type: array
-      description: List of model versions that the model object has
-      items:
-        $ref: '#/components/schemas/RTAModelVersion'
-    RTAModelVersion:
-      type: object
-      description: Model version information including whether it is latest version
-      required:
-        - name
-        - isLatest
-      properties:
-        name:
-          type: string
-          description: Name of model version
-        isLatest:
-          type: boolean
-          description: Displays whether it is the latest version offered for the model
-    RTAArtifact:
-      description: Entity having labels
-      type: object
-      required:
-        - name
-        - url
-        - executionId
-        - kind
-        - createdAt
-      properties:
-        name:
-          type: string
-          maxLength: 256
-          description:
-            Name of the artifact; this is used for dependent pipelines
-            to resolve an artifact
-        executionId:
-          $ref: '#/components/schemas/RTAExecutionId'
-        url:
-          $ref: '#/components/schemas/RTAArtifactUrl'
-        signature:
-          $ref: '#/components/schemas/RTAArtifactSignature'
-        kind:
-          type: string
-          enum:
-            - model
-            - dataset
-            - resultset
-            - other
-          description: Kind of the artifact, i.e. model or dataset
-        labels:
-          $ref: '#/components/schemas/RTALabelList'
-        createdAt:
-          type: string
-          description: Timestamp of resource creation
-          format: date-time
-    RTAArtifactName:
-      type: string
-      maxLength: 256
-    RTAArtifactUrl:
-      type: string
-      pattern: ([a-z0-9-]+):\/\/.+
-      maxLength: 1024
-      example: s3://some_bucket/some_path
-      description: "Reference to the location of the artifact.
-
-        Note, the credentials will be found in a secret called
-
-        'some_bucket-object_store_secret'. If not provided, a default will be assumed.
-
-        "
-    RTAArtifactSignature:
-      type: string
-      maxLength: 256
-    RTAArtifactArray:
-      type: array
-      items:
-        $ref: '#/components/schemas/RTAArtifact'
-    RTADeployment:
-      type: object
-      description: Detailed data about an inference-pipeline deployment
-      required:
-        - scenarioId
-        - executableId
-        - createdAt
-        - modifiedAt
-      properties:
-        scenarioId:
-          $ref: '#/components/schemas/RTAScenarioId'
-        executableId:
-          $ref: '#/components/schemas/RTAExecutableId'
-        id:
-          $ref: '#/components/schemas/RTADeploymentId'
-        deploymentUrl:
-          $ref: '#/components/schemas/RTADeploymentUrl'
-        latestRunningTargetId:
-          $ref: '#/components/schemas/RTALatestRunningTargetId'
-        targetId:
-          $ref: '#/components/schemas/RTATargetId'
-        ttl:
-          $ref: '#/components/schemas/RTATtl'
-        status:
-          type: string
-          description: Deployment status
-          enum:
-            - PENDING
-            - RUNNING
-            - COMPLETED
-            - DEAD
-            - UNKNOWN
-            - DELETING
-        statusMessage:
-          type: string
-          description: Deployment status message
-          maxLength: 256
-        lastOperation:
-          type: string
-          description:
-            Reflection of user's action on deployment. The value will be
-            CREATE after user sends POST - create deployment, UPDATE after user sends
-            PATCH - update deployment, and DELETE after user sends DELETE - delete
-            deployment
-          enum:
-            - CREATE
-            - UPDATE
-            - CASCADE-UPDATE
-            - DELETE
-        createdAt:
-          type: string
-          description: Timestamp of resource creation
-          format: date-time
-        modifiedAt:
-          type: string
-          format: date-time
-          description: Timestamp of latest resource modification
-    RTADeploymentId:
-      type: string
-      pattern: ^[\w.-]{4,64}$
-      example: aa97b177-9383-4934-8543-0f91a7a0283a
-      description: ID of the deployment
-    RTATargetId:
-      type: string
-      pattern: ^[\w.-]{4,64}$
-      example: aa97b177-9383-4934-8543-0f91a7a0283a
-      description:
-        Client provided reference, with which the status of a PATCHed deployment
-        can be tracked
-    RTALatestRunningTargetId:
-      type: string
-      pattern: ^[\w.-]{4,64}$
-      example: aa97b177-9383-4934-8543-0f91a7a0283a
-      description: Target ID of the latest running deployment
-    RTADeploymentUrl:
-      description: Consumption URL of the pipeline deployment
-      type: string
-      format: url
-    RTADeploymentCreationResponseMessage:
-      type: string
-      description: Message
-      example: Deployment scheduled
-    RTADeploymentCascadeUpdateResponseMessage:
-      type: string
-      description: Message
-      example: Deployment Cascade Update scheduled
-    RTADeploymentDeletionResponseMessage:
-      type: string
-      description: Message
-      example: Deployment deletion scheduled
-    RTADeploymentModificationResponseMessage:
-      type: string
-      description: Message
-      example: Deployment modification scheduled
-    RTADeploymentStatusDetails:
-      type: object
-      description: Current status details of the deployment
-    RTADeploymentDetails:
+        aiApi:
+          $ref: '#/components/schemas/MetaAiApi'
+        extensions:
+          $ref: '#/components/schemas/MetaExtensions'
+    MetaExtensions:
       type: object
       properties:
-        scaling:
-          $ref: '#/components/schemas/RTABackendDetails'
-        resources:
-          $ref: '#/components/schemas/RTABackendDetails'
-    RTABackendDetails:
-      type: object
-      properties:
-        backendDetails:
+        analytics:
           type: object
-          description: Current details of the deployment
-    RTAExecution:
+          required:
+            - version
+          properties:
+            version:
+              $ref: '#/components/schemas/MetaVersion'
+        resourceGroups:
+          type: object
+          required:
+            - version
+          properties:
+            version:
+              $ref: '#/components/schemas/MetaVersion'
+        dataset:
+          type: object
+          properties:
+            version:
+              $ref: '#/components/schemas/MetaVersion'
+            capabilities:
+              description: List of Dataset extension capabilities
+              type: object
+              properties:
+                upload:
+                  description: Support for uploading of files
+                  type: boolean
+                  default: true
+                download:
+                  description: Support for downloading of files
+                  type: boolean
+                  default: true
+                delete:
+                  description: Support for deletion of files
+                  type: boolean
+                  default: true
+            limits:
+              type: object
+              properties:
+                maxUploadFileSize:
+                  type: integer
+                  description:
+                    Max size (in bytes) of a single uploaded file allowed
+                    by this runtime per resource group.
+                  default: 104857600
+                maxFilesPerDataset:
+                  description: Max number of files per dataset. <0 means unlimited.
+                  type: integer
+                  default: -1
+                acceptedContentTypes:
+                  type: array
+                  items:
+                    type: string
+                    pattern: ^\w+\/([\w+-]\.)?[\w.-]+(\+[\w-]+)*$
+          required:
+            - version
+        metrics:
+          type: object
+          properties:
+            version:
+              $ref: '#/components/schemas/MetaVersion'
+            capabilities:
+              description: List of Metrics extension capabilities
+              type: object
+              properties:
+                extendedResults:
+                  description: Support for returning extended results
+                  type: boolean
+                  default: false
+          required:
+            - version
+    MetaAiApi:
+      description:
+        There are (currently) the following types of execution engines  1)
+        complete runtimes that offer executions and deployments, 2) runtimes that
+        do only batch inference and therefore don't support deployments 3) runtimes
+        that allow deployments, but with predefined models and therefore don't need
+        executions 4) runtimes that have fixed endpoints and therefore only need listing
+        deployments
       type: object
-      description: Execution
-      required:
-        - scenarioId
-        - executableId
-        - createdAt
-        - modifiedAt
       properties:
-        scenarioId:
-          $ref: '#/components/schemas/RTAScenarioId'
-        executableId:
-          $ref: '#/components/schemas/RTAExecutableId'
-        id:
-          $ref: '#/components/schemas/RTAExecutionId'
-        status:
-          type: string
-          description: Status of the execution
-          enum:
-            - PENDING
-            - RUNNING
-            - COMPLETED
-            - DEAD
-            - STOPPING
-            - STOPPED
-            - UNKNOWN
-          example: COMPLETED
-        statusMessage:
-          type: string
-          description: Execution status message
-          maxLength: 256
-        submissionTimestamp:
-          type: string
-          description: Timestamp of execution submission
-          format: date-time
-          example: '2017-09-15T12:01:06Z'
-          nullable: true
-        startTimestamp:
-          type: string
-          description: Timestamp of execution start
-          format: date-time
-          example: '2017-09-15T12:01:06Z'
-          nullable: true
-        finishTimestamp:
-          type: string
-          description: Timestamp of execution finish
-          format: date-time
-          example: '2017-09-15T12:01:06Z'
-          nullable: true
-        createdAt:
-          type: string
-          description: Timestamp of resource creation
-          format: date-time
-        modifiedAt:
-          type: string
-          format: date-time
-          description: Timestamp of latest resource modification
-    RTAInputArtifactArgumentBinding:
+        version:
+          $ref: '#/components/schemas/MetaVersion'
+        capabilities:
+          type: object
+          properties:
+            multitenant:
+              type: boolean
+              description:
+                true-> AI API implementation supports resource groups (Main
+                Tenant scenario), false-> implementation does not support resource
+                groups (Service Tenant scenario)
+              default: true
+            shareable:
+              type: boolean
+              description:
+                true-> clients can use just one instance (global static
+                models), false-> clients should avoid sharing an instance
+              default: true
+            staticDeployments:
+              type: boolean
+              description:
+                There are static always running endpoints that can be used
+                for inference without the need to do user deployments.
+              default: true
+            userDeployments:
+              type: boolean
+              description:
+                Services that only support batch inference typically neither
+                allow listing nor creation of deployments. For these, userDeployments
+                == false
+              default: true
+            userExecutions:
+              type: boolean
+              default: true
+            timeToLiveDeployments:
+              type: boolean
+              default: false
+            executionSchedules:
+              type: boolean
+              default: false
+            logs:
+              type: object
+              properties:
+                executions:
+                  type: boolean
+                  default: true
+                deployments:
+                  type: boolean
+                  default: true
+            bulkUpdates:
+              type: object
+              description:
+                Services that support patch on /executions and /deployments
+                to change targetStatus of multiple executions and deployments.
+              properties:
+                executions:
+                  type: boolean
+                  default: false
+                deployments:
+                  type: boolean
+                  default: false
+        limits:
+          type: object
+          properties:
+            executions:
+              type: object
+              properties:
+                maxRunningCount:
+                  description:
+                    Max nr of executions allowed by this runtime per resource
+                    group. <0 means unlimited.
+                  type: integer
+                  default: -1
+            deployments:
+              type: object
+              properties:
+                maxRunningCount:
+                  description:
+                    Max nr of deployments allowed by this runtime per resource
+                    group. <0 means unlimited.
+                  type: integer
+                  default: -1
+            timeToLiveDeployments:
+              type: object
+              properties:
+                minimum:
+                  type: string
+                  default: 10m
+                maximum:
+                  type: string
+                  default: '-1'
+      required:
+        - version
+    MetaVersion:
+      example: 1.2.3
+      type: string
+      pattern: ^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$
+    MetaAPIVersion:
       type: object
-      required:
-        - name
-        - url
       properties:
-        name:
-          $ref: '#/components/schemas/RTAArtifactName'
+        versionId:
+          type: string
+          description: API version identifier
+          example: v1
         url:
-          $ref: '#/components/schemas/RTAArtifactUrl'
-        signature:
-          $ref: '#/components/schemas/RTAArtifactSignature'
-      description: Required for execution
-    RTAOutputArtifactArgumentBinding:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          $ref: '#/components/schemas/RTAArtifactName'
-        url:
-          $ref: '#/components/schemas/RTAArtifactUrl'
-      description: Result of execution
-    RTAExecutableArgumentBinding:
-      type: object
-      required:
-        - key
-        - value
-      properties:
-        key:
           type: string
-          maxLength: 256
-        value:
+          description: URL of the API version
+          example: https://api.example.com/v1
+        description:
           type: string
-      description: 'Required for execution
-
-        Result of activation
-
-        '
-    RTAExecutionId:
-      type: string
-      pattern: ^[\w.-]{4,64}$
-      example: aa97b177-9383-4934-8543-0f91a7a0283a
-      description: ID of the execution
-    RTAExecutionCreationResponseMessage:
-      type: string
-      description: Message
-      example: Execution scheduled
-    RTAExecutionModificationResponseMessage:
-      type: string
-      description: Message
-      example: Execution modification scheduled
-    RTAExecutionDeletionResponseMessage:
-      type: string
-      description: Message
-      example: Execution deletion scheduled
-    RTAExecutionStatusDetails:
-      type: object
-      description: Current status details of the execution
-    RTALogCommonResponse:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/RTALogCommonData'
-      description: 'A common log query response.
-
-        '
-    RTALogCommonData:
-      type: object
-      properties:
-        result:
-          $ref: '#/components/schemas/RTALogCommonResult'
-    RTALogCommonResult:
-      type: array
-      items:
-        $ref: '#/components/schemas/RTALogCommonResultItem'
-    RTALogCommonResultItem:
-      type: object
-      description: Common log record.
-      properties:
-        timestamp:
-          $ref: '#/components/schemas/RTAtimestamp'
-        msg:
-          $ref: '#/components/schemas/RTAmessage'
-    RTAtimestamp:
-      description: Datetime in RFC 3339.
-      type: string
-      format: date-time
-      example: '2021-05-19T00:00:14.347+00:00'
-    RTAmessage:
-      description: message content.
-      type: string
-    RTAErrorResponse:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/RTAError'
-    RTAError:
+          description: version description
+          example: Example API
+      description: API version description
+    MetaApiError:
       type: object
       required:
         - code
@@ -6356,7 +6306,101 @@ components:
         message:
           type: string
           description: Plaintext error description
-          example: something went wrong
+        requestId:
+          type: string
+          description: ID of the individual request
+        target:
+          type: string
+          description: Invoked URL
+        details:
+          description: Optional details of the error message
+          type: object
+    KpiColumnName:
+      readOnly: true
+      type: string
+      description: Name of the Column
+      anyOf:
+        - enum:
+            - ResourceGroup
+            - Scenario
+            - Executable
+            - Executions
+            - Artifacts
+            - Deployments
+        - {}
+    KpiArrayOfColumnNames:
+      uniqueItems: true
+      type: array
+      readOnly: true
+      items:
+        $ref: '#/components/schemas/KpiColumnName'
+    KpiAggregationAttribute:
+      type: string
+      title: Aggregation Attribute
+      readOnly: true
+    KpiCountAggregate:
+      type: integer
+      title: CountAggregate
+      format: int64
+      minimum: 0
+      x-examples: {}
+      readOnly: true
+    KpiResultRow:
+      type: array
+      title: ResultRow
+      uniqueItems: false
+      x-examples: {}
+      description: ''
+      items:
+        $ref: '#/components/schemas/KpiResultRowItem'
+      readOnly: true
+    KpiResultRowItem:
+      title: ResultRowItem
+      anyOf:
+        - $ref: '#/components/schemas/KpiAggregationAttribute'
+        - $ref: '#/components/schemas/KpiCountAggregate'
+      x-examples: {}
+    KpiResultRowList:
+      title: ResultRowList
+      type: array
+      items:
+        $ref: '#/components/schemas/KpiResultRow'
+    KpiResultSet:
+      type: object
+      title: ResultSet
+      x-examples:
+        example-1:
+          header:
+            - ResourceGroup
+            - Executions
+            - Artifacts
+            - Deployments
+          rows:
+            - - 00112233-4455-6677-8899-aabbccddeeff
+              - 30
+              - 30
+              - 3
+      additionalProperties: false
+      minProperties: 2
+      maxProperties: 2
+      properties:
+        header:
+          $ref: '#/components/schemas/KpiArrayOfColumnNames'
+        rows:
+          $ref: '#/components/schemas/KpiResultRowList'
+      readOnly: true
+    KpiApiError:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: Descriptive error code (not http status code)
+        message:
+          type: string
+          description: Plaintext error description
         requestId:
           type: string
           description: ID of the individual request
@@ -6367,169 +6411,128 @@ components:
           description: Optional details of the error message
           type: object
   parameters:
-    BckndtokenHeader:
+    RTAtokenHeader:
       name: Authorization
       in: header
       description: Authorization bearer token containing a JWT token.
       required: false
       schema:
         type: string
-    Bckndai-resource-group:
-      name: AI-Resource-Group
-      in: header
-      description: Specify an existing resource group id to use
-      required: false
-      schema:
-        type: string
-    Bckndai-resource-group-default:
-      name: AI-Resource-Group
-      in: header
-      description:
-        Specify an existing resource group id to use. Uses "default" if
-        value not provided.
-      required: false
-      schema:
-        type: string
-        default: default
-    Bckndai-tenant-scope:
-      name: AI-Tenant-Scope
-      in: header
-      description: Specify whether the main tenant scope is to be used
-      required: false
-      schema:
-        type: boolean
-      example: true
-    Bckndtop:
+    RTAlimit:
+      in: query
       name: $top
-      description: Number of results to display
-      in: query
+      description:
+        The max number of entries to return. Defaults to 1000. Limited
+        to 5000 max.
       required: false
       schema:
         type: integer
-        minimum: 0
-      example: 10
-    Bckndskip:
-      name: $skip
-      description: Number of results to be skipped from the ordered list of results
-      in: query
-      required: false
-      schema:
-        type: integer
-        minimum: 0
-      example: 10
-    Bckndcount:
-      name: $count
-      description:
-        When the $count field is set to false, the response contains a
-        count of the items present in the response. When the $count field is set to
-        true, the response contains a count of all the items present on the server,
-        and not just the ones in the response. When the $count field is not passed,
-        it is false by default.
-      in: query
-      required: false
-      schema:
-        type: boolean
-      example: true
-    BckndresourceGroupId:
-      name: resourceGroupId
-      description: Resource group identifier
-      in: path
-      required: true
-      schema:
-        type: string
-        pattern: ^[a-zA-Z0-9][a-zA-Z0-9.-]{1,251}[a-zA-Z0-9]$
-        minLength: 3
-        maxLength: 253
-      example: my-test-rg
-    BckndobjectStoreName:
-      name: objectStoreName
-      description: Name of the object store for the secret.
-      in: path
-      required: true
-      schema:
-        type: string
-        pattern: ^[a-zA-Z0-9\.\-_]+$
-      example: My_objectStore
-    BcknddockerRegistryName:
-      name: dockerRegistryName
-      description: Name of the docker Registry store for the secret.
-      in: path
-      required: true
-      schema:
-        type: string
-        pattern: ^[a-z0-9](?:_?[a-z0-9\.\-]+)*[a-z0-9]$
-        maxLength: 63
-      example: mydockeregistry
-    BckndsecretName:
-      name: secretName
-      in: path
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 252
-        pattern: ^[a-z0-9\-\.]+$
-    BckndrepositoryName:
-      name: repositoryName
-      description: Name of the repository
-      in: path
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 51
-        pattern: ^[a-z0-9\-]+$
-      example: tenant-application
-    BckndapplicationName:
-      name: applicationName
-      description: Name of the ArgoCD application
-      in: path
-      required: true
-      schema:
-        type: string
-        minLength: 3
-        maxLength: 54
-        pattern: ^[a-z0-9\-]+$
-      example: tenant-application
-    BckndServiceName:
-      name: ServiceName
-      description: Name of the Service
-      in: path
-      required: true
-      schema:
-        type: string
-        pattern: ^[a-zA-Z0-9\-_]+$
-        minLength: 1
-        maxLength: 32
-      example: cashapp
-    BckndquotaOnly:
-      name: quotaOnly
-      description:
-        When being set to true, the response contains only the quota of
-        the resource and not the quota usage.
-      in: query
-      required: false
-      schema:
-        type: boolean
-      example: true
-    KpiquerySelect:
-      name: $select
-      description: Columns to select
-      in: query
-      required: false
-      schema:
-        uniqueItems: true
-        type: array
-        readOnly: true
+        minimum: 1
+        maximum: 5000
+        default: 1000
+      examples:
+        min:
+          value: 1
+          summary: Min number of entries to return
+        max:
+          value: 5000
+          summary: Max number of entries to return
         default:
-          - ResourceGroup
-          - Executions
-          - Artifacts
-          - Deployments
-        items:
-          $ref: '#/components/schemas/KpiColumnName'
-      style: form
-      explode: false
+          value: 1000
+          summary: default number of entries to return
+    RTAstart:
+      name: start
+      in: query
+      description:
+        The start time for the query as a RFC 3339 datetime format. Defaults
+        to one hour ago. + in timezone need to be encoded to %2B.
+      required: false
+      schema:
+        type: string
+        format: date-time
+      examples:
+        zulu:
+          value: '2021-05-19T00:00:14.347Z'
+          summary: Datetime example use Z as timezone
+        utc:
+          value: 2021-05-19T00:00:14.347%2B00:00
+          summary:
+            Datetime example use +00:00 as timezone, where + is encoded to
+            %2B
+        local-plus:
+          value: 2021-05-19T08:00:14.347%2B08:00
+          summary:
+            Datetime example use +08:00 as timezone, where + is encoded to
+            %2B
+        local-minus:
+          value: '2021-05-18T16:00:14.347-08:00'
+          summary: Datetime example use -08:00 as timezone
+    RTAend:
+      name: end
+      in: query
+      description:
+        The end time for the query as a RFC 3339 datetime format. Defaults
+        to now. + in timezone need to be encoded to %2B.
+      required: false
+      schema:
+        type: string
+        format: date-time
+      examples:
+        zulu:
+          value: '2021-05-19T01:00:14.347Z'
+          summary: Datetime example use Z as timezone
+        utc:
+          value: 2021-05-19T01:00:14.347%2B00:00
+          summary:
+            Datetime example use +00:00 as timezone, where + is encoded to
+            %2B
+        local-plus:
+          value: 2021-05-19T09:00:14.347%2B08:00
+          summary:
+            Datetime example use +08:00 as timezone, where + is encoded to
+            %2B
+        local-minus:
+          value: '2021-05-18T17:00:14.347-08:00'
+          summary: Datetime example use -08:00 as timezone
+    RTAorder:
+      name: $order
+      in: query
+      description:
+        "Determines the sort order. Supported values are asc or desc. Defaults
+        to asc. Sort order:\n  * `asc` - Ascending, earliest in the order will appear
+        at the top of the list\n  * `desc` - Descending, last in the order will appear
+        at the top of the list\n"
+      required: false
+      schema:
+        type: string
+        enum:
+          - asc
+          - desc
+      examples:
+        asc:
+          value: asc
+          summary: Sort the results in ascending order
+        desc:
+          value: desc
+          summary: Sort the results in descending order
+    RTAexecutionId:
+      name: executionId
+      description: Execution identifier
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[\w.-]{4,64}$
+      example: aa97b177-9383-4934-8543-0f91a7a0283a
+    RTAdeploymentId:
+      name: deploymentId
+      description: Deployment identifier
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[\w.-]{4,64}$
+      example: aa97b177-9383-4934-8543-0f91a7a0283a
     DSetresourceGroupHeader:
       in: header
       name: AI-Resource-Group
@@ -6847,6 +6850,151 @@ components:
           - status
       example: status
       x-visible: false
+    BckndtokenHeader:
+      name: Authorization
+      in: header
+      description: Authorization bearer token containing a JWT token.
+      required: false
+      schema:
+        type: string
+    Bckndai-resource-group:
+      name: AI-Resource-Group
+      in: header
+      description: Specify an existing resource group id to use
+      required: false
+      schema:
+        type: string
+    Bckndai-resource-group-default:
+      name: AI-Resource-Group
+      in: header
+      description:
+        Specify an existing resource group id to use. Uses "default" if
+        value not provided.
+      required: false
+      schema:
+        type: string
+        default: default
+    Bckndai-tenant-scope:
+      name: AI-Tenant-Scope
+      in: header
+      description: Specify whether the main tenant scope is to be used
+      required: false
+      schema:
+        type: boolean
+      example: true
+    Bckndtop:
+      name: $top
+      description: Number of results to display
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+      example: 10
+    Bckndskip:
+      name: $skip
+      description: Number of results to be skipped from the ordered list of results
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+      example: 10
+    Bckndcount:
+      name: $count
+      description:
+        When the $count field is set to false, the response contains a
+        count of the items present in the response. When the $count field is set to
+        true, the response contains a count of all the items present on the server,
+        and not just the ones in the response. When the $count field is not passed,
+        it is false by default.
+      in: query
+      required: false
+      schema:
+        type: boolean
+      example: true
+    BckndresourceGroupId:
+      name: resourceGroupId
+      description: Resource group identifier
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[a-zA-Z0-9][a-zA-Z0-9.-]{1,251}[a-zA-Z0-9]$
+        minLength: 3
+        maxLength: 253
+      example: my-test-rg
+    BckndobjectStoreName:
+      name: objectStoreName
+      description: Name of the object store for the secret.
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[a-zA-Z0-9\.\-_]+$
+      example: My_objectStore
+    BcknddockerRegistryName:
+      name: dockerRegistryName
+      description: Name of the docker Registry store for the secret.
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[a-z0-9](?:_?[a-z0-9\.\-]+)*[a-z0-9]$
+        maxLength: 63
+      example: mydockeregistry
+    BckndsecretName:
+      name: secretName
+      in: path
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 252
+        pattern: ^[a-z0-9\-\.]+$
+    BckndrepositoryName:
+      name: repositoryName
+      description: Name of the repository
+      in: path
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 51
+        pattern: ^[a-z0-9\-]+$
+      example: tenant-application
+    BckndapplicationName:
+      name: applicationName
+      description: Name of the ArgoCD application
+      in: path
+      required: true
+      schema:
+        type: string
+        minLength: 3
+        maxLength: 54
+        pattern: ^[a-z0-9\-]+$
+      example: tenant-application
+    BckndServiceName:
+      name: ServiceName
+      description: Name of the Service
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[a-zA-Z0-9\-_]+$
+        minLength: 1
+        maxLength: 32
+      example: cashapp
+    BckndquotaOnly:
+      name: quotaOnly
+      description:
+        When being set to true, the response contains only the quota of
+        the resource and not the quota usage.
+      in: query
+      required: false
+      schema:
+        type: boolean
+      example: true
     TrckqueryFilter:
       example: executionId eq 'aa97b177-9383-4934-8543-0f91b7a0283a'
       name: $filter
@@ -6901,176 +7049,51 @@ components:
       schema:
         type: string
       required: true
-    RTAtokenHeader:
-      name: Authorization
-      in: header
-      description: Authorization bearer token containing a JWT token.
-      required: false
-      schema:
-        type: string
-    RTAlimit:
+    KpiquerySelect:
+      name: $select
+      description: Columns to select
       in: query
-      name: $top
-      description:
-        The max number of entries to return. Defaults to 1000. Limited
-        to 5000 max.
       required: false
       schema:
-        type: integer
-        minimum: 1
-        maximum: 5000
-        default: 1000
-      examples:
-        min:
-          value: 1
-          summary: Min number of entries to return
-        max:
-          value: 5000
-          summary: Max number of entries to return
+        uniqueItems: true
+        type: array
+        readOnly: true
         default:
-          value: 1000
-          summary: default number of entries to return
-    RTAstart:
-      name: start
-      in: query
-      description:
-        The start time for the query as a RFC 3339 datetime format. Defaults
-        to one hour ago. + in timezone need to be encoded to %2B.
-      required: false
-      schema:
-        type: string
-        format: date-time
-      examples:
-        zulu:
-          value: '2021-05-19T00:00:14.347Z'
-          summary: Datetime example use Z as timezone
-        utc:
-          value: 2021-05-19T00:00:14.347%2B00:00
-          summary:
-            Datetime example use +00:00 as timezone, where + is encoded to
-            %2B
-        local-plus:
-          value: 2021-05-19T08:00:14.347%2B08:00
-          summary:
-            Datetime example use +08:00 as timezone, where + is encoded to
-            %2B
-        local-minus:
-          value: '2021-05-18T16:00:14.347-08:00'
-          summary: Datetime example use -08:00 as timezone
-    RTAend:
-      name: end
-      in: query
-      description:
-        The end time for the query as a RFC 3339 datetime format. Defaults
-        to now. + in timezone need to be encoded to %2B.
-      required: false
-      schema:
-        type: string
-        format: date-time
-      examples:
-        zulu:
-          value: '2021-05-19T01:00:14.347Z'
-          summary: Datetime example use Z as timezone
-        utc:
-          value: 2021-05-19T01:00:14.347%2B00:00
-          summary:
-            Datetime example use +00:00 as timezone, where + is encoded to
-            %2B
-        local-plus:
-          value: 2021-05-19T09:00:14.347%2B08:00
-          summary:
-            Datetime example use +08:00 as timezone, where + is encoded to
-            %2B
-        local-minus:
-          value: '2021-05-18T17:00:14.347-08:00'
-          summary: Datetime example use -08:00 as timezone
-    RTAorder:
-      name: $order
-      in: query
-      description:
-        "Determines the sort order. Supported values are asc or desc. Defaults\
-        \ to asc. Sort order:\n  * `asc` - Ascending, earliest in the order will appear\
-        \ at the top of the list\n  * `desc` - Descending, last in the order will\
-        \ appear at the top of the list\n"
-      required: false
-      schema:
-        type: string
-        enum:
-          - asc
-          - desc
-      examples:
-        asc:
-          value: asc
-          summary: Sort the results in ascending order
-        desc:
-          value: desc
-          summary: Sort the results in descending order
-    RTAexecutionId:
-      name: executionId
-      description: Execution identifier
-      in: path
-      required: true
-      schema:
-        type: string
-        pattern: ^[\w.-]{4,64}$
-      example: aa97b177-9383-4934-8543-0f91a7a0283a
-    RTAdeploymentId:
-      name: deploymentId
-      description: Deployment identifier
-      in: path
-      required: true
-      schema:
-        type: string
-        pattern: ^[\w.-]{4,64}$
-      example: aa97b177-9383-4934-8543-0f91a7a0283a
+          - ResourceGroup
+          - Executions
+          - Artifacts
+          - Deployments
+        items:
+          $ref: '#/components/schemas/KpiColumnName'
+      style: form
+      explode: false
   responses:
-    BckndCommonError:
+    RTANotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RTAErrorResponse'
+    RTABadRequest:
+      description: The request was malformed and could thus not be processed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RTAErrorResponse'
+    RTACommonError:
       description:
         HTTP status codes 401, 403 or 500. Response body contains further
         details.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/BckndErrorResponse'
-    BckndNotFound:
-      description: The specified resource was not found
+            $ref: '#/components/schemas/RTAErrorResponse'
+    RTAUnauthorized:
+      description: Lacks valid authentication credentials for the target resource.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/BckndErrorResponse'
-    BckndBadRequest:
-      description: The request was malformed and could thus not be processed.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/BckndErrorResponse'
-    KpiNotFound:
-      description: The specified resource was not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/KpiApiError'
-    KpiTooManyRequests:
-      description: Too many requests
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/KpiApiError'
-    KpiInvalidRequest:
-      description: Invalid request
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/KpiApiError'
+            $ref: '#/components/schemas/RTAErrorResponse'
     DSetBadRequest:
       description: The specification of the resource was incorrect
       content:
@@ -7187,15 +7210,6 @@ components:
             the artifact API to register this file.
           schema:
             $ref: '#/components/schemas/DSetUrl'
-    MetaNotFound:
-      description: The specified resource was not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/MetaApiError'
     AiNotFound:
       description: The specified resource was not found
       content:
@@ -7225,6 +7239,26 @@ components:
             properties:
               error:
                 $ref: '#/components/schemas/AiApiError'
+    BckndCommonError:
+      description:
+        HTTP status codes 401, 403 or 500. Response body contains further
+        details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BckndErrorResponse'
+    BckndNotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BckndErrorResponse'
+    BckndBadRequest:
+      description: The request was malformed and could thus not be processed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BckndErrorResponse'
     TrckBadRequest:
       content:
         application/json:
@@ -7261,29 +7295,39 @@ components:
               error:
                 $ref: '#/components/schemas/TrckApiError'
       description: request entity is larger than limits defined by server.
-    RTANotFound:
+    MetaNotFound:
       description: The specified resource was not found
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RTAErrorResponse'
-    RTABadRequest:
-      description: The request was malformed and could thus not be processed.
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/MetaApiError'
+    KpiNotFound:
+      description: The specified resource was not found
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RTAErrorResponse'
-    RTACommonError:
-      description:
-        HTTP status codes 401, 403 or 500. Response body contains further
-        details.
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/KpiApiError'
+    KpiTooManyRequests:
+      description: Too many requests
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RTAErrorResponse'
-    RTAUnauthorized:
-      description: Lacks valid authentication credentials for the target resource.
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/KpiApiError'
+    KpiInvalidRequest:
+      description: Invalid request
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RTAErrorResponse'
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/KpiApiError'

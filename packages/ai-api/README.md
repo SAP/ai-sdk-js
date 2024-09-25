@@ -28,6 +28,18 @@ We maintain a list of [currently available and tested AI Core APIs](https://gith
 $ npm install @sap-ai-sdk/ai-api
 ```
 
+## Version Management
+
+⚠️ **Important**: This package contains generated code. Updates to this package may include breaking changes.
+
+To ensure compatibility and manage updates effectively, we strongly recommend using the tilde (`~`) version range in your project instead of the caret (`^`). This approach will allow patch-level updates while preventing potentially breaking minor version changes.
+
+```JSON
+"dependencies": {
+    "@sap-ai-sdk/ai-api": "~1.0.0"
+}
+```
+
 ## Prerequisites
 
 - [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-api/sap-ai-api-service-guide/initial-setup).

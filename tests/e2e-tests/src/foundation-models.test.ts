@@ -5,12 +5,12 @@ loadEnv();
 
 describe('Azure OpenAI Foundation Model Access', () => {
   it('should complete a chat', async () => {
-    const result = await chatCompletion();
-    expect(result).toContain('Paris');
+    const response = await chatCompletion();
+    expect(response.getContent()!).toContain('Paris');
   });
 
   it('should compute an embedding vector', async () => {
-    const result = await computeEmbedding();
-    expect(result).not.toHaveLength(0);
+    const response = await computeEmbedding();
+    expect(response.getEmbedding()!).not.toHaveLength(0);
   });
 });

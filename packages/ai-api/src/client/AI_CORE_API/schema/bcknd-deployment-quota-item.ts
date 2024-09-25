@@ -3,12 +3,11 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-
+import type { BckndDeploymentQuota } from './bcknd-deployment-quota.js';
 /**
- * Representation of the 'BckndUsageResourcePlanItem' schema.
+ * Representation of the 'BckndDeploymentQuotaItem' schema.
  */
-export type BckndUsageResourcePlanItem = {
-  id: string;
+export type BckndDeploymentQuotaItem = {
   resourcePlanType?: string;
-  configuredMaxReplicas?: number;
+  deploymentQuota?: BckndDeploymentQuota;
 } & Record<string, any>;
