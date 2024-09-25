@@ -2,4 +2,4 @@
 '@sap-ai-sdk/ai-api': minor
 ---
 
-[Improvement] Add a function `kubesubmitV4ResourceQuotaGetDeploymentQuota()` in `DeploymentApi`to get details about quota and usage for deployments. Additionally create two new types `BckndDeploymentQuotaItem` and `BckndDeploymentResourceQuotaResponse`.
+[Improvement] Add `kubesubmitV4ResourceQuotaGetDeploymentQuota()` function in `DeploymentApi` to get details about quota and usage for deployments. Additionally introduce two new types `BckndDeploymentQuotaItem` and `BckndDeploymentResourceQuotaResponse`.
