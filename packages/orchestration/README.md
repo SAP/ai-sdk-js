@@ -87,7 +87,7 @@ const responseContent = response.getContent();
 
 #### Customizing the Request Configuration
 
-To customize the request configuration, for example if you want to pass additional headers to the client, use the second parameter in the `chatCompletion()` method:
+To customize the request configuration, for example to pass additional headers to the client, use the second parameter in the `chatCompletion()` method:
 
 ```ts
 const response = await orchestrationClient.chatCompletion(
@@ -182,13 +182,13 @@ Each category can be configured with severity levels of 0, 2, 4, or 6.
 
 ### Retrieving Data from the Response
 
-In addition to `response.getContent()`, you can use other available convenience methods to retrieve the finish reason and token usage.
+In addition to `response.getContent()`, other available convenience methods can retrieve the finish reason and token usage.
 Use `response.rawReason` to access the complete HTTP response from the orchestration service.
 
 #### Finish Reason
 
-Finish Reason gives you the reason for stopping the chat completion request.
-For example, when output gets filtered based on your configuration, the finish reason is `content_filter`.
+The Finish Reason indicates the reason for stopping the chat completion request.
+For example, when output gets filtered based on the configuration, the finish reason is `content_filter`.
 
 ```ts
 const finishReason = response.getFinishReason();
