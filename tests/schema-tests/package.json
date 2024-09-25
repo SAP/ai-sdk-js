@@ -16,9 +16,6 @@
     "generate-schema": "pnpm generate-schema:azure-openai && pnpm generate-schema:orchestration",
     "postgenerate-schema": "rm ./ts-to-zod.config.cjs"
   },
-  "dependencies": {
-    "zod": "^3.23.8"
-  },
   "devDependencies": {
     "ts-to-zod": "^3.13.0"
   }
