@@ -17,7 +17,6 @@ describe('OpenAI chat completion response', () => {
   const response = new AzureOpenAiChatCompletionResponse(rawResponse);
 
   it('should return the completion response', () => {
-    // TODO: Use zod schema to validate the response
     expect(response.data).toStrictEqual(mockResponse);
   });
 });
