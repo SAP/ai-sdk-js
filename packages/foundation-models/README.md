@@ -4,17 +4,17 @@ This package incorporates generative AI foundation models into your AI activitie
 
 ## Table of Contents
 
-1. [Installation](#installation)
-2. [Prerequisites](#prerequisites)
-3. [Relationship between Models and Deployment ID](#relationship-between-models-and-deployment-id)
-4. [Usage](#usage)
-   - [Client Initialization](#client-initialization)
-   - [Azure OpenAI Client](#azure-openai-client)
-     - [Chat Client](#chat-client)
-     - [Embedding Client](#embedding-client)
-5. [Local Testing](#local-testing)
-6. [Support, Feedback, Contribution](#support-feedback-contribution)
-7. [License](#license)
+- [Installation](#installation)
+- [Prerequisites](#prerequisites)
+- [Relationship between Models and Deployment ID](#relationship-between-models-and-deployment-id)
+- [Usage](#usage)
+  - [Client Initialization](#client-initialization)
+  - [Azure OpenAI Client](#azure-openai-client)
+    - [Chat Client](#chat-client)
+    - [Embedding Client](#embedding-client)
+- [Local Testing](#local-testing)
+- [Support, Feedback, Contribution](#support-feedback-contribution)
+- [License](#license)
 
 ## Installation
 

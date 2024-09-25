@@ -4,20 +4,20 @@ This package incorporates generative AI orchestration capabilities into your AI 
 
 ## Table of Contents
 
-1. [Installation](#installation)
-2. [Prerequisites](#prerequisites)
-3. [Orchestration Service](#orchestration-service)
-4. [Relationship between Orchestration and Resource Groups](#relationship-between-orchestration-and-resource-groups)
-5. [Usage](#usage)
-   - [Templating](#templating)
-   - [Content Filtering](#content-filtering)
-   - [Retrieving Data from the Response](#retrieving-data-from-the-response)
-     - [Finish Reason](#finish-reason)
-     - [Token Usage](#token-usage)
-     - [Using Resource Groups](#using-resource-groups)
-6. [Local Testing](#local-testing)
-7. [Support, Feedback, Contribution](#support-feedback-contribution)
-8. [License](#license)
+- [Installation](#installation)
+- [Prerequisites](#prerequisites)
+- [Orchestration Service](#orchestration-service)
+- [Relationship between Orchestration and Resource Groups](#relationship-between-orchestration-and-resource-groups)
+- [Usage](#usage)
+  - [Templating](#templating)
+  - [Content Filtering](#content-filtering)
+  - [Retrieving Data from the Response](#retrieving-data-from-the-response)
+    - [Finish Reason](#finish-reason)
+    - [Token Usage](#token-usage)
+    - [Using Resource Groups](#using-resource-groups)
+- [Local Testing](#local-testing)
+- [Support, Feedback, Contribution](#support-feedback-contribution)
+- [License](#license)
 
 ## Installation
 

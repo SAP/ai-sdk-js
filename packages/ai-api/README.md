@@ -11,16 +11,16 @@ We maintain a list of [currently available and tested AI Core APIs](https://gith
 
 ## Table of Contents
 
-1. [Installation](#installation)
-2. [Prerequisites](#prerequisites)
-3. [Usage](#usage)
-   - [Create an Artifact](#create-an-artifact)
-   - [Create a Configuration](#create-a-configuration)
-   - [Create a Deployment](#create-a-deployment)
-   - [Delete a Deployment](#delete-a-deployment)
-4. [Local Testing](#local-testing)
-5. [Support, Feedback, Contribution](#support-feedback-contribution)
-6. [License](#license)
+- [Installation](#installation)
+- [Prerequisites](#prerequisites)
+- [Usage](#usage)
+  - [Create an Artifact](#create-an-artifact)
+  - [Create a Configuration](#create-a-configuration)
+  - [Create a Deployment](#create-a-deployment)
+  - [Delete a Deployment](#delete-a-deployment)
+- [Local Testing](#local-testing)
+- [Support, Feedback, Contribution](#support-feedback-contribution)
+- [License](#license)
 
 ## Installation
 
