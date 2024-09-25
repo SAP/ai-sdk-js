@@ -10,6 +10,10 @@ This package incorporates generative AI orchestration capabilities into your AI 
 4. [Usage](#usage)
    - [Templating](#templating)
    - [Content Filtering](#content-filtering)
+   - [Retrieving Data from the Response](#retrieving-data-from-the-response)
+     - [Finish Reason](#finish-reason)
+     - [Token Usage](#token-usage)
+     - [Using Resource Groups](#using-resource-groups)
 5. [Local Testing](#local-testing)
 6. [Support, Feedback, Contribution](#support-feedback-contribution)
 7. [License](#license)
@@ -125,54 +129,6 @@ const response = await orchestrationClient.chatCompletion({
 const responseContent = response.getContent();
 ```
 
-#### Retrieving Data from the Response
-
-In addition to `response.getContent()`, you can use other available convenience methods to retrieve the finish and token usage.
-Use `response.rawReason` to access the complete HTTP response from the orchestration service.
-
-##### Finish Reason
-
-```ts
-const finishReason = response.getFinishReason();
-```
-
-##### Token Usage
-
-To retrieve the token usage details of the orchestration request, use the following snippet:
-
-```ts
-const tokenUsage = response.getTokenUsage();
-
-logger.info(
-  `Total tokens consumed by the request: ${tokenUsage.total_tokens}\n` +
-    `Input prompt tokens consumed: ${tokenUsage.prompt_tokens}\n` +
-    `Output text completion tokens consumed: ${tokenUsage.completion_tokens}\n`
-);
-```
-
-Remember to initialize a logger before using it.
-
-#### Using Resource Groups
-
-[Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
-
-The resource group can be used as an additional parameter to pick the right orchestration deployment.
-
-```ts
-const orchestrationClient = new OrchestrationClient(
-  {
-    llm: {
-      model_name: 'gpt-4-32k',
-      model_params: { max_tokens: 50, temperature: 0.1 }
-    },
-    templating: {
-      template: [{ role: 'user', content: 'What is my name?' }]
-    }
-  },
-  { resourceGroup: 'rg1234' }
-);
-```
-
 ### Content Filtering
 
 Use the orchestration client with filtering to restrict content that is passed to and received from a generative AI model.
@@ -206,13 +162,64 @@ try {
   });
   return response.getContent();
 } catch (error: any) {
-  return `Error: ${error.message}`;
+  return `Error: ${error.message} with underlying cause: ${error.response.data.message}`;
 }
 ```
 
 `buildAzureContentFilter()` is a convenience function that creates an Azure content filter configuration based on the provided inputs.
 The Azure content filter supports four categories: `Hate`, `Violence`, `Sexual`, and `SelfHarm`.
 Each category can be configured with severity levels of 0, 2, 4, or 6.
+
+### Retrieving Data from the Response
+
+In addition to `response.getContent()`, you can use other available convenience methods to retrieve the finish reason and token usage.
+Use `response.rawReason` to access the complete HTTP response from the orchestration service.
+
+#### Finish Reason
+
+Finish Reason gives you the reason for stopping the chat completion request.
+For example, when output gets filtered based on your configuration, the finish reason is `content_filter`.
+
+```ts
+const finishReason = response.getFinishReason();
+```
+
+#### Token Usage
+
+To retrieve the token usage details of the orchestration request, use the following snippet:
+
+```ts
+const tokenUsage = response.getTokenUsage();
+
+logger.info(
+  `Total tokens consumed by the request: ${tokenUsage.total_tokens}\n` +
+    `Input prompt tokens consumed: ${tokenUsage.prompt_tokens}\n` +
+    `Output text completion tokens consumed: ${tokenUsage.completion_tokens}\n`
+);
+```
+
+Remember to initialize a logger before using it.
+
+### Using Resource Groups
+
+[Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
+
+The resource group can be used as an additional parameter to pick the right orchestration deployment.
+
+```ts
+const orchestrationClient = new OrchestrationClient(
+  {
+    llm: {
+      model_name: 'gpt-4-32k',
+      model_params: { max_tokens: 50, temperature: 0.1 }
+    },
+    templating: {
+      template: [{ role: 'user', content: 'What is my name?' }]
+    }
+  },
+  { resourceGroup: 'rg1234' }
+);
+```
 
 ## Local Testing
 
