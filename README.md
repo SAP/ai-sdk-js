@@ -33,7 +33,7 @@ This package incorporates generative AI [orchestration](https://help.sap.com/doc
 $ npm install @sap-ai-sdk/orchestration
 ```
 
-For details on Orchestration client usage, refer to [here](./packages/orchestration/README.md).
+For details on Orchestration client, refer to this [document](./packages/orchestration/README.md).
 
 ### @sap-ai-sdk/ai-api
 
@@ -50,7 +50,7 @@ This package provides tools to manage your scenarios and workflows in SAP AI Cor
 $ npm install @sap-ai-sdk/ai-api
 ```
 
-For details on client usage, refer to [here](./packages/ai-api/README.md).
+For details on the client, refer to this [document](./packages/ai-api/README.md).
 
 ### @sap-ai-sdk/foundation-models
 
@@ -62,7 +62,7 @@ This package incorporates generative AI foundation models into your AI activitie
 $ npm install @sap-ai-sdk/foundation-models
 ```
 
-For details on Azure OpenAI client usage, refer to [here](./packages/foundation-models/README.md).
+For details on Azure OpenAI client, refer to this [document](./packages/foundation-models/README.md).
 
 ### @sap-ai-sdk/langchain
 
@@ -74,7 +74,7 @@ This package provides LangChain model clients, built on top of the foundation mo
 $ npm install @sap-ai-sdk/langchain
 ```
 
-For details on LangChain model client usage, refer to [here](./packages/langchain/README.md).
+For details on LangChain model client, refer to this [document](./packages/langchain/README.md).
 
 ## SAP Cloud SDK for AI Sample Project
 
