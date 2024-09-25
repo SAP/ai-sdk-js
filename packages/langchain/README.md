@@ -24,7 +24,7 @@ $ npm install @sap-ai-sdk/langchain
 ## Prerequisites
 
 - [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
-- Bind the service to your application you are building.
+- Bind the service to your application.
 - Ensure the project is configured with Node.js v20 or higher, along with native ESM support.
 - A deployed model is available in SAP Generative AI hub.
   - Use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).

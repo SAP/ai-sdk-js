@@ -46,8 +46,6 @@ Consequently, each deployment ID and resource group uniquely map to a combinatio
 
 You can pass the model name as a parameter to a client, the SDK will implicitly fetch the deployment ID for the model from the AI Core service and use it in the request.
 
-A particular model it's version and resource group are tied to a deployment ID for the global AI scenario `foundation-models`.
-
 By default, the SDK caches the deployment information, including the deployment ID, model name, and version, for 5 minutes to avoid performance issues from fetching this data with each request.
 
 ```ts
