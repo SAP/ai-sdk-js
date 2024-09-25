@@ -134,7 +134,7 @@ export const ExecutionScheduleApi = {
     },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<any>('get', '/lm/executionSchedules/$count', {
+    new OpenApiRequestBuilder<number>('get', '/lm/executionSchedules/$count', {
       queryParameters,
       headerParameters
     })
