@@ -172,9 +172,19 @@ try {
   });
   return response.getContent();
 } catch (error: any) {
-  return `Error: ${error.message} with underlying cause: ${error.response.data.message}`;
+  return `Error: ${error.message}`;
 }
 ```
+
+In the above code snippet, both `orchestrationClient.chatCompletion()` and `response.getContent()` can throw errors.
+
+- **Axios Errors**:  
+  When the chat completion request fails with a `400` status code, the caught error will be an `Axios` error. The property `error.response.data.message` may provide additional details about the failure's cause.
+
+- **Output Content Filtered**:  
+  The method `response.getContent()` can throw an error if the content filter configuration filters the output. This situation can occur even if the initial request succeeds. The `error.message` property indicates whether the output was filtered.
+
+Therefore, handle errors appropriately to ensure meaningful feedback for both types of errors.
 
 `buildAzureContentFilter()` is a convenience function that creates an Azure content filter configuration based on the provided inputs.
 The Azure content filter supports four categories: `Hate`, `Violence`, `Sexual`, and `SelfHarm`.
@@ -182,7 +192,7 @@ Each category can be configured with severity levels of 0, 2, 4, or 6.
 
 ### Retrieving Data from the Response
 
-In addition to `response.getContent()`, other available convenience methods can retrieve the finish reason and token usage.
+In addition to `getContent()`, other available convenience methods can retrieve the finish reason and token usage.
 Use `response.rawReason` to access the complete HTTP response from the orchestration service.
 
 #### Finish Reason
