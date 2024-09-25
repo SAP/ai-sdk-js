@@ -6,12 +6,10 @@ import { BaseLLMParams } from '@langchain/core/language_models/llms';
 import type {
   AzureOpenAiCreateChatCompletionRequest,
   AzureOpenAiChatModel,
+  AzureOpenAiEmbeddingModel,
   AzureOpenAiChatCompletionsRequestCommon
 } from '@sap-ai-sdk/foundation-models';
-import type {
-  AzureOpenAiEmbeddingModel,
-  CustomRequestConfig
-} from '@sap-ai-sdk/core';
+import type { CustomRequestConfig } from '@sap-ai-sdk/core';
 import type { ModelConfig, ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
 
 /**

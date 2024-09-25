@@ -1108,8 +1108,8 @@ packages:
     resolution: {integrity: sha512-WAtkmhbdl2T41qzimTzhb3pXCHQxO4onqxzPxgdf3KftQdTwLq0YYBDhozRMZLNAd/+cfH0ymZGaZSsnc9Ogsg==}
     engines: {node: '>=18'}
 
-  '@langchain/openai@0.3.0':
-    resolution: {integrity: sha512-yXrz5Qn3t9nq3NQAH2l4zZOI4ev2CFdLC5kvmi5SdW4bggRuM40SXTUAY3VRld4I5eocYfk82VbrlA+6dvN5EA==}
+  '@langchain/openai@0.3.2':
+    resolution: {integrity: sha512-p513TVHkZ+mMV4dGloprPFKaukOuOZxyPXY/IWReQK34c1dpnywmjrXg8ydcnfncNbq+kJ/kKe671NK9bic4WA==}
     engines: {node: '>=18'}
     peerDependencies:
       '@langchain/core': '>=0.2.26 <0.4.0'
@@ -5132,7 +5132,7 @@ snapshots:
   '@langchain/community@0.3.2(@langchain/core@0.3.3(openai@4.61.1(zod@3.23.8)))(axios@1.7.7)(ignore@5.3.2)(jsonwebtoken@9.0.2)(lodash@4.17.21)(openai@4.61.1(zod@3.23.8))':
     dependencies:
       '@langchain/core': 0.3.3(openai@4.61.1(zod@3.23.8))
-      '@langchain/openai': 0.3.0(@langchain/core@0.3.3(openai@4.61.1(zod@3.23.8)))
+      '@langchain/openai': 0.3.2(@langchain/core@0.3.3(openai@4.61.1(zod@3.23.8)))
       binary-extensions: 2.3.0
       expr-eval: 2.0.2
       flat: 5.0.2
@@ -5177,7 +5177,7 @@ snapshots:
     transitivePeerDependencies:
       - openai
 
-  '@langchain/openai@0.3.0(@langchain/core@0.3.3(openai@4.61.1(zod@3.23.8)))':
+  '@langchain/openai@0.3.2(@langchain/core@0.3.3(openai@4.61.1(zod@3.23.8)))':
     dependencies:
       '@langchain/core': 0.3.3(openai@4.61.1(zod@3.23.8))
       js-tiktoken: 1.0.14
@@ -7728,7 +7728,7 @@ snapshots:
   langchain@0.3.2(@langchain/core@0.3.3(openai@4.61.1(zod@3.23.8)))(axios@1.7.7)(openai@4.61.1(zod@3.23.8)):
     dependencies:
       '@langchain/core': 0.3.3(openai@4.61.1(zod@3.23.8))
-      '@langchain/openai': 0.3.0(@langchain/core@0.3.3(openai@4.61.1(zod@3.23.8)))
+      '@langchain/openai': 0.3.2(@langchain/core@0.3.3(openai@4.61.1(zod@3.23.8)))
       '@langchain/textsplitters': 0.1.0(@langchain/core@0.3.3(openai@4.61.1(zod@3.23.8)))
       js-tiktoken: 1.0.14
       js-yaml: 4.1.0
