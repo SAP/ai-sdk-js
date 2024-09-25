@@ -45,7 +45,7 @@ Find more details about orchestration workflow [here](https://help.sap.com/docs/
 ## Relationship between Orchestration and Resource Groups
 
 Access to orchestration of generative AI models is provided under the global AI scenario `orchestration`, which is managed by SAP AI Core.
-You can create a deployment to make orchestration capabilities available for use, only if you have access to the global AI scenario `orchestration`.
+A deployment can be created to enable orchestration capabilities only with access to the global AI scenario `orchestration`.
 [Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
 Each resource group allows for a one-time orchestration deployment.
 

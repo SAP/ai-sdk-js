@@ -34,11 +34,12 @@ $ npm install @sap-ai-sdk/langchain
 ## Relationship between Models and Deployment ID
 
 Access to generative AI models is provided under the global AI scenario `foundation-models`, which is managed by SAP AI Core.
-You can create a deployment for a model, only if you have access to the global AI scenario `foundation-models`.
+A deployment can be created for a model only with access to the global AI scenario `foundation-models`.
 Each model, model version, and resource group allows for a one-time deployment.
 [Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
 
 Consequently, each deployment ID and resource group uniquely map to a combination of model and model version within the `foundation-models` scenario.
+
 
 ## Usage
 
