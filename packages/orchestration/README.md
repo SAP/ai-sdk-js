@@ -7,16 +7,17 @@ This package incorporates generative AI orchestration capabilities into your AI 
 1. [Installation](#installation)
 2. [Prerequisites](#prerequisites)
 3. [Orchestration Service](#orchestration-service)
-4. [Usage](#usage)
+4. [Relationship between Orchestration and Resource Groups](#relationship-between-orchestration-and-resource-groups)
+5. [Usage](#usage)
    - [Templating](#templating)
    - [Content Filtering](#content-filtering)
    - [Retrieving Data from the Response](#retrieving-data-from-the-response)
      - [Finish Reason](#finish-reason)
      - [Token Usage](#token-usage)
      - [Using Resource Groups](#using-resource-groups)
-5. [Local Testing](#local-testing)
-6. [Support, Feedback, Contribution](#support-feedback-contribution)
-7. [License](#license)
+6. [Local Testing](#local-testing)
+7. [Support, Feedback, Contribution](#support-feedback-contribution)
+8. [License](#license)
 
 ## Installation
 
@@ -40,6 +41,15 @@ The orchestration service provides essential features like templating and conten
 - **Content filtering** lets you restrict the content sent to or received from a generative AI model.
 
 Find more details about orchestration workflow [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration-workflow).
+
+## Relationship between Orchestration and Resource Groups
+
+Access to orchestration of generative AI models is provided under the global AI scenario `orchestration`, which is managed by SAP AI Core.
+You can create a deployment to make orchestration capabilities available for use, only if you have access to the global AI scenario `orchestration`.
+[Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
+Each resource group allows for a one-time orchestration deployment.
+
+Consequently, each orchestration deployment uniquely maps to a resource group within the `orchestration` scenario.
 
 ## Usage
 
@@ -201,8 +211,6 @@ logger.info(
 Remember to initialize a logger before using it.
 
 ### Using Resource Groups
-
-[Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
 
 The resource group can be used as an additional parameter to pick the right orchestration deployment.
 

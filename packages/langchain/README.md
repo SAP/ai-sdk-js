@@ -6,13 +6,14 @@ This package provides LangChain model clients built on top of the foundation mod
 
 1. [Installation](#installation)
 2. [Prerequisites](#prerequisites)
-3. [Usage](#usage)
+3. [Relationship between Models and Deployment ID](#relationship-between-models-and-deployment-id)
+4. [Usage](#usage)
    - [Client Initialization](#client-initialization)
    - [Chat Client](#chat-client)
    - [Embedding Client](#embedding-client)
-4. [Local Testing](#local-testing)
-5. [Support, Feedback, Contribution](#support-feedback-contribution)
-6. [License](#license)
+5. [Local Testing](#local-testing)
+6. [Support, Feedback, Contribution](#support-feedback-contribution)
+7. [License](#license)
 
 ## Installation
 
@@ -23,12 +24,21 @@ $ npm install @sap-ai-sdk/langchain
 ## Prerequisites
 
 - [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
-- Bind the service to your application.
+- Bind the service to your application you are building.
 - Ensure the project is configured with Node.js v20 or higher, along with native ESM support.
-- For testing your application locally:
-  - Download a service key for your AI Core service instance.
-  - Create a `.env` file in the root of your directory.
-  - Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`.
+- A deployed model is available in SAP Generative AI hub.
+  - Use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
+    Deployment can be set up for each model and model version, as well as a resource group intended for use with the generative AI hub.
+  - Once a deployment is complete, the model can be accessed via the `deploymentUrl`.
+
+## Relationship between Models and Deployment ID
+
+Access to generative AI models is provided under the global AI scenario `foundation-models`, which is managed by SAP AI Core.
+You can create a deployment for a model, only if you have access to the global AI scenario `foundation-models`.
+Each model, model version, and resource group allows for a one-time deployment.
+[Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
+
+Consequently, each deployment ID and resource group uniquely map to a combination of model and model version within the `foundation-models` scenario.
 
 ## Usage
 
@@ -60,6 +70,9 @@ const chatClient = new AzureOpenAiChatClient({
   resourceGroup: 'my-resource-group'
 });
 ```
+
+**Do not pass a `deployment ID` to initialize the client.**
+For the LangChain model clients, initialization is done using the model name, model version and resource group.
 
 ### Chat Client
 

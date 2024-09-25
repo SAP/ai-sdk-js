@@ -6,14 +6,15 @@ This package incorporates generative AI foundation models into your AI activitie
 
 1. [Installation](#installation)
 2. [Prerequisites](#prerequisites)
-3. [Usage](#usage)
+3. [Relationship between Models and Deployment ID](#relationship-between-models-and-deployment-id)
+4. [Usage](#usage)
    - [Client Initialization](#client-initialization)
    - [Azure OpenAI Client](#azure-openai-client)
      - [Chat Client](#chat-client)
      - [Embedding Client](#embedding-client)
-4. [Local Testing](#local-testing)
-5. [Support, Feedback, Contribution](#support-feedback-contribution)
-6. [License](#license)
+5. [Local Testing](#local-testing)
+6. [Support, Feedback, Contribution](#support-feedback-contribution)
+7. [License](#license)
 
 ## Installation
 
@@ -28,13 +29,24 @@ $ npm install @sap-ai-sdk/foundation-models
 - A deployed OpenAI model in SAP Generative AI hub.
   - Use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
     Deployment can be set up for each model and model version, as well as a resource group intended for use with the generative AI hub.
-  - Once a deployment is complete, the model can be accessed via the `deploymentUrl`
+  - Once a deployment is complete, the model can be accessed via the `deploymentUrl`.
+
+## Relationship between Models and Deployment ID
+
+Access to generative AI models is provided under the global AI scenario `foundation-models`, which is managed by SAP AI Core.
+You can create a deployment for a model, only if you have access to the global AI scenario `foundation-models`.
+Each model, model version, and resource group allows for a one-time deployment.
+[Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
+
+Consequently, each deployment ID and resource group uniquely map to a combination of model and model version within the `foundation-models` scenario.
 
 ## Usage
 
 ### Client Initialization
 
 You can pass the model name as a parameter to a client, the SDK will implicitly fetch the deployment ID for the model from the AI Core service and use it in the request.
+
+A particular model it's version and resource group are tied to a deployment ID for the global AI scenario `foundation-models`.
 
 By default, the SDK caches the deployment information, including the deployment ID, model name, and version, for 5 minutes to avoid performance issues from fetching this data with each request.
 
@@ -49,8 +61,6 @@ const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
 // For an embedding client
 const embeddingClient = new AzureOpenAiEmbeddingClient({ modelName: 'gpt-4o' });
 ```
-
-[Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
 
 The deployment ID and resource group can be used as an alternative to the model name for obtaining a model.
 
