@@ -38,18 +38,6 @@ export default [
     }
   },
   {
-    files: ['packages/foundation-models/src/azure-openai/client/inference/schema/*.ts'],
-    rules: {
-      'jsdoc/check-indentation': 'off'
-    }
-  },
-  {
-    files: ['**/packages/**/client/**/*.ts'],
-    rules: {
-      '@typescript-eslint/consistent-type-definitions': 'off'
-    }
-  },
-  {
     ignores: ['**/dist-cjs/**/*']
   }
 ];
