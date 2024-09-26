@@ -60,7 +60,7 @@ const chatClient = new AzureOpenAiChatClient({
 });
 ```
 
-An important note is that LangChain clients be default attempt 6 retries with exponential backoff in case of a failure.
+An important note is that LangChain clients by default attempt 6 retries with exponential backoff in case of a failure.
 Especially in testing environments you might want to reduce this number to speed up the process:
 
 ```ts
