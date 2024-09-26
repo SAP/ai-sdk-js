@@ -7,5 +7,10 @@
     "composite": true
   },
   "include": ["**/*.ts"],
-  "exclude": ["dist/**/*", "node_modules/**/*"]
+  "exclude": ["dist/**/*", "node_modules/**/*"],
+  "references": [
+    { "path": "../../packages/ai-api" },
+    { "path": "../../packages/orchestration" },
+    { "path": "../../sample-code" }
+  ]
 }
