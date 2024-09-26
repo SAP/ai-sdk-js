@@ -7,10 +7,9 @@ import {
 import { orchestrationCompletion } from './orchestration.js';
 import { getDeployments } from './ai-api.js';
 import {
-  complexInvoke,
-  embedDocument,
-  embedQuery,
-  simpleInvoke
+  invokeChain,
+  invokeRagChain,
+  invoke
 } from './langchain-azure-openai.js';
 
 const app = express();
@@ -73,7 +72,7 @@ app.get('/ai-api/get-deployments', async (req, res) => {
 
 app.get('/langchain/chat', async (req, res) => {
   try {
-    res.send(await simpleInvoke());
+    res.send(await invoke());
   } catch (error: any) {
     console.error(error);
     res
@@ -84,7 +83,7 @@ app.get('/langchain/chat', async (req, res) => {
 
 app.get('/langchain/complex-chat', async (req, res) => {
   try {
-    res.send(await complexInvoke());
+    res.send(await invokeChain());
   } catch (error: any) {
     console.error(error);
     res
@@ -93,30 +92,9 @@ app.get('/langchain/complex-chat', async (req, res) => {
   }
 });
 
-app.get('/langchain/embed-query', async (req, res) => {
+app.get('/langchain/retrieval-augmented-generation', async (req, res) => {
   try {
-    const result = await embedQuery();
-    if (!result.length) {
-      res.status(500).send('No embedding vector returned.');
-    } else {
-      res.send('Number crunching success, got a nice vector.');
-    }
-  } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
-  }
-});
-
-app.get('/langchain/embed-document', async (req, res) => {
-  try {
-    const result = await embedDocument();
-    if (!result.length) {
-      res.status(500).send('No embedding vector returned.');
-    } else {
-      res.send('Number crunching success, got a nice vector.');
-    }
+    res.send(await invokeRagChain());
   } catch (error: any) {
     console.error(error);
     res
