@@ -20,14 +20,12 @@ export default [
       '**/*.d.ts',
       '**/dist/**/*',
       '**/coverage/**/*',
-      'packages/ai-api/src/client/**/*'
+      'packages/**/client/**/*'
     ]
   },
   {
     files: [
-      '**/test-util/**/*.ts',
-      '**/packages/**/client/**/*',
-      '**/*.zod.ts'
+      '**/test-util/**/*.ts'
     ],
     rules: {
       'jsdoc/require-jsdoc': 'off'
