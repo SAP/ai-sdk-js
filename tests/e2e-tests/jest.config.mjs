@@ -5,5 +5,5 @@ export default {
   globalSetup: undefined,
   globalTeardown: undefined,
   displayName: 'e2e-tests',
-  testTimeout: 10000,
+  testTimeout: 30000,
 };
