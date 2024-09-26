@@ -6,7 +6,8 @@
 import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';
 import type {
   BckndCommonResourceQuotaResponse,
-  BckndExecutableResourceQuotaResponse
+  BckndExecutableResourceQuotaResponse,
+  BckndDeploymentResourceQuotaResponse
 } from './schema/index.js';
 /**
  * Representation of the 'ResourceQuotaApi'.
@@ -116,6 +117,24 @@ export const ResourceQuotaApi = {
     new OpenApiRequestBuilder<BckndCommonResourceQuotaResponse>(
       'get',
       '/admin/resourceQuota/dockerRegistrySecrets',
+      {
+        queryParameters,
+        headerParameters
+      }
+    ),
+  /**
+   * Get the details about quota and usage for deployments
+   * @param queryParameters - Object containing the following keys: quotaOnly.
+   * @param headerParameters - Object containing the following keys: Authorization.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  kubesubmitV4ResourceQuotaGetDeploymentQuota: (
+    queryParameters?: { quotaOnly?: boolean },
+    headerParameters?: { Authorization?: string }
+  ) =>
+    new OpenApiRequestBuilder<BckndDeploymentResourceQuotaResponse>(
+      'get',
+      '/admin/resourceQuota/deployments',
       {
         queryParameters,
         headerParameters

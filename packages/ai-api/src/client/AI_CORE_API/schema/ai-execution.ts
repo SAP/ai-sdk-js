@@ -6,6 +6,7 @@
 import type { AiExecutionId } from './ai-execution-id.js';
 import type { AiConfigurationId } from './ai-configuration-id.js';
 import type { AiConfigurationName } from './ai-configuration-name.js';
+import type { AiExecutableId } from './ai-executable-id.js';
 import type { AiScenarioId } from './ai-scenario-id.js';
 import type { AiExecutionStatus } from './ai-execution-status.js';
 import type { AiExecutionStatusMessage } from './ai-execution-status-message.js';
@@ -18,6 +19,7 @@ export type AiExecution = {
   id: AiExecutionId;
   configurationId: AiConfigurationId;
   configurationName?: AiConfigurationName;
+  executableId?: AiExecutableId;
   scenarioId?: AiScenarioId;
   /**
    * Target status of the execution

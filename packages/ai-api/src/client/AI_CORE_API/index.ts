@@ -10,7 +10,6 @@ export * from './execution-api.js';
 export * from './execution-schedule-api.js';
 export * from './scenario-api.js';
 export * from './executable-api.js';
-export * from './model-api.js';
 export * from './meta-api.js';
 export * from './metrics-api.js';
 export * from './kpi-api.js';

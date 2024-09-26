@@ -7,6 +7,7 @@ import type { AiDeploymentId } from './ai-deployment-id.js';
 import type { AiDeploymentUrl } from './ai-deployment-url.js';
 import type { AiConfigurationId } from './ai-configuration-id.js';
 import type { AiConfigurationName } from './ai-configuration-name.js';
+import type { AiExecutableId } from './ai-executable-id.js';
 import type { AiScenarioId } from './ai-scenario-id.js';
 import type { AiDeploymentStatus } from './ai-deployment-status.js';
 import type { AiDeploymentStatusMessage } from './ai-deployment-status-message.js';
@@ -21,6 +22,7 @@ export type AiDeploymentResponseWithDetails = {
   deploymentUrl?: AiDeploymentUrl;
   configurationId: AiConfigurationId;
   configurationName?: AiConfigurationName;
+  executableId?: AiExecutableId;
   scenarioId?: AiScenarioId;
   status: AiDeploymentStatus;
   statusMessage?: AiDeploymentStatusMessage;

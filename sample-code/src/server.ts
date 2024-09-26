@@ -4,7 +4,7 @@ import { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 import {
   chatCompletion,
   computeEmbedding
-} from './foundation-models-azure-openai.js';
+} from './foundation-models/azure-openai.js';
 import {
   orchestrationChatCompletion,
   orchestrationTemplating,
@@ -12,6 +12,7 @@ import {
   orchestrationOutputFiltering,
   orchestrationRequestConfig
 } from './orchestration.js';
+
 import { getDeployments } from './ai-api.js';
 import {
   complexInvoke,
@@ -27,9 +28,10 @@ app.get(['/', '/health'], (req, res) => {
   res.send('Hello World! 🌍');
 });
 
-app.get('/llm', async (req, res) => {
+app.get('/azure-openai/chat-completion', async (req, res) => {
   try {
-    res.send(await chatCompletion());
+    const response = await chatCompletion();
+    res.send(response.getContent());
   } catch (error: any) {
     console.error(error);
     res
@@ -38,10 +40,11 @@ app.get('/llm', async (req, res) => {
   }
 });
 
-app.get('/embedding', async (req, res) => {
+app.get('/azure-openai/embedding', async (req, res) => {
   try {
-    const result = await computeEmbedding();
-    if (!result.length) {
+    const response = await computeEmbedding();
+
+    if (!response.getEmbedding()?.length) {
       res.status(500).send('No embedding vector returned.');
     } else {
       res.send('Number crunching success, got a nice vector.');
