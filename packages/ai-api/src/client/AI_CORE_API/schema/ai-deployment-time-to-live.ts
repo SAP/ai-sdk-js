@@ -9,4 +9,4 @@
  * @example "24H"
  * Pattern: "^[0-9]+[m,M,h,H,d,D]$".
  */
-export type AiDeploymentTimeToLive = string;
+export type AiDeploymentTimeToLive = string | null;

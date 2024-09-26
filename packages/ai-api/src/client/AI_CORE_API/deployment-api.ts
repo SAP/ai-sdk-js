@@ -179,7 +179,7 @@ export const DeploymentApi = {
     },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<any>('get', '/lm/deployments/$count', {
+    new OpenApiRequestBuilder<number>('get', '/lm/deployments/$count', {
       queryParameters,
       headerParameters
     }),

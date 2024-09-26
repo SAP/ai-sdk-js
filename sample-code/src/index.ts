@@ -2,8 +2,8 @@
 export {
   chatCompletion,
   computeEmbedding
-} from './foundation-models-azure-openai.js';
-
+} from './foundation-models/azure-openai.js';
+export { orchestrationCompletionMasking } from './orchestration.js';
 export {
   embedQuery,
   embedDocument,
