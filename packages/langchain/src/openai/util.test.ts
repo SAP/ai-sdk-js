@@ -3,8 +3,11 @@ import {
   AzureOpenAiCreateChatCompletionRequest
 } from '@sap-ai-sdk/foundation-models';
 import {
+  AIMessage,
   BaseMessage,
+  HumanMessage,
   RemoveMessage,
+  SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
@@ -32,15 +35,30 @@ describe('Mapping Functions', () => {
 
   it('should parse a LangChain input to an AI SDK input', async () => {
     const langchainPrompt: BaseMessage[] = [
-      new ToolMessage('Test Content', 'test-id')
+      new ToolMessage('Tool Test Content', 'test-id'),
+      new HumanMessage('Human Test Content'),
+      new SystemMessage('System Test Content'),
+      new AIMessage('AI Test Content')
     ];
 
     const request: AzureOpenAiCreateChatCompletionRequest = {
       messages: [
         {
           role: 'tool',
-          content: 'Test Content',
+          content: 'Tool Test Content',
           tool_call_id: 'test-id'
+        },
+        {
+          role: 'user',
+          content: 'Human Test Content'
+        },
+        {
+          role: 'system',
+          content: 'System Test Content'
+        },
+        {
+          role: 'assistant',
+          content: 'AI Test Content'
         }
       ],
       tools: [{ type: 'function', function: { name: 'test', parameters: {} } }],
@@ -60,7 +78,7 @@ describe('Mapping Functions', () => {
     expect(mapping).toMatchObject(request);
   });
 
-  it('throws an error if the message role is not supported', async () => {
+  it('throws an error if the message type is not supported', async () => {
     const langchainPrompt: BaseMessage[] = [
       new RemoveMessage({ id: 'test-id' })
     ];
