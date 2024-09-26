@@ -21,14 +21,13 @@ export default [
       '**/dist/**/*',
       '**/coverage/**/*',
       'packages/ai-api/src/client/**/*',
-      'packages/foundation-models/src/azure-openai/client/inference/schema/on-your-data-system-assigned-managed-identity-authentication-options.ts',
+      'packages/foundation-models/src/azure-openai/client/inference/schema/on-your-data-system-assigned-managed-identity-authentication-options.ts'
     ]
   },
   {
     files: [
       '**/test-util/**/*.ts',
-      '**/packages/orchestration/src/client/**/*',
-      '**/*.zod.ts'
+      '**/packages/orchestration/src/client/**/*'
     ],
     rules: {
       'jsdoc/require-jsdoc': 'off'

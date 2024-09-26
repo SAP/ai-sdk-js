@@ -35,19 +35,19 @@ export type RTAExecution = {
    * @example "2017-09-15T12:01:06Z"
    * Format: "date-time".
    */
-  submissionTimestamp?: string;
+  submissionTimestamp?: string | null;
   /**
    * Timestamp of execution start
    * @example "2017-09-15T12:01:06Z"
    * Format: "date-time".
    */
-  startTimestamp?: string;
+  startTimestamp?: string | null;
   /**
    * Timestamp of execution finish
    * @example "2017-09-15T12:01:06Z"
    * Format: "date-time".
    */
-  finishTimestamp?: string;
+  finishTimestamp?: string | null;
   /**
    * Timestamp of resource creation
    * Format: "date-time".

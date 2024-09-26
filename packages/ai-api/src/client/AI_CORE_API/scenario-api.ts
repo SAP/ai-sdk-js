@@ -7,7 +7,8 @@ import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';
 import type {
   AiScenarioList,
   AiScenario,
-  AiVersionList
+  AiVersionList,
+  AiModelList
 } from './schema/index.js';
 /**
  * Representation of the 'ScenarioApi'.
@@ -57,6 +58,24 @@ export const ScenarioApi = {
       {
         pathParameters: { scenarioId },
         queryParameters,
+        headerParameters
+      }
+    ),
+  /**
+   * Retrieve information about all models available in LLM global scenario
+   * @param scenarioId - Scenario identifier
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  modelsGet: (
+    scenarioId: string,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
+    new OpenApiRequestBuilder<AiModelList>(
+      'get',
+      '/lm/scenarios/{scenarioId}/models',
+      {
+        pathParameters: { scenarioId },
         headerParameters
       }
     )

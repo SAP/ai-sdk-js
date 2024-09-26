@@ -9,5 +9,5 @@ import type { BckndUsageResourcePlanItem } from './bcknd-usage-resource-plan-ite
  */
 export type BckndDeploymentUsage = {
   count: number;
-  resourcePlans: BckndUsageResourcePlanItem[];
+  items: BckndUsageResourcePlanItem[];
 } & Record<string, any>;
