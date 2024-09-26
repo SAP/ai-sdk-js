@@ -78,7 +78,10 @@ export async function invokeRagChain(): Promise<string> {
   const splits = await textSplitter.splitDocuments(docs);
 
   // Initialize the embedding client with 0 retries for fast testing
-  const embeddingClient = new AzureOpenAiEmbeddingClient({ modelName: 'text-embedding-ada-002', maxRetries: 0 });
+  const embeddingClient = new AzureOpenAiEmbeddingClient({
+    modelName: 'text-embedding-ada-002',
+    maxRetries: 0
+  });
 
   // Create a vector store from the document
   const vectorStore = await MemoryVectorStore.fromDocuments(
@@ -100,7 +103,10 @@ export async function invokeRagChain(): Promise<string> {
   );
 
   // Initialize the chat client with 0 retries for fast testing
-  const llm = new AzureOpenAiChatClient({ modelName: 'gpt-35-turbo', maxRetries: 0 });
+  const llm = new AzureOpenAiChatClient({
+    modelName: 'gpt-35-turbo',
+    maxRetries: 0
+  });
 
   // Create a chain to combine an LLM call with the prompt template and output parser
   const ragChain = await createStuffDocumentsChain({

@@ -8,5 +8,9 @@
   },
   "include": ["**/*.ts"],
   "exclude": ["dist/**/*", "node_modules/**/*"],
-  "references": [{ "path": "../../packages/ai-api" }, { "path": "../../packages/orchestration" }, { "path": "../../sample-code" }]
+  "references": [
+    { "path": "../../packages/ai-api" },
+    { "path": "../../packages/orchestration" },
+    { "path": "../../sample-code" }
+  ]
 }
