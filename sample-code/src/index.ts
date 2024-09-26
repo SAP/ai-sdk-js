@@ -8,7 +8,8 @@ export {
   orchestrationTemplating,
   orchestrationInputFiltering,
   orchestrationOutputFiltering,
-  orchestrationRequestConfig
+  orchestrationRequestConfig,
+  orchestrationCompletionMasking
 } from './orchestration.js';
 export {
   embedQuery,

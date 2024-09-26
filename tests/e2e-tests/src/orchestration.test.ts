@@ -3,7 +3,8 @@ import {
   orchestrationTemplating,
   orchestrationInputFiltering,
   orchestrationOutputFiltering,
-  orchestrationRequestConfig
+  orchestrationRequestConfig,
+  orchestrationCompletionMasking
 } from '@sap-ai-sdk/sample-code';
 import { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 import { loadEnv } from './utils/load-env.js';
@@ -48,5 +49,10 @@ describe('orchestration', () => {
     const response = await orchestrationRequestConfig();
 
     assertContent(response);
+  });
+
+  it('should complete a chat with masking', async () => {
+    const result = await orchestrationCompletionMasking();
+    expect(result).toEqual(expect.any(String));
   });
 });
