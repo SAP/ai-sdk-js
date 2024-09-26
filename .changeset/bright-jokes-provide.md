@@ -2,4 +2,4 @@
 '@sap-ai-sdk/langchain': patch
 ---
 
-[Improvement] Improve error handling.
+[Fixed Issue] Fix auto completion for Azure OpenAI Embedding models.

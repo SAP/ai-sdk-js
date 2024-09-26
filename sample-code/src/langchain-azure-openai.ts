@@ -109,7 +109,7 @@ export async function invokeRagChain(): Promise<string> {
     outputParser: new StringOutputParser()
   });
 
-  // Create a retriever from the vector store
+  // Create a retriever for the vector store
   const retriever = vectorStore.asRetriever();
 
   // Create a prompt
