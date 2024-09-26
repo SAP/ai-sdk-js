@@ -2,46 +2,51 @@
 
 This package incorporates generative AI orchestration capabilities into your AI activities in SAP AI Core and SAP AI Launchpad.
 
-### Installation
+## Table of Contents
+
+1. [Installation](#installation)
+2. [Prerequisites](#prerequisites)
+3. [Orchestration Service](#orchestration-service)
+4. [Usage](#usage)
+   - [Templating](#templating)
+   - [Content Filtering](#content-filtering)
+5. [Support, Feedback, Contribution](#support-feedback-contribution)
+6. [License](#license)
+
+## Installation
 
 ```
 $ npm install @sap-ai-sdk/orchestration
 ```
 
-## Orchestration Client
+### Prerequisites
 
-The orchestration client provides essential features like templating and content filtering, which are often required in business AI scenarios:
+- [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
+- Project configured with Node.js v20 or higher and native ESM support enabled.
+- An orchestration deployment is running.
+  - Use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to create a deployment for orchestration to the SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration).
+  - Once a deployment is complete, the orchestration service can be accessed via the `deploymentUrl`.
+
+## Orchestration Service
+
+The orchestration service provides essential features like templating and content filtering, which are often required in business AI scenarios:
 
 - **Templating** allows composing prompts with placeholders that can be filled during a chat completion request.
 - **Content filtering** lets you restrict the content sent to or received from a generative AI model.
 
-To interact with generative AI models compatible with the orchestration service, use the orchestration client.
-Find more details about orchestration [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration-workflow).
+Find more details about orchestration workflow [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration-workflow).
 
-To utilize orchestration capabilities, you need to create a deployment.
-Once the deployment is complete, you'll have a `deploymentUrl` to access the orchestration service.
-For details, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration).
+## Usage
 
-### Prerequisites
+Leverage the orchestration service capabilities by using the orchestration client.
+The client allows you to configure various modules, such as templating and content filtering, while sending chat completion requests to an orchestration-compatible generative AI model.
 
-- [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
-- Project configured with Node.js v20 or higher and native ESM support enabled.
-- At least one orchestration-compatible deployment for a generative AI model is running.
-  - You can use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to the SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
-- A deployment for orchestration is created. For details, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration). If deployment for orchestration already exists, skip this step.
-- The `@sap-ai-sdk/orchestration` package is installed in your project.
+### Templating
 
-### Orchestration Client
+Use the orchestration client with templating to pass a prompt containing placeholders that will be replaced with input parameters during a chat completion request.
+This allows for variations in the prompt based on the input parameters.
 
-Use the orchestration client to configure different modules like templating and content filtering along with sending chat completion requests to an orchestration-compatible generative AI model.
-
-#### Templating
-
-Use the orchestration client with templating to pass a prompt with placeholders that are replaced with input parameters during a chat completion request.
-
-You can vary the prompt based on the input parameters.
-
-```TS
+```ts
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
@@ -66,7 +71,7 @@ const responseContent = response.getContent();
 It is possible to provide a history of a conversation to the model.
 Use the following snippet to send a chat completion request with history and a system message:
 
-```TS
+```ts
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
@@ -75,9 +80,7 @@ const orchestrationClient = new OrchestrationClient({
     model_params: { max_tokens: 50, temperature: 0.1 }
   },
   templating: {
-    template: [
-      { role: 'user', content: 'What is my name?' }
-    ]
+    template: [{ role: 'user', content: 'What is my name?' }]
   }
 });
 
@@ -102,29 +105,33 @@ const response = await orchestrationClient.chatCompletion({
 const responseContent = response.getContent();
 ```
 
-##### Token Usage
+#### Token Usage
 
-To get the token usage details of the orchestration request, use the following snippet:
-Remember to initialize a logger before using it.
+To retrieve the token usage details of the orchestration request, use the following snippet:
 
-```TS
+```ts
 const tokenUsage = response.getTokenUsage();
 
 logger.info(
   `Total tokens consumed by the request: ${tokenUsage.total_tokens}\n` +
-  `Input prompt tokens consumed: ${tokenUsage.prompt_tokens}\n` +
-  `Output text completion tokens consumed: ${tokenUsage.completion_tokens}\n`
+    `Input prompt tokens consumed: ${tokenUsage.prompt_tokens}\n` +
+    `Output text completion tokens consumed: ${tokenUsage.completion_tokens}\n`
 );
 ```
 
-#### Content Filtering
+Remember to initialize a logger before using it.
+
+### Content Filtering
 
 Use the orchestration client with filtering to restrict content that is passed to and received from a generative AI model.
 
 This feature allows filtering both the [input](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-orchestration#content-filtering-on-input) and [output](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-orchestration#content-filtering-on-input) of a model based on content safety criteria.
 
-```TS
-import { OrchestrationClient, buildAzureContentFilter } from '@sap-ai-sdk/orchestration';
+```ts
+import {
+  OrchestrationClient,
+  buildAzureContentFilter
+} from '@sap-ai-sdk/orchestration';
 
 const filter = buildAzureContentFilter({ Hate: 2, Violence: 4 });
 const orchestrationClient = new OrchestrationClient({

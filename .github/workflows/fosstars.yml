@@ -16,7 +16,7 @@ jobs:
           token: '${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}'
       - if: failure() || cancelled()
         name: Slack Notify
-        uses: slackapi/slack-github-action@v1.26.0
+        uses: slackapi/slack-github-action@v1.27.0
         with:
           payload: |
             {

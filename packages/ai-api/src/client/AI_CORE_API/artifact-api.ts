@@ -101,7 +101,7 @@ export const ArtifactApi = {
     },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<any>('get', '/lm/artifacts/$count', {
+    new OpenApiRequestBuilder<number>('get', '/lm/artifacts/$count', {
       queryParameters,
       headerParameters
     })

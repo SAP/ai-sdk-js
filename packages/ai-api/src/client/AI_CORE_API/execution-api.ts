@@ -176,7 +176,7 @@ export const ExecutionApi = {
     },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<any>('get', '/lm/executions/$count', {
+    new OpenApiRequestBuilder<number>('get', '/lm/executions/$count', {
       queryParameters,
       headerParameters
     }),

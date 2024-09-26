@@ -101,7 +101,7 @@ export const ConfigurationApi = {
     },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<any>('get', '/lm/configurations/$count', {
+    new OpenApiRequestBuilder<number>('get', '/lm/configurations/$count', {
       queryParameters,
       headerParameters
     })

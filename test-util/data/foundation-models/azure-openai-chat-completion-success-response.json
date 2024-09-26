@@ -21,15 +21,16 @@
       },
       "finish_reason": "stop",
       "index": 0,
+      "logprobs": null,
       "message": {
-        "content": "The deepest place on Earth is located in the Western Pacific Ocean and is known as the Mariana Trench.",
+        "content": "Hello! I'm just a computer program, so I don't have feelings, but thanks for asking. How can I assist you today?",
         "role": "assistant"
       }
     }
   ],
-  "created": 1725457796,
-  "id": "chatcmpl-A3kgOwg9B6j87n0IkoCFCUCxRSwQZ",
-  "model": "gpt-4-32k",
+  "created": 1726839449,
+  "id": "chatcmpl-A9Y77vG0OKsk9lUU0UAtlTKpnjyQ6",
+  "model": "gpt-4o-2024-05-13",
   "object": "chat.completion",
   "prompt_filter_results": [
     {
@@ -37,10 +38,6 @@
         "hate": {
           "filtered": false,
           "severity": "safe"
-        },
-        "jailbreak": {
-          "detected": false,
-          "filtered": false
         },
         "self_harm": {
           "filtered": false,
@@ -58,10 +55,10 @@
       "prompt_index": 0
     }
   ],
-  "system_fingerprint": null,
+  "system_fingerprint": "fp_80a1bad4c7",
   "usage": {
-    "completion_tokens": 22,
-    "prompt_tokens": 15,
-    "total_tokens": 37
+    "completion_tokens": 26,
+    "prompt_tokens": 13,
+    "total_tokens": 39
   }
 }
