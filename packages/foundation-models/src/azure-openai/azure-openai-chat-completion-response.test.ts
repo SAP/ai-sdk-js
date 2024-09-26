@@ -1,8 +1,8 @@
 import { createLogger } from '@sap-cloud-sdk/util';
+import { jest } from '@jest/globals';
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
 import { AzureOpenAiChatCompletionResponse } from './azure-openai-chat-completion-response.js';
 import { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.js';
-import { jest } from '@jest/globals';
 describe('OpenAI chat completion response', () => {
   const mockResponse =
     parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
@@ -15,7 +15,9 @@ describe('OpenAI chat completion response', () => {
     headers: {},
     request: {}
   };
-  const azureOpenAiChatResponse = new AzureOpenAiChatCompletionResponse(rawResponse);
+  const azureOpenAiChatResponse = new AzureOpenAiChatCompletionResponse(
+    rawResponse
+  );
 
   it('should return the chat completion response', () => {
     expect(azureOpenAiChatResponse.data).toStrictEqual(mockResponse);
@@ -36,7 +38,7 @@ describe('OpenAI chat completion response', () => {
   it('should return default choice index with convenience functions', () => {
     expect(azureOpenAiChatResponse.getFinishReason()).toBe('stop');
     expect(azureOpenAiChatResponse.getContent()).toBe(
-      'Hello! I\'m just a computer program, so I don\'t have feelings, but thanks for asking. How can I assist you today?'
+      "Hello! I'm just a computer program, so I don't have feelings, but thanks for asking. How can I assist you today?"
     );
   });
 
@@ -47,9 +49,7 @@ describe('OpenAI chat completion response', () => {
     });
     const errorSpy = jest.spyOn(logger, 'error');
     expect(azureOpenAiChatResponse.getFinishReason(1)).toBeUndefined();
-    expect(errorSpy).toHaveBeenCalledWith(
-      "Choice index 1 is out of bounds."
-    );
+    expect(errorSpy).toHaveBeenCalledWith('Choice index 1 is out of bounds.');
     expect(azureOpenAiChatResponse.getContent(1)).toBeUndefined();
     expect(errorSpy).toHaveBeenCalledTimes(2);
   });

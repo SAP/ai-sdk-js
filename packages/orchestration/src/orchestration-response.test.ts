@@ -1,8 +1,8 @@
 import { createLogger } from '@sap-cloud-sdk/util';
+import { jest } from '@jest/globals';
 import { parseMockResponse } from '../../../test-util/mock-http.js';
 import { CompletionPostResponse } from './client/api/schema/index.js';
 import { OrchestrationResponse } from './orchestration-response.js';
-import { jest } from '@jest/globals';
 
 describe('OrchestrationResponse', () => {
   const mockResponse = parseMockResponse<CompletionPostResponse>(
@@ -44,12 +44,10 @@ describe('OrchestrationResponse', () => {
     const logger = createLogger({
       package: 'orchestration',
       messageContext: 'orchestration-response'
-   });
-   const errorSpy = jest.spyOn(logger, 'error');
+    });
+    const errorSpy = jest.spyOn(logger, 'error');
     expect(orchestrationResponse.getFinishReason(1)).toBeUndefined();
-    expect(errorSpy).toHaveBeenCalledWith(
-      "Choice index 1 is out of bounds."
-    );
+    expect(errorSpy).toHaveBeenCalledWith('Choice index 1 is out of bounds.');
     expect(orchestrationResponse.getContent(1)).toBeUndefined();
     expect(errorSpy).toHaveBeenCalledTimes(2);
   });
