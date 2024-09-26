@@ -74,8 +74,8 @@ importers:
         specifier: ^9.0.2
         version: 9.0.2
       mock-fs:
-        specifier: ^5.2.0
-        version: 5.2.0
+        specifier: ^5.3.0
+        version: 5.3.0
       nock:
         specifier: ^13.5.5
         version: 13.5.5
@@ -235,16 +235,16 @@ importers:
         version: 0.3.3(openai@4.61.1(zod@3.23.8))
       '@sap-ai-sdk/ai-api':
         specifier: canary
-        version: 1.0.1-20240924013103.0
+        version: 1.0.1-20240926013103.0
       '@sap-ai-sdk/foundation-models':
         specifier: canary
-        version: 1.0.1-20240924013103.0
+        version: 1.0.1-20240926013103.0
       '@sap-ai-sdk/langchain':
         specifier: canary
-        version: 1.0.1-20240924013103.0(openai@4.61.1(zod@3.23.8))(zod@3.23.8)
+        version: 1.0.1-20240926013103.0(openai@4.61.1(zod@3.23.8))(zod@3.23.8)
       '@sap-ai-sdk/orchestration':
         specifier: canary
-        version: 1.0.1-20240924013103.0
+        version: 1.0.1-20240926013103.0
       express:
         specifier: ^4.21.0
         version: 4.21.0
@@ -785,20 +785,20 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
-  '@sap-ai-sdk/ai-api@1.0.1-20240924013103.0':
-    resolution: {integrity: sha512-+YLt74svNFX+YdKTtoydJ4PZ49QwiHFU9TZ7NxiTZLKWU9fvoGeocMkLW0E/zvAisT5MFDTIvfVKSA9hztZ/VA==}
+  '@sap-ai-sdk/ai-api@1.0.1-20240926013103.0':
+    resolution: {integrity: sha512-fqdtTPYH9BlBVovrr0dvT6cCfS33xgp1o2fWxCdk0A1Q2uJCEKVoSKdQtvZ5xX7AVkYYS0bMnQmvgZLbccymFQ==}
 
-  '@sap-ai-sdk/core@1.0.1-20240924013103.0':
-    resolution: {integrity: sha512-+YWJiyIVrgUdiN/UN7Q9yFMINelF4Anmq/HvwsphIaGJ9LeoaYyOAeOJ3HE4OTob6Kjl6bQVpCehpxz2RGO98A==}
+  '@sap-ai-sdk/core@1.0.1-20240926013103.0':
+    resolution: {integrity: sha512-WV/GG+dCWMW7R+92n7fbthuImUeqcF7fMSeJr7ZyZT66oAwpNHv6o+YGCpz9zr0uxk0S0GKUwVK8DdA5AgPdJw==}
 
-  '@sap-ai-sdk/foundation-models@1.0.1-20240924013103.0':
-    resolution: {integrity: sha512-lZPU//ktZBvkVM9lXECae9Aqwaniusxhch9kN9HYsG9RUIn7a/DuffyyS9RJsWc5UDl7tygr6JTqzr0UvfpTrw==}
+  '@sap-ai-sdk/foundation-models@1.0.1-20240926013103.0':
+    resolution: {integrity: sha512-bnIm7QNM8HBSsdhvYkIjbXn9H5mg85yDiVWAaiHyXwHi+PMrOf7qcHJIgyyxhEoZ7wR1HRT7ATOp8K+sf5QUZg==}
 
-  '@sap-ai-sdk/langchain@1.0.1-20240924013103.0':
-    resolution: {integrity: sha512-01kiP8eOPMUztaNB1bF+qtsAXKLvCWTXhSKZ5VuMcTXXOVHW7DJlUfq90DksHsXVb8FJN3PHM4YgfLq06kzo3Q==}
+  '@sap-ai-sdk/langchain@1.0.1-20240926013103.0':
+    resolution: {integrity: sha512-hfpacFe5RND2eJQDpLME1uCDU0aEwtntL9Kj8O5/Mv0fvKCB929Ebx+SBwyQhvNhIwAorVYKUGpqsJ/XdZ40+g==}
 
-  '@sap-ai-sdk/orchestration@1.0.1-20240924013103.0':
-    resolution: {integrity: sha512-7Hk++VsT4ef8uCZFYI72z2bQ/A2nap6oaIYAaFkvcm/+rREU7v3XmoTNe9uy2KMOzXpWWzjbXneKTZLslYg0pQ==}
+  '@sap-ai-sdk/orchestration@1.0.1-20240926013103.0':
+    resolution: {integrity: sha512-gPlBecYWghvSOAzTf/syfBjGgANgwrwtzUW2zTAy2OqxCgvMApFH5mfkw2FrY64/MBi+qfwZCQVNNyebKT/Zsg==}
 
   '@sap-cloud-sdk/connectivity@3.21.0':
     resolution: {integrity: sha512-E3WdZ13r+va/DYaj/vLLUEmtj9bKtkxcUiqMWG560X7vFzcUDN0jKtSE8L+RkWs7k3bqsIr01EV+TuGku9mggQ==}
@@ -2969,8 +2969,8 @@ packages:
     resolution: {integrity: sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==}
     engines: {node: '>=16 || 14 >=14.17'}
 
-  mock-fs@5.2.0:
-    resolution: {integrity: sha512-2dF2R6YMSZbpip1V1WHKGLNjr/k48uQClqMVb5H3MOvwc9qhYis3/IWbj02qIg/Y8MDXKFF4c5v0rxx2o6xTZw==}
+  mock-fs@5.3.0:
+    resolution: {integrity: sha512-IMvz1X+RF7vf+ur7qUenXMR7/FSKSIqS3HqFHXcyNI7G0FbpFO8L5lfsUJhl+bhK1AiulVHWKUSxebWauPA+xQ==}
     engines: {node: '>=12.0.0'}
 
   mri@1.2.0:
@@ -4901,15 +4901,15 @@ snapshots:
 
   '@rtsao/scc@1.1.0': {}
 
-  '@sap-ai-sdk/ai-api@1.0.1-20240924013103.0':
+  '@sap-ai-sdk/ai-api@1.0.1-20240926013103.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.0.1-20240924013103.0
+      '@sap-ai-sdk/core': 1.0.1-20240926013103.0
       '@sap-cloud-sdk/connectivity': 3.21.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/core@1.0.1-20240924013103.0':
+  '@sap-ai-sdk/core@1.0.1-20240926013103.0':
     dependencies:
       '@sap-cloud-sdk/connectivity': 3.21.0
       '@sap-cloud-sdk/http-client': 3.21.0
@@ -4919,22 +4919,22 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/foundation-models@1.0.1-20240924013103.0':
+  '@sap-ai-sdk/foundation-models@1.0.1-20240926013103.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 1.0.1-20240924013103.0
-      '@sap-ai-sdk/core': 1.0.1-20240924013103.0
+      '@sap-ai-sdk/ai-api': 1.0.1-20240926013103.0
+      '@sap-ai-sdk/core': 1.0.1-20240926013103.0
       '@sap-cloud-sdk/http-client': 3.21.0
       '@sap-cloud-sdk/util': 3.21.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/langchain@1.0.1-20240924013103.0(openai@4.61.1(zod@3.23.8))(zod@3.23.8)':
+  '@sap-ai-sdk/langchain@1.0.1-20240926013103.0(openai@4.61.1(zod@3.23.8))(zod@3.23.8)':
     dependencies:
       '@langchain/core': 0.3.3(openai@4.61.1(zod@3.23.8))
-      '@sap-ai-sdk/ai-api': 1.0.1-20240924013103.0
-      '@sap-ai-sdk/core': 1.0.1-20240924013103.0
-      '@sap-ai-sdk/foundation-models': 1.0.1-20240924013103.0
+      '@sap-ai-sdk/ai-api': 1.0.1-20240926013103.0
+      '@sap-ai-sdk/core': 1.0.1-20240926013103.0
+      '@sap-ai-sdk/foundation-models': 1.0.1-20240926013103.0
       zod-to-json-schema: 3.23.3(zod@3.23.8)
     transitivePeerDependencies:
       - debug
@@ -4942,10 +4942,10 @@ snapshots:
       - supports-color
       - zod
 
-  '@sap-ai-sdk/orchestration@1.0.1-20240924013103.0':
+  '@sap-ai-sdk/orchestration@1.0.1-20240926013103.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 1.0.1-20240924013103.0
-      '@sap-ai-sdk/core': 1.0.1-20240924013103.0
+      '@sap-ai-sdk/ai-api': 1.0.1-20240926013103.0
+      '@sap-ai-sdk/core': 1.0.1-20240926013103.0
       '@sap-cloud-sdk/http-client': 3.21.0
       '@sap-cloud-sdk/util': 3.21.0
     transitivePeerDependencies:
@@ -7647,7 +7647,7 @@ snapshots:
 
   minipass@7.1.2: {}
 
-  mock-fs@5.2.0: {}
+  mock-fs@5.3.0: {}
 
   mri@1.2.0: {}
 
