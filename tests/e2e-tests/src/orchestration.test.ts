@@ -1,4 +1,5 @@
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+import { orchestrationCompletionMasking } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
 
 loadEnv();
@@ -30,5 +31,10 @@ describe('orchestration', () => {
     expect(response.data.orchestration_result.choices).not.toHaveLength(0);
     expect(response.getContent()).toEqual(expect.any(String));
     expect(response.getFinishReason()).toEqual('stop');
+  });
+
+  it('should complete a chat with masking', async () => {
+    const result = await orchestrationCompletionMasking();
+    expect(result).toEqual(expect.any(String));
   });
 });
