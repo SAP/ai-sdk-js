@@ -11,6 +11,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
 - [Usage](#usage)
   - [Templating](#templating)
   - [Content Filtering](#content-filtering)
+  - [Data Masking](#data-masking)
   - [Retrieving Data from the Response](#retrieving-data-from-the-response)
     - [Finish Reason](#finish-reason)
     - [Token Usage](#token-usage)
@@ -189,6 +190,42 @@ Therefore, handle errors appropriately to ensure meaningful feedback for both ty
 `buildAzureContentFilter()` is a convenience function that creates an Azure content filter configuration based on the provided inputs.
 The Azure content filter supports four categories: `Hate`, `Violence`, `Sexual`, and `SelfHarm`.
 Each category can be configured with severity levels of 0, 2, 4, or 6.
+
+### Data Masking
+
+You can anonymize or pseudonomize the prompt using the data masking capabilities of the orchestration service.
+
+```ts
+const orchestrationClient = new OrchestrationClient({
+  llm: {
+    model_name: 'gpt-4-32k',
+    model_params: {}
+  },
+  templating: {
+    template: [
+      {
+        role: 'user',
+        content:
+          'Please write an email to {{?user}} ({{?email}}), informing them about the amazing capabilities of generative AI! Be brief and concise, write at most 6 sentences.'
+      }
+    ]
+  },
+  masking: {
+    masking_providers: [
+      {
+        type: 'sap_data_privacy_integration',
+        method: 'pseudonymization',
+        entities: [{ type: 'profile-email' }, { type: 'profile-person' }]
+      }
+    ]
+  }
+});
+
+const response = await orchestrationClient.chatCompletion({
+  inputParams: { user: 'Alice Anderson', email: 'alice.anderson@sap.com' }
+});
+return response.getContent();
+```
 
 ### Retrieving Data from the Response
 

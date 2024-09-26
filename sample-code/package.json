@@ -29,7 +29,7 @@
     "@sap-ai-sdk/langchain": "workspace:^",
     "@sap-cloud-sdk/util": "^3.21.0",
     "@langchain/core": "0.3.3",
-    "@types/express": "^4.17.21",
+    "@types/express": "^5.0.0",
     "express": "^4.21.0"
   }
 }
