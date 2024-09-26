@@ -1,5 +1,7 @@
+import { createLogger } from '@sap-cloud-sdk/util';
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
 import { AzureOpenAiEmbeddingResponse } from './azure-openai-embedding-response.js';
+import { jest } from '@jest/globals';
 
 describe('Azure OpenAI embedding response', () => {
   const mockResponse = parseMockResponse<AzureOpenAiEmbeddingResponse>(
@@ -12,9 +14,25 @@ describe('Azure OpenAI embedding response', () => {
     headers: {},
     request: {}
   };
-  const response = new AzureOpenAiEmbeddingResponse(rawResponse);
+  const embeddingResponse = new AzureOpenAiEmbeddingResponse(rawResponse);
 
   it('should return the embedding response', () => {
-    expect(response.data).toStrictEqual(mockResponse);
+    expect(embeddingResponse.data).toStrictEqual(mockResponse);
+  });
+
+  it('should return raw response', () => {
+    expect(embeddingResponse.rawResponse).toBe(rawResponse);
+  });
+  it('should return undefined when convenience function is called with incorrect index', () => {
+    const logger = createLogger({
+package: 'foundation-models',
+  messageContext: 'azure-openai-embedding-response'
+    });
+    const errorSpy = jest.spyOn(logger, 'error');
+    expect(embeddingResponse.getEmbedding(1)).toBeUndefined();
+    expect(errorSpy).toHaveBeenCalledWith(
+      "Data index 1 is out of bounds."
+    );
+    expect(errorSpy).toHaveBeenCalledTimes(1);
   });
 });

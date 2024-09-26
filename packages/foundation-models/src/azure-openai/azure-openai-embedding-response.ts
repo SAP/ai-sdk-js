@@ -27,7 +27,7 @@ export class AzureOpenAiEmbeddingResponse {
    */
   getEmbedding(dataIndex = 0): number[] | undefined {
     this.logInvalidDataIndex(dataIndex);
-    return this.data.data[0]?.embedding;
+    return this.data.data[dataIndex]?.embedding;
   }
 
   private logInvalidDataIndex(dataIndex: number): void {
