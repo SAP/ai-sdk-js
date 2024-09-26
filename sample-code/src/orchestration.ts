@@ -110,7 +110,7 @@ async function orchestrationCompletionFiltering(): Promise<string | undefined> {
 }
 
 /**
- * Ask to write an email while masking personal information.
+ * Ask to write an e-mail while masking personal information.
  * @returns The message content from the orchestration service in the generative AI hub.
  */
 export async function orchestrationCompletionMasking(): Promise<
