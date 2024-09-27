@@ -88,7 +88,7 @@ const responseContent = response.getContent();
 
 #### Customizing the Request Configuration
 
-To customize the request configuration, for example to pass additional headers to the client, use the second parameter in the `chatCompletion()` method:
+To pass custom request configuration parameters (e.g., headers) to the client, use the second parameter in the `chatCompletion()` method:
 
 ```ts
 const response = await orchestrationClient.chatCompletion(
