@@ -27,14 +27,15 @@ $ npm install @sap-ai-sdk/langchain
 - Bind the service to your application.
 - Ensure the project is configured with Node.js v20 or higher, along with native ESM support.
 - A deployed model is available in SAP Generative AI hub.
-  - Use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
+  - Use the [`DeploymentApi`](https://github.com/SAP/ai-sdk-js/blob/main/packages/ai-api/README.md#create-a-deployment) from `@sap-ai-sdk/ai-api` to deploy a model to SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
     Deployment can be set up for each model and model version, as well as a resource group intended for use with the generative AI hub.
   - Once a deployment is complete, the model can be accessed via the `deploymentUrl`.
 
 ## Relationship between Models and Deployment ID
 
-Access to generative AI models is provided under the global AI scenario `foundation-models`, which is managed by SAP AI Core.
-A deployment can be created for a model only with access to the global AI scenario `foundation-models`.
+SAP AI Core manages access to generative AI models through the global AI scenario `foundation-models`.
+Creating a deployment for a model requires access to this scenario.
+
 Each model, model version, and resource group allows for a one-time deployment.
 [Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
 
@@ -171,7 +172,7 @@ const retriever = vectorStore.asRetriever();
 
 ## Local Testing
 
-For local testing instructions, refer to this [section](../../README.md#local-testing).
+For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
 
 ## Support, Feedback, Contribution
 

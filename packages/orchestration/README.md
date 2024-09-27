@@ -31,7 +31,7 @@ $ npm install @sap-ai-sdk/orchestration
 - [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Project configured with Node.js v20 or higher and native ESM support enabled.
 - An orchestration deployment is running.
-  - Use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to create a deployment for orchestration to the SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration).
+  - Use the [`DeploymentApi`](https://github.com/SAP/ai-sdk-js/blob/main/packages/ai-api/README.md#create-a-deployment) from `@sap-ai-sdk/ai-api` to create a deployment for orchestration to the SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration).
   - Once a deployment is complete, the orchestration service can be accessed via the `deploymentUrl`.
 
 ## Orchestration Service
@@ -45,8 +45,9 @@ Find more details about orchestration workflow [here](https://help.sap.com/docs/
 
 ## Relationship between Orchestration and Resource Groups
 
-Access to orchestration of generative AI models is provided under the global AI scenario `orchestration`, which is managed by SAP AI Core.
-A deployment can be created to enable orchestration capabilities only with access to the global AI scenario `orchestration`.
+SAP AI Core manages access to orchestration of generative AI models through the global AI scenario `orchestration`.
+Creating a deployment for enabling orchestration capabilities requires access to this scenario.
+
 [Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
 Each resource group allows for a one-time orchestration deployment.
 
@@ -278,7 +279,7 @@ const orchestrationClient = new OrchestrationClient(
 
 ## Local Testing
 
-For local testing instructions, refer to this [section](../../README.md#local-testing).
+For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
 
 ## Support, Feedback, Contribution
 
