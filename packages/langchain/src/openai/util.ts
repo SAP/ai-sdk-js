@@ -180,9 +180,6 @@ type RoleAndContent = {
 
 function mapRoleAndContent(baseMessage: BaseMessage): RoleAndContent {
   const role = mapBaseMessageToRole(baseMessage);
-  if (!['system', 'user', 'assistant', 'tool', 'function'].includes(role)) {
-    throw new Error(`Unsupported message role: ${role}`);
-  }
   return {
     role,
     content: baseMessage.content as ContentType<typeof role>
@@ -200,9 +197,7 @@ function isStructuredToolArray(tools?: unknown[]): tools is StructuredTool[] {
  * @internal
  */
 function mapToolCallId(message: BaseMessage): string {
-  return message._getType() === 'tool'
-    ? (message as ToolMessage).tool_call_id
-    : '';
+  return ToolMessage.isInstance(message) ? message.tool_call_id : '';
 }
 
 function mapToolChoice(
