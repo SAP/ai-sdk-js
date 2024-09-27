@@ -235,7 +235,7 @@ Use `response.rawReason` to access the complete HTTP response from the orchestra
 #### Finish Reason
 
 The finish reason indicates the reason for stopping the chat completion request.
-For example, when output gets filtered based on the configuration, the finish reason is `content_filter`.
+For example, when output is filtered based on the configuration, the finish reason is `content_filter`.
 
 ```ts
 const finishReason = response.getFinishReason();
