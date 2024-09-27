@@ -37,7 +37,7 @@ SAP AI Core manages access to generative AI models through the global AI scenari
 Creating a deployment for a model requires access to this scenario.
 
 Each model, model version, and resource group allows for a one-time deployment.
-After deployment completion, the response includes a deploymentUrl and an 'id', which is the Deployment ID (id). For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
+After deployment completion, the response includes a `deploymentUrl` and an `id`, which is the deployment ID. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
 [Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
 
 Consequently, each deployment ID and resource group uniquely map to a combination of model and model version within the `foundation-models` scenario.
