@@ -275,6 +275,8 @@ const orchestrationClient = new OrchestrationClient(
 );
 ```
 
+The relationship between orchestration and resource groups is explained in this [section](#relationship-between-orchestration-and-resource-groups).
+
 ## Local Testing
 
 For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
