@@ -1,6 +1,6 @@
 using { cuid } from '@sap/cds/common';
 
-entity ChatCompletionsEntity: cuid {
+entity AzureOpenAiChatCompletionsEntity: cuid {
   messages: many Message;
 }
 

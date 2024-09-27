@@ -24,7 +24,7 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 
 ```bash
 curl --request POST \
-  --url 'http://localhost:4004/odata/v4/chat-completions/ChatCompletions' \
+  --url 'http://localhost:4004/odata/v4/azure-openai/ChatCompletions' \
   --header 'Content-Type: application/json' \
   --data '{
   "messages": [

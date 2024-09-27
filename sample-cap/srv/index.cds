@@ -1,1 +1,1 @@
-using from './foundation-models/azure-openai/chat-completion-service';
+using from './foundation-models/azure-openai-service';
