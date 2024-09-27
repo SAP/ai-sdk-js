@@ -1,12 +1,12 @@
 packages:
-  # all packages in direct subdirs of packages/
   - 'packages/ai-api'
-  - 'packages/foundation-models'
-  - 'packages/orchestration'
   - 'packages/core'
+  - 'packages/foundation-models'
   - 'packages/langchain'
+  - 'packages/orchestration'
+  - 'sample-cap'
   - 'sample-code'
   - 'tests/e2e-tests'
-  - 'tests/type-tests'
-  - 'tests/smoke-tests'
   - 'tests/schema-tests'
+  - 'tests/smoke-tests'
+  - 'tests/type-tests'

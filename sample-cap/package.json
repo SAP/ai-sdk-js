@@ -1,0 +1,26 @@
+{
+  "type": "module",
+  "name": "@sap-ai-sdk/sample-cap",
+  "version": "1.0.0",
+  "description": "Sample CAP application with Cloud SDK for AI.",
+  "repository": "https://github.com/sap/ai-sdk-js",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap/cds": "^8",
+    "express": "^4",
+    "@sap-ai-sdk/foundation-models": "workspace:^"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^1",
+    "@cap-js/cds-types": "^0.6",
+    "@cap-js/cds-typer": ">=0.1",
+    "tsx": "^4.19.1"
+  },
+  "scripts": {
+    "start": "cds-tsx serve"
+  },
+  "imports": {
+    "#cds-models/*": "./@cds-models/*/index.js"
+  }
+}
