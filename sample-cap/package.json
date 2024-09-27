@@ -18,7 +18,8 @@
     "tsx": "^4.19.1"
   },
   "scripts": {
-    "start": "cds-tsx serve"
+    "start": "cds-tsx serve",
+    "watch": "cds-tsx watch"
   },
   "imports": {
     "#cds-models/*": "./@cds-models/*/index.js"

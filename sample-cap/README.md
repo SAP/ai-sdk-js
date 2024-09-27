@@ -1,25 +1,37 @@
-# Getting Started
+# Sample CAP Application with SAP Cloud SDK for AI
 
-Welcome to your new project.
+Sample CAP application written in TypeScript to demonstrate the usage of SAP Cloud SDK for AI. 
 
-It contains these folders and files, following our recommended project layout:
+## Build and Run Locally
 
-File or Folder | Purpose
----------|----------
-`app/` | content for UI frontends goes here
-`db/` | your domain models and data go here
-`srv/` | your service models and code go here
-`package.json` | project metadata and configuration
-`readme.md` | this getting started guide
+1. Build the application with `pnpm install`.
 
+2. Bind the application to your AI Core instance:
 
-## Next Steps
+  ```bash
+  cds bind -2 AI_CORE_INSTANCE_NAME
+  ```
 
-- Open a new terminal and run `cds watch`
-- (in VS Code simply choose _**Terminal** > Run Task > cds watch_)
-- Start adding content, for example, a [db/schema.cds](db/schema.cds).
+3. Run the application: 
 
+  ```bash
+  cds bind -2 AI_CORE_INSTANCE_NAME --exec -- pnpm start
+  ```
 
-## Learn More
+### Usage
 
-Learn more at https://cap.cloud.sap/docs/get-started/.
+#### Azure OpenAI Chat Completion
+
+```bash
+curl --request POST \
+  --url 'http://localhost:4004/odata/v4/chat-completions/ChatCompletions' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hello, how are you?"
+    }
+  ]
+}'
+```
