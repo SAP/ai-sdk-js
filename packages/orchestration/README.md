@@ -83,7 +83,7 @@ const response = await orchestrationClient.chatCompletion({
 const responseContent = response.getContent();
 ```
 
-`response.getContent()` is a convenience method that parses the response and returns the model's output as a string.
+`getContent()` is a convenience method that parses the response and returns the model's output as a string.
 
 #### Customizing the Request Configuration
 
