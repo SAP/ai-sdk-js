@@ -2,6 +2,7 @@ import { ChatModel } from './model-types.js';
 import {
   ChatMessages,
   FilteringModuleConfig,
+  MaskingModuleConfig,
   LlmModuleConfig as OriginalLlmModuleConfig,
   TemplatingModuleConfig
 } from './client/api/schema/index.js';
@@ -45,4 +46,8 @@ export interface OrchestrationModuleConfig {
    * Filtering module configuration.
    */
   filtering?: FilteringModuleConfig;
+  /**
+   * Masking module configuration.
+   */
+  masking?: MaskingModuleConfig;
 }
