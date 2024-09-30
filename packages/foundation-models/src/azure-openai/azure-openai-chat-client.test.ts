@@ -84,10 +84,10 @@ describe('Azure OpenAI chat client', () => {
     };
 
     const mockResponse =
-    parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
-      'foundation-models',
-      'azure-openai-chat-completion-success-response.json'
-    );
+      parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
+        'foundation-models',
+        'azure-openai-chat-completion-success-response.json'
+      );
 
     const prompt = {
       messages: [
@@ -135,10 +135,10 @@ describe('Azure OpenAI chat client', () => {
     };
 
     const mockResponse =
-    parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
-      'foundation-models',
-      'azure-openai-chat-completion-success-response.json'
-    );
+      parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
+        'foundation-models',
+        'azure-openai-chat-completion-success-response.json'
+      );
 
     mockInference(
       {
