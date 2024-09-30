@@ -52,7 +52,11 @@ describe('http-client', () => {
       .reply(200, mockPromptResponse);
 
     const res = await executeRequest(
-      { url: '/some/endpoint', apiVersion: 'mock-api-version', resourceGroup: 'custom-resource-group' },
+      {
+        url: '/some/endpoint',
+        apiVersion: 'mock-api-version',
+        resourceGroup: 'custom-resource-group'
+      },
       mockPrompt
     );
     expect(scope.isDone()).toBe(true);

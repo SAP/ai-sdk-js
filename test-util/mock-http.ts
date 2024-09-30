@@ -99,11 +99,11 @@ export function mockInference(
   },
   endpoint: EndpointOptions = mockEndpoint
 ): nock.Scope {
-  const { url, apiVersion } = endpoint;
+  const { url, apiVersion, resourceGroup } = endpoint;
   const destination = getMockedAiCoreDestination();
   return nock(destination.url, {
     reqheaders: {
-      'ai-resource-group': 'default',
+      'ai-resource-group': resourceGroup ?? 'default',
       authorization: `Bearer ${destination.authTokens?.[0].value}`
     }
   })

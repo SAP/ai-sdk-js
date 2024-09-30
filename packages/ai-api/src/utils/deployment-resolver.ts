@@ -51,7 +51,9 @@ export type ModelDeployment<ModelNameT = string> =
 /**
  * @internal
  */
-export function getResourceGroup(modelDeployment: ModelDeployment): string | undefined {
+export function getResourceGroup(
+  modelDeployment: ModelDeployment
+): string | undefined {
   return typeof modelDeployment === 'object'
     ? modelDeployment.resourceGroup
     : undefined;

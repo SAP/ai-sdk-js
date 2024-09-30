@@ -75,4 +75,93 @@ describe('Azure OpenAI chat client', () => {
 
     await expect(client.run(prompt)).rejects.toThrow('status code 400');
   });
+
+  it('executes a request with the custom request group', async () => {
+    const customChatCompletionEndpoint = {
+      url: 'inference/deployments/1234/chat/completions',
+      apiVersion,
+      resourceGroup: 'custom-resource-group'
+    };
+
+    const mockResponse =
+    parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
+      'foundation-models',
+      'azure-openai-chat-completion-success-response.json'
+    );
+
+    const prompt = {
+      messages: [
+        {
+          role: 'user' as const,
+          content: 'Where is the deepest place on earth located'
+        }
+      ]
+    };
+
+    mockInference(
+      {
+        data: prompt
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      customChatCompletionEndpoint
+    );
+
+    const clientWithResourceGroup = new AzureOpenAiChatClient({
+      deploymentId: '1234',
+      resourceGroup: 'custom-resource-group'
+    });
+
+    const response = await clientWithResourceGroup.run(prompt);
+    expect(response.data).toEqual(mockResponse);
+  });
+
+  it('it fails when the wrong resource group is set', async () => {
+    const customChatCompletionEndpoint = {
+      url: 'inference/deployments/1234/chat/completions',
+      apiVersion,
+      resourceGroup: 'custom-resource-group'
+    };
+
+    const prompt = {
+      messages: [
+        {
+          role: 'user' as const,
+          content: 'Where is the deepest place on earth located'
+        }
+      ]
+    };
+
+    const mockResponse =
+    parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
+      'foundation-models',
+      'azure-openai-chat-completion-success-response.json'
+    );
+
+    mockInference(
+      {
+        data: prompt
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      customChatCompletionEndpoint
+    );
+
+    mockInference(
+      {
+        data: prompt
+      },
+      {
+        data: null,
+        status: 404
+      },
+      chatCompletionEndpoint
+    );
+
+    expect(client.run(prompt)).rejects.toThrow();
+  });
 });

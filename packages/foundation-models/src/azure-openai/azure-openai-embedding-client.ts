@@ -37,7 +37,11 @@ export class AzureOpenAiEmbeddingClient {
     );
     const resourceGroup = getResourceGroup(this.modelDeployment);
     const response = await executeRequest(
-      { url: `/inference/deployments/${deploymentId}/embeddings`, apiVersion, resourceGroup },
+      {
+        url: `/inference/deployments/${deploymentId}/embeddings`,
+        apiVersion,
+        resourceGroup
+      },
       data,
       requestConfig
     );
