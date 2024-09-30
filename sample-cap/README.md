@@ -20,7 +20,19 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 
 ### Usage
 
-#### Azure OpenAI Chat Completion
+#### ai-api
+
+##### Deployment API
+
+```bash
+curl --request GET \
+  --url 'http://localhost:4004/odata/v4/ai-api/Deployments' \
+  --header 'Content-Type: application/json'
+```
+
+#### foundation-models
+
+##### Azure OpenAI Chat Completion
 
 ```bash
 curl --request POST \
@@ -31,6 +43,30 @@ curl --request POST \
     {
       "role": "user",
       "content": "Hello, how are you?"
+    }
+  ]
+}'
+```
+
+#### orchestration
+
+#####
+
+```bash
+curl --request POST \
+  --url 'http://localhost:4004/odata/v4/orchestration/ChatCompletions' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "template": [
+    { 
+      "role": "user",
+      "content": "What is the capital of {{?country}}"
+    }
+  ],
+  "inputParams": [
+    {
+      "name": "country",
+      "value": "France"
     }
   ]
 }'
