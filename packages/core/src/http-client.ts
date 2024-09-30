@@ -30,11 +30,14 @@ export interface EndpointOptions {
    * The specific endpoint to call.
    */
   url: string;
-
   /**
    * The API version to use.
    */
   apiVersion?: string;
+  /**
+   * The resource group to use.
+   */
+  resourceGroup?: string;
 }
 /**
  * Executes a request to the AI Core service.
@@ -49,10 +52,10 @@ export async function executeRequest(
   requestConfig?: CustomRequestConfig
 ): Promise<HttpResponse> {
   const aiCoreDestination = await getAiCoreDestination();
-  const { url, apiVersion } = endpointOptions;
+  const { url, apiVersion, resourceGroup } = endpointOptions;
 
   const mergedRequestConfig = {
-    ...mergeWithDefaultRequestConfig(apiVersion, requestConfig),
+    ...mergeWithDefaultRequestConfig(apiVersion, resourceGroup, requestConfig),
     data: JSON.stringify(data)
   };
 
@@ -69,13 +72,14 @@ export async function executeRequest(
 
 function mergeWithDefaultRequestConfig(
   apiVersion?: string,
+  resourceGroup?: string,
   requestConfig?: CustomRequestConfig
 ): HttpRequestConfig {
   const defaultConfig: HttpRequestConfig = {
     method: 'post',
     headers: {
       'content-type': 'application/json',
-      'ai-resource-group': 'default',
+      'ai-resource-group': resourceGroup ?? 'default',
       'ai-client-type': 'AI SDK JavaScript'
     },
     params: apiVersion ? { 'api-version': apiVersion } : {}
