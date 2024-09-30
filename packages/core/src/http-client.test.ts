@@ -36,4 +36,27 @@ describe('http-client', () => {
     expect(res.status).toBe(200);
     expect(res.data).toEqual(mockPromptResponse);
   }, 10000);
+
+  it('should execute a request to the AI Core service with a custom resource gorup', async () => {
+    const mockPrompt = { prompt: 'some test prompt' };
+    const mockPromptResponse = { completion: 'some test completion' };
+
+    const scope = nock(aiCoreDestination.url, {
+      reqheaders: {
+        'ai-resource-group': 'custom-resource-group',
+        'ai-client-type': 'AI SDK JavaScript'
+      }
+    })
+      .post('/v2/some/endpoint', mockPrompt)
+      .query({ 'api-version': 'mock-api-version' })
+      .reply(200, mockPromptResponse);
+
+    const res = await executeRequest(
+      { url: '/some/endpoint', apiVersion: 'mock-api-version', resourceGroup: 'custom-resource-group' },
+      mockPrompt
+    );
+    expect(scope.isDone()).toBe(true);
+    expect(res.status).toBe(200);
+    expect(res.data).toEqual(mockPromptResponse);
+  });
 });
