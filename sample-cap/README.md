@@ -50,7 +50,7 @@ curl --request POST \
 
 #### orchestration
 
-#####
+##### Chat Completions with Templating
 
 ```bash
 curl --request POST \
