@@ -19,7 +19,11 @@ export = (srv: OrchestrationService) => {
       inputParams: mappedInputParams
     });
 
-    return req.info(response.getContent());
+    return req.reply({
+      template,
+      inputParams,
+      content: response.getContent()
+    });
   });
 };
 
