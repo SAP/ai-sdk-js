@@ -10,26 +10,25 @@ import {
 /**
  * Get all deployments.
  * @param resourceGroup - AI-Resource-Group where the resources are available.
- * @param status - Optional parameter to filter deployments by status
+ * @param status - Optional parameter to filter deployments by status.
  * @returns All deployments.
  */
 export async function getDeployments(
   resourceGroup: string,
-  status?: 
-  | 'PENDING'
-  | 'RUNNING'
-  | 'COMPLETED'
-  | 'DEAD'
-  | 'STOPPING'
-  | 'STOPPED'
-  | 'UNKNOWN'
+  status?:
+    | 'PENDING'
+    | 'RUNNING'
+    | 'COMPLETED'
+    | 'DEAD'
+    | 'STOPPING'
+    | 'STOPPED'
+    | 'UNKNOWN'
 ): Promise<AiDeploymentList> {
-  // check for optional query parameters. 
-  const queryParams = status ? { status } : {}; 
-  const response = await DeploymentApi.deploymentQuery(
-    queryParams,
-    { 'AI-Resource-Group': resourceGroup }
-  ).execute();
+  // check for optional query parameters.
+  const queryParams = status ? { status } : {};
+  const response = await DeploymentApi.deploymentQuery(queryParams, {
+    'AI-Resource-Group': resourceGroup
+  }).execute();
 
   return response;
 }
@@ -72,7 +71,7 @@ export async function createDeployment(
 }
 
 /**
- * Update target status of a specific deployment to stop it. 
+ * Update target status of a specific deployment to stop it.
  * Only deployments with 'status': 'RUNNING' can be stopped.
  * @param deploymentId - ID of the specific deployment.
  * @param resourceGroup - AI-Resource-Group where the resources are available.

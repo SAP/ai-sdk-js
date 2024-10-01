@@ -1,8 +1,4 @@
-import {
-    ScenarioApi,
-    AiScenarioList,
-    AiModelList
-} from '@sap-ai-sdk/ai-api';
+import { ScenarioApi, AiScenarioList, AiModelList } from '@sap-ai-sdk/ai-api';
 
 /**
  * Get all scenarios.
@@ -10,13 +6,13 @@ import {
  * @returns All scenarios.
  */
 export async function getScenarios(
-    resourceGroup: string
-  ): Promise<AiScenarioList> {
-    const response = await ScenarioApi.scenarioQuery(
-      { 'AI-Resource-Group': resourceGroup }
-    ).execute();
-  
-    return response;
+  resourceGroup: string
+): Promise<AiScenarioList> {
+  const response = await ScenarioApi.scenarioQuery({
+    'AI-Resource-Group': resourceGroup
+  }).execute();
+
+  return response;
 }
 
 /**
@@ -29,10 +25,9 @@ export async function getModelsInScenario(
   scenarioId: string,
   resourceGroup: string
 ): Promise<AiModelList> {
-  const response = await ScenarioApi.modelsGet(
-    scenarioId,
-    { 'AI-Resource-Group': resourceGroup }
-  ).execute();
+  const response = await ScenarioApi.modelsGet(scenarioId, {
+    'AI-Resource-Group': resourceGroup
+  }).execute();
 
   return response;
 }
