@@ -4,8 +4,8 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 
 ### Table of Contents
 
-- [Build and Run Locally](#build-and-run-locally)
-  - [Usage](#usage)
+- [Local Deployment](#local-deployment)
+- [Usage](#usage)
     - [`ai-api`](#ai-api)
       - [Deployment API](#deployment-api)
     - [`foundation-models`](#foundation-models)
@@ -13,7 +13,7 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
     - [`orchestration`](#orchestration)
       - [Chat Completions with Templating](#chat-completions-with-templating)
 
-## Build and Run Locally
+## Local Deployment
 
 1. Build the application with `pnpm install`.
 
@@ -31,7 +31,7 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
    cds bind -2 AI_CORE_INSTANCE_NAME --exec -- pnpm start
    ```
 
-### Usage
+## Usage
 
 #### `ai-api`
 
