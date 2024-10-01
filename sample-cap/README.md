@@ -6,12 +6,12 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 
 - [Local Deployment](#local-deployment)
 - [Usage](#usage)
-    - [`ai-api`](#ai-api)
-      - [Deployment API](#deployment-api)
-    - [`foundation-models`](#foundation-models)
-      - [Azure OpenAI Chat Completion](#azure-openai-chat-completion)
-    - [`orchestration`](#orchestration)
-      - [Chat Completions with Templating](#chat-completions-with-templating)
+  - [`ai-api`](#ai-api)
+    - [Deployment API](#deployment-api)
+  - [`foundation-models`](#foundation-models)
+    - [Azure OpenAI Chat Completion](#azure-openai-chat-completion)
+  - [`orchestration`](#orchestration)
+    - [Chat Completions with Templating](#chat-completions-with-templating)
 
 ## Local Deployment
 
