@@ -1,6 +1,6 @@
 # Sample CAP Application with SAP Cloud SDK for AI
 
-Sample CAP application written in TypeScript to demonstrate the usage of SAP Cloud SDK for AI. 
+Sample CAP application written in TypeScript to demonstrate the usage of SAP Cloud SDK for AI.
 
 ## Build and Run Locally
 
@@ -8,15 +8,15 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 
 2. Bind the application to your AI Core instance:
 
-  ```bash
-  cds bind -2 AI_CORE_INSTANCE_NAME
-  ```
+   ```bash
+   cds bind -2 AI_CORE_INSTANCE_NAME
+   ```
 
-3. Run the application: 
+3. Run the application:
 
-  ```bash
-  cds bind -2 AI_CORE_INSTANCE_NAME --exec -- pnpm start
-  ```
+   ```bash
+   cds bind -2 AI_CORE_INSTANCE_NAME --exec -- pnpm start
+   ```
 
 ### Usage
 
@@ -58,7 +58,7 @@ curl --request POST \
   --header 'Content-Type: application/json' \
   --data '{
   "template": [
-    { 
+    {
       "role": "user",
       "content": "What is the capital of {{?country}}"
     }

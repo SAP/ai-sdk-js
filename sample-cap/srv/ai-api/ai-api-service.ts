@@ -8,7 +8,11 @@ export = (srv: AiApiService) => {
       { 'AI-Resource-Group': 'default' }
     ).execute();
     req.reply(
-      response.resources.map(({ id, deploymentUrl, status }) => ({ id, deploymentUrl, status }))
+      response.resources.map(({ id, deploymentUrl, status }) => ({
+        id,
+        deploymentUrl,
+        status
+      }))
     );
   });
 };

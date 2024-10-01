@@ -15,7 +15,9 @@
   },
   "scripts": {
     "start": "cds-tsx serve",
-    "watch": "cds-tsx watch"
+    "watch": "cds-tsx watch",
+    "lint": "eslint . && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -c",
+    "lint:fix": "eslint . --fix && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -w --log-level error"
   },
   "imports": {
     "#cds-models/*": "./@cds-models/*/index.js"
