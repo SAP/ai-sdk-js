@@ -19,6 +19,9 @@
   "scripts": {
     "compile": "tsc",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:deployment-api-create": "NODE_OPTIONS=--experimental-vm-modules jest -t \"create deployment\"",
+    "test:deployment-api-modify": "NODE_OPTIONS=--experimental-vm-modules jest -t \"modify deployment\"",
+    "test:deployment-api-delete": "NODE_OPTIONS=--experimental-vm-modules jest -t \"delete deployment\"",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
