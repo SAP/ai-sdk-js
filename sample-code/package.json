@@ -28,7 +28,7 @@
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/langchain": "workspace:^",
     "langchain": "0.3.2",
-    "@langchain/core": "0.3.3",
+    "@langchain/core": "0.3.4",
     "@langchain/textsplitters": "0.1.0",
     "@sap-cloud-sdk/util": "^3.21.0",
     "@types/express": "^5.0.0",
