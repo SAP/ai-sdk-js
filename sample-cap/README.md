@@ -2,6 +2,17 @@
 
 Sample CAP application written in TypeScript to demonstrate the usage of SAP Cloud SDK for AI.
 
+### Table of Contents
+
+- [Build and Run Locally](#build-and-run-locally)
+  - [Usage](#usage)
+    - [`ai-api`](#ai-api)
+      - [Deployment API](#deployment-api)
+    - [`foundation-models`](#foundation-models)
+      - [Azure OpenAI Chat Completion](#azure-openai-chat-completion)
+    - [`orchestration`](#orchestration)
+      - [Chat Completions with Templating](#chat-completions-with-templating)
+
 ## Build and Run Locally
 
 1. Build the application with `pnpm install`.
