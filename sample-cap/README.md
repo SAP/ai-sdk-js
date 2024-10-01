@@ -33,9 +33,9 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 
 ## Usage
 
-#### `ai-api`
+### `ai-api`
 
-##### Deployment API
+#### Deployment API
 
 ```bash
 curl --request GET \
@@ -43,9 +43,9 @@ curl --request GET \
   --header 'Content-Type: application/json'
 ```
 
-#### `foundation-models`
+### `foundation-models`
 
-##### Azure OpenAI Chat Completion
+#### Azure OpenAI Chat Completion
 
 ```bash
 curl --request POST \
@@ -61,9 +61,9 @@ curl --request POST \
 }'
 ```
 
-#### `orchestration`
+### `orchestration`
 
-##### Chat Completions with Templating
+#### Chat Completions with Templating
 
 ```bash
 curl --request POST \
