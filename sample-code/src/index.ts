@@ -9,3 +9,10 @@ export {
   invokeChain,
   invokeRagChain
 } from './langchain-azure-openai.js';
+export {
+  getDeployment,
+  getDeployments,
+  createDeployment,
+  modifyDeployment,
+  deleteDeployment
+} from './ai-api/deployment-api.js';

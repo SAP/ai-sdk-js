@@ -1,11 +1,12 @@
 /* eslint-disable no-console */
 import express from 'express';
+import { AiApiError } from '@sap-ai-sdk/ai-api';
 import {
   chatCompletion,
   computeEmbedding
 } from './foundation-models/azure-openai.js';
 import { orchestrationCompletion } from './orchestration.js';
-import { getDeployments } from './ai-api.js';
+import { createDeployment, getDeployments } from './ai-api/deployment-api.js';
 import {
   invokeChain,
   invokeRagChain,
@@ -61,12 +62,25 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
 
 app.get('/ai-api/get-deployments', async (req, res) => {
   try {
-    res.send(await getDeployments());
+    res.send(await getDeployments('default'));
   } catch (error: any) {
     console.error(error);
+    const apiError = error.response.data.error as AiApiError;
     res
-      .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+      .status(error.response.status)
+      .send('Yikes, vibes are off apparently 😬 -> ' + apiError.message);
+  }
+});
+
+app.post('/ai-api/create-deployment', async (req, res) => {
+  try {
+    res.send(await createDeployment(req.body.configurationId, 'default'));
+  } catch (error: any) {
+    console.error(error);
+    const apiError = error.response.data.error as AiApiError;
+    res
+      .status(error.response.status)
+      .send('Yikes, vibes are off apparently 😬 -> ' + apiError.message);
   }
 });
 
