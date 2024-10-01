@@ -87,13 +87,13 @@ const response = await chatClient.run(
       'content-type': 'application/json',
       'ai-resource-group': 'default',
       'ai-client-type': 'AI SDK JavaScript',
-      // Additional headers can be added here
+      // Add more headers here
     },
     params: {
       'api-version': '2024-06-01',
-      // Additional parameters can be added here
+      // Add more parameters here
     },
-    // Additional configuration options can be added here
+    // Add more request configuration here
   }
 );
 

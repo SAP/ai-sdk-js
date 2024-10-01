@@ -54,9 +54,6 @@ const orchestrationClient = new OrchestrationClient({
     model_params: { max_tokens: 50, temperature: 0.1 }
     model_version: 'latest'
   },
-  templating: {
-    ...
-  },
   ...
 });
 ```
@@ -67,6 +64,7 @@ The client allows you to combine various modules, such as templating and content
 
 Use the orchestration client with templating to pass a prompt containing placeholders that will be replaced with input parameters during a chat completion request.
 This allows for variations in the prompt based on the input parameters.
+Set custom request configuration when calling `chatCompletion` function.
 
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
@@ -83,9 +81,20 @@ const orchestrationClient = new OrchestrationClient({
   }
 });
 
-const response = await orchestrationClient.chatCompletion({
-  inputParams: { country: 'France' }
-});
+const response = await orchestrationClient.chatCompletion(
+  {
+    inputParams: { country: 'France' }
+  },
+  {
+    headers: {
+      // Add more headers here
+    },
+    params: {
+      // Add more parameters here
+    },
+    // Add more request configuration here
+  }
+);
 
 const responseContent = response.getContent();
 ```
