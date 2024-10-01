@@ -6,13 +6,15 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 
 1. Build the application with `pnpm install`.
 
-2. Bind the application to your AI Core instance:
+2. Login using `cf login -a API_ENDPOINT -o ORG -s SPACE`.
+
+3. Bind the application to your AI Core instance:
 
    ```bash
    cds bind -2 AI_CORE_INSTANCE_NAME
    ```
 
-3. Run the application:
+4. Run the application with the binding:
 
    ```bash
    cds bind -2 AI_CORE_INSTANCE_NAME --exec -- pnpm start
@@ -20,7 +22,7 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 
 ### Usage
 
-#### ai-api
+#### `ai-api`
 
 ##### Deployment API
 
@@ -30,7 +32,7 @@ curl --request GET \
   --header 'Content-Type: application/json'
 ```
 
-#### foundation-models
+#### `foundation-models`
 
 ##### Azure OpenAI Chat Completion
 
@@ -48,7 +50,7 @@ curl --request POST \
 }'
 ```
 
-#### orchestration
+#### `orchestration`
 
 ##### Chat Completions with Templating
 
