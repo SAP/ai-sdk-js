@@ -9,13 +9,9 @@
   "dependencies": {
     "@sap/cds": "^8",
     "express": "^4",
-    "@sap-ai-sdk/foundation-models": "workspace:^"
-  },
-  "devDependencies": {
-    "@cap-js/sqlite": "^1",
-    "@cap-js/cds-types": "^0.6",
-    "@cap-js/cds-typer": ">=0.1",
-    "tsx": "^4.19.1"
+    "@sap-ai-sdk/ai-api": "workspace:^",
+    "@sap-ai-sdk/foundation-models": "workspace:^",
+    "@sap-ai-sdk/orchestration": "workspace:^"
   },
   "scripts": {
     "start": "cds-tsx serve",

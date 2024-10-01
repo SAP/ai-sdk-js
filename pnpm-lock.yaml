@@ -10,6 +10,15 @@ importers:
 
   .:
     devDependencies:
+      '@cap-js/cds-typer':
+        specifier: '>=0.1'
+        version: 0.26.0(@cap-js/cds-types@0.6.5(@sap/cds@8.2.3(express@4.21.0)))(@sap/cds@8.2.3(express@4.21.0))
+      '@cap-js/cds-types':
+        specifier: ^0.6
+        version: 0.6.5(@sap/cds@8.2.3(express@4.21.0))
+      '@cap-js/sqlite':
+        specifier: ^1
+        version: 1.7.3(@sap/cds@8.2.3(express@4.21.0))
       '@changesets/cli':
         specifier: ^2.27.8
         version: 2.27.8
@@ -88,6 +97,9 @@ importers:
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@20.16.10)(typescript@5.6.2)
+      tsx:
+        specifier: ^4.19.1
+        version: 4.19.1
       typescript:
         specifier: ^5.6.2
         version: 5.6.2
@@ -166,28 +178,21 @@ importers:
 
   sample-cap:
     dependencies:
+      '@sap-ai-sdk/ai-api':
+        specifier: workspace:^
+        version: link:../packages/ai-api
       '@sap-ai-sdk/foundation-models':
         specifier: workspace:^
         version: link:../packages/foundation-models
+      '@sap-ai-sdk/orchestration':
+        specifier: workspace:^
+        version: link:../packages/orchestration
       '@sap/cds':
         specifier: ^8
         version: 8.2.3(express@4.21.0)
       express:
         specifier: ^4
         version: 4.21.0
-    devDependencies:
-      '@cap-js/cds-typer':
-        specifier: '>=0.1'
-        version: 0.26.0(@cap-js/cds-types@0.6.5(@sap/cds@8.2.3(express@4.21.0)))(@sap/cds@8.2.3(express@4.21.0))
-      '@cap-js/cds-types':
-        specifier: ^0.6
-        version: 0.6.5(@sap/cds@8.2.3(express@4.21.0))
-      '@cap-js/sqlite':
-        specifier: ^1
-        version: 1.7.3(@sap/cds@8.2.3(express@4.21.0))
-      tsx:
-        specifier: ^4.19.1
-        version: 4.19.1
 
   sample-code:
     dependencies:
