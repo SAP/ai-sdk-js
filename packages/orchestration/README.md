@@ -91,7 +91,7 @@ const response = await orchestrationClient.chatCompletion(
     },
     params: {
       // Add more parameters here
-    },
+    }
     // Add more request configuration here
   }
 );
