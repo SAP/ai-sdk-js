@@ -10,6 +10,7 @@ import {
 /**
  * Get all deployments.
  * @param resourceGroup - AI-Resource-Group where the resources are available.
+ * @param status - Optional parameter to filter deployments by status
  * @returns All deployments.
  */
 export async function getDeployments(
