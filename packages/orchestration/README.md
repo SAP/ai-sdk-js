@@ -114,11 +114,12 @@ const responseContent = response.getContent();
 
 `getContent()` is a convenience method that parses the response and returns the model's output as a string.
 
+To retrieve the `finish_reason` for stopping the chat completion request, use the convenience method `getFinishReason()`:
+
 ```ts
 const finishReason = response.getFinishReason();
 ```
 
-`getFinishReason()` is a convenience method that specifies the reason for stopping the chat completion request.
 
 ```ts
 const tokenUsage = response.getTokenUsage();
@@ -130,7 +131,6 @@ console.log(
 );
 ```
 
-`getTokenUsage()` is a convenience method that retrieves the token usage details of the chat completion request.
 
 #### Passing a Message History
 
