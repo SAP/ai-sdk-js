@@ -211,10 +211,13 @@ try {
 Both `chatCompletion()` and `getContent()` methods can throw errors.
 
 - **Axios Errors**:  
-  When the chat completion request fails with a `400` status code, the caught error will be an `Axios` error. The property `error.response.data.message` may provide additional details about the failure's cause.
+  When the chat completion request fails with a `400` status code, the caught error will be an `Axios` error.
+  The property `error.response.data.message` may provide additional details about the failure's cause.
 
 - **Output Content Filtered**:  
-  The method `getContent()` can throw an error if the output filter filters the model output. This situation can occur even if the chat completion request succeeds with a `200` status code. The `error.message` property indicates whether the output was filtered.
+  The method `getContent()` can throw an error if the output filter filters the model output.
+  This can occur even if the chat completion request responds with a `200` HTTP status code.
+  The `error.message` property indicates if the output was filtered.
 
 Therefore, handle errors appropriately to ensure meaningful feedback for both types of errors.
 
