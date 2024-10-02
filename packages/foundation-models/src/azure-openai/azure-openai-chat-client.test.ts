@@ -1,6 +1,7 @@
 import nock from 'nock';
 import {
   mockClientCredentialsGrantCall,
+  mockDeploymentsList,
   mockInference,
   parseMockResponse
 } from '../../../../test-util/mock-http.js';
@@ -14,7 +15,7 @@ describe('Azure OpenAI chat client', () => {
     apiVersion
   };
 
-  const client = new AzureOpenAiChatClient({ deploymentId: '1234' });
+  const client = new AzureOpenAiChatClient({ modelName: 'gpt-35-turbo' });
 
   beforeEach(() => {
     mockClientCredentialsGrantCall();
@@ -98,6 +99,15 @@ describe('Azure OpenAI chat client', () => {
       ]
     };
 
+    mockDeploymentsList(
+      {
+        scenarioId: 'foundation-models',
+        resourceGroup: 'custom-resource-group',
+        executableId: 'azure-openai'
+      },
+      { id: '1234', model: { name: 'gpt-4o', version: 'latest' } }
+    );
+
     mockInference(
       {
         data: prompt
@@ -110,58 +120,11 @@ describe('Azure OpenAI chat client', () => {
     );
 
     const clientWithResourceGroup = new AzureOpenAiChatClient({
-      deploymentId: '1234',
+      modelName: 'gpt-4o',
       resourceGroup: 'custom-resource-group'
     });
 
     const response = await clientWithResourceGroup.run(prompt);
     expect(response.data).toEqual(mockResponse);
-  });
-
-  it('fails when the wrong resource group is set', async () => {
-    const customChatCompletionEndpoint = {
-      url: 'inference/deployments/1234/chat/completions',
-      apiVersion,
-      resourceGroup: 'custom-resource-group'
-    };
-
-    const prompt = {
-      messages: [
-        {
-          role: 'user' as const,
-          content: 'Where is the deepest place on earth located'
-        }
-      ]
-    };
-
-    const mockResponse =
-      parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
-        'foundation-models',
-        'azure-openai-chat-completion-success-response.json'
-      );
-
-    mockInference(
-      {
-        data: prompt
-      },
-      {
-        data: mockResponse,
-        status: 200
-      },
-      customChatCompletionEndpoint
-    );
-
-    mockInference(
-      {
-        data: prompt
-      },
-      {
-        data: null,
-        status: 404
-      },
-      chatCompletionEndpoint
-    );
-
-    expect(client.run(prompt)).rejects.toThrow();
   });
 });

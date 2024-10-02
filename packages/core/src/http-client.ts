@@ -52,7 +52,7 @@ export async function executeRequest(
   requestConfig?: CustomRequestConfig
 ): Promise<HttpResponse> {
   const aiCoreDestination = await getAiCoreDestination();
-  const { url, apiVersion, resourceGroup } = endpointOptions;
+  const { url, apiVersion, resourceGroup = 'default' } = endpointOptions;
 
   const mergedRequestConfig = {
     ...mergeWithDefaultRequestConfig(apiVersion, resourceGroup, requestConfig),
@@ -79,7 +79,7 @@ function mergeWithDefaultRequestConfig(
     method: 'post',
     headers: {
       'content-type': 'application/json',
-      'ai-resource-group': resourceGroup ?? 'default',
+      'ai-resource-group': resourceGroup,
       'ai-client-type': 'AI SDK JavaScript'
     },
     params: apiVersion ? { 'api-version': apiVersion } : {}
