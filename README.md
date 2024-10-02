@@ -33,7 +33,7 @@ This package incorporates generative AI [orchestration](https://help.sap.com/doc
 $ npm install @sap-ai-sdk/orchestration
 ```
 
-For details on Orchestration client, refer to this [document](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md).
+For details on orchestration client, refer to this [document](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md).
 
 ### @sap-ai-sdk/ai-api
 
