@@ -2,16 +2,18 @@
 
 This package incorporates generative AI orchestration capabilities into your AI activities in SAP AI Core and SAP AI Launchpad.
 
-## Table of Contents
+### Table of Contents
 
-1. [Installation](#installation)
-2. [Prerequisites](#prerequisites)
-3. [Orchestration Service](#orchestration-service)
-4. [Usage](#usage)
-   - [Templating](#templating)
-   - [Content Filtering](#content-filtering)
-5. [Support, Feedback, Contribution](#support-feedback-contribution)
-6. [License](#license)
+- [Installation](#installation)
+  - [Prerequisites](#prerequisites)
+- [Orchestration Service](#orchestration-service)
+- [Usage](#usage)
+  - [Templating](#templating)
+    - [Token Usage](#token-usage)
+  - [Content Filtering](#content-filtering)
+    - [Data Masking](#data-masking)
+- [Support, Feedback, Contribution](#support-feedback-contribution)
+- [License](#license)
 
 ## Installation
 
@@ -39,12 +41,30 @@ Find more details about orchestration workflow [here](https://help.sap.com/docs/
 ## Usage
 
 Leverage the orchestration service capabilities by using the orchestration client.
-The client allows you to configure various modules, such as templating and content filtering, while sending chat completion requests to an orchestration-compatible generative AI model.
+Configure the LLM module by setting the `model_name` and `model_params` properties.
+Define the optional `model_version` property to choose an available model version.
+By default, the version is set to `latest`.
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+
+const orchestrationClient = new OrchestrationClient({
+  llm: {
+    model_name: 'gpt-4-32k',
+    model_params: { max_tokens: 50, temperature: 0.1 }
+    model_version: 'latest'
+  },
+  ...
+});
+```
+
+The client allows you to combine various modules, such as templating and content filtering, while sending chat completion requests to an orchestration-compatible generative AI model.
 
 ### Templating
 
 Use the orchestration client with templating to pass a prompt containing placeholders that will be replaced with input parameters during a chat completion request.
 This allows for variations in the prompt based on the input parameters.
+Set custom request configuration when calling `chatCompletion` function.
 
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
@@ -61,9 +81,20 @@ const orchestrationClient = new OrchestrationClient({
   }
 });
 
-const response = await orchestrationClient.chatCompletion({
-  inputParams: { country: 'France' }
-});
+const response = await orchestrationClient.chatCompletion(
+  {
+    inputParams: { country: 'France' }
+  },
+  {
+    headers: {
+      // Add more headers here
+    },
+    params: {
+      // Add more parameters here
+    }
+    // Add more request configuration here
+  }
+);
 
 const responseContent = response.getContent();
 ```
