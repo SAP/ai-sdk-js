@@ -221,7 +221,7 @@ return response.getContent();
 
 ### Custom Request Configuration
 
-Set custom request configuration in the `requestConfig` parameter when calling `chatCompletion` function.
+Set custom request configuration in the `requestConfig` parameter when calling the `chatCompletion()` method.
 
 ```ts
 const response = await orchestrationClient.chatCompletion(
