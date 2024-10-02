@@ -143,7 +143,7 @@ Define optional request configuration when running the client, similar to the ch
 
 ### Custom Request Configuration
 
-Set custom request configuration in the `requestConfig` parameter when calling the `run` function of a chat or embedding client.
+Set custom request configuration in the `requestConfig` parameter when calling the `run()` method of a chat or embedding client.
 
 ```ts
 const response = await client.run(
