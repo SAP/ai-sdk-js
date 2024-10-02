@@ -139,7 +139,6 @@ const response = await embeddingClient.run({
 const embedding = response.getEmbedding();
 ```
 
-
 ### Custom Request Configuration
 
 Set custom request configuration in the `requestConfig` parameter when calling the `run()` method of a chat or embedding client.
