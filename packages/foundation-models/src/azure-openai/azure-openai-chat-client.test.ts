@@ -76,7 +76,7 @@ describe('Azure OpenAI chat client', () => {
     await expect(client.run(prompt)).rejects.toThrow('status code 400');
   });
 
-  it('executes a request with the custom request group', async () => {
+  it('executes a request with the custom resource group', async () => {
     const customChatCompletionEndpoint = {
       url: 'inference/deployments/1234/chat/completions',
       apiVersion,
@@ -118,7 +118,7 @@ describe('Azure OpenAI chat client', () => {
     expect(response.data).toEqual(mockResponse);
   });
 
-  it('it fails when the wrong resource group is set', async () => {
+  it('fails when the wrong resource group is set', async () => {
     const customChatCompletionEndpoint = {
       url: 'inference/deployments/1234/chat/completions',
       apiVersion,

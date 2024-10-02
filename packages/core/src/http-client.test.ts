@@ -37,7 +37,7 @@ describe('http-client', () => {
     expect(res.data).toEqual(mockPromptResponse);
   }, 10000);
 
-  it('should execute a request to the AI Core service with a custom resource gorup', async () => {
+  it('should execute a request to the AI Core service with a custom resource group', async () => {
     const mockPrompt = { prompt: 'some test prompt' };
     const mockPromptResponse = { completion: 'some test completion' };
 
