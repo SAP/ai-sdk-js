@@ -62,7 +62,7 @@ This package incorporates generative AI foundation models into your AI activitie
 $ npm install @sap-ai-sdk/foundation-models
 ```
 
-For details on Azure OpenAI client, refer to this [document](https://github.com/SAP/ai-sdk-js/blob/main/packages/foundation-models/README.md).
+For details on foundation model clients, refer to this [document](https://github.com/SAP/ai-sdk-js/blob/main/packages/foundation-models/README.md).
 
 ### @sap-ai-sdk/langchain
 

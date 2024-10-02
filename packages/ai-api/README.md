@@ -173,7 +173,7 @@ async function modifyDeployment() {
 
 ## Local Testing
 
-For local testing instuctions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
+For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
 
 ## Support, Feedback, Contribution
 
