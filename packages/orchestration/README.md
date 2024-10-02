@@ -5,7 +5,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
 ## Table of Contents
 
 - [Installation](#installation)
-- [Prerequisites](#prerequisites)
+  - [Prerequisites](#prerequisites)
 - [Orchestration Service](#orchestration-service)
 - [Relationship between Orchestration and Resource Groups](#relationship-between-orchestration-and-resource-groups)
 - [Usage](#usage)
@@ -55,12 +55,30 @@ Consequently, each orchestration deployment uniquely maps to a resource group wi
 ## Usage
 
 Leverage the orchestration service capabilities by using the orchestration client.
-The client allows you to configure various modules, such as templating and content filtering, while sending chat completion requests to an orchestration-compatible generative AI model.
+Configure the LLM module by setting the `model_name` and `model_params` properties.
+Define the optional `model_version` property to choose an available model version.
+By default, the version is set to `latest`.
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+
+const orchestrationClient = new OrchestrationClient({
+  llm: {
+    model_name: 'gpt-4-32k',
+    model_params: { max_tokens: 50, temperature: 0.1 }
+    model_version: 'latest'
+  },
+  ...
+});
+```
+
+The client allows you to combine various modules, such as templating and content filtering, while sending chat completion requests to an orchestration-compatible generative AI model.
 
 ### Templating
 
 Use the orchestration client with templating to pass a prompt containing placeholders that will be replaced with input parameters during a chat completion request.
 This allows for variations in the prompt based on the input parameters.
+Set custom request configuration when calling `chatCompletion` function.
 
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
@@ -77,9 +95,20 @@ const orchestrationClient = new OrchestrationClient({
   }
 });
 
-const response = await orchestrationClient.chatCompletion({
-  inputParams: { country: 'France' }
-});
+const response = await orchestrationClient.chatCompletion(
+  {
+    inputParams: { country: 'France' }
+  },
+  {
+    headers: {
+      // Add more headers here
+    },
+    params: {
+      // Add more parameters here
+    }
+    // Add more request configuration here
+  }
+);
 
 const responseContent = response.getContent();
 ```

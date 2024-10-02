@@ -9,9 +9,8 @@ This package incorporates generative AI foundation models into your AI activitie
 - [Relationship between Models and Deployment ID](#relationship-between-models-and-deployment-id)
 - [Usage](#usage)
   - [Client Initialization](#client-initialization)
-  - [Azure OpenAI Client](#azure-openai-client)
-    - [Chat Client](#chat-client)
-    - [Embedding Client](#embedding-client)
+  - [Chat Client](#chat-client)
+  - [Embedding Client](#embedding-client)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
@@ -72,26 +71,38 @@ const chatClient = new AzureOpenAiChatClient({
 });
 ```
 
-### Azure OpenAI Client
-
-The Azure OpenAI client can then be used to send chat completion or embedding requests to models deployed in the SAP generative AI hub.
-
-#### Chat Client
+### Chat Client
 
 Use the `AzureOpenAiChatClient` to send chat completion requests to an OpenAI model deployed in SAP generative AI hub.
+
+The client sends request with Azure OpenAI API version `2024-06-01`.
+
+Set request configuration in the `requestConfig` parameter. The following example shows a call with messages and optional request configuration.
 
 ```ts
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
 
 const chatClient = new AzureOpenAiChatClient('gpt-4o');
-const response = await chatClient.run({
-  messages: [
-    {
-      role: 'user',
-      content: 'Where is the deepest place on earth located'
+const response = await chatClient.run(
+  {
+    messages: [
+      {
+        role: 'user',
+        content: 'Where is the deepest place on earth located'
+      }
+    ]
+  },
+  {
+    headers: {
+      'x-custom-header': 'custom-value'
+      // Add more headers here
+    },
+    params: {
+      // Add more parameters here
     }
-  ]
-});
+    // Add more request configuration here
+  }
+);
 
 const responseContent = response.getContent();
 ```
@@ -136,7 +147,7 @@ logger.info(
 
 Refer to `AzureOpenAiChatCompletionParameters` interface for other parameters that can be passed to the chat completion request.
 
-#### Embedding Client
+### Embedding Client
 
 Use the `AzureOpenAiEmbeddingClient` to send embedding requests to an OpenAI model deployed in SAP generative AI hub.
 
@@ -151,6 +162,8 @@ const response = await embeddingClient.run({
 });
 const embedding = response.getEmbedding();
 ```
+
+Define optional request configuration when running the client, similar to the chat client.
 
 ## Local Testing
 
