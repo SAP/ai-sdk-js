@@ -46,7 +46,8 @@ To ensure compatibility and manage updates effectively, we strongly recommend us
 
 ## Usage
 
-The examples below demonstrate the usage of the most commonly used APIs in SAP AI Core. In addition to the examples below, you can find more **sample code** [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/ai-api).
+The examples below demonstrate the usage of the most commonly used APIs in SAP AI Core.
+In addition to the examples below, you can find more **sample code** [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/ai-api).
 
 ### Create an Artifact
 
