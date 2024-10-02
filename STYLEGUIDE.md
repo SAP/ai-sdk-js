@@ -1,6 +1,6 @@
 # Style Guide
 
-The SAP Cloud SDK for AI follow the style guide from the SAP Cloud SDK for JavaScript.
+The SAP Cloud SDK for AI follows the style guide from the SAP Cloud SDK for JavaScript.
 
 ## Code
 
