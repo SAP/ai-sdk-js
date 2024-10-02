@@ -4,15 +4,16 @@ This package incorporates generative AI foundation models into your AI activitie
 
 ## Table of Contents
 
-1. [Installation](#installation)
-2. [Prerequisites](#prerequisites)
-3. [Usage](#usage)
-   - [Client Initialization](#client-initialization)
-   - [Azure OpenAI Client](#azure-openai-client)
-     - [Chat Client](#chat-client)
-     - [Embedding Client](#embedding-client)
-4. [Support, Feedback, Contribution](#support-feedback-contribution)
-5. [License](#license)
+- [Table of Contents](#table-of-contents)
+- [Installation](#installation)
+- [Prerequisites](#prerequisites)
+- [Usage](#usage)
+  - [Client Initialization](#client-initialization)
+  - [Chat Client](#chat-client)
+  - [Embedding Client](#embedding-client)
+  - [Custom Request Configuration](#custom-request-configuration)
+- [Support, Feedback, Contribution](#support-feedback-contribution)
+- [License](#license)
 
 ## Installation
 
@@ -60,13 +61,11 @@ const chatClient = new AzureOpenAiChatClient({
 });
 ```
 
-### Azure OpenAI Client
-
-The Azure OpenAI client can then be used to send chat completion or embedding requests to models deployed in the SAP generative AI hub.
-
-#### Chat Client
+### Chat Client
 
 Use the `AzureOpenAiChatClient` to send chat completion requests to an OpenAI model deployed in SAP generative AI hub.
+
+The client sends request with Azure OpenAI API version `2024-06-01`.
 
 ```ts
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
@@ -124,7 +123,7 @@ logger.info(
 
 Refer to `AzureOpenAiChatCompletionParameters` interface for other parameters that can be passed to the chat completion request.
 
-#### Embedding Client
+### Embedding Client
 
 Use the `AzureOpenAiEmbeddingClient` to send embedding requests to an OpenAI model deployed in SAP generative AI hub.
 
@@ -138,6 +137,28 @@ const response = await embeddingClient.run({
   input: 'AI is fascinating'
 });
 const embedding = response.getEmbedding();
+```
+
+### Custom Request Configuration
+
+Set custom request configuration in the `requestConfig` parameter when calling the `run()` method of a chat or embedding client.
+
+```ts
+const response = await client.run(
+  {
+    ...
+  },
+  {
+    headers: {
+      'x-custom-header': 'custom-value'
+      // Add more headers here
+    },
+    params: {
+      // Add more parameters here
+    }
+    // Add more request configuration here
+  }
+);
 ```
 
 ## Support, Feedback, Contribution

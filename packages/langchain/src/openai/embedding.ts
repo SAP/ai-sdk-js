@@ -1,19 +1,16 @@
 import {
   AzureOpenAiEmbeddingClient as AzureOpenAiEmbeddingClientBase,
+  AzureOpenAiEmbeddingModel,
   AzureOpenAiEmbeddingParameters
 } from '@sap-ai-sdk/foundation-models';
 import { Embeddings } from '@langchain/core/embeddings';
-import { AzureOpenAiChatModel } from '@sap-ai-sdk/core';
 import { AzureOpenAiEmbeddingModelParams } from './types.js';
 
 /**
  * LangChain embedding client for Azure OpenAI consumption on SAP BTP.
  */
-export class AzureOpenAiEmbeddingClient
-  extends Embeddings
-  implements AzureOpenAiEmbeddingModelParams
-{
-  modelName: AzureOpenAiChatModel;
+export class AzureOpenAiEmbeddingClient extends Embeddings {
+  modelName: AzureOpenAiEmbeddingModel;
   modelVersion?: string;
   resourceGroup?: string;
 

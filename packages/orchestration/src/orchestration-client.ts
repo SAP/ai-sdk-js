@@ -39,7 +39,8 @@ export class OrchestrationClient {
 
     const response = await executeRequest(
       {
-        url: `/inference/deployments/${deploymentId}/completion`
+        url: `/inference/deployments/${deploymentId}/completion`,
+        resourceGroup: this.deploymentConfig?.resourceGroup
       },
       body,
       requestConfig
