@@ -132,7 +132,6 @@ console.log(
 );
 ```
 
-
 #### Passing a Message History
 
 It is possible to provide a history of a conversation to the model.
