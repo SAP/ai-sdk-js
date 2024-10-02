@@ -61,6 +61,8 @@ const orchestrationClient = new OrchestrationClient({
 
 The client allows you to combine various modules, such as templating and content filtering, while sending chat completion requests to an orchestration-compatible generative AI model.
 
+In addition to the examples below, you can find more **sample code** [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/orchestration.ts).
+
 ### Templating
 
 Use the orchestration client with templating to pass a prompt containing placeholders that will be replaced with input parameters during a chat completion request.
