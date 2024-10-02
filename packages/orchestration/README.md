@@ -29,7 +29,8 @@ $ npm install @sap-ai-sdk/orchestration
 - [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Project configured with Node.js v20 or higher and native ESM support enabled.
 - An orchestration deployment is running.
-  - Use the [`DeploymentApi`](https://github.com/SAP/ai-sdk-js/blob/main/packages/ai-api/README.md#create-a-deployment) from `@sap-ai-sdk/ai-api` to create a deployment for orchestration to the SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration).
+  - Use the [`DeploymentApi`](https://github.com/SAP/ai-sdk-js/blob/main/packages/ai-api/README.md#create-a-deployment) from `@sap-ai-sdk/ai-api` to create a deployment for orchestration to the SAP generative AI hub. 
+  For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration).
   - Once a deployment is complete, the orchestration service can be accessed via the `deploymentUrl`.
 
 ## Orchestration Service
@@ -247,14 +248,12 @@ To retrieve the token usage details of the orchestration request, use the follow
 ```ts
 const tokenUsage = response.getTokenUsage();
 
-logger.info(
+console.log(
   `Total tokens consumed by the request: ${tokenUsage.total_tokens}\n` +
     `Input prompt tokens consumed: ${tokenUsage.prompt_tokens}\n` +
     `Output text completion tokens consumed: ${tokenUsage.completion_tokens}\n`
 );
 ```
-
-Remember to initialize a logger before using it.
 
 ### Using Resource Groups
 
