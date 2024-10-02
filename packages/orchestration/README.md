@@ -5,7 +5,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
 ## Table of Contents
 
 - [Installation](#installation)
-  - [Prerequisites](#prerequisites)
+- [Prerequisites](#prerequisites)
 - [Orchestration Service](#orchestration-service)
 - [Relationship between Orchestration and Resource Groups](#relationship-between-orchestration-and-resource-groups)
 - [Usage](#usage)
@@ -23,7 +23,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
 $ npm install @sap-ai-sdk/orchestration
 ```
 
-### Prerequisites
+## Prerequisites
 
 - [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Project configured with Node.js v20 or higher and native ESM support enabled.
