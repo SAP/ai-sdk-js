@@ -71,16 +71,14 @@ The client sends request with Azure OpenAI API version `2024-06-01`.
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
 
 const chatClient = new AzureOpenAiChatClient('gpt-4o');
-const response = await chatClient.run(
-  {
-    messages: [
-      {
-        role: 'user',
-        content: 'Where is the deepest place on earth located'
-      }
-    ]
-  }
-);
+const response = await chatClient.run({
+  messages: [
+    {
+      role: 'user',
+      content: 'Where is the deepest place on earth located'
+    }
+  ]
+});
 
 const responseContent = response.getContent();
 ```

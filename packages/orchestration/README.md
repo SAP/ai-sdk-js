@@ -82,11 +82,9 @@ const orchestrationClient = new OrchestrationClient({
   }
 });
 
-const response = await orchestrationClient.chatCompletion(
-  {
-    inputParams: { country: 'France' }
-  }
-);
+const response = await orchestrationClient.chatCompletion({
+  inputParams: { country: 'France' }
+});
 
 const responseContent = response.getContent();
 ```
