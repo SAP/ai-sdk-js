@@ -120,6 +120,7 @@ To retrieve the `finish_reason` for stopping the chat completion request, use th
 const finishReason = response.getFinishReason();
 ```
 
+Use the `getTokenUsage()` convenience method to retrieve the token usage details of the chat completion request:
 
 ```ts
 const tokenUsage = response.getTokenUsage();
