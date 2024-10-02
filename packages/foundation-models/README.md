@@ -83,9 +83,7 @@ const response = await chatClient.run(
   },
   {
     headers: {
-      'content-type': 'application/json',
-      'ai-resource-group': 'default',
-      'ai-client-type': 'AI SDK JavaScript'
+      'x-custom-header': 'custom-value'
       // Add more headers here
     },
     params: {
