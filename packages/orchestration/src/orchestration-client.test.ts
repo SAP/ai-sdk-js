@@ -12,7 +12,7 @@ import {
 } from './orchestration-client.js';
 import { buildAzureContentFilter } from './orchestration-filter-utility.js';
 import { OrchestrationResponse } from './orchestration-response.js';
-import { OrchestrationModuleConfig } from './orchestration-types.js';
+import { OrchestrationModuleConfig, Prompt } from './orchestration-types.js';
 
 describe('orchestration service client', () => {
   beforeEach(() => {
@@ -218,6 +218,60 @@ describe('orchestration service client', () => {
     const response = await new OrchestrationClient(config).chatCompletion(
       prompt
     );
+    expect(response.data).toEqual(mockResponse);
+  });
+
+  it('executes a request with the custom resource group', async () => {
+    const prompt: Prompt = {
+      messagesHistory: [
+        {
+          role: 'user',
+          content: 'Where is the deepest place on earth located'
+        }
+      ]
+    };
+
+    const config: OrchestrationModuleConfig = {
+      llm: {
+        model_name: 'gpt-4o',
+        model_params: {}
+      },
+      templating: {
+        template: [{ role: 'user', content: "What's my name?" }]
+      }
+    };
+
+    const customChatCompletionEndpoint = {
+      url: 'inference/deployments/1234/completion',
+      resourceGroup: 'custom-resource-group'
+    };
+
+    const mockResponse = parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'orchestration-chat-completion-message-history.json'
+    );
+
+    mockDeploymentsList(
+      { scenarioId: 'orchestration', resourceGroup: 'custom-resource-group' },
+      { id: '1234', model: { name: 'gpt-4o', version: 'latest' } }
+    );
+
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, prompt)
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      customChatCompletionEndpoint
+    );
+
+    const clientWithResourceGroup = new OrchestrationClient(config, {
+      resourceGroup: 'custom-resource-group'
+    });
+
+    const response = await clientWithResourceGroup.chatCompletion(prompt);
     expect(response.data).toEqual(mockResponse);
   });
 });

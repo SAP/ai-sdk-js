@@ -1,6 +1,7 @@
 import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
 import {
   getDeploymentId,
+  getResourceGroup,
   type ModelDeployment
 } from '@sap-ai-sdk/ai-api/internal.js';
 import type { AzureOpenAiCreateChatCompletionRequest } from './client/inference/schema/index.js';
@@ -31,10 +32,12 @@ export class AzureOpenAiChatClient {
       this.modelDeployment,
       'azure-openai'
     );
+    const resourceGroup = getResourceGroup(this.modelDeployment);
     const response = await executeRequest(
       {
         url: `/inference/deployments/${deploymentId}/chat/completions`,
-        apiVersion
+        apiVersion,
+        resourceGroup
       },
       data,
       requestConfig

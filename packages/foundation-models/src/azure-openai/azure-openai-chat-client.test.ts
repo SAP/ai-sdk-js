@@ -1,6 +1,7 @@
 import nock from 'nock';
 import {
   mockClientCredentialsGrantCall,
+  mockDeploymentsList,
   mockInference,
   parseMockResponse
 } from '../../../../test-util/mock-http.js';
@@ -74,5 +75,56 @@ describe('Azure OpenAI chat client', () => {
     );
 
     await expect(client.run(prompt)).rejects.toThrow('status code 400');
+  });
+
+  it('executes a request with the custom resource group', async () => {
+    const customChatCompletionEndpoint = {
+      url: 'inference/deployments/1234/chat/completions',
+      apiVersion,
+      resourceGroup: 'custom-resource-group'
+    };
+
+    const mockResponse =
+      parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
+        'foundation-models',
+        'azure-openai-chat-completion-success-response.json'
+      );
+
+    const prompt = {
+      messages: [
+        {
+          role: 'user' as const,
+          content: 'Where is the deepest place on earth located'
+        }
+      ]
+    };
+
+    mockDeploymentsList(
+      {
+        scenarioId: 'foundation-models',
+        resourceGroup: 'custom-resource-group',
+        executableId: 'azure-openai'
+      },
+      { id: '1234', model: { name: 'gpt-4o', version: 'latest' } }
+    );
+
+    mockInference(
+      {
+        data: prompt
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      customChatCompletionEndpoint
+    );
+
+    const clientWithResourceGroup = new AzureOpenAiChatClient({
+      modelName: 'gpt-4o',
+      resourceGroup: 'custom-resource-group'
+    });
+
+    const response = await clientWithResourceGroup.run(prompt);
+    expect(response.data).toEqual(mockResponse);
   });
 });

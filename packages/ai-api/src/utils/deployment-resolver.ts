@@ -49,6 +49,17 @@ export type ModelDeployment<ModelNameT = string> =
   | ((ModelConfig<ModelNameT> | DeploymentIdConfig) & ResourceGroupConfig);
 
 /**
+ * @internal
+ */
+export function getResourceGroup(
+  modelDeployment: ModelDeployment
+): string | undefined {
+  return typeof modelDeployment === 'object'
+    ? modelDeployment.resourceGroup
+    : undefined;
+}
+
+/**
  * Type guard to check if the given deployment configuration is a deployment ID configuration.
  * @param modelDeployment - Configuration to check.
  * @returns `true` if the configuration is a deployment ID configuration, `false` otherwise.
