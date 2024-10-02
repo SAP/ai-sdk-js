@@ -139,7 +139,6 @@ const response = await embeddingClient.run({
 const embedding = response.getEmbedding();
 ```
 
-Define optional request configuration when running the client, similar to the chat client.
 
 ### Custom Request Configuration
 
