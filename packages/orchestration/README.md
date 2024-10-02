@@ -12,6 +12,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
     - [Token Usage](#token-usage)
   - [Content Filtering](#content-filtering)
     - [Data Masking](#data-masking)
+  - [Custom Request Configuration](#custom-request-configuration)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
 
@@ -51,7 +52,7 @@ import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 const orchestrationClient = new OrchestrationClient({
   llm: {
     model_name: 'gpt-4-32k',
-    model_params: { max_tokens: 50, temperature: 0.1 }
+    model_params: { max_tokens: 50, temperature: 0.1 },
     model_version: 'latest'
   },
   ...
@@ -64,7 +65,6 @@ The client allows you to combine various modules, such as templating and content
 
 Use the orchestration client with templating to pass a prompt containing placeholders that will be replaced with input parameters during a chat completion request.
 This allows for variations in the prompt based on the input parameters.
-Set custom request configuration when calling `chatCompletion` function.
 
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
@@ -84,15 +84,6 @@ const orchestrationClient = new OrchestrationClient({
 const response = await orchestrationClient.chatCompletion(
   {
     inputParams: { country: 'France' }
-  },
-  {
-    headers: {
-      // Add more headers here
-    },
-    params: {
-      // Add more parameters here
-    }
-    // Add more request configuration here
   }
 );
 
@@ -227,6 +218,28 @@ const response = await orchestrationClient.chatCompletion({
   inputParams: { user: 'Alice Anderson', email: 'alice.anderson@sap.com' }
 });
 return response.getContent();
+```
+
+### Custom Request Configuration
+
+Set custom request configuration in the `requestConfig` parameter when calling `chatCompletion` function.
+
+```ts
+const response = await orchestrationClient.chatCompletion(
+  {
+    ...
+  },
+  {
+    headers: {
+      'x-custom-header': 'custom-value'
+      // Add more headers here
+    },
+    params: {
+      // Add more parameters here
+    }
+    // Add more request configuration here
+  }
+);
 ```
 
 ## Support, Feedback, Contribution
