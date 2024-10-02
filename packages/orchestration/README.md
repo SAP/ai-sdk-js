@@ -12,6 +12,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
     - [Token Usage](#token-usage)
   - [Content Filtering](#content-filtering)
     - [Data Masking](#data-masking)
+  - [Custom Request Configuration](#custom-request-configuration)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
 
@@ -51,7 +52,7 @@ import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 const orchestrationClient = new OrchestrationClient({
   llm: {
     model_name: 'gpt-4-32k',
-    model_params: { max_tokens: 50, temperature: 0.1 }
+    model_params: { max_tokens: 50, temperature: 0.1 },
     model_version: 'latest'
   },
   ...
@@ -84,15 +85,6 @@ const orchestrationClient = new OrchestrationClient({
 const response = await orchestrationClient.chatCompletion(
   {
     inputParams: { country: 'France' }
-  },
-  {
-    headers: {
-      // Add more headers here
-    },
-    params: {
-      // Add more parameters here
-    }
-    // Add more request configuration here
   }
 );
 
@@ -227,6 +219,28 @@ const response = await orchestrationClient.chatCompletion({
   inputParams: { user: 'Alice Anderson', email: 'alice.anderson@sap.com' }
 });
 return response.getContent();
+```
+
+### Custom Request Configuration
+
+Set custom request configuration in the `requestConfig` parameter when calling `chatCompletion` function.
+
+```ts
+const response = await orchestrationClient.chatCompletion(
+  {
+    ...
+  },
+  {
+    headers: {
+      'x-custom-header': 'custom-value'
+      // Add more headers here
+    },
+    params: {
+      // Add more parameters here
+    }
+    // Add more request configuration here
+  }
+);
 ```
 
 ## Support, Feedback, Contribution
