@@ -71,16 +71,14 @@ The client sends request with Azure OpenAI API version `2024-06-01`.
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
 
 const chatClient = new AzureOpenAiChatClient('gpt-4o');
-const response = await chatClient.run(
-  {
-    messages: [
-      {
-        role: 'user',
-        content: 'Where is the deepest place on earth located'
-      }
-    ]
-  }
-);
+const response = await chatClient.run({
+  messages: [
+    {
+      role: 'user',
+      content: 'Where is the deepest place on earth located'
+    }
+  ]
+});
 
 const responseContent = response.getContent();
 ```
@@ -143,7 +141,7 @@ const embedding = response.getEmbedding();
 
 ### Custom Request Configuration
 
-Set custom request configuration in the `requestConfig` parameter when calling the `run` function of a chat or embedding client. 
+Set custom request configuration in the `requestConfig` parameter when calling the `run` function of a chat or embedding client.
 
 ```ts
 const response = await client.run(
