@@ -12,6 +12,7 @@ We maintain a list of [currently available and tested AI Core APIs](https://gith
 ## Table of Contents
 
 - [Installation](#installation)
+- [Version Management](#version-management)
 - [Prerequisites](#prerequisites)
 - [Usage](#usage)
   - [Create an Artifact](#create-an-artifact)
