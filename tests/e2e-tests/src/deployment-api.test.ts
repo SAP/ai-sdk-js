@@ -93,7 +93,7 @@ describe('DeploymentApi', () => {
     );
 
     // Wait for deletion to complete
-    await new Promise(r => setTimeout(r, 25000));
+    await new Promise(r => setTimeout(r, 30000));
     await expect(getDeployment(deploymentId, resourceGroup)).rejects.toThrow();
 
     createdDeploymentId = undefined; // Reset
