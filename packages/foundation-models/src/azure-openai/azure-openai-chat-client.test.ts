@@ -15,7 +15,7 @@ describe('Azure OpenAI chat client', () => {
     apiVersion
   };
 
-  const client = new AzureOpenAiChatClient({ modelName: 'gpt-35-turbo' });
+  const client = new AzureOpenAiChatClient({ deploymentId: '1234' });
 
   beforeEach(() => {
     mockClientCredentialsGrantCall();
