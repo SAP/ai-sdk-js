@@ -86,21 +86,6 @@ const responseContent = response.getContent();
 
 `getContent()` is a convenience method that parses the response and returns the model's output as a string.
 
-#### Customizing the Request Configuration
-
-To pass custom request configuration parameters (e.g., headers) to the client, use the second parameter in the `chatCompletion()` method:
-
-```ts
-const response = await orchestrationClient.chatCompletion(
-  {
-    inputParams: { country: 'France' }
-  },
-  {
-    headers: { 'x-custom-header': 'custom-value' }
-  }
-);
-```
-
 #### Passing a Message History
 
 It is possible to provide a history of a conversation to the model.
