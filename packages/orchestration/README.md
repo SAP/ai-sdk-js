@@ -12,7 +12,6 @@ This package incorporates generative AI orchestration capabilities into your AI 
   - [Templating](#templating)
   - [Content Filtering](#content-filtering)
   - [Data Masking](#data-masking)
-  - [Retrieving Data from the Response](#retrieving-data-from-the-response)
   - [Using Resource Groups](#using-resource-groups)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
@@ -114,6 +113,24 @@ const responseContent = response.getContent();
 ```
 
 `getContent()` is a convenience method that parses the response and returns the model's output as a string.
+
+```ts
+const finishReason = response.getFinishReason();
+```
+
+`getFinishReason()` is a convenience method that specifies the reason for stopping the chat completion request.
+
+```ts
+const tokenUsage = response.getTokenUsage();
+
+console.log(
+  `Total tokens consumed by the request: ${tokenUsage.total_tokens}\n` +
+    `Input prompt tokens consumed: ${tokenUsage.prompt_tokens}\n` +
+    `Output text completion tokens consumed: ${tokenUsage.completion_tokens}\n`
+);
+```
+
+`getTokenUsage()` is a convenience method that retrieves the token usage details of the chat completion request.
 
 #### Passing a Message History
 
@@ -239,34 +256,6 @@ const response = await orchestrationClient.chatCompletion({
   inputParams: { user: 'Alice Anderson', email: 'alice.anderson@sap.com' }
 });
 return response.getContent();
-```
-
-### Retrieving Data from the Response
-
-In addition to `getContent()`, other available convenience methods can retrieve the finish reason and token usage.
-Use `response.rawReason` to access the complete HTTP response from the orchestration service.
-
-#### Finish Reason
-
-The finish reason indicates the reason for stopping the chat completion request.
-For example, when output is filtered based on the configuration, the finish reason is `content_filter`.
-
-```ts
-const finishReason = response.getFinishReason();
-```
-
-#### Token Usage
-
-To retrieve the token usage details of the orchestration request, use the following snippet:
-
-```ts
-const tokenUsage = response.getTokenUsage();
-
-console.log(
-  `Total tokens consumed by the request: ${tokenUsage.total_tokens}\n` +
-    `Input prompt tokens consumed: ${tokenUsage.prompt_tokens}\n` +
-    `Output text completion tokens consumed: ${tokenUsage.completion_tokens}\n`
-);
 ```
 
 ### Using Resource Groups
