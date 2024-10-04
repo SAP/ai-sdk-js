@@ -179,7 +179,7 @@ async function cleanupDeployments(): Promise<void> {
           } else if (status !== 'STOPPED' && targetStatus === 'STOPPED') {
             await waitForDeploymentToReachStatus(id, 'STOPPED');
           }
-          
+
           await deleteDeployment(id, resourceGroup);
           // Wait for deletion to complete
           await new Promise(r => setTimeout(r, 25000));
