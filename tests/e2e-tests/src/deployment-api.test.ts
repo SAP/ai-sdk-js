@@ -1,5 +1,4 @@
-import retry from 'async-retry';
-import { AiApiError, AiDeployment, AiDeploymentList } from '@sap-ai-sdk/ai-api';
+import { AiApiError, AiDeploymentList } from '@sap-ai-sdk/ai-api';
 import {
   getDeployment,
   getDeployments,
@@ -8,9 +7,11 @@ import {
   deleteDeployment
 } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
-import { configurationId, resourceGroup } from './utils/ai-api-utils.js';
-
-// TODO: Make sure local test doesn't interfere with cloud test
+import {
+  configurationId,
+  resourceGroup,
+  waitForDeploymentToReachStatus
+} from './utils/ai-api-utils.js';
 
 loadEnv();
 
@@ -19,14 +20,9 @@ describe('DeploymentApi', () => {
   let initialState: AiDeploymentList | undefined;
 
   beforeAll(async () => {
-    await cleanupDeployments();
     const queryResponse = await getDeployments(resourceGroup);
     expect(queryResponse).toBeDefined();
     initialState = queryResponse;
-  }, 200000);
-
-  afterAll(async () => {
-    await cleanupDeployments();
   }, 200000);
 
   it('should create a deployment and wait for it to run', async () => {
@@ -95,26 +91,35 @@ describe('DeploymentApi', () => {
     // Wait for deletion to complete
     await new Promise(r => setTimeout(r, 30000));
     await expect(getDeployment(deploymentId, resourceGroup)).rejects.toThrow();
-
-    createdDeploymentId = undefined; // Reset
   }, 100000);
 
   it('should validate consistency of deployments after test flow', async () => {
     const queryResponse = await getDeployments(resourceGroup);
     expect(queryResponse).toBeDefined();
 
-    const sanitizedInitialState = sanitizedState(initialState);
-    const sanitizedEndState = sanitizedState(queryResponse);
-    expect(sanitizedEndState).toStrictEqual(sanitizedInitialState);
+    const sanitizedInitialState = sanitizedState(
+      initialState,
+      createdDeploymentId
+    );
+    const sanitizedEndState = sanitizedState(
+      queryResponse,
+      createdDeploymentId
+    );
+    expect(sanitizedEndState.resources).toStrictEqual(
+      sanitizedInitialState.resources
+    );
   });
 });
 
-const sanitizedState = (state: AiDeploymentList | undefined) => ({
+const sanitizedState = (
+  state: AiDeploymentList | undefined,
+  createdDeployentId: string | undefined
+) => ({
   ...state,
-  resources: state?.resources.map(
+  resources: state?.resources
+    .filter(deployment => deployment.id === createdDeployentId)
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ({ modifiedAt, ...rest }) => rest
-  )
+    .map(({ modifiedAt, ...rest }) => rest)
 });
 
 async function checkCreatedDeployment(
@@ -139,57 +144,4 @@ async function checkCreatedDeployment(
     }
   }
   return deploymentId;
-}
-
-async function waitForDeploymentToReachStatus(
-  deploymentId: string,
-  targetStatus: 'RUNNING' | 'STOPPED'
-): Promise<AiDeployment> {
-  return retry(
-    async () => {
-      const deploymentDetail = await getDeployment(deploymentId, resourceGroup);
-      if (deploymentDetail.status === targetStatus) {
-        return deploymentDetail;
-      }
-      throw new Error(`Deployment has not yet reached ${targetStatus} status.`);
-    },
-    {
-      retries: 30,
-      minTimeout: 5000
-    }
-  );
-}
-
-async function cleanupDeployments(): Promise<void> {
-  try {
-    const deployments = await getDeployments(resourceGroup);
-
-    if (deployments.count !== 0) {
-      await Promise.all(
-        deployments.resources.map(async deployment => {
-          const { id, status, targetStatus } = deployment;
-
-          if (
-            status !== 'STOPPED' &&
-            targetStatus !== 'STOPPED' &&
-            status !== 'UNKNOWN'
-          ) {
-            await modifyDeployment(id, resourceGroup);
-            await waitForDeploymentToReachStatus(id, 'STOPPED');
-          } else if (status !== 'STOPPED' && targetStatus === 'STOPPED') {
-            await waitForDeploymentToReachStatus(id, 'STOPPED');
-          }
-
-          await deleteDeployment(id, resourceGroup);
-          // Wait for deletion to complete
-          await new Promise(r => setTimeout(r, 25000));
-        })
-      );
-    }
-  } catch (errorData: any) {
-    const apiError = errorData.response.data.error as AiApiError;
-    throw new Error(
-      `Deployment cleanup failed: ${apiError.message}. Manual action is required.`
-    );
-  }
 }
