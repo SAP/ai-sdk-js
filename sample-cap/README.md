@@ -39,8 +39,7 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 
 ```bash
 curl --request GET \
-  --url 'http://localhost:4004/odata/v4/ai-api/Deployments' \
-  --header 'Content-Type: application/json'
+  --url 'http://localhost:4004/odata/v4/ai-api/getDeployments'
 ```
 
 ### `foundation-models`
@@ -49,7 +48,7 @@ curl --request GET \
 
 ```bash
 curl --request POST \
-  --url 'http://localhost:4004/odata/v4/azure-openai/ChatCompletions' \
+  --url 'http://localhost:4004/odata/v4/azure-openai/chatCompletions' \
   --header 'Content-Type: application/json' \
   --data '{
   "messages": [
@@ -67,7 +66,7 @@ curl --request POST \
 
 ```bash
 curl --request POST \
-  --url 'http://localhost:4004/odata/v4/orchestration/ChatCompletions' \
+  --url 'http://localhost:4004/odata/v4/orchestration/chatCompletions' \
   --header 'Content-Type: application/json' \
   --data '{
   "template": [

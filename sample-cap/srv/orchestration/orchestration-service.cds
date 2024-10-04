@@ -1,6 +1,6 @@
-using { OrchestrationChatCompletionsEntity } from '../../db/orchestration/orchestration-chat-completions-entity';
+using { Template, InputParam } from '../../db/orchestration/orchestration-chat-completions-entity';
 
 @path: 'orchestration'
 service OrchestrationService {
-  entity ChatCompletions as projection on OrchestrationChatCompletionsEntity;
+  action chatCompletions(template: array of Template, inputParams: array of InputParam) returns String;
 }

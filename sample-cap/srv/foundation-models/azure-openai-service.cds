@@ -1,6 +1,6 @@
-using { AzureOpenAiChatCompletionsEntity } from '../../db/foundation-models/azure-openai-chat-completions-entity';
+using {Message} from '../../db/foundation-models/azure-openai-chat-completions-entity';
 
 @path: 'azure-openai'
 service AzureOpenAiService {
-  entity ChatCompletions as projection on AzureOpenAiChatCompletionsEntity;
+  action chatCompletions(messages : array of Message) returns String;
 }
