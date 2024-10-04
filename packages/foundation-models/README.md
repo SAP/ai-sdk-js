@@ -4,14 +4,15 @@ This package incorporates generative AI foundation models into your AI activitie
 
 ## Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Prerequisites](#prerequisites)
+- [Relationship between Models and Deployment ID](#relationship-between-models-and-deployment-id)
 - [Usage](#usage)
   - [Client Initialization](#client-initialization)
   - [Chat Client](#chat-client)
   - [Embedding Client](#embedding-client)
   - [Custom Request Configuration](#custom-request-configuration)
+- [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
 
@@ -26,9 +27,21 @@ $ npm install @sap-ai-sdk/foundation-models
 - [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Project configured with Node.js v20 or higher and native ESM support enabled.
 - A deployed OpenAI model in SAP Generative AI hub.
-  - Use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
+  - Use the [`DeploymentApi`](https://github.com/SAP/ai-sdk-js/blob/main/packages/ai-api/README.md#create-a-deployment) from `@sap-ai-sdk/ai-api` to deploy a model to SAP generative AI hub.
+    For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
     Deployment can be set up for each model and model version, as well as a resource group intended for use with the generative AI hub.
-  - Once a deployment is complete, the model can be accessed via the `deploymentUrl`
+  - Once a deployment is complete, the model can be accessed via the `deploymentUrl`.
+
+## Relationship between Models and Deployment ID
+
+SAP AI Core manages access to generative AI models through the global AI scenario `foundation-models`.
+Creating a deployment for a model requires access to this scenario.
+
+Each model, model version, and resource group allows for a one-time deployment.
+After deployment completion, the response includes a `deploymentUrl` and an `id`, which is the deployment ID. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
+[Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
+
+Consequently, each deployment ID and resource group uniquely map to a combination of model and model version within the `foundation-models` scenario.
 
 ## Usage
 
@@ -49,8 +62,6 @@ const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
 // For an embedding client
 const embeddingClient = new AzureOpenAiEmbeddingClient({ modelName: 'gpt-4o' });
 ```
-
-[Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
 
 The deployment ID and resource group can be used as an alternative to the model name for obtaining a model.
 
@@ -160,6 +171,10 @@ const response = await client.run(
   }
 );
 ```
+
+## Local Testing
+
+For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
 
 ## Support, Feedback, Contribution
 
