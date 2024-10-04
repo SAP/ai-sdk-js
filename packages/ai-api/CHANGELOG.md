@@ -1,5 +1,21 @@
 # @sap-ai-sdk/ai-api
 
+## 1.1.0
+
+### Minor Changes
+
+- 5bd2e4d: [Compatibility Note] Move `modelsGet()` from `ModelApi` to `ScenarioApi`, and remove `ModelAPI`.
+- 5bd2e4d: [Fixed Issue] Fix `AiExecutionModificationResponseList` type to correctly represent an array of responses or errors.
+- 771f986: [Fixed Issue] Fix sending the correct resource group headers when custom resource group is set.
+- 5bd2e4d: [Improvement] Add `kubesubmitV4ResourceQuotaGetDeploymentQuota()` function in `DeploymentApi` to get details about quota and usage for deployments. Additionally introduce two new types `BckndDeploymentQuotaItem` and `BckndDeploymentResourceQuotaResponse`.
+
+### Patch Changes
+
+- 506a1e4: [Fixed Issue] Fix missing and unused dependencies.
+- Updated dependencies [506a1e4]
+- Updated dependencies [771f986]
+  - @sap-ai-sdk/core@1.1.0
+
 ## 1.0.0
 
 ### Major Changes
