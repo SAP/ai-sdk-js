@@ -14,6 +14,7 @@
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
+    "@sap-ai-sdk/util": "workspace:^",
     "@sap-ai-sdk/sample-code": "workspace:^"
   },
   "scripts": {
