@@ -12,4 +12,10 @@ describe('Smoke Test', () => {
       fetch(`${smokeTestRoute}/orchestration/simple`)
     ).resolves.toHaveProperty('status', 200);
   });
+
+  it('langchain client retrieves completion results', async () => {
+    await expect(
+      fetch(`${smokeTestRoute}/langchain/invoke`)
+    ).resolves.toHaveProperty('status', 200);
+  });
 });
