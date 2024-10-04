@@ -3,10 +3,11 @@
 
 # SAP Cloud SDK for AI
 
-Integrate chat completion into your business applications with SAP Cloud SDK for AI. Leverage the generative AI hub of SAP AI Core to make use of templating, grounding, data masking, content filtering and more. Setup your SAP AI Core instance with SAP Cloud SDK for AI Core.
+Integrate chat completion into your business applications with SAP Cloud SDK for AI. Leverage the generative AI hub of [SAP AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/what-is-sap-ai-core) to make use of templating, grounding, data masking, content filtering and more. Setup your SAP AI Core instance with SAP Cloud SDK for AI Core.
 
 ### Table of Contents
 
+- [Requirements and Setup](#requirements-and-setup)
 - [Packages](#packages)
   - [@sap-ai-sdk/ai-api](#sap-ai-sdkai-api)
   - [@sap-ai-sdk/foundation-models](#sap-ai-sdkfoundation-models)
@@ -18,6 +19,10 @@ Integrate chat completion into your business applications with SAP Cloud SDK for
 - [Security / Disclosure](#security--disclosure)
 - [Code of Conduct](#code-of-conduct)
 - [Licensing](#licensing)
+
+## Requirements and Setup
+
+See the documentation of each individual package under the [Packages](#packages) section.
 
 ## Packages
 
