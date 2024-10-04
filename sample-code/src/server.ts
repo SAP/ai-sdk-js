@@ -97,7 +97,7 @@ app.get('/ai-api/get-deployments', async (req, res) => {
   }
 });
 
-app.get('/langchain/chat', async (req, res) => {
+app.get('/langchain/invoke', async (req, res) => {
   try {
     res.send(await invoke());
   } catch (error: any) {
@@ -108,7 +108,7 @@ app.get('/langchain/chat', async (req, res) => {
   }
 });
 
-app.get('/langchain/complex-chat', async (req, res) => {
+app.get('/langchain/invoke-chain', async (req, res) => {
   try {
     res.send(await invokeChain());
   } catch (error: any) {
@@ -119,7 +119,7 @@ app.get('/langchain/complex-chat', async (req, res) => {
   }
 });
 
-app.get('/langchain/retrieval-augmented-generation', async (req, res) => {
+app.get('/langchain/invoke-rag-chain', async (req, res) => {
   try {
     res.send(await invokeRagChain());
   } catch (error: any) {
