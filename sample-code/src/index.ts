@@ -3,7 +3,14 @@ export {
   chatCompletion,
   computeEmbedding
 } from './foundation-models/azure-openai.js';
-export { orchestrationCompletionMasking } from './orchestration.js';
+export {
+  orchestrationChatCompletion,
+  orchestrationTemplating,
+  orchestrationInputFiltering,
+  orchestrationOutputFiltering,
+  orchestrationRequestConfig,
+  orchestrationCompletionMasking
+} from './orchestration.js';
 export {
   invoke,
   invokeChain,

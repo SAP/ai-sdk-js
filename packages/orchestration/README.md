@@ -13,6 +13,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
   - [Content Filtering](#content-filtering)
   - [Data Masking](#data-masking)
   - [Using Resource Groups](#using-resource-groups)
+  - [Custom Request Configuration](#custom-request-configuration)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
@@ -64,7 +65,7 @@ import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 const orchestrationClient = new OrchestrationClient({
   llm: {
     model_name: 'gpt-4-32k',
-    model_params: { max_tokens: 50, temperature: 0.1 }
+    model_params: { max_tokens: 50, temperature: 0.1 },
     model_version: 'latest'
   },
   ...
@@ -72,6 +73,8 @@ const orchestrationClient = new OrchestrationClient({
 ```
 
 The client allows you to combine various modules, such as templating and content filtering, while sending chat completion requests to an orchestration-compatible generative AI model.
+
+In addition to the examples below, you can find more **sample code** [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/orchestration.ts).
 
 ### Templating
 
@@ -94,20 +97,9 @@ const orchestrationClient = new OrchestrationClient({
   }
 });
 
-const response = await orchestrationClient.chatCompletion(
-  {
-    inputParams: { country: 'France' }
-  },
-  {
-    headers: {
-      // Add more headers here
-    },
-    params: {
-      // Add more parameters here
-    }
-    // Add more request configuration here
-  }
-);
+const response = await orchestrationClient.chatCompletion({
+  inputParams: { country: 'France' }
+});
 
 const responseContent = response.getContent();
 ```
@@ -281,6 +273,28 @@ const orchestrationClient = new OrchestrationClient(
 ```
 
 The relationship between orchestration and resource groups is explained in this [section](#relationship-between-orchestration-and-resource-groups).
+
+### Custom Request Configuration
+
+Set custom request configuration in the `requestConfig` parameter when calling the `chatCompletion()` method.
+
+```ts
+const response = await orchestrationClient.chatCompletion(
+  {
+    ...
+  },
+  {
+    headers: {
+      'x-custom-header': 'custom-value'
+      // Add more headers here
+    },
+    params: {
+      // Add more parameters here
+    }
+    // Add more request configuration here
+  }
+);
+```
 
 ## Local Testing
 

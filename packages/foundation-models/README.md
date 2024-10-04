@@ -11,6 +11,7 @@ This package incorporates generative AI foundation models into your AI activitie
   - [Client Initialization](#client-initialization)
   - [Chat Client](#chat-client)
   - [Embedding Client](#embedding-client)
+  - [Custom Request Configuration](#custom-request-configuration)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
@@ -77,32 +78,18 @@ Use the `AzureOpenAiChatClient` to send chat completion requests to an OpenAI mo
 
 The client sends request with Azure OpenAI API version `2024-06-01`.
 
-Set request configuration in the `requestConfig` parameter. The following example shows a call with messages and optional request configuration.
-
 ```ts
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
 
 const chatClient = new AzureOpenAiChatClient('gpt-4o');
-const response = await chatClient.run(
-  {
-    messages: [
-      {
-        role: 'user',
-        content: 'Where is the deepest place on earth located'
-      }
-    ]
-  },
-  {
-    headers: {
-      'x-custom-header': 'custom-value'
-      // Add more headers here
-    },
-    params: {
-      // Add more parameters here
+const response = await chatClient.run({
+  messages: [
+    {
+      role: 'user',
+      content: 'Where is the deepest place on earth located'
     }
-    // Add more request configuration here
-  }
-);
+  ]
+});
 
 const responseContent = response.getContent();
 ```
@@ -163,7 +150,27 @@ const response = await embeddingClient.run({
 const embedding = response.getEmbedding();
 ```
 
-Define optional request configuration when running the client, similar to the chat client.
+### Custom Request Configuration
+
+Set custom request configuration in the `requestConfig` parameter when calling the `run()` method of a chat or embedding client.
+
+```ts
+const response = await client.run(
+  {
+    ...
+  },
+  {
+    headers: {
+      'x-custom-header': 'custom-value'
+      // Add more headers here
+    },
+    params: {
+      // Add more parameters here
+    }
+    // Add more request configuration here
+  }
+);
+```
 
 ## Local Testing
 
