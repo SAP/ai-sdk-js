@@ -9,10 +9,7 @@ import { AzureOpenAiEmbeddingModelParams } from './types.js';
 /**
  * LangChain embedding client for Azure OpenAI consumption on SAP BTP.
  */
-export class AzureOpenAiEmbeddingClient
-  extends Embeddings
-  implements AzureOpenAiEmbeddingModelParams
-{
+export class AzureOpenAiEmbeddingClient extends Embeddings {
   modelName: AzureOpenAiEmbeddingModel;
   modelVersion?: string;
   resourceGroup?: string;

@@ -175,9 +175,11 @@ async function cleanupDeployments(): Promise<void> {
             status !== 'UNKNOWN'
           ) {
             await modifyDeployment(id, resourceGroup);
+            await waitForDeploymentToReachStatus(id, 'STOPPED');
+          } else if (status !== 'STOPPED' && targetStatus === 'STOPPED') {
+            await waitForDeploymentToReachStatus(id, 'STOPPED');
           }
-
-          await waitForDeploymentToReachStatus(id, 'STOPPED');
+          
           await deleteDeployment(id, resourceGroup);
           // Wait for deletion to complete
           await new Promise(r => setTimeout(r, 25000));

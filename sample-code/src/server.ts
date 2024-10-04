@@ -1,12 +1,19 @@
 /* eslint-disable no-console */
 import express from 'express';
 import { AiApiError } from '@sap-ai-sdk/ai-api';
+import { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 import {
   chatCompletion,
   computeEmbedding
 } from './foundation-models/azure-openai.js';
-import { orchestrationCompletion } from './orchestration.js';
-import { createDeployment, getDeployments } from './ai-api/deployment-api.js';
+import {
+  orchestrationChatCompletion,
+  orchestrationTemplating,
+  orchestrationInputFiltering,
+  orchestrationOutputFiltering,
+  orchestrationRequestConfig
+} from './orchestration.js';
+import { getDeployments, createDeployment } from './ai-api/deployment-api.js';
 import {
   invokeChain,
   invokeRagChain,
@@ -50,8 +57,28 @@ app.get('/azure-openai/embedding', async (req, res) => {
 });
 
 app.get('/orchestration/:sampleCase', async (req, res) => {
+  const sampleCase = req.params.sampleCase;
+  const testCase =
+    {
+      simple: orchestrationChatCompletion,
+      template: orchestrationTemplating,
+      inputFiltering: orchestrationInputFiltering,
+      outputFiltering: orchestrationOutputFiltering,
+      requestConfig: orchestrationRequestConfig,
+      default: orchestrationChatCompletion
+    }[sampleCase] || orchestrationChatCompletion;
+
   try {
-    res.send(await orchestrationCompletion(req.params.sampleCase));
+    const result = (await testCase()) as OrchestrationResponse;
+    if (sampleCase === 'inputFiltering') {
+      res.send('Input filter applied successfully');
+    } else if (sampleCase === 'outputFiltering') {
+      res.send(
+        `Output filter applied successfully with threshold results: ${JSON.stringify(result.data.module_results.output_filtering!.data!)}`
+      );
+    } else {
+      res.send(result.getContent());
+    }
   } catch (error: any) {
     console.error(error);
     res
