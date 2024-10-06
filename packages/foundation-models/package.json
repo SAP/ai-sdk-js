@@ -33,7 +33,7 @@
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
-    "@sap-cloud-sdk/http-client": "^3.21.0",
-    "@sap-cloud-sdk/util": "^3.21.0"
+    "@sap-cloud-sdk/http-client": "^3.22.0",
+    "@sap-cloud-sdk/util": "^3.22.0"
   }
 }
