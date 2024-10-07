@@ -10,9 +10,6 @@ export default class OrchestrationService {
     };
     const templating = { template };
 
-
-
-
     const response = await new OrchestrationClient({
       llm,
       templating
@@ -26,9 +23,9 @@ export default class OrchestrationService {
 
 /**
  * Map input parameters since CAP does not support dynamic object keys.
- * 
+ *
  * For example:
- * 
+ *
  * ```ts
  * inputParams: [{
  *   name: 'param1',
@@ -44,7 +41,9 @@ export default class OrchestrationService {
  * @param inputParams - Array of `InputParam` entity.
  * @returns Mapped input parameters for AI Core.
  */
-function mapInputParams(inputParams: { name: string; value: string }[]): Record<string, string> {
+function mapInputParams(
+  inputParams: { name: string; value: string }[]
+): Record<string, string> {
   return inputParams.reduce(
     (acc, { name, value }) => ({ ...acc, [name]: value }),
     {} as Record<string, string>
