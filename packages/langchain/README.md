@@ -4,14 +4,16 @@ This package provides LangChain model clients built on top of the foundation mod
 
 ## Table of Contents
 
-1. [Installation](#installation)
-2. [Prerequisites](#prerequisites)
-3. [Usage](#usage)
-   - [Client Initialization](#client-initialization)
-   - [Chat Client](#chat-client)
-   - [Embedding Client](#embedding-client)
-4. [Support, Feedback, Contribution](#support-feedback-contribution)
-5. [License](#license)
+- [Installation](#installation)
+- [Prerequisites](#prerequisites)
+- [Relationship between Models and Deployment ID](#relationship-between-models-and-deployment-id)
+- [Usage](#usage)
+  - [Client Initialization](#client-initialization)
+  - [Chat Client](#chat-client)
+  - [Embedding Client](#embedding-client)
+- [Local Testing](#local-testing)
+- [Support, Feedback, Contribution](#support-feedback-contribution)
+- [License](#license)
 
 ## Installation
 
@@ -24,10 +26,22 @@ $ npm install @sap-ai-sdk/langchain
 - [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Bind the service to your application.
 - Ensure the project is configured with Node.js v20 or higher, along with native ESM support.
-- For testing your application locally:
-  - Download a service key for your AI Core service instance.
-  - Create a `.env` file in the root of your directory.
-  - Add an entry `AICORE_SERVICE_KEY='<content-of-service-key>'`.
+- A deployed model is available in SAP Generative AI hub.
+  - Use the [`DeploymentApi`](https://github.com/SAP/ai-sdk-js/blob/main/packages/ai-api/README.md#create-a-deployment) from `@sap-ai-sdk/ai-api` to deploy a model to SAP generative AI hub.
+    For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
+  - Once a deployment is complete, the model can be accessed via the `deploymentUrl`.
+
+## Relationship between Models and Deployment ID
+
+SAP AI Core manages access to generative AI models through the global AI scenario `foundation-models`.
+Creating a deployment for a model requires access to this scenario.
+
+Each model, model version, and resource group allows for a one-time deployment.
+After deployment completion, the response includes a `deploymentUrl` and an `id`, which is the deployment ID. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
+
+[Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
+
+Consequently, each deployment ID and resource group uniquely map to a combination of model and model version within the `foundation-models` scenario.
 
 ## Usage
 
@@ -59,6 +73,9 @@ const chatClient = new AzureOpenAiChatClient({
   resourceGroup: 'my-resource-group'
 });
 ```
+
+**Do not pass a `deployment ID` to initialize the client.**
+For the LangChain model clients, initialization is done using the model name, model version and resource group.
 
 An important note is that LangChain clients by default attempt 6 retries with exponential backoff in case of a failure.
 Especially in testing environments you might want to reduce this number to speed up the process:
@@ -154,6 +171,10 @@ const vectorStore = await MemoryVectorStore.fromDocuments(
 // Create a retriever for the vector store
 const retriever = vectorStore.asRetriever();
 ```
+
+## Local Testing
+
+For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
 
 ## Support, Feedback, Contribution
 

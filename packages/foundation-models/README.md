@@ -4,15 +4,17 @@ This package incorporates generative AI foundation models into your AI activitie
 
 ## Table of Contents
 
-1. [Installation](#installation)
-2. [Prerequisites](#prerequisites)
-3. [Usage](#usage)
-   - [Client Initialization](#client-initialization)
-   - [Azure OpenAI Client](#azure-openai-client)
-     - [Chat Client](#chat-client)
-     - [Embedding Client](#embedding-client)
-4. [Support, Feedback, Contribution](#support-feedback-contribution)
-5. [License](#license)
+- [Installation](#installation)
+- [Prerequisites](#prerequisites)
+- [Relationship between Models and Deployment ID](#relationship-between-models-and-deployment-id)
+- [Usage](#usage)
+  - [Azure OpenAI Client Initialization](#client-initialization)
+  - [Azure OpenAI Chat Client](#chat-client)
+  - [Azure OpenAI Embedding Client](#embedding-client)
+  - [Custom Request Configuration](#custom-request-configuration)
+- [Local Testing](#local-testing)
+- [Support, Feedback, Contribution](#support-feedback-contribution)
+- [License](#license)
 
 ## Installation
 
@@ -25,13 +27,25 @@ $ npm install @sap-ai-sdk/foundation-models
 - [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Project configured with Node.js v20 or higher and native ESM support enabled.
 - A deployed OpenAI model in SAP Generative AI hub.
-  - Use the [`DeploymentApi`](../ai-api/README.md#deploymentapi) from `@sap-ai-sdk/ai-api` to deploy a model to SAP generative AI hub. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
+  - Use the [`DeploymentApi`](https://github.com/SAP/ai-sdk-js/blob/main/packages/ai-api/README.md#create-a-deployment) from `@sap-ai-sdk/ai-api` to deploy a model to SAP generative AI hub.
+    For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
     Deployment can be set up for each model and model version, as well as a resource group intended for use with the generative AI hub.
-  - Once a deployment is complete, the model can be accessed via the `deploymentUrl`
+  - Once a deployment is complete, the model can be accessed via the `deploymentUrl`.
+
+## Relationship between Models and Deployment ID
+
+SAP AI Core manages access to generative AI models through the global AI scenario `foundation-models`.
+Creating a deployment for a model requires access to this scenario.
+
+Each model, model version, and resource group allows for a one-time deployment.
+After deployment completion, the response includes a `deploymentUrl` and an `id`, which is the deployment ID. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
+[Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
+
+Consequently, each deployment ID and resource group uniquely map to a combination of model and model version within the `foundation-models` scenario.
 
 ## Usage
 
-### Client Initialization
+### Azure OpenAI Client Initialization
 
 You can pass the model name as a parameter to a client, the SDK will implicitly fetch the deployment ID for the model from the AI Core service and use it in the request.
 
@@ -49,8 +63,6 @@ const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
 const embeddingClient = new AzureOpenAiEmbeddingClient({ modelName: 'gpt-4o' });
 ```
 
-[Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
-
 The deployment ID and resource group can be used as an alternative to the model name for obtaining a model.
 
 ```ts
@@ -60,13 +72,11 @@ const chatClient = new AzureOpenAiChatClient({
 });
 ```
 
-### Azure OpenAI Client
-
-The Azure OpenAI client can then be used to send chat completion or embedding requests to models deployed in the SAP generative AI hub.
-
-#### Chat Client
+### Azure OpenAI Chat Client
 
 Use the `AzureOpenAiChatClient` to send chat completion requests to an OpenAI model deployed in SAP generative AI hub.
+
+The client sends request with Azure OpenAI API version `2024-06-01`.
 
 ```ts
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
@@ -124,7 +134,7 @@ logger.info(
 
 Refer to `AzureOpenAiChatCompletionParameters` interface for other parameters that can be passed to the chat completion request.
 
-#### Embedding Client
+### Azure OpenAI Embedding Client
 
 Use the `AzureOpenAiEmbeddingClient` to send embedding requests to an OpenAI model deployed in SAP generative AI hub.
 
@@ -139,6 +149,32 @@ const response = await embeddingClient.run({
 });
 const embedding = response.getEmbedding();
 ```
+
+### Custom Request Configuration
+
+Set custom request configuration in the `requestConfig` parameter when calling the `run()` method of a chat or embedding client.
+
+```ts
+const response = await client.run(
+  {
+    ...
+  },
+  {
+    headers: {
+      'x-custom-header': 'custom-value'
+      // Add more headers here
+    },
+    params: {
+      // Add more parameters here
+    }
+    // Add more request configuration here
+  }
+);
+```
+
+## Local Testing
+
+For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
 
 ## Support, Feedback, Contribution
 

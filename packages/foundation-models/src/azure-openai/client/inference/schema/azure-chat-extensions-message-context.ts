@@ -5,9 +5,9 @@
  */
 import type { AzureOpenAiCitation } from './citation.js';
 /**
- *   A representation of the additional context information available when Azure OpenAI chat extensions are involved
- *   in the generation of a corresponding chat completions response. This context information is only populated when
- *   using an Azure OpenAI request configured to use a matching extension.
+ * A representation of the additional context information available when Azure OpenAI chat extensions are involved
+ * in the generation of a corresponding chat completions response. This context information is only populated when
+ * using an Azure OpenAI request configured to use a matching extension.
  */
 export type AzureOpenAiAzureChatExtensionsMessageContext = {
   /**

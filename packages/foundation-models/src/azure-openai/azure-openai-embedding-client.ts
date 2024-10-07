@@ -1,6 +1,7 @@
 import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
 import {
   getDeploymentId,
+  getResourceGroup,
   type ModelDeployment
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { AzureOpenAiEmbeddingResponse } from './azure-openai-embedding-response.js';
@@ -34,8 +35,13 @@ export class AzureOpenAiEmbeddingClient {
       this.modelDeployment,
       'azure-openai'
     );
+    const resourceGroup = getResourceGroup(this.modelDeployment);
     const response = await executeRequest(
-      { url: `/inference/deployments/${deploymentId}/embeddings`, apiVersion },
+      {
+        url: `/inference/deployments/${deploymentId}/embeddings`,
+        apiVersion,
+        resourceGroup
+      },
       data,
       requestConfig
     );

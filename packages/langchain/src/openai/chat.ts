@@ -3,7 +3,6 @@ import { BaseMessage } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
 import { AzureOpenAiChatClient as AzureOpenAiChatClientBase } from '@sap-ai-sdk/foundation-models';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
-import { AzureOpenAiChatModel } from '@sap-ai-sdk/core';
 import { mapLangchainToAiClient, mapOutputToChatResult } from './util.js';
 import type {
   AzureOpenAiChatCallOptions,
@@ -13,13 +12,7 @@ import type {
 /**
  * LangChain chat client for Azure OpenAI consumption on SAP BTP.
  */
-export class AzureOpenAiChatClient
-  extends BaseChatModel<AzureOpenAiChatCallOptions>
-  implements AzureOpenAiChatModelParams
-{
-  modelName: AzureOpenAiChatModel;
-  modelVersion?: string;
-  resourceGroup?: string;
+export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOptions> {
   temperature?: number | null;
   top_p?: number | null;
   logit_bias?: Record<string, any> | null | undefined;
@@ -33,9 +26,6 @@ export class AzureOpenAiChatClient
   constructor(fields: AzureOpenAiChatModelParams) {
     super(fields);
     this.openAiChatClient = new AzureOpenAiChatClientBase(fields);
-    this.modelName = fields.modelName;
-    this.modelVersion = fields.modelVersion;
-    this.resourceGroup = fields.resourceGroup;
     this.temperature = fields.temperature;
     this.top_p = fields.top_p;
     this.logit_bias = fields.logit_bias;

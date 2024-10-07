@@ -11,15 +11,17 @@ We maintain a list of [currently available and tested AI Core APIs](https://gith
 
 ## Table of Contents
 
-1. [Installation](#installation)
-2. [Prerequisites](#prerequisites)
-3. [Usage](#usage)
-   - [Create an Artifact](#create-an-artifact)
-   - [Create a Configuration](#create-a-configuration)
-   - [Create a Deployment](#create-a-deployment)
-   - [Delete a Deployment](#delete-a-deployment)
-4. [Support, Feedback, Contribution](#support-feedback-contribution)
-5. [License](#license)
+- [Installation](#installation)
+- [Version Management](#version-management)
+- [Prerequisites](#prerequisites)
+- [Usage](#usage)
+  - [Create an Artifact](#create-an-artifact)
+  - [Create a Configuration](#create-a-configuration)
+  - [Create a Deployment](#create-a-deployment)
+  - [Delete a Deployment](#delete-a-deployment)
+- [Local Testing](#local-testing)
+- [Support, Feedback, Contribution](#support-feedback-contribution)
+- [License](#license)
 
 ## Installation
 
@@ -41,7 +43,7 @@ To ensure compatibility and manage updates effectively, we strongly recommend us
 
 ## Prerequisites
 
-- [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-api/sap-ai-api-service-guide/initial-setup).
+- [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Project configured with Node.js v20 or higher and native ESM support enabled.
 
 ## Usage
@@ -168,6 +170,10 @@ async function modifyDeployment() {
     }
 }
 ```
+
+## Local Testing
+
+For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
 
 ## Support, Feedback, Contribution
 

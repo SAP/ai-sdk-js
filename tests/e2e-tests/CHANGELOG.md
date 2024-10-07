@@ -1,5 +1,20 @@
 # @sap-ai-sdk/e2e-tests
 
+## 1.1.0
+
+### Patch Changes
+
+- 506a1e4: [Fixed Issue] Fix missing and unused dependencies.
+- Updated dependencies [a1105d9]
+- Updated dependencies [506a1e4]
+- Updated dependencies [5bd2e4d]
+- Updated dependencies [5bd2e4d]
+- Updated dependencies [771f986]
+- Updated dependencies [5bd2e4d]
+  - @sap-ai-sdk/orchestration@1.1.0
+  - @sap-ai-sdk/ai-api@1.1.0
+  - @sap-ai-sdk/sample-code@1.1.0
+
 ## 1.0.0
 
 ### Patch Changes

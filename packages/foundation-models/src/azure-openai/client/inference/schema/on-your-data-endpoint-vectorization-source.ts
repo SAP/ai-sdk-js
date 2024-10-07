@@ -3,14 +3,13 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AzureOpenAiOnYourDataVectorizationSourceType } from './on-your-data-vectorization-source-type.js';
 import type { AzureOpenAiOnYourDataApiKeyAuthenticationOptions } from './on-your-data-api-key-authentication-options.js';
 /**
  * The details of a a vectorization source, used by Azure OpenAI On Your Data when applying vector search, that is based
  * on a public Azure OpenAI endpoint call for embeddings.
  */
 export type AzureOpenAiOnYourDataEndpointVectorizationSource = {
-  type: AzureOpenAiOnYourDataVectorizationSourceType;
+  type: string;
 } & {
   authentication: AzureOpenAiOnYourDataApiKeyAuthenticationOptions;
   /**
