@@ -5,5 +5,5 @@ using {
 
 @path: 'orchestration'
 service OrchestrationService {
-  action chatCompletions(template : array of Template, inputParams : array of InputParam) returns String;
+  action chatCompletion(template : array of Template, inputParams : array of InputParam) returns String;
 }

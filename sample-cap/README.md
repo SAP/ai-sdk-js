@@ -28,7 +28,7 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 4. Run the application with the binding:
 
    ```bash
-   cds bind -2 AI_CORE_INSTANCE_NAME --exec -- pnpm start
+   pnpm watch:hybrid
    ```
 
 ## Usage

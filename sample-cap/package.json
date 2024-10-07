@@ -14,8 +14,8 @@
     "@sap-ai-sdk/orchestration": "workspace:^"
   },
   "scripts": {
-    "start": "cds-tsx serve",
     "watch": "cds-tsx watch",
+    "watch:hybrid": "cds-tsx watch --profile hybrid",
     "lint": "eslint . && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -w --log-level error"
   },

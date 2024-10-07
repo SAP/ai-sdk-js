@@ -1,8 +1,8 @@
-import { Request as CdsRequest } from '@sap/cds';
+import { Request } from '@sap/cds';
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 export default class OrchestrationService {
-  async chatCompletions(req: CdsRequest) {
+  async chatCompletion(req: Request) {
     const { template, inputParams } = req.data;
     const llm = {
       model_name: 'gpt-4-32k',
@@ -11,10 +11,7 @@ export default class OrchestrationService {
     const templating = { template };
 
     const mappedInputParams = inputParams.reduce(
-      (acc, { name, value }) => {
-        acc[name] = value;
-        return acc;
-      },
+      (acc, { name, value }) => ({ ...acc, [name]: value }),
       {} as Record<string, string>
     );
 

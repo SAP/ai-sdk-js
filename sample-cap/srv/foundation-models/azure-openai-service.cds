@@ -2,5 +2,5 @@ using {Message} from '../../db/foundation-models/azure-openai-chat-completions-e
 
 @path: 'azure-openai'
 service AzureOpenAiService {
-  action chatCompletions(messages : array of Message) returns String;
+  action chatCompletion(messages : array of Message) returns String;
 }
