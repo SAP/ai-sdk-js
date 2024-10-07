@@ -48,7 +48,7 @@ curl --request GET \
 
 ```bash
 curl --request POST \
-  --url 'http://localhost:4004/odata/v4/azure-openai/chatCompletions' \
+  --url 'http://localhost:4004/odata/v4/azure-openai/chatCompletion' \
   --header 'Content-Type: application/json' \
   --data '{
   "messages": [
@@ -66,7 +66,7 @@ curl --request POST \
 
 ```bash
 curl --request POST \
-  --url 'http://localhost:4004/odata/v4/orchestration/chatCompletions' \
+  --url 'http://localhost:4004/odata/v4/orchestration/chatCompletion' \
   --header 'Content-Type: application/json' \
   --data '{
   "template": [
