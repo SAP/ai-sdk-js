@@ -36,6 +36,8 @@ jobs:
         run: pnpm check:public-api
       - name: Check dependencies
         run: pnpm check:deps
+      - name: License Check
+        run: pnpm check:license
 
   dependabot:
     runs-on: ubuntu-latest
