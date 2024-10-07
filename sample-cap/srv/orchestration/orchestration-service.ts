@@ -10,18 +10,43 @@ export default class OrchestrationService {
     };
     const templating = { template };
 
-    const mappedInputParams = inputParams.reduce(
-      (acc, { name, value }) => ({ ...acc, [name]: value }),
-      {} as Record<string, string>
-    );
+
+
 
     const response = await new OrchestrationClient({
       llm,
       templating
     }).chatCompletion({
-      inputParams: mappedInputParams
+      inputParams: mapInputParams(inputParams)
     });
 
     return response.getContent();
   }
+}
+
+/**
+ * Map input parameters since CAP does not support dynamic object keys.
+ * 
+ * For example:
+ * 
+ * ```ts
+ * inputParams: [{
+ *   name: 'param1',
+ *   value: 'value1'
+ * }]
+ * ```
+ * =>
+ * ```ts
+ * mappedInputParams: {
+ *   param1: 'value1'
+ * }
+ * ```
+ * @param inputParams - Array of `InputParam` entity.
+ * @returns Mapped input parameters for AI Core.
+ */
+function mapInputParams(inputParams: { name: string; value: string }[]): Record<string, string> {
+  return inputParams.reduce(
+    (acc, { name, value }) => ({ ...acc, [name]: value }),
+    {} as Record<string, string>
+  );
 }

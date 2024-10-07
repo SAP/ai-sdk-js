@@ -1,5 +1,5 @@
 @path: 'ai-api'
 service AiApiService {
-  // entity Deployments as projection on AiDeploymentsEntity;
-  action getDeployments() returns String;
+  // Technically, it should return an array of AiDeployment entity if we define it in the model.
+  action getDeployments() returns array of String;
 }
