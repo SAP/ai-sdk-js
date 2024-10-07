@@ -99,6 +99,20 @@ If this is the case, follow these steps:
 
 Last, check that everything is published as expected on npm.
 
+### How to Roll Back Releases
+
+Once a release is published on npm you can no longer take it back.
+To fix issues in published packages you need to publish a new version.
+
+If you find an issue with the release or something fails before publishing, you can revert the release.
+Make sure to:
+
+- Revert the bump commit.
+- Delete the draft release.
+- Delete the version tag.
+
+Then you can fix the error on the state before the release and try again.
+
 ## Contributing Code or Documentation
 
 You are welcome to contribute code in order to fix a bug or to implement a new feature that is logged as an issue.
