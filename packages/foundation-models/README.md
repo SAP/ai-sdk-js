@@ -8,9 +8,9 @@ This package incorporates generative AI foundation models into your AI activitie
 - [Prerequisites](#prerequisites)
 - [Relationship between Models and Deployment ID](#relationship-between-models-and-deployment-id)
 - [Usage](#usage)
-  - [Client Initialization](#client-initialization)
-  - [Chat Client](#chat-client)
-  - [Embedding Client](#embedding-client)
+  - [Azure OpenAI Client Initialization](#client-initialization)
+  - [Azure OpenAI Chat Client](#chat-client)
+  - [Azure OpenAI Embedding Client](#embedding-client)
   - [Custom Request Configuration](#custom-request-configuration)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
@@ -45,7 +45,7 @@ Consequently, each deployment ID and resource group uniquely map to a combinatio
 
 ## Usage
 
-### Client Initialization
+### Azure OpenAI Client Initialization
 
 You can pass the model name as a parameter to a client, the SDK will implicitly fetch the deployment ID for the model from the AI Core service and use it in the request.
 
@@ -72,7 +72,7 @@ const chatClient = new AzureOpenAiChatClient({
 });
 ```
 
-### Chat Client
+### Azure OpenAI Chat Client
 
 Use the `AzureOpenAiChatClient` to send chat completion requests to an OpenAI model deployed in SAP generative AI hub.
 
@@ -134,7 +134,7 @@ logger.info(
 
 Refer to `AzureOpenAiChatCompletionParameters` interface for other parameters that can be passed to the chat completion request.
 
-### Embedding Client
+### Azure OpenAI Embedding Client
 
 Use the `AzureOpenAiEmbeddingClient` to send embedding requests to an OpenAI model deployed in SAP generative AI hub.
 
