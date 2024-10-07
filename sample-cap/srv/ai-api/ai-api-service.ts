@@ -6,6 +6,6 @@ export default class AiApiService {
       {},
       { 'AI-Resource-Group': 'default' }
     ).execute();
-    return response.resources;
+    return JSON.stringify(response.resources);
   }
 }
