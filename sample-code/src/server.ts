@@ -1,10 +1,17 @@
 /* eslint-disable no-console */
 import express from 'express';
+import { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 import {
   chatCompletion,
   computeEmbedding
 } from './foundation-models/azure-openai.js';
-import { orchestrationCompletion } from './orchestration.js';
+import {
+  orchestrationChatCompletion,
+  orchestrationTemplating,
+  orchestrationInputFiltering,
+  orchestrationOutputFiltering,
+  orchestrationRequestConfig
+} from './orchestration.js';
 import { getDeployments } from './ai-api.js';
 import {
   invokeChain,
@@ -49,8 +56,28 @@ app.get('/azure-openai/embedding', async (req, res) => {
 });
 
 app.get('/orchestration/:sampleCase', async (req, res) => {
+  const sampleCase = req.params.sampleCase;
+  const testCase =
+    {
+      simple: orchestrationChatCompletion,
+      template: orchestrationTemplating,
+      inputFiltering: orchestrationInputFiltering,
+      outputFiltering: orchestrationOutputFiltering,
+      requestConfig: orchestrationRequestConfig,
+      default: orchestrationChatCompletion
+    }[sampleCase] || orchestrationChatCompletion;
+
   try {
-    res.send(await orchestrationCompletion(req.params.sampleCase));
+    const result = (await testCase()) as OrchestrationResponse;
+    if (sampleCase === 'inputFiltering') {
+      res.send('Input filter applied successfully');
+    } else if (sampleCase === 'outputFiltering') {
+      res.send(
+        `Output filter applied successfully with threshold results: ${JSON.stringify(result.data.module_results.output_filtering!.data!)}`
+      );
+    } else {
+      res.send(result.getContent());
+    }
   } catch (error: any) {
     console.error(error);
     res
@@ -70,7 +97,7 @@ app.get('/ai-api/get-deployments', async (req, res) => {
   }
 });
 
-app.get('/langchain/chat', async (req, res) => {
+app.get('/langchain/invoke', async (req, res) => {
   try {
     res.send(await invoke());
   } catch (error: any) {
@@ -81,7 +108,7 @@ app.get('/langchain/chat', async (req, res) => {
   }
 });
 
-app.get('/langchain/complex-chat', async (req, res) => {
+app.get('/langchain/invoke-chain', async (req, res) => {
   try {
     res.send(await invokeChain());
   } catch (error: any) {
@@ -92,7 +119,7 @@ app.get('/langchain/complex-chat', async (req, res) => {
   }
 });
 
-app.get('/langchain/retrieval-augmented-generation', async (req, res) => {
+app.get('/langchain/invoke-rag-chain', async (req, res) => {
   try {
     res.send(await invokeRagChain());
   } catch (error: any) {

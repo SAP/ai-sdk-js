@@ -1,7 +1,5 @@
 # Contributing
 
-## How to contribute
-
 When contributing to this repository, please first discuss the changes you wish to make through an issue, email, or any other method with the owners of this repository.
 
 All members of the project community must abide by the [SAP Open Source Code of Conduct](https://github.com/SAP/.github/blob/main/CODE_OF_CONDUCT.md).
@@ -12,7 +10,7 @@ Once you are ready to make a change, please test it appropriately, create a pull
 ## Project Structure
 
 This project contains multiple packages, that are managed using pnpm workspaces.
-Productive packages are located in the `packages` directory, test packages are located in the `tests` directory. 
+Productive packages are located in the `packages` directory, test packages are located in the `tests` directory.
 Some of the packages are interdependent, therefore pnpm install won't work from within those packages. Run `pnpm install` in the root directory instead.
 
 ## Testing
@@ -88,14 +86,16 @@ $ pnpm lint:fix
 
 You are welcome to contribute code in order to fix a bug or to implement a new feature that is logged as an issue.
 
-The following rule governs code contributions:
+The following rules govern code contributions:
 
 - Contributions must be licensed under the [Apache 2.0 License](./LICENSE)
 - Due to legal reasons, contributors will be asked to accept a Developer Certificate of Origin (DCO) when they create the first pull request to this project. This happens in an automated fashion during the submission process. SAP uses [the standard DCO text of the Linux Foundation](https://developercertificate.org/).
 
+Also make sure to follow our [style guide](./STYLEGUIDE)
+
 ## Contributing with AI-generated Code
 
-As artificial intelligence evolves, AI-generated code is becoming valuable for many software projects, including open-source initiatives. 
+As artificial intelligence evolves, AI-generated code is becoming valuable for many software projects, including open-source initiatives.
 While we recognize the potential benefits of incorporating AI-generated content into our open-source projects, there are certain requirements that need to be reflected and adhered to when making contributions.
 
 Please see our [Guideline for AI-generated code contributions to SAP Open Source Software Projects](https://github.com/SAP/.github/blob/main/CONTRIBUTING_USING_GENAI.md) for more details.

@@ -3,12 +3,12 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AzureOpenAiChatCompletionRequestMessageRole } from './chat-completion-request-message-role.js';
+
 /**
  * Representation of the 'AzureOpenAiChatCompletionRequestMessageTool' schema.
  */
 export type AzureOpenAiChatCompletionRequestMessageTool = {
-  role: AzureOpenAiChatCompletionRequestMessageRole;
+  role: string;
 } & {
   /**
    * Tool call that this message is responding to.
