@@ -93,6 +93,7 @@ If this is the case, follow these steps:
 
 1. **Bump the version**: Execute the `bump` workflow from the `main` branch.
    If you want to release a new major version, you need to enter the full major version as a precaution.
+   Skip providing a version for minor and patch version releases.
    This bumps the version on main and creates a tag and draft release with release notes on GitHub.
 2. **Publish to npm**: Find the draft release in the [GitHub releases](https://github.com/SAP/ai-sdk-js/releases), check the release notes and press **Publish release**. This triggers the `publish` workflow that publishes the new version to [`npmjs.com`](https://www.npmjs.com/settings/sap-ai-sdk/packages).
 
