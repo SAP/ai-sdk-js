@@ -4,16 +4,16 @@ We are excited to announce the initial release of the [SAP Cloud SDK for AI](htt
 It simplifies the integration of generative AI capabilities into your SAP Business Technology Platform (BTP) applications.
 
 The SDK allows you to leverage the [SAP AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/what-is-sap-ai-core) and [SAP AI Launchpad](https://help.sap.com/docs/ai-launchpad/sap-ai-launchpad-user-guide/using-sap-ai-launchpad?locale=en-US), enabling capabilities like templating, grounding, data masking, and more.
-In this blog post, we’ll introduce you to the key packages and their features.
+In this blog post, we'll introduce you to the key packages and their features.
 
 ## Key Features
 ### AI Orchestration with `@sap-ai-sdk/orchestration`
 The [@sap-ai-sdk/orchestration](https://github.com/SAP/ai-sdk-js/tree/main/packages/orchestration#readme) package enables generative AI orchestration, allowing you to configure templating, content filtering, and data masking for your applications.
 With the orchestration service, you can streamline AI interactions and ensure compliance with content safety guidelines.
 
-- **Templating**: Create dynamic prompts with placeholders to customize AI interactions based on user inputs.
-- **Content Filtering**: Apply filters to ensure input and output adhere to content safety guidelines.
-- **Data Masking**: Anonymize sensitive information with data masking features.
+- **[Templating](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md#templating)**: Create dynamic prompts with placeholders to customize AI interactions based on user inputs.
+- **[Content Filtering](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md#content-filtering)**: Apply filters to ensure input and output adhere to content safety guidelines.
+- **[Data Masking](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md#data-masking)**: Anonymize sensitive information with data masking features.
 
 ### AI Management with `@sap-ai-sdk/ai-api`
 The [@sap-ai-sdk/ai-api](https://github.com/SAP/ai-sdk-js/tree/main/packages/ai-api#readme) package provides comprehensive tools for managing scenarios and workflows in SAP AI Core.
