@@ -1,11 +1,11 @@
-import { ChatModel } from './model-types.js';
-import {
+import type { ChatModel } from './model-types.js';
+import type {
   ChatMessages,
   FilteringModuleConfig,
   MaskingModuleConfig,
   LlmModuleConfig as OriginalLlmModuleConfig,
   TemplatingModuleConfig
-} from './client/api/schema/index.js';
+} from './client/api/schema';
 
 /**
  * Prompt configuration.

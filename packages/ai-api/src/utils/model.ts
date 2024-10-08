@@ -1,4 +1,4 @@
-import { AiDeployment } from '../client/AI_CORE_API/index.js';
+import type { AiDeployment } from '../client/AI_CORE_API';
 
 /**
  * A foundation model is identified by its name and optionally a version.

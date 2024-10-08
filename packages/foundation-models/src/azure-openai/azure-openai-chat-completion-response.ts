@@ -1,6 +1,6 @@
-import { HttpResponse } from '@sap-cloud-sdk/http-client';
 import { createLogger } from '@sap-cloud-sdk/util';
-import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.js';
+import type { HttpResponse } from '@sap-cloud-sdk/http-client';
+import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema';
 
 const logger = createLogger({
   package: 'foundation-models',

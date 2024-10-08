@@ -3,14 +3,14 @@ export type {
   AzureOpenAiEmbeddingModel,
   AzureOpenAiEmbeddingParameters,
   AzureOpenAiEmbeddingOutput
-} from './azure-openai/index.js';
+} from './azure-openai';
 
 export {
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient,
   AzureOpenAiChatCompletionResponse,
   AzureOpenAiEmbeddingResponse
-} from './azure-openai/index.js';
+} from './azure-openai';
 
 export type {
   AzureOpenAiCreateChatCompletionRequest,
@@ -59,4 +59,4 @@ export type {
   AzureOpenAiChatCompletionTokenLogprob,
   AzureOpenAiCompletionUsage,
   AzureOpenAiChatCompletionResponseObject
-} from './azure-openai/client/inference/schema/index.js';
+} from './azure-openai/client/inference/schema';

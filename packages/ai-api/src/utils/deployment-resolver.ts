@@ -1,7 +1,4 @@
-import {
-  type AiDeployment,
-  DeploymentApi
-} from '../client/AI_CORE_API/index.js';
+import { type AiDeployment, DeploymentApi } from '../client/AI_CORE_API';
 import { deploymentCache } from './deployment-cache.js';
 import { extractModel, type FoundationModel } from './model.js';
 

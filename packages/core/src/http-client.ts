@@ -1,10 +1,10 @@
 import { mergeIgnoreCase, removeLeadingSlashes } from '@sap-cloud-sdk/util';
-import {
-  executeHttpRequest,
+import { executeHttpRequest } from '@sap-cloud-sdk/http-client';
+import { getAiCoreDestination } from './context.js';
+import type {
   HttpRequestConfig,
   HttpResponse
 } from '@sap-cloud-sdk/http-client';
-import { getAiCoreDestination } from './context.js';
 
 /**
  * The type for parameters in custom request configuration.

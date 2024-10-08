@@ -1,11 +1,8 @@
 import retry from 'async-retry';
-import {
-  AiDeployment,
-  AiDeploymentList,
-  DeploymentApi
-} from '@sap-ai-sdk/ai-api';
+import { DeploymentApi } from '@sap-ai-sdk/ai-api';
 import { loadEnv } from './utils/load-env.js';
 import { resourceGroup } from './utils/ai-api-utils.js';
+import type { AiDeployment, AiDeploymentList } from '@sap-ai-sdk/ai-api';
 
 loadEnv();
 

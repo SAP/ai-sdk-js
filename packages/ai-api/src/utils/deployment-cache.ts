@@ -1,5 +1,5 @@
 import { Cache } from '@sap-cloud-sdk/connectivity/internal.js';
-import { type AiDeployment } from '../client/AI_CORE_API/index.js';
+import { type AiDeployment } from '../client/AI_CORE_API';
 import { type DeploymentResolutionOptions } from './deployment-resolver.js';
 import { extractModel, type FoundationModel } from './model.js';
 

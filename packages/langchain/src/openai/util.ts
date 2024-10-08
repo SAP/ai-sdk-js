@@ -1,21 +1,22 @@
-import { AIMessage, BaseMessage, ToolMessage } from '@langchain/core/messages';
-import { ChatResult } from '@langchain/core/outputs';
-import { StructuredTool } from '@langchain/core/tools';
-import {
-  type AzureOpenAiChatCompletionTool,
-  type AzureOpenAiChatCompletionRequestMessage,
-  type AzureOpenAiCreateChatCompletionResponse,
-  type AzureOpenAiCreateChatCompletionRequest,
-  type AzureOpenAiChatCompletionFunctionParameters,
+import { AIMessage, ToolMessage } from '@langchain/core/messages';
+import { zodToJsonSchema } from 'zod-to-json-schema';
+import type { BaseMessage } from '@langchain/core/messages';
+import type { ChatResult } from '@langchain/core/outputs';
+import type { StructuredTool } from '@langchain/core/tools';
+import type {
   AzureOpenAiChatCompletionRequestMessageSystem,
   AzureOpenAiChatCompletionRequestMessageUser,
   AzureOpenAiChatCompletionRequestMessageAssistant,
   AzureOpenAiChatCompletionRequestMessageTool,
-  AzureOpenAiChatCompletionRequestMessageFunction
+  AzureOpenAiChatCompletionRequestMessageFunction,
+  type AzureOpenAiChatCompletionTool,
+  type AzureOpenAiChatCompletionRequestMessage,
+  type AzureOpenAiCreateChatCompletionResponse,
+  type AzureOpenAiCreateChatCompletionRequest,
+  type AzureOpenAiChatCompletionFunctionParameters
 } from '@sap-ai-sdk/foundation-models';
-import { zodToJsonSchema } from 'zod-to-json-schema';
-import { AzureOpenAiChatClient } from './chat.js';
-import { AzureOpenAiChatCallOptions } from './types.js';
+import type { AzureOpenAiChatClient } from './chat.js';
+import type { AzureOpenAiChatCallOptions } from './types.js';
 
 type ToolChoice =
   | 'none'

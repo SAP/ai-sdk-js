@@ -1,10 +1,12 @@
 import {
-  LlmModuleConfig,
   OrchestrationClient,
-  OrchestrationResponse,
   buildAzureContentFilter
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
+import type {
+  LlmModuleConfig,
+  OrchestrationResponse
+} from '@sap-ai-sdk/orchestration';
 
 const logger = createLogger({
   package: 'sample-code',
