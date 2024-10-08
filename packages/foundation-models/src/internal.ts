@@ -1,1 +1,1 @@
-export * from './azure-openai';
+export * from './azure-openai/index.js';

@@ -1,4 +1,7 @@
-import type { AzureContentSafety, FilteringConfig } from './client/api/schema';
+import type {
+  AzureContentSafety,
+  FilteringConfig
+} from './client/api/schema/index.js';
 
 /**
  * Convenience function to create Azure content filters.

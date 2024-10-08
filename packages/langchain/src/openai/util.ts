@@ -9,11 +9,11 @@ import type {
   AzureOpenAiChatCompletionRequestMessageAssistant,
   AzureOpenAiChatCompletionRequestMessageTool,
   AzureOpenAiChatCompletionRequestMessageFunction,
-  type AzureOpenAiChatCompletionTool,
-  type AzureOpenAiChatCompletionRequestMessage,
-  type AzureOpenAiCreateChatCompletionResponse,
-  type AzureOpenAiCreateChatCompletionRequest,
-  type AzureOpenAiChatCompletionFunctionParameters
+  AzureOpenAiChatCompletionTool,
+  AzureOpenAiChatCompletionRequestMessage,
+  AzureOpenAiCreateChatCompletionResponse,
+  AzureOpenAiCreateChatCompletionRequest,
+  AzureOpenAiChatCompletionFunctionParameters
 } from '@sap-ai-sdk/foundation-models';
 import type { AzureOpenAiChatClient } from './chat.js';
 import type { AzureOpenAiChatCallOptions } from './types.js';

@@ -1,1 +1,1 @@
-export * from './openai';
+export * from './openai/index.js';

@@ -7,12 +7,18 @@ export default [
     // https://github.com/import-js/eslint-plugin-import/issues/2556
     rules: {
       'import/namespace': 'off',
-      'import/no-internal-modules': 'off'
+      'import/no-internal-modules': 'off',
       // TODO: add this once there is a new release of eslint-plugin-import
       // 'import/no-internal-modules': [
       //   'error',
       //   { allow: ['@sap-cloud-sdk/*/internal.js'] }
       // ]
+      'import/no-useless-path-segments': [
+        'error',
+        {
+          noUselessIndex: false
+        }
+      ]
     }
   },
   {
@@ -24,9 +30,7 @@ export default [
     ]
   },
   {
-    files: [
-      '**/test-util/**/*.ts'
-    ],
+    files: ['**/test-util/**/*.ts'],
     rules: {
       'jsdoc/require-jsdoc': 'off'
     }

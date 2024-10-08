@@ -23,7 +23,7 @@ export type {
   AzureThreshold,
   AzureContentSafety,
   AzureContentSafetyFilterConfig
-} from './client/api/schema';
+} from './client/api/schema/index.js';
 
 export type {
   OrchestrationModuleConfig,

@@ -1,6 +1,9 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-import type { CompletionPostResponse, TokenUsage } from './client/api/schema';
+import type {
+  CompletionPostResponse,
+  TokenUsage
+} from './client/api/schema/index.js';
 
 const logger = createLogger({
   package: 'orchestration',
