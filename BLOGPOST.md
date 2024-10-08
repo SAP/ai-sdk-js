@@ -43,5 +43,4 @@ To explore these packages further, check out our [sample project](https://github
 
 ## Support and Feedback
 We value your feedback on this initial release!
-Share your thoughts or ideas in as [GitHub issues](https://github.com/SAP/ai-sdk-js/issues).
-If you need 
+If you need support or want to share your thoughts and ideas, please do so with [GitHub issues](https://github.com/SAP/ai-sdk-js/issues).
