@@ -1,8 +1,8 @@
+import type { BaseLLMParams } from '@langchain/core/language_models/llms';
 import type {
   BaseChatModelCallOptions,
   BaseChatModelParams
 } from '@langchain/core/language_models/chat_models';
-import { BaseLLMParams } from '@langchain/core/language_models/llms';
 import type {
   AzureOpenAiCreateChatCompletionRequest,
   AzureOpenAiChatModel,

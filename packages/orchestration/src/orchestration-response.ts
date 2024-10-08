@@ -1,6 +1,6 @@
-import { HttpResponse } from '@sap-cloud-sdk/http-client';
 import { createLogger } from '@sap-cloud-sdk/util';
-import {
+import type { HttpResponse } from '@sap-cloud-sdk/http-client';
+import type {
   CompletionPostResponse,
   TokenUsage
 } from './client/api/schema/index.js';

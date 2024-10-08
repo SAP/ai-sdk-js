@@ -1,10 +1,12 @@
 import {
   AzureOpenAiChatClient,
-  AzureOpenAiChatCompletionResponse,
-  AzureOpenAiEmbeddingClient,
-  AzureOpenAiEmbeddingResponse
+  AzureOpenAiEmbeddingClient
 } from '@sap-ai-sdk/foundation-models';
 import { createLogger } from '@sap-cloud-sdk/util';
+import type {
+  AzureOpenAiChatCompletionResponse,
+  AzureOpenAiEmbeddingResponse
+} from '@sap-ai-sdk/foundation-models';
 
 const logger = createLogger({
   package: 'sample-code',

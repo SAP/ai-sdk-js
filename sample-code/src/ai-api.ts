@@ -1,4 +1,5 @@
-import { AiDeployment, DeploymentApi } from '@sap-ai-sdk/ai-api';
+import { DeploymentApi } from '@sap-ai-sdk/ai-api';
+import type { AiDeployment } from '@sap-ai-sdk/ai-api';
 
 /**
  * Get all deployments.

@@ -5,14 +5,17 @@ import {
   mockInference,
   parseMockResponse
 } from '../../../test-util/mock-http.js';
-import { CompletionPostResponse } from './client/api/schema/index.js';
 import {
   constructCompletionPostRequest,
   OrchestrationClient
 } from './orchestration-client.js';
 import { buildAzureContentFilter } from './orchestration-filter-utility.js';
 import { OrchestrationResponse } from './orchestration-response.js';
-import { OrchestrationModuleConfig, Prompt } from './orchestration-types.js';
+import type { CompletionPostResponse } from './client/api/schema';
+import type {
+  OrchestrationModuleConfig,
+  Prompt
+} from './orchestration-types.js';
 
 describe('orchestration service client', () => {
   beforeEach(() => {

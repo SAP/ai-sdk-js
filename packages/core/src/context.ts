@@ -1,10 +1,12 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import {
-  HttpDestination,
-  Service,
-  ServiceCredentials,
   getServiceBinding,
   transformServiceBindingToDestination
+} from '@sap-cloud-sdk/connectivity';
+import type {
+  HttpDestination,
+  Service,
+  ServiceCredentials
 } from '@sap-cloud-sdk/connectivity';
 
 const logger = createLogger({
