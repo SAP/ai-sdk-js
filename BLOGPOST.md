@@ -29,7 +29,7 @@ The [@sap-ai-sdk/langchain](https://github.com/SAP/ai-sdk-js/tree/main/packages/
 ### Generative AI with `@sap-ai-sdk/foundation-models`
 The [@sap-ai-sdk/foundation-models](https://github.com/SAP/ai-sdk-js/tree/main/packages/foundation-models#readme) package offers streamlined access to specific generative AI models deployed in SAP AI Core and SAP AI Launchpad. It provides a more focused interface compared to the full orchestration capabilities, concentrating on direct model interactions.
 
-This package is ideal for developers who need direct access to foundation models without the additional layers of orchestration, content filtering, or data masking provided by the orchestration service.
+This package is ideal for developers who need direct access to foundation models for inference and embedding requests without the additional layers of templating, content filtering, or data masking provided by the orchestration service.
 
 ## Getting Started
 To explore these packages further, check out our [sample project](https://github.com/SAP/ai-sdk-js/tree/main/sample-code#readme) demonstrating the usage of various SDK packages.
