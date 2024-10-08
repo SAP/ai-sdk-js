@@ -3,6 +3,7 @@ import express from 'express';
 import {
   chatCompletion,
   computeEmbedding
+  // eslint-disable-next-line import/no-internal-modules
 } from './foundation-models/azure-openai.js';
 import {
   orchestrationChatCompletion,

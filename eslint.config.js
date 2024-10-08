@@ -1,18 +1,23 @@
 import flatConfig from '@sap-cloud-sdk/eslint-config/flat-config.js';
-
 export default [
   ...flatConfig,
   {
-    // Eslint flat config is not supported by eslint-plugin-import.
-    // https://github.com/import-js/eslint-plugin-import/issues/2556
+    files: ['**/*.ts'],
     rules: {
       'import/namespace': 'off',
-      'import/no-internal-modules': 'off',
-      // TODO: add this once there is a new release of eslint-plugin-import
-      // 'import/no-internal-modules': [
-      //   'error',
-      //   { allow: ['@sap-cloud-sdk/*/internal.js'] }
-      // ]
+      'import/no-internal-modules': [
+        'error',
+        {
+          allow: [
+            '@sap-cloud-sdk/*/internal.js',
+            '@sap-ai-sdk/*/internal.js',
+            '@langchain/core/**',
+            'langchain/**',
+            '*/index.js',
+            '*/client/**/index.js'
+          ]
+        }
+      ],
       'import/no-useless-path-segments': [
         'error',
         {
@@ -30,18 +35,18 @@ export default [
     ]
   },
   {
-    files: ['**/test-util/**/*.ts'],
+    files: [
+      '**/test/**/*',
+      '**/test-util/**/*',
+      '**/*.test.ts',
+      '**/*.spec.ts',
+      '**/dist-cjs/**/*'
+    ],
     rules: {
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      'import/no-internal-modules': 'off',
+      'no-unused-expressions': 'off',
       'jsdoc/require-jsdoc': 'off'
     }
-  },
-  {
-    files: ['packages/langchain/**/*.ts'],
-    rules: {
-      'import/no-internal-modules': 'off'
-    }
-  },
-  {
-    ignores: ['**/dist-cjs/**/*']
   }
 ];
