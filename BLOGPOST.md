@@ -37,6 +37,8 @@ It provides a more focused interface compared to the full orchestration capabili
 This package is ideal for developers who need direct access to foundation models for inference and embedding requests without the additional layers of templating, content filtering, or data masking provided by the orchestration service.
 
 ## Getting Started
+To use the packages, you will need Node v20 or higher, as well as an ESM (ECMAScript Modules) compatible application.
+
 To explore these packages further, check out our [sample project](https://github.com/SAP/ai-sdk-js/tree/main/sample-code#readme) demonstrating the usage of various SDK packages.
 
 ## Support and Feedback
