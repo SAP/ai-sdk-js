@@ -4,9 +4,9 @@ import {
   getResourceGroup,
   type ModelDeployment
 } from '@sap-ai-sdk/ai-api/internal.js';
-import type { AzureOpenAiCreateChatCompletionRequest } from './client/inference/schema/index.js';
 import { apiVersion, type AzureOpenAiChatModel } from './model-types.js';
 import { AzureOpenAiChatCompletionResponse } from './azure-openai-chat-completion-response.js';
+import type { AzureOpenAiCreateChatCompletionRequest } from './client/inference/schema/index.js';
 
 /**
  * Azure OpenAI client for chat completion.

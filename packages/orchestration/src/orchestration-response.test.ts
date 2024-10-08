@@ -1,8 +1,8 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import { jest } from '@jest/globals';
 import { parseMockResponse } from '../../../test-util/mock-http.js';
-import { CompletionPostResponse } from './client/api/schema/index.js';
 import { OrchestrationResponse } from './orchestration-response.js';
+import type { CompletionPostResponse } from './client/api/schema';
 
 describe('OrchestrationResponse', () => {
   const mockResponse = parseMockResponse<CompletionPostResponse>(

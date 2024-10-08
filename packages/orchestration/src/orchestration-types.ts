@@ -1,5 +1,5 @@
-import { ChatModel } from './model-types.js';
-import {
+import type { ChatModel } from './model-types.js';
+import type {
   ChatMessages,
   FilteringModuleConfig,
   MaskingModuleConfig,

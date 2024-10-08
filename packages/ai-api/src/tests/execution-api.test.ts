@@ -1,14 +1,14 @@
 import nock from 'nock';
-import {
-  AiEnactmentCreationRequest,
-  AiExecutionCreationResponse,
-  AiExecutionList,
-  ExecutionApi
-} from '../client/AI_CORE_API/index.js';
+import { ExecutionApi } from '../client/AI_CORE_API';
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
 } from '../../../../test-util/mock-http.js';
+import type {
+  AiEnactmentCreationRequest,
+  AiExecutionCreationResponse,
+  AiExecutionList
+} from '../client/AI_CORE_API';
 
 describe('execution', () => {
   beforeEach(() => {

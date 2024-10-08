@@ -1,9 +1,7 @@
-import {
-  OpenApiRequestBuilder as CloudSDKOpenApiRequestBuilder,
-  OpenApiRequestParameters
-} from '@sap-cloud-sdk/openapi';
-import { HttpResponse, Method } from '@sap-cloud-sdk/http-client';
+import { OpenApiRequestBuilder as CloudSDKOpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
 import { executeRequest } from './http-client.js';
+import type { OpenApiRequestParameters } from '@sap-cloud-sdk/openapi';
+import type { HttpResponse, Method } from '@sap-cloud-sdk/http-client';
 
 /**
  * Request builder for OpenAPI requests.
