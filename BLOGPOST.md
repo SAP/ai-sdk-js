@@ -24,7 +24,7 @@ The [@sap-ai-sdk/langchain](https://github.com/SAP/ai-sdk-js/tree/main/packages/
 
 - **Seamless Integration**: Built on SAP Cloud SDK for AI's foundation model clients, ensuring compatibility with SAP AI Core and LangChain's ecosystem.
 - **Flexible Clients**: Easily initialize chat and embedding clients with support for advanced features like templating and output parsing.
-- **RAG Support**: Implement Retrieval-Augmented Generation workflows by combining embedding capabilities with LangChain's text splitters and vector stores.
+- **RAG Support**: Implement [Retrieval-Augmented Generation workflows](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/langchain-azure-openai.ts#L65) by combining embedding capabilities with LangChain's text splitters and vector stores.
 
 ### Generative AI with `@sap-ai-sdk/foundation-models`
 The [@sap-ai-sdk/foundation-models](https://github.com/SAP/ai-sdk-js/tree/main/packages/foundation-models#readme) package offers streamlined access to specific generative AI models deployed in SAP AI Core and SAP AI Launchpad. It provides a more focused interface compared to the full orchestration capabilities, concentrating on direct model interactions.
