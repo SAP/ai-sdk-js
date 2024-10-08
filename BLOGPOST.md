@@ -15,9 +15,9 @@ The [@sap-ai-sdk/orchestration](https://github.com/SAP/ai-sdk-js/tree/main/packa
 ### AI Management with `@sap-ai-sdk/ai-api`
 The [@sap-ai-sdk/ai-api](https://github.com/SAP/ai-sdk-js/tree/main/packages/ai-api#readme) package provides comprehensive tools for managing scenarios and workflows in SAP AI Core. You can automate processes such as creating artifacts, configurations, and deployments; executing batch inference jobs; and managing Docker registries and object storage for training data.
 
-- **Artifact Management**: Register and manage datasets and other model artifacts.
-- **Configuration Management**: Set up configurations for different models and use cases.
-- **Deployment Management**: Deploy AI models and manage their lifecycle within SAP AI Core.
+- **[Artifact Management](https://github.com/SAP/ai-sdk-js/tree/main/packages/ai-api#create-an-artifact)**: Register and manage datasets and other model artifacts.
+- **[Configuration Management](https://github.com/SAP/ai-sdk-js/tree/main/packages/ai-api#create-a-configuration)**: Set up configurations for different models and use cases.
+- **[Deployment Management](https://github.com/SAP/ai-sdk-js/tree/main/packages/ai-api#create-a-deployment)**: Deploy AI models and manage their lifecycle within SAP AI Core.
 
 ### LangChain Integration with `@sap-ai-sdk/langchain`
 The [@sap-ai-sdk/langchain](https://github.com/SAP/ai-sdk-js/tree/main/packages/langchain#readme) package provides LangChain-compatible clients for Azure OpenAI models deployed in SAP AI Core, enabling sophisticated AI pipelines within your SAP BTP applications.
