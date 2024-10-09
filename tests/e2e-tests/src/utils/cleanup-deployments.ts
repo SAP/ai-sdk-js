@@ -1,5 +1,4 @@
 import { createLogger } from '@sap-cloud-sdk/util';
-import { AiApiError } from '@sap-ai-sdk/ai-api';
 import {
   deleteDeployment,
   getDeployments,
@@ -10,6 +9,7 @@ import {
   resourceGroup,
   waitForDeploymentToReachStatus
 } from './ai-api-utils.js';
+import type { AiApiError } from '@sap-ai-sdk/ai-api';
 
 loadEnv();
 

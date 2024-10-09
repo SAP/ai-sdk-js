@@ -1,4 +1,5 @@
-import { ScenarioApi, AiScenarioList, AiModelList } from '@sap-ai-sdk/ai-api';
+import { ScenarioApi } from '@sap-ai-sdk/ai-api';
+import type { AiScenarioList, AiModelList } from '@sap-ai-sdk/ai-api';
 
 /**
  * Get all scenarios.

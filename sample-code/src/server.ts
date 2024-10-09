@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import express from 'express';
-import { AiApiError } from '@sap-ai-sdk/ai-api';
 import {
   chatCompletion,
   computeEmbedding
@@ -13,13 +12,21 @@ import {
   orchestrationOutputFiltering,
   orchestrationRequestConfig
 } from './orchestration.js';
-import { getDeployments, createDeployment } from './ai-api/deployment-api.js';
-import { getModelsInScenario } from './ai-api/scenario-api.js';
+import {
+  getDeployments,
+  createDeployment
+  // eslint-disable-next-line import/no-internal-modules
+} from './ai-api/deployment-api.js';
+import {
+  getModelsInScenario
+  // eslint-disable-next-line import/no-internal-modules
+} from './ai-api/scenario-api.js';
 import {
   invokeChain,
   invokeRagChain,
   invoke
 } from './langchain-azure-openai.js';
+import type { AiApiError } from '@sap-ai-sdk/ai-api';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 
 const app = express();

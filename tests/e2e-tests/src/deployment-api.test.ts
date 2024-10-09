@@ -1,4 +1,3 @@
-import { AiApiError, AiDeploymentList } from '@sap-ai-sdk/ai-api';
 import {
   getDeployment,
   getDeployments,
@@ -12,6 +11,7 @@ import {
   resourceGroup,
   waitForDeploymentToReachStatus
 } from './utils/ai-api-utils.js';
+import type { AiApiError, AiDeploymentList } from '@sap-ai-sdk/ai-api';
 
 loadEnv();
 

@@ -1,10 +1,10 @@
-import {
+import { DeploymentApi } from '@sap-ai-sdk/ai-api';
+import type {
   AiDeploymentCreationResponse,
   AiDeploymentDeletionResponse,
   AiDeploymentList,
   AiDeploymentModificationResponse,
-  AiDeploymentResponseWithDetails,
-  DeploymentApi
+  AiDeploymentResponseWithDetails
 } from '@sap-ai-sdk/ai-api';
 
 /**

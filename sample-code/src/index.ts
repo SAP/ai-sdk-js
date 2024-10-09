@@ -23,5 +23,10 @@ export {
   createDeployment,
   stopDeployment,
   deleteDeployment
+  // eslint-disable-next-line import/no-internal-modules
 } from './ai-api/deployment-api.js';
-export { getScenarios, getModelsInScenario } from './ai-api/scenario-api.js';
+export {
+  getScenarios,
+  getModelsInScenario
+  // eslint-disable-next-line import/no-internal-modules
+} from './ai-api/scenario-api.js';
