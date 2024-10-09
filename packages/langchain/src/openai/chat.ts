@@ -1,9 +1,9 @@
-import { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
-import { BaseMessage } from '@langchain/core/messages';
-import type { ChatResult } from '@langchain/core/outputs';
 import { AzureOpenAiChatClient as AzureOpenAiChatClientBase } from '@sap-ai-sdk/foundation-models';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { mapLangchainToAiClient, mapOutputToChatResult } from './util.js';
+import type { BaseMessage } from '@langchain/core/messages';
+import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
+import type { ChatResult } from '@langchain/core/outputs';
 import type {
   AzureOpenAiChatCallOptions,
   AzureOpenAiChatModelParams

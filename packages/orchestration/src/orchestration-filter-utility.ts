@@ -1,4 +1,4 @@
-import {
+import type {
   AzureContentSafety,
   FilteringConfig
 } from './client/api/schema/index.js';

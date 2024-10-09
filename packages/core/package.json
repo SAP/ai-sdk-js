@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/core",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
@@ -27,9 +27,9 @@
     "check:public-api": "node --loader ts-node/esm ../../scripts/check-public-api-cli.ts"
   },
   "dependencies": {
-    "@sap-cloud-sdk/connectivity": "^3.21.0",
-    "@sap-cloud-sdk/http-client": "^3.21.0",
-    "@sap-cloud-sdk/openapi": "^3.21.0",
-    "@sap-cloud-sdk/util": "^3.21.0"
+    "@sap-cloud-sdk/connectivity": "^3.22.1",
+    "@sap-cloud-sdk/http-client": "^3.22.1",
+    "@sap-cloud-sdk/openapi": "^3.22.1",
+    "@sap-cloud-sdk/util": "^3.22.1"
   }
 }

@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 import express from 'express';
 import { AiApiError } from '@sap-ai-sdk/ai-api';
-import { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 import {
   chatCompletion,
   computeEmbedding
+  // eslint-disable-next-line import/no-internal-modules
 } from './foundation-models/azure-openai.js';
 import {
   orchestrationChatCompletion,
@@ -20,6 +20,7 @@ import {
   invokeRagChain,
   invoke
 } from './langchain-azure-openai.js';
+import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 
 const app = express();
 const port = 8080;
@@ -124,7 +125,7 @@ app.get('/ai-api/get-models-in-scenario', async (req, res) => {
   }
 });
 
-app.get('/langchain/chat', async (req, res) => {
+app.get('/langchain/invoke', async (req, res) => {
   try {
     res.send(await invoke());
   } catch (error: any) {
@@ -135,7 +136,7 @@ app.get('/langchain/chat', async (req, res) => {
   }
 });
 
-app.get('/langchain/complex-chat', async (req, res) => {
+app.get('/langchain/invoke-chain', async (req, res) => {
   try {
     res.send(await invokeChain());
   } catch (error: any) {
@@ -146,7 +147,7 @@ app.get('/langchain/complex-chat', async (req, res) => {
   }
 });
 
-app.get('/langchain/retrieval-augmented-generation', async (req, res) => {
+app.get('/langchain/invoke-rag-chain', async (req, res) => {
   try {
     res.send(await invokeRagChain());
   } catch (error: any) {

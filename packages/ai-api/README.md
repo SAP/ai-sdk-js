@@ -43,7 +43,7 @@ To ensure compatibility and manage updates effectively, we strongly recommend us
 
 ## Prerequisites
 
-- [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-api/sap-ai-api-service-guide/initial-setup).
+- [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Project configured with Node.js v20 or higher and native ESM support enabled.
 
 ## Usage

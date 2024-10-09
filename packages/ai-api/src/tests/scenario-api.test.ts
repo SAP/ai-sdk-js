@@ -1,9 +1,10 @@
 import nock from 'nock';
-import { ScenarioApi, AiScenarioList } from '../client/AI_CORE_API/index.js';
+import { ScenarioApi } from '../client/AI_CORE_API';
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
 } from '../../../../test-util/mock-http.js';
+import type { AiScenarioList } from '../client/AI_CORE_API';
 
 describe('scenario', () => {
   beforeEach(() => {
