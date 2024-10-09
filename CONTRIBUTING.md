@@ -82,6 +82,37 @@ To fix all linting issues, run:
 $ pnpm lint:fix
 ```
 
+## Releases
+
+To release a new version, ensure that the following prerequisites are met:
+
+- The smoke tests are passing.
+- There are changesets under the `.changeset` directory. Without changesets, there should be nothing to release.
+
+If this is the case, follow these steps:
+
+1. **Bump the version**: Execute the `bump` workflow from the `main` branch.
+   If you want to release a new major version, enter the full major version as a precaution.
+   Skip providing a version for minor and patch version releases.
+   This bumps the version on the `main` branch and creates a tag and draft release with release notes on GitHub.
+2. **Publish to npm**: Find the draft release in the [GitHub releases](https://github.com/SAP/ai-sdk-js/releases), check the release notes, and press **Publish release**. This triggers the `publish` workflow that publishes the new version to [`npmjs.com`](https://www.npmjs.com/settings/sap-ai-sdk/packages).
+
+Finally, check that everything is published as expected on npm.
+
+### How to Roll Back Releases
+
+Once a release is published on npm, you can no longer take it back.
+To fix issues in published packages, you need to publish a new version.
+
+If you find an issue with the release or something fails before publishing, you can revert the release.
+Make sure to:
+
+- Revert the bump commit.
+- Delete the draft release.
+- Delete the version tag.
+
+Then you can fix the error and try again from the state before the release.
+
 ## Contributing Code or Documentation
 
 You are welcome to contribute code in order to fix a bug or to implement a new feature that is logged as an issue.
