@@ -84,25 +84,25 @@ $ pnpm lint:fix
 
 ## Releases
 
-To release a new version follow these steps make sure that some prerequisites are met:
+To release a new version, ensure that the following prerequisites are met:
 
 - The smoke tests are passing.
-- There are changesets under `.changeset`. Without changesets there should be nothing to release.
+- There are changesets under the `.changeset` directory. Without changesets, there should be nothing to release.
 
 If this is the case, follow these steps:
 
 1. **Bump the version**: Execute the `bump` workflow from the `main` branch.
-   If you want to release a new major version, you need to enter the full major version as a precaution.
+   If you want to release a new major version, enter the full major version as a precaution.
    Skip providing a version for minor and patch version releases.
-   This bumps the version on main and creates a tag and draft release with release notes on GitHub.
-2. **Publish to npm**: Find the draft release in the [GitHub releases](https://github.com/SAP/ai-sdk-js/releases), check the release notes and press **Publish release**. This triggers the `publish` workflow that publishes the new version to [`npmjs.com`](https://www.npmjs.com/settings/sap-ai-sdk/packages).
+   This bumps the version on the `main` branch and creates a tag and draft release with release notes on GitHub.
+2. **Publish to npm**: Find the draft release in the [GitHub releases](https://github.com/SAP/ai-sdk-js/releases), check the release notes, and press **Publish release**. This triggers the `publish` workflow that publishes the new version to [`npmjs.com`](https://www.npmjs.com/settings/sap-ai-sdk/packages).
 
-Last, check that everything is published as expected on npm.
+Finally, check that everything is published as expected on npm.
 
 ### How to Roll Back Releases
 
-Once a release is published on npm you can no longer take it back.
-To fix issues in published packages you need to publish a new version.
+Once a release is published on npm, you can no longer take it back.
+To fix issues in published packages, you need to publish a new version.
 
 If you find an issue with the release or something fails before publishing, you can revert the release.
 Make sure to:
@@ -111,7 +111,7 @@ Make sure to:
 - Delete the draft release.
 - Delete the version tag.
 
-Then you can fix the error on the state before the release and try again.
+Then you can fix the error and try again from the state before the release.
 
 ## Contributing Code or Documentation
 
