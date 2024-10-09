@@ -14,6 +14,7 @@ import {
   orchestrationRequestConfig
 } from './orchestration.js';
 import { getDeployments, createDeployment } from './ai-api/deployment-api.js';
+import { getModelsInScenario } from './ai-api/scenario-api.js';
 import {
   invokeChain,
   invokeRagChain,
@@ -102,6 +103,18 @@ app.get('/ai-api/get-deployments', async (req, res) => {
 app.post('/ai-api/create-deployment', async (req, res) => {
   try {
     res.send(await createDeployment(req.body.configurationId, 'default'));
+  } catch (error: any) {
+    console.error(error);
+    const apiError = error.response.data.error as AiApiError;
+    res
+      .status(error.response.status)
+      .send('Yikes, vibes are off apparently 😬 -> ' + apiError.message);
+  }
+});
+
+app.get('/ai-api/get-models-in-scenario', async (req, res) => {
+  try {
+    res.send(await getModelsInScenario('foundation-models', 'default'));
   } catch (error: any) {
     console.error(error);
     const apiError = error.response.data.error as AiApiError;

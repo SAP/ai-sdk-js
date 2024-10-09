@@ -23,7 +23,7 @@ describe('DeploymentApi', () => {
     const queryResponse = await getDeployments(resourceGroup);
     expect(queryResponse).toBeDefined();
     initialState = queryResponse;
-  }, 200000);
+  });
 
   it('should create a deployment and wait for it to run', async () => {
     const createResponse = await createDeployment(

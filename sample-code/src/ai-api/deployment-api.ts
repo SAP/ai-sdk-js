@@ -26,11 +26,9 @@ export async function getDeployments(
 ): Promise<AiDeploymentList> {
   // check for optional query parameters.
   const queryParams = status ? { status } : {};
-  const response = await DeploymentApi.deploymentQuery(queryParams, {
+  return DeploymentApi.deploymentQuery(queryParams, {
     'AI-Resource-Group': resourceGroup
   }).execute();
-
-  return response;
 }
 
 /**
@@ -43,13 +41,11 @@ export async function getDeployment(
   deploymentId: string,
   resourceGroup: string
 ): Promise<AiDeploymentResponseWithDetails> {
-  const response = await DeploymentApi.deploymentGet(
+  return DeploymentApi.deploymentGet(
     deploymentId,
     {},
     { 'AI-Resource-Group': resourceGroup }
   ).execute();
-
-  return response;
 }
 
 /**
@@ -62,12 +58,10 @@ export async function createDeployment(
   configurationId: string,
   resourceGroup: string
 ): Promise<AiDeploymentCreationResponse> {
-  const response = await DeploymentApi.deploymentCreate(
+  return DeploymentApi.deploymentCreate(
     { configurationId },
     { 'AI-Resource-Group': resourceGroup }
   ).execute();
-
-  return response;
 }
 
 /**
@@ -81,13 +75,11 @@ export async function modifyDeployment(
   deploymentId: string,
   resourceGroup: string
 ): Promise<AiDeploymentModificationResponse> {
-  const response = await DeploymentApi.deploymentModify(
+  return DeploymentApi.deploymentModify(
     deploymentId,
     { targetStatus: 'STOPPED' },
     { 'AI-Resource-Group': resourceGroup }
   ).execute();
-
-  return response;
 }
 
 /**
@@ -101,9 +93,7 @@ export async function deleteDeployment(
   deploymentId: string,
   resourceGroup: string
 ): Promise<AiDeploymentDeletionResponse> {
-  const response = await DeploymentApi.deploymentDelete(deploymentId, {
+  return DeploymentApi.deploymentDelete(deploymentId, {
     'AI-Resource-Group': resourceGroup
   }).execute();
-
-  return response;
 }

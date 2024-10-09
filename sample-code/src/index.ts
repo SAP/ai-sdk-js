@@ -23,4 +23,4 @@ export {
   modifyDeployment,
   deleteDeployment
 } from './ai-api/deployment-api.js';
-export { getScenarios } from './ai-api/scenario-api.js';
+export { getScenarios, getModelsInScenario } from './ai-api/scenario-api.js';

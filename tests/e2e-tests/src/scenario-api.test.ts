@@ -1,4 +1,4 @@
-import { getScenarios } from '@sap-ai-sdk/sample-code';
+import { getScenarios, getModelsInScenario } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
 import { resourceGroup } from './utils/ai-api-utils.js';
 
@@ -13,5 +13,13 @@ describe('ScenarioApi', () => {
       scenario => scenario.id === 'foundation-models'
     );
     expect(foundationModel).toBeDefined();
+  });
+
+  it('should get list of all models available in `foundation-models` scenario', async () => {
+    const models = await getModelsInScenario(
+      'foundation-models',
+      resourceGroup
+    );
+    expect(models).toBeDefined();
   });
 });
