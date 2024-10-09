@@ -3,7 +3,7 @@ import {
   getDeployment,
   getDeployments,
   createDeployment,
-  modifyDeployment,
+  stopDeployment,
   deleteDeployment
 } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
@@ -51,13 +51,13 @@ describe('DeploymentApi', () => {
     createdDeploymentId = runningDeployment.id;
   }, 200000);
 
-  it('should modify the deployment to stop it', async () => {
+  it('should stop the deployment', async () => {
     const deploymentId = await checkCreatedDeployment(
       createdDeploymentId,
       'RUNNING'
     );
 
-    const modifyResponse = await modifyDeployment(deploymentId, resourceGroup);
+    const modifyResponse = await stopDeployment(deploymentId, resourceGroup);
     expect(modifyResponse).toEqual(
       expect.objectContaining({
         message: 'Deployment modification scheduled'

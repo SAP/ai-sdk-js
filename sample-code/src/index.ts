@@ -20,7 +20,7 @@ export {
   getDeployment,
   getDeployments,
   createDeployment,
-  modifyDeployment,
+  stopDeployment,
   deleteDeployment
 } from './ai-api/deployment-api.js';
 export { getScenarios, getModelsInScenario } from './ai-api/scenario-api.js';

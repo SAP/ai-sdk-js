@@ -21,7 +21,7 @@
     "compile": "tsc",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "test:deployment-api-create": "NODE_OPTIONS=--experimental-vm-modules jest -t \"create deployment\"",
-    "test:deployment-api-modify": "NODE_OPTIONS=--experimental-vm-modules jest -t \"modify deployment\"",
+    "test:deployment-api-stop": "NODE_OPTIONS=--experimental-vm-modules jest -t \"stop deployment\"",
     "test:deployment-api-delete": "NODE_OPTIONS=--experimental-vm-modules jest -t \"delete deployment\"",
     "cleanup-deployments": "node --loader ts-node/esm ./src/utils/cleanup-deployments.ts",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",

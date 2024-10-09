@@ -71,7 +71,7 @@ export async function createDeployment(
  * @param resourceGroup - AI-Resource-Group where the resources are available.
  * @returns Deployment modification response with 'targetStatus': 'STOPPED'.
  */
-export async function modifyDeployment(
+export async function stopDeployment(
   deploymentId: string,
   resourceGroup: string
 ): Promise<AiDeploymentModificationResponse> {
