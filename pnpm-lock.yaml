@@ -210,7 +210,7 @@ importers:
         version: link:../../sample-code
       '@sap-cloud-sdk/util':
         specifier: ^3.21.0
-        version: 3.21.0
+        version: 3.22.1
     devDependencies:
       '@types/async-retry':
         specifier: ^1.4.9

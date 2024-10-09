@@ -3,7 +3,7 @@ import { AiApiError } from '@sap-ai-sdk/ai-api';
 import {
   deleteDeployment,
   getDeployments,
-  modifyDeployment
+  stopDeployment
 } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './load-env.js';
 import {
@@ -34,7 +34,7 @@ async function cleanupDeployments(): Promise<void> {
             targetStatus !== 'STOPPED' &&
             status !== 'UNKNOWN'
           ) {
-            await modifyDeployment(id, resourceGroup);
+            await stopDeployment(id, resourceGroup);
             await waitForDeploymentToReachStatus(id, 'STOPPED');
           } else if (status !== 'STOPPED' && targetStatus === 'STOPPED') {
             await waitForDeploymentToReachStatus(id, 'STOPPED');
