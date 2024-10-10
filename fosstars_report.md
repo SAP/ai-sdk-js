@@ -285,14 +285,14 @@ Score: **10.0**, confidence is 10.0 (max), weight is 0.5 (medium)
 
 The score evaluates how active a project is. It's based on number of commits and contributors in the last 3 months.
 
-192 commits in the last 3 months results to 10.00 points
+193 commits in the last 3 months results to 10.00 points
 4 contributors increase the score value from 10.00 to 11.00
 
 This sub-score is based on 2 features:
 
 
 
-1.  **Number of commits in the last three months:** 192
+1.  **Number of commits in the last three months:** 193
 1.  **Number of contributors in the last three months:** 4
 
 
@@ -309,7 +309,7 @@ This sub-score is based on 3 features:
 
 
 1.  **Number of projects on GitHub that use an open source project:** unknown
-1.  **Number of stars for a GitHub repository:** 18
+1.  **Number of stars for a GitHub repository:** 19
 1.  **Number of watchers for a GitHub repository:** 1
 
 
@@ -387,7 +387,7 @@ This sub-score is based on 2 features:
 
 
 1.  **Is it included to OSS-Fuzz?** No
-1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT
+1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT, OTHER
 
 
 ### Memory-safety testing
@@ -405,7 +405,7 @@ This sub-score is based on 4 features:
 1.  **Does it use AddressSanitizer?** No
 1.  **Does it use MemorySanitizer?** No
 1.  **Does it use UndefinedBehaviorSanitizer?** No
-1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT
+1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT, OTHER
 
 
 ### nohttp tool
@@ -439,7 +439,7 @@ This sub-score is based on 4 features:
 1.  **Does it use Dependabot?** Yes
 1.  **Does it use GitHub as the main development platform?** Yes
 1.  **Package managers:** NPM, YARN
-1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT
+1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT, OTHER
 
 
 ### Snyk score
@@ -457,7 +457,7 @@ This sub-score is based on 4 features:
 1.  **Does it use GitHub as the main development platform?** Yes
 1.  **Does it use Snyk?** No
 1.  **Package managers:** NPM, YARN
-1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT
+1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT, OTHER
 
 
 ### OWASP Dependency Check score
@@ -491,7 +491,7 @@ This sub-score is based on 3 features:
 
 1.  **Does it run CodeQL scans?** Yes
 1.  **Does it use CodeQL checks for pull requests?** Yes
-1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT
+1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT, OTHER
 
 
 ### Bandit score
@@ -508,7 +508,7 @@ This sub-score is based on 3 features:
 
 1.  **If a project runs Bandit scan checks for commits:** No
 1.  **If a project runs Bandit scans:** No
-1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT
+1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT, OTHER
 
 
 ### FindSecBugs score
@@ -524,7 +524,7 @@ This sub-score is based on 2 features:
 
 
 1.  **Does it use FindSecBugs?** No
-1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT
+1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT, OTHER
 
 
 ### How a project uses Pylint
@@ -541,7 +541,7 @@ This sub-score is based on 3 features:
 
 1.  **Does it run Pylint scans on all commits?** No
 1.  **Does it run Pylint scans?** No
-1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT
+1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT, OTHER
 
 
 ### GoSec score
@@ -559,7 +559,7 @@ This sub-score is based on 4 features:
 1.  **Does it run GoSec scans on all pull requests?** No
 1.  **Does it run GoSec scans with rules?** No
 1.  **Does it run GoSec scans?** No
-1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT
+1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT, OTHER
 
 
 ### How a project uses MyPy
@@ -576,7 +576,7 @@ This sub-score is based on 3 features:
 
 1.  **Does it run MyPy scans on all commits?** No
 1.  **Does it run MyPy scans?** No
-1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT
+1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT, OTHER
 
 
 ## Known vulnerabilities

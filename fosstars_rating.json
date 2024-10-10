@@ -244,7 +244,7 @@
         }
       }
     },
-    "value" : 4.952756132756132,
+    "value" : 4.95287518037518,
     "weight" : 1.0,
     "confidence" : 7.179487179487181,
     "usedValues" : [ {
@@ -555,7 +555,7 @@
               "name" : "A set of programming languages"
             },
             "languages" : {
-              "elements" : [ "JAVASCRIPT", "TYPESCRIPT" ]
+              "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
             },
             "explanation" : [ ]
           } ],
@@ -608,7 +608,7 @@
               "name" : "A set of programming languages"
             },
             "languages" : {
-              "elements" : [ "JAVASCRIPT", "TYPESCRIPT" ]
+              "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
             },
             "explanation" : [ ]
           } ],
@@ -767,7 +767,7 @@
               "name" : "A set of programming languages"
             },
             "languages" : {
-              "elements" : [ "JAVASCRIPT", "TYPESCRIPT" ]
+              "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
             },
             "explanation" : [ ]
           } ],
@@ -810,7 +810,7 @@
               "name" : "A set of programming languages"
             },
             "languages" : {
-              "elements" : [ "JAVASCRIPT", "TYPESCRIPT" ]
+              "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
             },
             "explanation" : [ ]
           } ],
@@ -837,7 +837,7 @@
               "name" : "A set of programming languages"
             },
             "languages" : {
-              "elements" : [ "JAVASCRIPT", "TYPESCRIPT" ]
+              "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
             },
             "explanation" : [ ]
           }, {
@@ -888,7 +888,7 @@
               "name" : "A set of programming languages"
             },
             "languages" : {
-              "elements" : [ "JAVASCRIPT", "TYPESCRIPT" ]
+              "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
             },
             "explanation" : [ ]
           } ],
@@ -931,7 +931,7 @@
               "name" : "A set of programming languages"
             },
             "languages" : {
-              "elements" : [ "JAVASCRIPT", "TYPESCRIPT" ]
+              "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
             },
             "explanation" : [ ]
           } ],
@@ -974,7 +974,7 @@
               "name" : "A set of programming languages"
             },
             "languages" : {
-              "elements" : [ "JAVASCRIPT", "TYPESCRIPT" ]
+              "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
             },
             "explanation" : [ ]
           } ],
@@ -1091,7 +1091,7 @@
             "name" : "A set of programming languages"
           },
           "languages" : {
-            "elements" : [ "JAVASCRIPT", "TYPESCRIPT" ]
+            "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
           },
           "explanation" : [ ]
         }, {
@@ -1126,7 +1126,7 @@
             "name" : "A set of programming languages"
           },
           "languages" : {
-            "elements" : [ "JAVASCRIPT", "TYPESCRIPT" ]
+            "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
           },
           "explanation" : [ ]
         }, {
@@ -1336,7 +1336,7 @@
           "type" : "PositiveIntegerFeature",
           "name" : "Number of commits in the last three months"
         },
-        "number" : 192,
+        "number" : 193,
         "explanation" : [ ]
       }, {
         "type" : "IntegerValue",
@@ -1347,7 +1347,7 @@
         "number" : 4,
         "explanation" : [ ]
       } ],
-      "explanation" : [ "192 commits in the last 3 months results to 10.00 points", "4 contributors increase the score value from 10.00 to 11.00" ],
+      "explanation" : [ "193 commits in the last 3 months results to 10.00 points", "4 contributors increase the score value from 10.00 to 11.00" ],
       "isUnknown" : false,
       "isNotApplicable" : false,
       "feature" : {
@@ -1385,7 +1385,7 @@
         "type" : "ProjectPopularityScore",
         "name" : "Open-source project popularity score"
       },
-      "value" : 0.021333333333333333,
+      "value" : 0.022333333333333334,
       "weight" : 0.5,
       "confidence" : 6.666666666666667,
       "usedValues" : [ {
@@ -1394,7 +1394,7 @@
           "type" : "PositiveIntegerFeature",
           "name" : "Number of stars for a GitHub repository"
         },
-        "number" : 18,
+        "number" : 19,
         "explanation" : [ ]
       }, {
         "type" : "IntegerValue",
@@ -1673,7 +1673,7 @@
                 "name" : "A set of programming languages"
               },
               "languages" : {
-                "elements" : [ "JAVASCRIPT", "TYPESCRIPT" ]
+                "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
               },
               "explanation" : [ ]
             } ],
@@ -1726,7 +1726,7 @@
                 "name" : "A set of programming languages"
               },
               "languages" : {
-                "elements" : [ "JAVASCRIPT", "TYPESCRIPT" ]
+                "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
               },
               "explanation" : [ ]
             } ],
@@ -1885,7 +1885,7 @@
                 "name" : "A set of programming languages"
               },
               "languages" : {
-                "elements" : [ "JAVASCRIPT", "TYPESCRIPT" ]
+                "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
               },
               "explanation" : [ ]
             } ],
@@ -1928,7 +1928,7 @@
                 "name" : "A set of programming languages"
               },
               "languages" : {
-                "elements" : [ "JAVASCRIPT", "TYPESCRIPT" ]
+                "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
               },
               "explanation" : [ ]
             } ],
@@ -1955,7 +1955,7 @@
                 "name" : "A set of programming languages"
               },
               "languages" : {
-                "elements" : [ "JAVASCRIPT", "TYPESCRIPT" ]
+                "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
               },
               "explanation" : [ ]
             }, {
@@ -2006,7 +2006,7 @@
                 "name" : "A set of programming languages"
               },
               "languages" : {
-                "elements" : [ "JAVASCRIPT", "TYPESCRIPT" ]
+                "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
               },
               "explanation" : [ ]
             } ],
@@ -2049,7 +2049,7 @@
                 "name" : "A set of programming languages"
               },
               "languages" : {
-                "elements" : [ "JAVASCRIPT", "TYPESCRIPT" ]
+                "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
               },
               "explanation" : [ ]
             } ],
@@ -2092,7 +2092,7 @@
                 "name" : "A set of programming languages"
               },
               "languages" : {
-                "elements" : [ "JAVASCRIPT", "TYPESCRIPT" ]
+                "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
               },
               "explanation" : [ ]
             } ],
@@ -2209,7 +2209,7 @@
               "name" : "A set of programming languages"
             },
             "languages" : {
-              "elements" : [ "JAVASCRIPT", "TYPESCRIPT" ]
+              "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
             },
             "explanation" : [ ]
           }, {
@@ -2244,7 +2244,7 @@
               "name" : "A set of programming languages"
             },
             "languages" : {
-              "elements" : [ "JAVASCRIPT", "TYPESCRIPT" ]
+              "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
             },
             "explanation" : [ ]
           }, {
