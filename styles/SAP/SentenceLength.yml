@@ -1,0 +1,6 @@
+extends: occurrence
+message: 'Try to keep sentences short (< 45 words).'
+scope: sentence
+level: warning
+max: 45
+token: \b(\w+)\b

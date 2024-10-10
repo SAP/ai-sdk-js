@@ -1,4 +1,4 @@
-# Project Structure of the SAP AI SDK for JS
+# Project Structure of the SAP Cloud SDK for AI (JavaScript / TypeScript)
 
 ## Modules
 
@@ -7,6 +7,6 @@
 - @sap-ai-sdk/ai-api
     - AI API generated client + types
 - @sap-ai-sdk/foundation-models
-    - Foundation model client for LLM Access (Azure Openai, ...)
+    - Foundation model client for LLM Access (Azure Openai, and more)
 - @sap-ai-sdk/orchestration
     - Orchestration generated client

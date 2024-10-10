@@ -1,0 +1,6 @@
+[Ww]hite-?list(ed|ing)?
+[Bb]lack-?list(ed|ing)?
+[Mm]aster
+[Ss]lave
+[Pp]re-generated?
+S/4

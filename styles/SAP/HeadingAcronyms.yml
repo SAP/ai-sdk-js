@@ -1,0 +1,39 @@
+extends: existence
+message: Avoid using acronyms in a title or heading. Found '%s'.
+level: warning
+scope: heading
+tokens:
+  - '[A-Z]{2,5}'
+raw:
+  - (?!SAP)
+  - (?!HANA)
+  - (?!SDK)
+  - (?!API)
+  - (?!BAPI)
+  - (?!RFC)
+  - (?!HTTP)
+  - (?!CRUD)
+  - (?!REST)
+  - (?!XSUAA)
+  - (?!JSON)
+  - (?!IDE)
+  - (?!BCP)
+  - (?!BTP)
+  - (?!WAR)
+  - (?!URL)
+  - (?!ERP)
+  - (?!FAQ)
+  - (?!CPU)
+  - (?!ABAP)
+  - (?!CLI)
+  - (?!TLS)
+  - (?!CVE)
+  - (?!SSL)
+  - (?!JWT)
+  - (?!IAS)
+  - (?!ZTIS)
+  - (?!AI)
+  - (?!ESM)
+  - (?!ID)
+  - (?!CAP)
+  - (?!CJS)

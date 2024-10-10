@@ -4,6 +4,7 @@ This package provides LangChain model clients built on top of the foundation mod
 
 ## Table of Contents
 
+- [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Prerequisites](#prerequisites)
 - [Relationship between Models and Deployment ID](#relationship-between-models-and-deployment-id)
@@ -37,7 +38,8 @@ SAP AI Core manages access to generative AI models through the global AI scenari
 Creating a deployment for a model requires access to this scenario.
 
 Each model, model version, and resource group allows for a one-time deployment.
-After deployment completion, the response includes a `deploymentUrl` and an `id`, which is the deployment ID. For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
+After deployment completion, the response includes a `deploymentUrl` and an `id`, which is the deployment ID.
+For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
 
 [Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
 
@@ -90,7 +92,7 @@ const embeddingClient = new AzureOpenAiEmbeddingClient({
 ### Chat Client
 
 The chat client allows you to interact with Azure OpenAI chat models, accessible via the generative AI hub of SAP AI Core.
-To invoke the client, simply pass a prompt:
+To invoke the client, pass a prompt:
 
 ```ts
 const response = await chatClient.invoke("What's the capital of France?");
@@ -178,9 +180,10 @@ For local testing instructions, refer to this [section](https://github.com/SAP/a
 
 ## Support, Feedback, Contribution
 
-This project is open to feature requests/suggestions, bug reports etc. via [GitHub issues](https://github.com/SAP/ai-sdk-js/issues).
+This project is open to feature requests, bug reports and questions via [GitHub issues](https://github.com/SAP/ai-sdk-js/issues).
 
-Contribution and feedback are encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](https://github.com/SAP/ai-sdk-js/blob/main/CONTRIBUTING.md).
+Contribution and feedback are encouraged and always welcome.
+For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](https://github.com/SAP/ai-sdk-js/blob/main/CONTRIBUTING.md).
 
 ## License
 

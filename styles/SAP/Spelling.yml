@@ -1,0 +1,7 @@
+extends: existence
+message: "In general, use American spelling instead of '%s'."
+ignorecase: true
+level: warning
+tokens:
+  - '(?:\w+)nised?'
+  - '(?:\w+)logue'

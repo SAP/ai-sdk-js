@@ -21,4 +21,4 @@ Often a list of options with pros and cons including the selection implementatio
 
 ## Option B
 
-...
+<!-- ... -->

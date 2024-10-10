@@ -1,0 +1,7 @@
+extends: existence
+message: 'Each sentence should end with punctuation.'
+nonword: true
+scope: sentence
+level: suggestion
+raw:
+  - '^[^:]{3}.*[^\.:!?]$'
