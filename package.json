@@ -28,6 +28,8 @@
     "type-tests": "pnpm -F=@sap-ai-sdk/type-tests",
     "smoke-tests": "pnpm -F=@sap-ai-sdk/smoke-tests",
     "schema-tests": "pnpm -F=@sap-ai-sdk/schema-tests",
+    "sample-code": "pnpm -F=@sap-ai-sdk/sample-code",
+    "sample-cap": "pnpm -F=@sap-ai-sdk/sample-cap",
     "check:public-api": "pnpm -r check:public-api",
     "check:deps": "pnpm -r -F !./tests/smoke-tests -F !./tests/schema-tests exec depcheck --ignores=\"nock,@jest/globals\" --quiet"
   },
@@ -38,16 +40,18 @@
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^3.21.0",
-    "@sap-cloud-sdk/eslint-config": "^3.21.0",
-    "@sap-cloud-sdk/generator-common": "^3.21.0",
-    "@sap-cloud-sdk/http-client": "^3.21.0",
-    "@sap-cloud-sdk/openapi-generator": "^3.21.0",
-    "@sap-cloud-sdk/util": "^3.21.0",
+    "tsx": "^4.19.1",
+    "@sap-cloud-sdk/connectivity": "^3.22.1",
+    "@sap-cloud-sdk/eslint-config": "^3.22.1",
+    "@sap-cloud-sdk/generator-common": "^3.22.1",
+    "@sap-cloud-sdk/http-client": "^3.22.1",
+    "@sap-cloud-sdk/openapi-generator": "^3.22.1",
+    "@sap-cloud-sdk/util": "^3.22.1",
     "@types/jest": "^29.5.13",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/mock-fs": "^4.13.4",
-    "@types/node": "^20.16.10",
+    "@types/node": "^20.16.11",
+    "@cap-js/cds-types": "^0.6.5",
     "depcheck": "^1.4.7",
     "eslint": "^9.12.0",
     "glob": "^11.0.0",
@@ -58,6 +62,6 @@
     "prettier": "^3.3.3",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.3"
   }
 }

@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 import express from 'express';
-import { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 import {
   chatCompletion,
   computeEmbedding
+  // eslint-disable-next-line import/no-internal-modules
 } from './foundation-models/azure-openai.js';
 import {
   orchestrationChatCompletion,
@@ -18,6 +18,7 @@ import {
   invokeRagChain,
   invoke
 } from './langchain-azure-openai.js';
+import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 
 const app = express();
 const port = 8080;

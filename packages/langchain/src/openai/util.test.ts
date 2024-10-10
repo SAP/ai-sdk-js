@@ -1,10 +1,5 @@
 import {
-  AzureOpenAiCreateChatCompletionResponse,
-  AzureOpenAiCreateChatCompletionRequest
-} from '@sap-ai-sdk/foundation-models';
-import {
   AIMessage,
-  BaseMessage,
   HumanMessage,
   RemoveMessage,
   SystemMessage,
@@ -13,7 +8,12 @@ import {
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
 import { mapLangchainToAiClient, mapOutputToChatResult } from './util.js';
 import { AzureOpenAiChatClient } from './chat.js';
-import { AzureOpenAiChatCallOptions } from './types.js';
+import type { BaseMessage } from '@langchain/core/messages';
+import type {
+  AzureOpenAiCreateChatCompletionResponse,
+  AzureOpenAiCreateChatCompletionRequest
+} from '@sap-ai-sdk/foundation-models';
+import type { AzureOpenAiChatCallOptions } from './types.js';
 
 const openAiMockResponse =
   parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(

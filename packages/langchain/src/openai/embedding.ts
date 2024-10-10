@@ -1,10 +1,10 @@
-import {
-  AzureOpenAiEmbeddingClient as AzureOpenAiEmbeddingClientBase,
+import { AzureOpenAiEmbeddingClient as AzureOpenAiEmbeddingClientBase } from '@sap-ai-sdk/foundation-models';
+import { Embeddings } from '@langchain/core/embeddings';
+import type {
   AzureOpenAiEmbeddingModel,
   AzureOpenAiEmbeddingParameters
 } from '@sap-ai-sdk/foundation-models';
-import { Embeddings } from '@langchain/core/embeddings';
-import { AzureOpenAiEmbeddingModelParams } from './types.js';
+import type { AzureOpenAiEmbeddingModelParams } from './types.js';
 
 /**
  * LangChain embedding client for Azure OpenAI consumption on SAP BTP.

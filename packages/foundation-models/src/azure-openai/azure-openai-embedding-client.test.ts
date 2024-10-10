@@ -4,12 +4,12 @@ import {
   mockInference,
   parseMockResponse
 } from '../../../../test-util/mock-http.js';
-import {
+import { AzureOpenAiEmbeddingClient } from './azure-openai-embedding-client.js';
+import { apiVersion } from './model-types.js';
+import type {
   AzureOpenAiEmbeddingOutput,
   AzureOpenAiEmbeddingParameters
 } from './azure-openai-embedding-types.js';
-import { AzureOpenAiEmbeddingClient } from './azure-openai-embedding-client.js';
-import { apiVersion } from './model-types.js';
 
 describe('Azure OpenAI embedding client', () => {
   const embeddingsEndpoint = {

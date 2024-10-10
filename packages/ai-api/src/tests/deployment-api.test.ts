@@ -1,18 +1,18 @@
 import nock from 'nock';
+import { DeploymentApi } from '../client/AI_CORE_API';
 import {
+  aiCoreDestination,
+  mockClientCredentialsGrantCall
+} from '../../../../test-util/mock-http.js';
+import type {
   AiDeploymentCreationRequest,
   AiDeploymentCreationResponse,
   AiDeploymentDeletionResponse,
   AiDeploymentList,
   AiDeploymentModificationRequest,
   AiDeploymentModificationResponse,
-  AiDeploymentTargetStatus,
-  DeploymentApi
-} from '../client/AI_CORE_API/index.js';
-import {
-  aiCoreDestination,
-  mockClientCredentialsGrantCall
-} from '../../../../test-util/mock-http.js';
+  AiDeploymentTargetStatus
+} from '../client/AI_CORE_API';
 
 describe('deployment', () => {
   beforeEach(() => {

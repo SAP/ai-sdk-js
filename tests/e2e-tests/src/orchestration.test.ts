@@ -6,8 +6,8 @@ import {
   orchestrationRequestConfig,
   orchestrationCompletionMasking
 } from '@sap-ai-sdk/sample-code';
-import { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 import { loadEnv } from './utils/load-env.js';
+import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 
 loadEnv();
 

@@ -16,8 +16,8 @@
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^3.21.0",
-    "@sap-cloud-sdk/http-client": "^3.21.0",
+    "@sap-cloud-sdk/connectivity": "^3.22.1",
+    "@sap-cloud-sdk/http-client": "^3.22.1",
     "tsd": "^0.31.2"
   }
 }

@@ -1,14 +1,14 @@
 import nock from 'nock';
-import {
-  AiArtifactCreationResponse,
-  AiArtifactList,
-  AiArtifactPostData,
-  ArtifactApi
-} from '../client/AI_CORE_API/index.js';
+import { ArtifactApi } from '../client/AI_CORE_API';
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
 } from '../../../../test-util/mock-http.js';
+import type {
+  AiArtifactCreationResponse,
+  AiArtifactList,
+  AiArtifactPostData
+} from '../client/AI_CORE_API';
 
 describe('artifact', () => {
   beforeEach(() => {
