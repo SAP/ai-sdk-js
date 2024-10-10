@@ -7,7 +7,8 @@
 - 5bd2e4d: [Compatibility Note] Move `modelsGet()` from `ModelApi` to `ScenarioApi`, and remove `ModelAPI`.
 - 5bd2e4d: [Fixed Issue] Fix `AiExecutionModificationResponseList` type to correctly represent an array of responses or errors.
 - 771f986: [Fixed Issue] Fix sending the correct resource group headers when custom resource group is set.
-- 5bd2e4d: [Improvement] Add `kubesubmitV4ResourceQuotaGetDeploymentQuota()` function in `DeploymentApi` to get details about quota and usage for deployments. Additionally introduce two new types `BckndDeploymentQuotaItem` and `BckndDeploymentResourceQuotaResponse`.
+- 5bd2e4d: [Improvement] Add `kubesubmitV4ResourceQuotaGetDeploymentQuota()` function in `DeploymentApi` to get details about quota and usage for deployments. 
+  Additionally introduce two new types `BckndDeploymentQuotaItem` and `BckndDeploymentResourceQuotaResponse`.
 
 ### Patch Changes
 

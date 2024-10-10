@@ -4,6 +4,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
 
 ## Table of Contents
 
+- [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Prerequisites](#prerequisites)
 - [Orchestration Service](#orchestration-service)
@@ -202,11 +203,11 @@ try {
 
 Both `chatCompletion()` and `getContent()` methods can throw errors.
 
-- **Axios Errors**:  
+- **axios errors**:  
   When the chat completion request fails with a `400` status code, the caught error will be an `Axios` error.
   The property `error.response.data.message` may provide additional details about the failure's cause.
 
-- **Output Content Filtered**:  
+- **output content filtered**:  
   The method `getContent()` can throw an error if the output filter filters the model output.
   This can occur even if the chat completion request responds with a `200` HTTP status code.
   The `error.message` property indicates if the output was filtered.
@@ -302,7 +303,8 @@ For local testing instructions, refer to this [section](https://github.com/SAP/a
 
 ## Support, Feedback, Contribution
 
-Contribution and feedback are encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](https://github.com/SAP/ai-sdk-js/blob/main/CONTRIBUTING.md).
+Contribution and feedback are encouraged and always welcome.
+For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](https://github.com/SAP/ai-sdk-js/blob/main/CONTRIBUTING.md).
 
 ## License
 
