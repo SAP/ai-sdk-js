@@ -37,7 +37,7 @@ jobs:
       - name: Check dependencies
         run: pnpm check:deps
       - name: License Check
-        run: pnpm check:license
+        uses: sap/ai-sdk-js/.github/actions/check-license@license-check-action
 
   dependabot:
     runs-on: ubuntu-latest
