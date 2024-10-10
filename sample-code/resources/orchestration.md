@@ -1,4 +1,4 @@
-!!! The below information is only a snapshot of our documentation, used for the purpose of the sample code. 
+!!! The below information is only a snapshot of our documentation, used for the purpose of the sample code.
 For the up-to-date documentation, please refer to the [official documentation](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md). !!!
 
 ## Orchestration Service

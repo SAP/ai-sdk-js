@@ -8,7 +8,7 @@
 
 ### Patch Changes
 
-- 3cbfdc7: [Fixed Issue] Fix index-based data access in embedding response. 
+- 3cbfdc7: [Fixed Issue] Fix index-based data access in embedding response.
   Previously, the 0th index data was always returned.
 - 506a1e4: [Fixed Issue] Fix missing and unused dependencies.
 - Updated dependencies [506a1e4]

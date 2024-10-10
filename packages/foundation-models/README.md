@@ -39,7 +39,7 @@ SAP AI Core manages access to generative AI models through the global AI scenari
 Creating a deployment for a model requires access to this scenario.
 
 Each model, model version, and resource group allows for a one-time deployment.
-After deployment completion, the response includes a `deploymentUrl` and an `id`, which is the deployment ID. 
+After deployment completion, the response includes a `deploymentUrl` and an `id`, which is the deployment ID.
 For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
 [Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
 
@@ -182,7 +182,7 @@ For local testing instructions, refer to this [section](https://github.com/SAP/a
 
 This project is open to feature requests, bug reports and questions via [GitHub issues](https://github.com/SAP/ai-sdk-js/issues).
 
-Contribution and feedback are encouraged and always welcome. 
+Contribution and feedback are encouraged and always welcome.
 For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](https://github.com/SAP/ai-sdk-js/blob/main/CONTRIBUTING.md).
 
 ## License
