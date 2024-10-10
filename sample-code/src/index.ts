@@ -17,3 +17,16 @@ export {
   invokeChain,
   invokeRagChain
 } from './langchain-azure-openai.js';
+export {
+  getDeployment,
+  getDeployments,
+  createDeployment,
+  stopDeployment,
+  deleteDeployment
+  // eslint-disable-next-line import/no-internal-modules
+} from './ai-api/deployment-api.js';
+export {
+  getScenarios,
+  getModelsInScenario
+  // eslint-disable-next-line import/no-internal-modules
+} from './ai-api/scenario-api.js';

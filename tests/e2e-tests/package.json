@@ -14,11 +14,16 @@
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
-    "@sap-ai-sdk/sample-code": "workspace:^"
+    "@sap-ai-sdk/sample-code": "workspace:^",
+    "@sap-cloud-sdk/util": "^3.21.0"
   },
   "scripts": {
     "compile": "tsc",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:deployment-api-create": "NODE_OPTIONS=--experimental-vm-modules jest -t \"create deployment\"",
+    "test:deployment-api-stop": "NODE_OPTIONS=--experimental-vm-modules jest -t \"stop deployment\"",
+    "test:deployment-api-delete": "NODE_OPTIONS=--experimental-vm-modules jest -t \"delete deployment\"",
+    "cleanup-deployments": "node --loader ts-node/esm ./src/utils/cleanup-deployments.ts",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
