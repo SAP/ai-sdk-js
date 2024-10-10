@@ -36,6 +36,8 @@ jobs:
         run: pnpm check:public-api
       - name: Check dependencies
         run: pnpm check:deps
+      - name: License Check
+        uses: sap/cloud-sdk-js/.github/actions/check-license@main
 
   dependabot:
     runs-on: ubuntu-latest
