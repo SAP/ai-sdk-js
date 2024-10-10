@@ -9,6 +9,18 @@ jobs:
   grammar-check:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Determine Changed Files
+        id: changed-files
+        run: |
+          ALL_FILES=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files.[] | select(.additions > 0) | .path')
+          CHANGED_FILES="${ALL_FILES//$'\n'/,}"
+
+          echo "[DEBUG] Following files have been changed: $CHANGED_FILES"
+          echo "CHANGED_FILES=$CHANGED_FILES" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: Vale
         # vale fails if the PR is too large, e.g. when updating API docs
         if: ${{ github.event.pull_request.changed_files < 100 }}
