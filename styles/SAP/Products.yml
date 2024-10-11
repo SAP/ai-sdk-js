@@ -1,0 +1,27 @@
+extends: substitution
+message: "Use '%s' instead of '%s'."
+link: 'https://www.sapbrandtools.com/naming-center/'
+level: error
+ignorecase: false
+swap:
+  (?:[^\s]*) ?(?:[^\s]*) ?AI SDKs?: SAP Cloud SDK for AI
+  (?:[^\s]*) ?Cloud Platform: SAP Cloud Platform
+  (?:[^\s]*) ?S/?4/? ?HANA: SAP S/4HANA
+  (?:[^\s]*) ?Success ?Factors: SAP SuccessFactors
+  SFSF: SAP SuccessFactors
+  C4C: SAP Cloud for Customer
+  (?:[^\s]*) ?Fieldglass: SAP Fieldglass
+  (?:[^\s]*) ?Ariba: SAP Ariba
+  (?:[^\s]*) ?Concur: SAP Concur
+  (?:[^\s]*) ?BTP: SAP BTP
+  (?:[^\s]*) ?cloud [fF]oundry: Cloud Foundry
+  (?:[^\s]*) ?[cC]loud foundry: Cloud Foundry
+  (?:[^\s]*) ?[oO]n[pP]remise[s]*: On-Premise #Not without -
+  (?:[^\s]*) ?[oO]n-[pP]remises: On-Premise #No s in the end
+  (?:[^\s]*) ?[oO]n[-]*[pP]rem: On-Premise #No OnPrem short term
+  # SAP S/4HANA OnPremise: SAP S/4HANA on-premise edition
+  (?:)[Tt]ype[ -]*[Ss]cript: TypeScript
+  (?:[^\s]*) [API|api] [hH]ub: SAP Business Accelerator Hub
+  # generative AI hub
+  (?:[^\s]*) ?[Gg]en ?[AI|ai] [hH]ub: generative AI hub
+  (?:[^\s]*) ?[Gg]enerative ?[AI|ai] [hH]ub: generative AI hub

@@ -1,0 +1,7 @@
+extends: existence
+message: "Each sentence should have it's own line."
+nonword: true
+scope: list
+level: warning
+raw:
+  - '(?:[\d\w]{2,})\.[^$\n\d\w\.\)]'
