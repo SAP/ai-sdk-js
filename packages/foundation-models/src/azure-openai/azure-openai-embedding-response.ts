@@ -34,7 +34,7 @@ export class AzureOpenAiEmbeddingResponse {
    * Parses the Azure OpenAI response and returns all embeddings.
    * @returns The embedding vectors.
    */
-  getEmbeddings(): number[][] | undefined {
+  getEmbeddings(): number[][] {
     return this.data.data.map(({ embedding }) => embedding);
   }
 
