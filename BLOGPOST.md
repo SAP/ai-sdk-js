@@ -15,8 +15,8 @@ With the orchestration service, you can streamline AI interactions and ensure co
 
 ## AI Management with `@sap-ai-sdk/ai-api`
 
+Automate processes such as managing artifacts, configurations, and deployments, executing batch inference jobs, as well as managing Docker registries and object storage for training data.
 The [@sap-ai-sdk/ai-api](https://github.com/SAP/ai-sdk-js/tree/main/packages/ai-api#readme) package provides comprehensive tools for managing scenarios and workflows in SAP AI Core.
-You can automate processes such as creating artifacts, configurations, and deployments, executing batch inference jobs, and managing Docker registries as well as object storage for training data.
 
 - **[Artifact Management](https://github.com/SAP/ai-sdk-js/tree/main/packages/ai-api#create-an-artifact)**: Register and manage datasets and other model artifacts.
 - **[Configuration Management](https://github.com/SAP/ai-sdk-js/tree/main/packages/ai-api#create-a-configuration)**: Set up configurations for different models and use cases.
@@ -26,7 +26,7 @@ You can automate processes such as creating artifacts, configurations, and deplo
 
 The [@sap-ai-sdk/langchain](https://github.com/SAP/ai-sdk-js/tree/main/packages/langchain#readme) package provides LangChain-compatible clients for Azure OpenAI models deployed in SAP AI Core, enabling sophisticated AI pipelines within your SAP BTP applications.
 
-- **Seamless Integration**: Built on SAP Cloud SDK for AI's foundation model clients, ensuring compatibility with SAP AI Core and LangChain's ecosystem.
+- **Seamless Integration**: Build on SAP Cloud SDK for AI's foundation model clients, ensuring compatibility with SAP AI Core and LangChain's ecosystem.
 - **Flexible Clients**: Easily initialize chat and embedding clients with support for advanced features like templating and output parsing.
 - **RAG Support**: Implement [Retrieval-Augmented Generation workflows](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/langchain-azure-openai.ts#L65) by combining embedding capabilities with LangChain's text splitters and vector stores.
 
