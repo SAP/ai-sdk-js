@@ -6,7 +6,7 @@ It simplifies the integration of generative AI capabilities into your SAP Busine
 The SDK allows you to leverage [SAP AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/what-is-sap-ai-core) and [SAP AI Launchpad](https://help.sap.com/docs/ai-launchpad/sap-ai-launchpad-user-guide/using-sap-ai-launchpad?locale=en-US), enabling capabilities like templating, grounding, data masking, and more.
 In this blog post, we'll introduce you to the key packages and their features.
 
-## Key Features
+## Key Packages
 ### AI Orchestration with `@sap-ai-sdk/orchestration`
 The [@sap-ai-sdk/orchestration](https://github.com/SAP/ai-sdk-js/tree/main/packages/orchestration#readme) package enables generative AI orchestration, allowing you to configure templating, content filtering, and data masking for your applications.
 With the orchestration service, you can streamline AI interactions and ensure compliance with content safety guidelines.
