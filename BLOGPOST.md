@@ -6,7 +6,7 @@ In this blog post, we'll introduce you to the key packages and their features.
 
 ## AI Orchestration with `@sap-ai-sdk/orchestration`
 
-Configure templating, content filtering, and data masking for your applications The [@sap-ai-sdk/orchestration](https://github.com/SAP/ai-sdk-js/tree/main/packages/orchestration#readme) package enables generative AI orchestration, allowing you to c.
+Leverage the generative AI Hub orchestration service and configure templating, content filtering, and data masking for your applications with the [@sap-ai-sdk/orchestration](https://github.com/SAP/ai-sdk-js/tree/main/packages/orchestration#readme) package.
 With the orchestration service, you can streamline AI interactions and ensure compliance with content safety guidelines.
 
 - **[Templating](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md#templating)**: Create dynamic prompts with placeholders to customize AI interactions based on user inputs.
