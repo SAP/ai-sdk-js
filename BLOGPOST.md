@@ -16,7 +16,7 @@ With the orchestration service, you can streamline AI interactions and ensure co
 ## AI Management with `@sap-ai-sdk/ai-api`
 
 The [@sap-ai-sdk/ai-api](https://github.com/SAP/ai-sdk-js/tree/main/packages/ai-api#readme) package provides comprehensive tools for managing scenarios and workflows in SAP AI Core.
-You can automate processes such as creating artifacts, configurations, and deployments, executing batch inference jobs, and managing Docker registries and object storage for training data.
+You can automate processes such as creating artifacts, configurations, and deployments, executing batch inference jobs, and managing Docker registries as well as object storage for training data.
 
 - **[Artifact Management](https://github.com/SAP/ai-sdk-js/tree/main/packages/ai-api#create-an-artifact)**: Register and manage datasets and other model artifacts.
 - **[Configuration Management](https://github.com/SAP/ai-sdk-js/tree/main/packages/ai-api#create-a-configuration)**: Set up configurations for different models and use cases.
