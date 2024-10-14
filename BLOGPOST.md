@@ -3,7 +3,7 @@
 We are excited to announce the initial release of the [SAP Cloud SDK for AI](https://github.com/SAP/ai-sdk-js#readme)!
 It simplifies the integration of generative AI capabilities into your SAP Business Technology Platform (BTP) applications.
 
-The SDK allows you to leverage the [SAP AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/what-is-sap-ai-core) and [SAP AI Launchpad](https://help.sap.com/docs/ai-launchpad/sap-ai-launchpad-user-guide/using-sap-ai-launchpad?locale=en-US), enabling capabilities like templating, grounding, data masking, and more.
+The SDK allows you to leverage [SAP AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/what-is-sap-ai-core) and [SAP AI Launchpad](https://help.sap.com/docs/ai-launchpad/sap-ai-launchpad-user-guide/using-sap-ai-launchpad?locale=en-US), enabling capabilities like templating, grounding, data masking, and more.
 In this blog post, we'll introduce you to the key packages and their features.
 
 ## Key Features
