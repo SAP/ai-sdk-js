@@ -2,7 +2,8 @@ import { AzureOpenAiEmbeddingClient as AzureOpenAiEmbeddingClientBase } from '@s
 import { Embeddings } from '@langchain/core/embeddings';
 import type {
   AzureOpenAiEmbeddingModel,
-  AzureOpenAiEmbeddingParameters
+  AzureOpenAiEmbeddingParameters,
+  AzureOpenAiEmbeddingResponse
 } from '@sap-ai-sdk/foundation-models';
 import type { AzureOpenAiEmbeddingModelParams } from './types.js';
 
@@ -25,22 +26,18 @@ export class AzureOpenAiEmbeddingClient extends Embeddings {
   }
 
   override async embedDocuments(documents: string[]): Promise<number[][]> {
-    return Promise.all(
-      documents.map(document => this.createEmbedding({ input: document }))
-    );
+    return (await this.createEmbeddings({ input: documents })).getEmbeddings();
   }
 
   override async embedQuery(input: string): Promise<number[]> {
-    return this.createEmbedding({ input });
+    return (await this.createEmbeddings({ input })).getEmbedding() ?? [];
   }
 
-  private async createEmbedding(
+  private async createEmbeddings(
     query: AzureOpenAiEmbeddingParameters
-  ): Promise<number[]> {
-    return this.caller.callWithOptions(
-      {},
-      async () =>
-        (await this.openAiEmbeddingClient.run(query)).getEmbedding() ?? []
+  ): Promise<AzureOpenAiEmbeddingResponse> {
+    return this.caller.callWithOptions({}, async () =>
+      this.openAiEmbeddingClient.run(query)
     );
   }
 }
