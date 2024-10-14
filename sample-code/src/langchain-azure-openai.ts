@@ -59,7 +59,7 @@ export async function invokeChain(): Promise<string> {
 }
 
 /**
- * Perform retrieval augmeneted generation with the chat and embedding LangChain clients.
+ * Perform retrieval augmented generation with the chat and embedding LangChain clients.
  * @returns The answer from GPT.
  */
 export async function invokeRagChain(): Promise<string> {
