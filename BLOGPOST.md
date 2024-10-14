@@ -13,7 +13,7 @@ With the orchestration service, you can streamline AI interactions and ensure co
 
 - **[Templating](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md#templating)**: Create dynamic prompts with placeholders to customize AI interactions based on user inputs.
 - **[Content Filtering](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md#content-filtering)**: Apply filters to ensure input and output adhere to content safety guidelines.
-- **[Data Masking](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md#data-masking)**: Anonymize sensitive information with data masking features.
+- **[Data Masking](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md#data-masking)**: Anonymize and pseudonymize sensitive information with data masking features.
 
 ### AI Management with `@sap-ai-sdk/ai-api`
 The [@sap-ai-sdk/ai-api](https://github.com/SAP/ai-sdk-js/tree/main/packages/ai-api#readme) package provides comprehensive tools for managing scenarios and workflows in SAP AI Core.
