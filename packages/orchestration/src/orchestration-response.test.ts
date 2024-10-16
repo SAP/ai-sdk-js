@@ -2,20 +2,27 @@ import { createLogger } from '@sap-cloud-sdk/util';
 import { jest } from '@jest/globals';
 import { parseMockResponse } from '../../../test-util/mock-http.js';
 import { OrchestrationResponse } from './orchestration-response.js';
-import type { CompletionPostResponse } from './client/api/schema';
+import type { HttpResponse } from '@sap-cloud-sdk/http-client';
+import type { CompletionPostResponse } from './client/api/schema/index.js';
 
 describe('OrchestrationResponse', () => {
-  const mockResponse = parseMockResponse<CompletionPostResponse>(
-    'orchestration',
-    'orchestration-chat-completion-success-response.json'
-  );
-  const rawResponse = {
-    data: mockResponse,
-    status: 200,
-    headers: {},
-    request: {}
-  };
-  let orchestrationResponse = new OrchestrationResponse(rawResponse);
+  let mockResponse: CompletionPostResponse;
+  let rawResponse: HttpResponse;
+  let orchestrationResponse: OrchestrationResponse;
+
+  beforeAll(async () => {
+    mockResponse = await parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'orchestration-chat-completion-success-response.json'
+    );
+    rawResponse = {
+      data: mockResponse,
+      status: 200,
+      headers: {},
+      request: {}
+    };
+    orchestrationResponse = new OrchestrationResponse(rawResponse);
+  });
 
   it('should initialize with raw response', () => {
     expect(orchestrationResponse.rawResponse).toBe(rawResponse);

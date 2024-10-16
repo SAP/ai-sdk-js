@@ -36,7 +36,7 @@ describe('Azure OpenAI chat client', () => {
     };
 
     const mockResponse =
-      parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
+      await parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
         'foundation-models',
         'azure-openai-chat-completion-success-response.json'
       );
@@ -58,7 +58,7 @@ describe('Azure OpenAI chat client', () => {
 
   it('throws on bad request', async () => {
     const prompt = { messages: [] };
-    const mockResponse = parseMockResponse(
+    const mockResponse = await parseMockResponse(
       'foundation-models',
       'azure-openai-error-response.json'
     );
@@ -85,7 +85,7 @@ describe('Azure OpenAI chat client', () => {
     };
 
     const mockResponse =
-      parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
+      await parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
         'foundation-models',
         'azure-openai-chat-completion-success-response.json'
       );

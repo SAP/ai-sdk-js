@@ -31,7 +31,7 @@ describe('Azure OpenAI embedding client', () => {
     const prompt = {
       input: ['AI is fascinating']
     } as AzureOpenAiEmbeddingParameters;
-    const mockResponse = parseMockResponse<AzureOpenAiEmbeddingOutput>(
+    const mockResponse = await parseMockResponse<AzureOpenAiEmbeddingOutput>(
       'foundation-models',
       'azure-openai-embeddings-success-response.json'
     );
@@ -52,7 +52,7 @@ describe('Azure OpenAI embedding client', () => {
 
   it('throws on bad request', async () => {
     const prompt = { input: [] };
-    const mockResponse = parseMockResponse(
+    const mockResponse = await parseMockResponse(
       'foundation-models',
       'azure-openai-error-response.json'
     );

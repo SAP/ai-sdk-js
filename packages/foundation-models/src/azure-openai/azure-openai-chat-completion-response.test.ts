@@ -2,22 +2,30 @@ import { createLogger } from '@sap-cloud-sdk/util';
 import { jest } from '@jest/globals';
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
 import { AzureOpenAiChatCompletionResponse } from './azure-openai-chat-completion-response.js';
-import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema';
+import type { HttpResponse } from '@sap-cloud-sdk/http-client';
+import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.js';
+
 describe('OpenAI chat completion response', () => {
-  const mockResponse =
-    parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
-      'foundation-models',
-      'azure-openai-chat-completion-success-response.json'
+  let mockResponse: AzureOpenAiCreateChatCompletionResponse;
+  let rawResponse: HttpResponse;
+  let azureOpenAiChatResponse: AzureOpenAiChatCompletionResponse;
+
+  beforeAll(async () => {
+    mockResponse =
+      await parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
+        'foundation-models',
+        'azure-openai-chat-completion-success-response.json'
+      );
+    rawResponse = {
+      data: mockResponse,
+      status: 200,
+      headers: {},
+      request: {}
+    };
+    azureOpenAiChatResponse = new AzureOpenAiChatCompletionResponse(
+      rawResponse
     );
-  const rawResponse = {
-    data: mockResponse,
-    status: 200,
-    headers: {},
-    request: {}
-  };
-  const azureOpenAiChatResponse = new AzureOpenAiChatCompletionResponse(
-    rawResponse
-  );
+  });
 
   it('should return the chat completion response', () => {
     expect(azureOpenAiChatResponse.data).toStrictEqual(mockResponse);

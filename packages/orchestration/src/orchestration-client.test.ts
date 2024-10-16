@@ -38,7 +38,7 @@ describe('orchestration service client', () => {
       }
     };
 
-    const mockResponse = parseMockResponse<CompletionPostResponse>(
+    const mockResponse = await parseMockResponse<CompletionPostResponse>(
       'orchestration',
       'orchestration-chat-completion-success-response.json'
     );
@@ -86,7 +86,7 @@ describe('orchestration service client', () => {
     const prompt = {
       inputParams: { phrase: 'I hate you.', number: '3' }
     };
-    const mockResponse = parseMockResponse<CompletionPostResponse>(
+    const mockResponse = await parseMockResponse<CompletionPostResponse>(
       'orchestration',
       'orchestration-chat-completion-filter-config.json'
     );
@@ -149,7 +149,7 @@ describe('orchestration service client', () => {
       }
     };
     const prompt = { inputParams: { phrase: 'I hate you.', number: '3' } };
-    const mockResponse = parseMockResponse<CompletionPostResponse>(
+    const mockResponse = await parseMockResponse<CompletionPostResponse>(
       'orchestration',
       'orchestration-chat-completion-filter-config.json'
     );
@@ -201,7 +201,7 @@ describe('orchestration service client', () => {
       ]
     };
 
-    const mockResponse = parseMockResponse<CompletionPostResponse>(
+    const mockResponse = await parseMockResponse<CompletionPostResponse>(
       'orchestration',
       'orchestration-chat-completion-message-history.json'
     );
@@ -249,7 +249,7 @@ describe('orchestration service client', () => {
       resourceGroup: 'custom-resource-group'
     };
 
-    const mockResponse = parseMockResponse<CompletionPostResponse>(
+    const mockResponse = await parseMockResponse<CompletionPostResponse>(
       'orchestration',
       'orchestration-chat-completion-message-history.json'
     );
