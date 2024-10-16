@@ -2,10 +2,11 @@ import { createLogger } from '@sap-cloud-sdk/util';
 import { jest } from '@jest/globals';
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
 import { AzureOpenAiChatCompletionResponse } from './azure-openai-chat-completion-response.js';
-import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema';
+import type { HttpResponse } from '@sap-cloud-sdk/http-client';
+import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.js';
 describe('OpenAI chat completion response', async () => {
   let mockResponse: AzureOpenAiCreateChatCompletionResponse;
-  let rawResponse;
+  let rawResponse: HttpResponse;
   let azureOpenAiChatResponse: AzureOpenAiChatCompletionResponse;
 
   beforeAll(async () => {
