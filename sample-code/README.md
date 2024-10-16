@@ -2,7 +2,7 @@
 
 ![e2e-test](https://github.com/SAP/ai-sdk-js/actions/workflows/e2e-tests.yaml/badge.svg)
 
-Sample code to demonstrate the usage of the SAP AI SDK.
+Sample code to demonstrate the usage of the SAP Cloud SDK for AI.
 Also used as basis for running E2E tests.
 
 ## Build, Run, Deploy Locally

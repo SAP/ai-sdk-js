@@ -135,7 +135,7 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
   // accessing the content should throw an error
   try {
     result.getContent();
-  } catch (error: any) {
+  } catch {
     logger.info(
       `Result from output content filter: ${result.data.module_results.output_filtering!.message}`
     );

@@ -1,0 +1,7 @@
+extends: capitalization
+message: "'%s' should use title-style capitalization."
+link: 'https://capitalizemytitle.com/style/AP/#'
+level: suggestion
+scope: heading
+match: $title
+style: AP

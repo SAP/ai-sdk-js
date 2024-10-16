@@ -11,6 +11,7 @@ We maintain a list of [currently available and tested AI Core APIs](https://gith
 
 ## Table of Contents
 
+- [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Version Management](#version-management)
 - [Prerequisites](#prerequisites)
@@ -31,7 +32,8 @@ $ npm install @sap-ai-sdk/ai-api
 
 ## Version Management
 
-⚠️ **Important**: This package contains generated code. Updates to this package may include breaking changes.
+⚠️ **Important**: This package contains generated code.
+Updates to this package may include breaking changes.
 
 To ensure compatibility and manage updates effectively, we strongly recommend using the tilde (`~`) version range in your project instead of the caret (`^`). This approach will allow patch-level updates while preventing potentially breaking minor version changes.
 
@@ -43,7 +45,7 @@ To ensure compatibility and manage updates effectively, we strongly recommend us
 
 ## Prerequisites
 
-- [Enable the AI Core service in BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
+- [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Project configured with Node.js v20 or higher and native ESM support enabled.
 
 ## Usage
@@ -134,7 +136,8 @@ async function createDeployment() {
 
 ### Delete a Deployment
 
-Only deployments with `targetStatus: STOPPED` can be deleted. So a modification request must be sent before deletion can occur.
+Only deployments with `targetStatus: STOPPED` can be deleted.
+Thus, a modification request must be sent before deletion can occur.
 
 ```TypeScript
 async function modifyDeployment() {
@@ -178,9 +181,10 @@ For local testing instructions, refer to this [section](https://github.com/SAP/a
 
 ## Support, Feedback, Contribution
 
-This project is open to feature requests/suggestions, bug reports etc. via [GitHub issues](https://github.com/SAP/ai-sdk-js/issues).
+This project is open to feature requests, bug reports and questions via [GitHub issues](https://github.com/SAP/ai-sdk-js/issues).
 
-Contribution and feedback are encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](https://github.com/SAP/ai-sdk-js/blob/main/CONTRIBUTING.md).
+Contribution and feedback are encouraged and always welcome.
+For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](https://github.com/SAP/ai-sdk-js/blob/main/CONTRIBUTING.md).
 
 ## License
 

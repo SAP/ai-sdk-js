@@ -1,0 +1,8 @@
+extends: readability
+message: 'The text is very complex! It has a grade score of >14.'
+link: 'https://en.wikipedia.org/wiki/Gunning_fog_index'
+level: warning
+grade: 14
+metrics:
+  - Flesch-Kincaid
+  - Gunning Fog
