@@ -25,10 +25,20 @@ export class AzureOpenAiEmbeddingClient extends Embeddings {
     this.resourceGroup = fields.resourceGroup;
   }
 
+  /**
+   * Embed a list of document chunks. All chunks are embedded in one batch.
+   * @param documents - Document chunks to embed.
+   * @returns Embeddings.
+   */
   override async embedDocuments(documents: string[]): Promise<number[][]> {
     return (await this.createEmbeddings({ input: documents })).getEmbeddings();
   }
 
+  /**
+   * Embed a single string.
+   * @param input - Input string to embed.
+   * @returns Embedding.
+   */
   override async embedQuery(input: string): Promise<number[]> {
     return (await this.createEmbeddings({ input })).getEmbedding() ?? [];
   }
