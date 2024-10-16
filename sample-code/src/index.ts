@@ -18,11 +18,10 @@ export {
   invokeRagChain
 } from './langchain-azure-openai.js';
 export {
-  getDeployment,
   getDeployments,
   createDeployment,
-  stopDeployment,
-  deleteDeployment
+  stopDeployments,
+  deleteDeployments
   // eslint-disable-next-line import/no-internal-modules
 } from './ai-api/deployment-api.js';
 export {

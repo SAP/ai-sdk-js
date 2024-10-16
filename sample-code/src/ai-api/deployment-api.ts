@@ -1,51 +1,28 @@
 import { DeploymentApi } from '@sap-ai-sdk/ai-api';
 import type {
+  AiDeploymentBulkModificationResponse,
   AiDeploymentCreationResponse,
   AiDeploymentDeletionResponse,
   AiDeploymentList,
-  AiDeploymentModificationResponse,
-  AiDeploymentResponseWithDetails
+  AiDeploymentModificationRequestList,
+  AiDeploymentStatus
 } from '@sap-ai-sdk/ai-api';
 
 /**
- * Get all deployments.
+ * Get all deployments filtered by status.
  * @param resourceGroup - AI-Resource-Group where the resources are available.
- * @param status - Optional parameter to filter deployments by status.
- * @returns All deployments.
+ * @param status - Optional query parameter to filter deployments by status.
+ * @returns List of deployments.
  */
 export async function getDeployments(
   resourceGroup: string,
-  status?:
-    | 'PENDING'
-    | 'RUNNING'
-    | 'COMPLETED'
-    | 'DEAD'
-    | 'STOPPING'
-    | 'STOPPED'
-    | 'UNKNOWN'
+  status?: AiDeploymentStatus
 ): Promise<AiDeploymentList> {
   // check for optional query parameters.
   const queryParams = status ? { status } : {};
   return DeploymentApi.deploymentQuery(queryParams, {
     'AI-Resource-Group': resourceGroup
   }).execute();
-}
-
-/**
- * Get information about specific deployment.
- * @param deploymentId - ID of the specific deployment.
- * @param resourceGroup - AI-Resource-Group where the resources are available.
- * @returns Details for deplyoment with deploymentId.
- */
-export async function getDeployment(
-  deploymentId: string,
-  resourceGroup: string
-): Promise<AiDeploymentResponseWithDetails> {
-  return DeploymentApi.deploymentGet(
-    deploymentId,
-    {},
-    { 'AI-Resource-Group': resourceGroup }
-  ).execute();
 }
 
 /**
@@ -65,35 +42,67 @@ export async function createDeployment(
 }
 
 /**
- * Update target status of a specific deployment to stop it.
+ * Stop all deployments with the specific configuration ID.
  * Only deployments with 'status': 'RUNNING' can be stopped.
- * @param deploymentId - ID of the specific deployment.
+ * @param configurationId - ID of the configuration to be used.
  * @param resourceGroup - AI-Resource-Group where the resources are available.
- * @returns Deployment modification response with 'targetStatus': 'STOPPED'.
+ * @returns Deployment modification response list with 'targetStatus': 'STOPPED'.
  */
-export async function stopDeployment(
-  deploymentId: string,
+export async function stopDeployments(
+  configurationId: string,
   resourceGroup: string
-): Promise<AiDeploymentModificationResponse> {
-  return DeploymentApi.deploymentModify(
-    deploymentId,
-    { targetStatus: 'STOPPED' },
+): Promise<AiDeploymentBulkModificationResponse> {
+  // Get all RUNNING deployments with configurationId
+  const deployments: AiDeploymentList = await DeploymentApi.deploymentQuery(
+    { status: 'RUNNING', configurationId },
+    { 'AI-Resource-Group': resourceGroup }
+  ).execute();
+
+  // Map the deployment Ids and add property targetStatus: 'STOPPED'
+  const deploymentsToStop: any = deployments.resources.map(deployment => ({
+    id: deployment.id,
+    targetStatus: 'STOPPED'
+  }));
+
+  // Send batch modify request to stop deployments
+  return DeploymentApi.deploymentBatchModify(
+    { deployments: deploymentsToStop as AiDeploymentModificationRequestList },
     { 'AI-Resource-Group': resourceGroup }
   ).execute();
 }
 
 /**
- * Mark deployment with deploymentId as deleted.
- * Only deployments with 'status': 'STOPPED' can be deleted.
- * @param deploymentId - ID of the specific deployment.
+ * Delete all deployments.
+ * Only deployments with 'status': 'STOPPED' and 'status': 'UNKNOWN' can be deleted.
  * @param resourceGroup - AI-Resource-Group where the resources are available.
- * @returns Deployment deletion response with 'targetStatus': 'DELETED'.
+ * @returns Deployment deletion response list with 'targetStatus': 'DELETED'.
  */
-export async function deleteDeployment(
-  deploymentId: string,
+export async function deleteDeployments(
   resourceGroup: string
-): Promise<AiDeploymentDeletionResponse> {
-  return DeploymentApi.deploymentDelete(deploymentId, {
-    'AI-Resource-Group': resourceGroup
-  }).execute();
+): Promise<AiDeploymentDeletionResponse[]> {
+  // Get all STOPPED and UNKNOWN deployments
+  const [runningDeployments, unknownDeployments] = await Promise.all([
+    DeploymentApi.deploymentQuery(
+      { status: 'STOPPED' },
+      { 'AI-Resource-Group': resourceGroup }
+    ).execute(),
+    DeploymentApi.deploymentQuery(
+      { status: 'UNKNOWN' },
+      { 'AI-Resource-Group': resourceGroup }
+    ).execute()
+  ]);
+
+  const deploymentsToDelete = [
+    ...runningDeployments.resources,
+    ...unknownDeployments.resources
+  ];
+
+  // Delete all deployments
+  return Promise.all(
+    deploymentsToDelete.map(deployment =>
+      DeploymentApi.deploymentDelete(deployment.id, {
+        'AI-Resource-Group': resourceGroup
+      }).execute()
+    )
+  );
 }

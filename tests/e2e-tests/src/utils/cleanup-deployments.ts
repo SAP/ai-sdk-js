@@ -1,9 +1,6 @@
 import { createLogger } from '@sap-cloud-sdk/util';
-import {
-  deleteDeployment,
-  getDeployments,
-  stopDeployment
-} from '@sap-ai-sdk/sample-code';
+import { getDeployments } from '@sap-ai-sdk/sample-code';
+import { DeploymentApi } from '@sap-ai-sdk/ai-api';
 import { loadEnv } from './load-env.js';
 import {
   resourceGroup,
@@ -28,21 +25,18 @@ async function cleanupDeployments(): Promise<void> {
       logger.info('Starting deployment cleanup process.');
       await Promise.all(
         deployments.resources.map(async deployment => {
-          const { id, status, targetStatus } = deployment;
-          if (
-            status !== 'STOPPED' &&
-            targetStatus !== 'STOPPED' &&
-            status !== 'UNKNOWN'
-          ) {
-            await stopDeployment(id, resourceGroup);
-            await waitForDeploymentToReachStatus(id, 'STOPPED');
-          } else if (status !== 'STOPPED' && targetStatus === 'STOPPED') {
+          const { id, status } = deployment;
+          if (status !== 'STOPPED' && status !== 'UNKNOWN') {
+            await DeploymentApi.deploymentModify(
+              id,
+              { targetStatus: 'STOPPED' },
+              { 'AI-Resource-Group': resourceGroup }
+            ).execute();
             await waitForDeploymentToReachStatus(id, 'STOPPED');
           }
-
-          await deleteDeployment(id, resourceGroup);
-          // Wait for deletion to complete
-          await new Promise(r => setTimeout(r, 25000));
+          await DeploymentApi.deploymentDelete(id, {
+            'AI-Resource-Group': resourceGroup
+          }).execute();
         })
       );
       logger.info('Deployment cleanup successful.');

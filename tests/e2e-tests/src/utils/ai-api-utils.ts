@@ -1,5 +1,5 @@
 import retry from 'async-retry';
-import { getDeployment } from '@sap-ai-sdk/sample-code';
+import { DeploymentApi } from '@sap-ai-sdk/ai-api';
 import type { AiDeployment } from '@sap-ai-sdk/ai-api';
 
 /**
@@ -21,15 +21,20 @@ export async function waitForDeploymentToReachStatus(
 ): Promise<AiDeployment> {
   return retry(
     async () => {
-      const deploymentDetail = await getDeployment(deploymentId, resourceGroup);
+      const deploymentDetail = await DeploymentApi.deploymentGet(
+        deploymentId,
+        {},
+        { 'AI-Resource-Group': resourceGroup }
+      ).execute();
       if (deploymentDetail.status === targetStatus) {
         return deploymentDetail;
       }
       throw new Error(`Deployment has not yet reached ${targetStatus} status.`);
     },
     {
-      retries: 30,
-      minTimeout: 5000
+      retries: 20,
+      minTimeout: 5000,
+      factor: 1
     }
   );
 }

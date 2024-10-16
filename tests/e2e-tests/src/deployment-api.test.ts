@@ -1,10 +1,5 @@
-import {
-  getDeployment,
-  getDeployments,
-  createDeployment,
-  stopDeployment,
-  deleteDeployment
-} from '@sap-ai-sdk/sample-code';
+import { DeploymentApi } from '@sap-ai-sdk/ai-api';
+import { getDeployments, createDeployment } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
 import {
   configurationId,
@@ -17,12 +12,12 @@ loadEnv();
 
 describe('DeploymentApi', () => {
   let createdDeploymentId: string | undefined;
-  let initialState: AiDeploymentList | undefined;
+  let initialDeployments: AiDeploymentList | undefined;
 
   beforeAll(async () => {
     const queryResponse = await getDeployments(resourceGroup);
     expect(queryResponse).toBeDefined();
-    initialState = queryResponse;
+    initialDeployments = queryResponse;
   });
 
   it('should create a deployment and wait for it to run', async () => {
@@ -57,7 +52,11 @@ describe('DeploymentApi', () => {
       'RUNNING'
     );
 
-    const modifyResponse = await stopDeployment(deploymentId, resourceGroup);
+    const modifyResponse = await DeploymentApi.deploymentModify(
+      deploymentId,
+      { targetStatus: 'STOPPED' },
+      { 'AI-Resource-Group': resourceGroup }
+    ).execute();
     expect(modifyResponse).toEqual(
       expect.objectContaining({
         message: 'Deployment modification scheduled'
@@ -81,7 +80,9 @@ describe('DeploymentApi', () => {
       'STOPPED'
     );
 
-    const deleteResponse = await deleteDeployment(deploymentId, resourceGroup);
+    const deleteResponse = await DeploymentApi.deploymentDelete(deploymentId, {
+      'AI-Resource-Group': resourceGroup
+    }).execute();
     expect(deleteResponse).toEqual(
       expect.objectContaining({
         message: 'Deletion scheduled'
@@ -90,33 +91,39 @@ describe('DeploymentApi', () => {
 
     // Wait for deletion to complete
     await new Promise(r => setTimeout(r, 30000));
-    await expect(getDeployment(deploymentId, resourceGroup)).rejects.toThrow();
-  }, 100000);
+    await expect(
+      DeploymentApi.deploymentGet(
+        deploymentId,
+        {},
+        { 'AI-Resource-Group': resourceGroup }
+      ).execute()
+    ).rejects.toThrow();
+  }, 150000);
 
   it('should validate consistency of deployments after test flow', async () => {
     const queryResponse = await getDeployments(resourceGroup);
     expect(queryResponse).toBeDefined();
 
-    const sanitizedInitialState = sanitizedState(
-      initialState,
+    const initialFilteredDeployments = filterDeployments(
+      initialDeployments,
       createdDeploymentId
     );
-    const sanitizedEndState = sanitizedState(
+    const finalFilteredDeployments = filterDeployments(
       queryResponse,
       createdDeploymentId
     );
-    expect(sanitizedEndState.resources).toStrictEqual(
-      sanitizedInitialState.resources
+    expect(finalFilteredDeployments.resources).toStrictEqual(
+      initialFilteredDeployments.resources
     );
   });
 });
 
-const sanitizedState = (
-  state: AiDeploymentList | undefined,
+const filterDeployments = (
+  deployments: AiDeploymentList | undefined,
   createdDeployentId: string | undefined
 ) => ({
-  ...state,
-  resources: state?.resources
+  ...deployments,
+  resources: deployments?.resources
     .filter(deployment => deployment.id === createdDeployentId)
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     .map(({ modifiedAt, ...rest }) => rest)
@@ -126,10 +133,10 @@ async function checkCreatedDeployment(
   deploymentId: string | undefined,
   status: 'RUNNING' | 'STOPPED'
 ): Promise<string> {
-  if (deploymentId === undefined) {
+  if (!deploymentId) {
     try {
       const response = await getDeployments(resourceGroup, status);
-      if (response.count === 0) {
+      if (!response.count) {
         throw new Error(
           `No ${status} deployments found, please ${status === 'RUNNING' ? 'create' : 'stop'} a deployment first to ${status === 'RUNNING' ? 'modify' : 'delete'} it.`
         );
