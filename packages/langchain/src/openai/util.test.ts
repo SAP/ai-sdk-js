@@ -15,12 +15,6 @@ import type {
 } from '@sap-ai-sdk/foundation-models';
 import type { AzureOpenAiChatCallOptions } from './types.js';
 
-const openAiMockResponse =
-  parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
-    'foundation-models',
-    'azure-openai-chat-completion-success-response.json'
-  );
-
 // Signal and Prompt Index are provided by the super class in every call
 const defaultOptions = {
   signal: undefined,
@@ -29,6 +23,11 @@ const defaultOptions = {
 
 describe('Mapping Functions', () => {
   it('should parse an OpenAI response to a (LangChain) chat response', async () => {
+    const openAiMockResponse =
+      await parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
+        'foundation-models',
+        'azure-openai-chat-completion-success-response.json'
+      );
     const result = mapOutputToChatResult(openAiMockResponse);
     expect(result).toMatchSnapshot();
   });

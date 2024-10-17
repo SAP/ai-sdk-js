@@ -30,6 +30,14 @@ export class AzureOpenAiEmbeddingResponse {
     return this.data.data[dataIndex]?.embedding;
   }
 
+  /**
+   * Parses the Azure OpenAI response and returns all embeddings.
+   * @returns The embedding vectors.
+   */
+  getEmbeddings(): number[][] {
+    return this.data.data.map(({ embedding }) => embedding);
+  }
+
   private logInvalidDataIndex(dataIndex: number): void {
     if (dataIndex < 0 || dataIndex >= this.data.data.length) {
       logger.error(`Data index ${dataIndex} is out of bounds.`);

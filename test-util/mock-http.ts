@@ -1,11 +1,6 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import {
-  DestinationAuthToken,
-  HttpDestination,
-  ServiceCredentials
-} from '@sap-cloud-sdk/connectivity';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import nock from 'nock';
 import { type EndpointOptions } from '@sap-ai-sdk/core';
 import {
@@ -13,6 +8,11 @@ import {
   type DeploymentResolutionOptions
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { dummyToken } from './mock-jwt.js';
+import type {
+  DestinationAuthToken,
+  HttpDestination,
+  ServiceCredentials
+} from '@sap-cloud-sdk/connectivity';
 
 // Get the directory of this file
 const __filename = fileURLToPath(import.meta.url);
@@ -121,7 +121,7 @@ export function mockDeploymentsList(
 ): nock.Scope {
   const nockOpts = {
     reqheaders: {
-      'ai-resource-group': opts?.resourceGroup  ?? 'default',
+      'ai-resource-group': opts?.resourceGroup ?? 'default'
     }
   };
   const query = {
@@ -143,14 +143,12 @@ export function mockDeploymentsList(
 /**
  * @internal
  */
-export function parseMockResponse<T>(client: string, fileName: string): T {
-  const fileContent = fs.readFileSync(
-    path.join(
-      __dirname,
-      'data',
-      client,
-      fileName
-    ),
+export async function parseMockResponse<T>(
+  client: string,
+  fileName: string
+): Promise<T> {
+  const fileContent = await readFile(
+    path.join(__dirname, 'data', client, fileName),
     'utf-8'
   );
   return JSON.parse(fileContent);

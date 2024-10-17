@@ -4,17 +4,22 @@ This package provides LangChain model clients built on top of the foundation mod
 
 ## Table of Contents
 
-- [Table of Contents](#table-of-contents)
-- [Installation](#installation)
-- [Prerequisites](#prerequisites)
-- [Relationship between Models and Deployment ID](#relationship-between-models-and-deployment-id)
-- [Usage](#usage)
-  - [Client Initialization](#client-initialization)
-  - [Chat Client](#chat-client)
-  - [Embedding Client](#embedding-client)
-- [Local Testing](#local-testing)
-- [Support, Feedback, Contribution](#support-feedback-contribution)
-- [License](#license)
+- [@sap-ai-sdk/langchain](#sap-ai-sdklangchain)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Prerequisites](#prerequisites)
+  - [Relationship between Models and Deployment ID](#relationship-between-models-and-deployment-id)
+  - [Usage](#usage)
+    - [Client Initialization](#client-initialization)
+    - [Chat Client](#chat-client)
+      - [Advanced Example with Templating and Output Parsing](#advanced-example-with-templating-and-output-parsing)
+    - [Embedding Client](#embedding-client)
+      - [Embed Text](#embed-text)
+      - [Embed Document Chunks](#embed-document-chunks)
+      - [Preprocess, embed, and store documents](#preprocess-embed-and-store-documents)
+  - [Local Testing](#local-testing)
+  - [Support, Feedback, Contribution](#support-feedback-contribution)
+  - [License](#license)
 
 ## Installation
 
@@ -128,7 +133,7 @@ return llmChain.invoke({
 
 ### Embedding Client
 
-Embedding clients allow embedding either text or documents (represented as arrays of strings).
+Embedding clients allow embedding either text or document chunks (represented as arrays of strings).
 While you can use them standalone, they are usually used in combination with other LangChain utilities, like a text splitter for preprocessing and a vector store for storage and retrieval of the relevant embeddings.
 For a complete example how to implement RAG with our LangChain client, take a look at our [sample code](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/langchain-azure-openai.ts).
 
@@ -140,10 +145,10 @@ const embeddedText = await embeddingClient.embedQuery(
 );
 ```
 
-#### Embed Documents
+#### Embed Document Chunks
 
 ```ts
-const embeddedDocument = await embeddingClient.embedDocuments([
+const embeddedDocuments = await embeddingClient.embedDocuments([
   'Page 1: Paris is the capital of France.',
   'Page 2: It is a beautiful city.'
 ]);

@@ -50,7 +50,7 @@
     "@types/jest": "^29.5.13",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/mock-fs": "^4.13.4",
-    "@types/node": "^20.16.11",
+    "@types/node": "^20.16.12",
     "@cap-js/cds-types": "^0.6.5",
     "depcheck": "^1.4.7",
     "eslint": "^9.12.0",

@@ -27,22 +27,20 @@ export interface AzureOpenAiEmbeddingOutput {
   /**
    * Array of result candidates.
    */
-  data: [
-    {
-      /**
-       * Embedding object.
-       */
-      object: 'embedding';
-      /**
-       * Array of size `1536` (Azure OpenAI's embedding size) containing embedding vector.
-       */
-      embedding: number[];
-      /**
-       * Index of choice.
-       */
-      index: number;
-    }
-  ];
+  data: {
+    /**
+     * Embedding object.
+     */
+    object: 'embedding';
+    /**
+     * Array of size `1536` (Azure OpenAI's embedding size) containing embedding vector.
+     */
+    embedding: number[];
+    /**
+     * Index of choice.
+     */
+    index: number;
+  }[];
   /**
    * Token Usage.
    */
