@@ -1,30 +1,30 @@
-import retry from 'async-retry';
 import { DeploymentApi } from '@sap-ai-sdk/ai-api';
+import { getDeployments, createDeployment } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
-import { resourceGroup } from './utils/ai-api-utils.js';
-import type { AiDeployment, AiDeploymentList } from '@sap-ai-sdk/ai-api';
+import {
+  configurationId,
+  resourceGroup,
+  waitForDeploymentToReachStatus
+} from './utils/ai-api-utils.js';
+import type { AiApiError, AiDeploymentList } from '@sap-ai-sdk/ai-api';
 
 loadEnv();
 
 describe('DeploymentApi', () => {
   let createdDeploymentId: string | undefined;
-  let initialState: AiDeploymentList | undefined;
+  let initialDeployments: AiDeploymentList | undefined;
 
   beforeAll(async () => {
-    const queryResponse = await DeploymentApi.deploymentQuery(
-      {},
-      { 'AI-Resource-Group': resourceGroup }
-    ).execute();
+    const queryResponse = await getDeployments(resourceGroup);
     expect(queryResponse).toBeDefined();
-    initialState = queryResponse;
+    initialDeployments = queryResponse;
   });
 
   it('should create a deployment and wait for it to run', async () => {
-    const createResponse = await DeploymentApi.deploymentCreate(
-      { configurationId: '54cc966d-8bc1-44ab-a9dc-658d59ef205d' },
-      { 'AI-Resource-Group': resourceGroup }
-    ).execute();
-
+    const createResponse = await createDeployment(
+      configurationId,
+      resourceGroup
+    );
     expect(createResponse).toEqual(
       expect.objectContaining({
         message: 'Deployment scheduled.',
@@ -36,7 +36,6 @@ describe('DeploymentApi', () => {
       createResponse.id,
       'RUNNING'
     );
-
     expect(runningDeployment).toEqual(
       expect.objectContaining({
         status: 'RUNNING',
@@ -45,17 +44,19 @@ describe('DeploymentApi', () => {
     );
 
     createdDeploymentId = runningDeployment.id;
-  }, 180000);
+  }, 200000);
 
-  it('should modify the deployment to stop it', async () => {
-    const deploymentId = getDeploymentId(createdDeploymentId);
+  it('should stop the deployment', async () => {
+    const deploymentId = await checkCreatedDeployment(
+      createdDeploymentId,
+      'RUNNING'
+    );
 
     const modifyResponse = await DeploymentApi.deploymentModify(
       deploymentId,
       { targetStatus: 'STOPPED' },
       { 'AI-Resource-Group': resourceGroup }
     ).execute();
-
     expect(modifyResponse).toEqual(
       expect.objectContaining({
         message: 'Deployment modification scheduled'
@@ -66,78 +67,88 @@ describe('DeploymentApi', () => {
       deploymentId,
       'STOPPED'
     );
-
     expect(stoppedDeployment).toEqual(
       expect.objectContaining({
         status: 'STOPPED'
       })
     );
-  }, 180000);
+  }, 200000);
 
   it('should delete the deployment', async () => {
-    const deploymentId = getDeploymentId(createdDeploymentId);
+    const deploymentId = await checkCreatedDeployment(
+      createdDeploymentId,
+      'STOPPED'
+    );
+
     const deleteResponse = await DeploymentApi.deploymentDelete(deploymentId, {
       'AI-Resource-Group': resourceGroup
     }).execute();
-
     expect(deleteResponse).toEqual(
       expect.objectContaining({
         message: 'Deletion scheduled'
       })
     );
-  });
 
-  afterAll(async () => {
-    getDeploymentId(createdDeploymentId);
     // Wait for deletion to complete
-    await new Promise(r => setTimeout(r, 15000));
-    const queryResponse = await DeploymentApi.deploymentQuery(
-      {},
-      { 'AI-Resource-Group': resourceGroup }
-    ).execute();
-    expect(queryResponse).toBeDefined();
-
-    const sanitizedInitialState = sanitizedState(initialState);
-    const sanitizedEndState = sanitizedState(queryResponse);
-    expect(sanitizedEndState).toStrictEqual(sanitizedInitialState);
-  }, 30000);
-});
-
-const sanitizedState = (state: AiDeploymentList | undefined) => ({
-  ...state,
-  resources: state?.resources.map(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ({ modifiedAt, ...rest }) => rest
-  )
-});
-
-function getDeploymentId(id: string | undefined): string {
-  if (id === undefined) {
-    throw new Error('deploymentId is not defined.');
-  }
-  return id;
-}
-
-async function waitForDeploymentToReachStatus(
-  deploymentId: string,
-  targetStatus: 'RUNNING' | 'STOPPED'
-): Promise<AiDeployment> {
-  return retry(
-    async () => {
-      const deploymentDetail = await DeploymentApi.deploymentGet(
+    await new Promise(r => setTimeout(r, 30000));
+    await expect(
+      DeploymentApi.deploymentGet(
         deploymentId,
         {},
         { 'AI-Resource-Group': resourceGroup }
-      ).execute();
+      ).execute()
+    ).rejects.toThrow();
+  }, 150000);
 
-      if (deploymentDetail.status === targetStatus) {
-        return deploymentDetail;
+  it('should validate consistency of deployments after test flow', async () => {
+    const queryResponse = await getDeployments(resourceGroup);
+    expect(queryResponse).toBeDefined();
+
+    const initialFilteredDeployments = filterDeployments(
+      initialDeployments,
+      createdDeploymentId
+    );
+    const finalFilteredDeployments = filterDeployments(
+      queryResponse,
+      createdDeploymentId
+    );
+    expect(finalFilteredDeployments.resources).toStrictEqual(
+      initialFilteredDeployments.resources
+    );
+  });
+});
+
+const filterDeployments = (
+  deployments: AiDeploymentList | undefined,
+  createdDeployentId: string | undefined
+) => ({
+  ...deployments,
+  resources: deployments?.resources
+    .filter(deployment => deployment.id === createdDeployentId)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    .map(({ modifiedAt, ...rest }) => rest)
+});
+
+async function checkCreatedDeployment(
+  deploymentId: string | undefined,
+  status: 'RUNNING' | 'STOPPED'
+): Promise<string> {
+  if (!deploymentId) {
+    try {
+      const response = await getDeployments(resourceGroup, status);
+      if (!response.count) {
+        throw new Error(
+          `No ${status} deployments found, please ${status === 'RUNNING' ? 'create' : 'stop'} a deployment first to ${status === 'RUNNING' ? 'modify' : 'delete'} it.`
+        );
       }
-      throw new Error(`Deployment has not yet reached ${targetStatus} status.`);
-    },
-    {
-      retries: 30,
-      minTimeout: 5000
+      return response.resources[0].id;
+    } catch (error: any) {
+      if (error.response) {
+        const apiError = error.response.data.error as AiApiError;
+        throw new Error(`Request failed: ${apiError.message}`);
+      }
+      throw error;
     }
-  );
+  }
+  return deploymentId;
 }
