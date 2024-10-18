@@ -12,12 +12,24 @@ import {
   orchestrationOutputFiltering,
   orchestrationRequestConfig
 } from './orchestration.js';
-import { getDeployments } from './ai-api.js';
+import {
+  getDeployments,
+  createDeployment,
+  stopDeployments,
+  deleteDeployments
+  // eslint-disable-next-line import/no-internal-modules
+} from './ai-api/deployment-api.js';
+import {
+  getScenarios,
+  getModelsInScenario
+  // eslint-disable-next-line import/no-internal-modules
+} from './ai-api/scenario-api.js';
 import {
   invokeChain,
   invokeRagChain,
   invoke
 } from './langchain-azure-openai.js';
+import type { AiApiError, AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 
 const app = express();
@@ -87,14 +99,81 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
   }
 });
 
-app.get('/ai-api/get-deployments', async (req, res) => {
+app.get('/ai-api/deployments', async (req, res) => {
   try {
-    res.send(await getDeployments());
+    res.send(
+      await getDeployments('default', req.query.status as AiDeploymentStatus)
+    );
   } catch (error: any) {
     console.error(error);
+    const apiError = error.response.data.error as AiApiError;
     res
-      .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+      .status(error.response.status)
+      .send('Yikes, vibes are off apparently 😬 -> ' + apiError.message);
+  }
+});
+
+app.post('/ai-api/deployment/create', express.json(), async (req, res) => {
+  try {
+    res.send(await createDeployment(req.body.configurationId, 'default'));
+  } catch (error: any) {
+    console.error(error);
+    const apiError = error.response.data.error as AiApiError;
+    res
+      .status(error.response.status)
+      .send('Yikes, vibes are off apparently 😬 -> ' + apiError.message);
+  }
+});
+
+app.patch('/ai-api/deployment/batch-stop', express.json(), async (req, res) => {
+  try {
+    res.send(await stopDeployments(req.body.configurationId, 'default'));
+  } catch (error: any) {
+    console.error(error);
+    const apiError = error.response.data.error as AiApiError;
+    res
+      .status(error.response.status)
+      .send('Yikes, vibes are off apparently 😬 -> ' + apiError.message);
+  }
+});
+
+app.delete(
+  '/ai-api/deployment/batch-delete',
+  express.json(),
+  async (req, res) => {
+    try {
+      res.send(await deleteDeployments('default'));
+    } catch (error: any) {
+      console.error(error);
+      const apiError = error.response.data.error as AiApiError;
+      res
+        .status(error.response.status)
+        .send('Yikes, vibes are off apparently 😬 -> ' + apiError.message);
+    }
+  }
+);
+
+app.get('/ai-api/scenarios', async (req, res) => {
+  try {
+    res.send(await getScenarios('default'));
+  } catch (error: any) {
+    console.error(error);
+    const apiError = error.response.data.error as AiApiError;
+    res
+      .status(error.response.status)
+      .send('Yikes, vibes are off apparently 😬 -> ' + apiError.message);
+  }
+});
+
+app.get('/ai-api/models', async (req, res) => {
+  try {
+    res.send(await getModelsInScenario('foundation-models', 'default'));
+  } catch (error: any) {
+    console.error(error);
+    const apiError = error.response.data.error as AiApiError;
+    res
+      .status(error.response.status)
+      .send('Yikes, vibes are off apparently 😬 -> ' + apiError.message);
   }
 });
 
