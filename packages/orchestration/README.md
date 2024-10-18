@@ -125,6 +125,25 @@ console.log(
 );
 ```
 
+> [!Tip]
+> #### Harmonized API
+> You can switch to a different model, even from another vendor, by leveraging the harmonized API of the orchestration service.
+> Here’s an example where only one line of code is changed..
+> ```ts
+> const orchestrationClient = new OrchestrationClient({
+>  llm: {
+>    // only change the model name here
+>    model_name: 'gemini-1.5-flash',
+>    model_params: { max_tokens: 50, temperature: 0.1 }
+>  },
+>  templating: {
+>    template: [
+>      { role: 'user', content: 'What is the capital of {{?country}}?' }
+>    ]
+>  }
+> });
+> ```
+
 #### Passing a Message History
 
 It is possible to provide a history of a conversation to the model.
