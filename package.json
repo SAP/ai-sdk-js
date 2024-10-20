@@ -53,7 +53,7 @@
     "@types/node": "^20.16.13",
     "@cap-js/cds-types": "^0.6.5",
     "depcheck": "^1.4.7",
-    "eslint": "^9.12.0",
+    "eslint": "^9.13.0",
     "glob": "^11.0.0",
     "jest": "^30.0.0-alpha.6",
     "jsonwebtoken": "^9.0.2",
