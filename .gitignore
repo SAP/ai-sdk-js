@@ -56,3 +56,4 @@ build/Release
 .vscode
 /pnpm-publish-summary.json
 /tests/smoke-tests/deployment
+.idea

@@ -136,6 +136,10 @@ importers:
       '@sap-cloud-sdk/util':
         specifier: ^3.22.2
         version: 3.22.2
+    devDependencies:
+      typescript:
+        specifier: ^5.6.3
+        version: 5.6.3
 
   packages/langchain:
     dependencies:
