@@ -2,6 +2,7 @@
 import express from 'express';
 import {
   chatCompletion,
+  chatCompletionWithStream,
   computeEmbedding
   // eslint-disable-next-line import/no-internal-modules
 } from './foundation-models/azure-openai.js';
@@ -38,6 +39,18 @@ app.get('/azure-openai/chat-completion', async (req, res) => {
       .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
   }
 });
+
+app.get('/azure-openai/chat-completion-stream', async (req, res)=> {
+  try {
+    await chatCompletionWithStream();
+  } catch (error: any) {
+    console.error(error);
+    res
+      .status(500)
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+  }
+});
+
 
 app.get('/azure-openai/embedding', async (req, res) => {
   try {
