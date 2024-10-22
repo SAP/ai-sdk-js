@@ -30,7 +30,7 @@ export class AzureOpenAiChatClient {
     data: AzureOpenAiCreateChatCompletionRequest,
     requestConfig?: CustomRequestConfig
   ): Promise<AzureOpenAiChatCompletionResponse> {
-    const response = this._executeRequest(data, requestConfig);
+    const response = await this._executeRequest(data, requestConfig);
     return new AzureOpenAiChatCompletionResponse(response);
   }
 
@@ -40,7 +40,7 @@ export class AzureOpenAiChatClient {
   ): Promise<Stream<any>> {
     // TODO: The return type `any` should actually be the type of the stream response.
     // But `createChatCompletionStreamResponse` is first available in Azure OpenAI spec preview version 2024-08-01.
-    const response = this._executeRequest({
+    const response = await this._executeRequest({
       ...data,
       stream: true
     }, {
