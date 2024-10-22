@@ -129,8 +129,8 @@ console.log(
 >
 > #### Harmonized API
 >
-> You can switch to a different model, even from another vendor, by leveraging the harmonized API of the orchestration service.
-> Here’s an example where only one line of code is changed..
+> As the orchestration service API is harmonized, you can switch to a different model, even from another vendor, by changing only the `model_name` property.
+> Here’s an example where only one line of code is changed.
 >
 > ```ts
 > const orchestrationClient = new OrchestrationClient({
