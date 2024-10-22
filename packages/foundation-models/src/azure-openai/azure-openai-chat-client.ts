@@ -46,7 +46,7 @@ export class AzureOpenAiChatClient {
     }, {
       ...requestConfig,
       responseType: 'stream'
-    });
+    } as any);
     return Stream.fromSSEResponse(response, new AbortController());
   }
 
@@ -59,7 +59,7 @@ export class AzureOpenAiChatClient {
       'azure-openai'
     );
     const resourceGroup = getResourceGroup(this.modelDeployment);
-    return await executeRequest(
+    return executeRequest(
       {
         url: `/inference/deployments/${deploymentId}/chat/completions`,
         apiVersion,
