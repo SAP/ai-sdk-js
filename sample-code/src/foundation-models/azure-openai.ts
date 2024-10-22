@@ -46,17 +46,11 @@ export async function computeEmbedding(): Promise<AzureOpenAiEmbeddingResponse> 
 }
 
 
-export async function chatCompletionWithStream(): Promise<void> {
-  const stream = await new AzureOpenAiChatClient('gpt-35-turbo').runWithStream({
-    messages: [{ role: 'user', content: 'What is the capital of France?' }]
+export async function chatCompletionStream(): Promise<void> {
+  const stream = await new AzureOpenAiChatClient('gpt-35-turbo').stream({
+    messages: [{ role: 'user', content: 'What is the capital of France?' }],
   });
-
-  // Use getContent() to access the content responded by LLM.
-  // logger.info(response.getContent());
-
-//   for await (const chunk of stream) {
-//     logger.info(chunk.choices[0]?.delta?.content || "");
-// }
-
-  // return response;
+  for await (const chunk of stream) {
+    logger.info(JSON.stringify(chunk));
+}
 }
