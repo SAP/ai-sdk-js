@@ -3,7 +3,7 @@ const smokeTestRoute =
 describe('Smoke Test', () => {
   it('aicore client retrieves a list of deployments', async () => {
     await expect(
-      fetch(`${smokeTestRoute}/ai-api/get-deployments`)
+      fetch(`${smokeTestRoute}/ai-api/deployments`)
     ).resolves.toHaveProperty('status', 200);
   });
 
