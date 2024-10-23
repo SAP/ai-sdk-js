@@ -6,9 +6,9 @@ import {
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { apiVersion, type AzureOpenAiChatModel } from './model-types.js';
 import { AzureOpenAiChatCompletionResponse } from './azure-openai-chat-completion-response.js';
-import type { AzureOpenAiCreateChatCompletionRequest } from './client/inference/schema/index.js';
 import { Stream } from './azure-openai-streaming.js';
-import { HttpResponse } from '@sap-cloud-sdk/http-client';
+import type { HttpResponse } from '@sap-cloud-sdk/http-client';
+import type { AzureOpenAiCreateChatCompletionRequest } from './client/inference/schema/index.js';
 
 /**
  * Azure OpenAI client for chat completion.
@@ -34,6 +34,12 @@ export class AzureOpenAiChatClient {
     return new AzureOpenAiChatCompletionResponse(response);
   }
 
+  /**
+   * Creates a completion stream for the chat messages.
+   * @param data - The input parameters for the chat completion.
+   * @param requestConfig - The request configuration.
+   * @returns The completion stream.
+   */
   async stream(
     data: AzureOpenAiCreateChatCompletionRequest,
     requestConfig?: CustomRequestConfig
