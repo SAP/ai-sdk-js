@@ -29,6 +29,26 @@ export async function chatCompletion(): Promise<AzureOpenAiChatCompletionRespons
 }
 
 /**
+ * Ask Azure OpenAI model about the capital of France with streaming.
+ * @returns The response from Azure OpenAI containing the response content.
+ */
+export async function chatCompletionStream(): Promise<string> {
+  const response = await new AzureOpenAiChatClient('gpt-35-turbo').streamString({
+    messages: [{ role: 'user', content: 'What is the capital of France?' }]
+  });
+
+  let result = '';
+  for await (const chunk of response) {
+    logger.info(`chunk: ${chunk}`);
+    result += chunk;
+  }
+
+  // logger.info(`finish reason: ${response.finishReason}`);
+  // logger.info(`usage: ${JSON.stringify(response.usage)}`);
+  return result;
+}
+
+/**
  * Embed 'Hello, world!' using the OpenAI ADA model.
  * @returns The response from Azure OpenAI containing the embedding vector.
  */
@@ -43,19 +63,4 @@ export async function computeEmbedding(): Promise<AzureOpenAiEmbeddingResponse> 
   logger.info(response.getEmbedding());
 
   return response;
-}
-
-
-export async function chatCompletionStream(): Promise<void> {
-  try {
-    const stream = await new AzureOpenAiChatClient('gpt-35-turbo').stream({
-      messages: [{ role: 'user', content: 'What is the capital of France?' }],
-    });
-    for await (const chunk of stream) {
-      logger.info(JSON.stringify(chunk));
-    }
-  } catch (error: any) {
-    console.log(JSON.stringify(error.response.data.message));
-  }
-  
 }

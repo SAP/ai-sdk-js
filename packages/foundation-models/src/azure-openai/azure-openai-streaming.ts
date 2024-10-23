@@ -1,6 +1,6 @@
 import { HttpResponse } from '@sap-cloud-sdk/http-client';
 import { LineDecoder } from './azure-openai-line-decoder.js';
-import { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.js';
+import { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.js';
 
 type Bytes = string | ArrayBuffer | Uint8Array | Buffer | null | undefined;
 
@@ -53,7 +53,7 @@ export class Stream<Item> implements AsyncIterable<Item> {
               throw new Error(data.error);
             }
 
-            yield new AzureOpenAiChatCompletionStreamResponse(data) as any;
+            yield new AzureOpenAiChatCompletionStreamChunkResponse(data) as any;
           } else {
             let data;
             try {

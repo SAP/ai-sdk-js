@@ -54,7 +54,8 @@ app.get('/azure-openai/chat-completion', async (req, res) => {
 
 app.get('/azure-openai/chat-completion-stream', async (req, res)=> {
   try {
-    await chatCompletionStream();
+    const response = await chatCompletionStream();
+    res.send(response);
   } catch (error: any) {
     console.error(error);
     res
