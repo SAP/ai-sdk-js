@@ -38,13 +38,13 @@ export async function chatCompletionStream(): Promise<string> {
   });
 
   let result = '';
-  for await (const chunk of response) {
+  for await (const chunk of response.stream!) {
     logger.info(`chunk: ${chunk}`);
     result += chunk;
   }
 
-  // logger.info(`finish reason: ${response.finishReason}`);
-  // logger.info(`usage: ${JSON.stringify(response.usage)}`);
+  logger.info(`finish reason: ${response.finishReason}`);
+  logger.info(`usage: ${JSON.stringify(response.usage)}`);
   return result;
 }
 

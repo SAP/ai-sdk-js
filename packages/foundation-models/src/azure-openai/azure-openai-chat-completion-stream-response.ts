@@ -14,8 +14,5 @@ export class AzureOpenAiChatCompletionStreamResponse {
 
   public usage: AzureOpenAiCompletionUsage | undefined;
   public finishReason: 'stop' | 'length' | 'content_filter' | undefined;
-
-  constructor(public stream: Stream<any>) {
-    this.stream = stream;
-  }
+  public stream: Stream<any> | undefined;
 }

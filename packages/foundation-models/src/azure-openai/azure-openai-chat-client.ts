@@ -61,16 +61,7 @@ export class AzureOpenAiChatClient {
     return Stream.fromSSEResponse(response, new AbortController());
   }
 
-  private async * pipeString(stream: Stream<any>) {
-    for await (const chunk of stream) {
-      // Process each item here
-      const deltaContent = chunk.getDeltaContent();
-      if (!deltaContent) {
-        continue;
-      }
-      yield deltaContent;
-    }
-  }
+
 
   /**
    * Creates a completion stream for the chat messages.
@@ -81,11 +72,13 @@ export class AzureOpenAiChatClient {
   async stream(
     data: AzureOpenAiCreateChatCompletionRequest,
     requestConfig?: CustomRequestConfig
-  ): Promise<Stream<any>> {
+  ): Promise<AzureOpenAiChatCompletionStreamResponse> {
+    const response = new AzureOpenAiChatCompletionStreamResponse();
     const stream1 = await this.fromSSEResponse(data, requestConfig);
-    const stream2 = new Stream<any>(() => this.pipeFinishReason(stream1), new AbortController());
-    const stream3 = new Stream<any>(() => this.pipeTokenUsage(stream2), new AbortController());;
-    return stream3;
+    const stream2 = new Stream<any>(() => this.pipeFinishReason(stream1, response), new AbortController());
+    const stream3 = new Stream<any>(() => this.pipeTokenUsage(stream2, response), new AbortController());;
+    response.stream = stream3;
+    return response;
   }
 
   /**
@@ -97,10 +90,14 @@ export class AzureOpenAiChatClient {
   async streamString(
     data: AzureOpenAiCreateChatCompletionRequest,
     requestConfig?: CustomRequestConfig
-  ): Promise<Stream<String>> {
-    const stream1 = await this.stream(data, requestConfig);
-    const stream2 = new Stream<String>(() => this.pipeString(stream1), new AbortController());
-    return stream2;
+  ): Promise<AzureOpenAiChatCompletionStreamResponse> {
+    const response = new AzureOpenAiChatCompletionStreamResponse();
+    const stream1 = await this.fromSSEResponse(data, requestConfig);
+    const stream2 = new Stream<any>(() => this.pipeFinishReason(stream1, response), new AbortController());
+    const stream3 = new Stream<any>(() => this.pipeTokenUsage(stream2, response), new AbortController());;
+    const stream4 = new Stream<String>(() => this.pipeString(stream3), new AbortController());
+    response.stream = stream4;
+    return response;
   }
 
   private async executeRequest(
@@ -123,12 +120,22 @@ export class AzureOpenAiChatClient {
     );
   }
 
-  private async * pipeFinishReason(stream: Stream<any>) {
+  private async * pipeString(stream: Stream<any>) {
+    for await (const chunk of stream) {
+      // Process each item here
+      const deltaContent = chunk.getDeltaContent();
+      if (!deltaContent) {
+        continue;
+      }
+      yield deltaContent;
+    }
+  }
+
+  private async * pipeFinishReason(stream: Stream<any>, response: AzureOpenAiChatCompletionStreamResponse) {
     for await (const chunk of stream) {
       const finishReason = chunk.getFinishReason();
       if (finishReason) {
-        // streamResponse.finishReason = finishReason;
-        // Do some callback maybe
+        response.finishReason = finishReason;
         switch (finishReason) {
           case 'content_filter':
             throw new Error('Stream finished with content filter hit.');
@@ -145,12 +152,11 @@ export class AzureOpenAiChatClient {
     }
   }
 
-  private async * pipeTokenUsage(stream: Stream<any>) {
+  private async * pipeTokenUsage(stream: Stream<any>, response: AzureOpenAiChatCompletionStreamResponse) {
     for await (const chunk of stream) {
       const usage = chunk.getTokenUsage();
       if (usage) {
-        // streamResponse.usage = usage;
-        // Do some callback maybe
+        response.usage = usage;
       }
       yield chunk;
     }
