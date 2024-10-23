@@ -46,7 +46,7 @@ export class AzureOpenAiChatClient {
     }, {
       ...requestConfig,
       responseType: 'stream'
-    } as any);
+    });
     return Stream.fromSSEResponse(response, new AbortController());
   }
 

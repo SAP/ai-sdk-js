@@ -52,5 +52,5 @@ export async function chatCompletionStream(): Promise<void> {
   });
   for await (const chunk of stream) {
     logger.info(JSON.stringify(chunk));
-}
+  }
 }
