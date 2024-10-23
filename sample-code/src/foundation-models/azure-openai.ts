@@ -47,10 +47,15 @@ export async function computeEmbedding(): Promise<AzureOpenAiEmbeddingResponse> 
 
 
 export async function chatCompletionStream(): Promise<void> {
-  const stream = await new AzureOpenAiChatClient('gpt-35-turbo').stream({
-    messages: [{ role: 'user', content: 'What is the capital of France?' }],
-  });
-  for await (const chunk of stream) {
-    logger.info(JSON.stringify(chunk));
+  try {
+    const stream = await new AzureOpenAiChatClient('gpt-35-turbo').stream({
+      messages: [{ role: 'user', content: 'What is the capital of France?' }],
+    });
+    for await (const chunk of stream) {
+      logger.info(JSON.stringify(chunk));
+    }
+  } catch (error: any) {
+    console.log(JSON.stringify(error.response.data.message));
   }
+  
 }

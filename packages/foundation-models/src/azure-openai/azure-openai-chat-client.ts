@@ -48,12 +48,30 @@ export class AzureOpenAiChatClient {
     // But `createChatCompletionStreamResponse` is first available in Azure OpenAI spec preview version 2024-08-01.
     const response = await this._executeRequest({
       ...data,
-      stream: true
+      stream: true,
+      stream_options: {
+        include_usage: true
+      }
     }, {
       ...requestConfig,
       responseType: 'stream'
     });
     return Stream.fromSSEResponse(response, new AbortController());
+  }
+
+  async * processStream(stream: Stream<any>): AsyncIterator<any, String, undefined> {
+    for await (const chunk of stream) {
+      // Process each item here
+      yield chunk.getDeltaContent();
+    }
+  }
+
+  async streamString(
+    data: AzureOpenAiCreateChatCompletionRequest,
+    requestConfig?: CustomRequestConfig
+  ): Promise<Stream<String>> {
+    const originalStream = this.stream(data, requestConfig);
+    return new Stream<String>(this.processStream, new AbortController());
   }
 
   private async _executeRequest(
