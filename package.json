@@ -51,7 +51,7 @@
     "@types/jsonwebtoken": "^9.0.7",
     "@types/mock-fs": "^4.13.4",
     "@types/node": "^20.17.0",
-    "@cap-js/cds-types": "^0.6.5",
+    "@cap-js/cds-types": "^0.7.0",
     "depcheck": "^1.4.7",
     "eslint": "^9.13.0",
     "glob": "^11.0.0",
