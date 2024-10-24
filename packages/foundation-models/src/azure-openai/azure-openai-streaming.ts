@@ -1,15 +1,13 @@
-import { HttpResponse } from '@sap-cloud-sdk/http-client';
 import { LineDecoder } from './azure-openai-line-decoder.js';
-import { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.js';
-import { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.js';
+import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 
 type Bytes = string | ArrayBuffer | Uint8Array | Buffer | null | undefined;
 
-export type ServerSentEvent = {
+export interface ServerSentEvent {
   event: string | null;
   data: string;
   raw: string[];
-};
+}
 
 export class Stream<Item> implements AsyncIterable<Item> {
   constructor(public iterator: () => AsyncIterator<Item>) {}
@@ -25,7 +23,7 @@ export class Stream<Item> implements AsyncIterable<Item> {
       let done = false;
       try {
         for await (const sse of _iterSSEMessages(response)) {
-          if (done) continue;
+          if (done) {continue;}
 
           if (sse.data.startsWith('[DONE]')) {
             done = true;
@@ -38,8 +36,8 @@ export class Stream<Item> implements AsyncIterable<Item> {
             try {
               data = JSON.parse(sse.data);
             } catch (e) {
-              console.error(`Could not parse message into JSON:`, sse.data);
-              console.error(`From chunk:`, sse.raw);
+              console.error('Could not parse message into JSON:', sse.data);
+              console.error('From chunk:', sse.raw);
               throw e;
             }
 
@@ -53,8 +51,8 @@ export class Stream<Item> implements AsyncIterable<Item> {
             try {
               data = JSON.parse(sse.data);
             } catch (e) {
-              console.error(`Could not parse message into JSON:`, sse.data);
-              console.error(`From chunk:`, sse.raw);
+              console.error('Could not parse message into JSON:', sse.data);
+              console.error('From chunk:', sse.raw);
               throw e;
             }
             // TODO: Is this where the error should be thrown?
@@ -62,7 +60,7 @@ export class Stream<Item> implements AsyncIterable<Item> {
               // throw new Error(data.error, data.message);
               throw new Error(data.error);
             }
-            yield { event: sse.event, data: data } as any;
+            yield { event: sse.event, data } as any;
           }
         }
         done = true;
@@ -104,8 +102,8 @@ export class Stream<Item> implements AsyncIterable<Item> {
       let done = false;
       try {
         for await (const line of iterLines()) {
-          if (done) continue;
-          if (line) yield JSON.parse(line);
+          if (done) {continue;}
+          if (line) {yield JSON.parse(line);}
         }
         done = true;
       } catch (e) {
@@ -125,12 +123,11 @@ export class Stream<Item> implements AsyncIterable<Item> {
    * independently read from at different speeds.
    */
   tee(): [Stream<Item>, Stream<Item>] {
-    const left: Array<Promise<IteratorResult<Item>>> = [];
-    const right: Array<Promise<IteratorResult<Item>>> = [];
+    const left: Promise<IteratorResult<Item>>[] = [];
+    const right: Promise<IteratorResult<Item>>[] = [];
     const iterator = this.iterator();
 
-    const teeIterator = (queue: Array<Promise<IteratorResult<Item>>>): AsyncIterator<Item> => {
-      return {
+    const teeIterator = (queue: Promise<IteratorResult<Item>>[]): AsyncIterator<Item> => ({
         next: () => {
           if (queue.length === 0) {
             const result = iterator.next();
@@ -139,8 +136,7 @@ export class Stream<Item> implements AsyncIterable<Item> {
           }
           return queue.shift()!;
         },
-      };
-    };
+      });
 
     return [
       new Stream(() => teeIterator(left)),
@@ -165,7 +161,7 @@ export class Stream<Item> implements AsyncIterable<Item> {
       async pull(ctrl: any) {
         try {
           const { value, done } = await iter.next();
-          if (done) return ctrl.close();
+          if (done) {return ctrl.close();}
 
           const bytes = encoder.encode(JSON.stringify(value) + '\n');
 
@@ -185,7 +181,7 @@ export async function* _iterSSEMessages(
   response: HttpResponse
 ): AsyncGenerator<ServerSentEvent, void, unknown> {
   if (!response.data) {
-    throw new Error(`Attempted to iterate over a response with no body`);
+    throw new Error('Attempted to iterate over a response with no body');
   }
 
   const sseDecoder = new SSEDecoder();
@@ -197,13 +193,13 @@ export async function* _iterSSEMessages(
   for await (const sseChunk of iterSSEChunks(iter)) {
     for (const line of lineDecoder.decode(sseChunk)) {
       const sse = sseDecoder.decode(line);
-      if (sse) yield sse;
+      if (sse) {yield sse;}
     }
   }
 
   for (const line of lineDecoder.flush()) {
     const sse = sseDecoder.decode(line);
-    if (sse) yield sse;
+    if (sse) {yield sse;}
   }
 }
 
@@ -224,7 +220,7 @@ async function* iterSSEChunks(iterator: AsyncIterableIterator<Bytes>): AsyncGene
         : typeof chunk === 'string' ? new TextEncoder().encode(chunk)
           : chunk;
 
-    let newData = new Uint8Array(data.length + binaryChunk.length);
+    const newData = new Uint8Array(data.length + binaryChunk.length);
     newData.set(data);
     newData.set(binaryChunk, data.length);
     data = newData;
@@ -290,7 +286,7 @@ class SSEDecoder {
 
     if (!line) {
       // empty line and we didn't previously encounter any messages
-      if (!this.event && !this.data.length) return null;
+      if (!this.event && !this.data.length) {return null;}
 
       const sse: ServerSentEvent = {
         event: this.event,

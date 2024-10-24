@@ -6,18 +6,10 @@ import {
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { apiVersion, type AzureOpenAiChatModel } from './model-types.js';
 import { AzureOpenAiChatCompletionResponse } from './azure-openai-chat-completion-response.js';
-import { Stream } from './azure-openai-streaming.js';
-import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-import type { AzureOpenAiCreateChatCompletionRequest } from './client/inference/schema/index.js';
-import { createLogger } from '@sap-cloud-sdk/util';
-import { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.js';
 import { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.js';
 import { ChatCompletionStream } from './azure-openai-chat-completion-stream.js';
-
-const logger = createLogger({
-  package: 'foundation-models',
-  messageContext: 'azure-openai-chat-client'
-});
+import type { HttpResponse } from '@sap-cloud-sdk/http-client';
+import type { AzureOpenAiCreateChatCompletionRequest } from './client/inference/schema/index.js';
 
 /**
  * Azure OpenAI client for chat completion.
@@ -43,7 +35,7 @@ export class AzureOpenAiChatClient {
     return new AzureOpenAiChatCompletionResponse(response);
   }
 
-  private async fromSSEResponse(
+  private async createStream(
     data: AzureOpenAiCreateChatCompletionRequest,
     requestConfig?: CustomRequestConfig
   ): Promise<ChatCompletionStream> {
@@ -73,8 +65,7 @@ export class AzureOpenAiChatClient {
     requestConfig?: CustomRequestConfig
   ): Promise<AzureOpenAiChatCompletionStreamResponse> {
     const response = new AzureOpenAiChatCompletionStreamResponse();
-    const stream = await this.fromSSEResponse(data, requestConfig);
-    response.stream = stream
+    response.stream = (await this.createStream(data, requestConfig))
       .pipe(ChatCompletionStream.processChunk, response)
       .pipe(ChatCompletionStream.processFinishReason, response)
       .pipe(ChatCompletionStream.processTokenUsage, response);
@@ -92,13 +83,7 @@ export class AzureOpenAiChatClient {
     requestConfig?: CustomRequestConfig
   ): Promise<AzureOpenAiChatCompletionStreamResponse> {
     const response = new AzureOpenAiChatCompletionStreamResponse();
-    // const stream1 = await this.fromSSEResponse(data, requestConfig);
-    // const stream2 = new Stream<any>(() => this.pipeFinishReason(stream1, response));
-    // const stream3 = new Stream<any>(() => this.pipeTokenUsage(stream2, response));
-    // const stream4 = new Stream<String>(() => this.pipeString(stream3));
-    
-    const stream = await this.fromSSEResponse(data, requestConfig);
-    response.stream = stream
+    response.stream = (await this.createStream(data, requestConfig))
       .pipe(ChatCompletionStream.processChunk, response)
       .pipe(ChatCompletionStream.processFinishReason, response)
       .pipe(ChatCompletionStream.processTokenUsage, response)
@@ -125,6 +110,4 @@ export class AzureOpenAiChatClient {
       requestConfig
     );
   }
-
-  
 }

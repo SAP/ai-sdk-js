@@ -4,7 +4,7 @@ type Bytes = string | ArrayBuffer | Uint8Array | Buffer | null | undefined;
  * A re-implementation of httpx's `LineDecoder` in Python that handles incrementally
  * reading lines from text.
  *
- * https://github.com/encode/httpx/blob/920333ea98118e9cf617f246905d7b202510941c/httpx/_decoders.py#L258
+ * Https://github.com/encode/httpx/blob/920333ea98118e9cf617f246905d7b202510941c/httpx/_decoders.py#L258.
  */
 export class LineDecoder {
   // prettier-ignore
@@ -63,8 +63,8 @@ export class LineDecoder {
   }
 
   decodeText(bytes: Bytes): string {
-    if (bytes == null) return '';
-    if (typeof bytes === 'string') return bytes;
+    if (bytes == null) {return '';}
+    if (typeof bytes === 'string') {return bytes;}
 
     // Node:
     if (typeof Buffer !== 'undefined') {
@@ -95,7 +95,7 @@ export class LineDecoder {
     }
 
     throw new Error(
-      `Unexpected: neither Buffer nor TextDecoder are available as globals. Please report this error.`,
+      'Unexpected: neither Buffer nor TextDecoder are available as globals. Please report this error.',
     );
   }
 
