@@ -73,20 +73,17 @@ export class AzureOpenAiChatClient {
   }
 
   /**
-   * Creates a completion stream of the delta string for the chat messages.
+   * Creates a completion stream of the delta content for the chat messages.
    * @param data - The input parameters for the chat completion.
    * @param requestConfig - The request configuration.
-   * @returns The completion stream of the delta string.
+   * @returns The completion stream of the delta content.
    */
-  async streamString(
+  async streamContent(
     data: AzureOpenAiCreateChatCompletionRequest,
     requestConfig?: CustomRequestConfig
   ): Promise<AzureOpenAiChatCompletionStreamResponse> {
     const response = new AzureOpenAiChatCompletionStreamResponse();
-    response.stream = (await this.createStream(data, requestConfig))
-      .pipe(ChatCompletionStream.processChunk, response)
-      .pipe(ChatCompletionStream.processFinishReason, response)
-      .pipe(ChatCompletionStream.processTokenUsage, response)
+    (await this.stream(data, requestConfig)).stream
       .pipe(ChatCompletionStream.processString, response);
     return response;
   }

@@ -1,6 +1,7 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import type { Stream } from './azure-openai-streaming.js';
 import type { AzureOpenAiCompletionUsage } from './client/inference/schema/completion-usage.js';
+import { ChatCompletionStream } from './azure-openai-chat-completion-stream.js';
 
 const logger = createLogger({
   package: 'foundation-models',
@@ -13,7 +14,7 @@ const logger = createLogger({
 export class AzureOpenAiChatCompletionStreamResponse {
   private _usage: AzureOpenAiCompletionUsage | undefined;
   private _finishReason: string | undefined;
-  private _stream: Stream<any> | undefined;
+  private _stream: ChatCompletionStream | undefined;
 
   public get usage() {
     if (!this._usage) {
@@ -37,14 +38,14 @@ export class AzureOpenAiChatCompletionStreamResponse {
     this._finishReason = finishReason;
   }
 
-  public get stream(): Stream<any> {
+  public get stream(): ChatCompletionStream {
     if (!this._stream) {
       throw new Error('Response stream is undefined.');
     }
     return this._stream;
   }
 
-  public set stream(stream: Stream<any>) {
+  public set stream(stream: ChatCompletionStream) {
     this._stream = stream;
   }
 }

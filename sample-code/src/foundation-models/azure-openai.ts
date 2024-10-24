@@ -33,13 +33,13 @@ export async function chatCompletion(): Promise<AzureOpenAiChatCompletionRespons
  * @returns The response from Azure OpenAI containing the response content.
  */
 export async function chatCompletionStream(): Promise<string> {
-  const response = await new AzureOpenAiChatClient('gpt-35-turbo').streamString({
+  const response = await new AzureOpenAiChatClient('gpt-35-turbo').streamContent({
     messages: [{ role: 'user', content: 'What is the capital of France?' }]
   });
 
   let result = '';
   for await (const chunk of response.stream) {
-    logger.info(`chunk: ${JSON.stringify(chunk)}`);
+    logger.info(`chunk: ${chunk}`);
     result += chunk;
   }
 
