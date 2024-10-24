@@ -1,10 +1,3 @@
-import { createLogger } from '@sap-cloud-sdk/util';
-
-const logger = createLogger({
-  package: 'foundation-models',
-  messageContext: 'azure-openai-chat-completion-stream-chunk-response'
-});
-
 /**
  * Azure OpenAI chat completion stream chunk response.
  */

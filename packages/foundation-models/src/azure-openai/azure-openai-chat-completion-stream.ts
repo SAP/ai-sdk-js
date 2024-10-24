@@ -27,7 +27,7 @@ export class ChatCompletionStream extends Stream<any> {
    * @param response
    * @internal
    */
-  static async * processChunk(stream: ChatCompletionStream, response: AzureOpenAiChatCompletionStreamResponse) {
+  static async * processChunk(stream: ChatCompletionStream, response: AzureOpenAiChatCompletionStreamResponse): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse, void, any> {
     for await (const chunk of stream) {
       yield new AzureOpenAiChatCompletionStreamChunkResponse(chunk);
     };
@@ -36,9 +36,8 @@ export class ChatCompletionStream extends Stream<any> {
   /**
    * @internal
    */
-  static async * processString(stream: ChatCompletionStream, response: AzureOpenAiChatCompletionStreamResponse) {
+  static async * processString(stream: ChatCompletionStream, response: AzureOpenAiChatCompletionStreamResponse): AsyncGenerator<string, void, any> {
     for await (const chunk of stream) {
-      // Process each item here
       const deltaContent = chunk.getDeltaContent();
       if (!deltaContent) {
         continue;
@@ -50,7 +49,7 @@ export class ChatCompletionStream extends Stream<any> {
   /**
    * @internal
    */
-  static async * processFinishReason(stream: ChatCompletionStream, response: AzureOpenAiChatCompletionStreamResponse) {
+  static async * processFinishReason(stream: ChatCompletionStream, response: AzureOpenAiChatCompletionStreamResponse): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse, void, any> {
     for await (const chunk of stream) {
       const finishReason = chunk.getFinishReason();
       if (finishReason) {
@@ -74,7 +73,7 @@ export class ChatCompletionStream extends Stream<any> {
   /**
    * @internal
    */
-  static async * processTokenUsage(stream: ChatCompletionStream, response: AzureOpenAiChatCompletionStreamResponse) {
+  static async * processTokenUsage(stream: ChatCompletionStream, response: AzureOpenAiChatCompletionStreamResponse): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse, void, any> {
     for await (const chunk of stream) {
       const usage = chunk.getTokenUsage();
       if (usage) {

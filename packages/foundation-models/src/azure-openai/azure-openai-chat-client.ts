@@ -35,25 +35,6 @@ export class AzureOpenAiChatClient {
     return new AzureOpenAiChatCompletionResponse(response);
   }
 
-  private async createStream(
-    data: AzureOpenAiCreateChatCompletionRequest,
-    requestConfig?: CustomRequestConfig
-  ): Promise<ChatCompletionStream> {
-    // TODO: The return type `any` should actually be the type of the stream response.
-    // But `createChatCompletionStreamResponse` is first available in Azure OpenAI spec preview version 2024-08-01.
-    const response = await this.executeRequest({
-      ...data,
-      stream: true,
-      stream_options: {
-        include_usage: true
-      }
-    }, {
-      ...requestConfig,
-      responseType: 'stream'
-    });
-    return ChatCompletionStream.fromSSEResponse(response);
-  }
-
   /**
    * Creates a completion stream for the chat messages.
    * @param data - The input parameters for the chat completion.
@@ -106,5 +87,24 @@ export class AzureOpenAiChatClient {
       data,
       requestConfig
     );
+  }
+
+  private async createStream(
+    data: AzureOpenAiCreateChatCompletionRequest,
+    requestConfig?: CustomRequestConfig
+  ): Promise<ChatCompletionStream> {
+    // TODO: The return type `any` should actually be the type of the stream response.
+    // But `createChatCompletionStreamResponse` is first available in Azure OpenAI spec preview version 2024-08-01.
+    const response = await this.executeRequest({
+      ...data,
+      stream: true,
+      stream_options: {
+        include_usage: true
+      }
+    }, {
+      ...requestConfig,
+      responseType: 'stream'
+    });
+    return ChatCompletionStream.fromSSEResponse(response);
   }
 }
