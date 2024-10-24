@@ -39,7 +39,7 @@ export async function chatCompletionStream(): Promise<string> {
 
   let result = '';
   for await (const chunk of response.stream!) {
-    logger.info(`chunk: ${chunk}`);
+    logger.info(`chunk: ${JSON.stringify(chunk)}`);
     result += chunk;
   }
 

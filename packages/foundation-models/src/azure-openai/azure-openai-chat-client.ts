@@ -12,6 +12,7 @@ import type { AzureOpenAiCreateChatCompletionRequest } from './client/inference/
 import { createLogger } from '@sap-cloud-sdk/util';
 import { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.js';
 import { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.js';
+import { ChatCompletionStream } from './azure-openai-chat-completion-stream.js';
 
 const logger = createLogger({
   package: 'foundation-models',
@@ -45,7 +46,7 @@ export class AzureOpenAiChatClient {
   private async fromSSEResponse(
     data: AzureOpenAiCreateChatCompletionRequest,
     requestConfig?: CustomRequestConfig
-  ): Promise<Stream<any>> {
+  ): Promise<ChatCompletionStream> {
     // TODO: The return type `any` should actually be the type of the stream response.
     // But `createChatCompletionStreamResponse` is first available in Azure OpenAI spec preview version 2024-08-01.
     const response = await this.executeRequest({
@@ -58,10 +59,8 @@ export class AzureOpenAiChatClient {
       ...requestConfig,
       responseType: 'stream'
     });
-    return Stream.fromSSEResponse(response, new AbortController());
+    return ChatCompletionStream.fromSSEResponse(response);
   }
-
-
 
   /**
    * Creates a completion stream for the chat messages.
@@ -74,10 +73,11 @@ export class AzureOpenAiChatClient {
     requestConfig?: CustomRequestConfig
   ): Promise<AzureOpenAiChatCompletionStreamResponse> {
     const response = new AzureOpenAiChatCompletionStreamResponse();
-    const stream1 = await this.fromSSEResponse(data, requestConfig);
-    const stream2 = new Stream<any>(() => this.pipeFinishReason(stream1, response), new AbortController());
-    const stream3 = new Stream<any>(() => this.pipeTokenUsage(stream2, response), new AbortController());;
-    response.stream = stream3;
+    const stream = await this.fromSSEResponse(data, requestConfig);
+    response.stream = stream
+      .pipe(ChatCompletionStream.processChunk, response)
+      .pipe(ChatCompletionStream.processFinishReason, response)
+      .pipe(ChatCompletionStream.processTokenUsage, response);
     return response;
   }
 
@@ -92,11 +92,17 @@ export class AzureOpenAiChatClient {
     requestConfig?: CustomRequestConfig
   ): Promise<AzureOpenAiChatCompletionStreamResponse> {
     const response = new AzureOpenAiChatCompletionStreamResponse();
-    const stream1 = await this.fromSSEResponse(data, requestConfig);
-    const stream2 = new Stream<any>(() => this.pipeFinishReason(stream1, response), new AbortController());
-    const stream3 = new Stream<any>(() => this.pipeTokenUsage(stream2, response), new AbortController());;
-    const stream4 = new Stream<String>(() => this.pipeString(stream3), new AbortController());
-    response.stream = stream4;
+    // const stream1 = await this.fromSSEResponse(data, requestConfig);
+    // const stream2 = new Stream<any>(() => this.pipeFinishReason(stream1, response));
+    // const stream3 = new Stream<any>(() => this.pipeTokenUsage(stream2, response));
+    // const stream4 = new Stream<String>(() => this.pipeString(stream3));
+    
+    const stream = await this.fromSSEResponse(data, requestConfig);
+    response.stream = stream
+      .pipe(ChatCompletionStream.processChunk, response)
+      .pipe(ChatCompletionStream.processFinishReason, response)
+      .pipe(ChatCompletionStream.processTokenUsage, response)
+      .pipe(ChatCompletionStream.processString, response);
     return response;
   }
 
@@ -120,45 +126,5 @@ export class AzureOpenAiChatClient {
     );
   }
 
-  private async * pipeString(stream: Stream<any>) {
-    for await (const chunk of stream) {
-      // Process each item here
-      const deltaContent = chunk.getDeltaContent();
-      if (!deltaContent) {
-        continue;
-      }
-      yield deltaContent;
-    }
-  }
-
-  private async * pipeFinishReason(stream: Stream<any>, response: AzureOpenAiChatCompletionStreamResponse) {
-    for await (const chunk of stream) {
-      const finishReason = chunk.getFinishReason();
-      if (finishReason) {
-        response.finishReason = finishReason;
-        switch (finishReason) {
-          case 'content_filter':
-            throw new Error('Stream finished with content filter hit.');
-          case 'length':
-            throw new Error('Stream finished with token length exceeded.');
-          case 'stop':
-            logger.debug('Stream finished.');
-            break;
-          default:
-            throw new Error(`Stream finished with unknown reason '${finishReason}'.`);
-        }
-      }
-      yield chunk;
-    }
-  }
-
-  private async * pipeTokenUsage(stream: Stream<any>, response: AzureOpenAiChatCompletionStreamResponse) {
-    for await (const chunk of stream) {
-      const usage = chunk.getTokenUsage();
-      if (usage) {
-        response.usage = usage;
-      }
-      yield chunk;
-    }
-  }
+  
 }

@@ -1,6 +1,7 @@
 import { HttpResponse } from '@sap-cloud-sdk/http-client';
 import { LineDecoder } from './azure-openai-line-decoder.js';
 import { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.js';
+import { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.js';
 
 type Bytes = string | ArrayBuffer | Uint8Array | Buffer | null | undefined;
 
@@ -11,16 +12,9 @@ export type ServerSentEvent = {
 };
 
 export class Stream<Item> implements AsyncIterable<Item> {
-  controller: AbortController;
+  constructor(public iterator: () => AsyncIterator<Item>) {}
 
-  constructor(
-    private iterator: () => AsyncIterator<Item>,
-    controller: AbortController,
-  ) {
-    this.controller = controller;
-  }
-
-  static fromSSEResponse<Item>(response: HttpResponse, controller: AbortController) {
+  static fromSSEResponse<Item>(response: HttpResponse) {
     let consumed = false;
 
     async function* iterator(): AsyncIterator<Item, any, undefined> {
@@ -30,7 +24,7 @@ export class Stream<Item> implements AsyncIterable<Item> {
       consumed = true;
       let done = false;
       try {
-        for await (const sse of _iterSSEMessages(response, controller)) {
+        for await (const sse of _iterSSEMessages(response)) {
           if (done) continue;
 
           if (sse.data.startsWith('[DONE]')) {
@@ -53,7 +47,7 @@ export class Stream<Item> implements AsyncIterable<Item> {
               throw new Error(data.error);
             }
 
-            yield new AzureOpenAiChatCompletionStreamChunkResponse(data) as any;
+            yield data;
           } else {
             let data;
             try {
@@ -65,31 +59,26 @@ export class Stream<Item> implements AsyncIterable<Item> {
             }
             // TODO: Is this where the error should be thrown?
             if (sse.event == 'error') {
-                // throw new Error(data.error, data.message);
-                throw new Error(data.error);
+              // throw new Error(data.error, data.message);
+              throw new Error(data.error);
             }
             yield { event: sse.event, data: data } as any;
           }
         }
         done = true;
       } catch (e) {
-        // If the user calls `stream.controller.abort()`, we should exit without throwing.
-        if (e instanceof Error && e.name === 'AbortError') return;
         throw e;
-      } finally {
-        // If the user `break`s, abort the ongoing request.
-        if (!done) controller.abort();
       }
     }
 
-    return new Stream(iterator, controller);
+    return new Stream(iterator);
   }
 
   /**
    * Generates a Stream from a newline-separated ReadableStream
    * where each item is a JSON value.
    */
-  static fromReadableStream<Item>(readableStream: ReadableStream, controller: AbortController) {
+  static fromReadableStream<Item>(readableStream: ReadableStream) {
     let consumed = false;
 
     async function* iterLines(): AsyncGenerator<string, void, unknown> {
@@ -120,16 +109,11 @@ export class Stream<Item> implements AsyncIterable<Item> {
         }
         done = true;
       } catch (e) {
-        // If the user calls `stream.controller.abort()`, we should exit without throwing.
-        if (e instanceof Error && e.name === 'AbortError') return;
         throw e;
-      } finally {
-        // If the user `break`s, abort the ongoing request.
-        if (!done) controller.abort();
       }
     }
 
-    return new Stream(iterator, controller);
+    return new Stream(iterator);
   }
 
   [Symbol.asyncIterator](): AsyncIterator<Item> {
@@ -159,8 +143,8 @@ export class Stream<Item> implements AsyncIterable<Item> {
     };
 
     return [
-      new Stream(() => teeIterator(left), this.controller),
-      new Stream(() => teeIterator(right), this.controller),
+      new Stream(() => teeIterator(left)),
+      new Stream(() => teeIterator(right)),
     ];
   }
 
@@ -198,18 +182,16 @@ export class Stream<Item> implements AsyncIterable<Item> {
 }
 
 export async function* _iterSSEMessages(
-  response: HttpResponse,
-  controller: AbortController,
+  response: HttpResponse
 ): AsyncGenerator<ServerSentEvent, void, unknown> {
   if (!response.data) {
-    controller.abort();
     throw new Error(`Attempted to iterate over a response with no body`);
   }
 
   const sseDecoder = new SSEDecoder();
   const lineDecoder = new LineDecoder();
 
-//   console.log(response.data);
+  //   console.log(response.data);
 
   const iter = response.data;
   for await (const sseChunk of iterSSEChunks(iter)) {
@@ -239,8 +221,8 @@ async function* iterSSEChunks(iterator: AsyncIterableIterator<Bytes>): AsyncGene
 
     const binaryChunk =
       chunk instanceof ArrayBuffer ? new Uint8Array(chunk)
-      : typeof chunk === 'string' ? new TextEncoder().encode(chunk)
-      : chunk;
+        : typeof chunk === 'string' ? new TextEncoder().encode(chunk)
+          : chunk;
 
     let newData = new Uint8Array(data.length + binaryChunk.length);
     newData.set(data);
