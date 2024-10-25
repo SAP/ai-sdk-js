@@ -81,6 +81,8 @@ app.get('/azure-openai/chat-completion-stream', async (req, res)=> {
     res
       .status(500)
       .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+  } finally {
+    res.end();
   }
 });
 
