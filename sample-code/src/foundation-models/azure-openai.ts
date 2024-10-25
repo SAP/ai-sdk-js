@@ -1,6 +1,7 @@
 import {
   AzureOpenAiChatClient,
-  AzureOpenAiEmbeddingClient
+  AzureOpenAiEmbeddingClient,
+  AzureOpenAiChatCompletionStreamResponse
 } from '@sap-ai-sdk/foundation-models';
 import { createLogger } from '@sap-cloud-sdk/util';
 import type {
@@ -32,20 +33,11 @@ export async function chatCompletion(): Promise<AzureOpenAiChatCompletionRespons
  * Ask Azure OpenAI model about the capital of France with streaming.
  * @returns The response from Azure OpenAI containing the response content.
  */
-export async function chatCompletionStream(): Promise<string> {
+export async function chatCompletionStream(): Promise<AzureOpenAiChatCompletionStreamResponse> {
   const response = await new AzureOpenAiChatClient('gpt-35-turbo').streamContent({
-    messages: [{ role: 'user', content: 'What is the capital of France?' }]
+    messages: [{ role: 'user', content: 'Give me a very long introduction of SAP Cloud SDK.' }]
   });
-
-  let result = '';
-  for await (const chunk of response.stream) {
-    logger.info(`chunk: ${chunk}`);
-    result += chunk;
-  }
-
-  logger.info(`finish reason: ${response.finishReason}`);
-  logger.info(`usage: ${JSON.stringify(response.usage)}`);
-  return result;
+  return response;
 }
 
 /**

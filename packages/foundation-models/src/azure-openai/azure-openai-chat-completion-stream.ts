@@ -62,14 +62,14 @@ export class ChatCompletionStream extends Stream<any> {
         response!.finishReason = finishReason;
         switch (finishReason) {
           case 'content_filter':
-            throw new Error('Stream finished with content filter hit.');
+            logger.error('Stream finished with content filter hit.');
           case 'length':
-            throw new Error('Stream finished with token length exceeded.');
+            logger.error('Stream finished with token length exceeded.');
           case 'stop':
             logger.debug('Stream finished.');
             break;
           default:
-            throw new Error(`Stream finished with unknown reason '${finishReason}'.`);
+            logger.error(`Stream finished with unknown reason '${finishReason}'.`);
         }
       }
       yield chunk;

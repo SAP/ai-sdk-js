@@ -55,7 +55,27 @@ app.get('/azure-openai/chat-completion', async (req, res) => {
 app.get('/azure-openai/chat-completion-stream', async (req, res)=> {
   try {
     const response = await chatCompletionStream();
-    res.send(response);
+
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    let connectionAlive = true;
+
+    res.on('close', () => {
+      connectionAlive = false;
+      res.end();
+    });
+
+    for await (const chunk of response.stream) {
+      if (!connectionAlive) {
+        break;
+      }
+      res.write(chunk);
+
+    }
   } catch (error: any) {
     console.error(error);
     res
@@ -63,7 +83,6 @@ app.get('/azure-openai/chat-completion-stream', async (req, res)=> {
       .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
   }
 });
-
 
 app.get('/azure-openai/embedding', async (req, res) => {
   try {

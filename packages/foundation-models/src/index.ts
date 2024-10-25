@@ -9,7 +9,10 @@ export {
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient,
   AzureOpenAiChatCompletionResponse,
-  AzureOpenAiEmbeddingResponse
+  AzureOpenAiEmbeddingResponse,
+  AzureOpenAiChatCompletionStreamChunkResponse,
+  AzureOpenAiChatCompletionStreamResponse,
+  ChatCompletionStream
 } from './azure-openai/index.js';
 
 export type {
