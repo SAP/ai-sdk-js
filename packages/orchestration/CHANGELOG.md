@@ -1,5 +1,12 @@
 # @sap-ai-sdk/orchestration
 
+## 1.2.0
+
+### Patch Changes
+
+- @sap-ai-sdk/ai-api@1.2.0
+- @sap-ai-sdk/core@1.2.0
+
 ## 1.1.0
 
 ### Minor Changes

@@ -1,5 +1,17 @@
 # @sap-ai-sdk/sample-code
 
+## 1.2.0
+
+### Patch Changes
+
+- Updated dependencies [99498cd]
+- Updated dependencies [99498cd]
+- Updated dependencies [99498cd]
+  - @sap-ai-sdk/foundation-models@1.2.0
+  - @sap-ai-sdk/langchain@1.2.0
+  - @sap-ai-sdk/ai-api@1.2.0
+  - @sap-ai-sdk/orchestration@1.2.0
+
 ## 1.1.0
 
 ### Patch Changes
