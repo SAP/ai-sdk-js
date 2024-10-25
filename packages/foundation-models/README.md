@@ -1,5 +1,7 @@
 # @sap-ai-sdk/foundation-models
 
+SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI Core**, **SAP Generative AI Hub**, and **Orchestration Service**.
+
 This package incorporates generative AI foundation models into your AI activities in SAP AI Core and SAP AI Launchpad.
 
 ## Table of Contents
