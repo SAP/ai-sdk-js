@@ -1,5 +1,7 @@
 # @sap-ai-sdk/langchain
 
+SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI Core**, **SAP Generative AI Hub**, and **Orchestration Service**.
+
 This package provides LangChain model clients built on top of the foundation model clients of the SAP Cloud SDK for AI.
 
 ## Table of Contents
