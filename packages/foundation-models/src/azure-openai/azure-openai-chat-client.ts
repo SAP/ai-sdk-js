@@ -46,8 +46,9 @@ export class AzureOpenAiChatClient {
     requestConfig?: CustomRequestConfig
   ): Promise<AzureOpenAiChatCompletionStreamResponse> {
     const response = new AzureOpenAiChatCompletionStreamResponse();
-    response.stream = (await this.createStream(data, requestConfig))
-      .pipe(ChatCompletionStream.processChunk, response)
+    const stream = await this.createStream(data, requestConfig);
+    response.stream = stream
+      .pipe(ChatCompletionStream.processChunk)
       .pipe(ChatCompletionStream.processFinishReason, response)
       .pipe(ChatCompletionStream.processTokenUsage, response);
     return response;
@@ -64,8 +65,12 @@ export class AzureOpenAiChatClient {
     requestConfig?: CustomRequestConfig
   ): Promise<AzureOpenAiChatCompletionStreamResponse> {
     const response = new AzureOpenAiChatCompletionStreamResponse();
-    (await this.stream(data, requestConfig)).stream
-      .pipe(ChatCompletionStream.processString, response);
+    const stream = await this.createStream(data, requestConfig);
+    response.stream = stream
+      .pipe(ChatCompletionStream.processChunk)
+      .pipe(ChatCompletionStream.processFinishReason, response)
+      .pipe(ChatCompletionStream.processTokenUsage, response)
+      .pipe(ChatCompletionStream.processContent, response);
     return response;
   }
 
@@ -93,8 +98,6 @@ export class AzureOpenAiChatClient {
     data: AzureOpenAiCreateChatCompletionRequest,
     requestConfig?: CustomRequestConfig
   ): Promise<ChatCompletionStream> {
-    // TODO: The return type `any` should actually be the type of the stream response.
-    // But `createChatCompletionStreamResponse` is first available in Azure OpenAI spec preview version 2024-08-01.
     const response = await this.executeRequest({
       ...data,
       stream: true,
