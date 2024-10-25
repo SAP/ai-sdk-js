@@ -1,5 +1,7 @@
 # @sap-ai-sdk/ai-api
 
+SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI Core**, **SAP Generative AI Hub**, and **Orchestration Service**.
+
 This package provides tools to manage scenarios and workflows in SAP AI Core.
 
 - Streamline data preprocessing and model training pipelines.
