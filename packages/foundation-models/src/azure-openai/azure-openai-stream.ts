@@ -13,6 +13,7 @@ type Bytes = string | ArrayBuffer | Uint8Array | Buffer | null | undefined;
 
 /**
  * Stream implemented as an async iterable.
+ * @internal
  */
 export class Stream<Item> implements AsyncIterable<Item> {
   static fromSSEResponse<Item>(response: HttpResponse): Stream<Item> {
