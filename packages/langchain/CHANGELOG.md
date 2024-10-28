@@ -1,5 +1,16 @@
 # @sap-ai-sdk/langchain
 
+## 1.2.0
+
+### Patch Changes
+
+- 99498cd: [Fixed Issue] Fix performance issues when creating embeddings for split documents by sending all documents in one request instead of splitting it up in separate requests.
+- Updated dependencies [99498cd]
+- Updated dependencies [99498cd]
+  - @sap-ai-sdk/foundation-models@1.2.0
+  - @sap-ai-sdk/ai-api@1.2.0
+  - @sap-ai-sdk/core@1.2.0
+
 ## 1.1.0
 
 ### Minor Changes

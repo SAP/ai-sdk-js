@@ -1,5 +1,17 @@
 # @sap-ai-sdk/foundation-models
 
+## 1.2.0
+
+### Minor Changes
+
+- 99498cd: [New Functionality] Add convenience method to access all embeddings in an Azure OpenAI response (`AzureOpenAiEmbeddingResponse`).
+- 99498cd: [Compatibility Note] Adjust `AzureOpenAiEmbeddingOutput` type to include multiple embedding responses as opposed to one.
+
+### Patch Changes
+
+- @sap-ai-sdk/ai-api@1.2.0
+- @sap-ai-sdk/core@1.2.0
+
 ## 1.1.0
 
 ### Minor Changes
