@@ -1,4 +1,4 @@
-import type { AzureOpenAiCompletionUsage } from './client/inference/schema/completion-usage.js';
+import type { AzureOpenAiCompletionUsage } from './client/inference/schema/index.js';
 import type { ChatCompletionStream } from './azure-openai-chat-completion-stream.js';
 
 /**

@@ -63,8 +63,10 @@ export class ChatCompletionStream extends Stream<any> {
         switch (finishReason) {
           case 'content_filter':
             logger.error('Stream finished with content filter hit.');
+            break;
           case 'length':
             logger.error('Stream finished with token length exceeded.');
+            break;
           case 'stop':
             logger.debug('Stream finished.');
             break;
