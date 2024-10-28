@@ -12,7 +12,7 @@ export {
   AzureOpenAiEmbeddingResponse,
   AzureOpenAiChatCompletionStreamChunkResponse,
   AzureOpenAiChatCompletionStreamResponse,
-  ChatCompletionStream
+  AzureOpenAiChatCompletionStream
 } from './azure-openai/index.js';
 
 export type {

@@ -1,72 +1,75 @@
+import { createLogger } from '@sap-cloud-sdk/util';
 import { LineDecoder } from './azure-openai-line-decoder.js';
+import { SSEDecoder } from './azure-openai-sse-decoder.js';
+import type { ServerSentEvent } from './azure-openai-sse-decoder.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
+
+const logger = createLogger({
+  package: 'foundation-models',
+  messageContext: 'azure-openai-stream'
+});
 
 type Bytes = string | ArrayBuffer | Uint8Array | Buffer | null | undefined;
 
-export interface ServerSentEvent {
-  event: string | null;
-  data: string;
-  raw: string[];
-}
-
+/**
+ * Stream implemented as an async iterable.
+ */
 export class Stream<Item> implements AsyncIterable<Item> {
-  constructor(public iterator: () => AsyncIterator<Item>) {}
-
-  static fromSSEResponse<Item>(response: HttpResponse) {
+  static fromSSEResponse<Item>(response: HttpResponse): Stream<Item> {
     let consumed = false;
 
     async function* iterator(): AsyncIterator<Item, any, undefined> {
       if (consumed) {
-        throw new Error('Cannot iterate over a consumed stream, use `.tee()` to split the stream.');
+        throw new Error(
+          'Cannot iterate over a consumed stream, use `.tee()` to split the stream.'
+        );
       }
       consumed = true;
       let done = false;
-      try {
-        for await (const sse of _iterSSEMessages(response)) {
-          if (done) {continue;}
-
-          if (sse.data.startsWith('[DONE]')) {
-            done = true;
-            continue;
-          }
-
-          if (sse.event === null) {
-            let data;
-
-            try {
-              data = JSON.parse(sse.data);
-            } catch (e) {
-              console.error('Could not parse message into JSON:', sse.data);
-              console.error('From chunk:', sse.raw);
-              throw e;
-            }
-
-            if (data && data.error) {
-              throw new Error(data.error);
-            }
-
-            yield data;
-          } else {
-            let data;
-            try {
-              data = JSON.parse(sse.data);
-            } catch (e) {
-              console.error('Could not parse message into JSON:', sse.data);
-              console.error('From chunk:', sse.raw);
-              throw e;
-            }
-            // TODO: Is this where the error should be thrown?
-            if (sse.event == 'error') {
-              // throw new Error(data.error, data.message);
-              throw new Error(data.error);
-            }
-            yield { event: sse.event, data } as any;
-          }
+      for await (const sse of _iterSSEMessages(response)) {
+        if (done) {
+          continue;
         }
-        done = true;
-      } catch (e) {
-        throw e;
+
+        if (sse.data.startsWith('[DONE]')) {
+          done = true;
+          continue;
+        }
+
+        if (sse.event === null) {
+          let data;
+
+          try {
+            data = JSON.parse(sse.data);
+          } catch (e: any) {
+            logger.error(`Could not parse message into JSON: ${sse.data}`);
+            logger.error(`From chunk: ${sse.raw}`);
+            throw e;
+          }
+
+          if (data && data.error) {
+            throw new Error(data.error);
+          }
+
+          yield data;
+        } else {
+          let data;
+          try {
+            data = JSON.parse(sse.data);
+          } catch (e: any) {
+            logger.error(`Could not parse message into JSON: ${sse.data}`);
+            logger.error(`From chunk: ${sse.raw}`);
+            throw e;
+          }
+          // TODO: Is this where the error should be thrown?
+          if (sse.event === 'error') {
+            // throw new Error(data.error, data.message);
+            throw new Error(data.error);
+          }
+          yield { event: sse.event, data } as any;
+        }
       }
+      done = true;
     }
 
     return new Stream(iterator);
@@ -75,8 +78,12 @@ export class Stream<Item> implements AsyncIterable<Item> {
   /**
    * Generates a Stream from a newline-separated ReadableStream
    * where each item is a JSON value.
+   * @param readableStream - The ReadableStream to convert to a Stream.
+   * @returns The Stream.
    */
-  static fromReadableStream<Item>(readableStream: ReadableStream) {
+  static fromReadableStream<Item>(
+    readableStream: ReadableStream
+  ): Stream<Item> {
     let consumed = false;
 
     async function* iterLines(): AsyncGenerator<string, void, unknown> {
@@ -96,23 +103,28 @@ export class Stream<Item> implements AsyncIterable<Item> {
 
     async function* iterator(): AsyncIterator<Item, any, undefined> {
       if (consumed) {
-        throw new Error('Cannot iterate over a consumed stream, use `.tee()` to split the stream.');
+        throw new Error(
+          'Cannot iterate over a consumed stream, use `.tee()` to split the stream.'
+        );
       }
       consumed = true;
       let done = false;
-      try {
-        for await (const line of iterLines()) {
-          if (done) {continue;}
-          if (line) {yield JSON.parse(line);}
+
+      for await (const line of iterLines()) {
+        if (done) {
+          continue;
         }
-        done = true;
-      } catch (e) {
-        throw e;
+        if (line) {
+          yield JSON.parse(line);
+        }
       }
+      done = true;
     }
 
     return new Stream(iterator);
   }
+
+  constructor(public iterator: () => AsyncIterator<Item>) {}
 
   [Symbol.asyncIterator](): AsyncIterator<Item> {
     return this.iterator();
@@ -121,26 +133,29 @@ export class Stream<Item> implements AsyncIterable<Item> {
   /**
    * Splits the stream into two streams which can be
    * independently read from at different speeds.
+   * @returns A tuple of two streams.
    */
   tee(): [Stream<Item>, Stream<Item>] {
     const left: Promise<IteratorResult<Item>>[] = [];
     const right: Promise<IteratorResult<Item>>[] = [];
     const iterator = this.iterator();
 
-    const teeIterator = (queue: Promise<IteratorResult<Item>>[]): AsyncIterator<Item> => ({
-        next: () => {
-          if (queue.length === 0) {
-            const result = iterator.next();
-            left.push(result);
-            right.push(result);
-          }
-          return queue.shift()!;
-        },
-      });
+    const teeIterator = (
+      queue: Promise<IteratorResult<Item>>[]
+    ): AsyncIterator<Item> => ({
+      next: () => {
+        if (queue.length === 0) {
+          const result = iterator.next();
+          left.push(result);
+          right.push(result);
+        }
+        return queue.shift()!;
+      }
+    });
 
     return [
       new Stream(() => teeIterator(left)),
-      new Stream(() => teeIterator(right)),
+      new Stream(() => teeIterator(right))
     ];
   }
 
@@ -148,35 +163,40 @@ export class Stream<Item> implements AsyncIterable<Item> {
    * Converts this stream to a newline-separated ReadableStream of
    * JSON stringified values in the stream
    * which can be turned back into a Stream with `Stream.fromReadableStream()`.
+   * @returns The ReadableStream.
    */
   toReadableStream(): ReadableStream {
-    const self = this;
     let iter: AsyncIterator<Item>;
     const encoder = new TextEncoder();
 
-    return new ReadableStream({
-      async start() {
-        iter = self[Symbol.asyncIterator]();
+    const underlyingDefaultSource: UnderlyingDefaultSource<any> = {
+      start: async () => {
+        iter = this[Symbol.asyncIterator]();
       },
-      async pull(ctrl: any) {
+      pull: async (ctrl: any) => {
         try {
           const { value, done } = await iter.next();
-          if (done) {return ctrl.close();}
-
+          if (done) {
+            return ctrl.close();
+          }
           const bytes = encoder.encode(JSON.stringify(value) + '\n');
-
           ctrl.enqueue(bytes);
         } catch (err) {
           ctrl.error(err);
         }
       },
-      async cancel() {
+      cancel: async () => {
         await iter.return?.();
-      },
-    });
+      }
+    };
+
+    return new ReadableStream(underlyingDefaultSource);
   }
 }
 
+/**
+ * @internal
+ */
 export async function* _iterSSEMessages(
   response: HttpResponse
 ): AsyncGenerator<ServerSentEvent, void, unknown> {
@@ -187,27 +207,34 @@ export async function* _iterSSEMessages(
   const sseDecoder = new SSEDecoder();
   const lineDecoder = new LineDecoder();
 
-  //   console.log(response.data);
-
   const iter = response.data;
   for await (const sseChunk of iterSSEChunks(iter)) {
     for (const line of lineDecoder.decode(sseChunk)) {
       const sse = sseDecoder.decode(line);
-      if (sse) {yield sse;}
+      if (sse) {
+        yield sse;
+      }
     }
   }
 
   for (const line of lineDecoder.flush()) {
     const sse = sseDecoder.decode(line);
-    if (sse) {yield sse;}
+    if (sse) {
+      yield sse;
+    }
   }
 }
 
 /**
  * Given an async iterable iterator, iterates over it and yields full
  * SSE chunks, i.e. yields when a double new-line is encountered.
+ * @param iterator - Async iterable iterator.
+ * @returns Async generator of Uint8Array.
+ * @internal
  */
-async function* iterSSEChunks(iterator: AsyncIterableIterator<Bytes>): AsyncGenerator<Uint8Array> {
+async function* iterSSEChunks(
+  iterator: AsyncIterableIterator<Bytes>
+): AsyncGenerator<Uint8Array> {
   let data = new Uint8Array();
 
   for await (const chunk of iterator) {
@@ -216,8 +243,10 @@ async function* iterSSEChunks(iterator: AsyncIterableIterator<Bytes>): AsyncGene
     }
 
     const binaryChunk =
-      chunk instanceof ArrayBuffer ? new Uint8Array(chunk)
-        : typeof chunk === 'string' ? new TextEncoder().encode(chunk)
+      chunk instanceof ArrayBuffer
+        ? new Uint8Array(chunk)
+        : typeof chunk === 'string'
+          ? new TextEncoder().encode(chunk)
           : chunk;
 
     const newData = new Uint8Array(data.length + binaryChunk.length);
@@ -268,62 +297,12 @@ function findDoubleNewlineIndex(buffer: Uint8Array): number {
   return -1;
 }
 
-class SSEDecoder {
-  private data: string[];
-  private event: string | null;
-  private chunks: string[];
-
-  constructor() {
-    this.event = null;
-    this.data = [];
-    this.chunks = [];
-  }
-
-  decode(line: string) {
-    if (line.endsWith('\r')) {
-      line = line.substring(0, line.length - 1);
-    }
-
-    if (!line) {
-      // empty line and we didn't previously encounter any messages
-      if (!this.event && !this.data.length) {return null;}
-
-      const sse: ServerSentEvent = {
-        event: this.event,
-        data: this.data.join('\n'),
-        raw: this.chunks,
-      };
-
-      this.event = null;
-      this.data = [];
-      this.chunks = [];
-
-      return sse;
-    }
-
-    this.chunks.push(line);
-
-    if (line.startsWith(':')) {
-      return null;
-    }
-
-    let [fieldname, _, value] = partition(line, ':');
-
-    if (value.startsWith(' ')) {
-      value = value.substring(1);
-    }
-
-    if (fieldname === 'event') {
-      this.event = value;
-    } else if (fieldname === 'data') {
-      this.data.push(value);
-    }
-
-    return null;
-  }
-}
-
-/** This is an internal helper function that's just used for testing */
+/**
+ * This is an internal helper function that's just used for testing.
+ * @param chunks - The chunks to decode.
+ * @returns The decoded lines.
+ * @internal
+ */
 export function _decodeChunks(chunks: string[]): string[] {
   const decoder = new LineDecoder();
   const lines: string[] = [];
@@ -332,13 +311,4 @@ export function _decodeChunks(chunks: string[]): string[] {
   }
 
   return lines;
-}
-
-function partition(str: string, delimiter: string): [string, string, string] {
-  const index = str.indexOf(delimiter);
-  if (index !== -1) {
-    return [str.substring(0, index), delimiter, str.substring(index + delimiter.length)];
-  }
-
-  return [str, '', ''];
 }

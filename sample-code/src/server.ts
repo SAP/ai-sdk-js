@@ -52,7 +52,7 @@ app.get('/azure-openai/chat-completion', async (req, res) => {
   }
 });
 
-app.get('/azure-openai/chat-completion-stream', async (req, res)=> {
+app.get('/azure-openai/chat-completion-stream', async (req, res) => {
   try {
     const response = await chatCompletionStream();
 
@@ -74,7 +74,6 @@ app.get('/azure-openai/chat-completion-stream', async (req, res)=> {
         break;
       }
       res.write(chunk);
-
     }
   } catch (error: any) {
     console.error(error);

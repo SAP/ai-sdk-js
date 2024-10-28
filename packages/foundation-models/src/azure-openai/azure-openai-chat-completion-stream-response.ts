@@ -1,5 +1,5 @@
 import type { AzureOpenAiCompletionUsage } from './client/inference/schema/index.js';
-import type { ChatCompletionStream } from './azure-openai-chat-completion-stream.js';
+import type { AzureOpenAiChatCompletionStream } from './azure-openai-chat-completion-stream.js';
 
 /**
  * Azure OpenAI chat completion stream response.
@@ -7,7 +7,7 @@ import type { ChatCompletionStream } from './azure-openai-chat-completion-stream
 export class AzureOpenAiChatCompletionStreamResponse {
   private _usage: AzureOpenAiCompletionUsage | undefined;
   private _finishReason: string | undefined;
-  private _stream: ChatCompletionStream | undefined;
+  private _stream: AzureOpenAiChatCompletionStream | undefined;
 
   public get usage(): AzureOpenAiCompletionUsage {
     if (!this._usage) {
@@ -31,14 +31,14 @@ export class AzureOpenAiChatCompletionStreamResponse {
     this._finishReason = finishReason;
   }
 
-  public get stream(): ChatCompletionStream {
+  public get stream(): AzureOpenAiChatCompletionStream {
     if (!this._stream) {
       throw new Error('Response stream is undefined.');
     }
     return this._stream;
   }
 
-  public set stream(stream: ChatCompletionStream) {
+  public set stream(stream: AzureOpenAiChatCompletionStream) {
     this._stream = stream;
   }
 }

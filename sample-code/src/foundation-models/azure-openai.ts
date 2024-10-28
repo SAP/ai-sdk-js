@@ -1,12 +1,12 @@
 import {
   AzureOpenAiChatClient,
-  AzureOpenAiEmbeddingClient,
-  AzureOpenAiChatCompletionStreamResponse
+  AzureOpenAiEmbeddingClient
 } from '@sap-ai-sdk/foundation-models';
 import { createLogger } from '@sap-cloud-sdk/util';
 import type {
   AzureOpenAiChatCompletionResponse,
-  AzureOpenAiEmbeddingResponse
+  AzureOpenAiEmbeddingResponse,
+  AzureOpenAiChatCompletionStreamResponse
 } from '@sap-ai-sdk/foundation-models';
 
 const logger = createLogger({
@@ -34,8 +34,15 @@ export async function chatCompletion(): Promise<AzureOpenAiChatCompletionRespons
  * @returns The response from Azure OpenAI containing the response content.
  */
 export async function chatCompletionStream(): Promise<AzureOpenAiChatCompletionStreamResponse> {
-  const response = await new AzureOpenAiChatClient('gpt-35-turbo').streamContent({
-    messages: [{ role: 'user', content: 'Give me a very long introduction of SAP Cloud SDK.' }]
+  const response = await new AzureOpenAiChatClient(
+    'gpt-35-turbo'
+  ).streamContent({
+    messages: [
+      {
+        role: 'user',
+        content: 'Give me a very long introduction of SAP Cloud SDK.'
+      }
+    ]
   });
   return response;
 }

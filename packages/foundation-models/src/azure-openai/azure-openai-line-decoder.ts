@@ -36,7 +36,9 @@ export class LineDecoder {
       return [];
     }
 
-    const trailingNewline = LineDecoder.NEWLINE_CHARS.has(text[text.length - 1] || '');
+    const trailingNewline = LineDecoder.NEWLINE_CHARS.has(
+      text[text.length - 1] || ''
+    );
     let lines = text.split(LineDecoder.NEWLINE_REGEXP);
 
     // if there is a trailing new line then the last entry will be an empty
@@ -63,8 +65,12 @@ export class LineDecoder {
   }
 
   decodeText(bytes: Bytes): string {
-    if (bytes == null) {return '';}
-    if (typeof bytes === 'string') {return bytes;}
+    if (bytes == null) {
+      return '';
+    }
+    if (typeof bytes === 'string') {
+      return bytes;
+    }
 
     // Node:
     if (typeof Buffer !== 'undefined') {
@@ -76,7 +82,7 @@ export class LineDecoder {
       }
 
       throw new Error(
-        `Unexpected: received non-Uint8Array (${bytes.constructor.name}) stream chunk in an environment with a global "Buffer" defined, which this library assumes to be Node. Please report this error.`,
+        `Unexpected: received non-Uint8Array (${bytes.constructor.name}) stream chunk in an environment with a global "Buffer" defined, which this library assumes to be Node. Please report this error.`
       );
     }
 
@@ -90,12 +96,12 @@ export class LineDecoder {
       throw new Error(
         `Unexpected: received non-Uint8Array/ArrayBuffer (${
           (bytes as any).constructor.name
-        }) in a web platform. Please report this error.`,
+        }) in a web platform. Please report this error.`
       );
     }
 
     throw new Error(
-      'Unexpected: neither Buffer nor TextDecoder are available as globals. Please report this error.',
+      'Unexpected: neither Buffer nor TextDecoder are available as globals. Please report this error.'
     );
   }
 

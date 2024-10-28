@@ -7,7 +7,7 @@ import {
 import { apiVersion, type AzureOpenAiChatModel } from './model-types.js';
 import { AzureOpenAiChatCompletionResponse } from './azure-openai-chat-completion-response.js';
 import { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.js';
-import { ChatCompletionStream } from './azure-openai-chat-completion-stream.js';
+import { AzureOpenAiChatCompletionStream } from './azure-openai-chat-completion-stream.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { AzureOpenAiCreateChatCompletionRequest } from './client/inference/schema/index.js';
 
@@ -19,7 +19,7 @@ export class AzureOpenAiChatClient {
    * Creates an instance of the Azure OpenAI chat client.
    * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
    */
-  constructor(private modelDeployment: ModelDeployment<AzureOpenAiChatModel>) { }
+  constructor(private modelDeployment: ModelDeployment<AzureOpenAiChatModel>) {}
 
   /**
    * Creates a completion for the chat messages.
@@ -48,9 +48,9 @@ export class AzureOpenAiChatClient {
     const response = new AzureOpenAiChatCompletionStreamResponse();
     const stream = await this.createStream(data, requestConfig);
     response.stream = stream
-      .pipe(ChatCompletionStream.processChunk)
-      .pipe(ChatCompletionStream.processFinishReason, response)
-      .pipe(ChatCompletionStream.processTokenUsage, response);
+      .pipe(AzureOpenAiChatCompletionStream.processChunk)
+      .pipe(AzureOpenAiChatCompletionStream.processFinishReason, response)
+      .pipe(AzureOpenAiChatCompletionStream.processTokenUsage, response);
     return response;
   }
 
@@ -67,10 +67,10 @@ export class AzureOpenAiChatClient {
     const response = new AzureOpenAiChatCompletionStreamResponse();
     const stream = await this.createStream(data, requestConfig);
     response.stream = stream
-      .pipe(ChatCompletionStream.processChunk)
-      .pipe(ChatCompletionStream.processFinishReason, response)
-      .pipe(ChatCompletionStream.processTokenUsage, response)
-      .pipe(ChatCompletionStream.processContent, response);
+      .pipe(AzureOpenAiChatCompletionStream.processChunk)
+      .pipe(AzureOpenAiChatCompletionStream.processFinishReason, response)
+      .pipe(AzureOpenAiChatCompletionStream.processTokenUsage, response)
+      .pipe(AzureOpenAiChatCompletionStream.processContent, response);
     return response;
   }
 
@@ -97,17 +97,20 @@ export class AzureOpenAiChatClient {
   private async createStream(
     data: AzureOpenAiCreateChatCompletionRequest,
     requestConfig?: CustomRequestConfig
-  ): Promise<ChatCompletionStream> {
-    const response = await this.executeRequest({
-      ...data,
-      stream: true,
-      stream_options: {
-        include_usage: true
+  ): Promise<AzureOpenAiChatCompletionStream> {
+    const response = await this.executeRequest(
+      {
+        ...data,
+        stream: true,
+        stream_options: {
+          include_usage: true
+        }
+      },
+      {
+        ...requestConfig,
+        responseType: 'stream'
       }
-    }, {
-      ...requestConfig,
-      responseType: 'stream'
-    });
-    return ChatCompletionStream.fromSSEResponse(response);
+    );
+    return AzureOpenAiChatCompletionStream.fromSSEResponse(response);
   }
 }
