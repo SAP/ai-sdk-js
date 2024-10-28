@@ -143,6 +143,20 @@ export function mockDeploymentsList(
 /**
  * @internal
  */
+export async function parseMockResponseToString(
+  client: string,
+  fileName: string
+): Promise<string> {
+  const fileContent = await readFile(
+    path.join(__dirname, 'data', client, fileName),
+    'utf-8'
+  );
+  return fileContent;
+}
+
+/**
+ * @internal
+ */
 export async function parseMockResponse<T>(
   client: string,
   fileName: string

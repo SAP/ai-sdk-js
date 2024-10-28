@@ -21,9 +21,7 @@ export class AzureOpenAiChatCompletionStream extends Stream<any> {
    * @returns Chat completion stream.
    * @internal
    */
-  static fromSSEResponse(
-    response: HttpResponse
-  ): AzureOpenAiChatCompletionStream {
+  static fromSSEResponse(response: HttpResponse): AzureOpenAiChatCompletionStream {
     const stream = Stream.fromSSEResponse<any>(response);
     return new AzureOpenAiChatCompletionStream(stream.iterator);
   }
@@ -120,9 +118,7 @@ export class AzureOpenAiChatCompletionStream extends Stream<any> {
     response?: AzureOpenAiChatCompletionStreamResponse
   ): AzureOpenAiChatCompletionStream {
     if (response) {
-      return new AzureOpenAiChatCompletionStream(() =>
-        processFn(this, response)
-      );
+      return new AzureOpenAiChatCompletionStream(() => processFn(this, response));
     }
     return new AzureOpenAiChatCompletionStream(() => processFn(this));
   }
