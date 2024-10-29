@@ -75,6 +75,13 @@ app.get('/azure-openai/chat-completion-stream', async (req, res) => {
       }
       res.write(chunk);
     }
+
+    res.write('\n\n---------------------------\n');
+    res.write(`Finish reason: ${response.finishReason}\n`);
+    res.write('Token usage:\n');
+    res.write(`  - Completion tokens: ${response.usage.completion_tokens}\n`);
+    res.write(`  - Prompt tokens: ${response.usage.prompt_tokens}\n`);
+    res.write(`  - Total tokens: ${response.usage.total_tokens}\n`);
   } catch (error: any) {
     console.error(error);
     res

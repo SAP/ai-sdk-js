@@ -33,7 +33,9 @@ export async function chatCompletion(): Promise<AzureOpenAiChatCompletionRespons
  * Ask Azure OpenAI model about the capital of France with streaming.
  * @returns The response from Azure OpenAI containing the response content.
  */
-export async function chatCompletionStream(): Promise<AzureOpenAiChatCompletionStreamResponse> {
+export async function chatCompletionStream(): Promise<
+  AzureOpenAiChatCompletionStreamResponse<string>
+> {
   const response = await new AzureOpenAiChatClient(
     'gpt-35-turbo'
   ).streamContent({

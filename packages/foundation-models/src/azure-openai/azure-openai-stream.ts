@@ -16,7 +16,7 @@ type Bytes = string | ArrayBuffer | Uint8Array | Buffer | null | undefined;
  * @internal
  */
 export class Stream<Item> implements AsyncIterable<Item> {
-  static fromSSEResponse<Item>(response: HttpResponse): Stream<Item> {
+  protected static fromSSEResponse<Item>(response: HttpResponse): Stream<Item> {
     let consumed = false;
 
     async function* iterator(): AsyncIterator<Item, any, undefined> {
@@ -76,122 +76,10 @@ export class Stream<Item> implements AsyncIterable<Item> {
     return new Stream(iterator);
   }
 
-  /**
-   * Generates a Stream from a newline-separated ReadableStream
-   * where each item is a JSON value.
-   * @param readableStream - The ReadableStream to convert to a Stream.
-   * @returns The Stream.
-   */
-  static fromReadableStream<Item>(
-    readableStream: ReadableStream
-  ): Stream<Item> {
-    let consumed = false;
-
-    async function* iterLines(): AsyncGenerator<string, void, unknown> {
-      const lineDecoder = new LineDecoder();
-
-      const iter = readableStream;
-      for await (const chunk of iter) {
-        for (const line of lineDecoder.decode(chunk)) {
-          yield line;
-        }
-      }
-
-      for (const line of lineDecoder.flush()) {
-        yield line;
-      }
-    }
-
-    async function* iterator(): AsyncIterator<Item, any, undefined> {
-      if (consumed) {
-        throw new Error(
-          'Cannot iterate over a consumed stream, use `.tee()` to split the stream.'
-        );
-      }
-      consumed = true;
-      let done = false;
-
-      for await (const line of iterLines()) {
-        if (done) {
-          continue;
-        }
-        if (line) {
-          yield JSON.parse(line);
-        }
-      }
-      done = true;
-    }
-
-    return new Stream(iterator);
-  }
-
   constructor(public iterator: () => AsyncIterator<Item>) {}
 
   [Symbol.asyncIterator](): AsyncIterator<Item> {
     return this.iterator();
-  }
-
-  /**
-   * Splits the stream into two streams which can be
-   * independently read from at different speeds.
-   * @returns A tuple of two streams.
-   */
-  tee(): [Stream<Item>, Stream<Item>] {
-    const left: Promise<IteratorResult<Item>>[] = [];
-    const right: Promise<IteratorResult<Item>>[] = [];
-    const iterator = this.iterator();
-
-    const teeIterator = (
-      queue: Promise<IteratorResult<Item>>[]
-    ): AsyncIterator<Item> => ({
-      next: () => {
-        if (queue.length === 0) {
-          const result = iterator.next();
-          left.push(result);
-          right.push(result);
-        }
-        return queue.shift()!;
-      }
-    });
-
-    return [
-      new Stream(() => teeIterator(left)),
-      new Stream(() => teeIterator(right))
-    ];
-  }
-
-  /**
-   * Converts this stream to a newline-separated ReadableStream of
-   * JSON stringified values in the stream
-   * which can be turned back into a Stream with `Stream.fromReadableStream()`.
-   * @returns The ReadableStream.
-   */
-  toReadableStream(): ReadableStream {
-    let iter: AsyncIterator<Item>;
-    const encoder = new TextEncoder();
-
-    const underlyingDefaultSource: UnderlyingDefaultSource<any> = {
-      start: async () => {
-        iter = this[Symbol.asyncIterator]();
-      },
-      pull: async (ctrl: any) => {
-        try {
-          const { value, done } = await iter.next();
-          if (done) {
-            return ctrl.close();
-          }
-          const bytes = encoder.encode(JSON.stringify(value) + '\n');
-          ctrl.enqueue(bytes);
-        } catch (err) {
-          ctrl.error(err);
-        }
-      },
-      cancel: async () => {
-        await iter.return?.();
-      }
-    };
-
-    return new ReadableStream(underlyingDefaultSource);
   }
 }
 

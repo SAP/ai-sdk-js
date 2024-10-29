@@ -2,16 +2,16 @@
  * Azure OpenAI chat completion stream chunk response.
  */
 export class AzureOpenAiChatCompletionStreamChunkResponse {
-  constructor(public readonly chunk: any) {
-    this.chunk = chunk;
+  constructor(public readonly data: any) {
+    this.data = data;
   }
 
   /**
    * Usage of tokens in the chunk response.
    * @returns Token usage.
    */
-  getTokenUsage(): this['chunk']['usage'] {
-    return this.chunk.usage;
+  getTokenUsage(): this['data']['usage'] {
+    return this.data.usage;
   }
 
   /**
@@ -21,8 +21,8 @@ export class AzureOpenAiChatCompletionStreamChunkResponse {
    */
   getFinishReason(
     choiceIndex = 0
-  ): this['chunk']['choices'][0]['finish_reason'] {
-    return this.chunk.choices[choiceIndex]?.finish_reason;
+  ): this['data']['choices'][0]['finish_reason'] {
+    return this.data.choices[choiceIndex]?.finish_reason;
   }
 
   /**
@@ -31,6 +31,6 @@ export class AzureOpenAiChatCompletionStreamChunkResponse {
    * @returns The message delta content.
    */
   getDeltaContent(choiceIndex = 0): string | undefined | null {
-    return this.chunk.choices[choiceIndex]?.delta?.content;
+    return this.data.choices[choiceIndex]?.delta?.content;
   }
 }

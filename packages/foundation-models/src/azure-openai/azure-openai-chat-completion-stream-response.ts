@@ -4,10 +4,10 @@ import type { AzureOpenAiChatCompletionStream } from './azure-openai-chat-comple
 /**
  * Azure OpenAI chat completion stream response.
  */
-export class AzureOpenAiChatCompletionStreamResponse {
+export class AzureOpenAiChatCompletionStreamResponse<T> {
   private _usage: AzureOpenAiCompletionUsage | undefined;
   private _finishReason: string | undefined;
-  private _stream: AzureOpenAiChatCompletionStream | undefined;
+  private _stream: AzureOpenAiChatCompletionStream<T> | undefined;
 
   public get usage(): AzureOpenAiCompletionUsage {
     if (!this._usage) {
@@ -31,14 +31,14 @@ export class AzureOpenAiChatCompletionStreamResponse {
     this._finishReason = finishReason;
   }
 
-  public get stream(): AzureOpenAiChatCompletionStream {
+  public get stream(): AzureOpenAiChatCompletionStream<T> {
     if (!this._stream) {
       throw new Error('Response stream is undefined.');
     }
     return this._stream;
   }
 
-  public set stream(stream: AzureOpenAiChatCompletionStream) {
+  public set stream(stream: AzureOpenAiChatCompletionStream<T>) {
     this._stream = stream;
   }
 }

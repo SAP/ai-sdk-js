@@ -14,16 +14,16 @@ const logger = createLogger({
  */
 // TODO: The Item type `any` should actually be the type of the stream chunk response.
 // But `createChatCompletionStreamResponse` is first available in Azure OpenAI spec preview version 2024-08-01.
-export class AzureOpenAiChatCompletionStream extends Stream<any> {
+export class AzureOpenAiChatCompletionStream<T> extends Stream<T> {
   /**
    * Create a chat completion stream based on the http response.
    * @param response - Http response.
    * @returns Chat completion stream.
    * @internal
    */
-  static fromSSEResponse(
+  public static create(
     response: HttpResponse
-  ): AzureOpenAiChatCompletionStream {
+  ): AzureOpenAiChatCompletionStream<any> {
     const stream = Stream.fromSSEResponse<any>(response);
     return new AzureOpenAiChatCompletionStream(stream.iterator);
   }
@@ -34,7 +34,7 @@ export class AzureOpenAiChatCompletionStream extends Stream<any> {
    * @internal
    */
   static async *processChunk(
-    stream: AzureOpenAiChatCompletionStream
+    stream: AzureOpenAiChatCompletionStream<any>
   ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse, void, any> {
     for await (const chunk of stream) {
       yield new AzureOpenAiChatCompletionStreamChunkResponse(chunk);
@@ -47,7 +47,7 @@ export class AzureOpenAiChatCompletionStream extends Stream<any> {
    * @internal
    */
   static async *processContent(
-    stream: AzureOpenAiChatCompletionStream
+    stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>
   ): AsyncGenerator<string, void, any> {
     for await (const chunk of stream) {
       const deltaContent = chunk.getDeltaContent();
@@ -62,8 +62,8 @@ export class AzureOpenAiChatCompletionStream extends Stream<any> {
    * @internal
    */
   static async *processFinishReason(
-    stream: AzureOpenAiChatCompletionStream,
-    response?: AzureOpenAiChatCompletionStreamResponse
+    stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
+    response?: AzureOpenAiChatCompletionStreamResponse<any>
   ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse, void, any> {
     for await (const chunk of stream) {
       const finishReason = chunk.getFinishReason();
@@ -93,8 +93,8 @@ export class AzureOpenAiChatCompletionStream extends Stream<any> {
    * @internal
    */
   static async *processTokenUsage(
-    stream: AzureOpenAiChatCompletionStream,
-    response?: AzureOpenAiChatCompletionStreamResponse
+    stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
+    response?: AzureOpenAiChatCompletionStreamResponse<any>
   ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse, void, any> {
     for await (const chunk of stream) {
       const usage = chunk.getTokenUsage();
@@ -105,20 +105,20 @@ export class AzureOpenAiChatCompletionStream extends Stream<any> {
     }
   }
 
-  constructor(public iterator: () => AsyncIterator<any>) {
+  constructor(public iterator: () => AsyncIterator<T>) {
     super(iterator);
   }
 
   /**
    * @internal
    */
-  pipe(
+  pipe<K>(
     processFn: (
-      stream: AzureOpenAiChatCompletionStream,
-      response?: AzureOpenAiChatCompletionStreamResponse
-    ) => AsyncIterator<any, any, any>,
-    response?: AzureOpenAiChatCompletionStreamResponse
-  ): AzureOpenAiChatCompletionStream {
+      stream: AzureOpenAiChatCompletionStream<T>,
+      response?: AzureOpenAiChatCompletionStreamResponse<any>
+    ) => AsyncIterator<K, any, any>,
+    response?: AzureOpenAiChatCompletionStreamResponse<any>
+  ): AzureOpenAiChatCompletionStream<K> {
     if (response) {
       return new AzureOpenAiChatCompletionStream(() =>
         processFn(this, response)
