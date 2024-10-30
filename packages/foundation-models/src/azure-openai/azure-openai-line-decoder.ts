@@ -87,20 +87,6 @@ export class LineDecoder {
       );
     }
 
-    // Browser
-    if (typeof TextDecoder !== 'undefined') {
-      if (bytes instanceof Uint8Array || bytes instanceof ArrayBuffer) {
-        this.textDecoder ??= new TextDecoder('utf8');
-        return this.textDecoder.decode(bytes);
-      }
-
-      throw new Error(
-        `Unexpected: received non-Uint8Array/ArrayBuffer (${
-          (bytes as any).constructor.name
-        }) in a web platform. Please report this error.`
-      );
-    }
-
     throw new Error(
       'Unexpected: neither Buffer nor TextDecoder are available as globals. Please report this error.'
     );

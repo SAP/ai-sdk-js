@@ -143,7 +143,7 @@ export function mockDeploymentsList(
 /**
  * @internal
  */
-export async function parseMockResponseToString(
+export async function parseFileToString(
   client: string,
   fileName: string
 ): Promise<string> {
