@@ -30,7 +30,6 @@
     "schema-tests": "pnpm -F=@sap-ai-sdk/schema-tests",
     "sample-code": "pnpm -F=@sap-ai-sdk/sample-code",
     "sample-cap": "pnpm -F=@sap-ai-sdk/sample-cap",
-    "check:public-api": "pnpm -r check:public-api",
     "check:deps": "pnpm -r -F !./tests/smoke-tests -F !./tests/schema-tests exec depcheck --ignores=\"nock,@jest/globals\" --quiet"
   },
   "devDependencies": {

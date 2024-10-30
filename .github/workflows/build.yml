@@ -33,7 +33,10 @@ jobs:
       - name: Check CommonJS compatibility
         run: pnpm compile:cjs
       - name: Check public API
-        run: pnpm check:public-api
+        run: sap/cloud-sdk-js/.github/actions/check-public-api@public-api-check-gh-action
+        with:
+          force-internal-exports: 'false'
+          ignored-paths: 'client/inference/schema, client/api/schema'
       - name: Check dependencies
         run: pnpm check:deps
       - name: License Check
