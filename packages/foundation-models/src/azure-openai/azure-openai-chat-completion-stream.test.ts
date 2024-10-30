@@ -1,5 +1,5 @@
 import { parseFileToString } from "../../../../test-util/mock-http.js";
-import { AzureOpenAiChatCompletionStream } from "../../internal.js";
+import { AzureOpenAiChatCompletionStream } from "./azure-openai-chat-completion-stream.js";
 import { LineDecoder } from "./azure-openai-line-decoder.js";
 import { SSEDecoder } from "./azure-openai-sse-decoder.js";
 
