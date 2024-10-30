@@ -35,37 +35,18 @@ export class SseStream<Item> implements AsyncIterable<Item> {
           continue;
         }
 
-        if (sse.event === null) {
-          let data;
+        try {
+          const data = JSON.parse(sse.data);
 
-          try {
-            data = JSON.parse(sse.data);
-          } catch (e: any) {
-            logger.error(`Could not parse message into JSON: ${sse.data}`);
-            logger.error(`From chunk: ${sse.raw}`);
-            throw e;
-          }
-
-          if (data && data.error) {
+          if (data?.error) {
             throw new Error(data.error);
           }
-
-          yield data;
-        } else {
-          let data;
-          try {
-            data = JSON.parse(sse.data);
-          } catch (e: any) {
-            logger.error(`Could not parse message into JSON: ${sse.data}`);
-            logger.error(`From chunk: ${sse.raw}`);
-            throw e;
-          }
-          // TODO: Is this where the error should be thrown?
-          if (sse.event === 'error') {
-            // throw new Error(data.error, data.message);
-            throw new Error(data.error);
-          }
-          yield { event: sse.event, data } as any;
+          
+          yield sse.event === null ? data : { event: sse.event, data } as any;
+        } catch(error: any) {
+          logger.error(`Could not parse message into JSON: ${sse.data}`);
+          logger.error(`From chunk: ${sse.raw}`);
+          throw error;
         }
       }
       done = true;
