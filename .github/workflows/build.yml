@@ -32,8 +32,8 @@ jobs:
       - run: pnpm lint
       - name: Check CommonJS compatibility
         run: pnpm compile:cjs
-      - name: Install TypeScript
-        run: pnpm add -D typescript
+      - name: Set NODE_PATH
+        run: echo "NODE_PATH=$(pwd)/node_modules" >> $GITHUB_ENV
       - name: Check public API
         uses: sap/cloud-sdk-js/.github/actions/check-public-api@public-api-check-gh-action
         with:
