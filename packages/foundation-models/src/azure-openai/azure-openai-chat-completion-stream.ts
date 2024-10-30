@@ -12,9 +12,7 @@ const logger = createLogger({
 /**
  * Chat completion stream containing post-processing functions.
  */
-// TODO: The Item type `any` should actually be the type of the stream chunk response.
-// But `createChatCompletionStreamResponse` is first available in Azure OpenAI spec preview version 2024-08-01.
-export class AzureOpenAiChatCompletionStream<T> extends Stream<T> {
+export class AzureOpenAiChatCompletionStream<Item> extends Stream<Item> {
   /**
    * Create a chat completion stream based on the http response.
    * @param response - Http response.
@@ -24,7 +22,8 @@ export class AzureOpenAiChatCompletionStream<T> extends Stream<T> {
   public static create(
     response: HttpResponse
   ): AzureOpenAiChatCompletionStream<any> {
-    const stream = Stream.fromSSEResponse<any>(response);
+    // TODO: Change `any` to `CreateChatCompletionStreamResponse` once the preview spec becomes stable.
+    const stream = Stream.fromSSEResponse<any>(response); // TODO: Change `any` to `CreateChatCompletionStreamResponse` once the preview spec becomes stable.
     return new AzureOpenAiChatCompletionStream(stream.iterator);
   }
 
@@ -34,8 +33,8 @@ export class AzureOpenAiChatCompletionStream<T> extends Stream<T> {
    * @internal
    */
   static async *processChunk(
-    stream: AzureOpenAiChatCompletionStream<any>
-  ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse, void, any> {
+    stream: AzureOpenAiChatCompletionStream<any> // TODO: Change `any` to `CreateChatCompletionStreamResponse` once the preview spec becomes stable.
+  ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse> {
     for await (const chunk of stream) {
       yield new AzureOpenAiChatCompletionStreamChunkResponse(chunk);
     }
@@ -48,7 +47,7 @@ export class AzureOpenAiChatCompletionStream<T> extends Stream<T> {
    */
   static async *processContent(
     stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>
-  ): AsyncGenerator<string, void, any> {
+  ): AsyncGenerator<string> {
     for await (const chunk of stream) {
       const deltaContent = chunk.getDeltaContent();
       if (!deltaContent) {
@@ -64,11 +63,13 @@ export class AzureOpenAiChatCompletionStream<T> extends Stream<T> {
   static async *processFinishReason(
     stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
     response?: AzureOpenAiChatCompletionStreamResponse<any>
-  ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse, void, any> {
+  ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse> {
     for await (const chunk of stream) {
       const finishReason = chunk.getFinishReason();
       if (finishReason) {
-        response!.finishReason = finishReason;
+        if (response) {
+          response.finishReason = finishReason;
+        }
         switch (finishReason) {
           case 'content_filter':
             logger.error('Stream finished with content filter hit.');
@@ -95,30 +96,37 @@ export class AzureOpenAiChatCompletionStream<T> extends Stream<T> {
   static async *processTokenUsage(
     stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
     response?: AzureOpenAiChatCompletionStreamResponse<any>
-  ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse, void, any> {
+  ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse> {
     for await (const chunk of stream) {
       const usage = chunk.getTokenUsage();
       if (usage) {
-        response!.usage = usage;
+        if (response) {
+          response.usage = usage;
+        }
+        logger.debug(`Token usage: ${JSON.stringify(usage)}`);
       }
       yield chunk;
     }
   }
 
-  constructor(public iterator: () => AsyncIterator<T>) {
+  constructor(public iterator: () => AsyncIterator<Item>) {
     super(iterator);
   }
 
   /**
+   * Pipe the stream through a processing function.
+   * @param processFn - The function to process the input stream.
+   * @param response - The `AzureOpenAiChatCompletionStreamResponse` object for process function to store finish reason, token usage, etc.
+   * @returns The output stream containing processed items.
    * @internal
    */
-  pipe<K>(
+  pipe<TReturn>(
     processFn: (
-      stream: AzureOpenAiChatCompletionStream<T>,
+      stream: AzureOpenAiChatCompletionStream<Item>,
       response?: AzureOpenAiChatCompletionStreamResponse<any>
-    ) => AsyncIterator<K, any, any>,
+    ) => AsyncIterator<TReturn>,
     response?: AzureOpenAiChatCompletionStreamResponse<any>
-  ): AzureOpenAiChatCompletionStream<K> {
+  ): AzureOpenAiChatCompletionStream<TReturn> {
     if (response) {
       return new AzureOpenAiChatCompletionStream(() =>
         processFn(this, response)

@@ -3,6 +3,7 @@
  */
 export class AzureOpenAiChatCompletionStreamChunkResponse {
   constructor(public readonly data: any) {
+    // TODO: Change `any` to `CreateChatCompletionStreamResponse` once the preview spec becomes stable.
     this.data = data;
   }
 
