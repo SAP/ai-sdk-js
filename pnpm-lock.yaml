@@ -12,7 +12,7 @@ importers:
     devDependencies:
       '@cap-js/cds-types':
         specifier: ^0.7.0
-        version: 0.7.0(@sap/cds@8.3.1(express@4.21.1))
+        version: 0.7.0(@sap/cds@8.4.0(express@4.21.1))
       '@changesets/cli':
         specifier: ^2.27.9
         version: 2.27.9
@@ -1045,6 +1045,16 @@ packages:
 
   '@sap/cds@8.3.1':
     resolution: {integrity: sha512-v44OYZqeFYrH6ghfO/RqQ7eqgcNYAAQmVVFy9pIbOkxXay0uVDXB1nC3hu6cuqIYvp2PFInL0c3l1e+ycFSkPA==}
+    engines: {node: '>=18'}
+    hasBin: true
+    peerDependencies:
+      express: '>=4'
+    peerDependenciesMeta:
+      express:
+        optional: true
+
+  '@sap/cds@8.4.0':
+    resolution: {integrity: sha512-nJzDmoyZVcnACZ2gHL03LRNZCDMV6fEW4t0PFg6cdvRAIiKl0s9/0zKp8kVDJpm6a+k5yvDx8nW2O10KqpMIVQ==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
@@ -4621,9 +4631,9 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@cap-js/cds-types@0.7.0(@sap/cds@8.3.1(express@4.21.1))':
+  '@cap-js/cds-types@0.7.0(@sap/cds@8.4.0(express@4.21.1))':
     dependencies:
-      '@sap/cds': 8.3.1(express@4.21.1)
+      '@sap/cds': 8.4.0(express@4.21.1)
       '@types/express': 4.17.21
 
   '@changesets/apply-release-plan@7.0.5':
@@ -5472,6 +5482,11 @@ snapshots:
       '@sap/cds': 8.3.1(express@4.21.1)
       express: 4.21.1
 
+  '@sap/cds-fiori@1.2.7(@sap/cds@8.4.0(express@4.21.1))(express@4.21.1)':
+    dependencies:
+      '@sap/cds': 8.4.0(express@4.21.1)
+      express: 4.21.1
+
   '@sap/cds-foss@5.0.1':
     dependencies:
       big.js: 6.2.2
@@ -5483,6 +5498,14 @@ snapshots:
     dependencies:
       '@sap/cds-compiler': 5.3.2
       '@sap/cds-fiori': 1.2.7(@sap/cds@8.3.1(express@4.21.1))(express@4.21.1)
+      '@sap/cds-foss': 5.0.1
+    optionalDependencies:
+      express: 4.21.1
+
+  '@sap/cds@8.4.0(express@4.21.1)':
+    dependencies:
+      '@sap/cds-compiler': 5.3.2
+      '@sap/cds-fiori': 1.2.7(@sap/cds@8.4.0(express@4.21.1))(express@4.21.1)
       '@sap/cds-foss': 5.0.1
     optionalDependencies:
       express: 4.21.1
