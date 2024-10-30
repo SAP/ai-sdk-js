@@ -32,7 +32,7 @@ jobs:
       - run: pnpm lint
       - name: Check CommonJS compatibility
         run: pnpm compile:cjs
-      - run: npm install typescript
+      - run: npm install -g typescript
       - name: Check public API
         uses: sap/cloud-sdk-js/.github/actions/check-public-api@public-api-check-gh-action
         with:
