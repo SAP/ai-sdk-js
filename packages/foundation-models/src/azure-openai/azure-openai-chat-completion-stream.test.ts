@@ -2,8 +2,8 @@ import { createLogger } from '@sap-cloud-sdk/util';
 import { jest } from '@jest/globals';
 import { parseFileToString } from '../../../../test-util/mock-http.js';
 import { AzureOpenAiChatCompletionStream } from './azure-openai-chat-completion-stream.js';
-import { LineDecoder } from './azure-openai-line-decoder.js';
-import { SSEDecoder } from './azure-openai-sse-decoder.js';
+import { LineDecoder } from './stream/line-decoder.js';
+import { SSEDecoder } from './stream/sse-decoder.js';
 
 describe('OpenAI chat completion stream', () => {
   let sseChunks: string[];

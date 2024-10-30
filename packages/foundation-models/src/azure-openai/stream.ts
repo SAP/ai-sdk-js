@@ -1,7 +1,7 @@
 import { createLogger } from '@sap-cloud-sdk/util';
-import { LineDecoder } from './azure-openai-line-decoder.js';
-import { SSEDecoder } from './azure-openai-sse-decoder.js';
-import type { ServerSentEvent } from './azure-openai-sse-decoder.js';
+import { LineDecoder } from './stream/line-decoder.js';
+import { SSEDecoder } from './stream/sse-decoder.js';
+import type { ServerSentEvent } from './stream/sse-decoder.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 
 const logger = createLogger({

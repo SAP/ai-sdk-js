@@ -1,5 +1,5 @@
 import { createLogger } from '@sap-cloud-sdk/util';
-import { Stream } from './azure-openai-stream.js';
+import { Stream } from './stream/stream.js';
 import { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.js';
