@@ -21,9 +21,7 @@ export class Stream<Item> implements AsyncIterable<Item> {
 
     async function* iterator(): AsyncIterator<Item, any, undefined> {
       if (consumed) {
-        throw new Error(
-          'Cannot iterate over a consumed stream, use `.tee()` to split the stream.'
-        );
+        throw new Error('Cannot iterate over a consumed stream.');
       }
       consumed = true;
       let done = false;
