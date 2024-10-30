@@ -1,5 +1,5 @@
 import { createLogger } from '@sap-cloud-sdk/util';
-import { Stream } from './stream/stream.js';
+import { SseStream } from './stream/sse-stream.js';
 import { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.js';
@@ -12,7 +12,7 @@ const logger = createLogger({
 /**
  * Chat completion stream containing post-processing functions.
  */
-export class AzureOpenAiChatCompletionStream<Item> extends Stream<Item> {
+export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
   /**
    * Create a chat completion stream based on the http response.
    * @param response - Http response.
@@ -23,7 +23,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends Stream<Item> {
     response: HttpResponse
   ): AzureOpenAiChatCompletionStream<any> {
     // TODO: Change `any` to `CreateChatCompletionStreamResponse` once the preview spec becomes stable.
-    const stream = Stream.fromSSEResponse<any>(response); // TODO: Change `any` to `CreateChatCompletionStreamResponse` once the preview spec becomes stable.
+    const stream = SseStream.fromSSEResponse<any>(response); // TODO: Change `any` to `CreateChatCompletionStreamResponse` once the preview spec becomes stable.
     return new AzureOpenAiChatCompletionStream(stream.iterator);
   }
 

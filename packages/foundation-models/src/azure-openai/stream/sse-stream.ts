@@ -15,8 +15,8 @@ type Bytes = string | ArrayBuffer | Uint8Array | Buffer | null | undefined;
  * Stream implemented as an async iterable.
  * @internal
  */
-export class Stream<Item> implements AsyncIterable<Item> {
-  protected static fromSSEResponse<Item>(response: HttpResponse): Stream<Item> {
+export class SseStream<Item> implements AsyncIterable<Item> {
+  protected static fromSSEResponse<Item>(response: HttpResponse): SseStream<Item> {
     let consumed = false;
 
     async function* iterator(): AsyncIterator<Item, any, undefined> {
@@ -71,7 +71,7 @@ export class Stream<Item> implements AsyncIterable<Item> {
       done = true;
     }
 
-    return new Stream(iterator);
+    return new SseStream(iterator);
   }
 
   constructor(public iterator: () => AsyncIterator<Item>) {}
