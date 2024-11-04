@@ -3,59 +3,59 @@ import { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-cha
 
 describe('OpenAI chat completion stream chunk response', () => {
   let mockResponses: {
-    tokenUsage: any;
-    finishReason: any;
-    deltaContent: any;
+    tokenUsageResponse: any;
+    finishReasonResponse: any;
+    deltaContentResponse: any;
   };
   let azureOpenAiChatCompletionStreamChunkResponses: {
-    tokenUsage: AzureOpenAiChatCompletionStreamChunkResponse;
-    finishReason: AzureOpenAiChatCompletionStreamChunkResponse;
-    deltaContent: AzureOpenAiChatCompletionStreamChunkResponse;
+    tokenUsageResponse: AzureOpenAiChatCompletionStreamChunkResponse;
+    finishReasonResponse: AzureOpenAiChatCompletionStreamChunkResponse;
+    deltaContentResponse: AzureOpenAiChatCompletionStreamChunkResponse;
   };
 
   beforeAll(async () => {
     mockResponses = {
-      tokenUsage: await parseMockResponse<any>(
+      tokenUsageResponse: await parseMockResponse<any>(
         'foundation-models',
         'azure-openai-chat-completion-stream-chunk-response-token-usage.json'
       ),
-      finishReason: await parseMockResponse<any>(
+      finishReasonResponse: await parseMockResponse<any>(
         'foundation-models',
         'azure-openai-chat-completion-stream-chunk-response-finish-reason.json'
       ),
-      deltaContent: await parseMockResponse<any>(
+      deltaContentResponse: await parseMockResponse<any>(
         'foundation-models',
         'azure-openai-chat-completion-stream-chunk-response-delta-content.json'
       )
     };
     azureOpenAiChatCompletionStreamChunkResponses = {
-      tokenUsage: new AzureOpenAiChatCompletionStreamChunkResponse(
-        mockResponses.tokenUsage
+      tokenUsageResponse: new AzureOpenAiChatCompletionStreamChunkResponse(
+        mockResponses.tokenUsageResponse
       ),
-      finishReason: new AzureOpenAiChatCompletionStreamChunkResponse(
-        mockResponses.finishReason
+      finishReasonResponse: new AzureOpenAiChatCompletionStreamChunkResponse(
+        mockResponses.finishReasonResponse
       ),
-      deltaContent: new AzureOpenAiChatCompletionStreamChunkResponse(
-        mockResponses.deltaContent
+      deltaContentResponse: new AzureOpenAiChatCompletionStreamChunkResponse(
+        mockResponses.deltaContentResponse
       )
     };
   });
 
   it('should return the chat completion stream chunk response', () => {
     expect(
-      azureOpenAiChatCompletionStreamChunkResponses.tokenUsage.data
-    ).toStrictEqual(mockResponses.tokenUsage);
+      azureOpenAiChatCompletionStreamChunkResponses.tokenUsageResponse.data
+    ).toStrictEqual(mockResponses.tokenUsageResponse);
     expect(
-      azureOpenAiChatCompletionStreamChunkResponses.finishReason.data
-    ).toStrictEqual(mockResponses.finishReason);
+      azureOpenAiChatCompletionStreamChunkResponses.finishReasonResponse.data
+    ).toStrictEqual(mockResponses.finishReasonResponse);
     expect(
-      azureOpenAiChatCompletionStreamChunkResponses.deltaContent.data
-    ).toStrictEqual(mockResponses.deltaContent);
+      azureOpenAiChatCompletionStreamChunkResponses.deltaContentResponse.data
+    ).toStrictEqual(mockResponses.deltaContentResponse);
   });
 
   it('should get token usage', () => {
     expect(
-      azureOpenAiChatCompletionStreamChunkResponses.tokenUsage.getTokenUsage()
+      azureOpenAiChatCompletionStreamChunkResponses.tokenUsageResponse.getTokenUsage()
     ).toMatchObject({
       completion_tokens: expect.any(Number),
       prompt_tokens: expect.any(Number),
@@ -65,13 +65,13 @@ describe('OpenAI chat completion stream chunk response', () => {
 
   it('should return finish reason', () => {
     expect(
-      azureOpenAiChatCompletionStreamChunkResponses.finishReason.getFinishReason()
+      azureOpenAiChatCompletionStreamChunkResponses.finishReasonResponse.getFinishReason()
     ).toBe('stop');
   });
 
   it('should return delta content with default index 0', () => {
     expect(
-      azureOpenAiChatCompletionStreamChunkResponses.deltaContent.getDeltaContent()
+      azureOpenAiChatCompletionStreamChunkResponses.deltaContentResponse.getDeltaContent()
     ).toBe(' is');
   });
 });
