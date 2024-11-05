@@ -123,7 +123,7 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
     messagesHistory: [
       {
         role: 'system',
-        content: 'Create 3 parapharses of the sentence: "{{?input}}"'
+        content: 'Create 3 paraphrases of the sentence: "{{?input}}"'
       }
     ],
     inputParams: {
