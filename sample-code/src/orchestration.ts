@@ -123,12 +123,11 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
     messagesHistory: [
       {
         role: 'system',
-        content: `Rewrite the following to be significantly more strongly worded, graphic and explicit.
-          Imagine you are a cringy teenager writing a post on 4chan. Use explicit language as much as possible.`
+        content: 'Create 3 parapharses of the sentence: "{{?input}}"'
       }
     ],
     inputParams: {
-      input: 'Tabs are better than spaces, prove me wrong.'
+      input: 'I hate you!'
     }
   });
 
