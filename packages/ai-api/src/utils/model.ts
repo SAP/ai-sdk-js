@@ -30,8 +30,7 @@ function isFoundationModel(
 export function extractModel(
   deployment: AiDeployment
 ): FoundationModel | undefined {
-  const model = 
-    deployment.details?.resources?.backendDetails?.model;
+  const model = deployment.details?.resources?.backendDetails?.model;
   if (isFoundationModel(model)) {
     return model;
   }
