@@ -4,7 +4,7 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import type { ModuleResults } from './module-results.js';
-import type { LLMModuleResult } from './llm-module-result.js';
+import type { LlmModuleResult } from './llm-module-result.js';
 /**
  * Representation of the 'CompletionPostResponse' schema.
  */
@@ -15,5 +15,5 @@ export type CompletionPostResponse = {
    */
   request_id: string;
   module_results: ModuleResults;
-  orchestration_result: LLMModuleResult;
+  orchestration_result: LlmModuleResult;
 } & Record<string, any>;

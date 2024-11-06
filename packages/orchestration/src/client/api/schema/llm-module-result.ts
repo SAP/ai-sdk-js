@@ -8,6 +8,6 @@ import type { LLMModuleResultStreaming } from './llm-module-result-streaming.js'
 /**
  * Output of LLM module. Follows the OpenAI spec.
  */
-export type LLMModuleResult =
+export type LlmModuleResult =
   | LLMModuleResultSynchronous
   | LLMModuleResultStreaming;
