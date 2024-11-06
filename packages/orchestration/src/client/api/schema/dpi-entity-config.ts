@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { DPIEntities } from './dpi-entities';
+import type { DPIEntities } from './dpi-entities.js';
 /**
  * Representation of the 'DPIEntityConfig' schema.
  */

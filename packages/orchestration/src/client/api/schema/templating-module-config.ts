@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { Template } from './template';
+import type { Template } from './template.js';
 /**
  * Representation of the 'TemplatingModuleConfig' schema.
  */

@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { ChatMessage } from './chat-message';
+import type { ChatMessage } from './chat-message.js';
 /**
  * Representation of the 'LLMChoice' schema.
  */

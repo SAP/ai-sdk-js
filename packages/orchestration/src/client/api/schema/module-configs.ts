@@ -3,10 +3,10 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { LLMModuleConfig } from './llm-module-config';
-import type { TemplatingModuleConfig } from './templating-module-config';
-import type { FilteringModuleConfig } from './filtering-module-config';
-import type { MaskingModuleConfig } from './masking-module-config';
+import type { LLMModuleConfig } from './llm-module-config.js';
+import type { TemplatingModuleConfig } from './templating-module-config.js';
+import type { FilteringModuleConfig } from './filtering-module-config.js';
+import type { MaskingModuleConfig } from './masking-module-config.js';
 /**
  * Representation of the 'ModuleConfigs' schema.
  */

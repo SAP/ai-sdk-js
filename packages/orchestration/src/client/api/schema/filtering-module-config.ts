@@ -3,8 +3,8 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { InputFilteringConfig } from './input-filtering-config';
-import type { OutputFilteringConfig } from './output-filtering-config';
+import type { InputFilteringConfig } from './input-filtering-config.js';
+import type { OutputFilteringConfig } from './output-filtering-config.js';
 /**
  * Representation of the 'FilteringModuleConfig' schema.
  */

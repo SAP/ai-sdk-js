@@ -3,8 +3,8 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { ModuleResults } from './module-results';
-import type { LLMModuleResult } from './llm-module-result';
+import type { ModuleResults } from './module-results.js';
+import type { LLMModuleResult } from './llm-module-result.js';
 /**
  * Representation of the 'CompletionPostResponse' schema.
  */

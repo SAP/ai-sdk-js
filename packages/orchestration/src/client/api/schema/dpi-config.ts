@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { DPIEntityConfig } from './dpi-entity-config';
+import type { DPIEntityConfig } from './dpi-entity-config.js';
 /**
  * Representation of the 'DPIConfig' schema.
  */

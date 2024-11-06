@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { MaskingProviderConfig } from './masking-provider-config';
+import type { MaskingProviderConfig } from './masking-provider-config.js';
 /**
  * Representation of the 'MaskingModuleConfig' schema.
  */
