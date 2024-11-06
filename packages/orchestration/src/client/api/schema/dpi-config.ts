@@ -9,11 +9,11 @@ import type { DpiEntityConfig } from './dpi-entity-config.js';
  */
 export type DpiConfig = {
   /**
-   * Type of masking service provider.
+   * Type of masking service provider
    */
   type: 'sap_data_privacy_integration';
   /**
-   * Type of masking method to be used.
+   * Type of masking method to be used
    */
   method: 'anonymization' | 'pseudonymization';
   /**
