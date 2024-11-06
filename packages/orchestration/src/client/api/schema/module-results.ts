@@ -5,8 +5,8 @@
  */
 import type { GenericModuleResult } from './generic-module-result.js';
 import type { ChatMessages } from './chat-messages.js';
-import type { LlmModuleResult } from './llm-module-result.js';
-import type { LlmChoice } from './llm-choice.js';
+import type { LLMModuleResult } from './llm-module-result.js';
+import type { LLMChoice } from './llm-choice.js';
 /**
  * Results of each module.
  */
@@ -15,7 +15,7 @@ export interface ModuleResults {
   templating?: ChatMessages;
   input_masking?: GenericModuleResult;
   input_filtering?: GenericModuleResult;
-  llm?: LlmModuleResult;
+  llm?: LLMModuleResult;
   output_filtering?: GenericModuleResult;
-  output_unmasking?: LlmChoice[];
+  output_unmasking?: LLMChoice[];
 }

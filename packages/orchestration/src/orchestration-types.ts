@@ -3,7 +3,7 @@ import type {
   ChatMessages,
   FilteringModuleConfig,
   MaskingModuleConfig,
-  LlmModuleConfig as OriginalLlmModuleConfig,
+  LLMModuleConfig as OriginalLlmModuleConfig,
   TemplatingModuleConfig
 } from './client/api/schema/index.js';
 
