@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { ModuleResults } from './module-results.js';
+import type { ModuleResults } from './module-results';
 /**
  * Representation of the 'ErrorResponse' schema.
  */
@@ -21,7 +21,7 @@ export type ErrorResponse = {
    */
   message: string;
   /**
-   * Where the error occurred.
+   * Where the error occurred
    * @example "LLM Module"
    */
   location: string;

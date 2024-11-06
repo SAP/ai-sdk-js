@@ -5,9 +5,9 @@
  */
 
 /**
- * Default entities supported by data privacy and integration service.
+ * Default entities supported by data privacy and integration service
  */
-export type DpiEntities =
+export type DPIEntities =
   | 'profile-person'
   | 'profile-org'
   | 'profile-university'
