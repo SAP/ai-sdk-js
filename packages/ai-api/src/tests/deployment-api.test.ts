@@ -34,7 +34,7 @@ describe('deployment', () => {
             'https://ai.example.com/inference/deployments/0a1b2c3d',
           details: {
             resources: {
-              backend_details: {
+              backendDetails: {
                 model: {
                   name: 'gpt-4-32k',
                   version: 'latest'
@@ -42,7 +42,7 @@ describe('deployment', () => {
               }
             },
             scaling: {
-              backend_details: {}
+              backendDetails: {}
             }
           },
           id: '0a1b2c3d',
