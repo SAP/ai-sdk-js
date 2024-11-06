@@ -5,20 +5,20 @@
  */
 import type { ChatMessage } from './chat-message.js';
 /**
- * Representation of the 'LlmChoice' schema.
+ * Representation of the 'LLMChoice' schema.
  */
-export type LlmChoice = {
+export type LLMChoice = {
   /**
-   * Index of the choice.
+   * Index of the choice
    */
   index: number;
   message: ChatMessage;
   /**
-   * Log probabilities.
+   * Log probabilities
    */
   logprobs?: Record<string, number[]>;
   /**
-   * Reason the model stopped generating tokens. 'stop' if the model hit a natural stop point or a provided stop sequence, 'length' if the maximum token number was reached, 'content_filter' if content was omitted due to a filter enforced by the LLM model provider or the content filtering module.
+   * Reason the model stopped generating tokens. 'stop' if the model hit a natural stop point or a provided stop sequence, 'length' if the maximum token number was reached, 'content_filter' if content was omitted due to a filter enforced by the LLM model provider or the content filtering module
    * @example "stop"
    */
   finish_reason: string;
