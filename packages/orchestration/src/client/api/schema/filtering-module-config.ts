@@ -8,7 +8,7 @@ import { OutputFilteringConfig } from './output-filtering-config.js';
 /**
  * Representation of the 'FilteringModuleConfig' schema.
  */
-export interface FilteringModuleConfig {
+export type FilteringModuleConfig = {
   /**
    * List of provider type and filters.
    */
@@ -17,4 +17,4 @@ export interface FilteringModuleConfig {
    * List of provider type and filters.
    */
   output?: OutputFilteringConfig;
-}
+};
