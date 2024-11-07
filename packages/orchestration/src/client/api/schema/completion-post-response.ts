@@ -10,7 +10,7 @@ import type { LlmModuleResult } from './llm-module-result.js';
  */
 export type CompletionPostResponse = {
   /**
-   * ID of the request.
+   * ID of the request
    * @example "d4a67ea1-2bf9-4df7-8105-d48203ccff76"
    */
   request_id: string;
