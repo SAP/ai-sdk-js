@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { LLMChoice } from './llm-choice.js';
+import type { LlmChoice } from './llm-choice.js';
 import type { TokenUsage } from './token-usage.js';
 /**
  * Output of LLM module. Follows the OpenAI spec.
