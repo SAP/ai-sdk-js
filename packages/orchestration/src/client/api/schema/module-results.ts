@@ -11,7 +11,6 @@ import type { LlmChoice } from './llm-choice.js';
  * Results of each module.
  */
 export type ModuleResults = {
-  grounding?: GenericModuleResult;
   templating?: ChatMessages;
   input_masking?: GenericModuleResult;
   input_filtering?: GenericModuleResult;
