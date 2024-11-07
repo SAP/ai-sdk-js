@@ -28,6 +28,4 @@ export * from './masking-provider-config.js';
 export * from './dpi-config.js';
 export * from './dpi-entity-config.js';
 export * from './dpi-entities.js';
-export * from './grounding-module-config.js';
-export * from './grounding-filter.js';
 export * from './error-response.js';

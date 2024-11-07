@@ -5,21 +5,21 @@
  */
 
 /**
- * Usage of tokens in the response.
+ * Usage of tokens in the response
  */
 export type TokenUsage = {
   /**
-   * Number of tokens used in the input.
+   * Number of tokens used in the input
    * @example 20
    */
   completion_tokens: number;
   /**
-   * Number of tokens used in the output.
+   * Number of tokens used in the output
    * @example 30
    */
   prompt_tokens: number;
   /**
-   * Total number of tokens used.
+   * Total number of tokens used
    * @example 50
    */
   total_tokens: number;

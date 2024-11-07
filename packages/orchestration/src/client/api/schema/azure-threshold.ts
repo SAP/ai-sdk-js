@@ -5,6 +5,6 @@
  */
 
 /**
- * Representation of the 'AzureThreshold' schema.
+ * Threshold for the filter. Setting it to `0` blocks content with low severity, whereas `6` is the most permissive and blocks only the highest severity
  */
 export type AzureThreshold = 0 | 2 | 4 | 6;
