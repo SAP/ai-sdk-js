@@ -13,12 +13,10 @@
     "express": "^4"
   },
   "scripts": {
+    "build": "tsc -b",
     "watch": "cds-tsx watch",
     "watch:hybrid": "cds-tsx watch --profile hybrid",
     "lint": "eslint . && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -w --log-level error"
-  },
-  "devDependencies": {
-    "@cap-js/cds-types": "^0.7.0"
   }
 }
