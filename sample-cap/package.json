@@ -16,7 +16,7 @@
     "@cap-js/cds-types": "^0.7.0"
   },
   "scripts": {
-    "build": "tsc -b",
+    "compile": "tsc -b",
     "watch": "cds-tsx watch",
     "watch:hybrid": "cds-tsx watch --profile hybrid",
     "lint": "eslint . && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -c",
