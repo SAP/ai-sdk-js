@@ -9,12 +9,12 @@
  */
 export type LlmModuleConfig = {
   /**
-   * Model name as in LLM Access configuration.
+   * Model name as in LLM Access configuration
    * @example "gpt-4"
    */
   model_name: string;
   /**
-   * Model parameters.
+   * Model parameters
    * @example {
    *   "max_tokens": 300,
    *   "temperature": 0.1,
