@@ -61,6 +61,7 @@
     "prettier": "^3.3.3",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "@cap-js/cds-types": "^0.7.0"
   }
 }
