@@ -16,4 +16,4 @@ export type FilteringModuleConfig = {
    * List of provider type and filters.
    */
   output?: FilteringConfig;
-}
+};

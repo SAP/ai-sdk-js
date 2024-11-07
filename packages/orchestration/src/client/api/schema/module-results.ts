@@ -18,4 +18,4 @@ export type ModuleResults = {
   llm?: LlmModuleResult;
   output_filtering?: GenericModuleResult;
   output_unmasking?: LlmChoice[];
-}
+};
