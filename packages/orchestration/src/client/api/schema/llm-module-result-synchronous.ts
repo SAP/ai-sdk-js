@@ -37,6 +37,6 @@ export type LLMModuleResultSynchronous = {
   /**
    * Choices
    */
-  choices: LLMChoice[];
+  choices: LlmChoice[];
   usage: TokenUsage;
 } & Record<string, any>;
