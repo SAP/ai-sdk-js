@@ -10,9 +10,6 @@ importers:
 
   .:
     devDependencies:
-      '@cap-js/cds-types':
-        specifier: ^0.7.0
-        version: 0.7.0(@sap/cds@8.3.1(express@4.21.1))
       '@changesets/cli':
         specifier: ^2.27.9
         version: 2.27.9
@@ -187,6 +184,10 @@ importers:
       express:
         specifier: ^4
         version: 4.21.1
+    devDependencies:
+      '@cap-js/cds-types':
+        specifier: ^0.7.0
+        version: 0.7.0(@sap/cds@8.3.1(express@4.21.1))
 
   sample-code:
     dependencies:

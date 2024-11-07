@@ -12,6 +12,9 @@
     "@sap/cds": "^8",
     "express": "^4"
   },
+  "devDependencies": {
+    "@cap-js/cds-types": "^0.7.0"
+  },
   "scripts": {
     "build": "tsc -b",
     "watch": "cds-tsx watch",
