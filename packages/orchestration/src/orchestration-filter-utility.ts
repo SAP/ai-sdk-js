@@ -1,6 +1,7 @@
 import type {
   AzureContentSafety,
-  FilteringConfig
+  InputFilteringConfig,
+  OutputFilteringConfig
 } from './client/api/schema/index.js';
 
 /**
@@ -10,7 +11,7 @@ import type {
  */
 export function buildAzureContentFilter(
   filter?: AzureContentSafety
-): FilteringConfig {
+): InputFilteringConfig | OutputFilteringConfig {
   if (filter && !Object.keys(filter).length) {
     throw new Error('Filter property cannot be an empty object');
   }
