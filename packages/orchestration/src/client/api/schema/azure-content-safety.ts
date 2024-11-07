@@ -5,11 +5,11 @@
  */
 import type { AzureThreshold } from './azure-threshold.js';
 /**
- * Filter configuration for Azure Content Safety.
+ * Filter configuration for Azure Content Safety
  */
-export interface AzureContentSafety {
+export type AzureContentSafety = {
   Hate?: AzureThreshold;
   SelfHarm?: AzureThreshold;
   Sexual?: AzureThreshold;
   Violence?: AzureThreshold;
-}
+};

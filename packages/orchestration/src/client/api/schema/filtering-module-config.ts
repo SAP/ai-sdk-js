@@ -7,7 +7,7 @@ import type { FilteringConfig } from './filtering-config.js';
 /**
  * Representation of the 'FilteringModuleConfig' schema.
  */
-export interface FilteringModuleConfig {
+export type FilteringModuleConfig = {
   /**
    * List of provider type and filters.
    */
