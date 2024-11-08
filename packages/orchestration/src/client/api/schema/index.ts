@@ -16,6 +16,7 @@ export * from './llm-module-result.js';
 export * from './llm-choice.js';
 export * from './token-usage.js';
 export * from './templating-module-config.js';
+export * from './template.js';
 export * from './filtering-module-config.js';
 export * from './input-filtering-config.js';
 export * from './output-filtering-config.js';
