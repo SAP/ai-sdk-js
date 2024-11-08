@@ -21,7 +21,7 @@ export type ErrorResponse = {
    */
   message: string;
   /**
-   * Where the error occurred.
+   * Where the error occurred
    * @example "LLM Module"
    */
   location: string;
