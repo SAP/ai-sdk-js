@@ -18,7 +18,7 @@
   },
   "scripts": {
     "prebuild": "rm -rf dist",
-    "build": "pnpm cds-build && pnpm compile && pnpm cleanup",
+    "build": "pnpm rebuild && pnpm cds-build && pnpm compile && pnpm cleanup",
     "cds-build": "cds build --production",
     "compile": "tsc",
     "cleanup": "rm -f ./dist/srv/srv/**/*.ts ./dist/srv/package-lock.json",
