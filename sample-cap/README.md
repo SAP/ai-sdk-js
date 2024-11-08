@@ -32,7 +32,6 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 ## Remote Deployment
 
 1. Install dependencies using `pnpm install`.
-   
 2. Transpile the CAP application using `pnpm build`.
 
 3. Modify `services` and `routes` values in `manifest.yml`.
