@@ -6,9 +6,10 @@
   "repository": "https://github.com/sap/ai-sdk-js",
   "private": true,
   "dependencies": {
-    "@sap-ai-sdk/ai-api": "workspace:^",
-    "@sap-ai-sdk/foundation-models": "workspace:^",
-    "@sap-ai-sdk/orchestration": "workspace:^",
+    "@sap-ai-sdk/ai-api": "^1",
+    "@sap-ai-sdk/foundation-models": "^1",
+    "@sap-ai-sdk/orchestration": "^1",
+    "@sap-ai-sdk/sample-cap": "file:gen/srv",
     "@sap/cds": "^8",
     "express": "^4"
   },
@@ -16,7 +17,13 @@
     "@cap-js/cds-types": "^0.7.0"
   },
   "scripts": {
+    "prebuild": "rm -rf gen",
+    "build": "pnpm cds-build && pnpm compile && pnpm cleanup",
+    "cds-build": "cds build --production",
     "compile": "tsc -b",
+    "cleanup": "rm -f ./gen/srv/srv/**/*.ts ./gen/srv/package-lock.json",
+    "postbuild": "npm i --package-lock-only ./gen/srv",
+    "start": "npx cds-serve",
     "watch": "cds-tsx watch",
     "watch:hybrid": "cds-tsx watch --profile hybrid",
     "lint": "eslint . && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -c",

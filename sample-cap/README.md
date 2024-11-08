@@ -7,11 +7,8 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 - [Local Deployment](#local-deployment)
 - [Usage](#usage)
   - [`ai-api`](#ai-api)
-    - [Deployment API](#deployment-api)
   - [`foundation-models`](#foundation-models)
-    - [Azure OpenAI Chat Completion](#azure-openai-chat-completion)
   - [`orchestration`](#orchestration)
-    - [Chat Completions with Templating](#chat-completions-with-templating)
 
 ## Local Deployment
 
@@ -39,7 +36,7 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 
 ```bash
 curl --request GET \
-  --url 'http://localhost:4004/odata/v4/ai-api/getDeployments'
+  --url 'https://ai-sdk-js-sample-cap.cfapps.eu12-001.hana.ondemand.com/odata/v4/ai-api/getDeployments'
 ```
 
 ### `foundation-models`
