@@ -12,7 +12,7 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 
 ## Local Deployment
 
-1. Build the application with `pnpm install`.
+1. Install the application dependencies with `pnpm install`.
 
 2. Login using `cf login -a API_ENDPOINT -o ORG -s SPACE`.
 
