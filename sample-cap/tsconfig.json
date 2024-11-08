@@ -2,12 +2,12 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "rootDir": "./srv",
-    "outDir": "./gen/srv/srv",
-    "tsBuildInfoFile": "./gen/.tsbuildinfo",
+    "outDir": "./dist/srv/srv",
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
     "composite": true
   },
   "include": ["srv/**/*.ts"],
-  "exclude": ["gen/**/*", "**/*.test.ts", "node_modules/**/*"],
+  "exclude": ["dist/**/*", "**/*.test.ts", "node_modules/**/*"],
   "references": [
     { "path": "../packages/ai-api" },
     { "path": "../packages/foundation-models" },

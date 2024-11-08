@@ -1,6 +1,6 @@
 applications:
   - name: ai-sdk-js-sample-cap
-    path: ./gen/srv
+    path: ./dist/srv
     memory: 256M
     buildpacks:
       - nodejs_buildpack
