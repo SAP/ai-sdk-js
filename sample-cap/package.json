@@ -18,9 +18,9 @@
   },
   "scripts": {
     "prebuild": "rm -rf dist",
-    "build": "pnpm rebuild && pnpm cds-build && pnpm compile && pnpm cleanup",
+    "build": "pnpm cds-build && pnpm compile && pnpm cleanup",
     "cds-build": "cds build --production",
-    "compile": "tsc",
+    "compile": "pnpm rebuild && tsc",
     "cleanup": "rm -f ./dist/srv/srv/**/*.ts ./dist/srv/package-lock.json",
     "postbuild": "pushd ./dist/srv && npm i --package-lock-only && popd",
     "start": "npx cds-serve",
