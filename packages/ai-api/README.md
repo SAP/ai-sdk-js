@@ -48,7 +48,11 @@ To ensure compatibility and manage updates effectively, we strongly recommend us
 ## Prerequisites
 
 - [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
-- Project configured with Node.js v20 or higher and native ESM support enabled.
+- Configure the project with **Node.js v20 or higher** and **native ESM** support.
+
+> **Accessing the AI Core Service via the SDK**:
+> The SDK automatically retrieves the `AI Core` service binding from the `VCAP_SERVICES` environment variable, along with the service token needed for authentication.
+> All subsequent client requests are routed to this service endpoint.
 
 ## Usage
 

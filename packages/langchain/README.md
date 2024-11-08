@@ -32,12 +32,14 @@ $ npm install @sap-ai-sdk/langchain
 ## Prerequisites
 
 - [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
-- Bind the service to your application.
-- Ensure the project is configured with Node.js v20 or higher, along with native ESM support.
-- A deployed model is available in SAP Generative AI hub.
-  - Use the [`DeploymentApi`](https://github.com/SAP/ai-sdk-js/blob/main/packages/ai-api/README.md#create-a-deployment) from `@sap-ai-sdk/ai-api` to deploy a model to SAP generative AI hub.
-    For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
-  - Once a deployment is complete, the model can be accessed via the `deploymentUrl`.
+- Configure the project with **Node.js v20 or higher** and **native ESM** support.
+- Ensure a deployed model is available in the SAP Generative AI Hub.
+  - Use the [`DeploymentApi`](https://github.com/SAP/ai-sdk-js/blob/main/packages/ai-api/README.md#create-a-deployment) from `@sap-ai-sdk/ai-api` to deploy a model to the SAP Generative AI Hub. For more information, see [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
+  - Once deployment is complete, access the model via the `deploymentUrl`.
+
+> **Accessing the AI Core Service via the SDK**:
+> The SDK automatically retrieves the `AI Core` service binding from the `VCAP_SERVICES` environment variable, along with the service token needed for authentication.
+> All subsequent client requests are routed to this service endpoint.
 
 ## Relationship between Models and Deployment ID
 
