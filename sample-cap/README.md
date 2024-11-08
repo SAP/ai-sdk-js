@@ -35,8 +35,8 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 #### Deployment API
 
 ```bash
-curl --request GET \
-  --url 'https://ai-sdk-js-sample-cap.cfapps.eu12-001.hana.ondemand.com/odata/v4/ai-api/getDeployments'
+curl --request POST \
+  --url 'http://localhost:4004/odata/v4/ai-api/getDeployments'
 ```
 
 ### `foundation-models`
