@@ -5,6 +5,7 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 ### Table of Contents
 
 - [Local Deployment](#local-deployment)
+- [Remote Deployment](#remote-deployment)
 - [Usage](#usage)
   - [`ai-api`](#ai-api)
   - [`foundation-models`](#foundation-models)
@@ -12,7 +13,7 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 
 ## Local Deployment
 
-1. Install the application dependencies with `pnpm install`.
+1. Install dependencies using `pnpm install`.
 
 2. Login using `cf login -a API_ENDPOINT -o ORG -s SPACE`.
 
@@ -28,7 +29,21 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
    pnpm watch:hybrid
    ```
 
+## Remote Deployment
+
+1. Install dependencies using `pnpm install`.
+   
+2. Transpile the CAP application using `pnpm build`.
+
+3. Modify `services` and `routes` values in `manifest.yml`.
+
+4. Login using `cf login -a API_ENDPOINT -o ORG -s SPACE`.
+
+5. Deploy the application using `cf push`.
+
 ## Usage
+
+For local deployment, the `HOSTNAME` is `http://localhost:4004`. For remote deployment, the `HOSTNAME` is the `route` defined in `manifest.yaml`.
 
 ### `ai-api`
 
@@ -36,7 +51,7 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 
 ```bash
 curl --request POST \
-  --url 'http://localhost:4004/odata/v4/ai-api/getDeployments'
+  --url '<HOSTNAME>/odata/v4/ai-api/getDeployments'
 ```
 
 ### `foundation-models`
@@ -45,7 +60,7 @@ curl --request POST \
 
 ```bash
 curl --request POST \
-  --url 'http://localhost:4004/odata/v4/azure-openai/chatCompletion' \
+  --url '<HOSTNAME>/odata/v4/azure-openai/chatCompletion' \
   --header 'Content-Type: application/json' \
   --data '{
   "messages": [
@@ -63,7 +78,7 @@ curl --request POST \
 
 ```bash
 curl --request POST \
-  --url 'http://localhost:4004/odata/v4/orchestration/chatCompletion' \
+  --url '<HOSTNAME>/odata/v4/orchestration/chatCompletion' \
   --header 'Content-Type: application/json' \
   --data '{
   "template": [
