@@ -42,7 +42,7 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 
 ## Usage
 
-For local deployment, the `HOSTNAME` is `http://localhost:4004`. For remote deployment, the `HOSTNAME` is the `route` defined in `manifest.yaml`.
+For local deployment, set `SAMPLE_CAP_HOST` as `http://localhost:4004`. For remote deployment, set `SAMPLE_CAP_HOST` as the `route` value defined in `manifest.yaml`.
 
 ### `ai-api`
 
@@ -50,7 +50,7 @@ For local deployment, the `HOSTNAME` is `http://localhost:4004`. For remote depl
 
 ```bash
 curl --request POST \
-  --url '<HOSTNAME>/odata/v4/ai-api/getDeployments'
+  --url $SAMPLE_CAP_HOST/odata/v4/ai-api/getDeployments
 ```
 
 ### `foundation-models`
@@ -59,7 +59,7 @@ curl --request POST \
 
 ```bash
 curl --request POST \
-  --url '<HOSTNAME>/odata/v4/azure-openai/chatCompletion' \
+  --url $SAMPLE_CAP_HOST/odata/v4/azure-openai/chatCompletion \
   --header 'Content-Type: application/json' \
   --data '{
   "messages": [
@@ -77,7 +77,7 @@ curl --request POST \
 
 ```bash
 curl --request POST \
-  --url '<HOSTNAME>/odata/v4/orchestration/chatCompletion' \
+  --url $SAMPLE_CAP_HOST/odata/v4/orchestration/chatCompletion \
   --header 'Content-Type: application/json' \
   --data '{
   "template": [
