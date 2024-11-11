@@ -26,7 +26,10 @@ Setup your SAP AI Core instance with SAP Cloud SDK for AI.
 
 ## Requirements and Setup
 
-See the documentation of each individual package under the [Packages](#packages) section.
+- [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
+- Ensure the project is configured with **Node.js v20 or higher**, along with **native ESM** support.
+
+For further details, refer to the individual sections under [Packages](#packages).
 
 ## Packages
 
@@ -94,8 +97,8 @@ The [project README](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/READ
 
 To test SAP Cloud SDK for AI features locally during application development, follow these steps:
 
-- Download a service key for the AI Core service instance.
-- Set the downloaded service key as the `AICORE_SERVICE_KEY` environment variable in the local environment.
+1. Download a service key for the AI Core service instance.
+2. Set the downloaded service key as the `AICORE_SERVICE_KEY` environment variable in the local environment.
 
 The SDK parses the service key from the environment variable to interact with the AI Core service.
 This setup enables local testing of clients such as orchestration and OpenAI, provided that deployments for orchestration and OpenAI exist in SAP BTP.
