@@ -5,12 +5,12 @@
  */
 import type { FilterConfig } from './filter-config.js';
 /**
- * Representation of the 'FilteringConfig' schema.
+ * Representation of the 'OutputFilteringConfig' schema.
  */
-export type FilteringConfig = {
+export type OutputFilteringConfig = {
   /**
    * Configuration for content filtering services that should be used for the given filtering step (input filtering or output filtering).
    * Min Items: 1.
    */
   filters: FilterConfig[];
-} & Record<string, any>;
+};

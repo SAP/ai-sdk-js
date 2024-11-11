@@ -30,12 +30,7 @@ function isFoundationModel(
 export function extractModel(
   deployment: AiDeployment
 ): FoundationModel | undefined {
-  // this workaround fixes an error in AI Core, where the API spec calls it "backendDetails" but the service returns "backend_details
-  // TODO: remove this workaround once fixed in AI Core (AIWDF-2124)
-  const model = (
-    deployment.details?.resources?.backendDetails ||
-    deployment.details?.resources?.backend_details
-  )?.model;
+  const model = deployment.details?.resources?.backendDetails?.model;
   if (isFoundationModel(model)) {
     return model;
   }

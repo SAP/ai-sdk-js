@@ -3,8 +3,11 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { Template } from './template.js';
+
 /**
- * Representation of the 'TemplatingModuleConfig' schema.
+ * Representation of the 'ChatDelta' schema.
  */
-export type TemplatingModuleConfig = Template;
+export type ChatDelta = {
+  role?: string;
+  content: string;
+} & Record<string, any>;

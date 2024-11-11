@@ -16,6 +16,6 @@ describe('Langchain OpenAI Access', () => {
 
   it('executes an invoke based on an embedding vector from our orchestration readme', async () => {
     const result = await invokeRagChain();
-    expect(result).toContain('@sap-ai-sdk/orchestration');
+    expect(result).toContain('OrchestrationClient');
   });
 });

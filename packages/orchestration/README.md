@@ -30,11 +30,15 @@ $ npm install @sap-ai-sdk/orchestration
 ## Prerequisites
 
 - [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
-- Project configured with Node.js v20 or higher and native ESM support enabled.
-- An orchestration deployment is running.
-  - Use the [`DeploymentApi`](https://github.com/SAP/ai-sdk-js/blob/main/packages/ai-api/README.md#create-a-deployment) from `@sap-ai-sdk/ai-api` to create a deployment for orchestration to the SAP generative AI hub.
-    For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration).
-  - Once a deployment is complete, the orchestration service can be accessed via the `deploymentUrl`.
+- Configure the project with **Node.js v20 or higher** and **native ESM** support.
+- Ensure an orchestration deployment is available in the SAP Generative AI Hub.
+  - Use the [`DeploymentApi`](https://github.com/SAP/ai-sdk-js/blob/main/packages/ai-api/README.md#create-a-deployment) from `@sap-ai-sdk/ai-api` [to create a deployment](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration).
+    Alternatively, you can also create deployments using the [SAP AI Launchpad](https://help.sap.com/docs/sap-ai-core/generative-ai-hub/activate-generative-ai-hub-for-sap-ai-launchpad?locale=en-US&q=launchpad).
+  - Once the deployment is complete, access the orchestration service via the `deploymentUrl`.
+
+> **Accessing the AI Core Service via the SDK**:
+> The SDK automatically retrieves the `AI Core` service credentials from the `VCAP_SERVICES` environment variable and resolves the access token needed for authentication.
+> All subsequent client requests are routed to this service endpoint.
 
 ## Orchestration Service
 
@@ -297,7 +301,7 @@ const orchestrationClient = new OrchestrationClient(
 );
 ```
 
-The relationship between orchestration and resource groups is explained in this [section](#relationship-between-orchestration-and-resource-groups).
+The relationship between orchestration and resource groups is explained [here](#relationship-between-orchestration-and-resource-groups).
 
 ### Custom Request Configuration
 

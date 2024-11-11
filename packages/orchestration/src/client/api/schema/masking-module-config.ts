@@ -7,10 +7,10 @@ import type { MaskingProviderConfig } from './masking-provider-config.js';
 /**
  * Representation of the 'MaskingModuleConfig' schema.
  */
-export interface MaskingModuleConfig {
+export type MaskingModuleConfig = {
   /**
    * List of masking service providers
    * Min Items: 1.
    */
   masking_providers: MaskingProviderConfig[];
-}
+};

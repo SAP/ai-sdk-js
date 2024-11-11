@@ -5,16 +5,16 @@
  */
 
 /**
- * Generic module result.
+ * Generic module result
  */
 export type GenericModuleResult = {
   /**
-   * Some message created from the module.
+   * Some message created from the module
    * @example "Input to LLM is masked successfully."
    */
   message: string;
   /**
-   * Additional data object from the module.
+   * Additional data object from the module
    */
   data?: Record<string, any>;
 } & Record<string, any>;

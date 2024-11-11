@@ -9,7 +9,7 @@ import type { DpiEntities } from './dpi-entities.js';
  */
 export type DpiEntityConfig = {
   /**
-   * Type of entity to be masked.
+   * Type of entity to be masked
    */
   type: DpiEntities;
 } & Record<string, any>;
