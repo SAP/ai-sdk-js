@@ -54,8 +54,10 @@ app.get('/azure-openai/chat-completion', async (req, res) => {
 });
 
 app.get('/azure-openai/chat-completion-stream', async (req, res) => {
+  const controller = new AbortController();
   try {
-    const response = await chatCompletionStream();
+
+    const response = await chatCompletionStream(controller);
 
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Content-Type', 'text/event-stream');
@@ -66,6 +68,7 @@ app.get('/azure-openai/chat-completion-stream', async (req, res) => {
     let connectionAlive = true;
 
     res.on('close', () => {
+      controller.abort();
       connectionAlive = false;
       res.end();
     });
@@ -77,12 +80,14 @@ app.get('/azure-openai/chat-completion-stream', async (req, res) => {
       res.write(chunk);
     }
 
-    res.write('\n\n---------------------------\n');
-    res.write(`Finish reason: ${response.finishReasons.get(0)}\n`);
-    res.write('Token usage:\n');
-    res.write(`  - Completion tokens: ${response.usage.completion_tokens}\n`);
-    res.write(`  - Prompt tokens: ${response.usage.prompt_tokens}\n`);
-    res.write(`  - Total tokens: ${response.usage.total_tokens}\n`);
+    if (connectionAlive) {
+      res.write('\n\n---------------------------\n');
+      res.write(`Finish reason: ${response.finishReasons.get(0)}\n`);
+      res.write('Token usage:\n');
+      res.write(`  - Completion tokens: ${response.usage.completion_tokens}\n`);
+      res.write(`  - Prompt tokens: ${response.usage.prompt_tokens}\n`);
+      res.write(`  - Total tokens: ${response.usage.total_tokens}\n`);
+    }
   } catch (error: any) {
     console.error(error);
     res
@@ -96,8 +101,9 @@ app.get('/azure-openai/chat-completion-stream', async (req, res) => {
 app.get(
   '/azure-openai/chat-completion-stream-multiple-choices',
   async (req, res) => {
+    const controller = new AbortController();
     try {
-      const response = await chatCompletionStreamMultipleChoices();
+      const response = await chatCompletionStreamMultipleChoices(controller);
 
       res.setHeader('Cache-Control', 'no-cache');
       res.setHeader('Content-Type', 'text/event-stream');
@@ -108,6 +114,7 @@ app.get(
       let connectionAlive = true;
 
       res.on('close', () => {
+        controller.abort();
         connectionAlive = false;
         res.end();
       });
@@ -119,12 +126,14 @@ app.get(
         res.write(chunk);
       }
 
-      res.write('\n\n---------------------------\n');
-      res.write(`Finish reason: ${response.finishReasons.get(1)}\n`);
-      res.write('Token usage:\n');
-      res.write(`  - Completion tokens: ${response.usage.completion_tokens}\n`);
-      res.write(`  - Prompt tokens: ${response.usage.prompt_tokens}\n`);
-      res.write(`  - Total tokens: ${response.usage.total_tokens}\n`);
+      if (connectionAlive) {
+        res.write('\n\n---------------------------\n');
+        res.write(`Finish reason: ${response.finishReasons.get(1)}\n`);
+        res.write('Token usage:\n');
+        res.write(`  - Completion tokens: ${response.usage.completion_tokens}\n`);
+        res.write(`  - Prompt tokens: ${response.usage.prompt_tokens}\n`);
+        res.write(`  - Total tokens: ${response.usage.total_tokens}\n`);
+      }
     } catch (error: any) {
       console.error(error);
       res

@@ -44,13 +44,14 @@ export class AzureOpenAiChatClient {
    */
   async stream(
     data: AzureOpenAiCreateChatCompletionRequest,
+    controller = new AbortController(),
     requestConfig?: CustomRequestConfig
   ): Promise<
     AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>
   > {
     const response =
       new AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>();
-    response.stream = (await this.createStream(data, requestConfig))
+    response.stream = (await this.createStream(data, controller, requestConfig))
       ._pipe(AzureOpenAiChatCompletionStream._processChunk)
       ._pipe(AzureOpenAiChatCompletionStream._processFinishReason, response)
       ._pipe(AzureOpenAiChatCompletionStream._processTokenUsage, response);
@@ -79,6 +80,7 @@ export class AzureOpenAiChatClient {
 
   private async createStream(
     data: AzureOpenAiCreateChatCompletionRequest,
+    controller: AbortController,
     requestConfig?: CustomRequestConfig
   ): Promise<AzureOpenAiChatCompletionStream<any>> {
     const response = await this.executeRequest(
@@ -94,6 +96,6 @@ export class AzureOpenAiChatClient {
         responseType: 'stream'
       }
     );
-    return AzureOpenAiChatCompletionStream._create(response);
+    return AzureOpenAiChatCompletionStream._create(response, controller);
   }
 }

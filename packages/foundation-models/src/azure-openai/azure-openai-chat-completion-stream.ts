@@ -20,11 +20,12 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
    * @internal
    */
   public static _create(
-    response: HttpResponse
+    response: HttpResponse,
+    controller: AbortController
   ): AzureOpenAiChatCompletionStream<any> {
     // TODO: Change `any` to `CreateChatCompletionStreamResponse` once the preview spec becomes stable.
-    const stream = SseStream.fromSSEResponse<any>(response); // TODO: Change `any` to `CreateChatCompletionStreamResponse` once the preview spec becomes stable.
-    return new AzureOpenAiChatCompletionStream(stream.iterator);
+    const stream = SseStream.fromSSEResponse<any>(response, controller); // TODO: Change `any` to `CreateChatCompletionStreamResponse` once the preview spec becomes stable.
+    return new AzureOpenAiChatCompletionStream(stream.iterator, controller);
   }
 
   /**
@@ -101,8 +102,11 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
     }
   }
 
-  constructor(public iterator: () => AsyncIterator<Item>) {
-    super(iterator);
+  constructor(
+    public iterator: () => AsyncIterator<Item>,
+    controller: AbortController
+  ) {
+    super(iterator, controller);
   }
 
   /**
@@ -120,11 +124,12 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
     response?: AzureOpenAiChatCompletionStreamResponse<any>
   ): AzureOpenAiChatCompletionStream<TReturn> {
     if (response) {
-      return new AzureOpenAiChatCompletionStream(() =>
-        processFn(this, response)
+      return new AzureOpenAiChatCompletionStream(
+        () => processFn(this, response),
+        this.controller
       );
     }
-    return new AzureOpenAiChatCompletionStream(() => processFn(this));
+    return new AzureOpenAiChatCompletionStream(() => processFn(this), this.controller);
   }
 
   /**

@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { _iterSSEMessages, _decodeChunks as decodeChunks } from './sse-stream';
+import { _iterSSEMessages, _decodeChunks as decodeChunks } from './sse-stream.js';
 
 describe('line decoder', () => {
   test('basic', () => {
@@ -49,7 +49,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response)[Symbol.asyncIterator]();
+    const stream = _iterSSEMessages(response, new AbortController())[Symbol.asyncIterator]();
 
     let event = await stream.next();
     assert(event.value);
@@ -69,7 +69,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response)[Symbol.asyncIterator]();
+    const stream = _iterSSEMessages(response, new AbortController())[Symbol.asyncIterator]();
 
     let event = await stream.next();
     assert(event.value);
@@ -90,7 +90,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response)[Symbol.asyncIterator]();
+    const stream = _iterSSEMessages(response, new AbortController())[Symbol.asyncIterator]();
 
     let event = await stream.next();
     assert(event.value);
@@ -113,7 +113,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response)[Symbol.asyncIterator]();
+    const stream = _iterSSEMessages(response, new AbortController())[Symbol.asyncIterator]();
 
     let event = await stream.next();
     assert(event.value);
@@ -143,7 +143,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response)[Symbol.asyncIterator]();
+    const stream = _iterSSEMessages(response, new AbortController())[Symbol.asyncIterator]();
 
     let event = await stream.next();
     assert(event.value);
@@ -174,7 +174,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response)[Symbol.asyncIterator]();
+    const stream = _iterSSEMessages(response, new AbortController())[Symbol.asyncIterator]();
 
     let event = await stream.next();
     assert(event.value);
@@ -197,7 +197,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response)[Symbol.asyncIterator]();
+    const stream = _iterSSEMessages(response, new AbortController())[Symbol.asyncIterator]();
 
     let event = await stream.next();
     assert(event.value);
@@ -224,7 +224,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response)[Symbol.asyncIterator]();
+    const stream = _iterSSEMessages(response, new AbortController())[Symbol.asyncIterator]();
 
     let event = await stream.next();
     assert(event.value);
@@ -263,7 +263,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response)[Symbol.asyncIterator]();
+    const stream = _iterSSEMessages(response, new AbortController())[Symbol.asyncIterator]();
 
     let event = await stream.next();
     assert(event.value);

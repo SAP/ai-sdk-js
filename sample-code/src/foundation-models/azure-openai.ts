@@ -34,7 +34,7 @@ export async function chatCompletion(): Promise<AzureOpenAiChatCompletionRespons
  * Ask Azure OpenAI model about the capital of France with streaming.
  * @returns The response from Azure OpenAI containing the response content.
  */
-export async function chatCompletionStream(): Promise<
+export async function chatCompletionStream(controller: AbortController): Promise<
   AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>
 > {
   const response = await new AzureOpenAiChatClient('gpt-35-turbo').stream({
@@ -44,7 +44,7 @@ export async function chatCompletionStream(): Promise<
         content: 'Give me a very long introduction of SAP Cloud SDK.'
       }
     ]
-  });
+  }, controller);
   return response;
 }
 
@@ -52,7 +52,7 @@ export async function chatCompletionStream(): Promise<
  * Ask Azure OpenAI model about the capital of France with streaming.
  * @returns The response from Azure OpenAI containing the response content.
  */
-export async function chatCompletionStreamMultipleChoices(): Promise<
+export async function chatCompletionStreamMultipleChoices(controller: AbortController): Promise<
   AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>
 > {
   const response = await new AzureOpenAiChatClient('gpt-35-turbo').stream({
@@ -63,7 +63,7 @@ export async function chatCompletionStreamMultipleChoices(): Promise<
       }
     ],
     n: 2
-  });
+  }, controller);
   return response;
 }
 

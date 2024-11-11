@@ -16,8 +16,11 @@ type Bytes = string | ArrayBuffer | Uint8Array | Buffer | null | undefined;
  * @internal
  */
 export class SseStream<Item> implements AsyncIterable<Item> {
+  controller: AbortController;
+
   protected static fromSSEResponse<Item>(
-    response: HttpResponse
+    response: HttpResponse,
+    controller: AbortController
   ): SseStream<Item> {
     let consumed = false;
 
@@ -27,37 +30,53 @@ export class SseStream<Item> implements AsyncIterable<Item> {
       }
       consumed = true;
       let done = false;
-      for await (const sse of _iterSSEMessages(response)) {
-        if (done) {
-          continue;
-        }
 
-        if (sse.data.startsWith('[DONE]')) {
-          done = true;
-          continue;
-        }
-
-        try {
-          const data = JSON.parse(sse.data);
-
-          if (data?.error) {
-            throw new Error(data.error);
+      try {
+        for await (const sse of _iterSSEMessages(response, controller)) {
+          if (done) {
+            continue;
           }
 
-          yield sse.event === null ? data : ({ event: sse.event, data } as any);
-        } catch (error: any) {
-          logger.error(`Could not parse message into JSON: ${sse.data}`);
-          logger.error(`From chunk: ${sse.raw}`);
-          throw error;
+          if (sse.data.startsWith('[DONE]')) {
+            done = true;
+            continue;
+          }
+
+          try {
+            const data = JSON.parse(sse.data);
+            if (data?.error) {
+              throw new Error(data.error);
+            }
+            yield sse.event === null ? data : ({ event: sse.event, data } as any);
+          } catch (e: any) {
+            logger.error(`Could not parse message into JSON: ${sse.data}`);
+            logger.error(`From chunk: ${sse.raw}`);
+            throw e;
+          }
+        }
+        done = true;
+      } catch (e: any) {
+        if (e instanceof Error && e.name === 'AbortError') {
+          return;
+        } else {
+          logger.error('Error while iterating over SSE stream:', e);
+        }
+      } finally {
+        if (!done) {
+          controller.abort();
         }
       }
-      done = true;
     }
 
-    return new SseStream(iterator);
+    return new SseStream(iterator, controller);
   }
 
-  constructor(public iterator: () => AsyncIterator<Item>) {}
+  constructor(
+    public iterator: () => AsyncIterator<Item>,
+    controller: AbortController
+  ) {
+    this.controller = controller;
+  }
 
   [Symbol.asyncIterator](): AsyncIterator<Item> {
     return this.iterator();
@@ -68,9 +87,11 @@ export class SseStream<Item> implements AsyncIterable<Item> {
  * @internal
  */
 export async function* _iterSSEMessages(
-  response: HttpResponse
+  response: HttpResponse,
+  controller: AbortController
 ): AsyncGenerator<ServerSentEvent, void, unknown> {
   if (!response.data) {
+    controller.abort();
     throw new Error('Attempted to iterate over a response with no body');
   }
 
