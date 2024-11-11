@@ -77,8 +77,8 @@ importers:
         specifier: ^5.4.1
         version: 5.4.1
       nock:
-        specifier: ^13.5.5
-        version: 13.5.5
+        specifier: ^13.5.6
+        version: 13.5.6
       prettier:
         specifier: ^3.3.3
         version: 3.3.3
@@ -3210,8 +3210,8 @@ packages:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
     engines: {node: '>= 0.6'}
 
-  nock@13.5.5:
-    resolution: {integrity: sha512-XKYnqUrCwXC8DGG1xX4YH5yNIrlh9c065uaMZZHUoeUUINTOyt+x/G+ezYk0Ft6ExSREVIs+qBJDK503viTfFA==}
+  nock@13.5.6:
+    resolution: {integrity: sha512-o2zOYiCpzRqSzPj0Zt/dQ/DqZeYoaQ7TUonc/xUPjCGl9WeHpNbxgVvOquXYAaJzI0M9BXV3HTzG0p8IUAbBTQ==}
     engines: {node: '>= 10.13'}
 
   node-cache@5.1.2:
@@ -7979,7 +7979,7 @@ snapshots:
 
   negotiator@0.6.3: {}
 
-  nock@13.5.5:
+  nock@13.5.6:
     dependencies:
       debug: 4.3.7(supports-color@8.1.1)
       json-stringify-safe: 5.0.1
