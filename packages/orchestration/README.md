@@ -31,12 +31,13 @@ $ npm install @sap-ai-sdk/orchestration
 
 - [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Configure the project with **Node.js v20 or higher** and **native ESM** support.
-- Run an orchestration deployment.
-  - Use the [`DeploymentApi`](https://github.com/SAP/ai-sdk-js/blob/main/packages/ai-api/README.md#create-a-deployment) from `@sap-ai-sdk/ai-api` to create a deployment for orchestration to the SAP Generative AI Hub. For more information, see [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration).
+- Ensure an orchestration deployment is available in the SAP Generative AI Hub.
+  - Use the [`DeploymentApi`](https://github.com/SAP/ai-sdk-js/blob/main/packages/ai-api/README.md#create-a-deployment) from `@sap-ai-sdk/ai-api` [to create a deployment](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration).
+    Alternatively, you can also create deployments using the [SAP AI Launchpad](https://help.sap.com/docs/sap-ai-core/generative-ai-hub/activate-generative-ai-hub-for-sap-ai-launchpad?locale=en-US&q=launchpad).
   - Once the deployment is complete, access the orchestration service via the `deploymentUrl`.
 
 > **Accessing the AI Core Service via the SDK**:
-> The SDK automatically retrieves the `AI Core` service binding from the `VCAP_SERVICES` environment variable, along with the service token needed for authentication.
+> The SDK automatically retrieves the `AI Core` service credentials from the `VCAP_SERVICES` environment variable and resolves the access token needed for authentication.
 > All subsequent client requests are routed to this service endpoint.
 
 ## Orchestration Service
