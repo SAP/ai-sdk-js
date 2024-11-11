@@ -137,23 +137,33 @@ expectType<Promise<AzureOpenAiEmbeddingResponse>>(
 expect<AzureOpenAiChatModel>('custom-model');
 expect<AzureOpenAiChatModel>('gpt-4-32k');
 
-/** 
+/**
  * Streaming.
  */
-expectType<Promise<AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>>>(
+expectType<
+  Promise<
+    AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>
+  >
+>(
   new AzureOpenAiChatClient('gpt-4').stream({
     messages: [{ role: 'user', content: 'test prompt' }]
   })
 );
 
-expectType<AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>>(
-  (await new AzureOpenAiChatClient('gpt-4').stream({
-    messages: [{ role: 'user', content: 'test prompt' }]
-  })).stream
+expectType<
+  AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>
+>(
+  (
+    await new AzureOpenAiChatClient('gpt-4').stream({
+      messages: [{ role: 'user', content: 'test prompt' }]
+    })
+  ).stream
 );
 
 expectType<AzureOpenAiChatCompletionStream<string>>(
-  (await new AzureOpenAiChatClient('gpt-4').stream({
-    messages: [{ role: 'user', content: 'test prompt' }]
-  })).stream.toContentStream()
+  (
+    await new AzureOpenAiChatClient('gpt-4').stream({
+      messages: [{ role: 'user', content: 'test prompt' }]
+    })
+  ).stream.toContentStream()
 );

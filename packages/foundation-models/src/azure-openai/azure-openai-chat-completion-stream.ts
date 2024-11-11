@@ -102,6 +102,25 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
     }
   }
 
+  /**
+   * Transform a stream of chunks into a stream of content strings.
+   * @param stream - Chat completion stream.
+   * @param choiceIndex - The index of the choice to parse.
+   * @internal
+   */
+  static async *_processContentStream(
+    stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
+    choiceIndex = 0
+  ): AsyncGenerator<string> {
+    for await (const chunk of stream) {
+      const deltaContent = chunk.getDeltaContent(choiceIndex);
+      if (!deltaContent) {
+        continue;
+      }
+      yield deltaContent;
+    }
+  }
+
   constructor(
     public iterator: () => AsyncIterator<Item>,
     controller: AbortController
@@ -135,34 +154,16 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
     );
   }
 
-  /**
-   * Transform a stream of chunks into a stream of content strings.
-   * @param stream - Chat completion stream.
-   * @param choiceIndex - The index of the choice to parse.
-   * @internal
-   */
-  static async *_processContentStream(
-    stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
-    choiceIndex = 0
-  ): AsyncGenerator<string> {
-    for await (const chunk of stream) {
-      const deltaContent = chunk.getDeltaContent(choiceIndex);
-      if (!deltaContent) {
-        continue;
-      }
-      yield deltaContent;
-    }
-  }
-
   public toContentStream(
     this: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
     choiceIndex?: number
   ): AzureOpenAiChatCompletionStream<string> {
     return new AzureOpenAiChatCompletionStream(
-      () => AzureOpenAiChatCompletionStream._processContentStream(
-        this,
-        choiceIndex
-      ),
+      () =>
+        AzureOpenAiChatCompletionStream._processContentStream(
+          this,
+          choiceIndex
+        ),
       this.controller
     );
   }
