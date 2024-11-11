@@ -129,7 +129,10 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
         this.controller
       );
     }
-    return new AzureOpenAiChatCompletionStream(() => processFn(this), this.controller);
+    return new AzureOpenAiChatCompletionStream(
+      () => processFn(this),
+      this.controller
+    );
   }
 
   /**

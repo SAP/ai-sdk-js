@@ -56,7 +56,6 @@ app.get('/azure-openai/chat-completion', async (req, res) => {
 app.get('/azure-openai/chat-completion-stream', async (req, res) => {
   const controller = new AbortController();
   try {
-
     const response = await chatCompletionStream(controller);
 
     res.setHeader('Cache-Control', 'no-cache');
@@ -130,7 +129,9 @@ app.get(
         res.write('\n\n---------------------------\n');
         res.write(`Finish reason: ${response.finishReasons.get(1)}\n`);
         res.write('Token usage:\n');
-        res.write(`  - Completion tokens: ${response.usage.completion_tokens}\n`);
+        res.write(
+          `  - Completion tokens: ${response.usage.completion_tokens}\n`
+        );
         res.write(`  - Prompt tokens: ${response.usage.prompt_tokens}\n`);
         res.write(`  - Total tokens: ${response.usage.total_tokens}\n`);
       }

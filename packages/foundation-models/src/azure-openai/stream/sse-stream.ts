@@ -6,7 +6,7 @@ import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 
 const logger = createLogger({
   package: 'foundation-models',
-  messageContext: 'azure-openai-stream'
+  messageContext: 'azure-openai-sse-stream'
 });
 
 type Bytes = string | ArrayBuffer | Uint8Array | Buffer | null | undefined;
@@ -16,8 +16,6 @@ type Bytes = string | ArrayBuffer | Uint8Array | Buffer | null | undefined;
  * @internal
  */
 export class SseStream<Item> implements AsyncIterable<Item> {
-  controller: AbortController;
-
   protected static fromSSEResponse<Item>(
     response: HttpResponse,
     controller: AbortController
@@ -47,7 +45,9 @@ export class SseStream<Item> implements AsyncIterable<Item> {
             if (data?.error) {
               throw new Error(data.error);
             }
-            yield sse.event === null ? data : ({ event: sse.event, data } as any);
+            yield sse.event === null
+              ? data
+              : ({ event: sse.event, data } as any);
           } catch (e: any) {
             logger.error(`Could not parse message into JSON: ${sse.data}`);
             logger.error(`From chunk: ${sse.raw}`);
@@ -56,11 +56,10 @@ export class SseStream<Item> implements AsyncIterable<Item> {
         }
         done = true;
       } catch (e: any) {
-        if (e instanceof Error && e.name === 'AbortError') {
+        if (e instanceof Error && e.name === 'CanceledError') {
           return;
-        } else {
-          logger.error('Error while iterating over SSE stream:', e);
         }
+        logger.error('Error while iterating over SSE stream:', e);
       } finally {
         if (!done) {
           controller.abort();
@@ -70,6 +69,8 @@ export class SseStream<Item> implements AsyncIterable<Item> {
 
     return new SseStream(iterator, controller);
   }
+
+  controller: AbortController;
 
   constructor(
     public iterator: () => AsyncIterator<Item>,

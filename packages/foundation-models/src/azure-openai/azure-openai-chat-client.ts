@@ -39,6 +39,7 @@ export class AzureOpenAiChatClient {
   /**
    * Creates a completion stream for the chat messages.
    * @param data - The input parameters for the chat completion.
+   * @param controller - The abort controller.
    * @param requestConfig - The request configuration.
    * @returns The completion stream.
    */
@@ -71,7 +72,7 @@ export class AzureOpenAiChatClient {
       {
         url: `/inference/deployments/${deploymentId}/chat/completions`,
         apiVersion,
-        resourceGroup
+        resourceGroup,
       },
       data,
       requestConfig
@@ -93,7 +94,8 @@ export class AzureOpenAiChatClient {
       },
       {
         ...requestConfig,
-        responseType: 'stream'
+        responseType: 'stream',
+        signal: controller.signal
       }
     );
     return AzureOpenAiChatCompletionStream._create(response, controller);
