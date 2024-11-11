@@ -58,10 +58,14 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
             }
             switch (finishReason) {
               case 'content_filter':
-                logger.error(`Choice ${choiceIndex}: Stream finished with content filter hit.`);
+                logger.error(
+                  `Choice ${choiceIndex}: Stream finished with content filter hit.`
+                );
                 break;
               case 'length':
-                logger.error(`Choice ${choiceIndex}: Stream finished with token length exceeded.`);
+                logger.error(
+                  `Choice ${choiceIndex}: Stream finished with token length exceeded.`
+                );
                 break;
               case 'stop':
                 logger.debug(`Choice ${choiceIndex}: Stream finished.`);
@@ -72,7 +76,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
                 );
             }
           }
-        };
+        }
       });
       yield chunk;
     }
@@ -81,7 +85,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
   /**
    * @internal
    */
-  static async * _processTokenUsage(
+  static async *_processTokenUsage(
     stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
     response?: AzureOpenAiChatCompletionStreamResponse<any>
   ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse> {
@@ -129,7 +133,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
    * @param choiceIndex - The index of the choice to parse.
    * @internal
    */
-  async * toContentStream(
+  async *toContentStream(
     this: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
     choiceIndex = 0
   ): AsyncGenerator<string> {

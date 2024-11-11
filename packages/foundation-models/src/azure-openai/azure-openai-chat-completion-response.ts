@@ -32,9 +32,7 @@ export class AzureOpenAiChatCompletionResponse {
    * @param choiceIndex - The index of the choice to parse.
    * @returns The finish reason.
    */
-  getFinishReason(
-    choiceIndex = 0
-  ): string | undefined | null {
+  getFinishReason(choiceIndex = 0): string | undefined | null {
     this.logInvalidChoiceIndex(choiceIndex);
     return this.data.choices[choiceIndex]?.finish_reason;
   }
