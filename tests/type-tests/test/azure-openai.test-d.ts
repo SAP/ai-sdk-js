@@ -43,7 +43,7 @@ expectType<string | undefined | null>(
   ).getContent()
 );
 
-expectType<string | undefined>(
+expectType<string | undefined | null>(
   (
     await new AzureOpenAiChatClient('gpt-4').run({
       messages: [{ role: 'user', content: 'test prompt' }]
