@@ -69,7 +69,7 @@ app.get('/azure-openai/chat-completion-stream', async (req, res) => {
       res.end();
     });
 
-    for await (const chunk of response.stream) {
+    for await (const chunk of response.stream.toStringStream()) {
       if (!connectionAlive) {
         break;
       }

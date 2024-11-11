@@ -16,7 +16,9 @@ type Bytes = string | ArrayBuffer | Uint8Array | Buffer | null | undefined;
  * @internal
  */
 export class SseStream<Item> implements AsyncIterable<Item> {
-  protected static fromSSEResponse<Item>(response: HttpResponse): SseStream<Item> {
+  protected static fromSSEResponse<Item>(
+    response: HttpResponse
+  ): SseStream<Item> {
     let consumed = false;
 
     async function* iterator(): AsyncIterator<Item, any, undefined> {
@@ -41,9 +43,9 @@ export class SseStream<Item> implements AsyncIterable<Item> {
           if (data?.error) {
             throw new Error(data.error);
           }
-          
-          yield sse.event === null ? data : { event: sse.event, data } as any;
-        } catch(error: any) {
+
+          yield sse.event === null ? data : ({ event: sse.event, data } as any);
+        } catch (error: any) {
           logger.error(`Could not parse message into JSON: ${sse.data}`);
           logger.error(`From chunk: ${sse.raw}`);
           throw error;

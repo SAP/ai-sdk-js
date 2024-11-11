@@ -6,7 +6,8 @@ import { createLogger } from '@sap-cloud-sdk/util';
 import type {
   AzureOpenAiChatCompletionResponse,
   AzureOpenAiEmbeddingResponse,
-  AzureOpenAiChatCompletionStreamResponse
+  AzureOpenAiChatCompletionStreamResponse,
+  AzureOpenAiChatCompletionStreamChunkResponse
 } from '@sap-ai-sdk/foundation-models';
 
 const logger = createLogger({
@@ -34,11 +35,9 @@ export async function chatCompletion(): Promise<AzureOpenAiChatCompletionRespons
  * @returns The response from Azure OpenAI containing the response content.
  */
 export async function chatCompletionStream(): Promise<
-  AzureOpenAiChatCompletionStreamResponse<string>
+  AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>
 > {
-  const response = await new AzureOpenAiChatClient(
-    'gpt-35-turbo'
-  ).streamContent({
+  const response = await new AzureOpenAiChatClient('gpt-35-turbo').stream({
     messages: [
       {
         role: 'user',

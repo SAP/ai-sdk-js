@@ -1,5 +1,3 @@
-import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-import { PassThrough } from 'stream';
 import assert from 'assert';
 import { _iterSSEMessages, _decodeChunks as decodeChunks } from './sse-stream';
 
@@ -15,11 +13,17 @@ describe('line decoder', () => {
   });
 
   test('trailing new lines', () => {
-    expect(decodeChunks(['foo', ' bar', 'baz\n', 'thing\n'])).toEqual(['foo barbaz', 'thing']);
+    expect(decodeChunks(['foo', ' bar', 'baz\n', 'thing\n'])).toEqual([
+      'foo barbaz',
+      'thing'
+    ]);
   });
 
   test('trailing new lines with \\r', () => {
-    expect(decodeChunks(['foo', ' bar', 'baz\r\n', 'thing\r\n'])).toEqual(['foo barbaz', 'thing']);
+    expect(decodeChunks(['foo', ' bar', 'baz\r\n', 'thing\r\n'])).toEqual([
+      'foo barbaz',
+      'thing'
+    ]);
   });
 
   test('escaped new lines', () => {
@@ -27,7 +31,9 @@ describe('line decoder', () => {
   });
 
   test('escaped new lines with \\r', () => {
-    expect(decodeChunks(['foo', ' bar\\r\\nbaz\n'])).toEqual(['foo bar\\r\\nbaz']);
+    expect(decodeChunks(['foo', ' bar\\r\\nbaz\n'])).toEqual([
+      'foo bar\\r\\nbaz'
+    ]);
   });
 });
 
@@ -43,9 +49,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response)[
-      Symbol.asyncIterator
-    ]();
+    const stream = _iterSSEMessages(response)[Symbol.asyncIterator]();
 
     let event = await stream.next();
     assert(event.value);
@@ -65,9 +69,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response)[
-      Symbol.asyncIterator
-    ]();
+    const stream = _iterSSEMessages(response)[Symbol.asyncIterator]();
 
     let event = await stream.next();
     assert(event.value);
@@ -88,9 +90,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response)[
-      Symbol.asyncIterator
-    ]();
+    const stream = _iterSSEMessages(response)[Symbol.asyncIterator]();
 
     let event = await stream.next();
     assert(event.value);
@@ -113,9 +113,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response)[
-      Symbol.asyncIterator
-    ]();
+    const stream = _iterSSEMessages(response)[Symbol.asyncIterator]();
 
     let event = await stream.next();
     assert(event.value);
@@ -145,9 +143,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response)[
-      Symbol.asyncIterator
-    ]();
+    const stream = _iterSSEMessages(response)[Symbol.asyncIterator]();
 
     let event = await stream.next();
     assert(event.value);
@@ -178,9 +174,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response)[
-      Symbol.asyncIterator
-    ]();
+    const stream = _iterSSEMessages(response)[Symbol.asyncIterator]();
 
     let event = await stream.next();
     assert(event.value);
@@ -203,9 +197,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response)[
-      Symbol.asyncIterator
-    ]();
+    const stream = _iterSSEMessages(response)[Symbol.asyncIterator]();
 
     let event = await stream.next();
     assert(event.value);
@@ -232,9 +224,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response)[
-      Symbol.asyncIterator
-    ]();
+    const stream = _iterSSEMessages(response)[Symbol.asyncIterator]();
 
     let event = await stream.next();
     assert(event.value);
@@ -242,7 +232,9 @@ describe('streaming decoding', () => {
 
     event = await stream.next();
     assert(event.value);
-    expect(JSON.parse(event.value.data)).toEqual({ content: Buffer.from([0xe2, 0x80, 0xa8]).toString() });
+    expect(JSON.parse(event.value.data)).toEqual({
+      content: Buffer.from([0xe2, 0x80, 0xa8]).toString()
+    });
 
     event = await stream.next();
     assert(event.value);
@@ -260,7 +252,9 @@ describe('streaming decoding', () => {
       // so that some multi-byte characters span multiple chunks
       yield Buffer.from([0xd0]);
       yield Buffer.from([0xb8, 0xd0, 0xb7, 0xd0]);
-      yield Buffer.from([0xb2, 0xd0, 0xb5, 0xd1, 0x81, 0xd1, 0x82, 0xd0, 0xbd, 0xd0, 0xb8]);
+      yield Buffer.from([
+        0xb2, 0xd0, 0xb5, 0xd1, 0x81, 0xd1, 0x82, 0xd0, 0xbd, 0xd0, 0xb8
+      ]);
       yield Buffer.from('"}\n');
       yield Buffer.from('\n');
     }
@@ -269,9 +263,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response)[
-      Symbol.asyncIterator
-    ]();
+    const stream = _iterSSEMessages(response)[Symbol.asyncIterator]();
 
     let event = await stream.next();
     assert(event.value);

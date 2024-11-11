@@ -1,5 +1,5 @@
 import { createLogger } from '@sap-cloud-sdk/util';
-import { SseStream } from './stream/sse-stream.js';
+import { SseStream } from './stream/index.js';
 import { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.js';
@@ -19,7 +19,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
    * @returns Chat completion stream.
    * @internal
    */
-  public static create(
+  public static _create(
     response: HttpResponse
   ): AzureOpenAiChatCompletionStream<any> {
     // TODO: Change `any` to `CreateChatCompletionStreamResponse` once the preview spec becomes stable.
@@ -32,7 +32,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
    * @param stream - Chat completion stream.
    * @internal
    */
-  static async *processChunk(
+  static async *_processChunk(
     stream: AzureOpenAiChatCompletionStream<any> // TODO: Change `any` to `CreateChatCompletionStreamResponse` once the preview spec becomes stable.
   ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse> {
     for await (const chunk of stream) {
@@ -41,26 +41,9 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
   }
 
   /**
-   * Transform the stream chunk into string.
-   * @param stream - Chat completion stream.
    * @internal
    */
-  static async *processContent(
-    stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>
-  ): AsyncGenerator<string> {
-    for await (const chunk of stream) {
-      const deltaContent = chunk.getDeltaContent();
-      if (!deltaContent) {
-        continue;
-      }
-      yield deltaContent;
-    }
-  }
-
-  /**
-   * @internal
-   */
-  static async *processFinishReason(
+  static async *_processFinishReason(
     stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
     response?: AzureOpenAiChatCompletionStreamResponse<any>
   ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse> {
@@ -93,7 +76,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
   /**
    * @internal
    */
-  static async *processTokenUsage(
+  static async *_processTokenUsage(
     stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
     response?: AzureOpenAiChatCompletionStreamResponse<any>
   ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse> {
@@ -120,7 +103,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
    * @returns The output stream containing processed items.
    * @internal
    */
-  pipe<TReturn>(
+  _pipe<TReturn>(
     processFn: (
       stream: AzureOpenAiChatCompletionStream<Item>,
       response?: AzureOpenAiChatCompletionStreamResponse<any>
@@ -133,5 +116,22 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
       );
     }
     return new AzureOpenAiChatCompletionStream(() => processFn(this));
+  }
+
+  /**
+   * Transform a stream of chunks into a stream of content strings.
+   * @param stream - Chat completion stream.
+   * @internal
+   */
+  async *toStringStream(
+    this: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>
+  ): AsyncGenerator<string> {
+    for await (const chunk of this) {
+      const deltaContent = chunk.getDeltaContent();
+      if (!deltaContent) {
+        continue;
+      }
+      yield deltaContent;
+    }
   }
 }

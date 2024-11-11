@@ -51,28 +51,9 @@ export class AzureOpenAiChatClient {
     const response =
       new AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>();
     response.stream = (await this.createStream(data, requestConfig))
-      .pipe(AzureOpenAiChatCompletionStream.processChunk)
-      .pipe(AzureOpenAiChatCompletionStream.processFinishReason, response)
-      .pipe(AzureOpenAiChatCompletionStream.processTokenUsage, response);
-    return response;
-  }
-
-  /**
-   * Creates a completion stream of the delta content for the chat messages.
-   * @param data - The input parameters for the chat completion.
-   * @param requestConfig - The request configuration.
-   * @returns The completion stream of the delta content.
-   */
-  async streamContent(
-    data: AzureOpenAiCreateChatCompletionRequest,
-    requestConfig?: CustomRequestConfig
-  ): Promise<AzureOpenAiChatCompletionStreamResponse<string>> {
-    const response = new AzureOpenAiChatCompletionStreamResponse<string>();
-    response.stream = (await this.createStream(data, requestConfig))
-      .pipe(AzureOpenAiChatCompletionStream.processChunk)
-      .pipe(AzureOpenAiChatCompletionStream.processFinishReason, response)
-      .pipe(AzureOpenAiChatCompletionStream.processTokenUsage, response)
-      .pipe(AzureOpenAiChatCompletionStream.processContent, response);
+      ._pipe(AzureOpenAiChatCompletionStream._processChunk)
+      ._pipe(AzureOpenAiChatCompletionStream._processFinishReason, response)
+      ._pipe(AzureOpenAiChatCompletionStream._processTokenUsage, response);
     return response;
   }
 
@@ -113,6 +94,6 @@ export class AzureOpenAiChatClient {
         responseType: 'stream'
       }
     );
-    return AzureOpenAiChatCompletionStream.create(response);
+    return AzureOpenAiChatCompletionStream._create(response);
   }
 }
