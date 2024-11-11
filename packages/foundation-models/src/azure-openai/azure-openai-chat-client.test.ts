@@ -3,11 +3,13 @@ import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
   mockInference,
+  parseFileToString,
   parseMockResponse
 } from '../../../../test-util/mock-http.js';
 import { AzureOpenAiChatClient } from './azure-openai-chat-client.js';
 import { apiVersion } from './model-types.js';
 import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.js';
+import { stream } from '@sap/cds';
 
 describe('Azure OpenAI chat client', () => {
   const chatCompletionEndpoint = {
@@ -126,5 +128,48 @@ describe('Azure OpenAI chat client', () => {
 
     const response = await clientWithResourceGroup.run(prompt);
     expect(response.data).toEqual(mockResponse);
+  });
+
+  it('executes a streaming request with correct chunk response', async () => {
+    const prompt = {
+      messages: [
+        {
+          role: 'user' as const,
+          content: 'Where is the deepest place on earth located'
+        }
+      ],
+      stream: true,
+      stream_options: {
+        include_usage: true
+      }
+    };
+
+    const mockResponse =
+      await parseFileToString(
+        'foundation-models',
+        'azure-openai-chat-completion-stream-chunks.txt'
+      );
+
+    mockInference(
+      {
+        data: prompt
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      chatCompletionEndpoint
+    );
+
+    const initialResponse = await parseFileToString(
+      'foundation-models',
+      'azure-openai-chat-completion-stream-chunk-response-initial.json'
+    );
+
+    const response = await client.stream(prompt);
+    for await (const chunk of response.stream) {
+      expect(JSON.stringify(chunk.data)).toEqual(initialResponse);
+      break;
+    }
   });
 });
