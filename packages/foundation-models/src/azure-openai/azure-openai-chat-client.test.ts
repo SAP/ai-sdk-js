@@ -9,7 +9,6 @@ import {
 import { AzureOpenAiChatClient } from './azure-openai-chat-client.js';
 import { apiVersion } from './model-types.js';
 import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.js';
-import { stream } from '@sap/cds';
 
 describe('Azure OpenAI chat client', () => {
   const chatCompletionEndpoint = {
@@ -144,11 +143,10 @@ describe('Azure OpenAI chat client', () => {
       }
     };
 
-    const mockResponse =
-      await parseFileToString(
-        'foundation-models',
-        'azure-openai-chat-completion-stream-chunks.txt'
-      );
+    const mockResponse = await parseFileToString(
+      'foundation-models',
+      'azure-openai-chat-completion-stream-chunks.txt'
+    );
 
     mockInference(
       {
