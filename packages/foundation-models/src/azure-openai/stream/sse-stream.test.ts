@@ -310,12 +310,13 @@ describe('streaming decoding', () => {
       Symbol.asyncIterator
     ]();
 
-    let event = await stream.next();
+    const event = await stream.next();
     assert(event.value);
     expect(event.value.event).toBeNull();
-    expect(JSON.parse(event.value.data)).toEqual({"content": "culpa "});
+    expect(JSON.parse(event.value.data)).toEqual({ content: 'culpa ' });
 
-    expect(stream.next()).rejects.toThrow('Invalid SSE payload: {"error":"Something went wrong"}');
+    expect(stream.next()).rejects.toThrow(
+      'Invalid SSE payload: {"error":"Something went wrong"}'
+    );
   });
-
 });
