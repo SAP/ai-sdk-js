@@ -73,6 +73,8 @@ export class SSEDecoder {
       this.event = trimedValue;
     } else if (fieldname === 'data') {
       this.data.push(trimedValue);
+    } else {
+      throw new Error(`Invalid SSE payload: ${line}`);
     }
 
     return null;

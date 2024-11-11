@@ -294,4 +294,28 @@ describe('streaming decoding', () => {
     event = await stream.next();
     expect(event.done).toBeTruthy();
   });
+
+  test('invalid payload', async () => {
+    async function* body(): AsyncGenerator<Buffer> {
+      yield Buffer.from('data: {"content": "culpa "}\n');
+      yield Buffer.from('\n');
+      yield Buffer.from('{"error":"Something went wrong"}\n');
+    }
+
+    const response = {
+      data: body()
+    } as any;
+
+    const stream = _iterSSEMessages(response, new AbortController())[
+      Symbol.asyncIterator
+    ]();
+
+    let event = await stream.next();
+    assert(event.value);
+    expect(event.value.event).toBeNull();
+    expect(JSON.parse(event.value.data)).toEqual({"content": "culpa "});
+
+    expect(stream.next()).rejects.toThrow('Invalid SSE payload: {"error":"Something went wrong"}');
+  });
+
 });
