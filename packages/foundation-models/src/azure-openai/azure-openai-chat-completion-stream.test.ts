@@ -60,13 +60,16 @@ describe('OpenAI chat completion stream', () => {
     );
     const asyncGeneratorFinishReason =
       AzureOpenAiChatCompletionStream._processFinishReason(
-        new AzureOpenAiChatCompletionStream(() => asyncGeneratorChunk, new AbortController())
+        new AzureOpenAiChatCompletionStream(
+          () => asyncGeneratorChunk,
+          new AbortController()
+        )
       );
 
     for await (const chunk of asyncGeneratorFinishReason) {
       expect(chunk).toBeDefined();
     }
-    expect(debugSpy).toHaveBeenCalledWith(`Choice 0: Stream finished.`);
+    expect(debugSpy).toHaveBeenCalledWith('Choice 0: Stream finished.');
   });
 
   it('should process the token usage', async () => {
@@ -80,7 +83,10 @@ describe('OpenAI chat completion stream', () => {
     );
     const asyncGeneratorTokenUsage =
       AzureOpenAiChatCompletionStream._processTokenUsage(
-        new AzureOpenAiChatCompletionStream(() => asyncGeneratorChunk, new AbortController())
+        new AzureOpenAiChatCompletionStream(
+          () => asyncGeneratorChunk,
+          new AbortController()
+        )
       );
 
     for await (const chunk of asyncGeneratorTokenUsage) {
