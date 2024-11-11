@@ -51,7 +51,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
     for await (const chunk of stream) {
       chunk.data.choices.forEach((choice: any) => {
         const choiceIndex = choice.index;
-        if (choiceIndex) {
+        if (choiceIndex !== undefined && choiceIndex !== null) {
           const finishReason = chunk.getFinishReason(choiceIndex);
           if (finishReason) {
             if (response) {

@@ -32,7 +32,8 @@ describe('OpenAI chat completion stream', () => {
       }
     }
     originalChatCompletionStream = new AzureOpenAiChatCompletionStream(
-      iterator
+      iterator,
+      new AbortController()
     );
   });
 
@@ -59,32 +60,13 @@ describe('OpenAI chat completion stream', () => {
     );
     const asyncGeneratorFinishReason =
       AzureOpenAiChatCompletionStream._processFinishReason(
-        new AzureOpenAiChatCompletionStream(() => asyncGeneratorChunk)
+        new AzureOpenAiChatCompletionStream(() => asyncGeneratorChunk, new AbortController())
       );
 
     for await (const chunk of asyncGeneratorFinishReason) {
       expect(chunk).toBeDefined();
     }
-    expect(debugSpy).toHaveBeenCalledWith('Stream finished.');
-  });
-  it('should process the finish reason', async () => {
-    const logger = createLogger({
-      package: 'foundation-models',
-      messageContext: 'azure-openai-chat-completion-stream'
-    });
-    const debugSpy = jest.spyOn(logger, 'debug');
-    const asyncGeneratorChunk = AzureOpenAiChatCompletionStream._processChunk(
-      originalChatCompletionStream
-    );
-    const asyncGeneratorFinishReason =
-      AzureOpenAiChatCompletionStream._processFinishReason(
-        new AzureOpenAiChatCompletionStream(() => asyncGeneratorChunk)
-      );
-
-    for await (const chunk of asyncGeneratorFinishReason) {
-      expect(chunk).toBeDefined();
-    }
-    expect(debugSpy).toHaveBeenCalledWith('Stream finished.');
+    expect(debugSpy).toHaveBeenCalledWith(`Choice 0: Stream finished.`);
   });
 
   it('should process the token usage', async () => {
@@ -98,7 +80,7 @@ describe('OpenAI chat completion stream', () => {
     );
     const asyncGeneratorTokenUsage =
       AzureOpenAiChatCompletionStream._processTokenUsage(
-        new AzureOpenAiChatCompletionStream(() => asyncGeneratorChunk)
+        new AzureOpenAiChatCompletionStream(() => asyncGeneratorChunk, new AbortController())
       );
 
     for await (const chunk of asyncGeneratorTokenUsage) {
@@ -114,7 +96,8 @@ describe('OpenAI chat completion stream', () => {
       originalChatCompletionStream
     );
     const chunkStream = new AzureOpenAiChatCompletionStream(
-      () => asyncGeneratorChunk
+      () => asyncGeneratorChunk,
+      new AbortController()
     );
 
     let output = '';
