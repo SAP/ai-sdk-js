@@ -137,20 +137,33 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
 
   /**
    * Transform a stream of chunks into a stream of content strings.
-   * @param this - Chat completion stream.
+   * @param stream - Chat completion stream.
    * @param choiceIndex - The index of the choice to parse.
    * @internal
    */
-  async *toContentStream(
-    this: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
+  static async *_processContentStream(
+    stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
     choiceIndex = 0
   ): AsyncGenerator<string> {
-    for await (const chunk of this) {
+    for await (const chunk of stream) {
       const deltaContent = chunk.getDeltaContent(choiceIndex);
       if (!deltaContent) {
         continue;
       }
       yield deltaContent;
     }
+  }
+
+  public toContentStream(
+    this: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
+    choiceIndex?: number
+  ): AzureOpenAiChatCompletionStream<string> {
+    return new AzureOpenAiChatCompletionStream(
+      () => AzureOpenAiChatCompletionStream._processContentStream(
+        this,
+        choiceIndex
+      ),
+      this.controller
+    );
   }
 }
