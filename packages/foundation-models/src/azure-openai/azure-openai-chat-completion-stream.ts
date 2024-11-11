@@ -48,27 +48,32 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
     response?: AzureOpenAiChatCompletionStreamResponse<any>
   ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse> {
     for await (const chunk of stream) {
-      const finishReason = chunk.getFinishReason();
-      if (finishReason) {
-        if (response) {
-          response.finishReason = finishReason;
-        }
-        switch (finishReason) {
-          case 'content_filter':
-            logger.error('Stream finished with content filter hit.');
-            break;
-          case 'length':
-            logger.error('Stream finished with token length exceeded.');
-            break;
-          case 'stop':
-            logger.debug('Stream finished.');
-            break;
-          default:
-            logger.error(
-              `Stream finished with unknown reason '${finishReason}'.`
-            );
-        }
-      }
+      chunk.data.choices.forEach((choice: any) => {
+        const choiceIndex = choice.index;
+        if (choiceIndex) {
+          const finishReason = chunk.getFinishReason(choiceIndex);
+          if (finishReason) {
+            if (response) {
+              response.finishReasons.set(choiceIndex, finishReason);
+            }
+            switch (finishReason) {
+              case 'content_filter':
+                logger.error(`Choice ${choiceIndex}: Stream finished with content filter hit.`);
+                break;
+              case 'length':
+                logger.error(`Choice ${choiceIndex}: Stream finished with token length exceeded.`);
+                break;
+              case 'stop':
+                logger.debug(`Choice ${choiceIndex}: Stream finished.`);
+                break;
+              default:
+                logger.error(
+                  `Choice ${choiceIndex}: Stream finished with unknown reason '${finishReason}'.`
+                );
+            }
+          }
+        };
+      });
       yield chunk;
     }
   }
@@ -76,7 +81,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
   /**
    * @internal
    */
-  static async *_processTokenUsage(
+  static async * _processTokenUsage(
     stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
     response?: AzureOpenAiChatCompletionStreamResponse<any>
   ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse> {
@@ -120,14 +125,16 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
 
   /**
    * Transform a stream of chunks into a stream of content strings.
-   * @param stream - Chat completion stream.
+   * @param this - Chat completion stream.
+   * @param choiceIndex - The index of the choice to parse.
    * @internal
    */
-  async *toStringStream(
-    this: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>
+  async * toContentStream(
+    this: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
+    choiceIndex = 0
   ): AsyncGenerator<string> {
     for await (const chunk of this) {
-      const deltaContent = chunk.getDeltaContent();
+      const deltaContent = chunk.getDeltaContent(choiceIndex);
       if (!deltaContent) {
         continue;
       }

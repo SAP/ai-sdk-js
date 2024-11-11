@@ -49,6 +49,25 @@ export async function chatCompletionStream(): Promise<
 }
 
 /**
+ * Ask Azure OpenAI model about the capital of France with streaming.
+ * @returns The response from Azure OpenAI containing the response content.
+ */
+export async function chatCompletionStreamMultipleChoices(): Promise<
+  AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>
+> {
+  const response = await new AzureOpenAiChatClient('gpt-35-turbo').stream({
+    messages: [
+      {
+        role: 'user',
+        content: 'Give me a very long introduction of SAP Cloud SDK.'
+      }
+    ],
+    n: 2
+  });
+  return response;
+}
+
+/**
  * Embed 'Hello, world!' using the OpenAI ADA model.
  * @returns The response from Azure OpenAI containing the embedding vector.
  */

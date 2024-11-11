@@ -34,7 +34,7 @@ export class AzureOpenAiChatCompletionResponse {
    */
   getFinishReason(
     choiceIndex = 0
-  ): this['data']['choices'][0]['finish_reason'] {
+  ): string | undefined | null {
     this.logInvalidChoiceIndex(choiceIndex);
     return this.data.choices[choiceIndex]?.finish_reason;
   }

@@ -48,7 +48,7 @@ describe('OpenAI chat completion stream', () => {
     expect(output).toEqual('The capital of France is Paris.');
   });
 
-  it('should process the finish reason', async () => {
+  it('should process the finish reasons', async () => {
     const logger = createLogger({
       package: 'foundation-models',
       messageContext: 'azure-openai-chat-completion-stream'
@@ -118,7 +118,7 @@ describe('OpenAI chat completion stream', () => {
     );
 
     let output = '';
-    for await (const chunk of chunkStream.toStringStream()) {
+    for await (const chunk of chunkStream.toContentStream()) {
       expect(typeof chunk).toBe('string');
       output += chunk;
     }

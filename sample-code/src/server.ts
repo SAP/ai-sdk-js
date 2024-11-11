@@ -3,6 +3,7 @@ import express from 'express';
 import {
   chatCompletion,
   chatCompletionStream,
+  chatCompletionStreamMultipleChoices,
   computeEmbedding
   // eslint-disable-next-line import/no-internal-modules
 } from './foundation-models/azure-openai.js';
@@ -69,7 +70,7 @@ app.get('/azure-openai/chat-completion-stream', async (req, res) => {
       res.end();
     });
 
-    for await (const chunk of response.stream.toStringStream()) {
+    for await (const chunk of response.stream.toContentStream()) {
       if (!connectionAlive) {
         break;
       }
@@ -77,7 +78,7 @@ app.get('/azure-openai/chat-completion-stream', async (req, res) => {
     }
 
     res.write('\n\n---------------------------\n');
-    res.write(`Finish reason: ${response.finishReason}\n`);
+    res.write(`Finish reason: ${response.finishReasons.get(0)}\n`);
     res.write('Token usage:\n');
     res.write(`  - Completion tokens: ${response.usage.completion_tokens}\n`);
     res.write(`  - Prompt tokens: ${response.usage.prompt_tokens}\n`);
@@ -91,6 +92,49 @@ app.get('/azure-openai/chat-completion-stream', async (req, res) => {
     res.end();
   }
 });
+
+app.get('/azure-openai/chat-completion-stream-multiple-choices', async (req, res) => {
+  try {
+    const response = await chatCompletionStreamMultipleChoices();
+
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    let connectionAlive = true;
+
+    res.on('close', () => {
+      connectionAlive = false;
+      res.end();
+    });
+
+    for await (const chunk of response.stream.toContentStream(1)) {
+      if (!connectionAlive) {
+        break;
+      }
+      res.write(chunk);
+    }
+
+    res.write('\n\n---------------------------\n');
+    res.write(`Finish reason: ${response.finishReasons.get(1)}\n`);
+    res.write('Token usage:\n');
+    res.write(`  - Completion tokens: ${response.usage.completion_tokens}\n`);
+    res.write(`  - Prompt tokens: ${response.usage.prompt_tokens}\n`);
+    res.write(`  - Total tokens: ${response.usage.total_tokens}\n`);
+
+
+  } catch (error: any) {
+    console.error(error);
+    res
+      .status(500)
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+  } finally {
+    res.end();
+  }
+});
+
 
 app.get('/azure-openai/embedding', async (req, res) => {
   try {
