@@ -72,7 +72,7 @@ export class AzureOpenAiChatClient {
       {
         url: `/inference/deployments/${deploymentId}/chat/completions`,
         apiVersion,
-        resourceGroup,
+        resourceGroup
       },
       data,
       requestConfig
