@@ -9,33 +9,46 @@ export class AzureOpenAiChatCompletionStreamResponse<T> {
   private _finishReasons: Map<number, string> = new Map();
   private _stream: AzureOpenAiChatCompletionStream<T> | undefined;
 
-  public get usage(): AzureOpenAiCompletionUsage {
-    if (!this._usage) {
-      throw new Error('Response stream is undefined.');
-    }
+  public getTokenUsage(): AzureOpenAiCompletionUsage | undefined {
     return this._usage;
   }
 
-  public set usage(usage: AzureOpenAiCompletionUsage) {
+  /**
+   * @internal
+   */
+  _setTokenUsage(usage: AzureOpenAiCompletionUsage) {
     this._usage = usage;
   }
 
-  public get finishReasons(): Map<number, string> {
+  public getFinishReason(choiceIndex = 0): string | undefined | null {
+    return this._finishReasons.get(choiceIndex);
+  }
+
+  /**
+   * @internal
+   */
+  _getFinishReasons() {
     return this._finishReasons;
   }
 
-  public set finishReasons(finishReasons: Map<number, string>) {
+  /**
+   * @internal
+   */
+  _setFinishReasons(finishReasons: Map<number, string>) {
     this._finishReasons = finishReasons;
   }
 
-  public get stream(): AzureOpenAiChatCompletionStream<T> {
+  getStream(): AzureOpenAiChatCompletionStream<T> {
     if (!this._stream) {
       throw new Error('Response stream is undefined.');
     }
     return this._stream;
   }
 
-  public set stream(stream: AzureOpenAiChatCompletionStream<T>) {
+  /**
+   * @internal
+   */
+  _setStream(stream: AzureOpenAiChatCompletionStream<T>) {
     this._stream = stream;
   }
 }

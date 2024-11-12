@@ -1,3 +1,5 @@
+import { AzureOpenAiCompletionUsage } from "./client/inference/schema/completion-usage.js";
+
 /**
  * Azure OpenAI chat completion stream chunk response.
  */
@@ -11,7 +13,7 @@ export class AzureOpenAiChatCompletionStreamChunkResponse {
    * Usage of tokens in the chunk response.
    * @returns Token usage.
    */
-  getTokenUsage(): this['data']['usage'] {
+  getTokenUsage(): AzureOpenAiCompletionUsage {
     return this.data.usage;
   }
 

@@ -55,7 +55,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
           const finishReason = chunk.getFinishReason(choiceIndex);
           if (finishReason) {
             if (response) {
-              response.finishReasons.set(choiceIndex, finishReason);
+              response._getFinishReasons().set(choiceIndex, finishReason);
             }
             switch (finishReason) {
               case 'content_filter':
@@ -94,7 +94,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
       const usage = chunk.getTokenUsage();
       if (usage) {
         if (response) {
-          response.usage = usage;
+          response._setTokenUsage(usage);
         }
         logger.debug(`Token usage: ${JSON.stringify(usage)}`);
       }

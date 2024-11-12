@@ -72,7 +72,7 @@ app.get('/azure-openai/chat-completion-stream', async (req, res) => {
       res.end();
     });
 
-    for await (const chunk of response.stream.toContentStream()) {
+    for await (const chunk of response.getStream().toContentStream()) {
       if (!connectionAlive) {
         break;
       }
@@ -80,12 +80,14 @@ app.get('/azure-openai/chat-completion-stream', async (req, res) => {
     }
 
     if (connectionAlive) {
+      const finishReason = response.getFinishReason();
+      const tokenUsage = response.getTokenUsage()!;
       res.write('\n\n---------------------------\n');
-      res.write(`Finish reason: ${response.finishReasons.get(0)}\n`);
+      res.write(`Finish reason: ${finishReason}\n`);
       res.write('Token usage:\n');
-      res.write(`  - Completion tokens: ${response.usage.completion_tokens}\n`);
-      res.write(`  - Prompt tokens: ${response.usage.prompt_tokens}\n`);
-      res.write(`  - Total tokens: ${response.usage.total_tokens}\n`);
+      res.write(`  - Completion tokens: ${tokenUsage.completion_tokens}\n`);
+      res.write(`  - Prompt tokens: ${tokenUsage.prompt_tokens}\n`);
+      res.write(`  - Total tokens: ${tokenUsage.total_tokens}\n`);
     }
   } catch (error: any) {
     console.error(error);
@@ -118,7 +120,7 @@ app.get(
         res.end();
       });
 
-      for await (const chunk of response.stream.toContentStream(1)) {
+      for await (const chunk of response.getStream().toContentStream(1)) {
         if (!connectionAlive) {
           break;
         }
@@ -126,14 +128,13 @@ app.get(
       }
 
       if (connectionAlive) {
+        const finishReason = response.getFinishReason(1);
+        const tokenUsage = response.getTokenUsage()!;
         res.write('\n\n---------------------------\n');
-        res.write(`Finish reason: ${response.finishReasons.get(1)}\n`);
-        res.write('Token usage:\n');
-        res.write(
-          `  - Completion tokens: ${response.usage.completion_tokens}\n`
-        );
-        res.write(`  - Prompt tokens: ${response.usage.prompt_tokens}\n`);
-        res.write(`  - Total tokens: ${response.usage.total_tokens}\n`);
+        res.write(`Finish reason: ${finishReason}\n`);
+        res.write(`  - Completion tokens: ${tokenUsage.completion_tokens}\n`);
+        res.write(`  - Prompt tokens: ${tokenUsage.prompt_tokens}\n`);
+        res.write(`  - Total tokens: ${tokenUsage.total_tokens}\n`);
       }
     } catch (error: any) {
       console.error(error);
