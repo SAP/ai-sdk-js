@@ -7,7 +7,6 @@ import type { LlmModuleConfig } from './llm-module-config.js';
 import type { TemplatingModuleConfig } from './templating-module-config.js';
 import type { FilteringModuleConfig } from './filtering-module-config.js';
 import type { MaskingModuleConfig } from './masking-module-config.js';
-import type { GroundingModuleConfig } from './grounding-module-config.js';
 /**
  * Representation of the 'ModuleConfigs' schema.
  */
@@ -16,5 +15,4 @@ export type ModuleConfigs = {
   templating_module_config: TemplatingModuleConfig;
   filtering_module_config?: FilteringModuleConfig;
   masking_module_config?: MaskingModuleConfig;
-  grounding_module_config?: GroundingModuleConfig;
 } & Record<string, any>;
