@@ -35,10 +35,10 @@ jobs:
       - name: Set NODE_PATH
         run: echo "NODE_PATH=$(pwd)/node_modules" >> $GITHUB_ENV
       - name: Check public API
-        uses: sap/cloud-sdk-js/.github/actions/check-public-api@public-api-check-gh-action
+        uses: sap/cloud-sdk-js/.github/actions/check-public-api@main
         with:
-          force-internal-exports: 'false'
-          ignored-paths: 'client/inference/schema, client/api/schema'
+          force_internal_exports: 'false'
+          ignored_paths: 'client/inference/schema, client/api/schema'
       - name: Check dependencies
         run: pnpm check:deps
       - name: License Check
