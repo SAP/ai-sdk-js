@@ -55,6 +55,38 @@ describe('Azure OpenAI chat client', () => {
     const response = await client.run(prompt);
     expect(response.data).toEqual(mockResponse);
   });
+  it('allows a custom api-version', async () => {
+    const prompt = {
+      messages: [
+        {
+          role: 'user' as const,
+          content: 'Where is the deepest place on earth located'
+        }
+      ]
+    };
+
+    const mockResponse =
+      await parseMockResponse<AzureOpenAiCreateChatCompletionResponse>(
+        'foundation-models',
+        'azure-openai-chat-completion-success-response.json'
+      );
+
+    mockInference(
+      {
+        data: prompt
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      { ...chatCompletionEndpoint, apiVersion: 'foo-bar' }
+    );
+
+    const response = await client.run(prompt, {
+      params: { 'api-version': 'foo-bar' }
+    });
+    expect(response.data).toEqual(mockResponse);
+  });
 
   it('throws on bad request', async () => {
     const prompt = { messages: [] };
