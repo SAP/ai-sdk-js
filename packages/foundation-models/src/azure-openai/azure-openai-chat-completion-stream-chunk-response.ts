@@ -1,4 +1,4 @@
-import { AzureOpenAiCompletionUsage } from "./client/inference/schema/completion-usage.js";
+import type { AzureOpenAiCompletionUsage } from './client/inference/schema/index.js';
 
 /**
  * Azure OpenAI chat completion stream chunk response.
