@@ -40,7 +40,7 @@ $ npm install @sap-ai-sdk/langchain
   - Once deployment is complete, access the model via the `deploymentUrl`.
 
 > **Accessing the AI Core Service via the SDK**
-> 
+>
 > The SDK automatically retrieves the `AI Core` service credentials and resolves the access token needed for authentication.
 >
 > - In Cloud Foundry, it's accessed from the `VCAP_SERVICES` environment variable.

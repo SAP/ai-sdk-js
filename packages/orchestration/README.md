@@ -37,7 +37,7 @@ $ npm install @sap-ai-sdk/orchestration
   - Once the deployment is complete, access the orchestration service via the `deploymentUrl`.
 
 > **Accessing the AI Core Service via the SDK**
-> 
+>
 > The SDK automatically retrieves the `AI Core` service credentials and resolves the access token needed for authentication.
 >
 > - In Cloud Foundry, it's accessed from the `VCAP_SERVICES` environment variable.
