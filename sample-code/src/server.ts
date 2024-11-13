@@ -57,21 +57,21 @@ app.get('/azure-openai/chat-completion-stream', async (req, res) => {
   try {
     const response = await chatCompletionStream(controller);
 
-    // Set headers for event stream
+    // Set headers for event stream.
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Connection', 'keep-alive');
     res.flushHeaders();
 
     let connectionAlive = true;
 
-    // Abort the stream if the client connection is closed
+    // Abort the stream if the client connection is closed.
     res.on('close', () => {
       controller.abort();
       connectionAlive = false;
       res.end();
     });
 
-    // Stream the delta content
+    // Stream the delta content.
     for await (const chunk of response.stream.toContentStream()) {
       if (!connectionAlive) {
         break;
@@ -79,7 +79,7 @@ app.get('/azure-openai/chat-completion-stream', async (req, res) => {
       res.write(chunk);
     }
 
-    // Write the finish reason and token usage after the stream ends
+    // Write the finish reason and token usage after the stream ends.
     if (connectionAlive) {
       const finishReason = response.getFinishReason();
       const tokenUsage = response.getTokenUsage()!;
