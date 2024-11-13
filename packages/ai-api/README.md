@@ -50,10 +50,12 @@ To ensure compatibility and manage updates effectively, we strongly recommend us
 - [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Configure the project with **Node.js v20 or higher** and **native ESM** support.
 
-> **Accessing the AI Core Service via the SDK**:
-> The SDK automatically retrieves the `AI Core` service credentials from the `VCAP_SERVICES` environment variable and resolves the access token needed for authentication.
-> For Kubernetes / Kyma environments, you have to mount the service binding as a secret instead, for more information refer to [this documentation](https://www.npmjs.com/package/@sap/xsenv#usage-in-kubernetes).
-> All subsequent client requests are routed to this service endpoint.
+> **Accessing the AI Core Service via the SDK**
+> 
+> The SDK automatically retrieves the `AI Core` service credentials and resolves the access token needed for authentication.
+>
+>  - In Cloud Foundry, it's accessed from the `VCAP_SERVICES` environment variable.
+>  - In Kubernetes / Kyma environments, you have to mount the service binding as a secret instead, for more information refer to [this documentation](https://www.npmjs.com/package/@sap/xsenv#usage-in-kubernetes).
 
 ## Usage
 

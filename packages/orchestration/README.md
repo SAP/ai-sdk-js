@@ -36,7 +36,8 @@ $ npm install @sap-ai-sdk/orchestration
     Alternatively, you can also create deployments using the [SAP AI Launchpad](https://help.sap.com/docs/sap-ai-core/generative-ai-hub/activate-generative-ai-hub-for-sap-ai-launchpad?locale=en-US&q=launchpad).
   - Once the deployment is complete, access the orchestration service via the `deploymentUrl`.
 
-> **Accessing the AI Core Service via the SDK**:
+> **Accessing the AI Core Service via the SDK**
+> 
 > The SDK automatically retrieves the `AI Core` service credentials and resolves the access token needed for authentication.
 >
 >  - In Cloud Foundry, it's accessed from the `VCAP_SERVICES` environment variable.
