@@ -103,6 +103,11 @@ To test SAP Cloud SDK for AI features locally during application development, fo
 The SDK parses the service key from the environment variable to interact with the AI Core service.
 This setup enables local testing of clients such as orchestration and OpenAI, provided that deployments for orchestration and OpenAI exist in SAP BTP.
 
+> [!Tip]
+> Loading environment variables might vary based on the framework you are using.
+>
+> For example, while we are using the [dotenv](https://www.npmjs.com/package/dotenv) library, in NextJS you need to use a [specific configuration](https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables) to load environment variables.
+
 ## Support, Feedback, Contribution
 
 This project is open to feature requests, bug reports and questions via [GitHub issues](https://github.com/SAP/ai-sdk-js/issues).
