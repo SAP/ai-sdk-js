@@ -31,6 +31,10 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 
 ## Remote Deployment
 
+> [!WARNING]  
+> All cds services are marked with `@requires: 'any'` and are publicly accessible in order to simplify the deployment process. 
+> Apply proper authentication mechanisms to avoid unauthorized access.
+
 1. Install dependencies using `pnpm install`.
 2. Transpile the CAP application using `pnpm build`.
 
