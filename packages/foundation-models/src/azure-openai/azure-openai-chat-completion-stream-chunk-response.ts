@@ -23,12 +23,7 @@ export class AzureOpenAiChatCompletionStreamChunkResponse {
    * @returns The finish reason.
    */
   getFinishReason(choiceIndex = 0): string | undefined | null {
-    for (const choice of this.data.choices) {
-      if (choice.index === choiceIndex) {
-        return choice.finish_reason;
-      }
-    }
-    return undefined;
+    return this.data.choices.find((choice: any) => choice.index === choiceIndex)?.finish_reason;
   }
 
   /**
@@ -37,11 +32,6 @@ export class AzureOpenAiChatCompletionStreamChunkResponse {
    * @returns The message delta content.
    */
   getDeltaContent(choiceIndex = 0): string | undefined | null {
-    for (const choice of this.data.choices) {
-      if (choice.index === choiceIndex) {
-        return choice.delta.content;
-      }
-    }
-    return undefined;
+    return this.data.choices.find((choice: any) => choice.index === choiceIndex)?.delta.content;
   }
 }
