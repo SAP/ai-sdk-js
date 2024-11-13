@@ -58,20 +58,21 @@ app.get('/azure-openai/chat-completion-stream', async (req, res) => {
   try {
     const response = await chatCompletionStream(controller);
 
-    res.setHeader('Cache-Control', 'no-cache');
+    // Set headers for event stream
     res.setHeader('Content-Type', 'text/event-stream');
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Connection', 'keep-alive');
     res.flushHeaders();
 
     let connectionAlive = true;
 
+    // Abort the stream if the client connection is closed
     res.on('close', () => {
       controller.abort();
       connectionAlive = false;
       res.end();
     });
 
+    // Stream the delta content
     for await (const chunk of response.stream.toContentStream()) {
       if (!connectionAlive) {
         break;
@@ -79,6 +80,7 @@ app.get('/azure-openai/chat-completion-stream', async (req, res) => {
       res.write(chunk);
     }
 
+    // Write the finish reason and token usage after the stream ends
     if (connectionAlive) {
       const finishReason = response.getFinishReason();
       const tokenUsage = response.getTokenUsage()!;
@@ -98,54 +100,6 @@ app.get('/azure-openai/chat-completion-stream', async (req, res) => {
     res.end();
   }
 });
-
-app.get(
-  '/azure-openai/chat-completion-stream-multiple-choices',
-  async (req, res) => {
-    const controller = new AbortController();
-    try {
-      const response = await chatCompletionStreamMultipleChoices(controller);
-
-      res.setHeader('Cache-Control', 'no-cache');
-      res.setHeader('Content-Type', 'text/event-stream');
-      res.setHeader('Access-Control-Allow-Origin', '*');
-      res.setHeader('Connection', 'keep-alive');
-      res.flushHeaders();
-
-      let connectionAlive = true;
-
-      res.on('close', () => {
-        controller.abort();
-        connectionAlive = false;
-        res.end();
-      });
-
-      for await (const chunk of response.stream.toContentStream(1)) {
-        if (!connectionAlive) {
-          break;
-        }
-        res.write(chunk);
-      }
-
-      if (connectionAlive) {
-        const finishReason = response.getFinishReason(1);
-        const tokenUsage = response.getTokenUsage()!;
-        res.write('\n\n---------------------------\n');
-        res.write(`Finish reason: ${finishReason}\n`);
-        res.write(`  - Completion tokens: ${tokenUsage.completion_tokens}\n`);
-        res.write(`  - Prompt tokens: ${tokenUsage.prompt_tokens}\n`);
-        res.write(`  - Total tokens: ${tokenUsage.total_tokens}\n`);
-      }
-    } catch (error: any) {
-      console.error(error);
-      res
-        .status(500)
-        .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
-    } finally {
-      res.end();
-    }
-  }
-);
 
 app.get('/azure-openai/embedding', async (req, res) => {
   try {
