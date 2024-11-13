@@ -104,9 +104,9 @@ The SDK parses the service key from the environment variable to interact with th
 This setup enables local testing of clients such as orchestration and OpenAI, provided that deployments for orchestration and OpenAI exist in SAP BTP.
 
 > [!Tip]
-> Loading environment variables might vary based on the framework you are using.
+> Ways to load environment variables might vary based on the framework you are using.
 >
-> For example, while we are using the [dotenv](https://www.npmjs.com/package/dotenv) library, in NextJS you need to use a [specific configuration](https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables) to load environment variables.
+> For example, while the SAP Cloud SDK for AI uses the [dotenv](https://www.npmjs.com/package/dotenv) library to load environment variables, NextJS uses a [specific configuration](https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables) to load them.
 
 ## Support, Feedback, Contribution
 
