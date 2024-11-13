@@ -51,14 +51,7 @@ describe('OpenAI chat completion response', () => {
   });
 
   it('should return undefined when convenience function is called with incorrect index', () => {
-    const logger = createLogger({
-      package: 'foundation-models',
-      messageContext: 'azure-openai-chat-completion-response'
-    });
-    const errorSpy = jest.spyOn(logger, 'error');
     expect(azureOpenAiChatResponse.getFinishReason(1)).toBeUndefined();
-    expect(errorSpy).toHaveBeenCalledWith('Choice index 1 is out of bounds.');
     expect(azureOpenAiChatResponse.getContent(1)).toBeUndefined();
-    expect(errorSpy).toHaveBeenCalledTimes(2);
   });
 });

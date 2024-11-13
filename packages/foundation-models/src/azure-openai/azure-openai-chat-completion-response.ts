@@ -34,9 +34,8 @@ export class AzureOpenAiChatCompletionResponse {
    */
   getFinishReason(
     choiceIndex = 0
-  ): this['data']['choices'][0]['finish_reason'] {
-    this.logInvalidChoiceIndex(choiceIndex);
-    return this.data.choices[choiceIndex]?.finish_reason;
+  ): string | undefined {
+    return this.data.choices.find(choice => choice.index === choiceIndex)?.finish_reason;
   }
 
   /**
@@ -45,13 +44,6 @@ export class AzureOpenAiChatCompletionResponse {
    * @returns The message content.
    */
   getContent(choiceIndex = 0): string | undefined | null {
-    this.logInvalidChoiceIndex(choiceIndex);
-    return this.data.choices[choiceIndex]?.message?.content;
-  }
-
-  private logInvalidChoiceIndex(choiceIndex: number): void {
-    if (choiceIndex < 0 || choiceIndex >= this.data.choices.length) {
-      logger.error(`Choice index ${choiceIndex} is out of bounds.`);
-    }
+    return this.data.choices.find(choice => choice.index === choiceIndex)?.message?.content;
   }
 }

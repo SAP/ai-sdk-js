@@ -48,15 +48,8 @@ describe('OrchestrationResponse', () => {
   });
 
   it('should return undefined when convenience function is called with incorrect index', () => {
-    const logger = createLogger({
-      package: 'orchestration',
-      messageContext: 'orchestration-response'
-    });
-    const errorSpy = jest.spyOn(logger, 'error');
     expect(orchestrationResponse.getFinishReason(1)).toBeUndefined();
-    expect(errorSpy).toHaveBeenCalledWith('Choice index 1 is out of bounds.');
     expect(orchestrationResponse.getContent(1)).toBeUndefined();
-    expect(errorSpy).toHaveBeenCalledTimes(2);
   });
 
   it('should throw if content that was filtered is accessed', () => {
