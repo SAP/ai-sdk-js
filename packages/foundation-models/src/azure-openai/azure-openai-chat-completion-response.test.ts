@@ -1,5 +1,3 @@
-import { createLogger } from '@sap-cloud-sdk/util';
-import { jest } from '@jest/globals';
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
 import { AzureOpenAiChatCompletionResponse } from './azure-openai-chat-completion-response.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
