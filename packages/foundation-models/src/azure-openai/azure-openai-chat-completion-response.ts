@@ -1,11 +1,5 @@
-import { createLogger } from '@sap-cloud-sdk/util';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.js';
-
-const logger = createLogger({
-  package: 'foundation-models',
-  messageContext: 'azure-openai-chat-completion-response'
-});
 
 /**
  * Azure OpenAI chat completion response.
@@ -32,10 +26,8 @@ export class AzureOpenAiChatCompletionResponse {
    * @param choiceIndex - The index of the choice to parse.
    * @returns The finish reason.
    */
-  getFinishReason(
-    choiceIndex = 0
-  ): string | undefined {
-    return this.data.choices.find(choice => choice.index === choiceIndex)?.finish_reason;
+  getFinishReason(choiceIndex = 0): string | undefined {
+    return this.data.choices.find(c => c.index === choiceIndex)?.finish_reason;
   }
 
   /**
@@ -44,6 +36,7 @@ export class AzureOpenAiChatCompletionResponse {
    * @returns The message content.
    */
   getContent(choiceIndex = 0): string | undefined | null {
-    return this.data.choices.find(choice => choice.index === choiceIndex)?.message?.content;
+    return this.data.choices.find(c => c.index === choiceIndex)?.message
+      ?.content;
   }
 }

@@ -1,14 +1,8 @@
-import { createLogger } from '@sap-cloud-sdk/util';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type {
   CompletionPostResponse,
   TokenUsage
 } from './client/api/schema/index.js';
-
-const logger = createLogger({
-  package: 'orchestration',
-  messageContext: 'orchestration-response'
-});
 
 /**
  * Representation of an orchestration response.
@@ -35,7 +29,7 @@ export class OrchestrationResponse {
    * @returns The finish reason.
    */
   getFinishReason(choiceIndex = 0): string | undefined {
-    return this.getChoices().find(choice => choice.index === choiceIndex)?.finish_reason;
+    return this.getChoices().find(c => c.index === choiceIndex)?.finish_reason;
   }
 
   /**
@@ -45,7 +39,7 @@ export class OrchestrationResponse {
    * @returns The message content.
    */
   getContent(choiceIndex = 0): string | undefined {
-    const choice = this.getChoices().find(choice => choice.index === choiceIndex);
+    const choice = this.getChoices().find(c => c.index === choiceIndex);
     if (
       choice?.message?.content === '' &&
       choice?.finish_reason === 'content_filter'
