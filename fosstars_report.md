@@ -1,6 +1,6 @@
 **Rating**: **UNCLEAR**
 
-**Score**: **4.95**, max score value is 10.0
+**Score**: **5.06**, max score value is 10.0
 
 **Confidence**: Low (7.18, max confidence value is 10.0)
 
@@ -41,7 +41,7 @@ It used the following sub-scores:
         
     1.  **[nohttp tool](#nohttp-tool)**: **0.0** (weight is 0.2)
         
-1.  **[Security awareness](#security-awareness)**: **3.0** (weight is 0.9)
+1.  **[Security awareness](#security-awareness)**: **3.5** (weight is 0.9)
     
 1.  **[Vulnerability discovery and security testing](#vulnerability-discovery-and-security-testing)**: **0.0** (weight is 0.6)
     1.  **[Security testing](#security-testing)**: **9.09** (weight is 1.0)
@@ -169,7 +169,7 @@ This sub-score is based on the following sub-scores:
 
 ### Security awareness
 
-Score: **3.0**, confidence is 10.0 (max), weight is 0.9 (high)
+Score: **3.5**, confidence is 10.0 (max), weight is 0.9 (high)
 
 The score shows how a project is aware of security. If the project has a security policy, then the score adds 2.00. If the project has a security team, then the score adds 3.00. If the project uses verified signed commits, then the score adds 0.50. If the project has a bug bounty program, then the score adds 4.00. If the project signs its artifacts, then the score adds 0.50. If the project uses a security tool or library, then the score adds 1.00. If the project has executable binaries, then the score subtracts 2.00.
 
@@ -194,7 +194,7 @@ This sub-score is based on 18 features:
 1.  **Does it use Snyk?** No
 1.  **Does it use UndefinedBehaviorSanitizer?** No
 1.  **Does it use nohttp?** No
-1.  **Does it use verified signed commits?** No
+1.  **Does it use verified signed commits?** Yes
 1.  **How is OWASP Dependency Check used?** Not used
 1.  **Is it included to OSS-Fuzz?** No
 
@@ -285,14 +285,14 @@ Score: **10.0**, confidence is 10.0 (max), weight is 0.5 (medium)
 
 The score evaluates how active a project is. It's based on number of commits and contributors in the last 3 months.
 
-209 commits in the last 3 months results to 10.00 points
+210 commits in the last 3 months results to 10.00 points
 3 contributors increase the score value from 10.00 to 11.00
 
 This sub-score is based on 2 features:
 
 
 
-1.  **Number of commits in the last three months:** 209
+1.  **Number of commits in the last three months:** 210
 1.  **Number of contributors in the last three months:** 3
 
 
@@ -309,7 +309,7 @@ This sub-score is based on 3 features:
 
 
 1.  **Number of projects on GitHub that use an open source project:** unknown
-1.  **Number of stars for a GitHub repository:** 32
+1.  **Number of stars for a GitHub repository:** 33
 1.  **Number of watchers for a GitHub repository:** 1
 
 
