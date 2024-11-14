@@ -33,7 +33,7 @@ export class AzureOpenAiChatCompletionStreamChunkResponse {
    * @returns The message delta content.
    */
   getDeltaContent(choiceIndex = 0): string | undefined | null {
-    return this.data.choices.find((c: any) => c.index === choiceIndex)
-      ?.delta.content;
+    return this.data.choices.find((c: any) => c.index === choiceIndex)?.delta
+      .content;
   }
 }
