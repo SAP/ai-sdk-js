@@ -1,11 +1,5 @@
-import { createLogger } from '@sap-cloud-sdk/util';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.js';
-
-const logger = createLogger({
-  package: 'foundation-models',
-  messageContext: 'azure-openai-chat-completion-response'
-});
 
 /**
  * Azure OpenAI chat completion response.
@@ -32,11 +26,8 @@ export class AzureOpenAiChatCompletionResponse {
    * @param choiceIndex - The index of the choice to parse.
    * @returns The finish reason.
    */
-  getFinishReason(
-    choiceIndex = 0
-  ): this['data']['choices'][0]['finish_reason'] {
-    this.logInvalidChoiceIndex(choiceIndex);
-    return this.data.choices[choiceIndex]?.finish_reason;
+  getFinishReason(choiceIndex = 0): string | undefined {
+    return this.data.choices.find(c => c.index === choiceIndex)?.finish_reason;
   }
 
   /**
@@ -45,13 +36,7 @@ export class AzureOpenAiChatCompletionResponse {
    * @returns The message content.
    */
   getContent(choiceIndex = 0): string | undefined | null {
-    this.logInvalidChoiceIndex(choiceIndex);
-    return this.data.choices[choiceIndex]?.message?.content;
-  }
-
-  private logInvalidChoiceIndex(choiceIndex: number): void {
-    if (choiceIndex < 0 || choiceIndex >= this.data.choices.length) {
-      logger.error(`Choice index ${choiceIndex} is out of bounds.`);
-    }
+    return this.data.choices.find(c => c.index === choiceIndex)?.message
+      ?.content;
   }
 }
