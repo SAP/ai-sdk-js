@@ -88,7 +88,7 @@ export class LineDecoder {
     }
 
     throw new Error(
-      'Unexpected: neither Buffer nor TextDecoder are available as globals. Please report this error.'
+      'Unexpected: Buffer is not available as globals. Please report this error.'
     );
   }
 
