@@ -6,16 +6,34 @@
   "repository": "https://github.com/sap/ai-sdk-js",
   "private": true,
   "dependencies": {
-    "@sap-ai-sdk/ai-api": "workspace:^",
-    "@sap-ai-sdk/foundation-models": "workspace:^",
-    "@sap-ai-sdk/orchestration": "workspace:^",
-    "@sap/cds": "^8",
-    "express": "^4"
+    "@sap-ai-sdk/ai-api": "^1",
+    "@sap-ai-sdk/foundation-models": "^1",
+    "@sap-ai-sdk/orchestration": "^1",
+    "express": "^4",
+    "@sap/xssec": "^4",
+    "@sap/cds": "^8.4.1"
+  },
+  "devDependencies": {
+    "@sap/cds-dk": "^8.4.1"
   },
   "scripts": {
+    "prebuild": "rm -rf dist",
+    "build": "pnpm cds-build && pnpm compile && pnpm cleanup",
+    "cds-build": "cds build --production",
+    "compile": "tsc",
+    "cleanup": "rm -f ./dist/srv/srv/**/*.ts ./dist/srv/package-lock.json",
+    "postbuild": "pushd ./dist/srv && npm i --package-lock-only && popd",
+    "start": "npx cds-serve",
     "watch": "cds-tsx watch",
     "watch:hybrid": "cds-tsx watch --profile hybrid",
     "lint": "eslint . && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -w --log-level error"
+  },
+  "cds": {
+    "requires": {
+      "[production]": {
+        "auth": "xsuaa"
+      }
+    }
   }
 }

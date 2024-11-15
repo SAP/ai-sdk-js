@@ -31,7 +31,7 @@
     "sample-code": "pnpm -F=@sap-ai-sdk/sample-code",
     "sample-cap": "pnpm -F=@sap-ai-sdk/sample-cap",
     "check:public-api": "pnpm -r check:public-api",
-    "check:deps": "pnpm -r -F !./tests/smoke-tests -F !./tests/schema-tests exec depcheck --ignores=\"nock,@jest/globals\" --quiet"
+    "check:deps": "pnpm -r -F !./tests/smoke-tests -F !./tests/schema-tests -F !./sample-cap exec depcheck --ignores=\"nock,@jest/globals\" --quiet"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.9",
@@ -51,7 +51,6 @@
     "@types/jsonwebtoken": "^9.0.7",
     "@types/mock-fs": "^4.13.4",
     "@types/node": "^20.17.6",
-    "@cap-js/cds-types": "^0.7.0",
     "depcheck": "^1.4.7",
     "eslint": "^9.14.0",
     "glob": "^11.0.0",
