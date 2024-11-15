@@ -2,4 +2,4 @@
 '@sap-ai-sdk/foundation-models': minor
 ---
 
-[New Functionality] Support streaming for Azure OpenAI chat completion in `foudation-models`.
+[New Functionality] Support streaming chat completion in the Azure OpenAI client in `foundation-models`.
