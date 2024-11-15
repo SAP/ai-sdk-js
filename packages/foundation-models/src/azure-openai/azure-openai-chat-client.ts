@@ -41,7 +41,7 @@ export class AzureOpenAiChatClient {
    * @param data - The input parameters for the chat completion.
    * @param controller - The abort controller.
    * @param requestConfig - The request configuration.
-   * @returns The completion stream.
+   * @returns A response containing the chat completion stream.
    */
   async stream(
     data: AzureOpenAiCreateChatCompletionRequest,
