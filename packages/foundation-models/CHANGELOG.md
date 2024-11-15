@@ -1,5 +1,13 @@
 # @sap-ai-sdk/foundation-models
 
+## 1.3.0
+
+### Patch Changes
+
+- 91df549: [Fixed Issue] Get choice via index by comparing the `index` property instead of using array index.
+  - @sap-ai-sdk/ai-api@1.3.0
+  - @sap-ai-sdk/core@1.3.0
+
 ## 1.2.0
 
 ### Minor Changes

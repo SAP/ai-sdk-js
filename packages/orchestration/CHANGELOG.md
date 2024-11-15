@@ -1,5 +1,23 @@
 # @sap-ai-sdk/orchestration
 
+## 1.3.0
+
+### Minor Changes
+
+- bf17e17: [Fixed Issue] Fix input and output filters to disallow additional properties as part of the filter config.
+
+  [Compatibility Note] `FilteringConfig` type has been renamed to `InputFilteringConfig` and `OutputFilteringConfig` for future extensibility.
+
+- 6fe32b8: [Compatibility Note] Switch some of the orchestration interfaces to types, as they were introduced by accident.
+
+  [Compatibility Note] Remove `grounding` key from the type `ModuleResults`.
+
+### Patch Changes
+
+- 91df549: [Fixed Issue] Get choice via index by comparing the `index` property instead of using array index.
+  - @sap-ai-sdk/ai-api@1.3.0
+  - @sap-ai-sdk/core@1.3.0
+
 ## 1.2.0
 
 ### Patch Changes
