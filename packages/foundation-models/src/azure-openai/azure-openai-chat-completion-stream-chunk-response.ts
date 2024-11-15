@@ -22,7 +22,7 @@ export class AzureOpenAiChatCompletionStreamChunkResponse {
    * @param choiceIndex - The index of the choice to parse.
    * @returns The finish reason.
    */
-  getFinishReason(choiceIndex = 0): string | undefined | null {
+  getFinishReason(choiceIndex = 0): string | undefined {
     return this.data.choices.find((c: any) => c.index === choiceIndex)
       ?.finish_reason;
   }
