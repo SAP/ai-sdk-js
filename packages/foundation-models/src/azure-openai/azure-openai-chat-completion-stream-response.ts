@@ -6,6 +6,9 @@ import type { AzureOpenAiChatCompletionStream } from './azure-openai-chat-comple
  */
 export class AzureOpenAiChatCompletionStreamResponse<T> {
   private _usage: AzureOpenAiCompletionUsage | undefined;
+  /**
+   * Finish reasons for all choices.
+   */
   private _finishReasons: Map<number, string> = new Map();
   private _stream: AzureOpenAiChatCompletionStream<T> | undefined;
 
