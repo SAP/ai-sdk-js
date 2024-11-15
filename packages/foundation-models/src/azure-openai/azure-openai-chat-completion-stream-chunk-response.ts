@@ -13,7 +13,7 @@ export class AzureOpenAiChatCompletionStreamChunkResponse {
    * Usage of tokens in the chunk response.
    * @returns Token usage.
    */
-  getTokenUsage(): AzureOpenAiCompletionUsage {
+  getTokenUsage(): AzureOpenAiCompletionUsage | null {
     return this.data.usage;
   }
 
