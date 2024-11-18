@@ -23,6 +23,12 @@ export default [
         {
           noUselessIndex: false
         }
+      ],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          'varsIgnorePattern': '^_'
+        }
       ]
     }
   },

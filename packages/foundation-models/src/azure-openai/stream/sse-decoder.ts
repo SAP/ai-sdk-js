@@ -67,7 +67,7 @@ export class SSEDecoder {
       return null;
     }
 
-    const [fieldname, , value] = partition(line, ':');
+    const [fieldname, _, value] = partition(line, ':');
     const trimedValue = value.startsWith(' ') ? value.substring(1) : value;
 
     if (fieldname === 'event') {
