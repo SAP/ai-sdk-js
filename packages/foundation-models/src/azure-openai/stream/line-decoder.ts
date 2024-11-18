@@ -53,7 +53,7 @@ export class LineDecoder {
       return [];
     }
 
-    if (this.buffer.length > 0) {
+    if (this.buffer.length) {
       lines = [this.buffer.join('') + lines[0], ...lines.slice(1)];
       this.buffer = [];
     }

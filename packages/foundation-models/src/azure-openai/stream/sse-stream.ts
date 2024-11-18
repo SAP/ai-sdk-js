@@ -16,7 +16,7 @@ type Bytes = string | ArrayBuffer | Uint8Array | Buffer | null | undefined;
  * @internal
  */
 export class SseStream<Item> implements AsyncIterable<Item> {
-  protected static fromSSEResponse<Item>(
+  protected static transformToSseStream<Item>(
     response: HttpResponse,
     controller: AbortController
   ): SseStream<Item> {
@@ -30,7 +30,7 @@ export class SseStream<Item> implements AsyncIterable<Item> {
       let done = false;
 
       try {
-        for await (const sse of _iterSSEMessages(response, controller)) {
+        for await (const sse of _iterSseMessages(response, controller)) {
           if (done) {
             continue;
           }
@@ -45,6 +45,7 @@ export class SseStream<Item> implements AsyncIterable<Item> {
             if (data?.error) {
               throw new Error(data.error);
             }
+            // Yield also the event if it exists, otherwise just the data
             yield sse.event === null
               ? data
               : ({ event: sse.event, data } as any);
@@ -56,11 +57,13 @@ export class SseStream<Item> implements AsyncIterable<Item> {
         }
         done = true;
       } catch (e: any) {
+        // Ignore the error if controller was aborted
         if (e instanceof Error && e.name === 'CanceledError') {
           return;
         }
         logger.error('Error while iterating over SSE stream:', e);
       } finally {
+        // Make sure that the controller is aborted if the stream was not fully consumed
         if (!done) {
           controller.abort();
         }
@@ -87,7 +90,7 @@ export class SseStream<Item> implements AsyncIterable<Item> {
 /**
  * @internal
  */
-export async function* _iterSSEMessages(
+export async function* _iterSseMessages(
   response: HttpResponse,
   controller: AbortController
 ): AsyncGenerator<ServerSentEvent, void, unknown> {
@@ -100,7 +103,7 @@ export async function* _iterSSEMessages(
   const lineDecoder = new LineDecoder();
 
   const iter = response.data;
-  for await (const sseChunk of iterSSEChunks(iter)) {
+  for await (const sseChunk of iterSseChunks(iter)) {
     for (const line of lineDecoder.decode(sseChunk)) {
       const sse = sseDecoder.decode(line);
       if (sse) {
@@ -124,7 +127,7 @@ export async function* _iterSSEMessages(
  * @returns Async generator of Uint8Array.
  * @internal
  */
-async function* iterSSEChunks(
+async function* iterSseChunks(
   iterator: AsyncIterableIterator<Bytes>
 ): AsyncGenerator<Uint8Array> {
   let data = new Uint8Array();
@@ -153,7 +156,7 @@ async function* iterSSEChunks(
     }
   }
 
-  if (data.length > 0) {
+  if (data.length) {
     yield data;
   }
 }

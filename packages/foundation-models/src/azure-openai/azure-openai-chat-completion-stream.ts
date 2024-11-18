@@ -24,7 +24,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
     controller: AbortController
   ): AzureOpenAiChatCompletionStream<any> {
     // TODO: Change `any` to `CreateChatCompletionStreamResponse` once the preview spec becomes stable.
-    const stream = SseStream.fromSSEResponse<any>(response, controller); // TODO: Change `any` to `CreateChatCompletionStreamResponse` once the preview spec becomes stable.
+    const stream = SseStream.transformToSseStream<any>(response, controller); // TODO: Change `any` to `CreateChatCompletionStreamResponse` once the preview spec becomes stable.
     return new AzureOpenAiChatCompletionStream(stream.iterator, controller);
   }
 

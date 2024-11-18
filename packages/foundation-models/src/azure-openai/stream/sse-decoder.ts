@@ -1,5 +1,6 @@
 /**
  * @internal
+ * Server-Sent Event, see {@link https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events}.
  */
 export interface ServerSentEvent {
   /**

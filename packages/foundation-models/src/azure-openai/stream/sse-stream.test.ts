@@ -1,6 +1,6 @@
 import assert from 'assert';
 import {
-  _iterSSEMessages,
+  _iterSseMessages,
   _decodeChunks as decodeChunks
 } from './sse-stream.js';
 
@@ -52,7 +52,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response, new AbortController())[
+    const stream = _iterSseMessages(response, new AbortController())[
       Symbol.asyncIterator
     ]();
 
@@ -74,7 +74,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response, new AbortController())[
+    const stream = _iterSseMessages(response, new AbortController())[
       Symbol.asyncIterator
     ]();
 
@@ -97,7 +97,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response, new AbortController())[
+    const stream = _iterSseMessages(response, new AbortController())[
       Symbol.asyncIterator
     ]();
 
@@ -122,7 +122,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response, new AbortController())[
+    const stream = _iterSseMessages(response, new AbortController())[
       Symbol.asyncIterator
     ]();
 
@@ -154,7 +154,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response, new AbortController())[
+    const stream = _iterSseMessages(response, new AbortController())[
       Symbol.asyncIterator
     ]();
 
@@ -187,7 +187,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response, new AbortController())[
+    const stream = _iterSseMessages(response, new AbortController())[
       Symbol.asyncIterator
     ]();
 
@@ -212,7 +212,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response, new AbortController())[
+    const stream = _iterSseMessages(response, new AbortController())[
       Symbol.asyncIterator
     ]();
 
@@ -241,7 +241,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response, new AbortController())[
+    const stream = _iterSseMessages(response, new AbortController())[
       Symbol.asyncIterator
     ]();
 
@@ -282,7 +282,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response, new AbortController())[
+    const stream = _iterSseMessages(response, new AbortController())[
       Symbol.asyncIterator
     ]();
 
@@ -306,7 +306,7 @@ describe('streaming decoding', () => {
       data: body()
     } as any;
 
-    const stream = _iterSSEMessages(response, new AbortController())[
+    const stream = _iterSseMessages(response, new AbortController())[
       Symbol.asyncIterator
     ]();
 
