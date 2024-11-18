@@ -10,9 +10,6 @@ importers:
 
   .:
     devDependencies:
-      '@cap-js/cds-types':
-        specifier: ^0.7.0
-        version: 0.7.0(@sap/cds@8.4.2(express@4.21.1))
       '@changesets/cli':
         specifier: ^2.27.9
         version: 2.27.9
@@ -170,20 +167,27 @@ importers:
   sample-cap:
     dependencies:
       '@sap-ai-sdk/ai-api':
-        specifier: workspace:^
-        version: link:../packages/ai-api
+        specifier: ^1
+        version: 1.2.0
       '@sap-ai-sdk/foundation-models':
-        specifier: workspace:^
-        version: link:../packages/foundation-models
+        specifier: ^1
+        version: 1.2.0
       '@sap-ai-sdk/orchestration':
-        specifier: workspace:^
-        version: link:../packages/orchestration
+        specifier: ^1
+        version: 1.2.0
       '@sap/cds':
-        specifier: ^8
-        version: 8.3.1(express@4.21.1)
+        specifier: ^8.4.2
+        version: 8.4.2(express@4.21.1)
+      '@sap/xssec':
+        specifier: ^4
+        version: 4.2.4
       express:
         specifier: ^4
         version: 4.21.1
+    devDependencies:
+      '@sap/cds-dk':
+        specifier: ^8.4.1
+        version: 8.4.1
 
   sample-code:
     dependencies:
@@ -215,8 +219,8 @@ importers:
         specifier: ^4.21.1
         version: 4.21.1
       langchain:
-        specifier: 0.3.5
-        version: 0.3.5(@langchain/core@0.3.18(openai@4.61.1(zod@3.23.8)))(axios@1.7.7)(cheerio@1.0.0)(openai@4.61.1(zod@3.23.8))
+        specifier: 0.3.6
+        version: 0.3.6(@langchain/core@0.3.18(openai@4.61.1(zod@3.23.8)))(axios@1.7.7)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.23.8))
 
   tests/e2e-tests:
     dependencies:
@@ -262,16 +266,16 @@ importers:
         version: 0.1.0(@langchain/core@0.3.18(openai@4.61.1(zod@3.23.8)))
       '@sap-ai-sdk/ai-api':
         specifier: canary
-        version: 1.2.1-20241114013105.0
+        version: 1.3.1-20241117013135.0
       '@sap-ai-sdk/foundation-models':
         specifier: canary
-        version: 1.2.1-20241114013105.0
+        version: 1.3.1-20241117013135.0
       '@sap-ai-sdk/langchain':
         specifier: canary
-        version: 1.2.1-20241114013105.0(openai@4.61.1(zod@3.23.8))(zod@3.23.8)
+        version: 1.3.1-20241117013135.0(openai@4.61.1(zod@3.23.8))(zod@3.23.8)
       '@sap-ai-sdk/orchestration':
         specifier: canary
-        version: 1.2.1-20241114013105.0
+        version: 1.3.1-20241117013135.0
       '@sap-cloud-sdk/util':
         specifier: ^3.22.2
         version: 3.22.2
@@ -279,8 +283,8 @@ importers:
         specifier: ^4.21.1
         version: 4.21.1
       langchain:
-        specifier: 0.3.5
-        version: 0.3.5(@langchain/core@0.3.18(openai@4.61.1(zod@3.23.8)))(axios@1.7.7)(cheerio@1.0.0)(openai@4.61.1(zod@3.23.8))
+        specifier: 0.3.6
+        version: 0.3.6(@langchain/core@0.3.18(openai@4.61.1(zod@3.23.8)))(axios@1.7.7)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.23.8))
     devDependencies:
       '@types/express':
         specifier: ^5.0.0
@@ -505,10 +509,25 @@ packages:
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
-  '@cap-js/cds-types@0.7.0':
-    resolution: {integrity: sha512-zprkz3csN7z7v+0V78UlCfg2psm7Q3DJwvBjQB5BxVhlBcmuzoXn5EKKvzIXjflgWP1hUsDUhjVU5Hg9Quvq0g==}
+  '@cap-js/asyncapi@1.0.2':
+    resolution: {integrity: sha512-1EbZUaKxWvhxmdjM1raFEQT9MkI28mFJMtYEEbUGdD2NMpd7pWH//xcWpLb+9NOKye+mXEtZxvD9bZcRE5y2lA==}
     peerDependencies:
-      '@sap/cds': ^8.0.0
+      '@sap/cds': '>=7.6'
+
+  '@cap-js/db-service@1.15.0':
+    resolution: {integrity: sha512-9MCyfumDsPRA/axkQ0kePd8MqolbDTCGAaSN1jR07bMSNo/gFoRGfqcqvlP8+XdX5S1xBiMmP1gbw8VktZr0yg==}
+    peerDependencies:
+      '@sap/cds': '>=7.9'
+
+  '@cap-js/openapi@1.0.7':
+    resolution: {integrity: sha512-Ntfu5vqT3xVJQ/D/Ayuy/uZhxhUGUZsr4ngJrQMLwiK1NaFpY1rrv2A0rabVRRKO++QBfEOmVKxEEDaAfbf6Hg==}
+    peerDependencies:
+      '@sap/cds': '>=7.6'
+
+  '@cap-js/sqlite@1.7.7':
+    resolution: {integrity: sha512-SOmFJMr6pjWOniFRkJsrI0BpQEQT5Q8o+IVZ/LXFj6+bAe0NQQztzxhMQx62V/Px3u58JJM3xkPMU+QC5PcJHw==}
+    peerDependencies:
+      '@sap/cds': '>=7.6'
 
   '@changesets/apply-release-plan@7.0.5':
     resolution: {integrity: sha512-1cWCk+ZshEkSVEZrm2fSj1Gz8sYvxgUL4Q78+1ZZqeqfuevPTPk033/yUZ3df8BKMohkqqHfzj0HOOrG0KtXTw==}
@@ -987,20 +1006,32 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
-  '@sap-ai-sdk/ai-api@1.2.1-20241114013105.0':
-    resolution: {integrity: sha512-AK/P+rGvkqL20RneAg03iIWGdh/VFgk+k+UvrP3d+Ai3xc7BD14WX0vKlLx6Kjf6V3vPEYru1YGBeebqStEqWw==}
+  '@sap-ai-sdk/ai-api@1.2.0':
+    resolution: {integrity: sha512-pUZiGg7q3BJzcAgqxAi2EX7ru2/ks5c7YzmImMoRqQafZr0McsqpCKGRp/VOw+CARyqpsV1AZ8GL50Kk8gxorQ==}
 
-  '@sap-ai-sdk/core@1.2.1-20241114013105.0':
-    resolution: {integrity: sha512-ia5UxmrlqLOrvABDooPHFSbLbowiWM6Vs9g79Dro5ueYrvnRYS/RN0lQNaI17kUXBJoTE4f/dQvvKj4M2CXRmw==}
+  '@sap-ai-sdk/ai-api@1.3.1-20241117013135.0':
+    resolution: {integrity: sha512-JmhVnFhTT7pxtPO0WipmBomk3JYljQ1/Q+cnqOEkQeQimSeeuBHXoyRunL/nFfoPDk2uRhlQ3ZEsydZjNAIgxg==}
 
-  '@sap-ai-sdk/foundation-models@1.2.1-20241114013105.0':
-    resolution: {integrity: sha512-BgnON2AG0SdpRJWAJgg2wcNcT/7epFKw449MchxbiAjhzdt9adUp3vFQoTa0K9NbGynWhVS3OlDOzAuj8+oBYw==}
+  '@sap-ai-sdk/core@1.2.0':
+    resolution: {integrity: sha512-55Mmx8eLw6JIphOYSBPRE1kVnV5DvRyXT2CxFhCnEcQnD1unf0GZbG+XdmGSYxhj3VoqO42Y4P0Qxq5yRAIRGQ==}
 
-  '@sap-ai-sdk/langchain@1.2.1-20241114013105.0':
-    resolution: {integrity: sha512-FcrAa8TCLqrie/vDgFMd16iAVQyIZdoiX2rmpFVK+o36mArGM8m9q7o6S17cAH7jlSaEyFFyyr8c3hIQpI573w==}
+  '@sap-ai-sdk/core@1.3.1-20241117013135.0':
+    resolution: {integrity: sha512-bB9aG3v4GJR43PDUkMGbqSFA/nICB6OZuHubt8BFTsg9pIJh2vmFjVMZ8brFHddPaQa8A8lqVUBEYMD7/aDHpg==}
 
-  '@sap-ai-sdk/orchestration@1.2.1-20241114013105.0':
-    resolution: {integrity: sha512-VBRjRD3z/iiRz84SEQhva4SrsZUtKpmhs7pBeicSr6QyA7txaGiyN9WTfXNqQsBpWqOkZVEM8eDkuGHQldqesQ==}
+  '@sap-ai-sdk/foundation-models@1.2.0':
+    resolution: {integrity: sha512-Zzv3lcV0aZNKsh99Tq8ptai0W4tTNRK6xy1hrMYKsZenIJR2h+xypQtN/Sw95uwF2Ldsf1xxZvPK6xoOI4cGlw==}
+
+  '@sap-ai-sdk/foundation-models@1.3.1-20241117013135.0':
+    resolution: {integrity: sha512-cGIwcMjNrZRaisOD4NVmYGq5z7sstNvTAGyyX7IqKe5qA8QaDJY2+isacSC2rW2ER1R22xSZCsLlttGTnFTueA==}
+
+  '@sap-ai-sdk/langchain@1.3.1-20241117013135.0':
+    resolution: {integrity: sha512-OWp23miffeLNg58yK1smjGI3kdje80RKiFjHgS2XXmb8Mv74HeRsBJmu1M41JEf0ORHbsV1GaSQgpCbLy8T6TA==}
+
+  '@sap-ai-sdk/orchestration@1.2.0':
+    resolution: {integrity: sha512-wgfZ5bX2D0RmVtg3S7WUZFRRq0YL/3ewh7xySUXBZM29rHtPmzqLGKJuxKe1a+qvFNCwGJiGd3kpuAqnUdj1jg==}
+
+  '@sap-ai-sdk/orchestration@1.3.1-20241117013135.0':
+    resolution: {integrity: sha512-DXeU79WVgaGZ3hrgMJqM5xYvzY+J1MLgGUhhveF2ZjRhpPKEuR05ITS8rJ8ln2f0MaL3EfBrSuFpDbIewQo4gg==}
 
   '@sap-cloud-sdk/connectivity@3.22.2':
     resolution: {integrity: sha512-kfJaRersOefqKn12Q6my+Bch8TVD83j9CsA/vKQI6D7UpdJjfy6k4EbwlVeuehWb4kvTLYvQLvjJE0JhelESPQ==}
@@ -1034,6 +1065,10 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
+  '@sap/cds-dk@8.4.1':
+    resolution: {integrity: sha512-+/DU/gSGD6iEDdZ4/heUJqP2Mf0qqy38aKtmKpw0o/FKlTy6RrN5P4R4PIa4Y8gyGrn4i1Uk1H9cheBSQAk15A==}
+    hasBin: true
+
   '@sap/cds-fiori@1.2.7':
     resolution: {integrity: sha512-F6Uf9wvkv0fXW+Fh7PiV2BbB/k+p1cFJLkQCCKDRJH8HvlxWEcXcn/YIvBrQGuX+GToi125MxB3wd712d8OLTA==}
     peerDependencies:
@@ -1044,15 +1079,9 @@ packages:
     resolution: {integrity: sha512-q6h7LkEx6w9LswCIQzJJ2mnoyeGS8jrmBXN4I4+aECRL60mkLskoqGetot+2tX2xXGxCYJuo5v1dtSafwBqTRQ==}
     engines: {node: '>=14'}
 
-  '@sap/cds@8.3.1':
-    resolution: {integrity: sha512-v44OYZqeFYrH6ghfO/RqQ7eqgcNYAAQmVVFy9pIbOkxXay0uVDXB1nC3hu6cuqIYvp2PFInL0c3l1e+ycFSkPA==}
-    engines: {node: '>=18'}
+  '@sap/cds-mtxs@2.3.1':
+    resolution: {integrity: sha512-WmWJAUnXGeki6ax2zq9MFGduZq8k+bfoMI/Tn+WJbv6P82qI7Ul15/0lljpvi4I7obOgM02+szXILVi5MorATQ==}
     hasBin: true
-    peerDependencies:
-      express: '>=4'
-    peerDependenciesMeta:
-      express:
-        optional: true
 
   '@sap/cds@8.4.2':
     resolution: {integrity: sha512-wHiPU+PciyG6L7oGglUq22ji+aV5SFwef/gF/rnIheMirzxpDlHq+K8GwqmcrrFu3GWRioQGRe3rr8KAalOQrg==}
@@ -1064,12 +1093,46 @@ packages:
       express:
         optional: true
 
+  '@sap/eslint-plugin-cds@3.1.2':
+    resolution: {integrity: sha512-tstnON4GgR6/FLdbHT0zxkAYYYPqatPk3zP6xxo3RWsP0+UVJeM2kAfzseUoRUEKAilRrx8hduxFr3PzUPQCFQ==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      eslint: '>=8'
+
+  '@sap/hdi-deploy@5.3.2':
+    resolution: {integrity: sha512-1QvlrMdeVXCIc2DSLjR5ZIKFz9GVcuC8JvXtifU7bYetajc6mgU5FRR9zseZgrHVdCveeRIURmoPplUl4Hszag==}
+    engines: {node: ^18.0.0 || ^20.0.0}
+    peerDependencies:
+      '@sap/hana-client': ^2 >= 2.6
+      hdb: ^0
+    peerDependenciesMeta:
+      '@sap/hana-client':
+        optional: true
+      hdb:
+        optional: true
+
+  '@sap/hdi@4.6.0':
+    resolution: {integrity: sha512-heRX6dvyr58LT0jrZECpt9jJTHIWttDSuLKsBccpKPBbBJxCDr6hpIXKmtCJj7M7ASDgESSGx1fE326V/ltlLQ==}
+    engines: {node: '>=18 <=20'}
+    peerDependencies:
+      '@sap/hana-client': ^2 >= 2.5
+      hdb: ^0
+    peerDependenciesMeta:
+      '@sap/hana-client':
+        optional: true
+      hdb:
+        optional: true
+
   '@sap/xsenv@5.3.0':
     resolution: {integrity: sha512-2UqioTBYe7XTvrskulaqVvoQ8WUA06Ofumxfa545DlB9gZyvvdL0ncQDU9EWrqFKE6U/e+kdQRpaMfRnrM5ykQ==}
     engines: {node: ^18.0.0 || ^20.0.0}
 
   '@sap/xssec@4.2.4':
     resolution: {integrity: sha512-WW+nOFLa4SRBapqa9y3dLUqZploHA/lN9pkPHoa3qzpb0Q9YupZCI++aP39HR0bDYsztoRg/xVryViReJkk3Dg==}
+    engines: {node: '>=18'}
+
+  '@sap/xssec@4.2.7':
+    resolution: {integrity: sha512-RCBFma3jiLIJ1naAPFNLQWMIkKwQENiwSsdEtffs2Q+RhH+AnLiaXAqxtXGlO/N+Lg53WANEIcLThYRkttQ00w==}
     engines: {node: '>=18'}
 
   '@sinclair/typebox@0.27.8':
@@ -1139,14 +1202,8 @@ packages:
   '@types/estree@1.0.6':
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
 
-  '@types/express-serve-static-core@4.19.6':
-    resolution: {integrity: sha512-N4LZ2xG7DatVqhCZzOGb1Yi5lMbXSZcmdLDe9EzSndPV2HpWYWzRbaerl2n27irrm94EPpprqa8KpskPT085+A==}
-
   '@types/express-serve-static-core@5.0.0':
     resolution: {integrity: sha512-AbXMTZGt40T+KON9/Fdxx0B2WK5hsgxcfXJLr5bFpZ7b4JCex2WyQPTEKdXqfHiY5nKKBScZ7yCoO6Pvgxfvnw==}
-
-  '@types/express@4.17.21':
-    resolution: {integrity: sha512-ejlPM315qwLpaQlQDTjPdsUFSc6ZsP4AN6AlWnogPjQ7CVi7PYF3YVz+CY3jE2pwYf7E/7HlDAN0rV2GxTG0HQ==}
 
   '@types/express@5.0.0':
     resolution: {integrity: sha512-DvZriSMehGHL1ZNLzi6MidnsDhUZM/x2pRdDIKdwbUNqqwHxMlRdkxtn6/EPKyqKpHqTl/4nRZsRNLpZxZRpPQ==}
@@ -1528,12 +1585,18 @@ packages:
     resolution: {integrity: sha512-pbnl5XzGBdrFU/wT4jqmJVPn2B6UHPBOhzMQkY/SPUPB6QtUXtmBHBIwCbXJol93mOpGMnQyP/+BB19q04xj7g==}
     engines: {node: '>=4'}
 
+  better-sqlite3@11.5.0:
+    resolution: {integrity: sha512-e/6eggfOutzoK0JWiU36jsisdWoHOfN9iWiW/SieKvb7SAa6aGNmBM/UKyp+/wWSXpLlWNN8tCPwoDNPhzUvuQ==}
+
   big.js@6.2.2:
     resolution: {integrity: sha512-y/ie+Faknx7sZA5MfGA2xKlu0GDv8RWrXGsmlteyJQ2lvoKv9GBK/fpRMc2qlSoBAgNxrixICFCBefIq8WCQpQ==}
 
   binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
     engines: {node: '>=8'}
+
+  bindings@1.5.0:
+    resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
 
   bl@4.1.0:
     resolution: {integrity: sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w==}
@@ -1641,6 +1704,9 @@ packages:
   chokidar@3.6.0:
     resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
     engines: {node: '>= 8.10.0'}
+
+  chownr@1.1.4:
+    resolution: {integrity: sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg==}
 
   ci-info@3.9.0:
     resolution: {integrity: sha512-NIxF55hv4nSqQswkAeiOi1r83xy8JldOFDTWiug55KBu9Jnblncd2U6ViHmYgHf01TPZS77NJBhBMKdWj9HQMQ==}
@@ -1815,6 +1881,10 @@ packages:
     resolution: {integrity: sha512-z2S+W9X73hAUUki+N+9Za2lBlun89zigOyGrsax+KUQ6wKW4ZoWpEYBkGhQjwAjjDCkWxhY0VKEhk8wzY7F5cA==}
     engines: {node: '>=0.10.0'}
 
+  decompress-response@6.0.0:
+    resolution: {integrity: sha512-aW35yZM6Bb/4oJlZncMH2LCoZtJXTRxES17vE3hoRiowU2kWHaJKFkSBDnDR+cm9J+9QhXmREyIfv0pji9ejCQ==}
+    engines: {node: '>=10'}
+
   dedent@1.5.3:
     resolution: {integrity: sha512-NHQtfOOW68WD8lgypbLA5oT+Bt0xXJhiYvoR6SmmNXZfpzOGXwdKWmcwG8N7PwVVWV3eF/68nmD9BaJSsTBhyQ==}
     peerDependencies:
@@ -1822,6 +1892,10 @@ packages:
     peerDependenciesMeta:
       babel-plugin-macros:
         optional: true
+
+  deep-extend@0.6.0:
+    resolution: {integrity: sha512-LOHxIOaPYdHlJRtCQfDIVZtfw/ufM8+rVj649RIHzcm/vGwQRXFt6OPqIFWsm2XEMrNIEtWR64sY1LEKD2vAOA==}
+    engines: {node: '>=4.0.0'}
 
   deep-is@0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
@@ -1867,6 +1941,10 @@ packages:
 
   detect-indent@6.1.0:
     resolution: {integrity: sha512-reYkTUJAZb9gUuZ2RvVCNhVHdg62RHnJ7WJl8ftMi4diZ6NWlciOzQN88pUhSELEwflJht4oQDv0F0BMlwaYtA==}
+    engines: {node: '>=8'}
+
+  detect-libc@2.0.3:
+    resolution: {integrity: sha512-bwy0MGW55bG41VqxxypOsdSdGqLwXPI/focwgTYCFMbdUiBAxLg9CFzG08sz2aqzknwiX7Hkl0bQENjg8iLByw==}
     engines: {node: '>=8'}
 
   detect-newline@3.1.0:
@@ -1958,6 +2036,9 @@ packages:
 
   encoding-sniffer@0.2.0:
     resolution: {integrity: sha512-ju7Wq1kg04I3HtiYIOrUrdfdDvkyO9s5XM8QAj/bN61Yo/Vb4vgJxy5vi4Yxk01gWHbrofpPtpxM8bKger9jhg==}
+
+  end-of-stream@1.4.4:
+    resolution: {integrity: sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==}
 
   enhanced-resolve@5.17.1:
     resolution: {integrity: sha512-LMHl3dXhTcfv8gM4kEzIUeTQ+7fpdA0l2tUf34BddXPkz2A5xJ5L/Pchd5BL6rdccM9QGvu0sWZzK1Z1t4wwyg==}
@@ -2215,6 +2296,10 @@ packages:
     resolution: {integrity: sha512-Zk/eNKV2zbjpKzrsQ+n1G6poVbErQxJ0LBOJXaKZ1EViLzH+hrLu9cdXI4zw9dBQJslwBEpbQ2P1oS7nDxs6jQ==}
     engines: {node: '>= 0.8.0'}
 
+  expand-template@2.0.3:
+    resolution: {integrity: sha512-XYfuKMvj4O35f/pOXLObndIRvyQ+/+6AhODh+OKWj9S9498pHHn/IMszH+gt0fBCRWMNfk1ZSp5x3AifmnI2vg==}
+    engines: {node: '>=6'}
+
   expand-tilde@2.0.2:
     resolution: {integrity: sha512-A5EmesHW6rfnZ9ysHQjPdJRni0SRar0tjtG5MNtm9n5TUvsYU8oozprtRD4AqHxcZWWlVuAmQo2nWKfN9oyjTw==}
     engines: {node: '>=0.10.0'}
@@ -2288,6 +2373,9 @@ packages:
     resolution: {integrity: sha512-XXTUwCvisa5oacNGRP9SfNtYBNAMi+RPwBFmblZEF7N7swHYQS6/Zfk7SRwx4D5j3CH211YNRco1DEMNVfZCnQ==}
     engines: {node: '>=16.0.0'}
 
+  file-uri-to-path@1.0.0:
+    resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==}
+
   filelist@1.0.4:
     resolution: {integrity: sha512-w1cEuf3S+DrLCQL7ET6kz+gmlJdbq9J7yXCSjK/OZCPA+qEN1WyF4ZAf0YYJa4/shHJra2t/d/r8SV4Ji+x+8Q==}
 
@@ -2360,6 +2448,9 @@ packages:
     resolution: {integrity: sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==}
     engines: {node: '>= 0.6'}
 
+  fs-constants@1.0.0:
+    resolution: {integrity: sha512-y6OAwoSIf7FyjMIv94u+b5rdheZEjzR63GTyZJm5qh4Bi+2YgwLCcI/fPFZkL5PSixOt6ZNKm+w+Hfp/Bciwow==}
+
   fs-extra@11.2.0:
     resolution: {integrity: sha512-PmDi3uwK5nFuXh7XDTlVnS17xJS7vW36is2+w3xcv8SVxiB4NyATf4ctkVY5bkSjX0Y4nbvZCq1/EjtEyr9ktw==}
     engines: {node: '>=14.14'}
@@ -2421,6 +2512,9 @@ packages:
   get-tsconfig@4.8.1:
     resolution: {integrity: sha512-k9PN+cFBmaLWtVz29SkUoqU5O0slLuHJXt/2P+tMVFT+phsSGXGkp9t3rQIqdz0e+06EHNGs3oM6ZX1s2zHxRg==}
 
+  github-from-package@0.0.0:
+    resolution: {integrity: sha512-SyHy3T1v2NUXn29OsWdxmK6RwHD+vkj3v8en8AOBZ1wBQ/hCAQ5bAQTD02kW4W9tUp/3Qh6J8r9EvntiyCmOOw==}
+
   glob-parent@5.1.2:
     resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}
     engines: {node: '>= 6'}
@@ -2475,6 +2569,11 @@ packages:
   graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
 
+  handlebars@4.7.8:
+    resolution: {integrity: sha512-vafaFqs8MZkRrSX7sFVUdo3ap/eNiLnb4IakshzvP56X5Nr1iGKAIqdX6tMlm6HcNRIkr6AxO5jFEoJzzpT8aQ==}
+    engines: {node: '>=0.4.7'}
+    hasBin: true
+
   hard-rejection@2.1.0:
     resolution: {integrity: sha512-VIZB+ibDhx7ObhAe7OVtoEbuP4h/MuOTHJ+J8h/eBXotJYl0fBgR72xDFCKgIh22OJZIOVNxBMWuhAr10r8HdA==}
     engines: {node: '>=6'}
@@ -2508,6 +2607,10 @@ packages:
   hasown@2.0.2:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
+
+  hdb@0.19.10:
+    resolution: {integrity: sha512-er0oyute1aMjf6v41JU7z1a6Zo8lqj3muC7C4Uoi81Xf4WNdjPb424wUnXIhaf4HS8H9ARDyWrMGJTvPU2jjPw==}
+    engines: {node: '>= 0.12'}
 
   homedir-polyfill@1.0.3:
     resolution: {integrity: sha512-eSmmWE5bZTK2Nou4g0AI3zZ9rswp7GRKoKXS1BLUkvPviOqs4YTN1djQIqrXy9k5gEtdLPy86JjRwsNM9tnDcA==}
@@ -3027,8 +3130,8 @@ packages:
   kuler@2.0.0:
     resolution: {integrity: sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==}
 
-  langchain@0.3.5:
-    resolution: {integrity: sha512-Gq0xC45Sq6nszS8kQG9suCrmBsuXH0INMmiF7D2TwPb6mtG35Jiq4grCk9ykpwPsarTHdty3SzUbII/FqiYSSw==}
+  langchain@0.3.6:
+    resolution: {integrity: sha512-erZOIKXzwCOrQHqY9AyjkQmaX62zUap1Sigw1KrwMUOnVoLKkVNRmAyxFlNZDZ9jLs/58MaQcaT9ReJtbj3x6w==}
     engines: {node: '>=18'}
     peerDependencies:
       '@langchain/anthropic': '*'
@@ -3095,6 +3198,9 @@ packages:
 
   lines-and-columns@1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
+
+  livereload-js@4.0.2:
+    resolution: {integrity: sha512-Fy7VwgQNiOkynYyNBTo3v9hQUhcW5pFAheJN148+DTgpShjsy/22pLHKKwDK5v0kOsZsJBK+6q1PMgLvRmrwFQ==}
 
   locate-path@5.0.0:
     resolution: {integrity: sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g==}
@@ -3230,6 +3336,10 @@ packages:
     resolution: {integrity: sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==}
     engines: {node: '>=6'}
 
+  mimic-response@3.1.0:
+    resolution: {integrity: sha512-z0yWI+4FDrrweS8Zmt4Ej5HdJmky15+L2e6Wgn3+iK5fWzb6T3fhNFq2+MeTRb064c6Wr4N/wv0DzQTjNzHNGQ==}
+    engines: {node: '>=10'}
+
   min-indent@1.0.1:
     resolution: {integrity: sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==}
     engines: {node: '>=4'}
@@ -3264,6 +3374,9 @@ packages:
     resolution: {integrity: sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==}
     engines: {node: '>=16 || 14 >=14.17'}
 
+  mkdirp-classic@0.5.3:
+    resolution: {integrity: sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==}
+
   mock-fs@5.4.1:
     resolution: {integrity: sha512-sz/Q8K1gXXXHR+qr0GZg2ysxCRr323kuN10O7CtQjraJsFDJ4SJ+0I5MzALz7aRp9lHk8Cc/YdsT95h9Ka1aFw==}
     engines: {node: '>=12.0.0'}
@@ -3294,6 +3407,9 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
+  napi-build-utils@1.0.2:
+    resolution: {integrity: sha512-ONmRUqK7zj7DWX0D9ADe03wbwOBZxNAfF20PlGfCWQcD3+/MakShIHrMqx9YwPTfxDdF1zLeL+RGZiR9kGMLdg==}
+
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
 
@@ -3301,9 +3417,16 @@ packages:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
     engines: {node: '>= 0.6'}
 
+  neo-async@2.6.2:
+    resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
+
   nock@13.5.6:
     resolution: {integrity: sha512-o2zOYiCpzRqSzPj0Zt/dQ/DqZeYoaQ7TUonc/xUPjCGl9WeHpNbxgVvOquXYAaJzI0M9BXV3HTzG0p8IUAbBTQ==}
     engines: {node: '>= 10.13'}
+
+  node-abi@3.71.0:
+    resolution: {integrity: sha512-SZ40vRiy/+wRTf21hxkkEjPJZpARzUMVcJoQse2EF8qkUWbbO2z7vd5oA/H6bVH6SZQ5STGcu0KRDS7biNRfxw==}
+    engines: {node: '>=10'}
 
   node-cache@5.1.2:
     resolution: {integrity: sha512-t1QzWwnk4sjLWaQAS8CHgOJ+RAfmHpxFWmc36IWTiWHQfs0w5JDMBS1b1ZxQteo0vVVuWJvIUKHDkkeK7vIGCg==}
@@ -3334,6 +3457,10 @@ packages:
 
   node-releases@2.0.14:
     resolution: {integrity: sha512-y10wOWt8yZpqXmOgRo77WaHEmhYQYGNA6y421PKsKYWEK8aW+cqAphborZDhqfyKrbZEN92CN1X2KbafY2s7Yw==}
+
+  node-watch@0.7.4:
+    resolution: {integrity: sha512-RinNxoz4W1cep1b928fuFhvAQ5ag/+1UlMDV7rbyGthBIgsiEouS4kvRayvvboxii4m8eolKOIBo3OjDqbc+uQ==}
+    engines: {node: '>=6'}
 
   normalize-package-data@2.5.0:
     resolution: {integrity: sha512-/5CMN3T0R4XTj4DcGaexo+roZSdSFW/0AOOTROrjxzCG1wrWXEsGbRKevjlIL+ZDE4sZlJr5ED4YW0yqmkK+eA==}
@@ -3583,6 +3710,10 @@ packages:
     resolution: {integrity: sha512-4UGewrYgqDFw9vV6zNV+ADmPAUAfJPKtGvb/VdpQAx25X5f3xXdGdyOEVFwkl8Hl/tl7+xbeHqSEM+D5/TirUg==}
     engines: {node: '>=10'}
 
+  pluralize@8.0.0:
+    resolution: {integrity: sha512-Nc3IT5yHzflTfbjgqWcCPpo7DaKy4FnpB0l/zCAW0Tc7jxAiuqSxHasntB3D7887LSrA93kDJ9IXovxJYxyLCA==}
+    engines: {node: '>=4'}
+
   possible-typed-array-names@1.0.0:
     resolution: {integrity: sha512-d7Uw+eZoloe0EHDIYoe+bQ5WXnGMOpmiZFTuMWCwpjzzkL2nTjcKiAk4hh8TjnGye2TwWOk3UXucZ+3rbmBa8Q==}
     engines: {node: '>= 0.4'}
@@ -3590,6 +3721,11 @@ packages:
   postcss@8.4.47:
     resolution: {integrity: sha512-56rxCq7G/XfB4EkXq9Egn5GCqugWvDFjafDOThIdMBsI15iqPqR5r15TfSr1YPYeEI19YeaXMCbY6u88Y76GLQ==}
     engines: {node: ^10 || ^12 || >=14}
+
+  prebuild-install@7.1.2:
+    resolution: {integrity: sha512-UnNke3IQb6sgarcZIDU3gbMeTp/9SSU1DAIkil7PrqG1vZlBtY5msYccSKSHDqa3hNg436IXK+SNImReuA1wEQ==}
+    engines: {node: '>=10'}
+    hasBin: true
 
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
@@ -3640,6 +3776,9 @@ packages:
   pseudomap@1.0.2:
     resolution: {integrity: sha512-b/YwNhb8lk1Zz2+bXXpS/LK9OisiZZ1SNsSLxN1x2OXVEhW2Ckr/7mWE5vrC1ZTiJlD9g19jWszTmJsB+oEpFQ==}
 
+  pump@3.0.2:
+    resolution: {integrity: sha512-tUPXtzlGM8FE3P0ZL6DVs/3P58k9nk8/jZeQCurTJylQA8qFYzHFfhBJkuqyE0FifOsQ0uKWekiZ5g8wtr28cw==}
+
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
@@ -3665,6 +3804,10 @@ packages:
   raw-body@2.5.2:
     resolution: {integrity: sha512-8zGqypfENjCIqGhgXToC8aB2r7YrBX+AQAfIPs/Mlk+BtPTztOvTS01NRW/3Eh60J+a48lt8qsCzirQ6loCVfA==}
     engines: {node: '>= 0.8'}
+
+  rc@1.2.8:
+    resolution: {integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==}
+    hasBin: true
 
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
@@ -3785,6 +3928,9 @@ packages:
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
+  sax@1.4.1:
+    resolution: {integrity: sha512-+aWOz7yVScEGoKNd4PA10LZ8sk0A/z5+nXQG5giUO5rprX9jgYsTdov9qCchZiPIZezbZH+jRut8nPodFAX4Jg==}
+
   semver-compare@1.0.0:
     resolution: {integrity: sha512-YM3/ITh2MJ5MtzaM429anh+x2jiLVjqILF4m4oyQB18W7Ggea7BfqdH/wGMK7dDiMghv/6WG7znWMwUDzJiXow==}
 
@@ -3864,6 +4010,12 @@ packages:
   signal-exit@4.1.0:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
+
+  simple-concat@1.0.1:
+    resolution: {integrity: sha512-cSFtAPtRhljv69IK0hTVZQ+OfE9nePi/rtJmw5UjHeVyVroEqJXP1sFztKUy1qU+xvz3u/sfYJLa947b7nAN2Q==}
+
+  simple-get@4.0.1:
+    resolution: {integrity: sha512-brv7p5WgH0jmQJr1ZDDfKDOSeWWg+OVypG99A/5vYGPqJ6pxiaHLy8nxtFjBA7oMa01ebA9gfh1uMCFqOuXxvA==}
 
   simple-swizzle@0.2.2:
     resolution: {integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==}
@@ -3968,6 +4120,10 @@ packages:
     resolution: {integrity: sha512-laJTa3Jb+VQpaC6DseHhF7dXVqHTfJPCRDaEbid/drOhgitgYku/letMUqOXFoWV0zIIUbjpdH2t+tYj4bQMRQ==}
     engines: {node: '>=8'}
 
+  strip-json-comments@2.0.1:
+    resolution: {integrity: sha512-4gB8na07fecVVkOI6Rs4e7T6NOTki5EmL7TUduTs6bu3EdnSycntVJ4re8kgZA+wx9IueI2Y11bfbgwtzuE0KQ==}
+    engines: {node: '>=0.10.0'}
+
   strip-json-comments@3.1.1:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
@@ -4002,6 +4158,13 @@ packages:
 
   tapable@2.2.1:
     resolution: {integrity: sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==}
+    engines: {node: '>=6'}
+
+  tar-fs@2.1.1:
+    resolution: {integrity: sha512-V0r2Y9scmbDRLCNex/+hYzvp/zyYjvFbHPNgVTKfQvVrb6guiE/fxP+XblDNR011utopbkex2nM4dHNV6GDsng==}
+
+  tar-stream@2.2.0:
+    resolution: {integrity: sha512-ujeqbceABgwMZxEJnk2HDY2DlnUZ+9oEcb1KzTVfYHio0UE6dG71n60d8D2I4qNvleWrrXpmjpt7vZeF1LnMZQ==}
     engines: {node: '>=6'}
 
   term-size@2.2.1:
@@ -4130,6 +4293,9 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
+  tunnel-agent@0.6.0:
+    resolution: {integrity: sha512-McnNiV1l8RYeY8tBgEpuodCC1mLUdbSN+CYBL7kJsJNInOP8UjDDEwdk6Mw60vdLLrr5NHKZhMAOSrR2NZuQ+w==}
+
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
@@ -4186,6 +4352,11 @@ packages:
   typescript@5.6.3:
     resolution: {integrity: sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==}
     engines: {node: '>=14.17'}
+    hasBin: true
+
+  uglify-js@3.19.3:
+    resolution: {integrity: sha512-v3Xu+yuwBXisp6QYTcH4UbH+xYJXqnq2m/LtQVWKWzYc1iehYnLixoQDN9FH6/j9/oybfd6W9Ghwkl8+UMKTKQ==}
+    engines: {node: '>=0.8.0'}
     hasBin: true
 
   unbox-primitive@1.0.2:
@@ -4335,6 +4506,22 @@ packages:
   write-file-atomic@5.0.1:
     resolution: {integrity: sha512-+QU2zd6OTD8XWIJCbffaiQeH9U73qIqafo1x6V1snCWYGJf6cVE0cDR4D8xRzcEnfI21IFrUPzPGtcPf8AC+Rw==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
+
+  ws@8.18.0:
+    resolution: {integrity: sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
+  xml-js@1.6.11:
+    resolution: {integrity: sha512-7rVi2KMfwfWFl+GpPg6m80IVMWXLRjO+PxTq7V2CDhoGak0wzYzFgUY2m4XJ47OGdXd8eLE8EmwfAmdjw7lC1g==}
+    hasBin: true
 
   xmlbuilder@15.1.1:
     resolution: {integrity: sha512-yMqGBqtXyeN1e3TGYvgNgDVZ3j84W4cwkOXQswghol6APgZWaff9lnbvN7MHYJOiXsvGPXtjTYJEiC9J2wv9Eg==}
@@ -4633,10 +4820,27 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@cap-js/cds-types@0.7.0(@sap/cds@8.4.2(express@4.21.1))':
+  '@cap-js/asyncapi@1.0.2(@sap/cds@8.4.2(express@4.21.1))':
     dependencies:
       '@sap/cds': 8.4.2(express@4.21.1)
-      '@types/express': 4.17.21
+
+  '@cap-js/db-service@1.15.0(@sap/cds@8.4.2(express@4.21.1))':
+    dependencies:
+      '@sap/cds': 8.4.2(express@4.21.1)
+      generic-pool: 3.9.0
+    optional: true
+
+  '@cap-js/openapi@1.0.7(@sap/cds@8.4.2(express@4.21.1))':
+    dependencies:
+      '@sap/cds': 8.4.2(express@4.21.1)
+      pluralize: 8.0.0
+
+  '@cap-js/sqlite@1.7.7(@sap/cds@8.4.2(express@4.21.1))':
+    dependencies:
+      '@cap-js/db-service': 1.15.0(@sap/cds@8.4.2(express@4.21.1))
+      '@sap/cds': 8.4.2(express@4.21.1)
+      better-sqlite3: 11.5.0
+    optional: true
 
   '@changesets/apply-release-plan@7.0.5':
     dependencies:
@@ -5167,7 +5371,7 @@ snapshots:
       jest-haste-map: 30.0.0-alpha.6
       jest-regex-util: 30.0.0-alpha.6
       jest-util: 30.0.0-alpha.6
-      micromatch: 4.0.7
+      micromatch: 4.0.8
       pirates: 4.0.6
       slash: 3.0.0
       write-file-atomic: 5.0.1
@@ -5307,15 +5511,23 @@ snapshots:
 
   '@rtsao/scc@1.1.0': {}
 
-  '@sap-ai-sdk/ai-api@1.2.1-20241114013105.0':
+  '@sap-ai-sdk/ai-api@1.2.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.2.1-20241114013105.0
+      '@sap-ai-sdk/core': 1.2.0
       '@sap-cloud-sdk/connectivity': 3.22.2
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/core@1.2.1-20241114013105.0':
+  '@sap-ai-sdk/ai-api@1.3.1-20241117013135.0':
+    dependencies:
+      '@sap-ai-sdk/core': 1.3.1-20241117013135.0
+      '@sap-cloud-sdk/connectivity': 3.22.2
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
+  '@sap-ai-sdk/core@1.2.0':
     dependencies:
       '@sap-cloud-sdk/connectivity': 3.22.2
       '@sap-cloud-sdk/http-client': 3.22.2
@@ -5325,22 +5537,42 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/foundation-models@1.2.1-20241114013105.0':
+  '@sap-ai-sdk/core@1.3.1-20241117013135.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 1.2.1-20241114013105.0
-      '@sap-ai-sdk/core': 1.2.1-20241114013105.0
+      '@sap-cloud-sdk/connectivity': 3.22.2
+      '@sap-cloud-sdk/http-client': 3.22.2
+      '@sap-cloud-sdk/openapi': 3.22.2
+      '@sap-cloud-sdk/util': 3.22.2
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
+  '@sap-ai-sdk/foundation-models@1.2.0':
+    dependencies:
+      '@sap-ai-sdk/ai-api': 1.2.0
+      '@sap-ai-sdk/core': 1.2.0
       '@sap-cloud-sdk/http-client': 3.22.2
       '@sap-cloud-sdk/util': 3.22.2
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/langchain@1.2.1-20241114013105.0(openai@4.61.1(zod@3.23.8))(zod@3.23.8)':
+  '@sap-ai-sdk/foundation-models@1.3.1-20241117013135.0':
+    dependencies:
+      '@sap-ai-sdk/ai-api': 1.3.1-20241117013135.0
+      '@sap-ai-sdk/core': 1.3.1-20241117013135.0
+      '@sap-cloud-sdk/http-client': 3.22.2
+      '@sap-cloud-sdk/util': 3.22.2
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
+  '@sap-ai-sdk/langchain@1.3.1-20241117013135.0(openai@4.61.1(zod@3.23.8))(zod@3.23.8)':
     dependencies:
       '@langchain/core': 0.3.18(openai@4.61.1(zod@3.23.8))
-      '@sap-ai-sdk/ai-api': 1.2.1-20241114013105.0
-      '@sap-ai-sdk/core': 1.2.1-20241114013105.0
-      '@sap-ai-sdk/foundation-models': 1.2.1-20241114013105.0
+      '@sap-ai-sdk/ai-api': 1.3.1-20241117013135.0
+      '@sap-ai-sdk/core': 1.3.1-20241117013135.0
+      '@sap-ai-sdk/foundation-models': 1.3.1-20241117013135.0
       zod-to-json-schema: 3.23.5(zod@3.23.8)
     transitivePeerDependencies:
       - debug
@@ -5348,12 +5580,21 @@ snapshots:
       - supports-color
       - zod
 
-  '@sap-ai-sdk/orchestration@1.2.1-20241114013105.0':
+  '@sap-ai-sdk/orchestration@1.2.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 1.2.1-20241114013105.0
-      '@sap-ai-sdk/core': 1.2.1-20241114013105.0
+      '@sap-ai-sdk/ai-api': 1.2.0
+      '@sap-ai-sdk/core': 1.2.0
       '@sap-cloud-sdk/http-client': 3.22.2
       '@sap-cloud-sdk/util': 3.22.2
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
+  '@sap-ai-sdk/orchestration@1.3.1-20241117013135.0':
+    dependencies:
+      '@sap-ai-sdk/ai-api': 1.3.1-20241117013135.0
+      '@sap-ai-sdk/core': 1.3.1-20241117013135.0
+      '@sap-cloud-sdk/http-client': 3.22.2
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -5363,7 +5604,7 @@ snapshots:
       '@sap-cloud-sdk/resilience': 3.22.2
       '@sap-cloud-sdk/util': 3.22.2
       '@sap/xsenv': 5.3.0
-      '@sap/xssec': 4.2.4
+      '@sap/xssec': 4.2.7
       async-retry: 1.3.3
       axios: 1.7.7
       jsonwebtoken: 9.0.2
@@ -5467,10 +5708,33 @@ snapshots:
     dependencies:
       antlr4: 4.9.3
 
-  '@sap/cds-fiori@1.2.7(@sap/cds@8.3.1(express@4.21.1))(express@4.21.1)':
+  '@sap/cds-dk@8.4.1':
     dependencies:
-      '@sap/cds': 8.3.1(express@4.21.1)
+      '@cap-js/asyncapi': 1.0.2(@sap/cds@8.4.2(express@4.21.1))
+      '@cap-js/openapi': 1.0.7(@sap/cds@8.4.2(express@4.21.1))
+      '@sap/cds': 8.4.2(express@4.21.1)
+      '@sap/cds-foss': 5.0.1
+      '@sap/cds-mtxs': 2.3.1(hdb@0.19.10)
+      '@sap/eslint-plugin-cds': 3.1.2(eslint@9.14.0)(express@4.21.1)
+      '@sap/hdi-deploy': 5.3.2(hdb@0.19.10)
+      axios: 1.7.7
+      eslint: 9.14.0
       express: 4.21.1
+      hdb: 0.19.10
+      livereload-js: 4.0.2
+      mustache: 4.2.0
+      node-watch: 0.7.4
+      ws: 8.18.0
+      xml-js: 1.6.11
+    optionalDependencies:
+      '@cap-js/sqlite': 1.7.7(@sap/cds@8.4.2(express@4.21.1))
+    transitivePeerDependencies:
+      - '@sap/hana-client'
+      - bufferutil
+      - debug
+      - jiti
+      - supports-color
+      - utf-8-validate
 
   '@sap/cds-fiori@1.2.7(@sap/cds@8.4.2(express@4.21.1))(express@4.21.1)':
     dependencies:
@@ -5484,13 +5748,15 @@ snapshots:
       xmlbuilder: 15.1.1
       yaml: 2.5.1
 
-  '@sap/cds@8.3.1(express@4.21.1)':
+  '@sap/cds-mtxs@2.3.1(hdb@0.19.10)':
     dependencies:
-      '@sap/cds-compiler': 5.3.2
-      '@sap/cds-fiori': 1.2.7(@sap/cds@8.3.1(express@4.21.1))(express@4.21.1)
-      '@sap/cds-foss': 5.0.1
-    optionalDependencies:
-      express: 4.21.1
+      '@sap/hdi-deploy': 5.3.2(hdb@0.19.10)
+      axios: 1.7.7
+    transitivePeerDependencies:
+      - '@sap/hana-client'
+      - debug
+      - hdb
+      - supports-color
 
   '@sap/cds@8.4.2(express@4.21.1)':
     dependencies:
@@ -5499,6 +5765,33 @@ snapshots:
       '@sap/cds-foss': 5.0.1
     optionalDependencies:
       express: 4.21.1
+
+  '@sap/eslint-plugin-cds@3.1.2(eslint@9.14.0)(express@4.21.1)':
+    dependencies:
+      '@sap/cds': 8.4.2(express@4.21.1)
+      eslint: 9.14.0
+      semver: 7.6.3
+    transitivePeerDependencies:
+      - express
+
+  '@sap/hdi-deploy@5.3.2(hdb@0.19.10)':
+    dependencies:
+      '@sap/hdi': 4.6.0(hdb@0.19.10)
+      '@sap/xsenv': 5.3.0
+      async: 3.2.6
+      dotenv: 16.4.5
+      handlebars: 4.7.8
+      micromatch: 4.0.8
+    optionalDependencies:
+      hdb: 0.19.10
+    transitivePeerDependencies:
+      - supports-color
+
+  '@sap/hdi@4.6.0(hdb@0.19.10)':
+    dependencies:
+      async: 3.2.6
+    optionalDependencies:
+      hdb: 0.19.10
 
   '@sap/xsenv@5.3.0':
     dependencies:
@@ -5509,6 +5802,13 @@ snapshots:
       - supports-color
 
   '@sap/xssec@4.2.4':
+    dependencies:
+      debug: 4.3.7(supports-color@8.1.1)
+      jwt-decode: 4.0.0
+    transitivePeerDependencies:
+      - supports-color
+
+  '@sap/xssec@4.2.7':
     dependencies:
       debug: 4.3.7(supports-color@8.1.1)
       jwt-decode: 4.0.0
@@ -5600,26 +5900,12 @@ snapshots:
 
   '@types/estree@1.0.6': {}
 
-  '@types/express-serve-static-core@4.19.6':
-    dependencies:
-      '@types/node': 20.17.6
-      '@types/qs': 6.9.15
-      '@types/range-parser': 1.2.7
-      '@types/send': 0.17.4
-
   '@types/express-serve-static-core@5.0.0':
     dependencies:
       '@types/node': 20.17.5
       '@types/qs': 6.9.15
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.4
-
-  '@types/express@4.17.21':
-    dependencies:
-      '@types/body-parser': 1.19.5
-      '@types/express-serve-static-core': 4.19.6
-      '@types/qs': 6.9.15
-      '@types/serve-static': 1.15.7
 
   '@types/express@5.0.0':
     dependencies:
@@ -5669,7 +5955,7 @@ snapshots:
 
   '@types/node-fetch@2.6.11':
     dependencies:
-      '@types/node': 20.17.5
+      '@types/node': 20.17.6
       form-data: 4.0.1
 
   '@types/node@12.20.55': {}
@@ -6080,9 +6366,20 @@ snapshots:
     dependencies:
       is-windows: 1.0.2
 
+  better-sqlite3@11.5.0:
+    dependencies:
+      bindings: 1.5.0
+      prebuild-install: 7.1.2
+    optional: true
+
   big.js@6.2.2: {}
 
   binary-extensions@2.3.0: {}
+
+  bindings@1.5.0:
+    dependencies:
+      file-uri-to-path: 1.0.0
+    optional: true
 
   bl@4.1.0:
     dependencies:
@@ -6233,6 +6530,9 @@ snapshots:
       readdirp: 3.6.0
     optionalDependencies:
       fsevents: 2.3.3
+
+  chownr@1.1.4:
+    optional: true
 
   ci-info@3.9.0: {}
 
@@ -6396,7 +6696,15 @@ snapshots:
 
   decamelize@1.2.0: {}
 
+  decompress-response@6.0.0:
+    dependencies:
+      mimic-response: 3.1.0
+    optional: true
+
   dedent@1.5.3: {}
+
+  deep-extend@0.6.0:
+    optional: true
 
   deep-is@0.1.4: {}
 
@@ -6457,6 +6765,9 @@ snapshots:
   detect-file@1.0.0: {}
 
   detect-indent@6.1.0: {}
+
+  detect-libc@2.0.3:
+    optional: true
 
   detect-newline@3.1.0: {}
 
@@ -6537,6 +6848,11 @@ snapshots:
     dependencies:
       iconv-lite: 0.6.3
       whatwg-encoding: 3.1.1
+    optional: true
+
+  end-of-stream@1.4.4:
+    dependencies:
+      once: 1.4.0
     optional: true
 
   enhanced-resolve@5.17.1:
@@ -6898,6 +7214,9 @@ snapshots:
 
   exit@0.1.2: {}
 
+  expand-template@2.0.3:
+    optional: true
+
   expand-tilde@2.0.2:
     dependencies:
       homedir-polyfill: 1.0.3
@@ -7009,6 +7328,9 @@ snapshots:
     dependencies:
       flat-cache: 4.0.1
 
+  file-uri-to-path@1.0.0:
+    optional: true
+
   filelist@1.0.4:
     dependencies:
       minimatch: 5.1.6
@@ -7088,6 +7410,9 @@ snapshots:
 
   fresh@0.5.2: {}
 
+  fs-constants@1.0.0:
+    optional: true
+
   fs-extra@11.2.0:
     dependencies:
       graceful-fs: 4.2.11
@@ -7149,6 +7474,9 @@ snapshots:
   get-tsconfig@4.8.1:
     dependencies:
       resolve-pkg-maps: 1.0.0
+
+  github-from-package@0.0.0:
+    optional: true
 
   glob-parent@5.1.2:
     dependencies:
@@ -7225,6 +7553,15 @@ snapshots:
 
   graphemer@1.4.0: {}
 
+  handlebars@4.7.8:
+    dependencies:
+      minimist: 1.2.8
+      neo-async: 2.6.2
+      source-map: 0.6.1
+      wordwrap: 1.0.0
+    optionalDependencies:
+      uglify-js: 3.19.3
+
   hard-rejection@2.1.0: {}
 
   has-bigints@1.0.2: {}
@@ -7248,6 +7585,10 @@ snapshots:
   hasown@2.0.2:
     dependencies:
       function-bind: 1.1.2
+
+  hdb@0.19.10:
+    dependencies:
+      iconv-lite: 0.4.24
 
   homedir-polyfill@1.0.3:
     dependencies:
@@ -7592,7 +7933,7 @@ snapshots:
       jest-runner: 30.0.0-alpha.6
       jest-util: 30.0.0-alpha.6
       jest-validate: 30.0.0-alpha.6
-      micromatch: 4.0.7
+      micromatch: 4.0.8
       parse-json: 5.2.0
       pretty-format: 30.0.0-alpha.6
       slash: 3.0.0
@@ -7669,7 +8010,7 @@ snapshots:
       jest-regex-util: 30.0.0-alpha.6
       jest-util: 30.0.0-alpha.6
       jest-worker: 30.0.0-alpha.6
-      micromatch: 4.0.7
+      micromatch: 4.0.8
       walker: 1.0.8
     optionalDependencies:
       fsevents: 2.3.3
@@ -7712,7 +8053,7 @@ snapshots:
       '@types/stack-utils': 2.0.3
       chalk: 4.1.2
       graceful-fs: 4.2.11
-      micromatch: 4.0.7
+      micromatch: 4.0.8
       pretty-format: 30.0.0-alpha.6
       slash: 3.0.0
       stack-utils: 2.0.6
@@ -8009,7 +8350,7 @@ snapshots:
 
   kuler@2.0.0: {}
 
-  langchain@0.3.5(@langchain/core@0.3.18(openai@4.61.1(zod@3.23.8)))(axios@1.7.7)(cheerio@1.0.0)(openai@4.61.1(zod@3.23.8)):
+  langchain@0.3.6(@langchain/core@0.3.18(openai@4.61.1(zod@3.23.8)))(axios@1.7.7)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.23.8)):
     dependencies:
       '@langchain/core': 0.3.18(openai@4.61.1(zod@3.23.8))
       '@langchain/openai': 0.3.2(@langchain/core@0.3.18(openai@4.61.1(zod@3.23.8)))
@@ -8027,6 +8368,7 @@ snapshots:
     optionalDependencies:
       axios: 1.7.7
       cheerio: 1.0.0
+      handlebars: 4.7.8
     transitivePeerDependencies:
       - encoding
       - openai
@@ -8052,6 +8394,8 @@ snapshots:
   lilconfig@3.1.2: {}
 
   lines-and-columns@1.2.4: {}
+
+  livereload-js@4.0.2: {}
 
   locate-path@5.0.0:
     dependencies:
@@ -8177,6 +8521,9 @@ snapshots:
 
   mimic-fn@2.1.0: {}
 
+  mimic-response@3.1.0:
+    optional: true
+
   min-indent@1.0.1: {}
 
   minimatch@10.0.1:
@@ -8209,6 +8556,9 @@ snapshots:
 
   minipass@7.1.2: {}
 
+  mkdirp-classic@0.5.3:
+    optional: true
+
   mock-fs@5.4.1: {}
 
   mri@1.2.0: {}
@@ -8231,9 +8581,14 @@ snapshots:
 
   nanoid@3.3.7: {}
 
+  napi-build-utils@1.0.2:
+    optional: true
+
   natural-compare@1.4.0: {}
 
   negotiator@0.6.3: {}
+
+  neo-async@2.6.2: {}
 
   nock@13.5.6:
     dependencies:
@@ -8242,6 +8597,11 @@ snapshots:
       propagate: 2.0.1
     transitivePeerDependencies:
       - supports-color
+
+  node-abi@3.71.0:
+    dependencies:
+      semver: 7.6.3
+    optional: true
 
   node-cache@5.1.2:
     dependencies:
@@ -8264,6 +8624,8 @@ snapshots:
       es6-promise: 3.3.1
 
   node-releases@2.0.14: {}
+
+  node-watch@0.7.4: {}
 
   normalize-package-data@2.5.0:
     dependencies:
@@ -8540,6 +8902,8 @@ snapshots:
     dependencies:
       irregular-plurals: 3.5.0
 
+  pluralize@8.0.0: {}
+
   possible-typed-array-names@1.0.0: {}
 
   postcss@8.4.47:
@@ -8547,6 +8911,22 @@ snapshots:
       nanoid: 3.3.7
       picocolors: 1.1.0
       source-map-js: 1.2.1
+
+  prebuild-install@7.1.2:
+    dependencies:
+      detect-libc: 2.0.3
+      expand-template: 2.0.3
+      github-from-package: 0.0.0
+      minimist: 1.2.8
+      mkdirp-classic: 0.5.3
+      napi-build-utils: 1.0.2
+      node-abi: 3.71.0
+      pump: 3.0.2
+      rc: 1.2.8
+      simple-get: 4.0.1
+      tar-fs: 2.1.1
+      tunnel-agent: 0.6.0
+    optional: true
 
   prelude-ls@1.2.1: {}
 
@@ -8585,6 +8965,12 @@ snapshots:
 
   pseudomap@1.0.2: {}
 
+  pump@3.0.2:
+    dependencies:
+      end-of-stream: 1.4.4
+      once: 1.4.0
+    optional: true
+
   punycode@2.3.1: {}
 
   pure-rand@6.1.0: {}
@@ -8605,6 +8991,14 @@ snapshots:
       http-errors: 2.0.0
       iconv-lite: 0.4.24
       unpipe: 1.0.0
+
+  rc@1.2.8:
+    dependencies:
+      deep-extend: 0.6.0
+      ini: 1.3.8
+      minimist: 1.2.8
+      strip-json-comments: 2.0.1
+    optional: true
 
   react-is@18.3.1: {}
 
@@ -8729,6 +9123,8 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
+  sax@1.4.1: {}
+
   semver-compare@1.0.0: {}
 
   semver@5.7.2: {}
@@ -8830,6 +9226,16 @@ snapshots:
   signal-exit@3.0.7: {}
 
   signal-exit@4.1.0: {}
+
+  simple-concat@1.0.1:
+    optional: true
+
+  simple-get@4.0.1:
+    dependencies:
+      decompress-response: 6.0.0
+      once: 1.4.0
+      simple-concat: 1.0.1
+    optional: true
 
   simple-swizzle@0.2.2:
     dependencies:
@@ -8940,6 +9346,9 @@ snapshots:
     dependencies:
       min-indent: 1.0.1
 
+  strip-json-comments@2.0.1:
+    optional: true
+
   strip-json-comments@3.1.1: {}
 
   supports-color@5.5.0:
@@ -8983,6 +9392,23 @@ snapshots:
       tslib: 2.7.0
 
   tapable@2.2.1: {}
+
+  tar-fs@2.1.1:
+    dependencies:
+      chownr: 1.1.4
+      mkdirp-classic: 0.5.3
+      pump: 3.0.2
+      tar-stream: 2.2.0
+    optional: true
+
+  tar-stream@2.2.0:
+    dependencies:
+      bl: 4.1.0
+      end-of-stream: 1.4.4
+      fs-constants: 1.0.0
+      inherits: 2.0.4
+      readable-stream: 3.6.2
+    optional: true
 
   term-size@2.2.1: {}
 
@@ -9128,6 +9554,11 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
+  tunnel-agent@0.6.0:
+    dependencies:
+      safe-buffer: 5.2.1
+    optional: true
+
   type-check@0.4.0:
     dependencies:
       prelude-ls: 1.2.1
@@ -9191,6 +9622,9 @@ snapshots:
       - supports-color
 
   typescript@5.6.3: {}
+
+  uglify-js@3.19.3:
+    optional: true
 
   unbox-primitive@1.0.2:
     dependencies:
@@ -9357,6 +9791,12 @@ snapshots:
     dependencies:
       imurmurhash: 0.1.4
       signal-exit: 4.1.0
+
+  ws@8.18.0: {}
+
+  xml-js@1.6.11:
+    dependencies:
+      sax: 1.4.1
 
   xmlbuilder@15.1.1: {}
 

@@ -5,17 +5,15 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 ### Table of Contents
 
 - [Local Deployment](#local-deployment)
+- [Remote Deployment](#remote-deployment)
 - [Usage](#usage)
   - [`ai-api`](#ai-api)
-    - [Deployment API](#deployment-api)
   - [`foundation-models`](#foundation-models)
-    - [Azure OpenAI Chat Completion](#azure-openai-chat-completion)
   - [`orchestration`](#orchestration)
-    - [Chat Completions with Templating](#chat-completions-with-templating)
 
 ## Local Deployment
 
-1. Build the application with `pnpm install`.
+1. Install dependencies using `pnpm install`.
 
 2. Login using `cf login -a API_ENDPOINT -o ORG -s SPACE`.
 
@@ -31,15 +29,32 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
    pnpm watch:hybrid
    ```
 
+## Remote Deployment
+
+> [!WARNING]  
+> All CDS services are marked with `@requires: 'any'` and are publicly accessible in order to simplify the deployment process.
+> Apply proper authentication mechanisms to avoid unauthorized access.
+
+1. Install dependencies using `pnpm install`.
+2. Transpile the CAP application using `pnpm build`.
+
+3. Modify `services` and `routes` values in `manifest.yml`.
+
+4. Login using `cf login -a API_ENDPOINT -o ORG -s SPACE`.
+
+5. Deploy the application using `cf push`.
+
 ## Usage
+
+For local deployment, set `SAMPLE_CAP_HOST` as `http://localhost:4004`. For remote deployment, set `SAMPLE_CAP_HOST` as the `route` value defined in `manifest.yaml`.
 
 ### `ai-api`
 
 #### Deployment API
 
 ```bash
-curl --request GET \
-  --url 'http://localhost:4004/odata/v4/ai-api/getDeployments'
+curl --request POST \
+  --url $SAMPLE_CAP_HOST/odata/v4/ai-api/getDeployments
 ```
 
 ### `foundation-models`
@@ -48,7 +63,7 @@ curl --request GET \
 
 ```bash
 curl --request POST \
-  --url 'http://localhost:4004/odata/v4/azure-openai/chatCompletion' \
+  --url $SAMPLE_CAP_HOST/odata/v4/azure-openai/chatCompletion \
   --header 'Content-Type: application/json' \
   --data '{
   "messages": [
@@ -66,7 +81,7 @@ curl --request POST \
 
 ```bash
 curl --request POST \
-  --url 'http://localhost:4004/odata/v4/orchestration/chatCompletion' \
+  --url $SAMPLE_CAP_HOST/odata/v4/orchestration/chatCompletion \
   --header 'Content-Type: application/json' \
   --data '{
   "template": [
