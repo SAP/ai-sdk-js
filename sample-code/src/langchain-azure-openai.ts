@@ -95,7 +95,7 @@ export async function invokeRagChain(): Promise<string> {
       Use the following pieces of retrieved context to answer the question.
       If you don't know the answer, just say that you don't know.
       Use ten sentences maximum and keep the answer concise.
-      Also prioritize code examples, e.g., showing the class instantiaion.
+      Also prioritize code examples, e.g., showing the class instantiation.
 
       Question: {question}
       Context: {context}
