@@ -5,7 +5,9 @@ import {
 import { createLogger } from '@sap-cloud-sdk/util';
 import type {
   AzureOpenAiChatCompletionResponse,
-  AzureOpenAiEmbeddingResponse
+  AzureOpenAiEmbeddingResponse,
+  AzureOpenAiChatCompletionStreamResponse,
+  AzureOpenAiChatCompletionStreamChunkResponse
 } from '@sap-ai-sdk/foundation-models';
 
 const logger = createLogger({
@@ -25,6 +27,55 @@ export async function chatCompletion(): Promise<AzureOpenAiChatCompletionRespons
   // Use getContent() to access the content responded by LLM.
   logger.info(response.getContent());
 
+  return response;
+}
+
+/**
+ * Ask Azure OpenAI model about the capital of France with streaming.
+ * @param controller - The abort controller.
+ * @returns The response from Azure OpenAI containing the response content.
+ */
+export async function chatCompletionStream(
+  controller: AbortController
+): Promise<
+  AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>
+> {
+  const response = await new AzureOpenAiChatClient('gpt-35-turbo').stream(
+    {
+      messages: [
+        {
+          role: 'user',
+          content: 'Give me a very long introduction of SAP Cloud SDK.'
+        }
+      ]
+    },
+    controller
+  );
+  return response;
+}
+
+/**
+ * Ask Azure OpenAI model about the capital of France with streaming.
+ * @param controller - The abort controller.
+ * @returns The response from Azure OpenAI containing the response content.
+ */
+export async function chatCompletionStreamMultipleChoices(
+  controller: AbortController
+): Promise<
+  AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>
+> {
+  const response = await new AzureOpenAiChatClient('gpt-35-turbo').stream(
+    {
+      messages: [
+        {
+          role: 'user',
+          content: 'Give me a very long introduction of SAP Cloud SDK.'
+        }
+      ],
+      n: 2
+    },
+    controller
+  );
   return response;
 }
 
