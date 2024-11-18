@@ -1,0 +1,571 @@
+openapi: 3.0.0
+info:
+  title: Document Grounding Retrieval API
+  version: 0.1.0
+  description: 'SAP AI Core - API Specification for document grounding retrieval'
+servers:
+  - url: '/api/v1/lm/document-grounding/retrieval'
+paths:
+  '/dataRepositories':
+    get:
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/count'
+      tags:
+        - 'Retrieval: DataRepository'
+      summary: List all DataRepository objects.
+      operationId: retrieval.v1.retrieval_endpoints.get_data_repositories
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataRepositories'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  '/dataRepositories/{repositoryId}':
+    get:
+      tags:
+        - 'Retrieval: DataRepository'
+      summary: List single DataRepository object.
+      operationId: retrieval.v1.retrieval_endpoints.get_data_repository
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+        - name: repositoryId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            title: Repositoryid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataRepository'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  '/search':
+    post:
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+      tags:
+        - 'Retrieval: Federated Search across Data Repositories'
+      summary: Retrieve relevant content given a query string.
+      operationId: retrieval.v1.retrieval_endpoints.search_data_repositories
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchInput'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResults'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+
+components:
+  schemas:
+    Chunk:
+      properties:
+        id:
+          type: string
+          title: Id
+        content:
+          type: string
+          title: Content
+        metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyValueListPair'
+          title: Metadata
+          default: []
+      type: object
+      required:
+        - id
+        - content
+      title: Chunk
+    DataRepositories:
+      properties:
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataRepository'
+          title: Datarepositories
+        count:
+          type: integer
+      type: object
+      required:
+        - resources
+      title: DataRepositories
+    DataRepository:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: Unique identifier of this DataRepository.
+        title:
+          type: string
+          title: Title
+        metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyValueListPair'
+          title: Metadata
+          description: Metadata attached to DataRepository. Useful to later limit search to a subset of DataRepositories.
+          default: []
+        type:
+          $ref: '#/components/schemas/DataRepositoryType'
+      type: object
+      required:
+        - id
+        - title
+        - type
+      title: DataRepository
+      description: DataRepository schema expected by Retrieval.
+    DataRepositorySearchResult:
+      properties:
+        dataRepository:
+          $ref: '#/components/schemas/DataRepositoryWithDocuments'
+      type: object
+      required:
+        - dataRepository
+      title: DataRepositorySearchResult
+    DataRepositoryType:
+      type: string
+      anyOf:
+        - enum:
+            - vector
+            - help.sap.com
+        - {}
+      title: DataRepositoryType
+    DataRepositoryWithDocuments:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: Unique identifier of this DataRepository.
+        title:
+          type: string
+          title: Title
+        metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyValueListPair'
+          title: Metadata
+          description: Metadata attached to DataRepository. Useful to later limit search to a subset of DataRepositories.
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+          title: Documents
+      type: object
+      required:
+        - id
+        - title
+        - documents
+      title: DataRepositoryWithDocuments
+      description: DataRepository schema returned by the Vector search endpoint
+    Document:
+      properties:
+        id:
+          type: string
+          title: Id
+        metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentKeyValueListPair'
+          title: Metadata
+          default: []
+        chunks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Chunk'
+          title: Chunks
+      type: object
+      required:
+        - id
+        - chunks
+      title: Document
+    DocumentKeyValueListPair:
+      properties:
+        key:
+          type: string
+          maxLength: 1024
+          title: Key
+        value:
+          type: array
+          items:
+            type: string
+            maxLength: 1024
+          title: Value
+        matchMode:
+          type: string
+          nullable: true
+          title: MatchMode
+          description: Default match mode for search filters
+          default: ANY
+          anyOf:
+            - enum:
+                - ANY
+                - ALL
+            - {}
+      type: object
+      required:
+        - key
+        - value
+      title: DocumentKeyValueListPair
+    HTTPValidationError:
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    KeyValueListPair:
+      properties:
+        key:
+          type: string
+          maxLength: 1024
+          title: Key
+        value:
+          type: array
+          items:
+            type: string
+            maxLength: 1024
+          title: Value
+      type: object
+      required:
+        - key
+        - value
+      title: KeyValueListPair
+    PerFilterSearchResult:
+      properties:
+        filterId:
+          type: string
+          title: Filterid
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataRepositorySearchResult'
+          title: Results
+          description: List of returned results.
+          default: []
+      type: object
+      required:
+        - filterId
+      title: PerFilterSearchResult
+    PerFilterSearchResultError:
+      properties:
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+        - message
+      title: PerFilterSearchResultError
+    PerFilterSearchResultWithError:
+      properties:
+        filterId:
+          type: string
+          title: Filterid
+        error:
+          $ref: '#/components/schemas/PerFilterSearchResultError'
+          description: Error message if any.
+          default:
+            message: Unknown Error Occurred
+      type: object
+      required:
+        - filterId
+      title: PerFilterSearchResultWithError
+    SearchConfiguration:
+      properties:
+        maxChunkCount:
+          nullable: true
+          type: integer
+          minimum: 0
+          exclusiveMinimum: true
+          title: Maxchunkcount
+          description: Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'.
+        maxDocumentCount:
+          nullable: true
+          type: integer
+          minimum: 0
+          exclusiveMinimum: true
+          title: Maxdocumentcount
+          description: "[Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned."
+      type: object
+      title: SearchConfiguration
+    SearchDocumentKeyValueListPair:
+      properties:
+        key:
+          type: string
+          maxLength: 1024
+          title: Key
+        value:
+          type: array
+          items:
+            type: string
+            maxLength: 1024
+          title: Value
+        selectMode:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchSelectOptionEnum'
+          title: Selectmode
+          description: Select mode for search filters
+      type: object
+      required:
+        - key
+        - value
+      title: SearchDocumentKeyValueListPair
+    SearchFilter:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Identifier of this SearchFilter - unique per request.
+        searchConfiguration:
+          type: object
+          nullable: true
+          $ref: '#/components/schemas/SearchConfiguration'
+          default: {}
+          minProperties: 0
+          maxProperties: 2
+        dataRepositories:
+          type: array
+          items:
+            type: string
+          title: Datarepositories
+          description: Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids.
+          default:
+            - '*'
+        dataRepositoryType:
+          type: string
+          $ref: '#/components/schemas/DataRepositoryType'
+          description: Only include DataRepositories with the given type.
+        dataRepositoryMetadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyValueListPair'
+          title: Datarepositorymetadata
+          description: Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=['*']
+          default: []
+        documentMetadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchDocumentKeyValueListPair'
+          title: Documentmetadata
+          description: Restrict documents considered during search to those annotated with the given metadata.
+          default: []
+        chunkMetadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyValueListPair'
+          title: Chunkmetadata
+          description: Restrict chunks considered during search to those with the given metadata.
+          default: []
+      type: object
+      required:
+        - id
+        - dataRepositoryType
+      title: SearchFilter
+      description: Limit scope of search to certain DataRepositories, Documents or Chunks.
+    SearchInput:
+      properties:
+        query:
+          type: string
+          minLength: 1
+          title: Query
+          description: Query string
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchFilter'
+          title: Filters
+      type: object
+      required:
+        - query
+        - filters
+      title: SearchInput
+    SearchResults:
+      properties:
+        results:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/PerFilterSearchResult'
+              - $ref: '#/components/schemas/PerFilterSearchResultWithError'
+          title: Results
+          description: List of returned results.
+      type: object
+      required:
+        - results
+      title: SearchResults
+    SearchSelectOptionEnum:
+      type: string
+      anyOf:
+        - enum:
+            - ignoreIfKeyAbsent
+        - {}
+      title: SearchSelectOptionEnum
+    ValidationError:
+      properties:
+        loc:
+          type: array
+          items:
+            type: string
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+        - loc
+        - msg
+        - type
+      title: ValidationError
+
+    ### ###  ########################  ### ###
+    ### ###  ###       Error      ###  ### ###
+    ### ###  ########################  ### ###
+
+    ApiError:
+      required:
+        - code
+        - message
+      type: object
+      properties:
+        code:
+          description: >-
+            Descriptive error code (not http status code).
+          type: string
+        message:
+          description: plaintext error description
+          type: string
+        requestId:
+          description: id of individual request
+          type: string
+        target:
+          description: url that has been called
+          type: string
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetailsErrorResponse'
+
+    DetailsErrorResponse:
+      type: object
+      properties:
+        code:
+          description: Descriptive error code (not http status code)
+          type: string
+        message:
+          description: Plaintext error description
+          type: string
+
+  ### ***  *****************************************************  *** ###
+  ### ***  ***              Start of responses               ***  *** ###
+  ### ***  *****************************************************  *** ###
+
+  responses:
+    BadRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/ApiError'
+      description: The specification of the resource was incorrect
+
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/ApiError'
+
+    UnprocessableEntity:
+      description: There are validation issues with the data.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/ApiError'
+
+  parameters:
+    top:
+      name: $top
+      description: Number of results to display
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+      example: 10
+
+    skip:
+      name: $skip
+      description: Number of results to be skipped from the ordered list of results
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+      example: 10
+
+    count:
+      name: $count
+      description: When the $count field is set to false, the response contains a count of the items present in the response. When the $count field is set to true, the response contains a count of all the items present on the server, and not just the ones in the response. When the $count field is not passed, it is false by default.
+      in: query
+      required: false
+      schema:
+        type: boolean
+      example: true
+
+tags:
+  - name: 'Retrieval: DataRepository'
+    description: Data Repositories are an umbrella concept that unifies collections on the Vector API with predefined content delivered with RAGe.
+  - name: 'Retrieval: Federated Search across Data Repositories'
+    description: Federated semantic search across multiple Data Repositories.

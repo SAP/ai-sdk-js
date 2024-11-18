@@ -1,0 +1,307 @@
+openapi: 3.0.0
+info:
+  title: Document Grounding Pipeline API
+  version: 0.1.0
+  description: 'SAP AI Core - API Specification for document grounding pipeline'
+servers:
+  - url: '/api/v1/lm/document-grounding'
+paths:
+  '/pipelines':
+    post:
+      operationId: pipeline.v1.pipeline_endpoints.create_pipeline
+      description: 'Create a pipeline'
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createPipeline'
+      responses:
+        '201':
+          description: Returns pipelineId on successful creation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pipelineId'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+    get:
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/count'
+      operationId: pipeline.v1.pipeline_endpoints.get_all_pipeline
+      description: 'Get all pipelines'
+      responses:
+        '200':
+          description: Returns all pipelines for the tenant.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getPipelines'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  '/pipelines/{pipelineId}':
+    get:
+      operationId: pipeline.v1.pipeline_endpoints.get_pipeline_by_id
+      description: 'Get details of a pipeline by pipeline id'
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+        - name: pipelineId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the pipeline to get.
+      responses:
+        '200':
+          description: Returns the pipeline for an pipelineId
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getPipeline'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+    delete:
+      operationId: pipeline.v1.pipeline_endpoints.delete_pipeline_by_id
+      description: 'Delete a pipeline by pipeline id'
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+        - name: pipelineId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the pipeline to delete.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  '/pipelines/{pipelineId}/status':
+    get:
+      operationId: pipeline.v1.pipeline_endpoints.get_pipeline_status
+      description: 'Get pipeline status by pipeline id'
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+        - name: pipelineId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the pipeline to get status.
+      responses:
+        '200':
+          description: Returns the pipeline status for an pipelineId.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getPipelineStatus'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+components:
+  schemas:
+    createPipeline:
+      type: object
+      required:
+        - type
+        - configuration
+      properties:
+        type:
+          type: string
+          example: MSSharePoint
+        configuration:
+          type: object
+          required:
+            - destination
+          properties:
+            destination:
+              type: string
+              example: destination-name
+            sharePoint:
+              type: object
+              properties:
+                site:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: sharepoint-site-name
+                    includePaths:
+                      type: array
+                      items:
+                        type: string
+                      example: ['/testFolder1', 'testFolder2']
+    getPipelines:
+      properties:
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/getPipeline'
+          title: GetPipelines
+        count:
+          type: integer
+      type: object
+      required:
+        - resources
+      title: GetPipelines
+    getPipeline:
+      type: object
+      properties:
+        id:
+          type: string
+          example: uuid
+        type:
+          type: string
+          example: MSSharePoint
+        configuration:
+          type: object
+          properties:
+            destination:
+              type: string
+              example: destination-name
+            sharePoint:
+              type: object
+              properties:
+                site:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: sharepoint-site-id
+                    name:
+                      type: string
+                      example: sharepoint-site-name
+                    includePaths:
+                      type: array
+                      items:
+                        type: string
+                      example: ['/testFolder1', 'testFolder2']
+    getPipelineStatus:
+      type: object
+      properties:
+        lastStarted:
+          type: string
+          format: date-time
+          example: '2024-02-15T12:45:00.000Z'
+    pipelineId:
+      type: object
+      properties:
+        pipelineId:
+          type: string
+          example: uuid
+    ### ###  ########################  ### ###
+    ### ###  ###       Error      ###  ### ###
+    ### ###  ########################  ### ###
+
+    ApiError:
+      required:
+        - code
+        - message
+      type: object
+      properties:
+        code:
+          description: >-
+            Descriptive error code (not http status code).
+          type: string
+        message:
+          description: plaintext error description
+          type: string
+        requestId:
+          description: id of individual request
+          type: string
+        target:
+          description: url that has been called
+          type: string
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetailsErrorResponse'
+
+    DetailsErrorResponse:
+      type: object
+      properties:
+        code:
+          description: Descriptive error code (not http status code)
+          type: string
+        message:
+          description: Plaintext error description
+          type: string
+
+  ### ***  *****************************************************  *** ###
+  ### ***  ***              Start of responses               ***  *** ###
+  ### ***  *****************************************************  *** ###
+
+  responses:
+    BadRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/ApiError'
+      description: The specification of the resource was incorrect
+
+    NotFound:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/ApiError'
+      description: The specification of the resource was incorrect
+
+  parameters:
+    top:
+      name: $top
+      description: Number of results to display
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+      example: 10
+
+    skip:
+      name: $skip
+      description: Number of results to be skipped from the ordered list of results
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+      example: 10
+
+    count:
+      name: $count
+      description: When the $count field is set to false, the response contains a count of the items present in the response. When the $count field is set to true, the response contains a count of all the items present on the server, and not just the ones in the response. When the $count field is not passed, it is false by default.
+      in: query
+      required: false
+      schema:
+        type: boolean
+      example: true

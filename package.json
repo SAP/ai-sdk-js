@@ -20,6 +20,7 @@
     "lint:fix": "pnpm -r run lint:fix",
     "generate": "pnpm -r run generate",
     "ai-api": "pnpm -F=@sap-ai-sdk/ai-api",
+    "rage": "pnpm -F=@sap-ai-sdk/rage",
     "foundation-models": "pnpm -F=@sap-ai-sdk/foundation-models",
     "orchestration": "pnpm -F=@sap-ai-sdk/orchestration",
     "core": "pnpm -F=@sap-ai-sdk/core",
