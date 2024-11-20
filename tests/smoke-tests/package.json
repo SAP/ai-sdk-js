@@ -25,12 +25,12 @@
     "@sap-ai-sdk/foundation-models": "canary",
     "@sap-ai-sdk/langchain": "canary",
     "@sap-ai-sdk/orchestration": "canary",
-    "@sap-cloud-sdk/util": "^3.22.2",
+    "@sap-cloud-sdk/util": "^3.23.0",
     "express": "^4.21.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
     "dotenv": "^16.4.5",
-    "dotenv-cli": "^7.4.2"
+    "dotenv-cli": "^7.4.3"
   }
 }
