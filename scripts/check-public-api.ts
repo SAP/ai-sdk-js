@@ -26,11 +26,12 @@ export const regexExportedIndex = /\{([\w,]+)\}from'\./g;
 export const regexExportedInternal = /\.\/([\w-]+)/g;
 
 function mockFileSystem(pathToPackage: string) {
-  const { pathToSource, pathToTsConfig, pathToNodeModules } =
+  const { pathToSource, pathToTsConfig, pathToNodeModules, pathToPackageJson } =
     paths(pathToPackage);
   mock({
     [pathToTsConfig]: mock.load(pathToTsConfig),
     [pathToSource]: mock.load(pathToSource),
+    [pathToPackageJson]: mock.load(pathToPackageJson),
     [pathRootNodeModules]: mock.load(pathRootNodeModules),
     [pathToNodeModules]: mock.load(pathToNodeModules),
     [pathToTsConfigRoot]: mock.load(pathToTsConfigRoot)
@@ -39,16 +40,22 @@ function mockFileSystem(pathToPackage: string) {
 
 function paths(pathToPackage: string): {
   pathToSource: string;
+  pathToPackageJson: string;
   pathToTsConfig: string;
   pathToNodeModules: string;
   pathCompiled: string;
 } {
   return {
-    pathToSource: join(pathToPackage, 'src'),
-    pathToTsConfig: join(pathToPackage, 'tsconfig.json'),
-    pathToNodeModules: join(pathToPackage, 'node_modules'),
+    pathToSource: getPathWithPosixSeparator(join(pathToPackage, 'src')),
+    pathToPackageJson: getPathWithPosixSeparator(join(pathToPackage, 'package.json')),
+    pathToTsConfig: getPathWithPosixSeparator(join(pathToPackage, 'tsconfig.json')),
+    pathToNodeModules: getPathWithPosixSeparator(join(pathToPackage, 'node_modules')),
     pathCompiled: 'dist'
   };
+}
+
+function getPathWithPosixSeparator(filePath: string): string {
+  return filePath.split(sep).join(posix.sep);
 }
 
 /**
@@ -91,7 +98,7 @@ function compareApisAndLog(
     if (
       !allExportedIndex.find(nameInIndex => exportedType.name === nameInIndex)
     ) {
-      if (exportedType.path.split(sep).join(posix.sep).match(schemaPathRegex)) {
+      if (getPathWithPosixSeparator(exportedType.path).match(schemaPathRegex)) {
         logger.warn(
           `The ${exportedType.type} "${exportedType.name}" in file: ${exportedType.path} is not exported in the index.ts.`
         );
