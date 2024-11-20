@@ -1,6 +1,6 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
-import { join, resolve, parse, basename, dirname, posix, sep } from 'path';
+import path, { join, resolve, parse, basename, dirname, posix, sep } from 'path';
 import { fileURLToPath } from 'url';
 import { promises, existsSync } from 'fs';
 import { glob } from 'glob';
@@ -54,8 +54,8 @@ function paths(pathToPackage: string): {
   };
 }
 
-function getPathWithPosixSeparator(path: string): string {
-  return path.split(sep).join(posix.sep);
+function getPathWithPosixSeparator(filePath: string): string {
+  return filePath.split(sep).join(posix.sep);
 }
 
 /**
