@@ -85,6 +85,8 @@ const chatClient = new AzureOpenAiChatClient({
 
 ### Azure OpenAI Chat Client
 
+#### Making Requests
+
 Use the `AzureOpenAiChatClient` to send chat completion requests to an OpenAI model deployed in SAP generative AI hub.
 
 The client sends request with Azure OpenAI API version `2024-06-01`.
@@ -136,7 +138,7 @@ const response = await chatClient.run({
 const responseContent = response.getContent();
 const tokenUsage = response.getTokenUsage();
 
-logger.info(
+console.log(
   `Total tokens consumed by the request: ${tokenUsage.total_tokens}\n` +
     `Input prompt tokens consumed: ${tokenUsage.prompt_tokens}\n` +
     `Output text completion tokens consumed: ${tokenUsage.completion_tokens}\n`
@@ -144,6 +146,82 @@ logger.info(
 ```
 
 Refer to `AzureOpenAiChatCompletionParameters` interface for other parameters that can be passed to the chat completion request.
+
+#### Streaming
+
+The `AzureOpenAiChatClient` supports streaming response for chat completion requests based on the [Server-sent events](https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events) standard.
+
+Use the `stream()` method to receive a stream of chunk responses from the model.
+After consuming the stream, call the helper methods to get the finish reason and token usage information respectively.
+
+```ts
+const chatClient = new AzureOpenAiChatClient('gpt-4o');
+const response = await chatClient.stream({
+  messages: [
+    {
+      role: 'user',
+      content: 'Give me a very long introduction of SAP Cloud SDK.'
+    }
+  ]
+});
+
+for await (const chunk of response.stream) {
+  console.log(JSON.stringify(chunk));
+}
+
+const finishReason = response.getFinishReason();
+const tokenUsage = response.getTokenUsage();
+
+console.log(`Finish reason: ${finishReason}\n`);
+console.log(`Token usage: ${JSON.stringify(tokenUsage)}\n`);
+```
+
+##### Streaming the Delta Content
+
+The client provides a helper method to extract delta content and stream string directly.
+
+```ts
+for await (const chunk of response.stream.toContentStream()) {
+  console.log(chunk); // will log the delta content
+}
+```
+
+Each chunk will be a defined string containing the delta content.
+Set `choiceIndex` parameter for `toContentStream()` method to stream a specific choice.
+
+##### Streaming with Abort Controller
+
+Streaming request can be aborted using the `AbortController` API.
+In case of an error, the SAP Cloud SDK for AI will automatically close the stream.
+Additionally, it can be aborted manually by calling the `stream()` method with an `AbortController` object.
+
+```ts
+const chatClient = new AzureOpenAiChatClient('gpt-4o');
+const controller = new AbortController();
+const response = await new AzureOpenAiChatClient('gpt-35-turbo').stream(
+  {
+    messages: [
+      {
+        role: 'user',
+        content: 'Give me a very long introduction of SAP Cloud SDK.'
+      }
+    ]
+  },
+  controller
+);
+
+// Abort the streaming request after one second
+setTimeout(() => {
+  controller.abort();
+}, 1000);
+
+for await (const chunk of response.stream) {
+  console.log(JSON.stringify(chunk));
+}
+```
+
+In this example, streaming request will be aborted after one second.
+Abort controller can be useful, e.g., when end-user wants to stop the stream or refreshes the page.
 
 ### Azure OpenAI Embedding Client
 
