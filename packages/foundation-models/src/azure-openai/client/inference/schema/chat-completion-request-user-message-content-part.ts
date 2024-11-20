@@ -6,10 +6,8 @@
 import type { AzureOpenAiChatCompletionRequestMessageContentPartText } from './chat-completion-request-message-content-part-text.js';
 import type { AzureOpenAiChatCompletionRequestMessageContentPartImage } from './chat-completion-request-message-content-part-image.js';
 /**
- * Representation of the 'AzureOpenAiChatCompletionRequestMessageContentPart' schema.
+ * Representation of the 'AzureOpenAiChatCompletionRequestUserMessageContentPart' schema.
  */
-export type AzureOpenAiChatCompletionRequestMessageContentPart =
-  | ({ type: 'text' } & AzureOpenAiChatCompletionRequestMessageContentPartText)
-  | ({
-      type: 'image_url';
-    } & AzureOpenAiChatCompletionRequestMessageContentPartImage);
+export type AzureOpenAiChatCompletionRequestUserMessageContentPart =
+  | AzureOpenAiChatCompletionRequestMessageContentPartText
+  | AzureOpenAiChatCompletionRequestMessageContentPartImage;

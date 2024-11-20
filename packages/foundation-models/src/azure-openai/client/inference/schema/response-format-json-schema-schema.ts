@@ -5,6 +5,6 @@
  */
 
 /**
- * The object type.
+ * The schema for the response format, described as a JSON Schema object.
  */
-export type AzureOpenAiChatCompletionResponseObject = 'chat.completion';
+export type AzureOpenAiResponseFormatJsonSchemaSchema = Record<string, any>;

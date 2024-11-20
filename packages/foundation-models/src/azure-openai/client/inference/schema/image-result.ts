@@ -15,7 +15,7 @@ export type AzureOpenAiImageResult = {
    */
   url?: string;
   /**
-   * The base64 encoded image.
+   * The base64 encoded image
    */
   b64_json?: string;
   content_filter_results?: AzureOpenAiDalleContentFilterResults;

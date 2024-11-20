@@ -5,7 +5,7 @@
  */
 
 /**
- * Specifies the detail level of the image.
- * Default: "auto".
+ * Whether to enable parallel function calling during tool use.
+ * Default: true.
  */
-export type AzureOpenAiImageDetailLevel = 'auto' | 'low' | 'high';
+export type AzureOpenAiParallelToolCalls = boolean;

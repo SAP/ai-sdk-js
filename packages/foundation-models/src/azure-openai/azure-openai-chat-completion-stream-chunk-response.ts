@@ -1,11 +1,15 @@
-import type { AzureOpenAiCompletionUsage } from './client/inference/schema/index.js';
+import type {
+  AzureOpenAiCompletionUsage,
+  AzureOpenAiCreateChatCompletionStreamResponse
+} from './client/inference/schema/index.js';
 
 /**
  * Azure OpenAI chat completion stream chunk response.
  */
 export class AzureOpenAiChatCompletionStreamChunkResponse {
-  constructor(public readonly data: any) {
-    // TODO: Change `any` to `CreateChatCompletionStreamResponse` once the preview spec becomes stable.
+  constructor(
+    public readonly data: AzureOpenAiCreateChatCompletionStreamResponse
+  ) {
     this.data = data;
   }
 
@@ -22,9 +26,17 @@ export class AzureOpenAiChatCompletionStreamChunkResponse {
    * @param choiceIndex - The index of the choice to parse.
    * @returns The finish reason.
    */
-  getFinishReason(choiceIndex = 0): string | undefined {
-    return this.data.choices.find((c: any) => c.index === choiceIndex)
-      ?.finish_reason;
+  getFinishReason(
+    choiceIndex = 0
+  ):
+    | 'stop'
+    | 'length'
+    | 'tool_calls'
+    | 'content_filter'
+    | 'function_call'
+    | null
+    | undefined {
+    return this.data.choices.find(c => c.index === choiceIndex)?.finish_reason;
   }
 
   /**
@@ -33,7 +45,6 @@ export class AzureOpenAiChatCompletionStreamChunkResponse {
    * @returns The message delta content.
    */
   getDeltaContent(choiceIndex = 0): string | undefined | null {
-    return this.data.choices.find((c: any) => c.index === choiceIndex)?.delta
-      .content;
+    return this.data.choices.find(c => c.index === choiceIndex)?.delta.content;
   }
 }

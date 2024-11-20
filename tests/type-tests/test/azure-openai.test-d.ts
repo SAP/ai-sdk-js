@@ -46,7 +46,14 @@ expectType<string | undefined | null>(
   ).getContent()
 );
 
-expectType<string | undefined>(
+expectType<
+  | 'stop'
+  | 'length'
+  | 'tool_calls'
+  | 'content_filter'
+  | 'function_call'
+  | undefined
+>(
   (
     await new AzureOpenAiChatClient('gpt-4').run({
       messages: [{ role: 'user', content: 'test prompt' }]
@@ -166,4 +173,22 @@ expectType<AzureOpenAiChatCompletionStream<string>>(
       messages: [{ role: 'user', content: 'test prompt' }]
     })
   ).stream.toContentStream()
+);
+
+expectType<
+  AzureOpenAiChatCompletionStream<
+    | 'stop'
+    | 'length'
+    | 'tool_calls'
+    | 'content_filter'
+    | 'function_call'
+    | null
+    | undefined
+  >
+>(
+  (
+    await new AzureOpenAiChatClient('gpt-4').stream({
+      messages: [{ role: 'user', content: 'test prompt' }]
+    })
+  ).getFinishReason()
 );

@@ -8,8 +8,10 @@
  * Representation of the 'AzureOpenAiChatCompletionRequestMessageContentPartText' schema.
  */
 export type AzureOpenAiChatCompletionRequestMessageContentPartText = {
-  type: string;
-} & {
+  /**
+   * The type of the content part.
+   */
+  type: 'text';
   /**
    * The text content.
    */
