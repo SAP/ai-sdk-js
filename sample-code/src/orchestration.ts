@@ -217,7 +217,13 @@ export async function orchestrationGrounding(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
     llm,
     templating: {
-      template: [{ role: 'user', content: 'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}' }]
+      template: [
+        {
+          role: 'user',
+          content:
+            'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
+        }
+      ]
     },
     grounding: {
       type: 'document_grounding_service',
@@ -237,6 +243,8 @@ export async function orchestrationGrounding(): Promise<OrchestrationResponse> {
   });
 
   return orchestrationClient.chatCompletion({
-    inputParams: { groundingRequest: 'What is Generative AI Hub in SAP AI Core?' }
+    inputParams: {
+      groundingRequest: 'What is Generative AI Hub in SAP AI Core?'
+    }
   });
 }
