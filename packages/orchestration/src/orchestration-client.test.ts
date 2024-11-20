@@ -231,7 +231,13 @@ describe('orchestration service client', () => {
         model_params: {}
       },
       templating: {
-        template: [{ role: 'user', content: "UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}" }],
+        template: [
+          {
+            role: 'user',
+            content:
+              'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
+          }
+        ],
         defaults: {}
       },
       grounding: {
@@ -241,7 +247,7 @@ describe('orchestration service client', () => {
             {
               id: 'filter1',
               data_repositories: ['*'],
-              search_config: { },
+              search_config: {},
               data_repository_type: 'help.sap.com'
             }
           ],
@@ -251,7 +257,9 @@ describe('orchestration service client', () => {
       }
     };
     const prompt = {
-      inputParams: { groundingRequest: "What is Generative AI Hub in SAP AI Core?" }
+      inputParams: {
+        groundingRequest: 'What is Generative AI Hub in SAP AI Core?'
+      }
     };
     const mockResponse = await parseMockResponse<CompletionPostResponse>(
       'orchestration',
