@@ -1,6 +1,6 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
-import path, { join, resolve, parse, basename, dirname, posix, sep } from 'path';
+import { join, resolve, parse, basename, dirname, posix, sep } from 'path';
 import { fileURLToPath } from 'url';
 import { promises, existsSync } from 'fs';
 import { glob } from 'glob';
