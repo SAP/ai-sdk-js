@@ -289,38 +289,38 @@ Grounding enables integrating external, contextually relevant, domain-specific, 
 
 ```ts
 const orchestrationClient = new OrchestrationClient({
-      llm: {
-        model_name: 'gpt-35-turbo',
-        model_params: {}
-      },
-      templating: {
-        template: [
-          {
-            role: 'user',
-            content:
-              'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
-          }
-        ],
-        defaults: {}
-      },
-      grounding: {
-        type: 'document_grounding_service',
-        config: {
-          filters: [
-            {
-              id: 'filter1',
-              data_repositories: ['*'],
-              search_config: {},
-              data_repository_type: 'help.sap.com'
-            }
-          ],
-          input_params: ['groundingRequest'],
-          output_param: 'groundingOutput'
-        }
+  llm: {
+    model_name: 'gpt-35-turbo',
+    model_params: {}
+  },
+  templating: {
+    template: [
+      {
+        role: 'user',
+        content:
+          'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
       }
-    });
+    ],
+    defaults: {}
+  },
+  grounding: {
+    type: 'document_grounding_service',
+    config: {
+      filters: [
+        {
+          id: 'filter1',
+          data_repositories: ['*'],
+          search_config: {},
+          data_repository_type: 'help.sap.com'
+        }
+      ],
+      input_params: ['groundingRequest'],
+      output_param: 'groundingOutput'
+    }
+  }
+});
 
-  const response = await orchestrationClient.chatCompletion({
+const response = await orchestrationClient.chatCompletion({
   inputParams: { groundingRequest: 'What is Generative AI Hub in SAP AI Core?' }
 });
 return response.getContent();
