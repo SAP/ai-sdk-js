@@ -46,7 +46,7 @@ $ npm install @sap-ai-sdk/orchestration
 
 ## Orchestration Service
 
-The orchestration service provides essential features like [templating](#templating), [content filtering](#content-filtering), [grounding](#grounding), etc. which are often required in business AI scenarios.
+The orchestration service provides essential features like [templating](#templating), [content filtering](#content-filtering), [grounding](#grounding), etc which are often required in business AI scenarios.
 
 Find more details about orchestration workflow [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration-workflow).
 
