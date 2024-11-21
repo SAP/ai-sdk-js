@@ -2,4 +2,4 @@
 '@sap-ai-sdk/orchestration': minor
 ---
 
-[New Functionality] Add support for the grounding capabilities of the orchestration service.
+[New Functionality] Add support for grounding capabilities of the orchestration service.
