@@ -15,6 +15,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
   - [Templating](#templating)
   - [Content Filtering](#content-filtering)
   - [Data Masking](#data-masking)
+  - [Grounding](#grounding)
   - [Using Resource Groups](#using-resource-groups)
   - [Custom Request Configuration](#custom-request-configuration)
 - [Local Testing](#local-testing)
@@ -45,10 +46,7 @@ $ npm install @sap-ai-sdk/orchestration
 
 ## Orchestration Service
 
-The orchestration service provides essential features like templating and content filtering, which are often required in business AI scenarios:
-
-- **Templating** allows composing prompts with placeholders that can be filled during a chat completion request.
-- **Content filtering** lets you restrict the content sent to or received from a generative AI model.
+The orchestration service provides essential features like [templating](#templating), [content filtering](#content-filtering), [grounding](#grounding), etc. which are often required in business AI scenarios.
 
 Find more details about orchestration workflow [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration-workflow).
 
@@ -281,6 +279,49 @@ const orchestrationClient = new OrchestrationClient({
 
 const response = await orchestrationClient.chatCompletion({
   inputParams: { user: 'Alice Anderson', email: 'alice.anderson@sap.com' }
+});
+return response.getContent();
+```
+
+### Grounding
+
+Grounding enables integrating external, contextually relevant, domain-specific, or real-time data into AI processes.
+
+```ts
+const orchestrationClient = new OrchestrationClient({
+      llm: {
+        model_name: 'gpt-35-turbo',
+        model_params: {}
+      },
+      templating: {
+        template: [
+          {
+            role: 'user',
+            content:
+              'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
+          }
+        ],
+        defaults: {}
+      },
+      grounding: {
+        type: 'document_grounding_service',
+        config: {
+          filters: [
+            {
+              id: 'filter1',
+              data_repositories: ['*'],
+              search_config: {},
+              data_repository_type: 'help.sap.com'
+            }
+          ],
+          input_params: ['groundingRequest'],
+          output_param: 'groundingOutput'
+        }
+      }
+    });
+
+  const response = await orchestrationClient.chatCompletion({
+  inputParams: { groundingRequest: 'What is Generative AI Hub in SAP AI Core?' }
 });
 return response.getContent();
 ```
