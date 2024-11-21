@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
       - name: REUSE Compliance Check
-        uses: fsfe/reuse-action@v4
+        uses: fsfe/reuse-action@v5
       - run: pnpm lint
       - name: Check CommonJS compatibility
         run: pnpm compile:cjs

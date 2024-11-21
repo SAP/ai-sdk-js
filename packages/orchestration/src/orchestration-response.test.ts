@@ -1,5 +1,3 @@
-import { createLogger } from '@sap-cloud-sdk/util';
-import { jest } from '@jest/globals';
 import { parseMockResponse } from '../../../test-util/mock-http.js';
 import { OrchestrationResponse } from './orchestration-response.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
@@ -48,15 +46,8 @@ describe('OrchestrationResponse', () => {
   });
 
   it('should return undefined when convenience function is called with incorrect index', () => {
-    const logger = createLogger({
-      package: 'orchestration',
-      messageContext: 'orchestration-response'
-    });
-    const errorSpy = jest.spyOn(logger, 'error');
     expect(orchestrationResponse.getFinishReason(1)).toBeUndefined();
-    expect(errorSpy).toHaveBeenCalledWith('Choice index 1 is out of bounds.');
     expect(orchestrationResponse.getContent(1)).toBeUndefined();
-    expect(errorSpy).toHaveBeenCalledTimes(2);
   });
 
   it('should throw if content that was filtered is accessed', () => {

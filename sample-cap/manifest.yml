@@ -1,0 +1,11 @@
+applications:
+  - name: ai-sdk-js-sample-cap
+    path: ./dist/srv
+    memory: 256M
+    buildpacks:
+      - nodejs_buildpack
+    services:
+      - default_aicore
+      - default_xsuaa
+    routes:
+      - route: 'ai-sdk-js-sample-cap.cfapps.eu12-001.hana.ondemand.com'
