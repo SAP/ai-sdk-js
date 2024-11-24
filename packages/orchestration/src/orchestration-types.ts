@@ -2,6 +2,7 @@ import type { ChatModel } from './model-types.js';
 import type {
   ChatMessages,
   FilteringModuleConfig,
+  GroundingModuleConfig,
   MaskingModuleConfig,
   LlmModuleConfig as OriginalLlmModuleConfig,
   TemplatingModuleConfig
@@ -50,4 +51,8 @@ export interface OrchestrationModuleConfig {
    * Masking module configuration.
    */
   masking?: MaskingModuleConfig;
+  /**
+   * Grounding module configuraton.
+   */
+  grounding?: GroundingModuleConfig;
 }
