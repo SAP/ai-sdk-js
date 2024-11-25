@@ -32,8 +32,13 @@ jobs:
       - run: pnpm lint
       - name: Check CommonJS compatibility
         run: pnpm compile:cjs
+      - name: Set NODE_PATH
+        run: echo "NODE_PATH=$(pwd)/node_modules" >> $GITHUB_ENV
       - name: Check public API
-        run: pnpm check:public-api
+        uses: sap/cloud-sdk-js/.github/actions/check-public-api@main
+        with:
+          force_internal_exports: 'false'
+          ignored_path_pattern: '.*?/client/[^/]+/schema'
       - name: Check dependencies
         run: pnpm check:deps
       - name: License Check

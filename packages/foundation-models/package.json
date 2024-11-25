@@ -25,7 +25,6 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint \"**/*.ts\" && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
-    "check:public-api": "node --loader ts-node/esm ../../scripts/check-public-api-cli.ts",
     "generate": "pnpm generate:azure-openai",
     "generate:azure-openai": "openapi-generator --generateESM --clearOutputDir -i ./src/azure-openai/spec/inference.yaml -o ./src/azure-openai/client --schemaPrefix AzureOpenAi",
     "postgenerate:azure-openai": "rm ./src/azure-openai/client/inference/*.ts && pnpm lint:fix"
