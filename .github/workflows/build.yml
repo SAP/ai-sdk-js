@@ -38,7 +38,7 @@ jobs:
         uses: sap/cloud-sdk-js/.github/actions/check-public-api@refactor-gh-action-public-api
         with:
           force_internal_exports: 'false'
-          ignored_path_patterns: '.*?/client/[^/]+/schema'
+          ignored_path_pattern: '.*?/client/[^/]+/schema'
       - name: Check dependencies
         run: pnpm check:deps
       - name: License Check
