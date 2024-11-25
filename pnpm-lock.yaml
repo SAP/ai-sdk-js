@@ -170,8 +170,8 @@ importers:
         specifier: workspace:^
         version: link:../core
       '@sap-cloud-sdk/connectivity':
-        specifier: ^3.22.2
-        version: 3.22.2
+        specifier: ^3.23.0
+        version: 3.23.0
 
   sample-cap:
     dependencies:
