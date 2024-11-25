@@ -12,6 +12,7 @@ export type CompletionPostRequest = {
   orchestration_config: OrchestrationConfig;
   /**
    * @example {
+   *   "groundingInput": "What is SAP Joule?",
    *   "inputContext": "optimizing supply chain management"
    * }
    */

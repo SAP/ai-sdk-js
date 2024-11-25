@@ -11,7 +11,7 @@ import {
 } from './orchestration-client.js';
 import { buildAzureContentFilter } from './orchestration-filter-utility.js';
 import { OrchestrationResponse } from './orchestration-response.js';
-import type { CompletionPostResponse } from './client/api/schema';
+import type { CompletionPostResponse } from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
   Prompt
@@ -204,6 +204,66 @@ describe('orchestration service client', () => {
     const mockResponse = await parseMockResponse<CompletionPostResponse>(
       'orchestration',
       'orchestration-chat-completion-message-history.json'
+    );
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, prompt)
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    const response = await new OrchestrationClient(config).chatCompletion(
+      prompt
+    );
+    expect(response.data).toEqual(mockResponse);
+  });
+
+  it('calls chatCompletion with grounding configuration', async () => {
+    const config: OrchestrationModuleConfig = {
+      llm: {
+        model_name: 'gpt-35-turbo',
+        model_params: {}
+      },
+      templating: {
+        template: [
+          {
+            role: 'user',
+            content:
+              'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
+          }
+        ],
+        defaults: {}
+      },
+      grounding: {
+        type: 'document_grounding_service',
+        config: {
+          filters: [
+            {
+              id: 'filter1',
+              data_repositories: ['*'],
+              search_config: {},
+              data_repository_type: 'help.sap.com'
+            }
+          ],
+          input_params: ['groundingRequest'],
+          output_param: 'groundingOutput'
+        }
+      }
+    };
+    const prompt = {
+      inputParams: {
+        groundingRequest: 'What is Generative AI Hub in SAP AI Core?'
+      }
+    };
+    const mockResponse = await parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'orchestration-chat-completion-grounding.json'
     );
     mockInference(
       {
