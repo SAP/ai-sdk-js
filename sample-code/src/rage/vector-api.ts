@@ -1,29 +1,68 @@
 import { VectorApi } from '@sap-ai-sdk/rage';
+import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 /**
  * Create a new collection.
- * @param resourceGroup - The resource group name.
  * @param title - The title of the collection to create.
+ * @param resourceGroup - The resource group name.
  * @returns The response of the create collection request.
  */
 export async function createCollection(
-  resourceGroup: string,
-  title: string
+  title: string,
+  resourceGroup: string
 ): Promise<any> {
-  const response =
-    VectorApi.CollectionsApi.vectorV1VectorEndpointsCreateCollection(
+  const response: HttpResponse =
+    await VectorApi.CollectionsApi.vectorV1VectorEndpointsCreateCollection(
       {
         title,
-        embeddingConfig: {
-          modelName: 'text-embedding-ada-002-v2'
-        },
-        metadata: [
-          {
-            key: 'purpose',
-            value: ['grounding test']
-          }
-        ]
+        embeddingConfig: {},
+        metadata: []
       },
+      { 'AI-Resource-Group': resourceGroup }
+    ).executeRaw();
+  if (response.headers) {
+    const location: string = response.headers['location'];
+    const match = location.match(/collections\/(.*?)\/creationStatus/);
+    const id = match ? match[1] : null;
+    if (id) {
+      return { id };
+    }
+    throw new Error(
+      `Collection could not be created, location header contains
+      ${location}`
+    );
+  }
+}
+
+/**
+ * Delete a collection.
+ * @param collectionId - The collection ID to delete.
+ * @param resourceGroup - The resource group name.
+ * @returns The response of the delete collection request.
+ */
+export async function deleteCollection(
+  collectionId: string,
+  resourceGroup: string
+): Promise<any> {
+  const response =
+    await VectorApi.CollectionsApi.vectorV1VectorEndpointsDeleteCollection(
+      collectionId,
       { 'AI-Resource-Group': resourceGroup }
     ).execute();
   return response;
+}
+
+/**
+ * Fetch a collection by ID.
+ * @param collectionId - The collection ID to fetch.
+ * @param resourceGroup - The resource group name.
+ * @returns The fetched collection.
+ */
+export async function getCollection(
+  collectionId: string,
+  resourceGroup: string
+): Promise<VectorApi.Collection> {
+  return VectorApi.CollectionsApi.vectorV1VectorEndpointsGetCollectionById(
+    collectionId,
+    { 'AI-Resource-Group': resourceGroup }
+  ).execute();
 }

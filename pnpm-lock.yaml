@@ -242,6 +242,9 @@ importers:
       '@sap-ai-sdk/orchestration':
         specifier: workspace:^
         version: link:../../packages/orchestration
+      '@sap-ai-sdk/rage':
+        specifier: workspace:^
+        version: link:../../packages/rage
       '@sap-ai-sdk/sample-code':
         specifier: workspace:^
         version: link:../../sample-code

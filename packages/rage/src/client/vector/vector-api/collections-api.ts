@@ -27,10 +27,14 @@ export const CollectionsApi = {
     queryParameters: { $top?: number; $skip?: number; $count?: boolean },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<CollectionsListResponse>('get', '/collections', {
-      queryParameters,
-      headerParameters
-    }),
+    new OpenApiRequestBuilder<CollectionsListResponse>(
+      'get',
+      '/lm/document-grounding/vector/collections',
+      {
+        queryParameters,
+        headerParameters
+      }
+    ),
   /**
    * Creates a collection. This operation is asynchronous. Poll the collection resource and check the status field to understand creation status.
    * @param body - Request body.
@@ -41,10 +45,14 @@ export const CollectionsApi = {
     body: CollectionRequest,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<any>('post', '/collections', {
-      body,
-      headerParameters
-    }),
+    new OpenApiRequestBuilder<any>(
+      'post',
+      '/lm/document-grounding/vector/collections',
+      {
+        body,
+        headerParameters
+      }
+    ),
   /**
    * Gets a specific collection by ID.
    * @param collectionId - Path parameter.
@@ -57,7 +65,7 @@ export const CollectionsApi = {
   ) =>
     new OpenApiRequestBuilder<Collection>(
       'get',
-      '/collections/{collectionId}',
+      '/lm/document-grounding/vector/collections/{collectionId}',
       {
         pathParameters: { collectionId },
         headerParameters
@@ -73,10 +81,14 @@ export const CollectionsApi = {
     collectionId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<any>('delete', '/collections/{collectionId}', {
-      pathParameters: { collectionId },
-      headerParameters
-    }),
+    new OpenApiRequestBuilder<any>(
+      'delete',
+      '/lm/document-grounding/vector/collections/{collectionId}',
+      {
+        pathParameters: { collectionId },
+        headerParameters
+      }
+    ),
   /**
    * Gets a specific collection status from monitor by ID.
    * @param id - Path parameter.
@@ -89,7 +101,7 @@ export const CollectionsApi = {
   ) =>
     new OpenApiRequestBuilder<
       CollectionCreatedResponse | CollectionPendingResponse
-    >('get', '/collections/{id}/creationStatus', {
+    >('get', '/lm/document-grounding/vector/collections/{id}/creationStatus', {
       pathParameters: { id },
       headerParameters
     }),
@@ -105,7 +117,7 @@ export const CollectionsApi = {
   ) =>
     new OpenApiRequestBuilder<
       CollectionDeletedResponse | CollectionPendingResponse
-    >('get', '/collections/{id}/deletionStatus', {
+    >('get', '/lm/document-grounding/vector/collections/{id}/deletionStatus', {
       pathParameters: { id },
       headerParameters
     })

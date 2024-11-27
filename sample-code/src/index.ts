@@ -30,6 +30,8 @@ export {
   // eslint-disable-next-line import/no-internal-modules
 } from './ai-api/scenario-api.js';
 export {
-  createCollection
+  createCollection,
+  getCollection,
+  deleteCollection
   // eslint-disable-next-line import/no-internal-modules
 } from './rage/vector-api.js';
