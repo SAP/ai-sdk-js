@@ -17,6 +17,7 @@ import type {
  * This API is part of the 'vector-api' service.
  */
 export const CollectionsApi = {
+  //Todo: Remove the explicitly added path parameter from the request builder
   /**
    * Gets a list of collections.
    * @param queryParameters - Object containing the following keys: $top, $skip, $count.

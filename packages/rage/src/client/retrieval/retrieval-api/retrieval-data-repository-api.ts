@@ -10,6 +10,7 @@ import type { DataRepositories, DataRepository } from './schema/index.js';
  * This API is part of the 'retrieval-api' service.
  */
 export const RetrievalDataRepositoryApi = {
+  //Todo: Remove the explicitly added path parameter from the request builder
   /**
    * Create a request builder for execution of get requests to the '/dataRepositories' endpoint.
    * @param queryParameters - Object containing the following keys: $top, $skip, $count.

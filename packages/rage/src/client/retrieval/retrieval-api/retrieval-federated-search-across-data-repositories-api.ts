@@ -10,6 +10,7 @@ import type { SearchInput, SearchResults } from './schema/index.js';
  * This API is part of the 'retrieval-api' service.
  */
 export const RetrievalFederatedSearchAcrossDataRepositoriesApi = {
+  //Todo: Remove the explicitly added path parameter from the request builder
   /**
    * Create a request builder for execution of post requests to the '/search' endpoint.
    * @param body - Request body.

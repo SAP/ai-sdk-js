@@ -16,6 +16,7 @@ import type {
  * This API is part of the 'vector-api' service.
  */
 export const DocumentsApi = {
+  //Todo: Remove the explicitly added path parameter from the request builder
   /**
    * Gets a specific document in a collection by ID.
    * @param collectionId - Path parameter.
