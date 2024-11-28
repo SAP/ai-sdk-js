@@ -7,5 +7,6 @@ export {
   AzureOpenAiEmbeddingModel,
   GcpVertexAiChatModel,
   AwsBedrockChatModel,
+  AwsBedrockEmbeddingModel,
   AiCoreOpenSourceChatModel
 } from './model-types.js';
