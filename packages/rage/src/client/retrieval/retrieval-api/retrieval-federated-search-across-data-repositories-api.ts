@@ -20,8 +20,12 @@ export const RetrievalFederatedSearchAcrossDataRepositoriesApi = {
     body: SearchInput,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<SearchResults>('post', '/search', {
-      body,
-      headerParameters
-    })
+    new OpenApiRequestBuilder<SearchResults>(
+      'post',
+      'lm/document-grounding/retrieval/search',
+      {
+        body,
+        headerParameters
+      }
+    )
 };

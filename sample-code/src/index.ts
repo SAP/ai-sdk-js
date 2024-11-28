@@ -36,3 +36,7 @@ export {
   createDocument
   // eslint-disable-next-line import/no-internal-modules
 } from './rage/vector-api.js';
+export {
+  searchCollection
+  // eslint-disable-next-line import/no-internal-modules
+} from './rage/retrieval-api.js';

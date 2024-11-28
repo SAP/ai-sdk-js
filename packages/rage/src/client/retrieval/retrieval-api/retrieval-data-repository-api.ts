@@ -20,10 +20,14 @@ export const RetrievalDataRepositoryApi = {
     queryParameters: { $top?: number; $skip?: number; $count?: boolean },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<DataRepositories>('get', '/dataRepositories', {
-      queryParameters,
-      headerParameters
-    }),
+    new OpenApiRequestBuilder<DataRepositories>(
+      'get',
+      'lm/document-grounding/retrieval/dataRepositories',
+      {
+        queryParameters,
+        headerParameters
+      }
+    ),
   /**
    * Create a request builder for execution of get requests to the '/dataRepositories/{repositoryId}' endpoint.
    * @param repositoryId - Path parameter.
@@ -36,7 +40,7 @@ export const RetrievalDataRepositoryApi = {
   ) =>
     new OpenApiRequestBuilder<DataRepository>(
       'get',
-      '/dataRepositories/{repositoryId}',
+      'lm/document-grounding/retrieval/dataRepositories/{repositoryId}',
       {
         pathParameters: { repositoryId },
         headerParameters
