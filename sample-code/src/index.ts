@@ -5,6 +5,11 @@ export {
   // eslint-disable-next-line import/no-internal-modules
 } from './foundation-models/azure-openai.js';
 export {
+  chatCompletionAnthropic,
+  computeEmbeddingAnthropic
+  // eslint-disable-next-line import/no-internal-modules
+} from './foundation-models/aws-anthropic.js';
+export {
   orchestrationChatCompletion,
   orchestrationTemplating,
   orchestrationInputFiltering,

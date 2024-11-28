@@ -63,3 +63,18 @@ export type {
   AzureOpenAiCompletionUsage,
   AzureOpenAiChatCompletionResponseObject
 } from './azure-openai/client/inference/schema/index.js';
+
+export {
+  AwsAnthropicChatClient,
+  AwsAnthropicChatCompletionResponse,
+  AwsAnthropicEmbeddingClient,
+  AwsAnthropicEmbeddingParameters,
+  AwsAnthropicEmbeddingResponse
+} from './aws-anthropic/index.js';
+
+export type {
+  AwsAnthropicChatModel,
+  AwsAnthropicEmbeddingModel,
+  AwsAnthropicEmbeddingOutput,
+  AwsAnthropicMessageCreationRequest
+} from './aws-anthropic/index.js';
