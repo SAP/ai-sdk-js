@@ -1,5 +1,5 @@
 import { RetrievalFederatedSearchAcrossDataRepositoriesApi } from '@sap-ai-sdk/rage';
-import type { RetrievalSearchResults } from '@sap-ai-sdk/rage';
+import type { SearchResults } from '@sap-ai-sdk/rage';
 
 /**
  * Search for documents in a collection.
@@ -12,7 +12,7 @@ export async function searchCollection(
   collectionId: string,
   query: string,
   resourceGroup: string
-): Promise<RetrievalSearchResults> {
+): Promise<SearchResults> {
   return RetrievalFederatedSearchAcrossDataRepositoriesApi.retrievalV1RetrievalEndpointsSearchDataRepositories(
     {
       query,

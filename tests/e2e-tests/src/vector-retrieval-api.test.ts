@@ -6,7 +6,7 @@ import {
   deleteCollection
 } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
-import type { Collection, RetrievalSearchResults } from '@sap-ai-sdk/rage';
+import type { Collection, SearchResults } from '@sap-ai-sdk/rage';
 
 loadEnv();
 
@@ -28,7 +28,7 @@ describe('VectorApi and RetrievalApi', () => {
       documentContent
     );
     expect(document).toBeDefined();
-    const searchResults: RetrievalSearchResults = await searchCollection(
+    const searchResults: SearchResults = await searchCollection(
       collectionId,
       'what is joule?',
       'default'
