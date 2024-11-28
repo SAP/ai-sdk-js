@@ -46,12 +46,12 @@ describe('VectorApi and RetrievalApi', () => {
   });
 
   afterAll(async () => {
-      const collection: VectorApi.Collection = await getCollection(
-        collectionId,
-        'default'
-      );
-      expect(collection).toBeDefined();
-      const response = await deleteCollection(collection.id, 'default');
-      expect(response).toBeDefined();
+    const collection: VectorApi.Collection = await getCollection(
+      collectionId,
+      'default'
+    );
+    expect(collection).toBeDefined();
+    const response = await deleteCollection(collection.id, 'default');
+    expect(response).toBeDefined();
   });
 });
