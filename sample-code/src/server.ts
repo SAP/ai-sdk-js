@@ -7,6 +7,11 @@ import {
   // eslint-disable-next-line import/no-internal-modules
 } from './foundation-models/azure-openai.js';
 import {
+  chatCompletionAnthropic,
+  computeEmbeddingAnthropic
+  // eslint-disable-next-line import/no-internal-modules
+} from './foundation-models/aws-anthropic.js';
+import {
   orchestrationChatCompletion,
   orchestrationTemplating,
   orchestrationInputFiltering,
@@ -103,6 +108,35 @@ app.get('/azure-openai/chat-completion-stream', async (req, res) => {
 app.get('/azure-openai/embedding', async (req, res) => {
   try {
     const response = await computeEmbedding();
+
+    if (!response.getEmbedding()?.length) {
+      res.status(500).send('No embedding vector returned.');
+    } else {
+      res.send('Number crunching success, got a nice vector.');
+    }
+  } catch (error: any) {
+    console.error(error);
+    res
+      .status(500)
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+  }
+});
+
+app.get('/aws-anthropic/chat-completion', async (req, res) => {
+  try {
+    const response = await chatCompletionAnthropic();
+    res.send(response.getContent());
+  } catch (error: any) {
+    console.error(error);
+    res
+      .status(500)
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+  }
+});
+
+app.get('/aws-anthropic/embedding', async (req, res) => {
+  try {
+    const response = await computeEmbeddingAnthropic();
 
     if (!response.getEmbedding()?.length) {
       res.status(500).send('No embedding vector returned.');
