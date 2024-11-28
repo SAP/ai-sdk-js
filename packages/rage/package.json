@@ -31,7 +31,6 @@
     "check:public-api": "node --loader ts-node/esm ../../scripts/check-public-api-cli.ts"
   },
   "dependencies": {
-    "@sap-ai-sdk/core": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^3.23.0"
+    "@sap-ai-sdk/core": "workspace:^"
   }
 }
