@@ -71,3 +71,10 @@ export {
   AwsAnthropicEmbeddingParameters,
   AwsAnthropicEmbeddingResponse
 } from './aws-anthropic/index.js';
+
+export type {
+  AwsAnthropicChatModel,
+  AwsAnthropicEmbeddingModel,
+  AwsAnthropicEmbeddingOutput,
+  AwsAnthropicMessageCreationRequest
+} from './aws-anthropic/index.js';
