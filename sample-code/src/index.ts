@@ -32,6 +32,7 @@ export {
 export {
   createCollection,
   getCollection,
-  deleteCollection
+  deleteCollection,
+  createDocument
   // eslint-disable-next-line import/no-internal-modules
 } from './rage/vector-api.js';

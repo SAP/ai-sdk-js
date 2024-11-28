@@ -66,3 +66,34 @@ export async function getCollection(
     { 'AI-Resource-Group': resourceGroup }
   ).execute();
 }
+
+/**
+ * Create a document in a collection.
+ * @param collectionId - The collection ID.
+ * @param resourceGroup - The resource group name.
+ * @param content - The content of the document to add.
+ * @returns Document list response.
+ */
+export async function createDocument(
+  collectionId: string,
+  resourceGroup: string,
+  content: string
+): Promise<VectorApi.DocumentsListResponse> {
+  return VectorApi.DocumentsApi.vectorV1VectorEndpointsCreateDocuments(
+    collectionId,
+    {
+      documents: [
+        {
+          chunks: [
+            {
+              content,
+              metadata: []
+            }
+          ],
+          metadata: []
+        }
+      ]
+    },
+    { 'AI-Resource-Group': resourceGroup }
+  ).execute();
+}

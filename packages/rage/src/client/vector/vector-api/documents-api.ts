@@ -30,7 +30,7 @@ export const DocumentsApi = {
   ) =>
     new OpenApiRequestBuilder<DocumentResponse>(
       'get',
-      '/collections/{collectionId}/documents/{documentId}',
+      'lm/document-grounding/vector/collections/{collectionId}/documents/{documentId}',
       {
         pathParameters: { collectionId, documentId },
         headerParameters
@@ -50,7 +50,7 @@ export const DocumentsApi = {
   ) =>
     new OpenApiRequestBuilder<any>(
       'delete',
-      '/collections/{collectionId}/documents/{documentId}',
+      'lm/document-grounding/vector/collections/{collectionId}/documents/{documentId}',
       {
         pathParameters: { collectionId, documentId },
         headerParameters
@@ -70,7 +70,7 @@ export const DocumentsApi = {
   ) =>
     new OpenApiRequestBuilder<Documents>(
       'get',
-      '/collections/{collectionId}/documents',
+      'lm/document-grounding/vector/collections/{collectionId}/documents',
       {
         pathParameters: { collectionId },
         queryParameters,
@@ -91,7 +91,7 @@ export const DocumentsApi = {
   ) =>
     new OpenApiRequestBuilder<DocumentsListResponse>(
       'post',
-      '/collections/{collectionId}/documents',
+      'lm/document-grounding/vector/collections/{collectionId}/documents',
       {
         pathParameters: { collectionId },
         body,
@@ -112,7 +112,7 @@ export const DocumentsApi = {
   ) =>
     new OpenApiRequestBuilder<DocumentsListResponse>(
       'patch',
-      '/collections/{collectionId}/documents',
+      'lm/document-grounding/vector/collections/{collectionId}/documents',
       {
         pathParameters: { collectionId },
         body,
