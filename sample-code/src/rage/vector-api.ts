@@ -1,4 +1,5 @@
-import { VectorApi } from '@sap-ai-sdk/rage';
+import { CollectionsApi, DocumentsApi } from '@sap-ai-sdk/rage';
+import type { Collection, DocumentsListResponse } from '@sap-ai-sdk/rage';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 /**
  * Create a new collection.
@@ -11,7 +12,7 @@ export async function createCollection(
   resourceGroup: string
 ): Promise<any> {
   const response: HttpResponse =
-    await VectorApi.CollectionsApi.vectorV1VectorEndpointsCreateCollection(
+    await CollectionsApi.vectorV1VectorEndpointsCreateCollection(
       {
         title,
         embeddingConfig: {},
@@ -43,11 +44,10 @@ export async function deleteCollection(
   collectionId: string,
   resourceGroup: string
 ): Promise<any> {
-  const response =
-    await VectorApi.CollectionsApi.vectorV1VectorEndpointsDeleteCollection(
-      collectionId,
-      { 'AI-Resource-Group': resourceGroup }
-    ).execute();
+  const response = await CollectionsApi.vectorV1VectorEndpointsDeleteCollection(
+    collectionId,
+    { 'AI-Resource-Group': resourceGroup }
+  ).execute();
   return response;
 }
 
@@ -60,11 +60,10 @@ export async function deleteCollection(
 export async function getCollection(
   collectionId: string,
   resourceGroup: string
-): Promise<VectorApi.Collection> {
-  return VectorApi.CollectionsApi.vectorV1VectorEndpointsGetCollectionById(
-    collectionId,
-    { 'AI-Resource-Group': resourceGroup }
-  ).execute();
+): Promise<Collection> {
+  return CollectionsApi.vectorV1VectorEndpointsGetCollectionById(collectionId, {
+    'AI-Resource-Group': resourceGroup
+  }).execute();
 }
 
 /**
@@ -78,8 +77,8 @@ export async function createDocument(
   collectionId: string,
   resourceGroup: string,
   content: string
-): Promise<VectorApi.DocumentsListResponse> {
-  return VectorApi.DocumentsApi.vectorV1VectorEndpointsCreateDocuments(
+): Promise<DocumentsListResponse> {
+  return DocumentsApi.vectorV1VectorEndpointsCreateDocuments(
     collectionId,
     {
       documents: [
