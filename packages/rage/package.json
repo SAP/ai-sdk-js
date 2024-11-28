@@ -18,6 +18,7 @@
     "internal.js",
     "internal.d.ts"
   ],
+  "private": true,
   "scripts": {
     "compile": "tsc",
     "compile:cjs": "tsc -p tsconfig.cjs.json",
