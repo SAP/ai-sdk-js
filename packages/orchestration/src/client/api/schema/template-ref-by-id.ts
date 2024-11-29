@@ -5,11 +5,12 @@
  */
 
 /**
- * Translation or transcription response when response_format was json
+ * Representation of the 'TemplateRefByID' schema.
  */
-export type AzureOpenAiAudioResponse = {
+export type TemplateRefByID = {
   /**
-   * Translated or transcribed text.
+   * ID of the template in prompt registry
+   * @example "template_id"
    */
-  text: string;
+  id: string;
 } & Record<string, any>;

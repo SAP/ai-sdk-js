@@ -21,7 +21,7 @@ export class OrchestrationResponse {
    * @returns Token usage.
    */
   getTokenUsage(): TokenUsage {
-    return this.data.orchestration_result.usage;
+    return this.data.orchestration_result.usage!;
   }
   /**
    * Reason for stopping the completion.
