@@ -15,7 +15,7 @@
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/sample-code": "workspace:^",
-    "@sap-cloud-sdk/util": "^3.23.0"
+    "@sap-cloud-sdk/util": "^3.24.0"
   },
   "scripts": {
     "compile": "tsc",
