@@ -176,8 +176,8 @@ importers:
         specifier: ^1
         version: 1.2.0
       '@sap/cds':
-        specifier: ^8.4.2
-        version: 8.4.2(express@4.21.1)
+        specifier: ^8.5.0
+        version: 8.5.0(express@4.21.1)
       '@sap/xssec':
         specifier: ^4
         version: 4.2.4
@@ -1099,8 +1099,8 @@ packages:
     resolution: {integrity: sha512-WmWJAUnXGeki6ax2zq9MFGduZq8k+bfoMI/Tn+WJbv6P82qI7Ul15/0lljpvi4I7obOgM02+szXILVi5MorATQ==}
     hasBin: true
 
-  '@sap/cds@8.4.2':
-    resolution: {integrity: sha512-wHiPU+PciyG6L7oGglUq22ji+aV5SFwef/gF/rnIheMirzxpDlHq+K8GwqmcrrFu3GWRioQGRe3rr8KAalOQrg==}
+  '@sap/cds@8.5.0':
+    resolution: {integrity: sha512-mRiLBPcY5vC1xi21pPqzMtp1HY9FOOFajkiuSArqnwtiyp2fxqWVombuVE9lTB2UyBl9bL8XXwrpjzDftIbnBg==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
@@ -4866,25 +4866,25 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@cap-js/asyncapi@1.0.2(@sap/cds@8.4.2(express@4.21.1))':
+  '@cap-js/asyncapi@1.0.2(@sap/cds@8.5.0(express@4.21.1))':
     dependencies:
-      '@sap/cds': 8.4.2(express@4.21.1)
+      '@sap/cds': 8.5.0(express@4.21.1)
 
-  '@cap-js/db-service@1.15.0(@sap/cds@8.4.2(express@4.21.1))':
+  '@cap-js/db-service@1.15.0(@sap/cds@8.5.0(express@4.21.1))':
     dependencies:
-      '@sap/cds': 8.4.2(express@4.21.1)
+      '@sap/cds': 8.5.0(express@4.21.1)
       generic-pool: 3.9.0
     optional: true
 
-  '@cap-js/openapi@1.0.7(@sap/cds@8.4.2(express@4.21.1))':
+  '@cap-js/openapi@1.0.7(@sap/cds@8.5.0(express@4.21.1))':
     dependencies:
-      '@sap/cds': 8.4.2(express@4.21.1)
+      '@sap/cds': 8.5.0(express@4.21.1)
       pluralize: 8.0.0
 
-  '@cap-js/sqlite@1.7.7(@sap/cds@8.4.2(express@4.21.1))':
+  '@cap-js/sqlite@1.7.7(@sap/cds@8.5.0(express@4.21.1))':
     dependencies:
-      '@cap-js/db-service': 1.15.0(@sap/cds@8.4.2(express@4.21.1))
-      '@sap/cds': 8.4.2(express@4.21.1)
+      '@cap-js/db-service': 1.15.0(@sap/cds@8.5.0(express@4.21.1))
+      '@sap/cds': 8.5.0(express@4.21.1)
       better-sqlite3: 11.5.0
     optional: true
 
@@ -5789,9 +5789,9 @@ snapshots:
 
   '@sap/cds-dk@8.4.2':
     dependencies:
-      '@cap-js/asyncapi': 1.0.2(@sap/cds@8.4.2(express@4.21.1))
-      '@cap-js/openapi': 1.0.7(@sap/cds@8.4.2(express@4.21.1))
-      '@sap/cds': 8.4.2(express@4.21.1)
+      '@cap-js/asyncapi': 1.0.2(@sap/cds@8.5.0(express@4.21.1))
+      '@cap-js/openapi': 1.0.7(@sap/cds@8.5.0(express@4.21.1))
+      '@sap/cds': 8.5.0(express@4.21.1)
       '@sap/cds-foss': 5.0.1
       '@sap/cds-mtxs': 2.3.1(hdb@0.19.10)
       '@sap/eslint-plugin-cds': 3.1.2(eslint@9.14.0)(express@4.21.1)
@@ -5806,7 +5806,7 @@ snapshots:
       ws: 8.18.0
       xml-js: 1.6.11
     optionalDependencies:
-      '@cap-js/sqlite': 1.7.7(@sap/cds@8.4.2(express@4.21.1))
+      '@cap-js/sqlite': 1.7.7(@sap/cds@8.5.0(express@4.21.1))
     transitivePeerDependencies:
       - '@sap/hana-client'
       - bufferutil
@@ -5815,9 +5815,9 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@sap/cds-fiori@1.2.7(@sap/cds@8.4.2(express@4.21.1))(express@4.21.1)':
+  '@sap/cds-fiori@1.2.7(@sap/cds@8.5.0(express@4.21.1))(express@4.21.1)':
     dependencies:
-      '@sap/cds': 8.4.2(express@4.21.1)
+      '@sap/cds': 8.5.0(express@4.21.1)
       express: 4.21.1
 
   '@sap/cds-foss@5.0.1':
@@ -5837,17 +5837,17 @@ snapshots:
       - hdb
       - supports-color
 
-  '@sap/cds@8.4.2(express@4.21.1)':
+  '@sap/cds@8.5.0(express@4.21.1)':
     dependencies:
       '@sap/cds-compiler': 5.3.2
-      '@sap/cds-fiori': 1.2.7(@sap/cds@8.4.2(express@4.21.1))(express@4.21.1)
+      '@sap/cds-fiori': 1.2.7(@sap/cds@8.5.0(express@4.21.1))(express@4.21.1)
       '@sap/cds-foss': 5.0.1
     optionalDependencies:
       express: 4.21.1
 
   '@sap/eslint-plugin-cds@3.1.2(eslint@9.14.0)(express@4.21.1)':
     dependencies:
-      '@sap/cds': 8.4.2(express@4.21.1)
+      '@sap/cds': 8.5.0(express@4.21.1)
       eslint: 9.14.0
       semver: 7.6.3
     transitivePeerDependencies:
