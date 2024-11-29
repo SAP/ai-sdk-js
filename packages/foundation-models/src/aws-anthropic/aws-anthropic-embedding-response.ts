@@ -4,7 +4,7 @@ import type { AwsAnthropicEmbeddingOutput } from './aws-anthropic-embedding-type
 
 const logger = createLogger({
   package: 'foundation-models',
-  messageContext: 'azure-openai-embedding-response'
+  messageContext: 'aws-anthropic-embedding-response'
 });
 
 /**
