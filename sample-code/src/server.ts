@@ -31,7 +31,11 @@ import {
   invokeRagChain,
   invoke
 } from './langchain-azure-openai.js';
-import { createCollection, createDocumentsWithSecret, deleteCollection } from './document-grounding.js';
+import {
+  createCollection,
+  createDocumentsWithSecret,
+  deleteCollection
+} from './document-grounding.js';
 import type { AiApiError, AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 

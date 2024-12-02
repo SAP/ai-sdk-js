@@ -6,20 +6,23 @@ import type { DocumentsListResponse } from '@sap-ai-sdk/document-grounding';
  * @returns Collection creation response.
  */
 export async function createCollection(): Promise<any> {
-  const createCollectionResponse = await CollectionsApi.vectorV1VectorEndpointsCreateCollection(
-    {
-      title: 'ai-sdk-js-e2e',
-      embeddingConfig: {
-        modelName: 'text-embedding-ada-002-v2'
+  const createCollectionResponse =
+    await CollectionsApi.vectorV1VectorEndpointsCreateCollection(
+      {
+        title: 'ai-sdk-js-e2e',
+        embeddingConfig: {
+          modelName: 'text-embedding-ada-002-v2'
+        },
+        metadata: []
       },
-      metadata: []
-    },
-    {
-      'AI-Resource-Group': 'default'
-    }
-  ).executeRaw();
+      {
+        'AI-Resource-Group': 'default'
+      }
+    ).executeRaw();
 
-  return (createCollectionResponse.headers.location as string).split('/').at(-2);
+  return (createCollectionResponse.headers.location as string)
+    .split('/')
+    .at(-2);
 }
 
 /**
@@ -28,12 +31,9 @@ export async function createCollection(): Promise<any> {
  * @returns Collection deletion response.
  */
 export async function deleteCollection(collectionId: string): Promise<any> {
-  return CollectionsApi.vectorV1VectorEndpointsDeleteCollection(
-    collectionId,
-    {
-      'AI-Resource-Group': 'default'
-    }
-  ).execute();
+  return CollectionsApi.vectorV1VectorEndpointsDeleteCollection(collectionId, {
+    'AI-Resource-Group': 'default'
+  }).execute();
 }
 
 /**
@@ -42,7 +42,10 @@ export async function deleteCollection(collectionId: string): Promise<any> {
  * @param secret - Secret.
  * @returns Documents creation response.
  */
-export async function createDocumentsWithSecret(collectionId: string, secret: number): Promise<DocumentsListResponse> {
+export async function createDocumentsWithSecret(
+  collectionId: string,
+  secret: number
+): Promise<DocumentsListResponse> {
   return DocumentsApi.vectorV1VectorEndpointsCreateDocuments(
     collectionId,
     {
