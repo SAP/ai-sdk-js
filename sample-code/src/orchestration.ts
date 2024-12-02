@@ -233,7 +233,7 @@ export async function orchestrationGrounding(): Promise<OrchestrationResponse> {
             id: 'filter1',
             data_repositories: ['*'],
             search_config: {},
-            data_repository_type: 'help.sap.com'
+            data_repository_type: 'vector'
           }
         ],
         input_params: ['groundingRequest'],
@@ -244,7 +244,7 @@ export async function orchestrationGrounding(): Promise<OrchestrationResponse> {
 
   return orchestrationClient.chatCompletion({
     inputParams: {
-      groundingRequest: 'What is Generative AI Hub in SAP AI Core?'
+      groundingRequest: 'What is the secret number for this SAP AI SDK JavaScript end to end test? Return only the number without any other text.'
     }
   });
 }

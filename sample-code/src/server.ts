@@ -11,7 +11,8 @@ import {
   orchestrationTemplating,
   orchestrationInputFiltering,
   orchestrationOutputFiltering,
-  orchestrationRequestConfig
+  orchestrationRequestConfig,
+  orchestrationGrounding
 } from './orchestration.js';
 import {
   getDeployments,
@@ -30,6 +31,7 @@ import {
   invokeRagChain,
   invoke
 } from './langchain-azure-openai.js';
+import { createCollection, createDocumentsWithSecret, deleteCollection } from './document-grounding.js';
 import type { AiApiError, AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 
@@ -251,6 +253,33 @@ app.get('/langchain/invoke-chain', async (req, res) => {
 app.get('/langchain/invoke-rag-chain', async (req, res) => {
   try {
     res.send(await invokeRagChain());
+  } catch (error: any) {
+    console.error(error);
+    res
+      .status(500)
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+  }
+});
+
+app.get('/document-grounding/invoke', async (req, res) => {
+  try {
+    const collectionId = await createCollection();
+    console.log(`Collection ${collectionId} created.`);
+
+    const secret = Math.random();
+    res.write(`Expected secret number: ${secret}\n`);
+
+    await createDocumentsWithSecret(collectionId, secret);
+    console.log(`Document with secret ${secret} created.`);
+
+    const result = await orchestrationGrounding();
+
+    res.write(`Orchestration response: ${result.getContent()}`);
+
+    await deleteCollection(collectionId);
+    console.log(`Collection ${collectionId} deleted.`);
+
+    res.end();
   } catch (error: any) {
     console.error(error);
     res
