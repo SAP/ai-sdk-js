@@ -1,11 +1,5 @@
-import { createLogger } from '@sap-cloud-sdk/util';
 import { CollectionsApi, DocumentsApi } from '@sap-ai-sdk/document-grounding';
 import type { DocumentsListResponse } from '@sap-ai-sdk/document-grounding';
-
-const logger = createLogger({
-  package: 'sample-code',
-  messageContext: 'document-grounding'
-});
 
 /**
  * Create a collection.
