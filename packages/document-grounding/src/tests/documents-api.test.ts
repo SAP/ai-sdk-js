@@ -22,10 +22,7 @@ describe('documents', () => {
           metadata: [
             {
               key: 'url',
-              value: [
-                'http://hello.com',
-                '123'
-              ],
+              value: ['http://hello.com', '123'],
               matchMode: 'ANY'
             }
           ],
@@ -40,16 +37,19 @@ describe('documents', () => {
         'AI-Resource-Group': 'default'
       }
     })
-      .get(`/v2/lm/document-grounding/vector/collections/${collectionId}/documents`)
+      .get(
+        `/v2/lm/document-grounding/vector/collections/${collectionId}/documents`
+      )
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'
       });
 
-    const result: Documents = await DocumentsApi.vectorV1VectorEndpointsGetAllDocuments(
-      collectionId,
-      {},
-      { 'AI-Resource-Group': 'default' }
-    ).execute();
+    const result: Documents =
+      await DocumentsApi.vectorV1VectorEndpointsGetAllDocuments(
+        collectionId,
+        {},
+        { 'AI-Resource-Group': 'default' }
+      ).execute();
 
     expect(result).toEqual(expectedResponse);
   });

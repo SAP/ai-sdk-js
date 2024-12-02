@@ -37,10 +37,11 @@ describe('retrieval data repository', () => {
         'Content-Type': 'application/json'
       });
 
-    const result: DataRepositories = await RetrievalDataRepositoryApi.retrievalV1RetrievalEndpointsGetDataRepositories(
-      {},
-      { 'AI-Resource-Group': 'default' }
-    ).execute();
+    const result: DataRepositories =
+      await RetrievalDataRepositoryApi.retrievalV1RetrievalEndpointsGetDataRepositories(
+        {},
+        { 'AI-Resource-Group': 'default' }
+      ).execute();
 
     expect(result).toEqual(expectedResponse);
   });

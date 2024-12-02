@@ -3,7 +3,10 @@ import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
 } from '../../../../test-util/mock-http.js';
-import { CollectionsApi, type CollectionsListResponse } from '../client/api/index.js';
+import {
+  CollectionsApi,
+  type CollectionsListResponse
+} from '../client/api/index.js';
 
 describe('collections', () => {
   beforeEach(() => {
@@ -38,10 +41,11 @@ describe('collections', () => {
         'Content-Type': 'application/json'
       });
 
-    const result: CollectionsListResponse = await CollectionsApi.vectorV1VectorEndpointsGetAllCollections(
-      {},
-      { 'AI-Resource-Group': 'default' }
-    ).execute();
+    const result: CollectionsListResponse =
+      await CollectionsApi.vectorV1VectorEndpointsGetAllCollections(
+        {},
+        { 'AI-Resource-Group': 'default' }
+      ).execute();
 
     expect(result).toEqual(expectedResponse);
   });

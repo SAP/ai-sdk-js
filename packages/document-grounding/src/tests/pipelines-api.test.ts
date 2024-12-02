@@ -26,12 +26,9 @@ describe('pipelines', () => {
               site: {
                 id: 'site-id',
                 name: 'site-name',
-                includePaths: [
-                  '/path1', '/path2'
-                ]
+                includePaths: ['/path1', '/path2']
               }
             }
-
           }
         }
       ],
@@ -48,10 +45,11 @@ describe('pipelines', () => {
         'Content-Type': 'application/json'
       });
 
-    const result: GetPipelines = await PipelinesApi.pipelineV1PipelineEndpointsGetAllPipeline(
-      {},
-      { 'AI-Resource-Group': 'default' }
-    ).execute();
+    const result: GetPipelines =
+      await PipelinesApi.pipelineV1PipelineEndpointsGetAllPipeline(
+        {},
+        { 'AI-Resource-Group': 'default' }
+      ).execute();
 
     expect(result).toEqual(expectedResponse);
   });
