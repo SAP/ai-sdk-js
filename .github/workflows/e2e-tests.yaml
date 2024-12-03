@@ -25,7 +25,6 @@ jobs:
         env:
           AICORE_SERVICE_KEY: ${{ secrets[matrix.secret-name] }}
         run: |
-          exit 1
           echo "AICORE_SERVICE_KEY='$AICORE_SERVICE_KEY'" > sample-code/.env
           echo "AICORE_SERVICE_KEY='$AICORE_SERVICE_KEY'" > tests/e2e-tests/.env
           url=$(echo "$AICORE_SERVICE_KEY" | jq -r '.serviceurls.AI_API_URL' | sed 's|^https://||')

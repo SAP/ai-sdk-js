@@ -14,15 +14,15 @@ jobs:
       - uses: SAP/fosstars-rating-core-action@v1.14.0
         with:
           token: '${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}'
-      - if: failure() || cancelled()
-        name: Slack Notify
+      - name: 'Slack Notification'
+        if: failure()
         uses: slackapi/slack-github-action@v2.0.0
         with:
+          webhook: ${{ secrets.SLACK_WEBHOOK }}
+          webhook-type: incoming-webhook
           payload: |
             {
               "username": "Fosstars Rating",
               "text": "Fosstars rating <https://github.com/SAP/ai-sdk-js/actions/runs/${{ github.run_id }}|failed>.",
             }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
