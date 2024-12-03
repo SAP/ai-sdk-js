@@ -250,8 +250,8 @@ importers:
   tests/schema-tests:
     devDependencies:
       ts-to-zod:
-        specifier: ^3.14.1
-        version: 3.14.1
+        specifier: ^3.15.0
+        version: 3.15.0
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -4254,8 +4254,8 @@ packages:
       '@swc/wasm':
         optional: true
 
-  ts-to-zod@3.14.1:
-    resolution: {integrity: sha512-qVjOcH0nBccMVsYiX9Qo9NAVnRHkXrkIaZHZ/gfu3YB5ClaG6u47lKJH/PCMY6bRL3oQ6WYK+NbwBj91eRhZFg==}
+  ts-to-zod@3.15.0:
+    resolution: {integrity: sha512-Lu5ITqD8xCIo4JZp4Cg3iSK3J2x3TGwwuDtNHfAIlx1mXWKClRdzqV+x6CFEzhKtJlZzhyvJIqg7DzrWfsdVSg==}
     hasBin: true
 
   tsconfig-paths@3.15.0:
@@ -6086,10 +6086,10 @@ snapshots:
       '@typescript-eslint/types': 8.16.0
       eslint-visitor-keys: 4.2.0
 
-  '@typescript/vfs@1.6.0(typescript@5.6.3)':
+  '@typescript/vfs@1.6.0(typescript@5.7.2)':
     dependencies:
       debug: 4.3.7(supports-color@8.1.1)
-      typescript: 5.6.3
+      typescript: 5.7.2
     transitivePeerDependencies:
       - supports-color
 
@@ -9482,10 +9482,10 @@ snapshots:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
 
-  ts-to-zod@3.14.1:
+  ts-to-zod@3.15.0:
     dependencies:
       '@oclif/core': 4.0.21
-      '@typescript/vfs': 1.6.0(typescript@5.6.3)
+      '@typescript/vfs': 1.6.0(typescript@5.7.2)
       case: 1.6.3
       chokidar: 3.6.0
       fs-extra: 11.2.0
@@ -9497,8 +9497,8 @@ snapshots:
       slash: 3.0.0
       threads: 1.7.0
       tslib: 2.8.1
-      tsutils: 3.21.0(typescript@5.6.3)
-      typescript: 5.6.3
+      tsutils: 3.21.0(typescript@5.7.2)
+      typescript: 5.7.2
       zod: 3.23.8
     transitivePeerDependencies:
       - supports-color
@@ -9524,10 +9524,10 @@ snapshots:
 
   tslib@2.8.1: {}
 
-  tsutils@3.21.0(typescript@5.6.3):
+  tsutils@3.21.0(typescript@5.7.2):
     dependencies:
       tslib: 1.14.1
-      typescript: 5.6.3
+      typescript: 5.7.2
 
   tsx@4.19.2:
     dependencies:
