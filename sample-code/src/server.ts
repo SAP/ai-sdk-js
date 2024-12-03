@@ -267,21 +267,26 @@ app.get('/langchain/invoke-rag-chain', async (req, res) => {
 
 app.get('/document-grounding/invoke', async (req, res) => {
   try {
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    // Create an empty collection.
     const collectionId = await createCollection();
-    console.log(`Collection ${collectionId} created.`);
+    res.write(`Collection created:\t\t${collectionId}\n`);
 
+    // Create a document with a generated random number.
     const secret = Math.random();
-    res.write(`Expected secret number: ${secret}\n`);
-
     await createDocumentsWithSecret(collectionId, secret);
-    console.log(`Document with secret ${secret} created.`);
+    res.write(`Document created with secret:\t${secret}\n`);
 
+    // Send an orchestration chat completion request with grounding module configured.
     const result = await orchestrationGrounding();
+    res.write(`Orchestration response:\t\t${result.getContent()}\n`);
 
-    res.write(`Orchestration response: ${result.getContent()}`);
-
+    // Delete the created collection.
     await deleteCollection(collectionId);
-    console.log(`Collection ${collectionId} deleted.`);
+    res.write(`Collection deleted:\t\t${collectionId}\n`);
 
     res.end();
   } catch (error: any) {
