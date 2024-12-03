@@ -4,6 +4,7 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import type { FilterConfig } from './filter-config.js';
+import type { FilteringStreamOptions } from './filtering-stream-options.js';
 /**
  * Representation of the 'OutputFilteringConfig' schema.
  */
@@ -13,4 +14,5 @@ export type OutputFilteringConfig = {
    * Min Items: 1.
    */
   filters: FilterConfig[];
+  stream_options?: FilteringStreamOptions;
 };

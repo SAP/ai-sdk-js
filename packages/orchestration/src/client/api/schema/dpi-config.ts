@@ -21,4 +21,8 @@ export type DpiConfig = {
    * Min Items: 1.
    */
   entities: DpiEntityConfig[];
+  /**
+   * List of strings that should not be masked
+   */
+  allowlist?: string[];
 } & Record<string, any>;
