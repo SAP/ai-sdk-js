@@ -248,7 +248,7 @@ describe('orchestration service client', () => {
               id: 'filter1',
               data_repositories: ['*'],
               search_config: {},
-              data_repository_type: 'help.sap.com'
+              data_repository_type: 'vector'
             }
           ],
           input_params: ['groundingRequest'],

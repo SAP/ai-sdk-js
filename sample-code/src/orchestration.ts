@@ -210,7 +210,7 @@ export async function orchestrationRequestConfig(): Promise<OrchestrationRespons
 }
 
 /**
- * Ask about Generative AI Hub in SAP AI Core and ground the response.
+ * Ask about a custom knowledge embedded in document grounding.
  * @returns The orchestration service response.
  */
 export async function orchestrationGrounding(): Promise<OrchestrationResponse> {
