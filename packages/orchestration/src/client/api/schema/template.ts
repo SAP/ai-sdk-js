@@ -3,14 +3,14 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { ChatMessages } from './chat-messages.js';
+import type { TemplatingChatMessage } from './templating-chat-message.js';
 /**
  * Representation of the 'Template' schema.
  * @example {
  *   "template": [
  *     {
  *       "role": "user",
- *       "content": "How can the features of AI in SAP BTP specifially {​{?product}}, be applied to {​{?inputContext}}"
+ *       "content": "How can the features of AI in SAP BTP specifically {{?groundingOutput}}, be applied to {{?inputContext}}"
  *     }
  *   ],
  *   "defaults": {
@@ -22,7 +22,7 @@ export type Template = {
   /**
    * A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
    */
-  template: ChatMessages;
+  template: TemplatingChatMessage;
   /**
    * Optional default values for the template. If a parameter has no default it is required.
    */
