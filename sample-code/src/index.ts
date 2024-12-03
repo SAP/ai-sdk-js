@@ -10,7 +10,8 @@ export {
   orchestrationInputFiltering,
   orchestrationOutputFiltering,
   orchestrationRequestConfig,
-  orchestrationCompletionMasking
+  orchestrationCompletionMasking,
+  orchestrationGrounding
 } from './orchestration.js';
 export {
   invoke,
@@ -29,3 +30,9 @@ export {
   getModelsInScenario
   // eslint-disable-next-line import/no-internal-modules
 } from './ai-api/scenario-api.js';
+
+export {
+  createCollection,
+  createDocumentsWithSecret,
+  deleteCollection
+} from './document-grounding.js';
