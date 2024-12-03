@@ -5,7 +5,7 @@
  */
 
 /**
- * citation information for a chat completions response message.
+ * Citation information for a chat completions response message.
  */
 export type AzureOpenAiCitation = {
   /**

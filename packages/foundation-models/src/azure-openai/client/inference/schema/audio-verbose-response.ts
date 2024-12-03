@@ -6,7 +6,7 @@
 import type { AzureOpenAiAudioResponse } from './audio-response.js';
 import type { AzureOpenAiAudioSegment } from './audio-segment.js';
 /**
- * Translation or transcription response when response_format was verbose_json
+ * Translation or transcription response when response_format was verbose_json.
  */
 export type AzureOpenAiAudioVerboseResponse = AzureOpenAiAudioResponse & {
   /**

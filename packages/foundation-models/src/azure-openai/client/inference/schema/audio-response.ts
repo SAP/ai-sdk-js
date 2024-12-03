@@ -5,7 +5,7 @@
  */
 
 /**
- * Translation or transcription response when response_format was json
+ * Translation or transcription response when response_format was json.
  */
 export type AzureOpenAiAudioResponse = {
   /**
