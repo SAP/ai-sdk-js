@@ -1,6 +1,6 @@
 ## Context
 
-AI/gen-ai-hub-sdk-js-backlog#ISSUENUMBER.
+SAP/ai-sdk-js-backlog#ISSUENUMBER.
 
 Please provide a description of what your change does and why it is needed.
 

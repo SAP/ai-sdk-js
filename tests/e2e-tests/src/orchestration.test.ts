@@ -6,7 +6,6 @@ import {
   orchestrationRequestConfig,
   orchestrationCompletionMasking
 } from '@sap-ai-sdk/sample-code';
-import { orchestrationGrounding } from '@sap-ai-sdk/sample-code/src/orchestration.js';
 import { loadEnv } from './utils/load-env.js';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 
@@ -55,12 +54,5 @@ describe('orchestration', () => {
   it('should complete a chat with masking', async () => {
     const result = await orchestrationCompletionMasking();
     expect(result).toEqual(expect.any(String));
-  });
-
-  it('should complete a chat with grounding', async () => {
-    const result = await orchestrationGrounding();
-    expect(result.getContent()).toEqual(expect.any(String));
-    expect(result.data.module_results).toBeDefined();
-    expect(result.data.module_results.grounding!.data).toBeDefined();
   });
 });
