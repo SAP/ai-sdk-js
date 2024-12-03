@@ -2,14 +2,16 @@
 
 SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI Core**, **SAP Generative AI Hub**, and **Orchestration Service**.
 
-This package incorporates generative AI grounding capabilities into your AI activities in SAP AI Core and SAP AI Launchpad.
+This package incorporates generative AI document grounding capabilities into your AI activities in SAP AI Core and SAP AI Launchpad.
 
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Prerequisites](#prerequisites)
-- [Document Grounding](#document-grounding)
+- [Usage](#usage)
+  - [Create a Collection](#create-a-collection)
+  - [Create a Document](#create-a-document)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
@@ -24,10 +26,6 @@ $ npm install @sap-ai-sdk/document-grounding
 
 - [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Configure the project with **Node.js v20 or higher** and **native ESM** support.
-- Ensure an orchestration deployment is available in the SAP Generative AI Hub.
-  - Use the [`DeploymentApi`](https://github.com/SAP/ai-sdk-js/blob/main/packages/ai-api/README.md#create-a-deployment) from `@sap-ai-sdk/ai-api` [to create a deployment](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration).
-    Alternatively, you can also create deployments using the [SAP AI Launchpad](https://help.sap.com/docs/sap-ai-core/generative-ai-hub/activate-generative-ai-hub-for-sap-ai-launchpad?locale=en-US&q=launchpad).
-  - Once the deployment is complete, access the orchestration service via the `deploymentUrl`.
 
 > **Accessing the AI Core Service via the SDK**
 >
@@ -36,9 +34,56 @@ $ npm install @sap-ai-sdk/document-grounding
 > - In Cloud Foundry, it's accessed from the `VCAP_SERVICES` environment variable.
 > - In Kubernetes / Kyma environments, you have to mount the service binding as a secret instead, for more information refer to [this documentation](https://www.npmjs.com/package/@sap/xsenv#usage-in-kubernetes).
 
-## Document Grounding
+## Usage
 
-TODO: Add a brief description of the package.
+The examples below demonstrate the usage of the most commonly used APIs in SAP AI Core document grounding service.
+In addition to the examples below, you can find more **sample code** [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/document-grounding.ts).
+
+### Create a Collection
+
+```ts
+const response: HttpResponse =
+  await CollectionsApi.vectorV1VectorEndpointsCreateCollection(
+    {
+      title: 'ai-sdk-js-e2e',
+      embeddingConfig: {
+        modelName: 'text-embedding-ada-002-v2'
+      },
+      metadata: []
+    },
+    {
+      'AI-Resource-Group': 'default'
+    }
+  ).executeRaw();
+
+const collectionId = (response.headers.location as string)
+  .split('/')
+  .at(-2);
+```
+
+### Create a Document
+
+```ts
+const response: DocumentsListResponse = DocumentsApi.vectorV1VectorEndpointsCreateDocuments(
+  collectionId,
+  {
+    documents: [
+      {
+        metadata: [],
+        chunks: [
+          {
+            content: 'SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service.',
+            metadata: []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    'AI-Resource-Group': 'default'
+  }
+).execute();
+```
 
 ## Local Testing
 

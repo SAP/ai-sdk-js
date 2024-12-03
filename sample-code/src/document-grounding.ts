@@ -5,7 +5,7 @@ import type { DocumentsListResponse } from '@sap-ai-sdk/document-grounding';
  * Create a collection.
  * @returns Collection creation response.
  */
-export async function createCollection(): Promise<any> {
+export async function createCollection(): Promise<string | undefined> {
   const createCollectionResponse =
     await CollectionsApi.vectorV1VectorEndpointsCreateCollection(
       {
