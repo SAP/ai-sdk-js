@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.4.7",
     "dotenv-cli": "^7.4.4"
   }
 }
