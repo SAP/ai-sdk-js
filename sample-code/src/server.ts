@@ -36,6 +36,10 @@ import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 const app = express();
 const port = 8080;
 
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
+
 app.get(['/', '/health'], (req, res) => {
   res.send('Hello World! 🌍');
 });
@@ -197,6 +201,7 @@ app.get('/azure-openai/embedding', async (req, res) => {
   }
 });
 
+/* Orchestration */
 app.get('/orchestration/:sampleCase', async (req, res) => {
   const sampleCase = req.params.sampleCase;
   const testCase =
@@ -227,6 +232,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
   }
 });
 
+/* Langchain */
 app.get('/langchain/invoke', async (req, res) => {
   try {
     res.send(await invoke());
@@ -258,8 +264,4 @@ app.get('/langchain/invoke-rag-chain', async (req, res) => {
       .status(500)
       .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
   }
-});
-
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
 });
