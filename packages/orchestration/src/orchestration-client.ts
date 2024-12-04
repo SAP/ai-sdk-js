@@ -50,6 +50,53 @@ export class OrchestrationClient {
 
     return new OrchestrationResponse(response);
   }
+
+  /**
+   * Executes the orchestration service using a JSON configuration.
+   * @param jsonConfig - The JSON configuration as an input string.
+   * @param prompt - Prompt configuration.
+   * @param requestConfig - Optional request configuration.
+   * @param deploymentConfig - Deployment configuration.
+   * @returns The orchestration response.
+   */
+  /* eslint-disable @typescript-eslint/member-ordering */
+  static async executeFromJson(
+    jsonConfig: string,
+    prompt?: Prompt,
+    requestConfig?: CustomRequestConfig,
+    deploymentConfig?: ResourceGroupConfig
+  ): Promise<OrchestrationResponse> {
+    let moduleConfig: Record<string, any>;
+    try {
+      moduleConfig = JSON.parse(jsonConfig);
+    } catch {
+      throw new Error(
+        `The provided configuration is not valid JSON: ${jsonConfig}`
+      );
+    }
+
+    const body: Record<string, any> = {
+      messages_history: prompt?.messagesHistory || [],
+      input_params: prompt?.inputParams || {},
+      orchestration_config: moduleConfig
+    };
+
+    const deploymentId = await resolveDeploymentId({
+      scenarioId: 'orchestration',
+      resourceGroup: deploymentConfig?.resourceGroup
+    });
+
+    const response = await executeRequest(
+      {
+        url: `/inference/deployments/${deploymentId}/completion`,
+        resourceGroup: deploymentConfig?.resourceGroup
+      },
+      body,
+      requestConfig
+    );
+
+    return new OrchestrationResponse(response);
+  }
 }
 
 /**

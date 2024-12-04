@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import {
   OrchestrationClient,
   buildAzureContentFilter
@@ -207,4 +208,51 @@ export async function orchestrationRequestConfig(): Promise<OrchestrationRespons
       headers: { 'x-custom-header': 'custom-value' }
     }
   );
+}
+
+/**
+ * Use the orchestration service with JSON obtained from AI Launchpad.
+ * @param filePath - Path to the JSON file obtained from AI Launchpad.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationFromJSON(
+  filePath?: string
+): Promise<OrchestrationResponse> {
+  // Default JSON configuration
+  const defaultJsonConfig = `{
+    "module_configurations": {
+      "llm_module_config": {
+        "model_name": "gpt-35-turbo",
+        "model_params": {},
+        "model_version": "0613"
+      },
+      "templating_module_config": {
+        "template": [
+          {
+            "role": "user",
+            "content": "SAP"
+          },
+          {
+            "role": "system",
+            "content": "When given the name of a company, provide the year of its establishment."
+          }
+        ]
+      }
+    }
+  }`;
+
+  try {
+    // Use provided file path if available, else fallback to default configuration
+    const jsonConfig = filePath
+      ? await fs.promises.readFile(filePath, 'utf-8')
+      : defaultJsonConfig;
+
+    const response = await OrchestrationClient.executeFromJson(jsonConfig);
+
+    logger.info(response.getContent());
+    return response;
+  } catch (error) {
+    logger.error('Error in orchestrationFromJSON:', error);
+    throw error;
+  }
 }
