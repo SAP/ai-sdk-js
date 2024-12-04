@@ -13,7 +13,7 @@ End-to-end tests for the SAP Cloud SDK for AI.
 
 1. Run `pnpm install` to install dependencies.
 2. Create a `.env` file in the `sample-code` directory with your AI core service key by adding the following line:
-   
+
    ```bash
    AICORE_SERVICE_KEY='SERVICE_KEY_JSON'
    ```

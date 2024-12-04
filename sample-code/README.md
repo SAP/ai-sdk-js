@@ -1,6 +1,6 @@
 # Sample Code
 
-Sample code to demonstrate the usage of the SAP Cloud SDK for AI. 
+Sample code to demonstrate the usage of the SAP Cloud SDK for AI.
 Some of the sample code is also used in E2E test.
 
 ### Table of Contents
@@ -16,7 +16,7 @@ Some of the sample code is also used in E2E test.
 
 1. Run `pnpm install` to install dependencies.
 2. Create a `.env` file in the `sample-code` directory with your AI core service key by adding the following line:
-   
+
    ```bash
    AICORE_SERVICE_KEY='SERVICE_KEY_JSON
    ```
@@ -60,7 +60,7 @@ The request body should be:
 
 #### Batch Delete all Deployments with Status `STOPPED` or `UNKNOWN`
 
-DELETE `/ai-api/deployment/batch-delete` 
+DELETE `/ai-api/deployment/batch-delete`
 
 Delete all deployments with status `STOPPED` or `UNKNOWN` in resource group "default".
 
@@ -88,7 +88,7 @@ Get chat completion response.
 
 GET `/azure-openai/chat-completion-stream`
 
-Get chat completion response with streaming. 
+Get chat completion response with streaming.
 
 The response header is set with `Content-Type: text/event-stream` to stream the text.
 
@@ -135,7 +135,7 @@ Get chat completion response with Azure content filter for the output. Use `buil
 
 GET `/orchestration/requestConfig`
 
-Send chat completion request with a custom header as the custom request configuration. 
+Send chat completion request with a custom header as the custom request configuration.
 
 ### Langchain
 
