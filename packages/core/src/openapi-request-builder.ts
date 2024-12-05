@@ -24,20 +24,27 @@ export class OpenApiRequestBuilder<
    * @param destination - The destination to execute the request against.
    * @returns A promise resolving to an HttpResponse.
    */
-  async executeRaw(destination?: HttpDestinationOrFetchOptions): Promise<HttpResponse> {
+  async executeRaw(
+    destination?: HttpDestinationOrFetchOptions
+  ): Promise<HttpResponse> {
     const { url, data, ...rest } = await this.requestConfig();
     // TODO: Remove explicit url! once we updated the type in the Cloud SDK, since url is always defined.
-    return executeRequest({ url: url! }, data, {
-      ...rest,
-      headers: {
-        ...rest.headers?.requestConfig,
-        ...rest.headers?.custom
+    return executeRequest(
+      { url: url! },
+      data,
+      {
+        ...rest,
+        headers: {
+          ...rest.headers?.requestConfig,
+          ...rest.headers?.custom
+        },
+        params: {
+          ...rest.params?.requestConfig,
+          ...rest.params?.custom
+        }
       },
-      params: {
-        ...rest.params?.requestConfig,
-        ...rest.params?.custom
-      }
-    }, destination);
+      destination
+    );
   }
 
   /**

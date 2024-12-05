@@ -1,7 +1,7 @@
 import { mergeIgnoreCase, removeLeadingSlashes } from '@sap-cloud-sdk/util';
 import { executeHttpRequest } from '@sap-cloud-sdk/http-client';
 import { getAiCoreDestination } from './context.js';
-import type { DestinationFetchOptions, DestinationForServiceBindingOptions } from '@sap-cloud-sdk/connectivity';
+import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 import type {
   HttpRequestConfig,
   HttpResponse
@@ -52,7 +52,7 @@ export async function executeRequest(
   endpointOptions: EndpointOptions,
   data: any,
   requestConfig?: CustomRequestConfig,
-  destination?: DestinationFetchOptions & DestinationForServiceBindingOptions
+  destination?: HttpDestinationOrFetchOptions
 ): Promise<HttpResponse> {
   const aiCoreDestination = await getAiCoreDestination(destination);
   const { url, apiVersion, resourceGroup = 'default' } = endpointOptions;

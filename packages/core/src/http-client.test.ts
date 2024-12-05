@@ -5,7 +5,6 @@ import {
   aiCoreDestination
 } from '../../../test-util/mock-http.js';
 import { executeRequest } from './http-client.js';
-import type { DestinationWithName } from '@sap-cloud-sdk/connectivity';
 
 describe('http-client', () => {
   beforeEach(() => {
@@ -90,7 +89,7 @@ describe('http-client', () => {
       mockPrompt,
       {},
       {
-        destinationName: 'my-aicore-destination',
+        destinationName: 'my-aicore-destination'
       }
     );
     expect(scope.isDone()).toBe(true);
