@@ -37,14 +37,14 @@ export async function deleteCollection(collectionId: string): Promise<any> {
 }
 
 /**
- * Create documents.
+ * Create document with a timestamp in it.
  * @param collectionId - Collection ID.
- * @param secret - Secret.
+ * @param timestamp - Timestamp at which e2e was executed.
  * @returns Documents creation response.
  */
-export async function createDocumentsWithSecret(
+export async function createDocumentsWithTimestamp(
   collectionId: string,
-  secret: number
+  timestamp: number
 ): Promise<DocumentsListResponse> {
   return DocumentsApi.vectorV1VectorEndpointsCreateDocuments(
     collectionId,
@@ -54,7 +54,7 @@ export async function createDocumentsWithSecret(
           metadata: [],
           chunks: [
             {
-              content: `SAP AI SDK JavaScript end to end test needs a secret number to pass. The secret is '${secret}'.`,
+              content: `The last SAP AI SDK JavaScript end to end test was run at ${timestamp}.`,
               metadata: []
             }
           ]

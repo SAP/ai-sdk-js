@@ -33,6 +33,6 @@ export {
 
 export {
   createCollection,
-  createDocumentsWithSecret,
+  createDocumentsWithTimestamp,
   deleteCollection
 } from './document-grounding.js';

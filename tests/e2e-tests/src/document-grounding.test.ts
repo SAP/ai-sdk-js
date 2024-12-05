@@ -1,6 +1,6 @@
 import {
   createCollection,
-  createDocumentsWithSecret,
+  createDocumentsWithTimestamp,
   deleteCollection,
   orchestrationGrounding
 } from '@sap-ai-sdk/sample-code';
@@ -10,12 +10,12 @@ loadEnv();
 
 describe('document grounding', () => {
   let collectionId: string;
-  let secret: number;
+  let timestamp: number;
 
   beforeAll(async () => {
     collectionId = await createCollection();
-    secret = Math.random();
-    await createDocumentsWithSecret(collectionId, secret);
+    timestamp = Date.now();
+    await createDocumentsWithTimestamp(collectionId, timestamp);
   });
 
   afterAll(async () => {
@@ -24,6 +24,6 @@ describe('document grounding', () => {
 
   it('should get the grounding secret via orchestration API', async () => {
     const result = await orchestrationGrounding();
-    expect(result.getContent()).toEqual(secret.toString());
+    expect(result.getContent()).toEqual(timestamp.toString());
   });
 });

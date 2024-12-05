@@ -245,7 +245,7 @@ export async function orchestrationGrounding(): Promise<OrchestrationResponse> {
   return orchestrationClient.chatCompletion({
     inputParams: {
       groundingRequest:
-        'What is the secret number for this SAP AI SDK JavaScript end to end test? Return only the number without any other text.'
+        'When was the last time SAP AI SDK JavaScript end to end test was executed? Return only the latest timestamp in milliseconds without any other text.'
     }
   });
 }

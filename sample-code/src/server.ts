@@ -33,7 +33,7 @@ import {
 } from './langchain-azure-openai.js';
 import {
   createCollection,
-  createDocumentsWithSecret,
+  createDocumentsWithTimestamp,
   deleteCollection
 } from './document-grounding.js';
 import type { AiApiError, AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
@@ -273,20 +273,20 @@ app.get('/document-grounding/invoke', async (req, res) => {
 
     // Create an empty collection.
     const collectionId = await createCollection();
-    res.write(`Collection created:\t\t${collectionId}\n`);
+    res.write(`Collection created:\t\t\t${collectionId}\n`);
 
-    // Create a document with a generated random number.
-    const secret = Math.random();
-    await createDocumentsWithSecret(collectionId, secret);
-    res.write(`Document created with secret:\t${secret}\n`);
+    // Create a document with the current timestamp.
+    const timestamp = Date.now();
+    await createDocumentsWithTimestamp(collectionId, timestamp);
+    res.write(`Document created with timestamp:\t${timestamp}\n`);
 
     // Send an orchestration chat completion request with grounding module configured.
     const result = await orchestrationGrounding();
-    res.write(`Orchestration response:\t\t${result.getContent()}\n`);
+    res.write(`Orchestration responded with timestamp:\t${result.getContent()}\n`);
 
     // Delete the created collection.
     await deleteCollection(collectionId);
-    res.write(`Collection deleted:\t\t${collectionId}\n`);
+    res.write(`Collection deleted:\t\t\t${collectionId}\n`);
 
     res.end();
   } catch (error: any) {
