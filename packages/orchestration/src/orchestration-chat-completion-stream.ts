@@ -6,8 +6,8 @@ import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { OrchestrationChatCompletionStreamResponse } from './orchestration-chat-completion-stream-response.js';
 
 const logger = createLogger({
-  package: 'foundation-models',
-  messageContext: 'azure-openai-chat-completion-stream'
+  package: 'orchestration',
+  messageContext: 'orchestration-chat-completion-stream'
 });
 
 /**
@@ -24,7 +24,7 @@ export class OrchestrationChatCompletionStream<Item> extends SseStream<Item> {
     response: HttpResponse,
     controller: AbortController
   ): OrchestrationChatCompletionStream<CompletionPostResponseStreaming> {
-    const stream = SseStream.transformToSseStream<any>(response, controller);
+    const stream = SseStream.transformToSseStream<any>(response, controller); // TODO: Check if this can be narrowed
     return new OrchestrationChatCompletionStream(stream.iterator, controller);
   }
 
@@ -49,7 +49,7 @@ export class OrchestrationChatCompletionStream<Item> extends SseStream<Item> {
     response?: OrchestrationChatCompletionStreamResponse<CompletionPostResponseStreaming>
   ): AsyncGenerator<OrchestrationChatCompletionStreamChunkResponse> {
     for await (const chunk of stream) {
-      chunk.data.choices.forEach((choice: any) => {
+      chunk.data.orchestration_result?.choices.forEach((choice: any) => {
         const choiceIndex = choice.index;
         if (choiceIndex >= 0) {
           const finishReason = chunk.getFinishReason(choiceIndex);
@@ -57,7 +57,7 @@ export class OrchestrationChatCompletionStream<Item> extends SseStream<Item> {
             if (response) {
               response._getFinishReasons().set(choiceIndex, finishReason);
             }
-            switch (finishReason) {
+            switch (finishReason) { // TODO: Cover all finish reasons
               case 'content_filter':
                 logger.error(
                   `Choice ${choiceIndex}: Stream finished with content filter hit.`

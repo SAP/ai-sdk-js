@@ -9,7 +9,7 @@ import { apiVersion, type AzureOpenAiEmbeddingModel } from './model-types.js';
 import type { AzureOpenAiEmbeddingParameters } from './azure-openai-embedding-types.js';
 
 /**
- * Azure OpenAI client for embeddings.
+ * Azure OpenAI client for embeddings./home/i519840/code/ai-sdk-js/packages/orchestration/src.
  */
 export class AzureOpenAiEmbeddingClient {
   /**
