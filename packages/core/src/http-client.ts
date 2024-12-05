@@ -1,6 +1,7 @@
 import { mergeIgnoreCase, removeLeadingSlashes } from '@sap-cloud-sdk/util';
 import { executeHttpRequest } from '@sap-cloud-sdk/http-client';
 import { getAiCoreDestination } from './context.js';
+import type { DestinationFetchOptions, DestinationForServiceBindingOptions } from '@sap-cloud-sdk/connectivity';
 import type {
   HttpRequestConfig,
   HttpResponse
@@ -44,14 +45,16 @@ export interface EndpointOptions {
  * @param endpointOptions - The options to call an endpoint.
  * @param data - The input parameters for the request.
  * @param requestConfig - The request configuration.
+ * @param destination - The destination to use for the request.
  * @returns The {@link HttpResponse} from the AI Core service.
  */
 export async function executeRequest(
   endpointOptions: EndpointOptions,
   data: any,
-  requestConfig?: CustomRequestConfig
+  requestConfig?: CustomRequestConfig,
+  destination?: DestinationFetchOptions & DestinationForServiceBindingOptions
 ): Promise<HttpResponse> {
-  const aiCoreDestination = await getAiCoreDestination();
+  const aiCoreDestination = await getAiCoreDestination(destination);
   const { url, apiVersion, resourceGroup = 'default' } = endpointOptions;
 
   const mergedRequestConfig = {

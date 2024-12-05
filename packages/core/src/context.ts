@@ -1,9 +1,13 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import {
+  assertHttpDestination,
+  getDestination,
   getServiceBinding,
   transformServiceBindingToDestination
 } from '@sap-cloud-sdk/connectivity';
 import type {
+  DestinationFetchOptions,
+  DestinationForServiceBindingOptions,
   HttpDestination,
   Service,
   ServiceCredentials
@@ -17,10 +21,22 @@ const logger = createLogger({
 let aiCoreServiceBinding: Service | undefined;
 
 /**
- * Returns a destination object from AI Core service binding.
+ * Returns a destination object.
+ * @param destination - The destination to use for the request.
  * @returns The destination object.
  */
-export async function getAiCoreDestination(): Promise<HttpDestination> {
+export async function getAiCoreDestination(destination?: DestinationFetchOptions & DestinationForServiceBindingOptions): Promise<HttpDestination> {
+  // If Destination is provided, get the destination and return it.
+  if (destination) {
+    const resolvedDestination = await getDestination(destination);
+    if (!resolvedDestination) {
+      throw new Error('Could not resolve destination.');
+    }
+    assertHttpDestination(resolvedDestination);
+    return resolvedDestination;
+  }
+
+  // Otherwise, get the destination from env or service binding with default service name "aicore".
   if (!aiCoreServiceBinding) {
     aiCoreServiceBinding =
       getAiCoreServiceKeyFromEnv() || getServiceBinding('aicore');
