@@ -71,6 +71,9 @@ export function constructCompletionPostRequest(
         }),
         ...(Object.keys(config?.masking || {}).length && {
           masking_module_config: config.masking
+        }),
+        ...(Object.keys(config?.grounding || {}).length && {
+          grounding_module_config: config.grounding
         })
       }
     },
