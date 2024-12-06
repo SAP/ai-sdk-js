@@ -11,7 +11,8 @@ import {
   orchestrationTemplating,
   orchestrationInputFiltering,
   orchestrationOutputFiltering,
-  orchestrationRequestConfig
+  orchestrationRequestConfig,
+  orchestrationFromJSON
 } from './orchestration.js';
 import {
   getDeployments,
@@ -126,11 +127,18 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       inputFiltering: orchestrationInputFiltering,
       outputFiltering: orchestrationOutputFiltering,
       requestConfig: orchestrationRequestConfig,
+      fromJSON: orchestrationFromJSON,
       default: orchestrationChatCompletion
     }[sampleCase] || orchestrationChatCompletion;
 
   try {
-    const result = (await testCase()) as OrchestrationResponse;
+    const result =
+      sampleCase === 'fromJSON'
+        ? // File path should be relative to the root. For this example, `sample-code` is the root.
+          ((await testCase(
+            './src/ModelOrchConfig.json'
+          )) as OrchestrationResponse)
+        : ((await testCase()) as OrchestrationResponse);
     if (sampleCase === 'inputFiltering') {
       res.send('Input filter applied successfully');
     } else if (sampleCase === 'outputFiltering') {

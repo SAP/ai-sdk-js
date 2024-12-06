@@ -10,7 +10,8 @@ export {
   orchestrationInputFiltering,
   orchestrationOutputFiltering,
   orchestrationRequestConfig,
-  orchestrationCompletionMasking
+  orchestrationCompletionMasking,
+  orchestrationFromJSON
 } from './orchestration.js';
 export {
   invoke,
