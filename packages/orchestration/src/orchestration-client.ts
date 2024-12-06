@@ -1,6 +1,8 @@
 import { executeRequest } from '@sap-ai-sdk/core';
 import { resolveDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
 import { OrchestrationResponse } from './orchestration-response.js';
+import { OrchestrationChatCompletionStream } from './orchestration-chat-completion-stream.js';
+import { OrchestrationChatCompletionStreamResponse } from './orchestration-chat-completion-stream-response.js';
 import type { CustomRequestConfig } from '@sap-ai-sdk/core';
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api/internal.js';
 import type { CompletionPostRequest } from './client/api/schema/index.js';
@@ -8,6 +10,7 @@ import type {
   OrchestrationModuleConfig,
   Prompt
 } from './orchestration-types.js';
+import type { OrchestrationChatCompletionStreamChunkResponse } from './orchestration-chat-completion-stream-chunk-response.js';
 
 /**
  * Get the orchestration client.
@@ -50,6 +53,44 @@ export class OrchestrationClient {
 
     return new OrchestrationResponse(response);
   }
+
+  async stream(
+    prompt?: Prompt,
+    controller = new AbortController(),
+    requestConfig?: CustomRequestConfig
+  ): Promise<OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>> {
+    const response = new OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>();
+    response.stream = (await this.createStream(controller, prompt, requestConfig))
+      ._pipe(OrchestrationChatCompletionStream._processChunk)
+      ._pipe(OrchestrationChatCompletionStream._processFinishReason, response)
+      ._pipe(OrchestrationChatCompletionStream._processTokenUsage, response);
+    return response;
+  }
+
+  private async createStream(
+    controller: AbortController,
+    prompt?: Prompt,
+    requestConfig?: CustomRequestConfig
+  ): Promise<OrchestrationChatCompletionStream<any>> {
+    const body = constructCompletionPostRequest(this.config, prompt, true);
+    const deploymentId = await resolveDeploymentId({
+      scenarioId: 'orchestration',
+      resourceGroup: this.deploymentConfig?.resourceGroup
+    });
+
+    const response = await executeRequest(
+      {
+        url: `/inference/deployments/${deploymentId}/completion`,
+        resourceGroup: this.deploymentConfig?.resourceGroup
+      },
+      body,
+      {
+        ...requestConfig,
+        signal: controller.signal
+      }
+    );
+    return OrchestrationChatCompletionStream._create(response, controller);
+  };
 }
 
 /**
@@ -57,10 +98,12 @@ export class OrchestrationClient {
  */
 export function constructCompletionPostRequest(
   config: OrchestrationModuleConfig,
-  prompt?: Prompt
+  prompt?: Prompt,
+  stream = false
 ): CompletionPostRequest {
   return {
     orchestration_config: {
+      stream,
       module_configurations: {
         templating_module_config: {
           template: config.templating.template
