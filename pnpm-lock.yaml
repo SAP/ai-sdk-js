@@ -33,7 +33,7 @@ importers:
         version: 3.24.0
       '@sap-cloud-sdk/eslint-config':
         specifier: ^3.24.0
-        version: 3.24.0(@types/eslint@8.56.10)(@typescript-eslint/eslint-plugin@8.16.0(@typescript-eslint/parser@8.16.0(eslint@9.16.0)(typescript@5.7.2))(eslint@9.16.0)(typescript@5.7.2))(eslint@9.16.0)(prettier@3.4.1)(typescript@5.7.2)
+        version: 3.24.0(@types/eslint@8.56.10)(@typescript-eslint/eslint-plugin@8.16.0(@typescript-eslint/parser@8.16.0(eslint@9.16.0)(typescript@5.7.2))(eslint@9.16.0)(typescript@5.7.2))(eslint@9.16.0)(prettier@3.4.2)(typescript@5.7.2)
       '@sap-cloud-sdk/generator-common':
         specifier: ^3.24.0
         version: 3.24.0
@@ -80,8 +80,8 @@ importers:
         specifier: ^13.5.6
         version: 13.5.6
       prettier:
-        specifier: ^3.4.1
-        version: 3.4.1
+        specifier: ^3.4.2
+        version: 3.4.2
       ts-jest:
         specifier: ^29.2.5
         version: 29.2.5(@babel/core@7.24.7)(@jest/transform@29.7.0)(@jest/types@29.6.3)(jest@30.0.0-alpha.6(@types/node@20.17.9)(ts-node@10.9.2(@types/node@20.17.9)(typescript@5.7.2)))(typescript@5.7.2)
@@ -140,8 +140,8 @@ importers:
   packages/langchain:
     dependencies:
       '@langchain/core':
-        specifier: 0.3.20
-        version: 0.3.20(openai@4.61.1(zod@3.23.8))
+        specifier: 0.3.22
+        version: 0.3.22(openai@4.61.1(zod@3.23.8))
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../ai-api
@@ -198,11 +198,11 @@ importers:
   sample-code:
     dependencies:
       '@langchain/core':
-        specifier: 0.3.20
-        version: 0.3.20(openai@4.61.1(zod@3.23.8))
+        specifier: 0.3.22
+        version: 0.3.22(openai@4.61.1(zod@3.23.8))
       '@langchain/textsplitters':
         specifier: 0.1.0
-        version: 0.1.0(@langchain/core@0.3.20(openai@4.61.1(zod@3.23.8)))
+        version: 0.1.0(@langchain/core@0.3.22(openai@4.61.1(zod@3.23.8)))
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../packages/ai-api
@@ -222,11 +222,11 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0
       express:
-        specifier: ^4.21.1
-        version: 4.21.1
+        specifier: ^4.21.2
+        version: 4.21.2
       langchain:
         specifier: 0.3.6
-        version: 0.3.6(@langchain/core@0.3.20(openai@4.61.1(zod@3.23.8)))(axios@1.7.8)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.23.8))
+        version: 0.3.6(@langchain/core@0.3.22(openai@4.61.1(zod@3.23.8)))(axios@1.7.8)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.23.8))
 
   tests/e2e-tests:
     dependencies:
@@ -265,11 +265,11 @@ importers:
   tests/smoke-tests:
     dependencies:
       '@langchain/core':
-        specifier: 0.3.20
-        version: 0.3.20(openai@4.61.1(zod@3.23.8))
+        specifier: 0.3.22
+        version: 0.3.22(openai@4.61.1(zod@3.23.8))
       '@langchain/textsplitters':
         specifier: 0.1.0
-        version: 0.1.0(@langchain/core@0.3.20(openai@4.61.1(zod@3.23.8)))
+        version: 0.1.0(@langchain/core@0.3.22(openai@4.61.1(zod@3.23.8)))
       '@sap-ai-sdk/ai-api':
         specifier: canary
         version: 1.3.1-20241206013137.0
@@ -286,11 +286,11 @@ importers:
         specifier: ^3.24.0
         version: 3.24.0
       express:
-        specifier: ^4.21.1
-        version: 4.21.1
+        specifier: ^4.21.2
+        version: 4.21.2
       langchain:
         specifier: 0.3.6
-        version: 0.3.6(@langchain/core@0.3.20(openai@4.61.1(zod@3.23.8)))(axios@1.7.8)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.23.8))
+        version: 0.3.6(@langchain/core@0.3.22(openai@4.61.1(zod@3.23.8)))(axios@1.7.8)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.23.8))
     devDependencies:
       '@types/express':
         specifier: ^5.0.0
@@ -954,10 +954,6 @@ packages:
 
   '@jsdevtools/ono@7.1.3':
     resolution: {integrity: sha512-4JQNk+3mVzK3xh2rqd6RB4J46qUR19azEHBneZyTZM+c456qOrbbM/5xcR8huNCCcbVt7+UmizG6GuUvPvKUYg==}
-
-  '@langchain/core@0.3.20':
-    resolution: {integrity: sha512-29yg7dccRkJ1MdGFW4FSp6+yM8LoisBHWjXsoi+hTRTQBael3yhjnevrNtVjhF8FMAt/rDQan6bHsGCQkwcScA==}
-    engines: {node: '>=18'}
 
   '@langchain/core@0.3.22':
     resolution: {integrity: sha512-9rwEbxJi3Fgs8XuealNYxB6s0FCOnvXLnpiV5/oKgmEJtCRS91IqgJCWA8d59s4YkaEply/EsZVc2azNPK6Wjw==}
@@ -2325,6 +2321,10 @@ packages:
     resolution: {integrity: sha512-YSFlK1Ee0/GC8QaO91tHcDxJiE/X4FbpAyQWkxAvG6AXCuR65YzK8ua6D9hvi/TzUfZMpc+BwuM1IPw8fmQBiQ==}
     engines: {node: '>= 0.10.0'}
 
+  express@4.21.2:
+    resolution: {integrity: sha512-28HqgMZAmih1Czt9ny7qr6ek2qddF4FclbMzwhCREB6OFfH+rXAnuNCwo1/wFvrtbgsQDb4kSbX9de9lFbrXnA==}
+    engines: {node: '>= 0.10.0'}
+
   extendable-error@0.1.7:
     resolution: {integrity: sha512-UOiS2in6/Q0FK0R0q6UY9vYpQ21mr/Qn1KOnte7vsACuNJf514WvCCUHSRCPcgjPT2bAhNIJdlE6bVap1GKmeg==}
 
@@ -3538,10 +3538,6 @@ packages:
   oas-validator@5.0.8:
     resolution: {integrity: sha512-cu20/HE5N5HKqVygs3dt94eYJfBi0TsZvPVXDhbXQHiEityDN+RROTleefoKRKKJ9dFAF2JBkDHgvWj0sjKGmw==}
 
-  object-inspect@1.13.2:
-    resolution: {integrity: sha512-IRZSRuzJiynemAXPYtPe5BoI/RESNYR7TYm50MC5Mqbd3Jmw5y790sErYw3V6SryFJD64b74qQQs9wn5Bg/k3g==}
-    engines: {node: '>= 0.4'}
-
   object-inspect@1.13.3:
     resolution: {integrity: sha512-kDCGIbxkDSXE3euJZZXzc6to7fCrKHNI/hSRQnRuQ+BWjFNzZwiFF8fj/6o2t2G9/jTj8PSIYTfCLelLZEeRpA==}
     engines: {node: '>= 0.4'}
@@ -3722,6 +3718,9 @@ packages:
   path-to-regexp@0.1.10:
     resolution: {integrity: sha512-7lf7qcQidTku0Gu3YDPc8DJ1q7OOucfa/BSsIwjuh56VU7katFvuM8hULfkwB3Fns/rsVF7PwPKVw1sl5KQS9w==}
 
+  path-to-regexp@0.1.12:
+    resolution: {integrity: sha512-RA1GjUVMnvYFxuqovrEqZoxxW5NUZqbwKtYz/Tt7nXerk0LbLblQmrsgdeOxV5SFHf0UDggjS/bSeOZwt1pmEQ==}
+
   path-type@4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
@@ -3791,8 +3790,8 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
 
-  prettier@3.4.1:
-    resolution: {integrity: sha512-G+YdqtITVZmOJje6QkXQWzl3fSfMxFwm1tjTyo9exhkmWSqC4Yhd1+lug++IlR2mvRVAxEDDWYkQdeSztajqgg==}
+  prettier@3.4.2:
+    resolution: {integrity: sha512-e9MewbtFo+Fevyuxn/4rrcDAaq0IYxPGLvObpQjiZBMAzB9IGmzlnG9RZy3FFas+eBMu2vA0CszMeduow5dIuQ==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -5465,22 +5464,6 @@ snapshots:
 
   '@jsdevtools/ono@7.1.3': {}
 
-  '@langchain/core@0.3.20(openai@4.61.1(zod@3.23.8))':
-    dependencies:
-      ansi-styles: 5.2.0
-      camelcase: 6.3.0
-      decamelize: 1.2.0
-      js-tiktoken: 1.0.14
-      langsmith: 0.2.8(openai@4.61.1(zod@3.23.8))
-      mustache: 4.2.0
-      p-queue: 6.6.2
-      p-retry: 4.6.2
-      uuid: 10.0.0
-      zod: 3.23.8
-      zod-to-json-schema: 3.23.5(zod@3.23.8)
-    transitivePeerDependencies:
-      - openai
-
   '@langchain/core@0.3.22(openai@4.61.1(zod@3.23.8))':
     dependencies:
       ansi-styles: 5.2.0
@@ -5497,9 +5480,9 @@ snapshots:
     transitivePeerDependencies:
       - openai
 
-  '@langchain/openai@0.3.2(@langchain/core@0.3.20(openai@4.61.1(zod@3.23.8)))':
+  '@langchain/openai@0.3.2(@langchain/core@0.3.22(openai@4.61.1(zod@3.23.8)))':
     dependencies:
-      '@langchain/core': 0.3.20(openai@4.61.1(zod@3.23.8))
+      '@langchain/core': 0.3.22(openai@4.61.1(zod@3.23.8))
       js-tiktoken: 1.0.14
       openai: 4.61.1(zod@3.23.8)
       zod: 3.23.8
@@ -5507,9 +5490,9 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@langchain/textsplitters@0.1.0(@langchain/core@0.3.20(openai@4.61.1(zod@3.23.8)))':
+  '@langchain/textsplitters@0.1.0(@langchain/core@0.3.22(openai@4.61.1(zod@3.23.8)))':
     dependencies:
-      '@langchain/core': 0.3.20(openai@4.61.1(zod@3.23.8))
+      '@langchain/core': 0.3.22(openai@4.61.1(zod@3.23.8))
       js-tiktoken: 1.0.14
 
   '@manypkg/find-root@1.1.0':
@@ -5688,7 +5671,7 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/eslint-config@3.24.0(@types/eslint@8.56.10)(@typescript-eslint/eslint-plugin@8.16.0(@typescript-eslint/parser@8.16.0(eslint@9.16.0)(typescript@5.7.2))(eslint@9.16.0)(typescript@5.7.2))(eslint@9.16.0)(prettier@3.4.1)(typescript@5.7.2)':
+  '@sap-cloud-sdk/eslint-config@3.24.0(@types/eslint@8.56.10)(@typescript-eslint/eslint-plugin@8.16.0(@typescript-eslint/parser@8.16.0(eslint@9.16.0)(typescript@5.7.2))(eslint@9.16.0)(typescript@5.7.2))(eslint@9.16.0)(prettier@3.4.2)(typescript@5.7.2)':
     dependencies:
       '@eslint/js': 9.15.0
       '@stylistic/eslint-plugin': 2.11.0(eslint@9.16.0)(typescript@5.7.2)
@@ -5696,9 +5679,9 @@ snapshots:
       eslint: 9.16.0
       eslint-config-prettier: 9.1.0(eslint@9.16.0)
       eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@8.16.0(eslint@9.16.0)(typescript@5.7.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.16.0(eslint@9.16.0)(typescript@5.7.2))(eslint@9.16.0))(eslint@9.16.0)
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.16.0(eslint@9.16.0)(typescript@5.7.2))(eslint-import-resolver-typescript@3.6.3)(eslint@9.16.0)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.16.0(eslint@9.16.0)(typescript@5.7.2))(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@8.16.0(eslint@9.16.0)(typescript@5.7.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.16.0(eslint@9.16.0)(typescript@5.7.2))(eslint@9.16.0))(eslint@9.16.0))(eslint@9.16.0)
       eslint-plugin-jsdoc: 50.6.0(eslint@9.16.0)
-      eslint-plugin-prettier: 5.2.1(@types/eslint@8.56.10)(eslint-config-prettier@9.1.0(eslint@9.16.0))(eslint@9.16.0)(prettier@3.4.1)
+      eslint-plugin-prettier: 5.2.1(@types/eslint@8.56.10)(eslint-config-prettier@9.1.0(eslint@9.16.0))(eslint@9.16.0)(prettier@3.4.2)
       eslint-plugin-regex: 1.10.0(eslint@9.16.0)
       eslint-plugin-unused-imports: 4.1.4(@typescript-eslint/eslint-plugin@8.16.0(@typescript-eslint/parser@8.16.0(eslint@9.16.0)(typescript@5.7.2))(eslint@9.16.0)(typescript@5.7.2))(eslint@9.16.0)
       typescript-eslint: 8.16.0(eslint@9.16.0)(typescript@5.7.2)
@@ -5718,7 +5701,7 @@ snapshots:
       fast-levenshtein: 3.0.0
       fs-extra: 11.2.0
       glob: 10.4.5
-      prettier: 3.4.1
+      prettier: 3.4.2
       typescript: 5.6.3
       voca: 1.4.1
       yargs: 17.7.2
@@ -7086,7 +7069,7 @@ snapshots:
       is-bun-module: 1.3.0
       is-glob: 4.0.3
     optionalDependencies:
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.16.0(eslint@9.16.0)(typescript@5.7.2))(eslint-import-resolver-typescript@3.6.3)(eslint@9.16.0)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.16.0(eslint@9.16.0)(typescript@5.7.2))(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@8.16.0(eslint@9.16.0)(typescript@5.7.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.16.0(eslint@9.16.0)(typescript@5.7.2))(eslint@9.16.0))(eslint@9.16.0))(eslint@9.16.0)
     transitivePeerDependencies:
       - '@typescript-eslint/parser'
       - eslint-import-resolver-node
@@ -7104,7 +7087,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.16.0(eslint@9.16.0)(typescript@5.7.2))(eslint-import-resolver-typescript@3.6.3)(eslint@9.16.0):
+  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.16.0(eslint@9.16.0)(typescript@5.7.2))(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@8.16.0(eslint@9.16.0)(typescript@5.7.2))(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.16.0(eslint@9.16.0)(typescript@5.7.2))(eslint@9.16.0))(eslint@9.16.0))(eslint@9.16.0):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.8
@@ -7150,10 +7133,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-prettier@5.2.1(@types/eslint@8.56.10)(eslint-config-prettier@9.1.0(eslint@9.16.0))(eslint@9.16.0)(prettier@3.4.1):
+  eslint-plugin-prettier@5.2.1(@types/eslint@8.56.10)(eslint-config-prettier@9.1.0(eslint@9.16.0))(eslint@9.16.0)(prettier@3.4.2):
     dependencies:
       eslint: 9.16.0
-      prettier: 3.4.1
+      prettier: 3.4.2
       prettier-linter-helpers: 1.0.0
       synckit: 0.9.2
     optionalDependencies:
@@ -7350,6 +7333,42 @@ snapshots:
       on-finished: 2.4.1
       parseurl: 1.3.3
       path-to-regexp: 0.1.10
+      proxy-addr: 2.0.7
+      qs: 6.13.0
+      range-parser: 1.2.1
+      safe-buffer: 5.2.1
+      send: 0.19.0
+      serve-static: 1.16.2
+      setprototypeof: 1.2.0
+      statuses: 2.0.1
+      type-is: 1.6.18
+      utils-merge: 1.0.1
+      vary: 1.1.2
+    transitivePeerDependencies:
+      - supports-color
+
+  express@4.21.2:
+    dependencies:
+      accepts: 1.3.8
+      array-flatten: 1.1.1
+      body-parser: 1.20.3
+      content-disposition: 0.5.4
+      content-type: 1.0.5
+      cookie: 0.7.1
+      cookie-signature: 1.0.6
+      debug: 2.6.9
+      depd: 2.0.0
+      encodeurl: 2.0.0
+      escape-html: 1.0.3
+      etag: 1.8.1
+      finalhandler: 1.3.1
+      fresh: 0.5.2
+      http-errors: 2.0.0
+      merge-descriptors: 1.0.3
+      methods: 1.1.2
+      on-finished: 2.4.1
+      parseurl: 1.3.3
+      path-to-regexp: 0.1.12
       proxy-addr: 2.0.7
       qs: 6.13.0
       range-parser: 1.2.1
@@ -8463,11 +8482,11 @@ snapshots:
 
   kuler@2.0.0: {}
 
-  langchain@0.3.6(@langchain/core@0.3.20(openai@4.61.1(zod@3.23.8)))(axios@1.7.8)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.23.8)):
+  langchain@0.3.6(@langchain/core@0.3.22(openai@4.61.1(zod@3.23.8)))(axios@1.7.8)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.23.8)):
     dependencies:
-      '@langchain/core': 0.3.20(openai@4.61.1(zod@3.23.8))
-      '@langchain/openai': 0.3.2(@langchain/core@0.3.20(openai@4.61.1(zod@3.23.8)))
-      '@langchain/textsplitters': 0.1.0(@langchain/core@0.3.20(openai@4.61.1(zod@3.23.8)))
+      '@langchain/core': 0.3.22(openai@4.61.1(zod@3.23.8))
+      '@langchain/openai': 0.3.2(@langchain/core@0.3.22(openai@4.61.1(zod@3.23.8)))
+      '@langchain/textsplitters': 0.1.0(@langchain/core@0.3.22(openai@4.61.1(zod@3.23.8)))
       js-tiktoken: 1.0.14
       js-yaml: 4.1.0
       jsonpointer: 5.0.1
@@ -8802,8 +8821,6 @@ snapshots:
       should: 13.2.3
       yaml: 1.10.2
 
-  object-inspect@1.13.2: {}
-
   object-inspect@1.13.3: {}
 
   object-keys@1.1.1: {}
@@ -8999,6 +9016,8 @@ snapshots:
 
   path-to-regexp@0.1.10: {}
 
+  path-to-regexp@0.1.12: {}
+
   path-type@4.0.0: {}
 
   picocolors@1.1.0: {}
@@ -9059,7 +9078,7 @@ snapshots:
 
   prettier@3.0.3: {}
 
-  prettier@3.4.1: {}
+  prettier@3.4.2: {}
 
   pretty-format@29.7.0:
     dependencies:
@@ -9334,7 +9353,7 @@ snapshots:
       call-bind: 1.0.7
       es-errors: 1.3.0
       get-intrinsic: 1.2.4
-      object-inspect: 1.13.2
+      object-inspect: 1.13.3
 
   signal-exit@3.0.7: {}
 
