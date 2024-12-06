@@ -52,7 +52,9 @@ export class OpenApiRequestBuilder<
    * @param destination - The destination to execute the request against.
    * @returns A promise resolving to the requested return type.
    */
-  async execute(destination?: HttpDestinationOrFetchOptions): Promise<ResponseT> {
+  async execute(
+    destination?: HttpDestinationOrFetchOptions
+  ): Promise<ResponseT> {
     const response = await this.executeRaw(destination);
     if ('data' in response) {
       return response.data;

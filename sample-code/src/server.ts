@@ -179,7 +179,10 @@ app.get('/ai-api/deployments', async (req, res) => {
 app.get('/ai-api/deployments-with-destination', async (req, res) => {
   try {
     res.send(
-      await getDeploymentsWithDestination('default', req.query.status as AiDeploymentStatus)
+      await getDeploymentsWithDestination(
+        'default',
+        req.query.status as AiDeploymentStatus
+      )
     );
   } catch (error: any) {
     console.error(error);

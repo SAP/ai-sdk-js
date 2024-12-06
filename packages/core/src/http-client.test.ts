@@ -1,5 +1,4 @@
 import nock from 'nock';
-import { registerDestination } from '@sap-cloud-sdk/connectivity';
 import {
   mockClientCredentialsGrantCall,
   aiCoreDestination,
