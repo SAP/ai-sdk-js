@@ -86,7 +86,7 @@ describe('http-client', () => {
       mockPrompt,
       {},
       {
-        destinationName: 'my-aicore-destination'
+        destinationName: 'aicore'
       }
     );
     expect(scope.isDone()).toBe(true);
