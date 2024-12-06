@@ -49,10 +49,11 @@ export class OpenApiRequestBuilder<
 
   /**
    * Execute request and get the response data. Use this to conveniently access the data of a service without technical information about the response.
+   * @param destination - The destination to execute the request against.
    * @returns A promise resolving to the requested return type.
    */
-  async execute(): Promise<ResponseT> {
-    const response = await this.executeRaw();
+  async execute(destination?: HttpDestinationOrFetchOptions): Promise<ResponseT> {
+    const response = await this.executeRaw(destination);
     if ('data' in response) {
       return response.data;
     }

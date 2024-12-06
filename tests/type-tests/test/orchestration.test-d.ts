@@ -78,6 +78,22 @@ expectType<TokenUsage>(
   ).getTokenUsage()
 );
 
+expectType<Promise<OrchestrationResponse>>(
+  new OrchestrationClient({
+    templating: {
+      template: [{ role: 'user', content: 'Hello!' }]
+    },
+    llm: {
+      model_name: 'gpt-35-turbo-16k',
+      model_params: {}
+    }
+  }, {
+    resourceGroup: 'resourceGroup'
+  }, {
+    destinationName: 'destinationName'
+  }).chatCompletion()
+);
+
 /**
  * Chat Completion with optional parameters.
  */

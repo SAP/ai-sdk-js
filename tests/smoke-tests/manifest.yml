@@ -6,5 +6,6 @@ applications:
       - nodejs_buildpack
     services:
       - default_aicore
+      - default_destination
     routes:
       - route: 'smoke-test-app.cfapps.eu12-001.hana.ondemand.com'

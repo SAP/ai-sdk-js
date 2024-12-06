@@ -2,7 +2,8 @@ import nock from 'nock';
 import { registerDestination } from '@sap-cloud-sdk/connectivity';
 import {
   mockClientCredentialsGrantCall,
-  aiCoreDestination
+  aiCoreDestination,
+  mockDestination
 } from '../../../test-util/mock-http.js';
 import { executeRequest } from './http-client.js';
 
@@ -66,10 +67,7 @@ describe('http-client', () => {
   });
 
   it('should execute a request using custom destination', async () => {
-    registerDestination({
-      name: 'my-aicore-destination',
-      url: 'http://example.com'
-    });
+    mockDestination();
 
     const mockPrompt = { prompt: 'some test prompt' };
     const mockPromptResponse = { completion: 'some test completion' };
