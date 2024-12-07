@@ -11,8 +11,8 @@ export type AzureOpenAiChatCompletionNamedToolChoice = {
   /**
    * The type of the tool. Currently, only `function` is supported.
    */
-  type?: 'function';
-  function?: {
+  type: 'function';
+  function: {
     /**
      * The name of the function to call.
      */

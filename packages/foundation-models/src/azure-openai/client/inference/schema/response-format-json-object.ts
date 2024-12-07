@@ -5,11 +5,11 @@
  */
 
 /**
- * Translation or transcription response when response_format was json
+ * Representation of the 'AzureOpenAiResponseFormatJsonObject' schema.
  */
-export type AzureOpenAiAudioResponse = {
+export type AzureOpenAiResponseFormatJsonObject = {
   /**
-   * Translated or transcribed text.
+   * The type of response format being defined: `json_object`
    */
-  text: string;
+  type: 'json_object';
 } & Record<string, any>;

@@ -15,7 +15,7 @@ export type AzureOpenAiGenerateImagesResponse = {
    */
   created: number;
   /**
-   * The result data of the operation, if successful.
+   * The result data of the operation, if successful
    */
   data: AzureOpenAiImageResult[];
 } & Record<string, any>;

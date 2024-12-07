@@ -1,5 +1,8 @@
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.js';
+import type {
+  AzureOpenAiCompletionUsage,
+  AzureOpenAiCreateChatCompletionResponse
+} from './client/inference/schema/index.js';
 
 /**
  * Azure OpenAI chat completion response.
@@ -17,7 +20,7 @@ export class AzureOpenAiChatCompletionResponse {
    * Usage of tokens in the response.
    * @returns Token usage.
    */
-  getTokenUsage(): this['data']['usage'] {
+  getTokenUsage(): AzureOpenAiCompletionUsage | undefined {
     return this.data.usage;
   }
 
@@ -26,7 +29,15 @@ export class AzureOpenAiChatCompletionResponse {
    * @param choiceIndex - The index of the choice to parse.
    * @returns The finish reason.
    */
-  getFinishReason(choiceIndex = 0): string | undefined {
+  getFinishReason(
+    choiceIndex = 0
+  ):
+    | 'stop'
+    | 'length'
+    | 'tool_calls'
+    | 'content_filter'
+    | 'function_call'
+    | undefined {
     return this.data.choices.find(c => c.index === choiceIndex)?.finish_reason;
   }
 
