@@ -24,7 +24,10 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
   max_tokens?: number;
   private openAiChatClient: AzureOpenAiChatClientBase;
 
-  constructor(fields: AzureOpenAiChatModelParams, destination?: HttpDestinationOrFetchOptions) {
+  constructor(
+    fields: AzureOpenAiChatModelParams,
+    destination?: HttpDestinationOrFetchOptions
+  ) {
     super(fields);
     this.openAiChatClient = new AzureOpenAiChatClientBase(fields, destination);
     this.temperature = fields.temperature;

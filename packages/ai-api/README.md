@@ -67,24 +67,24 @@ In addition to the examples below, you can find more **sample code** [here](http
 
 ```ts
 async function createArtifact() {
+  const requestBody: ArtifactPostData = {
+    name: 'training-test-dataset',
+    kind: 'dataset',
+    url: 'https://ai.example.com',
+    scenarioId: 'foundation-models'
+  };
 
-    const requestBody: ArtifactPostData = {
-        name: 'training-test-dataset',
-        kind: 'dataset',
-        url: 'https://ai.example.com',
-        scenarioId: 'foundation-models'
-    }
-
-    try {
-        const responseData: ArtifactCreationResponse = await ArtifactApi
-            .artifactCreate(requestBody, {'AI-Resource-Group': 'default'})
-            .execute();
-        return responseData;
-    } catch (errorData) {
-        const apiError = errorData.response.data.error as ApiError;
-        console.error('Status code:', errorData.response.status);
-        throw new Error(`Artifact creation failed: ${apiError.message}`);
-    }
+  try {
+    const responseData: ArtifactCreationResponse =
+      await ArtifactApi.artifactCreate(requestBody, {
+        'AI-Resource-Group': 'default'
+      }).execute();
+    return responseData;
+  } catch (errorData) {
+    const apiError = errorData.response.data.error as ApiError;
+    console.error('Status code:', errorData.response.status);
+    throw new Error(`Artifact creation failed: ${apiError.message}`);
+  }
 }
 ```
 
@@ -92,33 +92,34 @@ async function createArtifact() {
 
 ```ts
 async function createConfiguration() {
-    const requestBody: ConfigurationBaseData = {
-        name: 'gpt-35-turbo',
-        executableId: 'azure-openai',
-        scenarioId: 'foundation-models',
-        parameterBindings: [
-            {
-              "key": "modelName",
-              "value": "gpt-35-turbo"
-            },
-            {
-              "key": "modelVersion",
-              "value": "latest"
-            }
-        ],
-        inputArtifactBindings: []
-    }
+  const requestBody: ConfigurationBaseData = {
+    name: 'gpt-35-turbo',
+    executableId: 'azure-openai',
+    scenarioId: 'foundation-models',
+    parameterBindings: [
+      {
+        key: 'modelName',
+        value: 'gpt-35-turbo'
+      },
+      {
+        key: 'modelVersion',
+        value: 'latest'
+      }
+    ],
+    inputArtifactBindings: []
+  };
 
-    try {
-        const responseData: ConfigurationCreationResponse = await ConfigurationApi
-            .configurationCreate(requestBody, {'AI-Resource-Group': 'default'})
-            .execute();
-        return responseData;
-    } catch (errorData) {
-        const apiError = errorData.response.data.error as ApiError;
-        console.error('Status code:', errorData.response.status);
-        throw new Error(`Configuration creation failed: ${apiError.message}`);
-    }
+  try {
+    const responseData: ConfigurationCreationResponse =
+      await ConfigurationApi.configurationCreate(requestBody, {
+        'AI-Resource-Group': 'default'
+      }).execute();
+    return responseData;
+  } catch (errorData) {
+    const apiError = errorData.response.data.error as ApiError;
+    console.error('Status code:', errorData.response.status);
+    throw new Error(`Configuration creation failed: ${apiError.message}`);
+  }
 }
 ```
 
@@ -151,37 +152,41 @@ Thus, a modification request must be sent before deletion can occur.
 
 ```ts
 async function modifyDeployment() {
+  let deploymentId: string = '0a1b2c3d4e5f';
 
-    let deploymentId: string = '0a1b2c3d4e5f';
+  const deployment: DeploymentResponseWithDetails =
+    await DeploymentApi.deploymentGet(
+      deploymentId,
+      {},
+      { 'AI-Resource-Group': 'default' }
+    ).execute();
 
-    const deployment: DeploymentResponseWithDetails = await DeploymentApi
-        .deploymentGet(deploymentId, {}, {'AI-Resource-Group': 'default'})
-        .execute();
+  if (deployment.targetStatus === 'RUNNING') {
+    // Only RUNNING deployments can be STOPPED.
+    const requestBody: DeploymentModificationRequest = {
+      targetStatus: 'STOPPED'
+    };
 
-    if(deployment.targetStatus === 'RUNNING') {
-        // Only RUNNING deployments can be STOPPED.
-        const requestBody: DeploymentModificationRequest = {
-            targetStatus: 'STOPPED',
-        };
-
-        try {
-            await DeploymentApi
-                .deploymentModify(deploymentId, requestBody, {'AI-Resource-Group': 'default'})
-                .execute();
-        } catch (errorData) {
-            const apiError = errorData.response.data.error as ApiError;
-            console.error('Status code:', errorData.response.status);
-            throw new Error(`Deployment modification failed: ${apiError.message}`);
-        }
-    }
-    // Wait a few seconds for the deployment to stop
     try {
-        return DeploymentApi.deploymentDelete(deploymentId, { 'AI-Resource-Group': 'default' }).execute();
+      await DeploymentApi.deploymentModify(deploymentId, requestBody, {
+        'AI-Resource-Group': 'default'
+      }).execute();
     } catch (errorData) {
-        const apiError = errorData.response.data.error as ApiError;
-        console.error('Status code:', errorData.response.status);
-        throw new Error(`Deployment deletion failed: ${apiError.message}`);
+      const apiError = errorData.response.data.error as ApiError;
+      console.error('Status code:', errorData.response.status);
+      throw new Error(`Deployment modification failed: ${apiError.message}`);
     }
+  }
+  // Wait a few seconds for the deployment to stop
+  try {
+    return DeploymentApi.deploymentDelete(deploymentId, {
+      'AI-Resource-Group': 'default'
+    }).execute();
+  } catch (errorData) {
+    const apiError = errorData.response.data.error as ApiError;
+    console.error('Status code:', errorData.response.status);
+    throw new Error(`Deployment deletion failed: ${apiError.message}`);
+  }
 }
 ```
 
@@ -192,11 +197,11 @@ For example, when querying deployments targeting a destination with the name `my
 
 ```ts
 const queryParams = status ? { status } : {};
-  return DeploymentApi.deploymentQuery(queryParams, {
-    'AI-Resource-Group': resourceGroup
-  }).execute({
-    destinationName: 'my-destination'
-  });
+return DeploymentApi.deploymentQuery(queryParams, {
+  'AI-Resource-Group': resourceGroup
+}).execute({
+  destinationName: 'my-destination'
+});
 ```
 
 ## Local Testing

@@ -104,15 +104,17 @@ When initializing the `AzureOpenAiChatClient` and `AzureOpenAiEmbeddingClient` c
 For example, when targeting a destination with the name `my-destination`, the following code can be used:
 
 ```ts
-const chatClient = new AzureOpenAiChatClient({
-  modelName: 'gpt-4o',
-  modelVersion: '24-07-2021',
-  resourceGroup: 'my-resource-group'
-}, {
-  destinatioName: 'my-destination'
-});
+const chatClient = new AzureOpenAiChatClient(
+  {
+    modelName: 'gpt-4o',
+    modelVersion: '24-07-2021',
+    resourceGroup: 'my-resource-group'
+  },
+  {
+    destinatioName: 'my-destination'
+  }
+);
 ```
-
 
 ### Chat Client
 

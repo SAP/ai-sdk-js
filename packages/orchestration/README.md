@@ -376,16 +376,18 @@ When initializing the `OrchestrationClient` client, it is possible to provide a 
 For example, when targeting a destination with the name `my-destination`, the following code can be used:
 
 ```ts
-const orchestrationClient = new OrchestrationClient({
-  llm,
-  templating
-},
-{
-  resourceGroup: 'default'
-},
-{
-  destinationName: 'my-destination'
-});
+const orchestrationClient = new OrchestrationClient(
+  {
+    llm,
+    templating
+  },
+  {
+    resourceGroup: 'default'
+  },
+  {
+    destinationName: 'my-destination'
+  }
+);
 ```
 
 ## Local Testing

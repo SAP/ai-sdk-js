@@ -18,9 +18,15 @@ export class AzureOpenAiEmbeddingClient extends Embeddings {
 
   private openAiEmbeddingClient: AzureOpenAiEmbeddingClientBase;
 
-  constructor(fields: AzureOpenAiEmbeddingModelParams, destination?: HttpDestinationOrFetchOptions) {
+  constructor(
+    fields: AzureOpenAiEmbeddingModelParams,
+    destination?: HttpDestinationOrFetchOptions
+  ) {
     super(fields);
-    this.openAiEmbeddingClient = new AzureOpenAiEmbeddingClientBase(fields, destination);
+    this.openAiEmbeddingClient = new AzureOpenAiEmbeddingClientBase(
+      fields,
+      destination
+    );
     this.modelName = fields.modelName;
     this.modelVersion = fields.modelVersion;
     this.resourceGroup = fields.resourceGroup;
