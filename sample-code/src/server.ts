@@ -37,9 +37,9 @@ import {
   deleteCollection,
   retrieveDocuments
 } from './document-grounding.js';
+import type { RetievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type { AiApiError, AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
-import { RetievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 
 const app = express();
 const port = 8080;
@@ -333,17 +333,25 @@ app.get('/document-grounding/invoke-retrieve-documents', async (req, res) => {
     console.log(JSON.stringify(retrievalResult));
 
     res.write('Retrieved documents:\n');
-    (retrievalResult.results as RetievalPerFilterSearchResult[]).forEach((perFilterSearchResult) => {
-      res.write(`  - Filter: ${perFilterSearchResult.filterId}\n`);
-      perFilterSearchResult.results!.forEach(retievalDataRepositorySearchResult => {
-        res.write(`    - Data repository: ${retievalDataRepositorySearchResult.dataRepository.title}\n`);
-        retievalDataRepositorySearchResult.dataRepository.documents.forEach(retrievalDocument => {
-          retrievalDocument.chunks.forEach(chunk => {
-            res.write(`      - Chunk: ${chunk.content}\n`);
-          });
-        });
-      });
-    });
+    (retrievalResult.results as RetievalPerFilterSearchResult[]).forEach(
+      perFilterSearchResult => {
+        res.write(`  - Filter: ${perFilterSearchResult.filterId}\n`);
+        perFilterSearchResult.results!.forEach(
+          retievalDataRepositorySearchResult => {
+            res.write(
+              `    - Data repository: ${retievalDataRepositorySearchResult.dataRepository.title}\n`
+            );
+            retievalDataRepositorySearchResult.dataRepository.documents.forEach(
+              retrievalDocument => {
+                retrievalDocument.chunks.forEach(chunk => {
+                  res.write(`      - Chunk: ${chunk.content}\n`);
+                });
+              }
+            );
+          }
+        );
+      }
+    );
 
     // Delete the created collection.
     await deleteCollection(collectionId);
