@@ -40,10 +40,7 @@ export class OrchestrationClient {
     prompt?: Prompt,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationResponse> {
-    const response = await this.executeRequest(
-      prompt,
-      requestConfig
-    );
+    const response = await this.executeRequest(prompt, requestConfig);
 
     return new OrchestrationResponse(response);
   }
