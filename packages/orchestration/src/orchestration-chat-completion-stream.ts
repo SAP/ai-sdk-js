@@ -57,7 +57,9 @@ export class OrchestrationChatCompletionStream<Item> extends SseStream<Item> {
             if (response) {
               response._getFinishReasons().set(choiceIndex, finishReason);
             }
-            switch (finishReason) { // TODO: Cover all finish reasons
+            switch (
+              finishReason // TODO: Cover all finish reasons
+            ) {
               case 'content_filter':
                 logger.error(
                   `Choice ${choiceIndex}: Stream finished with content filter hit.`
