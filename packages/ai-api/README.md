@@ -22,6 +22,7 @@ We maintain a list of [currently available and tested AI Core APIs](https://gith
   - [Create a Configuration](#create-a-configuration)
   - [Create a Deployment](#create-a-deployment)
   - [Delete a Deployment](#delete-a-deployment)
+  - [Custom Destination](#custom-destination)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
@@ -64,7 +65,7 @@ In addition to the examples below, you can find more **sample code** [here](http
 
 ### Create an Artifact
 
-```TypeScript
+```ts
 async function createArtifact() {
 
     const requestBody: ArtifactPostData = {
@@ -89,7 +90,7 @@ async function createArtifact() {
 
 ### Create a Configuration
 
-```TypeScript
+```ts
 async function createConfiguration() {
     const requestBody: ConfigurationBaseData = {
         name: 'gpt-35-turbo',
@@ -148,7 +149,7 @@ async function createDeployment() {
 Only deployments with `targetStatus: STOPPED` can be deleted.
 Thus, a modification request must be sent before deletion can occur.
 
-```TypeScript
+```ts
 async function modifyDeployment() {
 
     let deploymentId: string = '0a1b2c3d4e5f';
@@ -182,6 +183,20 @@ async function modifyDeployment() {
         throw new Error(`Deployment deletion failed: ${apiError.message}`);
     }
 }
+```
+
+### Custom Destination
+
+When calling the `execute()` method, it is possible to provide a custom destination.
+For example, when querying deployments targeting a destination with the name `my-destination`, the following code can be used:
+
+```ts
+const queryParams = status ? { status } : {};
+  return DeploymentApi.deploymentQuery(queryParams, {
+    'AI-Resource-Group': resourceGroup
+  }).execute({
+    destinationName: 'my-destination'
+  });
 ```
 
 ## Local Testing

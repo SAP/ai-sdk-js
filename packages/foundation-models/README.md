@@ -15,6 +15,7 @@ This package incorporates generative AI foundation models into your AI activitie
   - [Azure OpenAI Chat Client](#azure-openai-chat-client)
   - [Azure OpenAI Embedding Client](#azure-openai-embedding-client)
   - [Custom Request Configuration](#custom-request-configuration)
+  - [Custom Destination](#custom-destination)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
@@ -259,6 +260,17 @@ const response = await client.run(
     // Add more request configuration here
   }
 );
+```
+
+### Custom Destination
+
+When initializing the `AzureOpenAiChatClient` and `AzureOpenAiEmbeddingClient` clients, it is possible to provide a custom destination.
+For example, when targeting a destination with the name `my-destination`, the following code can be used:
+
+```ts
+const client = await new AzureOpenAiChatClient('gpt-35-turbo', {
+  destinationName: 'my-destination'
+});
 ```
 
 ## Local Testing
