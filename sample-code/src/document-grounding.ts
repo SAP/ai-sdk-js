@@ -1,5 +1,12 @@
-import { CollectionsApi, DocumentsApi, RetrievalFederatedSearchAcrossDataRepositoriesApi } from '@sap-ai-sdk/document-grounding';
-import type { DocumentsListResponse, SearchResults } from '@sap-ai-sdk/document-grounding';
+import {
+  CollectionsApi,
+  DocumentsApi,
+  RetrievalFederatedSearchAcrossDataRepositoriesApi
+} from '@sap-ai-sdk/document-grounding';
+import type {
+  DocumentsListResponse,
+  SearchResults
+} from '@sap-ai-sdk/document-grounding';
 
 /**
  * Create a collection.
@@ -74,16 +81,15 @@ export async function createDocumentsWithTimestamp(
 export async function retrieveDocuments(): Promise<SearchResults> {
   return RetrievalFederatedSearchAcrossDataRepositoriesApi.retrievalV1RetrievalEndpointsSearchDataRepositories(
     {
-      query: 'When was the last time SAP AI SDK JavaScript end to end test was executed?',
+      query:
+        'When was the last time SAP AI SDK JavaScript end to end test was executed?',
       filters: [
         {
           id: 'my-filter',
           searchConfiguration: {
             maxChunkCount: 1
           },
-          dataRepositories: [
-            '*'
-          ],
+          dataRepositories: ['*'],
           dataRepositoryType: 'vector',
           dataRepositoryMetadata: [],
           documentMetadata: [],

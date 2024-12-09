@@ -273,37 +273,42 @@ app.get('/langchain/invoke-rag-chain', async (req, res) => {
   }
 });
 
-app.get('/document-grounding/invoke-orchestration-grounding', async (req, res) => {
-  try {
-    res.setHeader('Content-Type', 'text/event-stream');
-    res.setHeader('Connection', 'keep-alive');
-    res.flushHeaders();
+app.get(
+  '/document-grounding/invoke-orchestration-grounding',
+  async (req, res) => {
+    try {
+      res.setHeader('Content-Type', 'text/event-stream');
+      res.setHeader('Connection', 'keep-alive');
+      res.flushHeaders();
 
-    // Create an empty collection.
-    const collectionId = await createCollection();
-    res.write(`Collection created:\t\t\t${collectionId}\n`);
+      // Create an empty collection.
+      const collectionId = await createCollection();
+      res.write(`Collection created:\t\t\t${collectionId}\n`);
 
-    // Create a document with the current timestamp.
-    const timestamp = Date.now();
-    await createDocumentsWithTimestamp(collectionId, timestamp);
-    res.write(`Document created with timestamp:\t${timestamp}\n`);
+      // Create a document with the current timestamp.
+      const timestamp = Date.now();
+      await createDocumentsWithTimestamp(collectionId, timestamp);
+      res.write(`Document created with timestamp:\t${timestamp}\n`);
 
-    // Send an orchestration chat completion request with grounding module configured.
-    const groundingResult = await orchestrationGrounding();
-    res.write(`Orchestration responded with timestamp:\t${groundingResult.getContent()}\n`);
+      // Send an orchestration chat completion request with grounding module configured.
+      const groundingResult = await orchestrationGrounding();
+      res.write(
+        `Orchestration responded with timestamp:\t${groundingResult.getContent()}\n`
+      );
 
-    // Delete the created collection.
-    await deleteCollection(collectionId);
-    res.write(`Collection deleted:\t\t\t${collectionId}\n`);
+      // Delete the created collection.
+      await deleteCollection(collectionId);
+      res.write(`Collection deleted:\t\t\t${collectionId}\n`);
 
-    res.end();
-  } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+      res.end();
+    } catch (error: any) {
+      console.error(error);
+      res
+        .status(500)
+        .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+    }
   }
-});
+);
 
 app.get('/document-grounding/invoke-retrieve-documents', async (req, res) => {
   try {
@@ -326,12 +331,12 @@ app.get('/document-grounding/invoke-retrieve-documents', async (req, res) => {
     console.log(JSON.stringify(retrievalResult));
 
     res.write('Retrieved documents:\n');
-    retrievalResult.results.forEach((perFilterSearchResult) => {
+    retrievalResult.results.forEach(perFilterSearchResult => {
       res.write(`\t- Filter: ${perFilterSearchResult.filterId}\n`);
-      perFilterSearchResult.results.forEach((documentChunks) => {
+      perFilterSearchResult.results.forEach(documentChunks => {
         res.write(`\t\t- Data repository: ${documentChunks.title}\n`);
-        documentChunks.documents.forEach((documentOutput) => {
-          documentOutput.chunks.forEach((chunk) => {
+        documentChunks.documents.forEach(documentOutput => {
+          documentOutput.chunks.forEach(chunk => {
             res.write(`\t\t\t- ${chunk.content}\n`);
           });
         });
