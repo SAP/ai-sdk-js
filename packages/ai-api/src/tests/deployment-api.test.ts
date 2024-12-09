@@ -2,7 +2,8 @@ import nock from 'nock';
 import { DeploymentApi } from '../client/AI_CORE_API';
 import {
   aiCoreDestination,
-  mockClientCredentialsGrantCall
+  mockClientCredentialsGrantCall,
+  mockDestination
 } from '../../../../test-util/mock-http.js';
 import type {
   AiDeploymentCreationRequest,
@@ -168,6 +169,36 @@ describe('deployment', () => {
       await DeploymentApi.deploymentDelete(deploymentId, {
         'AI-Resource-Group': 'default'
       }).execute();
+
+    expect(result).toEqual(expectedResponse);
+  });
+
+  it('parses a successful response for delete request with custom destination', async () => {
+    mockDestination();
+
+    const deploymentId = '4e5f6g7h';
+    const expectedResponse: AiDeploymentDeletionResponse = {
+      id: '4e5f6g7h',
+      message: 'Deletion scheduled',
+      targetStatus: 'DELETED'
+    };
+
+    nock('http://example.com', {
+      reqheaders: {
+        'AI-Resource-Group': 'default'
+      }
+    })
+      .delete(`/v2/lm/deployments/${deploymentId}`)
+      .reply(200, expectedResponse, {
+        'Content-Type': 'application/json'
+      });
+
+    const result: AiDeploymentDeletionResponse =
+      await DeploymentApi.deploymentDelete(deploymentId, {
+        'AI-Resource-Group': 'default'
+      }).execute({
+        destinationName: 'aicore'
+      });
 
     expect(result).toEqual(expectedResponse);
   });

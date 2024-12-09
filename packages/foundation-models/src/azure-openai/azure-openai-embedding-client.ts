@@ -7,6 +7,7 @@ import {
 import { AzureOpenAiEmbeddingResponse } from './azure-openai-embedding-response.js';
 import { apiVersion, type AzureOpenAiEmbeddingModel } from './model-types.js';
 import type { AzureOpenAiEmbeddingParameters } from './azure-openai-embedding-types.js';
+import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 /**
  * Azure OpenAI client for embeddings.
@@ -18,7 +19,8 @@ export class AzureOpenAiEmbeddingClient {
    */
 
   constructor(
-    private modelDeployment: ModelDeployment<AzureOpenAiEmbeddingModel>
+    private modelDeployment: ModelDeployment<AzureOpenAiEmbeddingModel>,
+    private destination?: HttpDestinationOrFetchOptions
   ) {}
 
   /**
@@ -43,7 +45,8 @@ export class AzureOpenAiEmbeddingClient {
         resourceGroup
       },
       data,
-      requestConfig
+      requestConfig,
+      this.destination
     );
     return new AzureOpenAiEmbeddingResponse(response);
   }
