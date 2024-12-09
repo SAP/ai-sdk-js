@@ -3,6 +3,7 @@ import { resolveDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
 import { OrchestrationResponse } from './orchestration-response.js';
 import { OrchestrationChatCompletionStream } from './orchestration-chat-completion-stream.js';
 import { OrchestrationChatCompletionStreamResponse } from './orchestration-chat-completion-stream-response.js';
+import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { CustomRequestConfig } from '@sap-ai-sdk/core';
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api/internal.js';
 import type {
@@ -39,18 +40,8 @@ export class OrchestrationClient {
     prompt?: Prompt,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationResponse> {
-    const body = constructCompletionPostRequest(this.config, prompt);
-    const deploymentId = await resolveDeploymentId({
-      scenarioId: 'orchestration',
-      resourceGroup: this.deploymentConfig?.resourceGroup
-    });
-
-    const response = await executeRequest(
-      {
-        url: `/inference/deployments/${deploymentId}/completion`,
-        resourceGroup: this.deploymentConfig?.resourceGroup
-      },
-      body,
+    const response = await this.executeRequest(
+      prompt,
       requestConfig
     );
 
@@ -75,6 +66,27 @@ export class OrchestrationClient {
     return response;
   }
 
+  private async executeRequest(
+    prompt?: Prompt,
+    requestConfig?: CustomRequestConfig,
+    streaming: boolean = false
+  ): Promise<HttpResponse> {
+    const body = constructCompletionPostRequest(this.config, prompt, streaming);
+    const deploymentId = await resolveDeploymentId({
+      scenarioId: 'orchestration',
+      resourceGroup: this.deploymentConfig?.resourceGroup
+    });
+
+    return executeRequest(
+      {
+        url: `/inference/deployments/${deploymentId}/completion`,
+        resourceGroup: this.deploymentConfig?.resourceGroup
+      },
+      body,
+      requestConfig
+    );
+  }
+
   private async createStream(
     controller: AbortController,
     prompt?: Prompt,
@@ -82,22 +94,13 @@ export class OrchestrationClient {
   ): Promise<
     OrchestrationChatCompletionStream<CompletionPostResponseStreaming>
   > {
-    const body = constructCompletionPostRequest(this.config, prompt, true);
-    const deploymentId = await resolveDeploymentId({
-      scenarioId: 'orchestration',
-      resourceGroup: this.deploymentConfig?.resourceGroup
-    });
-
-    const response = await executeRequest(
-      {
-        url: `/inference/deployments/${deploymentId}/completion`,
-        resourceGroup: this.deploymentConfig?.resourceGroup
-      },
-      body,
+    const response = await this.executeRequest(
+      prompt,
       {
         ...requestConfig,
         signal: controller.signal
-      }
+      },
+      true
     );
     return OrchestrationChatCompletionStream._create(response, controller);
   }
