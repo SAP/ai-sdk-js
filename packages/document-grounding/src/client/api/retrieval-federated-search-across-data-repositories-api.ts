@@ -4,7 +4,10 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';
-import type { RetrievalSearchInput, SearchResults } from './schema/index.js';
+import type {
+  RetrievalSearchInput,
+  RetievalSearchResults
+} from './schema/index.js';
 /**
  * Representation of the 'RetrievalFederatedSearchAcrossDataRepositoriesApi'.
  * This API is part of the 'api' service.
@@ -20,7 +23,7 @@ export const RetrievalFederatedSearchAcrossDataRepositoriesApi = {
     body: RetrievalSearchInput,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<SearchResults>(
+    new OpenApiRequestBuilder<RetievalSearchResults>(
       'post',
       '/lm/document-grounding/retrieval/search',
       {

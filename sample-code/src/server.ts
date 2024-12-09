@@ -39,6 +39,7 @@ import {
 } from './document-grounding.js';
 import type { AiApiError, AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
+import { RetievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 
 const app = express();
 const port = 8080;
@@ -332,13 +333,13 @@ app.get('/document-grounding/invoke-retrieve-documents', async (req, res) => {
     console.log(JSON.stringify(retrievalResult));
 
     res.write('Retrieved documents:\n');
-    retrievalResult.results.forEach(perFilterSearchResult => {
-      res.write(`\t- Filter: ${perFilterSearchResult.filterId}\n`);
-      perFilterSearchResult.results.forEach(documentChunks => {
-        res.write(`\t\t- Data repository: ${documentChunks.title}\n`);
-        documentChunks.documents.forEach(documentOutput => {
-          documentOutput.chunks.forEach(chunk => {
-            res.write(`\t\t\t- ${chunk.content}\n`);
+    (retrievalResult.results as RetievalPerFilterSearchResult[]).forEach((perFilterSearchResult) => {
+      res.write(`  - Filter: ${perFilterSearchResult.filterId}\n`);
+      perFilterSearchResult.results!.forEach(retievalDataRepositorySearchResult => {
+        res.write(`    - Data repository: ${retievalDataRepositorySearchResult.dataRepository.title}\n`);
+        retievalDataRepositorySearchResult.dataRepository.documents.forEach(retrievalDocument => {
+          retrievalDocument.chunks.forEach(chunk => {
+            res.write(`      - Chunk: ${chunk.content}\n`);
           });
         });
       });
@@ -355,8 +356,4 @@ app.get('/document-grounding/invoke-retrieve-documents', async (req, res) => {
       .status(500)
       .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
   }
-});
-
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
 });

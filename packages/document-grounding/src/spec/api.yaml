@@ -637,7 +637,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SearchResults'
+                $ref: '#/components/schemas/RetievalSearchResults'
         '400':
           $ref: '#/components/responses/BadRequest'
         '422':
@@ -1385,6 +1385,102 @@ components:
         - dataRepositoryType
       title: RetrievalSearchFilter
       description: Limit scope of search to certain DataRepositories, Documents or Chunks.
+    RetrievalDocument:
+      properties:
+        id:
+          type: string
+          title: Id
+        metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentKeyValueListPair'
+          title: Metadata
+          default: []
+        chunks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Chunk'
+          title: Chunks
+      type: object
+      required:
+        - id
+        - chunks
+      title: RetrievalDocument
+    DataRepositoryWithDocuments:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: Unique identifier of this DataRepository.
+        title:
+          type: string
+          title: Title
+        metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyValueListPair'
+          title: Metadata
+          description: Metadata attached to DataRepository. Useful to later limit search to a subset of DataRepositories.
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/RetrievalDocument'
+          title: Documents
+      type: object
+      required:
+        - id
+        - title
+        - documents
+      title: DataRepositoryWithDocuments
+      description: DataRepository schema returned by the Vector search endpoint
+    RetievalDataRepositorySearchResult:
+      properties:
+        dataRepository:
+          $ref: '#/components/schemas/DataRepositoryWithDocuments'
+      type: object
+      required:
+        - dataRepository
+      title: DataRepositorySearchResult
+    RetievalPerFilterSearchResult:
+      properties:
+        filterId:
+          type: string
+          title: Filterid
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RetievalDataRepositorySearchResult'
+          title: Results
+          description: List of returned results.
+          default: []
+      type: object
+      required:
+        - filterId
+      title: PerFilterSearchResult
+    RetievalPerFilterSearchResultWithError:
+      properties:
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+        - message
+      title: PerFilterSearchResultError
+    RetievalSearchResults:
+      properties:
+        results:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/RetievalPerFilterSearchResult'
+              - $ref: '#/components/schemas/RetievalPerFilterSearchResultWithError'
+          title: Results
+          description: List of returned results.
+      type: object
+      required:
+        - results
+      title: SearchResults
 
     ### ###  ########################  ### ###
     ### ###  ###       Error      ###  ### ###

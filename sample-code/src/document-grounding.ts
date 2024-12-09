@@ -5,7 +5,7 @@ import {
 } from '@sap-ai-sdk/document-grounding';
 import type {
   DocumentsListResponse,
-  SearchResults
+  RetievalSearchResults
 } from '@sap-ai-sdk/document-grounding';
 
 /**
@@ -78,7 +78,7 @@ export async function createDocumentsWithTimestamp(
  * Retrieve documents across data repositories.
  * @returns Search results.
  */
-export async function retrieveDocuments(): Promise<SearchResults> {
+export async function retrieveDocuments(): Promise<RetievalSearchResults> {
   return RetrievalFederatedSearchAcrossDataRepositoriesApi.retrievalV1RetrievalEndpointsSearchDataRepositories(
     {
       query:
@@ -87,7 +87,7 @@ export async function retrieveDocuments(): Promise<SearchResults> {
         {
           id: 'my-filter',
           searchConfiguration: {
-            maxChunkCount: 1
+            maxChunkCount: 10
           },
           dataRepositories: ['*'],
           dataRepositoryType: 'vector',
