@@ -5,7 +5,10 @@ import { OrchestrationChatCompletionStream } from './orchestration-chat-completi
 import { OrchestrationChatCompletionStreamResponse } from './orchestration-chat-completion-stream-response.js';
 import type { CustomRequestConfig } from '@sap-ai-sdk/core';
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api/internal.js';
-import type { CompletionPostRequest, CompletionPostResponseStreaming } from './client/api/schema/index.js';
+import type {
+  CompletionPostRequest,
+  CompletionPostResponseStreaming
+} from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
   Prompt
@@ -58,9 +61,14 @@ export class OrchestrationClient {
     prompt?: Prompt,
     requestConfig?: CustomRequestConfig,
     controller = new AbortController()
-  ): Promise<OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>> {
-    const response = new OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>();
-    response.stream = (await this.createStream(controller, prompt, requestConfig))
+  ): Promise<
+    OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
+  > {
+    const response =
+      new OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>();
+    response.stream = (
+      await this.createStream(controller, prompt, requestConfig)
+    )
       ._pipe(OrchestrationChatCompletionStream._processChunk)
       ._pipe(OrchestrationChatCompletionStream._processFinishReason, response)
       ._pipe(OrchestrationChatCompletionStream._processTokenUsage, response);
@@ -71,7 +79,9 @@ export class OrchestrationClient {
     controller: AbortController,
     prompt?: Prompt,
     requestConfig?: CustomRequestConfig
-  ): Promise<OrchestrationChatCompletionStream<CompletionPostResponseStreaming>> {
+  ): Promise<
+    OrchestrationChatCompletionStream<CompletionPostResponseStreaming>
+  > {
     const body = constructCompletionPostRequest(this.config, prompt, true);
     const deploymentId = await resolveDeploymentId({
       scenarioId: 'orchestration',
@@ -90,7 +100,7 @@ export class OrchestrationClient {
       }
     );
     return OrchestrationChatCompletionStream._create(response, controller);
-  };
+  }
 }
 
 /**
