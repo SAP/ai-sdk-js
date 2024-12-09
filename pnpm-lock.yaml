@@ -151,6 +151,9 @@ importers:
       '@sap-ai-sdk/foundation-models':
         specifier: workspace:^
         version: link:../foundation-models
+      '@sap-cloud-sdk/connectivity':
+        specifier: 3.24.0
+        version: 3.24.0
       zod-to-json-schema:
         specifier: ^3.23.5
         version: 3.23.5(zod@3.23.8)

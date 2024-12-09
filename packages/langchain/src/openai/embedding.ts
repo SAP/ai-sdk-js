@@ -1,5 +1,6 @@
 import { AzureOpenAiEmbeddingClient as AzureOpenAiEmbeddingClientBase } from '@sap-ai-sdk/foundation-models';
 import { Embeddings } from '@langchain/core/embeddings';
+import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 import type {
   AzureOpenAiEmbeddingModel,
   AzureOpenAiEmbeddingParameters,
@@ -17,9 +18,9 @@ export class AzureOpenAiEmbeddingClient extends Embeddings {
 
   private openAiEmbeddingClient: AzureOpenAiEmbeddingClientBase;
 
-  constructor(fields: AzureOpenAiEmbeddingModelParams) {
+  constructor(fields: AzureOpenAiEmbeddingModelParams, destination?: HttpDestinationOrFetchOptions) {
     super(fields);
-    this.openAiEmbeddingClient = new AzureOpenAiEmbeddingClientBase(fields);
+    this.openAiEmbeddingClient = new AzureOpenAiEmbeddingClientBase(fields, destination);
     this.modelName = fields.modelName;
     this.modelVersion = fields.modelVersion;
     this.resourceGroup = fields.resourceGroup;

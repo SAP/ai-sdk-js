@@ -8,6 +8,7 @@ import type {
   AzureOpenAiChatCallOptions,
   AzureOpenAiChatModelParams
 } from './types.js';
+import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 /**
  * LangChain chat client for Azure OpenAI consumption on SAP BTP.
@@ -23,9 +24,9 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
   max_tokens?: number;
   private openAiChatClient: AzureOpenAiChatClientBase;
 
-  constructor(fields: AzureOpenAiChatModelParams) {
+  constructor(fields: AzureOpenAiChatModelParams, destination?: HttpDestinationOrFetchOptions) {
     super(fields);
-    this.openAiChatClient = new AzureOpenAiChatClientBase(fields);
+    this.openAiChatClient = new AzureOpenAiChatClientBase(fields, destination);
     this.temperature = fields.temperature;
     this.top_p = fields.top_p;
     this.logit_bias = fields.logit_bias;
