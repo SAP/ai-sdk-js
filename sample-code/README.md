@@ -33,6 +33,13 @@ Parts of the sample code are also used in E2E tests.
 
 Get all deployments in resource group `default`.
 
+#### Get all Deployments with Custom Destination
+
+`GET /ai-api/deployments-with-destination`
+
+Get all deployments targeting a custom destination.
+Provide a destination when calling the `execute()` method.
+
 #### Create a Deployment
 
 `POST /ai-api/deployment/create`
@@ -82,6 +89,13 @@ Get all foundation models in resource group `default`.
 `GET /azure-openai/chat-completion`
 
 Get chat completion response.
+
+#### Chat Completion with Custom Destination
+
+`GET /azure-openai/chat-completion-with-destination`
+
+Get chat completion response targeting a custom destination.
+Provide a destination when initializing the `AzureOpenAiChatClient`.
 
 #### Chat Completion Streaming
 
