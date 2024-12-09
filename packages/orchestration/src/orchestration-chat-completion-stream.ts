@@ -46,7 +46,7 @@ export class OrchestrationChatCompletionStream<Item> extends SseStream<Item> {
    */
   static async *_processFinishReason(
     stream: OrchestrationChatCompletionStream<OrchestrationChatCompletionStreamChunkResponse>,
-    response?: OrchestrationChatCompletionStreamResponse<CompletionPostResponseStreaming>
+    response?: OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
   ): AsyncGenerator<OrchestrationChatCompletionStreamChunkResponse> {
     for await (const chunk of stream) {
       chunk.data.orchestration_result?.choices.forEach((choice: any) => {
@@ -88,7 +88,7 @@ export class OrchestrationChatCompletionStream<Item> extends SseStream<Item> {
    */
   static async *_processTokenUsage(
     stream: OrchestrationChatCompletionStream<OrchestrationChatCompletionStreamChunkResponse>,
-    response?: OrchestrationChatCompletionStreamResponse<CompletionPostResponseStreaming>
+    response?: OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
   ): AsyncGenerator<OrchestrationChatCompletionStreamChunkResponse> {
     for await (const chunk of stream) {
       const usage = chunk.getTokenUsage();
@@ -138,9 +138,9 @@ export class OrchestrationChatCompletionStream<Item> extends SseStream<Item> {
   _pipe<TReturn>(
     processFn: (
       stream: OrchestrationChatCompletionStream<Item>,
-      response?: OrchestrationChatCompletionStreamResponse<CompletionPostResponseStreaming>
+      response?: OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
     ) => AsyncIterator<TReturn>,
-    response?: OrchestrationChatCompletionStreamResponse<CompletionPostResponseStreaming>
+    response?: OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
   ): OrchestrationChatCompletionStream<TReturn> {
     if (response) {
       return new OrchestrationChatCompletionStream(
