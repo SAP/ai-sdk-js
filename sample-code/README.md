@@ -43,7 +43,7 @@ Get all deployments in resource group `default`.
 }
 ```
 
-Create a deployment with certain configuration ID in resource group "default".
+Create a deployment with certain configuration ID in resource group `default`.
 
 #### Batch Stop Deployments with Given Configuration ID
 
@@ -55,25 +55,25 @@ Create a deployment with certain configuration ID in resource group "default".
 }
 ```
 
-Stop all deployments with a certain configuration ID in resource group "default".
+Stop all deployments with a certain configuration ID in resource group `default`.
 
 #### Batch Delete all Deployments with Status `STOPPED` or `UNKNOWN`
 
 `DELETE` `/ai-api/deployment/batch-delete`
 
-Delete all deployments with status `STOPPED` or `UNKNOWN` in resource group "default".
+Delete all deployments with status `STOPPED` or `UNKNOWN` in resource group `default`.
 
 #### Get all Scenarios
 
 `GET` `/ai-api/scenarios`
 
-Get all scenarios in resource group "default".
+Get all scenarios in resource group `default`.
 
 #### Get all Foundation Models
 
 `GET` `/ai-api/models`
 
-Get all foundation models in resource group "default".
+Get all foundation models in resource group `default`.
 
 ### Foundation Models (Azure OpenAI)
 
