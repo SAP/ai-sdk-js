@@ -4,7 +4,7 @@ import {
   mockClientCredentialsGrantCall
 } from '../../../../test-util/mock-http.js';
 import { PipelinesApi } from '../client/api/index.js';
-import type { GetPipelines } from '../client/api/index.js';
+import type { Pipelines } from '../client/api/index.js';
 
 describe('pipelines', () => {
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe('pipelines', () => {
   });
 
   it('should get all pipelines', async () => {
-    const expectedResponse: GetPipelines = {
+    const expectedResponse: Pipelines = {
       resources: [
         {
           id: 'pipeline-id',
@@ -45,7 +45,7 @@ describe('pipelines', () => {
         'Content-Type': 'application/json'
       });
 
-    const result: GetPipelines =
+    const result: Pipelines =
       await PipelinesApi.pipelineV1PipelineEndpointsGetAllPipeline(
         {},
         { 'AI-Resource-Group': 'default' }

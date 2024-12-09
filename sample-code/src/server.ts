@@ -273,6 +273,7 @@ app.get('/langchain/invoke-rag-chain', async (req, res) => {
   }
 });
 
+/* Document Grounding */
 app.get(
   '/document-grounding/invoke-orchestration-grounding',
   async (req, res) => {
