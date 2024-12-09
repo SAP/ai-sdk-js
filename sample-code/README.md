@@ -1,7 +1,7 @@
 # Sample Code
 
 Sample code to demonstrate the usage of the SAP Cloud SDK for AI.
-Some of the sample code is also used in E2E test.
+Parts of the sample code are also used in E2E tests.
 
 ### Table of Contents
 
