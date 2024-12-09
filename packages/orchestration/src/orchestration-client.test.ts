@@ -64,6 +64,50 @@ describe('orchestration service client', () => {
     expect(response.getTokenUsage().completion_tokens).toEqual(9);
   });
 
+  it('calls executeFromJson with valid JSON configuration', async () => {
+    const jsonConfig = `{
+      "module_configurations": {
+        "llm_module_config": {
+          "model_name": "gpt-35-turbo-16k",
+          "model_params": {
+            "max_tokens": 50,
+            "temperature": 0.1
+          }
+        },
+        "templating_module_config": {
+          "template": [{ "role": "user", "content": "What is the capital of France?" }]
+        }
+      }
+    }`;
+
+    const mockResponse = await parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'orchestration-chat-completion-success-response.json'
+    );
+
+    mockInference(
+      {
+        data: {
+          messages_history: [],
+          input_params: {},
+          orchestration_config: JSON.parse(jsonConfig)
+        }
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    const response = await OrchestrationClient.executeFromJson(jsonConfig);
+
+    expect(response).toBeInstanceOf(OrchestrationResponse);
+    expect(response.data).toEqual(mockResponse);
+  });
+
   it('calls chatCompletion with filter configuration supplied using convenience function', async () => {
     const config: OrchestrationModuleConfig = {
       llm: {
