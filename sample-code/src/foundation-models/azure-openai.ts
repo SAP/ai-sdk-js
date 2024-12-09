@@ -31,7 +31,7 @@ export async function chatCompletion(): Promise<AzureOpenAiChatCompletionRespons
 }
 
 /**
- * Ask Azure OpenAI model about the capital of France with streaming.
+ * Ask Azure OpenAI model about SAP Cloud SDK with streaming.
  * @param controller - The abort controller.
  * @returns The response from Azure OpenAI containing the response content.
  */
