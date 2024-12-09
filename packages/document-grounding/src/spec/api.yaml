@@ -3,6 +3,21 @@ info:
   title: Document Grounding Pipeline API
   version: 0.1.0
   description: "SAP AI Core - API Specification AI Data Management api's"
+  contact:
+    name: SAP AI Core
+tags:
+  - name: pipelines
+    description: Tag for pipeline component
+  - name: collections
+    description: Tag for vector collections component
+  - name: documents
+    description: Tag for vector documents component
+  - name: search
+    description: Tag for vector search
+  - name: 'Retrieval: DataRepository'
+    description: 'Retrieval: DataRepository'
+  - name: 'Retrieval: Federated Search across Data Repositories'
+    description: 'Retrieval: Federated Search across Data Repositories'
 paths:
   '/lm/document-grounding/pipelines':
     post:
@@ -21,14 +36,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/createPipeline'
+              $ref: '#/components/schemas/PipelinePostRequst'
       responses:
         '201':
           description: Returns pipelineId on successful creation.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/pipelineId'
+                $ref: '#/components/schemas/PipelineId'
         '400':
           $ref: '#/components/responses/BadRequest'
     get:
@@ -51,7 +66,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/getPipelines'
+                $ref: '#/components/schemas/Pipelines'
         '400':
           $ref: '#/components/responses/BadRequest'
   '/lm/document-grounding/pipelines/{pipelineId}':
@@ -78,7 +93,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/getPipeline'
+                $ref: '#/components/schemas/Pipeline'
         '400':
           $ref: '#/components/responses/BadRequest'
     delete:
@@ -127,7 +142,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/getPipelineStatus'
+                $ref: '#/components/schemas/PipelineStatus'
         '400':
           $ref: '#/components/responses/BadRequest'
   '/lm/document-grounding/vector/collections':
@@ -181,9 +196,6 @@ paths:
               description: The newly created collections monitor url
               schema:
                 $ref: '#/components/schemas/CollectionPendingResponse'
-                type: string
-                format: uri
-
         '400':
           $ref: '#/components/responses/BadRequest'
         '422':
@@ -247,8 +259,6 @@ paths:
               description: The deleted collections monitor url
               schema:
                 $ref: '#/components/schemas/CollectionPendingResponse'
-                type: string
-                format: uri
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -453,6 +463,7 @@ paths:
       tags:
         - search
       summary: Search chunk by vector
+      description: 'Search chunk by vector'
       operationId: vector.v1.vector_endpoints.search_chunk
       requestBody:
         content:
@@ -557,6 +568,7 @@ paths:
       tags:
         - 'Retrieval: DataRepository'
       summary: List all DataRepository objects.
+      description: List all DataRepository objects.
       operationId: retrieval.v1.retrieval_endpoints.get_data_repositories
       responses:
         '200':
@@ -572,6 +584,7 @@ paths:
       tags:
         - 'Retrieval: DataRepository'
       summary: List single DataRepository object.
+      description: List single DataRepository object.
       operationId: retrieval.v1.retrieval_endpoints.get_data_repository
       parameters:
         - in: header
@@ -610,12 +623,13 @@ paths:
       tags:
         - 'Retrieval: Federated Search across Data Repositories'
       summary: Retrieve relevant content given a query string.
+      description: Retrieve relevant content given a query string.
       operationId: retrieval.v1.retrieval_endpoints.search_data_repositories
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SearchInput'
+              $ref: '#/components/schemas/RetrievalSearchInput'
         required: true
       responses:
         '200':
@@ -630,17 +644,19 @@ paths:
           $ref: '#/components/responses/UnprocessableEntity'
 components:
   schemas:
-    createPipeline:
+    PipelinePostRequst:
       type: object
       required:
         - type
         - configuration
+      additionalProperties: true
       properties:
         type:
           type: string
           example: MSSharePoint
         configuration:
           type: object
+          additionalProperties: true
           required:
             - destination
           properties:
@@ -649,9 +665,11 @@ components:
               example: destination-name
             sharePoint:
               type: object
+              additionalProperties: true
               properties:
                 site:
                   type: object
+                  additionalProperties: true
                   properties:
                     name:
                       type: string
@@ -661,20 +679,20 @@ components:
                       items:
                         type: string
                       example: ['/testFolder1', 'testFolder2']
-    getPipelines:
+    Pipelines:
       properties:
         resources:
           type: array
           items:
-            $ref: '#/components/schemas/getPipeline'
-          title: GetPipelines
+            $ref: '#/components/schemas/Pipeline'
+          title: Get Pipelines
         count:
           type: integer
       type: object
       required:
         - resources
-      title: GetPipelines
-    getPipeline:
+      title: Pipelines
+    Pipeline:
       type: object
       properties:
         id:
@@ -706,14 +724,14 @@ components:
                       items:
                         type: string
                       example: ['/testFolder1', 'testFolder2']
-    getPipelineStatus:
+    PipelineStatus:
       type: object
       properties:
         lastStarted:
           type: string
           format: date-time
           example: '2024-02-15T12:45:00.000Z'
-    pipelineId:
+    PipelineId:
       type: object
       properties:
         pipelineId:
@@ -740,6 +758,7 @@ components:
         - content
       title: Chunk
     DocumentKeyValueListPair:
+      additionalProperties: true
       properties:
         key:
           type: string
@@ -753,8 +772,8 @@ components:
           title: Value
         matchMode:
           type: string
-          nullable: true
           title: MatchMode
+          additionalProperties: true
           description: Default match mode for search filters
           default: ANY
           anyOf:
@@ -767,16 +786,8 @@ components:
         - key
         - value
       title: DocumentKeyValueListPair
-    HTTPValidationError:
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          title: Detail
-      type: object
-      title: HTTPValidationError
     KeyValueListPair:
+      additionalProperties: true
       properties:
         key:
           type: string
@@ -840,7 +851,7 @@ components:
         - id
         - title
         - documents
-      title: Collection
+      title: DocumentsChunk
     PerFilterSearchResult:
       properties:
         filterId:
@@ -857,9 +868,9 @@ components:
         - results
       title: PerFilterSearchResult
     SearchConfiguration:
+      additionalProperties: true
       properties:
         maxChunkCount:
-          nullable: true
           type: integer
           minimum: 0
           maximum: 0
@@ -867,7 +878,6 @@ components:
           title: Maxchunkcount
           description: Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'.
         maxDocumentCount:
-          nullable: true
           type: integer
           minimum: 0
           maximum: 0
@@ -877,6 +887,7 @@ components:
       type: object
       title: SearchConfiguration
     SearchDocumentKeyValueListPair:
+      additionalProperties: true
       properties:
         key:
           type: string
@@ -912,76 +923,6 @@ components:
       required:
         - results
       title: SearchResults
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-              - type: string
-              - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-        - loc
-        - msg
-        - type
-      title: ValidationError
-    GenericError:
-      properties:
-        error:
-          type: string
-          title: Error
-      type: object
-      required:
-        - error
-      title: GenericError
-    Error:
-      properties:
-        code:
-          type: integer
-          title: Code
-        message:
-          type: string
-          title: Message
-        target:
-          type: string
-          title: Target
-        details:
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-          type: array
-          title: Details
-      type: object
-      required:
-        - code
-        - message
-        - target
-        - details
-      title: Error
-    ErrorDetail:
-      properties:
-        code:
-          type: integer
-          title: Code
-        target:
-          type: string
-          title: Target
-        message:
-          type: string
-          title: Message
-      type: object
-      required:
-        - code
-        - target
-        - message
-      title: ErrorDetail
     CollectionsListResponse:
       properties:
         resources:
@@ -997,10 +938,10 @@ components:
       title: CollectionsListResponse
       description: A response containing collections retrieved from the server.
     CollectionRequest:
+      additionalProperties: true
       properties:
         title:
           type: string
-          nullable: true
           title: Title
         embeddingConfig:
           $ref: '#/components/schemas/EmbeddingConfig'
@@ -1036,6 +977,7 @@ components:
         Location:
           type: string
           title: Location
+          format: uri
         status:
           type: string
           title: Status
@@ -1058,6 +1000,7 @@ components:
         - status
       title: CollectionDeletedResponse
     BaseDocument:
+      additionalProperties: true
       properties:
         chunks:
           items:
@@ -1076,6 +1019,7 @@ components:
       title: BaseDocument
       description: Base class for documents, document requests and responses.
     DocumentCreateRequest:
+      additionalProperties: true
       properties:
         documents:
           items:
@@ -1090,6 +1034,7 @@ components:
         A create request containing one or more new documents to create and
         store in a collection.
     Document-Input:
+      additionalProperties: true
       properties:
         chunks:
           items:
@@ -1114,6 +1059,7 @@ components:
       title: Document
       description: A single document stored in a collection by ID.
     DocumentUpdateRequest:
+      additionalProperties: true
       properties:
         documents:
           items:
@@ -1157,7 +1103,7 @@ components:
       type: object
       required:
         - documents
-      title: Documents
+      title: DocumentsListResponse
       description: A response containing documents created or updated, retrieved from the server.
     Documents:
       properties:
@@ -1174,6 +1120,7 @@ components:
       title: Documents
       description: A response containing documents retrieved from the server.
     TextOnlyBaseChunk:
+      additionalProperties: true
       properties:
         content:
           type: string
@@ -1223,6 +1170,7 @@ components:
       default: ignoreIfKeyAbsent
       title: SearchSelectOptionEnum
     SearchFilter:
+      additionalProperties: true
       properties:
         id:
           type: string
@@ -1272,6 +1220,7 @@ components:
         - configuration
       title: SearchFilter
     TextSearchRequest:
+      additionalProperties: true
       properties:
         query:
           type: string
@@ -1290,6 +1239,7 @@ components:
         - filters
       title: TextSearchRequest
     EmbeddingConfig:
+      additionalProperties: true
       properties:
         modelName:
           type: string
@@ -1302,7 +1252,6 @@ components:
       properties:
         title:
           type: string
-          nullable: true
           title: Title
         embeddingConfig:
           $ref: '#/components/schemas/EmbeddingConfig'
@@ -1372,7 +1321,8 @@ components:
       required:
         - resources
       title: DataRepositories
-    SearchInput:
+    RetrievalSearchInput:
+      additionalProperties: true
       properties:
         query:
           type: string
@@ -1382,13 +1332,59 @@ components:
         filters:
           type: array
           items:
-            $ref: '#/components/schemas/SearchFilter'
+            $ref: '#/components/schemas/RetrievalSearchFilter'
           title: Filters
       type: object
       required:
         - query
         - filters
       title: SearchInput
+    RetrievalSearchFilter:
+      additionalProperties: true
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Identifier of this SearchFilter - unique per request.
+        searchConfiguration:
+          $ref: '#/components/schemas/SearchConfiguration'
+        dataRepositories:
+          type: array
+          items:
+            type: string
+          title: Datarepositories
+          description: Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids.
+          default:
+            - '*'
+        dataRepositoryType:
+          $ref: '#/components/schemas/DataRepositoryType'
+        dataRepositoryMetadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyValueListPair'
+          title: Datarepositorymetadata
+          description: Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=['*']
+          default: []
+        documentMetadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchDocumentKeyValueListPair'
+          title: Documentmetadata
+          description: Restrict documents considered during search to those annotated with the given metadata.
+          default: []
+        chunkMetadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyValueListPair'
+          title: Chunkmetadata
+          description: Restrict chunks considered during search to those with the given metadata.
+          default: []
+      type: object
+      required:
+        - id
+        - dataRepositoryType
+      title: RetrievalSearchFilter
+      description: Limit scope of search to certain DataRepositories, Documents or Chunks.
 
     ### ###  ########################  ### ###
     ### ###  ###       Error      ###  ### ###

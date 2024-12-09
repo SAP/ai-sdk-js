@@ -11,7 +11,7 @@ import type { DataRepositories, DataRepository } from './schema/index.js';
  */
 export const RetrievalDataRepositoryApi = {
   /**
-   * Create a request builder for execution of get requests to the '/lm/document-grounding/retrieval/dataRepositories' endpoint.
+   * List all DataRepository objects.
    * @param queryParameters - Object containing the following keys: $top, $skip, $count.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
@@ -29,7 +29,7 @@ export const RetrievalDataRepositoryApi = {
       }
     ),
   /**
-   * Create a request builder for execution of get requests to the '/lm/document-grounding/retrieval/dataRepositories/{repositoryId}' endpoint.
+   * List single DataRepository object.
    * @param repositoryId - Path parameter.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.

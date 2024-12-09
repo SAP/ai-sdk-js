@@ -3,12 +3,11 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-
+import type { Pipeline } from './pipeline.js';
 /**
- * Representation of the 'ErrorDetail' schema.
+ * Representation of the 'Pipelines' schema.
  */
-export type ErrorDetail = {
-  code: number;
-  target: string;
-  message: string;
+export type Pipelines = {
+  resources: Pipeline[];
+  count?: number;
 } & Record<string, any>;

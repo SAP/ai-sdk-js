@@ -1,5 +1,5 @@
-import { CollectionsApi, DocumentsApi } from '@sap-ai-sdk/document-grounding';
-import type { DocumentsListResponse } from '@sap-ai-sdk/document-grounding';
+import { CollectionsApi, DocumentsApi, RetrievalFederatedSearchAcrossDataRepositoriesApi } from '@sap-ai-sdk/document-grounding';
+import type { DocumentsListResponse, SearchResults } from '@sap-ai-sdk/document-grounding';
 
 /**
  * Create a collection.
@@ -58,6 +58,36 @@ export async function createDocumentsWithTimestamp(
               metadata: []
             }
           ]
+        }
+      ]
+    },
+    {
+      'AI-Resource-Group': 'default'
+    }
+  ).execute();
+}
+
+/**
+ * Retrieve documents across data repositories.
+ * @returns Search results.
+ */
+export async function retrieveDocuments(): Promise<SearchResults> {
+  return RetrievalFederatedSearchAcrossDataRepositoriesApi.retrievalV1RetrievalEndpointsSearchDataRepositories(
+    {
+      query: 'When was the last time SAP AI SDK JavaScript end to end test was executed?',
+      filters: [
+        {
+          id: 'my-filter',
+          searchConfiguration: {
+            maxChunkCount: 1
+          },
+          dataRepositories: [
+            '*'
+          ],
+          dataRepositoryType: 'vector',
+          dataRepositoryMetadata: [],
+          documentMetadata: [],
+          chunkMetadata: []
         }
       ]
     },

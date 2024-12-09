@@ -5,28 +5,20 @@
  */
 
 /**
- * Representation of the 'GetPipeline' schema.
+ * Representation of the 'PipelinePostRequst' schema.
  */
-export type GetPipeline = {
-  /**
-   * @example "uuid"
-   */
-  id?: string;
+export type PipelinePostRequst = {
   /**
    * @example "MSSharePoint"
    */
-  type?: string;
-  configuration?: {
+  type: string;
+  configuration: {
     /**
      * @example "destination-name"
      */
-    destination?: string;
+    destination: string;
     sharePoint?: {
       site?: {
-        /**
-         * @example "sharepoint-site-id"
-         */
-        id?: string;
         /**
          * @example "sharepoint-site-name"
          */

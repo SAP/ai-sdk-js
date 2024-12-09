@@ -5,11 +5,11 @@
  */
 import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';
 import type {
-  GetPipelines,
-  CreatePipeline,
+  Pipelines,
+  PipelinePostRequst,
   PipelineId,
-  GetPipeline,
-  GetPipelineStatus
+  Pipeline,
+  PipelineStatus
 } from './schema/index.js';
 /**
  * Representation of the 'PipelinesApi'.
@@ -26,7 +26,7 @@ export const PipelinesApi = {
     queryParameters: { $top?: number; $skip?: number; $count?: boolean },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<GetPipelines>(
+    new OpenApiRequestBuilder<Pipelines>(
       'get',
       '/lm/document-grounding/pipelines',
       {
@@ -41,7 +41,7 @@ export const PipelinesApi = {
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   pipelineV1PipelineEndpointsCreatePipeline: (
-    body: CreatePipeline,
+    body: PipelinePostRequst,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
     new OpenApiRequestBuilder<PipelineId>(
@@ -62,7 +62,7 @@ export const PipelinesApi = {
     pipelineId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<GetPipeline>(
+    new OpenApiRequestBuilder<Pipeline>(
       'get',
       '/lm/document-grounding/pipelines/{pipelineId}',
       {
@@ -98,7 +98,7 @@ export const PipelinesApi = {
     pipelineId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<GetPipelineStatus>(
+    new OpenApiRequestBuilder<PipelineStatus>(
       'get',
       '/lm/document-grounding/pipelines/{pipelineId}/status',
       {

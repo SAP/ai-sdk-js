@@ -5,20 +5,28 @@
  */
 
 /**
- * Representation of the 'CreatePipeline' schema.
+ * Representation of the 'Pipeline' schema.
  */
-export type CreatePipeline = {
+export type Pipeline = {
+  /**
+   * @example "uuid"
+   */
+  id?: string;
   /**
    * @example "MSSharePoint"
    */
-  type: string;
-  configuration: {
+  type?: string;
+  configuration?: {
     /**
      * @example "destination-name"
      */
-    destination: string;
+    destination?: string;
     sharePoint?: {
       site?: {
+        /**
+         * @example "sharepoint-site-id"
+         */
+        id?: string;
         /**
          * @example "sharepoint-site-name"
          */

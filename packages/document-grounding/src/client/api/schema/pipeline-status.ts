@@ -3,10 +3,14 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { ValidationError } from './validation-error.js';
+
 /**
- * Representation of the 'HTTPValidationError' schema.
+ * Representation of the 'PipelineStatus' schema.
  */
-export type HTTPValidationError = {
-  detail?: ValidationError[];
+export type PipelineStatus = {
+  /**
+   * @example "2024-02-15T12:45:00.000Z"
+   * Format: "date-time".
+   */
+  lastStarted?: string;
 } & Record<string, any>;

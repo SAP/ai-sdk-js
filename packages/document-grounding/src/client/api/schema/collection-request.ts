@@ -9,7 +9,7 @@ import type { KeyValueListPair } from './key-value-list-pair.js';
  * A request for creating a new, single collection.
  */
 export type CollectionRequest = {
-  title?: string | null;
+  title?: string;
   embeddingConfig: EmbeddingConfig;
   /**
    * Metadata attached to collection. Useful to restrict search to a subset of collections.

@@ -11,7 +11,7 @@ import type { TextSearchRequest, SearchResults } from './schema/index.js';
  */
 export const SearchApi = {
   /**
-   * Create a request builder for execution of post requests to the '/lm/document-grounding/vector/search' endpoint.
+   * Search chunk by vector
    * @param body - Request body.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
