@@ -5,7 +5,7 @@ import { OrchestrationChatCompletionStream } from './orchestration-chat-completi
 import { OrchestrationChatCompletionStreamResponse } from './orchestration-chat-completion-stream-response.js';
 import type { CustomRequestConfig } from '@sap-ai-sdk/core';
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api/internal.js';
-import type { CompletionPostRequest } from './client/api/schema/index.js';
+import type { CompletionPostRequest, CompletionPostResponseStreaming } from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
   Prompt
@@ -56,8 +56,8 @@ export class OrchestrationClient {
 
   async stream(
     prompt?: Prompt,
-    controller = new AbortController(),
-    requestConfig?: CustomRequestConfig
+    requestConfig?: CustomRequestConfig,
+    controller = new AbortController()
   ): Promise<OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>> {
     const response = new OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>();
     response.stream = (await this.createStream(controller, prompt, requestConfig))
@@ -71,7 +71,7 @@ export class OrchestrationClient {
     controller: AbortController,
     prompt?: Prompt,
     requestConfig?: CustomRequestConfig
-  ): Promise<OrchestrationChatCompletionStream<any>> {
+  ): Promise<OrchestrationChatCompletionStream<CompletionPostResponseStreaming>> {
     const body = constructCompletionPostRequest(this.config, prompt, true);
     const deploymentId = await resolveDeploymentId({
       scenarioId: 'orchestration',
