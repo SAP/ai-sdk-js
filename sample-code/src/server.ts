@@ -43,118 +43,15 @@ import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 const app = express();
 const port = 8080;
 
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
+
 app.get(['/', '/health'], (req, res) => {
   res.send('Hello World! 🌍');
 });
 
-app.get('/azure-openai/chat-completion', async (req, res) => {
-  try {
-    const response = await chatCompletion();
-    res.send(response.getContent());
-  } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
-  }
-});
-
-app.get('/azure-openai/chat-completion-stream', async (req, res) => {
-  const controller = new AbortController();
-  try {
-    const response = await chatCompletionStream(controller);
-
-    // Set headers for event stream.
-    res.setHeader('Content-Type', 'text/event-stream');
-    res.setHeader('Connection', 'keep-alive');
-    res.flushHeaders();
-
-    let connectionAlive = true;
-
-    // Abort the stream if the client connection is closed.
-    res.on('close', () => {
-      controller.abort();
-      connectionAlive = false;
-      res.end();
-    });
-
-    // Stream the delta content.
-    for await (const chunk of response.stream.toContentStream()) {
-      if (!connectionAlive) {
-        break;
-      }
-      res.write(chunk);
-    }
-
-    // Write the finish reason and token usage after the stream ends.
-    if (connectionAlive) {
-      const finishReason = response.getFinishReason();
-      const tokenUsage = response.getTokenUsage()!;
-      res.write('\n\n---------------------------\n');
-      res.write(`Finish reason: ${finishReason}\n`);
-      res.write('Token usage:\n');
-      res.write(`  - Completion tokens: ${tokenUsage.completion_tokens}\n`);
-      res.write(`  - Prompt tokens: ${tokenUsage.prompt_tokens}\n`);
-      res.write(`  - Total tokens: ${tokenUsage.total_tokens}\n`);
-    }
-  } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
-  } finally {
-    res.end();
-  }
-});
-
-app.get('/azure-openai/embedding', async (req, res) => {
-  try {
-    const response = await computeEmbedding();
-
-    if (!response.getEmbedding()?.length) {
-      res.status(500).send('No embedding vector returned.');
-    } else {
-      res.send('Number crunching success, got a nice vector.');
-    }
-  } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
-  }
-});
-
-app.get('/orchestration/:sampleCase', async (req, res) => {
-  const sampleCase = req.params.sampleCase;
-  const testCase =
-    {
-      simple: orchestrationChatCompletion,
-      template: orchestrationTemplating,
-      inputFiltering: orchestrationInputFiltering,
-      outputFiltering: orchestrationOutputFiltering,
-      requestConfig: orchestrationRequestConfig,
-      default: orchestrationChatCompletion
-    }[sampleCase] || orchestrationChatCompletion;
-
-  try {
-    const result = (await testCase()) as OrchestrationResponse;
-    if (sampleCase === 'inputFiltering') {
-      res.send('Input filter applied successfully');
-    } else if (sampleCase === 'outputFiltering') {
-      res.send(
-        `Output filter applied successfully with threshold results: ${JSON.stringify(result.data.module_results.output_filtering!.data!)}`
-      );
-    } else {
-      res.send(result.getContent());
-    }
-  } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
-  }
-});
-
+/* AI API */
 app.get('/ai-api/deployments', async (req, res) => {
   try {
     res.send(
@@ -233,6 +130,116 @@ app.get('/ai-api/models', async (req, res) => {
   }
 });
 
+/* Foundation Models (Azure OpenAI) */
+app.get('/azure-openai/chat-completion', async (req, res) => {
+  try {
+    const response = await chatCompletion();
+    res.send(response.getContent());
+  } catch (error: any) {
+    console.error(error);
+    res
+      .status(500)
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+  }
+});
+
+app.get('/azure-openai/chat-completion-stream', async (req, res) => {
+  const controller = new AbortController();
+  try {
+    const response = await chatCompletionStream(controller);
+
+    // Set headers for event stream.
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    let connectionAlive = true;
+
+    // Abort the stream if the client connection is closed.
+    res.on('close', () => {
+      controller.abort();
+      connectionAlive = false;
+      res.end();
+    });
+
+    // Stream the delta content.
+    for await (const chunk of response.stream.toContentStream()) {
+      if (!connectionAlive) {
+        break;
+      }
+      res.write(chunk);
+    }
+
+    // Write the finish reason and token usage after the stream ends.
+    if (connectionAlive) {
+      const finishReason = response.getFinishReason();
+      const tokenUsage = response.getTokenUsage()!;
+      res.write('\n\n---------------------------\n');
+      res.write(`Finish reason: ${finishReason}\n`);
+      res.write('Token usage:\n');
+      res.write(`  - Completion tokens: ${tokenUsage.completion_tokens}\n`);
+      res.write(`  - Prompt tokens: ${tokenUsage.prompt_tokens}\n`);
+      res.write(`  - Total tokens: ${tokenUsage.total_tokens}\n`);
+    }
+  } catch (error: any) {
+    console.error(error);
+    res
+      .status(500)
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+  } finally {
+    res.end();
+  }
+});
+
+app.get('/azure-openai/embedding', async (req, res) => {
+  try {
+    const response = await computeEmbedding();
+
+    if (!response.getEmbedding()?.length) {
+      res.status(500).send('No embedding vector returned.');
+    } else {
+      res.send('Number crunching success, got a nice vector.');
+    }
+  } catch (error: any) {
+    console.error(error);
+    res
+      .status(500)
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+  }
+});
+
+/* Orchestration */
+app.get('/orchestration/:sampleCase', async (req, res) => {
+  const sampleCase = req.params.sampleCase;
+  const testCase =
+    {
+      simple: orchestrationChatCompletion,
+      template: orchestrationTemplating,
+      inputFiltering: orchestrationInputFiltering,
+      outputFiltering: orchestrationOutputFiltering,
+      requestConfig: orchestrationRequestConfig
+    }[sampleCase] || orchestrationChatCompletion;
+
+  try {
+    const result = (await testCase()) as OrchestrationResponse;
+    if (sampleCase === 'inputFiltering') {
+      res.send('Input filter applied successfully');
+    } else if (sampleCase === 'outputFiltering') {
+      res.send(
+        `Output filter applied successfully with threshold results: ${JSON.stringify(result.data.module_results.output_filtering!.data!)}`
+      );
+    } else {
+      res.send(result.getContent());
+    }
+  } catch (error: any) {
+    console.error(error);
+    res
+      .status(500)
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+  }
+});
+
+/* Langchain */
 app.get('/langchain/invoke', async (req, res) => {
   try {
     res.send(await invoke());
