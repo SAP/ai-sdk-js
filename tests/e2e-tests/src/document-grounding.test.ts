@@ -22,7 +22,7 @@ describe('document grounding', () => {
     await deleteCollection(collectionId);
   });
 
-  it('should get the grounding secret via orchestration API', async () => {
+  it('should get the result based on grounding context via orchestration API', async () => {
     const result = await orchestrationGrounding();
     expect(result.getContent()).toEqual(timestamp.toString());
   });
