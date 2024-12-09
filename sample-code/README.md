@@ -169,7 +169,7 @@ The chain performs RAG with the chat and embedding client.
 
 This scenario demonstrates the end-to-end flow for creating collections and documents targeting document grounding service, and then using the orchestration grounding to get a chat completion response with a retrieved context.
 
-The flow will first create a empty collection and then add a document to it. 
+The flow will first create a empty collection and then add a document to it.
 The document contains a statement with the current timestamp.
 It will be retrieved with a user question asking for the latest timestamp by orchestration grounding module.
 Then, orchestration service will send a chat completion request with the context to LLM.
