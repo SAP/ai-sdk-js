@@ -29,13 +29,13 @@ Parts of the sample code are also used in E2E tests.
 
 #### Get all Deployments
 
-GET `/ai-api/deployments`
+`GET` `/ai-api/deployments`
 
-Get all deployments in resource group "default".
+Get all deployments in resource group `default`.
 
 #### Create a Deployment
 
-POST `/ai-api/deployment/create`
+`POST` `/ai-api/deployment/create`
 
 ```json
 {
@@ -47,7 +47,7 @@ Create a deployment with certain configuration ID in resource group "default".
 
 #### Batch Stop Deployments with Given Configuration ID
 
-PATCH `/ai-api/deployment/batch-stop`
+`PATCH` `/ai-api/deployment/batch-stop`
 
 ```json
 {
@@ -56,23 +56,22 @@ PATCH `/ai-api/deployment/batch-stop`
 ```
 
 Stop all deployments with a certain configuration ID in resource group "default".
-The request body should be:
 
 #### Batch Delete all Deployments with Status `STOPPED` or `UNKNOWN`
 
-DELETE `/ai-api/deployment/batch-delete`
+`DELETE` `/ai-api/deployment/batch-delete`
 
 Delete all deployments with status `STOPPED` or `UNKNOWN` in resource group "default".
 
 #### Get all Scenarios
 
-GET `/ai-api/scenarios`
+`GET` `/ai-api/scenarios`
 
 Get all scenarios in resource group "default".
 
 #### Get all Foundation Models
 
-GET `/ai-api/models`
+`GET` `/ai-api/models`
 
 Get all foundation models in resource group "default".
 
@@ -80,13 +79,13 @@ Get all foundation models in resource group "default".
 
 #### Chat Completion
 
-GET `/azure-openai/chat-completion`
+`GET` `/azure-openai/chat-completion`
 
 Get chat completion response.
 
 #### Chat Completion Streaming
 
-GET `/azure-openai/chat-completion-stream`
+`GET` `/azure-openai/chat-completion-stream`
 
 Get chat completion response with streaming.
 
@@ -100,7 +99,7 @@ Once the streaming is done, finish reason and token usage are printed out.
 
 #### Embedding
 
-GET `/azure-openai/embedding`
+`GET` `/azure-openai/embedding`
 
 Get embedding vector for the input.
 
@@ -108,34 +107,34 @@ Get embedding vector for the input.
 
 #### Simple Chat Completion
 
-GET `/orchestration/simple`
+`GET` `/orchestration/simple`
 
 Get chat completion response for a given static input.
 
 #### Templating
 
-GET `orchestration/template`
+`GET` `orchestration/template`
 
 Get chat completion response with template and input parameters.
 Define variable by wrapping it with `{{? ... }}`.
 
 #### Input Filtering
 
-GET `/orchestration/inputFiltering`
+`GET` `/orchestration/inputFiltering`
 
 Get chat completion response with Azure content filter for the input.
 Use `buildAzureContentFilter()` to build the content filter.
 
 #### Output Filtering
 
-GET `/orchestration/outputFiltering`
+`GET` `/orchestration/outputFiltering`
 
 Get chat completion response with Azure content filter for the output.
 Use `buildAzureContentFilter()` to build the content filter.
 
 #### Custom Request Config
 
-GET `/orchestration/requestConfig`
+`GET` `/orchestration/requestConfig`
 
 Send chat completion request with a custom header as the custom request configuration.
 
@@ -143,20 +142,20 @@ Send chat completion request with a custom header as the custom request configur
 
 #### Invoke with a Simple Input
 
-GET `/langchain/invoke`
+`GET` `/langchain/invoke`
 
 Invoke langchain Azure OpenAI client with a simple input to get chat completion response.
 
 #### Invoke a Chain for Templating
 
-GET `/langchain/invoke-chain`
+`GET` `/langchain/invoke-chain`
 
 Invoke chain to get chat completion response from Azure OpenAI.
 The chain contains a template and a string parser.
 
 #### Invoke a Chain for Retrieval-Augmented Generation (RAG)
 
-GET `/langchain/invoke-rag-chain`
+`GET` `/langchain/invoke-rag-chain`
 
 Invoke a chain to embed documents and get chat completion response with context from Azure OpenAI.
 The chain performs RAG with the chat and embedding client.
