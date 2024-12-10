@@ -13,6 +13,7 @@ import type {
  * This API is part of the 'api' service.
  */
 export const RetrievalFederatedSearchAcrossDataRepositoriesApi = {
+  _defaultBasePath: '/lm/document-grounding',
   /**
    * Retrieve relevant content given a query string.
    * @param body - Request body.
@@ -25,10 +26,11 @@ export const RetrievalFederatedSearchAcrossDataRepositoriesApi = {
   ) =>
     new OpenApiRequestBuilder<RetievalSearchResults>(
       'post',
-      '/lm/document-grounding/retrieval/search',
+      '/retrieval/search',
       {
         body,
         headerParameters
-      }
+      },
+      RetrievalFederatedSearchAcrossDataRepositoriesApi._defaultBasePath
     )
 };

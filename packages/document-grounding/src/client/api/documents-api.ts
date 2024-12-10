@@ -16,6 +16,7 @@ import type {
  * This API is part of the 'api' service.
  */
 export const DocumentsApi = {
+  _defaultBasePath: '/lm/document-grounding',
   /**
    * Gets a specific document in a collection by ID.
    * @param collectionId - Path parameter.
@@ -30,11 +31,12 @@ export const DocumentsApi = {
   ) =>
     new OpenApiRequestBuilder<DocumentResponse>(
       'get',
-      '/lm/document-grounding/vector/collections/{collectionId}/documents/{documentId}',
+      '/vector/collections/{collectionId}/documents/{documentId}',
       {
         pathParameters: { collectionId, documentId },
         headerParameters
-      }
+      },
+      DocumentsApi._defaultBasePath
     ),
   /**
    * Deletes a specific document of a collection.
@@ -50,11 +52,12 @@ export const DocumentsApi = {
   ) =>
     new OpenApiRequestBuilder<any>(
       'delete',
-      '/lm/document-grounding/vector/collections/{collectionId}/documents/{documentId}',
+      '/vector/collections/{collectionId}/documents/{documentId}',
       {
         pathParameters: { collectionId, documentId },
         headerParameters
-      }
+      },
+      DocumentsApi._defaultBasePath
     ),
   /**
    * Gets a list of documents of a collection.
@@ -70,12 +73,13 @@ export const DocumentsApi = {
   ) =>
     new OpenApiRequestBuilder<Documents>(
       'get',
-      '/lm/document-grounding/vector/collections/{collectionId}/documents',
+      '/vector/collections/{collectionId}/documents',
       {
         pathParameters: { collectionId },
         queryParameters,
         headerParameters
-      }
+      },
+      DocumentsApi._defaultBasePath
     ),
   /**
    * Create and stores one or multiple documents into a collection. If omitted, 'id' will be auto-generated.
@@ -91,12 +95,13 @@ export const DocumentsApi = {
   ) =>
     new OpenApiRequestBuilder<DocumentsListResponse>(
       'post',
-      '/lm/document-grounding/vector/collections/{collectionId}/documents',
+      '/vector/collections/{collectionId}/documents',
       {
         pathParameters: { collectionId },
         body,
         headerParameters
-      }
+      },
+      DocumentsApi._defaultBasePath
     ),
   /**
    * Upserts the data of multiple documents into a collection.
@@ -112,11 +117,12 @@ export const DocumentsApi = {
   ) =>
     new OpenApiRequestBuilder<DocumentsListResponse>(
       'patch',
-      '/lm/document-grounding/vector/collections/{collectionId}/documents',
+      '/vector/collections/{collectionId}/documents',
       {
         pathParameters: { collectionId },
         body,
         headerParameters
-      }
+      },
+      DocumentsApi._defaultBasePath
     )
 };

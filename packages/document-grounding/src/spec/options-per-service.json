@@ -1,0 +1,7 @@
+{
+  "src/spec/api.yaml": {
+    "packageName": "api",
+    "directoryName": "api",
+    "basePath": "/lm/document-grounding"
+  }
+}

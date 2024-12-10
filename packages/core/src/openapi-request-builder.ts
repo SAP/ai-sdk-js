@@ -13,9 +13,10 @@ export class OpenApiRequestBuilder<
   constructor(
     method: Method,
     pathPattern: string,
-    parameters?: OpenApiRequestParameters
+    parameters?: OpenApiRequestParameters,
+    basePath?: string
   ) {
-    super(method, pathPattern, parameters);
+    super(method, pathPattern, parameters, basePath);
   }
 
   /**
