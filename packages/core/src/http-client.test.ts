@@ -4,7 +4,7 @@ import {
   aiCoreDestination,
   mockDestination
 } from '../../../test-util/mock-http.js';
-import { executeRequest } from './http-client.js';
+import { executeRequest, getTargetUrl } from './http-client.js';
 
 describe('http-client', () => {
   beforeEach(() => {
@@ -92,5 +92,12 @@ describe('http-client', () => {
     expect(scope.isDone()).toBe(true);
     expect(res.status).toBe(200);
     expect(res.data).toEqual(mockPromptResponse);
+  });
+
+  it('should get correct target url', async () => {
+    expect(getTargetUrl('http://example.com', '/some/endpoint')).toBe('http://example.com/v2/some/endpoint');
+    expect(getTargetUrl('http://example.com/', '/some/endpoint')).toBe('http://example.com/v2/some/endpoint');
+    expect(getTargetUrl('http://example.com/abc', '/some/endpoint')).toBe('http://example.com/abc/some/endpoint');
+    expect(getTargetUrl('http://example.com/abc/', '/some/endpoint')).toBe('http://example.com/abc/some/endpoint');
   });
 });
