@@ -35,14 +35,13 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 > All CDS services are marked with `@requires: 'any'` and are publicly accessible in order to simplify the deployment process.
 > Apply proper authentication mechanisms to avoid unauthorized access.
 
+1. Update the `@sap-ai-sdk/*` dependencies from `"workspace:^"` to the semver version `^1`
 1. Install dependencies using `pnpm install`.
 2. Transpile the CAP application using `pnpm build`.
-
-3. Modify `services` and `routes` values in `manifest.yml`.
-
-4. Login using `cf login -a API_ENDPOINT -o ORG -s SPACE`.
-
-5. Deploy the application using `cf push`.
+4. Run `deploy:postbuild` to add a `package-lock.json` 
+5. Modify `services` and `routes` values in `manifest.yml`.
+6. Login using `cf login -a API_ENDPOINT -o ORG -s SPACE`.
+7. Deploy the application using `cf push`.
 
 ## Usage
 
