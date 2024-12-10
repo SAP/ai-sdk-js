@@ -36,12 +36,12 @@ Sample CAP application written in TypeScript to demonstrate the usage of SAP Clo
 > Apply proper authentication mechanisms to avoid unauthorized access.
 
 1. Update the `@sap-ai-sdk/*` dependencies from `"workspace:^"` to the semver version `^1`
-1. Install dependencies using `pnpm install`.
-1. Transpile the CAP application using `pnpm build`.
-1. Run `deploy:postbuild` to add a `package-lock.json`
-1. Modify `services` and `routes` values in `manifest.yml`.
-1. Login using `cf login -a API_ENDPOINT -o ORG -s SPACE`.
-1. Deploy the application using `cf push`.
+2. Install dependencies using `pnpm install`.
+3. Transpile the CAP application using `pnpm build`.
+4. Run `deploy:postbuild` to add a `package-lock.json`
+5. Modify `services` and `routes` values in `manifest.yml`.
+6. Login using `cf login -a API_ENDPOINT -o ORG -s SPACE`.
+7. Deploy the application using `cf push`.
 
 ## Usage
 
