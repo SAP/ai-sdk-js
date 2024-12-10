@@ -1,18 +1,19 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import { SseStream } from '@sap-ai-sdk/core';
-import { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.js';
+import { OrchestrationChatCompletionStreamChunkResponse } from './orchestration-chat-completion-stream-chunk-response.js';
+import type { CompletionPostResponseStreaming } from './client/api/schema/index.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-import type { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.js';
+import type { OrchestrationChatCompletionStreamResponse } from './orchestration-chat-completion-stream-response.js';
 
 const logger = createLogger({
-  package: 'foundation-models',
-  messageContext: 'azure-openai-chat-completion-stream'
+  package: 'orchestration',
+  messageContext: 'orchestration-chat-completion-stream'
 });
 
 /**
  * Chat completion stream containing post-processing functions.
  */
-export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
+export class OrchestrationChatCompletionStream<Item> extends SseStream<Item> {
   /**
    * Create a chat completion stream based on the http response.
    * @param response - Http response.
@@ -22,10 +23,9 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
   public static _create(
     response: HttpResponse,
     controller: AbortController
-  ): AzureOpenAiChatCompletionStream<any> {
-    // TODO: Change `any` to `CreateChatCompletionStreamResponse` once the preview spec becomes stable.
-    const stream = SseStream.transformToSseStream<any>(response, controller); // TODO: Change `any` to `CreateChatCompletionStreamResponse` once the preview spec becomes stable.
-    return new AzureOpenAiChatCompletionStream(stream.iterator, controller);
+  ): OrchestrationChatCompletionStream<CompletionPostResponseStreaming> {
+    const stream = SseStream.transformToSseStream<any>(response, controller); // TODO: Check if this can be narrowed
+    return new OrchestrationChatCompletionStream(stream.iterator, controller);
   }
 
   /**
@@ -34,10 +34,10 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
    * @internal
    */
   static async *_processChunk(
-    stream: AzureOpenAiChatCompletionStream<any> // TODO: Change `any` to `CreateChatCompletionStreamResponse` once the preview spec becomes stable.
-  ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse> {
+    stream: OrchestrationChatCompletionStream<CompletionPostResponseStreaming>
+  ): AsyncGenerator<OrchestrationChatCompletionStreamChunkResponse> {
     for await (const chunk of stream) {
-      yield new AzureOpenAiChatCompletionStreamChunkResponse(chunk);
+      yield new OrchestrationChatCompletionStreamChunkResponse(chunk);
     }
   }
 
@@ -45,11 +45,11 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
    * @internal
    */
   static async *_processFinishReason(
-    stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
-    response?: AzureOpenAiChatCompletionStreamResponse<any>
-  ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse> {
+    stream: OrchestrationChatCompletionStream<OrchestrationChatCompletionStreamChunkResponse>,
+    response?: OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
+  ): AsyncGenerator<OrchestrationChatCompletionStreamChunkResponse> {
     for await (const chunk of stream) {
-      chunk.data.choices.forEach((choice: any) => {
+      chunk.data.orchestration_result?.choices.forEach((choice: any) => {
         const choiceIndex = choice.index;
         if (choiceIndex >= 0) {
           const finishReason = chunk.getFinishReason(choiceIndex);
@@ -87,9 +87,9 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
    * @internal
    */
   static async *_processTokenUsage(
-    stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
-    response?: AzureOpenAiChatCompletionStreamResponse<any>
-  ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse> {
+    stream: OrchestrationChatCompletionStream<OrchestrationChatCompletionStreamChunkResponse>,
+    response?: OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
+  ): AsyncGenerator<OrchestrationChatCompletionStreamChunkResponse> {
     for await (const chunk of stream) {
       const usage = chunk.getTokenUsage();
       if (usage) {
@@ -109,7 +109,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
    * @internal
    */
   static async *_processContentStream(
-    stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
+    stream: OrchestrationChatCompletionStream<OrchestrationChatCompletionStreamChunkResponse>,
     choiceIndex = 0
   ): AsyncGenerator<string> {
     for await (const chunk of stream) {
@@ -137,30 +137,30 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
    */
   _pipe<TReturn>(
     processFn: (
-      stream: AzureOpenAiChatCompletionStream<Item>,
-      response?: AzureOpenAiChatCompletionStreamResponse<any>
+      stream: OrchestrationChatCompletionStream<Item>,
+      response?: OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
     ) => AsyncIterator<TReturn>,
-    response?: AzureOpenAiChatCompletionStreamResponse<any>
-  ): AzureOpenAiChatCompletionStream<TReturn> {
+    response?: OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
+  ): OrchestrationChatCompletionStream<TReturn> {
     if (response) {
-      return new AzureOpenAiChatCompletionStream(
+      return new OrchestrationChatCompletionStream(
         () => processFn(this, response),
         this.controller
       );
     }
-    return new AzureOpenAiChatCompletionStream(
+    return new OrchestrationChatCompletionStream(
       () => processFn(this),
       this.controller
     );
   }
 
   public toContentStream(
-    this: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
+    this: OrchestrationChatCompletionStream<OrchestrationChatCompletionStreamChunkResponse>,
     choiceIndex?: number
-  ): AzureOpenAiChatCompletionStream<string> {
-    return new AzureOpenAiChatCompletionStream(
+  ): OrchestrationChatCompletionStream<string> {
+    return new OrchestrationChatCompletionStream(
       () =>
-        AzureOpenAiChatCompletionStream._processContentStream(
+        OrchestrationChatCompletionStream._processContentStream(
           this,
           choiceIndex
         ),
