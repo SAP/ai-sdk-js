@@ -1,4 +1,8 @@
-import { mergeIgnoreCase, removeLeadingSlashes, removeTrailingSlashes } from '@sap-cloud-sdk/util';
+import {
+  mergeIgnoreCase,
+  removeLeadingSlashes,
+  removeTrailingSlashes
+} from '@sap-cloud-sdk/util';
 import { executeHttpRequest } from '@sap-cloud-sdk/http-client';
 import { getAiCoreDestination } from './context.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
