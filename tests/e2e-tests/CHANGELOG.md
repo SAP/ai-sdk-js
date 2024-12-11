@@ -1,5 +1,14 @@
 # @sap-ai-sdk/e2e-tests
 
+## 1.4.0
+
+### Patch Changes
+
+- Updated dependencies [d79cee8]
+  - @sap-ai-sdk/orchestration@1.4.0
+  - @sap-ai-sdk/sample-code@1.4.0
+  - @sap-ai-sdk/ai-api@1.4.0
+
 ## 1.3.0
 
 ### Patch Changes

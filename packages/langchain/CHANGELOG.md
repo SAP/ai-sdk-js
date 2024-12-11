@@ -1,5 +1,14 @@
 # @sap-ai-sdk/langchain
 
+## 1.4.0
+
+### Patch Changes
+
+- Updated dependencies [d79cee8]
+  - @sap-ai-sdk/foundation-models@1.4.0
+  - @sap-ai-sdk/ai-api@1.4.0
+  - @sap-ai-sdk/core@1.4.0
+
 ## 1.3.0
 
 ### Patch Changes

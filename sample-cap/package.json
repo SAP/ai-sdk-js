@@ -1,14 +1,14 @@
 {
   "type": "module",
   "name": "@sap-ai-sdk/sample-cap",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Sample CAP application with Cloud SDK for AI.",
   "repository": "https://github.com/sap/ai-sdk-js",
   "private": true,
   "dependencies": {
-    "@sap-ai-sdk/ai-api": "^1",
-    "@sap-ai-sdk/foundation-models": "^1",
-    "@sap-ai-sdk/orchestration": "^1",
+    "@sap-ai-sdk/ai-api": "workspace:^",
+    "@sap-ai-sdk/foundation-models": "workspace:^",
+    "@sap-ai-sdk/orchestration": "workspace:^",
     "express": "^4",
     "@sap/xssec": "^4",
     "@sap/cds": "^8.5.1"
@@ -22,7 +22,7 @@
     "cds-build": "cds build --production",
     "compile": "tsc",
     "cleanup": "rm -f ./dist/srv/srv/**/*.ts ./dist/srv/package-lock.json",
-    "postbuild": "pushd ./dist/srv && npm i --package-lock-only && popd",
+    "deploy:postbuild": "pushd ./dist/srv && npm i --package-lock-only && popd",
     "start": "npx cds-serve",
     "watch": "cds-tsx watch",
     "watch:hybrid": "cds-tsx watch --profile hybrid",
