@@ -103,6 +103,7 @@ function mergeWithDefaultRequestConfig(
  * @param url - The url, e.g., `http://example.com` or `http://example.com:8000/abc`.
  * @param endpointPath - The path to the endpoint, e.g., `/some/endpoint`.
  * @returns Target url combining the url and endpoint path.
+ * @internal
  */
 export function getTargetUrl(url: string, endpointPath: string): string {
   // Remove the last trailing slash
