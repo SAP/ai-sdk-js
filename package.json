@@ -23,6 +23,7 @@
     "foundation-models": "pnpm -F=@sap-ai-sdk/foundation-models",
     "orchestration": "pnpm -F=@sap-ai-sdk/orchestration",
     "core": "pnpm -F=@sap-ai-sdk/core",
+    "document-grounding": "pnpm -F=@sap-ai-sdk/document-grounding",
     "langchain": "pnpm -F=@sap-ai-sdk/langchain",
     "e2e-tests": "pnpm -F=@sap-ai-sdk/e2e-tests",
     "type-tests": "pnpm -F=@sap-ai-sdk/type-tests",
