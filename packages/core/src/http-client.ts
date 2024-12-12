@@ -1,6 +1,11 @@
-import { mergeIgnoreCase, removeLeadingSlashes } from '@sap-cloud-sdk/util';
+import {
+  mergeIgnoreCase,
+  removeLeadingSlashes,
+  removeTrailingSlashes
+} from '@sap-cloud-sdk/util';
 import { executeHttpRequest } from '@sap-cloud-sdk/http-client';
 import { getAiCoreDestination } from './context.js';
+import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 import type {
   HttpRequestConfig,
   HttpResponse
@@ -44,14 +49,16 @@ export interface EndpointOptions {
  * @param endpointOptions - The options to call an endpoint.
  * @param data - The input parameters for the request.
  * @param requestConfig - The request configuration.
+ * @param destination - The destination to use for the request.
  * @returns The {@link HttpResponse} from the AI Core service.
  */
 export async function executeRequest(
   endpointOptions: EndpointOptions,
   data: any,
-  requestConfig?: CustomRequestConfig
+  requestConfig?: CustomRequestConfig,
+  destination?: HttpDestinationOrFetchOptions
 ): Promise<HttpResponse> {
-  const aiCoreDestination = await getAiCoreDestination();
+  const aiCoreDestination = await getAiCoreDestination(destination);
   const { url, apiVersion, resourceGroup = 'default' } = endpointOptions;
 
   const mergedRequestConfig = {
@@ -59,10 +66,8 @@ export async function executeRequest(
     data: JSON.stringify(data)
   };
 
-  const targetUrl = aiCoreDestination.url + `/v2/${removeLeadingSlashes(url)}`;
-
   return executeHttpRequest(
-    { ...aiCoreDestination, url: targetUrl },
+    { ...aiCoreDestination, url: getTargetUrl(aiCoreDestination.url, url) },
     mergedRequestConfig,
     {
       fetchCsrfToken: false
@@ -90,4 +95,25 @@ function mergeWithDefaultRequestConfig(
     headers: mergeIgnoreCase(defaultConfig.headers, requestConfig?.headers),
     params: mergeIgnoreCase(defaultConfig.params, requestConfig?.params)
   };
+}
+
+/**
+ * Get target url with endpoint path appended.
+ * Append path `v2` if the url contains empty pathname `/`.
+ * @param url - The url, e.g., `http://example.com` or `http://example.com:8000/abc`.
+ * @param endpointPath - The path to the endpoint, e.g., `/some/endpoint`.
+ * @returns Target url combining the url and endpoint path.
+ * @internal
+ */
+export function getTargetUrl(url: string, endpointPath: string): string {
+  // Remove the last trailing slash
+  url = removeTrailingSlashes(url);
+  // Remove the first leading slashes
+  endpointPath = removeLeadingSlashes(endpointPath);
+
+  const urlObj = new URL(url);
+  if (urlObj.pathname === '/') {
+    return url + '/v2/' + endpointPath;
+  }
+  return url + '/' + endpointPath;
 }

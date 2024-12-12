@@ -4,24 +4,18 @@ SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI
 
 This package provides LangChain model clients built on top of the foundation model clients of the SAP Cloud SDK for AI.
 
-## Table of Contents
+### Table of Contents
 
-- [@sap-ai-sdk/langchain](#sap-ai-sdklangchain)
-  - [Table of Contents](#table-of-contents)
-  - [Installation](#installation)
-  - [Prerequisites](#prerequisites)
-  - [Relationship between Models and Deployment ID](#relationship-between-models-and-deployment-id)
-  - [Usage](#usage)
-    - [Client Initialization](#client-initialization)
-    - [Chat Client](#chat-client)
-      - [Advanced Example with Templating and Output Parsing](#advanced-example-with-templating-and-output-parsing)
-    - [Embedding Client](#embedding-client)
-      - [Embed Text](#embed-text)
-      - [Embed Document Chunks](#embed-document-chunks)
-      - [Preprocess, embed, and store documents](#preprocess-embed-and-store-documents)
-  - [Local Testing](#local-testing)
-  - [Support, Feedback, Contribution](#support-feedback-contribution)
-  - [License](#license)
+- [Installation](#installation)
+- [Prerequisites](#prerequisites)
+- [Relationship between Models and Deployment ID](#relationship-between-models-and-deployment-id)
+- [Usage](#usage)
+  - [Client Initialization](#client-initialization)
+  - [Chat Client](#chat-client)
+  - [Embedding Client](#embedding-client)
+- [Local Testing](#local-testing)
+- [Support, Feedback, Contribution](#support-feedback-contribution)
+- [License](#license)
 
 ## Installation
 
@@ -102,6 +96,27 @@ const embeddingClient = new AzureOpenAiEmbeddingClient({
   maxRetries: 0
 });
 ```
+
+#### Custom Destination
+
+When initializing the `AzureOpenAiChatClient` and `AzureOpenAiEmbeddingClient` clients, it is possible to provide a custom destination.
+For example, when targeting a destination with the name `my-destination`, the following code can be used:
+
+```ts
+const chatClient = new AzureOpenAiChatClient(
+  {
+    modelName: 'gpt-4o',
+    modelVersion: '24-07-2021',
+    resourceGroup: 'my-resource-group'
+  },
+  {
+    destinationName: 'my-destination'
+  }
+);
+```
+
+By default, the fetched destination is cached.
+To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
 ### Chat Client
 

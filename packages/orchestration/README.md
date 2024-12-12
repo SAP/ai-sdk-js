@@ -4,9 +4,8 @@ SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI
 
 This package incorporates generative AI orchestration capabilities into your AI activities in SAP AI Core and SAP AI Launchpad.
 
-## Table of Contents
+### Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Prerequisites](#prerequisites)
 - [Orchestration Service](#orchestration-service)
@@ -18,6 +17,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
   - [Grounding](#grounding)
   - [Using Resource Groups](#using-resource-groups)
   - [Custom Request Configuration](#custom-request-configuration)
+  - [Custom Destination](#custom-destination)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
@@ -368,6 +368,29 @@ const response = await orchestrationClient.chatCompletion(
   }
 );
 ```
+
+### Custom Destination
+
+When initializing the `OrchestrationClient` client, it is possible to provide a custom destination.
+For example, when targeting a destination with the name `my-destination`, the following code can be used:
+
+```ts
+const orchestrationClient = new OrchestrationClient(
+  {
+    llm,
+    templating
+  },
+  {
+    resourceGroup: 'default'
+  },
+  {
+    destinationName: 'my-destination'
+  }
+);
+```
+
+By default, the fetched destination is cached.
+To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
 ## Local Testing
 

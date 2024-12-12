@@ -62,6 +62,15 @@ expectType<AzureOpenAiCompletionUsage | undefined>(
   ).getTokenUsage()
 );
 
+expectType<Promise<AzureOpenAiChatCompletionResponse>>(
+  new AzureOpenAiChatClient('gpt-4', {
+    destinationName: 'destinationName',
+    useCache: false
+  }).run({
+    messages: [{ role: 'user', content: 'test prompt' }]
+  })
+);
+
 /**
  * Chat completion with optional parameters.
  */
@@ -132,6 +141,15 @@ expectType<Promise<AzureOpenAiEmbeddingResponse>>(
       }
     }
   )
+);
+
+expectType<Promise<AzureOpenAiEmbeddingResponse>>(
+  new AzureOpenAiEmbeddingClient('text-embedding-ada-002', {
+    destinationName: 'destinationName',
+    useCache: false
+  }).run({
+    input: 'test input'
+  })
 );
 
 expect<AzureOpenAiChatModel>('custom-model');

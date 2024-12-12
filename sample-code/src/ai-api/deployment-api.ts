@@ -26,6 +26,25 @@ export async function getDeployments(
 }
 
 /**
+ * Get all deployments filtered by status with destination.
+ * @param resourceGroup - AI-Resource-Group where the resources are available.
+ * @param status - Optional query parameter to filter deployments by status.
+ * @returns List of deployments.
+ */
+export async function getDeploymentsWithDestination(
+  resourceGroup: string,
+  status?: AiDeploymentStatus
+): Promise<AiDeploymentList> {
+  // check for optional query parameters.
+  const queryParams = status ? { status } : {};
+  return DeploymentApi.deploymentQuery(queryParams, {
+    'AI-Resource-Group': resourceGroup
+  }).execute({
+    destinationName: 'e2e-aicore'
+  });
+}
+
+/**
  * Create a deployment using the configuration specified by configurationId.
  * @param configurationId - ID of the configuration to be used.
  * @param resourceGroup - AI-Resource-Group where the resources are available.

@@ -11,6 +11,7 @@ import { AzureOpenAiChatCompletionStream } from './azure-openai-chat-completion-
 import type { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { AzureOpenAiCreateChatCompletionRequest } from './client/inference/schema/index.js';
+import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 /**
  * Azure OpenAI client for chat completion.
@@ -19,8 +20,12 @@ export class AzureOpenAiChatClient {
   /**
    * Creates an instance of the Azure OpenAI chat client.
    * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
+   * @param destination - The destination to use for the request.
    */
-  constructor(private modelDeployment: ModelDeployment<AzureOpenAiChatModel>) {}
+  constructor(
+    private modelDeployment: ModelDeployment<AzureOpenAiChatModel>,
+    private destination?: HttpDestinationOrFetchOptions
+  ) {}
 
   /**
    * Creates a completion for the chat messages.
@@ -75,7 +80,8 @@ export class AzureOpenAiChatClient {
         resourceGroup
       },
       data,
-      requestConfig
+      requestConfig,
+      this.destination
     );
   }
 

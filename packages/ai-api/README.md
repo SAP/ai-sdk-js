@@ -11,9 +11,8 @@ This package provides tools to manage scenarios and workflows in SAP AI Core.
 
 We maintain a list of [currently available and tested AI Core APIs](https://github.com/SAP/ai-sdk-js/blob/main/docs/list-tested-APIs.md)
 
-## Table of Contents
+### Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Version Management](#version-management)
 - [Prerequisites](#prerequisites)
@@ -22,6 +21,7 @@ We maintain a list of [currently available and tested AI Core APIs](https://gith
   - [Create a Configuration](#create-a-configuration)
   - [Create a Deployment](#create-a-deployment)
   - [Delete a Deployment](#delete-a-deployment)
+  - [Custom Destination](#custom-destination)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
@@ -64,60 +64,61 @@ In addition to the examples below, you can find more **sample code** [here](http
 
 ### Create an Artifact
 
-```TypeScript
+```ts
 async function createArtifact() {
+  const requestBody: ArtifactPostData = {
+    name: 'training-test-dataset',
+    kind: 'dataset',
+    url: 'https://ai.example.com',
+    scenarioId: 'foundation-models'
+  };
 
-    const requestBody: ArtifactPostData = {
-        name: 'training-test-dataset',
-        kind: 'dataset',
-        url: 'https://ai.example.com',
-        scenarioId: 'foundation-models'
-    }
-
-    try {
-        const responseData: ArtifactCreationResponse = await ArtifactApi
-            .artifactCreate(requestBody, {'AI-Resource-Group': 'default'})
-            .execute();
-        return responseData;
-    } catch (errorData) {
-        const apiError = errorData.response.data.error as ApiError;
-        console.error('Status code:', errorData.response.status);
-        throw new Error(`Artifact creation failed: ${apiError.message}`);
-    }
+  try {
+    const responseData: ArtifactCreationResponse =
+      await ArtifactApi.artifactCreate(requestBody, {
+        'AI-Resource-Group': 'default'
+      }).execute();
+    return responseData;
+  } catch (errorData) {
+    const apiError = errorData.response.data.error as ApiError;
+    console.error('Status code:', errorData.response.status);
+    throw new Error(`Artifact creation failed: ${apiError.message}`);
+  }
 }
 ```
 
 ### Create a Configuration
 
-```TypeScript
+```ts
 async function createConfiguration() {
-    const requestBody: ConfigurationBaseData = {
-        name: 'gpt-35-turbo',
-        executableId: 'azure-openai',
-        scenarioId: 'foundation-models',
-        parameterBindings: [
-            {
-              "key": "modelName",
-              "value": "gpt-35-turbo"
-            },
-            {
-              "key": "modelVersion",
-              "value": "latest"
-            }
-        ],
-        inputArtifactBindings: []
-    }
+  const requestBody: ConfigurationBaseData = {
+    name: 'gpt-35-turbo',
+    executableId: 'azure-openai',
+    scenarioId: 'foundation-models',
+    parameterBindings: [
+      {
+        key: 'modelName',
+        value: 'gpt-35-turbo'
+      },
+      {
+        key: 'modelVersion',
+        value: 'latest'
+      }
+    ],
+    inputArtifactBindings: []
+  };
 
-    try {
-        const responseData: ConfigurationCreationResponse = await ConfigurationApi
-            .configurationCreate(requestBody, {'AI-Resource-Group': 'default'})
-            .execute();
-        return responseData;
-    } catch (errorData) {
-        const apiError = errorData.response.data.error as ApiError;
-        console.error('Status code:', errorData.response.status);
-        throw new Error(`Configuration creation failed: ${apiError.message}`);
-    }
+  try {
+    const responseData: ConfigurationCreationResponse =
+      await ConfigurationApi.configurationCreate(requestBody, {
+        'AI-Resource-Group': 'default'
+      }).execute();
+    return responseData;
+  } catch (errorData) {
+    const apiError = errorData.response.data.error as ApiError;
+    console.error('Status code:', errorData.response.status);
+    throw new Error(`Configuration creation failed: ${apiError.message}`);
+  }
 }
 ```
 
@@ -148,41 +149,64 @@ async function createDeployment() {
 Only deployments with `targetStatus: STOPPED` can be deleted.
 Thus, a modification request must be sent before deletion can occur.
 
-```TypeScript
+```ts
 async function modifyDeployment() {
+  let deploymentId: string = '0a1b2c3d4e5f';
 
-    let deploymentId: string = '0a1b2c3d4e5f';
+  const deployment: DeploymentResponseWithDetails =
+    await DeploymentApi.deploymentGet(
+      deploymentId,
+      {},
+      { 'AI-Resource-Group': 'default' }
+    ).execute();
 
-    const deployment: DeploymentResponseWithDetails = await DeploymentApi
-        .deploymentGet(deploymentId, {}, {'AI-Resource-Group': 'default'})
-        .execute();
+  if (deployment.targetStatus === 'RUNNING') {
+    // Only RUNNING deployments can be STOPPED.
+    const requestBody: DeploymentModificationRequest = {
+      targetStatus: 'STOPPED'
+    };
 
-    if(deployment.targetStatus === 'RUNNING') {
-        // Only RUNNING deployments can be STOPPED.
-        const requestBody: DeploymentModificationRequest = {
-            targetStatus: 'STOPPED',
-        };
-
-        try {
-            await DeploymentApi
-                .deploymentModify(deploymentId, requestBody, {'AI-Resource-Group': 'default'})
-                .execute();
-        } catch (errorData) {
-            const apiError = errorData.response.data.error as ApiError;
-            console.error('Status code:', errorData.response.status);
-            throw new Error(`Deployment modification failed: ${apiError.message}`);
-        }
-    }
-    // Wait a few seconds for the deployment to stop
     try {
-        return DeploymentApi.deploymentDelete(deploymentId, { 'AI-Resource-Group': 'default' }).execute();
+      await DeploymentApi.deploymentModify(deploymentId, requestBody, {
+        'AI-Resource-Group': 'default'
+      }).execute();
     } catch (errorData) {
-        const apiError = errorData.response.data.error as ApiError;
-        console.error('Status code:', errorData.response.status);
-        throw new Error(`Deployment deletion failed: ${apiError.message}`);
+      const apiError = errorData.response.data.error as ApiError;
+      console.error('Status code:', errorData.response.status);
+      throw new Error(`Deployment modification failed: ${apiError.message}`);
     }
+  }
+  // Wait a few seconds for the deployment to stop
+  try {
+    return DeploymentApi.deploymentDelete(deploymentId, {
+      'AI-Resource-Group': 'default'
+    }).execute();
+  } catch (errorData) {
+    const apiError = errorData.response.data.error as ApiError;
+    console.error('Status code:', errorData.response.status);
+    throw new Error(`Deployment deletion failed: ${apiError.message}`);
+  }
 }
 ```
+
+### Custom Destination
+
+When calling the `execute()` method, it is possible to provide a custom destination.
+For example, when querying deployments targeting a destination with the name `my-destination`, the following code can be used:
+
+```ts
+const queryParams = status ? { status } : {};
+return DeploymentApi.deploymentQuery(queryParams, {
+  'AI-Resource-Group': resourceGroup
+}).execute({
+  destinationName: 'my-destination'
+});
+```
+
+By default, the fetched destination is cached.
+To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
+
+```ts
 
 ## Local Testing
 
@@ -198,3 +222,4 @@ For more information about how to contribute, the project structure, as well as 
 ## License
 
 The SAP Cloud SDK for AI is released under the [Apache License Version 2.0.](http://www.apache.org/licenses/).
+```
