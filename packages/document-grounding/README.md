@@ -41,7 +41,7 @@ In addition to the examples below, you can find more **sample code** [here](http
 ### Create a Collection
 
 ```ts
-import 
+import
 const response =
   await CollectionsApi.vectorV1VectorEndpointsCreateCollection(
     {
