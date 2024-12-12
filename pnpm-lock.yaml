@@ -149,8 +149,8 @@ importers:
         specifier: workspace:^
         version: link:../foundation-models
       zod-to-json-schema:
-        specifier: ^3.23.5
-        version: 3.23.5(zod@3.24.1)
+        specifier: ^3.24.1
+        version: 3.24.1(zod@3.24.1)
 
   packages/orchestration:
     dependencies:
@@ -4584,10 +4584,10 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  zod-to-json-schema@3.23.5:
-    resolution: {integrity: sha512-5wlSS0bXfF/BrL4jPAbz9da5hDlDptdEppYfe+x4eIJ7jioqKG9uUxOwPzqof09u/XeVdrgFu29lZi+8XNDJtA==}
+  zod-to-json-schema@3.24.1:
+    resolution: {integrity: sha512-3h08nf3Vw3Wl3PK+q3ow/lIil81IT2Oa7YpQyUUDsEWbXveMesdfK1xBd2RhCkynwZndAxixji/7SYJJowr62w==}
     peerDependencies:
-      zod: ^3.23.3
+      zod: ^3.24.1
 
   zod@3.24.0:
     resolution: {integrity: sha512-Hz+wiY8yD0VLA2k/+nsg2Abez674dDGTai33SwNvMPuf9uIrBC9eFgIMQxBBbHFxVXi8W+5nX9DcAh9YNSQm/w==}
@@ -5449,7 +5449,7 @@ snapshots:
       p-retry: 4.6.2
       uuid: 10.0.0
       zod: 3.24.1
-      zod-to-json-schema: 3.23.5(zod@3.24.1)
+      zod-to-json-schema: 3.24.1(zod@3.24.1)
     transitivePeerDependencies:
       - openai
 
@@ -5466,7 +5466,7 @@ snapshots:
       p-retry: 4.6.2
       uuid: 10.0.0
       zod: 3.24.1
-      zod-to-json-schema: 3.23.5(zod@3.24.1)
+      zod-to-json-schema: 3.24.1(zod@3.24.1)
     transitivePeerDependencies:
       - openai
 
@@ -5483,7 +5483,7 @@ snapshots:
       p-retry: 4.6.2
       uuid: 10.0.0
       zod: 3.24.1
-      zod-to-json-schema: 3.23.5(zod@3.24.1)
+      zod-to-json-schema: 3.24.1(zod@3.24.1)
     transitivePeerDependencies:
       - openai
 
@@ -5493,7 +5493,7 @@ snapshots:
       js-tiktoken: 1.0.14
       openai: 4.61.1(zod@3.24.1)
       zod: 3.24.1
-      zod-to-json-schema: 3.23.5(zod@3.24.1)
+      zod-to-json-schema: 3.24.1(zod@3.24.1)
     transitivePeerDependencies:
       - encoding
 
@@ -5503,7 +5503,7 @@ snapshots:
       js-tiktoken: 1.0.14
       openai: 4.61.1(zod@3.24.1)
       zod: 3.24.1
-      zod-to-json-schema: 3.23.5(zod@3.24.1)
+      zod-to-json-schema: 3.24.1(zod@3.24.1)
     transitivePeerDependencies:
       - encoding
 
@@ -5608,7 +5608,7 @@ snapshots:
       '@sap-ai-sdk/ai-api': 1.4.1-20241211013152.0
       '@sap-ai-sdk/core': 1.4.1-20241211013152.0
       '@sap-ai-sdk/foundation-models': 1.4.1-20241211013152.0
-      zod-to-json-schema: 3.23.5(zod@3.24.1)
+      zod-to-json-schema: 3.24.1(zod@3.24.1)
     transitivePeerDependencies:
       - debug
       - openai
@@ -8436,7 +8436,7 @@ snapshots:
       uuid: 10.0.0
       yaml: 2.5.1
       zod: 3.24.0
-      zod-to-json-schema: 3.23.5(zod@3.24.0)
+      zod-to-json-schema: 3.24.1(zod@3.24.0)
     optionalDependencies:
       axios: 1.7.8
       cheerio: 1.0.0
@@ -8459,7 +8459,7 @@ snapshots:
       uuid: 10.0.0
       yaml: 2.5.1
       zod: 3.24.0
-      zod-to-json-schema: 3.23.5(zod@3.24.0)
+      zod-to-json-schema: 3.24.1(zod@3.24.0)
     optionalDependencies:
       axios: 1.7.8
       cheerio: 1.0.0
@@ -9996,11 +9996,11 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod-to-json-schema@3.23.5(zod@3.24.0):
+  zod-to-json-schema@3.24.1(zod@3.24.0):
     dependencies:
       zod: 3.24.0
 
-  zod-to-json-schema@3.23.5(zod@3.24.1):
+  zod-to-json-schema@3.24.1(zod@3.24.1):
     dependencies:
       zod: 3.24.1
 
