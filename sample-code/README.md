@@ -167,13 +167,13 @@ The chain performs RAG with the chat and embedding client.
 
 `GET /document-grounding/invoke-orchestration-grounding`
 
-This scenario demonstrates the end-to-end flow for creating collections and documents targeting document grounding service, and then using the orchestration grounding to get a chat completion response with a retrieved context.
+This scenario demonstrates the end-to-end flow for creating collections and documents using the document grounding service, and then using the orchestration grounding to get a chat completion response with a retrieved context.
 
-The flow will first create a empty collection and then add a document to it.
+The flow will first create an empty collection and then add a document to it.
 The document contains a statement with the current timestamp.
 It will be retrieved with a user question asking for the latest timestamp by orchestration grounding module.
 Then, orchestration service will send a chat completion request with the context to LLM.
-As a result, the response should contain the same timestamp.
+The response should contain the same timestamp.
 
 The created collection will be deleted at the end of the flow.
 
@@ -181,8 +181,8 @@ The created collection will be deleted at the end of the flow.
 
 `GET /document-grounding/invoke-retrieve-documents`
 
-This scenario demonstrates the end-to-end flow for creating collections and documents targeting document grounding service, and then retrieving the documents with a query.
+This scenario demonstrates the end-to-end flow for creating collections and documents using the document grounding service, and then retrieving the documents with a query.
 
-The response should contain similar chunks of documents comparing to the query.
+The response should contain chunks of documents similar to the query.
 
 The created collection will be deleted at the end of the flow.

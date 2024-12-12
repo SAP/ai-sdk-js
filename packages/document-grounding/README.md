@@ -4,9 +4,8 @@ SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI
 
 This package incorporates generative AI document grounding capabilities into your AI activities in SAP AI Core and SAP AI Launchpad.
 
-## Table of Contents
+### Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Prerequisites](#prerequisites)
 - [Usage](#usage)
@@ -42,7 +41,8 @@ In addition to the examples below, you can find more **sample code** [here](http
 ### Create a Collection
 
 ```ts
-const response: HttpResponse =
+import 
+const response =
   await CollectionsApi.vectorV1VectorEndpointsCreateCollection(
     {
       title: 'ai-sdk-js-e2e',
@@ -63,7 +63,7 @@ const collectionId = (response.headers.location as string).split('/').at(-2);
 
 ```ts
 const response: DocumentsListResponse =
-  DocumentsApi.vectorV1VectorEndpointsCreateDocuments(
+  await DocumentsApi.vectorV1VectorEndpointsCreateDocuments(
     collectionId,
     {
       documents: [
