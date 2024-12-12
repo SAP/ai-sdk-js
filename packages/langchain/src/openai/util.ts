@@ -4,16 +4,16 @@ import type { BaseMessage } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
 import type { StructuredTool } from '@langchain/core/tools';
 import type {
-  AzureOpenAiChatCompletionRequestMessageSystem,
-  AzureOpenAiChatCompletionRequestMessageUser,
-  AzureOpenAiChatCompletionRequestMessageAssistant,
+  AzureOpenAiChatCompletionRequestSystemMessage,
+  AzureOpenAiChatCompletionRequestUserMessage,
+  AzureOpenAiChatCompletionRequestAssistantMessage,
   AzureOpenAiChatCompletionRequestMessageTool,
   AzureOpenAiChatCompletionRequestMessageFunction,
   AzureOpenAiChatCompletionTool,
   AzureOpenAiChatCompletionRequestMessage,
   AzureOpenAiCreateChatCompletionResponse,
   AzureOpenAiCreateChatCompletionRequest,
-  AzureOpenAiChatCompletionFunctionParameters
+  AzureOpenAiFunctionParameters
 } from '@sap-ai-sdk/foundation-models';
 import type { AzureOpenAiChatClient } from './chat.js';
 import type { AzureOpenAiChatCallOptions } from './types.js';
@@ -40,14 +40,14 @@ type ToolChoice =
 type LangChainToolChoice = string | Record<string, any> | 'auto' | 'any';
 
 /**
- * Maps a LangChain {@link StructuredTool} to {@link AzureOpenAiChatCompletionFunction}.
+ * Maps a LangChain {@link StructuredTool} to {@link AzureOpenAiChatCompletionFunctions}.
  * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
  * @returns The OpenAI chat completion function.
  */
 function mapToolToOpenAiFunction(tool: StructuredTool): {
   description?: string;
   name: string;
-  parameters: AzureOpenAiChatCompletionFunctionParameters;
+  parameters: AzureOpenAiFunctionParameters;
 } & Record<string, any> {
   return {
     name: tool.name,
@@ -164,11 +164,11 @@ function mapBaseMessageToAzureOpenAiChatMessage(
 type Role = 'system' | 'user' | 'assistant' | 'tool' | 'function';
 
 type ContentType<T extends Role> = T extends 'system'
-  ? AzureOpenAiChatCompletionRequestMessageSystem['content']
+  ? AzureOpenAiChatCompletionRequestSystemMessage['content']
   : T extends 'user'
-    ? AzureOpenAiChatCompletionRequestMessageUser['content']
+    ? AzureOpenAiChatCompletionRequestUserMessage['content']
     : T extends 'assistant'
-      ? AzureOpenAiChatCompletionRequestMessageAssistant['content']
+      ? AzureOpenAiChatCompletionRequestAssistantMessage['content']
       : T extends 'tool'
         ? AzureOpenAiChatCompletionRequestMessageTool['content']
         : T extends 'function'
