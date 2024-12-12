@@ -4,9 +4,8 @@ SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI
 
 This package provides LangChain model clients built on top of the foundation model clients of the SAP Cloud SDK for AI.
 
-## Table of Contents
+### Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Prerequisites](#prerequisites)
 - [Relationship between Models and Deployment ID](#relationship-between-models-and-deployment-id)
@@ -111,10 +110,13 @@ const chatClient = new AzureOpenAiChatClient(
     resourceGroup: 'my-resource-group'
   },
   {
-    destinatioName: 'my-destination'
+    destinationName: 'my-destination'
   }
 );
 ```
+
+By default, the fetched destination is cached. 
+To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
 ### Chat Client
 

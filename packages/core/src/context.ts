@@ -29,6 +29,11 @@ export async function getAiCoreDestination(
 ): Promise<HttpDestination> {
   // If Destination is provided, get the destination and return it.
   if (destination) {
+    // If fetch options provided, by default cache the destination.
+    if (destination.destinationName !== undefined && destination.useCache === undefined) {
+      destination.useCache = true;
+    }
+
     const resolvedDestination = await useOrFetchDestination(destination);
     if (!resolvedDestination) {
       throw new Error('Could not resolve destination.');

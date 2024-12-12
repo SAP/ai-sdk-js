@@ -4,9 +4,8 @@ SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI
 
 This package incorporates generative AI orchestration capabilities into your AI activities in SAP AI Core and SAP AI Launchpad.
 
-## Table of Contents
+### Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Prerequisites](#prerequisites)
 - [Orchestration Service](#orchestration-service)
@@ -389,6 +388,9 @@ const orchestrationClient = new OrchestrationClient(
   }
 );
 ```
+
+By default, the fetched destination is cached. 
+To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
 ## Local Testing
 

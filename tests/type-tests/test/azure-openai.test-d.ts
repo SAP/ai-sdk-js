@@ -64,7 +64,8 @@ expectType<AzureOpenAiCompletionUsage | undefined>(
 
 expectType<Promise<AzureOpenAiChatCompletionResponse>>(
   new AzureOpenAiChatClient('gpt-4', {
-    destinationName: 'destinationName'
+    destinationName: 'destinationName',
+    useCache: false
   }).run({
     messages: [{ role: 'user', content: 'test prompt' }]
   })
@@ -144,7 +145,8 @@ expectType<Promise<AzureOpenAiEmbeddingResponse>>(
 
 expectType<Promise<AzureOpenAiEmbeddingResponse>>(
   new AzureOpenAiEmbeddingClient('text-embedding-ada-002', {
-    destinationName: 'destinationName'
+    destinationName: 'destinationName',
+    useCache: false
   }).run({
     input: 'test input'
   })

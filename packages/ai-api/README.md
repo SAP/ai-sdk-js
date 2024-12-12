@@ -11,9 +11,8 @@ This package provides tools to manage scenarios and workflows in SAP AI Core.
 
 We maintain a list of [currently available and tested AI Core APIs](https://github.com/SAP/ai-sdk-js/blob/main/docs/list-tested-APIs.md)
 
-## Table of Contents
+### Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Version Management](#version-management)
 - [Prerequisites](#prerequisites)
@@ -203,6 +202,11 @@ return DeploymentApi.deploymentQuery(queryParams, {
   destinationName: 'my-destination'
 });
 ```
+
+By default, the fetched destination is cached. 
+To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
+
+```ts
 
 ## Local Testing
 

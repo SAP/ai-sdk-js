@@ -93,7 +93,8 @@ expectType<Promise<OrchestrationResponse>>(
       resourceGroup: 'resourceGroup'
     },
     {
-      destinationName: 'destinationName'
+      destinationName: 'destinationName',
+      useCache: false
     }
   ).chatCompletion()
 );

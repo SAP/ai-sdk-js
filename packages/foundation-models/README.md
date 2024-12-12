@@ -4,9 +4,8 @@ SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI
 
 This package incorporates generative AI foundation models into your AI activities in SAP AI Core and SAP AI Launchpad.
 
-## Table of Contents
+### Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Prerequisites](#prerequisites)
 - [Relationship between Models and Deployment ID](#relationship-between-models-and-deployment-id)
@@ -272,6 +271,9 @@ const client = await new AzureOpenAiChatClient('gpt-35-turbo', {
   destinationName: 'my-destination'
 });
 ```
+
+By default, the fetched destination is cached. 
+To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
 ## Local Testing
 

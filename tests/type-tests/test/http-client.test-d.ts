@@ -22,7 +22,8 @@ expectType<Promise<HttpResponse>>(
     {},
     { headers: { 'Content-Type': 'application/json' } },
     {
-      destinationName: 'my-aicore-destination'
+      destinationName: 'my-aicore-destination',
+      useCache: false
     }
   )
 );
