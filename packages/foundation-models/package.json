@@ -34,6 +34,6 @@
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-cloud-sdk/http-client": "^3.24.0",
     "@sap-cloud-sdk/util": "^3.24.0",
-    "@sap-cloud-sdk/connectivity": "3.24.0"
+    "@sap-cloud-sdk/connectivity": "^3.24.0"
   }
 }
