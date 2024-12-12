@@ -203,7 +203,7 @@ return DeploymentApi.deploymentQuery(queryParams, {
 });
 ```
 
-By default, the fetched destination is cached. 
+By default, the fetched destination is cached.
 To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
 ```ts
@@ -222,3 +222,4 @@ For more information about how to contribute, the project structure, as well as 
 ## License
 
 The SAP Cloud SDK for AI is released under the [Apache License Version 2.0.](http://www.apache.org/licenses/).
+```

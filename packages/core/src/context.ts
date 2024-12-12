@@ -30,7 +30,10 @@ export async function getAiCoreDestination(
   // If Destination is provided, get the destination and return it.
   if (destination) {
     // If fetch options provided, by default cache the destination.
-    if (destination.destinationName !== undefined && destination.useCache === undefined) {
+    if (
+      destination.destinationName !== undefined &&
+      destination.useCache === undefined
+    ) {
       destination.useCache = true;
     }
 

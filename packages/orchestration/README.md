@@ -389,7 +389,7 @@ const orchestrationClient = new OrchestrationClient(
 );
 ```
 
-By default, the fetched destination is cached. 
+By default, the fetched destination is cached.
 To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
 ## Local Testing
