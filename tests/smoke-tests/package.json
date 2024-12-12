@@ -18,8 +18,8 @@
     "node": "^20"
   },
   "dependencies": {
-    "langchain": "0.3.6",
-    "@langchain/core": "0.3.22",
+    "langchain": "0.3.7",
+    "@langchain/core": "0.3.23",
     "@langchain/textsplitters": "0.1.0",
     "@sap-ai-sdk/ai-api": "canary",
     "@sap-ai-sdk/foundation-models": "canary",
