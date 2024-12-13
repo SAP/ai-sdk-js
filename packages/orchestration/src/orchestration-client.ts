@@ -19,7 +19,7 @@ export class OrchestrationClient {
    * @param deploymentConfig - Deployment configuration.
    */
   constructor(
-    private config: OrchestrationModuleConfig,
+    private config: OrchestrationModuleConfig | string,
     private deploymentConfig?: ResourceGroupConfig
   ) {}
 
@@ -33,7 +33,11 @@ export class OrchestrationClient {
     prompt?: Prompt,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationResponse> {
-    const body = constructCompletionPostRequest(this.config, prompt);
+    const body: CompletionPostRequest | Record<string, any> =
+      isOrchestrationModuleConfig(this.config)
+        ? constructCompletionPostRequest(this.config, prompt)
+        : constructCompletionFromJson(this.config, prompt);
+
     const deploymentId = await resolveDeploymentId({
       scenarioId: 'orchestration',
       resourceGroup: this.deploymentConfig?.resourceGroup
@@ -50,52 +54,33 @@ export class OrchestrationClient {
 
     return new OrchestrationResponse(response);
   }
+}
 
-  /**
-   * Executes the orchestration service using a JSON configuration.
-   * @param jsonConfig - The JSON configuration as an input string.
-   * @param prompt - Prompt configuration.
-   * @param requestConfig - Optional request configuration.
-   * @param deploymentConfig - Deployment configuration.
-   * @returns The orchestration response.
-   */
-  /* eslint-disable @typescript-eslint/member-ordering */
-  static async executeFromJson(
-    jsonConfig: string,
-    prompt?: Prompt,
-    requestConfig?: CustomRequestConfig,
-    deploymentConfig?: ResourceGroupConfig
-  ): Promise<OrchestrationResponse> {
-    let moduleConfig: Record<string, any>;
-    try {
-      moduleConfig = JSON.parse(jsonConfig);
-    } catch {
-      throw new Error(
-        `The provided configuration is not valid JSON: ${jsonConfig}`
-      );
-    }
+/**
+ * @internal
+ * Type guard to check if the config is of type OrchestrationModuleConfig.
+ */
+function isOrchestrationModuleConfig(
+  config: OrchestrationModuleConfig | string
+): config is OrchestrationModuleConfig {
+  return typeof config === 'object' && 'templating' in config;
+}
 
-    const body: Record<string, any> = {
+/**
+ * @internal
+ */
+function constructCompletionFromJson(
+  config: string,
+  prompt?: Prompt
+): Record<string, any> {
+  try {
+    return {
       messages_history: prompt?.messagesHistory || [],
       input_params: prompt?.inputParams || {},
-      orchestration_config: moduleConfig
+      orchestration_config: JSON.parse(config as string)
     };
-
-    const deploymentId = await resolveDeploymentId({
-      scenarioId: 'orchestration',
-      resourceGroup: deploymentConfig?.resourceGroup
-    });
-
-    const response = await executeRequest(
-      {
-        url: `/inference/deployments/${deploymentId}/completion`,
-        resourceGroup: deploymentConfig?.resourceGroup
-      },
-      body,
-      requestConfig
-    );
-
-    return new OrchestrationResponse(response);
+  } catch (error) {
+    throw new Error(`Could not parse JSON: ${error}`);
   }
 }
 

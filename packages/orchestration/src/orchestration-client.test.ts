@@ -102,7 +102,7 @@ describe('orchestration service client', () => {
       }
     );
 
-    const response = await OrchestrationClient.executeFromJson(jsonConfig);
+    const response = await new OrchestrationClient(jsonConfig).chatCompletion();
 
     expect(response).toBeInstanceOf(OrchestrationResponse);
     expect(response.data).toEqual(mockResponse);
