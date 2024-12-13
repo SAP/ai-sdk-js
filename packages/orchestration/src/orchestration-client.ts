@@ -8,6 +8,7 @@ import type {
   OrchestrationModuleConfig,
   Prompt
 } from './orchestration-types.js';
+import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 /**
  * Get the orchestration client.
@@ -17,10 +18,12 @@ export class OrchestrationClient {
    * Creates an instance of the orchestration client.
    * @param config - Orchestration module configuration.
    * @param deploymentConfig - Deployment configuration.
+   * @param destination - The destination to use for the request.
    */
   constructor(
     private config: OrchestrationModuleConfig,
-    private deploymentConfig?: ResourceGroupConfig
+    private deploymentConfig?: ResourceGroupConfig,
+    private destination?: HttpDestinationOrFetchOptions
   ) {}
 
   /**
@@ -45,7 +48,8 @@ export class OrchestrationClient {
         resourceGroup: this.deploymentConfig?.resourceGroup
       },
       body,
-      requestConfig
+      requestConfig,
+      this.destination
     );
 
     return new OrchestrationResponse(response);

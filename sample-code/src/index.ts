@@ -1,7 +1,8 @@
 // exported for e2e tests
 export {
   chatCompletion,
-  computeEmbedding
+  computeEmbedding,
+  chatCompletionWithDestination
   // eslint-disable-next-line import/no-internal-modules
 } from './foundation-models/azure-openai.js';
 export {
@@ -19,6 +20,7 @@ export {
 } from './langchain-azure-openai.js';
 export {
   getDeployments,
+  getDeploymentsWithDestination,
   createDeployment,
   stopDeployments,
   deleteDeployments
