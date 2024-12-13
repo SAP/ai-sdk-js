@@ -119,6 +119,12 @@ importers:
         specifier: ^3.24.0
         version: 3.24.0
 
+  packages/document-grounding:
+    dependencies:
+      '@sap-ai-sdk/core':
+        specifier: workspace:^
+        version: link:../core
+
   packages/foundation-models:
     dependencies:
       '@sap-ai-sdk/ai-api':
@@ -209,6 +215,9 @@ importers:
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../packages/ai-api
+      '@sap-ai-sdk/document-grounding':
+        specifier: workspace:^
+        version: link:../packages/document-grounding
       '@sap-ai-sdk/foundation-models':
         specifier: workspace:^
         version: link:../packages/foundation-models

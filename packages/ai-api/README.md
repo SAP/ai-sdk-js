@@ -206,8 +206,6 @@ return DeploymentApi.deploymentQuery(queryParams, {
 By default, the fetched destination is cached.
 To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
-```ts
-
 ## Local Testing
 
 For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
@@ -222,4 +220,7 @@ For more information about how to contribute, the project structure, as well as 
 ## License
 
 The SAP Cloud SDK for AI is released under the [Apache License Version 2.0.](http://www.apache.org/licenses/).
+
+```
+
 ```
