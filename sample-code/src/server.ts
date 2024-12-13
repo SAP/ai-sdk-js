@@ -251,7 +251,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       inputFiltering: orchestrationInputFiltering,
       outputFiltering: orchestrationOutputFiltering,
       requestConfig: orchestrationRequestConfig,
-      fromJSON: orchestrationFromJSON,
+      fromJSON: orchestrationFromJSON
     }[sampleCase] || orchestrationChatCompletion;
 
   try {
