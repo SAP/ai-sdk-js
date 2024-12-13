@@ -17,6 +17,7 @@ import type {
  * This API is part of the 'api' service.
  */
 export const CollectionsApi = {
+  _defaultBasePath: '/lm/document-grounding',
   /**
    * Gets a list of collections.
    * @param queryParameters - Object containing the following keys: $top, $skip, $count.
@@ -29,11 +30,12 @@ export const CollectionsApi = {
   ) =>
     new OpenApiRequestBuilder<CollectionsListResponse>(
       'get',
-      '/lm/document-grounding/vector/collections',
+      '/vector/collections',
       {
         queryParameters,
         headerParameters
-      }
+      },
+      CollectionsApi._defaultBasePath
     ),
   /**
    * Creates a collection. This operation is asynchronous. Poll the collection resource and check the status field to understand creation status.
@@ -47,11 +49,12 @@ export const CollectionsApi = {
   ) =>
     new OpenApiRequestBuilder<any>(
       'post',
-      '/lm/document-grounding/vector/collections',
+      '/vector/collections',
       {
         body,
         headerParameters
-      }
+      },
+      CollectionsApi._defaultBasePath
     ),
   /**
    * Gets a specific collection by ID.
@@ -65,11 +68,12 @@ export const CollectionsApi = {
   ) =>
     new OpenApiRequestBuilder<Collection>(
       'get',
-      '/lm/document-grounding/vector/collections/{collectionId}',
+      '/vector/collections/{collectionId}',
       {
         pathParameters: { collectionId },
         headerParameters
-      }
+      },
+      CollectionsApi._defaultBasePath
     ),
   /**
    * Deletes a specific collection by ID. This operation is asynchronous. Poll the collection for a 404 status code.
@@ -83,11 +87,12 @@ export const CollectionsApi = {
   ) =>
     new OpenApiRequestBuilder<any>(
       'delete',
-      '/lm/document-grounding/vector/collections/{collectionId}',
+      '/vector/collections/{collectionId}',
       {
         pathParameters: { collectionId },
         headerParameters
-      }
+      },
+      CollectionsApi._defaultBasePath
     ),
   /**
    * Gets a specific collection status from monitor by ID.
@@ -101,10 +106,15 @@ export const CollectionsApi = {
   ) =>
     new OpenApiRequestBuilder<
       CollectionCreatedResponse | CollectionPendingResponse
-    >('get', '/lm/document-grounding/vector/collections/{id}/creationStatus', {
-      pathParameters: { id },
-      headerParameters
-    }),
+    >(
+      'get',
+      '/vector/collections/{id}/creationStatus',
+      {
+        pathParameters: { id },
+        headerParameters
+      },
+      CollectionsApi._defaultBasePath
+    ),
   /**
    * Gets a specific collection status from monitor by ID.
    * @param id - Path parameter.
@@ -117,8 +127,13 @@ export const CollectionsApi = {
   ) =>
     new OpenApiRequestBuilder<
       CollectionDeletedResponse | CollectionPendingResponse
-    >('get', '/lm/document-grounding/vector/collections/{id}/deletionStatus', {
-      pathParameters: { id },
-      headerParameters
-    })
+    >(
+      'get',
+      '/vector/collections/{id}/deletionStatus',
+      {
+        pathParameters: { id },
+        headerParameters
+      },
+      CollectionsApi._defaultBasePath
+    )
 };

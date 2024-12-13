@@ -10,6 +10,7 @@ import type { TextSearchRequest, SearchResults } from './schema/index.js';
  * This API is part of the 'api' service.
  */
 export const SearchApi = {
+  _defaultBasePath: '/lm/document-grounding',
   /**
    * Search chunk by vector
    * @param body - Request body.
@@ -22,10 +23,11 @@ export const SearchApi = {
   ) =>
     new OpenApiRequestBuilder<SearchResults>(
       'post',
-      '/lm/document-grounding/vector/search',
+      '/vector/search',
       {
         body,
         headerParameters
-      }
+      },
+      SearchApi._defaultBasePath
     )
 };

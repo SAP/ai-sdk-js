@@ -16,6 +16,7 @@ import type {
  * This API is part of the 'api' service.
  */
 export const PipelinesApi = {
+  _defaultBasePath: '/lm/document-grounding',
   /**
    * Get all pipelines
    * @param queryParameters - Object containing the following keys: $top, $skip, $count.
@@ -28,11 +29,12 @@ export const PipelinesApi = {
   ) =>
     new OpenApiRequestBuilder<Pipelines>(
       'get',
-      '/lm/document-grounding/pipelines',
+      '/pipelines',
       {
         queryParameters,
         headerParameters
-      }
+      },
+      PipelinesApi._defaultBasePath
     ),
   /**
    * Create a pipeline
@@ -46,11 +48,12 @@ export const PipelinesApi = {
   ) =>
     new OpenApiRequestBuilder<PipelineId>(
       'post',
-      '/lm/document-grounding/pipelines',
+      '/pipelines',
       {
         body,
         headerParameters
-      }
+      },
+      PipelinesApi._defaultBasePath
     ),
   /**
    * Get details of a pipeline by pipeline id
@@ -64,11 +67,12 @@ export const PipelinesApi = {
   ) =>
     new OpenApiRequestBuilder<Pipeline>(
       'get',
-      '/lm/document-grounding/pipelines/{pipelineId}',
+      '/pipelines/{pipelineId}',
       {
         pathParameters: { pipelineId },
         headerParameters
-      }
+      },
+      PipelinesApi._defaultBasePath
     ),
   /**
    * Delete a pipeline by pipeline id
@@ -82,11 +86,12 @@ export const PipelinesApi = {
   ) =>
     new OpenApiRequestBuilder<any>(
       'delete',
-      '/lm/document-grounding/pipelines/{pipelineId}',
+      '/pipelines/{pipelineId}',
       {
         pathParameters: { pipelineId },
         headerParameters
-      }
+      },
+      PipelinesApi._defaultBasePath
     ),
   /**
    * Get pipeline status by pipeline id
@@ -100,10 +105,11 @@ export const PipelinesApi = {
   ) =>
     new OpenApiRequestBuilder<PipelineStatus>(
       'get',
-      '/lm/document-grounding/pipelines/{pipelineId}/status',
+      '/pipelines/{pipelineId}/status',
       {
         pathParameters: { pipelineId },
         headerParameters
-      }
+      },
+      PipelinesApi._defaultBasePath
     )
 };

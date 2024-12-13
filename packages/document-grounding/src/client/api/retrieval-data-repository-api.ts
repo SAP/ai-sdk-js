@@ -10,6 +10,7 @@ import type { DataRepositories, DataRepository } from './schema/index.js';
  * This API is part of the 'api' service.
  */
 export const RetrievalDataRepositoryApi = {
+  _defaultBasePath: '/lm/document-grounding',
   /**
    * List all DataRepository objects.
    * @param queryParameters - Object containing the following keys: $top, $skip, $count.
@@ -22,11 +23,12 @@ export const RetrievalDataRepositoryApi = {
   ) =>
     new OpenApiRequestBuilder<DataRepositories>(
       'get',
-      '/lm/document-grounding/retrieval/dataRepositories',
+      '/retrieval/dataRepositories',
       {
         queryParameters,
         headerParameters
-      }
+      },
+      RetrievalDataRepositoryApi._defaultBasePath
     ),
   /**
    * List single DataRepository object.
@@ -40,10 +42,11 @@ export const RetrievalDataRepositoryApi = {
   ) =>
     new OpenApiRequestBuilder<DataRepository>(
       'get',
-      '/lm/document-grounding/retrieval/dataRepositories/{repositoryId}',
+      '/retrieval/dataRepositories/{repositoryId}',
       {
         pathParameters: { repositoryId },
         headerParameters
-      }
+      },
+      RetrievalDataRepositoryApi._defaultBasePath
     )
 };
