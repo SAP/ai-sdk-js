@@ -1,5 +1,8 @@
 # @sap-ai-sdk/document-grounding
 
+> [!warning]
+> This package is still in **beta** and is subject to breaking changes. Use it with caution.
+
 SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI Core**, **SAP Generative AI Hub**, and **Orchestration Service**.
 
 This package incorporates generative AI document grounding capabilities into your AI activities in SAP AI Core and SAP AI Launchpad.
