@@ -4,6 +4,7 @@ packages:
   - 'packages/foundation-models'
   - 'packages/langchain'
   - 'packages/orchestration'
+  - 'packages/document-grounding'
   - 'sample-cap'
   - 'sample-code'
   - 'tests/e2e-tests'

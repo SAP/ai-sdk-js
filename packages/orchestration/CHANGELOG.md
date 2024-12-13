@@ -1,5 +1,16 @@
 # @sap-ai-sdk/orchestration
 
+## 1.4.0
+
+### Minor Changes
+
+- d79cee8: [New Functionality] Add support for grounding capabilities of the orchestration service.
+
+### Patch Changes
+
+- @sap-ai-sdk/ai-api@1.4.0
+- @sap-ai-sdk/core@1.4.0
+
 ## 1.3.0
 
 ### Minor Changes

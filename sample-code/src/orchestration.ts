@@ -234,3 +234,43 @@ export async function orchestrationFromJSON(
     throw error;
   }
 }
+/**
+ * Ask about a custom knowledge embedded in document grounding.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationGrounding(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    llm,
+    templating: {
+      template: [
+        {
+          role: 'user',
+          content:
+            'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
+        }
+      ]
+    },
+    grounding: {
+      type: 'document_grounding_service',
+      config: {
+        filters: [
+          {
+            id: 'filter1',
+            data_repositories: ['*'],
+            search_config: {},
+            data_repository_type: 'vector'
+          }
+        ],
+        input_params: ['groundingRequest'],
+        output_param: 'groundingOutput'
+      }
+    }
+  });
+
+  return orchestrationClient.chatCompletion({
+    inputParams: {
+      groundingRequest:
+        'When was the last time SAP AI SDK JavaScript end to end test was executed? Return only the latest timestamp in milliseconds without any other text.'
+    }
+  });
+}
