@@ -3,6 +3,7 @@ import express from 'express';
 import {
   chatCompletion,
   chatCompletionStream,
+  chatCompletionWithDestination,
   computeEmbedding
   // eslint-disable-next-line import/no-internal-modules
 } from './foundation-models/azure-openai.js';
@@ -16,6 +17,7 @@ import {
 } from './orchestration.js';
 import {
   getDeployments,
+  getDeploymentsWithDestination,
   createDeployment,
   stopDeployments,
   deleteDeployments
@@ -57,6 +59,23 @@ app.get('/ai-api/deployments', async (req, res) => {
   try {
     res.send(
       await getDeployments('default', req.query.status as AiDeploymentStatus)
+    );
+  } catch (error: any) {
+    console.error(error);
+    const apiError = error.response.data.error as AiApiError;
+    res
+      .status(error.response.status)
+      .send('Yikes, vibes are off apparently 😬 -> ' + apiError.message);
+  }
+});
+
+app.get('/ai-api/deployments-with-destination', async (req, res) => {
+  try {
+    res.send(
+      await getDeploymentsWithDestination(
+        'default',
+        req.query.status as AiDeploymentStatus
+      )
     );
   } catch (error: any) {
     console.error(error);
@@ -135,6 +154,18 @@ app.get('/ai-api/models', async (req, res) => {
 app.get('/azure-openai/chat-completion', async (req, res) => {
   try {
     const response = await chatCompletion();
+    res.send(response.getContent());
+  } catch (error: any) {
+    console.error(error);
+    res
+      .status(500)
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+  }
+});
+
+app.get('/azure-openai/chat-completion-with-destination', async (req, res) => {
+  try {
+    const response = await chatCompletionWithDestination();
     res.send(response.getContent());
   } catch (error: any) {
     console.error(error);

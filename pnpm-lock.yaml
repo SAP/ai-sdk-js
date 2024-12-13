@@ -133,6 +133,9 @@ importers:
       '@sap-ai-sdk/core':
         specifier: workspace:^
         version: link:../core
+      '@sap-cloud-sdk/connectivity':
+        specifier: ^3.24.0
+        version: 3.24.0
       '@sap-cloud-sdk/http-client':
         specifier: ^3.24.0
         version: 3.24.0
@@ -154,6 +157,9 @@ importers:
       '@sap-ai-sdk/foundation-models':
         specifier: workspace:^
         version: link:../foundation-models
+      '@sap-cloud-sdk/connectivity':
+        specifier: ^3.24.0
+        version: 3.24.0
       zod-to-json-schema:
         specifier: ^3.24.1
         version: 3.24.1(zod@3.24.1)
@@ -166,6 +172,9 @@ importers:
       '@sap-ai-sdk/core':
         specifier: workspace:^
         version: link:../core
+      '@sap-cloud-sdk/connectivity':
+        specifier: ^3.24.0
+        version: 3.24.0
       '@sap-cloud-sdk/http-client':
         specifier: ^3.24.0
         version: 3.24.0
