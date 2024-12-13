@@ -206,8 +206,6 @@ return DeploymentApi.deploymentQuery(queryParams, {
 By default, the fetched destination is cached.
 To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
-```ts
-
 ## Local Testing
 
 For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).

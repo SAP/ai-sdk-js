@@ -14,6 +14,7 @@ This package incorporates generative AI document grounding capabilities into you
 - [Usage](#usage)
   - [Create a Collection](#create-a-collection)
   - [Create a Document](#create-a-document)
+  - [Custom Destination](#custom-destination)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
@@ -86,6 +87,19 @@ const response: DocumentsListResponse =
       'AI-Resource-Group': 'default'
     }
   ).execute();
+```
+
+### Custom Destination
+
+When calling the `execute()` method, it is possible to provide a custom destination.
+For example, when querying deployments targeting a destination with the name `my-destination`, the following code can be used:
+
+```ts
+const response = await CollectionsApi.vectorV1VectorEndpointsDeleteCollection(collectionId, {
+  'AI-Resource-Group': 'default'
+}).execute({
+  destinationName: 'my-destination'
+});
 ```
 
 ## Local Testing
