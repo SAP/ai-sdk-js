@@ -95,9 +95,12 @@ When calling the `execute()` method, it is possible to provide a custom destinat
 For example, when querying deployments targeting a destination with the name `my-destination`, the following code can be used:
 
 ```ts
-const response = await CollectionsApi.vectorV1VectorEndpointsDeleteCollection(collectionId, {
-  'AI-Resource-Group': 'default'
-}).execute({
+const response = await CollectionsApi.vectorV1VectorEndpointsDeleteCollection(
+  collectionId,
+  {
+    'AI-Resource-Group': 'default'
+  }
+).execute({
   destinationName: 'my-destination'
 });
 ```
