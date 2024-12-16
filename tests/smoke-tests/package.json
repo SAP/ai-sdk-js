@@ -25,6 +25,7 @@
     "@sap-ai-sdk/foundation-models": "canary",
     "@sap-ai-sdk/langchain": "canary",
     "@sap-ai-sdk/orchestration": "canary",
+    "@sap-ai-sdk/document-grounding": "canary",
     "@sap-cloud-sdk/util": "^3.24.0",
     "express": "^4.21.2"
   },
