@@ -24,7 +24,7 @@ export class OrchestrationChatCompletionStream<Item> extends SseStream<Item> {
     response: HttpResponse,
     controller: AbortController
   ): OrchestrationChatCompletionStream<CompletionPostResponseStreaming> {
-    const stream = SseStream.transformToSseStream<any>(response, controller); // TODO: Check if this can be narrowed
+    const stream = SseStream.transformToSseStream<CompletionPostResponseStreaming>(response, controller);
     return new OrchestrationChatCompletionStream(stream.iterator, controller);
   }
 
