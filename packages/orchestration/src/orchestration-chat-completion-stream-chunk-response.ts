@@ -1,8 +1,8 @@
-import type { CompletionPostResponseStreaming } from './client/api/schema/index.js';
+import type { CompletionPostResponseStreaming, LLMChoiceStreaming } from './client/api/schema/index.js';
 import type { TokenUsage } from './index.js';
 
 /**
- * Azure OpenAI chat completion stream chunk response.
+ * Orchestration chat completion stream chunk response.
  */
 export class OrchestrationChatCompletionStreamChunkResponse {
   constructor(public readonly data: CompletionPostResponseStreaming) {
@@ -24,7 +24,7 @@ export class OrchestrationChatCompletionStreamChunkResponse {
    */
   getFinishReason(choiceIndex = 0): string | undefined {
     return this.data.orchestration_result?.choices.find(
-      (c: any) => c.index === choiceIndex
+      (c: LLMChoiceStreaming) => c.index === choiceIndex
     )?.finish_reason;
   }
 
@@ -35,7 +35,7 @@ export class OrchestrationChatCompletionStreamChunkResponse {
    */
   getDeltaContent(choiceIndex = 0): string | undefined {
     return this.data.orchestration_result?.choices.find(
-      (c: any) => c.index === choiceIndex
+      (c: LLMChoiceStreaming) => c.index === choiceIndex
     )?.delta.content;
   }
 }

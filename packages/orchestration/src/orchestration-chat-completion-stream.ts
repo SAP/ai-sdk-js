@@ -1,7 +1,7 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import { SseStream } from '@sap-ai-sdk/core';
 import { OrchestrationChatCompletionStreamChunkResponse } from './orchestration-chat-completion-stream-chunk-response.js';
-import type { CompletionPostResponseStreaming } from './client/api/schema/index.js';
+import type { CompletionPostResponseStreaming, LLMChoiceStreaming } from './client/api/schema/index.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { OrchestrationChatCompletionStreamResponse } from './orchestration-chat-completion-stream-response.js';
 
@@ -49,7 +49,7 @@ export class OrchestrationChatCompletionStream<Item> extends SseStream<Item> {
     response?: OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
   ): AsyncGenerator<OrchestrationChatCompletionStreamChunkResponse> {
     for await (const chunk of stream) {
-      chunk.data.orchestration_result?.choices.forEach((choice: any) => {
+      chunk.data.orchestration_result?.choices.forEach((choice: LLMChoiceStreaming) => {
         const choiceIndex = choice.index;
         if (choiceIndex >= 0) {
           const finishReason = chunk.getFinishReason(choiceIndex);
@@ -131,7 +131,7 @@ export class OrchestrationChatCompletionStream<Item> extends SseStream<Item> {
   /**
    * Pipe the stream through a processing function.
    * @param processFn - The function to process the input stream.
-   * @param response - The `AzureOpenAiChatCompletionStreamResponse` object for process function to store finish reason, token usage, etc.
+   * @param response - The `OrchestrationChatCompletionStreamResponse` object for process function to store finish reason, token usage, etc.
    * @returns The output stream containing processed items.
    * @internal
    */

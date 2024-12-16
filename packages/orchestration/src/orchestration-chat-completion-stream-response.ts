@@ -2,7 +2,7 @@ import type { TokenUsage } from './client/api/schema/index.js';
 import type { OrchestrationChatCompletionStream } from './orchestration-chat-completion-stream.js';
 
 /**
- * Azure OpenAI chat completion stream response.
+ * Orchestration chat completion stream response.
  */
 export class OrchestrationChatCompletionStreamResponse<T> {
   private _usage: TokenUsage | undefined;
