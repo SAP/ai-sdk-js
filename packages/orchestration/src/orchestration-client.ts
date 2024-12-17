@@ -37,9 +37,9 @@ export class OrchestrationClient {
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationResponse> {
     const body: CompletionPostRequest | Record<string, any> =
-      isOrchestrationModuleConfig(this.config)
-        ? constructCompletionPostRequest(this.config, prompt)
-        : constructCompletionFromJson(this.config, prompt);
+      typeof this.config === 'string'
+        ? constructCompletionFromJson(this.config, prompt)
+        : constructCompletionPostRequest(this.config, prompt);
 
     const deploymentId = await resolveDeploymentId({
       scenarioId: 'orchestration',
@@ -62,18 +62,8 @@ export class OrchestrationClient {
 
 /**
  * @internal
- * Type guard to check if the config is of type OrchestrationModuleConfig.
  */
-function isOrchestrationModuleConfig(
-  config: OrchestrationModuleConfig | string
-): config is OrchestrationModuleConfig {
-  return typeof config === 'object' && 'templating' in config;
-}
-
-/**
- * @internal
- */
-function constructCompletionFromJson(
+export function constructCompletionFromJson(
   config: string,
   prompt?: Prompt
 ): Record<string, any> {

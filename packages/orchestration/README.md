@@ -328,16 +328,18 @@ return response.getContent();
 ```
 
 ### Using a JSON configuration from AI Launchpad
-If you already have a orchestration workflow created in AI Launchpad, you can copy or download the configuration as a JSON and use it directly with the orchestration client.
+
+If you already have an orchestration workflow created in AI Launchpad, you can either download the configuration as a JSON file or copy the JSON string directly to use it with the orchestration client.
 
 ```ts
-const jsonConfig = await fs.promises.readFile('path/to/orchestration-config.json', 'utf-8');
+const jsonConfig = await fs.promises.readFile(
+  'path/to/orchestration-config.json',
+  'utf-8'
+);
 // Or alternatively, you can also provide the JSON configuration as a plain string in the code directly.
-// const jsonConfig = '... your JSON ...'
+// const jsonConfig = 'YOUR_JSON_CONFIG'
 
-const response = await new OrchestrationClient(
-  jsonConfig
-).chatCompletion();
+const response = await new OrchestrationClient(jsonConfig).chatCompletion();
 
 return response;
 ```

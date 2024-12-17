@@ -257,9 +257,9 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
   try {
     const result =
       sampleCase === 'fromJSON'
-        ? // File path should be relative to the root. For this example, `sample-code` is the root.
+        ?
           ((await testCase(
-            './src/ModelOrchConfig.json'
+            './src/model-orchestration-config.json'
           )) as OrchestrationResponse)
         : ((await testCase()) as OrchestrationResponse);
     if (sampleCase === 'inputFiltering') {
