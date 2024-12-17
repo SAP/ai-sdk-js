@@ -96,6 +96,7 @@ export class OrchestrationClient {
       prompt,
       {
         ...requestConfig,
+        responseType: 'stream',
         signal: controller.signal
       },
       true
