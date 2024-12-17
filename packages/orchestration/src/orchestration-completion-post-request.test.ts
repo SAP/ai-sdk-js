@@ -1,6 +1,6 @@
 import { constructCompletionPostRequest } from './orchestration-client.js';
-import { buildAzureContentFilter } from './orchestration-filter-utility.js';
-import type { CompletionPostRequest } from './client/api/schema';
+import { buildAzureContentFilter } from './orchestration-util.js';
+import type { CompletionPostRequest } from './client/api/schema/index.js';
 import type { OrchestrationModuleConfig } from './orchestration-types.js';
 
 describe('constructCompletionPostRequest()', () => {
