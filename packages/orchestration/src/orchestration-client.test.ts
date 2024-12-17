@@ -65,7 +65,7 @@ describe('orchestration service client', () => {
     expect(response.getTokenUsage().completion_tokens).toEqual(9);
   });
 
-  it('calls executeFromJson with valid JSON configuration', async () => {
+  it('calls chatCompletion with valid JSON configuration', async () => {
     const jsonConfig = `{
       "module_configurations": {
         "llm_module_config": {
