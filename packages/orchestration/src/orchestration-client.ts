@@ -11,6 +11,7 @@ import type {
   CompletionPostResponseStreaming
 } from './client/api/schema/index.js';
 import type {
+  LlmModuleConfig,
   OrchestrationModuleConfig,
   Prompt
 } from './orchestration-types.js';
@@ -118,7 +119,7 @@ export function constructCompletionPostRequest(
         templating_module_config: {
           template: config.templating.template
         },
-        llm_module_config: config.llm,
+        llm_module_config: configureLLM(config.llm, stream),
         ...(Object.keys(config?.filtering || {}).length && {
           filtering_module_config: config.filtering
         }),
@@ -137,4 +138,14 @@ export function constructCompletionPostRequest(
       messages_history: prompt.messagesHistory
     })
   };
+}
+
+function configureLLM(llm: LlmModuleConfig, stream: boolean): LlmModuleConfig {
+  if (stream) {
+    llm.model_params = {
+      ...llm.model_params,
+      stream_options: { include_usage: true }
+    };
+  }
+  return llm;
 }

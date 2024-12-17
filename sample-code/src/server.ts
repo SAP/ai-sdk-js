@@ -233,7 +233,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
   }
 });
 
-app.get('test/chat-completion-stream', async (req, res) => {
+app.get('/orchestration-stream/chat-completion-stream', async (req, res) => {
   const controller = new AbortController();
   try {
     const response = await orchestrationChatCompletionStream(controller);

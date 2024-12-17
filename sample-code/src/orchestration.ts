@@ -59,11 +59,11 @@ export async function chatCompletionStream(
     },
     // define the prompt
     templating: {
-      template: [{ role: 'user', content: 'What is the capital of France?' }]
+      template: [{ role: 'user', content: 'Give me a short introduction of SAP Cloud SDK.' }]
     }
   });
 
-  const response = orchestrationClient.stream(undefined, undefined, controller);
+  const response = await orchestrationClient.stream(undefined, undefined, controller);
   return response;
 }
 

@@ -23,7 +23,7 @@ export class OrchestrationChatCompletionStreamChunkResponse {
    * @returns The finish reason.
    */
   getFinishReason(choiceIndex = 0): string | undefined {
-    return this.data.orchestration_result?.choices.find(
+    return this.getChoices()?.find(
       (c: LLMChoiceStreaming) => c.index === choiceIndex
     )?.finish_reason;
   }
@@ -34,8 +34,12 @@ export class OrchestrationChatCompletionStreamChunkResponse {
    * @returns The message delta content.
    */
   getDeltaContent(choiceIndex = 0): string | undefined {
-    return this.data.orchestration_result?.choices.find(
+    return this.getChoices()?.find(
       (c: LLMChoiceStreaming) => c.index === choiceIndex
     )?.delta.content;
+  }
+
+  private getChoices(): LLMChoiceStreaming[] | undefined {
+    return this.data.orchestration_result?.choices;
   }
 }
