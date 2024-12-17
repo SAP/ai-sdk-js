@@ -257,8 +257,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
   try {
     const result =
       sampleCase === 'fromJSON'
-        ?
-          ((await testCase(
+        ? ((await testCase(
             './src/model-orchestration-config.json'
           )) as OrchestrationResponse)
         : ((await testCase()) as OrchestrationResponse);

@@ -1,21 +1,21 @@
 {
-    "module_configurations": {
-      "llm_module_config": {
-        "model_name": "gpt-35-turbo",
-        "model_params": {},
-        "model_version": "0613"
-      },
-      "templating_module_config": {
-        "template": [
-          {
-            "role": "user",
-            "content": "SAP"
-          },
-          {
-            "role": "system",
-            "content": "When given the name of a company, provide the year of it's establishment."
-          }
-        ]
-      }
+  "module_configurations": {
+    "llm_module_config": {
+      "model_name": "gpt-35-turbo",
+      "model_params": {},
+      "model_version": "0613"
+    },
+    "templating_module_config": {
+      "template": [
+        {
+          "role": "user",
+          "content": "SAP"
+        },
+        {
+          "role": "system",
+          "content": "When given the name of a company, provide the year of it's establishment."
+        }
+      ]
     }
+  }
 }
