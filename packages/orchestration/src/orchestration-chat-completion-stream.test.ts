@@ -1,12 +1,13 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import { jest } from '@jest/globals';
 import { LineDecoder, SSEDecoder } from '@sap-ai-sdk/core';
-import { parseFileToString } from '../../../../test-util/mock-http.js';
-import { AzureOpenAiChatCompletionStream } from './azure-openai-chat-completion-stream.js';
+import { parseFileToString } from '../../../test-util/mock-http.js';
+import { OrchestrationChatCompletionStream } from './orchestration-chat-completion-stream.js';
+import type { CompletionPostResponseStreaming } from './client/api/schema/index.js';
 
 describe('OpenAI chat completion stream', () => {
   let sseChunks: string[];
-  let originalChatCompletionStream: AzureOpenAiChatCompletionStream<any>;
+  let originalChatCompletionStream: OrchestrationChatCompletionStream<CompletionPostResponseStreaming>;
 
   beforeEach(async () => {
     const rawChunksString = await parseFileToString(
@@ -30,7 +31,7 @@ describe('OpenAI chat completion stream', () => {
         yield sseChunk;
       }
     }
-    originalChatCompletionStream = new AzureOpenAiChatCompletionStream(
+    originalChatCompletionStream = new OrchestrationChatCompletionStream(
       iterator,
       new AbortController()
     );
@@ -38,7 +39,7 @@ describe('OpenAI chat completion stream', () => {
 
   it('should wrap the raw chunk', async () => {
     let output = '';
-    const asnycGenerator = AzureOpenAiChatCompletionStream._processChunk(
+    const asnycGenerator = OrchestrationChatCompletionStream._processChunk(
       originalChatCompletionStream
     );
     for await (const chunk of asnycGenerator) {
@@ -54,12 +55,12 @@ describe('OpenAI chat completion stream', () => {
       messageContext: 'azure-openai-chat-completion-stream'
     });
     const debugSpy = jest.spyOn(logger, 'debug');
-    const asyncGeneratorChunk = AzureOpenAiChatCompletionStream._processChunk(
+    const asyncGeneratorChunk = OrchestrationChatCompletionStream._processChunk(
       originalChatCompletionStream
     );
     const asyncGeneratorFinishReason =
-      AzureOpenAiChatCompletionStream._processFinishReason(
-        new AzureOpenAiChatCompletionStream(
+    OrchestrationChatCompletionStream._processFinishReason(
+        new OrchestrationChatCompletionStream(
           () => asyncGeneratorChunk,
           new AbortController()
         )
@@ -77,12 +78,12 @@ describe('OpenAI chat completion stream', () => {
       messageContext: 'azure-openai-chat-completion-stream'
     });
     const debugSpy = jest.spyOn(logger, 'debug');
-    const asyncGeneratorChunk = AzureOpenAiChatCompletionStream._processChunk(
+    const asyncGeneratorChunk = OrchestrationChatCompletionStream._processChunk(
       originalChatCompletionStream
     );
     const asyncGeneratorTokenUsage =
-      AzureOpenAiChatCompletionStream._processTokenUsage(
-        new AzureOpenAiChatCompletionStream(
+    OrchestrationChatCompletionStream._processTokenUsage(
+        new OrchestrationChatCompletionStream(
           () => asyncGeneratorChunk,
           new AbortController()
         )
@@ -97,10 +98,10 @@ describe('OpenAI chat completion stream', () => {
   });
 
   it('should transform the original stream to string stream', async () => {
-    const asyncGeneratorChunk = AzureOpenAiChatCompletionStream._processChunk(
+    const asyncGeneratorChunk = OrchestrationChatCompletionStream._processChunk(
       originalChatCompletionStream
     );
-    const chunkStream = new AzureOpenAiChatCompletionStream(
+    const chunkStream = new OrchestrationChatCompletionStream(
       () => asyncGeneratorChunk,
       new AbortController()
     );

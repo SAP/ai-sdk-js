@@ -5,6 +5,8 @@ import {
 import { createLogger } from '@sap-cloud-sdk/util';
 import type {
   LlmModuleConfig,
+  OrchestrationChatCompletionStreamChunkResponse,
+  OrchestrationChatCompletionStreamResponse,
   OrchestrationResponse
 } from '@sap-ai-sdk/orchestration';
 
@@ -30,13 +32,39 @@ export async function orchestrationChatCompletion(): Promise<OrchestrationRespon
     }
   });
 
-  // execute the request
+  // execute the requestcontroller
   const result = await orchestrationClient.chatCompletion();
 
   // use getContent() to access the LLM response
   logger.info(result.getContent());
 
   return result;
+}
+
+/**
+ * Ask GPT 3.5 through the orchestration service about SAP Cloud SDK with streaming.
+ * @param controller - The abort controller.
+ * @returns The response from Azure OpenAI containing the response content.
+ */
+export async function chatCompletionStream(
+  controller: AbortController
+): Promise<
+  OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
+> {
+  const orchestrationClient = new OrchestrationClient({
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o',
+      model_params: {}
+    },
+    // define the prompt
+    templating: {
+      template: [{ role: 'user', content: 'What is the capital of France?' }]
+    }
+  });
+
+  const response = orchestrationClient.stream(undefined, undefined, controller);
+  return response;
 }
 
 const llm: LlmModuleConfig = {

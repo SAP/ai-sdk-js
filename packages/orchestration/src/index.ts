@@ -40,6 +40,10 @@ export type {
   Prompt
 } from './orchestration-types.js';
 
+export { OrchestrationChatCompletionStreamResponse } from './orchestration-chat-completion-stream-response.js';
+
+export { OrchestrationChatCompletionStreamChunkResponse } from './orchestration-chat-completion-stream-chunk-response.js';
+
 export { OrchestrationClient } from './orchestration-client.js';
 
 export { buildAzureContentFilter } from './orchestration-filter-utility.js';

@@ -1,0 +1,77 @@
+import { parseMockResponse } from '../../../test-util/mock-http.js';
+import { OrchestrationChatCompletionStreamChunkResponse } from './orchestration-chat-completion-stream-chunk-response.js';
+
+describe('OpenAI chat completion stream chunk response', () => {
+  let mockResponses: {
+    tokenUsageResponse: any;
+    finishReasonResponse: any;
+    deltaContentResponse: any;
+  };
+  let azureOpenAiChatCompletionStreamChunkResponses: {
+    tokenUsageResponse: OrchestrationChatCompletionStreamChunkResponse;
+    finishReasonResponse: OrchestrationChatCompletionStreamChunkResponse;
+    deltaContentResponse: OrchestrationChatCompletionStreamChunkResponse;
+  };
+
+  beforeAll(async () => {
+    mockResponses = {
+      tokenUsageResponse: await parseMockResponse<any>(
+        'foundation-models',
+        'azure-openai-chat-completion-stream-chunk-response-token-usage.json'
+      ),
+      finishReasonResponse: await parseMockResponse<any>(
+        'foundation-models',
+        'azure-openai-chat-completion-stream-chunk-response-finish-reason.json'
+      ),
+      deltaContentResponse: await parseMockResponse<any>(
+        'foundation-models',
+        'azure-openai-chat-completion-stream-chunk-response-delta-content.json'
+      )
+    };
+    azureOpenAiChatCompletionStreamChunkResponses = {
+      tokenUsageResponse: new OrchestrationChatCompletionStreamChunkResponse(
+        mockResponses.tokenUsageResponse
+      ),
+      finishReasonResponse: new OrchestrationChatCompletionStreamChunkResponse(
+        mockResponses.finishReasonResponse
+      ),
+      deltaContentResponse: new OrchestrationChatCompletionStreamChunkResponse(
+        mockResponses.deltaContentResponse
+      )
+    };
+  });
+
+  it('should return the chat completion stream chunk response', () => {
+    expect(
+      azureOpenAiChatCompletionStreamChunkResponses.tokenUsageResponse.data
+    ).toStrictEqual(mockResponses.tokenUsageResponse);
+    expect(
+      azureOpenAiChatCompletionStreamChunkResponses.finishReasonResponse.data
+    ).toStrictEqual(mockResponses.finishReasonResponse);
+    expect(
+      azureOpenAiChatCompletionStreamChunkResponses.deltaContentResponse.data
+    ).toStrictEqual(mockResponses.deltaContentResponse);
+  });
+
+  it('should get token usage', () => {
+    expect(
+      azureOpenAiChatCompletionStreamChunkResponses.tokenUsageResponse.getTokenUsage()
+    ).toMatchObject({
+      completion_tokens: expect.any(Number),
+      prompt_tokens: expect.any(Number),
+      total_tokens: expect.any(Number)
+    });
+  });
+
+  it('should return finish reason', () => {
+    expect(
+      azureOpenAiChatCompletionStreamChunkResponses.finishReasonResponse.getFinishReason()
+    ).toBe('stop');
+  });
+
+  it('should return delta content with default index 0', () => {
+    expect(
+      azureOpenAiChatCompletionStreamChunkResponses.deltaContentResponse.getDeltaContent()
+    ).toBe(' is');
+  });
+});

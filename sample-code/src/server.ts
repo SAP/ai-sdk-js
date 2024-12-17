@@ -2,7 +2,7 @@
 import express from 'express';
 import {
   chatCompletion,
-  chatCompletionStream,
+  chatCompletionStream as azureChatCompletionStream,
   computeEmbedding
   // eslint-disable-next-line import/no-internal-modules
 } from './foundation-models/azure-openai.js';
@@ -11,7 +11,8 @@ import {
   orchestrationTemplating,
   orchestrationInputFiltering,
   orchestrationOutputFiltering,
-  orchestrationRequestConfig
+  orchestrationRequestConfig,
+  chatCompletionStream as orchestrationChatCompletionStream
 } from './orchestration.js';
 import {
   getDeployments,
@@ -139,7 +140,7 @@ app.get('/azure-openai/chat-completion', async (req, res) => {
 app.get('/azure-openai/chat-completion-stream', async (req, res) => {
   const controller = new AbortController();
   try {
-    const response = await chatCompletionStream(controller);
+    const response = await azureChatCompletionStream(controller);
 
     // Set headers for event stream.
     res.setHeader('Content-Type', 'text/event-stream');
@@ -229,6 +230,54 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
     res
       .status(500)
       .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+  }
+});
+
+app.get('test/chat-completion-stream', async (req, res) => {
+  const controller = new AbortController();
+  try {
+    const response = await orchestrationChatCompletionStream(controller);
+
+    // Set headers for event stream.
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    let connectionAlive = true;
+
+    // Abort the stream if the client connection is closed.
+    res.on('close', () => {
+      controller.abort();
+      connectionAlive = false;
+      res.end();
+    });
+
+    // Stream the delta content.
+    for await (const chunk of response.stream.toContentStream()) {
+      if (!connectionAlive) {
+        break;
+      }
+      res.write(chunk);
+    }
+
+    // Write the finish reason and token usage after the stream ends.
+    if (connectionAlive) {
+      const finishReason = response.getFinishReason();
+      const tokenUsage = response.getTokenUsage();
+      res.write('\n\n---------------------------\n');
+      res.write(`Finish reason: ${finishReason}\n`);
+      res.write('Token usage:\n');
+      res.write(`  - Completion tokens: ${tokenUsage?.completion_tokens}\n`);
+      res.write(`  - Prompt tokens: ${tokenUsage?.prompt_tokens}\n`);
+      res.write(`  - Total tokens: ${tokenUsage?.total_tokens}\n`);
+    }
+  } catch (error: any) {
+    console.error(error);
+    res
+      .status(500)
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+  } finally {
+    res.end();
   }
 });
 
