@@ -5,14 +5,14 @@ import { parseFileToString } from '../../../test-util/mock-http.js';
 import { OrchestrationChatCompletionStream } from './orchestration-chat-completion-stream.js';
 import type { CompletionPostResponseStreaming } from './client/api/schema/index.js';
 
-describe('OpenAI chat completion stream', () => {
+describe('Orchestration chat completion stream', () => {
   let sseChunks: string[];
   let originalChatCompletionStream: OrchestrationChatCompletionStream<CompletionPostResponseStreaming>;
 
   beforeEach(async () => {
     const rawChunksString = await parseFileToString(
-      'foundation-models',
-      'azure-openai-chat-completion-stream-chunks.txt'
+      'orchestration',
+      'orchestration-chat-completion-stream-chunks.txt'
     );
     const lineDecoder = new LineDecoder();
     const sseDecoder = new SSEDecoder();
@@ -46,13 +46,13 @@ describe('OpenAI chat completion stream', () => {
       expect(chunk).toBeDefined();
       chunk.getDeltaContent() ? (output += chunk.getDeltaContent()) : null;
     }
-    expect(output).toEqual('The capital of France is Paris.');
+    expect(output).toMatchSnapshot();
   });
 
   it('should process the finish reasons', async () => {
     const logger = createLogger({
-      package: 'foundation-models',
-      messageContext: 'azure-openai-chat-completion-stream'
+      package: 'orchestration',
+      messageContext: 'orchestration-chat-completion-stream'
     });
     const debugSpy = jest.spyOn(logger, 'debug');
     const asyncGeneratorChunk = OrchestrationChatCompletionStream._processChunk(
@@ -74,8 +74,8 @@ describe('OpenAI chat completion stream', () => {
 
   it('should process the token usage', async () => {
     const logger = createLogger({
-      package: 'foundation-models',
-      messageContext: 'azure-openai-chat-completion-stream'
+      package: 'orchestration',
+      messageContext: 'orchestration-chat-completion-stream'
     });
     const debugSpy = jest.spyOn(logger, 'debug');
     const asyncGeneratorChunk = OrchestrationChatCompletionStream._processChunk(
@@ -111,6 +111,6 @@ describe('OpenAI chat completion stream', () => {
       expect(typeof chunk).toBe('string');
       output += chunk;
     }
-    expect(output).toEqual('The capital of France is Paris.');
+    expect(output).toMatchSnapshot();
   });
 });

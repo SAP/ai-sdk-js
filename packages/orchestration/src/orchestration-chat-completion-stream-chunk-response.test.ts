@@ -7,7 +7,7 @@ describe('OpenAI chat completion stream chunk response', () => {
     finishReasonResponse: any;
     deltaContentResponse: any;
   };
-  let azureOpenAiChatCompletionStreamChunkResponses: {
+  let orchestrationChatCompletionStreamChunkResponses: {
     tokenUsageResponse: OrchestrationChatCompletionStreamChunkResponse;
     finishReasonResponse: OrchestrationChatCompletionStreamChunkResponse;
     deltaContentResponse: OrchestrationChatCompletionStreamChunkResponse;
@@ -16,19 +16,19 @@ describe('OpenAI chat completion stream chunk response', () => {
   beforeAll(async () => {
     mockResponses = {
       tokenUsageResponse: await parseMockResponse<any>(
-        'foundation-models',
-        'azure-openai-chat-completion-stream-chunk-response-token-usage.json'
+        'orchestration',
+        'orchestration-chat-completion-stream-chunk-response-token-usage.json'
       ),
       finishReasonResponse: await parseMockResponse<any>(
-        'foundation-models',
-        'azure-openai-chat-completion-stream-chunk-response-finish-reason.json'
+        'orchestration',
+        'orchestration-chat-completion-stream-chunk-response-finish-reason.json'
       ),
       deltaContentResponse: await parseMockResponse<any>(
-        'foundation-models',
-        'azure-openai-chat-completion-stream-chunk-response-delta-content.json'
+        'orchestration',
+        'orchestration-chat-completion-stream-chunk-response-delta-content.json'
       )
     };
-    azureOpenAiChatCompletionStreamChunkResponses = {
+    orchestrationChatCompletionStreamChunkResponses = {
       tokenUsageResponse: new OrchestrationChatCompletionStreamChunkResponse(
         mockResponses.tokenUsageResponse
       ),
@@ -43,19 +43,19 @@ describe('OpenAI chat completion stream chunk response', () => {
 
   it('should return the chat completion stream chunk response', () => {
     expect(
-      azureOpenAiChatCompletionStreamChunkResponses.tokenUsageResponse.data
+      orchestrationChatCompletionStreamChunkResponses.tokenUsageResponse.data
     ).toStrictEqual(mockResponses.tokenUsageResponse);
     expect(
-      azureOpenAiChatCompletionStreamChunkResponses.finishReasonResponse.data
+      orchestrationChatCompletionStreamChunkResponses.finishReasonResponse.data
     ).toStrictEqual(mockResponses.finishReasonResponse);
     expect(
-      azureOpenAiChatCompletionStreamChunkResponses.deltaContentResponse.data
+      orchestrationChatCompletionStreamChunkResponses.deltaContentResponse.data
     ).toStrictEqual(mockResponses.deltaContentResponse);
   });
 
   it('should get token usage', () => {
     expect(
-      azureOpenAiChatCompletionStreamChunkResponses.tokenUsageResponse.getTokenUsage()
+      orchestrationChatCompletionStreamChunkResponses.tokenUsageResponse.getTokenUsage()
     ).toMatchObject({
       completion_tokens: expect.any(Number),
       prompt_tokens: expect.any(Number),
@@ -65,13 +65,15 @@ describe('OpenAI chat completion stream chunk response', () => {
 
   it('should return finish reason', () => {
     expect(
-      azureOpenAiChatCompletionStreamChunkResponses.finishReasonResponse.getFinishReason()
+      orchestrationChatCompletionStreamChunkResponses.finishReasonResponse.getFinishReason()
     ).toBe('stop');
   });
 
   it('should return delta content with default index 0', () => {
     expect(
-      azureOpenAiChatCompletionStreamChunkResponses.deltaContentResponse.getDeltaContent()
-    ).toBe(' is');
+      orchestrationChatCompletionStreamChunkResponses.deltaContentResponse.getDeltaContent()
+    ).toMatchInlineSnapshot(
+      '"rimarily focusing on Java and JavaScript/Node.js environments, allowing developers to work in their "'
+    );
   });
 });
