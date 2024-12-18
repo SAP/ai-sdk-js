@@ -253,11 +253,11 @@ app.get('/orchestration-stream/chat-completion-stream', async (req, res) => {
     });
 
     // Stream the delta content.
-    for await (const chunk of response.stream.toContentStream()) {
+    for await (const chunk of response.stream) {
       if (!connectionAlive) {
         break;
       }
-      res.write(chunk);
+      res.write(chunk.getDeltaContent() + '\n');
     }
 
     // Write the finish reason and token usage after the stream ends.

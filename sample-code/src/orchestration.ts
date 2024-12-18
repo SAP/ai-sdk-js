@@ -63,7 +63,7 @@ export async function chatCompletionStream(
     }
   });
 
-  const response = await orchestrationClient.stream(undefined, undefined, controller);
+  const response = await orchestrationClient.stream(undefined, controller);
   return response;
 }
 

@@ -48,8 +48,8 @@ export class OrchestrationClient {
 
   async stream(
     prompt?: Prompt,
-    requestConfig?: CustomRequestConfig,
-    controller = new AbortController()
+    controller = new AbortController(),
+    requestConfig?: CustomRequestConfig
   ): Promise<
     OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
   > {

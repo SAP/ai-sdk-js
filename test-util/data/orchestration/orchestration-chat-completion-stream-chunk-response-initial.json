@@ -1,0 +1,28 @@
+{
+    "request_id": "ceaa358c-48b8-4ce1-8a62-b0c47675fc9c",
+    "module_results": {
+        "templating": [
+            {
+                "role": "user",
+                "content": "Give me a short introduction of SAP Cloud SDK."
+            }
+        ]
+    },
+    "orchestration_result": {
+        "id": "",
+        "object": "",
+        "created": 0,
+        "model": "",
+        "system_fingerprint": "",
+        "choices": [
+            {
+                "index": 0,
+                "delta": {
+                    "role": "",
+                    "content": ""
+                },
+                "finish_reason": ""
+            }
+        ]
+    }
+}
