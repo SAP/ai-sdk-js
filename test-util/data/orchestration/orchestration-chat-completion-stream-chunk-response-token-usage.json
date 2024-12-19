@@ -1,0 +1,49 @@
+{
+    "request_id": "66172762-8c47-4438-89e7-2689be8f370b",
+    "module_results": {
+        "llm": {
+            "id": "chatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wp",
+            "object": "chat.completion.chunk",
+            "created": 1734524005,
+            "model": "gpt-4o-2024-08-06",
+            "system_fingerprint": "fp_4e924a4b48",
+            "choices": [
+                {
+                    "index": 0,
+                    "delta": {
+                        "role": "assistant",
+                        "content": "rate with SAP's enterprise solutions."
+                    },
+                    "finish_reason": "stop"
+                }
+            ],
+            "usage": {
+                "completion_tokens": 271,
+                "prompt_tokens": 17,
+                "total_tokens": 288
+            }
+        }
+    },
+    "orchestration_result": {
+        "id": "chatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wp",
+        "object": "chat.completion.chunk",
+        "created": 1734524005,
+        "model": "gpt-4o-2024-08-06",
+        "system_fingerprint": "fp_4e924a4b48",
+        "choices": [
+            {
+                "index": 0,
+                "delta": {
+                    "role": "assistant",
+                    "content": "rate with SAP's enterprise solutions."
+                },
+                "finish_reason": "stop"
+            }
+        ],
+        "usage": {
+            "completion_tokens": 271,
+            "prompt_tokens": 17,
+            "total_tokens": 288
+        }
+    }
+}

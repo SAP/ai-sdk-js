@@ -1,6 +1,6 @@
 import { constructCompletionPostRequest } from './orchestration-client.js';
 import { buildAzureContentFilter } from './orchestration-filter-utility.js';
-import type { CompletionPostRequest } from './client/api/schema';
+import type { CompletionPostRequest } from './client/api/schema/index.js';
 import type { OrchestrationModuleConfig } from './orchestration-types.js';
 
 describe('constructCompletionPostRequest()', () => {
@@ -17,6 +17,7 @@ describe('constructCompletionPostRequest()', () => {
   it('with model configuration and prompt template', async () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
+        stream: false,
         module_configurations: {
           templating_module_config: defaultConfig.templating,
           llm_module_config: defaultConfig.llm
@@ -36,6 +37,7 @@ describe('constructCompletionPostRequest()', () => {
     };
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
+        stream: false,
         module_configurations: {
           templating_module_config: config.templating,
           llm_module_config: config.llm
@@ -62,6 +64,7 @@ describe('constructCompletionPostRequest()', () => {
     const inputParams = { phrase: 'I hate you.', number: '3' };
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
+        stream: false,
         module_configurations: {
           templating_module_config: config.templating,
           llm_module_config: config.llm
@@ -89,6 +92,7 @@ describe('constructCompletionPostRequest()', () => {
     const inputParams = {};
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
+        stream: false,
         module_configurations: {
           templating_module_config: config.templating,
           llm_module_config: config.llm
@@ -112,6 +116,7 @@ describe('constructCompletionPostRequest()', () => {
     };
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
+        stream: false,
         module_configurations: {
           templating_module_config: config.templating,
           llm_module_config: config.llm
@@ -148,6 +153,7 @@ describe('constructCompletionPostRequest()', () => {
     ];
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
+        stream: false,
         module_configurations: {
           templating_module_config: config.templating,
           llm_module_config: config.llm
@@ -169,6 +175,7 @@ describe('constructCompletionPostRequest()', () => {
     };
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
+        stream: false,
         module_configurations: {
           templating_module_config: config.templating,
           llm_module_config: config.llm,
@@ -189,6 +196,7 @@ describe('constructCompletionPostRequest()', () => {
     };
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
+        stream: false,
         module_configurations: {
           templating_module_config: config.templating,
           llm_module_config: config.llm

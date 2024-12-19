@@ -9,3 +9,4 @@ export {
   AwsBedrockChatModel,
   AiCoreOpenSourceChatModel
 } from './model-types.js';
+export { SseStream, LineDecoder, SSEDecoder } from './stream/index.js';

@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Orchestration chat completion stream should transform the original stream to string stream 1`] = `
+"The SAP Cloud SDK is a comprehensive development toolkit designed to simplify and accelerate the creation of applications that integrate with SAP solutions, particularly those built on the SAP Business Technology Platform (BTP). It provides developers with libraries, tools, and best practices that streamline the process of connecting to SAP systems, such as S/4HANA and other services available on the SAP Cloud Platform.
+
+Key features of the SAP Cloud SDK include:
+
+1. **Simplified Connectivity**: The SDK offers pre-built libraries to easily interact with SAP services, providing capabilities for authentication, service consumption, and OData/REST client generation.
+
+2. **Multi-cloud Support**: It supports multiple cloud environments, ensuring that applications remain flexible and can be deployed across various cloud providers.
+
+3. **Best Practices and Guidelines**: The SDK includes best practices for development, ensuring high-quality, scalable, and maintainable code.
+
+4. **Project Scaffolding and Code Samples**: Developers can quickly start their projects using provided templates and samples, accelerating the development process and reducing the learning curve.
+
+5. **Extensive Documentation and Community Support**: Ample documentation, tutorials, and an active community help developers overcome challenges and adopt the SDK efficiently.
+
+Overall, the SAP Cloud SDK is an essential tool for developers looking to build cloud-native applications and extensions that seamlessly integrate with SAP's enterprise solutions."
+`;
+
+exports[`Orchestration chat completion stream should wrap the raw chunk 1`] = `
+"The SAP Cloud SDK is a comprehensive development toolkit designed to simplify and accelerate the creation of applications that integrate with SAP solutions, particularly those built on the SAP Business Technology Platform (BTP). It provides developers with libraries, tools, and best practices that streamline the process of connecting to SAP systems, such as S/4HANA and other services available on the SAP Cloud Platform.
+
+Key features of the SAP Cloud SDK include:
+
+1. **Simplified Connectivity**: The SDK offers pre-built libraries to easily interact with SAP services, providing capabilities for authentication, service consumption, and OData/REST client generation.
+
+2. **Multi-cloud Support**: It supports multiple cloud environments, ensuring that applications remain flexible and can be deployed across various cloud providers.
+
+3. **Best Practices and Guidelines**: The SDK includes best practices for development, ensuring high-quality, scalable, and maintainable code.
+
+4. **Project Scaffolding and Code Samples**: Developers can quickly start their projects using provided templates and samples, accelerating the development process and reducing the learning curve.
+
+5. **Extensive Documentation and Community Support**: Ample documentation, tutorials, and an active community help developers overcome challenges and adopt the SDK efficiently.
+
+Overall, the SAP Cloud SDK is an essential tool for developers looking to build cloud-native applications and extensions that seamlessly integrate with SAP's enterprise solutions."
+`;
