@@ -54,7 +54,7 @@ export async function chatCompletionStream(
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
     llm: {
-      model_name: 'gpt-4o',
+      model_name: 'gpt-35-turbo',
       model_params: {}
     },
     // define the prompt

@@ -375,7 +375,7 @@ describe('orchestration service client', () => {
       );
 
       for await (const chunk of response.stream) {
-        expect(JSON.stringify(chunk.data)).toEqual(initialResponse);
+        expect(chunk.data).toEqual(JSON.parse(initialResponse));
         break;
       }
     });

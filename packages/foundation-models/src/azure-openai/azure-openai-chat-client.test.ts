@@ -198,7 +198,7 @@ describe('Azure OpenAI chat client', () => {
 
     const response = await client.stream(prompt);
     for await (const chunk of response.stream) {
-      expect(JSON.stringify(chunk.data)).toEqual(initialResponse);
+      expect(chunk.data).toEqual(JSON.parse(initialResponse));
       break;
     }
   });
