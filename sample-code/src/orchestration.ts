@@ -1,3 +1,4 @@
+import { readFile } from 'node:fs/promises';
 import {
   OrchestrationClient,
   buildAzureContentFilter
@@ -209,6 +210,30 @@ export async function orchestrationRequestConfig(): Promise<OrchestrationRespons
   );
 }
 
+/**
+ * Use the orchestration service with JSON obtained from AI Launchpad.
+ * @param filePath - Path to the JSON file obtained from AI Launchpad.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationFromJSON(
+  filePath: string
+): Promise<OrchestrationResponse | undefined> {
+  try {
+    // You can also provide the JSON configuration as a plain string in the code directly instead.
+    if (filePath) {
+      const jsonConfig = await readFile(filePath, 'utf-8');
+      const response = await new OrchestrationClient(
+        jsonConfig
+      ).chatCompletion();
+
+      logger.info(response.getContent());
+      return response;
+    }
+  } catch (error) {
+    logger.error('Error in orchestrationFromJSON:', error);
+    throw error;
+  }
+}
 /**
  * Ask about a custom knowledge embedded in document grounding.
  * @returns The orchestration service response.
