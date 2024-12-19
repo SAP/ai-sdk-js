@@ -198,7 +198,7 @@ Additionally, it can be aborted manually by calling the `stream()` method with a
 ```ts
 const chatClient = new AzureOpenAiChatClient('gpt-4o');
 const controller = new AbortController();
-const response = await new AzureOpenAiChatClient('gpt-35-turbo').stream(
+const response = await chatClient.stream(
   {
     messages: [
       {
