@@ -44,6 +44,8 @@ export { OrchestrationChatCompletionStreamResponse } from './orchestration-chat-
 
 export { OrchestrationChatCompletionStreamChunkResponse } from './orchestration-chat-completion-stream-chunk-response.js';
 
+export { OrchestrationChatCompletionStream } from './orchestration-chat-completion-stream.js';
+
 export { OrchestrationClient } from './orchestration-client.js';
 
 export { buildAzureContentFilter } from './orchestration-filter-utility.js';
