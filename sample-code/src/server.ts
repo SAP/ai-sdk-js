@@ -254,7 +254,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
     }[sampleCase] || orchestrationChatCompletion;
 
   try {
-    const result = ((await testCase()) as OrchestrationResponse);
+    const result = (await testCase()) as OrchestrationResponse;
     if (sampleCase === 'inputFiltering') {
       res.send('Input filter applied successfully');
     } else if (sampleCase === 'outputFiltering') {
@@ -274,7 +274,9 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
 
 app.get('/orchestration-from-json', async (req, res) => {
   try {
-    const result = await orchestrationFromJSON('./src/model-orchestration-config.json') as OrchestrationResponse;
+    const result = (await orchestrationFromJSON(
+      './src/model-orchestration-config.json'
+    )) as OrchestrationResponse;
     res.send(result.getContent());
   } catch (error: any) {
     console.error(error);
