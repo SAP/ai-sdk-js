@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import { readFile } from 'node:fs/promises';
 import {
   OrchestrationClient,
   buildAzureContentFilter
@@ -216,12 +216,12 @@ export async function orchestrationRequestConfig(): Promise<OrchestrationRespons
  * @returns The orchestration service response.
  */
 export async function orchestrationFromJSON(
-  filePath?: string
+  filePath: string
 ): Promise<OrchestrationResponse | undefined> {
   try {
     // You can also provide the JSON configuration as a plain string in the code directly instead.
     if (filePath) {
-      const jsonConfig = await fs.promises.readFile(filePath, 'utf-8');
+      const jsonConfig = await readFile(filePath, 'utf-8');
       const response = await new OrchestrationClient(
         jsonConfig
       ).chatCompletion();

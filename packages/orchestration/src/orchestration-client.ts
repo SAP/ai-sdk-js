@@ -16,7 +16,7 @@ import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity'
 export class OrchestrationClient {
   /**
    * Creates an instance of the orchestration client.
-   * @param config - Orchestration module configuration.
+   * @param config - Orchestration module configuration. This can either be an instance of `OrchestrationModuleConfig` or a JSON string retrieved from AI Launchpad.
    * @param deploymentConfig - Deployment configuration.
    * @param destination - The destination to use for the request.
    */

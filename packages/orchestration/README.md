@@ -15,7 +15,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
   - [Content Filtering](#content-filtering)
   - [Data Masking](#data-masking)
   - [Grounding](#grounding)
-  - [Using a Configuration from AI Launchpad](#using-a-json-configuration-from-ai-launchpad)
+  - [Using a JSON Configuration from AI Launchpad](#using-a-json-configuration-from-ai-launchpad)
   - [Using Resource Groups](#using-resource-groups)
   - [Custom Request Configuration](#custom-request-configuration)
   - [Custom Destination](#custom-destination)

@@ -250,17 +250,11 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       template: orchestrationTemplating,
       inputFiltering: orchestrationInputFiltering,
       outputFiltering: orchestrationOutputFiltering,
-      requestConfig: orchestrationRequestConfig,
-      fromJSON: orchestrationFromJSON
+      requestConfig: orchestrationRequestConfig
     }[sampleCase] || orchestrationChatCompletion;
 
   try {
-    const result =
-      sampleCase === 'fromJSON'
-        ? ((await testCase(
-            './src/model-orchestration-config.json'
-          )) as OrchestrationResponse)
-        : ((await testCase()) as OrchestrationResponse);
+    const result = ((await testCase()) as OrchestrationResponse);
     if (sampleCase === 'inputFiltering') {
       res.send('Input filter applied successfully');
     } else if (sampleCase === 'outputFiltering') {
@@ -270,6 +264,18 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
     } else {
       res.send(result.getContent());
     }
+  } catch (error: any) {
+    console.error(error);
+    res
+      .status(500)
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+  }
+});
+
+app.get('/orchestration-from-json', async (req, res) => {
+  try {
+    const result = await orchestrationFromJSON('./src/model-orchestration-config.json') as OrchestrationResponse;
+    res.send(result.getContent());
   } catch (error: any) {
     console.error(error);
     res
