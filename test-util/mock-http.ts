@@ -8,10 +8,11 @@ import {
   type DeploymentResolutionOptions
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { dummyToken } from './mock-jwt.js';
-import type {
-  DestinationAuthToken,
-  HttpDestination,
-  ServiceCredentials
+import {
+  registerDestination,
+  type DestinationAuthToken,
+  type HttpDestination,
+  type ServiceCredentials
 } from '@sap-cloud-sdk/connectivity';
 
 // Get the directory of this file
@@ -166,4 +167,14 @@ export async function parseMockResponse<T>(
     'utf-8'
   );
   return JSON.parse(fileContent);
+}
+
+/**
+ * @internal
+ */
+export async function mockDestination() {
+  registerDestination({
+    name: 'aicore',
+    url: 'http://example.com'
+  });
 }

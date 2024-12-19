@@ -1,7 +1,8 @@
 // exported for e2e tests
 export {
   chatCompletion,
-  computeEmbedding
+  computeEmbedding,
+  chatCompletionWithDestination
   // eslint-disable-next-line import/no-internal-modules
 } from './foundation-models/azure-openai.js';
 export {
@@ -10,7 +11,8 @@ export {
   orchestrationInputFiltering,
   orchestrationOutputFiltering,
   orchestrationRequestConfig,
-  orchestrationCompletionMasking
+  orchestrationCompletionMasking,
+  orchestrationGrounding
 } from './orchestration.js';
 export {
   invoke,
@@ -19,6 +21,7 @@ export {
 } from './langchain-azure-openai.js';
 export {
   getDeployments,
+  getDeploymentsWithDestination,
   createDeployment,
   stopDeployments,
   deleteDeployments
@@ -29,3 +32,9 @@ export {
   getModelsInScenario
   // eslint-disable-next-line import/no-internal-modules
 } from './ai-api/scenario-api.js';
+
+export {
+  createCollection,
+  createDocumentsWithTimestamp,
+  deleteCollection
+} from './document-grounding.js';

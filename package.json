@@ -1,6 +1,6 @@
 {
   "name": "sap-ai-sdk",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "",
   "keywords": [],
   "license": "Apache-2.0",
@@ -23,6 +23,7 @@
     "foundation-models": "pnpm -F=@sap-ai-sdk/foundation-models",
     "orchestration": "pnpm -F=@sap-ai-sdk/orchestration",
     "core": "pnpm -F=@sap-ai-sdk/core",
+    "document-grounding": "pnpm -F=@sap-ai-sdk/document-grounding",
     "langchain": "pnpm -F=@sap-ai-sdk/langchain",
     "e2e-tests": "pnpm -F=@sap-ai-sdk/e2e-tests",
     "type-tests": "pnpm -F=@sap-ai-sdk/type-tests",
@@ -33,7 +34,7 @@
     "check:deps": "pnpm -r -F !./tests/smoke-tests -F !./tests/schema-tests -F !./sample-cap exec depcheck --ignores=\"nock,@jest/globals\" --quiet"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.27.10",
+    "@changesets/cli": "^2.27.11",
     "@jest/globals": "^29.5.12",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
@@ -49,9 +50,9 @@
     "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/mock-fs": "^4.13.4",
-    "@types/node": "^20.17.9",
+    "@types/node": "^20.17.10",
     "depcheck": "^1.4.7",
-    "eslint": "^9.16.0",
+    "eslint": "^9.17.0",
     "glob": "^11.0.0",
     "jest": "^30.0.0-alpha.6",
     "jsonwebtoken": "^9.0.2",

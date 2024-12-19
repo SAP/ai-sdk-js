@@ -11,6 +11,7 @@ Parts of the sample code are also used in E2E tests.
   - [Foundation Models (Azure OpenAI)](#foundation-models-azure-openai)
   - [Orchestration](#orchestration)
   - [Langchain](#langchain)
+  - [Document Grounding](#document-grounding)
 
 ## Local Deployment
 
@@ -32,6 +33,13 @@ Parts of the sample code are also used in E2E tests.
 `GET /ai-api/deployments`
 
 Get all deployments in resource group `default`.
+
+#### Get all Deployments with Custom Destination
+
+`GET /ai-api/deployments-with-destination`
+
+Get all deployments targeting a custom destination.
+Provide a destination when calling the `execute()` method.
 
 #### Create a Deployment
 
@@ -82,6 +90,13 @@ Get all foundation models in resource group `default`.
 `GET /azure-openai/chat-completion`
 
 Get chat completion response.
+
+#### Chat Completion with Custom Destination
+
+`GET /azure-openai/chat-completion-with-destination`
+
+Get chat completion response targeting a custom destination.
+Provide a destination when initializing the `AzureOpenAiChatClient`.
 
 #### Chat Completion Streaming
 
@@ -159,3 +174,29 @@ The chain contains a template and a string parser.
 
 Invoke a chain to embed documents and get chat completion response with context from Azure OpenAI.
 The chain performs RAG with the chat and embedding client.
+
+### Document Grounding
+
+#### E2E flow for Orchestration Grounding
+
+`GET /document-grounding/invoke-orchestration-grounding`
+
+This scenario demonstrates the end-to-end flow for creating collections and documents using the document grounding service, and then using the orchestration grounding to get a chat completion response with a retrieved context.
+
+The flow will first create an empty collection and then add a document to it.
+The document contains a statement with the current timestamp.
+It will be retrieved with a user question asking for the latest timestamp by orchestration grounding module.
+Then, orchestration service will send a chat completion request with the context to LLM.
+The response should contain the same timestamp.
+
+The created collection will be deleted at the end of the flow.
+
+#### E2E flow for Retrieving Documents
+
+`GET /document-grounding/invoke-retrieve-documents`
+
+This scenario demonstrates the end-to-end flow for creating collections and documents using the document grounding service, and then retrieving the documents with a query.
+
+The response should contain chunks of documents similar to the query.
+
+The created collection will be deleted at the end of the flow.
