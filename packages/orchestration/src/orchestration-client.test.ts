@@ -339,44 +339,49 @@ describe('orchestration service client', () => {
     expect(response.data).toEqual(mockResponse);
   });
 
-    it('executes a streaming request with correct chunk response', async () => {
-      const config: OrchestrationModuleConfig = {
-        llm: {
-          model_name: 'gpt-4o',
-          model_params: {}
-        },
-        templating: {
-          template: [{ role: 'user', content: 'Give me a short introduction of SAP Cloud SDK.' }]
-        }
-      };
-
-      const mockResponse = await parseFileToString(
-        'orchestration',
-        'orchestration-chat-completion-stream-chunks.txt'
-      );
-
-      mockInference(
-        {
-          data: constructCompletionPostRequest(config, undefined, true)
-        },
-        {
-          data: mockResponse,
-          status: 200
-        },
-        {
-          url: 'inference/deployments/1234/completion'
-        }
-      );
-      const response = await new OrchestrationClient(config).stream();
-
-      const initialResponse = await parseFileToString(
-        'orchestration',
-        'orchestration-chat-completion-stream-chunk-response-initial.json'
-      );
-
-      for await (const chunk of response.stream) {
-        expect(chunk.data).toEqual(JSON.parse(initialResponse));
-        break;
+  it('executes a streaming request with correct chunk response', async () => {
+    const config: OrchestrationModuleConfig = {
+      llm: {
+        model_name: 'gpt-4o',
+        model_params: {}
+      },
+      templating: {
+        template: [
+          {
+            role: 'user',
+            content: 'Give me a short introduction of SAP Cloud SDK.'
+          }
+        ]
       }
-    });
+    };
+
+    const mockResponse = await parseFileToString(
+      'orchestration',
+      'orchestration-chat-completion-stream-chunks.txt'
+    );
+
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, undefined, true)
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+    const response = await new OrchestrationClient(config).stream();
+
+    const initialResponse = await parseFileToString(
+      'orchestration',
+      'orchestration-chat-completion-stream-chunk-response-initial.json'
+    );
+
+    for await (const chunk of response.stream) {
+      expect(chunk.data).toEqual(JSON.parse(initialResponse));
+      break;
+    }
+  });
 });

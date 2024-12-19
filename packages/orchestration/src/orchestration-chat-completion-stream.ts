@@ -1,7 +1,10 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import { SseStream } from '@sap-ai-sdk/core';
 import { OrchestrationChatCompletionStreamChunkResponse } from './orchestration-chat-completion-stream-chunk-response.js';
-import type { CompletionPostResponseStreaming, LLMChoiceStreaming } from './client/api/schema/index.js';
+import type {
+  CompletionPostResponseStreaming,
+  LLMChoiceStreaming
+} from './client/api/schema/index.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { OrchestrationChatCompletionStreamResponse } from './orchestration-chat-completion-stream-response.js';
 
@@ -24,7 +27,11 @@ export class OrchestrationChatCompletionStream<Item> extends SseStream<Item> {
     response: HttpResponse,
     controller: AbortController
   ): OrchestrationChatCompletionStream<CompletionPostResponseStreaming> {
-    const stream = SseStream.transformToSseStream<CompletionPostResponseStreaming>(response, controller);
+    const stream =
+      SseStream.transformToSseStream<CompletionPostResponseStreaming>(
+        response,
+        controller
+      );
     return new OrchestrationChatCompletionStream(stream.iterator, controller);
   }
 
@@ -49,36 +56,38 @@ export class OrchestrationChatCompletionStream<Item> extends SseStream<Item> {
     response?: OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
   ): AsyncGenerator<OrchestrationChatCompletionStreamChunkResponse> {
     for await (const chunk of stream) {
-      chunk.data.orchestration_result?.choices.forEach((choice: LLMChoiceStreaming) => {
-        const choiceIndex = choice.index;
-        if (choiceIndex >= 0) {
-          const finishReason = chunk.getFinishReason(choiceIndex);
-          if (finishReason) {
-            if (response) {
-              response._getFinishReasons().set(choiceIndex, finishReason);
-            }
-            switch (finishReason) {
-              case 'content_filter':
-                logger.error(
-                  `Choice ${choiceIndex}: Stream finished with content filter hit.`
-                );
-                break;
-              case 'length':
-                logger.error(
-                  `Choice ${choiceIndex}: Stream finished with token length exceeded.`
-                );
-                break;
-              case 'stop':
-                logger.debug(`Choice ${choiceIndex}: Stream finished.`);
-                break;
-              default:
-                logger.error(
-                  `Choice ${choiceIndex}: Stream finished with unknown reason '${finishReason}'.`
-                );
+      chunk.data.orchestration_result?.choices.forEach(
+        (choice: LLMChoiceStreaming) => {
+          const choiceIndex = choice.index;
+          if (choiceIndex >= 0) {
+            const finishReason = chunk.getFinishReason(choiceIndex);
+            if (finishReason) {
+              if (response) {
+                response._getFinishReasons().set(choiceIndex, finishReason);
+              }
+              switch (finishReason) {
+                case 'content_filter':
+                  logger.error(
+                    `Choice ${choiceIndex}: Stream finished with content filter hit.`
+                  );
+                  break;
+                case 'length':
+                  logger.error(
+                    `Choice ${choiceIndex}: Stream finished with token length exceeded.`
+                  );
+                  break;
+                case 'stop':
+                  logger.debug(`Choice ${choiceIndex}: Stream finished.`);
+                  break;
+                default:
+                  logger.error(
+                    `Choice ${choiceIndex}: Stream finished with unknown reason '${finishReason}'.`
+                  );
+              }
             }
           }
         }
-      });
+      );
       yield chunk;
     }
   }

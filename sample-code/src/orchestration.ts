@@ -59,7 +59,12 @@ export async function chatCompletionStream(
     },
     // define the prompt
     templating: {
-      template: [{ role: 'user', content: 'Give me a short introduction of SAP Cloud SDK.' }]
+      template: [
+        {
+          role: 'user',
+          content: 'Give me a short introduction of SAP Cloud SDK.'
+        }
+      ]
     }
   });
 

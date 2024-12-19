@@ -1,4 +1,7 @@
-import type { CompletionPostResponseStreaming, LLMChoiceStreaming } from './client/api/schema/index.js';
+import type {
+  CompletionPostResponseStreaming,
+  LLMChoiceStreaming
+} from './client/api/schema/index.js';
 import type { TokenUsage } from './index.js';
 
 /**

@@ -59,7 +59,7 @@ describe('Orchestration chat completion stream', () => {
       originalChatCompletionStream
     );
     const asyncGeneratorFinishReason =
-    OrchestrationChatCompletionStream._processFinishReason(
+      OrchestrationChatCompletionStream._processFinishReason(
         new OrchestrationChatCompletionStream(
           () => asyncGeneratorChunk,
           new AbortController()
@@ -82,7 +82,7 @@ describe('Orchestration chat completion stream', () => {
       originalChatCompletionStream
     );
     const asyncGeneratorTokenUsage =
-    OrchestrationChatCompletionStream._processTokenUsage(
+      OrchestrationChatCompletionStream._processTokenUsage(
         new OrchestrationChatCompletionStream(
           () => asyncGeneratorChunk,
           new AbortController()
