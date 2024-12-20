@@ -1,3 +1,4 @@
+import { readFile } from 'node:fs/promises';
 import {
   OrchestrationClient,
   buildAzureContentFilter
@@ -207,6 +208,24 @@ export async function orchestrationRequestConfig(): Promise<OrchestrationRespons
       headers: { 'x-custom-header': 'custom-value' }
     }
   );
+}
+
+/**
+ * Use the orchestration service with JSON obtained from AI Launchpad.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationFromJSON(): Promise<
+  OrchestrationResponse | undefined
+> {
+  // You can also provide the JSON configuration as a plain string in the code directly instead.
+  const jsonConfig = await readFile(
+    './src/model-orchestration-config.json',
+    'utf-8'
+  );
+  const response = await new OrchestrationClient(jsonConfig).chatCompletion();
+
+  logger.info(response.getContent());
+  return response;
 }
 
 /**

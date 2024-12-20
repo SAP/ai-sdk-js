@@ -15,6 +15,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
   - [Content Filtering](#content-filtering)
   - [Data Masking](#data-masking)
   - [Grounding](#grounding)
+  - [Using a JSON Configuration from AI Launchpad](#using-a-json-configuration-from-ai-launchpad)
   - [Using Resource Groups](#using-resource-groups)
   - [Custom Request Configuration](#custom-request-configuration)
   - [Custom Destination](#custom-destination)
@@ -324,6 +325,23 @@ const response = await orchestrationClient.chatCompletion({
   inputParams: { groundingRequest: 'What is Generative AI Hub in SAP AI Core?' }
 });
 return response.getContent();
+```
+
+### Using a JSON Configuration from AI Launchpad
+
+If you already have an orchestration workflow created in AI Launchpad, you can either download the configuration as a JSON file or copy the JSON string directly to use it with the orchestration client.
+
+```ts
+const jsonConfig = await fs.promises.readFile(
+  'path/to/orchestration-config.json',
+  'utf-8'
+);
+// Alternatively, you can provide the JSON configuration as a plain string in the code directly.
+// const jsonConfig = 'YOUR_JSON_CONFIG'
+
+const response = await new OrchestrationClient(jsonConfig).chatCompletion();
+
+return response;
 ```
 
 ### Using Resource Groups
