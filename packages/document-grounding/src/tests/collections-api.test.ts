@@ -4,7 +4,7 @@ import {
   mockClientCredentialsGrantCall
 } from '../../../../test-util/mock-http.js';
 import {
-  CollectionsApi,
+  VectorApi,
   type CollectionsListResponse
 } from '../client/api/index.js';
 
@@ -41,11 +41,10 @@ describe('collections', () => {
         'Content-Type': 'application/json'
       });
 
-    const result: CollectionsListResponse =
-      await CollectionsApi.vectorV1VectorEndpointsGetAllCollections(
-        {},
-        { 'AI-Resource-Group': 'default' }
-      ).execute();
+    const result: CollectionsListResponse = await VectorApi.getAllCollections(
+      {},
+      { 'AI-Resource-Group': 'default' }
+    ).execute();
 
     expect(result).toEqual(expectedResponse);
   });

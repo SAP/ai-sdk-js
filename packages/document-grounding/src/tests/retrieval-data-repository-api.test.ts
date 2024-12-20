@@ -3,8 +3,7 @@ import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
 } from '../../../../test-util/mock-http.js';
-import { RetrievalDataRepositoryApi } from '../client/api/index.js';
-import type { DataRepositories } from '../../internal.js';
+import { RetrievalApi, type DataRepositories } from '../../internal.js';
 
 describe('retrieval data repository', () => {
   beforeEach(() => {
@@ -37,11 +36,10 @@ describe('retrieval data repository', () => {
         'Content-Type': 'application/json'
       });
 
-    const result: DataRepositories =
-      await RetrievalDataRepositoryApi.retrievalV1RetrievalEndpointsGetDataRepositories(
-        {},
-        { 'AI-Resource-Group': 'default' }
-      ).execute();
+    const result: DataRepositories = await RetrievalApi.getDataRepositories(
+      {},
+      { 'AI-Resource-Group': 'default' }
+    ).execute();
 
     expect(result).toEqual(expectedResponse);
   });
