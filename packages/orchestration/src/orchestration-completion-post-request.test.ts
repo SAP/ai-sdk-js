@@ -191,8 +191,7 @@ describe('construct completion post request', () => {
       orchestration_config: {
         module_configurations: {
           templating_module_config: config.templating,
-          llm_module_config: config.llm,
-          filtering_module_config: config.filtering
+          llm_module_config: config.llm
         }
       }
     };
