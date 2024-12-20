@@ -3,7 +3,7 @@ import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
 } from '../../../../test-util/mock-http.js';
-import { DocumentsApi } from '../client/api/index.js';
+import { VectorApi } from '../client/api/index.js';
 import type { Documents } from '../client/api/index.js';
 
 describe('documents', () => {
@@ -44,12 +44,11 @@ describe('documents', () => {
         'Content-Type': 'application/json'
       });
 
-    const result: Documents =
-      await DocumentsApi.vectorV1VectorEndpointsGetAllDocuments(
-        collectionId,
-        {},
-        { 'AI-Resource-Group': 'default' }
-      ).execute();
+    const result: Documents = await VectorApi.getAllDocuments(
+      collectionId,
+      {},
+      { 'AI-Resource-Group': 'default' }
+    ).execute();
 
     expect(result).toEqual(expectedResponse);
   });
