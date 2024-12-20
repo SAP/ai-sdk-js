@@ -146,8 +146,8 @@ importers:
   packages/langchain:
     dependencies:
       '@langchain/core':
-        specifier: 0.3.24
-        version: 0.3.24(openai@4.61.1(zod@3.24.1))
+        specifier: 0.3.25
+        version: 0.3.25(openai@4.61.1(zod@3.24.1))
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../ai-api
@@ -207,11 +207,11 @@ importers:
   sample-code:
     dependencies:
       '@langchain/core':
-        specifier: 0.3.24
-        version: 0.3.24(openai@4.61.1(zod@3.24.1))
+        specifier: 0.3.25
+        version: 0.3.25(openai@4.61.1(zod@3.24.1))
       '@langchain/textsplitters':
         specifier: 0.1.0
-        version: 0.1.0(@langchain/core@0.3.24(openai@4.61.1(zod@3.24.1)))
+        version: 0.1.0(@langchain/core@0.3.25(openai@4.61.1(zod@3.24.1)))
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../packages/ai-api
@@ -238,7 +238,7 @@ importers:
         version: 4.21.2
       langchain:
         specifier: 0.3.7
-        version: 0.3.7(@langchain/core@0.3.24(openai@4.61.1(zod@3.24.1)))(axios@1.7.8)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.24.1))
+        version: 0.3.7(@langchain/core@0.3.25(openai@4.61.1(zod@3.24.1)))(axios@1.7.8)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.24.1))
 
   tests/e2e-tests:
     dependencies:
@@ -277,11 +277,11 @@ importers:
   tests/smoke-tests:
     dependencies:
       '@langchain/core':
-        specifier: 0.3.24
-        version: 0.3.24(openai@4.61.1(zod@3.24.1))
+        specifier: 0.3.25
+        version: 0.3.25(openai@4.61.1(zod@3.24.1))
       '@langchain/textsplitters':
         specifier: 0.1.0
-        version: 0.1.0(@langchain/core@0.3.24(openai@4.61.1(zod@3.24.1)))
+        version: 0.1.0(@langchain/core@0.3.25(openai@4.61.1(zod@3.24.1)))
       '@sap-ai-sdk/ai-api':
         specifier: canary
         version: 1.4.1-20241219013138.0
@@ -305,7 +305,7 @@ importers:
         version: 4.21.2
       langchain:
         specifier: 0.3.7
-        version: 0.3.7(@langchain/core@0.3.24(openai@4.61.1(zod@3.24.1)))(axios@1.7.8)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.24.1))
+        version: 0.3.7(@langchain/core@0.3.25(openai@4.61.1(zod@3.24.1)))(axios@1.7.8)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.24.1))
     devDependencies:
       '@types/express':
         specifier: ^5.0.0
@@ -975,6 +975,10 @@ packages:
 
   '@langchain/core@0.3.24':
     resolution: {integrity: sha512-xd7+VSJCwFNwt57poYjl18SbAb51mLWvq7OvQhkUQXv20LdnrO8Y5e2NhVKpNcYE306fFfAu+ty9ncPyKCpMZA==}
+    engines: {node: '>=18'}
+
+  '@langchain/core@0.3.25':
+    resolution: {integrity: sha512-kB4BhGK2XQu/c9RtHD+ocixZ7fziakvXzzVJhkd3KdR5RBcZNigzDVLf83cYAQbqeeEpLdbKb/6N+KWDc7zX/g==}
     engines: {node: '>=18'}
 
   '@langchain/openai@0.3.2':
@@ -5460,9 +5464,26 @@ snapshots:
     transitivePeerDependencies:
       - openai
 
-  '@langchain/openai@0.3.2(@langchain/core@0.3.24(openai@4.61.1(zod@3.24.1)))':
+  '@langchain/core@0.3.25(openai@4.61.1(zod@3.24.1))':
     dependencies:
-      '@langchain/core': 0.3.24(openai@4.61.1(zod@3.24.1))
+      '@cfworker/json-schema': 4.0.3
+      ansi-styles: 5.2.0
+      camelcase: 6.3.0
+      decamelize: 1.2.0
+      js-tiktoken: 1.0.14
+      langsmith: 0.2.8(openai@4.61.1(zod@3.24.1))
+      mustache: 4.2.0
+      p-queue: 6.6.2
+      p-retry: 4.6.2
+      uuid: 10.0.0
+      zod: 3.24.1
+      zod-to-json-schema: 3.24.1(zod@3.24.1)
+    transitivePeerDependencies:
+      - openai
+
+  '@langchain/openai@0.3.2(@langchain/core@0.3.25(openai@4.61.1(zod@3.24.1)))':
+    dependencies:
+      '@langchain/core': 0.3.25(openai@4.61.1(zod@3.24.1))
       js-tiktoken: 1.0.14
       openai: 4.61.1(zod@3.24.1)
       zod: 3.24.1
@@ -5470,9 +5491,9 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@langchain/textsplitters@0.1.0(@langchain/core@0.3.24(openai@4.61.1(zod@3.24.1)))':
+  '@langchain/textsplitters@0.1.0(@langchain/core@0.3.25(openai@4.61.1(zod@3.24.1)))':
     dependencies:
-      '@langchain/core': 0.3.24(openai@4.61.1(zod@3.24.1))
+      '@langchain/core': 0.3.25(openai@4.61.1(zod@3.24.1))
       js-tiktoken: 1.0.14
 
   '@manypkg/find-root@1.1.0':
@@ -8386,11 +8407,11 @@ snapshots:
 
   kuler@2.0.0: {}
 
-  langchain@0.3.7(@langchain/core@0.3.24(openai@4.61.1(zod@3.24.1)))(axios@1.7.8)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.24.1)):
+  langchain@0.3.7(@langchain/core@0.3.25(openai@4.61.1(zod@3.24.1)))(axios@1.7.8)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.24.1)):
     dependencies:
-      '@langchain/core': 0.3.24(openai@4.61.1(zod@3.24.1))
-      '@langchain/openai': 0.3.2(@langchain/core@0.3.24(openai@4.61.1(zod@3.24.1)))
-      '@langchain/textsplitters': 0.1.0(@langchain/core@0.3.24(openai@4.61.1(zod@3.24.1)))
+      '@langchain/core': 0.3.25(openai@4.61.1(zod@3.24.1))
+      '@langchain/openai': 0.3.2(@langchain/core@0.3.25(openai@4.61.1(zod@3.24.1)))
+      '@langchain/textsplitters': 0.1.0(@langchain/core@0.3.25(openai@4.61.1(zod@3.24.1)))
       js-tiktoken: 1.0.14
       js-yaml: 4.1.0
       jsonpointer: 5.0.1
