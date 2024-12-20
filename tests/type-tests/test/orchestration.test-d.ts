@@ -165,6 +165,28 @@ expectType<Promise<OrchestrationResponse>>(
 );
 
 /**
+ * Chat Completion with JSON configuration.
+ */
+expectType<Promise<OrchestrationResponse>>(
+  new OrchestrationClient(
+    `{
+      "module_configurations": {
+          "llm_module_config": {
+              "model_name": "gpt-35-turbo-16k",
+              "model_params": {
+                "max_tokens": 50,
+                "temperature": 0.1
+              }
+          },
+          "templating_module_config": {
+              "template": [{ "role": "user", "content": "Hello!" }]
+          }
+          }
+      }`
+  ).chatCompletion()
+);
+
+/**
  * Orchestration completion parameters cannot be empty.
  */
 expectError<any>(new OrchestrationClient({}).chatCompletion());

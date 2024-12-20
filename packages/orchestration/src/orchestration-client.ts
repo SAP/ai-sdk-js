@@ -16,7 +16,7 @@ import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity'
 export class OrchestrationClient {
   /**
    * Creates an instance of the orchestration client.
-   * @param config - Orchestration module configuration. This can either be an instance of `OrchestrationModuleConfig` or a JSON string retrieved from AI Launchpad.
+   * @param config - Orchestration module configuration. This can either be an `OrchestrationModuleConfig` object or a JSON string obtained from AI Launchpad.
    * @param deploymentConfig - Deployment configuration.
    * @param destination - The destination to use for the request.
    */
@@ -36,9 +36,9 @@ export class OrchestrationClient {
     prompt?: Prompt,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationResponse> {
-    const body: CompletionPostRequest | Record<string, any> =
+    const body =
       typeof this.config === 'string'
-        ? constructCompletionFromJson(this.config, prompt)
+        ? constructCompletionPostRequestFromJson(this.config, prompt)
         : constructCompletionPostRequest(this.config, prompt);
 
     const deploymentId = await resolveDeploymentId({
@@ -63,7 +63,7 @@ export class OrchestrationClient {
 /**
  * @internal
  */
-export function constructCompletionFromJson(
+export function constructCompletionPostRequestFromJson(
   config: string,
   prompt?: Prompt
 ): Record<string, any> {
@@ -71,7 +71,7 @@ export function constructCompletionFromJson(
     return {
       messages_history: prompt?.messagesHistory || [],
       input_params: prompt?.inputParams || {},
-      orchestration_config: JSON.parse(config as string)
+      orchestration_config: JSON.parse(config)
     };
   } catch (error) {
     throw new Error(`Could not parse JSON: ${error}`);

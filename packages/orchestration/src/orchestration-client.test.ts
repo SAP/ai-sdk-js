@@ -6,7 +6,7 @@ import {
   parseMockResponse
 } from '../../../test-util/mock-http.js';
 import {
-  constructCompletionFromJson,
+  constructCompletionPostRequestFromJson,
   constructCompletionPostRequest,
   OrchestrationClient
 } from './orchestration-client.js';
@@ -88,7 +88,7 @@ describe('orchestration service client', () => {
 
     mockInference(
       {
-        data: constructCompletionFromJson(jsonConfig)
+        data: constructCompletionPostRequestFromJson(jsonConfig)
       },
       {
         data: mockResponse,
