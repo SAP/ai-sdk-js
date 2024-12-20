@@ -19,7 +19,6 @@ export interface ServerSentEvent {
 
 /**
  * Server-Sent Event decoder.
- * @internal
  */
 export class SSEDecoder {
   private data: string[];

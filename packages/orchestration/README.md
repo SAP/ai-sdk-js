@@ -84,6 +84,94 @@ The client allows you to combine various modules, such as templating and content
 
 In addition to the examples below, you can find more **sample code** [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/orchestration.ts).
 
+### Streaming
+
+The `OrchestrationClient` supports streaming response for chat completion requests based on the [Server-sent events](https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events) standard.
+
+Use the `stream()` method to receive a stream of chunk responses from the model.
+After consuming the stream, call the helper methods to get the finish reason and token usage information respectively.
+
+```ts
+const orchestrationClient = new OrchestrationClient({
+  llm: {
+    model_name: 'gpt-4o',
+    model_params: { max_tokens: 50, temperature: 0.1 }
+  },
+  templating: {
+    template: [
+      { role: 'user', content: 'What is the capital of {{?country}}?' }
+    ]
+  }
+});
+
+const response = await orchestrationClient.stream({
+  inputParams: { country: 'France' }
+});
+
+for await (const chunk of response.stream) {
+  console.log(JSON.stringify(chunk));
+}
+
+const finishReason = response.getFinishReason();
+const tokenUsage = response.getTokenUsage();
+
+console.log(`Finish reason: ${finishReason}\n`);
+console.log(`Token usage: ${JSON.stringify(tokenUsage)}\n`);
+```
+
+#### Streaming the Delta Content
+
+The client provides a helper method to extract delta content and stream string directly.
+
+```ts
+for await (const chunk of response.stream.toContentStream()) {
+  console.log(chunk); // will log the delta content
+}
+```
+
+Each chunk will be a defined string containing the delta content.
+Set `choiceIndex` parameter for `toContentStream()` method to stream a specific choice.
+
+#### Streaming with Abort Controller
+
+Streaming request can be aborted using the `AbortController` API.
+In case of an error, the SAP Cloud SDK for AI will automatically close the stream.
+Additionally, it can be aborted manually by calling the `stream()` method with an `AbortController` object.
+
+```ts
+const orchestrationClient = new OrchestrationClient({
+  llm: {
+    model_name: 'gpt-4o',
+    model_params: { max_tokens: 50, temperature: 0.1 }
+  },
+  templating: {
+    template: [
+      { role: 'user', content: 'What is the capital of {{?country}}?' }
+    ]
+  }
+});
+
+const controller = new AbortController();
+const response = await orchestrationClient.stream(
+  {
+    inputParams: { country: 'France' }
+  },
+  controller
+);
+
+// Abort the streaming request after one second
+setTimeout(() => {
+  controller.abort();
+}, 1000);
+
+for await (const chunk of response.stream) {
+  console.log(JSON.stringify(chunk));
+}
+```
+
+In this example, streaming request will be aborted after one second.
+Abort controller can be useful, e.g., when end-user wants to stop the stream or refreshes the page.
+
 ### Templating
 
 Use the orchestration client with templating to pass a prompt containing placeholders that will be replaced with input parameters during a chat completion request.

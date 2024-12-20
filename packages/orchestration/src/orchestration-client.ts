@@ -1,13 +1,21 @@
 import { executeRequest } from '@sap-ai-sdk/core';
 import { resolveDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
 import { OrchestrationResponse } from './orchestration-response.js';
+import { OrchestrationChatCompletionStream } from './orchestration-chat-completion-stream.js';
+import { OrchestrationChatCompletionStreamResponse } from './orchestration-chat-completion-stream-response.js';
+import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { CustomRequestConfig } from '@sap-ai-sdk/core';
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api/internal.js';
-import type { CompletionPostRequest } from './client/api/schema/index.js';
 import type {
+  CompletionPostRequest,
+  CompletionPostResponseStreaming
+} from './client/api/schema/index.js';
+import type {
+  LlmModuleConfig,
   OrchestrationModuleConfig,
   Prompt
 } from './orchestration-types.js';
+import type { OrchestrationChatCompletionStreamChunkResponse } from './orchestration-chat-completion-stream-chunk-response.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 /**
@@ -36,13 +44,41 @@ export class OrchestrationClient {
     prompt?: Prompt,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationResponse> {
-    const body = constructCompletionPostRequest(this.config, prompt);
+    const response = await this.executeRequest(prompt, requestConfig);
+
+    return new OrchestrationResponse(response);
+  }
+
+  async stream(
+    prompt?: Prompt,
+    controller = new AbortController(),
+    requestConfig?: CustomRequestConfig
+  ): Promise<
+    OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
+  > {
+    const response =
+      new OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>();
+    response.stream = (
+      await this.createStream(controller, prompt, requestConfig)
+    )
+      ._pipe(OrchestrationChatCompletionStream._processChunk)
+      ._pipe(OrchestrationChatCompletionStream._processFinishReason, response)
+      ._pipe(OrchestrationChatCompletionStream._processTokenUsage, response);
+    return response;
+  }
+
+  private async executeRequest(
+    prompt?: Prompt,
+    requestConfig?: CustomRequestConfig,
+    streaming: boolean = false
+  ): Promise<HttpResponse> {
+    const body = constructCompletionPostRequest(this.config, prompt, streaming);
     const deploymentId = await resolveDeploymentId({
       scenarioId: 'orchestration',
       resourceGroup: this.deploymentConfig?.resourceGroup
     });
 
-    const response = await executeRequest(
+    return executeRequest(
       {
         url: `/inference/deployments/${deploymentId}/completion`,
         resourceGroup: this.deploymentConfig?.resourceGroup
@@ -51,8 +87,25 @@ export class OrchestrationClient {
       requestConfig,
       this.destination
     );
+  }
 
-    return new OrchestrationResponse(response);
+  private async createStream(
+    controller: AbortController,
+    prompt?: Prompt,
+    requestConfig?: CustomRequestConfig
+  ): Promise<
+    OrchestrationChatCompletionStream<CompletionPostResponseStreaming>
+  > {
+    const response = await this.executeRequest(
+      prompt,
+      {
+        ...requestConfig,
+        responseType: 'stream',
+        signal: controller.signal
+      },
+      true
+    );
+    return OrchestrationChatCompletionStream._create(response, controller);
   }
 }
 
@@ -61,15 +114,17 @@ export class OrchestrationClient {
  */
 export function constructCompletionPostRequest(
   config: OrchestrationModuleConfig,
-  prompt?: Prompt
+  prompt?: Prompt,
+  stream = false
 ): CompletionPostRequest {
   return {
     orchestration_config: {
+      stream,
       module_configurations: {
         templating_module_config: {
           template: config.templating.template
         },
-        llm_module_config: config.llm,
+        llm_module_config: configureLLM(config.llm, stream),
         ...(Object.keys(config?.filtering || {}).length && {
           filtering_module_config: config.filtering
         }),
@@ -88,4 +143,14 @@ export function constructCompletionPostRequest(
       messages_history: prompt.messagesHistory
     })
   };
+}
+
+function configureLLM(llm: LlmModuleConfig, stream: boolean): LlmModuleConfig {
+  if (stream) {
+    llm.model_params = {
+      ...llm.model_params,
+      stream_options: { include_usage: true }
+    };
+  }
+  return llm;
 }

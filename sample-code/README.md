@@ -153,6 +153,20 @@ Use `buildAzureContentFilter()` to build the content filter.
 
 Send chat completion request with a custom header as the custom request configuration.
 
+#### Chat Completion Streaming
+
+`GET /orchestration-stream/chat-completion-stream`
+
+Get chat completion response with streaming.
+
+The response header is set with `Content-Type: text/event-stream` to stream the text.
+
+`AbortController` is used to cancel the request in case user closes or refreshes the page, or there is an error.
+
+The `toContentStream()` method is called to extract the content of the chunk for convenience.
+
+Once the streaming is done, finish reason and token usage are printed out.
+
 ### Langchain
 
 #### Invoke with a Simple Input
