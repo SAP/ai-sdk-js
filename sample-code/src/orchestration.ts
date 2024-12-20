@@ -141,13 +141,13 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
     );
     logger.info(
       'The original response from the LLM was as follows: ' +
-      result.data.module_results.llm?.choices[0].message.content
+        result.data.module_results.llm?.choices[0].message.content
     );
     return result;
   }
   throw new Error(
     'Output was not filtered as expected. The LLM response was: ' +
-    result.getContent()
+      result.getContent()
   );
 }
 
@@ -214,9 +214,14 @@ export async function orchestrationRequestConfig(): Promise<OrchestrationRespons
  * Use the orchestration service with JSON obtained from AI Launchpad.
  * @returns The orchestration service response.
  */
-export async function orchestrationFromJSON(): Promise<OrchestrationResponse | undefined> {
+export async function orchestrationFromJSON(): Promise<
+  OrchestrationResponse | undefined
+> {
   // You can also provide the JSON configuration as a plain string in the code directly instead.
-  const jsonConfig = await readFile('./src/model-orchestration-config.json', 'utf-8');
+  const jsonConfig = await readFile(
+    './src/model-orchestration-config.json',
+    'utf-8'
+  );
   const response = await new OrchestrationClient(jsonConfig).chatCompletion();
 
   logger.info(response.getContent());
