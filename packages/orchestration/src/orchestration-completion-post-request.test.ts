@@ -3,7 +3,7 @@ import { buildAzureContentFilter } from './orchestration-filter-utility.js';
 import type { CompletionPostRequest } from './client/api/schema';
 import type { OrchestrationModuleConfig } from './orchestration-types.js';
 
-describe('constructCompletionPostRequest()', () => {
+describe('construct completion post request', () => {
   const defaultConfig: OrchestrationModuleConfig = {
     llm: {
       model_name: 'gpt-35-turbo-16k',
@@ -14,7 +14,7 @@ describe('constructCompletionPostRequest()', () => {
     }
   };
 
-  it('with model configuration and prompt template', async () => {
+  it('should construct completion post request with llm and templating module', async () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
@@ -29,7 +29,7 @@ describe('constructCompletionPostRequest()', () => {
   });
 
   // TODO: Adapt the test after Cloud SDK fix for: https://github.com/SAP/cloud-sdk-backlog/issues/1234
-  it('with model configuration and empty template', async () => {
+  it('should construct completion post request with llm and empty templating module', async () => {
     const config: OrchestrationModuleConfig = {
       ...defaultConfig,
       templating: { template: [] }
@@ -47,7 +47,7 @@ describe('constructCompletionPostRequest()', () => {
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
-  it('with model configuration, prompt template and template params', async () => {
+  it('should construct completion post request with llm and templating module with input params', async () => {
     const config: OrchestrationModuleConfig = {
       ...defaultConfig,
       templating: {
@@ -74,7 +74,7 @@ describe('constructCompletionPostRequest()', () => {
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
-  it('with model configuration, prompt template and empty template params', async () => {
+  it('should construct completion post request with llm and templating module with empty input params', async () => {
     const config: OrchestrationModuleConfig = {
       ...defaultConfig,
       templating: {
@@ -101,7 +101,7 @@ describe('constructCompletionPostRequest()', () => {
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
-  it('with model name, empty model parameters and prompt template', async () => {
+  it('should construct completion post request with empty model params', async () => {
     const config: OrchestrationModuleConfig = {
       ...defaultConfig,
       llm: {
@@ -123,7 +123,7 @@ describe('constructCompletionPostRequest()', () => {
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
-  it('with model configuration, prompt template and message history', async () => {
+  it('should construct completion post request with message history', async () => {
     const config: OrchestrationModuleConfig = {
       ...defaultConfig,
       templating: {
@@ -160,7 +160,7 @@ describe('constructCompletionPostRequest()', () => {
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
-  it('with model configuration, prompt template and filter configuration', async () => {
+  it('should construct completion post request with filtering', async () => {
     const config: OrchestrationModuleConfig = {
       ...defaultConfig,
       filtering: {
@@ -182,7 +182,7 @@ describe('constructCompletionPostRequest()', () => {
   });
 
   // TODO: Adapt the test after Cloud SDK fix for: https://github.com/SAP/cloud-sdk-backlog/issues/1234
-  it('with model configuration, prompt template empty filter configuration', async () => {
+  it('should construct completion post request with empty filtering', async () => {
     const config: OrchestrationModuleConfig = {
       ...defaultConfig,
       filtering: {}
@@ -191,7 +191,8 @@ describe('constructCompletionPostRequest()', () => {
       orchestration_config: {
         module_configurations: {
           templating_module_config: config.templating,
-          llm_module_config: config.llm
+          llm_module_config: config.llm,
+          filtering_module_config: config.filtering
         }
       }
     };
