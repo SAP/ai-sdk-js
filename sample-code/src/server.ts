@@ -250,7 +250,8 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       template: orchestrationTemplating,
       inputFiltering: orchestrationInputFiltering,
       outputFiltering: orchestrationOutputFiltering,
-      requestConfig: orchestrationRequestConfig
+      requestConfig: orchestrationRequestConfig,
+      fromJSON: orchestrationFromJSON,
     }[sampleCase] || orchestrationChatCompletion;
 
   try {
@@ -264,20 +265,6 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
     } else {
       res.send(result.getContent());
     }
-  } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
-  }
-});
-
-app.get('/orchestration-from-json', async (req, res) => {
-  try {
-    const result = (await orchestrationFromJSON(
-      './src/model-orchestration-config.json'
-    )) as OrchestrationResponse;
-    res.send(result.getContent());
   } catch (error: any) {
     console.error(error);
     res

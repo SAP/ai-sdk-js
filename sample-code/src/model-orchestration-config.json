@@ -1,9 +1,9 @@
 {
   "module_configurations": {
     "llm_module_config": {
-      "model_name": "gpt-35-turbo",
+      "model_name": "gpt-4o",
       "model_params": {},
-      "model_version": "0613"
+      "model_version": "latest"
     },
     "templating_module_config": {
       "template": [
