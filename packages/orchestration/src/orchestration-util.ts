@@ -28,10 +28,39 @@ export function buildAzureContentFilter(
   };
 }
 
-export type DocumentGroundingFilterWrapper = Pick<DocumentGroundingFilter,
+/**
+ * Represents a filter configuration for the Document Grounding Service.
+ * 
+ */
+export type DocumentGroundingServiceFilter = Pick<DocumentGroundingFilter,
   'id' | 'search_config' | 'data_repositories' | 'data_repository_metadata' | 'document_metadata' | 'chunk_metadata'> & {
+    /**
+     * Defines the type of data repository. 
+     * If not set, the default value is 'vector'.
+     */
     data_repository_type?: DataRepositoryType;
   };
+
+
+  /**
+   * Represents the configuration for the Document Grounding Service.
+   */
+  export type DocumentGroundingServiceConfig = {
+    /**
+     * Define the filters to apply during the grounding process
+     */
+    filters?: DocumentGroundingServiceFilter[];
+    /**
+     * Contains the input parameters used for grounding input questions
+     */
+    input_params: string[];
+    /**
+     * Parameter name used for grounding output
+     * @example "groundingOutput"
+     */
+    output_param: string 
+  }
+
 
 /**
  * Convenience function to create Document Grounding configuration.
@@ -39,7 +68,7 @@ export type DocumentGroundingFilterWrapper = Pick<DocumentGroundingFilter,
  * @returns An object with the full grounding configuration.
  */
 export function buildDocumentGroundingConfig(
-  groundingConfig: { filters?: DocumentGroundingFilterWrapper[]; input_params: string[]; output_param: string }
+  groundingConfig: DocumentGroundingServiceConfig
 ): GroundingModuleConfig {
   return {
     type: 'document_grounding_service',
@@ -48,8 +77,8 @@ export function buildDocumentGroundingConfig(
       output_param: groundingConfig.output_param,
       ...(groundingConfig.filters && {
         filters: groundingConfig.filters?.map(filter => ({
-          ...filter,
-          data_repository_type: 'vector'
+          data_repository_type: 'vector',
+          ...filter 
         }))
       })
     }

@@ -42,7 +42,13 @@ export type {
 
 export { OrchestrationClient } from './orchestration-client.js';
 
-export { buildAzureContentFilter } from './orchestration-util.js';
+export { 
+  buildAzureContentFilter,
+  buildDocumentGroundingConfig,
+  type DocumentGroundingServiceConfig,
+  type DocumentGroundingServiceFilter
+
+} from './orchestration-util.js';
 
 export { OrchestrationResponse } from './orchestration-response.js';
 
