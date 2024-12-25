@@ -3,7 +3,7 @@ import { buildAzureContentFilter } from './orchestration-filter-utility.js';
 import type {
   CompletionPostRequest,
   FilteringModuleConfig
-} from './client/api/schema';
+} from './client/api/schema/index.js';
 import type { OrchestrationModuleConfig } from './orchestration-types.js';
 
 describe('filter utility', () => {

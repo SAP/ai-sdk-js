@@ -7,6 +7,7 @@ import {
   parseMockResponse
 } from '../../../test-util/mock-http.js';
 import {
+  constructCompletionPostRequestFromJson,
   constructCompletionPostRequest,
   OrchestrationClient
 } from './orchestration-client.js';
@@ -63,6 +64,47 @@ describe('orchestration service client', () => {
     expect(response.getContent()).toEqual(expect.any(String));
     expect(response.getFinishReason()).toEqual(expect.any(String));
     expect(response.getTokenUsage().completion_tokens).toEqual(9);
+  });
+
+  it('calls chatCompletion with valid JSON configuration', async () => {
+    const jsonConfig = `{
+      "module_configurations": {
+        "llm_module_config": {
+          "model_name": "gpt-35-turbo-16k",
+          "model_params": {
+            "max_tokens": 50,
+            "temperature": 0.1
+          }
+        },
+        "templating_module_config": {
+          "template": [{ "role": "user", "content": "What is the capital of France?" }]
+        }
+      }
+    }`;
+
+    const mockResponse = await parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'orchestration-chat-completion-success-response.json'
+    );
+
+    mockInference(
+      {
+        data: constructCompletionPostRequestFromJson(jsonConfig)
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    const response =
+      await OrchestrationClient.chatCompletionWithJson(jsonConfig);
+
+    expect(response).toBeInstanceOf(OrchestrationResponse);
+    expect(response.data).toEqual(mockResponse);
   });
 
   it('calls chatCompletion with filter configuration supplied using convenience function', async () => {
