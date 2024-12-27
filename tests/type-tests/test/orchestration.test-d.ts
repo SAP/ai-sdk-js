@@ -253,7 +253,7 @@ expectType<GroundingModuleConfig>(
 
 expectError<GroundingModuleConfig>(
   buildDocumentGroundingConfig({
-    input_params: ['test'] 
+    input_params: ['test']
   })
 );
 
@@ -268,5 +268,3 @@ expectType<GroundingModuleConfig>(
     ]
   })
 );
-
-
