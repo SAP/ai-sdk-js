@@ -30,41 +30,46 @@ export function buildAzureContentFilter(
 
 /**
  * Represents a filter configuration for the Document Grounding Service.
- * 
+ *
  */
-export type DocumentGroundingServiceFilter = Pick<DocumentGroundingFilter,
-  'id' | 'search_config' | 'data_repositories' | 'data_repository_metadata' | 'document_metadata' | 'chunk_metadata'> & {
-    /**
-     * Defines the type of data repository. 
-     * If not set, the default value is 'vector'.
-     */
-    data_repository_type?: DataRepositoryType;
-  };
-
-
+export type DocumentGroundingServiceFilter = Pick<
+  DocumentGroundingFilter,
+  | 'id'
+  | 'search_config'
+  | 'data_repositories'
+  | 'data_repository_metadata'
+  | 'document_metadata'
+  | 'chunk_metadata'
+> & {
   /**
-   * Represents the configuration for the Document Grounding Service.
+   * Defines the type of data repository.
+   * If not set, the default value is 'vector'.
    */
-  export type DocumentGroundingServiceConfig = {
-    /**
-     * Define the filters to apply during the grounding process
-     */
-    filters?: DocumentGroundingServiceFilter[];
-    /**
-     * Contains the input parameters used for grounding input questions
-     */
-    input_params: string[];
-    /**
-     * Parameter name used for grounding output
-     * @example "groundingOutput"
-     */
-    output_param: string 
-  }
+  data_repository_type?: DataRepositoryType;
+};
 
+/**
+ * Represents the configuration for the Document Grounding Service.
+ */
+export interface DocumentGroundingServiceConfig {
+  /**
+   * Define the filters to apply during the grounding process.
+   */
+  filters?: DocumentGroundingServiceFilter[];
+  /**
+   * Contains the input parameters used for grounding input questions.
+   */
+  input_params: string[];
+  /**
+   * Parameter name used for grounding output.
+   * @example "groundingOutput"
+   */
+  output_param: string;
+}
 
 /**
  * Convenience function to create Document Grounding configuration.
- * @param groundingConfig: Configuration for the document grounding service.
+ * @param groundingConfig - Configuration for the document grounding service.
  * @returns An object with the full grounding configuration.
  */
 export function buildDocumentGroundingConfig(
@@ -78,9 +83,9 @@ export function buildDocumentGroundingConfig(
       ...(groundingConfig.filters && {
         filters: groundingConfig.filters?.map(filter => ({
           data_repository_type: 'vector',
-          ...filter 
+          ...filter
         }))
       })
     }
-  }
+  };
 }

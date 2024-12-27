@@ -1,5 +1,9 @@
 import { constructCompletionPostRequest } from './orchestration-client.js';
-import { buildAzureContentFilter, buildDocumentGroundingConfig, DocumentGroundingServiceConfig } from './orchestration-util.js';
+import {
+  buildAzureContentFilter,
+  buildDocumentGroundingConfig
+} from './orchestration-util.js';
+import type { DocumentGroundingServiceConfig } from './orchestration-util.js';
 import type {
   CompletionPostRequest,
   FilteringModuleConfig
@@ -24,7 +28,7 @@ describe('orchestration utils', () => {
     afterEach(() => {
       config.filtering = undefined;
     });
-  
+
     it('constructs filter configuration with only input', async () => {
       const filtering: FilteringModuleConfig = {
         input: buildAzureContentFilter({ Hate: 4, SelfHarm: 0 })
@@ -50,7 +54,7 @@ describe('orchestration utils', () => {
           .filtering_module_config
       ).toEqual(expectedFilterConfig);
     });
-  
+
     it('constructs filter configuration with only output', async () => {
       const filtering: FilteringModuleConfig = {
         output: buildAzureContentFilter({ Sexual: 2, Violence: 6 })
@@ -76,7 +80,7 @@ describe('orchestration utils', () => {
           .filtering_module_config
       ).toEqual(expectedFilterConfig);
     });
-  
+
     it('constructs filter configuration with both input and output', async () => {
       const filtering: FilteringModuleConfig = {
         input: buildAzureContentFilter({
@@ -121,7 +125,7 @@ describe('orchestration utils', () => {
           .filtering_module_config
       ).toEqual(expectedFilterConfig);
     });
-  
+
     it('omits filters if not set', async () => {
       const filtering: FilteringModuleConfig = {
         input: buildAzureContentFilter(),
@@ -151,7 +155,7 @@ describe('orchestration utils', () => {
           .filtering_module_config
       ).toEqual(expectedFilterConfig);
     });
-  
+
     it('omits filter configuration if not set', async () => {
       const filtering: FilteringModuleConfig = {};
       config.filtering = filtering;
@@ -162,7 +166,7 @@ describe('orchestration utils', () => {
           .filtering_module_config
       ).toBeUndefined();
     });
-  
+
     it('throw error when configuring empty filter', async () => {
       const createFilterConfig = () => {
         {
@@ -172,7 +176,7 @@ describe('orchestration utils', () => {
       expect(createFilterConfig).toThrow(
         'Filter property cannot be an empty object'
       );
-    });  
+    });
   });
   describe('document grounding', () => {
     it('builds grounding configuration with minimal required properties', () => {
