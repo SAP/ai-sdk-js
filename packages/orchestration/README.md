@@ -327,6 +327,24 @@ const response = await orchestrationClient.chatCompletion({
 return response.getContent();
 ```
 
+`buildDocumentGroundingConfig` function provides convenience to create the document grounding service configuration using the minimal set of required values:
+
+```ts
+import {
+  buildDocumentGroundingConfig
+} from '@sap-ai-sdk/orchestration';
+
+const orchestrationConfig: {
+  ...,
+  grounding: buildDocumentGroundingConfig(
+    input_params: ['groundingInput'], 
+    output_param: 'groundingOutput',
+    filters: [{id: 'filter-id', data_repositories: ['repository-id'],}]
+    )
+}
+```
+
+
 ### Using a JSON Configuration from AI Launchpad
 
 If you already have an orchestration workflow created in AI Launchpad, you can either download the configuration as a JSON file or copy the JSON string directly to use it with the orchestration client.
