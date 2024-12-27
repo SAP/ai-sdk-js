@@ -337,13 +337,12 @@ import {
 const orchestrationConfig: {
   ...,
   grounding: buildDocumentGroundingConfig(
-    input_params: ['groundingInput'], 
+    input_params: ['groundingInput'],
     output_param: 'groundingOutput',
     filters: [{id: 'filter-id', data_repositories: ['repository-id'],}]
     )
 }
 ```
-
 
 ### Using a JSON Configuration from AI Launchpad
 
