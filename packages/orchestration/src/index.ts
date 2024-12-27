@@ -37,16 +37,16 @@ export type {
 export type {
   OrchestrationModuleConfig,
   LlmModuleConfig,
-  Prompt
+  Prompt,
+  DocumentGroundingServiceConfig,
+  DocumentGroundingServiceFilter
 } from './orchestration-types.js';
 
 export { OrchestrationClient } from './orchestration-client.js';
 
 export {
   buildAzureContentFilter,
-  buildDocumentGroundingConfig,
-  type DocumentGroundingServiceConfig,
-  type DocumentGroundingServiceFilter
+  buildDocumentGroundingConfig
 } from './orchestration-util.js';
 
 export { OrchestrationResponse } from './orchestration-response.js';

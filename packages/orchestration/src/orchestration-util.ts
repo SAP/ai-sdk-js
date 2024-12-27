@@ -1,11 +1,10 @@
 import type {
   AzureContentSafety,
-  DataRepositoryType,
-  DocumentGroundingFilter,
   GroundingModuleConfig,
   InputFilteringConfig,
   OutputFilteringConfig
 } from './client/api/schema/index.js';
+import { DocumentGroundingServiceConfig } from './orchestration-types.js';
 
 /**
  * Convenience function to create Azure content filters.
@@ -26,45 +25,6 @@ export function buildAzureContentFilter(
       }
     ]
   };
-}
-
-/**
- * Represents a filter configuration for the Document Grounding Service.
- *
- */
-export type DocumentGroundingServiceFilter = Pick<
-  DocumentGroundingFilter,
-  | 'id'
-  | 'search_config'
-  | 'data_repositories'
-  | 'data_repository_metadata'
-  | 'document_metadata'
-  | 'chunk_metadata'
-> & {
-  /**
-   * Defines the type of data repository.
-   * If not set, the default value is 'vector'.
-   */
-  data_repository_type?: DataRepositoryType;
-};
-
-/**
- * Represents the configuration for the Document Grounding Service.
- */
-export interface DocumentGroundingServiceConfig {
-  /**
-   * Define the filters to apply during the grounding process.
-   */
-  filters?: DocumentGroundingServiceFilter[];
-  /**
-   * Contains the input parameters used for grounding input questions.
-   */
-  input_params: string[];
-  /**
-   * Parameter name used for grounding output.
-   * @example "groundingOutput"
-   */
-  output_param: string;
 }
 
 /**
