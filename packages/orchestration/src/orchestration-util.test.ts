@@ -3,12 +3,11 @@ import {
   buildAzureContentFilter,
   buildDocumentGroundingConfig
 } from './orchestration-util.js';
-import type { DocumentGroundingServiceConfig } from './orchestration-util.js';
 import type {
   CompletionPostRequest,
   FilteringModuleConfig
 } from './client/api/schema/index.js';
-import type { OrchestrationModuleConfig } from './orchestration-types.js';
+import type { OrchestrationModuleConfig, DocumentGroundingServiceConfig } from './orchestration-types.js';
 
 describe('orchestration utils', () => {
   describe('azure filter', () => {
