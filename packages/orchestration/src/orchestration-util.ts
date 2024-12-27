@@ -1,10 +1,10 @@
+import type { DocumentGroundingServiceConfig } from './orchestration-types.js';
 import type {
   AzureContentSafety,
   GroundingModuleConfig,
   InputFilteringConfig,
   OutputFilteringConfig
 } from './client/api/schema/index.js';
-import { DocumentGroundingServiceConfig } from './orchestration-types.js';
 
 /**
  * Convenience function to create Azure content filters.
