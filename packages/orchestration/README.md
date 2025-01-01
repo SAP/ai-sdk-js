@@ -90,7 +90,7 @@ In addition to the examples below, you can find more **sample code** [here](http
 The `OrchestrationClient` supports streaming response for chat completion requests based on the [Server-sent events](https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events) standard.
 
 Use the `stream()` method to receive a stream of chunk responses from the model.
-After consuming the stream, call the helper methods to get the finish reason and token usage information respectively.
+After consuming the stream, call the helper methods to get the finish reason and token usage information.
 
 ```ts
 const orchestrationClient = new OrchestrationClient({

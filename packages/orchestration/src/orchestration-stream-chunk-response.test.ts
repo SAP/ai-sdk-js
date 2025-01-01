@@ -1,16 +1,16 @@
 import { parseMockResponse } from '../../../test-util/mock-http.js';
-import { OrchestrationChatCompletionStreamChunkResponse } from './orchestration-chat-completion-stream-chunk-response.js';
+import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 
-describe('OpenAI chat completion stream chunk response', () => {
+describe('Orchestration chat completion stream chunk response', () => {
   let mockResponses: {
     tokenUsageResponse: any;
     finishReasonResponse: any;
     deltaContentResponse: any;
   };
-  let orchestrationChatCompletionStreamChunkResponses: {
-    tokenUsageResponse: OrchestrationChatCompletionStreamChunkResponse;
-    finishReasonResponse: OrchestrationChatCompletionStreamChunkResponse;
-    deltaContentResponse: OrchestrationChatCompletionStreamChunkResponse;
+  let orchestrationStreamChunkResponses: {
+    tokenUsageResponse: OrchestrationStreamChunkResponse;
+    finishReasonResponse: OrchestrationStreamChunkResponse;
+    deltaContentResponse: OrchestrationStreamChunkResponse;
   };
 
   beforeAll(async () => {
@@ -28,14 +28,14 @@ describe('OpenAI chat completion stream chunk response', () => {
         'orchestration-chat-completion-stream-chunk-response-delta-content.json'
       )
     };
-    orchestrationChatCompletionStreamChunkResponses = {
-      tokenUsageResponse: new OrchestrationChatCompletionStreamChunkResponse(
+    orchestrationStreamChunkResponses = {
+      tokenUsageResponse: new OrchestrationStreamChunkResponse(
         mockResponses.tokenUsageResponse
       ),
-      finishReasonResponse: new OrchestrationChatCompletionStreamChunkResponse(
+      finishReasonResponse: new OrchestrationStreamChunkResponse(
         mockResponses.finishReasonResponse
       ),
-      deltaContentResponse: new OrchestrationChatCompletionStreamChunkResponse(
+      deltaContentResponse: new OrchestrationStreamChunkResponse(
         mockResponses.deltaContentResponse
       )
     };
@@ -43,19 +43,19 @@ describe('OpenAI chat completion stream chunk response', () => {
 
   it('should return the chat completion stream chunk response', () => {
     expect(
-      orchestrationChatCompletionStreamChunkResponses.tokenUsageResponse.data
+      orchestrationStreamChunkResponses.tokenUsageResponse.data
     ).toStrictEqual(mockResponses.tokenUsageResponse);
     expect(
-      orchestrationChatCompletionStreamChunkResponses.finishReasonResponse.data
+      orchestrationStreamChunkResponses.finishReasonResponse.data
     ).toStrictEqual(mockResponses.finishReasonResponse);
     expect(
-      orchestrationChatCompletionStreamChunkResponses.deltaContentResponse.data
+      orchestrationStreamChunkResponses.deltaContentResponse.data
     ).toStrictEqual(mockResponses.deltaContentResponse);
   });
 
   it('should get token usage', () => {
     expect(
-      orchestrationChatCompletionStreamChunkResponses.tokenUsageResponse.getTokenUsage()
+      orchestrationStreamChunkResponses.tokenUsageResponse.getTokenUsage()
     ).toMatchObject({
       completion_tokens: expect.any(Number),
       prompt_tokens: expect.any(Number),
@@ -65,13 +65,13 @@ describe('OpenAI chat completion stream chunk response', () => {
 
   it('should return finish reason', () => {
     expect(
-      orchestrationChatCompletionStreamChunkResponses.finishReasonResponse.getFinishReason()
+      orchestrationStreamChunkResponses.finishReasonResponse.getFinishReason()
     ).toBe('stop');
   });
 
   it('should return delta content with default index 0', () => {
     expect(
-      orchestrationChatCompletionStreamChunkResponses.deltaContentResponse.getDeltaContent()
+      orchestrationStreamChunkResponses.deltaContentResponse.getDeltaContent()
     ).toMatchInlineSnapshot(
       '"rimarily focusing on Java and JavaScript/Node.js environments, allowing developers to work in their "'
     );

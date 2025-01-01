@@ -1,12 +1,12 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import { SseStream } from '@sap-ai-sdk/core';
-import { OrchestrationChatCompletionStreamChunkResponse } from './orchestration-chat-completion-stream-chunk-response.js';
+import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 import type {
   CompletionPostResponseStreaming,
   LLMChoiceStreaming
 } from './client/api/schema/index.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-import type { OrchestrationChatCompletionStreamResponse } from './orchestration-chat-completion-stream-response.js';
+import type { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 
 const logger = createLogger({
   package: 'orchestration',
@@ -16,7 +16,7 @@ const logger = createLogger({
 /**
  * Chat completion stream containing post-processing functions.
  */
-export class OrchestrationChatCompletionStream<Item> extends SseStream<Item> {
+export class OrchestrationStream<Item> extends SseStream<Item> {
   /**
    * Create a chat completion stream based on the http response.
    * @param response - Http response.
@@ -26,13 +26,13 @@ export class OrchestrationChatCompletionStream<Item> extends SseStream<Item> {
   public static _create(
     response: HttpResponse,
     controller: AbortController
-  ): OrchestrationChatCompletionStream<CompletionPostResponseStreaming> {
+  ): OrchestrationStream<CompletionPostResponseStreaming> {
     const stream =
       SseStream.transformToSseStream<CompletionPostResponseStreaming>(
         response,
         controller
       );
-    return new OrchestrationChatCompletionStream(stream.iterator, controller);
+    return new OrchestrationStream(stream.iterator, controller);
   }
 
   /**
@@ -41,10 +41,10 @@ export class OrchestrationChatCompletionStream<Item> extends SseStream<Item> {
    * @internal
    */
   static async *_processChunk(
-    stream: OrchestrationChatCompletionStream<CompletionPostResponseStreaming>
-  ): AsyncGenerator<OrchestrationChatCompletionStreamChunkResponse> {
+    stream: OrchestrationStream<CompletionPostResponseStreaming>
+  ): AsyncGenerator<OrchestrationStreamChunkResponse> {
     for await (const chunk of stream) {
-      yield new OrchestrationChatCompletionStreamChunkResponse(chunk);
+      yield new OrchestrationStreamChunkResponse(chunk);
     }
   }
 
@@ -52,9 +52,9 @@ export class OrchestrationChatCompletionStream<Item> extends SseStream<Item> {
    * @internal
    */
   static async *_processFinishReason(
-    stream: OrchestrationChatCompletionStream<OrchestrationChatCompletionStreamChunkResponse>,
-    response?: OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
-  ): AsyncGenerator<OrchestrationChatCompletionStreamChunkResponse> {
+    stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
+    response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
+  ): AsyncGenerator<OrchestrationStreamChunkResponse> {
     for await (const chunk of stream) {
       chunk.data.orchestration_result?.choices.forEach(
         (choice: LLMChoiceStreaming) => {
@@ -96,9 +96,9 @@ export class OrchestrationChatCompletionStream<Item> extends SseStream<Item> {
    * @internal
    */
   static async *_processTokenUsage(
-    stream: OrchestrationChatCompletionStream<OrchestrationChatCompletionStreamChunkResponse>,
-    response?: OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
-  ): AsyncGenerator<OrchestrationChatCompletionStreamChunkResponse> {
+    stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
+    response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
+  ): AsyncGenerator<OrchestrationStreamChunkResponse> {
     for await (const chunk of stream) {
       const usage = chunk.getTokenUsage();
       if (usage) {
@@ -118,7 +118,7 @@ export class OrchestrationChatCompletionStream<Item> extends SseStream<Item> {
    * @internal
    */
   static async *_processContentStream(
-    stream: OrchestrationChatCompletionStream<OrchestrationChatCompletionStreamChunkResponse>,
+    stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
     choiceIndex = 0
   ): AsyncGenerator<string> {
     for await (const chunk of stream) {
@@ -140,36 +140,36 @@ export class OrchestrationChatCompletionStream<Item> extends SseStream<Item> {
   /**
    * Pipe the stream through a processing function.
    * @param processFn - The function to process the input stream.
-   * @param response - The `OrchestrationChatCompletionStreamResponse` object for process function to store finish reason, token usage, etc.
+   * @param response - The `OrchestrationStreamResponse` object for process function to store finish reason, token usage, etc.
    * @returns The output stream containing processed items.
    * @internal
    */
   _pipe<TReturn>(
     processFn: (
-      stream: OrchestrationChatCompletionStream<Item>,
-      response?: OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
+      stream: OrchestrationStream<Item>,
+      response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
     ) => AsyncIterator<TReturn>,
-    response?: OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
-  ): OrchestrationChatCompletionStream<TReturn> {
+    response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
+  ): OrchestrationStream<TReturn> {
     if (response) {
-      return new OrchestrationChatCompletionStream(
+      return new OrchestrationStream(
         () => processFn(this, response),
         this.controller
       );
     }
-    return new OrchestrationChatCompletionStream(
+    return new OrchestrationStream(
       () => processFn(this),
       this.controller
     );
   }
 
   public toContentStream(
-    this: OrchestrationChatCompletionStream<OrchestrationChatCompletionStreamChunkResponse>,
+    this: OrchestrationStream<OrchestrationStreamChunkResponse>,
     choiceIndex?: number
-  ): OrchestrationChatCompletionStream<string> {
-    return new OrchestrationChatCompletionStream(
+  ): OrchestrationStream<string> {
+    return new OrchestrationStream(
       () =>
-        OrchestrationChatCompletionStream._processContentStream(
+        OrchestrationStream._processContentStream(
           this,
           choiceIndex
         ),

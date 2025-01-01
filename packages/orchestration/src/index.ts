@@ -40,11 +40,11 @@ export type {
   Prompt
 } from './orchestration-types.js';
 
-export { OrchestrationChatCompletionStreamResponse } from './orchestration-chat-completion-stream-response.js';
+export { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 
-export { OrchestrationChatCompletionStreamChunkResponse } from './orchestration-chat-completion-stream-chunk-response.js';
+export { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 
-export { OrchestrationChatCompletionStream } from './orchestration-chat-completion-stream.js';
+export { OrchestrationStream } from './orchestration-stream.js';
 
 export { OrchestrationClient } from './orchestration-client.js';
 

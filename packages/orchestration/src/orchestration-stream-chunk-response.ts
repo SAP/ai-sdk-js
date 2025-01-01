@@ -1,13 +1,13 @@
 import type {
   CompletionPostResponseStreaming,
-  LLMChoiceStreaming
+  LLMChoiceStreaming,
+  TokenUsage
 } from './client/api/schema/index.js';
-import type { TokenUsage } from './index.js';
 
 /**
  * Orchestration chat completion stream chunk response.
  */
-export class OrchestrationChatCompletionStreamChunkResponse {
+export class OrchestrationStreamChunkResponse {
   constructor(public readonly data: CompletionPostResponseStreaming) {
     this.data = data;
   }

@@ -6,8 +6,8 @@ import {
 import { createLogger } from '@sap-cloud-sdk/util';
 import type {
   LlmModuleConfig,
-  OrchestrationChatCompletionStreamChunkResponse,
-  OrchestrationChatCompletionStreamResponse,
+  OrchestrationStreamChunkResponse,
+  OrchestrationStreamResponse,
   OrchestrationResponse
 } from '@sap-ai-sdk/orchestration';
 
@@ -50,7 +50,7 @@ export async function orchestrationChatCompletion(): Promise<OrchestrationRespon
 export async function chatCompletionStream(
   controller: AbortController
 ): Promise<
-  OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
+  OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
 > {
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used

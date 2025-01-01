@@ -2,12 +2,12 @@ import { createLogger } from '@sap-cloud-sdk/util';
 import { jest } from '@jest/globals';
 import { LineDecoder, SSEDecoder } from '@sap-ai-sdk/core';
 import { parseFileToString } from '../../../test-util/mock-http.js';
-import { OrchestrationChatCompletionStream } from './orchestration-chat-completion-stream.js';
+import { OrchestrationStream } from './orchestration-stream.js';
 import type { CompletionPostResponseStreaming } from './client/api/schema/index.js';
 
 describe('Orchestration chat completion stream', () => {
   let sseChunks: string[];
-  let originalChatCompletionStream: OrchestrationChatCompletionStream<CompletionPostResponseStreaming>;
+  let originalChatCompletionStream: OrchestrationStream<CompletionPostResponseStreaming>;
 
   beforeEach(async () => {
     const rawChunksString = await parseFileToString(
@@ -31,7 +31,7 @@ describe('Orchestration chat completion stream', () => {
         yield sseChunk;
       }
     }
-    originalChatCompletionStream = new OrchestrationChatCompletionStream(
+    originalChatCompletionStream = new OrchestrationStream(
       iterator,
       new AbortController()
     );
@@ -39,7 +39,7 @@ describe('Orchestration chat completion stream', () => {
 
   it('should wrap the raw chunk', async () => {
     let output = '';
-    const asnycGenerator = OrchestrationChatCompletionStream._processChunk(
+    const asnycGenerator = OrchestrationStream._processChunk(
       originalChatCompletionStream
     );
     for await (const chunk of asnycGenerator) {
@@ -55,12 +55,12 @@ describe('Orchestration chat completion stream', () => {
       messageContext: 'orchestration-chat-completion-stream'
     });
     const debugSpy = jest.spyOn(logger, 'debug');
-    const asyncGeneratorChunk = OrchestrationChatCompletionStream._processChunk(
+    const asyncGeneratorChunk = OrchestrationStream._processChunk(
       originalChatCompletionStream
     );
     const asyncGeneratorFinishReason =
-      OrchestrationChatCompletionStream._processFinishReason(
-        new OrchestrationChatCompletionStream(
+      OrchestrationStream._processFinishReason(
+        new OrchestrationStream(
           () => asyncGeneratorChunk,
           new AbortController()
         )
@@ -78,12 +78,12 @@ describe('Orchestration chat completion stream', () => {
       messageContext: 'orchestration-chat-completion-stream'
     });
     const debugSpy = jest.spyOn(logger, 'debug');
-    const asyncGeneratorChunk = OrchestrationChatCompletionStream._processChunk(
+    const asyncGeneratorChunk = OrchestrationStream._processChunk(
       originalChatCompletionStream
     );
     const asyncGeneratorTokenUsage =
-      OrchestrationChatCompletionStream._processTokenUsage(
-        new OrchestrationChatCompletionStream(
+      OrchestrationStream._processTokenUsage(
+        new OrchestrationStream(
           () => asyncGeneratorChunk,
           new AbortController()
         )
@@ -98,10 +98,10 @@ describe('Orchestration chat completion stream', () => {
   });
 
   it('should transform the original stream to string stream', async () => {
-    const asyncGeneratorChunk = OrchestrationChatCompletionStream._processChunk(
+    const asyncGeneratorChunk = OrchestrationStream._processChunk(
       originalChatCompletionStream
     );
-    const chunkStream = new OrchestrationChatCompletionStream(
+    const chunkStream = new OrchestrationStream(
       () => asyncGeneratorChunk,
       new AbortController()
     );

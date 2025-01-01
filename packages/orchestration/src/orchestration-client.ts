@@ -1,8 +1,8 @@
 import { executeRequest } from '@sap-ai-sdk/core';
 import { resolveDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
 import { OrchestrationResponse } from './orchestration-response.js';
-import { OrchestrationChatCompletionStream } from './orchestration-chat-completion-stream.js';
-import { OrchestrationChatCompletionStreamResponse } from './orchestration-chat-completion-stream-response.js';
+import { OrchestrationStream } from './orchestration-stream.js';
+import { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 import type {
   HttpResponse,
   CustomRequestConfig
@@ -14,7 +14,7 @@ import type {
   OrchestrationModuleConfig,
   Prompt
 } from './orchestration-types.js';
-import type { OrchestrationChatCompletionStreamChunkResponse } from './orchestration-chat-completion-stream-chunk-response.js';
+import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 interface RequestOptions {
@@ -56,7 +56,7 @@ export class OrchestrationClient {
     destination?: HttpDestinationOrFetchOptions,
     requestConfig?: CustomRequestConfig
   ): Promise<
-    OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
+    OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   > {
     return OrchestrationClient.createStreamResponse(
       {
@@ -107,10 +107,10 @@ export class OrchestrationClient {
     options: RequestOptions,
     controller: AbortController
   ): Promise<
-    OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
+    OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   > {
     const response =
-      new OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>();
+      new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
 
     const streamResponse = await OrchestrationClient.executeRequest({
       ...options,
@@ -121,14 +121,14 @@ export class OrchestrationClient {
       }
     });
 
-    const stream = await OrchestrationChatCompletionStream._create(
+    const stream = OrchestrationStream._create(
       streamResponse,
       controller
     );
     response.stream = stream
-      ._pipe(OrchestrationChatCompletionStream._processChunk)
-      ._pipe(OrchestrationChatCompletionStream._processFinishReason, response)
-      ._pipe(OrchestrationChatCompletionStream._processTokenUsage, response);
+      ._pipe(OrchestrationStream._processChunk)
+      ._pipe(OrchestrationStream._processFinishReason, response)
+      ._pipe(OrchestrationStream._processTokenUsage, response);
 
     return response;
   }
@@ -158,7 +158,7 @@ export class OrchestrationClient {
     controller = new AbortController(),
     requestConfig?: CustomRequestConfig
   ): Promise<
-    OrchestrationChatCompletionStreamResponse<OrchestrationChatCompletionStreamChunkResponse>
+    OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   > {
     return OrchestrationClient.createStreamResponse(
       {
