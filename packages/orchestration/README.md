@@ -100,7 +100,7 @@ const orchestrationClient = new OrchestrationClient({
   },
   templating: {
     template: [
-      { role: 'user', content: 'What is the capital of {{?country}}?' }
+      { role: 'user', content: 'Give a long history of {{?country}}?' }
     ]
   }
 });
@@ -147,7 +147,7 @@ const orchestrationClient = new OrchestrationClient({
   },
   templating: {
     template: [
-      { role: 'user', content: 'What is the capital of {{?country}}?' }
+      { role: 'user', content: 'Give a long history of {{?country}}?' }
     ]
   }
 });
