@@ -7,21 +7,16 @@ info:
     name: SAP AI Core
 tags:
   - name: pipelines
-    description: Tag for pipeline component
-  - name: collections
-    description: Tag for vector collections component
-  - name: documents
-    description: Tag for vector documents component
-  - name: search
-    description: Tag for vector search
-  - name: 'Retrieval: DataRepository'
-    description: 'Retrieval: DataRepository'
-  - name: 'Retrieval: Federated Search across Data Repositories'
-    description: 'Retrieval: Federated Search across Data Repositories'
+    description: Tag for pipelines component
+  - name: vector
+    description: Tag for vector component
+  - name: retrieval
+    description: Tag for retrieval component
 paths:
-  '/lm/document-grounding/pipelines':
+  '/lm/document-groundingpipelines':
     post:
       operationId: pipeline.v1.pipeline_endpoints.create_pipeline
+      x-sap-cloud-sdk-operation-name: createPipeline
       description: 'Create a pipeline'
       tags:
         - pipelines
@@ -56,7 +51,8 @@ paths:
         - $ref: '#/components/parameters/top'
         - $ref: '#/components/parameters/skip'
         - $ref: '#/components/parameters/count'
-      operationId: pipeline.v1.pipeline_endpoints.get_all_pipeline
+      operationId: pipeline.v1.pipeline_endpoints.get_all_pipelines
+      x-sap-cloud-sdk-operation-name: getAllPipelines
       description: 'Get all pipelines'
       tags:
         - pipelines
@@ -69,9 +65,10 @@ paths:
                 $ref: '#/components/schemas/Pipelines'
         '400':
           $ref: '#/components/responses/BadRequest'
-  '/lm/document-grounding/pipelines/{pipelineId}':
+  '/lm/document-groundingpipelines/{pipelineId}':
     get:
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_by_id
+      x-sap-cloud-sdk-operation-name: getPipelineById
       description: 'Get details of a pipeline by pipeline id'
       tags:
         - pipelines
@@ -98,6 +95,7 @@ paths:
           $ref: '#/components/responses/BadRequest'
     delete:
       operationId: pipeline.v1.pipeline_endpoints.delete_pipeline_by_id
+      x-sap-cloud-sdk-operation-name: deletePipelineById
       description: 'Delete a pipeline by pipeline id'
       tags:
         - pipelines
@@ -118,9 +116,10 @@ paths:
           description: No Content
         '400':
           $ref: '#/components/responses/BadRequest'
-  '/lm/document-grounding/pipelines/{pipelineId}/status':
+  '/lm/document-groundingpipelines/{pipelineId}/status':
     get:
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_status
+      x-sap-cloud-sdk-operation-name: getPipelineStatus
       description: 'Get pipeline status by pipeline id'
       tags:
         - pipelines
@@ -145,7 +144,7 @@ paths:
                 $ref: '#/components/schemas/PipelineStatus'
         '400':
           $ref: '#/components/responses/BadRequest'
-  '/lm/document-grounding/vector/collections':
+  '/lm/document-groundingvector/collections':
     get:
       parameters:
         - in: header
@@ -157,10 +156,11 @@ paths:
         - $ref: '#/components/parameters/skip'
         - $ref: '#/components/parameters/count'
       tags:
-        - collections
+        - vector
       summary: Get collections
       description: Gets a list of collections.
       operationId: vector.v1.vector_endpoints.get_all_collections
+      x-sap-cloud-sdk-operation-name: getAllCollections
       responses:
         '200':
           description: Successful Response
@@ -178,10 +178,11 @@ paths:
           schema:
             type: string
       tags:
-        - collections
+        - vector
       summary: Create collection
       description: Creates a collection. This operation is asynchronous. Poll the collection resource and check the status field to understand creation status.
       operationId: vector.v1.vector_endpoints.create_collection
+      x-sap-cloud-sdk-operation-name: createCollection
       requestBody:
         content:
           application/json:
@@ -200,13 +201,14 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/lm/document-grounding/vector/collections/{collectionId}':
+  '/lm/document-groundingvector/collections/{collectionId}':
     get:
       tags:
-        - collections
+        - vector
       summary: Get collection by ID
       description: Gets a specific collection by ID.
       operationId: vector.v1.vector_endpoints.get_collection_by_id
+      x-sap-cloud-sdk-operation-name: getCollectionById
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -235,10 +237,11 @@ paths:
           $ref: '#/components/responses/UnprocessableEntity'
     delete:
       tags:
-        - collections
+        - vector
       summary: Delete collection by ID
       description: Deletes a specific collection by ID. This operation is asynchronous. Poll the collection for a 404 status code.
-      operationId: vector.v1.vector_endpoints.delete_collection
+      operationId: vector.v1.vector_endpoints.delete_collection_by_id
+      x-sap-cloud-sdk-operation-name: deleteCollectionById
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -265,13 +268,14 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/lm/document-grounding/vector/collections/{collectionId}/documents/{documentId}':
+  '/lm/document-groundingvector/collections/{collectionId}/documents/{documentId}':
     get:
       tags:
-        - documents
+        - vector
       summary: Get document by ID
       description: Gets a specific document in a collection by ID.
       operationId: vector.v1.vector_endpoints.get_document_by_id
+      x-sap-cloud-sdk-operation-name: getDocumentById
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -307,10 +311,11 @@ paths:
           $ref: '#/components/responses/UnprocessableEntity'
     delete:
       tags:
-        - documents
+        - vector
       summary: Delete a document
       description: Deletes a specific document of a collection.
-      operationId: vector.v1.vector_endpoints.delete_document
+      operationId: vector.v1.vector_endpoints.delete_document_by_id
+      x-sap-cloud-sdk-operation-name: deleteDocumentById
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -340,13 +345,14 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/lm/document-grounding/vector/collections/{collectionId}/documents':
+  '/lm/document-groundingvector/collections/{collectionId}/documents':
     get:
       tags:
-        - documents
+        - vector
       summary: Get documents
       description: Gets a list of documents of a collection.
       operationId: vector.v1.vector_endpoints.get_all_documents
+      x-sap-cloud-sdk-operation-name: getAllDocuments
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -378,10 +384,11 @@ paths:
           $ref: '#/components/responses/UnprocessableEntity'
     post:
       tags:
-        - documents
+        - vector
       summary: Create documents in collection
       description: Create and stores one or multiple documents into a collection. If omitted, 'id' will be auto-generated.
       operationId: vector.v1.vector_endpoints.create_documents
+      x-sap-cloud-sdk-operation-name: createDocuments
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -416,10 +423,11 @@ paths:
           $ref: '#/components/responses/UnprocessableEntity'
     patch:
       tags:
-        - documents
+        - vector
       summary: Upsert documents in collection
       description: Upserts the data of multiple documents into a collection.
       operationId: vector.v1.vector_endpoints.update_documents
+      x-sap-cloud-sdk-operation-name: updateDocuments
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -452,7 +460,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/lm/document-grounding/vector/search':
+  '/lm/document-groundingvector/search':
     post:
       parameters:
         - in: header
@@ -461,10 +469,11 @@ paths:
           schema:
             type: string
       tags:
-        - search
+        - vector
       summary: Search chunk by vector
       description: 'Search chunk by vector'
-      operationId: vector.v1.vector_endpoints.search_chunk
+      operationId: vector.v1.vector_endpoints.search
+      x-sap-cloud-sdk-operation-name: search
       requestBody:
         content:
           application/json:
@@ -484,13 +493,14 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/lm/document-grounding/vector/collections/{id}/creationStatus':
+  '/lm/document-groundingvector/collections/{id}/creationStatus':
     get:
       tags:
-        - collections
+        - vector
       summary: Get collection status by ID
       description: Gets a specific collection status from monitor by ID.
       operationId: vector.v1.vector_endpoints.get_collection_creation_status
+      x-sap-cloud-sdk-operation-name: getCollectionCreationStatus
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -519,13 +529,14 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/lm/document-grounding/vector/collections/{id}/deletionStatus':
+  '/lm/document-groundingvector/collections/{id}/deletionStatus':
     get:
       tags:
-        - collections
+        - vector
       summary: Get collection status by ID
       description: Gets a specific collection status from monitor by ID.
       operationId: vector.v1.vector_endpoints.get_collection_deletion_status
+      x-sap-cloud-sdk-operation-name: getCollectionDeletionStatus
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -554,7 +565,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/lm/document-grounding/retrieval/dataRepositories':
+  '/lm/document-groundingretrieval/dataRepositories':
     get:
       parameters:
         - in: header
@@ -566,10 +577,11 @@ paths:
         - $ref: '#/components/parameters/skip'
         - $ref: '#/components/parameters/count'
       tags:
-        - 'Retrieval: DataRepository'
+        - retrieval
       summary: List all DataRepository objects.
       description: List all DataRepository objects.
       operationId: retrieval.v1.retrieval_endpoints.get_data_repositories
+      x-sap-cloud-sdk-operation-name: getDataRepositories
       responses:
         '200':
           description: Successful Response
@@ -579,13 +591,14 @@ paths:
                 $ref: '#/components/schemas/DataRepositories'
         '400':
           $ref: '#/components/responses/BadRequest'
-  '/lm/document-grounding/retrieval/dataRepositories/{repositoryId}':
+  '/lm/document-groundingretrieval/dataRepositories/{repositoryId}':
     get:
       tags:
-        - 'Retrieval: DataRepository'
+        - retrieval
       summary: List single DataRepository object.
       description: List single DataRepository object.
-      operationId: retrieval.v1.retrieval_endpoints.get_data_repository
+      operationId: retrieval.v1.retrieval_endpoints.get_data_repository_by_id
+      x-sap-cloud-sdk-operation-name: getDataRepositoryById
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -612,7 +625,7 @@ paths:
           $ref: '#/components/responses/UnprocessableEntity'
         '404':
           $ref: '#/components/responses/NotFound'
-  '/lm/document-grounding/retrieval/search':
+  '/lm/document-groundingretrieval/search':
     post:
       parameters:
         - in: header
@@ -621,10 +634,11 @@ paths:
           schema:
             type: string
       tags:
-        - 'Retrieval: Federated Search across Data Repositories'
+        - retrieval
       summary: Retrieve relevant content given a query string.
       description: Retrieve relevant content given a query string.
-      operationId: retrieval.v1.retrieval_endpoints.search_data_repositories
+      operationId: retrieval.v1.retrieval_endpoints.search
+      x-sap-cloud-sdk-operation-name: search
       requestBody:
         content:
           application/json:

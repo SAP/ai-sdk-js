@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -22,13 +22,13 @@ export const PipelinesApi = {
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  pipelineV1PipelineEndpointsGetAllPipeline: (
+  getAllPipelines: (
     queryParameters: { $top?: number; $skip?: number; $count?: boolean },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
     new OpenApiRequestBuilder<Pipelines>(
       'get',
-      '/lm/document-grounding/pipelines',
+      '/lm/document-groundingpipelines',
       {
         queryParameters,
         headerParameters
@@ -40,13 +40,13 @@ export const PipelinesApi = {
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  pipelineV1PipelineEndpointsCreatePipeline: (
+  createPipeline: (
     body: PipelinePostRequst,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
     new OpenApiRequestBuilder<PipelineId>(
       'post',
-      '/lm/document-grounding/pipelines',
+      '/lm/document-groundingpipelines',
       {
         body,
         headerParameters
@@ -58,13 +58,13 @@ export const PipelinesApi = {
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  pipelineV1PipelineEndpointsGetPipelineById: (
+  getPipelineById: (
     pipelineId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
     new OpenApiRequestBuilder<Pipeline>(
       'get',
-      '/lm/document-grounding/pipelines/{pipelineId}',
+      '/lm/document-groundingpipelines/{pipelineId}',
       {
         pathParameters: { pipelineId },
         headerParameters
@@ -76,13 +76,13 @@ export const PipelinesApi = {
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  pipelineV1PipelineEndpointsDeletePipelineById: (
+  deletePipelineById: (
     pipelineId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
     new OpenApiRequestBuilder<any>(
       'delete',
-      '/lm/document-grounding/pipelines/{pipelineId}',
+      '/lm/document-groundingpipelines/{pipelineId}',
       {
         pathParameters: { pipelineId },
         headerParameters
@@ -94,13 +94,13 @@ export const PipelinesApi = {
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  pipelineV1PipelineEndpointsGetPipelineStatus: (
+  getPipelineStatus: (
     pipelineId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
     new OpenApiRequestBuilder<PipelineStatus>(
       'get',
-      '/lm/document-grounding/pipelines/{pipelineId}/status',
+      '/lm/document-groundingpipelines/{pipelineId}/status',
       {
         pathParameters: { pipelineId },
         headerParameters
