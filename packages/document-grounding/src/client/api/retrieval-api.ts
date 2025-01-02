@@ -27,7 +27,7 @@ export const RetrievalApi = {
   ) =>
     new OpenApiRequestBuilder<DataRepositories>(
       'get',
-      '/lm/document-groundingretrieval/dataRepositories',
+      '/lm/document-grounding/retrieval/dataRepositories',
       {
         queryParameters,
         headerParameters
@@ -45,7 +45,7 @@ export const RetrievalApi = {
   ) =>
     new OpenApiRequestBuilder<DataRepository>(
       'get',
-      '/lm/document-groundingretrieval/dataRepositories/{repositoryId}',
+      '/lm/document-grounding/retrieval/dataRepositories/{repositoryId}',
       {
         pathParameters: { repositoryId },
         headerParameters
@@ -63,7 +63,7 @@ export const RetrievalApi = {
   ) =>
     new OpenApiRequestBuilder<RetievalSearchResults>(
       'post',
-      '/lm/document-groundingretrieval/search',
+      '/lm/document-grounding/retrieval/search',
       {
         body,
         headerParameters

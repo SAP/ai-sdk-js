@@ -28,7 +28,7 @@ export const PipelinesApi = {
   ) =>
     new OpenApiRequestBuilder<Pipelines>(
       'get',
-      '/lm/document-groundingpipelines',
+      '/lm/document-grounding/pipelines',
       {
         queryParameters,
         headerParameters
@@ -46,7 +46,7 @@ export const PipelinesApi = {
   ) =>
     new OpenApiRequestBuilder<PipelineId>(
       'post',
-      '/lm/document-groundingpipelines',
+      '/lm/document-grounding/pipelines',
       {
         body,
         headerParameters
@@ -64,7 +64,7 @@ export const PipelinesApi = {
   ) =>
     new OpenApiRequestBuilder<Pipeline>(
       'get',
-      '/lm/document-groundingpipelines/{pipelineId}',
+      '/lm/document-grounding/pipelines/{pipelineId}',
       {
         pathParameters: { pipelineId },
         headerParameters
@@ -82,7 +82,7 @@ export const PipelinesApi = {
   ) =>
     new OpenApiRequestBuilder<any>(
       'delete',
-      '/lm/document-groundingpipelines/{pipelineId}',
+      '/lm/document-grounding/pipelines/{pipelineId}',
       {
         pathParameters: { pipelineId },
         headerParameters
@@ -100,7 +100,7 @@ export const PipelinesApi = {
   ) =>
     new OpenApiRequestBuilder<PipelineStatus>(
       'get',
-      '/lm/document-groundingpipelines/{pipelineId}/status',
+      '/lm/document-grounding/pipelines/{pipelineId}/status',
       {
         pathParameters: { pipelineId },
         headerParameters

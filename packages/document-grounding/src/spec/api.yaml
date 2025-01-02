@@ -13,7 +13,7 @@ tags:
   - name: retrieval
     description: Tag for retrieval component
 paths:
-  '/lm/document-groundingpipelines':
+  '/lm/document-grounding/pipelines':
     post:
       operationId: pipeline.v1.pipeline_endpoints.create_pipeline
       x-sap-cloud-sdk-operation-name: createPipeline
@@ -65,7 +65,7 @@ paths:
                 $ref: '#/components/schemas/Pipelines'
         '400':
           $ref: '#/components/responses/BadRequest'
-  '/lm/document-groundingpipelines/{pipelineId}':
+  '/lm/document-grounding/pipelines/{pipelineId}':
     get:
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_by_id
       x-sap-cloud-sdk-operation-name: getPipelineById
@@ -116,7 +116,7 @@ paths:
           description: No Content
         '400':
           $ref: '#/components/responses/BadRequest'
-  '/lm/document-groundingpipelines/{pipelineId}/status':
+  '/lm/document-grounding/pipelines/{pipelineId}/status':
     get:
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_status
       x-sap-cloud-sdk-operation-name: getPipelineStatus
@@ -144,7 +144,7 @@ paths:
                 $ref: '#/components/schemas/PipelineStatus'
         '400':
           $ref: '#/components/responses/BadRequest'
-  '/lm/document-groundingvector/collections':
+  '/lm/document-grounding/vector/collections':
     get:
       parameters:
         - in: header
@@ -201,7 +201,7 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/lm/document-groundingvector/collections/{collectionId}':
+  '/lm/document-grounding/vector/collections/{collectionId}':
     get:
       tags:
         - vector
@@ -268,7 +268,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/lm/document-groundingvector/collections/{collectionId}/documents/{documentId}':
+  '/lm/document-grounding/vector/collections/{collectionId}/documents/{documentId}':
     get:
       tags:
         - vector
@@ -345,7 +345,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/lm/document-groundingvector/collections/{collectionId}/documents':
+  '/lm/document-grounding/vector/collections/{collectionId}/documents':
     get:
       tags:
         - vector
@@ -460,7 +460,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/lm/document-groundingvector/search':
+  '/lm/document-grounding/vector/search':
     post:
       parameters:
         - in: header
@@ -493,7 +493,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/lm/document-groundingvector/collections/{id}/creationStatus':
+  '/lm/document-grounding/vector/collections/{id}/creationStatus':
     get:
       tags:
         - vector
@@ -529,7 +529,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/lm/document-groundingvector/collections/{id}/deletionStatus':
+  '/lm/document-grounding/vector/collections/{id}/deletionStatus':
     get:
       tags:
         - vector
@@ -565,7 +565,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/lm/document-groundingretrieval/dataRepositories':
+  '/lm/document-grounding/retrieval/dataRepositories':
     get:
       parameters:
         - in: header
@@ -591,7 +591,7 @@ paths:
                 $ref: '#/components/schemas/DataRepositories'
         '400':
           $ref: '#/components/responses/BadRequest'
-  '/lm/document-groundingretrieval/dataRepositories/{repositoryId}':
+  '/lm/document-grounding/retrieval/dataRepositories/{repositoryId}':
     get:
       tags:
         - retrieval
@@ -625,7 +625,7 @@ paths:
           $ref: '#/components/responses/UnprocessableEntity'
         '404':
           $ref: '#/components/responses/NotFound'
-  '/lm/document-groundingretrieval/search':
+  '/lm/document-grounding/retrieval/search':
     post:
       parameters:
         - in: header
