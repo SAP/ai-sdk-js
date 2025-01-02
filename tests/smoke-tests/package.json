@@ -18,8 +18,8 @@
     "node": "^20"
   },
   "dependencies": {
-    "langchain": "0.3.7",
-    "@langchain/core": "0.3.25",
+    "langchain": "0.3.8",
+    "@langchain/core": "0.3.27",
     "@langchain/textsplitters": "0.1.0",
     "@sap-ai-sdk/ai-api": "canary",
     "@sap-ai-sdk/foundation-models": "canary",
@@ -32,6 +32,6 @@
   "devDependencies": {
     "@types/express": "^5.0.0",
     "dotenv": "^16.4.7",
-    "dotenv-cli": "^7.4.4"
+    "dotenv-cli": "^8.0.0"
   }
 }

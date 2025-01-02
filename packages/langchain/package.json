@@ -30,7 +30,7 @@
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-cloud-sdk/connectivity": "^3.25.0",
-    "@langchain/core": "0.3.25",
+    "@langchain/core": "0.3.27",
     "zod-to-json-schema": "^3.24.1"
   }
 }
