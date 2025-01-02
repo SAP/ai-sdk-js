@@ -1,7 +1,4 @@
-import {
-  VectorApi,
-  RetrievalApi
-} from '@sap-ai-sdk/document-grounding';
+import { VectorApi, RetrievalApi } from '@sap-ai-sdk/document-grounding';
 import type {
   DocumentsListResponse,
   RetievalSearchResults
@@ -12,19 +9,18 @@ import type {
  * @returns Collection creation response.
  */
 export async function createCollection(): Promise<string> {
-  const createCollectionResponse =
-    await VectorApi.createCollection(
-      {
-        title: 'ai-sdk-js-e2e',
-        embeddingConfig: {
-          modelName: 'text-embedding-ada-002-v2'
-        },
-        metadata: []
+  const createCollectionResponse = await VectorApi.createCollection(
+    {
+      title: 'ai-sdk-js-e2e',
+      embeddingConfig: {
+        modelName: 'text-embedding-ada-002-v2'
       },
-      {
-        'AI-Resource-Group': 'default'
-      }
-    ).executeRaw();
+      metadata: []
+    },
+    {
+      'AI-Resource-Group': 'default'
+    }
+  ).executeRaw();
 
   return (createCollectionResponse.headers.location as string)
     .split('/')
