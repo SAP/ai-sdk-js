@@ -47,7 +47,7 @@ export { OrchestrationClient } from './orchestration-client.js';
 export {
   buildAzureContentFilter,
   buildDocumentGroundingConfig
-} from './orchestration-util.js';
+} from './orchestration-utils.js';
 
 export { OrchestrationResponse } from './orchestration-response.js';
 

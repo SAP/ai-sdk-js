@@ -2,7 +2,7 @@ import { constructCompletionPostRequest } from './orchestration-client.js';
 import {
   buildAzureContentFilter,
   buildDocumentGroundingConfig
-} from './orchestration-util.js';
+} from './orchestration-utils.js';
 import type {
   CompletionPostRequest,
   FilteringModuleConfig

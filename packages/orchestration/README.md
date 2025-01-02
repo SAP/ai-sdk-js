@@ -339,7 +339,7 @@ const orchestrationConfig: {
   grounding: buildDocumentGroundingConfig(
     input_params: ['groundingInput'],
     output_param: 'groundingOutput',
-    filters: [{id: 'filter-id', data_repositories: ['repository-id'],}]
+    filters: [{id: 'filter-id', data_repositories: ['repository-id'] }]
     )
 }
 ```

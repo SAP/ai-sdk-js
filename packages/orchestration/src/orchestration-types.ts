@@ -84,7 +84,7 @@ export type DocumentGroundingServiceFilter = Pick<
  */
 export interface DocumentGroundingServiceConfig {
   /**
-   * Define the filters to apply during the grounding process.
+   * Defines the filters to apply during the grounding process.
    */
   filters?: DocumentGroundingServiceFilter[];
   /**
