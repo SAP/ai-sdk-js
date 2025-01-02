@@ -1,7 +1,6 @@
 import {
-  CollectionsApi,
-  DocumentsApi,
-  RetrievalFederatedSearchAcrossDataRepositoriesApi
+  VectorApi,
+  RetrievalApi
 } from '@sap-ai-sdk/document-grounding';
 import type {
   DocumentsListResponse,
@@ -14,7 +13,7 @@ import type {
  */
 export async function createCollection(): Promise<string> {
   const createCollectionResponse =
-    await CollectionsApi.vectorV1VectorEndpointsCreateCollection(
+    await VectorApi.createCollection(
       {
         title: 'ai-sdk-js-e2e',
         embeddingConfig: {
@@ -38,7 +37,7 @@ export async function createCollection(): Promise<string> {
  * @returns Collection deletion response.
  */
 export async function deleteCollection(collectionId: string): Promise<any> {
-  return CollectionsApi.vectorV1VectorEndpointsDeleteCollection(collectionId, {
+  return VectorApi.deleteCollectionById(collectionId, {
     'AI-Resource-Group': 'default'
   }).execute();
 }
@@ -53,7 +52,7 @@ export async function createDocumentsWithTimestamp(
   collectionId: string,
   timestamp: number
 ): Promise<DocumentsListResponse> {
-  return DocumentsApi.vectorV1VectorEndpointsCreateDocuments(
+  return VectorApi.createDocuments(
     collectionId,
     {
       documents: [
@@ -79,7 +78,7 @@ export async function createDocumentsWithTimestamp(
  * @returns Search results.
  */
 export async function retrieveDocuments(): Promise<RetievalSearchResults> {
-  return RetrievalFederatedSearchAcrossDataRepositoriesApi.retrievalV1RetrievalEndpointsSearchDataRepositories(
+  return RetrievalApi.search(
     {
       query:
         'When was the last time SAP AI SDK JavaScript end to end test was executed?',
