@@ -3,7 +3,7 @@ import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
 } from '../../../../test-util/mock-http.js';
-import { RetrievalApi, type DataRepositories } from '../../internal.js';
+import { RetrievalApi, type DataRepositories } from '../client/api/index.js';
 
 describe('retrieval data repository', () => {
   beforeEach(() => {
