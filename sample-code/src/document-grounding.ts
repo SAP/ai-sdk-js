@@ -1,4 +1,4 @@
-import { RetrievalApi, VectorApi } from '@sap-ai-sdk/document-grounding';
+import { VectorApi, RetrievalApi } from '@sap-ai-sdk/document-grounding';
 import type {
   DocumentsListResponse,
   RetievalSearchResults
