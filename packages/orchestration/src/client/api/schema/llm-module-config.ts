@@ -23,7 +23,7 @@ export type LlmModuleConfig = {
    *   "n": 2
    * }
    */
-  model_params: Record<string, any>;
+  model_params?: Record<string, any>;
   /**
    * Version of the model to use
    * Default: "latest".
