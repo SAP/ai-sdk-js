@@ -24,6 +24,7 @@ import type {
  * This API is part of the 'api' service.
  */
 export const VectorApi = {
+  _defaultBasePath: '/lm/document-grounding',
   /**
    * Gets a list of collections.
    * @param queryParameters - Object containing the following keys: $top, $skip, $count.
@@ -36,11 +37,12 @@ export const VectorApi = {
   ) =>
     new OpenApiRequestBuilder<CollectionsListResponse>(
       'get',
-      '/lm/document-grounding/vector/collections',
+      '/vector/collections',
       {
         queryParameters,
         headerParameters
-      }
+      },
+      VectorApi._defaultBasePath
     ),
   /**
    * Creates a collection. This operation is asynchronous. Poll the collection resource and check the status field to understand creation status.
@@ -54,11 +56,12 @@ export const VectorApi = {
   ) =>
     new OpenApiRequestBuilder<any>(
       'post',
-      '/lm/document-grounding/vector/collections',
+      '/vector/collections',
       {
         body,
         headerParameters
-      }
+      },
+      VectorApi._defaultBasePath
     ),
   /**
    * Gets a specific collection by ID.
@@ -72,11 +75,12 @@ export const VectorApi = {
   ) =>
     new OpenApiRequestBuilder<Collection>(
       'get',
-      '/lm/document-grounding/vector/collections/{collectionId}',
+      '/vector/collections/{collectionId}',
       {
         pathParameters: { collectionId },
         headerParameters
-      }
+      },
+      VectorApi._defaultBasePath
     ),
   /**
    * Deletes a specific collection by ID. This operation is asynchronous. Poll the collection for a 404 status code.
@@ -90,11 +94,12 @@ export const VectorApi = {
   ) =>
     new OpenApiRequestBuilder<any>(
       'delete',
-      '/lm/document-grounding/vector/collections/{collectionId}',
+      '/vector/collections/{collectionId}',
       {
         pathParameters: { collectionId },
         headerParameters
-      }
+      },
+      VectorApi._defaultBasePath
     ),
   /**
    * Gets a specific document in a collection by ID.
@@ -110,11 +115,12 @@ export const VectorApi = {
   ) =>
     new OpenApiRequestBuilder<DocumentResponse>(
       'get',
-      '/lm/document-grounding/vector/collections/{collectionId}/documents/{documentId}',
+      '/vector/collections/{collectionId}/documents/{documentId}',
       {
         pathParameters: { collectionId, documentId },
         headerParameters
-      }
+      },
+      VectorApi._defaultBasePath
     ),
   /**
    * Deletes a specific document of a collection.
@@ -130,11 +136,12 @@ export const VectorApi = {
   ) =>
     new OpenApiRequestBuilder<any>(
       'delete',
-      '/lm/document-grounding/vector/collections/{collectionId}/documents/{documentId}',
+      '/vector/collections/{collectionId}/documents/{documentId}',
       {
         pathParameters: { collectionId, documentId },
         headerParameters
-      }
+      },
+      VectorApi._defaultBasePath
     ),
   /**
    * Gets a list of documents of a collection.
@@ -150,12 +157,13 @@ export const VectorApi = {
   ) =>
     new OpenApiRequestBuilder<Documents>(
       'get',
-      '/lm/document-grounding/vector/collections/{collectionId}/documents',
+      '/vector/collections/{collectionId}/documents',
       {
         pathParameters: { collectionId },
         queryParameters,
         headerParameters
-      }
+      },
+      VectorApi._defaultBasePath
     ),
   /**
    * Create and stores one or multiple documents into a collection. If omitted, 'id' will be auto-generated.
@@ -171,12 +179,13 @@ export const VectorApi = {
   ) =>
     new OpenApiRequestBuilder<DocumentsListResponse>(
       'post',
-      '/lm/document-grounding/vector/collections/{collectionId}/documents',
+      '/vector/collections/{collectionId}/documents',
       {
         pathParameters: { collectionId },
         body,
         headerParameters
-      }
+      },
+      VectorApi._defaultBasePath
     ),
   /**
    * Upserts the data of multiple documents into a collection.
@@ -192,12 +201,13 @@ export const VectorApi = {
   ) =>
     new OpenApiRequestBuilder<DocumentsListResponse>(
       'patch',
-      '/lm/document-grounding/vector/collections/{collectionId}/documents',
+      '/vector/collections/{collectionId}/documents',
       {
         pathParameters: { collectionId },
         body,
         headerParameters
-      }
+      },
+      VectorApi._defaultBasePath
     ),
   /**
    * Search chunk by vector
@@ -211,11 +221,12 @@ export const VectorApi = {
   ) =>
     new OpenApiRequestBuilder<SearchResults>(
       'post',
-      '/lm/document-grounding/vector/search',
+      '/vector/search',
       {
         body,
         headerParameters
-      }
+      },
+      VectorApi._defaultBasePath
     ),
   /**
    * Gets a specific collection status from monitor by ID.
@@ -229,10 +240,15 @@ export const VectorApi = {
   ) =>
     new OpenApiRequestBuilder<
       CollectionCreatedResponse | CollectionPendingResponse
-    >('get', '/lm/document-grounding/vector/collections/{id}/creationStatus', {
-      pathParameters: { id },
-      headerParameters
-    }),
+    >(
+      'get',
+      '/vector/collections/{id}/creationStatus',
+      {
+        pathParameters: { id },
+        headerParameters
+      },
+      VectorApi._defaultBasePath
+    ),
   /**
    * Gets a specific collection status from monitor by ID.
    * @param id - Path parameter.
@@ -245,8 +261,13 @@ export const VectorApi = {
   ) =>
     new OpenApiRequestBuilder<
       CollectionDeletedResponse | CollectionPendingResponse
-    >('get', '/lm/document-grounding/vector/collections/{id}/deletionStatus', {
-      pathParameters: { id },
-      headerParameters
-    })
+    >(
+      'get',
+      '/vector/collections/{id}/deletionStatus',
+      {
+        pathParameters: { id },
+        headerParameters
+      },
+      VectorApi._defaultBasePath
+    )
 };
