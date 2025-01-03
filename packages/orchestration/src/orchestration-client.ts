@@ -206,7 +206,9 @@ function addStreamOptions(
   moduleConfigs: ModuleConfigs,
   streamOptions?: StreamOptions
 ): OrchestrationConfig {
-  const { llm, outputFiltering, chunkSize } = streamOptions;
+  const llm = streamOptions?.llm ?? {};
+  const outputFiltering = streamOptions?.outputFiltering ?? {};
+  const chunkSize = streamOptions?.chunkSize;
 
   return {
     stream: true,
@@ -218,22 +220,21 @@ function addStreamOptions(
       llm_module_config: {
         ...moduleConfigs.llm_module_config,
         stream_options: {
-          include_usage: llm?.includeUsage ?? true,
+          include_usage: llm.includeUsage ?? true,
           ...llm
         }
       },
-      ...(outputFiltering &&
-        Object.keys(outputFiltering).length && {
-          filtering_module_config: {
-            ...moduleConfigs.filtering_module_config,
-            output: {
-              ...(moduleConfigs.filtering_module_config?.output || {}),
-              stream_options: outputFiltering
-            }
+      ...(Object.keys(outputFiltering).length && {
+        filtering_module_config: {
+          ...moduleConfigs.filtering_module_config,
+          output: {
+            ...(moduleConfigs.filtering_module_config?.output || {}),
+            stream_options: outputFiltering
           }
-        })
+        }
+      })
     }
-  } as OrchestrationConfig;
+  } as OrchestrationConfig; // TODO: Remove typecast when types are re-generated;
 }
 
 /**
