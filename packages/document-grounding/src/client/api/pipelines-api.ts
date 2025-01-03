@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -22,7 +22,7 @@ export const PipelinesApi = {
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  pipelineV1PipelineEndpointsGetAllPipeline: (
+  getAllPipelines: (
     queryParameters: { $top?: number; $skip?: number; $count?: boolean },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
@@ -40,7 +40,7 @@ export const PipelinesApi = {
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  pipelineV1PipelineEndpointsCreatePipeline: (
+  createPipeline: (
     body: PipelinePostRequst,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
@@ -58,7 +58,7 @@ export const PipelinesApi = {
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  pipelineV1PipelineEndpointsGetPipelineById: (
+  getPipelineById: (
     pipelineId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
@@ -76,7 +76,7 @@ export const PipelinesApi = {
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  pipelineV1PipelineEndpointsDeletePipelineById: (
+  deletePipelineById: (
     pipelineId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
@@ -94,7 +94,7 @@ export const PipelinesApi = {
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  pipelineV1PipelineEndpointsGetPipelineStatus: (
+  getPipelineStatus: (
     pipelineId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
