@@ -47,7 +47,7 @@ In addition to the examples below, you can find more **sample code** [here](http
 ```ts
 import
 const response =
-  await CollectionsApi.vectorV1VectorEndpointsCreateCollection(
+  await VectorApi.createCollection(
     {
       title: 'ai-sdk-js-e2e',
       embeddingConfig: {
@@ -67,7 +67,7 @@ const collectionId = (response.headers.location as string).split('/').at(-2);
 
 ```ts
 const response: DocumentsListResponse =
-  await DocumentsApi.vectorV1VectorEndpointsCreateDocuments(
+  await VectorApi.createDocuments(
     collectionId,
     {
       documents: [
@@ -95,7 +95,7 @@ When calling the `execute()` method, it is possible to provide a custom destinat
 For example, when querying deployments targeting a destination with the name `my-destination`, the following code can be used:
 
 ```ts
-const response = await CollectionsApi.vectorV1VectorEndpointsDeleteCollection(
+const response = await VectorApi.deleteCollectionById(
   collectionId,
   {
     'AI-Resource-Group': 'default'
