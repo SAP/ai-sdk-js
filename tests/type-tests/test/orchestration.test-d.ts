@@ -4,8 +4,11 @@ import {
   CompletionPostResponse,
   OrchestrationResponse,
   TokenUsage,
-  ChatModel
+  ChatModel,
+  LlmModuleConfig
 } from '@sap-ai-sdk/orchestration';
+import { modelParamOptions } from '@sap-ai-sdk/orchestration/src/orchestration-utils.js';
+import { LlmModelParams } from '@sap-ai-sdk/orchestration/internal.js';
 
 /**
  * Chat Completion.
@@ -238,3 +241,12 @@ expectType<Promise<OrchestrationResponse>>(
 
 expect<ChatModel>('custom-model');
 expect<ChatModel>('gemini-1.0-pro');
+
+/**
+ * Model Param util for LLM Module Config
+ */
+expectType<LlmModelParams>(
+  modelParamOptions({ max_tokens: 50, temperature: 0.5 })
+);
+
+expectType<LlmModelParams>(modelParamOptions({ custom_key: 'value' }));
