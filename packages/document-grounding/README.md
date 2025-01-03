@@ -66,27 +66,26 @@ const collectionId = (response.headers.location as string).split('/').at(-2);
 ### Create a Document
 
 ```ts
-const response: DocumentsListResponse =
-  await VectorApi.createDocuments(
-    collectionId,
-    {
-      documents: [
-        {
-          metadata: [],
-          chunks: [
-            {
-              content:
-                'SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service.',
-              metadata: []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      'AI-Resource-Group': 'default'
-    }
-  ).execute();
+const response: DocumentsListResponse = await VectorApi.createDocuments(
+  collectionId,
+  {
+    documents: [
+      {
+        metadata: [],
+        chunks: [
+          {
+            content:
+              'SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service.',
+            metadata: []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    'AI-Resource-Group': 'default'
+  }
+).execute();
 ```
 
 ### Custom Destination
@@ -95,12 +94,9 @@ When calling the `execute()` method, it is possible to provide a custom destinat
 For example, when querying deployments targeting a destination with the name `my-destination`, the following code can be used:
 
 ```ts
-const response = await VectorApi.deleteCollectionById(
-  collectionId,
-  {
-    'AI-Resource-Group': 'default'
-  }
-).execute({
+const response = await VectorApi.deleteCollectionById(collectionId, {
+  'AI-Resource-Group': 'default'
+}).execute({
   destinationName: 'my-destination'
 });
 ```
