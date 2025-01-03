@@ -15,6 +15,7 @@ import type {
  * This API is part of the 'api' service.
  */
 export const RetrievalApi = {
+  _defaultBasePath: '/lm/document-grounding',
   /**
    * List all DataRepository objects.
    * @param queryParameters - Object containing the following keys: $top, $skip, $count.
@@ -27,11 +28,12 @@ export const RetrievalApi = {
   ) =>
     new OpenApiRequestBuilder<DataRepositories>(
       'get',
-      '/lm/document-grounding/retrieval/dataRepositories',
+      '/retrieval/dataRepositories',
       {
         queryParameters,
         headerParameters
-      }
+      },
+      RetrievalApi._defaultBasePath
     ),
   /**
    * List single DataRepository object.
@@ -45,11 +47,12 @@ export const RetrievalApi = {
   ) =>
     new OpenApiRequestBuilder<DataRepository>(
       'get',
-      '/lm/document-grounding/retrieval/dataRepositories/{repositoryId}',
+      '/retrieval/dataRepositories/{repositoryId}',
       {
         pathParameters: { repositoryId },
         headerParameters
-      }
+      },
+      RetrievalApi._defaultBasePath
     ),
   /**
    * Retrieve relevant content given a query string.
@@ -63,10 +66,11 @@ export const RetrievalApi = {
   ) =>
     new OpenApiRequestBuilder<RetievalSearchResults>(
       'post',
-      '/lm/document-grounding/retrieval/search',
+      '/retrieval/search',
       {
         body,
         headerParameters
-      }
+      },
+      RetrievalApi._defaultBasePath
     )
 };

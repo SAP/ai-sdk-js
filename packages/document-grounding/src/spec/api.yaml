@@ -12,8 +12,10 @@ tags:
     description: Tag for vector component
   - name: retrieval
     description: Tag for retrieval component
+servers:
+  - url: '/v2/lm/document-grounding'
 paths:
-  '/lm/document-grounding/pipelines':
+  '/pipelines':
     post:
       operationId: pipeline.v1.pipeline_endpoints.create_pipeline
       x-sap-cloud-sdk-operation-name: createPipeline
@@ -65,7 +67,7 @@ paths:
                 $ref: '#/components/schemas/Pipelines'
         '400':
           $ref: '#/components/responses/BadRequest'
-  '/lm/document-grounding/pipelines/{pipelineId}':
+  '/pipelines/{pipelineId}':
     get:
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_by_id
       x-sap-cloud-sdk-operation-name: getPipelineById
@@ -116,7 +118,7 @@ paths:
           description: No Content
         '400':
           $ref: '#/components/responses/BadRequest'
-  '/lm/document-grounding/pipelines/{pipelineId}/status':
+  '/pipelines/{pipelineId}/status':
     get:
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_status
       x-sap-cloud-sdk-operation-name: getPipelineStatus
@@ -144,7 +146,7 @@ paths:
                 $ref: '#/components/schemas/PipelineStatus'
         '400':
           $ref: '#/components/responses/BadRequest'
-  '/lm/document-grounding/vector/collections':
+  '/vector/collections':
     get:
       parameters:
         - in: header
@@ -201,7 +203,7 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/lm/document-grounding/vector/collections/{collectionId}':
+  '/vector/collections/{collectionId}':
     get:
       tags:
         - vector
@@ -268,7 +270,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/lm/document-grounding/vector/collections/{collectionId}/documents/{documentId}':
+  '/vector/collections/{collectionId}/documents/{documentId}':
     get:
       tags:
         - vector
@@ -345,7 +347,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/lm/document-grounding/vector/collections/{collectionId}/documents':
+  '/vector/collections/{collectionId}/documents':
     get:
       tags:
         - vector
@@ -460,7 +462,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/lm/document-grounding/vector/search':
+  '/vector/search':
     post:
       parameters:
         - in: header
@@ -493,7 +495,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/lm/document-grounding/vector/collections/{id}/creationStatus':
+  '/vector/collections/{id}/creationStatus':
     get:
       tags:
         - vector
@@ -529,7 +531,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/lm/document-grounding/vector/collections/{id}/deletionStatus':
+  '/vector/collections/{id}/deletionStatus':
     get:
       tags:
         - vector
@@ -565,7 +567,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/lm/document-grounding/retrieval/dataRepositories':
+  '/retrieval/dataRepositories':
     get:
       parameters:
         - in: header
@@ -591,7 +593,7 @@ paths:
                 $ref: '#/components/schemas/DataRepositories'
         '400':
           $ref: '#/components/responses/BadRequest'
-  '/lm/document-grounding/retrieval/dataRepositories/{repositoryId}':
+  '/retrieval/dataRepositories/{repositoryId}':
     get:
       tags:
         - retrieval
@@ -625,7 +627,7 @@ paths:
           $ref: '#/components/responses/UnprocessableEntity'
         '404':
           $ref: '#/components/responses/NotFound'
-  '/lm/document-grounding/retrieval/search':
+  '/retrieval/search':
     post:
       parameters:
         - in: header
