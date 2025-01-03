@@ -237,8 +237,8 @@ importers:
         specifier: ^4.21.2
         version: 4.21.2
       langchain:
-        specifier: 0.3.8
-        version: 0.3.8(@langchain/core@0.3.27(openai@4.61.1(zod@3.24.1)))(axios@1.7.9)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.24.1))
+        specifier: 0.3.9
+        version: 0.3.9(@langchain/core@0.3.27(openai@4.61.1(zod@3.24.1)))(axios@1.7.9)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.24.1))
 
   tests/e2e-tests:
     dependencies:
@@ -304,8 +304,8 @@ importers:
         specifier: ^4.21.2
         version: 4.21.2
       langchain:
-        specifier: 0.3.8
-        version: 0.3.8(@langchain/core@0.3.27(openai@4.61.1(zod@3.24.1)))(axios@1.7.9)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.24.1))
+        specifier: 0.3.9
+        version: 0.3.9(@langchain/core@0.3.27(openai@4.61.1(zod@3.24.1)))(axios@1.7.9)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.24.1))
     devDependencies:
       '@types/express':
         specifier: ^5.0.0
@@ -3169,12 +3169,13 @@ packages:
   kuler@2.0.0:
     resolution: {integrity: sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==}
 
-  langchain@0.3.8:
-    resolution: {integrity: sha512-EiAHFgBdThuXFmIx9j81wjdPItpRsw0Ck4r5dyhB74gyhehRGna/UK2CTqeKVnIUM/f4g4JbxUgAU4voXljDMw==}
+  langchain@0.3.9:
+    resolution: {integrity: sha512-uteRutI03Bt9f53nZmx8mWfJXkf6VlFVRuOprRJ0mWdCpkTP359sxrH4v6w4TokLiziPC/aMay662kmOz0dHlA==}
     engines: {node: '>=18'}
     peerDependencies:
       '@langchain/anthropic': '*'
       '@langchain/aws': '*'
+      '@langchain/cerebras': '*'
       '@langchain/cohere': '*'
       '@langchain/core': '>=0.2.21 <0.4.0'
       '@langchain/google-genai': '*'
@@ -3191,6 +3192,8 @@ packages:
       '@langchain/anthropic':
         optional: true
       '@langchain/aws':
+        optional: true
+      '@langchain/cerebras':
         optional: true
       '@langchain/cohere':
         optional: true
@@ -5989,7 +5992,7 @@ snapshots:
 
   '@types/node-fetch@2.6.11':
     dependencies:
-      '@types/node': 20.17.10
+      '@types/node': 20.17.11
       form-data: 4.0.1
 
   '@types/node@12.20.55': {}
@@ -8454,7 +8457,7 @@ snapshots:
 
   kuler@2.0.0: {}
 
-  langchain@0.3.8(@langchain/core@0.3.27(openai@4.61.1(zod@3.24.1)))(axios@1.7.9)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.24.1)):
+  langchain@0.3.9(@langchain/core@0.3.27(openai@4.61.1(zod@3.24.1)))(axios@1.7.9)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.24.1)):
     dependencies:
       '@langchain/core': 0.3.27(openai@4.61.1(zod@3.24.1))
       '@langchain/openai': 0.3.2(@langchain/core@0.3.27(openai@4.61.1(zod@3.24.1)))
