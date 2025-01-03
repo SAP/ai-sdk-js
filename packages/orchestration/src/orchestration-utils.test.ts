@@ -1,9 +1,12 @@
 import { constructCompletionPostRequest } from './orchestration-client.js';
-import { buildAzureContentFilter } from './orchestration-filter-utility.js';
+import {
+  buildAzureContentFilter,
+  modelParamOptions
+} from './orchestration-utils.js';
 import type {
   CompletionPostRequest,
   FilteringModuleConfig
-} from './client/api/schema';
+} from './client/api/schema/index.js';
 import type { OrchestrationModuleConfig } from './orchestration-types.js';
 
 describe('filter utility', () => {
@@ -172,5 +175,22 @@ describe('filter utility', () => {
     expect(createFilterConfig).toThrow(
       'Filter property cannot be an empty object'
     );
+  });
+
+  describe('model params', () => {
+    it('should retain known typed parameters in the returned object', () => {
+      const model_params = modelParamOptions({
+        max_tokens: 50,
+        temperature: 0.5
+      });
+      expect(model_params).toEqual({ max_tokens: 50, temperature: 0.5 });
+    });
+    test('should accept arbitrary parameters', () => {
+      const model_params = modelParamOptions({
+        max_tokens: 50,
+        custom_param: 'value'
+      });
+      expect(model_params).toEqual({ max_tokens: 50, custom_param: 'value' });
+    });
   });
 });

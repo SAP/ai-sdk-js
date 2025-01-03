@@ -32,6 +32,18 @@ export type LlmModuleConfig = OriginalLlmModuleConfig & {
 };
 
 /**
+ * Module Parameters for LLM module configuration.
+ */
+export type LlmModelParams = {
+  max_tokens?: number;
+  temperature?: number;
+  frequency_penalty?: number;
+  presence_penalty?: number;
+  top_p?: number;
+  n?: number;
+} & Record<string, any>;
+
+/**
  * Orchestration module configuration.
  */
 export interface OrchestrationModuleConfig {

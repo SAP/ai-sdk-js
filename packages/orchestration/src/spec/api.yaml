@@ -224,7 +224,6 @@ components:
       type: object
       required:
         - model_name
-        - model_params
       properties:
         model_name:
           description: Model name as in LLM Access configuration

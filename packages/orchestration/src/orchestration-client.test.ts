@@ -10,7 +10,7 @@ import {
   constructCompletionPostRequest,
   OrchestrationClient
 } from './orchestration-client.js';
-import { buildAzureContentFilter } from './orchestration-filter-utility.js';
+import { buildAzureContentFilter } from './orchestration-utils.js';
 import { OrchestrationResponse } from './orchestration-response.js';
 import type { CompletionPostResponse } from './client/api/schema/index.js';
 import type {
