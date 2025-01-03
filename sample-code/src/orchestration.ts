@@ -49,9 +49,7 @@ export async function orchestrationChatCompletion(): Promise<OrchestrationRespon
  */
 export async function chatCompletionStream(
   controller: AbortController
-): Promise<
-  OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
-> {
+): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
     llm: {
@@ -255,7 +253,8 @@ export async function orchestrationFromJSON(): Promise<
     './src/model-orchestration-config.json',
     'utf-8'
   );
-  const response = await OrchestrationClient.chatCompletionWithJson(jsonConfig);
+  const response =
+    await OrchestrationClient.chatCompletionWithJsonModuleConfig(jsonConfig);
 
   logger.info(response.getContent());
   return response;

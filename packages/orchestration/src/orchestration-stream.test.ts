@@ -58,13 +58,9 @@ describe('Orchestration chat completion stream', () => {
     const asyncGeneratorChunk = OrchestrationStream._processChunk(
       originalChatCompletionStream
     );
-    const asyncGeneratorFinishReason =
-      OrchestrationStream._processFinishReason(
-        new OrchestrationStream(
-          () => asyncGeneratorChunk,
-          new AbortController()
-        )
-      );
+    const asyncGeneratorFinishReason = OrchestrationStream._processFinishReason(
+      new OrchestrationStream(() => asyncGeneratorChunk, new AbortController())
+    );
 
     for await (const chunk of asyncGeneratorFinishReason) {
       expect(chunk).toBeDefined();
@@ -81,13 +77,9 @@ describe('Orchestration chat completion stream', () => {
     const asyncGeneratorChunk = OrchestrationStream._processChunk(
       originalChatCompletionStream
     );
-    const asyncGeneratorTokenUsage =
-      OrchestrationStream._processTokenUsage(
-        new OrchestrationStream(
-          () => asyncGeneratorChunk,
-          new AbortController()
-        )
-      );
+    const asyncGeneratorTokenUsage = OrchestrationStream._processTokenUsage(
+      new OrchestrationStream(() => asyncGeneratorChunk, new AbortController())
+    );
 
     for await (const chunk of asyncGeneratorTokenUsage) {
       expect(chunk).toBeDefined();

@@ -157,10 +157,7 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
         this.controller
       );
     }
-    return new OrchestrationStream(
-      () => processFn(this),
-      this.controller
-    );
+    return new OrchestrationStream(() => processFn(this), this.controller);
   }
 
   public toContentStream(
@@ -168,11 +165,7 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
     choiceIndex?: number
   ): OrchestrationStream<string> {
     return new OrchestrationStream(
-      () =>
-        OrchestrationStream._processContentStream(
-          this,
-          choiceIndex
-        ),
+      () => OrchestrationStream._processContentStream(this, choiceIndex),
       this.controller
     );
   }

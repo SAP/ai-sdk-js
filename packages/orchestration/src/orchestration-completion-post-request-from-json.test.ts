@@ -1,11 +1,11 @@
-import { constructCompletionPostRequestFromJson } from './orchestration-client.js';
+import { constructCompletionPostRequestFromJsonModuleConfig } from './orchestration-client.js';
 
 describe('construct completion post request from JSON', () => {
   it('should throw an error when invalid JSON is provided', () => {
     const invalidJsonConfig = '{ "module_configurations": {}, ';
 
     expect(() =>
-      constructCompletionPostRequestFromJson(invalidJsonConfig)
+      constructCompletionPostRequestFromJsonModuleConfig(invalidJsonConfig)
     ).toThrow('Could not parse JSON');
   });
 
@@ -32,7 +32,7 @@ describe('construct completion post request from JSON', () => {
     };
 
     const completionPostRequestFromJson: Record<string, any> =
-      constructCompletionPostRequestFromJson(jsonConfig);
+      constructCompletionPostRequestFromJsonModuleConfig(jsonConfig);
 
     expect(expectedCompletionPostRequestFromJson).toEqual(
       completionPostRequestFromJson
@@ -85,7 +85,7 @@ describe('construct completion post request from JSON', () => {
     };
 
     const completionPostRequestFromJson: Record<string, any> =
-      constructCompletionPostRequestFromJson(jsonConfig, {
+      constructCompletionPostRequestFromJsonModuleConfig(jsonConfig, {
         inputParams,
         messagesHistory
       });

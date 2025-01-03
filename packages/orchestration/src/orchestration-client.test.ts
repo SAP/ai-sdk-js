@@ -7,7 +7,7 @@ import {
   parseMockResponse
 } from '../../../test-util/mock-http.js';
 import {
-  constructCompletionPostRequestFromJson,
+  constructCompletionPostRequestFromJsonModuleConfig,
   constructCompletionPostRequest,
   OrchestrationClient
 } from './orchestration-client.js';
@@ -89,7 +89,7 @@ describe('orchestration service client', () => {
 
     mockInference(
       {
-        data: constructCompletionPostRequestFromJson(jsonConfig)
+        data: constructCompletionPostRequestFromJsonModuleConfig(jsonConfig)
       },
       {
         data: mockResponse,
@@ -101,7 +101,7 @@ describe('orchestration service client', () => {
     );
 
     const response =
-      await OrchestrationClient.chatCompletionWithJson(jsonConfig);
+      await OrchestrationClient.chatCompletionWithJsonModuleConfig(jsonConfig);
 
     expect(response).toBeInstanceOf(OrchestrationResponse);
     expect(response.data).toEqual(mockResponse);

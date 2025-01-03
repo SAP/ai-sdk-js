@@ -8,9 +8,12 @@ import type {
   CustomRequestConfig
 } from '@sap-cloud-sdk/http-client';
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api/internal.js';
-import type { CompletionPostRequest } from './client/api/schema/index.js';
 import type {
-  LlmModuleConfig,
+  CompletionPostRequest,
+  ModuleConfigs,
+  OrchestrationConfig
+} from './client/api/schema/index.js';
+import type {
   OrchestrationModuleConfig,
   Prompt
 } from './orchestration-types.js';
@@ -20,52 +23,58 @@ import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity'
 interface RequestOptions {
   prompt?: Prompt;
   requestConfig?: CustomRequestConfig;
-  streaming?: boolean;
-  jsonConfig?: string;
+  stream?: boolean;
+  streamOptions?: StreamOptions;
+  jsonModuleConfig?: string;
   deploymentConfig?: ResourceGroupConfig;
   destination?: HttpDestinationOrFetchOptions;
   config?: OrchestrationModuleConfig;
+}
+
+interface ConfigurationOptions {
+  deploymentConfig?: ResourceGroupConfig;
+  destination?: HttpDestinationOrFetchOptions;
+  requestConfig?: CustomRequestConfig;
+}
+
+interface StreamOptions {
+  chunkSize?: number;
+  llm?: { includeUsage?: boolean; [key: string]: any };
+  // Add more options as they are implemented
+  // masking?: { };
+  // grounding?: { };
+  // inputFiltering?: { };
+  outputFiltering?: { overlap?: number };
 }
 
 /**
  * Get the orchestration client.
  */
 export class OrchestrationClient {
-  static async chatCompletionWithJson(
-    jsonConfig: string,
+  static async chatCompletionWithJsonModuleConfig(
+    jsonModuleConfig: string,
     prompt?: Prompt,
-    deploymentConfig?: ResourceGroupConfig,
-    destination?: HttpDestinationOrFetchOptions,
-    requestConfig?: CustomRequestConfig
+    options?: ConfigurationOptions
   ): Promise<OrchestrationResponse> {
     const response = await OrchestrationClient.executeRequest({
+      jsonModuleConfig,
       prompt,
-      requestConfig,
-      jsonConfig,
-      deploymentConfig,
-      destination
+      ...options
     });
     return new OrchestrationResponse(response);
   }
 
-  static async streamWithJson(
-    jsonConfig: string,
+  static async streamWithJsonModuleConfig(
+    jsonModuleConfig: string,
     prompt?: Prompt,
     controller = new AbortController(),
-    deploymentConfig?: ResourceGroupConfig,
-    destination?: HttpDestinationOrFetchOptions,
-    requestConfig?: CustomRequestConfig
-  ): Promise<
-    OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
-  > {
+    options?: ConfigurationOptions
+  ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
     return OrchestrationClient.createStreamResponse(
       {
+        jsonModuleConfig,
         prompt,
-        requestConfig,
-        streaming: true,
-        jsonConfig,
-        deploymentConfig,
-        destination
+        ...options
       },
       controller
     );
@@ -77,25 +86,30 @@ export class OrchestrationClient {
     const {
       prompt,
       requestConfig,
-      streaming = false,
-      jsonConfig,
-      deploymentConfig: { resourceGroup } = {},
-      destination
+      stream,
+      streamOptions,
+      jsonModuleConfig,
+      deploymentConfig,
+      destination,
+      config
     } = options;
 
-    const body = jsonConfig
-      ? constructCompletionPostRequestFromJson(jsonConfig, prompt)
-      : constructCompletionPostRequest(options.config!, prompt, streaming);
+    const body = jsonModuleConfig
+      ? constructCompletionPostRequestFromJsonModuleConfig(
+          jsonModuleConfig,
+          prompt
+        )
+      : constructCompletionPostRequest(config!, prompt, stream, streamOptions);
 
     const deploymentId = await resolveDeploymentId({
       scenarioId: 'orchestration',
-      resourceGroup
+      ...deploymentConfig
     });
 
     return executeRequest(
       {
         url: `/inference/deployments/${deploymentId}/completion`,
-        resourceGroup
+        ...deploymentConfig
       },
       body,
       requestConfig,
@@ -106,9 +120,7 @@ export class OrchestrationClient {
   private static async createStreamResponse(
     options: RequestOptions,
     controller: AbortController
-  ): Promise<
-    OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
-  > {
+  ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
     const response =
       new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
 
@@ -121,10 +133,7 @@ export class OrchestrationClient {
       }
     });
 
-    const stream = OrchestrationStream._create(
-      streamResponse,
-      controller
-    );
+    const stream = OrchestrationStream._create(streamResponse, controller);
     response.stream = stream
       ._pipe(OrchestrationStream._processChunk)
       ._pipe(OrchestrationStream._processFinishReason, response)
@@ -146,6 +155,7 @@ export class OrchestrationClient {
     const response = await OrchestrationClient.executeRequest({
       prompt,
       requestConfig,
+      stream: false,
       config: this.config,
       deploymentConfig: this.deploymentConfig,
       destination: this.destination
@@ -156,15 +166,15 @@ export class OrchestrationClient {
   async stream(
     prompt?: Prompt,
     controller = new AbortController(),
+    options?: StreamOptions,
     requestConfig?: CustomRequestConfig
-  ): Promise<
-    OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
-  > {
+  ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
     return OrchestrationClient.createStreamResponse(
       {
         prompt,
         requestConfig,
-        streaming: true,
+        streamOptions: options,
+        stream: true,
         config: this.config,
         deploymentConfig: this.deploymentConfig,
         destination: this.destination
@@ -177,7 +187,7 @@ export class OrchestrationClient {
 /**
  * @internal
  */
-export function constructCompletionPostRequestFromJson(
+export function constructCompletionPostRequestFromJsonModuleConfig(
   config: string,
   prompt?: Prompt
 ): Record<string, any> {
@@ -192,14 +202,38 @@ export function constructCompletionPostRequestFromJson(
   }
 }
 
-function configureLLM(llm: LlmModuleConfig, stream: boolean): LlmModuleConfig {
-  if (stream) {
-    llm.model_params = {
-      ...llm.model_params,
-      stream_options: { include_usage: true }
-    };
-  }
-  return llm;
+function addStreamOptions(
+  moduleConfigs: ModuleConfigs,
+  streamOptions?: StreamOptions
+): OrchestrationConfig {
+  const { llm, outputFiltering, chunkSize } = streamOptions;
+
+  return {
+    stream: true,
+    stream_options: {
+      chunk_size: chunkSize
+    },
+    module_configurations: {
+      ...moduleConfigs,
+      llm_module_config: {
+        ...moduleConfigs.llm_module_config,
+        stream_options: {
+          include_usage: llm?.includeUsage ?? true,
+          ...llm
+        }
+      },
+      ...(outputFiltering &&
+        Object.keys(outputFiltering).length && {
+          filtering_module_config: {
+            ...moduleConfigs.filtering_module_config,
+            output: {
+              ...(moduleConfigs.filtering_module_config?.output || {}),
+              stream_options: outputFiltering
+            }
+          }
+        })
+    }
+  } as OrchestrationConfig;
 }
 
 /**
@@ -208,13 +242,14 @@ function configureLLM(llm: LlmModuleConfig, stream: boolean): LlmModuleConfig {
 export function constructCompletionPostRequest(
   config: OrchestrationModuleConfig,
   prompt?: Prompt,
-  stream = false
+  stream?: boolean,
+  streamOptions?: StreamOptions
 ): CompletionPostRequest {
   const moduleConfigurations = {
     templating_module_config: {
       template: config.templating.template
     },
-    llm_module_config: configureLLM(config.llm, stream),
+    llm_module_config: config.llm,
     ...(config?.filtering &&
       Object.keys(config.filtering).length && {
         filtering_module_config: config.filtering
@@ -230,10 +265,9 @@ export function constructCompletionPostRequest(
   };
 
   return {
-    orchestration_config: {
-      stream,
-      module_configurations: moduleConfigurations
-    },
+    orchestration_config: stream
+      ? addStreamOptions(moduleConfigurations, streamOptions)
+      : { module_configurations: moduleConfigurations, stream: false },
     ...(prompt?.inputParams && {
       input_params: prompt.inputParams
     }),
