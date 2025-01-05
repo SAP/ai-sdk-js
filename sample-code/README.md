@@ -16,10 +16,13 @@ Parts of the sample code are also used in E2E tests.
 ## Local Deployment
 
 1. Run `pnpm install` to install dependencies.
-2. Create a `.env` file in the `sample-code` directory with your AI core service key by adding the following line:
+2. Create a `.env` file in the `sample-code` directory with the complete content of your AI core service key by adding the following line:
 
    ```bash
-   AICORE_SERVICE_KEY='SERVICE_KEY_JSON
+   AICORE_SERVICE_KEY='{
+     "clientid": "...",
+     ...
+   }'
    ```
 
 3. Run `pnpm local` to start the server.
