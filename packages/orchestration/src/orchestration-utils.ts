@@ -35,21 +35,20 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
 /**
  * @internal
  */
-export function addStreamOptionsToLlmModuleConfig(
-  llmModuleConfig: LlmModuleConfig,
-  streamOptions?: StreamOptions
-): LlmModuleConfig {
-  if (!streamOptions?.llm) {
+export function enableTokenUsage(
+  llmModuleConfig?: RecursivePartial<LlmModuleConfig>
+): RecursivePartial<LlmModuleConfig> | undefined {
+  const modelParams = llmModuleConfig?.model_params || {} ;
+  if( modelParams.stream_options ) {
     return llmModuleConfig;
   }
+  
   return {
     ...llmModuleConfig,
     model_params: {
-      ...llmModuleConfig.model_params,
+      ...llmModuleConfig?.model_params,
       stream_options: {
-        include_usage: true,
-        ...(llmModuleConfig.model_params.stream_options || {}),
-        ...streamOptions.llm
+        include_usage: true
       }
     }
   };
@@ -75,9 +74,9 @@ export function addStreamOptionsToOutputFilteringConfig(
  * @internal
  */
 export function addStreamOptions(
-  moduleConfigs: ModuleConfigs,
-  streamOptions?: StreamOptions
-): OrchestrationConfig {
+  moduleConfigs: RecursivePartial<ModuleConfigs>,
+  streamOptions: StreamOptions
+): RecursivePartial<OrchestrationConfig> {
   const { llm_module_config, filtering_module_config } = moduleConfigs;
   const outputFiltering = streamOptions?.outputFiltering;
   const chunkSize = streamOptions?.chunk_size;
@@ -95,10 +94,7 @@ export function addStreamOptions(
     },
     module_configurations: {
       ...moduleConfigs,
-      llm_module_config: addStreamOptionsToLlmModuleConfig(
-        llm_module_config,
-        streamOptions
-      ),
+      llm_module_config: enableTokenUsage(llm_module_config),
       ...(outputFiltering &&
         filtering_module_config?.output && {
           filtering_module_config: {
@@ -113,18 +109,24 @@ export function addStreamOptions(
   };
 }
 
+type RecursivePartial<T> = {
+  [P in keyof T]?:
+    T[P] extends (infer U)[] ? RecursivePartial<U>[] :
+    T[P] extends object | undefined ? RecursivePartial<T[P]> :
+    T[P];
+};
+
 /**
  * @internal
  */
 export function constructCompletionPostRequest(
-  config: OrchestrationModuleConfig,
+  config: RecursivePartial<OrchestrationModuleConfig>,
   prompt?: Prompt,
-  stream?: boolean,
   streamOptions?: StreamOptions
-): CompletionPostRequest {
+): RecursivePartial<CompletionPostRequest> {
   const moduleConfigurations = {
     templating_module_config: {
-      template: config.templating.template
+      template: config.templating?.template
     },
     llm_module_config: config.llm,
     ...(config?.filtering &&
@@ -141,10 +143,9 @@ export function constructCompletionPostRequest(
       })
   };
 
-  return {
-    orchestration_config: stream
-      ? addStreamOptions(moduleConfigurations, streamOptions)
-      : { module_configurations: moduleConfigurations, stream },
+  var result = {
+    orchestration_config:{ 
+      module_configurations: moduleConfigurations as Partial<ModuleConfigs> },
     ...(prompt?.inputParams && {
       input_params: prompt.inputParams
     }),
@@ -152,4 +153,9 @@ export function constructCompletionPostRequest(
       messages_history: prompt.messagesHistory
     })
   };
+
+  if( streamOptions ) {
+    addStreamOptions(result.orchestration_config.module_configurations, streamOptions);
+  }
+  return result;
 }

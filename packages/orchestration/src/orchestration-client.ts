@@ -28,17 +28,22 @@ const logger = createLogger({ messageContext: 'orchestration-client' });
  * Get the orchestration client.
  */
 export class OrchestrationClient {
+  private readonly moduleConfig: Partial<OrchestrationModuleConfig>;
+
   constructor(
     private config: OrchestrationModuleConfig | string,
     private deploymentConfig?: ResourceGroupConfig,
     private destination?: HttpDestinationOrFetchOptions
   ) {
-    try {
-      if (typeof config === 'string') {
-        JSON.parse(config);
+    if (typeof config === 'string') {
+      try {
+        this.moduleConfig = JSON.parse(config);
+      } catch (error) {
+        throw new Error(`Could not parse JSON: ${error}`);
       }
-    } catch (error) {
-      throw new Error(`Could not parse JSON: ${error}`);
+    }
+    else {
+      this.moduleConfig = config;
     }
   }
 
@@ -48,8 +53,7 @@ export class OrchestrationClient {
   ): Promise<OrchestrationResponse> {
     const response = await this.executeRequest({
       prompt,
-      requestConfig,
-      stream: false
+      requestConfig
     });
     return new OrchestrationResponse(response);
   }
@@ -60,12 +64,6 @@ export class OrchestrationClient {
     options?: StreamOptions,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
-    if (typeof this.config === 'string' && options) {
-      logger.warn(
-        'Stream options are not supported when using a JSON module config.'
-      );
-    }
-
     return this.createStreamResponse(
       {
         prompt,
@@ -77,19 +75,11 @@ export class OrchestrationClient {
   }
 
   private async executeRequest(options: RequestOptions): Promise<HttpResponse> {
-    const { prompt, requestConfig, stream, streamOptions } = options;
+    const { prompt, requestConfig, streamOptions } = options;
 
-    const body =
-      typeof this.config === 'string'
-        ? constructCompletionPostRequestFromJsonModuleConfig(
-            JSON.parse(this.config),
+    const body = constructCompletionPostRequest(
+            this.moduleConfig,
             prompt,
-            stream
-          )
-        : constructCompletionPostRequest(
-            this.config,
-            prompt,
-            stream,
             streamOptions
           );
 

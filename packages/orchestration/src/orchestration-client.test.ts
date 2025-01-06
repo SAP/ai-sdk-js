@@ -7,7 +7,6 @@ import {
   parseMockResponse
 } from '../../../test-util/mock-http.js';
 import {
-  constructCompletionPostRequestFromJsonModuleConfig,
   constructCompletionPostRequest,
   OrchestrationClient
 } from './orchestration-client.js';
