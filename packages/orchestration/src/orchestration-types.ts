@@ -1,7 +1,10 @@
+import type { CustomRequestConfig } from '@sap-cloud-sdk/http-client';
 import type { ChatModel } from './model-types.js';
 import type {
   ChatMessages,
   FilteringModuleConfig,
+  FilteringStreamOptions,
+  GlobalStreamOptions,
   GroundingModuleConfig,
   MaskingModuleConfig,
   LlmModuleConfig as OriginalLlmModuleConfig,
@@ -55,4 +58,40 @@ export interface OrchestrationModuleConfig {
    * Grounding module configuraton.
    */
   grounding?: GroundingModuleConfig;
+}
+
+/**
+ * Request options for orchestration.
+ */
+export interface RequestOptions {
+  /**
+   * Prompt configuration.
+   */
+  prompt?: Prompt;
+  /**
+   * Custom request configuration.
+   */
+  requestConfig?: CustomRequestConfig;
+  /**
+   * Whether to stream the response.
+   */
+  stream?: boolean;
+  /**
+   * Options for the stream.
+   */
+  streamOptions?: StreamOptions;
+}
+
+/**
+ * Options for the stream.
+ */
+export interface StreamOptions extends GlobalStreamOptions {
+  /**
+   * LLM specific stream options.
+   */
+  llm?: { includeUsage?: boolean; [key: string]: any };
+  /**
+   * Output filtering stream options.
+   */
+  outputFiltering?: FilteringStreamOptions;
 }
