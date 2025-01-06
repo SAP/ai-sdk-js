@@ -253,8 +253,7 @@ export async function orchestrationFromJSON(): Promise<
     './src/model-orchestration-config.json',
     'utf-8'
   );
-  const response =
-    await new OrchestrationClient(jsonConfig).chatCompletion();
+  const response = await new OrchestrationClient(jsonConfig).chatCompletion();
 
   logger.info(response.getContent());
   return response;
