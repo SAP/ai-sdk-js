@@ -31,7 +31,12 @@ export type {
   ChatMessage,
   AzureThreshold,
   AzureContentSafety,
-  AzureContentSafetyFilterConfig
+  AzureContentSafetyFilterConfig,
+  ImageContent,
+  TextContent,
+  MultiChatMessageContent,
+  MultiChatMessage,
+  TemplatingChatMessage // TODO: Check this
 } from './client/api/schema/index.js';
 
 export type {
