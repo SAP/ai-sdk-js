@@ -254,7 +254,7 @@ export async function orchestrationFromJSON(): Promise<
     'utf-8'
   );
   const response =
-    await OrchestrationClient.chatCompletionWithJsonModuleConfig(jsonConfig);
+    await new OrchestrationClient(jsonConfig).chatCompletion();
 
   logger.info(response.getContent());
   return response;
