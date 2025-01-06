@@ -35,8 +35,7 @@ export type {
   ImageContent,
   TextContent,
   MultiChatMessageContent,
-  MultiChatMessage,
-  TemplatingChatMessage // TODO: Check this
+  MultiChatMessage
 } from './client/api/schema/index.js';
 
 export type {
