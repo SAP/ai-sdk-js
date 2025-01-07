@@ -24,7 +24,9 @@ describe('construct completion post request from JSON', () => {
     };
 
     const completionPostRequestFromJson: Record<string, any> =
-      constructCompletionPostRequestFromJsonModuleConfig(jsonConfig);
+      constructCompletionPostRequestFromJsonModuleConfig(
+        JSON.parse(jsonConfig)
+      );
 
     expect(expectedCompletionPostRequestFromJson).toEqual(
       completionPostRequestFromJson
@@ -77,10 +79,13 @@ describe('construct completion post request from JSON', () => {
     };
 
     const completionPostRequestFromJson: Record<string, any> =
-      constructCompletionPostRequestFromJsonModuleConfig(jsonConfig, {
-        inputParams,
-        messagesHistory
-      });
+      constructCompletionPostRequestFromJsonModuleConfig(
+        JSON.parse(jsonConfig),
+        {
+          inputParams,
+          messagesHistory
+        }
+      );
 
     expect(expectedCompletionPostRequestFromJson).toEqual(
       completionPostRequestFromJson

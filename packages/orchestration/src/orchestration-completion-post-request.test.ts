@@ -17,7 +17,6 @@ describe('construct completion post request', () => {
   it('should construct completion post request with llm and templating module', async () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
-        stream: false,
         module_configurations: {
           templating_module_config: defaultConfig.templating,
           llm_module_config: defaultConfig.llm
@@ -37,7 +36,6 @@ describe('construct completion post request', () => {
     };
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
-        stream: false,
         module_configurations: {
           templating_module_config: config.templating,
           llm_module_config: config.llm
@@ -64,7 +62,6 @@ describe('construct completion post request', () => {
     const inputParams = { phrase: 'I hate you.', number: '3' };
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
-        stream: false,
         module_configurations: {
           templating_module_config: config.templating,
           llm_module_config: config.llm
@@ -92,7 +89,6 @@ describe('construct completion post request', () => {
     const inputParams = {};
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
-        stream: false,
         module_configurations: {
           templating_module_config: config.templating,
           llm_module_config: config.llm
@@ -116,7 +112,6 @@ describe('construct completion post request', () => {
     };
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
-        stream: false,
         module_configurations: {
           templating_module_config: config.templating,
           llm_module_config: config.llm
@@ -153,7 +148,6 @@ describe('construct completion post request', () => {
     ];
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
-        stream: false,
         module_configurations: {
           templating_module_config: config.templating,
           llm_module_config: config.llm
@@ -175,7 +169,6 @@ describe('construct completion post request', () => {
     };
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
-        stream: false,
         module_configurations: {
           templating_module_config: config.templating,
           llm_module_config: config.llm,
@@ -196,7 +189,6 @@ describe('construct completion post request', () => {
     };
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
-        stream: false,
         module_configurations: {
           templating_module_config: config.templating,
           llm_module_config: config.llm

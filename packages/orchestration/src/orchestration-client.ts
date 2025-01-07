@@ -70,6 +70,7 @@ export class OrchestrationClient {
       {
         prompt,
         requestConfig,
+        stream: true,
         streamOptions: options
       },
       controller

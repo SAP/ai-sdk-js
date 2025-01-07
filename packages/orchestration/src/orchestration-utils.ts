@@ -23,12 +23,17 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
   prompt?: Prompt,
   stream?: boolean
 ): Record<string, any> {
+  const orchestration_config = { ...config };
+  if (stream) {
+    orchestration_config.stream = true;
+  } else {
+    delete orchestration_config.stream;
+  }
+
   return {
     messages_history: prompt?.messagesHistory || [],
     input_params: prompt?.inputParams || {},
-    orchestration_config: stream
-      ? { ...config, stream: true }
-      : { ...config, stream: false }
+    orchestration_config
   };
 }
 
@@ -142,7 +147,7 @@ export function constructCompletionPostRequest(
   return {
     orchestration_config: stream
       ? addStreamOptions(moduleConfigurations, streamOptions)
-      : { module_configurations: moduleConfigurations, stream },
+      : { module_configurations: moduleConfigurations },
     ...(prompt?.inputParams && {
       input_params: prompt.inputParams
     }),
