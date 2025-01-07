@@ -431,8 +431,8 @@ describe('orchestration service client', () => {
   it('should throw an error when invalid JSON is provided', () => {
     const invalidJsonConfig = '{ "module_configurations": {}, ';
 
-    expect(() =>
-      new OrchestrationClient(invalidJsonConfig)
-    ).toThrow('Could not parse JSON');
+    expect(() => new OrchestrationClient(invalidJsonConfig)).toThrow(
+      'Could not parse JSON'
+    );
   });
 });
