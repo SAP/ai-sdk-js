@@ -327,7 +327,7 @@ const response = await orchestrationClient.chatCompletion({
 return response.getContent();
 ```
 
-`buildDocumentGroundingConfig()` function provides convenience to create the document grounding service configuration using the minimal set of required values:
+Instead of defining the configuration as a raw JSON object, the `buildDocumentGroundingConfig()` function can be used to create the configuration by specifying only the minimal required values.
 
 ```ts
 import {
@@ -339,7 +339,7 @@ const orchestrationConfig: {
   grounding: buildDocumentGroundingConfig(
     input_params: ['groundingInput'],
     output_param: 'groundingOutput',
-    filters: [{id: 'filter-id', data_repositories: ['repository-id'] }]
+    filters: [{id: 'filter1', data_repositories: ['repository-id'] }]
     )
 }
 ```

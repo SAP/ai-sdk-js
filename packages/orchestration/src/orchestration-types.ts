@@ -61,7 +61,6 @@ export interface OrchestrationModuleConfig {
 
 /**
  * Represents a filter configuration for the Document Grounding Service.
- *
  */
 export type DocumentGroundingServiceFilter = Pick<
   DocumentGroundingFilter,
@@ -78,6 +77,7 @@ export type DocumentGroundingServiceFilter = Pick<
    */
   data_repository_type?: DataRepositoryType;
 };
+
 
 /**
  * Represents the configuration for the Document Grounding Service.
