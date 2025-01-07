@@ -95,13 +95,13 @@ export class OrchestrationClient {
 
     const deploymentId = await resolveDeploymentId({
       scenarioId: 'orchestration',
-      ...(this.deploymentConfig || {})
+      ...(this.deploymentConfig ?? {})
     });
 
     return executeRequest(
       {
         url: `/inference/deployments/${deploymentId}/completion`,
-        ...(this.deploymentConfig || {})
+        ...(this.deploymentConfig ?? {})
       },
       body,
       requestConfig,

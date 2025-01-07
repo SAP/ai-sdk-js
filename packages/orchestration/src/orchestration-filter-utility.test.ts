@@ -1,5 +1,5 @@
-import { constructCompletionPostRequest } from './orchestration-client.js';
 import { buildAzureContentFilter } from './orchestration-filter-utility.js';
+import { constructCompletionPostRequest } from './orchestration-utils.js';
 import type {
   CompletionPostRequest,
   FilteringModuleConfig

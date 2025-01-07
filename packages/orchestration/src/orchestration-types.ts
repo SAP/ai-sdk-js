@@ -85,7 +85,7 @@ export interface RequestOptions {
 /**
  * Options for the stream.
  */
-export interface StreamOptions extends GlobalStreamOptions {
+export interface StreamOptions {
   /**
    * LLM specific stream options.
    */
@@ -94,4 +94,8 @@ export interface StreamOptions extends GlobalStreamOptions {
    * Output filtering stream options.
    */
   outputFiltering?: FilteringStreamOptions;
+  /**
+   * Global stream options.
+   */
+  global?: GlobalStreamOptions;
 }

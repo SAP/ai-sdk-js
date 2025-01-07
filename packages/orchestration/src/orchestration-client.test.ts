@@ -6,13 +6,13 @@ import {
   parseFileToString,
   parseMockResponse
 } from '../../../test-util/mock-http.js';
-import {
-  constructCompletionPostRequestFromJsonModuleConfig,
-  constructCompletionPostRequest,
-  OrchestrationClient
-} from './orchestration-client.js';
+import { OrchestrationClient } from './orchestration-client.js';
 import { buildAzureContentFilter } from './orchestration-filter-utility.js';
 import { OrchestrationResponse } from './orchestration-response.js';
+import {
+  constructCompletionPostRequest,
+  constructCompletionPostRequestFromJsonModuleConfig
+} from './orchestration-utils.js';
 import type { CompletionPostResponse } from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
@@ -89,7 +89,9 @@ describe('orchestration service client', () => {
 
     mockInference(
       {
-        data: constructCompletionPostRequestFromJsonModuleConfig(jsonConfig)
+        data: constructCompletionPostRequestFromJsonModuleConfig(
+          JSON.parse(jsonConfig)
+        )
       },
       {
         data: mockResponse,
@@ -100,8 +102,7 @@ describe('orchestration service client', () => {
       }
     );
 
-    const response =
-      await OrchestrationClient.chatCompletionWithJsonModuleConfig(jsonConfig);
+    const response = await new OrchestrationClient(jsonConfig).chatCompletion();
 
     expect(response).toBeInstanceOf(OrchestrationResponse);
     expect(response.data).toEqual(mockResponse);
@@ -425,5 +426,13 @@ describe('orchestration service client', () => {
       expect(chunk.data).toEqual(JSON.parse(initialResponse));
       break;
     }
+  });
+
+  it('should throw an error when invalid JSON is provided', () => {
+    const invalidJsonConfig = '{ "module_configurations": {}, ';
+
+    expect(() =>
+      new OrchestrationClient(invalidJsonConfig)
+    ).toThrow('Could not parse JSON');
   });
 });

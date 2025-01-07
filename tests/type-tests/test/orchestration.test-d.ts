@@ -168,7 +168,7 @@ expectType<Promise<OrchestrationResponse>>(
  * Chat Completion with JSON configuration.
  */
 expectType<Promise<OrchestrationResponse>>(
-  OrchestrationClient.chatCompletionWithJsonModuleConfig(`{
+  new OrchestrationClient(`{
     "module_configurations": {
       "llm_module_config": {
         "model_name": "gpt-35-turbo-16k",
@@ -181,7 +181,7 @@ expectType<Promise<OrchestrationResponse>>(
         "template": [{ "role": "user", "content": "Hello!" }]
       }
     }
-  }`)
+  }`).chatCompletion()
 );
 
 /**

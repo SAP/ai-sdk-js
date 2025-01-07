@@ -80,7 +80,7 @@ export function addStreamOptions(
 ): OrchestrationConfig {
   const { llm_module_config, filtering_module_config } = moduleConfigs;
   const outputFiltering = streamOptions?.outputFiltering;
-  const chunkSize = streamOptions?.chunk_size;
+  const globalOptions = streamOptions?.global;
 
   if (!moduleConfigs?.filtering_module_config?.output && outputFiltering) {
     logger.warn(
@@ -90,9 +90,7 @@ export function addStreamOptions(
 
   return {
     stream: true,
-    stream_options: {
-      chunk_size: chunkSize
-    },
+    stream_options: globalOptions,
     module_configurations: {
       ...moduleConfigs,
       llm_module_config: addStreamOptionsToLlmModuleConfig(

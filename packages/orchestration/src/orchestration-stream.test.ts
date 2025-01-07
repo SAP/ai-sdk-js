@@ -39,12 +39,12 @@ describe('Orchestration chat completion stream', () => {
 
   it('should wrap the raw chunk', async () => {
     let output = '';
-    const asnycGenerator = OrchestrationStream._processChunk(
+    const asyncGenerator = OrchestrationStream._processChunk(
       originalChatCompletionStream
     );
-    for await (const chunk of asnycGenerator) {
+    for await (const chunk of asyncGenerator) {
       expect(chunk).toBeDefined();
-      chunk.getDeltaContent() ? (output += chunk.getDeltaContent()) : null;
+      output += chunk.getDeltaContent() ?? '';
     }
     expect(output).toMatchSnapshot();
   });

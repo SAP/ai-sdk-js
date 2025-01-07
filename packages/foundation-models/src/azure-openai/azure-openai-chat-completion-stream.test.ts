@@ -38,12 +38,12 @@ describe('OpenAI chat completion stream', () => {
 
   it('should wrap the raw chunk', async () => {
     let output = '';
-    const asnycGenerator = AzureOpenAiChatCompletionStream._processChunk(
+    const asyncGenerator = AzureOpenAiChatCompletionStream._processChunk(
       originalChatCompletionStream
     );
-    for await (const chunk of asnycGenerator) {
+    for await (const chunk of asyncGenerator) {
       expect(chunk).toBeDefined();
-      chunk.getDeltaContent() ? (output += chunk.getDeltaContent()) : null;
+      output += chunk.getDeltaContent() ?? '';
     }
     expect(output).toEqual('The capital of France is Paris.');
   });
