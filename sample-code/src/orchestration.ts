@@ -22,8 +22,7 @@ export async function orchestrationChatCompletion(): Promise<OrchestrationRespon
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
     llm: {
-      model_name: 'gpt-4o',
-      model_params: {}
+      model_name: 'gpt-4o'
     },
     // define the prompt
     templating: {
@@ -41,8 +40,7 @@ export async function orchestrationChatCompletion(): Promise<OrchestrationRespon
 }
 
 const llm: LlmModuleConfig = {
-  model_name: 'gpt-4o',
-  model_params: {}
+  model_name: 'gpt-4o'
 };
 
 /**
@@ -160,8 +158,7 @@ export async function orchestrationCompletionMasking(): Promise<
 > {
   const orchestrationClient = new OrchestrationClient({
     llm: {
-      model_name: 'gpt-4-32k',
-      model_params: {}
+      model_name: 'gpt-4-32k'
     },
     templating: {
       template: [
