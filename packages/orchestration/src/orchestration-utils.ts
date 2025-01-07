@@ -1,4 +1,3 @@
-import type { LlmModelParams } from './orchestration-types.js';
 import type {
   AzureContentSafety,
   InputFilteringConfig,
@@ -24,15 +23,4 @@ export function buildAzureContentFilter(
       }
     ]
   };
-}
-
-/**
- * Convenience function to set model params in LLM Module Configuration.
- * @param model_params - Configuration for the model params object in LLM Module Configuration.
- * @returns An object with the model params for LLM Module Config.
- */
-export function modelParamOptions(
-  model_params: LlmModelParams
-): LlmModelParams {
-  return { ...model_params };
 }

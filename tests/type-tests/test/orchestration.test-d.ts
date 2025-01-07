@@ -5,10 +5,8 @@ import {
   OrchestrationResponse,
   TokenUsage,
   ChatModel,
-  LlmModuleConfig
+  LlmModelParams
 } from '@sap-ai-sdk/orchestration';
-import { modelParamOptions } from '@sap-ai-sdk/orchestration/src/orchestration-utils.js';
-import { LlmModelParams } from '@sap-ai-sdk/orchestration/internal.js';
 
 /**
  * Chat Completion.
@@ -19,8 +17,7 @@ expectType<Promise<OrchestrationResponse>>(
       template: [{ role: 'user', content: 'Hello!' }]
     },
     llm: {
-      model_name: 'gpt-35-turbo-16k',
-      model_params: {}
+      model_name: 'gpt-35-turbo-16k'
     }
   }).chatCompletion()
 );
@@ -32,8 +29,7 @@ expectType<CompletionPostResponse>(
         template: [{ role: 'user', content: 'Hello!' }]
       },
       llm: {
-        model_name: 'gpt-35-turbo-16k',
-        model_params: {}
+        model_name: 'gpt-35-turbo-16k'
       }
     }).chatCompletion()
   ).data
@@ -46,8 +42,7 @@ expectType<string | undefined>(
         template: [{ role: 'user', content: 'Hello!' }]
       },
       llm: {
-        model_name: 'gpt-35-turbo-16k',
-        model_params: {}
+        model_name: 'gpt-35-turbo-16k'
       }
     }).chatCompletion()
   ).getContent()
@@ -60,8 +55,7 @@ expectType<string | undefined>(
         template: [{ role: 'user', content: 'Hello!' }]
       },
       llm: {
-        model_name: 'gpt-35-turbo-16k',
-        model_params: {}
+        model_name: 'gpt-35-turbo-16k'
       }
     }).chatCompletion()
   ).getFinishReason()
@@ -74,8 +68,7 @@ expectType<TokenUsage>(
         template: [{ role: 'user', content: 'Hello!' }]
       },
       llm: {
-        model_name: 'gpt-35-turbo-16k',
-        model_params: {}
+        model_name: 'gpt-35-turbo-16k'
       }
     }).chatCompletion()
   ).getTokenUsage()
@@ -88,8 +81,7 @@ expectType<Promise<OrchestrationResponse>>(
         template: [{ role: 'user', content: 'Hello!' }]
       },
       llm: {
-        model_name: 'gpt-35-turbo-16k',
-        model_params: {}
+        model_name: 'gpt-35-turbo-16k'
       }
     },
     {
@@ -200,8 +192,7 @@ expectError<any>(new OrchestrationClient({}).chatCompletion());
 expectError<any>(
   new OrchestrationClient({
     llm: {
-      model_name: 'gpt-35-turbo-16k',
-      model_params: {}
+      model_name: 'gpt-35-turbo-16k'
     }
   }).chatCompletion()
 );
@@ -215,10 +206,19 @@ expectError<any>(
       template: [{ role: 'user', content: 'Hello!' }]
     },
     llm: {
-      model_params: {}
+      model_params: { max_tokens: 50 }
     }
   }).chatCompletion()
 );
+
+/**
+ * Model parameters should accept known typed parameters and arbitrary parameters.
+ */
+expectType<LlmModelParams>({
+  max_tokens: 50,
+  temperature: 0.2,
+  random_property: 'random - value'
+});
 
 /**
  * Model parameters should adhere to OrchestrationCompletionParameters.// Todo: Check if additional checks can be added for model_params.
@@ -241,12 +241,3 @@ expectType<Promise<OrchestrationResponse>>(
 
 expect<ChatModel>('custom-model');
 expect<ChatModel>('gemini-1.0-pro');
-
-/**
- * Model Param util for LLM Module Config
- */
-expectType<LlmModelParams>(
-  modelParamOptions({ max_tokens: 50, temperature: 0.5 })
-);
-
-expectType<LlmModelParams>(modelParamOptions({ custom_key: 'value' }));

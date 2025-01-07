@@ -29,6 +29,7 @@ export interface Prompt {
 export type LlmModuleConfig = OriginalLlmModuleConfig & {
   /** */
   model_name: ChatModel;
+  model_params?: LlmModelParams;
 };
 
 /**
