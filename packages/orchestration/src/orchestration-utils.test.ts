@@ -173,21 +173,4 @@ describe('filter utility', () => {
       'Filter property cannot be an empty object'
     );
   });
-
-  // describe('model params', () => {
-  //   it('should retain known typed parameters in the returned object', () => {
-  //     const model_params = modelParamOptions({
-  //       max_tokens: 50,
-  //       temperature: 0.5
-  //     });
-  //     expect(model_params).toEqual({ max_tokens: 50, temperature: 0.5 });
-  //   });
-  //   test('should accept arbitrary parameters', () => {
-  //     const model_params = modelParamOptions({
-  //       max_tokens: 50,
-  //       custom_param: 'value'
-  //     });
-  //     expect(model_params).toEqual({ max_tokens: 50, custom_param: 'value' });
-  //   });
-  // });
 });
