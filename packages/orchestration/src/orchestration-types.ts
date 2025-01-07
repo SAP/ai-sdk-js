@@ -78,7 +78,6 @@ export type DocumentGroundingServiceFilter = Pick<
   data_repository_type?: DataRepositoryType;
 };
 
-
 /**
  * Represents the configuration for the Document Grounding Service.
  */
