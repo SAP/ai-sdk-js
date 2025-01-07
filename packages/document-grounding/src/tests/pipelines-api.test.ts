@@ -45,11 +45,10 @@ describe('pipelines', () => {
         'Content-Type': 'application/json'
       });
 
-    const result: Pipelines =
-      await PipelinesApi.pipelineV1PipelineEndpointsGetAllPipeline(
-        {},
-        { 'AI-Resource-Group': 'default' }
-      ).execute();
+    const result: Pipelines = await PipelinesApi.getAllPipelines(
+      {},
+      { 'AI-Resource-Group': 'default' }
+    ).execute();
 
     expect(result).toEqual(expectedResponse);
   });
