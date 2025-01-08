@@ -174,9 +174,10 @@ Abort controller can be useful, e.g., when end-user wants to stop the stream or 
 
 #### Stream Options
 
-The orchestration service offers multiple streaming options, which you can configure in addition to the llm's streaming options. There are two ways to add specific streaming options to your client, either at initalization, or dynamically when calling the stream API.
+The orchestration service offers multiple streaming options, which you can configure in addition to the LLM's streaming options.
+There are two ways to add specific streaming options to your client, either at initalization, or dynamically when calling the stream API.
 
-Dynamically setting these options after client initialization is particularly helpful when you've initialized a client with a config ment for regular chat completion and now want to switch to using streaming.
+Dynamically setting these options after client initialization is particularly helpful when you've initialized a client with a config meant for regular chat completion and now want to switch to using streaming.
 
 You can check the list of available stream options in the [orchestration service's documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/streaming).
 
