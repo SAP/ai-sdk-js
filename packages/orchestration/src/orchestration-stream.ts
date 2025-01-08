@@ -14,13 +14,13 @@ const logger = createLogger({
 });
 
 /**
- * Chat completion stream containing post-processing functions.
+ * Orchestration stream containing post-processing functions.
  */
 export class OrchestrationStream<Item> extends SseStream<Item> {
   /**
-   * Create a chat completion stream based on the http response.
+   * Create an orchestration stream based on the http response.
    * @param response - Http response.
-   * @returns Chat completion stream.
+   * @returns An orchestration stream.
    * @internal
    */
   public static _create(
@@ -37,7 +37,7 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
 
   /**
    * Wrap raw chunk data with chunk response class to provide helper functions.
-   * @param stream - Chat completion stream.
+   * @param stream - Orchestration stream.
    * @internal
    */
   static async *_processChunk(
@@ -113,16 +113,15 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
 
   /**
    * Transform a stream of chunks into a stream of content strings.
-   * @param stream - Chat completion stream.
+   * @param stream - Orchestration stream.
    * @param choiceIndex - The index of the choice to parse.
    * @internal
    */
   static async *_processContentStream(
     stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
-    choiceIndex = 0
   ): AsyncGenerator<string> {
     for await (const chunk of stream) {
-      const deltaContent = chunk.getDeltaContent(choiceIndex);
+      const deltaContent = chunk.getDeltaContent();
       if (!deltaContent) {
         continue;
       }
@@ -160,12 +159,16 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
     return new OrchestrationStream(() => processFn(this), this.controller);
   }
 
+  /**
+   * Transform the stream of chunks into a stream of content strings.
+   * @param this - Orchestration stream.
+   * @returns A stream of content strings.
+   */
   public toContentStream(
-    this: OrchestrationStream<OrchestrationStreamChunkResponse>,
-    choiceIndex?: number
+    this: OrchestrationStream<OrchestrationStreamChunkResponse>
   ): OrchestrationStream<string> {
     return new OrchestrationStream(
-      () => OrchestrationStream._processContentStream(this, choiceIndex),
+      () => OrchestrationStream._processContentStream(this),
       this.controller
     );
   }

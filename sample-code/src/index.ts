@@ -12,7 +12,7 @@ export {
   orchestrationOutputFiltering,
   orchestrationRequestConfig,
   orchestrationCompletionMasking,
-  orchestrationFromJSON,
+  orchestrationFromJson,
   orchestrationGrounding
 } from './orchestration.js';
 export {

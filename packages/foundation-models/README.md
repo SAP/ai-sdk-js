@@ -178,7 +178,7 @@ console.log(`Token usage: ${JSON.stringify(tokenUsage)}\n`);
 
 ##### Streaming the Delta Content
 
-The client provides a helper method to extract delta content and stream string directly.
+The client provides a helper method to extract the text chunks as strings:
 
 ```ts
 for await (const chunk of response.stream.toContentStream()) {

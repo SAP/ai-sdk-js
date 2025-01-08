@@ -44,14 +44,14 @@ export function addStreamOptionsToLlmModuleConfig(
   llmModuleConfig: LlmModuleConfig,
   streamOptions?: StreamOptions
 ): LlmModuleConfig {
-  if (!streamOptions?.llm) {
+  if (streamOptions?.llm === undefined) {
     return llmModuleConfig;
   }
   return {
     ...llmModuleConfig,
     model_params: {
       ...llmModuleConfig.model_params,
-      ...((streamOptions && streamOptions?.llm !== null) || llmModuleConfig.model_params.stream_options) && {
+      ...(streamOptions?.llm !== null && {
         stream_options: {
           include_usage: true,
           ...(llmModuleConfig.model_params.stream_options || {}),

@@ -14,7 +14,7 @@ import {
   orchestrationOutputFiltering,
   orchestrationRequestConfig,
   chatCompletionStream as orchestrationChatCompletionStream,
-  orchestrationFromJSON,
+  orchestrationFromJson,
   orchestrationGrounding
 } from './orchestration.js';
 import {
@@ -252,7 +252,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       inputFiltering: orchestrationInputFiltering,
       outputFiltering: orchestrationOutputFiltering,
       requestConfig: orchestrationRequestConfig,
-      fromJSON: orchestrationFromJSON
+      fromJson: orchestrationFromJson
     }[sampleCase] || orchestrationChatCompletion;
 
   try {

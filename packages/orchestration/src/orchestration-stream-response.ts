@@ -2,7 +2,7 @@ import type { TokenUsage } from './client/api/schema/index.js';
 import type { OrchestrationStream } from './orchestration-stream.js';
 
 /**
- * Orchestration chat completion stream response.
+ * Orchestration stream response.
  */
 export class OrchestrationStreamResponse<T> {
   private _usage: TokenUsage | undefined;

@@ -87,7 +87,7 @@ In addition to the examples below, you can find more **sample code** [here](http
 
 ### Streaming
 
-The `OrchestrationClient` supports streaming response for chat completion requests based on the [Server-sent events](https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events) standard.
+The `OrchestrationClient` supports streaming responses for chat completion requests based on the [Server-sent events](https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events) standard.
 
 Use the `stream()` method to receive a stream of chunk responses from the model.
 After consuming the stream, call the helper methods to get the finish reason and token usage information.
@@ -122,7 +122,7 @@ console.log(`Token usage: ${JSON.stringify(tokenUsage)}\n`);
 
 #### Streaming the Delta Content
 
-The client provides a helper method to extract delta content and stream string directly.
+The client provides a helper method to extract the text chunks as strings:
 
 ```ts
 for await (const chunk of response.stream.toContentStream()) {
@@ -130,8 +130,7 @@ for await (const chunk of response.stream.toContentStream()) {
 }
 ```
 
-Each chunk will be a defined string containing the delta content.
-Set `choiceIndex` parameter for `toContentStream()` method to stream a specific choice.
+Each chunk will be a string containing the delta content.
 
 #### Streaming with Abort Controller
 
@@ -172,6 +171,34 @@ for await (const chunk of response.stream) {
 
 In this example, streaming request will be aborted after one second.
 Abort controller can be useful, e.g., when end-user wants to stop the stream or refreshes the page.
+
+#### Stream Options
+The orchestration service offers multiple streaming options, which you can configure in addition to the llm's streaming options. There are two ways to add specific streaming options to your client, either at initalization, or dynamically when calling the stream API.
+
+Dynamically setting these options after client initialization is particularly helpful when you've initialized a client with a config ment for regular chat completion and now want to switch to using streaming.
+
+You can check the list of available stream options in the [orchestration service's documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/streaming).
+
+An example for setting the streaming options when calling the stream API looks like the following:
+```ts
+const response = orchestrationClient.stream(
+  {
+    inputParams: { country: 'France' }
+  },
+  controller,
+  {
+    llm: { include_usage: false },
+    global: { chunk_size: 10 },
+    outputFiltering: { overlap: 200 }
+  }
+)
+```
+
+Usage metrics are collected by default, if you do not want to receive them, set include_usage to false.
+If you don't want any streaming options as part of your call to the LLM, set options.llm = null.
+
+> [!NOTE]
+> When initalizing a client with a JSON module config, providing streaming options is not possible.
 
 ### Templating
 

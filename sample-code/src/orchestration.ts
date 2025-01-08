@@ -61,13 +61,13 @@ export async function chatCompletionStream(
       template: [
         {
           role: 'user',
-          content: 'Give me a short introduction of SAP Cloud SDK.'
+          content: 'Give me a long introduction of {{?input}}'
         }
       ]
     }
   });
 
-  const response = await orchestrationClient.stream(undefined, controller);
+  const response = await orchestrationClient.stream({ inputParams: { input: 'SAP Cloud SDK' } }, controller);
   return response;
 }
 
@@ -245,7 +245,7 @@ export async function orchestrationRequestConfig(): Promise<OrchestrationRespons
  * Use the orchestration service with JSON obtained from AI Launchpad.
  * @returns The orchestration service response.
  */
-export async function orchestrationFromJSON(): Promise<
+export async function orchestrationFromJson(): Promise<
   OrchestrationResponse | undefined
 > {
   // You can also provide the JSON configuration as a plain string in the code directly instead.

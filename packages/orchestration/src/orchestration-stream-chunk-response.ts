@@ -5,7 +5,7 @@ import type {
 } from './client/api/schema/index.js';
 
 /**
- * Orchestration chat completion stream chunk response.
+ * Orchestration stream chunk response.
  */
 export class OrchestrationStreamChunkResponse {
   constructor(public readonly data: CompletionPostResponseStreaming) {
