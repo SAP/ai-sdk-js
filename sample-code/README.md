@@ -134,7 +134,13 @@ Get chat completion response for a given static input.
 `GET orchestration/template`
 
 Get chat completion response with template and input parameters.
-Define variable by wrapping it with `{{? ... }}`.
+Define variable by wrapping it with `{{?...}}`.
+
+#### Image Recognition
+
+`GET orchestration/image`
+
+Get chat completion response with image input.
 
 #### Input Filtering
 

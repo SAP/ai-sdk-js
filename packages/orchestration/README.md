@@ -235,7 +235,8 @@ const response = await orchestrationClient.chatCompletion({
 ```
 
 `IMAGE_URL` can either be a public URL or a base64 encoded image, e.g., `data:image/jpeg;base64,...`.
-The model can take multiple images. It will process each image and use the information from all of them to answer the question.
+The model can take multiple images. 
+It will process each image and use the information from all of them to answer the question.
 
 ### Content Filtering
 
