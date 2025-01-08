@@ -67,7 +67,10 @@ export async function chatCompletionStream(
     }
   });
 
-  const response = await orchestrationClient.stream({ inputParams: { input: 'SAP Cloud SDK' } }, controller);
+  const response = await orchestrationClient.stream(
+    { inputParams: { input: 'SAP Cloud SDK' } },
+    controller
+  );
   return response;
 }
 

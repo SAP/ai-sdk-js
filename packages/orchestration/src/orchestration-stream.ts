@@ -118,7 +118,7 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
    * @internal
    */
   static async *_processContentStream(
-    stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
+    stream: OrchestrationStream<OrchestrationStreamChunkResponse>
   ): AsyncGenerator<string> {
     for await (const chunk of stream) {
       const deltaContent = chunk.getDeltaContent();

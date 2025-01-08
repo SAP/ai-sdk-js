@@ -173,6 +173,7 @@ In this example, streaming request will be aborted after one second.
 Abort controller can be useful, e.g., when end-user wants to stop the stream or refreshes the page.
 
 #### Stream Options
+
 The orchestration service offers multiple streaming options, which you can configure in addition to the llm's streaming options. There are two ways to add specific streaming options to your client, either at initalization, or dynamically when calling the stream API.
 
 Dynamically setting these options after client initialization is particularly helpful when you've initialized a client with a config ment for regular chat completion and now want to switch to using streaming.
@@ -180,6 +181,7 @@ Dynamically setting these options after client initialization is particularly he
 You can check the list of available stream options in the [orchestration service's documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/streaming).
 
 An example for setting the streaming options when calling the stream API looks like the following:
+
 ```ts
 const response = orchestrationClient.stream(
   {
@@ -191,7 +193,7 @@ const response = orchestrationClient.stream(
     global: { chunk_size: 10 },
     outputFiltering: { overlap: 200 }
   }
-)
+);
 ```
 
 Usage metrics are collected by default, if you do not want to receive them, set include_usage to false.
