@@ -33,7 +33,7 @@ export async function orchestrationChatCompletion(): Promise<OrchestrationRespon
     }
   });
 
-  // execute the requestcontroller
+  // execute the request
   const result = await orchestrationClient.chatCompletion();
 
   // use getContent() to access the LLM response
@@ -43,7 +43,7 @@ export async function orchestrationChatCompletion(): Promise<OrchestrationRespon
 }
 
 /**
- * Ask GPT 3.5 through the orchestration service about SAP Cloud SDK with streaming.
+ * Ask ChatGPT through the orchestration service about SAP Cloud SDK with streaming.
  * @param controller - The abort controller.
  * @returns The response from Azure OpenAI containing the response content.
  */
