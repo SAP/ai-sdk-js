@@ -88,9 +88,7 @@ export function constructCompletionPostRequest(
   return {
     orchestration_config: {
       module_configurations: {
-        templating_module_config: {
-          template: config.templating.template
-        },
+        templating_module_config: config.templating,
         llm_module_config: config.llm,
         ...(Object.keys(config?.filtering || {}).length && {
           filtering_module_config: config.filtering
