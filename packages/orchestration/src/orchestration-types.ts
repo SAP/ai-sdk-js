@@ -89,7 +89,7 @@ export interface StreamOptions {
   /**
    * LLM specific stream options.
    */
-  llm?: { includeUsage?: boolean; [key: string]: any };
+  llm?: { include_usage?: boolean; [key: string]: any };
   /**
    * Output filtering stream options.
    */

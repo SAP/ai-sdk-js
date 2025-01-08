@@ -63,7 +63,7 @@ export class OrchestrationClient {
   async stream(
     prompt?: Prompt,
     controller = new AbortController(),
-    options?: StreamOptions,
+    options: StreamOptions = {},
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
     if (typeof this.config === 'string' && options) {
