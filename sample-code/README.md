@@ -131,14 +131,14 @@ Get chat completion response for a given static input.
 
 #### Templating
 
-`GET orchestration/template`
+`GET /orchestration/template`
 
 Get chat completion response with template and input parameters.
 Define variable by wrapping it with `{{?...}}`.
 
 #### Image Recognition
 
-`GET orchestration/image`
+`GET /orchestration/image`
 
 Get chat completion response with image input.
 
