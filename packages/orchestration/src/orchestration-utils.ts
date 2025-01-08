@@ -51,7 +51,7 @@ export function addStreamOptionsToLlmModuleConfig(
     ...llmModuleConfig,
     model_params: {
       ...llmModuleConfig.model_params,
-      ...((streamOptions || llmModuleConfig.model_params.stream_options) && {
+      ...((streamOptions && streamOptions?.llm !== null) || llmModuleConfig.model_params.stream_options) && {
         stream_options: {
           include_usage: true,
           ...(llmModuleConfig.model_params.stream_options || {}),
