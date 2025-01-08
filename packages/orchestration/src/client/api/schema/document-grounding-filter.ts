@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -34,4 +34,4 @@ export type DocumentGroundingFilter = {
    * Restrict chunks considered during search to those with the given metadata.
    */
   chunk_metadata?: KeyValueListPair[];
-} & Record<string, any>;
+};

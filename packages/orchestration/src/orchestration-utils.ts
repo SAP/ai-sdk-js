@@ -128,9 +128,7 @@ export function constructCompletionPostRequest(
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
   const moduleConfigurations = {
-    templating_module_config: {
-      template: config.templating.template
-    },
+    templating_module_config: config.templating,
     llm_module_config: config.llm,
     ...(config?.filtering &&
       Object.keys(config.filtering).length && {
