@@ -34,11 +34,27 @@ export type AwsBedrockChatModel = LiteralUnion<
   | 'anthropic--claude-3-opus'
   | 'anthropic--claude-3-sonnet'
   | 'anthropic--claude-3.5-sonnet'
+  | 'amazon--titan-text-express'
+  | 'amazon--titan-text-lite'
+  | 'amazon--nova-pro'
+  | 'amazon--nova-lite'
+  | 'amazon--nova-micro'
+>;
+
+/**
+ * AI Core Aleph Alpha models for chat completion.
+ */
+export type AiCoreAlephAlphaChatModel = LiteralUnion<
+  'alephalpha-pharia-1-7b-control' | 'alephalpha-pharia-1-66b-control'
 >;
 
 /**
  * AI Core open source models for chat completion.
  */
 export type AiCoreOpenSourceChatModel = LiteralUnion<
-  'mistralai--mixtral-8x7b-instruct-v01' | 'meta--llama3-70b-instruct'
+  | 'mistralai--mixtral-8x7b-instruct-v01'
+  | 'mistralai--mistral-large-instruct'
+  | 'meta--llama3-70b-instruct'
+  | 'meta--llama3.1-70b-instruct'
+  | 'ibm--granite-13b-chat'
 >;
