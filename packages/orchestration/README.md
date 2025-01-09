@@ -175,9 +175,10 @@ Abort controller can be useful, e.g., when end-user wants to stop the stream or 
 #### Stream Options
 
 The orchestration service offers multiple streaming options, which you can configure in addition to the LLM's streaming options.
-There are two ways to add specific streaming options to your client, either at initalization, or dynamically when calling the stream API.
+These include options like definining the maximum number of characters per chunk or modifying the output filter behavior.
+There are two ways to add specific streaming options to your client, either at initialization of orchestration client, or when calling the stream API.
 
-Dynamically setting these options after client initialization is particularly helpful when you've initialized a client with a config meant for regular chat completion and now want to switch to using streaming.
+Setting streaming options dynamically could be useful if an initialized orchestration client will also be used for streaming.
 
 You can check the list of available stream options in the [orchestration service's documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/streaming).
 
@@ -197,8 +198,8 @@ const response = orchestrationClient.stream(
 );
 ```
 
-Usage metrics are collected by default, if you do not want to receive them, set include_usage to false.
-If you don't want any streaming options as part of your call to the LLM, set options.llm = null.
+Usage metrics are collected by default, if you do not want to receive them, set `include_usage` to `false`.
+If you don't want any streaming options as part of your call to the LLM, set `streamOptions.llm` to `null`.
 
 > [!NOTE]
 > When initalizing a client with a JSON module config, providing streaming options is not possible.

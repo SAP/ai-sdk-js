@@ -435,4 +435,6 @@ describe('orchestration service client', () => {
       'Could not parse JSON'
     );
   });
+
+  // add test for executing streaming with options with a JSON client, check for warning log<f
 });

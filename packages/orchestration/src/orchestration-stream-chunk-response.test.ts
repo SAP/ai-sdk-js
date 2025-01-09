@@ -3,8 +3,7 @@ import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-r
 
 describe('Orchestration chat completion stream chunk response', () => {
   let mockResponses: {
-    tokenUsageResponse: any;
-    finishReasonResponse: any;
+    tokenUsageAndFinishReasonResponse: any;
     deltaContentResponse: any;
   };
   let orchestrationStreamChunkResponses: {
@@ -15,13 +14,9 @@ describe('Orchestration chat completion stream chunk response', () => {
 
   beforeAll(async () => {
     mockResponses = {
-      tokenUsageResponse: await parseMockResponse<any>(
+      tokenUsageAndFinishReasonResponse: await parseMockResponse<any>(
         'orchestration',
-        'orchestration-chat-completion-stream-chunk-response-token-usage.json'
-      ),
-      finishReasonResponse: await parseMockResponse<any>(
-        'orchestration',
-        'orchestration-chat-completion-stream-chunk-response-finish-reason.json'
+        'orchestration-chat-completion-stream-chunk-response-token-usage-and-finish-reason.json'
       ),
       deltaContentResponse: await parseMockResponse<any>(
         'orchestration',
@@ -30,10 +25,10 @@ describe('Orchestration chat completion stream chunk response', () => {
     };
     orchestrationStreamChunkResponses = {
       tokenUsageResponse: new OrchestrationStreamChunkResponse(
-        mockResponses.tokenUsageResponse
+        mockResponses.tokenUsageAndFinishReasonResponse
       ),
       finishReasonResponse: new OrchestrationStreamChunkResponse(
-        mockResponses.finishReasonResponse
+        mockResponses.tokenUsageAndFinishReasonResponse
       ),
       deltaContentResponse: new OrchestrationStreamChunkResponse(
         mockResponses.deltaContentResponse
@@ -44,10 +39,10 @@ describe('Orchestration chat completion stream chunk response', () => {
   it('should return the chat completion stream chunk response', () => {
     expect(
       orchestrationStreamChunkResponses.tokenUsageResponse.data
-    ).toStrictEqual(mockResponses.tokenUsageResponse);
+    ).toStrictEqual(mockResponses.tokenUsageAndFinishReasonResponse);
     expect(
       orchestrationStreamChunkResponses.finishReasonResponse.data
-    ).toStrictEqual(mockResponses.finishReasonResponse);
+    ).toStrictEqual(mockResponses.tokenUsageAndFinishReasonResponse);
     expect(
       orchestrationStreamChunkResponses.deltaContentResponse.data
     ).toStrictEqual(mockResponses.deltaContentResponse);
