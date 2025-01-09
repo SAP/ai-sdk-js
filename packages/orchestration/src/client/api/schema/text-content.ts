@@ -5,9 +5,9 @@
  */
 
 /**
- * Representation of the 'ChatDelta' schema.
+ * Representation of the 'TextContent' schema.
  */
-export type ChatDelta = {
-  role?: string;
-  content: string;
+export type TextContent = {
+  type: 'text';
+  text: string;
 } & Record<string, any>;
