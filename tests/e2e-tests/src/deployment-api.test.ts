@@ -59,8 +59,10 @@ describe('DeploymentApi', () => {
     await new Promise(r => setTimeout(r, 60000));
     const finalDeployments = await getDeployments(resourceGroup);
 
-    if(finalDeployments.count) {
-      expect(finalDeployments.resources.map(deployment => deployment.id)).not.toContain(createdDeploymentId);
+    if (finalDeployments.count) {
+      expect(
+        finalDeployments.resources.map(deployment => deployment.id)
+      ).not.toContain(createdDeploymentId);
     }
   }, 75000);
 });
