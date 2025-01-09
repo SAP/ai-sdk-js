@@ -1,43 +1,11 @@
-export type {
-  CompletionPostResponse,
-  ChatMessages,
-  TokenUsage,
-  TemplatingModuleConfig,
-  OrchestrationConfig,
-  ModuleResults,
-  ModuleConfigs,
-  MaskingModuleConfig,
-  MaskingProviderConfig,
-  GroundingModuleConfig,
-  DocumentGroundingFilter,
-  GroundingFilterId,
-  GroundingFilterSearchConfiguration,
-  DataRepositoryType,
-  KeyValueListPair,
-  SearchDocumentKeyValueListPair,
-  SearchSelectOptionEnum,
-  LlmModuleResult,
-  LlmChoice,
-  GenericModuleResult,
-  FilteringModuleConfig,
-  InputFilteringConfig,
-  OutputFilteringConfig,
-  FilterConfig,
-  ErrorResponse,
-  DpiEntities,
-  DpiEntityConfig,
-  DpiConfig,
-  CompletionPostRequest,
-  ChatMessage,
-  AzureThreshold,
-  AzureContentSafety,
-  AzureContentSafetyFilterConfig
-} from './client/api/schema/index.js';
+export * from './client/api/schema/index.js';
 
 export type {
   OrchestrationModuleConfig,
   LlmModuleConfig,
-  Prompt
+  Prompt,
+  RequestOptions,
+  StreamOptions
 } from './orchestration-types.js';
 
 export { OrchestrationStreamResponse } from './orchestration-stream-response.js';
