@@ -62,15 +62,8 @@ export interface OrchestrationModuleConfig {
 /**
  * Represents a filter configuration for the Document Grounding Service.
  */
-export type DocumentGroundingServiceFilter = Pick<
-  DocumentGroundingFilter,
-  | 'id'
-  | 'search_config'
-  | 'data_repositories'
-  | 'data_repository_metadata'
-  | 'document_metadata'
-  | 'chunk_metadata'
-> & {
+export type DocumentGroundingServiceFilter = Omit<
+  DocumentGroundingFilter, 'data_repository_type'> & {
   /**
    * Defines the type of data repository.
    * If not set, the default value is 'vector'.
