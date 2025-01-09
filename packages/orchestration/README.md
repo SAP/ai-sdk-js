@@ -287,6 +287,7 @@ return response.getContent();
 ### Grounding
 
 Grounding enables integrating external, contextually relevant, domain-specific, or real-time data into AI processes.
+The grounding configuration can be provided as a raw JSON object or by using the `buildDocumentGroundingConfig()` function,  function, which requires only the minimal mandatory values.
 
 ```ts
 const orchestrationClient = new OrchestrationClient({
@@ -304,44 +305,22 @@ const orchestrationClient = new OrchestrationClient({
     ],
     defaults: {}
   },
-  grounding: {
-    type: 'document_grounding_service',
-    config: {
-      filters: [
+  grounding: buildDocumentGroundingConfig(
+    input_params: ['groundingRequest'],
+    output_param: 'groundingOutput',
+    filters: [
         {
           id: 'filter1',
-          data_repositories: ['*'],
-          search_config: {},
-          data_repository_type: 'vector'
+          data_repositories: ['repository-id']
         }
       ],
-      input_params: ['groundingRequest'],
-      output_param: 'groundingOutput'
-    }
-  }
+    )
 });
 
 const response = await orchestrationClient.chatCompletion({
   inputParams: { groundingRequest: 'What is Generative AI Hub in SAP AI Core?' }
 });
 return response.getContent();
-```
-
-Instead of defining the configuration as a raw JSON object, the `buildDocumentGroundingConfig()` function can be used to create the configuration by specifying only the minimal required values.
-
-```ts
-import {
-  buildDocumentGroundingConfig
-} from '@sap-ai-sdk/orchestration';
-
-const orchestrationConfig: {
-  ...,
-  grounding: buildDocumentGroundingConfig(
-    input_params: ['groundingInput'],
-    output_param: 'groundingOutput',
-    filters: [{id: 'filter1', data_repositories: ['repository-id'] }]
-    )
-}
 ```
 
 ### Using a JSON Configuration from AI Launchpad
