@@ -33,7 +33,7 @@ export type LlmModuleConfig = OriginalLlmModuleConfig & {
 };
 
 /**
- * Module Parameters for LLM module configuration.
+ * Model Parameters for LLM module configuration.
  */
 export type LlmModelParams = {
   max_tokens?: number;

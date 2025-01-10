@@ -1,4 +1,4 @@
-import { expectError, expectType } from 'tsd';
+import { expectError, expectType, expectAssignable } from 'tsd';
 import {
   OrchestrationClient,
   CompletionPostResponse,
@@ -214,7 +214,7 @@ expectError<any>(
 /**
  * Model parameters should accept known typed parameters and arbitrary parameters.
  */
-expectType<LlmModelParams>({
+expectAssignable<LlmModelParams>({
   max_tokens: 50,
   temperature: 0.2,
   random_property: 'random - value'
