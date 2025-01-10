@@ -244,18 +244,28 @@ Use the orchestration client with filtering to restrict content that is passed t
 
 This feature allows filtering both the [input](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-orchestration#content-filtering-on-input) and [output](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-orchestration#content-filtering-on-input) of a model based on content safety criteria.
 
+#### Azure Content Filter
+
+Use `ContentFilters.azure()` to build an Azure content filter.
+The Azure content filter supports four categories: `Hate`, `Violence`, `Sexual`, and `SelfHarm`.
+Each category can be configured with severity levels of 0, 2, 4, or 6.
+
+Here is a complete example of using an Azure content filter for both input and output:
+
 ```ts
 import { OrchestrationClient, ContentFilters } from '@sap-ai-sdk/orchestration';
+const llm = {
+  model_name: 'gpt-4o',
+  model_params: { max_tokens: 50, temperature: 0.1 }
+};
+const templating = {
+  template: [{ role: 'user', content: '{{?input}}' }]
+};
 
 const filter = ContentFilters.azure({ Hate: 2, Violence: 4 });
 const orchestrationClient = new OrchestrationClient({
-  llm: {
-    model_name: 'gpt-4o',
-    model_params: { max_tokens: 50, temperature: 0.1 }
-  },
-  templating: {
-    template: [{ role: 'user', content: '{{?input}}' }]
-  },
+  llm,
+  templating,
   filtering: {
     input: {
       filters: [filter]
@@ -276,26 +286,18 @@ try {
 }
 ```
 
+#### Error Handling
+
 Both `chatCompletion()` and `getContent()` methods can throw errors.
 
-- **axios errors**:  
+- **Axios Errors**:  
   When the chat completion request fails with a `400` status code, the caught error will be an `Axios` error.
   The property `error.response.data.message` may provide additional details about the failure's cause.
 
-- **output content filtered**:  
+- **Output Content Filtered**:  
   The method `getContent()` can throw an error if the output filter filters the model output.
   This can occur even if the chat completion request responds with a `200` HTTP status code.
   The `error.message` property indicates if the output was filtered.
-
-Therefore, handle errors appropriately to ensure meaningful feedback for both types of errors.
-
-`ContentFilters` contains helper functions to create content filters.
-
-#### Azure Content Filter
-
-Use `ContentFilters.azure()` to build an Azure content filter.
-The Azure content filter supports four categories: `Hate`, `Violence`, `Sexual`, and `SelfHarm`.
-Each category can be configured with severity levels of 0, 2, 4, or 6.
 
 ### Data Masking
 
