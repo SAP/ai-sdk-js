@@ -29,7 +29,20 @@ export interface Prompt {
 export type LlmModuleConfig = OriginalLlmModuleConfig & {
   /** */
   model_name: ChatModel;
+  model_params?: LlmModelParams;
 };
+
+/**
+ * Model Parameters for LLM module configuration.
+ */
+export type LlmModelParams = {
+  max_tokens?: number;
+  temperature?: number;
+  frequency_penalty?: number;
+  presence_penalty?: number;
+  top_p?: number;
+  n?: number;
+} & Record<string, any>;
 
 /**
  * Orchestration module configuration.

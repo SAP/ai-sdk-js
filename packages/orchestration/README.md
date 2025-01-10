@@ -64,9 +64,10 @@ Consequently, each orchestration deployment uniquely maps to a resource group wi
 ## Usage
 
 Leverage the orchestration service capabilities by using the orchestration client.
-Configure the LLM module by setting the `model_name` and `model_params` properties.
+Configure the LLM module by setting the `model_name` property.
 Define the optional `model_version` property to choose an available model version.
 By default, the version is set to `latest`.
+Specify the optional `model_params` property to apply specific parameters to the model
 
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
@@ -203,8 +204,7 @@ import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
   llm: {
-    model_name: 'gpt-4o',
-    model_params: {}
+    model_name: 'gpt-4o'
   },
   templating: {
     template: [
@@ -299,8 +299,7 @@ You can anonymize or pseudonomize the prompt using the data masking capabilities
 ```ts
 const orchestrationClient = new OrchestrationClient({
   llm: {
-    model_name: 'gpt-4o',
-    model_params: {}
+    model_name: 'gpt-4o'
   },
   templating: {
     template: [
@@ -335,8 +334,7 @@ Grounding enables integrating external, contextually relevant, domain-specific, 
 ```ts
 const orchestrationClient = new OrchestrationClient({
   llm: {
-    model_name: 'gpt-35-turbo',
-    model_params: {}
+    model_name: 'gpt-35-turbo'
   },
   templating: {
     template: [

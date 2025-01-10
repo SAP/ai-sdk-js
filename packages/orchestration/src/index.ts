@@ -41,12 +41,13 @@ export type {
 export type {
   OrchestrationModuleConfig,
   LlmModuleConfig,
-  Prompt
+  Prompt,
+  LlmModelParams
 } from './orchestration-types.js';
 
 export { OrchestrationClient } from './orchestration-client.js';
 
-export { buildAzureContentFilter } from './orchestration-filter-utility.js';
+export { buildAzureContentFilter } from './orchestration-utils.js';
 
 export { OrchestrationResponse } from './orchestration-response.js';
 
