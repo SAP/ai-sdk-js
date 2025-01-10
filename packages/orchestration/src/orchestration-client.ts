@@ -22,7 +22,10 @@ import type {
 import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
-const logger = createLogger({ messageContext: 'orchestration-client' });
+const logger = createLogger({
+  package: 'orchestration',
+  messageContext: 'orchestration-client'
+});
 
 /**
  * Get the orchestration client.

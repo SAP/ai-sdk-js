@@ -55,4 +55,7 @@ describe('orchestration', () => {
     const result = await orchestrationCompletionMasking();
     expect(result).toEqual(expect.any(String));
   });
+
+  // add e2e test
+  // java tests only that there is any response
 });

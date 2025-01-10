@@ -1,4 +1,6 @@
 import nock from 'nock';
+import { jest } from '@jest/globals';
+import { createLogger } from '@sap-cloud-sdk/util';
 import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
@@ -28,6 +30,21 @@ describe('orchestration service client', () => {
   afterEach(() => {
     nock.cleanAll();
   });
+
+  const jsonConfig = `{
+    "module_configurations": {
+      "llm_module_config": {
+        "model_name": "gpt-35-turbo-16k",
+        "model_params": {
+          "max_tokens": 50,
+          "temperature": 0.1
+        }
+      },
+      "templating_module_config": {
+        "template": [{ "role": "user", "content": "What is the capital of France?" }]
+      }
+    }
+  }`;
 
   it('calls chatCompletion with minimum configuration', async () => {
     const config: OrchestrationModuleConfig = {
@@ -66,22 +83,15 @@ describe('orchestration service client', () => {
     expect(response.getTokenUsage().completion_tokens).toEqual(9);
   });
 
-  it('calls chatCompletion with valid JSON configuration', async () => {
-    const jsonConfig = `{
-      "module_configurations": {
-        "llm_module_config": {
-          "model_name": "gpt-35-turbo-16k",
-          "model_params": {
-            "max_tokens": 50,
-            "temperature": 0.1
-          }
-        },
-        "templating_module_config": {
-          "template": [{ "role": "user", "content": "What is the capital of France?" }]
-        }
-      }
-    }`;
+  it('should throw an error when invalid JSON is provided', () => {
+    const invalidJsonConfig = '{ "module_configurations": {}, ';
 
+    expect(() => new OrchestrationClient(invalidJsonConfig)).toThrow(
+      'Could not parse JSON'
+    );
+  });
+
+  it('calls chatCompletion with valid JSON configuration', async () => {
     const mockResponse = await parseMockResponse<CompletionPostResponse>(
       'orchestration',
       'orchestration-chat-completion-success-response.json'
@@ -428,13 +438,56 @@ describe('orchestration service client', () => {
     }
   });
 
-  it('should throw an error when invalid JSON is provided', () => {
-    const invalidJsonConfig = '{ "module_configurations": {}, ';
-
-    expect(() => new OrchestrationClient(invalidJsonConfig)).toThrow(
-      'Could not parse JSON'
+  it('executes a streaming request with JSON config and logs warning for stream options', async () => {
+    const mockResponse = await parseFileToString(
+      'orchestration',
+      'orchestration-chat-completion-stream-chunks.txt'
     );
-  });
 
-  // add test for executing streaming with options with a JSON client, check for warning log<f
+    mockInference(
+      {
+        data: constructCompletionPostRequestFromJsonModuleConfig(
+          JSON.parse(jsonConfig),
+          undefined,
+          true
+        )
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    const logger = createLogger({
+      package: 'orchestration',
+      messageContext: 'orchestration-client'
+    });
+
+    const warnSpy = jest.spyOn(logger, 'warn');
+
+    const response = await new OrchestrationClient(jsonConfig).stream(
+      undefined,
+      undefined,
+      {
+        outputFiltering: { overlap: 100 }
+      }
+    );
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      'Stream options are not supported when using a JSON module config.'
+    );
+
+    const initialResponse = await parseFileToString(
+      'orchestration',
+      'orchestration-chat-completion-stream-chunk-response-initial.json'
+    );
+
+    for await (const chunk of response.stream) {
+      expect(chunk.data).toEqual(JSON.parse(initialResponse));
+      break;
+    }
+  });
 });

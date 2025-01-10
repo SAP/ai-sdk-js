@@ -13,7 +13,10 @@ import type {
   OrchestrationModuleConfig
 } from './orchestration-types.js';
 
-const logger = createLogger({ messageContext: 'orchestration-utils' });
+const logger = createLogger({
+  package: 'orchestration',
+  messageContext: 'orchestration-utils'
+});
 
 /**
  * @internal
@@ -44,7 +47,7 @@ export function addStreamOptionsToLlmModuleConfig(
   llmModuleConfig: LlmModuleConfig,
   streamOptions?: StreamOptions
 ): LlmModuleConfig {
-  if (streamOptions?.llm === undefined) {
+  if (streamOptions?.llm === null) {
     return llmModuleConfig;
   }
   return {
@@ -55,7 +58,7 @@ export function addStreamOptionsToLlmModuleConfig(
         stream_options: {
           include_usage: true,
           ...(llmModuleConfig.model_params.stream_options || {}),
-          ...streamOptions.llm
+          ...(streamOptions?.llm || {})
         }
       })
     }
@@ -97,7 +100,7 @@ export function addStreamOptions(
 
   return {
     stream: true,
-    stream_options: globalOptions,
+    ...(globalOptions && { stream_options: globalOptions }),
     module_configurations: {
       ...moduleConfigs,
       llm_module_config: addStreamOptionsToLlmModuleConfig(
