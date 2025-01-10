@@ -13,7 +13,8 @@ export {
   orchestrationRequestConfig,
   orchestrationCompletionMasking,
   orchestrationFromJSON,
-  orchestrationGrounding
+  orchestrationGrounding,
+  orchestrationChatCompletionImage
 } from './orchestration.js';
 export {
   invoke,
