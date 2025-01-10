@@ -15,9 +15,7 @@ export function buildAzureContentFilter(
   filter?: AzureContentSafety
 ): InputFilteringConfig | OutputFilteringConfig {
   return {
-    filters: [
-      ContentFilters.azure(filter)
-    ]
+    filters: [ContentFilters.azure(filter)]
   };
 }
 

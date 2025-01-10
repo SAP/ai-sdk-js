@@ -1,7 +1,14 @@
-import { buildAzureContentFilter, ContentFilters } from './orchestration-filtering.js';
+import {
+  buildAzureContentFilter,
+  ContentFilters
+} from './orchestration-filtering.js';
 import { constructCompletionPostRequest } from './orchestration-client.js';
 import type { OrchestrationModuleConfig } from './orchestration-types.js';
-import type { CompletionPostRequest, FilterConfig, FilteringModuleConfig } from './client/api/schema/index.js';
+import type {
+  CompletionPostRequest,
+  FilterConfig,
+  FilteringModuleConfig
+} from './client/api/schema/index.js';
 
 describe('Content filters', () => {
   // TOOD: Remove this test collection once `buildAzureContentFilter` is removed.
