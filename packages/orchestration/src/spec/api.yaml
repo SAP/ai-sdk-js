@@ -270,6 +270,7 @@ components:
       type: object
       required:
         - model_name
+      additionalProperties: false
       properties:
         model_name:
           description: Model name as in LLM Access configuration
