@@ -204,8 +204,7 @@ import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
   llm: {
-    model_name: 'gpt-4o',
-    model_params: {}
+    model_name: 'gpt-4o'
   },
   templating: {
     template: [
