@@ -270,7 +270,6 @@ components:
       type: object
       required:
         - model_name
-        - model_params
       additionalProperties: false
       properties:
         model_name:

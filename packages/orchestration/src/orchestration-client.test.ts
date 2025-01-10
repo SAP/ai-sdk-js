@@ -268,8 +268,7 @@ describe('orchestration service client', () => {
   it('calls chatCompletion with grounding configuration', async () => {
     const config: OrchestrationModuleConfig = {
       llm: {
-        model_name: 'gpt-35-turbo',
-        model_params: {}
+        model_name: 'gpt-35-turbo'
       },
       templating: {
         template: [
@@ -337,8 +336,7 @@ describe('orchestration service client', () => {
 
     const config: OrchestrationModuleConfig = {
       llm: {
-        model_name: 'gpt-4o',
-        model_params: {}
+        model_name: 'gpt-4o'
       },
       templating: {
         template: [{ role: 'user', content: "What's my name?" }]

@@ -31,7 +31,11 @@ export type {
   ChatMessage,
   AzureThreshold,
   AzureContentSafety,
-  AzureContentSafetyFilterConfig
+  AzureContentSafetyFilterConfig,
+  ImageContent,
+  TextContent,
+  MultiChatMessageContent,
+  MultiChatMessage
 } from './client/api/schema/index.js';
 
 export type {
@@ -39,7 +43,8 @@ export type {
   LlmModuleConfig,
   Prompt,
   DocumentGroundingServiceConfig,
-  DocumentGroundingServiceFilter
+  DocumentGroundingServiceFilter,
+  LlmModelParams
 } from './orchestration-types.js';
 
 export { OrchestrationClient } from './orchestration-client.js';
