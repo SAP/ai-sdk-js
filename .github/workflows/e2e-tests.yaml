@@ -43,8 +43,6 @@ jobs:
             fi
           done
           wget -qO- -S --content-on-error localhost:8080
-      - name: 'Cleanup Deployments'
-        run: pnpm e2e-tests cleanup-deployments
       - name: 'Execute E2E Tests'
         run: pnpm test:e2e
       - name: 'Slack Notification'
