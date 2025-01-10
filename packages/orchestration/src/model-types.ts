@@ -1,6 +1,5 @@
 import type {
   AiCoreOpenSourceChatModel,
-  AiCoreAlephAlphaChatModel,
   AwsBedrockChatModel,
   AzureOpenAiChatModel,
   GcpVertexAiChatModel
@@ -13,5 +12,4 @@ export type ChatModel =
   | Exclude<AzureOpenAiChatModel, 'gpt-4o-mini'>
   | GcpVertexAiChatModel
   | AwsBedrockChatModel
-  | AiCoreAlephAlphaChatModel
   | AiCoreOpenSourceChatModel;

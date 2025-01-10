@@ -42,13 +42,6 @@ export type AwsBedrockChatModel = LiteralUnion<
 >;
 
 /**
- * AI Core Aleph Alpha models for chat completion.
- */
-export type AiCoreAlephAlphaChatModel = LiteralUnion<
-  'alephalpha-pharia-1-7b-control' | 'alephalpha-pharia-1-66b-control'
->;
-
-/**
  * AI Core open source models for chat completion.
  */
 export type AiCoreOpenSourceChatModel = LiteralUnion<
