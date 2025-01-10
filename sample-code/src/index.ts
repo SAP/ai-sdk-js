@@ -14,7 +14,9 @@ export {
   orchestrationCompletionMasking,
   orchestrationFromJson,
   orchestrationGrounding,
-  orchestrationChatCompletionImage
+  orchestrationChatCompletionImage,
+  chatCompletionStreamWithJsonModuleConfig,
+  chatCompletionStream
 } from './orchestration.js';
 export {
   invoke,

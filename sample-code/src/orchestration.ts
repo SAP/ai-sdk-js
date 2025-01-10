@@ -8,7 +8,8 @@ import type {
   LlmModuleConfig,
   OrchestrationStreamChunkResponse,
   OrchestrationStreamResponse,
-  OrchestrationResponse
+  OrchestrationResponse,
+  StreamOptions
 } from '@sap-ai-sdk/orchestration';
 
 const logger = createLogger({
@@ -44,10 +45,12 @@ export async function orchestrationChatCompletion(): Promise<OrchestrationRespon
 /**
  * Ask ChatGPT through the orchestration service about SAP Cloud SDK with streaming.
  * @param controller - The abort controller.
- * @returns The response from Azure OpenAI containing the response content.
+ * @param streamOptions - The stream options.
+ * @returns The response from the orchestration service containing the response content.
  */
 export async function chatCompletionStream(
-  controller: AbortController
+  controller: AbortController,
+  streamOptions?: StreamOptions
 ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
@@ -66,11 +69,43 @@ export async function chatCompletionStream(
     }
   });
 
-  const response = await orchestrationClient.stream(
+  return orchestrationClient.stream(
+    { inputParams: { input: 'SAP Cloud SDK' } },
+    controller,
+    streamOptions
+  );
+}
+
+/**
+ * Ask ChatGPT through the orchestration service about SAP Cloud SDK with streaming and JSON module configuration.
+ * @param controller - The abort controller.
+ * @returns The response from the orchestration service containing the response content.
+ */
+export async function chatCompletionStreamWithJsonModuleConfig(
+  controller: AbortController
+): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
+  const jsonConfig = `{
+    "module_configurations": {
+      "llm_module_config": {
+        "model_name": "gpt-35-turbo",
+        "model_params": {
+          "stream_options": {
+            "include_usage": true
+          }
+        }
+      },
+      "templating_module_config": {
+        "template": [{ "role": "user", "content": "Give me a long introduction of {{?input}}" }]
+      }
+    }
+  }`;
+
+  const orchestrationClient = new OrchestrationClient(jsonConfig);
+
+  return orchestrationClient.stream(
     { inputParams: { input: 'SAP Cloud SDK' } },
     controller
   );
-  return response;
 }
 
 const llm: LlmModuleConfig = {
