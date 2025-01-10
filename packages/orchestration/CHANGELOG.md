@@ -1,5 +1,18 @@
 # @sap-ai-sdk/orchestration
 
+## 1.5.0
+
+### Minor Changes
+
+- 17a1eea: [New Functionality] Add support for using a JSON configuration obtained from AI Launchpad to consume orchestration service.
+- b4a5506: [New Functionality] Add support for providing custom destination for AI Core besides using environment variable and service binding.
+
+### Patch Changes
+
+- Updated dependencies [b4a5506]
+  - @sap-ai-sdk/ai-api@1.5.0
+  - @sap-ai-sdk/core@1.5.0
+
 ## 1.4.0
 
 ### Minor Changes
