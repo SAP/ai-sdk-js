@@ -265,3 +265,39 @@ export async function orchestrationGrounding(): Promise<OrchestrationResponse> {
     }
   });
 }
+
+/**
+ * Ask about the image content using a template.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationChatCompletionImage(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    llm,
+    templating: {
+      template: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: 'Describe the image.'
+            },
+            {
+              type: 'image_url',
+              image_url: {
+                url: '{{?imageUrl}}'
+              }
+            }
+          ]
+        }
+      ]
+    }
+  });
+
+  return orchestrationClient.chatCompletion({
+    inputParams: {
+      imageUrl:
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png'
+    }
+  });
+}

@@ -14,7 +14,8 @@ import {
   orchestrationOutputFiltering,
   orchestrationRequestConfig,
   orchestrationFromJSON,
-  orchestrationGrounding
+  orchestrationGrounding,
+  orchestrationChatCompletionImage
 } from './orchestration.js';
 import {
   getDeployments,
@@ -251,7 +252,8 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       inputFiltering: orchestrationInputFiltering,
       outputFiltering: orchestrationOutputFiltering,
       requestConfig: orchestrationRequestConfig,
-      fromJSON: orchestrationFromJSON
+      fromJSON: orchestrationFromJSON,
+      image: orchestrationChatCompletionImage
     }[sampleCase] || orchestrationChatCompletion;
 
   try {
