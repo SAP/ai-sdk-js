@@ -287,7 +287,7 @@ return response.getContent();
 ### Grounding
 
 Grounding enables integrating external, contextually relevant, domain-specific, or real-time data into AI processes.
-The grounding configuration can be provided as a raw JSON object or by using the `buildDocumentGroundingConfig()` function, function, which requires only the minimal mandatory values.
+The grounding configuration can be provided as a raw JSON object or by using the `buildDocumentGroundingConfig()` function, which requires only the minimal mandatory values.
 
 ```ts
 const orchestrationClient = new OrchestrationClient({
