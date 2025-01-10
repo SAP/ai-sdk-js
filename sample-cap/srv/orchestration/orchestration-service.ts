@@ -4,8 +4,7 @@ export default class OrchestrationService {
   async chatCompletion(req: any) {
     const { template, inputParams } = req.data;
     const llm = {
-      model_name: 'gpt-4-32k',
-      model_params: {}
+      model_name: 'gpt-4-32k'
     };
     const templating = { template };
 

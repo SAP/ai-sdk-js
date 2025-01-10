@@ -24,8 +24,7 @@ export async function orchestrationChatCompletion(): Promise<OrchestrationRespon
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
     llm: {
-      model_name: 'gpt-4o',
-      model_params: {}
+      model_name: 'gpt-4o'
     },
     // define the prompt
     templating: {
@@ -75,8 +74,7 @@ export async function chatCompletionStream(
 }
 
 const llm: LlmModuleConfig = {
-  model_name: 'gpt-4o',
-  model_params: {}
+  model_name: 'gpt-4o'
 };
 
 /**
@@ -194,8 +192,7 @@ export async function orchestrationCompletionMasking(): Promise<
 > {
   const orchestrationClient = new OrchestrationClient({
     llm: {
-      model_name: 'gpt-4-32k',
-      model_params: {}
+      model_name: 'gpt-4-32k'
     },
     templating: {
       template: [
@@ -299,6 +296,42 @@ export async function orchestrationGrounding(): Promise<OrchestrationResponse> {
     inputParams: {
       groundingRequest:
         'When was the last time SAP AI SDK JavaScript end to end test was executed? Return only the latest timestamp in milliseconds without any other text.'
+    }
+  });
+}
+
+/**
+ * Ask about the image content using a template.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationChatCompletionImage(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    llm,
+    templating: {
+      template: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: 'Describe the image.'
+            },
+            {
+              type: 'image_url',
+              image_url: {
+                url: '{{?imageUrl}}'
+              }
+            }
+          ]
+        }
+      ]
+    }
+  });
+
+  return orchestrationClient.chatCompletion({
+    inputParams: {
+      imageUrl:
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png'
     }
   });
 }

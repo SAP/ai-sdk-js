@@ -5,7 +5,8 @@ export type {
   LlmModuleConfig,
   Prompt,
   RequestOptions,
-  StreamOptions
+  StreamOptions,
+  LlmModelParams
 } from './orchestration-types.js';
 
 export { OrchestrationStreamResponse } from './orchestration-stream-response.js';
@@ -16,7 +17,7 @@ export { OrchestrationStream } from './orchestration-stream.js';
 
 export { OrchestrationClient } from './orchestration-client.js';
 
-export { buildAzureContentFilter } from './orchestration-filter-utility.js';
+export { buildAzureContentFilter } from './orchestration-utils.js';
 
 export { OrchestrationResponse } from './orchestration-response.js';
 

@@ -22,4 +22,4 @@ End-to-end tests for the SAP Cloud SDK for AI.
 
 ## Remote Testing
 
-Trigger the [GitHub Action](https://github.com/SAP/ai-sdk-js/actions/workflows/e2e-test.yml).
+Trigger the [GitHub Action](https://github.com/SAP/ai-sdk-js/actions/workflows/e2e-tests.yaml).

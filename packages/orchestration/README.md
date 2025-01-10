@@ -64,16 +64,17 @@ Consequently, each orchestration deployment uniquely maps to a resource group wi
 ## Usage
 
 Leverage the orchestration service capabilities by using the orchestration client.
-Configure the LLM module by setting the `model_name` and `model_params` properties.
+Configure the LLM module by setting the `model_name` property.
 Define the optional `model_version` property to choose an available model version.
 By default, the version is set to `latest`.
+Specify the optional `model_params` property to apply specific parameters to the model
 
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
   llm: {
-    model_name: 'gpt-4-32k',
+    model_name: 'gpt-4o',
     model_params: { max_tokens: 50, temperature: 0.1 },
     model_version: 'latest'
   },
@@ -215,7 +216,7 @@ import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
   llm: {
-    model_name: 'gpt-4-32k',
+    model_name: 'gpt-4o',
     model_params: { max_tokens: 50, temperature: 0.1 }
   },
   templating: {
@@ -284,7 +285,7 @@ import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
   llm: {
-    model_name: 'gpt-4-32k',
+    model_name: 'gpt-4o',
     model_params: { max_tokens: 50, temperature: 0.1 }
   },
   templating: {
@@ -313,6 +314,49 @@ const response = await orchestrationClient.chatCompletion({
 const responseContent = response.getContent();
 ```
 
+#### Image Recognition
+
+Many models in the orchestration service have image recognition capabilities, meaning the models can take images and answer questions about them.
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+
+const orchestrationClient = new OrchestrationClient({
+  llm: {
+    model_name: 'gpt-4o'
+  },
+  templating: {
+    template: [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'text',
+            text: 'What is the content of the image?'
+          },
+          {
+            type: 'image_url',
+            image_url: {
+              url: '{{?imageUrl}}'
+            }
+          }
+        ]
+      }
+    ]
+  }
+});
+
+const response = await orchestrationClient.chatCompletion({
+  inputParams: {
+    imageUrl: 'IMAGE_URL'
+  }
+});
+```
+
+`IMAGE_URL` can either be a public URL or a base64 encoded image, e.g., `data:image/jpeg;base64,...`.
+The model can take multiple images.
+It will process each image and use the information from all of them to answer the question.
+
 ### Content Filtering
 
 Use the orchestration client with filtering to restrict content that is passed to and received from a generative AI model.
@@ -328,7 +372,7 @@ import {
 const filter = buildAzureContentFilter({ Hate: 2, Violence: 4 });
 const orchestrationClient = new OrchestrationClient({
   llm: {
-    model_name: 'gpt-4-32k',
+    model_name: 'gpt-4o',
     model_params: { max_tokens: 50, temperature: 0.1 }
   },
   templating: {
@@ -374,8 +418,7 @@ You can anonymize or pseudonomize the prompt using the data masking capabilities
 ```ts
 const orchestrationClient = new OrchestrationClient({
   llm: {
-    model_name: 'gpt-4-32k',
-    model_params: {}
+    model_name: 'gpt-4o'
   },
   templating: {
     template: [
@@ -410,8 +453,7 @@ Grounding enables integrating external, contextually relevant, domain-specific, 
 ```ts
 const orchestrationClient = new OrchestrationClient({
   llm: {
-    model_name: 'gpt-35-turbo',
-    model_params: {}
+    model_name: 'gpt-35-turbo'
   },
   templating: {
     template: [
@@ -471,7 +513,7 @@ The resource group can be used as an additional parameter to pick the right orch
 const orchestrationClient = new OrchestrationClient(
   {
     llm: {
-      model_name: 'gpt-4-32k',
+      model_name: 'gpt-4p',
       model_params: { max_tokens: 50, temperature: 0.1 }
     },
     templating: {

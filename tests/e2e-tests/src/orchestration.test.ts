@@ -4,7 +4,8 @@ import {
   orchestrationInputFiltering,
   orchestrationOutputFiltering,
   orchestrationRequestConfig,
-  orchestrationCompletionMasking
+  orchestrationCompletionMasking,
+  orchestrationChatCompletionImage
 } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
@@ -54,6 +55,12 @@ describe('orchestration', () => {
   it('should complete a chat with masking', async () => {
     const result = await orchestrationCompletionMasking();
     expect(result).toEqual(expect.any(String));
+  });
+
+  it('should complete a chat with image', async () => {
+    const response = await orchestrationChatCompletionImage();
+    expect(response.getContent()?.includes('SAP')).toBe(true);
+    expect(response.getContent()?.includes('logo')).toBe(true);
   });
 
   // add e2e test
