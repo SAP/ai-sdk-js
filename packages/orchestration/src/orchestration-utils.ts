@@ -2,7 +2,6 @@ import { createLogger } from '@sap-cloud-sdk/util';
 import type {
   AzureContentSafety,
   InputFilteringConfig,
-
   CompletionPostRequest,
   FilteringStreamOptions,
   ModuleConfigs,

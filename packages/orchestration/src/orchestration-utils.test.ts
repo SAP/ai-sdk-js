@@ -3,17 +3,17 @@ import { jest } from '@jest/globals';
 import {
   addStreamOptions,
   addStreamOptionsToLlmModuleConfig,
-  addStreamOptionsToOutputFilteringConfig
-, buildAzureContentFilter,
-constructCompletionPostRequest } from './orchestration-utils.js';
+  addStreamOptionsToOutputFilteringConfig,
+  buildAzureContentFilter,
+  constructCompletionPostRequest
+} from './orchestration-utils.js';
 import type {
   OrchestrationModuleConfig,
   StreamOptions
 } from './orchestration-types.js';
 import type {
   ModuleConfigs,
-  OrchestrationConfig
-,
+  OrchestrationConfig,
   CompletionPostRequest,
   FilteringModuleConfig
 } from './client/api/schema/index.js';
@@ -41,7 +41,9 @@ describe('construct completion post request', () => {
   };
 
   it('should add include_usage to llm module config', () => {
-    const llmConfig = addStreamOptionsToLlmModuleConfig(defaultOrchestrationModuleConfig.llm);
+    const llmConfig = addStreamOptionsToLlmModuleConfig(
+      defaultOrchestrationModuleConfig.llm
+    );
     expect(llmConfig.model_params?.stream_options).toEqual({
       include_usage: true
     });
@@ -58,11 +60,16 @@ describe('construct completion post request', () => {
   });
 
   it('should not add any stream options to llm module config', () => {
-    const llmConfig = addStreamOptionsToLlmModuleConfig(defaultOrchestrationModuleConfig.llm, {
-      llm: null
-    });
+    const llmConfig = addStreamOptionsToLlmModuleConfig(
+      defaultOrchestrationModuleConfig.llm,
+      {
+        llm: null
+      }
+    );
     expect(
-      Object.keys((llmConfig.model_params ?? {})).every(key => key !== 'stream_options')
+      Object.keys(llmConfig.model_params ?? {}).every(
+        key => key !== 'stream_options'
+      )
     ).toBe(true);
   });
 

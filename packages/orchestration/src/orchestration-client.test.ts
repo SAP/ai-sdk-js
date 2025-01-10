@@ -9,7 +9,8 @@ import {
   parseMockResponse
 } from '../../../test-util/mock-http.js';
 import { OrchestrationClient } from './orchestration-client.js';
-import { buildAzureContentFilter,
+import {
+  buildAzureContentFilter,
   constructCompletionPostRequest,
   constructCompletionPostRequestFromJsonModuleConfig
 } from './orchestration-utils.js';

@@ -1,7 +1,5 @@
 import { expectError, expectType, expectAssignable } from 'tsd';
-import {
-  OrchestrationClient
-} from '@sap-ai-sdk/orchestration';
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 import type {
   CompletionPostResponse,
   OrchestrationResponse,
