@@ -28,7 +28,9 @@ describe('orchestration utils', () => {
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
       templating: {
-        template: [{ role: 'user', content: 'Create paraphrases of {{?phrase}}' }]
+        template: [
+          { role: 'user', content: 'Create paraphrases of {{?phrase}}' }
+        ]
       }
     };
 
@@ -87,7 +89,9 @@ describe('orchestration utils', () => {
         config.filtering!.output!,
         defaultStreamOptions.outputFiltering!
       );
-      expect(filteringConfig.filters).toEqual(config.filtering?.output?.filters);
+      expect(filteringConfig.filters).toEqual(
+        config.filtering?.output?.filters
+      );
       expect(filteringConfig.stream_options).toEqual({
         overlap: 100
       });
@@ -136,7 +140,10 @@ describe('orchestration utils', () => {
 
       const warnSpy = jest.spyOn(logger, 'warn');
 
-      const config = addStreamOptions(defaultModuleConfigs, defaultStreamOptions);
+      const config = addStreamOptions(
+        defaultModuleConfigs,
+        defaultStreamOptions
+      );
 
       expect(warnSpy).toHaveBeenCalledWith(
         'Output filter stream options are not applied because filtering module is not configured.'

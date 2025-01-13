@@ -1,5 +1,6 @@
 import { createLogger } from '@sap-cloud-sdk/util';
-import type { DocumentGroundingServiceConfig ,
+import type {
+  DocumentGroundingServiceConfig,
   Prompt,
   StreamOptions,
   LlmModuleConfig,
