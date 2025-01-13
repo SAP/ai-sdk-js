@@ -5,6 +5,8 @@ import type {
   OrchestrationResponse,
   TokenUsage,
   ChatModel,
+  GroundingModuleConfig,
+  buildDocumentGroundingConfig,
   LlmModelParams
 } from '@sap-ai-sdk/orchestration';
 
@@ -239,3 +241,31 @@ expectType<Promise<OrchestrationResponse>>(
 
 expect<ChatModel>('custom-model');
 expect<ChatModel>('gemini-1.0-pro');
+
+/**
+ * Grounding util
+ */
+expectType<GroundingModuleConfig>(
+  buildDocumentGroundingConfig({
+    input_params: ['test'],
+    output_param: 'test'
+  })
+);
+
+expectError<GroundingModuleConfig>(
+  buildDocumentGroundingConfig({
+    input_params: ['test']
+  })
+);
+
+expectType<GroundingModuleConfig>(
+  buildDocumentGroundingConfig({
+    input_params: ['test'],
+    output_param: 'test',
+    filters: [
+      {
+        id: 'test'
+      }
+    ]
+  })
+);

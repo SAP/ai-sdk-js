@@ -1,6 +1,13 @@
 import { createLogger } from '@sap-cloud-sdk/util';
+import type { DocumentGroundingServiceConfig ,
+  Prompt,
+  StreamOptions,
+  LlmModuleConfig,
+  OrchestrationModuleConfig
+} from './orchestration-types.js';
 import type {
   AzureContentSafety,
+  GroundingModuleConfig,
   InputFilteringConfig,
   CompletionPostRequest,
   FilteringStreamOptions,
@@ -8,12 +15,6 @@ import type {
   OrchestrationConfig,
   OutputFilteringConfig
 } from './client/api/schema/index.js';
-import type {
-  Prompt,
-  StreamOptions,
-  LlmModuleConfig,
-  OrchestrationModuleConfig
-} from './orchestration-types.js';
 
 const logger = createLogger({
   package: 'orchestration',
@@ -180,5 +181,28 @@ export function buildAzureContentFilter(
         ...(filter && { config: filter })
       }
     ]
+  };
+}
+
+/**
+ * Convenience function to create Document Grounding configuration.
+ * @param groundingConfig - Configuration for the document grounding service.
+ * @returns An object with the full grounding configuration.
+ */
+export function buildDocumentGroundingConfig(
+  groundingConfig: DocumentGroundingServiceConfig
+): GroundingModuleConfig {
+  return {
+    type: 'document_grounding_service',
+    config: {
+      input_params: groundingConfig.input_params,
+      output_param: groundingConfig.output_param,
+      ...(groundingConfig.filters && {
+        filters: groundingConfig.filters?.map(filter => ({
+          data_repository_type: 'vector',
+          ...filter
+        }))
+      })
+    }
   };
 }

@@ -2,6 +2,8 @@ import type { CustomRequestConfig } from '@sap-cloud-sdk/http-client';
 import type { ChatModel } from './model-types.js';
 import type {
   ChatMessages,
+  DataRepositoryType,
+  DocumentGroundingFilter,
   FilteringModuleConfig,
   FilteringStreamOptions,
   GlobalStreamOptions,
@@ -111,4 +113,37 @@ export interface StreamOptions {
    * Global stream options.
    */
   global?: GlobalStreamOptions;
+}
+
+/**
+ * Represents a filter configuration for the Document Grounding Service.
+ */
+export type DocumentGroundingServiceFilter = Omit<
+  DocumentGroundingFilter,
+  'data_repository_type'
+> & {
+  /**
+   * Defines the type of data repository.
+   * If not set, the default value is 'vector'.
+   */
+  data_repository_type?: DataRepositoryType;
+};
+
+/**
+ * Represents the configuration for the Document Grounding Service.
+ */
+export interface DocumentGroundingServiceConfig {
+  /**
+   * Defines the filters to apply during the grounding process.
+   */
+  filters?: DocumentGroundingServiceFilter[];
+  /**
+   * Contains the input parameters used for grounding input questions.
+   */
+  input_params: string[];
+  /**
+   * Parameter name used for grounding output.
+   * @example "groundingOutput"
+   */
+  output_param: string;
 }

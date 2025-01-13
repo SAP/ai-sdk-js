@@ -6,6 +6,8 @@ export type {
   Prompt,
   RequestOptions,
   StreamOptions,
+  DocumentGroundingServiceConfig,
+  DocumentGroundingServiceFilter,
   LlmModelParams
 } from './orchestration-types.js';
 
@@ -17,7 +19,10 @@ export { OrchestrationStream } from './orchestration-stream.js';
 
 export { OrchestrationClient } from './orchestration-client.js';
 
-export { buildAzureContentFilter } from './orchestration-utils.js';
+export {
+  buildAzureContentFilter,
+  buildDocumentGroundingConfig
+} from './orchestration-utils.js';
 
 export { OrchestrationResponse } from './orchestration-response.js';
 
