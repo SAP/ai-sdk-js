@@ -1,5 +1,6 @@
 import { expectError, expectType, expectAssignable } from 'tsd';
-import { OrchestrationClient ,
+import {
+  OrchestrationClient,
   buildDocumentGroundingConfig
 } from '@sap-ai-sdk/orchestration';
 import type {
