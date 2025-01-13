@@ -1,7 +1,8 @@
 import { readFile } from 'node:fs/promises';
 import {
   OrchestrationClient,
-  buildAzureContentFilter
+  buildAzureContentFilter,
+  buildDocumentGroundingConfig
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
 import type {
@@ -241,21 +242,11 @@ export async function orchestrationGrounding(): Promise<OrchestrationResponse> {
         }
       ]
     },
-    grounding: {
-      type: 'document_grounding_service',
-      config: {
-        filters: [
-          {
-            id: 'filter1',
-            data_repositories: ['*'],
-            search_config: {},
-            data_repository_type: 'vector'
-          }
-        ],
-        input_params: ['groundingRequest'],
-        output_param: 'groundingOutput'
-      }
-    }
+    grounding: buildDocumentGroundingConfig({
+      input_params: ['groundingRequest'],
+      output_param: 'groundingOutput',
+      filters: [{ id: 'filter1'}]
+    })
   });
 
   return orchestrationClient.chatCompletion({
