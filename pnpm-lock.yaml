@@ -237,8 +237,8 @@ importers:
         specifier: ^4.21.2
         version: 4.21.2
       langchain:
-        specifier: 0.3.10
-        version: 0.3.10(@langchain/core@0.3.27(openai@4.61.1(zod@3.24.1)))(axios@1.7.9)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.24.1))
+        specifier: 0.3.11
+        version: 0.3.11(@langchain/core@0.3.27(openai@4.61.1(zod@3.24.1)))(axios@1.7.9)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.24.1))
 
   tests/e2e-tests:
     dependencies:
@@ -304,8 +304,8 @@ importers:
         specifier: ^4.21.2
         version: 4.21.2
       langchain:
-        specifier: 0.3.10
-        version: 0.3.10(@langchain/core@0.3.27(openai@4.61.1(zod@3.24.1)))(axios@1.7.9)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.24.1))
+        specifier: 0.3.11
+        version: 0.3.11(@langchain/core@0.3.27(openai@4.61.1(zod@3.24.1)))(axios@1.7.9)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.24.1))
     devDependencies:
       '@types/express':
         specifier: ^5.0.0
@@ -3191,8 +3191,8 @@ packages:
   kuler@2.0.0:
     resolution: {integrity: sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==}
 
-  langchain@0.3.10:
-    resolution: {integrity: sha512-dZXdhs81NU/PS2WfECCLJszx4to3ELK7qTMbumD0rAKx3mQb0sqr8M9MiVCcPgTZ1J1pzoDr5yCSdsmm9UsNXA==}
+  langchain@0.3.11:
+    resolution: {integrity: sha512-PgAG4ZLeuSRkKsyf98cmWGdwKv3I1hOFC8a4fr7e+bm7E+F6Fx6xUkgbuC78ff0N/Cjs5BBryZIFMrqoKPqsvg==}
     engines: {node: '>=18'}
     peerDependencies:
       '@langchain/anthropic': '*'
@@ -6038,7 +6038,7 @@ snapshots:
 
   '@types/node-fetch@2.6.11':
     dependencies:
-      '@types/node': 20.17.11
+      '@types/node': 20.17.12
       form-data: 4.0.1
 
   '@types/node@12.20.55': {}
@@ -8542,7 +8542,7 @@ snapshots:
 
   kuler@2.0.0: {}
 
-  langchain@0.3.10(@langchain/core@0.3.27(openai@4.61.1(zod@3.24.1)))(axios@1.7.9)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.24.1)):
+  langchain@0.3.11(@langchain/core@0.3.27(openai@4.61.1(zod@3.24.1)))(axios@1.7.9)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.24.1)):
     dependencies:
       '@langchain/core': 0.3.27(openai@4.61.1(zod@3.24.1))
       '@langchain/openai': 0.3.2(@langchain/core@0.3.27(openai@4.61.1(zod@3.24.1)))
