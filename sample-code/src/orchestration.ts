@@ -245,7 +245,7 @@ export async function orchestrationGrounding(): Promise<OrchestrationResponse> {
     grounding: buildDocumentGroundingConfig({
       input_params: ['groundingRequest'],
       output_param: 'groundingOutput',
-      filters: [{ id: 'filter1'}]
+      filters: [{ id: 'filter1' }]
     })
   });
 
