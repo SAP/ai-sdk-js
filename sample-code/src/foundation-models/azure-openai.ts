@@ -31,7 +31,7 @@ export async function chatCompletion(): Promise<AzureOpenAiChatCompletionRespons
 }
 
 /**
- * Ask Azure OpenAI model about the capital of France with streaming.
+ * Ask Azure OpenAI model about SAP Cloud SDK with streaming.
  * @param controller - The abort controller.
  * @returns The response from Azure OpenAI containing the response content.
  */
@@ -67,6 +67,23 @@ export async function computeEmbedding(): Promise<AzureOpenAiEmbeddingResponse> 
 
   // Use getEmbedding to access the embedding vector
   logger.info(response.getEmbedding());
+
+  return response;
+}
+
+/**
+ * Use custom destination to ask Azure OpenAI model about the capital of France.
+ * @returns The response from Azure OpenAI containing the response content.
+ */
+export async function chatCompletionWithDestination(): Promise<AzureOpenAiChatCompletionResponse> {
+  const response = await new AzureOpenAiChatClient('gpt-35-turbo', {
+    destinationName: 'e2e-aicore'
+  }).run({
+    messages: [{ role: 'user', content: 'What is the capital of France?' }]
+  });
+
+  // Use getContent() to access the content responded by LLM.
+  logger.info(response.getContent());
 
   return response;
 }

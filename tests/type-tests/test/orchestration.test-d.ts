@@ -1,10 +1,15 @@
-import { expectError, expectType } from 'tsd';
+import { expectError, expectType, expectAssignable } from 'tsd';
 import {
   OrchestrationClient,
+  buildDocumentGroundingConfig
+} from '@sap-ai-sdk/orchestration';
+import type {
   CompletionPostResponse,
   OrchestrationResponse,
   TokenUsage,
-  ChatModel
+  ChatModel,
+  GroundingModuleConfig,
+  LlmModelParams
 } from '@sap-ai-sdk/orchestration';
 
 /**
@@ -16,8 +21,7 @@ expectType<Promise<OrchestrationResponse>>(
       template: [{ role: 'user', content: 'Hello!' }]
     },
     llm: {
-      model_name: 'gpt-35-turbo-16k',
-      model_params: {}
+      model_name: 'gpt-35-turbo-16k'
     }
   }).chatCompletion()
 );
@@ -29,8 +33,7 @@ expectType<CompletionPostResponse>(
         template: [{ role: 'user', content: 'Hello!' }]
       },
       llm: {
-        model_name: 'gpt-35-turbo-16k',
-        model_params: {}
+        model_name: 'gpt-35-turbo-16k'
       }
     }).chatCompletion()
   ).data
@@ -43,8 +46,7 @@ expectType<string | undefined>(
         template: [{ role: 'user', content: 'Hello!' }]
       },
       llm: {
-        model_name: 'gpt-35-turbo-16k',
-        model_params: {}
+        model_name: 'gpt-35-turbo-16k'
       }
     }).chatCompletion()
   ).getContent()
@@ -57,8 +59,7 @@ expectType<string | undefined>(
         template: [{ role: 'user', content: 'Hello!' }]
       },
       llm: {
-        model_name: 'gpt-35-turbo-16k',
-        model_params: {}
+        model_name: 'gpt-35-turbo-16k'
       }
     }).chatCompletion()
   ).getFinishReason()
@@ -71,11 +72,30 @@ expectType<TokenUsage>(
         template: [{ role: 'user', content: 'Hello!' }]
       },
       llm: {
-        model_name: 'gpt-35-turbo-16k',
-        model_params: {}
+        model_name: 'gpt-35-turbo-16k'
       }
     }).chatCompletion()
   ).getTokenUsage()
+);
+
+expectType<Promise<OrchestrationResponse>>(
+  new OrchestrationClient(
+    {
+      templating: {
+        template: [{ role: 'user', content: 'Hello!' }]
+      },
+      llm: {
+        model_name: 'gpt-35-turbo-16k'
+      }
+    },
+    {
+      resourceGroup: 'resourceGroup'
+    },
+    {
+      destinationName: 'destinationName',
+      useCache: false
+    }
+  ).chatCompletion()
 );
 
 /**
@@ -144,6 +164,26 @@ expectType<Promise<OrchestrationResponse>>(
 );
 
 /**
+ * Chat Completion with JSON configuration.
+ */
+expectType<Promise<OrchestrationResponse>>(
+  new OrchestrationClient(`{
+    "module_configurations": {
+      "llm_module_config": {
+        "model_name": "gpt-35-turbo-16k",
+        "model_params": {
+          "max_tokens": 50,
+          "temperature": 0.1
+        }
+      },
+      "templating_module_config": {
+        "template": [{ "role": "user", "content": "Hello!" }]
+      }
+    }
+  }`).chatCompletion()
+);
+
+/**
  * Orchestration completion parameters cannot be empty.
  */
 expectError<any>(new OrchestrationClient({}).chatCompletion());
@@ -154,8 +194,7 @@ expectError<any>(new OrchestrationClient({}).chatCompletion());
 expectError<any>(
   new OrchestrationClient({
     llm: {
-      model_name: 'gpt-35-turbo-16k',
-      model_params: {}
+      model_name: 'gpt-35-turbo-16k'
     }
   }).chatCompletion()
 );
@@ -169,10 +208,19 @@ expectError<any>(
       template: [{ role: 'user', content: 'Hello!' }]
     },
     llm: {
-      model_params: {}
+      model_params: { max_tokens: 50 }
     }
   }).chatCompletion()
 );
+
+/**
+ * Model parameters should accept known typed parameters and arbitrary parameters.
+ */
+expectAssignable<LlmModelParams>({
+  max_tokens: 50,
+  temperature: 0.2,
+  random_property: 'random - value'
+});
 
 /**
  * Model parameters should adhere to OrchestrationCompletionParameters.// Todo: Check if additional checks can be added for model_params.
@@ -195,3 +243,31 @@ expectType<Promise<OrchestrationResponse>>(
 
 expect<ChatModel>('custom-model');
 expect<ChatModel>('gemini-1.0-pro');
+
+/**
+ * Grounding util.
+ */
+expectType<GroundingModuleConfig>(
+  buildDocumentGroundingConfig({
+    input_params: ['test'],
+    output_param: 'test'
+  })
+);
+
+expectError<GroundingModuleConfig>(
+  buildDocumentGroundingConfig({
+    input_params: ['test']
+  })
+);
+
+expectType<GroundingModuleConfig>(
+  buildDocumentGroundingConfig({
+    input_params: ['test'],
+    output_param: 'test',
+    filters: [
+      {
+        id: 'test'
+      }
+    ]
+  })
+);

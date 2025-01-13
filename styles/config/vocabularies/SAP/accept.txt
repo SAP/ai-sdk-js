@@ -137,3 +137,6 @@ seldomly
 lookups
 
 CDS
+
+llm's
+[Ll][Ll][Mm]'s

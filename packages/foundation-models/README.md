@@ -4,9 +4,8 @@ SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI
 
 This package incorporates generative AI foundation models into your AI activities in SAP AI Core and SAP AI Launchpad.
 
-## Table of Contents
+### Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Prerequisites](#prerequisites)
 - [Relationship between Models and Deployment ID](#relationship-between-models-and-deployment-id)
@@ -15,6 +14,7 @@ This package incorporates generative AI foundation models into your AI activitie
   - [Azure OpenAI Chat Client](#azure-openai-chat-client)
   - [Azure OpenAI Embedding Client](#azure-openai-embedding-client)
   - [Custom Request Configuration](#custom-request-configuration)
+  - [Custom Destination](#custom-destination)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
@@ -152,7 +152,7 @@ Refer to `AzureOpenAiChatCompletionParameters` interface for other parameters th
 The `AzureOpenAiChatClient` supports streaming response for chat completion requests based on the [Server-sent events](https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events) standard.
 
 Use the `stream()` method to receive a stream of chunk responses from the model.
-After consuming the stream, call the helper methods to get the finish reason and token usage information respectively.
+After consuming the stream, call the helper methods to get the finish reason and token usage information.
 
 ```ts
 const chatClient = new AzureOpenAiChatClient('gpt-4o');
@@ -178,7 +178,7 @@ console.log(`Token usage: ${JSON.stringify(tokenUsage)}\n`);
 
 ##### Streaming the Delta Content
 
-The client provides a helper method to extract delta content and stream string directly.
+The client provides a helper method to extract the text chunks as strings:
 
 ```ts
 for await (const chunk of response.stream.toContentStream()) {
@@ -198,7 +198,7 @@ Additionally, it can be aborted manually by calling the `stream()` method with a
 ```ts
 const chatClient = new AzureOpenAiChatClient('gpt-4o');
 const controller = new AbortController();
-const response = await new AzureOpenAiChatClient('gpt-35-turbo').stream(
+const response = await chatClient.stream(
   {
     messages: [
       {
@@ -260,6 +260,20 @@ const response = await client.run(
   }
 );
 ```
+
+### Custom Destination
+
+When initializing the `AzureOpenAiChatClient` and `AzureOpenAiEmbeddingClient` clients, it is possible to provide a custom destination.
+For example, when targeting a destination with the name `my-destination`, the following code can be used:
+
+```ts
+const client = await new AzureOpenAiChatClient('gpt-35-turbo', {
+  destinationName: 'my-destination'
+});
+```
+
+By default, the fetched destination is cached.
+To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
 ## Local Testing
 

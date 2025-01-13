@@ -1,12 +1,14 @@
 import { expectType } from 'tsd';
 import {
-  type AzureOpenAiChatModel,
-  AzureOpenAiEmbeddingResponse,
   AzureOpenAiChatClient,
-  AzureOpenAiEmbeddingClient,
+  AzureOpenAiEmbeddingClient
+} from '@sap-ai-sdk/foundation-models';
+import type {
+  AzureOpenAiEmbeddingResponse,
   AzureOpenAiChatCompletionResponse,
   AzureOpenAiCreateChatCompletionResponse,
   AzureOpenAiCompletionUsage,
+  AzureOpenAiChatModel,
   AzureOpenAiChatCompletionStreamResponse,
   AzureOpenAiChatCompletionStreamChunkResponse,
   AzureOpenAiChatCompletionStream
@@ -67,6 +69,15 @@ expectType<AzureOpenAiCompletionUsage | undefined>(
       messages: [{ role: 'user', content: 'test prompt' }]
     })
   ).getTokenUsage()
+);
+
+expectType<Promise<AzureOpenAiChatCompletionResponse>>(
+  new AzureOpenAiChatClient('gpt-4', {
+    destinationName: 'destinationName',
+    useCache: false
+  }).run({
+    messages: [{ role: 'user', content: 'test prompt' }]
+  })
 );
 
 /**
@@ -139,6 +150,15 @@ expectType<Promise<AzureOpenAiEmbeddingResponse>>(
       }
     }
   )
+);
+
+expectType<Promise<AzureOpenAiEmbeddingResponse>>(
+  new AzureOpenAiEmbeddingClient('text-embedding-ada-002', {
+    destinationName: 'destinationName',
+    useCache: false
+  }).run({
+    input: 'test input'
+  })
 );
 
 expect<AzureOpenAiChatModel>('custom-model');

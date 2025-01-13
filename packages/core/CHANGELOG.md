@@ -1,5 +1,13 @@
 # @sap-ai-sdk/core
 
+## 1.5.0
+
+### Minor Changes
+
+- b4a5506: [New Functionality] Add support for providing custom destination for AI Core besides using environment variable and service binding.
+
+## 1.4.0
+
 ## 1.3.0
 
 ## 1.2.0

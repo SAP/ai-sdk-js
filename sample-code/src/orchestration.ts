@@ -1,11 +1,16 @@
+import { readFile } from 'node:fs/promises';
 import {
   OrchestrationClient,
-  buildAzureContentFilter
+  buildAzureContentFilter,
+  buildDocumentGroundingConfig
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
 import type {
   LlmModuleConfig,
-  OrchestrationResponse
+  OrchestrationStreamChunkResponse,
+  OrchestrationStreamResponse,
+  OrchestrationResponse,
+  StreamOptions
 } from '@sap-ai-sdk/orchestration';
 
 const logger = createLogger({
@@ -21,8 +26,7 @@ export async function orchestrationChatCompletion(): Promise<OrchestrationRespon
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
     llm: {
-      model_name: 'gpt-4o',
-      model_params: {}
+      model_name: 'gpt-4o'
     },
     // define the prompt
     templating: {
@@ -39,9 +43,74 @@ export async function orchestrationChatCompletion(): Promise<OrchestrationRespon
   return result;
 }
 
+/**
+ * Ask ChatGPT through the orchestration service about SAP Cloud SDK with streaming.
+ * @param controller - The abort controller.
+ * @param streamOptions - The stream options.
+ * @returns The response from the orchestration service containing the response content.
+ */
+export async function chatCompletionStream(
+  controller: AbortController,
+  streamOptions?: StreamOptions
+): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
+  const orchestrationClient = new OrchestrationClient({
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-35-turbo',
+      model_params: {}
+    },
+    // define the prompt
+    templating: {
+      template: [
+        {
+          role: 'user',
+          content: 'Give me a long introduction of {{?input}}'
+        }
+      ]
+    }
+  });
+
+  return orchestrationClient.stream(
+    { inputParams: { input: 'SAP Cloud SDK' } },
+    controller,
+    streamOptions
+  );
+}
+
+/**
+ * Ask ChatGPT through the orchestration service about SAP Cloud SDK with streaming and JSON module configuration.
+ * @param controller - The abort controller.
+ * @returns The response from the orchestration service containing the response content.
+ */
+export async function chatCompletionStreamWithJsonModuleConfig(
+  controller: AbortController
+): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
+  const jsonConfig = `{
+    "module_configurations": {
+      "llm_module_config": {
+        "model_name": "gpt-35-turbo",
+        "model_params": {
+          "stream_options": {
+            "include_usage": true
+          }
+        }
+      },
+      "templating_module_config": {
+        "template": [{ "role": "user", "content": "Give me a long introduction of {{?input}}" }]
+      }
+    }
+  }`;
+
+  const orchestrationClient = new OrchestrationClient(jsonConfig);
+
+  return orchestrationClient.stream(
+    { inputParams: { input: 'SAP Cloud SDK' } },
+    controller
+  );
+}
+
 const llm: LlmModuleConfig = {
-  model_name: 'gpt-4o',
-  model_params: {}
+  model_name: 'gpt-4o'
 };
 
 /**
@@ -159,8 +228,7 @@ export async function orchestrationCompletionMasking(): Promise<
 > {
   const orchestrationClient = new OrchestrationClient({
     llm: {
-      model_name: 'gpt-4-32k',
-      model_params: {}
+      model_name: 'gpt-4-32k'
     },
     templating: {
       template: [
@@ -207,4 +275,89 @@ export async function orchestrationRequestConfig(): Promise<OrchestrationRespons
       headers: { 'x-custom-header': 'custom-value' }
     }
   );
+}
+
+/**
+ * Use the orchestration service with JSON obtained from AI Launchpad.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationFromJson(): Promise<
+  OrchestrationResponse | undefined
+> {
+  // You can also provide the JSON configuration as a plain string in the code directly instead.
+  const jsonConfig = await readFile(
+    './src/model-orchestration-config.json',
+    'utf-8'
+  );
+  const response = await new OrchestrationClient(jsonConfig).chatCompletion();
+
+  logger.info(response.getContent());
+  return response;
+}
+
+/**
+ * Ask about a custom knowledge embedded in document grounding.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationGrounding(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    llm,
+    templating: {
+      template: [
+        {
+          role: 'user',
+          content:
+            'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
+        }
+      ]
+    },
+    grounding: buildDocumentGroundingConfig({
+      input_params: ['groundingRequest'],
+      output_param: 'groundingOutput',
+      filters: [{ id: 'filter1' }]
+    })
+  });
+
+  return orchestrationClient.chatCompletion({
+    inputParams: {
+      groundingRequest:
+        'When was the last time SAP AI SDK JavaScript end to end test was executed? Return only the latest timestamp in milliseconds without any other text.'
+    }
+  });
+}
+
+/**
+ * Ask about the image content using a template.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationChatCompletionImage(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    llm,
+    templating: {
+      template: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: 'Describe the image.'
+            },
+            {
+              type: 'image_url',
+              image_url: {
+                url: '{{?imageUrl}}'
+              }
+            }
+          ]
+        }
+      ]
+    }
+  });
+
+  return orchestrationClient.chatCompletion({
+    inputParams: {
+      imageUrl:
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png'
+    }
+  });
 }

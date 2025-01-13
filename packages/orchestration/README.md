@@ -4,9 +4,8 @@ SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI
 
 This package incorporates generative AI orchestration capabilities into your AI activities in SAP AI Core and SAP AI Launchpad.
 
-## Table of Contents
+### Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Prerequisites](#prerequisites)
 - [Orchestration Service](#orchestration-service)
@@ -16,8 +15,10 @@ This package incorporates generative AI orchestration capabilities into your AI 
   - [Content Filtering](#content-filtering)
   - [Data Masking](#data-masking)
   - [Grounding](#grounding)
+  - [Using a JSON Configuration from AI Launchpad](#using-a-json-configuration-from-ai-launchpad)
   - [Using Resource Groups](#using-resource-groups)
   - [Custom Request Configuration](#custom-request-configuration)
+  - [Custom Destination](#custom-destination)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
@@ -63,16 +64,17 @@ Consequently, each orchestration deployment uniquely maps to a resource group wi
 ## Usage
 
 Leverage the orchestration service capabilities by using the orchestration client.
-Configure the LLM module by setting the `model_name` and `model_params` properties.
+Configure the LLM module by setting the `model_name` property.
 Define the optional `model_version` property to choose an available model version.
 By default, the version is set to `latest`.
+Specify the optional `model_params` property to apply specific parameters to the model
 
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
   llm: {
-    model_name: 'gpt-4-32k',
+    model_name: 'gpt-4o',
     model_params: { max_tokens: 50, temperature: 0.1 },
     model_version: 'latest'
   },
@@ -83,6 +85,125 @@ const orchestrationClient = new OrchestrationClient({
 The client allows you to combine various modules, such as templating and content filtering, while sending chat completion requests to an orchestration-compatible generative AI model.
 
 In addition to the examples below, you can find more **sample code** [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/orchestration.ts).
+
+### Streaming
+
+The `OrchestrationClient` supports streaming responses for chat completion requests based on the [Server-sent events](https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events) standard.
+
+Use the `stream()` method to receive a stream of chunk responses from the model.
+After consuming the stream, call the helper methods to get the finish reason and token usage information.
+
+```ts
+const orchestrationClient = new OrchestrationClient({
+  llm: {
+    model_name: 'gpt-4o',
+    model_params: { max_tokens: 50, temperature: 0.1 }
+  },
+  templating: {
+    template: [
+      { role: 'user', content: 'Give a long history of {{?country}}?' }
+    ]
+  }
+});
+
+const response = await orchestrationClient.stream({
+  inputParams: { country: 'France' }
+});
+
+for await (const chunk of response.stream) {
+  console.log(JSON.stringify(chunk));
+}
+
+const finishReason = response.getFinishReason();
+const tokenUsage = response.getTokenUsage();
+
+console.log(`Finish reason: ${finishReason}\n`);
+console.log(`Token usage: ${JSON.stringify(tokenUsage)}\n`);
+```
+
+#### Streaming the Delta Content
+
+The client provides a helper method to extract the text chunks as strings:
+
+```ts
+for await (const chunk of response.stream.toContentStream()) {
+  console.log(chunk); // will log the delta content
+}
+```
+
+Each chunk will be a string containing the delta content.
+
+#### Streaming with Abort Controller
+
+Streaming request can be aborted using the `AbortController` API.
+In case of an error, the SAP Cloud SDK for AI will automatically close the stream.
+Additionally, it can be aborted manually by calling the `stream()` method with an `AbortController` object.
+
+```ts
+const orchestrationClient = new OrchestrationClient({
+  llm: {
+    model_name: 'gpt-4o',
+    model_params: { max_tokens: 50, temperature: 0.1 }
+  },
+  templating: {
+    template: [
+      { role: 'user', content: 'Give a long history of {{?country}}?' }
+    ]
+  }
+});
+
+const controller = new AbortController();
+const response = await orchestrationClient.stream(
+  {
+    inputParams: { country: 'France' }
+  },
+  controller
+);
+
+// Abort the streaming request after one second
+setTimeout(() => {
+  controller.abort();
+}, 1000);
+
+for await (const chunk of response.stream) {
+  console.log(JSON.stringify(chunk));
+}
+```
+
+In this example, streaming request will be aborted after one second.
+Abort controller can be useful, e.g., when end-user wants to stop the stream or refreshes the page.
+
+#### Stream Options
+
+The orchestration service offers multiple streaming options, which you can configure in addition to the LLM's streaming options.
+These include options like definining the maximum number of characters per chunk or modifying the output filter behavior.
+There are two ways to add specific streaming options to your client, either at initialization of orchestration client, or when calling the stream API.
+
+Setting streaming options dynamically could be useful if an initialized orchestration client will also be used for streaming.
+
+You can check the list of available stream options in the [orchestration service's documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/streaming).
+
+An example for setting the streaming options when calling the stream API looks like the following:
+
+```ts
+const response = orchestrationClient.stream(
+  {
+    inputParams: { country: 'France' }
+  },
+  controller,
+  {
+    llm: { include_usage: false },
+    global: { chunk_size: 10 },
+    outputFiltering: { overlap: 200 }
+  }
+);
+```
+
+Usage metrics are collected by default, if you do not want to receive them, set `include_usage` to `false`.
+If you don't want any streaming options as part of your call to the LLM, set `streamOptions.llm` to `null`.
+
+> [!NOTE]
+> When initalizing a client with a JSON module config, providing streaming options is not possible.
 
 ### Templating
 
@@ -95,7 +216,7 @@ import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
   llm: {
-    model_name: 'gpt-4-32k',
+    model_name: 'gpt-4o',
     model_params: { max_tokens: 50, temperature: 0.1 }
   },
   templating: {
@@ -164,7 +285,7 @@ import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
   llm: {
-    model_name: 'gpt-4-32k',
+    model_name: 'gpt-4o',
     model_params: { max_tokens: 50, temperature: 0.1 }
   },
   templating: {
@@ -193,6 +314,49 @@ const response = await orchestrationClient.chatCompletion({
 const responseContent = response.getContent();
 ```
 
+#### Image Recognition
+
+Many models in the orchestration service have image recognition capabilities, meaning the models can take images and answer questions about them.
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+
+const orchestrationClient = new OrchestrationClient({
+  llm: {
+    model_name: 'gpt-4o'
+  },
+  templating: {
+    template: [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'text',
+            text: 'What is the content of the image?'
+          },
+          {
+            type: 'image_url',
+            image_url: {
+              url: '{{?imageUrl}}'
+            }
+          }
+        ]
+      }
+    ]
+  }
+});
+
+const response = await orchestrationClient.chatCompletion({
+  inputParams: {
+    imageUrl: 'IMAGE_URL'
+  }
+});
+```
+
+`IMAGE_URL` can either be a public URL or a base64 encoded image, e.g., `data:image/jpeg;base64,...`.
+The model can take multiple images.
+It will process each image and use the information from all of them to answer the question.
+
 ### Content Filtering
 
 Use the orchestration client with filtering to restrict content that is passed to and received from a generative AI model.
@@ -208,7 +372,7 @@ import {
 const filter = buildAzureContentFilter({ Hate: 2, Violence: 4 });
 const orchestrationClient = new OrchestrationClient({
   llm: {
-    model_name: 'gpt-4-32k',
+    model_name: 'gpt-4o',
     model_params: { max_tokens: 50, temperature: 0.1 }
   },
   templating: {
@@ -254,8 +418,7 @@ You can anonymize or pseudonomize the prompt using the data masking capabilities
 ```ts
 const orchestrationClient = new OrchestrationClient({
   llm: {
-    model_name: 'gpt-4-32k',
-    model_params: {}
+    model_name: 'gpt-4o'
   },
   templating: {
     template: [
@@ -286,12 +449,12 @@ return response.getContent();
 ### Grounding
 
 Grounding enables integrating external, contextually relevant, domain-specific, or real-time data into AI processes.
+The grounding configuration can be provided as a raw JSON object or by using the `buildDocumentGroundingConfig()` function, which requires only the minimal mandatory values.
 
 ```ts
 const orchestrationClient = new OrchestrationClient({
   llm: {
-    model_name: 'gpt-35-turbo',
-    model_params: {}
+    model_name: 'gpt-35-turbo'
   },
   templating: {
     template: [
@@ -303,27 +466,39 @@ const orchestrationClient = new OrchestrationClient({
     ],
     defaults: {}
   },
-  grounding: {
-    type: 'document_grounding_service',
-    config: {
-      filters: [
+  grounding: buildDocumentGroundingConfig(
+    input_params: ['groundingRequest'],
+    output_param: 'groundingOutput',
+    filters: [
         {
           id: 'filter1',
-          data_repositories: ['*'],
-          search_config: {},
-          data_repository_type: 'vector'
+          data_repositories: ['repository-id']
         }
       ],
-      input_params: ['groundingRequest'],
-      output_param: 'groundingOutput'
-    }
-  }
+    )
 });
 
 const response = await orchestrationClient.chatCompletion({
   inputParams: { groundingRequest: 'What is Generative AI Hub in SAP AI Core?' }
 });
 return response.getContent();
+```
+
+### Using a JSON Configuration from AI Launchpad
+
+If you already have an orchestration workflow created in AI Launchpad, you can either download the configuration as a JSON file or copy the JSON string directly to use it with the orchestration client.
+
+```ts
+const jsonConfig = await fs.promises.readFile(
+  'path/to/orchestration-config.json',
+  'utf-8'
+);
+// Alternatively, you can provide the JSON configuration as a plain string in the code directly.
+// const jsonConfig = 'YOUR_JSON_CONFIG'
+
+const response = await new OrchestrationClient(jsonConfig).chatCompletion();
+
+return response;
 ```
 
 ### Using Resource Groups
@@ -334,7 +509,7 @@ The resource group can be used as an additional parameter to pick the right orch
 const orchestrationClient = new OrchestrationClient(
   {
     llm: {
-      model_name: 'gpt-4-32k',
+      model_name: 'gpt-4p',
       model_params: { max_tokens: 50, temperature: 0.1 }
     },
     templating: {
@@ -368,6 +543,29 @@ const response = await orchestrationClient.chatCompletion(
   }
 );
 ```
+
+### Custom Destination
+
+When initializing the `OrchestrationClient` client, it is possible to provide a custom destination.
+For example, when targeting a destination with the name `my-destination`, the following code can be used:
+
+```ts
+const orchestrationClient = new OrchestrationClient(
+  {
+    llm,
+    templating
+  },
+  {
+    resourceGroup: 'default'
+  },
+  {
+    destinationName: 'my-destination'
+  }
+);
+```
+
+By default, the fetched destination is cached.
+To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
 ## Local Testing
 

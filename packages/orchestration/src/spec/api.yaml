@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Orchestration
   description: Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
-  version: 0.36.1
+  version: 0.43.0
 x-sap-shortText: Enhance content generation with additional capabilities for business AI scenarios.
 servers:
   - url: https://api.ai.{region}.ml.hana.ondemand.com/v2/inference/deployments/{orchestration_deployment_id}
@@ -19,7 +19,7 @@ servers:
           - prod-us21.eastus.azure
           - prod-eu30.europe-west3.gcp
           - prod-us30.us-central1.gcp
-        default: prod.eu-central-1
+        default: prod.eu-central-1.aws
       orchestration_deployment_id:
         description: The deployment ID of the orchestration service. To be obtained from the SAP AI Core service using the deployments endpoint.
         default: x111111
@@ -31,15 +31,12 @@ security:
 tags:
   - name: Orchestrated Completion
     description: Run an orchestrated completion inference request
-
 paths:
   /completion:
     post:
       tags:
-        - Orchestration Completion
+        - Orchestrated Completion
       operationId: orchestration.v1.endpoints.create
-      summary: 'Orchestrated Completion'
-      description: 'Run an orchestrated completion inference request'
       requestBody:
         required: true
         content:
@@ -59,21 +56,12 @@ paths:
           $ref: '#/components/responses/CommonError'
 
 components:
-  securitySchemes:
-    Oauth2:
-      type: oauth2
-      description:
-        OAuth client credentials (client ID and secret) are required. These
-        can be requested from SAP BTP cloud cockpit.
-      flows:
-        clientCredentials:
-          tokenUrl: https://(subdomain_identity_zone).authentication.(host)/oauth/token
-          scopes: {}
   schemas:
     CompletionPostRequest:
       type: object
       required:
         - orchestration_config
+      additionalProperties: false
       properties:
         orchestration_config:
           $ref: '#/components/schemas/OrchestrationConfig'
@@ -92,15 +80,32 @@ components:
     ChatMessages:
       type: array
       items:
-        $ref: '#/components/schemas/ChatMessage'
+        oneOf:
+          - $ref: '#/components/schemas/ChatMessage'
+          - $ref: '#/components/schemas/MultiChatMessage'
 
     TemplatingChatMessage:
       type: array
       minItems: 1
       items:
-        $ref: '#/components/schemas/ChatMessage'
+        oneOf:
+          - $ref: '#/components/schemas/ChatMessage'
+          - $ref: '#/components/schemas/MultiChatMessage'
 
     ChatMessage:
+      type: object
+      required:
+        - role
+        - content
+      additionalProperties: false
+      properties:
+        role:
+          type: string
+          example: user
+        content:
+          type: string
+
+    MultiChatMessage:
       type: object
       required:
         - role
@@ -110,7 +115,46 @@ components:
           type: string
           example: user
         content:
+          type: array
+          items:
+            $ref: '#/components/schemas/MultiChatMessageContent'
+
+    MultiChatMessageContent:
+      oneOf:
+        - $ref: '#/components/schemas/TextContent'
+        - $ref: '#/components/schemas/ImageContent'
+
+    TextContent:
+      type: object
+      required:
+        - type
+        - text
+      properties:
+        type:
           type: string
+          enum: ['text']
+        text:
+          type: string
+
+    ImageContent:
+      type: object
+      required:
+        - type
+        - image_url
+      properties:
+        type:
+          type: string
+          enum: ['image_url']
+        image_url:
+          type: object
+          required:
+            - url
+          properties:
+            url:
+              type: string
+            detail: # keep? openai specific
+              type: string
+              default: 'auto'
 
     ChatDelta:
       type: object
@@ -156,6 +200,7 @@ components:
       type: object
       required:
         - module_configurations
+      additionalProperties: false
       properties:
         module_configurations:
           $ref: '#/components/schemas/ModuleConfigs'
@@ -171,6 +216,7 @@ components:
       required:
         - llm_module_config
         - templating_module_config
+      additionalProperties: false
       properties:
         llm_module_config:
           $ref: '#/components/schemas/LLMModuleConfig'
@@ -217,14 +263,14 @@ components:
           description: Number of characters per chunk that post-LLM modules operate on.
           default: 100
           minimum: 1
-          maximum: 10000
+          maximum: 10000 # currently determined by max_size of ACS text records
 
     # --- LLM MODULE ---
     LLMModuleConfig:
       type: object
       required:
         - model_name
-        - model_params
+      additionalProperties: false
       properties:
         model_name:
           description: Model name as in LLM Access configuration
@@ -416,6 +462,7 @@ components:
       type: object
       required:
         - template
+      additionalProperties: false
       properties:
         template:
           allOf:
@@ -436,6 +483,7 @@ components:
       type: object
       required:
         - template_ref
+      additionalProperties: false
       properties:
         template_ref:
           type: object
@@ -448,6 +496,7 @@ components:
       type: object
       required:
         - id
+      additionalProperties: false
       properties:
         id:
           type: string
@@ -460,6 +509,7 @@ components:
         - scenario
         - name
         - version
+      additionalProperties: false
       properties:
         scenario:
           type: string
@@ -477,6 +527,7 @@ components:
     # --- Filtering Module ---
     FilteringModuleConfig:
       type: object
+      additionalProperties: false
       properties:
         input:
           allOf:
@@ -486,7 +537,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/OutputFilteringConfig'
           description: List of provider type and filters
-      additionalProperties: false
+      minProperties: 1
 
     InputFilteringConfig:
       type: object
@@ -536,6 +587,7 @@ components:
       type: object
       required:
         - type
+      additionalProperties: false
       properties:
         type:
           description: String represents name of the filter provider
@@ -562,7 +614,6 @@ components:
 
     AzureThreshold:
       type: integer
-      description: Threshold for the filter. Setting it to `0` blocks content with low severity, whereas `6` is the most permissive and blocks only the highest severity
       enum:
         - 0
         - 2
@@ -576,6 +627,7 @@ components:
       type: object
       required:
         - masking_providers
+      additionalProperties: false
       properties:
         masking_providers:
           type: array
@@ -583,7 +635,6 @@ components:
           items:
             $ref: '#/components/schemas/MaskingProviderConfig'
           description: List of masking service providers
-      additionalProperties: false
 
     MaskingProviderConfig:
       oneOf:
@@ -595,6 +646,7 @@ components:
         - type
         - method
         - entities
+      additionalProperties: false
       properties:
         type:
           description: Type of masking service provider
@@ -616,14 +668,22 @@ components:
         allowlist:
           description: List of strings that should not be masked
           type: array
+          example: ['SAP', 'Joule']
           items:
             type: string
-            example: 'David Smith'
+        mask_grounding_input:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+              default: false
+              description: controls whether the input to the grounding module will be masked with the configuration supplied in the masking module
 
     DPIEntityConfig:
       type: object
       required:
         - type
+      additionalProperties: false
       properties:
         type:
           description: Type of entity to be masked
@@ -666,6 +726,7 @@ components:
       required:
         - type
         - config
+      additionalProperties: false
       properties:
         type:
           type: string
@@ -679,6 +740,7 @@ components:
           required:
             - input_params
             - output_param
+          additionalProperties: false
           properties:
             filters:
               type: array
@@ -688,6 +750,7 @@ components:
               description: Document grounding service filters to be used
             input_params:
               type: array
+              minItems: 1
               items:
                 type: string
                 example: groundingInput
@@ -696,11 +759,13 @@ components:
               type: string
               description: Parameter name used for grounding output
               example: groundingOutput
+
     DocumentGroundingFilter:
       type: object
       required:
         - id
         - data_repository_type
+      additionalProperties: false
       properties:
         id:
           $ref: '#/components/schemas/GroundingFilterId'
@@ -737,11 +802,13 @@ components:
           title: Chunkmetadata
           description: Restrict chunks considered during search to those with the given metadata.
       minProperties: 1
+
     GroundingFilterId:
       title: Id
       description: Identifier of this SearchFilter - unique per request.
     GroundingFilterSearchConfiguration:
       nullable: true
+      additionalProperties: false
       properties:
         max_chunk_count:
           nullable: true
@@ -760,6 +827,7 @@ components:
       title: SearchConfiguration
       minProperties: 0
       maxProperties: 1
+
     DataRepositoryType:
       type: string
       anyOf:
@@ -768,6 +836,7 @@ components:
         - {}
       title: DataRepositoryType
     KeyValueListPair:
+      additionalProperties: false
       properties:
         key:
           type: string
@@ -784,7 +853,9 @@ components:
         - key
         - value
       title: KeyValueListPair
+
     SearchDocumentKeyValueListPair:
+      additionalProperties: false
       properties:
         key:
           type: string

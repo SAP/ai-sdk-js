@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -23,6 +23,16 @@ export type DpiConfig = {
   entities: DpiEntityConfig[];
   /**
    * List of strings that should not be masked
+   * @example [
+   *   "SAP",
+   *   "Joule"
+   * ]
    */
   allowlist?: string[];
-} & Record<string, any>;
+  mask_grounding_input?: {
+    /**
+     * controls whether the input to the grounding module will be masked with the configuration supplied in the masking module
+     */
+    enabled?: boolean;
+  } & Record<string, any>;
+};
