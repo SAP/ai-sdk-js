@@ -13,7 +13,6 @@ type Bytes = string | ArrayBuffer | Uint8Array | Buffer | null | undefined;
 
 /**
  * Stream implemented as an async iterable.
- * @internal
  */
 export class SseStream<Item> implements AsyncIterable<Item> {
   protected static transformToSseStream<Item>(

@@ -152,7 +152,7 @@ Refer to `AzureOpenAiChatCompletionParameters` interface for other parameters th
 The `AzureOpenAiChatClient` supports streaming response for chat completion requests based on the [Server-sent events](https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events) standard.
 
 Use the `stream()` method to receive a stream of chunk responses from the model.
-After consuming the stream, call the helper methods to get the finish reason and token usage information respectively.
+After consuming the stream, call the helper methods to get the finish reason and token usage information.
 
 ```ts
 const chatClient = new AzureOpenAiChatClient('gpt-4o');
@@ -178,7 +178,7 @@ console.log(`Token usage: ${JSON.stringify(tokenUsage)}\n`);
 
 ##### Streaming the Delta Content
 
-The client provides a helper method to extract delta content and stream string directly.
+The client provides a helper method to extract the text chunks as strings:
 
 ```ts
 for await (const chunk of response.stream.toContentStream()) {
@@ -198,7 +198,7 @@ Additionally, it can be aborted manually by calling the `stream()` method with a
 ```ts
 const chatClient = new AzureOpenAiChatClient('gpt-4o');
 const controller = new AbortController();
-const response = await new AzureOpenAiChatClient('gpt-35-turbo').stream(
+const response = await chatClient.stream(
   {
     messages: [
       {

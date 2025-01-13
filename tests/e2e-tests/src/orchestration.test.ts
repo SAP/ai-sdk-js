@@ -5,7 +5,9 @@ import {
   orchestrationOutputFiltering,
   orchestrationRequestConfig,
   orchestrationCompletionMasking,
-  orchestrationChatCompletionImage
+  orchestrationChatCompletionImage,
+  chatCompletionStreamWithJsonModuleConfig,
+  chatCompletionStream
 } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
@@ -61,5 +63,27 @@ describe('orchestration', () => {
     const response = await orchestrationChatCompletionImage();
     expect(response.getContent()?.includes('SAP')).toBe(true);
     expect(response.getContent()?.includes('logo')).toBe(true);
+  });
+
+  it('should return stream of orchestration responses', async () => {
+    const response = await chatCompletionStream(new AbortController());
+
+    for await (const chunk of response.stream) {
+      expect(chunk).toBeDefined();
+    }
+    expect(response.getFinishReason()).toEqual('stop');
+    expect(response.getTokenUsage()).toBeDefined();
+  });
+
+  it('should return stream of orchestration responses, using a JSON client', async () => {
+    const response = await chatCompletionStreamWithJsonModuleConfig(
+      new AbortController()
+    );
+
+    for await (const chunk of response.stream) {
+      expect(chunk).toBeDefined();
+    }
+    expect(response.getFinishReason()).toEqual('stop');
+    expect(response.getTokenUsage()).toBeDefined();
   });
 });

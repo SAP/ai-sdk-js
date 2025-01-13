@@ -7,7 +7,10 @@ import {
 import { createLogger } from '@sap-cloud-sdk/util';
 import type {
   LlmModuleConfig,
-  OrchestrationResponse
+  OrchestrationStreamChunkResponse,
+  OrchestrationStreamResponse,
+  OrchestrationResponse,
+  StreamOptions
 } from '@sap-ai-sdk/orchestration';
 
 const logger = createLogger({
@@ -38,6 +41,72 @@ export async function orchestrationChatCompletion(): Promise<OrchestrationRespon
   logger.info(result.getContent());
 
   return result;
+}
+
+/**
+ * Ask ChatGPT through the orchestration service about SAP Cloud SDK with streaming.
+ * @param controller - The abort controller.
+ * @param streamOptions - The stream options.
+ * @returns The response from the orchestration service containing the response content.
+ */
+export async function chatCompletionStream(
+  controller: AbortController,
+  streamOptions?: StreamOptions
+): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
+  const orchestrationClient = new OrchestrationClient({
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-35-turbo',
+      model_params: {}
+    },
+    // define the prompt
+    templating: {
+      template: [
+        {
+          role: 'user',
+          content: 'Give me a long introduction of {{?input}}'
+        }
+      ]
+    }
+  });
+
+  return orchestrationClient.stream(
+    { inputParams: { input: 'SAP Cloud SDK' } },
+    controller,
+    streamOptions
+  );
+}
+
+/**
+ * Ask ChatGPT through the orchestration service about SAP Cloud SDK with streaming and JSON module configuration.
+ * @param controller - The abort controller.
+ * @returns The response from the orchestration service containing the response content.
+ */
+export async function chatCompletionStreamWithJsonModuleConfig(
+  controller: AbortController
+): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
+  const jsonConfig = `{
+    "module_configurations": {
+      "llm_module_config": {
+        "model_name": "gpt-35-turbo",
+        "model_params": {
+          "stream_options": {
+            "include_usage": true
+          }
+        }
+      },
+      "templating_module_config": {
+        "template": [{ "role": "user", "content": "Give me a long introduction of {{?input}}" }]
+      }
+    }
+  }`;
+
+  const orchestrationClient = new OrchestrationClient(jsonConfig);
+
+  return orchestrationClient.stream(
+    { inputParams: { input: 'SAP Cloud SDK' } },
+    controller
+  );
 }
 
 const llm: LlmModuleConfig = {
@@ -212,7 +281,7 @@ export async function orchestrationRequestConfig(): Promise<OrchestrationRespons
  * Use the orchestration service with JSON obtained from AI Launchpad.
  * @returns The orchestration service response.
  */
-export async function orchestrationFromJSON(): Promise<
+export async function orchestrationFromJson(): Promise<
   OrchestrationResponse | undefined
 > {
   // You can also provide the JSON configuration as a plain string in the code directly instead.

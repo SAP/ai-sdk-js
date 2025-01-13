@@ -1,12 +1,14 @@
 import { expectError, expectType, expectAssignable } from 'tsd';
 import {
   OrchestrationClient,
+  buildDocumentGroundingConfig
+} from '@sap-ai-sdk/orchestration';
+import type {
   CompletionPostResponse,
   OrchestrationResponse,
   TokenUsage,
   ChatModel,
   GroundingModuleConfig,
-  buildDocumentGroundingConfig,
   LlmModelParams
 } from '@sap-ai-sdk/orchestration';
 
@@ -165,22 +167,20 @@ expectType<Promise<OrchestrationResponse>>(
  * Chat Completion with JSON configuration.
  */
 expectType<Promise<OrchestrationResponse>>(
-  new OrchestrationClient(
-    `{
-      "module_configurations": {
-        "llm_module_config": {
-          "model_name": "gpt-35-turbo-16k",
-          "model_params": {
-            "max_tokens": 50,
-            "temperature": 0.1
-          }
-        },
-        "templating_module_config": {
-          "template": [{ "role": "user", "content": "Hello!" }]
+  new OrchestrationClient(`{
+    "module_configurations": {
+      "llm_module_config": {
+        "model_name": "gpt-35-turbo-16k",
+        "model_params": {
+          "max_tokens": 50,
+          "temperature": 0.1
         }
+      },
+      "templating_module_config": {
+        "template": [{ "role": "user", "content": "Hello!" }]
       }
-    }`
-  ).chatCompletion()
+    }
+  }`).chatCompletion()
 );
 
 /**
@@ -245,7 +245,7 @@ expect<ChatModel>('custom-model');
 expect<ChatModel>('gemini-1.0-pro');
 
 /**
- * Grounding util
+ * Grounding util.
  */
 expectType<GroundingModuleConfig>(
   buildDocumentGroundingConfig({

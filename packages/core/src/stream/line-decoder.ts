@@ -5,7 +5,6 @@ type Bytes = string | ArrayBuffer | Uint8Array | Buffer | null | undefined;
  * reading lines from text.
  *
  * Https://github.com/encode/httpx/blob/920333ea98118e9cf617f246905d7b202510941c/httpx/_decoders.py#L258.
- * @internal
  */
 export class LineDecoder {
   // prettier-ignore

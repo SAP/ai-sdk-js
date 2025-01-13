@@ -6,7 +6,7 @@
     "tsBuildInfoFile": "./dist/.tsbuildinfo",
     "composite": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/orchestration-utils.test.ts"],
   "exclude": ["dist/**/*", "test/**/*", "**/*.test.ts", "node_modules/**/*"],
   "references": [{ "path": "../core" }, { "path": "../ai-api" }]
 }
