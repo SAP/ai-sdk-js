@@ -1,20 +1,20 @@
 import { AIMessage, ToolMessage } from '@langchain/core/messages';
 import { zodToJsonSchema } from 'zod-to-json-schema';
-import type { BaseMessage } from '@langchain/core/messages';
-import type { ChatResult } from '@langchain/core/outputs';
-import type { StructuredTool } from '@langchain/core/tools';
 import type {
+  AzureOpenAiChatCompletionRequestFunctionMessage,
+  AzureOpenAiChatCompletionRequestToolMessage,
   AzureOpenAiChatCompletionRequestSystemMessage,
   AzureOpenAiChatCompletionRequestUserMessage,
   AzureOpenAiChatCompletionRequestAssistantMessage,
-  AzureOpenAiChatCompletionRequestMessageTool,
-  AzureOpenAiChatCompletionRequestMessageFunction,
   AzureOpenAiChatCompletionTool,
   AzureOpenAiChatCompletionRequestMessage,
   AzureOpenAiCreateChatCompletionResponse,
   AzureOpenAiCreateChatCompletionRequest,
   AzureOpenAiFunctionParameters
 } from '@sap-ai-sdk/foundation-models';
+import type { BaseMessage } from '@langchain/core/messages';
+import type { ChatResult } from '@langchain/core/outputs';
+import type { StructuredTool } from '@langchain/core/tools';
 import type { AzureOpenAiChatClient } from './chat.js';
 import type { AzureOpenAiChatCallOptions } from './types.js';
 
@@ -151,7 +151,7 @@ function mapBaseMessageToAzureOpenAiChatMessage(
   message: BaseMessage
 ): AzureOpenAiChatCompletionRequestMessage {
   return removeUndefinedProperties<AzureOpenAiChatCompletionRequestMessage>({
-    name: message.name,
+    name: message.name ?? '',
     ...mapRoleAndContent(message),
     function_call: message.additional_kwargs.function_call,
     tool_calls: message.additional_kwargs.tool_calls,
@@ -170,9 +170,9 @@ type ContentType<T extends Role> = T extends 'system'
     : T extends 'assistant'
       ? AzureOpenAiChatCompletionRequestAssistantMessage['content']
       : T extends 'tool'
-        ? AzureOpenAiChatCompletionRequestMessageTool['content']
+        ? AzureOpenAiChatCompletionRequestToolMessage['content']
         : T extends 'function'
-          ? AzureOpenAiChatCompletionRequestMessageFunction['content']
+          ? AzureOpenAiChatCompletionRequestFunctionMessage['content']
           : never;
 
 type RoleAndContent = {
