@@ -1,6 +1,6 @@
 ## Context
 
-SAP/ai-sdk-js-backlog#ISSUENUMBER.
+Closes SAP/ai-sdk-js-backlog#ISSUENUMBER.
 
 ## What this PR does and why it is needed
 
