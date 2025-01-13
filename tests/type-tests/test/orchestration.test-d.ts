@@ -1,12 +1,13 @@
 import { expectError, expectType, expectAssignable } from 'tsd';
-import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+import { OrchestrationClient ,
+  buildDocumentGroundingConfig
+} from '@sap-ai-sdk/orchestration';
 import type {
   CompletionPostResponse,
   OrchestrationResponse,
   TokenUsage,
   ChatModel,
   GroundingModuleConfig,
-  buildDocumentGroundingConfig,
   LlmModelParams
 } from '@sap-ai-sdk/orchestration';
 
@@ -243,7 +244,7 @@ expect<ChatModel>('custom-model');
 expect<ChatModel>('gemini-1.0-pro');
 
 /**
- * Grounding util
+ * Grounding util.
  */
 expectType<GroundingModuleConfig>(
   buildDocumentGroundingConfig({
