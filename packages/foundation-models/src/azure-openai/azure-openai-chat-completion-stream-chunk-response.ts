@@ -28,7 +28,9 @@ export class AzureOpenAiChatCompletionStreamChunkResponse {
    */
   getFinishReason(
     choiceIndex = 0
-  ): AzureOpenAiCreateChatCompletionStreamResponse['choices'][0]['finish_reason'] | undefined {
+  ):
+    | AzureOpenAiCreateChatCompletionStreamResponse['choices'][0]['finish_reason']
+    | undefined {
     return this.data.choices.find(c => c.index === choiceIndex)?.finish_reason;
   }
 
