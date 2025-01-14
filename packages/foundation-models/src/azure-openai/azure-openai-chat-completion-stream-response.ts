@@ -1,4 +1,7 @@
-import type { AzureOpenAiCompletionUsage, AzureOpenAiCreateChatCompletionStreamResponse } from './client/inference/schema/index.js';
+import type {
+  AzureOpenAiCompletionUsage,
+  AzureOpenAiCreateChatCompletionStreamResponse
+} from './client/inference/schema/index.js';
 import type { AzureOpenAiChatCompletionStream } from './azure-openai-chat-completion-stream.js';
 
 /**
@@ -9,7 +12,10 @@ export class AzureOpenAiChatCompletionStreamResponse<T> {
   /**
    * Finish reasons for all choices.
    */
-  private _finishReasons: Map<number, AzureOpenAiCreateChatCompletionStreamResponse['choices'][0]['finish_reason']> = new Map();
+  private _finishReasons: Map<
+    number,
+    AzureOpenAiCreateChatCompletionStreamResponse['choices'][0]['finish_reason']
+  > = new Map();
   private _stream: AzureOpenAiChatCompletionStream<T> | undefined;
 
   public getTokenUsage(): AzureOpenAiCompletionUsage | undefined {
@@ -23,21 +29,33 @@ export class AzureOpenAiChatCompletionStreamResponse<T> {
     this._usage = usage;
   }
 
-  public getFinishReason(choiceIndex = 0): AzureOpenAiCreateChatCompletionStreamResponse['choices'][0]['finish_reason'] | undefined {
+  public getFinishReason(
+    choiceIndex = 0
+  ):
+    | AzureOpenAiCreateChatCompletionStreamResponse['choices'][0]['finish_reason']
+    | undefined {
     return this._finishReasons.get(choiceIndex);
   }
 
   /**
    * @internal
    */
-  _getFinishReasons(): Map<number, AzureOpenAiCreateChatCompletionStreamResponse['choices'][0]['finish_reason']> {
+  _getFinishReasons(): Map<
+    number,
+    AzureOpenAiCreateChatCompletionStreamResponse['choices'][0]['finish_reason']
+  > {
     return this._finishReasons;
   }
 
   /**
    * @internal
    */
-  _setFinishReasons(finishReasons: Map<number, AzureOpenAiCreateChatCompletionStreamResponse['choices'][0]['finish_reason']>): void {
+  _setFinishReasons(
+    finishReasons: Map<
+      number,
+      AzureOpenAiCreateChatCompletionStreamResponse['choices'][0]['finish_reason']
+    >
+  ): void {
     this._finishReasons = finishReasons;
   }
 

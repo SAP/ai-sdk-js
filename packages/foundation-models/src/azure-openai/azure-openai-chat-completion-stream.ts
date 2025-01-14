@@ -24,7 +24,11 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
     response: HttpResponse,
     controller: AbortController
   ): AzureOpenAiChatCompletionStream<AzureOpenAiCreateChatCompletionStreamResponse> {
-    const stream = SseStream.transformToSseStream<AzureOpenAiCreateChatCompletionStreamResponse>(response, controller);
+    const stream =
+      SseStream.transformToSseStream<AzureOpenAiCreateChatCompletionStreamResponse>(
+        response,
+        controller
+      );
     return new AzureOpenAiChatCompletionStream(stream.iterator, controller);
   }
 

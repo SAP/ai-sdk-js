@@ -196,13 +196,13 @@ expectType<AzureOpenAiChatCompletionStream<string>>(
 );
 
 expectType<
-    | 'stop'
-    | 'length'
-    | 'tool_calls'
-    | 'content_filter'
-    | 'function_call'
-    | null
-    | undefined
+  | 'stop'
+  | 'length'
+  | 'tool_calls'
+  | 'content_filter'
+  | 'function_call'
+  | null
+  | undefined
 >(
   (
     await new AzureOpenAiChatClient('gpt-4').stream({

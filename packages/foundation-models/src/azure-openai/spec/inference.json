@@ -17,9 +17,7 @@
   ],
   "security": [
     {
-      "bearer": [
-        "api.read"
-      ]
+      "bearer": ["api.read"]
     },
     {
       "apiKey": []
@@ -199,9 +197,7 @@
                     "nullable": true
                   }
                 },
-                "required": [
-                  "input"
-                ]
+                "required": ["input"]
               }
             }
           }
@@ -238,11 +234,7 @@
                             }
                           }
                         },
-                        "required": [
-                          "index",
-                          "object",
-                          "embedding"
-                        ]
+                        "required": ["index", "object", "embedding"]
                       }
                     },
                     "usage": {
@@ -255,18 +247,10 @@
                           "type": "integer"
                         }
                       },
-                      "required": [
-                        "prompt_tokens",
-                        "total_tokens"
-                      ]
+                      "required": ["prompt_tokens", "total_tokens"]
                     }
                   },
-                  "required": [
-                    "object",
-                    "model",
-                    "data",
-                    "usage"
-                  ]
+                  "required": ["object", "model", "data", "usage"]
                 }
               }
             }
@@ -597,9 +581,7 @@
       },
       "innerErrorCode": {
         "description": "Error codes for the inner error object.",
-        "enum": [
-          "ResponsibleAIPolicyViolation"
-        ],
+        "enum": ["ResponsibleAIPolicyViolation"],
         "type": "string",
         "x-ms-enum": {
           "name": "InnerErrorCode",
@@ -662,9 +644,7 @@
             "type": "boolean"
           }
         },
-        "required": [
-          "filtered"
-        ]
+        "required": ["filtered"]
       },
       "contentFilterSeverityResult": {
         "type": "object",
@@ -676,12 +656,7 @@
             "properties": {
               "severity": {
                 "type": "string",
-                "enum": [
-                  "safe",
-                  "low",
-                  "medium",
-                  "high"
-                ],
+                "enum": ["safe", "low", "medium", "high"],
                 "x-ms-enum": {
                   "name": "ContentFilterSeverity",
                   "modelAsString": true,
@@ -708,10 +683,7 @@
             }
           }
         ],
-        "required": [
-          "severity",
-          "filtered"
-        ]
+        "required": ["severity", "filtered"]
       },
       "contentFilterDetectedResult": {
         "type": "object",
@@ -727,10 +699,7 @@
             }
           }
         ],
-        "required": [
-          "detected",
-          "filtered"
-        ]
+        "required": ["detected", "filtered"]
       },
       "contentFilterDetectedWithCitationResult": {
         "type": "object",
@@ -754,10 +723,7 @@
             }
           }
         ],
-        "required": [
-          "detected",
-          "filtered"
-        ]
+        "required": ["detected", "filtered"]
       },
       "contentFilterResultsBase": {
         "type": "object",
@@ -1116,9 +1082,7 @@
             "description": "A unique identifier representing your end-user, which can help to monitor and detect abuse.\n"
           }
         },
-        "required": [
-          "prompt"
-        ]
+        "required": ["prompt"]
       },
       "createCompletionResponse": {
         "type": "object",
@@ -1133,21 +1097,12 @@
             "description": "The list of completion choices the model generated for the input prompt.",
             "items": {
               "type": "object",
-              "required": [
-                "finish_reason",
-                "index",
-                "logprobs",
-                "text"
-              ],
+              "required": ["finish_reason", "index", "logprobs", "text"],
               "properties": {
                 "finish_reason": {
                   "type": "string",
                   "description": "The reason the model stopped generating tokens. This will be `stop` if the model hit a natural stop point or a provided stop sequence,\n`length` if the maximum number of tokens specified in the request was reached,\nor `content_filter` if content was omitted due to a flag from our content filters.\n",
-                  "enum": [
-                    "stop",
-                    "length",
-                    "content_filter"
-                  ]
+                  "enum": ["stop", "length", "content_filter"]
                 },
                 "index": {
                   "type": "integer"
@@ -1212,21 +1167,13 @@
           "object": {
             "type": "string",
             "description": "The object type, which is always \"text_completion\"",
-            "enum": [
-              "text_completion"
-            ]
+            "enum": ["text_completion"]
           },
           "usage": {
             "$ref": "#/components/schemas/completionUsage"
           }
         },
-        "required": [
-          "id",
-          "object",
-          "created",
-          "model",
-          "choices"
-        ]
+        "required": ["id", "object", "created", "model", "choices"]
       },
       "createChatCompletionRequest": {
         "type": "object",
@@ -1388,10 +1335,7 @@
                   {
                     "type": "string",
                     "description": "`none` means the model will not call a function and instead generates a message. `auto` means the model can pick between generating a message or calling a function.\n",
-                    "enum": [
-                      "none",
-                      "auto"
-                    ]
+                    "enum": ["none", "auto"]
                   },
                   {
                     "$ref": "#/components/schemas/chatCompletionFunctionCallOption"
@@ -1415,9 +1359,7 @@
                 "description": "A unique identifier representing your end-user, which can help to monitor and detect abuse.\n"
               }
             },
-            "required": [
-              "messages"
-            ]
+            "required": ["messages"]
           }
         ]
       },
@@ -1437,9 +1379,7 @@
             "$ref": "#/components/schemas/FunctionParameters"
           }
         },
-        "required": [
-          "name"
-        ]
+        "required": ["name"]
       },
       "chatCompletionFunctionCallOption": {
         "type": "object",
@@ -1450,9 +1390,7 @@
             "description": "The name of the function to call."
           }
         },
-        "required": [
-          "name"
-        ]
+        "required": ["name"]
       },
       "chatCompletionRequestMessage": {
         "oneOf": [
@@ -1498,9 +1436,7 @@
           },
           "role": {
             "type": "string",
-            "enum": [
-              "system"
-            ],
+            "enum": ["system"],
             "description": "The role of the messages author, in this case `system`."
           },
           "name": {
@@ -1508,10 +1444,7 @@
             "description": "An optional name for the participant. Provides the model information to differentiate between participants of the same role."
           }
         },
-        "required": [
-          "content",
-          "role"
-        ]
+        "required": ["content", "role"]
       },
       "chatCompletionRequestUserMessage": {
         "type": "object",
@@ -1539,9 +1472,7 @@
           },
           "role": {
             "type": "string",
-            "enum": [
-              "user"
-            ],
+            "enum": ["user"],
             "description": "The role of the messages author, in this case `user`."
           },
           "name": {
@@ -1549,10 +1480,7 @@
             "description": "An optional name for the participant. Provides the model information to differentiate between participants of the same role."
           }
         },
-        "required": [
-          "content",
-          "role"
-        ]
+        "required": ["content", "role"]
       },
       "chatCompletionRequestAssistantMessage": {
         "type": "object",
@@ -1585,9 +1513,7 @@
           },
           "role": {
             "type": "string",
-            "enum": [
-              "assistant"
-            ],
+            "enum": ["assistant"],
             "description": "The role of the messages author, in this case `assistant`."
           },
           "name": {
@@ -1612,15 +1538,10 @@
                 "description": "The name of the function to call."
               }
             },
-            "required": [
-              "arguments",
-              "name"
-            ]
+            "required": ["arguments", "name"]
           }
         },
-        "required": [
-          "role"
-        ]
+        "required": ["role"]
       },
       "chatCompletionRequestToolMessage": {
         "type": "object",
@@ -1628,9 +1549,7 @@
         "properties": {
           "role": {
             "type": "string",
-            "enum": [
-              "tool"
-            ],
+            "enum": ["tool"],
             "description": "The role of the messages author, in this case `tool`."
           },
           "content": {
@@ -1657,11 +1576,7 @@
             "description": "Tool call that this message is responding to."
           }
         },
-        "required": [
-          "role",
-          "content",
-          "tool_call_id"
-        ]
+        "required": ["role", "content", "tool_call_id"]
       },
       "chatCompletionRequestFunctionMessage": {
         "type": "object",
@@ -1670,9 +1585,7 @@
         "properties": {
           "role": {
             "type": "string",
-            "enum": [
-              "function"
-            ],
+            "enum": ["function"],
             "description": "The role of the messages author, in this case `function`."
           },
           "content": {
@@ -1685,11 +1598,7 @@
             "description": "The name of the function to call."
           }
         },
-        "required": [
-          "role",
-          "content",
-          "name"
-        ]
+        "required": ["role", "content", "name"]
       },
       "chatCompletionRequestSystemMessageContentPart": {
         "oneOf": [
@@ -1731,9 +1640,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [
-              "text"
-            ],
+            "enum": ["text"],
             "description": "The type of the content part."
           },
           "text": {
@@ -1741,10 +1648,7 @@
             "description": "The text content."
           }
         },
-        "required": [
-          "type",
-          "text"
-        ]
+        "required": ["type", "text"]
       },
       "chatCompletionRequestMessageContentPartImage": {
         "type": "object",
@@ -1752,9 +1656,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [
-              "image_url"
-            ],
+            "enum": ["image_url"],
             "description": "The type of the content part."
           },
           "image_url": {
@@ -1768,23 +1670,14 @@
               "detail": {
                 "type": "string",
                 "description": "Specifies the detail level of the image. Learn more in the [Vision guide](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/gpt-with-vision?tabs=rest%2Csystem-assigned%2Cresource#detail-parameter-settings-in-image-processing-low-high-auto).",
-                "enum": [
-                  "auto",
-                  "low",
-                  "high"
-                ],
+                "enum": ["auto", "low", "high"],
                 "default": "auto"
               }
             },
-            "required": [
-              "url"
-            ]
+            "required": ["url"]
           }
         },
-        "required": [
-          "type",
-          "image_url"
-        ]
+        "required": ["type", "image_url"]
       },
       "chatCompletionRequestMessageContentPartRefusal": {
         "type": "object",
@@ -1792,9 +1685,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [
-              "refusal"
-            ],
+            "enum": ["refusal"],
             "description": "The type of the content part."
           },
           "refusal": {
@@ -1802,15 +1693,10 @@
             "description": "The refusal message generated by the model."
           }
         },
-        "required": [
-          "type",
-          "refusal"
-        ]
+        "required": ["type", "refusal"]
       },
       "azureChatExtensionConfiguration": {
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "type": "object",
         "properties": {
           "type": {
@@ -1829,10 +1715,7 @@
       "azureChatExtensionType": {
         "type": "string",
         "description": "  A representation of configuration data for a single Azure OpenAI chat extension. This will be used by a chat\n  completions request that should use Azure OpenAI chat extensions to augment the response behavior.\n  The use of this configuration is compatible only with Azure OpenAI.",
-        "enum": [
-          "azure_search",
-          "azure_cosmos_db"
-        ],
+        "enum": ["azure_search", "azure_cosmos_db"],
         "x-ms-enum": {
           "name": "AzureChatExtensionType",
           "modelAsString": true,
@@ -1851,9 +1734,7 @@
         }
       },
       "azureSearchChatExtensionConfiguration": {
-        "required": [
-          "parameters"
-        ],
+        "required": ["parameters"],
         "description": "A specific representation of configurable options for Azure Search when using it as an Azure OpenAI chat\nextension.",
         "allOf": [
           {
@@ -1870,11 +1751,7 @@
         "x-ms-discriminator-value": "azure_search"
       },
       "azureSearchChatExtensionParameters": {
-        "required": [
-          "authentication",
-          "endpoint",
-          "index_name"
-        ],
+        "required": ["authentication", "endpoint", "index_name"],
         "type": "object",
         "properties": {
           "authentication": {
@@ -2025,9 +1902,7 @@
         }
       },
       "azureCosmosDBChatExtensionConfiguration": {
-        "required": [
-          "parameters"
-        ],
+        "required": ["parameters"],
         "description": "A specific representation of configurable options for Azure Cosmos DB when using it as an Azure OpenAI chat\nextension.",
         "allOf": [
           {
@@ -2106,10 +1981,7 @@
         "description": "Parameters to use when configuring Azure OpenAI On Your Data chat extensions when using Azure Cosmos DB for\nMongoDB vCore."
       },
       "azureCosmosDBFieldMappingOptions": {
-        "required": [
-          "content_fields",
-          "vector_fields"
-        ],
+        "required": ["content_fields", "vector_fields"],
         "type": "object",
         "properties": {
           "title_field": {
@@ -2146,9 +2018,7 @@
         "description": "Optional settings to control how fields are processed when using a configured Azure Cosmos DB resource."
       },
       "onYourDataAuthenticationOptions": {
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "type": "object",
         "properties": {
           "type": {
@@ -2203,9 +2073,7 @@
         }
       },
       "onYourDataApiKeyAuthenticationOptions": {
-        "required": [
-          "key"
-        ],
+        "required": ["key"],
         "description": "The authentication options for Azure OpenAI On Your Data when using an API key.",
         "allOf": [
           {
@@ -2223,9 +2091,7 @@
         "x-ms-discriminator-value": "api_key"
       },
       "onYourDataConnectionStringAuthenticationOptions": {
-        "required": [
-          "connection_string"
-        ],
+        "required": ["connection_string"],
         "description": "The authentication options for Azure OpenAI On Your Data when using a connection string.",
         "allOf": [
           {
@@ -2252,9 +2118,7 @@
         "x-ms-discriminator-value": "system_assigned_managed_identity"
       },
       "onYourDataUserAssignedManagedIdentityAuthenticationOptions": {
-        "required": [
-          "managed_identity_resource_id"
-        ],
+        "required": ["managed_identity_resource_id"],
         "description": "The authentication options for Azure OpenAI On Your Data when using a user-assigned managed identity.",
         "allOf": [
           {
@@ -2272,9 +2136,7 @@
         "x-ms-discriminator-value": "user_assigned_managed_identity"
       },
       "onYourDataVectorizationSource": {
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "type": "object",
         "properties": {
           "type": {
@@ -2293,10 +2155,7 @@
       "onYourDataVectorizationSourceType": {
         "type": "string",
         "description": "Represents the available sources Azure OpenAI On Your Data can use to configure vectorization of data for use with\nvector search.",
-        "enum": [
-          "endpoint",
-          "deployment_name"
-        ],
+        "enum": ["endpoint", "deployment_name"],
         "x-ms-enum": {
           "name": "OnYourDataVectorizationSourceType",
           "modelAsString": true,
@@ -2315,9 +2174,7 @@
         }
       },
       "onYourDataDeploymentNameVectorizationSource": {
-        "required": [
-          "deployment_name"
-        ],
+        "required": ["deployment_name"],
         "description": "The details of a a vectorization source, used by Azure OpenAI On Your Data when applying vector search, that is based\non an internal embeddings model deployment name in the same Azure OpenAI resource.",
         "allOf": [
           {
@@ -2335,10 +2192,7 @@
         "x-ms-discriminator-value": "deployment_name"
       },
       "onYourDataEndpointVectorizationSource": {
-        "required": [
-          "authentication",
-          "endpoint"
-        ],
+        "required": ["authentication", "endpoint"],
         "description": "The details of a a vectorization source, used by Azure OpenAI On Your Data when applying vector search, that is based\non a public Azure OpenAI endpoint call for embeddings.",
         "allOf": [
           {
@@ -2378,9 +2232,7 @@
         "description": "  A representation of the additional context information available when Azure OpenAI chat extensions are involved\n  in the generation of a corresponding chat completions response. This context information is only populated when\n  using an Azure OpenAI request configured to use a matching extension."
       },
       "citation": {
-        "required": [
-          "content"
-        ],
+        "required": ["content"],
         "type": "object",
         "properties": {
           "content": {
@@ -2429,23 +2281,14 @@
                 "description": "The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function."
               }
             },
-            "required": [
-              "name",
-              "arguments"
-            ]
+            "required": ["name", "arguments"]
           }
         },
-        "required": [
-          "id",
-          "type",
-          "function"
-        ]
+        "required": ["id", "type", "function"]
       },
       "toolCallType": {
         "type": "string",
-        "enum": [
-          "function"
-        ],
+        "enum": ["function"],
         "description": "The type of the tool call, in this case `function`.",
         "x-ms-enum": {
           "name": "ToolCallType",
@@ -2479,10 +2322,7 @@
             }
           }
         ],
-        "required": [
-          "tool_call_id",
-          "content"
-        ]
+        "required": ["tool_call_id", "content"]
       },
       "chatCompletionRequestMessageFunction": {
         "allOf": [
@@ -2496,9 +2336,7 @@
             "properties": {
               "role": {
                 "type": "string",
-                "enum": [
-                  "function"
-                ],
+                "enum": ["function"],
                 "description": "The role of the messages author, in this case `function`."
               },
               "name": {
@@ -2513,10 +2351,7 @@
             }
           }
         ],
-        "required": [
-          "function_call_id",
-          "content"
-        ]
+        "required": ["function_call_id", "content"]
       },
       "createChatCompletionResponse": {
         "type": "object",
@@ -2534,12 +2369,7 @@
             "description": "A list of chat completion choices. Can be more than one if `n` is greater than 1.",
             "items": {
               "type": "object",
-              "required": [
-                "finish_reason",
-                "index",
-                "message",
-                "logprobs"
-              ],
+              "required": ["finish_reason", "index", "message", "logprobs"],
               "properties": {
                 "finish_reason": {
                   "type": "string",
@@ -2584,10 +2414,7 @@
                       "nullable": true
                     }
                   },
-                  "required": [
-                    "content",
-                    "refusal"
-                  ]
+                  "required": ["content", "refusal"]
                 }
               }
             }
@@ -2607,21 +2434,13 @@
           "object": {
             "type": "string",
             "description": "The object type, which is always `chat.completion`.",
-            "enum": [
-              "chat.completion"
-            ]
+            "enum": ["chat.completion"]
           },
           "usage": {
             "$ref": "#/components/schemas/completionUsage"
           }
         },
-        "required": [
-          "choices",
-          "created",
-          "id",
-          "model",
-          "object"
-        ]
+        "required": ["choices", "created", "id", "model", "object"]
       },
       "createChatCompletionStreamResponse": {
         "type": "object",
@@ -2636,11 +2455,7 @@
             "description": "A list of chat completion choices. Can contain more than one elements if `n` is greater than 1.\n",
             "items": {
               "type": "object",
-              "required": [
-                "delta",
-                "finish_reason",
-                "index"
-              ],
+              "required": ["delta", "finish_reason", "index"],
               "properties": {
                 "delta": {
                   "$ref": "#/components/schemas/chatCompletionStreamResponseDelta"
@@ -2667,10 +2482,7 @@
                       "nullable": true
                     }
                   },
-                  "required": [
-                    "content",
-                    "refusal"
-                  ]
+                  "required": ["content", "refusal"]
                 },
                 "finish_reason": {
                   "type": "string",
@@ -2706,23 +2518,11 @@
           "object": {
             "type": "string",
             "description": "The object type, which is always `chat.completion.chunk`.",
-            "enum": [
-              "chat.completion.chunk"
-            ],
-            "required": [
-              "prompt_tokens",
-              "completion_tokens",
-              "total_tokens"
-            ]
+            "enum": ["chat.completion.chunk"],
+            "required": ["prompt_tokens", "completion_tokens", "total_tokens"]
           }
         },
-        "required": [
-          "choices",
-          "created",
-          "id",
-          "model",
-          "object"
-        ]
+        "required": ["choices", "created", "id", "model", "object"]
       },
       "chatCompletionStreamResponseDelta": {
         "type": "object",
@@ -2756,12 +2556,7 @@
           },
           "role": {
             "type": "string",
-            "enum": [
-              "system",
-              "user",
-              "assistant",
-              "tool"
-            ],
+            "enum": ["system", "user", "assistant", "tool"],
             "description": "The role of the author of this message."
           },
           "refusal": {
@@ -2783,9 +2578,7 @@
           },
           "type": {
             "type": "string",
-            "enum": [
-              "function"
-            ],
+            "enum": ["function"],
             "description": "The type of the tool. Currently, only `function` is supported."
           },
           "function": {
@@ -2802,9 +2595,7 @@
             }
           }
         },
-        "required": [
-          "index"
-        ]
+        "required": ["index"]
       },
       "chatCompletionStreamOptions": {
         "description": "Options for streaming response. Only set this when you set `stream: true`.\n",
@@ -2840,9 +2631,7 @@
             "nullable": true
           }
         },
-        "required": [
-          "content"
-        ]
+        "required": ["content"]
       },
       "chatCompletionTokenLogprob": {
         "type": "object",
@@ -2886,20 +2675,11 @@
                   "nullable": true
                 }
               },
-              "required": [
-                "token",
-                "logprob",
-                "bytes"
-              ]
+              "required": ["token", "logprob", "bytes"]
             }
           }
         },
-        "required": [
-          "token",
-          "logprob",
-          "bytes",
-          "top_logprobs"
-        ]
+        "required": ["token", "logprob", "bytes", "top_logprobs"]
       },
       "chatCompletionResponseMessage": {
         "type": "object",
@@ -2932,17 +2712,11 @@
             "$ref": "#/components/schemas/azureChatExtensionsMessageContext"
           }
         },
-        "required": [
-          "role",
-          "content",
-          "refusal"
-        ]
+        "required": ["role", "content", "refusal"]
       },
       "chatCompletionResponseMessageRole": {
         "type": "string",
-        "enum": [
-          "assistant"
-        ],
+        "enum": ["assistant"],
         "description": "The role of the author of the response message."
       },
       "chatCompletionToolChoiceOption": {
@@ -2951,11 +2725,7 @@
           {
             "type": "string",
             "description": "`none` means the model will not call a function and instead generates a message. `auto` means the model can pick between generating a message or calling a function.",
-            "enum": [
-              "none",
-              "auto",
-              "required"
-            ]
+            "enum": ["none", "auto", "required"]
           },
           {
             "$ref": "#/components/schemas/chatCompletionNamedToolChoice"
@@ -2968,9 +2738,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [
-              "function"
-            ],
+            "enum": ["function"],
             "description": "The type of the tool. Currently, only `function` is supported."
           },
           "function": {
@@ -2981,15 +2749,10 @@
                 "description": "The name of the function to call."
               }
             },
-            "required": [
-              "name"
-            ]
+            "required": ["name"]
           }
         },
-        "required": [
-          "type",
-          "function"
-        ]
+        "required": ["type", "function"]
       },
       "ParallelToolCalls": {
         "type": "boolean",
@@ -3016,10 +2779,7 @@
             "description": "The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function."
           }
         },
-        "required": [
-          "name",
-          "arguments"
-        ]
+        "required": ["name", "arguments"]
       },
       "completionUsage": {
         "type": "object",
@@ -3048,30 +2808,21 @@
             }
           }
         },
-        "required": [
-          "prompt_tokens",
-          "completion_tokens",
-          "total_tokens"
-        ]
+        "required": ["prompt_tokens", "completion_tokens", "total_tokens"]
       },
       "chatCompletionTool": {
         "type": "object",
         "properties": {
           "type": {
             "type": "string",
-            "enum": [
-              "function"
-            ],
+            "enum": ["function"],
             "description": "The type of the tool. Currently, only `function` is supported."
           },
           "function": {
             "$ref": "#/components/schemas/FunctionObject"
           }
         },
-        "required": [
-          "type",
-          "function"
-        ]
+        "required": ["type", "function"]
       },
       "FunctionParameters": {
         "type": "object",
@@ -3099,9 +2850,7 @@
             "description": "Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling)."
           }
         },
-        "required": [
-          "name"
-        ]
+        "required": ["name"]
       },
       "ResponseFormatText": {
         "type": "object",
@@ -3109,14 +2858,10 @@
           "type": {
             "type": "string",
             "description": "The type of response format being defined: `text`",
-            "enum": [
-              "text"
-            ]
+            "enum": ["text"]
           }
         },
-        "required": [
-          "type"
-        ]
+        "required": ["type"]
       },
       "ResponseFormatJsonObject": {
         "type": "object",
@@ -3124,14 +2869,10 @@
           "type": {
             "type": "string",
             "description": "The type of response format being defined: `json_object`",
-            "enum": [
-              "json_object"
-            ]
+            "enum": ["json_object"]
           }
         },
-        "required": [
-          "type"
-        ]
+        "required": ["type"]
       },
       "ResponseFormatJsonSchemaSchema": {
         "type": "object",
@@ -3144,9 +2885,7 @@
           "type": {
             "type": "string",
             "description": "The type of response format being defined: `json_schema`",
-            "enum": [
-              "json_schema"
-            ]
+            "enum": ["json_schema"]
           },
           "json_schema": {
             "type": "object",
@@ -3169,16 +2908,10 @@
                 "description": "Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`."
               }
             },
-            "required": [
-              "type",
-              "name"
-            ]
+            "required": ["type", "name"]
           }
         },
-        "required": [
-          "type",
-          "json_schema"
-        ]
+        "required": ["type", "json_schema"]
       },
       "chatCompletionChoiceCommon": {
         "type": "object",
@@ -3213,9 +2946,7 @@
             "description": "The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use log probability to automatically increase the temperature until certain thresholds are hit."
           }
         },
-        "required": [
-          "file"
-        ]
+        "required": ["file"]
       },
       "audioResponse": {
         "description": "Translation or transcription response when response_format was json",
@@ -3226,9 +2957,7 @@
             "description": "Translated or transcribed text."
           }
         },
-        "required": [
-          "text"
-        ]
+        "required": ["text"]
       },
       "audioVerboseResponse": {
         "description": "Translation or transcription response when response_format was verbose_json",
@@ -3242,10 +2971,7 @@
               "task": {
                 "type": "string",
                 "description": "Type of audio task.",
-                "enum": [
-                  "transcribe",
-                  "translate"
-                ],
+                "enum": ["transcribe", "translate"],
                 "x-ms-enum": {
                   "modelAsString": true
                 }
@@ -3267,20 +2993,12 @@
             }
           }
         ],
-        "required": [
-          "text"
-        ]
+        "required": ["text"]
       },
       "audioResponseFormat": {
         "title": "AudioResponseFormat",
         "description": "Defines the format of the output.",
-        "enum": [
-          "json",
-          "text",
-          "srt",
-          "verbose_json",
-          "vtt"
-        ],
+        "enum": ["json", "text", "srt", "verbose_json", "vtt"],
         "type": "string",
         "x-ms-enum": {
           "modelAsString": true
@@ -3312,9 +3030,7 @@
             "description": "The language of the input audio. Supplying the input language in ISO-639-1 format will improve accuracy and latency."
           }
         },
-        "required": [
-          "file"
-        ]
+        "required": ["file"]
       },
       "audioSegment": {
         "type": "object",
@@ -3369,10 +3085,7 @@
       "imageQuality": {
         "description": "The quality of the image that will be generated.",
         "type": "string",
-        "enum": [
-          "standard",
-          "hd"
-        ],
+        "enum": ["standard", "hd"],
         "default": "standard",
         "x-ms-enum": {
           "name": "Quality",
@@ -3394,10 +3107,7 @@
       "imagesResponseFormat": {
         "description": "The format in which the generated images are returned.",
         "type": "string",
-        "enum": [
-          "url",
-          "b64_json"
-        ],
+        "enum": ["url", "b64_json"],
         "default": "url",
         "x-ms-enum": {
           "name": "ImagesResponseFormat",
@@ -3419,11 +3129,7 @@
       "imageSize": {
         "description": "The size of the generated images.",
         "type": "string",
-        "enum": [
-          "1792x1024",
-          "1024x1792",
-          "1024x1024"
-        ],
+        "enum": ["1792x1024", "1024x1792", "1024x1024"],
         "default": "1024x1024",
         "x-ms-enum": {
           "name": "Size",
@@ -3450,10 +3156,7 @@
       "imageStyle": {
         "description": "The style of the generated images.",
         "type": "string",
-        "enum": [
-          "vivid",
-          "natural"
-        ],
+        "enum": ["vivid", "natural"],
         "default": "vivid",
         "x-ms-enum": {
           "name": "Style",
@@ -3508,9 +3211,7 @@
             "$ref": "#/components/schemas/imageStyle"
           }
         },
-        "required": [
-          "prompt"
-        ]
+        "required": ["prompt"]
       },
       "generateImagesResponse": {
         "type": "object",
@@ -3529,10 +3230,7 @@
             }
           }
         },
-        "required": [
-          "created",
-          "data"
-        ]
+        "required": ["created", "data"]
       },
       "imageResult": {
         "type": "object",
