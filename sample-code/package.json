@@ -15,7 +15,7 @@
     "node": "^20"
   },
   "scripts": {
-    "start": "node --loader ts-node/esm src/server.ts",
+    "start": "node --loader ts-node/esm --watch src/server.ts",
     "local": "node --env-file=.env --loader ts-node/esm src/server.ts",
     "compile": "tsc",
     "dev": "tsc -w",
@@ -33,6 +33,7 @@
     "@langchain/textsplitters": "0.1.0",
     "@sap-cloud-sdk/util": "^3.25.0",
     "@types/express": "^5.0.0",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "dotenv": "^16.4.5"
   }
 }

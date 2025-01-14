@@ -281,6 +281,7 @@ export async function orchestrationRequestConfig(): Promise<OrchestrationRespons
  * Use the orchestration service with JSON obtained from AI Launchpad.
  * @returns The orchestration service response.
  */
+// Where is the headquarters of SAP?
 export async function orchestrationFromJson(): Promise<
   OrchestrationResponse | undefined
 > {

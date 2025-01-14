@@ -47,6 +47,9 @@ import type { RetievalPerFilterSearchResult } from '@sap-ai-sdk/document-groundi
 import type { AiApiError, AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 
+import 'dotenv/config.js';
+console.log(process.env.AICORE_SERVICE_KEY);
+
 const app = express();
 const port = 8080;
 
