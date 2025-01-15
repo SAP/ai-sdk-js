@@ -284,10 +284,13 @@ To do this, set the `api-version` parameter in a `CustomRequestConfig` object, l
 
 ```ts
 const client = await new AzureOpenAiChatClient('gpt-35-turbo', {
-  destinationName: 'my-destination',
+  destinationName: 'my-destination'
 });
 
-client.run({ messages: [{ role: 'user', content: 'YOUR_PROMPT' }] }, { params: { 'api-version': 'YOUR_OLD_VERSION' } });
+client.run(
+  { messages: [{ role: 'user', content: 'YOUR_PROMPT' }] },
+  { params: { 'api-version': 'YOUR_OLD_VERSION' } }
+);
 ```
 
 ## Local Testing
