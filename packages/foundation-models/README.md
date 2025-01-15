@@ -277,7 +277,7 @@ To disable caching, set the `useCache` parameter to `false` together with the `d
 
 ### Overwriting API Version
 
-We are continously updating the OpenAI API version to match the latest version.
+We are continuously updating the OpenAI API version to match the latest version.
 In case this behavior causes issues in your application, you can overwrite the API version.
 
 To do this, set the `api-version` parameter in the `CustomRequestConfig` object, like the following:
