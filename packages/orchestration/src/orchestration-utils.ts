@@ -14,7 +14,8 @@ import type {
   FilteringStreamOptions,
   ModuleConfigs,
   OrchestrationConfig,
-  OutputFilteringConfig
+  OutputFilteringConfig,
+  GlobalStreamOptions
 } from './client/api/schema/index.js';
 
 const logger = createLogger({
@@ -134,7 +135,7 @@ export function constructCompletionPostRequest(
   stream?: boolean,
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
-  const moduleConfigurations = {
+  const moduleConfigurations: ModuleConfigs = {
     templating_module_config: config.templating,
     llm_module_config: config.llm,
     ...(config?.filtering &&
@@ -153,13 +154,31 @@ export function constructCompletionPostRequest(
 
   return {
     orchestration_config: stream
-      ? addStreamOptions(moduleConfigurations, streamOptions)
+      ? addStreamOptions(
+          moduleConfigurations,
+          mergeStreamOptions(config.streaming, streamOptions)
+        )
       : { module_configurations: moduleConfigurations },
     ...(prompt?.inputParams && {
       input_params: prompt.inputParams
     }),
     ...(prompt?.messagesHistory && {
       messages_history: prompt.messagesHistory
+    })
+  };
+}
+
+function mergeStreamOptions(
+  globalOptions?: GlobalStreamOptions,
+  streamOptions?: StreamOptions
+): StreamOptions {
+  return {
+    ...streamOptions,
+    ...((globalOptions || streamOptions?.global) && {
+      global: {
+        ...globalOptions,
+        ...streamOptions?.global
+      }
     })
   };
 }
