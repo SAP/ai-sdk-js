@@ -275,6 +275,21 @@ const client = await new AzureOpenAiChatClient('gpt-35-turbo', {
 By default, the fetched destination is cached.
 To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
+### Overwriting API Version
+
+We are continously updating the OpenAI API version to match the latest version.
+In case this behavior causes issues in your application, you can overwrite the API version.
+
+To do this, set the `api-version` parameter in a `CustomRequestConfig` object, like the following:
+
+```ts
+const client = await new AzureOpenAiChatClient('gpt-35-turbo', {
+  destinationName: 'my-destination',
+});
+
+client.run({ messages: [{ role: 'user', content: 'YOUR_PROMPT' }] }, { params: { 'api-version': 'YOUR_OLD_VERSION' } });
+```
+
 ## Local Testing
 
 For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
