@@ -27,7 +27,7 @@
     "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "pnpm generate:azure-openai",
     "pregenerate:azure-openai": "cp ./src/azure-openai/spec/inference.json ./src/azure-openai/spec/inference.json.bak && pnpm node-jq \"walk(if type == \\\"object\\\" then (if has(\\\"x-ms-examples\\\") then del(.[\\\"x-ms-examples\\\"]) else . end) else . end)\" ./src/azure-openai/spec/inference.json.bak > ./src/azure-openai/spec/inference.json && rm -f ./src/azure-openai/spec/inference.json.bak",
-    "generate:azure-openai": "cd ./src/azure-openai/spec && openapi-generator --generateESM --clearOutputDir -i ./inference.json -o ../client --schemaPrefix AzureOpenAi && cd -",
+    "generate:azure-openai": "cd ./src/azure-openai/spec && openapi-generator --generateESM --clearOutputDir -i ./inference.json -o ../client --schemaPrefix AzureOpenAi && cd ..",
     "postgenerate:azure-openai": "rm ./src/azure-openai/client/inference/*.ts && pnpm lint:fix"
   },
   "dependencies": {
