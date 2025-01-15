@@ -3,6 +3,7 @@ import {
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient
 } from '@sap-ai-sdk/foundation-models';
+import type { AzureOpenAiCreateChatCompletionStreamResponse } from '@sap-ai-sdk/foundation-models/src/index.js';
 import type {
   AzureOpenAiEmbeddingResponse,
   AzureOpenAiChatCompletionResponse,
@@ -49,11 +50,7 @@ expectType<string | undefined | null>(
 );
 
 expectType<
-  | 'stop'
-  | 'length'
-  | 'tool_calls'
-  | 'content_filter'
-  | 'function_call'
+  | AzureOpenAiCreateChatCompletionResponse['choices'][0]['finish_reason']
   | undefined
 >(
   (
@@ -196,12 +193,7 @@ expectType<AzureOpenAiChatCompletionStream<string>>(
 );
 
 expectType<
-  | 'stop'
-  | 'length'
-  | 'tool_calls'
-  | 'content_filter'
-  | 'function_call'
-  | null
+  | AzureOpenAiCreateChatCompletionStreamResponse['choices'][0]['finish_reason']
   | undefined
 >(
   (
