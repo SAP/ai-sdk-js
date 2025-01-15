@@ -5,9 +5,9 @@
  */
 import type { ChatDelta } from './chat-delta.js';
 /**
- * Representation of the 'LLMChoiceStreaming' schema.
+ * Representation of the 'LlmChoiceStreaming' schema.
  */
-export type LLMChoiceStreaming = {
+export type LlmChoiceStreaming = {
   /**
    * Index of the choice
    */

@@ -5,6 +5,7 @@ import { transformFilesInDirectory } from './util.js';
 
 const namesToCorrect = [
   'LLMModuleResult',
+  'LLMChoiceStreaming',
   'LLMModuleConfig',
   'LLMChoice',
   'DPIEntities',

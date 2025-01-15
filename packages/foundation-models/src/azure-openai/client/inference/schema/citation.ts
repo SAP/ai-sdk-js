@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
 /**
- * Citation information for a chat completions response message.
+ * citation information for a chat completions response message.
  */
 export type AzureOpenAiCitation = {
   /**

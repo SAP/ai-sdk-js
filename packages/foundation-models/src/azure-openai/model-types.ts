@@ -6,7 +6,7 @@ import type {
 /**
  * @internal
  */
-export const apiVersion = '2024-06-01';
+export const apiVersion = '2024-10-21';
 /**
  * Azure OpenAI models for chat completion.
  */

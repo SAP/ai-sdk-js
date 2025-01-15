@@ -44,7 +44,7 @@ describe('OpenAI chat completion response', () => {
   it('should return default choice index with convenience functions', () => {
     expect(azureOpenAiChatResponse.getFinishReason()).toBe('stop');
     expect(azureOpenAiChatResponse.getContent()).toBe(
-      "Hello! I'm just a computer program, so I don't have feelings, but thanks for asking. How can I assist you today?"
+      'Hello! I’m here and ready to help. How can I assist you today?'
     );
   });
 
