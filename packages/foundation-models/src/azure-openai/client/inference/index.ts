@@ -3,8 +3,5 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-
-/**
- * Error codes for the inner error object.
- */
-export type AzureOpenAiInnerErrorCode = 'ResponsibleAIPolicyViolation';
+export * from './default-api.js';
+export * from './schema/index.js';
