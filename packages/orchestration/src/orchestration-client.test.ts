@@ -21,6 +21,48 @@ import type {
   Prompt
 } from './orchestration-types.js';
 
+const defaultJsonConfig = `{
+  "module_configurations": {
+    "llm_module_config": {
+      "model_name": "gpt-35-turbo-16k",
+      "model_params": {
+        "max_tokens": 50,
+        "temperature": 0.1
+      }
+    },
+    "templating_module_config": {
+      "template": [{ "role": "user", "content": "What is the capital of France?" }]
+    }
+  }
+}`;
+
+const streamMockResponse = await parseFileToString(
+  'orchestration',
+  'orchestration-chat-completion-stream-chunks.txt'
+);
+
+function mockJsonStreamInference(
+  jsonConfig: string = defaultJsonConfig,
+  response: string = streamMockResponse
+) {
+  mockInference(
+    {
+      data: constructCompletionPostRequestFromJsonModuleConfig(
+        JSON.parse(jsonConfig),
+        undefined,
+        true
+      )
+    },
+    {
+      data: response,
+      status: 200
+    },
+    {
+      url: 'inference/deployments/1234/completion'
+    }
+  );
+}
+
 describe('orchestration service client', () => {
   beforeEach(() => {
     mockClientCredentialsGrantCall();
@@ -30,21 +72,6 @@ describe('orchestration service client', () => {
   afterEach(() => {
     nock.cleanAll();
   });
-
-  const jsonConfig = `{
-    "module_configurations": {
-      "llm_module_config": {
-        "model_name": "gpt-35-turbo-16k",
-        "model_params": {
-          "max_tokens": 50,
-          "temperature": 0.1
-        }
-      },
-      "templating_module_config": {
-        "template": [{ "role": "user", "content": "What is the capital of France?" }]
-      }
-    }
-  }`;
 
   it('calls chatCompletion with minimum configuration', async () => {
     const config: OrchestrationModuleConfig = {
@@ -100,7 +127,7 @@ describe('orchestration service client', () => {
     mockInference(
       {
         data: constructCompletionPostRequestFromJsonModuleConfig(
-          JSON.parse(jsonConfig)
+          JSON.parse(defaultJsonConfig)
         )
       },
       {
@@ -112,7 +139,9 @@ describe('orchestration service client', () => {
       }
     );
 
-    const response = await new OrchestrationClient(jsonConfig).chatCompletion();
+    const response = await new OrchestrationClient(
+      defaultJsonConfig
+    ).chatCompletion();
 
     expect(response).toBeInstanceOf(OrchestrationResponse);
     expect(response.data).toEqual(mockResponse);
@@ -436,28 +465,8 @@ describe('orchestration service client', () => {
     }
   });
 
-  it('executes a streaming request with JSON config and logs warning for stream options', async () => {
-    const mockResponse = await parseFileToString(
-      'orchestration',
-      'orchestration-chat-completion-stream-chunks.txt'
-    );
-
-    mockInference(
-      {
-        data: constructCompletionPostRequestFromJsonModuleConfig(
-          JSON.parse(jsonConfig),
-          undefined,
-          true
-        )
-      },
-      {
-        data: mockResponse,
-        status: 200
-      },
-      {
-        url: 'inference/deployments/1234/completion'
-      }
-    );
+  it('executes a streaming request with JSON config without warnings', async () => {
+    mockJsonStreamInference();
 
     const logger = createLogger({
       package: 'orchestration',
@@ -466,7 +475,32 @@ describe('orchestration service client', () => {
 
     const warnSpy = jest.spyOn(logger, 'warn');
 
-    const response = await new OrchestrationClient(jsonConfig).stream(
+    const response = await new OrchestrationClient(defaultJsonConfig).stream();
+
+    expect(warnSpy).not.toHaveBeenCalled();
+
+    const initialResponse = await parseFileToString(
+      'orchestration',
+      'orchestration-chat-completion-stream-chunk-response-initial.json'
+    );
+
+    for await (const chunk of response.stream) {
+      expect(chunk.data).toEqual(JSON.parse(initialResponse));
+      break;
+    }
+  });
+
+  it('executes a streaming request with JSON config and logs warning for stream options', async () => {
+    mockJsonStreamInference();
+
+    const logger = createLogger({
+      package: 'orchestration',
+      messageContext: 'orchestration-client'
+    });
+
+    const warnSpy = jest.spyOn(logger, 'warn');
+
+    const response = await new OrchestrationClient(defaultJsonConfig).stream(
       undefined,
       undefined,
       {
