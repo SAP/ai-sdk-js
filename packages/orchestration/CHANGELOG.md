@@ -1,5 +1,19 @@
 # @sap-ai-sdk/orchestration
 
+## 1.6.0
+
+### Minor Changes
+
+- 1da2caa: [New Functionality] Support image recognition for orchestration service.
+- d836abf: [New Functionality] Add support for streaming in the orchestration client.
+- 1476584: [Improvement] Make `model_params` property in the `LlmModuleConfig` optional and refine the type definition to also include known properties.
+- a039890: [Improvement] Add `buildDocumentGroundingConfig()` convenience function to create document grounding configuration in the Orchestration client.
+
+### Patch Changes
+
+- @sap-ai-sdk/ai-api@1.6.0
+- @sap-ai-sdk/core@1.6.0
+
 ## 1.5.0
 
 ### Minor Changes

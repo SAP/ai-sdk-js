@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@sap-ai-sdk/smoke-tests",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "private": "true",
@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "langchain": "0.3.11",
-    "@langchain/core": "0.3.29",
+    "@langchain/core": "0.3.30",
     "@langchain/textsplitters": "0.1.0",
     "@sap-ai-sdk/ai-api": "canary",
     "@sap-ai-sdk/foundation-models": "canary",
