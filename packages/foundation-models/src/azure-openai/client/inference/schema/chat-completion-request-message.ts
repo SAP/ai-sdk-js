@@ -1,19 +1,19 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AzureOpenAiChatCompletionRequestMessageSystem } from './chat-completion-request-message-system.js';
-import type { AzureOpenAiChatCompletionRequestMessageUser } from './chat-completion-request-message-user.js';
-import type { AzureOpenAiChatCompletionRequestMessageAssistant } from './chat-completion-request-message-assistant.js';
-import type { AzureOpenAiChatCompletionRequestMessageTool } from './chat-completion-request-message-tool.js';
-import type { AzureOpenAiChatCompletionRequestMessageFunction } from './chat-completion-request-message-function.js';
+import type { AzureOpenAiChatCompletionRequestSystemMessage } from './chat-completion-request-system-message.js';
+import type { AzureOpenAiChatCompletionRequestUserMessage } from './chat-completion-request-user-message.js';
+import type { AzureOpenAiChatCompletionRequestAssistantMessage } from './chat-completion-request-assistant-message.js';
+import type { AzureOpenAiChatCompletionRequestToolMessage } from './chat-completion-request-tool-message.js';
+import type { AzureOpenAiChatCompletionRequestFunctionMessage } from './chat-completion-request-function-message.js';
 /**
  * Representation of the 'AzureOpenAiChatCompletionRequestMessage' schema.
  */
 export type AzureOpenAiChatCompletionRequestMessage =
-  | ({ role: 'system' } & AzureOpenAiChatCompletionRequestMessageSystem)
-  | ({ role: 'user' } & AzureOpenAiChatCompletionRequestMessageUser)
-  | ({ role: 'assistant' } & AzureOpenAiChatCompletionRequestMessageAssistant)
-  | ({ role: 'tool' } & AzureOpenAiChatCompletionRequestMessageTool)
-  | ({ role: 'function' } & AzureOpenAiChatCompletionRequestMessageFunction);
+  | AzureOpenAiChatCompletionRequestSystemMessage
+  | AzureOpenAiChatCompletionRequestUserMessage
+  | AzureOpenAiChatCompletionRequestAssistantMessage
+  | AzureOpenAiChatCompletionRequestToolMessage
+  | AzureOpenAiChatCompletionRequestFunctionMessage;
