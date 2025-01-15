@@ -73,6 +73,10 @@ export interface OrchestrationModuleConfig {
    * Grounding module configuraton.
    */
   grounding?: GroundingModuleConfig;
+  /**
+   * Global streaming options.
+   */
+  streaming?: GlobalStreamOptions;
 }
 
 /**
