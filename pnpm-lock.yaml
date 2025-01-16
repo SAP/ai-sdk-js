@@ -186,6 +186,15 @@ importers:
         specifier: ^3.25.0
         version: 3.25.0
 
+  packages/prompt-registry:
+    dependencies:
+      '@sap-ai-sdk/core':
+        specifier: workspace:^
+        version: link:../core
+      '@sap-cloud-sdk/connectivity':
+        specifier: ^3.25.0
+        version: 3.25.0
+
   sample-cap:
     dependencies:
       '@sap-ai-sdk/ai-api':
@@ -4982,25 +4991,25 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@cap-js/asyncapi@1.0.2(@sap/cds@8.6.1(express@4.21.1))':
+  '@cap-js/asyncapi@1.0.2(@sap/cds@8.6.1(express@4.21.2))':
     dependencies:
-      '@sap/cds': 8.6.1(express@4.21.1)
+      '@sap/cds': 8.6.1(express@4.21.2)
 
-  '@cap-js/db-service@1.15.0(@sap/cds@8.6.1(express@4.21.1))':
+  '@cap-js/db-service@1.15.0(@sap/cds@8.6.1(express@4.21.2))':
     dependencies:
-      '@sap/cds': 8.6.1(express@4.21.1)
+      '@sap/cds': 8.6.1(express@4.21.2)
       generic-pool: 3.9.0
     optional: true
 
-  '@cap-js/openapi@1.0.7(@sap/cds@8.6.1(express@4.21.1))':
+  '@cap-js/openapi@1.0.7(@sap/cds@8.6.1(express@4.21.2))':
     dependencies:
-      '@sap/cds': 8.6.1(express@4.21.1)
+      '@sap/cds': 8.6.1(express@4.21.2)
       pluralize: 8.0.0
 
-  '@cap-js/sqlite@1.7.7(@sap/cds@8.6.1(express@4.21.1))':
+  '@cap-js/sqlite@1.7.7(@sap/cds@8.6.1(express@4.21.2))':
     dependencies:
-      '@cap-js/db-service': 1.15.0(@sap/cds@8.6.1(express@4.21.1))
-      '@sap/cds': 8.6.1(express@4.21.1)
+      '@cap-js/db-service': 1.15.0(@sap/cds@8.6.1(express@4.21.2))
+      '@sap/cds': 8.6.1(express@4.21.2)
       better-sqlite3: 11.5.0
     optional: true
 
@@ -5771,7 +5780,7 @@ snapshots:
       '@typescript-eslint/parser': 8.18.1(eslint@9.18.0)(typescript@5.7.3)
       eslint: 9.18.0
       eslint-config-prettier: 9.1.0(eslint@9.18.0)
-      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.1(eslint@9.18.0)(typescript@5.7.3))(eslint@9.18.0))(eslint@9.18.0)
+      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0)(eslint@9.18.0)
       eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.18.1(eslint@9.18.0)(typescript@5.7.3))(eslint-import-resolver-typescript@3.7.0)(eslint@9.18.0)
       eslint-plugin-jsdoc: 50.6.1(eslint@9.18.0)
       eslint-plugin-prettier: 5.2.1(@types/eslint@8.56.10)(eslint-config-prettier@9.1.0(eslint@9.18.0))(eslint@9.18.0)(prettier@3.4.2)
@@ -5861,8 +5870,8 @@ snapshots:
 
   '@sap/cds-dk@8.6.1':
     dependencies:
-      '@cap-js/asyncapi': 1.0.2(@sap/cds@8.6.1(express@4.21.1))
-      '@cap-js/openapi': 1.0.7(@sap/cds@8.6.1(express@4.21.1))
+      '@cap-js/asyncapi': 1.0.2(@sap/cds@8.6.1(express@4.21.2))
+      '@cap-js/openapi': 1.0.7(@sap/cds@8.6.1(express@4.21.2))
       '@sap/cds': 8.6.1(express@4.21.2)
       '@sap/cds-foss': 5.0.1
       '@sap/cds-mtxs': 2.3.1(hdb@0.19.10)
@@ -5878,7 +5887,7 @@ snapshots:
       ws: 8.18.0
       xml-js: 1.6.11
     optionalDependencies:
-      '@cap-js/sqlite': 1.7.7(@sap/cds@8.6.1(express@4.21.1))
+      '@cap-js/sqlite': 1.7.7(@sap/cds@8.6.1(express@4.21.2))
     transitivePeerDependencies:
       - '@sap/hana-client'
       - bufferutil
@@ -5892,9 +5901,9 @@ snapshots:
       '@sap/cds': 8.6.1(express@4.21.1)
       express: 4.21.1
 
-  '@sap/cds-fiori@1.2.7(@sap/cds@8.6.1(express@4.21.1))(express@4.21.2)':
+  '@sap/cds-fiori@1.2.7(@sap/cds@8.6.1(express@4.21.2))(express@4.21.2)':
     dependencies:
-      '@sap/cds': 8.6.1(express@4.21.1)
+      '@sap/cds': 8.6.1(express@4.21.2)
       express: 4.21.2
 
   '@sap/cds-foss@5.0.1':
@@ -5925,7 +5934,7 @@ snapshots:
   '@sap/cds@8.6.1(express@4.21.2)':
     dependencies:
       '@sap/cds-compiler': 5.3.2
-      '@sap/cds-fiori': 1.2.7(@sap/cds@8.6.1(express@4.21.1))(express@4.21.2)
+      '@sap/cds-fiori': 1.2.7(@sap/cds@8.6.1(express@4.21.2))(express@4.21.2)
       '@sap/cds-foss': 5.0.1
     optionalDependencies:
       express: 4.21.2
@@ -7188,7 +7197,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.1(eslint@9.18.0)(typescript@5.7.3))(eslint@9.18.0))(eslint@9.18.0):
+  eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0)(eslint@9.18.0):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.0(supports-color@8.1.1)
@@ -7204,14 +7213,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.18.1(eslint@9.18.0)(typescript@5.7.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.1(eslint@9.18.0)(typescript@5.7.3))(eslint@9.18.0))(eslint@9.18.0))(eslint@9.18.0):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.18.1(eslint@9.18.0)(typescript@5.7.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0)(eslint@9.18.0))(eslint@9.18.0):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 8.18.1(eslint@9.18.0)(typescript@5.7.3)
       eslint: 9.18.0
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.1(eslint@9.18.0)(typescript@5.7.3))(eslint@9.18.0))(eslint@9.18.0)
+      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0)(eslint@9.18.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -7226,7 +7235,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.18.0
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.18.1(eslint@9.18.0)(typescript@5.7.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.1(eslint@9.18.0)(typescript@5.7.3))(eslint@9.18.0))(eslint@9.18.0))(eslint@9.18.0)
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.18.1(eslint@9.18.0)(typescript@5.7.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0)(eslint@9.18.0))(eslint@9.18.0)
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
