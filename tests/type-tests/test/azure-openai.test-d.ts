@@ -3,6 +3,7 @@ import {
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient
 } from '@sap-ai-sdk/foundation-models';
+import type { AzureOpenAiCreateChatCompletionStreamResponse } from '@sap-ai-sdk/foundation-models/src/index.js';
 import type {
   AzureOpenAiEmbeddingResponse,
   AzureOpenAiChatCompletionResponse,
@@ -48,7 +49,10 @@ expectType<string | undefined | null>(
   ).getContent()
 );
 
-expectType<string | undefined>(
+expectType<
+  | AzureOpenAiCreateChatCompletionResponse['choices'][0]['finish_reason']
+  | undefined
+>(
   (
     await new AzureOpenAiChatClient('gpt-4').run({
       messages: [{ role: 'user', content: 'test prompt' }]
@@ -186,4 +190,15 @@ expectType<AzureOpenAiChatCompletionStream<string>>(
       messages: [{ role: 'user', content: 'test prompt' }]
     })
   ).stream.toContentStream()
+);
+
+expectType<
+  | AzureOpenAiCreateChatCompletionStreamResponse['choices'][0]['finish_reason']
+  | undefined
+>(
+  (
+    await new AzureOpenAiChatClient('gpt-4').stream({
+      messages: [{ role: 'user', content: 'test prompt' }]
+    })
+  ).getFinishReason()
 );

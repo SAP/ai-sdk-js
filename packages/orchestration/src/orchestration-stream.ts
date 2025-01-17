@@ -3,7 +3,7 @@ import { SseStream } from '@sap-ai-sdk/core';
 import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 import type {
   CompletionPostResponseStreaming,
-  LLMChoiceStreaming
+  LlmChoiceStreaming
 } from './client/api/schema/index.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { OrchestrationStreamResponse } from './orchestration-stream-response.js';
@@ -57,7 +57,7 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
   ): AsyncGenerator<OrchestrationStreamChunkResponse> {
     for await (const chunk of stream) {
       chunk.data.orchestration_result?.choices.forEach(
-        (choice: LLMChoiceStreaming) => {
+        (choice: LlmChoiceStreaming) => {
           const choiceIndex = choice.index;
           if (choiceIndex >= 0) {
             const finishReason = chunk.getFinishReason(choiceIndex);
@@ -78,6 +78,16 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
                   break;
                 case 'stop':
                   logger.debug(`Choice ${choiceIndex}: Stream finished.`);
+                  break;
+                case 'tool_calls':
+                  logger.error(
+                    `Choice ${choiceIndex}: Stream finished with tool calls exceeded.`
+                  );
+                  break;
+                case 'function_call':
+                  logger.error(
+                    `Choice ${choiceIndex}: Stream finished with function call exceeded.`
+                  );
                   break;
                 default:
                   logger.error(

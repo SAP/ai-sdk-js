@@ -1,6 +1,6 @@
 import type {
   CompletionPostResponseStreaming,
-  LLMChoiceStreaming,
+  LlmChoiceStreaming,
   TokenUsage
 } from './client/api/schema/index.js';
 
@@ -27,7 +27,7 @@ export class OrchestrationStreamChunkResponse {
    */
   getFinishReason(choiceIndex = 0): string | undefined {
     return this.getChoices()?.find(
-      (c: LLMChoiceStreaming) => c.index === choiceIndex
+      (c: LlmChoiceStreaming) => c.index === choiceIndex
     )?.finish_reason;
   }
 
@@ -38,11 +38,11 @@ export class OrchestrationStreamChunkResponse {
    */
   getDeltaContent(choiceIndex = 0): string | undefined {
     return this.getChoices()?.find(
-      (c: LLMChoiceStreaming) => c.index === choiceIndex
+      (c: LlmChoiceStreaming) => c.index === choiceIndex
     )?.delta.content;
   }
 
-  private getChoices(): LLMChoiceStreaming[] | undefined {
+  private getChoices(): LlmChoiceStreaming[] | undefined {
     return this.data.orchestration_result?.choices;
   }
 }
