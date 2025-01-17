@@ -15,7 +15,7 @@ import {
   constructCompletionPostRequestFromJsonModuleConfig
 } from './orchestration-utils.js';
 import { OrchestrationResponse } from './orchestration-response.js';
-import { AzureContentSafetyThreshold } from './orchestration-types.js';
+import { AzureFilterThreshold } from './orchestration-types.js';
 import type { CompletionPostResponse } from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
@@ -164,12 +164,12 @@ describe('orchestration service client', () => {
       },
       filtering: {
         input: buildAzureContentFilter({
-          Hate: AzureContentSafetyThreshold.ALLOW_SAFE_LOW_MEDIUM,
-          SelfHarm: AzureContentSafetyThreshold.ALLOW_SAFE_LOW
+          Hate: AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM,
+          SelfHarm: AzureFilterThreshold.ALLOW_SAFE_LOW
         }),
         output: buildAzureContentFilter({
-          Sexual: AzureContentSafetyThreshold.ALLOW_SAFE,
-          Violence: AzureContentSafetyThreshold.ALLOW_SAFE_LOW_MEDIUM
+          Sexual: AzureFilterThreshold.ALLOW_SAFE,
+          Violence: AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM
         })
       }
     };
@@ -219,8 +219,8 @@ describe('orchestration service client', () => {
             {
               type: 'azure_content_safety' as const,
               config: {
-                Hate: AzureContentSafetyThreshold.ALLOW_SAFE_LOW_MEDIUM,
-                SelfHarm: AzureContentSafetyThreshold.ALLOW_SAFE_LOW
+                Hate: AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM,
+                SelfHarm: AzureFilterThreshold.ALLOW_SAFE_LOW
               }
             }
           ]
@@ -230,8 +230,8 @@ describe('orchestration service client', () => {
             {
               type: 'azure_content_safety' as const,
               config: {
-                Sexual: AzureContentSafetyThreshold.ALLOW_SAFE,
-                Violence: AzureContentSafetyThreshold.ALLOW_SAFE_LOW_MEDIUM
+                Sexual: AzureFilterThreshold.ALLOW_SAFE,
+                Violence: AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM
               }
             }
           ]

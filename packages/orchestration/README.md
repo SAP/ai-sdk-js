@@ -369,7 +369,10 @@ import {
   buildAzureContentFilter
 } from '@sap-ai-sdk/orchestration';
 
-const filter = buildAzureContentFilter({ Hate: 2, Violence: 4 });
+const filter = buildAzureContentFilter({
+  Hate: AzureFilterThreshold.ALLOW_SAFE_LOW,
+  Violence: AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM
+});
 const orchestrationClient = new OrchestrationClient({
   llm: {
     model_name: 'gpt-4o',
@@ -409,7 +412,7 @@ Therefore, handle errors appropriately to ensure meaningful feedback for both ty
 
 `buildAzureContentFilter()` is a convenience function that creates an Azure content filter configuration based on the provided inputs.
 The Azure content filter supports four categories: `Hate`, `Violence`, `Sexual`, and `SelfHarm`.
-Each category can be configured with severity levels of 0, 2, 4, or 6.
+Each category can be configured with severity levels of `ALLOW_SAFE`, `ALLOW_SAFE_LOW`, `ALLOW_SAFE_LOW_MEDIUM` and `ALLOW_ALL` which correspond to Azure threshold values of 0, 2, 4, or 6 respectively.
 
 ### Data Masking
 

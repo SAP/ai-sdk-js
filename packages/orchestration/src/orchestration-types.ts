@@ -171,7 +171,7 @@ export interface AzureContentSafetyThresholdType {
 /**
  * A descriptive constant for AzureThreshold.
  */
-export const AzureContentSafetyThreshold: AzureContentSafetyThresholdType = {
+export const AzureFilterThreshold: AzureContentSafetyThresholdType = {
   ALLOW_SAFE: 0,
   ALLOW_SAFE_LOW: 2,
   ALLOW_SAFE_LOW_MEDIUM: 4,
