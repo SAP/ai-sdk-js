@@ -5,9 +5,11 @@
  */
 
 /**
- * Representation of the 'TextContent' schema.
+ * Representation of the 'ResponseFormatText' schema.
  */
-export type TextContent = {
+export type ResponseFormatText = {
+  /**
+   * The type of response format being defined: `text`
+   */
   type: 'text';
-  text: string;
 };
