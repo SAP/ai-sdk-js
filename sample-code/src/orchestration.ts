@@ -362,7 +362,7 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
 
   return orchestrationClient.chatCompletion({
     inputParams: {
-      // You can also provide public web URL of the image in the code directly.
+      // You can also provide the public URL of the image as a string in the code directly.
       imageUrl: encodedString
     }
   });
