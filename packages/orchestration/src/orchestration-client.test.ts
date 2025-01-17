@@ -15,6 +15,7 @@ import {
   constructCompletionPostRequestFromJsonModuleConfig
 } from './orchestration-utils.js';
 import { OrchestrationResponse } from './orchestration-response.js';
+import { AzureFilterThreshold } from './orchestration-types.js';
 import type { CompletionPostResponse } from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
@@ -162,8 +163,14 @@ describe('orchestration service client', () => {
         ]
       },
       filtering: {
-        input: buildAzureContentFilter({ Hate: 4, SelfHarm: 2 }),
-        output: buildAzureContentFilter({ Sexual: 0, Violence: 4 })
+        input: buildAzureContentFilter({
+          Hate: AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM,
+          SelfHarm: AzureFilterThreshold.ALLOW_SAFE_LOW
+        }),
+        output: buildAzureContentFilter({
+          Sexual: AzureFilterThreshold.ALLOW_SAFE,
+          Violence: AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM
+        })
       }
     };
     const prompt = {
@@ -212,8 +219,8 @@ describe('orchestration service client', () => {
             {
               type: 'azure_content_safety' as const,
               config: {
-                Hate: 4 as const,
-                SelfHarm: 2 as const
+                Hate: AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM,
+                SelfHarm: AzureFilterThreshold.ALLOW_SAFE_LOW
               }
             }
           ]
@@ -223,8 +230,8 @@ describe('orchestration service client', () => {
             {
               type: 'azure_content_safety' as const,
               config: {
-                Sexual: 0 as const,
-                Violence: 4 as const
+                Sexual: AzureFilterThreshold.ALLOW_SAFE,
+                Violence: AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM
               }
             }
           ]

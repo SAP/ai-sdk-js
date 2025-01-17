@@ -1,6 +1,7 @@
 import type { CustomRequestConfig } from '@sap-cloud-sdk/http-client';
 import type { ChatModel } from './model-types.js';
 import type {
+  AzureThreshold,
   ChatMessages,
   DataRepositoryType,
   DocumentGroundingFilter,
@@ -151,3 +152,28 @@ export interface DocumentGroundingServiceConfig {
    */
   output_param: string;
 }
+
+/**
+ * A descriptive  type for AzureThreshold input.
+ * @internal
+ */
+export interface AzureContentSafetyThresholdType {
+  /** Only safe content is allowed. AzureThreshold value of 0. */
+  readonly ALLOW_SAFE: AzureThreshold;
+  /** Safe and low-risk content is allowed. AzureThreshold value of 2.*/
+  readonly ALLOW_SAFE_LOW: AzureThreshold;
+  /** Safe, low-risk, and medium-risk content is allowed. AzureThreshold value of 4. */
+  readonly ALLOW_SAFE_LOW_MEDIUM: AzureThreshold;
+  /** All content is allowed. AzureThreshold value of 6. */
+  readonly ALLOW_ALL: AzureThreshold;
+}
+
+/**
+ * A descriptive constant for AzureThreshold.
+ */
+export const AzureFilterThreshold: AzureContentSafetyThresholdType = {
+  ALLOW_SAFE: 0,
+  ALLOW_SAFE_LOW: 2,
+  ALLOW_SAFE_LOW_MEDIUM: 4,
+  ALLOW_ALL: 6
+} as const;
