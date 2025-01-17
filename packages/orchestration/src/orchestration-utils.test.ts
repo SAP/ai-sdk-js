@@ -8,17 +8,18 @@ import {
   buildDocumentGroundingConfig,
   constructCompletionPostRequest
 } from './orchestration-utils.js';
+import {
+  type OrchestrationModuleConfig,
+  type DocumentGroundingServiceConfig,
+  type StreamOptions,
+  AzureContentSafetyThreshold
+} from './orchestration-types.js';
 import type {
   CompletionPostRequest,
   FilteringModuleConfig,
   ModuleConfigs,
   OrchestrationConfig
 } from './client/api/schema/index.js';
-import type {
-  OrchestrationModuleConfig,
-  DocumentGroundingServiceConfig,
-  StreamOptions
-} from './orchestration-types.js';
 
 describe('orchestration utils', () => {
   describe('stream util tests', () => {
@@ -174,7 +175,10 @@ describe('orchestration utils', () => {
 
     it('constructs filter configuration with only input', async () => {
       const filtering: FilteringModuleConfig = {
-        input: buildAzureContentFilter({ Hate: 4, SelfHarm: 0 })
+        input: buildAzureContentFilter({
+          Hate: AzureContentSafetyThreshold.ALLOW_SAFE_LOW_MEDIUM,
+          SelfHarm: AzureContentSafetyThreshold.ALLOW_SAFE
+        })
       };
       const expectedFilterConfig: FilteringModuleConfig = {
         input: {
@@ -200,7 +204,10 @@ describe('orchestration utils', () => {
 
     it('constructs filter configuration with only output', async () => {
       const filtering: FilteringModuleConfig = {
-        output: buildAzureContentFilter({ Sexual: 2, Violence: 6 })
+        output: buildAzureContentFilter({
+          Sexual: AzureContentSafetyThreshold.ALLOW_SAFE_LOW,
+          Violence: AzureContentSafetyThreshold.ALLOW_ALL
+        })
       };
       const expectedFilterConfig: FilteringModuleConfig = {
         output: {
@@ -227,10 +234,10 @@ describe('orchestration utils', () => {
     it('constructs filter configuration with both input and output', async () => {
       const filtering: FilteringModuleConfig = {
         input: buildAzureContentFilter({
-          Hate: 4,
-          SelfHarm: 0,
-          Sexual: 2,
-          Violence: 6
+          Hate: AzureContentSafetyThreshold.ALLOW_SAFE_LOW_MEDIUM,
+          SelfHarm: AzureContentSafetyThreshold.ALLOW_SAFE,
+          Sexual: AzureContentSafetyThreshold.ALLOW_SAFE_LOW,
+          Violence: AzureContentSafetyThreshold.ALLOW_ALL
         }),
         output: buildAzureContentFilter({ Sexual: 2, Violence: 6 })
       };

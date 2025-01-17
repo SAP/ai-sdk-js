@@ -164,10 +164,13 @@ describe('orchestration service client', () => {
       },
       filtering: {
         input: buildAzureContentFilter({
-          Hate: 4,
-          SelfHarm: 2
+          Hate: AzureContentSafetyThreshold.ALLOW_SAFE_LOW_MEDIUM,
+          SelfHarm: AzureContentSafetyThreshold.ALLOW_SAFE_LOW
         }),
-        output: buildAzureContentFilter({ Sexual: 0, Violence: 4 })
+        output: buildAzureContentFilter({
+          Sexual: AzureContentSafetyThreshold.ALLOW_SAFE,
+          Violence: AzureContentSafetyThreshold.ALLOW_SAFE_LOW_MEDIUM
+        })
       }
     };
     const prompt = {
