@@ -15,5 +15,5 @@ export type ImageContent = {
      * Default: "auto".
      */
     detail?: string;
-  } & Record<string, any>;
-} & Record<string, any>;
+  };
+};
