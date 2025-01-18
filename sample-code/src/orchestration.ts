@@ -1,4 +1,6 @@
 import { readFile } from 'node:fs/promises';
+import { extname } from 'path';
+import { lookup } from 'mime-types';
 import {
   OrchestrationClient,
   buildAzureContentFilter,
@@ -354,10 +356,14 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
     }
   });
 
+  const imageFilePath = './src/media/sample-image.png';
+  const mimeType = lookup(extname(imageFilePath).toLowerCase());
+  const encodedString = `data:${mimeType};base64,${await readFile(imageFilePath, 'base64')}`;
+
   return orchestrationClient.chatCompletion({
     inputParams: {
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png'
+      // You can also provide the public URL of the image as a string in the code directly.
+      imageUrl: encodedString
     }
   });
 }
