@@ -11,6 +11,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
 - [Orchestration Service](#orchestration-service)
 - [Relationship between Orchestration and Resource Groups](#relationship-between-orchestration-and-resource-groups)
 - [Usage](#usage)
+  - [Streaming](#streaming)
   - [Templating](#templating)
   - [Content Filtering](#content-filtering)
   - [Data Masking](#data-masking)
@@ -365,7 +366,7 @@ This feature allows filtering both the [input](https://help.sap.com/docs/sap-ai-
 
 #### Azure Content Filter
 
-Use `ContentFilters.azure()` to build an Azure content filter.
+Use `ContentFilters.azure()` function to build an Azure content filter.
 The Azure content filter supports four categories: `Hate`, `Violence`, `Sexual`, and `SelfHarm`.
 Each category can be configured with severity levels of 0, 2, 4, or 6.
 
@@ -414,7 +415,7 @@ Both `chatCompletion()` and `getContent()` methods can throw errors.
   The property `error.response.data.message` may provide additional details about the failure's cause.
 
 - **Output Content Filtered**:  
-  The method `getContent()` can throw an error if the output filter filters the model output.
+  The `getContent()` method can throw an error if the output filter filters the model output.
   This can occur even if the chat completion request responds with a `200` HTTP status code.
   The `error.message` property indicates if the output was filtered.
 
