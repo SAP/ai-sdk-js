@@ -9,7 +9,7 @@ import type { AzureContentSafety } from './azure-content-safety.js';
  */
 export type AzureContentSafetyFilterConfig = {
   /**
-   * String represents name of the filter provider
+   * Name of the filter provider type
    * @example "azure_content_safety"
    */
   type: 'azure_content_safety';
