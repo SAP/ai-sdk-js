@@ -243,6 +243,9 @@ importers:
       '@sap-ai-sdk/orchestration':
         specifier: workspace:^
         version: link:../packages/orchestration
+      '@sap-ai-sdk/prompt-registry':
+        specifier: workspace:^
+        version: link:../packages/prompt-registry
       '@sap-cloud-sdk/util':
         specifier: ^3.25.0
         version: 3.25.0

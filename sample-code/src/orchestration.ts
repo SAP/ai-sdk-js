@@ -30,12 +30,12 @@ export async function orchestrationChatCompletion(): Promise<OrchestrationRespon
     },
     // define the prompt
     templating: {
-      template: [{ role: 'user', content: 'What is the capital of France?' }]
+      template_ref: { name: 'get-capital', scenario: 'e2e-test', version: '0.0.1'}
     }
   });
 
   // execute the request
-  const result = await orchestrationClient.chatCompletion();
+  const result = await orchestrationClient.chatCompletion({ inputParams: { input: 'France' }});
 
   // use getContent() to access the LLM response
   logger.info(result.getContent());

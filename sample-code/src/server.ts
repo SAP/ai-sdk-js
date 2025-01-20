@@ -46,6 +46,7 @@ import {
 import type { RetievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type { AiApiError, AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
+import { createPromptTemplate, getAllPromptTemplates } from './prompt-registry.js';
 
 const app = express();
 const port = 8080;
@@ -509,3 +510,28 @@ app.get('/document-grounding/invoke-retrieve-documents', async (req, res) => {
       .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
   }
 });
+
+app.get('/prompt-registry/create-prompt-template', async (req, res) => {
+  try {
+    const promptTemplateId = await createPromptTemplate();
+    res.send('Prompt template created successfully. Id: ' + promptTemplateId);
+  } catch (error: any) {
+    console.error(error);
+    res
+      .status(500)
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+  }
+});
+
+app.get('/prompt-registry/get-all-templates', async (req, res) => {
+  try {
+    res.send(await getAllPromptTemplates());
+  } catch (error: any) {
+    console.error(error);
+    res
+      .status(500)
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+  }
+});
+
+
