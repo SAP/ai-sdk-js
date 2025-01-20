@@ -1,7 +1,6 @@
 import type {
   AzureContentSafety,
   AzureContentSafetyFilterConfig,
-  FilterConfig,
   InputFilteringConfig,
   OutputFilteringConfig
 } from '../client/api/schema/index.js';
