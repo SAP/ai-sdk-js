@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { LLMChoiceStreaming } from './llm-choice-streaming.js';
+import type { LlmChoiceStreaming } from './llm-choice-streaming.js';
 import type { TokenUsage } from './token-usage.js';
 /**
  * Output of LLM module. Follows the OpenAI spec.
@@ -32,6 +32,6 @@ export type LLMModuleResultStreaming = {
   /**
    * Choices
    */
-  choices: LLMChoiceStreaming[];
+  choices: LlmChoiceStreaming[];
   usage?: TokenUsage;
 } & Record<string, any>;

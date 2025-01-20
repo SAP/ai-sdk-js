@@ -1,14 +1,31 @@
 import { executeRequest } from '@sap-ai-sdk/core';
 import { resolveDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
+import { createLogger } from '@sap-cloud-sdk/util';
+import { OrchestrationStream } from './orchestration-stream.js';
+import { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 import { OrchestrationResponse } from './orchestration-response.js';
-import type { CustomRequestConfig } from '@sap-ai-sdk/core';
+import {
+  constructCompletionPostRequest,
+  constructCompletionPostRequestFromJsonModuleConfig
+} from './util/index.js';
+import type {
+  HttpResponse,
+  CustomRequestConfig
+} from '@sap-cloud-sdk/http-client';
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api/internal.js';
-import type { CompletionPostRequest } from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
-  Prompt
+  Prompt,
+  RequestOptions,
+  StreamOptions
 } from './orchestration-types.js';
+import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+
+const logger = createLogger({
+  package: 'orchestration',
+  messageContext: 'orchestration-client'
+});
 
 /**
  * Get the orchestration client.
@@ -24,88 +41,106 @@ export class OrchestrationClient {
     private config: OrchestrationModuleConfig | string,
     private deploymentConfig?: ResourceGroupConfig,
     private destination?: HttpDestinationOrFetchOptions
-  ) {}
+  ) {
+    try {
+      if (typeof config === 'string') {
+        JSON.parse(config);
+      }
+    } catch (error) {
+      throw new Error(`Could not parse JSON: ${error}`);
+    }
+  }
 
-  /**
-   * Creates a completion for the chat messages.
-   * @param prompt - Prompt configuration.
-   * @param requestConfig - Request configuration.
-   * @returns The completion result.
-   */
   async chatCompletion(
     prompt?: Prompt,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationResponse> {
+    const response = await this.executeRequest({
+      prompt,
+      requestConfig,
+      stream: false
+    });
+    return new OrchestrationResponse(response);
+  }
+
+  async stream(
+    prompt?: Prompt,
+    controller = new AbortController(),
+    options?: StreamOptions,
+    requestConfig?: CustomRequestConfig
+  ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
+    if (typeof this.config === 'string' && options) {
+      logger.warn(
+        'Stream options are not supported when using a JSON module config.'
+      );
+    }
+
+    return this.createStreamResponse(
+      {
+        prompt,
+        requestConfig,
+        stream: true,
+        streamOptions: options
+      },
+      controller
+    );
+  }
+
+  private async executeRequest(options: RequestOptions): Promise<HttpResponse> {
+    const { prompt, requestConfig, stream, streamOptions } = options;
+
     const body =
       typeof this.config === 'string'
-        ? constructCompletionPostRequestFromJson(this.config, prompt)
-        : constructCompletionPostRequest(this.config, prompt);
+        ? constructCompletionPostRequestFromJsonModuleConfig(
+            JSON.parse(this.config),
+            prompt,
+            stream
+          )
+        : constructCompletionPostRequest(
+            this.config,
+            prompt,
+            stream,
+            streamOptions
+          );
 
     const deploymentId = await resolveDeploymentId({
       scenarioId: 'orchestration',
-      resourceGroup: this.deploymentConfig?.resourceGroup
+      ...(this.deploymentConfig ?? {})
     });
 
-    const response = await executeRequest(
+    return executeRequest(
       {
         url: `/inference/deployments/${deploymentId}/completion`,
-        resourceGroup: this.deploymentConfig?.resourceGroup
+        ...(this.deploymentConfig ?? {})
       },
       body,
       requestConfig,
       this.destination
     );
-
-    return new OrchestrationResponse(response);
   }
-}
 
-/**
- * @internal
- */
-export function constructCompletionPostRequestFromJson(
-  config: string,
-  prompt?: Prompt
-): Record<string, any> {
-  try {
-    return {
-      messages_history: prompt?.messagesHistory || [],
-      input_params: prompt?.inputParams || {},
-      orchestration_config: JSON.parse(config)
-    };
-  } catch (error) {
-    throw new Error(`Could not parse JSON: ${error}`);
-  }
-}
+  private async createStreamResponse(
+    options: RequestOptions,
+    controller: AbortController
+  ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
+    const response =
+      new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
 
-/**
- * @internal
- */
-export function constructCompletionPostRequest(
-  config: OrchestrationModuleConfig,
-  prompt?: Prompt
-): CompletionPostRequest {
-  return {
-    orchestration_config: {
-      module_configurations: {
-        templating_module_config: config.templating,
-        llm_module_config: config.llm,
-        ...(Object.keys(config?.filtering || {}).length && {
-          filtering_module_config: config.filtering
-        }),
-        ...(Object.keys(config?.masking || {}).length && {
-          masking_module_config: config.masking
-        }),
-        ...(Object.keys(config?.grounding || {}).length && {
-          grounding_module_config: config.grounding
-        })
+    const streamResponse = await this.executeRequest({
+      ...options,
+      requestConfig: {
+        ...options.requestConfig,
+        responseType: 'stream',
+        signal: controller.signal
       }
-    },
-    ...(prompt?.inputParams && {
-      input_params: prompt.inputParams
-    }),
-    ...(prompt?.messagesHistory && {
-      messages_history: prompt.messagesHistory
-    })
-  };
+    });
+
+    const stream = OrchestrationStream._create(streamResponse, controller);
+    response.stream = stream
+      ._pipe(OrchestrationStream._processChunk)
+      ._pipe(OrchestrationStream._processFinishReason, response)
+      ._pipe(OrchestrationStream._processTokenUsage, response);
+
+    return response;
+  }
 }

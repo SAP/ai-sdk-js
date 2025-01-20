@@ -1,9 +1,8 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import { jest } from '@jest/globals';
+import { LineDecoder, SSEDecoder } from '@sap-ai-sdk/core';
 import { parseFileToString } from '../../../../test-util/mock-http.js';
 import { AzureOpenAiChatCompletionStream } from './azure-openai-chat-completion-stream.js';
-import { LineDecoder } from './stream/line-decoder.js';
-import { SSEDecoder } from './stream/sse-decoder.js';
 
 describe('OpenAI chat completion stream', () => {
   let sseChunks: string[];
@@ -39,12 +38,12 @@ describe('OpenAI chat completion stream', () => {
 
   it('should wrap the raw chunk', async () => {
     let output = '';
-    const asnycGenerator = AzureOpenAiChatCompletionStream._processChunk(
+    const asyncGenerator = AzureOpenAiChatCompletionStream._processChunk(
       originalChatCompletionStream
     );
-    for await (const chunk of asnycGenerator) {
+    for await (const chunk of asyncGenerator) {
       expect(chunk).toBeDefined();
-      chunk.getDeltaContent() ? (output += chunk.getDeltaContent()) : null;
+      output += chunk.getDeltaContent() ?? '';
     }
     expect(output).toEqual('The capital of France is Paris.');
   });

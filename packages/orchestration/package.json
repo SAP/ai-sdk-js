@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/orchestration",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
@@ -32,6 +32,9 @@
   "dependencies": {
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/ai-api": "workspace:^",
+    "@sap-cloud-sdk/util": "^3.25.0"
+  },
+  "devDependencies": {
     "@sap-cloud-sdk/http-client": "^3.25.0",
     "@sap-cloud-sdk/connectivity": "^3.25.0"
   }

@@ -5,6 +5,6 @@
  */
 
 /**
- * Representation of the 'DataRepositoryType' schema.
+ * Only include DataRepositories with the given type.
  */
-export type DataRepositoryType = 'vector' | any;
+export type DataRepositoryType = 'vector' | 'help.sap.com' | any;

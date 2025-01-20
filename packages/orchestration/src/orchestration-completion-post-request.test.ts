@@ -1,7 +1,12 @@
-import { constructCompletionPostRequest } from './orchestration-client.js';
-import { ContentFilters } from './orchestration-filtering.js';
-import type { CompletionPostRequest } from './client/api/schema';
-import type { OrchestrationModuleConfig } from './orchestration-types.js';
+import {
+  ContentFilters,
+  constructCompletionPostRequest
+} from './util/index.js';
+import type { CompletionPostRequest } from './client/api/schema/index.js';
+import type {
+  OrchestrationModuleConfig,
+  StreamOptions
+} from './orchestration-types.js';
 
 describe('construct completion post request', () => {
   const defaultConfig: OrchestrationModuleConfig = {
@@ -199,6 +204,54 @@ describe('construct completion post request', () => {
     };
     const completionPostRequest: CompletionPostRequest =
       constructCompletionPostRequest(config);
+    expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
+  });
+
+  it('should construct completion post request with stream options', async () => {
+    const config: OrchestrationModuleConfig = {
+      ...defaultConfig,
+      filtering: {
+        output: {
+          filters: [ContentFilters.azure({ Hate: 4, SelfHarm: 0 })]
+        }
+      }
+    };
+
+    const streamOptions: StreamOptions = {
+      global: { chunk_size: 100 },
+      outputFiltering: { overlap: 100 }
+    };
+
+    const expectedCompletionPostRequest: CompletionPostRequest = {
+      orchestration_config: {
+        stream: true,
+        stream_options: streamOptions.global,
+        module_configurations: {
+          templating_module_config: config.templating,
+          llm_module_config: {
+            ...config.llm,
+            model_params: {
+              ...config.llm.model_params,
+              stream_options: { include_usage: true }
+            }
+          },
+          filtering_module_config: {
+            output: {
+              ...config.filtering!.output!,
+              stream_options: streamOptions.outputFiltering
+            }
+          }
+        }
+      },
+      input_params: { phrase: 'I hate you.' }
+    };
+    const completionPostRequest: CompletionPostRequest =
+      constructCompletionPostRequest(
+        config,
+        { inputParams: { phrase: 'I hate you.' } },
+        true,
+        streamOptions
+      );
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 });

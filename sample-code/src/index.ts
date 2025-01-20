@@ -12,9 +12,11 @@ export {
   orchestrationOutputFiltering,
   orchestrationRequestConfig,
   orchestrationCompletionMasking,
-  orchestrationFromJSON,
+  orchestrationFromJson,
   orchestrationGrounding,
-  orchestrationChatCompletionImage
+  orchestrationChatCompletionImage,
+  chatCompletionStreamWithJsonModuleConfig,
+  chatCompletionStream
 } from './orchestration.js';
 export {
   invoke,

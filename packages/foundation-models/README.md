@@ -152,7 +152,7 @@ Refer to `AzureOpenAiChatCompletionParameters` interface for other parameters th
 The `AzureOpenAiChatClient` supports streaming response for chat completion requests based on the [Server-sent events](https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events) standard.
 
 Use the `stream()` method to receive a stream of chunk responses from the model.
-After consuming the stream, call the helper methods to get the finish reason and token usage information respectively.
+After consuming the stream, call the helper methods to get the finish reason and token usage information.
 
 ```ts
 const chatClient = new AzureOpenAiChatClient('gpt-4o');
@@ -178,7 +178,7 @@ console.log(`Token usage: ${JSON.stringify(tokenUsage)}\n`);
 
 ##### Streaming the Delta Content
 
-The client provides a helper method to extract delta content and stream string directly.
+The client provides a helper method to extract the text chunks as strings:
 
 ```ts
 for await (const chunk of response.stream.toContentStream()) {
@@ -198,7 +198,7 @@ Additionally, it can be aborted manually by calling the `stream()` method with a
 ```ts
 const chatClient = new AzureOpenAiChatClient('gpt-4o');
 const controller = new AbortController();
-const response = await new AzureOpenAiChatClient('gpt-35-turbo').stream(
+const response = await chatClient.stream(
   {
     messages: [
       {
@@ -274,6 +274,24 @@ const client = await new AzureOpenAiChatClient('gpt-35-turbo', {
 
 By default, the fetched destination is cached.
 To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
+
+### Overwriting API Version
+
+We are continuously updating the OpenAI API version to match the latest version.
+In case this behavior causes issues in your application, you can overwrite the API version.
+
+To do this, set the `api-version` parameter in the `CustomRequestConfig` object, like the following:
+
+```ts
+const client = await new AzureOpenAiChatClient('gpt-35-turbo', {
+  destinationName: 'my-destination'
+});
+
+client.run(
+  { messages: [{ role: 'user', content: 'YOUR_PROMPT' }] },
+  { params: { 'api-version': 'YOUR_OLD_VERSION' } }
+);
+```
 
 ## Local Testing
 

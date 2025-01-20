@@ -1,56 +1,29 @@
-export type {
-  CompletionPostResponse,
-  ChatMessages,
-  TokenUsage,
-  TemplatingModuleConfig,
-  OrchestrationConfig,
-  ModuleResults,
-  ModuleConfigs,
-  MaskingModuleConfig,
-  MaskingProviderConfig,
-  GroundingModuleConfig,
-  DocumentGroundingFilter,
-  GroundingFilterId,
-  GroundingFilterSearchConfiguration,
-  DataRepositoryType,
-  KeyValueListPair,
-  SearchDocumentKeyValueListPair,
-  SearchSelectOptionEnum,
-  LlmModuleResult,
-  LlmChoice,
-  GenericModuleResult,
-  FilteringModuleConfig,
-  InputFilteringConfig,
-  OutputFilteringConfig,
-  FilterConfig,
-  ErrorResponse,
-  DpiEntities,
-  DpiEntityConfig,
-  DpiConfig,
-  CompletionPostRequest,
-  ChatMessage,
-  AzureThreshold,
-  AzureContentSafety,
-  AzureContentSafetyFilterConfig,
-  ImageContent,
-  TextContent,
-  MultiChatMessageContent,
-  MultiChatMessage
-} from './client/api/schema/index.js';
+export * from './client/api/schema/index.js';
 
 export type {
   OrchestrationModuleConfig,
   LlmModuleConfig,
   Prompt,
+  RequestOptions,
+  StreamOptions,
+  DocumentGroundingServiceConfig,
+  DocumentGroundingServiceFilter,
   LlmModelParams
 } from './orchestration-types.js';
+
+export { OrchestrationStreamResponse } from './orchestration-stream-response.js';
+
+export { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
+
+export { OrchestrationStream } from './orchestration-stream.js';
 
 export { OrchestrationClient } from './orchestration-client.js';
 
 export {
   buildAzureContentFilter,
-  ContentFilters
-} from './orchestration-filtering.js';
+  ContentFilters,
+  buildDocumentGroundingConfig
+} from './util/index.js';
 
 export { OrchestrationResponse } from './orchestration-response.js';
 

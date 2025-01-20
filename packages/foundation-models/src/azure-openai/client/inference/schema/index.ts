@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -23,20 +23,24 @@ export * from './prompt-filter-results.js';
 export * from './dalle-content-filter-results.js';
 export * from './dalle-filter-results.js';
 export * from './chat-completions-request-common.js';
+export * from './create-completion-request.js';
+export * from './create-completion-response.js';
 export * from './create-chat-completion-request.js';
-export * from './chat-completion-response-format.js';
-export * from './chat-completion-function.js';
-export * from './chat-completion-function-parameters.js';
+export * from './chat-completion-functions.js';
+export * from './chat-completion-function-call-option.js';
 export * from './chat-completion-request-message.js';
-export * from './chat-completion-request-message-role.js';
-export * from './chat-completion-request-message-system.js';
-export * from './chat-completion-request-message-user.js';
-export * from './chat-completion-request-message-content-part.js';
-export * from './chat-completion-request-message-content-part-type.js';
+export * from './chat-completion-request-system-message.js';
+export * from './chat-completion-request-user-message.js';
+export * from './chat-completion-request-assistant-message.js';
+export * from './chat-completion-request-tool-message.js';
+export * from './chat-completion-request-function-message.js';
+export * from './chat-completion-request-system-message-content-part.js';
+export * from './chat-completion-request-user-message-content-part.js';
+export * from './chat-completion-request-assistant-message-content-part.js';
+export * from './chat-completion-request-tool-message-content-part.js';
 export * from './chat-completion-request-message-content-part-text.js';
 export * from './chat-completion-request-message-content-part-image.js';
-export * from './image-detail-level.js';
-export * from './chat-completion-request-message-assistant.js';
+export * from './chat-completion-request-message-content-part-refusal.js';
 export * from './azure-chat-extension-configuration.js';
 export * from './azure-chat-extension-type.js';
 export * from './azure-search-chat-extension-configuration.js';
@@ -63,18 +67,27 @@ export * from './tool-call-type.js';
 export * from './chat-completion-request-message-tool.js';
 export * from './chat-completion-request-message-function.js';
 export * from './create-chat-completion-response.js';
+export * from './create-chat-completion-stream-response.js';
+export * from './chat-completion-stream-response-delta.js';
+export * from './chat-completion-message-tool-call-chunk.js';
+export * from './chat-completion-stream-options.js';
 export * from './chat-completion-choice-log-probs.js';
 export * from './chat-completion-token-logprob.js';
 export * from './chat-completion-response-message.js';
 export * from './chat-completion-response-message-role.js';
 export * from './chat-completion-tool-choice-option.js';
 export * from './chat-completion-named-tool-choice.js';
+export * from './parallel-tool-calls.js';
+export * from './chat-completion-message-tool-calls.js';
 export * from './chat-completion-function-call.js';
-export * from './chat-completions-response-common.js';
-export * from './chat-completion-response-object.js';
 export * from './completion-usage.js';
 export * from './chat-completion-tool.js';
-export * from './chat-completion-tool-type.js';
+export * from './function-parameters.js';
+export * from './function-object.js';
+export * from './response-format-text.js';
+export * from './response-format-json-object.js';
+export * from './response-format-json-schema-schema.js';
+export * from './response-format-json-schema.js';
 export * from './chat-completion-choice-common.js';
 export * from './create-translation-request.js';
 export * from './audio-response.js';

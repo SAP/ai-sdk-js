@@ -162,6 +162,48 @@ For example, use `ContentFilters.azure()` to build Azure content filter.
 
 Send chat completion request with a custom header as the custom request configuration.
 
+#### Chat Completion Streaming
+
+`POST /orchestration-stream/chat-completion-stream`
+
+Get a chat completion response with streaming.
+
+You can set the streaming options in the body of the request.
+
+An example for setting the chunk size would look like this:
+
+```
+curl -X POST http://localhost:8080/orchestration-stream/chat-completion-stream \
+-H "Content-Type: application/json" \
+-d '{
+  "global": {
+    "chunk_size": 10
+  }
+}'
+```
+
+The response header is set with `Content-Type: text/event-stream` to stream the text.
+
+`AbortController` is used to cancel the request in case user closes or refreshes the page, or there is an error.
+
+The `toContentStream()` method is called to extract the content of the chunk for convenience.
+
+Once the streaming is done, finish reason and token usage are printed out.
+
+#### Chat Completion Streaming With JSON Module Config
+
+`GET /orchestration-stream/chat-completion-stream-json`
+
+Get a chat completion response with streaming with a JSON Module Config initalized client.
+
+The response header is set with `Content-Type: text/event-stream` to stream the text.
+
+`AbortController` is used to cancel the request in case user closes or refreshes the page, or there is an error.
+
+The `toContentStream()` method is called to extract the content of the chunk for convenience.
+
+Once the streaming is done, finish reason and token usage are printed out.
+
 ### Langchain
 
 #### Invoke with a Simple Input

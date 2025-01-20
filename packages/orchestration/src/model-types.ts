@@ -9,7 +9,7 @@ import type {
  * Supported chat models for orchestration.
  */
 export type ChatModel =
-  | Exclude<AzureOpenAiChatModel, 'gpt-4o-mini'>
+  | AzureOpenAiChatModel
   | GcpVertexAiChatModel
   | AwsBedrockChatModel
   | AiCoreOpenSourceChatModel;
