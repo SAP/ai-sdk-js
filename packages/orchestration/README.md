@@ -16,6 +16,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
   - [Data Masking](#data-masking)
   - [Grounding](#grounding)
   - [Using a JSON Configuration from AI Launchpad](#using-a-json-configuration-from-ai-launchpad)
+  - [Streaming](#streaming)
   - [Using Resource Groups](#using-resource-groups)
   - [Custom Request Configuration](#custom-request-configuration)
   - [Custom Destination](#custom-destination)
@@ -85,125 +86,6 @@ const orchestrationClient = new OrchestrationClient({
 The client allows you to combine various modules, such as templating and content filtering, while sending chat completion requests to an orchestration-compatible generative AI model.
 
 In addition to the examples below, you can find more **sample code** [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/orchestration.ts).
-
-### Streaming
-
-The `OrchestrationClient` supports streaming responses for chat completion requests based on the [Server-sent events](https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events) standard.
-
-Use the `stream()` method to receive a stream of chunk responses from the model.
-After consuming the stream, call the helper methods to get the finish reason and token usage information.
-
-```ts
-const orchestrationClient = new OrchestrationClient({
-  llm: {
-    model_name: 'gpt-4o',
-    model_params: { max_tokens: 50, temperature: 0.1 }
-  },
-  templating: {
-    template: [
-      { role: 'user', content: 'Give a long history of {{?country}}?' }
-    ]
-  }
-});
-
-const response = await orchestrationClient.stream({
-  inputParams: { country: 'France' }
-});
-
-for await (const chunk of response.stream) {
-  console.log(JSON.stringify(chunk));
-}
-
-const finishReason = response.getFinishReason();
-const tokenUsage = response.getTokenUsage();
-
-console.log(`Finish reason: ${finishReason}\n`);
-console.log(`Token usage: ${JSON.stringify(tokenUsage)}\n`);
-```
-
-#### Streaming the Delta Content
-
-The client provides a helper method to extract the text chunks as strings:
-
-```ts
-for await (const chunk of response.stream.toContentStream()) {
-  console.log(chunk); // will log the delta content
-}
-```
-
-Each chunk will be a string containing the delta content.
-
-#### Streaming with Abort Controller
-
-Streaming request can be aborted using the `AbortController` API.
-In case of an error, the SAP Cloud SDK for AI will automatically close the stream.
-Additionally, it can be aborted manually by calling the `stream()` method with an `AbortController` object.
-
-```ts
-const orchestrationClient = new OrchestrationClient({
-  llm: {
-    model_name: 'gpt-4o',
-    model_params: { max_tokens: 50, temperature: 0.1 }
-  },
-  templating: {
-    template: [
-      { role: 'user', content: 'Give a long history of {{?country}}?' }
-    ]
-  }
-});
-
-const controller = new AbortController();
-const response = await orchestrationClient.stream(
-  {
-    inputParams: { country: 'France' }
-  },
-  controller
-);
-
-// Abort the streaming request after one second
-setTimeout(() => {
-  controller.abort();
-}, 1000);
-
-for await (const chunk of response.stream) {
-  console.log(JSON.stringify(chunk));
-}
-```
-
-In this example, streaming request will be aborted after one second.
-Abort controller can be useful, e.g., when end-user wants to stop the stream or refreshes the page.
-
-#### Stream Options
-
-The orchestration service offers multiple streaming options, which you can configure in addition to the LLM's streaming options.
-These include options like definining the maximum number of characters per chunk or modifying the output filter behavior.
-There are two ways to add specific streaming options to your client, either at initialization of orchestration client, or when calling the stream API.
-
-Setting streaming options dynamically could be useful if an initialized orchestration client will also be used for streaming.
-
-You can check the list of available stream options in the [orchestration service's documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/streaming).
-
-An example for setting the streaming options when calling the stream API looks like the following:
-
-```ts
-const response = orchestrationClient.stream(
-  {
-    inputParams: { country: 'France' }
-  },
-  controller,
-  {
-    llm: { include_usage: false },
-    global: { chunk_size: 10 },
-    outputFiltering: { overlap: 200 }
-  }
-);
-```
-
-Usage metrics are collected by default, if you do not want to receive them, set `include_usage` to `false`.
-If you don't want any streaming options as part of your call to the LLM, set `streamOptions.llm` to `null`.
-
-> [!NOTE]
-> When initalizing a client with a JSON module config, providing streaming options is not possible.
 
 ### Templating
 
@@ -500,6 +382,125 @@ const response = await new OrchestrationClient(jsonConfig).chatCompletion();
 
 return response;
 ```
+
+### Streaming
+
+The `OrchestrationClient` supports streaming responses for chat completion requests based on the [Server-sent events](https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events) standard.
+
+Use the `stream()` method to receive a stream of chunk responses from the model.
+After consuming the stream, call the helper methods to get the finish reason and token usage information.
+
+```ts
+const orchestrationClient = new OrchestrationClient({
+  llm: {
+    model_name: 'gpt-4o',
+    model_params: { max_tokens: 50, temperature: 0.1 }
+  },
+  templating: {
+    template: [
+      { role: 'user', content: 'Give a long history of {{?country}}?' }
+    ]
+  }
+});
+
+const response = await orchestrationClient.stream({
+  inputParams: { country: 'France' }
+});
+
+for await (const chunk of response.stream) {
+  console.log(JSON.stringify(chunk));
+}
+
+const finishReason = response.getFinishReason();
+const tokenUsage = response.getTokenUsage();
+
+console.log(`Finish reason: ${finishReason}\n`);
+console.log(`Token usage: ${JSON.stringify(tokenUsage)}\n`);
+```
+
+#### Streaming the Delta Content
+
+The client provides a helper method to extract the text chunks as strings:
+
+```ts
+for await (const chunk of response.stream.toContentStream()) {
+  console.log(chunk); // will log the delta content
+}
+```
+
+Each chunk will be a string containing the delta content.
+
+#### Streaming with Abort Controller
+
+Streaming request can be aborted using the `AbortController` API.
+In case of an error, the SAP Cloud SDK for AI will automatically close the stream.
+Additionally, it can be aborted manually by calling the `stream()` method with an `AbortController` object.
+
+```ts
+const orchestrationClient = new OrchestrationClient({
+  llm: {
+    model_name: 'gpt-4o',
+    model_params: { max_tokens: 50, temperature: 0.1 }
+  },
+  templating: {
+    template: [
+      { role: 'user', content: 'Give a long history of {{?country}}?' }
+    ]
+  }
+});
+
+const controller = new AbortController();
+const response = await orchestrationClient.stream(
+  {
+    inputParams: { country: 'France' }
+  },
+  controller
+);
+
+// Abort the streaming request after one second
+setTimeout(() => {
+  controller.abort();
+}, 1000);
+
+for await (const chunk of response.stream) {
+  console.log(JSON.stringify(chunk));
+}
+```
+
+In this example, streaming request will be aborted after one second.
+Abort controller can be useful, e.g., when end-user wants to stop the stream or refreshes the page.
+
+#### Stream Options
+
+The orchestration service offers multiple streaming options, which you can configure in addition to the LLM's streaming options.
+These include options like definining the maximum number of characters per chunk or modifying the output filter behavior.
+There are two ways to add specific streaming options to your client, either at initialization of orchestration client, or when calling the stream API.
+
+Setting streaming options dynamically could be useful if an initialized orchestration client will also be used for streaming.
+
+You can check the list of available stream options in the [orchestration service's documentation](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/streaming).
+
+An example for setting the streaming options when calling the stream API looks like the following:
+
+```ts
+const response = orchestrationClient.stream(
+  {
+    inputParams: { country: 'France' }
+  },
+  controller,
+  {
+    llm: { include_usage: false },
+    global: { chunk_size: 10 },
+    outputFiltering: { overlap: 200 }
+  }
+);
+```
+
+Usage metrics are collected by default, if you do not want to receive them, set `include_usage` to `false`.
+If you don't want any streaming options as part of your call to the LLM, set `streamOptions.llm` to `null`.
+
+> [!NOTE]
+> When initalizing a client with a JSON module config, providing streaming options is not possible.
 
 ### Using Resource Groups
 
