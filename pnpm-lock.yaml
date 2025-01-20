@@ -199,13 +199,13 @@ importers:
         version: link:../packages/orchestration
       '@sap/cds':
         specifier: ^8.6.1
-        version: 8.6.1(express@4.21.1)
+        version: 8.6.1(express@4.21.2)
       '@sap/xssec':
         specifier: ^4
         version: 4.2.8
       express:
         specifier: ^4
-        version: 4.21.1
+        version: 4.21.2
     devDependencies:
       '@sap/cds-dk':
         specifier: ^8.6.1
@@ -2116,6 +2116,10 @@ packages:
     resolution: {integrity: sha512-MZ4iQ6JwHOBQjahnjwaC1ZtIBH+2ohjamzAO3oaHcXYup7qxjF2fixyH+Q71voWHeOkI2q/TnJao/KfXYIZWbw==}
     engines: {node: '>= 0.4'}
 
+  es-object-atoms@1.1.1:
+    resolution: {integrity: sha512-FGgH2h8zKNim9ljj7dankFPcICIK9Cp5bm+c2gQSYePhpaG5+esrLODihIorn+Pe6FGJzWhXQotPv73jTaldXA==}
+    engines: {node: '>= 0.4'}
+
   es-set-tostringtag@2.0.3:
     resolution: {integrity: sha512-3T8uNMC3OQTHkFUsFq8r/BwAXLHvU/9O9mE0fBc/MY5iq/8H7ncvO947LmYA6ldWw9Uh8Yhf25zu6n7nML5QWQ==}
     engines: {node: '>= 0.4'}
@@ -2352,10 +2356,6 @@ packages:
     resolution: {integrity: sha512-WVi2V4iHKw/vHEyye00Q9CSZz7KHDbJkJyteUI8kTih9jiyMl3bIk7wLYFcY9D1Blnadlyb5w5NBuNjQBow99g==}
     engines: {node: ^16.10.0 || ^18.12.0 || >=20.0.0}
 
-  express@4.21.1:
-    resolution: {integrity: sha512-YSFlK1Ee0/GC8QaO91tHcDxJiE/X4FbpAyQWkxAvG6AXCuR65YzK8ua6D9hvi/TzUfZMpc+BwuM1IPw8fmQBiQ==}
-    engines: {node: '>= 0.10.0'}
-
   express@4.21.2:
     resolution: {integrity: sha512-28HqgMZAmih1Czt9ny7qr6ek2qddF4FclbMzwhCREB6OFfH+rXAnuNCwo1/wFvrtbgsQDb4kSbX9de9lFbrXnA==}
     engines: {node: '>= 0.10.0'}
@@ -2537,9 +2537,17 @@ packages:
     resolution: {integrity: sha512-qxsEs+9A+u85HhllWJJFicJfPDhRmjzoYdl64aMWW9yRIJmSyxdn8IEkuIM530/7T+lv0TIHd8L6Q/ra0tEoeA==}
     engines: {node: '>= 0.4'}
 
+  get-intrinsic@1.2.7:
+    resolution: {integrity: sha512-VW6Pxhsrk0KAOqs3WEd0klDiF/+V7gQOpAvY1jVU/LHmaD/kQO4523aiJuikX/QAKYiW6x8Jh+RJej1almdtCA==}
+    engines: {node: '>= 0.4'}
+
   get-package-type@0.1.0:
     resolution: {integrity: sha512-pjzuKtY64GYfWizNAJ0fr9VqttZkNiK2iS430LtIHzjBEr6bX8Am2zm4sW4Ro5wjWW5cAlRL1qAMTcXbjNAO2Q==}
     engines: {node: '>=8.0.0'}
+
+  get-proto@1.0.1:
+    resolution: {integrity: sha512-sTSfBjoXBp89JvIKIefqw7U2CCebsc74kiY6awiGogKtoSGbgjYE/G/+l9sF3MWFPNc9IcoOC4ODfKHfxFmp0g==}
+    engines: {node: '>= 0.4'}
 
   get-stream@6.0.1:
     resolution: {integrity: sha512-ts6Wi+2j3jQjqi70w5AlN8DFnkSwC+MqmxEzdEALB2qXZYV3X/b1CTfgPLGJNMeAWxdPfU8FO1ms3NUfaHCPYg==}
@@ -3783,9 +3791,6 @@ packages:
     resolution: {integrity: sha512-ypGJsmGtdXUOeM5u93TyeIEfEhM6s+ljAhrk5vAvSx8uyY/02OvrZnA0YNGUrPXfpJMgI1ODd3nwz8Npx4O4cg==}
     engines: {node: 20 || >=22}
 
-  path-to-regexp@0.1.10:
-    resolution: {integrity: sha512-7lf7qcQidTku0Gu3YDPc8DJ1q7OOucfa/BSsIwjuh56VU7katFvuM8hULfkwB3Fns/rsVF7PwPKVw1sl5KQS9w==}
-
   path-to-regexp@0.1.12:
     resolution: {integrity: sha512-RA1GjUVMnvYFxuqovrEqZoxxW5NUZqbwKtYz/Tt7nXerk0LbLblQmrsgdeOxV5SFHf0UDggjS/bSeOZwt1pmEQ==}
 
@@ -3894,6 +3899,10 @@ packages:
 
   qs@6.13.0:
     resolution: {integrity: sha512-+38qI9SOr8tfZ4QmJNplMUxqjbe7LKvvZgWdExBOmd+egZTtjLB67Gu0HRX3u/XOq7UU2Nx6nsjvS16Z9uwfpg==}
+    engines: {node: '>=0.6'}
+
+  qs@6.14.0:
+    resolution: {integrity: sha512-YWWTjgABSKcvs/nWBi9PycY/JiPJqOD4JA6o9Sej2AtvSGarXxKC3OQSk4pAarbdQlKAh5D4FCQkJNkW+GAn3w==}
     engines: {node: '>=0.6'}
 
   queue-microtask@1.2.3:
@@ -4978,25 +4987,25 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@cap-js/asyncapi@1.0.2(@sap/cds@8.6.1(express@4.21.1))':
+  '@cap-js/asyncapi@1.0.2(@sap/cds@8.6.1(express@4.21.2))':
     dependencies:
-      '@sap/cds': 8.6.1(express@4.21.1)
+      '@sap/cds': 8.6.1(express@4.21.2)
 
-  '@cap-js/db-service@1.15.0(@sap/cds@8.6.1(express@4.21.1))':
+  '@cap-js/db-service@1.15.0(@sap/cds@8.6.1(express@4.21.2))':
     dependencies:
-      '@sap/cds': 8.6.1(express@4.21.1)
+      '@sap/cds': 8.6.1(express@4.21.2)
       generic-pool: 3.9.0
     optional: true
 
-  '@cap-js/openapi@1.0.7(@sap/cds@8.6.1(express@4.21.1))':
+  '@cap-js/openapi@1.0.7(@sap/cds@8.6.1(express@4.21.2))':
     dependencies:
-      '@sap/cds': 8.6.1(express@4.21.1)
+      '@sap/cds': 8.6.1(express@4.21.2)
       pluralize: 8.0.0
 
-  '@cap-js/sqlite@1.7.7(@sap/cds@8.6.1(express@4.21.1))':
+  '@cap-js/sqlite@1.7.7(@sap/cds@8.6.1(express@4.21.2))':
     dependencies:
-      '@cap-js/db-service': 1.15.0(@sap/cds@8.6.1(express@4.21.1))
-      '@sap/cds': 8.6.1(express@4.21.1)
+      '@cap-js/db-service': 1.15.0(@sap/cds@8.6.1(express@4.21.2))
+      '@sap/cds': 8.6.1(express@4.21.2)
       better-sqlite3: 11.5.0
     optional: true
 
@@ -5857,8 +5866,8 @@ snapshots:
 
   '@sap/cds-dk@8.6.1':
     dependencies:
-      '@cap-js/asyncapi': 1.0.2(@sap/cds@8.6.1(express@4.21.1))
-      '@cap-js/openapi': 1.0.7(@sap/cds@8.6.1(express@4.21.1))
+      '@cap-js/asyncapi': 1.0.2(@sap/cds@8.6.1(express@4.21.2))
+      '@cap-js/openapi': 1.0.7(@sap/cds@8.6.1(express@4.21.2))
       '@sap/cds': 8.6.1(express@4.21.2)
       '@sap/cds-foss': 5.0.1
       '@sap/cds-mtxs': 2.3.1(hdb@0.19.10)
@@ -5874,7 +5883,7 @@ snapshots:
       ws: 8.18.0
       xml-js: 1.6.11
     optionalDependencies:
-      '@cap-js/sqlite': 1.7.7(@sap/cds@8.6.1(express@4.21.1))
+      '@cap-js/sqlite': 1.7.7(@sap/cds@8.6.1(express@4.21.2))
     transitivePeerDependencies:
       - '@sap/hana-client'
       - bufferutil
@@ -5883,14 +5892,9 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@sap/cds-fiori@1.2.7(@sap/cds@8.6.1(express@4.21.1))(express@4.21.1)':
+  '@sap/cds-fiori@1.2.7(@sap/cds@8.6.1(express@4.21.2))(express@4.21.2)':
     dependencies:
-      '@sap/cds': 8.6.1(express@4.21.1)
-      express: 4.21.1
-
-  '@sap/cds-fiori@1.2.7(@sap/cds@8.6.1(express@4.21.1))(express@4.21.2)':
-    dependencies:
-      '@sap/cds': 8.6.1(express@4.21.1)
+      '@sap/cds': 8.6.1(express@4.21.2)
       express: 4.21.2
 
   '@sap/cds-foss@5.0.1':
@@ -5910,18 +5914,10 @@ snapshots:
       - hdb
       - supports-color
 
-  '@sap/cds@8.6.1(express@4.21.1)':
-    dependencies:
-      '@sap/cds-compiler': 5.3.2
-      '@sap/cds-fiori': 1.2.7(@sap/cds@8.6.1(express@4.21.1))(express@4.21.1)
-      '@sap/cds-foss': 5.0.1
-    optionalDependencies:
-      express: 4.21.1
-
   '@sap/cds@8.6.1(express@4.21.2)':
     dependencies:
       '@sap/cds-compiler': 5.3.2
-      '@sap/cds-fiori': 1.2.7(@sap/cds@8.6.1(express@4.21.1))(express@4.21.2)
+      '@sap/cds-fiori': 1.2.7(@sap/cds@8.6.1(express@4.21.2))(express@4.21.2)
       '@sap/cds-foss': 5.0.1
     optionalDependencies:
       express: 4.21.2
@@ -7097,6 +7093,10 @@ snapshots:
     dependencies:
       es-errors: 1.3.0
 
+  es-object-atoms@1.1.1:
+    dependencies:
+      es-errors: 1.3.0
+
   es-set-tostringtag@2.0.3:
     dependencies:
       get-intrinsic: 1.2.6
@@ -7428,42 +7428,6 @@ snapshots:
       jest-mock: 30.0.0-alpha.6
       jest-util: 30.0.0-alpha.6
 
-  express@4.21.1:
-    dependencies:
-      accepts: 1.3.8
-      array-flatten: 1.1.1
-      body-parser: 1.20.3
-      content-disposition: 0.5.4
-      content-type: 1.0.5
-      cookie: 0.7.1
-      cookie-signature: 1.0.6
-      debug: 2.6.9
-      depd: 2.0.0
-      encodeurl: 2.0.0
-      escape-html: 1.0.3
-      etag: 1.8.1
-      finalhandler: 1.3.1
-      fresh: 0.5.2
-      http-errors: 2.0.0
-      merge-descriptors: 1.0.3
-      methods: 1.1.2
-      on-finished: 2.4.1
-      parseurl: 1.3.3
-      path-to-regexp: 0.1.10
-      proxy-addr: 2.0.7
-      qs: 6.13.0
-      range-parser: 1.2.1
-      safe-buffer: 5.2.1
-      send: 0.19.0
-      serve-static: 1.16.2
-      setprototypeof: 1.2.0
-      statuses: 2.0.1
-      type-is: 1.6.18
-      utils-merge: 1.0.1
-      vary: 1.1.2
-    transitivePeerDependencies:
-      - supports-color
-
   express@4.21.2:
     dependencies:
       accepts: 1.3.8
@@ -7689,7 +7653,25 @@ snapshots:
       hasown: 2.0.2
       math-intrinsics: 1.1.0
 
+  get-intrinsic@1.2.7:
+    dependencies:
+      call-bind-apply-helpers: 1.0.1
+      es-define-property: 1.0.1
+      es-errors: 1.3.0
+      es-object-atoms: 1.1.1
+      function-bind: 1.1.2
+      get-proto: 1.0.1
+      gopd: 1.2.0
+      has-symbols: 1.1.0
+      hasown: 2.0.2
+      math-intrinsics: 1.1.0
+
   get-package-type@0.1.0: {}
+
+  get-proto@1.0.1:
+    dependencies:
+      dunder-proto: 1.0.1
+      es-object-atoms: 1.1.1
 
   get-stream@6.0.1: {}
 
@@ -9035,7 +9017,7 @@ snapshots:
       form-data-encoder: 1.7.2
       formdata-node: 4.4.1
       node-fetch: 2.7.0
-      qs: 6.13.0
+      qs: 6.14.0
     optionalDependencies:
       zod: 3.24.1
     transitivePeerDependencies:
@@ -9168,8 +9150,6 @@ snapshots:
       lru-cache: 11.0.0
       minipass: 7.1.2
 
-  path-to-regexp@0.1.10: {}
-
   path-to-regexp@0.1.12: {}
 
   path-type@4.0.0: {}
@@ -9266,6 +9246,10 @@ snapshots:
   pure-rand@6.1.0: {}
 
   qs@6.13.0:
+    dependencies:
+      side-channel: 1.1.0
+
+  qs@6.14.0:
     dependencies:
       side-channel: 1.1.0
 
@@ -9523,14 +9507,14 @@ snapshots:
     dependencies:
       call-bound: 1.0.3
       es-errors: 1.3.0
-      get-intrinsic: 1.2.6
+      get-intrinsic: 1.2.7
       object-inspect: 1.13.3
 
   side-channel-weakmap@1.0.2:
     dependencies:
       call-bound: 1.0.3
       es-errors: 1.3.0
-      get-intrinsic: 1.2.6
+      get-intrinsic: 1.2.7
       object-inspect: 1.13.3
       side-channel-map: 1.0.1
 
