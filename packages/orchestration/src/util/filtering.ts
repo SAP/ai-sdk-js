@@ -24,7 +24,9 @@ export function buildAzureContentFilter(
  * @param config - Filtering configuration for Azure filter. If skipped, the default Azure content filter configuration is used.
  * @returns Filter config object.
  */
-export function azureContentSafety(config?: AzureContentSafety): AzureContentSafetyFilterConfig {
+export function azureContentSafety(
+  config?: AzureContentSafety
+): AzureContentSafetyFilterConfig {
   return {
     type: 'azure_content_safety',
     ...(config && { config })

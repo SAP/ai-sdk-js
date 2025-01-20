@@ -166,7 +166,9 @@ describe('orchestration service client', () => {
           filters: [ContentFilters.azureContentSafety({ Hate: 4, SelfHarm: 2 })]
         },
         output: {
-          filters: [ContentFilters.azureContentSafety({ Sexual: 0, Violence: 4 })]
+          filters: [
+            ContentFilters.azureContentSafety({ Sexual: 0, Violence: 4 })
+          ]
         }
       }
     };
