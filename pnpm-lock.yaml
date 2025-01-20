@@ -249,6 +249,9 @@ importers:
       langchain:
         specifier: 0.3.11
         version: 0.3.11(@langchain/core@0.3.31(openai@4.61.1(zod@3.24.1)))(axios@1.7.9)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.61.1(zod@3.24.1))
+      mime-types:
+        specifier: ^2.1.35
+        version: 2.1.35
 
   tests/e2e-tests:
     dependencies:
