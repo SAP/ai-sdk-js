@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import { extname } from 'path';
+import { extname, join } from 'path';
 import { lookup } from 'mime-types';
 import {
   OrchestrationClient,
@@ -356,7 +356,7 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
     }
   });
 
-  const imageFilePath = './src/media/sample-image.png';
+  const imageFilePath = join(__dirname, 'src', 'media', 'sample-image.png');
   const mimeType = lookup(extname(imageFilePath).toLowerCase());
   const encodedString = `data:${mimeType};base64,${await readFile(imageFilePath, 'base64')}`;
 
