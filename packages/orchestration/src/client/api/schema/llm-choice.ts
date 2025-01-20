@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { ChatMessage } from './chat-message.js';
+import type { ResponseChatMessage } from './response-chat-message.js';
 /**
  * Representation of the 'LlmChoice' schema.
  */
@@ -12,7 +12,7 @@ export type LlmChoice = {
    * Index of the choice
    */
   index: number;
-  message: ChatMessage;
+  message: ResponseChatMessage;
   /**
    * Log probabilities
    */
