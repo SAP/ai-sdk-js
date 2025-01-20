@@ -74,7 +74,7 @@ describe('stream util tests', () => {
       ...defaultOrchestrationModuleConfig,
       filtering: {
         output: {
-          filters: [ContentFilters.azure({ Hate: 4, SelfHarm: 0 })]
+          filters: [ContentFilters.azureContentSafety({ Hate: 4, SelfHarm: 0 })]
         }
       }
     };
@@ -93,7 +93,7 @@ describe('stream util tests', () => {
       ...defaultModuleConfigs,
       filtering_module_config: {
         output: {
-          filters: [ContentFilters.azure({ Hate: 4, SelfHarm: 0 })]
+          filters: [ContentFilters.azureContentSafety({ Hate: 4, SelfHarm: 0 })]
         }
       }
     };

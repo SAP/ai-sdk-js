@@ -3,4 +3,4 @@
 ---
 
 [Compatibility Note] Deprecate `buildAzureContentFilter()` function since it restricts filtering to have only one filter. 
-Use `ContentFilters.azure()` instead.
+Use `ContentFilters.azureContentSafety()` instead.

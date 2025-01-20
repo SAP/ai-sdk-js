@@ -142,7 +142,7 @@ const templating = { template: [{ role: 'user', content: '{{?input}}' }] };
 export async function orchestrationInputFiltering(): Promise<void> {
   // create a filter with minimal thresholds for hate and violence
   // lower numbers mean more strict filtering
-  const azureContentFilter = ContentFilters.azure({ Hate: 0, Violence: 0 });
+  const azureContentFilter = ContentFilters.azureContentSafety({ Hate: 0, Violence: 0 });
   const orchestrationClient = new OrchestrationClient({
     llm,
     templating,
@@ -176,7 +176,7 @@ export async function orchestrationInputFiltering(): Promise<void> {
 export async function orchestrationOutputFiltering(): Promise<OrchestrationResponse> {
   // output filters are build in the same way as input filters
   // set the thresholds to the minimum to maximize the chance the LLM output will be filtered
-  const azureContentFilter = ContentFilters.azure({ Hate: 0, Violence: 0 });
+  const azureContentFilter = ContentFilters.azureContentSafety({ Hate: 0, Violence: 0 });
   const orchestrationClient = new OrchestrationClient({
     llm,
     templating,
