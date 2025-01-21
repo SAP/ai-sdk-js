@@ -13,4 +13,4 @@ export type MultiChatMessage = {
    */
   role: string;
   content: MultiChatMessageContent[];
-} & Record<string, any>;
+};
