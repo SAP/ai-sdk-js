@@ -10,6 +10,7 @@ import {
 import { createStuffDocumentsChain } from 'langchain/chains/combine_documents';
 import { MemoryVectorStore } from 'langchain/vectorstores/memory';
 import { TextLoader } from 'langchain/document_loaders/fs/text';
+import { AIMessage } from '@langchain/core/messages';
 
 /**
  * Ask GPT about the capital of France.
@@ -23,8 +24,8 @@ export async function invoke(): Promise<string> {
     temperature: 0.7
   });
 
-  // invoke a prompt
-  const response = await client.invoke('What is the capital of France?');
+  // invoke a prompt TODO: revert later
+  const response = await client.invoke([new AIMessage({ name: '', content: 'content', id: ''  })]);
 
   // create an output parser
   const parser = new StringOutputParser();
