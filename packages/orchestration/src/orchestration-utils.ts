@@ -4,10 +4,10 @@ import type {
   Prompt,
   StreamOptions,
   LlmModuleConfig,
-  OrchestrationModuleConfig
+  OrchestrationModuleConfig,
+  AzureContentSafety
 } from './orchestration-types.js';
 import type {
-  AzureContentSafety,
   GroundingModuleConfig,
   InputFilteringConfig,
   CompletionPostRequest,

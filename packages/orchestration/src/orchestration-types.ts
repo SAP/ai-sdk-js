@@ -151,3 +151,39 @@ export interface DocumentGroundingServiceConfig {
    */
   output_param: string;
 }
+
+/**
+ * A descriptive type for AzureThreshold input.
+ */
+export type AzureContentSafety = {
+  /**
+   * Filter configuration for Hate.
+   */
+  Hate?: AzureContentSafetyThreshold;
+  /**
+   * Filter configuration for SelfHarm.
+   */
+  SelfHarm?: AzureContentSafetyThreshold;
+  /**
+   * Filter configuration for Sexual.
+   */
+  Sexual?: AzureContentSafetyThreshold;
+  /**
+   * Filter configuration for Violence.
+   */
+  Violence?: AzureContentSafetyThreshold;
+}
+
+/**
+ * A descriptive constant for Azure content safety filter.
+ */
+export enum AzureContentSafetyThreshold {
+  /** Allows only safe content. */
+  ALLOW_SAFE = 0,
+  /** Allows safe content and low-risk content. */
+  ALLOW_SAFE_LOW = 2,
+  /** Allows safe, low-risk, and medium-risk content. */
+  ALLOW_SAFE_LOW_MEDIUM = 4,
+  /** Allows all content. */
+  ALLOW_ALL = 6
+}

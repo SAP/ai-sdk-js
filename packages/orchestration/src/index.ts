@@ -8,7 +8,9 @@ export type {
   StreamOptions,
   DocumentGroundingServiceConfig,
   DocumentGroundingServiceFilter,
-  LlmModelParams
+  LlmModelParams,
+  AzureContentSafety,
+  AzureContentSafetyThreshold
 } from './orchestration-types.js';
 
 export { OrchestrationStreamResponse } from './orchestration-stream-response.js';
