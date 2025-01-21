@@ -153,24 +153,24 @@ export interface DocumentGroundingServiceConfig {
 }
 
 /**
- * A descriptive type for AzureThreshold input.
+ * Filter configuration for Azure Content Safety.
  */
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type AzureContentSafety = {
   /**
-   * Filter configuration for Hate.
+   * The filter category for hate content.
    */
   Hate?: AzureFilterThreshold;
   /**
-   * Filter configuration for SelfHarm.
+   * The filter category for self-harm content.
    */
   SelfHarm?: AzureFilterThreshold;
   /**
-   * Filter configuration for Sexual.
+   * The filter category for sexual content.
    */
   Sexual?: AzureFilterThreshold;
   /**
-   * Filter configuration for Violence.
+   * The filter category for violence content.
    */
   Violence?: AzureFilterThreshold;
 };
@@ -179,12 +179,12 @@ export type AzureContentSafety = {
  * A descriptive constant for Azure content safety filter.
  */
 export enum AzureFilterThreshold {
-  /** Allows only safe content. */
+  /** Only safe content is allowed. */
   ALLOW_SAFE = 0,
-  /** Allows safe content and low-risk content. */
+  /** Safe and low-risk content is allowed. */
   ALLOW_SAFE_LOW = 2,
-  /** Allows safe, low-risk, and medium-risk content. */
+  /** Safe, low-risk, and medium-risk content is allowed. */
   ALLOW_SAFE_LOW_MEDIUM = 4,
-  /** Allows all content. */
+  /** All content is allowed. */
   ALLOW_ALL = 6
 }
