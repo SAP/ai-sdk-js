@@ -18,6 +18,7 @@ import type { BaseMessage, HumanMessage } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
 import type { StructuredTool } from '@langchain/core/tools';
 import type { AzureOpenAiChatClient } from './chat.js';
+import { v4 as uuidv4, v4 } from 'uuid';
 import type { AzureOpenAiChatCallOptions } from './types.js';
 
 type ToolChoice =
@@ -120,13 +121,13 @@ export function mapOutputToChatResult(
 function mapLangchainToolCallToAzureOpenAiToolCall(toolCalls?: ToolCall[]): AzureOpenAiChatCompletionMessageToolCalls | undefined {
   if (toolCalls) {
     return toolCalls.map(toolCall => ({
-      id: toolCall.id ?? '',
+      id: toolCall.id ?? v4(),
       type: 'function',
       function: {
         name: toolCall.name,
         arguments: JSON.stringify(toolCall.args)
       }
-    }));
+    }))
   }
 }
 
