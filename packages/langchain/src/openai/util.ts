@@ -24,20 +24,20 @@ type ToolChoice =
   | 'none'
   | 'auto'
   | {
+    /**
+     * The type of the tool.
+     */
+    type: 'function';
+    /**
+     * Use to force the model to call a specific function.
+     */
+    function: {
       /**
-       * The type of the tool.
+       * The name of the function to call.
        */
-      type: 'function';
-      /**
-       * Use to force the model to call a specific function.
-       */
-      function: {
-        /**
-         * The name of the function to call.
-         */
-        name: string;
-      };
+      name: string;
     };
+  };
 
 type LangChainToolChoice = string | Record<string, any> | 'auto' | 'any';
 
@@ -118,15 +118,16 @@ export function mapOutputToChatResult(
 }
 
 function mapLangchainToolCallToAzureOpenAiToolCall(toolCalls?: ToolCall[]): AzureOpenAiChatCompletionMessageToolCalls | undefined {
-if(toolCalls) {
-  return toolCalls.map(toolCall => ({
-    id: toolCall.id ?? '',
-    type: 'function',
-    function: {
-      name: toolCall.name,
-      arguments: JSON.stringify(toolCall.args)
-    }
-  }));
+  if (toolCalls) {
+    return toolCalls.map(toolCall => ({
+      id: toolCall.id ?? '',
+      type: 'function',
+      function: {
+        name: toolCall.name,
+        arguments: JSON.stringify(toolCall.args)
+      }
+    }));
+  }
 }
 
 function mapAiMessageToAzureOpenAiChatMessage(
@@ -161,17 +162,17 @@ function mapHumanMessageToAzureOpenAiChatMessage(
 function mapBaseMessageToAzureOpenAiChatMessage(
   message: BaseMessage
 ): AzureOpenAiChatCompletionRequestMessage {
-  switch(message.getType()) {
+  switch (message.getType()) {
     case 'ai':
       return mapAiMessageToAzureOpenAiChatMessage(message);
     case 'human':
       return mapHumanMessageToAzureOpenAiChatMessage(message);
-    case 'system':
-      return mapSystemMessageToAzureOpenAiChatMessage(message) as AzureOpenAiChatCompletionRequestSystemMessage;
-    case 'function':
-      return mapFunctionMessageToAzureOpenAiChatMessage(message) as AzureOpenAiChatCompletionRequestFunctionMessage;
-    case 'tool':
-      return mapToolMessageToAzureOpenAiChatMessage(message) as AzureOpenAiChatCompletionRequestToolMessage;
+    // case 'system':
+    //   return mapSystemMessageToAzureOpenAiChatMessage(message) as AzureOpenAiChatCompletionRequestSystemMessage;
+    // case 'function':
+    //   return mapFunctionMessageToAzureOpenAiChatMessage(message) as AzureOpenAiChatCompletionRequestFunctionMessage;
+    // case 'tool':
+    //   return mapToolMessageToAzureOpenAiChatMessage(message) as AzureOpenAiChatCompletionRequestToolMessage;
     default:
       throw new Error(`Unsupported message type: ${message.getType()}`);
   };
