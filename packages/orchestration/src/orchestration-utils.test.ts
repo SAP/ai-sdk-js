@@ -12,7 +12,7 @@ import {
   type OrchestrationModuleConfig,
   type DocumentGroundingServiceConfig,
   type StreamOptions,
-  AzureContentSafetyThreshold
+  AzureFilterThreshold
 } from './orchestration-types.js';
 import type {
   CompletionPostRequest,
@@ -84,8 +84,8 @@ describe('orchestration utils', () => {
         ...defaultOrchestrationModuleConfig,
         filtering: {
           output: buildAzureContentFilter({
-            Hate: AzureContentSafetyThreshold.ALLOW_SAFE_LOW_MEDIUM,
-            SelfHarm: AzureContentSafetyThreshold.ALLOW_SAFE
+            Hate: AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM,
+            SelfHarm: AzureFilterThreshold.ALLOW_SAFE
           })
         }
       };
@@ -106,8 +106,8 @@ describe('orchestration utils', () => {
         ...defaultModuleConfigs,
         filtering_module_config: {
           output: buildAzureContentFilter({
-            Hate: AzureContentSafetyThreshold.ALLOW_SAFE_LOW_MEDIUM,
-            SelfHarm: AzureContentSafetyThreshold.ALLOW_SAFE
+            Hate: AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM,
+            SelfHarm: AzureFilterThreshold.ALLOW_SAFE
           })
         }
       };
@@ -182,8 +182,8 @@ describe('orchestration utils', () => {
     it('constructs filter configuration with only input', async () => {
       const filtering: FilteringModuleConfig = {
         input: buildAzureContentFilter({
-          Hate: AzureContentSafetyThreshold.ALLOW_SAFE_LOW_MEDIUM,
-          SelfHarm: AzureContentSafetyThreshold.ALLOW_SAFE
+          Hate: AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM,
+          SelfHarm: AzureFilterThreshold.ALLOW_SAFE
         })
       };
       const expectedFilterConfig: FilteringModuleConfig = {
@@ -211,8 +211,8 @@ describe('orchestration utils', () => {
     it('constructs filter configuration with only output', async () => {
       const filtering: FilteringModuleConfig = {
         output: buildAzureContentFilter({
-          Sexual: AzureContentSafetyThreshold.ALLOW_SAFE_LOW,
-          Violence: AzureContentSafetyThreshold.ALLOW_ALL
+          Sexual: AzureFilterThreshold.ALLOW_SAFE_LOW,
+          Violence: AzureFilterThreshold.ALLOW_ALL
         })
       };
       const expectedFilterConfig: FilteringModuleConfig = {
@@ -240,14 +240,14 @@ describe('orchestration utils', () => {
     it('constructs filter configuration with both input and output', async () => {
       const filtering: FilteringModuleConfig = {
         input: buildAzureContentFilter({
-          Hate: AzureContentSafetyThreshold.ALLOW_SAFE_LOW_MEDIUM,
-          SelfHarm: AzureContentSafetyThreshold.ALLOW_SAFE,
-          Sexual: AzureContentSafetyThreshold.ALLOW_SAFE_LOW,
-          Violence: AzureContentSafetyThreshold.ALLOW_ALL
+          Hate: AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM,
+          SelfHarm: AzureFilterThreshold.ALLOW_SAFE,
+          Sexual: AzureFilterThreshold.ALLOW_SAFE_LOW,
+          Violence: AzureFilterThreshold.ALLOW_ALL
         }),
         output: buildAzureContentFilter({
-          Sexual: AzureContentSafetyThreshold.ALLOW_SAFE_LOW,
-          Violence: AzureContentSafetyThreshold.ALLOW_ALL
+          Sexual: AzureFilterThreshold.ALLOW_SAFE_LOW,
+          Violence: AzureFilterThreshold.ALLOW_ALL
         })
       };
       const expectedFilterConfig: FilteringModuleConfig = {

@@ -160,25 +160,25 @@ export type AzureContentSafety = {
   /**
    * Filter configuration for Hate.
    */
-  Hate?: AzureContentSafetyThreshold;
+  Hate?: AzureFilterThreshold;
   /**
    * Filter configuration for SelfHarm.
    */
-  SelfHarm?: AzureContentSafetyThreshold;
+  SelfHarm?: AzureFilterThreshold;
   /**
    * Filter configuration for Sexual.
    */
-  Sexual?: AzureContentSafetyThreshold;
+  Sexual?: AzureFilterThreshold;
   /**
    * Filter configuration for Violence.
    */
-  Violence?: AzureContentSafetyThreshold;
+  Violence?: AzureFilterThreshold;
 };
 
 /**
  * A descriptive constant for Azure content safety filter.
  */
-export enum AzureContentSafetyThreshold {
+export enum AzureFilterThreshold {
   /** Allows only safe content. */
   ALLOW_SAFE = 0,
   /** Allows safe content and low-risk content. */
