@@ -155,7 +155,7 @@ export interface DocumentGroundingServiceConfig {
 /**
  * A descriptive type for AzureThreshold input.
  */
-export type AzureContentSafety = {
+export interface AzureContentSafety {
   /**
    * Filter configuration for Hate.
    */
