@@ -155,7 +155,8 @@ export interface DocumentGroundingServiceConfig {
 /**
  * A descriptive type for AzureThreshold input.
  */
-export interface AzureContentSafety {
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type AzureContentSafety = {
   /**
    * Filter configuration for Hate.
    */
@@ -172,7 +173,7 @@ export interface AzureContentSafety {
    * Filter configuration for Violence.
    */
   Violence?: AzureContentSafetyThreshold;
-}
+};
 
 /**
  * A descriptive constant for Azure content safety filter.
