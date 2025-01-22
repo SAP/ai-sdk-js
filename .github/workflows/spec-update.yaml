@@ -97,6 +97,7 @@ jobs:
         id: generate
         if: steps.spec_diff.outputs.spec_diff == 'true'
         run: |
+          pnpm install
           pnpm generate
 
       - name: "Compile and Test"
@@ -107,7 +108,7 @@ jobs:
         run: |
           if pnpm compile ; then
             echo "compilation_result=success" >> "$GITHUB_OUTPUT"
-            if pnpm test ; then
+            if pnpm test:unit && pnpm test:type ; then
                 echo "test_result=success" >> "$GITHUB_OUTPUT"
             else
                 echo "test_result=failure" >> "$GITHUB_OUTPUT"
@@ -153,7 +154,7 @@ jobs:
           
           ## Definition of Done
 
-          - [ ] Unit tests cover new classes
+          - [ ] Unit / type tests cover new classes
           - [ ] Release notes updated
           "
 
