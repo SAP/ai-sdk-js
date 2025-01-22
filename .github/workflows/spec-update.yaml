@@ -141,8 +141,8 @@ jobs:
           This PR was created automatically by the [spec-update workflow](https://github.com/SAP/ai-sdk-js/actions/workflows/spec-update.yaml).
           You can commit on top of this branch, but as long as this PR is open the action can't be re-run.
           
-          - Compilation outcome: ${{ steps.compile.output.compilation_result }}
-          - Test run outcome: ${{ steps.compile.output.test_result }}
+          - Compilation outcome: ${{ steps.compile.outputs.compilation_result }}
+          - Test run outcome: ${{ steps.compile.outputs.test_result }}
           
           Before merging, make sure to update tests and release notes, if necessary.
           
@@ -158,6 +158,6 @@ jobs:
           echo "File download outcome: ${{ steps.download.outcome }}"
           echo "Spec file contained changes: ${{ steps.spec_diff.outputs.spec_diff }}"
           echo "Client generation outcome: ${{ steps.generate.outcome }}"
-          echo "Client compilation outcome: ${{ steps.compile.output.compilation_result }}"
-          echo "Client test outcome: ${{ steps.compile.output.test_result }}"
+          echo "Client compilation outcome: ${{ steps.compile.outputs.compilation_result }}"
+          echo "Client test outcome: ${{ steps.compile.outputs.test_result }}"
           echo "Branch creation: ${{ steps.push.outcome }}"
