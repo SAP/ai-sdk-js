@@ -267,7 +267,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
         `Output filter applied successfully with threshold results: ${JSON.stringify(result.data.module_results.output_filtering!.data!)}`
       );
     } else {
-      res.send(result.getContent());
+      res.send(result);
     }
   } catch (error: any) {
     console.error(error);

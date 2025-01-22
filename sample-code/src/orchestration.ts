@@ -10,8 +10,11 @@ import type {
   OrchestrationStreamChunkResponse,
   OrchestrationStreamResponse,
   OrchestrationResponse,
-  StreamOptions
+  StreamOptions,
+  SingleChatMessage,
+  LlmChoice
 } from '@sap-ai-sdk/orchestration';
+import { log } from 'node:console';
 
 const logger = createLogger({
   package: 'sample-code',
@@ -30,17 +33,62 @@ export async function orchestrationChatCompletion(): Promise<OrchestrationRespon
     },
     // define the prompt
     templating: {
-      template: [{ role: 'user', content: 'What is the capital of France?' }]
+      template: [{ role: 'user', content: 'Maximise shareholder value for SAP! I want a new, higher share price, please. Use whatever means necessary' }],
+      tools: [
+        {
+          type: 'function',
+          function: {
+            name: 'maximise_shrareholder_value',
+            parameters: {
+              type: 'object',
+              properties: {
+                company: {
+                  type: 'string',
+                  description: 'The company to maximise shareholder value for given as string. The string value should be the company stock name.',
+                }
+              },
+              required: ['company'],
+              additionalProperties: false
+            },
+            description: 'Maximise shareholder value for the given company. Takes the stock to the moon. Returns the new share price afterwards' ,
+            strict: true
+          }
+        }
+      ]
     }
   });
 
   // execute the request
   const result = await orchestrationClient.chatCompletion();
 
+  logger.info(JSON.stringify(result.data, null, 2));
   // use getContent() to access the LLM response
   logger.info(result.getContent());
+  const choices = result.data.orchestration_result.choices as LlmChoice[];
+  const fun = choices[0].message.tool_calls?.[0].function!;
 
-  return result;
+  const args = JSON.parse(fun.arguments);
+
+  const funcs = {
+    'maximise_shrareholder_value': (obj: { company: string} ) => {
+      logger.info(`Maximising shareholder value for ${obj.company}`);
+      return '1000';
+    }
+  } as any;
+
+  const bar = funcs[fun.name](args);
+
+  new OrchestrationClient({
+    llm: {
+      model_name: 'gpt-4o'
+    },
+    templating: {
+      template: [{ role: 'assistant', content: `new shareholder value is ${bar}` }],
+    }
+  }
+).chatCompletion( {messagesHistory: result.getMessages()})
+
+  return bar;
 }
 
 /**
