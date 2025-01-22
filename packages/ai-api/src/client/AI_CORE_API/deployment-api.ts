@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -21,6 +21,7 @@ import type {
  * This API is part of the 'AI_CORE_API' service.
  */
 export const DeploymentApi = {
+  _defaultBasePath: undefined,
   /**
    * Retrieve a list of deployments that match the specified filter criteria.
    * Filter criteria include a list of executableIds, a scenarioId, a configurationId, or a deployment status.
@@ -50,10 +51,15 @@ export const DeploymentApi = {
     },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<AiDeploymentList>('get', '/lm/deployments', {
-      queryParameters,
-      headerParameters
-    }),
+    new OpenApiRequestBuilder<AiDeploymentList>(
+      'get',
+      '/lm/deployments',
+      {
+        queryParameters,
+        headerParameters
+      },
+      DeploymentApi._defaultBasePath
+    ),
   /**
    * Create a deployment using the configuration specified by configurationId after synchronously checking the
    * correctness of the configuration.
@@ -72,7 +78,8 @@ export const DeploymentApi = {
       {
         body,
         headerParameters
-      }
+      },
+      DeploymentApi._defaultBasePath
     ),
   /**
    * Update status of multiple deployments. stop or delete multiple deployments.
@@ -90,7 +97,8 @@ export const DeploymentApi = {
       {
         body,
         headerParameters
-      }
+      },
+      DeploymentApi._defaultBasePath
     ),
   /**
    * Retrieve details for execution with deploymentId.
@@ -111,7 +119,8 @@ export const DeploymentApi = {
         pathParameters: { deploymentId },
         queryParameters,
         headerParameters
-      }
+      },
+      DeploymentApi._defaultBasePath
     ),
   /**
    * Update target status of a deployment to stop a deployment or change the configuration to be used by the
@@ -135,7 +144,8 @@ export const DeploymentApi = {
         pathParameters: { deploymentId },
         body,
         headerParameters
-      }
+      },
+      DeploymentApi._defaultBasePath
     ),
   /**
    * Mark deployment with deploymentId as deleted.
@@ -153,7 +163,8 @@ export const DeploymentApi = {
       {
         pathParameters: { deploymentId },
         headerParameters
-      }
+      },
+      DeploymentApi._defaultBasePath
     ),
   /**
    * Retrieve the number of available deployments. The number can be filtered by
@@ -179,10 +190,15 @@ export const DeploymentApi = {
     },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<number>('get', '/lm/deployments/$count', {
-      queryParameters,
-      headerParameters
-    }),
+    new OpenApiRequestBuilder<number>(
+      'get',
+      '/lm/deployments/$count',
+      {
+        queryParameters,
+        headerParameters
+      },
+      DeploymentApi._defaultBasePath
+    ),
   /**
    * Retrieve logs of a deployment for getting insight into the deployment results or failures.
    * @param deploymentId - Deployment identifier
@@ -207,6 +223,7 @@ export const DeploymentApi = {
         pathParameters: { deploymentId },
         queryParameters,
         headerParameters
-      }
+      },
+      DeploymentApi._defaultBasePath
     )
 };
