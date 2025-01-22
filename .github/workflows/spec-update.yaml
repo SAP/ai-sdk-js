@@ -41,9 +41,9 @@ jobs:
       REF: ${{ github.event.inputs.file-ref }}
       CREATE_PR: ${{ github.event.inputs.create-pr }}
     steps:
-      - name: "Checkout repository"
-        uses: actions/checkout@v4
+      - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
+          node-version: 20
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Checkout or Create Branch"
@@ -88,16 +88,10 @@ jobs:
             echo "spec_diff=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
-        if: steps.spec_diff.outputs.spec_diff == 'true'
-        with:
-          node-version: 20
-
       - name: "Generate"
         id: generate
         if: steps.spec_diff.outputs.spec_diff == 'true'
         run: |
-          pnpm install
           pnpm generate
 
       - name: "Compile and Test"
