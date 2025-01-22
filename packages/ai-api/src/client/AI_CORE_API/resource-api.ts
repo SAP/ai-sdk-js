@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -14,6 +14,7 @@ import type {
  * This API is part of the 'AI_CORE_API' service.
  */
 export const ResourceApi = {
+  _defaultBasePath: undefined,
   /**
    * Lists all hot spare nodes, used nodes and total nodes corresponding to tenant.
    * @param headerParameters - Object containing the following keys: Authorization.
@@ -25,7 +26,8 @@ export const ResourceApi = {
       '/admin/resources/nodes',
       {
         headerParameters
-      }
+      },
+      ResourceApi._defaultBasePath
     ),
   /**
    * Set hot spare nodes corresponding to tenant at main tenant level.
@@ -43,6 +45,7 @@ export const ResourceApi = {
       {
         body,
         headerParameters
-      }
+      },
+      ResourceApi._defaultBasePath
     )
 };

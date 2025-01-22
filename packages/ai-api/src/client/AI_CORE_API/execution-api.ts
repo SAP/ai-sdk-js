@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -21,6 +21,7 @@ import type {
  * This API is part of the 'AI_CORE_API' service.
  */
 export const ExecutionApi = {
+  _defaultBasePath: undefined,
   /**
    * Retrieve a list of executions that match the specified filter criteria.
    * Filter criteria include a list of executableIds, a scenarioId, a configurationId, or a execution status.
@@ -51,10 +52,15 @@ export const ExecutionApi = {
     },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<AiExecutionList>('get', '/lm/executions', {
-      queryParameters,
-      headerParameters
-    }),
+    new OpenApiRequestBuilder<AiExecutionList>(
+      'get',
+      '/lm/executions',
+      {
+        queryParameters,
+        headerParameters
+      },
+      ExecutionApi._defaultBasePath
+    ),
   /**
    * Create an execution using the configuration specified by configurationId.
    * @param body - Request body.
@@ -71,7 +77,8 @@ export const ExecutionApi = {
       {
         body,
         headerParameters
-      }
+      },
+      ExecutionApi._defaultBasePath
     ),
   /**
    * Patch multiple executions' status to stopped or deleted.
@@ -89,7 +96,8 @@ export const ExecutionApi = {
       {
         body,
         headerParameters
-      }
+      },
+      ExecutionApi._defaultBasePath
     ),
   /**
    * Retrieve details for execution with executionId.
@@ -110,7 +118,8 @@ export const ExecutionApi = {
         pathParameters: { executionId },
         queryParameters,
         headerParameters
-      }
+      },
+      ExecutionApi._defaultBasePath
     ),
   /**
    * Update target status of the execution to stop an execution.
@@ -131,7 +140,8 @@ export const ExecutionApi = {
         pathParameters: { executionId },
         body,
         headerParameters
-      }
+      },
+      ExecutionApi._defaultBasePath
     ),
   /**
    * Mark the execution with executionId as deleted.
@@ -149,7 +159,8 @@ export const ExecutionApi = {
       {
         pathParameters: { executionId },
         headerParameters
-      }
+      },
+      ExecutionApi._defaultBasePath
     ),
   /**
    * Retrieve the number of available executions. The number can be filtered by
@@ -176,10 +187,15 @@ export const ExecutionApi = {
     },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<number>('get', '/lm/executions/$count', {
-      queryParameters,
-      headerParameters
-    }),
+    new OpenApiRequestBuilder<number>(
+      'get',
+      '/lm/executions/$count',
+      {
+        queryParameters,
+        headerParameters
+      },
+      ExecutionApi._defaultBasePath
+    ),
   /**
    * Retrieve logs of an execution for getting insight into the execution results or failures.
    * @param executionId - Execution identifier
@@ -204,6 +220,7 @@ export const ExecutionApi = {
         pathParameters: { executionId },
         queryParameters,
         headerParameters
-      }
+      },
+      ExecutionApi._defaultBasePath
     )
 };
