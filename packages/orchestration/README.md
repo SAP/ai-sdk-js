@@ -370,7 +370,7 @@ return response.getContent();
 By default, the optional filter property `data_repository_type` is set to `vector`.
 Set it to `help.sap.com` to retrieve context from the SAP Help Portal.
 Set `data_respotiories` property with an array of `REPOSITORY_ID` values to search in specific data repositories.
-Skip this property to search in all available data repositories. 
+Skip this property to search in all available data repositories.
 
 ### Using a JSON Configuration from AI Launchpad
 
