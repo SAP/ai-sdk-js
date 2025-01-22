@@ -133,7 +133,7 @@ jobs:
             exit 0
           fi
           
-          gh pr create --base main --head $BRANCH --title "feat: [DevOps] Update $CHOICE Specification" --body "
+          gh pr create --base main --head $BRANCH --title "feat: Update $CHOICE specification" --body "
           ## Context
           
           Update $CHOICE specification file based on $REF.
