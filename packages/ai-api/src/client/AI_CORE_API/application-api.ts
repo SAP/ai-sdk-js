@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -20,6 +20,7 @@ import type {
  * This API is part of the 'AI_CORE_API' service.
  */
 export const ApplicationApi = {
+  _defaultBasePath: undefined,
   /**
    * Return all Argo CD application data objects.
    *
@@ -37,7 +38,8 @@ export const ApplicationApi = {
       {
         queryParameters,
         headerParameters
-      }
+      },
+      ApplicationApi._defaultBasePath
     ),
   /**
    * Create an ArgoCD application to synchronise a repository.
@@ -56,7 +58,8 @@ export const ApplicationApi = {
       {
         body,
         headerParameters
-      }
+      },
+      ApplicationApi._defaultBasePath
     ),
   /**
    * Returns the ArgoCD application health and sync status.
@@ -75,7 +78,8 @@ export const ApplicationApi = {
       {
         pathParameters: { applicationName },
         headerParameters
-      }
+      },
+      ApplicationApi._defaultBasePath
     ),
   /**
    * Retrieve the ArgoCD application details.
@@ -94,7 +98,8 @@ export const ApplicationApi = {
       {
         pathParameters: { applicationName },
         headerParameters
-      }
+      },
+      ApplicationApi._defaultBasePath
     ),
   /**
    * Update the referenced ArgoCD application to synchronize the repository.
@@ -116,7 +121,8 @@ export const ApplicationApi = {
         pathParameters: { applicationName },
         body,
         headerParameters
-      }
+      },
+      ApplicationApi._defaultBasePath
     ),
   /**
    * Delete an ArgoCD application
@@ -134,7 +140,8 @@ export const ApplicationApi = {
       {
         pathParameters: { applicationName },
         headerParameters
-      }
+      },
+      ApplicationApi._defaultBasePath
     ),
   /**
    * Schedules a refresh of the specified application that will be picked up by ArgoCD asynchronously
@@ -153,6 +160,7 @@ export const ApplicationApi = {
       {
         pathParameters: { applicationName },
         headerParameters
-      }
+      },
+      ApplicationApi._defaultBasePath
     )
 };

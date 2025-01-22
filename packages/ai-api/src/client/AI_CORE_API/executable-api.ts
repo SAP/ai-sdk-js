@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -10,6 +10,7 @@ import type { AiExecutableList, AiExecutable } from './schema/index.js';
  * This API is part of the 'AI_CORE_API' service.
  */
 export const ExecutableApi = {
+  _defaultBasePath: undefined,
   /**
    * Retrieve a list of executables for a scenario. Filter by version ID, if required.
    *
@@ -30,7 +31,8 @@ export const ExecutableApi = {
         pathParameters: { scenarioId },
         queryParameters,
         headerParameters
-      }
+      },
+      ExecutableApi._defaultBasePath
     ),
   /**
    * Retrieve details about an executable identified by executableId belonging
@@ -52,6 +54,7 @@ export const ExecutableApi = {
       {
         pathParameters: { scenarioId, executableId },
         headerParameters
-      }
+      },
+      ExecutableApi._defaultBasePath
     )
 };

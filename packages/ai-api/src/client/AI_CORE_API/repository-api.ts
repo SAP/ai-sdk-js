@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -18,6 +18,7 @@ import type {
  * This API is part of the 'AI_CORE_API' service.
  */
 export const RepositoryApi = {
+  _defaultBasePath: undefined,
   /**
    * Retrieve a list of all GitOps repositories for a tenant.
    * @param queryParameters - Object containing the following keys: $top, $skip, $count.
@@ -34,7 +35,8 @@ export const RepositoryApi = {
       {
         queryParameters,
         headerParameters
-      }
+      },
+      RepositoryApi._defaultBasePath
     ),
   /**
    * On-board a new GitOps repository as specified in the content payload
@@ -52,7 +54,8 @@ export const RepositoryApi = {
       {
         body,
         headerParameters
-      }
+      },
+      RepositoryApi._defaultBasePath
     ),
   /**
    * Retrieve the access details for a repository if it exists.
@@ -70,7 +73,8 @@ export const RepositoryApi = {
       {
         pathParameters: { repositoryName },
         headerParameters
-      }
+      },
+      RepositoryApi._defaultBasePath
     ),
   /**
    * Update the referenced repository credentials to synchronize a repository.
@@ -92,7 +96,8 @@ export const RepositoryApi = {
         pathParameters: { repositoryName },
         body,
         headerParameters
-      }
+      },
+      RepositoryApi._defaultBasePath
     ),
   /**
    * Remove a repository from GitOps.
@@ -110,6 +115,7 @@ export const RepositoryApi = {
       {
         pathParameters: { repositoryName },
         headerParameters
-      }
+      },
+      RepositoryApi._defaultBasePath
     )
 };

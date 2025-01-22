@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -18,6 +18,7 @@ import type {
  * This API is part of the 'AI_CORE_API' service.
  */
 export const ExecutionScheduleApi = {
+  _defaultBasePath: undefined,
   /**
    * Retrieve a list of execution schedules that match the specified filter criteria.
    * Filter criteria include executionScheduleStatus or a configurationId.
@@ -42,7 +43,8 @@ export const ExecutionScheduleApi = {
       {
         queryParameters,
         headerParameters
-      }
+      },
+      ExecutionScheduleApi._defaultBasePath
     ),
   /**
    * Create an execution schedule using the configuration specified by configurationId, and schedule.
@@ -60,7 +62,8 @@ export const ExecutionScheduleApi = {
       {
         body,
         headerParameters
-      }
+      },
+      ExecutionScheduleApi._defaultBasePath
     ),
   /**
    * Retrieve details for execution schedule with executionScheduleId.
@@ -78,7 +81,8 @@ export const ExecutionScheduleApi = {
       {
         pathParameters: { executionScheduleId },
         headerParameters
-      }
+      },
+      ExecutionScheduleApi._defaultBasePath
     ),
   /**
    * Update details of an execution schedule
@@ -99,7 +103,8 @@ export const ExecutionScheduleApi = {
         pathParameters: { executionScheduleId },
         body,
         headerParameters
-      }
+      },
+      ExecutionScheduleApi._defaultBasePath
     ),
   /**
    * Delete the execution schedule with executionScheduleId.
@@ -117,7 +122,8 @@ export const ExecutionScheduleApi = {
       {
         pathParameters: { executionScheduleId },
         headerParameters
-      }
+      },
+      ExecutionScheduleApi._defaultBasePath
     ),
   /**
    * Retrieve the number of scheduled executions. The number can be filtered by
@@ -134,8 +140,13 @@ export const ExecutionScheduleApi = {
     },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<number>('get', '/lm/executionSchedules/$count', {
-      queryParameters,
-      headerParameters
-    })
+    new OpenApiRequestBuilder<number>(
+      'get',
+      '/lm/executionSchedules/$count',
+      {
+        queryParameters,
+        headerParameters
+      },
+      ExecutionScheduleApi._defaultBasePath
+    )
 };

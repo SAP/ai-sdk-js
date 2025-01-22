@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -16,6 +16,7 @@ import type {
  * This API is part of the 'AI_CORE_API' service.
  */
 export const ArtifactApi = {
+  _defaultBasePath: undefined,
   /**
    * Retrieve a list of artifacts that matches the specified filter criteria.
    * Filter criteria include scenario ID, execution ID, an artifact name, artifact kind, or artifact labels.
@@ -41,10 +42,15 @@ export const ArtifactApi = {
     },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<AiArtifactList>('get', '/lm/artifacts', {
-      queryParameters,
-      headerParameters
-    }),
+    new OpenApiRequestBuilder<AiArtifactList>(
+      'get',
+      '/lm/artifacts',
+      {
+        queryParameters,
+        headerParameters
+      },
+      ArtifactApi._defaultBasePath
+    ),
   /**
    * Register an artifact for use in a configuration, for example a model or a dataset.
    * @param body - Request body.
@@ -61,7 +67,8 @@ export const ArtifactApi = {
       {
         body,
         headerParameters
-      }
+      },
+      ArtifactApi._defaultBasePath
     ),
   /**
    * Retrieve details for artifact with artifactId.
@@ -75,11 +82,16 @@ export const ArtifactApi = {
     queryParameters: { $expand?: 'scenario' },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<AiArtifact>('get', '/lm/artifacts/{artifactId}', {
-      pathParameters: { artifactId },
-      queryParameters,
-      headerParameters
-    }),
+    new OpenApiRequestBuilder<AiArtifact>(
+      'get',
+      '/lm/artifacts/{artifactId}',
+      {
+        pathParameters: { artifactId },
+        queryParameters,
+        headerParameters
+      },
+      ArtifactApi._defaultBasePath
+    ),
   /**
    * Retrieve  the number of available artifacts that match the specified filter criteria.
    * Filter criteria include a scenarioId, executionId, an artifact name, artifact kind, or artifact labels.
@@ -101,8 +113,13 @@ export const ArtifactApi = {
     },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<number>('get', '/lm/artifacts/$count', {
-      queryParameters,
-      headerParameters
-    })
+    new OpenApiRequestBuilder<number>(
+      'get',
+      '/lm/artifacts/$count',
+      {
+        queryParameters,
+        headerParameters
+      },
+      ArtifactApi._defaultBasePath
+    )
 };
