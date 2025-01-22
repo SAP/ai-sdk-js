@@ -19,4 +19,12 @@ export type RTAModelBaseData = {
    */
   description: string;
   versions: RTAModelVersionList;
+  /**
+   * Display name of the model
+   */
+  displayName?: string;
+  /**
+   * Access type of the model
+   */
+  accessType?: string;
 } & Record<string, any>;
