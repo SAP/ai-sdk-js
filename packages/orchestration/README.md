@@ -354,7 +354,7 @@ const orchestrationClient = new OrchestrationClient({
     filters: [
         {
           id: 'FILTER_ID',
-          // data_repository_type: 'vector', // optional
+          // data_repository_type: 'vector', // optional, default value is 'vector'
           data_repositories: ['REPOSITORY_ID'],
         }
       ],
@@ -369,7 +369,8 @@ return response.getContent();
 
 By default, the optional filter property `data_repository_type` is set to `vector`.
 Set it to `help.sap.com` to retrieve context from the SAP Help Portal.
-`REPOSITORY_ID` can also be a wildcard `*` to search all repositories.
+Set `data_respotiories` property with an array of `REPOSITORY_ID` values to search in specific data repositories.
+Skip this property to search in all available data repositories. 
 
 ### Using a JSON Configuration from AI Launchpad
 
