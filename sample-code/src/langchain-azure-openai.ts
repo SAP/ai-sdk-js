@@ -10,7 +10,8 @@ import {
 import { createStuffDocumentsChain } from 'langchain/chains/combine_documents';
 import { MemoryVectorStore } from 'langchain/vectorstores/memory';
 import { TextLoader } from 'langchain/document_loaders/fs/text';
-import { AIMessage } from '@langchain/core/messages';
+import type { AzureOpenAiChatCompletionTool } from '@sap-ai-sdk/foundation-models';
+import type { AIMessageChunk } from '@langchain/core/messages';
 
 /**
  * Ask GPT about the capital of France.
@@ -21,11 +22,35 @@ export async function invoke(): Promise<string> {
   const client = new AzureOpenAiChatClient({
     modelName: 'gpt-35-turbo',
     max_tokens: 1000,
-    temperature: 0.7
+    temperature: 0.7,
   });
 
-  // invoke a prompt TODO: revert later
-  const response = await client.invoke([new AIMessage({ name: '', content: 'content', id: ''  })]);
+  const azureTool: AzureOpenAiChatCompletionTool =
+    {
+      type: 'function',
+      function: {
+        name: 'shareholder_value',
+        description: 'Multiplies the shareholder value',
+        parameters: {
+          type: 'object',
+          properties: {
+            value: {
+              type: 'number',
+              description: 'The value that is supposed to be increased.'
+            }
+          },
+          required: ['value'],
+        },
+      }
+    };
+
+  const response: AIMessageChunk = await client.invoke('Increase the shareholder value, it is currently at 10', { tools: [azureTool] });
+
+  const toolCalls = response.tool_calls;
+
+  toolCalls?.map((toolCall) => console.log(toolCall.name, JSON.stringify(toolCall.args)));
+
+  // return response.content[0] as string;
 
   // create an output parser
   const parser = new StringOutputParser();

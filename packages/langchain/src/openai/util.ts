@@ -1,10 +1,8 @@
 import { AIMessage } from '@langchain/core/messages';
 import { zodToJsonSchema } from 'zod-to-json-schema';
+import { v4 as uuidv4 } from 'uuid';
 import type { ToolCall } from '@langchain/core/messages/tool';
 import type {
-  AzureOpenAiChatCompletionRequestFunctionMessage,
-  AzureOpenAiChatCompletionRequestToolMessage,
-  AzureOpenAiChatCompletionRequestSystemMessage,
   AzureOpenAiChatCompletionRequestUserMessage,
   AzureOpenAiChatCompletionRequestAssistantMessage,
   AzureOpenAiChatCompletionTool,
@@ -18,7 +16,6 @@ import type { BaseMessage, HumanMessage } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
 import type { StructuredTool } from '@langchain/core/tools';
 import type { AzureOpenAiChatClient } from './chat.js';
-import { v4 as uuidv4, v4 } from 'uuid';
 import type { AzureOpenAiChatCallOptions } from './types.js';
 
 type ToolChoice =
@@ -88,6 +85,7 @@ export function mapOutputToChatResult(
         text: choice.message?.content || '',
         message: new AIMessage({
           content: choice.message?.content || '',
+          // TODO: map this -> tool_calls: choice.message?.tool_calls,
           additional_kwargs: {
             finish_reason: choice.finish_reason,
             index: choice.index,
@@ -121,13 +119,13 @@ export function mapOutputToChatResult(
 function mapLangchainToolCallToAzureOpenAiToolCall(toolCalls?: ToolCall[]): AzureOpenAiChatCompletionMessageToolCalls | undefined {
   if (toolCalls) {
     return toolCalls.map(toolCall => ({
-      id: toolCall.id ?? v4(),
+      id: toolCall.id ?? uuidv4(),
       type: 'function',
       function: {
         name: toolCall.name,
         arguments: JSON.stringify(toolCall.args)
       }
-    }))
+    }));
   }
 }
 
@@ -135,7 +133,7 @@ function mapAiMessageToAzureOpenAiChatMessage(
   message: AIMessage
 ): AzureOpenAiChatCompletionRequestAssistantMessage {
   return {
-    ...message,
+    name: message.name,
     tool_calls: message.additional_kwargs.tool_calls ?? mapLangchainToolCallToAzureOpenAiToolCall(message.tool_calls),
     function_call: message.additional_kwargs.function_call,
     content: message.content as AzureOpenAiChatCompletionRequestAssistantMessage['content'],
@@ -147,8 +145,7 @@ function mapHumanMessageToAzureOpenAiChatMessage(
   message: HumanMessage
 ): AzureOpenAiChatCompletionRequestUserMessage {
   return {
-    ...message,
-    tool_calls: message.additional_kwargs.tool_calls,
+    name: message.name,
     content: message.content as AzureOpenAiChatCompletionRequestUserMessage['content'],
     role: 'user'
   };
