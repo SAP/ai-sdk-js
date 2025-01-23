@@ -8,10 +8,16 @@ export type {
   StreamOptions,
   DocumentGroundingServiceConfig,
   DocumentGroundingServiceFilter,
-  LlmModelParams
+  LlmModelParams,
+  AzureContentSafety,
+  AzureFilterThresholdType,
+  AzureThresholdType
 } from './orchestration-types.js';
 
-export { AzureFilterThreshold } from './orchestration-types.js';
+export {
+  AzureFilterThreshold,
+  isAzureFilterThresholdType
+} from './orchestration-types.js';
 export { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 
 export { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';

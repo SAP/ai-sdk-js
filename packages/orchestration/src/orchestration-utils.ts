@@ -1,13 +1,15 @@
 import { createLogger } from '@sap-cloud-sdk/util';
-import type {
-  DocumentGroundingServiceConfig,
-  Prompt,
-  StreamOptions,
-  LlmModuleConfig,
-  OrchestrationModuleConfig
+import {
+  type DocumentGroundingServiceConfig,
+  type Prompt,
+  type StreamOptions,
+  type LlmModuleConfig,
+  type OrchestrationModuleConfig,
+  type AzureContentSafety,
+  AzureFilterThreshold,
+  isAzureFilterThresholdType
 } from './orchestration-types.js';
 import type {
-  AzureContentSafety,
   GroundingModuleConfig,
   InputFilteringConfig,
   CompletionPostRequest,
@@ -198,7 +200,30 @@ export function buildAzureContentFilter(
     filters: [
       {
         type: 'azure_content_safety',
-        ...(filter && { config: filter })
+        ...(filter && {
+          config: {
+            ...(filter.Hate !== undefined && {
+              Hate: isAzureFilterThresholdType(filter.Hate)
+                ? AzureFilterThreshold[filter.Hate]
+                : filter.Hate
+            }),
+            ...(filter.SelfHarm !== undefined && {
+              SelfHarm: isAzureFilterThresholdType(filter.SelfHarm)
+                ? AzureFilterThreshold[filter.SelfHarm]
+                : filter.SelfHarm
+            }),
+            ...(filter.Sexual !== undefined && {
+              Sexual: isAzureFilterThresholdType(filter.Sexual)
+                ? AzureFilterThreshold[filter.Sexual]
+                : filter.Sexual
+            }),
+            ...(filter.Violence !== undefined && {
+              Violence: isAzureFilterThresholdType(filter.Violence)
+                ? AzureFilterThreshold[filter.Violence]
+                : filter.Violence
+            })
+          }
+        })
       }
     ]
   };

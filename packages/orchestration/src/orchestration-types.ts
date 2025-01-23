@@ -10,7 +10,8 @@ import type {
   GroundingModuleConfig,
   MaskingModuleConfig,
   LlmModuleConfig as OriginalLlmModuleConfig,
-  TemplatingModuleConfig
+  TemplatingModuleConfig,
+  AzureThreshold
 } from './client/api/schema/index.js';
 
 /**
@@ -154,26 +155,26 @@ export interface DocumentGroundingServiceConfig {
 
 /**
  * A descriptive  type for AzureThreshold input.
- * @internal
  */
-export interface AzureContentSafety {
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type AzureContentSafety = {
   /**
    * The filter category for hate content.
    */
-  Hate?: AzureFilterThresholdType;
+  Hate?: AzureThresholdType;
   /**
    * The filter category for self-harm content.
    */
-  SelfHarm?: AzureFilterThresholdType;
+  SelfHarm?: AzureThresholdType;
   /**
    * The filter category for sexual content.
    */
-  Sexual?: AzureFilterThresholdType;
+  Sexual?: AzureThresholdType;
   /**
    * The filter category for violence content.
    */
-  Violence?: AzureFilterThresholdType;
-}
+  Violence?: AzureThresholdType;
+};
 
 /**
  * A descriptive constant for Azure content safety threshold.
@@ -186,12 +187,22 @@ export const AzureFilterThreshold = {
 } as const;
 
 /**
+ * Type for azure filter threshold constant.
+ */
+export type AzureFilterThresholdType = keyof typeof AzureFilterThreshold;
+/**
  * Type for azure filter threshold autocompletion.
  * A union of numeric values too for now, to avoid breaking changes.
  */
-type AzureFilterThresholdType =
-  | keyof typeof AzureFilterThreshold
-  | 0
-  | 2
-  | 4
-  | 6;
+export type AzureThresholdType = AzureFilterThresholdType | AzureThreshold;
+
+/**
+ * Type guard to check if a value is a valid AzureFilterThresholdType.
+ * @param value - Value to check for type.
+ * @returns A Boolean value.
+ **/
+export function isAzureFilterThresholdType(
+  value: any
+): value is AzureFilterThresholdType {
+  return value in AzureFilterThreshold;
+}
