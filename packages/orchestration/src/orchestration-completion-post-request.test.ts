@@ -170,7 +170,7 @@ describe('construct completion post request', () => {
       ...defaultConfig,
       filtering: {
         input: {
-          filters: [ContentFilters.azureContentSafety({ Hate: 4, SelfHarm: 0 })]
+          filters: [ContentFilters.buildAzureContentSafety({ Hate: 4, SelfHarm: 0 })]
         }
       }
     };
@@ -212,7 +212,7 @@ describe('construct completion post request', () => {
       ...defaultConfig,
       filtering: {
         output: {
-          filters: [ContentFilters.azureContentSafety({ Hate: 4, SelfHarm: 0 })]
+          filters: [ContentFilters.buildAzureContentSafety({ Hate: 4, SelfHarm: 0 })]
         }
       }
     };

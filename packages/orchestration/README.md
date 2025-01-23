@@ -11,7 +11,6 @@ This package incorporates generative AI orchestration capabilities into your AI 
 - [Orchestration Service](#orchestration-service)
 - [Relationship between Orchestration and Resource Groups](#relationship-between-orchestration-and-resource-groups)
 - [Usage](#usage)
-  - [Streaming](#streaming)
   - [Templating](#templating)
   - [Content Filtering](#content-filtering)
   - [Data Masking](#data-masking)
@@ -248,7 +247,7 @@ This feature allows filtering both the [input](https://help.sap.com/docs/sap-ai-
 
 #### Azure Content Filter
 
-Use `ContentFilters.azureContentSafety()` function to build an Azure content filter.
+Use `ContentFilters.buildAzureContentSafety()` function to build an Azure content filter.
 The Azure content filter supports four categories: `Hate`, `Violence`, `Sexual`, and `SelfHarm`.
 Each category can be configured with severity levels of 0, 2, 4, or 6.
 
@@ -264,7 +263,7 @@ const templating = {
   template: [{ role: 'user', content: '{{?input}}' }]
 };
 
-const filter = ContentFilters.azureContentSafety({ Hate: 2, Violence: 4 });
+const filter = ContentFilters.buildAzureContentSafety({ Hate: 2, Violence: 4 });
 const orchestrationClient = new OrchestrationClient({
   llm,
   templating,
