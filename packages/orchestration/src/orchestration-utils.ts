@@ -202,26 +202,14 @@ export function buildAzureContentFilter(
         type: 'azure_content_safety',
         ...(filter && {
           config: {
-            ...(filter.Hate !== undefined && {
-              Hate: isAzureFilterThresholdType(filter.Hate)
-                ? AzureFilterThreshold[filter.Hate]
-                : filter.Hate
-            }),
-            ...(filter.SelfHarm !== undefined && {
-              SelfHarm: isAzureFilterThresholdType(filter.SelfHarm)
-                ? AzureFilterThreshold[filter.SelfHarm]
-                : filter.SelfHarm
-            }),
-            ...(filter.Sexual !== undefined && {
-              Sexual: isAzureFilterThresholdType(filter.Sexual)
-                ? AzureFilterThreshold[filter.Sexual]
-                : filter.Sexual
-            }),
-            ...(filter.Violence !== undefined && {
-              Violence: isAzureFilterThresholdType(filter.Violence)
-                ? AzureFilterThreshold[filter.Violence]
-                : filter.Violence
-            })
+            ...Object.fromEntries(
+              Object.entries(filter).map(([key, value]) => [
+                key,
+                isAzureFilterThresholdType(value)
+                  ? AzureFilterThreshold[value]
+                  : value
+              ])
+            )
           }
         })
       }
