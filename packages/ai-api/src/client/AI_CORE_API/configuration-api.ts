@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -15,6 +15,7 @@ import type {
  * This API is part of the 'AI_CORE_API' service.
  */
 export const ConfigurationApi = {
+  _defaultBasePath: undefined,
   /**
    * Retrieve a list of configurations. Filter results by scenario ID or a list of executable IDs.
    * Search for configurations containing the search string as substring in the configuration name.
@@ -41,7 +42,8 @@ export const ConfigurationApi = {
       {
         queryParameters,
         headerParameters
-      }
+      },
+      ConfigurationApi._defaultBasePath
     ),
   /**
    * Create a new configuration linked to a specific scenario and executable for use in an execution
@@ -61,7 +63,8 @@ export const ConfigurationApi = {
       {
         body,
         headerParameters
-      }
+      },
+      ConfigurationApi._defaultBasePath
     ),
   /**
    * Retrieve details for configuration with configurationId.
@@ -82,7 +85,8 @@ export const ConfigurationApi = {
         pathParameters: { configurationId },
         queryParameters,
         headerParameters
-      }
+      },
+      ConfigurationApi._defaultBasePath
     ),
   /**
    * Retrieve the number of available configurations that match the specified filter criteria.
@@ -101,8 +105,13 @@ export const ConfigurationApi = {
     },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<number>('get', '/lm/configurations/$count', {
-      queryParameters,
-      headerParameters
-    })
+    new OpenApiRequestBuilder<number>(
+      'get',
+      '/lm/configurations/$count',
+      {
+        queryParameters,
+        headerParameters
+      },
+      ConfigurationApi._defaultBasePath
+    )
 };

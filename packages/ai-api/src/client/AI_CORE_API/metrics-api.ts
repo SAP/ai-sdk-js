@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -17,6 +17,7 @@ import type {
  * This API is part of the 'AI_CORE_API' service.
  */
 export const MetricsApi = {
+  _defaultBasePath: undefined,
   /**
    * Retrieve metrics, labels, or tags according to filter conditions.
    * One query parameter is mandatory, either execution ID or filter.
@@ -34,10 +35,15 @@ export const MetricsApi = {
     },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<TrckGetMetricResourceList>('get', '/lm/metrics', {
-      queryParameters,
-      headerParameters
-    }),
+    new OpenApiRequestBuilder<TrckGetMetricResourceList>(
+      'get',
+      '/lm/metrics',
+      {
+        queryParameters,
+        headerParameters
+      },
+      MetricsApi._defaultBasePath
+    ),
   /**
    * Update or create metrics, tags, or labels associated with an execution.
    *
@@ -49,10 +55,15 @@ export const MetricsApi = {
     body: TrckMetricResource,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<any>('patch', '/lm/metrics', {
-      body,
-      headerParameters
-    }),
+    new OpenApiRequestBuilder<any>(
+      'patch',
+      '/lm/metrics',
+      {
+        body,
+        headerParameters
+      },
+      MetricsApi._defaultBasePath
+    ),
   /**
    * Delete metrics, tags, or labels associated with an execution.
    * @param queryParameters - Object containing the following keys: executionId.
@@ -69,6 +80,7 @@ export const MetricsApi = {
       {
         queryParameters,
         headerParameters
-      }
+      },
+      MetricsApi._defaultBasePath
     )
 };

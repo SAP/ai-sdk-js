@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -14,6 +14,7 @@ import type {
  * This API is part of the 'AI_CORE_API' service.
  */
 export const ResourceQuotaApi = {
+  _defaultBasePath: undefined,
   /**
    * Get the details about quota and usage for resource groups
    * @param queryParameters - Object containing the following keys: quotaOnly.
@@ -30,7 +31,8 @@ export const ResourceQuotaApi = {
       {
         queryParameters,
         headerParameters
-      }
+      },
+      ResourceQuotaApi._defaultBasePath
     ),
   /**
    * Get the details about quota and usage for executables
@@ -48,7 +50,8 @@ export const ResourceQuotaApi = {
       {
         queryParameters,
         headerParameters
-      }
+      },
+      ResourceQuotaApi._defaultBasePath
     ),
   /**
    * Get the details about quota and usage for applications
@@ -66,7 +69,8 @@ export const ResourceQuotaApi = {
       {
         queryParameters,
         headerParameters
-      }
+      },
+      ResourceQuotaApi._defaultBasePath
     ),
   /**
    * Get the details about quota and usage for repositories
@@ -84,7 +88,8 @@ export const ResourceQuotaApi = {
       {
         queryParameters,
         headerParameters
-      }
+      },
+      ResourceQuotaApi._defaultBasePath
     ),
   /**
    * Get the details about quota and usage for tenant-level generic secrets
@@ -102,7 +107,8 @@ export const ResourceQuotaApi = {
       {
         queryParameters,
         headerParameters
-      }
+      },
+      ResourceQuotaApi._defaultBasePath
     ),
   /**
    * Get the details about quota and usage for docker registry secrets
@@ -120,7 +126,8 @@ export const ResourceQuotaApi = {
       {
         queryParameters,
         headerParameters
-      }
+      },
+      ResourceQuotaApi._defaultBasePath
     ),
   /**
    * Get the details about quota and usage for deployments
@@ -138,6 +145,7 @@ export const ResourceQuotaApi = {
       {
         queryParameters,
         headerParameters
-      }
+      },
+      ResourceQuotaApi._defaultBasePath
     )
 };
