@@ -31,7 +31,8 @@ jobs:
         uses: fsfe/reuse-action@v5
       - run: pnpm generate
       - name: Enforce generated code is up to date
-        run: git status --porcelain
+        run: |
+          [ `git status --porcelain=1 | wc -l` -ne 0 ] && exit 1
       - run: pnpm lint
       - name: Check CommonJS compatibility
         run: pnpm compile:cjs
