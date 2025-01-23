@@ -32,7 +32,11 @@ jobs:
       - run: pnpm generate
       - name: Enforce generated code is up to date
         run: |
-          [ `git status --porcelain=1 | wc -l` -ne 0 ] && exit 1
+          if ! git diff-index --quiet HEAD --; then
+            echo "Generated code is out of date. Please run 'pnpm generate' and commit the changes."
+            git status
+            exit 1
+          fi
       - run: pnpm lint
       - name: Check CommonJS compatibility
         run: pnpm compile:cjs
