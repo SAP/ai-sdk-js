@@ -41,9 +41,9 @@ jobs:
       REF: ${{ github.event.inputs.file-ref }}
       CREATE_PR: ${{ github.event.inputs.create-pr }}
     steps:
-      - name: "Checkout repository"
-        uses: actions/checkout@v4
+      - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
+          node-version: 20
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Checkout or Create Branch"
@@ -88,16 +88,10 @@ jobs:
             echo "spec_diff=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
-        if: steps.spec_diff.outputs.spec_diff == 'true'
-        with:
-          node-version: 20
-
       - name: "Generate"
         id: generate
         if: steps.spec_diff.outputs.spec_diff == 'true'
         run: |
-          pnpm install
           pnpm generate
 
       - name: "Compile and Test"
@@ -139,7 +133,7 @@ jobs:
             exit 0
           fi
           
-          gh pr create --base main --head $BRANCH --title "feat: [DevOps] Update $CHOICE Specification" --body "
+          gh pr create --base main --head $BRANCH --title "feat: Update $CHOICE specification" --body "
           ## Context
           
           Update $CHOICE specification file based on $REF.
@@ -147,8 +141,8 @@ jobs:
           This PR was created automatically by the [spec-update workflow](https://github.com/SAP/ai-sdk-js/actions/workflows/spec-update.yaml).
           You can commit on top of this branch, but as long as this PR is open the action can't be re-run.
           
-          - Compilation outcome: ${{ steps.compile.output.compilation_result }}
-          - Test run outcome: ${{ steps.compile.output.test_result }}
+          - Compilation outcome: ${{ steps.compile.outputs.compilation_result }}
+          - Test run outcome: ${{ steps.compile.outputs.test_result }}
           
           Before merging, make sure to update tests and release notes, if necessary.
           
@@ -164,6 +158,6 @@ jobs:
           echo "File download outcome: ${{ steps.download.outcome }}"
           echo "Spec file contained changes: ${{ steps.spec_diff.outputs.spec_diff }}"
           echo "Client generation outcome: ${{ steps.generate.outcome }}"
-          echo "Client compilation outcome: ${{ steps.compile.output.compilation_result }}"
-          echo "Client test outcome: ${{ steps.compile.output.test_result }}"
+          echo "Client compilation outcome: ${{ steps.compile.outputs.compilation_result }}"
+          echo "Client test outcome: ${{ steps.compile.outputs.test_result }}"
           echo "Branch creation: ${{ steps.push.outcome }}"
