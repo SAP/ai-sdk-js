@@ -348,7 +348,6 @@ export async function orchestrationGroundingHelpSapCom(): Promise<OrchestrationR
       filters: [
         {
           id: 'filter1',
-          data_repositories: ['*'],
           data_repository_type: 'help.sap.com'
         }
       ]
