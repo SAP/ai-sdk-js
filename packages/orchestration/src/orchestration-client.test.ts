@@ -168,8 +168,8 @@ describe('orchestration service client', () => {
           SelfHarm: 'ALLOW_SAFE_LOW'
         }),
         output: buildAzureContentFilter({
-          Sexual: 'ALLOW_SAFE',
-          Violence: 'ALLOW_SAFE_LOW_MEDIUM'
+          Sexual: 0,
+          Violence: 4
         })
       }
     };
