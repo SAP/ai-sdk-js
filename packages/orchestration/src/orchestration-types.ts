@@ -10,8 +10,7 @@ import type {
   GroundingModuleConfig,
   MaskingModuleConfig,
   LlmModuleConfig as OriginalLlmModuleConfig,
-  TemplatingModuleConfig,
-  AzureThreshold
+  TemplatingModuleConfig
 } from './client/api/schema/index.js';
 
 /**
