@@ -10,8 +10,9 @@ import {
 import { createStuffDocumentsChain } from 'langchain/chains/combine_documents';
 import { MemoryVectorStore } from 'langchain/vectorstores/memory';
 import { TextLoader } from 'langchain/document_loaders/fs/text';
+import { HumanMessage, SystemMessage, ToolMessage } from '@langchain/core/messages';
+import type { BaseMessage } from '@langchain/core/messages';
 import type { AzureOpenAiChatCompletionTool } from '@sap-ai-sdk/foundation-models';
-import type { AIMessageChunk } from '@langchain/core/messages';
 
 /**
  * Ask GPT about the capital of France.
@@ -22,35 +23,11 @@ export async function invoke(): Promise<string> {
   const client = new AzureOpenAiChatClient({
     modelName: 'gpt-35-turbo',
     max_tokens: 1000,
-    temperature: 0.7,
+    temperature: 0.7
   });
 
-  const azureTool: AzureOpenAiChatCompletionTool =
-    {
-      type: 'function',
-      function: {
-        name: 'shareholder_value',
-        description: 'Multiplies the shareholder value',
-        parameters: {
-          type: 'object',
-          properties: {
-            value: {
-              type: 'number',
-              description: 'The value that is supposed to be increased.'
-            }
-          },
-          required: ['value'],
-        },
-      }
-    };
-
-  const response: AIMessageChunk = await client.invoke('Increase the shareholder value, it is currently at 10', { tools: [azureTool] });
-
-  const toolCalls = response.tool_calls;
-
-  toolCalls?.map((toolCall) => console.log(toolCall.name, JSON.stringify(toolCall.args)));
-
-  // return response.content[0] as string;
+  // invoke a prompt
+  const response = await client.invoke('What is the capital of France?');
 
   // create an output parser
   const parser = new StringOutputParser();
@@ -58,6 +35,7 @@ export async function invoke(): Promise<string> {
   // parse the response
   return parser.invoke(response);
 }
+
 /**
  * Ask GPT about the capital of France, as part of a chain.
  * @returns The answer from ChatGPT.
@@ -152,4 +130,74 @@ export async function invokeRagChain(): Promise<string> {
     question: prompt,
     context: await retriever.invoke(prompt)
   });
+}
+
+/**
+ * Let GPT increase the shareholder value.
+ * @returns The answer from GPT.
+ */
+export async function invokeToolChain(): Promise<string> {
+    // initialize client with options
+    const client = new AzureOpenAiChatClient({
+      modelName: 'gpt-35-turbo',
+      max_tokens: 1000,
+      temperature: 0.7,
+    });
+
+    // create a tool
+    const azureTool: AzureOpenAiChatCompletionTool =
+      {
+        type: 'function',
+        function: {
+          name: 'shareholder_value',
+          description: 'Multiplies the shareholder value',
+          parameters: {
+            type: 'object',
+            properties: {
+              value: {
+                type: 'number',
+                description: 'The value that is supposed to be increased.'
+              }
+            },
+            required: ['value'],
+          },
+        }
+      };
+
+    // create a function to increase the shareholder value
+    function shareholderValueFunction(value: number): string {
+      return `The shareholder value has been increased to ${value * 2}`;
+    }
+
+    const humanMessage = new HumanMessage('Increase the shareholder value, it is currently at 10');
+
+    const history: BaseMessage[] = [humanMessage];
+
+    const response = await client.invoke(history, { tools: [azureTool] });
+
+    history.push(response);
+
+    if(response.tool_calls) {
+      const shareholderValue = shareholderValueFunction(response.tool_calls[0].args.value);
+
+      const toolMessage = new ToolMessage(
+        {
+          content: shareholderValue,
+          tool_call_id: response.tool_calls[0].id ?? 'default'
+        }
+      );
+
+      history.push(toolMessage);
+    } else {
+      const failMessage = new SystemMessage('No tool calls were made');
+      history.push(failMessage);
+    }
+
+    const finalResponse = await client.invoke(history);
+
+    // create an output parser
+    const parser = new StringOutputParser();
+
+    // parse the response
+    return parser.invoke(finalResponse);
 }

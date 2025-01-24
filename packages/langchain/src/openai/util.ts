@@ -10,34 +10,16 @@ import type {
   AzureOpenAiCreateChatCompletionResponse,
   AzureOpenAiCreateChatCompletionRequest,
   AzureOpenAiFunctionParameters,
-  AzureOpenAiChatCompletionMessageToolCalls
+  AzureOpenAiChatCompletionMessageToolCalls,
+  AzureOpenAiChatCompletionRequestToolMessage,
+  AzureOpenAiChatCompletionRequestFunctionMessage,
+  AzureOpenAiChatCompletionRequestSystemMessage
 } from '@sap-ai-sdk/foundation-models';
-import type { BaseMessage, HumanMessage } from '@langchain/core/messages';
+import type { BaseMessage, FunctionMessage, HumanMessage, ToolMessage } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
 import type { StructuredTool } from '@langchain/core/tools';
 import type { AzureOpenAiChatClient } from './chat.js';
 import type { AzureOpenAiChatCallOptions } from './types.js';
-
-type ToolChoice =
-  | 'none'
-  | 'auto'
-  | {
-    /**
-     * The type of the tool.
-     */
-    type: 'function';
-    /**
-     * Use to force the model to call a specific function.
-     */
-    function: {
-      /**
-       * The name of the function to call.
-       */
-      name: string;
-    };
-  };
-
-type LangChainToolChoice = string | Record<string, any> | 'auto' | 'any';
 
 /**
  * Maps a LangChain {@link StructuredTool} to {@link AzureOpenAiChatCompletionFunctions}.
@@ -71,6 +53,22 @@ function mapToolToOpenAiTool(
 }
 
 /**
+ * Maps {@link AzureOpenAiChatCompletionMessageToolCalls} to LangChain's {@link ToolCall}.
+ * @param toolCalls - The {@link AzureOpenAiChatCompletionMessageToolCalls} response.
+ * @returns The LangChain {@link ToolCall}.
+ */
+function mapOpenAitoLangchainToolCall(toolCalls?: AzureOpenAiChatCompletionMessageToolCalls): ToolCall[] | undefined {
+  if (toolCalls) {
+    return toolCalls.map(toolCall => ({
+      id: toolCall.id,
+      name: toolCall.function.name,
+      args: JSON.parse(toolCall.function.arguments),
+      type: 'tool_call'
+    }));
+  };
+}
+
+/**
  * Maps {@link AzureOpenAiCreateChatCompletionResponse} to LangChain's {@link ChatResult}.
  * @param completionResponse - The {@link AzureOpenAiCreateChatCompletionResponse} response.
  * @returns The LangChain {@link ChatResult}
@@ -82,10 +80,10 @@ export function mapOutputToChatResult(
   return {
     generations: completionResponse.choices.map(
       (choice: (typeof completionResponse)['choices'][0]) => ({
-        text: choice.message?.content || '',
+        text: choice.message?.content ?? '',
         message: new AIMessage({
-          content: choice.message?.content || '',
-          // TODO: map this -> tool_calls: choice.message?.tool_calls,
+          content: choice.message?.content ?? '',
+          tool_calls: mapOpenAitoLangchainToolCall(choice.message?.tool_calls),
           additional_kwargs: {
             finish_reason: choice.finish_reason,
             index: choice.index,
@@ -116,6 +114,11 @@ export function mapOutputToChatResult(
   };
 }
 
+/**
+ * Maps LangChain's {@link ToolCall} to Azure OpenAI's {@link AzureOpenAiChatCompletionMessageToolCalls}.
+ * @param toolCalls - The {@link ToolCall} to map.
+ * @returns The Azure OpenAI {@link AzureOpenAiChatCompletionMessageToolCalls}.
+ */
 function mapLangchainToolCallToAzureOpenAiToolCall(toolCalls?: ToolCall[]): AzureOpenAiChatCompletionMessageToolCalls | undefined {
   if (toolCalls) {
     return toolCalls.map(toolCall => ({
@@ -129,25 +132,60 @@ function mapLangchainToolCallToAzureOpenAiToolCall(toolCalls?: ToolCall[]): Azur
   }
 }
 
-function mapAiMessageToAzureOpenAiChatMessage(
+/**
+ * Maps LangChain's {@link AIMessage} to Azure OpenAI's {@link AzureOpenAiChatCompletionRequestAssistantMessage}.
+ * @param message - The {@link AIMessage} to map.
+ * @returns The Azure OpenAI {@link AzureOpenAiChatCompletionRequestAssistantMessage}.
+ */
+function mapAiMessageToAzureOpenAiAssistantMessage(
   message: AIMessage
 ): AzureOpenAiChatCompletionRequestAssistantMessage {
   return {
     name: message.name,
-    tool_calls: message.additional_kwargs.tool_calls ?? mapLangchainToolCallToAzureOpenAiToolCall(message.tool_calls),
+    tool_calls: mapLangchainToolCallToAzureOpenAiToolCall(message.tool_calls) ?? message.additional_kwargs.tool_calls,
     function_call: message.additional_kwargs.function_call,
     content: message.content as AzureOpenAiChatCompletionRequestAssistantMessage['content'],
     role: 'assistant'
   };
 }
 
-function mapHumanMessageToAzureOpenAiChatMessage(
+function mapHumanMessageToAzureOpenAiUserMessage(
   message: HumanMessage
 ): AzureOpenAiChatCompletionRequestUserMessage {
   return {
-    name: message.name,
+    role: 'user',
     content: message.content as AzureOpenAiChatCompletionRequestUserMessage['content'],
-    role: 'user'
+    name: message.name,
+  };
+}
+
+function mapToolMessageToAzureOpenAiToolMessage(
+  message: ToolMessage
+): AzureOpenAiChatCompletionRequestToolMessage {
+  return {
+    role: 'tool',
+    content: message.content as AzureOpenAiChatCompletionRequestToolMessage['content'],
+    tool_call_id: message.tool_call_id
+  };
+}
+
+function mapFunctionMessageToAzureOpenAiChatMessage(
+  message: FunctionMessage
+): AzureOpenAiChatCompletionRequestFunctionMessage {
+  return {
+    role: 'function',
+    content: message.content as AzureOpenAiChatCompletionRequestFunctionMessage['content'],
+    name: message.name ? message.name : 'default'
+  };
+}
+
+function mapSystemMessageToAzureOpenAiChatMessage(
+  message: BaseMessage
+): AzureOpenAiChatCompletionRequestSystemMessage {
+  return {
+    role: 'system',
+    content: message.content as AzureOpenAiChatCompletionRequestSystemMessage['content'],
+    name: message.name
   };
 }
 
@@ -162,15 +200,15 @@ function mapBaseMessageToAzureOpenAiChatMessage(
 ): AzureOpenAiChatCompletionRequestMessage {
   switch (message.getType()) {
     case 'ai':
-      return mapAiMessageToAzureOpenAiChatMessage(message);
+      return mapAiMessageToAzureOpenAiAssistantMessage(message);
     case 'human':
-      return mapHumanMessageToAzureOpenAiChatMessage(message);
-    // case 'system':
-    //   return mapSystemMessageToAzureOpenAiChatMessage(message) as AzureOpenAiChatCompletionRequestSystemMessage;
-    // case 'function':
-    //   return mapFunctionMessageToAzureOpenAiChatMessage(message) as AzureOpenAiChatCompletionRequestFunctionMessage;
-    // case 'tool':
-    //   return mapToolMessageToAzureOpenAiChatMessage(message) as AzureOpenAiChatCompletionRequestToolMessage;
+      return mapHumanMessageToAzureOpenAiUserMessage(message);
+    case 'system':
+      return mapSystemMessageToAzureOpenAiChatMessage(message);
+    case 'function':
+      return mapFunctionMessageToAzureOpenAiChatMessage(message);
+    case 'tool':
+      return mapToolMessageToAzureOpenAiToolMessage(message as ToolMessage);
     default:
       throw new Error(`Unsupported message type: ${message.getType()}`);
   };
@@ -180,21 +218,6 @@ function isStructuredToolArray(tools?: unknown[]): tools is StructuredTool[] {
   return !!tools?.every(tool =>
     Array.isArray((tool as StructuredTool).lc_namespace)
   );
-}
-
-function mapToolChoice(
-  toolChoice?: LangChainToolChoice
-): ToolChoice | undefined {
-  if (toolChoice === 'auto' || toolChoice === 'none') {
-    return toolChoice;
-  }
-
-  if (typeof toolChoice === 'string') {
-    return {
-      type: 'function',
-      function: { name: toolChoice }
-    };
-  }
 }
 
 /**

@@ -35,7 +35,8 @@ import {
 import {
   invokeChain,
   invokeRagChain,
-  invoke
+  invoke,
+  invokeToolChain
 } from './langchain-azure-openai.js';
 import {
   createCollection,
@@ -392,7 +393,7 @@ app.get('/langchain/invoke', async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.request.data);
   }
 });
 
@@ -403,7 +404,7 @@ app.get('/langchain/invoke-chain', async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.request.data);
   }
 });
 
@@ -414,7 +415,18 @@ app.get('/langchain/invoke-rag-chain', async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.request.data);
+  }
+});
+
+app.get('/langchain/invoke-tool-chain', async (req, res) => {
+  try {
+    res.send(await invokeToolChain());
+  } catch (error: any) {
+    console.error(error);
+    res
+      .status(500)
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.request.data);
   }
 });
 
