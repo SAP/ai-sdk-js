@@ -15,7 +15,12 @@ import type {
   AzureOpenAiChatCompletionRequestFunctionMessage,
   AzureOpenAiChatCompletionRequestSystemMessage
 } from '@sap-ai-sdk/foundation-models';
-import type { BaseMessage, FunctionMessage, HumanMessage, ToolMessage } from '@langchain/core/messages';
+import type {
+  BaseMessage,
+  FunctionMessage,
+  HumanMessage,
+  ToolMessage
+} from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
 import type { StructuredTool } from '@langchain/core/tools';
 import type { AzureOpenAiChatClient } from './chat.js';
@@ -57,7 +62,9 @@ function mapToolToOpenAiTool(
  * @param toolCalls - The {@link AzureOpenAiChatCompletionMessageToolCalls} response.
  * @returns The LangChain {@link ToolCall}.
  */
-function mapOpenAitoLangchainToolCall(toolCalls?: AzureOpenAiChatCompletionMessageToolCalls): ToolCall[] | undefined {
+function mapOpenAitoLangchainToolCall(
+  toolCalls?: AzureOpenAiChatCompletionMessageToolCalls
+): ToolCall[] | undefined {
   if (toolCalls) {
     return toolCalls.map(toolCall => ({
       id: toolCall.id,
@@ -65,7 +72,7 @@ function mapOpenAitoLangchainToolCall(toolCalls?: AzureOpenAiChatCompletionMessa
       args: JSON.parse(toolCall.function.arguments),
       type: 'tool_call'
     }));
-  };
+  }
 }
 
 /**
@@ -119,7 +126,9 @@ export function mapOutputToChatResult(
  * @param toolCalls - The {@link ToolCall} to map.
  * @returns The Azure OpenAI {@link AzureOpenAiChatCompletionMessageToolCalls}.
  */
-function mapLangchainToolCallToAzureOpenAiToolCall(toolCalls?: ToolCall[]): AzureOpenAiChatCompletionMessageToolCalls | undefined {
+function mapLangchainToolCallToAzureOpenAiToolCall(
+  toolCalls?: ToolCall[]
+): AzureOpenAiChatCompletionMessageToolCalls | undefined {
   if (toolCalls) {
     return toolCalls.map(toolCall => ({
       id: toolCall.id ?? uuidv4(),
@@ -142,9 +151,12 @@ function mapAiMessageToAzureOpenAiAssistantMessage(
 ): AzureOpenAiChatCompletionRequestAssistantMessage {
   return {
     name: message.name,
-    tool_calls: mapLangchainToolCallToAzureOpenAiToolCall(message.tool_calls) ?? message.additional_kwargs.tool_calls,
+    tool_calls:
+      mapLangchainToolCallToAzureOpenAiToolCall(message.tool_calls) ??
+      message.additional_kwargs.tool_calls,
     function_call: message.additional_kwargs.function_call,
-    content: message.content as AzureOpenAiChatCompletionRequestAssistantMessage['content'],
+    content:
+      message.content as AzureOpenAiChatCompletionRequestAssistantMessage['content'],
     role: 'assistant'
   };
 }
@@ -154,8 +166,9 @@ function mapHumanMessageToAzureOpenAiUserMessage(
 ): AzureOpenAiChatCompletionRequestUserMessage {
   return {
     role: 'user',
-    content: message.content as AzureOpenAiChatCompletionRequestUserMessage['content'],
-    name: message.name,
+    content:
+      message.content as AzureOpenAiChatCompletionRequestUserMessage['content'],
+    name: message.name
   };
 }
 
@@ -164,7 +177,8 @@ function mapToolMessageToAzureOpenAiToolMessage(
 ): AzureOpenAiChatCompletionRequestToolMessage {
   return {
     role: 'tool',
-    content: message.content as AzureOpenAiChatCompletionRequestToolMessage['content'],
+    content:
+      message.content as AzureOpenAiChatCompletionRequestToolMessage['content'],
     tool_call_id: message.tool_call_id
   };
 }
@@ -174,7 +188,8 @@ function mapFunctionMessageToAzureOpenAiChatMessage(
 ): AzureOpenAiChatCompletionRequestFunctionMessage {
   return {
     role: 'function',
-    content: message.content as AzureOpenAiChatCompletionRequestFunctionMessage['content'],
+    content:
+      message.content as AzureOpenAiChatCompletionRequestFunctionMessage['content'],
     name: message.name ? message.name : 'default'
   };
 }
@@ -184,7 +199,8 @@ function mapSystemMessageToAzureOpenAiChatMessage(
 ): AzureOpenAiChatCompletionRequestSystemMessage {
   return {
     role: 'system',
-    content: message.content as AzureOpenAiChatCompletionRequestSystemMessage['content'],
+    content:
+      message.content as AzureOpenAiChatCompletionRequestSystemMessage['content'],
     name: message.name
   };
 }
@@ -211,7 +227,7 @@ function mapBaseMessageToAzureOpenAiChatMessage(
       return mapToolMessageToAzureOpenAiToolMessage(message as ToolMessage);
     default:
       throw new Error(`Unsupported message type: ${message.getType()}`);
-  };
+  }
 }
 
 function isStructuredToolArray(tools?: unknown[]): tools is StructuredTool[] {

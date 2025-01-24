@@ -10,7 +10,11 @@ import {
 import { createStuffDocumentsChain } from 'langchain/chains/combine_documents';
 import { MemoryVectorStore } from 'langchain/vectorstores/memory';
 import { TextLoader } from 'langchain/document_loaders/fs/text';
-import { HumanMessage, SystemMessage, ToolMessage } from '@langchain/core/messages';
+import {
+  HumanMessage,
+  SystemMessage,
+  ToolMessage
+} from '@langchain/core/messages';
 import type { BaseMessage } from '@langchain/core/messages';
 import type { AzureOpenAiChatCompletionTool } from '@sap-ai-sdk/foundation-models';
 
@@ -137,67 +141,68 @@ export async function invokeRagChain(): Promise<string> {
  * @returns The answer from GPT.
  */
 export async function invokeToolChain(): Promise<string> {
-    // initialize client with options
-    const client = new AzureOpenAiChatClient({
-      modelName: 'gpt-35-turbo',
-      max_tokens: 1000,
-      temperature: 0.7,
+  // initialize client with options
+  const client = new AzureOpenAiChatClient({
+    modelName: 'gpt-35-turbo',
+    max_tokens: 1000,
+    temperature: 0.7
+  });
+
+  // create a tool
+  const azureTool: AzureOpenAiChatCompletionTool = {
+    type: 'function',
+    function: {
+      name: 'shareholder_value',
+      description: 'Multiplies the shareholder value',
+      parameters: {
+        type: 'object',
+        properties: {
+          value: {
+            type: 'number',
+            description: 'The value that is supposed to be increased.'
+          }
+        },
+        required: ['value']
+      }
+    }
+  };
+
+  // create a function to increase the shareholder value
+  function shareholderValueFunction(value: number): string {
+    return `The shareholder value has been increased to ${value * 2}`;
+  }
+
+  const humanMessage = new HumanMessage(
+    'Increase the shareholder value, it is currently at 10'
+  );
+
+  const history: BaseMessage[] = [humanMessage];
+
+  const response = await client.invoke(history, { tools: [azureTool] });
+
+  history.push(response);
+
+  if (response.tool_calls) {
+    const shareholderValue = shareholderValueFunction(
+      response.tool_calls[0].args.value
+    );
+
+    const toolMessage = new ToolMessage({
+      content: shareholderValue,
+      tool_call_id: response.tool_calls[0].id ?? 'default'
     });
 
-    // create a tool
-    const azureTool: AzureOpenAiChatCompletionTool =
-      {
-        type: 'function',
-        function: {
-          name: 'shareholder_value',
-          description: 'Multiplies the shareholder value',
-          parameters: {
-            type: 'object',
-            properties: {
-              value: {
-                type: 'number',
-                description: 'The value that is supposed to be increased.'
-              }
-            },
-            required: ['value'],
-          },
-        }
-      };
+    history.push(toolMessage);
+  } else {
+    const failMessage = new SystemMessage('No tool calls were made');
+    history.push(failMessage);
+  }
 
-    // create a function to increase the shareholder value
-    function shareholderValueFunction(value: number): string {
-      return `The shareholder value has been increased to ${value * 2}`;
-    }
+  const finalResponse = await client.invoke(history);
 
-    const humanMessage = new HumanMessage('Increase the shareholder value, it is currently at 10');
+  // create an output parser
+  const parser = new StringOutputParser();
 
-    const history: BaseMessage[] = [humanMessage];
-
-    const response = await client.invoke(history, { tools: [azureTool] });
-
-    history.push(response);
-
-    if(response.tool_calls) {
-      const shareholderValue = shareholderValueFunction(response.tool_calls[0].args.value);
-
-      const toolMessage = new ToolMessage(
-        {
-          content: shareholderValue,
-          tool_call_id: response.tool_calls[0].id ?? 'default'
-        }
-      );
-
-      history.push(toolMessage);
-    } else {
-      const failMessage = new SystemMessage('No tool calls were made');
-      history.push(failMessage);
-    }
-
-    const finalResponse = await client.invoke(history);
-
-    // create an output parser
-    const parser = new StringOutputParser();
-
-    // parse the response
-    return parser.invoke(finalResponse);
+  // parse the response
+  return parser.invoke(finalResponse);
 }

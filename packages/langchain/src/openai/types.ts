@@ -47,9 +47,11 @@ export type AzureOpenAiChatCallOptions = BaseChatModelCallOptions &
     | 'functions'
     | 'function_call'
   > & {
-    tools: AzureOpenAiCreateChatCompletionRequest['tools'] | DynamicStructuredTool[];
+    tools:
+      | AzureOpenAiCreateChatCompletionRequest['tools']
+      | DynamicStructuredTool[];
     requestConfig?: CustomRequestConfig;
-    };
+  };
 
 /**
  * Input type for {@link AzureOpenAiEmbeddingClient} initialization.
