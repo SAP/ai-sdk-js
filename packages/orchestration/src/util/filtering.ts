@@ -14,8 +14,16 @@ import type {
 export function buildAzureContentFilter(
   filter?: AzureContentSafety
 ): InputFilteringConfig | OutputFilteringConfig {
+  if (filter && !Object.keys(filter).length) {
+    throw new Error('Filter property cannot be an empty object');
+  }
   return {
-    filters: [ContentFilters.buildAzureContentSafety(filter)]
+    filters: [
+      {
+        type: 'azure_content_safety',
+        ...(filter && { config: filter })
+      }
+    ]
   };
 }
 

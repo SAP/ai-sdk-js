@@ -165,6 +165,17 @@ describe('Content filter util', () => {
           .filtering_module_config
       ).toBeUndefined();
     });
+
+    it('throw error when configuring empty filter', async () => {
+      const createFilterConfig = () => {
+        {
+          buildAzureContentFilter({});
+        }
+      };
+      expect(createFilterConfig).toThrow(
+        'Filter property cannot be an empty object'
+      );
+    });
   });
 
   describe('Azure content filter', () => {
