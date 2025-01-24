@@ -10,10 +10,13 @@ export type {
   DocumentGroundingServiceFilter,
   LlmModelParams,
   AzureContentFilter,
-  AzureThresholdType
+  AzureFilterThresholdType
 } from './orchestration-types.js';
 
-export { AzureFilterThreshold, isAzureFilterThresholdType } from './orchestration-types.js';
+export {
+  AzureFilterThreshold,
+  isAzureFilterThresholdType
+} from './orchestration-types.js';
 
 export { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 

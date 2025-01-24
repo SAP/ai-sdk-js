@@ -160,19 +160,19 @@ export interface AzureContentFilter {
   /**
    * The filter category for hate content.
    */
-  Hate?: AzureThresholdType;
+  Hate?: AzureFilterThresholdType;
   /**
    * The filter category for self-harm content.
    */
-  SelfHarm?: AzureThresholdType;
+  SelfHarm?: AzureFilterThresholdType;
   /**
    * The filter category for sexual content.
    */
-  Sexual?: AzureThresholdType;
+  Sexual?: AzureFilterThresholdType;
   /**
    * The filter category for violence content.
    */
-  Violence?: AzureThresholdType;
+  Violence?: AzureFilterThresholdType;
 }
 
 /**
@@ -189,11 +189,6 @@ export const AzureFilterThreshold = {
  * Type for azure filter threshold constant.
  */
 export type AzureFilterThresholdType = keyof typeof AzureFilterThreshold;
-/**
- * Type for azure content filter threshold autocompletion.
- * A union of numeric values too for now, to avoid breaking changes.
- */
-export type AzureThresholdType = AzureFilterThresholdType | AzureThreshold;
 
 /**
  * Type guard to check if a value is a valid azure filter threshold value.
