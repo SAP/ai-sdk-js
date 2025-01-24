@@ -1,4 +1,3 @@
-import type { DynamicStructuredTool } from '@langchain/core/tools';
 import type { BaseLLMParams } from '@langchain/core/language_models/llms';
 import type {
   BaseChatModelCallOptions,
@@ -46,10 +45,8 @@ export type AzureOpenAiChatCallOptions = BaseChatModelCallOptions &
     | 'tool_choice'
     | 'functions'
     | 'function_call'
+    | 'tools'
   > & {
-    tools:
-      | AzureOpenAiCreateChatCompletionRequest['tools']
-      | DynamicStructuredTool[];
     requestConfig?: CustomRequestConfig;
   };
 
