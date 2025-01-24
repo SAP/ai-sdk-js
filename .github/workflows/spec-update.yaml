@@ -82,7 +82,9 @@ jobs:
 
       - name: "Exit if there are no changes"
         id: spec_diff
+        # Before checking for changed files, run the linter as that also changes spec files
         run: |
+          pnpm lint:fix
           if [[ -n "$(git status --porcelain)" ]]; then
             echo "Changes detected in the specification file."
             git status
