@@ -83,7 +83,7 @@ jobs:
       - name: "Exit if there are no changes"
         id: spec_diff
         run: |
-          if [[ `git status --porcelain` ]]; then
+          if [[ -n "$(git status --porcelain)" ]]; then
             echo "spec_diff=true" >> "$GITHUB_OUTPUT"
           else
             echo "spec_diff=false" >> "$GITHUB_OUTPUT"
