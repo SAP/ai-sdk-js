@@ -173,9 +173,9 @@ jobs:
           echo "| Step | Status |" >> $GITHUB_STEP_SUMMARY
           echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
           echo "| File Download | ${{ steps.download.outcome == 'success' && '✅' || '❌' }} ${{ steps.download.outcome }}" >> $GITHUB_STEP_SUMMARY
-          echo "| Spec File Changes | ${{ steps.spec_diff.outputs.spec_diff && '🔄 Changes Detected' || '⚠ No Changes' }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Spec File Changes | ${{ steps.spec_diff.outputs.spec_diff == 'true' && '🔄 Changes Detected' || '⚠ No Changes' }}" >> $GITHUB_STEP_SUMMARY
           
-          if ${{ steps.spec_diff.outputs.spec_diff }}; then
+          if ${{ steps.spec_diff.outputs.spec_diff == 'true' }}; then
             echo "| Client Generation | ${{ steps.generate.outcome == 'success' && '✅' || '❌' }} ${{ steps.generate.outcome }}" >> $GITHUB_STEP_SUMMARY
             echo "| Client Compilation | ${{ steps.compile.outputs.compilation_result == 'success' && '✅' || '❌' }} ${{ steps.compile.outputs.compilation_result }}" >> $GITHUB_STEP_SUMMARY
             echo "| Client Testing | ${{ steps.compile.outputs.test_result == 'success' && '✅' || steps.compile.outputs.test_result == 'skipped' && '⏩' || '❌' }} ${{ steps.compile.outputs.test_result }}" >> $GITHUB_STEP_SUMMARY
