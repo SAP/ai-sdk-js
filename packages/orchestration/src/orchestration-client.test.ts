@@ -164,12 +164,15 @@ describe('orchestration service client', () => {
       filtering: {
         input: {
           filters: [
-            ContentFilters.buildAzureContentSafety({ Hate: 4, SelfHarm: 2 })
+            ContentFilters.buildAzureContentSafety({
+              Hate: 'ALLOW_SAFE_LOW_MEDIUM',
+              SelfHarm: 'ALLOW_SAFE_LOW'
+            })
           ]
         },
         output: {
           filters: [
-            ContentFilters.buildAzureContentSafety({ Sexual: 0, Violence: 4 })
+            ContentFilters.buildAzureContentSafety({ Sexual: 'ALLOW_SAFE', Violence: 'ALLOW_SAFE_LOW_MEDIUM' })
           ]
         }
       }

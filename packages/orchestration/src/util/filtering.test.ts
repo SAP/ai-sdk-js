@@ -170,8 +170,8 @@ describe('Content filter util', () => {
   describe('Azure content filter', () => {
     it('builds filter config', async () => {
       const filterConfig = ContentFilters.buildAzureContentSafety({
-        Hate: 4,
-        SelfHarm: 0
+        Hate: 'ALLOW_SAFE_LOW_MEDIUM',
+        SelfHarm: 'ALLOW_SAFE'
       });
       const expectedFilterConfig: FilterConfig = {
         type: 'azure_content_safety',

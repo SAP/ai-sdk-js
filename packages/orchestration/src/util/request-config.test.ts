@@ -75,7 +75,7 @@ describe('stream util tests', () => {
       filtering: {
         output: {
           filters: [
-            ContentFilters.buildAzureContentSafety({ Hate: 4, SelfHarm: 0 })
+            ContentFilters.buildAzureContentSafety({ Hate: 'ALLOW_SAFE_LOW_MEDIUM', SelfHarm: 'ALLOW_SAFE' })
           ]
         }
       }
@@ -96,7 +96,7 @@ describe('stream util tests', () => {
       filtering_module_config: {
         output: {
           filters: [
-            ContentFilters.buildAzureContentSafety({ Hate: 4, SelfHarm: 0 })
+            ContentFilters.buildAzureContentSafety({ Hate: 'ALLOW_SAFE_LOW_MEDIUM', SelfHarm: 'ALLOW_SAFE' })
           ]
         }
       }
