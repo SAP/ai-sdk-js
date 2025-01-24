@@ -1,5 +1,6 @@
 import { expectError, expectType, expectAssignable } from 'tsd';
 import {
+  ContentFilters,
   OrchestrationClient,
   buildDocumentGroundingConfig
 } from '@sap-ai-sdk/orchestration';
@@ -9,7 +10,8 @@ import type {
   TokenUsage,
   ChatModel,
   GroundingModuleConfig,
-  LlmModelParams
+  LlmModelParams,
+  AzureContentSafetyFilterConfig
 } from '@sap-ai-sdk/orchestration';
 
 /**
@@ -243,6 +245,27 @@ expectType<Promise<OrchestrationResponse>>(
 
 expect<ChatModel>('custom-model');
 expect<ChatModel>('gemini-1.0-pro');
+
+/**
+ * FilteringUtil.
+ */
+
+expectType<AzureContentSafetyFilterConfig>(
+  ContentFilters.buildAzureContentSafety({
+    Hate: 'ALLOW_ALL',
+    SelfHarm: 'ALLOW_SAFE_LOW',
+    Sexual: 'ALLOW_SAFE_LOW_MEDIUM',
+    Violence: 'ALLOW_SAFE'
+  })
+);
+
+// Assert that the new type introduced is non- breaking
+expectType<AzureContentSafetyFilterConfig>(
+  ContentFilters.buildAzureContentSafety({
+    Hate: 2,
+    SelfHarm: 4
+  })
+);
 
 /**
  * Grounding util.

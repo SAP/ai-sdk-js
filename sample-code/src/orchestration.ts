@@ -143,8 +143,8 @@ export async function orchestrationInputFiltering(): Promise<void> {
   // create a filter with minimal thresholds for hate and violence
   // lower numbers mean more strict filtering
   const azureContentFilter = ContentFilters.buildAzureContentSafety({
-    Hate: 0,
-    Violence: 0
+    Hate: 'ALLOW_SAFE',
+    Violence: 'ALLOW_SAFE'
   });
   const orchestrationClient = new OrchestrationClient({
     llm,
@@ -180,8 +180,8 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
   // output filters are build in the same way as input filters
   // set the thresholds to the minimum to maximize the chance the LLM output will be filtered
   const azureContentFilter = ContentFilters.buildAzureContentSafety({
-    Hate: 0,
-    Violence: 0
+    Hate: 'ALLOW_SAFE',
+    Violence: 'ALLOW_SAFE'
   });
   const orchestrationClient = new OrchestrationClient({
     llm,
