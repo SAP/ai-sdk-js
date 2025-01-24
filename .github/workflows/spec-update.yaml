@@ -174,3 +174,4 @@ jobs:
             echo "| Client Testing | ${{ steps.compile.outputs.test_result == 'success' && '✅' || steps.compile.outputs.test_result == 'skipped' && '⏩' || '❌' }} ${{ steps.compile.outputs.test_result }}" >> $GITHUB_STEP_SUMMARY
             echo "| Branch Creation | ${{ steps.push.outcome == 'success' && '✅ $BRANCH' || '❌' }} ${{ steps.push.outcome }}" >> $GITHUB_STEP_SUMMARY
             echo "| Pull Request Creation | ${{ steps.push.outcome == 'success' && '✅ [PR Link]($PR_URL)' || '❌' }} ${{ steps.push.outcome }}" >> $GITHUB_STEP_SUMMARY
+          fi
