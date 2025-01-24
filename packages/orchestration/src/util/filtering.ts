@@ -1,3 +1,4 @@
+import { AzureFilterThreshold, isAzureFilterThresholdType, type AzureContentFilter } from '../orchestration-types.js';
 import type {
   AzureContentSafety,
   AzureContentSafetyFilterConfig,
@@ -25,11 +26,22 @@ export function buildAzureContentFilter(
  * @returns Filter config object.
  */
 export function buildAzureContentSafety(
-  config?: AzureContentSafety
+  config?: AzureContentFilter
 ): AzureContentSafetyFilterConfig {
   return {
     type: 'azure_content_safety',
-    ...(config && { config })
+    ...(config && {
+      config: {
+        ...Object.fromEntries(
+          Object.entries(config).map(([key, value]) => [
+            key,
+            isAzureFilterThresholdType(value)
+              ? AzureFilterThreshold[value]
+              : value
+          ])
+        )
+      }
+    })
   };
 }
 
