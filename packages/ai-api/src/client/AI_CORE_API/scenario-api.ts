@@ -79,7 +79,7 @@ export const ScenarioApi = {
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  modelsGet: (
+  scenarioQueryModels: (
     scenarioId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>

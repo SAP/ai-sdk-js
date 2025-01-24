@@ -5,11 +5,11 @@ info:
     "Provides tools to manage your scenarios and workflows in SAP AI Core.
     Execute pipelines as a batch job, for example to pre-process or train your models,
     or perform batch inference.  Serve inference requests of trained models. Deploy
-    а trained machine learning model as a web service to serve inference requests
+    a trained machine learning model as a web service to serve inference requests
     with high performance.  Register your own Docker registry, synchronize your AI
     content from your own git repository, and register your own object store for training
     data and trained models.\n"
-  version: 2.34.0
+  version: 2.37.0
 x-sap-shortText:
   Create and manage AI scenarios, trainings, deployments, and artifacts
   in SAP AI Core.
@@ -28,7 +28,7 @@ servers:
           - prod-us21.eastus.azure
           - prod-eu30.europe-west3.gcp
           - prod-us30.us-central1.gcp
-        default: prod.eu-central-1
+        default: prod.eu-central-1.aws
 externalDocs:
   description: Documentation for SAP AI Core
   url: https://help.sap.com/docs/AI_CORE?version=CLOUD
@@ -811,7 +811,7 @@ paths:
         - Scenario
       summary: Get information about all models available in LLM global scenario
       description: Retrieve information about all models available in LLM global scenario
-      operationId: models.get
+      operationId: scenario.query_models
       responses:
         '200':
           description:
@@ -1127,8 +1127,7 @@ paths:
         description: Body of the file upload request
         content:
           '*/*':
-            schema:
-              type: string
+            schema: {}
       responses:
         '201':
           $ref: '#/components/responses/DSetFileCreated'
@@ -2420,10 +2419,10 @@ paths:
                 $ref: '#/components/schemas/BckndDeploymentResourceQuotaResponse'
         '400':
           $ref: '#/components/responses/BckndBadRequest'
-        default:
-          $ref: '#/components/responses/BckndCommonError'
         '404':
           $ref: '#/components/responses/BckndNotFound'
+        default:
+          $ref: '#/components/responses/BckndCommonError'
 components:
   securitySchemes:
     Oauth2:
@@ -2642,6 +2641,12 @@ components:
           description: Description of the model and its capabilities
         versions:
           $ref: '#/components/schemas/RTAModelVersionList'
+        displayName:
+          type: string
+          description: Display name of the model
+        accessType:
+          type: string
+          description: Access type of the model
     RTAModelVersionList:
       type: array
       description: List of model versions that the model object has
@@ -2656,7 +2661,6 @@ components:
         - name
         - isLatest
         - deprecated
-        - retirementDate
       properties:
         name:
           type: string
@@ -2670,6 +2674,19 @@ components:
         retirementDate:
           type: string
           description: Retirement date of model in ISO 8601 timestamp
+        contextLength:
+          type: integer
+          description: Context length of the model
+        inputTypes:
+          type: array
+          description: List of input types supported by the model
+          items:
+            type: string
+        capabilities:
+          type: array
+          description: List of capabilities supported by the model
+          items:
+            type: string
     RTAArtifact:
       description: Entity having labels
       type: object
@@ -3014,65 +3031,6 @@ components:
         details:
           description: Optional details of the error message
           type: object
-    DSetUrl:
-      type: string
-      format: url
-      example: https://download.example.com/test/file.bin
-    DSetError:
-      description: Error Response
-      type: object
-      properties:
-        code:
-          type: string
-          minLength: 1
-        message:
-          type: string
-          minLength: 1
-        target:
-          type: string
-          minLength: 1
-        requestId:
-          type: string
-        details:
-          type: array
-          uniqueItems: true
-          minItems: 0
-          items:
-            required:
-              - code
-              - message
-            properties:
-              code:
-                type: string
-                minLength: 1
-              message:
-                type: string
-                minLength: 1
-      required:
-        - code
-        - message
-      x-examples:
-        example-1:
-          code: '03021655'
-          message: Bad request encountered. Please try again with possible-solution-here.
-          target: /url/path
-          requestId: 9832bf934f3743v3948v3
-          details:
-            - code: '01041211'
-              message: Optional nested error message.
-    DSetFileCreationResponse:
-      description: Response for successful file creation
-      type: object
-      required:
-        - message
-        - url
-      properties:
-        message:
-          type: string
-          description: File creation response message
-          example: File creation acknowledged
-        url:
-          $ref: '#/components/schemas/DSetUrl'
     AiScenario:
       type: object
       description:
@@ -3199,6 +3157,12 @@ components:
           description: Description of the model and its capabilities
         versions:
           $ref: '#/components/schemas/AiModelVersionList'
+        displayName:
+          type: string
+          description: Display name of the model
+        accessType:
+          type: string
+          description: Access type of the model
     AiModelVersionList:
       type: array
       description: List of model versions that the model object has
@@ -3206,10 +3170,13 @@ components:
         $ref: '#/components/schemas/AiModelVersion'
     AiModelVersion:
       type: object
-      description: Model version information including whether it is latest version
+      description:
+        Model version information including whether it is latest version,
+        its deprecation status and optional retirement date
       required:
         - name
         - isLatest
+        - deprecated
       properties:
         name:
           type: string
@@ -3217,6 +3184,25 @@ components:
         isLatest:
           type: boolean
           description: Displays whether it is the latest version offered for the model
+        deprecated:
+          type: boolean
+          description: Deprecation status of model
+        retirementDate:
+          type: string
+          description: Retirement date of model in ISO 8601 timestamp
+        contextLength:
+          type: integer
+          description: Context length of the model
+        inputTypes:
+          type: array
+          description: List of input types supported by the model
+          items:
+            type: string
+        capabilities:
+          type: array
+          description: List of capabilities supported by the model
+          items:
+            type: string
     AiVersion:
       type: object
       required:
@@ -4496,6 +4482,301 @@ components:
         details:
           description: Optional details of the error message
           type: object
+    TrckGetMetricResource:
+      description:
+        Collection of various metrics/tags/labels associated against some
+        execution/deployment
+      type: object
+      properties:
+        executionId:
+          $ref: '#/components/schemas/TrckExecutionId'
+        metrics:
+          $ref: '#/components/schemas/TrckGetMetricList'
+        tags:
+          $ref: '#/components/schemas/TrckTagList'
+        customInfo:
+          $ref: '#/components/schemas/TrckCustomInfoObjectList'
+      required:
+        - executionId
+    TrckMetricResource:
+      description:
+        Collection of various metrics/tags/labels associated against some
+        execution/deployment
+      required:
+        - executionId
+      type: object
+      properties:
+        executionId:
+          $ref: '#/components/schemas/TrckExecutionId'
+        metrics:
+          $ref: '#/components/schemas/TrckMetricList'
+        tags:
+          $ref: '#/components/schemas/TrckTagList'
+        customInfo:
+          $ref: '#/components/schemas/TrckCustomInfoObjectList'
+    TrckGetMetricResourceList:
+      type: object
+      required:
+        - resources
+      properties:
+        count:
+          type: integer
+          description: Number of the resource instances in the list
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrckGetMetricResource'
+    TrckDeleteMetricsResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/TrckExecutionId'
+        message:
+          type: string
+          example: Metric Resource was successfully deleted
+    TrckExecutionId:
+      type: string
+      example: aa97b177-9383-4934-8543-0f91b7a0283a
+      oneOf:
+        - $ref: '#/components/schemas/TrckMlapiExecutionId'
+      description: ID of the deployment/execution
+    TrckTimestamp:
+      type: string
+      description: Time when the metric was created or logged in RFC3339 format
+      format: date-time
+    TrckGetMetricList:
+      description: Array of Metric items
+      type: array
+      items:
+        $ref: '#/components/schemas/TrckGetMetric'
+    TrckMetricList:
+      description: Array of Metric items
+      type: array
+      items:
+        $ref: '#/components/schemas/TrckMetric'
+    TrckGetMetric:
+      description:
+        Key-value metrics, where the value is numeric. Metric can also
+        have optional step and label fields.
+      type: object
+      required:
+        - name
+        - value
+        - timestamp
+      properties:
+        name:
+          $ref: '#/components/schemas/TrckMetricName'
+        value:
+          $ref: '#/components/schemas/TrckMetricValue'
+        timestamp:
+          $ref: '#/components/schemas/TrckTimestamp'
+        step:
+          description:
+            step is an optional integer that represents any measurement
+            of training progress (number of training iterations, number of epochs,
+            and so on) for the metric
+          type: integer
+          minimum: 0
+          example: 2
+        labels:
+          $ref: '#/components/schemas/TrckLabelList'
+    TrckMetric:
+      description:
+        Key-value metrics, where the value is numeric. Metric can also
+        have optional step and label fields.
+      required:
+        - name
+        - value
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TrckMetricName'
+        value:
+          $ref: '#/components/schemas/TrckMetricValue'
+        timestamp:
+          $ref: '#/components/schemas/TrckTimestamp'
+        step:
+          description:
+            step is an optional integer that represents any measurement
+            of training progress (number of training iterations, number of epochs,
+            and so on) for the metric
+          type: integer
+          minimum: 0
+          example: 2
+        labels:
+          $ref: '#/components/schemas/TrckLabelList'
+    TrckMetricName:
+      pattern: '[\w-]{1,64}'
+      type: string
+      maxLength: 256
+      description: Name of the metric
+      example: Error Rate
+    TrckMetricValue:
+      type: number
+      description: Numeric Value of the metric
+      example: 0.98
+    TrckmetricSelectorPermissibleValues:
+      description:
+        Permissible value for $select could be either * or one or many
+        of the values from metrics, tags, custominfo
+      type: array
+      items:
+        type: string
+        enum:
+          - metrics
+          - tags
+          - customInfo
+          - '*'
+    TrckLabelList:
+      description: a list of name-value object pairs associated with some metric.
+      type: array
+      items:
+        $ref: '#/components/schemas/TrckLabel'
+      example:
+        - name: group
+          value: tree-82
+        - name: metrics.ai.sap.com/Artifact.name
+          value: sk_learn_rf_classifier_model
+    TrckLabel:
+      description: a classifying phrase/name applied to a metric
+      required:
+        - name
+        - value
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TrckLabelName'
+        value:
+          description: Metric Label Value
+          maxLength: 256
+          minLength: 1
+          type: string
+          example: sk_learn_random_forest_model
+      example:
+        name: group
+        value: tree-82
+    TrckTagList:
+      description:
+        a list of name-value object pairs associated with the execution/deployment.
+        Tags are queryable.
+      type: array
+      items:
+        $ref: '#/components/schemas/TrckTag'
+    TrckTag:
+      description:
+        A dictionary of name-value pairs to support segregation at execution
+        level.
+      required:
+        - name
+        - value
+      type: object
+      properties:
+        name:
+          oneOf:
+            - $ref: '#/components/schemas/TrckGenericName'
+        value:
+          description: tag value
+          maxLength: 256
+          minLength: 1
+          type: string
+          example: RFC-1
+      example:
+        name: Artifact Group
+        value: RFC-1
+    TrckCustomInfoObjectList:
+      description: ''
+      type: array
+      items:
+        $ref: '#/components/schemas/TrckCustomInfoObject'
+    TrckCustomInfoObject:
+      description:
+        large object which provides rendering/semantic information regarding
+        certain metric for consuming application or can be complex metrics in JSON
+        format
+      required:
+        - name
+        - value
+      type: object
+      properties:
+        name:
+          oneOf:
+            - $ref: '#/components/schemas/TrckGenericName'
+        value:
+          $ref: '#/components/schemas/TrckCustomInfoObjectData'
+      example:
+        name: Confusion Matrix
+        value:
+          "[{'Predicted': 'False',  'Actual': 'False','value': 34},{'Predicted':
+          'False','Actual': 'True',  'value': 124}, {'Predicted': 'True','Actual':
+          'False','value': 165},{  'Predicted': 'True','Actual': 'True','value':
+          36}]"
+    TrckCustomInfoObjectData:
+      description: Message
+      minLength: 1
+      type: string
+      example:
+        "[{'Predicted': 'False',\t'Actual': 'False','value': 34},{'Predicted':
+        'False','Actual': 'True',\t'value': 124}, {'Predicted': 'True','Actual': 'False','value':
+        165},{\t'Predicted': 'True','Actual': 'True','value': 36}]"
+    TrckMlapiExecutionId:
+      description: Generic ID
+      pattern: ^[\w.-]{4,64}$
+      type: string
+      example: aa97b177-9383-4934-8543-0f91b7a0283a
+    TrckGenericName:
+      description:
+        Generic name which can belong to a tag,label,metric or customInfo
+        Object
+      maxLength: 256
+      minLength: 1
+      type: string
+      example: sample name
+    TrckLabelName:
+      description:
+        Label name to label one or more metrics. "metrics.ai.sap.com/Artifact.name"
+        is a reserved label to associate an artifact with the metrics
+      maxLength: 256
+      minLength: 1
+      type: string
+      example: metrics.ai.sap.com/Artifact.name
+    TrckApiError:
+      required:
+        - code
+        - message
+      type: object
+      properties:
+        code:
+          description: Descriptive error code (not http status code).
+          type: string
+        message:
+          description: plaintext error description
+          type: string
+        requestId:
+          description: id of individual request
+          type: string
+        target:
+          description: url that has been called
+          type: string
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrckDetailsErrorResponse'
+    TrckDetailsErrorResponse:
+      type: object
+      properties:
+        code:
+          description: Descriptive error code (not http status code)
+          type: string
+        message:
+          description: Plaintext error description
+          type: string
+    TrckStringArray:
+      type: array
+      example:
+        - value1
+        - value2
+      items:
+        type: string
     BckndId:
       type: string
       pattern: ^[\w.-]{4,64}$
@@ -5071,6 +5352,8 @@ components:
           pattern: ^[a-z0-9\-\.]+$
         data:
           $ref: '#/components/schemas/BckndGenericSecretData'
+        labels:
+          $ref: '#/components/schemas/BckndGenericSecretLabels'
     BckndGenericSecretPatchBody:
       type: object
       required:
@@ -5110,6 +5393,25 @@ components:
       required:
         - count
         - resources
+    BckndGenericSecretLabels:
+      type: array
+      description: Arbitrary labels as meta information
+      items:
+        $ref: '#/components/schemas/BckndGenericSecretLabel'
+    BckndGenericSecretLabel:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          type: string
+          pattern: ^ext.ai.sap.com/(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]){1,48}$
+          maxLength: 63
+          example: ext.ai.sap.com/my-label
+        value:
+          type: string
+          maxLength: 5000
     BckndArgoCDRepositoryData:
       type: object
       required:
@@ -5786,301 +6088,160 @@ components:
         details:
           description: Optional details of the error message
           type: object
-    TrckGetMetricResource:
-      description:
-        Collection of various metrics/tags/labels associated against some
-        execution/deployment
-      type: object
-      properties:
-        executionId:
-          $ref: '#/components/schemas/TrckExecutionId'
-        metrics:
-          $ref: '#/components/schemas/TrckGetMetricList'
-        tags:
-          $ref: '#/components/schemas/TrckTagList'
-        customInfo:
-          $ref: '#/components/schemas/TrckCustomInfoObjectList'
-      required:
-        - executionId
-    TrckMetricResource:
-      description:
-        Collection of various metrics/tags/labels associated against some
-        execution/deployment
-      required:
-        - executionId
-      type: object
-      properties:
-        executionId:
-          $ref: '#/components/schemas/TrckExecutionId'
-        metrics:
-          $ref: '#/components/schemas/TrckMetricList'
-        tags:
-          $ref: '#/components/schemas/TrckTagList'
-        customInfo:
-          $ref: '#/components/schemas/TrckCustomInfoObjectList'
-    TrckGetMetricResourceList:
-      type: object
-      required:
-        - resources
-      properties:
-        count:
-          type: integer
-          description: Number of the resource instances in the list
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/TrckGetMetricResource'
-    TrckDeleteMetricsResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/TrckExecutionId'
-        message:
-          type: string
-          example: Metric Resource was successfully deleted
-    TrckExecutionId:
+    KpiColumnName:
+      readOnly: true
       type: string
-      example: aa97b177-9383-4934-8543-0f91b7a0283a
-      oneOf:
-        - $ref: '#/components/schemas/TrckMlapiExecutionId'
-      description: ID of the deployment/execution
-    TrckTimestamp:
+      description: Name of the Column
+      anyOf:
+        - enum:
+            - ResourceGroup
+            - Scenario
+            - Executable
+            - Executions
+            - Artifacts
+            - Deployments
+        - {}
+    KpiArrayOfColumnNames:
+      uniqueItems: true
+      type: array
+      readOnly: true
+      items:
+        $ref: '#/components/schemas/KpiColumnName'
+    KpiAggregationAttribute:
       type: string
-      description: Time when the metric was created or logged in RFC3339 format
-      format: date-time
-    TrckGetMetricList:
-      description: Array of Metric items
+      title: Aggregation Attribute
+      readOnly: true
+    KpiCountAggregate:
+      type: integer
+      title: CountAggregate
+      format: int64
+      minimum: 0
+      x-examples: {}
+      readOnly: true
+    KpiResultRow:
       type: array
-      items:
-        $ref: '#/components/schemas/TrckGetMetric'
-    TrckMetricList:
-      description: Array of Metric items
-      type: array
-      items:
-        $ref: '#/components/schemas/TrckMetric'
-    TrckGetMetric:
-      description:
-        Key-value metrics, where the value is numeric. Metric can also
-        have optional step and label fields.
-      type: object
-      required:
-        - name
-        - value
-        - timestamp
-      properties:
-        name:
-          $ref: '#/components/schemas/TrckMetricName'
-        value:
-          $ref: '#/components/schemas/TrckMetricValue'
-        timestamp:
-          $ref: '#/components/schemas/TrckTimestamp'
-        step:
-          description:
-            step is an optional integer that represents any measurement
-            of training progress (number of training iterations, number of epochs,
-            and so on) for the metric
-          type: integer
-          minimum: 0
-          example: 2
-        labels:
-          $ref: '#/components/schemas/TrckLabelList'
-    TrckMetric:
-      description:
-        Key-value metrics, where the value is numeric. Metric can also
-        have optional step and label fields.
-      required:
-        - name
-        - value
-      type: object
-      properties:
-        name:
-          $ref: '#/components/schemas/TrckMetricName'
-        value:
-          $ref: '#/components/schemas/TrckMetricValue'
-        timestamp:
-          $ref: '#/components/schemas/TrckTimestamp'
-        step:
-          description:
-            step is an optional integer that represents any measurement
-            of training progress (number of training iterations, number of epochs,
-            and so on) for the metric
-          type: integer
-          minimum: 0
-          example: 2
-        labels:
-          $ref: '#/components/schemas/TrckLabelList'
-    TrckMetricName:
-      pattern: '[\w-]{1,64}'
-      type: string
-      maxLength: 256
-      description: Name of the metric
-      example: Error Rate
-    TrckMetricValue:
-      type: number
-      description: Numeric Value of the metric
-      example: 0.98
-    TrckmetricSelectorPermissibleValues:
-      description:
-        Permissible value for $select could be either * or one or many
-        of the values from metrics, tags, custominfo
-      type: array
-      items:
-        type: string
-        enum:
-          - metrics
-          - tags
-          - customInfo
-          - '*'
-    TrckLabelList:
-      description: a list of name-value object pairs associated with some metric.
-      type: array
-      items:
-        $ref: '#/components/schemas/TrckLabel'
-      example:
-        - name: group
-          value: tree-82
-        - name: metrics.ai.sap.com/Artifact.name
-          value: sk_learn_rf_classifier_model
-    TrckLabel:
-      description: a classifying phrase/name applied to a metric
-      required:
-        - name
-        - value
-      type: object
-      properties:
-        name:
-          $ref: '#/components/schemas/TrckLabelName'
-        value:
-          description: Metric Label Value
-          maxLength: 256
-          minLength: 1
-          type: string
-          example: sk_learn_random_forest_model
-      example:
-        name: group
-        value: tree-82
-    TrckTagList:
-      description:
-        a list of name-value object pairs associated with the execution/deployment.
-        Tags are queryable.
-      type: array
-      items:
-        $ref: '#/components/schemas/TrckTag'
-    TrckTag:
-      description:
-        A dictionary of name-value pairs to support segregation at execution
-        level.
-      required:
-        - name
-        - value
-      type: object
-      properties:
-        name:
-          oneOf:
-            - $ref: '#/components/schemas/TrckGenericName'
-        value:
-          description: tag value
-          maxLength: 256
-          minLength: 1
-          type: string
-          example: RFC-1
-      example:
-        name: Artifact Group
-        value: RFC-1
-    TrckCustomInfoObjectList:
+      title: ResultRow
+      uniqueItems: false
+      x-examples: {}
       description: ''
+      items:
+        $ref: '#/components/schemas/KpiResultRowItem'
+      readOnly: true
+    KpiResultRowItem:
+      title: ResultRowItem
+      anyOf:
+        - $ref: '#/components/schemas/KpiAggregationAttribute'
+        - $ref: '#/components/schemas/KpiCountAggregate'
+      x-examples: {}
+    KpiResultRowList:
+      title: ResultRowList
       type: array
       items:
-        $ref: '#/components/schemas/TrckCustomInfoObject'
-    TrckCustomInfoObject:
-      description:
-        large object which provides rendering/semantic information regarding
-        certain metric for consuming application or can be complex metrics in JSON
-        format
-      required:
-        - name
-        - value
+        $ref: '#/components/schemas/KpiResultRow'
+    KpiResultSet:
       type: object
+      title: ResultSet
+      x-examples:
+        example-1:
+          header:
+            - ResourceGroup
+            - Executions
+            - Artifacts
+            - Deployments
+          rows:
+            - - 00112233-4455-6677-8899-aabbccddeeff
+              - 30
+              - 30
+              - 3
+      additionalProperties: false
+      minProperties: 2
+      maxProperties: 2
       properties:
-        name:
-          oneOf:
-            - $ref: '#/components/schemas/TrckGenericName'
-        value:
-          $ref: '#/components/schemas/TrckCustomInfoObjectData'
-      example:
-        name: Confusion Matrix
-        value:
-          "[{'Predicted': 'False',  'Actual': 'False','value': 34},{'Predicted':
-          'False','Actual': 'True',  'value': 124}, {'Predicted': 'True','Actual':
-          'False','value': 165},{  'Predicted': 'True','Actual': 'True','value':
-          36}]"
-    TrckCustomInfoObjectData:
-      description: Message
-      minLength: 1
-      type: string
-      example:
-        "[{'Predicted': 'False',\t'Actual': 'False','value': 34},{'Predicted':
-        'False','Actual': 'True',\t'value': 124}, {'Predicted': 'True','Actual': 'False','value':
-        165},{\t'Predicted': 'True','Actual': 'True','value': 36}]"
-    TrckMlapiExecutionId:
-      description: Generic ID
-      pattern: ^[\w.-]{4,64}$
-      type: string
-      example: aa97b177-9383-4934-8543-0f91b7a0283a
-    TrckGenericName:
-      description:
-        Generic name which can belong to a tag,label,metric or customInfo
-        Object
-      maxLength: 256
-      minLength: 1
-      type: string
-      example: sample name
-    TrckLabelName:
-      description:
-        Label name to label one or more metrics. "metrics.ai.sap.com/Artifact.name"
-        is a reserved label to associate an artifact with the metrics
-      maxLength: 256
-      minLength: 1
-      type: string
-      example: metrics.ai.sap.com/Artifact.name
-    TrckApiError:
+        header:
+          $ref: '#/components/schemas/KpiArrayOfColumnNames'
+        rows:
+          $ref: '#/components/schemas/KpiResultRowList'
+      readOnly: true
+    KpiApiError:
+      type: object
       required:
         - code
         - message
+      properties:
+        code:
+          type: string
+          description: Descriptive error code (not http status code)
+        message:
+          type: string
+          description: Plaintext error description
+        requestId:
+          type: string
+          description: ID of the individual request
+        target:
+          type: string
+          description: Invoked URL
+        details:
+          description: Optional details of the error message
+          type: object
+    DSetUrl:
+      type: string
+      format: url
+      example: https://download.example.com/test/file.bin
+    DSetError:
+      description: Error Response
       type: object
       properties:
         code:
-          description: Descriptive error code (not http status code).
           type: string
+          minLength: 1
         message:
-          description: plaintext error description
           type: string
-        requestId:
-          description: id of individual request
-          type: string
+          minLength: 1
         target:
-          description: url that has been called
+          type: string
+          minLength: 1
+        requestId:
           type: string
         details:
           type: array
+          uniqueItems: true
+          minItems: 0
           items:
-            $ref: '#/components/schemas/TrckDetailsErrorResponse'
-    TrckDetailsErrorResponse:
+            required:
+              - code
+              - message
+            properties:
+              code:
+                type: string
+                minLength: 1
+              message:
+                type: string
+                minLength: 1
+      required:
+        - code
+        - message
+      x-examples:
+        example-1:
+          code: '03021655'
+          message: Bad request encountered. Please try again with possible-solution-here.
+          target: /url/path
+          requestId: 9832bf934f3743v3948v3
+          details:
+            - code: '01041211'
+              message: Optional nested error message.
+    DSetFileCreationResponse:
+      description: Response for successful file creation
       type: object
+      required:
+        - message
+        - url
       properties:
-        code:
-          description: Descriptive error code (not http status code)
-          type: string
         message:
-          description: Plaintext error description
           type: string
-    TrckStringArray:
-      type: array
-      example:
-        - value1
-        - value2
-      items:
-        type: string
+          description: File creation response message
+          example: File creation acknowledged
+        url:
+          $ref: '#/components/schemas/DSetUrl'
     MetaCapabilities:
       type: object
       required:
@@ -6315,101 +6476,6 @@ components:
         details:
           description: Optional details of the error message
           type: object
-    KpiColumnName:
-      readOnly: true
-      type: string
-      description: Name of the Column
-      anyOf:
-        - enum:
-            - ResourceGroup
-            - Scenario
-            - Executable
-            - Executions
-            - Artifacts
-            - Deployments
-        - {}
-    KpiArrayOfColumnNames:
-      uniqueItems: true
-      type: array
-      readOnly: true
-      items:
-        $ref: '#/components/schemas/KpiColumnName'
-    KpiAggregationAttribute:
-      type: string
-      title: Aggregation Attribute
-      readOnly: true
-    KpiCountAggregate:
-      type: integer
-      title: CountAggregate
-      format: int64
-      minimum: 0
-      x-examples: {}
-      readOnly: true
-    KpiResultRow:
-      type: array
-      title: ResultRow
-      uniqueItems: false
-      x-examples: {}
-      description: ''
-      items:
-        $ref: '#/components/schemas/KpiResultRowItem'
-      readOnly: true
-    KpiResultRowItem:
-      title: ResultRowItem
-      anyOf:
-        - $ref: '#/components/schemas/KpiAggregationAttribute'
-        - $ref: '#/components/schemas/KpiCountAggregate'
-      x-examples: {}
-    KpiResultRowList:
-      title: ResultRowList
-      type: array
-      items:
-        $ref: '#/components/schemas/KpiResultRow'
-    KpiResultSet:
-      type: object
-      title: ResultSet
-      x-examples:
-        example-1:
-          header:
-            - ResourceGroup
-            - Executions
-            - Artifacts
-            - Deployments
-          rows:
-            - - 00112233-4455-6677-8899-aabbccddeeff
-              - 30
-              - 30
-              - 3
-      additionalProperties: false
-      minProperties: 2
-      maxProperties: 2
-      properties:
-        header:
-          $ref: '#/components/schemas/KpiArrayOfColumnNames'
-        rows:
-          $ref: '#/components/schemas/KpiResultRowList'
-      readOnly: true
-    KpiApiError:
-      type: object
-      required:
-        - code
-        - message
-      properties:
-        code:
-          type: string
-          description: Descriptive error code (not http status code)
-        message:
-          type: string
-          description: Plaintext error description
-        requestId:
-          type: string
-          description: ID of the individual request
-        target:
-          type: string
-          description: Invoked URL
-        details:
-          description: Optional details of the error message
-          type: object
   parameters:
     RTAtokenHeader:
       name: Authorization
@@ -6533,30 +6599,6 @@ components:
         type: string
         pattern: ^[\w.-]{4,64}$
       example: aa97b177-9383-4934-8543-0f91a7a0283a
-    DSetresourceGroupHeader:
-      in: header
-      name: AI-Resource-Group
-      description: Specify a resource group id
-      schema:
-        type: string
-      required: false
-    DSetpath:
-      name: path
-      in: path
-      required: true
-      schema:
-        type: string
-        format: path
-        pattern: ^(([\w.-]+):([\w.-]+)|([\w.-]+))(/([\w./-]+[\w.-]+)?)?$
-        maxLength: 1024
-      description: path relative to the object store root URL in the secret
-    DSetoverwrite:
-      name: overwrite
-      in: query
-      required: false
-      schema:
-        type: boolean
-      description: If true, then file is overwritten. Default is false.
     AiresourceGroupHeader:
       in: header
       name: AI-Resource-Group
@@ -6850,6 +6892,60 @@ components:
           - status
       example: status
       x-visible: false
+    TrckqueryFilter:
+      example: executionId eq 'aa97b177-9383-4934-8543-0f91b7a0283a'
+      name: $filter
+      description:
+        Filter parameter allows filtering of metric resource using ExecutionId(s).
+        User can only use in, eq operators in filter expression.
+      schema:
+        type: string
+      in: query
+      required: false
+      deprecated: true
+    TrckexecutionIds:
+      example: executionIds=aa97b177-9383-4934-8543-0f91b7a0283a,aa97b177-9383-4934-8543-0f91b7a0283b
+      name: executionIds
+      description:
+        executionIds parameter allows filtering of metric resource using
+        single or multiple ExecutionId(s).
+      schema:
+        $ref: '#/components/schemas/TrckStringArray'
+      in: query
+      style: form
+      required: false
+      explode: false
+    TrckmetricAttributeSelector:
+      examples:
+        selectAll:
+          value: $select=*
+        selectSpecific:
+          value: $select=metrics,customInfo
+      name: $select
+      description:
+        returns only the resources that the client explicitly requests.
+        User can also pass * as a value for $select,  which will behave same as that
+        of not passing $select query param.
+      schema:
+        $ref: '#/components/schemas/TrckmetricSelectorPermissibleValues'
+      in: query
+      style: form
+      required: false
+      explode: false
+    TrckexecutionId:
+      name: executionId
+      description: The Id of an execution
+      schema:
+        $ref: '#/components/schemas/TrckExecutionId'
+      in: query
+      required: true
+    TrcktrackingResourceGroupHeader:
+      name: AI-Resource-Group
+      description: Specify a resource group id
+      in: header
+      schema:
+        type: string
+      required: true
     BckndtokenHeader:
       name: Authorization
       in: header
@@ -6995,60 +7091,6 @@ components:
       schema:
         type: boolean
       example: true
-    TrckqueryFilter:
-      example: executionId eq 'aa97b177-9383-4934-8543-0f91b7a0283a'
-      name: $filter
-      description:
-        Filter parameter allows filtering of metric resource using ExecutionId(s).
-        User can only use in, eq operators in filter expression.
-      schema:
-        type: string
-      in: query
-      required: false
-      deprecated: true
-    TrckexecutionIds:
-      example: executionIds=aa97b177-9383-4934-8543-0f91b7a0283a,aa97b177-9383-4934-8543-0f91b7a0283b
-      name: executionIds
-      description:
-        executionIds parameter allows filtering of metric resource using
-        single or multiple ExecutionId(s).
-      schema:
-        $ref: '#/components/schemas/TrckStringArray'
-      in: query
-      style: form
-      required: false
-      explode: false
-    TrckmetricAttributeSelector:
-      examples:
-        selectAll:
-          value: $select=*
-        selectSpecific:
-          value: $select=metrics,customInfo
-      name: $select
-      description:
-        returns only the resources that the client explicitly requests.
-        User can also pass * as a value for $select,  which will behave same as that
-        of not passing $select query param.
-      schema:
-        $ref: '#/components/schemas/TrckmetricSelectorPermissibleValues'
-      in: query
-      style: form
-      required: false
-      explode: false
-    TrckexecutionId:
-      name: executionId
-      description: The Id of an execution
-      schema:
-        $ref: '#/components/schemas/TrckExecutionId'
-      in: query
-      required: true
-    TrcktrackingResourceGroupHeader:
-      name: AI-Resource-Group
-      description: Specify a resource group id
-      in: header
-      schema:
-        type: string
-      required: true
     KpiquerySelect:
       name: $select
       description: Columns to select
@@ -7067,6 +7109,30 @@ components:
           $ref: '#/components/schemas/KpiColumnName'
       style: form
       explode: false
+    DSetresourceGroupHeader:
+      in: header
+      name: AI-Resource-Group
+      description: Specify a resource group id
+      schema:
+        type: string
+      required: false
+    DSetpath:
+      name: path
+      in: path
+      required: true
+      schema:
+        type: string
+        format: path
+        pattern: ^(([\w.-]+):([\w.-]+)|([\w.-]+))(/([\w./-]+[\w.-]+)?)?$
+        maxLength: 1024
+      description: path relative to the object store root URL in the secret
+    DSetoverwrite:
+      name: overwrite
+      in: query
+      required: false
+      schema:
+        type: boolean
+      description: If true, then file is overwritten. Default is false.
   responses:
     RTANotFound:
       description: The specified resource was not found
@@ -7094,6 +7160,118 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/RTAErrorResponse'
+    AiNotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/AiApiError'
+    AiPreconditionFailed:
+      description:
+        The service didn't meet the precondition needed to execute this
+        operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/AiApiError'
+    AiBadRequest:
+      description: The specification of the resource was incorrect
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/AiApiError'
+    TrckBadRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/TrckApiError'
+      description: The specification of the resource was incorrect
+    TrckNotImplemented:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/TrckApiError'
+      description: Operation is not Supported.
+    TrckNotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/TrckApiError'
+    TrckPayloadTooLarge:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/TrckApiError'
+      description: request entity is larger than limits defined by server.
+    BckndCommonError:
+      description:
+        HTTP status codes 401, 403 or 500. Response body contains further
+        details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BckndErrorResponse'
+    BckndNotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BckndErrorResponse'
+    BckndBadRequest:
+      description: The request was malformed and could thus not be processed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BckndErrorResponse'
+    KpiNotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/KpiApiError'
+    KpiTooManyRequests:
+      description: Too many requests
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/KpiApiError'
+    KpiInvalidRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/KpiApiError'
     DSetBadRequest:
       description: The specification of the resource was incorrect
       content:
@@ -7210,91 +7388,6 @@ components:
             the artifact API to register this file.
           schema:
             $ref: '#/components/schemas/DSetUrl'
-    AiNotFound:
-      description: The specified resource was not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/AiApiError'
-    AiPreconditionFailed:
-      description:
-        The service didn't meet the precondition needed to execute this
-        operation
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/AiApiError'
-    AiBadRequest:
-      description: The specification of the resource was incorrect
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/AiApiError'
-    BckndCommonError:
-      description:
-        HTTP status codes 401, 403 or 500. Response body contains further
-        details.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/BckndErrorResponse'
-    BckndNotFound:
-      description: The specified resource was not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/BckndErrorResponse'
-    BckndBadRequest:
-      description: The request was malformed and could thus not be processed.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/BckndErrorResponse'
-    TrckBadRequest:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/TrckApiError'
-      description: The specification of the resource was incorrect
-    TrckNotImplemented:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/TrckApiError'
-      description: Operation is not Supported.
-    TrckNotFound:
-      description: The specified resource was not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/TrckApiError'
-    TrckPayloadTooLarge:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/TrckApiError'
-      description: request entity is larger than limits defined by server.
     MetaNotFound:
       description: The specified resource was not found
       content:
@@ -7304,30 +7397,3 @@ components:
             properties:
               error:
                 $ref: '#/components/schemas/MetaApiError'
-    KpiNotFound:
-      description: The specified resource was not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/KpiApiError'
-    KpiTooManyRequests:
-      description: Too many requests
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/KpiApiError'
-    KpiInvalidRequest:
-      description: Invalid request
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/KpiApiError'

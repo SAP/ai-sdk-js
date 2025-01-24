@@ -23,5 +23,17 @@ export type RTAModelVersion = {
   /**
    * Retirement date of model in ISO 8601 timestamp
    */
-  retirementDate: string;
+  retirementDate?: string;
+  /**
+   * Context length of the model
+   */
+  contextLength?: number;
+  /**
+   * List of input types supported by the model
+   */
+  inputTypes?: string[];
+  /**
+   * List of capabilities supported by the model
+   */
+  capabilities?: string[];
 } & Record<string, any>;
