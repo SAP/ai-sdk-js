@@ -249,7 +249,7 @@ This feature allows filtering both the [input](https://help.sap.com/docs/sap-ai-
 
 Use `ContentFilters.buildAzureContentSafety()` function to build an Azure content filter.
 The Azure content filter supports four categories: `Hate`, `Violence`, `Sexual`, and `SelfHarm`.
-Each category can be configured with severity levels of 0, 2, 4, or 6.
+Each category can be configured with severity levels of `ALLOW_SAFE`, `ALLOW_SAFE_LOW`, `ALLOW_SAFE_LOW_MEDIUM` and `ALLOW_ALL` which correspond to Azure threshold values of 0, 2, 4, or 6 respectively.
 
 Here is a complete example of using an Azure content filter for both input and output:
 
@@ -263,7 +263,10 @@ const templating = {
   template: [{ role: 'user', content: '{{?input}}' }]
 };
 
-const filter = ContentFilters.buildAzureContentSafety({ Hate: 2, Violence: 4 });
+const filter = ContentFilters.buildAzureContentSafety({
+  Hate: 'ALLOW_SAFE_LOW',
+  Violence: 'ALLOW_SAFE_LOW_MEDIUM'
+});
 const orchestrationClient = new OrchestrationClient({
   llm,
   templating,
