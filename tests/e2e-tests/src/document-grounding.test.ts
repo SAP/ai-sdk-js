@@ -2,7 +2,8 @@ import {
   createCollection,
   createDocumentsWithTimestamp,
   deleteCollection,
-  orchestrationGrounding
+  orchestrationGroundingHelpSapCom,
+  orchestrationGroundingVector
 } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
 
@@ -22,8 +23,15 @@ describe('document grounding', () => {
     await deleteCollection(collectionId);
   });
 
-  it('should get the result based on grounding context via orchestration API', async () => {
-    const result = await orchestrationGrounding();
+  it('should get the result based on grounding context from vector data repository via orchestration API', async () => {
+    const result = await orchestrationGroundingVector();
     expect(result.getContent()).toEqual(timestamp.toString());
+  });
+
+  it('should get the result based on grounding context from `help.sap.com` data respository via orchestration API', async () => {
+    const result = await orchestrationGroundingHelpSapCom();
+    expect(result.getContent()).toEqual(expect.any(String));
+    expect(result.data.module_results).toBeDefined();
+    expect(result.data.module_results.grounding!.data).toBeDefined();
   });
 });
