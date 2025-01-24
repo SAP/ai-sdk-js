@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -18,6 +18,7 @@ import type {
  * This API is part of the 'AI_CORE_API' service.
  */
 export const ObjectStoreSecretApi = {
+  _defaultBasePath: undefined,
   /**
    * Retrieve a list of metadata of the stored secrets.
    *
@@ -35,7 +36,8 @@ export const ObjectStoreSecretApi = {
       {
         queryParameters,
         headerParameters
-      }
+      },
+      ObjectStoreSecretApi._defaultBasePath
     ),
   /**
    * Create a secret based on the configuration in the request body
@@ -54,7 +56,8 @@ export const ObjectStoreSecretApi = {
       {
         body,
         headerParameters
-      }
+      },
+      ObjectStoreSecretApi._defaultBasePath
     ),
   /**
    * This retrieves the metadata of the stored secret which match the parameter objectStoreName.
@@ -75,7 +78,8 @@ export const ObjectStoreSecretApi = {
       {
         pathParameters: { objectStoreName },
         headerParameters
-      }
+      },
+      ObjectStoreSecretApi._defaultBasePath
     ),
   /**
    * Update a secret with name of objectStoreName if it exists.
@@ -97,7 +101,8 @@ export const ObjectStoreSecretApi = {
         pathParameters: { objectStoreName },
         body,
         headerParameters
-      }
+      },
+      ObjectStoreSecretApi._defaultBasePath
     ),
   /**
    * Delete a secret with the name of objectStoreName if it exists.
@@ -115,6 +120,7 @@ export const ObjectStoreSecretApi = {
       {
         pathParameters: { objectStoreName },
         headerParameters
-      }
+      },
+      ObjectStoreSecretApi._defaultBasePath
     )
 };

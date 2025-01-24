@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -10,6 +10,7 @@ import type { BckndServiceList, BckndExtendedService } from './schema/index.js';
  * This API is part of the 'AI_CORE_API' service.
  */
 export const ServiceApi = {
+  _defaultBasePath: undefined,
   /**
    * Retrieve a list of services for a given main tenant.
    *
@@ -19,9 +20,14 @@ export const ServiceApi = {
   kubesubmitV4AiservicesGetAll: (headerParameters?: {
     Authorization?: string;
   }) =>
-    new OpenApiRequestBuilder<BckndServiceList>('get', '/admin/services', {
-      headerParameters
-    }),
+    new OpenApiRequestBuilder<BckndServiceList>(
+      'get',
+      '/admin/services',
+      {
+        headerParameters
+      },
+      ServiceApi._defaultBasePath
+    ),
   /**
    * Get an service of a given main tenant.
    *
@@ -39,6 +45,7 @@ export const ServiceApi = {
       {
         pathParameters: { serviceName },
         headerParameters
-      }
+      },
+      ServiceApi._defaultBasePath
     )
 };

@@ -10,4 +10,4 @@
 export type TextContent = {
   type: 'text';
   text: string;
-} & Record<string, any>;
+};

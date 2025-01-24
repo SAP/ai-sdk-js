@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -18,6 +18,7 @@ import type {
  * This API is part of the 'AI_CORE_API' service.
  */
 export const DockerRegistrySecretApi = {
+  _defaultBasePath: undefined,
   /**
    * Retrieve the stored secret metadata which matches the parameter dockerRegistryName. The base64 encoded field for the stored secret is not returned.
    *
@@ -35,7 +36,8 @@ export const DockerRegistrySecretApi = {
       {
         pathParameters: { dockerRegistryName },
         headerParameters
-      }
+      },
+      DockerRegistrySecretApi._defaultBasePath
     ),
   /**
    * Update a secret with name of dockerRegistryName if it exists.
@@ -57,7 +59,8 @@ export const DockerRegistrySecretApi = {
         pathParameters: { dockerRegistryName },
         body,
         headerParameters
-      }
+      },
+      DockerRegistrySecretApi._defaultBasePath
     ),
   /**
    * Delete a secret with the name of dockerRegistryName if it exists.
@@ -75,7 +78,8 @@ export const DockerRegistrySecretApi = {
       {
         pathParameters: { dockerRegistryName },
         headerParameters
-      }
+      },
+      DockerRegistrySecretApi._defaultBasePath
     ),
   /**
    * Retrieve a list of metadata of the stored secrets
@@ -94,7 +98,8 @@ export const DockerRegistrySecretApi = {
       {
         queryParameters,
         headerParameters
-      }
+      },
+      DockerRegistrySecretApi._defaultBasePath
     ),
   /**
    * Create a secret based on the configuration in the request body.
@@ -115,6 +120,7 @@ export const DockerRegistrySecretApi = {
       {
         body,
         headerParameters
-      }
+      },
+      DockerRegistrySecretApi._defaultBasePath
     )
 };

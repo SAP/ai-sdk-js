@@ -34,5 +34,5 @@ export type DpiConfig = {
      * controls whether the input to the grounding module will be masked with the configuration supplied in the masking module
      */
     enabled?: boolean;
-  } & Record<string, any>;
+  };
 };

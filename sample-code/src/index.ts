@@ -13,7 +13,8 @@ export {
   orchestrationRequestConfig,
   orchestrationCompletionMasking,
   orchestrationFromJson,
-  orchestrationGrounding,
+  orchestrationGroundingVector,
+  orchestrationGroundingHelpSapCom,
   orchestrationChatCompletionImage,
   chatCompletionStreamWithJsonModuleConfig,
   chatCompletionStream

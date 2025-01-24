@@ -4,8 +4,7 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import type { ChatMessage } from './chat-message.js';
-import type { MultiChatMessage } from './multi-chat-message.js';
 /**
  * Representation of the 'ChatMessages' schema.
  */
-export type ChatMessages = (ChatMessage | MultiChatMessage)[];
+export type ChatMessages = ChatMessage[];

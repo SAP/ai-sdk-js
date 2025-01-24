@@ -15,9 +15,10 @@ import {
   orchestrationRequestConfig,
   chatCompletionStream as orchestrationChatCompletionStream,
   orchestrationFromJson,
-  orchestrationGrounding,
+  orchestrationGroundingVector,
   orchestrationChatCompletionImage,
-  chatCompletionStreamWithJsonModuleConfig as orchestrationChatCompletionStreamWithJsonModuleConfig
+  chatCompletionStreamWithJsonModuleConfig as orchestrationChatCompletionStreamWithJsonModuleConfig,
+  orchestrationGroundingHelpSapCom
 } from './orchestration.js';
 import {
   getDeployments,
@@ -432,7 +433,7 @@ app.get('/langchain/invoke-tool-chain', async (req, res) => {
 
 /* Document Grounding */
 app.get(
-  '/document-grounding/invoke-orchestration-grounding',
+  '/document-grounding/invoke-orchestration-grounding-vector',
   async (req, res) => {
     try {
       res.setHeader('Content-Type', 'text/event-stream');
@@ -449,7 +450,7 @@ app.get(
       res.write(`Document created with timestamp:\t${timestamp}\n`);
 
       // Send an orchestration chat completion request with grounding module configured.
-      const groundingResult = await orchestrationGrounding();
+      const groundingResult = await orchestrationGroundingVector();
       res.write(
         `Orchestration responded with timestamp:\t${groundingResult.getContent()}\n`
       );
@@ -521,3 +522,18 @@ app.get('/document-grounding/invoke-retrieve-documents', async (req, res) => {
       .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
   }
 });
+
+app.get(
+  '/document-grounding/invoke-orchestration-grounding-help-sap-com',
+  async (req, res) => {
+    try {
+      const groundingResult = await orchestrationGroundingHelpSapCom();
+      res.send(groundingResult.getContent());
+    } catch (error: any) {
+      console.error(error);
+      res
+        .status(500)
+        .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+    }
+  }
+);

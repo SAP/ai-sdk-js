@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -15,6 +15,7 @@ import type {
  * This API is part of the 'AI_CORE_API' service.
  */
 export const SecretApi = {
+  _defaultBasePath: undefined,
   /**
    * Lists all secrets corresponding to tenant. This retrieves metadata only, not the secret data itself.
    * @param queryParameters - Object containing the following keys: $top, $skip, $count.
@@ -35,7 +36,8 @@ export const SecretApi = {
       {
         queryParameters,
         headerParameters
-      }
+      },
+      SecretApi._defaultBasePath
     ),
   /**
    * Create a new generic secret in the corresponding resource group or at main tenant level.
@@ -57,7 +59,8 @@ export const SecretApi = {
       {
         body,
         headerParameters
-      }
+      },
+      SecretApi._defaultBasePath
     ),
   /**
    * Update secret credentials. Replace secret data with the provided data.
@@ -82,7 +85,8 @@ export const SecretApi = {
         pathParameters: { secretName },
         body,
         headerParameters
-      }
+      },
+      SecretApi._defaultBasePath
     ),
   /**
    * Deletes the secret from provided resource group namespace
@@ -98,8 +102,13 @@ export const SecretApi = {
       'AI-Tenant-Scope'?: boolean;
     }
   ) =>
-    new OpenApiRequestBuilder<any>('delete', '/admin/secrets/{secretName}', {
-      pathParameters: { secretName },
-      headerParameters
-    })
+    new OpenApiRequestBuilder<any>(
+      'delete',
+      '/admin/secrets/{secretName}',
+      {
+        pathParameters: { secretName },
+        headerParameters
+      },
+      SecretApi._defaultBasePath
+    )
 };
