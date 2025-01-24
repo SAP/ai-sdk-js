@@ -86,7 +86,7 @@ jobs:
           if [[ -n "$(git status --porcelain)" ]]; then
             echo "Changes detected in the specification file."
             git status
-            echo "spec_diff=false" >> "$GITHUB_OUTPUT"
+            echo "spec_diff=true" >> "$GITHUB_OUTPUT"
           else
             echo "No changes detected in the specification file, skipping rest of the job."
             git status
@@ -123,7 +123,8 @@ jobs:
         run: |
           git config --global user.email "cloudsdk@sap.com"
           git config --global user.name "SAP Cloud SDK Bot"
-          git add .
+          git add --all
+          git status
           git commit -m "Update $CHOICE based on $REF"
           git push --set-upstream origin ${{ steps.branch.outputs.branch }}
 
