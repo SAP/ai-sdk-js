@@ -142,7 +142,7 @@ jobs:
             exit 0
           fi
           
-          PR_URL=$(gh pr create --json url --jq .url --base main --head $BRANCH --title "feat: Update $CHOICE specification" --body "
+          PR_URL=$(gh pr create --base main --head $BRANCH --title "feat: Update $CHOICE specification" --body "
           ## Context
           
           Update $CHOICE specification file based on $REF.
@@ -159,8 +159,7 @@ jobs:
 
           - [ ] Unit / type tests cover new classes
           - [ ] Release notes updated
-          ")
-          echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
+          ") && echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
 
       - name: Generate Job Summary
         if: ${{ always() }}
