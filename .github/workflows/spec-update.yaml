@@ -84,8 +84,12 @@ jobs:
         id: spec_diff
         run: |
           if [[ -n "$(git status --porcelain)" ]]; then
-            echo "spec_diff=true" >> "$GITHUB_OUTPUT"
+            echo "Changes detected in the specification file."
+            git status
+            echo "spec_diff=false" >> "$GITHUB_OUTPUT"
           else
+            echo "No changes detected in the specification file, skipping rest of the job."
+            git status
             echo "spec_diff=false" >> "$GITHUB_OUTPUT"
           fi
 
