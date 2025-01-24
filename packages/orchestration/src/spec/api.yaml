@@ -1,11 +1,11 @@
 openapi: 3.0.0
 
 info:
-  title: Orchestration
-  description: Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
+  title: Internal Orchestration Service API
+  description: SAP AI Core - Orchestration Service API
   contact:
     name: SAP AI Core
-  version: 0.48.2
+  version: 0.0.1
 
 servers:
   - url: '/v1'
@@ -849,6 +849,7 @@ components:
       required:
         - type
         - config
+      additionalProperties: false
       properties:
         type:
           description: Name of the filter provider type
@@ -1037,7 +1038,6 @@ components:
     DocumentGroundingFilter:
       type: object
       required:
-        - id
         - data_repository_type
       additionalProperties: false
       properties:
@@ -1078,6 +1078,7 @@ components:
     GroundingFilterId:
       title: Id
       description: Identifier of this SearchFilter - unique per request.
+      type: string
     GroundingFilterSearchConfiguration:
       additionalProperties: false
       properties:
@@ -1100,11 +1101,9 @@ components:
     DataRepositoryType:
       type: string
       description: Only include DataRepositories with the given type.
-      anyOf:
-        - enum:
-            - vector
-            - help.sap.com
-        - {}
+      enum:
+        - vector
+        - help.sap.com
       title: DataRepositoryType
     KeyValueListPair:
       additionalProperties: false
@@ -1151,10 +1150,8 @@ components:
       title: SearchDocumentKeyValueListPair
     SearchSelectOptionEnum:
       type: string
-      anyOf:
-        - enum:
-            - ignoreIfKeyAbsent
-        - {}
+      enum:
+        - ignoreIfKeyAbsent
       title: SearchSelectOptionEnum
 
     ErrorResponse:

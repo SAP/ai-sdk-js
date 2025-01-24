@@ -12,7 +12,7 @@ import type { SearchDocumentKeyValueListPair } from './search-document-key-value
  * Representation of the 'DocumentGroundingFilter' schema.
  */
 export type DocumentGroundingFilter = {
-  id: GroundingFilterId;
+  id?: GroundingFilterId;
   search_config?: GroundingFilterSearchConfiguration;
   /**
    * Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids.
