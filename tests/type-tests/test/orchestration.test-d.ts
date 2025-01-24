@@ -259,8 +259,7 @@ expectType<AzureContentSafetyFilterConfig>(
   })
 );
 
-// Assert that the new type introduced is non- breaking
-expectType<AzureContentSafetyFilterConfig>(
+expectError<AzureContentSafetyFilterConfig>(
   ContentFilters.buildAzureContentSafety({
     Hate: 2,
     SelfHarm: 4
