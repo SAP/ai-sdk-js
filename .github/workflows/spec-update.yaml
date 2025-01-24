@@ -33,6 +33,7 @@ jobs:
     outputs:
       spec_diff: ${{ steps.spec_diff.outputs.spec_diff }}
       branch: ${{ steps.push.outputs.branch }}
+      pr_url: ${{ steps.create-pr.outputs.pr_url }}
       compilation_result: ${{ steps.compile.outputs.compilation_result }}
       test_result: ${{ steps.compile.outputs.test_result }}
     env:
@@ -123,6 +124,7 @@ jobs:
           git push --set-upstream origin ${{ steps.branch.outputs.branch }}
 
       - name: "Create PR"
+        id: create-pr
         if: ${{ env.CREATE_PR == 'true' && steps.spec_diff.outputs.spec_diff == 'true'}}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -133,7 +135,7 @@ jobs:
             exit 0
           fi
           
-          gh pr create --base main --head $BRANCH --title "feat: Update $CHOICE specification" --body "
+          PR_URL=$(gh pr create --json url --jq .url --base main --head $BRANCH --title "feat: Update $CHOICE specification" --body "
           ## Context
           
           Update $CHOICE specification file based on $REF.
@@ -150,14 +152,25 @@ jobs:
 
           - [ ] Unit / type tests cover new classes
           - [ ] Release notes updated
-          "
+          ")
+          echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
 
-      - name: "Print Summary"
+      - name: Generate Job Summary
         if: ${{ always() }}
+        env:
+          BRANCH: ${{ steps.branch.outputs.branch }}
+          PR_URL: ${{ steps.create-pr.outputs.pr_url }}
         run: |
-          echo "File download outcome: ${{ steps.download.outcome }}"
-          echo "Spec file contained changes: ${{ steps.spec_diff.outputs.spec_diff }}"
-          echo "Client generation outcome: ${{ steps.generate.outcome }}"
-          echo "Client compilation outcome: ${{ steps.compile.outputs.compilation_result }}"
-          echo "Client test outcome: ${{ steps.compile.outputs.test_result }}"
-          echo "Branch creation: ${{ steps.push.outcome }}"
+          echo "## Workflow Execution Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Step | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| File Download | ${{ steps.download.outcome == 'success' && '✅' || '❌' }} ${{ steps.download.outcome }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Spec File Changes | ${{ steps.spec_diff.outputs.spec_diff && '🔄 Changes Detected' || '⚠ No Changes' }}" >> $GITHUB_STEP_SUMMARY
+          
+          if ${{ steps.spec_diff.outputs.spec_diff }}; then
+            echo "| Client Generation | ${{ steps.generate.outcome == 'success' && '✅' || '❌' }} ${{ steps.generate.outcome }}" >> $GITHUB_STEP_SUMMARY
+            echo "| Client Compilation | ${{ steps.compile.outputs.compilation_result == 'success' && '✅' || '❌' }} ${{ steps.compile.outputs.compilation_result }}" >> $GITHUB_STEP_SUMMARY
+            echo "| Client Testing | ${{ steps.compile.outputs.test_result == 'success' && '✅' || steps.compile.outputs.test_result == 'skipped' && '⏩' || '❌' }} ${{ steps.compile.outputs.test_result }}" >> $GITHUB_STEP_SUMMARY
+            echo "| Branch Creation | ${{ steps.push.outcome == 'success' && '✅ $BRANCH' || '❌' }} ${{ steps.push.outcome }}" >> $GITHUB_STEP_SUMMARY
+            echo "| Pull Request Creation | ${{ steps.push.outcome == 'success' && '✅ [PR Link]($PR_URL)' || '❌' }} ${{ steps.push.outcome }}" >> $GITHUB_STEP_SUMMARY
