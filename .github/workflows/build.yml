@@ -19,7 +19,6 @@ jobs:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
           node-version: ${{ matrix.node-version }}
-          pnpm-version: 10
       - run: pnpm test:unit
       - run: pnpm test:type
       - run: pnpm test:schema
