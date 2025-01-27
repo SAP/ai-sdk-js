@@ -62,7 +62,7 @@ function mapToolToOpenAiTool(
  * @param toolCalls - The {@link AzureOpenAiChatCompletionMessageToolCalls} response.
  * @returns The LangChain {@link ToolCall}.
  */
-function mapOpenAitoLangchainToolCall(
+function mapAzureOpenAiToLangchainToolCall(
   toolCalls?: AzureOpenAiChatCompletionMessageToolCalls
 ): ToolCall[] | undefined {
   if (toolCalls) {
@@ -90,7 +90,9 @@ export function mapOutputToChatResult(
         text: choice.message?.content ?? '',
         message: new AIMessage({
           content: choice.message?.content ?? '',
-          tool_calls: mapOpenAitoLangchainToolCall(choice.message?.tool_calls),
+          tool_calls: mapAzureOpenAiToLangchainToolCall(
+            choice.message?.tool_calls
+          ),
           additional_kwargs: {
             finish_reason: choice.finish_reason,
             index: choice.index,
