@@ -249,9 +249,6 @@ importers:
       langchain:
         specifier: 0.3.13
         version: 0.3.13(@langchain/core@0.3.36(openai@4.80.1(ws@8.18.0)(zod@3.24.1)))(axios@1.7.9)(cheerio@1.0.0)(handlebars@4.7.8)(openai@4.80.1(ws@8.18.0)(zod@3.24.1))(ws@8.18.0)
-      zod:
-        specifier: ^3.24.1
-        version: 3.24.1
 
   tests/e2e-tests:
     dependencies:
