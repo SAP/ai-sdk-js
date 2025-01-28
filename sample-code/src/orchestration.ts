@@ -304,7 +304,7 @@ export async function orchestrationFromJson(): Promise<
  * Ask about a custom knowledge embedded in document grounding.
  * @returns The orchestration service response.
  */
-export async function orchestrationGrounding(): Promise<OrchestrationResponse> {
+export async function orchestrationGroundingVector(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
     llm,
     templating: {
@@ -327,6 +327,41 @@ export async function orchestrationGrounding(): Promise<OrchestrationResponse> {
     inputParams: {
       groundingRequest:
         'When was the last time SAP AI SDK JavaScript end to end test was executed? Return only the latest timestamp in milliseconds without any other text.'
+    }
+  });
+}
+
+/**
+ * Ask about Generative AI Hub in SAP AI Core and ground the response.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationGroundingHelpSapCom(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    llm,
+    templating: {
+      template: [
+        {
+          role: 'user',
+          content:
+            'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
+        }
+      ]
+    },
+    grounding: buildDocumentGroundingConfig({
+      input_params: ['groundingRequest'],
+      output_param: 'groundingOutput',
+      filters: [
+        {
+          id: 'filter1',
+          data_repository_type: 'help.sap.com'
+        }
+      ]
+    })
+  });
+
+  return orchestrationClient.chatCompletion({
+    inputParams: {
+      groundingRequest: 'Give me a short introduction of SAP AI Core.'
     }
   });
 }

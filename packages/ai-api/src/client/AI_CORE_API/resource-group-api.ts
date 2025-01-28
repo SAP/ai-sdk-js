@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -17,6 +17,7 @@ import type {
  * This API is part of the 'AI_CORE_API' service.
  */
 export const ResourceGroupApi = {
+  _defaultBasePath: undefined,
   /**
    * Retrieve a list of resource groups for a given tenant.
    *
@@ -40,7 +41,8 @@ export const ResourceGroupApi = {
       {
         queryParameters,
         headerParameters
-      }
+      },
+      ResourceGroupApi._defaultBasePath
     ),
   /**
    * Create resource group to a given main tenant. The length of resource group id must be between 3 and 253.
@@ -59,7 +61,8 @@ export const ResourceGroupApi = {
       {
         body,
         headerParameters
-      }
+      },
+      ResourceGroupApi._defaultBasePath
     ),
   /**
    * Get a resource group of a given main tenant.
@@ -78,7 +81,8 @@ export const ResourceGroupApi = {
       {
         pathParameters: { resourceGroupId },
         headerParameters
-      }
+      },
+      ResourceGroupApi._defaultBasePath
     ),
   /**
    * Replace some characteristics of the resource group, for instance labels.
@@ -100,7 +104,8 @@ export const ResourceGroupApi = {
         pathParameters: { resourceGroupId },
         body,
         headerParameters
-      }
+      },
+      ResourceGroupApi._defaultBasePath
     ),
   /**
    * Delete a resource group of a given main tenant.
@@ -119,6 +124,7 @@ export const ResourceGroupApi = {
       {
         pathParameters: { resourceGroupId },
         headerParameters
-      }
+      },
+      ResourceGroupApi._defaultBasePath
     )
 };

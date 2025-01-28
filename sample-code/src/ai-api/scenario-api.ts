@@ -24,7 +24,7 @@ export async function getModelsInScenario(
   scenarioId: string,
   resourceGroup: string
 ): Promise<AiModelList> {
-  return ScenarioApi.modelsGet(scenarioId, {
+  return ScenarioApi.scenarioQueryModels(scenarioId, {
     'AI-Resource-Group': resourceGroup
   }).execute();
 }

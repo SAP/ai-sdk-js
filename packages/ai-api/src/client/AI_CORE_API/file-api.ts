@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+ * Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
@@ -10,6 +10,7 @@ import type { DSetFileCreationResponse } from './schema/index.js';
  * This API is part of the 'AI_CORE_API' service.
  */
 export const FileApi = {
+  _defaultBasePath: undefined,
   /**
    * Endpoint for downloading file. The path must point to an individual file.
    * @param path - path relative to the object store root URL in the secret
@@ -20,10 +21,15 @@ export const FileApi = {
     path: string,
     headerParameters?: { 'AI-Resource-Group'?: string }
   ) =>
-    new OpenApiRequestBuilder<string>('get', '/lm/dataset/files/{path}', {
-      pathParameters: { path },
-      headerParameters
-    }),
+    new OpenApiRequestBuilder<string>(
+      'get',
+      '/lm/dataset/files/{path}',
+      {
+        pathParameters: { path },
+        headerParameters
+      },
+      FileApi._defaultBasePath
+    ),
   /**
    * Endpoint for uploading file. The maximum file size depends on the actual implementation
    * but must not exceed 100MB. The actual file size limit can be obtained by querying
@@ -50,7 +56,7 @@ export const FileApi = {
    */
   fileUpload: (
     path: string,
-    body: string | undefined,
+    body: any | undefined,
     queryParameters?: { overwrite?: boolean },
     headerParameters?: { 'AI-Resource-Group'?: string }
   ) =>
@@ -62,7 +68,8 @@ export const FileApi = {
         body,
         queryParameters,
         headerParameters
-      }
+      },
+      FileApi._defaultBasePath
     ),
   /**
    * Delete the file specified by the path parameter.
@@ -74,8 +81,13 @@ export const FileApi = {
     path: string,
     headerParameters?: { 'AI-Resource-Group'?: string }
   ) =>
-    new OpenApiRequestBuilder<any>('delete', '/lm/dataset/files/{path}', {
-      pathParameters: { path },
-      headerParameters
-    })
+    new OpenApiRequestBuilder<any>(
+      'delete',
+      '/lm/dataset/files/{path}',
+      {
+        pathParameters: { path },
+        headerParameters
+      },
+      FileApi._defaultBasePath
+    )
 };
