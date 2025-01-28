@@ -19,6 +19,7 @@ import type {
   BaseMessage,
   FunctionMessage,
   HumanMessage,
+  SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
@@ -96,8 +97,7 @@ export function mapOutputToChatResult(
           finish_reason: choice.finish_reason,
           index: choice.index,
           function_call: choice.message.function_call,
-          tool_calls: choice.message.tool_calls,
-          tool_call_id: choice.message.tool_call_id
+          tool_calls: choice.message.tool_calls
         }
       }),
       generationInfo: {
@@ -183,7 +183,7 @@ function mapToolMessageToAzureOpenAiToolMessage(
   };
 }
 
-function mapFunctionMessageToAzureOpenAiChatMessage(
+function mapFunctionMessageToAzureOpenAiFunctionMessage(
   message: FunctionMessage
 ): AzureOpenAiChatCompletionRequestFunctionMessage {
   return {
@@ -194,8 +194,8 @@ function mapFunctionMessageToAzureOpenAiChatMessage(
   };
 }
 
-function mapSystemMessageToAzureOpenAiChatMessage(
-  message: BaseMessage
+function mapSystemMessageToAzureOpenAiSystemMessage(
+  message: SystemMessage
 ): AzureOpenAiChatCompletionRequestSystemMessage {
   return {
     role: 'system',
@@ -220,9 +220,9 @@ function mapBaseMessageToAzureOpenAiChatMessage(
     case 'human':
       return mapHumanMessageToAzureOpenAiUserMessage(message);
     case 'system':
-      return mapSystemMessageToAzureOpenAiChatMessage(message);
+      return mapSystemMessageToAzureOpenAiSystemMessage(message);
     case 'function':
-      return mapFunctionMessageToAzureOpenAiChatMessage(message);
+      return mapFunctionMessageToAzureOpenAiFunctionMessage(message);
     case 'tool':
       return mapToolMessageToAzureOpenAiToolMessage(message as ToolMessage);
     default:
