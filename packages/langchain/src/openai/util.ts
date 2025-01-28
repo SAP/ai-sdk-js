@@ -85,39 +85,37 @@ export function mapOutputToChatResult(
   completionResponse: AzureOpenAiCreateChatCompletionResponse
 ): ChatResult {
   return {
-    generations: completionResponse.choices.map(
-      (choice: (typeof completionResponse)['choices'][0]) => ({
-        text: choice.message?.content ?? '',
-        message: new AIMessage({
-          content: choice.message?.content ?? '',
-          tool_calls: mapAzureOpenAiToLangchainToolCall(
-            choice.message?.tool_calls
-          ),
-          additional_kwargs: {
-            finish_reason: choice.finish_reason,
-            index: choice.index,
-            function_call: choice.message?.function_call,
-            tool_calls: choice.message?.tool_calls,
-            tool_call_id: ''
-          }
-        }),
-        generationInfo: {
+    generations: completionResponse.choices.map(choice => ({
+      text: choice.message.content ?? '',
+      message: new AIMessage({
+        content: choice.message.content ?? '',
+        tool_calls: mapAzureOpenAiToLangchainToolCall(
+          choice.message.tool_calls
+        ),
+        additional_kwargs: {
           finish_reason: choice.finish_reason,
           index: choice.index,
-          function_call: choice.message?.function_call,
-          tool_calls: choice.message?.tool_calls
+          function_call: choice.message.function_call,
+          tool_calls: choice.message.tool_calls,
+          tool_call_id: choice.message.tool_call_id
         }
-      })
-    ),
+      }),
+      generationInfo: {
+        finish_reason: choice.finish_reason,
+        index: choice.index,
+        function_call: choice.message.function_call,
+        tool_calls: choice.message.tool_calls
+      }
+    })),
     llmOutput: {
       created: completionResponse.created,
       id: completionResponse.id,
       model: completionResponse.model,
       object: completionResponse.object,
       tokenUsage: {
-        completionTokens: completionResponse.usage?.completion_tokens || 0,
-        promptTokens: completionResponse.usage?.prompt_tokens || 0,
-        totalTokens: completionResponse.usage?.total_tokens || 0
+        completionTokens: completionResponse.usage?.completion_tokens ?? 0,
+        promptTokens: completionResponse.usage?.prompt_tokens ?? 0,
+        totalTokens: completionResponse.usage?.total_tokens ?? 0
       }
     }
   };
@@ -133,7 +131,7 @@ function mapLangchainToolCallToAzureOpenAiToolCall(
 ): AzureOpenAiChatCompletionMessageToolCalls | undefined {
   if (toolCalls) {
     return toolCalls.map(toolCall => ({
-      id: toolCall.id ?? uuidv4(),
+      id: toolCall.id || uuidv4(),
       type: 'function',
       function: {
         name: toolCall.name,
@@ -192,7 +190,7 @@ function mapFunctionMessageToAzureOpenAiChatMessage(
     role: 'function',
     content:
       message.content as AzureOpenAiChatCompletionRequestFunctionMessage['content'],
-    name: message.name ? message.name : 'default'
+    name: message.name || 'default'
   };
 }
 
