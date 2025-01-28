@@ -33,8 +33,6 @@
     "@langchain/textsplitters": "0.1.0",
     "@sap-cloud-sdk/util": "^3.25.0",
     "@types/express": "^5.0.0",
-    "@types/mime-types": "2.1.4",
-    "express": "^4.21.2",
-    "mime-types": "^2.1.35"
+    "express": "^4.21.2"
   }
 }

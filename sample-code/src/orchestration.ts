@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
-import { extname, join } from 'path';
-import { lookup } from 'mime-types';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import {
   OrchestrationClient,
   buildAzureContentFilter,
@@ -19,6 +19,9 @@ const logger = createLogger({
   package: 'sample-code',
   messageContext: 'orchestration'
 });
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 /**
  * A simple LLM request, asking about the capital of France.
@@ -288,7 +291,7 @@ export async function orchestrationFromJson(): Promise<
 > {
   // You can also provide the JSON configuration as a plain string in the code directly instead.
   const jsonConfig = await readFile(
-    './src/model-orchestration-config.json',
+    join(__dirname, 'model-orchestration-config.json'),
     'utf-8'
   );
   const response = await new OrchestrationClient(jsonConfig).chatCompletion();
@@ -356,13 +359,13 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
     }
   });
 
-  const imageFilePath = join(__dirname, 'src', 'media', 'sample-image.png');
-  const mimeType = lookup(extname(imageFilePath).toLowerCase());
+  const imageFilePath = join(__dirname, 'media', 'sample-image.png');
+  const mimeType = 'image/png';
   const encodedString = `data:${mimeType};base64,${await readFile(imageFilePath, 'base64')}`;
 
   return orchestrationClient.chatCompletion({
     inputParams: {
-      // You can also provide the public URL of the image as a string in the code directly.
+      // Alternatively, you can provide a public URL of the image here instead.
       imageUrl: encodedString
     }
   });
