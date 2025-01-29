@@ -42,6 +42,8 @@ $ npm install @sap-ai-sdk/document-grounding
 The examples below demonstrate the usage of the most commonly used APIs in SAP AI Core document grounding service.
 In addition to the examples below, you can find more **sample code** [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/document-grounding.ts).
 
+> Make sure if you define your own resource group that the resource group requires the correct label to use the document grounding service. When creating the resource group on SAP AI Launchpad, add the key-value pair label: `document-grounding: true`. You can also create the resource group via the orchestration API. You can find more information about [Creating a Resource Group for Grounding](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-resource-group-for-ai-data-management?locale=en-US) in the SAP Help document.
+
 ### Create a Collection
 
 ```ts
@@ -51,7 +53,7 @@ const response =
     {
       title: 'ai-sdk-js-e2e',
       embeddingConfig: {
-        modelName: 'text-embedding-ada-002-v2'
+        modelName: 'text-embedding-ada-002'
       },
       metadata: []
     },
