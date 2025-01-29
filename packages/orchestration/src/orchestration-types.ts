@@ -177,7 +177,7 @@ export interface AzureContentFilter {
 /**
  * A descriptive constant for Azure content safety filter threshold.
  */
-export const AzureFilterThreshold = {
+export const azureFilterThreshold = {
   ALLOW_SAFE: 0,
   ALLOW_SAFE_LOW: 2,
   ALLOW_SAFE_LOW_MEDIUM: 4,
@@ -187,7 +187,7 @@ export const AzureFilterThreshold = {
 /**
  * Type for azure filter threshold constant.
  */
-export type AzureFilterThresholdType = keyof typeof AzureFilterThreshold;
+export type AzureFilterThresholdType = keyof typeof azureFilterThreshold;
 
 /**
  * Type guard to check if a value is a valid azure filter threshold value.
@@ -197,5 +197,5 @@ export type AzureFilterThresholdType = keyof typeof AzureFilterThreshold;
 export function isAzureFilterThresholdType(
   value: any
 ): value is AzureFilterThresholdType {
-  return value in AzureFilterThreshold;
+  return value in azureFilterThreshold;
 }

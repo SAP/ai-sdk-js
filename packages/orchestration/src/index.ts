@@ -14,7 +14,7 @@ export type {
 } from './orchestration-types.js';
 
 export {
-  AzureFilterThreshold,
+  azureFilterThreshold,
   isAzureFilterThresholdType
 } from './orchestration-types.js';
 
