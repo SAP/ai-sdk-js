@@ -185,6 +185,6 @@ export const azureFilterThreshold = {
 } as const;
 
 /**
- * The Azure threshold level supported for each azure content ilter category.
+ * The Azure threshold level supported for each azure content filter category.
  */
 export type AzureFilterThreshold = keyof typeof azureFilterThreshold;
