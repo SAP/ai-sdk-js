@@ -1,5 +1,23 @@
 # @sap-ai-sdk/sample-code
 
+## 1.7.0
+
+### Minor Changes
+
+- ccfa2eb: [Fixed Issue] Fixed the internal mapping of LangChain to Azure OpenAI and vice versa.
+
+### Patch Changes
+
+- Updated dependencies [0a62553]
+- Updated dependencies [f08ac2e]
+- Updated dependencies [bdaae7e]
+- Updated dependencies [ccfa2eb]
+  - @sap-ai-sdk/orchestration@1.7.0
+  - @sap-ai-sdk/langchain@1.7.0
+  - @sap-ai-sdk/ai-api@1.7.0
+  - @sap-ai-sdk/document-grounding@1.7.0
+  - @sap-ai-sdk/foundation-models@1.7.0
+
 ## 1.6.0
 
 ### Patch Changes
