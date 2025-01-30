@@ -42,10 +42,10 @@ export type AzureOpenAiChatCallOptions = BaseChatModelCallOptions &
     | 'logprobs'
     | 'top_logprobs'
     | 'response_format'
-    | 'tools'
     | 'tool_choice'
     | 'functions'
     | 'function_call'
+    | 'tools'
   > & {
     requestConfig?: CustomRequestConfig;
   };

@@ -228,11 +228,11 @@ The chain performs RAG with the chat and embedding client.
 
 ### Document Grounding
 
-#### E2E flow for Orchestration Grounding
+#### E2E flow for Orchestration Grounding using `vector` as the Data Repository
 
-`GET /document-grounding/invoke-orchestration-grounding`
+`GET /document-grounding/invoke-orchestration-grounding-vector`
 
-This scenario demonstrates the end-to-end flow for creating collections and documents using the document grounding service, and then using the orchestration grounding to get a chat completion response with a retrieved context.
+This scenario demonstrates the end-to-end flow for creating collections and documents using the document grounding service, and then using the orchestration grounding module to get a chat completion response with a retrieved context based on `vector` data repository.
 
 The flow will first create an empty collection and then add a document to it.
 The document contains a statement with the current timestamp.
@@ -249,5 +249,16 @@ The created collection will be deleted at the end of the flow.
 This scenario demonstrates the end-to-end flow for creating collections and documents using the document grounding service, and then retrieving the documents with a query.
 
 The response should contain chunks of documents similar to the query.
+
+The created collection will be deleted at the end of the flow.
+
+#### E2E flow for Orchestration Grounding using `help.sap.com` as the Data Repository
+
+`GET /document-grounding/invoke-orchestration-grounding-help-sap-com`
+
+This scenario uses the orchestration grounding module to get a chat completion response with a retrieved context based on `help.sap.com` data repository.
+
+Orchestration service will send a chat completion request with the context to LLM.
+The response should contain the same timestamp.
 
 The created collection will be deleted at the end of the flow.

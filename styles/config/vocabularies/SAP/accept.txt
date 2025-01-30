@@ -109,7 +109,7 @@ polyfill
 URIs
 [Dd]estructure
 [Dd]estructuring
-config
+[Cc]onfig
 Injectable
 uncheck
 [kK]eystore

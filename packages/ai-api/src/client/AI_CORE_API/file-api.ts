@@ -56,7 +56,7 @@ export const FileApi = {
    */
   fileUpload: (
     path: string,
-    body: string | undefined,
+    body: any | undefined,
     queryParameters?: { overwrite?: boolean },
     headerParameters?: { 'AI-Resource-Group'?: string }
   ) =>
