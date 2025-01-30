@@ -159,19 +159,19 @@ export interface AzureContentFilter {
   /**
    * The filter category for hate content.
    */
-  Hate?: AzureFilterThresholdType;
+  Hate?: AzureThresholdLevel;
   /**
    * The filter category for self-harm content.
    */
-  SelfHarm?: AzureFilterThresholdType;
+  SelfHarm?: AzureThresholdLevel;
   /**
    * The filter category for sexual content.
    */
-  Sexual?: AzureFilterThresholdType;
+  Sexual?: AzureThresholdLevel;
   /**
    * The filter category for violence content.
    */
-  Violence?: AzureFilterThresholdType;
+  Violence?: AzureThresholdLevel;
 }
 
 /**
@@ -185,17 +185,6 @@ export const azureFilterThreshold = {
 } as const;
 
 /**
- * Type for azure filter threshold constant.
+ * The Azure threshold level supported for each azure content ilter category.
  */
-export type AzureFilterThresholdType = keyof typeof azureFilterThreshold;
-
-/**
- * Type guard to check if a value is a valid azure filter threshold value.
- * @param value - Value to check for type.
- * @returns A Boolean value.
- **/
-export function isAzureFilterThresholdType(
-  value: any
-): value is AzureFilterThresholdType {
-  return value in azureFilterThreshold;
-}
+export type AzureThresholdLevel = keyof typeof azureFilterThreshold;
