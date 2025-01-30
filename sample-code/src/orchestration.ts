@@ -21,7 +21,7 @@ const logger = createLogger({
 });
 
 const __filename = fileURLToPath(import.meta.url);
-// File lies in the dist folder when transpiled file executes, so we need to go up one level
+// Navigate up by one level, to access files in the `sample-code` root instead of the transpiled `dist` folder
 const __dirname = join(dirname(__filename), '..');
 
 /**
