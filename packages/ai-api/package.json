@@ -29,6 +29,6 @@
   },
   "dependencies": {
     "@sap-ai-sdk/core": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^3.25.0"
+    "@sap-cloud-sdk/connectivity": "^3.26.0"
   }
 }
