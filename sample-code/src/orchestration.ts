@@ -21,7 +21,8 @@ const logger = createLogger({
 });
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+// Navigate up by one level, to access files in the `sample-code` root instead of the transpiled `dist` folder
+const __dirname = join(dirname(__filename), '..');
 
 /**
  * A simple LLM request, asking about the capital of France.
@@ -291,7 +292,7 @@ export async function orchestrationFromJson(): Promise<
 > {
   // You can also provide the JSON configuration as a plain string in the code directly instead.
   const jsonConfig = await readFile(
-    join(__dirname, 'model-orchestration-config.json'),
+    join(__dirname, 'src', 'model-orchestration-config.json'),
     'utf-8'
   );
   const response = await new OrchestrationClient(jsonConfig).chatCompletion();
@@ -394,7 +395,7 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
     }
   });
 
-  const imageFilePath = join(__dirname, 'media', 'sample-image.png');
+  const imageFilePath = join(__dirname, 'src', 'media', 'sample-image.png');
   const mimeType = 'image/png';
   const encodedString = `data:${mimeType};base64,${await readFile(imageFilePath, 'base64')}`;
 
