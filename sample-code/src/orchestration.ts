@@ -21,7 +21,8 @@ const logger = createLogger({
 });
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+// File lies in the dist folder when transpiled file executes, so we need to go up one level
+const __dirname = join(dirname(__filename), '..');
 
 /**
  * A simple LLM request, asking about the capital of France.
