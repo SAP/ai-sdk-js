@@ -396,7 +396,6 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
   });
 
   const imageFilePath = join(__dirname, 'src', 'media', 'sample-image.png');
-  console.log(imageFilePath);
   const mimeType = 'image/png';
   const encodedString = `data:${mimeType};base64,${await readFile(imageFilePath, 'base64')}`;
 
