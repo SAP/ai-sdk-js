@@ -292,7 +292,7 @@ export async function orchestrationFromJson(): Promise<
 > {
   // You can also provide the JSON configuration as a plain string in the code directly instead.
   const jsonConfig = await readFile(
-    join(__dirname, 'model-orchestration-config.json'),
+    join(__dirname, 'src', 'model-orchestration-config.json'),
     'utf-8'
   );
   const response = await new OrchestrationClient(jsonConfig).chatCompletion();
@@ -395,7 +395,8 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
     }
   });
 
-  const imageFilePath = join(__dirname, 'media', 'sample-image.png');
+  const imageFilePath = join(__dirname, 'src', 'media', 'sample-image.png');
+  console.log(imageFilePath);
   const mimeType = 'image/png';
   const encodedString = `data:${mimeType};base64,${await readFile(imageFilePath, 'base64')}`;
 
