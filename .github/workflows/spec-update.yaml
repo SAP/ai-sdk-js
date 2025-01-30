@@ -33,6 +33,7 @@ jobs:
     outputs:
       spec_diff: ${{ steps.spec_diff.outputs.spec_diff }}
       branch: ${{ steps.push.outputs.branch }}
+      pr_url: ${{ steps.create-pr.outputs.pr_url }}
       compilation_result: ${{ steps.compile.outputs.compilation_result }}
       test_result: ${{ steps.compile.outputs.test_result }}
     env:
@@ -41,9 +42,9 @@ jobs:
       REF: ${{ github.event.inputs.file-ref }}
       CREATE_PR: ${{ github.event.inputs.create-pr }}
     steps:
-      - name: "Checkout repository"
-        uses: actions/checkout@v4
+      - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
+          node-version: 20
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Checkout or Create Branch"
@@ -81,23 +82,23 @@ jobs:
 
       - name: "Exit if there are no changes"
         id: spec_diff
+        # Before checking for changed files, run the linter as that also formats spec files
         run: |
-          if [[ `git status --porcelain` ]]; then
+          pnpm lint:fix
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "Changes detected in the specification file."
+            git status
             echo "spec_diff=true" >> "$GITHUB_OUTPUT"
           else
+            echo "No changes detected in the specification file, skipping rest of the job."
+            git status
             echo "spec_diff=false" >> "$GITHUB_OUTPUT"
           fi
-
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
-        if: steps.spec_diff.outputs.spec_diff == 'true'
-        with:
-          node-version: 20
 
       - name: "Generate"
         id: generate
         if: steps.spec_diff.outputs.spec_diff == 'true'
         run: |
-          pnpm install
           pnpm generate
 
       - name: "Compile and Test"
@@ -124,11 +125,13 @@ jobs:
         run: |
           git config --global user.email "cloudsdk@sap.com"
           git config --global user.name "SAP Cloud SDK Bot"
-          git add .
+          git add --all
+          git status
           git commit -m "Update $CHOICE based on $REF"
           git push --set-upstream origin ${{ steps.branch.outputs.branch }}
 
       - name: "Create PR"
+        id: create-pr
         if: ${{ env.CREATE_PR == 'true' && steps.spec_diff.outputs.spec_diff == 'true'}}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -139,7 +142,7 @@ jobs:
             exit 0
           fi
           
-          gh pr create --base main --head $BRANCH --title "feat: [DevOps] Update $CHOICE Specification" --body "
+          PR_URL=$(gh pr create --base main --head $BRANCH --title "feat: Update $CHOICE specification" --body "
           ## Context
           
           Update $CHOICE specification file based on $REF.
@@ -147,8 +150,8 @@ jobs:
           This PR was created automatically by the [spec-update workflow](https://github.com/SAP/ai-sdk-js/actions/workflows/spec-update.yaml).
           You can commit on top of this branch, but as long as this PR is open the action can't be re-run.
           
-          - Compilation outcome: ${{ steps.compile.output.compilation_result }}
-          - Test run outcome: ${{ steps.compile.output.test_result }}
+          - Compilation outcome: ${{ steps.compile.outputs.compilation_result }}
+          - Test run outcome: ${{ steps.compile.outputs.test_result }}
           
           Before merging, make sure to update tests and release notes, if necessary.
           
@@ -156,14 +159,26 @@ jobs:
 
           - [ ] Unit / type tests cover new classes
           - [ ] Release notes updated
-          "
+          ") && echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
 
-      - name: "Print Summary"
+      - name: Generate Job Summary
         if: ${{ always() }}
+        env:
+          BRANCH: ${{ steps.branch.outputs.branch }}
+          PR_URL: ${{ steps.create-pr.outputs.pr_url }}
         run: |
-          echo "File download outcome: ${{ steps.download.outcome }}"
-          echo "Spec file contained changes: ${{ steps.spec_diff.outputs.spec_diff }}"
-          echo "Client generation outcome: ${{ steps.generate.outcome }}"
-          echo "Client compilation outcome: ${{ steps.compile.output.compilation_result }}"
-          echo "Client test outcome: ${{ steps.compile.output.test_result }}"
-          echo "Branch creation: ${{ steps.push.outcome }}"
+          DIFF_URL="https://github.com/SAP/ai-sdk-js/compare/main...$BRANCH"
+          echo "## Workflow Execution Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Step | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| File Download | ${{ steps.download.outcome == 'success' && '✅' || '❌' }} ${{ steps.download.outcome }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Spec File Changes | ${{ steps.spec_diff.outputs.spec_diff == 'true' && '🔄 Changes Detected' || '⏹️ No Changes' }}" >> $GITHUB_STEP_SUMMARY
+          
+          if ${{ steps.spec_diff.outputs.spec_diff == 'true' }}; then
+            echo "| Client Generation | ${{ steps.generate.outcome == 'success' && '✅' || '❌' }} ${{ steps.generate.outcome }}" >> $GITHUB_STEP_SUMMARY
+            echo "| Client Compilation | ${{ steps.compile.outputs.compilation_result == 'success' && '✅' || '❌' }} ${{ steps.compile.outputs.compilation_result }}" >> $GITHUB_STEP_SUMMARY
+            echo "| Client Testing | ${{ steps.compile.outputs.test_result == 'success' && '✅' || steps.compile.outputs.test_result == 'skipped' && '⏩' || '❌' }} ${{ steps.compile.outputs.test_result }}" >> $GITHUB_STEP_SUMMARY
+            echo "| Branch Creation | ${{ steps.push.outcome == 'success' && '✅ [Branch Link]($DIFF_URL)' || '❌ failure' }}" >> $GITHUB_STEP_SUMMARY
+            echo "| Pull Request Creation | ${{ env.CREATE_PR == 'false' && '⏩ skipped' || '' }}${{ env.CREATE_PR == 'true' && steps.push.outcome == 'success' && '✅ [PR Link]($PR_URL)' || '' }}" >> $GITHUB_STEP_SUMMARY
+          fi
