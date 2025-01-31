@@ -14,4 +14,4 @@ export type LlamaGuard38BFilterConfig = {
    */
   type: 'llama_guard_3_8b';
   config: LlamaGuard38B;
-} & Record<string, any>;
+};
