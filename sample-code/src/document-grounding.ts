@@ -18,7 +18,7 @@ export async function createCollection(): Promise<string> {
       metadata: []
     },
     {
-      'AI-Resource-Group': 'default'
+      'AI-Resource-Group': 'ai-sdk-js-e2e'
     }
   ).executeRaw();
 
@@ -34,7 +34,7 @@ export async function createCollection(): Promise<string> {
  */
 export async function deleteCollection(collectionId: string): Promise<any> {
   return VectorApi.deleteCollectionById(collectionId, {
-    'AI-Resource-Group': 'default'
+    'AI-Resource-Group': 'ai-sdk-js-e2e'
   }).execute();
 }
 
@@ -64,7 +64,7 @@ export async function createDocumentsWithTimestamp(
       ]
     },
     {
-      'AI-Resource-Group': 'default'
+      'AI-Resource-Group': 'ai-sdk-js-e2e'
     }
   ).execute();
 }
@@ -93,7 +93,7 @@ export async function retrieveDocuments(): Promise<RetievalSearchResults> {
       ]
     },
     {
-      'AI-Resource-Group': 'default'
+      'AI-Resource-Group': 'ai-sdk-js-e2e'
     }
   ).execute();
 }
