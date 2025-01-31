@@ -93,7 +93,7 @@ In addition to the examples below, you can find more **sample code** [here](http
 
 ### LLM Config
 
-Configure which LLM to use module by setting the `model_name` property.
+Choose the LLM by setting the `model_name` property.
 Define the optional `model_version` property to choose an available model version.
 By default, the version is set to `latest`.
 Specify the optional `model_params` property to apply specific parameters to the model
