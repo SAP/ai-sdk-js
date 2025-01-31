@@ -87,7 +87,7 @@ console.log(response.getContent());
 
 Here we use GPT-4o with a single user message as prompt and print out the response.
 
-The `OrchestrationClient` allows you to combine various modules, such as templating and content filtering, while sending chat completion requests to an orchestration-compatible generative AI model.
+The `OrchestrationClient` enables combining various modules, such as templating and content filtering, while sending chat completion requests to an orchestration-compatible generative AI model.
 
 In addition to the examples below, you can find more **sample code** [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/orchestration.ts).
 
