@@ -9,7 +9,7 @@ import type {
  * Convenience function to create Azure content filters.
  * @param filter - Filtering configuration for Azure filter. If skipped, the default Azure content filter configuration is used.
  * @returns An object with the Azure filtering configuration.
- * @deprecated Use {@link buildAzureContentSafetyFilter()} instead.
+ * @deprecated Since 1.8.0. Use {@link buildAzureContentSafety()} instead.
  */
 export function buildAzureContentFilter(
   filter?: AzureContentSafety
