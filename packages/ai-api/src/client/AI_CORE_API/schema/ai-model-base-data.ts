@@ -27,4 +27,8 @@ export type AiModelBaseData = {
    * Access type of the model
    */
   accessType?: string;
+  /**
+   * Provider of the model
+   */
+  provider?: string;
 } & Record<string, any>;

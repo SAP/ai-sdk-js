@@ -11,9 +11,13 @@ export type BckndGenericSecretDetails = {
   /**
    * Name of the secret
    */
-  name?: string;
+  name: string;
   /**
    * Timestamp at which secret was created
    */
-  createdAt?: string;
+  createdAt: string;
+  /**
+   * Sync status of the replicated secrets in all resource groups of the tenant
+   */
+  resourceGroupSecretsSyncStatus?: Record<string, boolean>;
 } & Record<string, any>;

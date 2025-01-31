@@ -29,6 +29,15 @@ jobs:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
       - name: REUSE Compliance Check
         uses: fsfe/reuse-action@v5
+      - run: pnpm generate
+      - name: Enforce generated code is up to date
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "Generated code is out of date. The following changes were found after generating:"
+            git status
+            echo "Please run 'pnpm generate' and commit the changes."
+            exit 1
+          fi
       - run: pnpm lint
       - name: Check CommonJS compatibility
         run: pnpm compile:cjs

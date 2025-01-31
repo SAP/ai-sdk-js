@@ -1,5 +1,20 @@
 # @sap-ai-sdk/orchestration
 
+## 1.7.0
+
+### Minor Changes
+
+- 0a62553: [Compatibility Note] Update AI API to the 2501a release.
+  As part of this change, the `modelsGet` method of `ScenarioAPI` has been renamed to `scenarioQueryModels`.
+- f08ac2e: [New Functionality] Support using `help.sap.com` as data repository type in the grounding module.
+- bdaae7e: [Fixed Issue] Fix logging bug when using streaming with JSON client.
+  [New Functionality] Add `streaming` option in the `OrchestrationModuleConfig` type to set global streaming options.
+
+### Patch Changes
+
+- @sap-ai-sdk/ai-api@1.7.0
+- @sap-ai-sdk/core@1.7.0
+
 ## 1.6.0
 
 ### Minor Changes
