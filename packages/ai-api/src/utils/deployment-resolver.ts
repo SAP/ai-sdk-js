@@ -127,7 +127,7 @@ export async function resolveDeploymentId(
 
   if (!deployments.length) {
     throw new Error(
-      'No deployment matched the given criteria: ' + JSON.stringify(opts)
+      `No deployment matched the given criteria: ${JSON.stringify(opts)}. Please make sure the deployment is successful, which is a prerequisite before consuming orchestration or founndation models.`
     );
   }
   return deployments[0].id;
