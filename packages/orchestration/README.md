@@ -188,7 +188,7 @@ return orchestrationClient.chatCompletion({
 ```
 
 You can reference a prompt template either by ID or name, scenario and version.
-For more information on how to store a template in the Prompt Registry, please refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
+For details on storing a template in the Prompt Registry, refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
 
 #### Passing a Message History
 
