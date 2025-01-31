@@ -262,6 +262,50 @@ export async function orchestrationCompletionMasking(): Promise<
 }
 
 /**
+ * Mask the grounding input with a list of allowed words that are not masked.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationMaskGroundingInput(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    llm,
+    templating: {
+      template: [
+        {
+          role: 'user',
+          content: '{{?groundingInput}}\n{{?groundingOutput}}'
+        }
+      ]
+    },
+    grounding: buildDocumentGroundingConfig({
+      input_params: ['groundingInput'],
+      output_param: 'groundingOutput',
+      filters: [
+        {
+          id: 'filter1',
+          data_repository_type: 'help.sap.com'
+        }
+      ]
+    }),
+    masking: {
+      masking_providers: [
+        {
+          type: 'sap_data_privacy_integration',
+          method: 'pseudonymization',
+          entities: [{ type: 'profile-org' }],
+          mask_grounding_input: {
+            enabled: true
+          },
+          allowlist: ['Joule']
+        }
+      ]
+    }
+  });
+  return orchestrationClient.chatCompletion({
+    inputParams: { groundingInput: "What is SAP's product Joule?" }
+  });
+}
+
+/**
  * Ask about the capital of France and send along custom request configuration.
  * @returns The orchestration service response.
  */

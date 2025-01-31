@@ -18,7 +18,8 @@ import {
   orchestrationGroundingVector,
   orchestrationChatCompletionImage,
   chatCompletionStreamWithJsonModuleConfig as orchestrationChatCompletionStreamWithJsonModuleConfig,
-  orchestrationGroundingHelpSapCom
+  orchestrationGroundingHelpSapCom,
+  orchestrationMaskGroundingInput
 } from './orchestration.js';
 import {
   getDeployments,
@@ -529,6 +530,26 @@ app.get(
     try {
       const groundingResult = await orchestrationGroundingHelpSapCom();
       res.send(groundingResult.getContent());
+    } catch (error: any) {
+      console.error(error);
+      res
+        .status(500)
+        .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+    }
+  }
+);
+
+app.post(
+  '/document-grounding/invoke-orchestration-mask-grounding-input',
+  async (req, res) => {
+    try {
+      const groundingResult = await orchestrationMaskGroundingInput();
+      res.json({
+        masked_grounding_input:
+          groundingResult.data.module_results.input_masking?.data
+            ?.masked_grounding_input,
+        content: groundingResult.getContent()
+      });
     } catch (error: any) {
       console.error(error);
       res
