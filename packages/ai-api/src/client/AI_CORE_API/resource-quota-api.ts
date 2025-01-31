@@ -92,14 +92,18 @@ export const ResourceQuotaApi = {
       ResourceQuotaApi._defaultBasePath
     ),
   /**
-   * Get the details about quota and usage for tenant-level generic secrets
+   * Get the details about quota and usage for tenant-scoped or tenant-wide generic secrets
    * @param queryParameters - Object containing the following keys: quotaOnly.
-   * @param headerParameters - Object containing the following keys: Authorization.
+   * @param headerParameters - Object containing the following keys: Authorization, AI-Resource-Group, AI-Tenant-Scope.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   kubesubmitV4ResourceQuotaGetGenericSecretQuota: (
     queryParameters?: { quotaOnly?: boolean },
-    headerParameters?: { Authorization?: string }
+    headerParameters?: {
+      Authorization?: string;
+      'AI-Resource-Group'?: string;
+      'AI-Tenant-Scope'?: boolean;
+    }
   ) =>
     new OpenApiRequestBuilder<BckndCommonResourceQuotaResponse>(
       'get',
