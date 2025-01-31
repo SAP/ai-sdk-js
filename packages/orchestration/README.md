@@ -94,7 +94,6 @@ In addition to the examples below, you can find more **sample code** [here](http
 ### LLM Config
 
 Choose the LLM by setting the `model_name` property.
-Define the optional `model_version` property to choose an available model version.
 By default, the version is set to `latest`.
 Optionally, define `model_version` (default: `latest`) and `model_params` for custom settings.
 
