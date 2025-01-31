@@ -11,7 +11,9 @@ This package incorporates generative AI orchestration capabilities into your AI 
 - [Orchestration Service](#orchestration-service)
 - [Relationship between Orchestration and Resource Groups](#relationship-between-orchestration-and-resource-groups)
 - [Usage](#usage)
+  - [LLM Config](#llm-config)
   - [Templating](#templating)
+  - [Prompt Registry](#prompt-registry)
   - [Content Filtering](#content-filtering)
   - [Data Masking](#data-masking)
   - [Grounding](#grounding)
@@ -100,23 +102,8 @@ Optionally, define `model_version` (default: `latest`) and `model_params` for cu
 >
 > #### Harmonized API
 >
-> Since the Orchestration Service API is harmonized, switching to a different model—even from another vendor—only requires changing the `model_name` property.
-> Here’s an example where only one line of code is changed.
->
-> ```ts
-> const orchestrationClient = new OrchestrationClient({
->   llm: {
->     // only change the model name here
->     model_name: 'gemini-1.5-flash',
->     model_params: { max_tokens: 50, temperature: 0.1 }
->   },
->   templating: {
->     template: [
->       { role: 'user', content: 'What is the capital of {{?country}}?' }
->     ]
->   }
-> });
-> ```
+> The Orchestration Service provides a [harmonized API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/harmonized-api) for all models.
+> Switching to a different model — even from another vendor — only requires changing the `model_name` property.
 
 ### Templating
 
