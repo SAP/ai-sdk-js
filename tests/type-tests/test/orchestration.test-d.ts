@@ -1,7 +1,7 @@
 import { expectError, expectType, expectAssignable } from 'tsd';
 import {
-  ContentFilters,
   OrchestrationClient,
+  buildAzureContentSafetyFilter,
   buildDocumentGroundingConfig
 } from '@sap-ai-sdk/orchestration';
 import type {
@@ -251,7 +251,7 @@ expect<ChatModel>('gemini-1.0-pro');
  */
 
 expectType<AzureContentSafetyFilterConfig>(
-  ContentFilters.buildAzureContentSafety({
+  buildAzureContentSafetyFilter({
     Hate: 'ALLOW_ALL',
     SelfHarm: 'ALLOW_SAFE_LOW',
     Sexual: 'ALLOW_SAFE_LOW_MEDIUM',
@@ -260,7 +260,7 @@ expectType<AzureContentSafetyFilterConfig>(
 );
 
 expectError<AzureContentSafetyFilterConfig>(
-  ContentFilters.buildAzureContentSafety({
+  buildAzureContentSafetyFilter({
     Hate: 2,
     SelfHarm: 4
   })

@@ -1,9 +1,14 @@
+import { azureFilterThreshold } from '../orchestration-types.js';
 import type {
   AzureContentSafety,
   AzureContentSafetyFilterConfig,
   InputFilteringConfig,
   OutputFilteringConfig
 } from '../client/api/schema/index.js';
+import type {
+  AzureContentFilter,
+  AzureFilterThreshold
+} from '../orchestration-types.js';
 
 /**
  * Convenience function to create Azure content filters.
@@ -32,7 +37,7 @@ export function buildAzureContentFilter(
  * @param config - Filtering configuration for Azure filter. If skipped, the default Azure content filter configuration is used.
  * @returns Filter config object.
  */
-export function buildAzureContentSafety(
+export function buildAzureContentSafetyFilter(
   config?: AzureContentFilter
 ): AzureContentSafetyFilterConfig {
   if (config && !Object.keys(config).length) {
@@ -52,4 +57,3 @@ export function buildAzureContentSafety(
     })
   };
 }
-
