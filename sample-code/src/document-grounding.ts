@@ -13,7 +13,7 @@ export async function createCollection(): Promise<string> {
     {
       title: 'ai-sdk-js-e2e',
       embeddingConfig: {
-        modelName: 'text-embedding-ada-002-v2'
+        modelName: 'text-embedding-ada-002'
       },
       metadata: []
     },
