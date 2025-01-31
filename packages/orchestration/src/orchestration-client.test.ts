@@ -13,7 +13,7 @@ import { OrchestrationResponse } from './orchestration-response.js';
 import {
   constructCompletionPostRequestFromJsonModuleConfig,
   constructCompletionPostRequest,
-  ContentFilters
+  buildAzureContentSafetyFilter
 } from './util/index.js';
 import type { CompletionPostResponse } from './client/api/schema/index.js';
 import type {
@@ -163,20 +163,16 @@ describe('orchestration service client', () => {
       },
       filtering: {
         input: {
-          filters: [
-            ContentFilters.buildAzureContentSafety({
+          filters: [buildAzureContentSafetyFilter({
               Hate: 'ALLOW_SAFE_LOW_MEDIUM',
               SelfHarm: 'ALLOW_SAFE_LOW'
-            })
-          ]
+            })]
         },
         output: {
-          filters: [
-            ContentFilters.buildAzureContentSafety({
+          filters: [buildAzureContentSafetyFilter({
               Sexual: 'ALLOW_SAFE',
               Violence: 'ALLOW_SAFE_LOW_MEDIUM'
-            })
-          ]
+            })]
         }
       }
     };

@@ -5,7 +5,7 @@ import {
   addStreamOptionsToLlmModuleConfig,
   addStreamOptionsToOutputFilteringConfig
 } from './request-config.js';
-import { ContentFilters } from './filtering.js';
+import { buildAzureContentSafetyFilter } from './filtering.js';
 import type {
   ModuleConfigs,
   OrchestrationConfig
@@ -74,12 +74,10 @@ describe('stream util tests', () => {
       ...defaultOrchestrationModuleConfig,
       filtering: {
         output: {
-          filters: [
-            ContentFilters.buildAzureContentSafety({
+          filters: [buildAzureContentSafetyFilter({
               Hate: 'ALLOW_SAFE_LOW_MEDIUM',
               SelfHarm: 'ALLOW_SAFE'
-            })
-          ]
+            })]
         }
       }
     };
@@ -98,12 +96,10 @@ describe('stream util tests', () => {
       ...defaultModuleConfigs,
       filtering_module_config: {
         output: {
-          filters: [
-            ContentFilters.buildAzureContentSafety({
+          filters: [buildAzureContentSafetyFilter({
               Hate: 'ALLOW_SAFE_LOW_MEDIUM',
               SelfHarm: 'ALLOW_SAFE'
-            })
-          ]
+            })]
         }
       }
     };

@@ -2,9 +2,9 @@ import { readFile } from 'node:fs/promises';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import {
-  ContentFilters,
   OrchestrationClient,
-  buildDocumentGroundingConfig
+  buildDocumentGroundingConfig,
+  buildAzureContentSafetyFilter
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
 import type {
@@ -148,9 +148,9 @@ const templating = { template: [{ role: 'user', content: '{{?input}}' }] };
 export async function orchestrationInputFiltering(): Promise<void> {
   // create a filter with minimal thresholds for hate and violence
   // lower numbers mean more strict filtering
-  const azureContentFilter = ContentFilters.buildAzureContentSafety({
-    Hate: 'ALLOW_SAFE',
-    Violence: 'ALLOW_SAFE'
+  const azureContentFilter = buildAzureContentSafetyFilter({
+    Hate: 0,
+    Violence: 0
   });
   const orchestrationClient = new OrchestrationClient({
     llm,
@@ -185,9 +185,9 @@ export async function orchestrationInputFiltering(): Promise<void> {
 export async function orchestrationOutputFiltering(): Promise<OrchestrationResponse> {
   // output filters are build in the same way as input filters
   // set the thresholds to the minimum to maximize the chance the LLM output will be filtered
-  const azureContentFilter = ContentFilters.buildAzureContentSafety({
-    Hate: 'ALLOW_SAFE',
-    Violence: 'ALLOW_SAFE'
+  const azureContentFilter = buildAzureContentSafetyFilter({
+    Hate: 0,
+    Violence: 0
   });
   const orchestrationClient = new OrchestrationClient({
     llm,

@@ -25,8 +25,7 @@ export { OrchestrationClient } from './orchestration-client.js';
 
 export {
   buildAzureContentFilter,
-  ContentFilters,
-  buildAzureContentSafety,
+  buildAzureContentSafetyFilter,
   buildDocumentGroundingConfig
 } from './util/index.js';
 

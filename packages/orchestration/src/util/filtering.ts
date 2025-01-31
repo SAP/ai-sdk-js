@@ -1,8 +1,3 @@
-import {
-  azureFilterThreshold,
-  type AzureContentFilter,
-  type AzureFilterThreshold
-} from '../orchestration-types.js';
 import type {
   AzureContentSafety,
   AzureContentSafetyFilterConfig,
@@ -58,9 +53,3 @@ export function buildAzureContentSafety(
   };
 }
 
-/**
- * Content filters for orchestration.
- */
-export const ContentFilters = {
-  buildAzureContentSafety
-};
