@@ -168,9 +168,9 @@ console.log(
 );
 ```
 
-### Template Repository
+### Prompt Registry
 
-Alternatively to passing a template in the request, one can also use prepared templates stored in the [Template Repository](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) (also called Prompt Registry) of SAP AI Core.
+Alternatively to passing a template in the request, one can also use prepared templates stored in the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) of SAP AI Core.
 
 ```ts
 const orchestrationClient = new OrchestrationClient({
@@ -189,8 +189,8 @@ return orchestrationClient.chatCompletion({
 });
 ```
 
-You can reference a template either by ID or name, scenario and version.
-For more information on how to store a template in the Template Repository, please refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
+You can reference a prompt template either by ID or name, scenario and version.
+For more information on how to store a template in the Prompt Registry, please refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
 
 #### Passing a Message History
 

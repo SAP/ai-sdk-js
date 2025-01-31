@@ -1,7 +1,7 @@
 import {
   orchestrationChatCompletion,
   orchestrationTemplating,
-  orchestrationTemplateRepository,
+  orchestrationPromptRegistry,
   orchestrationInputFiltering,
   orchestrationOutputFiltering,
   orchestrationRequestConfig,
@@ -37,7 +37,7 @@ describe('orchestration', () => {
   });
 
   it('should complete a chat with a template reference', async () => {
-    const response = await orchestrationTemplateRepository();
+    const response = await orchestrationPromptRegistry();
 
     assertContent(response);
   });

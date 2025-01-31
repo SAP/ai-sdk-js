@@ -141,10 +141,10 @@ export async function orchestrationTemplating(): Promise<OrchestrationResponse> 
 }
 
 /**
- * Use a template stored in the template repository.
+ * Use a template stored in the prompt registry.
  * @returns The orchestration service response.
  */
-export async function orchestrationTemplateRepository(): Promise<OrchestrationResponse> {
+export async function orchestrationPromptRegistry(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
     llm,
     templating: {
