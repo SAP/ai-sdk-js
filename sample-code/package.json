@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@sap-ai-sdk/sample-code",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "private": "true",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -31,7 +31,7 @@
     "langchain": "0.3.13",
     "@langchain/core": "0.3.36",
     "@langchain/textsplitters": "0.1.0",
-    "@sap-cloud-sdk/util": "^3.25.0",
+    "@sap-cloud-sdk/util": "^3.26.0",
     "@types/express": "^5.0.0",
     "express": "^4.21.2"
   }

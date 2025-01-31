@@ -1,5 +1,16 @@
 # @sap-ai-sdk/sample-cap
 
+## 1.7.0
+
+### Patch Changes
+
+- Updated dependencies [0a62553]
+- Updated dependencies [f08ac2e]
+- Updated dependencies [bdaae7e]
+  - @sap-ai-sdk/orchestration@1.7.0
+  - @sap-ai-sdk/ai-api@1.7.0
+  - @sap-ai-sdk/foundation-models@1.7.0
+
 ## 1.6.0
 
 ### Patch Changes

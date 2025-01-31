@@ -115,6 +115,11 @@
               }
             }
           }
+        },
+        "x-ms-examples": {
+          "Create a completion.": {
+            "$ref": "./examples/completions.json"
+          }
         }
       }
     },
@@ -255,6 +260,11 @@
               }
             }
           }
+        },
+        "x-ms-examples": {
+          "Create a embeddings.": {
+            "$ref": "./examples/embeddings.json"
+          }
         }
       }
     },
@@ -337,6 +347,20 @@
               }
             }
           }
+        },
+        "x-ms-examples": {
+          "Create a chat completion.": {
+            "$ref": "./examples/chat_completions.json"
+          },
+          "Creates a completion based on Azure Search data and system-assigned managed identity.": {
+            "$ref": "./examples/chat_completions_azure_search_minimum.json"
+          },
+          "Creates a completion based on Azure Search vector data, previous assistant message and user-assigned managed identity.": {
+            "$ref": "./examples/chat_completions_azure_search_advanced.json"
+          },
+          "Creates a completion for the provided Azure Cosmos DB.": {
+            "$ref": "./examples/chat_completions_cosmos_db.json"
+          }
         }
       }
     },
@@ -399,6 +423,14 @@
                 }
               }
             }
+          }
+        },
+        "x-ms-examples": {
+          "Create an audio transcription with json response format.": {
+            "$ref": "./examples/audio_transcription_object.json"
+          },
+          "Create an audio transcription with text response format.": {
+            "$ref": "./examples/audio_transcription_text.json"
           }
         }
       }
@@ -463,6 +495,14 @@
               }
             }
           }
+        },
+        "x-ms-examples": {
+          "Create an audio translation with json response format.": {
+            "$ref": "./examples/audio_translation_object.json"
+          },
+          "Create an audio translation with text response format.": {
+            "$ref": "./examples/audio_translation_text.json"
+          }
         }
       }
     },
@@ -522,6 +562,11 @@
                 }
               }
             }
+          }
+        },
+        "x-ms-examples": {
+          "Create an image.": {
+            "$ref": "./examples/image_generation.json"
           }
         }
       }
