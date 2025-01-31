@@ -100,7 +100,7 @@ Optionally, define `model_version` (default: `latest`) and `model_params` for cu
 >
 > #### Harmonized API
 >
-> As the orchestration service API is harmonized, you can switch to a different model, even from another vendor, by changing only the `model_name` property.
+> Since the Orchestration Service API is harmonized, switching to a different model—even from another vendor—only requires changing the `model_name` property.
 > Here’s an example where only one line of code is changed.
 >
 > ```ts
