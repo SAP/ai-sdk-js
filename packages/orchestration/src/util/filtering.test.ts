@@ -206,8 +206,7 @@ describe('Content filter util', () => {
     });
 
     it('throw error when configuring empty filter', async () => {
-      const filterConfig = buildAzureContentSafetyFilter({});
-      expect(filterConfig).toThrow(
+      expect(() => buildAzureContentSafetyFilter({})).toThrow(
         'Filtering configuration cannot be an empty object'
       );
     });
