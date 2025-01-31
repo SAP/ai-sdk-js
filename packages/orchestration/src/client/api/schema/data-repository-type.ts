@@ -7,4 +7,4 @@
 /**
  * Only include DataRepositories with the given type.
  */
-export type DataRepositoryType = 'vector' | 'help.sap.com' | any;
+export type DataRepositoryType = 'vector' | 'help.sap.com';

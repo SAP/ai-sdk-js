@@ -9,7 +9,7 @@
  */
 export type GlobalStreamOptions = {
   /**
-   * Number of characters per chunk that post-LLM modules operate on.
+   * Minimum number of characters per chunk that post-LLM modules operate on.
    * Default: 100.
    * Maximum: 10000.
    * Minimum: 1.
