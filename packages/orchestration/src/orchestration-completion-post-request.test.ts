@@ -1,6 +1,6 @@
 import {
-  ContentFilters,
-  constructCompletionPostRequest
+  constructCompletionPostRequest,
+  buildAzureContentSafetyFilter
 } from './util/index.js';
 import type { CompletionPostRequest } from './client/api/schema/index.js';
 import type {
@@ -170,9 +170,7 @@ describe('construct completion post request', () => {
       ...defaultConfig,
       filtering: {
         input: {
-          filters: [
-            ContentFilters.buildAzureContentSafety({ Hate: 4, SelfHarm: 0 })
-          ]
+          filters: [buildAzureContentSafetyFilter({ Hate: 4, SelfHarm: 0 })]
         }
       }
     };
@@ -214,9 +212,7 @@ describe('construct completion post request', () => {
       ...defaultConfig,
       filtering: {
         output: {
-          filters: [
-            ContentFilters.buildAzureContentSafety({ Hate: 4, SelfHarm: 0 })
-          ]
+          filters: [buildAzureContentSafetyFilter({ Hate: 4, SelfHarm: 0 })]
         }
       }
     };
