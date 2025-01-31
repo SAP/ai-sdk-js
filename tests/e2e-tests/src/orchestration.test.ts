@@ -9,6 +9,7 @@ import {
   chatCompletionStreamWithJsonModuleConfig,
   chatCompletionStream
 } from '@sap-ai-sdk/sample-code';
+import { orchestrationTemplateRepository } from '@sap-ai-sdk/sample-code/src/orchestration.js';
 import { loadEnv } from './utils/load-env.js';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 
@@ -31,6 +32,12 @@ describe('orchestration', () => {
 
   it('should complete a chat with a template', async () => {
     const response = await orchestrationTemplating();
+
+    assertContent(response);
+  });
+
+  it('should complete a chat with a template reference', async () => {
+    const response = await orchestrationTemplateRepository();
 
     assertContent(response);
   });

@@ -140,6 +140,27 @@ export async function orchestrationTemplating(): Promise<OrchestrationResponse> 
   });
 }
 
+/**
+ * Use a template stored in the template repository.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationTemplateRepository(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    llm,
+    templating: {
+      template_ref: {
+        name: 'get-capital',
+        scenario: 'e2e-test',
+        version: '0.0.1'
+      }
+    }
+  });
+
+  return orchestrationClient.chatCompletion({
+    inputParams: { input: 'France' }
+  });
+}
+
 const templating = { template: [{ role: 'user', content: '{{?input}}' }] };
 
 /**

@@ -18,7 +18,8 @@ import {
   orchestrationGroundingVector,
   orchestrationChatCompletionImage,
   chatCompletionStreamWithJsonModuleConfig as orchestrationChatCompletionStreamWithJsonModuleConfig,
-  orchestrationGroundingHelpSapCom
+  orchestrationGroundingHelpSapCom,
+  orchestrationTemplateRepository
 } from './orchestration.js';
 import {
   getDeployments,
@@ -253,6 +254,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
     {
       simple: orchestrationChatCompletion,
       template: orchestrationTemplating,
+      templateRef: orchestrationTemplateRepository,
       inputFiltering: orchestrationInputFiltering,
       outputFiltering: orchestrationOutputFiltering,
       requestConfig: orchestrationRequestConfig,
