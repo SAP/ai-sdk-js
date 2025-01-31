@@ -9,7 +9,7 @@ import type {
  * Convenience function to create Azure content filters.
  * @param filter - Filtering configuration for Azure filter. If skipped, the default Azure content filter configuration is used.
  * @returns An object with the Azure filtering configuration.
- * @deprecated Use ContentFilters.buildAzureContentSafety() instead.
+ * @deprecated Use {@link buildAzureContentSafetyFilter()} instead.
  */
 export function buildAzureContentFilter(
   filter?: AzureContentSafety
@@ -32,18 +32,14 @@ export function buildAzureContentFilter(
  * @param config - Filtering configuration for Azure filter. If skipped, the default Azure content filter configuration is used.
  * @returns Filter config object.
  */
-export function buildAzureContentSafety(
+export function buildAzureContentSafetyFilter(
   config?: AzureContentSafety
 ): AzureContentSafetyFilterConfig {
+  if (config && !Object.keys(config).length) {
+    throw new Error('Filtering configuration cannot be an empty object');
+  }
   return {
     type: 'azure_content_safety',
     ...(config && { config })
   };
 }
-
-/**
- * Content filters for orchestration.
- */
-export const ContentFilters = {
-  buildAzureContentSafety
-};

@@ -1,4 +1,7 @@
-import { buildAzureContentFilter, ContentFilters } from './filtering.js';
+import {
+  buildAzureContentFilter,
+  buildAzureContentSafetyFilter
+} from './filtering.js';
 import { constructCompletionPostRequest } from './request-config.js';
 import type { OrchestrationModuleConfig } from '../orchestration-types.js';
 import type {
@@ -180,7 +183,7 @@ describe('Content filter util', () => {
 
   describe('Azure content filter', () => {
     it('builds filter config', async () => {
-      const filterConfig = ContentFilters.buildAzureContentSafety({
+      const filterConfig = buildAzureContentSafetyFilter({
         Hate: 4,
         SelfHarm: 0
       });
@@ -195,11 +198,18 @@ describe('Content filter util', () => {
     });
 
     it('builds filter config with no config', async () => {
-      const filterConfig = ContentFilters.buildAzureContentSafety();
+      const filterConfig = buildAzureContentSafetyFilter();
       const expectedFilterConfig: FilterConfig = {
         type: 'azure_content_safety'
       };
       expect(filterConfig).toEqual(expectedFilterConfig);
+    });
+
+    it('throw error when configuring empty filter', async () => {
+      const filterConfig = buildAzureContentSafetyFilter({});
+      expect(filterConfig).toThrow(
+        'Filtering configuration cannot be an empty object'
+      );
     });
   });
 });
