@@ -168,7 +168,7 @@ console.log(
 
 ### Prompt Registry
 
-Alternatively to passing a template in the request, one can also use prepared templates stored in the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) of SAP AI Core.
+Alternatively, prepared templates from the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) of SAP AI Core can be used instead of passing a template in the request.
 
 ```ts
 const orchestrationClient = new OrchestrationClient({
