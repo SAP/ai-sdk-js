@@ -74,10 +74,12 @@ describe('stream util tests', () => {
       ...defaultOrchestrationModuleConfig,
       filtering: {
         output: {
-          filters: [buildAzureContentSafetyFilter({
+          filters: [
+            buildAzureContentSafetyFilter({
               Hate: 'ALLOW_SAFE_LOW_MEDIUM',
               SelfHarm: 'ALLOW_SAFE'
-            })]
+            })
+          ]
         }
       }
     };
@@ -96,10 +98,12 @@ describe('stream util tests', () => {
       ...defaultModuleConfigs,
       filtering_module_config: {
         output: {
-          filters: [buildAzureContentSafetyFilter({
+          filters: [
+            buildAzureContentSafetyFilter({
               Hate: 'ALLOW_SAFE_LOW_MEDIUM',
               SelfHarm: 'ALLOW_SAFE'
-            })]
+            })
+          ]
         }
       }
     };
