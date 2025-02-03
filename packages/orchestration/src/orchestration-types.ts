@@ -64,7 +64,6 @@ export interface OrchestrationModuleConfig {
   /**
    * Filtering module configuration.
    * @example
-   * Configuring an input and output filter:
    * ```ts
    * filtering: {
    *   input: {
