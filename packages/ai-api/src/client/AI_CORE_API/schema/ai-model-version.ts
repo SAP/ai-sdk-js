@@ -36,4 +36,16 @@ export type AiModelVersion = {
    * List of capabilities supported by the model
    */
   capabilities?: string[];
+  /**
+   * List of metadata supported by the model
+   */
+  metadata?: Record<string, string>[];
+  /**
+   * List of costs associated with the model
+   */
+  cost?: Record<string, string>[];
+  /**
+   * List of suggested replacements for the model
+   */
+  suggestedReplacements?: string[];
 } & Record<string, any>;

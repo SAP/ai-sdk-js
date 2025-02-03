@@ -1,6 +1,7 @@
 import {
   orchestrationChatCompletion,
   orchestrationTemplating,
+  orchestrationPromptRegistry,
   orchestrationInputFiltering,
   orchestrationOutputFiltering,
   orchestrationRequestConfig,
@@ -31,6 +32,12 @@ describe('orchestration', () => {
 
   it('should complete a chat with a template', async () => {
     const response = await orchestrationTemplating();
+
+    assertContent(response);
+  });
+
+  it('should complete a chat with a template reference', async () => {
+    const response = await orchestrationPromptRegistry();
 
     assertContent(response);
   });

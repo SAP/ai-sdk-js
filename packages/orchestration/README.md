@@ -11,7 +11,9 @@ This package incorporates generative AI orchestration capabilities into your AI 
 - [Orchestration Service](#orchestration-service)
 - [Relationship between Orchestration and Resource Groups](#relationship-between-orchestration-and-resource-groups)
 - [Usage](#usage)
+  - [LLM Config](#llm-config)
   - [Templating](#templating)
+  - [Prompt Registry](#prompt-registry)
   - [Content Filtering](#content-filtering)
   - [Data Masking](#data-masking)
   - [Grounding](#grounding)
@@ -65,27 +67,43 @@ Consequently, each orchestration deployment uniquely maps to a resource group wi
 ## Usage
 
 Leverage the orchestration service capabilities by using the orchestration client.
-Configure the LLM module by setting the `model_name` property.
-Define the optional `model_version` property to choose an available model version.
-By default, the version is set to `latest`.
-Specify the optional `model_params` property to apply specific parameters to the model
+You can perform a simple prompt by running:
 
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
   llm: {
-    model_name: 'gpt-4o',
-    model_params: { max_tokens: 50, temperature: 0.1 },
-    model_version: 'latest'
+    model_name: 'gpt-4o'
   },
-  ...
+  templating: {
+    template: [
+      { role: 'user', content: 'Hello World! Why is this phrase so famous?' }
+    ]
+  }
 });
+
+const response = await orchestrationClient.chatCompletion();
+console.log(response.getContent());
 ```
 
-The client allows you to combine various modules, such as templating and content filtering, while sending chat completion requests to an orchestration-compatible generative AI model.
+Here we use GPT-4o with a single user message as prompt and print out the response.
+
+The `OrchestrationClient` enables combining various modules, such as templating and content filtering, while sending chat completion requests to an orchestration-compatible generative AI model.
 
 In addition to the examples below, you can find more **sample code** [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/orchestration.ts).
+
+### LLM Config
+
+Choose the LLM by setting the `model_name` property.
+Optionally, define `model_version` (default: `latest`) and `model_params` for custom settings.
+
+> [!Tip]
+>
+> #### Harmonized API
+>
+> The Orchestration Service provides a [harmonized API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/harmonized-api) for all models.
+> Switching to a different model — even from another vendor — only requires changing the `model_name` property.
 
 ### Templating
 
@@ -135,27 +153,29 @@ console.log(
 );
 ```
 
-> [!Tip]
->
-> #### Harmonized API
->
-> As the orchestration service API is harmonized, you can switch to a different model, even from another vendor, by changing only the `model_name` property.
-> Here’s an example where only one line of code is changed.
->
-> ```ts
-> const orchestrationClient = new OrchestrationClient({
->   llm: {
->     // only change the model name here
->     model_name: 'gemini-1.5-flash',
->     model_params: { max_tokens: 50, temperature: 0.1 }
->   },
->   templating: {
->     template: [
->       { role: 'user', content: 'What is the capital of {{?country}}?' }
->     ]
->   }
-> });
-> ```
+### Prompt Registry
+
+Alternatively, prepared templates from the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) of SAP AI Core can be used instead of passing a template in the request.
+
+```ts
+const orchestrationClient = new OrchestrationClient({
+  llm,
+  templating: {
+    template_ref: {
+      name: 'get-capital',
+      scenario: 'e2e-test',
+      version: '0.0.1'
+    }
+  }
+});
+
+return orchestrationClient.chatCompletion({
+  inputParams: { input: 'France' }
+});
+```
+
+A prompt template can be referenced either by ID, or by using a combination of name, scenario, and version.
+For details on storing a template in the Prompt Registry, refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
 
 #### Passing a Message History
 

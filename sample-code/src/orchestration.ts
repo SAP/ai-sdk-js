@@ -140,6 +140,27 @@ export async function orchestrationTemplating(): Promise<OrchestrationResponse> 
   });
 }
 
+/**
+ * Use a template stored in the prompt registry.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationPromptRegistry(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    llm,
+    templating: {
+      template_ref: {
+        name: 'get-capital',
+        scenario: 'e2e-test',
+        version: '0.0.1'
+      }
+    }
+  });
+
+  return orchestrationClient.chatCompletion({
+    inputParams: { input: 'France' }
+  });
+}
+
 const templating = { template: [{ role: 'user', content: '{{?input}}' }] };
 
 /**
@@ -316,23 +337,26 @@ export async function orchestrationFromJson(): Promise<
  * @returns The orchestration service response.
  */
 export async function orchestrationGroundingVector(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    llm,
-    templating: {
-      template: [
-        {
-          role: 'user',
-          content:
-            'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
-        }
-      ]
+  const orchestrationClient = new OrchestrationClient(
+    {
+      llm,
+      templating: {
+        template: [
+          {
+            role: 'user',
+            content:
+              'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
+          }
+        ]
+      },
+      grounding: buildDocumentGroundingConfig({
+        input_params: ['groundingRequest'],
+        output_param: 'groundingOutput',
+        filters: [{ id: 'filter1' }]
+      })
     },
-    grounding: buildDocumentGroundingConfig({
-      input_params: ['groundingRequest'],
-      output_param: 'groundingOutput',
-      filters: [{ id: 'filter1' }]
-    })
-  });
+    { resourceGroup: 'ai-sdk-js-e2e' }
+  );
 
   return orchestrationClient.chatCompletion({
     inputParams: {
