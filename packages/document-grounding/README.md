@@ -44,7 +44,7 @@ In addition to the examples below, you can find more **sample code** [here](http
 
 > Ensure that if you define your own resource group, it has the correct label to use the document grounding service.
 > When creating the resource group on SAP AI Launchpad, add the key-value pair label: `document-grounding: true`.
-> Alternatively, you can create the resource group via the orchestration API. 
+> Alternatively, you can create the resource group via the orchestration API.
 > For more details, refer to the [Creating a Resource Group for Grounding](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-resource-group-for-ai-data-management?locale=en-US) guide.
 
 ### Create a Collection
