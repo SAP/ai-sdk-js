@@ -2,7 +2,7 @@ import {
   buildAzureContentFilter,
   buildAzureContentSafetyFilter
 } from './filtering.js';
-import { constructCompletionPostRequest } from './orchestration-request-config.js';
+import { constructCompletionPostRequest } from './orchestration-module-config.js';
 import type { OrchestrationModuleConfig } from '../orchestration-types.js';
 import type {
   CompletionPostRequest,
