@@ -175,7 +175,7 @@ export async function orchestrationInputFiltering(): Promise<void> {
   const orchestrationClient = new OrchestrationClient({
     llm,
     templating,
-    // configure the filter to be applied for both input and output
+    // configure the filter to be applied for input
     filtering: {
       input: {
         filters: [azureContentFilter]
