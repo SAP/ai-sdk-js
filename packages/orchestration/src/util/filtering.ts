@@ -41,7 +41,7 @@ export function buildAzureContentSafetyFilter(
   config?: AzureContentFilter
 ): AzureContentSafetyFilterConfig {
   if (config && !Object.keys(config).length) {
-    throw new Error('Config cannot be an empty object');
+    throw new Error('Filtering configuration cannot be an empty object');
   }
   return {
     type: 'azure_content_safety',
