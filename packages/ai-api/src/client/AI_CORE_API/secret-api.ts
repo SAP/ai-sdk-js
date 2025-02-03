@@ -8,6 +8,7 @@ import type {
   BckndListGenericSecretsResponse,
   BckndGenericSecretPostBody,
   BckndGenericSecretDataResponse,
+  BckndGenericSecretDetails,
   BckndGenericSecretPatchBody
 } from './schema/index.js';
 /**
@@ -22,7 +23,7 @@ export const SecretApi = {
    * @param headerParameters - Object containing the following keys: Authorization, AI-Resource-Group, AI-Tenant-Scope.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  kubesubmitV4GenericSecretsGet: (
+  kubesubmitV4GenericSecretsGetAll: (
     queryParameters?: { $top?: number; $skip?: number; $count?: boolean },
     headerParameters?: {
       Authorization?: string;
@@ -58,6 +59,29 @@ export const SecretApi = {
       '/admin/secrets',
       {
         body,
+        headerParameters
+      },
+      SecretApi._defaultBasePath
+    ),
+  /**
+   * Retrieve a single generic secret. This retrieves metadata only, not the secret data itself.
+   * @param secretName - Path parameter.
+   * @param headerParameters - Object containing the following keys: Authorization, AI-Resource-Group, AI-Tenant-Scope.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  kubesubmitV4GenericSecretsGet: (
+    secretName: string,
+    headerParameters?: {
+      Authorization?: string;
+      'AI-Resource-Group'?: string;
+      'AI-Tenant-Scope'?: boolean;
+    }
+  ) =>
+    new OpenApiRequestBuilder<BckndGenericSecretDetails>(
+      'get',
+      '/admin/secrets/{secretName}',
+      {
+        pathParameters: { secretName },
         headerParameters
       },
       SecretApi._defaultBasePath
