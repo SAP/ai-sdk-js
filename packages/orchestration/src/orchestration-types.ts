@@ -63,7 +63,7 @@ export interface OrchestrationModuleConfig {
   llm: LlmModuleConfig;
   /**
    * Filtering module configuration.
-   * Construct filter configuration for both input and output filtering using convenience functions.
+   * Construct filter configuration for both input and output filters using convenience functions.
    * @example
    * ```ts
    * filtering: {
