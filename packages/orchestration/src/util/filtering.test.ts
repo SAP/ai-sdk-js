@@ -11,7 +11,7 @@ import type {
 } from '../client/api/schema/index.js';
 
 describe('Content filter util', () => {
-  // TOOD: Remove this test collection once `buildAzureContentFilter` is removed.
+  // TODO: Remove this test collection once `buildAzureContentFilter` is removed.
   describe('buildAzureContentFilter', () => {
     const config: OrchestrationModuleConfig = {
       llm: {
