@@ -277,7 +277,6 @@ Each category of the filter can be assigned a specific severity level, which cor
 | `ALLOW_SAFE_LOW_MEDIUM` | 4                     |
 | `ALLOW_ALL`             | 6                     |
 
-
 ```ts
 import { OrchestrationClient, ContentFilters } from '@sap-ai-sdk/orchestration';
 const llm = {
