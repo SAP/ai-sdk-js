@@ -4,7 +4,7 @@ import {
   addStreamOptions,
   addStreamOptionsToLlmModuleConfig,
   addStreamOptionsToOutputFilteringConfig
-} from './orchestration-module-config.js';
+} from './module-config.js';
 import { buildAzureContentSafetyFilter } from './filtering.js';
 import type {
   ModuleConfigs,
