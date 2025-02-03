@@ -327,23 +327,26 @@ export async function orchestrationFromJson(): Promise<
  * @returns The orchestration service response.
  */
 export async function orchestrationGroundingVector(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    llm,
-    templating: {
-      template: [
-        {
-          role: 'user',
-          content:
-            'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
-        }
-      ]
+  const orchestrationClient = new OrchestrationClient(
+    {
+      llm,
+      templating: {
+        template: [
+          {
+            role: 'user',
+            content:
+              'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
+          }
+        ]
+      },
+      grounding: buildDocumentGroundingConfig({
+        input_params: ['groundingRequest'],
+        output_param: 'groundingOutput',
+        filters: [{ id: 'filter1' }]
+      })
     },
-    grounding: buildDocumentGroundingConfig({
-      input_params: ['groundingRequest'],
-      output_param: 'groundingOutput',
-      filters: [{ id: 'filter1' }]
-    })
-  });
+    { resourceGroup: 'ai-sdk-js-e2e' }
+  );
 
   return orchestrationClient.chatCompletion({
     inputParams: {
