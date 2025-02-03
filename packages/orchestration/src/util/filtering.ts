@@ -34,7 +34,8 @@ export function buildAzureContentFilter(
 
 /**
  * Convenience function to create Azure content filters.
- * @param config - Configuration for Azure content safety filter. If skipped, the default configuration is used.
+ * @param config - Configuration for Azure content safety filter.
+ * If skipped, the default configuration of `ALLOW_SAFE_LOW` is used for all filter categories.
  * @returns Filter config object.
  */
 export function buildAzureContentSafetyFilter(
