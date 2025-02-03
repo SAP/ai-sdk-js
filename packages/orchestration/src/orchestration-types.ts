@@ -192,6 +192,7 @@ export interface AzureContentFilter {
 
 /**
  * A descriptive constant for Azure content safety filter threshold.
+ * @internal
  */
 export const azureFilterThreshold = {
   ALLOW_SAFE: 0,
@@ -202,5 +203,6 @@ export const azureFilterThreshold = {
 
 /**
  * The Azure threshold level supported for each azure content filter category.
+ * @internal
  */
 export type AzureFilterThreshold = keyof typeof azureFilterThreshold;
