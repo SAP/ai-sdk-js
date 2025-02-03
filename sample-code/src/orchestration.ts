@@ -168,7 +168,6 @@ const templating = { template: [{ role: 'user', content: '{{?input}}' }] };
  */
 export async function orchestrationInputFiltering(): Promise<void> {
   // create a filter with minimal thresholds for hate and violence
-  // lower numbers mean more strict filtering
   const azureContentFilter = buildAzureContentSafetyFilter({
     Hate: 'ALLOW_SAFE',
     Violence: 'ALLOW_SAFE'
