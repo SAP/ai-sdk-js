@@ -7,7 +7,7 @@ import { OrchestrationResponse } from './orchestration-response.js';
 import {
   constructCompletionPostRequest,
   constructCompletionPostRequestFromJsonModuleConfig
-} from './orchestration-utils.js';
+} from './util/index.js';
 import type {
   HttpResponse,
   CustomRequestConfig

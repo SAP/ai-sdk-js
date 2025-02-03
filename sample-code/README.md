@@ -147,14 +147,14 @@ Get chat completion response with image input.
 `GET /orchestration/inputFiltering`
 
 Get chat completion response with Azure content filter for the input.
-Use `buildAzureContentFilter()` to build the content filter.
+For example, use `buildAzureContentSafetyFilter()` function to build Azure content filter.
 
 #### Output Filtering
 
 `GET /orchestration/outputFiltering`
 
 Get chat completion response with Azure content filter for the output.
-Use `buildAzureContentFilter()` to build the content filter.
+For example, use `buildAzureContentSafetyFilter()` function to build Azure content filter.
 
 #### Custom Request Config
 

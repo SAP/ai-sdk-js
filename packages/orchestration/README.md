@@ -265,24 +265,42 @@ Use the orchestration client with filtering to restrict content that is passed t
 
 This feature allows filtering both the [input](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering) and [output](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering) of a model based on content safety criteria.
 
-```ts
-import {
-  OrchestrationClient,
-  buildAzureContentFilter
-} from '@sap-ai-sdk/orchestration';
+#### Azure Content Filter
 
-const filter = buildAzureContentFilter({ Hate: 2, Violence: 4 });
+Use `buildAzureContentSafetyFilter()` function to build an Azure content filter for both input and output.
+Each category of the filter can be assigned a specific severity level, which corresponds to an Azure threshold value.
+
+| Severity Level          | Azure Threshold Value |
+| ----------------------- | --------------------- |
+| `ALLOW_SAFE`            | 0                     |
+| `ALLOW_SAFE_LOW`        | 2                     |
+| `ALLOW_SAFE_LOW_MEDIUM` | 4                     |
+| `ALLOW_ALL`             | 6                     |
+
+```ts
+import { OrchestrationClient, ContentFilters } from '@sap-ai-sdk/orchestration';
+const llm = {
+  model_name: 'gpt-4o',
+  model_params: { max_tokens: 50, temperature: 0.1 }
+};
+const templating = {
+  template: [{ role: 'user', content: '{{?input}}' }]
+};
+
+const filter = buildAzureContentSafetyFilter({
+  Hate: 'ALLOW_SAFE_LOW',
+  Violence: 'ALLOW_SAFE_LOW_MEDIUM'
+});
 const orchestrationClient = new OrchestrationClient({
-  llm: {
-    model_name: 'gpt-4o',
-    model_params: { max_tokens: 50, temperature: 0.1 }
-  },
-  templating: {
-    template: [{ role: 'user', content: '{{?input}}' }]
-  },
+  llm,
+  templating,
   filtering: {
-    input: filter,
-    output: filter
+    input: {
+      filters: [filter]
+    },
+    output: {
+      filters: [filter]
+    }
   }
 });
 
@@ -296,22 +314,18 @@ try {
 }
 ```
 
+#### Error Handling
+
 Both `chatCompletion()` and `getContent()` methods can throw errors.
 
-- **axios errors**:  
+- **Axios Errors**:  
   When the chat completion request fails with a `400` status code, the caught error will be an `Axios` error.
-  The property `error.response.data.message` may provide additional details about the failure's cause.
+  The property `error.response.data.message` provides additional details about the failure.
 
-- **output content filtered**:  
-  The method `getContent()` can throw an error if the output filter filters the model output.
+- **Output Content Filtered**:  
+  The `getContent()` method can throw an error if the output filter filters the model output.
   This can occur even if the chat completion request responds with a `200` HTTP status code.
   The `error.message` property indicates if the output was filtered.
-
-Therefore, handle errors appropriately to ensure meaningful feedback for both types of errors.
-
-`buildAzureContentFilter()` is a convenience function that creates an Azure content filter configuration based on the provided inputs.
-The Azure content filter supports four categories: `Hate`, `Violence`, `Sexual`, and `SelfHarm`.
-Each category can be configured with severity levels of 0, 2, 4, or 6.
 
 ### Data Masking
 
