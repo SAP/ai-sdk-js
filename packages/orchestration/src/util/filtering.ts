@@ -1,4 +1,4 @@
-import { azureFilterThreshold } from '../orchestration-types.js';
+import { supportedAzureFilterThresholds } from '../orchestration-types.js';
 import type {
   AzureContentSafety,
   AzureContentSafetyFilterConfig,
@@ -50,7 +50,7 @@ export function buildAzureContentSafetyFilter(
         ...Object.fromEntries(
           Object.entries(config).map(([key, value]) => [
             key,
-            azureFilterThreshold[value as AzureFilterThreshold]
+            supportedAzureFilterThresholds[value as AzureFilterThreshold]
           ])
         )
       }
