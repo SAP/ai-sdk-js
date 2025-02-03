@@ -247,7 +247,7 @@ expect<ChatModel>('custom-model');
 expect<ChatModel>('gemini-1.0-pro');
 
 /**
- * FilteringUtil.
+ * Filtering Util.
  */
 
 expectType<AzureContentSafetyFilterConfig>(
