@@ -63,17 +63,13 @@ export interface OrchestrationModuleConfig {
   llm: LlmModuleConfig;
   /**
    * Filtering module configuration.
+   * Construct filter configuration for both input and output filtering using convenience functions.
    * @example
    * ```ts
    * filtering: {
    *   input: {
    *     filters: [
    *       buildAzureContentSafetyFilter({ Hate: 'ALLOW_SAFE', Violence: 'ALLOW_SAFE_LOW_MEDIUM' })
-   *     ]
-   *   },
-   *   output: {
-   *     filters: [
-   *       buildAzureContentSafetyFilter({ Hate: 'ALLOW_SAFE', Violence: 'ALLOW_SAFE_LOW' })
    *     ]
    *   }
    * }
