@@ -268,7 +268,7 @@ This feature allows filtering both the [input](https://help.sap.com/docs/sap-ai-
 #### Azure Content Filter
 
 Use `buildAzureContentSafetyFilter()` function to build an Azure content filter for both input and output.
-Each category of Azure content filter can be assigned a specific severity level, which corresponds to an Azure threshold value.
+Each category of the filter can be assigned a specific severity level, which corresponds to an Azure threshold value.
 
 | Severity Level          | Azure Threshold Value |
 | ----------------------- | --------------------- |
