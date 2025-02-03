@@ -68,12 +68,12 @@ export interface OrchestrationModuleConfig {
    * filtering: {
    *   input: {
    *     filters: [
-   *       buildAzureContentSafetyFilter({ Hate: 0, Violence: 0 })
+   *       buildAzureContentSafetyFilter({ Hate: 'ALLOW_SAFE', Violence: 'ALLOW_SAFE_LOW_MEDIUM' })
    *     ]
    *   },
    *   output: {
    *     filters: [
-   *       buildAzureContentSafetyFilter({ Hate: 0, Violence: 0 })
+   *       buildAzureContentSafetyFilter({ Hate: 'ALLOW_SAFE', Violence: 'ALLOW_SAFE_LOW' })
    *     ]
    *   }
    * }
