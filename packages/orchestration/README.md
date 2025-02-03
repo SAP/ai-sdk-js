@@ -269,7 +269,7 @@ This feature allows filtering both the [input](https://help.sap.com/docs/sap-ai-
 
 Use `buildAzureContentSafetyFilter()` function to build an Azure content filter.
 The Azure content filter supports four categories: `Hate`, `Violence`, `Sexual`, and `SelfHarm`.
-Each category can be set to a specific severity level, each of which corresponds to an azure threshold value.
+Each category can be assigned a specific severity level, which corresponds to an Azure threshold value.
 
 | Severity Level          | Azure Threshold Value |
 | ----------------------- | --------------------- |
