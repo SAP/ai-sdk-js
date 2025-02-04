@@ -262,7 +262,7 @@ export async function orchestrationCompletionMasking(): Promise<
 }
 
 /**
- * Mask the grounding input with a list of allowed words that are not masked.
+ * Apply data masking to the grounding input, excluding predefined 'allowList' words.
  * @returns The orchestration service response.
  */
 export async function orchestrationMaskGroundingInput(): Promise<OrchestrationResponse> {
@@ -272,7 +272,8 @@ export async function orchestrationMaskGroundingInput(): Promise<OrchestrationRe
       template: [
         {
           role: 'user',
-          content: '{{?groundingInput}}\n{{?groundingOutput}}'
+          content:
+            'UserQuestion: {{?groundingInput}} Context: {{?groundingOutput}}'
         }
       ]
     },

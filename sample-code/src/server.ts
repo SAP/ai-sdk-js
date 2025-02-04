@@ -544,12 +544,7 @@ app.post(
   async (req, res) => {
     try {
       const groundingResult = await orchestrationMaskGroundingInput();
-      res.json({
-        masked_grounding_input:
-          groundingResult.data.module_results.input_masking?.data
-            ?.masked_grounding_input,
-        content: groundingResult.getContent()
-      });
+      res.send(groundingResult.getContent());
     } catch (error: any) {
       console.error(error);
       res

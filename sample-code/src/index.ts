@@ -12,6 +12,7 @@ export {
   orchestrationOutputFiltering,
   orchestrationRequestConfig,
   orchestrationCompletionMasking,
+  orchestrationMaskGroundingInput,
   orchestrationFromJson,
   orchestrationGroundingVector,
   orchestrationGroundingHelpSapCom,
