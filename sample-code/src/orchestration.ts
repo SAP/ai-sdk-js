@@ -3,8 +3,8 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import {
   OrchestrationClient,
-  buildAzureContentFilter,
-  buildDocumentGroundingConfig
+  buildDocumentGroundingConfig,
+  buildAzureContentSafetyFilter
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
 import type {
@@ -21,7 +21,8 @@ const logger = createLogger({
 });
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+// Navigate up by one level, to access files in the `sample-code` root instead of the transpiled `dist` folder
+const __dirname = join(dirname(__filename), '..');
 
 /**
  * A simple LLM request, asking about the capital of France.
@@ -139,6 +140,27 @@ export async function orchestrationTemplating(): Promise<OrchestrationResponse> 
   });
 }
 
+/**
+ * Use a template stored in the prompt registry.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationPromptRegistry(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    llm,
+    templating: {
+      template_ref: {
+        name: 'get-capital',
+        scenario: 'e2e-test',
+        version: '0.0.1'
+      }
+    }
+  });
+
+  return orchestrationClient.chatCompletion({
+    inputParams: { input: 'France' }
+  });
+}
+
 const templating = { template: [{ role: 'user', content: '{{?input}}' }] };
 
 /**
@@ -146,14 +168,18 @@ const templating = { template: [{ role: 'user', content: '{{?input}}' }] };
  */
 export async function orchestrationInputFiltering(): Promise<void> {
   // create a filter with minimal thresholds for hate and violence
-  // lower numbers mean more strict filtering
-  const filter = buildAzureContentFilter({ Hate: 0, Violence: 0 });
+  const azureContentFilter = buildAzureContentSafetyFilter({
+    Hate: 'ALLOW_SAFE',
+    Violence: 'ALLOW_SAFE'
+  });
   const orchestrationClient = new OrchestrationClient({
     llm,
     templating,
-    // configure the filter to be applied for both input and output
+    // configure the filter to be applied for input
     filtering: {
-      input: filter
+      input: {
+        filters: [azureContentFilter]
+      }
     }
   });
 
@@ -179,12 +205,17 @@ export async function orchestrationInputFiltering(): Promise<void> {
 export async function orchestrationOutputFiltering(): Promise<OrchestrationResponse> {
   // output filters are build in the same way as input filters
   // set the thresholds to the minimum to maximize the chance the LLM output will be filtered
-  const filter = buildAzureContentFilter({ Hate: 0, Violence: 0 });
+  const azureContentFilter = buildAzureContentSafetyFilter({
+    Hate: 'ALLOW_SAFE',
+    Violence: 'ALLOW_SAFE'
+  });
   const orchestrationClient = new OrchestrationClient({
     llm,
     templating,
     filtering: {
-      output: filter
+      output: {
+        filters: [azureContentFilter]
+      }
     }
   });
   /**
@@ -336,7 +367,7 @@ export async function orchestrationFromJson(): Promise<
 > {
   // You can also provide the JSON configuration as a plain string in the code directly instead.
   const jsonConfig = await readFile(
-    join(__dirname, 'model-orchestration-config.json'),
+    join(__dirname, 'src', 'model-orchestration-config.json'),
     'utf-8'
   );
   const response = await new OrchestrationClient(jsonConfig).chatCompletion();
@@ -350,23 +381,26 @@ export async function orchestrationFromJson(): Promise<
  * @returns The orchestration service response.
  */
 export async function orchestrationGroundingVector(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    llm,
-    templating: {
-      template: [
-        {
-          role: 'user',
-          content:
-            'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
-        }
-      ]
+  const orchestrationClient = new OrchestrationClient(
+    {
+      llm,
+      templating: {
+        template: [
+          {
+            role: 'user',
+            content:
+              'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
+          }
+        ]
+      },
+      grounding: buildDocumentGroundingConfig({
+        input_params: ['groundingRequest'],
+        output_param: 'groundingOutput',
+        filters: [{ id: 'filter1' }]
+      })
     },
-    grounding: buildDocumentGroundingConfig({
-      input_params: ['groundingRequest'],
-      output_param: 'groundingOutput',
-      filters: [{ id: 'filter1' }]
-    })
-  });
+    { resourceGroup: 'ai-sdk-js-e2e' }
+  );
 
   return orchestrationClient.chatCompletion({
     inputParams: {
@@ -439,7 +473,7 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
     }
   });
 
-  const imageFilePath = join(__dirname, 'media', 'sample-image.png');
+  const imageFilePath = join(__dirname, 'src', 'media', 'sample-image.png');
   const mimeType = 'image/png';
   const encodedString = `data:${mimeType};base64,${await readFile(imageFilePath, 'base64')}`;
 

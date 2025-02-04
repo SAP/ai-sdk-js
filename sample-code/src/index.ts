@@ -8,6 +8,7 @@ export {
 export {
   orchestrationChatCompletion,
   orchestrationTemplating,
+  orchestrationPromptRegistry,
   orchestrationInputFiltering,
   orchestrationOutputFiltering,
   orchestrationRequestConfig,

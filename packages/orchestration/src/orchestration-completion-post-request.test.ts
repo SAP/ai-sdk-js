@@ -1,7 +1,7 @@
 import {
   constructCompletionPostRequest,
-  buildAzureContentFilter
-} from './orchestration-utils.js';
+  buildAzureContentSafetyFilter
+} from './util/index.js';
 import type { CompletionPostRequest } from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
@@ -169,7 +169,14 @@ describe('construct completion post request', () => {
     const config: OrchestrationModuleConfig = {
       ...defaultConfig,
       filtering: {
-        input: buildAzureContentFilter({ Hate: 4, SelfHarm: 0 })
+        input: {
+          filters: [
+            buildAzureContentSafetyFilter({
+              Hate: 'ALLOW_SAFE_LOW_MEDIUM',
+              SelfHarm: 'ALLOW_SAFE'
+            })
+          ]
+        }
       }
     };
     const expectedCompletionPostRequest: CompletionPostRequest = {
@@ -209,7 +216,14 @@ describe('construct completion post request', () => {
     const config: OrchestrationModuleConfig = {
       ...defaultConfig,
       filtering: {
-        output: buildAzureContentFilter({ Hate: 4, SelfHarm: 0 })
+        output: {
+          filters: [
+            buildAzureContentSafetyFilter({
+              Hate: 'ALLOW_SAFE_LOW_MEDIUM',
+              SelfHarm: 'ALLOW_SAFE'
+            })
+          ]
+        }
       }
     };
 

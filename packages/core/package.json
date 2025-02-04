@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/core",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
@@ -26,9 +26,9 @@
     "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
-    "@sap-cloud-sdk/connectivity": "^3.25.0",
-    "@sap-cloud-sdk/http-client": "^3.25.0",
-    "@sap-cloud-sdk/openapi": "^3.25.0",
-    "@sap-cloud-sdk/util": "^3.25.0"
+    "@sap-cloud-sdk/connectivity": "^3.26.0",
+    "@sap-cloud-sdk/http-client": "^3.26.0",
+    "@sap-cloud-sdk/openapi": "^3.26.0",
+    "@sap-cloud-sdk/util": "^3.26.0"
   }
 }

@@ -11,7 +11,9 @@ This package incorporates generative AI orchestration capabilities into your AI 
 - [Orchestration Service](#orchestration-service)
 - [Relationship between Orchestration and Resource Groups](#relationship-between-orchestration-and-resource-groups)
 - [Usage](#usage)
+  - [LLM Config](#llm-config)
   - [Templating](#templating)
+  - [Prompt Registry](#prompt-registry)
   - [Content Filtering](#content-filtering)
   - [Data Masking](#data-masking)
   - [Grounding](#grounding)
@@ -34,7 +36,7 @@ $ npm install @sap-ai-sdk/orchestration
 
 - [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Configure the project with **Node.js v20 or higher** and **native ESM** support.
-- Ensure an orchestration deployment is available in the SAP Generative AI Hub.
+- Ensure an [orchestration deployment is available in the SAP Generative AI Hub](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration).
   - Use the [`DeploymentApi`](https://github.com/SAP/ai-sdk-js/blob/main/packages/ai-api/README.md#create-a-deployment) from `@sap-ai-sdk/ai-api` [to create a deployment](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration).
     Alternatively, you can also create deployments using the [SAP AI Launchpad](https://help.sap.com/docs/sap-ai-core/generative-ai-hub/activate-generative-ai-hub-for-sap-ai-launchpad?locale=en-US&q=launchpad).
   - Once the deployment is complete, access the orchestration service via the `deploymentUrl`.
@@ -65,27 +67,43 @@ Consequently, each orchestration deployment uniquely maps to a resource group wi
 ## Usage
 
 Leverage the orchestration service capabilities by using the orchestration client.
-Configure the LLM module by setting the `model_name` property.
-Define the optional `model_version` property to choose an available model version.
-By default, the version is set to `latest`.
-Specify the optional `model_params` property to apply specific parameters to the model
+You can perform a simple prompt by running:
 
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
   llm: {
-    model_name: 'gpt-4o',
-    model_params: { max_tokens: 50, temperature: 0.1 },
-    model_version: 'latest'
+    model_name: 'gpt-4o'
   },
-  ...
+  templating: {
+    template: [
+      { role: 'user', content: 'Hello World! Why is this phrase so famous?' }
+    ]
+  }
 });
+
+const response = await orchestrationClient.chatCompletion();
+console.log(response.getContent());
 ```
 
-The client allows you to combine various modules, such as templating and content filtering, while sending chat completion requests to an orchestration-compatible generative AI model.
+Here we use GPT-4o with a single user message as prompt and print out the response.
+
+The `OrchestrationClient` enables combining various modules, such as templating and content filtering, while sending chat completion requests to an orchestration-compatible generative AI model.
 
 In addition to the examples below, you can find more **sample code** [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/orchestration.ts).
+
+### LLM Config
+
+Choose the LLM by setting the `model_name` property.
+Optionally, define `model_version` (default: `latest`) and `model_params` for custom settings.
+
+> [!Tip]
+>
+> #### Harmonized API
+>
+> The Orchestration Service provides a [harmonized API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/harmonized-api) for all models.
+> Switching to a different model — even from another vendor — only requires changing the `model_name` property.
 
 ### Templating
 
@@ -135,27 +153,29 @@ console.log(
 );
 ```
 
-> [!Tip]
->
-> #### Harmonized API
->
-> As the orchestration service API is harmonized, you can switch to a different model, even from another vendor, by changing only the `model_name` property.
-> Here’s an example where only one line of code is changed.
->
-> ```ts
-> const orchestrationClient = new OrchestrationClient({
->   llm: {
->     // only change the model name here
->     model_name: 'gemini-1.5-flash',
->     model_params: { max_tokens: 50, temperature: 0.1 }
->   },
->   templating: {
->     template: [
->       { role: 'user', content: 'What is the capital of {{?country}}?' }
->     ]
->   }
-> });
-> ```
+### Prompt Registry
+
+Alternatively, prepared templates from the [Prompt Registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) of SAP AI Core can be used instead of passing a template in the request.
+
+```ts
+const orchestrationClient = new OrchestrationClient({
+  llm,
+  templating: {
+    template_ref: {
+      name: 'get-capital',
+      scenario: 'e2e-test',
+      version: '0.0.1'
+    }
+  }
+});
+
+return orchestrationClient.chatCompletion({
+  inputParams: { input: 'France' }
+});
+```
+
+A prompt template can be referenced either by ID, or by using a combination of name, scenario, and version.
+For details on storing a template in the Prompt Registry, refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-prompt-template-imperative).
 
 #### Passing a Message History
 
@@ -243,26 +263,44 @@ It will process each image and use the information from all of them to answer th
 
 Use the orchestration client with filtering to restrict content that is passed to and received from a generative AI model.
 
-This feature allows filtering both the [input](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-orchestration#content-filtering-on-input) and [output](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-orchestration#content-filtering-on-input) of a model based on content safety criteria.
+This feature allows filtering both the [input](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering) and [output](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering) of a model based on content safety criteria.
+
+#### Azure Content Filter
+
+Use `buildAzureContentSafetyFilter()` function to build an Azure content filter for both input and output.
+Each category of the filter can be assigned a specific severity level, which corresponds to an Azure threshold value.
+
+| Severity Level          | Azure Threshold Value |
+| ----------------------- | --------------------- |
+| `ALLOW_SAFE`            | 0                     |
+| `ALLOW_SAFE_LOW`        | 2                     |
+| `ALLOW_SAFE_LOW_MEDIUM` | 4                     |
+| `ALLOW_ALL`             | 6                     |
 
 ```ts
-import {
-  OrchestrationClient,
-  buildAzureContentFilter
-} from '@sap-ai-sdk/orchestration';
+import { OrchestrationClient, ContentFilters } from '@sap-ai-sdk/orchestration';
+const llm = {
+  model_name: 'gpt-4o',
+  model_params: { max_tokens: 50, temperature: 0.1 }
+};
+const templating = {
+  template: [{ role: 'user', content: '{{?input}}' }]
+};
 
-const filter = buildAzureContentFilter({ Hate: 2, Violence: 4 });
+const filter = buildAzureContentSafetyFilter({
+  Hate: 'ALLOW_SAFE_LOW',
+  Violence: 'ALLOW_SAFE_LOW_MEDIUM'
+});
 const orchestrationClient = new OrchestrationClient({
-  llm: {
-    model_name: 'gpt-4o',
-    model_params: { max_tokens: 50, temperature: 0.1 }
-  },
-  templating: {
-    template: [{ role: 'user', content: '{{?input}}' }]
-  },
+  llm,
+  templating,
   filtering: {
-    input: filter,
-    output: filter
+    input: {
+      filters: [filter]
+    },
+    output: {
+      filters: [filter]
+    }
   }
 });
 
@@ -276,22 +314,18 @@ try {
 }
 ```
 
+#### Error Handling
+
 Both `chatCompletion()` and `getContent()` methods can throw errors.
 
-- **axios errors**:  
+- **Axios Errors**:  
   When the chat completion request fails with a `400` status code, the caught error will be an `Axios` error.
-  The property `error.response.data.message` may provide additional details about the failure's cause.
+  The property `error.response.data.message` provides additional details about the failure.
 
-- **output content filtered**:  
-  The method `getContent()` can throw an error if the output filter filters the model output.
+- **Output Content Filtered**:  
+  The `getContent()` method can throw an error if the output filter filters the model output.
   This can occur even if the chat completion request responds with a `200` HTTP status code.
   The `error.message` property indicates if the output was filtered.
-
-Therefore, handle errors appropriately to ensure meaningful feedback for both types of errors.
-
-`buildAzureContentFilter()` is a convenience function that creates an Azure content filter configuration based on the provided inputs.
-The Azure content filter supports four categories: `Hate`, `Violence`, `Sexual`, and `SelfHarm`.
-Each category can be configured with severity levels of 0, 2, 4, or 6.
 
 ### Data Masking
 

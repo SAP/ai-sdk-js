@@ -9,12 +9,12 @@ import {
   parseMockResponse
 } from '../../../test-util/mock-http.js';
 import { OrchestrationClient } from './orchestration-client.js';
-import {
-  buildAzureContentFilter,
-  constructCompletionPostRequest,
-  constructCompletionPostRequestFromJsonModuleConfig
-} from './orchestration-utils.js';
 import { OrchestrationResponse } from './orchestration-response.js';
+import {
+  constructCompletionPostRequestFromJsonModuleConfig,
+  constructCompletionPostRequest,
+  buildAzureContentSafetyFilter
+} from './util/index.js';
 import type { CompletionPostResponse } from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
@@ -162,8 +162,22 @@ describe('orchestration service client', () => {
         ]
       },
       filtering: {
-        input: buildAzureContentFilter({ Hate: 4, SelfHarm: 2 }),
-        output: buildAzureContentFilter({ Sexual: 0, Violence: 4 })
+        input: {
+          filters: [
+            buildAzureContentSafetyFilter({
+              Hate: 'ALLOW_SAFE_LOW_MEDIUM',
+              SelfHarm: 'ALLOW_SAFE_LOW'
+            })
+          ]
+        },
+        output: {
+          filters: [
+            buildAzureContentSafetyFilter({
+              Sexual: 'ALLOW_SAFE',
+              Violence: 'ALLOW_SAFE_LOW_MEDIUM'
+            })
+          ]
+        }
       }
     };
     const prompt = {

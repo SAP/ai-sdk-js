@@ -1,4 +1,4 @@
-import { constructCompletionPostRequestFromJsonModuleConfig } from './orchestration-utils.js';
+import { constructCompletionPostRequestFromJsonModuleConfig } from './util/module-config.js';
 
 describe('construct completion post request from JSON', () => {
   it('should construct completion post request from JSON', () => {

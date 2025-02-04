@@ -23,7 +23,7 @@ describe('vector api', () => {
         {
           title: 'ai-sdk-js-demo',
           embeddingConfig: {
-            modelName: 'text-embedding-ada-002-v2'
+            modelName: 'text-embedding-ada-002'
           },
           metadata: [],
           id: '7171c2b2-835b-4745-8824-ff5c7e98a416'
