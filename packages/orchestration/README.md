@@ -406,6 +406,29 @@ Set it to `help.sap.com` to retrieve context from the SAP Help Portal.
 Set `data_respotiories` property with an array of `REPOSITORY_ID` values to search in specific data repositories.
 Skip this property to search in all available data repositories.
 
+#### Data Masking in Grounding
+
+You can also configure masking of the grounding input to anonymize sensitive information while preserving necessary context for the Orchestration service.
+A masking configuration can be added in the grounding example above to mask the grounding input.
+
+```ts
+masking: {
+  masking_providers: [
+    {
+      type: 'sap_data_privacy_integration',
+      method: 'pseudonymization',
+      entities: [{ type: 'profile-email' }, { type: 'profile-person' }],
+      mask_grounding_input: {
+        enabled: true
+      },
+      allowlist: ['AI Core']
+    }
+  ];
+}
+```
+
+The `allowlist` property allows you to specify terms that should remain unmasked, ensuring important context-specific terminology is preserved in the grounding input.
+
 ### Using a JSON Configuration from AI Launchpad
 
 If you already have an orchestration workflow created in AI Launchpad, you can either download the configuration as a JSON file or copy the JSON string directly to use it with the orchestration client.
