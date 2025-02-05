@@ -63,18 +63,19 @@ describe('orchestration', () => {
   });
 
   it('should complete a chat with masking', async () => {
-    const result = await orchestrationCompletionMasking();
-    expect(result).toEqual(expect.any(String));
+    const response = await orchestrationCompletionMasking();
+    expect(response).toEqual(expect.any(String));
   });
 
   it('should complete a chat with masked grounding input', async () => {
-    const result = await orchestrationMaskGroundingInput();
+    const response = await orchestrationMaskGroundingInput();
     const parsedGroundingInput = JSON.parse(
-      result.data.module_results.input_masking!.data!.masked_grounding_input
+      response.data.module_results.input_masking!.data!.masked_grounding_input
     )[0];
     expect(parsedGroundingInput).toEqual(
       "What is MASKED_ORG_1's product Joule?"
     );
+    assertContent(response);
   });
 
   it('should complete a chat with image', async () => {
