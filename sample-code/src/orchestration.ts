@@ -455,7 +455,7 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
     templating: {
       template: [
         {
-          role: 'user',
+          role: 'user', // image_url content type is only supported in user messages
           content: [
             {
               type: 'text',

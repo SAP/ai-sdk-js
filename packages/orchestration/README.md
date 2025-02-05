@@ -220,6 +220,10 @@ const responseContent = response.getContent();
 
 Many models in the orchestration service have image recognition capabilities, meaning the models can take images and answer questions about them.
 
+> [!Warning]
+> The `image_url` content type can only be used in messages with `role: 'user'`.
+> Attempting to use `image_url` in non-user messages will result in an error.
+
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
@@ -230,7 +234,7 @@ const orchestrationClient = new OrchestrationClient({
   templating: {
     template: [
       {
-        role: 'user',
+        role: 'user', // image_url content type is only supported in user messages
         content: [
           {
             type: 'text',
