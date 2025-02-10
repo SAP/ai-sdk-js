@@ -74,7 +74,8 @@ describe('Mapping Functions', () => {
       ...defaultOptions,
       ...options
     });
-    expect(mapping).toMatchObject(request);
+    // Todo find a better way to remove undefined properties
+    expect(JSON.parse(JSON.stringify(mapping))).toStrictEqual(request);
   });
 
   it('throws an error if the message type is not supported', async () => {
