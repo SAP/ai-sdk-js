@@ -7,4 +7,4 @@
 /**
  * Representation of the 'SearchSelectOptionEnum' schema.
  */
-export type SearchSelectOptionEnum = 'ignoreIfKeyAbsent' | any;
+export type SearchSelectOptionEnum = 'ignoreIfKeyAbsent';
