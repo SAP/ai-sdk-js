@@ -4,11 +4,7 @@ import type { DocumentGroundingServiceConfig } from '../orchestration-types.js';
 describe('document grounding util', () => {
   it('builds grounding configuration with minimal required properties', () => {
     const groundingConfig: DocumentGroundingServiceConfig = {
-      filters: [
-        {
-          id: 'filter-id'
-        }
-      ],
+      filters: [{}],
       input_params: ['input'],
       output_param: 'output'
     };
@@ -17,7 +13,6 @@ describe('document grounding util', () => {
       config: {
         filters: [
           {
-            id: 'filter-id',
             data_repository_type: 'vector'
           }
         ],
@@ -31,9 +26,8 @@ describe('document grounding util', () => {
     const groundingConfig: DocumentGroundingServiceConfig = {
       filters: [
         {
-          id: 'filter-id',
           data_repositories: ['repo1', 'repo2'],
-          data_repository_type: 'custom-type'
+          data_repository_type: 'help.sap.com'
         }
       ],
       input_params: ['input'],
@@ -44,9 +38,8 @@ describe('document grounding util', () => {
       config: {
         filters: [
           {
-            id: 'filter-id',
             data_repositories: ['repo1', 'repo2'],
-            data_repository_type: 'custom-type'
+            data_repository_type: 'help.sap.com'
           }
         ],
         input_params: ['input'],

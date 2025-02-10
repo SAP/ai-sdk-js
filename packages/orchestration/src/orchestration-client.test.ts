@@ -341,9 +341,7 @@ describe('orchestration service client', () => {
         config: {
           filters: [
             {
-              id: 'filter1',
               data_repositories: ['*'],
-              search_config: {},
               data_repository_type: 'vector'
             }
           ],

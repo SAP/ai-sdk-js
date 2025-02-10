@@ -313,7 +313,6 @@ export async function orchestrationMaskGroundingInput(): Promise<OrchestrationRe
       output_param: 'groundingOutput',
       filters: [
         {
-          id: 'filter1',
           data_repository_type: 'help.sap.com'
         }
       ]
@@ -396,7 +395,7 @@ export async function orchestrationGroundingVector(): Promise<OrchestrationRespo
       grounding: buildDocumentGroundingConfig({
         input_params: ['groundingRequest'],
         output_param: 'groundingOutput',
-        filters: [{ id: 'filter1' }]
+        filters: [{ data_repository_type: 'vector' }]
       })
     },
     { resourceGroup: 'ai-sdk-js-e2e' }
@@ -431,7 +430,6 @@ export async function orchestrationGroundingHelpSapCom(): Promise<OrchestrationR
       output_param: 'groundingOutput',
       filters: [
         {
-          id: 'filter1',
           data_repository_type: 'help.sap.com'
         }
       ]
