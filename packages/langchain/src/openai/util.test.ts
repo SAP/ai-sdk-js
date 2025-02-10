@@ -75,6 +75,10 @@ describe('Mapping Functions', () => {
       ...options
     });
     expect(mapping).toMatchObject(request);
+    const assistantMessage = mapping.messages.filter(
+      message => message.role === 'assistant'
+    )[0];
+    expect(assistantMessage.tool_calls).toBeUndefined();
   });
 
   it('throws an error if the message type is not supported', async () => {
