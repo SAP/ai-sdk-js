@@ -6,7 +6,9 @@
   "keywords": [
     "sap-ai-sdk",
     "document-grounding",
-    "rage"
+    "rag",
+    "grounding",
+    "vector"
   ],
   "type": "module",
   "main": "./dist/index.js",
