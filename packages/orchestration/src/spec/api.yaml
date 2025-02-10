@@ -1034,11 +1034,15 @@ components:
               type: string
               description: Parameter name used for grounding output
               example: groundingOutput
+            metadata_params:
+              type: array
+              items:
+                type: string
+              description: Parameter name used for specifying metadata parameters
 
     DocumentGroundingFilter:
       type: object
       required:
-        - id
         - data_repository_type
       additionalProperties: false
       properties:
@@ -1079,6 +1083,7 @@ components:
     GroundingFilterId:
       title: Id
       description: Identifier of this SearchFilter - unique per request.
+      type: string
     GroundingFilterSearchConfiguration:
       additionalProperties: false
       properties:
@@ -1101,11 +1106,9 @@ components:
     DataRepositoryType:
       type: string
       description: Only include DataRepositories with the given type.
-      anyOf:
-        - enum:
-            - vector
-            - help.sap.com
-        - {}
+      enum:
+        - vector
+        - help.sap.com
       title: DataRepositoryType
     KeyValueListPair:
       additionalProperties: false
@@ -1152,10 +1155,8 @@ components:
       title: SearchDocumentKeyValueListPair
     SearchSelectOptionEnum:
       type: string
-      anyOf:
-        - enum:
-            - ignoreIfKeyAbsent
-        - {}
+      enum:
+        - ignoreIfKeyAbsent
       title: SearchSelectOptionEnum
 
     ErrorResponse:

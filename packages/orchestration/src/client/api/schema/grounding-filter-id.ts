@@ -7,4 +7,4 @@
 /**
  * Identifier of this SearchFilter - unique per request.
  */
-export type GroundingFilterId = any;
+export type GroundingFilterId = string;
