@@ -154,7 +154,7 @@ function mapAiMessageToAzureOpenAiAssistantMessage(
     message.additional_kwargs.tool_calls;
   return {
     name: message.name,
-    ...(tool_calls?.length && { tool_calls }),
+    ...(tool_calls?.length ? { tool_calls } : {}),
     function_call: message.additional_kwargs.function_call,
     content:
       message.content as AzureOpenAiChatCompletionRequestAssistantMessage['content'],

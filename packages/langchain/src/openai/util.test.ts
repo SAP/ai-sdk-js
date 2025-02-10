@@ -74,8 +74,11 @@ describe('Mapping Functions', () => {
       ...defaultOptions,
       ...options
     });
-    // Todo find a better way to remove undefined properties
-    expect(JSON.parse(JSON.stringify(mapping))).toStrictEqual(request);
+    expect(mapping).toMatchObject(request);
+    const assistantMessage = mapping.messages.filter(
+      message => message.role === 'assistant'
+    )[0];
+    expect(assistantMessage.tool_calls).toBeUndefined();
   });
 
   it('throws an error if the message type is not supported', async () => {
