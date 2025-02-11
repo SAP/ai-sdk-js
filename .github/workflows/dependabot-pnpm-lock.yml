@@ -4,7 +4,6 @@ on:
   pull_request_target:
     types: [opened, synchronize]
     paths:
-
       - '**/package.json'
   workflow_dispatch:
 
@@ -22,7 +21,7 @@ jobs:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Node.js
+      - name: Setup Environment
         uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
           node-version: '20' # TODO: Read from variables instead
