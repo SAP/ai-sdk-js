@@ -4,7 +4,7 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-pnpmfileChecksum: sha256-7lht5Q+T9K1tkr5FYaoHEDBAtJqjkSrAs2jGbKMfTIY=
+pnpmfileChecksum: fb3vh7gyjzvxzzal7fbygn3ogm
 
 importers:
 
@@ -74,8 +74,8 @@ importers:
         specifier: ^9.0.2
         version: 9.0.2
       mock-fs:
-        specifier: ^5.4.1
-        version: 5.4.1
+        specifier: ^5.5.0
+        version: 5.5.0
       nock:
         specifier: ^14.0.0
         version: 14.0.0
@@ -3508,8 +3508,8 @@ packages:
   mkdirp-classic@0.5.3:
     resolution: {integrity: sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==}
 
-  mock-fs@5.4.1:
-    resolution: {integrity: sha512-sz/Q8K1gXXXHR+qr0GZg2ysxCRr323kuN10O7CtQjraJsFDJ4SJ+0I5MzALz7aRp9lHk8Cc/YdsT95h9Ka1aFw==}
+  mock-fs@5.5.0:
+    resolution: {integrity: sha512-d/P1M/RacgM3dB0sJ8rjeRNXxtapkPCUnMGmIN0ixJ16F/E4GUZCvWcSGfWGz8eaXYvn1s9baUwNjI4LOPEjiA==}
     engines: {node: '>=12.0.0'}
 
   mri@1.2.0:
@@ -8874,7 +8874,7 @@ snapshots:
   mkdirp-classic@0.5.3:
     optional: true
 
-  mock-fs@5.4.1: {}
+  mock-fs@5.5.0: {}
 
   mri@1.2.0: {}
 

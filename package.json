@@ -56,7 +56,7 @@
     "glob": "^11.0.1",
     "jest": "^30.0.0-alpha.6",
     "jsonwebtoken": "^9.0.2",
-    "mock-fs": "^5.4.1",
+    "mock-fs": "^5.5.0",
     "nock": "^14.0.0",
     "prettier": "^3.5.0",
     "ts-jest": "^29.2.5",
