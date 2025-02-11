@@ -54,7 +54,7 @@
     "depcheck": "^1.4.7",
     "eslint": "^9.20.0",
     "glob": "^11.0.1",
-    "jest": "^30.0.0-alpha.6",
+    "jest": "^30.0.0-alpha.7",
     "jsonwebtoken": "^9.0.2",
     "mock-fs": "^5.5.0",
     "nock": "^14.0.1",
