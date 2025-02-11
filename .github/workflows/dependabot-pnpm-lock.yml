@@ -1,0 +1,44 @@
+name: Update pnpm-lock.yaml for Dependabot PRs
+
+on:
+  pull_request:
+    paths:
+      - 'package.json'
+      - '**/package.json'
+
+jobs:
+  update-lockfile:
+    runs-on: ubuntu-latest
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # TODO: Read from variables instead
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
+      - name: Update lockfile
+        run: pnpm install --lockfile-only
+
+      - name: Commit and push if changed
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git config --global user.email "cloud-sdk-js@github.com"
+            git config --global user.name "cloud-sdk-js"  
+            git add pnpm-lock.yaml
+            git commit -m "chore: update pnpm-lock.yaml"
+            git push
+          fi
