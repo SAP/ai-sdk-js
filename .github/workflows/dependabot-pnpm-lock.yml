@@ -1,7 +1,8 @@
 name: Update pnpm-lock.yaml for Dependabot PRs
 
 on:
-  pull_request:
+  pull_request_target:
+    types: [opened, synchronize]
     paths:
       - 'package.json'
       - '**/package.json'
