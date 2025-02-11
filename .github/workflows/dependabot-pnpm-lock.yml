@@ -16,16 +16,12 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Setup Environment
         uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
-          node-version: '20' # TODO: Read from variables instead
-
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          
       - name: Update lockfile
         run: pnpm install --lockfile-only
 
