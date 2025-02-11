@@ -482,3 +482,61 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
     }
   });
 }
+
+export interface TranslationResponseType {
+  language: string;
+  translation: string;
+}
+/**
+ * Ask about the image content using a template.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationResponseFormat(): Promise<TranslationResponseType> {
+  const orchestrationClient = new OrchestrationClient({
+    llm,
+    templating: {
+      template: [
+        {
+          role: 'system',
+          content:
+            'You are a helpful AI that translates simple sentences into different languages. The user will provide the sentence. You then choose a language at random and provide the translation.'
+        },
+        {
+          role: 'user',
+          content: '{{?input}}'
+        }
+      ],
+      response_format: {
+        type: 'json_schema',
+        json_schema: {
+          name: 'translation_response',
+          strict: true,
+          // todo: use ZOD instead, return
+          schema: {
+            type: 'object',
+            properties: {
+              language: {
+                type: 'string'
+              },
+              translation: {
+                type: 'string'
+              }
+            },
+            required: [
+                'language',
+                'translation'
+            ],
+            additionalProperties: false
+          }
+        }
+      }
+    }
+  });
+
+  const resonse = await orchestrationClient.chatCompletion({
+    inputParams: {
+      input: 'Hello World! Why is this phrase so famous?'
+    }
+  });
+  return JSON.parse(resonse.getContent()!) as TranslationResponseType;
+}

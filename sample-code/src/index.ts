@@ -18,6 +18,8 @@ export {
   orchestrationGroundingVector,
   orchestrationGroundingHelpSapCom,
   orchestrationChatCompletionImage,
+  orchestrationResponseFormat,
+  TranslationResponseType,
   chatCompletionStreamWithJsonModuleConfig,
   chatCompletionStream
 } from './orchestration.js';

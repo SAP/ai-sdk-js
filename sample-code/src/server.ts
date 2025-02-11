@@ -20,7 +20,8 @@ import {
   chatCompletionStreamWithJsonModuleConfig as orchestrationChatCompletionStreamWithJsonModuleConfig,
   orchestrationGroundingHelpSapCom,
   orchestrationMaskGroundingInput,
-  orchestrationPromptRegistry
+  orchestrationPromptRegistry,
+  orchestrationResponseFormat
 } from './orchestration.js';
 import {
   getDeployments,
@@ -260,7 +261,8 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       outputFiltering: orchestrationOutputFiltering,
       requestConfig: orchestrationRequestConfig,
       fromJson: orchestrationFromJson,
-      image: orchestrationChatCompletionImage
+      image: orchestrationChatCompletionImage,
+      responseFormat: orchestrationResponseFormat
     }[sampleCase] || orchestrationChatCompletion;
 
   try {
@@ -270,6 +272,10 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
     } else if (sampleCase === 'outputFiltering') {
       res.send(
         `Output filter applied successfully with threshold results: ${JSON.stringify(result.data.module_results.output_filtering!.data!)}`
+      );
+    } else if (sampleCase === 'responseFormat') {
+      res.send(
+        `Response format applied successfully with response: ${result}`
       );
     } else {
       res.send(result.getContent());
