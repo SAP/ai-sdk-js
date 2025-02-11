@@ -4,7 +4,7 @@ on:
   pull_request_target:
     types: [opened, synchronize]
     paths:
-      - 'package.json'
+
       - '**/package.json'
   workflow_dispatch:
 
@@ -23,14 +23,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
           node-version: '20' # TODO: Read from variables instead
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 10
 
       - name: Update lockfile
         run: pnpm install --lockfile-only
