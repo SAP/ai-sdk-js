@@ -21,7 +21,7 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
-          pnpm-install.args: --lockfile-only
+          pnpm-install-args: --lockfile-only
 
       - name: Commit and push if changed
         run: |
