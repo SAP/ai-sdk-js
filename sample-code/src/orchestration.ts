@@ -483,8 +483,17 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
   });
 }
 
+/**
+ * Response type that is guaranteed to be respected by the orchestration LLM response.
+ */
 export interface TranslationResponseType {
+  /**
+   * The language of the translation, randomly chosen by the LLM.
+   */
   language: string;
+  /**
+   * The translation of the input sentence.
+   */
   translation: string;
 }
 /**
@@ -522,10 +531,7 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
                 type: 'string'
               }
             },
-            required: [
-                'language',
-                'translation'
-            ],
+            required: ['language', 'translation'],
             additionalProperties: false
           }
         }

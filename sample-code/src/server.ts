@@ -274,9 +274,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
         `Output filter applied successfully with threshold results: ${JSON.stringify(result.data.module_results.output_filtering!.data!)}`
       );
     } else if (sampleCase === 'responseFormat') {
-      res.send(
-        `Response format applied successfully with response: ${result}`
-      );
+      res.send(`Response format applied successfully with response: ${result}`);
     } else {
       res.send(result.getContent());
     }
