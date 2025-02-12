@@ -12,7 +12,8 @@ import type {
   OrchestrationStreamChunkResponse,
   OrchestrationStreamResponse,
   OrchestrationResponse,
-  StreamOptions
+  StreamOptions,
+  TemplatingChatMessage
 } from '@sap-ai-sdk/orchestration';
 
 const logger = createLogger({
@@ -138,6 +139,31 @@ export async function orchestrationTemplating(): Promise<OrchestrationResponse> 
     // give the actual value for the variable "country"
     inputParams: { country: 'France' }
   });
+}
+
+/**
+ * Chat request to OpenAI through the Orchestration service using message history.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationMessagesHistory(): Promise<OrchestrationResponse> {
+  const orchestrationClient = (messages: TemplatingChatMessage) =>
+    new OrchestrationClient({
+      llm,
+      templating: {
+        template: messages
+      }
+    });
+
+  const firstResponse = await orchestrationClient([
+    { role: 'user', content: 'What is the capital of France?' }
+  ]).chatCompletion();
+
+  // User can then ask a follow-up question
+  const nextResponse = await orchestrationClient([
+    { role: 'user', content: 'Are you sure?' }
+  ]).chatCompletion({ messagesHistory: firstResponse.getAllMessages() });
+
+  return nextResponse;
 }
 
 /**

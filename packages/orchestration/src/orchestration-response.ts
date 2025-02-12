@@ -1,7 +1,11 @@
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type {
   CompletionPostResponse,
-  TokenUsage
+  TokenUsage,
+  ChatMessage,
+  SingleChatMessage,
+  MultiChatMessage,
+  ChatMessages
 } from './client/api/schema/index.js';
 
 /**
@@ -49,6 +53,72 @@ export class OrchestrationResponse {
       );
     }
     return choice?.message?.content;
+  }
+
+  /**
+   * Messages that can be used for subsequent prompts as message history.
+   * @param choiceIndex - The index of the choice to parse.
+   * @returns A list of all messages.
+   */
+  getAllMessages(choiceIndex = 0): ChatMessages {
+    const messages = (this.data.module_results.templating ?? []).map(
+      (message: ChatMessage) => {
+        const isMultiContent = Array.isArray(
+          (message as MultiChatMessage).content
+        );
+        if (isMultiContent) {
+          return this.handleMultiChatMessage(message as MultiChatMessage);
+        }
+        return this.handleSingleChatMessage(message as SingleChatMessage);
+      }
+    );
+
+    messages.push({
+      role: 'assistant',
+      content:
+        this.getChoices().find(c => c.index === choiceIndex)?.message.content ??
+        ''
+    });
+    return messages;
+  }
+
+  private handleSingleChatMessage(
+    singleMessage: SingleChatMessage
+  ): ChatMessage {
+    if (this.isValidChatRole(singleMessage)) {
+      return {
+        role: singleMessage.role,
+        content: singleMessage.content
+      };
+    }
+
+    throw new Error(`Unexpected role: ${singleMessage.role}`);
+  }
+
+  private handleMultiChatMessage(multiMessage: MultiChatMessage): ChatMessage {
+    if (this.isValidChatRole(multiMessage)) {
+      return {
+        role: multiMessage.role,
+        content: multiMessage.content
+          .map(content =>
+            content.type === 'text'
+              ? content.text
+              : `{ url: ${content.image_url.url}, detail: ${content.image_url.detail}}`
+          )
+          .join('\n')
+      };
+    }
+
+    throw new Error(
+      `Unexpected role with complex message: ${multiMessage.role}`
+    );
+  }
+
+  private isValidChatRole(message: ChatMessage) {
+    if (Array.isArray((message as MultiChatMessage).content)) {
+      return ['user', 'system'].includes(message.role);
+    }
+    return ['user', 'assistant', 'system'].includes(message.role);
   }
 
   private getChoices() {

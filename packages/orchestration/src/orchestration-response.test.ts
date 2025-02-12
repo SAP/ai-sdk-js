@@ -38,6 +38,21 @@ describe('OrchestrationResponse', () => {
     });
   });
 
+  it('should return return a list of all messages', () => {
+    const messageList = orchestrationResponse.getAllMessages();
+
+    expect(messageList.length).toBe(2);
+    expect(messageList[0]).toMatchObject({
+      role: 'user',
+      content: expect.any(String)
+    });
+
+    expect(messageList[1]).toEqual({
+      role: 'assistant',
+      content: expect.any(String)
+    });
+  });
+
   it('should return default choice index with convenience functions', () => {
     expect(orchestrationResponse.getFinishReason()).toBe('stop');
     expect(orchestrationResponse.getContent()).toBe(

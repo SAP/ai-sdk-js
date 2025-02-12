@@ -11,7 +11,8 @@ import type {
   ChatModel,
   GroundingModuleConfig,
   LlmModelParams,
-  AzureContentSafetyFilterConfig
+  AzureContentSafetyFilterConfig,
+  ChatMessages
 } from '@sap-ai-sdk/orchestration';
 
 /**
@@ -78,6 +79,19 @@ expectType<TokenUsage>(
       }
     }).chatCompletion()
   ).getTokenUsage()
+);
+
+expectType<ChatMessages>(
+  (
+    await new OrchestrationClient({
+      templating: {
+        template: [{ role: 'user', content: 'Hello!' }]
+      },
+      llm: {
+        model_name: 'gpt-35-turbo-16k'
+      }
+    }).chatCompletion()
+  ).getAllMessages()
 );
 
 expectType<Promise<OrchestrationResponse>>(

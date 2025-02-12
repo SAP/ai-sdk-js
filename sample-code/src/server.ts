@@ -20,7 +20,8 @@ import {
   chatCompletionStreamWithJsonModuleConfig as orchestrationChatCompletionStreamWithJsonModuleConfig,
   orchestrationGroundingHelpSapCom,
   orchestrationMaskGroundingInput,
-  orchestrationPromptRegistry
+  orchestrationPromptRegistry,
+  orchestrationMessagesHistory
 } from './orchestration.js';
 import {
   getDeployments,
@@ -256,6 +257,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       simple: orchestrationChatCompletion,
       template: orchestrationTemplating,
       templateRef: orchestrationPromptRegistry,
+      messageHistory: orchestrationMessagesHistory,
       inputFiltering: orchestrationInputFiltering,
       outputFiltering: orchestrationOutputFiltering,
       requestConfig: orchestrationRequestConfig,
@@ -273,6 +275,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       );
     } else {
       res.send(result.getContent());
+      console.log(result.getAllMessages());
     }
   } catch (error: any) {
     console.error(error);
