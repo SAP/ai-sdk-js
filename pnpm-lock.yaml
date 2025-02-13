@@ -186,6 +186,12 @@ importers:
         specifier: ^3.26.0
         version: 3.26.0
 
+  packages/prompt-registry:
+    dependencies:
+      '@sap-ai-sdk/core':
+        specifier: workspace:^
+        version: link:../core
+
   sample-cap:
     dependencies:
       '@sap-ai-sdk/ai-api':

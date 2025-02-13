@@ -5,7 +5,6 @@
  */
 import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';
 import type {
-  ProvisioningResponse,
   PromptTemplateListResponse,
   PromptTemplatePostRequest,
   PromptTemplatePostResponse,
@@ -15,56 +14,17 @@ import type {
   PromptTemplateSubstitutionResponse
 } from './schema/index.js';
 /**
- * Representation of the 'DefaultApi'.
+ * Representation of the 'PromptTemplatesApi'.
  * This API is part of the 'prompt-registry' service.
  */
-export const DefaultApi = {
+export const PromptTemplatesApi = {
   _defaultBasePath: undefined,
   /**
-   * Health check endpoint
-   * @returns The request builder, use the `execute()` method to trigger the request.
-   */
-  healthz: () =>
-    new OpenApiRequestBuilder<string>(
-      'get',
-      '/healthz',
-      {},
-      DefaultApi._defaultBasePath
-    ),
-  /**
-   * Onboard a tenant
-   * @param headerParameters - Object containing the following keys: AI-Main-Tenant.
-   * @returns The request builder, use the `execute()` method to trigger the request.
-   */
-  onboardTenant: (headerParameters: { 'AI-Main-Tenant': string }) =>
-    new OpenApiRequestBuilder<ProvisioningResponse>(
-      'post',
-      '/internal/promptTemplates/provisioning',
-      {
-        headerParameters
-      },
-      DefaultApi._defaultBasePath
-    ),
-  /**
-   * Offboard a tenant
-   * @param headerParameters - Object containing the following keys: AI-Main-Tenant.
-   * @returns The request builder, use the `execute()` method to trigger the request.
-   */
-  offboardTenant: (headerParameters: { 'AI-Main-Tenant': string }) =>
-    new OpenApiRequestBuilder<ProvisioningResponse>(
-      'delete',
-      '/internal/promptTemplates/provisioning',
-      {
-        headerParameters
-      },
-      DefaultApi._defaultBasePath
-    ),
-  /**
-   * Get prompt templates
+   * List prompt templates
    * @param queryParameters - Object containing the following keys: scenario, name, version, retrieve, includeSpec.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  getPromptTemplates: (queryParameters?: {
+  listPromptTemplates: (queryParameters?: {
     scenario?: string;
     name?: string;
     version?: string;
@@ -77,7 +37,7 @@ export const DefaultApi = {
       {
         queryParameters
       },
-      DefaultApi._defaultBasePath
+      PromptTemplatesApi._defaultBasePath
     ),
   /**
    * Create or update a prompt template
@@ -91,37 +51,41 @@ export const DefaultApi = {
       {
         body
       },
-      DefaultApi._defaultBasePath
+      PromptTemplatesApi._defaultBasePath
     ),
   /**
-   * Get prompt template history
+   * List prompt template history
    * @param scenario - Path parameter.
    * @param version - Path parameter.
    * @param name - Path parameter.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  getPromptTemplateHistory: (scenario: string, version: string, name: string) =>
+  listPromptTemplateHistory: (
+    scenario: string,
+    version: string,
+    name: string
+  ) =>
     new OpenApiRequestBuilder<PromptTemplateListResponse>(
       'get',
       '/lm/scenarios/{scenario}/promptTemplates/{name}/versions/{version}/history',
       {
         pathParameters: { scenario, version, name }
       },
-      DefaultApi._defaultBasePath
+      PromptTemplatesApi._defaultBasePath
     ),
   /**
-   * Get prompt template by ID
+   * Get prompt template by UUID
    * @param promptTemplateId - Path parameter.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  getPromptTemplateById: (promptTemplateId: string) =>
+  getPromptTemplateByUuid: (promptTemplateId: string) =>
     new OpenApiRequestBuilder<PromptTemplateGetResponse>(
       'get',
       '/lm/promptTemplates/{promptTemplateId}',
       {
         pathParameters: { promptTemplateId }
       },
-      DefaultApi._defaultBasePath
+      PromptTemplatesApi._defaultBasePath
     ),
   /**
    * Delete prompt template
@@ -135,7 +99,7 @@ export const DefaultApi = {
       {
         pathParameters: { promptTemplateId }
       },
-      DefaultApi._defaultBasePath
+      PromptTemplatesApi._defaultBasePath
     ),
   /**
    * Import prompt template
@@ -149,7 +113,7 @@ export const DefaultApi = {
       {
         body
       },
-      DefaultApi._defaultBasePath
+      PromptTemplatesApi._defaultBasePath
     ),
   /**
    * Export prompt template
@@ -163,7 +127,7 @@ export const DefaultApi = {
       {
         pathParameters: { promptTemplateId }
       },
-      DefaultApi._defaultBasePath
+      PromptTemplatesApi._defaultBasePath
     ),
   /**
    * Parse prompt template by ID
@@ -185,7 +149,7 @@ export const DefaultApi = {
         body,
         queryParameters
       },
-      DefaultApi._defaultBasePath
+      PromptTemplatesApi._defaultBasePath
     ),
   /**
    * Parse prompt template by name and version
@@ -211,6 +175,6 @@ export const DefaultApi = {
         body,
         queryParameters
       },
-      DefaultApi._defaultBasePath
+      PromptTemplatesApi._defaultBasePath
     )
 };
