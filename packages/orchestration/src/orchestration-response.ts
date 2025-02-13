@@ -84,10 +84,10 @@ export class OrchestrationResponse {
   private handleSingleChatMessage(
     singleMessage: SingleChatMessage
   ): ChatMessage {
-      return {
-        role: singleMessage.role,
-        content: singleMessage.content
-      };
+    return {
+      role: singleMessage.role,
+      content: singleMessage.content
+    };
   }
 
   private handleMultiChatMessage(multiMessage: MultiChatMessage): ChatMessage {
