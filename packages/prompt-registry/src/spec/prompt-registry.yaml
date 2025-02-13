@@ -1,0 +1,722 @@
+openapi: 3.0.0
+
+info:
+  version: 0.0.1
+  title: Prompt Registry API
+  description: Prompt Storage service for Design time & Runtime prompt templates.
+
+paths:
+  /healthz:
+    get:
+      operationId: registry.controller.prompt_controller.healthz
+      x-sap-cloud-sdk-operation-name: healthz
+      description: Health check endpoint
+      responses:
+        '200':
+          description: 'Service is up and running.'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 'OK'
+        '503':
+          description: 'Service is unavailable.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'Service Unavailable'
+  /internal/promptTemplates/provisioning:
+    parameters:
+      - in: header
+        name: AI-Main-Tenant
+        required: true
+        schema:
+          type: string
+        description: The main tenant name
+    post:
+      operationId: registry.controller.prompt_controller.onboard_tenant
+      x-sap-cloud-sdk-operation-name: onboardTenant
+      description: Onboard a tenant
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisioningResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        default:
+          $ref: '#/components/responses/CommonError'
+    delete:
+      operationId: registry.controller.prompt_controller.offboard_tenant
+      x-sap-cloud-sdk-operation-name: offboardTenant
+      description: Offboard a tenant
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisioningResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        default:
+          $ref: '#/components/responses/CommonError'
+  /lm/promptTemplates:
+    post:
+      operationId: registry.controller.prompt_controller.create_update_prompt_template
+      x-sap-cloud-sdk-operation-name: createUpdatePromptTemplate
+      description: Create or update a prompt template
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromptTemplatePostRequest'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromptTemplatePostResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        default:
+          $ref: '#/components/responses/CommonError'
+    get:
+      operationId: registry.controller.prompt_controller.get_prompt_templates
+      x-sap-cloud-sdk-operation-name: getPromptTemplates
+      description: Get prompt templates
+      parameters:
+        - name: scenario
+          in: query
+          schema:
+            type: string
+        - name: name
+          in: query
+          schema:
+            type: string
+        - name: version
+          in: query
+          schema:
+            type: string
+        - name: retrieve
+          in: query
+          schema:
+            type: string
+            default: both
+        - name: includeSpec
+          in: query
+          schema:
+            type: boolean
+            default: false
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromptTemplateListResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        default:
+          $ref: '#/components/responses/CommonError'
+  /lm/scenarios/{scenario}/promptTemplates/{name}/versions/{version}/history:
+    get:
+      operationId: registry.controller.prompt_controller.get_prompt_template_history
+      x-sap-cloud-sdk-operation-name: getPromptTemplateHistory
+      description: Get prompt template history
+      parameters:
+        - name: scenario
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: version
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromptTemplateListResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        default:
+          $ref: '#/components/responses/CommonError'
+  /lm/promptTemplates/{promptTemplateId}:
+    get:
+      operationId: registry.controller.prompt_controller.get_prompt_template_by_id
+      x-sap-cloud-sdk-operation-name: getPromptTemplateById
+      description: Get prompt template by ID
+      parameters:
+        - name: promptTemplateId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromptTemplateGetResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        default:
+          $ref: '#/components/responses/CommonError'
+    delete:
+      operationId: registry.controller.prompt_controller.delete_prompt_template
+      x-sap-cloud-sdk-operation-name: deletePromptTemplate
+      description: Delete prompt template
+      parameters:
+        - name: promptTemplateId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromptTemplateDeleteResponse'
+        404:
+          $ref: '#/components/responses/NotFound'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        default:
+          $ref: '#/components/responses/CommonError'
+  /lm/promptTemplates/import:
+    post:
+      operationId: registry.controller.prompt_controller.import_prompt_template
+      x-sap-cloud-sdk-operation-name: importPromptTemplate
+      description: Import prompt template
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromptTemplatePostResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        default:
+          $ref: '#/components/responses/CommonError'
+  /lm/promptTemplates/{promptTemplateId}/export:
+    get:
+      operationId: registry.controller.prompt_controller.export_prompt_template
+      x-sap-cloud-sdk-operation-name: exportPromptTemplate
+      description: Export prompt template
+      parameters:
+        - name: promptTemplateId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        400:
+          $ref: '#/components/responses/BadRequest'
+        default:
+          $ref: '#/components/responses/CommonError'
+  /lm/promptTemplates/{promptTemplateId}/substitution:
+    post:
+      operationId: registry.controller.prompt_controller.parse_prompt_template_by_id
+      x-sap-cloud-sdk-operation-name: parsePromptTemplateById
+      description: Parse prompt template by ID
+      parameters:
+        - name: promptTemplateId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: metadata
+          in: query
+          schema:
+            type: boolean
+            default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromptTemplateSubstitutionRequest'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromptTemplateSubstitutionResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        default:
+          $ref: '#/components/responses/CommonError'
+  /lm/scenarios/{scenario}/promptTemplates/{name}/versions/{version}/substitution:
+    post:
+      operationId: registry.controller.prompt_controller.parse_prompt_template_by_name_version
+      x-sap-cloud-sdk-operation-name: parsePromptTemplateByNameVersion
+      description: Parse prompt template by name and version
+      parameters:
+        - name: scenario
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: version
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: metadata
+          in: query
+          schema:
+            type: boolean
+            default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromptTemplateSubstitutionRequest'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromptTemplateSubstitutionResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        default:
+          $ref: '#/components/responses/CommonError'
+
+components:
+  schemas:
+    ProvisioningResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+    Template:
+      oneOf:
+        - $ref: '#/components/schemas/SingleChatTemplate'
+        - $ref: '#/components/schemas/MultiChatTemplate'
+    SingleChatTemplate:
+      type: object
+      required:
+        - role
+        - content
+      additionalProperties: false
+      properties:
+        role:
+          type: string
+        content:
+          type: string
+    MultiChatTemplate:
+      type: object
+      required:
+        - role
+        - content
+      additionalProperties: false
+      properties:
+        role:
+          type: string
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/MultiChatContent'
+    MultiChatContent:
+      oneOf:
+        - $ref: '#/components/schemas/ImageContent'
+        - $ref: '#/components/schemas/TextContent'
+    TextContent:
+      type: object
+      required:
+        - type
+        - text
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          enum: ['text']
+        text:
+          type: string
+    ImageContent:
+      type: object
+      required:
+        - type
+        - image_url
+      properties:
+        type:
+          type: string
+          enum: ['image_url']
+        image_url:
+          type: object
+          required:
+            - url
+          additionalProperties: false
+          properties:
+            url:
+              type: string
+            detail:
+              type: string
+              default: 'auto'
+    PromptTemplateSpec:
+      type: object
+      required:
+        - template
+      properties:
+        template:
+          type: array
+          items:
+            $ref: '#/components/schemas/Template'
+        defaults:
+          type: object
+        additionalFields:
+          type: object
+        response_format:
+          description: >
+            Response format that the model output should adhere to.
+            This is the same as the OpenAI definition.
+
+            Compatible with GPT-4o, GPT-4o mini, GPT-4 (Turbo) and all GPT-3.5 Turbo models newer than gpt-3.5-turbo-1106.
+          oneOf:
+            - $ref: '#/components/schemas/ResponseFormatText'
+            - $ref: '#/components/schemas/ResponseFormatJsonObject'
+            - $ref: '#/components/schemas/ResponseFormatJsonSchema'
+        tools:
+          type: array
+          description: >
+            A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for.
+            This is the same as the OpenAI definition.
+          items:
+            $ref: '#/components/schemas/ChatCompletionTool'
+
+    # below ReponseFormats are copied from openapi spec: https://github.com/openai/openai-openapi/blob/e0cb2d721753e13e69e918465795d6e9f87ab15a/openapi.yaml#L12286
+    ResponseFormatText:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          description: 'The type of response format being defined: `text`'
+          enum:
+            - text
+      required:
+        - type
+    ResponseFormatJsonObject:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          description: 'The type of response format being defined: `json_object`'
+          enum:
+            - json_object
+      required:
+        - type
+    ResponseFormatJsonSchema:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          description: 'The type of response format being defined: `json_schema`'
+          enum:
+            - json_schema
+        json_schema:
+          type: object
+          additionalProperties: false
+          properties:
+            description:
+              type: string
+              description:
+                A description of what the response format is for, used by the model
+                to determine how to respond in the format.
+            name:
+              type: string
+              description:
+                The name of the response format. Must be a-z, A-Z, 0-9, or contain
+                underscores and dashes, with a maximum length of 64.
+              pattern: '^[a-zA-Z0-9-_]+$'
+              maxLength: 64
+            schema:
+              $ref: '#/components/schemas/ResponseFormatJsonSchemaSchema'
+            strict:
+              type: boolean
+              nullable: true
+              default: false
+              description:
+                Whether to enable strict schema adherence when generating the
+                output. If set to true, the model will always follow the exact
+                schema defined in the `schema` field. Only a subset of JSON
+                Schema is supported when `strict` is `true`. To learn more, read
+                the [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+          required:
+            - name
+      required:
+        - type
+        - json_schema
+    ResponseFormatJsonSchemaSchema:
+      type: object
+      description: The schema for the response format, described as a JSON Schema object.
+      additionalProperties: true
+
+    # below tool-related definitions are copied from openai spec: https://github.com/openai/openai-openapi/blob/e0cb2d721753e13e69e918465795d6e9f87ab15a/openapi.yaml#L11547
+    ChatCompletionTool:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          enum:
+            - function
+          description: The type of the tool. Currently, only `function` is supported.
+        function:
+          $ref: '#/components/schemas/FunctionObject'
+      required:
+        - type
+        - function
+    FunctionObject:
+      type: object
+      additionalProperties: false
+      properties:
+        description:
+          type: string
+          description:
+            A description of what the function does, used by the model to
+            choose when and how to call the function.
+        name:
+          type: string
+          description:
+            The name of the function to be called. Must be a-z, A-Z, 0-9, or
+            contain underscores and dashes, with a maximum length of 64.
+          pattern: '^[a-zA-Z0-9-_]+$'
+          maxLength: 64
+        parameters:
+          $ref: '#/components/schemas/FunctionParameters'
+        strict:
+          type: boolean
+          nullable: true
+          default: false
+          description:
+            Whether to enable strict schema adherence when generating the
+            function call. If set to true, the model will follow the exact
+            schema defined in the `parameters` field. Only a subset of JSON
+            Schema is supported when `strict` is `true`. Learn more about
+            Structured Outputs in the [function calling
+            guide](docs/guides/function-calling).
+      required:
+        - name
+    FunctionParameters:
+      type: object
+      description: >-
+        The parameters the functions accepts, described as a JSON Schema object.
+        See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the
+        [JSON Schema
+        reference](https://json-schema.org/understanding-json-schema/) for
+        documentation about the format. 
+        Omitting `parameters` defines a function with an empty parameter list.
+      additionalProperties: true
+
+    PromptTemplatePostRequest:
+      type: object
+      required:
+        - name
+        - version
+        - scenario
+        - spec
+      properties:
+        name:
+          type: string
+          maxLength: 120
+        version:
+          type: string
+          maxLength: 10
+        scenario:
+          type: string
+          maxLength: 120
+        spec:
+          $ref: '#/components/schemas/PromptTemplateSpec'
+    PromptTemplatePostResponse:
+      type: object
+      required:
+        - message
+        - id
+        - scenario
+        - name
+        - version
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+          format: uuid
+        scenario:
+          type: string
+        name:
+          type: string
+        version:
+          type: string
+    PromptTemplateGetResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        version:
+          type: string
+        scenario:
+          type: string
+        creationTimestamp:
+          type: string
+          format: timestamp
+        managedBy:
+          type: string
+        isVersionHead:
+          type: boolean
+        spec:
+          $ref: '#/components/schemas/PromptTemplateSpec'
+    PromptTemplateListResponse:
+      type: object
+      required:
+        - count
+        - resources
+      properties:
+        count:
+          type: integer
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/PromptTemplateGetResponse'
+    PromptTemplateDeleteResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+    RuntimePromptTemplateFile:
+      type: object
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+          properties:
+            name:
+              type: string
+            version:
+              type: string
+            scenario:
+              type: string
+        spec:
+          $ref: '#/components/schemas/PromptTemplateSpec'
+    PromptTemplateSubstitutionRequest:
+      type: object
+      properties:
+        inputParams:
+          type: object
+    PromptTemplateSubstitutionResponse:
+      type: object
+      properties:
+        parsedPrompt:
+          type: array
+          items:
+            $ref: '#/components/schemas/Template'
+        resource:
+          $ref: '#/components/schemas/PromptTemplateGetResponse'
+    ErrorResponse:
+      type: object
+      required:
+        - request_id
+        - message
+      properties:
+        request_id:
+          type: string
+        message:
+          type: string
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    CommonError:
+      description: Common Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ForbiddenError:
+      description: Forbidden Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
