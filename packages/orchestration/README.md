@@ -109,7 +109,6 @@ Optionally, define `model_version` (default: `latest`) and `model_params` for cu
 
 Use the orchestration client with templating to pass a prompt containing placeholders that will be replaced with input parameters during a chat completion request.
 This allows for variations in the prompt based on the input parameters.
-Set custom request configuration when calling `chatCompletion` function.
 
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
@@ -131,27 +130,51 @@ const response = await orchestrationClient.chatCompletion({
 });
 
 const responseContent = response.getContent();
-```
-
-`getContent()` is a convenience method that parses the response and returns the model's output as a string.
-
-To retrieve the `finish_reason` for stopping the chat completion request, use the convenience method `getFinishReason()`:
-
-```ts
 const finishReason = response.getFinishReason();
+const tokenUsage = response.getTokenUsage();
 ```
 
-Use the `getTokenUsage()` convenience method to retrieve the token usage details of the chat completion request:
+You can use the following convenience methods for handling chat completion responses:
+- `getContent()`: parses the response and returns the model's output as a string.
+- `getFinishReason()`: retrieves the finish_reason, explaining why the chat completion request stopped.
+- `getTokenUsage()`: provides token usage details, namely `total_tokens`, `prompt_tokens`, and `completion_tokens`.
+
+#### Structured Outputs
+
+The `response_format` under `templating` guarantees that the model's output aligns with the JSON schemas specified by developers.
+It is useful when the model is not calling a tool, but rather, responding to the user in a structured way.
+By setting `strict: true`, the model ensures that its outputs conform precisely to the provided schema.
 
 ```ts
-const tokenUsage = response.getTokenUsage();
-
-console.log(
-  `Total tokens consumed by the request: ${tokenUsage.total_tokens}\n` +
-    `Input prompt tokens consumed: ${tokenUsage.prompt_tokens}\n` +
-    `Output text completion tokens consumed: ${tokenUsage.completion_tokens}\n`
-);
+templating: {
+    template: [
+      { role: 'user', content: 'What is the capital of {{?country}}?' }
+    ],
+    response_format: {
+        type: 'json_schema',
+        json_schema: {
+          name: 'capital_response',
+          strict: true,
+          schema: {
+            type: 'object',
+            properties: {
+              country_name: {
+                type: "string",
+                description: "The name of the country provided by the user."
+              },
+              capital: {
+                type: "string",
+                description: "The capital city of the country."
+              }
+            },
+            required: ["country_name", "capital"]
+          }
+        }
+      }
+  }
 ```
+
+In addition to using JSON schema objects, a zod schema is also supported.
 
 ### Prompt Registry
 
