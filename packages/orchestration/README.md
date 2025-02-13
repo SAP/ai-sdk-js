@@ -175,7 +175,7 @@ templating: {
   }
 ```
 
-In addition to using JSON schema objects, a zod schema is also supported.
+In addition to using JSON schema objects, a Zod schema is also supported.
 
 ### Prompt Registry
 
