@@ -66,10 +66,9 @@ export class OrchestrationResponse {
         const isMultiContent = Array.isArray(
           (message as MultiChatMessage).content
         );
-        if (isMultiContent) {
-          return this.handleMultiChatMessage(message as MultiChatMessage);
-        }
-        return this.handleSingleChatMessage(message as SingleChatMessage);
+        return isMultiContent
+          ? this.handleMultiChatMessage(message as MultiChatMessage)
+          : this.handleSingleChatMessage(message as SingleChatMessage);
       }
     );
 
@@ -85,40 +84,23 @@ export class OrchestrationResponse {
   private handleSingleChatMessage(
     singleMessage: SingleChatMessage
   ): ChatMessage {
-    if (this.isValidChatRole(singleMessage)) {
       return {
         role: singleMessage.role,
         content: singleMessage.content
       };
-    }
-
-    throw new Error(`Unexpected role: ${singleMessage.role}`);
   }
 
   private handleMultiChatMessage(multiMessage: MultiChatMessage): ChatMessage {
-    if (this.isValidChatRole(multiMessage)) {
-      return {
-        role: multiMessage.role,
-        content: multiMessage.content
-          .map(content =>
-            content.type === 'text'
-              ? content.text
-              : `{ url: ${content.image_url.url}, detail: ${content.image_url.detail}}`
-          )
-          .join('\n')
-      };
-    }
-
-    throw new Error(
-      `Unexpected role with complex message: ${multiMessage.role}`
-    );
-  }
-
-  private isValidChatRole(message: ChatMessage) {
-    if (Array.isArray((message as MultiChatMessage).content)) {
-      return ['user', 'system'].includes(message.role);
-    }
-    return ['user', 'assistant', 'system'].includes(message.role);
+    return {
+      role: multiMessage.role,
+      content: multiMessage.content
+        .map(content =>
+          content.type === 'text'
+            ? content.text
+            : `{ url: ${content.image_url.url}, detail: ${content.image_url.detail}}`
+        )
+        .join('\n')
+    };
   }
 
   private getChoices() {
