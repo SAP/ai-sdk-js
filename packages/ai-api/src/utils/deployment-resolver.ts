@@ -141,7 +141,12 @@ export async function resolveDeploymentId(
 async function getAllDeployments(
   opts: DeploymentResolutionOptions
 ): Promise<AiDeployment[]> {
-  const { destination, scenarioId, executableId, resourceGroup = 'default' } = opts;
+  const {
+    destination,
+    scenarioId,
+    executableId,
+    resourceGroup = 'default'
+  } = opts;
   try {
     const { resources } = await DeploymentApi.deploymentQuery(
       {
