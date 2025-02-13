@@ -135,6 +135,7 @@ const tokenUsage = response.getTokenUsage();
 ```
 
 You can use the following convenience methods for handling chat completion responses:
+
 - `getContent()`: parses the response and returns the model's output as a string.
 - `getFinishReason()`: retrieves the finish_reason, explaining why the chat completion request stopped.
 - `getTokenUsage()`: provides token usage details, namely `total_tokens`, `prompt_tokens`, and `completion_tokens`.
