@@ -14,6 +14,8 @@ import type {
   OrchestrationResponse,
   StreamOptions
 } from '@sap-ai-sdk/orchestration';
+import { z } from 'zod';
+import { zodToJsonSchema } from "zod-to-json-schema";
 
 const logger = createLogger({
   package: 'sample-code',
@@ -501,6 +503,10 @@ export interface TranslationResponseType {
  * @returns The orchestration service response.
  */
 export async function orchestrationResponseFormat(): Promise<TranslationResponseType> {
+  const translationSchema = z.object({
+    language: z.string(),
+    translation: z.string()
+  }).strict();
   const orchestrationClient = new OrchestrationClient({
     llm,
     templating: {
@@ -520,20 +526,7 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
         json_schema: {
           name: 'translation_response',
           strict: true,
-          // todo: use ZOD instead, return
-          schema: {
-            type: 'object',
-            properties: {
-              language: {
-                type: 'string'
-              },
-              translation: {
-                type: 'string'
-              }
-            },
-            required: ['language', 'translation'],
-            additionalProperties: false
-          }
+          schema: zodToJsonSchema(translationSchema)
         }
       }
     }
