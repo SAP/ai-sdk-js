@@ -534,10 +534,10 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
     }
   });
 
-  const resonse = await orchestrationClient.chatCompletion({
+  const response = await orchestrationClient.chatCompletion({
     inputParams: {
       input: 'Hello World! Why is this phrase so famous?'
     }
   });
-  return JSON.parse(resonse.getContent()!) as TranslationResponse;
+  return JSON.parse(response.getContent()!) as TranslationResponse;
 }

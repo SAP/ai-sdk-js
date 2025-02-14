@@ -144,7 +144,8 @@ You can use the following convenience methods for handling chat completion respo
 
 Setting `response_format` under `templating` guarantees that the model's output aligns with the schema type specified by developers.
 It is useful when the model is not calling a tool, but rather, responding to the user in a structured way.
-By setting `strict: true`, the model ensures that its outputs conform precisely to the provided schema.
+
+The example below demonstrates how to use `response_format` to return a JSON Schema, with `strict: true` ensuring the outputs conform precisely to the schema.
 
 ```ts
 templating: {
@@ -175,7 +176,7 @@ templating: {
   }
 ```
 
-In addition to using JSON schema objects, a Zod schema is also supported.
+The `json_schema` can also be initialized directly using a Zod schema.
 
 ### Prompt Registry
 
