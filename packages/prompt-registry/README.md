@@ -42,11 +42,10 @@ In addition, you can find more **sample code** [here](https://github.com/SAP/ai-
 ### List Prompt Templates
 
 ```ts
-const response: PromptTemplateListResponse = await PromptTemplatesApi.listPromptTemplates(
-  {
+const response: PromptTemplateListResponse =
+  await PromptTemplatesApi.listPromptTemplates({
     scenario: 'test'
-  }
-).execute();
+  }).execute();
 ```
 
 ### Custom Destination
@@ -55,13 +54,12 @@ When calling the `execute()` method, it is possible to provide a custom destinat
 For example, when querying deployments targeting a destination with the name `my-destination`, the following code can be used:
 
 ```ts
-const response: PromptTemplateListResponse = await PromptTemplatesApi.listPromptTemplates(
-  {
+const response: PromptTemplateListResponse =
+  await PromptTemplatesApi.listPromptTemplates({
     scenario: 'test'
-  }
-).execute({
-  destinationName: 'my-destination'
-});
+  }).execute({
+    destinationName: 'my-destination'
+  });
 ```
 
 ## Local Testing

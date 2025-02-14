@@ -1,5 +1,8 @@
 import { PromptTemplatesApi } from '@sap-ai-sdk/prompt-registry';
-import type { PromptTemplateDeleteResponse, PromptTemplatePostResponse } from '@sap-ai-sdk/prompt-registry';
+import type {
+  PromptTemplateDeleteResponse,
+  PromptTemplatePostResponse
+} from '@sap-ai-sdk/prompt-registry';
 
 /**
  * Create a prompt template.
@@ -7,7 +10,10 @@ import type { PromptTemplateDeleteResponse, PromptTemplatePostResponse } from '@
  * @param scenario - The scenario of the prompt template.
  * @returns Prompt template post response.
  */
-export async function createPromptTemplate(name: string, scenario: string): Promise<PromptTemplatePostResponse> {
+export async function createPromptTemplate(
+  name: string,
+  scenario: string
+): Promise<PromptTemplatePostResponse> {
   return PromptTemplatesApi.createUpdatePromptTemplate({
     name,
     scenario,
@@ -28,6 +34,8 @@ export async function createPromptTemplate(name: string, scenario: string): Prom
  * @param id - The id of the prompt template.
  * @returns Prompt template delete response.
  */
-export async function deletePromptTemplate(id: string): Promise<PromptTemplateDeleteResponse> {
+export async function deletePromptTemplate(
+  id: string
+): Promise<PromptTemplateDeleteResponse> {
   return PromptTemplatesApi.deletePromptTemplate(id).execute();
 }
