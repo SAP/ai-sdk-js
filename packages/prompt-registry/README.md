@@ -9,7 +9,7 @@ This package incorporates generative AI prompt registry capabilities into your A
 - [Installation](#installation)
 - [Prerequisites](#prerequisites)
 - [Usage](#usage)
-  - [TODO: Add sample calls](#todo-add-sample-calls)
+  - [List Prompt Templates](#list-prompt-templates)
   - [Custom Destination](#custom-destination)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
@@ -35,27 +35,31 @@ $ npm install @sap-ai-sdk/prompt-registry
 
 ## Usage
 
-The examples below demonstrate the usage of the most commonly used APIs in SAP AI Core prompt registry service.
+The example below demonstrate a sample usage of APIs in SAP AI Core prompt registry service.
 
-TODO: Add sample code examples if needed.
+In addition, you can find more **sample code** [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/prompt-registry.ts).
 
-<!-- In addition to the examples below, you can find more **sample code** [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/document-grounding.ts). -->
+### List Prompt Templates
 
-### TODO: Add sample calls
-
-Some api calls here.
+```ts
+const response: PromptTemplateListResponse = await PromptTemplatesApi.listPromptTemplates(
+  {
+    scenario: 'test'
+  }
+).execute();
+```
 
 ### Custom Destination
 
 When calling the `execute()` method, it is possible to provide a custom destination.
 For example, when querying deployments targeting a destination with the name `my-destination`, the following code can be used:
 
-TODO: Change this example.
-
 ```ts
-const response = await VectorApi.deleteCollectionById(collectionId, {
-  'AI-Resource-Group': 'default'
-}).execute({
+const response: PromptTemplateListResponse = await PromptTemplatesApi.listPromptTemplates(
+  {
+    scenario: 'test'
+  }
+).execute({
   destinationName: 'my-destination'
 });
 ```
