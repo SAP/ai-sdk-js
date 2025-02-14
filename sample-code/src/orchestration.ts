@@ -499,8 +499,8 @@ export interface TranslationResponse {
   translation: string;
 }
 /**
- * Ask about the image content using a template.
- * @returns The orchestration service response.
+ * Ask the Llm to translate a text to a randomly chosen language and return a structured response.
+ * @returns Response that adheres to `TranslationResponse` type.
  */
 export async function orchestrationResponseFormat(): Promise<TranslationResponse> {
   const translationSchema = z
