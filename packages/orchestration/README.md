@@ -175,8 +175,23 @@ templating: {
       }
   }
 ```
+You can also initialize `json_schema` using a Zod schema, as shown below:
 
-The `json_schema` can also be initialized directly using a Zod schema.
+```ts
+const countryCapitalSchema = z.object({
+    country_name: z.string().describe('The name of the country provided by the user.'),
+    capital: z.string().describe('The capital city of the country.')
+  }).strict();
+
+response_format: {
+  type: 'json_schema',
+  json_schema: {
+    name: 'capital_response',
+    strict: true,
+    schema: zodToJsonSchema(countryCapitalSchema)
+  }
+}
+```
 
 ### Prompt Registry
 
