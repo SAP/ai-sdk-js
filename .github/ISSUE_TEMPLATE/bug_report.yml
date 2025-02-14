@@ -64,6 +64,26 @@ body:
       required: false
   - type: dropdown
     attributes:
+      label: "Region"
+      description: "Choose the datacenter region where you encountered this issue."
+      multiple: false
+      options:
+        - AP10
+        - EU10 Canary
+        - EU10
+        - EU11
+        - EU12 Canary
+        - EU20
+        - EU30
+        - JP10
+        - US10
+        - US21
+        - US30
+        - SA30
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
       label: "Affected Development Phase"
       description: "Choose the development phase affected by this issue."
       multiple: false
