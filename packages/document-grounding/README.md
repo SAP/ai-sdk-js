@@ -50,20 +50,18 @@ In addition to the examples below, you can find more **sample code** [here](http
 ### Create a Collection
 
 ```ts
-import
-const response =
-  await VectorApi.createCollection(
-    {
-      title: 'ai-sdk-js-e2e',
-      embeddingConfig: {
-        modelName: 'text-embedding-ada-002'
-      },
-      metadata: []
+const response = await VectorApi.createCollection(
+  {
+    title: 'ai-sdk-js-e2e',
+    embeddingConfig: {
+      modelName: 'text-embedding-ada-002'
     },
-    {
-      'AI-Resource-Group': 'default'
-    }
-  ).executeRaw();
+    metadata: []
+  },
+  {
+    'AI-Resource-Group': 'default'
+  }
+).executeRaw();
 
 const collectionId = (response.headers.location as string).split('/').at(-2);
 ```

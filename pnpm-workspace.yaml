@@ -5,6 +5,7 @@ packages:
   - 'packages/langchain'
   - 'packages/orchestration'
   - 'packages/document-grounding'
+  - 'packages/prompt-registry'
   - 'sample-cap'
   - 'sample-code'
   - 'tests/e2e-tests'

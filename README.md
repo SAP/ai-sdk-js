@@ -17,6 +17,7 @@ Setup your SAP AI Core instance with SAP Cloud SDK for AI.
   - [@sap-ai-sdk/foundation-models](#sap-ai-sdkfoundation-models)
   - [@sap-ai-sdk/langchain](#sap-ai-sdklangchain)
   - [@sap-ai-sdk/orchestration](#sap-ai-sdkorchestration)
+  - [@sap-ai-sdk/prompt-registry](#sap-ai-sdkprompt-registry)
 - [SAP Cloud SDK for AI Sample Project](#sap-cloud-sdk-for-ai-sample-project)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
@@ -87,6 +88,18 @@ $ npm install @sap-ai-sdk/orchestration
 ```
 
 For details on orchestration client, refer to this [document](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md).
+
+### @sap-ai-sdk/prompt-registry
+
+This package incorporates generative AI [prompt registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) into your AI activities in SAP AI Core and SAP AI Launchpad.
+
+#### Installation
+
+```
+$ npm install @sap-ai-sdk/prompt-registry
+```
+
+For details on prompt registry client, refer to this [document](https://github.com/SAP/ai-sdk-js/blob/main/packages/prompt-registry/README.md).
 
 ## SAP Cloud SDK for AI Sample Project
 
