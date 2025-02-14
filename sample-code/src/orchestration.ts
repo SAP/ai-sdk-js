@@ -7,6 +7,8 @@ import {
   buildAzureContentSafetyFilter
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
+import { z } from 'zod';
+import { zodToJsonSchema } from 'zod-to-json-schema';
 import type {
   LlmModuleConfig,
   OrchestrationStreamChunkResponse,
@@ -481,4 +483,65 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
       imageUrl: encodedString
     }
   });
+}
+
+/**
+ * Response type that is guaranteed to be respected by the orchestration LLM response.
+ */
+export interface TranslationResponse {
+  /**
+   * The language of the translation, randomly chosen by the LLM.
+   */
+  language: string;
+  /**
+   * The translation of the input sentence.
+   */
+  translation: string;
+}
+/**
+ * Ask the Llm to translate a text to a randomly chosen language and return a structured response.
+ * @returns Response that adheres to `TranslationResponse` type.
+ */
+export async function orchestrationResponseFormat(): Promise<TranslationResponse> {
+  const translationSchema = z
+    .object({
+      language: z
+        .string()
+        .describe(
+          'The language of the translation, randomly chosen by the LLM.'
+        ),
+      translation: z.string().describe('The translation of the input sentence.')
+    })
+    .strict();
+  const orchestrationClient = new OrchestrationClient({
+    llm,
+    templating: {
+      template: [
+        {
+          role: 'system',
+          content:
+            'You are a helpful AI that translates simple sentences into different languages. The user will provide the sentence. You then choose a language at random and provide the translation.'
+        },
+        {
+          role: 'user',
+          content: '{{?input}}'
+        }
+      ],
+      response_format: {
+        type: 'json_schema',
+        json_schema: {
+          name: 'translation_response',
+          strict: true,
+          schema: zodToJsonSchema(translationSchema)
+        }
+      }
+    }
+  });
+
+  const response = await orchestrationClient.chatCompletion({
+    inputParams: {
+      input: 'Hello World! Why is this phrase so famous?'
+    }
+  });
+  return JSON.parse(response.getContent()!) as TranslationResponse;
 }
