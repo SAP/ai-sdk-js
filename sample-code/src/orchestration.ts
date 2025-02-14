@@ -488,7 +488,7 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
 /**
  * Response type that is guaranteed to be respected by the orchestration LLM response.
  */
-export interface TranslationResponseType {
+export interface TranslationResponse {
   /**
    * The language of the translation, randomly chosen by the LLM.
    */
@@ -502,7 +502,7 @@ export interface TranslationResponseType {
  * Ask about the image content using a template.
  * @returns The orchestration service response.
  */
-export async function orchestrationResponseFormat(): Promise<TranslationResponseType> {
+export async function orchestrationResponseFormat(): Promise<TranslationResponse> {
   const translationSchema = z
     .object({
       language: z.string(),
@@ -539,5 +539,5 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
       input: 'Hello World! Why is this phrase so famous?'
     }
   });
-  return JSON.parse(resonse.getContent()!) as TranslationResponseType;
+  return JSON.parse(resonse.getContent()!) as TranslationResponse;
 }
