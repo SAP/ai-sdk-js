@@ -39,11 +39,10 @@ describe('prompt templates', () => {
         'Content-Type': 'application/json'
       });
 
-    const result: PromptTemplateListResponse = await PromptTemplatesApi.listPromptTemplates(
-      {
+    const result: PromptTemplateListResponse =
+      await PromptTemplatesApi.listPromptTemplates({
         scenario: 'test'
-      }
-    ).execute();
+      }).execute();
 
     expect(result).toEqual(expectedResponse);
   });
