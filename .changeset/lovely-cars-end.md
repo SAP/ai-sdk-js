@@ -2,4 +2,4 @@
 '@sap-ai-sdk/langchain': minor
 ---
 
-[Fixed issues] Fix adding `tool_calls` to the assistant messages only when they exist and are not empty.
+[Fixed Issue] Add `tool_calls` array to assistant messages only when it is not empty.

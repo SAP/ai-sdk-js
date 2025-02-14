@@ -1,5 +1,5 @@
 ---
- '@sap-ai-sdk/orchestration': minor
- ---
+'@sap-ai-sdk/orchestration': minor
+---
 
- [New Functionality] Support configuring data masking for grounding inputs.
+[New Functionality] Support configuring data masking for grounding inputs.
