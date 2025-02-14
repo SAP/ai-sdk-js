@@ -1,5 +1,18 @@
 # @sap-ai-sdk/foundation-models
 
+## 1.8.0
+
+### Minor Changes
+
+- 09b0d2d: [Fixed Issue] Consider destination when resolving deployment ids.
+
+### Patch Changes
+
+- Updated dependencies [09b0d2d]
+- Updated dependencies [1731104]
+  - @sap-ai-sdk/ai-api@1.8.0
+  - @sap-ai-sdk/core@1.8.0
+
 ## 1.7.0
 
 ### Patch Changes
