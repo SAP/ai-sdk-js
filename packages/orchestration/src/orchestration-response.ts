@@ -1,7 +1,11 @@
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type {
   CompletionPostResponse,
-  TokenUsage
+  TokenUsage,
+  ChatMessage,
+  SingleChatMessage,
+  MultiChatMessage,
+  ChatMessages
 } from './client/api/schema/index.js';
 
 /**
@@ -49,6 +53,54 @@ export class OrchestrationResponse {
       );
     }
     return choice?.message?.content;
+  }
+
+  /**
+   * Messages that can be used for subsequent prompts as message history.
+   * @param choiceIndex - The index of the choice to parse.
+   * @returns A list of all messages.
+   */
+  getAllMessages(choiceIndex = 0): ChatMessages {
+    const messages = (this.data.module_results.templating ?? []).map(
+      (message: ChatMessage) => {
+        const isMultiContent = Array.isArray(
+          (message as MultiChatMessage).content
+        );
+        return isMultiContent
+          ? this.handleMultiChatMessage(message as MultiChatMessage)
+          : this.handleSingleChatMessage(message as SingleChatMessage);
+      }
+    );
+
+    messages.push({
+      role: 'assistant',
+      content:
+        this.getChoices().find(c => c.index === choiceIndex)?.message.content ??
+        ''
+    });
+    return messages;
+  }
+
+  private handleSingleChatMessage(
+    singleMessage: SingleChatMessage
+  ): ChatMessage {
+    return {
+      role: singleMessage.role,
+      content: singleMessage.content
+    };
+  }
+
+  private handleMultiChatMessage(multiMessage: MultiChatMessage): ChatMessage {
+    return {
+      role: multiMessage.role,
+      content: multiMessage.content
+        .map(content =>
+          content.type === 'text'
+            ? content.text
+            : `{ url: ${content.image_url.url}, detail: ${content.image_url.detail}}`
+        )
+        .join('\n')
+    };
   }
 
   private getChoices() {
