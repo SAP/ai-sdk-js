@@ -142,7 +142,7 @@ You can use the following convenience methods for handling chat completion respo
 
 #### Structured Outputs
 
-The `response_format` under `templating` guarantees that the model's output aligns with the JSON schemas specified by developers.
+Setting `response_format` under `templating` guarantees that the model's output aligns with the schema type specified by developers.
 It is useful when the model is not calling a tool, but rather, responding to the user in a structured way.
 By setting `strict: true`, the model ensures that its outputs conform precisely to the provided schema.
 
