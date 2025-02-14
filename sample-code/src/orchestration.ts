@@ -505,7 +505,11 @@ export interface TranslationResponse {
 export async function orchestrationResponseFormat(): Promise<TranslationResponse> {
   const translationSchema = z
     .object({
-      language: z.string().describe('The language of the translation, randomly chosen by the LLM.'),
+      language: z
+        .string()
+        .describe(
+          'The language of the translation, randomly chosen by the LLM.'
+        ),
       translation: z.string().describe('The translation of the input sentence.')
     })
     .strict();

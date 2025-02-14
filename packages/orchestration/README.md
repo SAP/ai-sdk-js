@@ -175,6 +175,7 @@ templating: {
       }
   }
 ```
+
 You can also initialize `json_schema` using a Zod schema, as shown below:
 
 ```ts
