@@ -138,7 +138,7 @@ You can use the following convenience methods for handling chat completion respo
 
 - `getContent()` parses the response and returns the model's output as a string.
 - `getFinishReason()` retrieves the `finish_reason` explaining why chat completion request stopped.
-- `getTokenUsage()` provides token usage details, namely `total_tokens`, `prompt_tokens`, and `completion_tokens`.
+- `getTokenUsage()` provides token usage details, including `total_tokens`, `prompt_tokens`, and `completion_tokens`.
 
 #### Structured Outputs
 
