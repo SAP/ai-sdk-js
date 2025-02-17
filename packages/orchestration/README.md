@@ -180,8 +180,8 @@ You can also initialize `json_schema` using a Zod schema, as shown below:
 
 ```ts
 const countryCapitalSchema = z.object({
-    country_name: z.string().describe('The name of the country provided by the user.'),
-    capital: z.string().describe('The capital city of the country.')
+    country_name: z.string(),
+    capital: z.string()
   }).strict();
 
 response_format: {
