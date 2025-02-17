@@ -1,6 +1,7 @@
 import {
   buildAzureContentFilter,
-  buildAzureContentSafetyFilter
+  buildAzureContentSafetyFilter,
+  buildLlamaGuardFilter
 } from './filtering.js';
 import { constructCompletionPostRequest } from './module-config.js';
 import type { OrchestrationModuleConfig } from '../orchestration-types.js';
@@ -209,6 +210,35 @@ describe('Content filter util', () => {
       expect(() => buildAzureContentSafetyFilter({})).toThrow(
         'Filtering configuration cannot be an empty object'
       );
+    });
+  });
+
+  describe('Llama Guard filter', () => {
+    it('builds filter config with custom config', async () => {
+      const filterConfig = buildLlamaGuardFilter({
+        child_exploitation: false,
+        hate: true,
+        violent_crimes: false,
+        sexual_content: true
+      });
+      const expectedFilterConfig = {
+        type: 'llama_guard_3_8b',
+        config: {
+          hate: true,
+          violent_crimes: false,
+          sexual_content: true
+        }
+      };
+      expect(filterConfig).toEqual(expectedFilterConfig);
+    });
+
+    it('builds filter config with no config', async () => {
+      const filterConfig = buildLlamaGuardFilter();
+      const expectedFilterConfig = {
+        type: 'llama_guard_3_8b',
+        config: {}
+      };
+      expect(filterConfig).toEqual(expectedFilterConfig);
     });
   });
 });
