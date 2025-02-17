@@ -3,6 +3,8 @@ import type {
   AzureContentSafety,
   AzureContentSafetyFilterConfig,
   InputFilteringConfig,
+  LlamaGuard38B,
+  LlamaGuard38BFilterConfig,
   OutputFilteringConfig
 } from '../client/api/schema/index.js';
 import type {
@@ -56,5 +58,19 @@ export function buildAzureContentSafetyFilter(
         )
       }
     })
+  };
+}
+
+/**
+ * Convenience function to create Azure content filters.
+ * @param config - Configuration for Llama guard filter.
+ * @returns Filter config object.
+ */
+export function buildLlamaGuardFilter(
+  config?: LlamaGuard38B
+): LlamaGuard38BFilterConfig {
+  return {
+    type: 'llama_guard_3_8b',
+    config: config ?? {}
   };
 }
