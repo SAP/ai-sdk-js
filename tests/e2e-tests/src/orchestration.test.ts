@@ -9,7 +9,8 @@ import {
   orchestrationMaskGroundingInput,
   orchestrationChatCompletionImage,
   chatCompletionStreamWithJsonModuleConfig,
-  chatCompletionStream
+  chatCompletionStream,
+  orchestrationResponseFormat
 } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
@@ -82,6 +83,12 @@ describe('orchestration', () => {
     const response = await orchestrationChatCompletionImage();
     expect(response.getContent()?.includes('SAP')).toBe(true);
     expect(response.getContent()?.includes('logo')).toBe(true);
+  });
+
+  it('should complete a chat with a required response format', async () => {
+    const result = await orchestrationResponseFormat();
+    expect(result.language).toBeDefined();
+    expect(result.translation).toBeDefined();
   });
 
   it('should return stream of orchestration responses', async () => {
