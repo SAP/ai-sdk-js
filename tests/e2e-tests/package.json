@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@sap-ai-sdk/e2e-tests",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "private": "true",
@@ -15,7 +15,7 @@
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/sample-code": "workspace:^",
-    "@sap-cloud-sdk/util": "^3.26.0"
+    "@sap-cloud-sdk/util": "^3.26.1"
   },
   "scripts": {
     "compile": "tsc",

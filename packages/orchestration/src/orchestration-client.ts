@@ -105,7 +105,8 @@ export class OrchestrationClient {
 
     const deploymentId = await resolveDeploymentId({
       scenarioId: 'orchestration',
-      ...(this.deploymentConfig ?? {})
+      ...(this.deploymentConfig ?? {}),
+      destination: this.destination
     });
 
     return executeRequest(

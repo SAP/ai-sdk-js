@@ -1,5 +1,17 @@
 # @sap-ai-sdk/ai-api
 
+## 1.8.0
+
+### Minor Changes
+
+- 09b0d2d: [Fixed Issue] Consider destination when resolving deployment ids.
+- 1731104: [Compatibility Note] Update AI API spec to 2501b release.
+  The `kubesubmitV4GenericSecretsGet` function is renamed to `kubesubmitV4GenericSecretsGetAll`.
+
+### Patch Changes
+
+- @sap-ai-sdk/core@1.8.0
+
 ## 1.7.0
 
 ### Patch Changes

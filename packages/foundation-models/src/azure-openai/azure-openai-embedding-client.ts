@@ -35,7 +35,8 @@ export class AzureOpenAiEmbeddingClient {
   ): Promise<AzureOpenAiEmbeddingResponse> {
     const deploymentId = await getDeploymentId(
       this.modelDeployment,
-      'azure-openai'
+      'azure-openai',
+      this.destination
     );
     const resourceGroup = getResourceGroup(this.modelDeployment);
     const response = await executeRequest(

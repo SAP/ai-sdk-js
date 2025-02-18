@@ -4,6 +4,7 @@ import {
 } from '../client/AI_CORE_API/index.js';
 import { deploymentCache } from './deployment-cache.js';
 import { extractModel, type FoundationModel } from './model.js';
+import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 /**
  * The model deployment configuration when using a model.
@@ -93,6 +94,10 @@ export interface DeploymentResolutionOptions {
    * The resource group of the deployment.
    */
   resourceGroup?: string;
+  /**
+   * The destination to use for the request.
+   */
+  destination?: HttpDestinationOrFetchOptions;
 }
 
 /**
@@ -136,7 +141,12 @@ export async function resolveDeploymentId(
 async function getAllDeployments(
   opts: DeploymentResolutionOptions
 ): Promise<AiDeployment[]> {
-  const { scenarioId, executableId, resourceGroup = 'default' } = opts;
+  const {
+    destination,
+    scenarioId,
+    executableId,
+    resourceGroup = 'default'
+  } = opts;
   try {
     const { resources } = await DeploymentApi.deploymentQuery(
       {
@@ -145,7 +155,7 @@ async function getAllDeployments(
         ...(executableId && { executableIds: [executableId] })
       },
       { 'AI-Resource-Group': resourceGroup }
-    ).execute();
+    ).execute(destination);
 
     deploymentCache.setAll(opts, resources);
 
@@ -164,7 +174,8 @@ async function getAllDeployments(
  */
 export async function getDeploymentId(
   modelDeployment: ModelDeployment,
-  executableId: string
+  executableId: string,
+  destination?: HttpDestinationOrFetchOptions
 ): Promise<string> {
   if (isDeploymentIdConfig(modelDeployment)) {
     return modelDeployment.deploymentId;
@@ -179,7 +190,8 @@ export async function getDeploymentId(
     scenarioId: 'foundation-models',
     executableId,
     model: translateToFoundationModel(model),
-    resourceGroup: model.resourceGroup
+    resourceGroup: model.resourceGroup,
+    destination
   });
 }
 

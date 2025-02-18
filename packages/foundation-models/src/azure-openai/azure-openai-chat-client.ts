@@ -70,7 +70,8 @@ export class AzureOpenAiChatClient {
   ): Promise<HttpResponse> {
     const deploymentId = await getDeploymentId(
       this.modelDeployment,
-      'azure-openai'
+      'azure-openai',
+      this.destination
     );
     const resourceGroup = getResourceGroup(this.modelDeployment);
     return executeRequest(
