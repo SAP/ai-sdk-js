@@ -61,6 +61,9 @@ export function buildAzureContentSafetyFilter(
   };
 }
 
+/**
+ * @internal
+ */
 const defaultLlamaGuardConfig: LlamaGuard38B = {
   violent_crimes: false,
   non_violent_crimes: false,
