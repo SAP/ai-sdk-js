@@ -225,7 +225,9 @@ describe('Content filter util', () => {
         type: 'llama_guard_3_8b',
         config: {
           hate: true,
-          sexual_content: true
+          violent_crimes: false,
+          sexual_content: true,
+          child_exploitation: false
         }
       };
       expect(filterConfig).toEqual(expectedFilterConfig);
