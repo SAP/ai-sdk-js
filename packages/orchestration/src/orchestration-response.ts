@@ -3,7 +3,6 @@ import type {
   CompletionPostResponse,
   TokenUsage,
   ChatMessage,
-  SingleChatMessage,
   MultiChatMessage,
   ChatMessages
 } from './client/api/schema/index.js';
@@ -65,22 +64,14 @@ export class OrchestrationResponse {
       this.data.module_results.templating ?? []
     ).map(message =>
       this.isMultiChatMessage(message)
-        ? this.handleMultiChatMessage(message as MultiChatMessage)
-        : this.handleSingleChatMessage(message as SingleChatMessage)
+        ? this.handleMultiChatMessage(message)
+        : message
     );
 
-    const content = this.getChoices().find(c => c.index === choiceIndex)
-      ?.message.content;
-    return content ? [...messages, { role: 'assistant', content }] : messages;
-  }
-
-  private handleSingleChatMessage(
-    singleChatMessage: SingleChatMessage
-  ): ChatMessage {
-    return {
-      role: singleChatMessage.role,
-      content: singleChatMessage.content
-    };
+    const content = this.getChoices().find(
+      c => c.index === choiceIndex
+    )?.message;
+    return content ? [...messages, content] : messages;
   }
 
   private handleMultiChatMessage(
