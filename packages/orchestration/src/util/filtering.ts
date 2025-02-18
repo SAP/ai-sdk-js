@@ -61,6 +61,23 @@ export function buildAzureContentSafetyFilter(
   };
 }
 
+const defaultLlamaGuardConfig: LlamaGuard38B = {
+  violent_crimes: false,
+  non_violent_crimes: false,
+  sex_crimes: false,
+  child_exploitation: false,
+  defamation: false,
+  specialized_advice: false,
+  privacy: false,
+  intellectual_property: false,
+  indiscriminate_weapons: false,
+  hate: false,
+  self_harm: false,
+  sexual_content: false,
+  elections: false,
+  code_interpreter_abuse: false
+};
+
 /**
  * Convenience function to create Azure content filters.
  * @param config - Configuration for Llama guard filter.
@@ -69,8 +86,11 @@ export function buildAzureContentSafetyFilter(
 export function buildLlamaGuardFilter(
   config?: LlamaGuard38B
 ): LlamaGuard38BFilterConfig {
+  if (config && !Object.keys(config).length) {
+    throw new Error('Filtering configuration cannot be an empty object');
+  }
   return {
     type: 'llama_guard_3_8b',
-    config: config ?? {}
+    config: config ?? defaultLlamaGuardConfig
   };
 }
