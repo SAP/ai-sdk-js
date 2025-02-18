@@ -38,7 +38,7 @@ describe('OrchestrationResponse', () => {
     });
   });
 
-  it('should return return a list of all messages', () => {
+  it('should return a list of all messages', () => {
     const messageList = orchestrationResponse.getAllMessages();
 
     expect(messageList.length).toBe(2);

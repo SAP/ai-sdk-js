@@ -21,7 +21,7 @@ import {
   orchestrationGroundingHelpSapCom,
   orchestrationMaskGroundingInput,
   orchestrationPromptRegistry,
-  orchestrationMessagesHistory
+  orchestrationMessagesHistory,
   orchestrationResponseFormat
 } from './orchestration.js';
 import {
@@ -279,7 +279,6 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       res.send(`Response format applied successfully with response: ${result}`);
     } else {
       res.send(result.getContent());
-      console.log(result.getAllMessages());
     }
   } catch (error: any) {
     console.error(error);

@@ -61,46 +61,48 @@ export class OrchestrationResponse {
    * @returns A list of all messages.
    */
   getAllMessages(choiceIndex = 0): ChatMessages {
-    const messages = (this.data.module_results.templating ?? []).map(
-      (message: ChatMessage) => {
-        const isMultiContent = Array.isArray(
-          (message as MultiChatMessage).content
-        );
-        return isMultiContent
-          ? this.handleMultiChatMessage(message as MultiChatMessage)
-          : this.handleSingleChatMessage(message as SingleChatMessage);
-      }
+    const messages: ChatMessage[] = (
+      this.data.module_results.templating ?? []
+    ).map(message =>
+      this.isMultiChatMessage(message)
+        ? this.handleMultiChatMessage(message as MultiChatMessage)
+        : this.handleSingleChatMessage(message as SingleChatMessage)
     );
 
-    messages.push({
-      role: 'assistant',
-      content:
-        this.getChoices().find(c => c.index === choiceIndex)?.message.content ??
-        ''
-    });
-    return messages;
+    const content = this.getChoices().find(c => c.index === choiceIndex)
+      ?.message.content;
+    return content ? [...messages, { role: 'assistant', content }] : messages;
   }
 
   private handleSingleChatMessage(
-    singleMessage: SingleChatMessage
+    singleChatMessage: SingleChatMessage
   ): ChatMessage {
     return {
-      role: singleMessage.role,
-      content: singleMessage.content
+      role: singleChatMessage.role,
+      content: singleChatMessage.content
     };
   }
 
-  private handleMultiChatMessage(multiMessage: MultiChatMessage): ChatMessage {
+  private handleMultiChatMessage(
+    multiChatMessage: MultiChatMessage
+  ): ChatMessage {
     return {
-      role: multiMessage.role,
-      content: multiMessage.content
+      role: multiChatMessage.role,
+      content: multiChatMessage.content
         .map(content =>
           content.type === 'text'
             ? content.text
-            : `{ url: ${content.image_url.url}, detail: ${content.image_url.detail}}`
+            : JSON.stringify({
+                url: content.image_url.url,
+                detail: content.image_url.detail
+              })
         )
         .join('\n')
     };
+  }
+
+  private isMultiChatMessage(params: ChatMessage): params is MultiChatMessage {
+    return Array.isArray(params.content);
   }
 
   private getChoices() {
