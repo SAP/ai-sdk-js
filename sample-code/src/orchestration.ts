@@ -247,13 +247,13 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
     );
     logger.info(
       'The original response from the LLM was as follows: ' +
-      result.data.module_results.llm?.choices[0].message.content
+        result.data.module_results.llm?.choices[0].message.content
     );
     return result;
   }
   throw new Error(
     'Output was not filtered as expected. The LLM response was: ' +
-    result.getContent()
+      result.getContent()
   );
 }
 
@@ -552,10 +552,11 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
  */
 export async function orchestrationToolCalling(): Promise<OrchestrationResponse> {
   const addNumbersSchema = z
-  .object({
-    a: z.number().describe('The first number to be added.'),
-    b: z.number().describe('The second number to be added.')
-  }).strict();
+    .object({
+      a: z.number().describe('The first number to be added.'),
+      b: z.number().describe('The second number to be added.')
+    })
+    .strict();
 
   const orchestrationClient = new OrchestrationClient({
     llm,
@@ -565,17 +566,19 @@ export async function orchestrationToolCalling(): Promise<OrchestrationResponse>
           role: 'system',
           content: 'You are a helpful AI that performs addition of two numbers.'
         },
-        { role: 'user', content: 'What is 2 + 3?' }],
-      tools: [{
-        type: 'function',
-        function: {
-          name: 'add',
-          description: 'Add two numbers',
-          parameters: zodToJsonSchema(addNumbersSchema)
+        { role: 'user', content: 'What is 2 + 3?' }
+      ],
+      tools: [
+        {
+          type: 'function',
+          function: {
+            name: 'add',
+            description: 'Add two numbers',
+            parameters: zodToJsonSchema(addNumbersSchema)
+          }
         }
-      }]
+      ]
     }
   });
   return orchestrationClient.chatCompletion();
 }
-

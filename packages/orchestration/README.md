@@ -141,6 +141,7 @@ You can use the following convenience methods for handling chat completion respo
 - `getTokenUsage()` provides token usage details, including `total_tokens`, `prompt_tokens`, and `completion_tokens`.
 
 #### Structured Outputs
+
 ##### Tool Calling
 
 Structured outputs through tools can be enabled by setting `strict: true` in the function definition.
@@ -166,6 +167,7 @@ templating: {
 ```
 
 ##### Using `response_format` parameter
+
 Setting `response_format` under `templating` guarantees that the model's output aligns with the schema type specified by developers.
 It is useful when the model is **not calling a tool**, but rather, responding to the user in a structured way.
 

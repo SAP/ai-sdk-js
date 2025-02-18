@@ -96,7 +96,8 @@ describe('orchestration', () => {
     const result = await orchestrationToolCalling();
     expect(result.getFinishReason()).toBe('tools_calls');
 
-    const tool_calls = result.data.orchestration_result.choices[0].message.tool_calls;
+    const tool_calls =
+      result.data.orchestration_result.choices[0].message.tool_calls;
 
     expect(tool_calls).toHaveLength(1);
     expect(tool_calls[0].function.name).toBeDefined();
