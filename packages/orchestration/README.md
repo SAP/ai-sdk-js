@@ -145,7 +145,7 @@ You can use the following convenience methods for handling chat completion respo
 ##### Tool Calling
 
 Structured outputs through tools can be enabled by setting `strict: true` in the function definition.
-These tools enable the creation of multi-step, agent-driven workflows, allowing LLMs to perform specific actions.
+These tools enable the creation of multi-step, agent-driven workflows, allowing LLM to perform specific actions.
 
 ```ts
 templating: {
