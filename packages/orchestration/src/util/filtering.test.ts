@@ -225,7 +225,6 @@ describe('Content filter util', () => {
         type: 'llama_guard_3_8b',
         config: {
           hate: true,
-          violent_crimes: false,
           sexual_content: true
         }
       };
@@ -236,7 +235,22 @@ describe('Content filter util', () => {
       const filterConfig = buildLlamaGuardFilter();
       const expectedFilterConfig = {
         type: 'llama_guard_3_8b',
-        config: {}
+        config: {
+          violent_crimes: false,
+          non_violent_crimes: false,
+          sex_crimes: false,
+          child_exploitation: false,
+          defamation: false,
+          specialized_advice: false,
+          privacy: false,
+          intellectual_property: false,
+          indiscriminate_weapons: false,
+          hate: false,
+          self_harm: false,
+          sexual_content: false,
+          elections: false,
+          code_interpreter_abuse: false
+        }
       };
       expect(filterConfig).toEqual(expectedFilterConfig);
     });
