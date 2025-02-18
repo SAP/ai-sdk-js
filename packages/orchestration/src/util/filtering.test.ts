@@ -216,18 +216,14 @@ describe('Content filter util', () => {
   describe('Llama Guard filter', () => {
     it('builds filter config with custom config', async () => {
       const filterConfig = buildLlamaGuardFilter({
-        child_exploitation: false,
         hate: true,
-        violent_crimes: false,
         sexual_content: true
       });
       const expectedFilterConfig = {
         type: 'llama_guard_3_8b',
         config: {
           hate: true,
-          violent_crimes: false,
-          sexual_content: true,
-          child_exploitation: false
+          sexual_content: true
         }
       };
       expect(filterConfig).toEqual(expectedFilterConfig);
