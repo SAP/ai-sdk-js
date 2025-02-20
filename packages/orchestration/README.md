@@ -142,8 +142,34 @@ You can use the following convenience methods for handling chat completion respo
 
 #### Structured Outputs
 
+##### Tool Calling
+
+Structured outputs through tools can be enabled by setting `strict: true` in the function definition.
+These tools enable the creation of multi-step, agent-driven workflows, allowing LLMs to perform specific actions.
+
+```ts
+templating: {
+  tools: [
+    type: 'function',
+    function: {
+      name: 'add',
+      description: 'Calculate the absolute value of x',
+      parameters: {
+        type: 'object',
+        properties: {
+          x: { type: number }
+        }
+      },
+      required: ['x'],
+      additionalProperties: false
+  ]
+}
+```
+
+##### Using `response_format` parameter
+
 Setting `response_format` under `templating` guarantees that the model's output aligns with the schema type specified by developers.
-It is useful when the model is not calling a tool, but rather, responding to the user in a structured way.
+It is useful when the model is **not calling a tool**, but rather, responding to the user in a structured way.
 
 The example below demonstrates how to use `response_format` to return a JSON Schema, with `strict: true` ensuring the outputs conform precisely to the schema.
 
