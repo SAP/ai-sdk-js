@@ -215,39 +215,28 @@ describe('Content filter util', () => {
 
   describe('Llama Guard filter', () => {
     it('builds filter config with custom config', async () => {
-      const filterConfig = buildLlamaGuardFilter({
-        hate: true,
-        sexual_content: true
-      });
+      const filterConfig = buildLlamaGuardFilter('elections', 'hate');
       const expectedFilterConfig = {
         type: 'llama_guard_3_8b',
         config: {
-          hate: true,
-          sexual_content: true
+          elections: true,
+          hate: true
         }
       };
       expect(filterConfig).toEqual(expectedFilterConfig);
     });
 
-    it('builds filter config with no config', async () => {
-      const filterConfig = buildLlamaGuardFilter();
+    it('builds filter config without duplicates', async () => {
+      const filterConfig = buildLlamaGuardFilter(
+        'non_violent_crimes',
+        'privacy',
+        'non_violent_crimes'
+      );
       const expectedFilterConfig = {
         type: 'llama_guard_3_8b',
         config: {
-          violent_crimes: false,
-          non_violent_crimes: false,
-          sex_crimes: false,
-          child_exploitation: false,
-          defamation: false,
-          specialized_advice: false,
-          privacy: false,
-          intellectual_property: false,
-          indiscriminate_weapons: false,
-          hate: false,
-          self_harm: false,
-          sexual_content: false,
-          elections: false,
-          code_interpreter_abuse: false
+          non_violent_crimes: true,
+          privacy: true
         }
       };
       expect(filterConfig).toEqual(expectedFilterConfig);
