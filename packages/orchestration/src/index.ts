@@ -9,6 +9,7 @@ export type {
   DocumentGroundingServiceConfig,
   DocumentGroundingServiceFilter,
   LlmModelParams,
+  LlamaGuardCategory,
   AzureContentFilter,
   AzureFilterThreshold
 } from './orchestration-types.js';

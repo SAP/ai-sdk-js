@@ -3,13 +3,13 @@ import type {
   AzureContentSafety,
   AzureContentSafetyFilterConfig,
   InputFilteringConfig,
-  LlamaGuard38B,
   LlamaGuard38BFilterConfig,
   OutputFilteringConfig
 } from '../client/api/schema/index.js';
 import type {
   AzureContentFilter,
-  AzureFilterThreshold
+  AzureFilterThreshold,
+  LlamaGuardCategory
 } from '../orchestration-types.js';
 
 /**
@@ -62,38 +62,17 @@ export function buildAzureContentSafetyFilter(
 }
 
 /**
- * @internal
- */
-const defaultLlamaGuardConfig: LlamaGuard38B = {
-  violent_crimes: false,
-  non_violent_crimes: false,
-  sex_crimes: false,
-  child_exploitation: false,
-  defamation: false,
-  specialized_advice: false,
-  privacy: false,
-  intellectual_property: false,
-  indiscriminate_weapons: false,
-  hate: false,
-  self_harm: false,
-  sexual_content: false,
-  elections: false,
-  code_interpreter_abuse: false
-};
-
-/**
  * Convenience function to create Llama guard filters.
- * @param config - Configuration for Llama guard filter.
+ * @param categories - Categories to be enabled for filtering. A minimum of one category must be provided.
  * @returns Filter config object.
  */
 export function buildLlamaGuardFilter(
-  config?: LlamaGuard38B
+  ...categories: [LlamaGuardCategory, ...LlamaGuardCategory[]]
 ): LlamaGuard38BFilterConfig {
-  if (config && !Object.keys(config).length) {
-    throw new Error('Filtering configuration cannot be an empty object');
-  }
   return {
     type: 'llama_guard_3_8b',
-    config: config ?? defaultLlamaGuardConfig
+    config: Object.fromEntries(
+      [...categories].map(category => [category, true])
+    )
   };
 }
