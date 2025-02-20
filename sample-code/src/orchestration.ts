@@ -545,3 +545,40 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
   });
   return JSON.parse(response.getContent()!) as TranslationResponse;
 }
+
+/**
+ * Ask the Llm to perform math operation of adding 2 numbers .
+ * @returns The orchestration service response containing `tool_calls`.
+ */
+export async function orchestrationToolCalling(): Promise<OrchestrationResponse> {
+  const addNumbersSchema = z
+    .object({
+      a: z.number().describe('The first number to be added.'),
+      b: z.number().describe('The second number to be added.')
+    })
+    .strict();
+
+  const orchestrationClient = new OrchestrationClient({
+    llm,
+    templating: {
+      template: [
+        {
+          role: 'system',
+          content: 'You are a helpful AI that performs addition of two numbers.'
+        },
+        { role: 'user', content: 'What is 2 + 3?' }
+      ],
+      tools: [
+        {
+          type: 'function',
+          function: {
+            name: 'add',
+            description: 'Add two numbers',
+            parameters: zodToJsonSchema(addNumbersSchema)
+          }
+        }
+      ]
+    }
+  });
+  return orchestrationClient.chatCompletion();
+}

@@ -20,7 +20,8 @@ export {
   orchestrationChatCompletionImage,
   orchestrationResponseFormat,
   chatCompletionStreamWithJsonModuleConfig,
-  chatCompletionStream
+  chatCompletionStream,
+  orchestrationToolCalling
 } from './orchestration.js';
 export {
   invoke,

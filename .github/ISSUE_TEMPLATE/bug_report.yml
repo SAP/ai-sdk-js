@@ -64,6 +64,27 @@ body:
       required: false
   - type: dropdown
     attributes:
+      label: "Region"
+      description: "Choose the region of your AI Core service."
+      multiple: true
+      options:
+        - AP10
+        - EU10 Canary
+        - EU10
+        - EU11
+        - EU12 Canary
+        - EU20
+        - EU30
+        - JP10
+        - US10
+        - US21
+        - US30
+        - SA30
+        - Not listed above
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
       label: "Affected Development Phase"
       description: "Choose the development phase affected by this issue."
       multiple: false

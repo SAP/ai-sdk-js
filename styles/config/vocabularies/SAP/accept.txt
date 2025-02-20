@@ -139,5 +139,5 @@ lookups
 CDS
 [Zz]od
 
-llm's
 [Ll][Ll][Mm]'s
+[Ll][Ll][Mm]s
