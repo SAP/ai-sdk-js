@@ -82,7 +82,7 @@ const defaultLlamaGuardConfig: LlamaGuard38B = {
 };
 
 /**
- * Convenience function to create Azure content filters.
+ * Convenience function to create Llama guard filters.
  * @param config - Configuration for Llama guard filter.
  * @returns Filter config object.
  */
