@@ -40,7 +40,7 @@
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
-    "tsx": "^4.19.2",
+    "tsx": "^4.19.3",
     "@sap-cloud-sdk/connectivity": "^3.26.1",
     "@sap-cloud-sdk/eslint-config": "^3.26.1",
     "@sap-cloud-sdk/generator-common": "^3.26.1",
