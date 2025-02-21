@@ -1,14 +1,12 @@
-import type { Prompt } from '@sap-ai-sdk/orchestration';
-import type { BaseLLMParams } from '@langchain/core/language_models/llms';
+import type { ChatResult } from '@langchain/core/outputs';
+import type { Prompt, ModuleResults } from '@sap-ai-sdk/orchestration';
 import type {
   BaseChatModelCallOptions
 } from '@langchain/core/language_models/chat_models';
 import type {
-  AzureOpenAiCreateChatCompletionRequest,
-  AzureOpenAiEmbeddingModel
+  AzureOpenAiCreateChatCompletionRequest
 } from '@sap-ai-sdk/foundation-models';
 import type { CustomRequestConfig } from '@sap-ai-sdk/core';
-import type { ModelConfig, ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
 
 /**
  * Call options for the {@link AzureOpenAiChatClient}.
@@ -31,15 +29,11 @@ export type AzureOpenAiChatCallOptions = BaseChatModelCallOptions &
   };
 
 /**
- * Options for orchestration calls that combines the base chat model call options with prompt-related settings.
- * @typedef {Object} OrchestrationCallOptions
- * @augments {BaseChatModelCallOptions}
- * @augments {Prompt}
+ * TODO: Add docs.
  */
 export type OrchestrationCallOptions = BaseChatModelCallOptions & { inputParams: Prompt['inputParams']; customRequestConfig: CustomRequestConfig };
 
 /**
- * Input type for {@link AzureOpenAiEmbeddingClient} initialization.
+ * TODO: Add docs.
  */
-export type AzureOpenAiEmbeddingModelParams =
-  ModelConfig<AzureOpenAiEmbeddingModel> & ResourceGroupConfig & BaseLLMParams;
+export type OrchestrationResponse = ChatResult & ModuleResults & { request_id: string };

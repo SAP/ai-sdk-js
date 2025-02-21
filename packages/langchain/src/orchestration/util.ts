@@ -1,14 +1,13 @@
 import { AIMessage } from '@langchain/core/messages';
-import type { ChatMessages } from '@sap-ai-sdk/orchestration';
+import type { ChatMessages, CompletionPostResponse } from '@sap-ai-sdk/orchestration';
 import type { ToolCall } from '@langchain/core/messages/tool';
 import type {
-  AzureOpenAiCreateChatCompletionResponse,
   AzureOpenAiChatCompletionMessageToolCalls
 } from '@sap-ai-sdk/foundation-models';
 import type {
   BaseMessage
 } from '@langchain/core/messages';
-import type { ChatResult } from '@langchain/core/outputs';
+import type { OrchestrationResponse } from './types.js';
 
 /**
  * Maps LangChain messages to Orchestration messages.
@@ -46,8 +45,8 @@ function mapAzureOpenAiToLangchainToolCall(
  * @internal
  */
 export function mapOutputToChatResult(
-  completionResponse: AzureOpenAiCreateChatCompletionResponse
-): ChatResult {
+  completionResponse: CompletionPostResponse
+): OrchestrationResponse {
   return {
     generations: completionResponse.choices.map(choice => ({
       text: choice.message.content ?? '',

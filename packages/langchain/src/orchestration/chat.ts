@@ -6,9 +6,9 @@ import type { BaseChatModelParams } from '@langchain/core/language_models/chat_m
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
 import type { BaseMessage } from '@langchain/core/messages';
 import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
-import type { ChatResult } from '@langchain/core/outputs';
 import type {
   OrchestrationCallOptions,
+  OrchestrationResponse
 } from './types.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
@@ -53,7 +53,7 @@ export class OrchestrationClient extends BaseChatModel<OrchestrationCallOptions>
     // this would AFAIK align more with other langchain clients
     options: typeof this.ParsedCallOptions,
     runManager?: CallbackManagerForLLMRun
-  ): Promise<ChatResult> {
+  ): Promise<OrchestrationResponse> {
     const res = await this.caller.callWithOptions(
       {
         signal: options.signal
@@ -63,6 +63,8 @@ export class OrchestrationClient extends BaseChatModel<OrchestrationCallOptions>
         // and we support the .bind() flow of langchain this way
         const orchestrationClient = new OrchestrationClientBase(this.orchestrationConfig, this.deploymentConfig, this.destination);
         return orchestrationClient.chatCompletion({
+          // how to handle tools here? doesn't really exist as input in orchestration as message history
+          // make template a call option, to merge it ??
           messagesHistory: mapLangchainMessagesToOrchestrationMessages(messages),
           inputParams: options.inputParams
         }, options.customRequestConfig);
