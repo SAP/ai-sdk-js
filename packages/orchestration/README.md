@@ -349,7 +349,7 @@ Each category of the filter can be assigned a specific severity level, which cor
 | `ALLOW_ALL`             | 6                     |
 
 ```ts
-import { OrchestrationClient, ContentFilters } from '@sap-ai-sdk/orchestration';
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 const llm = {
   model_name: 'gpt-4o',
   model_params: { max_tokens: 50, temperature: 0.1 }
@@ -383,6 +383,81 @@ try {
 } catch (error: any) {
   return `Error: ${error.message}`;
 }
+```
+
+#### Llama Guard Filter
+
+Use `buildLlamaGuardFilter()` function to build a Llama Guard content filter for both input and output.
+
+There are up to 14 categories that can be enabled for filtering by passing them as arguments to the `buildLlamaGuardFilter()` function.
+Use the IDE's autocompletion feature to discover all available categories.
+Any categories that are not included are disabled by default.
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const llm = {
+  model_name: 'gpt-4o',
+  model_params: { max_tokens: 50, temperature: 0.1 }
+};
+const templating = {
+  template: [{ role: 'user', content: '{{?input}}' }]
+};
+
+const filter = buildLlamaGuardFilter('hate', 'violent_crimes');
+const orchestrationClient = new OrchestrationClient({
+  llm,
+  templating,
+  filtering: {
+    input: {
+      filters: [filter]
+    },
+    output: {
+      filters: [filter]
+    }
+  }
+});
+
+try {
+  const response = await orchestrationClient.chatCompletion({
+    inputParams: { input: 'I hate you!' }
+  });
+  return response.getContent();
+} catch (error: any) {
+  return `Error: ${error.message}`;
+}
+```
+
+##### Using Multiple Content Filters
+
+Multiple different content filters can be passed into input and output filtering configuration of the orchestration client to further restrict the content that is passed to and received from a generative AI model.
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+const llm = {
+  model_name: 'gpt-4o',
+  model_params: { max_tokens: 50, temperature: 0.1 }
+};
+const templating = {
+  template: [{ role: 'user', content: '{{?input}}' }]
+};
+
+const azureFilter = buildAzureContentSafetyFilter({
+  Hate: 'ALLOW_SAFE_LOW',
+  Violence: 'ALLOW_SAFE_LOW_MEDIUM'
+});
+const llamaGuardfilter = buildLlamaGuardFilter('hate', 'violent_crimes');
+const orchestrationClient = new OrchestrationClient({
+  llm,
+  templating,
+  filtering: {
+    input: {
+      filters: [azureFilter,llamaGuardfilter]
+    },
+    output: {
+      filters: [azureFilter,llamaGuardfilter]
+    }
+  }
+});
 ```
 
 #### Error Handling
