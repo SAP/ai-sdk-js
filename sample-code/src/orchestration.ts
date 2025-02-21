@@ -209,7 +209,7 @@ export async function orchestrationInputFiltering(): Promise<void> {
  */
 export async function orchestrationOutputFiltering(): Promise<OrchestrationResponse> {
   // output filters are built in the same way as input filters
-  // set the threshold to the minimum to maximize the chance the LLM output will be filtered
+  // set the thresholds to the minimum to maximize the chance the LLM output will be filtered
   const azureContentFilter = buildAzureContentSafetyFilter({
     Hate: 'ALLOW_SAFE',
     Violence: 'ALLOW_SAFE'
