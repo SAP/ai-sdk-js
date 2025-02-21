@@ -94,7 +94,7 @@ describe('orchestration', () => {
 
   it('should return a response with tool_calls when finish_reason is tool_calls', async () => {
     const result = await orchestrationToolCalling();
-    expect(result.getFinishReason()).toBe('tools_calls');
+    expect(result.getFinishReason()).toBe('tool_calls');
 
     const tool_calls =
       result.data.orchestration_result.choices[0].message.tool_calls;
