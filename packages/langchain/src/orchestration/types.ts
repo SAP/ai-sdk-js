@@ -1,3 +1,4 @@
+import type { Prompt } from '@sap-ai-sdk/orchestration';
 import type { BaseLLMParams } from '@langchain/core/language_models/llms';
 import type {
   BaseChatModelCallOptions
@@ -28,6 +29,14 @@ export type AzureOpenAiChatCallOptions = BaseChatModelCallOptions &
   > & {
     requestConfig?: CustomRequestConfig;
   };
+
+/**
+ * Options for orchestration calls that combines the base chat model call options with prompt-related settings.
+ * @typedef {Object} OrchestrationCallOptions
+ * @augments {BaseChatModelCallOptions}
+ * @augments {Prompt}
+ */
+export type OrchestrationCallOptions = BaseChatModelCallOptions & { inputParams: Prompt['inputParams']; customRequestConfig: CustomRequestConfig };
 
 /**
  * Input type for {@link AzureOpenAiEmbeddingClient} initialization.

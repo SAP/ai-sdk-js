@@ -1,19 +1,21 @@
-import { BaseChatModel, BaseChatModelParams } from '@langchain/core/language_models/chat_models';
-import { OrchestrationClient as OrchestrationClientBase, OrchestrationModuleConfig } from '@sap-ai-sdk/orchestration';
-import { mapOutputToChatResult } from './util.js';
+import { BaseChatModel } from '@langchain/core/language_models/chat_models';
+import { OrchestrationClient as OrchestrationClientBase } from '@sap-ai-sdk/orchestration';
+import { mapLangchainMessagesToOrchestrationMessages, mapOutputToChatResult } from './util.js';
+import type { OrchestrationModuleConfig } from '@sap-ai-sdk/orchestration';
+import type { BaseChatModelParams } from '@langchain/core/language_models/chat_models';
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
 import type { BaseMessage } from '@langchain/core/messages';
 import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import type { ChatResult } from '@langchain/core/outputs';
 import type {
-  AzureOpenAiChatCallOptions,
+  OrchestrationCallOptions,
 } from './types.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 /**
  * LangChain chat client for Azure OpenAI consumption on SAP BTP.
  */
-export class OrchestrationClient extends BaseChatModel<AzureOpenAiChatCallOptions> {
+export class OrchestrationClient extends BaseChatModel<OrchestrationCallOptions> {
   // Omit streaming until supported
   orchestrationConfig: Omit<OrchestrationModuleConfig, 'streaming'>;
   langchainOptions?: BaseChatModelParams;
@@ -32,8 +34,8 @@ export class OrchestrationClient extends BaseChatModel<AzureOpenAiChatCallOption
     destination?: HttpDestinationOrFetchOptions,
   ) {
     super(langchainOptions);
-    this.orchestrationConfig = orchestrationConfig
-    this.destination = destination
+    this.orchestrationConfig = orchestrationConfig;
+    this.destination = destination;
     this.deploymentConfig = deploymentConfig;
   }
 
@@ -43,6 +45,12 @@ export class OrchestrationClient extends BaseChatModel<AzureOpenAiChatCallOption
 
   override async _generate(
     messages: BaseMessage[],
+    // Ignoring all default options for now, could make sense to initalize a new caller based on the bound properties + options
+    // that way the request options, e.g. maxRetries etc. will be applied.
+    // some other options like tool_choice need to be put inside of the llm model_params and merged with existing configs
+    // if we want to support those options
+    // we can also make LLM params a call option
+    // this would AFAIK align more with other langchain clients
     options: typeof this.ParsedCallOptions,
     runManager?: CallbackManagerForLLMRun
   ): Promise<ChatResult> {
@@ -51,15 +59,14 @@ export class OrchestrationClient extends BaseChatModel<AzureOpenAiChatCallOption
         signal: options.signal
       },
       () => {
+        // Initializing a new client every time, as caching is unaffected
+        // and we support the .bind() flow of langchain this way
         const orchestrationClient = new OrchestrationClientBase(this.orchestrationConfig, this.deploymentConfig, this.destination);
-        return orchestrationClient.chatCompletion(
-          mapLangchainToOrchestrationClient(this, messages, options),
+        return orchestrationClient.chatCompletion({
+          messagesHistory: mapLangchainMessagesToOrchestrationMessages(messages),
+          inputParams: options.inputParams
+        }, options.customRequestConfig);
       }
-        const orchestrationClient = new OrchestrationClientBase(this.fields, this.deploymentConfig, this.destination);
-        this.orchestrationClient.chatCompletion(
-          mapLangchainToOrchestrationClient(this, messages, options),
-          options.requestConfig
-        )
     );
 
     const content = res.getContent();
