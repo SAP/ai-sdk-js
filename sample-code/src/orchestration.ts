@@ -4,7 +4,8 @@ import { fileURLToPath } from 'url';
 import {
   OrchestrationClient,
   buildDocumentGroundingConfig,
-  buildAzureContentSafetyFilter
+  buildAzureContentSafetyFilter,
+  buildLlamaGuardFilter
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
 import { z } from 'zod';
@@ -166,7 +167,7 @@ export async function orchestrationPromptRegistry(): Promise<OrchestrationRespon
 const templating = { template: [{ role: 'user', content: '{{?input}}' }] };
 
 /**
- * Apply a content filter to LLM requests, filtering any hateful input.
+ * Apply multiple content filters to LLM requests, filtering any hateful input.
  */
 export async function orchestrationInputFiltering(): Promise<void> {
   // create a filter with minimal thresholds for hate and violence
@@ -174,19 +175,21 @@ export async function orchestrationInputFiltering(): Promise<void> {
     Hate: 'ALLOW_SAFE',
     Violence: 'ALLOW_SAFE'
   });
+  // Add llama guard content filter, to increase the chances of LLM input being filtered
+  const llamaGuardFilter = buildLlamaGuardFilter('hate', 'violent_crimes');
   const orchestrationClient = new OrchestrationClient({
     llm,
     templating,
     // configure the filter to be applied for input
     filtering: {
       input: {
-        filters: [azureContentFilter]
+        filters: [azureContentFilter, llamaGuardFilter]
       }
     }
   });
 
   try {
-    // trigger the input filter, producing a 400 - Bad Request response
+    // trigger the input filters, producing a 400 - Bad Request response
     await orchestrationClient.chatCompletion({
       inputParams: { input: 'I hate you!' }
     });
@@ -201,22 +204,24 @@ export async function orchestrationInputFiltering(): Promise<void> {
 }
 
 /**
- * Apply a content filter to LLM requests, filtering any hateful output.
+ * Apply multiple content filters to LLM requests, filtering any hateful output.
  * @returns The orchestration service response.
  */
 export async function orchestrationOutputFiltering(): Promise<OrchestrationResponse> {
-  // output filters are build in the same way as input filters
-  // set the thresholds to the minimum to maximize the chance the LLM output will be filtered
+  // output filters are built in the same way as input filters
+  // set the threshold to the minimum to maximize the chance the LLM output will be filtered
   const azureContentFilter = buildAzureContentSafetyFilter({
     Hate: 'ALLOW_SAFE',
     Violence: 'ALLOW_SAFE'
   });
+  // Add llama guard content filter, to increase the chances of LLM output being filtered
+  const llamaGuardFilter = buildLlamaGuardFilter('hate', 'violent_crimes');
   const orchestrationClient = new OrchestrationClient({
     llm,
     templating,
     filtering: {
       output: {
-        filters: [azureContentFilter]
+        filters: [azureContentFilter, llamaGuardFilter]
       }
     }
   });
