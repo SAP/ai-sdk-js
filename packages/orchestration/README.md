@@ -451,10 +451,10 @@ const orchestrationClient = new OrchestrationClient({
   templating,
   filtering: {
     input: {
-      filters: [azureFilter,llamaGuardfilter]
+      filters: [azureFilter, llamaGuardfilter]
     },
     output: {
-      filters: [azureFilter,llamaGuardfilter]
+      filters: [azureFilter, llamaGuardfilter]
     }
   }
 });
