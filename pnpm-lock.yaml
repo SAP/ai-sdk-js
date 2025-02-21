@@ -157,6 +157,9 @@ importers:
       '@sap-ai-sdk/foundation-models':
         specifier: workspace:^
         version: link:../foundation-models
+      '@sap-ai-sdk/orchestration':
+        specifier: workspace:^
+        version: link:../orchestration
       '@sap-cloud-sdk/connectivity':
         specifier: ^3.26.1
         version: 3.26.1
