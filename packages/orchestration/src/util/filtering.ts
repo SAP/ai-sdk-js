@@ -3,11 +3,13 @@ import type {
   AzureContentSafety,
   AzureContentSafetyFilterConfig,
   InputFilteringConfig,
+  LlamaGuard38BFilterConfig,
   OutputFilteringConfig
 } from '../client/api/schema/index.js';
 import type {
   AzureContentFilter,
-  AzureFilterThreshold
+  AzureFilterThreshold,
+  LlamaGuardCategory
 } from '../orchestration-types.js';
 
 /**
@@ -56,5 +58,21 @@ export function buildAzureContentSafetyFilter(
         )
       }
     })
+  };
+}
+
+/**
+ * Convenience function to create Llama guard filters.
+ * @param categories - Categories to be enabled for filtering. A minimum of one category must be provided.
+ * @returns Filter config object.
+ */
+export function buildLlamaGuardFilter(
+  ...categories: [LlamaGuardCategory, ...LlamaGuardCategory[]]
+): LlamaGuard38BFilterConfig {
+  return {
+    type: 'llama_guard_3_8b',
+    config: Object.fromEntries(
+      [...categories].map(category => [category, true])
+    )
   };
 }
