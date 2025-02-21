@@ -34,7 +34,7 @@
     "check:deps": "pnpm -r -F !./tests/smoke-tests -F !./tests/schema-tests -F !./sample-cap exec depcheck --ignores=\"nock,@jest/globals\" --quiet"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.28.0",
+    "@changesets/cli": "^2.28.1",
     "@jest/globals": "^29.5.12",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
