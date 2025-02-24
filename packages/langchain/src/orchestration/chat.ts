@@ -1,72 +1,77 @@
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { OrchestrationClient as OrchestrationClientBase } from '@sap-ai-sdk/orchestration';
+import { AsyncCaller } from '@langchain/core/utils/async_caller';
 import { mapLangchainMessagesToOrchestrationMessages, mapOutputToChatResult } from './util.js';
+import type { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
+import type { ChatResult } from '@langchain/core/outputs';
 import type { OrchestrationModuleConfig } from '@sap-ai-sdk/orchestration';
 import type { BaseChatModelParams } from '@langchain/core/language_models/chat_models';
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
 import type { BaseMessage } from '@langchain/core/messages';
 import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import type {
-  OrchestrationCallOptions,
-  OrchestrationResponse
+  OrchestrationCallOptions
 } from './types.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+
+// TODO: Update all docs
 
 /**
  * LangChain chat client for Azure OpenAI consumption on SAP BTP.
  */
-export class OrchestrationClient extends BaseChatModel<OrchestrationCallOptions> {
-  // Omit streaming until supported
-  orchestrationConfig: Omit<OrchestrationModuleConfig, 'streaming'>;
-  langchainOptions?: BaseChatModelParams;
-  deploymentConfig?: ResourceGroupConfig;
-  destination?: HttpDestinationOrFetchOptions;
-
-  // initialize with complete config and shit
-  // allow to prompt + pass model params at invocatio
-  // initialize a new client on every call, so that .bind() and .bindTools will properly work
-  // shit is still cached because it's not instance specific
+export class OrchestrationClient extends BaseChatModel<OrchestrationCallOptions, OrchestrationMessageChunk> {
   constructor(
     // Omit streaming until supported
-    orchestrationConfig: Omit<OrchestrationModuleConfig, 'streaming'>,
-    langchainOptions: BaseChatModelParams = {},
-    deploymentConfig?: ResourceGroupConfig,
-    destination?: HttpDestinationOrFetchOptions,
+    public orchestrationConfig: Omit<OrchestrationModuleConfig, 'streaming'>,
+    public langchainOptions: BaseChatModelParams = {},
+    public deploymentConfig?: ResourceGroupConfig,
+    public destination?: HttpDestinationOrFetchOptions,
   ) {
     super(langchainOptions);
-    this.orchestrationConfig = orchestrationConfig;
-    this.destination = destination;
-    this.deploymentConfig = deploymentConfig;
   }
 
   _llmType(): string {
     return 'orchestration';
   }
 
+  /**
+   * Decisions:
+   * bind only supports ParsedCallOptions, we don't support arbitrary LLM options, only tool calls & default BaseLanguageModelCallOptions, e.g. stop
+   * this aligns with other vendors' client designs (e.g. openai, google)
+   * top of the array (array[array.length - 1]) contains the current message, everything before then is history.
+   * Module results are part of our own message type, which extends AI Message to work with all other langchain functionality.
+   *
+   * For timeout, we need to apply our own middleware, it is not handled by langchain.
+   */
+
   override async _generate(
     messages: BaseMessage[],
-    // Ignoring all default options for now, could make sense to initalize a new caller based on the bound properties + options
-    // that way the request options, e.g. maxRetries etc. will be applied.
-    // some other options like tool_choice need to be put inside of the llm model_params and merged with existing configs
-    // if we want to support those options
-    // we can also make LLM params a call option
-    // this would AFAIK align more with other langchain clients
     options: typeof this.ParsedCallOptions,
     runManager?: CallbackManagerForLLMRun
-  ): Promise<OrchestrationResponse> {
-    const res = await this.caller.callWithOptions(
+  ): Promise<ChatResult> {
+    let caller = this.caller;
+    if(options.maxConcurrency) {
+      const { maxConcurrency, maxRetries, onFailedAttempt } = this.langchainOptions;
+      caller = new AsyncCaller(
+        { maxConcurrency: maxConcurrency ?? options.maxConcurrency,
+          maxRetries,
+          onFailedAttempt
+        }
+      );
+    }
+    const res = await caller.callWithOptions(
       {
         signal: options.signal
       },
       () => {
-        // Initializing a new client every time, as caching is unaffected
-        // and we support the .bind() flow of langchain this way
+        // consider this.tools & this.stop property, merge it ith template orchestration config
         const orchestrationClient = new OrchestrationClientBase(this.orchestrationConfig, this.deploymentConfig, this.destination);
+        const { messageHistory, inputParams } = mapLangchainMessagesToOrchestrationMessages(messages);
         return orchestrationClient.chatCompletion({
           // how to handle tools here? doesn't really exist as input in orchestration as message history
           // make template a call option, to merge it ??
-          messagesHistory: mapLangchainMessagesToOrchestrationMessages(messages),
-          inputParams: options.inputParams
+          messagesHistory,
+          inputParams
         }, options.customRequestConfig);
       }
     );
@@ -81,3 +86,4 @@ export class OrchestrationClient extends BaseChatModel<OrchestrationCallOptions>
     return mapOutputToChatResult(res.data);
   }
 }
+

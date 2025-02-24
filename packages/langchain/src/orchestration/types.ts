@@ -1,5 +1,4 @@
-import type { ChatResult } from '@langchain/core/outputs';
-import type { Prompt, ModuleResults } from '@sap-ai-sdk/orchestration';
+import type { Template } from '@sap-ai-sdk/orchestration';
 import type {
   BaseChatModelCallOptions
 } from '@langchain/core/language_models/chat_models';
@@ -31,9 +30,14 @@ export type AzureOpenAiChatCallOptions = BaseChatModelCallOptions &
 /**
  * TODO: Add docs.
  */
-export type OrchestrationCallOptions = BaseChatModelCallOptions & { inputParams: Prompt['inputParams']; customRequestConfig: CustomRequestConfig };
+export type OrchestrationCallOptions = Pick<
+  BaseChatModelCallOptions,
+  | 'stop'
+  | 'signal'
+  | 'maxConcurrency'
+  | 'timeout'
+  > & {
+    customRequestConfig?: CustomRequestConfig;
+    tools?: Template['tools'];
+  };
 
-/**
- * TODO: Add docs.
- */
-export type OrchestrationResponse = ChatResult & ModuleResults & { request_id: string };
