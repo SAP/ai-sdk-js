@@ -403,8 +403,7 @@ const filter = buildAzureContentSafetyFilter({
 Use `buildLlamaGuardFilter()` function to build a Llama Guard content filter.
 
 Available categories can be found with autocompletion.
-By default, all categories are disabled.
-Pass the categories you want as arguments to the function to enable them.
+Pass the categories as arguments to the function to enable them.
 
 The following example demonstrates how to build a Llama Guard content filter with specific categories enabled.
 
