@@ -389,8 +389,6 @@ Each category of the filter can be assigned a specific severity level, which cor
 | `ALLOW_SAFE_LOW_MEDIUM` | 4                     |
 | `ALLOW_ALL`             | 6                     |
 
-The following example demonstrates how to build an Azure content filter with specific severity levels for each category.
-
 ```ts
 const filter = buildAzureContentSafetyFilter({
   Hate: 'ALLOW_SAFE_LOW',
@@ -404,8 +402,6 @@ Use `buildLlamaGuardFilter()` function to build a Llama Guard content filter.
 
 Available categories can be found with autocompletion.
 Pass the categories as arguments to the function to enable them.
-
-The following example demonstrates how to build a Llama Guard content filter with specific categories enabled.
 
 ```ts
 const filter = buildLlamaGuardFilter('hate', 'violent_crimes');
