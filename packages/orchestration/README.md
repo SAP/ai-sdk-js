@@ -336,9 +336,50 @@ Use the orchestration client with filtering to restrict content that is passed t
 
 This feature allows filtering both the [input](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering) and [output](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering) of a model based on content safety criteria.
 
+The following example demonstrates how to use content filtering with the orchestration client.
+See the sections below for details on the available content filters and how to build them.
+
+```ts
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+
+const llm = {
+  model_name: 'gpt-4o',
+  model_params: { max_tokens: 50, temperature: 0.1 }
+};
+const templating = {
+  template: [{ role: 'user', content: '{{?input}}' }]
+};
+
+const filter = ... // Use a build function to create a content filter
+
+const orchestrationClient = new OrchestrationClient({
+  llm,
+  templating,
+  filtering: {
+    input: {
+      filters: [filter] // Multiple filters can be applied
+    },
+    output: {
+      filters: [filter]
+    }
+  }
+});
+
+try {
+  const response = await orchestrationClient.chatCompletion({
+    inputParams: { input: 'I hate you!' }
+  });
+  return response.getContent();
+} catch (error: any) {
+  return `Error: ${error.message}`;
+}
+```
+
+Multiple filters can be applied at the same time for both input and output filtering.
+
 #### Azure Content Filter
 
-Use `buildAzureContentSafetyFilter()` function to build an Azure content filter for both input and output.
+Use `buildAzureContentSafetyFilter()` function to build an Azure content filter.
 Each category of the filter can be assigned a specific severity level, which corresponds to an Azure threshold value.
 
 | Severity Level          | Azure Threshold Value |
@@ -348,116 +389,27 @@ Each category of the filter can be assigned a specific severity level, which cor
 | `ALLOW_SAFE_LOW_MEDIUM` | 4                     |
 | `ALLOW_ALL`             | 6                     |
 
-```ts
-import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
-const llm = {
-  model_name: 'gpt-4o',
-  model_params: { max_tokens: 50, temperature: 0.1 }
-};
-const templating = {
-  template: [{ role: 'user', content: '{{?input}}' }]
-};
+The following example demonstrates how to build an Azure content filter with specific severity levels for each category.
 
+```ts
 const filter = buildAzureContentSafetyFilter({
   Hate: 'ALLOW_SAFE_LOW',
   Violence: 'ALLOW_SAFE_LOW_MEDIUM'
 });
-const orchestrationClient = new OrchestrationClient({
-  llm,
-  templating,
-  filtering: {
-    input: {
-      filters: [filter]
-    },
-    output: {
-      filters: [filter]
-    }
-  }
-});
-
-try {
-  const response = await orchestrationClient.chatCompletion({
-    inputParams: { input: 'I hate you!' }
-  });
-  return response.getContent();
-} catch (error: any) {
-  return `Error: ${error.message}`;
-}
 ```
 
 #### Llama Guard Filter
 
-Use `buildLlamaGuardFilter()` function to build a Llama Guard content filter for both input and output.
+Use `buildLlamaGuardFilter()` function to build a Llama Guard content filter.
 
-There are up to 14 categories that can be enabled for filtering by passing them as arguments to the `buildLlamaGuardFilter()` function.
-Use the IDE's autocompletion feature to discover all available categories.
-Any categories that are not included are disabled by default.
+Available categories can be found with autocompletion.
+By default, all categories are disabled.
+Pass the categories you want as arguments to the function to enable them.
+
+The following example demonstrates how to build a Llama Guard content filter with specific categories enabled.
 
 ```ts
-import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
-const llm = {
-  model_name: 'gpt-4o',
-  model_params: { max_tokens: 50, temperature: 0.1 }
-};
-const templating = {
-  template: [{ role: 'user', content: '{{?input}}' }]
-};
-
 const filter = buildLlamaGuardFilter('hate', 'violent_crimes');
-const orchestrationClient = new OrchestrationClient({
-  llm,
-  templating,
-  filtering: {
-    input: {
-      filters: [filter]
-    },
-    output: {
-      filters: [filter]
-    }
-  }
-});
-
-try {
-  const response = await orchestrationClient.chatCompletion({
-    inputParams: { input: 'I hate you!' }
-  });
-  return response.getContent();
-} catch (error: any) {
-  return `Error: ${error.message}`;
-}
-```
-
-##### Using Multiple Content Filters
-
-Multiple different content filters can be passed into input and output filtering configuration of the orchestration client to further restrict the content that is passed to and received from a generative AI model.
-
-```ts
-import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
-const llm = {
-  model_name: 'gpt-4o',
-  model_params: { max_tokens: 50, temperature: 0.1 }
-};
-const templating = {
-  template: [{ role: 'user', content: '{{?input}}' }]
-};
-
-const azureFilter = buildAzureContentSafetyFilter({
-  Hate: 'ALLOW_SAFE_LOW',
-  Violence: 'ALLOW_SAFE_LOW_MEDIUM'
-});
-const llamaGuardfilter = buildLlamaGuardFilter('hate', 'violent_crimes');
-const orchestrationClient = new OrchestrationClient({
-  llm,
-  templating,
-  filtering: {
-    input: {
-      filters: [azureFilter, llamaGuardfilter]
-    },
-    output: {
-      filters: [azureFilter, llamaGuardfilter]
-    }
-  }
-});
 ```
 
 #### Error Handling
