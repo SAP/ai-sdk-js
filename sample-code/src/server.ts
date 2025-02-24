@@ -21,6 +21,7 @@ import {
   orchestrationGroundingHelpSapCom,
   orchestrationMaskGroundingInput,
   orchestrationPromptRegistry,
+  orchestrationMessagesHistory,
   orchestrationResponseFormat
 } from './orchestration.js';
 import {
@@ -257,6 +258,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       simple: orchestrationChatCompletion,
       template: orchestrationTemplating,
       templateRef: orchestrationPromptRegistry,
+      messageHistory: orchestrationMessagesHistory,
       inputFiltering: orchestrationInputFiltering,
       outputFiltering: orchestrationOutputFiltering,
       requestConfig: orchestrationRequestConfig,

@@ -1,7 +1,10 @@
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type {
   CompletionPostResponse,
-  TokenUsage
+  TokenUsage,
+  ChatMessage,
+  MultiChatMessage,
+  ChatMessages
 } from './client/api/schema/index.js';
 
 /**
@@ -49,6 +52,48 @@ export class OrchestrationResponse {
       );
     }
     return choice?.message?.content;
+  }
+
+  /**
+   * Messages that can be used for subsequent prompts as message history.
+   * @param choiceIndex - The index of the choice to parse.
+   * @returns A list of all messages.
+   */
+  getAllMessages(choiceIndex = 0): ChatMessages {
+    const messages: ChatMessage[] = (
+      this.data.module_results.templating ?? []
+    ).map(message =>
+      this.isMultiChatMessage(message)
+        ? this.handleMultiChatMessage(message)
+        : message
+    );
+
+    const content = this.getChoices().find(
+      c => c.index === choiceIndex
+    )?.message;
+    return content ? [...messages, content] : messages;
+  }
+
+  private handleMultiChatMessage(
+    multiChatMessage: MultiChatMessage
+  ): ChatMessage {
+    return {
+      role: multiChatMessage.role,
+      content: multiChatMessage.content
+        .map(content =>
+          content.type === 'text'
+            ? content.text
+            : JSON.stringify({
+                url: content.image_url.url,
+                detail: content.image_url.detail
+              })
+        )
+        .join('\n')
+    };
+  }
+
+  private isMultiChatMessage(params: ChatMessage): params is MultiChatMessage {
+    return Array.isArray(params.content);
   }
 
   private getChoices() {
