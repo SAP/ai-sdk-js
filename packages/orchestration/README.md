@@ -336,20 +336,12 @@ Use the orchestration client with filtering to restrict content that is passed t
 
 This feature allows filtering both the [input](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering) and [output](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering) of a model based on content safety criteria.
 
-#### Azure Content Filter
-
-Use `buildAzureContentSafetyFilter()` function to build an Azure content filter for both input and output.
-Each category of the filter can be assigned a specific severity level, which corresponds to an Azure threshold value.
-
-| Severity Level          | Azure Threshold Value |
-| ----------------------- | --------------------- |
-| `ALLOW_SAFE`            | 0                     |
-| `ALLOW_SAFE_LOW`        | 2                     |
-| `ALLOW_SAFE_LOW_MEDIUM` | 4                     |
-| `ALLOW_ALL`             | 6                     |
+The following example demonstrates how to use content filtering with the orchestration client.
+See the sections below for details on the available content filters and how to build them.
 
 ```ts
-import { OrchestrationClient, ContentFilters } from '@sap-ai-sdk/orchestration';
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+
 const llm = {
   model_name: 'gpt-4o',
   model_params: { max_tokens: 50, temperature: 0.1 }
@@ -358,16 +350,14 @@ const templating = {
   template: [{ role: 'user', content: '{{?input}}' }]
 };
 
-const filter = buildAzureContentSafetyFilter({
-  Hate: 'ALLOW_SAFE_LOW',
-  Violence: 'ALLOW_SAFE_LOW_MEDIUM'
-});
+const filter = ... // Use a build function to create a content filter
+
 const orchestrationClient = new OrchestrationClient({
   llm,
   templating,
   filtering: {
     input: {
-      filters: [filter]
+      filters: [filter] // Multiple filters can be applied
     },
     output: {
       filters: [filter]
@@ -383,6 +373,38 @@ try {
 } catch (error: any) {
   return `Error: ${error.message}`;
 }
+```
+
+Multiple filters can be applied at the same time for both input and output filtering.
+
+#### Azure Content Filter
+
+Use `buildAzureContentSafetyFilter()` function to build an Azure content filter.
+Each category of the filter can be assigned a specific severity level, which corresponds to an Azure threshold value.
+
+| Severity Level          | Azure Threshold Value |
+| ----------------------- | --------------------- |
+| `ALLOW_SAFE`            | 0                     |
+| `ALLOW_SAFE_LOW`        | 2                     |
+| `ALLOW_SAFE_LOW_MEDIUM` | 4                     |
+| `ALLOW_ALL`             | 6                     |
+
+```ts
+const filter = buildAzureContentSafetyFilter({
+  Hate: 'ALLOW_SAFE_LOW',
+  Violence: 'ALLOW_SAFE_LOW_MEDIUM'
+});
+```
+
+#### Llama Guard Filter
+
+Use `buildLlamaGuardFilter()` function to build a Llama Guard content filter.
+
+Available categories can be found with autocompletion.
+Pass the categories as arguments to the function to enable them.
+
+```ts
+const filter = buildLlamaGuardFilter('hate', 'violent_crimes');
 ```
 
 #### Error Handling

@@ -3,15 +3,17 @@ import type {
   AzureContentSafety,
   AzureContentSafetyFilterConfig,
   InputFilteringConfig,
+  LlamaGuard38BFilterConfig,
   OutputFilteringConfig
 } from '../client/api/schema/index.js';
 import type {
   AzureContentFilter,
-  AzureFilterThreshold
+  AzureFilterThreshold,
+  LlamaGuardCategory
 } from '../orchestration-types.js';
 
 /**
- * Convenience function to create Azure content filters.
+ * Convenience function to build Azure content filter.
  * @param filter - Filtering configuration for Azure filter. If skipped, the default Azure content filter configuration is used.
  * @returns An object with the Azure filtering configuration.
  * @deprecated Since 1.8.0. Use {@link buildAzureContentSafetyFilter()} instead.
@@ -33,10 +35,11 @@ export function buildAzureContentFilter(
 }
 
 /**
- * Convenience function to create Azure content filters.
+ * Convenience function to build Azure content filter.
  * @param config - Configuration for Azure content safety filter.
  * If skipped, the default configuration of `ALLOW_SAFE_LOW` is used for all filter categories.
  * @returns Filter config object.
+ * @example "buildAzureContentSafetyFilter({ Hate: 'ALLOW_SAFE', Violence: 'ALLOW_SAFE_LOW_MEDIUM' })"
  */
 export function buildAzureContentSafetyFilter(
   config?: AzureContentFilter
@@ -56,5 +59,22 @@ export function buildAzureContentSafetyFilter(
         )
       }
     })
+  };
+}
+
+/**
+ * Convenience function to build Llama guard filter.
+ * @param categories - Categories to be enabled for filtering. Provide at least one category.
+ * @returns Filter config object.
+ * @example "buildLlamaGuardFilter('self_harm', 'hate')"
+ */
+export function buildLlamaGuardFilter(
+  ...categories: [LlamaGuardCategory, ...LlamaGuardCategory[]]
+): LlamaGuard38BFilterConfig {
+  return {
+    type: 'llama_guard_3_8b',
+    config: Object.fromEntries(
+      [...categories].map(category => [category, true])
+    )
   };
 }

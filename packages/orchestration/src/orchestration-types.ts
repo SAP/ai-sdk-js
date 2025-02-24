@@ -8,6 +8,7 @@ import type {
   FilteringStreamOptions,
   GlobalStreamOptions,
   GroundingModuleConfig,
+  LlamaGuard38B,
   MaskingModuleConfig,
   LlmModuleConfig as OriginalLlmModuleConfig,
   TemplatingModuleConfig
@@ -201,3 +202,8 @@ export const supportedAzureFilterThresholds = {
  *
  */
 export type AzureFilterThreshold = keyof typeof supportedAzureFilterThresholds;
+
+/**
+ * The filter categories supported for Llama guard filter.
+ */
+export type LlamaGuardCategory = keyof LlamaGuard38B;

@@ -4,7 +4,8 @@ import { fileURLToPath } from 'url';
 import {
   OrchestrationClient,
   buildDocumentGroundingConfig,
-  buildAzureContentSafetyFilter
+  buildAzureContentSafetyFilter,
+  buildLlamaGuardFilter
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
 import { z } from 'zod';
@@ -166,33 +167,36 @@ export async function orchestrationPromptRegistry(): Promise<OrchestrationRespon
 const templating = { template: [{ role: 'user', content: '{{?input}}' }] };
 
 /**
- * Apply a content filter to LLM requests, filtering any hateful input.
+ * Apply multiple content filters to the input.
  */
 export async function orchestrationInputFiltering(): Promise<void> {
-  // create a filter with minimal thresholds for hate and violence
-  const azureContentFilter = buildAzureContentSafetyFilter({
+  // Build Azure content filter with only safe content allowed for hate and violence
+  const azureContentSafetyFilter = buildAzureContentSafetyFilter({
     Hate: 'ALLOW_SAFE',
     Violence: 'ALLOW_SAFE'
   });
+
+  // Build Llama guard content filter with categories 'privacy' enabled
+  const llamaGuardFilter = buildLlamaGuardFilter('privacy');
+
   const orchestrationClient = new OrchestrationClient({
     llm,
     templating,
-    // configure the filter to be applied for input
     filtering: {
       input: {
-        filters: [azureContentFilter]
+        filters: [azureContentSafetyFilter, llamaGuardFilter]
       }
     }
   });
 
   try {
-    // trigger the input filter, producing a 400 - Bad Request response
+    // Trigger the input filters which results in a 400 Bad Request error
     await orchestrationClient.chatCompletion({
-      inputParams: { input: 'I hate you!' }
+      inputParams: { input: 'My social insurance number is ABC123456789.' } // Should be filtered by the Llama guard filter
     });
     throw new Error('Input was not filtered as expected.');
   } catch (error: any) {
-    if (error.response.status === 400) {
+    if (error.response?.status === 400) {
       logger.info('Input was filtered as expected.');
     } else {
       throw error;
@@ -201,44 +205,42 @@ export async function orchestrationInputFiltering(): Promise<void> {
 }
 
 /**
- * Apply a content filter to LLM requests, filtering any hateful output.
+ * Apply multiple content filters to the output.
  * @returns The orchestration service response.
  */
 export async function orchestrationOutputFiltering(): Promise<OrchestrationResponse> {
-  // output filters are build in the same way as input filters
-  // set the thresholds to the minimum to maximize the chance the LLM output will be filtered
+  // Build Azure content filter with only safe content allowed for hate and violence
   const azureContentFilter = buildAzureContentSafetyFilter({
     Hate: 'ALLOW_SAFE',
     Violence: 'ALLOW_SAFE'
   });
+
+  // Build Llama guard content filter with categories 'privacy' enabled
+  const llamaGuardFilter = buildLlamaGuardFilter('privacy');
+
   const orchestrationClient = new OrchestrationClient({
     llm,
     templating,
     filtering: {
       output: {
-        filters: [azureContentFilter]
+        filters: [azureContentFilter, llamaGuardFilter]
       }
     }
   });
-  /**
-   * Trigger the output filter.
-   * Note: reliably triggering the output filter is a bit of a challenge. LLMs are fine-tuned to not respond with explicit or hateful content.
-   * Instead, they often respond with something like "Sorry, I can't assist with that" when asked to generate explicit content.
-   * The following prompt seems to work well with GPT-4o, producing enough explicit language to trigger the output filter, but may not work equally well with other models.
-   */
+
   const result = await orchestrationClient.chatCompletion({
     messagesHistory: [
       {
         role: 'system',
-        content: 'Create 3 paraphrases of the sentence: "{{?input}}"'
+        content: 'Reparaphrase the sentence in ten ways: "{{?input}}"'
       }
     ],
     inputParams: {
-      input: 'I hate you!'
+      input: 'I hate you!' // Should be filtered by the Azure content filter
     }
   });
 
-  // accessing the content should throw an error
+  // Accessing the content should throw an error
   try {
     result.getContent();
   } catch {
@@ -246,14 +248,12 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
       `Result from output content filter: ${result.data.module_results.output_filtering!.message}`
     );
     logger.info(
-      'The original response from the LLM was as follows: ' +
-        result.data.module_results.llm?.choices[0].message.content
+      `The original response from the LLM was as follows:\n${result.data.module_results.llm?.choices[0].message.content}`
     );
     return result;
   }
   throw new Error(
-    'Output was not filtered as expected. The LLM response was: ' +
-      result.getContent()
+    `Output was not filtered as expected. The LLM response was:\n${result.getContent()}`
   );
 }
 
