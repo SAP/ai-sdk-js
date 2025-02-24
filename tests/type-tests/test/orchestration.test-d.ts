@@ -278,9 +278,7 @@ expectType<LlamaGuard38BFilterConfig>(
 
 expectError<LlamaGuard38BFilterConfig>(buildLlamaGuardFilter());
 
-expectError<LlamaGuard38BFilterConfig>(
-  buildLlamaGuardFilter('unknown-string')
-);
+expectError<LlamaGuard38BFilterConfig>(buildLlamaGuardFilter('unknown-string'));
 
 /**
  * Grounding util.
