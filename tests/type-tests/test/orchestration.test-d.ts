@@ -276,10 +276,10 @@ expectType<LlamaGuard38BFilterConfig>(
   buildLlamaGuardFilter('code_interpreter_abuse', 'defamation')
 );
 
-expectError<LlamaGuard38BFilterConfig>(buildAzureContentSafetyFilter());
+expectError<LlamaGuard38BFilterConfig>(buildLlamaGuardFilter());
 
 expectError<LlamaGuard38BFilterConfig>(
-  buildAzureContentSafetyFilter('unknown-string')
+  buildLlamaGuardFilter('unknown-string')
 );
 
 /**
