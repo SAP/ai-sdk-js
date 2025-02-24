@@ -64,7 +64,7 @@ export function buildAzureContentSafetyFilter(
 
 /**
  * Convenience function to build Llama guard filter.
- * @param categories - Categories to be enabled for filtering. At least one category must be provided.
+ * @param categories - Categories to be enabled for filtering. Provide at least one category.
  * @returns Filter config object.
  * @example "buildLlamaGuardFilter('self_harm', 'hate')"
  */
