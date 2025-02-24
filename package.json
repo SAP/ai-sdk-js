@@ -48,7 +48,7 @@
     "@sap-cloud-sdk/openapi-generator": "^3.26.1",
     "@sap-cloud-sdk/util": "^3.26.1",
     "@types/jest": "^29.5.14",
-    "@types/jsonwebtoken": "^9.0.8",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/mock-fs": "^4.13.4",
     "@types/node": "^20.17.19",
     "depcheck": "^1.4.7",
