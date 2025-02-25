@@ -3,7 +3,8 @@ import type { AIMessageFields } from '@langchain/core/messages';
 import type { ModuleResults } from '@sap-ai-sdk/orchestration';
 
 /**
- * TODO: Add docs.
+ * An AI Message containing module results and request ID.
+ * @internal
  */
 export class OrchestrationMessage extends AIMessage {
   module_results: ModuleResults;

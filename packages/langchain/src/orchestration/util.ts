@@ -19,20 +19,19 @@ import type {
  * Checks if the object is a {@link Template}.
  * @param object - The object to check.
  * @returns True if the object is a {@link Template}.
+ * @internal
  */
 export function isTemplate(object: TemplatingModuleConfig): object is Template {
   return 'template' in object;
 }
 
 /**
- * Maps {@link BaseMessage} to {@link AzureOpenAiChatMessage}.
+ * Maps {@link BaseMessage} to {@link ChatMessage}.
  * @param message - The message to map.
- * @returns The {@link AzureOpenAiChatMessage}.
+ * @returns The {@link ChatMessage}.
  */
 // TODO: Add mapping of refusal property, once LangChain base class supports it natively.
-function mapBaseMessageToAzureOpenAiChatMessage(
-  message: BaseMessage
-): ChatMessage {
+function mapBaseMessageToChatMessage(message: BaseMessage): ChatMessage {
   switch (message.getType()) {
     case 'ai':
       return mapAiMessageToAzureOpenAiAssistantMessage(message);
@@ -97,15 +96,15 @@ function mapSystemMessageToAzureOpenAiSystemMessage(
 }
 
 /**
- * TODO: adjust
  * Maps LangChain messages to orchestration messages.
  * @param messages - The LangChain messages to map.
  * @returns The orchestration messages mapped from LangChain messages.
+ * @internal
  */
 export function mapLangchainMessagesToOrchestrationMessages(
   messages: BaseMessage[]
 ): ChatMessage[] {
-  return messages.map(mapBaseMessageToAzureOpenAiChatMessage);
+  return messages.map(mapBaseMessageToChatMessage);
 }
 
 /**

@@ -18,17 +18,15 @@ import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager
 import type { OrchestrationCallOptions } from './types.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
-// TODO: Update all docs
-
 /**
- * LangChain chat client for Azure OpenAI consumption on SAP BTP.
+ * The Orchestration client.
  */
 export class OrchestrationClient extends BaseChatModel<
   OrchestrationCallOptions,
   OrchestrationMessageChunk
 > {
   constructor(
-    // Omit streaming until supported
+    // TODO: Omit streaming until supported
     public orchestrationConfig: Omit<OrchestrationModuleConfig, 'streaming'>,
     public langchainOptions: BaseChatModelParams = {},
     public deploymentConfig?: ResourceGroupConfig,
@@ -45,8 +43,8 @@ export class OrchestrationClient extends BaseChatModel<
    * Decisions:
    * bind only supports ParsedCallOptions, we don't support arbitrary LLM options, only tool calls & default BaseLanguageModelCallOptions, e.g. stop ✅
    * this aligns with other vendors' client designs (e.g. openai, google) ✅
-   * top of the array (array[array.length - 1]) contains the current message, everything before then is history.
-   * Module results are part of our own message type, which extends AI Message to work with all other langchain functionality.
+   * inputParams are a seperate call option, history = history ✅
+   * Module results are part of our own message type, which extends AI Message to work with all other langchain functionality. ✅.
    *
    * For timeout, we need to apply our own middleware, it is not handled by langchain. ✅.
    */
@@ -71,7 +69,6 @@ export class OrchestrationClient extends BaseChatModel<
         signal: options.signal
       },
       () => {
-        // consider this.tools & this.stop property, merge it with template orchestration config
         const { inputParams } = options;
         const mergedOrchestrationConfig =
           this.mergeOrchestrationConfig(options);
@@ -88,8 +85,6 @@ export class OrchestrationClient extends BaseChatModel<
         };
         return orchestrationClient.chatCompletion(
           {
-            // how to handle tools here? doesn't really exist as input in orchestration as message history
-            // make template a call option, to merge it ??
             messagesHistory,
             inputParams
           },
@@ -100,7 +95,7 @@ export class OrchestrationClient extends BaseChatModel<
 
     const content = res.getContent();
 
-    // we currently do not support streaming
+    // TODO: Add streaming as soon as we support it
     await runManager?.handleLLMNewToken(
       typeof content === 'string' ? content : ''
     );

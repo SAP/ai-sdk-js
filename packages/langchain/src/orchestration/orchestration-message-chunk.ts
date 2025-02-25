@@ -3,7 +3,8 @@ import type { AIMessageChunkFields } from '@langchain/core/messages';
 import type { ModuleResults } from '@sap-ai-sdk/orchestration';
 
 /**
- * TODO: Add docs.
+ * An AI Message Chunk containing module results and request ID.
+ * @internal
  */
 export class OrchestrationMessageChunk extends AIMessageChunk {
   module_results: ModuleResults;
