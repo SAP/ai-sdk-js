@@ -2,18 +2,18 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import nock from 'nock';
-import { type EndpointOptions } from '@sap-ai-sdk/core';
-import {
-  type FoundationModel,
-  type DeploymentResolutionOptions
-} from '@sap-ai-sdk/ai-api/internal.js';
-import { dummyToken } from './mock-jwt.js';
 import {
   registerDestination,
   type DestinationAuthToken,
   type HttpDestination,
   type ServiceCredentials
 } from '@sap-cloud-sdk/connectivity';
+import { type EndpointOptions } from '@sap-ai-sdk/core';
+import {
+  type FoundationModel,
+  type DeploymentResolutionOptions
+} from '@sap-ai-sdk/ai-api/internal.js';
+import { dummyToken } from './mock-jwt.js';
 
 // Get the directory of this file
 const __filename = fileURLToPath(import.meta.url);
@@ -98,19 +98,33 @@ export function mockInference(
     data: any;
     status?: number;
   },
-  endpoint: EndpointOptions = mockEndpoint
+  endpoint: EndpointOptions = mockEndpoint,
+  resilienceOptions?: {
+    delay?: number;
+    retry?: number;
+  }
 ): nock.Scope {
   const { url, apiVersion, resourceGroup = 'default' } = endpoint;
   const destination = getMockedAiCoreDestination();
-  return nock(destination.url, {
+  const scope = nock(destination.url, {
     reqheaders: {
       'ai-resource-group': resourceGroup,
       authorization: `Bearer ${destination.authTokens?.[0].value}`
     }
-  })
-    .post(`/v2/${url}`, request.data)
-    .query(apiVersion ? { 'api-version': apiVersion } : {})
-    .reply(response.status, response.data);
+  });
+
+  let interceptor = scope.post(`/v2/${url}`, request.data).query(apiVersion ? { 'api-version': apiVersion } : {});
+
+  if (resilienceOptions?.retry) {
+    interceptor.times(resilienceOptions.retry).reply(500);
+    interceptor = scope.post(`/v2/${url}`, request.data).query(apiVersion ? { 'api-version': apiVersion } : {});
+  }
+
+  if (resilienceOptions?.delay) {
+    interceptor = interceptor.delay(resilienceOptions.delay);
+  }
+
+  return interceptor.reply(response.status, response.data);
 }
 
 /**
