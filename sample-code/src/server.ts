@@ -42,9 +42,7 @@ import {
   invoke,
   invokeToolChain
 } from './langchain-azure-openai.js';
-import {
-  invokeChain as invokeChainOrchestration
-} from './langchain-orchestration.js';
+import { invokeChain as invokeChainOrchestration } from './langchain-orchestration.js';
 import {
   createCollection,
   createDocumentsWithTimestamp,

@@ -49,7 +49,11 @@ export class OrchestrationClient extends BaseChatModel<
    */
   override pipe<NewRunOutput>(
     coerceable: RunnableLike<OrchestrationMessageChunk, NewRunOutput>
-  ): Runnable<BaseLanguageModelInput, Exclude<NewRunOutput, Error>, OrchestrationCallOptions> {
+  ): Runnable<
+    BaseLanguageModelInput,
+    Exclude<NewRunOutput, Error>,
+    OrchestrationCallOptions
+  > {
     // Delegate to the superclass pipe method and narrow the type.
     return super.pipe(coerceable) as Runnable<
       BaseLanguageModelInput,
