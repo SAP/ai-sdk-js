@@ -3,8 +3,7 @@ import type { ChatResult } from '@langchain/core/outputs';
 import type {
   ChatMessage,
   CompletionPostResponse,
-  Template,
-  TemplatingModuleConfig
+  Template
 } from '@sap-ai-sdk/orchestration';
 import type { ToolCall } from '@langchain/core/messages/tool';
 import type { AzureOpenAiChatCompletionMessageToolCalls } from '@sap-ai-sdk/foundation-models';
@@ -21,7 +20,7 @@ import type {
  * @returns True if the object is a {@link Template}.
  * @internal
  */
-export function isTemplate(object: TemplatingModuleConfig): object is Template {
+export function isTemplate(object: Record<string, any>): object is Template {
   return 'template' in object;
 }
 
@@ -134,43 +133,46 @@ function mapAzureOpenAiToLangchainToolCall(
 export function mapOutputToChatResult(
   completionResponse: CompletionPostResponse
 ): ChatResult {
+  const { orchestration_result, module_results, request_id } =
+    completionResponse;
+  const { choices, created, id, model, object, usage, system_fingerprint } =
+    orchestration_result;
   return {
-    generations: completionResponse.orchestration_result.choices.map(
-      choice => ({
-        text: choice.message.content ?? '',
-        message: new OrchestrationMessage(
-          {
-            content: choice.message.content ?? '',
-            tool_calls: mapAzureOpenAiToLangchainToolCall(
-              choice.message.tool_calls
-            ),
-            additional_kwargs: {
-              finish_reason: choice.finish_reason,
-              index: choice.index,
-              function_call: choice.message.function_call,
-              tool_calls: choice.message.tool_calls
-            }
-          },
-          completionResponse.module_results,
-          completionResponse.request_id
-        ),
-        generationInfo: {
-          finish_reason: choice.finish_reason,
-          index: choice.index,
-          function_call: choice.message.function_call,
-          tool_calls: choice.message.tool_calls
-        }
-      })
-    ),
+    generations: choices.map(choice => ({
+      text: choice.message.content ?? '',
+      message: new OrchestrationMessage(
+        {
+          content: choice.message.content ?? '',
+          tool_calls: mapAzureOpenAiToLangchainToolCall(
+            choice.message.tool_calls
+          ),
+          additional_kwargs: {
+            finish_reason: choice.finish_reason,
+            index: choice.index,
+            function_call: choice.message.function_call,
+            tool_calls: choice.message.tool_calls
+          }
+        },
+        module_results,
+        request_id
+      ),
+      generationInfo: {
+        finish_reason: choice.finish_reason,
+        index: choice.index,
+        function_call: choice.message.function_call,
+        tool_calls: choice.message.tool_calls
+      }
+    })),
     llmOutput: {
-      created: completionResponse.created,
-      id: completionResponse.id,
-      model: completionResponse.model,
-      object: completionResponse.object,
+      created,
+      id,
+      model,
+      object,
+      system_fingerprint,
       tokenUsage: {
-        completionTokens: completionResponse.usage?.completion_tokens ?? 0,
-        promptTokens: completionResponse.usage?.prompt_tokens ?? 0,
-        totalTokens: completionResponse.usage?.total_tokens ?? 0
+        completionTokens: usage?.completion_tokens ?? 0,
+        promptTokens: usage?.prompt_tokens ?? 0,
+        totalTokens: usage?.total_tokens ?? 0
       }
     }
   };
