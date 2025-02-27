@@ -7,6 +7,8 @@ import {
   mapLangchainMessagesToOrchestrationMessages,
   mapOutputToChatResult
 } from './util.js';
+import type { BaseLanguageModelInput } from '@langchain/core/language_models/base';
+import type { Runnable, RunnableLike } from '@langchain/core/runnables';
 import type { CustomRequestConfig } from '@sap-ai-sdk/core';
 import type { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
 import type { ChatResult } from '@langchain/core/outputs';
@@ -40,14 +42,21 @@ export class OrchestrationClient extends BaseChatModel<
   }
 
   /**
-   * Decisions:
-   * bind only supports ParsedCallOptions, we don't support arbitrary LLM options, only tool calls & default BaseLanguageModelCallOptions, e.g. stop ✅
-   * this aligns with other vendors' client designs (e.g. openai, google) ✅
-   * inputParams are a seperate call option, history = history ✅
-   * Module results are part of our own message type, which extends AI Message to work with all other langchain functionality. ✅.
-   *
-   * For timeout, we need to apply our own middleware, it is not handled by langchain. ✅.
+   * Create a new runnable sequence that runs each individual runnable in series,
+   * piping the output of one runnable into another runnable or runnable-like.
+   * @param coerceable - A runnable, function, or object whose values are functions or runnables.
+   * @returns A new runnable sequence.
    */
+  override pipe<NewRunOutput>(
+    coerceable: RunnableLike<OrchestrationMessageChunk, NewRunOutput>
+  ): Runnable<BaseLanguageModelInput, Exclude<NewRunOutput, Error>, OrchestrationCallOptions> {
+    // Delegate to the superclass pipe method and narrow the type.
+    return super.pipe(coerceable) as Runnable<
+      BaseLanguageModelInput,
+      Exclude<NewRunOutput, Error>,
+      OrchestrationCallOptions
+    >;
+  }
 
   override async _generate(
     messages: BaseMessage[],

@@ -1,8 +1,5 @@
 import { StringOutputParser } from '@langchain/core/output_parsers';
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
-import type { BaseLanguageModelInput } from '@langchain/core/language_models/base';
-import type { Runnable } from '@langchain/core/runnables';
-import type { OrchestrationCallOptions } from '@sap-ai-sdk/langchain';
 
 /**
  * Ask GPT about the capital of France, as part of a chain.
@@ -35,7 +32,7 @@ export async function invokeChain(): Promise<string> {
   const parser = new StringOutputParser();
 
   // chain together template, client, and parser
-  const llmChain = client.pipe(parser) as Runnable<BaseLanguageModelInput, string, OrchestrationCallOptions>;
+  const llmChain = client.pipe(parser);
 
   // invoke the chain
   return llmChain.invoke('My Message History', callOptions);
