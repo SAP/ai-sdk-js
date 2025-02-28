@@ -2,7 +2,7 @@ import { StringOutputParser } from '@langchain/core/output_parsers';
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 
 /**
- * Ask GPT about the capital of France, as part of a chain.
+ * ASk GPT about an introduction to SAP Cloud SDK.
  * @returns The answer from ChatGPT.
  */
 export async function invokeChain(): Promise<string> {

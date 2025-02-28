@@ -61,11 +61,8 @@ The client complies with the [LangChain's interface](https://js.langchain.com/do
 ### Client Initialization
 
 To initialize the client, you can provide 4 different configurations.
-The only required one is the [orchestration configuration](), however, you can also set:
-
--     public langchainOptions: BaseChatModelParams = {},
-  public deploymentConfig?: ResourceGroupConfig,
-  public destination?: HttpDestinationOrFetchOptions
+The only required one is the orchestration configuration which we describe in-depth in our [orchestration foundation client](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md).
+You can also set the [default LangChain options](https://v03.api.js.langchain.com/types/_langchain_core.language_models_chat_models.BaseChatModelParams.html), as well as a custom resource group and destination.
 
 A minimal example to instantiate the orchestration client uses a template and model name:
 
@@ -111,7 +108,7 @@ When invoking the client, you only have to pass a message history and most of th
 const systemMessage = new SystemMessage('Be a helpful assisstant!');
 const history = [systemMessage];
 const response = await client.invoke(history, {
-  inputParams: { subject: 'paris' }
+  inputParams: { subject: 'Paris' }
 });
 ```
 
