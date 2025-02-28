@@ -155,54 +155,6 @@ return llmChain.invoke({
 });
 ```
 
-### Embedding Client
-
-Embedding clients allow embedding either text or document chunks (represented as arrays of strings).
-While you can use them standalone, they are usually used in combination with other LangChain utilities, like a text splitter for preprocessing and a vector store for storage and retrieval of the relevant embeddings.
-For a complete example how to implement RAG with our LangChain client, take a look at our [sample code](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/langchain-azure-openai.ts).
-
-#### Embed Text
-
-```ts
-const embeddedText = await embeddingClient.embedQuery(
-  'Paris is the capital of France.'
-);
-```
-
-#### Embed Document Chunks
-
-```ts
-const embeddedDocuments = await embeddingClient.embedDocuments([
-  'Page 1: Paris is the capital of France.',
-  'Page 2: It is a beautiful city.'
-]);
-```
-
-#### Preprocess, embed, and store documents
-
-```ts
-// Create a text splitter and split the document
-const textSplitter = new RecursiveCharacterTextSplitter({
-  chunkSize: 2000,
-  chunkOverlap: 200
-});
-const splits = await textSplitter.splitDocuments(docs);
-
-// Initialize the embedding client
-const embeddingClient = new AzureOpenAiEmbeddingClient({
-  modelName: 'text-embedding-ada-002'
-});
-
-// Create a vector store from the document
-const vectorStore = await MemoryVectorStore.fromDocuments(
-  splits,
-  embeddingClient
-);
-
-// Create a retriever for the vector store
-const retriever = vectorStore.asRetriever();
-```
-
 ## Local Testing
 
 For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).

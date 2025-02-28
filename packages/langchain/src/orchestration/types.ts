@@ -7,7 +7,7 @@ import type { CustomRequestConfig } from '@sap-ai-sdk/core';
  */
 export type OrchestrationCallOptions = Pick<
   BaseChatModelCallOptions,
-  'stop' | 'signal' | 'timeout'
+  'stop' | 'signal' | 'timeout' | 'callbacks' | 'metadata' | 'runId' | 'runName' | 'tags'
 > & {
   customRequestConfig?: CustomRequestConfig;
   tools?: Template['tools'];

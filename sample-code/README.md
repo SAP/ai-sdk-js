@@ -204,13 +204,13 @@ The `toContentStream()` method is called to extract the content of the chunk for
 
 Once the streaming is done, finish reason and token usage are printed out.
 
-### Langchain
+### LangChain
 
 #### Invoke with a Simple Input
 
 `GET /langchain/invoke`
 
-Invoke langchain Azure OpenAI client with a simple input to get chat completion response.
+Invoke LangChain Azure OpenAI client with a simple input to get chat completion response.
 
 #### Invoke a Chain for Templating
 

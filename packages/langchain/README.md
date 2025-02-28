@@ -10,9 +10,8 @@ This package provides LangChain model clients built on top of the foundation mod
 - [Prerequisites](#prerequisites)
 - [Relationship between Models and Deployment ID](#relationship-between-models-and-deployment-id)
 - [Usage](#usage)
-  - [Client Initialization](#client-initialization)
-  - [Chat Client](#chat-client)
-  - [Embedding Client](#embedding-client)
+    - [SAP Orchestration Service](#sap-orchestration-service)
+    - [Azure OpenAI](#azure-openai)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
@@ -55,11 +54,16 @@ Consequently, each deployment ID and resource group uniquely map to a combinatio
 
 ## Usage
 
-This package offers both chat and embedding clients, currently supporting Azure OpenAI.
-Also supports the SAP Orchestration service.
+This package offers LangChain clients for Azure OpenAI as well as the SAP orchestration service
 All clients comply with [LangChain's interface](https://js.langchain.com/docs/introduction).
 
 ### SAP Orchestration Service
+
+For details on the orchestration client, refer to this [document](./src/orchestration/README.md).
+
+### Azure OpenAI
+
+For details on the Azure OpenAI clients, refer to this [document](./src/openai/README.md).
 
 ## Local Testing
 

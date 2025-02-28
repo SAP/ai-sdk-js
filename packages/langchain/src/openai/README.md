@@ -55,7 +55,7 @@ Consequently, each deployment ID and resource group uniquely map to a combinatio
 
 ## Usage
 
-This package offers both chat and embedding clients, currently supporting Azure OpenAI.
+This package offers both chat and embedding clients for Azure OpenAI.
 All clients comply with [LangChain's interface](https://js.langchain.com/docs/introduction).
 
 ### Client Initialization
@@ -74,7 +74,7 @@ const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
 const embeddingClient = new AzureOpenAiEmbeddingClient({ modelName: 'gpt-4o' });
 ```
 
-In addition to the default parameters of the model vendor (e.g., OpenAI) and LangChain, additional parameters can be used to help narrow down the search for the desired model:
+In addition to the default parameters of Azure OpenAI and LangChain, additional parameters can be used to help narrow down the search for the desired model:
 
 ```ts
 const chatClient = new AzureOpenAiChatClient({
