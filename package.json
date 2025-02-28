@@ -34,7 +34,7 @@
     "check:deps": "pnpm -r -F !./tests/smoke-tests -F !./tests/schema-tests -F !./sample-cap exec depcheck --ignores=\"nock,@jest/globals\" --quiet"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.28.0",
+    "@changesets/cli": "^2.28.1",
     "@jest/globals": "^29.5.12",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
@@ -48,18 +48,18 @@
     "@sap-cloud-sdk/openapi-generator": "^3.26.1",
     "@sap-cloud-sdk/util": "^3.26.1",
     "@types/jest": "^29.5.14",
-    "@types/jsonwebtoken": "^9.0.8",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/mock-fs": "^4.13.4",
     "@types/node": "^20.17.19",
     "depcheck": "^1.4.7",
-    "eslint": "^9.20.1",
+    "eslint": "^9.21.0",
     "glob": "^11.0.1",
     "jest": "^30.0.0-alpha.7",
     "jsonwebtoken": "^9.0.2",
     "mock-fs": "^5.5.0",
     "nock": "^14.0.1",
-    "prettier": "^3.5.1",
-    "ts-jest": "^29.2.5",
+    "prettier": "^3.5.2",
+    "ts-jest": "^29.2.6",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   }

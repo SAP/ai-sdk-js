@@ -2,7 +2,8 @@ import { expectError, expectType, expectAssignable } from 'tsd';
 import {
   OrchestrationClient,
   buildAzureContentSafetyFilter,
-  buildDocumentGroundingConfig
+  buildDocumentGroundingConfig,
+  buildLlamaGuardFilter
 } from '@sap-ai-sdk/orchestration';
 import type {
   CompletionPostResponse,
@@ -11,7 +12,8 @@ import type {
   ChatModel,
   GroundingModuleConfig,
   LlmModelParams,
-  AzureContentSafetyFilterConfig
+  AzureContentSafetyFilterConfig,
+  LlamaGuard38BFilterConfig
 } from '@sap-ai-sdk/orchestration';
 
 /**
@@ -247,7 +249,7 @@ expect<ChatModel>('custom-model');
 expect<ChatModel>('gemini-1.0-pro');
 
 /**
- * Filtering Util.
+ * Filtering Util for Azure content safety.
  */
 
 expectType<AzureContentSafetyFilterConfig>(
@@ -265,6 +267,18 @@ expectError<AzureContentSafetyFilterConfig>(
     SelfHarm: 4
   })
 );
+
+/**
+ * Filtering Util for Llama guard.
+ */
+
+expectType<LlamaGuard38BFilterConfig>(
+  buildLlamaGuardFilter('code_interpreter_abuse', 'defamation')
+);
+
+expectError<LlamaGuard38BFilterConfig>(buildLlamaGuardFilter());
+
+expectError<LlamaGuard38BFilterConfig>(buildLlamaGuardFilter('unknown-string'));
 
 /**
  * Grounding util.
