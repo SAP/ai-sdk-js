@@ -14,8 +14,6 @@ This package provides LangChain model clients built on top of the foundation mod
   - [Chat Client](#chat-client)
   - [Embedding Client](#embedding-client)
 - [Local Testing](#local-testing)
-- [Support, Feedback, Contribution](#support-feedback-contribution)
-- [License](#license)
 
 ## Installation
 
@@ -206,14 +204,3 @@ const retriever = vectorStore.asRetriever();
 ## Local Testing
 
 For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
-
-## Support, Feedback, Contribution
-
-This project is open to feature requests, bug reports and questions via [GitHub issues](https://github.com/SAP/ai-sdk-js/issues).
-
-Contribution and feedback are encouraged and always welcome.
-For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](https://github.com/SAP/ai-sdk-js/blob/main/CONTRIBUTING.md).
-
-## License
-
-The SAP Cloud SDK for AI is released under the [Apache License Version 2.0.](http://www.apache.org/licenses/).

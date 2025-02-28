@@ -11,11 +11,10 @@ This package provides LangChain model clients built on top of the foundation mod
 - [Relationship between Models and Deployment ID](#relationship-between-models-and-deployment-id)
 - [Usage](#usage)
   - [Client Initialization](#client-initialization)
-  - [Chat Client](#chat-client)
-  - [Embedding Client](#embedding-client)
+  - [Client](#client)
+    - [Resilience](#resilience)
 - [Local Testing](#local-testing)
-- [Support, Feedback, Contribution](#support-feedback-contribution)
-- [License](#license)
+- [Limitations](#limitations)
 
 ## Installation
 
@@ -55,60 +54,46 @@ Consequently, each deployment ID and resource group uniquely map to a combinatio
 
 ## Usage
 
-This package offers both chat and embedding clients, currently supporting Azure OpenAI.
-All clients comply with [LangChain's interface](https://js.langchain.com/docs/introduction).
+This package offers a LangChain orchestration service client.
+It does not support streaming yet.
+The client complies with the [LangChain's interface](https://js.langchain.com/docs/introduction).
 
 ### Client Initialization
 
-To initialize a client, provide the model name:
+To initialize the client, you can provide 4 different configurations.
+The only required one is the [orchestration configuration](), however, you can also set:
+
+-     public langchainOptions: BaseChatModelParams = {},
+  public deploymentConfig?: ResourceGroupConfig,
+  public destination?: HttpDestinationOrFetchOptions
+
+A minimal example to instantiate the orchestration client uses a template and model name:
 
 ```ts
-import {
-  AzureOpenAiChatClient,
-  AzureOpenAiEmbeddingClient
-} from '@sap-ai-sdk/langchain';
+const config: OrchestrationModuleConfig = {
+  llm: {
+    model_name: 'gpt-35-turbo'
+  },
+  templating: {
+    template: [
+      { role: 'user', content: 'Give me a long introduction of {{?subject}}' }
+    ]
+  }
+};
 
-// For a chat client
-const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
-// For an embedding client
-const embeddingClient = new AzureOpenAiEmbeddingClient({ modelName: 'gpt-4o' });
-```
-
-In addition to the default parameters of the model vendor (e.g., OpenAI) and LangChain, additional parameters can be used to help narrow down the search for the desired model:
-
-```ts
-const chatClient = new AzureOpenAiChatClient({
-  modelName: 'gpt-4o',
-  modelVersion: '24-07-2021',
-  resourceGroup: 'my-resource-group'
-});
-```
-
-**Do not pass a `deployment ID` to initialize the client.**
-For the LangChain model clients, initialization is done using the model name, model version and resource group.
-
-An important note is that LangChain clients by default attempt 6 retries with exponential backoff in case of a failure.
-Especially in testing environments you might want to reduce this number to speed up the process:
-
-```ts
-const embeddingClient = new OrchestrationClient({
-  modelName: 'gpt-4o',
-  maxRetries: 0
-});
+const client = new OrchestratioClient(config);
 ```
 
 #### Custom Destination
 
-When initializing the `AzureOpenAiChatClient` and `AzureOpenAiEmbeddingClient` clients, it is possible to provide a custom destination.
+When initializing the `OrchestrationClient`, it is possible to provide a custom destination.
 For example, when targeting a destination with the name `my-destination`, the following code can be used:
 
 ```ts
-const chatClient = new AzureOpenAiChatClient(
-  {
-    modelName: 'gpt-4o',
-    modelVersion: '24-07-2021',
-    resourceGroup: 'my-resource-group'
-  },
+const client = new OrchestrationClient(
+  orchestrationConfig,
+  langchainOptions,
+  deploymentConfig,
   {
     destinationName: 'my-destination'
   }
@@ -118,40 +103,38 @@ const chatClient = new AzureOpenAiChatClient(
 By default, the fetched destination is cached.
 To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
-### Chat Client
+### Client Invocation
 
-The chat client allows you to interact with Azure OpenAI chat models, accessible via the generative AI hub of SAP AI Core.
-To invoke the client, pass a prompt:
+When invoking the client, you only have to pass a message history and most of the time input parameters for the template module.
 
 ```ts
-const response = await chatClient.invoke("What's the capital of France?");
+const systemMessage = new SystemMessage('Be a helpful assisstant!');
+const history = [systemMessage];
+const response = await client.invoke(history, {
+  inputParams: { subject: 'paris' }
+});
 ```
 
-#### Advanced Example with Templating and Output Parsing
+#### Resilience
+
+If you need to add resilience to your client, you can make use of the default options available in LangChain, most importantly `timeout` and `maxRetry`.
+
+##### Timeout
+
+By default, there is no timeout set in the client, if you want to limit the maximum duration the entire request, including retries, should take,
+you can set a timeout duration in ms when using the invoke method:
 
 ```ts
-import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
-import { StringOutputParser } from '@langchain/core/output_parsers';
-import { ChatPromptTemplate } from '@langchain/core/prompts';
+const response = await client.invoke(messageHistory, { timeout: 10000 });
+```
 
-// initialize the client
-const client = new AzureOpenAiChatClient({ modelName: 'gpt-35-turbo' });
+##### Retry
 
-// create a prompt template
-const promptTemplate = ChatPromptTemplate.fromMessages([
-  ['system', 'Answer the following in {language}:'],
-  ['user', '{text}']
-]);
-// create an output parser
-const parser = new StringOutputParser();
+By default, LangChain clients retry 6 times, if you want to adjust this behavior, you need to do so at client initialization:
 
-// chain together template, client, and parser
-const llmChain = promptTemplate.pipe(client).pipe(parser);
-
-// invoke the chain
-return llmChain.invoke({
-  language: 'german',
-  text: 'What is the capital of France?'
+```ts
+const client = new OrchestrationClient(orchestrationConfig, {
+  maxRetries: 0
 });
 ```
 
@@ -159,13 +142,9 @@ return llmChain.invoke({
 
 For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
 
-## Support, Feedback, Contribution
+## Limitations
 
-This project is open to feature requests, bug reports and questions via [GitHub issues](https://github.com/SAP/ai-sdk-js/issues).
+Currently unsupported features are:
 
-Contribution and feedback are encouraged and always welcome.
-For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](https://github.com/SAP/ai-sdk-js/blob/main/CONTRIBUTING.md).
-
-## License
-
-The SAP Cloud SDK for AI is released under the [Apache License Version 2.0.](http://www.apache.org/licenses/).
+- Streaming
+- Tool Calling

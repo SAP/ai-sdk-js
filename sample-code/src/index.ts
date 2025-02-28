@@ -28,6 +28,7 @@ export {
   invokeChain,
   invokeRagChain
 } from './langchain-azure-openai.js';
+export { invokeChain as orchestrationInvokeChain } from './langchain-orchestration.js';
 export {
   getDeployments,
   getDeploymentsWithDestination,

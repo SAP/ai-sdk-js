@@ -79,7 +79,7 @@ function mapHumanMessageToChatMessage(message: HumanMessage): ChatMessage {
 function mapSystemMessageToAzureOpenAiSystemMessage(
   message: SystemMessage
 ): ChatMessage {
-  // TODO: Remove as soon as image_url is a supported inputed for system messages in orchestration.
+  // TODO: Remove as soon as image_url is a supported input for system messages in orchestration.
   if (
     typeof message.content !== 'string' &&
     message.content.some(content => content.type === 'image_url')
