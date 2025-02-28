@@ -1,5 +1,5 @@
 ---
-'@sap-ai-sdk/orchestration': minor
+'@sap-ai-sdk/orchestration': patch
 ---
 
-[New Functionality] Update Orchestration to 2502b Release
+[Improvement] Update Orchestration to 2502b Release
