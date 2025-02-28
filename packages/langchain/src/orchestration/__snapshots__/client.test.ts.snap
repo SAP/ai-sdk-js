@@ -1,8 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`orchestration service client handles error response when maxRetries is smaller than retry configuration 1`] = `"Request failed with status code 500"`;
-
-exports[`orchestration service client handles requests with longer timeout value 1`] = `
+exports[`orchestration service client returns successful response when maxRetries equals retry configuration 1`] = `
 {
   "id": [
     "langchain_core",
@@ -41,7 +39,7 @@ exports[`orchestration service client handles requests with longer timeout value
 }
 `;
 
-exports[`orchestration service client handles successful response when maxRetries equals retry configuration 1`] = `
+exports[`orchestration service client returns successful response when timeout is bigger than delay 1`] = `
 {
   "id": [
     "langchain_core",
