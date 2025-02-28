@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`orchestration service client handles error response when maxRetries is smaller than retry configuration 1`] = `"Request failed with status code 500"`;
+
+exports[`orchestration service client handles requests with longer timeout value 1`] = `
+{
+  "id": [
+    "langchain_core",
+    "messages",
+    "OrchestrationMessage",
+  ],
+  "kwargs": {
+    "additional_kwargs": {
+      "finish_reason": "stop",
+      "function_call": undefined,
+      "index": 0,
+      "tool_calls": undefined,
+    },
+    "content": "Hello! How can I assist you today?",
+    "invalid_tool_calls": [],
+    "response_metadata": {
+      "created": 172,
+      "finish_reason": "stop",
+      "function_call": undefined,
+      "id": "orchestration-id",
+      "index": 0,
+      "model": "gpt-35-turbo",
+      "object": "chat.completion",
+      "system_fingerprint": undefined,
+      "tokenUsage": {
+        "completionTokens": 9,
+        "promptTokens": 9,
+        "totalTokens": 18,
+      },
+      "tool_calls": undefined,
+    },
+    "tool_calls": [],
+  },
+  "lc": 1,
+  "type": "constructor",
+}
+`;
+
+exports[`orchestration service client handles successful response when maxRetries equals retry configuration 1`] = `
+{
+  "id": [
+    "langchain_core",
+    "messages",
+    "OrchestrationMessage",
+  ],
+  "kwargs": {
+    "additional_kwargs": {
+      "finish_reason": "stop",
+      "function_call": undefined,
+      "index": 0,
+      "tool_calls": undefined,
+    },
+    "content": "Hello! How can I assist you today?",
+    "invalid_tool_calls": [],
+    "response_metadata": {
+      "created": 172,
+      "finish_reason": "stop",
+      "function_call": undefined,
+      "id": "orchestration-id",
+      "index": 0,
+      "model": "gpt-35-turbo",
+      "object": "chat.completion",
+      "system_fingerprint": undefined,
+      "tokenUsage": {
+        "completionTokens": 9,
+        "promptTokens": 9,
+        "totalTokens": 18,
+      },
+      "tool_calls": undefined,
+    },
+    "tool_calls": [],
+  },
+  "lc": 1,
+  "type": "constructor",
+}
+`;

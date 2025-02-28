@@ -1,5 +1,6 @@
-import nock from 'nock';
 import { constructCompletionPostRequest } from '@sap-ai-sdk/orchestration/internal.js';
+import { jest } from '@jest/globals';
+import nock from 'nock';
 import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
@@ -12,32 +13,27 @@ import type {
   OrchestrationModuleConfig
 } from '@sap-ai-sdk/orchestration';
 
+jest.setTimeout(30000);
+
 describe('orchestration service client', () => {
-  beforeEach(() => {
+  let mockResponse: CompletionPostResponse;
+  beforeEach(async () => {
     mockClientCredentialsGrantCall();
     mockDeploymentsList({ scenarioId: 'orchestration' }, { id: '1234' });
+    mockResponse = await parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'orchestration-chat-completion-success-response.json'
+    );
   });
 
   afterEach(() => {
     nock.cleanAll();
   });
 
-  it('calls chatCompletion with minimum configuration', async () => {
-    const config: OrchestrationModuleConfig = {
-      llm: {
-        model_name: 'gpt-35-turbo-16k',
-        model_params: { max_tokens: 50, temperature: 0.1 }
-      },
-      templating: {
-        template: [{ role: 'user', content: 'Hello!' }]
-      }
-    };
-
-    const mockResponse = await parseMockResponse<CompletionPostResponse>(
-      'orchestration',
-      'orchestration-chat-completion-success-response.json'
-    );
-
+  function mockInferenceWithResilience(resilience: {
+    retry?: number;
+    delay?: number;
+  }) {
     mockInference(
       {
         data: constructCompletionPostRequest(config, { messagesHistory: [] })
@@ -49,50 +45,62 @@ describe('orchestration service client', () => {
       {
         url: 'inference/deployments/1234/completion'
       },
-      { retry: 3 }
+      resilience
     );
-    const response = await new OrchestrationClient(config, {
-      maxRetries: 5
-    }).invoke([], { timeout: 1 });
+  }
 
-    // expect(nock.isDone()).toBe(true);
-    expect(response).toMatchInlineSnapshot(`
-     {
-       "id": [
-         "langchain_core",
-         "messages",
-         "OrchestrationMessage",
-       ],
-       "kwargs": {
-         "additional_kwargs": {
-           "finish_reason": "stop",
-           "function_call": undefined,
-           "index": 0,
-           "tool_calls": undefined,
-         },
-         "content": "Hello! How can I assist you today?",
-         "invalid_tool_calls": [],
-         "response_metadata": {
-           "created": 172,
-           "finish_reason": "stop",
-           "function_call": undefined,
-           "id": "orchestration-id",
-           "index": 0,
-           "model": "gpt-35-turbo",
-           "object": "chat.completion",
-           "system_fingerprint": undefined,
-           "tokenUsage": {
-             "completionTokens": 9,
-             "promptTokens": 9,
-             "totalTokens": 18,
-           },
-           "tool_calls": undefined,
-         },
-         "tool_calls": [],
-       },
-       "lc": 1,
-       "type": "constructor",
-     }
-    `);
+  const config: OrchestrationModuleConfig = {
+    llm: {
+      model_name: 'gpt-35-turbo-16k',
+      model_params: { max_tokens: 50, temperature: 0.1 }
+    },
+    templating: {
+      template: [{ role: 'user', content: 'Hello!' }]
+    }
+  };
+
+  it('returns successful response when maxRetries equals retry configuration', async () => {
+    mockInferenceWithResilience({ retry: 2 });
+
+    const client = new OrchestrationClient(config, {
+      maxRetries: 2
+    });
+
+    expect(await client.invoke([])).toMatchSnapshot();
+  });
+
+  it('throws error response when maxRetries is smaller than required retries', async () => {
+    mockInferenceWithResilience({ retry: 2 });
+
+    const client = new OrchestrationClient(config, {
+      maxRetries: 1
+    });
+
+    await expect(client.invoke([])).rejects.toThrowErrorMatchingInlineSnapshot(
+      '"Request failed with status code 500"'
+    );
+  });
+
+  it('throws when delay exceeds timeout', async () => {
+    mockInferenceWithResilience({ delay: 2000 });
+
+    const client = new OrchestrationClient(config);
+
+    const response = client.invoke([], { timeout: 1000 });
+
+    await expect(response).rejects.toThrow(
+      expect.objectContaining({
+        stack: expect.stringMatching(/Timeout/)
+      })
+    );
+  });
+
+  it('returns successful response when timeout is bigger than delay', async () => {
+    mockInferenceWithResilience({ delay: 2000 });
+
+    const client = new OrchestrationClient(config);
+
+    const response = await client.invoke([], { timeout: 3000 });
+    expect(response).toMatchSnapshot();
   });
 });

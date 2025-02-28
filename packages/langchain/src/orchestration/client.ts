@@ -1,7 +1,5 @@
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { OrchestrationClient as OrchestrationClientBase } from '@sap-ai-sdk/orchestration';
-import { AsyncCaller } from '@langchain/core/utils/async_caller';
-import { resilience } from '@sap-cloud-sdk/resilience';
 import {
   isTemplate,
   mapLangchainMessagesToOrchestrationMessages,
@@ -9,7 +7,6 @@ import {
 } from './util.js';
 import type { BaseLanguageModelInput } from '@langchain/core/language_models/base';
 import type { Runnable, RunnableLike } from '@langchain/core/runnables';
-import type { CustomRequestConfig } from '@sap-ai-sdk/core';
 import type { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
 import type { ChatResult } from '@langchain/core/outputs';
 import type { OrchestrationModuleConfig } from '@sap-ai-sdk/orchestration';
@@ -66,22 +63,12 @@ export class OrchestrationClient extends BaseChatModel<
     options: typeof this.ParsedCallOptions,
     runManager?: CallbackManagerForLLMRun
   ): Promise<ChatResult> {
-    let caller = this.caller;
-    if (options.maxConcurrency) {
-      const { maxConcurrency, maxRetries, onFailedAttempt } =
-        this.langchainOptions;
-      caller = new AsyncCaller({
-        maxConcurrency: maxConcurrency ?? options.maxConcurrency,
-        maxRetries,
-        onFailedAttempt
-      });
-    }
-    const res = await caller.callWithOptions(
+    const res = await this.caller.callWithOptions(
       {
         signal: options.signal
       },
       () => {
-        const { inputParams } = options;
+        const { inputParams, customRequestConfig } = options;
         const mergedOrchestrationConfig =
           this.mergeOrchestrationConfig(options);
         const orchestrationClient = new OrchestrationClientBase(
@@ -91,10 +78,6 @@ export class OrchestrationClient extends BaseChatModel<
         );
         const messagesHistory =
           mapLangchainMessagesToOrchestrationMessages(messages);
-        const customRequestConfig: CustomRequestConfig = {
-          ...options.customRequestConfig,
-          middleware: resilience({ timeout: options.timeout })
-        };
         return orchestrationClient.chatCompletion(
           {
             messagesHistory,

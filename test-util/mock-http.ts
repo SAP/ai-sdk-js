@@ -116,11 +116,15 @@ export function mockInference(
   let interceptor = scope.post(`/v2/${url}`, request.data).query(apiVersion ? { 'api-version': apiVersion } : {});
 
   if (resilienceOptions?.retry) {
-    interceptor.times(resilienceOptions.retry).reply(500);
+    interceptor = interceptor.times(resilienceOptions.retry);
+    if(resilienceOptions.delay) {
+      interceptor = interceptor.delay(resilienceOptions.delay);
+    }
+    interceptor.reply(500);
     interceptor = scope.post(`/v2/${url}`, request.data).query(apiVersion ? { 'api-version': apiVersion } : {});
   }
 
-  if (resilienceOptions?.delay) {
+  if (!resilienceOptions?.retry && resilienceOptions?.delay) {
     interceptor = interceptor.delay(resilienceOptions.delay);
   }
 
