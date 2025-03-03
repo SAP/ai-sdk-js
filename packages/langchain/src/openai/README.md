@@ -15,7 +15,6 @@ This package provides LangChain model clients built on top of the foundation mod
   - [Embedding Client](#embedding-client)
 - [Local Testing](#local-testing)
 
-
 ## Relationship between Models and Deployment ID
 
 SAP AI Core manages access to generative AI models through the global AI scenario `foundation-models`.
