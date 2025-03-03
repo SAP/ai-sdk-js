@@ -74,7 +74,7 @@ const embeddingClient = new AzureOpenAiEmbeddingClient({
 
 #### Custom Destination
 
-When initializing the `AzureOpenAiChatClient` and `AzureOpenAiEmbeddingClient`, a custom destination can be specified.  
+When initializing the `AzureOpenAiChatClient` and `AzureOpenAiEmbeddingClient`, a custom destination can be specified. 
 For example, to target `my-destination`, use the following code:
 
 ```ts
@@ -95,7 +95,7 @@ To disable caching, set the `useCache` parameter to `false` together with the `d
 
 ### Chat Client
 
-The `AzureOpenAiChatClient` allows interaction with Azure OpenAI chat models, accessible through the Generative AI Hub of SAP AI Core.  
+The `AzureOpenAiChatClient` allows interaction with Azure OpenAI chat models, accessible through the Generative AI Hub of SAP AI Core.
 To invoke the client, pass a prompt as shown below:
 
 ```ts
@@ -132,8 +132,8 @@ return llmChain.invoke({
 
 ### Embedding Client
 
-The `AzureOpenAiEmbeddingClient` allows embedding of text or document chunks (represented as arrays of strings).  
-While it can be used standalone, it is typically combined with other LangChain utilities, such as a text splitter for preprocessing and a vector store for storing and retrieving relevant embeddings.  
+The `AzureOpenAiEmbeddingClient` allows embedding of text or document chunks (represented as arrays of strings).
+While it can be used standalone, it is typically combined with other LangChain utilities, such as a text splitter for preprocessing and a vector store for storing and retrieving relevant embeddings.
 For a complete example of how to implement RAG with the LangChain client, refer to the [sample code](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/langchain-azure-openai.ts).
 
 #### Embed Text

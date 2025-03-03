@@ -34,7 +34,7 @@ The client complies with [LangChain's interface](https://js.langchain.com/docs/i
 
 ### Client Initialization
 
-To initialize the client, four different configurations can be provided.  
+To initialize the client, four different configurations can be provided.
 The only required configuration is the orchestration configuration, explained in detail in the [orchestration foundation client](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md).  
 Additionally, it is possible to set [default LangChain options](https://v03.api.js.langchain.com/types/_langchain_core.language_models_chat_models.BaseChatModelParams.html), a custom resource group, and a destination.
 
@@ -57,7 +57,7 @@ const client = new OrchestratioClient(config);
 
 #### Custom Destination
 
-The `OrchestrationClient` can be initialized with a custom destination.  
+The `OrchestrationClient` can be initialized with a custom destination.
 For example, to target `my-destination`, use the following code:
 
 ```ts
