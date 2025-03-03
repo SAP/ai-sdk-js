@@ -42,6 +42,7 @@ import {
   invoke,
   invokeToolChain
 } from './langchain-azure-openai.js';
+import { invokeChain as invokeChainOrchestration } from './langchain-orchestration.js';
 import {
   createCollection,
   createDocumentsWithTimestamp,
@@ -408,6 +409,17 @@ app.get('/langchain/invoke', async (req, res) => {
 app.get('/langchain/invoke-chain', async (req, res) => {
   try {
     res.send(await invokeChain());
+  } catch (error: any) {
+    console.error(error);
+    res
+      .status(500)
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.request.data);
+  }
+});
+
+app.get('/langchain/invoke-chain-orchestration', async (req, res) => {
+  try {
+    res.send(await invokeChainOrchestration());
   } catch (error: any) {
     console.error(error);
     res
