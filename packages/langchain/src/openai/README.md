@@ -74,7 +74,7 @@ const embeddingClient = new AzureOpenAiEmbeddingClient({
 
 #### Custom Destination
 
-When initializing the `AzureOpenAiChatClient` and `AzureOpenAiEmbeddingClient`, a custom destination can be specified. 
+When initializing the `AzureOpenAiChatClient` and `AzureOpenAiEmbeddingClient`, a custom destination can be specified.
 For example, to target `my-destination`, use the following code:
 
 ```ts
