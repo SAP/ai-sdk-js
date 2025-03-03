@@ -257,9 +257,9 @@ components:
           type: string
           example: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
         module_results:
-          $ref: '#/components/schemas/ModuleResults'
+          $ref: '#/components/schemas/ModuleResultsSynchronous'
         orchestration_result:
-          $ref: '#/components/schemas/LLMModuleResult'
+          $ref: '#/components/schemas/LLMModuleResultSynchronous'
 
     CompletionPostResponseStreaming:
       # TODO: This seems unused in the spec, but used in our endpoints.py, related to Github #778
@@ -271,7 +271,7 @@ components:
           description: ID of the request
           type: string
         module_results:
-          $ref: '#/components/schemas/ModuleResults'
+          $ref: '#/components/schemas/ModuleResultsStreaming'
         orchestration_result:
           $ref: '#/components/schemas/LLMModuleResultStreaming'
 
@@ -308,7 +308,7 @@ components:
         grounding_module_config:
           $ref: '#/components/schemas/GroundingModuleConfig'
 
-    ModuleResults:
+    ModuleResultsBase:
       description: Results of each module.
       type: object
       additionalProperties: false
@@ -321,16 +321,38 @@ components:
           $ref: '#/components/schemas/GenericModuleResult'
         input_filtering:
           $ref: '#/components/schemas/GenericModuleResult'
-        llm:
-          $ref: '#/components/schemas/LLMModuleResult'
         output_filtering:
           $ref: '#/components/schemas/GenericModuleResult'
-        output_unmasking:
-          type: array
-          items:
-            oneOf:
-              - $ref: '#/components/schemas/LLMChoice'
-              - $ref: '#/components/schemas/LLMChoiceStreaming'
+
+    ModuleResultsSynchronous:
+      description: Synchronous results of each module.
+      type: object
+      additionalProperties: false
+      allOf:
+        - $ref: '#/components/schemas/ModuleResultsBase'
+        - type: object
+          properties:
+            llm:
+              $ref: '#/components/schemas/LLMModuleResultSynchronous'
+            output_unmasking:
+              type: array
+              items:
+                $ref: '#/components/schemas/LLMChoice'
+
+    ModuleResultsStreaming:
+      description: Streaming results of each module.
+      type: object
+      additionalProperties: false
+      allOf:
+        - $ref: '#/components/schemas/ModuleResultsBase'
+        - type: object
+          properties:
+            llm:
+              $ref: '#/components/schemas/LLMModuleResultStreaming'
+            output_unmasking:
+              type: array
+              items:
+                $ref: '#/components/schemas/LLMChoiceStreaming'
 
     GlobalStreamOptions:
       description: Options for streaming. Will be ignored if stream is false.
@@ -383,12 +405,6 @@ components:
         data:
           type: object
           description: Additional data object from the module
-
-    LLMModuleResult:
-      description: Output of LLM module. Follows the OpenAI spec.
-      oneOf:
-        - $ref: '#/components/schemas/LLMModuleResultSynchronous'
-        - $ref: '#/components/schemas/LLMModuleResultStreaming'
 
     LLMModuleResultSynchronous:
       type: object
@@ -1186,7 +1202,7 @@ components:
           description: Where the error occurred
           example: 'LLM Module'
         module_results:
-          $ref: '#/components/schemas/ModuleResults'
+          $ref: '#/components/schemas/ModuleResultsStreaming'
 
   responses:
     BadRequest:
