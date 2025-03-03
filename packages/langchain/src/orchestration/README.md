@@ -41,6 +41,7 @@ Additionally, it is possible to set [default LangChain options](https://v03.api.
 A minimal example for instantiating the orchestration client uses a template and model name:
 
 ```ts
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 const config: OrchestrationModuleConfig = {
   llm: {
     model_name: 'gpt-35-turbo'
@@ -52,7 +53,7 @@ const config: OrchestrationModuleConfig = {
   }
 };
 
-const client = new OrchestratioClient(config);
+const client = new OrchestrationClient(config);
 ```
 
 #### Custom Destination

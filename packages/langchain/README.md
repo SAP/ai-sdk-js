@@ -9,7 +9,7 @@ This package provides LangChain clients built on top of the foundation model and
 - [Installation](#installation)
 - [Prerequisites](#prerequisites)
 - [Usage](#usage)
-  - [SAP Orchestration Client](#sap-orchestration-client)
+  - [Orchestration Client](#orchestration-client)
   - [Azure OpenAI Client](#azure-openai-client)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
@@ -28,8 +28,8 @@ $ npm install @sap-ai-sdk/langchain
 - Configure the project with **Node.js v20 or higher** and **native ESM** support.
 - Ensure that a relevant deployment is available in the SAP Generative AI Hub:
   - Use the [`DeploymentApi`](https://github.com/SAP/ai-sdk-js/blob/main/packages/ai-api/README.md#create-a-deployment) from `@sap-ai-sdk/ai-api` or the [SAP AI Launchpad](https://help.sap.com/docs/sap-ai-core/generative-ai-hub/activate-generative-ai-hub-for-sap-ai-launchpad?locale=en-US&q=launchpad) to create a deployment.
-    - For **OpenAI models**, follow [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
-    - For **orchestration services**, follow [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration).
+    - For **OpenAI model**, follow [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
+    - For **orchestration service**, follow [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration).
   - Once deployed, access the service via the `deploymentUrl`.
 
 > **Accessing the AI Core Service via the SDK**
