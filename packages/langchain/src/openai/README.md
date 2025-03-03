@@ -4,10 +4,10 @@ SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI
 
 This package provides LangChain model clients built on top of the foundation model clients of the SAP Cloud SDK for AI.
 
+> **Note**: For installation and prerequisites, refer to the [README](../../README.md).
+
 ### Table of Contents
 
-- [Installation](#installation)
-- [Prerequisites](#prerequisites)
 - [Relationship between Models and Deployment ID](#relationship-between-models-and-deployment-id)
 - [Usage](#usage)
   - [Client Initialization](#client-initialization)
@@ -15,28 +15,6 @@ This package provides LangChain model clients built on top of the foundation mod
   - [Embedding Client](#embedding-client)
 - [Local Testing](#local-testing)
 
-## Installation
-
-```
-$ npm install @sap-ai-sdk/langchain
-```
-
-## Prerequisites
-
-- [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
-- Use the same `@langchain/core` version as the `@sap-ai-sdk/langchain` package, to see which langchain version this package is currently using, check our [package.json](./package.json).
-- Configure the project with **Node.js v20 or higher** and **native ESM** support.
-- Ensure a deployed OpenAI model is available in the SAP Generative AI Hub.
-  - Use the [`DeploymentApi`](https://github.com/SAP/ai-sdk-js/blob/main/packages/ai-api/README.md#create-a-deployment) from `@sap-ai-sdk/ai-api` [to deploy a model](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
-    Alternatively, you can also create deployments using the [SAP AI Launchpad](https://help.sap.com/docs/sap-ai-core/generative-ai-hub/activate-generative-ai-hub-for-sap-ai-launchpad?locale=en-US&q=launchpad).
-  - Once deployment is complete, access the model via the `deploymentUrl`.
-
-> **Accessing the AI Core Service via the SDK**
->
-> The SDK automatically retrieves the `AI Core` service credentials and resolves the access token needed for authentication.
->
-> - In Cloud Foundry, it's accessed from the `VCAP_SERVICES` environment variable.
-> - In Kubernetes / Kyma environments, you have to mount the service binding as a secret instead, for more information refer to [this documentation](https://www.npmjs.com/package/@sap/xsenv#usage-in-kubernetes).
 
 ## Relationship between Models and Deployment ID
 
@@ -54,7 +32,7 @@ Consequently, each deployment ID and resource group uniquely map to a combinatio
 ## Usage
 
 This package offers both chat and embedding clients for Azure OpenAI.
-All clients comply with [LangChain's interface](https://js.langchain.com/docs/introduction).
+The client complies with [LangChain's interface](https://js.langchain.com/docs/introduction).
 
 ### Client Initialization
 
@@ -83,10 +61,10 @@ const chatClient = new AzureOpenAiChatClient({
 ```
 
 **Do not pass a `deployment ID` to initialize the client.**
-For the LangChain model clients, initialization is done using the model name, model version and resource group.
+For LangChain model clients, initialization requires specifying the model name, model version, and resource group.
 
-An important note is that LangChain clients by default attempt 6 retries with exponential backoff in case of a failure.
-Especially in testing environments you might want to reduce this number to speed up the process:
+By default, LangChain clients retry up to 6 times with exponential backoff in case of failure.
+In testing environments, reducing this number can speed up the process:
 
 ```ts
 const embeddingClient = new AzureOpenAiEmbeddingClient({
@@ -97,8 +75,8 @@ const embeddingClient = new AzureOpenAiEmbeddingClient({
 
 #### Custom Destination
 
-When initializing the `AzureOpenAiChatClient` and `AzureOpenAiEmbeddingClient` clients, it is possible to provide a custom destination.
-For example, when targeting a destination with the name `my-destination`, the following code can be used:
+When initializing the `AzureOpenAiChatClient` and `AzureOpenAiEmbeddingClient`, a custom destination can be specified.  
+For example, to target `my-destination`, use the following code:
 
 ```ts
 const chatClient = new AzureOpenAiChatClient(
@@ -118,8 +96,8 @@ To disable caching, set the `useCache` parameter to `false` together with the `d
 
 ### Chat Client
 
-The chat client allows you to interact with Azure OpenAI chat models, accessible via the generative AI hub of SAP AI Core.
-To invoke the client, pass a prompt:
+The `AzureOpenAiChatClient` allows interaction with Azure OpenAI chat models, accessible through the Generative AI Hub of SAP AI Core.  
+To invoke the client, pass a prompt as shown below:
 
 ```ts
 const response = await chatClient.invoke("What's the capital of France?");
@@ -155,9 +133,9 @@ return llmChain.invoke({
 
 ### Embedding Client
 
-Embedding clients allow embedding either text or document chunks (represented as arrays of strings).
-While you can use them standalone, they are usually used in combination with other LangChain utilities, like a text splitter for preprocessing and a vector store for storage and retrieval of the relevant embeddings.
-For a complete example how to implement RAG with our LangChain client, take a look at our [sample code](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/langchain-azure-openai.ts).
+The `AzureOpenAiEmbeddingClient` allows embedding of text or document chunks (represented as arrays of strings).  
+While it can be used standalone, it is typically combined with other LangChain utilities, such as a text splitter for preprocessing and a vector store for storing and retrieving relevant embeddings.  
+For a complete example of how to implement RAG with the LangChain client, refer to the [sample code](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/langchain-azure-openai.ts).
 
 #### Embed Text
 

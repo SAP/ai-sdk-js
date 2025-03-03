@@ -4,11 +4,11 @@ SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI
 
 This package provides LangChain model clients built on top of the foundation model clients of the SAP Cloud SDK for AI.
 
+> **Note**: For installation and prerequisites, refer to the [README](../../README.md).
+
 ### Table of Contents
 
-- [Installation](#installation)
-- [Prerequisites](#prerequisites)
-- [Relationship between Models and Deployment ID](#relationship-between-models-and-deployment-id)
+- [Relationship between Orchestration and Resource Groups](#relationship-between-orchestration-and-resource-groups)
 - [Usage](#usage)
   - [Client Initialization](#client-initialization)
   - [Client](#client)
@@ -16,55 +16,29 @@ This package provides LangChain model clients built on top of the foundation mod
 - [Local Testing](#local-testing)
 - [Limitations](#limitations)
 
-## Installation
+## Relationship between Orchestration and Resource Groups
 
-```
-$ npm install @sap-ai-sdk/langchain
-```
-
-## Prerequisites
-
-- [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
-- Use the same `@langchain/core` version as the `@sap-ai-sdk/langchain` package, to see which langchain version this package is currently using, check our [package.json](./package.json).
-- Configure the project with **Node.js v20 or higher** and **native ESM** support.
-- Ensure a deployed OpenAI model is available in the SAP Generative AI Hub.
-  - Use the [`DeploymentApi`](https://github.com/SAP/ai-sdk-js/blob/main/packages/ai-api/README.md#create-a-deployment) from `@sap-ai-sdk/ai-api` [to deploy a model](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
-    Alternatively, you can also create deployments using the [SAP AI Launchpad](https://help.sap.com/docs/sap-ai-core/generative-ai-hub/activate-generative-ai-hub-for-sap-ai-launchpad?locale=en-US&q=launchpad).
-  - Once deployment is complete, access the model via the `deploymentUrl`.
-
-> **Accessing the AI Core Service via the SDK**
->
-> The SDK automatically retrieves the `AI Core` service credentials and resolves the access token needed for authentication.
->
-> - In Cloud Foundry, it's accessed from the `VCAP_SERVICES` environment variable.
-> - In Kubernetes / Kyma environments, you have to mount the service binding as a secret instead, for more information refer to [this documentation](https://www.npmjs.com/package/@sap/xsenv#usage-in-kubernetes).
-
-## Relationship between Models and Deployment ID
-
-SAP AI Core manages access to generative AI models through the global AI scenario `foundation-models`.
-Creating a deployment for a model requires access to this scenario.
-
-Each model, model version, and resource group allows for a one-time deployment.
-After deployment completion, the response includes a `deploymentUrl` and an `id`, which is the deployment ID.
-For more information, see [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-generative-ai-model-in-sap-ai-core).
+SAP AI Core manages access to orchestration of generative AI models through the global AI scenario `orchestration`.
+Creating a deployment for enabling orchestration capabilities requires access to this scenario.
 
 [Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
+Each resource group allows for a one-time orchestration deployment.
 
-Consequently, each deployment ID and resource group uniquely map to a combination of model and model version within the `foundation-models` scenario.
+Consequently, each orchestration deployment uniquely maps to a resource group within the `orchestration` scenario.
 
 ## Usage
 
 This package offers a LangChain orchestration service client.
-It does not support streaming yet.
-The client complies with the [LangChain's interface](https://js.langchain.com/docs/introduction).
+Streaming is not supported.
+The client complies with [LangChain's interface](https://js.langchain.com/docs/introduction).
 
 ### Client Initialization
 
-To initialize the client, you can provide 4 different configurations.
-The only required one is the orchestration configuration which we describe in-depth in our [orchestration foundation client](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md).
-You can also set the [default LangChain options](https://v03.api.js.langchain.com/types/_langchain_core.language_models_chat_models.BaseChatModelParams.html), as well as a custom resource group and destination.
+To initialize the client, four different configurations can be provided.  
+The only required configuration is the orchestration configuration, explained in detail in the [orchestration foundation client](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md).  
+Additionally, it is possible to set [default LangChain options](https://v03.api.js.langchain.com/types/_langchain_core.language_models_chat_models.BaseChatModelParams.html), a custom resource group, and a destination.  
 
-A minimal example to instantiate the orchestration client uses a template and model name:
+A minimal example for instantiating the orchestration client uses a template and model name:
 
 ```ts
 const config: OrchestrationModuleConfig = {
@@ -83,17 +57,15 @@ const client = new OrchestratioClient(config);
 
 #### Custom Destination
 
-When initializing the `OrchestrationClient`, it is possible to provide a custom destination.
-For example, when targeting a destination with the name `my-destination`, the following code can be used:
+The `OrchestrationClient` can be initialized with a custom destination.  
+For example, to target `my-destination`, use the following code:
 
 ```ts
 const client = new OrchestrationClient(
   orchestrationConfig,
   langchainOptions,
   deploymentConfig,
-  {
-    destinationName: 'my-destination'
-  }
+  { destinationName: 'my-destination' }
 );
 ```
 
@@ -102,7 +74,7 @@ To disable caching, set the `useCache` parameter to `false` together with the `d
 
 ### Client Invocation
 
-When invoking the client, you only have to pass a message history and most of the time input parameters for the template module.
+When invoking the client, pass a message history and, in most cases, input parameters for the template module.
 
 ```ts
 const systemMessage = new SystemMessage('Be a helpful assisstant!');
@@ -114,12 +86,12 @@ const response = await client.invoke(history, {
 
 #### Resilience
 
-If you need to add resilience to your client, you can make use of the default options available in LangChain, most importantly `timeout` and `maxRetry`.
+To add resilience to the client, use LangChain's default options, especially `timeout` and `maxRetry`.
 
 ##### Timeout
 
-By default, there is no timeout set in the client, if you want to limit the maximum duration the entire request, including retries, should take,
-you can set a timeout duration in ms when using the invoke method:
+By default, no timeout is set in the client.
+To limit the maximum duration for the entire request, including retries, specify a timeout in milliseconds when using the `invoke` method:
 
 ```ts
 const response = await client.invoke(messageHistory, { timeout: 10000 });
@@ -127,7 +99,8 @@ const response = await client.invoke(messageHistory, { timeout: 10000 });
 
 ##### Retry
 
-By default, LangChain clients retry 6 times, if you want to adjust this behavior, you need to do so at client initialization:
+LangChain clients retry up to 6 times by default.
+To modify this behavior, set the `maxRetries` option during client initialization:
 
 ```ts
 const client = new OrchestrationClient(orchestrationConfig, {
