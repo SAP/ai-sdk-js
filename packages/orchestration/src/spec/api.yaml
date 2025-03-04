@@ -2,7 +2,7 @@ openapi: 3.0.0
 
 info:
   title: Internal Orchestration Service API
-  description: SAP AI Core - Orchestration Service API
+  description: Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
   contact:
     name: SAP AI Core
   version: 0.0.1
@@ -262,6 +262,7 @@ components:
           $ref: '#/components/schemas/LLMModuleResult'
 
     CompletionPostResponseStreaming:
+      # TODO: This seems unused in the spec, but used in our endpoints.py, related to Github #778
       type: object
       required:
         - request_id
@@ -338,7 +339,7 @@ components:
       properties:
         chunk_size:
           type: integer
-          description: Number of characters per chunk that post-LLM modules operate on.
+          description: Minimum number of characters per chunk that post-LLM modules operate on.
           default: 100
           minimum: 1
           maximum: 10000 # currently determined by max_size of ACS text records
@@ -624,6 +625,8 @@ components:
               description:
                 The name of the response format. Must be a-z, A-Z, 0-9, or contain
                 underscores and dashes, with a maximum length of 64.
+              pattern: '^[a-zA-Z0-9-_]+$'
+              maxLength: 64
             schema:
               $ref: '#/components/schemas/ResponseFormatJsonSchemaSchema'
             strict:
@@ -675,6 +678,8 @@ components:
           description:
             The name of the function to be called. Must be a-z, A-Z, 0-9, or
             contain underscores and dashes, with a maximum length of 64.
+          pattern: '^[a-zA-Z0-9-_]+$'
+          maxLength: 64
         parameters:
           $ref: '#/components/schemas/FunctionParameters'
         strict:
