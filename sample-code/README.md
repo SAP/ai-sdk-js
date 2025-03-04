@@ -136,11 +136,11 @@ Get chat completion response for a given static input.
 Get chat completion response with template and input parameters.
 Define variable by wrapping it with `{{?...}}`.
 
-#### Image Recognition
+#### Templating with Reference
 
-`GET /orchestration/image`
+`GET /orchestration/templateRef`
 
-Get chat completion response with image input.
+Get chat completion response with template reference and input parameters.
 
 #### Input Filtering
 
@@ -161,6 +161,30 @@ For example, use `buildAzureContentSafetyFilter()` function to build Azure conte
 `GET /orchestration/requestConfig`
 
 Send chat completion request with a custom header as the custom request configuration.
+
+#### Orchestration Client from JSON config
+
+`GET /orchestration/fromJson`
+
+Get chat completion response with a JSON config initialized orchestration client.
+
+#### Image Recognition
+
+`GET /orchestration/image`
+
+Get chat completion response with image input.
+
+#### Structured Response
+
+`GET /orchestration/responseFormat`
+
+Get chat completion response with structured response format.
+
+#### Mask Grounding Input
+
+`GET /orchestration/maskGroundingInput`
+
+Get chat completion response with masked grounding input. 
 
 #### Chat Completion Streaming
 
