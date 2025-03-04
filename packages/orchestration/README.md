@@ -23,6 +23,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
   - [Custom Request Configuration](#custom-request-configuration)
   - [Custom Destination](#custom-destination)
 - [Local Testing](#local-testing)
+- [Error Handling](#error-handling-1)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
 
@@ -369,9 +370,10 @@ try {
   const response = await orchestrationClient.chatCompletion({
     inputParams: { input: 'I hate you!' }
   });
-  return response.getContent();
+  console.log(response.getContent());
 } catch (error: any) {
-  return `Error: ${error.message}`;
+  console.error(error.message);
+  console.error(error.cause?.response?.data);
 }
 ```
 
@@ -413,12 +415,12 @@ Both `chatCompletion()` and `getContent()` methods can throw errors.
 
 - **Axios Errors**:  
   When the chat completion request fails with a `400` status code, the caught error will be an `Axios` error.
-  The property `error.response.data.message` provides additional details about the failure.
+  Check `error.cause.response.data` for the error response body.
 
 - **Output Content Filtered**:  
   The `getContent()` method can throw an error if the output filter filters the model output.
   This can occur even if the chat completion request responds with a `200` HTTP status code.
-  The `error.message` property indicates if the output was filtered.
+  Check `error.cause.response.data` for the error response body.
 
 ### Data Masking
 
@@ -727,6 +729,10 @@ To disable caching, set the `useCache` parameter to `false` together with the `d
 ## Local Testing
 
 For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
+
+## Error Handling
+
+For error handling instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#error-handling).
 
 ## Support, Feedback, Contribution
 
