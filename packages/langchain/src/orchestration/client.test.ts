@@ -76,9 +76,7 @@ describe('orchestration service client', () => {
       maxRetries: 1
     });
 
-    await expect(client.invoke([])).rejects.toThrowErrorMatchingInlineSnapshot(
-      '"Request failed with status code 500"'
-    );
+    await expect(client.invoke([])).rejects.toThrow('Request failed with status code 500');
   });
 
   it('throws when delay exceeds timeout', async () => {
