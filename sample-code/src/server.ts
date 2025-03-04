@@ -49,7 +49,7 @@ import {
   retrieveDocuments
 } from './document-grounding.js';
 import type { RetievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
-import type { AiApiError, AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
+import type { AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 
 const app = express();
@@ -63,6 +63,13 @@ app.get(['/', '/health'], (req, res) => {
   res.send('Hello World! 🌍');
 });
 
+function sendError(res: any, error: any) {
+  console.error(error.stack);
+  res
+    .status(error.cause?.status || 500)
+    .send(error.cause?.response?.data || error.message);
+}
+
 /* AI API */
 app.get('/ai-api/deployments', async (req, res) => {
   try {
@@ -70,11 +77,7 @@ app.get('/ai-api/deployments', async (req, res) => {
       await getDeployments('default', req.query.status as AiDeploymentStatus)
     );
   } catch (error: any) {
-    console.error(error);
-    const apiError = error.response.data.error as AiApiError;
-    res
-      .status(error.response.status)
-      .send(apiError.message);
+    sendError(res, error);
   }
 });
 
@@ -87,11 +90,7 @@ app.get('/ai-api/deployments-with-destination', async (req, res) => {
       )
     );
   } catch (error: any) {
-    console.error(error);
-    const apiError = error.response.data.error as AiApiError;
-    res
-      .status(error.response.status)
-      .send(apiError.message);
+    sendError(res, error);
   }
 });
 
@@ -99,11 +98,7 @@ app.post('/ai-api/deployment/create', express.json(), async (req, res) => {
   try {
     res.send(await createDeployment(req.body.configurationId, 'default'));
   } catch (error: any) {
-    console.error(error);
-    const apiError = error.response.data.error as AiApiError;
-    res
-      .status(error.response.status)
-      .send(apiError.message);
+    sendError(res, error);
   }
 });
 
@@ -111,11 +106,7 @@ app.patch('/ai-api/deployment/batch-stop', express.json(), async (req, res) => {
   try {
     res.send(await stopDeployments(req.body.configurationId, 'default'));
   } catch (error: any) {
-    console.error(error);
-    const apiError = error.response.data.error as AiApiError;
-    res
-      .status(error.response.status)
-      .send(apiError.message);
+    sendError(res, error);
   }
 });
 
@@ -126,11 +117,7 @@ app.delete(
     try {
       res.send(await deleteDeployments('default'));
     } catch (error: any) {
-      console.error(error);
-      const apiError = error.response.data.error as AiApiError;
-      res
-        .status(error.response.status)
-        .send(apiError.message);
+      sendError(res, error);
     }
   }
 );
@@ -139,11 +126,7 @@ app.get('/ai-api/scenarios', async (req, res) => {
   try {
     res.send(await getScenarios('default'));
   } catch (error: any) {
-    console.error(error);
-    const apiError = error.response.data.error as AiApiError;
-    res
-      .status(error.response.status)
-      .send(apiError.message);
+    sendError(res, error);
   }
 });
 
@@ -151,11 +134,7 @@ app.get('/ai-api/models', async (req, res) => {
   try {
     res.send(await getModelsInScenario('foundation-models', 'default'));
   } catch (error: any) {
-    console.error(error);
-    const apiError = error.response.data.error as AiApiError;
-    res
-      .status(error.response.status)
-      .send(apiError.message);
+    sendError(res, error);
   }
 });
 
@@ -165,10 +144,7 @@ app.get('/azure-openai/chat-completion', async (req, res) => {
     const response = await chatCompletion();
     res.send(response.getContent());
   } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send(error.message);
+    sendError(res, error);
   }
 });
 
@@ -177,10 +153,7 @@ app.get('/azure-openai/chat-completion-with-destination', async (req, res) => {
     const response = await chatCompletionWithDestination();
     res.send(response.getContent());
   } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send(error.message);
+    sendError(res, error);
   }
 });
 
@@ -223,10 +196,7 @@ app.get('/azure-openai/chat-completion-stream', async (req, res) => {
       res.write(`  - Total tokens: ${tokenUsage.total_tokens}\n`);
     }
   } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send(error.message);
+    sendError(res, error);
   } finally {
     res.end();
   }
@@ -242,10 +212,7 @@ app.get('/azure-openai/embedding', async (req, res) => {
       res.send('Number crunching success, got a nice vector.');
     }
   } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send(error.message);
+    sendError(res, error);
   }
 });
 
@@ -279,10 +246,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       res.send(result.getContent());
     }
   } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send(error.message);
+    sendError(res, error);
   }
 });
 
@@ -331,10 +295,7 @@ app.post(
         res.write(`  - Total tokens: ${tokenUsage?.total_tokens}\n`);
       }
     } catch (error: any) {
-      console.error(error);
-      res
-        .status(500)
-        .send(error.message);
+      sendError(res, error);
     } finally {
       res.end();
     }
@@ -383,10 +344,7 @@ app.get(
         res.write(`  - Total tokens: ${tokenUsage?.total_tokens}\n`);
       }
     } catch (error: any) {
-      console.error(error);
-      res
-        .status(500)
-        .send(error.message);
+      sendError(res, error);
     } finally {
       res.end();
     }
@@ -398,10 +356,7 @@ app.get('/langchain/invoke', async (req, res) => {
   try {
     res.send(await invoke());
   } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send(error.request.data);
+    sendError(res, error);
   }
 });
 
@@ -409,10 +364,7 @@ app.get('/langchain/invoke-chain', async (req, res) => {
   try {
     res.send(await invokeChain());
   } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send(error.request.data);
+    sendError(res, error);
   }
 });
 
@@ -420,10 +372,7 @@ app.get('/langchain/invoke-rag-chain', async (req, res) => {
   try {
     res.send(await invokeRagChain());
   } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send(error.request.data);
+    sendError(res, error);
   }
 });
 
@@ -431,10 +380,7 @@ app.get('/langchain/invoke-tool-chain', async (req, res) => {
   try {
     res.send(await invokeToolChain());
   } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send(error.request.data);
+    sendError(res, error);
   }
 });
 
@@ -468,10 +414,7 @@ app.get(
 
       res.end();
     } catch (error: any) {
-      console.error(error);
-      res
-        .status(500)
-        .send(error.message);
+      sendError(res, error);
     }
   }
 );
@@ -523,10 +466,7 @@ app.get('/document-grounding/invoke-retrieve-documents', async (req, res) => {
 
     res.end();
   } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send(error.message);
+    sendError(res, error);
   }
 });
 
@@ -537,10 +477,7 @@ app.get(
       const groundingResult = await orchestrationGroundingHelpSapCom();
       res.send(groundingResult.getContent());
     } catch (error: any) {
-      console.error(error);
-      res
-        .status(500)
-        .send(error.message);
+      sendError(res, error);
     }
   }
 );
@@ -552,10 +489,7 @@ app.post(
       const groundingResult = await orchestrationMaskGroundingInput();
       res.send(groundingResult.getContent());
     } catch (error: any) {
-      console.error(error);
-      res
-        .status(500)
-        .send(error.message);
+      sendError(res, error);
     }
   }
 );
