@@ -111,9 +111,10 @@ This setup enables local testing of clients such as orchestration and OpenAI, pr
 
 ## Error Handling
 
-SAP Cloud SDK for AI uses [`ErrorWithCause`](https://sap.github.io/cloud-sdk/docs/js/features/error-handling) to provide more detailed error information.
+A common error scenario is `Request failed with status code STATUS_CODE` coming from `AxiosError`. 
+In this case, SAP Cloud SDK for AI uses [`ErrorWithCause`](https://sap.github.io/cloud-sdk/docs/js/features/error-handling) to provide more detailed error information.
 
-The following example shows how to access useful information for common error scenarios `Request failed with status code STATUS_CODE` coming from `AxiosError`.
+The following example shows how to access useful information from the error.
 
 ```ts
 try {
