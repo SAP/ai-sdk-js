@@ -8,7 +8,6 @@ import {
   constructCompletionPostRequest,
   constructCompletionPostRequestFromJsonModuleConfig
 } from './util/index.js';
-import type { ErrorResponse } from './client/api/schema/index.js';
 import type {
   HttpResponse,
   CustomRequestConfig
@@ -110,21 +109,16 @@ export class OrchestrationClient {
       destination: this.destination
     });
 
-    try {
-      const response = await executeRequest(
-        {
-          url: `/inference/deployments/${deploymentId}/completion`,
-          ...(this.deploymentConfig ?? {})
-        },
-        body,
-        requestConfig,
-        this.destination
-      );
-      return response;
-    } catch(error: any) {
-      const errorMessage: ErrorResponse = error.response?.data?.message;
-      throw new ErrorWithCause(`Request failed with status code ${error.status}. ${errorMessage}`, error);
-    }
+    const response = await executeRequest(
+      {
+        url: `/inference/deployments/${deploymentId}/completion`,
+        ...(this.deploymentConfig ?? {})
+      },
+      body,
+      requestConfig,
+      this.destination
+    );
+    return response;
   }
 
   private async createStreamResponse(

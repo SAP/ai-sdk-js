@@ -1,4 +1,5 @@
 import {
+  ErrorWithCause,
   mergeIgnoreCase,
   removeLeadingSlashes,
   removeTrailingSlashes
@@ -66,13 +67,18 @@ export async function executeRequest(
     data: JSON.stringify(data)
   };
 
-  return executeHttpRequest(
-    { ...aiCoreDestination, url: getTargetUrl(aiCoreDestination.url, url) },
-    mergedRequestConfig,
-    {
-      fetchCsrfToken: false
-    }
-  );
+  try {
+    const response = await executeHttpRequest(
+      { ...aiCoreDestination, url: getTargetUrl(aiCoreDestination.url, url) },
+      mergedRequestConfig,
+      {
+        fetchCsrfToken: false
+      }
+    );
+    return response;
+  } catch (error: any) {
+    throw new ErrorWithCause(`Request failed with status code ${error.status}.`, error);
+  }
 }
 
 function mergeWithDefaultRequestConfig(

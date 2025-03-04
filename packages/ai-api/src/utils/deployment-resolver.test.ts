@@ -1,4 +1,5 @@
 import nock from 'nock';
+import { ErrorWithCause } from '@sap-cloud-sdk/util';
 import {
   mockClientCredentialsGrantCall,
   aiCoreDestination,
@@ -7,7 +8,6 @@ import {
 import { type AiDeployment } from '../client/AI_CORE_API';
 import { getAllDeployments, resolveDeploymentId } from './deployment-resolver.js';
 import { deploymentCache } from './deployment-cache.js';
-import { ErrorWithCause } from '@sap-cloud-sdk/util';
 
 describe('deployment resolver', () => {
   beforeEach(() => {
