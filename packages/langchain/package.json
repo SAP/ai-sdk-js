@@ -29,9 +29,10 @@
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
+    "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-cloud-sdk/connectivity": "^3.26.1",
     "uuid": "^11.1.0",
-    "@langchain/core": "0.3.40",
+    "@langchain/core": "0.3.42",
     "zod-to-json-schema": "^3.24.3"
   }
 }
