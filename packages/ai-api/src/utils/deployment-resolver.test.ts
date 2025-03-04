@@ -4,7 +4,7 @@ import {
   aiCoreDestination,
   mockDeploymentsList
 } from '../../../../test-util/mock-http.js';
-import { type AiDeployment } from '../client/AI_CORE_API';
+import { type AiDeployment } from '../client/AI_CORE_API/index.js';
 import {
   getAllDeployments,
   resolveDeploymentId
