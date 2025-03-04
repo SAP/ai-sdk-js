@@ -118,9 +118,10 @@ async function createDeployment() {
   const requestBody: DeploymentCreationRequest = {
     configurationId: '0a1b2c3d-4e5f6g7h'
   };
-  const responseData: DeploymentCreationResponse = await DeploymentApi
-      .deploymentCreate(requestBody, {'AI-Resource-Group': 'default'})
-      .execute();
+  const responseData: DeploymentCreationResponse =
+    await DeploymentApi.deploymentCreate(requestBody, {
+      'AI-Resource-Group': 'default'
+    }).execute();
   return responseData;
 }
 ```
