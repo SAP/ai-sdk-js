@@ -14,6 +14,7 @@ This package provides LangChain model clients built on top of the foundation mod
   - [Chat Client](#chat-client)
   - [Embedding Client](#embedding-client)
 - [Local Testing](#local-testing)
+- [Error Handling](#error-handling)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
 
@@ -206,6 +207,10 @@ const retriever = vectorStore.asRetriever();
 ## Local Testing
 
 For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
+
+## Error Handling
+
+For error handling instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#error-handling).
 
 ## Support, Feedback, Contribution
 

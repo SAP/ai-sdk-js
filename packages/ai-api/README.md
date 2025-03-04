@@ -23,6 +23,7 @@ We maintain a list of [currently available and tested AI Core APIs](https://gith
   - [Delete a Deployment](#delete-a-deployment)
   - [Custom Destination](#custom-destination)
 - [Local Testing](#local-testing)
+- [Error Handling](#error-handling)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
 
@@ -73,17 +74,11 @@ async function createArtifact() {
     scenarioId: 'foundation-models'
   };
 
-  try {
-    const responseData: ArtifactCreationResponse =
-      await ArtifactApi.artifactCreate(requestBody, {
-        'AI-Resource-Group': 'default'
-      }).execute();
-    return responseData;
-  } catch (errorData) {
-    const apiError = errorData.response.data.error as ApiError;
-    console.error('Status code:', errorData.response.status);
-    throw new Error(`Artifact creation failed: ${apiError.message}`);
-  }
+  const responseData: ArtifactCreationResponse =
+    await ArtifactApi.artifactCreate(requestBody, {
+      'AI-Resource-Group': 'default'
+    }).execute();
+  return responseData;
 }
 ```
 
@@ -108,39 +103,25 @@ async function createConfiguration() {
     inputArtifactBindings: []
   };
 
-  try {
-    const responseData: ConfigurationCreationResponse =
-      await ConfigurationApi.configurationCreate(requestBody, {
-        'AI-Resource-Group': 'default'
-      }).execute();
-    return responseData;
-  } catch (errorData) {
-    const apiError = errorData.response.data.error as ApiError;
-    console.error('Status code:', errorData.response.status);
-    throw new Error(`Configuration creation failed: ${apiError.message}`);
-  }
+  const responseData: ConfigurationCreationResponse =
+    await ConfigurationApi.configurationCreate(requestBody, {
+      'AI-Resource-Group': 'default'
+    }).execute();
+  return responseData;
 }
 ```
 
 ### Create a Deployment
 
-```TypeScript
+```ts
 async function createDeployment() {
-
-    const requestBody: DeploymentCreationRequest = {
-      configurationId: '0a1b2c3d-4e5f6g7h'
-    };
-
-    try{
-        const responseData: DeploymentCreationResponse = await DeploymentApi
-            .deploymentCreate(requestBody, {'AI-Resource-Group': 'default'})
-            .execute();
-        return responseData;
-    } catch (errorData) {
-        const apiError = errorData.response.data.error as ApiError;
-        console.error('Status code:', errorData.response.status);
-        throw new Error(`Deployment creation failed: ${apiError.message}`);
-    }
+  const requestBody: DeploymentCreationRequest = {
+    configurationId: '0a1b2c3d-4e5f6g7h'
+  };
+  const responseData: DeploymentCreationResponse = await DeploymentApi
+      .deploymentCreate(requestBody, {'AI-Resource-Group': 'default'})
+      .execute();
+  return responseData;
 }
 ```
 
@@ -166,26 +147,14 @@ async function modifyDeployment() {
       targetStatus: 'STOPPED'
     };
 
-    try {
-      await DeploymentApi.deploymentModify(deploymentId, requestBody, {
-        'AI-Resource-Group': 'default'
-      }).execute();
-    } catch (errorData) {
-      const apiError = errorData.response.data.error as ApiError;
-      console.error('Status code:', errorData.response.status);
-      throw new Error(`Deployment modification failed: ${apiError.message}`);
-    }
-  }
-  // Wait a few seconds for the deployment to stop
-  try {
-    return DeploymentApi.deploymentDelete(deploymentId, {
+    await DeploymentApi.deploymentModify(deploymentId, requestBody, {
       'AI-Resource-Group': 'default'
     }).execute();
-  } catch (errorData) {
-    const apiError = errorData.response.data.error as ApiError;
-    console.error('Status code:', errorData.response.status);
-    throw new Error(`Deployment deletion failed: ${apiError.message}`);
   }
+  // Wait a few seconds for the deployment to stop
+  return DeploymentApi.deploymentDelete(deploymentId, {
+    'AI-Resource-Group': 'default'
+  }).execute();
 }
 ```
 
@@ -209,6 +178,10 @@ To disable caching, set the `useCache` parameter to `false` together with the `d
 ## Local Testing
 
 For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
+
+## Error Handling
+
+For error handling instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#error-handling).
 
 ## Support, Feedback, Contribution
 

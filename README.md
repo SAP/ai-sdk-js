@@ -19,6 +19,7 @@ Setup your SAP AI Core instance with SAP Cloud SDK for AI.
   - [@sap-ai-sdk/orchestration](#sap-ai-sdkorchestration)
 - [SAP Cloud SDK for AI Sample Project](#sap-cloud-sdk-for-ai-sample-project)
 - [Local Testing](#local-testing)
+- [Error Handling](#error-handling)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [Security / Disclosure](#security--disclosure)
 - [Code of Conduct](#code-of-conduct)
@@ -107,6 +108,27 @@ This setup enables local testing of clients such as orchestration and OpenAI, pr
 > Ways to load environment variables might vary based on the framework you are using.
 >
 > For example, while the SAP Cloud SDK for AI uses the [dotenv](https://www.npmjs.com/package/dotenv) library to load environment variables, NextJS uses a [specific configuration](https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables) to load them.
+
+## Error Handling
+
+SAP Cloud SDK for AI uses [`ErrorWithCause`](https://sap.github.io/cloud-sdk/docs/js/features/error-handling) to provide more detailed error information.
+
+The following example shows how to access useful information for common error scenarios `Request failed with status code STATUS_CODE` coming from `AxiosError`.
+
+```ts
+try {
+  ... // execute request
+} catch (e) {
+  // Print error messages from different layers
+  console.error(e.message);
+  console.error(e.cause?.message);
+  console.error(e.rootCause?.message);
+  // Print error response from the server
+  console.error(e.cause?.response?.data);
+  // Print error stack
+  console.error(e.stack);
+}
+```
 
 ## Support, Feedback, Contribution
 
