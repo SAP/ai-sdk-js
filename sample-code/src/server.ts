@@ -74,7 +74,7 @@ app.get('/ai-api/deployments', async (req, res) => {
     const apiError = error.response.data.error as AiApiError;
     res
       .status(error.response.status)
-      .send('Yikes, vibes are off apparently 😬 -> ' + apiError.message);
+      .send(apiError.message);
   }
 });
 
@@ -91,7 +91,7 @@ app.get('/ai-api/deployments-with-destination', async (req, res) => {
     const apiError = error.response.data.error as AiApiError;
     res
       .status(error.response.status)
-      .send('Yikes, vibes are off apparently 😬 -> ' + apiError.message);
+      .send(apiError.message);
   }
 });
 
@@ -103,7 +103,7 @@ app.post('/ai-api/deployment/create', express.json(), async (req, res) => {
     const apiError = error.response.data.error as AiApiError;
     res
       .status(error.response.status)
-      .send('Yikes, vibes are off apparently 😬 -> ' + apiError.message);
+      .send(apiError.message);
   }
 });
 
@@ -115,7 +115,7 @@ app.patch('/ai-api/deployment/batch-stop', express.json(), async (req, res) => {
     const apiError = error.response.data.error as AiApiError;
     res
       .status(error.response.status)
-      .send('Yikes, vibes are off apparently 😬 -> ' + apiError.message);
+      .send(apiError.message);
   }
 });
 
@@ -130,7 +130,7 @@ app.delete(
       const apiError = error.response.data.error as AiApiError;
       res
         .status(error.response.status)
-        .send('Yikes, vibes are off apparently 😬 -> ' + apiError.message);
+        .send(apiError.message);
     }
   }
 );
@@ -143,7 +143,7 @@ app.get('/ai-api/scenarios', async (req, res) => {
     const apiError = error.response.data.error as AiApiError;
     res
       .status(error.response.status)
-      .send('Yikes, vibes are off apparently 😬 -> ' + apiError.message);
+      .send(apiError.message);
   }
 });
 
@@ -155,7 +155,7 @@ app.get('/ai-api/models', async (req, res) => {
     const apiError = error.response.data.error as AiApiError;
     res
       .status(error.response.status)
-      .send('Yikes, vibes are off apparently 😬 -> ' + apiError.message);
+      .send(apiError.message);
   }
 });
 
@@ -168,7 +168,7 @@ app.get('/azure-openai/chat-completion', async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+      .send(error.message);
   }
 });
 
@@ -180,7 +180,7 @@ app.get('/azure-openai/chat-completion-with-destination', async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+      .send(error.message);
   }
 });
 
@@ -226,7 +226,7 @@ app.get('/azure-openai/chat-completion-stream', async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+      .send(error.message);
   } finally {
     res.end();
   }
@@ -245,7 +245,7 @@ app.get('/azure-openai/embedding', async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+      .send(error.message);
   }
 });
 
@@ -282,7 +282,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+      .send(error.message);
   }
 });
 
@@ -334,7 +334,7 @@ app.post(
       console.error(error);
       res
         .status(500)
-        .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+        .send(error.message);
     } finally {
       res.end();
     }
@@ -386,7 +386,7 @@ app.get(
       console.error(error);
       res
         .status(500)
-        .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+        .send(error.message);
     } finally {
       res.end();
     }
@@ -401,7 +401,7 @@ app.get('/langchain/invoke', async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.request.data);
+      .send(error.request.data);
   }
 });
 
@@ -412,7 +412,7 @@ app.get('/langchain/invoke-chain', async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.request.data);
+      .send(error.request.data);
   }
 });
 
@@ -423,7 +423,7 @@ app.get('/langchain/invoke-rag-chain', async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.request.data);
+      .send(error.request.data);
   }
 });
 
@@ -434,7 +434,7 @@ app.get('/langchain/invoke-tool-chain', async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.request.data);
+      .send(error.request.data);
   }
 });
 
@@ -471,7 +471,7 @@ app.get(
       console.error(error);
       res
         .status(500)
-        .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+        .send(error.message);
     }
   }
 );
@@ -526,7 +526,7 @@ app.get('/document-grounding/invoke-retrieve-documents', async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+      .send(error.message);
   }
 });
 
@@ -540,7 +540,7 @@ app.get(
       console.error(error);
       res
         .status(500)
-        .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+        .send(error.message);
     }
   }
 );
@@ -555,7 +555,7 @@ app.post(
       console.error(error);
       res
         .status(500)
-        .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+        .send(error.message);
     }
   }
 );
