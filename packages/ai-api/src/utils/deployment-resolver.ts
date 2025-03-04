@@ -5,6 +5,7 @@ import {
 import { deploymentCache } from './deployment-cache.js';
 import { extractModel, type FoundationModel } from './model.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+import { ErrorWithCause } from '@sap-cloud-sdk/util';
 
 /**
  * The model deployment configuration when using a model.
@@ -138,7 +139,13 @@ export async function resolveDeploymentId(
   return deployments[0].id;
 }
 
-async function getAllDeployments(
+/**
+ * Get all deployments that match the given criteria.
+ * @param opts - The options for the deployment resolution.
+ * @returns A promise of an array of deployments.
+ * @internal
+ */
+export async function getAllDeployments(
   opts: DeploymentResolutionOptions
 ): Promise<AiDeployment[]> {
   const {
@@ -160,8 +167,8 @@ async function getAllDeployments(
     deploymentCache.setAll(opts, resources);
 
     return resources;
-  } catch (error) {
-    throw new Error('Failed to fetch the list of deployments: ' + error);
+  } catch (error: any) {
+    throw new ErrorWithCause('Failed to fetch the list of deployments.', error);
   }
 }
 

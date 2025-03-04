@@ -5,8 +5,9 @@ import {
   mockDeploymentsList
 } from '../../../../test-util/mock-http.js';
 import { type AiDeployment } from '../client/AI_CORE_API';
-import { resolveDeploymentId } from './deployment-resolver.js';
+import { getAllDeployments, resolveDeploymentId } from './deployment-resolver.js';
 import { deploymentCache } from './deployment-cache.js';
+import { ErrorWithCause } from '@sap-cloud-sdk/util';
 
 describe('deployment resolver', () => {
   beforeEach(() => {
@@ -113,6 +114,71 @@ describe('deployment resolver', () => {
     });
 
     expect(id).toEqual('5');
+  });
+
+  describe('get all deployments', () => {
+    it('should return all deployments', async () => {
+      mockResponse();
+      const expected = [
+        {
+          'id': '1',
+          'details': {
+            'resources': {
+              'backendDetails':
+              {
+                'model': {
+                  'name': 'gpt-4o',
+                  'version': 'latest'
+                }
+              }
+            }
+          }
+        }, {
+          'id': '2',
+          'details': {
+            'resources': {
+              'backendDetails': {
+                'model': {
+                  'name': 'gpt-4o',
+                  'version': '0613'
+                }
+              }
+            }
+          }
+        }];
+      const deployments = await getAllDeployments({
+        scenarioId: 'foundation-models'
+      });
+      expect(deployments).toStrictEqual(expected);
+    });
+
+    it('should throw error with cause on invalid scenarioId', async () => {
+      nock(aiCoreDestination.url, {
+        reqheaders: {
+          'ai-resource-group': 'default'
+        }
+      })
+        .get('/v2/lm/deployments')
+        .query({ scenarioId: '123', status: 'RUNNING' })
+        .reply(400, {
+          error: {
+            code: '400',
+            message: "Invalid Request, '123' does not match '^[\\\\w.-]{4,64}$'\n\nFailed validating 'pattern' in schema:\n    {'type': 'string', 'pattern': '^[\\\\w.-]{4,64}$'}\n\nOn instance:\n    '123'",
+            requestId: '',
+            target: '/api/v2/deployments'
+          }
+        });
+
+      try{
+        await getAllDeployments({
+          scenarioId: '123'
+        });
+      } catch (err: any) {
+        expect(err).toBeInstanceOf(ErrorWithCause);
+        expect(err.message).toEqual('Failed to fetch the list of deployments.');
+        expect(err.stack).toContain('Caused by:\nHTTP Response: Request failed with status code 400');
+      }
+    });
   });
 });
 
