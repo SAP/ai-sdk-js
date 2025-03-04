@@ -1,6 +1,6 @@
 import { executeRequest } from '@sap-ai-sdk/core';
 import { resolveDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
-import { createLogger } from '@sap-cloud-sdk/util';
+import { createLogger, ErrorWithCause } from '@sap-cloud-sdk/util';
 import { OrchestrationStream } from './orchestration-stream.js';
 import { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 import { OrchestrationResponse } from './orchestration-response.js';
@@ -8,6 +8,7 @@ import {
   constructCompletionPostRequest,
   constructCompletionPostRequestFromJsonModuleConfig
 } from './util/index.js';
+import type { ErrorResponse } from './client/api/schema/index.js';
 import type {
   HttpResponse,
   CustomRequestConfig
@@ -109,15 +110,21 @@ export class OrchestrationClient {
       destination: this.destination
     });
 
-    return executeRequest(
-      {
-        url: `/inference/deployments/${deploymentId}/completion`,
-        ...(this.deploymentConfig ?? {})
-      },
-      body,
-      requestConfig,
-      this.destination
-    );
+    try {
+      const response = await executeRequest(
+        {
+          url: `/inference/deployments/${deploymentId}/completion`,
+          ...(this.deploymentConfig ?? {})
+        },
+        body,
+        requestConfig,
+        this.destination
+      );
+      return response;
+    } catch(error: any) {
+      const errorMessage: ErrorResponse = error.response?.data?.message;
+      throw new ErrorWithCause(`Request failed with status code ${error.status}. ${errorMessage}`, error);
+    }
   }
 
   private async createStreamResponse(
