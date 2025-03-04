@@ -109,7 +109,7 @@ export class OrchestrationClient {
       destination: this.destination
     });
 
-    const response = await executeRequest(
+    return executeRequest(
       {
         url: `/inference/deployments/${deploymentId}/completion`,
         ...(this.deploymentConfig ?? {})
@@ -118,7 +118,6 @@ export class OrchestrationClient {
       requestConfig,
       this.destination
     );
-    return response;
   }
 
   private async createStreamResponse(
