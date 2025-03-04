@@ -6,7 +6,10 @@ import {
   mockDeploymentsList
 } from '../../../../test-util/mock-http.js';
 import { type AiDeployment } from '../client/AI_CORE_API';
-import { getAllDeployments, resolveDeploymentId } from './deployment-resolver.js';
+import {
+  getAllDeployments,
+  resolveDeploymentId
+} from './deployment-resolver.js';
 import { deploymentCache } from './deployment-cache.js';
 
 describe('deployment resolver', () => {
@@ -121,31 +124,32 @@ describe('deployment resolver', () => {
       mockResponse();
       const expected = [
         {
-          'id': '1',
-          'details': {
-            'resources': {
-              'backendDetails':
-              {
-                'model': {
-                  'name': 'gpt-4o',
-                  'version': 'latest'
+          id: '1',
+          details: {
+            resources: {
+              backendDetails: {
+                model: {
+                  name: 'gpt-4o',
+                  version: 'latest'
                 }
               }
             }
           }
-        }, {
-          'id': '2',
-          'details': {
-            'resources': {
-              'backendDetails': {
-                'model': {
-                  'name': 'gpt-4o',
-                  'version': '0613'
+        },
+        {
+          id: '2',
+          details: {
+            resources: {
+              backendDetails: {
+                model: {
+                  name: 'gpt-4o',
+                  version: '0613'
                 }
               }
             }
           }
-        }];
+        }
+      ];
       const deployments = await getAllDeployments({
         scenarioId: 'foundation-models'
       });
@@ -163,20 +167,23 @@ describe('deployment resolver', () => {
         .reply(400, {
           error: {
             code: '400',
-            message: "Invalid Request, '123' does not match '^[\\\\w.-]{4,64}$'\n\nFailed validating 'pattern' in schema:\n    {'type': 'string', 'pattern': '^[\\\\w.-]{4,64}$'}\n\nOn instance:\n    '123'",
+            message:
+              "Invalid Request, '123' does not match '^[\\\\w.-]{4,64}$'\n\nFailed validating 'pattern' in schema:\n    {'type': 'string', 'pattern': '^[\\\\w.-]{4,64}$'}\n\nOn instance:\n    '123'",
             requestId: '',
             target: '/api/v2/deployments'
           }
         });
 
-      try{
+      try {
         await getAllDeployments({
           scenarioId: '123'
         });
       } catch (err: any) {
         expect(err).toBeInstanceOf(ErrorWithCause);
         expect(err.message).toEqual('Failed to fetch the list of deployments.');
-        expect(err.stack).toContain('Caused by:\nHTTP Response: Request failed with status code 400');
+        expect(err.stack).toContain(
+          'Caused by:\nHTTP Response: Request failed with status code 400'
+        );
       }
     });
   });

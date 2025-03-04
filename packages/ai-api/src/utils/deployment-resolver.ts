@@ -1,3 +1,4 @@
+import { ErrorWithCause } from '@sap-cloud-sdk/util';
 import {
   type AiDeployment,
   DeploymentApi
@@ -5,7 +6,6 @@ import {
 import { deploymentCache } from './deployment-cache.js';
 import { extractModel, type FoundationModel } from './model.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
-import { ErrorWithCause } from '@sap-cloud-sdk/util';
 
 /**
  * The model deployment configuration when using a model.

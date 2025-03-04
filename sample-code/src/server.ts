@@ -67,8 +67,8 @@ function sendError(res: any, error: any, send: boolean = true) {
   console.error(error.stack);
   if (send) {
     res
-    .status(error.cause?.status || 500)
-    .send(error.cause?.response?.data || error.message);
+      .status(error.cause?.status || 500)
+      .send(error.cause?.response?.data || error.message);
   }
 }
 
@@ -144,9 +144,7 @@ app.get('/ai-api/models', async (req, res) => {
 app.get('/azure-openai/chat-completion', async (req, res) => {
   try {
     const response = await chatCompletion();
-    res
-      .header('Content-Type', 'text/plain')
-      .send(response.getContent());
+    res.header('Content-Type', 'text/plain').send(response.getContent());
   } catch (error: any) {
     sendError(res, error);
   }
@@ -155,9 +153,7 @@ app.get('/azure-openai/chat-completion', async (req, res) => {
 app.get('/azure-openai/chat-completion-with-destination', async (req, res) => {
   try {
     const response = await chatCompletionWithDestination();
-    res
-      .header('Content-Type', 'text/plain')
-      .send(response.getContent());
+    res.header('Content-Type', 'text/plain').send(response.getContent());
   } catch (error: any) {
     sendError(res, error);
   }
@@ -244,7 +240,9 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
     if (sampleCase === 'inputFiltering') {
       res
         .header('Content-Type', 'text/plain')
-        .send(`Input filter applied successfully with response:\n${JSON.stringify(result, null, 2)}`);
+        .send(
+          `Input filter applied successfully with response:\n${JSON.stringify(result, null, 2)}`
+        );
     } else if (sampleCase === 'outputFiltering') {
       res
         .header('Content-Type', 'text/plain')
@@ -254,12 +252,12 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
     } else if (sampleCase === 'responseFormat') {
       res
         .header('Content-Type', 'text/plain')
-        .send(`Response format applied successfully with response:\n${JSON.stringify(result, null, 2)}`);
+        .send(
+          `Response format applied successfully with response:\n${JSON.stringify(result, null, 2)}`
+        );
     } else {
       console.log(JSON.stringify(result.data, null, 2));
-      res
-        .header('Content-Type', 'text/plain')
-        .send(result.getContent());
+      res.header('Content-Type', 'text/plain').send(result.getContent());
     }
   } catch (error: any) {
     sendError(res, error);
@@ -370,9 +368,7 @@ app.get(
 /* Langchain */
 app.get('/langchain/invoke', async (req, res) => {
   try {
-    res
-      .header('Content-Type', 'text/plain')
-      .send(await invoke());
+    res.header('Content-Type', 'text/plain').send(await invoke());
   } catch (error: any) {
     sendError(res, error);
   }
@@ -380,9 +376,7 @@ app.get('/langchain/invoke', async (req, res) => {
 
 app.get('/langchain/invoke-chain', async (req, res) => {
   try {
-    res
-      .header('Content-Type', 'text/plain')
-      .send(await invokeChain());
+    res.header('Content-Type', 'text/plain').send(await invokeChain());
   } catch (error: any) {
     sendError(res, error);
   }
@@ -390,9 +384,7 @@ app.get('/langchain/invoke-chain', async (req, res) => {
 
 app.get('/langchain/invoke-rag-chain', async (req, res) => {
   try {
-    res
-      .header('Content-Type', 'text/plain')
-      .send(await invokeRagChain());
+    res.header('Content-Type', 'text/plain').send(await invokeRagChain());
   } catch (error: any) {
     sendError(res, error);
   }
@@ -400,9 +392,7 @@ app.get('/langchain/invoke-rag-chain', async (req, res) => {
 
 app.get('/langchain/invoke-tool-chain', async (req, res) => {
   try {
-    res
-      .header('Content-Type', 'text/plain')
-      .send(await invokeToolChain());
+    res.header('Content-Type', 'text/plain').send(await invokeToolChain());
   } catch (error: any) {
     sendError(res, error);
   }

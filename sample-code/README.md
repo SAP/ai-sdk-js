@@ -184,7 +184,7 @@ Get chat completion response with structured response format.
 
 `GET /orchestration/maskGroundingInput`
 
-Get chat completion response with masked grounding input. 
+Get chat completion response with masked grounding input.
 
 #### Chat Completion Streaming
 

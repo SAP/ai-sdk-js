@@ -77,7 +77,10 @@ export async function executeRequest(
     );
     return response;
   } catch (error: any) {
-    throw new ErrorWithCause(`Request failed with status code ${error.status}.`, error);
+    throw new ErrorWithCause(
+      `Request failed with status code ${error.status}.`,
+      error
+    );
   }
 }
 
