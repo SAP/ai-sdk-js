@@ -22,7 +22,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
   - [Using Resource Groups](#using-resource-groups)
   - [Custom Request Configuration](#custom-request-configuration)
   - [Custom Destination](#custom-destination)
-- [Error Handling](#error-handling-1)
+- [Error Handling](#error-handling)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
@@ -379,6 +379,11 @@ try {
 
 Multiple filters can be applied at the same time for both input and output filtering.
 
+> [!Note]
+> The `chatCompletion()` method can throw an error with HTTP status code `400` if content filters hit.
+> In case of a `200` HTTP response, the `getContent()` method can throw an error if the output filters hit.
+> See the [error handling](#error-handling) section for more details.
+
 #### Azure Content Filter
 
 Use `buildAzureContentSafetyFilter()` function to build an Azure content filter.
@@ -408,19 +413,6 @@ Pass the categories as arguments to the function to enable them.
 ```ts
 const filter = buildLlamaGuardFilter('hate', 'violent_crimes');
 ```
-
-#### Error Handling
-
-Both `chatCompletion()` and `getContent()` methods can throw errors.
-
-- **Axios Errors**:  
-  When the chat completion request fails with a `400` status code, the caught error will be an `Axios` error.
-  Check `error.cause.response.data` for the error response body.
-
-- **Output Content Filtered**:  
-  The `getContent()` method can throw an error if the output filter filters the model output.
-  This can occur even if the chat completion request responds with a `200` HTTP status code.
-  Check `error.cause.response.data` for the error response body.
 
 ### Data Masking
 
