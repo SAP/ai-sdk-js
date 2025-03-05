@@ -18,8 +18,8 @@ Setup your SAP AI Core instance with SAP Cloud SDK for AI.
   - [@sap-ai-sdk/langchain](#sap-ai-sdklangchain)
   - [@sap-ai-sdk/orchestration](#sap-ai-sdkorchestration)
 - [SAP Cloud SDK for AI Sample Project](#sap-cloud-sdk-for-ai-sample-project)
-- [Local Testing](#local-testing)
 - [Error Handling](#error-handling)
+- [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [Security / Disclosure](#security--disclosure)
 - [Code of Conduct](#code-of-conduct)
@@ -94,21 +94,6 @@ For details on orchestration client, refer to this [document](https://github.com
 We have created a sample project demonstrating the different clients' usage of the SAP Cloud SDK for AI for TypeScript/JavaScript.
 The [project README](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/README.md) outlines the set-up needed to build and run it locally.
 
-## Local Testing
-
-To test SAP Cloud SDK for AI features locally during application development, follow these steps:
-
-1. Download a service key for the AI Core service instance.
-2. Set the downloaded service key as the `AICORE_SERVICE_KEY` environment variable in the local environment.
-
-The SDK parses the service key from the environment variable to interact with the AI Core service.
-This setup enables local testing of clients such as orchestration and OpenAI, provided that deployments for orchestration and OpenAI exist in SAP BTP.
-
-> [!Tip]
-> Ways to load environment variables might vary based on the framework you are using.
->
-> For example, while the SAP Cloud SDK for AI uses the [dotenv](https://www.npmjs.com/package/dotenv) library to load environment variables, NextJS uses a [specific configuration](https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables) to load them.
-
 ## Error Handling
 
 A common error scenario is `Request failed with status code STATUS_CODE` coming from `AxiosError`. 
@@ -130,6 +115,21 @@ try {
   console.error(e.stack);
 }
 ```
+
+## Local Testing
+
+To test SAP Cloud SDK for AI features locally during application development, follow these steps:
+
+1. Download a service key for the AI Core service instance.
+2. Set the downloaded service key as the `AICORE_SERVICE_KEY` environment variable in the local environment.
+
+The SDK parses the service key from the environment variable to interact with the AI Core service.
+This setup enables local testing of clients such as orchestration and OpenAI, provided that deployments for orchestration and OpenAI exist in SAP BTP.
+
+> [!Tip]
+> Ways to load environment variables might vary based on the framework you are using.
+>
+> For example, while the SAP Cloud SDK for AI uses the [dotenv](https://www.npmjs.com/package/dotenv) library to load environment variables, NextJS uses a [specific configuration](https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables) to load them.
 
 ## Support, Feedback, Contribution
 
