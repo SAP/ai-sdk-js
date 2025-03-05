@@ -99,20 +99,38 @@ The [project README](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/READ
 A common error scenario is `Request failed with status code STATUS_CODE` coming from `AxiosError`. 
 In this case, SAP Cloud SDK for AI uses [`ErrorWithCause`](https://sap.github.io/cloud-sdk/docs/js/features/error-handling) to provide more detailed error information.
 
-The following example shows how to access useful information from the error.
+The following example shows how to access useful information from a nested `ErrorWithCause`.
 
 ```ts
 try {
   ... // execute request
 } catch (e) {
-  // Print error messages from different layers
+  /* Print error messages from different layers */
+  // Example: "Error: Failed to fetch the deployments."
   console.error(e.message);
+  // Example: "Cause: executeRequest() function failed."
   console.error(e.cause?.message);
+  // Example: "Root cause: Request failed with status code 404"
   console.error(e.rootCause?.message);
-  // Print error response from the server
+
+  /* Print error response from the server */
   console.error(e.cause?.response?.data);
-  // Print error stack
+  /* Print error stack */
   console.error(e.stack);
+}
+```
+
+The error stack consists of the error message, call stack, the causes of the error, and error response from the server if exists.
+
+```txt
+ErrorWithCause: Failed to ....
+    at ... (some-file.ts:11:12)
+    at ... (...)
+Caused by:
+HTTP Response: Request failed with status code 400
+{
+  "error": "Bad Request",
+  "message": "Invalid request body"
 }
 ```
 
