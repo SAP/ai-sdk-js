@@ -16,8 +16,8 @@ This package incorporates generative AI foundation models into your AI activitie
   - [Custom Request Configuration](#custom-request-configuration)
   - [Custom Destination](#custom-destination)
   - [Overwriting API Version](#overwriting-api-version)
-- [Local Testing](#local-testing)
 - [Error Handling](#error-handling)
+- [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
 
@@ -295,13 +295,13 @@ client.run(
 );
 ```
 
-## Local Testing
-
-For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
-
 ## Error Handling
 
 For error handling instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#error-handling).
+
+## Local Testing
+
+For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
 
 ## Support, Feedback, Contribution
 

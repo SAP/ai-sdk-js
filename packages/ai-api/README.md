@@ -22,8 +22,8 @@ We maintain a list of [currently available and tested AI Core APIs](https://gith
   - [Create a Deployment](#create-a-deployment)
   - [Delete a Deployment](#delete-a-deployment)
   - [Custom Destination](#custom-destination)
-- [Local Testing](#local-testing)
 - [Error Handling](#error-handling)
+- [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
 
@@ -176,13 +176,13 @@ return DeploymentApi.deploymentQuery(queryParams, {
 By default, the fetched destination is cached.
 To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
 
-## Local Testing
-
-For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
-
 ## Error Handling
 
 For error handling instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#error-handling).
+
+## Local Testing
+
+For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
 
 ## Support, Feedback, Contribution
 
