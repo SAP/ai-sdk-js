@@ -5,17 +5,14 @@
  */
 import type { ResponseMessageToolCalls } from './response-message-tool-calls.js';
 /**
- * Representation of the 'ResponseChatMessage' schema.
+ * Representation of the 'ChatCompletionRequestAssistantMessage' schema.
  */
-export type ResponseChatMessage = {
+export type ChatCompletionRequestAssistantMessage = {
   /**
    * @example "assistant"
    */
-  role?: 'assistant';
+  role: 'assistant';
   content?: string | null;
-  /**
-   * @example "I'm sorry, I can't answer that question."
-   */
   refusal?: string | null;
   tool_calls?: ResponseMessageToolCalls;
 };
