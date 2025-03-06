@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
       - name: Get Changelog
-        uses: sap/cloud-sdk-js/.github/actions/get-changelog
+        uses: sap/cloud-sdk-js/.github/actions/get-changelog@main
         id: get-changelog
       - uses: ncipollo/release-action@v1
         env:
