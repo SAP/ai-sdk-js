@@ -27,3 +27,21 @@
 ### Implementation changed
 
 -
+
+# 1.9.0
+## New Features
+
+- [langchain] Add LangChain Orchestration client. (a45dc06)
+- [orchestration] Introduce `buildLlamaGuardFilter()` convenience function to build Llama guard filters. (bc51f59)
+
+## Fixed Issues
+
+- [ai-api, core] Add missing cause in the error object for failing HTTP requests by using `ErrorWithCause`, providing more context for debugging.
+
+  [Compatibility Note] Due to the introduction of `ErrorWithCause`, `AxiosError` is now wrapped inside the `cause` property.
+  For example, use `error.cause.response.data` instead of `error.response.data` to access the error response from the server. (bfed500)
+
+## Improvements
+
+- [orchestration] Update Orchestration to 2502b Release (84175fb)
+

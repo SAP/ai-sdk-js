@@ -1,5 +1,13 @@
 # @sap-ai-sdk/foundation-models
 
+## 1.9.0
+
+### Patch Changes
+
+- Updated dependencies [bfed500]
+  - @sap-ai-sdk/ai-api@1.9.0
+  - @sap-ai-sdk/core@1.9.0
+
 ## 1.8.0
 
 ### Minor Changes

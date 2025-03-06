@@ -1,5 +1,18 @@
 # @sap-ai-sdk/orchestration
 
+## 1.9.0
+
+### Minor Changes
+
+- bc51f59: [New Functionality] Introduce `buildLlamaGuardFilter()` convenience function to build Llama guard filters.
+
+### Patch Changes
+
+- 84175fb: [Improvement] Update Orchestration to 2502b Release
+- Updated dependencies [bfed500]
+  - @sap-ai-sdk/ai-api@1.9.0
+  - @sap-ai-sdk/core@1.9.0
+
 ## 1.8.0
 
 ### Minor Changes

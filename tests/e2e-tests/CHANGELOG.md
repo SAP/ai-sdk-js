@@ -1,5 +1,16 @@
 # @sap-ai-sdk/e2e-tests
 
+## 1.9.0
+
+### Patch Changes
+
+- Updated dependencies [bc51f59]
+- Updated dependencies [bfed500]
+- Updated dependencies [84175fb]
+  - @sap-ai-sdk/orchestration@1.9.0
+  - @sap-ai-sdk/ai-api@1.9.0
+  - @sap-ai-sdk/sample-code@1.9.0
+
 ## 1.8.0
 
 ### Patch Changes

@@ -1,5 +1,21 @@
 # @sap-ai-sdk/langchain
 
+## 1.9.0
+
+### Minor Changes
+
+- a45dc06: [New Functionality] Add LangChain Orchestration client.
+
+### Patch Changes
+
+- Updated dependencies [bc51f59]
+- Updated dependencies [bfed500]
+- Updated dependencies [84175fb]
+  - @sap-ai-sdk/orchestration@1.9.0
+  - @sap-ai-sdk/ai-api@1.9.0
+  - @sap-ai-sdk/core@1.9.0
+  - @sap-ai-sdk/foundation-models@1.9.0
+
 ## 1.8.0
 
 ### Minor Changes
