@@ -23,7 +23,7 @@ jobs:
       
       - name: merge and write Changelogs
         id: merge-changelogs
-        uses: sap/cloud-sdk-js/.github/actions/merge-and-write-changelogs
+        uses: sap/cloud-sdk-js/.github/actions/merge-and-write-changelogs@main
         env:
           VERSION: ${{ steps.bump.outputs.version }}
 
