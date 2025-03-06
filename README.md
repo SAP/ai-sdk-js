@@ -19,6 +19,7 @@ Setup your SAP AI Core instance with SAP Cloud SDK for AI.
   - [@sap-ai-sdk/orchestration](#sap-ai-sdkorchestration)
 - [SAP Cloud SDK for AI Sample Project](#sap-cloud-sdk-for-ai-sample-project)
 - [Error Handling](#error-handling)
+  - [Accessing Error Information](#accessing-error-information)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [Security / Disclosure](#security--disclosure)
@@ -99,40 +100,36 @@ The [project README](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/READ
 A common error scenario is `Request failed with status code STATUS_CODE` coming from `AxiosError`. 
 In this case, SAP Cloud SDK for AI uses [`ErrorWithCause`](https://sap.github.io/cloud-sdk/docs/js/features/error-handling) to provide more detailed error information.
 
-The following example shows how to access useful information from a nested `ErrorWithCause`.
+### Accessing Error Information
+
+For example, for the following nested `ErrorWithCause`
 
 ```ts
-try {
-  ... // execute request
-} catch (e) {
-  /* Print error messages from different layers */
-  // Example: "Error: Failed to fetch the deployments."
-  console.error(e.message);
-  // Example: "Cause: executeRequest() function failed."
-  console.error(e.cause?.message);
-  // Example: "Root cause: Request failed with status code 404"
-  console.error(e.rootCause?.message);
-
-  /* Print error response from the server */
-  console.error(e.cause?.response?.data);
-  /* Print error stack */
-  console.error(e.stack);
-}
+const rootCause = new Error('The root cause is a bug!');
+const lowerLevelErrorWithCause = new ErrorWithCause('Failed to call function foo().', rootCause);
+const upperLevelErrorWithCause = new ErrorWithCause('Process crashed.', lowerLevelErrorWithCause);
+throw upperLevelErrorWithCause;
 ```
 
-The error stack consists of the error message, call stack, the causes of the error, and error response from the server if exists.
+The error stack will look like this:
 
 ```txt
-ErrorWithCause: Failed to ....
-    at ... (some-file.ts:11:12)
-    at ... (...)
+ErrorWithCause: Process crashed.
+    at ...
 Caused by:
-HTTP Response: Request failed with status code 400
-{
-  "error": "Bad Request",
-  "message": "Invalid request body"
-}
+ErrorWithCause: Failed to call function foo().
+    at ...
+Caused by:
+Error: The root cause is a bug!
+    at ...
 ```
+
+- `error.stack` will contain the above stack trace.
+- `error.message` will be `Process crashed.`.
+- `error.cause.message` will be `Failed to call function foo().`.
+- `error.rootCause.message` will be `The root cause is a bug!`.
+
+In case of `AxiosError`, the response data will be part of the error stack and can be accessed via `error.cause.response.data`.
 
 ## Local Testing
 
