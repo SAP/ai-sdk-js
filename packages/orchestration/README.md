@@ -22,6 +22,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
   - [Using Resource Groups](#using-resource-groups)
   - [Custom Request Configuration](#custom-request-configuration)
   - [Custom Destination](#custom-destination)
+- [Error Handling](#error-handling)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
@@ -369,13 +370,19 @@ try {
   const response = await orchestrationClient.chatCompletion({
     inputParams: { input: 'I hate you!' }
   });
-  return response.getContent();
+  console.log(response.getContent());
 } catch (error: any) {
-  return `Error: ${error.message}`;
+  console.error(error.message);
+  console.error(error.cause?.response?.data);
 }
 ```
 
 Multiple filters can be applied at the same time for both input and output filtering.
+
+> [!Note]
+> The `chatCompletion()` method can throw an error with HTTP status code `400` if content filters hit.
+> In case of a `200` HTTP response, the `getContent()` method can throw an error if the output filters hit.
+> See the [error handling](#error-handling) section for more details.
 
 #### Azure Content Filter
 
@@ -406,19 +413,6 @@ Pass the categories as arguments to the function to enable them.
 ```ts
 const filter = buildLlamaGuardFilter('hate', 'violent_crimes');
 ```
-
-#### Error Handling
-
-Both `chatCompletion()` and `getContent()` methods can throw errors.
-
-- **Axios Errors**:  
-  When the chat completion request fails with a `400` status code, the caught error will be an `Axios` error.
-  The property `error.response.data.message` provides additional details about the failure.
-
-- **Output Content Filtered**:  
-  The `getContent()` method can throw an error if the output filter filters the model output.
-  This can occur even if the chat completion request responds with a `200` HTTP status code.
-  The `error.message` property indicates if the output was filtered.
 
 ### Data Masking
 
@@ -723,6 +717,10 @@ const orchestrationClient = new OrchestrationClient(
 
 By default, the fetched destination is cached.
 To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
+
+## Error Handling
+
+For error handling instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#error-handling).
 
 ## Local Testing
 

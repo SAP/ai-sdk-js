@@ -15,7 +15,8 @@ import type {
   OrchestrationStreamChunkResponse,
   OrchestrationStreamResponse,
   OrchestrationResponse,
-  StreamOptions
+  StreamOptions,
+  ErrorResponse
 } from '@sap-ai-sdk/orchestration';
 
 const logger = createLogger({
@@ -168,8 +169,9 @@ const templating = { template: [{ role: 'user', content: '{{?input}}' }] };
 
 /**
  * Apply multiple content filters to the input.
+ * @returns The orchestration service error response.
  */
-export async function orchestrationInputFiltering(): Promise<void> {
+export async function orchestrationInputFiltering(): Promise<ErrorResponse> {
   // Build Azure content filter with only safe content allowed for hate and violence
   const azureContentSafetyFilter = buildAzureContentSafetyFilter({
     Hate: 'ALLOW_SAFE',
@@ -196,11 +198,12 @@ export async function orchestrationInputFiltering(): Promise<void> {
     });
     throw new Error('Input was not filtered as expected.');
   } catch (error: any) {
-    if (error.response?.status === 400) {
+    if (error.cause?.status === 400) {
       logger.info('Input was filtered as expected.');
     } else {
       throw error;
     }
+    return error.cause?.response?.data;
   }
 }
 

@@ -11,6 +11,7 @@ This package provides LangChain clients built on top of the foundation model and
 - [Usage](#usage)
   - [Orchestration Client](#orchestration-client)
   - [Azure OpenAI Client](#azure-openai-client)
+- [Error Handling](#error-handling)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
@@ -51,6 +52,10 @@ For more information about the Orchestration client, refer to the [documentation
 ### Azure OpenAI Client
 
 For more information about Azure OpenAI client, refer to the [documentation](https://github.com/SAP/ai-sdk-js/tree/main/packages/langchain/src/openai/README.md).
+
+## Error Handling
+
+For error handling instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#error-handling).
 
 ## Local Testing
 
