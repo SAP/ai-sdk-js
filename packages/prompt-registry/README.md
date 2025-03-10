@@ -1,3 +1,6 @@
+> [!warning]
+> This package is still in **beta** and is subject to breaking changes. Use it with caution.
+
 # @sap-ai-sdk/prompt-registry
 
 SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI Core**, **SAP Generative AI Hub**, and **Orchestration Service**.
