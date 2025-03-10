@@ -49,6 +49,10 @@ import {
   deleteCollection,
   retrieveDocuments
 } from './document-grounding.js';
+import {
+  createPromptTemplate,
+  deletePromptTemplate
+} from './prompt-registry.js';
 import type { RetievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type { AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
@@ -509,3 +513,27 @@ app.get(
     }
   }
 );
+
+app.get('/prompt-registry/invoke', async (req, res) => {
+  try {
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    const { id } = await createPromptTemplate(
+      'ai-sdk-js-sample',
+      'orchestration'
+    );
+    res.write(`Prompt template created: ${id}\n`);
+
+    const response = await deletePromptTemplate(id);
+    res.write(`Prompt template deleted: ${response.message}\n`);
+
+    res.end();
+  } catch (error: any) {
+    console.error(error);
+    res
+      .status(500)
+      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+  }
+});

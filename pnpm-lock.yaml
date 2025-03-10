@@ -192,6 +192,12 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1
 
+  packages/prompt-registry:
+    dependencies:
+      '@sap-ai-sdk/core':
+        specifier: workspace:^
+        version: link:../core
+
   sample-cap:
     dependencies:
       '@sap-ai-sdk/ai-api':
@@ -240,6 +246,9 @@ importers:
       '@sap-ai-sdk/orchestration':
         specifier: workspace:^
         version: link:../packages/orchestration
+      '@sap-ai-sdk/prompt-registry':
+        specifier: workspace:^
+        version: link:../packages/prompt-registry
       '@sap-cloud-sdk/util':
         specifier: ^4.0.1
         version: 4.0.1
