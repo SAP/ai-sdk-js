@@ -19,6 +19,8 @@ Setup your SAP AI Core instance with SAP Cloud SDK for AI.
   - [@sap-ai-sdk/orchestration](#sap-ai-sdkorchestration)
   - [@sap-ai-sdk/prompt-registry](#sap-ai-sdkprompt-registry)
 - [SAP Cloud SDK for AI Sample Project](#sap-cloud-sdk-for-ai-sample-project)
+- [Error Handling](#error-handling)
+  - [Accessing Error Information](#accessing-error-information)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [Security / Disclosure](#security--disclosure)
@@ -105,6 +107,42 @@ For details on prompt registry client, refer to this [document](https://github.c
 
 We have created a sample project demonstrating the different clients' usage of the SAP Cloud SDK for AI for TypeScript/JavaScript.
 The [project README](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/README.md) outlines the set-up needed to build and run it locally.
+
+## Error Handling
+
+A common error scenario is `Request failed with status code STATUS_CODE` coming from `AxiosError`. 
+In this case, SAP Cloud SDK for AI uses [`ErrorWithCause`](https://sap.github.io/cloud-sdk/docs/js/features/error-handling) to provide more detailed error information.
+
+### Accessing Error Information
+
+For example, for the following nested `ErrorWithCause`
+
+```ts
+const rootCause = new Error('The root cause is a bug!');
+const lowerLevelErrorWithCause = new ErrorWithCause('Failed to call function foo().', rootCause);
+const upperLevelErrorWithCause = new ErrorWithCause('Process crashed.', lowerLevelErrorWithCause);
+throw upperLevelErrorWithCause;
+```
+
+The error stack will look like this:
+
+```txt
+ErrorWithCause: Process crashed.
+    at ...
+Caused by:
+ErrorWithCause: Failed to call function foo().
+    at ...
+Caused by:
+Error: The root cause is a bug!
+    at ...
+```
+
+- `error.stack` will contain the above stack trace.
+- `error.message` will be `Process crashed.`.
+- `error.cause.message` will be `Failed to call function foo().`.
+- `error.rootCause.message` will be `The root cause is a bug!`.
+
+In case of `AxiosError`, the response data will be part of the error stack and can be accessed via `error.cause.response.data`.
 
 ## Local Testing
 

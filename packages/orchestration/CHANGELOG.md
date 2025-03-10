@@ -1,5 +1,36 @@
 # @sap-ai-sdk/orchestration
 
+## 1.9.0
+
+### Minor Changes
+
+- bc51f59: [New Functionality] Introduce `buildLlamaGuardFilter()` convenience function to build Llama guard filters.
+
+### Patch Changes
+
+- 84175fb: [Improvement] Update Orchestration to 2502b Release
+- Updated dependencies [bfed500]
+  - @sap-ai-sdk/ai-api@1.9.0
+  - @sap-ai-sdk/core@1.9.0
+
+## 1.8.0
+
+### Minor Changes
+
+- 54a9044: [Compatibility Note] Deprecate `buildAzureContentFilter()` function.
+  Use `buildAzureContentSafetyFilter()` function instead.
+- 09b0d2d: [Fixed Issue] Consider destination when resolving deployment ids.
+- 16d97ab: [New Functionality] Support configuring data masking for grounding inputs.
+- 5c248a1: [New Functionality] Support using prompt registry with orchestration client.
+- 2c76a1f: [Compatibility Note] Update Orchestration to 2502a Release
+
+### Patch Changes
+
+- Updated dependencies [09b0d2d]
+- Updated dependencies [1731104]
+  - @sap-ai-sdk/ai-api@1.8.0
+  - @sap-ai-sdk/core@1.8.0
+
 ## 1.7.0
 
 ### Minor Changes

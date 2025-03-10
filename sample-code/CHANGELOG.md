@@ -1,5 +1,36 @@
 # @sap-ai-sdk/sample-code
 
+## 1.9.0
+
+### Patch Changes
+
+- Updated dependencies [a45dc06]
+- Updated dependencies [bc51f59]
+- Updated dependencies [bfed500]
+- Updated dependencies [84175fb]
+  - @sap-ai-sdk/langchain@1.9.0
+  - @sap-ai-sdk/orchestration@1.9.0
+  - @sap-ai-sdk/ai-api@1.9.0
+  - @sap-ai-sdk/foundation-models@1.9.0
+  - @sap-ai-sdk/document-grounding@1.9.0
+
+## 1.8.0
+
+### Patch Changes
+
+- Updated dependencies [54a9044]
+- Updated dependencies [cd06f2a]
+- Updated dependencies [09b0d2d]
+- Updated dependencies [16d97ab]
+- Updated dependencies [5c248a1]
+- Updated dependencies [2c76a1f]
+- Updated dependencies [1731104]
+  - @sap-ai-sdk/orchestration@1.8.0
+  - @sap-ai-sdk/langchain@1.8.0
+  - @sap-ai-sdk/foundation-models@1.8.0
+  - @sap-ai-sdk/ai-api@1.8.0
+  - @sap-ai-sdk/document-grounding@1.8.0
+
 ## 1.7.0
 
 ### Minor Changes

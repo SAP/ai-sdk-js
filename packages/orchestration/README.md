@@ -22,6 +22,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
   - [Using Resource Groups](#using-resource-groups)
   - [Custom Request Configuration](#custom-request-configuration)
   - [Custom Destination](#custom-destination)
+- [Error Handling](#error-handling)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
@@ -109,7 +110,6 @@ Optionally, define `model_version` (default: `latest`) and `model_params` for cu
 
 Use the orchestration client with templating to pass a prompt containing placeholders that will be replaced with input parameters during a chat completion request.
 This allows for variations in the prompt based on the input parameters.
-Set custom request configuration when calling `chatCompletion` function.
 
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
@@ -131,26 +131,94 @@ const response = await orchestrationClient.chatCompletion({
 });
 
 const responseContent = response.getContent();
-```
-
-`getContent()` is a convenience method that parses the response and returns the model's output as a string.
-
-To retrieve the `finish_reason` for stopping the chat completion request, use the convenience method `getFinishReason()`:
-
-```ts
 const finishReason = response.getFinishReason();
+const tokenUsage = response.getTokenUsage();
 ```
 
-Use the `getTokenUsage()` convenience method to retrieve the token usage details of the chat completion request:
+You can use the following convenience methods for handling chat completion responses:
+
+- `getContent()` parses the response and returns the model's output as a string.
+- `getFinishReason()` retrieves the `finish_reason` explaining why chat completion request stopped.
+- `getTokenUsage()` provides token usage details, including `total_tokens`, `prompt_tokens`, and `completion_tokens`.
+
+#### Structured Outputs
+
+##### Tool Calling
+
+Structured outputs through tools can be enabled by setting `strict: true` in the function definition.
+These tools enable the creation of multi-step, agent-driven workflows, allowing LLMs to perform specific actions.
 
 ```ts
-const tokenUsage = response.getTokenUsage();
+templating: {
+  tools: [
+    type: 'function',
+    function: {
+      name: 'add',
+      description: 'Calculate the absolute value of x',
+      parameters: {
+        type: 'object',
+        properties: {
+          x: { type: number }
+        }
+      },
+      required: ['x'],
+      additionalProperties: false
+  ]
+}
+```
 
-console.log(
-  `Total tokens consumed by the request: ${tokenUsage.total_tokens}\n` +
-    `Input prompt tokens consumed: ${tokenUsage.prompt_tokens}\n` +
-    `Output text completion tokens consumed: ${tokenUsage.completion_tokens}\n`
-);
+##### Using `response_format` parameter
+
+Setting `response_format` under `templating` guarantees that the model's output aligns with the schema type specified by developers.
+It is useful when the model is **not calling a tool**, but rather, responding to the user in a structured way.
+
+The example below demonstrates how to use `response_format` to return a JSON Schema, with `strict: true` ensuring the outputs conform precisely to the schema.
+
+```ts
+templating: {
+    template: [
+      { role: 'user', content: 'What is the capital of {{?country}}?' }
+    ],
+    response_format: {
+        type: 'json_schema',
+        json_schema: {
+          name: 'capital_response',
+          strict: true,
+          schema: {
+            type: 'object',
+            properties: {
+              country_name: {
+                type: "string",
+                description: "The name of the country provided by the user."
+              },
+              capital: {
+                type: "string",
+                description: "The capital city of the country."
+              }
+            },
+            required: ["country_name", "capital"]
+          }
+        }
+      }
+  }
+```
+
+You can also initialize `json_schema` using a Zod schema, as shown below:
+
+```ts
+const countryCapitalSchema = z.object({
+    country_name: z.string(),
+    capital: z.string()
+  }).strict();
+
+response_format: {
+  type: 'json_schema',
+  json_schema: {
+    name: 'capital_response',
+    strict: true,
+    schema: zodToJsonSchema(countryCapitalSchema)
+  }
+}
 ```
 
 ### Prompt Registry
@@ -269,20 +337,12 @@ Use the orchestration client with filtering to restrict content that is passed t
 
 This feature allows filtering both the [input](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering) and [output](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering) of a model based on content safety criteria.
 
-#### Azure Content Filter
-
-Use `buildAzureContentSafetyFilter()` function to build an Azure content filter for both input and output.
-Each category of the filter can be assigned a specific severity level, which corresponds to an Azure threshold value.
-
-| Severity Level          | Azure Threshold Value |
-| ----------------------- | --------------------- |
-| `ALLOW_SAFE`            | 0                     |
-| `ALLOW_SAFE_LOW`        | 2                     |
-| `ALLOW_SAFE_LOW_MEDIUM` | 4                     |
-| `ALLOW_ALL`             | 6                     |
+The following example demonstrates how to use content filtering with the orchestration client.
+See the sections below for details on the available content filters and how to build them.
 
 ```ts
-import { OrchestrationClient, ContentFilters } from '@sap-ai-sdk/orchestration';
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+
 const llm = {
   model_name: 'gpt-4o',
   model_params: { max_tokens: 50, temperature: 0.1 }
@@ -291,16 +351,14 @@ const templating = {
   template: [{ role: 'user', content: '{{?input}}' }]
 };
 
-const filter = buildAzureContentSafetyFilter({
-  Hate: 'ALLOW_SAFE_LOW',
-  Violence: 'ALLOW_SAFE_LOW_MEDIUM'
-});
+const filter = ... // Use a build function to create a content filter
+
 const orchestrationClient = new OrchestrationClient({
   llm,
   templating,
   filtering: {
     input: {
-      filters: [filter]
+      filters: [filter] // Multiple filters can be applied
     },
     output: {
       filters: [filter]
@@ -312,24 +370,49 @@ try {
   const response = await orchestrationClient.chatCompletion({
     inputParams: { input: 'I hate you!' }
   });
-  return response.getContent();
+  console.log(response.getContent());
 } catch (error: any) {
-  return `Error: ${error.message}`;
+  console.error(error.message);
+  console.error(error.cause?.response?.data);
 }
 ```
 
-#### Error Handling
+Multiple filters can be applied at the same time for both input and output filtering.
 
-Both `chatCompletion()` and `getContent()` methods can throw errors.
+> [!Note]
+> The `chatCompletion()` method can throw an error with HTTP status code `400` if content filters hit.
+> In case of a `200` HTTP response, the `getContent()` method can throw an error if the output filters hit.
+> See the [error handling](#error-handling) section for more details.
 
-- **Axios Errors**:  
-  When the chat completion request fails with a `400` status code, the caught error will be an `Axios` error.
-  The property `error.response.data.message` provides additional details about the failure.
+#### Azure Content Filter
 
-- **Output Content Filtered**:  
-  The `getContent()` method can throw an error if the output filter filters the model output.
-  This can occur even if the chat completion request responds with a `200` HTTP status code.
-  The `error.message` property indicates if the output was filtered.
+Use `buildAzureContentSafetyFilter()` function to build an Azure content filter.
+Each category of the filter can be assigned a specific severity level, which corresponds to an Azure threshold value.
+
+| Severity Level          | Azure Threshold Value |
+| ----------------------- | --------------------- |
+| `ALLOW_SAFE`            | 0                     |
+| `ALLOW_SAFE_LOW`        | 2                     |
+| `ALLOW_SAFE_LOW_MEDIUM` | 4                     |
+| `ALLOW_ALL`             | 6                     |
+
+```ts
+const filter = buildAzureContentSafetyFilter({
+  Hate: 'ALLOW_SAFE_LOW',
+  Violence: 'ALLOW_SAFE_LOW_MEDIUM'
+});
+```
+
+#### Llama Guard Filter
+
+Use `buildLlamaGuardFilter()` function to build a Llama Guard content filter.
+
+Available categories can be found with autocompletion.
+Pass the categories as arguments to the function to enable them.
+
+```ts
+const filter = buildLlamaGuardFilter('hate', 'violent_crimes');
+```
 
 ### Data Masking
 
@@ -634,6 +717,10 @@ const orchestrationClient = new OrchestrationClient(
 
 By default, the fetched destination is cached.
 To disable caching, set the `useCache` parameter to `false` together with the `destinationName` parameter.
+
+## Error Handling
+
+For error handling instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#error-handling).
 
 ## Local Testing
 

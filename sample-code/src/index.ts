@@ -18,14 +18,17 @@ export {
   orchestrationGroundingVector,
   orchestrationGroundingHelpSapCom,
   orchestrationChatCompletionImage,
+  orchestrationResponseFormat,
   chatCompletionStreamWithJsonModuleConfig,
-  chatCompletionStream
+  chatCompletionStream,
+  orchestrationToolCalling
 } from './orchestration.js';
 export {
   invoke,
   invokeChain,
   invokeRagChain
 } from './langchain-azure-openai.js';
+export { invokeChain as orchestrationInvokeChain } from './langchain-orchestration.js';
 export {
   getDeployments,
   getDeploymentsWithDestination,

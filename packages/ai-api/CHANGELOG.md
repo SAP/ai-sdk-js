@@ -1,5 +1,29 @@
 # @sap-ai-sdk/ai-api
 
+## 1.9.0
+
+### Patch Changes
+
+- bfed500: [Fixed Issue] Add missing cause in the error object for failing HTTP requests by using `ErrorWithCause`, providing more context for debugging.
+
+  [Compatibility Note] Due to the introduction of `ErrorWithCause`, `AxiosError` is now wrapped inside the `cause` property.
+  For example, use `error.cause.response.data` instead of `error.response.data` to access the error response from the server.
+
+- Updated dependencies [bfed500]
+  - @sap-ai-sdk/core@1.9.0
+
+## 1.8.0
+
+### Minor Changes
+
+- 09b0d2d: [Fixed Issue] Consider destination when resolving deployment ids.
+- 1731104: [Compatibility Note] Update AI API spec to 2501b release.
+  The `kubesubmitV4GenericSecretsGet` function is renamed to `kubesubmitV4GenericSecretsGetAll`.
+
+### Patch Changes
+
+- @sap-ai-sdk/core@1.8.0
+
 ## 1.7.0
 
 ### Patch Changes

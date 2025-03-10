@@ -4,8 +4,11 @@ import {
   aiCoreDestination,
   mockDeploymentsList
 } from '../../../../test-util/mock-http.js';
-import { type AiDeployment } from '../client/AI_CORE_API';
-import { resolveDeploymentId } from './deployment-resolver.js';
+import { type AiDeployment } from '../client/AI_CORE_API/index.js';
+import {
+  getAllDeployments,
+  resolveDeploymentId
+} from './deployment-resolver.js';
 import { deploymentCache } from './deployment-cache.js';
 
 describe('deployment resolver', () => {
@@ -113,6 +116,44 @@ describe('deployment resolver', () => {
     });
 
     expect(id).toEqual('5');
+  });
+
+  describe('get all deployments', () => {
+    it('should return all deployments', async () => {
+      mockResponse();
+      const expected = [
+        {
+          id: '1',
+          details: {
+            resources: {
+              backendDetails: {
+                model: {
+                  name: 'gpt-4o',
+                  version: 'latest'
+                }
+              }
+            }
+          }
+        },
+        {
+          id: '2',
+          details: {
+            resources: {
+              backendDetails: {
+                model: {
+                  name: 'gpt-4o',
+                  version: '0613'
+                }
+              }
+            }
+          }
+        }
+      ];
+      const deployments = await getAllDeployments({
+        scenarioId: 'foundation-models'
+      });
+      expect(deployments).toStrictEqual(expected);
+    });
   });
 });
 

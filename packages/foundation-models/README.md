@@ -15,6 +15,8 @@ This package incorporates generative AI foundation models into your AI activitie
   - [Azure OpenAI Embedding Client](#azure-openai-embedding-client)
   - [Custom Request Configuration](#custom-request-configuration)
   - [Custom Destination](#custom-destination)
+  - [Overwriting API Version](#overwriting-api-version)
+- [Error Handling](#error-handling)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
@@ -292,6 +294,10 @@ client.run(
   { params: { 'api-version': 'YOUR_OLD_VERSION' } }
 );
 ```
+
+## Error Handling
+
+For error handling instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#error-handling).
 
 ## Local Testing
 

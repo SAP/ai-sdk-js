@@ -15,11 +15,18 @@ jobs:
         with:
           token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           ref: 'main'
-      - uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
-        name: bump version
+      - name: bump version
+        uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
         id: bump
         with:
           majorVersion: ${{ inputs.majorVersion }}
+      
+      - name: merge and write Changelogs
+        id: merge-changelogs
+        uses: sap/cloud-sdk-js/.github/actions/merge-and-write-changelogs@main
+        env:
+          VERSION: ${{ steps.bump.outputs.version }}
+
       - uses: sap/cloud-sdk-js/.github/actions/commit-and-tag@main
         name: Commit and tag
         with:

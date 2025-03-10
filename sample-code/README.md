@@ -136,11 +136,11 @@ Get chat completion response for a given static input.
 Get chat completion response with template and input parameters.
 Define variable by wrapping it with `{{?...}}`.
 
-#### Image Recognition
+#### Templating with Reference
 
-`GET /orchestration/image`
+`GET /orchestration/templateRef`
 
-Get chat completion response with image input.
+Get chat completion response with template reference and input parameters.
 
 #### Input Filtering
 
@@ -161,6 +161,30 @@ For example, use `buildAzureContentSafetyFilter()` function to build Azure conte
 `GET /orchestration/requestConfig`
 
 Send chat completion request with a custom header as the custom request configuration.
+
+#### Orchestration Client from JSON config
+
+`GET /orchestration/fromJson`
+
+Get chat completion response with a JSON config initialized orchestration client.
+
+#### Image Recognition
+
+`GET /orchestration/image`
+
+Get chat completion response with image input.
+
+#### Structured Response
+
+`GET /orchestration/responseFormat`
+
+Get chat completion response with structured response format.
+
+#### Mask Grounding Input
+
+`GET /orchestration/maskGroundingInput`
+
+Get chat completion response with masked grounding input.
 
 #### Chat Completion Streaming
 
@@ -204,22 +228,29 @@ The `toContentStream()` method is called to extract the content of the chunk for
 
 Once the streaming is done, finish reason and token usage are printed out.
 
-### Langchain
+### LangChain
 
 #### Invoke with a Simple Input
 
 `GET /langchain/invoke`
 
-Invoke langchain Azure OpenAI client with a simple input to get chat completion response.
+Invoke LangChain Azure OpenAI client with a simple input to get chat completion response.
 
-#### Invoke a Chain for Templating
+#### Invoke a Chain with Templating
 
 `GET /langchain/invoke-chain`
 
 Invoke chain to get chat completion response from Azure OpenAI.
 The chain contains a template and a string parser.
 
-#### Invoke a Chain for Retrieval-Augmented Generation (RAG)
+#### Invoke a Chain with Templating and Orchestration Client
+
+`GET /langchain/invoke-chain-orchestration`
+
+Invoke a chain to get a orchestration response from the orchestration service.
+The chain has a built-in template and is chained with a string parser.
+
+#### Invoke a Chain with Retrieval-Augmented Generation (RAG)
 
 `GET /langchain/invoke-rag-chain`
 

@@ -10,6 +10,8 @@ export type AzureOpenAiChatModel = LiteralUnion<
   | 'gpt-4-32k'
   | 'gpt-35-turbo'
   | 'gpt-35-turbo-16k'
+  | 'o1'
+  | 'o3-mini'
 >;
 
 /**
@@ -50,4 +52,5 @@ export type AiCoreOpenSourceChatModel = LiteralUnion<
   | 'meta--llama3-70b-instruct'
   | 'meta--llama3.1-70b-instruct'
   | 'ibm--granite-13b-chat'
+  | 'alephalpha-pharia-1-7b-control'
 >;

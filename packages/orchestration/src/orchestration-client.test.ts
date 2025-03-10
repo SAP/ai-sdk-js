@@ -13,7 +13,8 @@ import { OrchestrationResponse } from './orchestration-response.js';
 import {
   constructCompletionPostRequestFromJsonModuleConfig,
   constructCompletionPostRequest,
-  buildAzureContentSafetyFilter
+  buildAzureContentSafetyFilter,
+  buildLlamaGuardFilter
 } from './util/index.js';
 import type { CompletionPostResponse } from './client/api/schema/index.js';
 import type {
@@ -186,6 +187,59 @@ describe('orchestration service client', () => {
     const mockResponse = await parseMockResponse<CompletionPostResponse>(
       'orchestration',
       'orchestration-chat-completion-filter-config.json'
+    );
+
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, prompt)
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+    const response = await new OrchestrationClient(config).chatCompletion(
+      prompt
+    );
+    expect(response.data).toEqual(mockResponse);
+  });
+
+  it('calls chatCompletion with filter configuration supplied using multiple convenience functions', async () => {
+    const llamaFilter = buildLlamaGuardFilter('self_harm');
+    const azureContentFilter = buildAzureContentSafetyFilter({
+      Sexual: 'ALLOW_SAFE'
+    });
+    const config: OrchestrationModuleConfig = {
+      llm: {
+        model_name: 'gpt-35-turbo-16k',
+        model_params: { max_tokens: 50, temperature: 0.1 }
+      },
+      templating: {
+        template: [
+          {
+            role: 'user',
+            content: 'Create {{?number}} paraphrases of {{?phrase}}'
+          }
+        ]
+      },
+      filtering: {
+        input: {
+          filters: [llamaFilter, azureContentFilter]
+        },
+        output: {
+          filters: [llamaFilter, azureContentFilter]
+        }
+      }
+    };
+    const prompt = {
+      inputParams: { phrase: 'I like myself.', number: '20' }
+    };
+    const mockResponse = await parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'orchestration-chat-completion-multiple-filter-config.json'
     );
 
     mockInference(

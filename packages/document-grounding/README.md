@@ -15,6 +15,7 @@ This package incorporates generative AI document grounding capabilities into you
   - [Create a Collection](#create-a-collection)
   - [Create a Document](#create-a-document)
   - [Custom Destination](#custom-destination)
+- [Error Handling](#error-handling)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
@@ -103,6 +104,10 @@ const response = await VectorApi.deleteCollectionById(collectionId, {
   destinationName: 'my-destination'
 });
 ```
+
+## Error Handling
+
+For error handling instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#error-handling).
 
 ## Local Testing
 

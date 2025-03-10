@@ -9,12 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
-      - uses: sap/cloud-sdk-js/.github/actions/merge-changelogs@main
-        name: merge changelogs
-        id: merge-changelogs
+      - name: Get Changelog
+        uses: sap/cloud-sdk-js/.github/actions/get-changelog@main
+        id: get-changelog
       - uses: ncipollo/release-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           draft: true
-          body: ${{ steps.merge-changelogs.outputs.changelog }}
+          body: ${{ steps.get-changelog.outputs.changelog }}

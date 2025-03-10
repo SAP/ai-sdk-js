@@ -1,5 +1,35 @@
 # @sap-ai-sdk/langchain
 
+## 1.9.0
+
+### Minor Changes
+
+- a45dc06: [New Functionality] Add LangChain Orchestration client.
+
+### Patch Changes
+
+- Updated dependencies [bc51f59]
+- Updated dependencies [bfed500]
+- Updated dependencies [84175fb]
+  - @sap-ai-sdk/orchestration@1.9.0
+  - @sap-ai-sdk/ai-api@1.9.0
+  - @sap-ai-sdk/core@1.9.0
+  - @sap-ai-sdk/foundation-models@1.9.0
+
+## 1.8.0
+
+### Minor Changes
+
+- cd06f2a: [Fixed Issue] Add `tool_calls` array to assistant messages only when it is not empty.
+
+### Patch Changes
+
+- Updated dependencies [09b0d2d]
+- Updated dependencies [1731104]
+  - @sap-ai-sdk/foundation-models@1.8.0
+  - @sap-ai-sdk/ai-api@1.8.0
+  - @sap-ai-sdk/core@1.8.0
+
 ## 1.7.0
 
 ### Minor Changes

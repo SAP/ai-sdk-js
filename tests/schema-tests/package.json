@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/schema-tests",
-  "version": "1.7.0",
+  "version": "1.9.0",
   "description": "Tests leveraging zod to ensure correct schema in the SAP AI SDK for JavaScript.",
   "type": "module",
   "private": true,
