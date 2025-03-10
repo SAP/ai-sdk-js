@@ -11,9 +11,6 @@
     "dist/**/*.d.ts",
     "dist/**/*.d.ts.map"
   ],
-  "engines": {
-    "node": "^20"
-  },
   "scripts": {
     "start": "node --loader ts-node/esm src/server.ts",
     "local": "node --env-file=.env --loader ts-node/esm src/server.ts",
