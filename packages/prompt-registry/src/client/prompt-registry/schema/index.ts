@@ -3,7 +3,6 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-export * from './provisioning-response.js';
 export * from './template.js';
 export * from './single-chat-template.js';
 export * from './multi-chat-template.js';

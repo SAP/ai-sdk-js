@@ -6,81 +6,10 @@ info:
   description: Prompt Storage service for Design time & Runtime prompt templates.
 
 tags:
-  - name: health
-    description: Tag for health check
-  - name: internal
-    description: Tag for internal operations
   - name: prompt templates
     description: Tag for prompt templates operations
 
 paths:
-  /healthz:
-    get:
-      operationId: registry.controller.prompt_controller.healthz
-      x-sap-cloud-sdk-operation-name: healthz
-      description: Health check endpoint
-      tags:
-        - health
-      responses:
-        '200':
-          description: 'Service is up and running.'
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: 'OK'
-        '503':
-          description: 'Service is unavailable.'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: 'Service Unavailable'
-  /internal/promptTemplates/provisioning:
-    parameters:
-      - in: header
-        name: AI-Main-Tenant
-        required: true
-        schema:
-          type: string
-        description: The main tenant name
-    post:
-      operationId: registry.controller.prompt_controller.onboard_tenant
-      x-sap-cloud-sdk-operation-name: onboardTenant
-      description: Onboard a tenant
-      tags:
-        - internal
-      responses:
-        200:
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProvisioningResponse'
-        403:
-          $ref: '#/components/responses/ForbiddenError'
-        default:
-          $ref: '#/components/responses/CommonError'
-    delete:
-      operationId: registry.controller.prompt_controller.offboard_tenant
-      x-sap-cloud-sdk-operation-name: offboardTenant
-      description: Offboard a tenant
-      tags:
-        - internal
-      responses:
-        200:
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProvisioningResponse'
-        403:
-          $ref: '#/components/responses/ForbiddenError'
-        default:
-          $ref: '#/components/responses/CommonError'
   /lm/promptTemplates:
     post:
       operationId: registry.controller.prompt_controller.create_update_prompt_template
@@ -377,13 +306,6 @@ paths:
 
 components:
   schemas:
-    ProvisioningResponse:
-      type: object
-      required:
-        - message
-      properties:
-        message:
-          type: string
     Template:
       oneOf:
         - $ref: '#/components/schemas/SingleChatTemplate'
