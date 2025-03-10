@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+import type { ModuleResultsSynchronous } from './module-results-synchronous.js';
 import type { ModuleResultsStreaming } from './module-results-streaming.js';
 /**
  * Representation of the 'ErrorResponse' schema.
@@ -25,5 +26,5 @@ export type ErrorResponse = {
    * @example "LLM Module"
    */
   location: string;
-  module_results?: ModuleResultsStreaming;
+  module_results?: ModuleResultsSynchronous | ModuleResultsStreaming;
 } & Record<string, any>;
