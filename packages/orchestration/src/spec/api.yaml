@@ -79,7 +79,6 @@ components:
         - $ref: '#/components/schemas/ChatCompletionRequestUserMessage'
         - $ref: '#/components/schemas/ChatCompletionRequestAssistantMessage'
         - $ref: '#/components/schemas/ChatCompletionRequestToolMessage'
-
     ChatCompletionRequestSystemMessage:
       type: object
       additionalProperties: false
@@ -101,7 +100,6 @@ components:
     ChatCompletionRequestSystemMessageContentPart:
       oneOf:
         - $ref: '#/components/schemas/TextContent'
-
     ChatCompletionRequestAssistantMessage:
       type: object
       additionalProperties: false
@@ -127,7 +125,6 @@ components:
       oneOf:
         - $ref: '#/components/schemas/TextContent'
         - $ref: '#/components/schemas/RefusalContent'
-
     ChatCompletionRequestUserMessage:
       type: object
       additionalProperties: false
@@ -150,7 +147,6 @@ components:
       oneOf:
         - $ref: '#/components/schemas/TextContent'
         - $ref: '#/components/schemas/ImageContent'
-
     ChatCompletionRequestToolMessage:
       type: object
       additionalProperties: false
@@ -175,31 +171,21 @@ components:
     ChatCompletionRequestToolMessageContentPart:
       oneOf:
         - $ref: '#/components/schemas/TextContent'
-
-    SingleChatMessage:
+    ResponseChatMessage:
       type: object
-      required:
-        - role
-        - content
       additionalProperties: false
       properties:
         role:
           type: string
-          example: user
+          enum: [assistant]
+          example: assistant
         content:
           type: string
-
-    ResponseChatMessage:
-      allOf:
-        - $ref: '#/components/schemas/SingleChatMessage'
-        - type: object
-          additionalProperties: false
-          properties:
-            refusal:
-              type: string
-              example: "I'm sorry, I can't answer that question."
-            tool_calls:
-              $ref: '#/components/schemas/ResponseMessageToolCalls'
+        refusal:
+          type: string
+          example: "I'm sorry, I can't answer that question."
+        tool_calls:
+          $ref: '#/components/schemas/ResponseMessageToolCalls'
     # below tool message definitions are copied from openai spec: https://github.com/openai/openai-openapi/blob/e0cb2d721753e13e69e918465795d6e9f87ab15a/openapi.yaml#L11007
     # only renaming them to differentiate them from the openai python classes
     ResponseMessageToolCalls:
@@ -240,21 +226,6 @@ components:
         - id
         - type
         - function
-
-    MultiChatMessage:
-      type: object
-      required:
-        - role
-        - content
-      additionalProperties: false
-      properties:
-        role:
-          type: string
-          example: user
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/MultiChatMessageContent'
 
     # same as OpenAI's ChatCompletionContentPartParam
     MultiChatMessageContent:
