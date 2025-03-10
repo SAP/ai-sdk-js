@@ -4,15 +4,24 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 export * from './completion-post-request.js';
-export * from './chat-message.js';
 export * from './chat-messages.js';
 export * from './templating-chat-message.js';
+export * from './chat-message.js';
+export * from './chat-completion-request-system-message.js';
+export * from './chat-completion-request-system-message-content-part.js';
+export * from './chat-completion-request-assistant-message.js';
+export * from './chat-completion-request-assistant-message-content-part.js';
+export * from './chat-completion-request-user-message.js';
+export * from './chat-completion-request-user-message-content-part.js';
+export * from './chat-completion-request-tool-message.js';
+export * from './chat-completion-request-tool-message-content-part.js';
 export * from './single-chat-message.js';
 export * from './response-chat-message.js';
 export * from './response-message-tool-calls.js';
 export * from './response-message-tool-call.js';
 export * from './multi-chat-message.js';
 export * from './multi-chat-message-content.js';
+export * from './refusal-content.js';
 export * from './text-content.js';
 export * from './image-content.js';
 export * from './chat-delta.js';
