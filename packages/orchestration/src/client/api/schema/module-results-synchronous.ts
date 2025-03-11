@@ -5,11 +5,11 @@
  */
 import type { ModuleResultsBase } from './module-results-base.js';
 import type { LLMModuleResultSynchronous } from './llm-module-result-synchronous.js';
-import type { LlmChoice } from './llm-choice.js';
+import type { LLMChoiceSynchronous } from './llm-choice-synchronous.js';
 /**
  * Synchronous results of each module.
  */
 export type ModuleResultsSynchronous = ModuleResultsBase & {
   llm?: LLMModuleResultSynchronous;
-  output_unmasking?: LlmChoice[];
+  output_unmasking?: LLMChoiceSynchronous[];
 } & Record<string, any>;

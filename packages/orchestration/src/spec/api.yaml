@@ -308,7 +308,7 @@ components:
         grounding_module_config:
           $ref: '#/components/schemas/GroundingModuleConfig'
 
-    # Abstract base class encompassing fields for both `ModuleResultsSynchronous` and `ModuleResultsStreaming`
+    # Abstract bas\e class encompassing fields for both `ModuleResultsSynchronous` and `ModuleResultsStreaming`
     # Not to be instantiated by llm-orchestration code
     ModuleResultsBase:
       description: Results of each module.
@@ -339,7 +339,7 @@ components:
             output_unmasking:
               type: array
               items:
-                $ref: '#/components/schemas/LLMChoice'
+                $ref: '#/components/schemas/LLMChoiceSynchronous'
 
     ModuleResultsStreaming:
       description: Streaming results of each module.
@@ -443,7 +443,7 @@ components:
           type: array
           description: Choices
           items:
-            $ref: '#/components/schemas/LLMChoice'
+            $ref: '#/components/schemas/LLMChoiceSynchronous'
         usage:
           $ref: '#/components/schemas/TokenUsage'
 
@@ -480,7 +480,7 @@ components:
         usage:
           $ref: '#/components/schemas/TokenUsage'
 
-    LLMChoice:
+    LLMChoiceSynchronous:
       type: object
       required:
         - index
@@ -1203,10 +1203,26 @@ components:
           type: string
           description: Where the error occurred
           example: 'LLM Module'
-        module_results:
-          oneOf:
-            - $ref: '#/components/schemas/ModuleResultsSynchronous'
-            - $ref: '#/components/schemas/ModuleResultsStreaming'
+
+    ErrorResponseSynchronous:
+      type: object
+      additionalProperties: false
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties:
+            module_results:
+              $ref: '#/components/schemas/ModuleResultsSynchronous'
+
+    ErrorResponseStreaming:
+      type: object
+      additionalProperties: false
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties:
+            module_results:
+              $ref: '#/components/schemas/ModuleResultsStreaming'
 
   responses:
     BadRequest:
