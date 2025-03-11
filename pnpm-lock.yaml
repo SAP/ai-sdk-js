@@ -325,6 +325,9 @@ importers:
       '@sap-ai-sdk/orchestration':
         specifier: canary
         version: 1.9.1-20250310013026.0
+      '@sap-ai-sdk/prompt-registry':
+        specifier: canary
+        version: 1.9.1-20250311013131.0
       '@sap-cloud-sdk/util':
         specifier: ^4.0.1
         version: 4.0.1
@@ -1185,6 +1188,9 @@ packages:
   '@sap-ai-sdk/core@1.9.1-20250310013026.0':
     resolution: {integrity: sha512-RWW3QjG+3UdzyxKwPPFnsUwVzJuecFHggtWg+qJhUQSP02bl92muRDFISxOoYY19whbWJ/O0CHWiN7viyboqLA==}
 
+  '@sap-ai-sdk/core@1.9.1-20250311013131.0':
+    resolution: {integrity: sha512-Qqki1pdplmpD9licJ5i1vvHmMUrxg1irCinqP32mbA/e4KcGGc9Ts9IyH5JVQRglYOru/Y6CILmZLd5+GGyVDw==}
+
   '@sap-ai-sdk/document-grounding@1.9.1-20250310013026.0':
     resolution: {integrity: sha512-vSq58NoMUhPi/n6Jm1w2x3+eRFHiHoQuz66PRHKlW9SVPz/Ofu1A3PSYMZca8UJ7ulOOPHy2YRqdSQfnfp/PXA==}
 
@@ -1196,6 +1202,9 @@ packages:
 
   '@sap-ai-sdk/orchestration@1.9.1-20250310013026.0':
     resolution: {integrity: sha512-Fj7wC6InVpOEW/4E8xOXwSgCPakyjq+ZHI/Wgerel8Gb72/UFB3J+aN6gd0Qy3bG0wHCU+0kyGwZDW5Z7rerZQ==}
+
+  '@sap-ai-sdk/prompt-registry@1.9.1-20250311013131.0':
+    resolution: {integrity: sha512-Nb58SjhsXcDkRf9NQvQ2Vov+e8blz0KUd2NEv9DH50/N1PGecjtHXJWJTE5LIUpNVS5W62TJPv38P/IxQr8TuA==}
 
   '@sap-cloud-sdk/connectivity@4.0.1':
     resolution: {integrity: sha512-teWKO15Qqb1FkoLtb2/zBszSLBvnHsOeeE9DUQHQ9rTUZ3z7MJOPuIDPNgcxUB3jgL+RC6dl1a4JqT9e22rYxA==}
@@ -6114,6 +6123,16 @@ snapshots:
       - debug
       - supports-color
 
+  '@sap-ai-sdk/core@1.9.1-20250311013131.0':
+    dependencies:
+      '@sap-cloud-sdk/connectivity': 4.0.1
+      '@sap-cloud-sdk/http-client': 4.0.1
+      '@sap-cloud-sdk/openapi': 4.0.1
+      '@sap-cloud-sdk/util': 4.0.1
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
   '@sap-ai-sdk/document-grounding@1.9.1-20250310013026.0':
     dependencies:
       '@sap-ai-sdk/core': 1.9.1-20250310013026.0
@@ -6157,6 +6176,13 @@ snapshots:
       - debug
       - supports-color
 
+  '@sap-ai-sdk/prompt-registry@1.9.1-20250311013131.0':
+    dependencies:
+      '@sap-ai-sdk/core': 1.9.1-20250311013131.0
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
   '@sap-cloud-sdk/connectivity@4.0.1':
     dependencies:
       '@sap-cloud-sdk/resilience': 4.0.1
@@ -6178,7 +6204,7 @@ snapshots:
       eslint: 9.22.0
       eslint-config-prettier: 10.0.2(eslint@9.22.0)
       eslint-import-resolver-typescript: 3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0)(typescript@5.8.2))(eslint@9.22.0))(eslint@9.22.0)
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0)(typescript@5.8.2))(eslint-import-resolver-typescript@3.8.3)(eslint@9.22.0)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0)(typescript@5.8.2))(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0)(typescript@5.8.2))(eslint@9.22.0))(eslint@9.22.0))(eslint@9.22.0)
       eslint-plugin-jsdoc: 50.6.3(eslint@9.22.0)
       eslint-plugin-prettier: 5.2.3(@types/eslint@8.56.10)(eslint-config-prettier@10.0.2(eslint@9.22.0))(eslint@9.22.0)(prettier@3.5.3)
       eslint-plugin-regex: 1.10.0(eslint@9.22.0)
@@ -7655,7 +7681,7 @@ snapshots:
       stable-hash: 0.0.4
       tinyglobby: 0.2.12
     optionalDependencies:
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0)(typescript@5.8.2))(eslint-import-resolver-typescript@3.8.3)(eslint@9.22.0)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0)(typescript@5.8.2))(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0)(typescript@5.8.2))(eslint@9.22.0))(eslint@9.22.0))(eslint@9.22.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -7670,7 +7696,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0)(typescript@5.8.2))(eslint-import-resolver-typescript@3.8.3)(eslint@9.22.0):
+  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0)(typescript@5.8.2))(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0)(typescript@5.8.2))(eslint@9.22.0))(eslint@9.22.0))(eslint@9.22.0):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.8
