@@ -5,6 +5,6 @@
  */
 import type { TextContent } from './text-content.js';
 /**
- * Representation of the 'ChatCompletionRequestSystemMessageContentPart' schema.
+ * Representation of the 'ToolChatMessageContentPart' schema.
  */
-export type ChatCompletionRequestSystemMessageContentPart = TextContent;
+export type ToolChatMessageContentPart = TextContent;

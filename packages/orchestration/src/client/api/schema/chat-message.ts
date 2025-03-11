@@ -3,15 +3,15 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { ChatCompletionRequestSystemMessage } from './chat-completion-request-system-message.js';
-import type { ChatCompletionRequestUserMessage } from './chat-completion-request-user-message.js';
-import type { ChatCompletionRequestAssistantMessage } from './chat-completion-request-assistant-message.js';
-import type { ChatCompletionRequestToolMessage } from './chat-completion-request-tool-message.js';
+import type { SystemChatMessage } from './system-chat-message.js';
+import type { UserChatMessage } from './user-chat-message.js';
+import type { AssistantChatMessage } from './assistant-chat-message.js';
+import type { ToolChatMessage } from './tool-chat-message.js';
 /**
  * Representation of the 'ChatMessage' schema.
  */
 export type ChatMessage =
-  | ChatCompletionRequestSystemMessage
-  | ChatCompletionRequestUserMessage
-  | ChatCompletionRequestAssistantMessage
-  | ChatCompletionRequestToolMessage;
+  | SystemChatMessage
+  | UserChatMessage
+  | AssistantChatMessage
+  | ToolChatMessage;

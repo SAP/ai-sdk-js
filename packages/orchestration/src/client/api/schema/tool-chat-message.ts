@@ -3,15 +3,15 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { TextContent } from './text-content.js';
+import type { ToolChatMessageContentPart } from './tool-chat-message-content-part.js';
 /**
- * Representation of the 'ChatCompletionRequestToolMessage' schema.
+ * Representation of the 'ToolChatMessage' schema.
  */
-export type ChatCompletionRequestToolMessage = {
+export type ToolChatMessage = {
   /**
    * @example "tool"
    */
   role: 'tool';
   tool_call_id: string;
-  content: string | TextContent[];
+  content: string | ToolChatMessageContentPart[];
 };

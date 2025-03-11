@@ -6,8 +6,6 @@
 import type { TextContent } from './text-content.js';
 import type { ImageContent } from './image-content.js';
 /**
- * Representation of the 'ChatCompletionRequestUserMessageContentPart' schema.
+ * Representation of the 'UserChatMessageContentPart' schema.
  */
-export type ChatCompletionRequestUserMessageContentPart =
-  | TextContent
-  | ImageContent;
+export type UserChatMessageContentPart = TextContent | ImageContent;
