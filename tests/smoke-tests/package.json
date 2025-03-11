@@ -23,6 +23,7 @@
     "@sap-ai-sdk/langchain": "canary",
     "@sap-ai-sdk/orchestration": "canary",
     "@sap-ai-sdk/document-grounding": "canary",
+    "@sap-ai-sdk/prompt-registry": "canary",
     "@sap-cloud-sdk/util": "^4.0.1",
     "express": "^4.21.2"
   },
