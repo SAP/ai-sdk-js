@@ -4,8 +4,7 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import type { TextContent } from './text-content.js';
-import type { RefusalContent } from './refusal-content.js';
 /**
  * Representation of the 'AssistantChatMessageContentPart' schema.
  */
-export type AssistantChatMessageContentPart = TextContent | RefusalContent;
+export type AssistantChatMessageContentPart = TextContent;

@@ -8,6 +8,12 @@
  * Representation of the 'TextContent' schema.
  */
 export type TextContent = {
+  /**
+   * The text content.
+   */
+  text?: string;
+  /**
+   * The type of the content part.
+   */
   type: 'text';
-  text: string;
 };

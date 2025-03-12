@@ -5,9 +5,18 @@
  */
 import type { UserChatMessageContentPart } from './user-chat-message-content-part.js';
 /**
- * Representation of the 'UserChatMessage' schema.
+ * Messages sent by an end user, containing prompts or additional context
+ * information.
+ *
  */
 export type UserChatMessage = {
-  role: 'user';
+  /**
+   * The contents of the user message.``
+   *
+   */
   content: string | UserChatMessageContentPart[];
-};
+  /**
+   * An optional name for the participant. Provides the model information to differentiate between participants of the same role.
+   */
+  role: 'user';
+} & Record<string, any>;
