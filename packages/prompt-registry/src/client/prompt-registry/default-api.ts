@@ -5,6 +5,7 @@
  */
 import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';
 import type {
+  ProvisioningResponse,
   PromptTemplateListResponse,
   PromptTemplatePostRequest,
   PromptTemplatePostResponse,
@@ -14,17 +15,60 @@ import type {
   PromptTemplateSubstitutionResponse
 } from './schema/index.js';
 /**
- * Representation of the 'PromptTemplatesApi'.
+ * Representation of the 'DefaultApi'.
  * This API is part of the 'prompt-registry' service.
  */
-export const PromptTemplatesApi = {
+export const DefaultApi = {
   _defaultBasePath: undefined,
   /**
-   * List prompt templates
+   * Create a request builder for execution of get requests to the '/healthz' endpoint.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  registryControllerPromptControllerHealthz: () =>
+    new OpenApiRequestBuilder<string>(
+      'get',
+      '/healthz',
+      {},
+      DefaultApi._defaultBasePath
+    ),
+  /**
+   * Create a request builder for execution of post requests to the '/internal/promptTemplates/provisioning' endpoint.
+   * @param headerParameters - Object containing the following keys: AI-Main-Tenant.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  registryControllerPromptControllerOnboardTenant: (headerParameters: {
+    'AI-Main-Tenant': string;
+  }) =>
+    new OpenApiRequestBuilder<ProvisioningResponse>(
+      'post',
+      '/internal/promptTemplates/provisioning',
+      {
+        headerParameters
+      },
+      DefaultApi._defaultBasePath
+    ),
+  /**
+   * Create a request builder for execution of delete requests to the '/internal/promptTemplates/provisioning' endpoint.
+   * @param headerParameters - Object containing the following keys: AI-Main-Tenant.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  registryControllerPromptControllerOffboardTenant: (headerParameters: {
+    'AI-Main-Tenant': string;
+  }) =>
+    new OpenApiRequestBuilder<ProvisioningResponse>(
+      'delete',
+      '/internal/promptTemplates/provisioning',
+      {
+        headerParameters
+      },
+      DefaultApi._defaultBasePath
+    ),
+  /**
+   * Create a request builder for execution of get requests to the '/lm/promptTemplates' endpoint.
    * @param queryParameters - Object containing the following keys: scenario, name, version, retrieve, includeSpec.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  listPromptTemplates: (queryParameters?: {
+  registryControllerPromptControllerListPromptTemplates: (queryParameters?: {
     scenario?: string;
     name?: string;
     version?: string;
@@ -37,30 +81,32 @@ export const PromptTemplatesApi = {
       {
         queryParameters
       },
-      PromptTemplatesApi._defaultBasePath
+      DefaultApi._defaultBasePath
     ),
   /**
-   * Create or update a prompt template
+   * Create a request builder for execution of post requests to the '/lm/promptTemplates' endpoint.
    * @param body - Request body.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  createUpdatePromptTemplate: (body: PromptTemplatePostRequest) =>
+  registryControllerPromptControllerCreateUpdatePromptTemplate: (
+    body: PromptTemplatePostRequest
+  ) =>
     new OpenApiRequestBuilder<PromptTemplatePostResponse>(
       'post',
       '/lm/promptTemplates',
       {
         body
       },
-      PromptTemplatesApi._defaultBasePath
+      DefaultApi._defaultBasePath
     ),
   /**
-   * List prompt template history
+   * Create a request builder for execution of get requests to the '/lm/scenarios/{scenario}/promptTemplates/{name}/versions/{version}/history' endpoint.
    * @param scenario - Path parameter.
    * @param version - Path parameter.
    * @param name - Path parameter.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  listPromptTemplateHistory: (
+  registryControllerPromptControllerListPromptTemplateHistory: (
     scenario: string,
     version: string,
     name: string
@@ -71,72 +117,80 @@ export const PromptTemplatesApi = {
       {
         pathParameters: { scenario, version, name }
       },
-      PromptTemplatesApi._defaultBasePath
+      DefaultApi._defaultBasePath
     ),
   /**
-   * Get prompt template by UUID
+   * Create a request builder for execution of get requests to the '/lm/promptTemplates/{promptTemplateId}' endpoint.
    * @param promptTemplateId - Path parameter.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  getPromptTemplateByUuid: (promptTemplateId: string) =>
+  registryControllerPromptControllerGetPromptTemplateByUuid: (
+    promptTemplateId: string
+  ) =>
     new OpenApiRequestBuilder<PromptTemplateGetResponse>(
       'get',
       '/lm/promptTemplates/{promptTemplateId}',
       {
         pathParameters: { promptTemplateId }
       },
-      PromptTemplatesApi._defaultBasePath
+      DefaultApi._defaultBasePath
     ),
   /**
-   * Delete prompt template
+   * Create a request builder for execution of delete requests to the '/lm/promptTemplates/{promptTemplateId}' endpoint.
    * @param promptTemplateId - Path parameter.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  deletePromptTemplate: (promptTemplateId: string) =>
+  registryControllerPromptControllerDeletePromptTemplate: (
+    promptTemplateId: string
+  ) =>
     new OpenApiRequestBuilder<PromptTemplateDeleteResponse>(
       'delete',
       '/lm/promptTemplates/{promptTemplateId}',
       {
         pathParameters: { promptTemplateId }
       },
-      PromptTemplatesApi._defaultBasePath
+      DefaultApi._defaultBasePath
     ),
   /**
-   * Import prompt template
+   * Create a request builder for execution of post requests to the '/lm/promptTemplates/import' endpoint.
    * @param body - Request body.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  importPromptTemplate: (body: any | undefined) =>
+  registryControllerPromptControllerImportPromptTemplate: (
+    body: any | undefined
+  ) =>
     new OpenApiRequestBuilder<PromptTemplatePostResponse>(
       'post',
       '/lm/promptTemplates/import',
       {
         body
       },
-      PromptTemplatesApi._defaultBasePath
+      DefaultApi._defaultBasePath
     ),
   /**
-   * Export prompt template
+   * Create a request builder for execution of get requests to the '/lm/promptTemplates/{promptTemplateId}/export' endpoint.
    * @param promptTemplateId - Path parameter.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  exportPromptTemplate: (promptTemplateId: string) =>
+  registryControllerPromptControllerExportPromptTemplate: (
+    promptTemplateId: string
+  ) =>
     new OpenApiRequestBuilder<string>(
       'get',
       '/lm/promptTemplates/{promptTemplateId}/export',
       {
         pathParameters: { promptTemplateId }
       },
-      PromptTemplatesApi._defaultBasePath
+      DefaultApi._defaultBasePath
     ),
   /**
-   * Parse prompt template by ID
+   * Create a request builder for execution of post requests to the '/lm/promptTemplates/{promptTemplateId}/substitution' endpoint.
    * @param promptTemplateId - Path parameter.
    * @param body - Request body.
    * @param queryParameters - Object containing the following keys: metadata.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  parsePromptTemplateById: (
+  registryControllerPromptControllerParsePromptTemplateById: (
     promptTemplateId: string,
     body: PromptTemplateSubstitutionRequest | undefined,
     queryParameters?: { metadata?: boolean }
@@ -149,10 +203,10 @@ export const PromptTemplatesApi = {
         body,
         queryParameters
       },
-      PromptTemplatesApi._defaultBasePath
+      DefaultApi._defaultBasePath
     ),
   /**
-   * Parse prompt template by name and version
+   * Create a request builder for execution of post requests to the '/lm/scenarios/{scenario}/promptTemplates/{name}/versions/{version}/substitution' endpoint.
    * @param scenario - Path parameter.
    * @param version - Path parameter.
    * @param name - Path parameter.
@@ -160,7 +214,7 @@ export const PromptTemplatesApi = {
    * @param queryParameters - Object containing the following keys: metadata.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  parsePromptTemplateByNameVersion: (
+  registryControllerPromptControllerParsePromptTemplateByNameVersion: (
     scenario: string,
     version: string,
     name: string,
@@ -175,6 +229,6 @@ export const PromptTemplatesApi = {
         body,
         queryParameters
       },
-      PromptTemplatesApi._defaultBasePath
+      DefaultApi._defaultBasePath
     )
 };

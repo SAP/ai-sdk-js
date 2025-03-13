@@ -5,18 +5,65 @@ info:
   title: Prompt Registry API
   description: Prompt Storage service for Design time & Runtime prompt templates.
 
-tags:
-  - name: prompt templates
-    description: Tag for prompt templates operations
-
 paths:
+  /healthz:
+    get:
+      operationId: registry.controller.prompt_controller.healthz
+      responses:
+        '200':
+          description: 'Service is up and running.'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 'OK'
+        '503':
+          description: 'Service is unavailable.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'Service Unavailable'
+  /internal/promptTemplates/provisioning:
+    parameters:
+      - in: header
+        name: AI-Main-Tenant
+        required: true
+        schema:
+          type: string
+        description: The main tenant name
+    post:
+      operationId: registry.controller.prompt_controller.onboard_tenant
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisioningResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        default:
+          $ref: '#/components/responses/CommonError'
+    delete:
+      operationId: registry.controller.prompt_controller.offboard_tenant
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisioningResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        default:
+          $ref: '#/components/responses/CommonError'
   /lm/promptTemplates:
     post:
       operationId: registry.controller.prompt_controller.create_update_prompt_template
-      x-sap-cloud-sdk-operation-name: createUpdatePromptTemplate
-      description: Create or update a prompt template
-      tags:
-        - prompt templates
       requestBody:
         required: true
         content:
@@ -38,10 +85,6 @@ paths:
           $ref: '#/components/responses/CommonError'
     get:
       operationId: registry.controller.prompt_controller.list_prompt_templates
-      x-sap-cloud-sdk-operation-name: listPromptTemplates
-      description: List prompt templates
-      tags:
-        - prompt templates
       parameters:
         - name: scenario
           in: query
@@ -81,10 +124,6 @@ paths:
   /lm/scenarios/{scenario}/promptTemplates/{name}/versions/{version}/history:
     get:
       operationId: registry.controller.prompt_controller.list_prompt_template_history
-      x-sap-cloud-sdk-operation-name: listPromptTemplateHistory
-      description: List prompt template history
-      tags:
-        - prompt templates
       parameters:
         - name: scenario
           in: path
@@ -117,10 +156,6 @@ paths:
   /lm/promptTemplates/{promptTemplateId}:
     get:
       operationId: registry.controller.prompt_controller.get_prompt_template_by_uuid
-      x-sap-cloud-sdk-operation-name: getPromptTemplateByUuid
-      description: Get prompt template by UUID
-      tags:
-        - prompt templates
       parameters:
         - name: promptTemplateId
           in: path
@@ -143,10 +178,6 @@ paths:
           $ref: '#/components/responses/CommonError'
     delete:
       operationId: registry.controller.prompt_controller.delete_prompt_template
-      x-sap-cloud-sdk-operation-name: deletePromptTemplate
-      description: Delete prompt template
-      tags:
-        - prompt templates
       parameters:
         - name: promptTemplateId
           in: path
@@ -170,10 +201,6 @@ paths:
   /lm/promptTemplates/import:
     post:
       operationId: registry.controller.prompt_controller.import_prompt_template
-      x-sap-cloud-sdk-operation-name: importPromptTemplate
-      description: Import prompt template
-      tags:
-        - prompt templates
       requestBody:
         content:
           multipart/form-data:
@@ -197,10 +224,6 @@ paths:
   /lm/promptTemplates/{promptTemplateId}/export:
     get:
       operationId: registry.controller.prompt_controller.export_prompt_template
-      x-sap-cloud-sdk-operation-name: exportPromptTemplate
-      description: Export prompt template
-      tags:
-        - prompt templates
       parameters:
         - name: promptTemplateId
           in: path
@@ -223,10 +246,6 @@ paths:
   /lm/promptTemplates/{promptTemplateId}/substitution:
     post:
       operationId: registry.controller.prompt_controller.parse_prompt_template_by_id
-      x-sap-cloud-sdk-operation-name: parsePromptTemplateById
-      description: Parse prompt template by ID
-      tags:
-        - prompt templates
       parameters:
         - name: promptTemplateId
           in: path
@@ -260,10 +279,6 @@ paths:
   /lm/scenarios/{scenario}/promptTemplates/{name}/versions/{version}/substitution:
     post:
       operationId: registry.controller.prompt_controller.parse_prompt_template_by_name_version
-      x-sap-cloud-sdk-operation-name: parsePromptTemplateByNameVersion
-      description: Parse prompt template by name and version
-      tags:
-        - prompt templates
       parameters:
         - name: scenario
           in: path
@@ -306,6 +321,13 @@ paths:
 
 components:
   schemas:
+    ProvisioningResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
     Template:
       oneOf:
         - $ref: '#/components/schemas/SingleChatTemplate'
@@ -374,6 +396,8 @@ components:
       type: object
       required:
         - template
+      additionalProperties:
+        type: object
       properties:
         template:
           type: array
@@ -383,6 +407,9 @@ components:
           type: object
         additionalFields:
           type: object
+          description: >
+            DEPRECATED. Please use additional_fields instead.
+          deprecated: true
         response_format:
           description: >
             Response format that the model output should adhere to.
