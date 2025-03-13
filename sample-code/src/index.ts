@@ -48,3 +48,8 @@ export {
   createDocumentsWithTimestamp,
   deleteCollection
 } from './document-grounding.js';
+
+export {
+  createPromptTemplate,
+  deletePromptTemplate
+} from './prompt-registry.js';
