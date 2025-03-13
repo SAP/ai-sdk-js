@@ -14,6 +14,7 @@ This package incorporates generative AI prompt registry capabilities into your A
 - [Usage](#usage)
   - [List Prompt Templates](#list-prompt-templates)
   - [Custom Destination](#custom-destination)
+- [Error Handling](#error-handling)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
@@ -64,6 +65,10 @@ const response: PromptTemplateListResponse =
     destinationName: 'my-destination'
   });
 ```
+
+## Error Handling
+
+For error handling instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#error-handling).
 
 ## Local Testing
 
