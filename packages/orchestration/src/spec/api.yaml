@@ -87,19 +87,18 @@ components:
           type: string
           enum:
             - system
-          example: system
         content:
-          oneOf:
-            - type: string
-            - type: array
-              items:
-                $ref: '#/components/schemas/SystemChatMessageContentPart'
-              minItems: 1
+          $ref: '#/components/schemas/SystemChatMessageContent'
       required:
         - role
         - content
-    SystemChatMessageContentPart:
-      $ref: '#/components/schemas/TextContent'
+    SystemChatMessageContent:
+      oneOf:
+        - type: string
+        - type: array
+          items:
+            $ref: '#/components/schemas/TextContent'
+          minItems: 1
     AssistantChatMessage:
       type: object
       additionalProperties: false
@@ -108,56 +107,42 @@ components:
           type: string
           enum:
             - assistant
-          example: assistant
         content:
-          oneOf:
-            - type: string
-            - type: array
-              items:
-                $ref: '#/components/schemas/AssistantChatMessageContentPart'
-              minItems: 1
+          $ref: '#/components/schemas/AssistantChatMessageContent'
         refusal:
           type: string
         tool_calls:
           $ref: '#/components/schemas/MessageToolCalls'
       required:
         - role
-    AssistantChatMessageContentPart:
-      $ref: '#/components/schemas/TextContent'
+    AssistantChatMessageContent:
+      oneOf:
+        - type: string
+        - type: array
+          items:
+            $ref: '#/components/schemas/TextContent'
+          minItems: 1
     UserChatMessage:
       type: object
-      title: User message
-      description: |
-        Messages sent by an end user, containing prompts or additional context
-        information.
-      # additionalProperties: false
+      additionalProperties: false
       properties:
         content:
-          description: |
-            The contents of the user message.``
-          oneOf:
-            - type: string
-              description: The text contents of the message.
-              title: Text content
-            - type: array
-              description:
-                An array of content parts with a defined type. Supported options
-                differ based on the [model](/docs/models) being used to generate
-                the response. Can contain text, image, or audio inputs.
-              title: Array of content parts
-              items:
-                $ref: '#/components/schemas/UserChatMessageContentPart'
-              minItems: 1
+          $ref: '#/components/schemas/UserChatMessageContent'
         role:
           type: string
           enum:
             - user
-          description: An optional name for the participant. Provides the model
-            information to differentiate between participants of the same role.
       required:
         - content
         - role
-    UserChatMessageContentPart:
+    UserChatMessageContent:
+      oneOf:
+        - type: string
+        - type: array
+          items:
+            $ref: '#/components/schemas/UserChatMessageContentItem'
+          minItems: 1
+    UserChatMessageContentItem:
       type: object
       additionalProperties: false
       properties:
@@ -166,13 +151,10 @@ components:
           enum:
             - text
             - image_url
-          description: The type of the content part.
         text:
           type: string
-          description: The text content.
         image_url:
           type: string
-          description: The URL of the image content.
       required:
         - type
     ToolChatMessage:
@@ -187,18 +169,18 @@ components:
         tool_call_id:
           type: string
         content:
-          oneOf:
-            - type: string
-            - type: array
-              items:
-                $ref: '#/components/schemas/ToolChatMessageContentPart'
-              minItems: 1
+          $ref: '#/components/schemas/ToolChatMessageContent'
       required:
         - role
         - content
         - tool_call_id
-    ToolChatMessageContentPart:
-      $ref: '#/components/schemas/TextContent'
+    ToolChatMessageContent:
+      oneOf:
+        - type: string
+        - type: array
+          items:
+            $ref: '#/components/schemas/TextContent'
+          minItems: 1
     ResponseChatMessage:
       type: object
       additionalProperties: false
@@ -260,6 +242,32 @@ components:
         - $ref: '#/components/schemas/TextContent'
         - $ref: '#/components/schemas/ImageContent'
 
+    MultiChatMessage:
+      type: object
+      required:
+        - role
+        - content
+      additionalProperties: false
+      properties:
+        role:
+          type: string
+          example: user
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/MultiChatMessageContent'
+    SingleChatMessage:
+      type: object
+      required:
+        - role
+        - content
+      additionalProperties: false
+      properties:
+        role:
+          type: string
+          example: user
+        content:
+          type: string
     RefusalContent:
       type: object
       properties:
@@ -279,12 +287,10 @@ components:
       properties:
         text:
           type: string
-          description: The text content.
         type:
           type: string
           enum:
             - text
-          description: The type of the content part.
       required:
         - type
 

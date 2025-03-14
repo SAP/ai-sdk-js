@@ -5,19 +5,10 @@
  */
 
 /**
- * Representation of the 'UserChatMessageContentPart' schema.
+ * Representation of the 'UserChatMessageContentItem' schema.
  */
-export type UserChatMessageContentPart = {
-  /**
-   * The type of the content part.
-   */
+export type UserChatMessageContentItem = {
   type: 'text' | 'image_url';
-  /**
-   * The text content.
-   */
   text?: string;
-  /**
-   * The URL of the image content.
-   */
   image_url?: string;
 };

@@ -3,20 +3,11 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { UserChatMessageContentPart } from './user-chat-message-content-part.js';
+import type { UserChatMessageContent } from './user-chat-message-content.js';
 /**
- * Messages sent by an end user, containing prompts or additional context
- * information.
- *
+ * Representation of the 'UserChatMessage' schema.
  */
 export type UserChatMessage = {
-  /**
-   * The contents of the user message.``
-   *
-   */
-  content: string | UserChatMessageContentPart[];
-  /**
-   * An optional name for the participant. Provides the model information to differentiate between participants of the same role.
-   */
+  content: UserChatMessageContent;
   role: 'user';
-} & Record<string, any>;
+};

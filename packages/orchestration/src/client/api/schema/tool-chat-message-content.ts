@@ -5,6 +5,6 @@
  */
 import type { TextContent } from './text-content.js';
 /**
- * Representation of the 'ToolChatMessageContentPart' schema.
+ * Representation of the 'ToolChatMessageContent' schema.
  */
-export type ToolChatMessageContentPart = TextContent;
+export type ToolChatMessageContent = string | TextContent[];

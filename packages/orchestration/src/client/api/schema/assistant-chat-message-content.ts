@@ -5,6 +5,6 @@
  */
 import type { TextContent } from './text-content.js';
 /**
- * Representation of the 'SystemChatMessageContentPart' schema.
+ * Representation of the 'AssistantChatMessageContent' schema.
  */
-export type SystemChatMessageContentPart = TextContent;
+export type AssistantChatMessageContent = string | TextContent[];

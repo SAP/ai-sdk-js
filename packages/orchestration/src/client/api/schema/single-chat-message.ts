@@ -5,9 +5,12 @@
  */
 
 /**
- * Representation of the 'TextContent' schema.
+ * Representation of the 'SingleChatMessage' schema.
  */
-export type TextContent = {
-  text?: string;
-  type: 'text';
+export type SingleChatMessage = {
+  /**
+   * @example "user"
+   */
+  role: string;
+  content: string;
 };
