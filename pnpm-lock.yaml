@@ -4,7 +4,7 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-pnpmfileChecksum: sha256-7lht5Q+T9K1tkr5FYaoHEDBAtJqjkSrAs2jGbKMfTIY=
+pnpmfileChecksum: fb3vh7gyjzvxzzal7fbygn3ogm
 
 importers:
 
@@ -170,8 +170,8 @@ importers:
         specifier: ^11.1.0
         version: 11.1.0
       zod-to-json-schema:
-        specifier: ^3.24.3
-        version: 3.24.3(zod@3.24.2)
+        specifier: ^3.24.4
+        version: 3.24.4(zod@3.24.2)
 
   packages/orchestration:
     dependencies:
@@ -265,8 +265,8 @@ importers:
         specifier: ^3.24.2
         version: 3.24.2
       zod-to-json-schema:
-        specifier: ^3.24.3
-        version: 3.24.3(zod@3.24.2)
+        specifier: ^3.24.4
+        version: 3.24.4(zod@3.24.2)
 
   tests/e2e-tests:
     dependencies:
@@ -312,22 +312,22 @@ importers:
         version: 0.1.0(@langchain/core@0.3.42(openai@4.85.2(ws@8.18.0)(zod@3.24.2)))
       '@sap-ai-sdk/ai-api':
         specifier: canary
-        version: 1.9.1-20250310013026.0
+        version: 1.9.1-20250316013131.0
       '@sap-ai-sdk/document-grounding':
         specifier: canary
-        version: 1.9.1-20250310013026.0
+        version: 1.9.1-20250316013131.0
       '@sap-ai-sdk/foundation-models':
         specifier: canary
-        version: 1.9.1-20250310013026.0
+        version: 1.9.1-20250316013131.0
       '@sap-ai-sdk/langchain':
         specifier: canary
-        version: 1.9.1-20250310013026.0(openai@4.85.2(ws@8.18.0)(zod@3.24.2))(zod@3.24.2)
+        version: 1.9.1-20250316013131.0(openai@4.85.2(ws@8.18.0)(zod@3.24.2))(zod@3.24.2)
       '@sap-ai-sdk/orchestration':
         specifier: canary
-        version: 1.9.1-20250310013026.0
+        version: 1.9.1-20250316013131.0
       '@sap-ai-sdk/prompt-registry':
         specifier: canary
-        version: 1.9.1-20250311013131.0
+        version: 1.9.1-20250316013131.0
       '@sap-cloud-sdk/util':
         specifier: ^4.0.1
         version: 4.0.1
@@ -1182,29 +1182,26 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
-  '@sap-ai-sdk/ai-api@1.9.1-20250310013026.0':
-    resolution: {integrity: sha512-0ZeKLKCDe1sHTlKwOGWtWJQNn0YYdf6h4SBlhKrBJtaRTUIdSbMC2/vNC2iKC6nGheEpb04xchgIAHe/+Ntxtg==}
+  '@sap-ai-sdk/ai-api@1.9.1-20250316013131.0':
+    resolution: {integrity: sha512-BpiC3BEg6tIHeHhnf61+hosl3MQd79wuGVIJR169iQ86tswF61iHe4g3IMJb22EY/RQhbVlcjzWdTNWPLLhScA==}
 
-  '@sap-ai-sdk/core@1.9.1-20250310013026.0':
-    resolution: {integrity: sha512-RWW3QjG+3UdzyxKwPPFnsUwVzJuecFHggtWg+qJhUQSP02bl92muRDFISxOoYY19whbWJ/O0CHWiN7viyboqLA==}
+  '@sap-ai-sdk/core@1.9.1-20250316013131.0':
+    resolution: {integrity: sha512-qxwxAn7Lx6RvEcvnODPHTS0h6dtqBR49xRIWJreO4oAuGFxJaG41p9KKYr2nh7mGp43F9rgstDj5YmIO7rHLCQ==}
 
-  '@sap-ai-sdk/core@1.9.1-20250311013131.0':
-    resolution: {integrity: sha512-Qqki1pdplmpD9licJ5i1vvHmMUrxg1irCinqP32mbA/e4KcGGc9Ts9IyH5JVQRglYOru/Y6CILmZLd5+GGyVDw==}
+  '@sap-ai-sdk/document-grounding@1.9.1-20250316013131.0':
+    resolution: {integrity: sha512-kD7mi1rF/zaqyk/TlZ6JPz12owoF2FV7q+/ktaqQVt0R6TA6XDmb3zDUhD9JuVJqxqj5sGjT03CYjIZVZvgLrw==}
 
-  '@sap-ai-sdk/document-grounding@1.9.1-20250310013026.0':
-    resolution: {integrity: sha512-vSq58NoMUhPi/n6Jm1w2x3+eRFHiHoQuz66PRHKlW9SVPz/Ofu1A3PSYMZca8UJ7ulOOPHy2YRqdSQfnfp/PXA==}
+  '@sap-ai-sdk/foundation-models@1.9.1-20250316013131.0':
+    resolution: {integrity: sha512-ESB0BaNpvMXb+4vQDpDgYD+thea0IIvxoG7WTTES3upkyvstaXNGhpRTHT2RiSDgW60TF3NFwRk/SIPC7WdBmg==}
 
-  '@sap-ai-sdk/foundation-models@1.9.1-20250310013026.0':
-    resolution: {integrity: sha512-SHLvJ9ReM4fIxqvtvAeIR+H3bAvVjpWM3UcKS8ZpUEjrzsKYiLJ7t4ew0BaCMN3sw6E7SOUawe8hKgD2S8V8yQ==}
+  '@sap-ai-sdk/langchain@1.9.1-20250316013131.0':
+    resolution: {integrity: sha512-TqJt/Oa8yR7KNEq9usyijmDunBXjeb/1/BEVILO+MvgnI1+n0lFoZ+YU5uYZzKEDOm/ZEcBuxQzFue+qB5KrUQ==}
 
-  '@sap-ai-sdk/langchain@1.9.1-20250310013026.0':
-    resolution: {integrity: sha512-OmeIVrej6u7mMGqBzvzO4p5EJ15qG5QScsOlE7AHorVuXYGuk3Oc1iXCTNh9oydkJ/4Z4umBdj486nVbAvjPGw==}
+  '@sap-ai-sdk/orchestration@1.9.1-20250316013131.0':
+    resolution: {integrity: sha512-1TCz1j4z9mgeROI8P3/a/qqsjfgPzj9msbp6LNSZQ1/i6xU9sQaEoWNR6X98XFp4ODEekp5abaMA7LmXVwRF4w==}
 
-  '@sap-ai-sdk/orchestration@1.9.1-20250310013026.0':
-    resolution: {integrity: sha512-Fj7wC6InVpOEW/4E8xOXwSgCPakyjq+ZHI/Wgerel8Gb72/UFB3J+aN6gd0Qy3bG0wHCU+0kyGwZDW5Z7rerZQ==}
-
-  '@sap-ai-sdk/prompt-registry@1.9.1-20250311013131.0':
-    resolution: {integrity: sha512-Nb58SjhsXcDkRf9NQvQ2Vov+e8blz0KUd2NEv9DH50/N1PGecjtHXJWJTE5LIUpNVS5W62TJPv38P/IxQr8TuA==}
+  '@sap-ai-sdk/prompt-registry@1.9.1-20250316013131.0':
+    resolution: {integrity: sha512-NZYKOvzXoef4pOW69N2Yn5SKd8G2U2/1UCJqkDS2msj5ZPhlWPTZ9cOoG+x0rk1sTmBxVRMuIWngKeh2+oQTxQ==}
 
   '@sap-cloud-sdk/connectivity@4.0.1':
     resolution: {integrity: sha512-teWKO15Qqb1FkoLtb2/zBszSLBvnHsOeeE9DUQHQ9rTUZ3z7MJOPuIDPNgcxUB3jgL+RC6dl1a4JqT9e22rYxA==}
@@ -4720,8 +4717,8 @@ packages:
   undici-types@6.19.8:
     resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
 
-  undici@6.21.1:
-    resolution: {integrity: sha512-q/1rj5D0/zayJB2FraXdaWxbhWiNKDvu8naDT2dl1yTlvJp4BLtOcp2a5BvgGNQpYYJzau7tf1WgKv3b+7mqpQ==}
+  undici@6.21.2:
+    resolution: {integrity: sha512-uROZWze0R0itiAKVPsYhFov9LxrPMHLMEQFszeI2gCN6bnIIZ8twzBCJcN2LJrBBLfrP0t1FW0g+JmKVl8Vk1g==}
     engines: {node: '>=18.17'}
 
   universalify@0.1.2:
@@ -4941,8 +4938,8 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  zod-to-json-schema@3.24.3:
-    resolution: {integrity: sha512-HIAfWdYIt1sssHfYZFCXp4rU1w2r8hVVXYIlmoa0r0gABLs5di3RCqPU5DDROogVz1pAdYBaz7HK5n9pSUNs3A==}
+  zod-to-json-schema@3.24.4:
+    resolution: {integrity: sha512-0uNlcvgabyrni9Ag8Vghj21drk7+7tp7VTwwR7KxxXXc/3pbXz2PHlDgj3cICahgF1kHm4dExBFj7BXrZJXzig==}
     peerDependencies:
       zod: ^3.24.1
 
@@ -6009,7 +6006,7 @@ snapshots:
       p-retry: 4.6.2
       uuid: 10.0.0
       zod: 3.24.2
-      zod-to-json-schema: 3.24.3(zod@3.24.2)
+      zod-to-json-schema: 3.24.4(zod@3.24.2)
     transitivePeerDependencies:
       - openai
 
@@ -6019,7 +6016,7 @@ snapshots:
       js-tiktoken: 1.0.19
       openai: 4.85.2(ws@8.18.0)(zod@3.24.2)
       zod: 3.24.2
-      zod-to-json-schema: 3.24.3(zod@3.24.2)
+      zod-to-json-schema: 3.24.4(zod@3.24.2)
     transitivePeerDependencies:
       - encoding
       - ws
@@ -6104,26 +6101,16 @@ snapshots:
 
   '@rtsao/scc@1.1.0': {}
 
-  '@sap-ai-sdk/ai-api@1.9.1-20250310013026.0':
+  '@sap-ai-sdk/ai-api@1.9.1-20250316013131.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.9.1-20250310013026.0
+      '@sap-ai-sdk/core': 1.9.1-20250316013131.0
       '@sap-cloud-sdk/connectivity': 4.0.1
       '@sap-cloud-sdk/util': 4.0.1
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/core@1.9.1-20250310013026.0':
-    dependencies:
-      '@sap-cloud-sdk/connectivity': 4.0.1
-      '@sap-cloud-sdk/http-client': 4.0.1
-      '@sap-cloud-sdk/openapi': 4.0.1
-      '@sap-cloud-sdk/util': 4.0.1
-    transitivePeerDependencies:
-      - debug
-      - supports-color
-
-  '@sap-ai-sdk/core@1.9.1-20250311013131.0':
+  '@sap-ai-sdk/core@1.9.1-20250316013131.0':
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.0.1
       '@sap-cloud-sdk/http-client': 4.0.1
@@ -6133,17 +6120,17 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/document-grounding@1.9.1-20250310013026.0':
+  '@sap-ai-sdk/document-grounding@1.9.1-20250316013131.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.9.1-20250310013026.0
+      '@sap-ai-sdk/core': 1.9.1-20250316013131.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/foundation-models@1.9.1-20250310013026.0':
+  '@sap-ai-sdk/foundation-models@1.9.1-20250316013131.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 1.9.1-20250310013026.0
-      '@sap-ai-sdk/core': 1.9.1-20250310013026.0
+      '@sap-ai-sdk/ai-api': 1.9.1-20250316013131.0
+      '@sap-ai-sdk/core': 1.9.1-20250316013131.0
       '@sap-cloud-sdk/connectivity': 4.0.1
       '@sap-cloud-sdk/http-client': 4.0.1
       '@sap-cloud-sdk/util': 4.0.1
@@ -6151,34 +6138,34 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/langchain@1.9.1-20250310013026.0(openai@4.85.2(ws@8.18.0)(zod@3.24.2))(zod@3.24.2)':
+  '@sap-ai-sdk/langchain@1.9.1-20250316013131.0(openai@4.85.2(ws@8.18.0)(zod@3.24.2))(zod@3.24.2)':
     dependencies:
       '@langchain/core': 0.3.42(openai@4.85.2(ws@8.18.0)(zod@3.24.2))
-      '@sap-ai-sdk/ai-api': 1.9.1-20250310013026.0
-      '@sap-ai-sdk/core': 1.9.1-20250310013026.0
-      '@sap-ai-sdk/foundation-models': 1.9.1-20250310013026.0
-      '@sap-ai-sdk/orchestration': 1.9.1-20250310013026.0
+      '@sap-ai-sdk/ai-api': 1.9.1-20250316013131.0
+      '@sap-ai-sdk/core': 1.9.1-20250316013131.0
+      '@sap-ai-sdk/foundation-models': 1.9.1-20250316013131.0
+      '@sap-ai-sdk/orchestration': 1.9.1-20250316013131.0
       '@sap-cloud-sdk/connectivity': 4.0.1
       uuid: 11.1.0
-      zod-to-json-schema: 3.24.3(zod@3.24.2)
+      zod-to-json-schema: 3.24.4(zod@3.24.2)
     transitivePeerDependencies:
       - debug
       - openai
       - supports-color
       - zod
 
-  '@sap-ai-sdk/orchestration@1.9.1-20250310013026.0':
+  '@sap-ai-sdk/orchestration@1.9.1-20250316013131.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 1.9.1-20250310013026.0
-      '@sap-ai-sdk/core': 1.9.1-20250310013026.0
+      '@sap-ai-sdk/ai-api': 1.9.1-20250316013131.0
+      '@sap-ai-sdk/core': 1.9.1-20250316013131.0
       '@sap-cloud-sdk/util': 4.0.1
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/prompt-registry@1.9.1-20250311013131.0':
+  '@sap-ai-sdk/prompt-registry@1.9.1-20250316013131.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.9.1-20250311013131.0
+      '@sap-ai-sdk/core': 1.9.1-20250316013131.0
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -6204,7 +6191,7 @@ snapshots:
       eslint: 9.22.0
       eslint-config-prettier: 10.0.2(eslint@9.22.0)
       eslint-import-resolver-typescript: 3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0)(typescript@5.8.2))(eslint@9.22.0))(eslint@9.22.0)
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0)(typescript@5.8.2))(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0)(typescript@5.8.2))(eslint@9.22.0))(eslint@9.22.0))(eslint@9.22.0)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0)(typescript@5.8.2))(eslint-import-resolver-typescript@3.8.3)(eslint@9.22.0)
       eslint-plugin-jsdoc: 50.6.3(eslint@9.22.0)
       eslint-plugin-prettier: 5.2.3(@types/eslint@8.56.10)(eslint-config-prettier@10.0.2(eslint@9.22.0))(eslint@9.22.0)(prettier@3.5.3)
       eslint-plugin-regex: 1.10.0(eslint@9.22.0)
@@ -7160,7 +7147,7 @@ snapshots:
       parse5: 7.2.1
       parse5-htmlparser2-tree-adapter: 7.1.0
       parse5-parser-stream: 7.1.2
-      undici: 6.21.1
+      undici: 6.21.2
       whatwg-mimetype: 4.0.0
     optional: true
 
@@ -7681,7 +7668,7 @@ snapshots:
       stable-hash: 0.0.4
       tinyglobby: 0.2.12
     optionalDependencies:
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0)(typescript@5.8.2))(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0)(typescript@5.8.2))(eslint@9.22.0))(eslint@9.22.0))(eslint@9.22.0)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0)(typescript@5.8.2))(eslint-import-resolver-typescript@3.8.3)(eslint@9.22.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -7696,7 +7683,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0)(typescript@5.8.2))(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0)(typescript@5.8.2))(eslint@9.22.0))(eslint@9.22.0))(eslint@9.22.0):
+  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0)(typescript@5.8.2))(eslint-import-resolver-typescript@3.8.3)(eslint@9.22.0):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.8
@@ -9133,7 +9120,7 @@ snapshots:
       uuid: 10.0.0
       yaml: 2.7.0
       zod: 3.24.2
-      zod-to-json-schema: 3.24.3(zod@3.24.2)
+      zod-to-json-schema: 3.24.4(zod@3.24.2)
     optionalDependencies:
       axios: 1.8.1
       cheerio: 1.0.0
@@ -10466,7 +10453,7 @@ snapshots:
 
   undici-types@6.19.8: {}
 
-  undici@6.21.1:
+  undici@6.21.2:
     optional: true
 
   universalify@0.1.2: {}
@@ -10699,7 +10686,7 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod-to-json-schema@3.24.3(zod@3.24.2):
+  zod-to-json-schema@3.24.4(zod@3.24.2):
     dependencies:
       zod: 3.24.2
 
