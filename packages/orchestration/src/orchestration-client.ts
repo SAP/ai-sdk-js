@@ -21,16 +21,23 @@ import type {
 } from './orchestration-types.js';
 import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+import { parse } from 'yaml';
+import { promptTemplatePostRequestSchema } from '@sap-ai-sdk/prompt-registry';
+import { TemplatingModuleConfig } from './client/api/schema/templating-module-config.js';
 
 const logger = createLogger({
   package: 'orchestration',
   messageContext: 'orchestration-client'
 });
 
+export type OrchestrationModuleConfigWithStringTemplating = Omit<OrchestrationModuleConfig, 'templating'> & {
+  templating: TemplatingModuleConfig | string;
+}
 /**
  * Get the orchestration client.
  */
 export class OrchestrationClient {
+  private config: OrchestrationModuleConfig | string;
   /**
    * Creates an instance of the orchestration client.
    * @param config - Orchestration module configuration. This can either be an `OrchestrationModuleConfig` object or a JSON string obtained from AI Launchpad.
@@ -38,18 +45,52 @@ export class OrchestrationClient {
    * @param destination - The destination to use for the request.
    */
   constructor(
-    private config: OrchestrationModuleConfig | string,
+    config: OrchestrationModuleConfigWithStringTemplating | string,
     private deploymentConfig?: ResourceGroupConfig,
     private destination?: HttpDestinationOrFetchOptions
-  ) {
+  )  {
+    if (typeof config === 'string') {
+      this.validateJsonConfig(config);
+      this.config = config; // Keep as string if it's a JSON string
+    } else if (typeof config.templating === 'string') {
+      this.config = this.parseAndMergeTemplating(config); // Process and assign if templating is a string
+    } else {
+      // Assert the type because TypeScript cannot guarantee that templating is not a string here
+      this.config = config as OrchestrationModuleConfig;
+    }
+  }
+
+/**
+ * Validate if a string is valid JSON.
+ */
+  private validateJsonConfig(config: string): void {
     try {
-      if (typeof config === 'string') {
-        JSON.parse(config);
-      }
+      JSON.parse(config);
     } catch (error) {
       throw new Error(`Could not parse JSON: ${error}`);
     }
   }
+
+ /**
+   * Parse and merge templating into the config object.
+   */
+ private parseAndMergeTemplating(config: OrchestrationModuleConfigWithStringTemplating): OrchestrationModuleConfig {
+  try {
+    const parsedObject = parse(config.templating as string); // We are sure it's a string here
+    const result = promptTemplatePostRequestSchema.safeParse(parsedObject);
+
+    if (result.success) {
+      return {
+        ...config,
+        templating: result.data.spec as TemplatingModuleConfig // Merge parsed templating into config
+      };
+    } else {
+      throw new Error(`Prompt Template YAML does not conform to the defined type: ${result.error}`);
+    }
+  } catch (error) {
+    throw new Error(`Error parsing YAML: ${error}`);
+  }
+}
 
   async chatCompletion(
     prompt?: Prompt,
