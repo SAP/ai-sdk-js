@@ -33,6 +33,6 @@
     "@sap-cloud-sdk/connectivity": "^4.0.1",
     "uuid": "^11.1.0",
     "@langchain/core": "0.3.42",
-    "zod-to-json-schema": "^3.24.3"
+    "zod-to-json-schema": "^3.24.4"
   }
 }
