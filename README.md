@@ -17,6 +17,7 @@ Setup your SAP AI Core instance with SAP Cloud SDK for AI.
   - [@sap-ai-sdk/foundation-models](#sap-ai-sdkfoundation-models)
   - [@sap-ai-sdk/langchain](#sap-ai-sdklangchain)
   - [@sap-ai-sdk/orchestration](#sap-ai-sdkorchestration)
+  - [@sap-ai-sdk/document-grounding](#sap-ai-sdkdocument-grounding)
   - [@sap-ai-sdk/prompt-registry](#sap-ai-sdkprompt-registry)
 - [SAP Cloud SDK for AI Sample Project](#sap-cloud-sdk-for-ai-sample-project)
 - [Error Handling](#error-handling)
@@ -91,7 +92,25 @@ $ npm install @sap-ai-sdk/orchestration
 
 For details on orchestration client, refer to this [document](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md).
 
+### @sap-ai-sdk/document-grounding
+
+> [!warning]
+> This package is still in **beta** and is subject to breaking changes. Use it with caution.
+
+This package incorporates generative AI document grounding [Pipeline API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/pipeline-api-a9badce6a4da4df68e98549d64aa2217), [Vector API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/vector-api-0358c5ca839d4cf7b4982dbcbc1ba7ff) and [Retrieval API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/retrieval-api) into your AI activities in SAP AI Core and SAP AI Launchpad.
+
+#### Installation
+
+```
+$ npm install @sap-ai-sdk/document-grounding
+```
+
+For details on document grounding client, refer to this [document](https://github.com/SAP/ai-sdk-js/blob/main/packages/document-grounding/README.md).
+
 ### @sap-ai-sdk/prompt-registry
+
+> [!warning]
+> This package is still in **beta** and is subject to breaking changes. Use it with caution.
 
 This package incorporates generative AI [prompt registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) into your AI activities in SAP AI Core and SAP AI Launchpad.
 
