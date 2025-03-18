@@ -109,9 +109,6 @@ For details on document grounding client, refer to this [document](https://githu
 
 ### @sap-ai-sdk/prompt-registry
 
-> [!warning]
-> This package is still in **beta** and is subject to breaking changes. Use it with caution.
-
 This package incorporates generative AI [prompt registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) into your AI activities in SAP AI Core and SAP AI Launchpad.
 
 #### Installation
