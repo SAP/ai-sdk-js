@@ -416,7 +416,7 @@ app.get('/langchain/invoke-tool-chain', async (req, res) => {
 
 /* Document Grounding */
 app.get(
-  '/document-grounding/invoke-orchestration-grounding-vector',
+  '/document-grounding/orchestration-grounding-vector',
   async (req, res) => {
     try {
       res.setHeader('Content-Type', 'text/event-stream');
@@ -449,7 +449,7 @@ app.get(
   }
 );
 
-app.get('/document-grounding/invoke-retrieve-documents', async (req, res) => {
+app.get('/document-grounding/retrieve-documents', async (req, res) => {
   try {
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Connection', 'keep-alive');
@@ -501,7 +501,7 @@ app.get('/document-grounding/invoke-retrieve-documents', async (req, res) => {
 });
 
 app.get(
-  '/document-grounding/invoke-orchestration-grounding-help-sap-com',
+  '/document-grounding/orchestration-grounding-help-sap-com',
   async (req, res) => {
     try {
       const groundingResult = await orchestrationGroundingHelpSapCom();
@@ -514,7 +514,7 @@ app.get(
   }
 );
 
-app.get('/prompt-registry/invoke', async (req, res) => {
+app.get('/prompt-registry/template', async (req, res) => {
   try {
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Connection', 'keep-alive');
@@ -531,9 +531,6 @@ app.get('/prompt-registry/invoke', async (req, res) => {
 
     res.end();
   } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+    sendError(res, error);
   }
 });

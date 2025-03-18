@@ -1,6 +1,3 @@
-> [!warning]
-> This package is still in **beta** and is subject to breaking changes. Use it with caution.
-
 # @sap-ai-sdk/prompt-registry
 
 SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI Core**, **SAP Generative AI Hub**, and **Orchestration Service**.
@@ -14,6 +11,7 @@ This package incorporates generative AI prompt registry capabilities into your A
 - [Usage](#usage)
   - [List Prompt Templates](#list-prompt-templates)
   - [Custom Destination](#custom-destination)
+- [Error Handling](#error-handling)
 - [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
@@ -64,6 +62,10 @@ const response: PromptTemplateListResponse =
     destinationName: 'my-destination'
   });
 ```
+
+## Error Handling
+
+For error handling instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#error-handling).
 
 ## Local Testing
 
