@@ -11,10 +11,10 @@
     "@sap-ai-sdk/orchestration": "workspace:^",
     "express": "^4.21.2",
     "@sap/xssec": "^4.4.0",
-    "@sap/cds": "^8.8.1"
+    "@sap/cds": "^8.8.2"
   },
   "devDependencies": {
-    "@sap/cds-dk": "^8.8.0"
+    "@sap/cds-dk": "^8.8.1"
   },
   "scripts": {
     "prebuild": "rm -rf dist",

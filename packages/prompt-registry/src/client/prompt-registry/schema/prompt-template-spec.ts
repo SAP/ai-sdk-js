@@ -14,6 +14,11 @@ import type { ChatCompletionTool } from './chat-completion-tool.js';
 export type PromptTemplateSpec = {
   template: Template[];
   defaults?: Record<string, any>;
+  /**
+   * DEPRECATED. Use additional properties instead.
+   *
+   * @deprecated
+   */
   additionalFields?: Record<string, any>;
   /**
    * Response format that the model output should adhere to. This is the same as the OpenAI definition.
@@ -29,4 +34,4 @@ export type PromptTemplateSpec = {
    *
    */
   tools?: ChatCompletionTool[];
-} & Record<string, any>;
+} & Record<string, Record<string, any>>;
