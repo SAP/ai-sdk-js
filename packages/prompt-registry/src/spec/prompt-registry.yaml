@@ -374,6 +374,8 @@ components:
       type: object
       required:
         - template
+      additionalProperties:
+        type: object
       properties:
         template:
           type: array
@@ -383,6 +385,9 @@ components:
           type: object
         additionalFields:
           type: object
+          description: >
+            DEPRECATED. Please use additional_fields instead.
+          deprecated: true
         response_format:
           description: >
             Response format that the model output should adhere to.
