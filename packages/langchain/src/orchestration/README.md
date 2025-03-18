@@ -8,23 +8,12 @@ This package provides LangChain model clients built on top of the foundation mod
 
 ### Table of Contents
 
-- [Relationship between Orchestration and Resource Groups](#relationship-between-orchestration-and-resource-groups)
 - [Usage](#usage)
   - [Client Initialization](#client-initialization)
   - [Client](#client)
     - [Resilience](#resilience)
 - [Local Testing](#local-testing)
 - [Limitations](#limitations)
-
-## Relationship between Orchestration and Resource Groups
-
-SAP AI Core manages access to orchestration of generative AI models through the global AI scenario `orchestration`.
-Creating a deployment for enabling orchestration capabilities requires access to this scenario.
-
-[Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
-Each resource group allows for a one-time orchestration deployment.
-
-Consequently, each orchestration deployment uniquely maps to a resource group within the `orchestration` scenario.
 
 ## Usage
 
