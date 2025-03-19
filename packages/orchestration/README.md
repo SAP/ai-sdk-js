@@ -101,8 +101,6 @@ Use the orchestration client with templating to pass a prompt containing placeho
 This allows for variations in the prompt based on the input parameters.
 
 ```ts
-import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
-
 const orchestrationClient = new OrchestrationClient({
   llm: {
     model_name: 'gpt-4o',
@@ -152,6 +150,7 @@ templating: {
       },
       required: ['x'],
       additionalProperties: false
+    }
   ]
 }
 ```
@@ -164,43 +163,44 @@ It is useful when the model is **not calling a tool**, but rather, responding to
 The example below demonstrates how to use `response_format` to return a JSON Schema, with `strict: true` ensuring the outputs conform precisely to the schema.
 
 ```ts
-templating: {
-    template: [
-      { role: 'user', content: 'What is the capital of {{?country}}?' }
-    ],
-    response_format: {
-        type: 'json_schema',
-        json_schema: {
-          name: 'capital_response',
-          strict: true,
-          schema: {
-            type: 'object',
-            properties: {
-              country_name: {
-                type: "string",
-                description: "The name of the country provided by the user."
-              },
-              capital: {
-                type: "string",
-                description: "The capital city of the country."
-              }
-            },
-            required: ["country_name", "capital"]
+const templating: TemplateModuleConfig = {
+  template: [
+    { role: 'user', content: 'What is the capital of {{?country}}?' }
+  ],
+  response_format: {
+    type: 'json_schema',
+    json_schema: {
+      name: 'capital_response',
+      strict: true,
+      schema: {
+        type: 'object',
+        properties: {
+          country_name: {
+            type: "string",
+            description: "The name of the country provided by the user."
+          },
+          capital: {
+            type: "string",
+            description: "The capital city of the country."
           }
-        }
+        },
+        required: ["country_name", "capital"]
       }
+    }
   }
+};
 ```
 
 You can also initialize `json_schema` using a Zod schema, as shown below:
 
 ```ts
-const countryCapitalSchema = z.object({
+const countryCapitalSchema = z
+  .object({
     country_name: z.string(),
     capital: z.string()
   }).strict();
 
-response_format: {
+const response_format: ResponseFormatJsonSchema = {
   type: 'json_schema',
   json_schema: {
     name: 'capital_response',
@@ -240,8 +240,6 @@ It is possible to provide a history of a conversation to the model.
 Use the following snippet to send a chat completion request with history and a system message:
 
 ```ts
-import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
-
 const orchestrationClient = new OrchestrationClient({
   llm: {
     model_name: 'gpt-4o',
@@ -282,8 +280,6 @@ Many models in the orchestration service have image recognition capabilities, me
 > Attempting to use `image_url` in non-user messages will result in an error.
 
 ```ts
-import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
-
 const orchestrationClient = new OrchestrationClient({
   llm: {
     model_name: 'gpt-4o'
@@ -330,17 +326,15 @@ The following example demonstrates how to use content filtering with the orchest
 See the sections below for details on the available content filters and how to build them.
 
 ```ts
-import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
-
-const llm = {
+const llm: LlmModuleConfig = {
   model_name: 'gpt-4o',
   model_params: { max_tokens: 50, temperature: 0.1 }
 };
-const templating = {
+const templating: TemplatingModuleConfig = {
   template: [{ role: 'user', content: '{{?input}}' }]
 };
 
-const filter = ... // Use a build function to create a content filter
+const filter: FilterConfig = ... // Use a build function to create a content filter
 
 const orchestrationClient = new OrchestrationClient({
   llm,
@@ -400,34 +394,38 @@ Available categories can be found with autocompletion.
 Pass the categories as arguments to the function to enable them.
 
 ```ts
-const filter = buildLlamaGuardFilter('hate', 'violent_crimes');
+const filter: FilterConfig = buildLlamaGuardFilter('hate', 'violent_crimes');
 ```
 
 ### Data Masking
 
-You can anonymize or pseudonomize the prompt using the data masking capabilities of the orchestration service.
+Use the orchestration client with masking to mask sensitive information in the prompt while preserving necessary context for the generative AI model.
+
+The following example demonstrates how to use data masking with the orchestration client.
+See the sections below for details on the available masking providers and how to build them.
 
 ```ts
+const llm: LlmModuleConfig = {
+  model_name: 'gpt-4o',
+  model_params: { max_tokens: 50, temperature: 0.1 }
+};
+const templating: TemplatingModuleConfig = {
+  template: [
+    {
+      role: 'user',
+      content:
+        'Please write an email to {{?user}} ({{?email}}), informing them about the amazing capabilities of generative AI! Be brief and concise, write at most 6 sentences.'
+    }
+  ]
+};
+
+const maskingProvider: MaskingProviderConfig = ... // Use a build function to create a masking provider
+
 const orchestrationClient = new OrchestrationClient({
-  llm: {
-    model_name: 'gpt-4o'
-  },
-  templating: {
-    template: [
-      {
-        role: 'user',
-        content:
-          'Please write an email to {{?user}} ({{?email}}), informing them about the amazing capabilities of generative AI! Be brief and concise, write at most 6 sentences.'
-      }
-    ]
-  },
+  llm,
+  templating,
   masking: {
-    masking_providers: [
-      buildDpiMaskingProvider({
-        method: 'pseudonymization',
-        entities: [{ type: 'profile-email' }, { type: 'profile-person' }]
-      })
-    ]
+    masking_providers: [maskingProvider] // Multiple masking providers can be applied
   }
 });
 
@@ -436,6 +434,23 @@ const response = await orchestrationClient.chatCompletion({
 });
 return response.getContent();
 ```
+
+#### SAP Data Privacy Integration
+
+Orchestration service offers a masking provider SAP Data Privacy Integration (DPI) to anonymize or pseudonomize sensitive information.
+Use `buildDpiMaskingProvider()` function to build a DPI masking provider.
+
+```ts
+const maskingProvider: MaskingProviderConfig = buildDpiMaskingProvider({
+  method: 'annonymization',
+  entities: [{ type: 'profile-email' }, { type: 'profile-person' }],
+  allowlist: ['SAP']
+})
+```
+
+The `allowlist` property specifies terms will be kept unmasked.
+Set `mask_grounding_input` to `true` to mask grounding input as well.
+For more information about groundings, refer to the [grounding](#grounding) section.
 
 ### Grounding
 
@@ -480,26 +495,6 @@ By default, the optional filter property `data_repository_type` is set to `vecto
 Set it to `help.sap.com` to retrieve context from the SAP Help Portal.
 Set `data_respotiories` property with an array of `REPOSITORY_ID` values to search in specific data repositories.
 Skip this property to search in all available data repositories.
-
-#### Data Masking in Grounding
-
-You can also configure masking of the grounding input to anonymize sensitive information while preserving necessary context for the Orchestration service.
-A masking configuration can be added in the grounding example above to mask the grounding input.
-
-```ts
-masking: {
-  masking_providers: [
-    buildDpiMaskingProvider({
-      method: 'pseudonymization',
-      entities: [{ type: 'profile-email' }, { type: 'profile-person' }],
-      mask_grounding_input: true
-      allowlist: ['AI Core']
-    })
-  ];
-}
-```
-
-The `allowlist` property allows you to specify terms that should remain unmasked, ensuring important context-specific terminology is preserved in the grounding input.
 
 ### Using a JSON Configuration from AI Launchpad
 
