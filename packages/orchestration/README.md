@@ -489,15 +489,12 @@ A masking configuration can be added in the grounding example above to mask the 
 ```ts
 masking: {
   masking_providers: [
-    {
-      type: 'sap_data_privacy_integration',
+    buildDpiMaskingProvider({
       method: 'pseudonymization',
       entities: [{ type: 'profile-email' }, { type: 'profile-person' }],
-      mask_grounding_input: {
-        enabled: true
-      },
+      mask_grounding_input: true
       allowlist: ['AI Core']
-    }
+    })
   ];
 }
 ```
