@@ -1,5 +1,6 @@
 import { expectError, expectType, expectAssignable } from 'tsd';
 import {
+  MaskingProviderConfig,
   OrchestrationClient,
   buildAzureContentSafetyFilter,
   buildDocumentGroundingConfig,
@@ -13,8 +14,10 @@ import type {
   GroundingModuleConfig,
   LlmModelParams,
   AzureContentSafetyFilterConfig,
-  LlamaGuard38BFilterConfig
+  LlamaGuard38BFilterConfig,
+  DpiConfig
 } from '@sap-ai-sdk/orchestration';
+import { buildDpiMaskingProvider } from '@sap-ai-sdk/orchestration/src/util/masking.js';
 
 /**
  * Chat Completion.
@@ -305,5 +308,24 @@ expectType<GroundingModuleConfig>(
         id: 'test'
       }
     ]
+  })
+);
+
+/**
+ * Masking util.
+ */
+expectType<DpiConfig>(
+  buildDpiMaskingProvider({
+    method: 'anonymization',
+    entities: ['profile-address'],
+    allowlist: ['SAP', 'Joule'],
+    mask_grounding_input: false
+  })
+);
+
+expectError<DpiConfig>(
+  buildDpiMaskingProvider({
+    method: 'anonymization',
+    entities: []
   })
 );
