@@ -169,7 +169,10 @@ export interface DocumentGroundingServiceConfig {
 /**
  * Represents the configuration for the masking provider SAP Data Privacy Integration.
  */
-export type DpiMaskingConfig = Omit<DpiConfig, 'type' | 'entities' | 'mask_grounding_input'> & {
+export type DpiMaskingConfig = Omit<
+  DpiConfig,
+  'type' | 'entities' | 'mask_grounding_input'
+> & {
   entities: [DpiEntities, ...DpiEntities[]];
   mask_grounding_input?: boolean;
 };

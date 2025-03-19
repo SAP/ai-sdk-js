@@ -6,14 +6,12 @@ describe('masking util', () => {
     const expectedDpiMaskingProvider: DpiConfig = {
       type: 'sap_data_privacy_integration',
       method: 'anonymization',
-      entities: [
-        { type: 'profile-address' }
-      ]
+      entities: [{ type: 'profile-address' }]
     };
 
     const actualDpiMaskingProvider = buildDpiMaskingProvider({
       method: 'anonymization',
-      entities: ['profile-address'],
+      entities: ['profile-address']
     });
 
     expect(actualDpiMaskingProvider).toStrictEqual(expectedDpiMaskingProvider);

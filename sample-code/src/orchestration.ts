@@ -5,7 +5,8 @@ import {
   OrchestrationClient,
   buildDocumentGroundingConfig,
   buildAzureContentSafetyFilter,
-  buildLlamaGuardFilter
+  buildLlamaGuardFilter,
+  buildDpiMaskingProvider
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
 import { z } from 'zod';
@@ -18,7 +19,6 @@ import type {
   StreamOptions,
   ErrorResponse
 } from '@sap-ai-sdk/orchestration';
-import { buildDpiMaskingProvider } from '@sap-ai-sdk/orchestration/src/util/masking.js';
 
 const logger = createLogger({
   package: 'sample-code',

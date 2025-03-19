@@ -12,7 +12,7 @@ export type {
   LlmModelParams,
   LlamaGuardCategory,
   AzureContentFilter,
-  AzureFilterThreshold,
+  AzureFilterThreshold
 } from './orchestration-types.js';
 
 export { OrchestrationStreamResponse } from './orchestration-stream-response.js';
