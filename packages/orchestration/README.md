@@ -423,11 +423,10 @@ const orchestrationClient = new OrchestrationClient({
   },
   masking: {
     masking_providers: [
-      {
-        type: 'sap_data_privacy_integration',
+      buildDpiMaskingProvider({
         method: 'pseudonymization',
         entities: [{ type: 'profile-email' }, { type: 'profile-person' }]
-      }
+      })
     ]
   }
 });
