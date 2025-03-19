@@ -9,7 +9,6 @@ This package incorporates generative AI orchestration capabilities into your AI 
 - [Installation](#installation)
 - [Prerequisites](#prerequisites)
 - [Orchestration Service](#orchestration-service)
-- [Relationship between Orchestration and Resource Groups](#relationship-between-orchestration-and-resource-groups)
 - [Usage](#usage)
   - [LLM Config](#llm-config)
   - [Templating](#templating)
@@ -19,7 +18,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
   - [Grounding](#grounding)
   - [Using a JSON Configuration from AI Launchpad](#using-a-json-configuration-from-ai-launchpad)
   - [Streaming](#streaming)
-  - [Using Resource Groups](#using-resource-groups)
+  - [Using a Custom Resource Group](#using-a-custom-resource-group)
   - [Custom Request Configuration](#custom-request-configuration)
   - [Custom Destination](#custom-destination)
 - [Error Handling](#error-handling)
@@ -37,10 +36,10 @@ $ npm install @sap-ai-sdk/orchestration
 
 - [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Configure the project with **Node.js v20 or higher** and **native ESM** support.
-- Ensure an [orchestration deployment is available in the SAP Generative AI Hub](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration).
-  - Use the [`DeploymentApi`](https://github.com/SAP/ai-sdk-js/blob/main/packages/ai-api/README.md#create-a-deployment) from `@sap-ai-sdk/ai-api` [to create a deployment](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration).
-    Alternatively, you can also create deployments using the [SAP AI Launchpad](https://help.sap.com/docs/sap-ai-core/generative-ai-hub/activate-generative-ai-hub-for-sap-ai-launchpad?locale=en-US&q=launchpad).
-  - Once the deployment is complete, access the orchestration service via the `deploymentUrl`.
+- An [Orchestration deployment](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/get-your-orchestration-deployment-url) is running in your AI Core service instance.
+  - When using the `default` [resource group](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups), a deployment is provided by default.
+    No further setup is needed.
+  - When using a custom resource group, please refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) on how to create a deployment in that resource group.
 
 > **Accessing the AI Core Service via the SDK**
 >
@@ -54,16 +53,6 @@ $ npm install @sap-ai-sdk/orchestration
 The orchestration service provides essential features like [templating](#templating), [content filtering](#content-filtering), [grounding](#grounding), etc which are often required in business AI scenarios.
 
 Find more details about orchestration workflow [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration-workflow).
-
-## Relationship between Orchestration and Resource Groups
-
-SAP AI Core manages access to orchestration of generative AI models through the global AI scenario `orchestration`.
-Creating a deployment for enabling orchestration capabilities requires access to this scenario.
-
-[Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
-Each resource group allows for a one-time orchestration deployment.
-
-Consequently, each orchestration deployment uniquely maps to a resource group within the `orchestration` scenario.
 
 ## Usage
 
@@ -652,9 +641,12 @@ If you don't want any streaming options as part of your call to the LLM, set `st
 > [!NOTE]
 > When initalizing a client with a JSON module config, providing streaming options is not possible.
 
-### Using Resource Groups
+### Using a Custom Resource Group
 
-The resource group can be used as an additional parameter to pick the right orchestration deployment.
+Using a custom [resource group](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups) requires a deployment of Orchestration within that resource group.
+Refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) for creating such a deployment.
+
+You can pass a custom resource group when creating a client as follows:
 
 ```ts
 const orchestrationClient = new OrchestrationClient(
@@ -670,8 +662,6 @@ const orchestrationClient = new OrchestrationClient(
   { resourceGroup: 'rg1234' }
 );
 ```
-
-The relationship between orchestration and resource groups is explained [here](#relationship-between-orchestration-and-resource-groups).
 
 ### Custom Request Configuration
 
