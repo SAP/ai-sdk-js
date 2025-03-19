@@ -8,19 +8,20 @@ import type { DpiMaskingConfig } from '../orchestration-types.js';
  * @returns An object with the masking provider configuration.
  */
 export function buildDpiMaskingProvider(dpiMaskingConfig: DpiMaskingConfig): DpiConfig {
+  const { method, mask_grounding_input, entities, allowlist } = dpiMaskingConfig;
   return {
     type: 'sap_data_privacy_integration',
-    method: dpiMaskingConfig.method,
-    entities: dpiMaskingConfig.entities.map(entity => ({
+    method,
+    entities: entities.map(entity => ({
       type: entity
     })),
-    ...(dpiMaskingConfig.mask_grounding_input !== undefined && {
+    ...(mask_grounding_input !== undefined && {
       mask_grounding_input: {
-        enabled: dpiMaskingConfig.mask_grounding_input
+        enabled: mask_grounding_input
       }
     }),
-    ...(dpiMaskingConfig.allowlist && {
-      allowlist: dpiMaskingConfig.allowlist
+    ...(allowlist && {
+      allowlist
     })
   };
 }
