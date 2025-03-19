@@ -1,11 +1,11 @@
 import { expectError, expectType, expectAssignable } from 'tsd';
 import {
-  MaskingProviderConfig,
   OrchestrationClient,
   buildAzureContentSafetyFilter,
   buildDocumentGroundingConfig,
   buildLlamaGuardFilter
 } from '@sap-ai-sdk/orchestration';
+import { buildDpiMaskingProvider } from '@sap-ai-sdk/orchestration/src/util/masking.js';
 import type {
   CompletionPostResponse,
   OrchestrationResponse,
@@ -17,7 +17,6 @@ import type {
   LlamaGuard38BFilterConfig,
   DpiConfig
 } from '@sap-ai-sdk/orchestration';
-import { buildDpiMaskingProvider } from '@sap-ai-sdk/orchestration/src/util/masking.js';
 
 /**
  * Chat Completion.
