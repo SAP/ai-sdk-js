@@ -28,6 +28,15 @@
 
 -
 
+# 1.10.0
+## New Features
+
+- [prompt-registry] Add a new package `@sap-ai-sdk/prompt-registry` for consuming APIs from prompt registry service. (01ffe58)
+
+## Improvements
+
+- [core] Add `o1`, `o3-mini` and `alephalpha-pharia-1-7b-control` to the available model list. (6f28f47)
+
 # 1.9.0
 ## New Features
 

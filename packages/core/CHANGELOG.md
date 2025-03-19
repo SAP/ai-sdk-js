@@ -1,5 +1,11 @@
 # @sap-ai-sdk/core
 
+## 1.10.0
+
+### Minor Changes
+
+- 6f28f47: [Improvement] Add `o1`, `o3-mini` and `alephalpha-pharia-1-7b-control` to the available model list.
+
 ## 1.9.0
 
 ### Patch Changes
