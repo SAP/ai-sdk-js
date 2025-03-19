@@ -164,9 +164,7 @@ The example below demonstrates how to use `response_format` to return a JSON Sch
 
 ```ts
 const templating: TemplateModuleConfig = {
-  template: [
-    { role: 'user', content: 'What is the capital of {{?country}}?' }
-  ],
+  template: [{ role: 'user', content: 'What is the capital of {{?country}}?' }],
   response_format: {
     type: 'json_schema',
     json_schema: {
@@ -176,15 +174,15 @@ const templating: TemplateModuleConfig = {
         type: 'object',
         properties: {
           country_name: {
-            type: "string",
-            description: "The name of the country provided by the user."
+            type: 'string',
+            description: 'The name of the country provided by the user.'
           },
           capital: {
-            type: "string",
-            description: "The capital city of the country."
+            type: 'string',
+            description: 'The capital city of the country.'
           }
         },
-        required: ["country_name", "capital"]
+        required: ['country_name', 'capital']
       }
     }
   }
@@ -198,7 +196,8 @@ const countryCapitalSchema = z
   .object({
     country_name: z.string(),
     capital: z.string()
-  }).strict();
+  })
+  .strict();
 
 const response_format: ResponseFormatJsonSchema = {
   type: 'json_schema',
@@ -207,7 +206,7 @@ const response_format: ResponseFormatJsonSchema = {
     strict: true,
     schema: zodToJsonSchema(countryCapitalSchema)
   }
-}
+};
 ```
 
 ### Prompt Registry
@@ -445,7 +444,7 @@ const maskingProvider: MaskingProviderConfig = buildDpiMaskingProvider({
   method: 'annonymization',
   entities: [{ type: 'profile-email' }, { type: 'profile-person' }],
   allowlist: ['SAP']
-})
+});
 ```
 
 The `allowlist` property specifies terms will be kept unmasked.
