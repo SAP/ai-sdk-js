@@ -241,7 +241,7 @@ const response = await embeddingClient.run({
 const embedding = response.getEmbedding();
 ```
 
-**Note:** Previous versions of this documentation referenced the `text-embedding-ada-002` model, which is now deprecated and scheduled for retirement on 2025-10-03. 
+**Note:** Previous versions of this documentation referenced the `text-embedding-ada-002` model, which is now deprecated and scheduled for retirement on 2025-10-03.
 All examples have been updated to use the recommended replacement models: `text-embedding-3-small` or `text-embedding-3-large`.
 
 ### Custom Request Configuration
