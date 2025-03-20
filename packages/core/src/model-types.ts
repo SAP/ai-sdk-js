@@ -18,7 +18,7 @@ export type AzureOpenAiChatModel = LiteralUnion<
  * Azure OpenAI models for embedding.
  */
 export type AzureOpenAiEmbeddingModel = LiteralUnion<
-  'text-embedding-ada-002' | 'text-embedding-3-small' | 'text-embedding-3-large'
+  'text-embedding-3-small' | 'text-embedding-3-large'
 >;
 
 /**
