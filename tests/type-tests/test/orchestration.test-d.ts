@@ -3,9 +3,9 @@ import {
   OrchestrationClient,
   buildAzureContentSafetyFilter,
   buildDocumentGroundingConfig,
-  buildLlamaGuardFilter
+  buildLlamaGuardFilter,
+  buildDpiMaskingProvider
 } from '@sap-ai-sdk/orchestration';
-import { buildDpiMaskingProvider } from '@sap-ai-sdk/orchestration/src/util/masking.js';
 import type {
   CompletionPostResponse,
   OrchestrationResponse,
