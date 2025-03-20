@@ -60,7 +60,7 @@ export async function chatCompletionStream(
  */
 export async function computeEmbedding(): Promise<AzureOpenAiEmbeddingResponse> {
   const response = await new AzureOpenAiEmbeddingClient(
-    'text-embedding-ada-002'
+    'text-embedding-3-small'
   ).run({
     input: 'Hello, world!'
   });

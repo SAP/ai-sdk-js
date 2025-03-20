@@ -87,7 +87,7 @@ export async function invokeRagChain(): Promise<string> {
 
   // Initialize the embedding client with 0 retries for fast testing
   const embeddingClient = new AzureOpenAiEmbeddingClient({
-    modelName: 'text-embedding-ada-002',
+    modelName: 'text-embedding-3-small',
     maxRetries: 0
   });
 

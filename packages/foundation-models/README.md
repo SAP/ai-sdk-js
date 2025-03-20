@@ -233,13 +233,15 @@ Use the `AzureOpenAiEmbeddingClient` to send embedding requests to an OpenAI mod
 import { AzureOpenAiEmbeddingClient } from '@sap-ai-sdk/foundation-models';
 
 const embeddingClient = new AzureOpenAiEmbeddingClient(
-  'text-embedding-ada-002'
+  'text-embedding-3-small'
 );
 const response = await embeddingClient.run({
   input: 'AI is fascinating'
 });
 const embedding = response.getEmbedding();
 ```
+
+**Note:** Previous versions of this documentation referenced the `text-embedding-ada-002` model, which is now deprecated and scheduled for retirement on 2025-10-03. All examples have been updated to use the recommended replacement models: `text-embedding-3-small` or `text-embedding-3-large`.
 
 ### Custom Request Configuration
 

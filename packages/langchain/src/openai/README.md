@@ -165,7 +165,7 @@ const splits = await textSplitter.splitDocuments(docs);
 
 // Initialize the embedding client
 const embeddingClient = new AzureOpenAiEmbeddingClient({
-  modelName: 'text-embedding-ada-002'
+  modelName: 'text-embedding-3-small'
 });
 
 // Create a vector store from the document
@@ -177,6 +177,8 @@ const vectorStore = await MemoryVectorStore.fromDocuments(
 // Create a retriever for the vector store
 const retriever = vectorStore.asRetriever();
 ```
+
+**Note:** Previous versions of this documentation referenced the `text-embedding-ada-002` model, which is now deprecated and scheduled for retirement on 2025-10-03. All examples have been updated to use the recommended replacement models: `text-embedding-3-small` or `text-embedding-3-large`.
 
 ## Local Testing
 
