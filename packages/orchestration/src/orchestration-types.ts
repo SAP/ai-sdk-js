@@ -4,6 +4,8 @@ import type {
   ChatMessages,
   DataRepositoryType,
   DocumentGroundingFilter,
+  DpiConfig,
+  DpiEntities,
   FilteringModuleConfig,
   FilteringStreamOptions,
   GlobalStreamOptions,
@@ -163,6 +165,17 @@ export interface DocumentGroundingServiceConfig {
    */
   output_param: string;
 }
+
+/**
+ * Represents the configuration for the masking provider SAP Data Privacy Integration.
+ */
+export type DpiMaskingConfig = Omit<
+  DpiConfig,
+  'type' | 'entities' | 'mask_grounding_input'
+> & {
+  entities: [DpiEntities, ...DpiEntities[]];
+  mask_grounding_input?: boolean;
+};
 
 /**
  * Filter configuration for Azure content safety Filter.

@@ -3,7 +3,8 @@ import {
   OrchestrationClient,
   buildAzureContentSafetyFilter,
   buildDocumentGroundingConfig,
-  buildLlamaGuardFilter
+  buildLlamaGuardFilter,
+  buildDpiMaskingProvider
 } from '@sap-ai-sdk/orchestration';
 import type {
   CompletionPostResponse,
@@ -13,7 +14,8 @@ import type {
   GroundingModuleConfig,
   LlmModelParams,
   AzureContentSafetyFilterConfig,
-  LlamaGuard38BFilterConfig
+  LlamaGuard38BFilterConfig,
+  DpiConfig
 } from '@sap-ai-sdk/orchestration';
 
 /**
@@ -305,5 +307,24 @@ expectType<GroundingModuleConfig>(
         id: 'test'
       }
     ]
+  })
+);
+
+/**
+ * Masking util.
+ */
+expectType<DpiConfig>(
+  buildDpiMaskingProvider({
+    method: 'anonymization',
+    entities: ['profile-address'],
+    allowlist: ['SAP', 'Joule'],
+    mask_grounding_input: false
+  })
+);
+
+expectError<DpiConfig>(
+  buildDpiMaskingProvider({
+    method: 'anonymization',
+    entities: []
   })
 );

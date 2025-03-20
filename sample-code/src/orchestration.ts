@@ -5,7 +5,8 @@ import {
   OrchestrationClient,
   buildDocumentGroundingConfig,
   buildAzureContentSafetyFilter,
-  buildLlamaGuardFilter
+  buildLlamaGuardFilter,
+  buildDpiMaskingProvider
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
 import { z } from 'zod';
@@ -282,11 +283,10 @@ export async function orchestrationCompletionMasking(): Promise<
     },
     masking: {
       masking_providers: [
-        {
-          type: 'sap_data_privacy_integration',
+        buildDpiMaskingProvider({
           method: 'pseudonymization',
-          entities: [{ type: 'profile-email' }, { type: 'profile-person' }]
-        }
+          entities: ['profile-email', 'profile-person']
+        })
       ]
     }
   });
@@ -324,15 +324,12 @@ export async function orchestrationMaskGroundingInput(): Promise<OrchestrationRe
     }),
     masking: {
       masking_providers: [
-        {
-          type: 'sap_data_privacy_integration',
+        buildDpiMaskingProvider({
           method: 'pseudonymization',
-          entities: [{ type: 'profile-org' }],
-          mask_grounding_input: {
-            enabled: true
-          },
+          entities: ['profile-org'],
+          mask_grounding_input: true,
           allowlist: ['Joule']
-        }
+        })
       ]
     }
   });
