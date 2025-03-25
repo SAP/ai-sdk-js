@@ -213,8 +213,8 @@ importers:
         specifier: ^8.8.3
         version: 8.8.3(express@4.21.2)
       '@sap/xssec':
-        specifier: ^4.4.0
-        version: 4.4.0
+        specifier: ^4.5.0
+        version: 4.5.0
       express:
         specifier: ^4.21.2
         version: 4.21.2
@@ -1200,6 +1200,10 @@ packages:
 
   '@sap/xssec@4.4.0':
     resolution: {integrity: sha512-tVPyF6z6lWN2cucT38kkTu6GTmFXhqd/xa0SrExZ+j8K1cNePEIDHvx/zfibubLeb198vyoreW4QOpR9+Vaj4A==}
+    engines: {node: '>=18'}
+
+  '@sap/xssec@4.5.0':
+    resolution: {integrity: sha512-Mait0L7EoGYX7o6MlEqPz778pP2Z52f3EcDtEu1rKHkuJwu/mOP4rJh2ZsGVVHWrRQIKRQJCaUTSOMxuL3Txxw==}
     engines: {node: '>=18'}
 
   '@sinclair/typebox@0.27.8':
@@ -5919,6 +5923,13 @@ snapshots:
       - supports-color
 
   '@sap/xssec@4.4.0':
+    dependencies:
+      debug: 4.4.0(supports-color@8.1.1)
+      jwt-decode: 4.0.0
+    transitivePeerDependencies:
+      - supports-color
+
+  '@sap/xssec@4.5.0':
     dependencies:
       debug: 4.4.0(supports-color@8.1.1)
       jwt-decode: 4.0.0
