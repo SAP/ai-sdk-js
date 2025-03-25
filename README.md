@@ -20,6 +20,7 @@ Setup your SAP AI Core instance with SAP Cloud SDK for AI.
   - [@sap-ai-sdk/document-grounding](#sap-ai-sdkdocument-grounding)
   - [@sap-ai-sdk/prompt-registry](#sap-ai-sdkprompt-registry)
 - [SAP Cloud SDK for AI Sample Project](#sap-cloud-sdk-for-ai-sample-project)
+- [Deprecated Models](#deprecated-models)
 - [Error Handling](#error-handling)
   - [Accessing Error Information](#accessing-error-information)
 - [Local Testing](#local-testing)
@@ -123,6 +124,16 @@ For details on prompt registry client, refer to this [document](https://github.c
 
 We have created a sample project demonstrating the different clients' usage of the SAP Cloud SDK for AI for TypeScript/JavaScript.
 The [project README](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/README.md) outlines the set-up needed to build and run it locally.
+
+## Deprecated Models
+
+The following models are deprecated and should not be used.
+Update your code to use one of the recommended replacement models.
+
+**text-embedding-ada-002**
+
+- Retirement Date: 2025-10-03
+- Replacement Models: `text-embedding-3-small` or `text-embedding-3-large`
 
 ## Error Handling
 

@@ -178,9 +178,6 @@ const vectorStore = await MemoryVectorStore.fromDocuments(
 const retriever = vectorStore.asRetriever();
 ```
 
-**Note:** Previous versions of this documentation referenced the `text-embedding-ada-002` model, which is now deprecated and scheduled for retirement on 2025-10-03.
-All examples have been updated to use the recommended replacement models: `text-embedding-3-small` or `text-embedding-3-large`.
-
 ## Local Testing
 
 For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
