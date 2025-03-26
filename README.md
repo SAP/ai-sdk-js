@@ -130,10 +130,11 @@ The [project README](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/READ
 The following models are deprecated and should not be used.
 Update your code to use one of the recommended replacement models.
 
-**text-embedding-ada-002**
+| Model Name               | Replacement                                        |
+|--------------------------|----------------------------------------------------|
+| `text-embedding-ada-002` | `text-embedding-3-small`, `text-embedding-3-large` |
 
-- Retirement Date: 2025-10-03
-- Replacement Models: `text-embedding-3-small` or `text-embedding-3-large`
+For more information, refer to the SAP note on [Availability of Generative AI Models](https://me.sap.com/notes/3437766).
 
 ## Error Handling
 
