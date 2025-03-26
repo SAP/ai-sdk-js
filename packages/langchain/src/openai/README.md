@@ -165,7 +165,7 @@ const splits = await textSplitter.splitDocuments(docs);
 
 // Initialize the embedding client
 const embeddingClient = new AzureOpenAiEmbeddingClient({
-  modelName: 'text-embedding-ada-002'
+  modelName: 'text-embedding-3-small'
 });
 
 // Create a vector store from the document
