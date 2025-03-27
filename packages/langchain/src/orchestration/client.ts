@@ -18,8 +18,10 @@ import type { OrchestrationCallOptions } from './types.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 function isInputFilteringError(error: any): boolean {
-  return error.cause?.status === 400 
-  && error.cause?.response?.data?.location?.includes('Input Filter');
+  return (
+    error.cause?.status === 400 &&
+    error.cause?.response?.data?.location?.includes('Input Filter')
+  );
 }
 
 /**

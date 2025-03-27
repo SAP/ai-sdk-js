@@ -44,7 +44,9 @@ import {
 // For a chat client
 const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
 // For an embedding client
-const embeddingClient = new AzureOpenAiEmbeddingClient({ modelName: 'text-embedding-3-small' });
+const embeddingClient = new AzureOpenAiEmbeddingClient({
+  modelName: 'text-embedding-3-small'
+});
 ```
 
 In addition to the default parameters of Azure OpenAI and LangChain, additional parameters can be used to help narrow down the search for the desired model:
@@ -78,9 +80,12 @@ LangChain clients retry up to 6 times by default.
 To modify this behavior, set the `maxRetries` option during client initialization:
 
 ```ts
-const client = new AzureOpenAiChatClient({ modelName: 'gpt-4o' }, {
-  maxRetries: 0
-});
+const client = new AzureOpenAiChatClient(
+  { modelName: 'gpt-4o' },
+  {
+    maxRetries: 0
+  }
+);
 ```
 
 #### Custom Destination
