@@ -1,6 +1,6 @@
 # LangChain Azure OpenAI Client
 
-LangChain Azure OpenAI client utilizing `@sap-ai-sdk/foundation-models` package provides an interface to interact with Azure OpenAI chat and embedding models when using LangChain.
+LangChain Azure OpenAI client utilizes `@sap-ai-sdk/foundation-models` package and provides an interface to interact with Azure OpenAI chat and embedding models when using LangChain.
 
 > **Note**: For installation and prerequisites of the package `@sap-ai-sdk/langchain`, refer to the [README](../../README.md).
 

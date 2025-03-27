@@ -1,6 +1,6 @@
 # LangChain Orchestration Client
 
-LangChain orchestration client utilizing `@sap-ai-sdk/orchestration` package enables you to interact with the Orchestration Service when using LangChain.
+LangChain orchestration client utilizes `@sap-ai-sdk/orchestration` package and provides an interface to interact with the Orchestration Service when using LangChain.
 
 > **Note**: For installation and prerequisites of the package `@sap-ai-sdk/langchain`, refer to the [README](../../README.md).
 
