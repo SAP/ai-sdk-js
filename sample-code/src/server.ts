@@ -42,7 +42,11 @@ import {
   invoke,
   invokeToolChain
 } from './langchain-azure-openai.js';
-import { invokeChain as invokeChainOrchestration } from './langchain-orchestration.js';
+import {
+  invokeChain as invokeChainOrchestration,
+  invokeChainWithInputFilter as invokeChainWithInputFilterOrchestration,
+  invokeChainWithOutputFilter as invokeChainWithOutputFilterOrchestration
+} from './langchain-orchestration.js';
 import {
   createCollection,
   createDocumentsWithTimestamp,
@@ -72,8 +76,8 @@ function sendError(res: any, error: any, send: boolean = true) {
   console.error(error.stack);
   if (send) {
     res
-      .status(error.cause?.status || 500)
-      .send(error.cause?.response?.data || error.message);
+      .status(error.cause?.status ?? 500)
+      .send(error.cause?.response?.data ?? error.message);
   }
 }
 
@@ -391,10 +395,23 @@ app.get('/langchain/invoke-chain-orchestration', async (req, res) => {
   try {
     res.send(await invokeChainOrchestration());
   } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.request.data);
+    sendError(res, error);
+  }
+});
+
+app.get('/langchain/invoke-chain-orchestration-input-filter', async (req, res) => {
+  try {
+    res.send(await invokeChainWithInputFilterOrchestration());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/langchain/invoke-chain-orchestration-output-filter', async (req, res) => {
+  try {
+    res.send(await invokeChainWithOutputFilterOrchestration());
+  } catch (error: any) {
+    sendError(res, error);
   }
 });
 

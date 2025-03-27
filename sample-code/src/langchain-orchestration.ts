@@ -1,39 +1,105 @@
 import { StringOutputParser } from '@langchain/core/output_parsers';
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+import { buildAzureContentSafetyFilter, buildLlamaGuardFilter, type OrchestrationModuleConfig } from '@sap-ai-sdk/orchestration';
 
 /**
- * ASk GPT about an introduction to SAP Cloud SDK.
+ * Ask GPT about an introduction to SAP Cloud SDK.
  * @returns The answer from ChatGPT.
  */
 export async function invokeChain(): Promise<string> {
-  const orchestrationConfig = {
+  const orchestrationConfig: OrchestrationModuleConfig = {
     // define the language model to be used
     llm: {
-      model_name: 'gpt-35-turbo',
-      model_params: {}
+      model_name: 'gpt-4o',
     },
     // define the template
     templating: {
       template: [
         {
           role: 'user',
-          content: 'Give me a long introduction of {{?input}}'
+          content: 'Tell me about {{?topic}}'
         }
       ]
     }
   };
 
-  const callOptions = { inputParams: { input: 'SAP Cloud SDK' } };
+  return new OrchestrationClient(orchestrationConfig)
+    .pipe(new StringOutputParser())
+    .invoke('My Message History', {
+      inputParams: {
+        topic: 'SAP Cloud SDK'
+      }
+    });
+}
 
-  // initialize the client
-  const client = new OrchestrationClient(orchestrationConfig);
+/**
+ * Trigger input content filter.
+ * @returns The answer from ChatGPT.
+ */
+export async function invokeChainWithInputFilter(): Promise<string> {
+  const orchestrationConfig: OrchestrationModuleConfig = {
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o'
+    },
+    // define the template
+    templating: {
+      template: [
+        {
+          role: 'user',
+          content: 'Tell me about {{?topic}}'
+        }
+      ]
+    },
+    filtering: {
+      input: {
+        filters: [buildLlamaGuardFilter('self_harm')]
+      }
+    }
+  };
 
-  // create an output parser
-  const parser = new StringOutputParser();
+  return new OrchestrationClient(orchestrationConfig)
+    .pipe(new StringOutputParser())
+    .invoke('My Message History', {
+      inputParams: {
+        topic: 'the way to hurt myself'
+      }
+    });
+}
 
-  // chain together template, client, and parser
-  const llmChain = client.pipe(parser);
+/**
+ * Trigger output content filter.
+ * @returns The answer from ChatGPT.
+ */
+export async function invokeChainWithOutputFilter(): Promise<string> {
+  const orchestrationConfig: OrchestrationModuleConfig = {
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o'
+    },
+    // define the template
+    templating: {
+      template: [
+        {
+          role: 'user',
+          content: 'Tell me about {{?topic}}'
+        }
+      ]
+    },
+    filtering: {
+      output: {
+        filters: [buildAzureContentSafetyFilter({
+          Hate: 'ALLOW_SAFE'
+        })]
+      }
+    }
+  };
 
-  // invoke the chain
-  return llmChain.invoke('My Message History', callOptions);
+  return new OrchestrationClient(orchestrationConfig)
+    .pipe(new StringOutputParser())
+    .invoke('My Message History', {
+      inputParams: {
+        topic: '30 different ways to rephrase "I hate you!" with strong feelings'
+      }
+    });
 }
