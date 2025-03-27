@@ -17,6 +17,11 @@ import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager
 import type { OrchestrationCallOptions } from './types.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
+function isInputFilteringError(error: any): boolean {
+  return error.cause?.status === 400 
+  && error.cause?.response?.data?.location?.includes('Input Filter');
+}
+
 /**
  * The Orchestration client.
  */
@@ -27,12 +32,19 @@ export class OrchestrationClient extends BaseChatModel<
   constructor(
     // TODO: Omit streaming until supported
     public orchestrationConfig: Omit<OrchestrationModuleConfig, 'streaming'>,
-    public langchainOptions: BaseChatModelParams = {
-      maxRetries: 0
-    },
+    public langchainOptions: BaseChatModelParams = {},
     public deploymentConfig?: ResourceGroupConfig,
     public destination?: HttpDestinationOrFetchOptions
   ) {
+    // Avoid retry if the error is due to input filtering
+    const { onFailedAttempt } = langchainOptions;
+    langchainOptions.onFailedAttempt = error => {
+      if (isInputFilteringError(error)) {
+        throw error;
+      }
+      onFailedAttempt?.(error);
+    };
+
     super(langchainOptions);
   }
 
