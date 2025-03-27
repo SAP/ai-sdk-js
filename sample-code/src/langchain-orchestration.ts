@@ -1,6 +1,10 @@
 import { StringOutputParser } from '@langchain/core/output_parsers';
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
-import { buildAzureContentSafetyFilter, buildLlamaGuardFilter, type OrchestrationModuleConfig } from '@sap-ai-sdk/orchestration';
+import {
+  buildAzureContentSafetyFilter,
+  buildLlamaGuardFilter,
+  type OrchestrationModuleConfig
+} from '@sap-ai-sdk/orchestration';
 
 /**
  * Ask GPT about an introduction to SAP Cloud SDK.
@@ -10,7 +14,7 @@ export async function invokeChain(): Promise<string> {
   const orchestrationConfig: OrchestrationModuleConfig = {
     // define the language model to be used
     llm: {
-      model_name: 'gpt-4o',
+      model_name: 'gpt-4o'
     },
     // define the template
     templating: {
@@ -88,9 +92,11 @@ export async function invokeChainWithOutputFilter(): Promise<string> {
     },
     filtering: {
       output: {
-        filters: [buildAzureContentSafetyFilter({
-          Hate: 'ALLOW_SAFE'
-        })]
+        filters: [
+          buildAzureContentSafetyFilter({
+            Hate: 'ALLOW_SAFE'
+          })
+        ]
       }
     }
   };
@@ -99,7 +105,8 @@ export async function invokeChainWithOutputFilter(): Promise<string> {
     .pipe(new StringOutputParser())
     .invoke('My Message History', {
       inputParams: {
-        topic: '30 different ways to rephrase "I hate you!" with strong feelings'
+        topic:
+          '30 different ways to rephrase "I hate you!" with strong feelings'
       }
     });
 }

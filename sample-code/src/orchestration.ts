@@ -235,7 +235,8 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
     messagesHistory: [
       {
         role: 'system',
-        content: 'Reparaphrase the sentence in 30 ways with strong feelings: "{{?input}}"'
+        content:
+          'Reparaphrase the sentence in 30 ways with strong feelings: "{{?input}}"'
       }
     ],
     inputParams: {

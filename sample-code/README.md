@@ -263,7 +263,6 @@ Invoke a chain to trigger input filtering of orchestration service.
 
 Invoke a chain to trigger output filtering of orchestration service.
 
-
 #### Invoke a Chain with Retrieval-Augmented Generation (RAG)
 
 `GET /langchain/invoke-rag-chain`

@@ -399,21 +399,27 @@ app.get('/langchain/invoke-chain-orchestration', async (req, res) => {
   }
 });
 
-app.get('/langchain/invoke-chain-orchestration-input-filter', async (req, res) => {
-  try {
-    res.send(await invokeChainWithInputFilterOrchestration());
-  } catch (error: any) {
-    sendError(res, error);
+app.get(
+  '/langchain/invoke-chain-orchestration-input-filter',
+  async (req, res) => {
+    try {
+      res.send(await invokeChainWithInputFilterOrchestration());
+    } catch (error: any) {
+      sendError(res, error);
+    }
   }
-});
+);
 
-app.get('/langchain/invoke-chain-orchestration-output-filter', async (req, res) => {
-  try {
-    res.send(await invokeChainWithOutputFilterOrchestration());
-  } catch (error: any) {
-    sendError(res, error);
+app.get(
+  '/langchain/invoke-chain-orchestration-output-filter',
+  async (req, res) => {
+    try {
+      res.send(await invokeChainWithOutputFilterOrchestration());
+    } catch (error: any) {
+      sendError(res, error);
+    }
   }
-});
+);
 
 app.get('/langchain/invoke-rag-chain', async (req, res) => {
   try {
