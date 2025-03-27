@@ -27,7 +27,9 @@ export class OrchestrationClient extends BaseChatModel<
   constructor(
     // TODO: Omit streaming until supported
     public orchestrationConfig: Omit<OrchestrationModuleConfig, 'streaming'>,
-    public langchainOptions: BaseChatModelParams = {},
+    public langchainOptions: BaseChatModelParams = {
+      maxRetries: 0
+    },
     public deploymentConfig?: ResourceGroupConfig,
     public destination?: HttpDestinationOrFetchOptions
   ) {
