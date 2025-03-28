@@ -67,8 +67,7 @@ export async function chatCompletionStream(
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
     llm: {
-      model_name: 'gpt-35-turbo',
-      model_params: {}
+      model_name: 'gpt-4o'
     },
     // define the prompt
     templating: {
@@ -99,7 +98,7 @@ export async function chatCompletionStreamWithJsonModuleConfig(
   const jsonConfig = `{
     "module_configurations": {
       "llm_module_config": {
-        "model_name": "gpt-35-turbo",
+        "model_name": "gpt-4o",
         "model_params": {
           "stream_options": {
             "include_usage": true
@@ -236,7 +235,8 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
     messagesHistory: [
       {
         role: 'system',
-        content: 'Reparaphrase the sentence in ten ways: "{{?input}}"'
+        content:
+          'Reparaphrase the sentence in 30 ways with strong feelings: "{{?input}}"'
       }
     ],
     inputParams: {

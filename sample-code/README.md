@@ -251,6 +251,18 @@ The chain contains a template and a string parser.
 Invoke a chain to get a orchestration response from the orchestration service.
 The chain has a built-in template and is chained with a string parser.
 
+#### Invoke a Chain with Orchestration Input Filtering
+
+`GET /langchain/invoke-chain-orchestration-input-filter`
+
+Invoke a chain to trigger input filtering of orchestration service.
+
+#### Invoke a Chain with Orchestration Output Filtering
+
+`GET /langchain/invoke-chain-orchestration-output-filter`
+
+Invoke a chain to trigger output filtering of orchestration service.
+
 #### Invoke a Chain with Retrieval-Augmented Generation (RAG)
 
 `GET /langchain/invoke-rag-chain`

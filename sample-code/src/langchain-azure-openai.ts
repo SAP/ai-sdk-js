@@ -25,7 +25,7 @@ import type { AzureOpenAiChatCompletionTool } from '@sap-ai-sdk/foundation-model
 export async function invoke(): Promise<string> {
   // initialize client with options
   const client = new AzureOpenAiChatClient({
-    modelName: 'gpt-35-turbo',
+    modelName: 'gpt-4o',
     max_tokens: 1000,
     temperature: 0.7
   });
@@ -46,7 +46,7 @@ export async function invoke(): Promise<string> {
  */
 export async function invokeChain(): Promise<string> {
   // initialize the client
-  const client = new AzureOpenAiChatClient({ modelName: 'gpt-35-turbo' });
+  const client = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
 
   // create a prompt template
   const promptTemplate = ChatPromptTemplate.fromMessages([
@@ -112,7 +112,7 @@ export async function invokeRagChain(): Promise<string> {
 
   // Initialize the chat client with 0 retries for fast testing
   const llm = new AzureOpenAiChatClient({
-    modelName: 'gpt-35-turbo',
+    modelName: 'gpt-4o',
     maxRetries: 0
   });
 
@@ -143,7 +143,7 @@ export async function invokeRagChain(): Promise<string> {
 export async function invokeToolChain(): Promise<string> {
   // initialize client with options
   const client = new AzureOpenAiChatClient({
-    modelName: 'gpt-35-turbo',
+    modelName: 'gpt-4o',
     max_tokens: 1000,
     temperature: 0.7
   });
