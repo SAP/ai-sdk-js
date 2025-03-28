@@ -91,7 +91,7 @@ const chatClient = new AzureOpenAiChatClient({
 
 Use the `AzureOpenAiChatClient` to send chat completion requests to an OpenAI model deployed in SAP generative AI hub.
 
-The client sends request with Azure OpenAI API version `2024-06-01`.
+The client sends request with Azure OpenAI API version `2024-10-21`.
 
 ```ts
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
