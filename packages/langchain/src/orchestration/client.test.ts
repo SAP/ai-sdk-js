@@ -36,10 +36,14 @@ describe('orchestration service client', () => {
     nock.cleanAll();
   });
 
-  function mockInferenceWithResilience(response: any, resilience: {
-    retry?: number;
-    delay?: number;
-  }, status: number = 200) {
+  function mockInferenceWithResilience(
+    response: any,
+    resilience: {
+      retry?: number;
+      delay?: number;
+    },
+    status: number = 200
+  ) {
     mockInference(
       {
         data: constructCompletionPostRequest(config, { messagesHistory: [] })
@@ -111,12 +115,18 @@ describe('orchestration service client', () => {
   });
 
   it('throws immediately when input filter error occurs', async () => {
-    mockInferenceWithResilience(mockResponseInputFilterError, { retry: 0 }, 400);
+    mockInferenceWithResilience(
+      mockResponseInputFilterError,
+      { retry: 0 },
+      400
+    );
 
     const client = new OrchestrationClient(config, {
       maxRetries: 1000 // Retry forever unless input filter error
     });
 
-    await expect(client.invoke([])).rejects.toThrow('Request failed with status code 400');
+    await expect(client.invoke([])).rejects.toThrow(
+      'Request failed with status code 400'
+    );
   }, 1000);
 });
