@@ -479,14 +479,16 @@ const orchestrationClient = new OrchestrationClient({
       {
         id: 'FILTER_ID',
         // data_repository_type: 'vector', // optional, default value is 'vector'
-        data_repositories: ['REPOSITORY_ID'],
+        data_repositories: ['REPOSITORY_ID']
       }
-    ],
+    ]
   })
 });
 
 const response = await orchestrationClient.chatCompletion({
-  inputParams: { groundingRequest: 'Give me a short introduction of SAP AI Core.' }
+  inputParams: {
+    groundingRequest: 'Give me a short introduction of SAP AI Core.'
+  }
 });
 return response.getContent();
 ```
