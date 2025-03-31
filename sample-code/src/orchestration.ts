@@ -397,7 +397,8 @@ export async function orchestrationGroundingVector(): Promise<OrchestrationRespo
       grounding: buildDocumentGroundingConfig({
         input_params: ['groundingRequest'],
         output_param: 'groundingOutput',
-        filters: [{ data_repository_type: 'vector' }]
+        filters: [{ data_repository_type: 'vector' }],
+        metadata_params: ['context']
       })
     },
     { resourceGroup: 'ai-sdk-js-e2e' }
