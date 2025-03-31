@@ -8,6 +8,8 @@ import type { TemplatingModuleConfig } from './templating-module-config.js';
 import type { FilteringModuleConfig } from './filtering-module-config.js';
 import type { MaskingModuleConfig } from './masking-module-config.js';
 import type { GroundingModuleConfig } from './grounding-module-config.js';
+import type { InputTranslationModuleConfig } from './input-translation-module-config.js';
+import type { OutputTranslationModuleConfig } from './output-translation-module-config.js';
 /**
  * Representation of the 'ModuleConfigs' schema.
  */
@@ -17,4 +19,6 @@ export type ModuleConfigs = {
   filtering_module_config?: FilteringModuleConfig;
   masking_module_config?: MaskingModuleConfig;
   grounding_module_config?: GroundingModuleConfig;
+  input_translation_module_config?: InputTranslationModuleConfig;
+  output_translation_module_config?: OutputTranslationModuleConfig;
 };

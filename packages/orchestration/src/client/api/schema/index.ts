@@ -66,4 +66,7 @@ export * from './data-repository-type.js';
 export * from './key-value-list-pair.js';
 export * from './search-document-key-value-list-pair.js';
 export * from './search-select-option-enum.js';
+export * from './input-translation-module-config.js';
+export * from './output-translation-module-config.js';
+export * from './sap-document-translation.js';
 export * from './error-response.js';

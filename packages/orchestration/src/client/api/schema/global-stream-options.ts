@@ -15,4 +15,15 @@ export type GlobalStreamOptions = {
    * Minimum: 1.
    */
   chunk_size?: number;
+  /**
+   * List of delimiters to split the input text into chunks.
+   * Default: [
+   *   "\n",
+   *   ".",
+   *   "?",
+   *   "!"
+   * ].
+   * Min Items: 1.
+   */
+  delimiters?: string[];
 };

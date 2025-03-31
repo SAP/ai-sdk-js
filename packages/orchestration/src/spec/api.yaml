@@ -307,6 +307,10 @@ components:
           $ref: '#/components/schemas/MaskingModuleConfig'
         grounding_module_config:
           $ref: '#/components/schemas/GroundingModuleConfig'
+        input_translation_module_config:
+          $ref: '#/components/schemas/InputTranslationModuleConfig'
+        output_translation_module_config:
+          $ref: '#/components/schemas/OutputTranslationModuleConfig'
 
     ModuleResults:
       description: Results of each module.
@@ -317,6 +321,8 @@ components:
           $ref: '#/components/schemas/GenericModuleResult'
         templating:
           $ref: '#/components/schemas/TemplatingChatMessage'
+        input_translation:
+          $ref: '#/components/schemas/GenericModuleResult'
         input_masking:
           $ref: '#/components/schemas/GenericModuleResult'
         input_filtering:
@@ -331,6 +337,8 @@ components:
             oneOf:
               - $ref: '#/components/schemas/LLMChoice'
               - $ref: '#/components/schemas/LLMChoiceStreaming'
+        output_translation:
+          $ref: '#/components/schemas/GenericModuleResult'
 
     GlobalStreamOptions:
       description: Options for streaming. Will be ignored if stream is false.
@@ -343,6 +351,13 @@ components:
           default: 100
           minimum: 1
           maximum: 10000 # currently determined by max_size of ACS text records
+        delimiters:
+          type: array
+          minItems: 1
+          description: List of delimiters to split the input text into chunks.
+          items:
+            type: string
+          default: ["\n", '.', '?', '!']
 
     # --- LLM MODULE ---
     LLMModuleConfig:
@@ -1115,6 +1130,7 @@ components:
         - vector
         - help.sap.com
       title: DataRepositoryType
+
     KeyValueListPair:
       additionalProperties: false
       properties:
@@ -1163,6 +1179,44 @@ components:
       enum:
         - ignoreIfKeyAbsent
       title: SearchSelectOptionEnum
+
+    # --- Translation Module ---
+    InputTranslationModuleConfig:
+      oneOf:
+        - $ref: '#/components/schemas/SAPDocumentTranslation'
+
+    OutputTranslationModuleConfig:
+      oneOf:
+        - $ref: '#/components/schemas/SAPDocumentTranslation'
+
+    SAPDocumentTranslation:
+      type: object
+      required:
+        - type
+        - config
+      additionalProperties: false
+      properties:
+        type:
+          description: Type of document translation provider
+          type: string
+          enum:
+            - sap_document_translation # this would be different for other translation provider
+          example: sap_document_translation
+        config: # `config` key, parameters specific to SAP Translation Hub that are sent to the service, might differ for translation provider
+          description: Configuration for `sap_document_translation` translation provider.
+          type: object
+          required:
+            - target_language
+          additionalProperties: false
+          properties:
+            source_language:
+              type: string
+              description: Language of the text to be translated.
+              example: 'de-DE'
+            target_language:
+              type: string
+              description: Language to which the text should be translated.
+              example: 'en-US'
 
     ErrorResponse:
       type: object
