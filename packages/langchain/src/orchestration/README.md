@@ -20,7 +20,7 @@ Currently, streaming is not supported.
 ### Client Initialization
 
 To initialize a client, four different configurations can be provided.
-Orchestration configuration is mandatory and its usage is explained in our [`orchestration client`](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md).
+Orchestration configuration is mandatory and its structure is explained in our [`orchestration client`](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md).
 Optionally, it is possible to set [LangChain options](https://v03.api.js.langchain.com/types/_langchain_core.language_models_chat_models.BaseChatModelParams.html), a custom resource group, and a destination of the SAP AI Core service.
 
 Below is an example for instantiating the orchestration client for LangChain:
