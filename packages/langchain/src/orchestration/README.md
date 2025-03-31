@@ -85,7 +85,7 @@ const response = await client.invoke(messageHistory, { timeout: 10000 });
 
 ##### Retry
 
-LangChain clients retry up to 6 times by default.
+LangChain clients retry up to 6 times with exponential backoff by default.
 To modify this behavior, set the `maxRetries` option during client initialization:
 
 ```ts
