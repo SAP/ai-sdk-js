@@ -61,7 +61,7 @@ describe('orchestration service client', () => {
 
   const config: OrchestrationModuleConfig = {
     llm: {
-      model_name: 'gpt-35-turbo-16k',
+      model_name: 'gpt-4o',
       model_params: { max_tokens: 50, temperature: 0.1 }
     },
     templating: {

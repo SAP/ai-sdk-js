@@ -29,7 +29,7 @@
     ],
     "created": 1730125149,
     "id": "chatcmpl-ANKsHIdjvozwuOGpGI6rygvwSJH0I",
-    "model": "gpt-35-turbo",
+    "model": "gpt-4o",
     "object": "chat.completion.chunk",
     "system_fingerprint": "fp_808245b034",
     "usage": null

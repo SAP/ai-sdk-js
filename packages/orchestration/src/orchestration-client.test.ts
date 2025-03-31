@@ -25,7 +25,7 @@ import type {
 const defaultJsonConfig = `{
   "module_configurations": {
     "llm_module_config": {
-      "model_name": "gpt-35-turbo-16k",
+      "model_name": "gpt-4o",
       "model_params": {
         "max_tokens": 50,
         "temperature": 0.1
@@ -77,7 +77,7 @@ describe('orchestration service client', () => {
   it('calls chatCompletion with minimum configuration', async () => {
     const config: OrchestrationModuleConfig = {
       llm: {
-        model_name: 'gpt-35-turbo-16k',
+        model_name: 'gpt-4o',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
       templating: {
@@ -151,7 +151,7 @@ describe('orchestration service client', () => {
   it('calls chatCompletion with filter configuration supplied using convenience function', async () => {
     const config: OrchestrationModuleConfig = {
       llm: {
-        model_name: 'gpt-35-turbo-16k',
+        model_name: 'gpt-4o',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
       templating: {
@@ -214,7 +214,7 @@ describe('orchestration service client', () => {
     });
     const config: OrchestrationModuleConfig = {
       llm: {
-        model_name: 'gpt-35-turbo-16k',
+        model_name: 'gpt-4o',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
       templating: {
@@ -263,7 +263,7 @@ describe('orchestration service client', () => {
   it('calls chatCompletion with filtering configuration', async () => {
     const config: OrchestrationModuleConfig = {
       llm: {
-        model_name: 'gpt-35-turbo-16k',
+        model_name: 'gpt-4o',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
       templating: {
@@ -326,7 +326,7 @@ describe('orchestration service client', () => {
   it('sends message history together with templating config', async () => {
     const config: OrchestrationModuleConfig = {
       llm: {
-        model_name: 'gpt-35-turbo-16k',
+        model_name: 'gpt-4o',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
       templating: {
@@ -378,7 +378,7 @@ describe('orchestration service client', () => {
   it('calls chatCompletion with grounding configuration', async () => {
     const config: OrchestrationModuleConfig = {
       llm: {
-        model_name: 'gpt-35-turbo'
+        model_name: 'gpt-4o'
       },
       templating: {
         template: [

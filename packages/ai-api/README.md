@@ -87,13 +87,13 @@ async function createArtifact() {
 ```ts
 async function createConfiguration() {
   const requestBody: ConfigurationBaseData = {
-    name: 'gpt-35-turbo',
+    name: 'gpt-4o',
     executableId: 'azure-openai',
     scenarioId: 'foundation-models',
     parameterBindings: [
       {
         key: 'modelName',
-        value: 'gpt-35-turbo'
+        value: 'gpt-4o'
       },
       {
         key: 'modelVersion',
