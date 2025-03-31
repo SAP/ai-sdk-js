@@ -471,18 +471,18 @@ const orchestrationClient = new OrchestrationClient({
     ],
     defaults: {}
   },
-  grounding: buildDocumentGroundingConfig(
+  grounding: buildDocumentGroundingConfig({
     input_params: ['groundingRequest'],
     output_param: 'groundingOutput',
     // metadata_params: ['PARAM_NAME']
     filters: [
-        {
-          id: 'FILTER_ID',
-          // data_repository_type: 'vector', // optional, default value is 'vector'
-          data_repositories: ['REPOSITORY_ID'],
-        }
-      ],
-    )
+      {
+        id: 'FILTER_ID',
+        // data_repository_type: 'vector', // optional, default value is 'vector'
+        data_repositories: ['REPOSITORY_ID'],
+      }
+    ],
+  })
 });
 
 const response = await orchestrationClient.chatCompletion({
