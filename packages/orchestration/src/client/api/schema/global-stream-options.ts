@@ -17,12 +17,12 @@ export type GlobalStreamOptions = {
   chunk_size?: number;
   /**
    * List of delimiters to split the input text into chunks.
-   * Default: [
+   * @example [
    *   "\n",
    *   ".",
    *   "?",
    *   "!"
-   * ].
+   * ]
    * Min Items: 1.
    */
   delimiters?: string[];

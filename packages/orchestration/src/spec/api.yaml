@@ -357,7 +357,7 @@ components:
           description: List of delimiters to split the input text into chunks.
           items:
             type: string
-          default: ["\n", '.', '?', '!']
+          example: ["\n", '.', '?', '!']
 
     # --- LLM MODULE ---
     LLMModuleConfig:
