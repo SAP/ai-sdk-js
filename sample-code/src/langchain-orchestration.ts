@@ -113,7 +113,7 @@ export async function invokeChainWithOutputFilter(): Promise<string> {
 }
 
 /**
- * Trigger masking input.
+ * Trigger masking the input provided to the large language model.
  * @returns The answer from ChatGPT.
  */
 export async function invokeChainWithMasking(): Promise<string> {
@@ -127,8 +127,7 @@ export async function invokeChainWithMasking(): Promise<string> {
       template: [
         {
           role: 'user',
-          content:
-            'Please write an email to {{?user}} ({{?email}}), informing them about the amazing capabilities of generative AI! Be brief and concise, write at most 6 sentences.'
+          content: 'Summarize the following CV in 10 sentences: {{?orgCV}}'
         }
       ]
     },
@@ -136,7 +135,14 @@ export async function invokeChainWithMasking(): Promise<string> {
       masking_providers: [
         buildDpiMaskingProvider({
           method: 'pseudonymization',
-          entities: ['profile-email', 'profile-person']
+          entities: [
+            'profile-email',
+            'profile-person',
+            'profile-org',
+            'profile-phone',
+            'profile-location'
+          ],
+          allowlist: ['Harvard University', 'Boston']
         })
       ]
     }
@@ -145,6 +151,33 @@ export async function invokeChainWithMasking(): Promise<string> {
   return new OrchestrationClient(orchestrationConfig)
     .pipe(new StringOutputParser())
     .invoke('My Message History', {
-      inputParams: { user: 'Alice Anderson', email: 'alice.anderson@sap.com' }
+      inputParams: {
+        orgCV:
+          'Patrick Morgan \n' +
+          '+49 (970) 333-3833 \n' +
+          'patric.morgan@hotmail.com \n\n' +
+          'Highlights \n' +
+          '- Strategic and financial planning expert \n' +
+          '- Accurate forecasting \n' +
+          '- Proficient in SAP, Excel VBA\n\n' +
+          'Education \n' +
+          'Master of Science: Finance - 2014 \n' +
+          'Harvard University, Boston \n\n' +
+          'Bachelor of Science: Finance - 2011 \n' +
+          'Harvard University, Boston \n\n\n' +
+          'Certifications \n' +
+          'Certified Management Accountant \n\n\n' +
+          'Summary \n' +
+          'Skilled Financial Manager adept at increasing work process efficiency and profitability through functional and technical analysis. Successful at advising large corporations, small businesses, and individual clients. Areas of expertise include asset allocation, investment strategy, and risk management. \n\n\n' +
+          'Experience \n' +
+          'Finance Manager - 09/2016 to 05/2018 \n' +
+          'M&K Group, York \n' +
+          '- Manage the modelling, planning, and execution of all financial processes. \n' +
+          '- Carry short and long-term custom comprehensive financial strategies to reach company goals. \n' +
+          'Finance Manager - 09/2013 to 05/2016 \n' +
+          'Ago Group, Chicago \n' +
+          '- Drafted executive analysis reports highlighting business issues, potential risks, and profit opportunities. \n' +
+          '- Recommended innovative alternatives to generate revenue and reduce unnecessary costs. \n'
+      }
     });
 }
