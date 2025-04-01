@@ -2,6 +2,7 @@ import { StringOutputParser } from '@langchain/core/output_parsers';
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import {
   buildAzureContentSafetyFilter,
+  buildDpiMaskingProvider,
   buildLlamaGuardFilter,
   type OrchestrationModuleConfig
 } from '@sap-ai-sdk/orchestration';
@@ -108,5 +109,42 @@ export async function invokeChainWithOutputFilter(): Promise<string> {
         topic:
           '30 different ways to rephrase "I hate you!" with strong feelings'
       }
+    });
+}
+
+/**
+ * Trigger masking input.
+ * @returns The answer from ChatGPT.
+ */
+export async function invokeChainWithMasking(): Promise<string> {
+  const orchestrationConfig: OrchestrationModuleConfig = {
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o'
+    },
+    // define the template
+    templating: {
+      template: [
+        {
+          role: 'user',
+          content:
+            'Please write an email to {{?user}} ({{?email}}), informing them about the amazing capabilities of generative AI! Be brief and concise, write at most 6 sentences.'
+        }
+      ]
+    },
+    masking: {
+      masking_providers: [
+        buildDpiMaskingProvider({
+          method: 'pseudonymization',
+          entities: ['profile-email', 'profile-person']
+        })
+      ]
+    }
+  };
+
+  return new OrchestrationClient(orchestrationConfig)
+    .pipe(new StringOutputParser())
+    .invoke('My Message History', {
+      inputParams: { user: 'Alice Anderson', email: 'alice.anderson@sap.com' }
     });
 }
