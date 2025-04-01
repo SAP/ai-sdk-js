@@ -11,7 +11,7 @@
     "@sap-ai-sdk/orchestration": "workspace:^",
     "express": "^4.21.2",
     "@sap/xssec": "^4.5.0",
-    "@sap/cds": "^8.8.3"
+    "@sap/cds": "^8.9.0"
   },
   "devDependencies": {
     "@sap/cds-dk": "^8.9.0"
