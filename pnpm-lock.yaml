@@ -83,8 +83,8 @@ importers:
         specifier: ^3.5.3
         version: 3.5.3
       ts-jest:
-        specifier: ^29.2.6
-        version: 29.3.0(@babel/core@7.26.10)(@jest/transform@29.7.0)(@jest/types@29.6.3)(jest@30.0.0-alpha.7(@types/node@20.17.28)(ts-node@10.9.2(@types/node@20.17.28)(typescript@5.8.2)))(typescript@5.8.2)
+        specifier: ^29.3.1
+        version: 29.3.1(@babel/core@7.26.10)(@jest/transform@29.7.0)(@jest/types@29.6.3)(jest@30.0.0-alpha.7(@types/node@20.17.28)(ts-node@10.9.2(@types/node@20.17.28)(typescript@5.8.2)))(typescript@5.8.2)
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@20.17.28)(typescript@5.8.2)
@@ -210,18 +210,18 @@ importers:
         specifier: workspace:^
         version: link:../packages/orchestration
       '@sap/cds':
-        specifier: ^8.8.3
-        version: 8.8.3(express@4.21.2)
+        specifier: ^8.9.0
+        version: 8.9.0(@eslint/js@9.23.0)(express@5.1.0)
       '@sap/xssec':
         specifier: ^4.5.0
         version: 4.5.0
       express:
-        specifier: ^4.21.2
-        version: 4.21.2
+        specifier: ^5.1.0
+        version: 5.1.0
     devDependencies:
       '@sap/cds-dk':
-        specifier: ^8.8.2
-        version: 8.8.2
+        specifier: ^8.9.0
+        version: 8.9.0(@eslint/js@9.23.0)
 
   sample-code:
     dependencies:
@@ -256,8 +256,8 @@ importers:
         specifier: ^5.0.1
         version: 5.0.1
       express:
-        specifier: ^4.21.2
-        version: 4.21.2
+        specifier: ^5.1.0
+        version: 5.1.0
       langchain:
         specifier: 0.3.19
         version: 0.3.19(@langchain/core@0.3.43(openai@4.89.0(ws@8.18.1)(zod@3.24.2)))(axios@1.8.4)(handlebars@4.7.8)(openai@4.89.0(ws@8.18.1)(zod@3.24.2))(ws@8.18.1)
@@ -312,28 +312,28 @@ importers:
         version: 0.1.0(@langchain/core@0.3.43(openai@4.89.0(ws@8.18.1)(zod@3.24.2)))
       '@sap-ai-sdk/ai-api':
         specifier: canary
-        version: 1.10.1-20250327013145.0
+        version: 1.10.1-20250401013228.0
       '@sap-ai-sdk/document-grounding':
         specifier: canary
-        version: 1.10.1-20250327013145.0
+        version: 1.10.1-20250401013228.0
       '@sap-ai-sdk/foundation-models':
         specifier: canary
-        version: 1.10.1-20250327013145.0
+        version: 1.10.1-20250401013228.0
       '@sap-ai-sdk/langchain':
         specifier: canary
-        version: 1.10.1-20250327013145.0(openai@4.89.0(ws@8.18.1)(zod@3.24.2))(zod@3.24.2)
+        version: 1.10.1-20250401013228.0(openai@4.89.0(ws@8.18.1)(zod@3.24.2))(zod@3.24.2)
       '@sap-ai-sdk/orchestration':
         specifier: canary
-        version: 1.10.1-20250327013145.0
+        version: 1.10.1-20250401013228.0
       '@sap-ai-sdk/prompt-registry':
         specifier: canary
-        version: 1.10.1-20250327013145.0
+        version: 1.10.1-20250401013228.0
       '@sap-cloud-sdk/util':
         specifier: ^4.0.2
         version: 4.0.2
       express:
-        specifier: ^4.21.2
-        version: 4.21.2
+        specifier: ^5.1.0
+        version: 5.1.0
       langchain:
         specifier: 0.3.19
         version: 0.3.19(@langchain/core@0.3.43(openai@4.89.0(ws@8.18.1)(zod@3.24.2)))(axios@1.8.4)(handlebars@4.7.8)(openai@4.89.0(ws@8.18.1)(zod@3.24.2))(ws@8.18.1)
@@ -564,8 +564,8 @@ packages:
     peerDependencies:
       '@sap/cds': '>=7.6'
 
-  '@cap-js/db-service@1.18.0':
-    resolution: {integrity: sha512-Gv0X+GZx85Op8GZ+xbkt49Nrrha68jPfV5+Uo023Xqsbv7HhoFPkI1t1IVI+isZRz04dx4MW573b0KKGEFDAFg==}
+  '@cap-js/db-service@1.19.0':
+    resolution: {integrity: sha512-bhLhZNeu6vjtIoL0QuVzg43Ce4iKC4RXi3xdbAsqsqs+fPl2JgwC75ufF30b427U14yyAEodmGz+fOZfN6oQ2g==}
     peerDependencies:
       '@sap/cds': '>=7.9'
 
@@ -574,8 +574,8 @@ packages:
     peerDependencies:
       '@sap/cds': '>=7.6'
 
-  '@cap-js/sqlite@1.9.0':
-    resolution: {integrity: sha512-0Ka6a7W7v5qyL8IiEjKg1oJH1AvLh/bmshHYxovmruKfyDEuEx+Kz8IARKq8oHwmzPCZVV/xXIKnpg/KWesXcA==}
+  '@cap-js/sqlite@1.10.0':
+    resolution: {integrity: sha512-4LfBbQy/Omt7GgImwD5iIKnUsmuMIozL/XLMQjMCWryfe/RXMJBhpBW2qvZIg+tYL7ifgMrXXcbDUyKGzG+q/g==}
     peerDependencies:
       '@sap/cds': '>=7.6'
 
@@ -1111,26 +1111,26 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
-  '@sap-ai-sdk/ai-api@1.10.1-20250327013145.0':
-    resolution: {integrity: sha512-g3HiJYOpZiBS2JntSvdC3zWomHY+BF5fsQcOEtFzPmZI9ZqGiJO81Vt8T9iKhpp+Su60SblzoEBZlg5rHot6gg==}
+  '@sap-ai-sdk/ai-api@1.10.1-20250401013228.0':
+    resolution: {integrity: sha512-AMwoXUtVB+6OB/1i/d8SWVc2pR2z4MUMrcAZXS30QVWpZiyB3RGUyo+xy7GZAIe8KoABKqzuiqXkWhhThc+d9A==}
 
-  '@sap-ai-sdk/core@1.10.1-20250327013145.0':
-    resolution: {integrity: sha512-T6j4yzgZfM3/9Qw4ugBc11HIp8eq3aLbG+J/g2KB0+oD0yxdfSENsNRr9gwRjX0pjFxT4MrTW8RmpqtSYj6mCA==}
+  '@sap-ai-sdk/core@1.10.1-20250401013228.0':
+    resolution: {integrity: sha512-kGNSq3vhcbmV9jKuI/N7g/yiV28Sgf/2setObR2DeiEDWosYtMxZScbumaoiJkxegoHyB+TddjSyYs5p3FGkTg==}
 
-  '@sap-ai-sdk/document-grounding@1.10.1-20250327013145.0':
-    resolution: {integrity: sha512-1ZW1NI1T3ncqGVFpKX/oOt4bW7aqVGDG8ezBGLUZZykbhoUDObSLoFM1p+62kKG3FfLeXylLzNr1Pi+dyfSFhw==}
+  '@sap-ai-sdk/document-grounding@1.10.1-20250401013228.0':
+    resolution: {integrity: sha512-qGreaLACFYVo4Ov26nbETq80ylR3+F5oChjIDZMzAbfhaZmy0kunql2RxrghA8glaBOuXwcwVg6QEJCOKm0tLQ==}
 
-  '@sap-ai-sdk/foundation-models@1.10.1-20250327013145.0':
-    resolution: {integrity: sha512-29Aw7/nAXYhp7y3N5DOvsmxJGLilvIk1VPpTznFsRlqV9+rb76MLUFheYrelIrt6pGKF2leEvX3PlVJrm/pkmQ==}
+  '@sap-ai-sdk/foundation-models@1.10.1-20250401013228.0':
+    resolution: {integrity: sha512-P8VhL/relSN6bQvRMoCxI701mQN1bTpKo/eWKxmqx1F2mXKPvHNDfn59NXE/eQd01vDmeZ4qQh2gwrBLgmbWTg==}
 
-  '@sap-ai-sdk/langchain@1.10.1-20250327013145.0':
-    resolution: {integrity: sha512-T0Sbb38+7FOpTw+9fVjIOncgv9WLWeMJJ1JTG+lKbA93P5XcpH0rHtBhXc0bHMxrBRy0fqTlw4lN2QijK4RefQ==}
+  '@sap-ai-sdk/langchain@1.10.1-20250401013228.0':
+    resolution: {integrity: sha512-l8xIyNIO7YIVQ9gmskWyu0AQLkdKquEegNxAXVFMtjRtxPCCPoYR4hvZzqj6ybyYyVYdvt3C4npCaYzbqFSxkw==}
 
-  '@sap-ai-sdk/orchestration@1.10.1-20250327013145.0':
-    resolution: {integrity: sha512-MeGfmyMxazfRPx37Hb9r1qVZYP5n++xnPUydUH8dCHoWPwJK+q4vvAhS3lvRRdIaFuKbUhPVlJT0mfMUdhxllg==}
+  '@sap-ai-sdk/orchestration@1.10.1-20250401013228.0':
+    resolution: {integrity: sha512-Sg0xoUgsH/QyJmXi9SJNOmWGyELzJ9lEON58PlleS3yuTMgoKsUVsk+byW4Ff7P5nCA5dF0LlK8r+2SHK70DQQ==}
 
-  '@sap-ai-sdk/prompt-registry@1.10.1-20250327013145.0':
-    resolution: {integrity: sha512-QURTnfnZ+DAIBmHKTvQ0eGivtalxH6pJNEY9cp9PsqoBrxjnYQNiq5crNReSoHWMsgkQg40q+F9ku+6Rw6EJKw==}
+  '@sap-ai-sdk/prompt-registry@1.10.1-20250401013228.0':
+    resolution: {integrity: sha512-eoYNLF9jvT4nQHqydKt5XyXrcGOh4A76KaW2cIyc/he3+3TW3m039rezzKH5pun/8sLWQMyGidSwCTNCgM6SHg==}
 
   '@sap-cloud-sdk/connectivity@4.0.2':
     resolution: {integrity: sha512-20ok60K1PLezyngU3Zcp2Hx3R2rlPYNeebD+IcFhzHklJGhkJGWOBiWxSlCLhyi1hGmYIr5SIlXHe/6AvHC69Q==}
@@ -1159,13 +1159,13 @@ packages:
   '@sap-cloud-sdk/util@4.0.2':
     resolution: {integrity: sha512-HhBXWFkDnmpexTDT2Hwx5F39vmAg/q83HCxyOUZSiEZHfOWAflUAYO+oX4mniCkve51eGDQcn82kJeGl+jY9kg==}
 
-  '@sap/cds-compiler@5.8.2':
-    resolution: {integrity: sha512-doEOvu2ZTYjcC8v/UaYESYVjSAnLvuDlit4FurUiPfxiMxsQqwDOtldJGDTb26JpZdIi/GrTWv8qksk6PnpmMA==}
+  '@sap/cds-compiler@5.9.0':
+    resolution: {integrity: sha512-9tKzOBYp/GYjENwPYAh7WIxgUZKjJsWC0NzhiK5dekMZqQ/+51jLDy85LJ09yhyEoaNaW77eEnPpAr2pCICbJA==}
     engines: {node: '>=18'}
     hasBin: true
 
-  '@sap/cds-dk@8.8.2':
-    resolution: {integrity: sha512-eF5wO0SnycDVyr4/xIRFiH7W1VANeB+yQoib9veM4oc7M/jkhB34bDZLdWqK7hpKLZ7k66aLc1SOWjOPLQne7g==}
+  '@sap/cds-dk@8.9.0':
+    resolution: {integrity: sha512-nhMc/QX8aUbhUtu47hyCsrP5U2I4jxXmgnUmMcn7lQriShYOsd0X5RqWIQwhMnzGVBa9Ia6aNYjQzcG6Su5xyg==}
     hasBin: true
 
   '@sap/cds-fiori@1.4.0':
@@ -1178,15 +1178,16 @@ packages:
     resolution: {integrity: sha512-q6h7LkEx6w9LswCIQzJJ2mnoyeGS8jrmBXN4I4+aECRL60mkLskoqGetot+2tX2xXGxCYJuo5v1dtSafwBqTRQ==}
     engines: {node: '>=14'}
 
-  '@sap/cds-mtxs@2.6.1':
-    resolution: {integrity: sha512-DjhtPSUq2oTSYWOWyOhJMXB4GCJ5A9BXWe/HLsBOs8mNLlsLrKNDfN60hvvMXPqDhAei5ZHWmQlinZ8cO5mUCw==}
+  '@sap/cds-mtxs@2.7.0':
+    resolution: {integrity: sha512-V+E5lIZTXrZHdaxeaTR+nMTG/Ldtxha3JYxPMqA9r3Tg1dFl7QZIXYzGlb8eCHzGqFpJ57qWoGAx0Sr0FybaXA==}
     hasBin: true
 
-  '@sap/cds@8.8.3':
-    resolution: {integrity: sha512-4OuQ1LTwFQYveMsPivyIfGN7kWIipB8kcG37ddGCrk0lNSv+dNBPpC1nUeOvCbFh0b0lu+shPpuqjQjCyR3pag==}
+  '@sap/cds@8.9.0':
+    resolution: {integrity: sha512-OZc5u9DTjx0a/MTy49AY5inOSSCMXhTPjYgfz8U4p5E0BiUkeX7jVkU9dqY5Ae14X3WmK3jd8KFZyTc2Nk6zaQ==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
+      '@eslint/js': ^9
       express: ^4
       tar: ^7
     peerDependenciesMeta:
@@ -1536,6 +1537,10 @@ packages:
     resolution: {integrity: sha512-PYAthTa2m2VKxuvSD3DPC/Gy+U+sOA1LAuT8mkmRuvw+NACSaeXEQ+NHcVF7rONl6qcaxV3Uuemwawk+7+SJLw==}
     engines: {node: '>= 0.6'}
 
+  accepts@2.0.0:
+    resolution: {integrity: sha512-5cvg6CtKwfgdmVqY1WIiXKc3Q1bkRqGLi+2W/6ao+6Y7gu/RCwRuAhGEzh5B4KlszSuTLgZYuqFqo5bImjNKng==}
+    engines: {node: '>= 0.6'}
+
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
     peerDependencies:
@@ -1751,6 +1756,10 @@ packages:
     resolution: {integrity: sha512-7rAxByjUMqQ3/bHJy7D6OGXvx/MMc4IqBn/X0fcM1QUcAItpZrBEYhWGem+tzXH90c+G01ypMcYJBO9Y30203g==}
     engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
 
+  body-parser@2.2.0:
+    resolution: {integrity: sha512-02qvAaxv8tp7fBa/mw1ga98OGm+eCbqzJOKoRt70sLmfEEi+jyBYVTDGfCL/k06/4EMk/z01gCe7HoCH/f2LTg==}
+    engines: {node: '>=18'}
+
   brace-expansion@1.1.11:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}
 
@@ -1934,6 +1943,10 @@ packages:
     resolution: {integrity: sha512-FveZTNuGw04cxlAiWbzi6zTAL/lhehaWbTtgluJh4/E95DqMwTmha3KZN1aAWA8cFIhHzMZUvLevkw5Rqk+tSQ==}
     engines: {node: '>= 0.6'}
 
+  content-disposition@1.0.0:
+    resolution: {integrity: sha512-Au9nRL8VNUut/XSzbQA38+M78dzP4D+eqg3gfJHMIHHYa3bg067xj1KxMUWj+VULbiZMowKngFFbKczUrNJ1mg==}
+    engines: {node: '>= 0.6'}
+
   content-type@1.0.5:
     resolution: {integrity: sha512-nTjqfcBFEipKdXCv4YDQWCfmcLZKm81ldF0pAopTvyrFGVbcR6P/VAAd5G7N+0tTr8QqiU0tFadD6FK4NtJwOA==}
     engines: {node: '>= 0.6'}
@@ -1944,8 +1957,16 @@ packages:
   cookie-signature@1.0.6:
     resolution: {integrity: sha512-QADzlaHc8icV8I7vbaJXJwod9HWYp8uCqf1xa4OfNu1T7JVxQIrUgOWtHdNDtPiywmFbiS12VjotIXLrKM3orQ==}
 
+  cookie-signature@1.2.2:
+    resolution: {integrity: sha512-D76uU73ulSXrD1UXF4KE2TMxVVwhsnCgfAyTg9k8P6KGZjlXKrOLe4dJQKI3Bxi5wjesZoFXJWElNWBjPZMbhg==}
+    engines: {node: '>=6.6.0'}
+
   cookie@0.7.1:
     resolution: {integrity: sha512-6DnInpx7SJ2AK3+CTUE/ZM0vWTUboZCegxhC2xiIydHR9jNuTAASBrfEpHhiGOZw/nX51bHt6YQl8jsGo4y/0w==}
+    engines: {node: '>= 0.6'}
+
+  cookie@0.7.2:
+    resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
     engines: {node: '>= 0.6'}
 
   core-util-is@1.0.2:
@@ -2425,6 +2446,10 @@ packages:
     resolution: {integrity: sha512-28HqgMZAmih1Czt9ny7qr6ek2qddF4FclbMzwhCREB6OFfH+rXAnuNCwo1/wFvrtbgsQDb4kSbX9de9lFbrXnA==}
     engines: {node: '>= 0.10.0'}
 
+  express@5.1.0:
+    resolution: {integrity: sha512-DT9ck5YIRU+8GYzzU5kT3eHGA5iL+1Zd0EutOmTE9Dtk+Tvuzd23VBU+ec7HPNSTxXYO55gPV/hq4pSBJDjFpA==}
+    engines: {node: '>= 18'}
+
   extendable-error@0.1.7:
     resolution: {integrity: sha512-UOiS2in6/Q0FK0R0q6UY9vYpQ21mr/Qn1KOnte7vsACuNJf514WvCCUHSRCPcgjPT2bAhNIJdlE6bVap1GKmeg==}
 
@@ -2504,6 +2529,10 @@ packages:
     resolution: {integrity: sha512-6BN9trH7bp3qvnrRyzsBz+g3lZxTNZTbVO2EV1CS0WIcDbawYVdYvGflME/9QP0h0pYlCDBCTjYa9nZzMDpyxQ==}
     engines: {node: '>= 0.8'}
 
+  finalhandler@2.1.0:
+    resolution: {integrity: sha512-/t88Ty3d5JWQbWYgaOGCCYfXRwV1+be02WqYYlL6h0lEiUAMPM8o8qKGO01YIkOHzka2up08wvgYD0mDiI+q3Q==}
+    engines: {node: '>= 0.8'}
+
   find-up@4.1.0:
     resolution: {integrity: sha512-PpOwAdQ/YlXQ2vj8a3h8IipDuYRi3wceVQQGYWxNINccq40Anw7BlsEXCMbt1Zt+OLA6Fq9suIpIWD0OsnISlw==}
     engines: {node: '>=8'}
@@ -2561,6 +2590,10 @@ packages:
   fresh@0.5.2:
     resolution: {integrity: sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==}
     engines: {node: '>= 0.6'}
+
+  fresh@2.0.0:
+    resolution: {integrity: sha512-Rx/WycZ60HOaqLKAi6cHRKKI7zxWbJ31MhntmtwMoaTeF7XFH9hhBp8vITaMidfljRQ6eYWCKkaTK+ykVJHP2A==}
+    engines: {node: '>= 0.8'}
 
   fs-constants@1.0.0:
     resolution: {integrity: sha512-y6OAwoSIf7FyjMIv94u+b5rdheZEjzR63GTyZJm5qh4Bi+2YgwLCcI/fPFZkL5PSixOt6ZNKm+w+Hfp/Bciwow==}
@@ -2930,6 +2963,9 @@ packages:
 
   is-potential-custom-element-name@1.0.1:
     resolution: {integrity: sha512-bCYeRA2rVibKZd+s2625gGnGF/t7DSqDs4dP7CrLA1m7jKWz6pps0LpYLJN8Q64HtmPKJ1hrN3nzPNKFEKOUiQ==}
+
+  is-promise@4.0.0:
+    resolution: {integrity: sha512-hvpoI6korhJMnej285dSg6nu1+e6uxs7zG3BYAm5byqDsgJNWwxzM6z6iZiAgQR4TJ30JmBTOwqZUw3WlyH3AQ==}
 
   is-regex@1.2.1:
     resolution: {integrity: sha512-MjYsKHO5O7mCsmRGxWcLWheFqN9DJ/2TmngvjKXihe6efViPqc274+Fx/4fYj/r03+ESvBdTXK0V6tA3rgez1g==}
@@ -3470,12 +3506,20 @@ packages:
     resolution: {integrity: sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==}
     engines: {node: '>= 0.6'}
 
+  media-typer@1.1.0:
+    resolution: {integrity: sha512-aisnrDP4GNe06UcKFnV5bfMNPBUw4jsLGaWwWfnH3v02GnBuXX2MCVn5RbrWo0j3pczUilYblq7fQ7Nw2t5XKw==}
+    engines: {node: '>= 0.8'}
+
   meow@9.0.0:
     resolution: {integrity: sha512-+obSblOQmRhcyBt62furQqRAQpNyWXo8BuQ5bN7dG8wmwQ+vwHKp/rCFD4CrTP8CsDQD1sjoZ94K417XEUk8IQ==}
     engines: {node: '>=10'}
 
   merge-descriptors@1.0.3:
     resolution: {integrity: sha512-gaNvAS7TZ897/rVaZ0nMtAyxNyi/pdbjbAwUpFQpN70GqnVfOiXpeUUMKRBmzXaSQ8DdTX4/0ms62r2K+hE6mQ==}
+
+  merge-descriptors@2.0.0:
+    resolution: {integrity: sha512-Snk314V5ayFLhp3fkUREub6WtjBfPdCPY1Ln8/8munuLuiYhsABgBVWsozAG+MWMbVEvcdcpbi9R7ww22l9Q3g==}
+    engines: {node: '>=18'}
 
   merge-stream@2.0.0:
     resolution: {integrity: sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==}
@@ -3496,8 +3540,16 @@ packages:
     resolution: {integrity: sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==}
     engines: {node: '>= 0.6'}
 
+  mime-db@1.54.0:
+    resolution: {integrity: sha512-aU5EJuIN2WDemCcAp2vFBfp/m4EAhWJnUNSSw0ixs7/kXbd6Pg64EmwJkNdFhB8aWt1sH2CTXrLxo/iAGV3oPQ==}
+    engines: {node: '>= 0.6'}
+
   mime-types@2.1.35:
     resolution: {integrity: sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==}
+    engines: {node: '>= 0.6'}
+
+  mime-types@3.0.1:
+    resolution: {integrity: sha512-xRc4oEhT6eaBpU1XF7AjpOFD+xQmXNB5OVKwp4tqCuBpHLS/ZbBDrc07mYTDqVMg6PfxUjjNp85O6Cd2Z/5HWA==}
     engines: {node: '>= 0.6'}
 
   mime@1.6.0:
@@ -3588,6 +3640,10 @@ packages:
 
   negotiator@0.6.3:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
+    engines: {node: '>= 0.6'}
+
+  negotiator@1.0.0:
+    resolution: {integrity: sha512-8Ofs/AUQh8MaEcrlq5xOX0CQ9ypTF5dl78mjlMNfOK08fzpgTHQRQPBxcPlEtIw0yRpws+Zo/3r+5WRby7u3Gg==}
     engines: {node: '>= 0.6'}
 
   neo-async@2.6.2:
@@ -3850,6 +3906,10 @@ packages:
   path-to-regexp@0.1.12:
     resolution: {integrity: sha512-RA1GjUVMnvYFxuqovrEqZoxxW5NUZqbwKtYz/Tt7nXerk0LbLblQmrsgdeOxV5SFHf0UDggjS/bSeOZwt1pmEQ==}
 
+  path-to-regexp@8.2.0:
+    resolution: {integrity: sha512-TdrF7fW9Rphjq4RjrW0Kp2AW0Ahwu9sRGTkS6bvDi0SCwZlEZYmcfDbEsTz8RVk0EHIS/Vd1bv3JhG+1xZuAyQ==}
+    engines: {node: '>=16'}
+
   path-type@4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
@@ -3957,6 +4017,10 @@ packages:
     resolution: {integrity: sha512-+38qI9SOr8tfZ4QmJNplMUxqjbe7LKvvZgWdExBOmd+egZTtjLB67Gu0HRX3u/XOq7UU2Nx6nsjvS16Z9uwfpg==}
     engines: {node: '>=0.6'}
 
+  qs@6.14.0:
+    resolution: {integrity: sha512-YWWTjgABSKcvs/nWBi9PycY/JiPJqOD4JA6o9Sej2AtvSGarXxKC3OQSk4pAarbdQlKAh5D4FCQkJNkW+GAn3w==}
+    engines: {node: '>=0.6'}
+
   quansync@0.2.10:
     resolution: {integrity: sha512-t41VRkMYbkHyCYmOvx/6URnN80H7k4X0lLdBMGsz+maAwrJQYB1djpV6vHrQIBE0WBSGqhtEHrK9U3DWWH8v7A==}
 
@@ -3973,6 +4037,10 @@ packages:
 
   raw-body@2.5.2:
     resolution: {integrity: sha512-8zGqypfENjCIqGhgXToC8aB2r7YrBX+AQAfIPs/Mlk+BtPTztOvTS01NRW/3Eh60J+a48lt8qsCzirQ6loCVfA==}
+    engines: {node: '>= 0.8'}
+
+  raw-body@3.0.0:
+    resolution: {integrity: sha512-RmkhL8CAyCRPXCE28MMH0z2PNWQBNk2Q09ZdxM9IOOXwxwZbN+qbWaatPkdkWIKL2ZVDImrN/pK5HTRz2PcS4g==}
     engines: {node: '>= 0.8'}
 
   rc@1.2.8:
@@ -4071,6 +4139,10 @@ packages:
     resolution: {integrity: sha512-g6QUff04oZpHs0eG5p83rFLhHeV00ug/Yf9nZM6fLeUrPguBTkTQOdpAWWspMh55TZfVQDPaN3NQJfbVRAxdIw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
 
+  router@2.2.0:
+    resolution: {integrity: sha512-nLTrUKm2UyiL7rlhapu/Zl45FwNgkZGaCpZbIHajDYgwlJCOzLSk+cIPAnsEqV955GjILJnKbdQC1nVPz+gAYQ==}
+    engines: {node: '>= 18'}
+
   rrweb-cssom@0.8.0:
     resolution: {integrity: sha512-guoltQEx+9aMf2gDZ0s62EcV8lsXR+0w8915TC3ITdn2YueuNjdAYh/levpU9nFaoChh9RUS5ZdQMrKfVEN9tw==}
 
@@ -4136,9 +4208,17 @@ packages:
     resolution: {integrity: sha512-dW41u5VfLXu8SJh5bwRmyYUbAoSB3c9uQh6L8h/KtsFREPWpbX1lrljJo186Jc4nmci/sGUZ9a0a0J2zgfq2hw==}
     engines: {node: '>= 0.8.0'}
 
+  send@1.2.0:
+    resolution: {integrity: sha512-uaW0WwXKpL9blXE2o0bRhoL2EGXIrZxQ2ZQ4mgcfoBxdFmQold+qWsD2jLrfZ0trjKL6vOw0j//eAwcALFjKSw==}
+    engines: {node: '>= 18'}
+
   serve-static@1.16.2:
     resolution: {integrity: sha512-VqpjJZKadQB/PEbEwvFdO43Ax5dFBZ2UECszz8bQ7pi7wt//PWe1P6MN7eCnjsatYtBT6EuiClbjSWP2WrIoTw==}
     engines: {node: '>= 0.8.0'}
+
+  serve-static@2.2.0:
+    resolution: {integrity: sha512-61g9pCh0Vnh7IutZjtLGGpTA355+OPn2TyDv/6ivP2h/AdAVX9azsoxmg2/M6nZeQZNYBEwIcsne1mJd9oQItQ==}
+    engines: {node: '>= 18'}
 
   set-function-length@1.2.2:
     resolution: {integrity: sha512-pgRc4hJ4/sNjWCSS9AmnS40x3bNMDTknHgL5UaMBTMyJnU90EgWh1Rz+MC9eFu4BuN/UwZjKQuY/1v3rM7HMfg==}
@@ -4440,8 +4520,8 @@ packages:
     peerDependencies:
       typescript: '>=4.8.4'
 
-  ts-jest@29.3.0:
-    resolution: {integrity: sha512-4bfGBX7Gd1Aqz3SyeDS9O276wEU/BInZxskPrbhZLyv+c1wskDCqDFMJQJLWrIr/fKoAH4GE5dKUlrdyvo+39A==}
+  ts-jest@29.3.1:
+    resolution: {integrity: sha512-FT2PIRtZABwl6+ZCry8IY7JZ3xMuppsEV9qFVHOVe8jDzggwUZ9TsM4chyJxL9yi6LvkqcZYU3LmapEE454zBQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -4540,6 +4620,10 @@ packages:
 
   type-is@1.6.18:
     resolution: {integrity: sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==}
+    engines: {node: '>= 0.6'}
+
+  type-is@2.0.1:
+    resolution: {integrity: sha512-OZs6gsjF4vMp32qrCbiVSkrFmXtG/AZhY3t0iAMrMBiAZyV9oALtXO8hsrHbMXF9x6L3grlFuwW2oAz7cav+Gw==}
     engines: {node: '>= 0.6'}
 
   typed-array-buffer@1.0.3:
@@ -4788,6 +4872,11 @@ packages:
 
   yaml@2.7.0:
     resolution: {integrity: sha512-+hSoy/QHluxmC9kCIJyL/uyFmLmc+e5CFR5Wa+bpIhIj85LVb9ZH2nVnqrHoSvKogwODv0ClqZkmiSSaIH5LTA==}
+    engines: {node: '>= 14'}
+    hasBin: true
+
+  yaml@2.7.1:
+    resolution: {integrity: sha512-10ULxpnOCQXxJvBgxsn9ptjq6uviG/htZKk9veJGhlqn3w/DxQ631zFF+nlQXLwmImeS5amR2dl2U8sg6U9jsQ==}
     engines: {node: '>= 14'}
     hasBin: true
 
@@ -5050,25 +5139,25 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@cap-js/asyncapi@1.0.3(@sap/cds@8.8.3(express@4.21.2))':
+  '@cap-js/asyncapi@1.0.3(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))':
     dependencies:
-      '@sap/cds': 8.8.3(express@4.21.2)
+      '@sap/cds': 8.9.0(@eslint/js@9.23.0)(express@5.1.0)
 
-  '@cap-js/db-service@1.18.0(@sap/cds@8.8.3(express@4.21.2))':
+  '@cap-js/db-service@1.19.0(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))':
     dependencies:
-      '@sap/cds': 8.8.3(express@4.21.2)
+      '@sap/cds': 8.9.0(@eslint/js@9.23.0)(express@5.1.0)
       generic-pool: 3.9.0
     optional: true
 
-  '@cap-js/openapi@1.2.1(@sap/cds@8.8.3(express@4.21.2))':
+  '@cap-js/openapi@1.2.1(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))':
     dependencies:
-      '@sap/cds': 8.8.3(express@4.21.2)
+      '@sap/cds': 8.9.0(@eslint/js@9.23.0)(express@5.1.0)
       pluralize: 8.0.0
 
-  '@cap-js/sqlite@1.9.0(@sap/cds@8.8.3(express@4.21.2))':
+  '@cap-js/sqlite@1.10.0(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))':
     dependencies:
-      '@cap-js/db-service': 1.18.0(@sap/cds@8.8.3(express@4.21.2))
-      '@sap/cds': 8.8.3(express@4.21.2)
+      '@cap-js/db-service': 1.19.0(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))
+      '@sap/cds': 8.9.0(@eslint/js@9.23.0)(express@5.1.0)
       better-sqlite3: 11.9.1
     optional: true
 
@@ -5815,16 +5904,16 @@ snapshots:
 
   '@rtsao/scc@1.1.0': {}
 
-  '@sap-ai-sdk/ai-api@1.10.1-20250327013145.0':
+  '@sap-ai-sdk/ai-api@1.10.1-20250401013228.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.10.1-20250327013145.0
+      '@sap-ai-sdk/core': 1.10.1-20250401013228.0
       '@sap-cloud-sdk/connectivity': 4.0.2
       '@sap-cloud-sdk/util': 4.0.2
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/core@1.10.1-20250327013145.0':
+  '@sap-ai-sdk/core@1.10.1-20250401013228.0':
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.0.2
       '@sap-cloud-sdk/http-client': 4.0.2
@@ -5834,17 +5923,17 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/document-grounding@1.10.1-20250327013145.0':
+  '@sap-ai-sdk/document-grounding@1.10.1-20250401013228.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.10.1-20250327013145.0
+      '@sap-ai-sdk/core': 1.10.1-20250401013228.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/foundation-models@1.10.1-20250327013145.0':
+  '@sap-ai-sdk/foundation-models@1.10.1-20250401013228.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 1.10.1-20250327013145.0
-      '@sap-ai-sdk/core': 1.10.1-20250327013145.0
+      '@sap-ai-sdk/ai-api': 1.10.1-20250401013228.0
+      '@sap-ai-sdk/core': 1.10.1-20250401013228.0
       '@sap-cloud-sdk/connectivity': 4.0.2
       '@sap-cloud-sdk/http-client': 4.0.2
       '@sap-cloud-sdk/util': 4.0.2
@@ -5852,13 +5941,13 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/langchain@1.10.1-20250327013145.0(openai@4.89.0(ws@8.18.1)(zod@3.24.2))(zod@3.24.2)':
+  '@sap-ai-sdk/langchain@1.10.1-20250401013228.0(openai@4.89.0(ws@8.18.1)(zod@3.24.2))(zod@3.24.2)':
     dependencies:
       '@langchain/core': 0.3.43(openai@4.89.0(ws@8.18.1)(zod@3.24.2))
-      '@sap-ai-sdk/ai-api': 1.10.1-20250327013145.0
-      '@sap-ai-sdk/core': 1.10.1-20250327013145.0
-      '@sap-ai-sdk/foundation-models': 1.10.1-20250327013145.0
-      '@sap-ai-sdk/orchestration': 1.10.1-20250327013145.0
+      '@sap-ai-sdk/ai-api': 1.10.1-20250401013228.0
+      '@sap-ai-sdk/core': 1.10.1-20250401013228.0
+      '@sap-ai-sdk/foundation-models': 1.10.1-20250401013228.0
+      '@sap-ai-sdk/orchestration': 1.10.1-20250401013228.0
       '@sap-cloud-sdk/connectivity': 4.0.2
       uuid: 11.1.0
       zod-to-json-schema: 3.24.5(zod@3.24.2)
@@ -5868,18 +5957,18 @@ snapshots:
       - supports-color
       - zod
 
-  '@sap-ai-sdk/orchestration@1.10.1-20250327013145.0':
+  '@sap-ai-sdk/orchestration@1.10.1-20250401013228.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 1.10.1-20250327013145.0
-      '@sap-ai-sdk/core': 1.10.1-20250327013145.0
+      '@sap-ai-sdk/ai-api': 1.10.1-20250401013228.0
+      '@sap-ai-sdk/core': 1.10.1-20250401013228.0
       '@sap-cloud-sdk/util': 4.0.2
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/prompt-registry@1.10.1-20250327013145.0':
+  '@sap-ai-sdk/prompt-registry@1.10.1-20250401013228.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.10.1-20250327013145.0
+      '@sap-ai-sdk/core': 1.10.1-20250401013228.0
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -5989,18 +6078,18 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@sap/cds-compiler@5.8.2':
+  '@sap/cds-compiler@5.9.0':
     dependencies:
       antlr4: 4.9.3
 
-  '@sap/cds-dk@8.8.2':
+  '@sap/cds-dk@8.9.0(@eslint/js@9.23.0)':
     dependencies:
-      '@cap-js/asyncapi': 1.0.3(@sap/cds@8.8.3(express@4.21.2))
-      '@cap-js/openapi': 1.2.1(@sap/cds@8.8.3(express@4.21.2))
-      '@sap/cds': 8.8.3(express@4.21.2)
+      '@cap-js/asyncapi': 1.0.3(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))
+      '@cap-js/openapi': 1.2.1(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))
+      '@sap/cds': 8.9.0(@eslint/js@9.23.0)(express@4.21.2)
       '@sap/cds-foss': 5.0.1
-      '@sap/cds-mtxs': 2.6.1(hdb@0.19.12)
-      '@sap/eslint-plugin-cds': 3.2.0(eslint@9.23.0)(express@4.21.2)
+      '@sap/cds-mtxs': 2.7.0(hdb@0.19.12)
+      '@sap/eslint-plugin-cds': 3.2.0(@eslint/js@9.23.0)(eslint@9.23.0)(express@4.21.2)
       '@sap/hdi-deploy': 5.4.1(hdb@0.19.12)
       axios: 1.8.4
       eslint: 9.23.0
@@ -6012,8 +6101,9 @@ snapshots:
       ws: 8.18.1
       xml-js: 1.6.11
     optionalDependencies:
-      '@cap-js/sqlite': 1.9.0(@sap/cds@8.8.3(express@4.21.2))
+      '@cap-js/sqlite': 1.10.0(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))
     transitivePeerDependencies:
+      - '@eslint/js'
       - '@sap/hana-client'
       - bufferutil
       - debug
@@ -6022,19 +6112,24 @@ snapshots:
       - tar
       - utf-8-validate
 
-  '@sap/cds-fiori@1.4.0(@sap/cds@8.8.3(express@4.21.2))(express@4.21.2)':
+  '@sap/cds-fiori@1.4.0(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))(express@4.21.2)':
     dependencies:
-      '@sap/cds': 8.8.3(express@4.21.2)
+      '@sap/cds': 8.9.0(@eslint/js@9.23.0)(express@5.1.0)
       express: 4.21.2
+
+  '@sap/cds-fiori@1.4.0(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))(express@5.1.0)':
+    dependencies:
+      '@sap/cds': 8.9.0(@eslint/js@9.23.0)(express@5.1.0)
+      express: 5.1.0
 
   '@sap/cds-foss@5.0.1':
     dependencies:
       big.js: 6.2.2
       generic-pool: 3.9.0
       xmlbuilder: 15.1.1
-      yaml: 2.7.0
+      yaml: 2.7.1
 
-  '@sap/cds-mtxs@2.6.1(hdb@0.19.12)':
+  '@sap/cds-mtxs@2.7.0(hdb@0.19.12)':
     dependencies:
       '@sap/hdi-deploy': 5.4.1(hdb@0.19.12)
       axios: 1.8.4
@@ -6044,20 +6139,31 @@ snapshots:
       - hdb
       - supports-color
 
-  '@sap/cds@8.8.3(express@4.21.2)':
+  '@sap/cds@8.9.0(@eslint/js@9.23.0)(express@4.21.2)':
     dependencies:
-      '@sap/cds-compiler': 5.8.2
-      '@sap/cds-fiori': 1.4.0(@sap/cds@8.8.3(express@4.21.2))(express@4.21.2)
+      '@eslint/js': 9.23.0
+      '@sap/cds-compiler': 5.9.0
+      '@sap/cds-fiori': 1.4.0(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))(express@4.21.2)
       '@sap/cds-foss': 5.0.1
     optionalDependencies:
       express: 4.21.2
 
-  '@sap/eslint-plugin-cds@3.2.0(eslint@9.23.0)(express@4.21.2)':
+  '@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0)':
     dependencies:
-      '@sap/cds': 8.8.3(express@4.21.2)
+      '@eslint/js': 9.23.0
+      '@sap/cds-compiler': 5.9.0
+      '@sap/cds-fiori': 1.4.0(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))(express@5.1.0)
+      '@sap/cds-foss': 5.0.1
+    optionalDependencies:
+      express: 5.1.0
+
+  '@sap/eslint-plugin-cds@3.2.0(@eslint/js@9.23.0)(eslint@9.23.0)(express@4.21.2)':
+    dependencies:
+      '@sap/cds': 8.9.0(@eslint/js@9.23.0)(express@4.21.2)
       eslint: 9.23.0
       semver: 7.7.1
     transitivePeerDependencies:
+      - '@eslint/js'
       - express
       - tar
 
@@ -6453,6 +6559,11 @@ snapshots:
       mime-types: 2.1.35
       negotiator: 0.6.3
 
+  accepts@2.0.0:
+    dependencies:
+      mime-types: 3.0.1
+      negotiator: 1.0.0
+
   acorn-jsx@5.3.2(acorn@8.14.1):
     dependencies:
       acorn: 8.14.1
@@ -6716,6 +6827,20 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  body-parser@2.2.0:
+    dependencies:
+      bytes: 3.1.2
+      content-type: 1.0.5
+      debug: 4.4.0(supports-color@8.1.1)
+      http-errors: 2.0.0
+      iconv-lite: 0.6.3
+      on-finished: 2.4.1
+      qs: 6.14.0
+      raw-body: 3.0.0
+      type-is: 2.0.1
+    transitivePeerDependencies:
+      - supports-color
+
   brace-expansion@1.1.11:
     dependencies:
       balanced-match: 1.0.2
@@ -6897,13 +7022,21 @@ snapshots:
     dependencies:
       safe-buffer: 5.2.1
 
+  content-disposition@1.0.0:
+    dependencies:
+      safe-buffer: 5.2.1
+
   content-type@1.0.5: {}
 
   convert-source-map@2.0.0: {}
 
   cookie-signature@1.0.6: {}
 
+  cookie-signature@1.2.2: {}
+
   cookie@0.7.1: {}
+
+  cookie@0.7.2: {}
 
   core-util-is@1.0.2: {}
 
@@ -7511,6 +7644,38 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  express@5.1.0:
+    dependencies:
+      accepts: 2.0.0
+      body-parser: 2.2.0
+      content-disposition: 1.0.0
+      content-type: 1.0.5
+      cookie: 0.7.2
+      cookie-signature: 1.2.2
+      debug: 4.4.0(supports-color@8.1.1)
+      encodeurl: 2.0.0
+      escape-html: 1.0.3
+      etag: 1.8.1
+      finalhandler: 2.1.0
+      fresh: 2.0.0
+      http-errors: 2.0.0
+      merge-descriptors: 2.0.0
+      mime-types: 3.0.1
+      on-finished: 2.4.1
+      once: 1.4.0
+      parseurl: 1.3.3
+      proxy-addr: 2.0.7
+      qs: 6.14.0
+      range-parser: 1.2.1
+      router: 2.2.0
+      send: 1.2.0
+      serve-static: 2.2.0
+      statuses: 2.0.1
+      type-is: 2.0.1
+      vary: 1.1.2
+    transitivePeerDependencies:
+      - supports-color
+
   extendable-error@0.1.7: {}
 
   external-editor@3.1.0:
@@ -7592,6 +7757,17 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  finalhandler@2.1.0:
+    dependencies:
+      debug: 4.4.0(supports-color@8.1.1)
+      encodeurl: 2.0.0
+      escape-html: 1.0.3
+      on-finished: 2.4.1
+      parseurl: 1.3.3
+      statuses: 2.0.1
+    transitivePeerDependencies:
+      - supports-color
+
   find-up@4.1.0:
     dependencies:
       locate-path: 5.0.0
@@ -7646,6 +7822,8 @@ snapshots:
   forwarded@0.2.0: {}
 
   fresh@0.5.2: {}
+
+  fresh@2.0.0: {}
 
   fs-constants@1.0.0:
     optional: true
@@ -8037,6 +8215,8 @@ snapshots:
   is-plain-obj@1.1.0: {}
 
   is-potential-custom-element-name@1.0.1: {}
+
+  is-promise@4.0.0: {}
 
   is-regex@1.2.1:
     dependencies:
@@ -8796,6 +8976,8 @@ snapshots:
 
   media-typer@0.3.0: {}
 
+  media-typer@1.1.0: {}
+
   meow@9.0.0:
     dependencies:
       '@types/minimist': 1.2.5
@@ -8813,6 +8995,8 @@ snapshots:
 
   merge-descriptors@1.0.3: {}
 
+  merge-descriptors@2.0.0: {}
+
   merge-stream@2.0.0: {}
 
   merge2@1.4.1: {}
@@ -8826,9 +9010,15 @@ snapshots:
 
   mime-db@1.52.0: {}
 
+  mime-db@1.54.0: {}
+
   mime-types@2.1.35:
     dependencies:
       mime-db: 1.52.0
+
+  mime-types@3.0.1:
+    dependencies:
+      mime-db: 1.54.0
 
   mime@1.6.0: {}
 
@@ -8900,6 +9090,8 @@ snapshots:
   natural-compare@1.4.0: {}
 
   negotiator@0.6.3: {}
+
+  negotiator@1.0.0: {}
 
   neo-async@2.6.2: {}
 
@@ -9189,6 +9381,8 @@ snapshots:
 
   path-to-regexp@0.1.12: {}
 
+  path-to-regexp@8.2.0: {}
+
   path-type@4.0.0: {}
 
   picocolors@1.1.1: {}
@@ -9286,6 +9480,10 @@ snapshots:
     dependencies:
       side-channel: 1.1.0
 
+  qs@6.14.0:
+    dependencies:
+      side-channel: 1.1.0
+
   quansync@0.2.10: {}
 
   queue-microtask@1.2.3: {}
@@ -9299,6 +9497,13 @@ snapshots:
       bytes: 3.1.2
       http-errors: 2.0.0
       iconv-lite: 0.4.24
+      unpipe: 1.0.0
+
+  raw-body@3.0.0:
+    dependencies:
+      bytes: 3.1.2
+      http-errors: 2.0.0
+      iconv-lite: 0.6.3
       unpipe: 1.0.0
 
   rc@1.2.8:
@@ -9408,6 +9613,16 @@ snapshots:
 
   reusify@1.1.0: {}
 
+  router@2.2.0:
+    dependencies:
+      debug: 4.4.0(supports-color@8.1.1)
+      depd: 2.0.0
+      is-promise: 4.0.0
+      parseurl: 1.3.3
+      path-to-regexp: 8.2.0
+    transitivePeerDependencies:
+      - supports-color
+
   rrweb-cssom@0.8.0: {}
 
   rspack-resolver@1.2.2:
@@ -9491,12 +9706,37 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  send@1.2.0:
+    dependencies:
+      debug: 4.4.0(supports-color@8.1.1)
+      encodeurl: 2.0.0
+      escape-html: 1.0.3
+      etag: 1.8.1
+      fresh: 2.0.0
+      http-errors: 2.0.0
+      mime-types: 3.0.1
+      ms: 2.1.3
+      on-finished: 2.4.1
+      range-parser: 1.2.1
+      statuses: 2.0.1
+    transitivePeerDependencies:
+      - supports-color
+
   serve-static@1.16.2:
     dependencies:
       encodeurl: 2.0.0
       escape-html: 1.0.3
       parseurl: 1.3.3
       send: 0.19.0
+    transitivePeerDependencies:
+      - supports-color
+
+  serve-static@2.2.0:
+    dependencies:
+      encodeurl: 2.0.0
+      escape-html: 1.0.3
+      parseurl: 1.3.3
+      send: 1.2.0
     transitivePeerDependencies:
       - supports-color
 
@@ -9851,7 +10091,7 @@ snapshots:
     dependencies:
       typescript: 5.8.2
 
-  ts-jest@29.3.0(@babel/core@7.26.10)(@jest/transform@29.7.0)(@jest/types@29.6.3)(jest@30.0.0-alpha.7(@types/node@20.17.28)(ts-node@10.9.2(@types/node@20.17.28)(typescript@5.8.2)))(typescript@5.8.2):
+  ts-jest@29.3.1(@babel/core@7.26.10)(@jest/transform@29.7.0)(@jest/types@29.6.3)(jest@30.0.0-alpha.7(@types/node@20.17.28)(ts-node@10.9.2(@types/node@20.17.28)(typescript@5.8.2)))(typescript@5.8.2):
     dependencies:
       bs-logger: 0.2.6
       ejs: 3.1.10
@@ -9967,6 +10207,12 @@ snapshots:
     dependencies:
       media-typer: 0.3.0
       mime-types: 2.1.35
+
+  type-is@2.0.1:
+    dependencies:
+      content-type: 1.0.5
+      media-typer: 1.1.0
+      mime-types: 3.0.1
 
   typed-array-buffer@1.0.3:
     dependencies:
@@ -10236,6 +10482,8 @@ snapshots:
   yaml@1.10.2: {}
 
   yaml@2.7.0: {}
+
+  yaml@2.7.1: {}
 
   yargs-parser@20.2.9: {}
 

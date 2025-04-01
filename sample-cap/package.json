@@ -9,12 +9,12 @@
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
-    "express": "^4.21.2",
+    "express": "^5.1.0",
     "@sap/xssec": "^4.5.0",
-    "@sap/cds": "^8.8.3"
+    "@sap/cds": "^8.9.0"
   },
   "devDependencies": {
-    "@sap/cds-dk": "^8.8.2"
+    "@sap/cds-dk": "^8.9.0"
   },
   "scripts": {
     "prebuild": "rm -rf dist",
