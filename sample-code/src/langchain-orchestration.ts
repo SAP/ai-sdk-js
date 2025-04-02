@@ -134,7 +134,7 @@ export async function invokeChainWithMasking(): Promise<string> {
     masking: {
       masking_providers: [
         buildDpiMaskingProvider({
-          method: 'pseudonymization',
+          method: 'anonymization',
           entities: [
             'profile-email',
             'profile-person',
