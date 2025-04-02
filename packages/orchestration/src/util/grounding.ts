@@ -19,6 +19,9 @@ export function buildDocumentGroundingConfig(
           data_repository_type: 'vector',
           ...filter
         }))
+      }),
+      ...(groundingConfig.metadata_params && {
+        metadata_params: groundingConfig.metadata_params
       })
     }
   };

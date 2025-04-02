@@ -470,6 +470,13 @@ app.get(
         `Orchestration responded with timestamp:\t${groundingResult.getContent()}\n`
       );
 
+      // Print the grounding data.
+      const groundingResultString =
+        groundingResult.data.module_results.grounding?.data?.grounding_result;
+      res.write(
+        `Orchestration grounding metadata:\t${JSON.stringify(JSON.parse(groundingResultString)[0].metadata)}\n`
+      );
+
       // Delete the created collection.
       await deleteCollection(collectionId);
       res.write(`Collection deleted:\t\t\t${collectionId}\n`);
