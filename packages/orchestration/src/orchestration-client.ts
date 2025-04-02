@@ -21,7 +21,7 @@ import type {
 } from './orchestration-types.js';
 import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
-import { parse } from 'yaml';
+import yaml from 'yaml';
 import { promptTemplatePostRequestSchema } from '@sap-ai-sdk/prompt-registry';
 import { TemplatingModuleConfig } from './client/api/schema/templating-module-config.js';
 
@@ -55,8 +55,7 @@ export class OrchestrationClient {
     } else if (typeof config.templating === 'string') {
       this.config = this.parseAndMergeTemplating(config); // Process and assign if templating is a string
     } else {
-      // Assert the type because TypeScript cannot guarantee that templating is not a string here
-      this.config = config as OrchestrationModuleConfig;
+      this.config = config as OrchestrationModuleConfig; // TypeScript cannot infer that config.templating is not a string
     }
   }
 
@@ -76,7 +75,7 @@ export class OrchestrationClient {
    */
  private parseAndMergeTemplating(config: OrchestrationModuleConfigWithStringTemplating): OrchestrationModuleConfig {
   try {
-    const parsedObject = parse(config.templating as string); // We are sure it's a string here
+    const parsedObject = yaml.parse(config.templating as string); // We are sure it's a string here
     const result = promptTemplatePostRequestSchema.safeParse(parsedObject);
 
     if (result.success) {
