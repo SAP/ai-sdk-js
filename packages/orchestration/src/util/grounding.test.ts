@@ -2,11 +2,12 @@ import { buildDocumentGroundingConfig } from './grounding.js';
 import type { DocumentGroundingServiceConfig } from '../orchestration-types.js';
 
 describe('document grounding util', () => {
-  it('builds grounding configuration with minimal required properties', () => {
+  it('builds simple grounding configuration', () => {
     const groundingConfig: DocumentGroundingServiceConfig = {
       filters: [{}],
       input_params: ['input'],
-      output_param: 'output'
+      output_param: 'output',
+      metadata_params: ['param1', 'param2']
     };
     expect(buildDocumentGroundingConfig(groundingConfig)).toEqual({
       type: 'document_grounding_service',
@@ -17,7 +18,8 @@ describe('document grounding util', () => {
           }
         ],
         input_params: ['input'],
-        output_param: 'output'
+        output_param: 'output',
+        metadata_params: ['param1', 'param2']
       }
     });
   });

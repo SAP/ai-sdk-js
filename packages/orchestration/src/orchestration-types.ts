@@ -164,6 +164,10 @@ export interface DocumentGroundingServiceConfig {
    * @example "groundingOutput"
    */
   output_param: string;
+  /**
+   * Parameter name used for specifying metadata parameters.
+   */
+  metadata_params?: string[];
 }
 
 /**

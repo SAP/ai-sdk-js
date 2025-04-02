@@ -57,7 +57,12 @@ export async function createDocumentsWithTimestamp(
           chunks: [
             {
               content: `The last SAP AI SDK JavaScript end to end test was run at ${timestamp}.`,
-              metadata: []
+              metadata: [
+                {
+                  key: 'context',
+                  value: ['sap-ai-sdk-js']
+                }
+              ]
             }
           ]
         }
