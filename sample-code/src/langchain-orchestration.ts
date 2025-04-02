@@ -155,7 +155,7 @@ export async function invokeChainWithMasking(): Promise<string> {
         orgCV:
           'Patrick Morgan \n' +
           '+49 (970) 333-3833 \n' +
-          'patric.morgan@hotmail.com \n\n' +
+          'patric.morgan@example.com \n\n' +
           'Highlights \n' +
           '- Strategic and financial planning expert \n' +
           '- Accurate forecasting \n' +
