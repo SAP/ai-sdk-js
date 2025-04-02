@@ -45,7 +45,8 @@ import {
 import {
   invokeChain as invokeChainOrchestration,
   invokeChainWithInputFilter as invokeChainWithInputFilterOrchestration,
-  invokeChainWithOutputFilter as invokeChainWithOutputFilterOrchestration
+  invokeChainWithOutputFilter as invokeChainWithOutputFilterOrchestration,
+  invokeLangGraphChain
 } from './langchain-orchestration.js';
 import {
   createCollection,
@@ -241,7 +242,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       fromJson: orchestrationFromJson,
       image: orchestrationChatCompletionImage,
       responseFormat: orchestrationResponseFormat,
-      maskGroundingInput: orchestrationMaskGroundingInput
+      maskGroundingInput: orchestrationMaskGroundingInput,
     }[sampleCase] || orchestrationChatCompletion;
 
   try {
@@ -432,6 +433,14 @@ app.get('/langchain/invoke-rag-chain', async (req, res) => {
 app.get('/langchain/invoke-tool-chain', async (req, res) => {
   try {
     res.header('Content-Type', 'text/plain').send(await invokeToolChain());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/langchain/invoke-stateful-chain', async (req, res) => {
+  try {
+    res.header('Content-Type', 'text/plain').send(await invokeLangGraphChain());
   } catch (error: any) {
     sendError(res, error);
   }

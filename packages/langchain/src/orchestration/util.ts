@@ -1,4 +1,6 @@
-import { OrchestrationMessage } from './orchestration-message.js';
+import {
+  AIMessage
+} from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
 import type {
   ChatMessage,
@@ -8,7 +10,6 @@ import type {
 import type { ToolCall } from '@langchain/core/messages/tool';
 import type { AzureOpenAiChatCompletionMessageToolCalls } from '@sap-ai-sdk/foundation-models';
 import type {
-  AIMessage,
   BaseMessage,
   HumanMessage,
   SystemMessage
@@ -140,7 +141,7 @@ export function mapOutputToChatResult(
   return {
     generations: choices.map(choice => ({
       text: choice.message.content ?? '',
-      message: new OrchestrationMessage(
+      message: new AIMessage(
         {
           content: choice.message.content ?? '',
           tool_calls: mapAzureOpenAiToLangchainToolCall(
@@ -150,11 +151,11 @@ export function mapOutputToChatResult(
             finish_reason: choice.finish_reason,
             index: choice.index,
             function_call: choice.message.function_call,
-            tool_calls: choice.message.tool_calls
+            tool_calls: choice.message.tool_calls,
+            module_results,
+            request_id
           }
-        },
-        module_results,
-        request_id
+        }
       ),
       generationInfo: {
         finish_reason: choice.finish_reason,
