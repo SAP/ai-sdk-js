@@ -1,44 +1,29 @@
-# @sap-ai-sdk/langchain
+# LangChain Orchestration Client
 
-SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI Core**, **SAP Generative AI Hub**, and **Orchestration Service**.
+LangChain orchestration client utilizes `@sap-ai-sdk/orchestration` package and provides an interface to interact with the Orchestration Service when using LangChain.
 
-This package provides LangChain model clients built on top of the foundation model clients of the SAP Cloud SDK for AI.
-
-> **Note**: For installation and prerequisites, refer to the [README](../../README.md).
+> **Note**: For installation and prerequisites of the package `@sap-ai-sdk/langchain`, refer to the [README](../../README.md).
 
 ### Table of Contents
 
-- [Relationship between Orchestration and Resource Groups](#relationship-between-orchestration-and-resource-groups)
 - [Usage](#usage)
   - [Client Initialization](#client-initialization)
-  - [Client](#client)
-    - [Resilience](#resilience)
+  - [Client Invocation](#client-invocation)
 - [Local Testing](#local-testing)
 - [Limitations](#limitations)
 
-## Relationship between Orchestration and Resource Groups
-
-SAP AI Core manages access to orchestration of generative AI models through the global AI scenario `orchestration`.
-Creating a deployment for enabling orchestration capabilities requires access to this scenario.
-
-[Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
-Each resource group allows for a one-time orchestration deployment.
-
-Consequently, each orchestration deployment uniquely maps to a resource group within the `orchestration` scenario.
-
 ## Usage
 
-This package offers a LangChain orchestration service client.
-Streaming is not supported.
 The client complies with [LangChain's interface](https://js.langchain.com/docs/introduction).
+Currently, streaming is not supported.
 
 ### Client Initialization
 
-To initialize the client, four different configurations can be provided.
-The only required configuration is the orchestration configuration, explained in detail in the [orchestration foundation client](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md).  
-Additionally, it is possible to set [default LangChain options](https://v03.api.js.langchain.com/types/_langchain_core.language_models_chat_models.BaseChatModelParams.html), a custom resource group, and a destination.
+To initialize a client, four different configurations can be provided.
+Orchestration configuration is mandatory and its structure is explained in our [`orchestration client`](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md).
+Optionally, it is possible to set [LangChain options](https://v03.api.js.langchain.com/types/_langchain_core.language_models_chat_models.BaseChatModelParams.html), a custom resource group, and a destination of the SAP AI Core service.
 
-A minimal example for instantiating the orchestration client uses a template and model name:
+Below is an example for instantiating the orchestration client for LangChain:
 
 ```ts
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
@@ -58,8 +43,8 @@ const client = new OrchestrationClient(config);
 
 #### Custom Destination
 
-The `OrchestrationClient` can be initialized with a custom destination.
-For example, to target `my-destination`, use the following code:
+The `OrchestrationClient` can be initialized with a custom destination of the SAP AI Core service.
+For example, use the following code to target a specific destination:
 
 ```ts
 const client = new OrchestrationClient(
@@ -100,7 +85,7 @@ const response = await client.invoke(messageHistory, { timeout: 10000 });
 
 ##### Retry
 
-LangChain clients retry up to 6 times by default.
+LangChain clients retry up to 6 times with exponential backoff by default.
 To modify this behavior, set the `maxRetries` option during client initialization:
 
 ```ts
@@ -108,6 +93,8 @@ const client = new OrchestrationClient(orchestrationConfig, {
   maxRetries: 0
 });
 ```
+
+If the error is caused by input content filtering, the client will throw immediately without retrying.
 
 ## Local Testing
 

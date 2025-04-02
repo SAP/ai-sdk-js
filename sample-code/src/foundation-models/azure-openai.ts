@@ -20,7 +20,7 @@ const logger = createLogger({
  * @returns The response from Azure OpenAI containing the response content.
  */
 export async function chatCompletion(): Promise<AzureOpenAiChatCompletionResponse> {
-  const response = await new AzureOpenAiChatClient('gpt-35-turbo').run({
+  const response = await new AzureOpenAiChatClient('gpt-4o').run({
     messages: [{ role: 'user', content: 'What is the capital of France?' }]
   });
 
@@ -40,7 +40,7 @@ export async function chatCompletionStream(
 ): Promise<
   AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>
 > {
-  const response = await new AzureOpenAiChatClient('gpt-35-turbo').stream(
+  const response = await new AzureOpenAiChatClient('gpt-4o').stream(
     {
       messages: [
         {
@@ -60,7 +60,7 @@ export async function chatCompletionStream(
  */
 export async function computeEmbedding(): Promise<AzureOpenAiEmbeddingResponse> {
   const response = await new AzureOpenAiEmbeddingClient(
-    'text-embedding-ada-002'
+    'text-embedding-3-small'
   ).run({
     input: 'Hello, world!'
   });
@@ -76,7 +76,7 @@ export async function computeEmbedding(): Promise<AzureOpenAiEmbeddingResponse> 
  * @returns The response from Azure OpenAI containing the response content.
  */
 export async function chatCompletionWithDestination(): Promise<AzureOpenAiChatCompletionResponse> {
-  const response = await new AzureOpenAiChatClient('gpt-35-turbo', {
+  const response = await new AzureOpenAiChatClient('gpt-4o', {
     destinationName: 'e2e-aicore'
   }).run({
     messages: [{ role: 'user', content: 'What is the capital of France?' }]

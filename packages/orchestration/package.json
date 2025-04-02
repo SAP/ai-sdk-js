@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/orchestration",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
@@ -33,11 +33,11 @@
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/prompt-registry": "workspace:^",
-    "@sap-cloud-sdk/util": "^4.0.1",
+    "@sap-cloud-sdk/util": "^4.0.2",
     "yaml": "^1.10.2"
   },
   "devDependencies": {
-    "@sap-cloud-sdk/http-client": "^4.0.1",
-    "@sap-cloud-sdk/connectivity": "^4.0.1"
+    "@sap-cloud-sdk/http-client": "^4.0.2",
+    "@sap-cloud-sdk/connectivity": "^4.0.2"
   }
 }

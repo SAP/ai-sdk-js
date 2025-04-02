@@ -8,9 +8,10 @@ on:
         type: choice
         required: false
         options:
-          - core
-          - grounding
+          - ai-api
+          - document-grounding
           - orchestration
+          - prompt-registry
         default: orchestration
       file-ref:
         description: "Branch or tag to checkout the spec file from"
@@ -62,17 +63,21 @@ jobs:
           GH_ENTERPRISE_TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
         run: |
           case $CHOICE in
-            core)
+            ai-api)
               API_URL="$API_BASE_URL/cloudsdk/cloud-sdk-java-tests/contents/aicore.yaml?ref=$REF"
               FILE_PATH='packages/ai-api/src/spec/AI_CORE_API.yaml'
               ;;
-            grounding)
-              # TODO
-              exit 1
+            document-grounding)
+              API_URL="$API_BASE_URL/AI/rage-proxy-inference/contents/docs/public/business_api_hub/api_hub_merged_spec.yaml?ref=$REF"
+              FILE_PATH='packages/document-grounding/src/spec/api.yaml'
               ;;
             orchestration)
               API_URL="$API_BASE_URL/AI/llm-orchestration/contents/src/spec/api.yaml?ref=$REF"
               FILE_PATH='packages/orchestration/src/spec/api.yaml'
+              ;;
+            prompt-registry)
+              API_URL="$API_BASE_URL/AI/prompt-registry/contents/src/spec/prompt-registry.yaml?ref=$REF"
+              FILE_PATH='packages/prompt-registry/src/spec/prompt-registry.yaml'
               ;;
           esac
           
@@ -158,7 +163,7 @@ jobs:
           ## Definition of Done
 
           - [ ] Unit / type tests cover new classes
-          - [ ] Release notes updated
+          - [ ] Release notes / Changeset updated
           ") && echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
 
       - name: Generate Job Summary

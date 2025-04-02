@@ -1,10 +1,8 @@
-# @sap-ai-sdk/langchain
+# LangChain Azure OpenAI Client
 
-SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI Core**, **SAP Generative AI Hub**, and **Orchestration Service**.
+LangChain Azure OpenAI client utilizes `@sap-ai-sdk/foundation-models` package and provides an interface to interact with Azure OpenAI chat and embedding models when using LangChain.
 
-This package provides LangChain model clients built on top of the foundation model clients of the SAP Cloud SDK for AI.
-
-> **Note**: For installation and prerequisites, refer to the [README](../../README.md).
+> **Note**: For installation and prerequisites of the package `@sap-ai-sdk/langchain`, refer to the [README](../../README.md).
 
 ### Table of Contents
 
@@ -46,7 +44,9 @@ import {
 // For a chat client
 const chatClient = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
 // For an embedding client
-const embeddingClient = new AzureOpenAiEmbeddingClient({ modelName: 'gpt-4o' });
+const embeddingClient = new AzureOpenAiEmbeddingClient({
+  modelName: 'text-embedding-3-small'
+});
 ```
 
 In addition to the default parameters of Azure OpenAI and LangChain, additional parameters can be used to help narrow down the search for the desired model:
@@ -54,22 +54,38 @@ In addition to the default parameters of Azure OpenAI and LangChain, additional 
 ```ts
 const chatClient = new AzureOpenAiChatClient({
   modelName: 'gpt-4o',
-  modelVersion: '24-07-2021',
+  modelVersion: '2024-08-06',
   resourceGroup: 'my-resource-group'
 });
 ```
 
-**Do not pass a `deployment ID` to initialize the client.**
-For LangChain model clients, initialization requires specifying the model name, model version, and resource group.
+**Do not pass `deployment ID` when initializing the client.**
 
-By default, LangChain clients retry up to 6 times with exponential backoff in case of failure.
-In testing environments, reducing this number can speed up the process:
+#### Resilience
+
+To add resilience to the client, use LangChain's default options, especially `timeout` and `maxRetry`.
+
+##### Timeout
+
+By default, no timeout is set in the client.
+To limit the maximum duration for the entire request, including retries, specify a timeout in milliseconds when using the `invoke` method:
 
 ```ts
-const embeddingClient = new AzureOpenAiEmbeddingClient({
-  modelName: 'gpt-4o',
-  maxRetries: 0
-});
+const response = await client.invoke(messageHistory, { timeout: 10000 });
+```
+
+##### Retry
+
+LangChain clients retry up to 6 times with exponential backoff by default.
+To modify this behavior, set the `maxRetries` option during client initialization:
+
+```ts
+const client = new AzureOpenAiChatClient(
+  { modelName: 'gpt-4o' },
+  {
+    maxRetries: 0
+  }
+);
 ```
 
 #### Custom Destination
@@ -81,7 +97,7 @@ For example, to target `my-destination`, use the following code:
 const chatClient = new AzureOpenAiChatClient(
   {
     modelName: 'gpt-4o',
-    modelVersion: '24-07-2021',
+    modelVersion: '2024-08-06',
     resourceGroup: 'my-resource-group'
   },
   {
@@ -165,7 +181,7 @@ const splits = await textSplitter.splitDocuments(docs);
 
 // Initialize the embedding client
 const embeddingClient = new AzureOpenAiEmbeddingClient({
-  modelName: 'text-embedding-ada-002'
+  modelName: 'text-embedding-3-small'
 });
 
 // Create a vector store from the document

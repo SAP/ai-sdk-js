@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@sap-ai-sdk/sample-code",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "private": "true",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -27,12 +27,12 @@
     "@sap-ai-sdk/document-grounding": "workspace:^",
     "@sap-ai-sdk/prompt-registry": "workspace:^",
     "langchain": "0.3.19",
-    "@langchain/core": "0.3.42",
+    "@langchain/core": "0.3.43",
     "@langchain/textsplitters": "0.1.0",
-    "@sap-cloud-sdk/util": "^4.0.1",
-    "@types/express": "^5.0.0",
-    "express": "^4.21.2",
-    "zod-to-json-schema": "^3.24.3",
+    "@sap-cloud-sdk/util": "^4.0.2",
+    "@types/express": "^5.0.1",
+    "express": "^5.1.0",
+    "zod-to-json-schema": "^3.24.5",
     "zod": "^3.24.2"
   }
 }

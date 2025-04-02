@@ -5,7 +5,8 @@ import {
   OrchestrationClient,
   buildDocumentGroundingConfig,
   buildAzureContentSafetyFilter,
-  buildLlamaGuardFilter
+  buildLlamaGuardFilter,
+  buildDpiMaskingProvider
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
 import { z } from 'zod';
@@ -66,8 +67,7 @@ export async function chatCompletionStream(
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
     llm: {
-      model_name: 'gpt-35-turbo',
-      model_params: {}
+      model_name: 'gpt-4o'
     },
     // define the prompt
     templating: {
@@ -98,7 +98,7 @@ export async function chatCompletionStreamWithJsonModuleConfig(
   const jsonConfig = `{
     "module_configurations": {
       "llm_module_config": {
-        "model_name": "gpt-35-turbo",
+        "model_name": "gpt-4o",
         "model_params": {
           "stream_options": {
             "include_usage": true
@@ -235,7 +235,8 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
     messagesHistory: [
       {
         role: 'system',
-        content: 'Reparaphrase the sentence in ten ways: "{{?input}}"'
+        content:
+          'Reparaphrase the sentence in 30 ways with strong feelings: "{{?input}}"'
       }
     ],
     inputParams: {
@@ -282,11 +283,10 @@ export async function orchestrationCompletionMasking(): Promise<
     },
     masking: {
       masking_providers: [
-        {
-          type: 'sap_data_privacy_integration',
+        buildDpiMaskingProvider({
           method: 'pseudonymization',
-          entities: [{ type: 'profile-email' }, { type: 'profile-person' }]
-        }
+          entities: ['profile-email', 'profile-person']
+        })
       ]
     }
   });
@@ -324,15 +324,12 @@ export async function orchestrationMaskGroundingInput(): Promise<OrchestrationRe
     }),
     masking: {
       masking_providers: [
-        {
-          type: 'sap_data_privacy_integration',
+        buildDpiMaskingProvider({
           method: 'pseudonymization',
-          entities: [{ type: 'profile-org' }],
-          mask_grounding_input: {
-            enabled: true
-          },
+          entities: ['profile-org'],
+          mask_grounding_input: true,
           allowlist: ['Joule']
-        }
+        })
       ]
     }
   });
@@ -400,7 +397,8 @@ export async function orchestrationGroundingVector(): Promise<OrchestrationRespo
       grounding: buildDocumentGroundingConfig({
         input_params: ['groundingRequest'],
         output_param: 'groundingOutput',
-        filters: [{ data_repository_type: 'vector' }]
+        filters: [{ data_repository_type: 'vector' }],
+        metadata_params: ['context']
       })
     },
     { resourceGroup: 'ai-sdk-js-e2e' }

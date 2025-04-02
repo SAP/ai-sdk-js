@@ -55,7 +55,7 @@ const response = await VectorApi.createCollection(
   {
     title: 'ai-sdk-js-e2e',
     embeddingConfig: {
-      modelName: 'text-embedding-ada-002'
+      modelName: 'text-embedding-3-small'
     },
     metadata: []
   },

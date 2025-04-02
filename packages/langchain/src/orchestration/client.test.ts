@@ -10,6 +10,7 @@ import {
 import { OrchestrationClient } from './client.js';
 import type {
   CompletionPostResponse,
+  ErrorResponse,
   OrchestrationModuleConfig
 } from '@sap-ai-sdk/orchestration';
 
@@ -17,6 +18,7 @@ jest.setTimeout(30000);
 
 describe('orchestration service client', () => {
   let mockResponse: CompletionPostResponse;
+  let mockResponseInputFilterError: ErrorResponse;
   beforeEach(async () => {
     mockClientCredentialsGrantCall();
     mockDeploymentsList({ scenarioId: 'orchestration' }, { id: '1234' });
@@ -24,23 +26,31 @@ describe('orchestration service client', () => {
       'orchestration',
       'orchestration-chat-completion-success-response.json'
     );
+    mockResponseInputFilterError = await parseMockResponse<ErrorResponse>(
+      'orchestration',
+      'orchestration-chat-completion-input-filter-error.json'
+    );
   });
 
   afterEach(() => {
     nock.cleanAll();
   });
 
-  function mockInferenceWithResilience(resilience: {
-    retry?: number;
-    delay?: number;
-  }) {
+  function mockInferenceWithResilience(
+    response: any,
+    resilience: {
+      retry?: number;
+      delay?: number;
+    },
+    status: number = 200
+  ) {
     mockInference(
       {
         data: constructCompletionPostRequest(config, { messagesHistory: [] })
       },
       {
-        data: mockResponse,
-        status: 200
+        data: response,
+        status
       },
       {
         url: 'inference/deployments/1234/completion'
@@ -60,7 +70,7 @@ describe('orchestration service client', () => {
   };
 
   it('returns successful response when maxRetries equals retry configuration', async () => {
-    mockInferenceWithResilience({ retry: 2 });
+    mockInferenceWithResilience(mockResponse, { retry: 2 });
 
     const client = new OrchestrationClient(config, {
       maxRetries: 2
@@ -70,7 +80,7 @@ describe('orchestration service client', () => {
   });
 
   it('throws error response when maxRetries is smaller than required retries', async () => {
-    mockInferenceWithResilience({ retry: 2 });
+    mockInferenceWithResilience(mockResponse, { retry: 2 });
 
     const client = new OrchestrationClient(config, {
       maxRetries: 1
@@ -82,7 +92,7 @@ describe('orchestration service client', () => {
   });
 
   it('throws when delay exceeds timeout', async () => {
-    mockInferenceWithResilience({ delay: 2000 });
+    mockInferenceWithResilience(mockResponse, { delay: 2000 });
 
     const client = new OrchestrationClient(config);
 
@@ -96,11 +106,27 @@ describe('orchestration service client', () => {
   });
 
   it('returns successful response when timeout is bigger than delay', async () => {
-    mockInferenceWithResilience({ delay: 2000 });
+    mockInferenceWithResilience(mockResponse, { delay: 2000 });
 
     const client = new OrchestrationClient(config);
 
     const response = await client.invoke([], { timeout: 3000 });
     expect(response).toMatchSnapshot();
   });
+
+  it('throws immediately when input filter error occurs', async () => {
+    mockInferenceWithResilience(
+      mockResponseInputFilterError,
+      { retry: 0 },
+      400
+    );
+
+    const client = new OrchestrationClient(config, {
+      maxRetries: 1000 // Retry forever unless input filter error
+    });
+
+    await expect(client.invoke([])).rejects.toThrow(
+      'Request failed with status code 400'
+    );
+  }, 1000);
 });

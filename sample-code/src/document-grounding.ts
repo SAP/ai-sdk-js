@@ -13,7 +13,7 @@ export async function createCollection(): Promise<string> {
     {
       title: 'ai-sdk-js-e2e',
       embeddingConfig: {
-        modelName: 'text-embedding-ada-002'
+        modelName: 'text-embedding-3-small'
       },
       metadata: []
     },
@@ -57,7 +57,12 @@ export async function createDocumentsWithTimestamp(
           chunks: [
             {
               content: `The last SAP AI SDK JavaScript end to end test was run at ${timestamp}.`,
-              metadata: []
+              metadata: [
+                {
+                  key: 'context',
+                  value: ['sap-ai-sdk-js']
+                }
+              ]
             }
           ]
         }

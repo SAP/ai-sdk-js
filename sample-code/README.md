@@ -10,8 +10,9 @@ Parts of the sample code are also used in E2E tests.
   - [AI API](#ai-api)
   - [Foundation Models (Azure OpenAI)](#foundation-models-azure-openai)
   - [Orchestration](#orchestration)
-  - [Langchain](#langchain)
+  - [LangChain](#langchain)
   - [Document Grounding](#document-grounding)
+  - [Prompt Registry](#prompt-registry)
 
 ## Local Deployment
 
@@ -250,6 +251,18 @@ The chain contains a template and a string parser.
 Invoke a chain to get a orchestration response from the orchestration service.
 The chain has a built-in template and is chained with a string parser.
 
+#### Invoke a Chain with Orchestration Input Filtering
+
+`GET /langchain/invoke-chain-orchestration-input-filter`
+
+Invoke a chain to trigger input filtering of orchestration service.
+
+#### Invoke a Chain with Orchestration Output Filtering
+
+`GET /langchain/invoke-chain-orchestration-output-filter`
+
+Invoke a chain to trigger output filtering of orchestration service.
+
 #### Invoke a Chain with Retrieval-Augmented Generation (RAG)
 
 `GET /langchain/invoke-rag-chain`
@@ -261,7 +274,7 @@ The chain performs RAG with the chat and embedding client.
 
 #### E2E flow for Orchestration Grounding using `vector` as the Data Repository
 
-`GET /document-grounding/invoke-orchestration-grounding-vector`
+`GET /document-grounding/orchestration-grounding-vector`
 
 This scenario demonstrates the end-to-end flow for creating collections and documents using the document grounding service, and then using the orchestration grounding module to get a chat completion response with a retrieved context based on `vector` data repository.
 
@@ -275,7 +288,7 @@ The created collection will be deleted at the end of the flow.
 
 #### E2E flow for Retrieving Documents
 
-`GET /document-grounding/invoke-retrieve-documents`
+`GET /document-grounding/retrieve-documents`
 
 This scenario demonstrates the end-to-end flow for creating collections and documents using the document grounding service, and then retrieving the documents with a query.
 
@@ -285,7 +298,7 @@ The created collection will be deleted at the end of the flow.
 
 #### E2E flow for Orchestration Grounding using `help.sap.com` as the Data Repository
 
-`GET /document-grounding/invoke-orchestration-grounding-help-sap-com`
+`GET /document-grounding/orchestration-grounding-help-sap-com`
 
 This scenario uses the orchestration grounding module to get a chat completion response with a retrieved context based on `help.sap.com` data repository.
 
@@ -293,3 +306,11 @@ Orchestration service will send a chat completion request with the context to LL
 The response should contain the same timestamp.
 
 The created collection will be deleted at the end of the flow.
+
+### Prompt Registry
+
+#### Create and Delete Prompt Template
+
+`GET /prompt-registry/template`
+
+Create a prompt template and delete it.

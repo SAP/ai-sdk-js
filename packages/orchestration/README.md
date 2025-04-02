@@ -9,7 +9,6 @@ This package incorporates generative AI orchestration capabilities into your AI 
 - [Installation](#installation)
 - [Prerequisites](#prerequisites)
 - [Orchestration Service](#orchestration-service)
-- [Relationship between Orchestration and Resource Groups](#relationship-between-orchestration-and-resource-groups)
 - [Usage](#usage)
   - [LLM Config](#llm-config)
   - [Templating](#templating)
@@ -19,7 +18,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
   - [Grounding](#grounding)
   - [Using a JSON Configuration from AI Launchpad](#using-a-json-configuration-from-ai-launchpad)
   - [Streaming](#streaming)
-  - [Using Resource Groups](#using-resource-groups)
+  - [Using a Custom Resource Group](#using-a-custom-resource-group)
   - [Custom Request Configuration](#custom-request-configuration)
   - [Custom Destination](#custom-destination)
 - [Error Handling](#error-handling)
@@ -37,10 +36,10 @@ $ npm install @sap-ai-sdk/orchestration
 
 - [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
 - Configure the project with **Node.js v20 or higher** and **native ESM** support.
-- Ensure an [orchestration deployment is available in the SAP Generative AI Hub](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration).
-  - Use the [`DeploymentApi`](https://github.com/SAP/ai-sdk-js/blob/main/packages/ai-api/README.md#create-a-deployment) from `@sap-ai-sdk/ai-api` [to create a deployment](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration).
-    Alternatively, you can also create deployments using the [SAP AI Launchpad](https://help.sap.com/docs/sap-ai-core/generative-ai-hub/activate-generative-ai-hub-for-sap-ai-launchpad?locale=en-US&q=launchpad).
-  - Once the deployment is complete, access the orchestration service via the `deploymentUrl`.
+- An [Orchestration deployment](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/get-your-orchestration-deployment-url) is running in your AI Core service instance.
+  - When using the `default` [resource group](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups), a deployment is provided by default.
+    No further setup is needed.
+  - When using a custom resource group, please refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) on how to create a deployment in that resource group.
 
 > **Accessing the AI Core Service via the SDK**
 >
@@ -54,16 +53,6 @@ $ npm install @sap-ai-sdk/orchestration
 The orchestration service provides essential features like [templating](#templating), [content filtering](#content-filtering), [grounding](#grounding), etc which are often required in business AI scenarios.
 
 Find more details about orchestration workflow [here](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration-workflow).
-
-## Relationship between Orchestration and Resource Groups
-
-SAP AI Core manages access to orchestration of generative AI models through the global AI scenario `orchestration`.
-Creating a deployment for enabling orchestration capabilities requires access to this scenario.
-
-[Resource groups](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups?q=resource+group) represent a virtual collection of related resources within the scope of one SAP AI Core tenant.
-Each resource group allows for a one-time orchestration deployment.
-
-Consequently, each orchestration deployment uniquely maps to a resource group within the `orchestration` scenario.
 
 ## Usage
 
@@ -112,8 +101,6 @@ Use the orchestration client with templating to pass a prompt containing placeho
 This allows for variations in the prompt based on the input parameters.
 
 ```ts
-import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
-
 const orchestrationClient = new OrchestrationClient({
   llm: {
     model_name: 'gpt-4o',
@@ -163,6 +150,7 @@ templating: {
       },
       required: ['x'],
       additionalProperties: false
+    }
   ]
 }
 ```
@@ -175,50 +163,50 @@ It is useful when the model is **not calling a tool**, but rather, responding to
 The example below demonstrates how to use `response_format` to return a JSON Schema, with `strict: true` ensuring the outputs conform precisely to the schema.
 
 ```ts
-templating: {
-    template: [
-      { role: 'user', content: 'What is the capital of {{?country}}?' }
-    ],
-    response_format: {
-        type: 'json_schema',
-        json_schema: {
-          name: 'capital_response',
-          strict: true,
-          schema: {
-            type: 'object',
-            properties: {
-              country_name: {
-                type: "string",
-                description: "The name of the country provided by the user."
-              },
-              capital: {
-                type: "string",
-                description: "The capital city of the country."
-              }
-            },
-            required: ["country_name", "capital"]
+const templating: TemplateModuleConfig = {
+  template: [{ role: 'user', content: 'What is the capital of {{?country}}?' }],
+  response_format: {
+    type: 'json_schema',
+    json_schema: {
+      name: 'capital_response',
+      strict: true,
+      schema: {
+        type: 'object',
+        properties: {
+          country_name: {
+            type: 'string',
+            description: 'The name of the country provided by the user.'
+          },
+          capital: {
+            type: 'string',
+            description: 'The capital city of the country.'
           }
-        }
+        },
+        required: ['country_name', 'capital']
       }
+    }
   }
+};
 ```
 
 You can also initialize `json_schema` using a Zod schema, as shown below:
 
 ```ts
-const countryCapitalSchema = z.object({
+const countryCapitalSchema = z
+  .object({
     country_name: z.string(),
     capital: z.string()
-  }).strict();
+  })
+  .strict();
 
-response_format: {
+const response_format: ResponseFormatJsonSchema = {
   type: 'json_schema',
   json_schema: {
     name: 'capital_response',
     strict: true,
     schema: zodToJsonSchema(countryCapitalSchema)
   }
-}
+};
 ```
 
 ### Prompt Registry
@@ -251,8 +239,6 @@ It is possible to provide a history of a conversation to the model.
 Use the following snippet to send a chat completion request with history and a system message:
 
 ```ts
-import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
-
 const orchestrationClient = new OrchestrationClient({
   llm: {
     model_name: 'gpt-4o',
@@ -293,8 +279,6 @@ Many models in the orchestration service have image recognition capabilities, me
 > Attempting to use `image_url` in non-user messages will result in an error.
 
 ```ts
-import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
-
 const orchestrationClient = new OrchestrationClient({
   llm: {
     model_name: 'gpt-4o'
@@ -341,17 +325,15 @@ The following example demonstrates how to use content filtering with the orchest
 See the sections below for details on the available content filters and how to build them.
 
 ```ts
-import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
-
-const llm = {
+const llm: LlmModuleConfig = {
   model_name: 'gpt-4o',
   model_params: { max_tokens: 50, temperature: 0.1 }
 };
-const templating = {
+const templating: TemplatingModuleConfig = {
   template: [{ role: 'user', content: '{{?input}}' }]
 };
 
-const filter = ... // Use a build function to create a content filter
+const filter: FilterConfig = ... // Use a build function to create a content filter
 
 const orchestrationClient = new OrchestrationClient({
   llm,
@@ -411,35 +393,38 @@ Available categories can be found with autocompletion.
 Pass the categories as arguments to the function to enable them.
 
 ```ts
-const filter = buildLlamaGuardFilter('hate', 'violent_crimes');
+const filter: FilterConfig = buildLlamaGuardFilter('hate', 'violent_crimes');
 ```
 
 ### Data Masking
 
-You can anonymize or pseudonomize the prompt using the data masking capabilities of the orchestration service.
+Use the orchestration client with masking to mask sensitive information in the prompt while preserving necessary context for the generative AI model.
+
+The following example demonstrates how to use data masking with the orchestration client.
+See the sections below for details on the available masking providers and how to build them.
 
 ```ts
+const llm: LlmModuleConfig = {
+  model_name: 'gpt-4o',
+  model_params: { max_tokens: 50, temperature: 0.1 }
+};
+const templating: TemplatingModuleConfig = {
+  template: [
+    {
+      role: 'user',
+      content:
+        'Please write an email to {{?user}} ({{?email}}), informing them about the amazing capabilities of generative AI! Be brief and concise, write at most 6 sentences.'
+    }
+  ]
+};
+
+const maskingProvider: MaskingProviderConfig = ... // Use a build function to create a masking provider
+
 const orchestrationClient = new OrchestrationClient({
-  llm: {
-    model_name: 'gpt-4o'
-  },
-  templating: {
-    template: [
-      {
-        role: 'user',
-        content:
-          'Please write an email to {{?user}} ({{?email}}), informing them about the amazing capabilities of generative AI! Be brief and concise, write at most 6 sentences.'
-      }
-    ]
-  },
+  llm,
+  templating,
   masking: {
-    masking_providers: [
-      {
-        type: 'sap_data_privacy_integration',
-        method: 'pseudonymization',
-        entities: [{ type: 'profile-email' }, { type: 'profile-person' }]
-      }
-    ]
+    masking_providers: [maskingProvider] // Multiple masking providers can be applied
   }
 });
 
@@ -448,6 +433,23 @@ const response = await orchestrationClient.chatCompletion({
 });
 return response.getContent();
 ```
+
+#### SAP Data Privacy Integration
+
+Orchestration service offers a masking provider SAP Data Privacy Integration (DPI) to anonymize or pseudonomize sensitive information.
+Use `buildDpiMaskingProvider()` function to build a DPI masking provider.
+
+```ts
+const maskingProvider: MaskingProviderConfig = buildDpiMaskingProvider({
+  method: 'annonymization',
+  entities: [{ type: 'profile-email' }, { type: 'profile-person' }],
+  allowlist: ['SAP']
+});
+```
+
+The `allowlist` property specifies terms will be kept unmasked.
+Set `mask_grounding_input` to `true` to mask grounding input as well.
+For more information about groundings, refer to the [grounding](#grounding) section.
 
 ### Grounding
 
@@ -469,52 +471,33 @@ const orchestrationClient = new OrchestrationClient({
     ],
     defaults: {}
   },
-  grounding: buildDocumentGroundingConfig(
+  grounding: buildDocumentGroundingConfig({
     input_params: ['groundingRequest'],
     output_param: 'groundingOutput',
+    // metadata_params: ['PARAM_NAME']
     filters: [
-        {
-          id: 'FILTER_ID',
-          // data_repository_type: 'vector', // optional, default value is 'vector'
-          data_repositories: ['REPOSITORY_ID'],
-        }
-      ],
-    )
+      {
+        id: 'FILTER_ID',
+        // data_repository_type: 'vector', // optional, default value is 'vector'
+        data_repositories: ['REPOSITORY_ID']
+      }
+    ]
+  })
 });
 
 const response = await orchestrationClient.chatCompletion({
-  inputParams: { groundingRequest: 'Give me a short introduction of SAP AI Core.' }
+  inputParams: {
+    groundingRequest: 'Give me a short introduction of SAP AI Core.'
+  }
 });
 return response.getContent();
 ```
 
 By default, the optional filter property `data_repository_type` is set to `vector`.
 Set it to `help.sap.com` to retrieve context from the SAP Help Portal.
-Set `data_respotiories` property with an array of `REPOSITORY_ID` values to search in specific data repositories.
+Set `metadata_params` property with an array of parameter names to include [metadata](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/metadata) in the grounding result, which can be used in the prompt.
+Set `data_repositories` property with an array of repository IDs to search in specific data repositories.
 Skip this property to search in all available data repositories.
-
-#### Data Masking in Grounding
-
-You can also configure masking of the grounding input to anonymize sensitive information while preserving necessary context for the Orchestration service.
-A masking configuration can be added in the grounding example above to mask the grounding input.
-
-```ts
-masking: {
-  masking_providers: [
-    {
-      type: 'sap_data_privacy_integration',
-      method: 'pseudonymization',
-      entities: [{ type: 'profile-email' }, { type: 'profile-person' }],
-      mask_grounding_input: {
-        enabled: true
-      },
-      allowlist: ['AI Core']
-    }
-  ];
-}
-```
-
-The `allowlist` property allows you to specify terms that should remain unmasked, ensuring important context-specific terminology is preserved in the grounding input.
 
 ### Using a JSON Configuration from AI Launchpad
 
@@ -652,9 +635,12 @@ If you don't want any streaming options as part of your call to the LLM, set `st
 > [!NOTE]
 > When initalizing a client with a JSON module config, providing streaming options is not possible.
 
-### Using Resource Groups
+### Using a Custom Resource Group
 
-The resource group can be used as an additional parameter to pick the right orchestration deployment.
+Using a custom [resource group](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/resource-groups) requires a deployment of Orchestration within that resource group.
+Refer to [this guide](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-deployment-for-orchestration) for creating such a deployment.
+
+You can pass a custom resource group when creating a client as follows:
 
 ```ts
 const orchestrationClient = new OrchestrationClient(
@@ -670,8 +656,6 @@ const orchestrationClient = new OrchestrationClient(
   { resourceGroup: 'rg1234' }
 );
 ```
-
-The relationship between orchestration and resource groups is explained [here](#relationship-between-orchestration-and-resource-groups).
 
 ### Custom Request Configuration
 

@@ -17,8 +17,10 @@ Setup your SAP AI Core instance with SAP Cloud SDK for AI.
   - [@sap-ai-sdk/foundation-models](#sap-ai-sdkfoundation-models)
   - [@sap-ai-sdk/langchain](#sap-ai-sdklangchain)
   - [@sap-ai-sdk/orchestration](#sap-ai-sdkorchestration)
+  - [@sap-ai-sdk/document-grounding](#sap-ai-sdkdocument-grounding)
   - [@sap-ai-sdk/prompt-registry](#sap-ai-sdkprompt-registry)
 - [SAP Cloud SDK for AI Sample Project](#sap-cloud-sdk-for-ai-sample-project)
+- [Deprecated Models](#deprecated-models)
 - [Error Handling](#error-handling)
   - [Accessing Error Information](#accessing-error-information)
 - [Local Testing](#local-testing)
@@ -91,6 +93,21 @@ $ npm install @sap-ai-sdk/orchestration
 
 For details on orchestration client, refer to this [document](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md).
 
+### @sap-ai-sdk/document-grounding
+
+> [!warning]
+> This package is still in **beta** and is subject to breaking changes. Use it with caution.
+
+This package incorporates generative AI document grounding [Pipeline API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/pipeline-api-a9badce6a4da4df68e98549d64aa2217), [Vector API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/vector-api-0358c5ca839d4cf7b4982dbcbc1ba7ff) and [Retrieval API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/retrieval-api) into your AI activities in SAP AI Core and SAP AI Launchpad.
+
+#### Installation
+
+```
+$ npm install @sap-ai-sdk/document-grounding
+```
+
+For details on document grounding client, refer to this [document](https://github.com/SAP/ai-sdk-js/blob/main/packages/document-grounding/README.md).
+
 ### @sap-ai-sdk/prompt-registry
 
 This package incorporates generative AI [prompt registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) into your AI activities in SAP AI Core and SAP AI Launchpad.
@@ -107,6 +124,17 @@ For details on prompt registry client, refer to this [document](https://github.c
 
 We have created a sample project demonstrating the different clients' usage of the SAP Cloud SDK for AI for TypeScript/JavaScript.
 The [project README](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/README.md) outlines the set-up needed to build and run it locally.
+
+## Deprecated Models
+
+The following models are deprecated and should not be used.
+Update your code to use one of the recommended replacement models.
+
+| Model Name               | Replacement                                        |
+|--------------------------|----------------------------------------------------|
+| `text-embedding-ada-002` | `text-embedding-3-small`, `text-embedding-3-large` |
+
+For more information, refer to the SAP note on [Availability of Generative AI Models](https://me.sap.com/notes/3437766).
 
 ## Error Handling
 

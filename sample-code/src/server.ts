@@ -42,7 +42,11 @@ import {
   invoke,
   invokeToolChain
 } from './langchain-azure-openai.js';
-import { invokeChain as invokeChainOrchestration } from './langchain-orchestration.js';
+import {
+  invokeChain as invokeChainOrchestration,
+  invokeChainWithInputFilter as invokeChainWithInputFilterOrchestration,
+  invokeChainWithOutputFilter as invokeChainWithOutputFilterOrchestration
+} from './langchain-orchestration.js';
 import {
   createCollection,
   createDocumentsWithTimestamp,
@@ -72,8 +76,8 @@ function sendError(res: any, error: any, send: boolean = true) {
   console.error(error.stack);
   if (send) {
     res
-      .status(error.cause?.status || 500)
-      .send(error.cause?.response?.data || error.message);
+      .status(error.cause?.status ?? 500)
+      .send(error.cause?.response?.data ?? error.message);
   }
 }
 
@@ -391,12 +395,31 @@ app.get('/langchain/invoke-chain-orchestration', async (req, res) => {
   try {
     res.send(await invokeChainOrchestration());
   } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.request.data);
+    sendError(res, error);
   }
 });
+
+app.get(
+  '/langchain/invoke-chain-orchestration-input-filter',
+  async (req, res) => {
+    try {
+      res.send(await invokeChainWithInputFilterOrchestration());
+    } catch (error: any) {
+      sendError(res, error);
+    }
+  }
+);
+
+app.get(
+  '/langchain/invoke-chain-orchestration-output-filter',
+  async (req, res) => {
+    try {
+      res.send(await invokeChainWithOutputFilterOrchestration());
+    } catch (error: any) {
+      sendError(res, error);
+    }
+  }
+);
 
 app.get('/langchain/invoke-rag-chain', async (req, res) => {
   try {
@@ -416,7 +439,7 @@ app.get('/langchain/invoke-tool-chain', async (req, res) => {
 
 /* Document Grounding */
 app.get(
-  '/document-grounding/invoke-orchestration-grounding-vector',
+  '/document-grounding/orchestration-grounding-vector',
   async (req, res) => {
     try {
       res.setHeader('Content-Type', 'text/event-stream');
@@ -438,6 +461,13 @@ app.get(
         `Orchestration responded with timestamp:\t${groundingResult.getContent()}\n`
       );
 
+      // Print the grounding data.
+      const groundingResultString =
+        groundingResult.data.module_results.grounding?.data?.grounding_result;
+      res.write(
+        `Orchestration grounding metadata:\t${JSON.stringify(JSON.parse(groundingResultString)[0].metadata)}\n`
+      );
+
       // Delete the created collection.
       await deleteCollection(collectionId);
       res.write(`Collection deleted:\t\t\t${collectionId}\n`);
@@ -449,7 +479,7 @@ app.get(
   }
 );
 
-app.get('/document-grounding/invoke-retrieve-documents', async (req, res) => {
+app.get('/document-grounding/retrieve-documents', async (req, res) => {
   try {
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Connection', 'keep-alive');
@@ -501,7 +531,7 @@ app.get('/document-grounding/invoke-retrieve-documents', async (req, res) => {
 });
 
 app.get(
-  '/document-grounding/invoke-orchestration-grounding-help-sap-com',
+  '/document-grounding/orchestration-grounding-help-sap-com',
   async (req, res) => {
     try {
       const groundingResult = await orchestrationGroundingHelpSapCom();
@@ -514,7 +544,7 @@ app.get(
   }
 );
 
-app.get('/prompt-registry/invoke', async (req, res) => {
+app.get('/prompt-registry/template', async (req, res) => {
   try {
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Connection', 'keep-alive');
@@ -531,9 +561,6 @@ app.get('/prompt-registry/invoke', async (req, res) => {
 
     res.end();
   } catch (error: any) {
-    console.error(error);
-    res
-      .status(500)
-      .send('Yikes, vibes are off apparently 😬 -> ' + error.message);
+    sendError(res, error);
   }
 });

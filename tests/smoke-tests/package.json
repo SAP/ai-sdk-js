@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@sap-ai-sdk/smoke-tests",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "private": "true",
@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "langchain": "0.3.19",
-    "@langchain/core": "0.3.42",
+    "@langchain/core": "0.3.43",
     "@langchain/textsplitters": "0.1.0",
     "@sap-ai-sdk/ai-api": "canary",
     "@sap-ai-sdk/foundation-models": "canary",
@@ -24,11 +24,11 @@
     "@sap-ai-sdk/orchestration": "canary",
     "@sap-ai-sdk/document-grounding": "canary",
     "@sap-ai-sdk/prompt-registry": "canary",
-    "@sap-cloud-sdk/util": "^4.0.1",
-    "express": "^4.21.2"
+    "@sap-cloud-sdk/util": "^4.0.2",
+    "express": "^5.1.0"
   },
   "devDependencies": {
-    "@types/express": "^5.0.0",
+    "@types/express": "^5.0.1",
     "dotenv": "^16.4.7",
     "dotenv-cli": "^8.0.0"
   }

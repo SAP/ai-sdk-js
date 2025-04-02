@@ -1,0 +1,26 @@
+{
+  "request_id": "697914ca-9199-436f-afa5-da6ed900c8fb",
+  "code": 400,
+  "message": "Content filtered due to safety violations. Please modify the prompt and try again.",
+  "location": "Filtering Module - Input Filter",
+  "module_results": {
+    "templating": [
+      {
+        "role": "user",
+        "content": "My social insurance number is ABC123456789."
+      }
+    ],
+    "input_filtering": {
+      "message": "Content filtered due to safety violations. Please modify the prompt and try again.",
+      "data": {
+        "azure_content_safety": {
+          "Hate": 0,
+          "Violence": 0
+        },
+        "llama_guard_3_8b": {
+          "privacy": true
+        }
+      }
+    }
+  }
+}
