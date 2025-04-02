@@ -496,7 +496,7 @@ return response.getContent();
 By default, the optional filter property `data_repository_type` is set to `vector`.
 Set it to `help.sap.com` to retrieve context from the SAP Help Portal.
 Set `metadata_params` property with an array of parameter names to include [metadata](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/metadata) in the grounding result, which can be used in the prompt.
-Set `data_respotiories` property with an array of repository IDs to search in specific data repositories.
+Set `data_repositories` property with an array of repository IDs to search in specific data repositories.
 Skip this property to search in all available data repositories.
 
 ### Using a JSON Configuration from AI Launchpad
