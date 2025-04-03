@@ -45,6 +45,7 @@ import {
 import {
   invokeChain as invokeChainOrchestration,
   invokeChainWithInputFilter as invokeChainWithInputFilterOrchestration,
+  invokeChainWithMasking,
   invokeChainWithOutputFilter as invokeChainWithOutputFilterOrchestration
 } from './langchain-orchestration.js';
 import {
@@ -420,6 +421,14 @@ app.get(
     }
   }
 );
+
+app.get('/langchain/invoke-chain-orchestration-masking', async (req, res) => {
+  try {
+    res.send(await invokeChainWithMasking());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
 
 app.get('/langchain/invoke-rag-chain', async (req, res) => {
   try {
