@@ -21,6 +21,7 @@ jobs:
           path: ./ai-sdk
       - name: Install dependencies
         run: |
+          yarn install
           npm install -g ts-node typescript
       - name: Update release notes
         run: |
@@ -41,8 +42,8 @@ jobs:
           main();
           EOF
 
-          # Run the script using ts-node directly
-          ts-node temp-script.ts
+          # Run the script using ts-node with explicit ESM flags
+          NODE_OPTIONS="--loader ts-node/esm" ts-node --esm temp-script.ts
 
           # Clean up
           rm temp-script.ts
