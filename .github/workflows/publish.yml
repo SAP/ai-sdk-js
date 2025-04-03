@@ -23,7 +23,7 @@ jobs:
         run: |
           # Create a temporary script file with .mjs extension (Node.js ESM)
           cat > update-changelog.mjs << 'EOF'
-          import { addCurrentChangelog } from './scripts/add-changelog.js';
+          import { addCurrentChangelog } from './scripts/add-changelog.ts';
 
           // Self-executing async function
           (async () => {
