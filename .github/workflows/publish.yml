@@ -1,17 +1,41 @@
 name: publish
 
 on:
+  workflow_dispatch:
   release:
     types: [published]
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
-      - name: publish
+      - name: Checkout Docs
+        uses: actions/checkout@v4
+        with:
+          repository: SAP/ai-sdk
+          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
+          path: ./ai-sdk
+      - name: Update release notes
         run: |
-          yarn changeset publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}
+          npx ts-node -e "import { addCurrentChangelog } from './scripts/add-changelog'; addCurrentChangelog()"
+      - name: Open PR
+        run: |
+          cd ai-sdk
+          git config --local user.email "cloudsdk@sap.com"
+          git config --local user.name "SAP Cloud SDK Bot"
+          git checkout -b "update-release-notes"
+          git commit -m "update release notes" -a
+          git push -u origin update-release-notes
+
+          echo ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }} | gh auth login --hostname github.com --with-token
+          gh config set prompt disabled
+          PR_BODY="Auto-created by update release notes workflow."
+          PR_TITLE="Update JS Release Notes"
+          gh pr create --head "update-release-notes" --title "${PR_TITLE}" --body "${PR_BODY}"
+      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      # - name: publish
+      #   run: |
+      #     yarn changeset publish
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}
