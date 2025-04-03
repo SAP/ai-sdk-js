@@ -18,3 +18,16 @@ jobs:
         with:
           draft: true
           body: ${{ steps.get-changelog.outputs.changelog }}
+      - name: Update release notes
+        run: |
+          git config --local user.email "cloudsdk@sap.com"
+          git config --local user.name "SAP Cloud SDK Bot"
+          git checkout -b "update-release-notes"
+          git commit -m "update release notes" -a
+          git push -u origin update-release-notes
+
+          echo ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR  }} | gh auth login --hostname github.com --with-token
+          gh config set prompt disabled
+          PR_BODY="Auto-created by draft release notes workflow."
+          PR_TITLE="Update JS Release Notes"
+          gh pr create --head "update-release-notes" --title "${PR_TITLE}" --body "${PR_BODY}"
