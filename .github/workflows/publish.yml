@@ -21,8 +21,6 @@ jobs:
           path: ./ai-sdk
       - name: Install dependencies
         run: |
-          yarn install
-          # Install ts-node and typescript globally
           npm install -g ts-node typescript
       - name: Update release notes
         run: |
