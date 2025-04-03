@@ -66,7 +66,7 @@ export interface OrchestrationModuleConfig {
   llm: LlmModuleConfig;
   /**
    * Filtering module configuration for both input and output filters.
-   * To configure a filter, use convenience functions like `buildAzureContentSafetyFilter`, `buildLlamaGuardFilter`, etc.
+   * To configure a filter, use convenience functions like `buildAzureContentSafetyFilter`, `buildLlamaGuardFilter`, etc..
    * @example
    * filtering: {
    *   input: {
@@ -91,9 +91,16 @@ export interface OrchestrationModuleConfig {
   streaming?: GlobalStreamOptions;
 }
 
-export type OrchestrationModuleConfigWithStringTemplating = Omit<OrchestrationModuleConfig, 'templating'> & {
+/**
+ * Orchestration module configuration with string templating.
+ * This type is used when the `templating` property can also be a string.
+ */
+export type OrchestrationModuleConfigWithStringTemplating = Omit<
+  OrchestrationModuleConfig,
+  'templating'
+> & {
   templating: TemplatingModuleConfig | string;
-}
+};
 
 /**
  * Request options for orchestration.

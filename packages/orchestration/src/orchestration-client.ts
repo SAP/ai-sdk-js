@@ -1,6 +1,8 @@
 import { executeRequest } from '@sap-ai-sdk/core';
 import { resolveDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
 import { createLogger } from '@sap-cloud-sdk/util';
+import yaml from 'yaml';
+import { promptTemplatePostRequestSchema } from '@sap-ai-sdk/prompt-registry';
 import { OrchestrationStream } from './orchestration-stream.js';
 import { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 import { OrchestrationResponse } from './orchestration-response.js';
@@ -22,15 +24,11 @@ import type {
 } from './orchestration-types.js';
 import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
-import yaml from 'yaml';
-import { promptTemplatePostRequestSchema } from '@sap-ai-sdk/prompt-registry';
-import { TemplatingModuleConfig } from './client/api/schema/templating-module-config.js';
 
 const logger = createLogger({
   package: 'orchestration',
   messageContext: 'orchestration-client'
 });
-
 
 /**
  * Get the orchestration client.
@@ -47,7 +45,7 @@ export class OrchestrationClient {
     config: OrchestrationModuleConfigWithStringTemplating | string,
     private deploymentConfig?: ResourceGroupConfig,
     private destination?: HttpDestinationOrFetchOptions
-  )  {
+  ) {
     if (typeof config === 'string') {
       this.validateJsonConfig(config);
       this.config = config; // Keep as string if it's a JSON string
@@ -57,45 +55,6 @@ export class OrchestrationClient {
       this.config = config as OrchestrationModuleConfig; // TypeScript cannot infer that config.templating is not a string
     }
   }
-
-/**
- * Validate if a string is valid JSON.
- */
-  private validateJsonConfig(config: string): void {
-    try {
-      JSON.parse(config);
-    } catch (error) {
-      throw new Error(`Could not parse JSON: ${error}`);
-    }
-  }
-
-   /**
-   * Parse and merge templating into the config object.
-   */
- private parseAndMergeTemplating(config: OrchestrationModuleConfigWithStringTemplating): OrchestrationModuleConfig {
-  try {
-    const parsedObject = yaml.parse(config.templating as string); // We are sure it's a string here
-    const result = promptTemplatePostRequestSchema.safeParse(parsedObject);
-
-    if (result.success) {
-      return {
-        ...config,
-        templating: {
-          template: result.data.spec.template,
-          ...(result.data.spec.defaults && { defaults: result.data.spec.defaults }),
-          ...(result.data.spec.response_format && { response_format: result.data.spec.response_format }),
-          ...(result.data.spec.tools && { tools: result.data.spec.tools })
-        }
-      };
-    } else {
-      throw new Error(`Prompt Template YAML does not conform to the defined type: ${result.error}`);
-    }
-  } catch (error) {
-    throw new Error(`Error parsing YAML: ${error}`);
-  }
-}
-
-
 
   async chatCompletion(
     prompt?: Prompt,
@@ -189,5 +148,53 @@ export class OrchestrationClient {
       ._pipe(OrchestrationStream._processTokenUsage, response);
 
     return response;
+  }
+
+  /**
+   * Validate if a string is valid JSON.
+   * @param config - The JSON string to validate.
+   */
+  private validateJsonConfig(config: string): void {
+    try {
+      JSON.parse(config);
+    } catch (error) {
+      throw new Error(`Could not parse JSON: ${error}`);
+    }
+  }
+
+  /**
+   * Parse and merge templating into the config object.
+   * @param config - The orchestration module configuration with templating either as object or string.
+   * @returns The updated and merged orchestration module configuration.
+   * @throws Error if the YAML parsing fails or if the parsed object does not conform to the expected schema.
+   */
+  private parseAndMergeTemplating(
+    config: OrchestrationModuleConfigWithStringTemplating
+  ): OrchestrationModuleConfig {
+    try {
+      const parsedObject = yaml.parse(config.templating as string); // We are sure it's a string here
+      const result = promptTemplatePostRequestSchema.safeParse(parsedObject);
+
+      if (result.success) {
+        return {
+          ...config,
+          templating: {
+            template: result.data.spec.template,
+            ...(result.data.spec.defaults && {
+              defaults: result.data.spec.defaults
+            }),
+            ...(result.data.spec.response_format && {
+              response_format: result.data.spec.response_format
+            }),
+            ...(result.data.spec.tools && { tools: result.data.spec.tools })
+          }
+        };
+      }
+      throw new Error(
+        `Prompt Template YAML does not conform to the defined type: ${result.error}`
+      );
+    } catch (error) {
+      throw new Error(`Error parsing YAML: ${error}`);
+    }
   }
 }

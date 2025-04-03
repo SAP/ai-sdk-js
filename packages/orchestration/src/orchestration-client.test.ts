@@ -8,6 +8,7 @@ import {
   parseFileToString,
   parseMockResponse
 } from '../../../test-util/mock-http.js';
+import { yamlTemplate } from '../../../test-util/data/orchestration/orchestration-chat-completion-yaml-template.js';
 import { OrchestrationClient } from './orchestration-client.js';
 import { OrchestrationResponse } from './orchestration-response.js';
 import {
@@ -22,7 +23,6 @@ import type {
   OrchestrationModuleConfigWithStringTemplating,
   Prompt
 } from './orchestration-types.js';
-import { yamlTemplate } from '../../../test-util/data/orchestration/orchestration-chat-completion-yaml-template.js';
 
 const defaultJsonConfig = `{
   "module_configurations": {
@@ -395,11 +395,13 @@ describe('orchestration service client', () => {
         template: [
           {
             role: 'system',
-            content: 'You are a world-famous poet who can write virtuosic and brilliant poetry on any topic.'
+            content:
+              'You are a world-famous poet who can write virtuosic and brilliant poetry on any topic.'
           },
           {
             role: 'user',
-            content: 'Write a 1 verse poem about the following topic: {{?topic}}'
+            content:
+              'Write a 1 verse poem about the following topic: {{?topic}}'
           }
         ],
         response_format: {
@@ -441,7 +443,9 @@ describe('orchestration service client', () => {
     );
     mockInference(
       {
-        data: constructCompletionPostRequest(config, { inputParams: { topic: 'Generative AI Hub' }})
+        data: constructCompletionPostRequest(config, {
+          inputParams: { topic: 'Generative AI Hub' }
+        })
       },
       {
         data: mockResponse,
@@ -451,9 +455,9 @@ describe('orchestration service client', () => {
         url: 'inference/deployments/1234/completion'
       }
     );
-    const response = await new OrchestrationClient(configWithYaml).chatCompletion(
-      { inputParams: { topic: 'Generative AI Hub' }},
-    );
+    const response = await new OrchestrationClient(
+      configWithYaml
+    ).chatCompletion({ inputParams: { topic: 'Generative AI Hub' } });
     expect(response.data).toEqual(mockResponse);
   }, 60000);
 
