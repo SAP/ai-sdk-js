@@ -21,7 +21,7 @@ jobs:
           path: ./ai-sdk
       - name: Update release notes
         run: |
-          npx ts-node -e "import { addCurrentChangelog } from './scripts/add-changelog'; addCurrentChangelog()"
+          npx ts-node --esm -e "import { addCurrentChangelog } from './scripts/add-changelog.js'; addCurrentChangelog()"
       - name: Open PR
         run: |
           cd ai-sdk
