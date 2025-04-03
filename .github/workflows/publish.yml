@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           # Install ts-node and typescript as dev dependencies locally
-          yarn add --dev ts-node typescript
+          yarn install --dev ts-node typescript
       - name: Update release notes
         run: |
           # Create a temporary script file with .ts extension
