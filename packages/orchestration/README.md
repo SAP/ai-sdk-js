@@ -459,7 +459,7 @@ The grounding configuration can be provided as a raw JSON object or by using the
 ```ts
 const orchestrationClient = new OrchestrationClient({
   llm: {
-    model_name: 'gpt-35-turbo'
+    model_name: 'gpt-4o'
   },
   templating: {
     template: [

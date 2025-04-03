@@ -22,7 +22,7 @@
       "id": "anonymized-id",
       "object": "chat.completion",
       "created": 0,
-      "model": "gpt-35-turbo-16k",
+      "model": "gpt-4o",
       "system_fingerprint": "anonymized-fingerprint",
       "choices": [
         {
@@ -61,7 +61,7 @@
     "id": "anonymized-id",
     "object": "chat.completion",
     "created": 0,
-    "model": "gpt-35-turbo-16k",
+    "model": "gpt-4o",
     "system_fingerprint": "anonymized-fingerprint",
     "choices": [
       {

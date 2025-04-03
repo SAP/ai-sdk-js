@@ -20,7 +20,7 @@
       "id": "anonymized-id",
       "object": "chat.completion",
       "created": 0,
-      "model": "gpt-35-turbo-16k",
+      "model": "gpt-4o",
       "choices": [
         {
           "index": 0,
@@ -51,7 +51,7 @@
     "id": "anonymized-id",
     "object": "chat.completion",
     "created": 0,
-    "model": "gpt-35-turbo-16k",
+    "model": "gpt-4o",
     "choices": [
       {
         "index": 0,

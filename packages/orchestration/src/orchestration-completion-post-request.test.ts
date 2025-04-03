@@ -11,7 +11,7 @@ import type {
 describe('construct completion post request', () => {
   const defaultConfig: OrchestrationModuleConfig = {
     llm: {
-      model_name: 'gpt-35-turbo-16k',
+      model_name: 'gpt-4o',
       model_params: { max_tokens: 50, temperature: 0.1 }
     },
     templating: {
@@ -110,7 +110,7 @@ describe('construct completion post request', () => {
     const config: OrchestrationModuleConfig = {
       ...defaultConfig,
       llm: {
-        model_name: 'gpt-35-turbo-16k',
+        model_name: 'gpt-4o',
         model_params: {}
       },
       filtering: {}

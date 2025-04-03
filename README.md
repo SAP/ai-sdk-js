@@ -128,11 +128,15 @@ The [project README](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/READ
 ## Deprecated Models
 
 The following models are deprecated and should not be used.
-Update your code to use one of the recommended replacement models.
+Replace them with the recommended alternatives.
 
-| Model Name               | Replacement                                        |
-|--------------------------|----------------------------------------------------|
-| `text-embedding-ada-002` | `text-embedding-3-small`, `text-embedding-3-large` |
+| Model Name                  | Replacement                                        |
+| --------------------------- | -------------------------------------------------- |
+| `text-embedding-ada-002`    | `text-embedding-3-small`, `text-embedding-3-large` |
+| `meta--llama3-70b-instruct` | `meta--llama3.1-70b-instruct`                      |
+| `gpt-35-turbo`              | `gpt-4o-mini`                                      |
+| `gpt-35-turbo-16k`          | `gpt-4o-mini`                                      |
+| `gpt-4-32k`                 | `gpt-4o`                                           |
 
 For more information, refer to the SAP note on [Availability of Generative AI Models](https://me.sap.com/notes/3437766).
 

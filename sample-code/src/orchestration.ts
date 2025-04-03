@@ -270,7 +270,7 @@ export async function orchestrationCompletionMasking(): Promise<
 > {
   const orchestrationClient = new OrchestrationClient({
     llm: {
-      model_name: 'gpt-4-32k'
+      model_name: 'gpt-4o'
     },
     templating: {
       template: [

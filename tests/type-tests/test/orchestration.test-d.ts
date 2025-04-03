@@ -27,7 +27,7 @@ expectType<Promise<OrchestrationResponse>>(
       template: [{ role: 'user', content: 'Hello!' }]
     },
     llm: {
-      model_name: 'gpt-35-turbo-16k'
+      model_name: 'gpt-4o'
     }
   }).chatCompletion()
 );
@@ -39,7 +39,7 @@ expectType<CompletionPostResponse>(
         template: [{ role: 'user', content: 'Hello!' }]
       },
       llm: {
-        model_name: 'gpt-35-turbo-16k'
+        model_name: 'gpt-4o'
       }
     }).chatCompletion()
   ).data
@@ -52,7 +52,7 @@ expectType<string | undefined>(
         template: [{ role: 'user', content: 'Hello!' }]
       },
       llm: {
-        model_name: 'gpt-35-turbo-16k'
+        model_name: 'gpt-4o'
       }
     }).chatCompletion()
   ).getContent()
@@ -65,7 +65,7 @@ expectType<string | undefined>(
         template: [{ role: 'user', content: 'Hello!' }]
       },
       llm: {
-        model_name: 'gpt-35-turbo-16k'
+        model_name: 'gpt-4o'
       }
     }).chatCompletion()
   ).getFinishReason()
@@ -78,7 +78,7 @@ expectType<TokenUsage>(
         template: [{ role: 'user', content: 'Hello!' }]
       },
       llm: {
-        model_name: 'gpt-35-turbo-16k'
+        model_name: 'gpt-4o'
       }
     }).chatCompletion()
   ).getTokenUsage()
@@ -91,7 +91,7 @@ expectType<Promise<OrchestrationResponse>>(
         template: [{ role: 'user', content: 'Hello!' }]
       },
       llm: {
-        model_name: 'gpt-35-turbo-16k'
+        model_name: 'gpt-4o'
       }
     },
     {
@@ -113,7 +113,7 @@ expectType<Promise<OrchestrationResponse>>(
       template: [{ role: 'user', content: 'Hello!' }]
     },
     llm: {
-      model_name: 'gpt-35-turbo-16k',
+      model_name: 'gpt-4o',
       model_params: { max_tokens: 50, temperature: 0.1 }
     },
     filtering: {
@@ -176,7 +176,7 @@ expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient(`{
     "module_configurations": {
       "llm_module_config": {
-        "model_name": "gpt-35-turbo-16k",
+        "model_name": "gpt-4o",
         "model_params": {
           "max_tokens": 50,
           "temperature": 0.1
@@ -200,7 +200,7 @@ expectError<any>(new OrchestrationClient({}).chatCompletion());
 expectError<any>(
   new OrchestrationClient({
     llm: {
-      model_name: 'gpt-35-turbo-16k'
+      model_name: 'gpt-4o'
     }
   }).chatCompletion()
 );
@@ -237,7 +237,7 @@ expectType<Promise<OrchestrationResponse>>(
       template: [{ role: 'user', content: 'Hello!' }]
     },
     llm: {
-      model_name: 'gpt-35-turbo-16k',
+      model_name: 'gpt-4o',
       model_params: {
         max_tokens: 50,
         temperature: 0.1,
