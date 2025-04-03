@@ -9,6 +9,9 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 'main'
       - name: Checkout Docs
         uses: actions/checkout@v4
         with:
@@ -33,7 +36,7 @@ jobs:
           PR_BODY="Auto-created by update release notes workflow."
           PR_TITLE="Update JS Release Notes"
           gh pr create --head "update-release-notes" --title "${PR_TITLE}" --body "${PR_BODY}"
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      # - uses: sap/ai-sdk-js/.github/actions/setup@main
       # - name: publish
       #   run: |
       #     yarn changeset publish
