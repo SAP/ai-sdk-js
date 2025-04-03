@@ -21,13 +21,27 @@ jobs:
           path: ./ai-sdk
       - name: Update release notes
         run: |
-          # Use top-level await pattern with --eval instead of -e
-          npx ts-node --esm --eval "
+          # Create a temporary script file with .mjs extension (Node.js ESM)
+          cat > update-changelog.mjs << 'EOF'
           import { addCurrentChangelog } from './scripts/add-changelog.js';
-          (async () => { 
-            await addCurrentChangelog();
+
+          // Self-executing async function
+          (async () => {
+            try {
+              await addCurrentChangelog();
+              console.log('Successfully updated changelog');
+            } catch (error) {
+              console.error('Error updating changelog:', error);
+              process.exit(1);
+            }
           })();
-          "
+          EOF
+
+          # Run the script with Node.js directly
+          node update-changelog.mjs
+
+          # Clean up
+          rm update-changelog.mjs
       - name: Open PR
         run: |
           cd ai-sdk
