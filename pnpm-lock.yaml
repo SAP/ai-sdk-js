@@ -4,7 +4,7 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-pnpmfileChecksum: sha256-7lht5Q+T9K1tkr5FYaoHEDBAtJqjkSrAs2jGbKMfTIY=
+pnpmfileChecksum: fb3vh7gyjzvxzzal7fbygn3ogm
 
 importers:
 
@@ -210,8 +210,8 @@ importers:
         specifier: workspace:^
         version: link:../packages/orchestration
       '@sap/cds':
-        specifier: ^8.9.0
-        version: 8.9.0(@eslint/js@9.23.0)(express@5.1.0)
+        specifier: ^8.9.1
+        version: 8.9.1(@eslint/js@9.23.0)(express@5.1.0)
       '@sap/xssec':
         specifier: ^4.5.0
         version: 4.5.0
@@ -312,22 +312,22 @@ importers:
         version: 0.1.0(@langchain/core@0.3.43(openai@4.89.0(ws@8.18.1)(zod@3.24.2)))
       '@sap-ai-sdk/ai-api':
         specifier: canary
-        version: 1.10.1-20250401013228.0
+        version: 1.10.1-20250403013136.0
       '@sap-ai-sdk/document-grounding':
         specifier: canary
-        version: 1.10.1-20250401013228.0
+        version: 1.10.1-20250403013136.0
       '@sap-ai-sdk/foundation-models':
         specifier: canary
-        version: 1.10.1-20250401013228.0
+        version: 1.10.1-20250403013136.0
       '@sap-ai-sdk/langchain':
         specifier: canary
-        version: 1.10.1-20250401013228.0(openai@4.89.0(ws@8.18.1)(zod@3.24.2))(zod@3.24.2)
+        version: 1.10.1-20250403013136.0(openai@4.89.0(ws@8.18.1)(zod@3.24.2))(zod@3.24.2)
       '@sap-ai-sdk/orchestration':
         specifier: canary
-        version: 1.10.1-20250401013228.0
+        version: 1.10.1-20250403013136.0
       '@sap-ai-sdk/prompt-registry':
         specifier: canary
-        version: 1.10.1-20250401013228.0
+        version: 1.10.1-20250403013136.0
       '@sap-cloud-sdk/util':
         specifier: ^4.0.2
         version: 4.0.2
@@ -1111,26 +1111,26 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
-  '@sap-ai-sdk/ai-api@1.10.1-20250401013228.0':
-    resolution: {integrity: sha512-AMwoXUtVB+6OB/1i/d8SWVc2pR2z4MUMrcAZXS30QVWpZiyB3RGUyo+xy7GZAIe8KoABKqzuiqXkWhhThc+d9A==}
+  '@sap-ai-sdk/ai-api@1.10.1-20250403013136.0':
+    resolution: {integrity: sha512-G8Jt8Goc3KH5vz9WGVki896PCSF8fS6G5B7Dn06cyjKgoIQrv788r78LP/EiD1BpAGhr3V+soXJRUG2b4XDHSQ==}
 
-  '@sap-ai-sdk/core@1.10.1-20250401013228.0':
-    resolution: {integrity: sha512-kGNSq3vhcbmV9jKuI/N7g/yiV28Sgf/2setObR2DeiEDWosYtMxZScbumaoiJkxegoHyB+TddjSyYs5p3FGkTg==}
+  '@sap-ai-sdk/core@1.10.1-20250403013136.0':
+    resolution: {integrity: sha512-5Grz0OrveJmvnMM/59uZQdjbBWRvM5wBTqXxt27pnm9UKyZAZpOMf2JWGjD9BGhQdoKm6oOtR90Zh/Ck+QXTvA==}
 
-  '@sap-ai-sdk/document-grounding@1.10.1-20250401013228.0':
-    resolution: {integrity: sha512-qGreaLACFYVo4Ov26nbETq80ylR3+F5oChjIDZMzAbfhaZmy0kunql2RxrghA8glaBOuXwcwVg6QEJCOKm0tLQ==}
+  '@sap-ai-sdk/document-grounding@1.10.1-20250403013136.0':
+    resolution: {integrity: sha512-ggKBtsntRQMR+ltxSABVayy1Jb+tkKImTOzmV5VEbtqE/AHttpPS0MwBL411S2HRVMOMizaEJd9b4+8a5H/GLQ==}
 
-  '@sap-ai-sdk/foundation-models@1.10.1-20250401013228.0':
-    resolution: {integrity: sha512-P8VhL/relSN6bQvRMoCxI701mQN1bTpKo/eWKxmqx1F2mXKPvHNDfn59NXE/eQd01vDmeZ4qQh2gwrBLgmbWTg==}
+  '@sap-ai-sdk/foundation-models@1.10.1-20250403013136.0':
+    resolution: {integrity: sha512-NvYQjX+F5mwoItxh8a46CGAh/p5TlSIdMgrVJ2SYrKjU6dugruzCT3BsgT88RiDBPfJbyhxGE9zThDhFwCWSeA==}
 
-  '@sap-ai-sdk/langchain@1.10.1-20250401013228.0':
-    resolution: {integrity: sha512-l8xIyNIO7YIVQ9gmskWyu0AQLkdKquEegNxAXVFMtjRtxPCCPoYR4hvZzqj6ybyYyVYdvt3C4npCaYzbqFSxkw==}
+  '@sap-ai-sdk/langchain@1.10.1-20250403013136.0':
+    resolution: {integrity: sha512-ND/RLJVZa57MKy0+bO2sjYusTi+gftSi2sj3Y5cl344KFde0l2C67ImRAmxoFWpcen6pVCzgwiw07LdLvWmdYA==}
 
-  '@sap-ai-sdk/orchestration@1.10.1-20250401013228.0':
-    resolution: {integrity: sha512-Sg0xoUgsH/QyJmXi9SJNOmWGyELzJ9lEON58PlleS3yuTMgoKsUVsk+byW4Ff7P5nCA5dF0LlK8r+2SHK70DQQ==}
+  '@sap-ai-sdk/orchestration@1.10.1-20250403013136.0':
+    resolution: {integrity: sha512-p0BHoseTP9usojnFmPGe1E5/HIRpPlJU98y53ByTDuQmBuROJ4vii29RI+GauX7VH/bBR15oS6QaFhl2lQ5wXw==}
 
-  '@sap-ai-sdk/prompt-registry@1.10.1-20250401013228.0':
-    resolution: {integrity: sha512-eoYNLF9jvT4nQHqydKt5XyXrcGOh4A76KaW2cIyc/he3+3TW3m039rezzKH5pun/8sLWQMyGidSwCTNCgM6SHg==}
+  '@sap-ai-sdk/prompt-registry@1.10.1-20250403013136.0':
+    resolution: {integrity: sha512-1skzvpb91hadpECuUiYxv3pW/QIsbzWlrmlFUM1cwzz9FFseTArRWivttj+y1m8FcnhpLeaYGZQ7bzUOU3qNKw==}
 
   '@sap-cloud-sdk/connectivity@4.0.2':
     resolution: {integrity: sha512-20ok60K1PLezyngU3Zcp2Hx3R2rlPYNeebD+IcFhzHklJGhkJGWOBiWxSlCLhyi1hGmYIr5SIlXHe/6AvHC69Q==}
@@ -1168,8 +1168,8 @@ packages:
     resolution: {integrity: sha512-nhMc/QX8aUbhUtu47hyCsrP5U2I4jxXmgnUmMcn7lQriShYOsd0X5RqWIQwhMnzGVBa9Ia6aNYjQzcG6Su5xyg==}
     hasBin: true
 
-  '@sap/cds-fiori@1.4.0':
-    resolution: {integrity: sha512-Ge0Lwr2W1jUGepA4uABVB2szA/PBpmZDQt2CZdU1Ihc8LlgcdCoiulEYkiJvX3mTcQJEWCTEEsCNpQUqniEtTw==}
+  '@sap/cds-fiori@1.4.1':
+    resolution: {integrity: sha512-laoK+xfJRcJy+zWzUdgqOOy5V6lpUi9I3CN8yeGmMIktQ1ZsXc52814WvoWt4TWchY1/+rNYuWDl9Q8ttj4Y4w==}
     peerDependencies:
       '@sap/cds': '>=7.6'
       express: '>=4'
@@ -1182,8 +1182,8 @@ packages:
     resolution: {integrity: sha512-V+E5lIZTXrZHdaxeaTR+nMTG/Ldtxha3JYxPMqA9r3Tg1dFl7QZIXYzGlb8eCHzGqFpJ57qWoGAx0Sr0FybaXA==}
     hasBin: true
 
-  '@sap/cds@8.9.0':
-    resolution: {integrity: sha512-OZc5u9DTjx0a/MTy49AY5inOSSCMXhTPjYgfz8U4p5E0BiUkeX7jVkU9dqY5Ae14X3WmK3jd8KFZyTc2Nk6zaQ==}
+  '@sap/cds@8.9.1':
+    resolution: {integrity: sha512-+KoY7Bw1Gc3vwK4X3CFCV+IAQO4QT0HRsaW/qgETeOGqjzbuf6KvUqlkDuPE5msdXwfz/EFDB9Vx9jTyTw581Q==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
@@ -5139,25 +5139,25 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@cap-js/asyncapi@1.0.3(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))':
+  '@cap-js/asyncapi@1.0.3(@sap/cds@8.9.1(@eslint/js@9.23.0)(express@5.1.0))':
     dependencies:
-      '@sap/cds': 8.9.0(@eslint/js@9.23.0)(express@5.1.0)
+      '@sap/cds': 8.9.1(@eslint/js@9.23.0)(express@5.1.0)
 
-  '@cap-js/db-service@1.19.0(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))':
+  '@cap-js/db-service@1.19.0(@sap/cds@8.9.1(@eslint/js@9.23.0)(express@5.1.0))':
     dependencies:
-      '@sap/cds': 8.9.0(@eslint/js@9.23.0)(express@5.1.0)
+      '@sap/cds': 8.9.1(@eslint/js@9.23.0)(express@5.1.0)
       generic-pool: 3.9.0
     optional: true
 
-  '@cap-js/openapi@1.2.1(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))':
+  '@cap-js/openapi@1.2.1(@sap/cds@8.9.1(@eslint/js@9.23.0)(express@5.1.0))':
     dependencies:
-      '@sap/cds': 8.9.0(@eslint/js@9.23.0)(express@5.1.0)
+      '@sap/cds': 8.9.1(@eslint/js@9.23.0)(express@5.1.0)
       pluralize: 8.0.0
 
-  '@cap-js/sqlite@1.10.0(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))':
+  '@cap-js/sqlite@1.10.0(@sap/cds@8.9.1(@eslint/js@9.23.0)(express@5.1.0))':
     dependencies:
-      '@cap-js/db-service': 1.19.0(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))
-      '@sap/cds': 8.9.0(@eslint/js@9.23.0)(express@5.1.0)
+      '@cap-js/db-service': 1.19.0(@sap/cds@8.9.1(@eslint/js@9.23.0)(express@5.1.0))
+      '@sap/cds': 8.9.1(@eslint/js@9.23.0)(express@5.1.0)
       better-sqlite3: 11.9.1
     optional: true
 
@@ -5904,16 +5904,16 @@ snapshots:
 
   '@rtsao/scc@1.1.0': {}
 
-  '@sap-ai-sdk/ai-api@1.10.1-20250401013228.0':
+  '@sap-ai-sdk/ai-api@1.10.1-20250403013136.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.10.1-20250401013228.0
+      '@sap-ai-sdk/core': 1.10.1-20250403013136.0
       '@sap-cloud-sdk/connectivity': 4.0.2
       '@sap-cloud-sdk/util': 4.0.2
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/core@1.10.1-20250401013228.0':
+  '@sap-ai-sdk/core@1.10.1-20250403013136.0':
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.0.2
       '@sap-cloud-sdk/http-client': 4.0.2
@@ -5923,17 +5923,17 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/document-grounding@1.10.1-20250401013228.0':
+  '@sap-ai-sdk/document-grounding@1.10.1-20250403013136.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.10.1-20250401013228.0
+      '@sap-ai-sdk/core': 1.10.1-20250403013136.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/foundation-models@1.10.1-20250401013228.0':
+  '@sap-ai-sdk/foundation-models@1.10.1-20250403013136.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 1.10.1-20250401013228.0
-      '@sap-ai-sdk/core': 1.10.1-20250401013228.0
+      '@sap-ai-sdk/ai-api': 1.10.1-20250403013136.0
+      '@sap-ai-sdk/core': 1.10.1-20250403013136.0
       '@sap-cloud-sdk/connectivity': 4.0.2
       '@sap-cloud-sdk/http-client': 4.0.2
       '@sap-cloud-sdk/util': 4.0.2
@@ -5941,13 +5941,13 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/langchain@1.10.1-20250401013228.0(openai@4.89.0(ws@8.18.1)(zod@3.24.2))(zod@3.24.2)':
+  '@sap-ai-sdk/langchain@1.10.1-20250403013136.0(openai@4.89.0(ws@8.18.1)(zod@3.24.2))(zod@3.24.2)':
     dependencies:
       '@langchain/core': 0.3.43(openai@4.89.0(ws@8.18.1)(zod@3.24.2))
-      '@sap-ai-sdk/ai-api': 1.10.1-20250401013228.0
-      '@sap-ai-sdk/core': 1.10.1-20250401013228.0
-      '@sap-ai-sdk/foundation-models': 1.10.1-20250401013228.0
-      '@sap-ai-sdk/orchestration': 1.10.1-20250401013228.0
+      '@sap-ai-sdk/ai-api': 1.10.1-20250403013136.0
+      '@sap-ai-sdk/core': 1.10.1-20250403013136.0
+      '@sap-ai-sdk/foundation-models': 1.10.1-20250403013136.0
+      '@sap-ai-sdk/orchestration': 1.10.1-20250403013136.0
       '@sap-cloud-sdk/connectivity': 4.0.2
       uuid: 11.1.0
       zod-to-json-schema: 3.24.5(zod@3.24.2)
@@ -5957,18 +5957,18 @@ snapshots:
       - supports-color
       - zod
 
-  '@sap-ai-sdk/orchestration@1.10.1-20250401013228.0':
+  '@sap-ai-sdk/orchestration@1.10.1-20250403013136.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 1.10.1-20250401013228.0
-      '@sap-ai-sdk/core': 1.10.1-20250401013228.0
+      '@sap-ai-sdk/ai-api': 1.10.1-20250403013136.0
+      '@sap-ai-sdk/core': 1.10.1-20250403013136.0
       '@sap-cloud-sdk/util': 4.0.2
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/prompt-registry@1.10.1-20250401013228.0':
+  '@sap-ai-sdk/prompt-registry@1.10.1-20250403013136.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.10.1-20250401013228.0
+      '@sap-ai-sdk/core': 1.10.1-20250403013136.0
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -6084,9 +6084,9 @@ snapshots:
 
   '@sap/cds-dk@8.9.0(@eslint/js@9.23.0)':
     dependencies:
-      '@cap-js/asyncapi': 1.0.3(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))
-      '@cap-js/openapi': 1.2.1(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))
-      '@sap/cds': 8.9.0(@eslint/js@9.23.0)(express@4.21.2)
+      '@cap-js/asyncapi': 1.0.3(@sap/cds@8.9.1(@eslint/js@9.23.0)(express@5.1.0))
+      '@cap-js/openapi': 1.2.1(@sap/cds@8.9.1(@eslint/js@9.23.0)(express@5.1.0))
+      '@sap/cds': 8.9.1(@eslint/js@9.23.0)(express@4.21.2)
       '@sap/cds-foss': 5.0.1
       '@sap/cds-mtxs': 2.7.0(hdb@0.19.12)
       '@sap/eslint-plugin-cds': 3.2.0(@eslint/js@9.23.0)(eslint@9.23.0)(express@4.21.2)
@@ -6101,7 +6101,7 @@ snapshots:
       ws: 8.18.1
       xml-js: 1.6.11
     optionalDependencies:
-      '@cap-js/sqlite': 1.10.0(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))
+      '@cap-js/sqlite': 1.10.0(@sap/cds@8.9.1(@eslint/js@9.23.0)(express@5.1.0))
     transitivePeerDependencies:
       - '@eslint/js'
       - '@sap/hana-client'
@@ -6112,14 +6112,14 @@ snapshots:
       - tar
       - utf-8-validate
 
-  '@sap/cds-fiori@1.4.0(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))(express@4.21.2)':
+  '@sap/cds-fiori@1.4.1(@sap/cds@8.9.1(@eslint/js@9.23.0)(express@5.1.0))(express@4.21.2)':
     dependencies:
-      '@sap/cds': 8.9.0(@eslint/js@9.23.0)(express@5.1.0)
+      '@sap/cds': 8.9.1(@eslint/js@9.23.0)(express@5.1.0)
       express: 4.21.2
 
-  '@sap/cds-fiori@1.4.0(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))(express@5.1.0)':
+  '@sap/cds-fiori@1.4.1(@sap/cds@8.9.1(@eslint/js@9.23.0)(express@5.1.0))(express@5.1.0)':
     dependencies:
-      '@sap/cds': 8.9.0(@eslint/js@9.23.0)(express@5.1.0)
+      '@sap/cds': 8.9.1(@eslint/js@9.23.0)(express@5.1.0)
       express: 5.1.0
 
   '@sap/cds-foss@5.0.1':
@@ -6139,27 +6139,27 @@ snapshots:
       - hdb
       - supports-color
 
-  '@sap/cds@8.9.0(@eslint/js@9.23.0)(express@4.21.2)':
+  '@sap/cds@8.9.1(@eslint/js@9.23.0)(express@4.21.2)':
     dependencies:
       '@eslint/js': 9.23.0
       '@sap/cds-compiler': 5.9.0
-      '@sap/cds-fiori': 1.4.0(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))(express@4.21.2)
+      '@sap/cds-fiori': 1.4.1(@sap/cds@8.9.1(@eslint/js@9.23.0)(express@5.1.0))(express@4.21.2)
       '@sap/cds-foss': 5.0.1
     optionalDependencies:
       express: 4.21.2
 
-  '@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0)':
+  '@sap/cds@8.9.1(@eslint/js@9.23.0)(express@5.1.0)':
     dependencies:
       '@eslint/js': 9.23.0
       '@sap/cds-compiler': 5.9.0
-      '@sap/cds-fiori': 1.4.0(@sap/cds@8.9.0(@eslint/js@9.23.0)(express@5.1.0))(express@5.1.0)
+      '@sap/cds-fiori': 1.4.1(@sap/cds@8.9.1(@eslint/js@9.23.0)(express@5.1.0))(express@5.1.0)
       '@sap/cds-foss': 5.0.1
     optionalDependencies:
       express: 5.1.0
 
   '@sap/eslint-plugin-cds@3.2.0(@eslint/js@9.23.0)(eslint@9.23.0)(express@4.21.2)':
     dependencies:
-      '@sap/cds': 8.9.0(@eslint/js@9.23.0)(express@4.21.2)
+      '@sap/cds': 8.9.1(@eslint/js@9.23.0)(express@4.21.2)
       eslint: 9.23.0
       semver: 7.7.1
     transitivePeerDependencies:
