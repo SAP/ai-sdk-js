@@ -1,6 +1,7 @@
 name: draft-release
 
 on:
+  workflow_dispatch:
   push:
     tags: ['v*']
 
@@ -12,9 +13,11 @@ jobs:
       - name: Get Changelog
         uses: sap/cloud-sdk-js/.github/actions/get-changelog@main
         id: get-changelog
-      - uses: ncipollo/release-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          draft: true
-          body: ${{ steps.get-changelog.outputs.changelog }}
+      - name: Echo Changelog Output
+        run: echo "Changelog Content:\n${{ steps.get-changelog.outputs.changelog }}"
+      # - uses: ncipollo/release-action@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     draft: true
+      #     body: ${{ steps.get-changelog.outputs.changelog }}
