@@ -91,6 +91,10 @@ export interface OrchestrationModuleConfig {
   streaming?: GlobalStreamOptions;
 }
 
+export type OrchestrationModuleConfigWithStringTemplating = Omit<OrchestrationModuleConfig, 'templating'> & {
+  templating: TemplatingModuleConfig | string;
+}
+
 /**
  * Request options for orchestration.
  */

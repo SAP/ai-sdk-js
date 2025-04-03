@@ -11,8 +11,7 @@ import type {
   ModuleConfigs,
   OrchestrationConfig,
   OutputFilteringConfig,
-  GlobalStreamOptions,
-  TemplatingModuleConfig
+  GlobalStreamOptions
 } from '../client/api/schema/index.js';
 
 const logger = createLogger({

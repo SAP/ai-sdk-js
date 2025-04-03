@@ -15,6 +15,7 @@ import type {
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api/internal.js';
 import type {
   OrchestrationModuleConfig,
+  OrchestrationModuleConfigWithStringTemplating,
   Prompt,
   RequestOptions,
   StreamOptions
@@ -30,9 +31,7 @@ const logger = createLogger({
   messageContext: 'orchestration-client'
 });
 
-export type OrchestrationModuleConfigWithStringTemplating = Omit<OrchestrationModuleConfig, 'templating'> & {
-  templating: TemplatingModuleConfig | string;
-}
+
 /**
  * Get the orchestration client.
  */
@@ -70,7 +69,7 @@ export class OrchestrationClient {
     }
   }
 
- /**
+   /**
    * Parse and merge templating into the config object.
    */
  private parseAndMergeTemplating(config: OrchestrationModuleConfigWithStringTemplating): OrchestrationModuleConfig {
@@ -81,7 +80,12 @@ export class OrchestrationClient {
     if (result.success) {
       return {
         ...config,
-        templating: result.data.spec as TemplatingModuleConfig // Merge parsed templating into config
+        templating: {
+          template: result.data.spec.template,
+          ...(result.data.spec.defaults && { defaults: result.data.spec.defaults }),
+          ...(result.data.spec.response_format && { response_format: result.data.spec.response_format }),
+          ...(result.data.spec.tools && { tools: result.data.spec.tools })
+        }
       };
     } else {
       throw new Error(`Prompt Template YAML does not conform to the defined type: ${result.error}`);
@@ -90,6 +94,8 @@ export class OrchestrationClient {
     throw new Error(`Error parsing YAML: ${error}`);
   }
 }
+
+
 
   async chatCompletion(
     prompt?: Prompt,
