@@ -37,7 +37,8 @@ export default [
       '**/*.d.ts',
       '**/dist/**/*',
       '**/coverage/**/*',
-      'packages/**/client/**/*'
+      'packages/**/client/**/*',
+      'packages/prompt-registry/src/zod/*'
     ]
   },
   {
