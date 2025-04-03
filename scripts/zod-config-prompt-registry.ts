@@ -1,19 +1,10 @@
-import { writeFile } from 'node:fs/promises';
-import { basename, relative, join, dirname } from 'node:path';
-import { glob } from 'glob';
+import { join, dirname } from 'node:path';
 import { createLogger } from '@sap-cloud-sdk/util';
 import { readFile } from 'fs/promises';
 import { existsSync } from 'fs';
 import { generateAndWriteConfig } from './generate-zod-config.js';
 
 const logger = createLogger('generate-zod-config');
-
-// Define the type for the ts-to-zod configuration
-interface TsToZodConfig {
-  name: string;
-  input: string;
-  output: string;
-};
 
 // Recursively finds all imported files
 async function findImportedFiles(filePath: string, collectedFiles = new Set<string>()): Promise<void> {
