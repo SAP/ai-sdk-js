@@ -20,7 +20,14 @@ jobs:
           fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
           path: ./ai-sdk
       - name: Update release notes
-        run: node --loader ts-node/esm -e "import { addCurrentChangelog } from './scripts/add-changelog.js'; addCurrentChangelog();"
+        run: |
+          # Use top-level await pattern with --eval instead of -e
+          npx ts-node --esm --eval "
+          import { addCurrentChangelog } from './scripts/add-changelog.js';
+          (async () => { 
+            await addCurrentChangelog();
+          })();
+          "
       - name: Open PR
         run: |
           cd ai-sdk
