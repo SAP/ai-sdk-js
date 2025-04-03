@@ -21,12 +21,11 @@ jobs:
           path: ./ai-sdk
       - name: Update release notes
         run: |
-          # Create a temporary script file with .mjs extension (Node.js ESM)
-          cat > update-changelog.mjs << 'EOF'
-          import { addCurrentChangelog } from './scripts/add-changelog.ts';
+          # Create a temporary script file with .ts extension
+          cat > temp-script.ts << 'EOF'
+          import { addCurrentChangelog } from './scripts/add-changelog';
 
-          // Self-executing async function
-          (async () => {
+          async function main() {
             try {
               await addCurrentChangelog();
               console.log('Successfully updated changelog');
@@ -34,14 +33,16 @@ jobs:
               console.error('Error updating changelog:', error);
               process.exit(1);
             }
-          })();
+          }
+
+          main();
           EOF
 
-          # Run the script with Node.js directly
-          node update-changelog.mjs
+          # Run the script using ts-node with the project's tsconfig
+          yarn ts-node temp-script.ts
 
           # Clean up
-          rm update-changelog.mjs
+          rm temp-script.ts
       - name: Open PR
         run: |
           cd ai-sdk
