@@ -145,8 +145,6 @@ export async function invokeLangGraphChain(): Promise<string> {
     const latestMessage = state.messages.pop();
     const inputParamMessage = latestMessage!.content as string;
     const response = await llm.invoke(state.messages, { inputParams: { message: inputParamMessage } });
-    // eslint-disable-next-line no-console
-    console.log('Response:', response);
     // Update message history with response:
     return { messages: response };
   };
@@ -167,7 +165,7 @@ export async function invokeLangGraphChain(): Promise<string> {
     {
       role: 'user',
       content: 'SAP Cloud SDK',
-    },
+    }
   ];
   const output = await app.invoke({ messages: input }, config);
 
