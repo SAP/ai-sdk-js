@@ -8,31 +8,31 @@ spec:
         You are a world-famous poet who can write virtuosic and brilliant poetry on any topic.
     - role: "user"
       content: |-
-        Write a 3 verse poem about the following topic:
-        {{ ?topic }}
+        Write a 1 verse poem about the following topic: {{?topic}}
 
   response_format:
-    name: poem_structure
-    description: Structured format for the generated poem
-    strict: true
-    schema:
-      type: object
-      additionalProperties: false
-      required:
-        - title
-        - verses
-        - theme
-      properties:
-        title:
-          type: string
-          description: The title of the poem
-        theme:
-          type: string
-          description: The central theme or subject of the poem
-        verses:
-          type: array
-          description: A list of verses making up the poem
-          items:
+    type: 'json_schema'
+    json_schema:
+      name: poem_structure
+      description: Structured format for the generated poem
+      strict: true
+      schema:
+        additionalProperties: false
+        required:
+          - title
+          - verses
+          - theme
+        properties:
+          title:
             type: string
-            description: A single verse of the poem
+            description: The title of the poem
+          theme:
+            type: string
+            description: The central theme or subject of the poem
+          verses:
+            type: array
+            description: A list of verses making up the poem
+            items:
+              type: string
+              description: A single verse of the poem
 `;

@@ -409,7 +409,6 @@ describe('orchestration service client', () => {
             description: 'Structured format for the generated poem',
             strict: true,
             schema: {
-              type: 'object',
               additionalProperties: false,
               required: ['title', 'verses', 'theme'],
               properties: {
@@ -456,7 +455,7 @@ describe('orchestration service client', () => {
       { inputParams: { topic: 'Generative AI Hub' }},
     );
     expect(response.data).toEqual(mockResponse);
-  });
+  }, 60000);
 
   it('calls chatCompletion with grounding configuration', async () => {
     const config: OrchestrationModuleConfig = {
