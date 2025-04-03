@@ -19,6 +19,11 @@ jobs:
           token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
           fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
           path: ./ai-sdk
+      - name: Install dependencies
+        run: |
+          yarn install
+          # Install ts-node and typescript globally
+          npm install -g ts-node typescript
       - name: Update release notes
         run: |
           # Create a temporary script file with .ts extension
@@ -38,8 +43,8 @@ jobs:
           main();
           EOF
 
-          # Run the script using ts-node with the project's tsconfig
-          yarn ts-node temp-script.ts
+          # Run the script using ts-node directly
+          ts-node temp-script.ts
 
           # Clean up
           rm temp-script.ts
