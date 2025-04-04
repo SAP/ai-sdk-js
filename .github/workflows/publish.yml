@@ -21,7 +21,16 @@ jobs:
           path: ./ai-sdk
       - name: Update release notes
         run: |
-          npx ts-node --esm -e "import { addCurrentChangelog } from './scripts/add-changelog.js'; addCurrentChangelog()"
+          # Create a temporary runner script using .mts extension for explicit ESM
+          echo "import { addCurrentChangelog } from './scripts/add-changelog.js'; await addCurrentChangelog(); console.log('Changelog update script executed.');" > temp-runner.mts
+
+          # Execute the temporary script with npx ts-node using ESM loader
+          # npx will find/install ts-node if needed
+          npx ts-node --esm temp-runner.mts
+
+          # Optional: Remove the temporary file afterwards
+          rm temp-runner.mts
+        working-directory: ./ # Make sure this is the root of your checkout
       - name: Open PR
         run: |
           cd ai-sdk
