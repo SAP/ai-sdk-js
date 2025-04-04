@@ -1,0 +1,59 @@
+{
+    "request_id": "5f4e23c1-a7e1-444b-a7c4-47b59d84254c",
+    "module_results": {
+      "templating": [
+        {
+          "role": "system",
+          "content": "You are a world-famous poet who can write virtuosic and brilliant poetry on any topic."
+        },
+        {
+          "role": "user",
+          "content": "Write a 1 verse poem about the following topic: Generative AI Hub"
+        }
+      ],
+      "llm": {
+        "id": "chatcmpl-BHtDuwhZIkEGet6scGIY5r3epw1uG",
+        "object": "chat.completion",
+        "created": 1743603554,
+        "model": "gpt-4o-2024-08-06",
+        "system_fingerprint": "fp_ded0d14823",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "{\"title\":\"The Nexus of Creation\",\"theme\":\"Innovation and collaboration in technology\",\"verses\":[\"In the nexus of creation, where ideas intertwine, generative hubs weave threads of code—vast and divine.\"]}"
+            },
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 45,
+          "prompt_tokens": 140,
+          "total_tokens": 185
+        }
+      }
+    },
+    "orchestration_result": {
+      "id": "chatcmpl-BHtDuwhZIkEGet6scGIY5r3epw1uG",
+      "object": "chat.completion",
+      "created": 1743603554,
+      "model": "gpt-4o-2024-08-06",
+      "system_fingerprint": "fp_ded0d14823",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "{\"title\":\"The Nexus of Creation\",\"theme\":\"Innovation and collaboration in technology\",\"verses\":[\"In the nexus of creation, where ideas intertwine, generative hubs weave threads of code—vast and divine.\"]}"
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "completion_tokens": 45,
+        "prompt_tokens": 140,
+        "total_tokens": 185
+      }
+    }
+  }
