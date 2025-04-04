@@ -9,6 +9,11 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
+      - uses: sap/ai-sdk-js/.github/actions/setup@main
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: pnpm install
       - uses: actions/checkout@v4
         with:
           ref: 'main'
@@ -19,16 +24,6 @@ jobs:
           token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
           fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
           path: ./ai-sdk
-      # Setup pnpm
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10 # Or specify your project's pnpm version
-      # Install dependencies using pnpm
-      - name: Install dependencies
-        run: pnpm install
-
-      # Update release notes using pnpm
       - name: Update release notes
         run: |
           echo $(pwd) # Confirm the directory
@@ -38,14 +33,13 @@ jobs:
           # --esm tells ts-node to use ESM mode
           NODE_OPTIONS="--loader ts-node/esm" pnpm ts-node --esm scripts/execute-add-changelog.ts
         working-directory: ./ # Make sure this is the root of your checkout
-
       - name: Open PR
         id: open_pr
         run: |
           cd ai-sdk
           git config --local user.email "cloudsdk@sap.com"
           git config --local user.name "SAP Cloud SDK Bot"
-          BRANCH_NAME="update-release-notes"
+          BRANCH_NAME="update-release-notes-${{ github.run_id }}" # Define a unique branch name
           git checkout -b "${BRANCH_NAME}"
           git add docs-js/release-notes.mdx
           if git diff --staged --quiet; then
@@ -58,20 +52,9 @@ jobs:
             gh config set prompt disabled
             PR_BODY="Auto-created by update release notes workflow."
             PR_TITLE="Update JS Release Notes"
-            gh pr create --head "${BRANCH_NAME}" --title "${PR_TITLE}" --body "${PR_BODY}"
+            # Add --auto and --squash flags to enable auto-merge with squash strategy
+            gh pr create --head "${BRANCH_NAME}" --title "${PR_TITLE}" --body "${PR_BODY}" --auto --squash
           fi
-          echo "RELEASE_NOTES_BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_OUTPUT
-
-      - name: 'Check Whether Release Notes PR Can Be Merged'
-        uses: ./.github/actions/pr-is-mergeable
-        with:
-          pr-ref: ${{ steps.open_pr.outputs.RELEASE_NOTES_BRANCH_NAME }}
-          repo: SAP/ai-sdk
-          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
-          excluded-check-runs: |
-            {
-              \"Build Cloud SDK Documentation\": [\"dependabot\"]
-            }
       # - uses: sap/ai-sdk-js/.github/actions/setup@main
       # - name: publish
       #   run: |
