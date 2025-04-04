@@ -12,17 +12,17 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: 'main'
-      - name: Update release notes
-        run: |
-          npx ts-node --esm scripts/execute-add-changelog.ts
-          echo $(pwd)
       - name: Checkout Docs
         uses: actions/checkout@v4
         with:
           repository: SAP/ai-sdk
           token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
           fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
-          path: ./ai-sdk      
+          path: ./ai-sdk             
+      - name: Update release notes
+        run: |
+          echo $(pwd)
+          NODE_OPTIONS="--loader ts-node/esm" npx ts-node --esm execute-add-changelog.ts   
       - name: Open PR
         run: |
           cd ai-sdk
