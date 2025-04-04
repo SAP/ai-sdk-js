@@ -47,7 +47,7 @@ jobs:
             
             # Create PR without --auto, capture URL
             # Keep --squash if you want the default merge strategy to be squash
-            PR_URL=$(gh pr create --head "${BRANCH_NAME}" --title "${PR_TITLE}" --body "${PR_BODY}" --squash) 
+            PR_URL=$(gh pr create --head "${BRANCH_NAME}" --title "${PR_TITLE}" --body "${PR_BODY}") 
             
             if [ -z "$PR_URL" ]; then
               echo "Failed to create PR or no PR URL returned."
