@@ -12,13 +12,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: 'main'
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
       - name: Install dependencies
         run: |
-          yarn install
           # Ensure ts-node and typescript are installed locally
           yarn add --dev ts-node typescript --ignore-scripts
       - name: Update release notes
