@@ -19,20 +19,6 @@ jobs:
           token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
           fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
           path: ./ai-sdk
-
-      # Setup pnpm
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10 # Or specify your project's pnpm version
-
-      # Setup Node.js, enabling pnpm caching
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-          cache: 'pnpm' # Use pnpm cache
-
       # Install dependencies using pnpm
       - name: Install dependencies
         run: pnpm install
