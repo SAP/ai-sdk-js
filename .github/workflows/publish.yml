@@ -9,10 +9,6 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: 'main'
-
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
           node-version: 20
@@ -25,23 +21,21 @@ jobs:
           path: ./ai-sdk
       - name: Update release notes
         run: |
-          # Stay in the root directory (where scripts/ and node_modules/ exist)
-          echo "Current directory: $(pwd)" 
           # Execute using pnpm from the root directory
           NODE_OPTIONS="--loader ts-node/esm" pnpm ts-node --esm scripts/execute-add-changelog.ts
       - name: Open PR
         id: open_pr
         run: |
-          # Change into the ai-sdk directory for git operations
           cd ai-sdk 
           git config --local user.email "cloudsdk@sap.com"
           git config --local user.name "SAP Cloud SDK Bot"
-          BRANCH_NAME="update-release-notes-${{ github.run_id }}" # Define a unique branch name
+          BRANCH_NAME="update-release-notes-${{ github.run_id }}" 
           git checkout -b "${BRANCH_NAME}"
-          # Path is now relative to the ai-sdk directory
           git add docs-js/release-notes.mdx 
           if git diff --staged --quiet; then
             echo "No changes to commit."
+            # Output an empty pr_url if no changes
+            echo "pr_url=" >> "$GITHUB_OUTPUT" 
           else
             git commit -m "update release notes" -a
             git push -u origin "${BRANCH_NAME}"
@@ -50,9 +44,36 @@ jobs:
             gh config set prompt disabled
             PR_BODY="Auto-created by update release notes workflow."
             PR_TITLE="Update JS Release Notes"
-            # Add --auto and --squash flags to enable auto-merge with squash strategy
-            gh pr create --head "${BRANCH_NAME}" --title "${PR_TITLE}" --body "${PR_BODY}" --auto --squash
+            
+            # Create PR without --auto, capture URL
+            # Keep --squash if you want the default merge strategy to be squash
+            PR_URL=$(gh pr create --head "${BRANCH_NAME}" --title "${PR_TITLE}" --body "${PR_BODY}" --squash) 
+            
+            if [ -z "$PR_URL" ]; then
+              echo "Failed to create PR or no PR URL returned."
+              # Output an empty pr_url on failure
+              echo "pr_url=" >> "$GITHUB_OUTPUT" 
+              # Optionally exit with an error: exit 1
+            else
+              echo "Created PR: $PR_URL"
+              # Export the URL as a step output
+              echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
+            fi
           fi
+      - name: Merge PR
+        # Only run if the previous step actually outputted a PR URL
+        if: steps.open_pr.outputs.pr_url != ''
+        run: |
+          echo "Attempting to merge PR: ${{ steps.open_pr.outputs.pr_url }}"
+          echo ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }} | gh auth login --hostname github.com --with-token
+          gh config set prompt disabled
+          # Merge using the URL, specify strategy, and delete branch
+          gh pr merge "${{ steps.open_pr.outputs.pr_url }}" --auto --squash --delete-branch 
+          echo "PR merged successfully."
+        env:
+          # Ensure the token used here has permissions to merge PRs
+          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+
       # - uses: sap/ai-sdk-js/.github/actions/setup@main
       # - name: publish
       #   run: |
