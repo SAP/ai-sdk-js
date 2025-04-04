@@ -9,11 +9,6 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
-        with:
-          node-version: 20
-      - name: Install dependencies
-        run: pnpm install
       - uses: actions/checkout@v4
         with:
           ref: 'main'
@@ -24,6 +19,9 @@ jobs:
           token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
           fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
           path: ./ai-sdk
+      - uses: sap/ai-sdk-js/.github/actions/setup@main
+        with:
+            node-version: 20     
       - name: Update release notes
         run: |
           echo $(pwd) # Confirm the directory
