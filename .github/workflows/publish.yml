@@ -18,11 +18,16 @@ jobs:
           repository: SAP/ai-sdk
           token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
           fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
-          path: ./ai-sdk             
+          path: ./ai-sdk
       - name: Update release notes
         run: |
-          echo $(pwd)
-          npx ts-node --esm ./scripts/execute-add-changelog.ts   
+          echo $(pwd) # Confirm the directory
+          # Execute using yarn to ensure the local ts-node is used
+          # NODE_OPTIONS tells Node how to load .ts files
+          # yarn ts-node runs the local version
+          # --esm tells ts-node to use ESM mode
+          NODE_OPTIONS="--loader ts-node/esm" yarn ts-node --esm scripts/execute-add-changelog.ts
+        working-directory: ./ # Make sure this is the root of your checkout
       - name: Open PR
         run: |
           cd ai-sdk
