@@ -12,10 +12,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: 'main'
-      - name: Install dependencies
-        run: |
-          # Ensure ts-node and typescript are installed locally
-          yarn add --dev ts-node typescript --ignore-scripts
       - name: Update release notes
         run: |
           # Create a temporary runner script using .ts extension
