@@ -33,8 +33,12 @@ jobs:
       - name: Open PR
         id: open_pr
         run: |
-          cd ai-sdk
+          cd ai-sdk  
           echo $(pwd) # Confirm the directory
+          echo $(ls -la)
+          cd ..
+          echo $(pwd) # Confirm the directory
+          echo $(ls -la)
           git config --local user.email "cloudsdk@sap.com"
           git config --local user.name "SAP Cloud SDK Bot"
           BRANCH_NAME="update-release-notes-${{ github.run_id }}" # Define a unique branch name
