@@ -26,14 +26,14 @@ async function getReleaseNotesFilePath(): Promise<string> {
   const majorVersion = (await getPackageVersion()).split('.')[0];
 
   if (await isVersioned(majorVersion)) {
-    return `./cloud-sdk/docs-js_versioned_docs/version-v${majorVersion}/release-notes.mdx`;
+    return `./ai-sdk/docs-js_versioned_docs/version-v${majorVersion}/release-notes.mdx`;
   }
-  return './cloud-sdk/docs-js/release-notes.mdx';
+  return './ai-sdk/docs-js/release-notes.mdx';
 }
 
 async function isVersioned(majorVersion: string): Promise<boolean> {
   const versionedInDocusaurus = await readdir(
-    './cloud-sdk/docs-js_versioned_docs/'
+    './ai-sdk/docs-js_versioned_docs/'
   );
   // The docusaurus folders are called version-v1, version-v2 so match regex for ends with v1, v2, ...
   return !!versionedInDocusaurus.find(folder =>
@@ -48,9 +48,25 @@ async function isVersioned(majorVersion: string): Promise<boolean> {
 export async function addCurrentChangelog(): Promise<void> {
   const changelog = await getChangelogWithVersion();
   const releaseNotesFilePath = await getReleaseNotesFilePath();
-  const releaseNotes = await readFile(releaseNotesFilePath, {
-    encoding: 'utf8'
-  });
+  let releaseNotes: string;
+
+  try {
+    releaseNotes = await readFile(releaseNotesFilePath, {
+      encoding: 'utf8'
+    });
+  } catch (error: any) {
+    if (error?.code === 'ENOENT') {
+      console.log(
+        `Target release notes file not found at ${releaseNotesFilePath}. Using fallback.`
+      );
+      releaseNotes = await readFile('scripts/release-notes.mdx', {
+        encoding: 'utf8'
+      });
+    } else {
+      throw error;
+    }
+  }
+
   const releaseNotesArray = releaseNotes.split(
     '<!-- This line is used for our release notes automation -->\n'
   );
