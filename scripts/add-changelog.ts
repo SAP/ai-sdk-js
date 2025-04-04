@@ -32,13 +32,21 @@ async function getReleaseNotesFilePath(): Promise<string> {
 }
 
 async function isVersioned(majorVersion: string): Promise<boolean> {
-  const versionedInDocusaurus = await readdir(
-    './ai-sdk/docs-js_versioned_docs/'
-  );
-  // The docusaurus folders are called version-v1, version-v2 so match regex for ends with v1, v2, ...
-  return !!versionedInDocusaurus.find(folder =>
-    folder.match(new RegExp(`v${majorVersion}$`))
-  );
+  try {
+    console.log('majorVersion is', majorVersion);
+    const versionedInDocusaurus = await readdir(
+      './ai-sdk/docs-js_versioned_docs/'
+    );
+    // The docusaurus folders are called version-v1, version-v2 so match regex for ends with v1, v2, ...
+    return !!versionedInDocusaurus.find(folder =>
+      folder.match(new RegExp(`v${majorVersion}$`))
+    );
+  } catch (error: any) {
+    if (error?.code === 'ENOENT') {
+      return false;
+    }
+    throw error;
+  }
 }
 
 /**
