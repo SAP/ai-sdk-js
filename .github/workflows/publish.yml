@@ -30,11 +30,11 @@ jobs:
           # pnpm ts-node runs the local version
           # --esm tells ts-node to use ESM mode
           NODE_OPTIONS="--loader ts-node/esm" pnpm ts-node --esm scripts/execute-add-changelog.ts
-        working-directory: ./ # Make sure this is the root of your checkout
       - name: Open PR
         id: open_pr
         run: |
           cd ai-sdk
+          echo $(pwd) # Confirm the directory
           git config --local user.email "cloudsdk@sap.com"
           git config --local user.name "SAP Cloud SDK Bot"
           BRANCH_NAME="update-release-notes-${{ github.run_id }}" # Define a unique branch name
