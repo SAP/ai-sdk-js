@@ -15,4 +15,15 @@ export type GlobalStreamOptions = {
    * Minimum: 1.
    */
   chunk_size?: number;
+  /**
+   * List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.
+   * @example [
+   *   "\n",
+   *   ".",
+   *   "?",
+   *   "!"
+   * ]
+   * Min Items: 1.
+   */
+  delimiters?: string[];
 };

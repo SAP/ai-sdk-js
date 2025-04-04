@@ -14,9 +14,11 @@ import type { LlmChoiceStreaming } from './llm-choice-streaming.js';
 export type ModuleResults = {
   grounding?: GenericModuleResult;
   templating?: TemplatingChatMessage;
+  input_translation?: GenericModuleResult;
   input_masking?: GenericModuleResult;
   input_filtering?: GenericModuleResult;
   llm?: LlmModuleResult;
   output_filtering?: GenericModuleResult;
   output_unmasking?: (LlmChoice | LlmChoiceStreaming)[];
+  output_translation?: GenericModuleResult;
 };
