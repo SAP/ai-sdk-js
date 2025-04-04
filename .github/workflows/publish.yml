@@ -25,22 +25,21 @@ jobs:
           path: ./ai-sdk
       - name: Update release notes
         run: |
-          cd ai-sdk
-          echo $(pwd)
-          echo $(ls -la)
-          # Execute using pnpm to ensure the local ts-node is used within the workspace context
-          # NODE_OPTIONS tells Node how to load .ts files
-          # pnpm ts-node runs the local version
-          # --esm tells ts-node to use ESM mode
+          # Stay in the root directory (where scripts/ and node_modules/ exist)
+          echo "Current directory: $(pwd)" 
+          # Execute using pnpm from the root directory
           NODE_OPTIONS="--loader ts-node/esm" pnpm ts-node --esm scripts/execute-add-changelog.ts
       - name: Open PR
         id: open_pr
         run: |
+          # Change into the ai-sdk directory for git operations
+          cd ai-sdk 
           git config --local user.email "cloudsdk@sap.com"
           git config --local user.name "SAP Cloud SDK Bot"
           BRANCH_NAME="update-release-notes-${{ github.run_id }}" # Define a unique branch name
           git checkout -b "${BRANCH_NAME}"
-          git add docs-js/release-notes.mdx
+          # Path is now relative to the ai-sdk directory
+          git add docs-js/release-notes.mdx 
           if git diff --staged --quiet; then
             echo "No changes to commit."
           else
