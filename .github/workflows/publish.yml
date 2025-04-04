@@ -70,9 +70,6 @@ jobs:
           # Merge using the URL, specify strategy, and delete branch
           gh pr merge "${{ steps.open_pr.outputs.pr_url }}" --auto --squash --delete-branch 
           echo "PR merged successfully."
-        env:
-          # Ensure the token used here has permissions to merge PRs
-          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
 
       # - uses: sap/ai-sdk-js/.github/actions/setup@main
       # - name: publish
