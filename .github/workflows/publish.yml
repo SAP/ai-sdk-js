@@ -19,15 +19,35 @@ jobs:
           token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
           fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
           path: ./ai-sdk
+
+      # Setup pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10 # Or specify your project's pnpm version
+
+      # Setup Node.js, enabling pnpm caching
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'pnpm' # Use pnpm cache
+
+      # Install dependencies using pnpm
+      - name: Install dependencies
+        run: pnpm install
+
+      # Update release notes using pnpm
       - name: Update release notes
         run: |
           echo $(pwd) # Confirm the directory
-          # Execute using yarn to ensure the local ts-node is used
+          # Execute using pnpm to ensure the local ts-node is used within the workspace context
           # NODE_OPTIONS tells Node how to load .ts files
-          # yarn ts-node runs the local version
+          # pnpm ts-node runs the local version
           # --esm tells ts-node to use ESM mode
-          NODE_OPTIONS="--loader ts-node/esm" yarn ts-node --esm scripts/execute-add-changelog.ts
+          NODE_OPTIONS="--loader ts-node/esm" pnpm ts-node --esm scripts/execute-add-changelog.ts
         working-directory: ./ # Make sure this is the root of your checkout
+
       - name: Open PR
         run: |
           cd ai-sdk
@@ -45,6 +65,6 @@ jobs:
       # - uses: sap/ai-sdk-js/.github/actions/setup@main
       # - name: publish
       #   run: |
-      #     yarn changeset publish
+      #     pnpm changeset publish # Use pnpm here too if publishing
       #   env:
       #     NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}
