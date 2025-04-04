@@ -22,7 +22,7 @@ jobs:
       - name: Update release notes
         run: |
           echo $(pwd)
-          NODE_OPTIONS="--loader ts-node/esm" npx ts-node --esm execute-add-changelog.ts   
+          npx ts-node --esm execute-add-changelog.ts   
       - name: Open PR
         run: |
           cd ai-sdk
