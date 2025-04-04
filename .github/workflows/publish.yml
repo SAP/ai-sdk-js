@@ -45,6 +45,7 @@ jobs:
           git config --local user.email "cloudsdk@sap.com"
           git config --local user.name "SAP Cloud SDK Bot"
           git checkout -b "update-release-notes"
+          git add docs-js/release-notes.mdx
           git commit -m "update release notes" -a
           git push -u origin update-release-notes
 
