@@ -14,17 +14,8 @@ jobs:
           ref: 'main'
       - name: Update release notes
         run: |
-          # Create a temporary runner script using .ts extension
-          echo "import { addCurrentChangelog } from './scripts/add-changelog.js'; await addCurrentChangelog(); console.log('Changelog update script executed.');" > temp-runner.ts
-
-          # Execute the temporary script with npx ts-node
-          # Set NODE_OPTIONS to ensure Node uses the ts-node ESM loader
-          # Use --esm flag for ts-node as well
-          NODE_OPTIONS="--loader ts-node/esm" npx ts-node --esm temp-runner.ts
-
-          # Optional: Remove the temporary file afterwards
-          rm temp-runner.ts
-        working-directory: ./ # Make sure this is the root of your checkout
+          npx ts-node --esm scripts/execute-add-changelog.ts
+          echo $(pwd)
       - name: Checkout Docs
         uses: actions/checkout@v4
         with:
