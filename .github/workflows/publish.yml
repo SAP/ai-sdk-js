@@ -12,6 +12,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: 'main'
+
+      - uses: sap/ai-sdk-js/.github/actions/setup@main
+        with:
+          node-version: 20
       - name: Checkout Docs
         uses: actions/checkout@v4
         with:
@@ -19,9 +23,6 @@ jobs:
           token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
           fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
           path: ./ai-sdk
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
-        with:
-          node-version: 20
       - name: Update release notes
         run: |
           cd ai-sdk
