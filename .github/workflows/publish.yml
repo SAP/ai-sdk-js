@@ -40,20 +40,38 @@ jobs:
         working-directory: ./ # Make sure this is the root of your checkout
 
       - name: Open PR
+        id: open_pr
         run: |
           cd ai-sdk
           git config --local user.email "cloudsdk@sap.com"
           git config --local user.name "SAP Cloud SDK Bot"
-          git checkout -b "update-release-notes"
+          BRANCH_NAME="update-release-notes"
+          git checkout -b "${BRANCH_NAME}"
           git add docs-js/release-notes.mdx
-          git commit -m "update release notes" -a
-          git push -u origin update-release-notes
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "update release notes" -a
+            git push -u origin "${BRANCH_NAME}"
 
-          echo ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }} | gh auth login --hostname github.com --with-token
-          gh config set prompt disabled
-          PR_BODY="Auto-created by update release notes workflow."
-          PR_TITLE="Update JS Release Notes"
-          gh pr create --head "update-release-notes" --title "${PR_TITLE}" --body "${PR_BODY}"
+            echo ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }} | gh auth login --hostname github.com --with-token
+            gh config set prompt disabled
+            PR_BODY="Auto-created by update release notes workflow."
+            PR_TITLE="Update JS Release Notes"
+            gh pr create --head "${BRANCH_NAME}" --title "${PR_TITLE}" --body "${PR_BODY}"
+          fi
+          echo "RELEASE_NOTES_BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_OUTPUT
+
+      - name: 'Check Whether Release Notes PR Can Be Merged'
+        uses: ./.github/actions/pr-is-mergeable
+        with:
+          pr-ref: ${{ steps.open_pr.outputs.RELEASE_NOTES_BRANCH_NAME }}
+          repo: SAP/ai-sdk
+          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          excluded-check-runs: |
+            {
+              \"Build Cloud SDK Documentation\": [\"dependabot\"]
+            }
       # - uses: sap/ai-sdk-js/.github/actions/setup@main
       # - name: publish
       #   run: |
