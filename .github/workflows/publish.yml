@@ -19,35 +19,9 @@ jobs:
           token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
           fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
           path: ./ai-sdk
-      - name: Install dependencies
-        run: |
-          # Install ts-node and typescript as dev dependencies locally
-          yarn install --dev ts-node typescript
       - name: Update release notes
         run: |
-          # Create a temporary script file with .ts extension
-          cat > temp-script.ts << 'EOF'
-          import { addCurrentChangelog } from './scripts/add-changelog';
-
-          async function main() {
-            try {
-              await addCurrentChangelog();
-              console.log('Successfully updated changelog');
-            } catch (error) {
-              console.error('Error updating changelog:', error);
-              process.exit(1);
-            }
-          }
-
-          main();
-          EOF
-
-          # Run the script using yarn ts-node with explicit ESM flags
-          # NODE_OPTIONS tells Node how to load .ts files, yarn ts-node runs the local version
-          NODE_OPTIONS="--loader ts-node/esm" yarn ts-node --esm temp-script.ts
-
-          # Clean up
-          rm temp-script.ts
+          npx ts-node --esm -e "import { addCurrentChangelog } from './scripts/add-changelog.js'; addCurrentChangelog()"
       - name: Open PR
         run: |
           cd ai-sdk
