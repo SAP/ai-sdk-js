@@ -21,10 +21,12 @@ jobs:
           path: ./ai-sdk
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
-            node-version: 20     
+          node-version: 20
       - name: Update release notes
         run: |
-          echo $(pwd) # Confirm the directory
+          cd ai-sdk
+          echo $(pwd)
+          echo $(ls -la)
           # Execute using pnpm to ensure the local ts-node is used within the workspace context
           # NODE_OPTIONS tells Node how to load .ts files
           # pnpm ts-node runs the local version
@@ -33,12 +35,6 @@ jobs:
       - name: Open PR
         id: open_pr
         run: |
-          cd ai-sdk  
-          echo $(pwd) # Confirm the directory
-          echo $(ls -la)
-          cd ..
-          echo $(pwd) # Confirm the directory
-          echo $(ls -la)
           git config --local user.email "cloudsdk@sap.com"
           git config --local user.name "SAP Cloud SDK Bot"
           BRANCH_NAME="update-release-notes-${{ github.run_id }}" # Define a unique branch name
