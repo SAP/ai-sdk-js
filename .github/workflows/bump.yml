@@ -64,6 +64,7 @@ jobs:
         run: |
           NODE_OPTIONS="--loader ts-node/esm" pnpm ts-node --esm scripts/execute-add-changelog.ts
           VERSION=$(node -p "require('./package.json').version")
+          echo "VERSION=$VERSION"
           echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
 
       # - name: Open Release notes PR
