@@ -13,15 +13,23 @@ jobs:
   publish-npm:
     name: Publish to NPM
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
           node-version: ${{ env.NODE_VERSION }}
-    #   - name: publish
-    #     run: |
-    #       pnpm changeset publish # Use pnpm here too if publishing
-    #     env:
-    #       NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}
+      #   - name: publish
+      #     run: |
+      #       pnpm changeset publish # Use pnpm here too if publishing
+      #     env:
+      #       NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}
+      - name: Get Package Version
+        id: get_version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "Using version: $VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
   merge-release-notes-pr:
     name: Merge Release Notes PR
@@ -31,10 +39,10 @@ jobs:
       - name: Determine Docs PR Branch Name
         id: determine-branch-name
         run: |
-          VERSION=$(node -p "require('./package.json').version")
+          VERSION=${{ needs.publish-npm.outputs.version }}
           echo "Using version: $VERSION"
           BRANCH_NAME="update-release-notes-$VERSION"
-          echo "RELEASE_NOTES_BRANCH_NAME=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
+          echo "release_notes_branch=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
       - name: 'Check Whether Release Notes PR Can Be Merged'
         uses: ./.github/actions/pr-is-mergeable
         with:
@@ -49,4 +57,4 @@ jobs:
         run: |
           echo ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }} | gh auth login --hostname github.com --with-token
           gh config set prompt disabled
-          gh pr merge --squash "${{ needs.prerequisites.outputs.release-notes-branch }}" --delete-branch --repo "${{ env.DOCS_REPO }}"
+          gh pr merge --squash "${{ steps.determine-branch-name.outputs.release_notes_branch }}" --delete-branch --repo "${{ env.DOCS_REPO }}"
