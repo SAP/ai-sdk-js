@@ -12,34 +12,37 @@ env:
   NODE_VERSION: 20
 
 jobs:
-  # bump:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: sap/ai-sdk-js/.github/actions/setup@main
-  #       with:
-  #         token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
-  #         ref: 'main'
-  #     - name: bump version
-  #       uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
-  #       id: bump
-  #       with:
-  #         majorVersion: ${{ inputs.majorVersion }}
+  bump:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.bump.outputs.version }}
+    steps:
+      - uses: sap/ai-sdk-js/.github/actions/setup@main
+        with:
+          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          ref: 'main'
+      - name: bump version
+        uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
+        id: bump
+        with:
+          majorVersion: ${{ inputs.majorVersion }}
 
-  #     - name: merge and write Changelogs
-  #       id: merge-changelogs
-  #       uses: sap/cloud-sdk-js/.github/actions/merge-and-write-changelogs@main
-  #       env:
-  #         VERSION: ${{ steps.bump.outputs.version }}
+      - name: merge and write Changelogs
+        id: merge-changelogs
+        uses: sap/cloud-sdk-js/.github/actions/merge-and-write-changelogs@main
+        env:
+          VERSION: ${{ steps.bump.outputs.version }}
 
-  #     - uses: sap/cloud-sdk-js/.github/actions/commit-and-tag@main
-  #       name: Commit and tag
-  #       with:
-  #         version: ${{ steps.bump.outputs.version }}
-  #         user-name: sap-ai-sdk
+      - uses: sap/cloud-sdk-js/.github/actions/commit-and-tag@main
+        name: Commit and tag
+        with:
+          version: ${{ steps.bump.outputs.version }}
+          user-name: sap-ai-sdk
 
   prepare-release-notes:
     name: Prepare Release Notes
     runs-on: ubuntu-latest
+    needs: [bump]
     outputs:
       pr_url: ${{ steps.open_pr.outputs.pr_url }}
     steps:
@@ -65,10 +68,9 @@ jobs:
         id: open_pr
         working-directory: ${{ env.DOCS_CHECKOUT_PATH }}
         run: |
-          echo "Present working directory: $PWD"
           git config --local user.email "cloudsdk@sap.com"
           git config --local user.name "SAP Cloud SDK Bot"
-          BRANCH_NAME="update-release-notes-${{ github.run_id }}" 
+          BRANCH_NAME="update-release-notes-${{ needs.bump.outputs.version }}" 
           git checkout -b "${BRANCH_NAME}"
           git add docs-js/release-notes.mdx 
           if git diff --staged --quiet; then
