@@ -36,6 +36,9 @@ jobs:
     needs: [publish-npm]
     runs-on: ubuntu-latest
     steps:
+      - uses: sap/ai-sdk-js/.github/actions/setup@main
+        with:
+          node-version: ${{ env.NODE_VERSION }}
       - name: Determine Docs PR Branch Name
         id: determine-branch-name
         run: |
@@ -43,10 +46,11 @@ jobs:
           echo "Using version: $VERSION"
           BRANCH_NAME="update-release-notes-$VERSION"
           echo "release_notes_branch=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
+          echo "$PWD"
       - name: 'Check Whether Release Notes PR Can Be Merged'
         uses: ./.github/actions/pr-is-mergeable
         with:
-          pr-ref: ${{ steps.determine-branch-name.outputs.RELEASE_NOTES_BRANCH_NAME }}
+          pr-ref: ${{ steps.determine-branch-name.outputs.release_notes_branch }}
           repo: ${{ env.DOCS_REPO }}
           token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
           excluded-check-runs: |
