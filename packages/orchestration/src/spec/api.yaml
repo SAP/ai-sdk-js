@@ -379,6 +379,8 @@ components:
             frequency_penalty: 0
             presence_penalty: 0
             n: 2
+            stream_options:
+              include_usage: true
           additionalProperties: true
         model_version:
           description: Version of the model to use
