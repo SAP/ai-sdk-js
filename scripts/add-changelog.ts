@@ -26,16 +26,16 @@ async function getReleaseNotesFilePath(): Promise<string> {
   const majorVersion = (await getPackageVersion()).split('.')[0];
 
   if (await isVersioned(majorVersion)) {
-    return `./ai-sdk/docs-js_versioned_docs/version-v${majorVersion}/release-notes.mdx`;
+    return `./ai-sdk-docs/docs-js_versioned_docs/version-v${majorVersion}/release-notes.mdx`;
   }
-  return './ai-sdk/docs-js/release-notes.mdx';
+  return './ai-sdk-docs/docs-js/release-notes.mdx';
 }
 
 async function isVersioned(majorVersion: string): Promise<boolean> {
   try {
     console.log('majorVersion is', majorVersion);
     const versionedInDocusaurus = await readdir(
-      './ai-sdk/docs-js_versioned_docs/'
+      './ai-sdk-docs/docs-js_versioned_docs/'
     );
     // The docusaurus folders are called version-v1, version-v2 so match regex for ends with v1, v2, ...
     return !!versionedInDocusaurus.find(folder =>
