@@ -34,7 +34,7 @@ jobs:
         id: update-notes
         run: |
           echo "Present working directory: $PWD"
-          ls-la
+          ls -la
           NODE_OPTIONS="--loader ts-node/esm" pnpm ts-node --esm scripts/execute-add-changelog.ts
 
       - name: Open Release notes PR
