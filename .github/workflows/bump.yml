@@ -6,29 +6,92 @@ on:
       majorVersion:
         description: Mandatory, when bumping a major version. Semver compatible version string (X.Y.Z). Must not be set for patch and minor version releases.
         required: false
+env:
+  DOCS_REPO: SAP/ai-sdk
+  DOCS_CHECKOUT_PATH: ./ai-sdk-docs
+  NODE_VERSION: 20
 
 jobs:
-  bump:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
-        with:
-          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
-          ref: 'main'
-      - name: bump version
-        uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
-        id: bump
-        with:
-          majorVersion: ${{ inputs.majorVersion }}
-      
-      - name: merge and write Changelogs
-        id: merge-changelogs
-        uses: sap/cloud-sdk-js/.github/actions/merge-and-write-changelogs@main
-        env:
-          VERSION: ${{ steps.bump.outputs.version }}
+  # bump:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: sap/ai-sdk-js/.github/actions/setup@main
+  #       with:
+  #         token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+  #         ref: 'main'
+  #     - name: bump version
+  #       uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
+  #       id: bump
+  #       with:
+  #         majorVersion: ${{ inputs.majorVersion }}
 
-      - uses: sap/cloud-sdk-js/.github/actions/commit-and-tag@main
-        name: Commit and tag
+  #     - name: merge and write Changelogs
+  #       id: merge-changelogs
+  #       uses: sap/cloud-sdk-js/.github/actions/merge-and-write-changelogs@main
+  #       env:
+  #         VERSION: ${{ steps.bump.outputs.version }}
+
+  #     - uses: sap/cloud-sdk-js/.github/actions/commit-and-tag@main
+  #       name: Commit and tag
+  #       with:
+  #         version: ${{ steps.bump.outputs.version }}
+  #         user-name: sap-ai-sdk
+
+  prepare-release-notes:
+    name: Prepare Release Notes
+    runs-on: ubuntu-latest
+    outputs:
+      pr_url: ${{ steps.open_pr.outputs.pr_url }}
+    steps:
+      - name: Checkout current repository
+        uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
-          version: ${{ steps.bump.outputs.version }}
-          user-name: sap-ai-sdk
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Checkout Docs Repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DOCS_REPO }}
+          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          path: ${{ env.DOCS_CHECKOUT_PATH }}
+          fetch-depth: 0
+
+      - name: Update release notes file
+        id: update-notes
+        run: |
+          NODE_OPTIONS="--loader ts-node/esm" pnpm ts-node --esm scripts/execute-add-changelog.ts
+
+      - name: Open Release notes PR
+        id: open_pr
+        working-directory: ${{ env.DOCS_CHECKOUT_PATH }}
+        run: |
+          echo "Present working directory: $PWD"
+          git config --local user.email "cloudsdk@sap.com"
+          git config --local user.name "SAP Cloud SDK Bot"
+          BRANCH_NAME="update-release-notes-${{ github.run_id }}" 
+          git checkout -b "${BRANCH_NAME}"
+          git add docs-js/release-notes.mdx 
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+            # Output an empty pr_url if no changes
+            echo "pr_url=" >> "$GITHUB_OUTPUT" 
+          else
+            git commit -m "update release notes" -a
+            git push -u origin "${BRANCH_NAME}"
+
+            echo ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }} | gh auth login --hostname github.com --with-token
+            gh config set prompt disabled
+            PR_BODY="Auto-created by update release notes workflow."
+            PR_TITLE="Update JS Release Notes"
+            PR_URL=$(gh pr create --head "${BRANCH_NAME}" --title "${PR_TITLE}" --body "${PR_BODY}") 
+            
+            if [ -z "$PR_URL" ]; then
+              echo "Failed to create PR or no PR URL returned."
+              # Output an empty pr_url on failure
+              echo "pr_url=" >> "$GITHUB_OUTPUT" 
+            else
+              echo "Created PR: $PR_URL"
+              # Export the URL as a step output
+              echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
+            fi
+          fi
