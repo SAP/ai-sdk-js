@@ -59,10 +59,10 @@ const config = {
   // forceCoverageMatch: [],
 
   // A path to a module which exports an async function that is triggered once before all test suites
-  globalSetup: path.resolve(__dirname, 'global-test-setup.ts'),
+  globalSetup: path.resolve(__dirname, 'global-test-setup.mjs'),
 
   // A path to a module which exports an async function that is triggered once after all test suites
-  globalTeardown: path.resolve(__dirname, 'global-test-teardown.ts'),
+  globalTeardown: path.resolve(__dirname, 'global-test-teardown.mjs'),
 
   // A set of global variables that need to be available in all test environments
   // globals: {},
@@ -169,11 +169,11 @@ const config = {
   // This option allows use of a custom test runner
   // testRunner: "jest-circus/runner",
 
-  // extensionsToTreatAsEsm: ['.ts'],
+  extensionsToTreatAsEsm: ['.ts'],
 
   // A map from regular expressions to paths to transformers
   transform: {
-    '^.+\\.tsx?$': [
+    '^.+\\.ts?$': [
       'ts-jest',
       {
         useESM: true,
