@@ -1,7 +1,7 @@
 /**
  * This file is used to mock the environment variables that are required for the tests.
  */
-export default async function () {
+export default async function mockAiCoreEnvVariable() {
   const aiCoreServiceCredentials = {
     clientid: 'clientid',
     clientsecret: 'clientsecret',
