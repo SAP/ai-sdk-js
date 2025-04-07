@@ -169,11 +169,11 @@ const config = {
   // This option allows use of a custom test runner
   // testRunner: "jest-circus/runner",
 
-  extensionsToTreatAsEsm: ['.ts'],
+  // extensionsToTreatAsEsm: ['.ts'],
 
   // A map from regular expressions to paths to transformers
   transform: {
-    '^.+\\.ts?$': [
+    '^.+\\.tsx?$': [
       'ts-jest',
       {
         useESM: true,
