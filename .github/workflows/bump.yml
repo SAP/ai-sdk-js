@@ -26,13 +26,11 @@ jobs:
         id: bump
         with:
           majorVersion: ${{ inputs.majorVersion }}
-
       - name: merge and write Changelogs
         id: merge-changelogs
         uses: sap/cloud-sdk-js/.github/actions/merge-and-write-changelogs@main
         env:
           VERSION: ${{ steps.bump.outputs.version }}
-
       - uses: sap/cloud-sdk-js/.github/actions/commit-and-tag@main
         name: Commit and tag
         with:
@@ -48,7 +46,6 @@ jobs:
         uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
           node-version: ${{ env.NODE_VERSION }}
-
       - name: Checkout Docs Repo
         uses: actions/checkout@v4
         with:
@@ -56,12 +53,10 @@ jobs:
           token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
           path: ${{ env.DOCS_CHECKOUT_PATH }}
           fetch-depth: 0
-
       - name: Update release notes file
         id: update-notes
         run: |
           NODE_OPTIONS="--loader ts-node/esm" pnpm ts-node --esm scripts/execute-add-changelog.ts
-
       - name: Open Release notes PR
         id: open_pr
         working-directory: ${{ env.DOCS_CHECKOUT_PATH }}

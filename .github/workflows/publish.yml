@@ -20,7 +20,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
       - name: publish
         run: |
-          pnpm changeset publish # Use pnpm here too if publishing
+          pnpm changeset publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}
       - name: Get Package Version
@@ -45,7 +45,6 @@ jobs:
           echo "Using version: $VERSION"
           BRANCH_NAME="update-release-notes-$VERSION"
           echo "release_notes_branch=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
-          echo "$PWD"
       - name: 'Check Whether Release Notes PR Can Be Merged'
         uses: ./.github/actions/pr-is-mergeable
         with:
