@@ -6,10 +6,16 @@ on:
       majorVersion:
         description: Mandatory, when bumping a major version. Semver compatible version string (X.Y.Z). Must not be set for patch and minor version releases.
         required: false
+env:
+  DOCS_REPO: SAP/ai-sdk
+  DOCS_CHECKOUT_PATH: ./ai-sdk-docs
+  NODE_VERSION: 20
 
 jobs:
   bump:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.bump.outputs.version }}
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
@@ -20,7 +26,7 @@ jobs:
         id: bump
         with:
           majorVersion: ${{ inputs.majorVersion }}
-      
+
       - name: merge and write Changelogs
         id: merge-changelogs
         uses: sap/cloud-sdk-js/.github/actions/merge-and-write-changelogs@main
@@ -32,3 +38,50 @@ jobs:
         with:
           version: ${{ steps.bump.outputs.version }}
           user-name: sap-ai-sdk
+
+  prepare-release-notes:
+    name: Prepare Release Notes
+    runs-on: ubuntu-latest
+    needs: [bump]
+    steps:
+      - name: Checkout current repository
+        uses: sap/ai-sdk-js/.github/actions/setup@main
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Checkout Docs Repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DOCS_REPO }}
+          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          path: ${{ env.DOCS_CHECKOUT_PATH }}
+          fetch-depth: 0
+
+      - name: Update release notes file
+        id: update-notes
+        run: |
+          NODE_OPTIONS="--loader ts-node/esm" pnpm ts-node --esm scripts/execute-add-changelog.ts
+
+      - name: Open Release notes PR
+        id: open_pr
+        working-directory: ${{ env.DOCS_CHECKOUT_PATH }}
+        run: |
+          git config --local user.email "cloudsdk@sap.com"
+          git config --local user.name "SAP Cloud SDK Bot"
+          BRANCH_NAME="update-release-notes-${{ needs.bump.outputs.version }}"
+          git checkout -b "${BRANCH_NAME}"
+          git add docs-js/release-notes.mdx
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+            # Output an empty pr_url if no changes
+            echo "pr_url=" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "update release notes" -a
+            git push -u origin "${BRANCH_NAME}"
+
+            echo ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }} | gh auth login --hostname github.com --with-token
+            gh config set prompt disabled
+            PR_BODY="Auto-created by update release notes workflow."
+            PR_TITLE="Update JS Release Notes"
+            PR_URL=$(gh pr create --head "${BRANCH_NAME}" --title "${PR_TITLE}" --body "${PR_BODY}")
+            echo "Release notes PR created: $PR_URL"
