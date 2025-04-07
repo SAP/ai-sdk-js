@@ -7,7 +7,7 @@ on:
 
 env:
   DOCS_REPO: SAP/ai-sdk
-  DOCS_CHECKOUT_PATH: .ai-sdk-docs
+  DOCS_CHECKOUT_PATH: ./ai-sdk-docs
   NODE_VERSION: 20
 
 jobs:
@@ -33,12 +33,15 @@ jobs:
       - name: Update release notes file
         id: update-notes
         run: |
+          echo "Present working directory: $PWD"
+          ls-la
           NODE_OPTIONS="--loader ts-node/esm" pnpm ts-node --esm scripts/execute-add-changelog.ts
 
       - name: Open Release notes PR
         id: open_pr
         working-directory: ${{ env.DOCS_CHECKOUT_PATH }}
         run: |
+          echo "Present working directory: $PWD"
           git config --local user.email "cloudsdk@sap.com"
           git config --local user.name "SAP Cloud SDK Bot"
           BRANCH_NAME="update-release-notes-${{ github.run_id }}" 
