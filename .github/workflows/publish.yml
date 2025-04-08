@@ -1,4 +1,4 @@
-name: Publish JS SDK
+name: publish
 
 on:
   release:
