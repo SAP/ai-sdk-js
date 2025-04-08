@@ -80,3 +80,34 @@ jobs:
             PR_TITLE="Update JS Release Notes"
             PR_URL=$(gh pr create --head "${BRANCH_NAME}" --title "${PR_TITLE}" --body "${PR_BODY}")
             echo "Release notes PR created: $PR_URL"
+
+  handle-failure:
+    name: Handle Failure
+    runs-on: ubuntu-latest
+    needs: [bump, prepare-release-notes]
+    if: ${{ failure() }}
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: 'Delete Release Tag'
+        if: ${{ needs.bump.outputs.version != '' }}
+        run: |
+          TAG_NAME="v${{ needs.bump.outputs.version }}"
+          echo "Attempting to delete tag ${TAG_NAME}..."
+          git push --delete origin "${TAG_NAME}" || echo "Failed to delete tag ${TAG_NAME} (it might not exist)."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          continue-on-error: true
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: 'Close Release Notes PR and Delete Branch'
+        if: ${{ needs.prepare-release-notes.outputs.pr_url != '' }}
+        run: |
+          PR_URL="${{ needs.prepare-release-notes.outputs.pr_url }}"
+          echo "Attempting to close PR ${PR_URL} and delete its branch in repo ${{ env.DOCS_REPO }}..."
+          gh pr close "${PR_URL}" --delete-branch --repo "${{ env.DOCS_REPO }}" || echo "Failed to close PR ${PR_URL} (it might already be closed/merged or branch deleted)."
+        env:
+          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+        continue-on-error: true            
