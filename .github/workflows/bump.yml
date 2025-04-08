@@ -82,6 +82,13 @@ jobs:
             PR_TITLE="Update JS Release Notes"
             PR_URL=$(gh pr create --head "${BRANCH_NAME}" --title "${PR_TITLE}" --body "${PR_BODY}")
             echo "Release notes PR created: $PR_URL"
+            if [[ -n "$PR_URL" ]]; then
+              echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
+            else
+              echo "Failed to create PR or extract URL."
+              echo "pr_url=" >> "$GITHUB_OUTPUT"
+            fi
+          fi
 
   handle-failure:
     name: Handle Failure
@@ -92,6 +99,9 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
       - name: 'Delete Release Tag'
         if: ${{ needs.bump.outputs.version != '' }}
         run: |
@@ -101,9 +111,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           continue-on-error: true
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
       - name: 'Close Release Notes PR and Delete Branch'
         if: ${{ needs.prepare-release-notes.outputs.pr_url != '' }}
         run: |
