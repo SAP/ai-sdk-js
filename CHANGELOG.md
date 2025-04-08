@@ -28,6 +28,18 @@
 
 -
 
+# 1.11.0
+## Compatibility Notes
+
+- [core] Removed deprecated models: - `text-embedding-ada-002`, use `text-embedding-3-small` or `text-embedding-3-large` instead. - `meta--llama3-70b-instruct`, use `meta--llama3.1-70b-instruct` instead. - `gpt-35-turbo`, use `gpt-4o-mini` instead. - `gpt-35-turbo-16k`, use `gpt-4o-mini` instead. - `gpt-4-32k`, use `gpt-4o` instead. (627a152)
+
+## New Features
+
+- [langchain] Support using data masking in LangChain orchestration client. (3f8bd81)
+- [langchain] Support using content filtering in LangChain orchestration client. (e1f2b5a)
+- [orchestration] Introduce `buildDpiMaskingProvider()` convenience function to build masking provider `SAP Data Privacy Integration`. (a8d05b0)
+- [orchestration] Support setting `metadata_params` property in `buildDocumentGroundingConfig()` convenience function. (264c5b0)
+
 # 1.10.0
 ## New Features
 
