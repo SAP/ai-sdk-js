@@ -41,6 +41,8 @@ jobs:
     name: Prepare Release Notes
     runs-on: ubuntu-latest
     needs: [bump]
+    outputs:
+      pr_url: ${{ steps.open_pr.outputs.pr_url }}
     steps:
       - name: Checkout current repository
         uses: sap/ai-sdk-js/.github/actions/setup@main
@@ -110,4 +112,4 @@ jobs:
           gh pr close "${PR_URL}" --delete-branch --repo "${{ env.DOCS_REPO }}" || echo "Failed to close PR ${PR_URL} (it might already be closed/merged or branch deleted)."
         env:
           GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
-        continue-on-error: true            
+        continue-on-error: true
