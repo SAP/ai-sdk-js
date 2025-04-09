@@ -166,7 +166,9 @@ export async function orchestrationPromptRegistry(): Promise<OrchestrationRespon
   });
 }
 
-const templating: TemplatingModuleConfig = { template: [{ role: 'user', content: '{{?input}}' }] };
+const templating: TemplatingModuleConfig = {
+  template: [{ role: 'user', content: '{{?input}}' }]
+};
 
 /**
  * Apply multiple content filters to the input.
