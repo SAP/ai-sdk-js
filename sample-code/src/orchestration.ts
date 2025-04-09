@@ -17,7 +17,8 @@ import type {
   OrchestrationStreamResponse,
   OrchestrationResponse,
   StreamOptions,
-  ErrorResponse
+  ErrorResponse,
+  TemplatingModuleConfig
 } from '@sap-ai-sdk/orchestration';
 
 const logger = createLogger({
@@ -165,7 +166,9 @@ export async function orchestrationPromptRegistry(): Promise<OrchestrationRespon
   });
 }
 
-const templating = { template: [{ role: 'user', content: '{{?input}}' }] };
+const templating: TemplatingModuleConfig = {
+  template: [{ role: 'user', content: '{{?input}}' }]
+};
 
 /**
  * Apply multiple content filters to the input.
