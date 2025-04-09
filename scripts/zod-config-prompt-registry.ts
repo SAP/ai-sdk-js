@@ -8,8 +8,10 @@ const logger = createLogger('generate-zod-config');
 
 // Recursively finds all imported files
 async function findImportedFiles(filePath: string, collectedFiles = new Set<string>()): Promise<void> {
-    console.log(filePath);
-  if (!existsSync(filePath) || collectedFiles.has(filePath)) return;
+  if (!existsSync(filePath) || collectedFiles.has(filePath)) {
+    logger.warn(`File ${filePath} does not exist or has already been processed.`);
+    return;
+  }
 
   collectedFiles.add(filePath);
 
@@ -26,7 +28,7 @@ async function findImportedFiles(filePath: string, collectedFiles = new Set<stri
 
 async function main(args: string[]) {
   if (args.length !== 2) {
-    logger.error('Usage: node --loader ts-node/esm generate-zod-config.ts <inputFile> <outputSchema>');
+    logger.error('Usage: node --loader ts-node/esm ../../scripts/zod-config-prompt-registry.ts <inputFile> <outputSchemaFolder>');
     process.exit(1);
   }
 

@@ -8,7 +8,6 @@ import {
   parseFileToString,
   parseMockResponse
 } from '../../../test-util/mock-http.js';
-import { yamlTemplate } from '../../../test-util/data/orchestration/orchestration-chat-completion-yaml-template.js';
 import { OrchestrationClient } from './orchestration-client.js';
 import { OrchestrationResponse } from './orchestration-response.js';
 import {
@@ -378,6 +377,7 @@ describe('orchestration service client', () => {
   });
 
   it('calls chatCompletion with template passed as YAML config', async () => {
+    const yamlTemplate = await parseFileToString('orchestration', 'orchestration-chat-completion-yaml-template.yaml');
     const configWithYaml: OrchestrationModuleConfigWithStringTemplating = {
       llm: {
         model_name: 'gpt-4o',

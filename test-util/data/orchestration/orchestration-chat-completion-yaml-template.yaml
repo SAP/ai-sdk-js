@@ -1,4 +1,4 @@
-export const yamlTemplate = `name: poem
+name: poem
 version: 0.0.1
 scenario: agent-evaluator
 spec:
@@ -35,4 +35,3 @@ spec:
             items:
               type: string
               description: A single verse of the poem
-`;
