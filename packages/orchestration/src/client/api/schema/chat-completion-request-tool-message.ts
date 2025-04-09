@@ -12,6 +12,6 @@ export type ChatCompletionRequestToolMessage = {
    * @example "tool"
    */
   role: 'tool';
-  tool_call_id: string | null;
-  content: string | null;
+  tool_call_id: string;
+  content: string;
 };

@@ -12,7 +12,7 @@ export type ChatCompletionRequestAssistantMessage = {
    * @example "assistant"
    */
   role: 'assistant';
-  content?: string | null;
-  refusal?: string | null;
+  content?: string;
+  refusal?: string;
   tool_calls?: ResponseMessageToolCalls;
 };

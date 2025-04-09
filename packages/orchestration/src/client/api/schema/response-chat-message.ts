@@ -12,10 +12,10 @@ export type ResponseChatMessage = {
    * @example "assistant"
    */
   role?: 'assistant';
-  content?: string | null;
+  content?: string;
   /**
    * @example "I'm sorry, I can't answer that question."
    */
-  refusal?: string | null;
+  refusal?: string;
   tool_calls?: ResponseMessageToolCalls;
 };

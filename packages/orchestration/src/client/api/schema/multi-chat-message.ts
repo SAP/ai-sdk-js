@@ -15,6 +15,6 @@ export type MultiChatMessage = {
   role: string;
   content: MultiChatMessageContent[];
   tool_calls?: ResponseMessageToolCalls;
-  refusal?: string | null;
-  tool_call_id?: string | null;
+  refusal?: string;
+  tool_call_id?: string;
 };
