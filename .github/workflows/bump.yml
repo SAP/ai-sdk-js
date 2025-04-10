@@ -65,7 +65,7 @@ jobs:
         run: |
           git config --local user.email "cloudsdk@sap.com"
           git config --local user.name "SAP Cloud SDK Bot"
-          BRANCH_NAME="update-release-notes-${{ needs.bump.outputs.version }}"
+          BRANCH_NAME="update-release-notes-js-${{ needs.bump.outputs.version }}"
           git checkout -b "${BRANCH_NAME}"
           git add docs-js/release-notes.mdx
           if git diff --staged --quiet; then
