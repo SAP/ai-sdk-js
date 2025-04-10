@@ -58,7 +58,7 @@ jobs:
       - name: Update release notes file
         id: update-notes
         run: |
-          NODE_OPTIONS="--loader ts-node/esm" pnpm ts-node --esm scripts/execute-add-changelog.ts
+          pnpm node --loader ts-node/esm scripts/execute-add-changelog.ts
       - name: Open Release notes PR
         id: open_pr
         working-directory: ${{ env.DOCS_CHECKOUT_PATH }}
@@ -76,7 +76,6 @@ jobs:
             git commit -m "update release notes" -a
             git push -u origin "${BRANCH_NAME}"
 
-            echo ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }} | gh auth login --hostname github.com --with-token
             gh config set prompt disabled
             PR_BODY="Auto-created by update release notes workflow."
             PR_TITLE="Update JS Release Notes"
@@ -89,6 +88,8 @@ jobs:
               echo "pr_url=" >> "$GITHUB_OUTPUT"
             fi
           fi
+          env:
+            GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
 
   handle-failure:
     name: Handle Failure
@@ -109,7 +110,7 @@ jobs:
           echo "Attempting to delete tag ${TAG_NAME}..."
           git push --delete origin "${TAG_NAME}" || echo "Failed to delete tag ${TAG_NAME} (it might not exist)."
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           continue-on-error: true
       - name: 'Close Release Notes PR and Delete Branch'
         if: ${{ needs.prepare-release-notes.outputs.pr_url != '' }}
