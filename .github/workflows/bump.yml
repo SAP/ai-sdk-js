@@ -75,11 +75,9 @@ jobs:
           else
             git commit -m "update release notes" -a
             git push -u origin "${BRANCH_NAME}"
-
-            gh config set prompt disabled
             PR_BODY="Auto-created by update release notes workflow."
             PR_TITLE="Update JS Release Notes"
-            PR_URL=$(gh pr create --head "${BRANCH_NAME}" --title "${PR_TITLE}" --body "${PR_BODY}")
+            PR_URL=$(gh pr create --head "${BRANCH_NAME}" --title "${PR_TITLE}" --body "${PR_BODY}" --repo "${{ env.DOCS_REPO }}")
             echo "Release notes PR created: $PR_URL"
             if [[ -n "$PR_URL" ]]; then
               echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
@@ -88,5 +86,5 @@ jobs:
               echo "pr_url=" >> "$GITHUB_OUTPUT"
             fi
           fi
-          env:
-            GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+        env:
+          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
