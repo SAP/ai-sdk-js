@@ -56,24 +56,9 @@ async function isVersioned(majorVersion: string): Promise<boolean> {
 export async function addCurrentChangelog(): Promise<void> {
   const changelog = await getChangelogWithVersion();
   const releaseNotesFilePath = await getReleaseNotesFilePath();
-  let releaseNotes: string;
-
-  try {
-    releaseNotes = await readFile(releaseNotesFilePath, {
+  const releaseNotes = await readFile(releaseNotesFilePath, {
       encoding: 'utf8'
     });
-  } catch (error: any) {
-    if (error?.code === 'ENOENT') {
-      console.log(
-        `Target release notes file not found at ${releaseNotesFilePath}. Using fallback.`
-      );
-      releaseNotes = await readFile('scripts/resources/release-notes.mdx', {
-        encoding: 'utf8'
-      });
-    } else {
-      throw error;
-    }
-  }
 
   const releaseNotesArray = releaseNotes.split(
     '<!-- This line is used for our release notes automation -->\n'
