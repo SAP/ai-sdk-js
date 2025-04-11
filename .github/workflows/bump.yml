@@ -130,3 +130,5 @@ jobs:
             git commit -m "chore: apply lint fixes"
             git push
           fi
+        env:
+          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
