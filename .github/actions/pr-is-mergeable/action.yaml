@@ -1,0 +1,122 @@
+name: "PR Is Mergeable"
+description: "Checks whether the provided PR is approved and all status checks either succeeded or have been skipped"
+
+inputs:
+  pr-ref:
+    description: "The reference (i.e. either number or a branch) of the PR to check"
+    required: true
+  fail-on-unmergeable:
+    description: "Whether to fail the action if the PR is not mergeable"
+    required: false
+    default: "true"
+  repo:
+    description: "The repository of the PR"
+    required: false
+    default: ${{ github.repository }}
+  token:
+    description: "The GitHub access token (with PR read permissions) to access the PR"
+    required: false
+    default: ${{ github.token }}
+  excluded-check-runs:
+    description: "A JSON object, where the keys are the names of the workflows to exclude. The values are a list of step names to ignore. If the list is empty, all steps of the workflow will be ignored."
+    required: false
+    default: '{\"${{ github.workflow }}\": []}'
+
+outputs:
+  pr-number:
+    description: "The number of the PR that was checked"
+    value: ${{ steps.check.outputs.PR_NUMBER }}
+  is-mergeable:
+    description: "Whether the PR is mergeable"
+    value: ${{ steps.check.outputs.RESULT }}
+
+runs:
+  using: composite
+  steps:
+    - name: "Print Action Start"
+      run: echo ">>>>> Starting PR Is Mergeable Action; Not printing inputs, as they might contain sensitive information"
+      shell: bash
+
+    - name: "Check Whether PR Is Mergeable"
+      id: check
+      run: |
+        PR_JSON=$(gh pr view "${{ inputs.pr-ref }}" --repo "${{ inputs.repo }}" --json number,mergeable,reviewDecision,statusCheckRollup)
+        
+        PR_NUMBER=$(jq -r '.number' <<< "$PR_JSON")
+        PR_MERGEABLE=$(jq -r '.mergeable' <<< "$PR_JSON")
+        PR_DECISION=$(jq -r '.reviewDecision' <<< "$PR_JSON")
+        
+        echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
+        echo "[DEBUG] PR #$PR_NUMBER (in ${{ inputs.repo }}) is mergeable: $PR_MERGEABLE with decision $PR_DECISION"
+        
+        if [[ "$PR_DECISION" != "APPROVED" ]]; then
+          echo "PR #$PR_NUMBER (in ${{ inputs.repo }}) has not been approved."
+          echo "RESULT=false" >> $GITHUB_OUTPUT
+          exit 0
+        fi
+        
+        if [[ "$PR_MERGEABLE" != "MERGEABLE" ]]; then
+          echo "PR #$PR_NUMBER (in ${{ inputs.repo }}) is not mergeable (i.e. there are conflicts)."
+          echo "RESULT=false" >> $GITHUB_OUTPUT
+          exit 0
+        fi
+        
+        PR_CHECKS=$(jq -r '.statusCheckRollup' <<< "$PR_JSON")
+        
+        # check runs are things like our CI pipeline
+        FAILED_CHECK_RUNS=$(jq -r '.[] | select(.__typename == "CheckRun" and .conclusion != "SUCCESS" and .conclusion != "NEUTRAL")' <<< "$PR_CHECKS")
+        EXCLUDED_WORKFLOWS=$(jq -r 'keys[]' <<< "${{ inputs.excluded-check-runs }}")
+        
+        while IFS= read -r EXCLUDED_WORKFLOW; do
+          if [[ -z "$EXCLUDED_WORKFLOW" ]]; then
+            continue
+          fi
+          if [[ -z "$FAILED_CHECK_RUNS" ]]; then
+            break
+          fi
+        
+          EXCLUDED_STEPS=$(jq -r --arg workflow "$EXCLUDED_WORKFLOW" '.[$workflow] | .[]' <<< "${{ inputs.excluded-check-runs }}")
+        
+          if [[ -z "$EXCLUDED_STEPS" ]]; then
+            # the provided list is empty, so ignore all steps of the workflow
+            FAILED_CHECK_RUNS=$(jq -r --arg workflow "$EXCLUDED_WORKFLOW" 'select(.workflowName != $workflow)' <<< "$FAILED_CHECK_RUNS")
+          else
+            while IFS= read -r EXCLUDED_STEP; do
+              if [[ -z "$EXCLUDED_STEP" ]]; then
+                  continue
+              fi
+              FAILED_CHECK_RUNS=$(jq -r --arg workflow "$EXCLUDED_WORKFLOW" --arg step "$EXCLUDED_STEP" 'select(.workflowName != $workflow and .name != $step)' <<< "$FAILED_CHECK_RUNS")
+            done <<< "$EXCLUDED_STEPS"
+          fi
+        done <<< "$EXCLUDED_WORKFLOWS"
+        
+        if [[ -n "$FAILED_CHECK_RUNS" ]]; then
+          echo "PR #$PR_NUMBER (in ${{ inputs.repo }}) contains failed check runs: "
+          echo "$FAILED_CHECK_RUNS"
+          echo "RESULT=false" >> $GITHUB_OUTPUT
+          exit 0
+        fi
+        
+        # context checks are things like the license agreement check
+        FAILED_CONTEXT_CHECKS=$(jq -r '.[] | select(.__typename == "StatusContext" and .state != "SUCCESS" and .state != "NEUTRAL")' <<< "$PR_CHECKS")
+        if [[ -n "$FAILED_CONTEXT_CHECKS" ]]; then
+          echo "PR #$PR_NUMBER (in ${{ inputs.repo }}) contains failed context checks: "
+          echo "$FAILED_CONTEXT_CHECKS"
+          echo "RESULT=false" >> $GITHUB_OUTPUT
+          exit 0
+        fi
+        
+        echo "RESULT=true" >> $GITHUB_OUTPUT
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+
+    - name: "Fail If PR Is Not Mergeable"
+      if: ${{ inputs.fail-on-unmergeable == 'true' && steps.check.outputs.RESULT != 'true' }}
+      run: exit 1
+      shell: bash
+
+    - name: "Print Action End"
+      if: always()
+      run: echo "<<<<< Finished PR Is Mergeable Action"
+      shell: bash
