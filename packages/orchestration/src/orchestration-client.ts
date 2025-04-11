@@ -17,7 +17,6 @@ import type {
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api/internal.js';
 import type {
   OrchestrationModuleConfig,
-  OrchestrationModuleConfigWithStringTemplating,
   Prompt,
   RequestOptions,
   StreamOptions
@@ -34,7 +33,7 @@ const logger = createLogger({
  * Get the orchestration client.
  */
 export class OrchestrationClient {
-  private config: OrchestrationModuleConfig | string;
+  // config: OrchestrationModuleConfig | string;
   /**
    * Creates an instance of the orchestration client.
    * @param config - Orchestration module configuration. This can either be an `OrchestrationModuleConfig` object or a JSON string obtained from AI Launchpad.
@@ -42,7 +41,7 @@ export class OrchestrationClient {
    * @param destination - The destination to use for the request.
    */
   constructor(
-    config: OrchestrationModuleConfigWithStringTemplating | string,
+    private config: OrchestrationModuleConfig | string,
     private deploymentConfig?: ResourceGroupConfig,
     private destination?: HttpDestinationOrFetchOptions
   ) {
@@ -169,7 +168,7 @@ export class OrchestrationClient {
    * @throws Error if the YAML parsing fails or if the parsed object does not conform to the expected schema.
    */
   private parseAndMergeTemplating(
-    config: OrchestrationModuleConfigWithStringTemplating
+    config: OrchestrationModuleConfig
   ): OrchestrationModuleConfig {
     try {
       const parsedObject = yaml.parse(config.templating as string); // We are sure it's a string here

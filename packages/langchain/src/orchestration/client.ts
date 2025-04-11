@@ -9,12 +9,12 @@ import type { BaseLanguageModelInput } from '@langchain/core/language_models/bas
 import type { Runnable, RunnableLike } from '@langchain/core/runnables';
 import type { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
 import type { ChatResult } from '@langchain/core/outputs';
-import type { OrchestrationModuleConfig } from '@sap-ai-sdk/orchestration';
+import type { TemplatingModuleConfig } from '@sap-ai-sdk/orchestration';
 import type { BaseChatModelParams } from '@langchain/core/language_models/chat_models';
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
 import type { BaseMessage } from '@langchain/core/messages';
 import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
-import type { OrchestrationCallOptions } from './types.js';
+import type { OrchestrationCallOptions, LangchainOrchestrationModuleConfig } from './types.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 function isInputFilteringError(error: any): boolean {
@@ -33,7 +33,7 @@ export class OrchestrationClient extends BaseChatModel<
 > {
   constructor(
     // TODO: Omit streaming until supported
-    public orchestrationConfig: Omit<OrchestrationModuleConfig, 'streaming'>,
+    public orchestrationConfig: LangchainOrchestrationModuleConfig,
     public langchainOptions: BaseChatModelParams = {},
     public deploymentConfig?: ResourceGroupConfig,
     public destination?: HttpDestinationOrFetchOptions
@@ -116,7 +116,7 @@ export class OrchestrationClient extends BaseChatModel<
 
   private mergeOrchestrationConfig(
     options: typeof this.ParsedCallOptions
-  ): OrchestrationModuleConfig {
+  ): LangchainOrchestrationModuleConfig{
     const { tools = [], stop = [] } = options;
     return {
       ...this.orchestrationConfig,

@@ -19,7 +19,6 @@ import {
 import type { CompletionPostResponse } from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
-  OrchestrationModuleConfigWithStringTemplating,
   Prompt
 } from './orchestration-types.js';
 
@@ -378,7 +377,7 @@ describe('orchestration service client', () => {
 
   it('calls chatCompletion with template passed as YAML config', async () => {
     const yamlTemplate = await parseFileToString('orchestration', 'orchestration-chat-completion-yaml-template.yaml');
-    const configWithYaml: OrchestrationModuleConfigWithStringTemplating = {
+    const configWithYaml: OrchestrationModuleConfig = {
       llm: {
         model_name: 'gpt-4o',
         model_params: { max_tokens: 500 }

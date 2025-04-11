@@ -10,9 +10,9 @@ import {
 import { OrchestrationClient } from './client.js';
 import type {
   CompletionPostResponse,
-  ErrorResponse,
-  OrchestrationModuleConfig
+  ErrorResponse
 } from '@sap-ai-sdk/orchestration';
+import { LangchainOrchestrationModuleConfig } from './types.js';
 
 jest.setTimeout(30000);
 
@@ -59,7 +59,7 @@ describe('orchestration service client', () => {
     );
   }
 
-  const config: OrchestrationModuleConfig = {
+  const config: LangchainOrchestrationModuleConfig  = {
     llm: {
       model_name: 'gpt-35-turbo-16k',
       model_params: { max_tokens: 50, temperature: 0.1 }

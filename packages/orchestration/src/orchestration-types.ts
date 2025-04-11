@@ -59,7 +59,7 @@ export interface OrchestrationModuleConfig {
   /**
    * Templating module configuration.
    */
-  templating: TemplatingModuleConfig;
+  templating: TemplatingModuleConfig | string;
   /**
    * LLM module configuration.
    */
@@ -90,17 +90,6 @@ export interface OrchestrationModuleConfig {
    */
   streaming?: GlobalStreamOptions;
 }
-
-/**
- * Orchestration module configuration with string templating.
- * This type is used when the `templating` property can also be a string.
- */
-export type OrchestrationModuleConfigWithStringTemplating = Omit<
-  OrchestrationModuleConfig,
-  'templating'
-> & {
-  templating: TemplatingModuleConfig | string;
-};
 
 /**
  * Request options for orchestration.
