@@ -213,8 +213,8 @@ importers:
         specifier: ^8.9.1
         version: 8.9.1(@eslint/js@9.24.0)(express@5.1.0)
       '@sap/xssec':
-        specifier: ^4.5.0
-        version: 4.5.0
+        specifier: ^4.6.0
+        version: 4.6.0(@types/express@5.0.1)
       express:
         specifier: ^5.1.0
         version: 5.1.0
@@ -1242,9 +1242,14 @@ packages:
     resolution: {integrity: sha512-tVPyF6z6lWN2cucT38kkTu6GTmFXhqd/xa0SrExZ+j8K1cNePEIDHvx/zfibubLeb198vyoreW4QOpR9+Vaj4A==}
     engines: {node: '>=18'}
 
-  '@sap/xssec@4.5.0':
-    resolution: {integrity: sha512-Mait0L7EoGYX7o6MlEqPz778pP2Z52f3EcDtEu1rKHkuJwu/mOP4rJh2ZsGVVHWrRQIKRQJCaUTSOMxuL3Txxw==}
+  '@sap/xssec@4.6.0':
+    resolution: {integrity: sha512-0VYDqFymsQnpztTBUmdJaUVgHK/wIOC1KR6BmcmRJLQ3HMqGpGju1zkeY/D7SCwuQ8djYp0GEDhJ60F4aN1H/g==}
     engines: {node: '>=18'}
+    peerDependencies:
+      '@types/express': '>=4'
+    peerDependenciesMeta:
+      '@types/express':
+        optional: true
 
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
@@ -6223,10 +6228,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@sap/xssec@4.5.0':
+  '@sap/xssec@4.6.0(@types/express@5.0.1)':
     dependencies:
       debug: 4.4.0(supports-color@8.1.1)
       jwt-decode: 4.0.0
+    optionalDependencies:
+      '@types/express': 5.0.1
     transitivePeerDependencies:
       - supports-color
 
