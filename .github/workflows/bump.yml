@@ -89,6 +89,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
 
+#Added as a separate job to avoid running into incompatibility issues with pnpm and npm
   lint-docs:
     name: Run Lint Fix on Docs
     runs-on: ubuntu-latest
