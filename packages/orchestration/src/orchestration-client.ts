@@ -33,7 +33,6 @@ const logger = createLogger({
  * Get the orchestration client.
  */
 export class OrchestrationClient {
-  // config: OrchestrationModuleConfig | string;
   /**
    * Creates an instance of the orchestration client.
    * @param config - Orchestration module configuration. This can either be an `OrchestrationModuleConfig` object or a JSON string obtained from AI Launchpad.
@@ -47,9 +46,8 @@ export class OrchestrationClient {
   ) {
     if (typeof config === 'string') {
       this.validateJsonConfig(config);
-      this.config = config; // Keep as string if it's a JSON string
     } else if (typeof config.templating === 'string') {
-      this.config = this.parseAndMergeTemplating(config); // Process and assign if templating is a string
+      this.config = this.parseAndMergeTemplating(config); // parse and assign if templating is a string
     } else {
       this.config = config as OrchestrationModuleConfig; // TypeScript cannot infer that config.templating is not a string
     }

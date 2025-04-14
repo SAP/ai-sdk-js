@@ -27,9 +27,9 @@ export type OrchestrationCallOptions = Pick<
 };
 
 /**
- * Orchestration module configuration with string templating.
- * This type is used when the `templating` property can also be a string.
+ * Orchestration module configuration for Langchain.
  */
+// TODO: Omit streaming until supported
 export type LangchainOrchestrationModuleConfig = Omit<
   OrchestrationModuleConfigWithStringTemplating,
   'streaming' | 'templating'
