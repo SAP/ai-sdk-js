@@ -9,9 +9,11 @@ env:
   NODE_VERSION: 20
 
 jobs:
-  merge-release-notes-pr:
-    name: Merge Release Notes PR
+  check-release-notes-pr:
+    name: Check Release Notes PR Mergeability
     runs-on: ubuntu-latest
+    outputs:
+      release_notes_branch: ${{ steps.determine-branch-name.outputs.release_notes_branch }}
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
@@ -33,16 +35,11 @@ jobs:
             {
               \"Build Cloud SDK Documentation\": [\"dependabot\"]    
             }
-      - name: 'Merge Release Notes PR'
-        run: |
-          gh pr merge --squash "${{ steps.determine-branch-name.outputs.release_notes_branch }}" --delete-branch --repo "${{ env.DOCS_REPO }}"
-        env:
-          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
 
   publish-npm:
     name: Publish to NPM
     runs-on: ubuntu-latest
-    needs: [merge-release-notes-pr]
+    needs: [check-release-notes-pr]
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
@@ -52,3 +49,14 @@ jobs:
           pnpm changeset publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}
+
+  merge-release-notes-pr:
+    name: Merge Release Notes PR
+    runs-on: ubuntu-latest
+    needs: [check-release-notes-pr, publish-npm]
+    steps:
+      - name: 'Merge Release Notes PR'
+        run: |
+          gh pr merge --squash "${{ needs.check-release-notes-pr.outputs.release_notes_branch }}" --delete-branch --repo "${{ env.DOCS_REPO }}"
+        env:
+          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
