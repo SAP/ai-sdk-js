@@ -29,7 +29,7 @@ describe('deployment', () => {
       resources: [
         {
           configurationId: '3d2c1b0a',
-          configurationName: 'gpt-4-32k',
+          configurationName: 'gpt-4o',
           createdAt: '2024-04-17T15:19:53Z',
           deploymentUrl:
             'https://ai.example.com/inference/deployments/0a1b2c3d',
@@ -37,7 +37,7 @@ describe('deployment', () => {
             resources: {
               backendDetails: {
                 model: {
-                  name: 'gpt-4-32k',
+                  name: 'gpt-4o',
                   version: 'latest'
                 }
               }

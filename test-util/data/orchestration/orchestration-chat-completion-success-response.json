@@ -11,7 +11,7 @@
             "id": "llm-id",
             "object": "chat.completion",
             "created": 172,
-            "model": "gpt-35-turbo",
+            "model": "gpt-4o",
             "choices": [
                 {
                     "index": 0,
@@ -33,7 +33,7 @@
         "id": "orchestration-id",
         "object": "chat.completion",
         "created": 172,
-        "model": "gpt-35-turbo",
+        "model": "gpt-4o",
         "choices": [
             {
                 "index": 0,

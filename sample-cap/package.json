@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@sap-ai-sdk/sample-cap",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "description": "Sample CAP application with Cloud SDK for AI.",
   "repository": "https://github.com/sap/ai-sdk-js",
   "private": true,
@@ -10,11 +10,11 @@
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
     "express": "^5.1.0",
-    "@sap/xssec": "^4.5.0",
-    "@sap/cds": "^8.9.0"
+    "@sap/xssec": "^4.6.0",
+    "@sap/cds": "^8.9.1"
   },
   "devDependencies": {
-    "@sap/cds-dk": "^8.9.0"
+    "@sap/cds-dk": "^8.9.1"
   },
   "scripts": {
     "prebuild": "rm -rf dist",

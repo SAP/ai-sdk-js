@@ -269,7 +269,7 @@ When initializing the `AzureOpenAiChatClient` and `AzureOpenAiEmbeddingClient` c
 For example, when targeting a destination with the name `my-destination`, the following code can be used:
 
 ```ts
-const client = await new AzureOpenAiChatClient('gpt-35-turbo', {
+const client = await new AzureOpenAiChatClient('gpt-4o', {
   destinationName: 'my-destination'
 });
 ```
@@ -285,7 +285,7 @@ In case this behavior causes issues in your application, you can overwrite the A
 To do this, set the `api-version` parameter in the `CustomRequestConfig` object, like the following:
 
 ```ts
-const client = await new AzureOpenAiChatClient('gpt-35-turbo', {
+const client = await new AzureOpenAiChatClient('gpt-4o', {
   destinationName: 'my-destination'
 });
 

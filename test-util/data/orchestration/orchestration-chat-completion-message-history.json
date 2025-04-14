@@ -23,7 +23,7 @@
       "id": "chatcmpl-A1CB6j0yGKuiP9SOMIPVsuSsVia0m",
       "object": "chat.completion",
       "created": 1724848504,
-      "model": "gpt-35-turbo-16k",
+      "model": "gpt-4o",
       "choices": [
         {
           "index": 0,
@@ -53,7 +53,7 @@
     "id": "chatcmpl-A1CB6j0yGKuiP9SOMIPVsuSsVia0m",
     "object": "chat.completion",
     "created": 1724848504,
-    "model": "gpt-35-turbo-16k",
+    "model": "gpt-4o",
     "choices": [
       {
         "index": 0,

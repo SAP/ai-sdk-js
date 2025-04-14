@@ -126,7 +126,7 @@ import { StringOutputParser } from '@langchain/core/output_parsers';
 import { ChatPromptTemplate } from '@langchain/core/prompts';
 
 // initialize the client
-const client = new AzureOpenAiChatClient({ modelName: 'gpt-35-turbo' });
+const client = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
 
 // create a prompt template
 const promptTemplate = ChatPromptTemplate.fromMessages([

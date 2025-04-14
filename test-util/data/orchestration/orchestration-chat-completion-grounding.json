@@ -18,7 +18,7 @@
         "id": "chatcmpl-AVfIHSh5WUZ43wfDfnxdzzdqnUwr3",
         "object": "chat.completion",
         "created": 1732110265,
-        "model": "gpt-35-turbo",
+        "model": "gpt-4o",
         "system_fingerprint": "fp_808245b034",
         "choices": [
           {
@@ -41,7 +41,7 @@
       "id": "chatcmpl-AVfIHSh5WUZ43wfDfnxdzzdqnUwr3",
       "object": "chat.completion",
       "created": 1732110265,
-      "model": "gpt-35-turbo",
+      "model": "gpt-4o",
       "system_fingerprint": "fp_808245b034",
       "choices": [
         {

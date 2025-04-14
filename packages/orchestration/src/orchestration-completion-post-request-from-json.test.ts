@@ -5,7 +5,7 @@ describe('construct completion post request from JSON', () => {
     const jsonConfig = `{
       "module_configurations": {
           "llm_module_config": {
-              "model_name": "gpt-35-turbo-16k",
+              "model_name": "gpt-4o",
               "model_params": {
                 "max_tokens": 50,
                 "temperature": 0.1
@@ -37,7 +37,7 @@ describe('construct completion post request from JSON', () => {
     const jsonConfig = `{
             "module_configurations": {
               "llm_module_config": {
-                "model_name": "gpt-35-turbo-16k",
+                "model_name": "gpt-4o",
                 "model_params": {
                   "max_tokens": 50,
                   "temperature": 0.1

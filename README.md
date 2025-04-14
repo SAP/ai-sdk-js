@@ -7,7 +7,7 @@ SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI
 
 Integrate chat completion into your business applications with SAP Cloud SDK for AI. 
 Leverage the generative AI hub of [SAP AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/what-is-sap-ai-core) to make use of templating, grounding, data masking, content filtering and more. 
-Setup your SAP AI Core instance with SAP Cloud SDK for AI.
+Set up your SAP AI Core instance with SAP Cloud SDK for AI.
 
 ### Table of Contents
 
@@ -128,11 +128,15 @@ The [project README](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/READ
 ## Deprecated Models
 
 The following models are deprecated and should not be used.
-Update your code to use one of the recommended replacement models.
+Replace them with the recommended alternatives.
 
-| Model Name               | Replacement                                        |
-|--------------------------|----------------------------------------------------|
-| `text-embedding-ada-002` | `text-embedding-3-small`, `text-embedding-3-large` |
+| Model Name                  | Replacement                                        |
+| --------------------------- | -------------------------------------------------- |
+| `text-embedding-ada-002`    | `text-embedding-3-small`, `text-embedding-3-large` |
+| `meta--llama3-70b-instruct` | `meta--llama3.1-70b-instruct`                      |
+| `gpt-35-turbo`              | `gpt-4o-mini`                                      |
+| `gpt-35-turbo-16k`          | `gpt-4o-mini`                                      |
+| `gpt-4-32k`                 | `gpt-4o`                                           |
 
 For more information, refer to the SAP note on [Availability of Generative AI Models](https://me.sap.com/notes/3437766).
 

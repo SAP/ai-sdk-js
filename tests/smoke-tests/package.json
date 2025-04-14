@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@sap-ai-sdk/smoke-tests",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "private": "true",
@@ -15,8 +15,8 @@
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
-    "langchain": "0.3.19",
-    "@langchain/core": "0.3.43",
+    "langchain": "0.3.21",
+    "@langchain/core": "0.3.44",
     "@langchain/textsplitters": "0.1.0",
     "@sap-ai-sdk/ai-api": "canary",
     "@sap-ai-sdk/foundation-models": "canary",
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
-    "dotenv": "^16.4.7",
+    "dotenv": "^16.5.0",
     "dotenv-cli": "^8.0.0"
   }
 }

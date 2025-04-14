@@ -29,7 +29,7 @@ Below is an example for instantiating the orchestration client for LangChain:
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 const config: OrchestrationModuleConfig = {
   llm: {
-    model_name: 'gpt-35-turbo'
+    model_name: 'gpt-4o'
   },
   templating: {
     template: [
