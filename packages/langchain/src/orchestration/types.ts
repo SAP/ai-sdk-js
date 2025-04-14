@@ -1,7 +1,11 @@
-import type { Prompt, Template, TemplatingModuleConfig } from '@sap-ai-sdk/orchestration';
+import type {
+  Prompt,
+  Template,
+  TemplatingModuleConfig,
+  OrchestrationModuleConfig as OrchestrationModuleConfigWithStringTemplating
+} from '@sap-ai-sdk/orchestration';
 import type { BaseChatModelCallOptions } from '@langchain/core/language_models/chat_models';
 import type { CustomRequestConfig } from '@sap-ai-sdk/core';
-import type { OrchestrationModuleConfig as OrchestrationModuleConfigWithStringTemplating } from '@sap-ai-sdk/orchestration';
 
 /**
  * Options for an orchestration call.
@@ -27,7 +31,7 @@ export type OrchestrationCallOptions = Pick<
  * This type is used when the `templating` property can also be a string.
  */
 export type LangchainOrchestrationModuleConfig = Omit<
-OrchestrationModuleConfigWithStringTemplating,
+  OrchestrationModuleConfigWithStringTemplating,
   'streaming' | 'templating'
 > & {
   templating: TemplatingModuleConfig;

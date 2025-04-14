@@ -1,10 +1,11 @@
 import { StringOutputParser } from '@langchain/core/output_parsers';
-import { OrchestrationClient, LangchainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import {
   buildAzureContentSafetyFilter,
   buildDpiMaskingProvider,
   buildLlamaGuardFilter
 } from '@sap-ai-sdk/orchestration';
+import type { LangchainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
 
 /**
  * Ask GPT about an introduction to SAP Cloud SDK.

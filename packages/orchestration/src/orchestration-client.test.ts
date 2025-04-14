@@ -376,7 +376,10 @@ describe('orchestration service client', () => {
   });
 
   it('calls chatCompletion with template passed as YAML config', async () => {
-    const yamlTemplate = await parseFileToString('orchestration', 'orchestration-chat-completion-yaml-template.yaml');
+    const yamlTemplate = await parseFileToString(
+      'orchestration',
+      'orchestration-chat-completion-yaml-template.yaml'
+    );
     const configWithYaml: OrchestrationModuleConfig = {
       llm: {
         model_name: 'gpt-4o',

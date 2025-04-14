@@ -8,11 +8,11 @@ import {
   parseMockResponse
 } from '../../../../test-util/mock-http.js';
 import { OrchestrationClient } from './client.js';
+import type { LangchainOrchestrationModuleConfig } from './types.js';
 import type {
   CompletionPostResponse,
   ErrorResponse
 } from '@sap-ai-sdk/orchestration';
-import { LangchainOrchestrationModuleConfig } from './types.js';
 
 jest.setTimeout(30000);
 
@@ -59,7 +59,7 @@ describe('orchestration service client', () => {
     );
   }
 
-  const config: LangchainOrchestrationModuleConfig  = {
+  const config: LangchainOrchestrationModuleConfig = {
     llm: {
       model_name: 'gpt-4o',
       model_params: { max_tokens: 50, temperature: 0.1 }
