@@ -24,12 +24,13 @@ for (const file of files) {
       '.passthrough();'
     );
   }
-
+ if (file !== 'prompt-template-post-request.zod.ts') {
   // Add multiline /** @internal */ before each export const
   content = content.replace(
     /^(export const )/gm,
     `/**\n * @internal\n **/\n$1`
   );
+ }
 
   fs.writeFileSync(filePath, content);
   console.log(`✔ Patched ${file}`);
