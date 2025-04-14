@@ -8,4 +8,4 @@ export type {
   AzureOpenAiChatCallOptions
 } from './openai/index.js';
 export { OrchestrationClient } from './orchestration/index.js';
-export type { OrchestrationCallOptions } from './orchestration/index.js';
+export type { OrchestrationCallOptions, LangchainOrchestrationModuleConfig } from './orchestration/index.js';
