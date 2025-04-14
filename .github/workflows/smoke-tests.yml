@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
       - run: pnpm smoke-tests create-deployment
-      - uses: vchrisb/setup-cf@21dc86841a801618abacbb98628fd145b4c3bcf8
+      - uses: vchrisb/setup-cf@42264495e01f3510296e34e3d7681ea9640f2688
         with:
           api: ${{ vars.CF_API_URL }}
           username: ${{ secrets.CF_USER }}
