@@ -32,6 +32,7 @@
     "generate-zod-config": "rm -r ./src/zod/ && node --no-warnings --loader ts-node/esm ../../scripts/zod-config-prompt-registry.ts \"./src/client/prompt-registry/schema/prompt-template-post-request.ts\" ./src/zod"
   },
   "dependencies": {
-    "@sap-ai-sdk/core": "workspace:^"
+    "@sap-ai-sdk/core": "workspace:^",
+    "zod": "^3.24.2"
   }
 }
