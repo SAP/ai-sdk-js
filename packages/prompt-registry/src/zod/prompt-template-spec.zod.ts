@@ -20,4 +20,4 @@ export const promptTemplateSpecSchema = z
       .optional(),
     tools: z.array(chatCompletionToolSchema).optional()
   })
-  .and(z.record(z.record(z.any())));
+  .passthrough();

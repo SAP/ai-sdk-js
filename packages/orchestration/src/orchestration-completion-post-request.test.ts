@@ -2,7 +2,7 @@ import {
   constructCompletionPostRequest,
   buildAzureContentSafetyFilter
 } from './util/index.js';
-import type { CompletionPostRequest } from './client/api/schema/index.js';
+import type { CompletionPostRequest, TemplatingModuleConfig } from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
   StreamOptions
@@ -23,7 +23,7 @@ describe('construct completion post request', () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: defaultConfig.templating,
+          templating_module_config: defaultConfig.templating as TemplatingModuleConfig,
           llm_module_config: defaultConfig.llm
         }
       }
@@ -42,7 +42,7 @@ describe('construct completion post request', () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: config.templating,
+          templating_module_config: config.templating as TemplatingModuleConfig,
           llm_module_config: config.llm
         }
       }
@@ -68,7 +68,7 @@ describe('construct completion post request', () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: config.templating,
+          templating_module_config: config.templating as TemplatingModuleConfig,
           llm_module_config: config.llm
         }
       },
@@ -95,7 +95,7 @@ describe('construct completion post request', () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: config.templating,
+          templating_module_config: config.templating as TemplatingModuleConfig,
           llm_module_config: config.llm
         }
       },
@@ -118,7 +118,7 @@ describe('construct completion post request', () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: config.templating,
+          templating_module_config: config.templating as TemplatingModuleConfig,
           llm_module_config: config.llm
         }
       }
@@ -154,7 +154,7 @@ describe('construct completion post request', () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: config.templating,
+          templating_module_config: config.templating as TemplatingModuleConfig,
           llm_module_config: config.llm
         }
       },
@@ -182,7 +182,7 @@ describe('construct completion post request', () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: config.templating,
+          templating_module_config: config.templating as TemplatingModuleConfig,
           llm_module_config: config.llm,
           filtering_module_config: config.filtering
         }
@@ -202,7 +202,7 @@ describe('construct completion post request', () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       orchestration_config: {
         module_configurations: {
-          templating_module_config: config.templating,
+          templating_module_config: config.templating as TemplatingModuleConfig,
           llm_module_config: config.llm
         }
       }
@@ -237,7 +237,7 @@ describe('construct completion post request', () => {
         stream: true,
         stream_options: streamOptions.global,
         module_configurations: {
-          templating_module_config: config.templating,
+          templating_module_config: config.templating as TemplatingModuleConfig,
           llm_module_config: {
             ...config.llm,
             model_params: {
