@@ -3,6 +3,9 @@ import { z } from 'zod';
 import { imageContentSchema } from './image-content.zod.js';
 import { textContentSchema } from './text-content.zod.js';
 
+/**
+ * @internal
+ **/
 export const multiChatContentSchema = z.union([
   imageContentSchema,
   textContentSchema

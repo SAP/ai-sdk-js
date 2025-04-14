@@ -2,6 +2,9 @@
 import { z } from 'zod';
 import { functionObjectSchema } from './function-object.zod.js';
 
+/**
+ * @internal
+ **/
 export const chatCompletionToolSchema = z.object({
   type: z.literal('function'),
   function: functionObjectSchema

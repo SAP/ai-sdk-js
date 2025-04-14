@@ -2,6 +2,9 @@
 import { z } from 'zod';
 import { promptTemplateSpecSchema } from './prompt-template-spec.zod.js';
 
+/**
+ * @internal
+ **/
 export const promptTemplatePostRequestSchema = z
   .object({
     name: z.string(),

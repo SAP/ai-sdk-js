@@ -6,6 +6,9 @@ import { responseFormatJsonObjectSchema } from './response-format-json-object.zo
 import { responseFormatJsonSchemaSchema } from './response-format-json-schema.zod.js';
 import { chatCompletionToolSchema } from './chat-completion-tool.zod.js';
 
+/**
+ * @internal
+ **/
 export const promptTemplateSpecSchema = z
   .object({
     template: z.array(templateSchema),

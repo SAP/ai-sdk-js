@@ -3,6 +3,9 @@ import { z } from 'zod';
 import { singleChatTemplateSchema } from './single-chat-template.zod.js';
 import { multiChatTemplateSchema } from './multi-chat-template.zod.js';
 
+/**
+ * @internal
+ **/
 export const templateSchema = z.union([
   singleChatTemplateSchema,
   multiChatTemplateSchema

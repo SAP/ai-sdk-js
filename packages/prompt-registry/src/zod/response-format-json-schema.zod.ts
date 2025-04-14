@@ -2,6 +2,9 @@
 import { z } from 'zod';
 import { responseFormatJsonSchemaSchemaSchema } from './response-format-json-schema-schema.zod.js';
 
+/**
+ * @internal
+ **/
 export const responseFormatJsonSchemaSchema = z.object({
   type: z.literal('json_schema'),
   json_schema: z.object({
