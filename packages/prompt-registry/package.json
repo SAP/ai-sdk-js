@@ -31,7 +31,7 @@
     "zod": "pnpm generate-zod-config && pnpm ts-to-zod --all --skipValidation && pnpm patch-zod-import && pnpm patch-passthrough && rm ./ts-to-zod.config.cjs ",
     "generate-zod-config": "rm -r ./src/zod/ && node --no-warnings --loader ts-node/esm ../../scripts/zod-config-prompt-registry.ts \"./src/client/prompt-registry/schema/prompt-template-post-request.ts\" ./src/zod",
     "patch-zod-import": "sed -i.bak \"s/\\.zod'/\\.zod.js'/g\" ./src/zod/*.zod.ts && rm ./src/zod/*.bak",
-    "patch-passthrough": "sed -i '' 's/\\.and(z\\.record(z\\.record(z\\.any())));/.passthrough();/' ./src/zod/prompt-template-spec.zod.ts"
+    "patch-passthrough": "sed -i.bak 's/\\.and(z\\.record(z\\.record(z\\.any())));/.passthrough();/' ./src/zod/prompt-template-spec.zod.ts && rm ./src/zod/*.bak"
   },
   "dependencies": {
     "@sap-ai-sdk/core": "workspace:^"
