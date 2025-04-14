@@ -1,9 +1,10 @@
 # @sap-ai-sdk/core
 
+**This package is designed for internal usage and should not be consumed directly.**
+
 SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI Core**, **SAP Generative AI Hub**, and **Orchestration Service**.
 
 This package contains core utility functions that we reuse in the SDK to set the context and execute HTTP requests.
-They are primarily designed for **internal** usage.
 
 ### Installation
 
@@ -11,9 +12,9 @@ They are primarily designed for **internal** usage.
 $ npm install @sap-ai-sdk/core
 ```
 
-## Usage
+## Documentation
 
-The core package is not intended for direct usage.
+Visit the [SAP Cloud SDK for AI (JavaScript)](https://sap.github.io/ai-sdk/docs/js/overview-cloud-sdk-for-ai-js) documentation portal to learn more about its capabilities and detailed usage.
 
 ## Support, Feedback, Contribution
 
