@@ -10,13 +10,7 @@ This package incorporates generative AI document grounding capabilities into you
 ### Table of Contents
 
 - [Installation](#installation)
-- [Prerequisites](#prerequisites)
-- [Usage](#usage)
-  - [Create a Collection](#create-a-collection)
-  - [Create a Document](#create-a-document)
-  - [Custom Destination](#custom-destination)
-- [Error Handling](#error-handling)
-- [Local Testing](#local-testing)
+- [Documentation](#documentation)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
 
@@ -26,92 +20,9 @@ This package incorporates generative AI document grounding capabilities into you
 $ npm install @sap-ai-sdk/document-grounding
 ```
 
-## Prerequisites
+## Documentation
 
-- [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
-- Configure the project with **Node.js v20 or higher** and **native ESM** support.
-
-> **Accessing the AI Core Service via the SDK**
->
-> The SDK automatically retrieves the `AI Core` service credentials and resolves the access token needed for authentication.
->
-> - In Cloud Foundry, it's accessed from the `VCAP_SERVICES` environment variable.
-> - In Kubernetes / Kyma environments, you have to mount the service binding as a secret instead, for more information refer to [this documentation](https://www.npmjs.com/package/@sap/xsenv#usage-in-kubernetes).
-
-## Usage
-
-The examples below demonstrate the usage of the most commonly used APIs in SAP AI Core document grounding service.
-In addition to the examples below, you can find more **sample code** [here](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/src/document-grounding.ts).
-
-> Ensure that if you define your own resource group, it has the correct label to use the document grounding service.
-> When creating the resource group on SAP AI Launchpad, add the key-value pair label: `document-grounding: true`.
-> Alternatively, you can create the resource group via the orchestration API.
-> For more details, refer to the [Creating a Resource Group for Grounding](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/create-resource-group-for-ai-data-management?locale=en-US) guide.
-
-### Create a Collection
-
-```ts
-const response = await VectorApi.createCollection(
-  {
-    title: 'ai-sdk-js-e2e',
-    embeddingConfig: {
-      modelName: 'text-embedding-3-small'
-    },
-    metadata: []
-  },
-  {
-    'AI-Resource-Group': 'default'
-  }
-).executeRaw();
-
-const collectionId = (response.headers.location as string).split('/').at(-2);
-```
-
-### Create a Document
-
-```ts
-const response: DocumentsListResponse = await VectorApi.createDocuments(
-  collectionId,
-  {
-    documents: [
-      {
-        metadata: [],
-        chunks: [
-          {
-            content:
-              'SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service.',
-            metadata: []
-          }
-        ]
-      }
-    ]
-  },
-  {
-    'AI-Resource-Group': 'default'
-  }
-).execute();
-```
-
-### Custom Destination
-
-When calling the `execute()` method, it is possible to provide a custom destination.
-For example, when querying deployments targeting a destination with the name `my-destination`, the following code can be used:
-
-```ts
-const response = await VectorApi.deleteCollectionById(collectionId, {
-  'AI-Resource-Group': 'default'
-}).execute({
-  destinationName: 'my-destination'
-});
-```
-
-## Error Handling
-
-For error handling instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#error-handling).
-
-## Local Testing
-
-For local testing instructions, refer to this [section](https://github.com/SAP/ai-sdk-js/blob/main/README.md#local-testing).
+Visit the [SAP Cloud SDK for AI (JavaScript)](https://sap.github.io/ai-sdk/docs/js/overview-cloud-sdk-for-ai-js) documentation portal to learn more about its capabilities and detailed usage.
 
 ## Support, Feedback, Contribution
 
