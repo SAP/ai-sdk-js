@@ -3,9 +3,6 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-export * from './d-set-url.js';
-export * from './d-set-error.js';
-export * from './d-set-file-creation-response.js';
 export * from './kpi-column-name.js';
 export * from './kpi-array-of-column-names.js';
 export * from './kpi-aggregation-attribute.js';
@@ -15,6 +12,9 @@ export * from './kpi-result-row-item.js';
 export * from './kpi-result-row-list.js';
 export * from './kpi-result-set.js';
 export * from './kpi-api-error.js';
+export * from './d-set-url.js';
+export * from './d-set-error.js';
+export * from './d-set-file-creation-response.js';
 export * from './ai-scenario.js';
 export * from './ai-scenario-label-list.js';
 export * from './ai-label-list.js';
@@ -208,12 +208,6 @@ export * from './rt-atimestamp.js';
 export * from './rt-amessage.js';
 export * from './rta-error-response.js';
 export * from './rta-error.js';
-export * from './meta-capabilities.js';
-export * from './meta-extensions.js';
-export * from './meta-ai-api.js';
-export * from './meta-version.js';
-export * from './meta-api-version.js';
-export * from './meta-api-error.js';
 export * from './bcknd-id.js';
 export * from './bcknd-message.js';
 export * from './bcknd-name.js';
@@ -312,3 +306,9 @@ export * from './bcknd-resource-get-response.js';
 export * from './bcknd-resource-get-resource-plans.js';
 export * from './bcknd-error-response.js';
 export * from './bcknd-error.js';
+export * from './meta-capabilities.js';
+export * from './meta-extensions.js';
+export * from './meta-ai-api.js';
+export * from './meta-version.js';
+export * from './meta-api-version.js';
+export * from './meta-api-error.js';

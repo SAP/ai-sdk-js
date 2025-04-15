@@ -2,14 +2,14 @@ openapi: 3.0.0
 info:
   title: AI Core
   description:
-    "Provides tools to manage your scenarios and workflows in SAP AI Core.
-    Execute pipelines as a batch job, for example to pre-process or train your models,
-    or perform batch inference.  Serve inference requests of trained models. Deploy
-    а trained machine learning model as a web service to serve inference requests
-    with high performance.  Register your own Docker registry, synchronize your AI
-    content from your own git repository, and register your own object store for training
-    data and trained models.\n"
-  version: 2.38.0
+    "Provides tools to manage your scenarios and workflows in SAP AI Core.\
+    \ Execute pipelines as a batch job, for example to pre-process or train your models,\
+    \ or perform batch inference.  Serve inference requests of trained models. Deploy\
+    \ \u0430 trained machine learning model as a web service to serve inference requests\
+    \ with high performance.  Register your own Docker registry, synchronize your\
+    \ AI content from your own git repository, and register your own object store\
+    \ for training data and trained models.\n"
+  version: 2.39.0
 x-sap-shortText:
   Create and manage AI scenarios, trainings, deployments, and artifacts
   in SAP AI Core.
@@ -993,9 +993,10 @@ paths:
 
         '
       description:
-        "Retrieve metrics, labels, or tags according to filter conditions.
-        \nOne query parameter is mandatory, either execution ID or filter. \nUse up
-        to 10 execution IDs in a query parameter.\n"
+        "Retrieve metrics, labels, or tags according to filter conditions.\
+        \ \nOne query parameter is mandatory, either execution ID or filter. \nUse\
+        \ up to 10 execution IDs in a query parameter.\nWith top/skip parameters it\
+        \ is possible to paginate the result list.\n"
       tags:
         - Metrics
       parameters:
@@ -1003,6 +1004,9 @@ paths:
         - $ref: '#/components/parameters/TrckqueryFilter'
         - $ref: '#/components/parameters/TrckexecutionIds'
         - $ref: '#/components/parameters/TrckmetricAttributeSelector'
+        - $ref: '#/components/parameters/TrcktagFilters'
+        - $ref: '#/components/parameters/Trcktop'
+        - $ref: '#/components/parameters/Trckskip'
       responses:
         '200':
           content:
@@ -1068,9 +1072,9 @@ paths:
         - $ref: '#/components/parameters/KpiquerySelect'
       summary: Get KPIs
       description:
-        "Retrieve the number of executions, artifacts, and deployments
-        \nfor each resource group, scenario, and executable. The columns to be returned
-        can be specified in a query parameter.\n"
+        "Retrieve the number of executions, artifacts, and deployments\
+        \ \nfor each resource group, scenario, and executable. The columns to be returned\
+        \ can be specified in a query parameter.\n"
       operationId: kpi.get
       responses:
         '200':
@@ -1108,18 +1112,18 @@ paths:
       summary: Upload file (size <= 100Mb)
       operationId: file.upload
       description:
-        "Endpoint for uploading file. The maximum file size depends on
-        the actual implementation \nbut must not exceed 100MB. The actual file size
-        limit can be obtained by querying \nthe AI API Runtime Capabilities Endpoint
-        and checking the limits in the section of the `fileUpload` extension.\n\n
-        Path cannot be a prefix, it must be a path to an object.\nClients may group
-        the objects in any manner they choose by specifying path prefixes.\n\nAllowed
-        mime-types will be decided by the implementation.\nContent-Type header can
-        be set to \"application/octet-stream\" but the implementation is responsible
-        \nfor detecting the actual mime type and checking against the allowed list
-        of mime types. \nFor security reasons, implementations cannot trust the mime
-        type sent by the client.\n\nExample URLs: \n/files/dar/schemas/schema.json
-        \n/files/icr/datasets/training/20201001/20201001-01.csv \n/files/icr/datasets/training/20201001/20201001-02.csv\
+        "Endpoint for uploading file. The maximum file size depends on\
+        \ the actual implementation \nbut must not exceed 100MB. The actual file size\
+        \ limit can be obtained by querying \nthe AI API Runtime Capabilities Endpoint\
+        \ and checking the limits in the section of the `fileUpload` extension.\n\n\
+        Path cannot be a prefix, it must be a path to an object.\nClients may group\
+        \ the objects in any manner they choose by specifying path prefixes.\n\nAllowed\
+        \ mime-types will be decided by the implementation.\nContent-Type header can\
+        \ be set to \"application/octet-stream\" but the implementation is responsible\
+        \ \nfor detecting the actual mime type and checking against the allowed list\
+        \ of mime types. \nFor security reasons, implementations cannot trust the\
+        \ mime type sent by the client.\n\nExample URLs: \n/files/dar/schemas/schema.json\
+        \ \n/files/icr/datasets/training/20201001/20201001-01.csv \n/files/icr/datasets/training/20201001/20201001-02.csv\
         \  \n/files/mask-detection/training/mask-detection-20210301.tar.gz"
       parameters:
         - $ref: '#/components/parameters/DSetoverwrite'
@@ -2472,65 +2476,6 @@ components:
           tokenUrl: https://(subdomain_identity_zone).authentication.(host)/oauth/token
           scopes: {}
   schemas:
-    DSetUrl:
-      type: string
-      format: url
-      example: https://download.example.com/test/file.bin
-    DSetError:
-      description: Error Response
-      type: object
-      properties:
-        code:
-          type: string
-          minLength: 1
-        message:
-          type: string
-          minLength: 1
-        target:
-          type: string
-          minLength: 1
-        requestId:
-          type: string
-        details:
-          type: array
-          uniqueItems: true
-          minItems: 0
-          items:
-            required:
-              - code
-              - message
-            properties:
-              code:
-                type: string
-                minLength: 1
-              message:
-                type: string
-                minLength: 1
-      required:
-        - code
-        - message
-      x-examples:
-        example-1:
-          code: '03021655'
-          message: Bad request encountered. Please try again with possible-solution-here.
-          target: /url/path
-          requestId: 9832bf934f3743v3948v3
-          details:
-            - code: '01041211'
-              message: Optional nested error message.
-    DSetFileCreationResponse:
-      description: Response for successful file creation
-      type: object
-      required:
-        - message
-        - url
-      properties:
-        message:
-          type: string
-          description: File creation response message
-          example: File creation acknowledged
-        url:
-          $ref: '#/components/schemas/DSetUrl'
     KpiColumnName:
       readOnly: true
       type: string
@@ -2626,6 +2571,65 @@ components:
         details:
           description: Optional details of the error message
           type: object
+    DSetUrl:
+      type: string
+      format: url
+      example: https://download.example.com/test/file.bin
+    DSetError:
+      description: Error Response
+      type: object
+      properties:
+        code:
+          type: string
+          minLength: 1
+        message:
+          type: string
+          minLength: 1
+        target:
+          type: string
+          minLength: 1
+        requestId:
+          type: string
+        details:
+          type: array
+          uniqueItems: true
+          minItems: 0
+          items:
+            required:
+              - code
+              - message
+            properties:
+              code:
+                type: string
+                minLength: 1
+              message:
+                type: string
+                minLength: 1
+      required:
+        - code
+        - message
+      x-examples:
+        example-1:
+          code: '03021655'
+          message: Bad request encountered. Please try again with possible-solution-here.
+          target: /url/path
+          requestId: 9832bf934f3743v3948v3
+          details:
+            - code: '01041211'
+              message: Optional nested error message.
+    DSetFileCreationResponse:
+      description: Response for successful file creation
+      type: object
+      required:
+        - message
+        - url
+      properties:
+        message:
+          type: string
+          description: File creation response message
+          example: File creation acknowledged
+        url:
+          $ref: '#/components/schemas/DSetUrl'
     AiScenario:
       type: object
       description:
@@ -4107,6 +4111,10 @@ components:
       properties:
         executionId:
           $ref: '#/components/schemas/TrckExecutionId'
+        createdAt:
+          $ref: '#/components/schemas/TrckTimestamp'
+        modifiedAt:
+          $ref: '#/components/schemas/TrckTimestamp'
         metrics:
           $ref: '#/components/schemas/TrckGetMetricList'
         tags:
@@ -4125,6 +4133,10 @@ components:
       properties:
         executionId:
           $ref: '#/components/schemas/TrckExecutionId'
+        createdAt:
+          $ref: '#/components/schemas/TrckTimestamp'
+        modifiedAt:
+          $ref: '#/components/schemas/TrckTimestamp'
         metrics:
           $ref: '#/components/schemas/TrckMetricList'
         tags:
@@ -4332,9 +4344,9 @@ components:
       minLength: 1
       type: string
       example:
-        "[{'Predicted': 'False',\t'Actual': 'False','value': 34},{'Predicted':
-        'False','Actual': 'True',\t'value': 124}, {'Predicted': 'True','Actual': 'False','value':
-        165},{\t'Predicted': 'True','Actual': 'True','value': 36}]"
+        "[{'Predicted': 'False',\t'Actual': 'False','value': 34},{'Predicted':\
+        \ 'False','Actual': 'True',\t'value': 124}, {'Predicted': 'True','Actual':\
+        \ 'False','value': 165},{\t'Predicted': 'True','Actual': 'True','value': 36}]"
     TrckMlapiExecutionId:
       description: Generic ID
       pattern: ^[\w.-]{4,64}$
@@ -4609,6 +4621,19 @@ components:
         provider:
           type: string
           description: Provider of the model
+        allowedScenarios:
+          type: array
+          description: List of scenarioId:executuableId pair where the model supported
+          items:
+            type: object
+            required:
+              - scenarioId
+              - executableId
+            properties:
+              scenarioId:
+                $ref: '#/components/schemas/RTAScenarioId'
+              executableId:
+                $ref: '#/components/schemas/RTAExecutableId'
     RTAModelVersionList:
       type: array
       description: List of model versions that the model object has
@@ -4666,6 +4691,14 @@ components:
         suggestedReplacements:
           type: array
           description: List of suggested replacements for the model
+          items:
+            type: string
+        streamingSupported:
+          type: boolean
+          description: Streaming support status of the model
+        orchestrationCapabilities:
+          type: array
+          description: List of model capabilities supported by orchestration service
           items:
             type: string
     RTAArtifact:
@@ -5003,240 +5036,6 @@ components:
           type: string
           description: Plaintext error description
           example: something went wrong
-        requestId:
-          type: string
-          description: ID of the individual request
-        target:
-          type: string
-          description: Invoked URL
-        details:
-          description: Optional details of the error message
-          type: object
-    MetaCapabilities:
-      type: object
-      required:
-        - aiApi
-      properties:
-        runtimeIdentifier:
-          type: string
-          example: aicore
-          description: The name of the runtime
-        runtimeApiVersion:
-          $ref: '#/components/schemas/MetaVersion'
-        description:
-          type: string
-        aiApi:
-          $ref: '#/components/schemas/MetaAiApi'
-        extensions:
-          $ref: '#/components/schemas/MetaExtensions'
-    MetaExtensions:
-      type: object
-      properties:
-        analytics:
-          type: object
-          required:
-            - version
-          properties:
-            version:
-              $ref: '#/components/schemas/MetaVersion'
-        resourceGroups:
-          type: object
-          required:
-            - version
-          properties:
-            version:
-              $ref: '#/components/schemas/MetaVersion'
-        dataset:
-          type: object
-          properties:
-            version:
-              $ref: '#/components/schemas/MetaVersion'
-            capabilities:
-              description: List of Dataset extension capabilities
-              type: object
-              properties:
-                upload:
-                  description: Support for uploading of files
-                  type: boolean
-                  default: true
-                download:
-                  description: Support for downloading of files
-                  type: boolean
-                  default: true
-                delete:
-                  description: Support for deletion of files
-                  type: boolean
-                  default: true
-            limits:
-              type: object
-              properties:
-                maxUploadFileSize:
-                  type: integer
-                  description:
-                    Max size (in bytes) of a single uploaded file allowed
-                    by this runtime per resource group.
-                  default: 104857600
-                maxFilesPerDataset:
-                  description: Max number of files per dataset. <0 means unlimited.
-                  type: integer
-                  default: -1
-                acceptedContentTypes:
-                  type: array
-                  items:
-                    type: string
-                    pattern: ^\w+\/([\w+-]\.)?[\w.-]+(\+[\w-]+)*$
-          required:
-            - version
-        metrics:
-          type: object
-          properties:
-            version:
-              $ref: '#/components/schemas/MetaVersion'
-            capabilities:
-              description: List of Metrics extension capabilities
-              type: object
-              properties:
-                extendedResults:
-                  description: Support for returning extended results
-                  type: boolean
-                  default: false
-          required:
-            - version
-    MetaAiApi:
-      description:
-        There are (currently) the following types of execution engines  1)
-        complete runtimes that offer executions and deployments, 2) runtimes that
-        do only batch inference and therefore don't support deployments 3) runtimes
-        that allow deployments, but with predefined models and therefore don't need
-        executions 4) runtimes that have fixed endpoints and therefore only need listing
-        deployments
-      type: object
-      properties:
-        version:
-          $ref: '#/components/schemas/MetaVersion'
-        capabilities:
-          type: object
-          properties:
-            multitenant:
-              type: boolean
-              description:
-                true-> AI API implementation supports resource groups (Main
-                Tenant scenario), false-> implementation does not support resource
-                groups (Service Tenant scenario)
-              default: true
-            shareable:
-              type: boolean
-              description:
-                true-> clients can use just one instance (global static
-                models), false-> clients should avoid sharing an instance
-              default: true
-            staticDeployments:
-              type: boolean
-              description:
-                There are static always running endpoints that can be used
-                for inference without the need to do user deployments.
-              default: true
-            userDeployments:
-              type: boolean
-              description:
-                Services that only support batch inference typically neither
-                allow listing nor creation of deployments. For these, userDeployments
-                == false
-              default: true
-            userExecutions:
-              type: boolean
-              default: true
-            timeToLiveDeployments:
-              type: boolean
-              default: false
-            executionSchedules:
-              type: boolean
-              default: false
-            logs:
-              type: object
-              properties:
-                executions:
-                  type: boolean
-                  default: true
-                deployments:
-                  type: boolean
-                  default: true
-            bulkUpdates:
-              type: object
-              description:
-                Services that support patch on /executions and /deployments
-                to change targetStatus of multiple executions and deployments.
-              properties:
-                executions:
-                  type: boolean
-                  default: false
-                deployments:
-                  type: boolean
-                  default: false
-        limits:
-          type: object
-          properties:
-            executions:
-              type: object
-              properties:
-                maxRunningCount:
-                  description:
-                    Max nr of executions allowed by this runtime per resource
-                    group. <0 means unlimited.
-                  type: integer
-                  default: -1
-            deployments:
-              type: object
-              properties:
-                maxRunningCount:
-                  description:
-                    Max nr of deployments allowed by this runtime per resource
-                    group. <0 means unlimited.
-                  type: integer
-                  default: -1
-            timeToLiveDeployments:
-              type: object
-              properties:
-                minimum:
-                  type: string
-                  default: 10m
-                maximum:
-                  type: string
-                  default: '-1'
-      required:
-        - version
-    MetaVersion:
-      example: 1.2.3
-      type: string
-      pattern: ^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$
-    MetaAPIVersion:
-      type: object
-      properties:
-        versionId:
-          type: string
-          description: API version identifier
-          example: v1
-        url:
-          type: string
-          description: URL of the API version
-          example: https://api.example.com/v1
-        description:
-          type: string
-          description: version description
-          example: Example API
-      description: API version description
-    MetaApiError:
-      type: object
-      required:
-        - code
-        - message
-      properties:
-        code:
-          type: string
-          description: Descriptive error code (not http status code)
-        message:
-          type: string
-          description: Plaintext error description
         requestId:
           type: string
           description: ID of the individual request
@@ -6568,7 +6367,259 @@ components:
         details:
           description: Optional details of the error message
           type: object
+    MetaCapabilities:
+      type: object
+      required:
+        - aiApi
+      properties:
+        runtimeIdentifier:
+          type: string
+          example: aicore
+          description: The name of the runtime
+        runtimeApiVersion:
+          $ref: '#/components/schemas/MetaVersion'
+        description:
+          type: string
+        aiApi:
+          $ref: '#/components/schemas/MetaAiApi'
+        extensions:
+          $ref: '#/components/schemas/MetaExtensions'
+    MetaExtensions:
+      type: object
+      properties:
+        analytics:
+          type: object
+          required:
+            - version
+          properties:
+            version:
+              $ref: '#/components/schemas/MetaVersion'
+        resourceGroups:
+          type: object
+          required:
+            - version
+          properties:
+            version:
+              $ref: '#/components/schemas/MetaVersion'
+        dataset:
+          type: object
+          properties:
+            version:
+              $ref: '#/components/schemas/MetaVersion'
+            capabilities:
+              description: List of Dataset extension capabilities
+              type: object
+              properties:
+                upload:
+                  description: Support for uploading of files
+                  type: boolean
+                  default: true
+                download:
+                  description: Support for downloading of files
+                  type: boolean
+                  default: true
+                delete:
+                  description: Support for deletion of files
+                  type: boolean
+                  default: true
+            limits:
+              type: object
+              properties:
+                maxUploadFileSize:
+                  type: integer
+                  description:
+                    Max size (in bytes) of a single uploaded file allowed
+                    by this runtime per resource group.
+                  default: 104857600
+                maxFilesPerDataset:
+                  description: Max number of files per dataset. <0 means unlimited.
+                  type: integer
+                  default: -1
+                acceptedContentTypes:
+                  type: array
+                  items:
+                    type: string
+                    pattern: ^\w+\/([\w+-]\.)?[\w.-]+(\+[\w-]+)*$
+          required:
+            - version
+        metrics:
+          type: object
+          properties:
+            version:
+              $ref: '#/components/schemas/MetaVersion'
+            capabilities:
+              description: List of Metrics extension capabilities
+              type: object
+              properties:
+                extendedResults:
+                  description: Support for returning extended results
+                  type: boolean
+                  default: false
+          required:
+            - version
+    MetaAiApi:
+      description:
+        There are (currently) the following types of execution engines  1)
+        complete runtimes that offer executions and deployments, 2) runtimes that
+        do only batch inference and therefore don't support deployments 3) runtimes
+        that allow deployments, but with predefined models and therefore don't need
+        executions 4) runtimes that have fixed endpoints and therefore only need listing
+        deployments
+      type: object
+      properties:
+        version:
+          $ref: '#/components/schemas/MetaVersion'
+        capabilities:
+          type: object
+          properties:
+            multitenant:
+              type: boolean
+              description:
+                true-> AI API implementation supports resource groups (Main
+                Tenant scenario), false-> implementation does not support resource
+                groups (Service Tenant scenario)
+              default: true
+            shareable:
+              type: boolean
+              description:
+                true-> clients can use just one instance (global static
+                models), false-> clients should avoid sharing an instance
+              default: true
+            staticDeployments:
+              type: boolean
+              description:
+                There are static always running endpoints that can be used
+                for inference without the need to do user deployments.
+              default: true
+            userDeployments:
+              type: boolean
+              description:
+                Services that only support batch inference typically neither
+                allow listing nor creation of deployments. For these, userDeployments
+                == false
+              default: true
+            userExecutions:
+              type: boolean
+              default: true
+            timeToLiveDeployments:
+              type: boolean
+              default: false
+            executionSchedules:
+              type: boolean
+              default: false
+            logs:
+              type: object
+              properties:
+                executions:
+                  type: boolean
+                  default: true
+                deployments:
+                  type: boolean
+                  default: true
+            bulkUpdates:
+              type: object
+              description:
+                Services that support patch on /executions and /deployments
+                to change targetStatus of multiple executions and deployments.
+              properties:
+                executions:
+                  type: boolean
+                  default: false
+                deployments:
+                  type: boolean
+                  default: false
+        limits:
+          type: object
+          properties:
+            executions:
+              type: object
+              properties:
+                maxRunningCount:
+                  description:
+                    Max nr of executions allowed by this runtime per resource
+                    group. <0 means unlimited.
+                  type: integer
+                  default: -1
+            deployments:
+              type: object
+              properties:
+                maxRunningCount:
+                  description:
+                    Max nr of deployments allowed by this runtime per resource
+                    group. <0 means unlimited.
+                  type: integer
+                  default: -1
+            timeToLiveDeployments:
+              type: object
+              properties:
+                minimum:
+                  type: string
+                  default: 10m
+                maximum:
+                  type: string
+                  default: '-1'
+      required:
+        - version
+    MetaVersion:
+      example: 1.2.3
+      type: string
+      pattern: ^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$
+    MetaAPIVersion:
+      type: object
+      properties:
+        versionId:
+          type: string
+          description: API version identifier
+          example: v1
+        url:
+          type: string
+          description: URL of the API version
+          example: https://api.example.com/v1
+        description:
+          type: string
+          description: version description
+          example: Example API
+      description: API version description
+    MetaApiError:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: Descriptive error code (not http status code)
+        message:
+          type: string
+          description: Plaintext error description
+        requestId:
+          type: string
+          description: ID of the individual request
+        target:
+          type: string
+          description: Invoked URL
+        details:
+          description: Optional details of the error message
+          type: object
   parameters:
+    KpiquerySelect:
+      name: $select
+      description: Columns to select
+      in: query
+      required: false
+      schema:
+        uniqueItems: true
+        type: array
+        readOnly: true
+        default:
+          - ResourceGroup
+          - Executions
+          - Artifacts
+          - Deployments
+        items:
+          $ref: '#/components/schemas/KpiColumnName'
+      style: form
+      explode: false
     DSetresourceGroupHeader:
       in: header
       name: AI-Resource-Group
@@ -6593,24 +6644,6 @@ components:
       schema:
         type: boolean
       description: If true, then file is overwritten. Default is false.
-    KpiquerySelect:
-      name: $select
-      description: Columns to select
-      in: query
-      required: false
-      schema:
-        uniqueItems: true
-        type: array
-        readOnly: true
-        default:
-          - ResourceGroup
-          - Executions
-          - Artifacts
-          - Deployments
-        items:
-          $ref: '#/components/schemas/KpiColumnName'
-      style: form
-      explode: false
     AiresourceGroupHeader:
       in: header
       name: AI-Resource-Group
@@ -6944,6 +6977,23 @@ components:
       style: form
       required: false
       explode: false
+    TrcktagFilters:
+      example: name1=value1,name2!=value2,name3,name4=v%26a%3D%2Cl%23u%21%3De%5E2%25
+      name: tagFilters
+      description:
+        Filter metrics using tags by providing expressions in the format
+        name=value or name!=value, separated by commas (,). The results will include
+        only those metrics that match all the specified tag expressions, ensuring
+        a logical AND operation. The filter supports up to 100 tag expressions, key-only
+        searches (e.g., name) without a value, and tags containing special characters,
+        which  must be properly percent-encoded for accurate matching.
+      schema:
+        type: string
+        maxLength: 5000
+      in: query
+      style: form
+      required: false
+      explode: false
     TrckexecutionId:
       name: executionId
       description: The Id of an execution
@@ -6958,6 +7008,26 @@ components:
       schema:
         type: string
       required: true
+    Trcktop:
+      name: $top
+      description: Number of results to display
+      in: query
+      required: false
+      schema:
+        type: integer
+        maximum: 10000
+        default: 1000
+      example: 10
+      x-visible: false
+    Trckskip:
+      name: $skip
+      description: Number of results to be skipped from the ordered list of results
+      in: query
+      required: false
+      schema:
+        type: integer
+      example: 10
+      x-visible: false
     RTAtokenHeader:
       name: Authorization
       in: header
@@ -7045,10 +7115,10 @@ components:
       name: $order
       in: query
       description:
-        "Determines the sort order. Supported values are asc or desc. Defaults
-        to asc. Sort order:\n  * `asc` - Ascending, earliest in the order will appear
-        at the top of the list\n  * `desc` - Descending, last in the order will appear
-        at the top of the list\n"
+        "Determines the sort order. Supported values are asc or desc. Defaults\
+        \ to asc. Sort order:\n  * `asc` - Ascending, earliest in the order will appear\
+        \ at the top of the list\n  * `desc` - Descending, last in the order will\
+        \ appear at the top of the list\n"
       required: false
       schema:
         type: string
@@ -7226,6 +7296,33 @@ components:
         type: boolean
       example: true
   responses:
+    KpiNotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/KpiApiError'
+    KpiTooManyRequests:
+      description: Too many requests
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/KpiApiError'
+    KpiInvalidRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/KpiApiError'
     DSetBadRequest:
       description: The specification of the resource was incorrect
       content:
@@ -7342,33 +7439,6 @@ components:
             the artifact API to register this file.
           schema:
             $ref: '#/components/schemas/DSetUrl'
-    KpiNotFound:
-      description: The specified resource was not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/KpiApiError'
-    KpiTooManyRequests:
-      description: Too many requests
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/KpiApiError'
-    KpiInvalidRequest:
-      description: Invalid request
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/KpiApiError'
     AiNotFound:
       description: The specified resource was not found
       content:
@@ -7460,15 +7530,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/RTAErrorResponse'
-    MetaNotFound:
-      description: The specified resource was not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/MetaApiError'
     BckndCommonError:
       description:
         HTTP status codes 401, 403 or 500. Response body contains further
@@ -7489,3 +7550,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/BckndErrorResponse'
+    MetaNotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/MetaApiError'
