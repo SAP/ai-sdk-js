@@ -23,6 +23,22 @@ on:
         required: false
         default: true
         type: boolean
+  workflow_call:
+    inputs:
+      file:
+        description: "Which spec file to update"
+        required: true
+        type: string
+      file-ref:
+        description: "Branch or tag to checkout the spec file from"
+        required: false
+        default: main
+        type: string
+      create-pr:
+        description: "Create a pull request after updating the spec file"
+        required: false
+        default: true
+        type: boolean
 
 jobs:
   generate:
@@ -38,15 +54,14 @@ jobs:
       compilation_result: ${{ steps.compile.outputs.compilation_result }}
       test_result: ${{ steps.compile.outputs.test_result }}
     env:
-      API_BASE_URL: "https://github.tools.sap/api/v3/repos"
-      CHOICE: ${{ github.event.inputs.file }}
-      REF: ${{ github.event.inputs.file-ref }}
-      CREATE_PR: ${{ github.event.inputs.create-pr }}
+      CHOICE: ${{ inputs.file }}
+      REF: ${{ inputs.file-ref }}
+      CREATE_PR: ${{ inputs.create-pr }}
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
           node-version: 20
-          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Checkout or Create Branch"
         id: branch
@@ -60,28 +75,35 @@ jobs:
       - name: "Download specification file"
         id: download
         env:
+          GH_HOST: github.tools.sap
           GH_ENTERPRISE_TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
         run: |
           case $CHOICE in
             ai-api)
-              API_URL="$API_BASE_URL/cloudsdk/cloud-sdk-java-tests/contents/aicore.yaml?ref=$REF"
+              API_URL="repos/cloudsdk/cloud-sdk-java-tests/contents/aicore.yaml?ref=$REF"
               FILE_PATH='packages/ai-api/src/spec/AI_CORE_API.yaml'
               ;;
             document-grounding)
-              API_URL="$API_BASE_URL/AI/rage-proxy-inference/contents/docs/public/business_api_hub/api_hub_merged_spec.yaml?ref=$REF"
+              API_URL="repos/AI/rage-proxy-inference/contents/docs/public/business_api_hub/api_hub_merged_spec.yaml?ref=$REF"
               FILE_PATH='packages/document-grounding/src/spec/api.yaml'
               ;;
             orchestration)
-              API_URL="$API_BASE_URL/AI/llm-orchestration/contents/src/spec/api.yaml?ref=$REF"
+              API_URL="repos/AI/llm-orchestration/contents/src/spec/api.yaml?ref=$REF"
               FILE_PATH='packages/orchestration/src/spec/api.yaml'
               ;;
             prompt-registry)
-              API_URL="$API_BASE_URL/AI/prompt-registry/contents/src/spec/prompt-registry.yaml?ref=$REF"
+              API_URL="repos/AI/prompt-registry/contents/src/spec/prompt-registry.yaml?ref=$REF"
               FILE_PATH='packages/prompt-registry/src/spec/prompt-registry.yaml'
               ;;
           esac
           
           echo "Downloading $CHOICE specification file from $API_URL ..."
+
+          if [ -z "${GH_ENTERPRISE_TOKEN:-}" ]; then
+            echo "GH_ENTERPRISE_TOKEN is not set or is empty."
+          else
+            echo "GH_ENTERPRISE_TOKEN is set and not empty"
+          fi
           
           gh api $API_URL -H "Accept: application/vnd.github.raw" > $FILE_PATH
 
@@ -139,7 +161,7 @@ jobs:
         id: create-pr
         if: ${{ env.CREATE_PR == 'true' && steps.spec_diff.outputs.spec_diff == 'true'}}
         env:
-          GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: ${{ steps.branch.outputs.branch }}
         run: |
           if gh pr list --head $BRANCH --json number -q '.[].number' | grep -q .; then
