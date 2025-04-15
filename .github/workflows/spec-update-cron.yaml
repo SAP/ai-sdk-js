@@ -20,11 +20,6 @@ jobs:
     with:
       file: document-grounding
     secrets: inherit
-  spec-update-orchestration:
-    uses: SAP/ai-sdk-js/.github/workflows/spec-update.yaml@main
-    with:
-      file: orchestration
-    secrets: inherit
   spec-update-prompt-registry:
     uses: SAP/ai-sdk-js/.github/workflows/spec-update.yaml@main
     with:
