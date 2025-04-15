@@ -55,9 +55,9 @@ jobs:
       test_result: ${{ steps.compile.outputs.test_result }}
     env:
       API_BASE_URL: "https://github.tools.sap/api/v3/repos"
-      CHOICE: ${{ github.event.inputs.file }}
-      REF: ${{ github.event.inputs.file-ref }}
-      CREATE_PR: ${{ github.event.inputs.create-pr }}
+      CHOICE: ${{ inputs.file }}
+      REF: ${{ inputs.file-ref }}
+      CREATE_PR: ${{ inputs.create-pr }}
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
