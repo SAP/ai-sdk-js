@@ -99,6 +99,8 @@ jobs:
           esac
           
           echo "Downloading $CHOICE specification file from $API_URL ..."
+
+          echo "GH_HOST: $GH_HOST"
           
           gh api $API_URL -H "Accept: application/vnd.github.raw" > $FILE_PATH
 
