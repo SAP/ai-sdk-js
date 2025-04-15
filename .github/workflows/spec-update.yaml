@@ -99,6 +99,12 @@ jobs:
           
           echo "Downloading $CHOICE specification file from $API_URL ..."
 
+          if [ -v "GH_ENTERPRISE_TOKEN" ]; then
+            echo "GH_ENTERPRISE_TOKEN is set (defined)."
+          else
+            echo "GH_ENTERPRISE_TOKEN is not set (undefined)."
+          fi
+          
           gh api $API_URL -H "Accept: application/vnd.github.raw" > $FILE_PATH
 
       - name: "Exit if there are no changes"
