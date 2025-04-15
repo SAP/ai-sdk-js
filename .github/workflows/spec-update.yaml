@@ -76,7 +76,7 @@ jobs:
       - name: "Download specification file"
         id: download
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_HOST: github.tools.sap
           GH_ENTERPRISE_TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
         run: |
           case $CHOICE in
@@ -156,7 +156,7 @@ jobs:
         id: create-pr
         if: ${{ env.CREATE_PR == 'true' && steps.spec_diff.outputs.spec_diff == 'true'}}
         env:
-          GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: ${{ steps.branch.outputs.branch }}
         run: |
           if gh pr list --head $BRANCH --json number -q '.[].number' | grep -q .; then
