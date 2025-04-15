@@ -34,7 +34,7 @@
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/prompt-registry": "workspace:^",
     "@sap-cloud-sdk/util": "^4.0.2",
-    "yaml": "^1.10.2"
+    "yaml": "^2.7.1"
   },
   "devDependencies": {
     "@sap-cloud-sdk/http-client": "^4.0.2",
