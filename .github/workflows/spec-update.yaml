@@ -101,6 +101,12 @@ jobs:
           echo "Downloading $CHOICE specification file from $API_URL ..."
 
           echo "GH_HOST: $GH_HOST"
+
+          if [ -v "GH_TOKEN" ]; then
+            echo "GH_TOKEN is set (defined)."
+          else
+            echo "GH_TOKEN is not set (undefined)."
+          fi
           
           gh api $API_URL -H "Accept: application/vnd.github.raw" > $FILE_PATH
 
