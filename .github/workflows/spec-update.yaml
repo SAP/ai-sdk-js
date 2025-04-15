@@ -23,6 +23,22 @@ on:
         required: false
         default: true
         type: boolean
+  workflow_call:
+    inputs:
+      file:
+        description: "Which spec file to update"
+        required: true
+        type: string
+      file-ref:
+        description: "Branch or tag to checkout the spec file from"
+        required: false
+        default: main
+        type: string
+      create-pr:
+        description: "Create a pull request after updating the spec file"
+        required: false
+        default: true
+        type: boolean
 
 jobs:
   generate:

@@ -1,0 +1,24 @@
+name: "Spec File Update Workflow (Cron Job)"
+
+on:
+  schedule:
+    - cron: 21 3 */15 * * # At 03:21 on every 15th day-of-month.
+  workflow_dispatch: # TODO: remove this once tested
+
+jobs:
+  spec-update-ai-api:
+    uses: SAP/ai-sdk-js/.github/workflows/spec-update.yaml@create-bi-weekly-schedule-for-spec-updates # TODO: change back to main
+    with:
+      file: ai-api
+  spec-update-document-grounding:
+    uses: SAP/ai-sdk-js/.github/workflows/spec-update.yaml@create-bi-weekly-schedule-for-spec-updates
+    with:
+      file: document-grounding
+  spec-update-orchestration:
+    uses: SAP/ai-sdk-js/.github/workflows/spec-update.yaml@create-bi-weekly-schedule-for-spec-updates
+    with:
+      file: orchestration
+  spec-update-prompt-registry:
+    uses: SAP/ai-sdk-js/.github/workflows/spec-update.yaml@create-bi-weekly-schedule-for-spec-updates
+    with:
+      file: prompt-registry
