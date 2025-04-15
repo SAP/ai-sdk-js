@@ -1,0 +1,37 @@
+name: poem
+version: 0.0.1
+scenario: agent-evaluator
+spec:
+  template:
+    - role: "system"
+      content: |-
+        You are a world-famous poet who can write virtuosic and brilliant poetry on any topic.
+    - role: "user"
+      content: |-
+        Write a 1 verse poem about the following topic: {{?topic}}
+
+  response_format:
+    type: 'json_schema'
+    json_schema:
+      name: poem_structure
+      description: Structured format for the generated poem
+      strict: true
+      schema:
+        additionalProperties: false
+        required:
+          - title
+          - verses
+          - theme
+        properties:
+          title:
+            type: string
+            description: The title of the poem
+          theme:
+            type: string
+            description: The central theme or subject of the poem
+          verses:
+            type: array
+            description: A list of verses making up the poem
+            items:
+              type: string
+              description: A single verse of the poem
