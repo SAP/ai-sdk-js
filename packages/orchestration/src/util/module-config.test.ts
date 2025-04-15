@@ -8,7 +8,8 @@ import {
 import { buildAzureContentSafetyFilter } from './filtering.js';
 import type {
   ModuleConfigs,
-  OrchestrationConfig
+  OrchestrationConfig,
+  TemplatingModuleConfig
 } from '../client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
@@ -27,7 +28,8 @@ describe('stream util tests', () => {
 
   const defaultModuleConfigs: ModuleConfigs = {
     llm_module_config: defaultOrchestrationModuleConfig.llm,
-    templating_module_config: defaultOrchestrationModuleConfig.templating
+    templating_module_config:
+      defaultOrchestrationModuleConfig.templating as TemplatingModuleConfig
   };
 
   const defaultStreamOptions: StreamOptions = {
