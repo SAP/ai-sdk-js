@@ -2,12 +2,12 @@ name: "Spec File Update Workflow (Cron Job)"
 
 on:
   schedule:
-    # At 03:21 on every 15th day-of-month from 2 through 31.
+    # At 03:21 on every 15th day-of-month from 1 through 31.
     # Example:
-    #  2025-04-17 03:21:00
-    #  2025-05-02 03:21:00
-    #  2025-05-17 03:21:00
-    - cron: 21 3 2/15 * * 
+    #  2025-04-16 03:21:00
+    #  2025-05-01 03:21:00
+    #  2025-05-16 03:21:00
+    - cron: 21 3 1/15 * * 
 
 jobs:
   spec-update-ai-api:
