@@ -76,7 +76,7 @@ jobs:
       - name: "Download specification file"
         id: download
         env:
-          GH_TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_ENTERPRISE_TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
         run: |
           case $CHOICE in
