@@ -93,10 +93,10 @@ export async function chatCompletionWithDestination(): Promise<AzureOpenAiChatCo
 }
 
 /**
- * Example function to demonstrate tool chaining.
- * @returns A promise resolving to a string.
+ * Ask Azure OpenAI model to convert temperature from Celsius to Fahrenheit using tools.
+ * @returns The response from Azure OpenAI obtained using function calling.
  */
-export async function chatCompletionWithToolChain(): Promise<AzureOpenAiChatCompletionResponse> {
+export async function chatCompletionWithFunctionCall(): Promise<AzureOpenAiChatCompletionResponse> {
   const client = new AzureOpenAiChatClient('gpt-4o');
   const convertTemperatureTool: AzureOpenAiChatCompletionTool = {
     type: 'function',

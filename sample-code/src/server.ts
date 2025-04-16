@@ -5,7 +5,7 @@ import {
   chatCompletionStream as azureChatCompletionStream,
   chatCompletionWithDestination,
   computeEmbedding,
-  chatCompletionWithToolChain
+  chatCompletionWithFunctionCall
   // eslint-disable-next-line import/no-internal-modules
 } from './foundation-models/azure-openai.js';
 import {
@@ -231,7 +231,7 @@ app.get('/azure-openai/embedding', async (req, res) => {
 
 app.get('/azure-openai/invoke-tool-chain', async (req, res) => {
   try {
-    const response = await chatCompletionWithToolChain();
+    const response = await chatCompletionWithFunctionCall();
     res.header('Content-Type', 'text/plain').send(response.getContent());
   } catch (error: any) {
     sendError(res, error);
