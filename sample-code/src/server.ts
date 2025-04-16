@@ -4,7 +4,8 @@ import {
   chatCompletion,
   chatCompletionStream as azureChatCompletionStream,
   chatCompletionWithDestination,
-  computeEmbedding
+  computeEmbedding,
+  chatCompletionWithToolChain
   // eslint-disable-next-line import/no-internal-modules
 } from './foundation-models/azure-openai.js';
 import {
@@ -223,6 +224,15 @@ app.get('/azure-openai/embedding', async (req, res) => {
     } else {
       res.send('Number crunching success, got a nice vector.');
     }
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/azure-openai/invoke-tool-chain', async (req, res) => {
+  try {
+    const response = await chatCompletionWithToolChain();
+    res.header('Content-Type', 'text/plain').send(response.getContent());
   } catch (error: any) {
     sendError(res, error);
   }

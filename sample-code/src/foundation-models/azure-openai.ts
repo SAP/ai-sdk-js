@@ -7,7 +7,11 @@ import type {
   AzureOpenAiChatCompletionResponse,
   AzureOpenAiEmbeddingResponse,
   AzureOpenAiChatCompletionStreamResponse,
-  AzureOpenAiChatCompletionStreamChunkResponse
+  AzureOpenAiChatCompletionStreamChunkResponse,
+  AzureOpenAiChatCompletionTool,
+  AzureOpenAiChatCompletionMessageToolCall,
+  AzureOpenAiChatCompletionRequestMessage,
+  AzureOpenAiChatCompletionRequestToolMessage
 } from '@sap-ai-sdk/foundation-models';
 
 const logger = createLogger({
@@ -87,3 +91,76 @@ export async function chatCompletionWithDestination(): Promise<AzureOpenAiChatCo
 
   return response;
 }
+
+/**
+ * Example function to demonstrate tool chaining.
+ * @returns A promise resolving to a string.
+ */
+export async function chatCompletionWithToolChain(): Promise<AzureOpenAiChatCompletionResponse> {
+  const client = new AzureOpenAiChatClient('gpt-4o');
+  const convertTemperatureTool: AzureOpenAiChatCompletionTool = {
+    type: 'function',
+    function: {
+      name: 'convert_temperature_to_fahrenheit',
+      description: 'Converts temperature from Celsius to Fahrenheit',
+      parameters: {
+        type: 'object',
+        properties: {
+          temperature: {
+            type: 'number',
+            description: 'The temperature value in Celsius to convert.'
+          }
+        },
+        required: ['temperature']
+      }
+    }
+  };
+  const tools = [convertTemperatureTool];
+  const messages: AzureOpenAiChatCompletionRequestMessage[] = [
+    { role: 'user', content: 'Convert 20 degrees Celsius to Fahrenheit.' }
+  ];
+
+  const response = await client.run({
+    messages,
+    tools
+  });
+
+  const initialMessage = response.data.choices[0].message;
+  // Add the model's response for calling functions into the message history
+  messages.push(initialMessage);
+
+  if (response.getFinishReason() === 'tool_calls') {
+    (
+      initialMessage.tool_calls as AzureOpenAiChatCompletionMessageToolCall[]
+    ).forEach(toolCall => {
+      const name = toolCall.function.name;
+      const args = JSON.parse(toolCall.function.arguments);
+      const toolResult = callFunction(name, args);
+      const message: AzureOpenAiChatCompletionRequestToolMessage = {
+        role: 'tool',
+        content: toolResult?.toString() ?? '',
+        tool_call_id: toolCall.id
+      };
+      // Add the tool call result into the message history
+      messages.push(message);
+    });
+  }
+
+  // Ask the model again with the updated message history
+  const finalResponse = await client.run({
+    messages,
+    tools: [convertTemperatureTool]
+  });
+  return finalResponse;
+}
+
+function convertTemperatureToFahrenheit(temperature: number): string {
+  return `The temperature in Fahrenheit is ${(temperature * 9) / 5 + 32}°F.`;
+}
+
+const callFunction = (name: string, args: any) => {
+  switch (name) {
+    case 'convert_temperature_to_fahrenheit':
+      return convertTemperatureToFahrenheit(args.temperature);
+  }
+};
