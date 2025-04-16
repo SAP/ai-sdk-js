@@ -11,8 +11,8 @@ importers:
   .:
     devDependencies:
       '@changesets/cli':
-        specifier: ^2.29.0
-        version: 2.29.0
+        specifier: ^2.29.1
+        version: 2.29.1
       '@jest/globals':
         specifier: ^29.5.12
         version: 29.7.0
@@ -320,22 +320,22 @@ importers:
         version: 0.1.0(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2)))
       '@sap-ai-sdk/ai-api':
         specifier: canary
-        version: 1.11.1-20250414013204.0
+        version: 1.11.1-20250415115505.0
       '@sap-ai-sdk/document-grounding':
         specifier: canary
-        version: 1.11.1-20250414013204.0
+        version: 1.11.1-20250415115505.0
       '@sap-ai-sdk/foundation-models':
         specifier: canary
-        version: 1.11.1-20250414013204.0
+        version: 1.11.1-20250415115505.0
       '@sap-ai-sdk/langchain':
         specifier: canary
-        version: 1.11.1-20250414013204.0(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(zod@3.24.2)
+        version: 1.11.1-20250415115505.0(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(zod@3.24.2)
       '@sap-ai-sdk/orchestration':
         specifier: canary
-        version: 1.11.1-20250414013204.0
+        version: 1.11.1-20250415115505.0
       '@sap-ai-sdk/prompt-registry':
         specifier: canary
-        version: 1.11.1-20250414013204.0
+        version: 1.11.1-20250415115505.0
       '@sap-cloud-sdk/util':
         specifier: ^4.0.2
         version: 4.0.2
@@ -590,8 +590,8 @@ packages:
   '@cfworker/json-schema@4.1.1':
     resolution: {integrity: sha512-gAmrUZSGtKc3AiBL71iNWxDsyUC5uMaKKGdvzYsBoTW/xi42JQHl7eKV2OYzCUqvc+D2RCcf7EXY2iCyFIk6og==}
 
-  '@changesets/apply-release-plan@7.0.10':
-    resolution: {integrity: sha512-wNyeIJ3yDsVspYvHnEz1xQDq18D9ifed3lI+wxRQRK4pArUcuHgCTrHv0QRnnwjhVCQACxZ+CBih3wgOct6UXw==}
+  '@changesets/apply-release-plan@7.0.11':
+    resolution: {integrity: sha512-0iDv9lXJ6dmQ42yxPJQ3N7bKytxpJ/UL4omozNDe32nU7a5Jm+AtYyEnXaLQzZd/adJdExnhkCtxMyw6jvc9lQ==}
 
   '@changesets/assemble-release-plan@6.0.6':
     resolution: {integrity: sha512-Frkj8hWJ1FRZiY3kzVCKzS0N5mMwWKwmv9vpam7vt8rZjLL1JMthdh6pSDVSPumHPshTTkKZ0VtNbE0cJHZZUg==}
@@ -599,8 +599,8 @@ packages:
   '@changesets/changelog-git@0.2.1':
     resolution: {integrity: sha512-x/xEleCFLH28c3bQeQIyeZf8lFXyDFVn1SgcBiR2Tw/r4IAWlk1fzxCEZ6NxQAjF2Nwtczoen3OA2qR+UawQ8Q==}
 
-  '@changesets/cli@2.29.0':
-    resolution: {integrity: sha512-VQdSo9L/Y+PgX1HbytCSftadmHIOK20Y8mOhORDBwaelgjHccxYtO3YBDDhDdaZEPctcuH1YPmIyodHJADXwZA==}
+  '@changesets/cli@2.29.1':
+    resolution: {integrity: sha512-Y1Z7pVxM2PzKIONyz8IOhExr24HgUxyUxd7jkBkpUra0D6rTSeHuOAUE/syUIMQzzFg5r+1YFXq+YVlU/xFk/w==}
     hasBin: true
 
   '@changesets/config@3.1.1':
@@ -612,14 +612,14 @@ packages:
   '@changesets/get-dependents-graph@2.1.3':
     resolution: {integrity: sha512-gphr+v0mv2I3Oxt19VdWRRUxq3sseyUpX9DaHpTUmLj92Y10AGy+XOtV+kbM6L/fDcpx7/ISDFK6T8A/P3lOdQ==}
 
-  '@changesets/get-release-plan@4.0.8':
-    resolution: {integrity: sha512-MM4mq2+DQU1ZT7nqxnpveDMTkMBLnwNX44cX7NSxlXmr7f8hO6/S2MXNiXG54uf/0nYnefv0cfy4Czf/ZL/EKQ==}
+  '@changesets/get-release-plan@4.0.9':
+    resolution: {integrity: sha512-fddyWtaq+c63HAMxkclZUHCO9+11w2+qicKoEYKmZdXdrUnLF/WF3GfNGI1E0e6KinO6BVxbs77KFowdhHKG3w==}
 
   '@changesets/get-version-range-type@0.4.0':
     resolution: {integrity: sha512-hwawtob9DryoGTpixy1D3ZXbGgJu1Rhr+ySH2PvTLHvkZuQ7sRT4oQwMh0hbqZH1weAooedEjRsbrWcGLCeyVQ==}
 
-  '@changesets/git@3.0.2':
-    resolution: {integrity: sha512-r1/Kju9Y8OxRRdvna+nxpQIsMsRQn9dhhAZt94FLDeu0Hij2hnOozW8iqnHBgvu+KdnJppCveQwK4odwfw/aWQ==}
+  '@changesets/git@3.0.3':
+    resolution: {integrity: sha512-YWMBHldVK7+KuMIKl0GZJGDU+UaWaCFh/CSnQwU+rIZ5cH7dDovpOxD+lxXa6a4jdgv/6GnO619N6VidTJbSLw==}
 
   '@changesets/logger@0.1.1':
     resolution: {integrity: sha512-OQtR36ZlnuTxKqoW4Sv6x5YIhOmClRd5pWsjZsddYxpWs517R0HkyiefQPIytCVh4ZcC5x9XaG8KTdd5iRQUfg==}
@@ -630,8 +630,8 @@ packages:
   '@changesets/pre@2.0.2':
     resolution: {integrity: sha512-HaL/gEyFVvkf9KFg6484wR9s0qjAXlZ8qWPDkTyKF6+zqjBe/I2mygg3MbpZ++hdi0ToqNUF8cjj7fBy0dg8Ug==}
 
-  '@changesets/read@0.6.3':
-    resolution: {integrity: sha512-9H4p/OuJ3jXEUTjaVGdQEhBdqoT2cO5Ts95JTFsQyawmKzpL8FnIeJSyhTDPW1MBRDnwZlHFEM9SpPwJDY5wIg==}
+  '@changesets/read@0.6.4':
+    resolution: {integrity: sha512-XP6rUXTp8gWQ6rI2aSJc07RNuQjNaabhFFJbuhQHG71w9+LYRWK6j79OwWEF8v44cpkfNXLByMrNw1NntGY14w==}
 
   '@changesets/should-skip-package@0.1.2':
     resolution: {integrity: sha512-qAK/WrqWLNCP22UDdBTMPH5f41elVDlsNyat180A33dWxuUDyNpg6fPi/FyTZwRriVjg0L8gnjJn2F9XAoF0qw==}
@@ -1127,26 +1127,26 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
-  '@sap-ai-sdk/ai-api@1.11.1-20250414013204.0':
-    resolution: {integrity: sha512-5ktzR9DuXVLrsPrTMk8+VYAx+dAd6JUo8+TIOD2oLdwW+MOv28c9/OLqS2asn/5ftoCcbKF/oKz3fLjDZ01ydA==}
+  '@sap-ai-sdk/ai-api@1.11.1-20250415115505.0':
+    resolution: {integrity: sha512-0MXEBuEJ6k3gNOltqvieITXdhZ08M7FnN9ZRWqqtthhJ1y2dVSDlJoTHxegjLacWujpC0ockwGXT3BbbxR9avg==}
 
-  '@sap-ai-sdk/core@1.11.1-20250414013204.0':
-    resolution: {integrity: sha512-OJdwqtLcIaOStKwFi62/OZSXNy5HkWKERNFVxs5DucT5oczNLjqSR0BdTRql1apCKBsSRgoiacjXbS5TVrwp2A==}
+  '@sap-ai-sdk/core@1.11.1-20250415115505.0':
+    resolution: {integrity: sha512-gUtizDtbf9X+fXCkaiaCOqw6S8WOO84X7raw1wut3ybxgcmAunsUWBiCCj4WCHNYx/96e5XHRAbecFK2vABv1g==}
 
-  '@sap-ai-sdk/document-grounding@1.11.1-20250414013204.0':
-    resolution: {integrity: sha512-17xYa9w4U9qbezVSCBsMomVgjP7jdoMD6Akxag9r5sfmDpn3y2Qz3byZ4T4C+0JQDh4aKEIfJMhHjXrrrPPELA==}
+  '@sap-ai-sdk/document-grounding@1.11.1-20250415115505.0':
+    resolution: {integrity: sha512-1z3r8B/otETRyKObpqg7u5/puX7tWZWgCReU0m/wCwPQcp6F/v4jENI0vAgorzlMLgaANViYKRutmZlkkhtLug==}
 
-  '@sap-ai-sdk/foundation-models@1.11.1-20250414013204.0':
-    resolution: {integrity: sha512-CzYDMB0meZgse+c4tXo4yR4lcvP6cTLLRN7th2OUX6Y7fOMMirKTvxV4F63T4BwpgYlhnKP62QBaBB974J1T7w==}
+  '@sap-ai-sdk/foundation-models@1.11.1-20250415115505.0':
+    resolution: {integrity: sha512-EPU4uoL7Psa+O7ekFpS6hCeD1J9S1mYUa0rNvnn4EwZK7xahXqFeUzvXEcCoPHdkWxSJqAuQ0S9SCewafbL87A==}
 
-  '@sap-ai-sdk/langchain@1.11.1-20250414013204.0':
-    resolution: {integrity: sha512-cWeDPICLsB1UVUkG2gAMANPxdUlgId74NxOrSZ5nSOx4ajcgkuwG8xRBwbSaqoyQHH+ov+da9P0TXqziWEgMHw==}
+  '@sap-ai-sdk/langchain@1.11.1-20250415115505.0':
+    resolution: {integrity: sha512-X0RnZZUU7iMbKsPzjx0zGsMOpxusWUMR1BGm4jqggFT+ZUgmJRfZOXTZ7gHgG8FTDUT6BeAcGkOXQCyxrrW/Bg==}
 
-  '@sap-ai-sdk/orchestration@1.11.1-20250414013204.0':
-    resolution: {integrity: sha512-Ay81HcDdcuXWPgKgBYt7rap5RPhBi9TWds1FFHlqFZJv2d6USjpYkWnrRl83QDwhPKpb2dcMp3RNZih84sE2TA==}
+  '@sap-ai-sdk/orchestration@1.11.1-20250415115505.0':
+    resolution: {integrity: sha512-ZFqKhaPH9wq0Mk3buU7MMLGMhOdyYIsalaUs3camNOhEvSiZq7pRPgwO9RtmDqyoT7jWlM2HS3+HbJe9oykwDA==}
 
-  '@sap-ai-sdk/prompt-registry@1.11.1-20250414013204.0':
-    resolution: {integrity: sha512-MwtjN6o5heo5xVER2qdbKSJwt8C9mRarsN26vNBT/7EBRiKnP1WpZ81nO239cBerW3ak00QLhVdK7/aT1R6Y4g==}
+  '@sap-ai-sdk/prompt-registry@1.11.1-20250415115505.0':
+    resolution: {integrity: sha512-FhTZdz1sbe8znqjt82bchpu5AwdanmyZJyUS6+uWXLjHdweMiCi03ochNIqEYdR57bA9M1YRcmyffKIlsMg0pg==}
 
   '@sap-cloud-sdk/connectivity@4.0.2':
     resolution: {integrity: sha512-20ok60K1PLezyngU3Zcp2Hx3R2rlPYNeebD+IcFhzHklJGhkJGWOBiWxSlCLhyi1hGmYIr5SIlXHe/6AvHC69Q==}
@@ -4169,6 +4169,7 @@ packages:
 
   rspack-resolver@1.2.2:
     resolution: {integrity: sha512-Fwc19jMBA3g+fxDJH2B4WxwZjE0VaaOL7OX/A4Wn5Zv7bOD/vyPZhzXfaO73Xc2GAlfi96g5fGUa378WbIGfFw==}
+    deprecated: Please migrate to the brand new `@rspack/resolver` or `unrs-resolver` instead
 
   run-async@2.4.1:
     resolution: {integrity: sha512-tvVnVv01b8c1RrA6Ep7JkStj85Guv/YrMcwqYQnwjsAS2cTmmPGBBjAjpCW7RrSodNSoE2/qg9O4bceNvUuDgQ==}
@@ -5184,11 +5185,11 @@ snapshots:
 
   '@cfworker/json-schema@4.1.1': {}
 
-  '@changesets/apply-release-plan@7.0.10':
+  '@changesets/apply-release-plan@7.0.11':
     dependencies:
       '@changesets/config': 3.1.1
       '@changesets/get-version-range-type': 0.4.0
-      '@changesets/git': 3.0.2
+      '@changesets/git': 3.0.3
       '@changesets/should-skip-package': 0.1.2
       '@changesets/types': 6.1.0
       '@manypkg/get-packages': 1.1.3
@@ -5213,19 +5214,19 @@ snapshots:
     dependencies:
       '@changesets/types': 6.1.0
 
-  '@changesets/cli@2.29.0':
+  '@changesets/cli@2.29.1':
     dependencies:
-      '@changesets/apply-release-plan': 7.0.10
+      '@changesets/apply-release-plan': 7.0.11
       '@changesets/assemble-release-plan': 6.0.6
       '@changesets/changelog-git': 0.2.1
       '@changesets/config': 3.1.1
       '@changesets/errors': 0.2.0
       '@changesets/get-dependents-graph': 2.1.3
-      '@changesets/get-release-plan': 4.0.8
-      '@changesets/git': 3.0.2
+      '@changesets/get-release-plan': 4.0.9
+      '@changesets/git': 3.0.3
       '@changesets/logger': 0.1.1
       '@changesets/pre': 2.0.2
-      '@changesets/read': 0.6.3
+      '@changesets/read': 0.6.4
       '@changesets/should-skip-package': 0.1.2
       '@changesets/types': 6.1.0
       '@changesets/write': 0.4.0
@@ -5265,18 +5266,18 @@ snapshots:
       picocolors: 1.1.1
       semver: 7.7.1
 
-  '@changesets/get-release-plan@4.0.8':
+  '@changesets/get-release-plan@4.0.9':
     dependencies:
       '@changesets/assemble-release-plan': 6.0.6
       '@changesets/config': 3.1.1
       '@changesets/pre': 2.0.2
-      '@changesets/read': 0.6.3
+      '@changesets/read': 0.6.4
       '@changesets/types': 6.1.0
       '@manypkg/get-packages': 1.1.3
 
   '@changesets/get-version-range-type@0.4.0': {}
 
-  '@changesets/git@3.0.2':
+  '@changesets/git@3.0.3':
     dependencies:
       '@changesets/errors': 0.2.0
       '@manypkg/get-packages': 1.1.3
@@ -5300,9 +5301,9 @@ snapshots:
       '@manypkg/get-packages': 1.1.3
       fs-extra: 7.0.1
 
-  '@changesets/read@0.6.3':
+  '@changesets/read@0.6.4':
     dependencies:
-      '@changesets/git': 3.0.2
+      '@changesets/git': 3.0.3
       '@changesets/logger': 0.1.1
       '@changesets/parse': 0.4.1
       '@changesets/types': 6.1.0
@@ -5931,16 +5932,16 @@ snapshots:
 
   '@rtsao/scc@1.1.0': {}
 
-  '@sap-ai-sdk/ai-api@1.11.1-20250414013204.0':
+  '@sap-ai-sdk/ai-api@1.11.1-20250415115505.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.11.1-20250414013204.0
+      '@sap-ai-sdk/core': 1.11.1-20250415115505.0
       '@sap-cloud-sdk/connectivity': 4.0.2
       '@sap-cloud-sdk/util': 4.0.2
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/core@1.11.1-20250414013204.0':
+  '@sap-ai-sdk/core@1.11.1-20250415115505.0':
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.0.2
       '@sap-cloud-sdk/http-client': 4.0.2
@@ -5950,17 +5951,17 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/document-grounding@1.11.1-20250414013204.0':
+  '@sap-ai-sdk/document-grounding@1.11.1-20250415115505.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.11.1-20250414013204.0
+      '@sap-ai-sdk/core': 1.11.1-20250415115505.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/foundation-models@1.11.1-20250414013204.0':
+  '@sap-ai-sdk/foundation-models@1.11.1-20250415115505.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 1.11.1-20250414013204.0
-      '@sap-ai-sdk/core': 1.11.1-20250414013204.0
+      '@sap-ai-sdk/ai-api': 1.11.1-20250415115505.0
+      '@sap-ai-sdk/core': 1.11.1-20250415115505.0
       '@sap-cloud-sdk/connectivity': 4.0.2
       '@sap-cloud-sdk/http-client': 4.0.2
       '@sap-cloud-sdk/util': 4.0.2
@@ -5968,13 +5969,13 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/langchain@1.11.1-20250414013204.0(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(zod@3.24.2)':
+  '@sap-ai-sdk/langchain@1.11.1-20250415115505.0(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(zod@3.24.2)':
     dependencies:
       '@langchain/core': 0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2))
-      '@sap-ai-sdk/ai-api': 1.11.1-20250414013204.0
-      '@sap-ai-sdk/core': 1.11.1-20250414013204.0
-      '@sap-ai-sdk/foundation-models': 1.11.1-20250414013204.0
-      '@sap-ai-sdk/orchestration': 1.11.1-20250414013204.0
+      '@sap-ai-sdk/ai-api': 1.11.1-20250415115505.0
+      '@sap-ai-sdk/core': 1.11.1-20250415115505.0
+      '@sap-ai-sdk/foundation-models': 1.11.1-20250415115505.0
+      '@sap-ai-sdk/orchestration': 1.11.1-20250415115505.0
       '@sap-cloud-sdk/connectivity': 4.0.2
       uuid: 11.1.0
       zod-to-json-schema: 3.24.5(zod@3.24.2)
@@ -5984,18 +5985,21 @@ snapshots:
       - supports-color
       - zod
 
-  '@sap-ai-sdk/orchestration@1.11.1-20250414013204.0':
+  '@sap-ai-sdk/orchestration@1.11.1-20250415115505.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 1.11.1-20250414013204.0
-      '@sap-ai-sdk/core': 1.11.1-20250414013204.0
+      '@sap-ai-sdk/ai-api': 1.11.1-20250415115505.0
+      '@sap-ai-sdk/core': 1.11.1-20250415115505.0
+      '@sap-ai-sdk/prompt-registry': 1.11.1-20250415115505.0
       '@sap-cloud-sdk/util': 4.0.2
+      yaml: 1.10.2
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/prompt-registry@1.11.1-20250414013204.0':
+  '@sap-ai-sdk/prompt-registry@1.11.1-20250415115505.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.11.1-20250414013204.0
+      '@sap-ai-sdk/core': 1.11.1-20250415115505.0
+      zod: 3.24.2
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -6021,7 +6025,7 @@ snapshots:
       eslint: 9.24.0
       eslint-config-prettier: 10.1.1(eslint@9.24.0)
       eslint-import-resolver-typescript: 4.2.2(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint@9.24.0))(eslint@9.24.0)
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.2.2(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint@9.24.0))(eslint@9.24.0))(eslint@9.24.0)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.2.2)(eslint@9.24.0)
       eslint-plugin-jsdoc: 50.6.9(eslint@9.24.0)
       eslint-plugin-prettier: 5.2.4(eslint-config-prettier@10.1.1(eslint@9.24.0))(eslint@9.24.0)(prettier@3.5.3)
       eslint-plugin-regex: 1.10.0(eslint@9.24.0)
@@ -7437,7 +7441,7 @@ snapshots:
       stable-hash: 0.0.5
       tinyglobby: 0.2.12
     optionalDependencies:
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.2.2(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint@9.24.0))(eslint@9.24.0))(eslint@9.24.0)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.2.2)(eslint@9.24.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -7452,7 +7456,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.2.2(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint@9.24.0))(eslint@9.24.0))(eslint@9.24.0):
+  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.2.2)(eslint@9.24.0):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.8
