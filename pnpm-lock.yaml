@@ -194,8 +194,8 @@ importers:
         specifier: ^4.0.2
         version: 4.0.2
       yaml:
-        specifier: ^1.10.2
-        version: 1.10.2
+        specifier: ^2.7.1
+        version: 2.7.1
     devDependencies:
       '@sap-cloud-sdk/connectivity':
         specifier: ^4.0.2
