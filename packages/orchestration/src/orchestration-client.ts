@@ -47,9 +47,10 @@ export class OrchestrationClient {
     if (typeof config === 'string') {
       this.validateJsonConfig(config);
     } else {
-      this.config = typeof config.templating === 'string'
-      ? this.parseAndMergeTemplating(config) // parse and assign if templating is a string
-      : config; // TypeScript cannot infer that config.templating is not a string
+      this.config =
+        typeof config.templating === 'string'
+          ? this.parseAndMergeTemplating(config) // parse and assign if templating is a string
+          : config; // TypeScript cannot infer that config.templating is not a string
     }
   }
 
@@ -168,34 +169,34 @@ export class OrchestrationClient {
   private parseAndMergeTemplating(
     config: OrchestrationModuleConfig
   ): OrchestrationModuleConfig {
-    let parsedObject, result;
-       if (typeof config.templating === 'string' && !config.templating.trim()) {
-         throw new Error('Templating must be a non-empty YAML string.');
-       }
-       try {
-         parsedObject = yaml.parse(config.templating as string);
-       } catch (error) {
-         throw new Error(`Error parsing YAML: ${error}`);
-       }
+    let parsedObject;
+    if (typeof config.templating === 'string' && !config.templating.trim()) {
+      throw new Error('Templating must be a non-empty YAML string.');
+    }
+    try {
+      parsedObject = yaml.parse(config.templating as string);
+    } catch (error) {
+      throw new Error(`Error parsing YAML: ${error}`);
+    }
 
-     result = promptTemplatePostRequestSchema.safeParse(parsedObject);
-      if (!result.success) { 
-        throw new Error(
-          `Prompt Template YAML does not conform to the defined type. Validation errors: ${result.error}`
-        );
+    const result = promptTemplatePostRequestSchema.safeParse(parsedObject);
+    if (!result.success) {
+      throw new Error(
+        `Prompt Template YAML does not conform to the defined type. Validation errors: ${result.error}`
+      );
+    }
+    return {
+      ...config,
+      templating: {
+        template: result.data.spec.template,
+        ...(result.data.spec.defaults && {
+          defaults: result.data.spec.defaults
+        }),
+        ...(result.data.spec.response_format && {
+          response_format: result.data.spec.response_format
+        }),
+        ...(result.data.spec.tools && { tools: result.data.spec.tools })
       }
-        return {
-          ...config,
-          templating: {
-            template: result.data.spec.template,
-            ...(result.data.spec.defaults && {
-              defaults: result.data.spec.defaults
-            }),
-            ...(result.data.spec.response_format && {
-              response_format: result.data.spec.response_format
-            }),
-            ...(result.data.spec.tools && { tools: result.data.spec.tools })
-          }
-        };
-      }
-    } 
+    };
+  }
+}

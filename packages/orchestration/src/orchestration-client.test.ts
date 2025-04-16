@@ -473,7 +473,11 @@ describe('orchestration service client', () => {
       templating: ''
     };
 
-    expect(() => new OrchestrationClient(invalidConfigWithYaml).chatCompletion({ inputParams: { topic: 'Generative AI Hub' } })).toThrow();
+    expect(() =>
+      new OrchestrationClient(invalidConfigWithYaml).chatCompletion({
+        inputParams: { topic: 'Generative AI Hub' }
+      })
+    ).toThrow();
   });
 
   it('calls chatCompletion with grounding configuration', async () => {
