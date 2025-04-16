@@ -9,7 +9,6 @@ spec:
     - role: "user"
       content: |-
         Write a 1 verse poem about the following topic: {{?topic}}
-
   response_format:
     type: 'json_schema'
     json_schema:
@@ -17,6 +16,7 @@ spec:
       description: Structured format for the generated poem
       strict: true
       schema:
+        type: object
         additionalProperties: false
         required:
           - title

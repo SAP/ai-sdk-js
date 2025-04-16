@@ -46,10 +46,10 @@ export class OrchestrationClient {
   ) {
     if (typeof config === 'string') {
       this.validateJsonConfig(config);
-    } else if (typeof config.templating === 'string') {
-      this.config = this.parseAndMergeTemplating(config); // parse and assign if templating is a string
     } else {
-      this.config = config as OrchestrationModuleConfig; // TypeScript cannot infer that config.templating is not a string
+      this.config = typeof config.templating === 'string'
+      ? this.parseAndMergeTemplating(config) // parse and assign if templating is a string
+      : config; // TypeScript cannot infer that config.templating is not a string
     }
   }
 
@@ -168,11 +168,22 @@ export class OrchestrationClient {
   private parseAndMergeTemplating(
     config: OrchestrationModuleConfig
   ): OrchestrationModuleConfig {
-    try {
-      const parsedObject = yaml.parse(config.templating as string); // We are sure it's a string here
-      const result = promptTemplatePostRequestSchema.safeParse(parsedObject);
+    let parsedObject, result;
+       if (typeof config.templating === 'string' && !config.templating.trim()) {
+         throw new Error('Templating must be a non-empty YAML string.');
+       }
+       try {
+         parsedObject = yaml.parse(config.templating as string);
+       } catch (error) {
+         throw new Error(`Error parsing YAML: ${error}`);
+       }
 
-      if (result.success) {
+     result = promptTemplatePostRequestSchema.safeParse(parsedObject);
+      if (!result.success) { 
+        throw new Error(
+          `Prompt Template YAML does not conform to the defined type. Validation errors: ${result.error}`
+        );
+      }
         return {
           ...config,
           templating: {
@@ -187,11 +198,4 @@ export class OrchestrationClient {
           }
         };
       }
-      throw new Error(
-        `Prompt Template YAML does not conform to the defined type: ${result.error}`
-      );
-    } catch (error) {
-      throw new Error(`Error parsing YAML: ${error}`);
-    }
-  }
-}
+    } 

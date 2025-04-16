@@ -413,6 +413,7 @@ describe('orchestration service client', () => {
             description: 'Structured format for the generated poem',
             strict: true,
             schema: {
+              type: 'object',
               additionalProperties: false,
               required: ['title', 'verses', 'theme'],
               properties: {
@@ -462,6 +463,18 @@ describe('orchestration service client', () => {
     ).chatCompletion({ inputParams: { topic: 'Generative AI Hub' } });
     expect(response.data).toEqual(mockResponse);
   }, 60000);
+
+  it('fails when template is an empty string', async () => {
+    const invalidConfigWithYaml: OrchestrationModuleConfig = {
+      llm: {
+        model_name: 'gpt-4o',
+        model_params: { max_tokens: 500 }
+      },
+      templating: ''
+    };
+
+    expect(() => new OrchestrationClient(invalidConfigWithYaml).chatCompletion({ inputParams: { topic: 'Generative AI Hub' } })).toThrow();
+  });
 
   it('calls chatCompletion with grounding configuration', async () => {
     const config: OrchestrationModuleConfig = {
