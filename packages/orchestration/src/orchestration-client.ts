@@ -23,7 +23,7 @@ import type {
 } from './orchestration-types.js';
 import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
-import { TemplatingChatMessage } from './client/api/schema/templating-chat-message.js';
+import { TemplatingChatMessage } from './client/api/schema/index.js';
 
 const logger = createLogger({
   package: 'orchestration',
