@@ -163,4 +163,4 @@ function callFunction(name: string, args: any): string {
     default:
       throw new Error(`Function: ${name} not found!`);
   }
-};
+}
