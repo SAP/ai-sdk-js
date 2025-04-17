@@ -75,15 +75,31 @@ export class OrchestrationClient {
       );
     }
 
-    return this.createStreamResponse(
-      {
-        prompt,
-        requestConfig,
-        stream: true,
-        streamOptions: options
-      },
-      controller
-    );
+    try {
+      return this.createStreamResponse(
+        {
+          prompt,
+          requestConfig,
+          stream: true,
+          streamOptions: options
+        },
+        controller
+      );
+    } catch (error: any) {
+      if (
+        error.cause?.response?.data &&
+        typeof error.cause.response.data.read === 'function'
+      ) {
+        const chunks: Buffer[] = [];
+        for await (const chunk of error.cause.response.data) {
+          chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+        }
+        const responseString = Buffer.concat(chunks).toString('utf8');
+        const data = JSON.parse(responseString);
+        error.cause.response.data = data;
+      }
+      throw error;
+    }
   }
 
   private async executeRequest(options: RequestOptions): Promise<HttpResponse> {
