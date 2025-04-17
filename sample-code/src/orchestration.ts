@@ -586,3 +586,37 @@ export async function orchestrationToolCalling(): Promise<OrchestrationResponse>
   });
   return orchestrationClient.chatCompletion();
 }
+
+/**
+ * Use translation module for input and output.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationTranslation(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    llm,
+    templating: {
+      template: [
+        {
+          role: 'user',
+          content: 'Welche Stadt ist die Hauptstadt von Frankreich?'
+        }
+      ]
+    },
+    inputTranslation: {
+      type: 'sap_document_translation',
+      config: {
+        source_language: 'de-DE',
+        target_language: 'en-US'
+      }
+    },
+    outputTranslation: {
+      type: 'sap_document_translation',
+      config: {
+        source_language: 'en-US',
+        target_language: 'fr-FR'
+      }
+    }
+  });
+
+  return orchestrationClient.chatCompletion();
+}

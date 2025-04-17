@@ -10,9 +10,11 @@ import type {
   FilteringStreamOptions,
   GlobalStreamOptions,
   GroundingModuleConfig,
+  InputTranslationModuleConfig,
   LlamaGuard38B,
   MaskingModuleConfig,
   LlmModuleConfig as OriginalLlmModuleConfig,
+  OutputTranslationModuleConfig,
   TemplatingModuleConfig
 } from './client/api/schema/index.js';
 
@@ -89,6 +91,14 @@ export interface OrchestrationModuleConfig {
    * Global streaming options.
    */
   streaming?: GlobalStreamOptions;
+  /**
+   * Input translation module configuration.
+   */
+  inputTranslation?: InputTranslationModuleConfig;
+  /**
+   * Output translation module configuration.
+   */
+  outputTranslation?: OutputTranslationModuleConfig;
 }
 
 /**
