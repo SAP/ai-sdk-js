@@ -10,6 +10,7 @@ import {
   constructCompletionPostRequest,
   constructCompletionPostRequestFromJsonModuleConfig
 } from './util/index.js';
+import type { TemplatingChatMessage } from './client/api/schema/index.js';
 import type {
   HttpResponse,
   CustomRequestConfig
@@ -46,10 +47,11 @@ export class OrchestrationClient {
   ) {
     if (typeof config === 'string') {
       this.validateJsonConfig(config);
-    } else if (typeof config.templating === 'string') {
-      this.config = this.parseAndMergeTemplating(config); // parse and assign if templating is a string
     } else {
-      this.config = config as OrchestrationModuleConfig; // TypeScript cannot infer that config.templating is not a string
+      this.config =
+        typeof config.templating === 'string'
+          ? this.parseAndMergeTemplating(config) // parse and assign if templating is a string
+          : config;
     }
   }
 
@@ -168,30 +170,31 @@ export class OrchestrationClient {
   private parseAndMergeTemplating(
     config: OrchestrationModuleConfig
   ): OrchestrationModuleConfig {
+    let parsedObject;
+    if (typeof config.templating === 'string' && !config.templating.trim()) {
+      throw new Error('Templating YAML string must be non-empty.');
+    }
     try {
-      const parsedObject = yaml.parse(config.templating as string); // We are sure it's a string here
-      const result = promptTemplatePostRequestSchema.safeParse(parsedObject);
-
-      if (result.success) {
-        return {
-          ...config,
-          templating: {
-            template: result.data.spec.template,
-            ...(result.data.spec.defaults && {
-              defaults: result.data.spec.defaults
-            }),
-            ...(result.data.spec.response_format && {
-              response_format: result.data.spec.response_format
-            }),
-            ...(result.data.spec.tools && { tools: result.data.spec.tools })
-          }
-        };
-      }
-      throw new Error(
-        `Prompt Template YAML does not conform to the defined type: ${result.error}`
-      );
+      parsedObject = yaml.parse(config.templating as string);
     } catch (error) {
       throw new Error(`Error parsing YAML: ${error}`);
     }
+
+    const result = promptTemplatePostRequestSchema.safeParse(parsedObject);
+    if (!result.success) {
+      throw new Error(
+        `Prompt Template YAML does not conform to the defined type. Validation errors: ${result.error}`
+      );
+    }
+    const { template, defaults, response_format, tools } = result.data.spec;
+    return {
+      ...config,
+      templating: {
+        template: template as TemplatingChatMessage,
+        ...(defaults && { defaults }),
+        ...(response_format && { response_format }),
+        ...(tools && { tools })
+      }
+    };
   }
 }
