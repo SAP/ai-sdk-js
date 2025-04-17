@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/type-tests",
-  "version": "1.11.0",
+  "version": "1.12.0",
   "description": "Tests to ensure correct types in the SAP AI SDK for JavaScript.",
   "type": "module",
   "private": true,

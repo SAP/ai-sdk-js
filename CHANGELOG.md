@@ -28,6 +28,15 @@
 
 -
 
+# 1.12.0
+## Compatibility Notes
+
+- [langchain] Use `LangchainOrchestrationModuleConfig` to type the configuration object passed to the LangChain orchestration client. (5360c8c)
+
+## New Features
+
+- [orchestration] Add support for passing a YAML specification as a string to the `templating` property in `OrchestrationModuleConfig`. (5360c8c)
+
 # 1.11.0
 ## Compatibility Notes
 
