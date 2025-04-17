@@ -50,7 +50,7 @@ export class OrchestrationClient {
       this.config =
         typeof config.templating === 'string'
           ? this.parseAndMergeTemplating(config) // parse and assign if templating is a string
-          : config; // TypeScript cannot infer that config.templating is not a string
+          : config;
     }
   }
 
@@ -171,7 +171,7 @@ export class OrchestrationClient {
   ): OrchestrationModuleConfig {
     let parsedObject;
     if (typeof config.templating === 'string' && !config.templating.trim()) {
-      throw new Error('Templating must be a non-empty YAML string.');
+      throw new Error('Templating YAML string must be non-empty.');
     }
     try {
       parsedObject = yaml.parse(config.templating as string);
