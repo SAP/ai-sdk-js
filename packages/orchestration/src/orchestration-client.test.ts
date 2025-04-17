@@ -333,7 +333,7 @@ describe('orchestration service client', () => {
         template: [{ role: 'user', content: "What's my name?" }]
       }
     };
-    const prompt = {
+    const prompt: Prompt = {
       messagesHistory: [
         {
           role: 'system',
@@ -480,6 +480,36 @@ describe('orchestration service client', () => {
     ).toThrowErrorMatchingInlineSnapshot(
       '"Templating YAML string must be non-empty."'
     );
+  });
+
+  it('fails when template YAML string does not conform to the expected specification', async () => {
+    const invalidConfigWithYaml: OrchestrationModuleConfig = {
+      llm: {
+        model_name: 'gpt-4o',
+        model_params: { max_tokens: 500 }
+      },
+      templating: `
+      name: poem
+      version: 0.0.1
+      scenario: agent-evaluator
+      `
+    };
+
+    expect(() =>
+      new OrchestrationClient(invalidConfigWithYaml).chatCompletion()
+    ).toThrowErrorMatchingInlineSnapshot(`
+     "Prompt Template YAML does not conform to the defined type. Validation errors: [
+       {
+         "code": "invalid_type",
+         "expected": "object",
+         "received": "undefined",
+         "path": [
+           "spec"
+         ],
+         "message": "Required"
+       }
+     ]"
+    `);
   });
 
   it('calls chatCompletion with grounding configuration', async () => {
