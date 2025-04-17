@@ -125,13 +125,13 @@ export async function chatCompletionWithFunctionCall(): Promise<AzureOpenAiChatC
     tools
   });
 
-  const initialResponse = response.data.choices[0].message;
+  const initialResponseMessage = response.data.choices[0].message;
   // Add the model's response for calling functions into the message history
-  messages.push(initialResponse);
+  messages.push(initialResponseMessage);
 
-  if (initialResponse.tool_calls) {
+  if (initialResponseMessage.tool_calls) {
     // Get the first tool call
-    const toolCall = initialResponse.tool_calls[0];
+    const toolCall = initialResponseMessage.tool_calls[0];
     const name = toolCall.function.name;
     const args = JSON.parse(toolCall.function.arguments);
     const toolResult = callFunction(name, args);
