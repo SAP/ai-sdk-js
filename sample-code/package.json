@@ -27,7 +27,7 @@
     "@sap-ai-sdk/document-grounding": "workspace:^",
     "@sap-ai-sdk/prompt-registry": "workspace:^",
     "langchain": "0.3.21",
-    "@langchain/core": "0.3.44",
+    "@langchain/core": "0.3.45",
     "@langchain/textsplitters": "0.1.0",
     "@sap-cloud-sdk/util": "^4.0.2",
     "@types/express": "^5.0.1",
