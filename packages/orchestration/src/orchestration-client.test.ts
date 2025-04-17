@@ -477,7 +477,9 @@ describe('orchestration service client', () => {
       new OrchestrationClient(invalidConfigWithYaml).chatCompletion({
         inputParams: { topic: 'Generative AI Hub' }
       })
-    ).toThrow();
+    ).toThrowErrorMatchingInlineSnapshot(
+      `"Templating YAML string must be non-empty."`
+    );
   });
 
   it('calls chatCompletion with grounding configuration', async () => {
