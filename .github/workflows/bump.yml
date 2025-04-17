@@ -52,7 +52,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: ${{ env.DOCS_REPO }}
-          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           fetch-depth: 0
           path: ${{ env.DOCS_CHECKOUT_PATH }}
       - name: Update release notes file
@@ -87,7 +87,7 @@ jobs:
             fi
           fi
         env:
-          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
 
 #Added as a separate job to avoid running into incompatibility issues with pnpm and npm
   lint-docs:
@@ -100,7 +100,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: ${{ env.DOCS_REPO }}
-          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           ref: update-release-notes-js-${{ needs.bump.outputs.version }}
           path: ${{ env.DOCS_CHECKOUT_PATH }}
 
@@ -132,4 +132,4 @@ jobs:
             git push
           fi
         env:
-          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}

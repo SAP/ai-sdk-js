@@ -3,16 +3,16 @@ import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import {
   buildAzureContentSafetyFilter,
   buildDpiMaskingProvider,
-  buildLlamaGuardFilter,
-  type OrchestrationModuleConfig
+  buildLlamaGuardFilter
 } from '@sap-ai-sdk/orchestration';
+import type { LangchainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
 
 /**
  * Ask GPT about an introduction to SAP Cloud SDK.
  * @returns The answer from ChatGPT.
  */
 export async function invokeChain(): Promise<string> {
-  const orchestrationConfig: OrchestrationModuleConfig = {
+  const orchestrationConfig: LangchainOrchestrationModuleConfig = {
     // define the language model to be used
     llm: {
       model_name: 'gpt-4o'
@@ -42,7 +42,7 @@ export async function invokeChain(): Promise<string> {
  * @returns The answer from ChatGPT.
  */
 export async function invokeChainWithInputFilter(): Promise<string> {
-  const orchestrationConfig: OrchestrationModuleConfig = {
+  const orchestrationConfig: LangchainOrchestrationModuleConfig = {
     // define the language model to be used
     llm: {
       model_name: 'gpt-4o'
@@ -77,7 +77,7 @@ export async function invokeChainWithInputFilter(): Promise<string> {
  * @returns The answer from ChatGPT.
  */
 export async function invokeChainWithOutputFilter(): Promise<string> {
-  const orchestrationConfig: OrchestrationModuleConfig = {
+  const orchestrationConfig: LangchainOrchestrationModuleConfig = {
     // define the language model to be used
     llm: {
       model_name: 'gpt-4o'
@@ -117,7 +117,7 @@ export async function invokeChainWithOutputFilter(): Promise<string> {
  * @returns The answer from ChatGPT.
  */
 export async function invokeChainWithMasking(): Promise<string> {
-  const orchestrationConfig: OrchestrationModuleConfig = {
+  const orchestrationConfig: LangchainOrchestrationModuleConfig = {
     // define the language model to be used
     llm: {
       model_name: 'gpt-4o'

@@ -59,16 +59,15 @@ export interface OrchestrationModuleConfig {
   /**
    * Templating module configuration.
    */
-  templating: TemplatingModuleConfig;
+  templating: TemplatingModuleConfig | string;
   /**
    * LLM module configuration.
    */
   llm: LlmModuleConfig;
   /**
-   * Filtering module configuration.
-   * Construct filter configuration for both input and output filters using convenience functions.
+   * Filtering module configuration for both input and output filters.
+   * To configure a filter, use convenience functions like `buildAzureContentSafetyFilter`, `buildLlamaGuardFilter`, etc..
    * @example
-   * ```ts
    * filtering: {
    *   input: {
    *     filters: [
@@ -76,7 +75,6 @@ export interface OrchestrationModuleConfig {
    *     ]
    *   }
    * }
-   * ```
    */
   filtering?: FilteringModuleConfig;
   /**

@@ -11,7 +11,8 @@ import type {
   ModuleConfigs,
   OrchestrationConfig,
   OutputFilteringConfig,
-  GlobalStreamOptions
+  GlobalStreamOptions,
+  TemplatingModuleConfig
 } from '../client/api/schema/index.js';
 
 const logger = createLogger({
@@ -132,7 +133,7 @@ export function constructCompletionPostRequest(
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
   const moduleConfigurations: ModuleConfigs = {
-    templating_module_config: config.templating,
+    templating_module_config: config.templating as TemplatingModuleConfig,
     llm_module_config: config.llm,
     ...(config?.filtering &&
       Object.keys(config.filtering).length && {
