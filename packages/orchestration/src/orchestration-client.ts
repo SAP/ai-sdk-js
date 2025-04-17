@@ -185,17 +185,18 @@ export class OrchestrationClient {
         `Prompt Template YAML does not conform to the defined type. Validation errors: ${result.error}`
       );
     }
+    const spec = result.data.spec;
     return {
       ...config,
       templating: {
-        template: result.data.spec.template,
-        ...(result.data.spec.defaults && {
-          defaults: result.data.spec.defaults
+        template: spec.template,
+        ...(spec.defaults && {
+          defaults: spec.defaults
         }),
-        ...(result.data.spec.response_format && {
-          response_format: result.data.spec.response_format
+        ...(spec.response_format && {
+          response_format: spec.response_format
         }),
-        ...(result.data.spec.tools && { tools: result.data.spec.tools })
+        ...(spec.tools && { tools: spec.tools })
       }
     };
   }
