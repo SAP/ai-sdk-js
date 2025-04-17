@@ -30,7 +30,7 @@ jobs:
         with:
           pr-ref: ${{ steps.determine-branch-name.outputs.release_notes_branch }}
           repo: ${{ env.DOCS_REPO }}
-          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           excluded-check-runs: |
             {
               \"Build Cloud SDK Documentation\": [\"dependabot\"]    
@@ -59,4 +59,4 @@ jobs:
         run: |
           gh pr merge --squash "${{ needs.check-release-notes-pr.outputs.release_notes_branch }}" --delete-branch --repo "${{ env.DOCS_REPO }}"
         env:
-          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
