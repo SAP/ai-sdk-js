@@ -36,8 +36,8 @@
   },
   "devDependencies": {
     "ts-to-zod": "^3.15.0",
-    "zod": "^3.24.2",
-    "@changesets/cli": "^2.29.1",
+    "zod": "^3.24.3",
+    "@changesets/cli": "^2.29.2",
     "@jest/globals": "^29.5.12",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
