@@ -176,7 +176,7 @@ export class OrchestrationClient {
         return {
           ...config,
           templating: {
-            template: result.data.spec.template,
+            template: result.data.spec.template as any,
             ...(result.data.spec.defaults && {
               defaults: result.data.spec.defaults
             }),

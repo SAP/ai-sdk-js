@@ -21,7 +21,8 @@ import {
   orchestrationGroundingHelpSapCom,
   orchestrationMaskGroundingInput,
   orchestrationPromptRegistry,
-  orchestrationResponseFormat
+  orchestrationResponseFormat,
+  orchestrationTranslation
 } from './orchestration.js';
 import {
   getDeployments,
@@ -242,7 +243,8 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       fromJson: orchestrationFromJson,
       image: orchestrationChatCompletionImage,
       responseFormat: orchestrationResponseFormat,
-      maskGroundingInput: orchestrationMaskGroundingInput
+      maskGroundingInput: orchestrationMaskGroundingInput,
+      translation: orchestrationTranslation
     }[sampleCase] || orchestrationChatCompletion;
 
   try {
