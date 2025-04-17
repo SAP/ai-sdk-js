@@ -478,7 +478,7 @@ describe('orchestration service client', () => {
         inputParams: { topic: 'Generative AI Hub' }
       })
     ).toThrowErrorMatchingInlineSnapshot(
-      `"Templating YAML string must be non-empty."`
+      '"Templating YAML string must be non-empty."'
     );
   });
 
