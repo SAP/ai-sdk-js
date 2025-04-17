@@ -10,6 +10,7 @@ import {
   constructCompletionPostRequest,
   constructCompletionPostRequestFromJsonModuleConfig
 } from './util/index.js';
+import type { TemplatingChatMessage } from './client/api/schema/index.js';
 import type {
   HttpResponse,
   CustomRequestConfig
@@ -23,7 +24,6 @@ import type {
 } from './orchestration-types.js';
 import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
-import { TemplatingChatMessage } from './client/api/schema/index.js';
 
 const logger = createLogger({
   package: 'orchestration',
