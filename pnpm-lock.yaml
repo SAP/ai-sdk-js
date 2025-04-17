@@ -235,8 +235,8 @@ importers:
         version: 5.1.0
     devDependencies:
       '@sap/cds-dk':
-        specifier: ^8.9.1
-        version: 8.9.1(@eslint/js@9.24.0)
+        specifier: ^8.9.2
+        version: 8.9.2(@eslint/js@9.24.0)
 
   sample-code:
     dependencies:
@@ -1180,8 +1180,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  '@sap/cds-dk@8.9.1':
-    resolution: {integrity: sha512-EMaEQWeJZMmLFeUeqN5I+uoPUyYrNCbm5LJTjrlfCLfsQxa9pIc9354zSGFAJHDK3pp1oVw7b+bAqswbVBXT+A==}
+  '@sap/cds-dk@8.9.2':
+    resolution: {integrity: sha512-Lg4x93sb42YVg65GN9fNyRhdCEc6PTZYmkKfRVhLLz8U/MEPjimtMKz09mMuRJ7o1l2mYqCqCLyckl37NAG//w==}
     hasBin: true
 
   '@sap/cds-fiori@1.4.1':
@@ -1194,8 +1194,8 @@ packages:
     resolution: {integrity: sha512-q6h7LkEx6w9LswCIQzJJ2mnoyeGS8jrmBXN4I4+aECRL60mkLskoqGetot+2tX2xXGxCYJuo5v1dtSafwBqTRQ==}
     engines: {node: '>=14'}
 
-  '@sap/cds-mtxs@2.7.0':
-    resolution: {integrity: sha512-V+E5lIZTXrZHdaxeaTR+nMTG/Ldtxha3JYxPMqA9r3Tg1dFl7QZIXYzGlb8eCHzGqFpJ57qWoGAx0Sr0FybaXA==}
+  '@sap/cds-mtxs@2.7.1':
+    resolution: {integrity: sha512-sUVh5HBvOVvbUtdFVNTRRACRLY9eFTZUGZqfW8+RRVGYaxW/rLqjjzWGNcmQHm768muQ9E5xS8pBT45M8v5UWQ==}
     hasBin: true
 
   '@sap/cds@8.9.2':
@@ -6133,13 +6133,13 @@ snapshots:
     dependencies:
       antlr4: 4.9.3
 
-  '@sap/cds-dk@8.9.1(@eslint/js@9.24.0)':
+  '@sap/cds-dk@8.9.2(@eslint/js@9.24.0)':
     dependencies:
       '@cap-js/asyncapi': 1.0.3(@sap/cds@8.9.2(@eslint/js@9.24.0)(express@5.1.0))
       '@cap-js/openapi': 1.2.1(@sap/cds@8.9.2(@eslint/js@9.24.0)(express@5.1.0))
       '@sap/cds': 8.9.2(@eslint/js@9.24.0)(express@4.21.2)
       '@sap/cds-foss': 5.0.1
-      '@sap/cds-mtxs': 2.7.0(hdb@0.19.12)
+      '@sap/cds-mtxs': 2.7.1(hdb@0.19.12)
       '@sap/eslint-plugin-cds': 3.2.0(@eslint/js@9.24.0)(eslint@9.24.0)(express@4.21.2)
       '@sap/hdi-deploy': 5.4.2(hdb@0.19.12)
       axios: 1.8.4
@@ -6180,7 +6180,7 @@ snapshots:
       xmlbuilder: 15.1.1
       yaml: 2.7.1
 
-  '@sap/cds-mtxs@2.7.0(hdb@0.19.12)':
+  '@sap/cds-mtxs@2.7.1(hdb@0.19.12)':
     dependencies:
       '@sap/hdi-deploy': 5.4.2(hdb@0.19.12)
       axios: 1.8.4
