@@ -156,7 +156,7 @@ function convertTemperatureToFahrenheit(temperature: number): string {
   return `The temperature in Fahrenheit is ${(temperature * 9) / 5 + 32}°F.`;
 }
 
-const callFunction = (name: string, args: any): string => {
+function callFunction(name: string, args: any): string {
   switch (name) {
     case 'convert_temperature_to_fahrenheit':
       return convertTemperatureToFahrenheit(args.temperature);
