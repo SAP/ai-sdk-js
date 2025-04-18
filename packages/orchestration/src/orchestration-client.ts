@@ -80,7 +80,7 @@ export class OrchestrationClient {
     }
 
     try {
-      return this.createStreamResponse(
+      return await this.createStreamResponse(
         {
           prompt,
           requestConfig,
