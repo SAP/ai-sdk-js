@@ -77,6 +77,14 @@ export async function executeRequest(
     );
     return response;
   } catch (error: any) {
+    if (error.response?.data && error.config.responseType === 'stream') {
+      const chunks: Buffer[] = [];
+      for await (const chunk of error.response.data) {
+        chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+      }
+      error.response.data = JSON.parse(Buffer.concat(chunks).toString('utf8'));
+    }
+
     throw new ErrorWithCause(
       `Request failed with status code ${error.status}.`,
       error
