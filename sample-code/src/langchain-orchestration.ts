@@ -164,7 +164,7 @@ export async function invokeLangGraphChain(): Promise<string> {
   const input = [
     {
       role: 'user',
-      content: 'SAP Cloud SDK',
+      content: 'Tell me something about the SAP Cloud SDK',
     }
   ];
   const output = await app.invoke({ messages: input }, config);
@@ -172,7 +172,7 @@ export async function invokeLangGraphChain(): Promise<string> {
   const input2 = [
     {
       role: 'user',
-      content: 'What is special about it?',
+      content: 'What is special about it? Tell me in 3 sentences!',
     },
   ];
   const output2 = await app.invoke({ messages: input2 }, config);
