@@ -1,5 +1,11 @@
 # @sap-ai-sdk/ai-api
 
+## 1.12.0
+
+### Patch Changes
+
+- @sap-ai-sdk/core@1.12.0
+
 ## 1.11.0
 
 ### Patch Changes

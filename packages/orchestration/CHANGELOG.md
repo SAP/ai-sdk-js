@@ -1,5 +1,17 @@
 # @sap-ai-sdk/orchestration
 
+## 1.12.0
+
+### Minor Changes
+
+- 5360c8c: [New Functionality] Add support for passing a YAML specification as a string to the `templating` property in `OrchestrationModuleConfig`.
+
+### Patch Changes
+
+- @sap-ai-sdk/ai-api@1.12.0
+- @sap-ai-sdk/core@1.12.0
+- @sap-ai-sdk/prompt-registry@1.12.0
+
 ## 1.11.0
 
 ### Minor Changes
