@@ -8,7 +8,9 @@ export type {
   StreamOptions,
   DocumentGroundingServiceConfig,
   DocumentGroundingServiceFilter,
+  DpiMaskingConfig,
   LlmModelParams,
+  LlamaGuardCategory,
   AzureContentFilter,
   AzureFilterThreshold
 } from './orchestration-types.js';
@@ -24,7 +26,9 @@ export { OrchestrationClient } from './orchestration-client.js';
 export {
   buildAzureContentFilter,
   buildAzureContentSafetyFilter,
-  buildDocumentGroundingConfig
+  buildLlamaGuardFilter,
+  buildDocumentGroundingConfig,
+  buildDpiMaskingProvider
 } from './util/index.js';
 
 export { OrchestrationResponse } from './orchestration-response.js';

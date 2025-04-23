@@ -10,7 +10,8 @@ import {
   orchestrationChatCompletionImage,
   chatCompletionStreamWithJsonModuleConfig,
   chatCompletionStream,
-  orchestrationResponseFormat
+  orchestrationResponseFormat,
+  orchestrationToolCalling
 } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
@@ -89,6 +90,18 @@ describe('orchestration', () => {
     const result = await orchestrationResponseFormat();
     expect(result.language).toBeDefined();
     expect(result.translation).toBeDefined();
+  });
+
+  it('should return a response with tool_calls when finish_reason is tool_calls', async () => {
+    const result = await orchestrationToolCalling();
+    expect(result.getFinishReason()).toBe('tool_calls');
+
+    const tool_calls =
+      result.data.orchestration_result.choices[0].message.tool_calls;
+
+    expect(tool_calls).toHaveLength(1);
+    expect(tool_calls[0].function.name).toBeDefined();
+    expect(tool_calls[0].function.arguments).toBeDefined();
   });
 
   it('should return stream of orchestration responses', async () => {

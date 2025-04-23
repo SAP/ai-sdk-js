@@ -4,19 +4,14 @@ type LiteralUnion<T extends U, U = string> = T | (U & Record<never, never>);
  * Azure OpenAI models for chat completion.
  */
 export type AzureOpenAiChatModel = LiteralUnion<
-  | 'gpt-4o-mini'
-  | 'gpt-4o'
-  | 'gpt-4'
-  | 'gpt-4-32k'
-  | 'gpt-35-turbo'
-  | 'gpt-35-turbo-16k'
+  'gpt-4o-mini' | 'gpt-4o' | 'gpt-4' | 'o1' | 'o3-mini'
 >;
 
 /**
  * Azure OpenAI models for embedding.
  */
 export type AzureOpenAiEmbeddingModel = LiteralUnion<
-  'text-embedding-ada-002' | 'text-embedding-3-small' | 'text-embedding-3-large'
+  'text-embedding-3-small' | 'text-embedding-3-large'
 >;
 
 /**
@@ -47,7 +42,7 @@ export type AwsBedrockChatModel = LiteralUnion<
 export type AiCoreOpenSourceChatModel = LiteralUnion<
   | 'mistralai--mixtral-8x7b-instruct-v01'
   | 'mistralai--mistral-large-instruct'
-  | 'meta--llama3-70b-instruct'
   | 'meta--llama3.1-70b-instruct'
   | 'ibm--granite-13b-chat'
+  | 'alephalpha-pharia-1-7b-control'
 >;

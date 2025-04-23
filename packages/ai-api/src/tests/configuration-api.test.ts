@@ -27,11 +27,11 @@ describe('configuration', () => {
           executableId: 'azure-openai',
           id: '0a1b2c3d',
           inputArtifactBindings: [],
-          name: 'gpt-4-32k',
+          name: 'gpt-4o',
           parameterBindings: [
             {
               key: 'modelName',
-              value: 'gpt-4-32k'
+              value: 'gpt-4o'
             },
             {
               key: 'modelVersion',

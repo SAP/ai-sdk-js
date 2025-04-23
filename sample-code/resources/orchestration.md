@@ -25,7 +25,7 @@ import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
   llm: {
-    model_name: 'gpt-4-32k',
+    model_name: 'gpt-4o',
     model_params: { max_tokens: 50, temperature: 0.1 }
   },
   templating: {
@@ -50,7 +50,7 @@ import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 const orchestrationClient = new OrchestrationClient({
   llm: {
-    model_name: 'gpt-4-32k',
+    model_name: 'gpt-4o',
     model_params: { max_tokens: 50, temperature: 0.1 }
   },
   templating: {

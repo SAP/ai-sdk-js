@@ -1,6 +1,7 @@
 import {
   buildAzureContentFilter,
-  buildAzureContentSafetyFilter
+  buildAzureContentSafetyFilter,
+  buildLlamaGuardFilter
 } from './filtering.js';
 import { constructCompletionPostRequest } from './module-config.js';
 import type { OrchestrationModuleConfig } from '../orchestration-types.js';
@@ -15,7 +16,7 @@ describe('Content filter util', () => {
   describe('buildAzureContentFilter', () => {
     const config: OrchestrationModuleConfig = {
       llm: {
-        model_name: 'gpt-35-turbo-16k',
+        model_name: 'gpt-4o',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
       templating: {
@@ -209,6 +210,36 @@ describe('Content filter util', () => {
       expect(() => buildAzureContentSafetyFilter({})).toThrow(
         'Filtering configuration cannot be an empty object'
       );
+    });
+  });
+
+  describe('Llama Guard filter', () => {
+    it('builds filter config with custom config', async () => {
+      const filterConfig = buildLlamaGuardFilter('elections', 'hate');
+      const expectedFilterConfig = {
+        type: 'llama_guard_3_8b',
+        config: {
+          elections: true,
+          hate: true
+        }
+      };
+      expect(filterConfig).toEqual(expectedFilterConfig);
+    });
+
+    it('builds filter config without duplicates', async () => {
+      const filterConfig = buildLlamaGuardFilter(
+        'non_violent_crimes',
+        'privacy',
+        'non_violent_crimes'
+      );
+      const expectedFilterConfig = {
+        type: 'llama_guard_3_8b',
+        config: {
+          non_violent_crimes: true,
+          privacy: true
+        }
+      };
+      expect(filterConfig).toEqual(expectedFilterConfig);
     });
   });
 });

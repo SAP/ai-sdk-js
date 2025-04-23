@@ -20,13 +20,15 @@ export {
   orchestrationChatCompletionImage,
   orchestrationResponseFormat,
   chatCompletionStreamWithJsonModuleConfig,
-  chatCompletionStream
+  chatCompletionStream,
+  orchestrationToolCalling
 } from './orchestration.js';
 export {
   invoke,
   invokeChain,
   invokeRagChain
 } from './langchain-azure-openai.js';
+export { invokeChain as orchestrationInvokeChain } from './langchain-orchestration.js';
 export {
   getDeployments,
   getDeploymentsWithDestination,
@@ -46,3 +48,8 @@ export {
   createDocumentsWithTimestamp,
   deleteCollection
 } from './document-grounding.js';
+
+export {
+  createPromptTemplate,
+  deletePromptTemplate
+} from './prompt-registry.js';

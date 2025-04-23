@@ -1,0 +1,82 @@
+{
+  "request_id": "anonymized-request-id",
+  "module_results": {
+    "templating": [
+      {
+        "role": "user",
+        "content": "Create 20 paraphrases of I like myself."
+      }
+    ],
+    "input_filtering": {
+      "message": "Input filter passed successfully.",
+      "data": {
+        "azure_content_safety": {
+          "Sexual": 0
+        },
+        "llama_guard_3_8b": {
+          "self_harm": false
+        }
+      }
+    },
+    "llm": {
+      "id": "anonymized-id",
+      "object": "chat.completion",
+      "created": 0,
+      "model": "gpt-4o",
+      "system_fingerprint": "anonymized-fingerprint",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "1. I have a positive opinion of myself.\n2. I have a strong sense of self-liking.\n3. I have a fondness for who I am.\n4. I am content with my own being.\n5. I have a"
+          },
+          "finish_reason": "length"
+        }
+      ],
+      "usage": {
+        "completion_tokens": 50,
+        "prompt_tokens": 17,
+        "total_tokens": 67
+      }
+    },
+    "output_filtering": {
+      "message": "0 of 1 choices failed the output filter.",
+      "data": {
+        "choices": [
+          {
+            "index": 0,
+            "azure_content_safety": {
+              "Sexual": 0
+            },
+            "llama_guard_3_8b": {
+              "self_harm": false
+            }
+          }
+        ]
+      }
+    }
+  },
+  "orchestration_result": {
+    "id": "anonymized-id",
+    "object": "chat.completion",
+    "created": 0,
+    "model": "gpt-4o",
+    "system_fingerprint": "anonymized-fingerprint",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "1. I have a positive opinion of myself.\n2. I have a strong sense of self-liking.\n3. I have a fondness for who I am.\n4. I am content with my own being.\n5. I have a"
+        },
+        "finish_reason": "length"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 50,
+      "prompt_tokens": 17,
+      "total_tokens": 67
+    }
+  }
+}

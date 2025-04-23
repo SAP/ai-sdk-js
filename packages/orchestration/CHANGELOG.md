@@ -1,5 +1,51 @@
 # @sap-ai-sdk/orchestration
 
+## 1.12.0
+
+### Minor Changes
+
+- 5360c8c: [New Functionality] Add support for passing a YAML specification as a string to the `templating` property in `OrchestrationModuleConfig`.
+
+### Patch Changes
+
+- @sap-ai-sdk/ai-api@1.12.0
+- @sap-ai-sdk/core@1.12.0
+- @sap-ai-sdk/prompt-registry@1.12.0
+
+## 1.11.0
+
+### Minor Changes
+
+- a8d05b0: [New Functionality] Introduce `buildDpiMaskingProvider()` convenience function to build masking provider `SAP Data Privacy Integration`.
+- 264c5b0: [New Functionality] Support setting `metadata_params` property in `buildDocumentGroundingConfig()` convenience function.
+
+### Patch Changes
+
+- Updated dependencies [627a152]
+  - @sap-ai-sdk/core@1.11.0
+  - @sap-ai-sdk/ai-api@1.11.0
+
+## 1.10.0
+
+### Patch Changes
+
+- Updated dependencies [6f28f47]
+  - @sap-ai-sdk/core@1.10.0
+  - @sap-ai-sdk/ai-api@1.10.0
+
+## 1.9.0
+
+### Minor Changes
+
+- bc51f59: [New Functionality] Introduce `buildLlamaGuardFilter()` convenience function to build Llama guard filters.
+
+### Patch Changes
+
+- 84175fb: [Improvement] Update Orchestration to 2502b Release
+- Updated dependencies [bfed500]
+  - @sap-ai-sdk/ai-api@1.9.0
+  - @sap-ai-sdk/core@1.9.0
+
 ## 1.8.0
 
 ### Minor Changes

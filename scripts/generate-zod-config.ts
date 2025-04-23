@@ -22,34 +22,38 @@ async function main(args: string[]) {
   try {
     // Find all .ts files based on the glob path provided
     const files = await glob(input);
-
-    const config: TsToZodConfig[] = files.map(file => {
-      const configName = basename(file, '.ts');
-      const relativeInputPath = relative(process.cwd(), file);
-      const outputFilePath = join(outputSchema, `${configName}.zod.ts`);
-      return {
-        name: configName,
-        input: relativeInputPath,
-        output: outputFilePath
-      };
-    });
-
-    const configContent = `/**
- * ts-to-zod configuration.
- *
- * @type {import("ts-to-zod").TsToZodConfig}
- */
-module.exports = ${JSON.stringify(config, null, 2)};
-`;
-
-    // Write the config file to the specified outputConfig path
-    const configFilePath = join(process.cwd(), 'ts-to-zod.config.cjs');
-    await writeFile(configFilePath, configContent, 'utf8');
-
-    logger.info(`Configuration file generated at ${configFilePath}`);
+    await generateAndWriteConfig(files, outputSchema);
+    
   } catch (error) {
     logger.error('Error while generating configuration file:', error);
   }
+}
+
+export async function generateAndWriteConfig(files: string[], outputSchema: string): Promise<void> {
+  const config: TsToZodConfig[] = files.map(file => {
+    const configName = basename(file, '.ts');
+    const relativeInputPath = relative(process.cwd(), file);
+    const outputFilePath = join(outputSchema, `${configName}.zod.ts`);
+    return {
+      name: configName,
+      input: relativeInputPath,
+      output: outputFilePath
+    };
+  });
+
+  const configContent = `/**
+    * ts-to-zod configuration.
+    *
+    * @type {import("ts-to-zod").TsToZodConfig}
+    */
+    module.exports = ${JSON.stringify(config, null, 2)};
+    `;
+
+  // Write the config file to the specified outputConfig path
+  const configFilePath = join(process.cwd(), 'ts-to-zod.config.cjs');
+  await writeFile(configFilePath, configContent, 'utf8');
+
+  logger.info(`Configuration file generated at ${configFilePath}`);
 }
 
 // Run the main function

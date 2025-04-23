@@ -123,7 +123,7 @@ expectType<Promise<AzureOpenAiChatCompletionResponse>>(
  */
 
 expectType<Promise<AzureOpenAiEmbeddingResponse>>(
-  new AzureOpenAiEmbeddingClient('text-embedding-ada-002').run({
+  new AzureOpenAiEmbeddingClient('text-embedding-3-small').run({
     input: 'test input'
   })
 );
@@ -136,7 +136,7 @@ expectType<AzureOpenAiEmbeddingClient>(
  * Embeddings with optional parameters.
  */
 expectType<Promise<AzureOpenAiEmbeddingResponse>>(
-  new AzureOpenAiEmbeddingClient('text-embedding-ada-002').run(
+  new AzureOpenAiEmbeddingClient('text-embedding-3-small').run(
     {
       input: ['test input 1', 'test input 2'],
       user: 'some-guid'
@@ -150,7 +150,7 @@ expectType<Promise<AzureOpenAiEmbeddingResponse>>(
 );
 
 expectType<Promise<AzureOpenAiEmbeddingResponse>>(
-  new AzureOpenAiEmbeddingClient('text-embedding-ada-002', {
+  new AzureOpenAiEmbeddingClient('text-embedding-3-small', {
     destinationName: 'destinationName',
     useCache: false
   }).run({
@@ -159,7 +159,7 @@ expectType<Promise<AzureOpenAiEmbeddingResponse>>(
 );
 
 expect<AzureOpenAiChatModel>('custom-model');
-expect<AzureOpenAiChatModel>('gpt-4-32k');
+expect<AzureOpenAiChatModel>('gpt-4o');
 
 /**
  * Streaming.

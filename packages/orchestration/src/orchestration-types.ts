@@ -4,10 +4,13 @@ import type {
   ChatMessages,
   DataRepositoryType,
   DocumentGroundingFilter,
+  DpiConfig,
+  DpiEntities,
   FilteringModuleConfig,
   FilteringStreamOptions,
   GlobalStreamOptions,
   GroundingModuleConfig,
+  LlamaGuard38B,
   MaskingModuleConfig,
   LlmModuleConfig as OriginalLlmModuleConfig,
   TemplatingModuleConfig
@@ -56,16 +59,15 @@ export interface OrchestrationModuleConfig {
   /**
    * Templating module configuration.
    */
-  templating: TemplatingModuleConfig;
+  templating: TemplatingModuleConfig | string;
   /**
    * LLM module configuration.
    */
   llm: LlmModuleConfig;
   /**
-   * Filtering module configuration.
-   * Construct filter configuration for both input and output filters using convenience functions.
+   * Filtering module configuration for both input and output filters.
+   * To configure a filter, use convenience functions like `buildAzureContentSafetyFilter`, `buildLlamaGuardFilter`, etc..
    * @example
-   * ```ts
    * filtering: {
    *   input: {
    *     filters: [
@@ -73,7 +75,6 @@ export interface OrchestrationModuleConfig {
    *     ]
    *   }
    * }
-   * ```
    */
   filtering?: FilteringModuleConfig;
   /**
@@ -161,7 +162,22 @@ export interface DocumentGroundingServiceConfig {
    * @example "groundingOutput"
    */
   output_param: string;
+  /**
+   * Parameter name used for specifying metadata parameters.
+   */
+  metadata_params?: string[];
 }
+
+/**
+ * Represents the configuration for the masking provider SAP Data Privacy Integration.
+ */
+export type DpiMaskingConfig = Omit<
+  DpiConfig,
+  'type' | 'entities' | 'mask_grounding_input'
+> & {
+  entities: [DpiEntities, ...DpiEntities[]];
+  mask_grounding_input?: boolean;
+};
 
 /**
  * Filter configuration for Azure content safety Filter.
@@ -201,3 +217,8 @@ export const supportedAzureFilterThresholds = {
  *
  */
 export type AzureFilterThreshold = keyof typeof supportedAzureFilterThresholds;
+
+/**
+ * The filter categories supported for Llama guard filter.
+ */
+export type LlamaGuardCategory = keyof LlamaGuard38B;

@@ -1,5 +1,43 @@
 # @sap-ai-sdk/sample-cap
 
+## 1.12.0
+
+### Patch Changes
+
+- Updated dependencies [5360c8c]
+  - @sap-ai-sdk/orchestration@1.12.0
+  - @sap-ai-sdk/ai-api@1.12.0
+  - @sap-ai-sdk/foundation-models@1.12.0
+
+## 1.11.0
+
+### Patch Changes
+
+- Updated dependencies [a8d05b0]
+- Updated dependencies [264c5b0]
+  - @sap-ai-sdk/orchestration@1.11.0
+  - @sap-ai-sdk/ai-api@1.11.0
+  - @sap-ai-sdk/foundation-models@1.11.0
+
+## 1.10.0
+
+### Patch Changes
+
+- @sap-ai-sdk/ai-api@1.10.0
+- @sap-ai-sdk/foundation-models@1.10.0
+- @sap-ai-sdk/orchestration@1.10.0
+
+## 1.9.0
+
+### Patch Changes
+
+- Updated dependencies [bc51f59]
+- Updated dependencies [bfed500]
+- Updated dependencies [84175fb]
+  - @sap-ai-sdk/orchestration@1.9.0
+  - @sap-ai-sdk/ai-api@1.9.0
+  - @sap-ai-sdk/foundation-models@1.9.0
+
 ## 1.8.0
 
 ### Patch Changes
