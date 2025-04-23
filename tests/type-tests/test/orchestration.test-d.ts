@@ -14,7 +14,7 @@ import type {
   GroundingModuleConfig,
   LlmModelParams,
   AzureContentSafetyFilterConfig,
-  ChatMessages
+  ChatMessages,
   LlamaGuard38BFilterConfig,
   DpiConfig
 } from '@sap-ai-sdk/orchestration';
