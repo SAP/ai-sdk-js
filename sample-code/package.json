@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@langchain/langgraph": "^0.2.62",
-    "langchain": "0.3.21",
+    "langchain": "0.3.24",
     "@langchain/core": "0.3.48",
     "@langchain/textsplitters": "0.1.0",
     "@sap-ai-sdk/ai-api": "workspace:^",
