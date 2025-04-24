@@ -11,7 +11,8 @@ import {
   chatCompletionStreamWithJsonModuleConfig,
   chatCompletionStream,
   orchestrationResponseFormat,
-  orchestrationToolCalling
+  orchestrationToolCalling,
+  orchestrationMessageHistoryWithToolCalling
 } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
@@ -96,12 +97,20 @@ describe('orchestration', () => {
     const result = await orchestrationToolCalling();
     expect(result.getFinishReason()).toBe('tool_calls');
 
-    const tool_calls =
-      result.data.orchestration_result.choices[0].message.tool_calls;
+    const assistantMessage = result.getAssistantMessage();
 
-    expect(tool_calls).toHaveLength(1);
-    expect(tool_calls[0].function.name).toBeDefined();
-    expect(tool_calls[0].function.arguments).toBeDefined();
+    if (assistantMessage.tool_calls) {
+      expect(assistantMessage.tool_calls).toHaveLength(1);
+      expect(assistantMessage.tool_calls[0].function.name).toBeDefined();
+      expect(assistantMessage.tool_calls![0].function.arguments).toBeDefined();
+    } else {
+      throw new Error('Expected tool_calls to be defined');
+    }
+  });
+
+  it('should complete a chat when message history with tool calls is passed', async () => {
+    const result = await orchestrationMessageHistoryWithToolCalling();
+    assertContent(result);
   });
 
   it('should return stream of orchestration responses', async () => {

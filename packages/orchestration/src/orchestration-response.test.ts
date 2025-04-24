@@ -53,6 +53,15 @@ describe('OrchestrationResponse', () => {
     });
   });
 
+  it('should return the assistant message', () => {
+    const assistantMessage = orchestrationResponse.getAssistantMessage();
+
+    expect(assistantMessage).toEqual({
+      role: 'assistant',
+      content: expect.any(String)
+    });
+  });
+
   it('should return default choice index with convenience functions', () => {
     expect(orchestrationResponse.getFinishReason()).toBe('stop');
     expect(orchestrationResponse.getContent()).toBe(

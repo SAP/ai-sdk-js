@@ -3,8 +3,8 @@ import type {
   CompletionPostResponse,
   TokenUsage,
   ChatMessage,
-  MultiChatMessage,
-  ChatMessages
+  ChatMessages,
+  AssistantChatMessage
 } from './client/api/schema/index.js';
 
 /**
@@ -60,40 +60,20 @@ export class OrchestrationResponse {
    * @returns A list of all messages.
    */
   getAllMessages(choiceIndex = 0): ChatMessages {
-    const messages: ChatMessage[] = (
-      this.data.module_results.templating ?? []
-    ).map(message =>
-      this.isMultiChatMessage(message)
-        ? this.handleMultiChatMessage(message)
-        : message
-    );
-
+    const messages: ChatMessage[] = this.data.module_results.templating ?? [];
     const content = this.getChoices().find(
       c => c.index === choiceIndex
     )?.message;
     return content ? [...messages, content] : messages;
   }
 
-  private handleMultiChatMessage(
-    multiChatMessage: MultiChatMessage
-  ): ChatMessage {
-    return {
-      role: multiChatMessage.role,
-      content: multiChatMessage.content
-        .map(content =>
-          content.type === 'text'
-            ? content.text
-            : JSON.stringify({
-                url: content.image_url.url,
-                detail: content.image_url.detail
-              })
-        )
-        .join('\n')
-    };
-  }
-
-  private isMultiChatMessage(params: ChatMessage): params is MultiChatMessage {
-    return Array.isArray(params.content);
+  /**
+   * Gets the assistant message from the response.
+   * @param choiceIndex - The index of the choice to use (default is 0).
+   * @returns The assistant message.
+   */
+  getAssistantMessage(choiceIndex = 0): AssistantChatMessage {
+    return this.getChoices().find(c => c.index === choiceIndex)?.message;
   }
 
   private getChoices() {
