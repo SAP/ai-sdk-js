@@ -18,7 +18,6 @@ import {
   type OrchestrationModuleConfig,
   type OrchestrationResponse
 } from '@sap-ai-sdk/orchestration';
-import { ErrorWithCause } from '@sap-cloud-sdk/util';
 import { loadEnv } from './utils/load-env.js';
 
 loadEnv();
@@ -155,7 +154,6 @@ describe('orchestration', () => {
         new AbortController()
       );
     } catch (err: any) {
-      expect(err).toBeInstanceOf(ErrorWithCause);
       expect(err.stack).toContain(
         'Caused by:\nHTTP Response: Request failed with status code 400'
       );

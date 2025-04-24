@@ -1,5 +1,5 @@
-import { Readable } from 'stream';
-import { json } from 'stream/consumers';
+import { Readable } from 'node:stream';
+import { json } from 'node:stream/consumers';
 import {
   ErrorWithCause,
   mergeIgnoreCase,
