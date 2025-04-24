@@ -25,7 +25,7 @@ import type {
 const defaultJsonConfig = `{
   "module_configurations": {
     "llm_module_config": {
-      "model_name": "gpt-35-turbo-16k",
+      "model_name": "gpt-4o",
       "model_params": {
         "max_tokens": 50,
         "temperature": 0.1
@@ -77,7 +77,7 @@ describe('orchestration service client', () => {
   it('calls chatCompletion with minimum configuration', async () => {
     const config: OrchestrationModuleConfig = {
       llm: {
-        model_name: 'gpt-35-turbo-16k',
+        model_name: 'gpt-4o',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
       templating: {
@@ -151,7 +151,7 @@ describe('orchestration service client', () => {
   it('calls chatCompletion with filter configuration supplied using convenience function', async () => {
     const config: OrchestrationModuleConfig = {
       llm: {
-        model_name: 'gpt-35-turbo-16k',
+        model_name: 'gpt-4o',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
       templating: {
@@ -214,7 +214,7 @@ describe('orchestration service client', () => {
     });
     const config: OrchestrationModuleConfig = {
       llm: {
-        model_name: 'gpt-35-turbo-16k',
+        model_name: 'gpt-4o',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
       templating: {
@@ -263,7 +263,7 @@ describe('orchestration service client', () => {
   it('calls chatCompletion with filtering configuration', async () => {
     const config: OrchestrationModuleConfig = {
       llm: {
-        model_name: 'gpt-35-turbo-16k',
+        model_name: 'gpt-4o',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
       templating: {
@@ -326,14 +326,14 @@ describe('orchestration service client', () => {
   it('sends message history together with templating config', async () => {
     const config: OrchestrationModuleConfig = {
       llm: {
-        model_name: 'gpt-35-turbo-16k',
+        model_name: 'gpt-4o',
         model_params: { max_tokens: 50, temperature: 0.1 }
       },
       templating: {
         template: [{ role: 'user', content: "What's my name?" }]
       }
     };
-    const prompt = {
+    const prompt: Prompt = {
       messagesHistory: [
         {
           role: 'system',
@@ -375,10 +375,147 @@ describe('orchestration service client', () => {
     expect(response.data).toEqual(mockResponse);
   });
 
+  it('calls chatCompletion with template passed as YAML config', async () => {
+    const yamlTemplate = await parseFileToString(
+      'orchestration',
+      'orchestration-chat-completion-yaml-template.yaml'
+    );
+    const configWithYaml: OrchestrationModuleConfig = {
+      llm: {
+        model_name: 'gpt-4o',
+        model_params: { max_tokens: 500 }
+      },
+      templating: yamlTemplate
+    };
+
+    const config: OrchestrationModuleConfig = {
+      llm: {
+        model_name: 'gpt-4o',
+        model_params: { max_tokens: 500 }
+      },
+      templating: {
+        template: [
+          {
+            role: 'system',
+            content:
+              'You are a world-famous poet who can write virtuosic and brilliant poetry on any topic.'
+          },
+          {
+            role: 'user',
+            content:
+              'Write a 1 verse poem about the following topic: {{?topic}}'
+          }
+        ],
+        response_format: {
+          type: 'json_schema',
+          json_schema: {
+            name: 'poem_structure',
+            description: 'Structured format for the generated poem',
+            strict: true,
+            schema: {
+              type: 'object',
+              additionalProperties: false,
+              required: ['title', 'verses', 'theme'],
+              properties: {
+                title: {
+                  type: 'string',
+                  description: 'The title of the poem'
+                },
+                theme: {
+                  type: 'string',
+                  description: 'The central theme or subject of the poem'
+                },
+                verses: {
+                  type: 'array',
+                  description: 'A list of verses making up the poem',
+                  items: {
+                    type: 'string',
+                    description: 'A single verse of the poem'
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const mockResponse = await parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'orchestration-chat-completion-yaml-template-response.json'
+    );
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, {
+          inputParams: { topic: 'Generative AI Hub' }
+        })
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+    const response = await new OrchestrationClient(
+      configWithYaml
+    ).chatCompletion({ inputParams: { topic: 'Generative AI Hub' } });
+    expect(response.data).toEqual(mockResponse);
+  }, 60000);
+
+  it('fails when template is an empty string', async () => {
+    const invalidConfigWithYaml: OrchestrationModuleConfig = {
+      llm: {
+        model_name: 'gpt-4o',
+        model_params: { max_tokens: 500 }
+      },
+      templating: ''
+    };
+
+    expect(() =>
+      new OrchestrationClient(invalidConfigWithYaml).chatCompletion({
+        inputParams: { topic: 'Generative AI Hub' }
+      })
+    ).toThrowErrorMatchingInlineSnapshot(
+      '"Templating YAML string must be non-empty."'
+    );
+  });
+
+  it('fails when template YAML string does not conform to the expected specification', async () => {
+    const invalidConfigWithYaml: OrchestrationModuleConfig = {
+      llm: {
+        model_name: 'gpt-4o',
+        model_params: { max_tokens: 500 }
+      },
+      templating: `
+      name: poem
+      version: 0.0.1
+      scenario: agent-evaluator
+      `
+    };
+
+    expect(() =>
+      new OrchestrationClient(invalidConfigWithYaml).chatCompletion()
+    ).toThrowErrorMatchingInlineSnapshot(`
+     "Prompt Template YAML does not conform to the defined type. Validation errors: [
+       {
+         "code": "invalid_type",
+         "expected": "object",
+         "received": "undefined",
+         "path": [
+           "spec"
+         ],
+         "message": "Required"
+       }
+     ]"
+    `);
+  });
+
   it('calls chatCompletion with grounding configuration', async () => {
     const config: OrchestrationModuleConfig = {
       llm: {
-        model_name: 'gpt-35-turbo'
+        model_name: 'gpt-4o'
       },
       templating: {
         template: [

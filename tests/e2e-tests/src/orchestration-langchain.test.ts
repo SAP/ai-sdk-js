@@ -1,4 +1,7 @@
-import { orchestrationInvokeChain , invokeLangGraphChain } from '@sap-ai-sdk/sample-code';
+import {
+  orchestrationInvokeChain,
+  invokeLangGraphChain
+} from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
 
 loadEnv();

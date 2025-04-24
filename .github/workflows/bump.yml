@@ -6,10 +6,16 @@ on:
       majorVersion:
         description: Mandatory, when bumping a major version. Semver compatible version string (X.Y.Z). Must not be set for patch and minor version releases.
         required: false
+env:
+  DOCS_REPO: SAP/ai-sdk
+  DOCS_CHECKOUT_PATH: ./ai-sdk-docs
+  NODE_VERSION: 20
 
 jobs:
   bump:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.bump.outputs.version }}
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
@@ -20,15 +26,110 @@ jobs:
         id: bump
         with:
           majorVersion: ${{ inputs.majorVersion }}
-      
       - name: merge and write Changelogs
         id: merge-changelogs
         uses: sap/cloud-sdk-js/.github/actions/merge-and-write-changelogs@main
         env:
           VERSION: ${{ steps.bump.outputs.version }}
-
       - uses: sap/cloud-sdk-js/.github/actions/commit-and-tag@main
         name: Commit and tag
         with:
           version: ${{ steps.bump.outputs.version }}
           user-name: sap-ai-sdk
+
+  prepare-release-notes:
+    name: Prepare Release Notes
+    runs-on: ubuntu-latest
+    needs: [bump]
+    outputs:
+      pr_url: ${{ steps.open_pr.outputs.pr_url }}
+    steps:
+      - name: Checkout current repository
+        uses: sap/ai-sdk-js/.github/actions/setup@main
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Checkout Docs Repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DOCS_REPO }}
+          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          fetch-depth: 0
+          path: ${{ env.DOCS_CHECKOUT_PATH }}
+      - name: Update release notes file
+        id: update-notes
+        run: |
+          pnpm node --loader ts-node/esm -e "import { addCurrentChangelog } from './scripts/add-changelog.ts'; addCurrentChangelog()"
+      - name: Open Release notes PR
+        id: open_pr
+        working-directory: ${{ env.DOCS_CHECKOUT_PATH }}
+        run: |
+          git config --local user.email "cloudsdk@sap.com"
+          git config --local user.name "SAP Cloud SDK Bot"
+          BRANCH_NAME="update-release-notes-js-${{ needs.bump.outputs.version }}"
+          git checkout -b "${BRANCH_NAME}"
+          git add docs-js/release-notes.mdx
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+            # Output an empty pr_url if no changes
+            echo "pr_url=" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "update release notes" -a
+            git push -u origin "${BRANCH_NAME}"
+            PR_BODY="Auto-created by update release notes workflow."
+            PR_TITLE="Update JS Release Notes"
+            PR_URL=$(gh pr create --head "${BRANCH_NAME}" --title "${PR_TITLE}" --body "${PR_BODY}" --repo "${{ env.DOCS_REPO }}")
+            echo "Release notes PR created: $PR_URL"
+            if [[ -n "$PR_URL" ]]; then
+              echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
+            else
+              echo "Failed to create PR or extract URL."
+              echo "pr_url=" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+
+#Added as a separate job to avoid running into incompatibility issues with pnpm and npm
+  lint-docs:
+    name: Run Lint Fix on Docs
+    runs-on: ubuntu-latest
+    needs: [prepare-release-notes, bump]
+    if: needs.prepare-release-notes.outputs.pr_url != ''
+    steps:
+      - name: Checkout Docs Repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DOCS_REPO }}
+          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          ref: update-release-notes-js-${{ needs.bump.outputs.version }}
+          path: ${{ env.DOCS_CHECKOUT_PATH }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Dependencies
+        working-directory: ${{ env.DOCS_CHECKOUT_PATH }}
+        run: |
+          npm ci
+
+      - name: Run Lint Fix
+        working-directory: ${{ env.DOCS_CHECKOUT_PATH }}
+        run: |
+          npm run lint:fix
+
+      - name: Commit Lint Fixes
+        working-directory: ${{ env.DOCS_CHECKOUT_PATH }}
+        run: |
+          git config --local user.email "cloudsdk@sap.com"
+          git config --local user.name "SAP Cloud SDK Bot"
+          git add docs-js/release-notes.mdx
+          if git diff --staged --quiet; then
+            echo "No lint fixes to commit"
+          else
+            git commit -m "chore: apply lint fixes"
+            git push
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}

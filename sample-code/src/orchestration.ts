@@ -17,7 +17,8 @@ import type {
   OrchestrationStreamResponse,
   OrchestrationResponse,
   StreamOptions,
-  ErrorResponse
+  ErrorResponse,
+  TemplatingModuleConfig
 } from '@sap-ai-sdk/orchestration';
 
 const logger = createLogger({
@@ -165,7 +166,9 @@ export async function orchestrationPromptRegistry(): Promise<OrchestrationRespon
   });
 }
 
-const templating = { template: [{ role: 'user', content: '{{?input}}' }] };
+const templating: TemplatingModuleConfig = {
+  template: [{ role: 'user', content: '{{?input}}' }]
+};
 
 /**
  * Apply multiple content filters to the input.
@@ -270,7 +273,7 @@ export async function orchestrationCompletionMasking(): Promise<
 > {
   const orchestrationClient = new OrchestrationClient({
     llm: {
-      model_name: 'gpt-4-32k'
+      model_name: 'gpt-4o'
     },
     templating: {
       template: [
@@ -397,7 +400,8 @@ export async function orchestrationGroundingVector(): Promise<OrchestrationRespo
       grounding: buildDocumentGroundingConfig({
         input_params: ['groundingRequest'],
         output_param: 'groundingOutput',
-        filters: [{ data_repository_type: 'vector' }]
+        filters: [{ data_repository_type: 'vector' }],
+        metadata_params: ['context']
       })
     },
     { resourceGroup: 'ai-sdk-js-e2e' }

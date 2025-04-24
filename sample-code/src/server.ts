@@ -4,7 +4,8 @@ import {
   chatCompletion,
   chatCompletionStream as azureChatCompletionStream,
   chatCompletionWithDestination,
-  computeEmbedding
+  computeEmbedding,
+  chatCompletionWithFunctionCall
   // eslint-disable-next-line import/no-internal-modules
 } from './foundation-models/azure-openai.js';
 import {
@@ -46,7 +47,8 @@ import {
   invokeChain as invokeChainOrchestration,
   invokeChainWithInputFilter as invokeChainWithInputFilterOrchestration,
   invokeChainWithOutputFilter as invokeChainWithOutputFilterOrchestration,
-  invokeLangGraphChain
+  invokeLangGraphChain,
+  invokeChainWithMasking
 } from './langchain-orchestration.js';
 import {
   createCollection,
@@ -228,6 +230,15 @@ app.get('/azure-openai/embedding', async (req, res) => {
   }
 });
 
+app.get('/azure-openai/invoke-tool-chain', async (req, res) => {
+  try {
+    const response = await chatCompletionWithFunctionCall();
+    res.header('Content-Type', 'text/plain').send(response.getContent());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
 /* Orchestration */
 app.get('/orchestration/:sampleCase', async (req, res) => {
   const sampleCase = req.params.sampleCase;
@@ -242,7 +253,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       fromJson: orchestrationFromJson,
       image: orchestrationChatCompletionImage,
       responseFormat: orchestrationResponseFormat,
-      maskGroundingInput: orchestrationMaskGroundingInput,
+      maskGroundingInput: orchestrationMaskGroundingInput
     }[sampleCase] || orchestrationChatCompletion;
 
   try {
@@ -422,6 +433,14 @@ app.get(
   }
 );
 
+app.get('/langchain/invoke-chain-orchestration-masking', async (req, res) => {
+  try {
+    res.send(await invokeChainWithMasking());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
 app.get('/langchain/invoke-rag-chain', async (req, res) => {
   try {
     res.header('Content-Type', 'text/plain').send(await invokeRagChain());
@@ -468,6 +487,13 @@ app.get(
       const groundingResult = await orchestrationGroundingVector();
       res.write(
         `Orchestration responded with timestamp:\t${groundingResult.getContent()}\n`
+      );
+
+      // Print the grounding data.
+      const groundingResultString =
+        groundingResult.data.module_results.grounding?.data?.grounding_result;
+      res.write(
+        `Orchestration grounding metadata:\t${JSON.stringify(JSON.parse(groundingResultString)[0].metadata)}\n`
       );
 
       // Delete the created collection.

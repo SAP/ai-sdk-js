@@ -1,4 +1,9 @@
-import type { Prompt, Template } from '@sap-ai-sdk/orchestration';
+import type {
+  Prompt,
+  Template,
+  TemplatingModuleConfig,
+  OrchestrationModuleConfig as OrchestrationModuleConfigWithStringTemplating
+} from '@sap-ai-sdk/orchestration';
 import type { BaseChatModelCallOptions } from '@langchain/core/language_models/chat_models';
 import type { CustomRequestConfig } from '@sap-ai-sdk/core';
 
@@ -19,4 +24,15 @@ export type OrchestrationCallOptions = Pick<
   customRequestConfig?: CustomRequestConfig;
   tools?: Template['tools'];
   inputParams?: Prompt['inputParams'];
+};
+
+/**
+ * Orchestration module configuration for Langchain.
+ */
+// TODO: Omit streaming until supported
+export type LangchainOrchestrationModuleConfig = Omit<
+  OrchestrationModuleConfigWithStringTemplating,
+  'streaming' | 'templating'
+> & {
+  templating: TemplatingModuleConfig;
 };

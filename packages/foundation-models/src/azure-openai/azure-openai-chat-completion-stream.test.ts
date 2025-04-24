@@ -54,6 +54,7 @@ describe('OpenAI chat completion stream', () => {
       messageContext: 'azure-openai-chat-completion-stream'
     });
     const debugSpy = jest.spyOn(logger, 'debug');
+    const errorSpy = jest.spyOn(logger, 'error');
     const asyncGeneratorChunk = AzureOpenAiChatCompletionStream._processChunk(
       originalChatCompletionStream
     );
@@ -69,6 +70,7 @@ describe('OpenAI chat completion stream', () => {
       expect(chunk).toBeDefined();
     }
     expect(debugSpy).toHaveBeenCalledWith('Choice 0: Stream finished.');
+    expect(errorSpy).toHaveBeenCalledTimes(0);
   });
 
   it('should process the token usage', async () => {

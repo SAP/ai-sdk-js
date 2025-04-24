@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/prompt-registry",
-  "version": "1.10.0",
+  "version": "1.12.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
@@ -25,10 +25,14 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
-    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/prompt-registry.yaml -o ./src/client && pnpm update-imports && pnpm lint:fix",
-    "update-imports": "node --no-warnings --loader ts-node/esm ../../scripts/update-imports.ts ./src/client/prompt-registry"
+    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/prompt-registry.yaml -o ./src/client",
+    "postgenerate": "pnpm update-imports && pnpm zod && pnpm lint:fix",
+    "update-imports": "node --no-warnings --loader ts-node/esm ../../scripts/update-imports.ts ./src/client/prompt-registry",
+    "zod": "pnpm generate-zod-config && pnpm ts-to-zod --all --skipValidation && node --no-warnings --loader ts-node/esm ../../scripts/prompt-registry-zod-postprocess.ts ./src/zod && rm ./ts-to-zod.config.cjs ",
+    "generate-zod-config": "rm -r ./src/zod/ && node --no-warnings --loader ts-node/esm ../../scripts/zod-config-prompt-registry.ts \"./src/client/prompt-registry/schema/prompt-template-post-request.ts\" ./src/zod"
   },
   "dependencies": {
-    "@sap-ai-sdk/core": "workspace:^"
+    "@sap-ai-sdk/core": "workspace:^",
+    "zod": "^3.24.3"
   }
 }

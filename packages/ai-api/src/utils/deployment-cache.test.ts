@@ -37,11 +37,11 @@ describe('deployment cache', () => {
         },
         [
           mockAiDeployment('deployment-id1', {
-            name: 'gpt-35-turbo',
+            name: 'gpt-4o',
             version: 'latest'
           }),
           mockAiDeployment('deployment-id2', {
-            name: 'gpt-35-turbo',
+            name: 'gpt-4o',
             version: '123'
           })
         ]
@@ -52,7 +52,7 @@ describe('deployment cache', () => {
       expect(
         deploymentCache.get({
           scenarioId: 'foundation-models',
-          model: { name: 'gpt-4o', version: 'latest' }
+          model: { name: 'gpt-4', version: 'latest' }
         })
       ).toBeUndefined();
     });
@@ -62,7 +62,7 @@ describe('deployment cache', () => {
         deploymentCache.get({
           scenarioId: 'foundation-models',
           model: {
-            name: 'gpt-35-turbo',
+            name: 'gpt-4o',
             version: '123'
           }
         })?.id
@@ -74,7 +74,7 @@ describe('deployment cache', () => {
         deploymentCache.get({
           scenarioId: 'foundation-models',
           model: {
-            name: 'gpt-35-turbo'
+            name: 'gpt-4o'
           }
         })?.id
       ).toEqual('deployment-id1');

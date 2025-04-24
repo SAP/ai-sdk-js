@@ -7,11 +7,11 @@ SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI
 
 Integrate chat completion into your business applications with SAP Cloud SDK for AI. 
 Leverage the generative AI hub of [SAP AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/what-is-sap-ai-core) to make use of templating, grounding, data masking, content filtering and more. 
-Setup your SAP AI Core instance with SAP Cloud SDK for AI.
+Set up your SAP AI Core instance with SAP Cloud SDK for AI.
 
 ### Table of Contents
 
-- [Requirements and Setup](#requirements-and-setup)
+- [Documentation](#documentation)
 - [Packages](#packages)
   - [@sap-ai-sdk/ai-api](#sap-ai-sdkai-api)
   - [@sap-ai-sdk/foundation-models](#sap-ai-sdkfoundation-models)
@@ -20,21 +20,14 @@ Setup your SAP AI Core instance with SAP Cloud SDK for AI.
   - [@sap-ai-sdk/document-grounding](#sap-ai-sdkdocument-grounding)
   - [@sap-ai-sdk/prompt-registry](#sap-ai-sdkprompt-registry)
 - [SAP Cloud SDK for AI Sample Project](#sap-cloud-sdk-for-ai-sample-project)
-- [Deprecated Models](#deprecated-models)
-- [Error Handling](#error-handling)
-  - [Accessing Error Information](#accessing-error-information)
-- [Local Testing](#local-testing)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [Security / Disclosure](#security--disclosure)
 - [Code of Conduct](#code-of-conduct)
 - [Licensing](#licensing)
 
-## Requirements and Setup
+## Documentation
 
-- [Enable the AI Core service in SAP BTP](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/initial-setup).
-- Ensure the project is configured with **Node.js v20 or higher**, along with **native ESM** support.
-
-For further details, refer to the individual sections under [Packages](#packages).
+Visit the [SAP Cloud SDK for AI (JavaScript)](https://sap.github.io/ai-sdk/docs/js/overview-cloud-sdk-for-ai-js) documentation portal to learn more about its capabilities and detailed usage.
 
 ## Packages
 
@@ -55,8 +48,6 @@ This package provides tools to manage your scenarios and workflows in SAP AI Cor
 $ npm install @sap-ai-sdk/ai-api
 ```
 
-For details on the client, refer to this [document](https://github.com/SAP/ai-sdk-js/blob/main/packages/ai-api/README.md).
-
 ### @sap-ai-sdk/foundation-models
 
 This package incorporates generative AI foundation models into your AI activities in SAP AI Core and SAP AI Launchpad.
@@ -66,8 +57,6 @@ This package incorporates generative AI foundation models into your AI activitie
 ```
 $ npm install @sap-ai-sdk/foundation-models
 ```
-
-For details on foundation model clients, refer to this [document](https://github.com/SAP/ai-sdk-js/blob/main/packages/foundation-models/README.md).
 
 ### @sap-ai-sdk/langchain
 
@@ -79,8 +68,6 @@ This package provides LangChain model clients, built on top of the foundation mo
 $ npm install @sap-ai-sdk/langchain
 ```
 
-For details on LangChain model client, refer to this [document](https://github.com/SAP/ai-sdk-js/blob/main/packages/langchain/README.md).
-
 ### @sap-ai-sdk/orchestration
 
 This package incorporates generative AI [orchestration](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration) capabilities into your AI activities in SAP AI Core and SAP AI Launchpad.
@@ -90,8 +77,6 @@ This package incorporates generative AI [orchestration](https://help.sap.com/doc
 ```
 $ npm install @sap-ai-sdk/orchestration
 ```
-
-For details on orchestration client, refer to this [document](https://github.com/SAP/ai-sdk-js/blob/main/packages/orchestration/README.md).
 
 ### @sap-ai-sdk/document-grounding
 
@@ -106,8 +91,6 @@ This package incorporates generative AI document grounding [Pipeline API](https:
 $ npm install @sap-ai-sdk/document-grounding
 ```
 
-For details on document grounding client, refer to this [document](https://github.com/SAP/ai-sdk-js/blob/main/packages/document-grounding/README.md).
-
 ### @sap-ai-sdk/prompt-registry
 
 This package incorporates generative AI [prompt registry](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry) into your AI activities in SAP AI Core and SAP AI Launchpad.
@@ -118,74 +101,10 @@ This package incorporates generative AI [prompt registry](https://help.sap.com/d
 $ npm install @sap-ai-sdk/prompt-registry
 ```
 
-For details on prompt registry client, refer to this [document](https://github.com/SAP/ai-sdk-js/blob/main/packages/prompt-registry/README.md).
-
 ## SAP Cloud SDK for AI Sample Project
 
 We have created a sample project demonstrating the different clients' usage of the SAP Cloud SDK for AI for TypeScript/JavaScript.
 The [project README](https://github.com/SAP/ai-sdk-js/blob/main/sample-code/README.md) outlines the set-up needed to build and run it locally.
-
-## Deprecated Models
-
-The following models are deprecated and should not be used.
-Update your code to use one of the recommended replacement models.
-
-| Model Name               | Replacement                                        |
-|--------------------------|----------------------------------------------------|
-| `text-embedding-ada-002` | `text-embedding-3-small`, `text-embedding-3-large` |
-
-For more information, refer to the SAP note on [Availability of Generative AI Models](https://me.sap.com/notes/3437766).
-
-## Error Handling
-
-A common error scenario is `Request failed with status code STATUS_CODE` coming from `AxiosError`. 
-In this case, SAP Cloud SDK for AI uses [`ErrorWithCause`](https://sap.github.io/cloud-sdk/docs/js/features/error-handling) to provide more detailed error information.
-
-### Accessing Error Information
-
-For example, for the following nested `ErrorWithCause`
-
-```ts
-const rootCause = new Error('The root cause is a bug!');
-const lowerLevelErrorWithCause = new ErrorWithCause('Failed to call function foo().', rootCause);
-const upperLevelErrorWithCause = new ErrorWithCause('Process crashed.', lowerLevelErrorWithCause);
-throw upperLevelErrorWithCause;
-```
-
-The error stack will look like this:
-
-```txt
-ErrorWithCause: Process crashed.
-    at ...
-Caused by:
-ErrorWithCause: Failed to call function foo().
-    at ...
-Caused by:
-Error: The root cause is a bug!
-    at ...
-```
-
-- `error.stack` will contain the above stack trace.
-- `error.message` will be `Process crashed.`.
-- `error.cause.message` will be `Failed to call function foo().`.
-- `error.rootCause.message` will be `The root cause is a bug!`.
-
-In case of `AxiosError`, the response data will be part of the error stack and can be accessed via `error.cause.response.data`.
-
-## Local Testing
-
-To test SAP Cloud SDK for AI features locally during application development, follow these steps:
-
-1. Download a service key for the AI Core service instance.
-2. Set the downloaded service key as the `AICORE_SERVICE_KEY` environment variable in the local environment.
-
-The SDK parses the service key from the environment variable to interact with the AI Core service.
-This setup enables local testing of clients such as orchestration and OpenAI, provided that deployments for orchestration and OpenAI exist in SAP BTP.
-
-> [!Tip]
-> Ways to load environment variables might vary based on the framework you are using.
->
-> For example, while the SAP Cloud SDK for AI uses the [dotenv](https://www.npmjs.com/package/dotenv) library to load environment variables, NextJS uses a [specific configuration](https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables) to load them.
 
 ## Support, Feedback, Contribution
 
