@@ -1,14 +1,15 @@
 packages:
-  - 'packages/ai-api'
-  - 'packages/core'
-  - 'packages/foundation-models'
-  - 'packages/langchain'
-  - 'packages/orchestration'
-  - 'packages/document-grounding'
-  - 'packages/prompt-registry'
-  - 'sample-cap'
-  - 'sample-code'
-  - 'tests/e2e-tests'
-  - 'tests/schema-tests'
-  - 'tests/smoke-tests'
-  - 'tests/type-tests'
+  - packages/ai-api
+  - packages/core
+  - packages/foundation-models
+  - packages/langchain
+  - packages/orchestration
+  - packages/document-grounding
+  - packages/prompt-registry
+  - sample-cap
+  - sample-code
+  - tests/e2e-tests
+  - tests/schema-tests
+  - tests/smoke-tests
+  - tests/type-tests
+  
