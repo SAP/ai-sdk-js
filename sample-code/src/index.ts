@@ -2,7 +2,8 @@
 export {
   chatCompletion,
   computeEmbedding,
-  chatCompletionWithDestination
+  chatCompletionWithDestination,
+  chatCompletionWithFunctionCall
   // eslint-disable-next-line import/no-internal-modules
 } from './foundation-models/azure-openai.js';
 export {
