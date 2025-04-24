@@ -13,8 +13,12 @@ import {
   orchestrationResponseFormat,
   orchestrationToolCalling
 } from '@sap-ai-sdk/sample-code';
+import {
+  OrchestrationClient,
+  type OrchestrationModuleConfig,
+  type OrchestrationResponse
+} from '@sap-ai-sdk/orchestration';
 import { loadEnv } from './utils/load-env.js';
-import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 
 loadEnv();
 
@@ -124,5 +128,36 @@ describe('orchestration', () => {
     }
     expect(response.getFinishReason()).toEqual('stop');
     expect(response.getTokenUsage()).toBeDefined();
+  });
+
+  it('should return error message when incorrect templating is provided on orchestration stream call', async () => {
+    const config: OrchestrationModuleConfig = {
+      llm: {
+        model_name: 'gpt-4o',
+        model_params: {}
+      },
+      templating: {
+        template: [
+          {
+            role: 'user',
+            content: 'Give me a short introduction on {{ ?__input__ }}.'
+          }
+        ]
+      }
+    };
+
+    try {
+      await new OrchestrationClient(config).stream(
+        {
+          inputParams: { __input__: 'SAP Cloud SDK' }
+        },
+        new AbortController()
+      );
+    } catch (err: any) {
+      expect(err.stack).toContain(
+        'Caused by:\nHTTP Response: Request failed with status code 400'
+      );
+      expect(err.cause?.response?.data.message).toBeDefined();
+    }
   });
 });
