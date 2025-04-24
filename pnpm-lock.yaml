@@ -33,7 +33,7 @@ importers:
         version: 4.0.2
       '@sap-cloud-sdk/eslint-config':
         specifier: ^4.0.2
-        version: 4.0.2(@typescript-eslint/eslint-plugin@8.27.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint@9.24.0)(typescript@5.8.3))(eslint@9.24.0)(prettier@3.5.3)(typescript@5.8.3)
+        version: 4.0.2(@typescript-eslint/eslint-plugin@8.27.0(@typescript-eslint/parser@8.27.0(eslint@9.25.0)(typescript@5.8.3))(eslint@9.25.0)(typescript@5.8.3))(eslint@9.25.0)(prettier@3.5.3)(typescript@5.8.3)
       '@sap-cloud-sdk/generator-common':
         specifier: ^4.0.2
         version: 4.0.2
@@ -62,8 +62,8 @@ importers:
         specifier: ^1.4.7
         version: 1.4.7
       eslint:
-        specifier: ^9.24.0
-        version: 9.24.0
+        specifier: ^9.25.0
+        version: 9.25.0
       glob:
         specifier: ^11.0.1
         version: 11.0.1
@@ -77,8 +77,8 @@ importers:
         specifier: ^5.5.0
         version: 5.5.0
       nock:
-        specifier: ^14.0.3
-        version: 14.0.3
+        specifier: ^14.0.4
+        version: 14.0.4
       prettier:
         specifier: ^3.5.3
         version: 3.5.3
@@ -155,8 +155,8 @@ importers:
   packages/langchain:
     dependencies:
       '@langchain/core':
-        specifier: 0.3.44
-        version: 0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2))
+        specifier: 0.3.45
+        version: 0.3.45(openai@4.93.0(ws@8.18.1)(zod@3.24.3))
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../ai-api
@@ -177,7 +177,7 @@ importers:
         version: 11.1.0
       zod-to-json-schema:
         specifier: ^3.24.5
-        version: 3.24.5(zod@3.24.2)
+        version: 3.24.5(zod@3.24.3)
 
   packages/orchestration:
     dependencies:
@@ -226,7 +226,7 @@ importers:
         version: link:../packages/orchestration
       '@sap/cds':
         specifier: ^8.9.2
-        version: 8.9.2(@eslint/js@9.24.0)(express@5.1.0)
+        version: 8.9.2(@eslint/js@9.25.0)(express@5.1.0)
       '@sap/xssec':
         specifier: ^4.6.0
         version: 4.6.0(@types/express@5.0.1)
@@ -236,16 +236,16 @@ importers:
     devDependencies:
       '@sap/cds-dk':
         specifier: ^8.9.2
-        version: 8.9.2(@eslint/js@9.24.0)
+        version: 8.9.2(@eslint/js@9.25.0)
 
   sample-code:
     dependencies:
       '@langchain/core':
-        specifier: 0.3.44
-        version: 0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.3))
+        specifier: 0.3.45
+        version: 0.3.45(openai@4.93.0(ws@8.18.1)(zod@3.24.3))
       '@langchain/textsplitters':
         specifier: 0.1.0
-        version: 0.1.0(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.3)))
+        version: 0.1.0(@langchain/core@0.3.45(openai@4.93.0(ws@8.18.1)(zod@3.24.3)))
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../packages/ai-api
@@ -275,7 +275,7 @@ importers:
         version: 5.1.0
       langchain:
         specifier: 0.3.21
-        version: 0.3.21(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.3)))(axios@1.8.4)(handlebars@4.7.8)(openai@4.93.0(ws@8.18.1)(zod@3.24.3))(ws@8.18.1)
+        version: 0.3.21(@langchain/core@0.3.45(openai@4.93.0(ws@8.18.1)(zod@3.24.3)))(axios@1.8.4)(handlebars@4.7.8)(openai@4.93.0(ws@8.18.1)(zod@3.24.3))(ws@8.18.1)
       zod:
         specifier: ^3.24.3
         version: 3.24.3
@@ -313,29 +313,29 @@ importers:
   tests/smoke-tests:
     dependencies:
       '@langchain/core':
-        specifier: 0.3.44
-        version: 0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.3))
+        specifier: 0.3.45
+        version: 0.3.45(openai@4.93.0(ws@8.18.1)(zod@3.24.3))
       '@langchain/textsplitters':
         specifier: 0.1.0
-        version: 0.1.0(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.3)))
+        version: 0.1.0(@langchain/core@0.3.45(openai@4.93.0(ws@8.18.1)(zod@3.24.3)))
       '@sap-ai-sdk/ai-api':
         specifier: canary
-        version: 1.11.1-20250417013150.0
+        version: 1.12.1-20250420013203.0
       '@sap-ai-sdk/document-grounding':
         specifier: canary
-        version: 1.11.1-20250417013150.0
+        version: 1.12.1-20250420013203.0
       '@sap-ai-sdk/foundation-models':
         specifier: canary
-        version: 1.11.1-20250417013150.0
+        version: 1.12.1-20250420013203.0
       '@sap-ai-sdk/langchain':
         specifier: canary
-        version: 1.11.1-20250417013150.0(openai@4.93.0(ws@8.18.1)(zod@3.24.3))(zod@3.24.3)
+        version: 1.12.1-20250420013203.0(openai@4.93.0(ws@8.18.1)(zod@3.24.3))(zod@3.24.3)
       '@sap-ai-sdk/orchestration':
         specifier: canary
-        version: 1.11.1-20250417013150.0
+        version: 1.12.1-20250420013203.0
       '@sap-ai-sdk/prompt-registry':
         specifier: canary
-        version: 1.11.1-20250417013150.0
+        version: 1.12.1-20250420013203.0
       '@sap-cloud-sdk/util':
         specifier: ^4.0.2
         version: 4.0.2
@@ -344,7 +344,7 @@ importers:
         version: 5.1.0
       langchain:
         specifier: 0.3.21
-        version: 0.3.21(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.3)))(axios@1.8.4)(handlebars@4.7.8)(openai@4.93.0(ws@8.18.1)(zod@3.24.3))(ws@8.18.1)
+        version: 0.3.21(@langchain/core@0.3.45(openai@4.93.0(ws@8.18.1)(zod@3.24.3)))(axios@1.8.4)(handlebars@4.7.8)(openai@4.93.0(ws@8.18.1)(zod@3.24.3))(ws@8.18.1)
     devDependencies:
       '@types/express':
         specifier: ^5.0.1
@@ -399,8 +399,8 @@ packages:
     peerDependencies:
       openapi-types: '>=7'
 
-  '@asamuzakjp/css-color@3.1.1':
-    resolution: {integrity: sha512-hpRD68SV2OMcZCsrbdkccTw5FXjNDLo5OuqSHyHZfwweGsDWZwDJ2+gONyNAbazZclobMirACLw0lk8WVxIqxA==}
+  '@asamuzakjp/css-color@3.1.3':
+    resolution: {integrity: sha512-u25AyjuNrRFGb1O7KmWEu0ExN6iJMlUmDSlOPW/11JF8khOrIGG6oCoYpC+4mZlthNVhFUahk68lNrNI91f6Yg==}
 
   '@babel/code-frame@7.26.2':
     resolution: {integrity: sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ==}
@@ -657,15 +657,15 @@ packages:
     resolution: {integrity: sha512-JqWH1vsgdGcw2RR6VliXXdA0/59LttzlU8UlRT/iUUsEeWfYq8I+K0yhihEUTTHLRm1EXvpsCx3083EU15ecsA==}
     engines: {node: '>=18'}
 
-  '@csstools/css-calc@2.1.2':
-    resolution: {integrity: sha512-TklMyb3uBB28b5uQdxjReG4L80NxAqgrECqLZFQbyLekwwlcDDS8r3f07DKqeo8C4926Br0gf/ZDe17Zv4wIuw==}
+  '@csstools/css-calc@2.1.3':
+    resolution: {integrity: sha512-XBG3talrhid44BY1x3MHzUx/aTG8+x/Zi57M4aTKK9RFB4aLlF3TTSzfzn8nWVHWL3FgAXAxmupmDd6VWww+pw==}
     engines: {node: '>=18'}
     peerDependencies:
       '@csstools/css-parser-algorithms': ^3.0.4
       '@csstools/css-tokenizer': ^3.0.3
 
-  '@csstools/css-color-parser@3.0.8':
-    resolution: {integrity: sha512-pdwotQjCCnRPuNi06jFuP68cykU1f3ZWExLe/8MQ1LOs8Xq+fTkYgd+2V8mWUWMrOn9iS2HftPVaMZDaXzGbhQ==}
+  '@csstools/css-color-parser@3.0.9':
+    resolution: {integrity: sha512-wILs5Zk7BU86UArYBJTPy/FMPPKVKHMj1ycCEyf3VUptol0JNRLFU/BZsJ4aiIHJEbSLiizzRrw8Pc1uAEDrXw==}
     engines: {node: '>=18'}
     peerDependencies:
       '@csstools/css-parser-algorithms': ^3.0.4
@@ -853,6 +853,12 @@ packages:
     peerDependencies:
       eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
 
+  '@eslint-community/eslint-utils@4.6.1':
+    resolution: {integrity: sha512-KTsJMmobmbrFLe3LDh0PC2FXpcSYJt/MLjlkh/9LEnmKYLSYmT/0EW9JWANjeoemiuZrmogti0tW5Ch+qNUYDw==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
+
   '@eslint-community/regexpp@4.12.1':
     resolution: {integrity: sha512-CCZCDJuduB9OUkFkY2IgppNZMi2lBQgD2qzwXkEia16cge2pijY/aXi96CJMquDMn3nJdlPV1A5KrJEXwfLNzQ==}
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
@@ -883,6 +889,10 @@ packages:
 
   '@eslint/js@9.24.0':
     resolution: {integrity: sha512-uIY/y3z0uvOGX8cp1C2fiC4+ZmBhp6yZWkojtHL1YEMnRt1Y63HB9TM17proGEmeG7HeUY+UP36F0aknKYTpYA==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@eslint/js@9.25.0':
+    resolution: {integrity: sha512-iWhsUS8Wgxz9AXNfvfOPFSW4VfMXdVhp1hjkZVhXCrpgh/aLcc45rX6MPu+tIVUWDw0HfNwth7O28M1xDxNf9w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@eslint/object-schema@2.1.6':
@@ -1062,6 +1072,10 @@ packages:
     resolution: {integrity: sha512-3BsSFf7STvPPZyl2kMANgtVnCUvDdyP4k+koP+nY2Tczd5V+RFkuazIn/JOj/xxy/neZjr4PxFU4BFyF1aKXOA==}
     engines: {node: '>=18'}
 
+  '@langchain/core@0.3.45':
+    resolution: {integrity: sha512-4icCMCeuauVvwH43zgCE6Hk2Zbke5OccfVhFpTiIJPo8WoU/ALdaZlS22S+6+qZ9lFzFHsgZ6K33Av9aWhxkQA==}
+    engines: {node: '>=18'}
+
   '@langchain/openai@0.5.5':
     resolution: {integrity: sha512-QwdZrWcx6FB+UMKQ6+a0M9ZXzeUnZCwXP7ltqCCycPzdfiwxg3TQ6WkSefdEyiPpJcVVq/9HZSxrzGmf18QGyw==}
     engines: {node: '>=18'}
@@ -1080,8 +1094,8 @@ packages:
   '@manypkg/get-packages@1.1.3':
     resolution: {integrity: sha512-fo+QhuU3qE/2TQMQmbVMqaQ6EWbMhi4ABWP+O4AM1NqPBuy0OrApV5LO6BrrgnhtAHS2NH6RrVk9OL181tTi8A==}
 
-  '@mswjs/interceptors@0.38.1':
-    resolution: {integrity: sha512-JWLtvwpj2aCk2UvLlSQ12BFF/wBJJd0NhhYf7cz4k+tMhymmLn8ss3irznjWPvOsASV2raqb5EjTw+NRoeVDag==}
+  '@mswjs/interceptors@0.38.5':
+    resolution: {integrity: sha512-YSa0sYrniWIfsJBabu/YRVG10v5bqWk0PprwERFDEd776nAe/aafkUd68g7vOhVK1xG2H+Pb8e3sAnCOu/V47w==}
     engines: {node: '>=18'}
 
   '@napi-rs/wasm-runtime@0.2.7':
@@ -1127,26 +1141,26 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
-  '@sap-ai-sdk/ai-api@1.11.1-20250417013150.0':
-    resolution: {integrity: sha512-G2MCOl7kzTb3BjrJbyhPIah4LKXF3HTzFxSi8y/UJXJlN6B2blCq2HZvqwpH7NwsnalCy/T3ZJGVO6gqxSbcNw==}
+  '@sap-ai-sdk/ai-api@1.12.1-20250420013203.0':
+    resolution: {integrity: sha512-osOJiHRSWVCftLgtl4w+seBg93yZ1UA1PmrUPOdcECNuBHuNlZpC0x7JtfXeG/ThrflOfhYhFtqw+JRMwCbfUg==}
 
-  '@sap-ai-sdk/core@1.11.1-20250417013150.0':
-    resolution: {integrity: sha512-asTgGulVwC6tz0fxzv48H1tIp/UUBPiofteiNTUZVYn9983DiRhSV4CODblyFE1vB9WOCLAo7BmBPSAyXnycVw==}
+  '@sap-ai-sdk/core@1.12.1-20250420013203.0':
+    resolution: {integrity: sha512-XfvyFygRSz6dyvf4EZFlBRH3X1xDPM7aAkBYI4kc6NV5mxUdSdzIxkM1ASUXsig4oBA7KBF/vhlgsgGOLqnLSA==}
 
-  '@sap-ai-sdk/document-grounding@1.11.1-20250417013150.0':
-    resolution: {integrity: sha512-xs/X9Ejg94vsZI6YZfbsf+8D4Hvp2851uZNJ3v61phFR7u10LnblOlxhUGhdaNYeB5+nJb+ZzSxuDUiM5aEbuQ==}
+  '@sap-ai-sdk/document-grounding@1.12.1-20250420013203.0':
+    resolution: {integrity: sha512-nDP5wmCxKWkA6rESNttPLPPbnPymrmGNbfC0Cy9IU/7ceVkIca8dmIZF++yBDqaH9Lejks+AQCaOUB4oLyDQpg==}
 
-  '@sap-ai-sdk/foundation-models@1.11.1-20250417013150.0':
-    resolution: {integrity: sha512-pI7QdrERjYymvs9h2QnBZRuXL+LgQt9V263UJeqnZ1gnB8DLffMxm5d4RXfS7F4VGhSxMu0NVrm1VWCelP/zxQ==}
+  '@sap-ai-sdk/foundation-models@1.12.1-20250420013203.0':
+    resolution: {integrity: sha512-2UOIdqEco6kOApsm/zBGka8ppBOl5C8PI6ltEyDbMwzRTHmUcarz8vobYMh0ht76heC3bIgF3YujPJupPW6PKg==}
 
-  '@sap-ai-sdk/langchain@1.11.1-20250417013150.0':
-    resolution: {integrity: sha512-tlzTQ9ayND4SRXrJ5xkxDSbB6q7V+4zR7w4vZfkyjE/8w9CLEt3O0mnpvc1+8BRCw3eVsVjdJbVtz3Ay2vPFFQ==}
+  '@sap-ai-sdk/langchain@1.12.1-20250420013203.0':
+    resolution: {integrity: sha512-V9lIjR+uI4In9W+oz7vU+ts0IpCs24tKn5mq4kQJ78CTC8Lg4jXR86FYJmrzi6ehxUnGUKTqitVfpfhFS1Fj6g==}
 
-  '@sap-ai-sdk/orchestration@1.11.1-20250417013150.0':
-    resolution: {integrity: sha512-KsmCV1Qk5LtwbSnAZGIzSWRfg5gd5y2G74+c9lvwY8agziVW97WIDCLi6JQTe1DUafH51WqU3kic8bdEwBuwmg==}
+  '@sap-ai-sdk/orchestration@1.12.1-20250420013203.0':
+    resolution: {integrity: sha512-8RWjWe9KXsGgJfz2ZtBX9T0zbUGP8QP/R6IMbEM/tELH95NM10KFy2XqkCaEcPJj9MCTaxiNrGkabWGvWMpdpw==}
 
-  '@sap-ai-sdk/prompt-registry@1.11.1-20250417013150.0':
-    resolution: {integrity: sha512-f9xREKdAYzHf3ldsy2euBd/v57H5QatCFXQkcv7m+cXtdhfgQUVPVRHM8T1219j/FUHGl3LkSJ8xYSL7s3uK8g==}
+  '@sap-ai-sdk/prompt-registry@1.12.1-20250420013203.0':
+    resolution: {integrity: sha512-88DNFxAKTBBYCavB41uk+9wWF5UFtMZZqzWOBUhd0kvQoTxKdfaVRL2SXvR+7iPFmBuv7rkhSaiGgHVheosFFw==}
 
   '@sap-cloud-sdk/connectivity@4.0.2':
     resolution: {integrity: sha512-20ok60K1PLezyngU3Zcp2Hx3R2rlPYNeebD+IcFhzHklJGhkJGWOBiWxSlCLhyi1hGmYIr5SIlXHe/6AvHC69Q==}
@@ -2004,8 +2018,8 @@ packages:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
 
-  cssstyle@4.3.0:
-    resolution: {integrity: sha512-6r0NiY0xizYqfBvWp1G7WXJ06/bZyrk7Dc6PHql82C/pKGUTKu4yAX4Y8JPamb1ob9nBKuxWzCGTRuGwU3yxJQ==}
+  cssstyle@4.3.1:
+    resolution: {integrity: sha512-ZgW+Jgdd7i52AaLYCriF8Mxqft0gD/R9i9wi6RWBhs1pqdPEzPjym7rvRKi397WmQFf3SlyUsszhw+VVCbx79Q==}
     engines: {node: '>=18'}
 
   data-urls@5.0.0:
@@ -2388,6 +2402,16 @@ packages:
 
   eslint@9.24.0:
     resolution: {integrity: sha512-eh/jxIEJyZrvbWRe4XuVclLPDYSYYYgLy5zXGGxD6j8zjSAxFEzI2fL/8xNq6O2yKqVt+eF2YhV+hxjV6UKXwQ==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    hasBin: true
+    peerDependencies:
+      jiti: '*'
+    peerDependenciesMeta:
+      jiti:
+        optional: true
+
+  eslint@9.25.0:
+    resolution: {integrity: sha512-MsBdObhM4cEwkzCiraDv7A6txFXEqtNXOb877TsSp2FCkBNl8JfVQrmiuDqC1IkejT6JLPzYBXx/xAiYhyzgGA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     hasBin: true
     peerDependencies:
@@ -3276,8 +3300,8 @@ packages:
     resolution: {integrity: sha512-Hicd6JK5Njt2QB6XYFS7ok9e37O8AYk3jTcppG4YVQnYjOemymvTcmc7OWsmq/Qqj5TdRFO5/x/tIPmBeRtGHg==}
     engines: {node: '>=12.0.0'}
 
-  jsdom@26.0.0:
-    resolution: {integrity: sha512-BZYDGVAIriBWTpIxYzrXjv3E/4u8+/pSG5bQdIYCbNCGOvsPkDQfTVLAIXAf9ETdCpduCVTkDe2NNZ8NIwUVzw==}
+  jsdom@26.1.0:
+    resolution: {integrity: sha512-Cvc9WUhxSMEo4McES3P7oK3QaXldCfNWp7pl2NNeiIFlCoLr3kfq9kb1fxftiwk1FLV7CvpvDfonxtzUDeSOPg==}
     engines: {node: '>=18'}
     peerDependencies:
       canvas: ^3.0.0
@@ -3411,6 +3435,14 @@ packages:
 
   langsmith@0.3.15:
     resolution: {integrity: sha512-cv3ebg0Hh0gRbl72cv/uzaZ+KOdfa2mGF1s74vmB2vlNVO/Ap/O9RYaHV+tpR8nwhGZ50R3ILnTOwSwGP+XQxw==}
+    peerDependencies:
+      openai: '*'
+    peerDependenciesMeta:
+      openai:
+        optional: true
+
+  langsmith@0.3.18:
+    resolution: {integrity: sha512-VTD5DZI7qZsOipjp/WaLBIMsdT4Y2OA+9nxyEgPQd8srF4hRx3sIydgxARkB4N5E4yTwo1S42FpHoPNBvwwE/A==}
     peerDependencies:
       openai: '*'
     peerDependenciesMeta:
@@ -3670,8 +3702,8 @@ packages:
   neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
 
-  nock@14.0.3:
-    resolution: {integrity: sha512-sJ9RNmCuYBqXDmGZZHgZ1D1441MqFOU4T5aeLGVGEB4OWI/2LM0mZlkfBQzQKdOfJypL+2nPPBugXKjixBn4kQ==}
+  nock@14.0.4:
+    resolution: {integrity: sha512-86fh+gIKH8H02+y0/HKAOZZXn6OwgzXvl6JYwfjvKkoKxUWz54wIIDU/+w24xzMvk/R8pNVXOrvTubyl+Ml6cg==}
     engines: {node: '>=18.20.0 <20 || >=20.12.1'}
 
   node-abi@3.74.0:
@@ -3685,6 +3717,7 @@ packages:
   node-domexception@1.0.0:
     resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
     engines: {node: '>=10.5.0'}
+    deprecated: Use your platform's native DOMException instead
 
   node-fetch-h2@2.3.0:
     resolution: {integrity: sha512-ofRW94Ab0T4AOh5Fk8t0h8OBWrmjb0SSB20xh1H8YnPV9EJ+f5AMoYSUQ2zgJ4Iq2HAK0I2l5/Nequ8YzFS3Hg==}
@@ -4495,11 +4528,11 @@ packages:
     resolution: {integrity: sha512-qkf4trmKSIiMTs/E63cxH+ojC2unam7rJ0WrauAzpT3ECNTxGRMlaXxVbfxMUC/w0LaYk6jQ4y/nGR9uBO3tww==}
     engines: {node: '>=12.0.0'}
 
-  tldts-core@6.1.85:
-    resolution: {integrity: sha512-DTjUVvxckL1fIoPSb3KE7ISNtkWSawZdpfxGxwiIrZoO6EbHVDXXUIlIuWympPaeS+BLGyggozX/HTMsRAdsoA==}
+  tldts-core@6.1.86:
+    resolution: {integrity: sha512-Je6p7pkk+KMzMv2XXKmAE3McmolOQFdxkKw0R8EYNr7sELW46JqnNeTX8ybPiQgvg1ymCoF8LXs5fzFaZvJPTA==}
 
-  tldts@6.1.85:
-    resolution: {integrity: sha512-gBdZ1RjCSevRPFix/hpaUWeak2/RNUZB4/8frF1r5uYMHjFptkiT0JXIebWvgI/0ZHXvxaUDDJshiA0j6GdL3w==}
+  tldts@6.1.86:
+    resolution: {integrity: sha512-WMi/OQ2axVTf/ykqCQgXiIct+mSQDFdH2fkwhPwgEwvJ1kSzZRiinb0zF2Xb8u4+OqPChmyI6MEu4EezNJz+FQ==}
     hasBin: true
 
   tmp@0.0.33:
@@ -4524,8 +4557,8 @@ packages:
   tr46@0.0.3:
     resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
 
-  tr46@5.1.0:
-    resolution: {integrity: sha512-IUWnUK7ADYR5Sl1fZlO1INDUhVhatWl7BtJWsIhwJ0UAK7ilzzIa8uIqOO/aYVWHZPJkKbEL+362wrzoeRF7bw==}
+  tr46@5.1.1:
+    resolution: {integrity: sha512-hdF5ZgjTqgAntKkklYw0R03MG2x/bSzTtkxmIRw/sTNV8YXsCJ1tfLAX23lhxhHJlEf3CRCOCGGWw3vI3GaSPw==}
     engines: {node: '>=18'}
 
   trim-newlines@3.0.1:
@@ -4931,9 +4964,6 @@ packages:
     peerDependencies:
       zod: ^3.24.1
 
-  zod@3.24.2:
-    resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
-
   zod@3.24.3:
     resolution: {integrity: sha512-HhY1oqzWCQWuUqvBFnsyrtZRhyPeR7SUGv+C4+MsisMuVfSPx8HpwWqH8tRahSlt6M3PiFAcoeFhZAqIXTxoSg==}
 
@@ -4965,10 +4995,10 @@ snapshots:
       call-me-maybe: 1.0.2
       openapi-types: 12.1.3
 
-  '@asamuzakjp/css-color@3.1.1':
+  '@asamuzakjp/css-color@3.1.3':
     dependencies:
-      '@csstools/css-calc': 2.1.2(@csstools/css-parser-algorithms@3.0.4(@csstools/css-tokenizer@3.0.3))(@csstools/css-tokenizer@3.0.3)
-      '@csstools/css-color-parser': 3.0.8(@csstools/css-parser-algorithms@3.0.4(@csstools/css-tokenizer@3.0.3))(@csstools/css-tokenizer@3.0.3)
+      '@csstools/css-calc': 2.1.3(@csstools/css-parser-algorithms@3.0.4(@csstools/css-tokenizer@3.0.3))(@csstools/css-tokenizer@3.0.3)
+      '@csstools/css-color-parser': 3.0.9(@csstools/css-parser-algorithms@3.0.4(@csstools/css-tokenizer@3.0.3))(@csstools/css-tokenizer@3.0.3)
       '@csstools/css-parser-algorithms': 3.0.4(@csstools/css-tokenizer@3.0.3)
       '@csstools/css-tokenizer': 3.0.3
       lru-cache: 10.4.3
@@ -5164,25 +5194,25 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@cap-js/asyncapi@1.0.3(@sap/cds@8.9.2(@eslint/js@9.24.0)(express@5.1.0))':
+  '@cap-js/asyncapi@1.0.3(@sap/cds@8.9.2(@eslint/js@9.25.0)(express@5.1.0))':
     dependencies:
-      '@sap/cds': 8.9.2(@eslint/js@9.24.0)(express@5.1.0)
+      '@sap/cds': 8.9.2(@eslint/js@9.25.0)(express@5.1.0)
 
-  '@cap-js/db-service@1.19.1(@sap/cds@8.9.2(@eslint/js@9.24.0)(express@5.1.0))':
+  '@cap-js/db-service@1.19.1(@sap/cds@8.9.2(@eslint/js@9.25.0)(express@5.1.0))':
     dependencies:
-      '@sap/cds': 8.9.2(@eslint/js@9.24.0)(express@5.1.0)
+      '@sap/cds': 8.9.2(@eslint/js@9.25.0)(express@5.1.0)
       generic-pool: 3.9.0
     optional: true
 
-  '@cap-js/openapi@1.2.1(@sap/cds@8.9.2(@eslint/js@9.24.0)(express@5.1.0))':
+  '@cap-js/openapi@1.2.1(@sap/cds@8.9.2(@eslint/js@9.25.0)(express@5.1.0))':
     dependencies:
-      '@sap/cds': 8.9.2(@eslint/js@9.24.0)(express@5.1.0)
+      '@sap/cds': 8.9.2(@eslint/js@9.25.0)(express@5.1.0)
       pluralize: 8.0.0
 
-  '@cap-js/sqlite@1.10.0(@sap/cds@8.9.2(@eslint/js@9.24.0)(express@5.1.0))':
+  '@cap-js/sqlite@1.10.0(@sap/cds@8.9.2(@eslint/js@9.25.0)(express@5.1.0))':
     dependencies:
-      '@cap-js/db-service': 1.19.1(@sap/cds@8.9.2(@eslint/js@9.24.0)(express@5.1.0))
-      '@sap/cds': 8.9.2(@eslint/js@9.24.0)(express@5.1.0)
+      '@cap-js/db-service': 1.19.1(@sap/cds@8.9.2(@eslint/js@9.25.0)(express@5.1.0))
+      '@sap/cds': 8.9.2(@eslint/js@9.25.0)(express@5.1.0)
       better-sqlite3: 11.9.1
     optional: true
 
@@ -5338,15 +5368,15 @@ snapshots:
 
   '@csstools/color-helpers@5.0.2': {}
 
-  '@csstools/css-calc@2.1.2(@csstools/css-parser-algorithms@3.0.4(@csstools/css-tokenizer@3.0.3))(@csstools/css-tokenizer@3.0.3)':
+  '@csstools/css-calc@2.1.3(@csstools/css-parser-algorithms@3.0.4(@csstools/css-tokenizer@3.0.3))(@csstools/css-tokenizer@3.0.3)':
     dependencies:
       '@csstools/css-parser-algorithms': 3.0.4(@csstools/css-tokenizer@3.0.3)
       '@csstools/css-tokenizer': 3.0.3
 
-  '@csstools/css-color-parser@3.0.8(@csstools/css-parser-algorithms@3.0.4(@csstools/css-tokenizer@3.0.3))(@csstools/css-tokenizer@3.0.3)':
+  '@csstools/css-color-parser@3.0.9(@csstools/css-parser-algorithms@3.0.4(@csstools/css-tokenizer@3.0.3))(@csstools/css-tokenizer@3.0.3)':
     dependencies:
       '@csstools/color-helpers': 5.0.2
-      '@csstools/css-calc': 2.1.2(@csstools/css-parser-algorithms@3.0.4(@csstools/css-tokenizer@3.0.3))(@csstools/css-tokenizer@3.0.3)
+      '@csstools/css-calc': 2.1.3(@csstools/css-parser-algorithms@3.0.4(@csstools/css-tokenizer@3.0.3))(@csstools/css-tokenizer@3.0.3)
       '@csstools/css-parser-algorithms': 3.0.4(@csstools/css-tokenizer@3.0.3)
       '@csstools/css-tokenizer': 3.0.3
 
@@ -5464,6 +5494,11 @@ snapshots:
       eslint: 9.24.0
       eslint-visitor-keys: 3.4.3
 
+  '@eslint-community/eslint-utils@4.6.1(eslint@9.25.0)':
+    dependencies:
+      eslint: 9.25.0
+      eslint-visitor-keys: 3.4.3
+
   '@eslint-community/regexpp@4.12.1': {}
 
   '@eslint/config-array@0.20.0':
@@ -5501,6 +5536,8 @@ snapshots:
   '@eslint/js@9.23.0': {}
 
   '@eslint/js@9.24.0': {}
+
+  '@eslint/js@9.25.0': {}
 
   '@eslint/object-schema@2.1.6': {}
 
@@ -5813,23 +5850,6 @@ snapshots:
 
   '@jsdevtools/ono@7.1.3': {}
 
-  '@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2))':
-    dependencies:
-      '@cfworker/json-schema': 4.1.1
-      ansi-styles: 5.2.0
-      camelcase: 6.3.0
-      decamelize: 1.2.0
-      js-tiktoken: 1.0.19
-      langsmith: 0.3.15(openai@4.93.0(ws@8.18.1)(zod@3.24.2))
-      mustache: 4.2.0
-      p-queue: 6.6.2
-      p-retry: 4.6.2
-      uuid: 10.0.0
-      zod: 3.24.2
-      zod-to-json-schema: 3.24.5(zod@3.24.2)
-    transitivePeerDependencies:
-      - openai
-
   '@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.3))':
     dependencies:
       '@cfworker/json-schema': 4.1.1
@@ -5837,19 +5857,36 @@ snapshots:
       camelcase: 6.3.0
       decamelize: 1.2.0
       js-tiktoken: 1.0.19
-      langsmith: 0.3.15(openai@4.93.0(ws@8.18.1)(zod@3.24.3))
+      langsmith: 0.3.18(openai@4.93.0(ws@8.18.1)(zod@3.24.3))
       mustache: 4.2.0
       p-queue: 6.6.2
       p-retry: 4.6.2
       uuid: 10.0.0
-      zod: 3.24.2
-      zod-to-json-schema: 3.24.5(zod@3.24.2)
+      zod: 3.24.3
+      zod-to-json-schema: 3.24.5(zod@3.24.3)
     transitivePeerDependencies:
       - openai
 
-  '@langchain/openai@0.5.5(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.3)))(ws@8.18.1)':
+  '@langchain/core@0.3.45(openai@4.93.0(ws@8.18.1)(zod@3.24.3))':
     dependencies:
-      '@langchain/core': 0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.3))
+      '@cfworker/json-schema': 4.1.1
+      ansi-styles: 5.2.0
+      camelcase: 6.3.0
+      decamelize: 1.2.0
+      js-tiktoken: 1.0.19
+      langsmith: 0.3.18(openai@4.93.0(ws@8.18.1)(zod@3.24.3))
+      mustache: 4.2.0
+      p-queue: 6.6.2
+      p-retry: 4.6.2
+      uuid: 10.0.0
+      zod: 3.24.3
+      zod-to-json-schema: 3.24.5(zod@3.24.3)
+    transitivePeerDependencies:
+      - openai
+
+  '@langchain/openai@0.5.5(@langchain/core@0.3.45(openai@4.93.0(ws@8.18.1)(zod@3.24.3)))(ws@8.18.1)':
+    dependencies:
+      '@langchain/core': 0.3.45(openai@4.93.0(ws@8.18.1)(zod@3.24.3))
       js-tiktoken: 1.0.19
       openai: 4.93.0(ws@8.18.1)(zod@3.24.3)
       zod: 3.24.3
@@ -5858,9 +5895,9 @@ snapshots:
       - encoding
       - ws
 
-  '@langchain/textsplitters@0.1.0(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.3)))':
+  '@langchain/textsplitters@0.1.0(@langchain/core@0.3.45(openai@4.93.0(ws@8.18.1)(zod@3.24.3)))':
     dependencies:
-      '@langchain/core': 0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.3))
+      '@langchain/core': 0.3.45(openai@4.93.0(ws@8.18.1)(zod@3.24.3))
       js-tiktoken: 1.0.19
 
   '@manypkg/find-root@1.1.0':
@@ -5879,13 +5916,13 @@ snapshots:
       globby: 11.1.0
       read-yaml-file: 1.1.0
 
-  '@mswjs/interceptors@0.38.1':
+  '@mswjs/interceptors@0.38.5':
     dependencies:
       '@open-draft/deferred-promise': 2.2.0
       '@open-draft/logger': 0.3.0
       '@open-draft/until': 2.1.0
       is-node-process: 1.2.0
-      jsdom: 26.0.0
+      jsdom: 26.1.0
       outvariant: 1.4.3
       strict-event-emitter: 0.5.1
     transitivePeerDependencies:
@@ -5952,16 +5989,16 @@ snapshots:
 
   '@rtsao/scc@1.1.0': {}
 
-  '@sap-ai-sdk/ai-api@1.11.1-20250417013150.0':
+  '@sap-ai-sdk/ai-api@1.12.1-20250420013203.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.11.1-20250417013150.0
+      '@sap-ai-sdk/core': 1.12.1-20250420013203.0
       '@sap-cloud-sdk/connectivity': 4.0.2
       '@sap-cloud-sdk/util': 4.0.2
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/core@1.11.1-20250417013150.0':
+  '@sap-ai-sdk/core@1.12.1-20250420013203.0':
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.0.2
       '@sap-cloud-sdk/http-client': 4.0.2
@@ -5971,17 +6008,17 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/document-grounding@1.11.1-20250417013150.0':
+  '@sap-ai-sdk/document-grounding@1.12.1-20250420013203.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.11.1-20250417013150.0
+      '@sap-ai-sdk/core': 1.12.1-20250420013203.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/foundation-models@1.11.1-20250417013150.0':
+  '@sap-ai-sdk/foundation-models@1.12.1-20250420013203.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 1.11.1-20250417013150.0
-      '@sap-ai-sdk/core': 1.11.1-20250417013150.0
+      '@sap-ai-sdk/ai-api': 1.12.1-20250420013203.0
+      '@sap-ai-sdk/core': 1.12.1-20250420013203.0
       '@sap-cloud-sdk/connectivity': 4.0.2
       '@sap-cloud-sdk/http-client': 4.0.2
       '@sap-cloud-sdk/util': 4.0.2
@@ -5989,13 +6026,13 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/langchain@1.11.1-20250417013150.0(openai@4.93.0(ws@8.18.1)(zod@3.24.3))(zod@3.24.3)':
+  '@sap-ai-sdk/langchain@1.12.1-20250420013203.0(openai@4.93.0(ws@8.18.1)(zod@3.24.3))(zod@3.24.3)':
     dependencies:
       '@langchain/core': 0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.3))
-      '@sap-ai-sdk/ai-api': 1.11.1-20250417013150.0
-      '@sap-ai-sdk/core': 1.11.1-20250417013150.0
-      '@sap-ai-sdk/foundation-models': 1.11.1-20250417013150.0
-      '@sap-ai-sdk/orchestration': 1.11.1-20250417013150.0
+      '@sap-ai-sdk/ai-api': 1.12.1-20250420013203.0
+      '@sap-ai-sdk/core': 1.12.1-20250420013203.0
+      '@sap-ai-sdk/foundation-models': 1.12.1-20250420013203.0
+      '@sap-ai-sdk/orchestration': 1.12.1-20250420013203.0
       '@sap-cloud-sdk/connectivity': 4.0.2
       uuid: 11.1.0
       zod-to-json-schema: 3.24.5(zod@3.24.3)
@@ -6005,20 +6042,20 @@ snapshots:
       - supports-color
       - zod
 
-  '@sap-ai-sdk/orchestration@1.11.1-20250417013150.0':
+  '@sap-ai-sdk/orchestration@1.12.1-20250420013203.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 1.11.1-20250417013150.0
-      '@sap-ai-sdk/core': 1.11.1-20250417013150.0
-      '@sap-ai-sdk/prompt-registry': 1.11.1-20250417013150.0
+      '@sap-ai-sdk/ai-api': 1.12.1-20250420013203.0
+      '@sap-ai-sdk/core': 1.12.1-20250420013203.0
+      '@sap-ai-sdk/prompt-registry': 1.12.1-20250420013203.0
       '@sap-cloud-sdk/util': 4.0.2
       yaml: 2.7.1
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/prompt-registry@1.11.1-20250417013150.0':
+  '@sap-ai-sdk/prompt-registry@1.12.1-20250420013203.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.11.1-20250417013150.0
+      '@sap-ai-sdk/core': 1.12.1-20250420013203.0
       zod: 3.24.3
     transitivePeerDependencies:
       - debug
@@ -6037,20 +6074,20 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/eslint-config@4.0.2(@typescript-eslint/eslint-plugin@8.27.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint@9.24.0)(typescript@5.8.3))(eslint@9.24.0)(prettier@3.5.3)(typescript@5.8.3)':
+  '@sap-cloud-sdk/eslint-config@4.0.2(@typescript-eslint/eslint-plugin@8.27.0(@typescript-eslint/parser@8.27.0(eslint@9.25.0)(typescript@5.8.3))(eslint@9.25.0)(typescript@5.8.3))(eslint@9.25.0)(prettier@3.5.3)(typescript@5.8.3)':
     dependencies:
       '@eslint/js': 9.23.0
-      '@stylistic/eslint-plugin': 3.1.0(eslint@9.24.0)(typescript@5.8.3)
-      '@typescript-eslint/parser': 8.27.0(eslint@9.24.0)(typescript@5.8.3)
-      eslint: 9.24.0
-      eslint-config-prettier: 10.1.1(eslint@9.24.0)
-      eslint-import-resolver-typescript: 4.2.2(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint@9.24.0))(eslint@9.24.0)
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.2.2)(eslint@9.24.0)
-      eslint-plugin-jsdoc: 50.6.9(eslint@9.24.0)
-      eslint-plugin-prettier: 5.2.4(eslint-config-prettier@10.1.1(eslint@9.24.0))(eslint@9.24.0)(prettier@3.5.3)
-      eslint-plugin-regex: 1.10.0(eslint@9.24.0)
-      eslint-plugin-unused-imports: 4.1.4(@typescript-eslint/eslint-plugin@8.27.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint@9.24.0)(typescript@5.8.3))(eslint@9.24.0)
-      typescript-eslint: 8.27.0(eslint@9.24.0)(typescript@5.8.3)
+      '@stylistic/eslint-plugin': 3.1.0(eslint@9.25.0)(typescript@5.8.3)
+      '@typescript-eslint/parser': 8.27.0(eslint@9.25.0)(typescript@5.8.3)
+      eslint: 9.25.0
+      eslint-config-prettier: 10.1.1(eslint@9.25.0)
+      eslint-import-resolver-typescript: 4.2.2(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.25.0)(typescript@5.8.3))(eslint@9.25.0))(eslint@9.25.0)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.25.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.2.2)(eslint@9.25.0)
+      eslint-plugin-jsdoc: 50.6.9(eslint@9.25.0)
+      eslint-plugin-prettier: 5.2.4(eslint-config-prettier@10.1.1(eslint@9.25.0))(eslint@9.25.0)(prettier@3.5.3)
+      eslint-plugin-regex: 1.10.0(eslint@9.25.0)
+      eslint-plugin-unused-imports: 4.1.4(@typescript-eslint/eslint-plugin@8.27.0(@typescript-eslint/parser@8.27.0(eslint@9.25.0)(typescript@5.8.3))(eslint@9.25.0)(typescript@5.8.3))(eslint@9.25.0)
+      typescript-eslint: 8.27.0(eslint@9.25.0)(typescript@5.8.3)
     transitivePeerDependencies:
       - '@types/eslint'
       - '@typescript-eslint/eslint-plugin'
@@ -6133,14 +6170,14 @@ snapshots:
     dependencies:
       antlr4: 4.9.3
 
-  '@sap/cds-dk@8.9.2(@eslint/js@9.24.0)':
+  '@sap/cds-dk@8.9.2(@eslint/js@9.25.0)':
     dependencies:
-      '@cap-js/asyncapi': 1.0.3(@sap/cds@8.9.2(@eslint/js@9.24.0)(express@5.1.0))
-      '@cap-js/openapi': 1.2.1(@sap/cds@8.9.2(@eslint/js@9.24.0)(express@5.1.0))
-      '@sap/cds': 8.9.2(@eslint/js@9.24.0)(express@4.21.2)
+      '@cap-js/asyncapi': 1.0.3(@sap/cds@8.9.2(@eslint/js@9.25.0)(express@5.1.0))
+      '@cap-js/openapi': 1.2.1(@sap/cds@8.9.2(@eslint/js@9.25.0)(express@5.1.0))
+      '@sap/cds': 8.9.2(@eslint/js@9.25.0)(express@4.21.2)
       '@sap/cds-foss': 5.0.1
       '@sap/cds-mtxs': 2.7.1(hdb@0.19.12)
-      '@sap/eslint-plugin-cds': 3.2.0(@eslint/js@9.24.0)(eslint@9.24.0)(express@4.21.2)
+      '@sap/eslint-plugin-cds': 3.2.0(@eslint/js@9.25.0)(eslint@9.24.0)(express@4.21.2)
       '@sap/hdi-deploy': 5.4.2(hdb@0.19.12)
       axios: 1.8.4
       eslint: 9.24.0
@@ -6152,7 +6189,7 @@ snapshots:
       ws: 8.18.1
       xml-js: 1.6.11
     optionalDependencies:
-      '@cap-js/sqlite': 1.10.0(@sap/cds@8.9.2(@eslint/js@9.24.0)(express@5.1.0))
+      '@cap-js/sqlite': 1.10.0(@sap/cds@8.9.2(@eslint/js@9.25.0)(express@5.1.0))
     transitivePeerDependencies:
       - '@eslint/js'
       - '@sap/hana-client'
@@ -6163,14 +6200,14 @@ snapshots:
       - tar
       - utf-8-validate
 
-  '@sap/cds-fiori@1.4.1(@sap/cds@8.9.2(@eslint/js@9.24.0)(express@5.1.0))(express@4.21.2)':
+  '@sap/cds-fiori@1.4.1(@sap/cds@8.9.2(@eslint/js@9.25.0)(express@5.1.0))(express@4.21.2)':
     dependencies:
-      '@sap/cds': 8.9.2(@eslint/js@9.24.0)(express@5.1.0)
+      '@sap/cds': 8.9.2(@eslint/js@9.25.0)(express@5.1.0)
       express: 4.21.2
 
-  '@sap/cds-fiori@1.4.1(@sap/cds@8.9.2(@eslint/js@9.24.0)(express@5.1.0))(express@5.1.0)':
+  '@sap/cds-fiori@1.4.1(@sap/cds@8.9.2(@eslint/js@9.25.0)(express@5.1.0))(express@5.1.0)':
     dependencies:
-      '@sap/cds': 8.9.2(@eslint/js@9.24.0)(express@5.1.0)
+      '@sap/cds': 8.9.2(@eslint/js@9.25.0)(express@5.1.0)
       express: 5.1.0
 
   '@sap/cds-foss@5.0.1':
@@ -6190,27 +6227,27 @@ snapshots:
       - hdb
       - supports-color
 
-  '@sap/cds@8.9.2(@eslint/js@9.24.0)(express@4.21.2)':
+  '@sap/cds@8.9.2(@eslint/js@9.25.0)(express@4.21.2)':
     dependencies:
-      '@eslint/js': 9.24.0
+      '@eslint/js': 9.25.0
       '@sap/cds-compiler': 5.9.2
-      '@sap/cds-fiori': 1.4.1(@sap/cds@8.9.2(@eslint/js@9.24.0)(express@5.1.0))(express@4.21.2)
+      '@sap/cds-fiori': 1.4.1(@sap/cds@8.9.2(@eslint/js@9.25.0)(express@5.1.0))(express@4.21.2)
       '@sap/cds-foss': 5.0.1
     optionalDependencies:
       express: 4.21.2
 
-  '@sap/cds@8.9.2(@eslint/js@9.24.0)(express@5.1.0)':
+  '@sap/cds@8.9.2(@eslint/js@9.25.0)(express@5.1.0)':
     dependencies:
-      '@eslint/js': 9.24.0
+      '@eslint/js': 9.25.0
       '@sap/cds-compiler': 5.9.2
-      '@sap/cds-fiori': 1.4.1(@sap/cds@8.9.2(@eslint/js@9.24.0)(express@5.1.0))(express@5.1.0)
+      '@sap/cds-fiori': 1.4.1(@sap/cds@8.9.2(@eslint/js@9.25.0)(express@5.1.0))(express@5.1.0)
       '@sap/cds-foss': 5.0.1
     optionalDependencies:
       express: 5.1.0
 
-  '@sap/eslint-plugin-cds@3.2.0(@eslint/js@9.24.0)(eslint@9.24.0)(express@4.21.2)':
+  '@sap/eslint-plugin-cds@3.2.0(@eslint/js@9.25.0)(eslint@9.24.0)(express@4.21.2)':
     dependencies:
-      '@sap/cds': 8.9.2(@eslint/js@9.24.0)(express@4.21.2)
+      '@sap/cds': 8.9.2(@eslint/js@9.25.0)(express@4.21.2)
       eslint: 9.24.0
       semver: 7.7.1
     transitivePeerDependencies:
@@ -6277,10 +6314,10 @@ snapshots:
     dependencies:
       '@sinonjs/commons': 3.0.1
 
-  '@stylistic/eslint-plugin@3.1.0(eslint@9.24.0)(typescript@5.8.3)':
+  '@stylistic/eslint-plugin@3.1.0(eslint@9.25.0)(typescript@5.8.3)':
     dependencies:
-      '@typescript-eslint/utils': 8.27.0(eslint@9.24.0)(typescript@5.8.3)
-      eslint: 9.24.0
+      '@typescript-eslint/utils': 8.27.0(eslint@9.25.0)(typescript@5.8.3)
+      eslint: 9.25.0
       eslint-visitor-keys: 4.2.0
       espree: 10.3.0
       estraverse: 5.3.0
@@ -6450,15 +6487,15 @@ snapshots:
     dependencies:
       '@types/yargs-parser': 21.0.3
 
-  '@typescript-eslint/eslint-plugin@8.27.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint@9.24.0)(typescript@5.8.3)':
+  '@typescript-eslint/eslint-plugin@8.27.0(@typescript-eslint/parser@8.27.0(eslint@9.25.0)(typescript@5.8.3))(eslint@9.25.0)(typescript@5.8.3)':
     dependencies:
       '@eslint-community/regexpp': 4.12.1
-      '@typescript-eslint/parser': 8.27.0(eslint@9.24.0)(typescript@5.8.3)
+      '@typescript-eslint/parser': 8.27.0(eslint@9.25.0)(typescript@5.8.3)
       '@typescript-eslint/scope-manager': 8.27.0
-      '@typescript-eslint/type-utils': 8.27.0(eslint@9.24.0)(typescript@5.8.3)
-      '@typescript-eslint/utils': 8.27.0(eslint@9.24.0)(typescript@5.8.3)
+      '@typescript-eslint/type-utils': 8.27.0(eslint@9.25.0)(typescript@5.8.3)
+      '@typescript-eslint/utils': 8.27.0(eslint@9.25.0)(typescript@5.8.3)
       '@typescript-eslint/visitor-keys': 8.27.0
-      eslint: 9.24.0
+      eslint: 9.25.0
       graphemer: 1.4.0
       ignore: 5.3.2
       natural-compare: 1.4.0
@@ -6467,14 +6504,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3)':
+  '@typescript-eslint/parser@8.27.0(eslint@9.25.0)(typescript@5.8.3)':
     dependencies:
       '@typescript-eslint/scope-manager': 8.27.0
       '@typescript-eslint/types': 8.27.0
       '@typescript-eslint/typescript-estree': 8.27.0(typescript@5.8.3)
       '@typescript-eslint/visitor-keys': 8.27.0
       debug: 4.4.0(supports-color@8.1.1)
-      eslint: 9.24.0
+      eslint: 9.25.0
       typescript: 5.8.3
     transitivePeerDependencies:
       - supports-color
@@ -6484,12 +6521,12 @@ snapshots:
       '@typescript-eslint/types': 8.27.0
       '@typescript-eslint/visitor-keys': 8.27.0
 
-  '@typescript-eslint/type-utils@8.27.0(eslint@9.24.0)(typescript@5.8.3)':
+  '@typescript-eslint/type-utils@8.27.0(eslint@9.25.0)(typescript@5.8.3)':
     dependencies:
       '@typescript-eslint/typescript-estree': 8.27.0(typescript@5.8.3)
-      '@typescript-eslint/utils': 8.27.0(eslint@9.24.0)(typescript@5.8.3)
+      '@typescript-eslint/utils': 8.27.0(eslint@9.25.0)(typescript@5.8.3)
       debug: 4.4.0(supports-color@8.1.1)
-      eslint: 9.24.0
+      eslint: 9.25.0
       ts-api-utils: 2.1.0(typescript@5.8.3)
       typescript: 5.8.3
     transitivePeerDependencies:
@@ -6511,13 +6548,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@8.27.0(eslint@9.24.0)(typescript@5.8.3)':
+  '@typescript-eslint/utils@8.27.0(eslint@9.25.0)(typescript@5.8.3)':
     dependencies:
-      '@eslint-community/eslint-utils': 4.5.1(eslint@9.24.0)
+      '@eslint-community/eslint-utils': 4.6.1(eslint@9.25.0)
       '@typescript-eslint/scope-manager': 8.27.0
       '@typescript-eslint/types': 8.27.0
       '@typescript-eslint/typescript-estree': 8.27.0(typescript@5.8.3)
-      eslint: 9.24.0
+      eslint: 9.25.0
       typescript: 5.8.3
     transitivePeerDependencies:
       - supports-color
@@ -7109,9 +7146,9 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  cssstyle@4.3.0:
+  cssstyle@4.3.1:
     dependencies:
-      '@asamuzakjp/css-color': 3.1.1
+      '@asamuzakjp/css-color': 3.1.3
       rrweb-cssom: 0.8.0
 
   data-urls@5.0.0:
@@ -7429,9 +7466,9 @@ snapshots:
 
   escape-string-regexp@4.0.0: {}
 
-  eslint-config-prettier@10.1.1(eslint@9.24.0):
+  eslint-config-prettier@10.1.1(eslint@9.25.0):
     dependencies:
-      eslint: 9.24.0
+      eslint: 9.25.0
 
   eslint-formatter-pretty@4.1.0:
     dependencies:
@@ -7452,31 +7489,31 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@4.2.2(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint@9.24.0))(eslint@9.24.0):
+  eslint-import-resolver-typescript@4.2.2(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.25.0)(typescript@5.8.3))(eslint@9.25.0))(eslint@9.25.0):
     dependencies:
       debug: 4.4.0(supports-color@8.1.1)
-      eslint: 9.24.0
+      eslint: 9.25.0
       get-tsconfig: 4.10.0
       rspack-resolver: 1.2.2
       stable-hash: 0.0.5
       tinyglobby: 0.2.12
     optionalDependencies:
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.2.2)(eslint@9.24.0)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.25.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.2.2)(eslint@9.25.0)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@4.2.2(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint@9.24.0))(eslint@9.24.0))(eslint@9.24.0):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.27.0(eslint@9.25.0)(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@4.2.2(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.25.0)(typescript@5.8.3))(eslint@9.25.0))(eslint@9.25.0))(eslint@9.25.0):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
-      '@typescript-eslint/parser': 8.27.0(eslint@9.24.0)(typescript@5.8.3)
-      eslint: 9.24.0
+      '@typescript-eslint/parser': 8.27.0(eslint@9.25.0)(typescript@5.8.3)
+      eslint: 9.25.0
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 4.2.2(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint@9.24.0))(eslint@9.24.0)
+      eslint-import-resolver-typescript: 4.2.2(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.25.0)(typescript@5.8.3))(eslint@9.25.0))(eslint@9.25.0)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.2.2)(eslint@9.24.0):
+  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.25.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.2.2)(eslint@9.25.0):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.8
@@ -7485,9 +7522,9 @@ snapshots:
       array.prototype.flatmap: 1.3.3
       debug: 3.2.7
       doctrine: 2.1.0
-      eslint: 9.24.0
+      eslint: 9.25.0
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@4.2.2(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint@9.24.0))(eslint@9.24.0))(eslint@9.24.0)
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.27.0(eslint@9.25.0)(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@4.2.2(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.25.0)(typescript@5.8.3))(eslint@9.25.0))(eslint@9.25.0))(eslint@9.25.0)
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -7499,20 +7536,20 @@ snapshots:
       string.prototype.trimend: 1.0.9
       tsconfig-paths: 3.15.0
     optionalDependencies:
-      '@typescript-eslint/parser': 8.27.0(eslint@9.24.0)(typescript@5.8.3)
+      '@typescript-eslint/parser': 8.27.0(eslint@9.25.0)(typescript@5.8.3)
     transitivePeerDependencies:
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-jsdoc@50.6.9(eslint@9.24.0):
+  eslint-plugin-jsdoc@50.6.9(eslint@9.25.0):
     dependencies:
       '@es-joy/jsdoccomment': 0.49.0
       are-docs-informative: 0.0.2
       comment-parser: 1.4.1
       debug: 4.4.0(supports-color@8.1.1)
       escape-string-regexp: 4.0.0
-      eslint: 9.24.0
+      eslint: 9.25.0
       espree: 10.3.0
       esquery: 1.6.0
       parse-imports: 2.2.1
@@ -7522,24 +7559,24 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-prettier@5.2.4(eslint-config-prettier@10.1.1(eslint@9.24.0))(eslint@9.24.0)(prettier@3.5.3):
+  eslint-plugin-prettier@5.2.4(eslint-config-prettier@10.1.1(eslint@9.25.0))(eslint@9.25.0)(prettier@3.5.3):
     dependencies:
-      eslint: 9.24.0
+      eslint: 9.25.0
       prettier: 3.5.3
       prettier-linter-helpers: 1.0.0
       synckit: 0.10.3
     optionalDependencies:
-      eslint-config-prettier: 10.1.1(eslint@9.24.0)
+      eslint-config-prettier: 10.1.1(eslint@9.25.0)
 
-  eslint-plugin-regex@1.10.0(eslint@9.24.0):
+  eslint-plugin-regex@1.10.0(eslint@9.25.0):
     dependencies:
-      eslint: 9.24.0
+      eslint: 9.25.0
 
-  eslint-plugin-unused-imports@4.1.4(@typescript-eslint/eslint-plugin@8.27.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint@9.24.0)(typescript@5.8.3))(eslint@9.24.0):
+  eslint-plugin-unused-imports@4.1.4(@typescript-eslint/eslint-plugin@8.27.0(@typescript-eslint/parser@8.27.0(eslint@9.25.0)(typescript@5.8.3))(eslint@9.25.0)(typescript@5.8.3))(eslint@9.25.0):
     dependencies:
-      eslint: 9.24.0
+      eslint: 9.25.0
     optionalDependencies:
-      '@typescript-eslint/eslint-plugin': 8.27.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint@9.24.0)(typescript@5.8.3)
+      '@typescript-eslint/eslint-plugin': 8.27.0(@typescript-eslint/parser@8.27.0(eslint@9.25.0)(typescript@5.8.3))(eslint@9.25.0)(typescript@5.8.3)
 
   eslint-rule-docs@1.1.235: {}
 
@@ -7561,6 +7598,46 @@ snapshots:
       '@eslint/core': 0.12.0
       '@eslint/eslintrc': 3.3.1
       '@eslint/js': 9.24.0
+      '@eslint/plugin-kit': 0.2.8
+      '@humanfs/node': 0.16.6
+      '@humanwhocodes/module-importer': 1.0.1
+      '@humanwhocodes/retry': 0.4.2
+      '@types/estree': 1.0.7
+      '@types/json-schema': 7.0.15
+      ajv: 6.12.6
+      chalk: 4.1.2
+      cross-spawn: 7.0.6
+      debug: 4.4.0(supports-color@8.1.1)
+      escape-string-regexp: 4.0.0
+      eslint-scope: 8.3.0
+      eslint-visitor-keys: 4.2.0
+      espree: 10.3.0
+      esquery: 1.6.0
+      esutils: 2.0.3
+      fast-deep-equal: 3.1.3
+      file-entry-cache: 8.0.0
+      find-up: 5.0.0
+      glob-parent: 6.0.2
+      ignore: 5.3.2
+      imurmurhash: 0.1.4
+      is-glob: 4.0.3
+      json-stable-stringify-without-jsonify: 1.0.1
+      lodash.merge: 4.6.2
+      minimatch: 3.1.2
+      natural-compare: 1.4.0
+      optionator: 0.9.4
+    transitivePeerDependencies:
+      - supports-color
+
+  eslint@9.25.0:
+    dependencies:
+      '@eslint-community/eslint-utils': 4.6.1(eslint@9.25.0)
+      '@eslint-community/regexpp': 4.12.1
+      '@eslint/config-array': 0.20.0
+      '@eslint/config-helpers': 0.2.1
+      '@eslint/core': 0.13.0
+      '@eslint/eslintrc': 3.3.1
+      '@eslint/js': 9.25.0
       '@eslint/plugin-kit': 0.2.8
       '@humanfs/node': 0.16.6
       '@humanwhocodes/module-importer': 1.0.1
@@ -8809,12 +8886,11 @@ snapshots:
 
   jsdoc-type-pratt-parser@4.1.0: {}
 
-  jsdom@26.0.0:
+  jsdom@26.1.0:
     dependencies:
-      cssstyle: 4.3.0
+      cssstyle: 4.3.1
       data-urls: 5.0.0
       decimal.js: 10.5.0
-      form-data: 4.0.2
       html-encoding-sniffer: 4.0.0
       http-proxy-agent: 7.0.2
       https-proxy-agent: 7.0.6
@@ -8903,11 +8979,11 @@ snapshots:
 
   kuler@2.0.0: {}
 
-  langchain@0.3.21(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.3)))(axios@1.8.4)(handlebars@4.7.8)(openai@4.93.0(ws@8.18.1)(zod@3.24.3))(ws@8.18.1):
+  langchain@0.3.21(@langchain/core@0.3.45(openai@4.93.0(ws@8.18.1)(zod@3.24.3)))(axios@1.8.4)(handlebars@4.7.8)(openai@4.93.0(ws@8.18.1)(zod@3.24.3))(ws@8.18.1):
     dependencies:
-      '@langchain/core': 0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.3))
-      '@langchain/openai': 0.5.5(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.3)))(ws@8.18.1)
-      '@langchain/textsplitters': 0.1.0(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.3)))
+      '@langchain/core': 0.3.45(openai@4.93.0(ws@8.18.1)(zod@3.24.3))
+      '@langchain/openai': 0.5.5(@langchain/core@0.3.45(openai@4.93.0(ws@8.18.1)(zod@3.24.3)))(ws@8.18.1)
+      '@langchain/textsplitters': 0.1.0(@langchain/core@0.3.45(openai@4.93.0(ws@8.18.1)(zod@3.24.3)))
       js-tiktoken: 1.0.19
       js-yaml: 4.1.0
       jsonpointer: 5.0.1
@@ -8926,7 +9002,7 @@ snapshots:
       - openai
       - ws
 
-  langsmith@0.3.15(openai@4.93.0(ws@8.18.1)(zod@3.24.2)):
+  langsmith@0.3.15(openai@4.93.0(ws@8.18.1)(zod@3.24.3)):
     dependencies:
       '@types/uuid': 10.0.0
       chalk: 4.1.2
@@ -8936,9 +9012,9 @@ snapshots:
       semver: 7.7.1
       uuid: 10.0.0
     optionalDependencies:
-      openai: 4.93.0(ws@8.18.1)(zod@3.24.2)
+      openai: 4.93.0(ws@8.18.1)(zod@3.24.3)
 
-  langsmith@0.3.15(openai@4.93.0(ws@8.18.1)(zod@3.24.3)):
+  langsmith@0.3.18(openai@4.93.0(ws@8.18.1)(zod@3.24.3)):
     dependencies:
       '@types/uuid': 10.0.0
       chalk: 4.1.2
@@ -9160,9 +9236,9 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  nock@14.0.3:
+  nock@14.0.4:
     dependencies:
-      '@mswjs/interceptors': 0.38.1
+      '@mswjs/interceptors': 0.38.5
       json-stringify-safe: 5.0.1
       propagate: 2.0.1
     transitivePeerDependencies:
@@ -9303,22 +9379,6 @@ snapshots:
   onetime@5.1.2:
     dependencies:
       mimic-fn: 2.1.0
-
-  openai@4.93.0(ws@8.18.1)(zod@3.24.2):
-    dependencies:
-      '@types/node': 18.19.86
-      '@types/node-fetch': 2.6.12
-      abort-controller: 3.0.0
-      agentkeepalive: 4.6.0
-      form-data-encoder: 1.7.2
-      formdata-node: 4.4.1
-      node-fetch: 2.7.0
-    optionalDependencies:
-      ws: 8.18.1
-      zod: 3.24.2
-    transitivePeerDependencies:
-      - encoding
-    optional: true
 
   openai@4.93.0(ws@8.18.1)(zod@3.24.3):
     dependencies:
@@ -10136,11 +10196,11 @@ snapshots:
       fdir: 6.4.3(picomatch@4.0.2)
       picomatch: 4.0.2
 
-  tldts-core@6.1.85: {}
+  tldts-core@6.1.86: {}
 
-  tldts@6.1.85:
+  tldts@6.1.86:
     dependencies:
-      tldts-core: 6.1.85
+      tldts-core: 6.1.86
 
   tmp@0.0.33:
     dependencies:
@@ -10156,11 +10216,11 @@ snapshots:
 
   tough-cookie@5.1.2:
     dependencies:
-      tldts: 6.1.85
+      tldts: 6.1.86
 
   tr46@0.0.3: {}
 
-  tr46@5.1.0:
+  tr46@5.1.1:
     dependencies:
       punycode: 2.3.1
 
@@ -10328,12 +10388,12 @@ snapshots:
       possible-typed-array-names: 1.1.0
       reflect.getprototypeof: 1.0.10
 
-  typescript-eslint@8.27.0(eslint@9.24.0)(typescript@5.8.3):
+  typescript-eslint@8.27.0(eslint@9.25.0)(typescript@5.8.3):
     dependencies:
-      '@typescript-eslint/eslint-plugin': 8.27.0(@typescript-eslint/parser@8.27.0(eslint@9.24.0)(typescript@5.8.3))(eslint@9.24.0)(typescript@5.8.3)
-      '@typescript-eslint/parser': 8.27.0(eslint@9.24.0)(typescript@5.8.3)
-      '@typescript-eslint/utils': 8.27.0(eslint@9.24.0)(typescript@5.8.3)
-      eslint: 9.24.0
+      '@typescript-eslint/eslint-plugin': 8.27.0(@typescript-eslint/parser@8.27.0(eslint@9.25.0)(typescript@5.8.3))(eslint@9.25.0)(typescript@5.8.3)
+      '@typescript-eslint/parser': 8.27.0(eslint@9.25.0)(typescript@5.8.3)
+      '@typescript-eslint/utils': 8.27.0(eslint@9.25.0)(typescript@5.8.3)
+      eslint: 9.25.0
       typescript: 5.8.3
     transitivePeerDependencies:
       - supports-color
@@ -10429,7 +10489,7 @@ snapshots:
 
   whatwg-url@14.2.0:
     dependencies:
-      tr46: 5.1.0
+      tr46: 5.1.1
       webidl-conversions: 7.0.0
 
   whatwg-url@5.0.0:
@@ -10594,14 +10654,8 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod-to-json-schema@3.24.5(zod@3.24.2):
-    dependencies:
-      zod: 3.24.2
-
   zod-to-json-schema@3.24.5(zod@3.24.3):
     dependencies:
       zod: 3.24.3
-
-  zod@3.24.2: {}
 
   zod@3.24.3: {}
