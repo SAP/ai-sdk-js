@@ -5,13 +5,43 @@ exports[`orchestration service client returns successful response when maxRetrie
   "id": [
     "langchain_core",
     "messages",
-    "OrchestrationMessage",
+    "AIMessage",
   ],
   "kwargs": {
     "additional_kwargs": {
       "finish_reason": "stop",
       "function_call": undefined,
       "index": 0,
+      "module_results": {
+        "llm": {
+          "choices": [
+            {
+              "finish_reason": "stop",
+              "index": 0,
+              "message": {
+                "content": "Hello! How can I assist you today?",
+                "role": "assistant",
+              },
+            },
+          ],
+          "created": 172,
+          "id": "llm-id",
+          "model": "gpt-4o",
+          "object": "chat.completion",
+          "usage": {
+            "completion_tokens": 9,
+            "prompt_tokens": 9,
+            "total_tokens": 18,
+          },
+        },
+        "templating": [
+          {
+            "content": "Hello!",
+            "role": "user",
+          },
+        ],
+      },
+      "request_id": "request-id",
       "tool_calls": undefined,
     },
     "content": "Hello! How can I assist you today?",
@@ -44,13 +74,43 @@ exports[`orchestration service client returns successful response when timeout i
   "id": [
     "langchain_core",
     "messages",
-    "OrchestrationMessage",
+    "AIMessage",
   ],
   "kwargs": {
     "additional_kwargs": {
       "finish_reason": "stop",
       "function_call": undefined,
       "index": 0,
+      "module_results": {
+        "llm": {
+          "choices": [
+            {
+              "finish_reason": "stop",
+              "index": 0,
+              "message": {
+                "content": "Hello! How can I assist you today?",
+                "role": "assistant",
+              },
+            },
+          ],
+          "created": 172,
+          "id": "llm-id",
+          "model": "gpt-4o",
+          "object": "chat.completion",
+          "usage": {
+            "completion_tokens": 9,
+            "prompt_tokens": 9,
+            "total_tokens": 18,
+          },
+        },
+        "templating": [
+          {
+            "content": "Hello!",
+            "role": "user",
+          },
+        ],
+      },
+      "request_id": "request-id",
       "tool_calls": undefined,
     },
     "content": "Hello! How can I assist you today?",
