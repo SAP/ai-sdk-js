@@ -1,3 +1,5 @@
+import { Readable } from 'stream';
+import { json } from 'stream/consumers';
 import {
   ErrorWithCause,
   mergeIgnoreCase,
@@ -77,18 +79,18 @@ export async function executeRequest(
     );
     return response;
   } catch (error: any) {
-    if (error.response?.data && error.config.responseType === 'stream') {
-      const chunks: Buffer[] = [];
-      for await (const chunk of error.response.data) {
-        chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
-      }
-      error.response.data = JSON.parse(Buffer.concat(chunks).toString('utf8'));
-    }
-
+    await handleStreamError(error);
     throw new ErrorWithCause(
       `Request failed with status code ${error.status}.`,
       error
     );
+  }
+}
+
+async function handleStreamError(error: any) {
+  if (error.response?.data && error.config.responseType === 'stream') {
+    const readable = Readable.from(error.response.data);
+    error.response.data = await json(readable);
   }
 }
 
