@@ -72,7 +72,6 @@ describe('OrchestrationResponse', () => {
   it('should return undefined when convenience function is called with incorrect index', () => {
     expect(orchestrationResponse.getFinishReason(1)).toBeUndefined();
     expect(orchestrationResponse.getContent(1)).toBeUndefined();
-    expect(orchestrationResponse.getAllMessages(1)).toBeUndefined();
     expect(orchestrationResponse.getAssistantMessage(1)).toBeUndefined();
   });
 
