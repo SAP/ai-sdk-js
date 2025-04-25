@@ -30,6 +30,7 @@ jobs:
       - name: Check PR Status (Exists, Merged)
         id: check_pr_status
         run: |
+          set +e
           BRANCH_NAME="${{ steps.determine-branch-name.outputs.release_notes_branch }}"
           echo "Checking status for PR associated with branch: $BRANCH_NAME"
 
