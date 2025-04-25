@@ -623,9 +623,11 @@ export async function orchestrationToolCalling(): Promise<OrchestrationResponse>
  * @returns The orchestration service response containing `tool_calls`.
  */
 export async function orchestrationMessageHistoryWithToolCalling(): Promise<OrchestrationResponse> {
+  // The tool that performs the calculation
   const addTwoNumbers = (first: number, second: number): string =>
     `The sum of ${first} and ${second} is ${first + second}.`;
 
+  // Routing tool calls to their corresponsing implementation
   const callFunction = (name: string, args: any): string => {
     switch (name) {
       case 'add':
@@ -635,6 +637,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
     }
   };
 
+  // Tool definition
   const addNumbersTool: ChatCompletionTool = {
     type: 'function',
     function: {
@@ -660,6 +663,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
   const allMessages: ChatMessages = response.getAllMessages();
   const initialResponse: AssistantChatMessage = response.getAssistantMessage();
 
+  // Use the initial response to execute the tool and get the response.
   if (initialResponse.tool_calls) {
     const toolCall = initialResponse.tool_calls[0];
     const args = JSON.parse(toolCall.function.arguments);
@@ -671,8 +675,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
     allMessages.push(message);
   }
 
-  return orchestrationClient(
-    [{ role: 'user', content: 'What is the corresponding roman numeral?' }],
-    addNumbersTool
-  ).chatCompletion({ messagesHistory: allMessages });
+  return orchestrationClient(allMessages, addNumbersTool).chatCompletion({
+    messagesHistory: allMessages
+  });
 }
