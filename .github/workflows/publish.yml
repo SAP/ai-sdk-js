@@ -10,10 +10,11 @@ env:
 
 jobs:
   check-release-notes-pr:
-    name: Check Release Notes PR Mergeability
+    name: Check Release Notes PR Status
     runs-on: ubuntu-latest
     outputs:
       release_notes_branch: ${{ steps.determine-branch-name.outputs.release_notes_branch }}
+      is_merged: ${{ steps.check_pr_status.outputs.merged }}
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
@@ -25,7 +26,35 @@ jobs:
           echo "Using version: $VERSION"
           BRANCH_NAME="update-release-notes-js-$VERSION"
           echo "release_notes_branch=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }} # Token needed if setup action doesn't install gh
+
+      - name: Check PR Status (Exists, Merged)
+        id: check_pr_status
+        run: |
+          BRANCH_NAME="${{ steps.determine-branch-name.outputs.release_notes_branch }}"
+          echo "Checking status for PR associated with branch: $BRANCH_NAME"
+
+          # Attempt to get the state. Let the command fail if PR not found.
+          # Check if the state is MERGED. Output 'true' or 'false'.
+          MERGED_OUTPUT=$(gh pr view "$BRANCH_NAME" --repo "${{ env.DOCS_REPO }}" --json state --jq '.state == "MERGED" | tostring')
+          EXIT_CODE=$?
+
+          if [[ $EXIT_CODE -ne 0 ]]; then
+            echo "Failed to find Docs PR for branch $BRANCH_NAME or other error occurred (Exit code: $EXIT_CODE). The Docs PR is required for the release process." >&2
+            exit 1 # Fail the step
+          fi
+
+          # Command succeeded: PR exists
+          echo "PR found. Is Merged: $MERGED_OUTPUT"
+          echo "merged=$MERGED_OUTPUT" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+
       - name: 'Check Whether Release Notes PR Can Be Merged'
+        id: check_mergeability
+        # Only run if PR is not merged (existence is guaranteed by previous step success)
+        if: steps.check_pr_status.outputs.merged == 'false'
         uses: ./.github/actions/pr-is-mergeable
         with:
           pr-ref: ${{ steps.determine-branch-name.outputs.release_notes_branch }}
@@ -51,12 +80,15 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}
 
   merge-release-notes-pr:
-    name: Merge Release Notes PR
+    name: Merge Release Notes PR (if needed)
     runs-on: ubuntu-latest
     needs: [check-release-notes-pr, publish-npm]
+    # Run only if PR is not merged and the check job succeeded
+    if: needs.check-release-notes-pr.outputs.is_merged == 'false'
     steps:
       - name: 'Merge Release Notes PR'
         run: |
+          echo "Attempting to merge PR for branch: ${{ needs.check-release-notes-pr.outputs.release_notes_branch }}"
           gh pr merge --squash "${{ needs.check-release-notes-pr.outputs.release_notes_branch }}" --delete-branch --repo "${{ env.DOCS_REPO }}"
         env:
           GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
