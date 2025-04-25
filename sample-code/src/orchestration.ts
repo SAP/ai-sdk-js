@@ -675,7 +675,10 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
     allMessages.push(message);
   }
 
-  return orchestrationClient(allMessages, addNumbersTool).chatCompletion({
+  return orchestrationClient(
+    [{ role: 'user', content: 'What is the corresponding roman numeral?' }],
+    addNumbersTool
+  ).chatCompletion({
     messagesHistory: allMessages
   });
 }
