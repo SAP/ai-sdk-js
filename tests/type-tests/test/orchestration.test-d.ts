@@ -16,7 +16,9 @@ import type {
   AzureContentSafetyFilterConfig,
   ChatMessages,
   LlamaGuard38BFilterConfig,
-  DpiConfig
+  DpiConfig,
+  AssistantChatMessage,
+  MessageToolCalls
 } from '@sap-ai-sdk/orchestration';
 
 /**
@@ -92,10 +94,49 @@ expectType<ChatMessages>(
         template: [{ role: 'user', content: 'Hello!' }]
       },
       llm: {
-        model_name: 'gpt-35-turbo-16k'
+        model_name: 'gpt-4o-mini'
       }
     }).chatCompletion()
   ).getAllMessages()
+);
+
+expectType<MessageToolCalls | undefined>(
+  (
+    await new OrchestrationClient({
+      templating: {
+        template: [{ role: 'user', content: 'Hello!' }]
+      },
+      llm: {
+        model_name: 'gpt-4o-mini'
+      }
+    }).chatCompletion()
+  ).getToolCalls()
+);
+
+expectType<string | undefined>(
+  (
+    await new OrchestrationClient({
+      templating: {
+        template: [{ role: 'user', content: 'Hello!' }]
+      },
+      llm: {
+        model_name: 'gpt-4o-mini'
+      }
+    }).chatCompletion()
+  ).getRefusal()
+);
+
+expectType<AssistantChatMessage | undefined>(
+  (
+    await new OrchestrationClient({
+      templating: {
+        template: [{ role: 'user', content: 'Hello!' }]
+      },
+      llm: {
+        model_name: 'gpt-4o-mini'
+      }
+    }).chatCompletion()
+  ).getAssistantMessage()
 );
 
 expectType<Promise<OrchestrationResponse>>(

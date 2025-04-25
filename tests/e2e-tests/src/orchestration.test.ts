@@ -97,24 +97,16 @@ describe('orchestration', () => {
     expect(result.translation).toBeDefined();
   });
 
-  it('should return a response with tool_calls when finish_reason is tool_calls', async () => {
-    const result = await orchestrationToolCalling();
-    expect(result.getFinishReason()).toBe('tool_calls');
-
-    const assistantMessage = result.getAssistantMessage();
-
-    if (assistantMessage.tool_calls) {
-      expect(assistantMessage.tool_calls).toHaveLength(1);
-      expect(assistantMessage.tool_calls[0].function.name).toBeDefined();
-      expect(assistantMessage.tool_calls![0].function.arguments).toBeDefined();
-    } else {
-      throw new Error('Expected tool_calls to be defined');
-    }
-  });
-
   it('should complete a chat when message history with tool calls is passed', async () => {
-    const result = await orchestrationMessageHistoryWithToolCalling();
-    assertContent(result);
+    const toolCallResult = await orchestrationToolCalling();
+    expect(toolCallResult.getFinishReason()).toBe('tool_calls');
+
+    const assistantMessage = toolCallResult.getAssistantMessage();
+    expect(assistantMessage!.tool_calls![0].function.name).toBeDefined();
+
+    const chatCompletionResult =
+      await orchestrationMessageHistoryWithToolCalling();
+    assertContent(chatCompletionResult);
   });
 
   it('should return stream of orchestration responses', async () => {
