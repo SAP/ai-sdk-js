@@ -52,8 +52,6 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
 
       - name: 'Check Whether Release Notes PR Can Be Merged'
-        id: check_mergeability
-        # Only run if PR is not merged (existence is guaranteed by previous step success)
         if: steps.check_pr_status.outputs.merged == 'false'
         uses: ./.github/actions/pr-is-mergeable
         with:
@@ -83,7 +81,6 @@ jobs:
     name: Merge Release Notes PR (if needed)
     runs-on: ubuntu-latest
     needs: [check-release-notes-pr, publish-npm]
-    # Run only if PR is not merged and the check job succeeded
     if: needs.check-release-notes-pr.outputs.is_merged == 'false'
     steps:
       - name: 'Merge Release Notes PR'
