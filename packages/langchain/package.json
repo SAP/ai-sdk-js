@@ -32,7 +32,7 @@
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-cloud-sdk/connectivity": "^4.0.2",
     "uuid": "^11.1.0",
-    "@langchain/core": "0.3.44",
+    "@langchain/core": "0.3.48",
     "zod-to-json-schema": "^3.24.5"
   }
 }

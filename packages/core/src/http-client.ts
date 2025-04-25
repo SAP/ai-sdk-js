@@ -1,3 +1,5 @@
+import { Readable } from 'node:stream';
+import { json } from 'node:stream/consumers';
 import {
   ErrorWithCause,
   mergeIgnoreCase,
@@ -77,10 +79,19 @@ export async function executeRequest(
     );
     return response;
   } catch (error: any) {
+    // TODO: remove this after the axios issue (https://github.com/axios/axios/issues/6468) has been fixed.
+    await handleStreamError(error);
     throw new ErrorWithCause(
       `Request failed with status code ${error.status}.`,
       error
     );
+  }
+}
+
+async function handleStreamError(error: any) {
+  if (error.response?.data && error.config.responseType === 'stream') {
+    const readable = Readable.from(error.response.data);
+    error.response.data = await json(readable);
   }
 }
 

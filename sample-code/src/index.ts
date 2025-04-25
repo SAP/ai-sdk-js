@@ -2,7 +2,8 @@
 export {
   chatCompletion,
   computeEmbedding,
-  chatCompletionWithDestination
+  chatCompletionWithDestination,
+  chatCompletionWithFunctionCall
   // eslint-disable-next-line import/no-internal-modules
 } from './foundation-models/azure-openai.js';
 export {
@@ -29,7 +30,10 @@ export {
   invokeChain,
   invokeRagChain
 } from './langchain-azure-openai.js';
-export { invokeChain as orchestrationInvokeChain } from './langchain-orchestration.js';
+export {
+  invokeChain as orchestrationInvokeChain,
+  invokeLangGraphChain
+} from './langchain-orchestration.js';
 export {
   getDeployments,
   getDeploymentsWithDestination,
