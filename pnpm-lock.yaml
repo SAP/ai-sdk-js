@@ -321,6 +321,9 @@ importers:
       '@langchain/core':
         specifier: 0.3.48
         version: 0.3.48(openai@4.96.0(ws@8.18.1)(zod@3.24.3))
+      '@langchain/langgraph':
+        specifier: ^0.2.62
+        version: 0.2.62(@langchain/core@0.3.48(openai@4.96.0(ws@8.18.1)(zod@3.24.3)))(zod-to-json-schema@3.24.5(zod@3.24.3))
       '@langchain/textsplitters':
         specifier: 0.1.0
         version: 0.1.0(@langchain/core@0.3.48(openai@4.96.0(ws@8.18.1)(zod@3.24.3)))
@@ -351,6 +354,15 @@ importers:
       langchain:
         specifier: 0.3.24
         version: 0.3.24(@langchain/core@0.3.48(openai@4.96.0(ws@8.18.1)(zod@3.24.3)))(axios@1.8.4)(handlebars@4.7.8)(openai@4.96.0(ws@8.18.1)(zod@3.24.3))(ws@8.18.1)
+      uuid:
+        specifier: ^11.1.0
+        version: 11.1.0
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.3
+      zod-to-json-schema:
+        specifier: ^3.24.5
+        version: 3.24.5(zod@3.24.3)
     devDependencies:
       '@types/express':
         specifier: ^5.0.1

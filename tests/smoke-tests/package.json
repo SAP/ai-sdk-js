@@ -7,7 +7,7 @@
   "private": "true",
   "scripts": {
     "start": "node dist/server.js",
-    "local": "node --env-file=.env.local dist/server.js",
+    "local": "node --env-file=.env dist/server.js",
     "create-deployment": "rm -rf dist && cp -r ../../sample-code/dist dist",
     "cf-login": "dotenv -- bash -c 'cf login -a \"$CF_API_URL\" -u \"$CF_USER\" -p \"$CF_PASSWORD\" -o \"$CF_ORG\" -s \"$CF_SPACE\"'",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
@@ -15,17 +15,21 @@
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
+    "@langchain/langgraph": "^0.2.62",
     "langchain": "0.3.24",
     "@langchain/core": "0.3.48",
     "@langchain/textsplitters": "0.1.0",
     "@sap-ai-sdk/ai-api": "canary",
+    "@sap-ai-sdk/document-grounding": "canary",
     "@sap-ai-sdk/foundation-models": "canary",
     "@sap-ai-sdk/langchain": "canary",
     "@sap-ai-sdk/orchestration": "canary",
-    "@sap-ai-sdk/document-grounding": "canary",
     "@sap-ai-sdk/prompt-registry": "canary",
     "@sap-cloud-sdk/util": "^4.0.2",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "uuid": "^11.1.0",
+    "zod": "^3.24.2",
+    "zod-to-json-schema": "^3.24.5"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
