@@ -661,7 +661,8 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
 
   const response: OrchestrationResponse = await orchestrationToolCalling();
   const allMessages: ChatMessages = response.getAllMessages();
-  const initialResponse: AssistantChatMessage | undefined = response.getAssistantMessage();
+  const initialResponse: AssistantChatMessage | undefined =
+    response.getAssistantMessage();
 
   // Use the initial response to execute the tool and get the response.
   if (initialResponse && initialResponse.tool_calls) {
