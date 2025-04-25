@@ -26,8 +26,6 @@ jobs:
           echo "Using version: $VERSION"
           BRANCH_NAME="update-release-notes-js-$VERSION"
           echo "release_notes_branch=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
-        env:
-          GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }} # Token needed if setup action doesn't install gh
 
       - name: Check PR Status (Exists, Merged)
         id: check_pr_status
