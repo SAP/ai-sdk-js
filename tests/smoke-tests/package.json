@@ -35,5 +35,8 @@
     "@types/express": "^5.0.1",
     "dotenv": "^16.5.0",
     "dotenv-cli": "^8.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }
