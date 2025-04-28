@@ -1,6 +1,7 @@
 name: publish
 
 on:
+  workflow_dispatch:
   release:
     types: [published] # Trigger when a GitHub Release is published
 
@@ -62,24 +63,24 @@ jobs:
               \"Build Cloud SDK Documentation\": [\"dependabot\"]    
             }
 
-  publish-npm:
-    name: Publish to NPM
-    runs-on: ubuntu-latest
-    needs: [check-release-notes-pr]
-    steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: publish
-        run: |
-          pnpm changeset publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}
+  # publish-npm:
+  #   name: Publish to NPM
+  #   runs-on: ubuntu-latest
+  #   needs: [check-release-notes-pr]
+  #   steps:
+  #     - uses: sap/ai-sdk-js/.github/actions/setup@main
+  #       with:
+  #         node-version: ${{ env.NODE_VERSION }}
+  #     - name: publish
+  #       run: |
+  #         pnpm changeset publish
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}
 
   merge-release-notes-pr:
     name: Merge Release Notes PR (if needed)
     runs-on: ubuntu-latest
-    needs: [check-release-notes-pr, publish-npm]
+    needs: [check-release-notes-pr]
     if: needs.check-release-notes-pr.outputs.is_merged == 'false'
     steps:
       - name: 'Merge Release Notes PR'
