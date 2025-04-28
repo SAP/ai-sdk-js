@@ -2,7 +2,8 @@ name: publish
 
 on:
   pull_request:
-    branches: chore/improve-release-note-workflow
+    branches:
+      - main
   release:
     types: [published] # Trigger when a GitHub Release is published
 
