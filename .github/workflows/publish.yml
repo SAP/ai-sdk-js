@@ -1,9 +1,6 @@
 name: publish
 
 on:
-  pull_request:
-    branches:
-      - main
   release:
     types: [published] # Trigger when a GitHub Release is published
 
