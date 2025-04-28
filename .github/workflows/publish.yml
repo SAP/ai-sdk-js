@@ -30,21 +30,13 @@ jobs:
       - name: Check PR Status (Exists, Merged)
         id: check_pr_status
         run: |
-          set +e
           BRANCH_NAME="${{ steps.determine-branch-name.outputs.release_notes_branch }}"
           echo "Checking status for PR associated with branch: $BRANCH_NAME"
 
-          # Attempt to get the state. Let the command fail if PR not found.
-          # Check if the state is MERGED. Output 'true' or 'false'.
+          # Get merged status. If gh pr view fails (e.g., PR not found), the step will fail.
           MERGED_OUTPUT=$(gh pr view "$BRANCH_NAME" --repo "${{ env.DOCS_REPO }}" --json state --jq '.state == "MERGED" | tostring')
-          EXIT_CODE=$?
 
-          if [[ $EXIT_CODE -ne 0 ]]; then
-            echo "Failed to find Docs PR for branch $BRANCH_NAME or other error occurred (Exit code: $EXIT_CODE). The Docs PR is required for the release process." >&2
-            exit 1 # Fail the step
-          fi
-
-          # Command succeeded: PR exists
+          # This part only runs if the above command succeeded
           echo "PR found. Is Merged: $MERGED_OUTPUT"
           echo "merged=$MERGED_OUTPUT" >> "$GITHUB_OUTPUT"
         env:
