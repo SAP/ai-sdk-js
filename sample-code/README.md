@@ -143,6 +143,12 @@ Define variable by wrapping it with `{{?...}}`.
 
 Get chat completion response with template reference and input parameters.
 
+### Message History
+
+`GET /orchestration/messageHistory`
+
+Get chat completion response and use it as input for subsequent chat completion requests through message history.
+
 #### Input Filtering
 
 `GET /orchestration/inputFiltering`
