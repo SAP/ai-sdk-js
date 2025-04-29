@@ -4,7 +4,7 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-pnpmfileChecksum: sha256-7lht5Q+T9K1tkr5FYaoHEDBAtJqjkSrAs2jGbKMfTIY=
+pnpmfileChecksum: fb3vh7gyjzvxzzal7fbygn3ogm
 
 importers:
 
@@ -92,8 +92,8 @@ importers:
         specifier: ^3.15.0
         version: 3.15.0
       tsx:
-        specifier: ^4.19.3
-        version: 4.19.3
+        specifier: ^4.19.4
+        version: 4.19.4
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
@@ -329,22 +329,22 @@ importers:
         version: 0.1.0(@langchain/core@0.3.49(openai@4.96.0(ws@8.18.1)(zod@3.24.3)))
       '@sap-ai-sdk/ai-api':
         specifier: canary
-        version: 1.12.1-20250428013221.0
+        version: 1.12.1-20250429013204.0
       '@sap-ai-sdk/document-grounding':
         specifier: canary
-        version: 1.12.1-20250428013221.0
+        version: 1.12.1-20250429013204.0
       '@sap-ai-sdk/foundation-models':
         specifier: canary
-        version: 1.12.1-20250428013221.0
+        version: 1.12.1-20250429013204.0
       '@sap-ai-sdk/langchain':
         specifier: canary
-        version: 1.12.1-20250428013221.0(openai@4.96.0(ws@8.18.1)(zod@3.24.3))(zod@3.24.3)
+        version: 1.12.1-20250429013204.0(openai@4.96.0(ws@8.18.1)(zod@3.24.3))(zod@3.24.3)
       '@sap-ai-sdk/orchestration':
         specifier: canary
-        version: 1.12.1-20250428013221.0
+        version: 1.12.1-20250429013204.0
       '@sap-ai-sdk/prompt-registry':
         specifier: canary
-        version: 1.12.1-20250428013221.0
+        version: 1.12.1-20250429013204.0
       '@sap-cloud-sdk/util':
         specifier: ^4.0.2
         version: 4.0.2
@@ -715,152 +715,152 @@ packages:
     resolution: {integrity: sha512-xjZTSFgECpb9Ohuk5yMX5RhUEbfeQcuOp8IF60e+wyzWEF0M5xeSgqsfLtvPEX8BIyOX9saZqzuGPmZ8oWc+5Q==}
     engines: {node: '>=16'}
 
-  '@esbuild/aix-ppc64@0.25.1':
-    resolution: {integrity: sha512-kfYGy8IdzTGy+z0vFGvExZtxkFlA4zAxgKEahG9KE1ScBjpQnFsNOX8KTU5ojNru5ed5CVoJYXFtoxaq5nFbjQ==}
+  '@esbuild/aix-ppc64@0.25.3':
+    resolution: {integrity: sha512-W8bFfPA8DowP8l//sxjJLSLkD8iEjMc7cBVyP+u4cEv9sM7mdUCkgsj+t0n/BWPFtv7WWCN5Yzj0N6FJNUUqBQ==}
     engines: {node: '>=18'}
     cpu: [ppc64]
     os: [aix]
 
-  '@esbuild/android-arm64@0.25.1':
-    resolution: {integrity: sha512-50tM0zCJW5kGqgG7fQ7IHvQOcAn9TKiVRuQ/lN0xR+T2lzEFvAi1ZcS8DiksFcEpf1t/GYOeOfCAgDHFpkiSmA==}
+  '@esbuild/android-arm64@0.25.3':
+    resolution: {integrity: sha512-XelR6MzjlZuBM4f5z2IQHK6LkK34Cvv6Rj2EntER3lwCBFdg6h2lKbtRjpTTsdEjD/WSe1q8UyPBXP1x3i/wYQ==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [android]
 
-  '@esbuild/android-arm@0.25.1':
-    resolution: {integrity: sha512-dp+MshLYux6j/JjdqVLnMglQlFu+MuVeNrmT5nk6q07wNhCdSnB7QZj+7G8VMUGh1q+vj2Bq8kRsuyA00I/k+Q==}
+  '@esbuild/android-arm@0.25.3':
+    resolution: {integrity: sha512-PuwVXbnP87Tcff5I9ngV0lmiSu40xw1At6i3GsU77U7cjDDB4s0X2cyFuBiDa1SBk9DnvWwnGvVaGBqoFWPb7A==}
     engines: {node: '>=18'}
     cpu: [arm]
     os: [android]
 
-  '@esbuild/android-x64@0.25.1':
-    resolution: {integrity: sha512-GCj6WfUtNldqUzYkN/ITtlhwQqGWu9S45vUXs7EIYf+7rCiiqH9bCloatO9VhxsL0Pji+PF4Lz2XXCES+Q8hDw==}
+  '@esbuild/android-x64@0.25.3':
+    resolution: {integrity: sha512-ogtTpYHT/g1GWS/zKM0cc/tIebFjm1F9Aw1boQ2Y0eUQ+J89d0jFY//s9ei9jVIlkYi8AfOjiixcLJSGNSOAdQ==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [android]
 
-  '@esbuild/darwin-arm64@0.25.1':
-    resolution: {integrity: sha512-5hEZKPf+nQjYoSr/elb62U19/l1mZDdqidGfmFutVUjjUZrOazAtwK+Kr+3y0C/oeJfLlxo9fXb1w7L+P7E4FQ==}
+  '@esbuild/darwin-arm64@0.25.3':
+    resolution: {integrity: sha512-eESK5yfPNTqpAmDfFWNsOhmIOaQA59tAcF/EfYvo5/QWQCzXn5iUSOnqt3ra3UdzBv073ykTtmeLJZGt3HhA+w==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [darwin]
 
-  '@esbuild/darwin-x64@0.25.1':
-    resolution: {integrity: sha512-hxVnwL2Dqs3fM1IWq8Iezh0cX7ZGdVhbTfnOy5uURtao5OIVCEyj9xIzemDi7sRvKsuSdtCAhMKarxqtlyVyfA==}
+  '@esbuild/darwin-x64@0.25.3':
+    resolution: {integrity: sha512-Kd8glo7sIZtwOLcPbW0yLpKmBNWMANZhrC1r6K++uDR2zyzb6AeOYtI6udbtabmQpFaxJ8uduXMAo1gs5ozz8A==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [darwin]
 
-  '@esbuild/freebsd-arm64@0.25.1':
-    resolution: {integrity: sha512-1MrCZs0fZa2g8E+FUo2ipw6jw5qqQiH+tERoS5fAfKnRx6NXH31tXBKI3VpmLijLH6yriMZsxJtaXUyFt/8Y4A==}
+  '@esbuild/freebsd-arm64@0.25.3':
+    resolution: {integrity: sha512-EJiyS70BYybOBpJth3M0KLOus0n+RRMKTYzhYhFeMwp7e/RaajXvP+BWlmEXNk6uk+KAu46j/kaQzr6au+JcIw==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [freebsd]
 
-  '@esbuild/freebsd-x64@0.25.1':
-    resolution: {integrity: sha512-0IZWLiTyz7nm0xuIs0q1Y3QWJC52R8aSXxe40VUxm6BB1RNmkODtW6LHvWRrGiICulcX7ZvyH6h5fqdLu4gkww==}
+  '@esbuild/freebsd-x64@0.25.3':
+    resolution: {integrity: sha512-Q+wSjaLpGxYf7zC0kL0nDlhsfuFkoN+EXrx2KSB33RhinWzejOd6AvgmP5JbkgXKmjhmpfgKZq24pneodYqE8Q==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [freebsd]
 
-  '@esbuild/linux-arm64@0.25.1':
-    resolution: {integrity: sha512-jaN3dHi0/DDPelk0nLcXRm1q7DNJpjXy7yWaWvbfkPvI+7XNSc/lDOnCLN7gzsyzgu6qSAmgSvP9oXAhP973uQ==}
+  '@esbuild/linux-arm64@0.25.3':
+    resolution: {integrity: sha512-xCUgnNYhRD5bb1C1nqrDV1PfkwgbswTTBRbAd8aH5PhYzikdf/ddtsYyMXFfGSsb/6t6QaPSzxtbfAZr9uox4A==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [linux]
 
-  '@esbuild/linux-arm@0.25.1':
-    resolution: {integrity: sha512-NdKOhS4u7JhDKw9G3cY6sWqFcnLITn6SqivVArbzIaf3cemShqfLGHYMx8Xlm/lBit3/5d7kXvriTUGa5YViuQ==}
+  '@esbuild/linux-arm@0.25.3':
+    resolution: {integrity: sha512-dUOVmAUzuHy2ZOKIHIKHCm58HKzFqd+puLaS424h6I85GlSDRZIA5ycBixb3mFgM0Jdh+ZOSB6KptX30DD8YOQ==}
     engines: {node: '>=18'}
     cpu: [arm]
     os: [linux]
 
-  '@esbuild/linux-ia32@0.25.1':
-    resolution: {integrity: sha512-OJykPaF4v8JidKNGz8c/q1lBO44sQNUQtq1KktJXdBLn1hPod5rE/Hko5ugKKZd+D2+o1a9MFGUEIUwO2YfgkQ==}
+  '@esbuild/linux-ia32@0.25.3':
+    resolution: {integrity: sha512-yplPOpczHOO4jTYKmuYuANI3WhvIPSVANGcNUeMlxH4twz/TeXuzEP41tGKNGWJjuMhotpGabeFYGAOU2ummBw==}
     engines: {node: '>=18'}
     cpu: [ia32]
     os: [linux]
 
-  '@esbuild/linux-loong64@0.25.1':
-    resolution: {integrity: sha512-nGfornQj4dzcq5Vp835oM/o21UMlXzn79KobKlcs3Wz9smwiifknLy4xDCLUU0BWp7b/houtdrgUz7nOGnfIYg==}
+  '@esbuild/linux-loong64@0.25.3':
+    resolution: {integrity: sha512-P4BLP5/fjyihmXCELRGrLd793q/lBtKMQl8ARGpDxgzgIKJDRJ/u4r1A/HgpBpKpKZelGct2PGI4T+axcedf6g==}
     engines: {node: '>=18'}
     cpu: [loong64]
     os: [linux]
 
-  '@esbuild/linux-mips64el@0.25.1':
-    resolution: {integrity: sha512-1osBbPEFYwIE5IVB/0g2X6i1qInZa1aIoj1TdL4AaAb55xIIgbg8Doq6a5BzYWgr+tEcDzYH67XVnTmUzL+nXg==}
+  '@esbuild/linux-mips64el@0.25.3':
+    resolution: {integrity: sha512-eRAOV2ODpu6P5divMEMa26RRqb2yUoYsuQQOuFUexUoQndm4MdpXXDBbUoKIc0iPa4aCO7gIhtnYomkn2x+bag==}
     engines: {node: '>=18'}
     cpu: [mips64el]
     os: [linux]
 
-  '@esbuild/linux-ppc64@0.25.1':
-    resolution: {integrity: sha512-/6VBJOwUf3TdTvJZ82qF3tbLuWsscd7/1w+D9LH0W/SqUgM5/JJD0lrJ1fVIfZsqB6RFmLCe0Xz3fmZc3WtyVg==}
+  '@esbuild/linux-ppc64@0.25.3':
+    resolution: {integrity: sha512-ZC4jV2p7VbzTlnl8nZKLcBkfzIf4Yad1SJM4ZMKYnJqZFD4rTI+pBG65u8ev4jk3/MPwY9DvGn50wi3uhdaghg==}
     engines: {node: '>=18'}
     cpu: [ppc64]
     os: [linux]
 
-  '@esbuild/linux-riscv64@0.25.1':
-    resolution: {integrity: sha512-nSut/Mx5gnilhcq2yIMLMe3Wl4FK5wx/o0QuuCLMtmJn+WeWYoEGDN1ipcN72g1WHsnIbxGXd4i/MF0gTcuAjQ==}
+  '@esbuild/linux-riscv64@0.25.3':
+    resolution: {integrity: sha512-LDDODcFzNtECTrUUbVCs6j9/bDVqy7DDRsuIXJg6so+mFksgwG7ZVnTruYi5V+z3eE5y+BJZw7VvUadkbfg7QA==}
     engines: {node: '>=18'}
     cpu: [riscv64]
     os: [linux]
 
-  '@esbuild/linux-s390x@0.25.1':
-    resolution: {integrity: sha512-cEECeLlJNfT8kZHqLarDBQso9a27o2Zd2AQ8USAEoGtejOrCYHNtKP8XQhMDJMtthdF4GBmjR2au3x1udADQQQ==}
+  '@esbuild/linux-s390x@0.25.3':
+    resolution: {integrity: sha512-s+w/NOY2k0yC2p9SLen+ymflgcpRkvwwa02fqmAwhBRI3SC12uiS10edHHXlVWwfAagYSY5UpmT/zISXPMW3tQ==}
     engines: {node: '>=18'}
     cpu: [s390x]
     os: [linux]
 
-  '@esbuild/linux-x64@0.25.1':
-    resolution: {integrity: sha512-xbfUhu/gnvSEg+EGovRc+kjBAkrvtk38RlerAzQxvMzlB4fXpCFCeUAYzJvrnhFtdeyVCDANSjJvOvGYoeKzFA==}
+  '@esbuild/linux-x64@0.25.3':
+    resolution: {integrity: sha512-nQHDz4pXjSDC6UfOE1Fw9Q8d6GCAd9KdvMZpfVGWSJztYCarRgSDfOVBY5xwhQXseiyxapkiSJi/5/ja8mRFFA==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [linux]
 
-  '@esbuild/netbsd-arm64@0.25.1':
-    resolution: {integrity: sha512-O96poM2XGhLtpTh+s4+nP7YCCAfb4tJNRVZHfIE7dgmax+yMP2WgMd2OecBuaATHKTHsLWHQeuaxMRnCsH8+5g==}
+  '@esbuild/netbsd-arm64@0.25.3':
+    resolution: {integrity: sha512-1QaLtOWq0mzK6tzzp0jRN3eccmN3hezey7mhLnzC6oNlJoUJz4nym5ZD7mDnS/LZQgkrhEbEiTn515lPeLpgWA==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [netbsd]
 
-  '@esbuild/netbsd-x64@0.25.1':
-    resolution: {integrity: sha512-X53z6uXip6KFXBQ+Krbx25XHV/NCbzryM6ehOAeAil7X7oa4XIq+394PWGnwaSQ2WRA0KI6PUO6hTO5zeF5ijA==}
+  '@esbuild/netbsd-x64@0.25.3':
+    resolution: {integrity: sha512-i5Hm68HXHdgv8wkrt+10Bc50zM0/eonPb/a/OFVfB6Qvpiirco5gBA5bz7S2SHuU+Y4LWn/zehzNX14Sp4r27g==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [netbsd]
 
-  '@esbuild/openbsd-arm64@0.25.1':
-    resolution: {integrity: sha512-Na9T3szbXezdzM/Kfs3GcRQNjHzM6GzFBeU1/6IV/npKP5ORtp9zbQjvkDJ47s6BCgaAZnnnu/cY1x342+MvZg==}
+  '@esbuild/openbsd-arm64@0.25.3':
+    resolution: {integrity: sha512-zGAVApJEYTbOC6H/3QBr2mq3upG/LBEXr85/pTtKiv2IXcgKV0RT0QA/hSXZqSvLEpXeIxah7LczB4lkiYhTAQ==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [openbsd]
 
-  '@esbuild/openbsd-x64@0.25.1':
-    resolution: {integrity: sha512-T3H78X2h1tszfRSf+txbt5aOp/e7TAz3ptVKu9Oyir3IAOFPGV6O9c2naym5TOriy1l0nNf6a4X5UXRZSGX/dw==}
+  '@esbuild/openbsd-x64@0.25.3':
+    resolution: {integrity: sha512-fpqctI45NnCIDKBH5AXQBsD0NDPbEFczK98hk/aa6HJxbl+UtLkJV2+Bvy5hLSLk3LHmqt0NTkKNso1A9y1a4w==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [openbsd]
 
-  '@esbuild/sunos-x64@0.25.1':
-    resolution: {integrity: sha512-2H3RUvcmULO7dIE5EWJH8eubZAI4xw54H1ilJnRNZdeo8dTADEZ21w6J22XBkXqGJbe0+wnNJtw3UXRoLJnFEg==}
+  '@esbuild/sunos-x64@0.25.3':
+    resolution: {integrity: sha512-ROJhm7d8bk9dMCUZjkS8fgzsPAZEjtRJqCAmVgB0gMrvG7hfmPmz9k1rwO4jSiblFjYmNvbECL9uhaPzONMfgA==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [sunos]
 
-  '@esbuild/win32-arm64@0.25.1':
-    resolution: {integrity: sha512-GE7XvrdOzrb+yVKB9KsRMq+7a2U/K5Cf/8grVFRAGJmfADr/e/ODQ134RK2/eeHqYV5eQRFxb1hY7Nr15fv1NQ==}
+  '@esbuild/win32-arm64@0.25.3':
+    resolution: {integrity: sha512-YWcow8peiHpNBiIXHwaswPnAXLsLVygFwCB3A7Bh5jRkIBFWHGmNQ48AlX4xDvQNoMZlPYzjVOQDYEzWCqufMQ==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [win32]
 
-  '@esbuild/win32-ia32@0.25.1':
-    resolution: {integrity: sha512-uOxSJCIcavSiT6UnBhBzE8wy3n0hOkJsBOzy7HDAuTDE++1DJMRRVCPGisULScHL+a/ZwdXPpXD3IyFKjA7K8A==}
+  '@esbuild/win32-ia32@0.25.3':
+    resolution: {integrity: sha512-qspTZOIGoXVS4DpNqUYUs9UxVb04khS1Degaw/MnfMe7goQ3lTfQ13Vw4qY/Nj0979BGvMRpAYbs/BAxEvU8ew==}
     engines: {node: '>=18'}
     cpu: [ia32]
     os: [win32]
 
-  '@esbuild/win32-x64@0.25.1':
-    resolution: {integrity: sha512-Y1EQdcfwMSeQN/ujR5VayLOJ1BHaK+ssyk0AEzPjC+t1lITgsnccPqFjb6V+LsTp/9Iov4ysfjxLaGJ9RPtkVg==}
+  '@esbuild/win32-x64@0.25.3':
+    resolution: {integrity: sha512-ICgUR+kPimx0vvRzf+N/7L7tVSQeE3BYY+NhHRHXS1kBuPO7z2+7ea2HbhDyZdTephgvNvKrlDDKUexuCVBVvg==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
@@ -1072,10 +1072,6 @@ packages:
   '@jsdevtools/ono@7.1.3':
     resolution: {integrity: sha512-4JQNk+3mVzK3xh2rqd6RB4J46qUR19azEHBneZyTZM+c456qOrbbM/5xcR8huNCCcbVt7+UmizG6GuUvPvKUYg==}
 
-  '@langchain/core@0.3.48':
-    resolution: {integrity: sha512-R/G/ax4O3UrDV0JIkz6jiQSLBB68r9FswpHDgN6OPxU0R3YgAVnaiYuiNgUwHymmuUOJ6rZbndsnec73DE0iTw==}
-    engines: {node: '>=18'}
-
   '@langchain/core@0.3.49':
     resolution: {integrity: sha512-ESEbxjtVtZTpgMPrLFEQZVHA5EVJuDYV3XzTFQ8haPHmBJfzskl6TINFttoGKTGbv799DZrRwnd5fbuCN5NDEA==}
     engines: {node: '>=18'}
@@ -1172,26 +1168,26 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
-  '@sap-ai-sdk/ai-api@1.12.1-20250428013221.0':
-    resolution: {integrity: sha512-9XbYM0B9al85og+uPsBG0WAlcm9mIY+2cDhtbRxeexDbtnb4rRxM14LLPwAoJVFjErDsGxESIET1bUreMkbFMQ==}
+  '@sap-ai-sdk/ai-api@1.12.1-20250429013204.0':
+    resolution: {integrity: sha512-aO2E3Hm35IbcPNKvzBSmFj41IN2GO2qQr3GmhY810zsnnzOyo3x8w4563RoTvpQ5J7kPpgk5TcMY6nqSKUflDA==}
 
-  '@sap-ai-sdk/core@1.12.1-20250428013221.0':
-    resolution: {integrity: sha512-U1T6VxDBB3GfMheLr5HL+dpYGz16prXToV+WsRR+mryKHD4zHg9oSWjW6e2/QbUDwBCqiACWTRIHaSgGgzBvfw==}
+  '@sap-ai-sdk/core@1.12.1-20250429013204.0':
+    resolution: {integrity: sha512-FuOK6M6v4qk1BxVNvicDp/ojZHvTXdar34a8nQJt7sSuO6xnZcO37zH2OEu+Bz+OXDUIPan7q944Y3zU9QfOxw==}
 
-  '@sap-ai-sdk/document-grounding@1.12.1-20250428013221.0':
-    resolution: {integrity: sha512-rDG13JGFs3ghWAQTuOj4iVfFr/ZiIBhnYIBwVr3x7oJVeQXn1EKX+3Ldl/Mkd7wH6hYiUlWDraixEKQ4x4Ovow==}
+  '@sap-ai-sdk/document-grounding@1.12.1-20250429013204.0':
+    resolution: {integrity: sha512-VibGT1mLbv+UhMkUS0RlBjRCKLVjGoWPNkT+S96d5qpOIRwdC/6lg/pmaa1pKBpkc05QXopor4CYV9NSvotLsA==}
 
-  '@sap-ai-sdk/foundation-models@1.12.1-20250428013221.0':
-    resolution: {integrity: sha512-QmTKeZkRwiJDYDzu+zN+7BriQt6Nrx7T7PaGauOw1M6bY9IcxHnJJPNqE/1vkpRyiw+MlzeuQfS1wYO5yLxbRg==}
+  '@sap-ai-sdk/foundation-models@1.12.1-20250429013204.0':
+    resolution: {integrity: sha512-/lFTL/De7fRCSyudGhoVaSkdbjTkf4v99B5Lp5KC1ogwwIpZx33UynYQh+R8i06rWUmGzzb+IhbJzTC1cj733Q==}
 
-  '@sap-ai-sdk/langchain@1.12.1-20250428013221.0':
-    resolution: {integrity: sha512-IT5c/Ft6IfWgmeQIyS/Ibp6HUysQmhw5Gf1oQJaRwQ3ljrY+ve548E0cJhIiynmWZ7WSxRAFl2h+HJmiu5Q1PQ==}
+  '@sap-ai-sdk/langchain@1.12.1-20250429013204.0':
+    resolution: {integrity: sha512-+ZIs2leFEve+BLJhhJavQur5vVRmVnGRrTluX+w3K0U01K+49cpLDThO9YwWbQmue8peTywrdiUTH9383QPB3w==}
 
-  '@sap-ai-sdk/orchestration@1.12.1-20250428013221.0':
-    resolution: {integrity: sha512-amzOesHE3hPBta4use9gi5ENn2Vxa61qsSwz6ag3ltkLXRS8IhkNGlEZp4K8l1McmgDdy4WBeaA+6VXnze0VLQ==}
+  '@sap-ai-sdk/orchestration@1.12.1-20250429013204.0':
+    resolution: {integrity: sha512-2OWvPy+TTwyxnFkMzOz9aZTatAMwvQoa3kDT2FS7iw4rpKLiQulrX7HPUaEYQRCsZ55BR9qxvX2PlpW+4tARxw==}
 
-  '@sap-ai-sdk/prompt-registry@1.12.1-20250428013221.0':
-    resolution: {integrity: sha512-f2zcuRTMzV80EnwOgPX/vhnIFhEUE9ZAnapRdOZg134uRBDEavr/n4WZxUZg1RGaMUT4e23XQDEPeYYQnW/H1Q==}
+  '@sap-ai-sdk/prompt-registry@1.12.1-20250429013204.0':
+    resolution: {integrity: sha512-VcRzzTgMtjBXODW0F33xtmo9zWilj3ZHjQnZPefwD8d3/HIf3h9Lf8i7fZwFLKtX8V0C3JC7Momub27hQIZWxA==}
 
   '@sap-cloud-sdk/connectivity@4.0.2':
     resolution: {integrity: sha512-20ok60K1PLezyngU3Zcp2Hx3R2rlPYNeebD+IcFhzHklJGhkJGWOBiWxSlCLhyi1hGmYIr5SIlXHe/6AvHC69Q==}
@@ -2300,8 +2296,8 @@ packages:
   es6-promise@3.3.1:
     resolution: {integrity: sha512-SOp9Phqvqn7jtEUxPWdWfWoLmyt2VaJ6MpvP9Comy1MceMXqE6bxvaTu4iaxpYYPzhny28Lc+M87/c2cPK6lDg==}
 
-  esbuild@0.25.1:
-    resolution: {integrity: sha512-BGO5LtrGC7vxnqucAe/rmvKdJllfGaYWdyABvyMoXQlfYMb2bbRuReWR5tEGE//4LcNJj9XrkovTqNYRFZHAMQ==}
+  esbuild@0.25.3:
+    resolution: {integrity: sha512-qKA6Pvai73+M2FtftpNKRxJ78GIjmFXFxd/1DVBqGo/qNhLSfv+G12n9pNoWdytJC8U00TrViOwpjT0zgqQS8Q==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -4664,8 +4660,8 @@ packages:
     peerDependencies:
       typescript: '>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta'
 
-  tsx@4.19.3:
-    resolution: {integrity: sha512-4H8vUNGNjQ4V2EOoGw005+c+dGuPSnhpPBPHBtsZdGZBk/iJb4kguGlPWaZTZ3q5nMtFOEsY0nRDlh9PJyd6SQ==}
+  tsx@4.19.4:
+    resolution: {integrity: sha512-gK5GVzDkJK1SI1zwHf32Mqxf2tSJkNx+eYcNly5+nHvWqXUJYUkWBQtKauoESz3ymezAI++ZwT855x5p5eop+Q==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -5445,79 +5441,79 @@ snapshots:
       esquery: 1.6.0
       jsdoc-type-pratt-parser: 4.1.0
 
-  '@esbuild/aix-ppc64@0.25.1':
+  '@esbuild/aix-ppc64@0.25.3':
     optional: true
 
-  '@esbuild/android-arm64@0.25.1':
+  '@esbuild/android-arm64@0.25.3':
     optional: true
 
-  '@esbuild/android-arm@0.25.1':
+  '@esbuild/android-arm@0.25.3':
     optional: true
 
-  '@esbuild/android-x64@0.25.1':
+  '@esbuild/android-x64@0.25.3':
     optional: true
 
-  '@esbuild/darwin-arm64@0.25.1':
+  '@esbuild/darwin-arm64@0.25.3':
     optional: true
 
-  '@esbuild/darwin-x64@0.25.1':
+  '@esbuild/darwin-x64@0.25.3':
     optional: true
 
-  '@esbuild/freebsd-arm64@0.25.1':
+  '@esbuild/freebsd-arm64@0.25.3':
     optional: true
 
-  '@esbuild/freebsd-x64@0.25.1':
+  '@esbuild/freebsd-x64@0.25.3':
     optional: true
 
-  '@esbuild/linux-arm64@0.25.1':
+  '@esbuild/linux-arm64@0.25.3':
     optional: true
 
-  '@esbuild/linux-arm@0.25.1':
+  '@esbuild/linux-arm@0.25.3':
     optional: true
 
-  '@esbuild/linux-ia32@0.25.1':
+  '@esbuild/linux-ia32@0.25.3':
     optional: true
 
-  '@esbuild/linux-loong64@0.25.1':
+  '@esbuild/linux-loong64@0.25.3':
     optional: true
 
-  '@esbuild/linux-mips64el@0.25.1':
+  '@esbuild/linux-mips64el@0.25.3':
     optional: true
 
-  '@esbuild/linux-ppc64@0.25.1':
+  '@esbuild/linux-ppc64@0.25.3':
     optional: true
 
-  '@esbuild/linux-riscv64@0.25.1':
+  '@esbuild/linux-riscv64@0.25.3':
     optional: true
 
-  '@esbuild/linux-s390x@0.25.1':
+  '@esbuild/linux-s390x@0.25.3':
     optional: true
 
-  '@esbuild/linux-x64@0.25.1':
+  '@esbuild/linux-x64@0.25.3':
     optional: true
 
-  '@esbuild/netbsd-arm64@0.25.1':
+  '@esbuild/netbsd-arm64@0.25.3':
     optional: true
 
-  '@esbuild/netbsd-x64@0.25.1':
+  '@esbuild/netbsd-x64@0.25.3':
     optional: true
 
-  '@esbuild/openbsd-arm64@0.25.1':
+  '@esbuild/openbsd-arm64@0.25.3':
     optional: true
 
-  '@esbuild/openbsd-x64@0.25.1':
+  '@esbuild/openbsd-x64@0.25.3':
     optional: true
 
-  '@esbuild/sunos-x64@0.25.1':
+  '@esbuild/sunos-x64@0.25.3':
     optional: true
 
-  '@esbuild/win32-arm64@0.25.1':
+  '@esbuild/win32-arm64@0.25.3':
     optional: true
 
-  '@esbuild/win32-ia32@0.25.1':
+  '@esbuild/win32-ia32@0.25.3':
     optional: true
 
-  '@esbuild/win32-x64@0.25.1':
+  '@esbuild/win32-x64@0.25.3':
     optional: true
 
   '@eslint-community/eslint-utils@4.6.1(eslint@9.25.1)':
@@ -5870,23 +5866,6 @@ snapshots:
 
   '@jsdevtools/ono@7.1.3': {}
 
-  '@langchain/core@0.3.48(openai@4.96.0(ws@8.18.1)(zod@3.24.3))':
-    dependencies:
-      '@cfworker/json-schema': 4.1.1
-      ansi-styles: 5.2.0
-      camelcase: 6.3.0
-      decamelize: 1.2.0
-      js-tiktoken: 1.0.20
-      langsmith: 0.3.21(openai@4.96.0(ws@8.18.1)(zod@3.24.3))
-      mustache: 4.2.0
-      p-queue: 6.6.2
-      p-retry: 4.6.2
-      uuid: 10.0.0
-      zod: 3.24.3
-      zod-to-json-schema: 3.24.5(zod@3.24.3)
-    transitivePeerDependencies:
-      - openai
-
   '@langchain/core@0.3.49(openai@4.96.0(ws@8.18.1)(zod@3.24.3))':
     dependencies:
       '@cfworker/json-schema': 4.1.1
@@ -6035,16 +6014,16 @@ snapshots:
 
   '@rtsao/scc@1.1.0': {}
 
-  '@sap-ai-sdk/ai-api@1.12.1-20250428013221.0':
+  '@sap-ai-sdk/ai-api@1.12.1-20250429013204.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.12.1-20250428013221.0
+      '@sap-ai-sdk/core': 1.12.1-20250429013204.0
       '@sap-cloud-sdk/connectivity': 4.0.2
       '@sap-cloud-sdk/util': 4.0.2
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/core@1.12.1-20250428013221.0':
+  '@sap-ai-sdk/core@1.12.1-20250429013204.0':
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.0.2
       '@sap-cloud-sdk/http-client': 4.0.2
@@ -6054,17 +6033,17 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/document-grounding@1.12.1-20250428013221.0':
+  '@sap-ai-sdk/document-grounding@1.12.1-20250429013204.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.12.1-20250428013221.0
+      '@sap-ai-sdk/core': 1.12.1-20250429013204.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/foundation-models@1.12.1-20250428013221.0':
+  '@sap-ai-sdk/foundation-models@1.12.1-20250429013204.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 1.12.1-20250428013221.0
-      '@sap-ai-sdk/core': 1.12.1-20250428013221.0
+      '@sap-ai-sdk/ai-api': 1.12.1-20250429013204.0
+      '@sap-ai-sdk/core': 1.12.1-20250429013204.0
       '@sap-cloud-sdk/connectivity': 4.0.2
       '@sap-cloud-sdk/http-client': 4.0.2
       '@sap-cloud-sdk/util': 4.0.2
@@ -6072,13 +6051,13 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/langchain@1.12.1-20250428013221.0(openai@4.96.0(ws@8.18.1)(zod@3.24.3))(zod@3.24.3)':
+  '@sap-ai-sdk/langchain@1.12.1-20250429013204.0(openai@4.96.0(ws@8.18.1)(zod@3.24.3))(zod@3.24.3)':
     dependencies:
-      '@langchain/core': 0.3.48(openai@4.96.0(ws@8.18.1)(zod@3.24.3))
-      '@sap-ai-sdk/ai-api': 1.12.1-20250428013221.0
-      '@sap-ai-sdk/core': 1.12.1-20250428013221.0
-      '@sap-ai-sdk/foundation-models': 1.12.1-20250428013221.0
-      '@sap-ai-sdk/orchestration': 1.12.1-20250428013221.0
+      '@langchain/core': 0.3.49(openai@4.96.0(ws@8.18.1)(zod@3.24.3))
+      '@sap-ai-sdk/ai-api': 1.12.1-20250429013204.0
+      '@sap-ai-sdk/core': 1.12.1-20250429013204.0
+      '@sap-ai-sdk/foundation-models': 1.12.1-20250429013204.0
+      '@sap-ai-sdk/orchestration': 1.12.1-20250429013204.0
       '@sap-cloud-sdk/connectivity': 4.0.2
       uuid: 11.1.0
       zod-to-json-schema: 3.24.5(zod@3.24.3)
@@ -6088,20 +6067,20 @@ snapshots:
       - supports-color
       - zod
 
-  '@sap-ai-sdk/orchestration@1.12.1-20250428013221.0':
+  '@sap-ai-sdk/orchestration@1.12.1-20250429013204.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 1.12.1-20250428013221.0
-      '@sap-ai-sdk/core': 1.12.1-20250428013221.0
-      '@sap-ai-sdk/prompt-registry': 1.12.1-20250428013221.0
+      '@sap-ai-sdk/ai-api': 1.12.1-20250429013204.0
+      '@sap-ai-sdk/core': 1.12.1-20250429013204.0
+      '@sap-ai-sdk/prompt-registry': 1.12.1-20250429013204.0
       '@sap-cloud-sdk/util': 4.0.2
       yaml: 2.7.1
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/prompt-registry@1.12.1-20250428013221.0':
+  '@sap-ai-sdk/prompt-registry@1.12.1-20250429013204.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.12.1-20250428013221.0
+      '@sap-ai-sdk/core': 1.12.1-20250429013204.0
       zod: 3.24.3
     transitivePeerDependencies:
       - debug
@@ -7482,33 +7461,33 @@ snapshots:
 
   es6-promise@3.3.1: {}
 
-  esbuild@0.25.1:
+  esbuild@0.25.3:
     optionalDependencies:
-      '@esbuild/aix-ppc64': 0.25.1
-      '@esbuild/android-arm': 0.25.1
-      '@esbuild/android-arm64': 0.25.1
-      '@esbuild/android-x64': 0.25.1
-      '@esbuild/darwin-arm64': 0.25.1
-      '@esbuild/darwin-x64': 0.25.1
-      '@esbuild/freebsd-arm64': 0.25.1
-      '@esbuild/freebsd-x64': 0.25.1
-      '@esbuild/linux-arm': 0.25.1
-      '@esbuild/linux-arm64': 0.25.1
-      '@esbuild/linux-ia32': 0.25.1
-      '@esbuild/linux-loong64': 0.25.1
-      '@esbuild/linux-mips64el': 0.25.1
-      '@esbuild/linux-ppc64': 0.25.1
-      '@esbuild/linux-riscv64': 0.25.1
-      '@esbuild/linux-s390x': 0.25.1
-      '@esbuild/linux-x64': 0.25.1
-      '@esbuild/netbsd-arm64': 0.25.1
-      '@esbuild/netbsd-x64': 0.25.1
-      '@esbuild/openbsd-arm64': 0.25.1
-      '@esbuild/openbsd-x64': 0.25.1
-      '@esbuild/sunos-x64': 0.25.1
-      '@esbuild/win32-arm64': 0.25.1
-      '@esbuild/win32-ia32': 0.25.1
-      '@esbuild/win32-x64': 0.25.1
+      '@esbuild/aix-ppc64': 0.25.3
+      '@esbuild/android-arm': 0.25.3
+      '@esbuild/android-arm64': 0.25.3
+      '@esbuild/android-x64': 0.25.3
+      '@esbuild/darwin-arm64': 0.25.3
+      '@esbuild/darwin-x64': 0.25.3
+      '@esbuild/freebsd-arm64': 0.25.3
+      '@esbuild/freebsd-x64': 0.25.3
+      '@esbuild/linux-arm': 0.25.3
+      '@esbuild/linux-arm64': 0.25.3
+      '@esbuild/linux-ia32': 0.25.3
+      '@esbuild/linux-loong64': 0.25.3
+      '@esbuild/linux-mips64el': 0.25.3
+      '@esbuild/linux-ppc64': 0.25.3
+      '@esbuild/linux-riscv64': 0.25.3
+      '@esbuild/linux-s390x': 0.25.3
+      '@esbuild/linux-x64': 0.25.3
+      '@esbuild/netbsd-arm64': 0.25.3
+      '@esbuild/netbsd-x64': 0.25.3
+      '@esbuild/openbsd-arm64': 0.25.3
+      '@esbuild/openbsd-x64': 0.25.3
+      '@esbuild/sunos-x64': 0.25.3
+      '@esbuild/win32-arm64': 0.25.3
+      '@esbuild/win32-ia32': 0.25.3
+      '@esbuild/win32-x64': 0.25.3
 
   escalade@3.2.0: {}
 
@@ -10334,9 +10313,9 @@ snapshots:
       tslib: 1.14.1
       typescript: 5.8.2
 
-  tsx@4.19.3:
+  tsx@4.19.4:
     dependencies:
-      esbuild: 0.25.1
+      esbuild: 0.25.3
       get-tsconfig: 4.10.0
     optionalDependencies:
       fsevents: 2.3.3
