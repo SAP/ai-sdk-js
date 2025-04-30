@@ -43,7 +43,9 @@ describe('document grounding', () => {
   });
 
   it('should get the pipeline status', async () => {
-    const pipelineStatus = await getPipelineStatus('7b17e2ab-4ecc-448e-837f-2c10c9359925');
+    const pipelineStatus = await getPipelineStatus(
+      '7b17e2ab-4ecc-448e-837f-2c10c9359925'
+    );
     expect(pipelineStatus.status).toStrictEqual('INPROGRESS');
   });
 });
