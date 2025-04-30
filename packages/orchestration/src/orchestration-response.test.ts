@@ -1,7 +1,10 @@
 import { parseMockResponse } from '../../../test-util/mock-http.js';
 import { OrchestrationResponse } from './orchestration-response.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-import type { CompletionPostResponse } from './client/api/schema/index.js';
+import type {
+  CompletionPostResponse,
+  LlmChoice
+} from './client/api/schema/index.js';
 
 describe('OrchestrationResponse', () => {
   let mockResponse: CompletionPostResponse;
@@ -62,17 +65,83 @@ describe('OrchestrationResponse', () => {
     });
   });
 
+  it('should return the tool calls response', () => {
+    const localMockResponse = JSON.parse(JSON.stringify(mockResponse));
+    localMockResponse.orchestration_result.choices = [
+      {
+        index: 0,
+        message: {
+          role: 'assistant',
+          content: '',
+          tool_calls: [
+            {
+              type: 'function',
+              function: {
+                name: 'test_tool'
+              }
+            }
+          ]
+        },
+        finish_reason: 'tool_calls'
+      }
+    ] as LlmChoice[];
+
+    const localOrchestrationResponse = new OrchestrationResponse({
+      ...rawResponse,
+      data: localMockResponse
+    });
+
+    expect(localOrchestrationResponse.getToolCalls()).toEqual([
+      {
+        type: 'function',
+        function: {
+          name: expect.any(String)
+        }
+      }
+    ]);
+  });
+
+  it('should return the refusal message from model', () => {
+    const localMockResponse = JSON.parse(JSON.stringify(mockResponse));
+    localMockResponse.orchestration_result.choices = [
+      {
+        index: 0,
+        message: {
+          refusal: 'refusal message from model'
+        },
+        finish_reason: 'stop'
+      }
+    ];
+
+    const localOrchestrationResponse = new OrchestrationResponse({
+      ...rawResponse,
+      data: localMockResponse
+    });
+
+    expect(localOrchestrationResponse.getRefusal()).toEqual(expect.any(String));
+  });
+
   it('should return default choice index with convenience functions', () => {
     expect(orchestrationResponse.getFinishReason()).toBe('stop');
     expect(orchestrationResponse.getContent()).toBe(
       'Hello! How can I assist you today?'
     );
+    expect(orchestrationResponse.getAllMessages()).toEqual([
+      { content: 'Hello!', role: 'user' },
+      { content: 'Hello! How can I assist you today?', role: 'assistant' }
+    ]);
+    expect(orchestrationResponse.getAssistantMessage()).toEqual({
+      content: 'Hello! How can I assist you today?',
+      role: 'assistant'
+    });
   });
 
   it('should return undefined when convenience function is called with incorrect index', () => {
     expect(orchestrationResponse.getFinishReason(1)).toBeUndefined();
     expect(orchestrationResponse.getContent(1)).toBeUndefined();
     expect(orchestrationResponse.getAssistantMessage(1)).toBeUndefined();
+    expect(orchestrationResponse.getRefusal()).toBeUndefined();
+    expect(orchestrationResponse.getToolCalls()).toBeUndefined();
   });
 
   it('should throw if content that was filtered is accessed', () => {
