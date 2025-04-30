@@ -49,7 +49,8 @@ export {
 export {
   createCollection,
   createDocumentsWithTimestamp,
-  deleteCollection
+  deleteCollection,
+  getPipelineStatus
 } from './document-grounding.js';
 
 export {

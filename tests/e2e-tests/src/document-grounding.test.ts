@@ -2,6 +2,7 @@ import {
   createCollection,
   createDocumentsWithTimestamp,
   deleteCollection,
+  getPipelineStatus,
   orchestrationGrounding
 } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
@@ -39,5 +40,10 @@ describe('document grounding', () => {
     expect(result.getContent()).toContain('&)UPnkL_izT)&1u%?2Kg*Y.@qFqR@/');
     expect(result.data.module_results).toBeDefined();
     expect(result.data.module_results.grounding!.data).toBeDefined();
+  });
+
+  it('should get the pipeline status', async () => {
+    const pipelineStatus = await getPipelineStatus('7b17e2ab-4ecc-448e-837f-2c10c9359925');
+    expect(pipelineStatus.status).toStrictEqual('INPROGRESS');
   });
 });
