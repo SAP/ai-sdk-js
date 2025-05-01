@@ -248,7 +248,6 @@ expectType<Promise<OrchestrationResponse>>(
 );
 
 expect<ChatModel>('custom-model');
-expect<ChatModel>('gemini-1.0-pro');
 
 /**
  * Filtering Util for Azure content safety.
