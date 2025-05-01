@@ -5,7 +5,8 @@ import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
   mockInference,
-  parseMockResponse
+  parseMockResponse,
+  parseFileToString
 } from '../../../../test-util/mock-http.js';
 import { OrchestrationClient } from './client.js';
 import type { LangchainOrchestrationModuleConfig } from './types.js';
@@ -129,4 +130,50 @@ describe('orchestration service client', () => {
       'Request failed with status code 400'
     );
   }, 1000);
+
+  it('supports streaming responses', async () => {
+    // Load the mock streaming response
+    const streamMockResponse = await parseFileToString(
+      'orchestration',
+      'orchestration-chat-completion-stream-chunks.txt'
+    );
+
+    // Mock the streaming API call
+    mockInference(
+      {
+        data: constructCompletionPostRequest(
+          config,
+          { messagesHistory: [] },
+          true
+        )
+      },
+      {
+        data: streamMockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    const client = new OrchestrationClient(config);
+
+    // Test the stream method
+    const stream = await client.stream([]);
+
+    // Collect all chunks
+    const chunks = [];
+    for await (const chunk of stream) {
+      chunks.push(chunk);
+    }
+
+    // Verify we received chunks
+    expect(chunks.length).toBeGreaterThan(0);
+
+    // Verify the chunks are of the expected type
+    expect(chunks[0]).toBeDefined();
+    expect(chunks[0].content).toBeDefined();
+  });
+
+  // Test for disableStreaming property has been removed as the feature is no longer supported
 });

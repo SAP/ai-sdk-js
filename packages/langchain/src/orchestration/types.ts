@@ -29,10 +29,9 @@ export type OrchestrationCallOptions = Pick<
 /**
  * Orchestration module configuration for Langchain.
  */
-// TODO: Omit streaming until supported
 export type LangchainOrchestrationModuleConfig = Omit<
   OrchestrationModuleConfigWithStringTemplating,
-  'streaming' | 'templating'
+  'templating'
 > & {
   templating: TemplatingModuleConfig;
 };
