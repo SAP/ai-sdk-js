@@ -35,7 +35,7 @@ export const FileApi = {
    * but must not exceed 100MB. The actual file size limit can be obtained by querying
    * the AI API Runtime Capabilities Endpoint and checking the limits in the section of the `fileUpload` extension.
    *
-   * Path cannot be a prefix, it must be a path to an object.
+   *  Path cannot be a prefix, it must be a path to an object.
    * Clients may group the objects in any manner they choose by specifying path prefixes.
    *
    * Allowed mime-types will be decided by the implementation.

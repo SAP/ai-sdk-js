@@ -2,14 +2,14 @@ openapi: 3.0.0
 info:
   title: AI Core
   description:
-    "Provides tools to manage your scenarios and workflows in SAP AI Core.\
-    \ Execute pipelines as a batch job, for example to pre-process or train your models,\
-    \ or perform batch inference.  Serve inference requests of trained models. Deploy\
-    \ \u0430 trained machine learning model as a web service to serve inference requests\
-    \ with high performance.  Register your own Docker registry, synchronize your\
-    \ AI content from your own git repository, and register your own object store\
-    \ for training data and trained models.\n"
-  version: 2.39.0
+    "Provides tools to manage your scenarios and workflows in SAP AI Core.
+    Execute pipelines as a batch job, for example to pre-process or train your models,
+    or perform batch inference.  Serve inference requests of trained models. Deploy
+    а trained machine learning model as a web service to serve inference requests
+    with high performance.  Register your own Docker registry, synchronize your AI
+    content from your own git repository, and register your own object store for training
+    data and trained models.\n"
+  version: 2.40.0
 x-sap-shortText:
   Create and manage AI scenarios, trainings, deployments, and artifacts
   in SAP AI Core.
@@ -57,6 +57,8 @@ tags:
     description: Access to objectStoreSecrets
   - name: Secret
     description: Access to generic secrets
+  - name: Tenant
+    description: Access to tenant information
   - name: Meta
     description: Metadata about API provider and capabilities
   - name: Execution Schedule
@@ -993,10 +995,10 @@ paths:
 
         '
       description:
-        "Retrieve metrics, labels, or tags according to filter conditions.\
-        \ \nOne query parameter is mandatory, either execution ID or filter. \nUse\
-        \ up to 10 execution IDs in a query parameter.\nWith top/skip parameters it\
-        \ is possible to paginate the result list.\n"
+        "Retrieve metrics, labels, or tags according to filter conditions.
+        \nOne query parameter is mandatory, either execution ID or filter. \nUse up
+        to 10 execution IDs in a query parameter.\nWith top/skip parameters it is
+        possible to paginate the result list.\n"
       tags:
         - Metrics
       parameters:
@@ -1072,9 +1074,9 @@ paths:
         - $ref: '#/components/parameters/KpiquerySelect'
       summary: Get KPIs
       description:
-        "Retrieve the number of executions, artifacts, and deployments\
-        \ \nfor each resource group, scenario, and executable. The columns to be returned\
-        \ can be specified in a query parameter.\n"
+        "Retrieve the number of executions, artifacts, and deployments
+        \nfor each resource group, scenario, and executable. The columns to be returned
+        can be specified in a query parameter.\n"
       operationId: kpi.get
       responses:
         '200':
@@ -1112,18 +1114,18 @@ paths:
       summary: Upload file (size <= 100Mb)
       operationId: file.upload
       description:
-        "Endpoint for uploading file. The maximum file size depends on\
-        \ the actual implementation \nbut must not exceed 100MB. The actual file size\
-        \ limit can be obtained by querying \nthe AI API Runtime Capabilities Endpoint\
-        \ and checking the limits in the section of the `fileUpload` extension.\n\n\
-        Path cannot be a prefix, it must be a path to an object.\nClients may group\
-        \ the objects in any manner they choose by specifying path prefixes.\n\nAllowed\
-        \ mime-types will be decided by the implementation.\nContent-Type header can\
-        \ be set to \"application/octet-stream\" but the implementation is responsible\
-        \ \nfor detecting the actual mime type and checking against the allowed list\
-        \ of mime types. \nFor security reasons, implementations cannot trust the\
-        \ mime type sent by the client.\n\nExample URLs: \n/files/dar/schemas/schema.json\
-        \ \n/files/icr/datasets/training/20201001/20201001-01.csv \n/files/icr/datasets/training/20201001/20201001-02.csv\
+        "Endpoint for uploading file. The maximum file size depends on
+        the actual implementation \nbut must not exceed 100MB. The actual file size
+        limit can be obtained by querying \nthe AI API Runtime Capabilities Endpoint
+        and checking the limits in the section of the `fileUpload` extension.\n\n
+        Path cannot be a prefix, it must be a path to an object.\nClients may group
+        the objects in any manner they choose by specifying path prefixes.\n\nAllowed
+        mime-types will be decided by the implementation.\nContent-Type header can
+        be set to \"application/octet-stream\" but the implementation is responsible
+        \nfor detecting the actual mime type and checking against the allowed list
+        of mime types. \nFor security reasons, implementations cannot trust the mime
+        type sent by the client.\n\nExample URLs: \n/files/dar/schemas/schema.json
+        \n/files/icr/datasets/training/20201001/20201001-01.csv \n/files/icr/datasets/training/20201001/20201001-02.csv\
         \  \n/files/mask-detection/training/mask-detection-20210301.tar.gz"
       parameters:
         - $ref: '#/components/parameters/DSetoverwrite'
@@ -2464,6 +2466,25 @@ paths:
           $ref: '#/components/responses/BckndBadRequest'
         default:
           $ref: '#/components/responses/BckndCommonError'
+  /admin/tenantInfo:
+    parameters: []
+    get:
+      tags:
+        - Tenant Info
+      summary: Information about a specified tenant
+      description:
+        Tenant information containing the service plan that the tenant
+        is subscribed to.
+      operationId: tenant_info.get
+      responses:
+        '200':
+          description: A tenant info object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TntTenantInfo'
+        '404':
+          $ref: '#/components/responses/TntNotFound'
 components:
   securitySchemes:
     Oauth2:
@@ -2571,65 +2592,1379 @@ components:
         details:
           description: Optional details of the error message
           type: object
-    DSetUrl:
+    BckndId:
+      type: string
+      pattern: ^[\w.-]{4,64}$
+      example: aa97b177-9383-4934-8543-0f91a7a0283a
+      description: Generic ID
+    BckndMessage:
+      type: string
+      description: Message
+    BckndName:
+      type: string
+      description: Name
+    BckndCreationResponseMessage:
+      type: string
+      description: Message
+      example: Created
+    BckndUrl:
       type: string
       format: url
-      example: https://download.example.com/test/file.bin
-    DSetError:
-      description: Error Response
+    BckndResourceGroupList:
       type: object
       properties:
-        code:
+        count:
+          type: integer
+          description: Number of the resource instances in the list
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/BckndResourceGroup'
+      required:
+        - count
+        - resources
+    BckndResourceGroupBase:
+      type: object
+      properties:
+        resourceGroupId:
+          description: resource group id
+          type: string
+        tenantId:
+          description: tenant id
+          type: string
+        zoneId:
+          description: zone id
+          type: string
+    BckndResourceGroup:
+      type: object
+      properties:
+        resourceGroupId:
+          description: resource group id
+          type: string
+        tenantId:
+          description: tenant id
+          type: string
+        zoneId:
+          description: zone id
+          type: string
+        createdAt:
+          description: Timestamp of resource group creation
+          type: string
+          format: date-time
+        labels:
+          $ref: '#/components/schemas/BckndResourceGroupLabels'
+        status:
+          description: aggregated status of the onboarding process
+          type: string
+          enum:
+            - PROVISIONED
+            - ERROR
+            - PROVISIONING
+        statusMessage:
+          description: status message
+          type: string
+      required:
+        - status
+        - createdAt
+        - resourceGroupId
+    BckndInternalResourceGroup:
+      type: object
+      properties:
+        resourceGroupId:
+          description: resource group id
+          type: string
+        tenantId:
+          description: tenant id
+          type: string
+        zoneId:
+          description: zone id
+          type: string
+        createdAt:
+          description: Timestamp of resource group creation
+          type: string
+          format: date-time
+        labels:
+          $ref: '#/components/schemas/BckndInternalResourceGroupLabels'
+        status:
+          description: aggregated status of the onboarding process
+          type: string
+          enum:
+            - PROVISIONED
+            - ERROR
+            - PROVISIONING
+        statusMessage:
+          description: status message
+          type: string
+        annotations:
+          $ref: '#/components/schemas/BckndInternalResourceGroupAnnotations'
+      required:
+        - status
+        - createdAt
+        - resourceGroupId
+    BckndResourceGroupsPostRequest:
+      type: object
+      properties:
+        resourceGroupId:
+          description: resource group id
+          type: string
+          pattern: ^[a-zA-Z0-9][a-zA-Z0-9.-]{1,251}[a-zA-Z0-9]$
+          minLength: 3
+          maxLength: 253
+        labels:
+          $ref: '#/components/schemas/BckndResourceGroupLabels'
+    BckndResourceGroupLabels:
+      type: array
+      description: Arbitrary labels as meta information
+      items:
+        $ref: '#/components/schemas/BckndResourceGroupLabel'
+    BckndResourceGroupLabel:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          type: string
+          pattern: ^ext.ai.sap.com/(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]){1,48}$
+          maxLength: 63
+          example: ext.ai.sap.com/my-label
+        value:
+          type: string
+          maxLength: 5000
+    BckndInternalResourceGroupLabels:
+      type: array
+      description: Arbitrary labels as meta information
+      items:
+        $ref: '#/components/schemas/BckndInternalResourceGroupLabel'
+    BckndInternalResourceGroupLabel:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          type: string
+          pattern: ^internal.ai.sap.com/(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]){1,43}$
+          maxLength: 63
+          example: internal.ai.sap.com/my-label
+        value:
+          type: string
+          maxLength: 5000
+    BckndInternalResourceGroupAnnotations:
+      type: array
+      description: Arbitrary annotations as meta information
+      items:
+        $ref: '#/components/schemas/BckndInternalResourceGroupAnnotation'
+    BckndInternalResourceGroupAnnotation:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          type: string
+          pattern: ^internal.ai.sap.com/(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]){1,43}$
+          maxLength: 63
+          example: internal.ai.sap.com/my-annotation
+        value:
+          type: string
+          maxLength: 5000
+    BckndResourceGroupDeletionResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/BckndId'
+        message:
+          $ref: '#/components/schemas/BckndResourceGroupDeletionResponseMessage'
+      required:
+        - id
+        - message
+    BckndResourceGroupDeletionResponseMessage:
+      type: string
+      description: Message
+      example: Resource Group deletion scheduled
+    BckndResourceGroupPatchRequest:
+      type: object
+      properties:
+        labels:
+          $ref: '#/components/schemas/BckndResourceGroupLabels'
+    BckndEvent:
+      type: object
+      properties:
+        tenantId:
+          description: tenant id
+          type: string
+        action:
+          type: string
+          enum:
+            - PROVISION
+            - DEPROVISION
+        state:
+          type: string
+          enum:
+            - SUCCESSFUL
+            - FAILED
+            - PENDING
+        description:
+          description: describes the event state
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+          example: '2017-09-28T08:56:23.275Z'
+    BckndTenant:
+      type: object
+      properties:
+        tenantId:
+          description: tenant id
+          type: string
+        zoneId:
+          description: zone id
+          type: string
+        realSubaccountId:
+          description: real sub account id
+          type: string
+        servicePlan:
+          description: service plan
+          type: string
+    BckndobjectStoreSecretWithSensitiveDataRequest:
+      type: object
+      description:
+        This represents all the meta-data and extra information to be stored
+        as a k8-secret
+      required:
+        - name
+        - type
+        - data
+      properties:
+        name:
+          type: string
+          description:
+            Name of the object store for the secret object to be created.
+            Can be used later on check for existence of the secret.
+          example: myobjectstore
+        type:
+          type: string
+          description: Storage type e.g. S3, GCS,...
+          example: S3
+        bucket:
+          type: string
+          description: Bucket to be used
+          example: mybucket1
+        endpoint:
+          type: string
+          description: Optional parameter - URL of the storage server (S3 only)
+          example: www.example.com
+        region:
+          type: string
+          description: Optional parameter - Region of the storage server (S3 only)
+          example: eu
+        pathPrefix:
+          type: string
+          description: prefix folder to be added to storage path
+          example: mp-api
+        verifyssl:
+          type: string
+          description: 0, 1 flag for the KF-serving annotation - serving.kubeflow.org/s3-verifyssl
+          example: '0'
+        usehttps:
+          type: string
+          description: 0, 1 flag for KF-serving annotations - serving.kubeflow.org/s3-usehttps
+          example: '1'
+          default: '1'
+        data:
+          type: object
+          description: key:value pairs of data
+          writeOnly: true
+    BckndobjectStoreSecretWithSensitiveDataRequestForPostCall:
+      type: object
+      description:
+        This represents all the meta-data and extra information to be stored
+        as a k8-secret
+      required:
+        - name
+        - type
+        - data
+      properties:
+        name:
+          type: string
+          pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$
+          maxLength: 233
+          description:
+            Name of the object store for the secret object to be created.
+            Can be used later on check for existence of the secret.
+          example: myobjectstore
+        type:
+          type: string
+          description: Storage type e.g. S3, GCS,...
+          example: S3
+        bucket:
+          type: string
+          description: Bucket to be used
+          example: mybucket1
+        endpoint:
+          type: string
+          description: Optional parameter - URL of the storage server (S3 only)
+          example: www.example.com
+        region:
+          type: string
+          description: Optional parameter - Region of the storage server (S3 only)
+          example: eu
+        pathPrefix:
+          type: string
+          description: prefix folder to be added to storage path
+          example: mp-api
+        verifyssl:
+          type: string
+          description: 0, 1 flag for the KF-serving annotation - serving.kubeflow.org/s3-verifyssl
+          example: '0'
+        usehttps:
+          type: string
+          description: 0, 1 flag for KF-serving annotations - serving.kubeflow.org/s3-usehttps
+          example: '1'
+          default: '1'
+        data:
+          type: object
+          description: key:value pairs of data
+          writeOnly: true
+    BckndobjectStoreSecretStatusResponse:
+      description:
+        This represents a list of meta-data of a stored secret. The 'data'
+        field of the secret is never retrieved.
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Number of the resource instances in the list
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/BckndobjectStoreSecretStatus'
+      required:
+        - count
+        - resources
+    BckndobjectStoreSecretStatus:
+      type: object
+      description:
+        This represents the meta-data of a stored secret. The 'data' field
+        of the secret is never retrieved.
+      properties:
+        metadata:
+          description:
+            Key value pairs of meta-data assigned to the secret when the
+            secret was being created.
+          type: object
+          properties:
+            serving.kubeflow.org/s3-usehttps:
+              type: string
+              description: 0 and 1 values for setting the flag
+              example: '1'
+            serving.kubeflow.org/s3-verifyssl:
+              type: string
+              description: 0 and 1 values for setting the flag
+              example: '0'
+            serving.kubeflow.org/s3-endpoint:
+              type: string
+              description: Annotation for endpoint required by KF_Serving
+              example: some_endpoint
+            serving.kubeflow.org/s3-region:
+              type: string
+              description: Annotation for region required by KF_Serving
+              example: EU
+            storage.ai.sap.com/type:
+              type: string
+              description: Storage type of the secret
+              example: S3
+            storage.ai.sap.com/bucket:
+              type: string
+              description: bucket assigned to the secret on creation
+              example: my_bucket
+            storage.ai.sap.com/endpoint:
+              type: string
+              description: Endpoint assigned to the secret on creation
+              example: some_endpoint
+            storage.ai.sap.com/region:
+              type: string
+              description: Region of the storage server
+              example: EU
+            storage.ai.sap.com/pathPrefix:
+              type: string
+              description: Pathprefix type assigned to the secret on creation.
+              example: mnist_folder
+            storage.ai.sap.com/hdfsNameNode:
+              type: string
+              description: name node of the HDFS file system
+              example: https://c3272xxxxxfa8f.files.hdl.canary-eu10.hanacloud.ondemand.com
+            storage.ai.sap.com/headers:
+              type: string
+              description: headers for webHDFS and other protocols
+              example: '{"x-sap-filecontainer": "c32727xxxxxxx322dcfa8f"}'
+            storage.ai.sap.com/containerUri:
+              type: string
+              description: container uri of azure storage
+              example: https://sapcv842awjkfb2.blob.core.windows.net/sapcp-osaas-xxx-xxxx-xxxx-xxxx-xxxx-zrs
+            storage.ai.sap.com/subscriptionId:
+              type: string
+              description: subscription id
+              example: dgewg2-gkrwnegiw
+            storage.ai.sap.com/tenantId:
+              type: string
+              description: tenant id
+              example: dawd2120-dadwad2
+            storage.ai.sap.com/projectId:
+              type: string
+              description: project id of google cloud platform
+              example: sap-gcp-oaas-us31-1
+        name:
+          description: Name of objectstore
+          type: string
+          example: myobjectstore-object-store-secret
+    BckndobjectStoreSecretDeletionResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/BckndId'
+        message:
+          $ref: '#/components/schemas/BckndobjectStoreSecretDeletionResponseMessage'
+      required:
+        - id
+        - message
+    BckndobjectStoreSecretDeletionResponseMessage:
+      type: string
+      description: Message
+      example: Object Store Secret has been deleted
+    BckndobjectStoreSecretCreationResponse:
+      type: object
+      description: Message
+      example: Created
+      properties:
+        message:
+          $ref: '#/components/schemas/BckndobjectStoreSecretCreationResponseMessage'
+    BckndobjectStoreSecretCreationResponseMessage:
+      type: string
+      description: Message
+      example: Secret has been created
+    BckndobjectStoreSecretModificationResponseMessage:
+      type: string
+      description: Message
+      example: Secret has been modified
+    BckndobjectStoreSecretModificationResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/BckndId'
+        message:
+          $ref: '#/components/schemas/BckndobjectStoreSecretModificationResponseMessage'
+      required:
+        - id
+        - message
+    BcknddockerRegistryNameComponent:
+      description: Name of the docker Registry store for the secret.
+      type: string
+      pattern: ^[a-z0-9](?:_?[a-z0-9\.\-]+)*[a-z0-9]$
+      maxLength: 63
+      example: mydockeregistry
+    BcknddockerRegistrySecretWithSensitiveDataRequest:
+      type: object
+      description:
+        This represents all the meta-data and extra information to be stored
+        as a k8-secret
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - .dockerconfigjson
+          description: key:value pairs of data
+          writeOnly: true
+          additionalProperties: false
+          properties:
+            .dockerconfigjson:
+              type: string
+              description: .dockerconfigjson data
+    BcknddockerRegistrySecretStatusResponse:
+      description:
+        This represents a list of meta-data of a stored secret. The 'data'
+        field of the secret is never retrieved.
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Number of the resource instances in the list
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/BcknddockerRegistrySecretStatus'
+      required:
+        - count
+        - resources
+    BcknddockerRegistrySecretStatus:
+      type: object
+      description:
+        This represents the meta-data of a stored secret. The 'data' field
+        of the secret is never retrieved.
+      properties:
+        name:
+          description: Name of dockerRegistryStore
+          type: string
+          example: mydockeregistry
+    BcknddockerRegistrySecretDeletionResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/BckndId'
+        message:
+          $ref: '#/components/schemas/BcknddockerRegistrySecretDeletionResponseMessage'
+      required:
+        - id
+        - message
+    BcknddockerRegistrySecretDeletionResponseMessage:
+      type: string
+      description: Message
+      example: Docker Registry Secret has been deleted
+    BcknddockerRegistrySecretCreationResponse:
+      type: object
+      description: Message
+      example: Created
+      properties:
+        message:
+          $ref: '#/components/schemas/BcknddockerRegistrySecretCreationResponseMessage'
+    BcknddockerRegistrySecretCreationResponseMessage:
+      type: string
+      description: Message
+      example: Secret has been created
+    BcknddockerRegistrySecretModificationResponseMessage:
+      type: string
+      description: Message
+      example: Secret has been modified
+    BcknddockerRegistrySecretModificationResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/BckndId'
+        message:
+          $ref: '#/components/schemas/BcknddockerRegistrySecretModificationResponseMessage'
+      required:
+        - id
+        - message
+    BckndGenericSecretData:
+      description: Base64 encoded secret data
+      type: object
+      additionalProperties:
+        type: string
+    BckndGenericSecretPostBody:
+      type: object
+      required:
+        - name
+        - data
+      properties:
+        name:
+          description: The name of the secret
           type: string
           minLength: 1
+          maxLength: 252
+          pattern: ^[a-z0-9\-\.]+$
+        data:
+          $ref: '#/components/schemas/BckndGenericSecretData'
+        labels:
+          $ref: '#/components/schemas/BckndGenericSecretLabels'
+    BckndGenericSecretPatchBody:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/BckndGenericSecretData'
+    BckndGenericSecretDataResponse:
+      type: object
+      properties:
+        message:
+          $ref: '#/components/schemas/BckndMessage'
+        name:
+          $ref: '#/components/schemas/BckndName'
+    BckndGenericSecretDetails:
+      type: object
+      required:
+        - name
+        - createdAt
+      properties:
+        name:
+          description: Name of the secret
+          type: string
+        createdAt:
+          description: Timestamp at which secret was created
+          type: string
+        resourceGroupSecretsSyncStatus:
+          description:
+            Sync status of the replicated secrets in all resource groups
+            of the tenant
+          type: object
+          additionalProperties:
+            type: boolean
+            description: Resource group ID and sync status
+    BckndListGenericSecretsResponse:
+      description:
+        This represents a list of meta-data of the secret. The 'data' field
+        of the secret is never retrieved.
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Number of the resource instances in the list
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/BckndGenericSecretDetails'
+      required:
+        - count
+        - resources
+    BckndGenericSecretLabels:
+      type: array
+      description: Arbitrary labels as meta information
+      items:
+        $ref: '#/components/schemas/BckndGenericSecretLabel'
+    BckndGenericSecretLabel:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          type: string
+          pattern: ^ext.ai.sap.com/(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]){1,48}$
+          maxLength: 63
+          example: ext.ai.sap.com/my-label
+        value:
+          type: string
+          maxLength: 5000
+    BckndArgoCDRepositoryData:
+      type: object
+      required:
+        - url
+        - username
+        - password
+      properties:
+        name:
+          description: Name of the repository
+          type: string
+          minLength: 1
+          maxLength: 51
+          pattern: ^[a-z0-9\-]+$
+        url:
+          description: URL of the repository to synchronise
+          type: string
+        username:
+          description: Username for read-access to the repository
+          type: string
+        password:
+          description: Password for read-access to the repository
+          type: string
+    BckndArgoCDRepositoryCredentials:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          description: Username for read-access to the repository
+          type: string
+        password:
+          description: Password for read-access to the repository
+          type: string
+    BckndArgoCDRepositoryDataResponse:
+      description: This represents a list of GitOps repositories for the tenant.
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Number of the resource instances in the list
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/BckndArgoCDRepositoryDetails'
+      required:
+        - count
+        - resources
+    BckndArgoCDRepositoryCreationResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/BckndId'
+        message:
+          $ref: '#/components/schemas/BckndArgoCDRepositoryCreationResponseMessage'
+      required:
+        - id
+        - message
+    BckndArgoCDRepositoryCreationResponseMessage:
+      type: string
+      description: Message
+      example: Repository has been on-boarded
+    BckndArgoCDRepositoryDetails:
+      type: object
+      description: Repository details
+      properties:
+        name:
+          description: The name of the repository
+          type: string
+        url:
+          description: The repository URL
+          type: string
+        status:
+          description: The status of the repository's on-boarding
+          type: string
+          enum:
+            - ERROR
+            - IN-PROGRESS
+            - COMPLETED
+          example: COMPLETED
+    BckndArgoCDRepositoryDeletionResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/BckndId'
+        message:
+          $ref: '#/components/schemas/BckndArgoCDRepositoryDeletionResponseMessage'
+      required:
+        - id
+        - message
+    BckndArgoCDRepositoryDeletionResponseMessage:
+      type: string
+      description: Message
+      example: The repository has been off-boarded.
+    BckndArgoCDRepositoryModificationResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/BckndId'
+        message:
+          $ref: '#/components/schemas/BckndArgoCDRepositoryModificationResponseMessage'
+      required:
+        - id
+        - message
+    BckndArgoCDRepositoryModificationResponseMessage:
+      type: string
+      description: Message
+      example: ArgoCD application has been updated
+    BckndArgoCDApplicationBaseData:
+      type: object
+      required:
+        - repositoryUrl
+        - revision
+        - path
+      properties:
+        repositoryUrl:
+          description: URL of the repository to synchronise
+          type: string
+        revision:
+          description: revision to synchronise
+          type: string
+        path:
+          description: path within the repository to synchronise
+          type: string
+    BckndArgoCDApplicationData:
+      type: object
+      properties:
+        repositoryUrl:
+          description: URL of the repository to synchronise
+          type: string
+        revision:
+          description: revision to synchronise
+          type: string
+        path:
+          description: path within the repository to synchronise
+          type: string
+        applicationName:
+          description: ArgoCD application name
+          type: string
+          minLength: 3
+          maxLength: 54
+          pattern: ^[a-z0-9\-]+$
+      required:
+        - repositoryUrl
+        - revision
+        - path
+    BckndAllArgoCDApplicationData:
+      description: list of applications
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Number of the resource instances in the list
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/BckndArgoCDApplicationData'
+      required:
+        - count
+        - resources
+    BckndArgoCDApplicationDataRepoName:
+      type: object
+      required:
+        - repositoryName
+        - revision
+        - path
+      properties:
+        repositoryName:
+          description: Name of the repository to synchronise
+          type: string
+        revision:
+          description: revision to synchronise
+          type: string
+        path:
+          description: path within the repository to synchronise
+          type: string
+        applicationName:
+          description: ArgoCD application name
+          type: string
+          minLength: 3
+          maxLength: 54
+          pattern: ^[a-z0-9\-]+$
+    BckndArgoCDApplicationStatus:
+      type: object
+      description: ArgoCD application definition and status
+      properties:
+        healthStatus:
+          description: ArgoCD application health status
+          type: string
+        syncStatus:
+          description: ArgoCD application sync status
+          type: string
+        message:
+          description: ArgoCD application health status message
+          type: string
+        source:
+          description: Information about the ArgoCD application itself
+          type: object
+          properties:
+            repoURL:
+              description: URL of the repository
+              type: string
+            path:
+              description: Path of the repository
+              type: string
+            revision:
+              description: Revision number of the ArgoCD application
+              type: string
+        syncFinishedAt:
+          description:
+            Gets the timestamp information related to the sync state of
+            the ArgoCD application
+          type: string
+        syncStartedAt:
+          description:
+            Get timestamp information related to the sync state of the
+            ArgoCD application
+          type: string
+        reconciledAt:
+          description:
+            Get timestamp information related to the sync state of the
+            ArgoCD application
+          type: string
+        syncResourcesStatus:
+          description:
+            Status of all resources that need to be synchronized with the
+            gitops repo
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                description: ArgoCD application object name
+                type: string
+              kind:
+                description: ArgoCD application object kind
+                type: string
+              status:
+                description: ArgoCD application object sync status
+                type: string
+              message:
+                description: ArgoCD application object message
+                type: string
+        syncRessourcesStatus:
+          deprecated: true
+          description:
+            Status of all resources that need to be synchronized with the
+            gitops repo. Misspelled and deprecated, use syncResourcesStatus instead.
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                description: ArgoCD application object name
+                type: string
+              kind:
+                description: ArgoCD application object kind
+                type: string
+              status:
+                description: ArgoCD application object sync status
+                type: string
+              message:
+                description: ArgoCD application object message
+                type: string
+    BckndArgoCDApplicationDeletionResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/BckndId'
+        message:
+          $ref: '#/components/schemas/BckndArgoCDApplicationDeletionResponseMessage'
+      required:
+        - id
+        - message
+    BckndArgoCDApplicationDeletionResponseMessage:
+      type: string
+      description: Message
+      example: ArgoCD application has been deleted
+    BckndArgoCDApplicationCreationResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/BckndId'
+        message:
+          $ref: '#/components/schemas/BckndArgoCDApplicationCreationResponseMessage'
+      required:
+        - id
+        - message
+    BckndArgoCDApplicationCreationResponseMessage:
+      type: string
+      description: Message
+      example: ArgoCD application has been created
+    BckndArgoCDApplicationModificationResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/BckndId'
+        message:
+          $ref: '#/components/schemas/BckndArgoCDApplicationModificationResponseMessage'
+      required:
+        - id
+        - message
+    BckndArgoCDApplicationModificationResponseMessage:
+      type: string
+      description: Message
+      example: ArgoCD application has been updated
+    BckndArgoCDApplicationRefreshResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/BckndId'
+        message:
+          $ref: '#/components/schemas/BckndArgoCDApplicationRefreshResponseMessage'
+      required:
+        - id
+        - message
+    BckndArgoCDApplicationRefreshResponseMessage:
+      type: string
+      description: Message
+      example: Refresh of ArgoCD application has been scheduled
+    BckndServiceList:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Number of the resource instances in the list
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/BckndService'
+      required:
+        - count
+        - resources
+    BckndService:
+      type: object
+      properties:
+        name:
+          description: service name
+          type: string
+        description:
+          description: service description
+          type: string
+        url:
+          description: service broker url
+          type: string
+        status:
+          description: aggregated status of the service
+          type: string
+          enum:
+            - PROVISIONED
+            - ERROR
+            - PROVISIONING
+            - DEPROVISIONING
+        statusMessage:
+          description: status message
+          type: string
+    BckndExtendedService:
+      type: object
+      properties:
+        name:
+          description: service name
+          type: string
+        description:
+          description: service description
+          type: string
+        url:
+          description: service broker url
+          type: string
+        brokerSecret:
+          $ref: '#/components/schemas/BckndServiceBrokerSecret'
+        capabilities:
+          $ref: '#/components/schemas/BckndServiceCapabilities'
+        serviceCatalog:
+          $ref: '#/components/schemas/BckndServiceServiceCatalog'
+        sharedResourceGroupStatus:
+          $ref: '#/components/schemas/BckndSharedResourceGroupStatus'
+        status:
+          description: aggregated status of the service
+          type: string
+          enum:
+            - PROVISIONED
+            - ERROR
+            - PROVISIONING
+            - DEPROVISIONING
+        statusMessage:
+          description: status message
+          type: string
+    BckndServiceBrokerSecret:
+      type: object
+      properties:
+        name:
+          description: broker secret name
+          type: string
+        passwordKeyRef:
+          description: username key reference in broker secret
+          type: string
+        usernameKeyRef:
+          description: password key reference in broker secret
+          type: string
+    BckndServiceCapabilities:
+      type: object
+      properties:
+        logs:
+          description: Capabilities to read logs from deployments and executions.
+          type: object
+          properties:
+            deployments:
+              type: boolean
+            executions:
+              type: boolean
+        basic:
+          description: Basic capabilities like creating deployments and executions.
+          type: object
+          properties:
+            staticDeployments:
+              description:
+                There are static always running endpoints that can be used
+                for inference without the need to do user deployments.
+              type: boolean
+            userDeployments:
+              description:
+                Services that only support batch inference typically neither
+                allow listing nor creation of deployments. For these, userDeployments
+                == false
+              type: boolean
+            createExecutions:
+              description:
+                Services that only support deployment typically neither
+                allow create executions. For these, createExecutions == false
+              type: boolean
+            multitenant:
+              description:
+                true-> AI API implementation supports resource groups (Main
+                Tenant scenario), false-> implementation does not support resource
+                groups (Service Tenant scenario)
+              type: boolean
+    BckndServiceServiceCatalog:
+      type: array
+      items:
+        $ref: '#/components/schemas/BckndServiceServiceCatalogItem'
+    BckndServiceServiceCatalogItem:
+      type: object
+      properties:
+        extendCatalog:
+          $ref: '#/components/schemas/BckndServiceServiceCatalogItemExtendCatalog'
+        extendCredentials:
+          $ref: '#/components/schemas/BckndServiceServiceCatalogItemExtendCredentials'
+    BckndServiceServiceCatalogItemExtendCatalog:
+      type: object
+      properties:
+        bindable:
+          description: if the service is bindable
+          type: boolean
+        description:
+          description: description of the service
+          type: string
+        id:
+          description: id of the service
+          type: string
+        name:
+          description: name of the service
+          type: string
+        plans:
+          type: array
+          items:
+            $ref: '#/components/schemas/BckndServiceServicePlanItem'
+    BckndServiceServicePlanItem:
+      type: object
+      properties:
+        description:
+          description: description of the service plan
+          type: string
+        free:
+          description: if the service plan free
+          type: boolean
+        id:
+          description: id of the service plan
+          type: string
+        name:
+          description: name of the service plan
+          type: string
+        metadata:
+          $ref: '#/components/schemas/BckndServiceServicePlanItemMetadata'
+    BckndServiceServicePlanItemMetadata:
+      type: object
+      properties:
+        supportedPlatforms:
+          description: supported platforms of the service plan
+          type: array
+          items:
+            type: string
+            enum:
+              - cloudfoundry
+              - kubernetes
+              - sapbtp
+    BckndServiceServiceCatalogItemExtendCredentials:
+      type: object
+      properties:
+        shared:
+          type: object
+          properties:
+            serviceUrls:
+              type: object
+              properties:
+                AI_API_URL:
+                  type: string
+    BckndSharedResourceGroupStatus:
+      type: object
+      properties:
+        isEnabled:
+          description: indicates whether shared resource group is enabled
+          type: boolean
+        id:
+          description: shared resource group id
+          type: string
+        state:
+          description: current state of shared resource group
+          type: string
+    BckndDeploymentResourceQuotaResponse:
+      type: object
+      required:
+        - quotas
+      properties:
+        usage:
+          $ref: '#/components/schemas/BckndDeploymentUsage'
+        quotas:
+          type: array
+          items:
+            $ref: '#/components/schemas/BckndDeploymentQuotaItem'
+    BckndDeploymentUsage:
+      type: object
+      required:
+        - count
+        - items
+      properties:
+        count:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/BckndUsageResourcePlanItem'
+    BckndUsageResourcePlanItem:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+        resourcePlanType:
+          type: string
+        configuredMaxReplicas:
+          type: integer
+    BckndDeploymentQuotaItem:
+      type: object
+      properties:
+        resourcePlanType:
+          type: string
+        deploymentQuota:
+          $ref: '#/components/schemas/BckndDeploymentQuota'
+    BckndDeploymentQuota:
+      type: object
+      properties:
+        maxCount:
+          type: integer
+          description:
+            The value can be 0(disabled) or a positive integer defining
+            the maximum allowed number
+          example: 10
+        maxReplicaPerDeployment:
+          type: integer
+    BckndCommonResourceQuotaResponse:
+      type: object
+      required:
+        - quota
+      properties:
+        usage:
+          type: object
+          properties:
+            count:
+              type: integer
+        quota:
+          type: object
+          properties:
+            maxCount:
+              type: integer
+              description:
+                The value can be 0(disabled) or a positive integer defining
+                the maximum allowed number
+              example: 10
+    BckndExecutableResourceQuotaResponse:
+      type: object
+      required:
+        - quota
+      properties:
+        usage:
+          type: object
+          properties:
+            servingTemplateCount:
+              type: integer
+            workflowTemplateCount:
+              type: integer
+        quota:
+          type: object
+          properties:
+            servingTemplateMaxCount:
+              type: integer
+              description:
+                The value can be 0(disabled) or a positive integer defining
+                the maximum allowed number
+              example: 10
+            workflowTemplateMaxCount:
+              type: integer
+              description:
+                The value can be 0(disabled) or a positive integer defining
+                the maximum allowed number
+              example: 10
+    BckndResourcePatchBody:
+      type: object
+      required:
+        - resourcePlans
+      properties:
+        resourcePlans:
+          $ref: '#/components/schemas/BckndResourcePatchResourcePlans'
+    BckndResourcePatchResourcePlans:
+      type: array
+      items:
+        $ref: '#/components/schemas/BckndResourcePatchNodes'
+    BckndResourcePatchNodes:
+      type: object
+      required:
+        - name
+        - request
+      properties:
+        name:
+          type: string
+        request:
+          type: integer
+    BckndResourcePatchResponse:
+      type: object
+      required:
+        - message
+      properties:
         message:
           type: string
-          minLength: 1
-        target:
-          type: string
-          minLength: 1
-        requestId:
-          type: string
-        details:
-          type: array
-          uniqueItems: true
-          minItems: 0
-          items:
-            required:
-              - code
-              - message
-            properties:
-              code:
-                type: string
-                minLength: 1
-              message:
-                type: string
-                minLength: 1
+    BckndResourceGetResponse:
+      type: object
+      required:
+        - resourcePlans
+      properties:
+        resourcePlans:
+          $ref: '#/components/schemas/BckndResourceGetResourcePlans'
+    BckndResourceGetResourcePlans:
+      type: object
+      additionalProperties:
+        type: object
+        required:
+          - provisioned
+          - requested
+        properties:
+          provisioned:
+            type: integer
+          requested:
+            type: integer
+    BckndErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/BckndError'
+    BckndError:
+      type: object
       required:
         - code
         - message
-      x-examples:
-        example-1:
-          code: '03021655'
-          message: Bad request encountered. Please try again with possible-solution-here.
-          target: /url/path
-          requestId: 9832bf934f3743v3948v3
-          details:
-            - code: '01041211'
-              message: Optional nested error message.
-    DSetFileCreationResponse:
-      description: Response for successful file creation
-      type: object
-      required:
-        - message
-        - url
       properties:
+        code:
+          type: string
+          description: Descriptive error code (not http status code)
         message:
           type: string
-          description: File creation response message
-          example: File creation acknowledged
-        url:
-          $ref: '#/components/schemas/DSetUrl'
+          description: Plaintext error description
+          example: something went wrong
+        requestId:
+          type: string
+          description: ID of the individual request
+        target:
+          type: string
+          description: Invoked URL
+        details:
+          description: Optional details of the error message
+          type: object
+    TntTenantInfo:
+      type: object
+      required:
+        - tenantId
+        - servicePlan
+        - status
+      properties:
+        tenantId:
+          description: tenant id
+          type: string
+          example: aa97b177-9383-4934-8543-0f91a7a0283a
+        servicePlan:
+          type: string
+        status:
+          description: Provisioning status of the tenant
+          type: string
+    TntApiError:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: Descriptive error code (not http status code)
+        message:
+          type: string
+          description: Plaintext error description
+        requestId:
+          type: string
+          description: ID of the individual request
+        target:
+          type: string
+          description: Invoked URL
+        details:
+          description: Optional details of the error message
+          type: object
     AiScenario:
       type: object
       description:
@@ -4103,309 +5438,6 @@ components:
         details:
           description: Optional details of the error message
           type: object
-    TrckGetMetricResource:
-      description:
-        Collection of various metrics/tags/labels associated against some
-        execution/deployment
-      type: object
-      properties:
-        executionId:
-          $ref: '#/components/schemas/TrckExecutionId'
-        createdAt:
-          $ref: '#/components/schemas/TrckTimestamp'
-        modifiedAt:
-          $ref: '#/components/schemas/TrckTimestamp'
-        metrics:
-          $ref: '#/components/schemas/TrckGetMetricList'
-        tags:
-          $ref: '#/components/schemas/TrckTagList'
-        customInfo:
-          $ref: '#/components/schemas/TrckCustomInfoObjectList'
-      required:
-        - executionId
-    TrckMetricResource:
-      description:
-        Collection of various metrics/tags/labels associated against some
-        execution/deployment
-      required:
-        - executionId
-      type: object
-      properties:
-        executionId:
-          $ref: '#/components/schemas/TrckExecutionId'
-        createdAt:
-          $ref: '#/components/schemas/TrckTimestamp'
-        modifiedAt:
-          $ref: '#/components/schemas/TrckTimestamp'
-        metrics:
-          $ref: '#/components/schemas/TrckMetricList'
-        tags:
-          $ref: '#/components/schemas/TrckTagList'
-        customInfo:
-          $ref: '#/components/schemas/TrckCustomInfoObjectList'
-    TrckGetMetricResourceList:
-      type: object
-      required:
-        - resources
-      properties:
-        count:
-          type: integer
-          description: Number of the resource instances in the list
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/TrckGetMetricResource'
-    TrckDeleteMetricsResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/TrckExecutionId'
-        message:
-          type: string
-          example: Metric Resource was successfully deleted
-    TrckExecutionId:
-      type: string
-      example: aa97b177-9383-4934-8543-0f91b7a0283a
-      oneOf:
-        - $ref: '#/components/schemas/TrckMlapiExecutionId'
-      description: ID of the deployment/execution
-    TrckTimestamp:
-      type: string
-      description: Time when the metric was created or logged in RFC3339 format
-      format: date-time
-    TrckGetMetricList:
-      description: Array of Metric items
-      type: array
-      items:
-        $ref: '#/components/schemas/TrckGetMetric'
-    TrckMetricList:
-      description: Array of Metric items
-      type: array
-      items:
-        $ref: '#/components/schemas/TrckMetric'
-    TrckGetMetric:
-      description:
-        Key-value metrics, where the value is numeric. Metric can also
-        have optional step and label fields.
-      type: object
-      required:
-        - name
-        - value
-        - timestamp
-      properties:
-        name:
-          $ref: '#/components/schemas/TrckMetricName'
-        value:
-          $ref: '#/components/schemas/TrckMetricValue'
-        timestamp:
-          $ref: '#/components/schemas/TrckTimestamp'
-        step:
-          description:
-            step is an optional integer that represents any measurement
-            of training progress (number of training iterations, number of epochs,
-            and so on) for the metric
-          type: integer
-          minimum: 0
-          example: 2
-        labels:
-          $ref: '#/components/schemas/TrckLabelList'
-    TrckMetric:
-      description:
-        Key-value metrics, where the value is numeric. Metric can also
-        have optional step and label fields.
-      required:
-        - name
-        - value
-      type: object
-      properties:
-        name:
-          $ref: '#/components/schemas/TrckMetricName'
-        value:
-          $ref: '#/components/schemas/TrckMetricValue'
-        timestamp:
-          $ref: '#/components/schemas/TrckTimestamp'
-        step:
-          description:
-            step is an optional integer that represents any measurement
-            of training progress (number of training iterations, number of epochs,
-            and so on) for the metric
-          type: integer
-          minimum: 0
-          example: 2
-        labels:
-          $ref: '#/components/schemas/TrckLabelList'
-    TrckMetricName:
-      pattern: '[\w-]{1,64}'
-      type: string
-      maxLength: 256
-      description: Name of the metric
-      example: Error Rate
-    TrckMetricValue:
-      type: number
-      description: Numeric Value of the metric
-      example: 0.98
-    TrckmetricSelectorPermissibleValues:
-      description:
-        Permissible value for $select could be either * or one or many
-        of the values from metrics, tags, custominfo
-      type: array
-      items:
-        type: string
-        enum:
-          - metrics
-          - tags
-          - customInfo
-          - '*'
-    TrckLabelList:
-      description: a list of name-value object pairs associated with some metric.
-      type: array
-      items:
-        $ref: '#/components/schemas/TrckLabel'
-      example:
-        - name: group
-          value: tree-82
-        - name: metrics.ai.sap.com/Artifact.name
-          value: sk_learn_rf_classifier_model
-    TrckLabel:
-      description: a classifying phrase/name applied to a metric
-      required:
-        - name
-        - value
-      type: object
-      properties:
-        name:
-          $ref: '#/components/schemas/TrckLabelName'
-        value:
-          description: Metric Label Value
-          maxLength: 256
-          minLength: 1
-          type: string
-          example: sk_learn_random_forest_model
-      example:
-        name: group
-        value: tree-82
-    TrckTagList:
-      description:
-        a list of name-value object pairs associated with the execution/deployment.
-        Tags are queryable.
-      type: array
-      items:
-        $ref: '#/components/schemas/TrckTag'
-    TrckTag:
-      description:
-        A dictionary of name-value pairs to support segregation at execution
-        level.
-      required:
-        - name
-        - value
-      type: object
-      properties:
-        name:
-          oneOf:
-            - $ref: '#/components/schemas/TrckGenericName'
-        value:
-          description: tag value
-          maxLength: 256
-          minLength: 1
-          type: string
-          example: RFC-1
-      example:
-        name: Artifact Group
-        value: RFC-1
-    TrckCustomInfoObjectList:
-      description: ''
-      type: array
-      items:
-        $ref: '#/components/schemas/TrckCustomInfoObject'
-    TrckCustomInfoObject:
-      description:
-        large object which provides rendering/semantic information regarding
-        certain metric for consuming application or can be complex metrics in JSON
-        format
-      required:
-        - name
-        - value
-      type: object
-      properties:
-        name:
-          oneOf:
-            - $ref: '#/components/schemas/TrckGenericName'
-        value:
-          $ref: '#/components/schemas/TrckCustomInfoObjectData'
-      example:
-        name: Confusion Matrix
-        value:
-          "[{'Predicted': 'False',  'Actual': 'False','value': 34},{'Predicted':
-          'False','Actual': 'True',  'value': 124}, {'Predicted': 'True','Actual':
-          'False','value': 165},{  'Predicted': 'True','Actual': 'True','value':
-          36}]"
-    TrckCustomInfoObjectData:
-      description: Message
-      minLength: 1
-      type: string
-      example:
-        "[{'Predicted': 'False',\t'Actual': 'False','value': 34},{'Predicted':\
-        \ 'False','Actual': 'True',\t'value': 124}, {'Predicted': 'True','Actual':\
-        \ 'False','value': 165},{\t'Predicted': 'True','Actual': 'True','value': 36}]"
-    TrckMlapiExecutionId:
-      description: Generic ID
-      pattern: ^[\w.-]{4,64}$
-      type: string
-      example: aa97b177-9383-4934-8543-0f91b7a0283a
-    TrckGenericName:
-      description:
-        Generic name which can belong to a tag,label,metric or customInfo
-        Object
-      maxLength: 256
-      minLength: 1
-      type: string
-      example: sample name
-    TrckLabelName:
-      description:
-        Label name to label one or more metrics. "metrics.ai.sap.com/Artifact.name"
-        is a reserved label to associate an artifact with the metrics
-      maxLength: 256
-      minLength: 1
-      type: string
-      example: metrics.ai.sap.com/Artifact.name
-    TrckApiError:
-      required:
-        - code
-        - message
-      type: object
-      properties:
-        code:
-          description: Descriptive error code (not http status code).
-          type: string
-        message:
-          description: plaintext error description
-          type: string
-        requestId:
-          description: id of individual request
-          type: string
-        target:
-          description: url that has been called
-          type: string
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/TrckDetailsErrorResponse'
-    TrckDetailsErrorResponse:
-      type: object
-      properties:
-        code:
-          description: Descriptive error code (not http status code)
-          type: string
-        message:
-          description: Plaintext error description
-          type: string
-    TrckStringArray:
-      type: array
-      example:
-        - value1
-        - value2
-      items:
-        type: string
     RTAId:
       type: string
       pattern: ^[\w.-]{4,64}$
@@ -5045,26 +6077,50 @@ components:
         details:
           description: Optional details of the error message
           type: object
-    BckndId:
-      type: string
-      pattern: ^[\w.-]{4,64}$
-      example: aa97b177-9383-4934-8543-0f91a7a0283a
-      description: Generic ID
-    BckndMessage:
-      type: string
-      description: Message
-    BckndName:
-      type: string
-      description: Name
-    BckndCreationResponseMessage:
-      type: string
-      description: Message
-      example: Created
-    BckndUrl:
-      type: string
-      format: url
-    BckndResourceGroupList:
+    TrckGetMetricResource:
+      description:
+        Collection of various metrics/tags/labels associated against some
+        execution/deployment
       type: object
+      properties:
+        executionId:
+          $ref: '#/components/schemas/TrckExecutionId'
+        createdAt:
+          $ref: '#/components/schemas/TrckTimestamp'
+        modifiedAt:
+          $ref: '#/components/schemas/TrckTimestamp'
+        metrics:
+          $ref: '#/components/schemas/TrckGetMetricList'
+        tags:
+          $ref: '#/components/schemas/TrckTagList'
+        customInfo:
+          $ref: '#/components/schemas/TrckCustomInfoObjectList'
+      required:
+        - executionId
+    TrckMetricResource:
+      description:
+        Collection of various metrics/tags/labels associated against some
+        execution/deployment
+      required:
+        - executionId
+      type: object
+      properties:
+        executionId:
+          $ref: '#/components/schemas/TrckExecutionId'
+        createdAt:
+          $ref: '#/components/schemas/TrckTimestamp'
+        modifiedAt:
+          $ref: '#/components/schemas/TrckTimestamp'
+        metrics:
+          $ref: '#/components/schemas/TrckMetricList'
+        tags:
+          $ref: '#/components/schemas/TrckTagList'
+        customInfo:
+          $ref: '#/components/schemas/TrckCustomInfoObjectList'
+    TrckGetMetricResourceList:
+      type: object
+      required:
+        - resources
       properties:
         count:
           type: integer
@@ -5072,1301 +6128,317 @@ components:
         resources:
           type: array
           items:
-            $ref: '#/components/schemas/BckndResourceGroup'
-      required:
-        - count
-        - resources
-    BckndResourceGroupBase:
-      type: object
-      properties:
-        resourceGroupId:
-          description: resource group id
-          type: string
-        tenantId:
-          description: tenant id
-          type: string
-        zoneId:
-          description: zone id
-          type: string
-    BckndResourceGroup:
-      type: object
-      properties:
-        resourceGroupId:
-          description: resource group id
-          type: string
-        tenantId:
-          description: tenant id
-          type: string
-        zoneId:
-          description: zone id
-          type: string
-        createdAt:
-          description: Timestamp of resource group creation
-          type: string
-          format: date-time
-        labels:
-          $ref: '#/components/schemas/BckndResourceGroupLabels'
-        status:
-          description: aggregated status of the onboarding process
-          type: string
-          enum:
-            - PROVISIONED
-            - ERROR
-            - PROVISIONING
-        statusMessage:
-          description: status message
-          type: string
-      required:
-        - status
-        - createdAt
-        - resourceGroupId
-    BckndInternalResourceGroup:
-      type: object
-      properties:
-        resourceGroupId:
-          description: resource group id
-          type: string
-        tenantId:
-          description: tenant id
-          type: string
-        zoneId:
-          description: zone id
-          type: string
-        createdAt:
-          description: Timestamp of resource group creation
-          type: string
-          format: date-time
-        labels:
-          $ref: '#/components/schemas/BckndInternalResourceGroupLabels'
-        status:
-          description: aggregated status of the onboarding process
-          type: string
-          enum:
-            - PROVISIONED
-            - ERROR
-            - PROVISIONING
-        statusMessage:
-          description: status message
-          type: string
-        annotations:
-          $ref: '#/components/schemas/BckndInternalResourceGroupAnnotations'
-      required:
-        - status
-        - createdAt
-        - resourceGroupId
-    BckndResourceGroupsPostRequest:
-      type: object
-      properties:
-        resourceGroupId:
-          description: resource group id
-          type: string
-          pattern: ^[a-zA-Z0-9][a-zA-Z0-9.-]{1,251}[a-zA-Z0-9]$
-          minLength: 3
-          maxLength: 253
-        labels:
-          $ref: '#/components/schemas/BckndResourceGroupLabels'
-    BckndResourceGroupLabels:
-      type: array
-      description: Arbitrary labels as meta information
-      items:
-        $ref: '#/components/schemas/BckndResourceGroupLabel'
-    BckndResourceGroupLabel:
-      type: object
-      required:
-        - key
-        - value
-      properties:
-        key:
-          type: string
-          pattern: ^ext.ai.sap.com/(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]){1,48}$
-          maxLength: 63
-          example: ext.ai.sap.com/my-label
-        value:
-          type: string
-          maxLength: 5000
-    BckndInternalResourceGroupLabels:
-      type: array
-      description: Arbitrary labels as meta information
-      items:
-        $ref: '#/components/schemas/BckndInternalResourceGroupLabel'
-    BckndInternalResourceGroupLabel:
-      type: object
-      required:
-        - key
-        - value
-      properties:
-        key:
-          type: string
-          pattern: ^internal.ai.sap.com/(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]){1,43}$
-          maxLength: 63
-          example: internal.ai.sap.com/my-label
-        value:
-          type: string
-          maxLength: 5000
-    BckndInternalResourceGroupAnnotations:
-      type: array
-      description: Arbitrary annotations as meta information
-      items:
-        $ref: '#/components/schemas/BckndInternalResourceGroupAnnotation'
-    BckndInternalResourceGroupAnnotation:
-      type: object
-      required:
-        - key
-        - value
-      properties:
-        key:
-          type: string
-          pattern: ^internal.ai.sap.com/(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]){1,43}$
-          maxLength: 63
-          example: internal.ai.sap.com/my-annotation
-        value:
-          type: string
-          maxLength: 5000
-    BckndResourceGroupDeletionResponse:
+            $ref: '#/components/schemas/TrckGetMetricResource'
+    TrckDeleteMetricsResponse:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/BckndId'
+          $ref: '#/components/schemas/TrckExecutionId'
         message:
-          $ref: '#/components/schemas/BckndResourceGroupDeletionResponseMessage'
-      required:
-        - id
-        - message
-    BckndResourceGroupDeletionResponseMessage:
+          type: string
+          example: Metric Resource was successfully deleted
+    TrckExecutionId:
       type: string
-      description: Message
-      example: Resource Group deletion scheduled
-    BckndResourceGroupPatchRequest:
-      type: object
-      properties:
-        labels:
-          $ref: '#/components/schemas/BckndResourceGroupLabels'
-    BckndEvent:
-      type: object
-      properties:
-        tenantId:
-          description: tenant id
-          type: string
-        action:
-          type: string
-          enum:
-            - PROVISION
-            - DEPROVISION
-        state:
-          type: string
-          enum:
-            - SUCCESSFUL
-            - FAILED
-            - PENDING
-        description:
-          description: describes the event state
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-          example: '2017-09-28T08:56:23.275Z'
-    BckndTenant:
-      type: object
-      properties:
-        tenantId:
-          description: tenant id
-          type: string
-        zoneId:
-          description: zone id
-          type: string
-        realSubaccountId:
-          description: real sub account id
-          type: string
-        servicePlan:
-          description: service plan
-          type: string
-    BckndobjectStoreSecretWithSensitiveDataRequest:
-      type: object
+      example: aa97b177-9383-4934-8543-0f91b7a0283a
+      oneOf:
+        - $ref: '#/components/schemas/TrckMlapiExecutionId'
+      description: ID of the deployment/execution
+    TrckTimestamp:
+      type: string
+      description: Time when the metric was created or logged in RFC3339 format
+      format: date-time
+    TrckGetMetricList:
+      description: Array of Metric items
+      type: array
+      items:
+        $ref: '#/components/schemas/TrckGetMetric'
+    TrckMetricList:
+      description: Array of Metric items
+      type: array
+      items:
+        $ref: '#/components/schemas/TrckMetric'
+    TrckGetMetric:
       description:
-        This represents all the meta-data and extra information to be stored
-        as a k8-secret
+        Key-value metrics, where the value is numeric. Metric can also
+        have optional step and label fields.
+      type: object
       required:
         - name
-        - type
-        - data
+        - value
+        - timestamp
       properties:
         name:
-          type: string
+          $ref: '#/components/schemas/TrckMetricName'
+        value:
+          $ref: '#/components/schemas/TrckMetricValue'
+        timestamp:
+          $ref: '#/components/schemas/TrckTimestamp'
+        step:
           description:
-            Name of the object store for the secret object to be created.
-            Can be used later on check for existence of the secret.
-          example: myobjectstore
-        type:
-          type: string
-          description: Storage type e.g. S3, GCS,...
-          example: S3
-        bucket:
-          type: string
-          description: Bucket to be used
-          example: mybucket1
-        endpoint:
-          type: string
-          description: Optional parameter - URL of the storage server (S3 only)
-          example: www.example.com
-        region:
-          type: string
-          description: Optional parameter - Region of the storage server (S3 only)
-          example: eu
-        pathPrefix:
-          type: string
-          description: prefix folder to be added to storage path
-          example: mp-api
-        verifyssl:
-          type: string
-          description: 0, 1 flag for the KF-serving annotation - serving.kubeflow.org/s3-verifyssl
-          example: '0'
-        usehttps:
-          type: string
-          description: 0, 1 flag for KF-serving annotations - serving.kubeflow.org/s3-usehttps
-          example: '1'
-          default: '1'
-        data:
-          type: object
-          description: key:value pairs of data
-          writeOnly: true
-    BckndobjectStoreSecretWithSensitiveDataRequestForPostCall:
-      type: object
+            step is an optional integer that represents any measurement
+            of training progress (number of training iterations, number of epochs,
+            and so on) for the metric
+          type: integer
+          minimum: 0
+          example: 2
+        labels:
+          $ref: '#/components/schemas/TrckLabelList'
+    TrckMetric:
       description:
-        This represents all the meta-data and extra information to be stored
-        as a k8-secret
+        Key-value metrics, where the value is numeric. Metric can also
+        have optional step and label fields.
       required:
         - name
-        - type
-        - data
+        - value
+      type: object
       properties:
         name:
-          type: string
-          pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$
-          maxLength: 233
+          $ref: '#/components/schemas/TrckMetricName'
+        value:
+          $ref: '#/components/schemas/TrckMetricValue'
+        timestamp:
+          $ref: '#/components/schemas/TrckTimestamp'
+        step:
           description:
-            Name of the object store for the secret object to be created.
-            Can be used later on check for existence of the secret.
-          example: myobjectstore
-        type:
-          type: string
-          description: Storage type e.g. S3, GCS,...
-          example: S3
-        bucket:
-          type: string
-          description: Bucket to be used
-          example: mybucket1
-        endpoint:
-          type: string
-          description: Optional parameter - URL of the storage server (S3 only)
-          example: www.example.com
-        region:
-          type: string
-          description: Optional parameter - Region of the storage server (S3 only)
-          example: eu
-        pathPrefix:
-          type: string
-          description: prefix folder to be added to storage path
-          example: mp-api
-        verifyssl:
-          type: string
-          description: 0, 1 flag for the KF-serving annotation - serving.kubeflow.org/s3-verifyssl
-          example: '0'
-        usehttps:
-          type: string
-          description: 0, 1 flag for KF-serving annotations - serving.kubeflow.org/s3-usehttps
-          example: '1'
-          default: '1'
-        data:
-          type: object
-          description: key:value pairs of data
-          writeOnly: true
-    BckndobjectStoreSecretStatusResponse:
-      description:
-        This represents a list of meta-data of a stored secret. The 'data'
-        field of the secret is never retrieved.
-      type: object
-      properties:
-        count:
+            step is an optional integer that represents any measurement
+            of training progress (number of training iterations, number of epochs,
+            and so on) for the metric
           type: integer
-          description: Number of the resource instances in the list
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/BckndobjectStoreSecretStatus'
-      required:
-        - count
-        - resources
-    BckndobjectStoreSecretStatus:
-      type: object
+          minimum: 0
+          example: 2
+        labels:
+          $ref: '#/components/schemas/TrckLabelList'
+    TrckMetricName:
+      pattern: '[\w-]{1,64}'
+      type: string
+      maxLength: 256
+      description: Name of the metric
+      example: Error Rate
+    TrckMetricValue:
+      type: number
+      description: Numeric Value of the metric
+      example: 0.98
+    TrckmetricSelectorPermissibleValues:
       description:
-        This represents the meta-data of a stored secret. The 'data' field
-        of the secret is never retrieved.
-      properties:
-        metadata:
-          description:
-            Key value pairs of meta-data assigned to the secret when the
-            secret was being created.
-          type: object
-          properties:
-            serving.kubeflow.org/s3-usehttps:
-              type: string
-              description: 0 and 1 values for setting the flag
-              example: '1'
-            serving.kubeflow.org/s3-verifyssl:
-              type: string
-              description: 0 and 1 values for setting the flag
-              example: '0'
-            serving.kubeflow.org/s3-endpoint:
-              type: string
-              description: Annotation for endpoint required by KF_Serving
-              example: some_endpoint
-            serving.kubeflow.org/s3-region:
-              type: string
-              description: Annotation for region required by KF_Serving
-              example: EU
-            storage.ai.sap.com/type:
-              type: string
-              description: Storage type of the secret
-              example: S3
-            storage.ai.sap.com/bucket:
-              type: string
-              description: bucket assigned to the secret on creation
-              example: my_bucket
-            storage.ai.sap.com/endpoint:
-              type: string
-              description: Endpoint assigned to the secret on creation
-              example: some_endpoint
-            storage.ai.sap.com/region:
-              type: string
-              description: Region of the storage server
-              example: EU
-            storage.ai.sap.com/pathPrefix:
-              type: string
-              description: Pathprefix type assigned to the secret on creation.
-              example: mnist_folder
-            storage.ai.sap.com/hdfsNameNode:
-              type: string
-              description: name node of the HDFS file system
-              example: https://c3272xxxxxfa8f.files.hdl.canary-eu10.hanacloud.ondemand.com
-            storage.ai.sap.com/headers:
-              type: string
-              description: headers for webHDFS and other protocols
-              example: '{"x-sap-filecontainer": "c32727xxxxxxx322dcfa8f"}'
-            storage.ai.sap.com/containerUri:
-              type: string
-              description: container uri of azure storage
-              example: https://sapcv842awjkfb2.blob.core.windows.net/sapcp-osaas-xxx-xxxx-xxxx-xxxx-xxxx-zrs
-            storage.ai.sap.com/subscriptionId:
-              type: string
-              description: subscription id
-              example: dgewg2-gkrwnegiw
-            storage.ai.sap.com/tenantId:
-              type: string
-              description: tenant id
-              example: dawd2120-dadwad2
-            storage.ai.sap.com/projectId:
-              type: string
-              description: project id of google cloud platform
-              example: sap-gcp-oaas-us31-1
-        name:
-          description: Name of objectstore
-          type: string
-          example: myobjectstore-object-store-secret
-    BckndobjectStoreSecretDeletionResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/BckndId'
-        message:
-          $ref: '#/components/schemas/BckndobjectStoreSecretDeletionResponseMessage'
-      required:
-        - id
-        - message
-    BckndobjectStoreSecretDeletionResponseMessage:
-      type: string
-      description: Message
-      example: Object Store Secret has been deleted
-    BckndobjectStoreSecretCreationResponse:
-      type: object
-      description: Message
-      example: Created
-      properties:
-        message:
-          $ref: '#/components/schemas/BckndobjectStoreSecretCreationResponseMessage'
-    BckndobjectStoreSecretCreationResponseMessage:
-      type: string
-      description: Message
-      example: Secret has been created
-    BckndobjectStoreSecretModificationResponseMessage:
-      type: string
-      description: Message
-      example: Secret has been modified
-    BckndobjectStoreSecretModificationResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/BckndId'
-        message:
-          $ref: '#/components/schemas/BckndobjectStoreSecretModificationResponseMessage'
-      required:
-        - id
-        - message
-    BcknddockerRegistryNameComponent:
-      description: Name of the docker Registry store for the secret.
-      type: string
-      pattern: ^[a-z0-9](?:_?[a-z0-9\.\-]+)*[a-z0-9]$
-      maxLength: 63
-      example: mydockeregistry
-    BcknddockerRegistrySecretWithSensitiveDataRequest:
-      type: object
-      description:
-        This represents all the meta-data and extra information to be stored
-        as a k8-secret
-      required:
-        - data
-      properties:
-        data:
-          type: object
-          required:
-            - .dockerconfigjson
-          description: key:value pairs of data
-          writeOnly: true
-          additionalProperties: false
-          properties:
-            .dockerconfigjson:
-              type: string
-              description: .dockerconfigjson data
-    BcknddockerRegistrySecretStatusResponse:
-      description:
-        This represents a list of meta-data of a stored secret. The 'data'
-        field of the secret is never retrieved.
-      type: object
-      properties:
-        count:
-          type: integer
-          description: Number of the resource instances in the list
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/BcknddockerRegistrySecretStatus'
-      required:
-        - count
-        - resources
-    BcknddockerRegistrySecretStatus:
-      type: object
-      description:
-        This represents the meta-data of a stored secret. The 'data' field
-        of the secret is never retrieved.
-      properties:
-        name:
-          description: Name of dockerRegistryStore
-          type: string
-          example: mydockeregistry
-    BcknddockerRegistrySecretDeletionResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/BckndId'
-        message:
-          $ref: '#/components/schemas/BcknddockerRegistrySecretDeletionResponseMessage'
-      required:
-        - id
-        - message
-    BcknddockerRegistrySecretDeletionResponseMessage:
-      type: string
-      description: Message
-      example: Docker Registry Secret has been deleted
-    BcknddockerRegistrySecretCreationResponse:
-      type: object
-      description: Message
-      example: Created
-      properties:
-        message:
-          $ref: '#/components/schemas/BcknddockerRegistrySecretCreationResponseMessage'
-    BcknddockerRegistrySecretCreationResponseMessage:
-      type: string
-      description: Message
-      example: Secret has been created
-    BcknddockerRegistrySecretModificationResponseMessage:
-      type: string
-      description: Message
-      example: Secret has been modified
-    BcknddockerRegistrySecretModificationResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/BckndId'
-        message:
-          $ref: '#/components/schemas/BcknddockerRegistrySecretModificationResponseMessage'
-      required:
-        - id
-        - message
-    BckndGenericSecretData:
-      description: Base64 encoded secret data
-      type: object
-      additionalProperties:
+        Permissible value for $select could be either * or one or many
+        of the values from metrics, tags, custominfo
+      type: array
+      items:
         type: string
-    BckndGenericSecretPostBody:
-      type: object
-      required:
-        - name
-        - data
-      properties:
-        name:
-          description: The name of the secret
-          type: string
-          minLength: 1
-          maxLength: 252
-          pattern: ^[a-z0-9\-\.]+$
-        data:
-          $ref: '#/components/schemas/BckndGenericSecretData'
-        labels:
-          $ref: '#/components/schemas/BckndGenericSecretLabels'
-    BckndGenericSecretPatchBody:
-      type: object
-      required:
-        - data
-      properties:
-        data:
-          $ref: '#/components/schemas/BckndGenericSecretData'
-    BckndGenericSecretDataResponse:
-      type: object
-      properties:
-        message:
-          $ref: '#/components/schemas/BckndMessage'
-        name:
-          $ref: '#/components/schemas/BckndName'
-    BckndGenericSecretDetails:
-      type: object
-      required:
-        - name
-        - createdAt
-      properties:
-        name:
-          description: Name of the secret
-          type: string
-        createdAt:
-          description: Timestamp at which secret was created
-          type: string
-        resourceGroupSecretsSyncStatus:
-          description:
-            Sync status of the replicated secrets in all resource groups
-            of the tenant
-          type: object
-          additionalProperties:
-            type: boolean
-            description: Resource group ID and sync status
-    BckndListGenericSecretsResponse:
-      description:
-        This represents a list of meta-data of the secret. The 'data' field
-        of the secret is never retrieved.
-      type: object
-      properties:
-        count:
-          type: integer
-          description: Number of the resource instances in the list
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/BckndGenericSecretDetails'
-      required:
-        - count
-        - resources
-    BckndGenericSecretLabels:
+        enum:
+          - metrics
+          - tags
+          - customInfo
+          - '*'
+    TrckLabelList:
+      description: a list of name-value object pairs associated with some metric.
       type: array
-      description: Arbitrary labels as meta information
       items:
-        $ref: '#/components/schemas/BckndGenericSecretLabel'
-    BckndGenericSecretLabel:
-      type: object
+        $ref: '#/components/schemas/TrckLabel'
+      example:
+        - name: group
+          value: tree-82
+        - name: metrics.ai.sap.com/Artifact.name
+          value: sk_learn_rf_classifier_model
+    TrckLabel:
+      description: a classifying phrase/name applied to a metric
       required:
-        - key
+        - name
         - value
+      type: object
       properties:
-        key:
-          type: string
-          pattern: ^ext.ai.sap.com/(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]){1,48}$
-          maxLength: 63
-          example: ext.ai.sap.com/my-label
+        name:
+          $ref: '#/components/schemas/TrckLabelName'
         value:
-          type: string
-          maxLength: 5000
-    BckndArgoCDRepositoryData:
-      type: object
-      required:
-        - url
-        - username
-        - password
-      properties:
-        name:
-          description: Name of the repository
-          type: string
+          description: Metric Label Value
+          maxLength: 256
           minLength: 1
-          maxLength: 51
-          pattern: ^[a-z0-9\-]+$
-        url:
-          description: URL of the repository to synchronise
           type: string
-        username:
-          description: Username for read-access to the repository
-          type: string
-        password:
-          description: Password for read-access to the repository
-          type: string
-    BckndArgoCDRepositoryCredentials:
-      type: object
-      required:
-        - username
-        - password
-      properties:
-        username:
-          description: Username for read-access to the repository
-          type: string
-        password:
-          description: Password for read-access to the repository
-          type: string
-    BckndArgoCDRepositoryDataResponse:
-      description: This represents a list of GitOps repositories for the tenant.
-      type: object
-      properties:
-        count:
-          type: integer
-          description: Number of the resource instances in the list
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/BckndArgoCDRepositoryDetails'
-      required:
-        - count
-        - resources
-    BckndArgoCDRepositoryCreationResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/BckndId'
-        message:
-          $ref: '#/components/schemas/BckndArgoCDRepositoryCreationResponseMessage'
-      required:
-        - id
-        - message
-    BckndArgoCDRepositoryCreationResponseMessage:
-      type: string
-      description: Message
-      example: Repository has been on-boarded
-    BckndArgoCDRepositoryDetails:
-      type: object
-      description: Repository details
-      properties:
-        name:
-          description: The name of the repository
-          type: string
-        url:
-          description: The repository URL
-          type: string
-        status:
-          description: The status of the repository's on-boarding
-          type: string
-          enum:
-            - ERROR
-            - IN-PROGRESS
-            - COMPLETED
-          example: COMPLETED
-    BckndArgoCDRepositoryDeletionResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/BckndId'
-        message:
-          $ref: '#/components/schemas/BckndArgoCDRepositoryDeletionResponseMessage'
-      required:
-        - id
-        - message
-    BckndArgoCDRepositoryDeletionResponseMessage:
-      type: string
-      description: Message
-      example: The repository has been off-boarded.
-    BckndArgoCDRepositoryModificationResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/BckndId'
-        message:
-          $ref: '#/components/schemas/BckndArgoCDRepositoryModificationResponseMessage'
-      required:
-        - id
-        - message
-    BckndArgoCDRepositoryModificationResponseMessage:
-      type: string
-      description: Message
-      example: ArgoCD application has been updated
-    BckndArgoCDApplicationBaseData:
-      type: object
-      required:
-        - repositoryUrl
-        - revision
-        - path
-      properties:
-        repositoryUrl:
-          description: URL of the repository to synchronise
-          type: string
-        revision:
-          description: revision to synchronise
-          type: string
-        path:
-          description: path within the repository to synchronise
-          type: string
-    BckndArgoCDApplicationData:
-      type: object
-      properties:
-        repositoryUrl:
-          description: URL of the repository to synchronise
-          type: string
-        revision:
-          description: revision to synchronise
-          type: string
-        path:
-          description: path within the repository to synchronise
-          type: string
-        applicationName:
-          description: ArgoCD application name
-          type: string
-          minLength: 3
-          maxLength: 54
-          pattern: ^[a-z0-9\-]+$
-      required:
-        - repositoryUrl
-        - revision
-        - path
-    BckndAllArgoCDApplicationData:
-      description: list of applications
-      type: object
-      properties:
-        count:
-          type: integer
-          description: Number of the resource instances in the list
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/BckndArgoCDApplicationData'
-      required:
-        - count
-        - resources
-    BckndArgoCDApplicationDataRepoName:
-      type: object
-      required:
-        - repositoryName
-        - revision
-        - path
-      properties:
-        repositoryName:
-          description: Name of the repository to synchronise
-          type: string
-        revision:
-          description: revision to synchronise
-          type: string
-        path:
-          description: path within the repository to synchronise
-          type: string
-        applicationName:
-          description: ArgoCD application name
-          type: string
-          minLength: 3
-          maxLength: 54
-          pattern: ^[a-z0-9\-]+$
-    BckndArgoCDApplicationStatus:
-      type: object
-      description: ArgoCD application definition and status
-      properties:
-        healthStatus:
-          description: ArgoCD application health status
-          type: string
-        syncStatus:
-          description: ArgoCD application sync status
-          type: string
-        message:
-          description: ArgoCD application health status message
-          type: string
-        source:
-          description: Information about the ArgoCD application itself
-          type: object
-          properties:
-            repoURL:
-              description: URL of the repository
-              type: string
-            path:
-              description: Path of the repository
-              type: string
-            revision:
-              description: Revision number of the ArgoCD application
-              type: string
-        syncFinishedAt:
-          description:
-            Gets the timestamp information related to the sync state of
-            the ArgoCD application
-          type: string
-        syncStartedAt:
-          description:
-            Get timestamp information related to the sync state of the
-            ArgoCD application
-          type: string
-        reconciledAt:
-          description:
-            Get timestamp information related to the sync state of the
-            ArgoCD application
-          type: string
-        syncResourcesStatus:
-          description:
-            Status of all resources that need to be synchronized with the
-            gitops repo
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                description: ArgoCD application object name
-                type: string
-              kind:
-                description: ArgoCD application object kind
-                type: string
-              status:
-                description: ArgoCD application object sync status
-                type: string
-              message:
-                description: ArgoCD application object message
-                type: string
-        syncRessourcesStatus:
-          deprecated: true
-          description:
-            Status of all resources that need to be synchronized with the
-            gitops repo. Misspelled and deprecated, use syncResourcesStatus instead.
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                description: ArgoCD application object name
-                type: string
-              kind:
-                description: ArgoCD application object kind
-                type: string
-              status:
-                description: ArgoCD application object sync status
-                type: string
-              message:
-                description: ArgoCD application object message
-                type: string
-    BckndArgoCDApplicationDeletionResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/BckndId'
-        message:
-          $ref: '#/components/schemas/BckndArgoCDApplicationDeletionResponseMessage'
-      required:
-        - id
-        - message
-    BckndArgoCDApplicationDeletionResponseMessage:
-      type: string
-      description: Message
-      example: ArgoCD application has been deleted
-    BckndArgoCDApplicationCreationResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/BckndId'
-        message:
-          $ref: '#/components/schemas/BckndArgoCDApplicationCreationResponseMessage'
-      required:
-        - id
-        - message
-    BckndArgoCDApplicationCreationResponseMessage:
-      type: string
-      description: Message
-      example: ArgoCD application has been created
-    BckndArgoCDApplicationModificationResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/BckndId'
-        message:
-          $ref: '#/components/schemas/BckndArgoCDApplicationModificationResponseMessage'
-      required:
-        - id
-        - message
-    BckndArgoCDApplicationModificationResponseMessage:
-      type: string
-      description: Message
-      example: ArgoCD application has been updated
-    BckndArgoCDApplicationRefreshResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/BckndId'
-        message:
-          $ref: '#/components/schemas/BckndArgoCDApplicationRefreshResponseMessage'
-      required:
-        - id
-        - message
-    BckndArgoCDApplicationRefreshResponseMessage:
-      type: string
-      description: Message
-      example: Refresh of ArgoCD application has been scheduled
-    BckndServiceList:
-      type: object
-      properties:
-        count:
-          type: integer
-          description: Number of the resource instances in the list
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/BckndService'
-      required:
-        - count
-        - resources
-    BckndService:
-      type: object
-      properties:
-        name:
-          description: service name
-          type: string
-        description:
-          description: service description
-          type: string
-        url:
-          description: service broker url
-          type: string
-        status:
-          description: aggregated status of the service
-          type: string
-          enum:
-            - PROVISIONED
-            - ERROR
-            - PROVISIONING
-            - DEPROVISIONING
-        statusMessage:
-          description: status message
-          type: string
-    BckndExtendedService:
-      type: object
-      properties:
-        name:
-          description: service name
-          type: string
-        description:
-          description: service description
-          type: string
-        url:
-          description: service broker url
-          type: string
-        brokerSecret:
-          $ref: '#/components/schemas/BckndServiceBrokerSecret'
-        capabilities:
-          $ref: '#/components/schemas/BckndServiceCapabilities'
-        serviceCatalog:
-          $ref: '#/components/schemas/BckndServiceServiceCatalog'
-        status:
-          description: aggregated status of the service
-          type: string
-          enum:
-            - PROVISIONED
-            - ERROR
-            - PROVISIONING
-            - DEPROVISIONING
-        statusMessage:
-          description: status message
-          type: string
-    BckndServiceBrokerSecret:
-      type: object
-      properties:
-        name:
-          description: broker secret name
-          type: string
-        passwordKeyRef:
-          description: username key reference in broker secret
-          type: string
-        usernameKeyRef:
-          description: password key reference in broker secret
-          type: string
-    BckndServiceCapabilities:
-      type: object
-      properties:
-        logs:
-          description: Capabilities to read logs from deployments and executions.
-          type: object
-          properties:
-            deployments:
-              type: boolean
-            executions:
-              type: boolean
-        basic:
-          description: Basic capabilities like creating deployments and executions.
-          type: object
-          properties:
-            staticDeployments:
-              description:
-                There are static always running endpoints that can be used
-                for inference without the need to do user deployments.
-              type: boolean
-            userDeployments:
-              description:
-                Services that only support batch inference typically neither
-                allow listing nor creation of deployments. For these, userDeployments
-                == false
-              type: boolean
-            createExecutions:
-              description:
-                Services that only support deployment typically neither
-                allow create executions. For these, createExecutions == false
-              type: boolean
-            multitenant:
-              description:
-                true-> AI API implementation supports resource groups (Main
-                Tenant scenario), false-> implementation does not support resource
-                groups (Service Tenant scenario)
-              type: boolean
-    BckndServiceServiceCatalog:
+          example: sk_learn_random_forest_model
+      example:
+        name: group
+        value: tree-82
+    TrckTagList:
+      description:
+        a list of name-value object pairs associated with the execution/deployment.
+        Tags are queryable.
       type: array
       items:
-        $ref: '#/components/schemas/BckndServiceServiceCatalogItem'
-    BckndServiceServiceCatalogItem:
-      type: object
-      properties:
-        extendCatalog:
-          $ref: '#/components/schemas/BckndServiceServiceCatalogItemExtendCatalog'
-        extendCredentials:
-          $ref: '#/components/schemas/BckndServiceServiceCatalogItemExtendCredentials'
-    BckndServiceServiceCatalogItemExtendCatalog:
-      type: object
-      properties:
-        bindable:
-          description: if the service is bindable
-          type: boolean
-        description:
-          description: description of the service
-          type: string
-        id:
-          description: id of the service
-          type: string
-        name:
-          description: name of the service
-          type: string
-        plans:
-          type: array
-          items:
-            $ref: '#/components/schemas/BckndServiceServicePlanItem'
-    BckndServiceServicePlanItem:
-      type: object
-      properties:
-        description:
-          description: description of the service plan
-          type: string
-        free:
-          description: if the service plan free
-          type: boolean
-        id:
-          description: id of the service plan
-          type: string
-        name:
-          description: name of the service plan
-          type: string
-        metadata:
-          $ref: '#/components/schemas/BckndServiceServicePlanItemMetadata'
-    BckndServiceServicePlanItemMetadata:
-      type: object
-      properties:
-        supportedPlatforms:
-          description: supported platforms of the service plan
-          type: array
-          items:
-            type: string
-            enum:
-              - cloudfoundry
-              - kubernetes
-              - sapbtp
-    BckndServiceServiceCatalogItemExtendCredentials:
-      type: object
-      properties:
-        shared:
-          type: object
-          properties:
-            serviceUrls:
-              type: object
-              properties:
-                AI_API_URL:
-                  type: string
-    BckndDeploymentResourceQuotaResponse:
-      type: object
-      required:
-        - quotas
-      properties:
-        usage:
-          $ref: '#/components/schemas/BckndDeploymentUsage'
-        quotas:
-          type: array
-          items:
-            $ref: '#/components/schemas/BckndDeploymentQuotaItem'
-    BckndDeploymentUsage:
-      type: object
-      required:
-        - count
-        - items
-      properties:
-        count:
-          type: integer
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/BckndUsageResourcePlanItem'
-    BckndUsageResourcePlanItem:
-      type: object
-      required:
-        - id
-      properties:
-        id:
-          type: string
-        resourcePlanType:
-          type: string
-        configuredMaxReplicas:
-          type: integer
-    BckndDeploymentQuotaItem:
-      type: object
-      properties:
-        resourcePlanType:
-          type: string
-        deploymentQuota:
-          $ref: '#/components/schemas/BckndDeploymentQuota'
-    BckndDeploymentQuota:
-      type: object
-      properties:
-        maxCount:
-          type: integer
-          description:
-            The value can be 0(disabled) or a positive integer defining
-            the maximum allowed number
-          example: 10
-        maxReplicaPerDeployment:
-          type: integer
-    BckndCommonResourceQuotaResponse:
-      type: object
-      required:
-        - quota
-      properties:
-        usage:
-          type: object
-          properties:
-            count:
-              type: integer
-        quota:
-          type: object
-          properties:
-            maxCount:
-              type: integer
-              description:
-                The value can be 0(disabled) or a positive integer defining
-                the maximum allowed number
-              example: 10
-    BckndExecutableResourceQuotaResponse:
-      type: object
-      required:
-        - quota
-      properties:
-        usage:
-          type: object
-          properties:
-            servingTemplateCount:
-              type: integer
-            workflowTemplateCount:
-              type: integer
-        quota:
-          type: object
-          properties:
-            servingTemplateMaxCount:
-              type: integer
-              description:
-                The value can be 0(disabled) or a positive integer defining
-                the maximum allowed number
-              example: 10
-            workflowTemplateMaxCount:
-              type: integer
-              description:
-                The value can be 0(disabled) or a positive integer defining
-                the maximum allowed number
-              example: 10
-    BckndResourcePatchBody:
-      type: object
-      required:
-        - resourcePlans
-      properties:
-        resourcePlans:
-          $ref: '#/components/schemas/BckndResourcePatchResourcePlans'
-    BckndResourcePatchResourcePlans:
-      type: array
-      items:
-        $ref: '#/components/schemas/BckndResourcePatchNodes'
-    BckndResourcePatchNodes:
-      type: object
+        $ref: '#/components/schemas/TrckTag'
+    TrckTag:
+      description:
+        A dictionary of name-value pairs to support segregation at execution
+        level.
       required:
         - name
-        - request
+        - value
+      type: object
       properties:
         name:
+          oneOf:
+            - $ref: '#/components/schemas/TrckGenericName'
+        value:
+          description: tag value
+          maxLength: 256
+          minLength: 1
           type: string
-        request:
-          type: integer
-    BckndResourcePatchResponse:
-      type: object
+          example: RFC-1
+      example:
+        name: Artifact Group
+        value: RFC-1
+    TrckCustomInfoObjectList:
+      description: ''
+      type: array
+      items:
+        $ref: '#/components/schemas/TrckCustomInfoObject'
+    TrckCustomInfoObject:
+      description:
+        large object which provides rendering/semantic information regarding
+        certain metric for consuming application or can be complex metrics in JSON
+        format
       required:
-        - message
-      properties:
-        message:
-          type: string
-    BckndResourceGetResponse:
-      type: object
-      required:
-        - resourcePlans
-      properties:
-        resourcePlans:
-          $ref: '#/components/schemas/BckndResourceGetResourcePlans'
-    BckndResourceGetResourcePlans:
-      type: object
-      additionalProperties:
-        type: object
-        required:
-          - provisioned
-          - requested
-        properties:
-          provisioned:
-            type: integer
-          requested:
-            type: integer
-    BckndErrorResponse:
+        - name
+        - value
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/BckndError'
-    BckndError:
-      type: object
+        name:
+          oneOf:
+            - $ref: '#/components/schemas/TrckGenericName'
+        value:
+          $ref: '#/components/schemas/TrckCustomInfoObjectData'
+      example:
+        name: Confusion Matrix
+        value:
+          "[{'Predicted': 'False',  'Actual': 'False','value': 34},{'Predicted':
+          'False','Actual': 'True',  'value': 124}, {'Predicted': 'True','Actual':
+          'False','value': 165},{  'Predicted': 'True','Actual': 'True','value':
+          36}]"
+    TrckCustomInfoObjectData:
+      description: Message
+      minLength: 1
+      type: string
+      example:
+        "[{'Predicted': 'False',\t'Actual': 'False','value': 34},{'Predicted':
+        'False','Actual': 'True',\t'value': 124}, {'Predicted': 'True','Actual': 'False','value':
+        165},{\t'Predicted': 'True','Actual': 'True','value': 36}]"
+    TrckMlapiExecutionId:
+      description: Generic ID
+      pattern: ^[\w.-]{4,64}$
+      type: string
+      example: aa97b177-9383-4934-8543-0f91b7a0283a
+    TrckGenericName:
+      description:
+        Generic name which can belong to a tag,label,metric or customInfo
+        Object
+      maxLength: 256
+      minLength: 1
+      type: string
+      example: sample name
+    TrckLabelName:
+      description:
+        Label name to label one or more metrics. "metrics.ai.sap.com/Artifact.name"
+        is a reserved label to associate an artifact with the metrics
+      maxLength: 256
+      minLength: 1
+      type: string
+      example: metrics.ai.sap.com/Artifact.name
+    TrckApiError:
       required:
         - code
         - message
+      type: object
+      properties:
+        code:
+          description: Descriptive error code (not http status code).
+          type: string
+        message:
+          description: plaintext error description
+          type: string
+        requestId:
+          description: id of individual request
+          type: string
+        target:
+          description: url that has been called
+          type: string
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrckDetailsErrorResponse'
+    TrckDetailsErrorResponse:
+      type: object
+      properties:
+        code:
+          description: Descriptive error code (not http status code)
+          type: string
+        message:
+          description: Plaintext error description
+          type: string
+    TrckStringArray:
+      type: array
+      example:
+        - value1
+        - value2
+      items:
+        type: string
+    DSetUrl:
+      type: string
+      format: url
+      example: https://download.example.com/test/file.bin
+    DSetError:
+      description: Error Response
+      type: object
       properties:
         code:
           type: string
-          description: Descriptive error code (not http status code)
+          minLength: 1
         message:
           type: string
-          description: Plaintext error description
-          example: something went wrong
-        requestId:
-          type: string
-          description: ID of the individual request
+          minLength: 1
         target:
           type: string
-          description: Invoked URL
+          minLength: 1
+        requestId:
+          type: string
         details:
-          description: Optional details of the error message
-          type: object
+          type: array
+          uniqueItems: true
+          minItems: 0
+          items:
+            required:
+              - code
+              - message
+            properties:
+              code:
+                type: string
+                minLength: 1
+              message:
+                type: string
+                minLength: 1
+      required:
+        - code
+        - message
+      x-examples:
+        example-1:
+          code: '03021655'
+          message: Bad request encountered. Please try again with possible-solution-here.
+          target: /url/path
+          requestId: 9832bf934f3743v3948v3
+          details:
+            - code: '01041211'
+              message: Optional nested error message.
+    DSetFileCreationResponse:
+      description: Response for successful file creation
+      type: object
+      required:
+        - message
+        - url
+      properties:
+        message:
+          type: string
+          description: File creation response message
+          example: File creation acknowledged
+        url:
+          $ref: '#/components/schemas/DSetUrl'
     MetaCapabilities:
       type: object
       required:
@@ -6620,30 +6692,151 @@ components:
           $ref: '#/components/schemas/KpiColumnName'
       style: form
       explode: false
-    DSetresourceGroupHeader:
+    BckndtokenHeader:
+      name: Authorization
       in: header
-      name: AI-Resource-Group
-      description: Specify a resource group id
-      schema:
-        type: string
+      description: Authorization bearer token containing a JWT token.
       required: false
-    DSetpath:
-      name: path
-      in: path
-      required: true
       schema:
         type: string
-        format: path
-        pattern: ^(([\w.-]+):([\w.-]+)|([\w.-]+))(/([\w./-]+[\w.-]+)?)?$
-        maxLength: 1024
-      description: path relative to the object store root URL in the secret
-    DSetoverwrite:
-      name: overwrite
+    Bckndai-resource-group:
+      name: AI-Resource-Group
+      in: header
+      description: Specify an existing resource group id to use
+      required: false
+      schema:
+        type: string
+    Bckndai-resource-group-default:
+      name: AI-Resource-Group
+      in: header
+      description:
+        Specify an existing resource group id to use. Uses "default" if
+        value not provided.
+      required: false
+      schema:
+        type: string
+        default: default
+    Bckndai-tenant-scope:
+      name: AI-Tenant-Scope
+      in: header
+      description: Specify whether the main tenant scope is to be used
+      required: false
+      schema:
+        type: boolean
+      example: true
+    Bckndtop:
+      name: $top
+      description: Number of results to display
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+      example: 10
+    Bckndskip:
+      name: $skip
+      description: Number of results to be skipped from the ordered list of results
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+      example: 10
+    Bckndcount:
+      name: $count
+      description:
+        When the $count field is set to false, the response contains a
+        count of the items present in the response. When the $count field is set to
+        true, the response contains a count of all the items present on the server,
+        and not just the ones in the response. When the $count field is not passed,
+        it is false by default.
       in: query
       required: false
       schema:
         type: boolean
-      description: If true, then file is overwritten. Default is false.
+      example: true
+    BckndresourceGroupId:
+      name: resourceGroupId
+      description: Resource group identifier
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[a-zA-Z0-9][a-zA-Z0-9.-]{1,251}[a-zA-Z0-9]$
+        minLength: 3
+        maxLength: 253
+      example: my-test-rg
+    BckndobjectStoreName:
+      name: objectStoreName
+      description: Name of the object store for the secret.
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[a-zA-Z0-9\.\-_]+$
+      example: My_objectStore
+    BcknddockerRegistryName:
+      name: dockerRegistryName
+      description: Name of the docker Registry store for the secret.
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[a-z0-9](?:_?[a-z0-9\.\-]+)*[a-z0-9]$
+        maxLength: 63
+      example: mydockeregistry
+    BckndsecretName:
+      name: secretName
+      in: path
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 252
+        pattern: ^[a-z0-9\-\.]+$
+    BckndrepositoryName:
+      name: repositoryName
+      description: Name of the repository
+      in: path
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 51
+        pattern: ^[a-z0-9\-]+$
+      example: tenant-application
+    BckndapplicationName:
+      name: applicationName
+      description: Name of the ArgoCD application
+      in: path
+      required: true
+      schema:
+        type: string
+        minLength: 3
+        maxLength: 54
+        pattern: ^[a-z0-9\-]+$
+      example: tenant-application
+    BckndServiceName:
+      name: ServiceName
+      description: Name of the Service
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[a-zA-Z0-9\-_]+$
+        minLength: 1
+        maxLength: 32
+      example: cashapp
+    BckndquotaOnly:
+      name: quotaOnly
+      description:
+        When being set to true, the response contains only the quota of
+        the resource and not the quota usage.
+      in: query
+      required: false
+      schema:
+        type: boolean
+      example: true
     AiresourceGroupHeader:
       in: header
       name: AI-Resource-Group
@@ -6937,6 +7130,128 @@ components:
           - status
       example: status
       x-visible: false
+    RTAtokenHeader:
+      name: Authorization
+      in: header
+      description: Authorization bearer token containing a JWT token.
+      required: false
+      schema:
+        type: string
+    RTAlimit:
+      in: query
+      name: $top
+      description:
+        The max number of entries to return. Defaults to 1000. Limited
+        to 5000 max.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 5000
+        default: 1000
+      examples:
+        min:
+          value: 1
+          summary: Min number of entries to return
+        max:
+          value: 5000
+          summary: Max number of entries to return
+        default:
+          value: 1000
+          summary: default number of entries to return
+    RTAstart:
+      name: start
+      in: query
+      description:
+        The start time for the query as a RFC 3339 datetime format. Defaults
+        to one hour ago. + in timezone need to be encoded to %2B.
+      required: false
+      schema:
+        type: string
+        format: date-time
+      examples:
+        zulu:
+          value: '2021-05-19T00:00:14.347Z'
+          summary: Datetime example use Z as timezone
+        utc:
+          value: 2021-05-19T00:00:14.347%2B00:00
+          summary:
+            Datetime example use +00:00 as timezone, where + is encoded to
+            %2B
+        local-plus:
+          value: 2021-05-19T08:00:14.347%2B08:00
+          summary:
+            Datetime example use +08:00 as timezone, where + is encoded to
+            %2B
+        local-minus:
+          value: '2021-05-18T16:00:14.347-08:00'
+          summary: Datetime example use -08:00 as timezone
+    RTAend:
+      name: end
+      in: query
+      description:
+        The end time for the query as a RFC 3339 datetime format. Defaults
+        to now. + in timezone need to be encoded to %2B.
+      required: false
+      schema:
+        type: string
+        format: date-time
+      examples:
+        zulu:
+          value: '2021-05-19T01:00:14.347Z'
+          summary: Datetime example use Z as timezone
+        utc:
+          value: 2021-05-19T01:00:14.347%2B00:00
+          summary:
+            Datetime example use +00:00 as timezone, where + is encoded to
+            %2B
+        local-plus:
+          value: 2021-05-19T09:00:14.347%2B08:00
+          summary:
+            Datetime example use +08:00 as timezone, where + is encoded to
+            %2B
+        local-minus:
+          value: '2021-05-18T17:00:14.347-08:00'
+          summary: Datetime example use -08:00 as timezone
+    RTAorder:
+      name: $order
+      in: query
+      description:
+        "Determines the sort order. Supported values are asc or desc. Defaults
+        to asc. Sort order:\n  * `asc` - Ascending, earliest in the order will appear
+        at the top of the list\n  * `desc` - Descending, last in the order will appear
+        at the top of the list\n"
+      required: false
+      schema:
+        type: string
+        enum:
+          - asc
+          - desc
+      examples:
+        asc:
+          value: asc
+          summary: Sort the results in ascending order
+        desc:
+          value: desc
+          summary: Sort the results in descending order
+    RTAexecutionId:
+      name: executionId
+      description: Execution identifier
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[\w.-]{4,64}$
+      example: aa97b177-9383-4934-8543-0f91a7a0283a
+    RTAdeploymentId:
+      name: deploymentId
+      description: Deployment identifier
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[\w.-]{4,64}$
+      example: aa97b177-9383-4934-8543-0f91a7a0283a
     TrckqueryFilter:
       example: executionId eq 'aa97b177-9383-4934-8543-0f91b7a0283a'
       name: $filter
@@ -7028,273 +7343,30 @@ components:
         type: integer
       example: 10
       x-visible: false
-    RTAtokenHeader:
-      name: Authorization
+    DSetresourceGroupHeader:
       in: header
-      description: Authorization bearer token containing a JWT token.
-      required: false
-      schema:
-        type: string
-    RTAlimit:
-      in: query
-      name: $top
-      description:
-        The max number of entries to return. Defaults to 1000. Limited
-        to 5000 max.
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 5000
-        default: 1000
-      examples:
-        min:
-          value: 1
-          summary: Min number of entries to return
-        max:
-          value: 5000
-          summary: Max number of entries to return
-        default:
-          value: 1000
-          summary: default number of entries to return
-    RTAstart:
-      name: start
-      in: query
-      description:
-        The start time for the query as a RFC 3339 datetime format. Defaults
-        to one hour ago. + in timezone need to be encoded to %2B.
-      required: false
-      schema:
-        type: string
-        format: date-time
-      examples:
-        zulu:
-          value: '2021-05-19T00:00:14.347Z'
-          summary: Datetime example use Z as timezone
-        utc:
-          value: 2021-05-19T00:00:14.347%2B00:00
-          summary:
-            Datetime example use +00:00 as timezone, where + is encoded to
-            %2B
-        local-plus:
-          value: 2021-05-19T08:00:14.347%2B08:00
-          summary:
-            Datetime example use +08:00 as timezone, where + is encoded to
-            %2B
-        local-minus:
-          value: '2021-05-18T16:00:14.347-08:00'
-          summary: Datetime example use -08:00 as timezone
-    RTAend:
-      name: end
-      in: query
-      description:
-        The end time for the query as a RFC 3339 datetime format. Defaults
-        to now. + in timezone need to be encoded to %2B.
-      required: false
-      schema:
-        type: string
-        format: date-time
-      examples:
-        zulu:
-          value: '2021-05-19T01:00:14.347Z'
-          summary: Datetime example use Z as timezone
-        utc:
-          value: 2021-05-19T01:00:14.347%2B00:00
-          summary:
-            Datetime example use +00:00 as timezone, where + is encoded to
-            %2B
-        local-plus:
-          value: 2021-05-19T09:00:14.347%2B08:00
-          summary:
-            Datetime example use +08:00 as timezone, where + is encoded to
-            %2B
-        local-minus:
-          value: '2021-05-18T17:00:14.347-08:00'
-          summary: Datetime example use -08:00 as timezone
-    RTAorder:
-      name: $order
-      in: query
-      description:
-        "Determines the sort order. Supported values are asc or desc. Defaults\
-        \ to asc. Sort order:\n  * `asc` - Ascending, earliest in the order will appear\
-        \ at the top of the list\n  * `desc` - Descending, last in the order will\
-        \ appear at the top of the list\n"
-      required: false
-      schema:
-        type: string
-        enum:
-          - asc
-          - desc
-      examples:
-        asc:
-          value: asc
-          summary: Sort the results in ascending order
-        desc:
-          value: desc
-          summary: Sort the results in descending order
-    RTAexecutionId:
-      name: executionId
-      description: Execution identifier
-      in: path
-      required: true
-      schema:
-        type: string
-        pattern: ^[\w.-]{4,64}$
-      example: aa97b177-9383-4934-8543-0f91a7a0283a
-    RTAdeploymentId:
-      name: deploymentId
-      description: Deployment identifier
-      in: path
-      required: true
-      schema:
-        type: string
-        pattern: ^[\w.-]{4,64}$
-      example: aa97b177-9383-4934-8543-0f91a7a0283a
-    BckndtokenHeader:
-      name: Authorization
-      in: header
-      description: Authorization bearer token containing a JWT token.
-      required: false
-      schema:
-        type: string
-    Bckndai-resource-group:
       name: AI-Resource-Group
-      in: header
-      description: Specify an existing resource group id to use
-      required: false
+      description: Specify a resource group id
       schema:
         type: string
-    Bckndai-resource-group-default:
-      name: AI-Resource-Group
-      in: header
-      description:
-        Specify an existing resource group id to use. Uses "default" if
-        value not provided.
       required: false
+    DSetpath:
+      name: path
+      in: path
+      required: true
       schema:
         type: string
-        default: default
-    Bckndai-tenant-scope:
-      name: AI-Tenant-Scope
-      in: header
-      description: Specify whether the main tenant scope is to be used
-      required: false
-      schema:
-        type: boolean
-      example: true
-    Bckndtop:
-      name: $top
-      description: Number of results to display
-      in: query
-      required: false
-      schema:
-        type: integer
-        minimum: 0
-      example: 10
-    Bckndskip:
-      name: $skip
-      description: Number of results to be skipped from the ordered list of results
-      in: query
-      required: false
-      schema:
-        type: integer
-        minimum: 0
-      example: 10
-    Bckndcount:
-      name: $count
-      description:
-        When the $count field is set to false, the response contains a
-        count of the items present in the response. When the $count field is set to
-        true, the response contains a count of all the items present on the server,
-        and not just the ones in the response. When the $count field is not passed,
-        it is false by default.
+        format: path
+        pattern: ^(([\w.-]+):([\w.-]+)|([\w.-]+))(/([\w./-]+[\w.-]+)?)?$
+        maxLength: 1024
+      description: path relative to the object store root URL in the secret
+    DSetoverwrite:
+      name: overwrite
       in: query
       required: false
       schema:
         type: boolean
-      example: true
-    BckndresourceGroupId:
-      name: resourceGroupId
-      description: Resource group identifier
-      in: path
-      required: true
-      schema:
-        type: string
-        pattern: ^[a-zA-Z0-9][a-zA-Z0-9.-]{1,251}[a-zA-Z0-9]$
-        minLength: 3
-        maxLength: 253
-      example: my-test-rg
-    BckndobjectStoreName:
-      name: objectStoreName
-      description: Name of the object store for the secret.
-      in: path
-      required: true
-      schema:
-        type: string
-        pattern: ^[a-zA-Z0-9\.\-_]+$
-      example: My_objectStore
-    BcknddockerRegistryName:
-      name: dockerRegistryName
-      description: Name of the docker Registry store for the secret.
-      in: path
-      required: true
-      schema:
-        type: string
-        pattern: ^[a-z0-9](?:_?[a-z0-9\.\-]+)*[a-z0-9]$
-        maxLength: 63
-      example: mydockeregistry
-    BckndsecretName:
-      name: secretName
-      in: path
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 252
-        pattern: ^[a-z0-9\-\.]+$
-    BckndrepositoryName:
-      name: repositoryName
-      description: Name of the repository
-      in: path
-      required: true
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 51
-        pattern: ^[a-z0-9\-]+$
-      example: tenant-application
-    BckndapplicationName:
-      name: applicationName
-      description: Name of the ArgoCD application
-      in: path
-      required: true
-      schema:
-        type: string
-        minLength: 3
-        maxLength: 54
-        pattern: ^[a-z0-9\-]+$
-      example: tenant-application
-    BckndServiceName:
-      name: ServiceName
-      description: Name of the Service
-      in: path
-      required: true
-      schema:
-        type: string
-        pattern: ^[a-zA-Z0-9\-_]+$
-        minLength: 1
-        maxLength: 32
-      example: cashapp
-    BckndquotaOnly:
-      name: quotaOnly
-      description:
-        When being set to true, the response contains only the quota of
-        the resource and not the quota usage.
-      in: query
-      required: false
-      schema:
-        type: boolean
-      example: true
+      description: If true, then file is overwritten. Default is false.
   responses:
     KpiNotFound:
       description: The specified resource was not found
@@ -7323,6 +7395,126 @@ components:
             properties:
               error:
                 $ref: '#/components/schemas/KpiApiError'
+    BckndCommonError:
+      description:
+        HTTP status codes 401, 403 or 500. Response body contains further
+        details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BckndErrorResponse'
+    BckndNotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BckndErrorResponse'
+    BckndBadRequest:
+      description: The request was malformed and could thus not be processed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BckndErrorResponse'
+    TntNotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/TntApiError'
+    AiNotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/AiApiError'
+    AiPreconditionFailed:
+      description:
+        The service didn't meet the precondition needed to execute this
+        operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/AiApiError'
+    AiBadRequest:
+      description: The specification of the resource was incorrect
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/AiApiError'
+    RTANotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RTAErrorResponse'
+    RTABadRequest:
+      description: The request was malformed and could thus not be processed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RTAErrorResponse'
+    RTACommonError:
+      description:
+        HTTP status codes 401, 403 or 500. Response body contains further
+        details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RTAErrorResponse'
+    RTAUnauthorized:
+      description: Lacks valid authentication credentials for the target resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RTAErrorResponse'
+    TrckBadRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/TrckApiError'
+      description: The specification of the resource was incorrect
+    TrckNotImplemented:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/TrckApiError'
+      description: Operation is not Supported.
+    TrckNotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/TrckApiError'
+    TrckPayloadTooLarge:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/TrckApiError'
+      description: request entity is larger than limits defined by server.
     DSetBadRequest:
       description: The specification of the resource was incorrect
       content:
@@ -7439,117 +7631,6 @@ components:
             the artifact API to register this file.
           schema:
             $ref: '#/components/schemas/DSetUrl'
-    AiNotFound:
-      description: The specified resource was not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/AiApiError'
-    AiPreconditionFailed:
-      description:
-        The service didn't meet the precondition needed to execute this
-        operation
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/AiApiError'
-    AiBadRequest:
-      description: The specification of the resource was incorrect
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/AiApiError'
-    TrckBadRequest:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/TrckApiError'
-      description: The specification of the resource was incorrect
-    TrckNotImplemented:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/TrckApiError'
-      description: Operation is not Supported.
-    TrckNotFound:
-      description: The specified resource was not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/TrckApiError'
-    TrckPayloadTooLarge:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                $ref: '#/components/schemas/TrckApiError'
-      description: request entity is larger than limits defined by server.
-    RTANotFound:
-      description: The specified resource was not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RTAErrorResponse'
-    RTABadRequest:
-      description: The request was malformed and could thus not be processed.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RTAErrorResponse'
-    RTACommonError:
-      description:
-        HTTP status codes 401, 403 or 500. Response body contains further
-        details.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RTAErrorResponse'
-    RTAUnauthorized:
-      description: Lacks valid authentication credentials for the target resource.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RTAErrorResponse'
-    BckndCommonError:
-      description:
-        HTTP status codes 401, 403 or 500. Response body contains further
-        details.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/BckndErrorResponse'
-    BckndNotFound:
-      description: The specified resource was not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/BckndErrorResponse'
-    BckndBadRequest:
-      description: The request was malformed and could thus not be processed.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/BckndErrorResponse'
     MetaNotFound:
       description: The specified resource was not found
       content:
