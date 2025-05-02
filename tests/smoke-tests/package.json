@@ -17,7 +17,7 @@
   "dependencies": {
     "@langchain/langgraph": "^0.2.67",
     "langchain": "0.3.24",
-    "@langchain/core": "0.3.49",
+    "@langchain/core": "0.3.50",
     "@langchain/textsplitters": "0.1.0",
     "@sap-ai-sdk/ai-api": "canary",
     "@sap-ai-sdk/document-grounding": "canary",
