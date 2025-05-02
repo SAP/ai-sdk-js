@@ -70,6 +70,8 @@ jobs:
           BRANCH="spec-update/$CHOICE/$REF"
           git fetch origin $BRANCH || true
           git checkout -B $BRANCH origin/$BRANCH || git checkout -b $BRANCH
+          git rebase main
+          git push --force
           echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
 
       - name: "Download specification file"
