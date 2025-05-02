@@ -191,6 +191,10 @@ jobs:
         run: |
           DIFF_URL="https://github.com/SAP/ai-sdk-js/compare/main...$BRANCH"
           echo "## Workflow Execution Summary" >> $GITHUB_STEP_SUMMARY
+
+          echo "**Choice:** $CHOICE" >> $GITHUB_STEP_SUMMARY
+          echo "**Ref:** $REF" >> $GITHUB_STEP_SUMMARY
+
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| Step | Status |" >> $GITHUB_STEP_SUMMARY
           echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
