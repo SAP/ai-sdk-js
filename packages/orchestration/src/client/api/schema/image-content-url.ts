@@ -5,12 +5,12 @@
  */
 
 /**
- * Representation of the 'SingleChatMessage' schema.
+ * Representation of the 'ImageContentUrl' schema.
  */
-export type SingleChatMessage = {
+export type ImageContentUrl = {
+  url: string;
   /**
-   * @example "user"
+   * Default: "auto".
    */
-  role: string;
-  content: string;
+  detail?: string;
 };
