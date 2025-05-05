@@ -42,6 +42,17 @@ describe('document grounding', () => {
     expect(result.data.module_results.grounding!.data).toBeDefined();
   });
 
+  it('should get the result based on grounding context from SharePoint data respository via orchestration API', async () => {
+    const result = await orchestrationGrounding(
+      "What is the Tom's favorite snack?",
+      'vector',
+      ['635e0628-91d6-4c20-8fb6-c24e08b6c31f']
+    );
+    expect(result.getContent()).toContain('Dubai Chocolate');
+    expect(result.data.module_results).toBeDefined();
+    expect(result.data.module_results.grounding!.data).toBeDefined();
+  });
+
   it('should get the pipeline status', async () => {
     const pipelineStatus = await getPipelineStatus(
       '7b17e2ab-4ecc-448e-837f-2c10c9359925'
