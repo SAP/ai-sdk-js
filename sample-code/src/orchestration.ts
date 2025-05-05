@@ -18,7 +18,8 @@ import type {
   OrchestrationResponse,
   StreamOptions,
   ErrorResponse,
-  TemplatingModuleConfig
+  TemplatingModuleConfig,
+  DataRepositoryType
 } from '@sap-ai-sdk/orchestration';
 
 const logger = createLogger({
@@ -382,9 +383,16 @@ export async function orchestrationFromJson(): Promise<
 
 /**
  * Ask about a custom knowledge embedded in document grounding.
+ * @param query - The query to ask.
+ * @param dataRepositoryType - The type of data repository to use.
+ * @param dataRepositories - The data repositories to use for grounding.
  * @returns The orchestration service response.
  */
-export async function orchestrationGroundingVector(): Promise<OrchestrationResponse> {
+export async function orchestrationGrounding(
+  query: string,
+  dataRepositoryType: DataRepositoryType = 'vector',
+  dataRepositories: string[] = ['*']
+): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient(
     {
       llm,
@@ -400,8 +408,15 @@ export async function orchestrationGroundingVector(): Promise<OrchestrationRespo
       grounding: buildDocumentGroundingConfig({
         input_params: ['groundingRequest'],
         output_param: 'groundingOutput',
-        filters: [{ data_repository_type: 'vector' }],
-        metadata_params: ['context']
+        filters: [
+          {
+            data_repository_type: dataRepositoryType,
+            data_repositories: dataRepositories
+          }
+        ],
+        ...(dataRepositoryType !== 'help.sap.com' && {
+          metadata_params: ['context']
+        })
       })
     },
     { resourceGroup: 'ai-sdk-js-e2e' }
@@ -409,42 +424,7 @@ export async function orchestrationGroundingVector(): Promise<OrchestrationRespo
 
   return orchestrationClient.chatCompletion({
     inputParams: {
-      groundingRequest:
-        'When was the last time SAP AI SDK JavaScript end to end test was executed? Return only the latest timestamp in milliseconds without any other text.'
-    }
-  });
-}
-
-/**
- * Ask about Generative AI Hub in SAP AI Core and ground the response.
- * @returns The orchestration service response.
- */
-export async function orchestrationGroundingHelpSapCom(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    llm,
-    templating: {
-      template: [
-        {
-          role: 'user',
-          content:
-            'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
-        }
-      ]
-    },
-    grounding: buildDocumentGroundingConfig({
-      input_params: ['groundingRequest'],
-      output_param: 'groundingOutput',
-      filters: [
-        {
-          data_repository_type: 'help.sap.com'
-        }
-      ]
-    })
-  });
-
-  return orchestrationClient.chatCompletion({
-    inputParams: {
-      groundingRequest: 'Give me a short introduction of SAP AI Core.'
+      groundingRequest: query
     }
   });
 }
