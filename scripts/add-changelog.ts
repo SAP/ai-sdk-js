@@ -17,7 +17,7 @@ async function getChangelogWithVersion(v?: string): Promise<string> {
   const month = date.toLocaleString('default', { month: 'long' });
   const year = date.getFullYear();
 
-  const headerWithVersion = `\n## ${v} [Core Modules] - ${month} ${day}, ${year}`;
+  const headerWithVersion = `\n## ${v} - ${month} ${day}, ${year}`;
 
   return [headerWithVersion, logs].join('\n');
 }
