@@ -23,7 +23,7 @@ import type {
   ChatMessages,
   ChatCompletionTool,
   AssistantChatMessage,
-  ToolChatMessage
+  ToolChatMessage,
   DataRepositoryType
 } from '@sap-ai-sdk/orchestration';
 
