@@ -12,7 +12,10 @@ import type {
   OrchestrationConfig,
   OutputFilteringConfig,
   GlobalStreamOptions,
-  TemplatingModuleConfig
+  TemplatingModuleConfig,
+  Template,
+  TemplatingChatMessage,
+  ChatMessages
 } from '../client/api/schema/index.js';
 
 const logger = createLogger({
@@ -132,8 +135,32 @@ export function constructCompletionPostRequest(
   stream?: boolean,
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
+
+  // templating cannot be string here.
+  let templatingConfig = config.templating as TemplatingModuleConfig;
+
+if (isTemplate(templatingConfig)) {
+
+  // Throw if the template is empty
+  if (!Array.isArray(templatingConfig.template) || templatingConfig.template.length === 0) {
+    throw new Error(
+      'Templating config was provided with an empty template. Either provide a valid template or omit the field entirely.'
+    );
+  }
+
+  // No change needed — templating is already valid
+} else if (!templatingConfig) {
+  // No templating provided — fallback to prompt-based template generation
+  const { template, updatedHistory } = resolveTemplateFromPrompt(prompt);
+  templatingConfig = { template };
+
+  if (prompt) {
+    prompt.messages = updatedHistory;
+  }
+}
+
   const moduleConfigurations: ModuleConfigs = {
-    templating_module_config: config.templating as TemplatingModuleConfig,
+    templating_module_config: !config.templating ? templatingConfig : config.templating as TemplatingModuleConfig,
     llm_module_config: config.llm,
     ...(config?.filtering &&
       Object.keys(config.filtering).length && {
@@ -149,7 +176,7 @@ export function constructCompletionPostRequest(
       })
   };
 
-  return {
+  const request: CompletionPostRequest = {
     orchestration_config: stream
       ? addStreamOptions(
           moduleConfigurations,
@@ -158,10 +185,31 @@ export function constructCompletionPostRequest(
       : { module_configurations: moduleConfigurations },
     ...(prompt?.inputParams && {
       input_params: prompt.inputParams
-    }),
-    ...(prompt?.messagesHistory && {
-      messages_history: prompt.messagesHistory
     })
+  };
+
+  if (prompt?.messages && prompt.messages.length > 0) {
+    request.messages_history = prompt.messages; // Assuming messages_history still receives full chat context
+  } else if (prompt?.messagesHistory && prompt.messagesHistory.length > 0) {
+    request.messages_history = prompt.messagesHistory;
+  }
+  return request;
+}
+
+function resolveTemplateFromPrompt(prompt?: Prompt): {
+  template: TemplatingChatMessage;
+  updatedHistory?: ChatMessages;
+} {
+  const messages = prompt?.messages ?? prompt?.messagesHistory;
+
+  if (!messages || !messages.length) {
+    throw new Error('No messages or messagesHistory available to derive template.');
+  }
+
+  const latestMessage = messages.pop()!;
+  return {
+    template: [latestMessage],
+    updatedHistory: messages
   };
 }
 
@@ -178,4 +226,14 @@ function mergeStreamOptions(
       }
     })
   };
+}
+
+function isTemplate(
+  templating: TemplatingModuleConfig
+): templating is Template {
+  return (
+    templating &&
+    typeof templating === 'object' &&
+    'template' in templating
+  );
 }

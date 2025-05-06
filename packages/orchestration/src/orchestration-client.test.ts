@@ -79,9 +79,6 @@ describe('orchestration service client', () => {
       llm: {
         model_name: 'gpt-4o',
         model_params: { max_tokens: 50, temperature: 0.1 }
-      },
-      templating: {
-        template: [{ role: 'user', content: 'Hello!' }]
       }
     };
 
@@ -92,7 +89,7 @@ describe('orchestration service client', () => {
 
     mockInference(
       {
-        data: constructCompletionPostRequest(config)
+        data: constructCompletionPostRequest(config, { messages: [{ role: 'user', content: 'Hello' }]})
       },
       {
         data: mockResponse,
@@ -102,7 +99,7 @@ describe('orchestration service client', () => {
         url: 'inference/deployments/1234/completion'
       }
     );
-    const response = await new OrchestrationClient(config).chatCompletion();
+    const response = await new OrchestrationClient(config).chatCompletion({ messages: [{ role: 'user', content: 'Hello' }] });
 
     expect(response).toBeInstanceOf(OrchestrationResponse);
     expect(response.data).toEqual(mockResponse);
