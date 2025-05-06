@@ -60,16 +60,12 @@ export type LlmModelParams = {
   n?: number;
 } & Record<string, any>;
 
-// export type TemplatingModuleConfigNew = Omit<TemplatingModuleConfig, 'template'> & {
-//   template?: TemplatingChatMessage;
-// }
 
 export type Template = Omit<OriginalTemplate, 'template'> & {
   template?: TemplatingChatMessage;  // Make `template` optional
 };
 
-// TemplatingModuleConfig should reflect this change
-export type TemplatingModuleConfig = Template | TemplateRef;  // No change needed
+export type TemplatingModuleConfig = Template | TemplateRef;
 
 /**
  * Orchestration module configuration.
