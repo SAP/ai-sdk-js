@@ -21,6 +21,7 @@ import {
   chatCompletionStreamWithJsonModuleConfig as orchestrationChatCompletionStreamWithJsonModuleConfig,
   orchestrationMaskGroundingInput,
   orchestrationPromptRegistry,
+  orchestrationMessageHistory,
   orchestrationResponseFormat
 } from './orchestration.js';
 import {
@@ -246,6 +247,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       simple: orchestrationChatCompletion,
       template: orchestrationTemplating,
       templateRef: orchestrationPromptRegistry,
+      messageHistory: orchestrationMessageHistory,
       inputFiltering: orchestrationInputFiltering,
       outputFiltering: orchestrationOutputFiltering,
       requestConfig: orchestrationRequestConfig,
