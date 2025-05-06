@@ -18,7 +18,10 @@ export type AzureOpenAiEmbeddingModel = LiteralUnion<
  * GCP Vertex AI models for chat completion.
  */
 export type GcpVertexAiChatModel = LiteralUnion<
-  'gemini-1.0-pro' | 'gemini-1.5-pro' | 'gemini-1.5-flash'
+  | 'gemini-1.5-pro'
+  | 'gemini-1.5-flash'
+  | 'gemini-2.0-flash'
+  | 'gemini-2.0-flash-lite'
 >;
 
 /**
@@ -29,6 +32,7 @@ export type AwsBedrockChatModel = LiteralUnion<
   | 'anthropic--claude-3-opus'
   | 'anthropic--claude-3-sonnet'
   | 'anthropic--claude-3.5-sonnet'
+  | 'anthropic--claude-3.7-sonnet'
   | 'amazon--titan-text-express'
   | 'amazon--titan-text-lite'
   | 'amazon--nova-pro'
@@ -45,4 +49,5 @@ export type AiCoreOpenSourceChatModel = LiteralUnion<
   | 'meta--llama3.1-70b-instruct'
   | 'ibm--granite-13b-chat'
   | 'alephalpha-pharia-1-7b-control'
+  | 'deepseek-ai--deepseek-r1'
 >;

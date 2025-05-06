@@ -16,10 +16,9 @@ import {
   orchestrationRequestConfig,
   chatCompletionStream as orchestrationChatCompletionStream,
   orchestrationFromJson,
-  orchestrationGroundingVector,
+  orchestrationGrounding,
   orchestrationChatCompletionImage,
   chatCompletionStreamWithJsonModuleConfig as orchestrationChatCompletionStreamWithJsonModuleConfig,
-  orchestrationGroundingHelpSapCom,
   orchestrationMaskGroundingInput,
   orchestrationPromptRegistry,
   orchestrationMessageHistory,
@@ -486,7 +485,9 @@ app.get(
       res.write(`Document created with timestamp:\t${timestamp}\n`);
 
       // Send an orchestration chat completion request with grounding module configured.
-      const groundingResult = await orchestrationGroundingVector();
+      const groundingResult = await orchestrationGrounding(
+        'When was the last time SAP AI SDK JavaScript end to end test was executed? Return only the latest timestamp in milliseconds without any other text.'
+      );
       res.write(
         `Orchestration responded with timestamp:\t${groundingResult.getContent()}\n`
       );
@@ -525,7 +526,9 @@ app.get('/document-grounding/retrieve-documents', async (req, res) => {
     res.write(`Document created with timestamp:\t${timestamp}\n`);
 
     // Retrieve documents directly from document grounding service.
-    const retrievalResult = await retrieveDocuments();
+    const retrievalResult = await retrieveDocuments(
+      'When was the last time SAP AI SDK JavaScript end to end test was executed?'
+    );
 
     console.log(JSON.stringify(retrievalResult));
 
@@ -564,7 +567,10 @@ app.get(
   '/document-grounding/orchestration-grounding-help-sap-com',
   async (req, res) => {
     try {
-      const groundingResult = await orchestrationGroundingHelpSapCom();
+      const groundingResult = await orchestrationGrounding(
+        'Give me a short introduction of SAP AI Core.',
+        'help.sap.com'
+      );
       res
         .header('Content-Type', 'text/plain')
         .send(groundingResult.getContent());

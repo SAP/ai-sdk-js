@@ -16,8 +16,7 @@ export {
   orchestrationCompletionMasking,
   orchestrationMaskGroundingInput,
   orchestrationFromJson,
-  orchestrationGroundingVector,
-  orchestrationGroundingHelpSapCom,
+  orchestrationGrounding,
   orchestrationChatCompletionImage,
   orchestrationResponseFormat,
   chatCompletionStreamWithJsonModuleConfig,
@@ -51,7 +50,8 @@ export {
 export {
   createCollection,
   createDocumentsWithTimestamp,
-  deleteCollection
+  deleteCollection,
+  getPipelineStatus
 } from './document-grounding.js';
 
 export {
