@@ -108,6 +108,94 @@ describe('orchestration service client', () => {
     expect(response.getTokenUsage().completion_tokens).toEqual(9);
   });
 
+  it('calls chatCompletion with minimum configuration - 2', async () => {
+
+    const config: OrchestrationModuleConfig = {
+      llm: {
+        model_name: 'gpt-4o',
+        model_params: { max_tokens: 500 }
+      },
+      templating: { 
+        response_format: {
+          type: 'json_schema',
+          json_schema: {
+            name: 'poem_structure',
+            description: 'Structured format for the generated poem',
+            strict: true,
+            schema: {
+              type: 'object',
+              additionalProperties: false,
+              required: ['title', 'verses', 'theme'],
+              properties: {
+                title: {
+                  type: 'string',
+                  description: 'The title of the poem'
+                },
+                theme: {
+                  type: 'string',
+                  description: 'The central theme or subject of the poem'
+                },
+                verses: {
+                  type: 'array',
+                  description: 'A list of verses making up the poem',
+                  items: {
+                    type: 'string',
+                    description: 'A single verse of the poem'
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const mockResponse = await parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'orchestration-chat-completion-yaml-template-response.json'
+    );
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, {
+          messages: [
+            {
+              role: 'system',
+              content:
+                'You are a world-famous poet who can write virtuosic and brilliant poetry on any topic.'
+            },
+            {
+              role: 'user',
+              content:
+                'Write a 1 verse poem about the following topic: {{?topic}}'
+            }
+          ],
+          inputParams: { topic: 'Generative AI Hub' }
+        })
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+    const response = await new OrchestrationClient(config).chatCompletion({ messages: [
+      {
+        role: 'system',
+        content:
+          'You are a world-famous poet who can write virtuosic and brilliant poetry on any topic.'
+      },
+      {
+        role: 'user',
+        content:
+          'Write a 1 verse poem about the following topic: {{?topic}}'
+      }
+    ],
+    inputParams: { topic: 'Generative AI Hub' } });
+    expect(response.data).toEqual(mockResponse);
+  }, 60000);
+
   it('should throw an error when invalid JSON is provided', () => {
     const invalidJsonConfig = '{ "module_configurations": {}, ';
 

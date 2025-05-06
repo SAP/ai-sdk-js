@@ -3,6 +3,7 @@ export * from './client/api/schema/index.js';
 export type {
   OrchestrationModuleConfig,
   LlmModuleConfig,
+  TemplatingModuleConfig,
   Prompt,
   RequestOptions,
   StreamOptions,

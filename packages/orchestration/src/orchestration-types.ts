@@ -13,8 +13,9 @@ import type {
   LlamaGuard38B,
   MaskingModuleConfig,
   LlmModuleConfig as OriginalLlmModuleConfig,
-  TemplatingChatMessage,
-  TemplatingModuleConfig
+  Template as OriginalTemplate,
+  TemplateRef,
+  TemplatingChatMessage
 } from './client/api/schema/index.js';
 
 /**
@@ -59,9 +60,17 @@ export type LlmModelParams = {
   n?: number;
 } & Record<string, any>;
 
-export type TemplatingModuleConfigNew = TemplatingModuleConfig & {
-  template?: TemplatingChatMessage;
-}
+// export type TemplatingModuleConfigNew = Omit<TemplatingModuleConfig, 'template'> & {
+//   template?: TemplatingChatMessage;
+// }
+
+export type Template = Omit<OriginalTemplate, 'template'> & {
+  template?: TemplatingChatMessage;  // Make `template` optional
+};
+
+// TemplatingModuleConfig should reflect this change
+export type TemplatingModuleConfig = Template | TemplateRef;  // No change needed
+
 /**
  * Orchestration module configuration.
  */
@@ -80,7 +89,7 @@ export interface OrchestrationModuleConfig {
    *  ]
    * }
    */
-  templating?: TemplatingModuleConfigNew | string;
+  templating?: TemplatingModuleConfig | string;
   /**
    * LLM module configuration.
    */
@@ -243,3 +252,9 @@ export type AzureFilterThreshold = keyof typeof supportedAzureFilterThresholds;
  * The filter categories supported for Llama guard filter.
  */
 export type LlamaGuardCategory = keyof LlamaGuard38B;
+
+const t: TemplatingModuleConfig = {
+  defaults: {
+    inputContext: 'The default text that will be used in the template if inputContext is not set'
+  }
+}
