@@ -4,8 +4,7 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import type { TextContent } from './text-content.js';
-import type { ImageContent } from './image-content.js';
 /**
- * Representation of the 'MultiChatMessageContent' schema.
+ * Representation of the 'ChatMessageContent' schema.
  */
-export type MultiChatMessageContent = TextContent | ImageContent;
+export type ChatMessageContent = string | TextContent[];

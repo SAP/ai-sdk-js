@@ -1,5 +1,7 @@
 openapi: 3.0.0
 
+x-sap-shortText: 'Orchestration provides common capabilities for business AI scenarios, such as content filtering, data masking, and grounding'
+
 info:
   title: Internal Orchestration Service API
   description: Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
@@ -19,6 +21,7 @@ paths:
     post:
       tags:
         - OrchestrationCompletion
+      summary: orchestrated completion inference
       description: Run an orchestrated completion inference request
       operationId: orchestration.v1.endpoints.create
       requestBody:
@@ -61,11 +64,6 @@ components:
             - $ref: '#/components/schemas/ChatMessages'
           description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
 
-    ChatMessage:
-      oneOf:
-        - $ref: '#/components/schemas/SingleChatMessage'
-        - $ref: '#/components/schemas/MultiChatMessage'
-
     ChatMessages:
       type: array
       items:
@@ -77,38 +75,148 @@ components:
       items:
         $ref: '#/components/schemas/ChatMessage'
 
-    SingleChatMessage:
+    ChatMessage:
       type: object
-      required:
-        - role
-        - content
+      oneOf:
+        - $ref: '#/components/schemas/SystemChatMessage'
+        - $ref: '#/components/schemas/UserChatMessage'
+        - $ref: '#/components/schemas/AssistantChatMessage'
+        - $ref: '#/components/schemas/ToolChatMessage'
+        - $ref: '#/components/schemas/DeveloperChatMessage'
+    SystemChatMessage:
+      type: object
       additionalProperties: false
       properties:
         role:
           type: string
-          example: user
+          enum:
+            - system
+        content:
+          $ref: '#/components/schemas/ChatMessageContent'
+      required:
+        - role
+        - content
+    ChatMessageContent:
+      oneOf:
+        - type: string
+        - type: array
+          items:
+            $ref: '#/components/schemas/TextContent'
+          minItems: 1
+    AssistantChatMessage:
+      type: object
+      additionalProperties: false
+      properties:
+        role:
+          type: string
+          enum:
+            - assistant
+        content:
+          $ref: '#/components/schemas/ChatMessageContent'
+        refusal:
+          type: string
+        tool_calls:
+          $ref: '#/components/schemas/MessageToolCalls'
+      required:
+        - role
+    UserChatMessage:
+      type: object
+      additionalProperties: false
+      properties:
+        content:
+          $ref: '#/components/schemas/UserChatMessageContent'
+        role:
+          type: string
+          enum:
+            - user
+      required:
+        - content
+        - role
+    UserChatMessageContent:
+      oneOf:
+        - type: string
+        - type: array
+          items:
+            $ref: '#/components/schemas/UserChatMessageContentItem'
+          minItems: 1
+    UserChatMessageContentItem:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          enum:
+            - text
+            - image_url
+        text:
+          type: string
+        image_url:
+          $ref: '#/components/schemas/ImageContentUrl'
+      required:
+        - type
+    ImageContentUrl:
+      type: object
+      required:
+        - url
+      additionalProperties: false
+      properties:
+        url:
+          type: string
+        detail: # keep? openai specific
+          type: string
+          default: 'auto'
+    ToolChatMessage:
+      type: object
+      additionalProperties: false
+      properties:
+        role:
+          type: string
+          enum:
+            - tool
+          example: tool
+        tool_call_id:
+          type: string
+        content:
+          $ref: '#/components/schemas/ChatMessageContent'
+      required:
+        - role
+        - content
+        - tool_call_id
+    DeveloperChatMessage:
+      type: object
+      additionalProperties: false
+      properties:
+        role:
+          type: string
+          enum:
+            - developer
+        content:
+          $ref: '#/components/schemas/ChatMessageContent'
+      required:
+        - role
+        - content
+    ResponseChatMessage:
+      type: object
+      additionalProperties: false
+      properties:
+        role:
+          type: string
+          enum:
+            - assistant
         content:
           type: string
-
-    ResponseChatMessage:
-      allOf:
-        - $ref: '#/components/schemas/SingleChatMessage'
-        - type: object
-          additionalProperties: false
-          properties:
-            refusal:
-              type: string
-              example: "I'm sorry, I can't answer that question."
-            tool_calls:
-              $ref: '#/components/schemas/ResponseMessageToolCalls'
+        refusal:
+          type: string
+        tool_calls:
+          $ref: '#/components/schemas/MessageToolCalls'
     # below tool message definitions are copied from openai spec: https://github.com/openai/openai-openapi/blob/e0cb2d721753e13e69e918465795d6e9f87ab15a/openapi.yaml#L11007
     # only renaming them to differentiate them from the openai python classes
-    ResponseMessageToolCalls:
+    MessageToolCalls:
       type: array
       description: The tool calls generated by the model, such as function calls.
       items:
-        $ref: '#/components/schemas/ResponseMessageToolCall'
-    ResponseMessageToolCall:
+        $ref: '#/components/schemas/MessageToolCall'
+    MessageToolCall:
       type: object
       properties:
         id:
@@ -141,27 +249,6 @@ components:
         - id
         - type
         - function
-
-    MultiChatMessage:
-      type: object
-      required:
-        - role
-        - content
-      additionalProperties: false
-      properties:
-        role:
-          type: string
-          example: user
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/MultiChatMessageContent'
-
-    MultiChatMessageContent:
-      oneOf:
-        - $ref: '#/components/schemas/TextContent'
-        - $ref: '#/components/schemas/ImageContent'
-
     TextContent:
       type: object
       required:
@@ -174,28 +261,6 @@ components:
           enum: ['text']
         text:
           type: string
-
-    ImageContent:
-      type: object
-      required:
-        - type
-        - image_url
-      additionalProperties: false
-      properties:
-        type:
-          type: string
-          enum: ['image_url']
-        image_url:
-          type: object
-          required:
-            - url
-          additionalProperties: false
-          properties:
-            url:
-              type: string
-            detail: # keep? openai specific
-              type: string
-              default: 'auto'
 
     ChatDelta:
       type: object
@@ -307,6 +372,10 @@ components:
           $ref: '#/components/schemas/MaskingModuleConfig'
         grounding_module_config:
           $ref: '#/components/schemas/GroundingModuleConfig'
+        input_translation_module_config:
+          $ref: '#/components/schemas/InputTranslationModuleConfig'
+        output_translation_module_config:
+          $ref: '#/components/schemas/OutputTranslationModuleConfig'
 
     ModuleResults:
       description: Results of each module.
@@ -317,6 +386,8 @@ components:
           $ref: '#/components/schemas/GenericModuleResult'
         templating:
           $ref: '#/components/schemas/TemplatingChatMessage'
+        input_translation:
+          $ref: '#/components/schemas/GenericModuleResult'
         input_masking:
           $ref: '#/components/schemas/GenericModuleResult'
         input_filtering:
@@ -331,6 +402,8 @@ components:
             oneOf:
               - $ref: '#/components/schemas/LLMChoice'
               - $ref: '#/components/schemas/LLMChoiceStreaming'
+        output_translation:
+          $ref: '#/components/schemas/GenericModuleResult'
 
     GlobalStreamOptions:
       description: Options for streaming. Will be ignored if stream is false.
@@ -343,6 +416,13 @@ components:
           default: 100
           minimum: 1
           maximum: 10000 # currently determined by max_size of ACS text records
+        delimiters:
+          type: array
+          minItems: 1
+          description: List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.
+          items:
+            type: string
+          example: ["\n", '.', '?', '!']
 
     # --- LLM MODULE ---
     LLMModuleConfig:
@@ -364,6 +444,8 @@ components:
             frequency_penalty: 0
             presence_penalty: 0
             n: 2
+            stream_options:
+              include_usage: true
           additionalProperties: true
         model_version:
           description: Version of the model to use
@@ -1115,6 +1197,7 @@ components:
         - vector
         - help.sap.com
       title: DataRepositoryType
+
     KeyValueListPair:
       additionalProperties: false
       properties:
@@ -1164,6 +1247,44 @@ components:
         - ignoreIfKeyAbsent
       title: SearchSelectOptionEnum
 
+    # --- Translation Module ---
+    InputTranslationModuleConfig:
+      oneOf:
+        - $ref: '#/components/schemas/SAPDocumentTranslation'
+
+    OutputTranslationModuleConfig:
+      oneOf:
+        - $ref: '#/components/schemas/SAPDocumentTranslation'
+
+    SAPDocumentTranslation:
+      type: object
+      required:
+        - type
+        - config
+      additionalProperties: false
+      properties:
+        type:
+          description: Type of document translation provider
+          type: string
+          enum:
+            - sap_document_translation # this would be different for other translation provider
+          example: sap_document_translation
+        config: # `config` key, parameters specific to SAP Translation Hub that are sent to the service, might differ for translation provider
+          description: Configuration for `sap_document_translation` translation provider.
+          type: object
+          required:
+            - target_language
+          additionalProperties: false
+          properties:
+            source_language:
+              type: string
+              description: Language of the text to be translated.
+              example: 'de-DE'
+            target_language:
+              type: string
+              description: Language to which the text should be translated.
+              example: 'en-US'
+
     ErrorResponse:
       type: object
       required:
@@ -1201,3 +1322,11 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+
+  # https://pages.github.tools.sap/CPA/api-metadata-validator/rules/oas/sap-oas3-security/
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: To use this API, you must have an AI Core access token.

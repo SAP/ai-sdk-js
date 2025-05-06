@@ -5,9 +5,9 @@
  */
 
 /**
- * Representation of the 'ResponseMessageToolCall' schema.
+ * Representation of the 'MessageToolCall' schema.
  */
-export type ResponseMessageToolCall = {
+export type MessageToolCall = {
   /**
    * The ID of the tool call.
    */
