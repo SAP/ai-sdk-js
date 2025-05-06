@@ -67,11 +67,15 @@ jobs:
         id: branch
         # Checkout branch if it exists, otherwise create it
         run: |
+          git config --global user.email "cloudsdk@sap.com"
+          git config --global user.name "SAP Cloud SDK Bot"
+          git fetch --unshallow origin main
+          
           BRANCH="spec-update/$CHOICE/$REF"
           git fetch origin $BRANCH || true
           git checkout -B $BRANCH origin/$BRANCH || git checkout -b $BRANCH
           git rebase main
-          git push --set-upstream origin $BRANCH
+          git push --force --set-upstream origin $BRANCH
           echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
 
       - name: "Download specification file"
@@ -145,8 +149,6 @@ jobs:
         id: push
         if: steps.spec_diff.outputs.spec_diff == 'true'
         run: |
-          git config --global user.email "cloudsdk@sap.com"
-          git config --global user.name "SAP Cloud SDK Bot"
           git add --all
           git status
           git commit -m "Update $CHOICE based on $REF"

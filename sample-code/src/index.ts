@@ -16,13 +16,13 @@ export {
   orchestrationCompletionMasking,
   orchestrationMaskGroundingInput,
   orchestrationFromJson,
-  orchestrationGroundingVector,
-  orchestrationGroundingHelpSapCom,
+  orchestrationGrounding,
   orchestrationChatCompletionImage,
   orchestrationResponseFormat,
   chatCompletionStreamWithJsonModuleConfig,
   chatCompletionStream,
-  orchestrationToolCalling
+  orchestrationToolCalling,
+  orchestrationMessageHistoryWithToolCalling
 } from './orchestration.js';
 export {
   invoke,
@@ -50,7 +50,8 @@ export {
 export {
   createCollection,
   createDocumentsWithTimestamp,
-  deleteCollection
+  deleteCollection,
+  getPipelineStatus
 } from './document-grounding.js';
 
 export {

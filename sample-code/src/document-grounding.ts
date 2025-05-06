@@ -1,6 +1,12 @@
-import { VectorApi, RetrievalApi } from '@sap-ai-sdk/document-grounding';
+import {
+  VectorApi,
+  RetrievalApi,
+  PipelinesApi
+} from '@sap-ai-sdk/document-grounding';
 import type {
+  DataRepositoryType,
   DocumentsListResponse,
+  PipelineStatus,
   RetievalSearchResults
 } from '@sap-ai-sdk/document-grounding';
 
@@ -76,24 +82,27 @@ export async function createDocumentsWithTimestamp(
 
 /**
  * Retrieve documents across data repositories.
+ * @param query - Search query.
+ * @param dataRepositoryType - Type of data repository.
+ * @param dataRepositories - List of data repositories to search in.
  * @returns Search results.
  */
-export async function retrieveDocuments(): Promise<RetievalSearchResults> {
+export async function retrieveDocuments(
+  query: string,
+  dataRepositoryType: DataRepositoryType = 'vector',
+  dataRepositories: string[] = ['*']
+): Promise<RetievalSearchResults> {
   return RetrievalApi.search(
     {
-      query:
-        'When was the last time SAP AI SDK JavaScript end to end test was executed?',
+      query,
       filters: [
         {
           id: 'my-filter',
           searchConfiguration: {
             maxChunkCount: 10
           },
-          dataRepositories: ['*'],
-          dataRepositoryType: 'vector',
-          dataRepositoryMetadata: [],
-          documentMetadata: [],
-          chunkMetadata: []
+          dataRepositories,
+          dataRepositoryType
         }
       ]
     },
@@ -101,4 +110,17 @@ export async function retrieveDocuments(): Promise<RetievalSearchResults> {
       'AI-Resource-Group': 'ai-sdk-js-e2e'
     }
   ).execute();
+}
+
+/**
+ * Get pipeline status.
+ * @param pipelineId - Pipeline ID.
+ * @returns Pipeline status.
+ */
+export async function getPipelineStatus(
+  pipelineId: string
+): Promise<PipelineStatus> {
+  return PipelinesApi.getPipelineStatus(pipelineId, {
+    'AI-Resource-Group': 'ai-sdk-js-e2e'
+  }).execute();
 }

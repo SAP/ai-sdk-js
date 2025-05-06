@@ -14,8 +14,11 @@ import type {
   GroundingModuleConfig,
   LlmModelParams,
   AzureContentSafetyFilterConfig,
+  ChatMessages,
   LlamaGuard38BFilterConfig,
-  DpiConfig
+  DpiConfig,
+  AssistantChatMessage,
+  MessageToolCalls
 } from '@sap-ai-sdk/orchestration';
 
 /**
@@ -82,6 +85,58 @@ expectType<TokenUsage>(
       }
     }).chatCompletion()
   ).getTokenUsage()
+);
+
+expectType<ChatMessages>(
+  (
+    await new OrchestrationClient({
+      templating: {
+        template: [{ role: 'user', content: 'Hello!' }]
+      },
+      llm: {
+        model_name: 'gpt-4o-mini'
+      }
+    }).chatCompletion()
+  ).getAllMessages()
+);
+
+expectType<MessageToolCalls | undefined>(
+  (
+    await new OrchestrationClient({
+      templating: {
+        template: [{ role: 'user', content: 'Hello!' }]
+      },
+      llm: {
+        model_name: 'gpt-4o-mini'
+      }
+    }).chatCompletion()
+  ).getToolCalls()
+);
+
+expectType<string | undefined>(
+  (
+    await new OrchestrationClient({
+      templating: {
+        template: [{ role: 'user', content: 'Hello!' }]
+      },
+      llm: {
+        model_name: 'gpt-4o-mini'
+      }
+    }).chatCompletion()
+  ).getRefusal()
+);
+
+expectType<AssistantChatMessage | undefined>(
+  (
+    await new OrchestrationClient({
+      templating: {
+        template: [{ role: 'user', content: 'Hello!' }]
+      },
+      llm: {
+        model_name: 'gpt-4o-mini'
+      }
+    }).chatCompletion()
+  ).getAssistantMessage()
 );
 
 expectType<Promise<OrchestrationResponse>>(
@@ -220,6 +275,34 @@ expectError<any>(
 );
 
 /**
+ * Template role should be predefined string literals.
+ */
+expectError<any>(
+  new OrchestrationClient({
+    templating: {
+      template: [{ role: 'not-exist', content: 'Hello!' }]
+    },
+    llm: {
+      model_name: 'gpt-4o'
+    }
+  })
+);
+
+/**
+ * Tool message should have tool_call_id.
+ */
+expectError<any>(
+  new OrchestrationClient({
+    templating: {
+      template: [{ role: 'tool', content: 'Hello!' }]
+    },
+    llm: {
+      model_name: 'gpt-4o'
+    }
+  })
+);
+
+/**
  * Model parameters should accept known typed parameters and arbitrary parameters.
  */
 expectAssignable<LlmModelParams>({
@@ -252,7 +335,6 @@ expect<ChatModel>('custom-model');
 /**
  * Filtering Util for Azure content safety.
  */
-
 expectType<AzureContentSafetyFilterConfig>(
   buildAzureContentSafetyFilter({
     Hate: 'ALLOW_ALL',
@@ -272,7 +354,6 @@ expectError<AzureContentSafetyFilterConfig>(
 /**
  * Filtering Util for Llama guard.
  */
-
 expectType<LlamaGuard38BFilterConfig>(
   buildLlamaGuardFilter('code_interpreter_abuse', 'defamation')
 );

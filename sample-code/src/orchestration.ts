@@ -17,8 +17,14 @@ import type {
   OrchestrationStreamResponse,
   OrchestrationResponse,
   StreamOptions,
+  TemplatingChatMessage,
   ErrorResponse,
-  TemplatingModuleConfig
+  TemplatingModuleConfig,
+  ChatMessages,
+  ChatCompletionTool,
+  AssistantChatMessage,
+  ToolChatMessage,
+  DataRepositoryType
 } from '@sap-ai-sdk/orchestration';
 
 const logger = createLogger({
@@ -143,6 +149,31 @@ export async function orchestrationTemplating(): Promise<OrchestrationResponse> 
     // give the actual value for the variable "country"
     inputParams: { country: 'France' }
   });
+}
+
+/**
+ * Chat request to OpenAI through the Orchestration service using message history.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationMessageHistory(): Promise<OrchestrationResponse> {
+  const orchestrationClient = (messages: TemplatingChatMessage) =>
+    new OrchestrationClient({
+      llm,
+      templating: {
+        template: messages
+      }
+    });
+
+  const firstResponse = await orchestrationClient([
+    { role: 'user', content: 'What is the capital of France?' }
+  ]).chatCompletion();
+
+  // User can then ask a follow-up question
+  const nextResponse = await orchestrationClient([
+    { role: 'user', content: 'What is the typical food there?' }
+  ]).chatCompletion({ messagesHistory: firstResponse.getAllMessages() });
+
+  return nextResponse;
 }
 
 /**
@@ -382,9 +413,16 @@ export async function orchestrationFromJson(): Promise<
 
 /**
  * Ask about a custom knowledge embedded in document grounding.
+ * @param query - The query to ask.
+ * @param dataRepositoryType - The type of data repository to use.
+ * @param dataRepositories - The data repositories to use for grounding.
  * @returns The orchestration service response.
  */
-export async function orchestrationGroundingVector(): Promise<OrchestrationResponse> {
+export async function orchestrationGrounding(
+  query: string,
+  dataRepositoryType: DataRepositoryType = 'vector',
+  dataRepositories: string[] = ['*']
+): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient(
     {
       llm,
@@ -400,8 +438,15 @@ export async function orchestrationGroundingVector(): Promise<OrchestrationRespo
       grounding: buildDocumentGroundingConfig({
         input_params: ['groundingRequest'],
         output_param: 'groundingOutput',
-        filters: [{ data_repository_type: 'vector' }],
-        metadata_params: ['context']
+        filters: [
+          {
+            data_repository_type: dataRepositoryType,
+            data_repositories: dataRepositories
+          }
+        ],
+        ...(dataRepositoryType !== 'help.sap.com' && {
+          metadata_params: ['context']
+        })
       })
     },
     { resourceGroup: 'ai-sdk-js-e2e' }
@@ -409,42 +454,7 @@ export async function orchestrationGroundingVector(): Promise<OrchestrationRespo
 
   return orchestrationClient.chatCompletion({
     inputParams: {
-      groundingRequest:
-        'When was the last time SAP AI SDK JavaScript end to end test was executed? Return only the latest timestamp in milliseconds without any other text.'
-    }
-  });
-}
-
-/**
- * Ask about Generative AI Hub in SAP AI Core and ground the response.
- * @returns The orchestration service response.
- */
-export async function orchestrationGroundingHelpSapCom(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    llm,
-    templating: {
-      template: [
-        {
-          role: 'user',
-          content:
-            'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
-        }
-      ]
-    },
-    grounding: buildDocumentGroundingConfig({
-      input_params: ['groundingRequest'],
-      output_param: 'groundingOutput',
-      filters: [
-        {
-          data_repository_type: 'help.sap.com'
-        }
-      ]
-    })
-  });
-
-  return orchestrationClient.chatCompletion({
-    inputParams: {
-      groundingRequest: 'Give me a short introduction of SAP AI Core.'
+      groundingRequest: query
     }
   });
 }
@@ -550,18 +560,19 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
   return JSON.parse(response.getContent()!) as TranslationResponse;
 }
 
+// Shared utils
+const addNumbersSchema = z
+  .object({
+    a: z.number().describe('The first number to be added.'),
+    b: z.number().describe('The second number to be added.')
+  })
+  .strict();
+
 /**
  * Ask the Llm to perform math operation of adding 2 numbers .
  * @returns The orchestration service response containing `tool_calls`.
  */
 export async function orchestrationToolCalling(): Promise<OrchestrationResponse> {
-  const addNumbersSchema = z
-    .object({
-      a: z.number().describe('The first number to be added.'),
-      b: z.number().describe('The second number to be added.')
-    })
-    .strict();
-
   const orchestrationClient = new OrchestrationClient({
     llm,
     templating: {
@@ -585,4 +596,70 @@ export async function orchestrationToolCalling(): Promise<OrchestrationResponse>
     }
   });
   return orchestrationClient.chatCompletion();
+}
+
+/**
+ * Send a chat completion request to the Orchestration service using tools and pass the message history in a subsequent chat completion request.
+ * @returns The orchestration service response containing `tool_calls`.
+ */
+export async function orchestrationMessageHistoryWithToolCalling(): Promise<OrchestrationResponse> {
+  // The tool that performs the calculation
+  const addTwoNumbers = (first: number, second: number): string =>
+    `The sum of ${first} and ${second} is ${first + second}.`;
+
+  // Routing tool calls to their corresponsing implementation
+  const callFunction = (name: string, args: any): string => {
+    switch (name) {
+      case 'add':
+        return addTwoNumbers(args.a, args.b);
+      default:
+        throw new Error(`Function: ${name} not found!`);
+    }
+  };
+
+  // Tool definition
+  const addNumbersTool: ChatCompletionTool = {
+    type: 'function',
+    function: {
+      name: 'add',
+      description: 'Add two numbers',
+      parameters: zodToJsonSchema(addNumbersSchema)
+    }
+  };
+
+  const orchestrationClient = (
+    messages: TemplatingChatMessage,
+    tools: ChatCompletionTool
+  ) =>
+    new OrchestrationClient({
+      llm,
+      templating: {
+        template: messages,
+        tools: [tools]
+      }
+    });
+
+  const response: OrchestrationResponse = await orchestrationToolCalling();
+  const allMessages: ChatMessages = response.getAllMessages();
+  const initialResponse: AssistantChatMessage | undefined =
+    response.getAssistantMessage();
+
+  // Use the initial response to execute the tool and get the response.
+  if (initialResponse && initialResponse.tool_calls) {
+    const toolCall = initialResponse.tool_calls[0];
+    const args = JSON.parse(toolCall.function.arguments);
+    const message: ToolChatMessage = {
+      role: 'tool',
+      content: callFunction(toolCall.function.name, args),
+      tool_call_id: toolCall.id
+    };
+    allMessages.push(message);
+  }
+
+  return orchestrationClient(
+    [{ role: 'user', content: 'What is the corresponding roman numeral?' }],
+    addNumbersTool
+  ).chatCompletion({
+    messagesHistory: allMessages
+  });
 }
