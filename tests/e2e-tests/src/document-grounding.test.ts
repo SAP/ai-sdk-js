@@ -42,6 +42,17 @@ describe('document grounding', () => {
     expect(result.data.module_results.grounding!.data).toBeDefined();
   });
 
+  it('should get the result based on grounding context from S3 data respository via orchestration API', async () => {
+    const result = await orchestrationGrounding(
+      "What is the Tom's favorite snack?",
+      'vector',
+      ['8907272b-682e-4574-b8b8-9b75c393f362']
+    );
+    expect(result.getContent()).toContain('Dubai Chocolate');
+    expect(result.data.module_results).toBeDefined();
+    expect(result.data.module_results.grounding!.data).toBeDefined();
+  });
+
   it('should get the pipeline status', async () => {
     const pipelineStatus = await getPipelineStatus(
       '7b17e2ab-4ecc-448e-837f-2c10c9359925'
