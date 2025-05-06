@@ -3,4 +3,4 @@
 '@sap-ai-sdk/orchestration': patch
 ---
 
-[New Functionality] Add support for S3-based document grounding.
+[New Functionality] Support document grounding with SharePoint and S3 data repositories.
