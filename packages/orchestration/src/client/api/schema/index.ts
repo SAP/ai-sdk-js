@@ -4,17 +4,22 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 export * from './completion-post-request.js';
-export * from './chat-message.js';
 export * from './chat-messages.js';
 export * from './templating-chat-message.js';
-export * from './single-chat-message.js';
+export * from './chat-message.js';
+export * from './system-chat-message.js';
+export * from './chat-message-content.js';
+export * from './assistant-chat-message.js';
+export * from './user-chat-message.js';
+export * from './user-chat-message-content.js';
+export * from './user-chat-message-content-item.js';
+export * from './image-content-url.js';
+export * from './tool-chat-message.js';
+export * from './developer-chat-message.js';
 export * from './response-chat-message.js';
-export * from './response-message-tool-calls.js';
-export * from './response-message-tool-call.js';
-export * from './multi-chat-message.js';
-export * from './multi-chat-message-content.js';
+export * from './message-tool-calls.js';
+export * from './message-tool-call.js';
 export * from './text-content.js';
-export * from './image-content.js';
 export * from './chat-delta.js';
 export * from './tool-call-chunk.js';
 export * from './completion-post-response.js';
@@ -66,4 +71,7 @@ export * from './data-repository-type.js';
 export * from './key-value-list-pair.js';
 export * from './search-document-key-value-list-pair.js';
 export * from './search-select-option-enum.js';
+export * from './input-translation-module-config.js';
+export * from './output-translation-module-config.js';
+export * from './sap-document-translation.js';
 export * from './error-response.js';

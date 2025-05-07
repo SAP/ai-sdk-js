@@ -28,6 +28,15 @@
 
 -
 
+# 1.13.0
+## Fixed Issues
+
+- [foundation-models] Remove incorrect error logging if finish reason is null in the streaming chunk. (8130838)
+
+## Improvements
+
+- [core] Add `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `anthropic--claude-3.7-sonnet` and `deepseek-ai--deepseek-r1` to and remove `gemini-1.0-pro` from the available model list. (a6ba3af)
+
 # 1.12.0
 ## Compatibility Notes
 

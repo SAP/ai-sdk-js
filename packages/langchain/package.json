@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/langchain",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
@@ -32,7 +32,7 @@
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-cloud-sdk/connectivity": "^4.0.2",
     "uuid": "^11.1.0",
-    "@langchain/core": "0.3.49",
+    "@langchain/core": "0.3.51",
     "zod-to-json-schema": "^3.24.5"
   }
 }
