@@ -48,7 +48,8 @@ import {
   invokeChainWithInputFilter as invokeChainWithInputFilterOrchestration,
   invokeChainWithOutputFilter as invokeChainWithOutputFilterOrchestration,
   invokeLangGraphChain,
-  invokeChainWithMasking
+  invokeChainWithMasking,
+  streamOrchestrationLangChain
 } from './langchain-orchestration.js';
 import {
   createCollection,
@@ -462,6 +463,52 @@ app.get('/langchain/invoke-stateful-chain', async (req, res) => {
     res.header('Content-Type', 'text/plain').send(await invokeLangGraphChain());
   } catch (error: any) {
     sendError(res, error);
+  }
+});
+
+app.get('/langchain/stream-orchestration', async (req, res) => {
+  const controller = new AbortController();
+  try {
+    const stream = await streamOrchestrationLangChain(controller);
+
+    // Set headers for event stream.
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    let connectionAlive = true;
+
+    // Abort the stream if the client connection is closed.
+    res.on('close', () => {
+      controller.abort();
+      connectionAlive = false;
+      res.end();
+    });
+
+    // Stream the delta content.
+    for await (const chunk of stream) {
+      if (!connectionAlive) {
+        break;
+      }
+      // Use the content property similar to getDeltaContent()
+      res.write(chunk.content + '\n');
+      if (connectionAlive && chunk.usage_metadata) {
+        res.write('\n\n---------------------------\n');
+        res.write('Finish reason: stop\n');
+        res.write('Token usage:\n');
+        res.write(
+          `  - Completion tokens: ${chunk.usage_metadata?.output_tokens}\n`
+        );
+        res.write(`  - Prompt tokens: ${chunk.usage_metadata?.input_tokens}\n`);
+        res.write(`  - Total tokens: ${chunk.usage_metadata?.total_tokens}\n`);
+      }
+    }
+
+    // Write the finish reason and token usage after the stream ends.
+  } catch (error: any) {
+    sendError(res, error, false);
+  } finally {
+    res.end();
   }
 });
 

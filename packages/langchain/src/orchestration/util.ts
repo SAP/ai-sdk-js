@@ -1,14 +1,24 @@
-import { AIMessage } from '@langchain/core/messages';
+import {
+  AIMessage,
+  ChatMessageChunk,
+  HumanMessageChunk,
+  SystemMessageChunk,
+  ToolMessageChunk
+} from '@langchain/core/messages';
+import { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
 import type { ChatResult } from '@langchain/core/outputs';
 import type {
+  ChatDelta,
   ChatMessage,
   CompletionPostResponse,
+  CompletionPostResponseStreaming,
   Template
 } from '@sap-ai-sdk/orchestration';
 import type { ToolCall } from '@langchain/core/messages/tool';
 import type { AzureOpenAiChatCompletionMessageToolCalls } from '@sap-ai-sdk/foundation-models';
 import type {
   BaseMessage,
+  BaseMessageChunk,
   HumanMessage,
   SystemMessage
 } from '@langchain/core/messages';
@@ -173,4 +183,79 @@ export function mapOutputToChatResult(
       }
     }
   };
+}
+
+/**
+ * Converts orchestration stream chunk to an appropriate message chunk based on role.
+ * @param chunkData - The content of the message.
+ * @param delta - The delta content from the chunk.
+ * @param defaultRole - The default role to use if not specified in the delta.
+ * @returns A message chunk of the appropriate type based on the role.
+ * @internal
+ */
+export function _convertOrchestrationChunkToMessageChunk(
+  chunkData: CompletionPostResponseStreaming,
+  delta: ChatDelta,
+  defaultRole?: string
+): BaseMessageChunk {
+  const { module_results, request_id } = chunkData;
+  const role = delta.role ?? defaultRole ?? 'assistant';
+  const content = delta.content ?? '';
+
+  // Handle additional kwargs for function and tool calls
+  const additional_kwargs: Record<string, unknown> = {};
+
+  // Handle tool calls
+  if (delta.tool_calls && delta.tool_calls.length > 0) {
+    additional_kwargs.tool_calls = delta.tool_calls;
+  }
+
+  // Create tool call chunks if present
+  const toolCallChunks: {
+    name?: string;
+    args?: string;
+    id?: string;
+    index?: number;
+    type: string;
+  }[] = [];
+  if (Array.isArray(delta.tool_calls)) {
+    for (const toolCall of delta.tool_calls) {
+      toolCallChunks.push({
+        name: toolCall.function?.name,
+        args: toolCall.function?.arguments,
+        id: toolCall.id,
+        index: toolCall.index,
+        type: 'function'
+      });
+    }
+  }
+
+  // Return the appropriate message chunk based on role
+  switch (role) {
+    case 'user':
+      return new HumanMessageChunk({ content });
+
+    case 'assistant': {
+      return new OrchestrationMessageChunk(
+        { content, additional_kwargs },
+        module_results ?? {},
+        request_id
+      );
+    }
+
+    case 'system':
+      return new SystemMessageChunk({ content });
+
+    case 'tool': {
+      const toolCallId = delta.tool_calls?.[0]?.id ?? '';
+      return new ToolMessageChunk({
+        content,
+        additional_kwargs,
+        tool_call_id: toolCallId
+      });
+    }
+
+    default:
+      return new ChatMessageChunk({ content, role });
+  }
 }

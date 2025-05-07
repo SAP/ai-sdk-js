@@ -14,6 +14,7 @@ import {
 } from '@langchain/langgraph';
 import { v4 as uuidv4 } from 'uuid';
 import type { LangchainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
+import type { OrchestrationMessageChunk } from '@sap-ai-sdk/langchain/orchestration/index.js';
 
 /**
  * Ask GPT about an introduction to SAP Cloud SDK.
@@ -185,6 +186,49 @@ export async function invokeLangGraphChain(): Promise<string> {
   const secondResponse = output2.messages.at(-1)!.content as string;
 
   return `${firstResponse}\n\n${secondResponse}`;
+}
+
+/**
+ * Stream responses from the OrchestrationClient using LangChain.
+ * @param controller - The abort controller to cancel the request if needed.
+ * @returns An async iterable of AIMessageChunk objects.
+ */
+export async function streamOrchestrationLangChain(
+  controller = new AbortController()
+): Promise<AsyncIterable<OrchestrationMessageChunk>> {
+  const orchestrationConfig: LangchainOrchestrationModuleConfig = {
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o'
+    },
+    // define the template
+    templating: {
+      template: [
+        {
+          role: 'user',
+          content: 'Write a 100 word explanation about {{?topic}}'
+        }
+      ]
+    }
+  };
+
+  const client = new OrchestrationClient(orchestrationConfig);
+
+  // Return the stream
+  return client.stream(
+    [
+      {
+        role: 'user',
+        content: 'I need information about a topic.'
+      }
+    ],
+    {
+      inputParams: {
+        topic: 'SAP Cloud SDK and its capabilities'
+      },
+      signal: controller.signal
+    }
+  );
 }
 
 /**

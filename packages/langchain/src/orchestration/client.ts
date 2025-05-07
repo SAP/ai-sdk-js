@@ -3,6 +3,7 @@ import { OrchestrationClient as OrchestrationClientBase } from '@sap-ai-sdk/orch
 import { ChatGenerationChunk } from '@langchain/core/outputs';
 import { type BaseMessage } from '@langchain/core/messages';
 import {
+  _convertOrchestrationChunkToMessageChunk,
   isTemplate,
   mapLangchainMessagesToOrchestrationMessages,
   mapOutputToChatResult
@@ -127,99 +128,98 @@ export class OrchestrationClient extends BaseChatModel<
     options: typeof this.ParsedCallOptions,
     runManager?: CallbackManagerForLLMRun
   ): AsyncGenerator<ChatGenerationChunk> {
-    // Setup abort controller
     const controller = new AbortController();
     if (options.signal) {
-      options.signal.addEventListener('abort', () => {
-        controller.abort();
-      });
+      options.signal.addEventListener('abort', () => controller.abort());
     }
 
-    try {
-      // Extract options
-      const { inputParams, customRequestConfig } = options;
-      const mergedOrchestrationConfig = this.mergeOrchestrationConfig(options);
+    let defaultRole: string | undefined;
+    const messagesHistory =
+      mapLangchainMessagesToOrchestrationMessages(messages);
 
-      // Create orchestration client
-      const orchestrationClient = new OrchestrationClientBase(
-        mergedOrchestrationConfig,
-        this.deploymentConfig,
-        this.destination
-      );
+    const { inputParams, customRequestConfig } = options;
+    const mergedOrchestrationConfig = this.mergeOrchestrationConfig(options);
 
-      // Convert messages to orchestration format
-      const messagesHistory =
-        mapLangchainMessagesToOrchestrationMessages(messages);
+    const orchestrationClient = new OrchestrationClientBase(
+      mergedOrchestrationConfig,
+      this.deploymentConfig,
+      this.destination
+    );
 
-      // Call the stream API
-      const response = await this.caller.callWithOptions(
-        { signal: options.signal },
-        () =>
-          orchestrationClient.stream(
-            {
-              messagesHistory,
-              inputParams
-            },
-            controller,
-            {
-              llm: { include_usage: true }
-            },
-            customRequestConfig
-          )
-      );
+    const streamOptions = {
+      llm: {
+        include_usage: true,
+        ...options.streamOptions?.llm
+      },
+      outputFiltering: options.streamOptions?.outputFiltering,
+      global: options.streamOptions?.global
+    };
 
-      // Process the stream
-      for await (const chunk of response.stream) {
-        const deltaContent = chunk.getDeltaContent();
-        if (!deltaContent) {
-          continue;
-        }
+    const response = await this.caller.callWithOptions(
+      { signal: options.signal },
+      () =>
+        orchestrationClient.stream(
+          { messagesHistory, inputParams },
+          controller,
+          streamOptions,
+          customRequestConfig
+        )
+    );
 
-        await runManager?.handleLLMNewToken(deltaContent);
-
-        // Create a message chunk
-        const messageChunk = new OrchestrationMessageChunk(
-          deltaContent,
-          chunk.data.module_results || {},
-          chunk.data.request_id || ''
-        );
-
-        // Yield a generation chunk
-        yield new ChatGenerationChunk({
-          message: messageChunk,
-          text: deltaContent
-        });
+    for await (const chunk of response.stream) {
+      if (!chunk.data) {
+        continue;
       }
 
-      // After all chunks are processed, yield a final chunk with usage metadata
-      // const tokenUsage = response.getTokenUsage();
-      // const finishReason = response.getFinishReason();
+      const delta = chunk.getDelta();
+      if (!delta) {
+        continue;
+      }
+      const messageChunk = _convertOrchestrationChunkToMessageChunk(
+        chunk.data,
+        delta,
+        defaultRole
+      );
 
-      // if (tokenUsage) {
-      //   // Create a message chunk with usage metadata
-      //   const finalMessageChunk = new OrchestrationMessageChunk(
-      //     '', // Empty content for the final chunk
-      //     {}, // No module results for the final chunk
-      //     '' // No request ID for the final chunk
-      //   );
+      defaultRole = delta.role ?? defaultRole;
+      const finishReason = chunk.getFinishReason();
+      const tokenUsage = chunk.getTokenUsage();
 
-      //   // Add usage metadata
-      //   finalMessageChunk.usage_metadata = {
-      //     input_tokens: tokenUsage.completion_tokens,
-      //     output_tokens: tokenUsage.prompt_tokens,
-      //     total_tokens: tokenUsage.total_tokens
-      //   };
+      // Add token usage to the message chunk if this is the final chunk
+      if (finishReason && tokenUsage) {
+        if (messageChunk instanceof OrchestrationMessageChunk) {
+          messageChunk.usage_metadata = {
+            input_tokens: tokenUsage.prompt_tokens,
+            output_tokens: tokenUsage.completion_tokens,
+            total_tokens: tokenUsage.total_tokens
+          };
+        }
+      }
+      const content = delta.content ?? '';
+      const generationChunk = new ChatGenerationChunk({
+        message: messageChunk,
+        text: content
+      });
 
-      //   // Yield the final chunk with metadata
-      //   yield new ChatGenerationChunk({
-      //     message: finalMessageChunk,
-      //     text: '',
-      //     generationInfo: { finish_reason: finishReason }
-      //   });
-      // }
-    } catch (e) {
-      await runManager?.handleLLMError(e);
-      throw e;
+      // Notify the run manager about the new token
+      await runManager?.handleLLMNewToken(
+        content,
+        {
+          prompt: 0,
+          completion: 0
+        },
+        undefined,
+        undefined,
+        undefined,
+        { chunk: generationChunk }
+      );
+
+      // Yield the chunk
+      yield generationChunk;
+    }
+
+    if (options.signal?.aborted) {
+      throw new Error('AbortError');
     }
   }
 

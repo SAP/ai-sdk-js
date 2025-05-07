@@ -31,7 +31,8 @@ export {
 } from './langchain-azure-openai.js';
 export {
   invokeChain as orchestrationInvokeChain,
-  invokeLangGraphChain
+  invokeLangGraphChain,
+  streamOrchestrationLangChain
 } from './langchain-orchestration.js';
 export {
   getDeployments,
