@@ -136,19 +136,15 @@ export function constructCompletionPostRequest(
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
 
-  // templating cannot be string here.
+  // Templating cannot be a string here as it is already parsed in parseAndMergeTemplating method
   let templatingConfig = config.templating as TemplatingModuleConfig;
 
 if (isTemplate(templatingConfig)) {
-
-  // Throw if the template is empty
   if (!Array.isArray(templatingConfig.template) || templatingConfig.template.length === 0) {
     throw new Error(
       'Templating config was provided with an empty template. Either provide a valid template or omit the field entirely.'
     );
   }
-
-  // No change needed — templating is already valid
 } else if (!templatingConfig) {
   // No templating provided — fallback to prompt-based template generation
   const { template, updatedHistory } = resolveTemplateFromPrompt(prompt);
@@ -160,7 +156,7 @@ if (isTemplate(templatingConfig)) {
 }
 
   const moduleConfigurations: ModuleConfigs = {
-    templating_module_config: !config.templating ? templatingConfig : config.templating as TemplatingModuleConfig,
+    templating_module_config: templatingConfig,
     llm_module_config: config.llm,
     ...(config?.filtering &&
       Object.keys(config.filtering).length && {
@@ -188,9 +184,9 @@ if (isTemplate(templatingConfig)) {
     })
   };
 
-  if (prompt?.messages && prompt.messages.length > 0) {
+  if (prompt?.messages && prompt.messages.length) {
     request.messages_history = prompt.messages; // Assuming messages_history still receives full chat context
-  } else if (prompt?.messagesHistory && prompt.messagesHistory.length > 0) {
+  } else if (prompt?.messagesHistory && prompt.messagesHistory.length) {
     request.messages_history = prompt.messagesHistory;
   }
   return request;
