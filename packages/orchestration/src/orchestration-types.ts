@@ -248,9 +248,3 @@ export type AzureFilterThreshold = keyof typeof supportedAzureFilterThresholds;
  * The filter categories supported for Llama guard filter.
  */
 export type LlamaGuardCategory = keyof LlamaGuard38B;
-
-const t: TemplatingModuleConfig = {
-  defaults: {
-    inputContext: 'The default text that will be used in the template if inputContext is not set'
-  }
-}
