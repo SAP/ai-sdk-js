@@ -60,10 +60,10 @@ import {
   createPromptTemplate,
   deletePromptTemplate
 } from './prompt-registry.js';
+import { getAiModels } from './pab.js';
 import type { RetievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type { AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
-import { getAiModels } from './pab.js';
 
 const app = express();
 const port = 8080;

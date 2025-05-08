@@ -20,13 +20,11 @@ export async function getAiModels(): Promise<any> {
     tags: ['pab']
   };
 
-  const destination = await transformServiceBindingToClientCredentialsDestination(
-    service,
-    {
+  const destination =
+    (await transformServiceBindingToClientCredentialsDestination(service, {
       useCache: true,
       url: credentials.service_urls.agent_api_url
-    }
-  ) as HttpDestination;
+    })) as HttpDestination;
   destination.url += 'api/v1';
 
   return AiModelsApi.getAiModels().execute(destination);
