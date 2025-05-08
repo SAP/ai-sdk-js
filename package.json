@@ -26,6 +26,7 @@
     "document-grounding": "pnpm -F=@sap-ai-sdk/document-grounding",
     "langchain": "pnpm -F=@sap-ai-sdk/langchain",
     "prompt-registry": "pnpm -F=@sap-ai-sdk/prompt-registry",
+    "pab": "pnpm -F=@sap-ai-sdk/pab",
     "e2e-tests": "pnpm -F=@sap-ai-sdk/e2e-tests",
     "type-tests": "pnpm -F=@sap-ai-sdk/type-tests",
     "smoke-tests": "pnpm -F=@sap-ai-sdk/smoke-tests",

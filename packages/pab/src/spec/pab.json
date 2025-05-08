@@ -1,0 +1,5915 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "BAF Agent Controller",
+    "description": "The Agent Controller is the central service for managing AI agents, toolkits and triggering agent runs.",
+    "version": "1.0.0"
+  },
+  "x-sap-api-type": "ODATAV4",
+  "x-odata-version": "4.01",
+  "x-sap-shortText": "The Agent Controller is the central service for managing AI agents, toolkits and triggering agent runs.",
+  "servers": [
+    {
+      "url": "/api/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Agents",
+      "description": "List of Agents"
+    },
+    {
+      "name": "AiModels"
+    }
+  ],
+  "paths": {
+    "/Agents": {
+      "get": {
+        "summary": "Retrieves a list of agents.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/top"
+          },
+          {
+            "$ref": "#/components/parameters/skip"
+          },
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "name": "$filter",
+            "description": "Filter items by property values, see [Filtering](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionfilter)",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "description": "Order items by property values, see [Sorting](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionorderby)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "ID desc",
+                  "createdAt",
+                  "createdAt desc",
+                  "modifiedAt",
+                  "modifiedAt desc",
+                  "name",
+                  "name desc",
+                  "version",
+                  "version desc",
+                  "deploymentStatus",
+                  "deploymentStatus desc",
+                  "expertIn",
+                  "expertIn desc",
+                  "task",
+                  "task desc",
+                  "additionalContext",
+                  "additionalContext desc",
+                  "iterations",
+                  "iterations desc",
+                  "baseModel",
+                  "baseModel desc",
+                  "backupBaseModel",
+                  "backupBaseModel desc",
+                  "advancedModel",
+                  "advancedModel desc",
+                  "backupAdvancedModel",
+                  "backupAdvancedModel desc",
+                  "preprocessingEnabled",
+                  "preprocessingEnabled desc",
+                  "postprocessingEnabled",
+                  "postprocessingEnabled desc",
+                  "defaultOutputFormat",
+                  "defaultOutputFormat desc",
+                  "defaultOutputFormatOptions",
+                  "defaultOutputFormatOptions desc",
+                  "callbackDestination",
+                  "callbackDestination desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "name",
+                  "version",
+                  "deploymentStatus",
+                  "expertIn",
+                  "task",
+                  "additionalContext",
+                  "iterations",
+                  "orchestrationConfig",
+                  "baseModel",
+                  "backupBaseModel",
+                  "advancedModel",
+                  "backupAdvancedModel",
+                  "preprocessingEnabled",
+                  "postprocessingEnabled",
+                  "defaultOutputFormat",
+                  "defaultOutputFormatOptions",
+                  "callbackDestination"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["*", "threads", "toolkits"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved agents",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Collection of Agents",
+                  "properties": {
+                    "@count": {
+                      "$ref": "#/components/schemas/count"
+                    },
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AgentControllerService.Agents"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a single agent.",
+        "tags": ["Agents"],
+        "requestBody": {
+          "description": "List of Agents",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentControllerService.Agents-create"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created agent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Agents"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves a single agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "name",
+                  "version",
+                  "deploymentStatus",
+                  "expertIn",
+                  "task",
+                  "additionalContext",
+                  "iterations",
+                  "orchestrationConfig",
+                  "baseModel",
+                  "backupBaseModel",
+                  "advancedModel",
+                  "backupAdvancedModel",
+                  "preprocessingEnabled",
+                  "postprocessingEnabled",
+                  "defaultOutputFormat",
+                  "defaultOutputFormatOptions",
+                  "callbackDestination"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["*", "threads", "toolkits"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved agent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Agents"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Changes a single agent.",
+        "tags": ["Agents"],
+        "requestBody": {
+          "description": "List of Agents",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentControllerService.Agents-update"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a single agent.",
+        "tags": ["Agents"],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/AgentControllerService.archive": {
+      "post": {
+        "summary": "Sets an agent to archived state",
+        "tags": ["Archive"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/AgentControllerService.return_AgentControllerService_Agents_archive"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          }
+        ]
+      }
+    },
+    "/Agents({ID})/AgentControllerService.deploy": {
+      "post": {
+        "summary": "Sets an agent to deployed state",
+        "tags": ["Deploy"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/AgentControllerService.return_AgentControllerService_Agents_deploy"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          }
+        ]
+      }
+    },
+    "/Agents({ID})/threads": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves a list of threads of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/top"
+          },
+          {
+            "$ref": "#/components/parameters/skip"
+          },
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "name": "$filter",
+            "description": "Filter items by property values, see [Filtering](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionfilter)",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "description": "Order items by property values, see [Sorting](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionorderby)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "ID desc",
+                  "createdAt",
+                  "createdAt desc",
+                  "modifiedAt",
+                  "modifiedAt desc",
+                  "name",
+                  "name desc",
+                  "state",
+                  "state desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["ID", "createdAt", "modifiedAt", "name", "state"]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["*", "messages", "agent"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved threads",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Collection of Threads",
+                  "properties": {
+                    "@count": {
+                      "$ref": "#/components/schemas/count"
+                    },
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AgentControllerService.Threads"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a single thread of a agent.",
+        "tags": ["Agents"],
+        "requestBody": {
+          "description": "List of Threads",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentControllerService.Threads-create"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created thread",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Threads"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves a single thread of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["ID", "createdAt", "modifiedAt", "name", "state"]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["*", "messages", "agent"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved thread",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Threads"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Changes a single thread of a agent.",
+        "tags": ["Agents"],
+        "requestBody": {
+          "description": "List of Threads",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentControllerService.Threads-update"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a single thread of a agent.",
+        "tags": ["Agents"],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/AgentControllerService.cancel": {
+      "post": {
+        "summary": "Cancels the run of an agent thread",
+        "tags": ["Cancel"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/AgentControllerService.return_AgentControllerService_Threads_cancel"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID_1",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          }
+        ]
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/AgentControllerService.invoke": {
+      "post": {
+        "summary": "Invokes an agent thread",
+        "tags": ["Invoke"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/AgentControllerService.return_AgentControllerService_Threads_invoke"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID_1",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Action parameters",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  },
+                  "returnTrace": {
+                    "type": "boolean",
+                    "nullable": true
+                  },
+                  "outputFormat": {
+                    "type": "string",
+                    "enum": ["JSON", "Markdown", "Text"],
+                    "nullable": true
+                  },
+                  "outputFormatOptions": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/agent": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves agent of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "name",
+                  "version",
+                  "deploymentStatus",
+                  "expertIn",
+                  "task",
+                  "additionalContext",
+                  "iterations",
+                  "orchestrationConfig",
+                  "baseModel",
+                  "backupBaseModel",
+                  "advancedModel",
+                  "backupAdvancedModel",
+                  "preprocessingEnabled",
+                  "postprocessingEnabled",
+                  "defaultOutputFormat",
+                  "defaultOutputFormatOptions",
+                  "callbackDestination"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["*", "threads", "toolkits"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved agent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Agents"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/agent/AgentControllerService.archive": {
+      "post": {
+        "summary": "Sets an agent to archived state",
+        "tags": ["Archive"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/AgentControllerService.return_AgentControllerService_Agents_archive"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID_1",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          }
+        ]
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/agent/AgentControllerService.deploy": {
+      "post": {
+        "summary": "Sets an agent to deployed state",
+        "tags": ["Deploy"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/AgentControllerService.return_AgentControllerService_Agents_deploy"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID_1",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          }
+        ]
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/messages": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves a list of messages of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/top"
+          },
+          {
+            "$ref": "#/components/parameters/skip"
+          },
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "name": "$filter",
+            "description": "Filter items by property values, see [Filtering](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionfilter)",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "description": "Order items by property values, see [Sorting](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionorderby)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "ID desc",
+                  "createdAt",
+                  "createdAt desc",
+                  "modifiedAt",
+                  "modifiedAt desc",
+                  "previous_ID",
+                  "previous_ID desc",
+                  "type",
+                  "type desc",
+                  "canceled",
+                  "canceled desc",
+                  "sender",
+                  "sender desc",
+                  "content",
+                  "content desc",
+                  "outputFormat",
+                  "outputFormat desc",
+                  "outputFormatOptions",
+                  "outputFormatOptions desc",
+                  "scratchpad",
+                  "scratchpad desc",
+                  "group_ID",
+                  "group_ID desc",
+                  "guardrailed",
+                  "guardrailed desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "previous_ID",
+                  "type",
+                  "canceled",
+                  "sender",
+                  "content",
+                  "outputFormat",
+                  "outputFormatOptions",
+                  "scratchpad",
+                  "group_ID",
+                  "guardrailed"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "*",
+                  "thread",
+                  "traces",
+                  "tokens",
+                  "previous",
+                  "inputs",
+                  "group"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved messages",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Collection of Messages",
+                  "properties": {
+                    "@count": {
+                      "$ref": "#/components/schemas/count"
+                    },
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AgentControllerService.Messages"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a single message of a agent.",
+        "tags": ["Agents"],
+        "requestBody": {
+          "description": "New message",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentControllerService.Messages-create"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Messages"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/messages({ID_2})": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_2",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves a single message of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "previous_ID",
+                  "type",
+                  "canceled",
+                  "sender",
+                  "content",
+                  "outputFormat",
+                  "outputFormatOptions",
+                  "scratchpad",
+                  "group_ID",
+                  "guardrailed"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "*",
+                  "thread",
+                  "traces",
+                  "tokens",
+                  "previous",
+                  "inputs",
+                  "group"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Messages"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Changes a single message of a agent.",
+        "tags": ["Agents"],
+        "requestBody": {
+          "description": "New property values",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentControllerService.Messages-update"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a single message of a agent.",
+        "tags": ["Agents"],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/messages({ID_2})/group": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_2",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves group of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "previous_ID",
+                  "type",
+                  "canceled",
+                  "sender",
+                  "content",
+                  "outputFormat",
+                  "outputFormatOptions",
+                  "scratchpad",
+                  "group_ID",
+                  "guardrailed"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "*",
+                  "thread",
+                  "traces",
+                  "tokens",
+                  "previous",
+                  "inputs",
+                  "group"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved group",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Messages"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/messages({ID_2})/inputs": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_2",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves a list of inputs of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/top"
+          },
+          {
+            "$ref": "#/components/parameters/skip"
+          },
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "name": "$filter",
+            "description": "Filter items by property values, see [Filtering](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionfilter)",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "description": "Order items by property values, see [Sorting](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionorderby)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "ID desc",
+                  "createdAt",
+                  "createdAt desc",
+                  "modifiedAt",
+                  "modifiedAt desc",
+                  "name",
+                  "name desc",
+                  "description",
+                  "description desc",
+                  "type",
+                  "type desc",
+                  "possibleValues",
+                  "possibleValues desc",
+                  "suggestions",
+                  "suggestions desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "name",
+                  "description",
+                  "type",
+                  "possibleValues",
+                  "suggestions"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["*", "message"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved inputs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Collection of Inputs",
+                  "properties": {
+                    "@count": {
+                      "$ref": "#/components/schemas/count"
+                    },
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AgentControllerService.Inputs"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a single input of a agent.",
+        "tags": ["Agents"],
+        "requestBody": {
+          "description": "New input",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentControllerService.Inputs-create"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Inputs"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/messages({ID_2})/inputs({ID_3})": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_2",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_3",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves a single input of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "name",
+                  "description",
+                  "type",
+                  "possibleValues",
+                  "suggestions"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["*", "message"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Inputs"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Changes a single input of a agent.",
+        "tags": ["Agents"],
+        "requestBody": {
+          "description": "New property values",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentControllerService.Inputs-update"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a single input of a agent.",
+        "tags": ["Agents"],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/messages({ID_2})/inputs({ID_3})/message": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_2",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_3",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves message of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "previous_ID",
+                  "type",
+                  "canceled",
+                  "sender",
+                  "content",
+                  "outputFormat",
+                  "outputFormatOptions",
+                  "scratchpad",
+                  "group_ID",
+                  "guardrailed"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "*",
+                  "thread",
+                  "traces",
+                  "tokens",
+                  "previous",
+                  "inputs",
+                  "group"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Messages"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/messages({ID_2})/previous": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_2",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves previous of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "previous_ID",
+                  "type",
+                  "canceled",
+                  "sender",
+                  "content",
+                  "outputFormat",
+                  "outputFormatOptions",
+                  "scratchpad",
+                  "group_ID",
+                  "guardrailed"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "*",
+                  "thread",
+                  "traces",
+                  "tokens",
+                  "previous",
+                  "inputs",
+                  "group"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved previous",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Messages"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/messages({ID_2})/thread": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_2",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves thread of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["ID", "createdAt", "modifiedAt", "name", "state"]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["*", "messages", "agent"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved thread",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Threads"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/messages({ID_2})/thread/AgentControllerService.cancel": {
+      "post": {
+        "summary": "Cancels the run of an agent thread",
+        "tags": ["Cancel"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/AgentControllerService.return_AgentControllerService_Threads_cancel"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID_1",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID_2",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          }
+        ]
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/messages({ID_2})/thread/AgentControllerService.invoke": {
+      "post": {
+        "summary": "Invokes an agent thread",
+        "tags": ["Invoke"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/AgentControllerService.return_AgentControllerService_Threads_invoke"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID_1",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID_2",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Action parameters",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  },
+                  "returnTrace": {
+                    "type": "boolean",
+                    "nullable": true
+                  },
+                  "outputFormat": {
+                    "type": "string",
+                    "enum": ["JSON", "Markdown", "Text"],
+                    "nullable": true
+                  },
+                  "outputFormatOptions": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/messages({ID_2})/tokens": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_2",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves a list of tokens of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/top"
+          },
+          {
+            "$ref": "#/components/parameters/skip"
+          },
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "name": "$filter",
+            "description": "Filter items by property values, see [Filtering](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionfilter)",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "description": "Order items by property values, see [Sorting](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionorderby)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "ID desc",
+                  "createdAt",
+                  "createdAt desc",
+                  "modifiedAt",
+                  "modifiedAt desc",
+                  "modelName",
+                  "modelName desc",
+                  "inputTokens",
+                  "inputTokens desc",
+                  "outputTokens",
+                  "outputTokens desc",
+                  "inputTokensCost",
+                  "inputTokensCost desc",
+                  "outputTokensCost",
+                  "outputTokensCost desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "modelName",
+                  "inputTokens",
+                  "outputTokens",
+                  "inputTokensCost",
+                  "outputTokensCost"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["*", "message", "trace"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved tokens",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Collection of Tokens",
+                  "properties": {
+                    "@count": {
+                      "$ref": "#/components/schemas/count"
+                    },
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AgentControllerService.Tokens"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a single token of a agent.",
+        "tags": ["Agents"],
+        "requestBody": {
+          "description": "New token",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentControllerService.Tokens-create"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Tokens"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/messages({ID_2})/tokens({ID_3})": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_2",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_3",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves a single token of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "modelName",
+                  "inputTokens",
+                  "outputTokens",
+                  "inputTokensCost",
+                  "outputTokensCost"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["*", "message", "trace"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Tokens"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Changes a single token of a agent.",
+        "tags": ["Agents"],
+        "requestBody": {
+          "description": "New property values",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentControllerService.Tokens-update"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a single token of a agent.",
+        "tags": ["Agents"],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/messages({ID_2})/tokens({ID_3})/message": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_2",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_3",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves message of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "previous_ID",
+                  "type",
+                  "canceled",
+                  "sender",
+                  "content",
+                  "outputFormat",
+                  "outputFormatOptions",
+                  "scratchpad",
+                  "group_ID",
+                  "guardrailed"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "*",
+                  "thread",
+                  "traces",
+                  "tokens",
+                  "previous",
+                  "inputs",
+                  "group"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Messages"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/messages({ID_2})/tokens({ID_3})/trace": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_2",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_3",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves trace of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "fromId",
+                  "toId",
+                  "type",
+                  "data"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["*", "message", "tokens"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved trace",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Traces"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/messages({ID_2})/traces": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_2",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves a list of traces of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/top"
+          },
+          {
+            "$ref": "#/components/parameters/skip"
+          },
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "name": "$filter",
+            "description": "Filter items by property values, see [Filtering](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionfilter)",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "description": "Order items by property values, see [Sorting](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionorderby)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "ID desc",
+                  "createdAt",
+                  "createdAt desc",
+                  "modifiedAt",
+                  "modifiedAt desc",
+                  "fromId",
+                  "fromId desc",
+                  "toId",
+                  "toId desc",
+                  "type",
+                  "type desc",
+                  "data",
+                  "data desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "fromId",
+                  "toId",
+                  "type",
+                  "data"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["*", "message", "tokens"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved traces",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Collection of Traces",
+                  "properties": {
+                    "@count": {
+                      "$ref": "#/components/schemas/count"
+                    },
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AgentControllerService.Traces"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a single trace of a agent.",
+        "tags": ["Agents"],
+        "requestBody": {
+          "description": "New trace",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentControllerService.Traces-create"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created trace",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Traces"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/messages({ID_2})/traces({ID_3})": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_2",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_3",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves a single trace of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "fromId",
+                  "toId",
+                  "type",
+                  "data"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["*", "message", "tokens"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved trace",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Traces"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Changes a single trace of a agent.",
+        "tags": ["Agents"],
+        "requestBody": {
+          "description": "New property values",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentControllerService.Traces-update"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a single trace of a agent.",
+        "tags": ["Agents"],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/messages({ID_2})/traces({ID_3})/message": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_2",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_3",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves message of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "previous_ID",
+                  "type",
+                  "canceled",
+                  "sender",
+                  "content",
+                  "outputFormat",
+                  "outputFormatOptions",
+                  "scratchpad",
+                  "group_ID",
+                  "guardrailed"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "*",
+                  "thread",
+                  "traces",
+                  "tokens",
+                  "previous",
+                  "inputs",
+                  "group"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Messages"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/messages({ID_2})/traces({ID_3})/tokens": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_2",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_3",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves a list of tokens of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/top"
+          },
+          {
+            "$ref": "#/components/parameters/skip"
+          },
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "name": "$filter",
+            "description": "Filter items by property values, see [Filtering](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionfilter)",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "description": "Order items by property values, see [Sorting](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionorderby)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "ID desc",
+                  "createdAt",
+                  "createdAt desc",
+                  "modifiedAt",
+                  "modifiedAt desc",
+                  "modelName",
+                  "modelName desc",
+                  "inputTokens",
+                  "inputTokens desc",
+                  "outputTokens",
+                  "outputTokens desc",
+                  "inputTokensCost",
+                  "inputTokensCost desc",
+                  "outputTokensCost",
+                  "outputTokensCost desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "modelName",
+                  "inputTokens",
+                  "outputTokens",
+                  "inputTokensCost",
+                  "outputTokensCost"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["*", "message", "trace"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved tokens",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Collection of Tokens",
+                  "properties": {
+                    "@count": {
+                      "$ref": "#/components/schemas/count"
+                    },
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AgentControllerService.Tokens"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a single token of a agent.",
+        "tags": ["Agents"],
+        "requestBody": {
+          "description": "New token",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentControllerService.Tokens-create"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Tokens"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/messages({ID_2})/traces({ID_3})/tokens({ID_4})": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_2",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_3",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_4",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves a single token of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "modelName",
+                  "inputTokens",
+                  "outputTokens",
+                  "inputTokensCost",
+                  "outputTokensCost"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["*", "message", "trace"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Tokens"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Changes a single token of a agent.",
+        "tags": ["Agents"],
+        "requestBody": {
+          "description": "New property values",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentControllerService.Tokens-update"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a single token of a agent.",
+        "tags": ["Agents"],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/messages({ID_2})/traces({ID_3})/tokens({ID_4})/message": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_2",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_3",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_4",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves message of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "previous_ID",
+                  "type",
+                  "canceled",
+                  "sender",
+                  "content",
+                  "outputFormat",
+                  "outputFormatOptions",
+                  "scratchpad",
+                  "group_ID",
+                  "guardrailed"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "*",
+                  "thread",
+                  "traces",
+                  "tokens",
+                  "previous",
+                  "inputs",
+                  "group"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Messages"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/threads({ID_1})/messages({ID_2})/traces({ID_3})/tokens({ID_4})/trace": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_2",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_3",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_4",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves trace of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "fromId",
+                  "toId",
+                  "type",
+                  "data"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["*", "message", "tokens"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved trace",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Traces"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/toolkits": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves a list of toolkits of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/top"
+          },
+          {
+            "$ref": "#/components/parameters/skip"
+          },
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "name": "$filter",
+            "description": "Filter items by property values, see [Filtering](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionfilter)",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "description": "Order items by property values, see [Sorting](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionorderby)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "ID desc",
+                  "createdAt",
+                  "createdAt desc",
+                  "modifiedAt",
+                  "modifiedAt desc",
+                  "name",
+                  "name desc",
+                  "type",
+                  "type desc",
+                  "instanceId",
+                  "instanceId desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "name",
+                  "type",
+                  "instanceId"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["*", "agent"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved toolkits",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Collection of Toolkits",
+                  "properties": {
+                    "@count": {
+                      "$ref": "#/components/schemas/count"
+                    },
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AgentControllerService.Toolkits"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a single toolkit of a agent.",
+        "tags": ["Agents"],
+        "requestBody": {
+          "description": "List of Toolkits",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentControllerService.Toolkits-create"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created toolkit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Toolkits"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/toolkits({ID_1})": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves a single toolkit of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "name",
+                  "type",
+                  "instanceId"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["*", "agent"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved toolkit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Toolkits"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Changes a single toolkit of a agent.",
+        "tags": ["Agents"],
+        "requestBody": {
+          "description": "List of Toolkits",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentControllerService.Toolkits-update"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a single toolkit of a agent.",
+        "tags": ["Agents"],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/toolkits({ID_1})/agent": {
+      "parameters": [
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        },
+        {
+          "description": "key: ID",
+          "in": "path",
+          "name": "ID_1",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves agent of a agent.",
+        "tags": ["Agents"],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "createdAt",
+                  "modifiedAt",
+                  "name",
+                  "version",
+                  "deploymentStatus",
+                  "expertIn",
+                  "task",
+                  "additionalContext",
+                  "iterations",
+                  "orchestrationConfig",
+                  "baseModel",
+                  "backupBaseModel",
+                  "advancedModel",
+                  "backupAdvancedModel",
+                  "preprocessingEnabled",
+                  "postprocessingEnabled",
+                  "defaultOutputFormat",
+                  "defaultOutputFormatOptions",
+                  "callbackDestination"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "description": "The value of $expand query option is a comma-separated list of navigation property names, stream property names, or $value indicating the stream content of a media-entity. The corresponding related entities and stream values will be represented inline, see [Expand](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionexpand)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["*", "threads", "toolkits"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved agent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.Agents"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/Agents({ID})/toolkits({ID_1})/agent/AgentControllerService.archive": {
+      "post": {
+        "summary": "Sets an agent to archived state",
+        "tags": ["Archive"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/AgentControllerService.return_AgentControllerService_Agents_archive"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID_1",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          }
+        ]
+      }
+    },
+    "/Agents({ID})/toolkits({ID_1})/agent/AgentControllerService.deploy": {
+      "post": {
+        "summary": "Sets an agent to deployed state",
+        "tags": ["Deploy"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/AgentControllerService.return_AgentControllerService_Agents_deploy"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "parameters": [
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          },
+          {
+            "description": "key: ID",
+            "in": "path",
+            "name": "ID_1",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "01234567-89ab-cdef-0123-456789abcdef"
+            }
+          }
+        ]
+      }
+    },
+    "/AiModels": {
+      "get": {
+        "summary": "Retrieves a list of ai models.",
+        "tags": ["AiModels"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/top"
+          },
+          {
+            "$ref": "#/components/parameters/skip"
+          },
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "name": "$filter",
+            "description": "Filter items by property values, see [Filtering](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionfilter)",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "description": "Order items by property values, see [Sorting](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionorderby)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "modelId",
+                  "modelId desc",
+                  "modelName",
+                  "modelName desc",
+                  "providerId",
+                  "providerId desc",
+                  "providerName",
+                  "providerName desc",
+                  "rank",
+                  "rank desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "modelId",
+                  "modelName",
+                  "providerId",
+                  "providerName",
+                  "rank"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved ai models",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Collection of AiModels",
+                  "properties": {
+                    "@count": {
+                      "$ref": "#/components/schemas/count"
+                    },
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AgentControllerService.AiModels"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/AiModels('{modelId}')": {
+      "parameters": [
+        {
+          "description": "key: modelId",
+          "in": "path",
+          "name": "modelId",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves a single ai model.",
+        "tags": ["AiModels"],
+        "parameters": [
+          {
+            "name": "$select",
+            "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+            "in": "query",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "modelId",
+                  "modelName",
+                  "providerId",
+                  "providerName",
+                  "rank"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved ai model",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentControllerService.AiModels"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    },
+    "/deployContent": {
+      "post": {
+        "summary": "Orchestrates the creation/versioning, configuration, and deployment of a new Agent version and its associated Toolkit versions based on the provided content definition.",
+        "tags": ["Deploy Content"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/AgentControllerService.return_AgentControllerService_deployContent"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "requestBody": {
+          "description": "Action parameters",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "config": {
+                    "type": "string",
+                    "example": "{ \"name\": \"Report Expert Agent v1\", \"expertIn\": \"Business report writing\", \"task\": \"Do task x\", \"additionalContext\": \"When you see the value baf it stand for business-agent-foundation\", \"toolkits\": [{\"name\": \"Calculator\", \"type\": \"calculator\"}], \"iterations\": 20, \"orchestrationConfig\": \"{\\\"filtering_module_config\\\": { ... }}\", \"baseModel\": \"OpenAiGpt4oMini\", \"backupBaseModel\": \"OpenAiGpt4oMini\", \"advancedModel\": \"OpenAiGpt4o\", \"backupAdvancedModel\": \"OpenAiGpt4o\", \"preprocessingEnabled\": true, \"postprocessingEnabled\": true, \"defaultOutputFormat\": \"Markdown\", \"defaultOutputFormatOptions\": \"{\\\"schema\\\": \\\"https://json-schema.org/draft/2020-12/schema\\\"}\", \"callbackDestination\": \"MY_CALLBACK\"}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test": {
+      "post": {
+        "summary": "Invokes action test",
+        "tags": ["Service Operations"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/AgentControllerService.return_AgentControllerService_test"
+                    }
+                  ],
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AgentControllerService.Agents": {
+        "title": "List of Agents",
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "modifiedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "example": "Report Expert Agent v1"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int32",
+            "default": 1,
+            "example": 1
+          },
+          "deploymentStatus": {
+            "type": "string",
+            "enum": ["draft", "deployed", "archived"],
+            "default": "draft",
+            "example": "draft"
+          },
+          "expertIn": {
+            "type": "string",
+            "nullable": true,
+            "example": "Business report writing"
+          },
+          "task": {
+            "type": "string",
+            "nullable": true,
+            "example": "Do task x"
+          },
+          "additionalContext": {
+            "type": "string",
+            "nullable": true,
+            "example": "When you see the value baf it stand for business-agent-foundation"
+          },
+          "threads": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentControllerService.Threads"
+            }
+          },
+          "threads@count": {
+            "$ref": "#/components/schemas/count"
+          },
+          "toolkits": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentControllerService.Toolkits"
+            }
+          },
+          "toolkits@count": {
+            "$ref": "#/components/schemas/count"
+          },
+          "iterations": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true,
+            "default": 20,
+            "example": "20"
+          },
+          "orchestrationConfig": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AgentControllerService.cds_Map"
+              }
+            ],
+            "nullable": true,
+            "example": "{ \"filtering_module_config\": { ... } }"
+          },
+          "baseModel": {
+            "type": "string",
+            "default": "OpenAiGpt4oMini",
+            "example": "OpenAiGpt4oMini"
+          },
+          "backupBaseModel": {
+            "type": "string",
+            "nullable": true,
+            "example": "OpenAiGpt4oMini"
+          },
+          "advancedModel": {
+            "type": "string",
+            "default": "OpenAiGpt4o",
+            "example": "OpenAiGpt4o"
+          },
+          "backupAdvancedModel": {
+            "type": "string",
+            "nullable": true,
+            "example": "OpenAiGpt4o"
+          },
+          "preprocessingEnabled": {
+            "type": "boolean",
+            "default": true,
+            "example": "true"
+          },
+          "postprocessingEnabled": {
+            "type": "boolean",
+            "default": true,
+            "example": "true"
+          },
+          "defaultOutputFormat": {
+            "type": "string",
+            "nullable": true,
+            "default": "Markdown",
+            "example": "Markdown"
+          },
+          "defaultOutputFormatOptions": {
+            "type": "string",
+            "nullable": true,
+            "example": "{\"schema\": \"https://json-schema.org/draft/2020-12/schema\"}"
+          },
+          "callbackDestination": {
+            "type": "string",
+            "nullable": true,
+            "example": "MY_CALLBACK"
+          }
+        }
+      },
+      "AgentControllerService.Agents-create": {
+        "title": "List of Agents (for create)",
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          },
+          "name": {
+            "type": "string",
+            "example": "Report Expert Agent v1"
+          },
+          "expertIn": {
+            "type": "string",
+            "nullable": true,
+            "example": "Business report writing"
+          },
+          "task": {
+            "type": "string",
+            "nullable": true,
+            "example": "Do task x"
+          },
+          "additionalContext": {
+            "type": "string",
+            "nullable": true,
+            "example": "When you see the value baf it stand for business-agent-foundation"
+          },
+          "threads": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentControllerService.Threads-create"
+            }
+          },
+          "toolkits": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentControllerService.Toolkits-create"
+            }
+          },
+          "iterations": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true,
+            "default": 20,
+            "example": "20"
+          },
+          "orchestrationConfig": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AgentControllerService.cds_Map-create"
+              }
+            ],
+            "nullable": true,
+            "example": "{ \"filtering_module_config\": { ... } }"
+          },
+          "baseModel": {
+            "type": "string",
+            "default": "OpenAiGpt4oMini",
+            "example": "OpenAiGpt4oMini"
+          },
+          "backupBaseModel": {
+            "type": "string",
+            "nullable": true,
+            "example": "OpenAiGpt4oMini"
+          },
+          "advancedModel": {
+            "type": "string",
+            "default": "OpenAiGpt4o",
+            "example": "OpenAiGpt4o"
+          },
+          "backupAdvancedModel": {
+            "type": "string",
+            "nullable": true,
+            "example": "OpenAiGpt4o"
+          },
+          "preprocessingEnabled": {
+            "type": "boolean",
+            "default": true,
+            "example": "true"
+          },
+          "postprocessingEnabled": {
+            "type": "boolean",
+            "default": true,
+            "example": "true"
+          },
+          "defaultOutputFormat": {
+            "type": "string",
+            "nullable": true,
+            "default": "Markdown",
+            "example": "Markdown"
+          },
+          "defaultOutputFormatOptions": {
+            "type": "string",
+            "nullable": true,
+            "example": "{\"schema\": \"https://json-schema.org/draft/2020-12/schema\"}"
+          },
+          "callbackDestination": {
+            "type": "string",
+            "nullable": true,
+            "example": "MY_CALLBACK"
+          }
+        },
+        "required": ["ID"]
+      },
+      "AgentControllerService.Agents-update": {
+        "title": "List of Agents (for update)",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Report Expert Agent v1"
+          },
+          "expertIn": {
+            "type": "string",
+            "nullable": true,
+            "example": "Business report writing"
+          },
+          "task": {
+            "type": "string",
+            "nullable": true,
+            "example": "Do task x"
+          },
+          "additionalContext": {
+            "type": "string",
+            "nullable": true,
+            "example": "When you see the value baf it stand for business-agent-foundation"
+          },
+          "threads": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentControllerService.Threads-create"
+            }
+          },
+          "toolkits": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentControllerService.Toolkits-create"
+            }
+          },
+          "iterations": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true,
+            "default": 20,
+            "example": "20"
+          },
+          "orchestrationConfig": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AgentControllerService.cds_Map-update"
+              }
+            ],
+            "nullable": true,
+            "example": "{ \"filtering_module_config\": { ... } }"
+          },
+          "baseModel": {
+            "type": "string",
+            "default": "OpenAiGpt4oMini",
+            "example": "OpenAiGpt4oMini"
+          },
+          "backupBaseModel": {
+            "type": "string",
+            "nullable": true,
+            "example": "OpenAiGpt4oMini"
+          },
+          "advancedModel": {
+            "type": "string",
+            "default": "OpenAiGpt4o",
+            "example": "OpenAiGpt4o"
+          },
+          "backupAdvancedModel": {
+            "type": "string",
+            "nullable": true,
+            "example": "OpenAiGpt4o"
+          },
+          "preprocessingEnabled": {
+            "type": "boolean",
+            "default": true,
+            "example": "true"
+          },
+          "postprocessingEnabled": {
+            "type": "boolean",
+            "default": true,
+            "example": "true"
+          },
+          "defaultOutputFormat": {
+            "type": "string",
+            "nullable": true,
+            "default": "Markdown",
+            "example": "Markdown"
+          },
+          "defaultOutputFormatOptions": {
+            "type": "string",
+            "nullable": true,
+            "example": "{\"schema\": \"https://json-schema.org/draft/2020-12/schema\"}"
+          },
+          "callbackDestination": {
+            "type": "string",
+            "nullable": true,
+            "example": "MY_CALLBACK"
+          }
+        }
+      },
+      "AgentControllerService.AiModels": {
+        "title": "AiModels",
+        "type": "object",
+        "properties": {
+          "modelId": {
+            "type": "string"
+          },
+          "modelName": {
+            "type": "string",
+            "nullable": true
+          },
+          "providerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "providerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "rank": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "AgentControllerService.Inputs": {
+        "title": "Inputs",
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "modifiedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "message": {
+            "$ref": "#/components/schemas/AgentControllerService.Messages"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "default": "string"
+          },
+          "possibleValues": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          "suggestions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        }
+      },
+      "AgentControllerService.Inputs-create": {
+        "title": "Inputs (for create)",
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "default": "string"
+          },
+          "possibleValues": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          "suggestions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        },
+        "required": ["ID"]
+      },
+      "AgentControllerService.Inputs-update": {
+        "title": "Inputs (for update)",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "default": "string"
+          },
+          "possibleValues": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          "suggestions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        }
+      },
+      "AgentControllerService.Messages": {
+        "title": "Messages",
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "modifiedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "thread": {
+            "$ref": "#/components/schemas/AgentControllerService.Threads"
+          },
+          "traces": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentControllerService.Traces"
+            }
+          },
+          "traces@count": {
+            "$ref": "#/components/schemas/count"
+          },
+          "tokens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentControllerService.Tokens"
+            }
+          },
+          "tokens@count": {
+            "$ref": "#/components/schemas/count"
+          },
+          "previous": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AgentControllerService.Messages"
+              }
+            ],
+            "nullable": true
+          },
+          "previous_ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "default": "message"
+          },
+          "canceled": {
+            "type": "boolean",
+            "nullable": true,
+            "default": false
+          },
+          "sender": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "outputFormat": {
+            "type": "string",
+            "nullable": true
+          },
+          "outputFormatOptions": {
+            "type": "string",
+            "nullable": true
+          },
+          "scratchpad": {
+            "type": "string",
+            "nullable": true
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentControllerService.Inputs"
+            }
+          },
+          "inputs@count": {
+            "$ref": "#/components/schemas/count"
+          },
+          "group": {
+            "$ref": "#/components/schemas/AgentControllerService.Messages"
+          },
+          "group_ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          },
+          "guardrailed": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "AgentControllerService.Messages-create": {
+        "title": "Messages (for create)",
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          },
+          "traces": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentControllerService.Traces-create"
+            }
+          },
+          "tokens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentControllerService.Tokens-create"
+            }
+          },
+          "previous_ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef",
+            "nullable": true
+          },
+          "canceled": {
+            "type": "boolean",
+            "nullable": true,
+            "default": false
+          },
+          "sender": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "outputFormat": {
+            "type": "string",
+            "nullable": true
+          },
+          "outputFormatOptions": {
+            "type": "string",
+            "nullable": true
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentControllerService.Inputs-create"
+            }
+          },
+          "group_ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          },
+          "guardrailed": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": ["ID"]
+      },
+      "AgentControllerService.Messages-update": {
+        "title": "Messages (for update)",
+        "type": "object",
+        "properties": {
+          "traces": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentControllerService.Traces-create"
+            }
+          },
+          "tokens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentControllerService.Tokens-create"
+            }
+          },
+          "previous_ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef",
+            "nullable": true
+          },
+          "canceled": {
+            "type": "boolean",
+            "nullable": true,
+            "default": false
+          },
+          "sender": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "outputFormat": {
+            "type": "string",
+            "nullable": true
+          },
+          "outputFormatOptions": {
+            "type": "string",
+            "nullable": true
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentControllerService.Inputs-create"
+            }
+          },
+          "group_ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          },
+          "guardrailed": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "AgentControllerService.Threads": {
+        "title": "List of Threads",
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "modifiedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "example": "Sustainability Report 2023"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentControllerService.Messages"
+            }
+          },
+          "messages@count": {
+            "$ref": "#/components/schemas/count"
+          },
+          "state": {
+            "type": "string",
+            "default": "success",
+            "example": "running"
+          },
+          "agent": {
+            "$ref": "#/components/schemas/AgentControllerService.Agents"
+          }
+        }
+      },
+      "AgentControllerService.Threads-create": {
+        "title": "List of Threads (for create)",
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          },
+          "name": {
+            "type": "string",
+            "example": "Sustainability Report 2023"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentControllerService.Messages-create"
+            }
+          }
+        },
+        "required": ["ID"]
+      },
+      "AgentControllerService.Threads-update": {
+        "title": "List of Threads (for update)",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Sustainability Report 2023"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentControllerService.Messages-create"
+            }
+          }
+        }
+      },
+      "AgentControllerService.Tokens": {
+        "title": "Tokens",
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "modifiedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "message": {
+            "$ref": "#/components/schemas/AgentControllerService.Messages"
+          },
+          "trace": {
+            "$ref": "#/components/schemas/AgentControllerService.Traces"
+          },
+          "modelName": {
+            "type": "string"
+          },
+          "inputTokens": {
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          },
+          "outputTokens": {
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          },
+          "inputTokensCost": {
+            "anyOf": [
+              {
+                "type": "number",
+                "format": "decimal",
+                "multipleOf": 0.00001,
+                "maximum": 99999.99999,
+                "minimum": -99999.99999
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "example": 0,
+            "x-sap-precision": 10,
+            "x-sap-scale": 5,
+            "default": "0.0"
+          },
+          "outputTokensCost": {
+            "anyOf": [
+              {
+                "type": "number",
+                "format": "decimal",
+                "multipleOf": 0.00001,
+                "maximum": 99999.99999,
+                "minimum": -99999.99999
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "example": 0,
+            "x-sap-precision": 10,
+            "x-sap-scale": 5,
+            "default": "0.0"
+          }
+        }
+      },
+      "AgentControllerService.Tokens-create": {
+        "title": "Tokens (for create)",
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          },
+          "modelName": {
+            "type": "string"
+          },
+          "inputTokens": {
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          },
+          "outputTokens": {
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          },
+          "inputTokensCost": {
+            "anyOf": [
+              {
+                "type": "number",
+                "format": "decimal",
+                "multipleOf": 0.00001,
+                "maximum": 99999.99999,
+                "minimum": -99999.99999
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "example": 0,
+            "x-sap-precision": 10,
+            "x-sap-scale": 5,
+            "default": "0.0"
+          },
+          "outputTokensCost": {
+            "anyOf": [
+              {
+                "type": "number",
+                "format": "decimal",
+                "multipleOf": 0.00001,
+                "maximum": 99999.99999,
+                "minimum": -99999.99999
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "example": 0,
+            "x-sap-precision": 10,
+            "x-sap-scale": 5,
+            "default": "0.0"
+          }
+        },
+        "required": ["ID"]
+      },
+      "AgentControllerService.Tokens-update": {
+        "title": "Tokens (for update)",
+        "type": "object",
+        "properties": {
+          "modelName": {
+            "type": "string"
+          },
+          "inputTokens": {
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          },
+          "outputTokens": {
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          },
+          "inputTokensCost": {
+            "anyOf": [
+              {
+                "type": "number",
+                "format": "decimal",
+                "multipleOf": 0.00001,
+                "maximum": 99999.99999,
+                "minimum": -99999.99999
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "example": 0,
+            "x-sap-precision": 10,
+            "x-sap-scale": 5,
+            "default": "0.0"
+          },
+          "outputTokensCost": {
+            "anyOf": [
+              {
+                "type": "number",
+                "format": "decimal",
+                "multipleOf": 0.00001,
+                "maximum": 99999.99999,
+                "minimum": -99999.99999
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "example": 0,
+            "x-sap-precision": 10,
+            "x-sap-scale": 5,
+            "default": "0.0"
+          }
+        }
+      },
+      "AgentControllerService.Toolkits": {
+        "title": "List of Toolkits",
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "modifiedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "example": "Calculator"
+          },
+          "agent": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AgentControllerService.Agents"
+              }
+            ],
+            "example": "1"
+          },
+          "type": {
+            "type": "string",
+            "example": "calculator"
+          },
+          "instanceId": {
+            "type": "string",
+            "example": "UUID"
+          }
+        }
+      },
+      "AgentControllerService.Toolkits-create": {
+        "title": "List of Toolkits (for create)",
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          },
+          "name": {
+            "type": "string",
+            "example": "Calculator"
+          },
+          "type": {
+            "type": "string",
+            "example": "calculator"
+          },
+          "instanceId": {
+            "type": "string",
+            "example": "UUID"
+          }
+        },
+        "required": ["ID"]
+      },
+      "AgentControllerService.Toolkits-update": {
+        "title": "List of Toolkits (for update)",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Calculator"
+          },
+          "type": {
+            "type": "string",
+            "example": "calculator"
+          },
+          "instanceId": {
+            "type": "string",
+            "example": "UUID"
+          }
+        }
+      },
+      "AgentControllerService.Traces": {
+        "title": "Traces",
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "modifiedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-04-13T15:51:04.0000000Z",
+            "nullable": true
+          },
+          "message": {
+            "$ref": "#/components/schemas/AgentControllerService.Messages"
+          },
+          "fromId": {
+            "type": "string",
+            "nullable": true
+          },
+          "toId": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "start",
+              "end",
+              "abort",
+              "agent",
+              "edge",
+              "toolkit",
+              "toolkitResource",
+              "error"
+            ]
+          },
+          "tokens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentControllerService.Tokens"
+            }
+          },
+          "tokens@count": {
+            "$ref": "#/components/schemas/count"
+          },
+          "data": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "AgentControllerService.Traces-create": {
+        "title": "Traces (for create)",
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234567-89ab-cdef-0123-456789abcdef"
+          },
+          "fromId": {
+            "type": "string",
+            "nullable": true
+          },
+          "toId": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "start",
+              "end",
+              "abort",
+              "agent",
+              "edge",
+              "toolkit",
+              "toolkitResource",
+              "error"
+            ]
+          },
+          "tokens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentControllerService.Tokens-create"
+            }
+          },
+          "data": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": ["ID"]
+      },
+      "AgentControllerService.Traces-update": {
+        "title": "Traces (for update)",
+        "type": "object",
+        "properties": {
+          "fromId": {
+            "type": "string",
+            "nullable": true
+          },
+          "toId": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "start",
+              "end",
+              "abort",
+              "agent",
+              "edge",
+              "toolkit",
+              "toolkitResource",
+              "error"
+            ]
+          },
+          "tokens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentControllerService.Tokens-create"
+            }
+          },
+          "data": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "AgentControllerService.cds_Map": {
+        "title": "cds_Map",
+        "type": "object"
+      },
+      "AgentControllerService.cds_Map-create": {
+        "title": "cds_Map (for create)",
+        "type": "object"
+      },
+      "AgentControllerService.cds_Map-update": {
+        "title": "cds_Map (for update)",
+        "type": "object"
+      },
+      "AgentControllerService.return_AgentControllerService_Agents_archive": {
+        "title": "return_AgentControllerService_Agents_archive",
+        "type": "object"
+      },
+      "AgentControllerService.return_AgentControllerService_Agents_deploy": {
+        "title": "return_AgentControllerService_Agents_deploy",
+        "type": "object"
+      },
+      "AgentControllerService.return_AgentControllerService_Threads_cancel": {
+        "title": "return_AgentControllerService_Threads_cancel",
+        "type": "object"
+      },
+      "AgentControllerService.return_AgentControllerService_Threads_invoke": {
+        "title": "return_AgentControllerService_Threads_invoke",
+        "type": "object",
+        "properties": {
+          "runId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "AgentControllerService.return_AgentControllerService_deployContent": {
+        "title": "return_AgentControllerService_deployContent",
+        "type": "object",
+        "properties": {
+          "agentId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "AgentControllerService.return_AgentControllerService_test": {
+        "title": "return_AgentControllerService_test",
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "count": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string"
+          }
+        ],
+        "description": "The number of entities in the collection. Available when using the [$count](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptioncount) query option."
+      },
+      "error": {
+        "type": "object",
+        "required": ["error"],
+        "properties": {
+          "error": {
+            "type": "object",
+            "required": ["code", "message"],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "target": {
+                "type": "string"
+              },
+              "details": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["code", "message"],
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "target": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "innererror": {
+                "type": "object",
+                "description": "The structure of this object is service-specific"
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "top": {
+        "name": "$top",
+        "in": "query",
+        "description": "Show only the first n items, see [Paging - Top](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptiontop)",
+        "schema": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "example": 50
+      },
+      "skip": {
+        "name": "$skip",
+        "in": "query",
+        "description": "Skip the first n items, see [Paging - Skip](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionskip)",
+        "schema": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "count": {
+        "name": "$count",
+        "in": "query",
+        "description": "Include count of items, see [Count](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptioncount)",
+        "schema": {
+          "type": "boolean"
+        }
+      },
+      "search": {
+        "name": "$search",
+        "in": "query",
+        "description": "Search items by search phrases, see [Searching](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionsearch)",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "responses": {
+      "error": {
+        "description": "Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/error"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "http_bearer": {
+        "description": "HTTP authentication with bearer token",
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "http_bearer": []
+    }
+  ]
+}
