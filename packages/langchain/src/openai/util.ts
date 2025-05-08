@@ -1,6 +1,7 @@
 import { AIMessage } from '@langchain/core/messages';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { v4 as uuidv4 } from 'uuid';
+import { isZodSchema } from '@langchain/core/utils/types';
 import type { ToolCall } from '@langchain/core/messages/tool';
 import type {
   AzureOpenAiChatCompletionRequestUserMessage,
@@ -40,7 +41,9 @@ function mapToolToOpenAiFunction(tool: StructuredTool): {
   return {
     name: tool.name,
     description: tool.description,
-    parameters: zodToJsonSchema(tool.schema)
+    parameters: isZodSchema(tool.schema)
+      ? zodToJsonSchema(tool.schema)
+      : tool.schema
   };
 }
 
