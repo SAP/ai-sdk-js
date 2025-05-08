@@ -328,6 +328,7 @@ components:
 
     CompletionPostResponseStreaming:
       # TODO: This seems unused in the spec, but used in our endpoints.py, related to Github #778
+      # see also lint rule ignore in `.spectral.yaml`, Remove the ignore when fixing.
       type: object
       required:
         - request_id
