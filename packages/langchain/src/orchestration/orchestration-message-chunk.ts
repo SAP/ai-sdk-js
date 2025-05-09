@@ -14,7 +14,11 @@ export class OrchestrationMessageChunk extends AIMessageChunk {
     fields: string | AIMessageChunkFields,
     module_results: ModuleResults,
     request_id: string,
-    additional_properties?: Record<string, any>
+    additional_properties?: {
+      role?: string;
+      tool_call_id?: string;
+      [key: string]: any;
+    }
   ) {
     super(fields);
     this.module_results = module_results;
