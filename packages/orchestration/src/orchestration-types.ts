@@ -13,7 +13,9 @@ import type {
   LlamaGuard38B,
   MaskingModuleConfig,
   LlmModuleConfig as OriginalLlmModuleConfig,
-  TemplatingModuleConfig
+  Template as OriginalTemplate,
+  TemplateRef,
+  TemplatingChatMessage
 } from './client/api/schema/index.js';
 
 /**
@@ -22,8 +24,14 @@ import type {
 export interface Prompt {
   /**
    * History.
+   * @deprecated since 1.14.0. Use `messages` instead.
    */
   messagesHistory?: ChatMessages;
+
+  /**
+   * Chat messages, including the message history.
+   */
+  messages?: ChatMessages;
 
   /**
    * Template parameters.
@@ -52,14 +60,32 @@ export type LlmModelParams = {
   n?: number;
 } & Record<string, any>;
 
+
+export type Template = Omit<OriginalTemplate, 'template'> & {
+  template?: TemplatingChatMessage;  // Make `template` optional
+};
+
+export type TemplatingModuleConfig = Template | TemplateRef;
+
 /**
  * Orchestration module configuration.
  */
 export interface OrchestrationModuleConfig {
   /**
-   * Templating module configuration.
+   * Templating module configuration can be a template or a template reference.
+   * If a template is provided, it will be used to format the input parameters.
+   * If a template reference is provided, it will be used to reference a template.
+   * @example
+   * templating: {
+   *  template: [
+   *    {
+   *     role: 'user',
+   *    content: 'How can the features of AI in SAP BTP specifically {{?groundingOutput}}, be applied to {{?inputContext}}'
+   *   }
+   *  ]
+   * }
    */
-  templating: TemplatingModuleConfig | string;
+  templating?: TemplatingModuleConfig | string;
   /**
    * LLM module configuration.
    */
