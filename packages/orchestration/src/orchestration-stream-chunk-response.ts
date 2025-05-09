@@ -1,4 +1,5 @@
 import type {
+  ChatDelta,
   CompletionPostResponseStreaming,
   LlmChoiceStreaming,
   TokenUsage
@@ -40,6 +41,12 @@ export class OrchestrationStreamChunkResponse {
     return this.getChoices()?.find(
       (c: LlmChoiceStreaming) => c.index === choiceIndex
     )?.delta.content;
+  }
+
+  getDelta(choiceIndex = 0): ChatDelta | undefined {
+    return this.getChoices()?.find(
+      (c: LlmChoiceStreaming) => c.index === choiceIndex
+    )?.delta;
   }
 
   private getChoices(): LlmChoiceStreaming[] | undefined {
