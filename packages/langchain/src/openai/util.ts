@@ -2,7 +2,10 @@ import { AIMessage } from '@langchain/core/messages';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { v4 as uuidv4 } from 'uuid';
 import { isZodSchema } from '@langchain/core/utils/types';
-import type { StructuredToolInterface, StructuredTool} from '@langchain/core/tools';
+import type {
+  StructuredToolInterface,
+  StructuredTool
+} from '@langchain/core/tools';
 import type { ToolCall } from '@langchain/core/messages/tool';
 import type {
   AzureOpenAiChatCompletionRequestUserMessage,
@@ -235,8 +238,11 @@ function mapBaseMessageToAzureOpenAiChatMessage(
 }
 
 function isStructuredToolArray(tools?: unknown[]): tools is StructuredTool[] {
-  return !!tools?.every(tool => tool !== undefined &&
-    Array.isArray((tool as StructuredToolInterface).lc_namespace));
+  return !!tools?.every(
+    tool =>
+      tool !== undefined &&
+      Array.isArray((tool as StructuredToolInterface).lc_namespace)
+  );
 }
 
 /**

@@ -155,16 +155,13 @@ export async function invokeToolChain(): Promise<string> {
   }
 
   // create a tool
-  const azureTool = tool(
-    shareholderValueFunction,
-    {
-      name: 'shareholder_value',
-      description: 'Multiplies the shareholder value',
-      schema: z.object({
-        value: z.number().describe('The value that is supposed to be increased.')
-      })
-    }
-  );
+  const azureTool = tool(shareholderValueFunction, {
+    name: 'shareholder_value',
+    description: 'Multiplies the shareholder value',
+    schema: z.object({
+      value: z.number().describe('The value that is supposed to be increased.')
+    })
+  });
 
   const humanMessage = new HumanMessage(
     'Increase the shareholder value, it is currently at 10'
