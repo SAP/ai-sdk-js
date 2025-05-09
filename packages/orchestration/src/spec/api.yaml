@@ -328,6 +328,7 @@ components:
 
     CompletionPostResponseStreaming:
       # TODO: This seems unused in the spec, but used in our endpoints.py, related to Github #778
+      # see also lint rule ignore in `.spectral.yaml`, Remove the ignore when fixing.
       type: object
       required:
         - request_id
@@ -1077,6 +1078,7 @@ components:
         - profile-religious-group
         - profile-political-group
         - profile-pronouns-gender
+        - profile-ethnicity
         - profile-gender
         - profile-sexual-orientation
         - profile-trade-union
