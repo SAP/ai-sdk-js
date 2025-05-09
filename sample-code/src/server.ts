@@ -60,6 +60,7 @@ import {
   createPromptTemplate,
   deletePromptTemplate
 } from './prompt-registry.js';
+import { getAiModels } from './pab.js';
 import type { RetievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type { AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
@@ -596,6 +597,14 @@ app.get('/prompt-registry/template', async (req, res) => {
     res.write(`Prompt template deleted: ${response.message}\n`);
 
     res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/pab/ai-models', async (req, res) => {
+  try {
+    res.send(await getAiModels());
   } catch (error: any) {
     sendError(res, error);
   }
