@@ -9,6 +9,7 @@ import {
   parseFileToString
 } from '../../../../test-util/mock-http.js';
 import { OrchestrationClient } from './client.js';
+import type { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
 import type { LangchainOrchestrationModuleConfig } from './types.js';
 import type {
   CompletionPostResponse,
@@ -162,7 +163,7 @@ describe('orchestration service client', () => {
     const stream = await client.stream([]);
 
     // Collect all chunks
-    const chunks = [];
+    const chunks: OrchestrationMessageChunk[] = [];
     for await (const chunk of stream) {
       chunks.push(chunk);
     }
@@ -174,6 +175,4 @@ describe('orchestration service client', () => {
     expect(chunks[0]).toBeDefined();
     expect(chunks[0].content).toBeDefined();
   });
-
-  // Test for disableStreaming property has been removed as the feature is no longer supported
 });

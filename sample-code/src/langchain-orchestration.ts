@@ -13,8 +13,10 @@ import {
   MemorySaver
 } from '@langchain/langgraph';
 import { v4 as uuidv4 } from 'uuid';
-import type { LangchainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
-import type { OrchestrationMessageChunk } from '@sap-ai-sdk/langchain/orchestration/index.js';
+import type {
+  LangchainOrchestrationModuleConfig,
+  OrchestrationMessageChunk
+} from '@sap-ai-sdk/langchain';
 
 /**
  * Ask GPT about an introduction to SAP Cloud SDK.

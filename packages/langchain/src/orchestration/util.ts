@@ -1,10 +1,4 @@
-import {
-  AIMessage,
-  ChatMessageChunk,
-  HumanMessageChunk,
-  SystemMessageChunk,
-  ToolMessageChunk
-} from '@langchain/core/messages';
+import { AIMessage } from '@langchain/core/messages';
 import { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
 import type { ChatResult } from '@langchain/core/outputs';
 import type {
@@ -12,9 +6,10 @@ import type {
   ChatMessage,
   CompletionPostResponse,
   CompletionPostResponseStreaming,
-  Template
+  Template,
+  ToolCallChunk as OrchestrationToolCallChunk
 } from '@sap-ai-sdk/orchestration';
-import type { ToolCall } from '@langchain/core/messages/tool';
+import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type { AzureOpenAiChatCompletionMessageToolCalls } from '@sap-ai-sdk/foundation-models';
 import type {
   BaseMessage,
@@ -134,6 +129,27 @@ function mapAzureOpenAiToLangchainToolCall(
 }
 
 /**
+ * Maps {@link OrchestrationToolCallChunk} to LangChain's {@link ToolCallChunk}.
+ * @param toolCallChunks - The {@link OrchestrationToolCallChunk} in a stream response chunk.
+ * @returns An array of LangChain {@link ToolCallChunk}.
+ */
+function mapOrchestrationToLangchainToolCallChunk(
+  toolCallChunks: OrchestrationToolCallChunk[]
+): ToolCallChunk[] {
+  const tool_call_chunks: ToolCallChunk[] = [];
+  for (const chunk of toolCallChunks) {
+    tool_call_chunks.push({
+      name: chunk.function?.name,
+      args: chunk.function?.arguments,
+      id: chunk.id,
+      index: chunk.index,
+      type: 'tool_call_chunk'
+    });
+  }
+  return tool_call_chunks;
+}
+
+/**
  * Maps the completion response to a {@link ChatResult}.
  * @param completionResponse - The completion response to map.
  * @returns The mapped {@link ChatResult}.
@@ -211,51 +227,18 @@ export function _convertOrchestrationChunkToMessageChunk(
   }
 
   // Create tool call chunks if present
-  const toolCallChunks: {
-    name?: string;
-    args?: string;
-    id?: string;
-    index?: number;
-    type: string;
-  }[] = [];
+  let tool_call_chunks: ToolCallChunk[] = [];
   if (Array.isArray(delta.tool_calls)) {
-    for (const toolCall of delta.tool_calls) {
-      toolCallChunks.push({
-        name: toolCall.function?.name,
-        args: toolCall.function?.arguments,
-        id: toolCall.id,
-        index: toolCall.index,
-        type: 'function'
-      });
-    }
+    tool_call_chunks = mapOrchestrationToLangchainToolCallChunk(
+      delta.tool_calls
+    );
   }
-
-  // Return the appropriate message chunk based on role
-  switch (role) {
-    case 'user':
-      return new HumanMessageChunk({ content });
-
-    case 'assistant': {
-      return new OrchestrationMessageChunk(
-        { content, additional_kwargs },
-        module_results ?? {},
-        request_id
-      );
-    }
-
-    case 'system':
-      return new SystemMessageChunk({ content });
-
-    case 'tool': {
-      const toolCallId = delta.tool_calls?.[0]?.id ?? '';
-      return new ToolMessageChunk({
-        content,
-        additional_kwargs,
-        tool_call_id: toolCallId
-      });
-    }
-
-    default:
-      return new ChatMessageChunk({ content, role });
-  }
+  const toolCallId = delta.tool_calls?.[0]?.id ?? undefined;
+  // Use OrchestrationMessageChunk to represent message chunks for roles like 'tool' and 'user' too
+  return new OrchestrationMessageChunk(
+    { content, additional_kwargs, tool_call_chunks },
+    module_results ?? {},
+    request_id,
+    { role, ...(toolCallId && { tool_call_id: toolCallId }) }
+  );
 }

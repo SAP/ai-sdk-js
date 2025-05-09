@@ -495,7 +495,7 @@ app.get('/langchain/stream-orchestration', async (req, res) => {
       res.write(chunk.content + '\n');
       if (connectionAlive && chunk.usage_metadata) {
         res.write('\n\n---------------------------\n');
-        res.write('Finish reason: stop\n');
+        res.write(`Finish reason:  ${chunk.additional_kwargs.finish_reason}\n`);
         res.write('Token usage:\n');
         res.write(
           `  - Completion tokens: ${chunk.usage_metadata?.output_tokens}\n`
