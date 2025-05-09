@@ -5,6 +5,9 @@ import {
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
+import { z } from 'zod';
+import { zodToJsonSchema } from 'zod-to-json-schema';
+import { tool } from '@langchain/core/tools';
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
 import { mapLangchainToAiClient, mapOutputToChatResult } from './util.js';
 import { AzureOpenAiChatClient } from './chat.js';
@@ -39,6 +42,21 @@ describe('Mapping Functions', () => {
       new SystemMessage('System Test Content'),
       new AIMessage('AI Test Content')
     ];
+    const addNumbersSchema = z
+      .object({
+        a: z.number().describe('The first number to be added.'),
+        b: z.number().describe('The second number to be added.')
+      })
+      .strict();
+
+    const myTool = tool(
+      () => { },
+      {
+        name: 'test',
+        description: 'Some description',
+        schema: addNumbersSchema
+      }
+    );
 
     const request: AzureOpenAiCreateChatCompletionRequest = {
       messages: [
@@ -60,13 +78,20 @@ describe('Mapping Functions', () => {
           content: 'AI Test Content'
         }
       ],
-      tools: [{ type: 'function', function: { name: 'test', parameters: {} } }],
+      tools: [{
+        type: 'function',
+        function: {
+          name: 'test',
+          description: 'Some description',
+          parameters: zodToJsonSchema(addNumbersSchema),
+        }
+      }],
       tool_choice: 'auto',
       functions: [{ name: 'random' }, { name: 'test' }]
     };
     const client = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
     const options: AzureOpenAiChatCallOptions = {
-      tools: [{ type: 'function', function: { name: 'test', parameters: {} } }],
+      tools: [myTool],
       tool_choice: 'auto',
       functions: [{ name: 'random' }, { name: 'test' }]
     };
