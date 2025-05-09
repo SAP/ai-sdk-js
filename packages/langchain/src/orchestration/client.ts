@@ -188,7 +188,7 @@ export class OrchestrationClient extends BaseChatModel<
       // Add token usage to the message chunk if this is the final chunk
       if (finishReason && tokenUsage) {
         if (messageChunk instanceof OrchestrationMessageChunk) {
-          messageChunk.additional_kwargs.finish_reason = finishReason;
+          messageChunk.response_metadata.finish_reason = finishReason;
           messageChunk.usage_metadata = {
             input_tokens: tokenUsage.prompt_tokens,
             output_tokens: tokenUsage.completion_tokens,

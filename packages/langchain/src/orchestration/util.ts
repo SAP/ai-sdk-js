@@ -13,7 +13,6 @@ import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type { AzureOpenAiChatCompletionMessageToolCalls } from '@sap-ai-sdk/foundation-models';
 import type {
   BaseMessage,
-  BaseMessageChunk,
   HumanMessage,
   SystemMessage
 } from '@langchain/core/messages';
@@ -213,7 +212,7 @@ export function _convertOrchestrationChunkToMessageChunk(
   chunkData: CompletionPostResponseStreaming,
   delta: ChatDelta,
   defaultRole?: string
-): BaseMessageChunk {
+): OrchestrationMessageChunk {
   const { module_results, request_id } = chunkData;
   const role = delta.role ?? defaultRole ?? 'assistant';
   const content = delta.content ?? '';
