@@ -202,11 +202,11 @@ export function mapOutputToChatResult(
 }
 
 /**
- * Converts orchestration stream chunk to an appropriate message chunk based on role.
+ * Converts orchestration stream chunk to amessage chunk.
  * @param chunkData - The content of the message.
  * @param delta - The delta content from the chunk.
  * @param defaultRole - The default role to use if not specified in the delta.
- * @returns A message chunk of the appropriate type based on the role.
+ * @returns A message chunk compatible with Langchain's {@link AIMessageChunk}
  * @internal
  */
 export function _convertOrchestrationChunkToMessageChunk(
@@ -218,7 +218,7 @@ export function _convertOrchestrationChunkToMessageChunk(
   const role = delta.role ?? defaultRole ?? 'assistant';
   const content = delta.content ?? '';
 
-  // Handle additional kwargs for function and tool calls
+  // Handle additional kwargs for tool calls
   const additional_kwargs: Record<string, unknown> = {};
 
   // Handle tool calls
