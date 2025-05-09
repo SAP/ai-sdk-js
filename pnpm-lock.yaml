@@ -270,9 +270,15 @@ importers:
       '@sap-ai-sdk/orchestration':
         specifier: workspace:^
         version: link:../packages/orchestration
+      '@sap-ai-sdk/pab':
+        specifier: workspace:^
+        version: link:../packages/pab
       '@sap-ai-sdk/prompt-registry':
         specifier: workspace:^
         version: link:../packages/prompt-registry
+      '@sap-cloud-sdk/connectivity':
+        specifier: 4.0.2
+        version: 4.0.2
       '@sap-cloud-sdk/util':
         specifier: ^4.0.2
         version: 4.0.2
