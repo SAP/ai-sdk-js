@@ -146,6 +146,14 @@ export function constructCompletionPostRequest(
     ...(config?.grounding &&
       Object.keys(config.grounding).length && {
         grounding_module_config: config.grounding
+      }),
+    ...(config?.inputTranslation &&
+      Object.keys(config.inputTranslation).length && {
+        input_translation_module_config: config.inputTranslation
+      }),
+    ...(config?.outputTranslation &&
+      Object.keys(config.outputTranslation).length && {
+        output_translation_module_config: config.outputTranslation
       })
   };
 

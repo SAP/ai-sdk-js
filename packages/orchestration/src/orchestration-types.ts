@@ -10,9 +10,11 @@ import type {
   FilteringStreamOptions,
   GlobalStreamOptions,
   GroundingModuleConfig,
+  InputTranslationModuleConfig,
   LlamaGuard38B,
   MaskingModuleConfig,
   LlmModuleConfig as OriginalLlmModuleConfig,
+  OutputTranslationModuleConfig,
   TemplatingModuleConfig
 } from './client/api/schema/index.js';
 
@@ -89,6 +91,14 @@ export interface OrchestrationModuleConfig {
    * Global streaming options.
    */
   streaming?: GlobalStreamOptions;
+  /**
+   * Input translation module configuration.
+   */
+  inputTranslation?: InputTranslationModuleConfig;
+  /**
+   * Output translation module configuration.
+   */
+  outputTranslation?: OutputTranslationModuleConfig;
 }
 
 /**
@@ -222,3 +232,17 @@ export type AzureFilterThreshold = keyof typeof supportedAzureFilterThresholds;
  * The filter categories supported for Llama guard filter.
  */
 export type LlamaGuardCategory = keyof LlamaGuard38B;
+
+/**
+ * Translation configuration for SAP Document Translation.
+ */
+export interface TranslationConfigParams {
+  /**
+   * Language of the text to be translated.
+   */
+  source_language?: string;
+  /**
+   * Language to which the text should be translated.
+   */
+  target_language: string;
+}
