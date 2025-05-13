@@ -10,7 +10,7 @@ import type { TranslationConfigParams } from '../orchestration-types.js';
  * @example "buildOrchestrationTranslationModule({source_language: 'de-DE', target_language: 'en-US'})"
  */
 export function buildOrchestrationTranslationConfig(
-  config?: TranslationConfigParams  
+  config?: TranslationConfigParams
 ): SAPDocumentTranslation {
   if (!config || !config.target_language || !config.target_language.trim()) {
     throw new Error(
