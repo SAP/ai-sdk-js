@@ -690,7 +690,9 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
     })
   });
 
-  return orchestrationClient.chatCompletion({ 
-    inputParams: { input: 'Write an abstract for a thriller playing at SAP headquarters.' } 
+  return orchestrationClient.chatCompletion({
+    inputParams: {
+      input: 'Write an abstract for a thriller playing at SAP headquarters.'
+    }
   });
 }
