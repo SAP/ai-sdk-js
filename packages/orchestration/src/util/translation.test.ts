@@ -1,10 +1,10 @@
-import { buildOrchestrationTranslationModule } from './translation.js';
+import { buildOrchestrationTranslationConfig } from './translation.js';
 import type { SAPDocumentTranslation } from '../client/api/schema/index.js';
 import type { TranslationConfigParams } from '../orchestration-types.js';
 
 describe('Translation module config', () => {
   it('builds translation config', async () => {
-    const translationConfig = buildOrchestrationTranslationModule({
+    const translationConfig = buildOrchestrationTranslationConfig({
       source_language: 'de-DE',
       target_language: 'en-US'
     });
@@ -22,7 +22,7 @@ describe('Translation module config', () => {
 
   it('throw error when config is empty', async () => {
     expect(() => {
-      buildOrchestrationTranslationModule();
+      buildOrchestrationTranslationConfig();
     }).toThrow('Target language is required for translation configuration.');
   });
 
@@ -32,7 +32,7 @@ describe('Translation module config', () => {
     };
 
     expect(() => {
-      buildOrchestrationTranslationModule(invalidConfig);
+      buildOrchestrationTranslationConfig(invalidConfig);
     }).toThrow('Target language is required for translation configuration.');
   });
 });

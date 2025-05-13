@@ -30,7 +30,7 @@ export {
   buildLlamaGuardFilter,
   buildDocumentGroundingConfig,
   buildDpiMaskingProvider,
-  buildOrchestrationTranslationModule
+  buildOrchestrationTranslationConfig
 } from './util/index.js';
 
 export { OrchestrationResponse } from './orchestration-response.js';
