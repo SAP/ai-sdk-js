@@ -179,7 +179,7 @@ export class OrchestrationClient extends BaseChatModel<
           total_tokens: tokenUsage.total_tokens
         };
       }
-      const content = delta.content ?? '';
+      const content = chunk.getDeltaContent() ?? '';
       const generationChunk = new ChatGenerationChunk({
         message: messageChunk,
         text: content
