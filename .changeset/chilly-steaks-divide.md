@@ -3,4 +3,4 @@
 '@sap-ai-sdk/langchain': minor
 ---
 
-[New Functionality] Support streaming in Langchain orchestration client.
+[New Functionality] Support streaming in LangChain orchestration client.
