@@ -9,7 +9,12 @@ import { z } from 'zod';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { tool } from '@langchain/core/tools';
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
-import { isToolDefinition, mapLangchainToAiClient, mapOutputToChatResult, mapToolToOpenAiFunction } from './util.js';
+import {
+  isToolDefinition,
+  mapLangchainToAiClient,
+  mapOutputToChatResult,
+  mapToolToOpenAiFunction
+} from './util.js';
 import { AzureOpenAiChatClient } from './chat.js';
 import type { BaseMessage } from '@langchain/core/messages';
 import type {
@@ -49,7 +54,7 @@ describe('Mapping Functions', () => {
       })
       .strict();
 
-    const myTool = tool(() => { }, {
+    const myTool = tool(() => {}, {
       name: 'test',
       description: 'Some description',
       schema: addNumbersSchema
@@ -116,22 +121,26 @@ describe('Mapping Functions', () => {
   });
 
   it('should type guard the correct ToolDefinition', async () => {
-    expect(isToolDefinition({
-      type: 'function',
-      function: {
-        name: 'test',
-        description: 'Some description',
-        parameters: {}
-      }
-    })).toBe(true);
+    expect(
+      isToolDefinition({
+        type: 'function',
+        function: {
+          name: 'test',
+          description: 'Some description',
+          parameters: {}
+        }
+      })
+    ).toBe(true);
   });
 
   it('should not type guard the incorrect ToolDefinition', async () => {
-    expect(isToolDefinition({
-      name: 'test',
-      description: 'Some description',
-      parameters: {}
-    })).toBe(false);
+    expect(
+      isToolDefinition({
+        name: 'test',
+        description: 'Some description',
+        parameters: {}
+      })
+    ).toBe(false);
   });
 
   describe('mapToolToOpenAiFunction', () => {
@@ -193,11 +202,10 @@ describe('Mapping Functions', () => {
       const toolInput = {
         name: 'test',
         description: 'Some description',
-        schema: z
-          .object({
-            a: z.number().describe('The first number to be added.'),
-            b: z.number().describe('The second number to be added.')
-          })
+        schema: z.object({
+          a: z.number().describe('The first number to be added.'),
+          b: z.number().describe('The second number to be added.')
+        })
       };
       const expectedOutput = {
         name: 'test',
@@ -216,7 +224,7 @@ describe('Mapping Functions', () => {
               description: 'The second number to be added.'
             }
           },
-          required: ['a', 'b'],
+          required: ['a', 'b']
         }
       };
       const result = mapToolToOpenAiFunction(toolInput);

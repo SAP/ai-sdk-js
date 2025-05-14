@@ -28,7 +28,10 @@ import type {
 import type { ChatResult } from '@langchain/core/outputs';
 import type { AzureOpenAiChatClient } from './chat.js';
 import type { AzureOpenAiChatCallOptions } from './types.js';
-import type { FunctionDefinition, ToolDefinition } from '@langchain/core/language_models/base';
+import type {
+  FunctionDefinition,
+  ToolDefinition
+} from '@langchain/core/language_models/base';
 
 /**
  * Maps a LangChain {@link BindToolsInput} to {@link AzureOpenAiChatCompletionFunctions}.
@@ -36,7 +39,9 @@ import type { FunctionDefinition, ToolDefinition } from '@langchain/core/languag
  * @returns The OpenAI chat completion function.
  * @internal
  */
-export function mapToolToOpenAiFunction(tool: BindToolsInput): AzureOpenAiFunctionObject {
+export function mapToolToOpenAiFunction(
+  tool: BindToolsInput
+): AzureOpenAiFunctionObject {
   if (isToolDefinition(tool)) {
     return {
       name: tool.function.name,
@@ -299,7 +304,9 @@ type ToolDefinitionLike = Pick<ToolDefinition, 'type'> & {
  * @internal
  */
 // TODO: Replace `ToolDefinitionLike` with `ToolDefinition` once the `functions` property is removed from the SDK.
-export function isToolDefinition(tool: BindToolsInput): tool is ToolDefinitionLike {
+export function isToolDefinition(
+  tool: BindToolsInput
+): tool is ToolDefinitionLike {
   return (
     typeof tool === 'object' &&
     tool !== null &&

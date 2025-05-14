@@ -1,4 +1,3 @@
-import type { StructuredTool } from '@langchain/core/tools';
 import type { BaseLLMParams } from '@langchain/core/language_models/llms';
 import type {
   BaseChatModelCallOptions,
@@ -9,8 +8,7 @@ import type {
   AzureOpenAiCreateChatCompletionRequest,
   AzureOpenAiChatModel,
   AzureOpenAiEmbeddingModel,
-  AzureOpenAiChatCompletionsRequestCommon,
-  AzureOpenAiChatCompletionTool
+  AzureOpenAiChatCompletionsRequestCommon
 } from '@sap-ai-sdk/foundation-models';
 import type { CustomRequestConfig } from '@sap-ai-sdk/core';
 import type { ModelConfig, ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
