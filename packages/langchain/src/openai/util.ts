@@ -15,7 +15,8 @@ import type {
   AzureOpenAiChatCompletionMessageToolCalls,
   AzureOpenAiChatCompletionRequestToolMessage,
   AzureOpenAiChatCompletionRequestFunctionMessage,
-  AzureOpenAiChatCompletionRequestSystemMessage
+  AzureOpenAiChatCompletionRequestSystemMessage,
+  AzureOpenAiFunctionObject
 } from '@sap-ai-sdk/foundation-models';
 import type {
   BaseMessage,
@@ -27,23 +28,20 @@ import type {
 import type { ChatResult } from '@langchain/core/outputs';
 import type { AzureOpenAiChatClient } from './chat.js';
 import type { AzureOpenAiChatCallOptions } from './types.js';
-import type { ToolDefinition } from '@langchain/core/language_models/base';
+import type { FunctionDefinition, ToolDefinition } from '@langchain/core/language_models/base';
 
 /**
  * Maps a LangChain {@link BindToolsInput} to {@link AzureOpenAiChatCompletionFunctions}.
  * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
  * @returns The OpenAI chat completion function.
+ * @internal
  */
-function mapToolToOpenAiFunction(tool: BindToolsInput): {
-  description?: string;
-  name: string;
-  parameters: AzureOpenAiFunctionParameters;
-} & Record<string, any> {
+export function mapToolToOpenAiFunction(tool: BindToolsInput): AzureOpenAiFunctionObject {
   if (isToolDefinition(tool)) {
     return {
       name: tool.function.name,
       description: tool.function.description,
-      parameters: tool.function.parameters
+      parameters: tool.function.parameters ?? { type: 'object', properties: {} }
     };
   }
   return {
@@ -288,7 +286,20 @@ function removeUndefinedProperties<T extends object>(obj: T): T {
   return result;
 }
 
-function isToolDefinition(tool: BindToolsInput): tool is ToolDefinition {
+// Workaround to support deprecated `functions` property
+// since its type `AzureOpenAiChatCompletionFunctions` contains an optional `parameters` property.
+// TODO: Remove this workaround once the `functions` property is removed from the SDK.
+type ToolDefinitionLike = Pick<ToolDefinition, 'type'> & {
+  function: Omit<FunctionDefinition, 'parameters'> & {
+    parameters?: AzureOpenAiFunctionParameters;
+  };
+};
+
+/**
+ * @internal
+ */
+// TODO: Replace `ToolDefinitionLike` with `ToolDefinition` once the `functions` property is removed from the SDK.
+export function isToolDefinition(tool: BindToolsInput): tool is ToolDefinitionLike {
   return (
     typeof tool === 'object' &&
     tool !== null &&
@@ -296,7 +307,6 @@ function isToolDefinition(tool: BindToolsInput): tool is ToolDefinition {
     tool.type === 'function' &&
     'function' in tool &&
     tool.function !== null &&
-    'name' in tool.function &&
-    'parameters' in tool.function
+    'name' in tool.function
   );
 }
