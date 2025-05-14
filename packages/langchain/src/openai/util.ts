@@ -2,10 +2,7 @@ import { AIMessage } from '@langchain/core/messages';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { v4 as uuidv4 } from 'uuid';
 import { isZodSchema } from '@langchain/core/utils/types';
-import type {
-  StructuredToolInterface,
-  StructuredTool
-} from '@langchain/core/tools';
+import type { BindToolsInput } from '@langchain/core/language_models/chat_models';
 import type { ToolCall } from '@langchain/core/messages/tool';
 import type {
   AzureOpenAiChatCompletionRequestUserMessage,
@@ -30,17 +27,25 @@ import type {
 import type { ChatResult } from '@langchain/core/outputs';
 import type { AzureOpenAiChatClient } from './chat.js';
 import type { AzureOpenAiChatCallOptions } from './types.js';
+import type { ToolDefinition } from '@langchain/core/language_models/base';
 
 /**
- * Maps a LangChain {@link StructuredTool} to {@link AzureOpenAiChatCompletionFunctions}.
+ * Maps a LangChain {@link BindToolsInput} to {@link AzureOpenAiChatCompletionFunctions}.
  * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
  * @returns The OpenAI chat completion function.
  */
-function mapToolToOpenAiFunction(tool: StructuredTool): {
+function mapToolToOpenAiFunction(tool: BindToolsInput): {
   description?: string;
   name: string;
   parameters: AzureOpenAiFunctionParameters;
 } & Record<string, any> {
+  if (isToolDefinition(tool)) {
+    return {
+      name: tool.function.name,
+      description: tool.function.description,
+      parameters: tool.function.parameters
+    };
+  }
   return {
     name: tool.name,
     description: tool.description,
@@ -51,12 +56,12 @@ function mapToolToOpenAiFunction(tool: StructuredTool): {
 }
 
 /**
- * Maps a LangChain {@link StructuredTool} to {@link AzureOpenAiChatCompletionTool}.
+ * Maps a LangChain {@link BindToolsInput} to {@link AzureOpenAiChatCompletionTool}.
  * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
  * @returns The OpenAI chat completion tool.
  */
 function mapToolToOpenAiTool(
-  tool: StructuredTool
+  tool: BindToolsInput
 ): AzureOpenAiChatCompletionTool {
   return {
     type: 'function',
@@ -237,14 +242,6 @@ function mapBaseMessageToAzureOpenAiChatMessage(
   }
 }
 
-function isStructuredToolArray(tools?: unknown[]): tools is StructuredTool[] {
-  return !!tools?.every(
-    tool =>
-      tool !== undefined &&
-      Array.isArray((tool as StructuredToolInterface).lc_namespace)
-  );
-}
-
 /**
  * Maps LangChain's input interface to the AI SDK client's input interface
  * @param client The LangChain Azure OpenAI client
@@ -275,12 +272,8 @@ export function mapLangchainToAiClient(
     top_logprobs: options?.top_logprobs,
     function_call: options?.function_call,
     stop: options?.stop ?? client.stop,
-    functions: isStructuredToolArray(options?.functions)
-      ? options?.functions.map(mapToolToOpenAiFunction)
-      : options?.functions,
-    tools: isStructuredToolArray(options?.tools)
-      ? options?.tools.map(mapToolToOpenAiTool)
-      : options?.tools,
+    functions: options?.functions?.map(mapToolToOpenAiFunction),
+    tools: options?.tools?.map(mapToolToOpenAiTool),
     tool_choice: options?.tool_choice
   });
 }
@@ -293,4 +286,17 @@ function removeUndefinedProperties<T extends object>(obj: T): T {
     }
   }
   return result;
+}
+
+function isToolDefinition(tool: BindToolsInput): tool is ToolDefinition {
+  return (
+    typeof tool === 'object' &&
+    tool !== null &&
+    'type' in tool &&
+    tool.type === 'function' &&
+    'function' in tool &&
+    tool.function !== null &&
+    'name' in tool.function &&
+    'parameters' in tool.function
+  );
 }

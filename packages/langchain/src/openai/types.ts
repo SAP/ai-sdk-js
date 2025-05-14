@@ -2,7 +2,8 @@ import type { StructuredTool } from '@langchain/core/tools';
 import type { BaseLLMParams } from '@langchain/core/language_models/llms';
 import type {
   BaseChatModelCallOptions,
-  BaseChatModelParams
+  BaseChatModelParams,
+  BindToolsInput
 } from '@langchain/core/language_models/chat_models';
 import type {
   AzureOpenAiCreateChatCompletionRequest,
@@ -48,7 +49,7 @@ export type AzureOpenAiChatCallOptions = BaseChatModelCallOptions &
     | 'functions'
     | 'function_call'
   > & {
-    tools?: AzureOpenAiChatCompletionTool[] | StructuredTool[];
+    tools?: BindToolsInput[];
     requestConfig?: CustomRequestConfig;
   };
 
