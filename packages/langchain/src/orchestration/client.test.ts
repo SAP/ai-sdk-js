@@ -9,12 +9,12 @@ import {
   parseFileToString
 } from '../../../../test-util/mock-http.js';
 import { OrchestrationClient } from './client.js';
-import type { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
 import type { LangchainOrchestrationModuleConfig } from './types.js';
 import type {
   CompletionPostResponse,
   ErrorResponse
 } from '@sap-ai-sdk/orchestration';
+import type { AIMessageChunk } from '@langchain/core/messages';
 
 jest.setTimeout(30000);
 
@@ -163,7 +163,7 @@ describe('orchestration service client', () => {
     const stream = await client.stream([]);
 
     // Collect all chunks
-    const chunks: OrchestrationMessageChunk[] = [];
+    const chunks: AIMessageChunk[] = [];
     for await (const chunk of stream) {
       chunks.push(chunk);
     }

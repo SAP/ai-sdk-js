@@ -13,10 +13,8 @@ import {
   MemorySaver
 } from '@langchain/langgraph';
 import { v4 as uuidv4 } from 'uuid';
-import type {
-  LangchainOrchestrationModuleConfig,
-  OrchestrationMessageChunk
-} from '@sap-ai-sdk/langchain';
+import type { AIMessageChunk } from '@langchain/core/messages';
+import type { LangchainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
 
 /**
  * Ask GPT about an introduction to SAP Cloud SDK.
@@ -197,7 +195,7 @@ export async function invokeLangGraphChain(): Promise<string> {
  */
 export async function streamOrchestrationLangChain(
   controller = new AbortController()
-): Promise<AsyncIterable<OrchestrationMessageChunk>> {
+): Promise<AsyncIterable<AIMessageChunk>> {
   const orchestrationConfig: LangchainOrchestrationModuleConfig = {
     // define the language model to be used
     llm: {

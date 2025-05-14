@@ -1,13 +1,11 @@
-import { AIMessage } from '@langchain/core/messages';
-import { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
+import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
 import type {
-  ChatDelta,
   ChatMessage,
   CompletionPostResponse,
-  CompletionPostResponseStreaming,
   Template,
-  ToolCallChunk as OrchestrationToolCallChunk
+  ToolCallChunk as OrchestrationToolCallChunk,
+  OrchestrationStreamChunkResponse
 } from '@sap-ai-sdk/orchestration';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type { AzureOpenAiChatCompletionMessageToolCalls } from '@sap-ai-sdk/foundation-models';
@@ -201,43 +199,27 @@ export function mapOutputToChatResult(
 }
 
 /**
- * Converts orchestration stream chunk to amessage chunk.
- * @param chunkData - The content of the message.
- * @param delta - The delta content from the chunk.
- * @param defaultRole - The default role to use if not specified in the delta.
- * @returns A message chunk compatible with Langchain's {@link AIMessageChunk}
+ * Converts orchestration stream chunk to a LangChain message chunk.
+ * @param chunk- The orchestration stream chunk.
+ * @returns An {@link AIMessageChunk}
  * @internal
  */
-export function _convertOrchestrationChunkToMessageChunk(
-  chunkData: CompletionPostResponseStreaming,
-  delta: ChatDelta,
-  defaultRole?: string
-): OrchestrationMessageChunk {
-  const { module_results, request_id } = chunkData;
-  const role = delta.role ?? defaultRole ?? 'assistant';
-  const content = delta.content ?? '';
+export function mapOrchestrationChunkToLangChainMessageChunk(
+  chunk: OrchestrationStreamChunkResponse
+): AIMessageChunk {
+  const { module_results, request_id } = chunk.data;
+  const content = chunk.getDeltaContent() ?? '';
+  const toolCallChunks = chunk.getDeltaToolCallChunks();
 
-  // Handle additional kwargs for tool calls
-  const additional_kwargs: Record<string, unknown> = {};
+  const additional_kwargs: Record<string, unknown> = {
+    module_results,
+    request_id
+  };
 
-  // Handle tool calls
-  if (delta.tool_calls && delta.tool_calls.length > 0) {
-    additional_kwargs.tool_calls = delta.tool_calls;
-  }
-
-  // Create tool call chunks if present
   let tool_call_chunks: ToolCallChunk[] = [];
-  if (Array.isArray(delta.tool_calls)) {
-    tool_call_chunks = mapOrchestrationToLangchainToolCallChunk(
-      delta.tool_calls
-    );
+  if (Array.isArray(toolCallChunks)) {
+    tool_call_chunks = mapOrchestrationToLangchainToolCallChunk(toolCallChunks);
   }
-  const toolCallId = delta.tool_calls?.[0]?.id ?? undefined;
-  // Use OrchestrationMessageChunk to represent message chunks for roles like 'tool' and 'user' too
-  return new OrchestrationMessageChunk(
-    { content, additional_kwargs, tool_call_chunks },
-    module_results ?? {},
-    request_id,
-    { role, ...(toolCallId && { tool_call_id: toolCallId }) }
-  );
+  // Use AIMessageChunk to represent message chunks for roles like 'tool' and 'user' too
+  return new AIMessageChunk({ content, additional_kwargs, tool_call_chunks });
 }

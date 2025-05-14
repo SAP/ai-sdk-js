@@ -3,12 +3,12 @@ import { OrchestrationClient as OrchestrationClientBase } from '@sap-ai-sdk/orch
 import { ChatGenerationChunk } from '@langchain/core/outputs';
 import { type BaseMessage } from '@langchain/core/messages';
 import {
-  _convertOrchestrationChunkToMessageChunk,
+  mapOrchestrationChunkToLangChainMessageChunk,
   isTemplate,
   mapLangchainMessagesToOrchestrationMessages,
   mapOutputToChatResult
 } from './util.js';
-import { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
+import type { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
 import type { BaseLanguageModelInput } from '@langchain/core/language_models/base';
 import type { Runnable, RunnableLike } from '@langchain/core/runnables';
 import type { ChatResult } from '@langchain/core/outputs';
@@ -133,7 +133,6 @@ export class OrchestrationClient extends BaseChatModel<
       options.signal.addEventListener('abort', () => controller.abort());
     }
 
-    let defaultRole: string | undefined;
     const messagesHistory =
       mapLangchainMessagesToOrchestrationMessages(messages);
 
@@ -146,22 +145,13 @@ export class OrchestrationClient extends BaseChatModel<
       this.destination
     );
 
-    const streamOptions = {
-      llm: {
-        include_usage: true,
-        ...options.streamOptions?.llm
-      },
-      outputFiltering: options.streamOptions?.outputFiltering,
-      global: options.streamOptions?.global
-    };
-
     const response = await this.caller.callWithOptions(
       { signal: options.signal },
       () =>
         orchestrationClient.stream(
           { messagesHistory, inputParams },
           controller,
-          streamOptions,
+          options.streamOptions,
           customRequestConfig
         )
     );
@@ -171,30 +161,23 @@ export class OrchestrationClient extends BaseChatModel<
         continue;
       }
 
-      const delta = chunk.getDelta();
+      const delta = chunk.data.orchestration_result?.choices[0]?.delta;
       if (!delta) {
         continue;
       }
-      const messageChunk = _convertOrchestrationChunkToMessageChunk(
-        chunk.data,
-        delta,
-        defaultRole
-      );
+      const messageChunk = mapOrchestrationChunkToLangChainMessageChunk(chunk);
 
-      defaultRole = delta.role ?? defaultRole;
       const finishReason = chunk.getFinishReason();
       const tokenUsage = chunk.getTokenUsage();
 
       // Add token usage to the message chunk if this is the final chunk
       if (finishReason && tokenUsage) {
-        if (messageChunk instanceof OrchestrationMessageChunk) {
-          messageChunk.response_metadata.finish_reason = finishReason;
-          messageChunk.usage_metadata = {
-            input_tokens: tokenUsage.prompt_tokens,
-            output_tokens: tokenUsage.completion_tokens,
-            total_tokens: tokenUsage.total_tokens
-          };
-        }
+        messageChunk.response_metadata.finish_reason = finishReason;
+        messageChunk.usage_metadata = {
+          input_tokens: tokenUsage.prompt_tokens,
+          output_tokens: tokenUsage.completion_tokens,
+          total_tokens: tokenUsage.total_tokens
+        };
       }
       const content = delta.content ?? '';
       const generationChunk = new ChatGenerationChunk({
@@ -202,7 +185,6 @@ export class OrchestrationClient extends BaseChatModel<
         text: content
       });
 
-      // Notify the run manager about the new token
       await runManager?.handleLLMNewToken(
         content,
         {
@@ -215,7 +197,6 @@ export class OrchestrationClient extends BaseChatModel<
         { chunk: generationChunk }
       );
 
-      // Yield the chunk
       yield generationChunk;
     }
 
