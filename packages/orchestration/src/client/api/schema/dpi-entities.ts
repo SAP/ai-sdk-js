@@ -29,6 +29,7 @@ export type DpiEntities =
   | 'profile-religious-group'
   | 'profile-political-group'
   | 'profile-pronouns-gender'
+  | 'profile-ethnicity'
   | 'profile-gender'
   | 'profile-sexual-orientation'
   | 'profile-trade-union'
