@@ -54,11 +54,14 @@ describe('Mapping Functions', () => {
       })
       .strict();
 
-    const myTool = tool(() => {}, {
-      name: 'test',
-      description: 'Some description',
-      schema: addNumbersSchema
-    });
+    const myTool = tool(
+      ({ a, b }) => a + b,
+      {
+        name: 'test',
+        description: 'Add two numbers',
+        schema: addNumbersSchema
+      }
+    );
 
     const request: AzureOpenAiCreateChatCompletionRequest = {
       messages: [
@@ -85,7 +88,7 @@ describe('Mapping Functions', () => {
           type: 'function',
           function: {
             name: 'test',
-            description: 'Some description',
+            description: 'Add two numbers',
             parameters: zodToJsonSchema(addNumbersSchema)
           }
         }
