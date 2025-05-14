@@ -50,6 +50,7 @@
     "@sap-cloud-sdk/generator-common": "^4.0.2",
     "@sap-cloud-sdk/http-client": "^4.0.2",
     "@sap-cloud-sdk/openapi-generator": "^4.0.2",
+    "@sap-cloud-sdk/generator": "^4.0.2",
     "@sap-cloud-sdk/util": "^4.0.2",
     "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.9",
@@ -65,6 +66,7 @@
     "prettier": "^3.5.3",
     "ts-jest": "^29.3.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "fix-esm-import-path": "^1.10.1"
   }
 }

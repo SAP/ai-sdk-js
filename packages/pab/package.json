@@ -24,10 +24,12 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
-    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/pab.json -o ./src/client --skipValidation && pnpm update-imports && pnpm lint:fix",
-    "update-imports": "node --no-warnings --loader ts-node/esm ../../scripts/update-imports.ts ./src/client/pab"
+    "generate": "generate-odata-client --input ./src/spec --outputDir ./src/client --overwrite --skipValidation && fix-esm-import-path ./src/client && pnpm lint:fix"
   },
   "dependencies": {
-    "@sap-ai-sdk/core": "workspace:^"
+    "@sap-ai-sdk/core": "workspace:^",
+    "@sap-cloud-sdk/odata-v4": "^4.0.2",
+    "moment": "^2.30.1",
+    "bignumber.js": "^9.3.0"
   }
 }

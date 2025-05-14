@@ -3,12 +3,18 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-export * from './agents-api.js';
-export * from './archive-api.js';
-export * from './deploy-api.js';
-export * from './cancel-api.js';
-export * from './invoke-api.js';
-export * from './ai-models-api.js';
-export * from './deploy-content-api.js';
-export * from './service-operations-api.js';
-export * from './schema/index.js';
+export * from './Agents.js';
+export * from './AiModels.js';
+export * from './AgentsRequestBuilder.js';
+export * from './AiModelsRequestBuilder.js';
+export * from './AgentResponse.js';
+export * from './AgentResponseMissingInputs.js';
+export * from './AgentResponseTrace.js';
+export * from './AgentResponseTrace_TokenConsumption.js';
+export * from './CdsMap.js';
+export * from './ReturnUnifiedAiAgentService_Histories_Upvote.js';
+export * from './ReturnUnifiedAiAgentService_Histories_Unvote.js';
+export * from './ReturnUnifiedAiAgentService_Histories_Downvote.js';
+export * from './ReturnUnifiedAiAgentService_Chats_Cancel.js';
+export * from './BatchRequest.js';
+export * from './service.js';

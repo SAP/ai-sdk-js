@@ -1,12 +1,8 @@
-import { AiModelsApi } from '@sap-ai-sdk/pab';
+import { pab } from '@sap-ai-sdk/pab';
 import { transformServiceBindingToClientCredentialsDestination } from '@sap-cloud-sdk/connectivity';
 import type { HttpDestination, Service } from '@sap-cloud-sdk/connectivity';
 
-/**
- * Get AI models from the PAB.
- * @returns List of AI models.
- */
-export async function getAiModels(): Promise<any> {
+async function getPabDestination(): Promise<HttpDestination> {
   if (!process.env.PAB_SERVICE_KEY) {
     throw new Error('PAB_SERVICE_KEY is not set');
   }
@@ -26,6 +22,14 @@ export async function getAiModels(): Promise<any> {
       url: credentials.service_urls.agent_api_url
     })) as HttpDestination;
   destination.url += 'api/v1';
+  return destination;
+}
 
-  return AiModelsApi.getAiModels().execute(destination);
+/**
+ * Get AI models from the PAB.
+ * @returns List of AI models.
+ */
+export async function getAiModels(): Promise<any> {
+  const destination = await getPabDestination();
+  return pab().aiModelsApi.requestBuilder().getAll().execute(destination);
 }

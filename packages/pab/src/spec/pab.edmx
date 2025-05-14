@@ -1,0 +1,1633 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Authorization.V1.xml">
+        <edmx:Include Alias="Authorization" Namespace="Org.OData.Authorization.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml">
+        <edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Validation.V1.xml">
+        <edmx:Include Alias="Validation" Namespace="Org.OData.Validation.V1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="UnifiedAiAgentService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <Annotation Term="Core.Links">
+                <Collection>
+                    <Record>
+                        <PropertyValue Property="rel" String="author"/>
+                        <PropertyValue Property="href" String="https://cap.cloud.sap"/>
+                    </Record>
+                </Collection>
+            </Annotation>
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Agents" EntityType="UnifiedAiAgentService.Agents">
+                    <NavigationPropertyBinding Path="chats/history/chat" Target="Agents/chats"/>
+                    <NavigationPropertyBinding Path="chats/history/trace/history" Target="Agents/chats/history"/>
+                    <NavigationPropertyBinding Path="chats/history/trace/tokenConsumption/history/chat" Target="Agents/chats"/>
+                    <NavigationPropertyBinding Path="chats/history/trace/tokenConsumption/history/previous" Target="Agents/chats/history"/>
+                    <NavigationPropertyBinding Path="chats/history/trace/tokenConsumption/history/inputValues/history" Target="Agents/chats/history"/>
+                    <NavigationPropertyBinding Path="chats/history/trace/tokenConsumption/history/group" Target="Agents/chats/history"/>
+                    <NavigationPropertyBinding Path="chats/history/trace/tokenConsumption/trace" Target="Agents/chats/history/trace"/>
+                    <NavigationPropertyBinding Path="chats/history/previous" Target="Agents/chats/history"/>
+                    <NavigationPropertyBinding Path="chats/history/inputValues/history" Target="Agents/chats/history"/>
+                    <NavigationPropertyBinding Path="chats/history/group" Target="Agents/chats/history"/>
+                    <NavigationPropertyBinding Path="chats/agent" Target="Agents"/>
+                    <NavigationPropertyBinding Path="chats/resources/tool" Target="Agents/tools"/>
+                    <NavigationPropertyBinding Path="chats/resources/chat" Target="Agents/chats"/>
+                    <NavigationPropertyBinding Path="tools/agent" Target="Agents"/>
+                    <NavigationPropertyBinding Path="tools/resources/tool" Target="Agents/tools"/>
+                    <NavigationPropertyBinding Path="tools/resources/chat" Target="Agents/chats"/>
+                    <NavigationPropertyBinding Path="tools/config/tool" Target="Agents/tools"/>
+                </EntitySet>
+                <EntitySet Name="AiModels" EntityType="UnifiedAiAgentService.AiModels"/>
+                <ActionImport Name="sendMessage" Action="UnifiedAiAgentService.sendMessage"/>
+            </EntityContainer>
+            <EntityType Name="Agents">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="name" Type="Edm.String" Nullable="false"/>
+                <Property Name="type" Type="Edm.String" DefaultValue="smart"/>
+                <Property Name="safetyCheck" Type="Edm.Boolean" DefaultValue="false"/>
+                <Property Name="expertIn" Type="Edm.String"/>
+                <Property Name="initialInstructions" Type="Edm.String"/>
+                <NavigationProperty Name="chats" Type="Collection(UnifiedAiAgentService.Chats)" Partner="agent" ContainsTarget="true"/>
+                <NavigationProperty Name="tools" Type="Collection(UnifiedAiAgentService.Tools)" Partner="agent" ContainsTarget="true"/>
+                <Property Name="iterations" Type="Edm.Int32" DefaultValue="20"/>
+                <Property Name="mode" Type="Edm.String" DefaultValue="balanced"/>
+                <Property Name="baseModel" Type="Edm.String" DefaultValue="OpenAiGpt4oMini"/>
+                <Property Name="advancedModel" Type="Edm.String" DefaultValue="OpenAiGpt4o"/>
+                <Property Name="preprocessingEnabled" Type="Edm.Boolean" DefaultValue="true"/>
+                <Property Name="postprocessingEnabled" Type="Edm.Boolean" DefaultValue="true"/>
+                <Property Name="defaultOutputFormat" Type="Edm.String" DefaultValue="Markdown"/>
+                <Property Name="defaultOutputFormatOptions" Type="Edm.String"/>
+                <Property Name="orchestrationModuleConfig" Type="UnifiedAiAgentService.cds_Map"/>
+            </EntityType>
+            <EntityType Name="Resources">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="name" Type="Edm.String" Nullable="false"/>
+                <NavigationProperty Name="tool" Type="UnifiedAiAgentService.Tools" Nullable="false" Partner="resources"/>
+                <NavigationProperty Name="chat" Type="UnifiedAiAgentService.Chats" Partner="resources"/>
+                <Property Name="description" Type="Edm.String"/>
+                <Property Name="state" Type="Edm.String" Nullable="false" DefaultValue="initializing"/>
+                <Property Name="lastError" Type="Edm.String"/>
+                <Property Name="contentType" Type="Edm.String" Nullable="false"/>
+                <Property Name="data" Type="Edm.String" Nullable="false"/>
+                <Property Name="metadata" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="Tools">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="name" Type="Edm.String" Nullable="false"/>
+                <NavigationProperty Name="agent" Type="UnifiedAiAgentService.Agents" Nullable="false" Partner="tools"/>
+                <NavigationProperty Name="resources" Type="Collection(UnifiedAiAgentService.Resources)" Partner="tool" ContainsTarget="true"/>
+                <NavigationProperty Name="config" Type="Collection(UnifiedAiAgentService.Configs)" Partner="tool" ContainsTarget="true"/>
+                <Property Name="state" Type="Edm.String" Nullable="false" DefaultValue="initializing"/>
+                <Property Name="lastError" Type="Edm.String"/>
+                <Property Name="type" Type="Edm.String" Nullable="false"/>
+            </EntityType>
+            <EntityType Name="Configs">
+                <Key>
+                    <PropertyRef Name="name"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <NavigationProperty Name="tool" Type="UnifiedAiAgentService.Tools" Nullable="false" Partner="config"/>
+                <Property Name="name" Type="Edm.String" Nullable="false"/>
+                <Property Name="value" Type="Edm.String" Nullable="false"/>
+            </EntityType>
+            <EntityType Name="Histories">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <NavigationProperty Name="chat" Type="UnifiedAiAgentService.Chats" Nullable="false" Partner="history"/>
+                <NavigationProperty Name="trace" Type="Collection(UnifiedAiAgentService.Traces)" Partner="history" ContainsTarget="true"/>
+                <NavigationProperty Name="previous" Type="UnifiedAiAgentService.Histories">
+                    <ReferentialConstraint Property="previous_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="previous_ID" Type="Edm.Guid"/>
+                <Property Name="type" Type="Edm.String" Nullable="false" DefaultValue="questionForAgent"/>
+                <Property Name="sender" Type="Edm.String" Nullable="false"/>
+                <Property Name="content" Type="Edm.String" Nullable="false"/>
+                <Property Name="outputFormat" Type="Edm.String"/>
+                <Property Name="outputFormatOptions" Type="Edm.String"/>
+                <Property Name="rating" Type="Edm.Int32" DefaultValue="0"/>
+                <NavigationProperty Name="inputValues" Type="Collection(UnifiedAiAgentService.InputValues)" Partner="history" ContainsTarget="true"/>
+                <NavigationProperty Name="group" Type="UnifiedAiAgentService.Histories">
+                    <ReferentialConstraint Property="group_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="group_ID" Type="Edm.Guid"/>
+                <Property Name="source" Type="Edm.String"/>
+                <Property Name="canceled" Type="Edm.Boolean" DefaultValue="false"/>
+                <Property Name="contentFiltered" Type="Edm.Boolean" DefaultValue="false"/>
+            </EntityType>
+            <EntityType Name="Traces">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <NavigationProperty Name="history" Type="UnifiedAiAgentService.Histories" Nullable="false" Partner="trace"/>
+                <Property Name="index" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="fromId" Type="Edm.String"/>
+                <Property Name="toId" Type="Edm.String"/>
+                <Property Name="type" Type="Edm.String" Nullable="false"/>
+                <NavigationProperty Name="tokenConsumption" Type="Collection(UnifiedAiAgentService.TokenConsumptions)" Partner="trace" ContainsTarget="true"/>
+                <Property Name="data" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="TokenConsumptions">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <NavigationProperty Name="history" Type="UnifiedAiAgentService.Histories" Nullable="false">
+                    <ReferentialConstraint Property="history_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="history_ID" Type="Edm.Guid" Nullable="false"/>
+                <NavigationProperty Name="trace" Type="UnifiedAiAgentService.Traces" Nullable="false" Partner="tokenConsumption"/>
+                <Property Name="modelName" Type="Edm.String" Nullable="false"/>
+                <Property Name="inputTokens" Type="Edm.Int32" DefaultValue="0"/>
+                <Property Name="outputTokens" Type="Edm.Int32" DefaultValue="0"/>
+                <Property Name="inputTokenCost" Type="Edm.Decimal" Precision="10" Scale="5" DefaultValue="0.0"/>
+                <Property Name="outputTokenCost" Type="Edm.Decimal" Precision="10" Scale="5" DefaultValue="0.0"/>
+            </EntityType>
+            <EntityType Name="InputValues">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <NavigationProperty Name="history" Type="UnifiedAiAgentService.Histories" Nullable="false" Partner="inputValues"/>
+                <Property Name="name" Type="Edm.String" Nullable="false"/>
+                <Property Name="description" Type="Edm.String"/>
+                <Property Name="type" Type="Edm.String" Nullable="false" DefaultValue="string"/>
+                <Property Name="possibleValues" Type="Collection(Edm.String)" Nullable="true"/>
+                <Property Name="suggestions" Type="Collection(Edm.String)" Nullable="true"/>
+            </EntityType>
+            <EntityType Name="AiModels">
+                <Key>
+                    <PropertyRef Name="modelId"/>
+                </Key>
+                <Property Name="modelId" Type="Edm.String" Nullable="false"/>
+                <Property Name="modelName" Type="Edm.String" Nullable="false"/>
+                <Property Name="providerId" Type="Edm.String" Nullable="false"/>
+                <Property Name="providerName" Type="Edm.String" Nullable="false"/>
+                <Property Name="rank" Type="Edm.Int32"/>
+            </EntityType>
+            <EntityType Name="Chats">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="name" Type="Edm.String" Nullable="false"/>
+                <NavigationProperty Name="history" Type="Collection(UnifiedAiAgentService.Histories)" Partner="chat" ContainsTarget="true"/>
+                <Property Name="state" Type="Edm.String" Nullable="false" DefaultValue="none"/>
+                <NavigationProperty Name="agent" Type="UnifiedAiAgentService.Agents" Nullable="false" Partner="chats"/>
+                <NavigationProperty Name="resources" Type="Collection(UnifiedAiAgentService.Resources)" Partner="chat" ContainsTarget="true"/>
+            </EntityType>
+            <ComplexType Name="AgentResponse">
+                <Property Name="response" Type="Edm.String"/>
+                <Property Name="responseType" Type="Edm.String"/>
+                <Property Name="missingInputs" Type="Collection(UnifiedAiAgentService.AgentResponse_missingInputs)" Nullable="true"/>
+                <Property Name="historyId" Type="Edm.String" Nullable="false"/>
+                <Property Name="responseHistoryId" Type="Edm.String"/>
+                <Property Name="trace" Type="Collection(UnifiedAiAgentService.AgentResponse_trace)" Nullable="true"/>
+            </ComplexType>
+            <ComplexType Name="AgentResponse_missingInputs">
+                <Property Name="name" Type="Edm.String" Nullable="false"/>
+                <Property Name="description" Type="Edm.String"/>
+                <Property Name="type" Type="Edm.String" Nullable="false" DefaultValue="string"/>
+                <Property Name="possibleValues" Type="Collection(Edm.String)" Nullable="true"/>
+                <Property Name="suggestions" Type="Collection(Edm.String)" Nullable="true"/>
+            </ComplexType>
+            <ComplexType Name="AgentResponse_trace">
+                <Property Name="ID" Type="Edm.String" Nullable="false"/>
+                <Property Name="type" Type="Edm.String" Nullable="false"/>
+                <Property Name="index" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="fromId" Type="Edm.String"/>
+                <Property Name="toId" Type="Edm.String"/>
+                <Property Name="data" Type="Edm.String"/>
+                <Property Name="tokenConsumption" Type="Collection(UnifiedAiAgentService.AgentResponse_trace_tokenConsumption)" Nullable="true"/>
+            </ComplexType>
+            <ComplexType Name="AgentResponse_trace_tokenConsumption">
+                <Property Name="ID" Type="Edm.String" Nullable="false"/>
+                <Property Name="modelName" Type="Edm.String"/>
+                <Property Name="inputTokens" Type="Edm.Int32"/>
+                <Property Name="outputTokens" Type="Edm.Int32"/>
+            </ComplexType>
+            <ComplexType Name="cds_Map" OpenType="true"/>
+            <ComplexType Name="return_UnifiedAiAgentService_Histories_upvote"/>
+            <ComplexType Name="return_UnifiedAiAgentService_Histories_unvote"/>
+            <ComplexType Name="return_UnifiedAiAgentService_Histories_downvote"/>
+            <ComplexType Name="return_UnifiedAiAgentService_Chats_cancel"/>
+            <Action Name="upvote" IsBound="true">
+                <Parameter Name="in" Type="UnifiedAiAgentService.Histories"/>
+                <ReturnType Type="UnifiedAiAgentService.return_UnifiedAiAgentService_Histories_upvote"/>
+            </Action>
+            <Action Name="unvote" IsBound="true">
+                <Parameter Name="in" Type="UnifiedAiAgentService.Histories"/>
+                <ReturnType Type="UnifiedAiAgentService.return_UnifiedAiAgentService_Histories_unvote"/>
+            </Action>
+            <Action Name="downvote" IsBound="true">
+                <Parameter Name="in" Type="UnifiedAiAgentService.Histories"/>
+                <ReturnType Type="UnifiedAiAgentService.return_UnifiedAiAgentService_Histories_downvote"/>
+            </Action>
+            <Action Name="getChatInputSuggestions" IsBound="true">
+                <Parameter Name="in" Type="UnifiedAiAgentService.Chats"/>
+                <ReturnType Type="Collection(Edm.String)" Nullable="true"/>
+            </Action>
+            <Action Name="sendMessage" IsBound="true">
+                <Parameter Name="in" Type="UnifiedAiAgentService.Chats"/>
+                <Parameter Name="msg" Type="Edm.String" Nullable="false"/>
+                <Parameter Name="async" Type="Edm.Boolean"/>
+                <Parameter Name="destination" Type="Edm.String"/>
+                <Parameter Name="outputFormat" Type="Edm.String"/>
+                <Parameter Name="outputFormatOptions" Type="Edm.String"/>
+                <Parameter Name="returnTrace" Type="Edm.Boolean"/>
+                <ReturnType Type="UnifiedAiAgentService.AgentResponse"/>
+            </Action>
+            <Action Name="cancel" IsBound="true">
+                <Parameter Name="in" Type="UnifiedAiAgentService.Chats"/>
+                <ReturnType Type="UnifiedAiAgentService.return_UnifiedAiAgentService_Chats_cancel"/>
+            </Action>
+            <Action Name="continueMessage" IsBound="true">
+                <Parameter Name="in" Type="UnifiedAiAgentService.Chats"/>
+                <Parameter Name="observation" Type="Edm.String" Nullable="false"/>
+                <Parameter Name="historyId" Type="Edm.String" Nullable="false"/>
+                <Parameter Name="async" Type="Edm.Boolean"/>
+                <Parameter Name="destination" Type="Edm.String"/>
+                <Parameter Name="returnTrace" Type="Edm.Boolean"/>
+                <ReturnType Type="UnifiedAiAgentService.AgentResponse"/>
+            </Action>
+            <Annotation Term="Core.SchemaVersion" String="1.0.0"/>
+            <Annotations Target="UnifiedAiAgentService.EntityContainer">
+                <Annotation Term="Core.Description" String="The Business Agent Foundation service allows to let an agent interact with your data"/>
+                <Annotation Term="Core.LongDescription" String="The Business Agent Foundation service allows to let an agent interact with your data. API status: beta."/>
+                <Annotation Term="Capabilities.BatchSupported" Bool="false"/>
+                <Annotation Term="Capabilities.KeyAsSegmentSupported" Bool="false"/>
+                <Annotation Term="Common.Label" String="Business Agent Foundation"/>
+                <Annotation Term="Authorization.SecuritySchemes">
+                    <Collection>
+                        <Record Type="Authorization.SecurityScheme">
+                            <PropertyValue Property="Authorization" String="http_bearer"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="Authorization.Authorizations">
+                    <Collection>
+                        <Record Type="Authorization.Http">
+                            <PropertyValue Property="Name" String="http_bearer"/>
+                            <PropertyValue Property="Description" String="HTTP authentication with bearer token"/>
+                            <PropertyValue Property="Scheme" String="bearer"/>
+                            <PropertyValue Property="BearerFormat" String="JWT"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.AgentResponse/response">
+                <Annotation Term="Common.Label" String="Response"/>
+                <Annotation Term="Core.Description" String="AI response if synchronous"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="The best product is..."/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.AgentResponse/responseType">
+                <Annotation Term="Common.Label" String="Response"/>
+                <Annotation Term="Core.Description" String="Response type (subset of history type)"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="Answer"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="error"/>
+                            <PropertyValue Property="Value" String="error"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="answerForUser"/>
+                            <PropertyValue Property="Value" String="answerForUser"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="questionForUser"/>
+                            <PropertyValue Property="Value" String="questionForUser"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="questionForTool"/>
+                            <PropertyValue Property="Value" String="questionForTool"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.AgentResponse/historyId">
+                <Annotation Term="Common.Label" String="HistoryID"/>
+                <Annotation Term="Core.Description" String="ID of the message send to the agent"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="70b6331d-1107-4f78-bcd8-fb95603ad7a8"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.AgentResponse/responseHistoryId">
+                <Annotation Term="Common.Label" String="runID"/>
+                <Annotation Term="Core.Description" String="ID of the response message produced by the agent"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="eda5fe32-2c53-4593-889d-73a7e0f30729"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.AgentResponse/trace">
+                <Annotation Term="Common.Label" String="Trace"/>
+                <Annotation Term="Core.Description" String="Trace of the run"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="[]"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Agents">
+                <Annotation Term="Common.Label" String="Agents"/>
+                <Annotation Term="Core.Description" String="List of agents"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Agents/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Agents/createdAt">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Agents/modifiedAt">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Agents/name">
+                <Annotation Term="Core.Description" String="Name of the agent"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="Report Expert Agent"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Validation.Pattern" String="^(?! )[ -~\u00C0-\u00FF]{0,249}[^ ]$"/>
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Agents/type">
+                <Annotation Term="Core.Description" String="Type of the agent"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="smart"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="smart"/>
+                            <PropertyValue Property="Value" String="smart"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Agents/safetyCheck">
+                <Annotation Term="Core.Description" String="Adds additional checks to detect insulting prompts"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Agents/expertIn">
+                <Annotation Term="Core.Description" String="Define in which topic the agent is an expert"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="Business report writing"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Agents/initialInstructions">
+                <Annotation Term="Core.Description" String="Messages that are prepend to each chat"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="Table"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Agents/chats">
+                <Annotation Term="Core.Description" String="Chat-Sessions that belong to the agent"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Agents/tools">
+                <Annotation Term="Core.Description" String="Tools that the agent and therfore each chat can use"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Agents/iterations">
+                <Annotation Term="Core.Description" String="Maximum number of agent interations"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="20"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Validation.Minimum" Int="5"/>
+                <Annotation Term="Validation.Maximum" Int="100"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Agents/mode">
+                <Annotation Term="Core.Description" String="Sets the llms"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="balanced"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="performance"/>
+                            <PropertyValue Property="Value" String="performance"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="balanced"/>
+                            <PropertyValue Property="Value" String="balanced"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="quality"/>
+                            <PropertyValue Property="Value" String="quality"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Agents/baseModel">
+                <Annotation Term="Core.Description" String="Sets Base Model"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="OpenAiGpt4oMini"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="OpenAiGpt4o"/>
+                            <PropertyValue Property="Value" String="OpenAiGpt4o"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="OpenAiGpt4oMini"/>
+                            <PropertyValue Property="Value" String="OpenAiGpt4oMini"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="MistralAiMistralLargeInstruct"/>
+                            <PropertyValue Property="Value" String="MistralAiMistralLargeInstruct"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="AnthropicClaude3Sonnet"/>
+                            <PropertyValue Property="Value" String="AnthropicClaude3Sonnet"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="AnthropicClaude35Sonnet"/>
+                            <PropertyValue Property="Value" String="AnthropicClaude35Sonnet"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="GoogleGemini15Pro"/>
+                            <PropertyValue Property="Value" String="GoogleGemini15Pro"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="GoogleGemini1Pro"/>
+                            <PropertyValue Property="Value" String="GoogleGemini1Pro"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Agents/advancedModel">
+                <Annotation Term="Core.Description" String="Sets Advanced Model"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="OpenAiGpt4o"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="OpenAiGpt4o"/>
+                            <PropertyValue Property="Value" String="OpenAiGpt4o"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="OpenAiGpt4oMini"/>
+                            <PropertyValue Property="Value" String="OpenAiGpt4oMini"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="MistralAiMistralLargeInstruct"/>
+                            <PropertyValue Property="Value" String="MistralAiMistralLargeInstruct"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="AnthropicClaude3Sonnet"/>
+                            <PropertyValue Property="Value" String="AnthropicClaude3Sonnet"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="AnthropicClaude35Sonnet"/>
+                            <PropertyValue Property="Value" String="AnthropicClaude35Sonnet"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="GoogleGemini15Pro"/>
+                            <PropertyValue Property="Value" String="GoogleGemini15Pro"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="GoogleGemini1Pro"/>
+                            <PropertyValue Property="Value" String="GoogleGemini1Pro"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Agents/preprocessingEnabled">
+                <Annotation Term="Core.Description" String="Enable the preprocessing"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="true"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Agents/postprocessingEnabled">
+                <Annotation Term="Core.Description" String="Enable the postprocessing"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="true"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Agents/defaultOutputFormat">
+                <Annotation Term="Common.Label" String="Default Output Format"/>
+                <Annotation Term="Core.Description" String="Specify the output format of messages. Default is markdown. Possible values are Text, Markdown, JSON"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="Markdown"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="JSON"/>
+                            <PropertyValue Property="Value" String="JSON"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="Markdown"/>
+                            <PropertyValue Property="Value" String="Markdown"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="Text"/>
+                            <PropertyValue Property="Value" String="Text"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Agents/defaultOutputFormatOptions">
+                <Annotation Term="Common.Label" String="Default Output Format Options"/>
+                <Annotation Term="Core.Description" String="Specify any options for the specified output format e.g. JSON schema"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="{&quot;schema&quot;: &quot;https://json-schema.org/draft/2020-12/schema&quot;}"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Agents/orchestrationModuleConfig">
+                <Annotation Term="Core.Description" String="Json Configuration of AI Core Orchestration Modules"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="{&quot;filtering_module_config&quot;: {...}, &quot;masking_module_config&quot;: {...}}"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Resources">
+                <Annotation Term="Common.Label" String="Resources"/>
+                <Annotation Term="Core.Description" String="List of resources that belong to a tool"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Resources/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Resources/createdAt">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Resources/modifiedAt">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Resources/name">
+                <Annotation Term="Core.Description" String="Name of the resource"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="datasphere_openapi.json"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Validation.Pattern" String="^(?! )[ -~\u00C0-\u00FF]{0,249}[^ ]$"/>
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Resources/tool">
+                <Annotation Term="Core.Description" String="Associated Tool"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Resources/chat">
+                <Annotation Term="Core.Description" String="Associated Chat"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Resources/description">
+                <Annotation Term="Core.Description" String="Description of the content"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="This api document describes how to receive data from SAP datasphere"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Resources/state">
+                <Annotation Term="Core.Description" String="Current state of the resource"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="ready"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="initializing"/>
+                            <PropertyValue Property="Value" String="initializing"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="error"/>
+                            <PropertyValue Property="Value" String="error"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="ready"/>
+                            <PropertyValue Property="Value" String="ready"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Resources/lastError">
+                <Annotation Term="Core.Description" String="Last error message"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="The tool could not be initialized: no connection to the server"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Resources/contentType">
+                <Annotation Term="Core.Description" String="Content type of the resource"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="application/json"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="application/json"/>
+                            <PropertyValue Property="Value" String="application/json"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="text/csv"/>
+                            <PropertyValue Property="Value" String="text/csv"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="application/doc"/>
+                            <PropertyValue Property="Value" String="application/doc"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="application/docx"/>
+                            <PropertyValue Property="Value" String="application/docx"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="text/markdown"/>
+                            <PropertyValue Property="Value" String="text/markdown"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="application/pdf"/>
+                            <PropertyValue Property="Value" String="application/pdf"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="text/plain"/>
+                            <PropertyValue Property="Value" String="text/plain"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="application/xls"/>
+                            <PropertyValue Property="Value" String="application/xls"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="application/xlsx"/>
+                            <PropertyValue Property="Value" String="application/xlsx"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="application/xml"/>
+                            <PropertyValue Property="Value" String="application/xml"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Resources/data">
+                <Annotation Term="Core.Description" String="Base64 encoded data"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="ewogICJvcGVuYXBpIjogIjMuMC4xIiwKICAiaW5mbyI6IHsKICAgICJ0aXRsZSI6ICJJbWFnaW5hcnkgU2VydmljZSBBUEkiLAogICAgInZlcnNpb24iOiAiMS4wIgogIH0sCiAgInBhdGhzIjogewogICAgIi9vYmplY3RzIjogewogICAgICAiZ2V0IjogewogICAgICAgICJzdW1tYXJ5IjogIlJldHJpZXZlIE9iamVjdHMiLAogICAgICAgICJyZXNwb25zZXMiOiB7CiAgICAgICAgICAiMjAwIjogewogICAgICAgICAgICAiZGVzY3JpcHRpb24iOiAiU3VjY2VzcyIKICAgICAgICAgIH0KICAgICAgICB9CiAgICAgIH0KICAgIH0KICB9Cn0="/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Resources/metadata">
+                <Annotation Term="Core.Description" String="Metadata json of the document"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="metadata"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Tools">
+                <Annotation Term="Common.Label" String="Tools"/>
+                <Annotation Term="Core.Description" String="List of tools that the agent can use"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Tools/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Tools/createdAt">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Tools/modifiedAt">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Tools/name">
+                <Annotation Term="Core.Description" String="Name of the Tool"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="Calculator"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Validation.Pattern" String="^(?! )[ -~\u00C0-\u00FF]{0,249}[^ ]$"/>
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Tools/agent">
+                <Annotation Term="Core.Description" String="Associated Agent"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="1"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Tools/resources">
+                <Annotation Term="Core.Description" String="Resources of the tool"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Tools/config">
+                <Annotation Term="Core.Description" String="Key-Value pairs to configure the tool"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Tools/state">
+                <Annotation Term="Core.Description" String="Current state of the tool"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="ready"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="initializing"/>
+                            <PropertyValue Property="Value" String="initializing"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="waitForResources"/>
+                            <PropertyValue Property="Value" String="waitForResources"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="error"/>
+                            <PropertyValue Property="Value" String="error"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="ready"/>
+                            <PropertyValue Property="Value" String="ready"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Tools/lastError">
+                <Annotation Term="Core.Description" String="Last error message"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="The tool could not be initialized: no connection to the server"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Tools/type">
+                <Annotation Term="Core.Description" String="Type of the tool"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="calculator"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="bringyourown"/>
+                            <PropertyValue Property="Value" String="bringyourown"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="joulefunction"/>
+                            <PropertyValue Property="Value" String="joulefunction"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="calculator"/>
+                            <PropertyValue Property="Value" String="calculator"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="documentsearch"/>
+                            <PropertyValue Property="Value" String="documentsearch"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="document"/>
+                            <PropertyValue Property="Value" String="document"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="hana"/>
+                            <PropertyValue Property="Value" String="hana"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="human"/>
+                            <PropertyValue Property="Value" String="human"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="openapi"/>
+                            <PropertyValue Property="Value" String="openapi"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="processautomation"/>
+                            <PropertyValue Property="Value" String="processautomation"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="websearch"/>
+                            <PropertyValue Property="Value" String="websearch"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="odata"/>
+                            <PropertyValue Property="Value" String="odata"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="code"/>
+                            <PropertyValue Property="Value" String="code"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="agent2agent"/>
+                            <PropertyValue Property="Value" String="agent2agent"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="processautomationtools"/>
+                            <PropertyValue Property="Value" String="processautomationtools"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Configs">
+                <Annotation Term="Common.Label" String="Configs"/>
+                <Annotation Term="Core.Description" String="Configuration values that belong to a tool"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Configs/createdAt">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Configs/modifiedAt">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Configs/tool">
+                <Annotation Term="Core.Description" String="Associated Tool"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Configs/name">
+                <Annotation Term="Core.Description" String="Name of the config parameter"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="url"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Configs/value">
+                <Annotation Term="Core.Description" String="Value of the config parameter"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="https://my-value.local"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Histories">
+                <Annotation Term="Common.Label" String="Histories"/>
+                <Annotation Term="Core.Description" String="List of messages from the chat"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Histories/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Histories/createdAt">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Histories/modifiedAt">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Histories/chat">
+                <Annotation Term="Core.Description" String="Associated Chat"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Histories/trace">
+                <Annotation Term="Core.Description" String="Trace of the agent"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Histories/previous">
+                <Annotation Term="Core.Description" String="Previous Message"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Histories/previous_ID">
+                <Annotation Term="Core.Description" String="Previous Message"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Histories/type">
+                <Annotation Term="Core.Description" String="Type of the history entry"/>
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="error"/>
+                            <PropertyValue Property="Value" String="error"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="event"/>
+                            <PropertyValue Property="Value" String="event"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="answerForAgent"/>
+                            <PropertyValue Property="Value" String="answerForAgent"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="answerForUser"/>
+                            <PropertyValue Property="Value" String="answerForUser"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="answerForTool"/>
+                            <PropertyValue Property="Value" String="answerForTool"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="questionForUser"/>
+                            <PropertyValue Property="Value" String="questionForUser"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="questionForAgent"/>
+                            <PropertyValue Property="Value" String="questionForAgent"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="questionForTool"/>
+                            <PropertyValue Property="Value" String="questionForTool"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Histories/sender">
+                <Annotation Term="Core.Description" String="Sender of the message"/>
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="ai"/>
+                            <PropertyValue Property="Value" String="ai"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="user"/>
+                            <PropertyValue Property="Value" String="user"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="system"/>
+                            <PropertyValue Property="Value" String="system"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="tool"/>
+                            <PropertyValue Property="Value" String="tool"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Histories/content">
+                <Annotation Term="Core.Description" String="Message content"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Histories/outputFormat">
+                <Annotation Term="Core.Description" String="Message output format"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Histories/outputFormatOptions">
+                <Annotation Term="Core.Description" String="Message output format options"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Histories/rating">
+                <Annotation Term="Core.Description" String="Rating of the AI response (-1 = bad, 0 = none, 1 = good)"/>
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="downvote"/>
+                            <PropertyValue Property="Value" Int="-1"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="novote"/>
+                            <PropertyValue Property="Value" Int="0"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="upvote"/>
+                            <PropertyValue Property="Value" Int="1"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Histories/inputValues">
+                <Annotation Term="Core.Description" String="Required input values when using the human tool"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Histories/group">
+                <Annotation Term="Core.Description" String="Reference to the first questionForAgent message of a run"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Histories/group_ID">
+                <Annotation Term="Core.Description" String="Reference to the first questionForAgent message of a run"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Histories/source">
+                <Annotation Term="Core.Description" String="Source of the message, e.g. the tool x"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Histories/canceled">
+                <Annotation Term="Core.Description" String="Indicator if the task associated with the message is canceled"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Histories/contentFiltered">
+                <Annotation Term="Core.Description" String="Indicator if the content was filtered due to some policy violation (hate, violence, etc.)"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.upvote(UnifiedAiAgentService.Histories)">
+                <Annotation Term="Common.Label" String="Upvote"/>
+                <Annotation Term="Core.Description" String="Upvotes an AI generated message"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.unvote(UnifiedAiAgentService.Histories)">
+                <Annotation Term="Common.Label" String="Unvote"/>
+                <Annotation Term="Core.Description" String="Removes the vote on an AI generated message"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.downvote(UnifiedAiAgentService.Histories)">
+                <Annotation Term="Common.Label" String="Downvote"/>
+                <Annotation Term="Core.Description" String="Downvotes an AI generated message"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Traces">
+                <Annotation Term="Common.Label" String="Traces"/>
+                <Annotation Term="Core.Description" String="Information how the agent came up with the solution"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Traces/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Traces/createdAt">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Traces/modifiedAt">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Traces/history">
+                <Annotation Term="Core.Description" String="Associated History"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Traces/index">
+                <Annotation Term="Core.Description" String="Index to establish the event order"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Traces/fromId">
+                <Annotation Term="Core.Description" String="Edge from node"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Traces/toId">
+                <Annotation Term="Core.Description" String="Edge to node"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Traces/type">
+                <Annotation Term="Core.Description" String="Type of a trace node"/>
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="start"/>
+                            <PropertyValue Property="Value" String="start"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="end"/>
+                            <PropertyValue Property="Value" String="end"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="abort"/>
+                            <PropertyValue Property="Value" String="abort"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="agent"/>
+                            <PropertyValue Property="Value" String="agent"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="edge"/>
+                            <PropertyValue Property="Value" String="edge"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="tool"/>
+                            <PropertyValue Property="Value" String="tool"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="toolResource"/>
+                            <PropertyValue Property="Value" String="toolResource"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="error"/>
+                            <PropertyValue Property="Value" String="error"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Traces/tokenConsumption">
+                <Annotation Term="Core.Description" String="Tokens consumed by model"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Traces/data">
+                <Annotation Term="Core.Description" String="If type is edge, then this field describes the data that is passed to the next trace node, an agent thought or an tool type"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.TokenConsumptions">
+                <Annotation Term="Common.Label" String="TokenConsumptions"/>
+                <Annotation Term="Core.Description" String="Information how many tokens where used to come up with the solution"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.TokenConsumptions/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.TokenConsumptions/createdAt">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.TokenConsumptions/modifiedAt">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.TokenConsumptions/history">
+                <Annotation Term="Core.Description" String="History"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.TokenConsumptions/history_ID">
+                <Annotation Term="Core.Description" String="History"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.TokenConsumptions/trace">
+                <Annotation Term="Core.Description" String="Trace"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.TokenConsumptions/modelName">
+                <Annotation Term="Core.Description" String="Model name"/>
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="OpenAiGpt4o"/>
+                            <PropertyValue Property="Value" String="OpenAiGpt4o"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="OpenAiGpt4oMini"/>
+                            <PropertyValue Property="Value" String="OpenAiGpt4oMini"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="MistralAiMistralLargeInstruct"/>
+                            <PropertyValue Property="Value" String="MistralAiMistralLargeInstruct"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="AnthropicClaude3Sonnet"/>
+                            <PropertyValue Property="Value" String="AnthropicClaude3Sonnet"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="AnthropicClaude35Sonnet"/>
+                            <PropertyValue Property="Value" String="AnthropicClaude35Sonnet"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="GoogleGemini15Pro"/>
+                            <PropertyValue Property="Value" String="GoogleGemini15Pro"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="GoogleGemini1Pro"/>
+                            <PropertyValue Property="Value" String="GoogleGemini1Pro"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.TokenConsumptions/inputTokens">
+                <Annotation Term="Core.Description" String="Input Tokens"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.TokenConsumptions/outputTokens">
+                <Annotation Term="Core.Description" String="Output Tokens"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.TokenConsumptions/inputTokenCost">
+                <Annotation Term="Core.Description" String="Input Token Cost"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.TokenConsumptions/outputTokenCost">
+                <Annotation Term="Core.Description" String="Output Token Cost"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.InputValues">
+                <Annotation Term="Common.Label" String="InputValues"/>
+                <Annotation Term="Core.Description" String="Input values that the agent required"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.InputValues/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.InputValues/createdAt">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.InputValues/modifiedAt">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.InputValues/history">
+                <Annotation Term="Core.Description" String="Associated history"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.InputValues/name">
+                <Annotation Term="Core.Description" String="Name of the input value"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.InputValues/description">
+                <Annotation Term="Core.Description" String="Description of the input value"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.InputValues/type">
+                <Annotation Term="Core.Description" String="Type of the input value"/>
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="string"/>
+                            <PropertyValue Property="Value" String="string"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="number"/>
+                            <PropertyValue Property="Value" String="number"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="boolean"/>
+                            <PropertyValue Property="Value" String="boolean"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="enum"/>
+                            <PropertyValue Property="Value" String="enum"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.InputValues/possibleValues">
+                <Annotation Term="Core.Description" String="Possible values if type is enum"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.InputValues/suggestions">
+                <Annotation Term="Core.Description" String="Suggestions for the values"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.AiModels">
+                <Annotation Term="Common.Label" String="AiModels"/>
+                <Annotation Term="Core.Description" String="AI Models data"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.EntityContainer/AiModels">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record Type="Capabilities.DeleteRestrictionsType">
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record Type="Capabilities.InsertRestrictionsType">
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record Type="Capabilities.UpdateRestrictionsType">
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.AiModels/modelId">
+                <Annotation Term="Core.Description" String="The unique identifier for the AI model type."/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="OpenAiGpt4o"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="OpenAiGpt4o"/>
+                            <PropertyValue Property="Value" String="OpenAiGpt4o"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="OpenAiGpt4oMini"/>
+                            <PropertyValue Property="Value" String="OpenAiGpt4oMini"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="MistralAiMistralLargeInstruct"/>
+                            <PropertyValue Property="Value" String="MistralAiMistralLargeInstruct"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="AnthropicClaude3Sonnet"/>
+                            <PropertyValue Property="Value" String="AnthropicClaude3Sonnet"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="AnthropicClaude35Sonnet"/>
+                            <PropertyValue Property="Value" String="AnthropicClaude35Sonnet"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="GoogleGemini15Pro"/>
+                            <PropertyValue Property="Value" String="GoogleGemini15Pro"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="GoogleGemini1Pro"/>
+                            <PropertyValue Property="Value" String="GoogleGemini1Pro"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.AiModels/modelName">
+                <Annotation Term="Core.Description" String="The full name or identifier for the AI model."/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="GPT4o"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.AiModels/providerId">
+                <Annotation Term="Core.Description" String="The unique identifier for the provider."/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="openapi"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="openai"/>
+                            <PropertyValue Property="Value" String="openai"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="mistralai"/>
+                            <PropertyValue Property="Value" String="mistralai"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="anthropic"/>
+                            <PropertyValue Property="Value" String="anthropic"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="google"/>
+                            <PropertyValue Property="Value" String="google"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.AiModels/providerName">
+                <Annotation Term="Core.Description" String="The name of the organization or company providing the AI model."/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="OpenAI"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.AiModels/rank">
+                <Annotation Term="Core.Description" String="The rank or priority level of the AI model among others."/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="1"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Chats">
+                <Annotation Term="Common.Label" String="Chats"/>
+                <Annotation Term="Core.Description" String="Chat-Sessions with the Agent"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Chats/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Chats/createdAt">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Chats/modifiedAt">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Chats/name">
+                <Annotation Term="Core.Description" String="Name of the chat"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="Sustainability Report 2023"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Validation.Pattern" String="^(?! )[ -~\u00C0-\u00FF]{0,249}[^ ]$"/>
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Chats/history">
+                <Annotation Term="Core.Description" String="Chat history"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Chats/state">
+                <Annotation Term="Core.Description" String="Current state of the chat"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="Planned"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="none"/>
+                            <PropertyValue Property="Value" String="none"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="pending"/>
+                            <PropertyValue Property="Value" String="pending"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="running"/>
+                            <PropertyValue Property="Value" String="running"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="success"/>
+                            <PropertyValue Property="Value" String="success"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="failed"/>
+                            <PropertyValue Property="Value" String="failed"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="waiting"/>
+                            <PropertyValue Property="Value" String="waiting"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Chats/agent">
+                <Annotation Term="Core.Description" String="Associated Agent"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.Chats/resources">
+                <Annotation Term="Core.Description" String="Resources of the tool"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.getChatInputSuggestions(UnifiedAiAgentService.Chats)">
+                <Annotation Term="Common.Label" String="Get Chat Input Suggestions"/>
+                <Annotation Term="Core.Description" String="Get input suggestions for a chat"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.sendMessage(UnifiedAiAgentService.Chats)">
+                <Annotation Term="Common.Label" String="Send a task to the agent"/>
+                <Annotation Term="Core.Description" String="Sends a new task, question or general message to the agent"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.sendMessage(UnifiedAiAgentService.Chats)/msg">
+                <Annotation Term="Common.Label" String="Message"/>
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+                <Annotation Term="Core.Description" String="Message that is send"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="Which of the products is recommended?"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.sendMessage(UnifiedAiAgentService.Chats)/async">
+                <Annotation Term="Common.Label" String="Async"/>
+                <Annotation Term="Core.Description" String="Sets if the message should be processed asychronously"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.sendMessage(UnifiedAiAgentService.Chats)/destination">
+                <Annotation Term="Common.Label" String="destination"/>
+                <Annotation Term="Core.Description" String="If processed asychronously, the callback destination to return the response to"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="AGENT_CALLBACK"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.sendMessage(UnifiedAiAgentService.Chats)/outputFormat">
+                <Annotation Term="Common.Label" String="Output Format"/>
+                <Annotation Term="Core.Description" String="Specify the output format of the message. Default is markdown. Possible values are Text, Markdown, JSON"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="Markdown"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="JSON"/>
+                            <PropertyValue Property="Value" String="JSON"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="Markdown"/>
+                            <PropertyValue Property="Value" String="Markdown"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="Text"/>
+                            <PropertyValue Property="Value" String="Text"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.sendMessage(UnifiedAiAgentService.Chats)/outputFormatOptions">
+                <Annotation Term="Common.Label" String="Output Format Options"/>
+                <Annotation Term="Core.Description" String="Specify any options for the specified output format e.g. JSON schema"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="{&quot;schema&quot;: &quot;https://json-schema.org/draft/2020-12/schema&quot;}"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.sendMessage(UnifiedAiAgentService.Chats)/returnTrace">
+                <Annotation Term="Common.Label" String="Return Trace"/>
+                <Annotation Term="Core.Description" String="For synchronous messages sets if the agent trace should be returned"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" Bool="true"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.cancel(UnifiedAiAgentService.Chats)">
+                <Annotation Term="Common.Label" String="Cancel execution of agent"/>
+                <Annotation Term="Core.Description" String="You can stop or cancel the execution of an agent"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.continueMessage(UnifiedAiAgentService.Chats)">
+                <Annotation Term="Common.Label" String="Continue agent task with tool observation"/>
+                <Annotation Term="Core.Description" String="Provides the tool observation to the agent and continous the agent task"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.continueMessage(UnifiedAiAgentService.Chats)/observation">
+                <Annotation Term="Common.Label" String="Observation"/>
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+                <Annotation Term="Core.Description" String="Observation result of the tool"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="The result of the calculation is 10"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.continueMessage(UnifiedAiAgentService.Chats)/historyId">
+                <Annotation Term="Common.Label" String="HistoryID"/>
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+                <Annotation Term="Core.Description" String="ID to reference the tool message in the history"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="70b6331d-1107-4f78-bcd8-fb95603ad7a8"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.continueMessage(UnifiedAiAgentService.Chats)/async">
+                <Annotation Term="Common.Label" String="Async"/>
+                <Annotation Term="Core.Description" String="Sets if the message should be processed asychronously"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.continueMessage(UnifiedAiAgentService.Chats)/destination">
+                <Annotation Term="Common.Label" String="destination"/>
+                <Annotation Term="Core.Description" String="If processed asychronously, the callback destination to return the response to"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" String="AGENT_CALLBACK"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.continueMessage(UnifiedAiAgentService.Chats)/returnTrace">
+                <Annotation Term="Common.Label" String="Return Trace"/>
+                <Annotation Term="Core.Description" String="For synchronous messages sets if the agent trace should be returned"/>
+                <Annotation Term="Core.Example">
+                    <Record Type="Core.ExampleValue">
+                        <PropertyValue Property="Value" Bool="true"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.AgentResponse_missingInputs/name">
+                <Annotation Term="Core.Description" String="Name of the input value"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.AgentResponse_missingInputs/description">
+                <Annotation Term="Core.Description" String="Description of the input value"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.AgentResponse_missingInputs/type">
+                <Annotation Term="Core.Description" String="Type of the input value"/>
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="string"/>
+                            <PropertyValue Property="Value" String="string"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="number"/>
+                            <PropertyValue Property="Value" String="number"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="boolean"/>
+                            <PropertyValue Property="Value" String="boolean"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="enum"/>
+                            <PropertyValue Property="Value" String="enum"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.AgentResponse_missingInputs/possibleValues">
+                <Annotation Term="Core.Description" String="Possible values if type is enum"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.AgentResponse_missingInputs/suggestions">
+                <Annotation Term="Core.Description" String="Suggested values"/>
+            </Annotations>
+            <Annotations Target="UnifiedAiAgentService.AgentResponse_trace_tokenConsumption/modelName">
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="OpenAiGpt4o"/>
+                            <PropertyValue Property="Value" String="OpenAiGpt4o"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="OpenAiGpt4oMini"/>
+                            <PropertyValue Property="Value" String="OpenAiGpt4oMini"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
