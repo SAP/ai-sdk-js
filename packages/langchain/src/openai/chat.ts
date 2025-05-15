@@ -1,7 +1,9 @@
 import { AzureOpenAiChatClient as AzureOpenAiChatClientBase } from '@sap-ai-sdk/foundation-models';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { mapLangchainToAiClient, mapOutputToChatResult } from './util.js';
-import type { BaseMessage } from '@langchain/core/messages';
+import type { BaseLanguageModelInput } from '@langchain/core/language_models/base';
+import type { BindToolsInput } from '@langchain/core/language_models/chat_models';
+import type { AIMessageChunk, BaseMessage } from '@langchain/core/messages';
 import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import type { ChatResult } from '@langchain/core/outputs';
 import type {
@@ -9,6 +11,7 @@ import type {
   AzureOpenAiChatModelParams
 } from './types.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+import type { Runnable } from '@langchain/core/runnables';
 
 /**
  * LangChain chat client for Azure OpenAI consumption on SAP BTP.
@@ -22,6 +25,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
   frequency_penalty?: number;
   stop?: string | string[];
   max_tokens?: number;
+  supportsStrictToolCalling?: boolean;
   private openAiChatClient: AzureOpenAiChatClientBase;
 
   constructor(
@@ -38,6 +42,9 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
     this.presence_penalty = fields.presence_penalty;
     this.frequency_penalty = fields.frequency_penalty;
     this.max_tokens = fields.max_tokens;
+    if (fields.supportsStrictToolCalling !== undefined) {
+      this.supportsStrictToolCalling = fields.supportsStrictToolCalling;
+    }
   }
 
   _llmType(): string {
@@ -68,5 +75,18 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
     );
 
     return mapOutputToChatResult(res.data);
+  }
+
+  override bindTools(tools: BindToolsInput[], kwargs?: Partial<AzureOpenAiChatCallOptions> | undefined): Runnable<BaseLanguageModelInput, AIMessageChunk, AzureOpenAiChatCallOptions> {
+    let strict: boolean | undefined;
+    if (kwargs?.strict !== undefined) {
+      strict = kwargs.strict;
+    } else if (this.supportsStrictToolCalling !== undefined) {
+      strict = this.supportsStrictToolCalling;
+    }
+    return this.bind({
+      tools: {}, // TODO: map it with strict
+      ...kwargs,
+    } as Partial<AzureOpenAiChatCallOptions>);
   }
 }

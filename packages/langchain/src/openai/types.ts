@@ -25,7 +25,13 @@ export type AzureOpenAiChatModelParams = Pick<
   | 'frequency_penalty'
   | 'logit_bias'
   | 'user'
-> &
+> & {
+  /**
+   * Whether the model supports the `strict` argument when passing in tools.
+   * If `undefined` the `strict` argument will not be passed to OpenAI.
+   */
+  supportsStrictToolCalling?: boolean;
+} &
   BaseChatModelParams &
   ModelConfig<AzureOpenAiChatModel> &
   ResourceGroupConfig;
@@ -47,6 +53,7 @@ export type AzureOpenAiChatCallOptions = BaseChatModelCallOptions &
     | 'function_call'
     | 'tools'
   > & {
+    strict?: boolean;
     requestConfig?: CustomRequestConfig;
   };
 
