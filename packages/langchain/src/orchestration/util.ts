@@ -133,17 +133,13 @@ function mapAzureOpenAiToLangchainToolCall(
 function mapOrchestrationToLangchainToolCallChunk(
   toolCallChunks: OrchestrationToolCallChunk[]
 ): ToolCallChunk[] {
-  const tool_call_chunks: ToolCallChunk[] = [];
-  for (const chunk of toolCallChunks) {
-    tool_call_chunks.push({
-      name: chunk.function?.name,
-      args: chunk.function?.arguments,
-      id: chunk.id,
-      index: chunk.index,
-      type: 'tool_call_chunk'
-    });
-  }
-  return tool_call_chunks;
+  return toolCallChunks.map(chunk => ({
+    name: chunk.function?.name,
+    args: chunk.function?.arguments,
+    id: chunk.id,
+    index: chunk.index,
+    type: 'tool_call_chunk'
+  }));
 }
 
 /**
@@ -207,13 +203,14 @@ export function mapOutputToChatResult(
 export function mapOrchestrationChunkToLangChainMessageChunk(
   chunk: OrchestrationStreamChunkResponse
 ): AIMessageChunk {
-  const { module_results, request_id } = chunk.data;
+  const { module_results, request_id, orchestration_result } = chunk.data;
   const content = chunk.getDeltaContent() ?? '';
   const toolCallChunks = chunk.getDeltaToolCallChunks();
 
   const additional_kwargs: Record<string, unknown> = {
     module_results,
-    request_id
+    request_id,
+    orchestration_result
   };
 
   let tool_call_chunks: ToolCallChunk[] = [];
