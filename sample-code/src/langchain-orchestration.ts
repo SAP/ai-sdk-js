@@ -130,25 +130,12 @@ export async function invokeLangGraphChain(): Promise<string> {
     llm: {
       model_name: 'gpt-4o'
     },
-    // define the template
-    templating: {
-      template: [
-        {
-          role: 'user',
-          content: '{{?message}}'
-        }
-      ]
-    }
   };
 
   const llm = new OrchestrationClient(orchestrationConfig);
   // Define the function that calls the model
   const callModel = async (state: typeof MessagesAnnotation.State) => {
-    const latestMessage = state.messages.pop();
-    const inputParamMessage = latestMessage!.content as string;
-    const response = await llm.invoke(state.messages, {
-      inputParams: { message: inputParamMessage }
-    });
+    const response = await llm.invoke(state.messages);
     // Update message history with response:
     return { messages: response };
   };

@@ -569,43 +569,23 @@ const addNumbersSchema = z
   .strict();
 
 /**
- * Ask the Llm to perform math operation of adding 2 numbers .
- * @returns The orchestration service response containing `tool_calls`.
- */
-export async function orchestrationToolCalling(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    llm,
-    templating: {
-      template: [
-        {
-          role: 'system',
-          content: 'You are a helpful AI that performs addition of two numbers.'
-        },
-        { role: 'user', content: 'What is 2 + 3?' }
-      ],
-      tools: [
-        {
-          type: 'function',
-          function: {
-            name: 'add',
-            description: 'Add two numbers',
-            parameters: zodToJsonSchema(addNumbersSchema)
-          }
-        }
-      ]
-    }
-  });
-  return orchestrationClient.chatCompletion();
-}
-
-/**
  * Send a chat completion request to the Orchestration service using tools and pass the message history in a subsequent chat completion request.
  * @returns The orchestration service response containing `tool_calls`.
  */
 export async function orchestrationMessageHistoryWithToolCalling(): Promise<OrchestrationResponse> {
+  // Tool definition
+  const addNumbersTool: ChatCompletionTool = {
+    type: 'function',
+    function: {
+      name: 'add',
+      description: 'Add two numbers',
+      parameters: zodToJsonSchema(addNumbersSchema)
+    }
+  };
+
   // The tool that performs the calculation
   const addTwoNumbers = (first: number, second: number): string =>
-    `The sum of ${first} and ${second} is ${first + second}.`;
+   `The sum of ${first} and ${second} is ${first + second}.`;
 
   // Routing tool calls to their corresponsing implementation
   const callFunction = (name: string, args: any): string => {
@@ -617,32 +597,23 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
     }
   };
 
-  // Tool definition
-  const addNumbersTool: ChatCompletionTool = {
-    type: 'function',
-    function: {
-      name: 'add',
-      description: 'Add two numbers',
-      parameters: zodToJsonSchema(addNumbersSchema)
+  const orchestrationClient = new OrchestrationClient({
+    llm,
+    templating: {
+      tools: [addNumbersTool]
     }
-  };
+  });
 
-  const orchestrationClient = (
-    messages: TemplatingChatMessage,
-    tools: ChatCompletionTool
-  ) =>
-    new OrchestrationClient({
-      llm,
-      templating: {
-        template: messages,
-        tools: [tools]
-      }
-    });
-
-  const response: OrchestrationResponse = await orchestrationToolCalling();
-  const allMessages: ChatMessages = response.getAllMessages();
-  const initialResponse: AssistantChatMessage | undefined =
-    response.getAssistantMessage();
+  const response: OrchestrationResponse = await orchestrationClient.chatCompletion({ messages: [
+    {
+      role: 'system',
+      content: 'You are a helpful AI that performs addition of two numbers.'
+    },
+    { role: 'user', content: 'What is 2 + 3?' }
+  ]
+});
+  const allMessages = response.getAllMessages();
+  const initialResponse = response.getAssistantMessage();
 
   // Use the initial response to execute the tool and get the response.
   if (initialResponse && initialResponse.tool_calls) {
@@ -656,10 +627,10 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
     allMessages.push(message);
   }
 
-  return orchestrationClient(
-    [{ role: 'user', content: 'What is the corresponding roman numeral?' }],
-    addNumbersTool
-  ).chatCompletion({
-    messagesHistory: allMessages
-  });
+  // Call the model with a new message and the message history 
+  return orchestrationClient.chatCompletion(
+    {
+      messages: [{ role: 'user', content: 'What is the corresponding roman numeral?' }],
+      messagesHistory: allMessages
+    });
 }
