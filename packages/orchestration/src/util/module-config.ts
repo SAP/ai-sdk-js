@@ -12,10 +12,8 @@ import type {
   OrchestrationConfig,
   OutputFilteringConfig,
   GlobalStreamOptions,
-  TemplatingModuleConfig,
   Template,
-  TemplatingChatMessage,
-  ChatMessages
+  TemplatingModuleConfig
 } from '../client/api/schema/index.js';
 
 const logger = createLogger({
@@ -135,25 +133,20 @@ export function constructCompletionPostRequest(
   stream?: boolean,
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
+  // Templating is not a string here as it is already parsed in `parseAndMergeTemplating` method
+  const templatingConfig = config.templating as TemplatingModuleConfig;
 
-  // Templating cannot be a string here as it is already parsed in parseAndMergeTemplating method
-  let templatingConfig = config.templating as TemplatingModuleConfig;
-
-if (isTemplate(templatingConfig)) {
-  if (!Array.isArray(templatingConfig.template) || templatingConfig.template.length === 0) {
-    throw new Error(
-      'Templating config was provided with an empty template. Either provide a valid template or omit the field entirely.'
-    );
+  if (isTemplate(templatingConfig)) {
+    if (!templatingConfig.template.length && !prompt?.messages?.length) {
+      throw new Error('Either a prompt template or messages must be defined.');
+    }
+    if (prompt?.messages?.length) {
+      templatingConfig.template = [
+        ...templatingConfig.template,
+        ...prompt.messages
+      ];
+    }
   }
-} else if (!templatingConfig) {
-  // No templating provided — fallback to prompt-based template generation
-  const { template, updatedHistory } = resolveTemplateFromPrompt(prompt);
-  templatingConfig = { template };
-
-  if (prompt) {
-    prompt.messages = updatedHistory;
-  }
-}
 
   const moduleConfigurations: ModuleConfigs = {
     templating_module_config: templatingConfig,
@@ -172,7 +165,7 @@ if (isTemplate(templatingConfig)) {
       })
   };
 
-  const request: CompletionPostRequest = {
+  return {
     orchestration_config: stream
       ? addStreamOptions(
           moduleConfigurations,
@@ -181,31 +174,10 @@ if (isTemplate(templatingConfig)) {
       : { module_configurations: moduleConfigurations },
     ...(prompt?.inputParams && {
       input_params: prompt.inputParams
+    }),
+    ...(prompt?.messagesHistory && {
+      messages_history: prompt.messagesHistory
     })
-  };
-
-  if (prompt?.messages && prompt.messages.length) {
-    request.messages_history = prompt.messages; // Assuming messages_history still receives full chat context
-  } else if (prompt?.messagesHistory && prompt.messagesHistory.length) {
-    request.messages_history = prompt.messagesHistory;
-  }
-  return request;
-}
-
-function resolveTemplateFromPrompt(prompt?: Prompt): {
-  template: TemplatingChatMessage;
-  updatedHistory?: ChatMessages;
-} {
-  const messages = prompt?.messages ?? prompt?.messagesHistory;
-
-  if (!messages || !messages.length) {
-    throw new Error('No messages or messagesHistory available to derive template.');
-  }
-
-  const latestMessage = messages.pop()!;
-  return {
-    template: [latestMessage],
-    updatedHistory: messages
   };
 }
 
@@ -228,8 +200,6 @@ function isTemplate(
   templating: TemplatingModuleConfig
 ): templating is Template {
   return (
-    templating &&
-    typeof templating === 'object' &&
-    'template' in templating
+    templating && typeof templating === 'object' && 'template' in templating
   );
 }

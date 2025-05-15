@@ -74,12 +74,16 @@ describe('orchestration service client', () => {
     nock.cleanAll();
   });
 
-  it('calls chatCompletion with minimum configuration', async () => {
+  it('calls chatCompletion with minimal configuration', async () => {
     const config: OrchestrationModuleConfig = {
       llm: {
         model_name: 'gpt-4o',
         model_params: { max_tokens: 50, temperature: 0.1 }
       }
+    };
+
+    const prompt: Prompt = {
+      messages: [{ role: 'user', content: 'Hello' }]
     };
 
     const mockResponse = await parseMockResponse<CompletionPostResponse>(
@@ -89,7 +93,7 @@ describe('orchestration service client', () => {
 
     mockInference(
       {
-        data: constructCompletionPostRequest(config, { messages: [{ role: 'user', content: 'Hello' }]})
+        data: constructCompletionPostRequest(config, prompt)
       },
       {
         data: mockResponse,
@@ -99,7 +103,9 @@ describe('orchestration service client', () => {
         url: 'inference/deployments/1234/completion'
       }
     );
-    const response = await new OrchestrationClient(config).chatCompletion({ messages: [{ role: 'user', content: 'Hello' }] });
+    const response = await new OrchestrationClient(config).chatCompletion(
+      prompt
+    );
 
     expect(response).toBeInstanceOf(OrchestrationResponse);
     expect(response.data).toEqual(mockResponse);
@@ -108,44 +114,15 @@ describe('orchestration service client', () => {
     expect(response.getTokenUsage().completion_tokens).toEqual(9);
   });
 
-  it('calls chatCompletion with minimum configuration - 2', async () => {
-
+  it('calls chatCompletion with some templating configuration (without template)', async () => {
     const config: OrchestrationModuleConfig = {
       llm: {
         model_name: 'gpt-4o',
         model_params: { max_tokens: 500 }
       },
-      templating: { 
-        response_format: {
-          type: 'json_schema',
-          json_schema: {
-            name: 'poem_structure',
-            description: 'Structured format for the generated poem',
-            strict: true,
-            schema: {
-              type: 'object',
-              additionalProperties: false,
-              required: ['title', 'verses', 'theme'],
-              properties: {
-                title: {
-                  type: 'string',
-                  description: 'The title of the poem'
-                },
-                theme: {
-                  type: 'string',
-                  description: 'The central theme or subject of the poem'
-                },
-                verses: {
-                  type: 'array',
-                  description: 'A list of verses making up the poem',
-                  items: {
-                    type: 'string',
-                    description: 'A single verse of the poem'
-                  }
-                }
-              }
-            }
-          }
+      templating: {
+        defaults: {
+          topic: 'Generative AI Hub'
         }
       }
     };
@@ -180,19 +157,20 @@ describe('orchestration service client', () => {
         url: 'inference/deployments/1234/completion'
       }
     );
-    const response = await new OrchestrationClient(config).chatCompletion({ messages: [
-      {
-        role: 'system',
-        content:
-          'You are a world-famous poet who can write virtuosic and brilliant poetry on any topic.'
-      },
-      {
-        role: 'user',
-        content:
-          'Write a 1 verse poem about the following topic: {{?topic}}'
-      }
-    ],
-    inputParams: { topic: 'Generative AI Hub' } });
+    const response = await new OrchestrationClient(config).chatCompletion({
+      messages: [
+        {
+          role: 'system',
+          content:
+            'You are a world-famous poet who can write virtuosic and brilliant poetry on any topic.'
+        },
+        {
+          role: 'user',
+          content: 'Write a 1 verse poem about the following topic: {{?topic}}'
+        }
+      ],
+      inputParams: { topic: 'Generative AI Hub' }
+    });
     expect(response.data).toEqual(mockResponse);
   }, 60000);
 
@@ -408,17 +386,15 @@ describe('orchestration service client', () => {
     expect(response.data).toEqual(mockResponse);
   });
 
-  it('sends message history together with templating config', async () => {
+  it('sends message_history together with messages', async () => {
     const config: OrchestrationModuleConfig = {
       llm: {
         model_name: 'gpt-4o',
         model_params: { max_tokens: 50, temperature: 0.1 }
-      },
-      templating: {
-        template: [{ role: 'user', content: "What's my name?" }]
       }
     };
     const prompt: Prompt = {
+      messages: [{ role: 'user', content: "What's my name?" }],
       messagesHistory: [
         {
           role: 'system',
@@ -549,7 +525,7 @@ describe('orchestration service client', () => {
     expect(response.data).toEqual(mockResponse);
   }, 60000);
 
-  it('fails when template is an empty string', async () => {
+  it('throws when template is an empty string', async () => {
     const invalidConfigWithYaml: OrchestrationModuleConfig = {
       llm: {
         model_name: 'gpt-4o',
@@ -567,7 +543,7 @@ describe('orchestration service client', () => {
     );
   });
 
-  it('fails when template YAML string does not conform to the expected specification', async () => {
+  it('throws when template YAML string does not conform to the expected specification', async () => {
     const invalidConfigWithYaml: OrchestrationModuleConfig = {
       llm: {
         model_name: 'gpt-4o',

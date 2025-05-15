@@ -4,6 +4,7 @@ export type {
   OrchestrationModuleConfig,
   LlmModuleConfig,
   TemplatingModuleConfig,
+  Template,
   Prompt,
   RequestOptions,
   StreamOptions,
