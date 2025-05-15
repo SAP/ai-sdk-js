@@ -1,4 +1,4 @@
-import type { TokenUsage } from './client/api/schema/index.js';
+import type { MessageToolCalls, TokenUsage, ToolCallChunk } from './client/api/schema/index.js';
 import type { OrchestrationStream } from './orchestration-stream.js';
 
 /**
@@ -10,6 +10,7 @@ export class OrchestrationStreamResponse<T> {
    * Finish reasons for all choices.
    */
   private _finishReasons: Map<number, string> = new Map();
+  private _toolCallChunks: Map<number, ToolCallChunk[]> = new Map();
   private _stream: OrchestrationStream<T> | undefined;
 
   public getTokenUsage(): TokenUsage | undefined {
@@ -39,6 +40,28 @@ export class OrchestrationStreamResponse<T> {
    */
   _setFinishReasons(finishReasons: Map<number, string>): void {
     this._finishReasons = finishReasons;
+  }
+
+  public getToolCalls(choiceIndex = 0): MessageToolCalls | undefined {
+    try {
+      const toolCallChunks = this._toolCallChunks.get(choiceIndex);
+      if(!toolCallChunks) {
+        throw new Error(`No tool calls found for choice index ${choiceIndex}`);
+      }
+      const toolCallString = toolCallChunks?.join('');
+      return JSON.parse(toolCallString) as MessageToolCalls;
+    } catch(error) {
+      throw new Error(
+        `Error while getting tool calls for choice index ${choiceIndex}: ${error}`
+      );
+    }
+  }
+
+  /**
+   * @internal
+   */
+  _getToolCallChunks(): Map<number, ToolCallChunk[]> {
+    return this._toolCallChunks;
   }
 
   get stream(): OrchestrationStream<T> {

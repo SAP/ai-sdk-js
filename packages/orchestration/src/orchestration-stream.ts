@@ -48,6 +48,33 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
     }
   }
 
+  static async *_processToolCalls(
+    stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
+    response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
+  ): AsyncGenerator<OrchestrationStreamChunkResponse> {
+    for await (const chunk of stream) {
+      chunk.data.orchestration_result?.choices.forEach(
+        (choice: LlmChoiceStreaming) => {
+          const choiceIndex = choice.index;
+          if (choiceIndex >= 0) {
+            const toolCallsChunks = chunk.getToolCalls(choiceIndex);
+            if (toolCallsChunks) {
+              if (response) {
+                const toolCallChunksArray = response._getToolCallChunks().get(choiceIndex);
+                if (toolCallChunksArray) {
+                  toolCallChunksArray.push(...toolCallsChunks);
+                } else {
+                  response._getToolCallChunks().set(choiceIndex, toolCallsChunks);
+                }
+              }
+            }
+          }
+        }
+      );
+      yield chunk;
+    }
+  }
+
   /**
    * @internal
    */

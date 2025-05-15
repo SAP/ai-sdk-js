@@ -1,7 +1,8 @@
 import type {
   CompletionPostResponseStreaming,
   LlmChoiceStreaming,
-  TokenUsage
+  TokenUsage,
+  ToolCallChunk
 } from './client/api/schema/index.js';
 
 /**
@@ -29,6 +30,12 @@ export class OrchestrationStreamChunkResponse {
     return this.getChoices()?.find(
       (c: LlmChoiceStreaming) => c.index === choiceIndex
     )?.finish_reason;
+  }
+
+  getToolCalls(choiceIndex = 0): ToolCallChunk[] | undefined {
+    return this.getChoices()?.find(
+      (c: LlmChoiceStreaming) => c.index === choiceIndex
+    )?.delta.tool_calls;
   }
 
   /**
