@@ -36,12 +36,14 @@ expectType<CompletionPostResponse>(
   (
     await new OrchestrationClient({
       templating: {
-        defaults: { name: 'Bob' }, 
+        defaults: { name: 'Bob' }
       },
       llm: {
         model_name: 'gpt-4o'
       }
-    }).chatCompletion({ messages: [{ role: 'user', content: 'Hello! {{?name}}' }]})
+    }).chatCompletion({
+      messages: [{ role: 'user', content: 'Hello! {{?name}}' }]
+    })
   ).data
 );
 
