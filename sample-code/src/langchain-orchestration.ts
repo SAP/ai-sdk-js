@@ -129,7 +129,7 @@ export async function invokeLangGraphChain(): Promise<string> {
     // define the language model to be used
     llm: {
       model_name: 'gpt-4o'
-    },
+    }
   };
 
   const llm = new OrchestrationClient(orchestrationConfig);

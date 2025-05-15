@@ -20,9 +20,7 @@ import type {
   TemplatingChatMessage,
   ErrorResponse,
   TemplatingModuleConfig,
-  ChatMessages,
   ChatCompletionTool,
-  AssistantChatMessage,
   ToolChatMessage,
   DataRepositoryType
 } from '@sap-ai-sdk/orchestration';
@@ -585,7 +583,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
 
   // The tool that performs the calculation
   const addTwoNumbers = (first: number, second: number): string =>
-   `The sum of ${first} and ${second} is ${first + second}.`;
+    `The sum of ${first} and ${second} is ${first + second}.`;
 
   // Routing tool calls to their corresponsing implementation
   const callFunction = (name: string, args: any): string => {
@@ -604,14 +602,16 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
     }
   });
 
-  const response: OrchestrationResponse = await orchestrationClient.chatCompletion({ messages: [
-    {
-      role: 'system',
-      content: 'You are a helpful AI that performs addition of two numbers.'
-    },
-    { role: 'user', content: 'What is 2 + 3?' }
-  ]
-});
+  const response: OrchestrationResponse =
+    await orchestrationClient.chatCompletion({
+      messages: [
+        {
+          role: 'system',
+          content: 'You are a helpful AI that performs addition of two numbers.'
+        },
+        { role: 'user', content: 'What is 2 + 3?' }
+      ]
+    });
   const allMessages = response.getAllMessages();
   const initialResponse = response.getAssistantMessage();
 
@@ -627,10 +627,11 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
     allMessages.push(message);
   }
 
-  // Call the model with a new message and the message history 
-  return orchestrationClient.chatCompletion(
-    {
-      messages: [{ role: 'user', content: 'What is the corresponding roman numeral?' }],
-      messagesHistory: allMessages
-    });
+  // Call the model with a new message and the message history
+  return orchestrationClient.chatCompletion({
+    messages: [
+      { role: 'user', content: 'What is the corresponding roman numeral?' }
+    ],
+    messagesHistory: allMessages
+  });
 }
