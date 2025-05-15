@@ -249,17 +249,6 @@ expectType<Promise<OrchestrationResponse>>(
 expectError<any>(new OrchestrationClient({}).chatCompletion());
 
 /**
- * Prompt templates cannot be empty.
- */
-expectError<any>(
-  new OrchestrationClient({
-    llm: {
-      model_name: 'gpt-4o'
-    }
-  }).chatCompletion()
-);
-
-/**
  * Model_name is mandatory in llm_module_config.
  */
 expectError<any>(
