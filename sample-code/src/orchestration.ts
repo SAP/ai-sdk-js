@@ -645,19 +645,21 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
     response.getAssistantMessage();
 
   // Use the initial response to execute the tool and get the response.
+  let toolCallMessage: ToolChatMessage;
   if (initialResponse && initialResponse.tool_calls) {
     const toolCall = initialResponse.tool_calls[0];
     const args = JSON.parse(toolCall.function.arguments);
-    const message: ToolChatMessage = {
+    toolCallMessage = {
       role: 'tool',
       content: callFunction(toolCall.function.name, args),
       tool_call_id: toolCall.id
     };
-    allMessages.push(message);
+  } else {
+    throw new Error('No tool call found in the response.');
   }
 
   return orchestrationClient(
-    [{ role: 'user', content: 'What is the corresponding roman numeral?' }],
+    [toolCallMessage],
     addNumbersTool
   ).chatCompletion({
     messagesHistory: allMessages
