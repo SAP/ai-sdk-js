@@ -12,8 +12,7 @@ export type {
   LlmModelParams,
   LlamaGuardCategory,
   AzureContentFilter,
-  AzureFilterThreshold,
-  TranslationConfigParams
+  AzureFilterThreshold
 } from './orchestration-types.js';
 
 export { OrchestrationStreamResponse } from './orchestration-stream-response.js';
@@ -30,7 +29,7 @@ export {
   buildLlamaGuardFilter,
   buildDocumentGroundingConfig,
   buildDpiMaskingProvider,
-  buildOrchestrationTranslationConfig
+  buildTranslationConfig
 } from './util/index.js';
 
 export { OrchestrationResponse } from './orchestration-response.js';

@@ -7,7 +7,7 @@ import {
   buildAzureContentSafetyFilter,
   buildLlamaGuardFilter,
   buildDpiMaskingProvider,
-  buildOrchestrationTranslationConfig
+  buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
 import { z } from 'zod';
@@ -680,11 +680,11 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
         }
       ]
     },
-    inputTranslation: buildOrchestrationTranslationConfig({
+    inputTranslation: buildTranslationConfig({
       source_language: 'en-US',
       target_language: 'de-DE'
     }),
-    outputTranslation: buildOrchestrationTranslationConfig({
+    outputTranslation: buildTranslationConfig({
       source_language: 'de-DE',
       target_language: 'fr-FR'
     })

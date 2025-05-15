@@ -3,4 +3,4 @@
 ---
 
 [New Functionality] Add support for orchestration translation module. 
-Implement `buildOrchestrationTranslationConfig` convenience function to build translation config.
+Implement `buildTranslationConfig()` convenience function to build translation config.

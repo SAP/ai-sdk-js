@@ -240,7 +240,7 @@ Once the streaming is done, finish reason and token usage are printed out.
 `GET /orchestration/translation`
 
 Get chat completion response with input and output translation.
-For example, use `buildOrchestrationTranslationConfig` function to build a SAP Document Translation config.
+For example, use `buildTranslationConfig()` function to build a SAP Document Translation config.
 
 ### LangChain
 
