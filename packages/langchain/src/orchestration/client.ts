@@ -136,7 +136,7 @@ export class OrchestrationClient extends BaseChatModel<
       },
       templating: {
         ...this.orchestrationConfig.templating,
-        ...(isTemplate(this.orchestrationConfig.templating) &&
+        ...(this.orchestrationConfig.templating && isTemplate(this.orchestrationConfig.templating) &&
           tools.length && {
             tools: [
               ...(this.orchestrationConfig.templating.tools || []),
