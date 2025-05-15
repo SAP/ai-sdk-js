@@ -5,6 +5,8 @@ import { type BaseMessage } from '@langchain/core/messages';
 import {
   mapOrchestrationChunkToLangChainMessageChunk,
   isTemplate,
+  setFinishReason,
+  setUsageMetadata,
   mapLangchainMessagesToOrchestrationMessages,
   mapOutputToChatResult
 } from './util.js';
@@ -170,15 +172,8 @@ export class OrchestrationClient extends BaseChatModel<
       const finishReason = chunk.getFinishReason();
       const tokenUsage = chunk.getTokenUsage();
 
-      // Add token usage to the message chunk if this is the final chunk
-      if (finishReason && tokenUsage) {
-        messageChunk.response_metadata.finish_reason = finishReason;
-        messageChunk.usage_metadata = {
-          input_tokens: tokenUsage.prompt_tokens,
-          output_tokens: tokenUsage.completion_tokens,
-          total_tokens: tokenUsage.total_tokens
-        };
-      }
+      setFinishReason(messageChunk, finishReason);
+      setUsageMetadata(messageChunk, tokenUsage);
       const content = chunk.getDeltaContent() ?? '';
       const generationChunk = new ChatGenerationChunk({
         message: messageChunk,

@@ -5,7 +5,8 @@ import type {
   CompletionPostResponse,
   Template,
   ToolCallChunk as OrchestrationToolCallChunk,
-  OrchestrationStreamChunkResponse
+  OrchestrationStreamChunkResponse,
+  TokenUsage
 } from '@sap-ai-sdk/orchestration';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type { AzureOpenAiChatCompletionMessageToolCalls } from '@sap-ai-sdk/foundation-models';
@@ -219,4 +220,38 @@ export function mapOrchestrationChunkToLangChainMessageChunk(
   }
   // Use AIMessageChunk to represent message chunks for roles like 'tool' and 'user' too
   return new AIMessageChunk({ content, additional_kwargs, tool_call_chunks });
+}
+
+/**
+ * Sets finish reason on a message chunk if available.
+ * @param messageChunk - The message chunk to update.
+ * @param finishReason - The finish reason from the response.
+ * @internal
+ */
+export function setFinishReason(
+  messageChunk: AIMessageChunk,
+  finishReason: string | undefined
+): void {
+  if (finishReason) {
+    messageChunk.response_metadata.finish_reason = finishReason;
+  }
+}
+
+/**
+ * Sets usage metadata on a message chunk if available.
+ * @param messageChunk - The message chunk to update.
+ * @param tokenUsage - The token usage information.
+ * @internal
+ */
+export function setUsageMetadata(
+  messageChunk: AIMessageChunk,
+  tokenUsage: TokenUsage | undefined
+): void {
+  if (tokenUsage) {
+    messageChunk.usage_metadata = {
+      input_tokens: tokenUsage.prompt_tokens,
+      output_tokens: tokenUsage.completion_tokens,
+      total_tokens: tokenUsage.total_tokens
+    };
+  }
 }
