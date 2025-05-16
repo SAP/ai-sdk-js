@@ -303,7 +303,7 @@ type ToolDefinitionLike = Pick<ToolDefinition, 'type'> & {
 /**
  * @internal
  */
-// TODO: Replace `ToolDefinitionLike` with `ToolDefinition` once the `functions` property is removed from the SDK.
+// TODO: Replace `ToolDefinitionLike` with `ToolDefinition` once `functions` property of `AzureOpenAiCreateChatCompletionRequest` is removed from the SDK.
 export function isToolDefinition(
   tool: BindToolsInput
 ): tool is ToolDefinitionLike {
