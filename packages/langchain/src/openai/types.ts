@@ -8,7 +8,8 @@ import type {
   AzureOpenAiCreateChatCompletionRequest,
   AzureOpenAiChatModel,
   AzureOpenAiEmbeddingModel,
-  AzureOpenAiChatCompletionsRequestCommon
+  AzureOpenAiChatCompletionsRequestCommon,
+  AzureOpenAiChatCompletionTool
 } from '@sap-ai-sdk/foundation-models';
 import type { CustomRequestConfig } from '@sap-ai-sdk/core';
 import type { ModelConfig, ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
@@ -32,10 +33,16 @@ export type AzureOpenAiChatModelParams = Pick<
    * If `undefined` the `strict` argument will not be passed to OpenAI.
    */
   supportsStrictToolCalling?: boolean;
-} &
-  BaseChatModelParams &
+} & BaseChatModelParams &
   ModelConfig<AzureOpenAiChatModel> &
   ResourceGroupConfig;
+
+/**
+ * Tool type for Azure OpenAI.
+ */
+export type ChatAzureOpenAIToolType =
+  | AzureOpenAiChatCompletionTool
+  | BindToolsInput;
 
 /**
  * Call options for the {@link AzureOpenAiChatClient}.
@@ -54,7 +61,7 @@ export type AzureOpenAiChatCallOptions = BaseChatModelCallOptions &
     | 'function_call'
   > & {
     strict?: boolean;
-    tools?: BindToolsInput[];
+    tools?: ChatAzureOpenAIToolType[];
     requestConfig?: CustomRequestConfig;
   };
 
