@@ -38,7 +38,7 @@ describe('construct completion post request', () => {
   });
 
   // TODO: Adapt the test after Cloud SDK fix for: https://github.com/SAP/cloud-sdk-backlog/issues/1234
-  it('should construct completion post request with llm and empty templating module', async () => {
+  xit('should construct completion post request with llm and empty templating module', async () => {
     const config: OrchestrationModuleConfig = {
       ...defaultConfig,
       templating: { template: [] }

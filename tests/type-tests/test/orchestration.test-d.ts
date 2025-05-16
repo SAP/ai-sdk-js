@@ -26,9 +26,6 @@ import type {
  */
 expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient({
-    templating: {
-      template: [{ role: 'user', content: 'Hello!' }]
-    },
     llm: {
       model_name: 'gpt-4o'
     }
@@ -39,12 +36,14 @@ expectType<CompletionPostResponse>(
   (
     await new OrchestrationClient({
       templating: {
-        template: [{ role: 'user', content: 'Hello!' }]
+        defaults: { name: 'Bob' }
       },
       llm: {
         model_name: 'gpt-4o'
       }
-    }).chatCompletion()
+    }).chatCompletion({
+      messages: [{ role: 'user', content: 'Hello! {{?name}}' }]
+    })
   ).data
 );
 
@@ -248,17 +247,6 @@ expectType<Promise<OrchestrationResponse>>(
  * Orchestration completion parameters cannot be empty.
  */
 expectError<any>(new OrchestrationClient({}).chatCompletion());
-
-/**
- * Prompt templates cannot be empty.
- */
-expectError<any>(
-  new OrchestrationClient({
-    llm: {
-      model_name: 'gpt-4o'
-    }
-  }).chatCompletion()
-);
 
 /**
  * Model_name is mandatory in llm_module_config.

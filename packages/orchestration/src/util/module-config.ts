@@ -12,6 +12,7 @@ import type {
   OrchestrationConfig,
   OutputFilteringConfig,
   GlobalStreamOptions,
+  Template,
   TemplatingModuleConfig
 } from '../client/api/schema/index.js';
 
@@ -132,8 +133,23 @@ export function constructCompletionPostRequest(
   stream?: boolean,
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
+  // Templating is not a string here as it is already parsed in `parseAndMergeTemplating` method
+  const templatingConfig = config.templating as TemplatingModuleConfig;
+
+  if (isTemplate(templatingConfig)) {
+    if (!templatingConfig.template.length && !prompt?.messages?.length) {
+      throw new Error('Either a prompt template or messages must be defined.');
+    }
+    if (prompt?.messages?.length) {
+      templatingConfig.template = [
+        ...templatingConfig.template,
+        ...prompt.messages
+      ];
+    }
+  }
+
   const moduleConfigurations: ModuleConfigs = {
-    templating_module_config: config.templating as TemplatingModuleConfig,
+    templating_module_config: templatingConfig,
     llm_module_config: config.llm,
     ...(config?.filtering &&
       Object.keys(config.filtering).length && {
@@ -178,4 +194,12 @@ function mergeStreamOptions(
       }
     })
   };
+}
+
+function isTemplate(
+  templating: TemplatingModuleConfig
+): templating is Template {
+  return (
+    templating && typeof templating === 'object' && 'template' in templating
+  );
 }
