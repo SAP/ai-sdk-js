@@ -681,12 +681,12 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
       ]
     },
     inputTranslation: buildTranslationConfig({
-      source_language: 'en-US',
-      target_language: 'de-DE'
+      sourceLanguage: 'en-US',
+      targetLanguage: 'de-DE'
     }),
     outputTranslation: buildTranslationConfig({
-      source_language: 'de-DE',
-      target_language: 'fr-FR'
+      sourceLanguage: 'de-DE',
+      targetLanguage: 'fr-FR'
     })
   });
 

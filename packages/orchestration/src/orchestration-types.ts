@@ -232,3 +232,17 @@ export type AzureFilterThreshold = keyof typeof supportedAzureFilterThresholds;
  * The filter categories supported for Llama guard filter.
  */
 export type LlamaGuardCategory = keyof LlamaGuard38B;
+
+/**
+ * Translation configuration for SAP Document Translation.
+ */
+export interface TranslationConfigParams {
+  /**
+   * Language of the text to be translated.
+   */
+  sourceLanguage?: string;
+  /**
+   * Language to which the text should be translated.
+   */
+  targetLanguage: string;
+}

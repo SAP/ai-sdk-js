@@ -1,11 +1,12 @@
 import { buildTranslationConfig } from './translation.js';
+import type { TranslationConfigParams } from '../orchestration-types.js';
 import type { SAPDocumentTranslation } from '../client/api/schema/index.js';
 
 describe('Translation module config', () => {
   it('builds translation config', async () => {
     const translationConfig = buildTranslationConfig({
-      source_language: 'de-DE',
-      target_language: 'en-US'
+      sourceLanguage: 'de-DE',
+      targetLanguage: 'en-US'
     });
 
     const expectedTranslationConfig: SAPDocumentTranslation = {
@@ -26,11 +27,12 @@ describe('Translation module config', () => {
   });
 
   it('throw error when target language is empty', () => {
+    const errorConfig: TranslationConfigParams = {
+      sourceLanguage: 'en-US',
+      targetLanguage: ''
+    };
     expect(() => {
-      buildTranslationConfig({
-        source_language: 'en-US',
-        target_language: ''
-      });
+      buildTranslationConfig(errorConfig);
     }).toThrow('Target language is required for translation configuration.');
   });
 });
