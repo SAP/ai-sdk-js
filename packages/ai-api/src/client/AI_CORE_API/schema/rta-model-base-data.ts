@@ -5,6 +5,7 @@
  */
 import type { RTAExecutableId } from './rta-executable-id.js';
 import type { RTAModelVersionList } from './rta-model-version-list.js';
+import type { RTAScenarioId } from './rta-scenario-id.js';
 /**
  * Representation of the 'RTAModelBaseData' schema.
  */
@@ -31,4 +32,11 @@ export type RTAModelBaseData = {
    * Provider of the model
    */
   provider?: string;
+  /**
+   * List of scenarioId:executuableId pair where the model supported
+   */
+  allowedScenarios?: ({
+    scenarioId: RTAScenarioId;
+    executableId: RTAExecutableId;
+  } & Record<string, any>)[];
 } & Record<string, any>;

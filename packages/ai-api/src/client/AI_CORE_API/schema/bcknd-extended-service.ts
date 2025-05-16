@@ -6,6 +6,7 @@
 import type { BckndServiceBrokerSecret } from './bcknd-service-broker-secret.js';
 import type { BckndServiceCapabilities } from './bcknd-service-capabilities.js';
 import type { BckndServiceServiceCatalog } from './bcknd-service-service-catalog.js';
+import type { BckndSharedResourceGroupStatus } from './bcknd-shared-resource-group-status.js';
 /**
  * Representation of the 'BckndExtendedService' schema.
  */
@@ -25,6 +26,7 @@ export type BckndExtendedService = {
   brokerSecret?: BckndServiceBrokerSecret;
   capabilities?: BckndServiceCapabilities;
   serviceCatalog?: BckndServiceServiceCatalog;
+  sharedResourceGroupStatus?: BckndSharedResourceGroupStatus;
   /**
    * aggregated status of the service
    */

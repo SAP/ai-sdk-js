@@ -23,4 +23,5 @@ export * from './application-api.js';
 export * from './docker-registry-secret-api.js';
 export * from './service-api.js';
 export * from './resource-quota-api.js';
+export * from './tenant-info-api.js';
 export * from './schema/index.js';
