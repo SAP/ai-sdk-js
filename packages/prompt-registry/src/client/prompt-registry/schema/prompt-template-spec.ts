@@ -15,7 +15,7 @@ export type PromptTemplateSpec = {
   template: Template[];
   defaults?: Record<string, any>;
   /**
-   * DEPRECATED. Use additional properties instead.
+   * DEPRECATED. Please use additional_fields instead.
    *
    * @deprecated
    */
