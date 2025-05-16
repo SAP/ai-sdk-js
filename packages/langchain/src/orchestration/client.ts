@@ -1,17 +1,21 @@
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { OrchestrationClient as OrchestrationClientBase } from '@sap-ai-sdk/orchestration';
+import { ChatGenerationChunk } from '@langchain/core/outputs';
+import { type BaseMessage } from '@langchain/core/messages';
 import {
+  mapOrchestrationChunkToLangChainMessageChunk,
   isTemplate,
+  setFinishReason,
+  setUsageMetadata,
   mapLangchainMessagesToOrchestrationMessages,
   mapOutputToChatResult
 } from './util.js';
+import type { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
 import type { BaseLanguageModelInput } from '@langchain/core/language_models/base';
 import type { Runnable, RunnableLike } from '@langchain/core/runnables';
-import type { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
 import type { ChatResult } from '@langchain/core/outputs';
 import type { BaseChatModelParams } from '@langchain/core/language_models/chat_models';
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
-import type { BaseMessage } from '@langchain/core/messages';
 import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import type {
   OrchestrationCallOptions,
@@ -34,7 +38,6 @@ export class OrchestrationClient extends BaseChatModel<
   OrchestrationMessageChunk
 > {
   constructor(
-    // TODO: Omit streaming until supported
     public orchestrationConfig: LangchainOrchestrationModuleConfig,
     public langchainOptions: BaseChatModelParams = {},
     public deploymentConfig?: ResourceGroupConfig,
@@ -108,12 +111,93 @@ export class OrchestrationClient extends BaseChatModel<
 
     const content = res.getContent();
 
-    // TODO: Add streaming as soon as we support it
     await runManager?.handleLLMNewToken(
       typeof content === 'string' ? content : ''
     );
 
     return mapOutputToChatResult(res.data);
+  }
+
+  /**
+   * Stream response chunks from the OrchestrationClient.
+   * @param messages - The messages to send to the model.
+   * @param options - The call options.
+   * @param runManager - The callback manager for the run.
+   * @returns An async generator of chat generation chunks.
+   */
+  override async *_streamResponseChunks(
+    messages: BaseMessage[],
+    options: typeof this.ParsedCallOptions,
+    runManager?: CallbackManagerForLLMRun
+  ): AsyncGenerator<ChatGenerationChunk> {
+    const controller = new AbortController();
+    if (options.signal) {
+      options.signal.addEventListener('abort', () => controller.abort());
+    }
+
+    const messagesHistory =
+      mapLangchainMessagesToOrchestrationMessages(messages);
+
+    const { inputParams, customRequestConfig } = options;
+    const mergedOrchestrationConfig = this.mergeOrchestrationConfig(options);
+
+    const orchestrationClient = new OrchestrationClientBase(
+      mergedOrchestrationConfig,
+      this.deploymentConfig,
+      this.destination
+    );
+
+    const response = await this.caller.callWithOptions(
+      { signal: options.signal },
+      () =>
+        orchestrationClient.stream(
+          { messagesHistory, inputParams },
+          controller,
+          options.streamOptions,
+          customRequestConfig
+        )
+    );
+
+    for await (const chunk of response.stream) {
+      if (!chunk.data) {
+        continue;
+      }
+
+      const delta = chunk.data.orchestration_result?.choices[0]?.delta;
+      if (!delta) {
+        continue;
+      }
+      const messageChunk = mapOrchestrationChunkToLangChainMessageChunk(chunk);
+
+      const finishReason = chunk.getFinishReason();
+      const tokenUsage = chunk.getTokenUsage();
+
+      setFinishReason(messageChunk, finishReason);
+      setUsageMetadata(messageChunk, tokenUsage);
+      const content = chunk.getDeltaContent() ?? '';
+      const generationChunk = new ChatGenerationChunk({
+        message: messageChunk,
+        text: content
+      });
+
+      await runManager?.handleLLMNewToken(
+        content,
+        {
+          prompt: 0,
+          completion: 0
+        },
+        undefined,
+        undefined,
+        undefined,
+        { chunk: generationChunk }
+      );
+
+      yield generationChunk;
+    }
+
+    if (options.signal?.aborted) {
+      throw new Error('AbortError');
+    }
   }
 
   private mergeOrchestrationConfig(

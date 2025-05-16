@@ -4,7 +4,6 @@ import type { ModuleResults } from '@sap-ai-sdk/orchestration';
 
 /**
  * An AI Message Chunk containing module results and request ID.
- * @internal
  */
 export class OrchestrationMessageChunk extends AIMessageChunk {
   module_results: ModuleResults;

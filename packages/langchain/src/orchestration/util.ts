@@ -1,11 +1,14 @@
-import { AIMessage } from '@langchain/core/messages';
+import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
 import type {
   ChatMessage,
   CompletionPostResponse,
-  Template
+  Template,
+  ToolCallChunk as OrchestrationToolCallChunk,
+  OrchestrationStreamChunkResponse,
+  TokenUsage
 } from '@sap-ai-sdk/orchestration';
-import type { ToolCall } from '@langchain/core/messages/tool';
+import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type { AzureOpenAiChatCompletionMessageToolCalls } from '@sap-ai-sdk/foundation-models';
 import type {
   BaseMessage,
@@ -124,6 +127,23 @@ function mapAzureOpenAiToLangchainToolCall(
 }
 
 /**
+ * Maps {@link OrchestrationToolCallChunk} to LangChain's {@link ToolCallChunk}.
+ * @param toolCallChunks - The {@link OrchestrationToolCallChunk} in a stream response chunk.
+ * @returns An array of LangChain {@link ToolCallChunk}.
+ */
+function mapOrchestrationToLangchainToolCallChunk(
+  toolCallChunks: OrchestrationToolCallChunk[]
+): ToolCallChunk[] {
+  return toolCallChunks.map(chunk => ({
+    name: chunk.function?.name,
+    args: chunk.function?.arguments,
+    id: chunk.id,
+    index: chunk.index,
+    type: 'tool_call_chunk'
+  }));
+}
+
+/**
  * Maps the completion response to a {@link ChatResult}.
  * @param completionResponse - The completion response to map.
  * @returns The mapped {@link ChatResult}.
@@ -173,4 +193,65 @@ export function mapOutputToChatResult(
       }
     }
   };
+}
+
+/**
+ * Converts orchestration stream chunk to a LangChain message chunk.
+ * @param chunk- The orchestration stream chunk.
+ * @returns An {@link AIMessageChunk}
+ * @internal
+ */
+export function mapOrchestrationChunkToLangChainMessageChunk(
+  chunk: OrchestrationStreamChunkResponse
+): AIMessageChunk {
+  const { module_results, request_id, orchestration_result } = chunk.data;
+  const content = chunk.getDeltaContent() ?? '';
+  const toolCallChunks = chunk.getDeltaToolCallChunks();
+
+  const additional_kwargs: Record<string, unknown> = {
+    module_results,
+    request_id,
+    orchestration_result
+  };
+
+  let tool_call_chunks: ToolCallChunk[] = [];
+  if (Array.isArray(toolCallChunks)) {
+    tool_call_chunks = mapOrchestrationToLangchainToolCallChunk(toolCallChunks);
+  }
+  // Use AIMessageChunk to represent message chunks for roles like 'tool' and 'user' too
+  return new AIMessageChunk({ content, additional_kwargs, tool_call_chunks });
+}
+
+/**
+ * Sets finish reason on a message chunk if available.
+ * @param messageChunk - The message chunk to update.
+ * @param finishReason - The finish reason from the response.
+ * @internal
+ */
+export function setFinishReason(
+  messageChunk: AIMessageChunk,
+  finishReason: string | undefined
+): void {
+  if (finishReason) {
+    messageChunk.response_metadata.finish_reason = finishReason;
+  }
+}
+
+/**
+ * Sets usage metadata on a message chunk if available.
+ * @param messageChunk - The message chunk to update.
+ * @param tokenUsage - The token usage information.
+ * @internal
+ */
+export function setUsageMetadata(
+  messageChunk: AIMessageChunk,
+  tokenUsage: TokenUsage | undefined
+): void {
+  if (tokenUsage) {
+    messageChunk.usage_metadata = {
+      input_tokens: tokenUsage.prompt_tokens,
+      output_tokens: tokenUsage.completion_tokens,
+      total_tokens: tokenUsage.total_tokens
+    };
+  }
 }
