@@ -1,7 +1,8 @@
 import type { BaseLLMParams } from '@langchain/core/language_models/llms';
 import type {
   BaseChatModelCallOptions,
-  BaseChatModelParams
+  BaseChatModelParams,
+  BindToolsInput
 } from '@langchain/core/language_models/chat_models';
 import type {
   AzureOpenAiCreateChatCompletionRequest,
@@ -51,9 +52,9 @@ export type AzureOpenAiChatCallOptions = BaseChatModelCallOptions &
     | 'tool_choice'
     | 'functions'
     | 'function_call'
-    | 'tools'
   > & {
     strict?: boolean;
+    tools?: BindToolsInput[];
     requestConfig?: CustomRequestConfig;
   };
 
