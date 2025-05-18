@@ -222,8 +222,8 @@ export function mapOrchestrationChunkToLangChainMessageChunk(
 }
 
 /**
- * Sets finish reason on a message chunk if available.
- * @param messageChunk - The message chunk to update.
+ * Sets finish reason on a LangChain message chunk if available.
+ * @param messageChunk - The LangChain message chunk to update.
  * @param finishReason - The finish reason from the response.
  * @internal
  */
@@ -238,7 +238,7 @@ export function setFinishReason(
 
 /**
  * Sets usage metadata on a message chunk if available.
- * @param messageChunk - The message chunk to update.
+ * @param messageChunk - The LangChain message chunk to update.
  * @param tokenUsage - The token usage information.
  * @internal
  */
@@ -254,4 +254,22 @@ export function setTokenUsage(
     };
     messageChunk.response_metadata.token_usage = tokenUsage;
   }
+}
+
+/**
+ * Computes token indices for a chunk of the stream response.
+ * @param chunk - A chunk of the stream response.
+ * @returns An object with prompt and completion indices.
+ * @internal
+ */
+export function computeTokenIndices(chunk: OrchestrationStreamChunkResponse): {
+  prompt: number;
+  completion: number;
+} {
+  return {
+    // Indicates the token is part of the first prompt
+    prompt: 0,
+    // Use the choice index from the response or default to 0
+    completion: chunk.data.orchestration_result?.choices[0]?.index ?? 0
+  };
 }

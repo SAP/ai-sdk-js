@@ -8,7 +8,8 @@ import {
   setFinishReason,
   setTokenUsage,
   mapLangchainMessagesToOrchestrationMessages,
-  mapOutputToChatResult
+  mapOutputToChatResult,
+  computeTokenIndices
 } from './util.js';
 import type { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
 import type { BaseLanguageModelInput } from '@langchain/core/language_models/base';
@@ -167,29 +168,25 @@ export class OrchestrationClient extends BaseChatModel<
       if (!delta) {
         continue;
       }
-      const newTokenIndices = {
-        // Indicates the token is part of the first prompt and first completion
-        prompt: 0,
-        completion: chunk.data.orchestration_result?.choices[0]?.index ?? 0
-      };
+      const tokenIndices = computeTokenIndices(chunk);
       const messageChunk = mapOrchestrationChunkToLangChainMessageChunk(chunk);
       const finishReason = response.getFinishReason();
       const tokenUsage = response.getTokenUsage();
 
       setFinishReason(messageChunk, finishReason);
       setTokenUsage(messageChunk, tokenUsage);
-      const generationInfo: Record<string, any> = { ...newTokenIndices };
       const content = chunk.getDeltaContent() ?? '';
+
       const generationChunk = new ChatGenerationChunk({
         message: messageChunk,
         text: content,
-        generationInfo
+        generationInfo: { ...tokenIndices }
       });
 
       // Notify the run manager about the new token, some parameters are undefined as they are implicitly read from the context.
       await runManager?.handleLLMNewToken(
         content,
-        newTokenIndices,
+        tokenIndices,
         undefined,
         undefined,
         undefined,
