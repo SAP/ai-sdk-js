@@ -6,7 +6,7 @@ import {
   mapOrchestrationChunkToLangChainMessageChunk,
   isTemplate,
   setFinishReason,
-  setUsageMetadata,
+  setTokenUsage,
   mapLangchainMessagesToOrchestrationMessages,
   mapOutputToChatResult
 } from './util.js';
@@ -135,7 +135,7 @@ export class OrchestrationClient extends BaseChatModel<
       options.signal.addEventListener('abort', () => controller.abort());
     }
 
-    const messagesHistory =
+    const orchestrationMessages =
       mapLangchainMessagesToOrchestrationMessages(messages);
 
     const { inputParams, customRequestConfig } = options;
@@ -151,7 +151,8 @@ export class OrchestrationClient extends BaseChatModel<
       { signal: options.signal },
       () =>
         orchestrationClient.stream(
-          { messagesHistory, inputParams },
+          // Todo Adapt messagesHistory after: https://github.com/SAP/ai-sdk-js-backlog/issues/293
+          { messagesHistory: orchestrationMessages, inputParams },
           controller,
           options.streamOptions,
           customRequestConfig
@@ -162,30 +163,33 @@ export class OrchestrationClient extends BaseChatModel<
       if (!chunk.data) {
         continue;
       }
-
       const delta = chunk.data.orchestration_result?.choices[0]?.delta;
       if (!delta) {
         continue;
       }
+      const newTokenIndices = {
+        // Indicates the token is part of the first prompt and first completion
+        prompt: 0,
+        completion: chunk.data.orchestration_result?.choices[0]?.index ?? 0
+      };
       const messageChunk = mapOrchestrationChunkToLangChainMessageChunk(chunk);
-
-      const finishReason = chunk.getFinishReason();
-      const tokenUsage = chunk.getTokenUsage();
+      const finishReason = response.getFinishReason();
+      const tokenUsage = response.getTokenUsage();
 
       setFinishReason(messageChunk, finishReason);
-      setUsageMetadata(messageChunk, tokenUsage);
+      setTokenUsage(messageChunk, tokenUsage);
+      const generationInfo: Record<string, any> = { ...newTokenIndices };
       const content = chunk.getDeltaContent() ?? '';
       const generationChunk = new ChatGenerationChunk({
         message: messageChunk,
-        text: content
+        text: content,
+        generationInfo
       });
 
+      // Notify the run manager about the new token, some parameters are undefined as they are implicitly read from the context.
       await runManager?.handleLLMNewToken(
         content,
-        {
-          prompt: 0,
-          completion: 0
-        },
+        newTokenIndices,
         undefined,
         undefined,
         undefined,

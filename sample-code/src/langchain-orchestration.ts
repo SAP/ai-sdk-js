@@ -196,12 +196,11 @@ export async function invokeLangGraphChain(): Promise<string> {
 export async function streamOrchestrationLangChain(
   controller = new AbortController()
 ): Promise<AsyncIterable<AIMessageChunk>> {
+  // Todo Remove template and use messages after: https://github.com/SAP/ai-sdk-js-backlog/issues/293
   const orchestrationConfig: LangchainOrchestrationModuleConfig = {
-    // define the language model to be used
     llm: {
       model_name: 'gpt-4o'
     },
-    // define the template
     templating: {
       template: [
         {
@@ -213,22 +212,12 @@ export async function streamOrchestrationLangChain(
   };
 
   const client = new OrchestrationClient(orchestrationConfig);
-
-  // Return the stream
-  return client.stream(
-    [
-      {
-        role: 'user',
-        content: 'I need information about a topic.'
-      }
-    ],
-    {
-      inputParams: {
-        topic: 'SAP Cloud SDK and its capabilities'
-      },
-      signal: controller.signal
-    }
-  );
+  return client.stream([], {
+    inputParams: {
+      topic: 'SAP Cloud SDK and its capabilities'
+    },
+    signal: controller.signal
+  });
 }
 
 /**

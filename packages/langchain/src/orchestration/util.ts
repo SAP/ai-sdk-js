@@ -204,14 +204,13 @@ export function mapOutputToChatResult(
 export function mapOrchestrationChunkToLangChainMessageChunk(
   chunk: OrchestrationStreamChunkResponse
 ): AIMessageChunk {
-  const { module_results, request_id, orchestration_result } = chunk.data;
+  const { module_results, request_id } = chunk.data;
   const content = chunk.getDeltaContent() ?? '';
   const toolCallChunks = chunk.getDeltaToolCallChunks();
 
   const additional_kwargs: Record<string, unknown> = {
     module_results,
-    request_id,
-    orchestration_result
+    request_id
   };
 
   let tool_call_chunks: ToolCallChunk[] = [];
@@ -243,7 +242,7 @@ export function setFinishReason(
  * @param tokenUsage - The token usage information.
  * @internal
  */
-export function setUsageMetadata(
+export function setTokenUsage(
   messageChunk: AIMessageChunk,
   tokenUsage: TokenUsage | undefined
 ): void {
@@ -253,5 +252,6 @@ export function setUsageMetadata(
       output_tokens: tokenUsage.completion_tokens,
       total_tokens: tokenUsage.total_tokens
     };
+    messageChunk.response_metadata.token_usage = tokenUsage;
   }
 }
