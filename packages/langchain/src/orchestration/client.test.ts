@@ -21,6 +21,7 @@ jest.setTimeout(30000);
 describe('orchestration service client', () => {
   let mockResponse: CompletionPostResponse;
   let mockResponseInputFilterError: ErrorResponse;
+  let mockResponseStream: string;
   beforeEach(async () => {
     mockClientCredentialsGrantCall();
     mockDeploymentsList({ scenarioId: 'orchestration' }, { id: '1234' });
@@ -31,6 +32,10 @@ describe('orchestration service client', () => {
     mockResponseInputFilterError = await parseMockResponse<ErrorResponse>(
       'orchestration',
       'orchestration-chat-completion-input-filter-error.json'
+    );
+    mockResponseStream = await parseFileToString(
+      'orchestration',
+      'orchestration-chat-completion-stream-chunks.txt'
     );
   });
 
@@ -44,11 +49,16 @@ describe('orchestration service client', () => {
       retry?: number;
       delay?: number;
     },
-    status: number = 200
+    status: number = 200,
+    isStream: boolean = false
   ) {
     mockInference(
       {
-        data: constructCompletionPostRequest(config, { messagesHistory: [] })
+        data: constructCompletionPostRequest(
+          config,
+          { messagesHistory: [] },
+          isStream
+        )
       },
       {
         data: response,
@@ -59,6 +69,17 @@ describe('orchestration service client', () => {
       },
       resilience
     );
+  }
+
+  function mockStreamInferenceWithResilience(
+    response: any = mockResponseStream,
+    resilience: {
+      retry?: number;
+      delay?: number;
+    } = { retry: 0 },
+    status: number = 200
+  ) {
+    mockInferenceWithResilience(response, resilience, status, true);
   }
 
   const config: LangchainOrchestrationModuleConfig = {
@@ -133,46 +154,71 @@ describe('orchestration service client', () => {
   }, 1000);
 
   it('supports streaming responses', async () => {
-    // Load the mock streaming response
-    const streamMockResponse = await parseFileToString(
-      'orchestration',
-      'orchestration-chat-completion-stream-chunks.txt'
-    );
-
-    // Mock the streaming API call
-    mockInference(
-      {
-        data: constructCompletionPostRequest(
-          config,
-          { messagesHistory: [] },
-          true
-        )
-      },
-      {
-        data: streamMockResponse,
-        status: 200
-      },
-      {
-        url: 'inference/deployments/1234/completion'
-      }
-    );
+    mockStreamInferenceWithResilience();
 
     const client = new OrchestrationClient(config);
-
-    // Test the stream method
     const stream = await client.stream([]);
+    let iterations = 0;
+    const maxIterations = 2;
+    let intermediateChunk: AIMessageChunk | undefined;
 
-    // Collect all chunks
-    const chunks: AIMessageChunk[] = [];
+    for await (const chunk of stream) {
+      iterations++;
+      intermediateChunk = !intermediateChunk
+        ? chunk
+        : intermediateChunk.concat(chunk);
+      if (iterations >= maxIterations) {
+        break;
+      }
+    }
+    expect(intermediateChunk).toBeDefined();
+    expect(intermediateChunk!.content).toBeDefined();
+    expect(intermediateChunk!.content).toEqual(
+      'The SAP Cloud SDK is a comprehensive development toolkit designed to simplify and accelerate the cre'
+    );
+  });
+
+  it('test streaming with abort signal', async () => {
+    mockStreamInferenceWithResilience();
+    const client = new OrchestrationClient(config);
+    const controller = new AbortController();
+    const { signal } = controller;
+    const stream = await client.stream([], { signal });
+    const streamPromise = async () => {
+      for await (const _chunk of stream) {
+        controller.abort();
+      }
+    };
+
+    await expect(streamPromise()).rejects.toThrow();
+  }, 1000);
+
+  it('test streaming with callbacks', async () => {
+    mockStreamInferenceWithResilience();
+    let tokenCount = 0;
+    const callbackHandler = {
+      handleLLMNewToken: jest.fn().mockImplementation(() => {
+        tokenCount += 1;
+      })
+    };
+    const client = new OrchestrationClient(config, {
+      callbacks: [callbackHandler]
+    });
+    const stream = await client.stream([]);
+    const chunks = [];
+
     for await (const chunk of stream) {
       chunks.push(chunk);
+      break;
     }
-
-    // Verify we received chunks
+    expect(callbackHandler.handleLLMNewToken).toHaveBeenCalled();
+    const firstCallArgs = callbackHandler.handleLLMNewToken.mock.calls[0];
+    expect(firstCallArgs).toBeDefined();
+    // First chunk content is empty
+    expect(firstCallArgs[0]).toEqual('');
+    // Second argument should be the token indices
+    expect(firstCallArgs[1]).toEqual({ prompt: 0, completion: 0 });
+    expect(tokenCount).toBeGreaterThan(0);
     expect(chunks.length).toBeGreaterThan(0);
-
-    // Verify the chunks are of the expected type
-    expect(chunks[0]).toBeDefined();
-    expect(chunks[0].content).toBeDefined();
   });
 });
