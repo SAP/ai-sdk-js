@@ -161,15 +161,8 @@ export class OrchestrationClient extends BaseChatModel<
     );
 
     for await (const chunk of response.stream) {
-      if (!chunk.data) {
-        continue;
-      }
-      const delta = chunk.data.orchestration_result?.choices[0]?.delta;
-      if (!delta) {
-        continue;
-      }
-      const tokenIndices = computeTokenIndices(chunk);
       const messageChunk = mapOrchestrationChunkToLangChainMessageChunk(chunk);
+      const tokenIndices = computeTokenIndices(chunk);
       const finishReason = response.getFinishReason();
       const tokenUsage = response.getTokenUsage();
 
