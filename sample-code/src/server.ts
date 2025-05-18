@@ -49,7 +49,7 @@ import {
   invokeChainWithOutputFilter as invokeChainWithOutputFilterOrchestration,
   invokeLangGraphChain,
   invokeChainWithMasking,
-  streamOrchestrationLangChain
+  orchestrationStreamChain
 } from './langchain-orchestration.js';
 import {
   createCollection,
@@ -470,28 +470,22 @@ app.get('/langchain/invoke-stateful-chain', async (req, res) => {
 app.get('/langchain/stream-orchestration', async (req, res) => {
   const controller = new AbortController();
   try {
-    const stream = await streamOrchestrationLangChain(controller);
-
-    // Set headers for event stream.
+    const stream = await orchestrationStreamChain(controller);
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Connection', 'keep-alive');
     res.flushHeaders();
 
     let connectionAlive = true;
-
-    // Abort the stream if the client connection is closed.
     res.on('close', () => {
       controller.abort();
       connectionAlive = false;
       res.end();
     });
 
-    // Stream the delta content.
     for await (const chunk of stream) {
       if (!connectionAlive) {
         break;
       }
-      // Use the content property similar to getDeltaContent()
       res.write(chunk.content + '\n');
       if (connectionAlive && chunk.usage_metadata) {
         res.write('\n\n---------------------------\n');
@@ -506,8 +500,6 @@ app.get('/langchain/stream-orchestration', async (req, res) => {
         res.write(`  - Total tokens: ${chunk.usage_metadata?.total_tokens}\n`);
       }
     }
-
-    // Write the finish reason and token usage after the stream ends.
   } catch (error: any) {
     sendError(res, error, false);
   } finally {

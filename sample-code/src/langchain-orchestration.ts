@@ -193,7 +193,7 @@ export async function invokeLangGraphChain(): Promise<string> {
  * @param controller - The abort controller to cancel the request if needed.
  * @returns An async iterable of AIMessageChunk objects.
  */
-export async function streamOrchestrationLangChain(
+export async function orchestrationStreamChain(
   controller = new AbortController()
 ): Promise<AsyncIterable<AIMessageChunk>> {
   // Todo Remove template and use messages after: https://github.com/SAP/ai-sdk-js-backlog/issues/293
