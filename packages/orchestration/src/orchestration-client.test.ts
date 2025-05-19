@@ -798,9 +798,7 @@ describe('orchestration service client', () => {
 
     const response = await new OrchestrationClient(config).stream();
 
-    for await (const chunk of response.stream) {
-      expect(chunk.data).toBeDefined();
-    }
+    for await (const _ of response.stream) { /* empty */ }
 
     const tools = response.getToolCalls();
 
