@@ -102,7 +102,7 @@ function mapSystemMessageToAzureOpenAiSystemMessage(
  * @returns The orchestration messages mapped from LangChain messages.
  * @internal
  */
-export function mapLangchainMessagesToOrchestrationMessages(
+export function mapLangChainMessagesToOrchestrationMessages(
   messages: BaseMessage[]
 ): ChatMessage[] {
   return messages.map(mapBaseMessageToChatMessage);

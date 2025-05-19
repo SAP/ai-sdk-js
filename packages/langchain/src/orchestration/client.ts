@@ -7,7 +7,7 @@ import {
   isTemplate,
   setFinishReason,
   setTokenUsage,
-  mapLangchainMessagesToOrchestrationMessages,
+  mapLangChainMessagesToOrchestrationMessages,
   mapOutputToChatResult,
   computeTokenIndices
 } from './util.js';
@@ -99,7 +99,7 @@ export class OrchestrationClient extends BaseChatModel<
           this.destination
         );
         const messagesHistory =
-          mapLangchainMessagesToOrchestrationMessages(messages);
+          mapLangChainMessagesToOrchestrationMessages(messages);
         return orchestrationClient.chatCompletion(
           {
             messagesHistory,
@@ -137,7 +137,7 @@ export class OrchestrationClient extends BaseChatModel<
     }
 
     const orchestrationMessages =
-      mapLangchainMessagesToOrchestrationMessages(messages);
+      mapLangChainMessagesToOrchestrationMessages(messages);
 
     const { inputParams, customRequestConfig } = options;
     const mergedOrchestrationConfig = this.mergeOrchestrationConfig(options);

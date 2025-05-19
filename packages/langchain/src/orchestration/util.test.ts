@@ -8,7 +8,7 @@ import {
 import { OrchestrationStreamChunkResponse } from '@sap-ai-sdk/orchestration';
 import { jest } from '@jest/globals';
 import {
-  mapLangchainMessagesToOrchestrationMessages,
+  mapLangChainMessagesToOrchestrationMessages,
   mapOutputToChatResult,
   setFinishReason,
   setTokenUsage,
@@ -34,7 +34,7 @@ describe('mapLangchainMessagesToOrchestrationMessages', () => {
     ];
 
     const result =
-      mapLangchainMessagesToOrchestrationMessages(langchainMessages);
+      mapLangChainMessagesToOrchestrationMessages(langchainMessages);
 
     expect(result).toEqual([
       { role: 'system', content: 'System message content' },
@@ -49,7 +49,7 @@ describe('mapLangchainMessagesToOrchestrationMessages', () => {
     ];
 
     expect(() =>
-      mapLangchainMessagesToOrchestrationMessages(langchainMessages)
+      mapLangChainMessagesToOrchestrationMessages(langchainMessages)
     ).toThrow('Unsupported message type: tool');
   });
 });
@@ -59,7 +59,7 @@ describe('mapBaseMessageToChatMessage', () => {
     const humanMessage = new HumanMessage('Human message content');
 
     // Since mapBaseMessageToChatMessage is internal, we'll test it through mapLangchainMessagesToOrchestrationMessages
-    const result = mapLangchainMessagesToOrchestrationMessages([humanMessage]);
+    const result = mapLangChainMessagesToOrchestrationMessages([humanMessage]);
 
     expect(result[0]).toEqual({
       role: 'user',
@@ -70,7 +70,7 @@ describe('mapBaseMessageToChatMessage', () => {
   it('should map SystemMessage to ChatMessage with system role', () => {
     const systemMessage = new SystemMessage('System message content');
 
-    const result = mapLangchainMessagesToOrchestrationMessages([systemMessage]);
+    const result = mapLangChainMessagesToOrchestrationMessages([systemMessage]);
 
     expect(result[0]).toEqual({
       role: 'system',
@@ -81,7 +81,7 @@ describe('mapBaseMessageToChatMessage', () => {
   it('should map AIMessage to ChatMessage with assistant role', () => {
     const aiMessage = new AIMessage('AI message content');
 
-    const result = mapLangchainMessagesToOrchestrationMessages([aiMessage]);
+    const result = mapLangChainMessagesToOrchestrationMessages([aiMessage]);
 
     expect(result[0]).toEqual({
       role: 'assistant',
@@ -101,7 +101,7 @@ describe('mapBaseMessageToChatMessage', () => {
     });
 
     expect(() =>
-      mapLangchainMessagesToOrchestrationMessages([systemMessage])
+      mapLangChainMessagesToOrchestrationMessages([systemMessage])
     ).toThrow(
       'System messages with image URLs are not supported by the Orchestration Client.'
     );
