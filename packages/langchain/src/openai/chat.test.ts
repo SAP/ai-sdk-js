@@ -4,7 +4,11 @@ import { zodToJsonSchema } from 'zod-to-json-schema';
 import nock from 'nock';
 import { z } from 'zod';
 import { apiVersion } from '@sap-ai-sdk/foundation-models/internal.js';
-import { mockClientCredentialsGrantCall, mockDeploymentsList, mockInference } from '../../../../test-util/mock-http.js';
+import {
+  mockClientCredentialsGrantCall,
+  mockDeploymentsList,
+  mockInference
+} from '../../../../test-util/mock-http.js';
 import { AzureOpenAiChatClient } from './chat.js';
 
 describe('Chat client', () => {
@@ -94,7 +98,9 @@ describe('Chat client', () => {
         toolResponse,
         endpoint
       );
-      await client.bindTools([myTool], { strict: true }).invoke('What is 1 + 2?');
+      await client
+        .bindTools([myTool], { strict: true })
+        .invoke('What is 1 + 2?');
       expect(clientSpy).toHaveBeenCalledTimes(1);
     });
 
@@ -125,7 +131,9 @@ describe('Chat client', () => {
         toolResponse,
         endpoint
       );
-      await client.bindTools([myTool], { strict: false }).invoke('What is 1 + 2?');
+      await client
+        .bindTools([myTool], { strict: false })
+        .invoke('What is 1 + 2?');
       expect(clientSpy).toHaveBeenCalledTimes(1);
     });
 
