@@ -1,3 +1,4 @@
+import { mergeToolCallChunks } from './internal.js';
 import type { MessageToolCalls, TokenUsage, ToolCallChunk } from './client/api/schema/index.js';
 import type { OrchestrationStream } from './orchestration-stream.js';
 
@@ -48,9 +49,9 @@ export class OrchestrationStreamResponse<T> {
       if(!toolCallChunks) {
         throw new Error(`No tool calls found for choice index ${choiceIndex}`);
       }
-      const toolCalls = [];
+      const toolCalls: MessageToolCalls = [];
       for(const chunkArray of toolCallChunks.values()) {
-        const toolCall = JSON.parse(chunkArray.join(''));
+        const toolCall = mergeToolCallChunks(chunkArray);
         toolCalls.push(toolCall);
       }
       return toolCalls;

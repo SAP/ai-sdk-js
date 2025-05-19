@@ -1,6 +1,8 @@
 import nock from 'nock';
 import { jest } from '@jest/globals';
 import { createLogger } from '@sap-cloud-sdk/util';
+import { zodToJsonSchema } from 'zod-to-json-schema';
+import { z } from 'zod';
 import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
@@ -16,7 +18,10 @@ import {
   buildAzureContentSafetyFilter,
   buildLlamaGuardFilter
 } from './util/index.js';
-import type { CompletionPostResponse } from './client/api/schema/index.js';
+import type {
+  ChatCompletionTool,
+  CompletionPostResponse
+} from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
   Prompt
@@ -63,6 +68,36 @@ function mockJsonStreamInference(
     }
   );
 }
+
+const addNumbersSchema = z
+  .object({
+    a: z.number().describe('The first number to be added.'),
+    b: z.number().describe('The second number to be added.')
+  })
+  .strict();
+const addTool: ChatCompletionTool = {
+  type: 'function',
+  function: {
+    name: 'add',
+    description: 'Adds two numbers',
+    parameters: zodToJsonSchema(addNumbersSchema)
+  }
+};
+
+const multiplyNumbersSchema = z
+  .object({
+    a: z.number().describe('The first number to multiply.'),
+    b: z.number().describe('The second number to multiply.')
+  })
+  .strict();
+const multiplyTool: ChatCompletionTool = {
+  type: 'function',
+  function: {
+    name: 'multiply',
+    description: 'Multiplies two numbers',
+    parameters: zodToJsonSchema(multiplyNumbersSchema)
+  }
+};
 
 describe('orchestration service client', () => {
   beforeEach(() => {
@@ -724,5 +759,70 @@ describe('orchestration service client', () => {
       expect(chunk.data).toEqual(JSON.parse(initialResponse));
       break;
     }
+  });
+
+  it('executes a streaming request with multiple tools and parses the tool calls properly', async () => {
+    const config: OrchestrationModuleConfig = {
+      llm: {
+        model_name: 'gpt-4o',
+        model_params: {}
+      },
+      templating: {
+        template: [
+          {
+            role: 'user',
+            content: 'Add '
+          }
+        ],
+        tools: [addTool, multiplyTool]
+      }
+    };
+
+    const mockResponse = await parseFileToString(
+      'orchestration',
+      'orchestration-chat-completion-stream-multiple-tools-chunks.txt'
+    );
+
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, undefined, true)
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    const response = await new OrchestrationClient(config).stream();
+
+    for await (const chunk of response.stream) {
+      expect(chunk.data).toBeDefined();
+    }
+
+    const tools = response.getToolCalls();
+
+    expect(tools).toMatchInlineSnapshot(`
+     [
+       {
+         "function": {
+           "arguments": "{"a": 2, "b": 3}",
+           "name": "add",
+         },
+         "id": "call_HPgxxSmD2ctYfcJ3gp1JBc7i",
+         "type": "function",
+       },
+       {
+         "function": {
+           "arguments": "{"a": 2, "b": 3}",
+           "name": "multiply",
+         },
+         "id": "call_PExve0Dd9hxD8hOk4Uhr1yhO",
+         "type": "function",
+       },
+     ]
+    `);
   });
 });
