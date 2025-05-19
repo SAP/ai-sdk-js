@@ -9,6 +9,7 @@ import {
   parseFileToString
 } from '../../../../test-util/mock-http.js';
 import { OrchestrationClient } from './client.js';
+import type { ToolCall } from '@langchain/core/messages/tool';
 import type { LangchainOrchestrationModuleConfig } from './types.js';
 import type {
   CompletionPostResponse,
@@ -22,6 +23,7 @@ describe('orchestration service client', () => {
   let mockResponse: CompletionPostResponse;
   let mockResponseInputFilterError: ErrorResponse;
   let mockResponseStream: string;
+  let mockResponseStreamToolCalls: string;
   beforeEach(async () => {
     mockClientCredentialsGrantCall();
     mockDeploymentsList({ scenarioId: 'orchestration' }, { id: '1234' });
@@ -36,6 +38,10 @@ describe('orchestration service client', () => {
     mockResponseStream = await parseFileToString(
       'orchestration',
       'orchestration-chat-completion-stream-chunks.txt'
+    );
+    mockResponseStreamToolCalls = await parseFileToString(
+      'orchestration',
+      'orchestration-chat-completion-stream-chunks-tool-calls.txt'
     );
   });
 
@@ -220,5 +226,25 @@ describe('orchestration service client', () => {
     expect(firstCallArgs[1]).toEqual({ prompt: 0, completion: 0 });
     expect(tokenCount).toBeGreaterThan(0);
     expect(chunks.length).toBeGreaterThan(0);
+  });
+
+  it('supports streaming responses with tool calls', async () => {
+    mockStreamInferenceWithResilience(mockResponseStreamToolCalls);
+
+    const client = new OrchestrationClient(config);
+    const stream = await client.stream([]);
+
+    let finalOutput: AIMessageChunk | undefined;
+    for await (const chunk of stream) {
+      finalOutput = !finalOutput ? chunk : finalOutput.concat(chunk);
+    }
+
+    expect(finalOutput).toBeDefined();
+    expect(finalOutput!.tool_call_chunks).toBeDefined();
+    expect(finalOutput!.tool_calls).toBeDefined();
+
+    const completeToolCall: ToolCall = finalOutput!.tool_calls![0];
+    expect(completeToolCall!.name).toEqual('convert_temperature_to_fahrenheit');
+    expect(completeToolCall!.args).toEqual({ temperature: 20 });
   });
 });
