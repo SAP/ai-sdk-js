@@ -386,7 +386,7 @@ components:
         additionalFields:
           type: object
           description: >
-            DEPRECATED. Use additional properties instead.
+            DEPRECATED. Please use additional_fields instead.
           deprecated: true
         response_format:
           description: >
