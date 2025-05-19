@@ -53,7 +53,7 @@
     "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/mock-fs": "^4.13.4",
-    "@types/node": "^20.17.46",
+    "@types/node": "^20.17.47",
     "depcheck": "^1.4.7",
     "eslint": "^9.26.0",
     "glob": "^11.0.2",
@@ -62,7 +62,7 @@
     "mock-fs": "^5.5.0",
     "nock": "^14.0.4",
     "prettier": "^3.5.3",
-    "ts-jest": "^29.3.2",
+    "ts-jest": "^29.3.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   }
