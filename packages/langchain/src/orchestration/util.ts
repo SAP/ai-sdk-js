@@ -269,7 +269,6 @@ export function computeTokenIndices(chunk: OrchestrationStreamChunkResponse): {
   return {
     // Indicates the token is part of the first prompt
     prompt: 0,
-    // Use the choice index from the response or default to 0
     completion: chunk.data.orchestration_result?.choices[0]?.index ?? 0
   };
 }

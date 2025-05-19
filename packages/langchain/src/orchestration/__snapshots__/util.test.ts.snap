@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mapOrchestrationChunkToLangChainMessageChunk should map a chunk with content to AIMessageChunk: AIMessageChunk with content 1`] = `
+{
+  "id": [
+    "langchain_core",
+    "messages",
+    "AIMessageChunk",
+  ],
+  "kwargs": {
+    "additional_kwargs": {
+      "module_results": {
+        "llm": {
+          "choices": [
+            {
+              "delta": {
+                "content": "Test content",
+                "role": "assistant",
+                "tool_calls": undefined,
+              },
+              "finish_reason": "",
+              "index": 0,
+            },
+          ],
+          "created": 1634840000,
+          "id": "test-id",
+          "model": "test-model",
+          "object": "chat.completion.chunk",
+          "system_fingerprint": "fp_123",
+          "usage": undefined,
+        },
+      },
+      "request_id": "req-123",
+    },
+    "content": "Test content",
+    "invalid_tool_calls": [],
+    "response_metadata": {},
+    "tool_call_chunks": [],
+    "tool_calls": [],
+    "usage_metadata": undefined,
+  },
+  "lc": 1,
+  "type": "constructor",
+}
+`;
