@@ -390,7 +390,7 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
       id: 'call-123',
       index: 0,
       name: 'test_function',
-      args: '{"arg1":"value1"}',
+      args: '',
       type: 'tool_call_chunk'
     };
     expect(result.tool_call_chunks?.[0]).toEqual(expectedToolCallChunk);
