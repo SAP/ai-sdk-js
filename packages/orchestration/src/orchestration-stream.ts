@@ -3,7 +3,7 @@ import { SseStream } from '@sap-ai-sdk/core';
 import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 import type {
   CompletionPostResponseStreaming,
-  LlmChoiceStreaming
+  ToolCallChunk
 } from './client/api/schema/index.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { OrchestrationStreamResponse } from './orchestration-stream-response.js';
@@ -48,24 +48,34 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
     }
   }
 
+  /**
+   * @internal
+   */
   static async *_processToolCalls(
     stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
     response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   ): AsyncGenerator<OrchestrationStreamChunkResponse> {
     for await (const chunk of stream) {
       chunk.data.orchestration_result?.choices.forEach(
-        (choice: LlmChoiceStreaming) => {
+        (choice) => {
           const choiceIndex = choice.index;
           if (choiceIndex >= 0) {
             const toolCallsChunks = chunk.getToolCalls(choiceIndex);
             if (toolCallsChunks) {
               if (response) {
-                const toolCallChunksArray = response._getToolCallChunks().get(choiceIndex);
-                if (toolCallChunksArray) {
-                  toolCallChunksArray.push(...toolCallsChunks);
-                } else {
-                  response._getToolCallChunks().set(choiceIndex, toolCallsChunks);
+                let toolCallChunkMap = response._getToolCallChunks().get(choiceIndex);
+                if(!toolCallChunkMap) {
+                  toolCallChunkMap = new Map<number, ToolCallChunk[]>();
+                  response._getToolCallChunks().set(choiceIndex, toolCallChunkMap);
                 }
+                toolCallsChunks.map((toolCallChunk) => {
+                  const toolCallId = toolCallChunk.index;
+                  if(toolCallChunkMap.has(toolCallId)) {
+                    toolCallChunkMap.get(toolCallId)!.push(toolCallChunk);
+                  } else {
+                    toolCallChunkMap.set(toolCallId, [toolCallChunk]);
+                  }
+                });
               }
             }
           }
@@ -84,7 +94,7 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
   ): AsyncGenerator<OrchestrationStreamChunkResponse> {
     for await (const chunk of stream) {
       chunk.data.orchestration_result?.choices.forEach(
-        (choice: LlmChoiceStreaming) => {
+        (choice) => {
           const choiceIndex = choice.index;
           if (choiceIndex >= 0) {
             const finishReason = chunk.getFinishReason(choiceIndex);

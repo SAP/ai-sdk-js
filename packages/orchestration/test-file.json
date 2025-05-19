@@ -1,0 +1,72 @@
+{
+    "orchestration_config": {
+        "stream": true,
+        "stream_options": {
+            "delimiters": [".", "!", "?"]
+        },
+        "module_configurations": {
+            "templating_module_config": {
+                "template": [
+                    {
+                        "role": "user",
+                        "content": "{{?input}}"
+                    }
+                ],
+                "tools": [
+                    {
+                        "type": "function",
+                        "function": {
+                            "name": "add",
+                            "description": "Adds two numbers",
+                            "parameters": {
+                                "type": "object",
+                                "properties": {
+                                    "a": {
+                                        "type": "number",
+                                        "description": "The first number to add"
+                                    },
+                                    "b": {
+                                        "type": "number",
+                                        "description": "The second number to add"
+                                    }
+                                },
+                                "required": ["a", "b"]
+                            }
+                        }
+                    },
+                    {
+                        "type": "function",
+                        "function": {
+                            "name": "multiply",
+                            "description": "Multiplies two numbers",
+                            "parameters": {
+                                "type": "object",
+                                "properties": {
+                                    "a": {
+                                        "type": "number",
+                                        "description": "The first number to multiply"
+                                    },
+                                    "b": {
+                                        "type": "number",
+                                        "description": "The second number to multiply"
+                                    }
+                                },
+                                "required": ["a", "b"]
+                            }
+                        }
+                    }
+                ]
+            },
+            "llm_module_config": {
+                "model_name": "gpt-4o",
+                "model_params": {
+                    "max_tokens": 2000,
+                    "temperature": 0.1
+                }
+            }
+        }
+    },
+    "input_params": {
+        "input": "Add 2 and 3, then mulitply the result by 4."
+    }
+}

@@ -10,7 +10,7 @@ export class OrchestrationStreamResponse<T> {
    * Finish reasons for all choices.
    */
   private _finishReasons: Map<number, string> = new Map();
-  private _toolCallChunks: Map<number, ToolCallChunk[]> = new Map();
+  private _toolCallChunks: Map<number, Map<number, ToolCallChunk[]>> = new Map();
   private _stream: OrchestrationStream<T> | undefined;
 
   public getTokenUsage(): TokenUsage | undefined {
@@ -48,8 +48,12 @@ export class OrchestrationStreamResponse<T> {
       if(!toolCallChunks) {
         throw new Error(`No tool calls found for choice index ${choiceIndex}`);
       }
-      const toolCallString = toolCallChunks?.join('');
-      return JSON.parse(toolCallString) as MessageToolCalls;
+      const toolCalls = [];
+      for(const chunkArray of toolCallChunks.values()) {
+        const toolCall = JSON.parse(chunkArray.join(''));
+        toolCalls.push(toolCall);
+      }
+      return toolCalls;
     } catch(error) {
       throw new Error(
         `Error while getting tool calls for choice index ${choiceIndex}: ${error}`
@@ -60,7 +64,7 @@ export class OrchestrationStreamResponse<T> {
   /**
    * @internal
    */
-  _getToolCallChunks(): Map<number, ToolCallChunk[]> {
+  _getToolCallChunks(): Map<number, Map<number, ToolCallChunk[]>> {
     return this._toolCallChunks;
   }
 

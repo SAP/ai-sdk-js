@@ -28,13 +28,13 @@ export class OrchestrationStreamChunkResponse {
    */
   getFinishReason(choiceIndex = 0): string | undefined {
     return this.getChoices()?.find(
-      (c: LlmChoiceStreaming) => c.index === choiceIndex
+      (c) => c.index === choiceIndex
     )?.finish_reason;
   }
 
   getToolCalls(choiceIndex = 0): ToolCallChunk[] | undefined {
     return this.getChoices()?.find(
-      (c: LlmChoiceStreaming) => c.index === choiceIndex
+      (c) => c.index === choiceIndex
     )?.delta.tool_calls;
   }
 
@@ -45,7 +45,7 @@ export class OrchestrationStreamChunkResponse {
    */
   getDeltaContent(choiceIndex = 0): string | undefined {
     return this.getChoices()?.find(
-      (c: LlmChoiceStreaming) => c.index === choiceIndex
+      (c) => c.index === choiceIndex
     )?.delta.content;
   }
 
