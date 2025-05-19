@@ -189,7 +189,7 @@ export async function invokeLangGraphChain(): Promise<string> {
 }
 
 /**
- * Stream responses from the OrchestrationClient using LangChain.
+ * Stream responses using LangChain Orchestration client.
  * @param controller - The abort controller to cancel the request if needed.
  * @returns An async iterable of AIMessageChunk objects.
  */
