@@ -771,7 +771,7 @@ describe('orchestration service client', () => {
         template: [
           {
             role: 'user',
-            content: 'Add '
+            content: 'Add 2 + 3 and multiply 2 * 3'
           }
         ],
         tools: [addTool, multiplyTool]
