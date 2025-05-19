@@ -131,7 +131,7 @@ function mapAzureOpenAiToLangchainToolCall(
  * @param toolCallChunks - The {@link OrchestrationToolCallChunk} in a stream response chunk.
  * @returns An array of LangChain {@link ToolCallChunk}.
  */
-function mapOrchestrationToLangchainToolCallChunk(
+function mapOrchestrationToLangChainToolCallChunk(
   toolCallChunks: OrchestrationToolCallChunk[]
 ): ToolCallChunk[] {
   return toolCallChunks.map(chunk => ({
@@ -214,10 +214,11 @@ export function mapOrchestrationChunkToLangChainMessageChunk(
   };
 
   let tool_call_chunks: ToolCallChunk[] = [];
-  if (Array.isArray(toolCallChunks)) {
-    tool_call_chunks = mapOrchestrationToLangchainToolCallChunk(toolCallChunks);
+  if (toolCallChunks) {
+    tool_call_chunks = mapOrchestrationToLangChainToolCallChunk(toolCallChunks);
   }
-  // Use AIMessageChunk to represent message chunks for roles like 'tool' and 'user' too
+  // Use `AIMessageChunk` to represent message chunks for roles such as 'tool' and 'user' as well.
+  // While the `ChatDelta` type can accommodate other roles in the orchestration service's stream chunk response, in realtime, we only expect messages with the 'assistant' role to be returned.
   return new AIMessageChunk({ content, additional_kwargs, tool_call_chunks });
 }
 
