@@ -95,8 +95,9 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
     } else if (this.supportsStrictToolCalling !== undefined) {
       strict = this.supportsStrictToolCalling;
     }
+    const newTools = tools.map(tool => mapToolToOpenAiTool(tool, strict));
     return this.bind({
-      tools: tools.map(tool => mapToolToOpenAiTool(tool, strict)),
+      tools: newTools,
       ...kwargs
     } as Partial<AzureOpenAiChatCallOptions>);
   }

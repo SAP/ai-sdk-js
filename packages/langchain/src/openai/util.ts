@@ -54,16 +54,24 @@ export function mapToolToOpenAiFunction(
         type: 'object',
         properties: {}
       },
-      ...(strict !== undefined ? { strict } : {})
+      ...(
+        // If strict defined in kwargs
+        strict !== undefined && { strict } ||
+        // If strict defined in Azure OpenAI function, e.g., set previously when calling `bindTools()`.
+        // Notice that LangChain ToolDeifnition does not have strict property.
+        'strict' in tool.function
+          && tool.function.strict !== undefined
+          && { strict: tool.function.strict })
     };
   }
+  // StructuredTool like object
   return {
     name: tool.name,
     description: tool.description,
     parameters: isZodSchema(tool.schema)
       ? zodToJsonSchema(tool.schema)
       : tool.schema,
-    ...(strict !== undefined ? { strict } : {})
+    ...(strict !== undefined && { strict })
   };
 }
 
