@@ -150,7 +150,7 @@ export class OrchestrationClient extends BaseChatModel<
 
     const response = await this.caller.call(() =>
       orchestrationClient.stream(
-        // Todo Adapt messagesHistory after: https://github.com/SAP/ai-sdk-js-backlog/issues/293
+        // TODO: Adapt messagesHistory after: https://github.com/SAP/ai-sdk-js-backlog/issues/293
         { messagesHistory: orchestrationMessages, inputParams },
         controller,
         options.streamOptions,
