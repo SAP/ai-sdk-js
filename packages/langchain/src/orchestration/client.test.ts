@@ -184,7 +184,7 @@ describe('orchestration service client', () => {
     );
   });
 
-  it('test streaming with abort signal', async () => {
+  it('streaming with abort signal', async () => {
     mockStreamInferenceWithResilience();
     const client = new OrchestrationClient(config);
     const controller = new AbortController();
@@ -199,7 +199,7 @@ describe('orchestration service client', () => {
     await expect(streamPromise()).rejects.toThrow();
   }, 1000);
 
-  it('test streaming with callbacks', async () => {
+  it('streaming with callbacks', async () => {
     mockStreamInferenceWithResilience();
     let tokenCount = 0;
     const callbackHandler = {
