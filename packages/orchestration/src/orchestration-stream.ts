@@ -56,31 +56,33 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
     response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   ): AsyncGenerator<OrchestrationStreamChunkResponse> {
     for await (const chunk of stream) {
-      chunk.data.orchestration_result?.choices.forEach(
-        (choice) => {
-          const choiceIndex = choice.index;
-          if (choiceIndex >= 0) {
-            const toolCallsChunks = chunk.getToolCalls(choiceIndex);
-            if (toolCallsChunks) {
-              if (response) {
-                let toolCallChunkMap = response._getToolCallChunks().get(choiceIndex);
-                if(!toolCallChunkMap) {
-                  toolCallChunkMap = new Map<number, ToolCallChunk[]>();
-                  response._getToolCallChunks().set(choiceIndex, toolCallChunkMap);
-                }
-                toolCallsChunks.map((toolCallChunk) => {
-                  const toolCallId = toolCallChunk.index;
-                  if(toolCallChunkMap.has(toolCallId)) {
-                    toolCallChunkMap.get(toolCallId)!.push(toolCallChunk);
-                  } else {
-                    toolCallChunkMap.set(toolCallId, [toolCallChunk]);
-                  }
-                });
+      chunk.data.orchestration_result?.choices.forEach(choice => {
+        const choiceIndex = choice.index;
+        if (choiceIndex >= 0) {
+          const toolCallsChunks = chunk.getToolCalls(choiceIndex);
+          if (toolCallsChunks) {
+            if (response) {
+              let toolCallChunkMap = response
+                ._getToolCallChunks()
+                .get(choiceIndex);
+              if (!toolCallChunkMap) {
+                toolCallChunkMap = new Map<number, ToolCallChunk[]>();
+                response
+                  ._getToolCallChunks()
+                  .set(choiceIndex, toolCallChunkMap);
               }
+              toolCallsChunks.map(toolCallChunk => {
+                const toolCallId = toolCallChunk.index;
+                if (toolCallChunkMap.has(toolCallId)) {
+                  toolCallChunkMap.get(toolCallId)!.push(toolCallChunk);
+                } else {
+                  toolCallChunkMap.set(toolCallId, [toolCallChunk]);
+                }
+              });
             }
           }
         }
-      );
+      });
       yield chunk;
     }
   }
@@ -93,48 +95,46 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
     response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   ): AsyncGenerator<OrchestrationStreamChunkResponse> {
     for await (const chunk of stream) {
-      chunk.data.orchestration_result?.choices.forEach(
-        (choice) => {
-          const choiceIndex = choice.index;
-          if (choiceIndex >= 0) {
-            const finishReason = chunk.getFinishReason(choiceIndex);
-            if (finishReason) {
-              if (response) {
-                response._getFinishReasons().set(choiceIndex, finishReason);
-              }
-              switch (finishReason) {
-                case 'content_filter':
-                  logger.error(
-                    `Choice ${choiceIndex}: Stream finished with content filter hit.`
-                  );
-                  break;
-                case 'length':
-                  logger.error(
-                    `Choice ${choiceIndex}: Stream finished with token length exceeded.`
-                  );
-                  break;
-                case 'stop':
-                  logger.debug(`Choice ${choiceIndex}: Stream finished.`);
-                  break;
-                case 'tool_calls':
-                  logger.error(
-                    `Choice ${choiceIndex}: Stream finished with tool calls exceeded.`
-                  );
-                  break;
-                case 'function_call':
-                  logger.error(
-                    `Choice ${choiceIndex}: Stream finished with function call exceeded.`
-                  );
-                  break;
-                default:
-                  logger.error(
-                    `Choice ${choiceIndex}: Stream finished with unknown reason '${finishReason}'.`
-                  );
-              }
+      chunk.data.orchestration_result?.choices.forEach(choice => {
+        const choiceIndex = choice.index;
+        if (choiceIndex >= 0) {
+          const finishReason = chunk.getFinishReason(choiceIndex);
+          if (finishReason) {
+            if (response) {
+              response._getFinishReasons().set(choiceIndex, finishReason);
+            }
+            switch (finishReason) {
+              case 'content_filter':
+                logger.error(
+                  `Choice ${choiceIndex}: Stream finished with content filter hit.`
+                );
+                break;
+              case 'length':
+                logger.error(
+                  `Choice ${choiceIndex}: Stream finished with token length exceeded.`
+                );
+                break;
+              case 'stop':
+                logger.debug(`Choice ${choiceIndex}: Stream finished.`);
+                break;
+              case 'tool_calls':
+                logger.error(
+                  `Choice ${choiceIndex}: Stream finished with tool calls exceeded.`
+                );
+                break;
+              case 'function_call':
+                logger.error(
+                  `Choice ${choiceIndex}: Stream finished with function call exceeded.`
+                );
+                break;
+              default:
+                logger.error(
+                  `Choice ${choiceIndex}: Stream finished with unknown reason '${finishReason}'.`
+                );
             }
           }
         }
-      );
+      });
       yield chunk;
     }
   }

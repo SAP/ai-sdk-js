@@ -1,5 +1,9 @@
 import { mergeToolCallChunks } from './internal.js';
-import type { MessageToolCalls, TokenUsage, ToolCallChunk } from './client/api/schema/index.js';
+import type {
+  MessageToolCalls,
+  TokenUsage,
+  ToolCallChunk
+} from './client/api/schema/index.js';
 import type { OrchestrationStream } from './orchestration-stream.js';
 
 /**
@@ -11,7 +15,8 @@ export class OrchestrationStreamResponse<T> {
    * Finish reasons for all choices.
    */
   private _finishReasons: Map<number, string> = new Map();
-  private _toolCallChunks: Map<number, Map<number, ToolCallChunk[]>> = new Map();
+  private _toolCallChunks: Map<number, Map<number, ToolCallChunk[]>> =
+    new Map();
   private _stream: OrchestrationStream<T> | undefined;
 
   public getTokenUsage(): TokenUsage | undefined {
@@ -46,16 +51,16 @@ export class OrchestrationStreamResponse<T> {
   public getToolCalls(choiceIndex = 0): MessageToolCalls | undefined {
     try {
       const toolCallChunks = this._toolCallChunks.get(choiceIndex);
-      if(!toolCallChunks) {
+      if (!toolCallChunks) {
         throw new Error(`No tool calls found for choice index ${choiceIndex}`);
       }
       const toolCalls: MessageToolCalls = [];
-      for(const chunkArray of toolCallChunks.values()) {
+      for (const chunkArray of toolCallChunks.values()) {
         const toolCall = mergeToolCallChunks(chunkArray);
         toolCalls.push(toolCall);
       }
       return toolCalls;
-    } catch(error) {
+    } catch (error) {
       throw new Error(
         `Error while getting tool calls for choice index ${choiceIndex}: ${error}`
       );

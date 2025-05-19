@@ -658,10 +658,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
     throw new Error('No tool call found in the response.');
   }
 
-  return orchestrationClient(
-    [toolCallMessage],
-    addNumbersTool
-  ).chatCompletion({
+  return orchestrationClient([toolCallMessage], addNumbersTool).chatCompletion({
     messagesHistory: allMessages
   });
 }

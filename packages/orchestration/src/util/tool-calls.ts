@@ -1,4 +1,7 @@
-import type { MessageToolCall, ToolCallChunk } from '../client/api/schema/index.js';
+import type {
+  MessageToolCall,
+  ToolCallChunk
+} from '../client/api/schema/index.js';
 
 // —— Define a custom “growing” accumulator type —— //
 type ToolCallAccumulator = {
@@ -15,18 +18,20 @@ type ToolCallAccumulator = {
  * @throws If the final object is missing required fields.
  * @internal
  */
-export function mergeToolCallChunks(
-  chunks: ToolCallChunk[]
-): MessageToolCall {
+export function mergeToolCallChunks(chunks: ToolCallChunk[]): MessageToolCall {
   // Start with an empty accumulator that can grow.
   const acc: ToolCallAccumulator = {
-    function: {},
+    function: {}
   };
 
   for (const chunk of chunks) {
     // — Top‐level: id & type — //
-    if (chunk.id) {acc.id = chunk.id;}
-    if (chunk.type) {acc.type = chunk.type;}
+    if (chunk.id) {
+      acc.id = chunk.id;
+    }
+    if (chunk.type) {
+      acc.type = chunk.type;
+    }
 
     // — Merge any extra top‐level props — //
     for (const key of Object.keys(chunk)) {
@@ -38,7 +43,9 @@ export function mergeToolCallChunks(
     // — Function object — //
     if (chunk.function) {
       // Ensure acc.function exists
-      if (!acc.function) {acc.function = {};}
+      if (!acc.function) {
+        acc.function = {};
+      }
 
       const fnAcc = acc.function!;
 

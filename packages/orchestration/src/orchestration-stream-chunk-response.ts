@@ -27,15 +27,12 @@ export class OrchestrationStreamChunkResponse {
    * @returns The finish reason.
    */
   getFinishReason(choiceIndex = 0): string | undefined {
-    return this.getChoices()?.find(
-      (c) => c.index === choiceIndex
-    )?.finish_reason;
+    return this.getChoices()?.find(c => c.index === choiceIndex)?.finish_reason;
   }
 
   getToolCalls(choiceIndex = 0): ToolCallChunk[] | undefined {
-    return this.getChoices()?.find(
-      (c) => c.index === choiceIndex
-    )?.delta.tool_calls;
+    return this.getChoices()?.find(c => c.index === choiceIndex)?.delta
+      .tool_calls;
   }
 
   /**
@@ -44,9 +41,7 @@ export class OrchestrationStreamChunkResponse {
    * @returns The message delta content.
    */
   getDeltaContent(choiceIndex = 0): string | undefined {
-    return this.getChoices()?.find(
-      (c) => c.index === choiceIndex
-    )?.delta.content;
+    return this.getChoices()?.find(c => c.index === choiceIndex)?.delta.content;
   }
 
   private getChoices(): LlmChoiceStreaming[] | undefined {
