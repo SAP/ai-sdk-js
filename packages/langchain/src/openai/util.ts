@@ -36,7 +36,7 @@ import type {
 } from '@langchain/core/language_models/base';
 
 /**
- * Maps a LangChain {@link BindToolsInput} to {@link AzureOpenAiChatCompletionFunctions}.
+ * Maps a {@link ChatAzureOpenAIToolType} to {@link AzureOpenAiFunctionObject}.
  * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
  * @param strict - Whether to enforce strict mode for the function call.
  * @returns The OpenAI chat completion function.
@@ -68,7 +68,7 @@ export function mapToolToOpenAiFunction(
 }
 
 /**
- * Maps a LangChain {@link BindToolsInput} to {@link AzureOpenAiChatCompletionTool}.
+ * Maps a LangChain {@link ChatAzureOpenAIToolType} to {@link AzureOpenAiChatCompletionTool}.
  * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
  * @param strict - Whether to enforce strict mode for the function call.
  * @returns The OpenAI chat completion tool.
@@ -85,7 +85,7 @@ export function mapToolToOpenAiTool(
 }
 
 /**
- * Maps {@link AzureOpenAiChatCompletionMessageToolCalls} to LangChain's {@link ToolCall}.
+ * Maps {@link AzureOpenAiChatCompletionMessageToolCalls} to LangChain's {@link ToolCall} array.
  * @param toolCalls - The {@link AzureOpenAiChatCompletionMessageToolCalls} response.
  * @returns The LangChain {@link ToolCall}.
  */
@@ -233,9 +233,9 @@ function mapSystemMessageToAzureOpenAiSystemMessage(
 }
 
 /**
- * Maps {@link BaseMessage} to {@link AzureOpenAiChatMessage}.
+ * Maps {@link BaseMessage} to {@link AzureOpenAiChatCompletionRequestMessage}.
  * @param message - The message to map.
- * @returns The {@link AzureOpenAiChatMessage}.
+ * @returns The {@link AzureOpenAiChatCompletionRequestMessage}.
  */
 // TODO: Add mapping of refusal property, once LangChain base class supports it natively.
 function mapBaseMessageToAzureOpenAiChatMessage(
