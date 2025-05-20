@@ -196,7 +196,7 @@ export async function invokeLangGraphChain(): Promise<string> {
 export async function streamChain(
   controller = new AbortController()
 ): Promise<AsyncIterable<AIMessageChunk>> {
-  // Todo Remove template and use messages after: https://github.com/SAP/ai-sdk-js-backlog/issues/293
+  // TODO: Remove template and use messages during https://github.com/SAP/ai-sdk-js-backlog/issues/317
   const orchestrationConfig: LangchainOrchestrationModuleConfig = {
     llm: {
       model_name: 'gpt-4o'
