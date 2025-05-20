@@ -2,7 +2,6 @@ import { AIMessage } from '@langchain/core/messages';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { v4 as uuidv4 } from 'uuid';
 import { isZodSchema } from '@langchain/core/utils/types';
-import type { BindToolsInput } from '@langchain/core/language_models/chat_models';
 import type { ToolCall } from '@langchain/core/messages/tool';
 import type {
   AzureOpenAiChatCompletionRequestUserMessage,
@@ -27,53 +26,74 @@ import type {
 } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
 import type { AzureOpenAiChatClient } from './chat.js';
-import type { AzureOpenAiChatCallOptions } from './types.js';
+import type {
+  AzureOpenAiChatCallOptions,
+  ChatAzureOpenAIToolType
+} from './types.js';
 import type {
   FunctionDefinition,
   ToolDefinition
 } from '@langchain/core/language_models/base';
 
 /**
- * Maps a LangChain {@link BindToolsInput} to {@link AzureOpenAiChatCompletionFunctions}.
+ * Maps a {@link ChatAzureOpenAIToolType} to {@link AzureOpenAiFunctionObject}.
  * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
+ * @param strict - Whether to enforce strict mode for the function call.
  * @returns The OpenAI chat completion function.
  * @internal
  */
 export function mapToolToOpenAiFunction(
-  tool: BindToolsInput
+  tool: ChatAzureOpenAIToolType,
+  strict?: boolean
 ): AzureOpenAiFunctionObject {
-  if (isToolDefinition(tool)) {
+  if (isToolDefinitionLike(tool)) {
     return {
       name: tool.function.name,
       description: tool.function.description,
-      parameters: tool.function.parameters ?? { type: 'object', properties: {} }
+      parameters: tool.function.parameters ?? {
+        type: 'object',
+        properties: {}
+      },
+      ...// If strict defined in kwargs
+      ((strict !== undefined && { strict }) ||
+        // If strict defined in Azure OpenAI function, e.g., set previously when calling `bindTools()`.
+        // Notice that LangChain ToolDeifnition does not have strict property.
+        ('strict' in tool.function &&
+          tool.function.strict !== undefined && {
+            strict: tool.function.strict
+          }))
     };
   }
+  // StructuredTool like object
   return {
     name: tool.name,
     description: tool.description,
     parameters: isZodSchema(tool.schema)
       ? zodToJsonSchema(tool.schema)
-      : tool.schema
+      : tool.schema,
+    ...(strict !== undefined && { strict })
   };
 }
 
 /**
- * Maps a LangChain {@link BindToolsInput} to {@link AzureOpenAiChatCompletionTool}.
+ * Maps a LangChain {@link ChatAzureOpenAIToolType} to {@link AzureOpenAiChatCompletionTool}.
  * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
+ * @param strict - Whether to enforce strict mode for the function call.
  * @returns The OpenAI chat completion tool.
+ * @internal
  */
-function mapToolToOpenAiTool(
-  tool: BindToolsInput
+export function mapToolToOpenAiTool(
+  tool: ChatAzureOpenAIToolType,
+  strict?: boolean
 ): AzureOpenAiChatCompletionTool {
   return {
     type: 'function',
-    function: mapToolToOpenAiFunction(tool)
+    function: mapToolToOpenAiFunction(tool, strict)
   };
 }
 
 /**
- * Maps {@link AzureOpenAiChatCompletionMessageToolCalls} to LangChain's {@link ToolCall}.
+ * Maps {@link AzureOpenAiChatCompletionMessageToolCalls} to LangChain's {@link ToolCall} array.
  * @param toolCalls - The {@link AzureOpenAiChatCompletionMessageToolCalls} response.
  * @returns The LangChain {@link ToolCall}.
  */
@@ -221,9 +241,9 @@ function mapSystemMessageToAzureOpenAiSystemMessage(
 }
 
 /**
- * Maps {@link BaseMessage} to {@link AzureOpenAiChatMessage}.
+ * Maps {@link BaseMessage} to {@link AzureOpenAiChatCompletionRequestMessage}.
  * @param message - The message to map.
- * @returns The {@link AzureOpenAiChatMessage}.
+ * @returns The {@link AzureOpenAiChatCompletionRequestMessage}.
  */
 // TODO: Add mapping of refusal property, once LangChain base class supports it natively.
 function mapBaseMessageToAzureOpenAiChatMessage(
@@ -275,8 +295,8 @@ export function mapLangchainToAiClient(
     top_logprobs: options?.top_logprobs,
     function_call: options?.function_call,
     stop: options?.stop ?? client.stop,
-    functions: options?.functions?.map(mapToolToOpenAiFunction),
-    tools: options?.tools?.map(mapToolToOpenAiTool),
+    functions: options?.functions?.map(f => mapToolToOpenAiFunction(f)),
+    tools: options?.tools?.map(t => mapToolToOpenAiTool(t)),
     tool_choice: options?.tool_choice
   });
 }
@@ -291,9 +311,6 @@ function removeUndefinedProperties<T extends object>(obj: T): T {
   return result;
 }
 
-// Workaround to support deprecated `functions` property
-// since its type `AzureOpenAiChatCompletionFunctions` contains an optional `parameters` property.
-// TODO: Remove this workaround once the `functions` property is removed from the SDK.
 type ToolDefinitionLike = Pick<ToolDefinition, 'type'> & {
   function: Omit<FunctionDefinition, 'parameters'> & {
     parameters?: AzureOpenAiFunctionParameters;
@@ -303,9 +320,8 @@ type ToolDefinitionLike = Pick<ToolDefinition, 'type'> & {
 /**
  * @internal
  */
-// TODO: Replace `ToolDefinitionLike` with `ToolDefinition` once `functions` property of `AzureOpenAiCreateChatCompletionRequest` is removed from the SDK.
-export function isToolDefinition(
-  tool: BindToolsInput
+export function isToolDefinitionLike(
+  tool: ChatAzureOpenAIToolType
 ): tool is ToolDefinitionLike {
   return (
     typeof tool === 'object' &&

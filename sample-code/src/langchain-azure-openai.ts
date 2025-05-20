@@ -163,15 +163,13 @@ export async function invokeToolChain(): Promise<string> {
     })
   });
 
-  const humanMessage = new HumanMessage(
-    'Increase the shareholder value, it is currently at 10'
-  );
+  const messages: BaseMessage[] = [
+    new HumanMessage('Increase the shareholder value, it is currently at 10')
+  ];
 
-  const history: BaseMessage[] = [humanMessage];
+  const response = await client.bindTools([azureTool]).invoke(messages);
 
-  const response = await client.invoke(history, { tools: [azureTool] });
-
-  history.push(response);
+  messages.push(response);
 
   if (response.tool_calls) {
     const shareholderValue = shareholderValueFunction(
@@ -183,13 +181,13 @@ export async function invokeToolChain(): Promise<string> {
       tool_call_id: response.tool_calls[0].id ?? 'default'
     });
 
-    history.push(toolMessage);
+    messages.push(toolMessage);
   } else {
     const failMessage = new SystemMessage('No tool calls were made');
-    history.push(failMessage);
+    messages.push(failMessage);
   }
 
-  const finalResponse = await client.invoke(history);
+  const finalResponse = await client.invoke(messages);
 
   // create an output parser
   const parser = new StringOutputParser();
