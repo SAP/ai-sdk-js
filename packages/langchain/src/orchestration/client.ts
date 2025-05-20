@@ -98,11 +98,11 @@ export class OrchestrationClient extends BaseChatModel<
           this.deploymentConfig,
           this.destination
         );
-        const allMesages =
-          mapLangchainMessagesToOrchestrationMessages(messages);
+        const allMessages =
+          mapLangChainMessagesToOrchestrationMessages(messages);
         return orchestrationClient.chatCompletion(
           {
-            messages: allMesages,
+            messages: allMessages,
             inputParams
           },
           customRequestConfig
