@@ -568,6 +568,15 @@ const addNumbersSchema = z
   })
   .strict();
 
+const addNumbersTool: ChatCompletionTool = {
+  type: 'function',
+  function: {
+    name: 'add',
+    description: 'Add two numbers',
+    parameters: zodToJsonSchema(addNumbersSchema)
+  }
+};
+
 /**
  * Ask the Llm to perform math operation of adding 2 numbers .
  * @returns The orchestration service response containing `tool_calls`.
@@ -583,16 +592,7 @@ export async function orchestrationToolCalling(): Promise<OrchestrationResponse>
         },
         { role: 'user', content: 'What is 2 + 3?' }
       ],
-      tools: [
-        {
-          type: 'function',
-          function: {
-            name: 'add',
-            description: 'Add two numbers',
-            parameters: zodToJsonSchema(addNumbersSchema)
-          }
-        }
-      ]
+      tools: [addNumbersTool]
     }
   });
   return orchestrationClient.chatCompletion();
@@ -614,16 +614,6 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
         return addTwoNumbers(args.a, args.b);
       default:
         throw new Error(`Function: ${name} not found!`);
-    }
-  };
-
-  // Tool definition
-  const addNumbersTool: ChatCompletionTool = {
-    type: 'function',
-    function: {
-      name: 'add',
-      description: 'Add two numbers',
-      parameters: zodToJsonSchema(addNumbersSchema)
     }
   };
 
@@ -661,4 +651,39 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
   return orchestrationClient([toolCallMessage], addNumbersTool).chatCompletion({
     messagesHistory: allMessages
   });
+}
+
+/**
+ * Ask ChatGPT to do add two numbers with tools.
+ * @param controller - The abort controller.
+ * @param streamOptions - The stream options.
+ * @returns The response from the orchestration service containing the response content.
+ */
+export async function chatCompletionStreamWithTools(
+  controller: AbortController,
+  streamOptions?: StreamOptions
+): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
+  const orchestrationClient = new OrchestrationClient({
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o'
+    },
+    // define the prompt
+    templating: {
+      template: [
+        {
+          role: 'user',
+          content: 'Add the numbers {{?input}}'
+        }
+      ],
+      tools: [addNumbersTool]
+    }
+  });
+  return orchestrationClient.stream(
+    {
+      inputParams: { input: '2 and 3, as well as 4 and 5' }
+    },
+    controller,
+    streamOptions
+  );
 }

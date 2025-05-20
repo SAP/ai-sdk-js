@@ -115,17 +115,9 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
                 );
                 break;
               case 'stop':
-                logger.debug(`Choice ${choiceIndex}: Stream finished.`);
-                break;
               case 'tool_calls':
-                logger.error(
-                  `Choice ${choiceIndex}: Stream finished with tool calls exceeded.`
-                );
-                break;
               case 'function_call':
-                logger.error(
-                  `Choice ${choiceIndex}: Stream finished with function call exceeded.`
-                );
+                logger.debug(`Choice ${choiceIndex}: Stream finished.`);
                 break;
               default:
                 logger.error(
