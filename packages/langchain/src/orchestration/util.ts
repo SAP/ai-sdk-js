@@ -245,7 +245,7 @@ export function setFinishReason(
  */
 export function setTokenUsage(
   messageChunk: AIMessageChunk,
-  tokenUsage: TokenUsage | undefined
+  tokenUsage?: TokenUsage
 ): void {
   if (tokenUsage) {
     messageChunk.usage_metadata = {
