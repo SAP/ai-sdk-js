@@ -602,16 +602,15 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
     }
   });
 
-  const response =
-    await orchestrationClient.chatCompletion({
-      messages: [
-        {
-          role: 'system',
-          content: 'You are a helpful AI that performs addition of two numbers.'
-        },
-        { role: 'user', content: 'What is 2 + 3?' }
-      ]
-    });
+  const response = await orchestrationClient.chatCompletion({
+    messages: [
+      {
+        role: 'system',
+        content: 'You are a helpful AI that performs addition of two numbers.'
+      },
+      { role: 'user', content: 'What is 2 + 3?' }
+    ]
+  });
   const allMessages = response.getAllMessages();
   const initialResponse = response.getAssistantMessage();
   let toolMessage: ToolChatMessage;
