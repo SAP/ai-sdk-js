@@ -35,5 +35,5 @@ export type LangchainOrchestrationModuleConfig = Omit<
   OrchestrationModuleConfigWithStringTemplating,
   'templating'
 > & {
-  templating: TemplatingModuleConfig;
+  templating?: TemplatingModuleConfig;
 };

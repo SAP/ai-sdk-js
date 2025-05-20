@@ -89,24 +89,26 @@ export class OrchestrationClient extends BaseChatModel<
       {
         signal: options.signal
       },
-      (() => {
-      const { inputParams, customRequestConfig } = options;
-      const mergedOrchestrationConfig = this.mergeOrchestrationConfig(options);
-      const orchestrationClient = new OrchestrationClientBase(
-        mergedOrchestrationConfig,
-        this.deploymentConfig,
-        this.destination
-      );
-      const messagesHistory =
-        mapLangChainMessagesToOrchestrationMessages(messages);
-      return orchestrationClient.chatCompletion(
-        {
-          messagesHistory,
-          inputParams
-        },
-        customRequestConfig
-      );
-    }));
+      () => {
+        const { inputParams, customRequestConfig } = options;
+        const mergedOrchestrationConfig =
+          this.mergeOrchestrationConfig(options);
+        const orchestrationClient = new OrchestrationClientBase(
+          mergedOrchestrationConfig,
+          this.deploymentConfig,
+          this.destination
+        );
+        const allMesages =
+          mapLangchainMessagesToOrchestrationMessages(messages);
+        return orchestrationClient.chatCompletion(
+          {
+            messages: allMesages,
+            inputParams
+          },
+          customRequestConfig
+        );
+      }
+    );
 
     const content = res.getContent();
 
@@ -210,7 +212,8 @@ export class OrchestrationClient extends BaseChatModel<
       },
       templating: {
         ...this.orchestrationConfig.templating,
-        ...(isTemplate(this.orchestrationConfig.templating) &&
+        ...(this.orchestrationConfig.templating &&
+          isTemplate(this.orchestrationConfig.templating) &&
           tools.length && {
             tools: [
               ...(this.orchestrationConfig.templating.tools || []),

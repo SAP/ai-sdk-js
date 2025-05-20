@@ -60,11 +60,7 @@ describe('orchestration service client', () => {
   ) {
     mockInference(
       {
-        data: constructCompletionPostRequest(
-          config,
-          { messagesHistory: [] },
-          isStream
-        )
+        data: constructCompletionPostRequest(config)
       },
       {
         data: response,
