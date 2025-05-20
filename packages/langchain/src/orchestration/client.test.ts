@@ -180,7 +180,7 @@ describe('orchestration service client', () => {
     );
   });
 
-  it('streaming with abort signal', async () => {
+  it('streams and aborts with a signal', async () => {
     mockStreamInferenceWithResilience();
     const client = new OrchestrationClient(config);
     const controller = new AbortController();
