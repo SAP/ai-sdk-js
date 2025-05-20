@@ -20,9 +20,7 @@ import type {
   TemplatingChatMessage,
   ErrorResponse,
   TemplatingModuleConfig,
-  ChatMessages,
   ChatCompletionTool,
-  AssistantChatMessage,
   ToolChatMessage,
   DataRepositoryType
 } from '@sap-ai-sdk/orchestration';
@@ -578,27 +576,6 @@ const addNumbersTool: ChatCompletionTool = {
 };
 
 /**
- * Ask the Llm to perform math operation of adding 2 numbers .
- * @returns The orchestration service response containing `tool_calls`.
- */
-export async function orchestrationToolCalling(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    llm,
-    templating: {
-      template: [
-        {
-          role: 'system',
-          content: 'You are a helpful AI that performs addition of two numbers.'
-        },
-        { role: 'user', content: 'What is 2 + 3?' }
-      ],
-      tools: [addNumbersTool]
-    }
-  });
-  return orchestrationClient.chatCompletion();
-}
-
-/**
  * Send a chat completion request to the Orchestration service using tools and pass the message history in a subsequent chat completion request.
  * @returns The orchestration service response containing `tool_calls`.
  */
@@ -617,29 +594,30 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
     }
   };
 
-  const orchestrationClient = (
-    messages: TemplatingChatMessage,
-    tools: ChatCompletionTool
-  ) =>
-    new OrchestrationClient({
-      llm,
-      templating: {
-        template: messages,
-        tools: [tools]
-      }
-    });
+  const orchestrationClient = new OrchestrationClient({
+    llm,
+    templating: {
+      tools: [addNumbersTool]
+    }
+  });
 
-  const response: OrchestrationResponse = await orchestrationToolCalling();
-  const allMessages: ChatMessages = response.getAllMessages();
-  const initialResponse: AssistantChatMessage | undefined =
-    response.getAssistantMessage();
-
+  const response = await orchestrationClient.chatCompletion({
+    messages: [
+      {
+        role: 'system',
+        content: 'You are a helpful AI that performs addition of two numbers.'
+      },
+      { role: 'user', content: 'What is 2 + 3?' }
+    ]
+  });
+  const allMessages = response.getAllMessages();
+  const initialResponse = response.getAssistantMessage();
+  let toolMessage: ToolChatMessage;
   // Use the initial response to execute the tool and get the response.
-  let toolCallMessage: ToolChatMessage;
   if (initialResponse && initialResponse.tool_calls) {
     const toolCall = initialResponse.tool_calls[0];
     const args = JSON.parse(toolCall.function.arguments);
-    toolCallMessage = {
+    toolMessage = {
       role: 'tool',
       content: callFunction(toolCall.function.name, args),
       tool_call_id: toolCall.id
@@ -648,7 +626,9 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
     throw new Error('No tool call found in the response.');
   }
 
-  return orchestrationClient([toolCallMessage], addNumbersTool).chatCompletion({
+  // Call the model with a new message and the message history
+  return orchestrationClient.chatCompletion({
+    messages: [toolMessage],
     messagesHistory: allMessages
   });
 }
