@@ -22,8 +22,7 @@ import {
   orchestrationMaskGroundingInput,
   orchestrationPromptRegistry,
   orchestrationMessageHistory,
-  orchestrationResponseFormat,
-  chatCompletionStreamWithTools as orchestrationStreamWithTools
+  orchestrationResponseFormat
 } from './orchestration.js';
 import {
   getDeployments,
@@ -387,48 +386,6 @@ app.get(
     }
   }
 );
-
-app.get('/orchestration-stream/with-tools', async (req, res) => {
-  try {
-    const controller = new AbortController();
-    const response = await orchestrationStreamWithTools(controller);
-    // Set headers for event stream.
-    res.setHeader('Content-Type', 'text/event-stream');
-    res.setHeader('Connection', 'keep-alive');
-    res.flushHeaders();
-    let connectionAlive = true;
-    // Abort the stream if the client connection is closed.
-    res.on('close', () => {
-      controller.abort();
-      connectionAlive = false;
-      res.end();
-    });
-    // Stream the delta content.
-    for await (const chunk of response.stream) {
-      if (!connectionAlive) {
-        break;
-      }
-      if (chunk.getToolCalls()) {
-        res.write(JSON.stringify(chunk.getToolCalls()) + '\n');
-      }
-    }
-    // Write the finish reason and token usage after the stream ends.
-    if (connectionAlive) {
-      const tools = response.getToolCalls();
-      if (!tools) {
-        res.status(500).send('No tools returned.');
-        return;
-      }
-      for (const tool of tools) {
-        res.write('Tools:' + JSON.stringify(tool) + '\n');
-      }
-    }
-  } catch (error: any) {
-    sendError(res, error, false);
-  } finally {
-    res.end();
-  }
-});
 
 /* Langchain */
 app.get('/langchain/invoke', async (req, res) => {

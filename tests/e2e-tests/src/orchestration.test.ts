@@ -17,8 +17,11 @@ import {
 import {
   OrchestrationClient,
   type OrchestrationModuleConfig,
-  type OrchestrationResponse
+  type OrchestrationResponse,
+  type ChatCompletionTool
 } from '@sap-ai-sdk/orchestration';
+import { zodToJsonSchema } from 'zod-to-json-schema';
+import { z } from 'zod';
 import { loadEnv } from './utils/load-env.js';
 
 loadEnv();
@@ -160,5 +163,70 @@ describe('orchestration', () => {
       );
       expect(err.cause?.response?.data.message).toBeDefined();
     }
+  });
+
+  it('should return multiple tool calls in a single stream response', async () => {
+    const addNumbersSchema = z
+      .object({
+        a: z.number().describe('The first number to be added.'),
+        b: z.number().describe('The second number to be added.')
+      })
+      .strict();
+
+    const addTool: ChatCompletionTool = {
+      type: 'function',
+      function: {
+        name: 'add',
+        description: 'Adds two numbers',
+        parameters: zodToJsonSchema(addNumbersSchema)
+      }
+    };
+    const config: OrchestrationModuleConfig = {
+      llm: {
+        model_name: 'gpt-4o',
+        model_params: {}
+      },
+      templating: {
+        template: [
+          {
+            role: 'user',
+            content: 'Add 1 and 2, as well as 3 and 4.'
+          }
+        ],
+        tools: [addTool]
+      }
+    };
+
+    const response = await new OrchestrationClient(config).stream();
+
+    for await (const _ of response.stream) {
+      /* do nothing */
+    }
+
+    const tools = response.getToolCalls();
+
+    expect(tools).toHaveLength(2);
+    expect(tools!.every(tool => tool.id !== undefined)).toBe(true);
+    expect(tools!.map(tool => ({ ...tool, id: 'mock_id' })))
+      .toMatchInlineSnapshot(`
+     [
+       {
+         "function": {
+           "arguments": "{"a": 1, "b": 2}",
+           "name": "add",
+         },
+         "id": "mock_id",
+         "type": "function",
+       },
+       {
+         "function": {
+           "arguments": "{"a": 3, "b": 4}",
+           "name": "add",
+         },
+         "id": "mock_id",
+         "type": "function",
+       },
+     ]
+    `);
   });
 });

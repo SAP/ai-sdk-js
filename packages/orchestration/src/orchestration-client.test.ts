@@ -1,8 +1,6 @@
 import nock from 'nock';
 import { jest } from '@jest/globals';
 import { createLogger } from '@sap-cloud-sdk/util';
-import { zodToJsonSchema } from 'zod-to-json-schema';
-import { z } from 'zod';
 import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
@@ -18,10 +16,8 @@ import {
   buildAzureContentSafetyFilter,
   buildLlamaGuardFilter
 } from './util/index.js';
-import type {
-  ChatCompletionTool,
-  CompletionPostResponse
-} from './client/api/schema/index.js';
+import { addTool, multiplyTool } from './util/tools.js';
+import type { CompletionPostResponse } from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
   Prompt
@@ -68,36 +64,6 @@ function mockJsonStreamInference(
     }
   );
 }
-
-const addNumbersSchema = z
-  .object({
-    a: z.number().describe('The first number to be added.'),
-    b: z.number().describe('The second number to be added.')
-  })
-  .strict();
-const addTool: ChatCompletionTool = {
-  type: 'function',
-  function: {
-    name: 'add',
-    description: 'Adds two numbers',
-    parameters: zodToJsonSchema(addNumbersSchema)
-  }
-};
-
-const multiplyNumbersSchema = z
-  .object({
-    a: z.number().describe('The first number to multiply.'),
-    b: z.number().describe('The second number to multiply.')
-  })
-  .strict();
-const multiplyTool: ChatCompletionTool = {
-  type: 'function',
-  function: {
-    name: 'multiply',
-    description: 'Multiplies two numbers',
-    parameters: zodToJsonSchema(multiplyNumbersSchema)
-  }
-};
 
 describe('orchestration service client', () => {
   beforeEach(() => {

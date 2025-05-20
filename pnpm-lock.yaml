@@ -323,6 +323,9 @@ importers:
       dotenv:
         specifier: ^16.5.0
         version: 16.5.0
+      zod-to-json-schema:
+        specifier: ^3.24.5
+        version: 3.24.5(zod@3.24.4)
 
   tests/schema-tests: {}
 
