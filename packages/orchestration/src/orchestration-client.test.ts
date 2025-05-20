@@ -122,7 +122,7 @@ describe('orchestration service client', () => {
       },
       templating: {
         defaults: {
-          topic: 'Generative AI Hub'
+          topic: 'AI Core'
         }
       }
     };
