@@ -13,7 +13,9 @@ import type {
   LlamaGuard38B,
   MaskingModuleConfig,
   LlmModuleConfig as OriginalLlmModuleConfig,
-  TemplatingModuleConfig
+  Template as OriginalTemplate,
+  TemplateRef,
+  TemplatingChatMessage
 } from './client/api/schema/index.js';
 
 /**
@@ -21,12 +23,32 @@ import type {
  */
 export interface Prompt {
   /**
-   * History.
+   * Chat History.
    */
   messagesHistory?: ChatMessages;
 
   /**
+   * New chat messages, including template messages.
+   * @example
+   * messages: [
+   *   {
+   *     role: 'system',
+   *     content: 'You are a helpful assistant answering questions about {{product}}.'
+   *   },
+   *   {
+   *     role: 'user',
+   *     content: 'Can you give me an overview of its key benefits?'
+   *   }
+   * ]
+   */
+  messages?: ChatMessages;
+
+  /**
    * Template parameters.
+   * @example
+   * inputParams: {
+   *   product: 'SAP Cloud SDK'
+   * }
    */
   inputParams?: Record<string, string>;
 }
@@ -53,13 +75,55 @@ export type LlmModelParams = {
 } & Record<string, any>;
 
 /**
+ * Representation of the 'Template' schema.
+ */
+export type Template = Omit<OriginalTemplate, 'template'> & {
+  /**
+   * A chat message array to be formatted with values from `inputParams`.
+   * Both `role` and `content` can use {{?variable}} placeholders.
+   *
+   * For dynamic templating (changing per request), pass templated messages directly in `.chatCompletion({ messages })`.
+   * @example
+   * // Static template: passed once in client config
+   * templating: {
+   *   template: [
+   *     {
+   *       role: 'system',
+   *       content: 'You are a helpful assistant for {{?product}}.'
+   *     }
+   *   ]
+   * }
+   */
+  template?: TemplatingChatMessage;
+};
+
+/**
+ * Representation of the 'TemplatingModuleConfig' schema.
+ */
+export type TemplatingModuleConfig = Template | TemplateRef;
+
+/**
  * Orchestration module configuration.
  */
 export interface OrchestrationModuleConfig {
   /**
-   * Templating module configuration.
+   * Templating configuration for static prompts. Can be:
+   * - A `template`: an array of templated chat messages (with {{?placeholders}}).
+   * - An `id` or `scenario`, `name` and `version`: reference to a remote prompt template.
+   *
+   * This is meant for static instructions included with every call.
+   * For per-request templating, use `messages` in `.chatCompletion()` instead.
+   * @example
+   * templating: {
+   *   template: [
+   *     {
+   *       role: 'system',
+   *       content: 'You are an assistant for {{?product}}.'
+   *     }
+   *   ]
+   * }
    */
-  templating: TemplatingModuleConfig | string;
+  templating?: TemplatingModuleConfig | string;
   /**
    * LLM module configuration.
    */
