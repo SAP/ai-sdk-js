@@ -85,30 +85,24 @@ export class OrchestrationClient extends BaseChatModel<
     options: typeof this.ParsedCallOptions,
     runManager?: CallbackManagerForLLMRun
   ): Promise<ChatResult> {
-    const res = await this.caller.callWithOptions(
-      {
-        signal: options.signal
-      },
-      () => {
-        const { inputParams, customRequestConfig } = options;
-        const mergedOrchestrationConfig =
-          this.mergeOrchestrationConfig(options);
-        const orchestrationClient = new OrchestrationClientBase(
-          mergedOrchestrationConfig,
-          this.deploymentConfig,
-          this.destination
-        );
-        const messagesHistory =
-          mapLangChainMessagesToOrchestrationMessages(messages);
-        return orchestrationClient.chatCompletion(
-          {
-            messagesHistory,
-            inputParams
-          },
-          customRequestConfig
-        );
-      }
-    );
+    const res = await this.caller.call(() => {
+      const { inputParams, customRequestConfig } = options;
+      const mergedOrchestrationConfig = this.mergeOrchestrationConfig(options);
+      const orchestrationClient = new OrchestrationClientBase(
+        mergedOrchestrationConfig,
+        this.deploymentConfig,
+        this.destination
+      );
+      const messagesHistory =
+        mapLangChainMessagesToOrchestrationMessages(messages);
+      return orchestrationClient.chatCompletion(
+        {
+          messagesHistory,
+          inputParams
+        },
+        customRequestConfig
+      );
+    });
 
     const content = res.getContent();
 
