@@ -263,6 +263,7 @@ export function setTokenUsage(
  * @returns An object with prompt and completion indices.
  * @internal
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function computeTokenIndices(chunk: OrchestrationStreamChunkResponse): {
   prompt: number;
   completion: number;
@@ -270,6 +271,8 @@ export function computeTokenIndices(chunk: OrchestrationStreamChunkResponse): {
   return {
     // Indicates the token is part of the first prompt
     prompt: 0,
-    completion: chunk.data.orchestration_result?.choices[0]?.index ?? 0
+    // Hardcoding to 0 as mutiple choices are not currently supported in the orchestration service.
+    // Switch to `chunk.data.orchestration_result.choices[0].index` when support is added.
+    completion: 0
   };
 }
