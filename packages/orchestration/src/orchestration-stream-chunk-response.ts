@@ -48,13 +48,18 @@ export class OrchestrationStreamChunkResponse {
     return this.findChoiceByIndex(choiceIndex)?.delta.tool_calls;
   }
 
-  private getChoices(): LlmChoiceStreaming[] | undefined {
-    return this.data.orchestration_result?.choices;
-  }
-
-  private findChoiceByIndex(index: number): LlmChoiceStreaming | undefined {
+  /**
+   * Parses the chunk response and returns the choice by index.
+   * @param index - The index of the choice to find.
+   * @returns An {@link LLMChoiceStreaming} object associated withe index.
+   */
+  findChoiceByIndex(index: number): LlmChoiceStreaming | undefined {
     return this.getChoices()?.find(
       (c: LlmChoiceStreaming) => c.index === index
     );
+  }
+
+  private getChoices(): LlmChoiceStreaming[] | undefined {
+    return this.data.orchestration_result?.choices;
   }
 }
