@@ -23,7 +23,7 @@ import {
   orchestrationPromptRegistry,
   orchestrationMessageHistory,
   orchestrationResponseFormat,
-  chatCompletionStreamWithTools as orchestrationStreamWithTools,
+  chatCompletionStreamWithTools as orchestrationStreamWithTools
 } from './orchestration.js';
 import {
   getDeployments,
@@ -408,18 +408,18 @@ app.get('/orchestration-stream/with-tools', async (req, res) => {
       if (!connectionAlive) {
         break;
       }
-      if(chunk.getToolCalls()) {
+      if (chunk.getToolCalls()) {
         res.write(JSON.stringify(chunk.getToolCalls()) + '\n');
       }
     }
     // Write the finish reason and token usage after the stream ends.
     if (connectionAlive) {
       const tools = response.getToolCalls();
-      if(!tools) {
+      if (!tools) {
         res.status(500).send('No tools returned.');
         return;
       }
-      for(const tool of tools) {
+      for (const tool of tools) {
         res.write('Tools:' + JSON.stringify(tool) + '\n');
       }
     }
