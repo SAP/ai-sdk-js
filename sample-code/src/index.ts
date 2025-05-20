@@ -32,7 +32,7 @@ export {
 export {
   invokeChain as orchestrationInvokeChain,
   invokeLangGraphChain,
-  orchestrationStreamChain
+  streamChain
 } from './langchain-orchestration.js';
 export {
   getDeployments,

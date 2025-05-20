@@ -49,7 +49,7 @@ import {
   invokeChainWithOutputFilter as invokeChainWithOutputFilterOrchestration,
   invokeLangGraphChain,
   invokeChainWithMasking,
-  orchestrationStreamChain
+  streamChain
 } from './langchain-orchestration.js';
 import {
   createCollection,
@@ -470,7 +470,7 @@ app.get('/langchain/invoke-stateful-chain', async (req, res) => {
 app.get('/langchain/stream-orchestration', async (req, res) => {
   const controller = new AbortController();
   try {
-    const stream = await orchestrationStreamChain(controller);
+    const stream = await streamChain(controller);
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Connection', 'keep-alive');
     res.flushHeaders();
