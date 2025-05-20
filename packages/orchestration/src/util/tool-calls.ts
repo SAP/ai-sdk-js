@@ -51,7 +51,8 @@ export function mergeToolCallChunks(chunks: ToolCallChunk[]): MessageToolCall {
       }
 
       if (chunk.function.arguments) {
-        acc.function.arguments = (acc.function.arguments || '') + chunk.function.arguments;
+        acc.function.arguments =
+          (acc.function.arguments || '') + chunk.function.arguments;
       }
 
       // Merge any extra function‐scoped fields
@@ -67,7 +68,5 @@ export function mergeToolCallChunks(chunks: ToolCallChunk[]): MessageToolCall {
     return acc as MessageToolCall;
   }
 
-  throw new Error(
-    `Invalid tool call after merging: ${JSON.stringify(acc)}`
-  );
+  throw new Error(`Invalid tool call after merging: ${JSON.stringify(acc)}`);
 }
