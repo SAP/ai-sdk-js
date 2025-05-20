@@ -15,8 +15,9 @@ import {
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
+import { z } from 'zod';
+import { tool } from '@langchain/core/tools';
 import type { BaseMessage } from '@langchain/core/messages';
-import type { AzureOpenAiChatCompletionTool } from '@sap-ai-sdk/foundation-models';
 
 /**
  * Ask GPT about the capital of France.
@@ -148,29 +149,19 @@ export async function invokeToolChain(): Promise<string> {
     temperature: 0.7
   });
 
-  // create a tool
-  const azureTool: AzureOpenAiChatCompletionTool = {
-    type: 'function',
-    function: {
-      name: 'shareholder_value',
-      description: 'Multiplies the shareholder value',
-      parameters: {
-        type: 'object',
-        properties: {
-          value: {
-            type: 'number',
-            description: 'The value that is supposed to be increased.'
-          }
-        },
-        required: ['value']
-      }
-    }
-  };
-
   // create a function to increase the shareholder value
   function shareholderValueFunction(value: number): string {
     return `The shareholder value has been increased to ${value * 2}`;
   }
+
+  // create a tool
+  const azureTool = tool(shareholderValueFunction, {
+    name: 'shareholder_value',
+    description: 'Multiplies the shareholder value',
+    schema: z.object({
+      value: z.number().describe('The value that is supposed to be increased.')
+    })
+  });
 
   const humanMessage = new HumanMessage(
     'Increase the shareholder value, it is currently at 10'
