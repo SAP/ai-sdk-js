@@ -3,15 +3,24 @@ import type {
   ToolCallChunk
 } from '../client/api/schema/index.js';
 
-// —— Define a custom “growing” accumulator type —— //
 type ToolCallAccumulator = {
   id?: string;
-  type?: 'function';
-  function?: {
+  type: 'function';
+  function: {
     name?: string;
     arguments?: string;
   } & Record<string, any>;
 } & Record<string, any>;
+
+function validateToolCallAccumulator(acc: ToolCallAccumulator): boolean {
+  return (
+    !!acc.id &&
+    acc.type === 'function' &&
+    !!acc.function &&
+    typeof acc.function.name === 'string' &&
+    typeof acc.function.arguments === 'string'
+  );
+}
 
 /**
  * Merge a stream of ToolCallChunk into a single MessageToolCall.
@@ -19,66 +28,46 @@ type ToolCallAccumulator = {
  * @internal
  */
 export function mergeToolCallChunks(chunks: ToolCallChunk[]): MessageToolCall {
-  // Start with an empty accumulator that can grow.
   const acc: ToolCallAccumulator = {
+    type: 'function',
     function: {}
   };
 
   for (const chunk of chunks) {
-    // — Top‐level: id & type — //
     if (chunk.id) {
       acc.id = chunk.id;
     }
-    if (chunk.type) {
-      acc.type = chunk.type;
-    }
 
-    // — Merge any extra top‐level props — //
+    // Merge any extra top‐level props
     for (const key of Object.keys(chunk)) {
       if (!['index', 'id', 'type', 'function'].includes(key)) {
         acc[key] = chunk[key];
       }
     }
 
-    // — Function object — //
     if (chunk.function) {
-      // Ensure acc.function exists
-      if (!acc.function) {
-        acc.function = {};
-      }
-
-      const fnAcc = acc.function!;
-
       if (chunk.function.name) {
-        fnAcc.name = chunk.function.name;
+        acc.function.name = chunk.function.name;
       }
 
       if (chunk.function.arguments) {
-        fnAcc.arguments = (fnAcc.arguments || '') + chunk.function.arguments;
+        acc.function.arguments = (acc.function.arguments || '') + chunk.function.arguments;
       }
 
       // Merge any extra function‐scoped fields
       for (const key of Object.keys(chunk.function)) {
         if (!['name', 'arguments'].includes(key)) {
-          fnAcc[key] = (chunk.function as any)[key];
+          acc.function[key] = (chunk.function as any)[key];
         }
       }
     }
   }
 
-  // —— Final validation —— //
-  if (
-    !acc.id ||
-    acc.type !== 'function' ||
-    !acc.function ||
-    !acc.function.name ||
-    acc.function.arguments === undefined
-  ) {
-    throw new Error(
-      `Incomplete tool call after merging: ${JSON.stringify(acc)}`
-    );
+  if (validateToolCallAccumulator(acc)) {
+    return acc as MessageToolCall;
   }
 
-  // Now that we know all required fields are present, cast to MessageToolCall
-  return acc as MessageToolCall;
+  throw new Error(
+    `Invalid tool call after merging: ${JSON.stringify(acc)}`
+  );
 }
