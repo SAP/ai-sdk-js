@@ -80,7 +80,7 @@ export type LlmModelParams = {
 export type Template = Omit<OriginalTemplate, 'template'> & {
   /**
    * A chat message array to be formatted with values from `inputParams`.
-   * Both `role` and `content` can use {{?variable}} placeholders resolved via `inputParams`.
+   * Both `role` and `content` can use {{?variable}} placeholders.
    *
    * For dynamic templating (changing per request), pass templated messages directly in `.chatCompletion({ messages })`.
    * @example
