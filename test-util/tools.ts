@@ -1,6 +1,6 @@
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { z } from 'zod';
-import type { ChatCompletionTool } from '../client/api/schema/index.js';
+import type { ChatCompletionTool } from '../packages/orchestration/src/client/api/schema/index.js';
 
 const addNumbersSchema = z
   .object({
@@ -12,7 +12,7 @@ const addNumbersSchema = z
 /**
  * @internal
  */
-export const addTool: ChatCompletionTool = {
+export const addNumbersTool: ChatCompletionTool = {
   type: 'function',
   function: {
     name: 'add',
@@ -31,7 +31,7 @@ const multiplyNumbersSchema = z
 /**
  * @internal
  */
-export const multiplyTool: ChatCompletionTool = {
+export const multiplyNumbersTool: ChatCompletionTool = {
   type: 'function',
   function: {
     name: 'multiply',

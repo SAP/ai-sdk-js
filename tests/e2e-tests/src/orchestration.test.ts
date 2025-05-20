@@ -16,11 +16,9 @@ import {
 import {
   OrchestrationClient,
   type OrchestrationModuleConfig,
-  type OrchestrationResponse,
-  type ChatCompletionTool
+  type OrchestrationResponse
 } from '@sap-ai-sdk/orchestration';
-import { zodToJsonSchema } from 'zod-to-json-schema';
-import { z } from 'zod';
+import { addNumbersTool } from '../../../test-util/tools.js';
 import { loadEnv } from './utils/load-env.js';
 
 loadEnv();
@@ -159,21 +157,6 @@ describe('orchestration', () => {
   });
 
   it('should return multiple tool calls in a single stream response', async () => {
-    const addNumbersSchema = z
-      .object({
-        a: z.number().describe('The first number to be added.'),
-        b: z.number().describe('The second number to be added.')
-      })
-      .strict();
-
-    const addTool: ChatCompletionTool = {
-      type: 'function',
-      function: {
-        name: 'add',
-        description: 'Adds two numbers',
-        parameters: zodToJsonSchema(addNumbersSchema)
-      }
-    };
     const config: OrchestrationModuleConfig = {
       llm: {
         model_name: 'gpt-4o',
@@ -186,7 +169,7 @@ describe('orchestration', () => {
             content: 'Add 1 and 2, as well as 3 and 4.'
           }
         ],
-        tools: [addTool]
+        tools: [addNumbersTool]
       }
     };
 

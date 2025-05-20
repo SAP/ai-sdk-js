@@ -12,11 +12,12 @@ type ToolCallAccumulator = {
   } & Record<string, any>;
 } & Record<string, any>;
 
-function validateToolCallAccumulator(acc: ToolCallAccumulator): boolean {
+function isMessageToolCall(acc: ToolCallAccumulator): acc is MessageToolCall {
   return (
-    !!acc.id &&
+    typeof acc.id === 'string' &&
     acc.type === 'function' &&
-    !!acc.function &&
+    typeof acc.function === 'object' &&
+    acc.function !== null &&
     typeof acc.function.name === 'string' &&
     typeof acc.function.arguments === 'string'
   );
@@ -64,8 +65,8 @@ export function mergeToolCallChunks(chunks: ToolCallChunk[]): MessageToolCall {
     }
   }
 
-  if (validateToolCallAccumulator(acc)) {
-    return acc as MessageToolCall;
+  if (isMessageToolCall(acc)) {
+    return acc;
   }
 
   throw new Error(`Invalid tool call after merging: ${JSON.stringify(acc)}`);

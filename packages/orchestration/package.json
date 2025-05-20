@@ -38,8 +38,6 @@
   },
   "devDependencies": {
     "@sap-cloud-sdk/http-client": "^4.0.2",
-    "@sap-cloud-sdk/connectivity": "^4.0.2",
-    "zod-to-json-schema": "^3.24.5",
-    "zod": "^3.24.3"
+    "@sap-cloud-sdk/connectivity": "^4.0.2"
   }
 }

@@ -8,6 +8,7 @@ import {
   parseFileToString,
   parseMockResponse
 } from '../../../test-util/mock-http.js';
+import { addNumbersTool, multiplyNumbersTool } from '../../../test-util/tools.js';
 import { OrchestrationClient } from './orchestration-client.js';
 import { OrchestrationResponse } from './orchestration-response.js';
 import {
@@ -16,7 +17,6 @@ import {
   buildAzureContentSafetyFilter,
   buildLlamaGuardFilter
 } from './util/index.js';
-import { addTool, multiplyTool } from './util/tools.js';
 import type { CompletionPostResponse } from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
@@ -801,7 +801,7 @@ describe('orchestration service client', () => {
             content: 'Add 2 + 3 and multiply 2 * 3'
           }
         ],
-        tools: [addTool, multiplyTool]
+        tools: [addNumbersTool, multiplyNumbersTool]
       }
     };
 

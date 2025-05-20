@@ -100,6 +100,9 @@ importers:
       zod:
         specifier: ^3.25.7
         version: 3.25.7
+      zod-to-json-schema:
+        specifier: ^3.24.5
+        version: 3.24.5(zod@3.25.7)
 
   packages/ai-api:
     dependencies:
@@ -207,12 +210,6 @@ importers:
       '@sap-cloud-sdk/http-client':
         specifier: ^4.0.2
         version: 4.0.2
-      zod:
-        specifier: ^3.24.3
-        version: 3.25.7
-      zod-to-json-schema:
-        specifier: ^3.24.5
-        version: 3.24.5(zod@3.25.7)
 
   packages/prompt-registry:
     dependencies:

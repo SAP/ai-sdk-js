@@ -558,7 +558,6 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
   return JSON.parse(response.getContent()!) as TranslationResponse;
 }
 
-// Shared utils
 const addNumbersSchema = z
   .object({
     a: z.number().describe('The first number to be added.'),
@@ -634,7 +633,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
 }
 
 /**
- * Ask ChatGPT to do add two numbers with tools.
+ * Ask ChatGPT to add two numbers using tools and stream the response.
  * @param controller - The abort controller.
  * @param streamOptions - The stream options.
  * @returns The response from the orchestration service containing the response content.
@@ -650,19 +649,11 @@ export async function chatCompletionStreamWithTools(
     },
     // define the prompt
     templating: {
-      template: [
-        {
-          role: 'user',
-          content: 'Add the numbers {{?input}}'
-        }
-      ],
       tools: [addNumbersTool]
     }
   });
   return orchestrationClient.stream(
-    {
-      inputParams: { input: '2 and 3, as well as 4 and 5' }
-    },
+    { messages: [{ role: 'user', content: 'Add the numbers 2 and 3, as well as 4 and 5' }] },
     controller,
     streamOptions
   );
