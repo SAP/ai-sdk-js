@@ -120,7 +120,7 @@ export class OrchestrationClient extends BaseChatModel<
   }
 
   /**
-   * Stream response chunks from the OrchestrationClient.
+   * Stream response chunks from the Orchestration client.
    * @param messages - The messages to send to the model.
    * @param options - The call options.
    * @param runManager - The callback manager for the run.

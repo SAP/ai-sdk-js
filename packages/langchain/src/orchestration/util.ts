@@ -258,8 +258,8 @@ export function setTokenUsage(
 }
 
 /**
- * Computes token indices for a chunk of the stream response.
- * @param chunk - A chunk of the stream response.
+ * Computes token indices for a chunk of the orchestration stream response.
+ * @param chunk - A chunk of the orchestration stream response.
  * @returns An object with prompt and completion indices.
  * @internal
  */
