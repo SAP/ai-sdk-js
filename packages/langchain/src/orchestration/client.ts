@@ -85,7 +85,11 @@ export class OrchestrationClient extends BaseChatModel<
     options: typeof this.ParsedCallOptions,
     runManager?: CallbackManagerForLLMRun
   ): Promise<ChatResult> {
-    const res = await this.caller.call(() => {
+    const res = await this.caller.callWithOptions(
+      {
+        signal: options.signal
+      },
+      (() => {
       const { inputParams, customRequestConfig } = options;
       const mergedOrchestrationConfig = this.mergeOrchestrationConfig(options);
       const orchestrationClient = new OrchestrationClientBase(
@@ -102,7 +106,7 @@ export class OrchestrationClient extends BaseChatModel<
         },
         customRequestConfig
       );
-    });
+    }));
 
     const content = res.getContent();
 
