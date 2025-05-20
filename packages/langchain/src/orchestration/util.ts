@@ -230,7 +230,7 @@ export function mapOrchestrationChunkToLangChainMessageChunk(
  */
 export function setFinishReason(
   messageChunk: AIMessageChunk,
-  finishReason: string | undefined
+  finishReason?: string
 ): void {
   if (finishReason) {
     messageChunk.response_metadata.finish_reason = finishReason;
