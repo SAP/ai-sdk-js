@@ -602,7 +602,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
     }
   });
 
-  const response: OrchestrationResponse =
+  const response =
     await orchestrationClient.chatCompletion({
       messages: [
         {
@@ -614,24 +614,23 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
     });
   const allMessages = response.getAllMessages();
   const initialResponse = response.getAssistantMessage();
-
+  let toolMessage: ToolChatMessage;
   // Use the initial response to execute the tool and get the response.
   if (initialResponse && initialResponse.tool_calls) {
     const toolCall = initialResponse.tool_calls[0];
     const args = JSON.parse(toolCall.function.arguments);
-    const message: ToolChatMessage = {
+    toolMessage = {
       role: 'tool',
       content: callFunction(toolCall.function.name, args),
       tool_call_id: toolCall.id
     };
-    allMessages.push(message);
+  } else {
+    throw new Error('No tool call found in the response.');
   }
 
   // Call the model with a new message and the message history
   return orchestrationClient.chatCompletion({
-    messages: [
-      { role: 'user', content: 'What is the corresponding roman numeral?' }
-    ],
+    messages: [toolMessage],
     messagesHistory: allMessages
   });
 }
