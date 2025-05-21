@@ -46,7 +46,6 @@ function mapBaseMessageToChatMessage(message: BaseMessage): ChatMessage {
       return mapSystemMessageToOrchestrationSystemMessage(message);
     case 'tool':
       return mapToolMessageToOrchestrationToolMessage(message as ToolMessage);
-    case 'function':
     default:
       throw new Error(`Unsupported message type: ${message.getType()}`);
   }
