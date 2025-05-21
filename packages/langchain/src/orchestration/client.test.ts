@@ -10,12 +10,12 @@ import {
 } from '../../../../test-util/mock-http.js';
 import { OrchestrationClient } from './client.js';
 import type { ToolCall } from '@langchain/core/messages/tool';
+import type { AIMessageChunk } from '@langchain/core/messages';
 import type { LangchainOrchestrationModuleConfig } from './types.js';
 import type {
   CompletionPostResponse,
   ErrorResponse
 } from '@sap-ai-sdk/orchestration';
-import type { AIMessageChunk } from '@langchain/core/messages';
 
 jest.setTimeout(30000);
 
@@ -56,7 +56,7 @@ describe('orchestration service client', () => {
       delay?: number;
     },
     status: number = 200,
-    isStream: boolean = false
+    isStream?: boolean
   ) {
     mockInference(
       {
@@ -178,6 +178,70 @@ describe('orchestration service client', () => {
     expect(intermediateChunk!.content).toEqual(
       'The SAP Cloud SDK is a comprehensive development toolkit designed to simplify and accelerate the cre'
     );
+  });
+
+  it('streams and aborts with a signal', async () => {
+    mockStreamInferenceWithResilience();
+    const client = new OrchestrationClient(config);
+    const controller = new AbortController();
+    const { signal } = controller;
+    const stream = await client.stream([], { signal });
+    const streamPromise = async () => {
+      for await (const _chunk of stream) {
+        controller.abort();
+      }
+    };
+
+    await expect(streamPromise()).rejects.toThrow();
+  }, 1000);
+
+  it('streaming with callbacks', async () => {
+    mockStreamInferenceWithResilience();
+    let tokenCount = 0;
+    const callbackHandler = {
+      handleLLMNewToken: jest.fn().mockImplementation(() => {
+        tokenCount += 1;
+      })
+    };
+    const client = new OrchestrationClient(config, {
+      callbacks: [callbackHandler]
+    });
+    const stream = await client.stream([]);
+    const chunks = [];
+
+    for await (const chunk of stream) {
+      chunks.push(chunk);
+      break;
+    }
+    expect(callbackHandler.handleLLMNewToken).toHaveBeenCalled();
+    const firstCallArgs = callbackHandler.handleLLMNewToken.mock.calls[0];
+    expect(firstCallArgs).toBeDefined();
+    // First chunk content is empty
+    expect(firstCallArgs[0]).toEqual('');
+    // Second argument should be the token indices
+    expect(firstCallArgs[1]).toEqual({ prompt: 0, completion: 0 });
+    expect(tokenCount).toBeGreaterThan(0);
+    expect(chunks.length).toBeGreaterThan(0);
+  });
+
+  it('supports streaming responses with tool calls', async () => {
+    mockStreamInferenceWithResilience(mockResponseStreamToolCalls);
+
+    const client = new OrchestrationClient(config);
+    const stream = await client.stream([]);
+
+    let finalOutput: AIMessageChunk | undefined;
+    for await (const chunk of stream) {
+      finalOutput = !finalOutput ? chunk : finalOutput.concat(chunk);
+    }
+
+    expect(finalOutput).toBeDefined();
+    expect(finalOutput!.tool_call_chunks).toBeDefined();
+    expect(finalOutput!.tool_calls).toBeDefined();
+
+    const completeToolCall: ToolCall = finalOutput!.tool_calls![0];
+    expect(completeToolCall!.name).toEqual('convert_temperature_to_fahrenheit');
+    expect(completeToolCall!.args).toEqual({ temperature: 20 });
   });
 
   it('streams and aborts with a signal', async () => {
