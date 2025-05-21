@@ -3,8 +3,10 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { DPIStandardEntity } from './dpi-standard-entity.js';
+
 /**
- * Representation of the 'DpiEntityConfig' schema.
+ * Replaces the entity with a randomly generated value appropriate to its type.
  */
-export type DpiEntityConfig = DPIStandardEntity;
+export type DPIMethodFabricatedData = {
+  method: 'fabricated_data';
+};
