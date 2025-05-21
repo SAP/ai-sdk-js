@@ -160,23 +160,22 @@ describe('orchestration service client', () => {
 
     const client = new OrchestrationClient(config);
     const stream = await client.stream([]);
-    let iterations = 0;
-    const maxIterations = 2;
     let intermediateChunk: AIMessageChunk | undefined;
 
     for await (const chunk of stream) {
-      iterations++;
       intermediateChunk = intermediateChunk
         ? intermediateChunk.concat(chunk)
         : chunk;
-      if (iterations >= maxIterations) {
-        break;
-      }
     }
-    expect(intermediateChunk).toBeDefined();
-    expect(intermediateChunk!.content).toBeDefined();
-    expect(intermediateChunk!.content).toEqual(
-      'The SAP Cloud SDK is a comprehensive development toolkit designed to simplify and accelerate the cre'
+    expect(intermediateChunk?.content).toEqual(
+      'The SAP Cloud SDK is a comprehensive development toolkit designed to simplify and accelerate the creation of applications that integrate with SAP solutions, particularly those built on the SAP Business Technology Platform (BTP). It provides developers with libraries, tools, and best practices that streamline the process of connecting to SAP systems, such as S/4HANA and other services available on the SAP Cloud Platform.\n\n' +
+        'Key features of the SAP Cloud SDK include:\n\n' +
+        '1. **Simplified Connectivity**: The SDK offers pre-built libraries to easily interact with SAP services, providing capabilities for authentication, service consumption, and OData/REST client generation.\n\n' +
+        '2. **Multi-cloud Support**: It supports multiple cloud environments, ensuring that applications remain flexible and can be deployed across various cloud providers.\n\n' +
+        '3. **Best Practices and Guidelines**: The SDK includes best practices for development, ensuring high-quality, scalable, and maintainable code.\n\n' +
+        '4. **Project Scaffolding and Code Samples**: Developers can quickly start their projects using provided templates and samples, accelerating the development process and reducing the learning curve.\n\n' +
+        '5. **Extensive Documentation and Community Support**: Ample documentation, tutorials, and an active community help developers overcome challenges and adopt the SDK efficiently.\n\n' +
+        "Overall, the SAP Cloud SDK is an essential tool for developers looking to build cloud-native applications and extensions that seamlessly integrate with SAP's enterprise solutions."
     );
   });
 
@@ -186,75 +185,13 @@ describe('orchestration service client', () => {
     const controller = new AbortController();
     const { signal } = controller;
     const stream = await client.stream([], { signal });
-    const streamPromise = async () => {
+    const streamFunction = async () => {
       for await (const _chunk of stream) {
         controller.abort();
       }
     };
 
-    await expect(streamPromise()).rejects.toThrow();
-  }, 1000);
-
-  it('streaming with callbacks', async () => {
-    mockStreamInferenceWithResilience();
-    let tokenCount = 0;
-    const callbackHandler = {
-      handleLLMNewToken: jest.fn().mockImplementation(() => {
-        tokenCount += 1;
-      })
-    };
-    const client = new OrchestrationClient(config, {
-      callbacks: [callbackHandler]
-    });
-    const stream = await client.stream([]);
-    const chunks = [];
-
-    for await (const chunk of stream) {
-      chunks.push(chunk);
-      break;
-    }
-    expect(callbackHandler.handleLLMNewToken).toHaveBeenCalled();
-    const firstCallArgs = callbackHandler.handleLLMNewToken.mock.calls[0];
-    // First chunk content is empty
-    expect(firstCallArgs[0]).toEqual('');
-    // Second argument should be the token indices
-    expect(firstCallArgs[1]).toEqual({ prompt: 0, completion: 0 });
-    expect(tokenCount).toBeGreaterThan(0);
-  });
-
-  it('supports streaming responses with tool calls', async () => {
-    mockStreamInferenceWithResilience(mockResponseStreamToolCalls);
-
-    const client = new OrchestrationClient(config);
-    const stream = await client.stream([]);
-
-    let finalOutput: AIMessageChunk | undefined;
-    for await (const chunk of stream) {
-      finalOutput = !finalOutput ? chunk : finalOutput.concat(chunk);
-    }
-
-    expect(finalOutput).toBeDefined();
-    expect(finalOutput!.tool_call_chunks).toBeDefined();
-    expect(finalOutput!.tool_calls).toBeDefined();
-
-    const completeToolCall: ToolCall = finalOutput!.tool_calls![0];
-    expect(completeToolCall!.name).toEqual('convert_temperature_to_fahrenheit');
-    expect(completeToolCall!.args).toEqual({ temperature: 20 });
-  });
-
-  it('streams and aborts with a signal', async () => {
-    mockStreamInferenceWithResilience();
-    const client = new OrchestrationClient(config);
-    const controller = new AbortController();
-    const { signal } = controller;
-    const stream = await client.stream([], { signal });
-    const streamPromise = async () => {
-      for await (const _chunk of stream) {
-        controller.abort();
-      }
-    };
-
-    await expect(streamPromise()).rejects.toThrow();
+    await expect(streamFunction()).rejects.toThrow();
   }, 1000);
 
   it('streams with a callback', async () => {
@@ -277,13 +214,11 @@ describe('orchestration service client', () => {
     }
     expect(callbackHandler.handleLLMNewToken).toHaveBeenCalled();
     const firstCallArgs = callbackHandler.handleLLMNewToken.mock.calls[0];
-    expect(firstCallArgs).toBeDefined();
     // First chunk content is empty
     expect(firstCallArgs[0]).toEqual('');
     // Second argument should be the token indices
     expect(firstCallArgs[1]).toEqual({ prompt: 0, completion: 0 });
     expect(tokenCount).toBeGreaterThan(0);
-    expect(chunks.length).toBeGreaterThan(0);
   });
 
   it('supports streaming responses with tool calls', async () => {
@@ -294,15 +229,10 @@ describe('orchestration service client', () => {
 
     let finalOutput: AIMessageChunk | undefined;
     for await (const chunk of stream) {
-      finalOutput = !finalOutput ? chunk : finalOutput.concat(chunk);
+      finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
     }
-
-    expect(finalOutput).toBeDefined();
-    expect(finalOutput!.tool_call_chunks).toBeDefined();
-    expect(finalOutput!.tool_calls).toBeDefined();
-
     const completeToolCall: ToolCall = finalOutput!.tool_calls![0];
-    expect(completeToolCall!.name).toEqual('convert_temperature_to_fahrenheit');
-    expect(completeToolCall!.args).toEqual({ temperature: 20 });
+    expect(completeToolCall?.name).toEqual('convert_temperature_to_fahrenheit');
+    expect(completeToolCall?.args).toEqual({ temperature: 20 });
   });
 });
