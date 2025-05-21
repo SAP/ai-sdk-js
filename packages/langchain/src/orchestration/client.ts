@@ -16,7 +16,8 @@ import type { BaseMessage } from '@langchain/core/messages';
 import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import type {
   OrchestrationCallOptions,
-  LangChainOrchestrationModuleConfig
+  LangChainOrchestrationModuleConfig,
+  ChatOrchestrationToolType
 } from './types.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
@@ -117,6 +118,25 @@ export class OrchestrationClient extends BaseChatModel<
     return mapOutputToChatResult(res.data);
   }
 
+  override bindTools(
+    tools: ChatOrchestrationToolType[],
+    kwargs?: Partial<OrchestrationCallOptions> | undefined
+  ): Runnable<
+    BaseLanguageModelInput,
+    OrchestrationMessageChunk,
+    OrchestrationCallOptions
+  > {
+    let strict: boolean | undefined;
+    if (kwargs?.strict !== undefined) {
+      strict = kwargs.strict;
+    } // TODO: Check if we should add supportsStrictToolCalling here
+    const newTools = tools.map(tool => mapToolToChatCompletionTool(tool, strict));
+    return this.bind({
+      tools: newTools,
+      ...kwargs
+    } as Partial<OrchestrationCallOptions>);
+  }
+
   private mergeOrchestrationConfig(
     options: typeof this.ParsedCallOptions
   ): LangChainOrchestrationModuleConfig {
@@ -140,11 +160,11 @@ export class OrchestrationClient extends BaseChatModel<
         ...(this.orchestrationConfig.templating &&
           isTemplate(this.orchestrationConfig.templating) &&
           tools.length && {
-            tools: [
-              ...(this.orchestrationConfig.templating.tools || []),
-              ...tools.map(t => mapToolToChatCompletionTool(t))
-            ]
-          })
+          tools: [
+            ...(this.orchestrationConfig.templating.tools || []),
+            ...tools.map(t => mapToolToChatCompletionTool(t))
+          ]
+        })
       }
     };
   }

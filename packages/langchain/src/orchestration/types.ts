@@ -29,6 +29,7 @@ export type OrchestrationCallOptions = Pick<
   | 'tags'
 > & {
   customRequestConfig?: CustomRequestConfig;
+  strict?: boolean;
   tools?: ChatOrchestrationToolType[];
   inputParams?: Prompt['inputParams'];
 };
