@@ -8,7 +8,7 @@ import {
   parseMockResponse
 } from '../../../../test-util/mock-http.js';
 import { OrchestrationClient } from './client.js';
-import type { LangchainOrchestrationModuleConfig } from './types.js';
+import type { LangChainOrchestrationModuleConfig } from './types.js';
 import type {
   CompletionPostResponse,
   ErrorResponse
@@ -59,7 +59,7 @@ describe('orchestration service client', () => {
     );
   }
 
-  const config: LangchainOrchestrationModuleConfig = {
+  const config: LangChainOrchestrationModuleConfig = {
     llm: {
       model_name: 'gpt-4o',
       model_params: { max_tokens: 50, temperature: 0.1 }

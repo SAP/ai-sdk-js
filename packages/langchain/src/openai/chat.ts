@@ -1,7 +1,7 @@
 import { AzureOpenAiChatClient as AzureOpenAiChatClientBase } from '@sap-ai-sdk/foundation-models';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import {
-  mapLangchainToAiClient,
+  mapLangChainToAiClient,
   mapOutputToChatResult,
   mapToolToOpenAiTool
 } from './util.js';
@@ -66,7 +66,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
       },
       () =>
         this.openAiChatClient.run(
-          mapLangchainToAiClient(this, messages, options),
+          mapLangChainToAiClient(this, messages, options),
           options.requestConfig
         )
     );

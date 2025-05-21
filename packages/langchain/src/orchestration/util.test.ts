@@ -1,45 +1,48 @@
 import {
   AIMessage,
+  FunctionMessage,
   HumanMessage,
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
 import {
-  mapLangchainMessagesToOrchestrationMessages,
+  mapLangChainMessagesToOrchestrationMessages,
   mapOutputToChatResult
 } from './util.js';
 import type { OrchestrationMessage } from './orchestration-message.js';
 import type {
   CompletionPostResponse,
-  ResponseMessageToolCall
+  MessageToolCall
 } from '@sap-ai-sdk/orchestration';
 
-describe('mapLangchainMessagesToOrchestrationMessages', () => {
+describe('mapLangChainMessagesToOrchestrationMessages', () => {
   it('should map an array of LangChain messages to Orchestration messages', () => {
     const langchainMessages = [
       new SystemMessage('System message content'),
       new HumanMessage('Human message content'),
-      new AIMessage('AI message content')
+      new AIMessage('AI message content'),
+      new ToolMessage('Tool message content', 'tool_call_id')
     ];
 
     const result =
-      mapLangchainMessagesToOrchestrationMessages(langchainMessages);
+      mapLangChainMessagesToOrchestrationMessages(langchainMessages);
 
     expect(result).toEqual([
       { role: 'system', content: 'System message content' },
       { role: 'user', content: 'Human message content' },
-      { role: 'assistant', content: 'AI message content' }
+      { role: 'assistant', content: 'AI message content' },
+      { role: 'tool', content: 'Tool message content', tool_call_id: 'tool_call_id' }
     ]);
   });
 
   it('should throw error for unsupported message types', () => {
     const langchainMessages = [
-      new ToolMessage('Tool message content', 'tool-id')
+      new FunctionMessage('Function message content', 'function_name')
     ];
 
     expect(() =>
-      mapLangchainMessagesToOrchestrationMessages(langchainMessages)
-    ).toThrow('Unsupported message type: tool');
+      mapLangChainMessagesToOrchestrationMessages(langchainMessages)
+    ).toThrow('Unsupported message type: function');
   });
 });
 
@@ -47,8 +50,8 @@ describe('mapBaseMessageToChatMessage', () => {
   it('should map HumanMessage to ChatMessage with user role', () => {
     const humanMessage = new HumanMessage('Human message content');
 
-    // Since mapBaseMessageToChatMessage is internal, we'll test it through mapLangchainMessagesToOrchestrationMessages
-    const result = mapLangchainMessagesToOrchestrationMessages([humanMessage]);
+    // Since mapBaseMessageToChatMessage is internal, we'll test it through mapLangChainMessagesToOrchestrationMessages
+    const result = mapLangChainMessagesToOrchestrationMessages([humanMessage]);
 
     expect(result[0]).toEqual({
       role: 'user',
@@ -59,7 +62,7 @@ describe('mapBaseMessageToChatMessage', () => {
   it('should map SystemMessage to ChatMessage with system role', () => {
     const systemMessage = new SystemMessage('System message content');
 
-    const result = mapLangchainMessagesToOrchestrationMessages([systemMessage]);
+    const result = mapLangChainMessagesToOrchestrationMessages([systemMessage]);
 
     expect(result[0]).toEqual({
       role: 'system',
@@ -70,7 +73,7 @@ describe('mapBaseMessageToChatMessage', () => {
   it('should map AIMessage to ChatMessage with assistant role', () => {
     const aiMessage = new AIMessage('AI message content');
 
-    const result = mapLangchainMessagesToOrchestrationMessages([aiMessage]);
+    const result = mapLangChainMessagesToOrchestrationMessages([aiMessage]);
 
     expect(result[0]).toEqual({
       role: 'assistant',
@@ -78,7 +81,17 @@ describe('mapBaseMessageToChatMessage', () => {
     });
   });
 
-  it('should throw error when mapping SystemMessage with image_url content', () => {
+  it('should map ToolMessage to ChatMessage with tool role', () => {
+    const toolMessage = new ToolMessage('Tool message content', 'tool_call_id');
+    const result = mapLangChainMessagesToOrchestrationMessages([toolMessage]);
+    expect(result[0]).toEqual({
+      role: 'tool',
+      content: 'Tool message content',
+      tool_call_id: 'tool_call_id'
+    });
+  });
+
+  it('should throw error when mapping SystemMessage with unsupported content type like `image_url`', () => {
     const systemMessage = new SystemMessage({
       content: [
         { type: 'text', text: 'System text' },
@@ -90,9 +103,27 @@ describe('mapBaseMessageToChatMessage', () => {
     });
 
     expect(() =>
-      mapLangchainMessagesToOrchestrationMessages([systemMessage])
+      mapLangChainMessagesToOrchestrationMessages([systemMessage])
     ).toThrow(
-      'System messages with image URLs are not supported by the Orchestration Client.'
+      'The content type of system message can only be "text" the Orchestration Client.'
+    );
+  });
+
+  it('should throw error when mapping ToolMessage with unsupported content type like `image_url`', () => {
+    const toolMessage = new ToolMessage({
+      content: [
+        { type: 'text', text: 'System text' },
+        {
+          type: 'image_url',
+          image_url: { url: 'https://example.com/image.jpg' }
+        }
+      ]
+    }, 'tool_call_id');
+
+    expect(() =>
+      mapLangChainMessagesToOrchestrationMessages([toolMessage])
+    ).toThrow(
+      'The content type of tool message can only be "text" the Orchestration Client.'
     );
   });
 });
@@ -150,7 +181,7 @@ describe('mapOutputToChatResult', () => {
   });
 
   it('should map tool_calls correctly', () => {
-    const toolCallData: ResponseMessageToolCall = {
+    const toolCallData: MessageToolCall = {
       id: 'call-123',
       type: 'function',
       function: {

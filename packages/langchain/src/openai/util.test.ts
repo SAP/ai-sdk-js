@@ -11,7 +11,7 @@ import { tool } from '@langchain/core/tools';
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
 import {
   isToolDefinitionLike,
-  mapLangchainToAiClient,
+  mapLangChainToAiClient,
   mapOutputToChatResult,
   mapToolToOpenAiFunction,
   mapToolToOpenAiTool
@@ -100,7 +100,7 @@ describe('Mapping Functions', () => {
       tool_choice: 'auto',
       functions: [{ name: 'random' }, { name: 'test' }]
     };
-    const mapping = mapLangchainToAiClient(client, langchainPrompt, {
+    const mapping = mapLangChainToAiClient(client, langchainPrompt, {
       ...defaultOptions,
       ...options
     });
@@ -117,7 +117,7 @@ describe('Mapping Functions', () => {
     ];
     const client = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
     expect(() =>
-      mapLangchainToAiClient(client, langchainPrompt, defaultOptions)
+      mapLangChainToAiClient(client, langchainPrompt, defaultOptions)
     ).toThrowErrorMatchingInlineSnapshot('"Unsupported message type: remove"');
   });
 

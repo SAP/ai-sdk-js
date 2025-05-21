@@ -13,14 +13,14 @@ import {
   MemorySaver
 } from '@langchain/langgraph';
 import { v4 as uuidv4 } from 'uuid';
-import type { LangchainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
+import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
 
 /**
  * Ask GPT about an introduction to SAP Cloud SDK.
  * @returns The answer from ChatGPT.
  */
 export async function invokeChain(): Promise<string> {
-  const orchestrationConfig: LangchainOrchestrationModuleConfig = {
+  const orchestrationConfig: LangChainOrchestrationModuleConfig = {
     // define the language model to be used
     llm: {
       model_name: 'gpt-4o'
@@ -50,7 +50,7 @@ export async function invokeChain(): Promise<string> {
  * @returns The answer from ChatGPT.
  */
 export async function invokeChainWithInputFilter(): Promise<string> {
-  const orchestrationConfig: LangchainOrchestrationModuleConfig = {
+  const orchestrationConfig: LangChainOrchestrationModuleConfig = {
     // define the language model to be used
     llm: {
       model_name: 'gpt-4o'
@@ -85,7 +85,7 @@ export async function invokeChainWithInputFilter(): Promise<string> {
  * @returns The answer from ChatGPT.
  */
 export async function invokeChainWithOutputFilter(): Promise<string> {
-  const orchestrationConfig: LangchainOrchestrationModuleConfig = {
+  const orchestrationConfig: LangChainOrchestrationModuleConfig = {
     // define the language model to be used
     llm: {
       model_name: 'gpt-4o'
@@ -125,7 +125,7 @@ export async function invokeChainWithOutputFilter(): Promise<string> {
  * @returns The answer from ChatGPT.
  */
 export async function invokeLangGraphChain(): Promise<string> {
-  const orchestrationConfig: LangchainOrchestrationModuleConfig = {
+  const orchestrationConfig: LangChainOrchestrationModuleConfig = {
     // define the language model to be used
     llm: {
       model_name: 'gpt-4o'
@@ -179,7 +179,7 @@ export async function invokeLangGraphChain(): Promise<string> {
  * @returns The answer from ChatGPT.
  */
 export async function invokeChainWithMasking(): Promise<string> {
-  const orchestrationConfig: LangchainOrchestrationModuleConfig = {
+  const orchestrationConfig: LangChainOrchestrationModuleConfig = {
     // define the language model to be used
     llm: {
       model_name: 'gpt-4o'

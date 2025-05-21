@@ -3,7 +3,7 @@ import { loadEnv } from './utils/load-env.js';
 
 loadEnv();
 
-describe('Langchain OpenAI Access', () => {
+describe('LangChain OpenAI Access', () => {
   it('executes a basic invoke', async () => {
     const result = await invoke();
     expect(result).toContain('Paris');

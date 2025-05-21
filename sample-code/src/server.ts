@@ -387,7 +387,7 @@ app.get(
   }
 );
 
-/* Langchain */
+/* LangChain */
 app.get('/langchain/invoke', async (req, res) => {
   try {
     res.header('Content-Type', 'text/plain').send(await invoke());

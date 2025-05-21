@@ -2,7 +2,7 @@ import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { OrchestrationClient as OrchestrationClientBase } from '@sap-ai-sdk/orchestration';
 import {
   isTemplate,
-  mapLangchainMessagesToOrchestrationMessages,
+  mapLangChainMessagesToOrchestrationMessages,
   mapOutputToChatResult
 } from './util.js';
 import type { BaseLanguageModelInput } from '@langchain/core/language_models/base';
@@ -15,7 +15,7 @@ import type { BaseMessage } from '@langchain/core/messages';
 import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import type {
   OrchestrationCallOptions,
-  LangchainOrchestrationModuleConfig
+  LangChainOrchestrationModuleConfig
 } from './types.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
@@ -35,7 +35,7 @@ export class OrchestrationClient extends BaseChatModel<
 > {
   constructor(
     // TODO: Omit streaming until supported
-    public orchestrationConfig: LangchainOrchestrationModuleConfig,
+    public orchestrationConfig: LangChainOrchestrationModuleConfig,
     public langchainOptions: BaseChatModelParams = {},
     public deploymentConfig?: ResourceGroupConfig,
     public destination?: HttpDestinationOrFetchOptions
@@ -95,7 +95,7 @@ export class OrchestrationClient extends BaseChatModel<
           this.destination
         );
         const allMesages =
-          mapLangchainMessagesToOrchestrationMessages(messages);
+          mapLangChainMessagesToOrchestrationMessages(messages);
         return orchestrationClient.chatCompletion(
           {
             messages: allMesages,
@@ -118,7 +118,7 @@ export class OrchestrationClient extends BaseChatModel<
 
   private mergeOrchestrationConfig(
     options: typeof this.ParsedCallOptions
-  ): LangchainOrchestrationModuleConfig {
+  ): LangChainOrchestrationModuleConfig {
     const { tools = [], stop = [] } = options;
     return {
       ...this.orchestrationConfig,
