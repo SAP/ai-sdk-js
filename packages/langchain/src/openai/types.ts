@@ -1,13 +1,15 @@
 import type { BaseLLMParams } from '@langchain/core/language_models/llms';
 import type {
   BaseChatModelCallOptions,
-  BaseChatModelParams
+  BaseChatModelParams,
+  BindToolsInput
 } from '@langchain/core/language_models/chat_models';
 import type {
   AzureOpenAiCreateChatCompletionRequest,
   AzureOpenAiChatModel,
   AzureOpenAiEmbeddingModel,
-  AzureOpenAiChatCompletionsRequestCommon
+  AzureOpenAiChatCompletionsRequestCommon,
+  AzureOpenAiChatCompletionTool
 } from '@sap-ai-sdk/foundation-models';
 import type { CustomRequestConfig } from '@sap-ai-sdk/core';
 import type { ModelConfig, ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
@@ -25,10 +27,22 @@ export type AzureOpenAiChatModelParams = Pick<
   | 'frequency_penalty'
   | 'logit_bias'
   | 'user'
-> &
-  BaseChatModelParams &
+> & {
+  /**
+   * Whether the model supports the `strict` argument when passing in tools.
+   * If `undefined` the `strict` argument will not be passed to OpenAI.
+   */
+  supportsStrictToolCalling?: boolean;
+} & BaseChatModelParams &
   ModelConfig<AzureOpenAiChatModel> &
   ResourceGroupConfig;
+
+/**
+ * Tool type for Azure OpenAI.
+ */
+export type ChatAzureOpenAIToolType =
+  | AzureOpenAiChatCompletionTool
+  | BindToolsInput;
 
 /**
  * Call options for the {@link AzureOpenAiChatClient}.
@@ -45,8 +59,9 @@ export type AzureOpenAiChatCallOptions = BaseChatModelCallOptions &
     | 'tool_choice'
     | 'functions'
     | 'function_call'
-    | 'tools'
   > & {
+    strict?: boolean;
+    tools?: ChatAzureOpenAIToolType[];
     requestConfig?: CustomRequestConfig;
   };
 

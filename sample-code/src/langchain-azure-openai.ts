@@ -15,8 +15,9 @@ import {
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
+import { z } from 'zod';
+import { tool } from '@langchain/core/tools';
 import type { BaseMessage } from '@langchain/core/messages';
-import type { AzureOpenAiChatCompletionTool } from '@sap-ai-sdk/foundation-models';
 
 /**
  * Ask GPT about the capital of France.
@@ -148,39 +149,27 @@ export async function invokeToolChain(): Promise<string> {
     temperature: 0.7
   });
 
-  // create a tool
-  const azureTool: AzureOpenAiChatCompletionTool = {
-    type: 'function',
-    function: {
-      name: 'shareholder_value',
-      description: 'Multiplies the shareholder value',
-      parameters: {
-        type: 'object',
-        properties: {
-          value: {
-            type: 'number',
-            description: 'The value that is supposed to be increased.'
-          }
-        },
-        required: ['value']
-      }
-    }
-  };
-
   // create a function to increase the shareholder value
   function shareholderValueFunction(value: number): string {
     return `The shareholder value has been increased to ${value * 2}`;
   }
 
-  const humanMessage = new HumanMessage(
-    'Increase the shareholder value, it is currently at 10'
-  );
+  // create a tool
+  const azureTool = tool(shareholderValueFunction, {
+    name: 'shareholder_value',
+    description: 'Multiplies the shareholder value',
+    schema: z.object({
+      value: z.number().describe('The value that is supposed to be increased.')
+    })
+  });
 
-  const history: BaseMessage[] = [humanMessage];
+  const messages: BaseMessage[] = [
+    new HumanMessage('Increase the shareholder value, it is currently at 10')
+  ];
 
-  const response = await client.invoke(history, { tools: [azureTool] });
+  const response = await client.bindTools([azureTool]).invoke(messages);
 
-  history.push(response);
+  messages.push(response);
 
   if (response.tool_calls) {
     const shareholderValue = shareholderValueFunction(
@@ -192,13 +181,13 @@ export async function invokeToolChain(): Promise<string> {
       tool_call_id: response.tool_calls[0].id ?? 'default'
     });
 
-    history.push(toolMessage);
+    messages.push(toolMessage);
   } else {
     const failMessage = new SystemMessage('No tool calls were made');
-    history.push(failMessage);
+    messages.push(failMessage);
   }
 
-  const finalResponse = await client.invoke(history);
+  const finalResponse = await client.invoke(messages);
 
   // create an output parser
   const parser = new StringOutputParser();

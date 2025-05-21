@@ -1,6 +1,7 @@
 import { AIMessage } from '@langchain/core/messages';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { v4 as uuidv4 } from 'uuid';
+import { isZodSchema } from '@langchain/core/utils/types';
 import type { ToolCall } from '@langchain/core/messages/tool';
 import type {
   AzureOpenAiChatCompletionRequestUserMessage,
@@ -13,7 +14,8 @@ import type {
   AzureOpenAiChatCompletionMessageToolCalls,
   AzureOpenAiChatCompletionRequestToolMessage,
   AzureOpenAiChatCompletionRequestFunctionMessage,
-  AzureOpenAiChatCompletionRequestSystemMessage
+  AzureOpenAiChatCompletionRequestSystemMessage,
+  AzureOpenAiFunctionObject
 } from '@sap-ai-sdk/foundation-models';
 import type {
   BaseMessage,
@@ -23,43 +25,75 @@ import type {
   ToolMessage
 } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
-import type { StructuredTool } from '@langchain/core/tools';
 import type { AzureOpenAiChatClient } from './chat.js';
-import type { AzureOpenAiChatCallOptions } from './types.js';
+import type {
+  AzureOpenAiChatCallOptions,
+  ChatAzureOpenAIToolType
+} from './types.js';
+import type {
+  FunctionDefinition,
+  ToolDefinition
+} from '@langchain/core/language_models/base';
 
 /**
- * Maps a LangChain {@link StructuredTool} to {@link AzureOpenAiChatCompletionFunctions}.
+ * Maps a {@link ChatAzureOpenAIToolType} to {@link AzureOpenAiFunctionObject}.
  * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
+ * @param strict - Whether to enforce strict mode for the function call.
  * @returns The OpenAI chat completion function.
+ * @internal
  */
-function mapToolToOpenAiFunction(tool: StructuredTool): {
-  description?: string;
-  name: string;
-  parameters: AzureOpenAiFunctionParameters;
-} & Record<string, any> {
+export function mapToolToOpenAiFunction(
+  tool: ChatAzureOpenAIToolType,
+  strict?: boolean
+): AzureOpenAiFunctionObject {
+  if (isToolDefinitionLike(tool)) {
+    return {
+      name: tool.function.name,
+      description: tool.function.description,
+      parameters: tool.function.parameters ?? {
+        type: 'object',
+        properties: {}
+      },
+      ...// If strict defined in kwargs
+      ((strict !== undefined && { strict }) ||
+        // If strict defined in Azure OpenAI function, e.g., set previously when calling `bindTools()`.
+        // Notice that LangChain ToolDeifnition does not have strict property.
+        ('strict' in tool.function &&
+          tool.function.strict !== undefined && {
+            strict: tool.function.strict
+          }))
+    };
+  }
+  // StructuredTool like object
   return {
     name: tool.name,
     description: tool.description,
-    parameters: zodToJsonSchema(tool.schema)
+    parameters: isZodSchema(tool.schema)
+      ? zodToJsonSchema(tool.schema)
+      : tool.schema,
+    ...(strict !== undefined && { strict })
   };
 }
 
 /**
- * Maps a LangChain {@link StructuredTool} to {@link AzureOpenAiChatCompletionTool}.
+ * Maps a LangChain {@link ChatAzureOpenAIToolType} to {@link AzureOpenAiChatCompletionTool}.
  * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
+ * @param strict - Whether to enforce strict mode for the function call.
  * @returns The OpenAI chat completion tool.
+ * @internal
  */
-function mapToolToOpenAiTool(
-  tool: StructuredTool
+export function mapToolToOpenAiTool(
+  tool: ChatAzureOpenAIToolType,
+  strict?: boolean
 ): AzureOpenAiChatCompletionTool {
   return {
     type: 'function',
-    function: mapToolToOpenAiFunction(tool)
+    function: mapToolToOpenAiFunction(tool, strict)
   };
 }
 
 /**
- * Maps {@link AzureOpenAiChatCompletionMessageToolCalls} to LangChain's {@link ToolCall}.
+ * Maps {@link AzureOpenAiChatCompletionMessageToolCalls} to LangChain's {@link ToolCall} array.
  * @param toolCalls - The {@link AzureOpenAiChatCompletionMessageToolCalls} response.
  * @returns The LangChain {@link ToolCall}.
  */
@@ -207,9 +241,9 @@ function mapSystemMessageToAzureOpenAiSystemMessage(
 }
 
 /**
- * Maps {@link BaseMessage} to {@link AzureOpenAiChatMessage}.
+ * Maps {@link BaseMessage} to {@link AzureOpenAiChatCompletionRequestMessage}.
  * @param message - The message to map.
- * @returns The {@link AzureOpenAiChatMessage}.
+ * @returns The {@link AzureOpenAiChatCompletionRequestMessage}.
  */
 // TODO: Add mapping of refusal property, once LangChain base class supports it natively.
 function mapBaseMessageToAzureOpenAiChatMessage(
@@ -229,12 +263,6 @@ function mapBaseMessageToAzureOpenAiChatMessage(
     default:
       throw new Error(`Unsupported message type: ${message.getType()}`);
   }
-}
-
-function isStructuredToolArray(tools?: unknown[]): tools is StructuredTool[] {
-  return !!tools?.every(tool =>
-    Array.isArray((tool as StructuredTool).lc_namespace)
-  );
 }
 
 /**
@@ -267,12 +295,8 @@ export function mapLangchainToAiClient(
     top_logprobs: options?.top_logprobs,
     function_call: options?.function_call,
     stop: options?.stop ?? client.stop,
-    functions: isStructuredToolArray(options?.functions)
-      ? options?.functions.map(mapToolToOpenAiFunction)
-      : options?.functions,
-    tools: isStructuredToolArray(options?.tools)
-      ? options?.tools.map(mapToolToOpenAiTool)
-      : options?.tools,
+    functions: options?.functions?.map(f => mapToolToOpenAiFunction(f)),
+    tools: options?.tools?.map(t => mapToolToOpenAiTool(t)),
     tool_choice: options?.tool_choice
   });
 }
@@ -285,4 +309,27 @@ function removeUndefinedProperties<T extends object>(obj: T): T {
     }
   }
   return result;
+}
+
+type ToolDefinitionLike = Pick<ToolDefinition, 'type'> & {
+  function: Omit<FunctionDefinition, 'parameters'> & {
+    parameters?: AzureOpenAiFunctionParameters;
+  };
+};
+
+/**
+ * @internal
+ */
+export function isToolDefinitionLike(
+  tool: ChatAzureOpenAIToolType
+): tool is ToolDefinitionLike {
+  return (
+    typeof tool === 'object' &&
+    tool !== null &&
+    'type' in tool &&
+    tool.type === 'function' &&
+    'function' in tool &&
+    tool.function !== null &&
+    'name' in tool.function
+  );
 }

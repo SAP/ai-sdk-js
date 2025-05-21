@@ -11,7 +11,6 @@ import {
   chatCompletionStreamWithJsonModuleConfig,
   chatCompletionStream,
   orchestrationResponseFormat,
-  orchestrationToolCalling,
   orchestrationMessageHistoryWithToolCalling,
   orchestrationTranslation
 } from '@sap-ai-sdk/sample-code';
@@ -99,12 +98,6 @@ describe('orchestration', () => {
   });
 
   it('should complete a chat when message history with tool calls is passed', async () => {
-    const toolCallResult = await orchestrationToolCalling();
-    expect(toolCallResult.getFinishReason()).toBe('tool_calls');
-
-    const assistantMessage = toolCallResult.getAssistantMessage();
-    expect(assistantMessage!.tool_calls![0].function.name).toBeDefined();
-
     const chatCompletionResult =
       await orchestrationMessageHistoryWithToolCalling();
     assertContent(chatCompletionResult);

@@ -5,8 +5,17 @@ import {
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
+import { z } from 'zod';
+import { zodToJsonSchema } from 'zod-to-json-schema';
+import { tool } from '@langchain/core/tools';
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
-import { mapLangchainToAiClient, mapOutputToChatResult } from './util.js';
+import {
+  isToolDefinitionLike,
+  mapLangchainToAiClient,
+  mapOutputToChatResult,
+  mapToolToOpenAiFunction,
+  mapToolToOpenAiTool
+} from './util.js';
 import { AzureOpenAiChatClient } from './chat.js';
 import type { BaseMessage } from '@langchain/core/messages';
 import type {
@@ -39,6 +48,18 @@ describe('Mapping Functions', () => {
       new SystemMessage('System Test Content'),
       new AIMessage('AI Test Content')
     ];
+    const addNumbersSchema = z
+      .object({
+        a: z.number().describe('The first number to be added.'),
+        b: z.number().describe('The second number to be added.')
+      })
+      .strict();
+
+    const myTool = tool(({ a, b }) => a + b, {
+      name: 'test',
+      description: 'Add two numbers',
+      schema: addNumbersSchema
+    });
 
     const request: AzureOpenAiCreateChatCompletionRequest = {
       messages: [
@@ -60,13 +81,22 @@ describe('Mapping Functions', () => {
           content: 'AI Test Content'
         }
       ],
-      tools: [{ type: 'function', function: { name: 'test', parameters: {} } }],
+      tools: [
+        {
+          type: 'function',
+          function: {
+            name: 'test',
+            description: 'Add two numbers',
+            parameters: zodToJsonSchema(addNumbersSchema)
+          }
+        }
+      ],
       tool_choice: 'auto',
       functions: [{ name: 'random' }, { name: 'test' }]
     };
     const client = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
     const options: AzureOpenAiChatCallOptions = {
-      tools: [{ type: 'function', function: { name: 'test', parameters: {} } }],
+      tools: [myTool],
       tool_choice: 'auto',
       functions: [{ name: 'random' }, { name: 'test' }]
     };
@@ -89,5 +119,175 @@ describe('Mapping Functions', () => {
     expect(() =>
       mapLangchainToAiClient(client, langchainPrompt, defaultOptions)
     ).toThrowErrorMatchingInlineSnapshot('"Unsupported message type: remove"');
+  });
+
+  describe('isToolDefinitionLike', () => {
+    it('should type guard the correct ToolDefinition', async () => {
+      expect(
+        isToolDefinitionLike({
+          type: 'function',
+          function: {
+            name: 'test',
+            description: 'Some description',
+            parameters: {}
+          }
+        })
+      ).toBe(true);
+    });
+
+    it('should not type guard the incorrect ToolDefinition', async () => {
+      expect(
+        isToolDefinitionLike({
+          name: 'test',
+          description: 'Some description',
+          parameters: {}
+        })
+      ).toBe(false);
+    });
+
+    it('should type guard the correct ToolDefinition with no parameters defined', async () => {
+      expect(
+        isToolDefinitionLike({
+          type: 'function',
+          function: {
+            name: 'test',
+            description: 'Some description'
+          }
+        })
+      ).toBe(true);
+    });
+  });
+
+  describe('mapToolToOpenAiFunction', () => {
+    it('should map a ToolDefinition', async () => {
+      const toolInput = {
+        type: 'function',
+        function: {
+          name: 'test',
+          description: 'Some description',
+          parameters: { type: 'object', properties: {} }
+        }
+      };
+
+      const expectedOutput = {
+        name: 'test',
+        description: 'Some description',
+        parameters: { type: 'object', properties: {} },
+        strict: false
+      };
+      const result = mapToolToOpenAiFunction(toolInput, false);
+      expect(result).toEqual(expectedOutput);
+    });
+
+    it('should allow optional `parameters`', async () => {
+      const toolInput = {
+        type: 'function',
+        function: {
+          name: 'test',
+          description: 'Some description'
+        }
+      };
+
+      const expectedOutput = {
+        name: 'test',
+        description: 'Some description',
+        parameters: { type: 'object', properties: {} }
+      };
+      const result = mapToolToOpenAiFunction(toolInput);
+      expect(result).toEqual(expectedOutput);
+    });
+
+    it('should map a structured tool with JSON schema', async () => {
+      const toolInput = {
+        name: 'test',
+        description: 'Some description',
+        schema: { type: 'object', properties: {} }
+      };
+
+      const expectedOutput = {
+        name: 'test',
+        description: 'Some description',
+        parameters: { type: 'object', properties: {} }
+      };
+      const result = mapToolToOpenAiFunction(toolInput);
+      expect(result).toEqual(expectedOutput);
+    });
+
+    it('should map a structured tool with Zod schema', async () => {
+      const toolInput = {
+        name: 'test',
+        description: 'Some description',
+        schema: z.object({
+          a: z.number().describe('The first number to be added.'),
+          b: z.number().describe('The second number to be added.')
+        })
+      };
+      const expectedOutput = {
+        name: 'test',
+        description: 'Some description',
+        parameters: {
+          type: 'object',
+          $schema: 'http://json-schema.org/draft-07/schema#',
+          additionalProperties: false,
+          properties: {
+            a: {
+              type: 'number',
+              description: 'The first number to be added.'
+            },
+            b: {
+              type: 'number',
+              description: 'The second number to be added.'
+            }
+          },
+          required: ['a', 'b']
+        }
+      };
+      const result = mapToolToOpenAiFunction(toolInput);
+      expect(result).toEqual(expectedOutput);
+    });
+  });
+
+  describe('mapToolToOpenAiTool', () => {
+    it('should map OpenAI tool to itself with strict set if defined', async () => {
+      const toolInput = {
+        type: 'function',
+        function: {
+          name: 'test',
+          description: 'Some description',
+          parameters: { type: 'object', properties: {} }
+        }
+      };
+
+      const expectedOutput = {
+        type: 'function',
+        function: {
+          name: 'test',
+          description: 'Some description',
+          parameters: { type: 'object', properties: {} },
+          strict: false
+        }
+      };
+      const result = mapToolToOpenAiTool(toolInput, false);
+      expect(result).toEqual(expectedOutput);
+    });
+
+    it('should map structured tool to OpenAI tool with strict unset if not defined', async () => {
+      const toolInput = {
+        name: 'test',
+        description: 'Some description',
+        schema: { type: 'object', properties: {} }
+      };
+
+      const expectedOutput = {
+        type: 'function',
+        function: {
+          name: 'test',
+          description: 'Some description',
+          parameters: { type: 'object', properties: {} }
+        }
+      };
+      const result = mapToolToOpenAiTool(toolInput);
+      expect(result).toEqual(expectedOutput);
+    });
   });
 });
