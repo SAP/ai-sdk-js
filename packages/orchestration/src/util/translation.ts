@@ -7,7 +7,7 @@ import type { SAPDocumentTranslation } from '../client/api/schema/index.js';
  * The target language is mandatory, while source language will be auto-detected if not provided.
  * See https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages-6854bbb1bd824ffebc3a097a7c0fd45d for list of supported languages.
  * @returns A `SAPDocumentTranslation` configuration object.
- * @example "buildTranslationConfig({source_language: 'de-DE', target_language: 'en-US'})"
+ * @example "buildTranslationConfig({ sourceLanguage: 'de-DE', targetLanguage: 'en-US' })"
  */
 export function buildTranslationConfig(
   config?: TranslationConfigParams
