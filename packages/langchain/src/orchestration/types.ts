@@ -1,11 +1,18 @@
 import type {
   Prompt,
-  Template,
   TemplatingModuleConfig,
-  OrchestrationModuleConfig as OrchestrationModuleConfigWithStringTemplating
+  OrchestrationModuleConfig as OrchestrationModuleConfigWithStringTemplating,
+  ChatCompletionTool,
 } from '@sap-ai-sdk/orchestration';
-import type { BaseChatModelCallOptions } from '@langchain/core/language_models/chat_models';
+import type { BaseChatModelCallOptions, BindToolsInput } from '@langchain/core/language_models/chat_models';
 import type { CustomRequestConfig } from '@sap-ai-sdk/core';
+
+/**
+ * Tool type for LangChain Orchestration client.
+ */
+export type ChatOrchestrationToolType =
+  | ChatCompletionTool
+  | BindToolsInput;
 
 /**
  * Options for an orchestration call.
@@ -22,7 +29,7 @@ export type OrchestrationCallOptions = Pick<
   | 'tags'
 > & {
   customRequestConfig?: CustomRequestConfig;
-  tools?: Template['tools'];
+  tools?: ChatOrchestrationToolType[];
   inputParams?: Prompt['inputParams'];
 };
 

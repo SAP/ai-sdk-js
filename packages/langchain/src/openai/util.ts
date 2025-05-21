@@ -330,6 +330,8 @@ export function isToolDefinitionLike(
     tool.type === 'function' &&
     'function' in tool &&
     tool.function !== null &&
-    'name' in tool.function
+    'name' in tool.function &&
+    typeof tool.function.name === 'string' &&
+    tool.function.name !== null
   );
 }

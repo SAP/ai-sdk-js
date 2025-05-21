@@ -38,7 +38,7 @@ export type AzureOpenAiChatModelParams = Pick<
   ResourceGroupConfig;
 
 /**
- * Tool type for Azure OpenAI.
+ * Tool type for LangChain Azure OpenAI client.
  */
 export type ChatAzureOpenAIToolType =
   | AzureOpenAiChatCompletionTool

@@ -1,16 +1,23 @@
 import { AIMessage } from '@langchain/core/messages';
 import { v4 as uuidv4 } from 'uuid';
+import { isZodSchema } from '@langchain/core/utils/types';
+import { zodToJsonSchema } from 'zod-to-json-schema';
+import type { FunctionDefinition, ToolDefinition } from '@langchain/core/language_models/base';
+import type { ChatOrchestrationToolType } from './types.js';
 import type { ChatResult } from '@langchain/core/outputs';
 import type {
   AssistantChatMessage,
+  ChatCompletionTool,
   ChatMessage,
   ChatMessageContent,
   CompletionPostResponse,
+  FunctionObject,
+  FunctionParameters,
   MessageToolCalls,
   SystemChatMessage,
   Template,
   ToolChatMessage,
-  UserChatMessage
+  UserChatMessage,
 } from '@sap-ai-sdk/orchestration';
 import type { ToolCall } from '@langchain/core/messages/tool';
 import type {
@@ -20,6 +27,62 @@ import type {
   ToolMessage
 } from '@langchain/core/messages';
 
+/**
+ * Maps a {@link ChatOrchestrationToolType} to {@link FunctionObject}.
+ * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
+ * @param strict - Whether to enforce strict mode for the function call.
+ * @returns The Orchestration chat completion function.
+ * @internal
+ */
+export function mapToolToOrchestrationFunction(
+  tool: ChatOrchestrationToolType,
+  strict?: boolean
+): FunctionObject {
+  if (isToolDefinitionLike(tool)) {
+    return {
+      name: tool.function.name,
+      description: tool.function.description,
+      parameters: tool.function.parameters ?? {
+        type: 'object',
+        properties: {}
+      },
+      ...// If strict defined in kwargs
+      ((strict !== undefined && { strict }) ||
+        // If strict defined in Azure OpenAI function, e.g., set previously when calling `bindTools()`.
+        // Notice that LangChain ToolDeifnition does not have strict property.
+        ('strict' in tool.function &&
+          tool.function.strict !== undefined && {
+            strict: tool.function.strict
+          }))
+    };
+  }
+  // StructuredTool like object
+  return {
+    name: tool.name,
+    description: tool.description,
+    parameters: isZodSchema(tool.schema)
+      ? zodToJsonSchema(tool.schema)
+      : tool.schema,
+    ...(strict !== undefined && { strict })
+  };
+}
+
+/**
+ * Maps a LangChain {@link ChatOrchestrationToolType} to {@link ChatCompletionTool}.
+ * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
+ * @param strict - Whether to enforce strict mode for the function call.
+ * @returns The Orchestration chat completion tool.
+ * @internal
+ */
+export function mapToolToChatCompletionTool(
+  tool: ChatOrchestrationToolType,
+  strict?: boolean
+): ChatCompletionTool {
+  return {
+    type: 'function',
+    function: mapToolToOrchestrationFunction(tool, strict)
+  };
+}
 /**
  * Checks if the object is a {@link Template}.
  * @param object - The object to check.
@@ -211,4 +274,29 @@ export function mapOutputToChatResult(
       }
     }
   };
+}
+
+type ToolDefinitionLike = Pick<ToolDefinition, 'type'> & {
+  function: Omit<FunctionDefinition, 'parameters'> & {
+    parameters?: FunctionParameters;
+  };
+};
+
+/**
+ * @internal
+ */
+export function isToolDefinitionLike(
+  tool: ChatOrchestrationToolType
+): tool is ToolDefinitionLike {
+  return (
+    typeof tool === 'object' &&
+    tool !== null &&
+    'type' in tool &&
+    tool.type === 'function' &&
+    'function' in tool &&
+    tool.function !== null &&
+    'name' in tool.function &&
+    typeof tool.function.name === 'string' &&
+    tool.function.name !== null
+  );
 }

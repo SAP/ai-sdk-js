@@ -3,7 +3,8 @@ import { OrchestrationClient as OrchestrationClientBase } from '@sap-ai-sdk/orch
 import {
   isTemplate,
   mapLangChainMessagesToOrchestrationMessages,
-  mapOutputToChatResult
+  mapOutputToChatResult,
+  mapToolToChatCompletionTool
 } from './util.js';
 import type { BaseLanguageModelInput } from '@langchain/core/language_models/base';
 import type { Runnable, RunnableLike } from '@langchain/core/runnables';
@@ -141,7 +142,7 @@ export class OrchestrationClient extends BaseChatModel<
           tools.length && {
             tools: [
               ...(this.orchestrationConfig.templating.tools || []),
-              ...tools
+              ...tools.map(t => mapToolToChatCompletionTool(t))
             ]
           })
       }

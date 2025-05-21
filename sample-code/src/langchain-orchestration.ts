@@ -14,6 +14,9 @@ import {
 } from '@langchain/langgraph';
 import { v4 as uuidv4 } from 'uuid';
 import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
+import { tool } from '@langchain/core/tools';
+import { BaseMessage, HumanMessage } from '@langchain/core/messages';
+import z from 'zod';
 
 /**
  * Ask GPT about an introduction to SAP Cloud SDK.
@@ -242,4 +245,71 @@ export async function invokeChainWithMasking(): Promise<string> {
           '- Recommended innovative alternatives to generate revenue and reduce unnecessary costs. \n'
       }
     });
+}
+
+/**
+ * Let GPT increase the shareholder value.
+ * @returns The answer from GPT.
+ */
+export async function invokeToolChain(): Promise<string> {
+  // initialize client with options
+  const client = new OrchestrationClient({
+    llm: {
+      model_name: 'gpt-4o'
+    },
+    templating: {
+      template: [
+        {
+          role: 'user',
+          content: 'Increase the shareholder value, it is currently at {{?value}}'
+        }
+      ]
+    }
+  });
+
+  // create a function to increase the shareholder value
+  function shareholderValueFunction(value: number): string {
+    return `The shareholder value has been increased to ${value * 2}`;
+  }
+
+  // create a tool
+  const myTool = tool(shareholderValueFunction, {
+    name: 'shareholder_value',
+    description: 'Multiplies the shareholder value',
+    schema: z.object({
+      value: z.number().describe('The value that is supposed to be increased.')
+    })
+  });
+
+  const messages: BaseMessage[] = [
+    new HumanMessage('Increase the shareholder value, it is currently at 10')
+  ];
+
+  const response = await client.invoke(messages, { tools: [myTool] });
+
+  messages.push(response);
+
+  if (response.tool_calls) {
+    const shareholderValue = shareholderValueFunction(
+      response.tool_calls[0].args.value
+    );
+
+    const toolMessage = new ToolMessage({
+      content: shareholderValue,
+      tool_call_id: response.tool_calls[0].id ?? 'default'
+    });
+
+    messages.push(toolMessage);
+  } else {
+    const failMessage = new SystemMessage('No tool calls were made');
+    messages.push(failMessage);
+  }
+
+  const finalResponse = await client.invoke(messages);
+
+  // create an output parser
+  const parser = new StringOutputParser();
+
+  // parse the response
+  return parser.invoke(finalResponse);
 }
