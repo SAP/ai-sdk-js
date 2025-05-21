@@ -320,12 +320,6 @@ importers:
       dotenv:
         specifier: ^16.5.0
         version: 16.5.0
-      zod:
-        specifier: ^3.25.7
-        version: 3.25.7
-      zod-to-json-schema:
-        specifier: ^3.24.5
-        version: 3.24.5(zod@3.25.7)
 
   tests/schema-tests: {}
 
@@ -5013,9 +5007,6 @@ packages:
   zod@3.25.17:
     resolution: {integrity: sha512-8hQzQ/kMOIFbwOgPrm9Sf9rtFHpFUMy4HvN0yEB0spw14aYi0uT5xG5CE2DB9cd51GWNsz+DNO7se1kztHMKnw==}
 
-  zod@3.25.7:
-    resolution: {integrity: sha512-YGdT1cVRmKkOg6Sq7vY7IkxdphySKnXhaUmFI4r4FcuFVNgpCb9tZfNwXbT6BPjD5oz0nubFsoo9pIqKrDcCvg==}
-
 snapshots:
 
   '@ampproject/remapping@2.3.0':
@@ -6144,7 +6135,7 @@ snapshots:
       eslint: 9.27.0
       eslint-config-prettier: 10.1.1(eslint@9.27.0)
       eslint-import-resolver-typescript: 4.2.2(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.27.0)(typescript@5.8.3))(eslint@9.27.0))(eslint@9.27.0)
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.27.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.2.2)(eslint@9.27.0)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.27.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.2.2(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.27.0)(typescript@5.8.3))(eslint@9.27.0))(eslint@9.27.0))(eslint@9.27.0)
       eslint-plugin-jsdoc: 50.6.9(eslint@9.27.0)
       eslint-plugin-prettier: 5.2.4(eslint-config-prettier@10.1.1(eslint@9.27.0))(eslint@9.27.0)(prettier@3.5.3)
       eslint-plugin-regex: 1.10.0(eslint@9.27.0)
@@ -7578,7 +7569,7 @@ snapshots:
       stable-hash: 0.0.5
       tinyglobby: 0.2.12
     optionalDependencies:
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.27.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.2.2)(eslint@9.27.0)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.27.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.2.2(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.27.0)(typescript@5.8.3))(eslint@9.27.0))(eslint@9.27.0))(eslint@9.27.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -7593,7 +7584,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.27.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.2.2)(eslint@9.27.0):
+  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.27.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.2.2(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@9.27.0)(typescript@5.8.3))(eslint@9.27.0))(eslint@9.27.0))(eslint@9.27.0):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.8
@@ -10692,10 +10683,4 @@ snapshots:
     dependencies:
       zod: 3.25.17
 
-  zod-to-json-schema@3.24.5(zod@3.25.7):
-    dependencies:
-      zod: 3.25.7
-
   zod@3.25.17: {}
-
-  zod@3.25.7: {}
