@@ -24,7 +24,7 @@ describe('orchestration service client', () => {
   let mockResponseInputFilterError: ErrorResponse;
   let mockResponseStream: string;
   let mockResponseStreamToolCalls: string;
-  beforeEach(async () => {
+  beforeAll(async () => {
     mockClientCredentialsGrantCall();
     mockDeploymentsList({ scenarioId: 'orchestration' }, { id: '1234' });
     mockResponse = await parseMockResponse<CompletionPostResponse>(
@@ -166,9 +166,9 @@ describe('orchestration service client', () => {
 
     for await (const chunk of stream) {
       iterations++;
-      intermediateChunk = !intermediateChunk
-        ? chunk
-        : intermediateChunk.concat(chunk);
+      intermediateChunk = intermediateChunk
+        ? intermediateChunk.concat(chunk)
+        : chunk;
       if (iterations >= maxIterations) {
         break;
       }
