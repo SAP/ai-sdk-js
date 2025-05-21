@@ -134,15 +134,15 @@ export function constructCompletionPostRequest(
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
   // Templating is not a string here as it is already parsed in `parseAndMergeTemplating` method
-  const templatingConfig = config.templating as TemplatingModuleConfig;
+  const templatingConfig = { ...(config.templating as TemplatingModuleConfig) };
 
   if (isTemplate(templatingConfig)) {
-    if (!templatingConfig.template.length && !prompt?.messages?.length) {
+    if (!templatingConfig.template?.length && !prompt?.messages?.length) {
       throw new Error('Either a prompt template or messages must be defined.');
     }
     if (prompt?.messages?.length) {
       templatingConfig.template = [
-        ...templatingConfig.template,
+        ...(templatingConfig.template || []),
         ...prompt.messages
       ];
     }
@@ -200,6 +200,8 @@ function isTemplate(
   templating: TemplatingModuleConfig
 ): templating is Template {
   return (
-    templating && typeof templating === 'object' && 'template' in templating
+    templating &&
+    typeof templating === 'object' &&
+    !('template_ref' in templating)
   );
 }

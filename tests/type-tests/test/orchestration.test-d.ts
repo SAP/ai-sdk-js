@@ -254,6 +254,18 @@ expectError<any>(new OrchestrationClient({}).chatCompletion());
 expectError<any>(
   new OrchestrationClient({
     templating: {
+      template: [{ role: 'user', content: 'Hello!' }],
+      template_ref: { id: 'template_id' }
+    },
+    llm: {
+      model_name: 'gpt-4o'
+    }
+  }).chatCompletion()
+);
+
+expectError<any>(
+  new OrchestrationClient({
+    templating: {
       template: [{ role: 'user', content: 'Hello!' }]
     },
     llm: {
