@@ -137,12 +137,12 @@ export function constructCompletionPostRequest(
   const templatingConfig = config.templating as TemplatingModuleConfig;
 
   if (isTemplate(templatingConfig)) {
-    if (!templatingConfig.template.length && !prompt?.messages?.length) {
+    if (!templatingConfig.template?.length && !prompt?.messages?.length) {
       throw new Error('Either a prompt template or messages must be defined.');
     }
     if (prompt?.messages?.length) {
       templatingConfig.template = [
-        ...templatingConfig.template,
+        ...(templatingConfig.template || []),
         ...prompt.messages
       ];
     }
