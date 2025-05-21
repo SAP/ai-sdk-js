@@ -53,7 +53,7 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
     stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
     response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   ): AsyncGenerator<OrchestrationStreamChunkResponse> {
-    if(!response) {
+    if (!response) {
       throw new Error('Response is required to process tool calls.');
     }
     for await (const chunk of stream) {
@@ -72,15 +72,10 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
           }
           toolCallsChunks.map(toolCallChunk => {
             const toolCallId = toolCallChunk.index;
-            let toolCallAccumulator = toolCallAccumulators.get(toolCallId);
-            if (!toolCallAccumulator) {
-              toolCallAccumulator = mergeToolCallChunk(toolCallChunk);
-            } else {
-              toolCallAccumulator = mergeToolCallChunk(
-                toolCallChunk,
-                toolCallAccumulator
-              );
-            }
+            const toolCallAccumulator = mergeToolCallChunk(
+              toolCallChunk,
+              toolCallAccumulators.get(toolCallId)
+            );
             toolCallAccumulators.set(toolCallId, toolCallAccumulator);
           });
         }
@@ -96,7 +91,7 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
     stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
     response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   ): AsyncGenerator<OrchestrationStreamChunkResponse> {
-    if(!response) {
+    if (!response) {
       throw new Error('Response is required to process finish reasons.');
     }
     for await (const chunk of stream) {
@@ -139,7 +134,7 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
     stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
     response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   ): AsyncGenerator<OrchestrationStreamChunkResponse> {
-    if(!response) {
+    if (!response) {
       throw new Error('Response is required to process token usage.');
     }
     for await (const chunk of stream) {
