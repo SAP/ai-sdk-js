@@ -200,6 +200,8 @@ function isTemplate(
   templating: TemplatingModuleConfig
 ): templating is Template {
   return (
-    templating && typeof templating === 'object' && 'template' in templating
+    templating &&
+    typeof templating === 'object' &&
+    !('template_ref' in templating)
   );
 }
