@@ -257,7 +257,7 @@ describe('orchestration service client', () => {
     await expect(streamPromise()).rejects.toThrow();
   }, 1000);
 
-  it('streaming with callbacks', async () => {
+  it('streams with a callback', async () => {
     mockStreamInferenceWithResilience();
     let tokenCount = 0;
     const callbackHandler = {
