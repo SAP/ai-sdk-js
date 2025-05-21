@@ -76,9 +76,7 @@ export class OrchestrationStreamResponse<T> {
         if (isMessageToolCall(acc)) {
           toolCalls.push(acc);
         } else {
-          throw new Error(
-            `Tool call with id ${id} was incomplete.`
-          );
+          throw new Error(`Tool call with id ${id} was incomplete.`);
         }
       }
       return toolCalls;
