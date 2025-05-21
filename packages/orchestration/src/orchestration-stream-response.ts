@@ -15,8 +15,10 @@ export class OrchestrationStreamResponse<T> {
    * Finish reasons for all choices.
    */
   private _finishReasons: Map<number, string> = new Map();
-  private _toolCallsAccumulators: Map<number, Map<number, ToolCallAccumulator>> =
-    new Map();
+  private _toolCallsAccumulators: Map<
+    number,
+    Map<number, ToolCallAccumulator>
+  > = new Map();
   private _stream: OrchestrationStream<T> | undefined;
 
   public getTokenUsage(): TokenUsage | undefined {
@@ -50,7 +52,8 @@ export class OrchestrationStreamResponse<T> {
 
   public getToolCalls(choiceIndex = 0): MessageToolCalls | undefined {
     try {
-      const toolCallsAccumulators = this._toolCallsAccumulators.get(choiceIndex);
+      const toolCallsAccumulators =
+        this._toolCallsAccumulators.get(choiceIndex);
       if (!toolCallsAccumulators) {
         throw new Error(`No tool calls found for choice index ${choiceIndex}`);
       }
@@ -60,9 +63,7 @@ export class OrchestrationStreamResponse<T> {
           toolCalls.push(acc);
         } else {
           throw new Error(
-            `Tool call was incomplete for id ${id}: ${JSON.stringify(
-              acc
-            )}`
+            `Tool call was incomplete for id ${id}: ${JSON.stringify(acc)}`
           );
         }
       }
@@ -79,7 +80,7 @@ export class OrchestrationStreamResponse<T> {
    */
   _getToolCallsAccumulators(): Map<number, Map<number, ToolCallAccumulator>> {
     return this._toolCallsAccumulators;
-  };
+  }
 
   get stream(): OrchestrationStream<T> {
     if (!this._stream) {

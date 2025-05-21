@@ -8,7 +8,10 @@ import {
   parseFileToString,
   parseMockResponse
 } from '../../../test-util/mock-http.js';
-import { addNumbersTool, multiplyNumbersTool } from '../../../test-util/tools.js';
+import {
+  addNumbersTool,
+  multiplyNumbersTool
+} from '../../../test-util/tools.js';
 import { OrchestrationClient } from './orchestration-client.js';
 import { OrchestrationResponse } from './orchestration-response.js';
 import {

@@ -2,9 +2,7 @@ import { createLogger } from '@sap-cloud-sdk/util';
 import { SseStream } from '@sap-ai-sdk/core';
 import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 import { mergeToolCallChunk, type ToolCallAccumulator } from './internal.js';
-import type {
-  CompletionPostResponseStreaming
-} from './client/api/schema/index.js';
+import type { CompletionPostResponseStreaming } from './client/api/schema/index.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 
@@ -77,7 +75,10 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
                 if (!toolCallAccumulator) {
                   toolCallAccumulator = mergeToolCallChunk(toolCallChunk);
                 } else {
-                  toolCallAccumulator = mergeToolCallChunk(toolCallChunk, toolCallAccumulator);
+                  toolCallAccumulator = mergeToolCallChunk(
+                    toolCallChunk,
+                    toolCallAccumulator
+                  );
                 }
                 toolCallAccumulators.set(toolCallId, toolCallAccumulator);
               });

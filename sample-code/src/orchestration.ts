@@ -653,7 +653,11 @@ export async function chatCompletionStreamWithTools(
     }
   });
   return orchestrationClient.stream(
-    { messages: [{ role: 'user', content: 'Add the numbers 2 and 3, as well as 4 and 5' }] },
+    {
+      messages: [
+        { role: 'user', content: 'Add the numbers 2 and 3, as well as 4 and 5' }
+      ]
+    },
     controller,
     streamOptions
   );
