@@ -59,7 +59,7 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
     for await (const chunk of stream) {
       chunk.data.orchestration_result?.choices.forEach(choice => {
         const choiceIndex = choice.index;
-        const toolCallsChunks = chunk.getToolCalls(choiceIndex);
+        const toolCallsChunks = chunk.getDeltaToolCalls(choiceIndex);
         if (toolCallsChunks) {
           let toolCallAccumulators = response
             ._getToolCallsAccumulators()

@@ -30,7 +30,12 @@ export class OrchestrationStreamChunkResponse {
     return this.getChoices()?.find(c => c.index === choiceIndex)?.finish_reason;
   }
 
-  getToolCalls(choiceIndex = 0): ToolCallChunk[] | undefined {
+  /**
+   * Gets the delta tool calls for a specific choice index.
+   * @param choiceIndex - The index of the choice to parse.
+   * @returns The delta tool calls for the specified choice index.
+   */
+  getDeltaToolCalls(choiceIndex = 0): ToolCallChunk[] | undefined {
     return this.getChoices()?.find(c => c.index === choiceIndex)?.delta
       .tool_calls;
   }

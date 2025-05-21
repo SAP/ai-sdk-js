@@ -21,6 +21,10 @@ export class OrchestrationStreamResponse<T> {
   > = new Map();
   private _stream: OrchestrationStream<T> | undefined;
 
+  /**
+   * Gets the token usage for the response.
+   * @returns The token usage for the response.
+   */
   public getTokenUsage(): TokenUsage | undefined {
     return this._usage;
   }
@@ -32,6 +36,11 @@ export class OrchestrationStreamResponse<T> {
     this._usage = usage;
   }
 
+  /**
+   * Gets the finish reason for a specific choice index.
+   * @param choiceIndex - The index of the choice to get the finish reason for.
+   * @returns The finish reason for the specified choice index.
+   */
   public getFinishReason(choiceIndex = 0): string | undefined {
     return this._finishReasons.get(choiceIndex);
   }
@@ -50,12 +59,17 @@ export class OrchestrationStreamResponse<T> {
     this._finishReasons = finishReasons;
   }
 
+  /**
+   * Gets the tool calls for a specific choice index.
+   * @param choiceIndex - The index of the choice to get the tool calls for.
+   * @returns The tool calls for the specified choice index.
+   */
   public getToolCalls(choiceIndex = 0): MessageToolCalls | undefined {
     try {
       const toolCallsAccumulators =
         this._toolCallsAccumulators.get(choiceIndex);
       if (!toolCallsAccumulators) {
-        throw new Error(`No tool calls found for choice index ${choiceIndex}`);
+        return undefined;
       }
       const toolCalls: MessageToolCalls = [];
       for (const [id, acc] of toolCallsAccumulators.entries()) {
@@ -63,7 +77,7 @@ export class OrchestrationStreamResponse<T> {
           toolCalls.push(acc);
         } else {
           throw new Error(
-            `Tool call was incomplete for id ${id}: ${JSON.stringify(acc)}`
+            `Tool call with id ${id} was incomplete.`
           );
         }
       }
