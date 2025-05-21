@@ -53,37 +53,36 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
     stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
     response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   ): AsyncGenerator<OrchestrationStreamChunkResponse> {
+    if(!response) {
+      throw new Error('Response is required to process tool calls.');
+    }
     for await (const chunk of stream) {
       chunk.data.orchestration_result?.choices.forEach(choice => {
         const choiceIndex = choice.index;
-        if (choiceIndex >= 0) {
-          const toolCallsChunks = chunk.getToolCalls(choiceIndex);
-          if (toolCallsChunks) {
-            if (response) {
-              let toolCallAccumulators = response
-                ._getToolCallsAccumulators()
-                .get(choiceIndex);
-              if (!toolCallAccumulators) {
-                toolCallAccumulators = new Map<number, ToolCallAccumulator>();
-                response
-                  ._getToolCallsAccumulators()
-                  .set(choiceIndex, toolCallAccumulators);
-              }
-              toolCallsChunks.map(toolCallChunk => {
-                const toolCallId = toolCallChunk.index;
-                let toolCallAccumulator = toolCallAccumulators.get(toolCallId);
-                if (!toolCallAccumulator) {
-                  toolCallAccumulator = mergeToolCallChunk(toolCallChunk);
-                } else {
-                  toolCallAccumulator = mergeToolCallChunk(
-                    toolCallChunk,
-                    toolCallAccumulator
-                  );
-                }
-                toolCallAccumulators.set(toolCallId, toolCallAccumulator);
-              });
-            }
+        const toolCallsChunks = chunk.getToolCalls(choiceIndex);
+        if (toolCallsChunks) {
+          let toolCallAccumulators = response
+            ._getToolCallsAccumulators()
+            .get(choiceIndex);
+          if (!toolCallAccumulators) {
+            toolCallAccumulators = new Map<number, ToolCallAccumulator>();
+            response
+              ._getToolCallsAccumulators()
+              .set(choiceIndex, toolCallAccumulators);
           }
+          toolCallsChunks.map(toolCallChunk => {
+            const toolCallId = toolCallChunk.index;
+            let toolCallAccumulator = toolCallAccumulators.get(toolCallId);
+            if (!toolCallAccumulator) {
+              toolCallAccumulator = mergeToolCallChunk(toolCallChunk);
+            } else {
+              toolCallAccumulator = mergeToolCallChunk(
+                toolCallChunk,
+                toolCallAccumulator
+              );
+            }
+            toolCallAccumulators.set(toolCallId, toolCallAccumulator);
+          });
         }
       });
       yield chunk;
@@ -97,36 +96,35 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
     stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
     response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   ): AsyncGenerator<OrchestrationStreamChunkResponse> {
+    if(!response) {
+      throw new Error('Response is required to process finish reasons.');
+    }
     for await (const chunk of stream) {
       chunk.data.orchestration_result?.choices.forEach(choice => {
         const choiceIndex = choice.index;
-        if (choiceIndex >= 0) {
-          const finishReason = chunk.getFinishReason(choiceIndex);
-          if (finishReason) {
-            if (response) {
-              response._getFinishReasons().set(choiceIndex, finishReason);
-            }
-            switch (finishReason) {
-              case 'content_filter':
-                logger.error(
-                  `Choice ${choiceIndex}: Stream finished with content filter hit.`
-                );
-                break;
-              case 'length':
-                logger.error(
-                  `Choice ${choiceIndex}: Stream finished with token length exceeded.`
-                );
-                break;
-              case 'stop':
-              case 'tool_calls':
-              case 'function_call':
-                logger.debug(`Choice ${choiceIndex}: Stream finished.`);
-                break;
-              default:
-                logger.error(
-                  `Choice ${choiceIndex}: Stream finished with unknown reason '${finishReason}'.`
-                );
-            }
+        const finishReason = chunk.getFinishReason(choiceIndex);
+        if (finishReason) {
+          response._getFinishReasons().set(choiceIndex, finishReason);
+          switch (finishReason) {
+            case 'content_filter':
+              logger.error(
+                `Choice ${choiceIndex}: Stream finished with content filter hit.`
+              );
+              break;
+            case 'length':
+              logger.error(
+                `Choice ${choiceIndex}: Stream finished with token length exceeded.`
+              );
+              break;
+            case 'stop':
+            case 'tool_calls':
+            case 'function_call':
+              logger.debug(`Choice ${choiceIndex}: Stream finished.`);
+              break;
+            default:
+              logger.error(
+                `Choice ${choiceIndex}: Stream finished with unknown reason '${finishReason}'.`
+              );
           }
         }
       });
@@ -141,12 +139,13 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
     stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
     response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   ): AsyncGenerator<OrchestrationStreamChunkResponse> {
+    if(!response) {
+      throw new Error('Response is required to process token usage.');
+    }
     for await (const chunk of stream) {
       const usage = chunk.getTokenUsage();
       if (usage) {
-        if (response) {
-          response._setTokenUsage(usage);
-        }
+        response._setTokenUsage(usage);
         logger.debug(`Token usage: ${JSON.stringify(usage)}`);
       }
       yield chunk;
