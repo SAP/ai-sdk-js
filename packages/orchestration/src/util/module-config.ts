@@ -134,7 +134,7 @@ export function constructCompletionPostRequest(
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
   // Templating is not a string here as it is already parsed in `parseAndMergeTemplating` method
-  const templatingConfig = config.templating as TemplatingModuleConfig;
+  const templatingConfig = {...config.templating as TemplatingModuleConfig};
 
   if (isTemplate(templatingConfig)) {
     if (!templatingConfig.template?.length && !prompt?.messages?.length) {
