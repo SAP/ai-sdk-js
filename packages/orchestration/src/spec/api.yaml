@@ -76,7 +76,6 @@ components:
         $ref: '#/components/schemas/ChatMessage'
 
     ChatMessage:
-      type: object
       oneOf:
         - $ref: '#/components/schemas/SystemChatMessage'
         - $ref: '#/components/schemas/UserChatMessage'
@@ -1043,15 +1042,51 @@ components:
               description: controls whether the input to the grounding module will be masked with the configuration supplied in the masking module
 
     DPIEntityConfig:
+      oneOf:
+        - $ref: '#/components/schemas/DPIStandardEntity'
+
+    DPIStandardEntity:
       type: object
       required:
         - type
       additionalProperties: false
       properties:
         type:
-          description: Type of entity to be masked
-          allOf:
-            - $ref: '#/components/schemas/DPIEntities'
+          $ref: '#/components/schemas/DPIEntities'
+        replacement_strategy:
+          description: Replacement strategy to be used for the entity
+          oneOf:
+            - $ref: '#/components/schemas/DPIMethodConstant'
+            - $ref: '#/components/schemas/DPIMethodFabricatedData'
+
+    DPIMethodConstant:
+      description: Replaces the entity with the specified value followed by an incrementing number
+      type: object
+      required:
+        - method
+        - value
+      additionalProperties: false
+      properties:
+        method:
+          type: string
+          enum:
+            - constant
+        value:
+          description: Value to be used for replacement
+          example: NAME_REDACTED
+          type: string
+
+    DPIMethodFabricatedData:
+      description: Replaces the entity with a randomly generated value appropriate to its type.
+      type: object
+      required:
+        - method
+      additionalProperties: false
+      properties:
+        method:
+          type: string
+          enum:
+            - fabricated_data
 
     DPIEntities:
       description: Default entities supported by data privacy and integration service
