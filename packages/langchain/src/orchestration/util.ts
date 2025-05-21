@@ -272,7 +272,7 @@ export function computeTokenIndices(chunk: OrchestrationStreamChunkResponse): {
     // Indicates the token is part of the first prompt
     prompt: 0,
     // Hardcoding to 0 as mutiple choices are not currently supported in the orchestration service.
-    // Switch to `chunk.data.orchestration_result.choices[0].index` when support is added.
+    // TODO: Switch to `chunk.data.orchestration_result.choices[0].index` when support is added via https://github.com/SAP/ai-sdk-js-backlog/issues/321
     completion: 0
   };
 }
