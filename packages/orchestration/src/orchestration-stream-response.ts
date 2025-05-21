@@ -1,8 +1,8 @@
-import { mergeToolCallChunks } from './internal.js';
+import { isMessageToolCall } from './internal.js';
+import type { ToolCallAccumulator } from './internal.js';
 import type {
   MessageToolCalls,
-  TokenUsage,
-  ToolCallChunk
+  TokenUsage
 } from './client/api/schema/index.js';
 import type { OrchestrationStream } from './orchestration-stream.js';
 
@@ -15,7 +15,7 @@ export class OrchestrationStreamResponse<T> {
    * Finish reasons for all choices.
    */
   private _finishReasons: Map<number, string> = new Map();
-  private _toolCallChunks: Map<number, Map<number, ToolCallChunk[]>> =
+  private _toolCallsAccumulators: Map<number, Map<number, ToolCallAccumulator>> =
     new Map();
   private _stream: OrchestrationStream<T> | undefined;
 
@@ -50,14 +50,21 @@ export class OrchestrationStreamResponse<T> {
 
   public getToolCalls(choiceIndex = 0): MessageToolCalls | undefined {
     try {
-      const toolCallChunks = this._toolCallChunks.get(choiceIndex);
-      if (!toolCallChunks) {
+      const toolCallsAccumulators = this._toolCallsAccumulators.get(choiceIndex);
+      if (!toolCallsAccumulators) {
         throw new Error(`No tool calls found for choice index ${choiceIndex}`);
       }
       const toolCalls: MessageToolCalls = [];
-      for (const chunkArray of toolCallChunks.values()) {
-        const toolCall = mergeToolCallChunks(chunkArray);
-        toolCalls.push(toolCall);
+      for (const [id, acc] of toolCallsAccumulators.entries()) {
+        if (isMessageToolCall(acc)) {
+          toolCalls.push(acc);
+        } else {
+          throw new Error(
+            `Tool call was incomplete for id ${id}: ${JSON.stringify(
+              acc
+            )}`
+          );
+        }
       }
       return toolCalls;
     } catch (error) {
@@ -70,9 +77,9 @@ export class OrchestrationStreamResponse<T> {
   /**
    * @internal
    */
-  _getToolCallChunks(): Map<number, Map<number, ToolCallChunk[]>> {
-    return this._toolCallChunks;
-  }
+  _getToolCallsAccumulators(): Map<number, Map<number, ToolCallAccumulator>> {
+    return this._toolCallsAccumulators;
+  };
 
   get stream(): OrchestrationStream<T> {
     if (!this._stream) {

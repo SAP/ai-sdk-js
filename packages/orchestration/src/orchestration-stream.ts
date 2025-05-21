@@ -1,9 +1,9 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import { SseStream } from '@sap-ai-sdk/core';
 import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
+import { mergeToolCallChunk, type ToolCallAccumulator } from './internal.js';
 import type {
-  CompletionPostResponseStreaming,
-  ToolCallChunk
+  CompletionPostResponseStreaming
 } from './client/api/schema/index.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { OrchestrationStreamResponse } from './orchestration-stream-response.js';
@@ -62,22 +62,24 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
           const toolCallsChunks = chunk.getToolCalls(choiceIndex);
           if (toolCallsChunks) {
             if (response) {
-              let toolCallChunkMap = response
-                ._getToolCallChunks()
+              let toolCallAccumulators = response
+                ._getToolCallsAccumulators()
                 .get(choiceIndex);
-              if (!toolCallChunkMap) {
-                toolCallChunkMap = new Map<number, ToolCallChunk[]>();
+              if (!toolCallAccumulators) {
+                toolCallAccumulators = new Map<number, ToolCallAccumulator>();
                 response
-                  ._getToolCallChunks()
-                  .set(choiceIndex, toolCallChunkMap);
+                  ._getToolCallsAccumulators()
+                  .set(choiceIndex, toolCallAccumulators);
               }
               toolCallsChunks.map(toolCallChunk => {
                 const toolCallId = toolCallChunk.index;
-                if (toolCallChunkMap.has(toolCallId)) {
-                  toolCallChunkMap.get(toolCallId)!.push(toolCallChunk);
+                let toolCallAccumulator = toolCallAccumulators.get(toolCallId);
+                if (!toolCallAccumulator) {
+                  toolCallAccumulator = mergeToolCallChunk(toolCallChunk);
                 } else {
-                  toolCallChunkMap.set(toolCallId, [toolCallChunk]);
+                  toolCallAccumulator = mergeToolCallChunk(toolCallChunk, toolCallAccumulator);
                 }
+                toolCallAccumulators.set(toolCallId, toolCallAccumulator);
               });
             }
           }
