@@ -120,7 +120,7 @@ export class OrchestrationClient extends BaseChatModel<
     options: typeof this.ParsedCallOptions
   ): LangchainOrchestrationModuleConfig {
     const { tools = [], stop = [] } = options;
-    let config: LangchainOrchestrationModuleConfig =  {
+    const config: LangchainOrchestrationModuleConfig = {
       ...this.orchestrationConfig,
       llm: {
         ...this.orchestrationConfig.llm,
@@ -135,13 +135,10 @@ export class OrchestrationClient extends BaseChatModel<
         }
       }
     };
-      config.templating = this.orchestrationConfig.templating;
-      if (config.templating && isTemplate(config.templating) && tools.length) {
-        config.templating.tools = [
-            ...(config.templating.tools || []),
-            ...tools
-          ]
-        }
-        return config;
-      }
+    config.templating = this.orchestrationConfig.templating;
+    if (config.templating && isTemplate(config.templating) && tools.length) {
+      config.templating.tools = [...(config.templating.tools || []), ...tools];
+    }
+    return config;
   }
+}

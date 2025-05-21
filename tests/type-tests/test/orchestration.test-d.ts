@@ -259,7 +259,7 @@ expectError<any>(
     },
     llm: {
       model_name: 'gpt-4o'
-    },
+    }
   }).chatCompletion()
 );
 
