@@ -215,13 +215,11 @@ describe('orchestration service client', () => {
     }
     expect(callbackHandler.handleLLMNewToken).toHaveBeenCalled();
     const firstCallArgs = callbackHandler.handleLLMNewToken.mock.calls[0];
-    expect(firstCallArgs).toBeDefined();
     // First chunk content is empty
     expect(firstCallArgs[0]).toEqual('');
     // Second argument should be the token indices
     expect(firstCallArgs[1]).toEqual({ prompt: 0, completion: 0 });
     expect(tokenCount).toBeGreaterThan(0);
-    expect(chunks.length).toBeGreaterThan(0);
   });
 
   it('supports streaming responses with tool calls', async () => {
