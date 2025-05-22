@@ -6,7 +6,7 @@ import type {
   Template,
   ToolCallChunk as OrchestrationToolCallChunk,
   OrchestrationStreamChunkResponse,
-  TokenUsage
+  TokenUsage,
   TemplatingModuleConfig
 } from '@sap-ai-sdk/orchestration';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
@@ -207,7 +207,7 @@ export function mapOrchestrationChunkToLangChainMessageChunk(
 ): AIMessageChunk {
   const { module_results, request_id } = chunk.data;
   const content = chunk.getDeltaContent() ?? '';
-  const toolCallChunks = chunk.getDeltaToolCallChunks();
+  const toolCallChunks = chunk.getDeltaToolCalls();
 
   const additional_kwargs: Record<string, unknown> = {
     module_results,
