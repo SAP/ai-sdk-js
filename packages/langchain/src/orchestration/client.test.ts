@@ -191,7 +191,7 @@ describe('orchestration service client', () => {
       }
     };
 
-    await expect(streamFunction()).rejects.toThrow();
+    await expect(streamFunction()).rejects.toThrow('Aborted');
   }, 1000);
 
   it('streams with a callback', async () => {
@@ -206,7 +206,7 @@ describe('orchestration service client', () => {
       callbacks: [callbackHandler]
     });
     const stream = await client.stream([]);
-    const chunks = [];
+    const chunks: AIMessageChunk[] = [];
 
     for await (const chunk of stream) {
       chunks.push(chunk);

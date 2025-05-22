@@ -185,10 +185,6 @@ export class OrchestrationClient extends BaseChatModel<
 
       yield generationChunk;
     }
-
-    if (options.signal?.aborted) {
-      throw new Error('AbortError');
-    }
   }
 
   private mergeOrchestrationConfig(
