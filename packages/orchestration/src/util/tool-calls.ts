@@ -24,9 +24,6 @@ export function isMessageToolCall(
 ): acc is MessageToolCall {
   return (
     typeof acc.id === 'string' &&
-    acc.type === 'function' &&
-    typeof acc.function === 'object' &&
-    acc.function !== null &&
     typeof acc.function.name === 'string' &&
     typeof acc.function.arguments === 'string'
   );
