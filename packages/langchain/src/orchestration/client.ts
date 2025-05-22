@@ -173,7 +173,8 @@ export class OrchestrationClient extends BaseChatModel<
         generationInfo: { ...tokenIndices }
       });
 
-      // Notify the run manager about the new token, some parameters are undefined as they are implicitly read from the context.
+      // Notify the run manager about the new token
+      // Some parameters(`_runId`, `_parentRunId`, `_tags`) are set as undefined as they are implicitly read from the context.
       await runManager?.handleLLMNewToken(
         content,
         tokenIndices,
