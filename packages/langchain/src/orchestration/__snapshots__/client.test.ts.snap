@@ -138,14 +138,176 @@ exports[`orchestration service client returns successful response when timeout i
 }
 `;
 
-exports[`orchestration service client supports streaming responses with tool calls 1`] = `
-[
-  {
-    "args": "{"temperature":20",
-    "id": "call_O8w2vPQ7pVJBKD4srms1UeOZ",
-    "index": 0,
-    "name": "convert_temperature_to_fahrenheit",
-    "type": "tool_call_chunk",
+exports[`orchestration service client supports streaming responses 1`] = `
+{
+  "id": [
+    "langchain_core",
+    "messages",
+    "AIMessageChunk",
+  ],
+  "kwargs": {
+    "additional_kwargs": {
+      "module_results": {
+        "llm": {
+          "choices": [
+            {
+              "delta": {
+                "content": "The SAP Cloud SDK is a comprehensive development toolkit designed to simplify and accelerate the creation of applications that integrate with SAP solutions, particularly those built on the SAP Business Technology Platform (BTP). It provides developers with libraries, tools, and best practices that streamline the process of connecting to SAP systems, such as S/4HANA and other services available on the SAP Cloud Platform.
+
+Key features of the SAP Cloud SDK include:
+
+1. **Simplified Connectivity**: The SDK offers pre-built libraries to easily interact with SAP services, providing capabilities for authentication, service consumption, and OData/REST client generation.
+
+2. **Multi-cloud Support**: It supports multiple cloud environments, ensuring that applications remain flexible and can be deployed across various cloud providers.
+
+3. **Best Practices and Guidelines**: The SDK includes best practices for development, ensuring high-quality, scalable, and maintainable code.
+
+4. **Project Scaffolding and Code Samples**: Developers can quickly start their projects using provided templates and samples, accelerating the development process and reducing the learning curve.
+
+5. **Extensive Documentation and Community Support**: Ample documentation, tutorials, and an active community help developers overcome challenges and adopt the SDK efficiently.
+
+Overall, the SAP Cloud SDK is an essential tool for developers looking to build cloud-native applications and extensions that seamlessly integrate with SAP's enterprise solutions.",
+                "role": "assistantassistantassistantassistantassistantassistantassistantassistantassistantassistantassistantassistantassistantassistantassistantassistant",
+              },
+              "finish_reason": "stop",
+              "index": 0,
+            },
+          ],
+          "created": 1734524005,
+          "id": "chatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wp",
+          "model": "gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06",
+          "object": "chat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunk",
+          "system_fingerprint": "fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48",
+          "usage": {
+            "completion_tokens": 271,
+            "prompt_tokens": 17,
+            "total_tokens": 288,
+          },
+        },
+        "templating": [
+          {
+            "content": "Give me a short introduction of SAP Cloud SDK.",
+            "role": "user",
+          },
+        ],
+      },
+      "request_id": "66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b",
+    },
+    "content": "The SAP Cloud SDK is a comprehensive development toolkit designed to simplify and accelerate the creation of applications that integrate with SAP solutions, particularly those built on the SAP Business Technology Platform (BTP). It provides developers with libraries, tools, and best practices that streamline the process of connecting to SAP systems, such as S/4HANA and other services available on the SAP Cloud Platform.
+
+Key features of the SAP Cloud SDK include:
+
+1. **Simplified Connectivity**: The SDK offers pre-built libraries to easily interact with SAP services, providing capabilities for authentication, service consumption, and OData/REST client generation.
+
+2. **Multi-cloud Support**: It supports multiple cloud environments, ensuring that applications remain flexible and can be deployed across various cloud providers.
+
+3. **Best Practices and Guidelines**: The SDK includes best practices for development, ensuring high-quality, scalable, and maintainable code.
+
+4. **Project Scaffolding and Code Samples**: Developers can quickly start their projects using provided templates and samples, accelerating the development process and reducing the learning curve.
+
+5. **Extensive Documentation and Community Support**: Ample documentation, tutorials, and an active community help developers overcome challenges and adopt the SDK efficiently.
+
+Overall, the SAP Cloud SDK is an essential tool for developers looking to build cloud-native applications and extensions that seamlessly integrate with SAP's enterprise solutions.",
+    "id": undefined,
+    "invalid_tool_calls": [],
+    "response_metadata": {
+      "completion": 0,
+      "finish_reason": "stop",
+      "prompt": 0,
+      "token_usage": {
+        "completion_tokens": 271,
+        "prompt_tokens": 17,
+        "total_tokens": 288,
+      },
+    },
+    "tool_call_chunks": [],
+    "tool_calls": [],
+    "usage_metadata": {
+      "input_tokens": 17,
+      "output_tokens": 271,
+      "total_tokens": 288,
+    },
   },
-]
+  "lc": 1,
+  "type": "constructor",
+}
+`;
+
+exports[`orchestration service client supports streaming responses with tool calls 1`] = `
+{
+  "id": [
+    "langchain_core",
+    "messages",
+    "AIMessageChunk",
+  ],
+  "kwargs": {
+    "additional_kwargs": {
+      "module_results": {
+        "llm": {
+          "choices": [
+            {
+              "delta": {
+                "content": "",
+                "role": "assistantassistantassistantassistantassistant",
+                "tool_calls": [
+                  {
+                    "function": {
+                      "arguments": "{"temperature":20",
+                      "name": "convert_temperature_to_fahrenheit",
+                    },
+                    "id": "call_O8w2vPQ7pVJBKD4srms1UeOZ",
+                    "index": 0,
+                    "type": "function",
+                  },
+                ],
+              },
+              "index": 0,
+            },
+          ],
+          "created": 1747305948,
+          "id": "chatcmpl-BXQNwHanrLdjGaVrKksL8XRUtSDZAchatcmpl-BXQNwHanrLdjGaVrKksL8XRUtSDZAchatcmpl-BXQNwHanrLdjGaVrKksL8XRUtSDZAchatcmpl-BXQNwHanrLdjGaVrKksL8XRUtSDZAchatcmpl-BXQNwHanrLdjGaVrKksL8XRUtSDZA",
+          "model": "gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06",
+          "object": "chat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunk",
+          "system_fingerprint": "fp_ee1d74bde0fp_ee1d74bde0fp_ee1d74bde0fp_ee1d74bde0fp_ee1d74bde0",
+        },
+        "templating": [
+          {
+            "content": "Convert 20 degrees Celsius to Fahrenheit.",
+            "role": "user",
+          },
+        ],
+      },
+      "request_id": "0c9186b6-be86-40d8-9745-ec81dd6351bc0c9186b6-be86-40d8-9745-ec81dd6351bc0c9186b6-be86-40d8-9745-ec81dd6351bc0c9186b6-be86-40d8-9745-ec81dd6351bc0c9186b6-be86-40d8-9745-ec81dd6351bc0c9186b6-be86-40d8-9745-ec81dd6351bc",
+    },
+    "content": "",
+    "id": undefined,
+    "invalid_tool_calls": [],
+    "response_metadata": {
+      "completion": 0,
+      "prompt": 0,
+    },
+    "tool_call_chunks": [
+      {
+        "args": "{"temperature":20",
+        "id": "call_O8w2vPQ7pVJBKD4srms1UeOZ",
+        "index": 0,
+        "name": "convert_temperature_to_fahrenheit",
+        "type": "tool_call_chunk",
+      },
+    ],
+    "tool_calls": [
+      {
+        "args": {
+          "temperature": 20,
+        },
+        "id": "call_O8w2vPQ7pVJBKD4srms1UeOZ",
+        "name": "convert_temperature_to_fahrenheit",
+        "type": "tool_call",
+      },
+    ],
+    "usage_metadata": undefined,
+  },
+  "lc": 1,
+  "type": "constructor",
+}
 `;
