@@ -161,7 +161,7 @@ describe('orchestration', () => {
     const response = await orchestrationTranslation();
     assertContent(response);
   });
-  
+
   it('should return multiple tool calls in a single stream response', async () => {
     const config: OrchestrationModuleConfig = {
       llm: {
