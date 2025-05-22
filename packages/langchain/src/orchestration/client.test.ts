@@ -168,6 +168,24 @@ describe('orchestration service client', () => {
     expect(finalOutput).toMatchSnapshot();
   });
 
+  it('throws when delay exceeds timeout during streaming', async () => {
+    mockInferenceWithResilience(mockResponseStream, { delay: 2000 }, 200, true);
+
+    let finalOutput: AIMessageChunk | undefined;
+    const client = new OrchestrationClient(config);
+    try {
+      const stream = await client.stream([], { timeout: 1000 });
+      for await (const chunk of stream) {
+        finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
+      }
+    } catch (e) {
+      expect(e).toEqual(
+        expect.objectContaining({
+          stack: expect.stringMatching(/Timeout/)
+        })
+      );
+    }
+  });
   it('streams and aborts with a signal', async () => {
     mockInference(
       {

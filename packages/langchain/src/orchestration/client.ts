@@ -148,13 +148,17 @@ export class OrchestrationClient extends BaseChatModel<
       this.destination
     );
 
-    const response = await this.caller.call(() =>
-      orchestrationClient.stream(
-        { messages: orchestrationMessages, inputParams },
-        controller,
-        options.streamOptions,
-        customRequestConfig
-      )
+    const response = await this.caller.callWithOptions(
+      {
+        signal: controller.signal
+      },
+      () =>
+        orchestrationClient.stream(
+          { messages: orchestrationMessages, inputParams },
+          controller,
+          options.streamOptions,
+          customRequestConfig
+        )
     );
 
     for await (const chunk of response.stream) {
