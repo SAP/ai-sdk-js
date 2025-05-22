@@ -349,9 +349,7 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
 
     const mockChunk = new OrchestrationStreamChunkResponse(mockData);
     jest.spyOn(mockChunk, 'getDeltaContent').mockReturnValue(content);
-    jest
-      .spyOn(mockChunk, 'getDeltaToolCallChunks')
-      .mockReturnValue(toolCallChunks);
+    jest.spyOn(mockChunk, 'getDeltaToolCalls').mockReturnValue(toolCallChunks);
 
     return mockChunk;
   }

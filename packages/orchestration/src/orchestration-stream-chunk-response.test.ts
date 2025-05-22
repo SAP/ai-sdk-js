@@ -83,7 +83,7 @@ describe('Orchestration chat completion stream chunk response', () => {
 
   it('should return delta tool call chunks with default index 0', () => {
     const toolCallChunks =
-      orchestrationStreamChunkResponses.toolCallResponse.getDeltaToolCallChunks();
+      orchestrationStreamChunkResponses.toolCallResponse.getDeltaToolCalls();
 
     expect(toolCallChunks).toBeDefined();
     expect(toolCallChunks).toHaveLength(1);
