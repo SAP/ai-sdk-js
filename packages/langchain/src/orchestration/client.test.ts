@@ -73,17 +73,6 @@ describe('orchestration service client', () => {
     );
   }
 
-  function mockStreamInferenceWithResilience(
-    response: any = mockResponseStream,
-    resilience: {
-      retry?: number;
-      delay?: number;
-    } = { retry: 0 },
-    status: number = 200
-  ) {
-    mockInferenceWithResilience(response, resilience, status, true);
-  }
-
   const config: LangchainOrchestrationModuleConfig = {
     llm: {
       model_name: 'gpt-4o',
@@ -156,7 +145,18 @@ describe('orchestration service client', () => {
   }, 1000);
 
   it('supports streaming responses', async () => {
-    mockStreamInferenceWithResilience();
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, { messages: [] }, true)
+      },
+      {
+        data: mockResponseStream,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
 
     const client = new OrchestrationClient(config);
     const stream = await client.stream([]);
@@ -169,7 +169,18 @@ describe('orchestration service client', () => {
   });
 
   it('streams and aborts with a signal', async () => {
-    mockStreamInferenceWithResilience();
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, { messages: [] }, true)
+      },
+      {
+        data: mockResponseStream,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
     const client = new OrchestrationClient(config);
     const controller = new AbortController();
     const { signal } = controller;
@@ -184,7 +195,18 @@ describe('orchestration service client', () => {
   }, 1000);
 
   it('streams with a callback', async () => {
-    mockStreamInferenceWithResilience();
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, { messages: [] }, true)
+      },
+      {
+        data: mockResponseStream,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
     let tokenCount = 0;
     const callbackHandler = {
       handleLLMNewToken: jest.fn().mockImplementation(() => {
@@ -211,7 +233,18 @@ describe('orchestration service client', () => {
   });
 
   it('supports streaming responses with tool calls', async () => {
-    mockStreamInferenceWithResilience(mockResponseStreamToolCalls);
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, { messages: [] }, true)
+      },
+      {
+        data: mockResponseStreamToolCalls,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
 
     const client = new OrchestrationClient(config);
     const stream = await client.stream([]);
