@@ -198,7 +198,7 @@ export function mapOutputToChatResult(
 
 /**
  * Converts orchestration stream chunk to a LangChain message chunk.
- * @param chunk- The orchestration stream chunk.
+ * @param chunk - The orchestration stream chunk.
  * @returns An {@link AIMessageChunk}
  * @internal
  */
