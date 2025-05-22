@@ -18,7 +18,6 @@
     "@sap-cloud-sdk/util": "^4.0.2"
   },
   "scripts": {
-    "compile": "tsc",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "cleanup-deployments": "node --loader ts-node/esm ./src/utils/cleanup-deployments.ts",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",

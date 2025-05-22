@@ -18,6 +18,7 @@ import {
   type OrchestrationModuleConfig,
   type OrchestrationResponse
 } from '@sap-ai-sdk/orchestration';
+import { addNumbersTool } from '../../../test-util/tools.js';
 import { loadEnv } from './utils/load-env.js';
 
 loadEnv();
@@ -153,5 +154,55 @@ describe('orchestration', () => {
       );
       expect(err.cause?.response?.data.message).toBeDefined();
     }
+  });
+
+  it('should return multiple tool calls in a single stream response', async () => {
+    const config: OrchestrationModuleConfig = {
+      llm: {
+        model_name: 'gpt-4o',
+        model_params: {}
+      },
+      templating: {
+        template: [
+          {
+            role: 'user',
+            content: 'Add 1 and 2, as well as 3 and 4.'
+          }
+        ],
+        tools: [addNumbersTool]
+      }
+    };
+
+    const response = await new OrchestrationClient(config).stream();
+
+    for await (const _ of response.stream) {
+      /* do nothing */
+    }
+
+    const tools = response.getToolCalls();
+
+    expect(tools).toHaveLength(2);
+    expect(tools!.every(tool => tool.id !== undefined)).toBe(true);
+    expect(tools!.map(tool => ({ ...tool, id: 'mock_id' })))
+      .toMatchInlineSnapshot(`
+     [
+       {
+         "function": {
+           "arguments": "{"a": 1, "b": 2}",
+           "name": "add",
+         },
+         "id": "mock_id",
+         "type": "function",
+       },
+       {
+         "function": {
+           "arguments": "{"a": 3, "b": 4}",
+           "name": "add",
+         },
+         "id": "mock_id",
+         "type": "function",
+       },
+     ]
+    `);
   });
 });
