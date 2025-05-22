@@ -10,10 +10,11 @@ import { zodToJsonSchema } from 'zod-to-json-schema';
 import { tool } from '@langchain/core/tools';
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
 import {
-  isToolDefinition,
+  isToolDefinitionLike,
   mapLangchainToAiClient,
   mapOutputToChatResult,
-  mapToolToOpenAiFunction
+  mapToolToOpenAiFunction,
+  mapToolToOpenAiTool
 } from './util.js';
 import { AzureOpenAiChatClient } from './chat.js';
 import type { BaseMessage } from '@langchain/core/messages';
@@ -120,27 +121,41 @@ describe('Mapping Functions', () => {
     ).toThrowErrorMatchingInlineSnapshot('"Unsupported message type: remove"');
   });
 
-  it('should type guard the correct ToolDefinition', async () => {
-    expect(
-      isToolDefinition({
-        type: 'function',
-        function: {
+  describe('isToolDefinitionLike', () => {
+    it('should type guard the correct ToolDefinition', async () => {
+      expect(
+        isToolDefinitionLike({
+          type: 'function',
+          function: {
+            name: 'test',
+            description: 'Some description',
+            parameters: {}
+          }
+        })
+      ).toBe(true);
+    });
+
+    it('should not type guard the incorrect ToolDefinition', async () => {
+      expect(
+        isToolDefinitionLike({
           name: 'test',
           description: 'Some description',
           parameters: {}
-        }
-      })
-    ).toBe(true);
-  });
+        })
+      ).toBe(false);
+    });
 
-  it('should not type guard the incorrect ToolDefinition', async () => {
-    expect(
-      isToolDefinition({
-        name: 'test',
-        description: 'Some description',
-        parameters: {}
-      })
-    ).toBe(false);
+    it('should type guard the correct ToolDefinition with no parameters defined', async () => {
+      expect(
+        isToolDefinitionLike({
+          type: 'function',
+          function: {
+            name: 'test',
+            description: 'Some description'
+          }
+        })
+      ).toBe(true);
+    });
   });
 
   describe('mapToolToOpenAiFunction', () => {
@@ -157,14 +172,14 @@ describe('Mapping Functions', () => {
       const expectedOutput = {
         name: 'test',
         description: 'Some description',
-        parameters: { type: 'object', properties: {} }
+        parameters: { type: 'object', properties: {} },
+        strict: false
       };
-      const result = mapToolToOpenAiFunction(toolInput);
+      const result = mapToolToOpenAiFunction(toolInput, false);
       expect(result).toEqual(expectedOutput);
     });
 
-    // TODO: Remove this test when the deprecated `functions` property is removed
-    it('should still support the deprecated `functions` definition to allow optional `parameters`', async () => {
+    it('should allow optional `parameters`', async () => {
       const toolInput = {
         type: 'function',
         function: {
@@ -228,6 +243,50 @@ describe('Mapping Functions', () => {
         }
       };
       const result = mapToolToOpenAiFunction(toolInput);
+      expect(result).toEqual(expectedOutput);
+    });
+  });
+
+  describe('mapToolToOpenAiTool', () => {
+    it('should map OpenAI tool to itself with strict set if defined', async () => {
+      const toolInput = {
+        type: 'function',
+        function: {
+          name: 'test',
+          description: 'Some description',
+          parameters: { type: 'object', properties: {} }
+        }
+      };
+
+      const expectedOutput = {
+        type: 'function',
+        function: {
+          name: 'test',
+          description: 'Some description',
+          parameters: { type: 'object', properties: {} },
+          strict: false
+        }
+      };
+      const result = mapToolToOpenAiTool(toolInput, false);
+      expect(result).toEqual(expectedOutput);
+    });
+
+    it('should map structured tool to OpenAI tool with strict unset if not defined', async () => {
+      const toolInput = {
+        name: 'test',
+        description: 'Some description',
+        schema: { type: 'object', properties: {} }
+      };
+
+      const expectedOutput = {
+        type: 'function',
+        function: {
+          name: 'test',
+          description: 'Some description',
+          parameters: { type: 'object', properties: {} }
+        }
+      };
+      const result = mapToolToOpenAiTool(toolInput);
       expect(result).toEqual(expectedOutput);
     });
   });

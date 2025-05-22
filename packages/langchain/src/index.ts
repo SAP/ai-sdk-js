@@ -5,7 +5,8 @@ export {
 export type {
   AzureOpenAiChatModelParams,
   AzureOpenAiEmbeddingModelParams,
-  AzureOpenAiChatCallOptions
+  AzureOpenAiChatCallOptions,
+  ChatAzureOpenAIToolType
 } from './openai/index.js';
 export {
   OrchestrationClient,

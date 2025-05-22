@@ -7,6 +7,7 @@ import type {
   ToolCallChunk as OrchestrationToolCallChunk,
   OrchestrationStreamChunkResponse,
   TokenUsage
+  TemplatingModuleConfig
 } from '@sap-ai-sdk/orchestration';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type { AzureOpenAiChatCompletionMessageToolCalls } from '@sap-ai-sdk/foundation-models';
@@ -22,7 +23,7 @@ import type {
  * @returns True if the object is a {@link Template}.
  * @internal
  */
-export function isTemplate(object: Record<string, any>): object is Template {
+export function isTemplate(object: TemplatingModuleConfig): object is Template {
   return 'template' in object;
 }
 

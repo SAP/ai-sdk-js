@@ -191,7 +191,7 @@ export class OrchestrationClient extends BaseChatModel<
     options: typeof this.ParsedCallOptions
   ): LangchainOrchestrationModuleConfig {
     const { tools = [], stop = [] } = options;
-    return {
+    const config: LangchainOrchestrationModuleConfig = {
       ...this.orchestrationConfig,
       llm: {
         ...this.orchestrationConfig.llm,
@@ -204,18 +204,12 @@ export class OrchestrationClient extends BaseChatModel<
             ]
           })
         }
-      },
-      templating: {
-        ...this.orchestrationConfig.templating,
-        ...(this.orchestrationConfig.templating &&
-          isTemplate(this.orchestrationConfig.templating) &&
-          tools.length && {
-            tools: [
-              ...(this.orchestrationConfig.templating.tools || []),
-              ...tools
-            ]
-          })
       }
     };
+    config.templating = this.orchestrationConfig.templating;
+    if (config.templating && isTemplate(config.templating) && tools.length) {
+      config.templating.tools = [...(config.templating.tools || []), ...tools];
+    }
+    return config;
   }
 }
