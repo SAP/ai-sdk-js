@@ -264,8 +264,8 @@ export function setTokenUsage(
  * @returns An object with prompt and completion indices.
  * @internal
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 // TODO: Remove after https://github.com/SAP/ai-sdk-js-backlog/issues/321
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function computeTokenIndices(chunk: OrchestrationStreamChunkResponse): {
   prompt: number;
   completion: number;
