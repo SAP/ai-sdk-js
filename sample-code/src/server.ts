@@ -61,6 +61,7 @@ import {
   createPromptTemplate,
   deletePromptTemplate
 } from './prompt-registry.js';
+import type { AIMessageChunk } from '@langchain/core/messages';
 import type { RetievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type { AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
@@ -482,23 +483,29 @@ app.get('/langchain/stream-orchestration', async (req, res) => {
       res.end();
     });
 
+    let finalResult: AIMessageChunk | undefined;
     for await (const chunk of stream) {
       if (!connectionAlive) {
         break;
       }
       res.write(chunk.content + '\n');
-      if (connectionAlive && chunk.usage_metadata) {
-        res.write('\n\n---------------------------\n');
-        res.write(
-          `Finish reason:  ${chunk.response_metadata?.finish_reason}\n`
-        );
-        res.write('Token usage:\n');
-        res.write(
-          `  - Completion tokens: ${chunk.usage_metadata?.output_tokens}\n`
-        );
-        res.write(`  - Prompt tokens: ${chunk.usage_metadata?.input_tokens}\n`);
-        res.write(`  - Total tokens: ${chunk.usage_metadata?.total_tokens}\n`);
-      }
+      finalResult = finalResult ? finalResult.concat(chunk) : chunk;
+    }
+    if (connectionAlive && finalResult?.usage_metadata) {
+      res.write('\n\n---------------------------\n');
+      res.write(
+        `Finish reason:  ${finalResult.response_metadata?.finish_reason}\n`
+      );
+      res.write('Token usage:\n');
+      res.write(
+        `  - Completion tokens: ${finalResult.usage_metadata?.output_tokens}\n`
+      );
+      res.write(
+        `  - Prompt tokens: ${finalResult.usage_metadata?.input_tokens}\n`
+      );
+      res.write(
+        `  - Total tokens: ${finalResult.usage_metadata?.total_tokens}\n`
+      );
     }
   } catch (error: any) {
     sendError(res, error, false);
