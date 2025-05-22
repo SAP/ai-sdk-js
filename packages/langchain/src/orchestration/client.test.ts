@@ -163,9 +163,7 @@ describe('orchestration service client', () => {
     let finalOutput: AIMessageChunk | undefined;
 
     for await (const chunk of stream) {
-      finalOutput = finalOutput
-        ? finalOutput.concat(chunk)
-        : chunk;
+      finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
     }
     expect(finalOutput).toMatchSnapshot();
   });
