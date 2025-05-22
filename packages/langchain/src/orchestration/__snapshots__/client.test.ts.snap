@@ -137,3 +137,15 @@ exports[`orchestration service client returns successful response when timeout i
   "type": "constructor",
 }
 `;
+
+exports[`orchestration service client supports streaming responses with tool calls 1`] = `
+[
+  {
+    "args": "{"temperature":20",
+    "id": "call_O8w2vPQ7pVJBKD4srms1UeOZ",
+    "index": 0,
+    "name": "convert_temperature_to_fahrenheit",
+    "type": "tool_call_chunk",
+  },
+]
+`;

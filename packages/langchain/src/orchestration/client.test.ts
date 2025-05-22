@@ -232,7 +232,8 @@ describe('orchestration service client', () => {
       finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
     }
     const completeToolCall: ToolCall = finalOutput!.tool_calls![0];
-    expect(completeToolCall?.name).toEqual('convert_temperature_to_fahrenheit');
-    expect(completeToolCall?.args).toEqual({ temperature: 20 });
+    expect(completeToolCall.name).toEqual('convert_temperature_to_fahrenheit');
+    expect(completeToolCall.args).toEqual({ temperature: 20 });
+    expect(finalOutput?.tool_call_chunks).toMatchSnapshot();
   });
 });
