@@ -265,6 +265,7 @@ export function setTokenUsage(
  * @internal
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+// TODO: Remove after https://github.com/SAP/ai-sdk-js-backlog/issues/321
 export function computeTokenIndices(chunk: OrchestrationStreamChunkResponse): {
   prompt: number;
   completion: number;
