@@ -22,8 +22,9 @@ export const MetricsApi = {
    * Retrieve metrics, labels, or tags according to filter conditions.
    * One query parameter is mandatory, either execution ID or filter.
    * Use up to 10 execution IDs in a query parameter.
+   * With top/skip parameters it is possible to paginate the result list.
    *
-   * @param queryParameters - Object containing the following keys: $filter, executionIds, $select.
+   * @param queryParameters - Object containing the following keys: $filter, executionIds, $select, tagFilters, $top, $skip.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -32,6 +33,9 @@ export const MetricsApi = {
       $filter?: string;
       executionIds?: TrckStringArray;
       $select?: TrckmetricSelectorPermissibleValues;
+      tagFilters?: string;
+      $top?: number;
+      $skip?: number;
     },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
