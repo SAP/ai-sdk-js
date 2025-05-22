@@ -1,7 +1,8 @@
 import type {
   CompletionPostResponseStreaming,
   LlmChoiceStreaming,
-  TokenUsage
+  TokenUsage,
+  ToolCallChunk
 } from './client/api/schema/index.js';
 
 /**
@@ -26,9 +27,17 @@ export class OrchestrationStreamChunkResponse {
    * @returns The finish reason.
    */
   getFinishReason(choiceIndex = 0): string | undefined {
-    return this.getChoices()?.find(
-      (c: LlmChoiceStreaming) => c.index === choiceIndex
-    )?.finish_reason;
+    return this.getChoices()?.find(c => c.index === choiceIndex)?.finish_reason;
+  }
+
+  /**
+   * Gets the delta tool calls for a specific choice index.
+   * @param choiceIndex - The index of the choice to parse.
+   * @returns The delta tool calls for the specified choice index.
+   */
+  getDeltaToolCalls(choiceIndex = 0): ToolCallChunk[] | undefined {
+    return this.getChoices()?.find(c => c.index === choiceIndex)?.delta
+      .tool_calls;
   }
 
   /**
@@ -37,9 +46,7 @@ export class OrchestrationStreamChunkResponse {
    * @returns The message delta content.
    */
   getDeltaContent(choiceIndex = 0): string | undefined {
-    return this.getChoices()?.find(
-      (c: LlmChoiceStreaming) => c.index === choiceIndex
-    )?.delta.content;
+    return this.getChoices()?.find(c => c.index === choiceIndex)?.delta.content;
   }
 
   private getChoices(): LlmChoiceStreaming[] | undefined {

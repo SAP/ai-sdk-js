@@ -3,7 +3,8 @@ import type { ChatResult } from '@langchain/core/outputs';
 import type {
   ChatMessage,
   CompletionPostResponse,
-  Template
+  Template,
+  TemplatingModuleConfig
 } from '@sap-ai-sdk/orchestration';
 import type { ToolCall } from '@langchain/core/messages/tool';
 import type { AzureOpenAiChatCompletionMessageToolCalls } from '@sap-ai-sdk/foundation-models';
@@ -19,7 +20,7 @@ import type {
  * @returns True if the object is a {@link Template}.
  * @internal
  */
-export function isTemplate(object: Record<string, any>): object is Template {
+export function isTemplate(object: TemplatingModuleConfig): object is Template {
   return 'template' in object;
 }
 

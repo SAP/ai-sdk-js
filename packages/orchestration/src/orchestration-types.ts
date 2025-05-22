@@ -1,3 +1,4 @@
+import type { Xor } from '@sap-cloud-sdk/util';
 import type { CustomRequestConfig } from '@sap-cloud-sdk/http-client';
 import type { ChatModel } from './model-types.js';
 import type {
@@ -101,8 +102,9 @@ export type Template = Omit<OriginalTemplate, 'template'> & {
 
 /**
  * Representation of the 'TemplatingModuleConfig' schema.
+ * The type can be either a `Template` or a `TemplateRef`.
  */
-export type TemplatingModuleConfig = Template | TemplateRef;
+export type TemplatingModuleConfig = Xor<Template, TemplateRef>;
 
 /**
  * Orchestration module configuration.
