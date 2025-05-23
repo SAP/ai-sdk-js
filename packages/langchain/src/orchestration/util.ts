@@ -21,7 +21,8 @@ import type {
   Template,
   ToolChatMessage,
   UserChatMessage,
-  TemplatingModuleConfig
+  TemplatingModuleConfig,
+  TemplateRef
 } from '@sap-ai-sdk/orchestration';
 import type { ToolCall } from '@langchain/core/messages/tool';
 import type {
@@ -95,6 +96,16 @@ export function mapToolToChatCompletionTool(
  */
 export function isTemplate(object: TemplatingModuleConfig): object is Template {
   return 'template' in object;
+}
+
+/**
+ * Checks if the object is a {@link TemplateRef}.
+ * @param object - The object to check.
+ * @returns True if the object is a {@link TemplateRef}.
+ * @internal
+ */
+export function isTemplateRef(object: TemplatingModuleConfig): object is TemplateRef {
+  return 'template_ref' in object;
 }
 
 /**

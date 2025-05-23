@@ -1,7 +1,7 @@
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { OrchestrationClient as OrchestrationClientBase } from '@sap-ai-sdk/orchestration';
 import {
-  isTemplate,
+  isTemplateRef,
   mapLangChainMessagesToOrchestrationMessages,
   mapOutputToChatResult,
   mapToolToChatCompletionTool
@@ -130,11 +130,8 @@ export class OrchestrationClient extends BaseChatModel<
     if (kwargs?.strict !== undefined) {
       strict = kwargs.strict;
     } // TODO: Check if we should add supportsStrictToolCalling here
-    const newTools = tools.map(tool =>
-      mapToolToChatCompletionTool(tool, strict)
-    );
     return this.bind({
-      tools: newTools,
+      tools: tools.map(tool => mapToolToChatCompletionTool(tool, strict)),
       ...kwargs
     } as Partial<OrchestrationCallOptions>);
   }
@@ -159,11 +156,18 @@ export class OrchestrationClient extends BaseChatModel<
       }
     };
     config.templating = this.orchestrationConfig.templating;
-    if (config.templating && isTemplate(config.templating) && tools.length) {
-      config.templating.tools = [
-        ...(config.templating.tools || []),
-        ...tools.map(t => mapToolToChatCompletionTool(t))
-      ];
+    if (tools.length) {
+      if (!config.templating) {
+        config.templating = {};
+      }
+      if (config.templating && !isTemplateRef(config.templating)) {
+        config.templating.tools = [
+          // Preserve existing tools configured in the templating module
+          ...(config.templating.tools || []),
+          // Add new tools set with LangChain `bindTools()` or `invoke()` methods
+          ...tools.map(t => mapToolToChatCompletionTool(t))
+        ];
+      }
     }
     return config;
   }

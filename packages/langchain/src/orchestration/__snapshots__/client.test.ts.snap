@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`orchestration service client returns successful response when maxRetries equals retry configuration 1`] = `
+exports[`orchestration service client resilience returns successful response when maxRetries equals retry configuration 1`] = `
 {
   "id": [
     "langchain_core",
@@ -69,7 +69,7 @@ exports[`orchestration service client returns successful response when maxRetrie
 }
 `;
 
-exports[`orchestration service client returns successful response when timeout is bigger than delay 1`] = `
+exports[`orchestration service client resilience returns successful response when timeout is bigger than delay 1`] = `
 {
   "id": [
     "langchain_core",
