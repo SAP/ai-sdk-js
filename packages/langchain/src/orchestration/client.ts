@@ -130,7 +130,9 @@ export class OrchestrationClient extends BaseChatModel<
     if (kwargs?.strict !== undefined) {
       strict = kwargs.strict;
     } // TODO: Check if we should add supportsStrictToolCalling here
-    const newTools = tools.map(tool => mapToolToChatCompletionTool(tool, strict));
+    const newTools = tools.map(tool =>
+      mapToolToChatCompletionTool(tool, strict)
+    );
     return this.bind({
       tools: newTools,
       ...kwargs

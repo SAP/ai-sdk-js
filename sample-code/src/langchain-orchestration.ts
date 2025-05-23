@@ -14,7 +14,11 @@ import {
 } from '@langchain/langgraph';
 import { v4 as uuidv4 } from 'uuid';
 import { tool } from '@langchain/core/tools';
-import { HumanMessage, SystemMessage, ToolMessage } from '@langchain/core/messages';
+import {
+  HumanMessage,
+  SystemMessage,
+  ToolMessage
+} from '@langchain/core/messages';
 import z from 'zod';
 import type { BaseMessage } from '@langchain/core/messages';
 import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
@@ -262,7 +266,8 @@ export async function invokeToolChain(): Promise<string> {
       template: [
         {
           role: 'user',
-          content: 'Increase the shareholder value, it is currently at {{?value}}'
+          content:
+            'Increase the shareholder value, it is currently at {{?value}}'
         }
       ]
     }

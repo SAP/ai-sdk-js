@@ -31,7 +31,11 @@ describe('mapLangChainMessagesToOrchestrationMessages', () => {
       { role: 'system', content: 'System message content' },
       { role: 'user', content: 'Human message content' },
       { role: 'assistant', content: 'AI message content' },
-      { role: 'tool', content: 'Tool message content', tool_call_id: 'tool_call_id' }
+      {
+        role: 'tool',
+        content: 'Tool message content',
+        tool_call_id: 'tool_call_id'
+      }
     ]);
   });
 
@@ -110,15 +114,18 @@ describe('mapBaseMessageToChatMessage', () => {
   });
 
   it('should throw error when mapping ToolMessage with unsupported content type like `image_url`', () => {
-    const toolMessage = new ToolMessage({
-      content: [
-        { type: 'text', text: 'System text' },
-        {
-          type: 'image_url',
-          image_url: { url: 'https://example.com/image.jpg' }
-        }
-      ]
-    }, 'tool_call_id');
+    const toolMessage = new ToolMessage(
+      {
+        content: [
+          { type: 'text', text: 'System text' },
+          {
+            type: 'image_url',
+            image_url: { url: 'https://example.com/image.jpg' }
+          }
+        ]
+      },
+      'tool_call_id'
+    );
 
     expect(() =>
       mapLangChainMessagesToOrchestrationMessages([toolMessage])

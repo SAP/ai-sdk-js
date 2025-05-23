@@ -2,7 +2,10 @@ import { AIMessage } from '@langchain/core/messages';
 import { v4 as uuidv4 } from 'uuid';
 import { isZodSchema } from '@langchain/core/utils/types';
 import { zodToJsonSchema } from 'zod-to-json-schema';
-import type { FunctionDefinition, ToolDefinition } from '@langchain/core/language_models/base';
+import type {
+  FunctionDefinition,
+  ToolDefinition
+} from '@langchain/core/language_models/base';
 import type { ChatOrchestrationToolType } from './types.js';
 import type { ChatResult } from '@langchain/core/outputs';
 import type {
