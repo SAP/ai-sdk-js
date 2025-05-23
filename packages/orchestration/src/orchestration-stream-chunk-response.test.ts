@@ -11,7 +11,7 @@ describe('Orchestration chat completion stream chunk response', () => {
     tokenUsageResponse: OrchestrationStreamChunkResponse;
     finishReasonResponse: OrchestrationStreamChunkResponse;
     deltaContentResponse: OrchestrationStreamChunkResponse;
-    toolCallResponse: OrchestrationStreamChunkResponse;
+    deltaToolCallResponse: OrchestrationStreamChunkResponse;
   };
 
   beforeAll(async () => {
@@ -24,7 +24,7 @@ describe('Orchestration chat completion stream chunk response', () => {
         'orchestration',
         'orchestration-chat-completion-stream-chunk-response-delta-content.json'
       ),
-      toolCallResponse: await parseMockResponse<any>(
+      deltaToolCallResponse: await parseMockResponse<any>(
         'orchestration',
         'orchestration-chat-completion-stream-chunk-response-tool-call.json'
       )
@@ -39,8 +39,8 @@ describe('Orchestration chat completion stream chunk response', () => {
       deltaContentResponse: new OrchestrationStreamChunkResponse(
         mockResponses.deltaContentResponse
       ),
-      toolCallResponse: new OrchestrationStreamChunkResponse(
-        mockResponses.toolCallResponse
+      deltaToolCallResponse: new OrchestrationStreamChunkResponse(
+        mockResponses.deltaToolCallResponse
       )
     };
   });
@@ -83,7 +83,7 @@ describe('Orchestration chat completion stream chunk response', () => {
 
   it('should return delta tool call chunks with default index 0', () => {
     const toolCallChunks =
-      orchestrationStreamChunkResponses.toolCallResponse.getDeltaToolCalls();
+      orchestrationStreamChunkResponses.deltaToolCallResponse.getDeltaToolCalls();
 
     expect(toolCallChunks).toBeDefined();
     expect(toolCallChunks).toHaveLength(1);
@@ -97,7 +97,7 @@ describe('Orchestration chat completion stream chunk response', () => {
 
   it('should find choice by valid index', () => {
     const choice =
-      orchestrationStreamChunkResponses.toolCallResponse.findChoiceByIndex(0);
+      orchestrationStreamChunkResponses.deltaToolCallResponse.findChoiceByIndex(0);
 
     expect(choice).toBeDefined();
     expect(choice?.index).toBe(0);
