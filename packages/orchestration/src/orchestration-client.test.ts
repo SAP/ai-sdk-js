@@ -8,6 +8,10 @@ import {
   parseFileToString,
   parseMockResponse
 } from '../../../test-util/mock-http.js';
+import {
+  addNumbersTool,
+  multiplyNumbersTool
+} from '../../../test-util/tools.js';
 import { OrchestrationClient } from './orchestration-client.js';
 import { OrchestrationResponse } from './orchestration-response.js';
 import {
@@ -785,5 +789,70 @@ describe('orchestration service client', () => {
       expect(chunk.data).toEqual(JSON.parse(initialResponse));
       break;
     }
+  });
+
+  it('executes a streaming request with multiple tools and parses the tool calls properly', async () => {
+    const config: OrchestrationModuleConfig = {
+      llm: {
+        model_name: 'gpt-4o',
+        model_params: {}
+      },
+      templating: {
+        template: [
+          {
+            role: 'user',
+            content: 'Add 2 + 3 and multiply 2 * 3'
+          }
+        ],
+        tools: [addNumbersTool, multiplyNumbersTool]
+      }
+    };
+
+    const mockResponse = await parseFileToString(
+      'orchestration',
+      'orchestration-chat-completion-stream-multiple-tools-chunks.txt'
+    );
+
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, undefined, true)
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    const response = await new OrchestrationClient(config).stream();
+
+    for await (const _ of response.stream) {
+      /* empty */
+    }
+
+    const tools = response.getToolCalls();
+
+    expect(tools).toMatchInlineSnapshot(`
+     [
+       {
+         "function": {
+           "arguments": "{"a": 2, "b": 3}",
+           "name": "add",
+         },
+         "id": "call_HPgxxSmD2ctYfcJ3gp1JBc7i",
+         "type": "function",
+       },
+       {
+         "function": {
+           "arguments": "{"a": 2, "b": 3}",
+           "name": "multiply",
+         },
+         "id": "call_PExve0Dd9hxD8hOk4Uhr1yhO",
+         "type": "function",
+       },
+     ]
+    `);
   });
 });

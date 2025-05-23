@@ -15,7 +15,7 @@
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
-    "@langchain/langgraph": "^0.2.72",
+    "@langchain/langgraph": "^0.2.73",
     "langchain": "0.3.26",
     "@langchain/core": "0.3.56",
     "@langchain/textsplitters": "0.1.0",
@@ -28,7 +28,7 @@
     "@sap-cloud-sdk/util": "^4.0.2",
     "express": "^5.1.0",
     "uuid": "^11.1.0",
-    "zod": "^3.25.13",
+    "zod": "^3.25.20",
     "zod-to-json-schema": "^3.24.5"
   },
   "devDependencies": {

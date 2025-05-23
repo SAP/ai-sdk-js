@@ -13,10 +13,11 @@ import {
   MemorySaver
 } from '@langchain/langgraph';
 import { v4 as uuidv4 } from 'uuid';
-import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
 import { tool } from '@langchain/core/tools';
-import { BaseMessage, HumanMessage } from '@langchain/core/messages';
+import { HumanMessage, SystemMessage, ToolMessage } from '@langchain/core/messages';
 import z from 'zod';
+import type { BaseMessage } from '@langchain/core/messages';
+import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
 
 /**
  * Ask GPT about an introduction to SAP Cloud SDK.

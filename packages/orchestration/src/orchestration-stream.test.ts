@@ -3,6 +3,7 @@ import { jest } from '@jest/globals';
 import { LineDecoder, SSEDecoder } from '@sap-ai-sdk/core';
 import { parseFileToString } from '../../../test-util/mock-http.js';
 import { OrchestrationStream } from './orchestration-stream.js';
+import { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 import type { CompletionPostResponseStreaming } from './client/api/schema/index.js';
 
 describe('Orchestration chat completion stream', () => {
@@ -59,7 +60,8 @@ describe('Orchestration chat completion stream', () => {
       originalChatCompletionStream
     );
     const asyncGeneratorFinishReason = OrchestrationStream._processFinishReason(
-      new OrchestrationStream(() => asyncGeneratorChunk, new AbortController())
+      new OrchestrationStream(() => asyncGeneratorChunk, new AbortController()),
+      new OrchestrationStreamResponse()
     );
 
     for await (const chunk of asyncGeneratorFinishReason) {
@@ -78,7 +80,8 @@ describe('Orchestration chat completion stream', () => {
       originalChatCompletionStream
     );
     const asyncGeneratorTokenUsage = OrchestrationStream._processTokenUsage(
-      new OrchestrationStream(() => asyncGeneratorChunk, new AbortController())
+      new OrchestrationStream(() => asyncGeneratorChunk, new AbortController()),
+      new OrchestrationStreamResponse()
     );
 
     for await (const chunk of asyncGeneratorTokenUsage) {

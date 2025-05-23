@@ -558,7 +558,6 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
   return JSON.parse(response.getContent()!) as TranslationResponse;
 }
 
-// Shared utils
 const addNumbersSchema = z
   .object({
     a: z.number().describe('The first number to be added.'),
@@ -566,21 +565,20 @@ const addNumbersSchema = z
   })
   .strict();
 
+const addNumbersTool: ChatCompletionTool = {
+  type: 'function',
+  function: {
+    name: 'add',
+    description: 'Add two numbers',
+    parameters: zodToJsonSchema(addNumbersSchema)
+  }
+};
+
 /**
  * Send a chat completion request to the Orchestration service using tools and pass the message history in a subsequent chat completion request.
  * @returns The orchestration service response containing `tool_calls`.
  */
 export async function orchestrationMessageHistoryWithToolCalling(): Promise<OrchestrationResponse> {
-  // Tool definition
-  const addNumbersTool: ChatCompletionTool = {
-    type: 'function',
-    function: {
-      name: 'add',
-      description: 'Add two numbers',
-      parameters: zodToJsonSchema(addNumbersSchema)
-    }
-  };
-
   // The tool that performs the calculation
   const addTwoNumbers = (first: number, second: number): string =>
     `The sum of ${first} and ${second} is ${first + second}.`;
@@ -632,4 +630,35 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
     messages: [toolMessage],
     messagesHistory: allMessages
   });
+}
+
+/**
+ * Ask ChatGPT to add two numbers using tools and stream the response.
+ * @param controller - The abort controller.
+ * @param streamOptions - The stream options.
+ * @returns The response from the orchestration service containing the response content.
+ */
+export async function chatCompletionStreamWithTools(
+  controller: AbortController,
+  streamOptions?: StreamOptions
+): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
+  const orchestrationClient = new OrchestrationClient({
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o'
+    },
+    // define the prompt
+    templating: {
+      tools: [addNumbersTool]
+    }
+  });
+  return orchestrationClient.stream(
+    {
+      messages: [
+        { role: 'user', content: 'Add the numbers 2 and 3, as well as 4 and 5' }
+      ]
+    },
+    controller,
+    streamOptions
+  );
 }
