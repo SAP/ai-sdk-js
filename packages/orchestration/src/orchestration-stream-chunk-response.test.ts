@@ -97,7 +97,9 @@ describe('Orchestration chat completion stream chunk response', () => {
 
   it('should find choice by valid index', () => {
     const choice =
-      orchestrationStreamChunkResponses.deltaToolCallResponse.findChoiceByIndex(0);
+      orchestrationStreamChunkResponses.deltaToolCallResponse.findChoiceByIndex(
+        0
+      );
 
     expect(choice).toBeDefined();
     expect(choice?.index).toBe(0);
