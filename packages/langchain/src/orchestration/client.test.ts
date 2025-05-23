@@ -5,9 +5,12 @@ import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
   mockInference,
-  parseMockResponse
+  parseMockResponse,
+  parseFileToString
 } from '../../../../test-util/mock-http.js';
 import { OrchestrationClient } from './client.js';
+import type { ToolCall } from '@langchain/core/messages/tool';
+import type { AIMessageChunk } from '@langchain/core/messages';
 import type { LangchainOrchestrationModuleConfig } from './types.js';
 import type {
   CompletionPostResponse,
@@ -19,7 +22,9 @@ jest.setTimeout(30000);
 describe('orchestration service client', () => {
   let mockResponse: CompletionPostResponse;
   let mockResponseInputFilterError: ErrorResponse;
-  beforeEach(async () => {
+  let mockResponseStream: string;
+  let mockResponseStreamToolCalls: string;
+  beforeAll(async () => {
     mockClientCredentialsGrantCall();
     mockDeploymentsList({ scenarioId: 'orchestration' }, { id: '1234' });
     mockResponse = await parseMockResponse<CompletionPostResponse>(
@@ -29,6 +34,14 @@ describe('orchestration service client', () => {
     mockResponseInputFilterError = await parseMockResponse<ErrorResponse>(
       'orchestration',
       'orchestration-chat-completion-input-filter-error.json'
+    );
+    mockResponseStream = await parseFileToString(
+      'orchestration',
+      'orchestration-chat-completion-stream-chunks.txt'
+    );
+    mockResponseStreamToolCalls = await parseFileToString(
+      'orchestration',
+      'orchestration-chat-completion-stream-multiple-tools-chunks.txt'
     );
   });
 
@@ -42,11 +55,12 @@ describe('orchestration service client', () => {
       retry?: number;
       delay?: number;
     },
-    status: number = 200
+    status: number = 200,
+    isStream?: boolean
   ) {
     mockInference(
       {
-        data: constructCompletionPostRequest(config)
+        data: constructCompletionPostRequest(config, { messages: [] }, isStream)
       },
       {
         data: response,
@@ -129,4 +143,140 @@ describe('orchestration service client', () => {
       'Request failed with status code 400'
     );
   }, 1000);
+
+  it('supports streaming responses', async () => {
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, { messages: [] }, true)
+      },
+      {
+        data: mockResponseStream,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    const client = new OrchestrationClient(config);
+    const stream = await client.stream([]);
+    let finalOutput: AIMessageChunk | undefined;
+
+    for await (const chunk of stream) {
+      finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
+    }
+    expect(finalOutput).toMatchSnapshot();
+  });
+
+  it('throws when delay exceeds timeout during streaming', async () => {
+    mockInferenceWithResilience(mockResponseStream, { delay: 2000 }, 200, true);
+
+    let finalOutput: AIMessageChunk | undefined;
+    const client = new OrchestrationClient(config);
+    try {
+      const stream = await client.stream([], { timeout: 1000 });
+      for await (const chunk of stream) {
+        finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
+      }
+    } catch (e) {
+      expect(e).toEqual(
+        expect.objectContaining({
+          stack: expect.stringMatching(/Timeout/)
+        })
+      );
+    }
+  });
+  it('streams and aborts with a signal', async () => {
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, { messages: [] }, true)
+      },
+      {
+        data: mockResponseStream,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+    const client = new OrchestrationClient(config);
+    const controller = new AbortController();
+    const { signal } = controller;
+    const stream = await client.stream([], { signal });
+    const streamFunction = async () => {
+      for await (const _chunk of stream) {
+        controller.abort();
+      }
+    };
+
+    await expect(streamFunction()).rejects.toThrow('Aborted');
+  }, 1000);
+
+  it('streams with a callback', async () => {
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, { messages: [] }, true)
+      },
+      {
+        data: mockResponseStream,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+    let tokenCount = 0;
+    const callbackHandler = {
+      handleLLMNewToken: jest.fn().mockImplementation(() => {
+        tokenCount += 1;
+      })
+    };
+    const client = new OrchestrationClient(config, {
+      callbacks: [callbackHandler]
+    });
+    const stream = await client.stream([]);
+    const chunks: AIMessageChunk[] = [];
+
+    for await (const chunk of stream) {
+      chunks.push(chunk);
+      break;
+    }
+    expect(callbackHandler.handleLLMNewToken).toHaveBeenCalled();
+    const firstCallArgs = callbackHandler.handleLLMNewToken.mock.calls[0];
+    // First chunk content is empty
+    expect(firstCallArgs[0]).toEqual('');
+    // Second argument should be the token indices
+    expect(firstCallArgs[1]).toEqual({ prompt: 0, completion: 0 });
+    expect(tokenCount).toBeGreaterThan(0);
+  });
+
+  it('supports streaming responses with tool calls', async () => {
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, { messages: [] }, true)
+      },
+      {
+        data: mockResponseStreamToolCalls,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    const client = new OrchestrationClient(config);
+    const stream = await client.stream([]);
+
+    let finalOutput: AIMessageChunk | undefined;
+    for await (const chunk of stream) {
+      finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
+    }
+    const completeToolCall: ToolCall = finalOutput!.tool_calls![0];
+    expect(completeToolCall.name).toEqual('add');
+    expect(completeToolCall.args).toEqual({
+      a: 2,
+      b: 3
+    });
+    expect(finalOutput).toMatchSnapshot();
+  });
 });
