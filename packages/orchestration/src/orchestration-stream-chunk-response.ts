@@ -27,7 +27,7 @@ export class OrchestrationStreamChunkResponse {
    * @returns The finish reason.
    */
   getFinishReason(choiceIndex = 0): string | undefined {
-    return this.getChoices()?.find(c => c.index === choiceIndex)?.finish_reason;
+    return this.findChoiceByIndex(choiceIndex)?.finish_reason;
   }
 
   /**
@@ -36,8 +36,7 @@ export class OrchestrationStreamChunkResponse {
    * @returns The delta tool calls for the specified choice index.
    */
   getDeltaToolCalls(choiceIndex = 0): ToolCallChunk[] | undefined {
-    return this.getChoices()?.find(c => c.index === choiceIndex)?.delta
-      .tool_calls;
+    return this.findChoiceByIndex(choiceIndex)?.delta.tool_calls;
   }
 
   /**
@@ -46,7 +45,18 @@ export class OrchestrationStreamChunkResponse {
    * @returns The message delta content.
    */
   getDeltaContent(choiceIndex = 0): string | undefined {
-    return this.getChoices()?.find(c => c.index === choiceIndex)?.delta.content;
+    return this.findChoiceByIndex(choiceIndex)?.delta.content;
+  }
+
+  /**
+   * Parses the chunk response and returns the choice by index.
+   * @param index - The index of the choice to find.
+   * @returns An {@link LLMChoiceStreaming} object associated withe index.
+   */
+  findChoiceByIndex(index: number): LlmChoiceStreaming | undefined {
+    return this.getChoices()?.find(
+      (c: LlmChoiceStreaming) => c.index === index
+    );
   }
 
   private getChoices(): LlmChoiceStreaming[] | undefined {

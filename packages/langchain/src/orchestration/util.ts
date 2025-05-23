@@ -1,12 +1,15 @@
-import { AIMessage } from '@langchain/core/messages';
+import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
 import type {
   ChatMessage,
   CompletionPostResponse,
   Template,
+  ToolCallChunk as OrchestrationToolCallChunk,
+  OrchestrationStreamChunkResponse,
+  TokenUsage,
   TemplatingModuleConfig
 } from '@sap-ai-sdk/orchestration';
-import type { ToolCall } from '@langchain/core/messages/tool';
+import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type { AzureOpenAiChatCompletionMessageToolCalls } from '@sap-ai-sdk/foundation-models';
 import type {
   BaseMessage,
@@ -100,7 +103,7 @@ function mapSystemMessageToAzureOpenAiSystemMessage(
  * @returns The orchestration messages mapped from LangChain messages.
  * @internal
  */
-export function mapLangchainMessagesToOrchestrationMessages(
+export function mapLangChainMessagesToOrchestrationMessages(
   messages: BaseMessage[]
 ): ChatMessage[] {
   return messages.map(mapBaseMessageToChatMessage);
@@ -111,7 +114,7 @@ export function mapLangchainMessagesToOrchestrationMessages(
  * @param toolCalls - The {@link AzureOpenAiChatCompletionMessageToolCalls} response.
  * @returns The LangChain {@link ToolCall}.
  */
-function mapAzureOpenAiToLangchainToolCall(
+function mapAzureOpenAiToLangChainToolCall(
   toolCalls?: AzureOpenAiChatCompletionMessageToolCalls
 ): ToolCall[] | undefined {
   if (toolCalls) {
@@ -122,6 +125,23 @@ function mapAzureOpenAiToLangchainToolCall(
       type: 'tool_call'
     }));
   }
+}
+
+/**
+ * Maps {@link OrchestrationToolCallChunk} to LangChain's {@link ToolCallChunk}.
+ * @param toolCallChunks - The {@link OrchestrationToolCallChunk} in a stream response chunk.
+ * @returns An array of LangChain {@link ToolCallChunk}.
+ */
+function mapOrchestrationToLangChainToolCallChunk(
+  toolCallChunks: OrchestrationToolCallChunk[]
+): ToolCallChunk[] {
+  return toolCallChunks.map(chunk => ({
+    name: chunk.function?.name,
+    args: chunk.function?.arguments,
+    id: chunk.id,
+    index: chunk.index,
+    type: 'tool_call_chunk'
+  }));
 }
 
 /**
@@ -142,7 +162,7 @@ export function mapOutputToChatResult(
       text: choice.message.content ?? '',
       message: new AIMessage({
         content: choice.message.content ?? '',
-        tool_calls: mapAzureOpenAiToLangchainToolCall(
+        tool_calls: mapAzureOpenAiToLangChainToolCall(
           choice.message.tool_calls
         ),
         additional_kwargs: {
@@ -173,5 +193,88 @@ export function mapOutputToChatResult(
         totalTokens: usage?.total_tokens ?? 0
       }
     }
+  };
+}
+
+/**
+ * Converts orchestration stream chunk to a LangChain message chunk.
+ * @param chunk - The orchestration stream chunk.
+ * @returns An {@link AIMessageChunk}
+ * @internal
+ */
+export function mapOrchestrationChunkToLangChainMessageChunk(
+  chunk: OrchestrationStreamChunkResponse
+): AIMessageChunk {
+  const { module_results, request_id } = chunk.data;
+  const content = chunk.getDeltaContent() ?? '';
+  const toolCallChunks = chunk.getDeltaToolCalls();
+
+  const additional_kwargs: Record<string, unknown> = {
+    module_results,
+    request_id
+  };
+
+  let tool_call_chunks: ToolCallChunk[] = [];
+  if (toolCallChunks) {
+    tool_call_chunks = mapOrchestrationToLangChainToolCallChunk(toolCallChunks);
+  }
+  // Use `AIMessageChunk` to represent message chunks for roles such as 'tool' and 'user' as well.
+  // While the `ChatDelta` type can accommodate other roles in the orchestration service's stream chunk response, in realtime, we only expect messages with the 'assistant' role to be returned.
+  return new AIMessageChunk({ content, additional_kwargs, tool_call_chunks });
+}
+
+/**
+ * Sets finish reason on a LangChain message chunk if available.
+ * @param messageChunk - The LangChain message chunk to update.
+ * @param finishReason - The finish reason from the response.
+ * @internal
+ */
+export function setFinishReason(
+  messageChunk: AIMessageChunk,
+  finishReason?: string
+): void {
+  if (finishReason) {
+    messageChunk.response_metadata.finish_reason = finishReason;
+  }
+}
+
+/**
+ * Sets usage metadata on a message chunk if available.
+ * @param messageChunk - The LangChain message chunk to update.
+ * @param tokenUsage - The token usage information.
+ * @internal
+ */
+export function setTokenUsage(
+  messageChunk: AIMessageChunk,
+  tokenUsage?: TokenUsage
+): void {
+  if (tokenUsage) {
+    messageChunk.usage_metadata = {
+      input_tokens: tokenUsage.prompt_tokens,
+      output_tokens: tokenUsage.completion_tokens,
+      total_tokens: tokenUsage.total_tokens
+    };
+    messageChunk.response_metadata.token_usage = tokenUsage;
+  }
+}
+
+/**
+ * Computes token indices for a chunk of the orchestration stream response.
+ * @param chunk - A chunk of the orchestration stream response.
+ * @returns An object with prompt and completion indices.
+ * @internal
+ */
+// TODO: Remove after https://github.com/SAP/ai-sdk-js-backlog/issues/321
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function computeTokenIndices(chunk: OrchestrationStreamChunkResponse): {
+  prompt: number;
+  completion: number;
+} {
+  return {
+    // Indicates the token is part of the first prompt
+    prompt: 0,
+    // Hardcoding to 0 as mutiple choices are not currently supported in the orchestration service.
+    // TODO: Switch to `chunk.data.orchestration_result.choices[0].index` when support is added via https://github.com/SAP/ai-sdk-js-backlog/issues/321
+    completion: 0
   };
 }

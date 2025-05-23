@@ -49,7 +49,8 @@ import {
   invokeChainWithInputFilter as invokeChainWithInputFilterOrchestration,
   invokeChainWithOutputFilter as invokeChainWithOutputFilterOrchestration,
   invokeLangGraphChain,
-  invokeChainWithMasking
+  invokeChainWithMasking,
+  streamChain
 } from './langchain-orchestration.js';
 import {
   createCollection,
@@ -61,6 +62,7 @@ import {
   createPromptTemplate,
   deletePromptTemplate
 } from './prompt-registry.js';
+import type { AIMessageChunk } from '@langchain/core/messages';
 import type { RetievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type { AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
@@ -465,6 +467,52 @@ app.get('/langchain/invoke-stateful-chain', async (req, res) => {
     res.header('Content-Type', 'text/plain').send(await invokeLangGraphChain());
   } catch (error: any) {
     sendError(res, error);
+  }
+});
+
+app.get('/langchain/stream-orchestration', async (req, res) => {
+  const controller = new AbortController();
+  try {
+    const stream = await streamChain(controller);
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    let connectionAlive = true;
+    res.on('close', () => {
+      controller.abort();
+      connectionAlive = false;
+      res.end();
+    });
+
+    let finalResult: AIMessageChunk | undefined;
+    for await (const chunk of stream) {
+      if (!connectionAlive) {
+        break;
+      }
+      res.write(chunk.content + '\n');
+      finalResult = finalResult ? finalResult.concat(chunk) : chunk;
+    }
+    if (connectionAlive && finalResult?.usage_metadata) {
+      res.write('\n\n---------------------------\n');
+      res.write(
+        `Finish reason:  ${finalResult.response_metadata?.finish_reason}\n`
+      );
+      res.write('Token usage:\n');
+      res.write(
+        `  - Completion tokens: ${finalResult.usage_metadata?.output_tokens}\n`
+      );
+      res.write(
+        `  - Prompt tokens: ${finalResult.usage_metadata?.input_tokens}\n`
+      );
+      res.write(
+        `  - Total tokens: ${finalResult.usage_metadata?.total_tokens}\n`
+      );
+    }
+  } catch (error: any) {
+    sendError(res, error, false);
+  } finally {
+    res.end();
   }
 });
 

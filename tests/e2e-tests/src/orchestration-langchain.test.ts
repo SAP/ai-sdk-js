@@ -11,6 +11,7 @@ describe('Orchestration LangChain client', () => {
     const result = await orchestrationInvokeChain();
     expect(result).toContain('SAP Cloud SDK');
   });
+
   it('executes an invoke with LangGraph', async () => {
     const result = await invokeLangGraphChain();
     expect(result).toContain('SAP Cloud SDK');
