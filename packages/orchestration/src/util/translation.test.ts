@@ -20,13 +20,7 @@ describe('Translation module config', () => {
     expect(translationConfig).toEqual(expectedTranslationConfig);
   });
 
-  it('throw error when config is empty', async () => {
-    expect(() => {
-      buildTranslationConfig();
-    }).toThrow('Target language is required for translation configuration.');
-  });
-
-  it('throw error when target language is empty', () => {
+  it('throws error when target language is empty', () => {
     const errorConfig: TranslationConfigParams = {
       sourceLanguage: 'en-US',
       targetLanguage: ''

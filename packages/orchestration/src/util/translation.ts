@@ -10,9 +10,9 @@ import type { SAPDocumentTranslation } from '../client/api/schema/index.js';
  * @example "buildTranslationConfig({ sourceLanguage: 'de-DE', targetLanguage: 'en-US' })"
  */
 export function buildTranslationConfig(
-  config?: TranslationConfigParams
+  config: TranslationConfigParams
 ): SAPDocumentTranslation {
-  if (!config?.targetLanguage) {
+  if (!config.targetLanguage) {
     throw new Error(
       'Target language is required for translation configuration.'
     );
