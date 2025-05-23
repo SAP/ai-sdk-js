@@ -5,7 +5,7 @@ describe('Orchestration chat completion stream chunk response', () => {
   let mockResponses: {
     tokenUsageAndFinishReasonResponse: any;
     deltaContentResponse: any;
-    toolCallResponse: any;
+    deltaToolCallResponse: any;
   };
   let orchestrationStreamChunkResponses: {
     tokenUsageResponse: OrchestrationStreamChunkResponse;
