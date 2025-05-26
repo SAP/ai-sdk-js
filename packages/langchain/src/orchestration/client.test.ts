@@ -1,6 +1,7 @@
 import { constructCompletionPostRequest } from '@sap-ai-sdk/orchestration/internal.js';
 import { jest } from '@jest/globals';
 import nock from 'nock';
+import { type AIMessageChunk } from '@langchain/core/messages';
 import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
@@ -12,9 +13,7 @@ import { addNumbersTool } from '../../../../test-util/tools.js';
 import { OrchestrationClient } from './client.js';
 import type { LangChainOrchestrationModuleConfig } from './types.js';
 import type { ToolCall } from '@langchain/core/messages/tool';
-import type { AIMessageChunk } from '@langchain/core/messages';
 import type {
-  ChatMessages,
   CompletionPostResponse,
   ErrorResponse
 } from '@sap-ai-sdk/orchestration';
@@ -26,7 +25,7 @@ describe('orchestration service client', () => {
   let mockResponseInputFilterError: ErrorResponse;
   let mockResponseStream: string;
   let mockResponseStreamToolCalls: string;
-  const messages: ChatMessages = [{ role: 'user', content: 'Hello!' }];
+  const messages = [{ role: 'user' as const, content: 'Hello!' }];
   const config: LangChainOrchestrationModuleConfig = {
     llm: {
       model_name: 'gpt-4o',
@@ -60,6 +59,10 @@ describe('orchestration service client', () => {
 
   afterEach(() => {
     nock.cleanAll();
+  });
+
+  afterAll(done => {
+    done();
   });
 
   function mockInferenceWithResilience(
@@ -112,7 +115,7 @@ describe('orchestration service client', () => {
       );
     });
 
-    it('throws when delay exceeds timeout', async () => {
+    it('throws when delay exceeds timeout using invoke', async () => {
       mockInferenceWithResilience(mockResponse, { delay: 2000 });
       const client = new OrchestrationClient(config);
       const response = client.invoke(messages, { timeout: 1000 });
@@ -143,6 +146,19 @@ describe('orchestration service client', () => {
         'Request failed with status code 400'
       );
     }, 1000);
+
+    it('throws when delay exceeds timeout using streaming', async () => {
+      mockInferenceWithResilience(
+        mockResponseStream,
+        { delay: 2000 },
+        200,
+        true
+      );
+      const client = new OrchestrationClient(config);
+      await expect(client.stream('Hello!', { timeout: 1000 })).rejects.toThrow(
+        'AbortError'
+      );
+    });
   });
 
   describe('bindTools', () => {
@@ -282,7 +298,16 @@ describe('orchestration service client', () => {
     it('supports streaming responses', async () => {
       mockInference(
         {
-          data: constructCompletionPostRequest(config, { messages: [] }, true)
+          data: constructCompletionPostRequest(
+            {
+              ...config,
+              templating: {
+                template: messages
+              }
+            },
+            { messages: [] },
+            true
+          )
         },
         {
           data: mockResponseStream,
@@ -294,7 +319,7 @@ describe('orchestration service client', () => {
       );
 
       const client = new OrchestrationClient(config);
-      const stream = await client.stream([]);
+      const stream = await client.stream('Hello!');
       let finalOutput: AIMessageChunk | undefined;
 
       for await (const chunk of stream) {
@@ -303,33 +328,19 @@ describe('orchestration service client', () => {
       expect(finalOutput).toMatchSnapshot();
     });
 
-    it('throws when delay exceeds timeout during streaming', async () => {
-      mockInferenceWithResilience(
-        mockResponseStream,
-        { delay: 2000 },
-        200,
-        true
-      );
-
-      let finalOutput: AIMessageChunk | undefined;
-      const client = new OrchestrationClient(config);
-      try {
-        const stream = await client.stream([], { timeout: 1000 });
-        for await (const chunk of stream) {
-          finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
-        }
-      } catch (e) {
-        expect(e).toEqual(
-          expect.objectContaining({
-            stack: expect.stringMatching(/Timeout/)
-          })
-        );
-      }
-    });
     it('streams and aborts with a signal', async () => {
       mockInference(
         {
-          data: constructCompletionPostRequest(config, { messages: [] }, true)
+          data: constructCompletionPostRequest(
+            {
+              ...config,
+              templating: {
+                template: messages
+              }
+            },
+            { messages: [] },
+            true
+          )
         },
         {
           data: mockResponseStream,
@@ -342,7 +353,7 @@ describe('orchestration service client', () => {
       const client = new OrchestrationClient(config);
       const controller = new AbortController();
       const { signal } = controller;
-      const stream = await client.stream([], { signal });
+      const stream = await client.stream('Hello!', { signal });
       const streamFunction = async () => {
         for await (const _chunk of stream) {
           controller.abort();
@@ -355,7 +366,16 @@ describe('orchestration service client', () => {
     it('streams with a callback', async () => {
       mockInference(
         {
-          data: constructCompletionPostRequest(config, { messages: [] }, true)
+          data: constructCompletionPostRequest(
+            {
+              ...config,
+              templating: {
+                template: messages
+              }
+            },
+            { messages: [] },
+            true
+          )
         },
         {
           data: mockResponseStream,
@@ -374,7 +394,7 @@ describe('orchestration service client', () => {
       const client = new OrchestrationClient(config, {
         callbacks: [callbackHandler]
       });
-      const stream = await client.stream([]);
+      const stream = await client.stream('Hello!');
       const chunks: AIMessageChunk[] = [];
 
       for await (const chunk of stream) {
@@ -393,7 +413,16 @@ describe('orchestration service client', () => {
     it('supports streaming responses with tool calls', async () => {
       mockInference(
         {
-          data: constructCompletionPostRequest(config, { messages: [] }, true)
+          data: constructCompletionPostRequest(
+            {
+              ...config,
+              templating: {
+                template: messages
+              }
+            },
+            { messages: [] },
+            true
+          )
         },
         {
           data: mockResponseStreamToolCalls,
@@ -405,7 +434,7 @@ describe('orchestration service client', () => {
       );
 
       const client = new OrchestrationClient(config);
-      const stream = await client.stream([]);
+      const stream = await client.stream('Hello!');
 
       let finalOutput: AIMessageChunk | undefined;
       for await (const chunk of stream) {

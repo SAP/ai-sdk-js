@@ -138,7 +138,7 @@ exports[`orchestration service client resilience returns successful response whe
 }
 `;
 
-exports[`orchestration service client supports streaming responses 1`] = `
+exports[`orchestration service client streaming supports streaming responses 1`] = `
 {
   "id": [
     "langchain_core",
@@ -233,7 +233,7 @@ Overall, the SAP Cloud SDK is an essential tool for developers looking to build 
 }
 `;
 
-exports[`orchestration service client supports streaming responses with tool calls 1`] = `
+exports[`orchestration service client streaming supports streaming responses with tool calls 1`] = `
 {
   "id": [
     "langchain_core",
