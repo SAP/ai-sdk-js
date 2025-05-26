@@ -261,15 +261,6 @@ export async function invokeToolChain(): Promise<string> {
   const client = new OrchestrationClient({
     llm: {
       model_name: 'gpt-4o'
-    },
-    templating: {
-      template: [
-        {
-          role: 'user',
-          content:
-            'Increase the shareholder value, it is currently at {{?value}}'
-        }
-      ]
     }
   });
 
@@ -279,7 +270,7 @@ export async function invokeToolChain(): Promise<string> {
   }
 
   // create a tool
-  const myTool = tool(shareholderValueFunction, {
+  const shareholderValueTool = tool(shareholderValueFunction, {
     name: 'shareholder_value',
     description: 'Multiplies the shareholder value',
     schema: z.object({
@@ -291,11 +282,11 @@ export async function invokeToolChain(): Promise<string> {
     new HumanMessage('Increase the shareholder value, it is currently at 10')
   ];
 
-  const response = await client.invoke(messages, { tools: [myTool] });
+  const response = await client.bindTools([shareholderValueTool]).invoke(messages);
 
   messages.push(response);
 
-  if (response.tool_calls) {
+  if (Array.isArray(response.tool_calls) && response.tool_calls[0].name === 'shareholder_value') {
     const shareholderValue = shareholderValueFunction(
       response.tool_calls[0].args.value
     );

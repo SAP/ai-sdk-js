@@ -48,7 +48,8 @@ import {
   invokeChainWithInputFilter as invokeChainWithInputFilterOrchestration,
   invokeChainWithOutputFilter as invokeChainWithOutputFilterOrchestration,
   invokeLangGraphChain,
-  invokeChainWithMasking
+  invokeChainWithMasking,
+  invokeToolChain as invokeToolChainOrchestration
 } from './langchain-orchestration.js';
 import {
   createCollection,
@@ -453,6 +454,14 @@ app.get('/langchain/invoke-rag-chain', async (req, res) => {
 app.get('/langchain/invoke-tool-chain', async (req, res) => {
   try {
     res.header('Content-Type', 'text/plain').send(await invokeToolChain());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/langchain/invoke-tool-chain-orchestration', async (req, res) => {
+  try {
+    res.header('Content-Type', 'text/plain').send(await invokeToolChainOrchestration());
   } catch (error: any) {
     sendError(res, error);
   }
