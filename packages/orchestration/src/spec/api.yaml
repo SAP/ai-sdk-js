@@ -194,6 +194,10 @@ components:
       required:
         - role
         - content
+    # Below, OpenAI's spec marks 'content' as required but nullable: https://github.com/Azure/azure-rest-api-specs/blob/8279d4aee23a3fef5aac9c76333b0895c83e44c3/specification/cognitiveservices/data-plane/AzureOpenAI/inference/stable/2024-10-21/inference.yaml#L2121
+    # We've made it optional instead to maintain SDK compatibility and avoid breaking changes.
+    # Functionally achieves the same result as both patterns permit responses without textual content
+    # OpenAI via null values, ours via field omission.
     ResponseChatMessage:
       type: object
       additionalProperties: false
@@ -208,6 +212,8 @@ components:
           type: string
         tool_calls:
           $ref: '#/components/schemas/MessageToolCalls'
+      required:
+        - role
     # below tool message definitions are copied from openai spec: https://github.com/openai/openai-openapi/blob/e0cb2d721753e13e69e918465795d6e9f87ab15a/openapi.yaml#L11007
     # only renaming them to differentiate them from the openai python classes
     MessageToolCalls:
