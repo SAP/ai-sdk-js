@@ -20,7 +20,7 @@ import {
   ToolMessage
 } from '@langchain/core/messages';
 import z from 'zod';
-import type { BaseMessage } from '@langchain/core/messages';
+import type { BaseMessage, AIMessageChunk } from '@langchain/core/messages';
 import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
 
 /**
@@ -183,6 +183,35 @@ export async function invokeLangGraphChain(): Promise<string> {
 }
 
 /**
+ * Stream responses using LangChain Orchestration client.
+ * @param controller - The abort controller to cancel the request if needed.
+ * @returns An async iterable of {@link AIMessageChunk} objects.
+ */
+export async function streamChain(
+  controller = new AbortController()
+): Promise<AsyncIterable<AIMessageChunk>> {
+  const orchestrationConfig: LangChainOrchestrationModuleConfig = {
+    llm: {
+      model_name: 'gpt-4o'
+    }
+  };
+
+  const client = new OrchestrationClient(orchestrationConfig);
+  return client.stream(
+    [
+      {
+        role: 'user',
+        content:
+          'Write a 100 word explanation about SAP Cloud SDK and its capabilities'
+      }
+    ],
+    {
+      signal: controller.signal
+    }
+  );
+}
+
+/**
  * Trigger masking the input provided to the large language model.
  * @returns The answer from ChatGPT.
  */
@@ -282,11 +311,16 @@ export async function invokeToolChain(): Promise<string> {
     new HumanMessage('Increase the shareholder value, it is currently at 10')
   ];
 
-  const response = await client.bindTools([shareholderValueTool]).invoke(messages);
+  const response = await client
+    .bindTools([shareholderValueTool])
+    .invoke(messages);
 
   messages.push(response);
 
-  if (Array.isArray(response.tool_calls) && response.tool_calls[0].name === 'shareholder_value') {
+  if (
+    Array.isArray(response.tool_calls) &&
+    response.tool_calls[0].name === 'shareholder_value'
+  ) {
     const shareholderValue = shareholderValueFunction(
       response.tool_calls[0].args.value
     );

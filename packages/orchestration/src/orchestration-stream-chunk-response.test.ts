@@ -5,11 +5,13 @@ describe('Orchestration chat completion stream chunk response', () => {
   let mockResponses: {
     tokenUsageAndFinishReasonResponse: any;
     deltaContentResponse: any;
+    deltaToolCallResponse: any;
   };
   let orchestrationStreamChunkResponses: {
     tokenUsageResponse: OrchestrationStreamChunkResponse;
     finishReasonResponse: OrchestrationStreamChunkResponse;
     deltaContentResponse: OrchestrationStreamChunkResponse;
+    deltaToolCallResponse: OrchestrationStreamChunkResponse;
   };
 
   beforeAll(async () => {
@@ -21,6 +23,10 @@ describe('Orchestration chat completion stream chunk response', () => {
       deltaContentResponse: await parseMockResponse<any>(
         'orchestration',
         'orchestration-chat-completion-stream-chunk-response-delta-content.json'
+      ),
+      deltaToolCallResponse: await parseMockResponse<any>(
+        'orchestration',
+        'orchestration-chat-completion-stream-chunk-response-tool-call.json'
       )
     };
     orchestrationStreamChunkResponses = {
@@ -32,6 +38,9 @@ describe('Orchestration chat completion stream chunk response', () => {
       ),
       deltaContentResponse: new OrchestrationStreamChunkResponse(
         mockResponses.deltaContentResponse
+      ),
+      deltaToolCallResponse: new OrchestrationStreamChunkResponse(
+        mockResponses.deltaToolCallResponse
       )
     };
   });
@@ -70,5 +79,36 @@ describe('Orchestration chat completion stream chunk response', () => {
     ).toMatchInlineSnapshot(
       '"rimarily focusing on Java and JavaScript/Node.js environments, allowing developers to work in their "'
     );
+  });
+
+  it('should return delta tool call chunks with default index 0', () => {
+    const toolCallChunks =
+      orchestrationStreamChunkResponses.deltaToolCallResponse.getDeltaToolCalls();
+
+    expect(toolCallChunks).toBeDefined();
+    expect(toolCallChunks).toHaveLength(1);
+    expect(toolCallChunks?.[0]).toEqual({
+      index: 0,
+      function: {
+        arguments: '20'
+      }
+    });
+  });
+
+  it('should find choice by valid index', () => {
+    const choice =
+      orchestrationStreamChunkResponses.deltaToolCallResponse.findChoiceByIndex(
+        0
+      );
+
+    expect(choice).toBeDefined();
+    expect(choice?.index).toBe(0);
+    expect(choice?.delta?.role).toEqual('assistant');
+    expect(choice?.delta.content).toEqual(
+      'rimarily focusing on Java and JavaScript/Node.js environments, allowing developers to work in their '
+    );
+    expect(choice?.delta.tool_calls).toEqual([
+      { index: 0, function: { arguments: '20' } }
+    ]);
   });
 });

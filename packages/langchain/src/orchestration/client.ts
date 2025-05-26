@@ -1,18 +1,23 @@
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { OrchestrationClient as OrchestrationClientBase } from '@sap-ai-sdk/orchestration';
+import { ChatGenerationChunk } from '@langchain/core/outputs';
+import { type BaseMessage } from '@langchain/core/messages';
 import {
   isTemplateRef,
   mapLangChainMessagesToOrchestrationMessages,
   mapOutputToChatResult,
-  mapToolToChatCompletionTool
+  mapToolToChatCompletionTool,
+  mapOrchestrationChunkToLangChainMessageChunk,
+  setFinishReason,
+  setTokenUsage,
+  computeTokenIndices
 } from './util.js';
+import type { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
 import type { BaseLanguageModelInput } from '@langchain/core/language_models/base';
 import type { Runnable, RunnableLike } from '@langchain/core/runnables';
-import type { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
 import type { ChatResult } from '@langchain/core/outputs';
 import type { BaseChatModelParams } from '@langchain/core/language_models/chat_models';
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
-import type { BaseMessage } from '@langchain/core/messages';
 import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import type {
   OrchestrationCallOptions,
@@ -36,7 +41,6 @@ export class OrchestrationClient extends BaseChatModel<
   OrchestrationMessageChunk
 > {
   constructor(
-    // TODO: Omit streaming until supported
     public orchestrationConfig: LangChainOrchestrationModuleConfig,
     public langchainOptions: BaseChatModelParams = {},
     public deploymentConfig?: ResourceGroupConfig,
@@ -96,11 +100,11 @@ export class OrchestrationClient extends BaseChatModel<
           this.deploymentConfig,
           this.destination
         );
-        const allMesages =
+        const allMessages =
           mapLangChainMessagesToOrchestrationMessages(messages);
         return orchestrationClient.chatCompletion(
           {
-            messages: allMesages,
+            messages: allMessages,
             inputParams
           },
           customRequestConfig
@@ -110,7 +114,6 @@ export class OrchestrationClient extends BaseChatModel<
 
     const content = res.getContent();
 
-    // TODO: Add streaming as soon as we support it
     await runManager?.handleLLMNewToken(
       typeof content === 'string' ? content : ''
     );
@@ -134,6 +137,79 @@ export class OrchestrationClient extends BaseChatModel<
       tools: tools.map(tool => mapToolToChatCompletionTool(tool, strict)),
       ...kwargs
     } as Partial<OrchestrationCallOptions>);
+  }
+
+  /**
+   * Stream response chunks from the Orchestration client.
+   * @param messages - The messages to send to the model.
+   * @param options - The call options.
+   * @param runManager - The callback manager for the run.
+   * @returns An async generator of chat generation chunks.
+   */
+  override async *_streamResponseChunks(
+    messages: BaseMessage[],
+    options: typeof this.ParsedCallOptions,
+    runManager?: CallbackManagerForLLMRun
+  ): AsyncGenerator<ChatGenerationChunk> {
+    const controller = new AbortController();
+    if (options.signal) {
+      options.signal.addEventListener('abort', () => controller.abort());
+    }
+
+    const orchestrationMessages =
+      mapLangChainMessagesToOrchestrationMessages(messages);
+
+    const { inputParams, customRequestConfig } = options;
+    const mergedOrchestrationConfig = this.mergeOrchestrationConfig(options);
+
+    const orchestrationClient = new OrchestrationClientBase(
+      mergedOrchestrationConfig,
+      this.deploymentConfig,
+      this.destination
+    );
+
+    const response = await this.caller.callWithOptions(
+      {
+        signal: controller.signal
+      },
+      () =>
+        orchestrationClient.stream(
+          { messages: orchestrationMessages, inputParams },
+          controller,
+          options.streamOptions,
+          customRequestConfig
+        )
+    );
+
+    for await (const chunk of response.stream) {
+      const messageChunk = mapOrchestrationChunkToLangChainMessageChunk(chunk);
+      const tokenIndices = computeTokenIndices(chunk);
+      const finishReason = response.getFinishReason();
+      const tokenUsage = response.getTokenUsage();
+
+      setFinishReason(messageChunk, finishReason);
+      setTokenUsage(messageChunk, tokenUsage);
+      const content = chunk.getDeltaContent() ?? '';
+
+      const generationChunk = new ChatGenerationChunk({
+        message: messageChunk,
+        text: content,
+        generationInfo: { ...tokenIndices }
+      });
+
+      // Notify the run manager about the new token
+      // Some parameters(`_runId`, `_parentRunId`, `_tags`) are set as undefined as they are implicitly read from the context.
+      await runManager?.handleLLMNewToken(
+        content,
+        tokenIndices,
+        undefined,
+        undefined,
+        undefined,
+        { chunk: generationChunk }
+      );
+
+      yield generationChunk;
+    }
   }
 
   private mergeOrchestrationConfig(

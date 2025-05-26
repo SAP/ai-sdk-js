@@ -28,7 +28,7 @@
     "@sap-cloud-sdk/util": "^4.0.2",
     "express": "^5.1.0",
     "uuid": "^11.1.0",
-    "zod": "^3.25.20",
+    "zod": "^3.25.23",
     "zod-to-json-schema": "^3.24.5"
   },
   "devDependencies": {

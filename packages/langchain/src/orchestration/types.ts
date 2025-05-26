@@ -2,7 +2,8 @@ import type {
   Prompt,
   TemplatingModuleConfig,
   OrchestrationModuleConfig as OrchestrationModuleConfigWithStringTemplating,
-  ChatCompletionTool
+  ChatCompletionTool,
+  StreamOptions
 } from '@sap-ai-sdk/orchestration';
 import type {
   BaseChatModelCallOptions,
@@ -33,15 +34,22 @@ export type OrchestrationCallOptions = Pick<
   strict?: boolean;
   tools?: ChatOrchestrationToolType[];
   inputParams?: Prompt['inputParams'];
+  streamOptions?: StreamOptions;
 };
 
 /**
  * Orchestration module configuration for LangChain.
  */
-// TODO: Omit streaming until supported
 export type LangChainOrchestrationModuleConfig = Omit<
   OrchestrationModuleConfigWithStringTemplating,
-  'streaming' | 'templating'
+  'templating'
 > & {
   templating?: TemplatingModuleConfig;
 };
+
+/**
+ * Orchestration module configuration for LangChain.
+ * @deprecated Use `LangChainOrchestrationModuleConfig` instead.
+ */
+export type LangchainOrchestrationModuleConfig =
+  LangChainOrchestrationModuleConfig;

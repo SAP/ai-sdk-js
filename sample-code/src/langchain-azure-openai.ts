@@ -167,11 +167,16 @@ export async function invokeToolChain(): Promise<string> {
     new HumanMessage('Increase the shareholder value, it is currently at 10')
   ];
 
-  const response = await client.bindTools([shareholderValueTool]).invoke(messages);
+  const response = await client
+    .bindTools([shareholderValueTool])
+    .invoke(messages);
 
   messages.push(response);
 
-  if (Array.isArray(response.tool_calls) && response.tool_calls[0].name === 'shareholder_value') {
+  if (
+    Array.isArray(response.tool_calls) &&
+    response.tool_calls[0].name === 'shareholder_value'
+  ) {
     const shareholderValue = shareholderValueFunction(
       response.tool_calls[0].args.value
     );
@@ -183,7 +188,9 @@ export async function invokeToolChain(): Promise<string> {
 
     messages.push(toolMessage);
   } else {
-    const failMessage = new SystemMessage('Shareholder value tool was not called');
+    const failMessage = new SystemMessage(
+      'Shareholder value tool was not called'
+    );
     messages.push(failMessage);
   }
 

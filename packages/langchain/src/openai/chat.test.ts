@@ -1,16 +1,12 @@
-import { tool } from '@langchain/core/tools';
-import { jest } from '@jest/globals';
-import { zodToJsonSchema } from 'zod-to-json-schema';
 import nock from 'nock';
-import { z } from 'zod';
 import { apiVersion } from '@sap-ai-sdk/foundation-models/internal.js';
 import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
   mockInference
 } from '../../../../test-util/mock-http.js';
+import { addNumbersTool } from '../../../../test-util/tools.js';
 import { AzureOpenAiChatClient } from './chat.js';
-import { addNumbersSchema, addNumbersTool } from '../../../../test-util/tools.js';
 
 describe('Chat client', () => {
   let client: AzureOpenAiChatClient;
