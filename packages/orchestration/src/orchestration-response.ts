@@ -103,6 +103,6 @@ export class OrchestrationResponse {
     // TODO: replace cast with LLMChoice[] after the bug in orchestration, where
     // 'role' in ResponseChatMessage is optional when it should be mandatory, is fixed.
     // https://github.com/SAP/ai-sdk-js-backlog/issues/306
-    return this.getChoices().find((c: { index: number }) => c.index === index);
+    return (this.getChoices() as any).find((c: { index: number }) => c.index === index);
   }
 }
