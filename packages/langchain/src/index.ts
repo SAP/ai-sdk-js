@@ -14,5 +14,6 @@ export {
 } from './orchestration/index.js';
 export type {
   OrchestrationCallOptions,
-  LangChainOrchestrationModuleConfig
+  LangChainOrchestrationModuleConfig,
+  LangchainOrchestrationModuleConfig
 } from './orchestration/index.js';
