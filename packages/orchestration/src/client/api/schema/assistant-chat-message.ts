@@ -10,7 +10,7 @@ import type { MessageToolCalls } from './message-tool-calls.js';
  */
 export type AssistantChatMessage = {
   role: 'assistant';
-  content: ChatMessageContent;
+  content?: ChatMessageContent;
   refusal?: string;
   tool_calls?: MessageToolCalls;
 };
