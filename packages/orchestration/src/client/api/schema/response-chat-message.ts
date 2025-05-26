@@ -8,7 +8,7 @@ import type { MessageToolCalls } from './message-tool-calls.js';
  * Representation of the 'ResponseChatMessage' schema.
  */
 export type ResponseChatMessage = {
-  role?: 'assistant';
+  role: 'assistant';
   content?: string;
   refusal?: string;
   tool_calls?: MessageToolCalls;
