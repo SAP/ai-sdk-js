@@ -28,6 +28,28 @@
 
 -
 
+# 1.14.0
+## Compatibility Notes
+
+- [orchestration] Since `ChatMessage` type is now one of the many specific types such as `SystemChatMessage` and `UserChatMessage` with predefined roles in the orchestration service specification, always define type when creating objects of type `OrchestrationModuleConfig` and `TemplatingModuleConfig` to avoid `role` being any string. (84cfa07)
+
+## New Features
+
+- [document-grounding] Support document grounding with SharePoint and S3 data repositories.
+  - @sap-ai-sdk/core@1.14.0 (e30f66f)
+- [langchain, orchestration] Support streaming in LangChain orchestration client. (7574dd1)
+- [langchain] Support `bindTools()` method in Azure OpenAI LangChain client. (30939f2)
+- [orchestration] Introduce convenience functions `getAllMessages()`, `getAssistantMessage()`, `getToolCalls()` and `getRefusal()` for orchestration. (77efa15)
+- [orchestration] Introduce support for tool calls, for both streaming and regular invocation. (9931f98)
+- [orchestration] Support document grounding with SharePoint and S3 data repositories.
+  - @sap-ai-sdk/ai-api@1.14.0
+  - @sap-ai-sdk/core@1.14.0
+  - @sap-ai-sdk/prompt-registry@1.14.0 (e30f66f)
+
+## Improvements
+
+- [orchestration] Make `templating` and `templating.template` properties optional in the `Prompt` type and introduce a new `messages` property to allow sending messages directly without requiring a template. This enables users to reuse the same client instance without re-initialization by passing updated messages at runtime. (7ca8d88)
+
 # 1.13.0
 ## Fixed Issues
 

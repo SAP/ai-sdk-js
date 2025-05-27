@@ -1,5 +1,12 @@
 # @sap-ai-sdk/document-grounding
 
+## 1.14.0
+
+### Patch Changes
+
+- e30f66f: [New Functionality] Support document grounding with SharePoint and S3 data repositories.
+  - @sap-ai-sdk/core@1.14.0
+
 ## 1.13.0
 
 ### Patch Changes
