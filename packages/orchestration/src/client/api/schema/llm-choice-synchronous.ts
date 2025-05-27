@@ -5,9 +5,9 @@
  */
 import type { ResponseChatMessage } from './response-chat-message.js';
 /**
- * Representation of the 'LlmChoice' schema.
+ * Representation of the 'LLMChoiceSynchronous' schema.
  */
-export type LlmChoice = {
+export type LLMChoiceSynchronous = {
   /**
    * Index of the choice
    */
