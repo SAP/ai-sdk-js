@@ -172,7 +172,7 @@ describe('orchestration service client', () => {
     mockInferenceWithResilience(mockResponseStream, { delay: 2000 }, 200, true);
 
     let finalOutput: AIMessageChunk | undefined;
-    const client = new OrchestrationClient(config);
+    const client = new OrchestrationClient(config, { maxRetries: 0 });
     try {
       const stream = await client.stream([], { timeout: 1000 });
       for await (const chunk of stream) {
