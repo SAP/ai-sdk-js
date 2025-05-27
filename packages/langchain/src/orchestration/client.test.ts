@@ -154,7 +154,7 @@ describe('orchestration service client', () => {
         200,
         true
       );
-      const client = new OrchestrationClient(config);
+      const client = new OrchestrationClient(config, { maxRetries: 0 });
       await expect(client.stream('Hello!', { timeout: 1000 })).rejects.toThrow(
         'AbortError'
       );
