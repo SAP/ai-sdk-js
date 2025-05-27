@@ -6,7 +6,8 @@ import {
   buildDocumentGroundingConfig,
   buildAzureContentSafetyFilter,
   buildLlamaGuardFilter,
-  buildDpiMaskingProvider
+  buildDpiMaskingProvider,
+  buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
 import { z } from 'zod';
@@ -629,6 +630,38 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
   return orchestrationClient.chatCompletion({
     messages: [toolMessage],
     messagesHistory: allMessages
+  });
+}
+
+/**
+ * Use translation module for input and output translation.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationTranslation(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    llm,
+    templating: {
+      template: [
+        {
+          role: 'user',
+          content: '{{?input}}'
+        }
+      ]
+    },
+    inputTranslation: buildTranslationConfig({
+      sourceLanguage: 'en-US',
+      targetLanguage: 'de-DE'
+    }),
+    outputTranslation: buildTranslationConfig({
+      sourceLanguage: 'de-DE',
+      targetLanguage: 'fr-FR'
+    })
+  });
+
+  return orchestrationClient.chatCompletion({
+    inputParams: {
+      input: 'Write an abstract for a thriller playing at SAP headquarters.'
+    }
   });
 }
 

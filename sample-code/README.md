@@ -143,7 +143,7 @@ Define variable by wrapping it with `{{?...}}`.
 
 Get chat completion response with template reference and input parameters.
 
-### Message History
+#### Message History
 
 `GET /orchestration/messageHistory`
 
@@ -234,6 +234,13 @@ The response header is set with `Content-Type: text/event-stream` to stream the 
 The `toContentStream()` method is called to extract the content of the chunk for convenience.
 
 Once the streaming is done, finish reason and token usage are printed out.
+
+#### Translation
+
+`GET /orchestration/translation`
+
+Get chat completion response with input and output translation.
+For example, use `buildTranslationConfig()` function to build a SAP Document Translation config.
 
 ### LangChain
 
