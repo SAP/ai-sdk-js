@@ -146,6 +146,7 @@ export function mapOutputToChatResult(
       id: completionResponse.id,
       model: completionResponse.model,
       object: completionResponse.object,
+      promptFilterResults: completionResponse.prompt_filter_results || [],
       tokenUsage: {
         completionTokens: completionResponse.usage?.completion_tokens ?? 0,
         promptTokens: completionResponse.usage?.prompt_tokens ?? 0,
