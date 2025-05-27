@@ -11,7 +11,8 @@ import {
   chatCompletionStreamWithJsonModuleConfig,
   chatCompletionStream,
   orchestrationResponseFormat,
-  orchestrationMessageHistoryWithToolCalling
+  orchestrationMessageHistoryWithToolCalling,
+  orchestrationTranslation
 } from '@sap-ai-sdk/sample-code';
 import {
   OrchestrationClient,
@@ -154,6 +155,11 @@ describe('orchestration', () => {
       );
       expect(err.cause?.response?.data.message).toBeDefined();
     }
+  });
+
+  it('should complete a chat with input and output translation', async () => {
+    const response = await orchestrationTranslation();
+    assertContent(response);
   });
 
   it('should return multiple tool calls in a single stream response', async () => {

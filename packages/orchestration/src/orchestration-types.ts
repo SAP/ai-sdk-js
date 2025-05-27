@@ -11,12 +11,14 @@ import type {
   FilteringStreamOptions,
   GlobalStreamOptions,
   GroundingModuleConfig,
+  InputTranslationModuleConfig,
   LlamaGuard38B,
   MaskingModuleConfig,
   LlmModuleConfig as OriginalLlmModuleConfig,
   Template as OriginalTemplate,
   TemplateRef,
-  TemplatingChatMessage
+  TemplatingChatMessage,
+  OutputTranslationModuleConfig
 } from './client/api/schema/index.js';
 
 /**
@@ -155,6 +157,14 @@ export interface OrchestrationModuleConfig {
    * Global streaming options.
    */
   streaming?: GlobalStreamOptions;
+  /**
+   * Input translation module configuration.
+   */
+  inputTranslation?: InputTranslationModuleConfig;
+  /**
+   * Output translation module configuration.
+   */
+  outputTranslation?: OutputTranslationModuleConfig;
 }
 
 /**
@@ -288,3 +298,20 @@ export type AzureFilterThreshold = keyof typeof supportedAzureFilterThresholds;
  * The filter categories supported for Llama guard filter.
  */
 export type LlamaGuardCategory = keyof LlamaGuard38B;
+
+/**
+ * Translation configuration for SAP Document Translation.
+ * See https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages-6854bbb1bd824ffebc3a097a7c0fd45d for list of supported languages.
+ */
+export interface TranslationConfigParams {
+  /**
+   * Language of the text to be translated.
+   * @example sourceLanguage: "de-DE"
+   */
+  sourceLanguage?: string;
+  /**
+   * Language to which the text should be translated.
+   * @example targetLanguage: "en-US"
+   */
+  targetLanguage: string;
+}
