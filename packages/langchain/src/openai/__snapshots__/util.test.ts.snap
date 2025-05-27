@@ -39,6 +39,29 @@ exports[`Mapping Functions should parse an OpenAI response to a (LangChain) chat
     "id": "chatcmpl-Apc8UYiHfmiWG3OXxMDvODHQSOVNN",
     "model": "gpt-4o-2024-08-06",
     "object": "chat.completion",
+    "promptFilterResults": [
+      {
+        "content_filter_results": {
+          "hate": {
+            "filtered": false,
+            "severity": "safe",
+          },
+          "self_harm": {
+            "filtered": false,
+            "severity": "safe",
+          },
+          "sexual": {
+            "filtered": false,
+            "severity": "safe",
+          },
+          "violence": {
+            "filtered": false,
+            "severity": "safe",
+          },
+        },
+        "prompt_index": 0,
+      },
+    ],
     "tokenUsage": {
       "completionTokens": 17,
       "promptTokens": 13,
