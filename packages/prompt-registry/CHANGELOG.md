@@ -1,5 +1,11 @@
 # @sap-ai-sdk/prompt-registry
 
+## 1.14.0
+
+### Patch Changes
+
+- @sap-ai-sdk/core@1.14.0
+
 ## 1.13.0
 
 ### Patch Changes
