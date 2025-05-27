@@ -3,7 +3,11 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { ModuleResults } from './module-results.js';
+import type { ModuleResultsBase } from './module-results-base.js';
+import type { LLMModuleResultSynchronous } from './llm-module-result-synchronous.js';
+import type { LLMModuleResultStreaming } from './llm-module-result-streaming.js';
+import type { LLMChoiceSynchronous } from './llm-choice-synchronous.js';
+import type { LlmChoiceStreaming } from './llm-choice-streaming.js';
 /**
  * Representation of the 'ErrorResponse' schema.
  */
@@ -25,5 +29,8 @@ export type ErrorResponse = {
    * @example "LLM Module"
    */
   location: string;
-  module_results?: ModuleResults;
+  module_results?: ModuleResultsBase & {
+    llm?: LLMModuleResultSynchronous | LLMModuleResultStreaming;
+    output_unmasking?: (LLMChoiceSynchronous | LlmChoiceStreaming)[];
+  } & Record<string, any>;
 } & Record<string, any>;
