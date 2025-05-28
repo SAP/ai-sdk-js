@@ -1052,6 +1052,22 @@ components:
     DPIEntityConfig:
       oneOf:
         - $ref: '#/components/schemas/DPIStandardEntity'
+        - $ref: '#/components/schemas/DPICustomEntity'
+
+    DPICustomEntity:
+      type: object
+      required:
+        - regex
+        - replacement_strategy
+      additionalProperties: false
+      properties:
+        regex:
+          description: Regular expression to match the entity
+          type: string
+        replacement_strategy:
+          description: Replacement strategy to be used for the entity
+          oneOf:
+            - $ref: '#/components/schemas/DPIMethodConstant'
 
     DPIStandardEntity:
       type: object
