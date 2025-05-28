@@ -60,8 +60,8 @@ export function mapToolToOrchestrationFunction(
         // Notice that LangChain ToolDeifnition does not have strict property.
         ('strict' in tool.function &&
           tool.function.strict !== undefined && {
-          strict: tool.function.strict
-        }))
+            strict: tool.function.strict
+          }))
     };
   }
   // StructuredTool like object
@@ -176,11 +176,13 @@ function mapHumanMessageToChatMessage(message: HumanMessage): UserChatMessage {
   if (Array.isArray(message.content)) {
     message.content = message.content.map(content => ({
       ...content,
-      ...(content.type === 'image_url' && typeof content.image_url === 'string' ? {
-        image_url: {
-          url: content.image_url
-        }
-      } : {})
+      ...(content.type === 'image_url' && typeof content.image_url === 'string'
+        ? {
+            image_url: {
+              url: content.image_url
+            }
+          }
+        : {})
     }));
   }
   return {

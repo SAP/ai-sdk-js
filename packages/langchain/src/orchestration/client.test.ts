@@ -137,7 +137,12 @@ describe('orchestration service client', () => {
     }, 1000);
 
     it('throws when delay exceeds timeout during streaming', async () => {
-      mockInferenceWithResilience(mockResponseStream, { delay: 2000 }, 200, true);
+      mockInferenceWithResilience(
+        mockResponseStream,
+        { delay: 2000 },
+        200,
+        true
+      );
 
       let finalOutput: AIMessageChunk | undefined;
       const client = new OrchestrationClient(config, { maxRetries: 0 });
