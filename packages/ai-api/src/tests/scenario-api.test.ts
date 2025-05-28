@@ -12,6 +12,8 @@ describe('scenario', () => {
   });
   afterEach(() => {
     nock.cleanAll();
+  });
+  afterAll(() => {
     nock.restore();
   });
 

@@ -1,5 +1,5 @@
 import nock from 'nock';
-import { ArtifactApi } from '../client/AI_CORE_API';
+import { ArtifactApi } from '../client/AI_CORE_API/index.js';
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
@@ -16,6 +16,8 @@ describe('artifact', () => {
   });
   afterEach(() => {
     nock.cleanAll();
+  });
+  afterAll(() => {
     nock.restore();
   });
 

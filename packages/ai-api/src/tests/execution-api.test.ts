@@ -16,6 +16,8 @@ describe('execution', () => {
   });
   afterEach(() => {
     nock.cleanAll();
+  });
+  afterAll(() => {
     nock.restore();
   });
 
