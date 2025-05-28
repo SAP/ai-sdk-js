@@ -4,17 +4,18 @@
 
 ### Minor Changes
 
-- 7574dd1: [New Functionality] Support streaming in LangChain orchestration client.
-- 30939f2: [New Functionality] Support `bindTools()` method in Azure OpenAI LangChain client.
+- fa1e3fe: [New Functionality] Support streaming in LangChain orchestration client.
+- fa1e3fe: [New Functionality] Support `bindTools()` method in Azure OpenAI LangChain client.
 
 ### Patch Changes
 
-- Updated dependencies [7574dd1]
-- Updated dependencies [e30f66f]
-- Updated dependencies [77efa15]
-- Updated dependencies [9931f98]
-- Updated dependencies [7ca8d88]
-- Updated dependencies [84cfa07]
+- Updated dependencies [fa1e3fe]
+- Updated dependencies [fa1e3fe]
+- Updated dependencies [fa1e3fe]
+- Updated dependencies [fa1e3fe]
+- Updated dependencies [fa1e3fe]
+- Updated dependencies [fa1e3fe]
+- Updated dependencies [c62253f]
   - @sap-ai-sdk/orchestration@1.14.0
   - @sap-ai-sdk/ai-api@1.14.0
   - @sap-ai-sdk/core@1.14.0
