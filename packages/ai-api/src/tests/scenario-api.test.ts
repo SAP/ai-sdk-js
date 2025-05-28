@@ -1,10 +1,10 @@
 import nock from 'nock';
-import { ScenarioApi } from '../client/AI_CORE_API';
+import { ScenarioApi } from '../client/AI_CORE_API/index.js';
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
 } from '../../../../test-util/mock-http.js';
-import type { AiScenarioList } from '../client/AI_CORE_API';
+import type { AiScenarioList } from '../client/AI_CORE_API/index.js';
 
 describe('scenario', () => {
   beforeEach(() => {
@@ -12,6 +12,9 @@ describe('scenario', () => {
   });
   afterEach(() => {
     nock.cleanAll();
+  });
+  afterAll(() => {
+    nock.restore();
   });
 
   it('parses a successful response for get request', async () => {

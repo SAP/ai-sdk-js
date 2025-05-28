@@ -1,5 +1,5 @@
 import nock from 'nock';
-import { ArtifactApi } from '../client/AI_CORE_API';
+import { ArtifactApi } from '../client/AI_CORE_API/index.js';
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
@@ -8,7 +8,7 @@ import type {
   AiArtifactCreationResponse,
   AiArtifactList,
   AiArtifactPostData
-} from '../client/AI_CORE_API';
+} from '../client/AI_CORE_API/index.js';
 
 describe('artifact', () => {
   beforeEach(() => {
@@ -16,6 +16,9 @@ describe('artifact', () => {
   });
   afterEach(() => {
     nock.cleanAll();
+  });
+  afterAll(() => {
+    nock.restore();
   });
 
   it('parses a successful response for get request', async () => {
