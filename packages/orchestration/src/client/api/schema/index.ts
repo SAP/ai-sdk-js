@@ -63,6 +63,7 @@ export * from './masking-module-config.js';
 export * from './masking-provider-config.js';
 export * from './dpi-config.js';
 export * from './dpi-entity-config.js';
+export * from './dpi-custom-entity.js';
 export * from './dpi-standard-entity.js';
 export * from './dpi-method-constant.js';
 export * from './dpi-method-fabricated-data.js';
