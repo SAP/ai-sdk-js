@@ -74,6 +74,31 @@ describe('mapBaseMessageToChatMessage', () => {
     });
   });
 
+  it('should map HumanMessage with `image_url` to ChatMessage with user role', () => {
+    const humanMessage = new HumanMessage({
+      content: [
+        { type: 'text', text: 'Human message content' },
+        {
+          type: 'image_url',
+          image_url: 'https://example.com/image.jpg'
+        }
+      ]
+    });
+
+    const result = mapLangChainMessagesToOrchestrationMessages([humanMessage]);
+
+    expect(result[0]).toEqual({
+      role: 'user',
+      content: [
+        { type: 'text', text: 'Human message content' },
+        {
+          type: 'image_url',
+          image_url: { url: 'https://example.com/image.jpg' }
+        }
+      ]
+    });
+  });
+
   it('should map SystemMessage to ChatMessage with system role', () => {
     const systemMessage = new SystemMessage('System message content');
 
