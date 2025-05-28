@@ -133,7 +133,7 @@ export class OrchestrationClient extends BaseChatModel<
     if (kwargs?.strict !== undefined) {
       strict = kwargs.strict;
     }
-    return this.bind({
+    return this.withConfig({
       tools: tools.map(tool => mapToolToChatCompletionTool(tool, strict)),
       ...kwargs
     } as Partial<OrchestrationCallOptions>);
