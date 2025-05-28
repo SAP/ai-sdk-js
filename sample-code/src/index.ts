@@ -59,3 +59,7 @@ export {
   createPromptTemplate,
   deletePromptTemplate
 } from './prompt-registry.js';
+
+export {
+  runTravelAssistant
+} from './tutorials/agent-workflow-openai-langchain.js';

@@ -66,6 +66,7 @@ import type { AIMessageChunk } from '@langchain/core/messages';
 import type { RetievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type { AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
+import { runTravelAssistant } from './tutorials/agent-workflow-openai-langchain.js';
 
 const app = express();
 const port = 8080;
@@ -465,6 +466,14 @@ app.get('/langchain/invoke-tool-chain', async (req, res) => {
 app.get('/langchain/invoke-stateful-chain', async (req, res) => {
   try {
     res.header('Content-Type', 'text/plain').send(await invokeLangGraphChain());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/langchain/langgraph-tutorial', async (req, res) => {
+  try {
+    res.send(await runTravelAssistant());
   } catch (error: any) {
     sendError(res, error);
   }
