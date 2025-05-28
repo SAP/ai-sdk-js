@@ -90,8 +90,6 @@ function shouldContinue({ messages }: typeof MessagesAnnotation.State) {
 // Define the function that calls the model
 async function callModel(state: typeof MessagesAnnotation.State) {
   const response = await model.invoke(state.messages);
-  // Update message history with response
- // console.log("🤖 Assistant response:", response);
   return { messages: [response] };
 }
 
@@ -108,7 +106,6 @@ const workflow = new StateGraph(MessagesAnnotation)
 
   const config = { configurable: { thread_id: 'conv-1' } };
 
-// Example usage demonstrating conversation memory
 export async function runTravelAssistant() {
   console.log("🗺️ Travel Itinerary Assistant Started!");
   
