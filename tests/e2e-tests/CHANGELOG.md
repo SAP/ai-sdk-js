@@ -4,12 +4,13 @@
 
 ### Patch Changes
 
-- Updated dependencies [7574dd1]
-- Updated dependencies [e30f66f]
-- Updated dependencies [77efa15]
-- Updated dependencies [9931f98]
-- Updated dependencies [7ca8d88]
-- Updated dependencies [84cfa07]
+- Updated dependencies [fa1e3fe]
+- Updated dependencies [fa1e3fe]
+- Updated dependencies [fa1e3fe]
+- Updated dependencies [fa1e3fe]
+- Updated dependencies [fa1e3fe]
+- Updated dependencies [fa1e3fe]
+- Updated dependencies [c62253f]
   - @sap-ai-sdk/orchestration@1.14.0
   - @sap-ai-sdk/sample-code@1.14.0
   - @sap-ai-sdk/ai-api@1.14.0
