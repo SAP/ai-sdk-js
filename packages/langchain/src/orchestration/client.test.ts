@@ -111,7 +111,7 @@ describe('orchestration service client', () => {
       );
     });
 
-    it('throws when delay exceeds timeout using invoke', async () => {
+    it('throws when delay exceeds timeout', async () => {
       mockInferenceWithResilience(mockResponse, { delay: 2000 });
       const client = new OrchestrationClient(config);
       const response = client.invoke(messages, { timeout: 1000 });
@@ -120,6 +120,39 @@ describe('orchestration service client', () => {
           stack: expect.stringMatching(/Timeout/)
         })
       );
+    });
+
+    it('throws immediately when input filter error occurs', async () => {
+      mockInferenceWithResilience(
+        mockResponseInputFilterError,
+        { retry: 0 },
+        400
+      );
+      const client = new OrchestrationClient(config, {
+        maxRetries: 1000 // Retry forever unless input filter error
+      });
+      await expect(client.invoke(messages)).rejects.toThrow(
+        'Request failed with status code 400'
+      );
+    }, 1000);
+
+    it('throws when delay exceeds timeout during streaming', async () => {
+      mockInferenceWithResilience(mockResponseStream, { delay: 2000 }, 200, true);
+
+      let finalOutput: AIMessageChunk | undefined;
+      const client = new OrchestrationClient(config, { maxRetries: 0 });
+      try {
+        const stream = await client.stream([], { timeout: 1000 });
+        for await (const chunk of stream) {
+          finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
+        }
+      } catch (e) {
+        expect(e).toEqual(
+          expect.objectContaining({
+            stack: expect.stringMatching(/Timeout/)
+          })
+        );
+      }
     });
 
     it('returns successful response when timeout is bigger than delay', async () => {
