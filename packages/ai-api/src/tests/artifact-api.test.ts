@@ -8,7 +8,7 @@ import type {
   AiArtifactCreationResponse,
   AiArtifactList,
   AiArtifactPostData
-} from '../client/AI_CORE_API';
+} from '../client/AI_CORE_API/index.js';
 
 describe('artifact', () => {
   beforeEach(() => {
@@ -16,6 +16,7 @@ describe('artifact', () => {
   });
   afterEach(() => {
     nock.cleanAll();
+    nock.restore();
   });
 
   it('parses a successful response for get request', async () => {

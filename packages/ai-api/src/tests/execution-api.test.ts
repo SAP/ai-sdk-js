@@ -1,5 +1,5 @@
 import nock from 'nock';
-import { ExecutionApi } from '../client/AI_CORE_API';
+import { ExecutionApi } from '../client/AI_CORE_API/index.js';
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
@@ -8,7 +8,7 @@ import type {
   AiEnactmentCreationRequest,
   AiExecutionCreationResponse,
   AiExecutionList
-} from '../client/AI_CORE_API';
+} from '../client/AI_CORE_API/index.js';
 
 describe('execution', () => {
   beforeEach(() => {
@@ -16,6 +16,7 @@ describe('execution', () => {
   });
   afterEach(() => {
     nock.cleanAll();
+    nock.restore();
   });
 
   it('parses a successful response for get request', async () => {

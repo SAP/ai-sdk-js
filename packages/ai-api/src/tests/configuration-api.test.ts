@@ -1,5 +1,5 @@
 import nock from 'nock';
-import { ConfigurationApi } from '../client/AI_CORE_API';
+import { ConfigurationApi } from '../client/AI_CORE_API/index.js';
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
@@ -8,7 +8,7 @@ import type {
   AiConfigurationBaseData,
   AiConfigurationCreationResponse,
   AiConfigurationList
-} from '../client/AI_CORE_API';
+} from '../client/AI_CORE_API/index.js';
 
 describe('configuration', () => {
   beforeEach(() => {
@@ -16,6 +16,7 @@ describe('configuration', () => {
   });
   afterEach(() => {
     nock.cleanAll();
+    nock.restore();
   });
 
   it('parses a successful response for get request', async () => {

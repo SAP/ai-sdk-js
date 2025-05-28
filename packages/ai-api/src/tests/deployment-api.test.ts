@@ -1,5 +1,5 @@
 import nock from 'nock';
-import { DeploymentApi } from '../client/AI_CORE_API';
+import { DeploymentApi } from '../client/AI_CORE_API/index.js';
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall,
@@ -13,7 +13,7 @@ import type {
   AiDeploymentModificationRequest,
   AiDeploymentModificationResponse,
   AiDeploymentTargetStatus
-} from '../client/AI_CORE_API';
+} from '../client/AI_CORE_API/index.js';
 
 describe('deployment', () => {
   beforeEach(() => {
@@ -21,6 +21,7 @@ describe('deployment', () => {
   });
   afterEach(() => {
     nock.cleanAll();
+    nock.restore();
   });
 
   it('parses a successful response for get request', async () => {
