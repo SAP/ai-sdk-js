@@ -131,11 +131,6 @@ export class OrchestrationClient extends BaseChatModel<
     options: typeof this.ParsedCallOptions,
     runManager?: CallbackManagerForLLMRun
   ): AsyncGenerator<ChatGenerationChunk> {
-    const controller = new AbortController();
-    if (options.signal) {
-      options.signal.addEventListener('abort', () => controller.abort());
-    }
-
     const orchestrationMessages =
       mapLangChainMessagesToOrchestrationMessages(messages);
 
@@ -150,15 +145,20 @@ export class OrchestrationClient extends BaseChatModel<
 
     const response = await this.caller.callWithOptions(
       {
-        signal: controller.signal
+        signal: options.signal
       },
-      () =>
-        orchestrationClient.stream(
+      () => {
+        const controller = new AbortController();
+        if (options.signal) {
+          options.signal.addEventListener('abort', () => controller.abort());
+        }
+        return orchestrationClient.stream(
           { messages: orchestrationMessages, inputParams },
           controller,
           options.streamOptions,
           customRequestConfig
-        )
+        );
+      }
     );
 
     for await (const chunk of response.stream) {
