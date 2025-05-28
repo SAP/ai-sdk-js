@@ -236,7 +236,7 @@ export class OrchestrationClient extends BaseChatModel<
       if (!config.templating) {
         config.templating = {};
       }
-      if (config.templating && !isTemplateRef(config.templating)) {
+      if (!isTemplateRef(config.templating)) {
         config.templating.tools = [
           // Preserve existing tools configured in the templating module
           ...(config.templating.tools || []),

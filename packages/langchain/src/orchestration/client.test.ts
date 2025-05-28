@@ -61,10 +61,6 @@ describe('orchestration service client', () => {
     nock.cleanAll();
   });
 
-  afterAll(done => {
-    done();
-  });
-
   function mockInferenceWithResilience(
     response: any,
     resilience: {
@@ -313,9 +309,7 @@ describe('orchestration service client', () => {
           data: mockResponseStream,
           status: 200
         },
-        {
-          url: 'inference/deployments/1234/completion'
-        }
+        endpoint
       );
 
       const client = new OrchestrationClient(config);
@@ -346,9 +340,7 @@ describe('orchestration service client', () => {
           data: mockResponseStream,
           status: 200
         },
-        {
-          url: 'inference/deployments/1234/completion'
-        }
+        endpoint
       );
       const client = new OrchestrationClient(config);
       const controller = new AbortController();
@@ -381,9 +373,7 @@ describe('orchestration service client', () => {
           data: mockResponseStream,
           status: 200
         },
-        {
-          url: 'inference/deployments/1234/completion'
-        }
+        endpoint
       );
       let tokenCount = 0;
       const callbackHandler = {
@@ -428,9 +418,7 @@ describe('orchestration service client', () => {
           data: mockResponseStreamToolCalls,
           status: 200
         },
-        {
-          url: 'inference/deployments/1234/completion'
-        }
+        endpoint
       );
 
       const client = new OrchestrationClient(config);

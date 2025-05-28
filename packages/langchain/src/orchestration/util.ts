@@ -34,7 +34,6 @@ import type {
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
-import { url } from 'inspector';
 
 /**
  * Maps a {@link ChatOrchestrationToolType} to {@link FunctionObject}.
@@ -340,12 +339,9 @@ export function isToolDefinitionLike(
     typeof tool === 'object' &&
     tool !== null &&
     'type' in tool &&
-    tool.type === 'function' &&
     'function' in tool &&
     tool.function !== null &&
-    'name' in tool.function &&
-    typeof tool.function.name === 'string' &&
-    tool.function.name !== null
+    'name' in tool.function
   );
 }
 
