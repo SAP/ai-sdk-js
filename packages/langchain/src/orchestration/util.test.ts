@@ -166,7 +166,7 @@ describe('mapBaseMessageToChatMessage', () => {
     expect(() =>
       mapLangChainMessagesToOrchestrationMessages([toolMessage])
     ).toThrow(
-      'The content type of tool message can only be "text" the Orchestration Client.'
+      'The content type of tool message can only be "text" in the Orchestration Client.'
     );
   });
 });
