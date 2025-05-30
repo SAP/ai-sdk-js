@@ -216,7 +216,7 @@ function mapToolMessageToOrchestrationToolMessage(
     message.content.some(content => content.type !== 'text')
   ) {
     throw new Error(
-      'The content type of tool message can only be "text" the Orchestration Client.'
+      'The content type of tool message can only be "text" in the Orchestration Client.'
     );
   }
   return {
