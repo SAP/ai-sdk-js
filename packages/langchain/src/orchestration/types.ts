@@ -1,12 +1,20 @@
 import type {
   Prompt,
-  Template,
   TemplatingModuleConfig,
-  StreamOptions,
-  OrchestrationModuleConfig as OrchestrationModuleConfigWithStringTemplating
+  OrchestrationModuleConfig as OrchestrationModuleConfigWithStringTemplating,
+  ChatCompletionTool,
+  StreamOptions
 } from '@sap-ai-sdk/orchestration';
-import type { BaseChatModelCallOptions } from '@langchain/core/language_models/chat_models';
+import type {
+  BaseChatModelCallOptions,
+  BindToolsInput
+} from '@langchain/core/language_models/chat_models';
 import type { CustomRequestConfig } from '@sap-ai-sdk/core';
+
+/**
+ * Tool type for LangChain Orchestration client.
+ */
+export type ChatOrchestrationToolType = ChatCompletionTool | BindToolsInput;
 
 /**
  * Options for an orchestration call.
@@ -23,17 +31,25 @@ export type OrchestrationCallOptions = Pick<
   | 'tags'
 > & {
   customRequestConfig?: CustomRequestConfig;
-  tools?: Template['tools'];
+  strict?: boolean;
+  tools?: ChatOrchestrationToolType[];
   inputParams?: Prompt['inputParams'];
   streamOptions?: StreamOptions;
 };
 
 /**
- * Orchestration module configuration for Langchain.
+ * Orchestration module configuration for LangChain.
  */
-export type LangchainOrchestrationModuleConfig = Omit<
+export type LangChainOrchestrationModuleConfig = Omit<
   OrchestrationModuleConfigWithStringTemplating,
   'templating'
 > & {
   templating?: TemplatingModuleConfig;
 };
+
+/**
+ * Orchestration module configuration for LangChain.
+ * @deprecated Use `LangChainOrchestrationModuleConfig` instead.
+ */
+export type LangchainOrchestrationModuleConfig =
+  LangChainOrchestrationModuleConfig;

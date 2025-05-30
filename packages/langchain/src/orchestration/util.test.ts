@@ -1,5 +1,6 @@
 import {
   AIMessage,
+  FunctionMessage,
   AIMessageChunk,
   HumanMessage,
   SystemMessage,
@@ -25,12 +26,13 @@ import type {
   CompletionPostResponseStreaming
 } from '@sap-ai-sdk/orchestration';
 
-describe('mapLangchainMessagesToOrchestrationMessages', () => {
+describe('mapLangChainMessagesToOrchestrationMessages', () => {
   it('should map an array of LangChain messages to Orchestration messages', () => {
     const langchainMessages = [
       new SystemMessage('System message content'),
       new HumanMessage('Human message content'),
-      new AIMessage('AI message content')
+      new AIMessage('AI message content'),
+      new ToolMessage('Tool message content', 'tool_call_id')
     ];
 
     const result =
@@ -39,18 +41,23 @@ describe('mapLangchainMessagesToOrchestrationMessages', () => {
     expect(result).toEqual([
       { role: 'system', content: 'System message content' },
       { role: 'user', content: 'Human message content' },
-      { role: 'assistant', content: 'AI message content' }
+      { role: 'assistant', content: 'AI message content' },
+      {
+        role: 'tool',
+        content: 'Tool message content',
+        tool_call_id: 'tool_call_id'
+      }
     ]);
   });
 
   it('should throw error for unsupported message types', () => {
     const langchainMessages = [
-      new ToolMessage('Tool message content', 'tool-id')
+      new FunctionMessage('Function message content', 'function_name')
     ];
 
     expect(() =>
       mapLangChainMessagesToOrchestrationMessages(langchainMessages)
-    ).toThrow('Unsupported message type: tool');
+    ).toThrow('Unsupported message type: function');
   });
 });
 
@@ -58,12 +65,37 @@ describe('mapBaseMessageToChatMessage', () => {
   it('should map HumanMessage to ChatMessage with user role', () => {
     const humanMessage = new HumanMessage('Human message content');
 
-    // Since mapBaseMessageToChatMessage is internal, we'll test it through mapLangchainMessagesToOrchestrationMessages
+    // Since mapBaseMessageToChatMessage is internal, we'll test it through mapLangChainMessagesToOrchestrationMessages
     const result = mapLangChainMessagesToOrchestrationMessages([humanMessage]);
 
     expect(result[0]).toEqual({
       role: 'user',
       content: 'Human message content'
+    });
+  });
+
+  it('should map HumanMessage with `image_url` to ChatMessage with user role', () => {
+    const humanMessage = new HumanMessage({
+      content: [
+        { type: 'text', text: 'Human message content' },
+        {
+          type: 'image_url',
+          image_url: 'https://example.com/image.jpg'
+        }
+      ]
+    });
+
+    const result = mapLangChainMessagesToOrchestrationMessages([humanMessage]);
+
+    expect(result[0]).toEqual({
+      role: 'user',
+      content: [
+        { type: 'text', text: 'Human message content' },
+        {
+          type: 'image_url',
+          image_url: { url: 'https://example.com/image.jpg' }
+        }
+      ]
     });
   });
 
@@ -89,7 +121,17 @@ describe('mapBaseMessageToChatMessage', () => {
     });
   });
 
-  it('should throw error when mapping SystemMessage with image_url content', () => {
+  it('should map ToolMessage to ChatMessage with tool role', () => {
+    const toolMessage = new ToolMessage('Tool message content', 'tool_call_id');
+    const result = mapLangChainMessagesToOrchestrationMessages([toolMessage]);
+    expect(result[0]).toEqual({
+      role: 'tool',
+      content: 'Tool message content',
+      tool_call_id: 'tool_call_id'
+    });
+  });
+
+  it('should throw error when mapping SystemMessage with unsupported content type like `image_url`', () => {
     const systemMessage = new SystemMessage({
       content: [
         { type: 'text', text: 'System text' },
@@ -103,7 +145,28 @@ describe('mapBaseMessageToChatMessage', () => {
     expect(() =>
       mapLangChainMessagesToOrchestrationMessages([systemMessage])
     ).toThrow(
-      'System messages with image URLs are not supported by the Orchestration Client.'
+      'The content type of system message can only be "text" in the Orchestration Client.'
+    );
+  });
+
+  it('should throw error when mapping ToolMessage with unsupported content type like `image_url`', () => {
+    const toolMessage = new ToolMessage(
+      {
+        content: [
+          { type: 'text', text: 'System text' },
+          {
+            type: 'image_url',
+            image_url: { url: 'https://example.com/image.jpg' }
+          }
+        ]
+      },
+      'tool_call_id'
+    );
+
+    expect(() =>
+      mapLangChainMessagesToOrchestrationMessages([toolMessage])
+    ).toThrow(
+      'The content type of tool message can only be "text" in the Orchestration Client.'
     );
   });
 });

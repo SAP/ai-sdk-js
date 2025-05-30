@@ -2,7 +2,10 @@ import { zodToJsonSchema } from 'zod-to-json-schema';
 import { z } from 'zod';
 import type { ChatCompletionTool } from '../packages/orchestration/src/client/api/schema/index.js';
 
-const addNumbersSchema = z
+/**
+ * @internal
+ */
+export const addNumbersSchema = z
   .object({
     a: z.number().describe('The first number to be added.'),
     b: z.number().describe('The second number to be added.')
@@ -21,6 +24,9 @@ export const addNumbersTool: ChatCompletionTool = {
   }
 };
 
+/**
+ * @internal
+ */
 const multiplyNumbersSchema = z
   .object({
     a: z.number().describe('The first number to multiply.'),

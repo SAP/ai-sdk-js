@@ -13,15 +13,22 @@ import {
   MemorySaver
 } from '@langchain/langgraph';
 import { v4 as uuidv4 } from 'uuid';
-import type { AIMessageChunk } from '@langchain/core/messages';
-import type { LangchainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
+import { tool } from '@langchain/core/tools';
+import {
+  HumanMessage,
+  SystemMessage,
+  ToolMessage
+} from '@langchain/core/messages';
+import z from 'zod';
+import type { BaseMessage, AIMessageChunk } from '@langchain/core/messages';
+import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
 
 /**
  * Ask GPT about an introduction to SAP Cloud SDK.
  * @returns The answer from ChatGPT.
  */
 export async function invokeChain(): Promise<string> {
-  const orchestrationConfig: LangchainOrchestrationModuleConfig = {
+  const orchestrationConfig: LangChainOrchestrationModuleConfig = {
     // define the language model to be used
     llm: {
       model_name: 'gpt-4o'
@@ -51,7 +58,7 @@ export async function invokeChain(): Promise<string> {
  * @returns The answer from ChatGPT.
  */
 export async function invokeChainWithInputFilter(): Promise<string> {
-  const orchestrationConfig: LangchainOrchestrationModuleConfig = {
+  const orchestrationConfig: LangChainOrchestrationModuleConfig = {
     // define the language model to be used
     llm: {
       model_name: 'gpt-4o'
@@ -86,7 +93,7 @@ export async function invokeChainWithInputFilter(): Promise<string> {
  * @returns The answer from ChatGPT.
  */
 export async function invokeChainWithOutputFilter(): Promise<string> {
-  const orchestrationConfig: LangchainOrchestrationModuleConfig = {
+  const orchestrationConfig: LangChainOrchestrationModuleConfig = {
     // define the language model to be used
     llm: {
       model_name: 'gpt-4o'
@@ -126,7 +133,7 @@ export async function invokeChainWithOutputFilter(): Promise<string> {
  * @returns The answer from ChatGPT.
  */
 export async function invokeLangGraphChain(): Promise<string> {
-  const orchestrationConfig: LangchainOrchestrationModuleConfig = {
+  const orchestrationConfig: LangChainOrchestrationModuleConfig = {
     // define the language model to be used
     llm: {
       model_name: 'gpt-4o'
@@ -183,7 +190,7 @@ export async function invokeLangGraphChain(): Promise<string> {
 export async function streamChain(
   controller = new AbortController()
 ): Promise<AsyncIterable<AIMessageChunk>> {
-  const orchestrationConfig: LangchainOrchestrationModuleConfig = {
+  const orchestrationConfig: LangChainOrchestrationModuleConfig = {
     llm: {
       model_name: 'gpt-4o'
     }
@@ -209,7 +216,7 @@ export async function streamChain(
  * @returns The answer from ChatGPT.
  */
 export async function invokeChainWithMasking(): Promise<string> {
-  const orchestrationConfig: LangchainOrchestrationModuleConfig = {
+  const orchestrationConfig: LangChainOrchestrationModuleConfig = {
     // define the language model to be used
     llm: {
       model_name: 'gpt-4o'
@@ -272,4 +279,68 @@ export async function invokeChainWithMasking(): Promise<string> {
           '- Recommended innovative alternatives to generate revenue and reduce unnecessary costs. \n'
       }
     });
+}
+
+/**
+ * Let GPT increase the shareholder value.
+ * @returns The answer from GPT.
+ */
+export async function invokeToolChain(): Promise<string> {
+  // initialize client with options
+  const client = new OrchestrationClient({
+    llm: {
+      model_name: 'gpt-4o'
+    }
+  });
+
+  // create a function to increase the shareholder value
+  function shareholderValueFunction(value: number): string {
+    return `The shareholder value has been increased to ${value * 2}`;
+  }
+
+  // create a tool
+  const shareholderValueTool = tool(shareholderValueFunction, {
+    name: 'shareholder_value',
+    description: 'Multiplies the shareholder value',
+    schema: z.object({
+      value: z.number().describe('The value that is supposed to be increased.')
+    })
+  });
+
+  const messages: BaseMessage[] = [
+    new HumanMessage('Increase the shareholder value, it is currently at 10')
+  ];
+
+  const response = await client
+    .bindTools([shareholderValueTool])
+    .invoke(messages);
+
+  messages.push(response);
+
+  if (
+    Array.isArray(response.tool_calls) &&
+    response.tool_calls[0].name === 'shareholder_value'
+  ) {
+    const shareholderValue = shareholderValueFunction(
+      response.tool_calls[0].args.value
+    );
+
+    const toolMessage = new ToolMessage({
+      content: shareholderValue,
+      tool_call_id: response.tool_calls[0].id ?? 'default'
+    });
+
+    messages.push(toolMessage);
+  } else {
+    const failMessage = new SystemMessage('No tool calls were made');
+    messages.push(failMessage);
+  }
+
+  const finalResponse = await client.invoke(messages);
+
+  // create an output parser
+  const parser = new StringOutputParser();
+
+  // parse the response
+  return parser.invoke(finalResponse);
 }
