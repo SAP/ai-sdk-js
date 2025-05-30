@@ -57,7 +57,7 @@ export function mapToolToOrchestrationFunction(
       ...// If strict defined in kwargs
       ((strict !== undefined && { strict }) ||
         // If strict defined in Orchestration tool function, e.g., set previously when calling `bindTools()`.
-        // Notice that LangChain ToolDeifnition does not have strict property.
+        // Notice that LangChain ToolDefinition does not have strict property.
         ('strict' in tool.function &&
           tool.function.strict !== undefined && {
             strict: tool.function.strict
