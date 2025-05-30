@@ -199,7 +199,7 @@ function mapSystemMessageToOrchestrationSystemMessage(
     message.content.some(content => content.type !== 'text')
   ) {
     throw new Error(
-      'The content type of system message can only be "text" the Orchestration Client.'
+      'The content type of system message can only be "text" in the Orchestration Client.'
     );
   }
   return {
