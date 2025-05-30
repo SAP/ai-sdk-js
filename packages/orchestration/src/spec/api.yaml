@@ -863,11 +863,11 @@ components:
       additionalProperties: false
       properties:
         filters:
-          description: Configuration for content filtering services that should be used for the given filtering step (input filtering or output filtering).
+          description: Configuration for content filtering services that should be used for the given filtering step (input filtering).
           type: array
           minItems: 1
           items:
-            $ref: '#/components/schemas/FilterConfig'
+            $ref: '#/components/schemas/InputFilterConfig'
 
     OutputFilteringConfig:
       type: object
@@ -876,11 +876,11 @@ components:
       additionalProperties: false
       properties:
         filters:
-          description: Configuration for content filtering services that should be used for the given filtering step (input filtering or output filtering).
+          description: Configuration for content filtering services that should be used for the given filtering step (output filtering).
           type: array
           minItems: 1
           items:
-            $ref: '#/components/schemas/FilterConfig'
+            $ref: '#/components/schemas/OutputFilterConfig'
         stream_options:
           $ref: '#/components/schemas/FilteringStreamOptions'
 
@@ -896,12 +896,17 @@ components:
           minimum: 0
           maximum: 10000
 
-    FilterConfig:
+    InputFilterConfig:
       oneOf:
-        - $ref: '#/components/schemas/AzureContentSafetyFilterConfig'
+        - $ref: '#/components/schemas/AzureContentSafetyInputFilterConfig'
         - $ref: '#/components/schemas/LlamaGuard38bFilterConfig'
 
-    AzureContentSafetyFilterConfig:
+    OutputFilterConfig:
+      oneOf:
+        - $ref: '#/components/schemas/AzureContentSafetyOutputFilterConfig'
+        - $ref: '#/components/schemas/LlamaGuard38bFilterConfig'
+
+    AzureContentSafetyInputFilterConfig:
       type: object
       required:
         - type
@@ -914,9 +919,42 @@ components:
             - azure_content_safety
           example: azure_content_safety
         config:
-          $ref: '#/components/schemas/AzureContentSafety'
+          $ref: '#/components/schemas/AzureContentSafetyInput'
 
-    AzureContentSafety:
+    AzureContentSafetyOutputFilterConfig:
+      type: object
+      required:
+        - type
+      additionalProperties: false
+      properties:
+        type:
+          description: Name of the filter provider type
+          type: string
+          enum:
+            - azure_content_safety
+          example: azure_content_safety
+        config:
+          $ref: '#/components/schemas/AzureContentSafetyOutput'
+
+    AzureContentSafetyInput:
+      description: Filter configuration for Azure Content Safety
+      type: object
+      additionalProperties: false
+      properties:
+        Hate:
+          $ref: '#/components/schemas/AzureThreshold'
+        SelfHarm:
+          $ref: '#/components/schemas/AzureThreshold'
+        Sexual:
+          $ref: '#/components/schemas/AzureThreshold'
+        Violence:
+          $ref: '#/components/schemas/AzureThreshold'
+        PromptShield:
+          type: boolean
+          description: A flag to use prompt shield
+          default: false
+
+    AzureContentSafetyOutput:
       description: Filter configuration for Azure Content Safety
       type: object
       additionalProperties: false
