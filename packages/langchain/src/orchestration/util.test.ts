@@ -145,7 +145,7 @@ describe('mapBaseMessageToChatMessage', () => {
     expect(() =>
       mapLangChainMessagesToOrchestrationMessages([systemMessage])
     ).toThrow(
-      'The content type of system message can only be "text" the Orchestration Client.'
+      'The content type of system message can only be "text" in the Orchestration Client.'
     );
   });
 
