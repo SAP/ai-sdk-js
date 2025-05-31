@@ -5,10 +5,10 @@
  */
 import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';
 import type {
+  SearchInput,
+  SearchResults,
   DataRepositories,
-  DataRepository,
-  RetrievalSearchInput,
-  RetievalSearchResults
+  DataRepository
 } from './schema/index.js';
 /**
  * Representation of the 'RetrievalApi'.
@@ -17,12 +17,31 @@ import type {
 export const RetrievalApi = {
   _defaultBasePath: '/lm/document-grounding',
   /**
-   * List all DataRepository objects.
+   * Retrieve relevant content given a query string.
+   * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  search: (
+    body: SearchInput,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
+    new OpenApiRequestBuilder<SearchResults>(
+      'post',
+      '/retrieval/search',
+      {
+        body,
+        headerParameters
+      },
+      RetrievalApi._defaultBasePath
+    ),
+  /**
+   * List all Data Repositories
    * @param queryParameters - Object containing the following keys: $top, $skip, $count.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  getDataRepositories: (
+  retrievalV1RetrievalEndpointsGetDataRepositories: (
     queryParameters: { $top?: number; $skip?: number; $count?: boolean },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
@@ -36,12 +55,12 @@ export const RetrievalApi = {
       RetrievalApi._defaultBasePath
     ),
   /**
-   * List single DataRepository object.
-   * @param repositoryId - Path parameter.
+   * List data repository by id
+   * @param repositoryId - Repository ID
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  getDataRepositoryById: (
+  retrievalV1RetrievalEndpointsGetDataRepository: (
     repositoryId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
@@ -50,25 +69,6 @@ export const RetrievalApi = {
       '/retrieval/dataRepositories/{repositoryId}',
       {
         pathParameters: { repositoryId },
-        headerParameters
-      },
-      RetrievalApi._defaultBasePath
-    ),
-  /**
-   * Retrieve relevant content given a query string.
-   * @param body - Request body.
-   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
-   * @returns The request builder, use the `execute()` method to trigger the request.
-   */
-  search: (
-    body: RetrievalSearchInput,
-    headerParameters: { 'AI-Resource-Group': string }
-  ) =>
-    new OpenApiRequestBuilder<RetievalSearchResults>(
-      'post',
-      '/retrieval/search',
-      {
-        body,
         headerParameters
       },
       RetrievalApi._defaultBasePath
