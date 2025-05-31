@@ -5,9 +5,9 @@
  */
 import type { RetrievalSearchFilter } from './retrieval-search-filter.js';
 /**
- * Representation of the 'RetrievalSearchInput' schema.
+ * Representation of the 'SearchInput' schema.
  */
-export type RetrievalSearchInput = {
+export type SearchInput = {
   /**
    * Query string
    * Min Length: 1.

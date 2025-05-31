@@ -5,6 +5,8 @@
  */
 
 /**
- * Representation of the 'DataRepositoryType' schema.
+ * Representation of the 'PerFilterSearchResultError' schema.
  */
-export type DataRepositoryType = 'vector' | 'help.sap.com' | any;
+export type PerFilterSearchResultError = {
+  message: string;
+} & Record<string, any>;

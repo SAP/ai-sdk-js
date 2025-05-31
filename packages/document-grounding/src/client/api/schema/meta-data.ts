@@ -5,6 +5,11 @@
  */
 
 /**
- * Representation of the 'DataRepositoryType' schema.
+ * Representation of the 'MetaData' schema.
  */
-export type DataRepositoryType = 'vector' | 'help.sap.com' | any;
+export type MetaData = {
+  /**
+   * @example "destination-name"
+   */
+  destination: string;
+} & Record<string, any>;

@@ -5,8 +5,8 @@
  */
 import type { DataRepositoryWithDocuments } from './data-repository-with-documents.js';
 /**
- * Representation of the 'RetievalDataRepositorySearchResult' schema.
+ * Representation of the 'DataRepositorySearchResult' schema.
  */
-export type RetievalDataRepositorySearchResult = {
+export type DataRepositorySearchResult = {
   dataRepository: DataRepositoryWithDocuments;
 } & Record<string, any>;
