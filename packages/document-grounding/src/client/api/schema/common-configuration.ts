@@ -3,11 +3,13 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { DataRepository } from './data-repository.js';
+
 /**
- * Representation of the 'DataRepositories' schema.
+ * Representation of the 'CommonConfiguration' schema.
  */
-export type DataRepositories = {
-  count?: number;
-  resources: DataRepository[];
+export type CommonConfiguration = {
+  /**
+   * @example "generic-secret-name"
+   */
+  destination: string;
 } & Record<string, any>;

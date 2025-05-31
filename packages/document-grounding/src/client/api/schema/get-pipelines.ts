@@ -3,10 +3,11 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-
+import type { GetPipeline } from './get-pipeline.js';
 /**
- * Representation of the 'RetievalPerFilterSearchResultWithError' schema.
+ * Representation of the 'GetPipelines' schema.
  */
-export type RetievalPerFilterSearchResultWithError = {
-  message: string;
+export type GetPipelines = {
+  count?: number;
+  resources: GetPipeline[];
 } & Record<string, any>;
