@@ -26,7 +26,7 @@ export type LLMModuleResultSynchronous = {
   created: number;
   /**
    * Model name
-   * @example "gpt-4"
+   * @example "gpt-4o-mini"
    */
   model: string;
   /**
