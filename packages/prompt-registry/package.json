@@ -33,6 +33,6 @@
   },
   "dependencies": {
     "@sap-ai-sdk/core": "workspace:^",
-    "zod": "^3.25.39"
+    "zod": "^3.25.49"
   }
 }
