@@ -453,7 +453,7 @@ components:
       properties:
         model_name:
           description: Model name as in LLM Access configuration
-          example: 'gpt-4'
+          example: 'gpt-4o-mini'
           type: string
         model_params: # optional, default values are used for mandatory model parameters
           description: Model parameters
@@ -510,7 +510,7 @@ components:
         model:
           type: string
           description: Model name
-          example: 'gpt-4'
+          example: 'gpt-4o-mini'
         system_fingerprint:
           type: string
           description: System fingerprint
@@ -649,8 +649,6 @@ components:
           description: >
             Response format that the model output should adhere to.
             This is the same as the OpenAI definition.
-
-            Compatible with GPT-4o, GPT-4o mini, GPT-4 (Turbo) and all GPT-3.5 Turbo models newer than gpt-3.5-turbo-1106.
           oneOf:
             - $ref: '#/components/schemas/ResponseFormatText'
             - $ref: '#/components/schemas/ResponseFormatJsonObject'
@@ -1398,7 +1396,7 @@ components:
           example: 400
         message:
           type: string
-          example: "Model name must be one of ['gpt-4', ...]"
+          example: "Model name must be one of ['gpt-4o-mini', ...]"
         location:
           type: string
           description: Where the error occurred
