@@ -21,7 +21,7 @@ export type ErrorResponse = {
    */
   code: number;
   /**
-   * @example "Model name must be one of ['gpt-4', ...]"
+   * @example "Model name must be one of ['gpt-4o-mini', ...]"
    */
   message: string;
   /**
