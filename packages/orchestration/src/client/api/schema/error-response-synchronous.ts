@@ -3,11 +3,11 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { ModuleResults } from './module-results.js';
+import type { ModuleResultsSynchronous } from './module-results-synchronous.js';
 /**
- * Representation of the 'ErrorResponse' schema.
+ * Representation of the 'ErrorResponseSynchronous' schema.
  */
-export type ErrorResponse = {
+export type ErrorResponseSynchronous = {
   /**
    * @example "d4a67ea1-2bf9-4df7-8105-d48203ccff76"
    */
@@ -17,7 +17,7 @@ export type ErrorResponse = {
    */
   code: number;
   /**
-   * @example "Model name must be one of ['gpt-4', ...]"
+   * @example "Model name must be one of ['gpt-4o-mini', ...]"
    */
   message: string;
   /**
@@ -25,5 +25,5 @@ export type ErrorResponse = {
    * @example "LLM Module"
    */
   location: string;
-  module_results?: ModuleResults;
+  module_results?: ModuleResultsSynchronous;
 } & Record<string, any>;

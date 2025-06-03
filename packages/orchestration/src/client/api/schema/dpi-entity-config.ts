@@ -3,13 +3,9 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { DpiEntities } from './dpi-entities.js';
+import type { DPIStandardEntity } from './dpi-standard-entity.js';
+import type { DPICustomEntity } from './dpi-custom-entity.js';
 /**
  * Representation of the 'DpiEntityConfig' schema.
  */
-export type DpiEntityConfig = {
-  /**
-   * Type of entity to be masked
-   */
-  type: DpiEntities;
-};
+export type DpiEntityConfig = DPIStandardEntity | DPICustomEntity;
