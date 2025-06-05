@@ -9,9 +9,9 @@ import {
   mapToolToChatCompletionTool,
   mapOrchestrationChunkToLangChainMessageChunk,
   setFinishReason,
-  setTokenUsage,
-  computeTokenIndices
+  setTokenUsage
 } from './util.js';
+import type { NewTokenIndices } from '@langchain/core/callbacks/base';
 import type { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
 import type { BaseLanguageModelInput } from '@langchain/core/language_models/base';
 import type { Runnable, RunnableLike } from '@langchain/core/runnables';
@@ -183,7 +183,10 @@ export class OrchestrationClient extends BaseChatModel<
 
     for await (const chunk of response.stream) {
       const messageChunk = mapOrchestrationChunkToLangChainMessageChunk(chunk);
-      const tokenIndices = computeTokenIndices(chunk);
+      const newTokenIndices: NewTokenIndices = {
+        prompt: options.promptIndex ?? 0,
+        completion: 0
+      };
       const finishReason = response.getFinishReason();
       const tokenUsage = response.getTokenUsage();
 
@@ -194,14 +197,14 @@ export class OrchestrationClient extends BaseChatModel<
       const generationChunk = new ChatGenerationChunk({
         message: messageChunk,
         text: content,
-        generationInfo: { ...tokenIndices }
+        generationInfo: { ...newTokenIndices }
       });
 
       // Notify the run manager about the new token
       // Some parameters(`_runId`, `_parentRunId`, `_tags`) are set as undefined as they are implicitly read from the context.
       await runManager?.handleLLMNewToken(
         content,
-        tokenIndices,
+        newTokenIndices,
         undefined,
         undefined,
         undefined,

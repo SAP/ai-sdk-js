@@ -34,6 +34,7 @@ import type {
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
+import { NewTokenIndices } from '@langchain/core/callbacks/base';
 
 /**
  * Maps a {@link ChatOrchestrationToolType} to {@link FunctionObject}.
@@ -407,25 +408,4 @@ export function setTokenUsage(
     };
     messageChunk.response_metadata.token_usage = tokenUsage;
   }
-}
-
-/**
- * Computes token indices for a chunk of the orchestration stream response.
- * @param chunk - A chunk of the orchestration stream response.
- * @returns An object with prompt and completion indices.
- * @internal
- */
-// TODO: Remove after https://github.com/SAP/ai-sdk-js-backlog/issues/321
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function computeTokenIndices(chunk: OrchestrationStreamChunkResponse): {
-  prompt: number;
-  completion: number;
-} {
-  return {
-    // Indicates the token is part of the first prompt
-    prompt: 0,
-    // Hardcoding to 0 as mutiple choices are not currently supported in the orchestration service.
-    // TODO: Switch to `chunk.data.orchestration_result.choices[0].index` when support is added via https://github.com/SAP/ai-sdk-js-backlog/issues/321
-    completion: 0
-  };
 }

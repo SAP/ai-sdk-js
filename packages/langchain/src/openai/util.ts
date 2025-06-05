@@ -1,8 +1,8 @@
-import { AIMessage } from '@langchain/core/messages';
+import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { v4 as uuidv4 } from 'uuid';
 import { isZodSchema } from '@langchain/core/utils/types';
-import type { ToolCall } from '@langchain/core/messages/tool';
+import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type {
   AzureOpenAiChatCompletionRequestUserMessage,
   AzureOpenAiChatCompletionRequestAssistantMessage,
@@ -15,7 +15,11 @@ import type {
   AzureOpenAiChatCompletionRequestToolMessage,
   AzureOpenAiChatCompletionRequestFunctionMessage,
   AzureOpenAiChatCompletionRequestSystemMessage,
-  AzureOpenAiFunctionObject
+  AzureOpenAiFunctionObject,
+  AzureOpenAiChatCompletionStreamChunkResponse,
+  AzureOpenAiChatCompletionMessageToolCallChunk,
+  AzureOpenAiCompletionUsage,
+  AzureOpenAiCreateChatCompletionStreamResponse
 } from '@sap-ai-sdk/foundation-models';
 import type {
   BaseMessage,
@@ -34,6 +38,7 @@ import type {
   FunctionDefinition,
   ToolDefinition
 } from '@langchain/core/language_models/base';
+import { NewTokenIndices } from '@langchain/core/callbacks/base';
 
 /**
  * Maps a {@link ChatAzureOpenAIToolType} to {@link AzureOpenAiFunctionObject}.
@@ -60,8 +65,8 @@ export function mapToolToOpenAiFunction(
         // Notice that LangChain ToolDeifnition does not have strict property.
         ('strict' in tool.function &&
           tool.function.strict !== undefined && {
-            strict: tool.function.strict
-          }))
+          strict: tool.function.strict
+        }))
     };
   }
   // StructuredTool like object
@@ -300,6 +305,102 @@ export function mapLangChainToAiClient(
     tools: options?.tools?.map(t => mapToolToOpenAiTool(t)),
     tool_choice: options?.tool_choice
   });
+}
+
+/**
+ * Converts Azure OpenAI stream chunk to a LangChain message chunk.
+ * @param chunk - The Azure OpenAI stream chunk.
+ * @returns An {@link AIMessageChunk}
+ * @internal
+ */
+export function mapAzureOpenAIChunkToLangChainMessageChunk(
+  chunk: AzureOpenAiChatCompletionStreamChunkResponse,
+  choiceIndex: number
+): AIMessageChunk {
+  const { id, created, model, object, system_fingerprint } = chunk.data;
+  const additional_kwargs: Record<string, unknown> = {
+    id,
+    created,
+    model,
+    object,
+    system_fingerprint
+  };
+
+  const content = chunk.getDeltaContent(choiceIndex) ?? '';
+  const toolCallChunks = chunk.getDeltaToolCalls(choiceIndex);
+
+  let tool_call_chunks: ToolCallChunk[] = [];
+  if (toolCallChunks) {
+    tool_call_chunks = mapAzureOpenAIToLangChainToolCallChunk(toolCallChunks);
+  }
+
+  return new AIMessageChunk({ content, additional_kwargs, tool_call_chunks });
+}
+
+/**
+ * Maps {@link AzureOpenAiChatCompletionMessageToolCallChunk} to LangChain's {@link ToolCallChunk}.
+ * @param toolCallChunks - The {@link AzureOpenAiChatCompletionMessageToolCallChunk} in a stream response chunk.
+ * @returns An array of LangChain {@link ToolCallChunk}.
+ */
+function mapAzureOpenAIToLangChainToolCallChunk(
+  toolCallChunks: AzureOpenAiChatCompletionMessageToolCallChunk[]
+): ToolCallChunk[] {
+  return toolCallChunks.map(chunk => ({
+    name: chunk.function?.name,
+    args: chunk.function?.arguments,
+    id: chunk.id,
+    index: chunk.index,
+    type: 'tool_call_chunk'
+  }));
+}
+
+/**
+ * Computes token indices for a chunk of the Azure OpenAI stream response.
+ * @param chunk - A chunk of the Azure OpenAI stream response.
+ * @returns An object with prompt and completion indices.
+ * @internal
+ */
+export function computeTokenIndices(chunk: AzureOpenAiChatCompletionStreamChunkResponse, choiceIndex: number): NewTokenIndices {
+  return {
+    // TODO: This is wrong. We only get token for the whole response, not for each choice.
+    prompt: choiceIndex,
+    completion: chunk.getTokenUsage()?.total_tokens ?? 0
+  };
+}
+
+/**
+ * Sets finish reason on a LangChain message chunk if available.
+ * @param messageChunk - The LangChain message chunk to update.
+ * @param finishReason - The finish reason from the response.
+ * @internal
+ */
+export function setFinishReason(
+  messageChunk: AIMessageChunk,
+  finishReason?: AzureOpenAiCreateChatCompletionStreamResponse['choices'][0]['finish_reason']
+): void {
+  if (finishReason) {
+    messageChunk.response_metadata.finish_reason = finishReason;
+  }
+}
+
+/**
+ * Sets usage metadata on a message chunk if available.
+ * @param messageChunk - The LangChain message chunk to update.
+ * @param tokenUsage - The token usage information.
+ * @internal
+ */
+export function setTokenUsage(
+  messageChunk: AIMessageChunk,
+  tokenUsage?: AzureOpenAiCompletionUsage
+): void {
+  if (tokenUsage) {
+    messageChunk.usage_metadata = {
+      input_tokens: tokenUsage.prompt_tokens,
+      output_tokens: tokenUsage.completion_tokens,
+      total_tokens: tokenUsage.total_tokens
+    };
+    messageChunk.response_metadata.token_usage = tokenUsage;
+  }
 }
 
 function removeUndefinedProperties<T extends object>(obj: T): T {
