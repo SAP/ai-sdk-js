@@ -10,7 +10,7 @@
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
     "express": "^5.1.0",
-    "@sap/xssec": "^4.7.0",
+    "@sap/xssec": "^4.8.0",
     "@sap/cds": "^9.0.2"
   },
   "devDependencies": {
