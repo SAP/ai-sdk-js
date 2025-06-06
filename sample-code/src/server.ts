@@ -42,7 +42,8 @@ import {
   invokeChain,
   invokeRagChain,
   invoke,
-  invokeToolChain
+  invokeToolChain,
+  streamChain
 } from './langchain-azure-openai.js';
 import {
   invokeChain as invokeChainOrchestration,
@@ -483,6 +484,53 @@ app.get('/langchain/invoke-stateful-chain', async (req, res) => {
   }
 });
 
+app.get('/langchain/stream-azure-openai', async (req, res) => {
+  const controller = new AbortController();
+  try {
+    const stream = await streamChain(controller);
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    let connectionAlive = true;
+    res.on('close', () => {
+      controller.abort();
+      connectionAlive = false;
+      res.end();
+    });
+
+    let finalResult: AIMessageChunk | undefined;
+    for await (const chunk of stream) {
+      if (!connectionAlive) {
+        break;
+      }
+      res.write(chunk.content);
+      finalResult = finalResult ? finalResult.concat(chunk) : chunk;
+    }
+    console.log(JSON.stringify(finalResult, null, 2));
+    if (connectionAlive && finalResult?.usage_metadata) {
+      res.write('\n\n---------------------------\n');
+      res.write(
+        `Finish reason:  ${finalResult.response_metadata?.finish_reason}\n`
+      );
+      res.write('Token usage:\n');
+      res.write(
+        `  - Completion tokens: ${finalResult.usage_metadata?.output_tokens}\n`
+      );
+      res.write(
+        `  - Prompt tokens: ${finalResult.usage_metadata?.input_tokens}\n`
+      );
+      res.write(
+        `  - Total tokens: ${finalResult.usage_metadata?.total_tokens}\n`
+      );
+    }
+  } catch (error: any) {
+    sendError(res, error, false);
+  } finally {
+    res.end();
+  }
+});
+
 app.get('/langchain/stream-orchestration', async (req, res) => {
   const controller = new AbortController();
   try {
@@ -503,9 +551,10 @@ app.get('/langchain/stream-orchestration', async (req, res) => {
       if (!connectionAlive) {
         break;
       }
-      res.write(chunk.content + '\n');
+      res.write(chunk.content);
       finalResult = finalResult ? finalResult.concat(chunk) : chunk;
     }
+    console.log(JSON.stringify(finalResult, null, 2));
     if (connectionAlive && finalResult?.usage_metadata) {
       res.write('\n\n---------------------------\n');
       res.write(

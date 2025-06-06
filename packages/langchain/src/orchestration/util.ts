@@ -61,8 +61,8 @@ export function mapToolToOrchestrationFunction(
         // Notice that LangChain ToolDefinition does not have strict property.
         ('strict' in tool.function &&
           tool.function.strict !== undefined && {
-            strict: tool.function.strict
-          }))
+          strict: tool.function.strict
+        }))
     };
   }
   // StructuredTool like object
@@ -179,10 +179,10 @@ function mapHumanMessageToChatMessage(message: HumanMessage): UserChatMessage {
       ...content,
       ...(content.type === 'image_url' && typeof content.image_url === 'string'
         ? {
-            image_url: {
-              url: content.image_url
-            }
+          image_url: {
+            url: content.image_url
           }
+        }
         : {})
     }));
   }
@@ -294,21 +294,17 @@ export function mapOutputToChatResult(
         content: choice.message.content ?? '',
         tool_calls: mapOrchestrationToLangChainToolCall(
           choice.message.tool_calls
-        ),
-        additional_kwargs: {
-          finish_reason: choice.finish_reason,
-          index: choice.index,
-          function_call: choice.message.function_call,
-          tool_calls: choice.message.tool_calls,
-          module_results,
-          request_id
-        }
+        )
       }),
+      additional_kwargs: {
+        tool_calls: choice.message.tool_calls,
+        module_results
+      },
       generationInfo: {
         finish_reason: choice.finish_reason,
         index: choice.index,
-        function_call: choice.message.function_call,
-        tool_calls: choice.message.tool_calls
+        tool_calls: choice.message.tool_calls,
+        request_id
       }
     })),
     llmOutput: {
@@ -357,55 +353,16 @@ export function isToolDefinitionLike(
 export function mapOrchestrationChunkToLangChainMessageChunk(
   chunk: OrchestrationStreamChunkResponse
 ): AIMessageChunk {
-  const { module_results, request_id } = chunk.data;
+  const choice = chunk.data.orchestration_result?.choices[0];
   const content = chunk.getDeltaContent() ?? '';
-  const toolCallChunks = chunk.getDeltaToolCalls();
-
-  const additional_kwargs: Record<string, unknown> = {
-    module_results,
-    request_id
-  };
-
-  let tool_call_chunks: ToolCallChunk[] = [];
-  if (toolCallChunks) {
-    tool_call_chunks = mapOrchestrationToLangChainToolCallChunk(toolCallChunks);
-  }
-  // Use `AIMessageChunk` to represent message chunks for roles such as 'tool' and 'user' as well.
-  // While the `ChatDelta` type can accommodate other roles in the orchestration service's stream chunk response, in realtime, we only expect messages with the 'assistant' role to be returned.
-  return new AIMessageChunk({ content, additional_kwargs, tool_call_chunks });
-}
-
-/**
- * Sets finish reason on a LangChain message chunk if available.
- * @param messageChunk - The LangChain message chunk to update.
- * @param finishReason - The finish reason from the response.
- * @internal
- */
-export function setFinishReason(
-  messageChunk: AIMessageChunk,
-  finishReason?: string
-): void {
-  if (finishReason) {
-    messageChunk.response_metadata.finish_reason = finishReason;
-  }
-}
-
-/**
- * Sets usage metadata on a message chunk if available.
- * @param messageChunk - The LangChain message chunk to update.
- * @param tokenUsage - The token usage information.
- * @internal
- */
-export function setTokenUsage(
-  messageChunk: AIMessageChunk,
-  tokenUsage?: TokenUsage
-): void {
-  if (tokenUsage) {
-    messageChunk.usage_metadata = {
-      input_tokens: tokenUsage.prompt_tokens,
-      output_tokens: tokenUsage.completion_tokens,
-      total_tokens: tokenUsage.total_tokens
-    };
-    messageChunk.response_metadata.token_usage = tokenUsage;
-  }
+  const toolCallChunks = choice?.delta.tool_calls;
+  return new AIMessageChunk({
+    content,
+    additional_kwargs: {
+      module_results: chunk.data.module_results // TODO: Fix concat issue
+    },
+    ...(toolCallChunks && {
+      tool_call_chunks: mapOrchestrationToLangChainToolCallChunk(toolCallChunks)
+    })
+  });
 }

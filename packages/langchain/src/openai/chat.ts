@@ -5,9 +5,7 @@ import {
   mapAzureOpenAIChunkToLangChainMessageChunk,
   mapLangChainToAiClient,
   mapOutputToChatResult,
-  mapToolToOpenAiTool,
-  setFinishReason,
-  setTokenUsage
+  mapToolToOpenAiTool
 } from './util.js';
 import type { NewTokenIndices } from '@langchain/core/callbacks/base';
 import type { BaseLanguageModelInput } from '@langchain/core/language_models/base';
@@ -137,38 +135,61 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
     );
 
     for await (const chunk of response.stream) {
-      for (const choice of chunk.data.choices) {
-        const messageChunk = mapAzureOpenAIChunkToLangChainMessageChunk(chunk, choice.index);
-        const newTokenIndices: NewTokenIndices = {
-          prompt: options.promptIndex ?? 0,
-          completion: choice.index ?? 0
-        };
-        const finishReason = response.getFinishReason(0);
-        const tokenUsage = response.getTokenUsage();
+      // There can be only none or one choice inside a chunk
+      const choice = chunk.data.choices[0];
 
-        setFinishReason(messageChunk, finishReason);
-        setTokenUsage(messageChunk, tokenUsage);
-        const content = chunk.getDeltaContent() ?? '';
+      // Map the chunk to a LangChain message chunk
+      const messageChunk = mapAzureOpenAIChunkToLangChainMessageChunk(chunk);
 
-        const generationChunk = new ChatGenerationChunk({
-          message: messageChunk,
-          text: content,
-          generationInfo: { ...newTokenIndices }
-        });
-
-        // Notify the run manager about the new token
-        // Some parameters(`_runId`, `_parentRunId`, `_tags`) are set as undefined as they are implicitly read from the context.
-        await runManager?.handleLLMNewToken(
-          content,
-          newTokenIndices,
-          undefined,
-          undefined,
-          undefined,
-          { chunk: generationChunk }
-        );
-
-        yield generationChunk;
+      // Create initial generation info with token indices
+      const newTokenIndices: NewTokenIndices = {
+        prompt: options.promptIndex ?? 0,
+        completion: choice?.index ?? 0
       };
-    }
+      const generationInfo: Record<string, any> = { ...newTokenIndices };
+
+      // Process finish reason
+      if (choice?.finish_reason) {
+        generationInfo.finish_reason = choice.finish_reason;
+        // Only include system fingerprint in the last chunk for now to avoid concatenation issues
+        generationInfo.system_fingerprint = chunk.data.system_fingerprint;
+        generationInfo.model_name = chunk.data.model;
+        generationInfo.id = chunk.data.id;
+        generationInfo.created = chunk.data.created;
+        generationInfo.index = choice.index;
+      }
+
+      // Process token usage
+      const tokenUsage = chunk.getTokenUsage();
+      if (tokenUsage) {
+        generationInfo.token_usage = tokenUsage;
+        messageChunk.usage_metadata = {
+          input_tokens: tokenUsage.prompt_tokens,
+          output_tokens: tokenUsage.completion_tokens,
+          total_tokens: tokenUsage.total_tokens
+        };
+      }
+
+      const content = chunk.getDeltaContent() ?? '';
+
+      const generationChunk = new ChatGenerationChunk({
+        message: messageChunk,
+        text: content,
+        generationInfo
+      });
+
+      // Notify the run manager about the new token
+      // Some parameters(`_runId`, `_parentRunId`, `_tags`) are set as undefined as they are implicitly read from the context.
+      await runManager?.handleLLMNewToken(
+        content,
+        newTokenIndices,
+        undefined,
+        undefined,
+        undefined,
+        { chunk: generationChunk }
+      );
+
+      yield generationChunk;
+    };
   }
 }

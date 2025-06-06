@@ -49,7 +49,9 @@ export class AzureOpenAiChatCompletionStreamChunkResponse {
    * @param choiceIndex - The index of the choice to parse.
    * @returns The delta tool calls for the specified choice index.
    */
-  getDeltaToolCalls(choiceIndex = 0): AzureOpenAiChatCompletionMessageToolCallChunk[] | undefined {
+  getDeltaToolCalls(
+    choiceIndex = 0
+  ): AzureOpenAiChatCompletionMessageToolCallChunk[] | undefined {
     return this.findChoiceByIndex(choiceIndex)?.delta.tool_calls;
   }
 
@@ -58,7 +60,9 @@ export class AzureOpenAiChatCompletionStreamChunkResponse {
    * @param index - The index of the choice to find.
    * @returns An {@link LLMChoiceStreaming} object associated withe index.
    */
-  findChoiceByIndex(index: number): AzureOpenAiCreateChatCompletionStreamResponse['choices'][0] | undefined {
+  findChoiceByIndex(
+    index: number
+  ): AzureOpenAiCreateChatCompletionStreamResponse['choices'][0] | undefined {
     return this.getChoices()?.find(c => c.index === index);
   }
 

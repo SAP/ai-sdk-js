@@ -2,6 +2,7 @@ import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { v4 as uuidv4 } from 'uuid';
 import { isZodSchema } from '@langchain/core/utils/types';
+import type { NewTokenIndices } from '@langchain/core/callbacks/base';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type {
   AzureOpenAiChatCompletionRequestUserMessage,
@@ -18,8 +19,7 @@ import type {
   AzureOpenAiFunctionObject,
   AzureOpenAiChatCompletionStreamChunkResponse,
   AzureOpenAiChatCompletionMessageToolCallChunk,
-  AzureOpenAiCompletionUsage,
-  AzureOpenAiCreateChatCompletionStreamResponse
+  AzureOpenAiCompletionUsage
 } from '@sap-ai-sdk/foundation-models';
 import type {
   BaseMessage,
@@ -38,7 +38,6 @@ import type {
   FunctionDefinition,
   ToolDefinition
 } from '@langchain/core/language_models/base';
-import { NewTokenIndices } from '@langchain/core/callbacks/base';
 
 /**
  * Maps a {@link ChatAzureOpenAIToolType} to {@link AzureOpenAiFunctionObject}.
@@ -133,8 +132,6 @@ export function mapOutputToChatResult(
           choice.message.tool_calls
         ),
         additional_kwargs: {
-          finish_reason: choice.finish_reason,
-          index: choice.index,
           function_call: choice.message.function_call,
           tool_calls: choice.message.tool_calls
         }
@@ -314,27 +311,17 @@ export function mapLangChainToAiClient(
  * @internal
  */
 export function mapAzureOpenAIChunkToLangChainMessageChunk(
-  chunk: AzureOpenAiChatCompletionStreamChunkResponse,
-  choiceIndex: number
+  chunk: AzureOpenAiChatCompletionStreamChunkResponse
 ): AIMessageChunk {
-  const { id, created, model, object, system_fingerprint } = chunk.data;
-  const additional_kwargs: Record<string, unknown> = {
-    id,
-    created,
-    model,
-    object,
-    system_fingerprint
-  };
-
-  const content = chunk.getDeltaContent(choiceIndex) ?? '';
-  const toolCallChunks = chunk.getDeltaToolCalls(choiceIndex);
-
-  let tool_call_chunks: ToolCallChunk[] = [];
-  if (toolCallChunks) {
-    tool_call_chunks = mapAzureOpenAIToLangChainToolCallChunk(toolCallChunks);
-  }
-
-  return new AIMessageChunk({ content, additional_kwargs, tool_call_chunks });
+  const choice = chunk.data.choices[0];
+  const content = choice?.delta.content ?? '';
+  const toolCallChunks = choice?.delta.tool_calls;
+  return new AIMessageChunk({
+    content,
+    ...(toolCallChunks && {
+      tool_call_chunks: mapAzureOpenAIToLangChainToolCallChunk(toolCallChunks)
+    }),
+  });
 }
 
 /**
@@ -366,41 +353,6 @@ export function computeTokenIndices(chunk: AzureOpenAiChatCompletionStreamChunkR
     prompt: choiceIndex,
     completion: chunk.getTokenUsage()?.total_tokens ?? 0
   };
-}
-
-/**
- * Sets finish reason on a LangChain message chunk if available.
- * @param messageChunk - The LangChain message chunk to update.
- * @param finishReason - The finish reason from the response.
- * @internal
- */
-export function setFinishReason(
-  messageChunk: AIMessageChunk,
-  finishReason?: AzureOpenAiCreateChatCompletionStreamResponse['choices'][0]['finish_reason']
-): void {
-  if (finishReason) {
-    messageChunk.response_metadata.finish_reason = finishReason;
-  }
-}
-
-/**
- * Sets usage metadata on a message chunk if available.
- * @param messageChunk - The LangChain message chunk to update.
- * @param tokenUsage - The token usage information.
- * @internal
- */
-export function setTokenUsage(
-  messageChunk: AIMessageChunk,
-  tokenUsage?: AzureOpenAiCompletionUsage
-): void {
-  if (tokenUsage) {
-    messageChunk.usage_metadata = {
-      input_tokens: tokenUsage.prompt_tokens,
-      output_tokens: tokenUsage.completion_tokens,
-      total_tokens: tokenUsage.total_tokens
-    };
-    messageChunk.response_metadata.token_usage = tokenUsage;
-  }
 }
 
 function removeUndefinedProperties<T extends object>(obj: T): T {

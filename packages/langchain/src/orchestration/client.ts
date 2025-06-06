@@ -7,9 +7,7 @@ import {
   mapLangChainMessagesToOrchestrationMessages,
   mapOutputToChatResult,
   mapToolToChatCompletionTool,
-  mapOrchestrationChunkToLangChainMessageChunk,
-  setFinishReason,
-  setTokenUsage
+  mapOrchestrationChunkToLangChainMessageChunk
 } from './util.js';
 import type { NewTokenIndices } from '@langchain/core/callbacks/base';
 import type { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
@@ -182,22 +180,49 @@ export class OrchestrationClient extends BaseChatModel<
     );
 
     for await (const chunk of response.stream) {
+      const orchestrationResult = chunk.data.orchestration_result;
+      // There can be only none or one choice inside a chunk
+      const choice = orchestrationResult?.choices[0];
+
+      // Map the chunk to a LangChain message chunk
       const messageChunk = mapOrchestrationChunkToLangChainMessageChunk(chunk);
+
+      // Create initial generation info with token indices
       const newTokenIndices: NewTokenIndices = {
         prompt: options.promptIndex ?? 0,
-        completion: 0
+        completion: choice?.index ?? 0
       };
-      const finishReason = response.getFinishReason();
-      const tokenUsage = response.getTokenUsage();
+      const generationInfo: Record<string, any> = { ...newTokenIndices };
 
-      setFinishReason(messageChunk, finishReason);
-      setTokenUsage(messageChunk, tokenUsage);
+      // Process finish reason
+      if (choice?.finish_reason && orchestrationResult) {
+        generationInfo.finish_reason = choice.finish_reason;
+        // Only include system fingerprint in the last chunk for now to avoid concatenation issues
+        generationInfo.system_fingerprint = orchestrationResult.system_fingerprint;
+        generationInfo.model_name = orchestrationResult.model;
+        generationInfo.id = orchestrationResult.id;
+        generationInfo.created = orchestrationResult.created;
+        generationInfo.module_results = chunk.data.module_results;
+        generationInfo.request_id = chunk.data.request_id;
+      }
+
+      // Process token usage
+      const tokenUsage = chunk.getTokenUsage();
+      if (tokenUsage) {
+        generationInfo.token_usage = tokenUsage;
+        messageChunk.usage_metadata = {
+          input_tokens: tokenUsage.prompt_tokens,
+          output_tokens: tokenUsage.completion_tokens,
+          total_tokens: tokenUsage.total_tokens
+        };
+      }
+
       const content = chunk.getDeltaContent() ?? '';
 
       const generationChunk = new ChatGenerationChunk({
         message: messageChunk,
         text: content,
-        generationInfo: { ...newTokenIndices }
+        generationInfo
       });
 
       // Notify the run manager about the new token
