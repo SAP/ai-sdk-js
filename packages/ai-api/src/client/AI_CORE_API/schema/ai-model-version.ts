@@ -48,4 +48,12 @@ export type AiModelVersion = {
    * List of suggested replacements for the model
    */
   suggestedReplacements?: string[];
+  /**
+   * Streaming support status of the model
+   */
+  streamingSupported?: boolean;
+  /**
+   * List of model capabilities supported by orchestration service
+   */
+  orchestrationCapabilities?: string[];
 } & Record<string, any>;
