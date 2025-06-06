@@ -2,7 +2,6 @@ import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { v4 as uuidv4 } from 'uuid';
 import { isZodSchema } from '@langchain/core/utils/types';
-import type { NewTokenIndices } from '@langchain/core/callbacks/base';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type {
   AzureOpenAiChatCompletionRequestUserMessage,
@@ -338,23 +337,6 @@ function mapAzureOpenAIToLangChainToolCallChunk(
     index: chunk.index,
     type: 'tool_call_chunk'
   }));
-}
-
-/**
- * Computes token indices for a chunk of the Azure OpenAI stream response.
- * @param chunk - A chunk of the Azure OpenAI stream response.
- * @returns An object with prompt and completion indices.
- * @internal
- */
-export function computeTokenIndices(
-  chunk: AzureOpenAiChatCompletionStreamChunkResponse,
-  choiceIndex: number
-): NewTokenIndices {
-  return {
-    // TODO: This is wrong. We only get token for the whole response, not for each choice.
-    prompt: choiceIndex,
-    completion: chunk.getTokenUsage()?.total_tokens ?? 0
-  };
 }
 
 function removeUndefinedProperties<T extends object>(obj: T): T {
