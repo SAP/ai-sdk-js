@@ -357,7 +357,8 @@ export function mapOrchestrationChunkToLangChainMessageChunk(
   return new AIMessageChunk({
     content,
     additional_kwargs: {
-      module_results: chunk.data.module_results // TODO: Fix concat issue
+      // TODO: Fix duplicated module results when using concat() method for streaming chunks.
+      module_results: chunk.data.module_results
     },
     ...(toolCallChunks && {
       tool_call_chunks: mapOrchestrationToLangChainToolCallChunk(toolCallChunks)

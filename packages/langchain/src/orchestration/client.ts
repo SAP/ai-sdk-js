@@ -203,7 +203,6 @@ export class OrchestrationClient extends BaseChatModel<
         generationInfo.model_name = orchestrationResult.model;
         generationInfo.id = orchestrationResult.id;
         generationInfo.created = orchestrationResult.created;
-        generationInfo.module_results = chunk.data.module_results;
         generationInfo.request_id = chunk.data.request_id;
       }
 
