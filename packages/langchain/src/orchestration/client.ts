@@ -198,7 +198,8 @@ export class OrchestrationClient extends BaseChatModel<
       if (choice?.finish_reason && orchestrationResult) {
         generationInfo.finish_reason = choice.finish_reason;
         // Only include system fingerprint in the last chunk for now to avoid concatenation issues
-        generationInfo.system_fingerprint = orchestrationResult.system_fingerprint;
+        generationInfo.system_fingerprint =
+          orchestrationResult.system_fingerprint;
         generationInfo.model_name = orchestrationResult.model;
         generationInfo.id = orchestrationResult.id;
         generationInfo.created = orchestrationResult.created;

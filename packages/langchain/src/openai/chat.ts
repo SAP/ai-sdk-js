@@ -190,6 +190,6 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
       );
 
       yield generationChunk;
-    };
+    }
   }
 }

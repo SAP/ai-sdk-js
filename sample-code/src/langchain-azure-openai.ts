@@ -211,7 +211,6 @@ export async function invokeToolChain(): Promise<string> {
 export async function streamChain(
   controller = new AbortController()
 ): Promise<AsyncIterable<AIMessageChunk>> {
-
   const client = new AzureOpenAiChatClient({
     modelName: 'gpt-4o'
   });

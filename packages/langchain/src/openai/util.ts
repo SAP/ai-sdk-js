@@ -18,8 +18,7 @@ import type {
   AzureOpenAiChatCompletionRequestSystemMessage,
   AzureOpenAiFunctionObject,
   AzureOpenAiChatCompletionStreamChunkResponse,
-  AzureOpenAiChatCompletionMessageToolCallChunk,
-  AzureOpenAiCompletionUsage
+  AzureOpenAiChatCompletionMessageToolCallChunk
 } from '@sap-ai-sdk/foundation-models';
 import type {
   BaseMessage,
@@ -64,8 +63,8 @@ export function mapToolToOpenAiFunction(
         // Notice that LangChain ToolDeifnition does not have strict property.
         ('strict' in tool.function &&
           tool.function.strict !== undefined && {
-          strict: tool.function.strict
-        }))
+            strict: tool.function.strict
+          }))
     };
   }
   // StructuredTool like object
@@ -320,7 +319,7 @@ export function mapAzureOpenAIChunkToLangChainMessageChunk(
     content,
     ...(toolCallChunks && {
       tool_call_chunks: mapAzureOpenAIToLangChainToolCallChunk(toolCallChunks)
-    }),
+    })
   });
 }
 
@@ -347,7 +346,10 @@ function mapAzureOpenAIToLangChainToolCallChunk(
  * @returns An object with prompt and completion indices.
  * @internal
  */
-export function computeTokenIndices(chunk: AzureOpenAiChatCompletionStreamChunkResponse, choiceIndex: number): NewTokenIndices {
+export function computeTokenIndices(
+  chunk: AzureOpenAiChatCompletionStreamChunkResponse,
+  choiceIndex: number
+): NewTokenIndices {
   return {
     // TODO: This is wrong. We only get token for the whole response, not for each choice.
     prompt: choiceIndex,

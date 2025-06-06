@@ -24,8 +24,7 @@ import type {
   TemplatingModuleConfig,
   TemplateRef,
   ToolCallChunk as OrchestrationToolCallChunk,
-  OrchestrationStreamChunkResponse,
-  TokenUsage
+  OrchestrationStreamChunkResponse
 } from '@sap-ai-sdk/orchestration';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type {
@@ -34,7 +33,6 @@ import type {
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
-import { NewTokenIndices } from '@langchain/core/callbacks/base';
 
 /**
  * Maps a {@link ChatOrchestrationToolType} to {@link FunctionObject}.
@@ -61,8 +59,8 @@ export function mapToolToOrchestrationFunction(
         // Notice that LangChain ToolDefinition does not have strict property.
         ('strict' in tool.function &&
           tool.function.strict !== undefined && {
-          strict: tool.function.strict
-        }))
+            strict: tool.function.strict
+          }))
     };
   }
   // StructuredTool like object
@@ -179,10 +177,10 @@ function mapHumanMessageToChatMessage(message: HumanMessage): UserChatMessage {
       ...content,
       ...(content.type === 'image_url' && typeof content.image_url === 'string'
         ? {
-          image_url: {
-            url: content.image_url
+            image_url: {
+              url: content.image_url
+            }
           }
-        }
         : {})
     }));
   }
