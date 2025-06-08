@@ -32,7 +32,7 @@
     "zod-to-json-schema": "^3.24.5"
   },
   "devDependencies": {
-    "@types/express": "^5.0.2",
+    "@types/express": "^5.0.3",
     "dotenv": "^16.5.0",
     "dotenv-cli": "^8.0.0"
   },
