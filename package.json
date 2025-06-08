@@ -54,7 +54,7 @@
     "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/mock-fs": "^4.13.4",
-    "@types/node": "^20.17.58",
+    "@types/node": "^20.19.0",
     "depcheck": "^1.4.7",
     "eslint": "^9.27.0",
     "glob": "^11.0.2",
