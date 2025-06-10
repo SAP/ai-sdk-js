@@ -73,9 +73,11 @@ export async function chatCompletionStream(
   });
 
   return orchestrationClient.stream(
-    { 
-      messages: [{ role: 'user', content: 'Give me a long introduction of {{?input}}.' }],
-      inputParams: { input: 'SAP Cloud SDK'} 
+    {
+      messages: [
+        { role: 'user', content: 'Give me a long introduction of {{?input}}.' }
+      ],
+      inputParams: { input: 'SAP Cloud SDK' }
     },
     controller,
     streamOptions
@@ -155,7 +157,7 @@ export async function orchestrationMessageHistory(): Promise<OrchestrationRespon
   });
 
   // User can then ask a follow-up question
-  const nextResponse = await orchestrationClient.chatCompletion({ 
+  const nextResponse = await orchestrationClient.chatCompletion({
     messages: [{ role: 'user', content: 'What is the typical food there?' }],
     messagesHistory: firstResponse.getAllMessages()
   });
@@ -216,7 +218,9 @@ export async function orchestrationInputFiltering(): Promise<ErrorResponse> {
   try {
     // Trigger the input filters which results in a 400 Bad Request error
     await orchestrationClient.chatCompletion({
-      messages: [{  role: 'user', content: 'My social insurance number is ABC123456789.' }] // Should be filtered by the Llama guard filter
+      messages: [
+        { role: 'user', content: 'My social insurance number is ABC123456789.' }
+      ] // Should be filtered by the Llama guard filter
     });
     throw new Error('Input was not filtered as expected.');
   } catch (error: any) {
@@ -257,7 +261,11 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
 
   const result = await orchestrationClient.chatCompletion({
     messages: [
-      { role: 'user', content: 'Reparaphrase the sentence in 30 ways with strong feelings: "{{?input}}"'}
+      {
+        role: 'user',
+        content:
+          'Reparaphrase the sentence in 30 ways with strong feelings: "{{?input}}"'
+      }
     ],
     inputParams: { input: 'I hate you!' } // Should be filtered by the Azure content filter
   });
@@ -465,20 +473,20 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
   return orchestrationClient.chatCompletion({
     messages: [
       {
-          role: 'user', // image_url content type is only supported in user messages
-          content: [
-            {
-              type: 'text',
-              text: 'Describe the image.'
-            },
-            {
-              type: 'image_url',
-              image_url: {
-                url: '{{?imageUrl}}'
-              }
+        role: 'user', // image_url content type is only supported in user messages
+        content: [
+          {
+            type: 'text',
+            text: 'Describe the image.'
+          },
+          {
+            type: 'image_url',
+            image_url: {
+              url: '{{?imageUrl}}'
             }
-          ]
-        }
+          }
+        ]
+      }
     ],
     inputParams: {
       // Alternatively, you can provide a public URL of the image here instead.

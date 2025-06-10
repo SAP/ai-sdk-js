@@ -37,16 +37,19 @@ export async function invokeChain(): Promise<string> {
 
   return new OrchestrationClient(orchestrationConfig)
     .pipe(new StringOutputParser())
-    .invoke([
+    .invoke(
+      [
+        {
+          role: 'user',
+          content: 'Tell me about {{?topic}}'
+        }
+      ],
       {
-        role: 'user',
-        content: 'Tell me about {{?topic}}'
+        inputParams: {
+          topic: 'SAP Cloud SDK'
+        }
       }
-    ], {
-      inputParams: {
-        topic: 'SAP Cloud SDK'
-      }
-    });
+    );
 }
 
 /**
@@ -68,16 +71,19 @@ export async function invokeChainWithInputFilter(): Promise<string> {
 
   return new OrchestrationClient(orchestrationConfig)
     .pipe(new StringOutputParser())
-    .invoke([
+    .invoke(
+      [
+        {
+          role: 'user',
+          content: 'Tell me about {{?topic}}'
+        }
+      ],
       {
-        role: 'user',
-        content: 'Tell me about {{?topic}}'
+        inputParams: {
+          topic: 'the way to hurt myself'
+        }
       }
-    ], {
-      inputParams: {
-        topic: 'the way to hurt myself'
-      }
-    });
+    );
 }
 
 /**
@@ -103,17 +109,20 @@ export async function invokeChainWithOutputFilter(): Promise<string> {
 
   return new OrchestrationClient(orchestrationConfig)
     .pipe(new StringOutputParser())
-    .invoke([
+    .invoke(
+      [
         {
           role: 'user',
           content: 'Tell me about {{?topic}}'
         }
-      ], {
-      inputParams: {
-        topic:
-          '30 different ways to rephrase "I hate you!" with strong feelings'
+      ],
+      {
+        inputParams: {
+          topic:
+            '30 different ways to rephrase "I hate you!" with strong feelings'
+        }
       }
-    });
+    );
 }
 
 /**
@@ -228,41 +237,44 @@ export async function invokeChainWithMasking(): Promise<string> {
 
   return new OrchestrationClient(orchestrationConfig)
     .pipe(new StringOutputParser())
-    .invoke([
-      {
+    .invoke(
+      [
+        {
           role: 'user',
           content: 'Summarize the following CV in 10 sentences: {{?orgCV}}'
         }
-    ], {
-      inputParams: {
-        orgCV:
-          'Patrick Morgan \n' +
-          '+49 (970) 333-3833 \n' +
-          'patric.morgan@example.com \n\n' +
-          'Highlights \n' +
-          '- Strategic and financial planning expert \n' +
-          '- Accurate forecasting \n' +
-          '- Proficient in SAP, Excel VBA\n\n' +
-          'Education \n' +
-          'Master of Science: Finance - 2014 \n' +
-          'Harvard University, Boston \n\n' +
-          'Bachelor of Science: Finance - 2011 \n' +
-          'Harvard University, Boston \n\n\n' +
-          'Certifications \n' +
-          'Certified Management Accountant \n\n\n' +
-          'Summary \n' +
-          'Skilled Financial Manager adept at increasing work process efficiency and profitability through functional and technical analysis. Successful at advising large corporations, small businesses, and individual clients. Areas of expertise include asset allocation, investment strategy, and risk management. \n\n\n' +
-          'Experience \n' +
-          'Finance Manager - 09/2016 to 05/2018 \n' +
-          'M&K Group, York \n' +
-          '- Manage the modelling, planning, and execution of all financial processes. \n' +
-          '- Carry short and long-term custom comprehensive financial strategies to reach company goals. \n' +
-          'Finance Manager - 09/2013 to 05/2016 \n' +
-          'Ago Group, Chicago \n' +
-          '- Drafted executive analysis reports highlighting business issues, potential risks, and profit opportunities. \n' +
-          '- Recommended innovative alternatives to generate revenue and reduce unnecessary costs. \n'
+      ],
+      {
+        inputParams: {
+          orgCV:
+            'Patrick Morgan \n' +
+            '+49 (970) 333-3833 \n' +
+            'patric.morgan@example.com \n\n' +
+            'Highlights \n' +
+            '- Strategic and financial planning expert \n' +
+            '- Accurate forecasting \n' +
+            '- Proficient in SAP, Excel VBA\n\n' +
+            'Education \n' +
+            'Master of Science: Finance - 2014 \n' +
+            'Harvard University, Boston \n\n' +
+            'Bachelor of Science: Finance - 2011 \n' +
+            'Harvard University, Boston \n\n\n' +
+            'Certifications \n' +
+            'Certified Management Accountant \n\n\n' +
+            'Summary \n' +
+            'Skilled Financial Manager adept at increasing work process efficiency and profitability through functional and technical analysis. Successful at advising large corporations, small businesses, and individual clients. Areas of expertise include asset allocation, investment strategy, and risk management. \n\n\n' +
+            'Experience \n' +
+            'Finance Manager - 09/2016 to 05/2018 \n' +
+            'M&K Group, York \n' +
+            '- Manage the modelling, planning, and execution of all financial processes. \n' +
+            '- Carry short and long-term custom comprehensive financial strategies to reach company goals. \n' +
+            'Finance Manager - 09/2013 to 05/2016 \n' +
+            'Ago Group, Chicago \n' +
+            '- Drafted executive analysis reports highlighting business issues, potential risks, and profit opportunities. \n' +
+            '- Recommended innovative alternatives to generate revenue and reduce unnecessary costs. \n'
+        }
       }
-    });
+    );
 }
 
 /**
