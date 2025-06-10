@@ -1,14 +1,11 @@
-import { tool } from '@langchain/core/tools';
-import { jest } from '@jest/globals';
-import { zodToJsonSchema } from 'zod-to-json-schema';
 import nock from 'nock';
-import { z } from 'zod';
 import { apiVersion } from '@sap-ai-sdk/foundation-models/internal.js';
 import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
   mockInference
 } from '../../../../test-util/mock-http.js';
+import { addNumbersTool } from '../../../../test-util/tools.js';
 import { AzureOpenAiChatClient } from './chat.js';
 
 describe('Chat client', () => {
@@ -59,20 +56,8 @@ describe('Chat client', () => {
         ]
       }
     };
-    const addNumbersSchema = z
-      .object({
-        a: z.number().describe('The first number to be added.'),
-        b: z.number().describe('The second number to be added.')
-      })
-      .strict();
-    const myTool = tool(({ a, b }) => a + b, {
-      name: 'add',
-      description: 'Add two numbers',
-      schema: addNumbersSchema
-    });
 
     it('should bind a tool with strict set to true if defined in kwargs', async () => {
-      const clientSpy = jest.spyOn(client['openAiChatClient'], 'run');
       mockInference(
         {
           data: {
@@ -86,9 +71,7 @@ describe('Chat client', () => {
               {
                 type: 'function',
                 function: {
-                  name: 'add',
-                  description: 'Add two numbers',
-                  parameters: zodToJsonSchema(addNumbersSchema),
+                  ...addNumbersTool.function,
                   strict: true // Will be tested
                 }
               }
@@ -99,13 +82,11 @@ describe('Chat client', () => {
         endpoint
       );
       await client
-        .bindTools([myTool], { strict: true })
+        .bindTools([addNumbersTool], { strict: true })
         .invoke('What is 1 + 2?');
-      expect(clientSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should bind a tool with strict set to false if defined in kwargs', async () => {
-      const clientSpy = jest.spyOn(client['openAiChatClient'], 'run');
       mockInference(
         {
           data: {
@@ -119,9 +100,7 @@ describe('Chat client', () => {
               {
                 type: 'function',
                 function: {
-                  name: 'add',
-                  description: 'Add two numbers',
-                  parameters: zodToJsonSchema(addNumbersSchema),
+                  ...addNumbersTool.function,
                   strict: false // Will be tested
                 }
               }
@@ -132,13 +111,11 @@ describe('Chat client', () => {
         endpoint
       );
       await client
-        .bindTools([myTool], { strict: false })
+        .bindTools([addNumbersTool], { strict: false })
         .invoke('What is 1 + 2?');
-      expect(clientSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should bind a tool with undefined strict if not defined in kwargs', async () => {
-      const clientSpy = jest.spyOn(client['openAiChatClient'], 'run');
       mockInference(
         {
           data: {
@@ -152,9 +129,7 @@ describe('Chat client', () => {
               {
                 type: 'function',
                 function: {
-                  name: 'add',
-                  description: 'Add two numbers',
-                  parameters: zodToJsonSchema(addNumbersSchema),
+                  ...addNumbersTool.function,
                   strict: undefined // Will be tested
                 }
               }
@@ -164,13 +139,11 @@ describe('Chat client', () => {
         toolResponse,
         endpoint
       );
-      await client.bindTools([myTool]).invoke('What is 1 + 2?');
-      expect(clientSpy).toHaveBeenCalledTimes(1);
+      await client.bindTools([addNumbersTool]).invoke('What is 1 + 2?');
     });
 
     it('should bind a tool with strict set to true if defined by supportsStrictToolCalling', async () => {
       client.supportsStrictToolCalling = true;
-      const clientSpy = jest.spyOn(client['openAiChatClient'], 'run');
       mockInference(
         {
           data: {
@@ -184,9 +157,7 @@ describe('Chat client', () => {
               {
                 type: 'function',
                 function: {
-                  name: 'add',
-                  description: 'Add two numbers',
-                  parameters: zodToJsonSchema(addNumbersSchema),
+                  ...addNumbersTool.function,
                   strict: true // Will be tested
                 }
               }
@@ -196,8 +167,7 @@ describe('Chat client', () => {
         toolResponse,
         endpoint
       );
-      await client.bindTools([myTool]).invoke('What is 1 + 2?');
-      expect(clientSpy).toHaveBeenCalledTimes(1);
+      await client.bindTools([addNumbersTool]).invoke('What is 1 + 2?');
     });
   });
 });

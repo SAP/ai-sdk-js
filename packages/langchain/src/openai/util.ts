@@ -97,7 +97,7 @@ export function mapToolToOpenAiTool(
  * @param toolCalls - The {@link AzureOpenAiChatCompletionMessageToolCalls} response.
  * @returns The LangChain {@link ToolCall}.
  */
-function mapAzureOpenAiToLangchainToolCall(
+function mapAzureOpenAiToLangChainToolCall(
   toolCalls?: AzureOpenAiChatCompletionMessageToolCalls
 ): ToolCall[] | undefined {
   if (toolCalls) {
@@ -124,7 +124,7 @@ export function mapOutputToChatResult(
       text: choice.message.content ?? '',
       message: new AIMessage({
         content: choice.message.content ?? '',
-        tool_calls: mapAzureOpenAiToLangchainToolCall(
+        tool_calls: mapAzureOpenAiToLangChainToolCall(
           choice.message.tool_calls
         ),
         additional_kwargs: {
@@ -146,6 +146,7 @@ export function mapOutputToChatResult(
       id: completionResponse.id,
       model: completionResponse.model,
       object: completionResponse.object,
+      promptFilterResults: completionResponse.prompt_filter_results,
       tokenUsage: {
         completionTokens: completionResponse.usage?.completion_tokens ?? 0,
         promptTokens: completionResponse.usage?.prompt_tokens ?? 0,
@@ -160,7 +161,7 @@ export function mapOutputToChatResult(
  * @param toolCalls - The {@link ToolCall} to map.
  * @returns The Azure OpenAI {@link AzureOpenAiChatCompletionMessageToolCalls}.
  */
-function mapLangchainToolCallToAzureOpenAiToolCall(
+function mapLangChainToolCallToAzureOpenAiToolCall(
   toolCalls?: ToolCall[]
 ): AzureOpenAiChatCompletionMessageToolCalls | undefined {
   if (toolCalls) {
@@ -184,7 +185,7 @@ function mapAiMessageToAzureOpenAiAssistantMessage(
   message: AIMessage
 ): AzureOpenAiChatCompletionRequestAssistantMessage {
   const tool_calls =
-    mapLangchainToolCallToAzureOpenAiToolCall(message.tool_calls) ??
+    mapLangChainToolCallToAzureOpenAiToolCall(message.tool_calls) ??
     message.additional_kwargs.tool_calls;
   return {
     name: message.name,
@@ -273,7 +274,7 @@ function mapBaseMessageToAzureOpenAiChatMessage(
  * @returns An AI SDK compatibile request
  * @internal
  */
-export function mapLangchainToAiClient(
+export function mapLangChainToAiClient(
   client: AzureOpenAiChatClient,
   messages: BaseMessage[],
   options?: AzureOpenAiChatCallOptions & { promptIndex?: number }
@@ -327,7 +328,6 @@ export function isToolDefinitionLike(
     typeof tool === 'object' &&
     tool !== null &&
     'type' in tool &&
-    tool.type === 'function' &&
     'function' in tool &&
     tool.function !== null &&
     'name' in tool.function

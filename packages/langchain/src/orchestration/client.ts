@@ -3,12 +3,13 @@ import { OrchestrationClient as OrchestrationClientBase } from '@sap-ai-sdk/orch
 import { ChatGenerationChunk } from '@langchain/core/outputs';
 import { type BaseMessage } from '@langchain/core/messages';
 import {
-  mapOrchestrationChunkToLangChainMessageChunk,
-  isTemplate,
-  setFinishReason,
-  setTokenUsage,
+  isTemplateRef,
   mapLangChainMessagesToOrchestrationMessages,
   mapOutputToChatResult,
+  mapToolToChatCompletionTool,
+  mapOrchestrationChunkToLangChainMessageChunk,
+  setFinishReason,
+  setTokenUsage,
   computeTokenIndices
 } from './util.js';
 import type { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
@@ -20,7 +21,8 @@ import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
 import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import type {
   OrchestrationCallOptions,
-  LangchainOrchestrationModuleConfig
+  LangChainOrchestrationModuleConfig,
+  ChatOrchestrationToolType
 } from './types.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
@@ -39,7 +41,7 @@ export class OrchestrationClient extends BaseChatModel<
   OrchestrationMessageChunk
 > {
   constructor(
-    public orchestrationConfig: LangchainOrchestrationModuleConfig,
+    public orchestrationConfig: LangChainOrchestrationModuleConfig,
     public langchainOptions: BaseChatModelParams = {},
     public deploymentConfig?: ResourceGroupConfig,
     public destination?: HttpDestinationOrFetchOptions
@@ -119,6 +121,24 @@ export class OrchestrationClient extends BaseChatModel<
     return mapOutputToChatResult(res.data);
   }
 
+  override bindTools(
+    tools: ChatOrchestrationToolType[],
+    kwargs?: Partial<OrchestrationCallOptions> | undefined
+  ): Runnable<
+    BaseLanguageModelInput,
+    OrchestrationMessageChunk,
+    OrchestrationCallOptions
+  > {
+    let strict: boolean | undefined;
+    if (kwargs?.strict !== undefined) {
+      strict = kwargs.strict;
+    }
+    return this.withConfig({
+      tools: tools.map(tool => mapToolToChatCompletionTool(tool, strict)),
+      ...kwargs
+    } as Partial<OrchestrationCallOptions>);
+  }
+
   /**
    * Stream response chunks from the Orchestration client.
    * @param messages - The messages to send to the model.
@@ -131,11 +151,6 @@ export class OrchestrationClient extends BaseChatModel<
     options: typeof this.ParsedCallOptions,
     runManager?: CallbackManagerForLLMRun
   ): AsyncGenerator<ChatGenerationChunk> {
-    const controller = new AbortController();
-    if (options.signal) {
-      options.signal.addEventListener('abort', () => controller.abort());
-    }
-
     const orchestrationMessages =
       mapLangChainMessagesToOrchestrationMessages(messages);
 
@@ -150,15 +165,20 @@ export class OrchestrationClient extends BaseChatModel<
 
     const response = await this.caller.callWithOptions(
       {
-        signal: controller.signal
+        signal: options.signal
       },
-      () =>
-        orchestrationClient.stream(
+      () => {
+        const controller = new AbortController();
+        if (options.signal) {
+          options.signal.addEventListener('abort', () => controller.abort());
+        }
+        return orchestrationClient.stream(
           { messages: orchestrationMessages, inputParams },
           controller,
           options.streamOptions,
           customRequestConfig
-        )
+        );
+      }
     );
 
     for await (const chunk of response.stream) {
@@ -194,9 +214,9 @@ export class OrchestrationClient extends BaseChatModel<
 
   private mergeOrchestrationConfig(
     options: typeof this.ParsedCallOptions
-  ): LangchainOrchestrationModuleConfig {
+  ): LangChainOrchestrationModuleConfig {
     const { tools = [], stop = [] } = options;
-    const config: LangchainOrchestrationModuleConfig = {
+    const config: LangChainOrchestrationModuleConfig = {
       ...this.orchestrationConfig,
       llm: {
         ...this.orchestrationConfig.llm,
@@ -212,8 +232,18 @@ export class OrchestrationClient extends BaseChatModel<
       }
     };
     config.templating = this.orchestrationConfig.templating;
-    if (config.templating && isTemplate(config.templating) && tools.length) {
-      config.templating.tools = [...(config.templating.tools || []), ...tools];
+    if (tools.length) {
+      if (!config.templating) {
+        config.templating = {};
+      }
+      if (!isTemplateRef(config.templating)) {
+        config.templating.tools = [
+          // Preserve existing tools configured in the templating module
+          ...(config.templating.tools || []),
+          // Add new tools set with LangChain `bindTools()` or `invoke()` methods
+          ...tools.map(t => mapToolToChatCompletionTool(t))
+        ];
+      }
     }
     return config;
   }

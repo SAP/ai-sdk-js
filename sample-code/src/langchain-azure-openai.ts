@@ -155,7 +155,7 @@ export async function invokeToolChain(): Promise<string> {
   }
 
   // create a tool
-  const azureTool = tool(shareholderValueFunction, {
+  const shareholderValueTool = tool(shareholderValueFunction, {
     name: 'shareholder_value',
     description: 'Multiplies the shareholder value',
     schema: z.object({
@@ -167,11 +167,16 @@ export async function invokeToolChain(): Promise<string> {
     new HumanMessage('Increase the shareholder value, it is currently at 10')
   ];
 
-  const response = await client.bindTools([azureTool]).invoke(messages);
+  const response = await client
+    .bindTools([shareholderValueTool])
+    .invoke(messages);
 
   messages.push(response);
 
-  if (response.tool_calls) {
+  if (
+    Array.isArray(response.tool_calls) &&
+    response.tool_calls[0].name === 'shareholder_value'
+  ) {
     const shareholderValue = shareholderValueFunction(
       response.tool_calls[0].args.value
     );
@@ -183,7 +188,9 @@ export async function invokeToolChain(): Promise<string> {
 
     messages.push(toolMessage);
   } else {
-    const failMessage = new SystemMessage('No tool calls were made');
+    const failMessage = new SystemMessage(
+      'Shareholder value tool was not called'
+    );
     messages.push(failMessage);
   }
 

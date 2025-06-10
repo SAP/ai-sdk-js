@@ -48,9 +48,10 @@ import {
   invokeChain as invokeChainOrchestration,
   invokeChainWithInputFilter as invokeChainWithInputFilterOrchestration,
   invokeChainWithOutputFilter as invokeChainWithOutputFilterOrchestration,
-  invokeLangGraphChain,
+  invokeLangGraphChain as invokeLangGraphChainOrchestration,
   invokeChainWithMasking,
-  streamChain
+  invokeToolChain as invokeToolChainOrchestration,
+  streamChain as streamChainOrchestration
 } from './langchain-orchestration.js';
 import {
   createCollection,
@@ -391,7 +392,7 @@ app.get(
   }
 );
 
-/* Langchain */
+/* LangChain */
 app.get('/langchain/invoke', async (req, res) => {
   try {
     res.header('Content-Type', 'text/plain').send(await invoke());
@@ -462,9 +463,21 @@ app.get('/langchain/invoke-tool-chain', async (req, res) => {
   }
 });
 
+app.get('/langchain/invoke-tool-chain-orchestration', async (req, res) => {
+  try {
+    res
+      .header('Content-Type', 'text/plain')
+      .send(await invokeToolChainOrchestration());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
 app.get('/langchain/invoke-stateful-chain', async (req, res) => {
   try {
-    res.header('Content-Type', 'text/plain').send(await invokeLangGraphChain());
+    res
+      .header('Content-Type', 'text/plain')
+      .send(await invokeLangGraphChainOrchestration());
   } catch (error: any) {
     sendError(res, error);
   }
@@ -473,7 +486,7 @@ app.get('/langchain/invoke-stateful-chain', async (req, res) => {
 app.get('/langchain/stream-orchestration', async (req, res) => {
   const controller = new AbortController();
   try {
-    const stream = await streamChain(controller);
+    const stream = await streamChainOrchestration(controller);
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Connection', 'keep-alive');
     res.flushHeaders();
