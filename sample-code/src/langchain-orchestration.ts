@@ -32,21 +32,17 @@ export async function invokeChain(): Promise<string> {
     // define the language model to be used
     llm: {
       model_name: 'gpt-4o'
-    },
-    // define the template
-    templating: {
-      template: [
-        {
-          role: 'user',
-          content: 'Tell me about {{?topic}}'
-        }
-      ]
     }
   };
 
   return new OrchestrationClient(orchestrationConfig)
     .pipe(new StringOutputParser())
-    .invoke('My Message History', {
+    .invoke([
+      {
+        role: 'user',
+        content: 'Tell me about {{?topic}}'
+      }
+    ], {
       inputParams: {
         topic: 'SAP Cloud SDK'
       }
@@ -63,15 +59,6 @@ export async function invokeChainWithInputFilter(): Promise<string> {
     llm: {
       model_name: 'gpt-4o'
     },
-    // define the template
-    templating: {
-      template: [
-        {
-          role: 'user',
-          content: 'Tell me about {{?topic}}'
-        }
-      ]
-    },
     filtering: {
       input: {
         filters: [buildLlamaGuardFilter('self_harm')]
@@ -81,7 +68,12 @@ export async function invokeChainWithInputFilter(): Promise<string> {
 
   return new OrchestrationClient(orchestrationConfig)
     .pipe(new StringOutputParser())
-    .invoke('My Message History', {
+    .invoke([
+      {
+        role: 'user',
+        content: 'Tell me about {{?topic}}'
+      }
+    ], {
       inputParams: {
         topic: 'the way to hurt myself'
       }
@@ -98,15 +90,6 @@ export async function invokeChainWithOutputFilter(): Promise<string> {
     llm: {
       model_name: 'gpt-4o'
     },
-    // define the template
-    templating: {
-      template: [
-        {
-          role: 'user',
-          content: 'Tell me about {{?topic}}'
-        }
-      ]
-    },
     filtering: {
       output: {
         filters: [
@@ -120,7 +103,12 @@ export async function invokeChainWithOutputFilter(): Promise<string> {
 
   return new OrchestrationClient(orchestrationConfig)
     .pipe(new StringOutputParser())
-    .invoke('My Message History', {
+    .invoke([
+        {
+          role: 'user',
+          content: 'Tell me about {{?topic}}'
+        }
+      ], {
       inputParams: {
         topic:
           '30 different ways to rephrase "I hate you!" with strong feelings'
@@ -221,15 +209,6 @@ export async function invokeChainWithMasking(): Promise<string> {
     llm: {
       model_name: 'gpt-4o'
     },
-    // define the template
-    templating: {
-      template: [
-        {
-          role: 'user',
-          content: 'Summarize the following CV in 10 sentences: {{?orgCV}}'
-        }
-      ]
-    },
     masking: {
       masking_providers: [
         buildDpiMaskingProvider({
@@ -249,7 +228,12 @@ export async function invokeChainWithMasking(): Promise<string> {
 
   return new OrchestrationClient(orchestrationConfig)
     .pipe(new StringOutputParser())
-    .invoke('My Message History', {
+    .invoke([
+      {
+          role: 'user',
+          content: 'Summarize the following CV in 10 sentences: {{?orgCV}}'
+        }
+    ], {
       inputParams: {
         orgCV:
           'Patrick Morgan \n' +

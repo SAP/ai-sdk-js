@@ -13,14 +13,11 @@ import { createLogger } from '@sap-cloud-sdk/util';
 import { z } from 'zod';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import type {
-  LlmModuleConfig,
   OrchestrationStreamChunkResponse,
   OrchestrationStreamResponse,
   OrchestrationResponse,
   StreamOptions,
-  TemplatingChatMessage,
   ErrorResponse,
-  TemplatingModuleConfig,
   ChatCompletionTool,
   ToolChatMessage,
   DataRepositoryType
@@ -44,15 +41,13 @@ export async function orchestrationChatCompletion(): Promise<OrchestrationRespon
     // define the language model to be used
     llm: {
       model_name: 'gpt-4o'
-    },
-    // define the prompt
-    templating: {
-      template: [{ role: 'user', content: 'What is the capital of France?' }]
     }
   });
 
   // execute the request
-  const result = await orchestrationClient.chatCompletion();
+  const result = await orchestrationClient.chatCompletion({
+    messages: [{ role: 'user', content: 'What is the capital of France?' }]
+  });
 
   // use getContent() to access the LLM response
   logger.info(result.getContent());
@@ -74,23 +69,41 @@ export async function chatCompletionStream(
     // define the language model to be used
     llm: {
       model_name: 'gpt-4o'
-    },
-    // define the prompt
-    templating: {
-      template: [
-        {
-          role: 'user',
-          content: 'Give me a long introduction of {{?input}}'
-        }
-      ]
     }
   });
 
   return orchestrationClient.stream(
-    { inputParams: { input: 'SAP Cloud SDK' } },
+    { 
+      messages: [{ role: 'user', content: 'Give me a long introduction of {{?input}}.' }],
+      inputParams: { input: 'SAP Cloud SDK'} 
+    },
     controller,
     streamOptions
   );
+}
+
+/**
+ * Ask about the capital of any country using a template.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationTemplating(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o'
+    },
+    templating: {
+      template: [
+        // define "country" as variable by wrapping it with "{{? ... }}"
+        { role: 'user', content: 'What is the capital of {{?country}}?' }
+      ]
+    }
+  });
+
+  return orchestrationClient.chatCompletion({
+    // give the actual value for the variable "country"
+    inputParams: { country: 'France' }
+  });
 }
 
 /**
@@ -125,52 +138,27 @@ export async function chatCompletionStreamWithJsonModuleConfig(
   );
 }
 
-const llm: LlmModuleConfig = {
-  model_name: 'gpt-4o'
-};
-
-/**
- * Ask about the capital of any country using a template.
- * @returns The orchestration service response.
- */
-export async function orchestrationTemplating(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    llm,
-    templating: {
-      template: [
-        // define "country" as variable by wrapping it with "{{? ... }}"
-        { role: 'user', content: 'What is the capital of {{?country}}?' }
-      ]
-    }
-  });
-
-  return orchestrationClient.chatCompletion({
-    // give the actual value for the variable "country"
-    inputParams: { country: 'France' }
-  });
-}
-
 /**
  * Chat request to OpenAI through the Orchestration service using message history.
  * @returns The orchestration service response.
  */
 export async function orchestrationMessageHistory(): Promise<OrchestrationResponse> {
-  const orchestrationClient = (messages: TemplatingChatMessage) =>
-    new OrchestrationClient({
-      llm,
-      templating: {
-        template: messages
-      }
-    });
+  const orchestrationClient = new OrchestrationClient({
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o'
+    }
+  });
 
-  const firstResponse = await orchestrationClient([
-    { role: 'user', content: 'What is the capital of France?' }
-  ]).chatCompletion();
+  const firstResponse = await orchestrationClient.chatCompletion({
+    messages: [{ role: 'user', content: 'What is the capital of France?' }]
+  });
 
   // User can then ask a follow-up question
-  const nextResponse = await orchestrationClient([
-    { role: 'user', content: 'What is the typical food there?' }
-  ]).chatCompletion({ messagesHistory: firstResponse.getAllMessages() });
+  const nextResponse = await orchestrationClient.chatCompletion({ 
+    messages: [{ role: 'user', content: 'What is the typical food there?' }],
+    messagesHistory: firstResponse.getAllMessages()
+  });
 
   return nextResponse;
 }
@@ -181,7 +169,10 @@ export async function orchestrationMessageHistory(): Promise<OrchestrationRespon
  */
 export async function orchestrationPromptRegistry(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
-    llm,
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o'
+    },
     templating: {
       template_ref: {
         name: 'get-capital',
@@ -195,10 +186,6 @@ export async function orchestrationPromptRegistry(): Promise<OrchestrationRespon
     inputParams: { input: 'France' }
   });
 }
-
-const templating: TemplatingModuleConfig = {
-  template: [{ role: 'user', content: '{{?input}}' }]
-};
 
 /**
  * Apply multiple content filters to the input.
@@ -215,8 +202,10 @@ export async function orchestrationInputFiltering(): Promise<ErrorResponse> {
   const llamaGuardFilter = buildLlamaGuardFilter('privacy');
 
   const orchestrationClient = new OrchestrationClient({
-    llm,
-    templating,
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o'
+    },
     filtering: {
       input: {
         filters: [azureContentSafetyFilter, llamaGuardFilter]
@@ -227,7 +216,7 @@ export async function orchestrationInputFiltering(): Promise<ErrorResponse> {
   try {
     // Trigger the input filters which results in a 400 Bad Request error
     await orchestrationClient.chatCompletion({
-      inputParams: { input: 'My social insurance number is ABC123456789.' } // Should be filtered by the Llama guard filter
+      messages: [{  role: 'user', content: 'My social insurance number is ABC123456789.' }] // Should be filtered by the Llama guard filter
     });
     throw new Error('Input was not filtered as expected.');
   } catch (error: any) {
@@ -255,8 +244,10 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
   const llamaGuardFilter = buildLlamaGuardFilter('privacy');
 
   const orchestrationClient = new OrchestrationClient({
-    llm,
-    templating,
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o'
+    },
     filtering: {
       output: {
         filters: [azureContentFilter, llamaGuardFilter]
@@ -265,16 +256,10 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
   });
 
   const result = await orchestrationClient.chatCompletion({
-    messagesHistory: [
-      {
-        role: 'system',
-        content:
-          'Reparaphrase the sentence in 30 ways with strong feelings: "{{?input}}"'
-      }
+    messages: [
+      { role: 'user', content: 'Reparaphrase the sentence in 30 ways with strong feelings: "{{?input}}"'}
     ],
-    inputParams: {
-      input: 'I hate you!' // Should be filtered by the Azure content filter
-    }
+    inputParams: { input: 'I hate you!' } // Should be filtered by the Azure content filter
   });
 
   // Accessing the content should throw an error
@@ -302,17 +287,9 @@ export async function orchestrationCompletionMasking(): Promise<
   string | undefined
 > {
   const orchestrationClient = new OrchestrationClient({
+    // define the language model to be used
     llm: {
       model_name: 'gpt-4o'
-    },
-    templating: {
-      template: [
-        {
-          role: 'user',
-          content:
-            'Please write an email to {{?user}} ({{?email}}), informing them about the amazing capabilities of generative AI! Be brief and concise, write at most 6 sentences.'
-        }
-      ]
     },
     masking: {
       masking_providers: [
@@ -325,6 +302,13 @@ export async function orchestrationCompletionMasking(): Promise<
   });
 
   const response = await orchestrationClient.chatCompletion({
+    messages: [
+      {
+        role: 'user',
+        content:
+          'Please write an email to {{?user}} ({{?email}}), informing them about the amazing capabilities of generative AI! Be brief and concise, write at most 6 sentences.'
+      }
+    ],
     inputParams: { user: 'Alice Anderson', email: 'alice.anderson@sap.com' }
   });
   return response.getContent();
@@ -336,15 +320,9 @@ export async function orchestrationCompletionMasking(): Promise<
  */
 export async function orchestrationMaskGroundingInput(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
-    llm,
-    templating: {
-      template: [
-        {
-          role: 'user',
-          content:
-            'UserQuestion: {{?groundingInput}} Context: {{?groundingOutput}}'
-        }
-      ]
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o'
     },
     grounding: buildDocumentGroundingConfig({
       input_params: ['groundingInput'],
@@ -367,6 +345,13 @@ export async function orchestrationMaskGroundingInput(): Promise<OrchestrationRe
     }
   });
   return orchestrationClient.chatCompletion({
+    messages: [
+      {
+        role: 'user',
+        content:
+          'UserQuestion: {{?groundingInput}} Context: {{?groundingOutput}}'
+      }
+    ],
     inputParams: { groundingInput: "What is SAP's product Joule?" }
   });
 }
@@ -377,13 +362,15 @@ export async function orchestrationMaskGroundingInput(): Promise<OrchestrationRe
  */
 export async function orchestrationRequestConfig(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
-    llm,
-    templating
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o'
+    }
   });
 
   return orchestrationClient.chatCompletion(
     {
-      inputParams: { input: 'What is the capital of France?' }
+      messages: [{ role: 'user', content: 'What is the capital of France?' }]
     },
     // add a custom header to the request
     {
@@ -424,15 +411,9 @@ export async function orchestrationGrounding(
 ): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient(
     {
-      llm,
-      templating: {
-        template: [
-          {
-            role: 'user',
-            content:
-              'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
-          }
-        ]
+      // define the language model to be used
+      llm: {
+        model_name: 'gpt-4o'
       },
       grounding: buildDocumentGroundingConfig({
         input_params: ['groundingRequest'],
@@ -452,6 +433,13 @@ export async function orchestrationGrounding(
   );
 
   return orchestrationClient.chatCompletion({
+    messages: [
+      {
+        role: 'user',
+        content:
+          'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
+      }
+    ],
     inputParams: {
       groundingRequest: query
     }
@@ -464,10 +452,19 @@ export async function orchestrationGrounding(
  */
 export async function orchestrationChatCompletionImage(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
-    llm,
-    templating: {
-      template: [
-        {
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o'
+    }
+  });
+
+  const imageFilePath = join(__dirname, 'src', 'media', 'sample-image.png');
+  const mimeType = 'image/png';
+  const encodedString = `data:${mimeType};base64,${await readFile(imageFilePath, 'base64')}`;
+
+  return orchestrationClient.chatCompletion({
+    messages: [
+      {
           role: 'user', // image_url content type is only supported in user messages
           content: [
             {
@@ -482,15 +479,7 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
             }
           ]
         }
-      ]
-    }
-  });
-
-  const imageFilePath = join(__dirname, 'src', 'media', 'sample-image.png');
-  const mimeType = 'image/png';
-  const encodedString = `data:${mimeType};base64,${await readFile(imageFilePath, 'base64')}`;
-
-  return orchestrationClient.chatCompletion({
+    ],
     inputParams: {
       // Alternatively, you can provide a public URL of the image here instead.
       imageUrl: encodedString
@@ -527,19 +516,11 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
     })
     .strict();
   const orchestrationClient = new OrchestrationClient({
-    llm,
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o'
+    },
     templating: {
-      template: [
-        {
-          role: 'system',
-          content:
-            'You are a helpful AI that translates simple sentences into different languages. The user will provide the sentence. You then choose a language at random and provide the translation.'
-        },
-        {
-          role: 'user',
-          content: '{{?input}}'
-        }
-      ],
       response_format: {
         type: 'json_schema',
         json_schema: {
@@ -552,6 +533,17 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
   });
 
   const response = await orchestrationClient.chatCompletion({
+    messages: [
+      {
+        role: 'system',
+        content:
+          'You are a helpful AI that translates simple sentences into different languages. The user will provide the sentence. You then choose a language at random and provide the translation.'
+      },
+      {
+        role: 'user',
+        content: '{{?input}}'
+      }
+    ],
     inputParams: {
       input: 'Hello World! Why is this phrase so famous?'
     }
@@ -595,7 +587,10 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
   };
 
   const orchestrationClient = new OrchestrationClient({
-    llm,
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o'
+    },
     templating: {
       tools: [addNumbersTool]
     }
@@ -639,14 +634,9 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
  */
 export async function orchestrationTranslation(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
-    llm,
-    templating: {
-      template: [
-        {
-          role: 'user',
-          content: '{{?input}}'
-        }
-      ]
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o'
     },
     inputTranslation: buildTranslationConfig({
       sourceLanguage: 'en-US',
@@ -659,9 +649,12 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
   });
 
   return orchestrationClient.chatCompletion({
-    inputParams: {
-      input: 'Write an abstract for a thriller playing at SAP headquarters.'
-    }
+    messages: [
+      {
+        role: 'user',
+        content: 'Write an abstract for a thriller playing at SAP headquarters.'
+      }
+    ]
   });
 }
 
