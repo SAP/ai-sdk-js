@@ -242,8 +242,8 @@ importers:
         version: 5.1.0
     devDependencies:
       '@sap/cds-dk':
-        specifier: ^9.0.4
-        version: 9.0.4(@eslint/js@9.28.0)
+        specifier: ^9.0.5
+        version: 9.0.5(@eslint/js@9.28.0)
 
   sample-code:
     dependencies:
@@ -594,8 +594,8 @@ packages:
     peerDependencies:
       '@sap/cds': '>=7.6'
 
-  '@cap-js/db-service@2.0.1':
-    resolution: {integrity: sha512-ydf+56DAWEw8AbkwAo6ypAusADPXytflZpSVHTS+3JgN5EdFMvQthMsAjAVSQRQRWImv6EA4XYUdLwDVF1M/xg==}
+  '@cap-js/db-service@2.1.1':
+    resolution: {integrity: sha512-lkT8hQtMGLOWpbZzSWoMfoZe4vByuJZ9PierJPIhgLbayMLyTQ8iMKNgme1FW3nXFPc7JMJlEImskmhOygllAQ==}
     peerDependencies:
       '@sap/cds': '>=9'
 
@@ -1197,8 +1197,8 @@ packages:
     engines: {node: '>=20'}
     hasBin: true
 
-  '@sap/cds-dk@9.0.4':
-    resolution: {integrity: sha512-E9sgaIrNW97Jejb32GgDl8RG8OEvrOZ4I+ssywOcvvz4QpDZoiqWDGGcy/TL8TH2qC3XWShsRh2wSvhP05uWXA==}
+  '@sap/cds-dk@9.0.5':
+    resolution: {integrity: sha512-vl97mgvkm78fmrmql30vawPygRxMVzqvn9TsaC0gd6UpOXwnIVDzplh/tbJkSdJ6anCx3sW6kHbYdhhVTQv5kA==}
     hasBin: true
 
   '@sap/cds-fiori@2.0.1':
@@ -5110,7 +5110,7 @@ snapshots:
     dependencies:
       '@sap/cds': 9.0.3(@eslint/js@9.28.0)(express@5.1.0)
 
-  '@cap-js/db-service@2.0.1(@sap/cds@9.0.3(@eslint/js@9.28.0)(express@5.1.0))':
+  '@cap-js/db-service@2.1.1(@sap/cds@9.0.3(@eslint/js@9.28.0)(express@5.1.0))':
     dependencies:
       '@sap/cds': 9.0.3(@eslint/js@9.28.0)(express@5.1.0)
       generic-pool: 3.9.0
@@ -5123,7 +5123,7 @@ snapshots:
 
   '@cap-js/sqlite@2.0.1(@sap/cds@9.0.3(@eslint/js@9.28.0)(express@5.1.0))':
     dependencies:
-      '@cap-js/db-service': 2.0.1(@sap/cds@9.0.3(@eslint/js@9.28.0)(express@5.1.0))
+      '@cap-js/db-service': 2.1.1(@sap/cds@9.0.3(@eslint/js@9.28.0)(express@5.1.0))
       '@sap/cds': 9.0.3(@eslint/js@9.28.0)(express@5.1.0)
       better-sqlite3: 11.10.0
     optional: true
@@ -6053,7 +6053,7 @@ snapshots:
 
   '@sap/cds-compiler@6.0.10': {}
 
-  '@sap/cds-dk@9.0.4(@eslint/js@9.28.0)':
+  '@sap/cds-dk@9.0.5(@eslint/js@9.28.0)':
     dependencies:
       '@cap-js/asyncapi': 1.0.3(@sap/cds@9.0.3(@eslint/js@9.28.0)(express@5.1.0))
       '@cap-js/openapi': 1.2.3(@sap/cds@9.0.3(@eslint/js@9.28.0)(express@5.1.0))
