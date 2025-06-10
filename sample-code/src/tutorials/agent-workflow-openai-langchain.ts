@@ -179,6 +179,7 @@ export async function runTravelAssistant() {
 
       console.log("next: ", (await app.getState(config)).next);
 
+      
       // messages = [new HumanMessage('Great! Can you also recommend some restaurants?')];
       // response = await app.invoke({ messages }, config);
       response = await app.invoke(new Command({ resume: 'Great! Can you also recommend some restaurants?' }), config);
