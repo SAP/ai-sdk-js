@@ -52,16 +52,15 @@ const getRestaurantsTool = tool(
 
 // Human assistance tool - LLM calls this when it wants human input
 const humanAssistanceTool = tool(
-  async ({ question, context }) => {
+  async ({ question }) => {
     // This is a placeholder - the actual interrupt happens in the askHuman node
     return "Human input requested";
   },
   {
     name: 'humanAssistanceTool',
-    description: 'Ask for human input when you need confirmation or adjustments to suggestions',
+    description: 'Ask for human input when you need feedback or confirmation on itinerary suggestions',
     schema: z.object({ 
       question: z.string().describe('The question to ask the human'),
-      context: z.string().describe('Context of what you are asking about')
     })
   }
 );
@@ -77,11 +76,6 @@ const model = new AzureOpenAiChatClient({
 }).bindTools(tools);
 
 
-
-// function shouldContinue({ messages }: typeof MessagesAnnotation.State) {
-//   const lastMessage = messages[messages.length - 1] as AIMessage;
-//   return lastMessage.tool_calls?.length ? 'tools' : '__end__';
-// }
 function shouldContinue({ messages }: typeof MessagesAnnotation.State) {
   const lastMessage = messages[messages.length - 1] as AIMessage;
   
@@ -102,15 +96,13 @@ function shouldContinue({ messages }: typeof MessagesAnnotation.State) {
 
 function askHuman({ messages }: typeof MessagesAnnotation.State) {
   const lastMessage = messages[messages.length - 1] as AIMessage;
+
   const toolCall = lastMessage.tool_calls?.[0];
   const toolCallId = toolCall?.id;
   const question = toolCall?.args?.question;
-  const context = toolCall?.args?.context;
-  
-  console.log(`\nHuman Input Requested: ${question} with context: ${context}`);
-  
+
   // This is where the actual interrupt happens
-  const humanResponse: string = interrupt(`${question}: ${context}`);
+  const humanResponse: string = interrupt(`${question}`);
   
   const newToolMessage = new ToolMessage({
     tool_call_id: toolCallId!,
@@ -124,13 +116,6 @@ async function callModel(state: typeof MessagesAnnotation.State) {
   const response = await model.invoke(state.messages);
   return { messages: [response] };
 }
-
-// const workflow = new StateGraph(MessagesAnnotation)
-//   .addNode('agent', callModel)
-//   .addEdge(START, 'agent')
-//   .addNode('tools', toolNode)
-//   .addEdge('tools', 'agent')
-//   .addConditionalEdges('agent', shouldContinue);
 
   const workflow = new StateGraph(MessagesAnnotation)
   .addNode("agent", callModel)
@@ -151,12 +136,7 @@ export async function runTravelAssistant() {
     let messages = [
       new SystemMessage(
         `You are a helpful travel assistant. Create a short, practical 3-item itinerary based on the city weather.
-       
-       IMPORTANT: Every time you present or modify an itinerary, you MUST use the humanAssistanceTool to ask the user if they want adjustments. Do not just ask in text - you must call the tool.
-       
-       Call humanAssistanceTool with:
-       - question: "Would you like me to make any adjustments to this itinerary?"
-       - context: Brief description of the itinerary you just presented`
+        After you present a complete 3-item itinerary AND ask if they want adjustments, you MUST also call the humanAssistanceTool. Do this consistently for both initial and modified itineraries.`
       ),
       new HumanMessage(
         "I'm traveling to Paris. Can you help me prepare an itinerary?"
@@ -167,21 +147,17 @@ export async function runTravelAssistant() {
       let response = await app.invoke({ messages }, config);
      
       console.log('Assistant:', response.messages[response.messages.length - 1].content);
-      
-      // Continue with restaurant request
+      console.log('Assistant:', (response.messages[response.messages.length - 1] as AIMessage).tool_calls);
+
       console.log("next: ", (await app.getState(config)).next);
     
-      console.log('\n--- Continuing conversation ---');
-      // messages = [new HumanMessage('Can you suggest something more outdorsy?')];
       response = await app.invoke(new Command({ resume: 'Can you suggest something more outdorsy?' }), config);
      
       console.log('Assistant:', response.messages[response.messages.length - 1].content);
 
       console.log("next: ", (await app.getState(config)).next);
 
-      
-      // messages = [new HumanMessage('Great! Can you also recommend some restaurants?')];
-      // response = await app.invoke({ messages }, config);
+      // Continue with restaurant request
       response = await app.invoke(new Command({ resume: 'Great! Can you also recommend some restaurants?' }), config);
      
       console.log('Assistant:', response.messages[response.messages.length - 1].content);
@@ -191,5 +167,4 @@ export async function runTravelAssistant() {
     }
   }
 
-// Uncomment to run the example
 runTravelAssistant();

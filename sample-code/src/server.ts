@@ -67,6 +67,7 @@ import type { AIMessageChunk } from '@langchain/core/messages';
 import type { RetievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type { AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
+import { runTravelAssistant } from './tutorials/agent-workflow-openai-langchain.js';
 
 const app = express();
 const port = 8080;
@@ -87,6 +88,14 @@ function sendError(res: any, error: any, send: boolean = true) {
       .send(error.cause?.response?.data ?? error.message);
   }
 }
+
+app.get('/langchain/langgraph-tutorial', async (req, res) => {
+  try {
+    res.send(await runTravelAssistant());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
 
 /* AI API */
 app.get('/ai-api/deployments', async (req, res) => {
