@@ -22,7 +22,7 @@
   "dependencies": {
     "@langchain/langgraph": "^0.3.1",
     "langchain": "0.3.27",
-    "@langchain/core": "0.3.57",
+    "@langchain/core": "0.3.58",
     "@langchain/textsplitters": "0.1.0",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/document-grounding": "workspace:^",
@@ -34,7 +34,7 @@
     "@types/express": "^5.0.3",
     "express": "^5.1.0",
     "uuid": "^11.1.0",
-    "zod": "^3.25.56",
+    "zod": "^3.25.62",
     "zod-to-json-schema": "^3.24.5"
   }
 }
