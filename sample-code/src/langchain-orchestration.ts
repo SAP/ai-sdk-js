@@ -37,19 +37,12 @@ export async function invokeChain(): Promise<string> {
 
   return new OrchestrationClient(orchestrationConfig)
     .pipe(new StringOutputParser())
-    .invoke(
-      [
-        {
-          role: 'user',
-          content: 'Tell me about {{?topic}}'
-        }
-      ],
+    .invoke([
       {
-        inputParams: {
-          topic: 'SAP Cloud SDK'
-        }
+        role: 'user',
+        content: 'Tell me about SAP Cloud SDK'
       }
-    );
+    ]);
 }
 
 /**
@@ -71,19 +64,12 @@ export async function invokeChainWithInputFilter(): Promise<string> {
 
   return new OrchestrationClient(orchestrationConfig)
     .pipe(new StringOutputParser())
-    .invoke(
-      [
-        {
-          role: 'user',
-          content: 'Tell me about {{?topic}}'
-        }
-      ],
+    .invoke([
       {
-        inputParams: {
-          topic: 'the way to hurt myself'
-        }
+        role: 'user',
+        content: 'Tell me about the way to hurt myself'
       }
-    );
+    ]);
 }
 
 /**
@@ -109,20 +95,13 @@ export async function invokeChainWithOutputFilter(): Promise<string> {
 
   return new OrchestrationClient(orchestrationConfig)
     .pipe(new StringOutputParser())
-    .invoke(
-      [
-        {
-          role: 'user',
-          content: 'Tell me about {{?topic}}'
-        }
-      ],
+    .invoke([
       {
-        inputParams: {
-          topic:
-            '30 different ways to rephrase "I hate you!" with strong feelings'
-        }
+        role: 'user',
+        content:
+          'Tell me about 30 different ways to rephrase "I hate you!" with strong feelings'
       }
-    );
+    ]);
 }
 
 /**

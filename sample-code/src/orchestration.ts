@@ -75,9 +75,11 @@ export async function chatCompletionStream(
   return orchestrationClient.stream(
     {
       messages: [
-        { role: 'user', content: 'Give me a long introduction of {{?input}}.' }
-      ],
-      inputParams: { input: 'SAP Cloud SDK' }
+        {
+          role: 'user',
+          content: 'Give me a long introduction of SAP Cloud SDK.'
+        }
+      ]
     },
     controller,
     streamOptions
@@ -263,11 +265,11 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
     messages: [
       {
         role: 'user',
+        // Should be filtered by the Azure content filter
         content:
-          'Reparaphrase the sentence in 30 ways with strong feelings: "{{?input}}"'
+          'Reparaphrase the sentence in 30 ways with strong feelings: "I hate you!"'
       }
-    ],
-    inputParams: { input: 'I hate you!' } // Should be filtered by the Azure content filter
+    ]
   });
 
   // Accessing the content should throw an error
