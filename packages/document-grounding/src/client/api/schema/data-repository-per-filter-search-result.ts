@@ -3,15 +3,15 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { RetievalDataRepositorySearchResult } from './retieval-data-repository-search-result.js';
+import type { DataRepositorySearchResult } from './data-repository-search-result.js';
 /**
- * Representation of the 'RetievalPerFilterSearchResult' schema.
+ * Representation of the 'DataRepositoryPerFilterSearchResult' schema.
  */
-export type RetievalPerFilterSearchResult = {
+export type DataRepositoryPerFilterSearchResult = {
   filterId: string;
   /**
    * List of returned results.
    * Default: [].
    */
-  results?: RetievalDataRepositorySearchResult[];
+  results?: DataRepositorySearchResult[];
 } & Record<string, any>;
