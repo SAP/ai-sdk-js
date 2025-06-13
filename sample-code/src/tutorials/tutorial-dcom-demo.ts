@@ -156,11 +156,7 @@ export async function handleTravelRequest(threadId: string, userInput: string, l
   const session = activeSessions.get(threadId);
   
   // If no session exists, start new one
-  if (!session) {
-    if (!location) {
-      throw new Error("Location is required for new session");
-    }
-    
+  if (!session) {    
     const app = createWorkflow();
     const config = { configurable: { thread_id: threadId } };
     activeSessions.set(threadId, { app, config });
