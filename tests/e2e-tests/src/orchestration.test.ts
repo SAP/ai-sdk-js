@@ -131,20 +131,18 @@ describe('orchestration', () => {
       llm: {
         model_name: 'gpt-4o',
         model_params: {}
-      },
-      templating: {
-        template: [
-          {
-            role: 'user',
-            content: 'Give me a short introduction on {{ ?__input__ }}.'
-          }
-        ]
       }
     };
 
     try {
       await new OrchestrationClient(config).stream(
         {
+          messages: [
+            {
+              role: 'user',
+              content: 'Give me a short introduction on {{ ?__input__ }}.'
+            }
+          ],
           inputParams: { __input__: 'SAP Cloud SDK' }
         },
         new AbortController()
@@ -169,17 +167,18 @@ describe('orchestration', () => {
         model_params: {}
       },
       templating: {
-        template: [
-          {
-            role: 'user',
-            content: 'Add 1 and 2, as well as 3 and 4.'
-          }
-        ],
         tools: [addNumbersTool]
       }
     };
 
-    const response = await new OrchestrationClient(config).stream();
+    const response = await new OrchestrationClient(config).stream({
+      messages: [
+        {
+          role: 'user',
+          content: 'Add 1 and 2, as well as 3 and 4.'
+        }
+      ]
+    });
 
     for await (const _ of response.stream) {
       /* do nothing */

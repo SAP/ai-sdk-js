@@ -52,9 +52,6 @@ const orchestrationClient = new OrchestrationClient({
   llm: {
     model_name: 'gpt-4o',
     model_params: { max_tokens: 50, temperature: 0.1 }
-  },
-  templating: {
-    template: [{ role: 'user', content: 'What is my name?' }]
   }
 });
 
@@ -74,7 +71,8 @@ const response = await orchestrationClient.chatCompletion({
       content:
         "Hi Bob, nice to meet you! I'm an AI assistant. I'll remember that your name is Bob as we continue our conversation."
     }
-  ]
+  ],
+  messages: [{ role: 'user', content: 'What is my name?' }]
 });
 const responseContent = response.getContent();
 ```
