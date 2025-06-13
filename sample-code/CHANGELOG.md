@@ -1,5 +1,17 @@
 # @sap-ai-sdk/sample-code
 
+## 1.15.0
+
+### Patch Changes
+
+- Updated dependencies [4474313]
+  - @sap-ai-sdk/langchain@1.15.0
+  - @sap-ai-sdk/ai-api@1.15.0
+  - @sap-ai-sdk/document-grounding@1.15.0
+  - @sap-ai-sdk/foundation-models@1.15.0
+  - @sap-ai-sdk/orchestration@1.15.0
+  - @sap-ai-sdk/prompt-registry@1.15.0
+
 ## 1.14.0
 
 ### Patch Changes

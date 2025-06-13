@@ -1,5 +1,12 @@
 # @sap-ai-sdk/document-grounding
 
+## 1.15.0
+
+### Patch Changes
+
+- Updated dependencies [5307dd0]
+  - @sap-ai-sdk/core@1.15.0
+
 ## 1.14.0
 
 ### Patch Changes

@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@sap-ai-sdk/sample-cap",
-  "version": "1.14.0",
+  "version": "1.15.0",
   "description": "Sample CAP application with Cloud SDK for AI.",
   "repository": "https://github.com/sap/ai-sdk-js",
   "private": true,
