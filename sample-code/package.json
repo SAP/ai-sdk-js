@@ -20,7 +20,7 @@
     "lint:fix": "eslint . --fix && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -w --log-level error"
   },
   "dependencies": {
-    "@langchain/langgraph": "^0.3.3",
+    "@langchain/langgraph": "^0.3.4",
     "langchain": "0.3.28",
     "@langchain/core": "0.3.58",
     "@langchain/textsplitters": "0.1.0",
