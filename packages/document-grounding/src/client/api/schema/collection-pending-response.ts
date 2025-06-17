@@ -8,9 +8,6 @@
  * Representation of the 'CollectionPendingResponse' schema.
  */
 export type CollectionPendingResponse = {
-  /**
-   * Format: "uri".
-   */
   Location: string;
   status: string;
 } & Record<string, any>;
