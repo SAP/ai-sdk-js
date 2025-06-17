@@ -96,19 +96,19 @@ components:
       additionalProperties: false
       required:
         - input
-        - orchestration_config
+        - config
       properties:
-        orchestration_config:
+        config:
           $ref: '#/components/schemas/EmbeddingsOrchestrationConfig'
         input:
           $ref: '#/components/schemas/EmbeddingsInput'
     EmbeddingsOrchestrationConfig:
       type: object
       required:
-        - module_configs
+        - modules
       additionalProperties: false
       properties:
-        module_configs:
+        modules:
           $ref: '#/components/schemas/EmbeddingsModuleConfigs'
     EmbeddingsInput:
       type: object
@@ -191,10 +191,10 @@ components:
       properties:
         request_id:
           type: string
-        module_results:
+        intermediate_results:
           $ref: '#/components/schemas/ModuleResultsBase'
           description: Results of each module of /embeddings endpoint(e.g. input masking).
-        orchestration_result:
+        final_result:
           $ref: '#/components/schemas/EmbeddingsResponse'
           description: The response from request to embedding model following OpenAI specification.
     EmbeddingsResponse:
