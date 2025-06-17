@@ -9,6 +9,6 @@ import type { EmbeddingsInput } from './embeddings-input.js';
  * Representation of the 'EmbeddingsPostRequest' schema.
  */
 export type EmbeddingsPostRequest = {
-  orchestration_config: EmbeddingsOrchestrationConfig;
+  config: EmbeddingsOrchestrationConfig;
   input: EmbeddingsInput;
 };

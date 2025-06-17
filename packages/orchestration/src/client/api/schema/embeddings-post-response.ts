@@ -10,6 +10,6 @@ import type { EmbeddingsResponse } from './embeddings-response.js';
  */
 export type EmbeddingsPostResponse = {
   request_id: string;
-  module_results?: ModuleResultsBase;
-  orchestration_result?: EmbeddingsResponse;
+  intermediate_results?: ModuleResultsBase;
+  final_result?: EmbeddingsResponse;
 };

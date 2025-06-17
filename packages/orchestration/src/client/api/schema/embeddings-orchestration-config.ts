@@ -8,5 +8,5 @@ import type { EmbeddingsModuleConfigs } from './embeddings-module-configs.js';
  * Representation of the 'EmbeddingsOrchestrationConfig' schema.
  */
 export type EmbeddingsOrchestrationConfig = {
-  module_configs: EmbeddingsModuleConfigs;
+  modules: EmbeddingsModuleConfigs;
 };
