@@ -6,7 +6,7 @@
 import type { EmbeddingResult } from './embedding-result.js';
 import type { EmbeddingsUsage } from './embeddings-usage.js';
 /**
- * Representation of the 'EmbeddingsResponse' schema.
+ * The response from request to embedding model following OpenAI specification.
  */
 export type EmbeddingsResponse = {
   /**

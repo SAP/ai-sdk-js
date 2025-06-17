@@ -21,6 +21,7 @@ export type LlmModuleConfig = {
    *   "frequency_penalty": 0,
    *   "presence_penalty": 0,
    *   "n": 2,
+   *   "logprobs": true,
    *   "stream_options": {
    *     "include_usage": true
    *   }

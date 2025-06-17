@@ -96,3 +96,5 @@ export * from './input-translation-module-config.js';
 export * from './output-translation-module-config.js';
 export * from './sap-document-translation.js';
 export * from './error-response.js';
+export * from './chat-completion-token-logprob.js';
+export * from './choice-logprobs.js';

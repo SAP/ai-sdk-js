@@ -1,5 +1,10 @@
 openapi: 3.0.0
 
+# TEMPORARY : lint-spec-sap fails without this with "sap-oas3-production-url : At least one URL to a production system is required."
+servers:
+  - url: https://api.dummy.orchestration.service.sap.com
+    description: Internal Orchestration Service API
+
 x-sap-shortText: 'Orchestration provides common capabilities for business AI scenarios, such as content filtering, data masking, and grounding'
 
 info:
@@ -132,7 +137,7 @@ components:
           items:
             type: string
             minLength: 1
-          example: "['Hello', 'World', '!']"
+          example: ['Hello', 'World', '!']
       description: Text input for which embeddings need to be generated
       example: ['This is an input string.', 'This is another input string.']
     EmbeddingsModuleConfigs:
@@ -193,12 +198,11 @@ components:
           type: string
         intermediate_results:
           $ref: '#/components/schemas/ModuleResultsBase'
-          description: Results of each module of /embeddings endpoint(e.g. input masking).
         final_result:
           $ref: '#/components/schemas/EmbeddingsResponse'
-          description: The response from request to embedding model following OpenAI specification.
     EmbeddingsResponse:
       type: object
+      description: The response from request to embedding model following OpenAI specification.
       additionalProperties: false
       required:
         - object
@@ -578,7 +582,7 @@ components:
     # Abstract base class encompassing fields for both `ModuleResultsSynchronous` and `ModuleResultsStreaming`
     # Not to be instantiated by llm-orchestration code
     ModuleResultsBase:
-      description: Results of each module.
+      description: Results of each module of /embeddings endpoint(e.g. input masking).
       type: object
       additionalProperties: false
       properties:
@@ -663,6 +667,7 @@ components:
             frequency_penalty: 0
             presence_penalty: 0
             n: 2
+            logprobs: true
             stream_options:
               include_usage: true
           additionalProperties: true
@@ -767,12 +772,7 @@ components:
         message:
           $ref: '#/components/schemas/ResponseChatMessage'
         logprobs:
-          type: object
-          description: Log probabilities
-          additionalProperties:
-            type: array
-            items:
-              type: number
+          $ref: '#/components/schemas/ChoiceLogprobs'
         finish_reason:
           type: string
           description: "Reason the model stopped generating tokens. 'stop' if the model hit a natural stop point or a provided stop sequence, 'length' if the maximum token number was reached, 'content_filter' if content was omitted due to a filter enforced by the LLM model provider or the content filtering module"
@@ -789,12 +789,7 @@ components:
         delta:
           $ref: '#/components/schemas/ChatDelta'
         logprobs:
-          type: object
-          description: Log probabilities
-          additionalProperties:
-            type: array
-            items:
-              type: number
+          $ref: '#/components/schemas/ChoiceLogprobs'
         finish_reason:
           type: string
           description: Reason for stopping the model
@@ -1615,6 +1610,64 @@ components:
                     oneOf:
                       - $ref: '#/components/schemas/LLMChoiceSynchronous'
                       - $ref: '#/components/schemas/LLMChoiceStreaming'
+    # ref : https://github.com/openai/openai-python/blob/main/src/openai/types/chat/chat_completion_token_logprob.py
+    ChatCompletionTokenLogprob:
+      type: object
+      required:
+        - token
+        - logprob
+      properties:
+        token:
+          type: string
+          description: The token.
+        logprob:
+          type: number
+          format: float
+          description: The log probability of this token.
+        bytes:
+          type: array
+          items:
+            type: integer
+            format: int32
+          description: A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters are multi-byte.
+        top_logprobs:
+          type: array
+          description: List of the most likely tokens and their log probability, at this token position. In rare cases, there may be fewer than the number of requested `top_logprobs`.
+          items:
+            # This is the schema for the inner object within top_logprobs
+            type: object
+            required:
+              - token
+              - logprob
+            properties:
+              token:
+                type: string
+                description: The token.
+              logprob:
+                type: number
+                format: float
+                description: The log probability of this token.
+              bytes:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+                description: A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters are multi-byte.
+    # ref : https://github.com/openai/openai-python/blob/main/src/openai/types/chat/chat_completion.py
+    ChoiceLogprobs:
+      type: object
+      description: Log probabilities for the choice.
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCompletionTokenLogprob'
+          description: A list of message content tokens with log probability information.
+        refusal:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCompletionTokenLogprob'
+          description: A list of message refusal tokens with log probability information.
 
   responses:
     BadRequest:
