@@ -297,7 +297,7 @@ export function mapOutputToChatResult(
         additional_kwargs: {
           finish_reason: choice.finish_reason,
           index: choice.index,
-          function_call: choice.message.function_call,
+          //function_call: choice.message.tool_calls,
           tool_calls: choice.message.tool_calls,
           module_results,
           request_id
@@ -306,7 +306,7 @@ export function mapOutputToChatResult(
       generationInfo: {
         finish_reason: choice.finish_reason,
         index: choice.index,
-        function_call: choice.message.function_call,
+        function_call: choice.message.tool_calls,
         tool_calls: choice.message.tool_calls
       }
     })),
