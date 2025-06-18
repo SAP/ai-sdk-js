@@ -1,7 +1,7 @@
 import { StateGraph, MessagesAnnotation, MemorySaver, START, END, interrupt, Command } from "@langchain/langgraph";
 import { ToolNode } from "@langchain/langgraph/prebuilt";
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
-import { AIMessage, HumanMessage, SystemMessage, ToolMessage } from "@langchain/core/messages";
+import { AIMessage, HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { tool } from "@langchain/core/tools";
 import { z } from "zod";
 /**
@@ -50,23 +50,8 @@ const getRestaurantsTool = tool(
   }
 );
 
-// Human assistance tool - LLM calls this when it wants human input
-const humanAssistanceTool = tool(
-  async ({ question }) => {
-    // This is a placeholder - the actual interrupt happens in the askHuman node
-    return "Human input requested";
-  },
-  {
-    name: 'humanAssistanceTool',
-    description: 'Ask for human input when you need feedback or confirmation on itinerary suggestions',
-    schema: z.object({ 
-      question: z.string().describe('The question to ask the human'),
-    })
-  }
-);
-
 // Define the tools for the agent to use
-const tools = [getWeatherTool, getRestaurantsTool, humanAssistanceTool];
+const tools = [getWeatherTool, getRestaurantsTool];
 const toolNode = new ToolNode(tools);
 
 // Create a model and give it access to the tools
@@ -75,41 +60,26 @@ const model = new AzureOpenAiChatClient({
   temperature: 0.7,
 }).bindTools(tools);
 
-
-function shouldContinue({ messages }: typeof MessagesAnnotation.State) {
+async function shouldContinueAgent({ messages }: typeof MessagesAnnotation.State) {
   const lastMessage = messages[messages.length - 1] as AIMessage;
   
-  // If there is no function call, then we finish
-  if (!lastMessage.tool_calls?.length) {
-    return END;
+  // If there are tool calls, go to tools
+  if (lastMessage.tool_calls?.length) {
+    return 'tools';
   }
+  // Check if agent's message is a farewell (indicating user was satisfied)
+  const result = await model.invoke([
+    new SystemMessage(`You are a classifier. Respond with exactly "FAREWELL" if this is a farewell/goodbye message wishing someone happy travels. Respond with exactly "CONTINUE" if the conversation should continue.`),
+    new HumanMessage(`Assistant message: "${lastMessage.content}"`)
+  ]);
   
-  // If tool call is humanAssistanceTool, we ask human
-  if (lastMessage.tool_calls?.[0]?.name === "humanAssistanceTool") {
-    console.log("--- ASKING HUMAN ---");
-    return "askHuman";
-  }
-  
-  // Otherwise continue with regular tools
-  return "tools";
+  return result.content === 'FAREWELL' ? END : 'askHuman';
 }
 
-function askHuman({ messages }: typeof MessagesAnnotation.State) {
-  const lastMessage = messages[messages.length - 1] as AIMessage;
-
-  const toolCall = lastMessage.tool_calls?.[0];
-  const toolCallId = toolCall?.id;
-  const question = toolCall?.args?.question;
-
+async function askHuman({ messages }: typeof MessagesAnnotation.State) {
   // This is where the actual interrupt happens
-  const humanResponse: string = interrupt(`${question}`);
-  
-  const newToolMessage = new ToolMessage({
-    tool_call_id: toolCallId!,
-    content: humanResponse,
-  });
-  
-  return { messages: [newToolMessage] };
+  const humanResponse: string = interrupt(`Do you want to adjust the itinerary?`);
+  return { messages: [new HumanMessage(humanResponse)] };
 }
 
 async function callModel(state: typeof MessagesAnnotation.State) {
@@ -121,7 +91,7 @@ async function callModel(state: typeof MessagesAnnotation.State) {
   .addNode("agent", callModel)
   .addNode("tools", toolNode)
   .addNode("askHuman", askHuman)
-  .addConditionalEdges("agent", shouldContinue)
+  .addConditionalEdges("agent", shouldContinueAgent, ["tools", "askHuman", END])
   .addEdge("tools", "agent")
   .addEdge("askHuman", "agent")
   .addEdge(START, "agent");
@@ -135,8 +105,9 @@ export async function runTravelAssistant() {
     // Initial system prompt and user message
     let messages = [
       new SystemMessage(
-        `You are a helpful travel assistant. Create a short, practical 3-item itinerary based on the city weather.
-        After you present a complete 3-item itinerary AND ask if they want adjustments, you MUST also call the humanAssistanceTool. Do this consistently for both initial and modified itineraries.`
+        `You are a helpful travel assistant.  
+        You will generate a 3-item itinerary based on a provided city. You should use weather forecast and restaurant recommendations when creating the itinerary.
+        After presenting the itinerary, ask the user if they are satisfied with it or if they want to make changes.`
       ),
       new HumanMessage(
         "I'm traveling to Paris. Can you help me prepare an itinerary?"
@@ -147,21 +118,15 @@ export async function runTravelAssistant() {
       let response = await app.invoke({ messages }, config);
      
       console.log('Assistant:', response.messages[response.messages.length - 1].content);
-      console.log('Assistant:', (response.messages[response.messages.length - 1] as AIMessage).tool_calls);
-
       console.log("next: ", (await app.getState(config)).next);
     
-      response = await app.invoke(new Command({ resume: 'Can you suggest something more outdorsy?' }), config);
-     
+      response = await app.invoke(new Command({ resume: 'Can you suggest something more outdoorsy?' }), config);
+
       console.log('Assistant:', response.messages[response.messages.length - 1].content);
 
-      console.log("next: ", (await app.getState(config)).next);
-
-      // Continue with restaurant request
-      response = await app.invoke(new Command({ resume: 'Great! Can you also recommend some restaurants?' }), config);
-     
+      response = await app.invoke(new Command({ resume: 'Great! Looks perfect' }), config);
       console.log('Assistant:', response.messages[response.messages.length - 1].content);
-      
+ 
     } catch (error) {
       console.error('Error:', error);
     }
