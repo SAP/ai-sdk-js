@@ -1,7 +1,7 @@
 import { supportedAzureFilterThresholds } from '../orchestration-types.js';
 import type {
-  AzureContentSafety,
-  AzureContentSafetyFilterConfig,
+  AzureContentSafetyInputFilterConfig,
+  AzureContentSafetyOutput,
   InputFilteringConfig,
   LlamaGuard38BFilterConfig,
   OutputFilteringConfig
@@ -19,7 +19,7 @@ import type {
  * @deprecated Since 1.8.0. Use {@link buildAzureContentSafetyFilter()} instead.
  */
 export function buildAzureContentFilter(
-  filter?: AzureContentSafety
+  filter?: AzureContentSafetyOutput
 ): InputFilteringConfig | OutputFilteringConfig {
   if (filter && !Object.keys(filter).length) {
     throw new Error('Filter property cannot be an empty object');
@@ -43,7 +43,7 @@ export function buildAzureContentFilter(
  */
 export function buildAzureContentSafetyFilter(
   config?: AzureContentFilter
-): AzureContentSafetyFilterConfig {
+): AzureContentSafetyInputFilterConfig {
   if (config && !Object.keys(config).length) {
     throw new Error('Filtering configuration cannot be an empty object');
   }

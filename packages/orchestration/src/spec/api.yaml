@@ -9,15 +9,12 @@ info:
     name: SAP AI Core
   version: 0.0.1
 
-servers:
-  - url: '/v1'
-
 tags:
   - name: OrchestrationCompletion
     description: Run an orchestrated completion inference request
 
 paths:
-  /completion:
+  /v1/completion:
     post:
       tags:
         - OrchestrationCompletion
@@ -37,6 +34,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CompletionPostResponse'
+            text/event-stream:
+              schema:
+                $ref: '#/components/schemas/CompletionPostResponseStreaming'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        default:
+          $ref: '#/components/responses/CommonError'
+
+  /v2/embeddings:
+    post:
+      tags:
+        - OrchestrationEmbeddings
+      summary: orchestrated embeddings inference
+      description: >
+        Generate embeddings for input strings.
+      operationId: orchestration.v1.endpoints.create_embeddings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmbeddingsPostRequest'
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmbeddingsPostResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
         default:
@@ -64,19 +90,191 @@ components:
             - $ref: '#/components/schemas/ChatMessages'
           description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
 
+    # Embedings Schemas
+    EmbeddingsPostRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - input
+        - config
+      properties:
+        config:
+          $ref: '#/components/schemas/EmbeddingsOrchestrationConfig'
+        input:
+          $ref: '#/components/schemas/EmbeddingsInput'
+    EmbeddingsOrchestrationConfig:
+      type: object
+      required:
+        - modules
+      additionalProperties: false
+      properties:
+        modules:
+          $ref: '#/components/schemas/EmbeddingsModuleConfigs'
+    EmbeddingsInput:
+      type: object
+      required:
+        - text
+      additionalProperties: false
+      properties:
+        text:
+          $ref: '#/components/schemas/EmbeddingsInputText'
+        type:
+          type: string
+          enum: ['text', 'document', 'query']
+    EmbeddingsInputText:
+      oneOf:
+        - type: string
+          description: The string that will be turned into an embedding.
+          example: Hello World!
+        - type: array
+          description: The array of strings that will be turned into an embedding.
+          minItems: 1
+          items:
+            type: string
+            minLength: 1
+          example: "['Hello', 'World', '!']"
+      description: Text input for which embeddings need to be generated
+      example: ['This is an input string.', 'This is another input string.']
+    EmbeddingsModuleConfigs:
+      type: object
+      required:
+        - embeddings
+      additionalProperties: false
+      properties:
+        embeddings:
+          $ref: '#/components/schemas/EmbeddingsModelConfig'
+        masking:
+          $ref: '#/components/schemas/MaskingModuleConfig'
+    EmbeddingsModelConfig:
+      type: object
+      required:
+        - model
+      additionalProperties: false
+      properties:
+        model:
+          $ref: '#/components/schemas/EmbeddingsModelDetails'
+    EmbeddingsModelDetails:
+      type: object
+      required:
+        - name
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+        version:
+          type: string
+          default: 'latest'
+        params:
+          $ref: '#/components/schemas/EmbeddingsModelParams'
+    EmbeddingsModelParams:
+      type: object
+      description: Additional parameters for generating input's embeddings. Default values are used for mandatory parameters.
+      additionalProperties: true
+      properties:
+        dimensions:
+          type: integer
+          description: >
+            The number of dimensions the resulting output embeddings should have.
+        encoding_format:
+          type: string
+          enum: [float, base64, binary]
+          description: >
+            OpenAI's spec allows for 'float' and 'base64' encoding formats.
+        normalize:
+          type: boolean
+
+    EmbeddingsPostResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - request_id
+      properties:
+        request_id:
+          type: string
+        intermediate_results:
+          $ref: '#/components/schemas/ModuleResultsBase'
+          description: Results of each module of /embeddings endpoint(e.g. input masking).
+        final_result:
+          $ref: '#/components/schemas/EmbeddingsResponse'
+          description: The response from request to embedding model following OpenAI specification.
+    EmbeddingsResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - object
+        - data
+        - model
+        - usage
+      properties:
+        object:
+          type: string
+          description: The object type, which is always "list".
+          enum:
+            - list
+        data:
+          type: array
+          description: The list of embeddings generated by the model.
+          items:
+            $ref: '#/components/schemas/EmbeddingResult'
+        model:
+          type: string
+          description: The name of the model used to generate the embedding.
+        usage:
+          $ref: '#/components/schemas/EmbeddingsUsage'
+    EmbeddingsUsage:
+      type: object
+      description: The usage information for the request.
+      additionalProperties: false
+      required:
+        - prompt_tokens
+        - total_tokens
+      properties:
+        prompt_tokens:
+          type: integer
+          description: The number of tokens used by the prompt.
+        total_tokens:
+          type: integer
+          description: The total number of tokens used by the request.
+    EmbeddingResult:
+      type: object
+      description: |
+        Represents an embedding vector returned by embedding endpoint.
+      additionalProperties: false
+      required:
+        - object
+        - embedding
+        - index
+      properties:
+        object:
+          type: string
+          description: The object type, which is always "embedding".
+          enum:
+            - embedding
+        embedding:
+          $ref: '#/components/schemas/Embedding'
+        index:
+          type: integer
+          description: The index of the embedding in the list of embeddings.
+    Embedding:
+      oneOf:
+        - type: array
+          items:
+            type: number
+          description: 'An array of numbers representing the embedding.'
+        - type: string
+          description: 'A single base64 string representing the embedding.'
+
+    # Chat Completion Schemas
     ChatMessages:
       type: array
       items:
         $ref: '#/components/schemas/ChatMessage'
-
     TemplatingChatMessage:
       type: array
       minItems: 1
       items:
         $ref: '#/components/schemas/ChatMessage'
-
     ChatMessage:
-      type: object
       oneOf:
         - $ref: '#/components/schemas/SystemChatMessage'
         - $ref: '#/components/schemas/UserChatMessage'
@@ -195,6 +393,10 @@ components:
       required:
         - role
         - content
+    # Below, OpenAI's spec marks 'content' as required but nullable: https://github.com/Azure/azure-rest-api-specs/blob/8279d4aee23a3fef5aac9c76333b0895c83e44c3/specification/cognitiveservices/data-plane/AzureOpenAI/inference/stable/2024-10-21/inference.yaml#L2121
+    # We've made it optional instead to maintain SDK compatibility and avoid breaking changes.
+    # Functionally achieves the same result as both patterns permit responses without textual content
+    # OpenAI via null values, ours via field omission.
     ResponseChatMessage:
       type: object
       additionalProperties: false
@@ -209,6 +411,8 @@ components:
           type: string
         tool_calls:
           $ref: '#/components/schemas/MessageToolCalls'
+      required:
+        - role
     # below tool message definitions are copied from openai spec: https://github.com/openai/openai-openapi/blob/e0cb2d721753e13e69e918465795d6e9f87ab15a/openapi.yaml#L11007
     # only renaming them to differentiate them from the openai python classes
     MessageToolCalls:
@@ -261,7 +465,6 @@ components:
           enum: ['text']
         text:
           type: string
-
     ChatDelta:
       type: object
       required:
@@ -309,7 +512,6 @@ components:
                 calling your function.
       required:
         - index
-
     CompletionPostResponse:
       type: object
       required:
@@ -327,7 +529,6 @@ components:
           $ref: '#/components/schemas/LLMModuleResult'
 
     CompletionPostResponseStreaming:
-      # TODO: This seems unused in the spec, but used in our endpoints.py, related to Github #778
       type: object
       required:
         - request_id
@@ -336,10 +537,9 @@ components:
           description: ID of the request
           type: string
         module_results:
-          $ref: '#/components/schemas/ModuleResults'
+          $ref: '#/components/schemas/ModuleResultsStreaming'
         orchestration_result:
           $ref: '#/components/schemas/LLMModuleResultStreaming'
-
     OrchestrationConfig:
       type: object
       required:
@@ -354,7 +554,6 @@ components:
           default: false
         stream_options:
           $ref: '#/components/schemas/GlobalStreamOptions'
-
     ModuleConfigs:
       type: object
       required:
@@ -376,8 +575,9 @@ components:
           $ref: '#/components/schemas/InputTranslationModuleConfig'
         output_translation_module_config:
           $ref: '#/components/schemas/OutputTranslationModuleConfig'
-
-    ModuleResults:
+    # Abstract base class encompassing fields for both `ModuleResults` and `ModuleResultsStreaming`
+    # Not to be instantiated by llm-orchestration code
+    ModuleResultsBase:
       description: Results of each module.
       type: object
       additionalProperties: false
@@ -392,19 +592,38 @@ components:
           $ref: '#/components/schemas/GenericModuleResult'
         input_filtering:
           $ref: '#/components/schemas/GenericModuleResult'
-        llm:
-          $ref: '#/components/schemas/LLMModuleResult'
         output_filtering:
           $ref: '#/components/schemas/GenericModuleResult'
-        output_unmasking:
-          type: array
-          items:
-            oneOf:
-              - $ref: '#/components/schemas/LLMChoice'
-              - $ref: '#/components/schemas/LLMChoiceStreaming'
         output_translation:
           $ref: '#/components/schemas/GenericModuleResult'
-
+    ModuleResults:
+      description: Synchronous results of each module.
+      type: object
+      additionalProperties: false
+      allOf:
+        - $ref: '#/components/schemas/ModuleResultsBase'
+        - type: object
+          properties:
+            llm:
+              $ref: '#/components/schemas/LLMModuleResult'
+            output_unmasking:
+              type: array
+              items:
+                $ref: '#/components/schemas/LLMChoice'
+    ModuleResultsStreaming:
+      description: Streaming results of each module.
+      type: object
+      additionalProperties: false
+      allOf:
+        - $ref: '#/components/schemas/ModuleResultsBase'
+        - type: object
+          properties:
+            llm:
+              $ref: '#/components/schemas/LLMModuleResultStreaming'
+            output_unmasking:
+              type: array
+              items:
+                $ref: '#/components/schemas/LLMChoiceStreaming'
     GlobalStreamOptions:
       description: Options for streaming. Will be ignored if stream is false.
       type: object
@@ -433,7 +652,7 @@ components:
       properties:
         model_name:
           description: Model name as in LLM Access configuration
-          example: 'gpt-4'
+          example: 'gpt-4o-mini'
           type: string
         model_params: # optional, default values are used for mandatory model parameters
           description: Model parameters
@@ -451,7 +670,6 @@ components:
           description: Version of the model to use
           type: string
           default: 'latest'
-
     GenericModuleResult:
       type: object
       description: Generic module result
@@ -465,14 +683,7 @@ components:
         data:
           type: object
           description: Additional data object from the module
-
     LLMModuleResult:
-      description: Output of LLM module. Follows the OpenAI spec.
-      oneOf:
-        - $ref: '#/components/schemas/LLMModuleResultSynchronous'
-        - $ref: '#/components/schemas/LLMModuleResultStreaming'
-
-    LLMModuleResultSynchronous:
       type: object
       description: Output of LLM module. Follows the OpenAI spec.
       required:
@@ -498,7 +709,7 @@ components:
         model:
           type: string
           description: Model name
-          example: 'gpt-4'
+          example: 'gpt-4o-mini'
         system_fingerprint:
           type: string
           description: System fingerprint
@@ -510,7 +721,6 @@ components:
             $ref: '#/components/schemas/LLMChoice'
         usage:
           $ref: '#/components/schemas/TokenUsage'
-
     LLMModuleResultStreaming:
       type: object
       description: Output of LLM module. Follows the OpenAI spec.
@@ -543,7 +753,6 @@ components:
             $ref: '#/components/schemas/LLMChoiceStreaming'
         usage:
           $ref: '#/components/schemas/TokenUsage'
-
     LLMChoice:
       type: object
       required:
@@ -568,7 +777,6 @@ components:
           type: string
           description: "Reason the model stopped generating tokens. 'stop' if the model hit a natural stop point or a provided stop sequence, 'length' if the maximum token number was reached, 'content_filter' if content was omitted due to a filter enforced by the LLM model provider or the content filtering module"
           example: stop
-
     LLMChoiceStreaming:
       type: object
       required:
@@ -590,7 +798,6 @@ components:
         finish_reason:
           type: string
           description: Reason for stopping the model
-
     TokenUsage:
       type: object
       description: Usage of tokens in the response
@@ -641,8 +848,6 @@ components:
           description: >
             Response format that the model output should adhere to.
             This is the same as the OpenAI definition.
-
-            Compatible with GPT-4o, GPT-4o mini, GPT-4 (Turbo) and all GPT-3.5 Turbo models newer than gpt-3.5-turbo-1106.
           oneOf:
             - $ref: '#/components/schemas/ResponseFormatText'
             - $ref: '#/components/schemas/ResponseFormatJsonObject'
@@ -855,11 +1060,11 @@ components:
       additionalProperties: false
       properties:
         filters:
-          description: Configuration for content filtering services that should be used for the given filtering step (input filtering or output filtering).
+          description: Configuration for content filtering services that should be used for the given filtering step (input filtering).
           type: array
           minItems: 1
           items:
-            $ref: '#/components/schemas/FilterConfig'
+            $ref: '#/components/schemas/InputFilterConfig'
 
     OutputFilteringConfig:
       type: object
@@ -868,11 +1073,11 @@ components:
       additionalProperties: false
       properties:
         filters:
-          description: Configuration for content filtering services that should be used for the given filtering step (input filtering or output filtering).
+          description: Configuration for content filtering services that should be used for the given filtering step (output filtering).
           type: array
           minItems: 1
           items:
-            $ref: '#/components/schemas/FilterConfig'
+            $ref: '#/components/schemas/OutputFilterConfig'
         stream_options:
           $ref: '#/components/schemas/FilteringStreamOptions'
 
@@ -888,12 +1093,17 @@ components:
           minimum: 0
           maximum: 10000
 
-    FilterConfig:
+    InputFilterConfig:
       oneOf:
-        - $ref: '#/components/schemas/AzureContentSafetyFilterConfig'
+        - $ref: '#/components/schemas/AzureContentSafetyInputFilterConfig'
         - $ref: '#/components/schemas/LlamaGuard38bFilterConfig'
 
-    AzureContentSafetyFilterConfig:
+    OutputFilterConfig:
+      oneOf:
+        - $ref: '#/components/schemas/AzureContentSafetyOutputFilterConfig'
+        - $ref: '#/components/schemas/LlamaGuard38bFilterConfig'
+
+    AzureContentSafetyInputFilterConfig:
       type: object
       required:
         - type
@@ -906,9 +1116,42 @@ components:
             - azure_content_safety
           example: azure_content_safety
         config:
-          $ref: '#/components/schemas/AzureContentSafety'
+          $ref: '#/components/schemas/AzureContentSafetyInput'
 
-    AzureContentSafety:
+    AzureContentSafetyOutputFilterConfig:
+      type: object
+      required:
+        - type
+      additionalProperties: false
+      properties:
+        type:
+          description: Name of the filter provider type
+          type: string
+          enum:
+            - azure_content_safety
+          example: azure_content_safety
+        config:
+          $ref: '#/components/schemas/AzureContentSafetyOutput'
+
+    AzureContentSafetyInput:
+      description: Filter configuration for Azure Content Safety
+      type: object
+      additionalProperties: false
+      properties:
+        Hate:
+          $ref: '#/components/schemas/AzureThreshold'
+        SelfHarm:
+          $ref: '#/components/schemas/AzureThreshold'
+        Sexual:
+          $ref: '#/components/schemas/AzureThreshold'
+        Violence:
+          $ref: '#/components/schemas/AzureThreshold'
+        PromptShield:
+          type: boolean
+          description: A flag to use prompt shield
+          default: false
+
+    AzureContentSafetyOutput:
       description: Filter configuration for Azure Content Safety
       type: object
       additionalProperties: false
@@ -1042,15 +1285,67 @@ components:
               description: controls whether the input to the grounding module will be masked with the configuration supplied in the masking module
 
     DPIEntityConfig:
+      oneOf:
+        - $ref: '#/components/schemas/DPIStandardEntity'
+        - $ref: '#/components/schemas/DPICustomEntity'
+
+    DPICustomEntity:
+      type: object
+      required:
+        - regex
+        - replacement_strategy
+      additionalProperties: false
+      properties:
+        regex:
+          description: Regular expression to match the entity
+          type: string
+        replacement_strategy:
+          description: Replacement strategy to be used for the entity
+          oneOf:
+            - $ref: '#/components/schemas/DPIMethodConstant'
+
+    DPIStandardEntity:
       type: object
       required:
         - type
       additionalProperties: false
       properties:
         type:
-          description: Type of entity to be masked
-          allOf:
-            - $ref: '#/components/schemas/DPIEntities'
+          $ref: '#/components/schemas/DPIEntities'
+        replacement_strategy:
+          description: Replacement strategy to be used for the entity
+          oneOf:
+            - $ref: '#/components/schemas/DPIMethodConstant'
+            - $ref: '#/components/schemas/DPIMethodFabricatedData'
+
+    DPIMethodConstant:
+      description: Replaces the entity with the specified value followed by an incrementing number
+      type: object
+      required:
+        - method
+        - value
+      additionalProperties: false
+      properties:
+        method:
+          type: string
+          enum:
+            - constant
+        value:
+          description: Value to be used for replacement
+          example: NAME_REDACTED
+          type: string
+
+    DPIMethodFabricatedData:
+      description: Replaces the entity with a randomly generated value appropriate to its type.
+      type: object
+      required:
+        - method
+      additionalProperties: false
+      properties:
+        method:
+          type: string
+          enum:
+            - fabricated_data
 
     DPIEntities:
       description: Default entities supported by data privacy and integration service
@@ -1077,6 +1372,7 @@ components:
         - profile-religious-group
         - profile-political-group
         - profile-pronouns-gender
+        - profile-ethnicity
         - profile-gender
         - profile-sexual-orientation
         - profile-trade-union
@@ -1251,11 +1547,9 @@ components:
     InputTranslationModuleConfig:
       oneOf:
         - $ref: '#/components/schemas/SAPDocumentTranslation'
-
     OutputTranslationModuleConfig:
       oneOf:
         - $ref: '#/components/schemas/SAPDocumentTranslation'
-
     SAPDocumentTranslation:
       type: object
       required:
@@ -1301,13 +1595,37 @@ components:
           example: 400
         message:
           type: string
-          example: "Model name must be one of ['gpt-4', ...]"
+          example: "Model name must be one of ['gpt-4o-mini', ...]"
         location:
           type: string
           description: Where the error occurred
           example: 'LLM Module'
         module_results:
           $ref: '#/components/schemas/ModuleResults'
+
+    ErrorResponseStreaming:
+      type: object
+      required:
+        - request_id
+        - code
+        - message
+        - location
+      properties:
+        request_id:
+          type: string
+          example: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
+        code:
+          type: integer
+          example: 500
+        message:
+          type: string
+          example: "Model name must be one of ['gpt-4o-mini', ...]"
+        location:
+          type: string
+          description: Where the error occurred
+          example: 'LLM Module'
+        module_results:
+          $ref: '#/components/schemas/ModuleResultsStreaming'
 
   responses:
     BadRequest:

@@ -10,7 +10,7 @@
 export type LlmModuleConfig = {
   /**
    * Model name as in LLM Access configuration
-   * @example "gpt-4"
+   * @example "gpt-4o-mini"
    */
   model_name: string;
   /**

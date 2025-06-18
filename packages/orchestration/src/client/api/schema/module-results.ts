@@ -3,22 +3,13 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { GenericModuleResult } from './generic-module-result.js';
-import type { TemplatingChatMessage } from './templating-chat-message.js';
+import type { ModuleResultsBase } from './module-results-base.js';
 import type { LlmModuleResult } from './llm-module-result.js';
 import type { LlmChoice } from './llm-choice.js';
-import type { LlmChoiceStreaming } from './llm-choice-streaming.js';
 /**
- * Results of each module.
+ * Synchronous results of each module.
  */
-export type ModuleResults = {
-  grounding?: GenericModuleResult;
-  templating?: TemplatingChatMessage;
-  input_translation?: GenericModuleResult;
-  input_masking?: GenericModuleResult;
-  input_filtering?: GenericModuleResult;
+export type ModuleResults = ModuleResultsBase & {
   llm?: LlmModuleResult;
-  output_filtering?: GenericModuleResult;
-  output_unmasking?: (LlmChoice | LlmChoiceStreaming)[];
-  output_translation?: GenericModuleResult;
-};
+  output_unmasking?: LlmChoice[];
+} & Record<string, any>;
