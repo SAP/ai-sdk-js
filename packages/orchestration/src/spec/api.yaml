@@ -1,8 +1,7 @@
 openapi: 3.0.0
 
-# TEMPORARY : lint-spec-sap fails without this with "sap-oas3-production-url : At least one URL to a production system is required."
 servers:
-  - url: https://api.dummy.orchestration.service.sap.com
+  - url: '/'
     description: Internal Orchestration Service API
 
 x-sap-shortText: 'Orchestration provides common capabilities for business AI scenarios, such as content filtering, data masking, and grounding'
