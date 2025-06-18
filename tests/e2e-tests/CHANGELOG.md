@@ -1,5 +1,13 @@
 # @sap-ai-sdk/e2e-tests
 
+## 1.15.0
+
+### Patch Changes
+
+- @sap-ai-sdk/ai-api@1.15.0
+- @sap-ai-sdk/orchestration@1.15.0
+- @sap-ai-sdk/sample-code@1.15.0
+
 ## 1.14.0
 
 ### Patch Changes
