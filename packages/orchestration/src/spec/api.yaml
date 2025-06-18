@@ -37,7 +37,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CompletionPostResponseSynchronous'
+                $ref: '#/components/schemas/CompletionPostResponse'
             text/event-stream:
               schema:
                 $ref: '#/components/schemas/CompletionPostResponseStreaming'
@@ -515,7 +515,7 @@ components:
                 calling your function.
       required:
         - index
-    CompletionPostResponseSynchronous:
+    CompletionPostResponse:
       type: object
       required:
         - request_id
@@ -527,9 +527,9 @@ components:
           type: string
           example: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
         module_results:
-          $ref: '#/components/schemas/ModuleResultsSynchronous'
+          $ref: '#/components/schemas/ModuleResults'
         orchestration_result:
-          $ref: '#/components/schemas/LLMModuleResultSynchronous'
+          $ref: '#/components/schemas/LLMModuleResult'
 
     CompletionPostResponseStreaming:
       type: object
@@ -578,7 +578,7 @@ components:
           $ref: '#/components/schemas/InputTranslationModuleConfig'
         output_translation_module_config:
           $ref: '#/components/schemas/OutputTranslationModuleConfig'
-    # Abstract base class encompassing fields for both `ModuleResultsSynchronous` and `ModuleResultsStreaming`
+    # Abstract base class encompassing fields for both `ModuleResults` and `ModuleResultsStreaming`
     # Not to be instantiated by llm-orchestration code
     ModuleResultsBase:
       description: Results of each module of /embeddings endpoint(e.g. input masking).
@@ -599,7 +599,7 @@ components:
           $ref: '#/components/schemas/GenericModuleResult'
         output_translation:
           $ref: '#/components/schemas/GenericModuleResult'
-    ModuleResultsSynchronous:
+    ModuleResults:
       description: Synchronous results of each module.
       type: object
       additionalProperties: false
@@ -608,11 +608,11 @@ components:
         - type: object
           properties:
             llm:
-              $ref: '#/components/schemas/LLMModuleResultSynchronous'
+              $ref: '#/components/schemas/LLMModuleResult'
             output_unmasking:
               type: array
               items:
-                $ref: '#/components/schemas/LLMChoiceSynchronous'
+                $ref: '#/components/schemas/LLMChoice'
     ModuleResultsStreaming:
       description: Streaming results of each module.
       type: object
@@ -687,7 +687,7 @@ components:
         data:
           type: object
           description: Additional data object from the module
-    LLMModuleResultSynchronous:
+    LLMModuleResult:
       type: object
       description: Output of LLM module. Follows the OpenAI spec.
       required:
@@ -722,7 +722,7 @@ components:
           type: array
           description: Choices
           items:
-            $ref: '#/components/schemas/LLMChoiceSynchronous'
+            $ref: '#/components/schemas/LLMChoice'
         usage:
           $ref: '#/components/schemas/TokenUsage'
     LLMModuleResultStreaming:
@@ -757,7 +757,7 @@ components:
             $ref: '#/components/schemas/LLMChoiceStreaming'
         usage:
           $ref: '#/components/schemas/TokenUsage'
-    LLMChoiceSynchronous:
+    LLMChoice:
       type: object
       required:
         - index
@@ -1595,20 +1595,32 @@ components:
           description: Where the error occurred
           example: 'LLM Module'
         module_results:
-          allOf:
-            - $ref: '#/components/schemas/ModuleResultsBase'
-            - type: object
-              properties:
-                llm:
-                  oneOf:
-                    - $ref: '#/components/schemas/LLMModuleResultSynchronous'
-                    - $ref: '#/components/schemas/LLMModuleResultStreaming'
-                output_unmasking:
-                  type: array
-                  items:
-                    oneOf:
-                      - $ref: '#/components/schemas/LLMChoiceSynchronous'
-                      - $ref: '#/components/schemas/LLMChoiceStreaming'
+          $ref: '#/components/schemas/ModuleResults'
+
+    ErrorResponseStreaming:
+      type: object
+      required:
+        - request_id
+        - code
+        - message
+        - location
+      properties:
+        request_id:
+          type: string
+          example: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
+        code:
+          type: integer
+          example: 500
+        message:
+          type: string
+          example: "Model name must be one of ['gpt-4o-mini', ...]"
+        location:
+          type: string
+          description: Where the error occurred
+          example: 'LLM Module'
+        module_results:
+          $ref: '#/components/schemas/ModuleResultsStreaming'
+
     # ref : https://github.com/openai/openai-python/blob/main/src/openai/types/chat/chat_completion_token_logprob.py
     ChatCompletionTokenLogprob:
       type: object
