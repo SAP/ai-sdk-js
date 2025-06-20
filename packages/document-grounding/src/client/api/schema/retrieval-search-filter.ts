@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { SearchConfiguration } from './search-configuration.js';
+import type { RetrievalSearchConfiguration } from './retrieval-search-configuration.js';
 import type { DataRepositoryType } from './data-repository-type.js';
 import type { KeyValueListPair } from './key-value-list-pair.js';
 import type { SearchDocumentKeyValueListPair } from './search-document-key-value-list-pair.js';
@@ -15,7 +15,7 @@ export type RetrievalSearchFilter = {
    * Identifier of this SearchFilter - unique per request.
    */
   id: string;
-  searchConfiguration?: SearchConfiguration;
+  searchConfiguration?: RetrievalSearchConfiguration;
   /**
    * Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids.
    * Default: [
