@@ -70,7 +70,9 @@ export class AzureOpenAiChatCompletionStreamResponse<T> {
    * @param choiceIndex - The index of the choice to get the tool calls for.
    * @returns The tool calls for the specified choice index.
    */
-  public getToolCalls(choiceIndex = 0): AzureOpenAiChatCompletionMessageToolCalls | undefined {
+  public getToolCalls(
+    choiceIndex = 0
+  ): AzureOpenAiChatCompletionMessageToolCalls | undefined {
     try {
       const toolCallsAccumulators =
         this._toolCallsAccumulators.get(choiceIndex);

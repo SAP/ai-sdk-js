@@ -1,17 +1,17 @@
 {
-    "choices": [
-        {
-            "content_filter_results": {},
-            "delta": {},
-            "finish_reason": "stop",
-            "index": 0,
-            "logprobs": null
-        }
-    ],
-    "created": 1730125149,
-    "id": "chatcmpl-ANKsHIdjvozwuOGpGI6rygvwSJH0I",
-    "model": "gpt-4o",
-    "object": "chat.completion.chunk",
-    "system_fingerprint": "fp_808245b034",
-    "usage": null
+  "choices": [
+    {
+      "content_filter_results": {},
+      "delta": {},
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null
+    }
+  ],
+  "created": 1730125149,
+  "id": "chatcmpl-ANKsHIdjvozwuOGpGI6rygvwSJH0I",
+  "model": "gpt-4o",
+  "object": "chat.completion.chunk",
+  "system_fingerprint": "fp_808245b034",
+  "usage": null
 }
