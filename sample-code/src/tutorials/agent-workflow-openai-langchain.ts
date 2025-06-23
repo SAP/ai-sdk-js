@@ -54,11 +54,14 @@ const getRestaurantsTool = tool(
 const tools = [getWeatherTool, getRestaurantsTool];
 const toolNode = new ToolNode(tools);
 
-// Create a model and give it access to the tools
+// Create a model
 const model = new AzureOpenAiChatClient({
   modelName: 'gpt-4o',
   temperature: 0.7,
-}).bindTools(tools);
+})
+
+ // create a model with access to the tools
+const modelWithTools = model.bindTools(tools);
 
 async function shouldContinueAgent({ messages }: typeof MessagesAnnotation.State) {
   const lastMessage = messages[messages.length - 1] as AIMessage;
@@ -82,8 +85,8 @@ async function askHuman({ messages }: typeof MessagesAnnotation.State) {
   return { messages: [new HumanMessage(humanResponse)] };
 }
 
-async function callModel(state: typeof MessagesAnnotation.State) {
-  const response = await model.invoke(state.messages);
+async function callModel({ messages }: typeof MessagesAnnotation.State) {
+  const response = await modelWithTools.invoke(messages);
   return { messages: [response] };
 }
 
