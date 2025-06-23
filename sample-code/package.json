@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@sap-ai-sdk/sample-code",
-  "version": "1.14.0",
+  "version": "1.15.0",
   "private": "true",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -20,9 +20,9 @@
     "lint:fix": "eslint . --fix && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -w --log-level error"
   },
   "dependencies": {
-    "@langchain/langgraph": "^0.3.0",
-    "langchain": "0.3.27",
-    "@langchain/core": "0.3.57",
+    "@langchain/langgraph": "^0.3.4",
+    "langchain": "0.3.29",
+    "@langchain/core": "0.3.61",
     "@langchain/textsplitters": "0.1.0",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/document-grounding": "workspace:^",
@@ -31,10 +31,10 @@
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/prompt-registry": "workspace:^",
     "@sap-cloud-sdk/util": "^4.0.2",
-    "@types/express": "^5.0.2",
+    "@types/express": "^5.0.3",
     "express": "^5.1.0",
     "uuid": "^11.1.0",
-    "zod": "^3.25.51",
+    "zod": "^3.25.67",
     "zod-to-json-schema": "^3.24.5"
   }
 }

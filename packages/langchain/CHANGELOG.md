@@ -1,5 +1,19 @@
 # @sap-ai-sdk/langchain
 
+## 1.15.0
+
+### Minor Changes
+
+- 4474313: [New Functionality] Support `bindTools()` method in Orchestration LangChain client.
+
+### Patch Changes
+
+- Updated dependencies [5307dd0]
+  - @sap-ai-sdk/core@1.15.0
+  - @sap-ai-sdk/ai-api@1.15.0
+  - @sap-ai-sdk/foundation-models@1.15.0
+  - @sap-ai-sdk/orchestration@1.15.0
+
 ## 1.14.0
 
 ### Minor Changes

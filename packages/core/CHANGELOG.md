@@ -1,5 +1,11 @@
 # @sap-ai-sdk/core
 
+## 1.15.0
+
+### Minor Changes
+
+- 5307dd0: [Improvement] Add `o3`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `o4-mini` and `mistralai--mistral-small-instruct` to available model list.
+
 ## 1.14.0
 
 ## 1.13.0

@@ -28,6 +28,15 @@
 
 -
 
+# 1.15.0
+## New Features
+
+- [langchain] Support `bindTools()` method in Orchestration LangChain client. (4474313)
+
+## Improvements
+
+- [core] Add `o3`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `o4-mini` and `mistralai--mistral-small-instruct` to available model list. (5307dd0)
+
 # 1.14.0
 ## Compatibility Notes
 
