@@ -137,10 +137,7 @@ const initMessages = [
 try {
   let response = await app.invoke({ messages: initMessages }, config);
 
-  console.log(
-    'Assistant:',
-    response.messages.at(-1)?.content
-  );
+  console.log('Assistant:', response.messages.at(-1)?.content);
   console.log('next: ', (await app.getState(config)).next);
 
   response = await app.invoke(
@@ -148,19 +145,13 @@ try {
     config
   );
 
-  console.log(
-    'Assistant:',
-    response.messages.at(-1)?.content
-  );
+  console.log('Assistant:', response.messages.at(-1)?.content);
 
   response = await app.invoke(
     new Command({ resume: 'Great! Looks perfect' }),
     config
   );
-  console.log(
-    'Assistant:',
-    response.messages.at(-1)?.content
-  );
+  console.log('Assistant:', response.messages.at(-1)?.content);
 } catch (error) {
   console.error('Error:', error);
 }
