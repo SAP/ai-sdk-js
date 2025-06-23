@@ -74,4 +74,14 @@ describe('OpenAI chat completion stream chunk response', () => {
       azureOpenAiChatCompletionStreamChunkResponses.deltaContentResponse.getDeltaContent()
     ).toBe(' is');
   });
+
+  it('should get delta tool calls with default index 0', () => {
+    const toolCalls = azureOpenAiChatCompletionStreamChunkResponses.deltaContentResponse.getDeltaToolCalls();
+    
+
+  it('should find choice by index', () => {
+    const choiceIndex = 0;
+    const choice = azureOpenAiChatCompletionStreamChunkResponses.deltaContentResponse.findChoiceByIndex(choiceIndex);
+    expect(choice?.index).toBe(choiceIndex);
+  });
 });

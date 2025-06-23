@@ -2,7 +2,7 @@ import { AzureOpenAiChatClient as AzureOpenAiChatClientBase } from '@sap-ai-sdk/
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { ChatGenerationChunk } from '@langchain/core/outputs';
 import {
-  mapAzureOpenAIChunkToLangChainMessageChunk,
+  mapAzureOpenAiChunkToLangChainMessageChunk,
   mapLangChainToAiClient,
   mapOutputToChatResult,
   mapToolToOpenAiTool
@@ -139,7 +139,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
       const choice = chunk.data.choices[0];
 
       // Map the chunk to a LangChain message chunk
-      const messageChunk = mapAzureOpenAIChunkToLangChainMessageChunk(chunk);
+      const messageChunk = mapAzureOpenAiChunkToLangChainMessageChunk(chunk);
 
       // Create initial generation info with token indices
       const newTokenIndices: NewTokenIndices = {

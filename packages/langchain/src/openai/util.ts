@@ -308,7 +308,7 @@ export function mapLangChainToAiClient(
  * @returns An {@link AIMessageChunk}
  * @internal
  */
-export function mapAzureOpenAIChunkToLangChainMessageChunk(
+export function mapAzureOpenAiChunkToLangChainMessageChunk(
   chunk: AzureOpenAiChatCompletionStreamChunkResponse
 ): AIMessageChunk {
   const choice = chunk.data.choices[0];

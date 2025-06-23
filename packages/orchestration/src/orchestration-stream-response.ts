@@ -1,5 +1,5 @@
-import { isMessageToolCall } from './internal.js';
-import type { ToolCallAccumulator } from './internal.js';
+import { isMessageToolCall } from './util/index.js';
+import type { ToolCallAccumulator } from './util/index.js';
 import type {
   MessageToolCalls,
   TokenUsage
