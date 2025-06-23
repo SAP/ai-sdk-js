@@ -139,7 +139,7 @@ try {
 
   console.log(
     'Assistant:',
-    response.messages[response.messages.length - 1].content
+    response.messages.at(-1)?.content
   );
   console.log('next: ', (await app.getState(config)).next);
 
@@ -150,7 +150,7 @@ try {
 
   console.log(
     'Assistant:',
-    response.messages[response.messages.length - 1].content
+    response.messages.at(-1)?.content
   );
 
   response = await app.invoke(
@@ -159,7 +159,7 @@ try {
   );
   console.log(
     'Assistant:',
-    response.messages[response.messages.length - 1].content
+    response.messages.at(-1)?.content
   );
 } catch (error) {
   console.error('Error:', error);
