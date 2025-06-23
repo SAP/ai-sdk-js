@@ -77,7 +77,7 @@ const modelWithTools = model.bindTools(tools);
 async function shouldContinueAgent({
   messages
 }: typeof MessagesAnnotation.State) {
-  const lastMessage = messages[messages.length - 1] as AIMessage;
+  const lastMessage = messages.at(-1) as AIMessage;
 
   // If there are tool calls, go to tools
   if (lastMessage.tool_calls?.length) {
@@ -93,8 +93,8 @@ async function shouldContinueAgent({
 
   return result.content === 'FAREWELL' ? END : 'askHuman';
 }
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-async function askHuman({ messages }: typeof MessagesAnnotation.State) {
+
+async function askHuman() {
   // This is where the actual interrupt happens
   const humanResponse: string = interrupt(
     'Do you want to adjust the itinerary?'
