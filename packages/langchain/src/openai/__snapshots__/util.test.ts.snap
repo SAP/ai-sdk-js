@@ -18,9 +18,7 @@ exports[`Mapping Functions should parse an OpenAI response to a (LangChain) chat
         ],
         "kwargs": {
           "additional_kwargs": {
-            "finish_reason": "stop",
             "function_call": undefined,
-            "index": 0,
             "tool_calls": undefined,
           },
           "content": "Hello! I’m here and ready to help. How can I assist you today?",

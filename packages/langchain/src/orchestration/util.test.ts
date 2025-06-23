@@ -203,7 +203,7 @@ describe('mapOutputToChatResult', () => {
     expect(result.generations[0].generationInfo).toEqual({
       finish_reason: 'stop',
       index: 0,
-      function_call: undefined,
+      request_id: 'req-123',
       tool_calls: undefined
     });
     expect(result.llmOutput).toEqual({
@@ -341,7 +341,6 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
     expect(result.content).toBe('Test content');
     expect(result.additional_kwargs).toEqual({
       module_results: mockChunk.data.module_results,
-      request_id: 'req-123'
     });
     expect(result.tool_call_chunks).toEqual([]);
     expect(result).toMatchSnapshot('AIMessageChunk with content');
