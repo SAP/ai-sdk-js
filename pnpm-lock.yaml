@@ -33,7 +33,7 @@ importers:
         version: 4.0.2
       '@sap-cloud-sdk/eslint-config':
         specifier: ^4.0.2
-        version: 4.0.2(@typescript-eslint/eslint-plugin@8.33.0(@typescript-eslint/parser@8.33.0(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0)(prettier@3.5.3)(typescript@5.8.3)
+        version: 4.0.2(@typescript-eslint/eslint-plugin@8.33.0(@typescript-eslint/parser@8.33.0(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0)(prettier@3.6.0)(typescript@5.8.3)
       '@sap-cloud-sdk/generator-common':
         specifier: ^4.0.2
         version: 4.0.2
@@ -80,8 +80,8 @@ importers:
         specifier: ^14.0.4
         version: 14.0.5
       prettier:
-        specifier: ^3.5.3
-        version: 3.5.3
+        specifier: ^3.6.0
+        version: 3.6.0
       ts-jest:
         specifier: ^29.4.0
         version: 29.4.0(@babel/core@7.27.4)(@jest/transform@30.0.2)(@jest/types@30.0.1)(jest-util@30.0.2)(jest@30.0.0-alpha.7(@types/node@20.19.1)(ts-node@10.9.2(@types/node@20.19.1)(typescript@5.8.3)))(typescript@5.8.3)
@@ -242,8 +242,8 @@ importers:
         version: 5.1.0
     devDependencies:
       '@sap/cds-dk':
-        specifier: ^9.0.5
-        version: 9.0.5(@eslint/js@9.29.0)
+        specifier: ^9.0.6
+        version: 9.0.6(@eslint/js@9.29.0)
 
   sample-code:
     dependencies:
@@ -251,8 +251,8 @@ importers:
         specifier: 0.3.61
         version: 0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67))
       '@langchain/langgraph':
-        specifier: ^0.3.4
-        version: 0.3.4(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))(zod-to-json-schema@3.24.5(zod@3.25.67))
+        specifier: ^0.3.5
+        version: 0.3.5(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))(zod-to-json-schema@3.24.5(zod@3.25.67))
       '@langchain/textsplitters':
         specifier: 0.1.0
         version: 0.1.0(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))
@@ -332,8 +332,8 @@ importers:
         specifier: 0.3.61
         version: 0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67))
       '@langchain/langgraph':
-        specifier: ^0.3.4
-        version: 0.3.4(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))(zod-to-json-schema@3.24.5(zod@3.25.67))
+        specifier: ^0.3.5
+        version: 0.3.5(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))(zod-to-json-schema@3.24.5(zod@3.25.67))
       '@langchain/textsplitters':
         specifier: 0.1.0
         version: 0.1.0(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))
@@ -1133,8 +1133,8 @@ packages:
       react:
         optional: true
 
-  '@langchain/langgraph@0.3.4':
-    resolution: {integrity: sha512-Vuja8Qtu3Zjx7k4fK7Cnw+p8gtvIRPciWp9btPhAs3aUo6aBgOJOZVcK5Ii3mHfEHK/aQmRElR0x/u/YwykOrg==}
+  '@langchain/langgraph@0.3.5':
+    resolution: {integrity: sha512-7astlgnp6BdMQJqmr+cbDgR10FYWNCaDLnbfEDHpqhKCCajU59m5snOdl4Vtu5UM6V2k3lgatNqWoflBtxhIyg==}
     engines: {node: '>=18'}
     peerDependencies:
       '@langchain/core': '>=0.3.58 < 0.4.0'
@@ -1265,8 +1265,8 @@ packages:
     engines: {node: '>=20'}
     hasBin: true
 
-  '@sap/cds-dk@9.0.5':
-    resolution: {integrity: sha512-vl97mgvkm78fmrmql30vawPygRxMVzqvn9TsaC0gd6UpOXwnIVDzplh/tbJkSdJ6anCx3sW6kHbYdhhVTQv5kA==}
+  '@sap/cds-dk@9.0.6':
+    resolution: {integrity: sha512-grlpkXrcQelR1HAraCICkqG8247S1Klivxf8ferQu4QK/sby9YbPCZh01loaQ821FdHi+f5fP431DbL1fqBfsA==}
     hasBin: true
 
   '@sap/cds-fiori@2.0.1':
@@ -2700,10 +2700,6 @@ packages:
   form-data-encoder@1.7.2:
     resolution: {integrity: sha512-qfqtYan3rxrnCk1VYaA4H+Ms9xdpPqvLZa6xmMgFvhO32x7/3J/ExcTd6qpxM0vH2GdMI+poehyBZvqfMTto8A==}
 
-  form-data@4.0.2:
-    resolution: {integrity: sha512-hGfm/slu0ZabnNt4oaRZ6uREyfCj6P4fT/n6A1rGV+Z0VdGXjfOhVUpkn6qVQONHGIFwmveGXyDs75+nr6FM8w==}
-    engines: {node: '>= 6'}
-
   form-data@4.0.3:
     resolution: {integrity: sha512-qsITQPfmvMOSAdeyZ+12I1c+CKSstAFAwu+97zrnWAbIr5u8wfsExUzCesVLC8NgHuRUqNN4Zy6UPWUTRGslcA==}
     engines: {node: '>= 6'}
@@ -4112,8 +4108,8 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
 
-  prettier@3.5.3:
-    resolution: {integrity: sha512-QQtaxnoDJeAkDvDKWCLiwIXkTgRhwYDEQCghU9Z6q03iyek/rxRh/2lC3HB7P8sWT2xC/y5JDctPLBIGzHKbhw==}
+  prettier@3.6.0:
+    resolution: {integrity: sha512-ujSB9uXHJKzM/2GBuE0hBOUgC77CN3Bnpqa+g80bkv3T3A93wL/xlzDATHhnhkzifz/UE2SNOvmbTz5hSkDlHw==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -5957,7 +5953,7 @@ snapshots:
     optionalDependencies:
       '@langchain/core': 0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67))
 
-  '@langchain/langgraph@0.3.4(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))(zod-to-json-schema@3.24.5(zod@3.25.67))':
+  '@langchain/langgraph@0.3.5(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))(zod-to-json-schema@3.24.5(zod@3.25.67))':
     dependencies:
       '@langchain/core': 0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67))
       '@langchain/langgraph-checkpoint': 0.0.18(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))
@@ -6154,7 +6150,7 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/eslint-config@4.0.2(@typescript-eslint/eslint-plugin@8.33.0(@typescript-eslint/parser@8.33.0(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0)(prettier@3.5.3)(typescript@5.8.3)':
+  '@sap-cloud-sdk/eslint-config@4.0.2(@typescript-eslint/eslint-plugin@8.33.0(@typescript-eslint/parser@8.33.0(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0)(prettier@3.6.0)(typescript@5.8.3)':
     dependencies:
       '@eslint/js': 9.27.0
       '@stylistic/eslint-plugin': 3.1.0(eslint@9.29.0)(typescript@5.8.3)
@@ -6164,7 +6160,7 @@ snapshots:
       eslint-import-resolver-typescript: 4.4.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.33.0(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0))(eslint@9.29.0)
       eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.33.0(eslint@9.29.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.4.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.33.0(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0))(eslint@9.29.0))(eslint@9.29.0)
       eslint-plugin-jsdoc: 50.6.17(eslint@9.29.0)
-      eslint-plugin-prettier: 5.4.0(eslint-config-prettier@10.1.5(eslint@9.29.0))(eslint@9.29.0)(prettier@3.5.3)
+      eslint-plugin-prettier: 5.4.0(eslint-config-prettier@10.1.5(eslint@9.29.0))(eslint@9.29.0)(prettier@3.6.0)
       eslint-plugin-regex: 1.10.0(eslint@9.29.0)
       eslint-plugin-unused-imports: 4.1.4(@typescript-eslint/eslint-plugin@8.33.0(@typescript-eslint/parser@8.33.0(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0)
       typescript-eslint: 8.33.0(eslint@9.29.0)(typescript@5.8.3)
@@ -6183,7 +6179,7 @@ snapshots:
       fast-levenshtein: 3.0.0
       fs-extra: 11.3.0
       glob: 11.0.3
-      prettier: 3.5.3
+      prettier: 3.6.0
       typescript: 5.8.3
       voca: 1.4.1
       yargs: 17.7.2
@@ -6247,7 +6243,7 @@ snapshots:
 
   '@sap/cds-compiler@6.0.10': {}
 
-  '@sap/cds-dk@9.0.5(@eslint/js@9.29.0)':
+  '@sap/cds-dk@9.0.6(@eslint/js@9.29.0)':
     dependencies:
       '@cap-js/asyncapi': 1.0.3(@sap/cds@9.0.4(@eslint/js@9.29.0)(express@5.1.0))
       '@cap-js/openapi': 1.2.3(@sap/cds@9.0.4(@eslint/js@9.29.0)(express@5.1.0))
@@ -6879,7 +6875,7 @@ snapshots:
   axios@1.9.0:
     dependencies:
       follow-redirects: 1.15.9
-      form-data: 4.0.2
+      form-data: 4.0.3
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
@@ -7626,10 +7622,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-prettier@5.4.0(eslint-config-prettier@10.1.5(eslint@9.29.0))(eslint@9.29.0)(prettier@3.5.3):
+  eslint-plugin-prettier@5.4.0(eslint-config-prettier@10.1.5(eslint@9.29.0))(eslint@9.29.0)(prettier@3.6.0):
     dependencies:
       eslint: 9.29.0
-      prettier: 3.5.3
+      prettier: 3.6.0
       prettier-linter-helpers: 1.0.0
       synckit: 0.11.6
     optionalDependencies:
@@ -7972,13 +7968,6 @@ snapshots:
       signal-exit: 4.1.0
 
   form-data-encoder@1.7.2: {}
-
-  form-data@4.0.2:
-    dependencies:
-      asynckit: 0.4.0
-      combined-stream: 1.0.8
-      es-set-tostringtag: 2.1.0
-      mime-types: 2.1.35
 
   form-data@4.0.3:
     dependencies:
@@ -9621,7 +9610,7 @@ snapshots:
 
   prettier@3.0.3: {}
 
-  prettier@3.5.3: {}
+  prettier@3.6.0: {}
 
   pretty-format@29.7.0:
     dependencies:
