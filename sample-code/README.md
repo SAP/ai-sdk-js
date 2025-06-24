@@ -289,6 +289,18 @@ Invoke a chain to trigger data masking of orchestration service.
 Invoke a chain to embed documents and get chat completion response with context from Azure OpenAI.
 The chain performs RAG with the chat and embedding client.
 
+#### Stream with Azure OpenAI
+
+`GET /langchain/stream-azure-openai`
+
+Stream chat completion response with Azure OpenAI using LangChain.
+
+#### Stream with Orchestration
+
+`GET /langchain/stream-orchestration`
+
+Stream chat completion response with orchestration service using LangChain.
+
 ### Document Grounding
 
 #### E2E flow for Orchestration Grounding using `vector` as the Data Repository
