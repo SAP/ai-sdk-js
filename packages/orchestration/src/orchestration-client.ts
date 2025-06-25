@@ -81,9 +81,7 @@ export class OrchestrationClient {
       stream: false
     });
     const orchestrationResponse = new OrchestrationResponse(response);
-    this.history.push(
-      ...(orchestrationResponse.getTemplatedMessages())
-    );
+    this.history = orchestrationResponse.getAllMessages();
     return orchestrationResponse;
   }
 
