@@ -63,12 +63,28 @@ export class OrchestrationClient {
     prompt?: Prompt,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationResponse> {
+    if(this.clientConfig.enableHistory) {
+      if (!prompt) {
+        throw new Error(
+          'Prompt is required when history is enabled.'
+        );
+      }
+      if(prompt.messagesHistory) {
+        throw new Error(
+          'Prompt should not contain messagesHistory when history is enabled.');
+      }
+      prompt.messagesHistory = this.history;
+    }
     const response = await this.executeRequest({
       prompt,
       requestConfig,
       stream: false
     });
-    return new OrchestrationResponse(response);
+    const orchestrationResponse = new OrchestrationResponse(response);
+    this.history.push(
+      ...(orchestrationResponse.getTemplatedMessages())
+    );
+    return orchestrationResponse;
   }
 
   async stream(
