@@ -10,7 +10,10 @@ import {
   constructCompletionPostRequest,
   constructCompletionPostRequestFromJsonModuleConfig
 } from './util/index.js';
-import type { ChatMessages, TemplatingChatMessage } from './client/api/schema/index.js';
+import type {
+  ChatMessages,
+  TemplatingChatMessage
+} from './client/api/schema/index.js';
 import type {
   HttpResponse,
   CustomRequestConfig
@@ -35,6 +38,7 @@ const logger = createLogger({
  * Get the orchestration client.
  */
 export class OrchestrationClient {
+  private openStream = false;
   private history: ChatMessages = [];
   /**
    * Creates an instance of the orchestration client.
@@ -63,15 +67,15 @@ export class OrchestrationClient {
     prompt?: Prompt,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationResponse> {
-    if(this.clientConfig.enableHistory) {
+    if (this.clientConfig.enableHistory) {
       if (!prompt) {
-        throw new Error(
-          'Prompt is required when history is enabled.'
-        );
+        throw new Error('Prompt is required when history is enabled.');
       }
-      if(prompt.messagesHistory) {
+      // what if an old conversation is instantiated?
+      if (prompt.messagesHistory) {
         throw new Error(
-          'Prompt should not contain messagesHistory when history is enabled.');
+          'Prompt should not contain messagesHistory when history is enabled.'
+        );
       }
       prompt.messagesHistory = this.history;
     }
@@ -149,6 +153,13 @@ export class OrchestrationClient {
     const response =
       new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
 
+    if (this.openStream) {
+      throw new Error(
+        'Stream is already open. Please close the previous stream before opening a new one.'
+      );
+    }
+
+    this.openStream = true;
     const streamResponse = await this.executeRequest({
       ...options,
       requestConfig: {
