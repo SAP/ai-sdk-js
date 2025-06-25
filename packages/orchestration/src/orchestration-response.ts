@@ -27,6 +27,16 @@ export class OrchestrationResponse {
   getTokenUsage(): TokenUsage {
     return this.data.orchestration_result.usage!;
   }
+
+  /**
+   * Messages after they have been templated.
+   * This means the messages have been processed by input_translation and input_masking, if enabled.
+   * @returns Messages after templating.
+   */
+  getTemplatedMessages(): ChatMessages {
+    return this.data.module_results.templating ?? [];
+  }
+
   /**
    * Reason for stopping the completion.
    * @param choiceIndex - The index of the choice to parse.

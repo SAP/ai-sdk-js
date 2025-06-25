@@ -315,3 +315,13 @@ export interface TranslationConfigParams {
    */
   targetLanguage: string;
 }
+
+/**
+ * Configuration for the orchestration client.
+ */
+export interface ClientConfig {
+  /**
+   * Defines if chat history is maintained by the client.
+   */
+  enableHistory?: boolean;
+}

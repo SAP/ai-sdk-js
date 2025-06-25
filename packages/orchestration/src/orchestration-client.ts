@@ -10,13 +10,14 @@ import {
   constructCompletionPostRequest,
   constructCompletionPostRequestFromJsonModuleConfig
 } from './util/index.js';
-import type { TemplatingChatMessage } from './client/api/schema/index.js';
+import type { ChatMessages, TemplatingChatMessage } from './client/api/schema/index.js';
 import type {
   HttpResponse,
   CustomRequestConfig
 } from '@sap-cloud-sdk/http-client';
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api/internal.js';
 import type {
+  ClientConfig,
   OrchestrationModuleConfig,
   Prompt,
   RequestOptions,
@@ -34,14 +35,17 @@ const logger = createLogger({
  * Get the orchestration client.
  */
 export class OrchestrationClient {
+  private history: ChatMessages = [];
   /**
    * Creates an instance of the orchestration client.
    * @param config - Orchestration module configuration. This can either be an `OrchestrationModuleConfig` object or a JSON string obtained from AI Launchpad.
+   * @param clientConfig - Client configuration, which defines the clients behavior.
    * @param deploymentConfig - Deployment configuration.
    * @param destination - The destination to use for the request.
    */
   constructor(
     private config: OrchestrationModuleConfig | string,
+    private clientConfig: ClientConfig,
     private deploymentConfig?: ResourceGroupConfig,
     private destination?: HttpDestinationOrFetchOptions
   ) {
