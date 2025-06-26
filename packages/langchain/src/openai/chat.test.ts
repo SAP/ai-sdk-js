@@ -3,13 +3,17 @@ import { apiVersion } from '@sap-ai-sdk/foundation-models/internal.js';
 import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
-  mockInference
+  mockInference,
+  parseFileToString
 } from '../../../../test-util/mock-http.js';
 import { addNumbersTool } from '../../../../test-util/tools.js';
 import { AzureOpenAiChatClient } from './chat.js';
+import type { AIMessageChunk } from '@langchain/core/messages';
 
 describe('Chat client', () => {
   let client: AzureOpenAiChatClient;
+  let mockResponseStream: string;
+  let mockResponseStreamToolCalls: string;
   const endpoint = {
     url: 'inference/deployments/1234/chat/completions',
     apiVersion
@@ -25,6 +29,14 @@ describe('Chat client', () => {
         executableId: 'azure-openai'
       },
       { id: '1234', model: { name: 'gpt-4o', version: 'latest' } }
+    );
+    mockResponseStream = await parseFileToString(
+      'foundation-models',
+      'azure-openai-chat-completion-stream-chunks.txt'
+    );
+    mockResponseStreamToolCalls = await parseFileToString(
+      'foundation-models',
+      'azure-openai-chat-completion-stream-tools-chunks.txt'
     );
   });
 
@@ -168,6 +180,115 @@ describe('Chat client', () => {
         endpoint
       );
       await client.bindTools([addNumbersTool]).invoke('What is 1 + 2?');
+    });
+  });
+
+  describe('streaming', () => {
+    it('supports streaming responses', async () => {
+      mockInference(
+        {
+          data: {
+            messages: [
+              {
+                role: 'user' as const,
+                content: 'What is the capital of France?'
+              }
+            ],
+            stream: true,
+            stream_options: {
+              include_usage: true
+            }
+          }
+        },
+        {
+          data: mockResponseStream,
+          status: 200
+        },
+        endpoint
+      );
+
+      const stream = await client.stream('What is the capital of France?');
+      let finalOutput: AIMessageChunk | undefined;
+      for await (const chunk of stream) {
+        finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
+      }
+
+      expect(finalOutput).toMatchSnapshot();
+    });
+
+    it('streams and aborts with a signal', async () => {
+      mockInference(
+        {
+          data: {
+            messages: [
+              {
+                role: 'user' as const,
+                content: 'What is the capital of France?'
+              }
+            ],
+            stream: true,
+            stream_options: {
+              include_usage: true
+            }
+          }
+        },
+        {
+          data: mockResponseStream,
+          status: 200
+        },
+        endpoint
+      );
+
+      const controller = new AbortController();
+      const stream = await client.stream('What is the capital of France?', {
+        signal: controller.signal
+      });
+      const streamFunction = async () => {
+        for await (const _ of stream) {
+          controller.abort();
+        }
+      };
+      await expect(streamFunction()).rejects.toThrow('Aborted');
+    });
+
+    it('supports streaming responses with tool calls', async () => {
+      mockInference(
+        {
+          data: {
+            messages: [
+              {
+                role: 'user' as const,
+                content: 'What is 1 + 2?'
+              }
+            ],
+            tools: [addNumbersTool],
+            stream: true,
+            stream_options: {
+              include_usage: true
+            }
+          }
+        },
+        {
+          data: mockResponseStreamToolCalls,
+          status: 200
+        },
+        endpoint
+      );
+
+      const stream = await client
+        .bindTools([addNumbersTool])
+        .stream('What is 1 + 2?');
+      let finalOutput: AIMessageChunk | undefined;
+      for await (const chunk of stream) {
+        finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
+      }
+      const completeToolCall = finalOutput!.tool_calls![0];
+      expect(completeToolCall.name).toBe('add');
+      expect(completeToolCall.args).toEqual({
+        a: 1,
+        b: 2
+      });
+      expect(finalOutput).toMatchSnapshot();
     });
   });
 });

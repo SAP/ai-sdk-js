@@ -53,7 +53,7 @@ describe('orchestration service client', () => {
     );
     mockResponseStreamToolCalls = await parseFileToString(
       'orchestration',
-      'orchestration-chat-completion-stream-multiple-tools-chunks.txt'
+      'orchestration-chat-completion-stream-tools-chunks.txt'
     );
   });
 
@@ -385,7 +385,7 @@ describe('orchestration service client', () => {
       const { signal } = controller;
       const stream = await client.stream('Hello!', { signal });
       const streamFunction = async () => {
-        for await (const _chunk of stream) {
+        for await (const _ of stream) {
           controller.abort();
         }
       };

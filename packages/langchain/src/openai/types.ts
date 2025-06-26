@@ -62,6 +62,7 @@ export type AzureOpenAiChatCallOptions = BaseChatModelCallOptions &
   > & {
     strict?: boolean;
     tools?: ChatAzureOpenAIToolType[];
+    promptIndex?: number;
     requestConfig?: CustomRequestConfig;
   };
 

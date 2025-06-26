@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Chat client streaming supports streaming responses 1`] = `
+{
+  "id": [
+    "langchain_core",
+    "messages",
+    "AIMessageChunk",
+  ],
+  "kwargs": {
+    "additional_kwargs": {},
+    "content": "The capital of France is Paris.",
+    "id": undefined,
+    "invalid_tool_calls": [],
+    "response_metadata": {
+      "completion": 0,
+      "created": 1730125149,
+      "finish_reason": "stop",
+      "id": "chatcmpl-ANKsHIdjvozwuOGpGI6rygvwSJH0I",
+      "index": 0,
+      "model_name": "gpt-4o",
+      "prompt": 0,
+      "system_fingerprint": "fp_808245b034",
+      "token_usage": {
+        "completion_tokens": 7,
+        "prompt_tokens": 14,
+        "total_tokens": 21,
+      },
+    },
+    "tool_call_chunks": [],
+    "tool_calls": [],
+    "usage_metadata": {
+      "input_tokens": 14,
+      "output_tokens": 7,
+      "total_tokens": 21,
+    },
+  },
+  "lc": 1,
+  "type": "constructor",
+}
+`;
+
+exports[`Chat client streaming supports streaming responses with tool calls 1`] = `
+{
+  "id": [
+    "langchain_core",
+    "messages",
+    "AIMessageChunk",
+  ],
+  "kwargs": {
+    "additional_kwargs": {},
+    "content": "",
+    "id": undefined,
+    "invalid_tool_calls": [],
+    "response_metadata": {
+      "completion": 0,
+      "created": 1750673370,
+      "finish_reason": "tool_calls",
+      "id": "chatcmpl-BlYPCAKjvl7PBJxuZb352G12WIQK5",
+      "index": 0,
+      "model_name": "gpt-4o-2024-08-06",
+      "prompt": 0,
+      "system_fingerprint": "fp_ee1d74bde0",
+      "token_usage": {
+        "completion_tokens": 18,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0,
+        },
+        "prompt_tokens": 52,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0,
+        },
+        "total_tokens": 70,
+      },
+    },
+    "tool_call_chunks": [
+      {
+        "args": "{"a":1,"b":2}",
+        "id": "call_De0ejo2G1gknErC39DDH2JpS",
+        "index": 0,
+        "name": "add",
+        "type": "tool_call_chunk",
+      },
+    ],
+    "tool_calls": [
+      {
+        "args": {
+          "a": 1,
+          "b": 2,
+        },
+        "id": "call_De0ejo2G1gknErC39DDH2JpS",
+        "name": "add",
+        "type": "tool_call",
+      },
+    ],
+    "usage_metadata": {
+      "input_tokens": 52,
+      "output_tokens": 18,
+      "total_tokens": 70,
+    },
+  },
+  "lc": 1,
+  "type": "constructor",
+}
+`;
