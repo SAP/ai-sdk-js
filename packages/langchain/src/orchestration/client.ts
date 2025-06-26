@@ -95,6 +95,12 @@ export class OrchestrationClient extends BaseChatModel<
         const { inputParams, customRequestConfig } = options;
         const mergedOrchestrationConfig =
           this.mergeOrchestrationConfig(options);
+
+        const controller = new AbortController();
+        if (options.signal) {
+          options.signal.addEventListener('abort', () => controller.abort());
+        }
+
         const orchestrationClient = new OrchestrationClientBase(
           mergedOrchestrationConfig,
           this.deploymentConfig,
@@ -107,7 +113,10 @@ export class OrchestrationClient extends BaseChatModel<
             messages: allMessages,
             inputParams
           },
-          customRequestConfig
+          {
+            ...customRequestConfig,
+            signal: options.signal
+          }
         );
       }
     );

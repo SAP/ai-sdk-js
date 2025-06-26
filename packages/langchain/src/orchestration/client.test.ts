@@ -113,7 +113,7 @@ describe('orchestration service client', () => {
 
     it('throws when delay exceeds timeout', async () => {
       mockInferenceWithResilience(mockResponse, { delay: 2000 });
-      const client = new OrchestrationClient(config);
+      const client = new OrchestrationClient(config, { maxRetries: 0 });
       const response = client.invoke(messages, { timeout: 1000 });
       await expect(response).rejects.toThrow(
         expect.objectContaining({
