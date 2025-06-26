@@ -1,7 +1,5 @@
 import { supportedAzureFilterThresholds } from '../orchestration-types.js';
 import type {
-  AzureContentSafetyOutput,
-  AzureContentSafetyOutputFilterConfig,
   InputFilteringConfig,
   LlamaGuard38BFilterConfig,
   OutputFilteringConfig

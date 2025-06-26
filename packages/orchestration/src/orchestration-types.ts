@@ -326,4 +326,5 @@ export type AzureContentSafety = AzureContentSafetyOutput;
 /**
  * Representation of the Azure Content Safety filter config schema.
  */
-export type AzureContentSafetyFilterConfig = AzureContentSafetyOutputFilterConfig;
+export type AzureContentSafetyFilterConfig =
+  AzureContentSafetyOutputFilterConfig;
