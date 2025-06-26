@@ -1,6 +1,6 @@
 import { AIMessage } from '@langchain/core/messages';
 import type { AIMessageFields } from '@langchain/core/messages';
-import type { ModuleResults } from '@sap-ai-sdk/orchestration';
+import type { ModuleResults } from '@sap-ai-sdk/orchestration/internal.js';
 
 /**
  * An AI Message containing module results and request ID.

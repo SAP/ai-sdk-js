@@ -1,6 +1,6 @@
 import { AIMessageChunk } from '@langchain/core/messages';
 import type { AIMessageChunkFields } from '@langchain/core/messages';
-import type { ModuleResultsStreaming } from '@sap-ai-sdk/orchestration';
+import type { ModuleResultsStreaming } from '@sap-ai-sdk/orchestration/internal.js';
 
 /**
  * An AI Message Chunk containing module results and request ID.
