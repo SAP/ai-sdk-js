@@ -24,7 +24,7 @@ import type {
   UserChatMessage,
   TemplatingModuleConfig,
   TemplateRef,
-  ToolCallChunk as OrchestrationToolCallChunk,
+  ToolCallChunk as OrchestrationToolCallChunk
 } from '@sap-ai-sdk/orchestration/internal.js';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type {
