@@ -36,6 +36,6 @@
     "express": "^5.1.0",
     "uuid": "^11.1.0",
     "zod": "^3.25.67",
-    "zod-to-json-schema": "^3.24.5"
+    "zod-to-json-schema": "^3.24.6"
   }
 }
