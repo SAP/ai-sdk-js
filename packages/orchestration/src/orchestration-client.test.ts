@@ -810,7 +810,7 @@ describe('orchestration service client', () => {
 
     const mockResponse = await parseFileToString(
       'orchestration',
-      'orchestration-chat-completion-stream-multiple-tools-chunks.txt'
+      'orchestration-chat-completion-stream-tools-chunks.txt'
     );
 
     mockInference(

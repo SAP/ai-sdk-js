@@ -1,8 +1,8 @@
-import { AIMessage } from '@langchain/core/messages';
+import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { v4 as uuidv4 } from 'uuid';
 import { isZodSchema } from '@langchain/core/utils/types';
-import type { ToolCall } from '@langchain/core/messages/tool';
+import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type {
   AzureOpenAiChatCompletionRequestUserMessage,
   AzureOpenAiChatCompletionRequestAssistantMessage,
@@ -15,7 +15,9 @@ import type {
   AzureOpenAiChatCompletionRequestToolMessage,
   AzureOpenAiChatCompletionRequestFunctionMessage,
   AzureOpenAiChatCompletionRequestSystemMessage,
-  AzureOpenAiFunctionObject
+  AzureOpenAiFunctionObject,
+  AzureOpenAiChatCompletionStreamChunkResponse,
+  AzureOpenAiChatCompletionMessageToolCallChunk
 } from '@sap-ai-sdk/foundation-models';
 import type {
   BaseMessage,
@@ -128,8 +130,6 @@ export function mapOutputToChatResult(
           choice.message.tool_calls
         ),
         additional_kwargs: {
-          finish_reason: choice.finish_reason,
-          index: choice.index,
           function_call: choice.message.function_call,
           tool_calls: choice.message.tool_calls
         }
@@ -300,6 +300,43 @@ export function mapLangChainToAiClient(
     tools: options?.tools?.map(t => mapToolToOpenAiTool(t)),
     tool_choice: options?.tool_choice
   });
+}
+
+/**
+ * Converts Azure OpenAI stream chunk to a LangChain message chunk.
+ * @param chunk - The Azure OpenAI stream chunk.
+ * @returns An {@link AIMessageChunk}
+ * @internal
+ */
+export function mapAzureOpenAiChunkToLangChainMessageChunk(
+  chunk: AzureOpenAiChatCompletionStreamChunkResponse
+): AIMessageChunk {
+  const choice = chunk.data.choices[0];
+  const content = choice?.delta.content ?? '';
+  const toolCallChunks = choice?.delta.tool_calls;
+  return new AIMessageChunk({
+    content,
+    ...(toolCallChunks && {
+      tool_call_chunks: mapAzureOpenAIToLangChainToolCallChunk(toolCallChunks)
+    })
+  });
+}
+
+/**
+ * Maps {@link AzureOpenAiChatCompletionMessageToolCallChunk} to LangChain's {@link ToolCallChunk}.
+ * @param toolCallChunks - The {@link AzureOpenAiChatCompletionMessageToolCallChunk} in a stream response chunk.
+ * @returns An array of LangChain {@link ToolCallChunk}.
+ */
+function mapAzureOpenAIToLangChainToolCallChunk(
+  toolCallChunks: AzureOpenAiChatCompletionMessageToolCallChunk[]
+): ToolCallChunk[] {
+  return toolCallChunks.map(chunk => ({
+    name: chunk.function?.name,
+    args: chunk.function?.arguments,
+    id: chunk.id,
+    index: chunk.index,
+    type: 'tool_call_chunk'
+  }));
 }
 
 function removeUndefinedProperties<T extends object>(obj: T): T {

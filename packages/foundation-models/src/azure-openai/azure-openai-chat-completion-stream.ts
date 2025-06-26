@@ -1,6 +1,8 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import { SseStream } from '@sap-ai-sdk/core';
 import { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.js';
+import { mergeToolCallChunk } from './util/index.js';
+import type { ToolCallAccumulator } from './util/index.js';
 import type { AzureOpenAiCreateChatCompletionStreamResponse } from './client/inference/schema/index.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.js';
@@ -48,12 +50,50 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
   /**
    * @internal
    */
+  static async *_processToolCalls(
+    stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
+    response?: AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>
+  ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse> {
+    if (!response) {
+      throw new Error('Response is required to process tool calls.');
+    }
+    for await (const chunk of stream) {
+      chunk.data.choices.forEach(choice => {
+        const choiceIndex = choice.index;
+        const toolCallsChunks = chunk.getDeltaToolCalls(choiceIndex);
+        if (toolCallsChunks) {
+          let toolCallAccumulators = response
+            ._getToolCallsAccumulators()
+            .get(choiceIndex);
+          if (!toolCallAccumulators) {
+            toolCallAccumulators = new Map<number, ToolCallAccumulator>();
+            response
+              ._getToolCallsAccumulators()
+              .set(choiceIndex, toolCallAccumulators);
+          }
+          toolCallsChunks.map(toolCallChunk => {
+            const toolCallId = toolCallChunk.index;
+            const toolCallAccumulator = mergeToolCallChunk(
+              toolCallChunk,
+              toolCallAccumulators.get(toolCallId)
+            );
+            toolCallAccumulators.set(toolCallId, toolCallAccumulator);
+          });
+        }
+      });
+      yield chunk;
+    }
+  }
+
+  /**
+   * @internal
+   */
   static async *_processFinishReason(
     stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
     response?: AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>
   ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse> {
     for await (const chunk of stream) {
-      chunk.data.choices.forEach((choice: any) => {
+      chunk.data.choices.forEach(choice => {
         const choiceIndex = choice.index;
         if (choiceIndex >= 0) {
           const finishReason = chunk.getFinishReason(choiceIndex);

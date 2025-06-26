@@ -1,32 +1,43 @@
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
 import { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.js';
+import type { AzureOpenAiCreateChatCompletionStreamResponse } from './client/inference/schema/index.js';
 
 describe('OpenAI chat completion stream chunk response', () => {
   let mockResponses: {
-    tokenUsageResponse: any;
-    finishReasonResponse: any;
-    deltaContentResponse: any;
+    tokenUsageResponse: AzureOpenAiCreateChatCompletionStreamResponse;
+    finishReasonResponse: AzureOpenAiCreateChatCompletionStreamResponse;
+    deltaContentResponse: AzureOpenAiCreateChatCompletionStreamResponse;
+    toolCallsResponse: AzureOpenAiCreateChatCompletionStreamResponse;
   };
   let azureOpenAiChatCompletionStreamChunkResponses: {
     tokenUsageResponse: AzureOpenAiChatCompletionStreamChunkResponse;
     finishReasonResponse: AzureOpenAiChatCompletionStreamChunkResponse;
     deltaContentResponse: AzureOpenAiChatCompletionStreamChunkResponse;
+    toolCallsResponse: AzureOpenAiChatCompletionStreamChunkResponse;
   };
 
   beforeAll(async () => {
     mockResponses = {
-      tokenUsageResponse: await parseMockResponse<any>(
-        'foundation-models',
-        'azure-openai-chat-completion-stream-chunk-response-token-usage.json'
-      ),
-      finishReasonResponse: await parseMockResponse<any>(
-        'foundation-models',
-        'azure-openai-chat-completion-stream-chunk-response-finish-reason.json'
-      ),
-      deltaContentResponse: await parseMockResponse<any>(
-        'foundation-models',
-        'azure-openai-chat-completion-stream-chunk-response-delta-content.json'
-      )
+      tokenUsageResponse:
+        await parseMockResponse<AzureOpenAiCreateChatCompletionStreamResponse>(
+          'foundation-models',
+          'azure-openai-chat-completion-stream-chunk-response-token-usage.json'
+        ),
+      finishReasonResponse:
+        await parseMockResponse<AzureOpenAiCreateChatCompletionStreamResponse>(
+          'foundation-models',
+          'azure-openai-chat-completion-stream-chunk-response-finish-reason.json'
+        ),
+      deltaContentResponse:
+        await parseMockResponse<AzureOpenAiCreateChatCompletionStreamResponse>(
+          'foundation-models',
+          'azure-openai-chat-completion-stream-chunk-response-delta-content.json'
+        ),
+      toolCallsResponse:
+        await parseMockResponse<AzureOpenAiCreateChatCompletionStreamResponse>(
+          'foundation-models',
+          'azure-openai-chat-completion-stream-chunk-response-tool-calls.json'
+        )
     };
     azureOpenAiChatCompletionStreamChunkResponses = {
       tokenUsageResponse: new AzureOpenAiChatCompletionStreamChunkResponse(
@@ -37,6 +48,9 @@ describe('OpenAI chat completion stream chunk response', () => {
       ),
       deltaContentResponse: new AzureOpenAiChatCompletionStreamChunkResponse(
         mockResponses.deltaContentResponse
+      ),
+      toolCallsResponse: new AzureOpenAiChatCompletionStreamChunkResponse(
+        mockResponses.toolCallsResponse
       )
     };
   });
@@ -73,5 +87,20 @@ describe('OpenAI chat completion stream chunk response', () => {
     expect(
       azureOpenAiChatCompletionStreamChunkResponses.deltaContentResponse.getDeltaContent()
     ).toBe(' is');
+  });
+
+  it('should get delta tool calls with default index 0', () => {
+    expect(
+      azureOpenAiChatCompletionStreamChunkResponses.toolCallsResponse.getDeltaToolCalls()
+    ).toEqual([{ function: { arguments: '{"' }, index: 0 }]);
+  });
+
+  it('should find choice by index', () => {
+    const choiceIndex = 0;
+    const choice =
+      azureOpenAiChatCompletionStreamChunkResponses.deltaContentResponse.findChoiceByIndex(
+        choiceIndex
+      );
+    expect(choice?.index).toBe(choiceIndex);
   });
 });

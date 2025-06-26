@@ -84,7 +84,7 @@ importers:
         version: 3.6.1
       ts-jest:
         specifier: ^29.4.0
-        version: 29.4.0(@babel/core@7.27.3)(@jest/transform@30.0.2)(@jest/types@30.0.1)(jest-util@30.0.2)(jest@30.0.0-alpha.7(@types/node@20.19.1)(ts-node@10.9.2(@types/node@20.19.1)(typescript@5.8.3)))(typescript@5.8.3)
+        version: 29.4.0(@babel/core@7.27.4)(@jest/transform@30.0.2)(@jest/types@30.0.1)(jest-util@30.0.2)(jest@30.0.0-alpha.7(@types/node@20.19.1)(ts-node@10.9.2(@types/node@20.19.1)(typescript@5.8.3)))(typescript@5.8.3)
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@20.19.1)(typescript@5.8.3)
@@ -159,7 +159,7 @@ importers:
     dependencies:
       '@langchain/core':
         specifier: 0.3.61
-        version: 0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67))
+        version: 0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67))
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../ai-api
@@ -249,13 +249,13 @@ importers:
     dependencies:
       '@langchain/core':
         specifier: 0.3.61
-        version: 0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67))
+        version: 0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67))
       '@langchain/langgraph':
         specifier: ^0.3.5
-        version: 0.3.5(@langchain/core@0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67)))(zod-to-json-schema@3.24.6(zod@3.25.67))
+        version: 0.3.5(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))(zod-to-json-schema@3.24.6(zod@3.25.67))
       '@langchain/textsplitters':
         specifier: 0.1.0
-        version: 0.1.0(@langchain/core@0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67)))
+        version: 0.1.0(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../packages/ai-api
@@ -285,7 +285,7 @@ importers:
         version: 5.1.0
       langchain:
         specifier: 0.3.29
-        version: 0.3.29(@langchain/core@0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67)))(axios@1.10.0)(handlebars@4.7.8)(openai@5.6.0(ws@8.18.2)(zod@3.25.67))(ws@8.18.2)
+        version: 0.3.29(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))(axios@1.9.0)(handlebars@4.7.8)(openai@4.104.0(ws@8.18.2)(zod@3.25.67))(ws@8.18.2)
       uuid:
         specifier: ^11.1.0
         version: 11.1.0
@@ -301,6 +301,9 @@ importers:
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../../packages/ai-api
+      '@sap-ai-sdk/foundation-models':
+        specifier: workspace:^
+        version: link:../../packages/foundation-models
       '@sap-ai-sdk/orchestration':
         specifier: workspace:^
         version: link:../../packages/orchestration
@@ -327,31 +330,31 @@ importers:
     dependencies:
       '@langchain/core':
         specifier: 0.3.61
-        version: 0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67))
+        version: 0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67))
       '@langchain/langgraph':
         specifier: ^0.3.5
-        version: 0.3.5(@langchain/core@0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67)))(zod-to-json-schema@3.24.6(zod@3.25.67))
+        version: 0.3.5(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))(zod-to-json-schema@3.24.6(zod@3.25.67))
       '@langchain/textsplitters':
         specifier: 0.1.0
-        version: 0.1.0(@langchain/core@0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67)))
+        version: 0.1.0(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))
       '@sap-ai-sdk/ai-api':
         specifier: canary
-        version: 1.15.1-20250625013235.0
+        version: 1.15.1-20250615013233.0
       '@sap-ai-sdk/document-grounding':
         specifier: canary
-        version: 1.15.1-20250625013235.0
+        version: 1.15.1-20250615013233.0
       '@sap-ai-sdk/foundation-models':
         specifier: canary
-        version: 1.15.1-20250625013235.0
+        version: 1.15.1-20250615013233.0
       '@sap-ai-sdk/langchain':
         specifier: canary
-        version: 1.15.1-20250625013235.0(openai@5.6.0(ws@8.18.2)(zod@3.25.67))(zod@3.25.67)
+        version: 1.15.1-20250615013233.0(openai@4.104.0(ws@8.18.2)(zod@3.25.67))(zod@3.25.67)
       '@sap-ai-sdk/orchestration':
         specifier: canary
-        version: 1.15.1-20250625013235.0
+        version: 1.15.1-20250615013233.0
       '@sap-ai-sdk/prompt-registry':
         specifier: canary
-        version: 1.15.1-20250625013235.0
+        version: 1.15.1-20250615013233.0
       '@sap-cloud-sdk/util':
         specifier: ^4.0.2
         version: 4.0.2
@@ -360,7 +363,7 @@ importers:
         version: 5.1.0
       langchain:
         specifier: 0.3.29
-        version: 0.3.29(@langchain/core@0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67)))(axios@1.10.0)(handlebars@4.7.8)(openai@5.6.0(ws@8.18.2)(zod@3.25.67))(ws@8.18.2)
+        version: 0.3.29(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))(axios@1.9.0)(handlebars@4.7.8)(openai@4.104.0(ws@8.18.2)(zod@3.25.67))(ws@8.18.2)
       uuid:
         specifier: ^11.1.0
         version: 11.1.0
@@ -432,10 +435,6 @@ packages:
     resolution: {integrity: sha512-KiRAp/VoJaWkkte84TvUd9qjdbZAdiqyvMxrGl1N6vzFogKmaLgoM3L1kgtLicp2HP5fBJS8JrZKLVIZGVJAVg==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/core@7.27.3':
-    resolution: {integrity: sha512-hyrN8ivxfvJ4i0fIJuV4EOlV0WDMz5Ui4StRTgVaAvWeiRCilXgwVvxJKtFQ3TKtHgJscB2YiXKGNJuVwhQMtA==}
-    engines: {node: '>=6.9.0'}
-
   '@babel/core@7.27.4':
     resolution: {integrity: sha512-bXYxrXFubeYdvB0NhD/NBB3Qi6aZeV20GOWVI47t2dkecCEoneR4NPVcb7abpXDEvejgrUfFtG6vG/zxAKmg+g==}
     engines: {node: '>=6.9.0'}
@@ -476,10 +475,6 @@ packages:
 
   '@babel/helper-validator-option@7.27.1':
     resolution: {integrity: sha512-YvjJow9FxbhFFKDSuFnVCe2WxXk1zWc22fFePVNEaWJEu8IrZVlda6N0uHwzZrUM1il7NC9Mlp4MaJYbYd9JSg==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/helpers@7.27.3':
-    resolution: {integrity: sha512-h/eKy9agOya1IGuLaZ9tEUgz+uIRXcbtOhRtUyyMf8JFmn1iT13vnl/IGVWSkdOCG/pC57U4S1jnAabAavTMwg==}
     engines: {node: '>=6.9.0'}
 
   '@babel/helpers@7.27.6':
@@ -587,8 +582,8 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
-  '@babel/runtime@7.27.6':
-    resolution: {integrity: sha512-vbavdySgbTTrmFE+EsiqUTzlOr5bzlnJtUv9PynGCAKvfQqjIXbvFdumPM/GxMDfyuGMJaJAU6TO4zc1Jf1i8Q==}
+  '@babel/runtime@7.27.3':
+    resolution: {integrity: sha512-7EYtGezsdiDMyY80+65EzwiGmcJqpmcZCojSXaRgdrBaGtWTgDZKq69cPIVped6MkIM78cTQ2GOiEYjwOlG4xw==}
     engines: {node: '>=6.9.0'}
 
   '@babel/template@7.27.2':
@@ -619,8 +614,8 @@ packages:
     peerDependencies:
       '@sap/cds': '>=7.6'
 
-  '@cap-js/db-service@2.1.2':
-    resolution: {integrity: sha512-wbbEhUaSnQnYSC2029CO8MLAag5k/mJAtu6nyJUYfZbjkfr/JnP9lG5ylHg1dQtjRfAjPds+lxZIo35DHwNsVQ==}
+  '@cap-js/db-service@2.1.1':
+    resolution: {integrity: sha512-lkT8hQtMGLOWpbZzSWoMfoZe4vByuJZ9PierJPIhgLbayMLyTQ8iMKNgme1FW3nXFPc7JMJlEImskmhOygllAQ==}
     peerDependencies:
       '@sap/cds': '>=9'
 
@@ -1113,6 +1108,10 @@ packages:
   '@jsdevtools/ono@7.1.3':
     resolution: {integrity: sha512-4JQNk+3mVzK3xh2rqd6RB4J46qUR19azEHBneZyTZM+c456qOrbbM/5xcR8huNCCcbVt7+UmizG6GuUvPvKUYg==}
 
+  '@langchain/core@0.3.58':
+    resolution: {integrity: sha512-HLkOtVofgBHefaUae/+2fLNkpMLzEjHSavTmUF0YC7bDa5NPIZGlP80CGrSFXAeJ+WCPd8rIK8K/p6AW94inUQ==}
+    engines: {node: '>=18'}
+
   '@langchain/core@0.3.61':
     resolution: {integrity: sha512-4O7fw5SXNSE+uBnathLQrhm3t+7dZGagt/5kt37A+pXw0AkudxEBvveg73sSnpBd9SIz3/Vc7F4k8rCKXGbEDA==}
     engines: {node: '>=18'}
@@ -1144,8 +1143,8 @@ packages:
       zod-to-json-schema:
         optional: true
 
-  '@langchain/openai@0.5.15':
-    resolution: {integrity: sha512-ANadEHyAj5sufQpz+SOPpKbyoMcTLhnh8/d+afbSPUqWsIMPpEFX3HoSY3nrBPG6l4NQQNG5P5oHb4SdC8+YIg==}
+  '@langchain/openai@0.5.13':
+    resolution: {integrity: sha512-t5UsO7XYE+DBQlXQ21QK74Y+LH4It20wnENrmueNvxIWTn0nHDIGVmO6wo4rJxbmOOPRQ4l/oAxGRnYU8B8v6w==}
     engines: {node: '>=18'}
     peerDependencies:
       '@langchain/core': '>=0.3.58 <0.4.0'
@@ -1202,10 +1201,6 @@ packages:
     resolution: {integrity: sha512-fdDH1LSGfZdTH2sxdpVMw31BanV28K/Gry0cVFxaNP77neJSkd82mM8ErPNYs9e+0O7SdHBLTDzDgwUuy18RnQ==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
 
-  '@pkgr/core@0.2.4':
-    resolution: {integrity: sha512-ROFF39F6ZrnzSUEmQQZUar0Jt4xVoP9WnDRdWwF4NNcXs3xBTLgBUDoOwW141y1jP+S8nahIbdxbFC7IShw9Iw==}
-    engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
-
   '@pkgr/core@0.2.7':
     resolution: {integrity: sha512-YLT9Zo3oNPJoBjBc4q8G2mjU4tqIbf5CEOORbUUr48dCD9q3umJ3IPlVqOqDakPfd2HuwccBaqlGhN4Gmr5OWg==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
@@ -1213,26 +1208,26 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
-  '@sap-ai-sdk/ai-api@1.15.1-20250625013235.0':
-    resolution: {integrity: sha512-J7qqCmGe6cInEFXOCxllGOAY4ZKUh1mIlMTrUku8+VmjMZP+CuSR9F9GvwWrwtMxPWO/RaIXcrjxBPzcapddig==}
+  '@sap-ai-sdk/ai-api@1.15.1-20250615013233.0':
+    resolution: {integrity: sha512-7n+hXKGN2agSPa4PG6GSDQg+vXyAoan4oO+YoePcrNefFhJHUUR9jTvi8f9pAMi9LzX+B/ExypKgScXf7KdGBg==}
 
-  '@sap-ai-sdk/core@1.15.1-20250625013235.0':
-    resolution: {integrity: sha512-GNssbpbaCvEkjPZ2z8wtKK1YBmGKvysAmDGYN+u/xHHnkL5GmITsni7ydXIPhUu4iJbM3r60g1hqCIam5e4h8A==}
+  '@sap-ai-sdk/core@1.15.1-20250615013233.0':
+    resolution: {integrity: sha512-T104KxmsaOUao/8uCvTgamleFRnK8i6yriYz4IS0ilrry5S5Z2zh/KbJ0gwK78dhpFtdV8QuPoSxz0nwZURjuQ==}
 
-  '@sap-ai-sdk/document-grounding@1.15.1-20250625013235.0':
-    resolution: {integrity: sha512-sQJplP4mPHQ+UZHfZMx/SstjqiA/Pe9r9vB4dlENnDmpJRaUrSzANzrkx27weiVZ5KzwgmSyh07mj4kapsdRCA==}
+  '@sap-ai-sdk/document-grounding@1.15.1-20250615013233.0':
+    resolution: {integrity: sha512-sDxkufCuFC3YWb2SKgsmYNrKNnMGgfi++2m/FtBm7jprkwMavdeVNFm5c9tKmjPUify6lsmonlvm8ddgFn4beA==}
 
-  '@sap-ai-sdk/foundation-models@1.15.1-20250625013235.0':
-    resolution: {integrity: sha512-/flcpr7dIsxUEFOCpRrrBBHShJsIYkoRdSwZlLT8h35kghqNTmr4ZDQhAMX1cGwKvvwALDcQeFkcxx8/B+Rz5Q==}
+  '@sap-ai-sdk/foundation-models@1.15.1-20250615013233.0':
+    resolution: {integrity: sha512-rBsuftqkRVUI2Udvym1/28gYXHwKluIf0LUQ6pVXhCNDKE4SejUvkSrkb1ZVjw6e9SlNnqe6I2FkOEJnHMHN6A==}
 
-  '@sap-ai-sdk/langchain@1.15.1-20250625013235.0':
-    resolution: {integrity: sha512-u90OirJqiShSnLcCpJua4WPrYfnzuyaMsjy/41VLzr6muYiBlcxRQ6LSTePQlzytDdX8+2gN50AjE4ggcty7QQ==}
+  '@sap-ai-sdk/langchain@1.15.1-20250615013233.0':
+    resolution: {integrity: sha512-LmuXpmnnkSixEVVhb+BJ4ISVDSc9z/odw+S5DznhuY/jPs30Wa0euDDblhcHk5S6AVddMhluNbLkf+2BJy5Q9g==}
 
-  '@sap-ai-sdk/orchestration@1.15.1-20250625013235.0':
-    resolution: {integrity: sha512-LSyStKjAytejQzK54Q3hzT5LLpoBcSqIage5vHwKOV+WQM938MQ+LhpUUE3yjSlzrwKLZzpJ6FkfnRJshS+heA==}
+  '@sap-ai-sdk/orchestration@1.15.1-20250615013233.0':
+    resolution: {integrity: sha512-96ZS10lhrO0SpK10/p12PNVYTCDplx/yJWRxYDJ8kOpJglFcDfrLB9k2fdhSJdwToTFM0mqgilXo3i5Sz8McHA==}
 
-  '@sap-ai-sdk/prompt-registry@1.15.1-20250625013235.0':
-    resolution: {integrity: sha512-c9WDYHTRmNZqfuWcjgOHuJqNvppV9SDXYKt22pwNxtVeW3iJub1dB3+yZDt6GuPgkfOB3zN1WnYL3qD1nOr8Ng==}
+  '@sap-ai-sdk/prompt-registry@1.15.1-20250615013233.0':
+    resolution: {integrity: sha512-yYtYimJXtlMmcWZpMokIveM83ZPFiBO7gFeGvArbGcszOF4IDjzyFtAxAxp99dUCIEDL9j7yVUG/NCOb+rQksg==}
 
   '@sap-cloud-sdk/connectivity@4.0.2':
     resolution: {integrity: sha512-20ok60K1PLezyngU3Zcp2Hx3R2rlPYNeebD+IcFhzHklJGhkJGWOBiWxSlCLhyi1hGmYIr5SIlXHe/6AvHC69Q==}
@@ -1261,8 +1256,8 @@ packages:
   '@sap-cloud-sdk/util@4.0.2':
     resolution: {integrity: sha512-HhBXWFkDnmpexTDT2Hwx5F39vmAg/q83HCxyOUZSiEZHfOWAflUAYO+oX4mniCkve51eGDQcn82kJeGl+jY9kg==}
 
-  '@sap/cds-compiler@6.0.14':
-    resolution: {integrity: sha512-glxvrrOABemDHxR6BOUSJdZ+H+aZ0PadreGML862ZIeJJ0AUAjwIiT6gV5i6cgbXGXI7+aG70/DRB+W4H8jAsQ==}
+  '@sap/cds-compiler@6.0.10':
+    resolution: {integrity: sha512-331kw/MuLUGp95YiIa9kERUKvzaIsoarPDf3moIapWrFV0R22aPlkIiPNfJQbL71FLStVpsMogmziiu3x2HI0Q==}
     engines: {node: '>=20'}
     hasBin: true
 
@@ -1337,9 +1332,6 @@ packages:
 
   '@sinclair/typebox@0.34.33':
     resolution: {integrity: sha512-5HAV9exOMcXRUxo+9iYB5n09XxzCXnfy4VTNW4xnDv+FgjzAGY989C28BIdljKqmF+ZltUwujE3aossvcVtq6g==}
-
-  '@sinclair/typebox@0.34.37':
-    resolution: {integrity: sha512-2TRuQVgQYfy+EzHRTIvkhv2ADEouJ2xNS/Vq+W5EuuewBdOrvATvljZTxHWZSTYr2sTjTHpGvucaGAt67S2akw==}
 
   '@sinonjs/commons@3.0.1':
     resolution: {integrity: sha512-K3mCHKQ9sVh8o1C9cxkwxaOmXoAMlDxC1mYyHrjqOWEcBjYr76t96zL2zlj5dUGZ3HSw240X1qgH3Mjf1yJWpQ==}
@@ -1444,8 +1436,14 @@ packages:
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
 
+  '@types/node-fetch@2.6.12':
+    resolution: {integrity: sha512-8nneRWKCg3rMtF69nLQJnOYUcbafYeFSjqkw3jCRLsqkWFlHaoQrr5mXmofFGOx3DKn7UfmBMyov8ySvLRVldA==}
+
   '@types/node@12.20.55':
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
+
+  '@types/node@18.19.111':
+    resolution: {integrity: sha512-90sGdgA+QLJr1F9X79tQuEut0gEYIfkX9pydI4XGRgvFo9g2JWswefI+WUSUHPYVBHYSEfTEqBxA5hQvAZB3Mw==}
 
   '@types/node@20.19.1':
     resolution: {integrity: sha512-jJD50LtlD2dodAEO653i3YF04NWak6jN3ky+Ri3Em3mGR39/glWiboM/IePaRbgwSfqM1TpGXfAg8ohn/4dTgA==}
@@ -1654,6 +1652,10 @@ packages:
   '@vue/shared@3.5.15':
     resolution: {integrity: sha512-bKvgFJJL1ZX9KxMCTQY6xD9Dhe3nusd1OhyOb1cJYGqvAr0Vg8FIjHPMOEVbJ9GDT9HG+Bjdn4oS8ohKP8EvoA==}
 
+  abort-controller@3.0.0:
+    resolution: {integrity: sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==}
+    engines: {node: '>=6.5'}
+
   accepts@1.3.8:
     resolution: {integrity: sha512-PYAthTa2m2VKxuvSD3DPC/Gy+U+sOA1LAuT8mkmRuvw+NACSaeXEQ+NHcVF7rONl6qcaxV3Uuemwawk+7+SJLw==}
     engines: {node: '>= 0.6'}
@@ -1680,6 +1682,10 @@ packages:
     resolution: {integrity: sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==}
     engines: {node: '>=0.4.0'}
     hasBin: true
+
+  agentkeepalive@4.6.0:
+    resolution: {integrity: sha512-kja8j7PjmncONqaTsB8fQ+wE2mSU2DJ9D4XKoJ5PFWIdRMa6SLSN1ff4mOr4jCbfRSsxR4keIiySJU0N9T5hIQ==}
+    engines: {node: '>= 8.0.0'}
 
   ajv-draft-04@1.0.0:
     resolution: {integrity: sha512-mv00Te6nmYbRp5DCwclxtt7yV/joXJPGS7nM+97GdxvuttCOfgI3K4U25zboyeX0O+myI8ERluxQe5wljMmVIw==}
@@ -1808,9 +1814,6 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  axios@1.10.0:
-    resolution: {integrity: sha512-/1xYAC4MP/HEG+3duIhFr4ZQXR4sQXOIe+o6sdqzeykGLx6Upp/1p8MHqhINOvGeP7xyNHe7tsiJByc4SSVUxw==}
-
   axios@1.9.0:
     resolution: {integrity: sha512-re4CqKTJaURpzbLHtIi6XpDv20/CnpXOtjRY5/CU32L8gU8ek9UIivcfvSWvmKEngmVbrUtPpdDwWDWL7DNHvg==}
 
@@ -1883,8 +1886,8 @@ packages:
     resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
     engines: {node: '>=8'}
 
-  browserslist@4.25.1:
-    resolution: {integrity: sha512-KGj0KoOMXLpSNkkEI6Z6mShmQy0bc1I+T7K9N81k4WWMrfz+6fQ6es80B/YLAeRoKvjYE1YSHHOW1qe9xIVzHw==}
+  browserslist@4.25.0:
+    resolution: {integrity: sha512-PJ8gYKeS5e/whHBh8xrwYK+dAvEj7JXtz6uTucnMRB8OiGTsKccFekoRrjajPBHV8oOY+2tI4uxeceSimKwMFA==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
 
@@ -1942,8 +1945,8 @@ packages:
     resolution: {integrity: sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==}
     engines: {node: '>=10'}
 
-  caniuse-lite@1.0.30001726:
-    resolution: {integrity: sha512-VQAUIUzBiZ/UnlM28fSp2CRF3ivUn1BWEvxMcVTNwpw91Py1pGbPIyIKtd+tzct9C3ouceCVdGAXxZOpZAsgdw==}
+  caniuse-lite@1.0.30001721:
+    resolution: {integrity: sha512-cOuvmUVtKrtEaoKiO0rSc29jcjwMwX5tOHDy4MgVFEWiUXj4uBMJkwI8MDySkgXidpMiHUcviogAvFi4pA2hDQ==}
 
   case@1.6.3:
     resolution: {integrity: sha512-mzDSXIPaFwVDvZAHqZ9VlbyF4yyXRuX6IvB06WvPYkqJVO24kX1PPhv9bfpKNFZyxYFmmgo03HUiD8iklmJYRQ==}
@@ -2270,8 +2273,8 @@ packages:
     engines: {node: '>=0.10.0'}
     hasBin: true
 
-  electron-to-chromium@1.5.174:
-    resolution: {integrity: sha512-HE43yYdUUiJVjewV2A9EP8o89Kb4AqMKplMQP2IxEPUws1Etu/ZkdsgUDabUZ/WmbP4ZbvJDOcunvbBUPPIfmw==}
+  electron-to-chromium@1.5.166:
+    resolution: {integrity: sha512-QPWqHL0BglzPYyJJ1zSSmwFFL6MFXhbACOCcsCdUMCkzPdS9/OIBVxg516X/Ado2qwAq8k0nJJ7phQPCqiaFAw==}
 
   emittery@0.13.1:
     resolution: {integrity: sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ==}
@@ -2294,8 +2297,8 @@ packages:
     resolution: {integrity: sha512-Q0n9HRi4m6JuGIV1eFlmvJB7ZEVxu93IrMyiMsGC0lrMJMWzRgx6WGquyfQgZVb31vhGgXnfmPNNXmxnOkRBrg==}
     engines: {node: '>= 0.8'}
 
-  end-of-stream@1.4.5:
-    resolution: {integrity: sha512-ooEGc6HP26xXq/N+GCGOT0JKCLDGrq2bQUZrQ7gyrJiZANJ/8YDTxTpQBXGMn+WbIQXNVpyWymm7KYVICQnyOg==}
+  end-of-stream@1.4.4:
+    resolution: {integrity: sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==}
 
   enquirer@2.4.1:
     resolution: {integrity: sha512-rRqJg/6gd538VHvR3PSrdRBb/1Vy2YfzHqzvbhGIQpDRKIa4FgV/54b5Q1xYSxOOwKvjXweS26E0Q+nAMwp2pQ==}
@@ -2525,6 +2528,10 @@ packages:
     resolution: {integrity: sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==}
     engines: {node: '>= 0.6'}
 
+  event-target-shim@5.0.1:
+    resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
+    engines: {node: '>=6'}
+
   eventemitter3@4.0.7:
     resolution: {integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==}
 
@@ -2686,13 +2693,16 @@ packages:
     resolution: {integrity: sha512-gIXjKqtFuWEgzFRJA9WCQeSJLZDjgJUOMCMzxtvFq/37KojM1BFGufqsCy0r4qSQmYLsZYMeyRqzIWOMup03sw==}
     engines: {node: '>=14'}
 
-  form-data@4.0.2:
-    resolution: {integrity: sha512-hGfm/slu0ZabnNt4oaRZ6uREyfCj6P4fT/n6A1rGV+Z0VdGXjfOhVUpkn6qVQONHGIFwmveGXyDs75+nr6FM8w==}
-    engines: {node: '>= 6'}
+  form-data-encoder@1.7.2:
+    resolution: {integrity: sha512-qfqtYan3rxrnCk1VYaA4H+Ms9xdpPqvLZa6xmMgFvhO32x7/3J/ExcTd6qpxM0vH2GdMI+poehyBZvqfMTto8A==}
 
   form-data@4.0.3:
     resolution: {integrity: sha512-qsITQPfmvMOSAdeyZ+12I1c+CKSstAFAwu+97zrnWAbIr5u8wfsExUzCesVLC8NgHuRUqNN4Zy6UPWUTRGslcA==}
     engines: {node: '>= 6'}
+
+  formdata-node@4.4.1:
+    resolution: {integrity: sha512-0iirZp3uVDjVGt9p49aTaqjk84TrglENEDuqfdlZQ1roC9CWlPk6Avf8EEnZNcAqPonwkG35x4n3ww/1THYAeQ==}
+    engines: {node: '>= 12.20'}
 
   forwarded@0.2.0:
     resolution: {integrity: sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==}
@@ -2900,6 +2910,9 @@ packages:
   human-signals@2.1.0:
     resolution: {integrity: sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==}
     engines: {node: '>=10.17.0'}
+
+  humanize-ms@1.2.1:
+    resolution: {integrity: sha512-Fl70vYtsAFb/C06PTS9dZBo7ihau+Tu/DNCk/OyHhea07S+aeMWpFFkUaXRa8fI+ScZbEI8dfSxwY7gxZ9SAVQ==}
 
   iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
@@ -3491,6 +3504,14 @@ packages:
       typeorm:
         optional: true
 
+  langsmith@0.3.31:
+    resolution: {integrity: sha512-9lwuLZuN3tXFYQ6eMg0rmbBw7oxQo4bu1NYeylbjz27bOdG1XB9XNoxaiIArkK4ciLdOIOhPMBXP4bkvZOgHRw==}
+    peerDependencies:
+      openai: '*'
+    peerDependenciesMeta:
+      openai:
+        optional: true
+
   langsmith@0.3.33:
     resolution: {integrity: sha512-imNIaBL6+ElE5eMzNHYwFxo6W/6rHlqcaUjCYoIeGdCYWlARxE3CTGKul5DJnaUgGP2CTLFeNXyvRx5HWC/4KQ==}
     peerDependencies:
@@ -3769,6 +3790,10 @@ packages:
     resolution: {integrity: sha512-t1QzWwnk4sjLWaQAS8CHgOJ+RAfmHpxFWmc36IWTiWHQfs0w5JDMBS1b1ZxQteo0vVVuWJvIUKHDkkeK7vIGCg==}
     engines: {node: '>= 8.0.0'}
 
+  node-domexception@1.0.0:
+    resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
+    engines: {node: '>=10.5.0'}
+
   node-fetch-h2@2.3.0:
     resolution: {integrity: sha512-ofRW94Ab0T4AOh5Fk8t0h8OBWrmjb0SSB20xh1H8YnPV9EJ+f5AMoYSUQ2zgJ4Iq2HAK0I2l5/Nequ8YzFS3Hg==}
     engines: {node: 4.x || >=6.0.0}
@@ -3867,8 +3892,8 @@ packages:
     resolution: {integrity: sha512-kbpaSSGJTWdAY5KPVeMOKXSrPtr8C8C7wodJbcsd51jRnmD+GZu8Y0VoU6Dm5Z4vWr0Ig/1NKuWRKf7j5aaYSg==}
     engines: {node: '>=6'}
 
-  openai@5.6.0:
-    resolution: {integrity: sha512-jNH5z+hYAdOMZXyEt0yZ7246s+UZjg2AwFQqkAhZIPPjxNtHHO5mykOefau6FkOqj16aC94MOdJl/rZBcKj/cQ==}
+  openai@4.104.0:
+    resolution: {integrity: sha512-p99EFNsA/yX6UhVO93f5kJsDRLAg+CTA2RBqdHK4RtK8u5IJw32Hyb2dTGKbnnFmnuoBv5r7Z2CURI9sGZpSuA==}
     hasBin: true
     peerDependencies:
       ws: ^8.18.0
@@ -4107,8 +4132,8 @@ packages:
   proxy-from-env@1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
 
-  pump@3.0.3:
-    resolution: {integrity: sha512-todwxLMY7/heScKmntwQG8CXVkWUOdYxIvY2s0VWAAMh/nd8SoYiRaKjlr7+iCs984f2P8zvrfWcDDYVb73NfA==}
+  pump@3.0.2:
+    resolution: {integrity: sha512-tUPXtzlGM8FE3P0ZL6DVs/3P58k9nk8/jZeQCurTJylQA8qFYzHFfhBJkuqyE0FifOsQ0uKWekiZ5g8wtr28cw==}
 
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
@@ -4384,8 +4409,8 @@ packages:
   simple-swizzle@0.2.2:
     resolution: {integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==}
 
-  simple-wcswidth@1.1.1:
-    resolution: {integrity: sha512-R3q3/eoeNBp24CNTASEUrffXi0j9TwPIEvSStlvSrsFimM17sV5EHcMOc86j3K+UWZyLYvH0hRmYGCpCoaJ4vw==}
+  simple-wcswidth@1.0.1:
+    resolution: {integrity: sha512-xMO/8eNREtaROt7tJvWJqHBDTMFN4eiQ5I4JRMuilwfnFcV5W9u7RUkueNkdw0jPqGMX36iCywelS5yilTuOxg==}
 
   slash@3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
@@ -4740,6 +4765,9 @@ packages:
     resolution: {integrity: sha512-nWJ91DjeOkej/TA8pXQ3myruKpKEYgqvpw9lz4OPHj/NWFNluYrjbz9j01CJ8yKQd2g4jFoOkINCTW2I5LEEyw==}
     engines: {node: '>= 0.4'}
 
+  undici-types@5.26.5:
+    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+
   undici-types@6.21.0:
     resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
@@ -4812,6 +4840,10 @@ packages:
 
   wcwidth@1.0.1:
     resolution: {integrity: sha512-XHPEwS0q6TaxcvG85+8EYkbiCux2XtWG2mkc47Ng2A77BQu9+DqIOJldST4HgPkuea7dvKSj5VgX3P1d4rW8Tg==}
+
+  web-streams-polyfill@4.0.0-beta.3:
+    resolution: {integrity: sha512-QW95TCTaHmsYfHDybGMwO5IJIM93I/6vTRk+daHTWFPhwh+C8Cg7j7XyKrwrj8Ib6vYXe0ocYNrmzY4xAAN6ug==}
+    engines: {node: '>= 14'}
 
   webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
@@ -4946,6 +4978,9 @@ packages:
     peerDependencies:
       zod: ^3.24.1
 
+  zod@3.25.32:
+    resolution: {integrity: sha512-OSm2xTIRfW8CV5/QKgngwmQW/8aPfGdaQFlrGoErlgg/Epm7cjb6K6VEyExfe65a3VybUOnu381edLb0dfJl0g==}
+
   zod@3.25.67:
     resolution: {integrity: sha512-idA2YXwpCdqUSKRCACDE6ItZD9TZzy3OZMtpfLoh6oPR47lipysRrJfjzMqFxQ3uJuUPyUeWe1r9vLH33xO/Qw==}
 
@@ -4985,26 +5020,6 @@ snapshots:
 
   '@babel/compat-data@7.27.5': {}
 
-  '@babel/core@7.27.3':
-    dependencies:
-      '@ampproject/remapping': 2.3.0
-      '@babel/code-frame': 7.27.1
-      '@babel/generator': 7.27.5
-      '@babel/helper-compilation-targets': 7.27.2
-      '@babel/helper-module-transforms': 7.27.3(@babel/core@7.27.3)
-      '@babel/helpers': 7.27.3
-      '@babel/parser': 7.27.3
-      '@babel/template': 7.27.2
-      '@babel/traverse': 7.27.3
-      '@babel/types': 7.27.6
-      convert-source-map: 2.0.0
-      debug: 4.4.1(supports-color@8.1.1)
-      gensync: 1.0.0-beta.2
-      json5: 2.2.3
-      semver: 6.3.1
-    transitivePeerDependencies:
-      - supports-color
-
   '@babel/core@7.27.4':
     dependencies:
       '@ampproject/remapping': 2.3.0
@@ -5027,8 +5042,8 @@ snapshots:
 
   '@babel/generator@7.27.3':
     dependencies:
-      '@babel/parser': 7.27.3
-      '@babel/types': 7.27.3
+      '@babel/parser': 7.27.5
+      '@babel/types': 7.27.6
       '@jridgewell/gen-mapping': 0.3.8
       '@jridgewell/trace-mapping': 0.3.25
       jsesc: 3.1.0
@@ -5045,7 +5060,7 @@ snapshots:
     dependencies:
       '@babel/compat-data': 7.27.5
       '@babel/helper-validator-option': 7.27.1
-      browserslist: 4.25.1
+      browserslist: 4.25.0
       lru-cache: 5.1.1
       semver: 6.3.1
 
@@ -5053,15 +5068,6 @@ snapshots:
     dependencies:
       '@babel/traverse': 7.27.4
       '@babel/types': 7.27.6
-    transitivePeerDependencies:
-      - supports-color
-
-  '@babel/helper-module-transforms@7.27.3(@babel/core@7.27.3)':
-    dependencies:
-      '@babel/core': 7.27.3
-      '@babel/helper-module-imports': 7.27.1
-      '@babel/helper-validator-identifier': 7.27.1
-      '@babel/traverse': 7.27.4
     transitivePeerDependencies:
       - supports-color
 
@@ -5082,11 +5088,6 @@ snapshots:
 
   '@babel/helper-validator-option@7.27.1': {}
 
-  '@babel/helpers@7.27.3':
-    dependencies:
-      '@babel/template': 7.27.2
-      '@babel/types': 7.27.6
-
   '@babel/helpers@7.27.6':
     dependencies:
       '@babel/template': 7.27.2
@@ -5100,19 +5101,9 @@ snapshots:
     dependencies:
       '@babel/types': 7.27.6
 
-  '@babel/plugin-syntax-async-generators@7.8.4(@babel/core@7.27.3)':
-    dependencies:
-      '@babel/core': 7.27.3
-      '@babel/helper-plugin-utils': 7.27.1
-
   '@babel/plugin-syntax-async-generators@7.8.4(@babel/core@7.27.4)':
     dependencies:
       '@babel/core': 7.27.4
-      '@babel/helper-plugin-utils': 7.27.1
-
-  '@babel/plugin-syntax-bigint@7.8.3(@babel/core@7.27.3)':
-    dependencies:
-      '@babel/core': 7.27.3
       '@babel/helper-plugin-utils': 7.27.1
 
   '@babel/plugin-syntax-bigint@7.8.3(@babel/core@7.27.4)':
@@ -5120,19 +5111,9 @@ snapshots:
       '@babel/core': 7.27.4
       '@babel/helper-plugin-utils': 7.27.1
 
-  '@babel/plugin-syntax-class-properties@7.12.13(@babel/core@7.27.3)':
-    dependencies:
-      '@babel/core': 7.27.3
-      '@babel/helper-plugin-utils': 7.27.1
-
   '@babel/plugin-syntax-class-properties@7.12.13(@babel/core@7.27.4)':
     dependencies:
       '@babel/core': 7.27.4
-      '@babel/helper-plugin-utils': 7.27.1
-
-  '@babel/plugin-syntax-class-static-block@7.14.5(@babel/core@7.27.3)':
-    dependencies:
-      '@babel/core': 7.27.3
       '@babel/helper-plugin-utils': 7.27.1
 
   '@babel/plugin-syntax-class-static-block@7.14.5(@babel/core@7.27.4)':
@@ -5140,19 +5121,9 @@ snapshots:
       '@babel/core': 7.27.4
       '@babel/helper-plugin-utils': 7.27.1
 
-  '@babel/plugin-syntax-import-attributes@7.27.1(@babel/core@7.27.3)':
-    dependencies:
-      '@babel/core': 7.27.3
-      '@babel/helper-plugin-utils': 7.27.1
-
   '@babel/plugin-syntax-import-attributes@7.27.1(@babel/core@7.27.4)':
     dependencies:
       '@babel/core': 7.27.4
-      '@babel/helper-plugin-utils': 7.27.1
-
-  '@babel/plugin-syntax-import-meta@7.10.4(@babel/core@7.27.3)':
-    dependencies:
-      '@babel/core': 7.27.3
       '@babel/helper-plugin-utils': 7.27.1
 
   '@babel/plugin-syntax-import-meta@7.10.4(@babel/core@7.27.4)':
@@ -5160,19 +5131,9 @@ snapshots:
       '@babel/core': 7.27.4
       '@babel/helper-plugin-utils': 7.27.1
 
-  '@babel/plugin-syntax-json-strings@7.8.3(@babel/core@7.27.3)':
-    dependencies:
-      '@babel/core': 7.27.3
-      '@babel/helper-plugin-utils': 7.27.1
-
   '@babel/plugin-syntax-json-strings@7.8.3(@babel/core@7.27.4)':
     dependencies:
       '@babel/core': 7.27.4
-      '@babel/helper-plugin-utils': 7.27.1
-
-  '@babel/plugin-syntax-jsx@7.27.1(@babel/core@7.27.3)':
-    dependencies:
-      '@babel/core': 7.27.3
       '@babel/helper-plugin-utils': 7.27.1
 
   '@babel/plugin-syntax-jsx@7.27.1(@babel/core@7.27.4)':
@@ -5180,19 +5141,9 @@ snapshots:
       '@babel/core': 7.27.4
       '@babel/helper-plugin-utils': 7.27.1
 
-  '@babel/plugin-syntax-logical-assignment-operators@7.10.4(@babel/core@7.27.3)':
-    dependencies:
-      '@babel/core': 7.27.3
-      '@babel/helper-plugin-utils': 7.27.1
-
   '@babel/plugin-syntax-logical-assignment-operators@7.10.4(@babel/core@7.27.4)':
     dependencies:
       '@babel/core': 7.27.4
-      '@babel/helper-plugin-utils': 7.27.1
-
-  '@babel/plugin-syntax-nullish-coalescing-operator@7.8.3(@babel/core@7.27.3)':
-    dependencies:
-      '@babel/core': 7.27.3
       '@babel/helper-plugin-utils': 7.27.1
 
   '@babel/plugin-syntax-nullish-coalescing-operator@7.8.3(@babel/core@7.27.4)':
@@ -5200,19 +5151,9 @@ snapshots:
       '@babel/core': 7.27.4
       '@babel/helper-plugin-utils': 7.27.1
 
-  '@babel/plugin-syntax-numeric-separator@7.10.4(@babel/core@7.27.3)':
-    dependencies:
-      '@babel/core': 7.27.3
-      '@babel/helper-plugin-utils': 7.27.1
-
   '@babel/plugin-syntax-numeric-separator@7.10.4(@babel/core@7.27.4)':
     dependencies:
       '@babel/core': 7.27.4
-      '@babel/helper-plugin-utils': 7.27.1
-
-  '@babel/plugin-syntax-object-rest-spread@7.8.3(@babel/core@7.27.3)':
-    dependencies:
-      '@babel/core': 7.27.3
       '@babel/helper-plugin-utils': 7.27.1
 
   '@babel/plugin-syntax-object-rest-spread@7.8.3(@babel/core@7.27.4)':
@@ -5220,19 +5161,9 @@ snapshots:
       '@babel/core': 7.27.4
       '@babel/helper-plugin-utils': 7.27.1
 
-  '@babel/plugin-syntax-optional-catch-binding@7.8.3(@babel/core@7.27.3)':
-    dependencies:
-      '@babel/core': 7.27.3
-      '@babel/helper-plugin-utils': 7.27.1
-
   '@babel/plugin-syntax-optional-catch-binding@7.8.3(@babel/core@7.27.4)':
     dependencies:
       '@babel/core': 7.27.4
-      '@babel/helper-plugin-utils': 7.27.1
-
-  '@babel/plugin-syntax-optional-chaining@7.8.3(@babel/core@7.27.3)':
-    dependencies:
-      '@babel/core': 7.27.3
       '@babel/helper-plugin-utils': 7.27.1
 
   '@babel/plugin-syntax-optional-chaining@7.8.3(@babel/core@7.27.4)':
@@ -5240,19 +5171,9 @@ snapshots:
       '@babel/core': 7.27.4
       '@babel/helper-plugin-utils': 7.27.1
 
-  '@babel/plugin-syntax-private-property-in-object@7.14.5(@babel/core@7.27.3)':
-    dependencies:
-      '@babel/core': 7.27.3
-      '@babel/helper-plugin-utils': 7.27.1
-
   '@babel/plugin-syntax-private-property-in-object@7.14.5(@babel/core@7.27.4)':
     dependencies:
       '@babel/core': 7.27.4
-      '@babel/helper-plugin-utils': 7.27.1
-
-  '@babel/plugin-syntax-top-level-await@7.14.5(@babel/core@7.27.3)':
-    dependencies:
-      '@babel/core': 7.27.3
       '@babel/helper-plugin-utils': 7.27.1
 
   '@babel/plugin-syntax-top-level-await@7.14.5(@babel/core@7.27.4)':
@@ -5260,23 +5181,18 @@ snapshots:
       '@babel/core': 7.27.4
       '@babel/helper-plugin-utils': 7.27.1
 
-  '@babel/plugin-syntax-typescript@7.27.1(@babel/core@7.27.3)':
-    dependencies:
-      '@babel/core': 7.27.3
-      '@babel/helper-plugin-utils': 7.27.1
-
   '@babel/plugin-syntax-typescript@7.27.1(@babel/core@7.27.4)':
     dependencies:
       '@babel/core': 7.27.4
       '@babel/helper-plugin-utils': 7.27.1
 
-  '@babel/runtime@7.27.6': {}
+  '@babel/runtime@7.27.3': {}
 
   '@babel/template@7.27.2':
     dependencies:
       '@babel/code-frame': 7.27.1
-      '@babel/parser': 7.27.3
-      '@babel/types': 7.27.3
+      '@babel/parser': 7.27.5
+      '@babel/types': 7.27.6
 
   '@babel/traverse@7.27.3':
     dependencies:
@@ -5318,7 +5234,7 @@ snapshots:
     dependencies:
       '@sap/cds': 9.0.4(@eslint/js@9.29.0)(express@5.1.0)
 
-  '@cap-js/db-service@2.1.2(@sap/cds@9.0.4(@eslint/js@9.29.0)(express@5.1.0))':
+  '@cap-js/db-service@2.1.1(@sap/cds@9.0.4(@eslint/js@9.29.0)(express@5.1.0))':
     dependencies:
       '@sap/cds': 9.0.4(@eslint/js@9.29.0)(express@5.1.0)
       generic-pool: 3.9.0
@@ -5331,7 +5247,7 @@ snapshots:
 
   '@cap-js/sqlite@2.0.1(@sap/cds@9.0.4(@eslint/js@9.29.0)(express@5.1.0))':
     dependencies:
-      '@cap-js/db-service': 2.1.2(@sap/cds@9.0.4(@eslint/js@9.29.0)(express@5.1.0))
+      '@cap-js/db-service': 2.1.1(@sap/cds@9.0.4(@eslint/js@9.29.0)(express@5.1.0))
       '@sap/cds': 9.0.4(@eslint/js@9.29.0)(express@5.1.0)
       better-sqlite3: 11.10.0
     optional: true
@@ -5856,7 +5772,7 @@ snapshots:
 
   '@jest/schemas@30.0.1':
     dependencies:
-      '@sinclair/typebox': 0.34.37
+      '@sinclair/typebox': 0.34.33
 
   '@jest/snapshot-utils@30.0.0-alpha.7':
     dependencies:
@@ -5894,7 +5810,7 @@ snapshots:
 
   '@jest/transform@30.0.0-alpha.7':
     dependencies:
-      '@babel/core': 7.27.3
+      '@babel/core': 7.27.4
       '@jest/types': 30.0.0-alpha.7
       '@jridgewell/trace-mapping': 0.3.25
       babel-plugin-istanbul: 7.0.0
@@ -5985,14 +5901,14 @@ snapshots:
 
   '@jsdevtools/ono@7.1.3': {}
 
-  '@langchain/core@0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67))':
+  '@langchain/core@0.3.58(openai@4.104.0(ws@8.18.2)(zod@3.25.67))':
     dependencies:
       '@cfworker/json-schema': 4.1.1
       ansi-styles: 5.2.0
       camelcase: 6.3.0
       decamelize: 1.2.0
       js-tiktoken: 1.0.20
-      langsmith: 0.3.33(openai@5.6.0(ws@8.18.2)(zod@3.25.67))
+      langsmith: 0.3.31(openai@4.104.0(ws@8.18.2)(zod@3.25.67))
       mustache: 4.2.0
       p-queue: 6.6.2
       p-retry: 4.6.2
@@ -6002,25 +5918,42 @@ snapshots:
     transitivePeerDependencies:
       - openai
 
-  '@langchain/langgraph-checkpoint@0.0.18(@langchain/core@0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67)))':
+  '@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67))':
     dependencies:
-      '@langchain/core': 0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67))
+      '@cfworker/json-schema': 4.1.1
+      ansi-styles: 5.2.0
+      camelcase: 6.3.0
+      decamelize: 1.2.0
+      js-tiktoken: 1.0.20
+      langsmith: 0.3.33(openai@4.104.0(ws@8.18.2)(zod@3.25.67))
+      mustache: 4.2.0
+      p-queue: 6.6.2
+      p-retry: 4.6.2
+      uuid: 10.0.0
+      zod: 3.25.67
+      zod-to-json-schema: 3.24.6(zod@3.25.67)
+    transitivePeerDependencies:
+      - openai
+
+  '@langchain/langgraph-checkpoint@0.0.18(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))':
+    dependencies:
+      '@langchain/core': 0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67))
       uuid: 10.0.0
 
-  '@langchain/langgraph-sdk@0.0.84(@langchain/core@0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67)))':
+  '@langchain/langgraph-sdk@0.0.84(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))':
     dependencies:
       '@types/json-schema': 7.0.15
       p-queue: 6.6.2
       p-retry: 4.6.2
       uuid: 9.0.1
     optionalDependencies:
-      '@langchain/core': 0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67))
+      '@langchain/core': 0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67))
 
-  '@langchain/langgraph@0.3.5(@langchain/core@0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67)))(zod-to-json-schema@3.24.6(zod@3.25.67))':
+  '@langchain/langgraph@0.3.5(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))(zod-to-json-schema@3.24.6(zod@3.25.67))':
     dependencies:
-      '@langchain/core': 0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67))
-      '@langchain/langgraph-checkpoint': 0.0.18(@langchain/core@0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67)))
-      '@langchain/langgraph-sdk': 0.0.84(@langchain/core@0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67)))
+      '@langchain/core': 0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67))
+      '@langchain/langgraph-checkpoint': 0.0.18(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))
+      '@langchain/langgraph-sdk': 0.0.84(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))
       uuid: 10.0.0
       zod: 3.25.67
     optionalDependencies:
@@ -6028,30 +5961,31 @@ snapshots:
     transitivePeerDependencies:
       - react
 
-  '@langchain/openai@0.5.15(@langchain/core@0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67)))(ws@8.18.2)':
+  '@langchain/openai@0.5.13(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))(ws@8.18.2)':
     dependencies:
-      '@langchain/core': 0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67))
+      '@langchain/core': 0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67))
       js-tiktoken: 1.0.20
-      openai: 5.6.0(ws@8.18.2)(zod@3.25.67)
-      zod: 3.25.67
+      openai: 4.104.0(ws@8.18.2)(zod@3.25.32)
+      zod: 3.25.32
     transitivePeerDependencies:
+      - encoding
       - ws
 
-  '@langchain/textsplitters@0.1.0(@langchain/core@0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67)))':
+  '@langchain/textsplitters@0.1.0(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))':
     dependencies:
-      '@langchain/core': 0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67))
+      '@langchain/core': 0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67))
       js-tiktoken: 1.0.20
 
   '@manypkg/find-root@1.1.0':
     dependencies:
-      '@babel/runtime': 7.27.6
+      '@babel/runtime': 7.27.3
       '@types/node': 12.20.55
       find-up: 4.1.0
       fs-extra: 8.1.0
 
   '@manypkg/get-packages@1.1.3':
     dependencies:
-      '@babel/runtime': 7.27.6
+      '@babel/runtime': 7.27.3
       '@changesets/types': 4.1.0
       '@manypkg/find-root': 1.1.0
       fs-extra: 8.1.0
@@ -6121,22 +6055,20 @@ snapshots:
 
   '@pkgr/core@0.1.2': {}
 
-  '@pkgr/core@0.2.4': {}
-
   '@pkgr/core@0.2.7': {}
 
   '@rtsao/scc@1.1.0': {}
 
-  '@sap-ai-sdk/ai-api@1.15.1-20250625013235.0':
+  '@sap-ai-sdk/ai-api@1.15.1-20250615013233.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.15.1-20250625013235.0
+      '@sap-ai-sdk/core': 1.15.1-20250615013233.0
       '@sap-cloud-sdk/connectivity': 4.0.2
       '@sap-cloud-sdk/util': 4.0.2
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/core@1.15.1-20250625013235.0':
+  '@sap-ai-sdk/core@1.15.1-20250615013233.0':
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.0.2
       '@sap-cloud-sdk/http-client': 4.0.2
@@ -6146,17 +6078,17 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/document-grounding@1.15.1-20250625013235.0':
+  '@sap-ai-sdk/document-grounding@1.15.1-20250615013233.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.15.1-20250625013235.0
+      '@sap-ai-sdk/core': 1.15.1-20250615013233.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/foundation-models@1.15.1-20250625013235.0':
+  '@sap-ai-sdk/foundation-models@1.15.1-20250615013233.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 1.15.1-20250625013235.0
-      '@sap-ai-sdk/core': 1.15.1-20250625013235.0
+      '@sap-ai-sdk/ai-api': 1.15.1-20250615013233.0
+      '@sap-ai-sdk/core': 1.15.1-20250615013233.0
       '@sap-cloud-sdk/connectivity': 4.0.2
       '@sap-cloud-sdk/http-client': 4.0.2
       '@sap-cloud-sdk/util': 4.0.2
@@ -6164,13 +6096,13 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/langchain@1.15.1-20250625013235.0(openai@5.6.0(ws@8.18.2)(zod@3.25.67))(zod@3.25.67)':
+  '@sap-ai-sdk/langchain@1.15.1-20250615013233.0(openai@4.104.0(ws@8.18.2)(zod@3.25.67))(zod@3.25.67)':
     dependencies:
-      '@langchain/core': 0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67))
-      '@sap-ai-sdk/ai-api': 1.15.1-20250625013235.0
-      '@sap-ai-sdk/core': 1.15.1-20250625013235.0
-      '@sap-ai-sdk/foundation-models': 1.15.1-20250625013235.0
-      '@sap-ai-sdk/orchestration': 1.15.1-20250625013235.0
+      '@langchain/core': 0.3.58(openai@4.104.0(ws@8.18.2)(zod@3.25.67))
+      '@sap-ai-sdk/ai-api': 1.15.1-20250615013233.0
+      '@sap-ai-sdk/core': 1.15.1-20250615013233.0
+      '@sap-ai-sdk/foundation-models': 1.15.1-20250615013233.0
+      '@sap-ai-sdk/orchestration': 1.15.1-20250615013233.0
       '@sap-cloud-sdk/connectivity': 4.0.2
       uuid: 11.1.0
       zod-to-json-schema: 3.24.6(zod@3.25.67)
@@ -6180,20 +6112,20 @@ snapshots:
       - supports-color
       - zod
 
-  '@sap-ai-sdk/orchestration@1.15.1-20250625013235.0':
+  '@sap-ai-sdk/orchestration@1.15.1-20250615013233.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 1.15.1-20250625013235.0
-      '@sap-ai-sdk/core': 1.15.1-20250625013235.0
-      '@sap-ai-sdk/prompt-registry': 1.15.1-20250625013235.0
+      '@sap-ai-sdk/ai-api': 1.15.1-20250615013233.0
+      '@sap-ai-sdk/core': 1.15.1-20250615013233.0
+      '@sap-ai-sdk/prompt-registry': 1.15.1-20250615013233.0
       '@sap-cloud-sdk/util': 4.0.2
       yaml: 2.8.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/prompt-registry@1.15.1-20250625013235.0':
+  '@sap-ai-sdk/prompt-registry@1.15.1-20250615013233.0':
     dependencies:
-      '@sap-ai-sdk/core': 1.15.1-20250625013235.0
+      '@sap-ai-sdk/core': 1.15.1-20250615013233.0
       zod: 3.25.67
     transitivePeerDependencies:
       - debug
@@ -6303,7 +6235,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@sap/cds-compiler@6.0.14': {}
+  '@sap/cds-compiler@6.0.10': {}
 
   '@sap/cds-dk@9.0.6(@eslint/js@9.29.0)':
     dependencies:
@@ -6312,7 +6244,7 @@ snapshots:
       '@sap/cds': 9.0.4(@eslint/js@9.29.0)(express@4.21.2)
       '@sap/cds-mtxs': 3.0.1(@sap/cds@9.0.4(@eslint/js@9.29.0)(express@5.1.0))(hdb@0.19.12)
       '@sap/hdi-deploy': 5.4.2(hdb@0.19.12)
-      axios: 1.10.0
+      axios: 1.9.0
       express: 4.21.2
       hdb: 0.19.12
       livereload-js: 4.0.2
@@ -6354,7 +6286,7 @@ snapshots:
   '@sap/cds@9.0.4(@eslint/js@9.29.0)(express@4.21.2)':
     dependencies:
       '@eslint/js': 9.29.0
-      '@sap/cds-compiler': 6.0.14
+      '@sap/cds-compiler': 6.0.10
       '@sap/cds-fiori': 2.0.1(@sap/cds@9.0.4(@eslint/js@9.29.0)(express@5.1.0))(express@4.21.2)
       js-yaml: 4.1.0
     optionalDependencies:
@@ -6363,7 +6295,7 @@ snapshots:
   '@sap/cds@9.0.4(@eslint/js@9.29.0)(express@5.1.0)':
     dependencies:
       '@eslint/js': 9.29.0
-      '@sap/cds-compiler': 6.0.14
+      '@sap/cds-compiler': 6.0.10
       '@sap/cds-fiori': 2.0.1(@sap/cds@9.0.4(@eslint/js@9.29.0)(express@5.1.0))(express@5.1.0)
       js-yaml: 4.1.0
     optionalDependencies:
@@ -6413,8 +6345,6 @@ snapshots:
   '@sinclair/typebox@0.27.8': {}
 
   '@sinclair/typebox@0.34.33': {}
-
-  '@sinclair/typebox@0.34.37': {}
 
   '@sinonjs/commons@3.0.1':
     dependencies:
@@ -6543,7 +6473,16 @@ snapshots:
 
   '@types/ms@2.1.0': {}
 
+  '@types/node-fetch@2.6.12':
+    dependencies:
+      '@types/node': 20.19.1
+      form-data: 4.0.3
+
   '@types/node@12.20.55': {}
+
+  '@types/node@18.19.111':
+    dependencies:
+      undici-types: 5.26.5
 
   '@types/node@20.19.1':
     dependencies:
@@ -6740,7 +6679,7 @@ snapshots:
 
   '@vue/compiler-core@3.5.15':
     dependencies:
-      '@babel/parser': 7.27.3
+      '@babel/parser': 7.27.5
       '@vue/shared': 3.5.15
       entities: 4.5.0
       estree-walker: 2.0.2
@@ -6770,6 +6709,10 @@ snapshots:
 
   '@vue/shared@3.5.15': {}
 
+  abort-controller@3.0.0:
+    dependencies:
+      event-target-shim: 5.0.1
+
   accepts@1.3.8:
     dependencies:
       mime-types: 2.1.35
@@ -6791,6 +6734,10 @@ snapshots:
   acorn@8.14.1: {}
 
   acorn@8.15.0: {}
+
+  agentkeepalive@4.6.0:
+    dependencies:
+      humanize-ms: 1.2.1
 
   ajv-draft-04@1.0.0(ajv@8.17.1):
     optionalDependencies:
@@ -6919,7 +6866,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.1.0
 
-  axios@1.10.0:
+  axios@1.9.0:
     dependencies:
       follow-redirects: 1.15.9
       form-data: 4.0.3
@@ -6927,21 +6874,13 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  axios@1.9.0:
+  babel-jest@30.0.0-alpha.7(@babel/core@7.27.4):
     dependencies:
-      follow-redirects: 1.15.9
-      form-data: 4.0.2
-      proxy-from-env: 1.1.0
-    transitivePeerDependencies:
-      - debug
-
-  babel-jest@30.0.0-alpha.7(@babel/core@7.27.3):
-    dependencies:
-      '@babel/core': 7.27.3
+      '@babel/core': 7.27.4
       '@jest/transform': 30.0.0-alpha.7
       '@types/babel__core': 7.20.5
       babel-plugin-istanbul: 7.0.0
-      babel-preset-jest: 30.0.0-alpha.7(@babel/core@7.27.3)
+      babel-preset-jest: 30.0.0-alpha.7(@babel/core@7.27.4)
       chalk: 4.1.2
       graceful-fs: 4.2.11
       slash: 3.0.0
@@ -6964,25 +6903,6 @@ snapshots:
       '@babel/types': 7.27.6
       '@types/babel__core': 7.20.5
 
-  babel-preset-current-node-syntax@1.1.0(@babel/core@7.27.3):
-    dependencies:
-      '@babel/core': 7.27.3
-      '@babel/plugin-syntax-async-generators': 7.8.4(@babel/core@7.27.3)
-      '@babel/plugin-syntax-bigint': 7.8.3(@babel/core@7.27.3)
-      '@babel/plugin-syntax-class-properties': 7.12.13(@babel/core@7.27.3)
-      '@babel/plugin-syntax-class-static-block': 7.14.5(@babel/core@7.27.3)
-      '@babel/plugin-syntax-import-attributes': 7.27.1(@babel/core@7.27.3)
-      '@babel/plugin-syntax-import-meta': 7.10.4(@babel/core@7.27.3)
-      '@babel/plugin-syntax-json-strings': 7.8.3(@babel/core@7.27.3)
-      '@babel/plugin-syntax-logical-assignment-operators': 7.10.4(@babel/core@7.27.3)
-      '@babel/plugin-syntax-nullish-coalescing-operator': 7.8.3(@babel/core@7.27.3)
-      '@babel/plugin-syntax-numeric-separator': 7.10.4(@babel/core@7.27.3)
-      '@babel/plugin-syntax-object-rest-spread': 7.8.3(@babel/core@7.27.3)
-      '@babel/plugin-syntax-optional-catch-binding': 7.8.3(@babel/core@7.27.3)
-      '@babel/plugin-syntax-optional-chaining': 7.8.3(@babel/core@7.27.3)
-      '@babel/plugin-syntax-private-property-in-object': 7.14.5(@babel/core@7.27.3)
-      '@babel/plugin-syntax-top-level-await': 7.14.5(@babel/core@7.27.3)
-
   babel-preset-current-node-syntax@1.1.0(@babel/core@7.27.4):
     dependencies:
       '@babel/core': 7.27.4
@@ -7002,11 +6922,11 @@ snapshots:
       '@babel/plugin-syntax-private-property-in-object': 7.14.5(@babel/core@7.27.4)
       '@babel/plugin-syntax-top-level-await': 7.14.5(@babel/core@7.27.4)
 
-  babel-preset-jest@30.0.0-alpha.7(@babel/core@7.27.3):
+  babel-preset-jest@30.0.0-alpha.7(@babel/core@7.27.4):
     dependencies:
-      '@babel/core': 7.27.3
+      '@babel/core': 7.27.4
       babel-plugin-jest-hoist: 30.0.0-alpha.7
-      babel-preset-current-node-syntax: 1.1.0(@babel/core@7.27.3)
+      babel-preset-current-node-syntax: 1.1.0(@babel/core@7.27.4)
 
   balanced-match@1.0.2: {}
 
@@ -7083,12 +7003,12 @@ snapshots:
     dependencies:
       fill-range: 7.1.1
 
-  browserslist@4.25.1:
+  browserslist@4.25.0:
     dependencies:
-      caniuse-lite: 1.0.30001726
-      electron-to-chromium: 1.5.174
+      caniuse-lite: 1.0.30001721
+      electron-to-chromium: 1.5.166
       node-releases: 2.0.19
-      update-browserslist-db: 1.1.3(browserslist@4.25.1)
+      update-browserslist-db: 1.1.3(browserslist@4.25.0)
 
   bs-logger@0.2.6:
     dependencies:
@@ -7142,7 +7062,7 @@ snapshots:
 
   camelcase@6.3.0: {}
 
-  caniuse-lite@1.0.30001726: {}
+  caniuse-lite@1.0.30001721: {}
 
   case@1.6.3: {}
 
@@ -7245,7 +7165,7 @@ snapshots:
 
   console-table-printer@2.14.3:
     dependencies:
-      simple-wcswidth: 1.1.1
+      simple-wcswidth: 1.0.1
 
   content-disposition@0.5.4:
     dependencies:
@@ -7446,7 +7366,7 @@ snapshots:
     dependencies:
       jake: 10.9.2
 
-  electron-to-chromium@1.5.174: {}
+  electron-to-chromium@1.5.166: {}
 
   emittery@0.13.1: {}
 
@@ -7460,7 +7380,7 @@ snapshots:
 
   encodeurl@2.0.0: {}
 
-  end-of-stream@1.4.5:
+  end-of-stream@1.4.4:
     dependencies:
       once: 1.4.0
     optional: true
@@ -7793,6 +7713,8 @@ snapshots:
 
   etag@1.8.1: {}
 
+  event-target-shim@5.0.1: {}
+
   eventemitter3@4.0.7: {}
 
   execa@5.1.1:
@@ -8039,12 +7961,7 @@ snapshots:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
 
-  form-data@4.0.2:
-    dependencies:
-      asynckit: 0.4.0
-      combined-stream: 1.0.8
-      es-set-tostringtag: 2.1.0
-      mime-types: 2.1.35
+  form-data-encoder@1.7.2: {}
 
   form-data@4.0.3:
     dependencies:
@@ -8053,6 +7970,11 @@ snapshots:
       es-set-tostringtag: 2.1.0
       hasown: 2.0.2
       mime-types: 2.1.35
+
+  formdata-node@4.4.1:
+    dependencies:
+      node-domexception: 1.0.0
+      web-streams-polyfill: 4.0.0-beta.3
 
   forwarded@0.2.0: {}
 
@@ -8277,6 +8199,10 @@ snapshots:
 
   human-signals@2.1.0: {}
 
+  humanize-ms@1.2.1:
+    dependencies:
+      ms: 2.1.3
+
   iconv-lite@0.4.24:
     dependencies:
       safer-buffer: 2.1.2
@@ -8498,7 +8424,7 @@ snapshots:
   istanbul-lib-instrument@6.0.3:
     dependencies:
       '@babel/core': 7.27.4
-      '@babel/parser': 7.27.3
+      '@babel/parser': 7.27.5
       '@istanbuljs/schema': 0.1.3
       istanbul-lib-coverage: 3.2.2
       semver: 7.7.2
@@ -8594,11 +8520,11 @@ snapshots:
 
   jest-config@30.0.0-alpha.7(@types/node@20.19.1)(ts-node@10.9.2(@types/node@20.19.1)(typescript@5.8.3)):
     dependencies:
-      '@babel/core': 7.27.3
+      '@babel/core': 7.27.4
       '@jest/pattern': 30.0.0-alpha.7
       '@jest/test-sequencer': 30.0.0-alpha.7
       '@jest/types': 30.0.0-alpha.7
-      babel-jest: 30.0.0-alpha.7(@babel/core@7.27.3)
+      babel-jest: 30.0.0-alpha.7(@babel/core@7.27.4)
       chalk: 4.1.2
       ci-info: 4.2.0
       deepmerge: 4.3.1
@@ -8857,16 +8783,16 @@ snapshots:
 
   jest-snapshot@30.0.0-alpha.7:
     dependencies:
-      '@babel/core': 7.27.3
-      '@babel/generator': 7.27.3
-      '@babel/plugin-syntax-jsx': 7.27.1(@babel/core@7.27.3)
-      '@babel/plugin-syntax-typescript': 7.27.1(@babel/core@7.27.3)
-      '@babel/types': 7.27.3
+      '@babel/core': 7.27.4
+      '@babel/generator': 7.27.5
+      '@babel/plugin-syntax-jsx': 7.27.1(@babel/core@7.27.4)
+      '@babel/plugin-syntax-typescript': 7.27.1(@babel/core@7.27.4)
+      '@babel/types': 7.27.6
       '@jest/expect-utils': 30.0.0-alpha.7
       '@jest/snapshot-utils': 30.0.0-alpha.7
       '@jest/transform': 30.0.0-alpha.7
       '@jest/types': 30.0.0-alpha.7
-      babel-preset-current-node-syntax: 1.1.0(@babel/core@7.27.3)
+      babel-preset-current-node-syntax: 1.1.0(@babel/core@7.27.4)
       chalk: 4.1.2
       expect: 30.0.0-alpha.7
       graceful-fs: 4.2.11
@@ -9066,28 +8992,29 @@ snapshots:
 
   kuler@2.0.0: {}
 
-  langchain@0.3.29(@langchain/core@0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67)))(axios@1.10.0)(handlebars@4.7.8)(openai@5.6.0(ws@8.18.2)(zod@3.25.67))(ws@8.18.2):
+  langchain@0.3.29(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))(axios@1.9.0)(handlebars@4.7.8)(openai@4.104.0(ws@8.18.2)(zod@3.25.67))(ws@8.18.2):
     dependencies:
-      '@langchain/core': 0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67))
-      '@langchain/openai': 0.5.15(@langchain/core@0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67)))(ws@8.18.2)
-      '@langchain/textsplitters': 0.1.0(@langchain/core@0.3.61(openai@5.6.0(ws@8.18.2)(zod@3.25.67)))
+      '@langchain/core': 0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67))
+      '@langchain/openai': 0.5.13(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))(ws@8.18.2)
+      '@langchain/textsplitters': 0.1.0(@langchain/core@0.3.61(openai@4.104.0(ws@8.18.2)(zod@3.25.67)))
       js-tiktoken: 1.0.20
       js-yaml: 4.1.0
       jsonpointer: 5.0.1
-      langsmith: 0.3.33(openai@5.6.0(ws@8.18.2)(zod@3.25.67))
+      langsmith: 0.3.33(openai@4.104.0(ws@8.18.2)(zod@3.25.67))
       openapi-types: 12.1.3
       p-retry: 4.6.2
       uuid: 10.0.0
       yaml: 2.8.0
       zod: 3.25.67
     optionalDependencies:
-      axios: 1.10.0
+      axios: 1.9.0
       handlebars: 4.7.8
     transitivePeerDependencies:
+      - encoding
       - openai
       - ws
 
-  langsmith@0.3.33(openai@5.6.0(ws@8.18.2)(zod@3.25.67)):
+  langsmith@0.3.31(openai@4.104.0(ws@8.18.2)(zod@3.25.67)):
     dependencies:
       '@types/uuid': 10.0.0
       chalk: 4.1.2
@@ -9097,7 +9024,19 @@ snapshots:
       semver: 7.7.2
       uuid: 10.0.0
     optionalDependencies:
-      openai: 5.6.0(ws@8.18.2)(zod@3.25.67)
+      openai: 4.104.0(ws@8.18.2)(zod@3.25.67)
+
+  langsmith@0.3.33(openai@4.104.0(ws@8.18.2)(zod@3.25.67)):
+    dependencies:
+      '@types/uuid': 10.0.0
+      chalk: 4.1.2
+      console-table-printer: 2.14.3
+      p-queue: 6.6.2
+      p-retry: 4.6.2
+      semver: 7.7.2
+      uuid: 10.0.0
+    optionalDependencies:
+      openai: 4.104.0(ws@8.18.2)(zod@3.25.67)
 
   leven@3.1.0: {}
 
@@ -9326,6 +9265,8 @@ snapshots:
     dependencies:
       clone: 2.1.2
 
+  node-domexception@1.0.0: {}
+
   node-fetch-h2@2.3.0:
     dependencies:
       http2-client: 1.3.5
@@ -9446,10 +9387,36 @@ snapshots:
     dependencies:
       mimic-fn: 2.1.0
 
-  openai@5.6.0(ws@8.18.2)(zod@3.25.67):
+  openai@4.104.0(ws@8.18.2)(zod@3.25.32):
+    dependencies:
+      '@types/node': 18.19.111
+      '@types/node-fetch': 2.6.12
+      abort-controller: 3.0.0
+      agentkeepalive: 4.6.0
+      form-data-encoder: 1.7.2
+      formdata-node: 4.4.1
+      node-fetch: 2.7.0
+    optionalDependencies:
+      ws: 8.18.2
+      zod: 3.25.32
+    transitivePeerDependencies:
+      - encoding
+
+  openai@4.104.0(ws@8.18.2)(zod@3.25.67):
+    dependencies:
+      '@types/node': 18.19.111
+      '@types/node-fetch': 2.6.12
+      abort-controller: 3.0.0
+      agentkeepalive: 4.6.0
+      form-data-encoder: 1.7.2
+      formdata-node: 4.4.1
+      node-fetch: 2.7.0
     optionalDependencies:
       ws: 8.18.2
       zod: 3.25.67
+    transitivePeerDependencies:
+      - encoding
+    optional: true
 
   openapi-types@12.1.3: {}
 
@@ -9620,7 +9587,7 @@ snapshots:
       mkdirp-classic: 0.5.3
       napi-build-utils: 2.0.0
       node-abi: 3.75.0
-      pump: 3.0.3
+      pump: 3.0.2
       rc: 1.2.8
       simple-get: 4.0.1
       tar-fs: 2.1.3
@@ -9666,9 +9633,9 @@ snapshots:
 
   proxy-from-env@1.1.0: {}
 
-  pump@3.0.3:
+  pump@3.0.2:
     dependencies:
-      end-of-stream: 1.4.5
+      end-of-stream: 1.4.4
       once: 1.4.0
     optional: true
 
@@ -10020,7 +9987,7 @@ snapshots:
     dependencies:
       is-arrayish: 0.3.2
 
-  simple-wcswidth@1.1.1: {}
+  simple-wcswidth@1.0.1: {}
 
   slash@3.0.0: {}
 
@@ -10171,7 +10138,7 @@ snapshots:
 
   synckit@0.11.6:
     dependencies:
-      '@pkgr/core': 0.2.4
+      '@pkgr/core': 0.2.7
 
   synckit@0.11.8:
     dependencies:
@@ -10186,14 +10153,14 @@ snapshots:
     dependencies:
       chownr: 1.1.4
       mkdirp-classic: 0.5.3
-      pump: 3.0.3
+      pump: 3.0.2
       tar-stream: 2.2.0
     optional: true
 
   tar-stream@2.2.0:
     dependencies:
       bl: 4.1.0
-      end-of-stream: 1.4.5
+      end-of-stream: 1.4.4
       fs-constants: 1.0.0
       inherits: 2.0.4
       readable-stream: 3.6.2
@@ -10254,7 +10221,7 @@ snapshots:
     dependencies:
       typescript: 5.8.3
 
-  ts-jest@29.4.0(@babel/core@7.27.3)(@jest/transform@30.0.2)(@jest/types@30.0.1)(jest-util@30.0.2)(jest@30.0.0-alpha.7(@types/node@20.19.1)(ts-node@10.9.2(@types/node@20.19.1)(typescript@5.8.3)))(typescript@5.8.3):
+  ts-jest@29.4.0(@babel/core@7.27.4)(@jest/transform@30.0.2)(@jest/types@30.0.1)(jest-util@30.0.2)(jest@30.0.0-alpha.7(@types/node@20.19.1)(ts-node@10.9.2(@types/node@20.19.1)(typescript@5.8.3)))(typescript@5.8.3):
     dependencies:
       bs-logger: 0.2.6
       ejs: 3.1.10
@@ -10268,7 +10235,7 @@ snapshots:
       typescript: 5.8.3
       yargs-parser: 21.1.1
     optionalDependencies:
-      '@babel/core': 7.27.3
+      '@babel/core': 7.27.4
       '@jest/transform': 30.0.2
       '@jest/types': 30.0.1
       jest-util: 30.0.2
@@ -10432,6 +10399,8 @@ snapshots:
       has-symbols: 1.1.0
       which-boxed-primitive: 1.1.1
 
+  undici-types@5.26.5: {}
+
   undici-types@6.21.0: {}
 
   universalify@0.1.2: {}
@@ -10462,9 +10431,9 @@ snapshots:
       '@unrs/resolver-binding-win32-ia32-msvc': 1.7.4
       '@unrs/resolver-binding-win32-x64-msvc': 1.7.4
 
-  update-browserslist-db@1.1.3(browserslist@4.25.1):
+  update-browserslist-db@1.1.3(browserslist@4.25.0):
     dependencies:
-      browserslist: 4.25.1
+      browserslist: 4.25.0
       escalade: 3.2.0
       picocolors: 1.1.1
 
@@ -10512,6 +10481,8 @@ snapshots:
   wcwidth@1.0.1:
     dependencies:
       defaults: 1.0.4
+
+  web-streams-polyfill@4.0.0-beta.3: {}
 
   webidl-conversions@3.0.1: {}
 
@@ -10669,5 +10640,7 @@ snapshots:
   zod-to-json-schema@3.24.6(zod@3.25.67):
     dependencies:
       zod: 3.25.67
+
+  zod@3.25.32: {}
 
   zod@3.25.67: {}

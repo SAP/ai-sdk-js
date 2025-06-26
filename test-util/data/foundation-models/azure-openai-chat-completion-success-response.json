@@ -1,75 +1,75 @@
 {
-    "choices": [
-        {
-            "content_filter_results": {
-                "hate": {
-                    "filtered": false,
-                    "severity": "safe"
-                },
-                "self_harm": {
-                    "filtered": false,
-                    "severity": "safe"
-                },
-                "sexual": {
-                    "filtered": false,
-                    "severity": "safe"
-                },
-                "violence": {
-                    "filtered": false,
-                    "severity": "safe"
-                }
-            },
-            "finish_reason": "stop",
-            "index": 0,
-            "logprobs": null,
-            "message": {
-                "content": "Hello! I’m here and ready to help. How can I assist you today?",
-                "refusal": null,
-                "role": "assistant"
-            }
-        }
-    ],
-    "created": 1736864686,
-    "id": "chatcmpl-Apc8UYiHfmiWG3OXxMDvODHQSOVNN",
-    "model": "gpt-4o-2024-08-06",
-    "object": "chat.completion",
-    "prompt_filter_results": [
-        {
-            "content_filter_results": {
-                "hate": {
-                    "filtered": false,
-                    "severity": "safe"
-                },
-                "self_harm": {
-                    "filtered": false,
-                    "severity": "safe"
-                },
-                "sexual": {
-                    "filtered": false,
-                    "severity": "safe"
-                },
-                "violence": {
-                    "filtered": false,
-                    "severity": "safe"
-                }
-            },
-            "prompt_index": 0
-        }
-    ],
-    "system_fingerprint": "fp_f3927aa00d",
-    "usage": {
-        "completion_tokens": 17,
-        "completion_tokens_details": {
-            "accepted_prediction_tokens": 0,
-            "audio_tokens": 0,
-            "reasoning_tokens": 0,
-            "rejected_prediction_tokens": 0
+  "choices": [
+    {
+      "content_filter_results": {
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
         },
-        "prompt_tokens": 13,
-        "prompt_tokens_details": {
-            "audio_tokens": 0,
-            "cached_tokens": 0
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
         },
-        "total_tokens": 30
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        }
+      },
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "Hello! I’m here and ready to help. How can I assist you today?",
+        "refusal": null,
+        "role": "assistant"
+      }
     }
+  ],
+  "created": 1736864686,
+  "id": "chatcmpl-Apc8UYiHfmiWG3OXxMDvODHQSOVNN",
+  "model": "gpt-4o-2024-08-06",
+  "object": "chat.completion",
+  "prompt_filter_results": [
+    {
+      "content_filter_results": {
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        }
+      },
+      "prompt_index": 0
+    }
+  ],
+  "system_fingerprint": "fp_f3927aa00d",
+  "usage": {
+    "completion_tokens": 17,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens": 13,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    },
+    "total_tokens": 30
+  }
 }
