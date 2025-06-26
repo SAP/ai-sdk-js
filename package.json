@@ -39,7 +39,7 @@
     "zod-to-json-schema": "^3.24.5",
     "zod": "^3.25.67",
     "@changesets/cli": "^2.29.5",
-    "@jest/globals": "^30.0.2",
+    "@jest/globals": "^30.0.3",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
