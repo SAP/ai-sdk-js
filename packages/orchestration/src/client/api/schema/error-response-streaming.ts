@@ -3,17 +3,17 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { ModuleResults } from './module-results.js';
+import type { ModuleResultsStreaming } from './module-results-streaming.js';
 /**
- * Representation of the 'ErrorResponse' schema.
+ * Representation of the 'ErrorResponseStreaming' schema.
  */
-export type ErrorResponse = {
+export type ErrorResponseStreaming = {
   /**
    * @example "d4a67ea1-2bf9-4df7-8105-d48203ccff76"
    */
   request_id: string;
   /**
-   * @example 400
+   * @example 500
    */
   code: number;
   /**
@@ -25,5 +25,5 @@ export type ErrorResponse = {
    * @example "LLM Module"
    */
   location: string;
-  module_results?: ModuleResults;
+  module_results?: ModuleResultsStreaming;
 } & Record<string, any>;

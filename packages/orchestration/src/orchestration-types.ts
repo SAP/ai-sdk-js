@@ -18,7 +18,9 @@ import type {
   Template as OriginalTemplate,
   TemplateRef,
   TemplatingChatMessage,
-  OutputTranslationModuleConfig
+  OutputTranslationModuleConfig,
+  AzureContentSafetyOutput,
+  AzureContentSafetyOutputFilterConfig
 } from './client/api/schema/index.js';
 
 /**
@@ -315,3 +317,13 @@ export interface TranslationConfigParams {
    */
   targetLanguage: string;
 }
+
+/**
+ * Filter configuration for Azure Content Safety.
+ */
+export type AzureContentSafety = AzureContentSafetyOutput;
+
+/**
+ * Representation of the Azure Content Safety filter config schema.
+ */
+export type AzureContentSafetyFilterConfig = AzureContentSafetyOutputFilterConfig;
