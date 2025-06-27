@@ -85,18 +85,14 @@ export class OrchestrationClient extends BaseChatModel<
     options: typeof this.ParsedCallOptions,
     runManager?: CallbackManagerForLLMRun
   ): Promise<ChatResult> {
-    if(options.stream) {
-      const stream = this._streamResponseChunks(
-        messages,
-        options,
-        runManager
-      );
+    if (options.stream) {
+      const stream = this._streamResponseChunks(messages, options, runManager);
       const finalChunks: Record<number, ChatGenerationChunk> = {};
 
       for await (const chunk of stream) {
         chunk.message.response_metadata = {
           ...chunk.generationInfo,
-          ...chunk.message.response_metadata,
+          ...chunk.message.response_metadata
         };
         const index =
           (chunk.generationInfo as NewTokenIndices)?.completion ?? 0;
@@ -109,6 +105,7 @@ export class OrchestrationClient extends BaseChatModel<
 
       const generations = Object.entries(finalChunks)
         .sort(([aKey], [bKey]) => parseInt(aKey, 10) - parseInt(bKey, 10))
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .map(([_, value]) => value);
 
       return {
@@ -117,47 +114,45 @@ export class OrchestrationClient extends BaseChatModel<
     }
 
     const { inputParams, customRequestConfig } = options;
-    const allMessages =
-      mapLangChainMessagesToOrchestrationMessages(messages);
-    const mergedOrchestrationConfig =
-      this.mergeOrchestrationConfig(options);
+    const allMessages = mapLangChainMessagesToOrchestrationMessages(messages);
+    const mergedOrchestrationConfig = this.mergeOrchestrationConfig(options);
 
     const res = await this.caller.callWithOptions(
-    {
-      signal: options.signal
-    },
-    () => {
-      const controller = new AbortController();
-      if (options.signal) {
-        options.signal.addEventListener('abort', () => controller.abort());
-      }
-
-      const orchestrationClient = new OrchestrationClientBase(
-        mergedOrchestrationConfig,
-        this.deploymentConfig,
-        this.destination
-      );
-
-      return orchestrationClient.chatCompletion(
-        {
-          messages: allMessages,
-          inputParams
-        },
-        {
-          ...customRequestConfig,
-          signal: options.signal
+      {
+        signal: options.signal
+      },
+      () => {
+        const controller = new AbortController();
+        if (options.signal) {
+          options.signal.addEventListener('abort', () => controller.abort());
         }
-      );
-    }
-  );
 
-  const content = res.getContent();
+        const orchestrationClient = new OrchestrationClientBase(
+          mergedOrchestrationConfig,
+          this.deploymentConfig,
+          this.destination
+        );
 
-  await runManager?.handleLLMNewToken(
-    typeof content === 'string' ? content : ''
-  );
+        return orchestrationClient.chatCompletion(
+          {
+            messages: allMessages,
+            inputParams
+          },
+          {
+            ...customRequestConfig,
+            signal: options.signal
+          }
+        );
+      }
+    );
 
-  return mapOutputToChatResult(res.data);
+    const content = res.getContent();
+
+    await runManager?.handleLLMNewToken(
+      typeof content === 'string' ? content : ''
+    );
+
+    return mapOutputToChatResult(res.data);
   }
 
   override bindTools(
