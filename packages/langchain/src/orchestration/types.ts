@@ -35,6 +35,7 @@ export type OrchestrationCallOptions = Pick<
   tools?: ChatOrchestrationToolType[];
   promptIndex?: number;
   inputParams?: Prompt['inputParams'];
+  stream?: boolean;
   streamOptions?: StreamOptions;
 };
 
