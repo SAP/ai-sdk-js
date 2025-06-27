@@ -62,3 +62,5 @@ ts-to-zod.config.cjs
 
 # IDEA
 .idea
+
+.nvmrc
