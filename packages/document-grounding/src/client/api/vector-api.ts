@@ -5,6 +5,8 @@
  */
 import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';
 import type {
+  CollectionDeletedResponse,
+  CollectionPendingResponse,
   CollectionsListResponse,
   CollectionRequest,
   Collection,
@@ -15,9 +17,7 @@ import type {
   DocumentUpdateRequest,
   TextSearchRequest,
   SearchResults,
-  CollectionCreatedResponse,
-  CollectionPendingResponse,
-  CollectionDeletedResponse
+  CollectionCreatedResponse
 } from './schema/index.js';
 /**
  * Representation of the 'VectorApi'.
@@ -26,12 +26,33 @@ import type {
 export const VectorApi = {
   _defaultBasePath: '/lm/document-grounding',
   /**
+   * Gets a specific collection status from monitor by ID.
+   * @param id - Collection ID
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  getCollectionDeletionStatus: (
+    id: string,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
+    new OpenApiRequestBuilder<
+      CollectionDeletedResponse | CollectionPendingResponse
+    >(
+      'get',
+      '/vector/collections/{id}/deletionStatus',
+      {
+        pathParameters: { id },
+        headerParameters
+      },
+      VectorApi._defaultBasePath
+    ),
+  /**
    * Gets a list of collections.
    * @param queryParameters - Object containing the following keys: $top, $skip, $count.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  getAllCollections: (
+  vectorV1VectorEndpointsGetAllCollections: (
     queryParameters: { $top?: number; $skip?: number; $count?: boolean },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
@@ -50,7 +71,7 @@ export const VectorApi = {
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  createCollection: (
+  vectorV1VectorEndpointsCreateCollection: (
     body: CollectionRequest,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
@@ -65,11 +86,11 @@ export const VectorApi = {
     ),
   /**
    * Gets a specific collection by ID.
-   * @param collectionId - Path parameter.
+   * @param collectionId - Collection ID
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  getCollectionById: (
+  vectorV1VectorEndpointsGetCollectionById: (
     collectionId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
@@ -84,11 +105,11 @@ export const VectorApi = {
     ),
   /**
    * Deletes a specific collection by ID. This operation is asynchronous. Poll the collection for a 404 status code.
-   * @param collectionId - Path parameter.
+   * @param collectionId - Collection ID
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  deleteCollectionById: (
+  vectorV1VectorEndpointsDeleteCollection: (
     collectionId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
@@ -103,12 +124,12 @@ export const VectorApi = {
     ),
   /**
    * Gets a specific document in a collection by ID.
-   * @param collectionId - Path parameter.
-   * @param documentId - Path parameter.
+   * @param collectionId - Collection ID
+   * @param documentId - Document ID
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  getDocumentById: (
+  vectorV1VectorEndpointsGetDocumentById: (
     collectionId: string,
     documentId: string,
     headerParameters: { 'AI-Resource-Group': string }
@@ -124,12 +145,12 @@ export const VectorApi = {
     ),
   /**
    * Deletes a specific document of a collection.
-   * @param collectionId - Path parameter.
-   * @param documentId - Path parameter.
+   * @param collectionId - Collection ID
+   * @param documentId - Document ID
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  deleteDocumentById: (
+  vectorV1VectorEndpointsDeleteDocument: (
     collectionId: string,
     documentId: string,
     headerParameters: { 'AI-Resource-Group': string }
@@ -145,12 +166,12 @@ export const VectorApi = {
     ),
   /**
    * Gets a list of documents of a collection.
-   * @param collectionId - Path parameter.
+   * @param collectionId - Collection ID
    * @param queryParameters - Object containing the following keys: $top, $skip, $count.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  getAllDocuments: (
+  vectorV1VectorEndpointsGetAllDocuments: (
     collectionId: string,
     queryParameters: { $top?: number; $skip?: number; $count?: boolean },
     headerParameters: { 'AI-Resource-Group': string }
@@ -167,12 +188,12 @@ export const VectorApi = {
     ),
   /**
    * Create and stores one or multiple documents into a collection. If omitted, 'id' will be auto-generated.
-   * @param collectionId - Path parameter.
+   * @param collectionId - Collection ID
    * @param body - Request body.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  createDocuments: (
+  vectorV1VectorEndpointsCreateDocuments: (
     collectionId: string,
     body: DocumentCreateRequest,
     headerParameters: { 'AI-Resource-Group': string }
@@ -189,12 +210,12 @@ export const VectorApi = {
     ),
   /**
    * Upserts the data of multiple documents into a collection.
-   * @param collectionId - Path parameter.
+   * @param collectionId - Collection ID
    * @param body - Request body.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  updateDocuments: (
+  vectorV1VectorEndpointsUpdateDocuments: (
     collectionId: string,
     body: DocumentUpdateRequest,
     headerParameters: { 'AI-Resource-Group': string }
@@ -210,12 +231,12 @@ export const VectorApi = {
       VectorApi._defaultBasePath
     ),
   /**
-   * Search chunk by vector
+   * Search chunks
    * @param body - Request body.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  search: (
+  vectorV1VectorEndpointsSearchChunk: (
     body: TextSearchRequest,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
@@ -230,11 +251,11 @@ export const VectorApi = {
     ),
   /**
    * Gets a specific collection status from monitor by ID.
-   * @param id - Path parameter.
+   * @param id - Collection ID
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  getCollectionCreationStatus: (
+  vectorV1VectorEndpointsGetCollectionCreationStatus: (
     id: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
@@ -243,27 +264,6 @@ export const VectorApi = {
     >(
       'get',
       '/vector/collections/{id}/creationStatus',
-      {
-        pathParameters: { id },
-        headerParameters
-      },
-      VectorApi._defaultBasePath
-    ),
-  /**
-   * Gets a specific collection status from monitor by ID.
-   * @param id - Path parameter.
-   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
-   * @returns The request builder, use the `execute()` method to trigger the request.
-   */
-  getCollectionDeletionStatus: (
-    id: string,
-    headerParameters: { 'AI-Resource-Group': string }
-  ) =>
-    new OpenApiRequestBuilder<
-      CollectionDeletedResponse | CollectionPendingResponse
-    >(
-      'get',
-      '/vector/collections/{id}/deletionStatus',
       {
         pathParameters: { id },
         headerParameters
