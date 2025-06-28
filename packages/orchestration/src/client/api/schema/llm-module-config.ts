@@ -10,7 +10,7 @@
 export type LlmModuleConfig = {
   /**
    * Model name as in LLM Access configuration
-   * @example "gpt-4"
+   * @example "gpt-4o-mini"
    */
   model_name: string;
   /**
@@ -21,6 +21,7 @@ export type LlmModuleConfig = {
    *   "frequency_penalty": 0,
    *   "presence_penalty": 0,
    *   "n": 2,
+   *   "logprobs": true,
    *   "stream_options": {
    *     "include_usage": true
    *   }

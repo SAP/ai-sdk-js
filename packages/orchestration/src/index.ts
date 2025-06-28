@@ -1,5 +1,3 @@
-export * from './client/api/schema/index.js';
-
 export type {
   OrchestrationModuleConfig,
   LlmModuleConfig,
@@ -15,7 +13,13 @@ export type {
   LlamaGuardCategory,
   AzureContentFilter,
   AzureFilterThreshold,
-  TranslationConfigParams
+  TranslationConfigParams,
+  AzureContentSafety,
+  AzureContentSafetyFilterConfig,
+  ErrorResponse,
+  ChatCompletionTool,
+  ToolChatMessage,
+  DataRepositoryType
 } from './orchestration-types.js';
 
 export { OrchestrationStreamResponse } from './orchestration-stream-response.js';

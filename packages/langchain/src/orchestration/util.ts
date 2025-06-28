@@ -8,6 +8,7 @@ import type {
 } from '@langchain/core/language_models/base';
 import type { ChatOrchestrationToolType } from './types.js';
 import type { ChatResult } from '@langchain/core/outputs';
+import type { OrchestrationStreamChunkResponse } from '@sap-ai-sdk/orchestration';
 import type {
   AssistantChatMessage,
   ChatCompletionTool,
@@ -23,9 +24,8 @@ import type {
   UserChatMessage,
   TemplatingModuleConfig,
   TemplateRef,
-  ToolCallChunk as OrchestrationToolCallChunk,
-  OrchestrationStreamChunkResponse
-} from '@sap-ai-sdk/orchestration';
+  ToolCallChunk as OrchestrationToolCallChunk
+} from '@sap-ai-sdk/orchestration/internal.js';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type {
   BaseMessage,

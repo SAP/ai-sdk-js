@@ -3,7 +3,7 @@ import type { CustomRequestConfig } from '@sap-cloud-sdk/http-client';
 import type { ChatModel } from './model-types.js';
 import type {
   ChatMessages,
-  DataRepositoryType,
+  DataRepositoryType as OriginalDataRepositoryType,
   DocumentGroundingFilter,
   DpiConfig,
   DpiEntities,
@@ -18,7 +18,12 @@ import type {
   Template as OriginalTemplate,
   TemplateRef,
   TemplatingChatMessage,
-  OutputTranslationModuleConfig
+  OutputTranslationModuleConfig,
+  AzureContentSafetyOutput,
+  AzureContentSafetyOutputFilterConfig,
+  ErrorResponse as OriginalErrorResponse,
+  ChatCompletionTool as OriginalChatCompletionTool,
+  ToolChatMessage as OriginalToolChatMessage
 } from './client/api/schema/index.js';
 
 /**
@@ -315,3 +320,34 @@ export interface TranslationConfigParams {
    */
   targetLanguage: string;
 }
+
+/**
+ * Filter configuration for Azure Content Safety.
+ */
+export type AzureContentSafety = AzureContentSafetyOutput;
+
+/**
+ * Representation of the Azure Content Safety filter config schema.
+ */
+export type AzureContentSafetyFilterConfig =
+  AzureContentSafetyOutputFilterConfig;
+
+/**
+ * Representation of the 'ErrorResponse' schema.
+ */
+export type ErrorResponse = OriginalErrorResponse;
+
+/**
+ * Representation of the 'ChatCompletionTool' schema.
+ */
+export type ChatCompletionTool = OriginalChatCompletionTool;
+
+/**
+ * Representation of the 'ToolChatMessage' schema.
+ */
+export type ToolChatMessage = OriginalToolChatMessage;
+
+/**
+ * Only include DataRepositories with the given type.
+ */
+export type DataRepositoryType = OriginalDataRepositoryType;
