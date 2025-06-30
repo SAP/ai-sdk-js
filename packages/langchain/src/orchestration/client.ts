@@ -86,7 +86,11 @@ export class OrchestrationClient extends BaseChatModel<
     runManager?: CallbackManagerForLLMRun
   ): Promise<ChatResult> {
     if (options.stream) {
-      const stream = this._streamResponseChunks(messages, options, runManager);
+      const stream = this._streamResponseChunks(
+        messages,
+        { ...options, signal: new AbortController().signal },
+        runManager
+      );
       const finalChunks: Record<number, ChatGenerationChunk> = {};
 
       for await (const chunk of stream) {
@@ -96,11 +100,9 @@ export class OrchestrationClient extends BaseChatModel<
         };
         const index =
           (chunk.generationInfo as NewTokenIndices)?.completion ?? 0;
-        if (finalChunks[index] === undefined) {
-          finalChunks[index] = chunk;
-        } else {
-          finalChunks[index] = finalChunks[index].concat(chunk);
-        }
+        finalChunks[index] = finalChunks[index]
+          ? finalChunks[index].concat(chunk)
+          : chunk;
       }
 
       const generations = Object.entries(finalChunks)
@@ -122,11 +124,6 @@ export class OrchestrationClient extends BaseChatModel<
         signal: options.signal
       },
       () => {
-        const controller = new AbortController();
-        if (options.signal) {
-          options.signal.addEventListener('abort', () => controller.abort());
-        }
-
         const orchestrationClient = new OrchestrationClientBase(
           mergedOrchestrationConfig,
           this.deploymentConfig,
