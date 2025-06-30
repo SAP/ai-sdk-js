@@ -8,52 +8,17 @@ exports[`orchestration service client resilience returns successful response whe
     "AIMessage",
   ],
   "kwargs": {
-    "additional_kwargs": {
-      "finish_reason": "stop",
-      "function_call": undefined,
-      "index": 0,
-      "module_results": {
-        "llm": {
-          "choices": [
-            {
-              "finish_reason": "stop",
-              "index": 0,
-              "message": {
-                "content": "Hello! How can I assist you today?",
-                "role": "assistant",
-              },
-            },
-          ],
-          "created": 172,
-          "id": "llm-id",
-          "model": "gpt-4o",
-          "object": "chat.completion",
-          "usage": {
-            "completion_tokens": 9,
-            "prompt_tokens": 9,
-            "total_tokens": 18,
-          },
-        },
-        "templating": [
-          {
-            "content": "Hello!",
-            "role": "user",
-          },
-        ],
-      },
-      "request_id": "request-id",
-      "tool_calls": undefined,
-    },
+    "additional_kwargs": {},
     "content": "Hello! How can I assist you today?",
     "invalid_tool_calls": [],
     "response_metadata": {
       "created": 172,
       "finish_reason": "stop",
-      "function_call": undefined,
       "id": "orchestration-id",
       "index": 0,
       "model": "gpt-4o",
       "object": "chat.completion",
+      "request_id": "request-id",
       "system_fingerprint": undefined,
       "tokenUsage": {
         "completionTokens": 9,
@@ -77,52 +42,17 @@ exports[`orchestration service client resilience returns successful response whe
     "AIMessage",
   ],
   "kwargs": {
-    "additional_kwargs": {
-      "finish_reason": "stop",
-      "function_call": undefined,
-      "index": 0,
-      "module_results": {
-        "llm": {
-          "choices": [
-            {
-              "finish_reason": "stop",
-              "index": 0,
-              "message": {
-                "content": "Hello! How can I assist you today?",
-                "role": "assistant",
-              },
-            },
-          ],
-          "created": 172,
-          "id": "llm-id",
-          "model": "gpt-4o",
-          "object": "chat.completion",
-          "usage": {
-            "completion_tokens": 9,
-            "prompt_tokens": 9,
-            "total_tokens": 18,
-          },
-        },
-        "templating": [
-          {
-            "content": "Hello!",
-            "role": "user",
-          },
-        ],
-      },
-      "request_id": "request-id",
-      "tool_calls": undefined,
-    },
+    "additional_kwargs": {},
     "content": "Hello! How can I assist you today?",
     "invalid_tool_calls": [],
     "response_metadata": {
       "created": 172,
       "finish_reason": "stop",
-      "function_call": undefined,
       "id": "orchestration-id",
       "index": 0,
       "model": "gpt-4o",
       "object": "chat.completion",
+      "request_id": "request-id",
       "system_fingerprint": undefined,
       "tokenUsage": {
         "completionTokens": 9,
@@ -191,7 +121,6 @@ Overall, the SAP Cloud SDK is an essential tool for developers looking to build 
           },
         ],
       },
-      "request_id": "66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b66172762-8c47-4438-89e7-2689be8f370b",
     },
     "content": "The SAP Cloud SDK is a comprehensive development toolkit designed to simplify and accelerate the creation of applications that integrate with SAP solutions, particularly those built on the SAP Business Technology Platform (BTP). It provides developers with libraries, tools, and best practices that streamline the process of connecting to SAP systems, such as S/4HANA and other services available on the SAP Cloud Platform.
 
@@ -212,8 +141,13 @@ Overall, the SAP Cloud SDK is an essential tool for developers looking to build 
     "invalid_tool_calls": [],
     "response_metadata": {
       "completion": 0,
+      "created": 1734524005,
       "finish_reason": "stop",
+      "id": "chatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wp",
+      "model_name": "gpt-4o-2024-08-06",
       "prompt": 0,
+      "request_id": "66172762-8c47-4438-89e7-2689be8f370b",
+      "system_fingerprint": "fp_4e924a4b48",
       "token_usage": {
         "completion_tokens": 271,
         "prompt_tokens": 17,
@@ -287,15 +221,19 @@ exports[`orchestration service client streaming supports streaming responses wit
           },
         ],
       },
-      "request_id": "b851a041-7bcd-463f-881a-7cb40526bc05b851a041-7bcd-463f-881a-7cb40526bc05b851a041-7bcd-463f-881a-7cb40526bc05b851a041-7bcd-463f-881a-7cb40526bc05b851a041-7bcd-463f-881a-7cb40526bc05b851a041-7bcd-463f-881a-7cb40526bc05b851a041-7bcd-463f-881a-7cb40526bc05b851a041-7bcd-463f-881a-7cb40526bc05b851a041-7bcd-463f-881a-7cb40526bc05b851a041-7bcd-463f-881a-7cb40526bc05b851a041-7bcd-463f-881a-7cb40526bc05b851a041-7bcd-463f-881a-7cb40526bc05",
     },
     "content": "",
     "id": undefined,
     "invalid_tool_calls": [],
     "response_metadata": {
       "completion": 0,
+      "created": 1747660479,
       "finish_reason": "tool_calls",
+      "id": "chatcmpl-BYucBnhXmLZ6QGcjM6Ac76HKLibjd",
+      "model_name": "gpt-4o-2024-08-06",
       "prompt": 0,
+      "request_id": "b851a041-7bcd-463f-881a-7cb40526bc05",
+      "system_fingerprint": "fp_ee1d74bde0",
     },
     "tool_call_chunks": [
       {

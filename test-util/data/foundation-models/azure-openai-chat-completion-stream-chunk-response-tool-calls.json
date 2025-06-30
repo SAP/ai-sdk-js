@@ -1,0 +1,26 @@
+{
+  "choices": [
+    {
+      "content_filter_results": {},
+      "delta": {
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\""
+            },
+            "index": 0
+          }
+        ]
+      },
+      "finish_reason": null,
+      "index": 0,
+      "logprobs": null
+    }
+  ],
+  "created": 1750663486,
+  "id": "chatcmpl-BlVpmgkWgjEFuVuZXudjGOFWd9BE0",
+  "model": "gpt-4o-2024-08-06",
+  "object": "chat.completion.chunk",
+  "system_fingerprint": "fp_ee1d74bde0",
+  "usage": null
+}

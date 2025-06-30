@@ -33,6 +33,7 @@ export type OrchestrationCallOptions = Pick<
   customRequestConfig?: CustomRequestConfig;
   strict?: boolean;
   tools?: ChatOrchestrationToolType[];
+  promptIndex?: number;
   inputParams?: Prompt['inputParams'];
   streamOptions?: StreamOptions;
 };

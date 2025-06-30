@@ -7,11 +7,9 @@ import {
   mapLangChainMessagesToOrchestrationMessages,
   mapOutputToChatResult,
   mapToolToChatCompletionTool,
-  mapOrchestrationChunkToLangChainMessageChunk,
-  setFinishReason,
-  setTokenUsage,
-  computeTokenIndices
+  mapOrchestrationChunkToLangChainMessageChunk
 } from './util.js';
+import type { NewTokenIndices } from '@langchain/core/callbacks/base';
 import type { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
 import type { BaseLanguageModelInput } from '@langchain/core/language_models/base';
 import type { Runnable, RunnableLike } from '@langchain/core/runnables';
@@ -182,26 +180,56 @@ export class OrchestrationClient extends BaseChatModel<
     );
 
     for await (const chunk of response.stream) {
-      const messageChunk = mapOrchestrationChunkToLangChainMessageChunk(chunk);
-      const tokenIndices = computeTokenIndices(chunk);
-      const finishReason = response.getFinishReason();
-      const tokenUsage = response.getTokenUsage();
+      const orchestrationResult = chunk.data.orchestration_result;
+      // There can be only none or one choice inside a chunk
+      const choice = orchestrationResult?.choices[0];
 
-      setFinishReason(messageChunk, finishReason);
-      setTokenUsage(messageChunk, tokenUsage);
+      // Map the chunk to a LangChain message chunk
+      const messageChunk = mapOrchestrationChunkToLangChainMessageChunk(chunk);
+
+      // Create initial generation info with token indices
+      const newTokenIndices: NewTokenIndices = {
+        prompt: options.promptIndex ?? 0,
+        completion: choice?.index ?? 0
+      };
+      const generationInfo: Record<string, any> = { ...newTokenIndices };
+
+      // Process finish reason
+      if (choice?.finish_reason && orchestrationResult) {
+        generationInfo.finish_reason = choice.finish_reason;
+        // Only include system fingerprint in the last chunk for now to avoid concatenation issues
+        generationInfo.system_fingerprint =
+          orchestrationResult.system_fingerprint;
+        generationInfo.model_name = orchestrationResult.model;
+        generationInfo.id = orchestrationResult.id;
+        generationInfo.created = orchestrationResult.created;
+        generationInfo.request_id = chunk.data.request_id;
+      }
+
+      // Process token usage
+      const tokenUsage = chunk.getTokenUsage();
+      if (tokenUsage) {
+        generationInfo.token_usage = tokenUsage;
+        messageChunk.usage_metadata = {
+          input_tokens: tokenUsage.prompt_tokens,
+          output_tokens: tokenUsage.completion_tokens,
+          total_tokens: tokenUsage.total_tokens
+        };
+      }
+
       const content = chunk.getDeltaContent() ?? '';
 
       const generationChunk = new ChatGenerationChunk({
         message: messageChunk,
         text: content,
-        generationInfo: { ...tokenIndices }
+        generationInfo
       });
 
       // Notify the run manager about the new token
       // Some parameters(`_runId`, `_parentRunId`, `_tags`) are set as undefined as they are implicitly read from the context.
       await runManager?.handleLLMNewToken(
         content,
-        tokenIndices,
+        newTokenIndices,
         undefined,
         undefined,
         undefined,

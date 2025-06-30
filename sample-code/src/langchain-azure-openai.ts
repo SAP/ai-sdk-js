@@ -17,7 +17,7 @@ import {
 } from '@langchain/core/messages';
 import { z } from 'zod';
 import { tool } from '@langchain/core/tools';
-import type { BaseMessage } from '@langchain/core/messages';
+import type { AIMessageChunk, BaseMessage } from '@langchain/core/messages';
 
 /**
  * Ask GPT about the capital of France.
@@ -201,4 +201,29 @@ export async function invokeToolChain(): Promise<string> {
 
   // parse the response
   return parser.invoke(finalResponse);
+}
+
+/**
+ * Stream responses using LangChain Orchestration client.
+ * @param controller - The abort controller to cancel the request if needed.
+ * @returns An async iterable of {@link AIMessageChunk} objects.
+ */
+export async function streamChain(
+  controller = new AbortController()
+): Promise<AsyncIterable<AIMessageChunk>> {
+  const client = new AzureOpenAiChatClient({
+    modelName: 'gpt-4o'
+  });
+  return client.stream(
+    [
+      {
+        role: 'user',
+        content:
+          'Write a 100 word explanation about SAP Cloud SDK and its capabilities'
+      }
+    ],
+    {
+      signal: controller.signal
+    }
+  );
 }

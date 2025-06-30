@@ -59,6 +59,7 @@ export class AzureOpenAiChatClient {
       new AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>();
     response.stream = (await this.createStream(data, controller, requestConfig))
       ._pipe(AzureOpenAiChatCompletionStream._processChunk)
+      ._pipe(AzureOpenAiChatCompletionStream._processToolCalls, response)
       ._pipe(AzureOpenAiChatCompletionStream._processFinishReason, response)
       ._pipe(AzureOpenAiChatCompletionStream._processTokenUsage, response);
     return response;

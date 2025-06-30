@@ -14,15 +14,16 @@
   "scripts": {
     "start": "node --loader ts-node/esm src/server.ts",
     "local": "node --env-file=.env --loader ts-node/esm src/server.ts",
+    "agent-tutorial": "node --env-file=.env --loader ts-node/esm src/tutorials/agent-openai-langchain.ts",
     "compile": "tsc",
     "dev": "tsc -w",
     "lint": "eslint . && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -w --log-level error"
   },
   "dependencies": {
-    "@langchain/langgraph": "^0.3.3",
-    "langchain": "0.3.28",
-    "@langchain/core": "0.3.58",
+    "@langchain/langgraph": "^0.3.5",
+    "langchain": "0.3.29",
+    "@langchain/core": "0.3.61",
     "@langchain/textsplitters": "0.1.0",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/document-grounding": "workspace:^",
@@ -34,7 +35,7 @@
     "@types/express": "^5.0.3",
     "express": "^5.1.0",
     "uuid": "^11.1.0",
-    "zod": "^3.25.64",
-    "zod-to-json-schema": "^3.24.5"
+    "zod": "^3.25.67",
+    "zod-to-json-schema": "^3.24.6"
   }
 }

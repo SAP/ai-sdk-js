@@ -24,8 +24,7 @@ import type {
   TemplatingModuleConfig,
   TemplateRef,
   ToolCallChunk as OrchestrationToolCallChunk,
-  OrchestrationStreamChunkResponse,
-  TokenUsage
+  OrchestrationStreamChunkResponse
 } from '@sap-ai-sdk/orchestration';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type {
@@ -293,21 +292,17 @@ export function mapOutputToChatResult(
         content: choice.message.content ?? '',
         tool_calls: mapOrchestrationToLangChainToolCall(
           choice.message.tool_calls
-        ),
-        additional_kwargs: {
-          finish_reason: choice.finish_reason,
-          index: choice.index,
-          function_call: choice.message.function_call,
-          tool_calls: choice.message.tool_calls,
-          module_results,
-          request_id
-        }
+        )
       }),
+      additional_kwargs: {
+        tool_calls: choice.message.tool_calls,
+        module_results
+      },
       generationInfo: {
         finish_reason: choice.finish_reason,
         index: choice.index,
-        function_call: choice.message.function_call,
-        tool_calls: choice.message.tool_calls
+        tool_calls: choice.message.tool_calls,
+        request_id
       }
     })),
     llmOutput: {
@@ -356,76 +351,17 @@ export function isToolDefinitionLike(
 export function mapOrchestrationChunkToLangChainMessageChunk(
   chunk: OrchestrationStreamChunkResponse
 ): AIMessageChunk {
-  const { module_results, request_id } = chunk.data;
+  const choice = chunk.data.orchestration_result?.choices[0];
   const content = chunk.getDeltaContent() ?? '';
-  const toolCallChunks = chunk.getDeltaToolCalls();
-
-  const additional_kwargs: Record<string, unknown> = {
-    module_results,
-    request_id
-  };
-
-  let tool_call_chunks: ToolCallChunk[] = [];
-  if (toolCallChunks) {
-    tool_call_chunks = mapOrchestrationToLangChainToolCallChunk(toolCallChunks);
-  }
-  // Use `AIMessageChunk` to represent message chunks for roles such as 'tool' and 'user' as well.
-  // While the `ChatDelta` type can accommodate other roles in the orchestration service's stream chunk response, in realtime, we only expect messages with the 'assistant' role to be returned.
-  return new AIMessageChunk({ content, additional_kwargs, tool_call_chunks });
-}
-
-/**
- * Sets finish reason on a LangChain message chunk if available.
- * @param messageChunk - The LangChain message chunk to update.
- * @param finishReason - The finish reason from the response.
- * @internal
- */
-export function setFinishReason(
-  messageChunk: AIMessageChunk,
-  finishReason?: string
-): void {
-  if (finishReason) {
-    messageChunk.response_metadata.finish_reason = finishReason;
-  }
-}
-
-/**
- * Sets usage metadata on a message chunk if available.
- * @param messageChunk - The LangChain message chunk to update.
- * @param tokenUsage - The token usage information.
- * @internal
- */
-export function setTokenUsage(
-  messageChunk: AIMessageChunk,
-  tokenUsage?: TokenUsage
-): void {
-  if (tokenUsage) {
-    messageChunk.usage_metadata = {
-      input_tokens: tokenUsage.prompt_tokens,
-      output_tokens: tokenUsage.completion_tokens,
-      total_tokens: tokenUsage.total_tokens
-    };
-    messageChunk.response_metadata.token_usage = tokenUsage;
-  }
-}
-
-/**
- * Computes token indices for a chunk of the orchestration stream response.
- * @param chunk - A chunk of the orchestration stream response.
- * @returns An object with prompt and completion indices.
- * @internal
- */
-// TODO: Remove after https://github.com/SAP/ai-sdk-js-backlog/issues/321
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function computeTokenIndices(chunk: OrchestrationStreamChunkResponse): {
-  prompt: number;
-  completion: number;
-} {
-  return {
-    // Indicates the token is part of the first prompt
-    prompt: 0,
-    // Hardcoding to 0 as mutiple choices are not currently supported in the orchestration service.
-    // TODO: Switch to `chunk.data.orchestration_result.choices[0].index` when support is added via https://github.com/SAP/ai-sdk-js-backlog/issues/321
-    completion: 0
-  };
+  const toolCallChunks = choice?.delta.tool_calls;
+  return new AIMessageChunk({
+    content,
+    additional_kwargs: {
+      // TODO: Fix duplicated module results when using concat() method for streaming chunks.
+      module_results: chunk.data.module_results
+    },
+    ...(toolCallChunks && {
+      tool_call_chunks: mapOrchestrationToLangChainToolCallChunk(toolCallChunks)
+    })
+  });
 }
