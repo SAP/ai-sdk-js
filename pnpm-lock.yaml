@@ -33,7 +33,7 @@ importers:
         version: 4.0.2
       '@sap-cloud-sdk/eslint-config':
         specifier: ^4.0.2
-        version: 4.0.2(@typescript-eslint/eslint-plugin@8.33.0(@typescript-eslint/parser@8.33.0(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0)(prettier@3.6.1)(typescript@5.8.3)
+        version: 4.0.2(@typescript-eslint/eslint-plugin@8.33.0(@typescript-eslint/parser@8.33.0(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0)(prettier@3.6.2)(typescript@5.8.3)
       '@sap-cloud-sdk/generator-common':
         specifier: ^4.0.2
         version: 4.0.2
@@ -80,8 +80,8 @@ importers:
         specifier: ^14.0.4
         version: 14.0.5
       prettier:
-        specifier: ^3.6.1
-        version: 3.6.1
+        specifier: ^3.6.2
+        version: 3.6.2
       ts-jest:
         specifier: ^29.4.0
         version: 29.4.0(@babel/core@7.27.4)(@jest/transform@30.0.2)(@jest/types@30.0.1)(jest-util@30.0.2)(jest@30.0.0-alpha.7(@types/node@20.19.2)(ts-node@10.9.2(@types/node@20.19.2)(typescript@5.8.3)))(typescript@5.8.3)
@@ -4093,8 +4093,8 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
 
-  prettier@3.6.1:
-    resolution: {integrity: sha512-5xGWRa90Sp2+x1dQtNpIpeOQpTDBs9cZDmA/qs2vDNN2i18PdapqY7CmBeyLlMuGqXJRIOPaCaVZTLNQRWUH/A==}
+  prettier@3.6.2:
+    resolution: {integrity: sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -6116,7 +6116,7 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/eslint-config@4.0.2(@typescript-eslint/eslint-plugin@8.33.0(@typescript-eslint/parser@8.33.0(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0)(prettier@3.6.1)(typescript@5.8.3)':
+  '@sap-cloud-sdk/eslint-config@4.0.2(@typescript-eslint/eslint-plugin@8.33.0(@typescript-eslint/parser@8.33.0(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0)(prettier@3.6.2)(typescript@5.8.3)':
     dependencies:
       '@eslint/js': 9.27.0
       '@stylistic/eslint-plugin': 3.1.0(eslint@9.29.0)(typescript@5.8.3)
@@ -6126,7 +6126,7 @@ snapshots:
       eslint-import-resolver-typescript: 4.4.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.33.0(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0))(eslint@9.29.0)
       eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.33.0(eslint@9.29.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.4.1)(eslint@9.29.0)
       eslint-plugin-jsdoc: 50.6.17(eslint@9.29.0)
-      eslint-plugin-prettier: 5.4.0(eslint-config-prettier@10.1.5(eslint@9.29.0))(eslint@9.29.0)(prettier@3.6.1)
+      eslint-plugin-prettier: 5.4.0(eslint-config-prettier@10.1.5(eslint@9.29.0))(eslint@9.29.0)(prettier@3.6.2)
       eslint-plugin-regex: 1.10.0(eslint@9.29.0)
       eslint-plugin-unused-imports: 4.1.4(@typescript-eslint/eslint-plugin@8.33.0(@typescript-eslint/parser@8.33.0(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0)(typescript@5.8.3))(eslint@9.29.0)
       typescript-eslint: 8.33.0(eslint@9.29.0)(typescript@5.8.3)
@@ -6145,7 +6145,7 @@ snapshots:
       fast-levenshtein: 3.0.0
       fs-extra: 11.3.0
       glob: 11.0.3
-      prettier: 3.6.1
+      prettier: 3.6.2
       typescript: 5.8.3
       voca: 1.4.1
       yargs: 17.7.2
@@ -7588,10 +7588,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-prettier@5.4.0(eslint-config-prettier@10.1.5(eslint@9.29.0))(eslint@9.29.0)(prettier@3.6.1):
+  eslint-plugin-prettier@5.4.0(eslint-config-prettier@10.1.5(eslint@9.29.0))(eslint@9.29.0)(prettier@3.6.2):
     dependencies:
       eslint: 9.29.0
-      prettier: 3.6.1
+      prettier: 3.6.2
       prettier-linter-helpers: 1.0.0
       synckit: 0.11.6
     optionalDependencies:
@@ -9564,7 +9564,7 @@ snapshots:
 
   prettier@3.0.3: {}
 
-  prettier@3.6.1: {}
+  prettier@3.6.2: {}
 
   pretty-format@29.7.0:
     dependencies:
