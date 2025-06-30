@@ -85,36 +85,6 @@ export class OrchestrationClient extends BaseChatModel<
     options: typeof this.ParsedCallOptions,
     runManager?: CallbackManagerForLLMRun
   ): Promise<ChatResult> {
-    if (options.stream) {
-      const stream = this._streamResponseChunks(
-        messages,
-        { ...options, signal: new AbortController().signal },
-        runManager
-      );
-      const finalChunks: Record<number, ChatGenerationChunk> = {};
-
-      for await (const chunk of stream) {
-        chunk.message.response_metadata = {
-          ...chunk.generationInfo,
-          ...chunk.message.response_metadata
-        };
-        const index =
-          (chunk.generationInfo as NewTokenIndices)?.completion ?? 0;
-        finalChunks[index] = finalChunks[index]
-          ? finalChunks[index].concat(chunk)
-          : chunk;
-      }
-
-      const generations = Object.entries(finalChunks)
-        .sort(([aKey], [bKey]) => parseInt(aKey, 10) - parseInt(bKey, 10))
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        .map(([_, value]) => value);
-
-      return {
-        generations
-      };
-    }
-
     const { inputParams, customRequestConfig } = options;
     const allMessages = mapLangChainMessagesToOrchestrationMessages(messages);
     const mergedOrchestrationConfig = this.mergeOrchestrationConfig(options);
