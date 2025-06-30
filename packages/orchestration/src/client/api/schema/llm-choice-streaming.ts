@@ -4,6 +4,7 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import type { ChatDelta } from './chat-delta.js';
+import type { ChoiceLogprobs } from './choice-logprobs.js';
 /**
  * Representation of the 'LlmChoiceStreaming' schema.
  */
@@ -13,10 +14,7 @@ export type LlmChoiceStreaming = {
    */
   index: number;
   delta: ChatDelta;
-  /**
-   * Log probabilities
-   */
-  logprobs?: Record<string, number[]>;
+  logprobs?: ChoiceLogprobs;
   /**
    * Reason for stopping the model
    */

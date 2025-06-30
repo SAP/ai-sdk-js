@@ -1,13 +1,13 @@
 import { supportedAzureFilterThresholds } from '../orchestration-types.js';
 import type {
-  AzureContentSafety,
-  AzureContentSafetyFilterConfig,
   InputFilteringConfig,
   LlamaGuard38BFilterConfig,
   OutputFilteringConfig
 } from '../client/api/schema/index.js';
 import type {
   AzureContentFilter,
+  AzureContentSafety,
+  AzureContentSafetyFilterConfig,
   AzureFilterThreshold,
   LlamaGuardCategory
 } from '../orchestration-types.js';
