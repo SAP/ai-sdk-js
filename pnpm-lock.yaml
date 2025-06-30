@@ -321,8 +321,8 @@ importers:
         specifier: ^1.3.3
         version: 1.3.3
       dotenv:
-        specifier: ^16.5.0
-        version: 16.5.0
+        specifier: ^17.0.0
+        version: 17.0.0
 
   tests/schema-tests: {}
 
@@ -378,8 +378,8 @@ importers:
         specifier: ^5.0.3
         version: 5.0.3
       dotenv:
-        specifier: ^16.5.0
-        version: 16.5.0
+        specifier: ^17.0.0
+        version: 17.0.0
       dotenv-cli:
         specifier: ^8.0.0
         version: 8.0.0
@@ -2247,8 +2247,12 @@ packages:
     resolution: {integrity: sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==}
     engines: {node: '>=12'}
 
-  dotenv@16.5.0:
-    resolution: {integrity: sha512-m/C+AwOAr9/W1UOIZUo232ejMNnJAJtYQjUbHoNTBNTJSvqzzDh7vnrei3o3r3m9blf6ZoDkvcw0VmozNRFJxg==}
+  dotenv@16.6.1:
+    resolution: {integrity: sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==}
+    engines: {node: '>=12'}
+
+  dotenv@17.0.0:
+    resolution: {integrity: sha512-A0BJ5lrpJVSfnMMXjmeO0xUnoxqsBHWCoqqTnGwGYVdnctqXXUEhJOO7LxmgxJon9tEZFGpe0xPRX0h2v3AANQ==}
     engines: {node: '>=12'}
 
   dunder-proto@1.0.1:
@@ -6278,7 +6282,7 @@ snapshots:
       '@sap/hdi': 4.7.0(hdb@0.19.12)
       '@sap/xsenv': 5.6.1
       async: 3.2.6
-      dotenv: 16.5.0
+      dotenv: 16.6.1
       handlebars: 4.7.8
       micromatch: 4.0.8
     optionalDependencies:
@@ -7312,13 +7316,15 @@ snapshots:
   dotenv-cli@8.0.0:
     dependencies:
       cross-spawn: 7.0.6
-      dotenv: 16.5.0
+      dotenv: 16.6.1
       dotenv-expand: 10.0.0
       minimist: 1.2.8
 
   dotenv-expand@10.0.0: {}
 
-  dotenv@16.5.0: {}
+  dotenv@16.6.1: {}
+
+  dotenv@17.0.0: {}
 
   dunder-proto@1.0.1:
     dependencies:
