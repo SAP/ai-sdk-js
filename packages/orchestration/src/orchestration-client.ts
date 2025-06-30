@@ -49,7 +49,7 @@ export class OrchestrationClient {
    */
   constructor(
     private config: OrchestrationModuleConfig | string,
-    private clientConfig: ClientConfig,
+    private clientConfig?: ClientConfig,
     private deploymentConfig?: ResourceGroupConfig,
     private destination?: HttpDestinationOrFetchOptions
   ) {
@@ -67,7 +67,7 @@ export class OrchestrationClient {
     prompt?: Prompt,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationResponse> {
-    if (this.clientConfig.enableHistory) {
+    if (this.clientConfig?.enableHistory) {
       if (!prompt) {
         throw new Error('Prompt is required when history is enabled.');
       }
@@ -160,6 +160,16 @@ export class OrchestrationClient {
     }
 
     this.openStream = true;
+
+    const closeStream = () => {
+      this.openStream = false;
+      logger.debug('Stream closed, lock released.');
+    };
+
+    controller.signal.addEventListener('abort', closeStream, {
+      once: true
+    });
+
     const streamResponse = await this.executeRequest({
       ...options,
       requestConfig: {
@@ -169,12 +179,23 @@ export class OrchestrationClient {
       }
     });
 
-    const stream = OrchestrationStream._create(streamResponse, controller);
-    response.stream = stream
+    const rawStream = OrchestrationStream._create(streamResponse, controller)
       ._pipe(OrchestrationStream._processChunk)
       ._pipe(OrchestrationStream._processToolCalls, response)
       ._pipe(OrchestrationStream._processFinishReason, response)
       ._pipe(OrchestrationStream._processTokenUsage, response);
+
+    const wrappedStream = new OrchestrationStream(async function* () {
+      try {
+        for await (const chunk of rawStream) {
+          yield chunk;
+        }
+      } finally {
+        closeStream();
+      }
+    }, controller);
+
+    response.stream = wrappedStream;
 
     return response;
   }

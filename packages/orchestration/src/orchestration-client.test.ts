@@ -679,7 +679,7 @@ describe('orchestration service client', () => {
       customChatCompletionEndpoint
     );
 
-    const clientWithResourceGroup = new OrchestrationClient(config, {
+    const clientWithResourceGroup = new OrchestrationClient(config, undefined, {
       resourceGroup: 'custom-resource-group'
     });
 
@@ -854,5 +854,395 @@ describe('orchestration service client', () => {
        },
      ]
     `);
+  });
+});
+
+describe('stream lock functionality', () => {
+  const config: OrchestrationModuleConfig = {
+    llm: {
+      model_name: 'gpt-4o',
+      model_params: {}
+    },
+    templating: {
+      template: [
+        {
+          role: 'user',
+          content: 'Test message'
+        }
+      ]
+    }
+  };
+
+  beforeEach(() => {
+    mockClientCredentialsGrantCall();
+    mockDeploymentsList({ scenarioId: 'orchestration' }, { id: '1234' });
+  });
+
+  afterEach(() => {
+    nock.cleanAll();
+  });
+
+  it('prevents multiple concurrent streams', async () => {
+    const mockResponse = await parseFileToString(
+      'orchestration',
+      'orchestration-chat-completion-stream-chunks.txt'
+    );
+
+    // Mock two identical requests
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, undefined, true)
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    const client = new OrchestrationClient(config);
+
+    // Start first stream
+    const firstStream = client.stream();
+    await expect(firstStream).resolves.toBeDefined();
+
+    // Try to start second stream while first is active
+    await expect(client.stream()).rejects.toThrow(
+      'Stream is already open. Please close the previous stream before opening a new one.'
+    );
+  });
+
+  it('allows new stream after previous stream completes naturally', async () => {
+    const mockResponse = await parseFileToString(
+      'orchestration',
+      'orchestration-chat-completion-stream-chunks.txt'
+    );
+
+    // Mock two requests
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, undefined, true)
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, undefined, true)
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    const client = new OrchestrationClient(config);
+
+    // Complete first stream
+    const firstResponse = await client.stream();
+    for await (const _ of firstResponse.stream) {
+      /**
+       * Consume all chunks to complete the stream.
+       */
+    }
+
+    // Should be able to start second stream after first completes
+    const secondResponse = await client.stream();
+    expect(secondResponse).toBeDefined();
+
+    // Clean up second stream
+    for await (const _ of secondResponse.stream) {
+      break; // Just start the second stream
+    }
+  });
+
+  it('allows new stream after previous stream is aborted', async () => {
+    const mockResponse = await parseFileToString(
+      'orchestration',
+      'orchestration-chat-completion-stream-chunks.txt'
+    );
+
+    // Mock two requests
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, undefined, true)
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, undefined, true)
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    const client = new OrchestrationClient(config);
+
+    // Start and abort first stream
+    const controller1 = new AbortController();
+    await client.stream(undefined, controller1);
+
+    // Abort the stream
+    controller1.abort();
+
+    // Wait a bit for the abort to be processed
+    await new Promise(resolve => setTimeout(resolve, 10));
+
+    // Should be able to start second stream after first is aborted
+    const controller2 = new AbortController();
+    const secondResponse = await client.stream(undefined, controller2);
+    expect(secondResponse).toBeDefined();
+
+    // Clean up
+    controller2.abort();
+  });
+
+  it('releases lock even if stream creation fails', async () => {
+    // Mock a failed request
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, undefined, true)
+      },
+      {
+        data: { error: 'Internal server error' },
+        status: 500
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    // Mock a successful request for retry
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, undefined, true)
+      },
+      {
+        data: await parseFileToString(
+          'orchestration',
+          'orchestration-chat-completion-stream-chunks.txt'
+        ),
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    const client = new OrchestrationClient(config);
+
+    // First request should fail
+    await expect(client.stream()).rejects.toThrow();
+
+    // Should be able to retry after failure (lock should be released)
+    const retryResponse = await client.stream();
+    expect(retryResponse).toBeDefined();
+  });
+
+  it('handles multiple clients independently', async () => {
+    const mockResponse = await parseFileToString(
+      'orchestration',
+      'orchestration-chat-completion-stream-chunks.txt'
+    );
+
+    // Mock two requests
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, undefined, true)
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, undefined, true)
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    const client1 = new OrchestrationClient(config);
+    const client2 = new OrchestrationClient(config);
+
+    // Both clients should be able to start streams simultaneously
+    const [response1, response2] = await Promise.all([
+      client1.stream(),
+      client2.stream()
+    ]);
+
+    expect(response1).toBeDefined();
+    expect(response2).toBeDefined();
+  });
+
+  it('prevents new stream while consuming existing stream', async () => {
+    const mockResponse = await parseFileToString(
+      'orchestration',
+      'orchestration-chat-completion-stream-chunks.txt'
+    );
+
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, undefined, true)
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    const client = new OrchestrationClient(config);
+    const response = await client.stream();
+
+    // Start consuming the stream but don't complete it
+    const iterator = response.stream[Symbol.asyncIterator]();
+    await iterator.next(); // Get first chunk
+
+    // Should still be locked while stream is being consumed
+    await expect(client.stream()).rejects.toThrow(
+      'Stream is already open. Please close the previous stream before opening a new one.'
+    );
+
+    // Complete the stream
+    for await (const _ of response.stream) {
+      // Consume remaining chunks
+    }
+  });
+
+  it('works correctly with JSON config', async () => {
+    const jsonConfig = `{
+      "module_configurations": {
+        "llm_module_config": {
+          "model_name": "gpt-4o",
+          "model_params": {}
+        },
+        "templating_module_config": {
+          "template": [{ "role": "user", "content": "Test message" }]
+        }
+      }
+    }`;
+
+    const mockResponse = await parseFileToString(
+      'orchestration',
+      'orchestration-chat-completion-stream-chunks.txt'
+    );
+
+    // Mock two requests
+    mockInference(
+      {
+        data: constructCompletionPostRequestFromJsonModuleConfig(
+          JSON.parse(jsonConfig),
+          undefined,
+          true
+        )
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    const client = new OrchestrationClient(jsonConfig);
+
+    // Start first stream
+    const firstStream = client.stream();
+    await expect(firstStream).resolves.toBeDefined();
+
+    // Try to start second stream while first is active
+    await expect(client.stream()).rejects.toThrow(
+      'Stream is already open. Please close the previous stream before opening a new one.'
+    );
+  });
+
+  it('releases lock when stream encounters an error during iteration', async () => {
+    // Create a mock response that will cause an error during stream processing
+    const invalidMockResponse = 'invalid-sse-data\n\n';
+
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, undefined, true)
+      },
+      {
+        data: invalidMockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    // Mock a successful request for retry
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, undefined, true)
+      },
+      {
+        data: await parseFileToString(
+          'orchestration',
+          'orchestration-chat-completion-stream-chunks.txt'
+        ),
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    const client = new OrchestrationClient(config);
+    const response = await client.stream();
+
+    // Try to consume the stream - this should throw an error
+    try {
+      for await (const _ of response.stream) {
+        // This should fail due to invalid SSE data
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error: any) {
+      // Expected to throw
+    }
+
+    // Lock should be released after error, allowing new stream
+    const retryResponse = await client.stream();
+    expect(retryResponse).toBeDefined();
   });
 });
