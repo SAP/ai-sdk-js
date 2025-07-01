@@ -122,6 +122,22 @@ describe('orchestration service client', () => {
       );
     });
 
+    it('retries when delay exceeds timeout', async () => {
+      mockInferenceWithResilience(mockResponse, { delay: 2000 });
+      const onFailedAttempt = jest.fn();
+      const client = new OrchestrationClient(config, {
+        maxRetries: 1,
+        onFailedAttempt
+      });
+      const response = client.invoke(messages, { timeout: 1000 });
+      await expect(response).rejects.toThrow(
+        expect.objectContaining({
+          stack: expect.stringMatching(/Timeout/)
+        })
+      );
+      expect(onFailedAttempt).toHaveBeenCalledTimes(1);
+    });
+
     it('throws immediately when input filter error occurs', async () => {
       mockInferenceWithResilience(
         mockResponseInputFilterError,
