@@ -9,8 +9,8 @@ import {
   mapToolToChatCompletionTool,
   mapOrchestrationChunkToLangChainMessageChunk
 } from './util.js';
-import type { NewTokenIndices } from '@langchain/core/callbacks/base';
 import type { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
+import type { NewTokenIndices } from '@langchain/core/callbacks/base';
 import type { BaseLanguageModelInput } from '@langchain/core/language_models/base';
 import type { Runnable, RunnableLike } from '@langchain/core/runnables';
 import type { ChatResult } from '@langchain/core/outputs';
@@ -85,27 +85,30 @@ export class OrchestrationClient extends BaseChatModel<
     options: typeof this.ParsedCallOptions,
     runManager?: CallbackManagerForLLMRun
   ): Promise<ChatResult> {
+    const { inputParams, customRequestConfig } = options;
+    const allMessages = mapLangChainMessagesToOrchestrationMessages(messages);
+    const mergedOrchestrationConfig = this.mergeOrchestrationConfig(options);
+
     const res = await this.caller.callWithOptions(
       {
         signal: options.signal
       },
       () => {
-        const { inputParams, customRequestConfig } = options;
-        const mergedOrchestrationConfig =
-          this.mergeOrchestrationConfig(options);
         const orchestrationClient = new OrchestrationClientBase(
           mergedOrchestrationConfig,
           this.deploymentConfig,
           this.destination
         );
-        const allMessages =
-          mapLangChainMessagesToOrchestrationMessages(messages);
+
         return orchestrationClient.chatCompletion(
           {
             messages: allMessages,
             inputParams
           },
-          customRequestConfig
+          {
+            ...customRequestConfig,
+            signal: options.signal
+          }
         );
       }
     );
