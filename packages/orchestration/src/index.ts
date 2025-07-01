@@ -15,7 +15,9 @@ export type {
   LlamaGuardCategory,
   AzureContentFilter,
   AzureFilterThreshold,
-  TranslationConfigParams
+  TranslationConfigParams,
+  AzureContentSafety,
+  AzureContentSafetyFilterConfig
 } from './orchestration-types.js';
 
 export { OrchestrationStreamResponse } from './orchestration-stream-response.js';
