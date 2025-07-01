@@ -544,12 +544,15 @@ components:
         name:
           type: string
           maxLength: 120
+          pattern: '^[a-zA-Z0-9_-]+$'
         version:
           type: string
           maxLength: 10
+          pattern: '^[a-zA-Z0-9._-]+$'
         scenario:
           type: string
           maxLength: 120
+          pattern: '^[a-zA-Z0-9_-]+$'
         spec:
           $ref: '#/components/schemas/PromptTemplateSpec'
     PromptTemplatePostResponse:
