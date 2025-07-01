@@ -1132,7 +1132,7 @@ describe('stream lock functionality', () => {
     const response = await client.stream();
 
     // Start consuming the stream but don't complete it
-    const iterator = response.stream[Symbol.asyncIterator]();
+    const iterator = response.stream.iterator();
     await iterator.next(); // Get first chunk
 
     // Should still be locked while stream is being consumed
@@ -1141,8 +1141,8 @@ describe('stream lock functionality', () => {
     );
 
     // Complete the stream
-    for await (const _ of response.stream) {
-      // Consume remaining chunks
+    for await (const _ of { [Symbol.asyncIterator]: () => iterator }) {
+      // Consume
     }
   });
 
