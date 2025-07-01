@@ -170,14 +170,21 @@ export class OrchestrationClient {
       once: true
     });
 
-    const streamResponse = await this.executeRequest({
-      ...options,
-      requestConfig: {
-        ...options.requestConfig,
-        responseType: 'stream',
-        signal: controller.signal
-      }
-    });
+    let streamResponse;
+
+    try {
+      streamResponse = await this.executeRequest({
+        ...options,
+        requestConfig: {
+          ...options.requestConfig,
+          responseType: 'stream',
+          signal: controller.signal
+        }
+      });
+    } catch (error) {
+      closeStream();
+      throw error;
+    }
 
     const rawStream = OrchestrationStream._create(streamResponse, controller)
       ._pipe(OrchestrationStream._processChunk)
