@@ -2,4 +2,4 @@
 '@sap-ai-sdk/langchain': minor
 ---
 
-[Fixed Issue]: Allow retry on timeout for non-streaming requests in LangChain Orchestration.
+[Fixed Issue] Retry on timeout for non-streaming requests in LangChain Orchestration client.
