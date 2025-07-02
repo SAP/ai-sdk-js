@@ -1,7 +1,7 @@
 openapi: 3.0.0
 
 servers:
-  - url: '/'
+  - url: '/v1'
     description: Internal Orchestration Service API
 
 x-sap-shortText: 'Orchestration provides common capabilities for business AI scenarios, such as content filtering, data masking, and grounding'
@@ -18,7 +18,7 @@ tags:
     description: Run an orchestrated completion inference request
 
 paths:
-  /v1/completion:
+  /completion:
     post:
       tags:
         - OrchestrationCompletion
@@ -46,32 +46,6 @@ paths:
         default:
           $ref: '#/components/responses/CommonError'
 
-  /v2/embeddings:
-    post:
-      tags:
-        - OrchestrationEmbeddings
-      summary: orchestrated embeddings inference
-      description: >
-        Generate embeddings for input strings.
-      operationId: orchestration.v1.endpoints.create_embeddings
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EmbeddingsPostRequest'
-      responses:
-        '200':
-          description: 'Successful response'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EmbeddingsPostResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        default:
-          $ref: '#/components/responses/CommonError'
-
 components:
   schemas:
     CompletionPostRequest:
@@ -93,179 +67,6 @@ components:
           allOf:
             - $ref: '#/components/schemas/ChatMessages'
           description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
-
-    # Embedings Schemas
-    EmbeddingsPostRequest:
-      type: object
-      additionalProperties: false
-      required:
-        - input
-        - config
-      properties:
-        config:
-          $ref: '#/components/schemas/EmbeddingsOrchestrationConfig'
-        input:
-          $ref: '#/components/schemas/EmbeddingsInput'
-    EmbeddingsOrchestrationConfig:
-      type: object
-      required:
-        - modules
-      additionalProperties: false
-      properties:
-        modules:
-          $ref: '#/components/schemas/EmbeddingsModuleConfigs'
-    EmbeddingsInput:
-      type: object
-      required:
-        - text
-      additionalProperties: false
-      properties:
-        text:
-          $ref: '#/components/schemas/EmbeddingsInputText'
-        type:
-          type: string
-          enum: ['text', 'document', 'query']
-    EmbeddingsInputText:
-      oneOf:
-        - type: string
-          description: The string that will be turned into an embedding.
-          example: Hello World!
-        - type: array
-          description: The array of strings that will be turned into an embedding.
-          minItems: 1
-          items:
-            type: string
-            minLength: 1
-          example: ['Hello', 'World', '!']
-      description: Text input for which embeddings need to be generated
-      example: ['This is an input string.', 'This is another input string.']
-    EmbeddingsModuleConfigs:
-      type: object
-      required:
-        - embeddings
-      additionalProperties: false
-      properties:
-        embeddings:
-          $ref: '#/components/schemas/EmbeddingsModelConfig'
-        masking:
-          $ref: '#/components/schemas/MaskingModuleConfig'
-    EmbeddingsModelConfig:
-      type: object
-      required:
-        - model
-      additionalProperties: false
-      properties:
-        model:
-          $ref: '#/components/schemas/EmbeddingsModelDetails'
-    EmbeddingsModelDetails:
-      type: object
-      required:
-        - name
-      additionalProperties: false
-      properties:
-        name:
-          type: string
-        version:
-          type: string
-          default: 'latest'
-        params:
-          $ref: '#/components/schemas/EmbeddingsModelParams'
-    EmbeddingsModelParams:
-      type: object
-      description: Additional parameters for generating input's embeddings. Default values are used for mandatory parameters.
-      additionalProperties: true
-      properties:
-        dimensions:
-          type: integer
-          description: >
-            The number of dimensions the resulting output embeddings should have.
-        encoding_format:
-          type: string
-          enum: [float, base64, binary]
-          description: >
-            OpenAI's spec allows for 'float' and 'base64' encoding formats.
-        normalize:
-          type: boolean
-
-    EmbeddingsPostResponse:
-      type: object
-      additionalProperties: false
-      required:
-        - request_id
-      properties:
-        request_id:
-          type: string
-        intermediate_results:
-          $ref: '#/components/schemas/ModuleResultsBase'
-        final_result:
-          $ref: '#/components/schemas/EmbeddingsResponse'
-    EmbeddingsResponse:
-      type: object
-      description: The response from request to embedding model following OpenAI specification.
-      additionalProperties: false
-      required:
-        - object
-        - data
-        - model
-        - usage
-      properties:
-        object:
-          type: string
-          description: The object type, which is always "list".
-          enum:
-            - list
-        data:
-          type: array
-          description: The list of embeddings generated by the model.
-          items:
-            $ref: '#/components/schemas/EmbeddingResult'
-        model:
-          type: string
-          description: The name of the model used to generate the embedding.
-        usage:
-          $ref: '#/components/schemas/EmbeddingsUsage'
-    EmbeddingsUsage:
-      type: object
-      description: The usage information for the request.
-      additionalProperties: false
-      required:
-        - prompt_tokens
-        - total_tokens
-      properties:
-        prompt_tokens:
-          type: integer
-          description: The number of tokens used by the prompt.
-        total_tokens:
-          type: integer
-          description: The total number of tokens used by the request.
-    EmbeddingResult:
-      type: object
-      description: |
-        Represents an embedding vector returned by embedding endpoint.
-      additionalProperties: false
-      required:
-        - object
-        - embedding
-        - index
-      properties:
-        object:
-          type: string
-          description: The object type, which is always "embedding".
-          enum:
-            - embedding
-        embedding:
-          $ref: '#/components/schemas/Embedding'
-        index:
-          type: integer
-          description: The index of the embedding in the list of embeddings.
-    Embedding:
-      oneOf:
-        - type: array
-          items:
-            type: number
-          description: 'An array of numbers representing the embedding.'
-        - type: string
-          description: 'A single base64 string representing the embedding.'
 
     # Chat Completion Schemas
     ChatMessages:
@@ -581,7 +382,7 @@ components:
     # Abstract base class encompassing fields for both `ModuleResults` and `ModuleResultsStreaming`
     # Not to be instantiated by llm-orchestration code
     ModuleResultsBase:
-      description: Results of each module of /embeddings endpoint(e.g. input masking).
+      description: Results of each module.
       type: object
       additionalProperties: false
       properties:
@@ -856,7 +657,8 @@ components:
       example:
         template:
           - role: user
-            content: 'How can the features of AI in SAP BTP specifically {{?groundingOutput}}, be applied to {{?inputContext}}'
+            # escape curly braces to avoid jinja2 interpreting them
+            content: "How can the features of AI in SAP BTP specifically {{'{{?groundingOutput}}'}}, be applied to {{'{{?inputContext}}'}}"
         defaults:
           inputContext: The default text that will be used in the template if inputContext is not set
 
