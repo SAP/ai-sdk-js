@@ -94,8 +94,8 @@ jobs:
               FILE_PATH='packages/document-grounding/src/spec/api.yaml'
               ;;
             orchestration)
-              API_URL="repos/AI/llm-orchestration/contents/src/spec/api.yaml?ref=$REF"
-              FILE_PATH='packages/orchestration/src/spec/v1.yaml'
+              API_URL="repos/AI/llm-orchestration/contents/src/spec/v1.yaml?ref=$REF"
+              FILE_PATH='packages/orchestration/src/spec/api.yaml'
               ;;
             prompt-registry)
               API_URL="repos/AI/prompt-registry/contents/src/spec/prompt-registry.yaml?ref=$REF"
