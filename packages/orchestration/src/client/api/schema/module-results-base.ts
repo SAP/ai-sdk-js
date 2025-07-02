@@ -6,7 +6,7 @@
 import type { GenericModuleResult } from './generic-module-result.js';
 import type { TemplatingChatMessage } from './templating-chat-message.js';
 /**
- * Results of each module of /embeddings endpoint(e.g. input masking).
+ * Results of each module.
  */
 export type ModuleResultsBase = {
   grounding?: GenericModuleResult;
