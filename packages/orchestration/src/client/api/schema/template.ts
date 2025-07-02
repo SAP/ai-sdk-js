@@ -14,7 +14,7 @@ import type { ChatCompletionTool } from './chat-completion-tool.js';
  *   "template": [
  *     {
  *       "role": "user",
- *       "content": "How can the features of AI in SAP BTP specifically {{?groundingOutput}}, be applied to {{?inputContext}}"
+ *       "content": "How can the features of AI in SAP BTP specifically {{'{{?groundingOutput}}'}}, be applied to {{'{{?inputContext}}'}}"
  *     }
  *   ],
  *   "defaults": {
