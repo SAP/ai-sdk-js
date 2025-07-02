@@ -4,16 +4,26 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import type { ModuleResults } from './module-results.js';
-import type { LlmModuleResult } from './llm-module-result.js';
 /**
- * Representation of the 'CompletionPostResponse' schema.
+ * Representation of the 'Error' schema.
  */
-export type CompletionPostResponse = {
+export type Error = {
   /**
-   * ID of the request
    * @example "d4a67ea1-2bf9-4df7-8105-d48203ccff76"
    */
   request_id: string;
-  intermediate_results: ModuleResults;
-  final_result: LlmModuleResult;
+  /**
+   * @example 400
+   */
+  code: number;
+  /**
+   * @example "Model name must be one of ['gpt-4o-mini', ...]"
+   */
+  message: string;
+  /**
+   * Where the error occurred
+   * @example "LLM Module"
+   */
+  location: string;
+  intermediate_results?: ModuleResults;
 } & Record<string, any>;

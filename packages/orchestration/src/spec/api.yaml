@@ -1,7 +1,7 @@
 openapi: 3.0.0
 
 servers:
-  - url: '/'
+  - url: '/v2'
     description: Internal Orchestration Service API
 
 x-sap-shortText: 'Orchestration provides common capabilities for business AI scenarios, such as content filtering, data masking, and grounding'
@@ -16,15 +16,17 @@ info:
 tags:
   - name: OrchestrationCompletion
     description: Run an orchestrated completion inference request
+  - name: OrchestrationEmbeddings
+    description: Make an embeddings request
 
 paths:
-  /v1/completion:
+  /completion:
     post:
       tags:
         - OrchestrationCompletion
       summary: orchestrated completion inference
       description: Run an orchestrated completion inference request
-      operationId: orchestration.v1.endpoints.create
+      operationId: orchestration.v2.endpoints.create
       requestBody:
         required: true
         content:
@@ -46,14 +48,14 @@ paths:
         default:
           $ref: '#/components/responses/CommonError'
 
-  /v2/embeddings:
+  /embeddings:
     post:
       tags:
         - OrchestrationEmbeddings
       summary: orchestrated embeddings inference
       description: >
         Generate embeddings for input strings.
-      operationId: orchestration.v1.endpoints.create_embeddings
+      operationId: orchestration.v2.endpoints.create_embeddings
       requestBody:
         required: true
         content:
@@ -77,12 +79,12 @@ components:
     CompletionPostRequest:
       type: object
       required:
-        - orchestration_config
+        - config
       additionalProperties: false
       properties:
-        orchestration_config:
+        config:
           $ref: '#/components/schemas/OrchestrationConfig'
-        input_params:
+        placeholder_values:
           type: object
           example:
             groundingInput: 'What is SAP Joule?'
@@ -519,16 +521,16 @@ components:
       type: object
       required:
         - request_id
-        - orchestration_result
-        - module_results
+        - final_result
+        - intermediate_results
       properties:
         request_id:
           description: ID of the request
           type: string
           example: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
-        module_results:
+        intermediate_results:
           $ref: '#/components/schemas/ModuleResults'
-        orchestration_result:
+        final_result:
           $ref: '#/components/schemas/LLMModuleResult'
 
     CompletionPostResponseStreaming:
@@ -539,45 +541,36 @@ components:
         request_id:
           description: ID of the request
           type: string
-        module_results:
+        intermediate_results:
           $ref: '#/components/schemas/ModuleResultsStreaming'
-        orchestration_result:
+        final_result:
           $ref: '#/components/schemas/LLMModuleResultStreaming'
     OrchestrationConfig:
       type: object
       required:
-        - module_configurations
+        - modules
       additionalProperties: false
       properties:
-        module_configurations:
+        modules:
           $ref: '#/components/schemas/ModuleConfigs'
         stream:
-          type: boolean
-          description: If true, the response will be streamed back to the client
-          default: false
-        stream_options:
           $ref: '#/components/schemas/GlobalStreamOptions'
     ModuleConfigs:
       type: object
       required:
-        - llm_module_config
-        - templating_module_config
+        - prompt_templating
       additionalProperties: false
       properties:
-        llm_module_config:
-          $ref: '#/components/schemas/LLMModuleConfig'
-        templating_module_config:
-          $ref: '#/components/schemas/TemplatingModuleConfig'
-        filtering_module_config:
+        prompt_templating:
+          $ref: '#/components/schemas/PromptTemplatingModuleConfig'
+        filtering:
           $ref: '#/components/schemas/FilteringModuleConfig'
-        masking_module_config:
+        masking:
           $ref: '#/components/schemas/MaskingModuleConfig'
-        grounding_module_config:
+        grounding:
           $ref: '#/components/schemas/GroundingModuleConfig'
-        input_translation_module_config:
-          $ref: '#/components/schemas/InputTranslationModuleConfig'
-        output_translation_module_config:
-          $ref: '#/components/schemas/OutputTranslationModuleConfig'
+        translation:
+          $ref: '#/components/schemas/TranslationModuleConfig'
     # Abstract base class encompassing fields for both `ModuleResults` and `ModuleResultsStreaming`
     # Not to be instantiated by llm-orchestration code
     ModuleResultsBase:
@@ -628,10 +621,14 @@ components:
               items:
                 $ref: '#/components/schemas/LLMChoiceStreaming'
     GlobalStreamOptions:
-      description: Options for streaming. Will be ignored if stream is false.
+      description: Options for streaming. Will be ignored if enabled is false.
       type: object
       additionalProperties: false
       properties:
+        enabled:
+          type: boolean
+          description: If true, the response will be streamed back to the client
+          default: false
         chunk_size:
           type: integer
           description: Minimum number of characters per chunk that post-LLM modules operate on.
@@ -646,34 +643,6 @@ components:
             type: string
           example: ["\n", '.', '?', '!']
 
-    # --- LLM MODULE ---
-    LLMModuleConfig:
-      type: object
-      required:
-        - model_name
-      additionalProperties: false
-      properties:
-        model_name:
-          description: Model name as in LLM Access configuration
-          example: 'gpt-4o-mini'
-          type: string
-        model_params: # optional, default values are used for mandatory model parameters
-          description: Model parameters
-          type: object
-          example:
-            max_tokens: 300
-            temperature: 0.1
-            frequency_penalty: 0
-            presence_penalty: 0
-            n: 2
-            logprobs: true
-            stream_options:
-              include_usage: true
-          additionalProperties: true
-        model_version:
-          description: Version of the model to use
-          type: string
-          default: 'latest'
     GenericModuleResult:
       type: object
       description: Generic module result
@@ -689,7 +658,7 @@ components:
           description: Additional data object from the module
     LLMModuleResult:
       type: object
-      description: Output of LLM module. Follows the OpenAI spec.
+      description: Output from LLM. Follows the OpenAI spec.
       required:
         - id
         - object
@@ -813,12 +782,50 @@ components:
           description: Total number of tokens used
           example: 50
 
-    # --- Templating Module ---
-
-    TemplatingModuleConfig:
-      oneOf:
-        - $ref: '#/components/schemas/Template'
-        - $ref: '#/components/schemas/TemplateRef'
+    # --- Prompt Templating Module ---
+    PromptTemplatingModuleConfig:
+      type: object
+      required:
+        - prompt
+        - model
+      additionalProperties: false
+      properties:
+        prompt:
+          description: >
+            The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.
+          oneOf:
+            - $ref: '#/components/schemas/Template'
+            - $ref: '#/components/schemas/TemplateRef'
+        model:
+          description: >
+            The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.
+          $ref: '#/components/schemas/LLMModelDetails'
+    LLMModelDetails:
+      type: object
+      required:
+        - name
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          description: Name of the model as in LLM Access configuration
+          example: 'gpt-4o-mini'
+        version:
+          type: string
+          description: Version of the model to be used
+          default: 'latest'
+        params:
+          type: object
+          description: Additional parameters for the model. Default values are used for mandatory parameters.
+          additionalProperties: true
+          example:
+            max_tokens: 300
+            temperature: 0.1
+            frequency_penalty: 0
+            presence_penalty: 0
+            n: 2
+            stream_options:
+              include_usage: true
 
     # --- Templating Module with User Defined Template ---
     # response_format api definition taken from: https://github.com/openai/openai-openapi/blob/e0cb2d721753e13e69e918465795d6e9f87ab15a/openapi.yaml#L12286
@@ -856,7 +863,8 @@ components:
       example:
         template:
           - role: user
-            content: 'How can the features of AI in SAP BTP specifically {{?groundingOutput}}, be applied to {{?inputContext}}'
+            # escape curly braces to avoid jinja2 interpreting them
+            content: "How can the features of AI in SAP BTP specifically {{'{{?groundingOutput}}'}}, be applied to {{'{{?inputContext}}'}}"
         defaults:
           inputContext: The default text that will be used in the template if inputContext is not set
 
@@ -1132,15 +1140,15 @@ components:
       type: object
       additionalProperties: false
       properties:
-        Hate:
+        hate:
           $ref: '#/components/schemas/AzureThreshold'
-        SelfHarm:
+        self_harm:
           $ref: '#/components/schemas/AzureThreshold'
-        Sexual:
+        sexual:
           $ref: '#/components/schemas/AzureThreshold'
-        Violence:
+        violence:
           $ref: '#/components/schemas/AzureThreshold'
-        PromptShield:
+        prompt_shield:
           type: boolean
           description: A flag to use prompt shield
           default: false
@@ -1150,13 +1158,13 @@ components:
       type: object
       additionalProperties: false
       properties:
-        Hate:
+        hate:
           $ref: '#/components/schemas/AzureThreshold'
-        SelfHarm:
+        self_harm:
           $ref: '#/components/schemas/AzureThreshold'
-        Sexual:
+        sexual:
           $ref: '#/components/schemas/AzureThreshold'
-        Violence:
+        violence:
           $ref: '#/components/schemas/AzureThreshold'
 
     AzureThreshold:
@@ -1390,8 +1398,7 @@ components:
         config:
           type: object
           required:
-            - input_params
-            - output_param
+            - placeholders
           additionalProperties: false
           properties:
             filters:
@@ -1400,17 +1407,25 @@ components:
                 oneOf:
                   - $ref: '#/components/schemas/DocumentGroundingFilter'
               description: Document grounding service filters to be used
-            input_params:
-              type: array
-              minItems: 1
-              items:
-                type: string
-                example: groundingInput
-              description: Contains the input parameters used for grounding input questions
-            output_param:
-              type: string
-              description: Parameter name used for grounding output
-              example: groundingOutput
+            placeholders:
+              type: object
+              additionalProperties: false
+              required:
+                - input
+                - output
+              properties:
+                input:
+                  type: array
+                  minItems: 1
+                  items:
+                    type: string
+                    example: groundingInput
+                  description: Contains the input parameters used for grounding input questions
+                output:
+                  type: string
+                  description: Placeholder name for grounding output
+                  example: groundingOutput
+              description: Placeholders to be used for grounding input questions and output
             metadata_params:
               type: array
               items:
@@ -1538,12 +1553,19 @@ components:
       title: SearchSelectOptionEnum
 
     # --- Translation Module ---
-    InputTranslationModuleConfig:
-      oneOf:
-        - $ref: '#/components/schemas/SAPDocumentTranslation'
-    OutputTranslationModuleConfig:
-      oneOf:
-        - $ref: '#/components/schemas/SAPDocumentTranslation'
+    TranslationModuleConfig:
+      type: object
+      description: Configuration for translation module
+      additionalProperties: false
+      properties:
+        input:
+          description: Configuration for input translation
+          oneOf:
+            - $ref: '#/components/schemas/SAPDocumentTranslation'
+        output:
+          description: Configuration for output translation
+          oneOf:
+            - $ref: '#/components/schemas/SAPDocumentTranslation'
     SAPDocumentTranslation:
       type: object
       required:
@@ -1572,8 +1594,7 @@ components:
               type: string
               description: Language to which the text should be translated.
               example: 'en-US'
-
-    ErrorResponse:
+    Error:
       type: object
       required:
         - request_id
@@ -1594,10 +1615,10 @@ components:
           type: string
           description: Where the error occurred
           example: 'LLM Module'
-        module_results:
+        intermediate_results:
           $ref: '#/components/schemas/ModuleResults'
 
-    ErrorResponseStreaming:
+    ErrorStreaming:
       type: object
       required:
         - request_id
@@ -1618,8 +1639,24 @@ components:
           type: string
           description: Where the error occurred
           example: 'LLM Module'
-        module_results:
+        intermediate_results:
           $ref: '#/components/schemas/ModuleResultsStreaming'
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+
+    ErrorResponseStreaming:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorStreaming'
 
     # ref : https://github.com/openai/openai-python/blob/main/src/openai/types/chat/chat_completion_token_logprob.py
     ChatCompletionTokenLogprob:
