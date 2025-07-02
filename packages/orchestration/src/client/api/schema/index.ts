@@ -4,19 +4,6 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 export * from './completion-post-request.js';
-export * from './embeddings-post-request.js';
-export * from './embeddings-orchestration-config.js';
-export * from './embeddings-input.js';
-export * from './embeddings-input-text.js';
-export * from './embeddings-module-configs.js';
-export * from './embeddings-model-config.js';
-export * from './embeddings-model-details.js';
-export * from './embeddings-model-params.js';
-export * from './embeddings-post-response.js';
-export * from './embeddings-response.js';
-export * from './embeddings-usage.js';
-export * from './embedding-result.js';
-export * from './embedding.js';
 export * from './chat-messages.js';
 export * from './templating-chat-message.js';
 export * from './chat-message.js';
