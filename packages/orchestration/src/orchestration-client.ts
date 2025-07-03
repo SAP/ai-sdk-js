@@ -141,8 +141,8 @@ export class OrchestrationClient {
     });
 
     // Runs postProcessing of the response after the stream has been fully consumed.
-    // eslint-disable-next-line
     function postProcessing(
+      // eslint-disable-next-line
       response: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
     ): void {}
 
