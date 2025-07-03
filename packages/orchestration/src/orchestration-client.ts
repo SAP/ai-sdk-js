@@ -142,8 +142,9 @@ export class OrchestrationClient {
 
     // Runs postProcessing of the response after the stream has been fully consumed.
     // eslint-disable-next-line
-    function postProcessing(response: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>): void {
-    }
+    function postProcessing(
+      response: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
+    ): void {}
 
     const rawStream = OrchestrationStream._create(streamResponse, controller)
       ._pipe(OrchestrationStream._processChunk)
@@ -153,7 +154,7 @@ export class OrchestrationClient {
 
     const wrappedStream = new OrchestrationStream(async function* () {
       try {
-        for await(const chunk of rawStream) {
+        for await (const chunk of rawStream) {
           yield chunk;
         }
       } finally {
