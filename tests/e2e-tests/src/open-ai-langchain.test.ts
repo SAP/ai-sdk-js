@@ -1,11 +1,12 @@
 import { invoke, invokeChain, invokeRagChain } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
+import { invokeWithStructuredOutput } from '@sap-ai-sdk/sample-code';
 
 loadEnv();
 
 describe('LangChain OpenAI Access', () => {
   it('executes a basic invoke', async () => {
-    const result = await invoke();
+    const result = await invokeWithStructuredOutput();
     expect(result).toContain('Paris');
   });
 

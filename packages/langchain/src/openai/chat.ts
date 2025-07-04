@@ -8,7 +8,7 @@ import {
   mapToolToOpenAiTool
 } from './util.js';
 import type { NewTokenIndices } from '@langchain/core/callbacks/base';
-import type { BaseLanguageModelInput } from '@langchain/core/language_models/base';
+import type { BaseLanguageModelInput, FunctionDefinition, StructuredOutputMethodOptions, StructuredOutputMethodParams } from '@langchain/core/language_models/base';
 import type { AIMessageChunk, BaseMessage } from '@langchain/core/messages';
 import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import type { ChatResult } from '@langchain/core/outputs';
@@ -18,7 +18,11 @@ import type {
   ChatAzureOpenAIToolType
 } from './types.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
-import type { Runnable } from '@langchain/core/runnables';
+import { RunnableLambda, RunnablePassthrough, RunnableSequence, type Runnable } from '@langchain/core/runnables';
+import { getSchemaDescription, InteropZodType, isInteropZodSchema } from '@langchain/core/utils/types';
+import { JsonOutputParser, StructuredOutputParser } from '@langchain/core/output_parsers';
+import { JsonSchema7Type, toJsonSchema } from '@langchain/core/utils/json_schema';
+import { JsonOutputKeyToolsParser } from '@langchain/core/output_parsers/openai_tools';
 
 /**
  * LangChain chat client for Azure OpenAI consumption on SAP BTP.
@@ -33,6 +37,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
   stop?: string | string[];
   max_tokens?: number;
   supportsStrictToolCalling?: boolean;
+  modelName: string;
   private openAiChatClient: AzureOpenAiChatClientBase;
 
   constructor(
@@ -41,6 +46,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
   ) {
     super(fields);
     this.openAiChatClient = new AzureOpenAiChatClientBase(fields, destination);
+    this.modelName = fields.modelName;
     this.temperature = fields.temperature;
     this.top_p = fields.top_p;
     this.logit_bias = fields.logit_bias;
@@ -103,6 +109,184 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
       tools: newTools,
       ...kwargs
     } as Partial<AzureOpenAiChatCallOptions>);
+  }
+
+  override withStructuredOutput<RunOutput extends Record<string, any> = Record<string, any>>(outputSchema: InteropZodType<RunOutput> | Record<string, any>,
+    config?: StructuredOutputMethodOptions<boolean>): Runnable<BaseLanguageModelInput, RunOutput> | 
+    Runnable<BaseLanguageModelInput, {
+        raw: BaseMessage;
+        parsed: RunOutput;
+    }>{
+      let schema = outputSchema;
+      let name = config?.name;
+      let method = config?.method;
+      let includeRaw = config?.includeRaw;
+    
+    let llm: Runnable<BaseLanguageModelInput>;
+    let outputParser: Runnable<AIMessageChunk, RunOutput>;
+
+    if (config?.strict !== undefined && method === "jsonMode") {
+      throw new Error(
+        "Argument `strict` is only supported for `method` = 'function_calling'"
+      );
+    }
+
+    if (!this.modelName.startsWith("gpt-3") &&
+      !this.modelName.startsWith("gpt-4-") &&
+      this.modelName !== "gpt-4"
+    ) {
+      if (method === undefined) {
+        method = "jsonSchema";
+      }
+    } else if (method === "jsonSchema") {
+      console.warn(
+        `[WARNING]: JSON Schema is not supported for model "${this.modelName}". Falling back to tool calling.`
+      );
+    }
+
+    if (method === "jsonMode") {
+      let outputFormatSchema: JsonSchema7Type | undefined;
+      if (isInteropZodSchema(schema)) {
+        outputParser = StructuredOutputParser.fromZodSchema(schema);
+        outputFormatSchema = toJsonSchema(schema);
+      } else {
+        outputParser = new JsonOutputParser<RunOutput>();
+      }
+      llm = this.withConfig({
+        response_format: { type: "json_object" },
+        ls_structured_output_format: {
+          kwargs: { method: "jsonMode" },
+          schema: outputFormatSchema,
+        },
+      } as Partial<AzureOpenAiChatCallOptions>);
+    } else if (method === "jsonSchema") {
+      llm = this.withConfig({
+        response_format: {
+          type: "json_schema",
+          json_schema: {
+            name: name ?? "extract",
+            description: getSchemaDescription(schema),
+            schema,
+            strict: config?.strict,
+          },
+        },
+        ls_structured_output_format: {
+          kwargs: { method: "jsonSchema" },
+          schema: toJsonSchema(schema),
+        },
+      } as Partial<AzureOpenAiChatCallOptions>);
+      if (isInteropZodSchema(schema)) {
+        const altParser = StructuredOutputParser.fromZodSchema(schema);
+        outputParser = RunnableLambda.from<AIMessageChunk, RunOutput>(
+          (aiMessage: AIMessageChunk) => {
+            if ("parsed" in aiMessage.additional_kwargs) {
+              return aiMessage.additional_kwargs.parsed as RunOutput;
+            }
+            return altParser;
+          }
+        );
+      } else {
+        outputParser = new JsonOutputParser<RunOutput>();
+      }
+    } else {
+      let functionName = name ?? "extract";
+      // Is function calling
+      if (isInteropZodSchema(schema)) {
+        const asJsonSchema = toJsonSchema(schema);
+        llm = this.withConfig({
+          tools: [
+            {
+              type: "function" as const,
+              function: {
+                name: functionName,
+                description: asJsonSchema.description,
+                parameters: asJsonSchema,
+              },
+            },
+          ],
+          tool_choice: {
+            type: "function" as const,
+            function: {
+              name: functionName,
+            },
+          },
+          ls_structured_output_format: {
+            kwargs: { method: "functionCalling" },
+            schema: asJsonSchema,
+          },
+          // Do not pass `strict` argument to OpenAI if `config.strict` is undefined
+          ...(config?.strict !== undefined ? { strict: config.strict } : {}),
+        } as Partial<AzureOpenAiChatCallOptions>);
+        outputParser = new JsonOutputKeyToolsParser({
+          returnSingle: true,
+          keyName: functionName,
+          zodSchema: schema,
+        });
+      } else {
+        let openAIFunctionDefinition: FunctionDefinition;
+        if (
+          typeof schema.name === "string" &&
+          typeof schema.parameters === "object" &&
+          schema.parameters != null
+        ) {
+          openAIFunctionDefinition = schema as FunctionDefinition;
+          functionName = schema.name;
+        } else {
+          functionName = schema.title ?? functionName;
+          openAIFunctionDefinition = {
+            name: functionName,
+            description: schema.description ?? "",
+            parameters: schema,
+          };
+        }
+        llm = this.withConfig({
+          tools: [
+            {
+              type: "function",
+              function: openAIFunctionDefinition,
+            },
+          ],
+          tool_choice: {
+            type: "function",
+            function: {
+              name: functionName,
+            },
+          },
+          ls_structured_output_format: {
+            kwargs: { method: "functionCalling" },
+            schema: toJsonSchema(schema),
+          },
+          // Do not pass `strict` argument to OpenAI if `config.strict` is undefined
+          ...(config?.strict !== undefined ? { strict: config.strict } : {}),
+        } as Partial<AzureOpenAiChatCallOptions>);
+        outputParser = new JsonOutputKeyToolsParser<RunOutput>({
+          returnSingle: true,
+          keyName: functionName,
+        });
+      }
+    }
+
+    if (!includeRaw) {
+      return llm.pipe(outputParser) as Runnable<
+        BaseLanguageModelInput,
+        RunOutput
+      >;
+    }
+
+    const parserAssign = RunnablePassthrough.assign({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      parsed: (input: any, config) => outputParser.invoke(input.raw, config),
+    });
+    const parserNone = RunnablePassthrough.assign({
+      parsed: () => null,
+    });
+    const parsedWithFallback = parserAssign.withFallbacks({
+      fallbacks: [parserNone],
+    });
+    return RunnableSequence.from<
+      BaseLanguageModelInput,
+      { raw: BaseMessage; parsed: RunOutput }
+    >([{ raw: llm }, parsedWithFallback]);
   }
 
   /**

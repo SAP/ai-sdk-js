@@ -227,3 +227,65 @@ export async function streamChain(
     }
   );
 }
+
+/**
+ * With Structured Output
+ * @returns The answer from GPT with structured output.
+ */
+export async function invokeWithStructuredOutput(): Promise<string>  {
+   // initialize client with options
+  const llm = new AzureOpenAiChatClient({
+    modelName: 'gpt-4o'
+  });
+
+  /**
+   * 1. Only zod schema -> tool calling`
+   * 2. method: 'jsonSchema' -> response_format: 'jsonSchema'
+   * 2. method: 'jsonMode' -> response_format: 'json_object' (with zod without zod)
+   * 3. json object of type AzureOpenAiFunctionObject
+   */
+const joke = z.object({
+  setup: z.string().describe("The setup of the joke"),
+  punchline: z.string().describe("The punchline to the joke"),
+  rating: z.number().optional().describe("How funny the joke is, from 1 to 10"),
+});
+
+//const structuredLlm = llm.withStructuredOutput(joke, { name: 'joke', strict: true });
+
+const structuredLlm = llm.withStructuredOutput({
+  name: "joke",
+  description: "Joke to tell user.",
+  parameters: {
+    title: "Joke",
+    type: "object",
+    properties: {
+      setup: { type: "string", description: "The setup for the joke" },
+      punchline: { type: "string", description: "The joke's punchline" },
+    },
+    required: ["setup", "punchline"],
+  },
+});
+
+
+const jokeSchema = {
+  type: "object",
+  properties: {
+    setup: { type: "string", description: "The setup for the joke" },
+    punchline: { type: "string", description: "The joke's punchline" },
+    rating: { type: "number", description: "How funny the joke is, from 1 to 10" },
+  },
+  required: ["setup", "punchline", "rating"],
+}
+// const structuredLlm = llm.withStructuredOutput(jokeSchema, {
+//   method: 'jsonSchema',
+//   name: "joke",
+// });
+
+const finalResponse = await structuredLlm.invoke("Tell me a joke about cats");
+
+  // create an output parser
+  const parser = new StringOutputParser();
+
+  // parse the response
+  return parser.invoke(JSON.stringify(finalResponse));
+}
