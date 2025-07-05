@@ -140,12 +140,29 @@ export class OrchestrationClient {
       }
     });
 
-    const stream = OrchestrationStream._create(streamResponse, controller);
-    response.stream = stream
+    // Runs postProcessing of the response after the stream has been fully consumed.
+    function postProcessing(
+      // eslint-disable-next-line
+      response: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
+    ): void {}
+
+    const rawStream = OrchestrationStream._create(streamResponse, controller)
       ._pipe(OrchestrationStream._processChunk)
       ._pipe(OrchestrationStream._processToolCalls, response)
       ._pipe(OrchestrationStream._processFinishReason, response)
       ._pipe(OrchestrationStream._processTokenUsage, response);
+
+    const wrappedStream = new OrchestrationStream(async function* () {
+      try {
+        for await (const chunk of rawStream) {
+          yield chunk;
+        }
+      } finally {
+        postProcessing(response);
+      }
+    }, controller);
+
+    response.stream = wrappedStream;
 
     return response;
   }
