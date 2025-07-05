@@ -5,9 +5,9 @@
  */
 
 /**
- * Representation of the 'SearchConfiguration' schema.
+ * Representation of the 'RetrievalSearchConfiguration' schema.
  */
-export type SearchConfiguration = {
+export type RetrievalSearchConfiguration = {
   /**
    * Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'.
    */
