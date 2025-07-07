@@ -1,7 +1,7 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import { SseStream } from '@sap-ai-sdk/core';
 import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
-import { mergeToolCallChunk, type ToolCallAccumulator } from './internal.js';
+import { mergeModuleResults, mergeToolCallChunk, type ToolCallAccumulator } from './internal.js';
 import type { CompletionPostResponseStreaming } from './client/api/schema/index.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { OrchestrationStreamResponse } from './orchestration-stream-response.js';
@@ -146,6 +146,33 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
       yield chunk;
     }
   }
+
+  /**
+   * @internal
+   */
+  static async *_processModuleResults(
+    stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
+    response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
+  ): AsyncGenerator<OrchestrationStreamChunkResponse> {
+    if (!response) {
+      throw new Error('Response is required to process module results.');
+    }
+    for await (const chunk of stream) {
+      const moduleResults = chunk.data.module_results;
+      if (moduleResults) {
+        for(const [key, value] of Object.entries(moduleResults)) {
+          if (key in ['llm', 'output_unmasking']) {
+            const accumulator = response._getModuleResult(key);
+            const result = mergeModuleResults(value, accumulator.get(key));
+            response._setModuleResult(key, result);
+          } else {
+            response._setModuleResult(key, value);
+          }
+        }
+      }
+      yield chunk;
+    }
+  
 
   /**
    * Transform a stream of chunks into a stream of content strings.

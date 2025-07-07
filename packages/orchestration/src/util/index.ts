@@ -4,3 +4,4 @@ export * from './module-config.js';
 export * from './masking.js';
 export * from './translation.js';
 export * from './tool-calls.js';
+export * from './module-results.js';

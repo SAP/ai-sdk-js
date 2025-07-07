@@ -2,6 +2,7 @@ import { isMessageToolCall } from './util/index.js';
 import type { ToolCallAccumulator } from './util/index.js';
 import type {
   MessageToolCalls,
+  ModuleResultsStreaming,
   TokenUsage
 } from './client/api/schema/index.js';
 import type { OrchestrationStream } from './orchestration-stream.js';
@@ -20,6 +21,7 @@ export class OrchestrationStreamResponse<T> {
     Map<number, ToolCallAccumulator>
   > = new Map();
   private _stream: OrchestrationStream<T> | undefined;
+  private _moduleResults: ModuleResultsStreaming = {};
 
   /**
    * Gets the token usage for the response.
@@ -92,6 +94,16 @@ export class OrchestrationStreamResponse<T> {
    */
   _getToolCallsAccumulators(): Map<number, Map<number, ToolCallAccumulator>> {
     return this._toolCallsAccumulators;
+  }
+
+  /**
+   * @internal
+   */
+  _setModuleResult<K extends keyof ModuleResultsStreaming>(
+    moduleName: K,
+    result: ModuleResultsStreaming[K]
+  ): void {
+    this.
   }
 
   get stream(): OrchestrationStream<T> {
