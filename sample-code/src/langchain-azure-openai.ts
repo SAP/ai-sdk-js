@@ -229,45 +229,16 @@ export async function streamChain(
 }
 
 /**
- * With Structured Output
+ * With Structured Output using `json_schema`.
  * @returns The answer from GPT with structured output.
  */
-export async function invokeWithStructuredOutput(): Promise<string>  {
+export async function invokeWithStructuredOutputJsonSchema(): Promise<string>  {
    // initialize client with options
   const llm = new AzureOpenAiChatClient({
     modelName: 'gpt-4o'
   });
 
-  /**
-   * 1. Only zod schema -> tool calling`
-   * 2. method: 'jsonSchema' -> response_format: 'jsonSchema'
-   * 2. method: 'jsonMode' -> response_format: 'json_object' (with zod without zod)
-   * 3. json object of type AzureOpenAiFunctionObject
-   */
-const joke = z.object({
-  setup: z.string().describe("The setup of the joke"),
-  punchline: z.string().describe("The punchline to the joke"),
-  rating: z.number().optional().describe("How funny the joke is, from 1 to 10"),
-});
-
-//const structuredLlm = llm.withStructuredOutput(joke, { name: 'joke', strict: true });
-
-const structuredLlm = llm.withStructuredOutput({
-  name: "joke",
-  description: "Joke to tell user.",
-  parameters: {
-    title: "Joke",
-    type: "object",
-    properties: {
-      setup: { type: "string", description: "The setup for the joke" },
-      punchline: { type: "string", description: "The joke's punchline" },
-    },
-    required: ["setup", "punchline"],
-  },
-});
-
-
-const jokeSchema = {
+  const jokeSchema = {
   type: "object",
   properties: {
     setup: { type: "string", description: "The setup for the joke" },
@@ -276,16 +247,51 @@ const jokeSchema = {
   },
   required: ["setup", "punchline", "rating"],
 }
-// const structuredLlm = llm.withStructuredOutput(jokeSchema, {
-//   method: 'jsonSchema',
-//   name: "joke",
-// });
+const structuredLlm = llm.withStructuredOutput(jokeSchema, {
+  name: "joke",
+  strict: true
+});
 
-const finalResponse = await structuredLlm.invoke("Tell me a joke about cats");
-
-  // create an output parser
+  const finalResponse = await structuredLlm.invoke("Tell me a joke about cats");
   const parser = new StringOutputParser();
+  return parser.invoke(JSON.stringify(finalResponse));
+}
 
-  // parse the response
+/**
+ * Invoke with structured output using tool calling.
+ * Tool calling is used when input is either a zod schema or an OpenAI Function Definition JSON schema (with name, description and parameters).
+ * Used for models that dont support `response_format` or `json_schema`.
+ * @example JSON Schema:
+ * {
+ *   name: "joke",
+ *   description: "Joke to tell user.",
+ *   parameters: {
+ *     title: "Joke",
+ *     type: "object",
+ *     properties: {
+ *       setup: { type: "string", description: "The setup for the joke" },
+ *       punchline: { type: "string", description: "The joke's punchline" },
+ *     },
+ *     required: ["setup", "punchline"],
+ *   },
+  }
+ * @returns The answer from GPT with structured output using tool calls.
+ */
+export async function invokeWithStructuredOutputToolCalling(): Promise<string> {
+  // initialize client with options
+  const llm = new AzureOpenAiChatClient({
+    modelName: 'gpt-35-turbo'
+  });
+
+const joke = z.object({
+  setup: z.string().describe("The setup of the joke"),
+  punchline: z.string().describe("The punchline to the joke"),
+  rating: z.number().optional().describe("How funny the joke is, from 1 to 10"),
+});
+
+const structuredLlm = llm.withStructuredOutput(joke);
+
+  const finalResponse = await structuredLlm.invoke("Tell me a joke about cats");
+  const parser = new StringOutputParser();
   return parser.invoke(JSON.stringify(finalResponse));
 }

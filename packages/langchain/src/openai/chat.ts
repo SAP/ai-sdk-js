@@ -160,19 +160,20 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
         },
       } as Partial<AzureOpenAiChatCallOptions>);
     } else if (method === "jsonSchema") {
+      const asJsonSchema = toJsonSchema(schema)
       llm = this.withConfig({
         response_format: {
           type: "json_schema",
           json_schema: {
             name: name ?? "extract",
             description: getSchemaDescription(schema),
-            schema,
+            schema: asJsonSchema,
             strict: config?.strict,
           },
         },
         ls_structured_output_format: {
           kwargs: { method: "jsonSchema" },
-          schema: toJsonSchema(schema),
+          schema: asJsonSchema,
         },
       } as Partial<AzureOpenAiChatCallOptions>);
       if (isInteropZodSchema(schema)) {
@@ -193,6 +194,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
       // Is function calling
       if (isInteropZodSchema(schema)) {
         const asJsonSchema = toJsonSchema(schema);
+        
         llm = this.withConfig({
           tools: [
             {

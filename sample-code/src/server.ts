@@ -44,7 +44,7 @@ import {
   invoke,
   invokeToolChain,
   streamChain,
-  invokeWithStructuredOutput
+  invokeWithStructuredOutputJsonSchema
 } from './langchain-azure-openai.js';
 import {
   invokeChain as invokeChainOrchestration,
@@ -397,8 +397,17 @@ app.get(
 /* LangChain */
 app.get('/langchain/invoke', async (req, res) => {
   try {
-    const response = await invokeWithStructuredOutput();
+    const response = await invoke();
     res.send(JSON.stringify(response));
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/langchain/invoke-with-structured-output', async (req, res) => {
+  try {
+    const response = await invokeWithStructuredOutputJsonSchema();
+    res.header('Content-Type', 'text/plain').send(response);
   } catch (error: any) {
     sendError(res, error);
   }
