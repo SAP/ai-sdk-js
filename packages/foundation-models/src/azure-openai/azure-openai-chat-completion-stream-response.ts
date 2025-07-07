@@ -1,4 +1,4 @@
-import { isMessageToolCall, type ToolCallAccumulator } from './util/index.js';
+import { type ToolCallAccumulator } from './util/index.js';
 import type {
   AzureOpenAiChatCompletionMessageToolCalls,
   AzureOpenAiCompletionUsage,
@@ -22,6 +22,8 @@ export class AzureOpenAiChatCompletionStreamResponse<T> {
     number,
     Map<number, ToolCallAccumulator>
   > = new Map();
+  private _toolCalls: Map<number, AzureOpenAiChatCompletionMessageToolCalls> =
+    new Map();
   private _stream: AzureOpenAiChatCompletionStream<T> | undefined;
 
   public getTokenUsage(): AzureOpenAiCompletionUsage | undefined {
@@ -73,26 +75,17 @@ export class AzureOpenAiChatCompletionStreamResponse<T> {
   public getToolCalls(
     choiceIndex = 0
   ): AzureOpenAiChatCompletionMessageToolCalls | undefined {
-    try {
-      const toolCallsAccumulators =
-        this._toolCallsAccumulators.get(choiceIndex);
-      if (!toolCallsAccumulators) {
-        return undefined;
-      }
-      const toolCalls: AzureOpenAiChatCompletionMessageToolCalls = [];
-      for (const [id, acc] of toolCallsAccumulators.entries()) {
-        if (isMessageToolCall(acc)) {
-          toolCalls.push(acc);
-        } else {
-          throw new Error(`Tool call with id ${id} was incomplete.`);
-        }
-      }
-      return toolCalls;
-    } catch (error) {
-      throw new Error(
-        `Error while getting tool calls for choice index ${choiceIndex}: ${error}`
-      );
-    }
+    return this._toolCalls.get(choiceIndex);
+  }
+
+  /**
+   * @internal
+   */
+  _setToolCalls(
+    choiceIndex: number,
+    toolCalls: AzureOpenAiChatCompletionMessageToolCalls
+  ): void {
+    this._toolCalls.set(choiceIndex, toolCalls);
   }
 
   /**

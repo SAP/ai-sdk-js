@@ -68,6 +68,9 @@ export class OrchestrationStreamResponse<T> {
     return this._toolCalls.get(choiceIndex);
   }
 
+  /**
+   * @internal
+   */
   _setToolCalls(choiceIndex: number, toolCalls: MessageToolCalls): void {
     this._toolCalls.set(choiceIndex, toolCalls);
   }

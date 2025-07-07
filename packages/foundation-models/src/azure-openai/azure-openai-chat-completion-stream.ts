@@ -1,9 +1,12 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import { SseStream } from '@sap-ai-sdk/core';
 import { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.js';
-import { mergeToolCallChunk } from './util/index.js';
+import { isMessageToolCall, mergeToolCallChunk } from './util/index.js';
 import type { ToolCallAccumulator } from './util/index.js';
-import type { AzureOpenAiCreateChatCompletionStreamResponse } from './client/inference/schema/index.js';
+import type {
+  AzureOpenAiChatCompletionMessageToolCalls,
+  AzureOpenAiCreateChatCompletionStreamResponse
+} from './client/inference/schema/index.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.js';
 
@@ -82,6 +85,23 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
         }
       });
       yield chunk;
+    }
+
+    for (const [
+      choiceIndex,
+      toolCallsAccumulators
+    ] of response._getToolCallsAccumulators()) {
+      const toolCalls: AzureOpenAiChatCompletionMessageToolCalls = [];
+      for (const [id, acc] of toolCallsAccumulators.entries()) {
+        if (isMessageToolCall(acc)) {
+          toolCalls.push(acc);
+        } else {
+          logger.error(
+            `Error while parsing tool calls for choice index ${choiceIndex}: Tool call with id ${id} was incomplete.`
+          );
+        }
+      }
+      response._setToolCalls(choiceIndex, toolCalls);
     }
   }
 
