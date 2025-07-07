@@ -1,4 +1,3 @@
-import { isMessageToolCall } from './util/index.js';
 import type { ToolCallAccumulator } from './util/index.js';
 import type {
   MessageToolCalls,
@@ -20,6 +19,7 @@ export class OrchestrationStreamResponse<T> {
     Map<number, ToolCallAccumulator>
   > = new Map();
   private _stream: OrchestrationStream<T> | undefined;
+  private _toolCalls: Map<number, MessageToolCalls> = new Map();
 
   /**
    * Gets the token usage for the response.
@@ -65,26 +65,11 @@ export class OrchestrationStreamResponse<T> {
    * @returns The tool calls for the specified choice index.
    */
   public getToolCalls(choiceIndex = 0): MessageToolCalls | undefined {
-    try {
-      const toolCallsAccumulators =
-        this._toolCallsAccumulators.get(choiceIndex);
-      if (!toolCallsAccumulators) {
-        return undefined;
-      }
-      const toolCalls: MessageToolCalls = [];
-      for (const [id, acc] of toolCallsAccumulators.entries()) {
-        if (isMessageToolCall(acc)) {
-          toolCalls.push(acc);
-        } else {
-          throw new Error(`Tool call with id ${id} was incomplete.`);
-        }
-      }
-      return toolCalls;
-    } catch (error) {
-      throw new Error(
-        `Error while getting tool calls for choice index ${choiceIndex}: ${error}`
-      );
-    }
+    return this._toolCalls.get(choiceIndex);
+  }
+
+  _setToolCalls(choiceIndex: number, toolCalls: MessageToolCalls): void {
+    this._toolCalls.set(choiceIndex, toolCalls);
   }
 
   /**

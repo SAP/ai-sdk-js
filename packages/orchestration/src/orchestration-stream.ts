@@ -1,8 +1,15 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import { SseStream } from '@sap-ai-sdk/core';
 import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
-import { mergeToolCallChunk, type ToolCallAccumulator } from './internal.js';
-import type { CompletionPostResponseStreaming } from './client/api/schema/index.js';
+import {
+  isMessageToolCall,
+  mergeToolCallChunk,
+  type ToolCallAccumulator
+} from './internal.js';
+import type {
+  CompletionPostResponseStreaming,
+  MessageToolCalls
+} from './client/api/schema/index.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 
@@ -81,6 +88,27 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
         }
       });
       yield chunk;
+    }
+
+    for (const [
+      choiceIndex,
+      toolCallsAccumulators
+    ] of response._getToolCallsAccumulators()) {
+      const toolCalls: MessageToolCalls = [];
+      for (const [id, acc] of toolCallsAccumulators.entries()) {
+        try {
+          if (isMessageToolCall(acc)) {
+            toolCalls.push(acc);
+          } else {
+            throw new Error(`Tool call with id ${id} was incomplete.`);
+          }
+        } catch (error) {
+          logger.warn(
+            `Error while parsing tool calls for choice index ${choiceIndex}: ${error}`
+          );
+        }
+      }
+      response._setToolCalls(choiceIndex, toolCalls);
     }
   }
 
