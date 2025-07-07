@@ -1,4 +1,9 @@
-import { invoke, invokeChain, invokeRagChain, invokeWithStructuredOutputJsonSchema } from '@sap-ai-sdk/sample-code';
+import {
+  invoke,
+  invokeChain,
+  invokeRagChain,
+  invokeWithStructuredOutputJsonSchema
+} from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
 
 loadEnv();
@@ -25,6 +30,6 @@ describe('LangChain OpenAI Access', () => {
       setup: expect.any(String),
       punchline: expect.any(String),
       rating: expect.any(Number)
-    })
+    });
   });
 });

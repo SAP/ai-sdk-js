@@ -232,28 +232,31 @@ export async function streamChain(
  * With Structured Output using `json_schema`.
  * @returns The answer from GPT with structured output.
  */
-export async function invokeWithStructuredOutputJsonSchema(): Promise<string>  {
-   // initialize client with options
+export async function invokeWithStructuredOutputJsonSchema(): Promise<string> {
+  // initialize client with options
   const llm = new AzureOpenAiChatClient({
     modelName: 'gpt-4o'
   });
 
   const jokeSchema = {
-    type: "object",
+    type: 'object',
     additionalProperties: false,
     properties: {
-      setup: { type: "string", description: "The setup for the joke" },
-      punchline: { type: "string", description: "The joke's punchline" },
-      rating: { type: "number", description: "How funny the joke is, from 1 to 10" },
+      setup: { type: 'string', description: 'The setup for the joke' },
+      punchline: { type: 'string', description: "The joke's punchline" },
+      rating: {
+        type: 'number',
+        description: 'How funny the joke is, from 1 to 10'
+      }
     },
-    required: ["setup", "punchline", "rating"],
-  }
+    required: ['setup', 'punchline', 'rating']
+  };
   const structuredLlm = llm.withStructuredOutput(jokeSchema, {
-    name: "joke",
+    name: 'joke',
     strict: true
   });
 
-  const finalResponse = await structuredLlm.invoke("Tell me a joke about cats");
+  const finalResponse = await structuredLlm.invoke('Tell me a joke about cats');
   const parser = new StringOutputParser();
   return parser.invoke(JSON.stringify(finalResponse));
 }
@@ -262,28 +265,31 @@ export async function invokeWithStructuredOutputJsonSchema(): Promise<string>  {
  * With Structured Output error handling when refusal is expected.
  * @returns The answer from GPT with structured output.
  */
-export async function invokeWithStructuredOutputRefusal(): Promise<string>  {
-   // initialize client with options
+export async function invokeWithStructuredOutputRefusal(): Promise<string> {
+  // initialize client with options
   const llm = new AzureOpenAiChatClient({
     modelName: 'gpt-4o'
   });
 
   const jokeSchema = {
-    type: "object",
+    type: 'object',
     additionalProperties: false,
     properties: {
-      setup: { type: "string", description: "The setup for the joke" },
-      punchline: { type: "string", description: "The joke's punchline" },
-      rating: { type: "number", description: "How funny the joke is, from 1 to 10" },
+      setup: { type: 'string', description: 'The setup for the joke' },
+      punchline: { type: 'string', description: "The joke's punchline" },
+      rating: {
+        type: 'number',
+        description: 'How funny the joke is, from 1 to 10'
+      }
     },
-    required: ["setup", "punchline", "rating"],
-  }
+    required: ['setup', 'punchline', 'rating']
+  };
   const structuredLlm = llm.withStructuredOutput(jokeSchema, {
-    name: "joke",
+    name: 'joke',
     strict: true
   });
 
-  const finalResponse = await structuredLlm.invoke("Tell me a joke about cats");
+  const finalResponse = await structuredLlm.invoke('Tell me a joke about cats');
   const parser = new StringOutputParser();
   return parser.invoke(JSON.stringify(finalResponse));
 }
@@ -305,7 +311,7 @@ export async function invokeWithStructuredOutputRefusal(): Promise<string>  {
  *     },
  *     required: ["setup", "punchline"],
  *   },
-  }
+ * }
  * @returns The answer from GPT with structured output using tool calls.
  */
 export async function invokeWithStructuredOutputToolCalling(): Promise<string> {
@@ -314,16 +320,18 @@ export async function invokeWithStructuredOutputToolCalling(): Promise<string> {
     modelName: 'gpt-35-turbo'
   });
 
-const joke = z.object({
-  setup: z.string().describe("The setup of the joke"),
-  punchline: z.string().describe("The punchline to the joke"),
-  rating: z.number().optional().describe("How funny the joke is, from 1 to 10"),
-});
+  const joke = z.object({
+    setup: z.string().describe('The setup of the joke'),
+    punchline: z.string().describe('The punchline to the joke'),
+    rating: z
+      .number()
+      .optional()
+      .describe('How funny the joke is, from 1 to 10')
+  });
 
-const structuredLlm = llm.withStructuredOutput(joke);
+  const structuredLlm = llm.withStructuredOutput(joke);
 
-
-  const finalResponse = await structuredLlm.invoke("Tell me a joke about cats");
+  const finalResponse = await structuredLlm.invoke('Tell me a joke about cats');
   const parser = new StringOutputParser();
   return parser.invoke(JSON.stringify(finalResponse));
 }
