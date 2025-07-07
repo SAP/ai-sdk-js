@@ -169,7 +169,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
           json_schema: {
             name: name ?? 'extract',
             description: getSchemaDescription(schema),
-            schema: schema,
+            schema,
             strict: config?.strict,
           },
         },
@@ -279,7 +279,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
 
     const parserAssign = RunnablePassthrough.assign({
 
-      parsed: (input: any, config) => outputParser.invoke(input.raw, config),
+      parsed: (input: any, parserConfig) => outputParser.invoke(input.raw, parserConfig),
     });
     const parserNone = RunnablePassthrough.assign({
       parsed: () => null,
