@@ -96,15 +96,11 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
     ] of response._getToolCallsAccumulators()) {
       const toolCalls: MessageToolCalls = [];
       for (const [id, acc] of toolCallsAccumulators.entries()) {
-        try {
-          if (isMessageToolCall(acc)) {
-            toolCalls.push(acc);
-          } else {
-            throw new Error(`Tool call with id ${id} was incomplete.`);
-          }
-        } catch (error) {
-          logger.warn(
-            `Error while parsing tool calls for choice index ${choiceIndex}: ${error}`
+        if (isMessageToolCall(acc)) {
+          toolCalls.push(acc);
+        } else {
+          logger.error(
+            `Error while parsing tool calls for choice index ${choiceIndex}: Tool call with id ${id} was incomplete.`
           );
         }
       }
