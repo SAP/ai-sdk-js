@@ -239,18 +239,49 @@ export async function invokeWithStructuredOutputJsonSchema(): Promise<string>  {
   });
 
   const jokeSchema = {
-  type: "object",
-  properties: {
-    setup: { type: "string", description: "The setup for the joke" },
-    punchline: { type: "string", description: "The joke's punchline" },
-    rating: { type: "number", description: "How funny the joke is, from 1 to 10" },
-  },
-  required: ["setup", "punchline", "rating"],
+    type: "object",
+    additionalProperties: false,
+    properties: {
+      setup: { type: "string", description: "The setup for the joke" },
+      punchline: { type: "string", description: "The joke's punchline" },
+      rating: { type: "number", description: "How funny the joke is, from 1 to 10" },
+    },
+    required: ["setup", "punchline", "rating"],
+  }
+  const structuredLlm = llm.withStructuredOutput(jokeSchema, {
+    name: "joke",
+    strict: true
+  });
+
+  const finalResponse = await structuredLlm.invoke("Tell me a joke about cats");
+  const parser = new StringOutputParser();
+  return parser.invoke(JSON.stringify(finalResponse));
 }
-const structuredLlm = llm.withStructuredOutput(jokeSchema, {
-  name: "joke",
-  strict: true
-});
+
+/**
+ * With Structured Output error handling when refusal is expected.
+ * @returns The answer from GPT with structured output.
+ */
+export async function invokeWithStructuredOutputRefusal(): Promise<string>  {
+   // initialize client with options
+  const llm = new AzureOpenAiChatClient({
+    modelName: 'gpt-4o'
+  });
+
+  const jokeSchema = {
+    type: "object",
+    additionalProperties: false,
+    properties: {
+      setup: { type: "string", description: "The setup for the joke" },
+      punchline: { type: "string", description: "The joke's punchline" },
+      rating: { type: "number", description: "How funny the joke is, from 1 to 10" },
+    },
+    required: ["setup", "punchline", "rating"],
+  }
+  const structuredLlm = llm.withStructuredOutput(jokeSchema, {
+    name: "joke",
+    strict: true
+  });
 
   const finalResponse = await structuredLlm.invoke("Tell me a joke about cats");
   const parser = new StringOutputParser();
@@ -290,6 +321,7 @@ const joke = z.object({
 });
 
 const structuredLlm = llm.withStructuredOutput(joke);
+
 
   const finalResponse = await structuredLlm.invoke("Tell me a joke about cats");
   const parser = new StringOutputParser();
