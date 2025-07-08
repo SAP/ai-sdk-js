@@ -1,16 +1,23 @@
+import { createLogger } from '@sap-cloud-sdk/util';
 import type { ToolCallAccumulator } from './util/index.js';
 import type {
   MessageToolCalls,
-  ModuleResultsStreaming,
+  ModuleResults,
   TokenUsage
 } from './client/api/schema/index.js';
 import type { OrchestrationStream } from './orchestration-stream.js';
+
+const logger = createLogger({
+  package: 'orchestration',
+  messageContext: 'orchestration-stream-response'
+});
 
 /**
  * Orchestration stream response.
  */
 export class OrchestrationStreamResponse<T> {
-  public moduleResults: ModuleResultsStreaming = {};
+  private _moduleResults: ModuleResults | undefined;
+  private _moduleResultsAccumulator: ModuleResults = {};
   private _usage: TokenUsage | undefined;
   /**
    * Finish reasons for all choices.
@@ -22,7 +29,6 @@ export class OrchestrationStreamResponse<T> {
   > = new Map();
   private _stream: OrchestrationStream<T> | undefined;
   private _toolCalls: Map<number, MessageToolCalls> = new Map();
-  private _contentAccumulators: Map<string, Map<number, string>> = new Map();
 
   /**
    * Gets the token usage for the response.
@@ -63,6 +69,13 @@ export class OrchestrationStreamResponse<T> {
   }
 
   /**
+   * @internal
+   */
+  _getToolCallsAccumulators(): Map<number, Map<number, ToolCallAccumulator>> {
+    return this._toolCallsAccumulators;
+  }
+
+  /**
    * Gets the tool calls for a specific choice index.
    * @param choiceIndex - The index of the choice to get the tool calls for.
    * @returns The tool calls for the specified choice index.
@@ -81,18 +94,24 @@ export class OrchestrationStreamResponse<T> {
   /**
    * @internal
    */
-  _getToolCallsAccumulators(): Map<number, Map<number, ToolCallAccumulator>> {
-    return this._toolCallsAccumulators;
+  _setModuleResults(moduleResults: ModuleResults): void {
+    this._moduleResults = moduleResults;
+  }
+
+  public getModuleResults(): ModuleResults | undefined {
+    if (this._moduleResults) {
+      return this._moduleResults;
+    }
+    logger.warn(
+      'Module results are not set, likely because the stream has not finished yet.'
+    );
   }
 
   /**
    * @internal
    */
-  _setModuleResult<K extends keyof ModuleResultsStreaming>(
-    moduleName: K,
-    result: ModuleResultsStreaming[K]
-  ): void {
-    this._moduleResults[moduleName] = result;
+  _getModuleResultsAccumulator(): ModuleResults {
+    return this._moduleResultsAccumulator;
   }
 
   get stream(): OrchestrationStream<T> {

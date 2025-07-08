@@ -3,6 +3,7 @@ import { SseStream } from '@sap-ai-sdk/core';
 import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 import {
   isMessageToolCall,
+  mergeChoices,
   mergeToolCallChunk,
   type ToolCallAccumulator
 } from './internal.js';
@@ -184,19 +185,26 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
     for await (const chunk of stream) {
       const moduleResults = chunk.data.module_results;
       if (moduleResults) {
-        for(const [key, value] of Object.entries(moduleResults)) {
-          if (key in ['llm', 'output_unmasking']) {
-            const accumulator = response._getContentAccumulator(key);
-            const result = mergeContentAccumulator(value, accumulator);
-            response._setContentAccumulator(key, result);
-          } else {
-            response._setModuleResult(key, value);
+        const accumulator = response._getModuleResultsAccumulator();
+        for (const [key, value] of Object.entries(moduleResults)) {
+          switch (key) {
+            case 'llm': {
+              const result = {
+                ...value,
+                choices: mergeChoices(accumulator[key]?.choices, value.choices)
+              };
+              accumulator[key] = result;
+              break;
+            }
+            case 'output_unmasking':
+              accumulator[key] = mergeChoices(accumulator[key], value);
+              break;
+            default:
+              accumulator[key] = value;
           }
         }
       }
       yield chunk;
-
-      mergeContentAccumulators(response);
     }
   }
 
