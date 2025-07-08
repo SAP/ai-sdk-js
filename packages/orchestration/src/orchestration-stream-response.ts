@@ -10,6 +10,7 @@ import type { OrchestrationStream } from './orchestration-stream.js';
  * Orchestration stream response.
  */
 export class OrchestrationStreamResponse<T> {
+  public moduleResults: ModuleResultsStreaming = {};
   private _usage: TokenUsage | undefined;
   /**
    * Finish reasons for all choices.
@@ -21,7 +22,7 @@ export class OrchestrationStreamResponse<T> {
   > = new Map();
   private _stream: OrchestrationStream<T> | undefined;
   private _toolCalls: Map<number, MessageToolCalls> = new Map();
-  private _moduleResults: ModuleResultsStreaming = {};
+  private _contentAccumulators: Map<string, Map<number, string>> = new Map();
 
   /**
    * Gets the token usage for the response.

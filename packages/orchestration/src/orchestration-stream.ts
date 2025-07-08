@@ -2,7 +2,6 @@ import { createLogger } from '@sap-cloud-sdk/util';
 import { SseStream } from '@sap-ai-sdk/core';
 import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 import {
-  mergeModuleResults,
   isMessageToolCall,
   mergeToolCallChunk,
   type ToolCallAccumulator
@@ -187,15 +186,17 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
       if (moduleResults) {
         for(const [key, value] of Object.entries(moduleResults)) {
           if (key in ['llm', 'output_unmasking']) {
-            const accumulator = response.getModuleResult(key);
-            const result = mergeModuleResults(value, accumulator.get(key));
-            response._setModuleResult(key, result);
+            const accumulator = response._getContentAccumulator(key);
+            const result = mergeContentAccumulator(value, accumulator);
+            response._setContentAccumulator(key, result);
           } else {
             response._setModuleResult(key, value);
           }
         }
       }
       yield chunk;
+
+      mergeContentAccumulators(response);
     }
   }
 
