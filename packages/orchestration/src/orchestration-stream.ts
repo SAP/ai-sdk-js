@@ -2,14 +2,10 @@ import { createLogger } from '@sap-cloud-sdk/util';
 import { SseStream } from '@sap-ai-sdk/core';
 import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 import {
-  isMessageToolCall,
-  mergeChoices,
-  mergeToolCallChunk,
-  type ToolCallAccumulator
+  mergeChoices
 } from './internal.js';
 import type {
-  CompletionPostResponseStreaming,
-  MessageToolCalls
+  CompletionPostResponseStreaming
 } from './client/api/schema/index.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { OrchestrationStreamResponse } from './orchestration-stream-response.js';
@@ -54,122 +50,18 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
     }
   }
 
-  /**
-   * @internal
-   */
-  static async *_processToolCalls(
+  static async *_processStreamEnd(
     stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
     response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   ): AsyncGenerator<OrchestrationStreamChunkResponse> {
     if (!response) {
-      throw new Error('Response is required to process tool calls.');
+      throw new Error('Response is required to process stream end.');
     }
     for await (const chunk of stream) {
-      chunk.data.orchestration_result?.choices.forEach(choice => {
-        const choiceIndex = choice.index;
-        const toolCallsChunks = chunk.getDeltaToolCalls(choiceIndex);
-        if (toolCallsChunks) {
-          let toolCallAccumulators = response
-            ._getToolCallsAccumulators()
-            .get(choiceIndex);
-          if (!toolCallAccumulators) {
-            toolCallAccumulators = new Map<number, ToolCallAccumulator>();
-            response
-              ._getToolCallsAccumulators()
-              .set(choiceIndex, toolCallAccumulators);
-          }
-          toolCallsChunks.map(toolCallChunk => {
-            const toolCallId = toolCallChunk.index;
-            const toolCallAccumulator = mergeToolCallChunk(
-              toolCallChunk,
-              toolCallAccumulators.get(toolCallId)
-            );
-            toolCallAccumulators.set(toolCallId, toolCallAccumulator);
-          });
-        }
-      });
       yield chunk;
     }
 
-    for (const [
-      choiceIndex,
-      toolCallsAccumulators
-    ] of response._getToolCallsAccumulators()) {
-      const toolCalls: MessageToolCalls = [];
-      for (const [id, acc] of toolCallsAccumulators.entries()) {
-        if (isMessageToolCall(acc)) {
-          toolCalls.push(acc);
-        } else {
-          logger.error(
-            `Error while parsing tool calls for choice index ${choiceIndex}: Tool call with id ${id} was incomplete.`
-          );
-        }
-      }
-      response._setToolCalls(choiceIndex, toolCalls);
-    }
-  }
-
-  /**
-   * @internal
-   */
-  static async *_processFinishReason(
-    stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
-    response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
-  ): AsyncGenerator<OrchestrationStreamChunkResponse> {
-    if (!response) {
-      throw new Error('Response is required to process finish reasons.');
-    }
-    for await (const chunk of stream) {
-      chunk.data.orchestration_result?.choices.forEach(choice => {
-        const choiceIndex = choice.index;
-        const finishReason = chunk.getFinishReason(choiceIndex);
-        if (finishReason) {
-          response._getFinishReasons().set(choiceIndex, finishReason);
-          switch (finishReason) {
-            case 'content_filter':
-              logger.error(
-                `Choice ${choiceIndex}: Stream finished with content filter hit.`
-              );
-              break;
-            case 'length':
-              logger.error(
-                `Choice ${choiceIndex}: Stream finished with token length exceeded.`
-              );
-              break;
-            case 'stop':
-            case 'tool_calls':
-            case 'function_call':
-              logger.debug(`Choice ${choiceIndex}: Stream finished.`);
-              break;
-            default:
-              logger.error(
-                `Choice ${choiceIndex}: Stream finished with unknown reason '${finishReason}'.`
-              );
-          }
-        }
-      });
-      yield chunk;
-    }
-  }
-
-  /**
-   * @internal
-   */
-  static async *_processTokenUsage(
-    stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
-    response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
-  ): AsyncGenerator<OrchestrationStreamChunkResponse> {
-    if (!response) {
-      throw new Error('Response is required to process token usage.');
-    }
-    for await (const chunk of stream) {
-      const usage = chunk.getTokenUsage();
-      if (usage) {
-        response._setTokenUsage(usage);
-        logger.debug(`Token usage: ${JSON.stringify(usage)}`);
-      }
-      yield chunk;
-    }
+    response.openStream = false;
   }
 
   /**
@@ -186,26 +78,24 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
       const moduleResults = chunk.data.module_results;
       if (moduleResults) {
         const accumulator = response._getModuleResultsAccumulator();
-        for (const [key, value] of Object.entries(moduleResults)) {
-          switch (key) {
+        for (const [moduleName, moduleResult] of Object.entries(moduleResults)) {
+          switch (moduleName) {
             case 'llm': {
-              const result = {
-                ...value,
-                choices: mergeChoices(accumulator[key]?.choices, value.choices)
-              };
-              accumulator[key] = result;
+              const mergedLlmResult = mergeLlmModuleResult(accumulator[moduleName], moduleResult);
+              accumulator[moduleName] = mergedLlmResult;
               break;
             }
             case 'output_unmasking':
-              accumulator[key] = mergeChoices(accumulator[key], value);
+              accumulator[moduleName] = mergeChoices(accumulator[moduleName], moduleResult);
               break;
             default:
-              accumulator[key] = value;
+              accumulator[moduleName] = moduleResult;
           }
         }
       }
       yield chunk;
     }
+    response._setModuleResults(response._getModuleResultsAccumulator());
   }
 
   /**

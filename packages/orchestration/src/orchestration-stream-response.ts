@@ -1,7 +1,6 @@
 import { createLogger } from '@sap-cloud-sdk/util';
-import type { ToolCallAccumulator } from './util/index.js';
 import type {
-  MessageToolCalls,
+  LlmModuleResult,
   ModuleResults,
   TokenUsage
 } from './client/api/schema/index.js';
@@ -16,33 +15,22 @@ const logger = createLogger({
  * Orchestration stream response.
  */
 export class OrchestrationStreamResponse<T> {
-  private _moduleResults: ModuleResults | undefined;
-  private _moduleResultsAccumulator: ModuleResults = {};
-  private _usage: TokenUsage | undefined;
-  /**
-   * Finish reasons for all choices.
-   */
-  private _finishReasons: Map<number, string> = new Map();
-  private _toolCallsAccumulators: Map<
-    number,
-    Map<number, ToolCallAccumulator>
-  > = new Map();
+  public openStream = true;
+  private moduleResults: ModuleResults | undefined;
+  private orchestrationResult: LlmModuleResult | undefined;
   private _stream: OrchestrationStream<T> | undefined;
-  private _toolCalls: Map<number, MessageToolCalls> = new Map();
 
   /**
    * Gets the token usage for the response.
    * @returns The token usage for the response.
    */
   public getTokenUsage(): TokenUsage | undefined {
-    return this._usage;
-  }
-
-  /**
-   * @internal
-   */
-  _setTokenUsage(usage: TokenUsage): void {
-    this._usage = usage;
+    if(this.orchestrationResult) {
+      return this.orchestrationResult.usage;
+    }
+    logger.warn(
+      'The stream is still open, the token usage is not available yet.'
+    );
   }
 
   /**
@@ -51,67 +39,12 @@ export class OrchestrationStreamResponse<T> {
    * @returns The finish reason for the specified choice index.
    */
   public getFinishReason(choiceIndex = 0): string | undefined {
-    return this._finishReasons.get(choiceIndex);
-  }
-
-  /**
-   * @internal
-   */
-  _getFinishReasons(): Map<number, string> {
-    return this._finishReasons;
-  }
-
-  /**
-   * @internal
-   */
-  _setFinishReasons(finishReasons: Map<number, string>): void {
-    this._finishReasons = finishReasons;
-  }
-
-  /**
-   * @internal
-   */
-  _getToolCallsAccumulators(): Map<number, Map<number, ToolCallAccumulator>> {
-    return this._toolCallsAccumulators;
-  }
-
-  /**
-   * Gets the tool calls for a specific choice index.
-   * @param choiceIndex - The index of the choice to get the tool calls for.
-   * @returns The tool calls for the specified choice index.
-   */
-  public getToolCalls(choiceIndex = 0): MessageToolCalls | undefined {
-    return this._toolCalls.get(choiceIndex);
-  }
-
-  /**
-   * @internal
-   */
-  _setToolCalls(choiceIndex: number, toolCalls: MessageToolCalls): void {
-    this._toolCalls.set(choiceIndex, toolCalls);
-  }
-
-  /**
-   * @internal
-   */
-  _setModuleResults(moduleResults: ModuleResults): void {
-    this._moduleResults = moduleResults;
-  }
-
-  public getModuleResults(): ModuleResults | undefined {
-    if (this._moduleResults) {
-      return this._moduleResults;
+    if(!this.openStream) {
+      return this.findChoiceByIndex(choiceIndex)?.finish_reason;
     }
     logger.warn(
-      'Module results are not set, likely because the stream has not finished yet.'
+      'The stream is still open, the finish reason is not available yet.'
     );
-  }
-
-  /**
-   * @internal
-   */
-  _getModuleResultsAccumulator(): ModuleResults {
-    return this._moduleResultsAccumulator;
   }
 
   get stream(): OrchestrationStream<T> {
@@ -119,6 +52,25 @@ export class OrchestrationStreamResponse<T> {
       throw new Error('Response stream is undefined.');
     }
     return this._stream;
+  }
+
+  public getModuleResults(): ModuleResults | undefined {
+    if (!this.openStream) {
+      return this.moduleResults;
+    }
+    logger.warn(
+      'The stream is still open, module results are not available yet.'
+    );
+  }
+
+  private getChoices() {
+    return this.orchestrationResult?.choices ?? [];
+  }
+
+  private findChoiceByIndex(index: number) {
+    return this.getChoices().find(
+      (c: { index: number }) => c.index === index
+    );
   }
 
   /**
