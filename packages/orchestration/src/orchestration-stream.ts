@@ -1,7 +1,6 @@
-import { createLogger } from '@sap-cloud-sdk/util';
 import { SseStream } from '@sap-ai-sdk/core';
 import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
-import { mergeStreamResponse } from './util/stream.js';
+import { mergeStreamResponse } from './util/index.js';
 import type {
   CompletionPostResponseStreaming
 } from './client/api/schema/index.js';

@@ -14,6 +14,12 @@ const logger = createLogger({
   messageContext: 'orchestration-stream-response'
 });
 
+function openStreamWarning(missingData: string): void {
+  logger.warn(
+    `The stream is still open, the ${missingData} data is not available yet. Please wait until the stream is closed.`
+  );
+}
+
 /**
  * Orchestration stream response.
  */
@@ -30,9 +36,7 @@ export class OrchestrationStreamResponse<T> {
     if(!this._openStream) {
       return this._data.orchestration_result?.usage;
     }
-    logger.warn(
-      'The stream is still open, the token usage is not available yet. Please wait until the stream is closed.'
-    );
+    openStreamWarning('token usage');
   }
 
   /**
@@ -44,9 +48,7 @@ export class OrchestrationStreamResponse<T> {
     if(!this._openStream) {
       return this.findChoiceByIndex(choiceIndex)?.finish_reason;
     }
-    logger.warn(
-      'The stream is still open, the finish reason is not available yet. Please wait until the stream is closed.'
-    );
+    openStreamWarning('finish reason');
   }
 
     /**
@@ -61,9 +63,7 @@ export class OrchestrationStreamResponse<T> {
         const choice = this.findChoiceByIndex(choiceIndex);
         return choice?.message?.content;
       }
-      logger.warn(
-        'The stream is still open, the content is not available yet. Please wait until the stream is closed.'
-      );
+      openStreamWarning('content');
     }
 
     /**
@@ -76,9 +76,7 @@ export class OrchestrationStreamResponse<T> {
         const choice = this.findChoiceByIndex(choiceIndex);
         return choice?.message?.tool_calls;
       }
-      logger.warn(
-        'The stream is still open, the tool calls are not available yet. Please wait until the stream is closed.'
-      );
+      openStreamWarning('tool calls');
     }
 
     /**
@@ -91,9 +89,7 @@ export class OrchestrationStreamResponse<T> {
         const choice = this.findChoiceByIndex(choiceIndex);
         return choice?.message?.refusal;
       }
-      logger.warn(
-        'The stream is still open, the refusal message is not available yet. Please wait until the stream is closed.'
-      );
+      openStreamWarning('refusal message');
     }
 
     /**
@@ -107,9 +103,7 @@ export class OrchestrationStreamResponse<T> {
         const content = this.findChoiceByIndex(choiceIndex)?.message;
         return content ? [...messages, content] : messages;
       }
-      logger.warn(
-        'The stream is still open, the messages are not available yet. Please wait until the stream is closed.'
-      );
+      openStreamWarning('messages');
     }
 
     /**
@@ -122,18 +116,14 @@ export class OrchestrationStreamResponse<T> {
       if(!this._openStream) {
         return this.findChoiceByIndex(choiceIndex)?.message;
       }
-      logger.warn(
-        'The stream is still open, the assistant message is not available yet. Please wait until the stream is closed.'
-      );
+      openStreamWarning('assistant message');
     }
 
   public getResponse(): CompletionPostResponse | undefined {
     if(!this._openStream) {
       return this._data as CompletionPostResponse;
     }
-    logger.warn(
-      'The stream is still open, the response is not available yet. Please wait until the stream is closed.'
-    );
+    openStreamWarning('response');
   }
 
   get stream(): OrchestrationStream<T> {

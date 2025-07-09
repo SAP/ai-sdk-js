@@ -1,4 +1,4 @@
-import type { CompletionPostResponseStreaming, OrchestrationStreamChunkResponse, OrchestrationStreamResponse } from '../index.js';
+import type { CompletionPostResponseStreaming, LlmModuleResult, ModuleResults, OrchestrationStreamChunkResponse, OrchestrationStreamResponse } from '../index.js';
 
 /**
  * @internal
@@ -16,25 +16,13 @@ export function mergeStreamResponse(
 function mergeModuleResults(
   existing: Record<string, any> | undefined,
   incoming: Record<string, any> | undefined
-): Record<string, any> | undefined {
-  if (!existing) {
-    return incoming;
-  }
-  if (!incoming) {
-    return existing;
-  }
-  return { ...existing, ...incoming };
+): ModuleResults {
+  return { ...existing, ...incoming } as ModuleResults;
 }
 
 function mergeOrchestrationResult(
   existing: Record<string, any> | undefined,
   incoming: Record<string, any> | undefined
-): Record<string, any> | undefined {
-  if (!existing) {
-    return incoming;
-  }
-  if (!incoming) {
-    return existing;
-  }
-  return { ...existing, ...incoming };
+): LlmModuleResult {
+  return { ...existing, ...incoming } as LlmModuleResult;
 }
