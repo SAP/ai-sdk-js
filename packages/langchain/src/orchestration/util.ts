@@ -3,9 +3,7 @@ import { isZodSchemaV4 } from '@langchain/core/utils/types';
 // eslint-disable-next-line import/no-internal-modules
 import * as z from 'zod/v4';
 import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
-import type {
-  ToolDefinition
-} from '@langchain/core/language_models/base';
+import type { ToolDefinition } from '@langchain/core/language_models/base';
 import type { ChatOrchestrationToolType } from './types.js';
 import type { ChatResult } from '@langchain/core/outputs';
 import type {

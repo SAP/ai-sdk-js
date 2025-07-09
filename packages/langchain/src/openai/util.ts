@@ -3,7 +3,6 @@ import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
 import * as z from 'zod/v4';
 import { v4 as uuidv4 } from 'uuid';
 import { isZodSchemaV4 } from '@langchain/core/utils/types';
-import type { BindToolsInput } from '@langchain/core/language_models/chat_models';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type {
   AzureOpenAiChatCompletionRequestUserMessage,
@@ -33,9 +32,7 @@ import type {
   AzureOpenAiChatCallOptions,
   ChatAzureOpenAIToolType
 } from './types.js';
-import type {
-  ToolDefinition
-} from '@langchain/core/language_models/base';
+import type { ToolDefinition } from '@langchain/core/language_models/base';
 
 /**
  * Maps a {@link ChatAzureOpenAIToolType} to {@link AzureOpenAiFunctionObject}.
