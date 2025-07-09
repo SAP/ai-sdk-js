@@ -251,8 +251,8 @@ importers:
         specifier: 0.3.62
         version: 0.3.62(openai@4.104.0(ws@8.18.3)(zod@3.25.67))
       '@langchain/langgraph':
-        specifier: ^0.3.6
-        version: 0.3.6(@langchain/core@0.3.62(openai@4.104.0(ws@8.18.3)(zod@3.25.67)))(zod-to-json-schema@3.24.6(zod@3.25.67))
+        specifier: ^0.3.7
+        version: 0.3.7(@langchain/core@0.3.62(openai@4.104.0(ws@8.18.3)(zod@3.25.67)))(zod-to-json-schema@3.24.6(zod@3.25.67))
       '@langchain/textsplitters':
         specifier: 0.1.0
         version: 0.1.0(@langchain/core@0.3.62(openai@4.104.0(ws@8.18.3)(zod@3.25.67)))
@@ -332,8 +332,8 @@ importers:
         specifier: 0.3.62
         version: 0.3.62(openai@4.104.0(ws@8.18.3)(zod@3.25.67))
       '@langchain/langgraph':
-        specifier: ^0.3.6
-        version: 0.3.6(@langchain/core@0.3.62(openai@4.104.0(ws@8.18.3)(zod@3.25.67)))(zod-to-json-schema@3.24.6(zod@3.25.67))
+        specifier: ^0.3.7
+        version: 0.3.7(@langchain/core@0.3.62(openai@4.104.0(ws@8.18.3)(zod@3.25.67)))(zod-to-json-schema@3.24.6(zod@3.25.67))
       '@langchain/textsplitters':
         specifier: 0.1.0
         version: 0.1.0(@langchain/core@0.3.62(openai@4.104.0(ws@8.18.3)(zod@3.25.67)))
@@ -1096,19 +1096,22 @@ packages:
     peerDependencies:
       '@langchain/core': '>=0.2.31 <0.4.0'
 
-  '@langchain/langgraph-sdk@0.0.88':
-    resolution: {integrity: sha512-/W5VXmVpbeFkFdCSjGSSOXdGDzBzyc5NR7Q4ZkGvcR0cykpEi+s5s3ig4cBPALRjZzD/+PxWicK+vcIkTHhJJQ==}
+  '@langchain/langgraph-sdk@0.0.90':
+    resolution: {integrity: sha512-/RwdoGVsJvvzb9uvFzifUbaSB6iKKhmozS5N2DrBqs38HgvJGs0xDZJVSkmvF2fKd4mo/1424zzXcdNgGUATMg==}
     peerDependencies:
       '@langchain/core': '>=0.2.31 <0.4.0'
       react: ^18 || ^19
+      react-dom: ^18 || ^19
     peerDependenciesMeta:
       '@langchain/core':
         optional: true
       react:
         optional: true
+      react-dom:
+        optional: true
 
-  '@langchain/langgraph@0.3.6':
-    resolution: {integrity: sha512-TMRUEPb/eC5mS8XdY6gwLGX2druwFDxSWUQDXHHNsbrqhIrL3BPlw+UumjcKBQ8wvhk3gEspg4aHXGq8mAqbRA==}
+  '@langchain/langgraph@0.3.7':
+    resolution: {integrity: sha512-Cc0VUtuwFziCNqTNvD1QUNpMzhe9r8tTDIxFgpCwbF8oTNXxZ1tcd/iY9wr7gV5WhZm8DHEpZf3h4z3gFNeNMA==}
     engines: {node: '>=18'}
     peerDependencies:
       '@langchain/core': '>=0.3.58 < 0.4.0'
@@ -5892,7 +5895,7 @@ snapshots:
       '@langchain/core': 0.3.62(openai@4.104.0(ws@8.18.3)(zod@3.25.67))
       uuid: 10.0.0
 
-  '@langchain/langgraph-sdk@0.0.88(@langchain/core@0.3.62(openai@4.104.0(ws@8.18.3)(zod@3.25.67)))':
+  '@langchain/langgraph-sdk@0.0.90(@langchain/core@0.3.62(openai@4.104.0(ws@8.18.3)(zod@3.25.67)))':
     dependencies:
       '@types/json-schema': 7.0.15
       p-queue: 6.6.2
@@ -5901,17 +5904,18 @@ snapshots:
     optionalDependencies:
       '@langchain/core': 0.3.62(openai@4.104.0(ws@8.18.3)(zod@3.25.67))
 
-  '@langchain/langgraph@0.3.6(@langchain/core@0.3.62(openai@4.104.0(ws@8.18.3)(zod@3.25.67)))(zod-to-json-schema@3.24.6(zod@3.25.67))':
+  '@langchain/langgraph@0.3.7(@langchain/core@0.3.62(openai@4.104.0(ws@8.18.3)(zod@3.25.67)))(zod-to-json-schema@3.24.6(zod@3.25.67))':
     dependencies:
       '@langchain/core': 0.3.62(openai@4.104.0(ws@8.18.3)(zod@3.25.67))
       '@langchain/langgraph-checkpoint': 0.0.18(@langchain/core@0.3.62(openai@4.104.0(ws@8.18.3)(zod@3.25.67)))
-      '@langchain/langgraph-sdk': 0.0.88(@langchain/core@0.3.62(openai@4.104.0(ws@8.18.3)(zod@3.25.67)))
+      '@langchain/langgraph-sdk': 0.0.90(@langchain/core@0.3.62(openai@4.104.0(ws@8.18.3)(zod@3.25.67)))
       uuid: 10.0.0
       zod: 3.25.67
     optionalDependencies:
       zod-to-json-schema: 3.24.6(zod@3.25.67)
     transitivePeerDependencies:
       - react
+      - react-dom
 
   '@langchain/openai@0.5.13(@langchain/core@0.3.62(openai@4.104.0(ws@8.18.3)(zod@3.25.67)))(ws@8.18.3)':
     dependencies:
@@ -6112,7 +6116,7 @@ snapshots:
       eslint: 9.30.1
       eslint-config-prettier: 10.1.5(eslint@9.30.1)
       eslint-import-resolver-typescript: 4.4.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.33.0(eslint@9.30.1)(typescript@5.8.3))(eslint@9.30.1))(eslint@9.30.1)
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.33.0(eslint@9.30.1)(typescript@5.8.3))(eslint-import-resolver-typescript@4.4.1)(eslint@9.30.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.33.0(eslint@9.30.1)(typescript@5.8.3))(eslint-import-resolver-typescript@4.4.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.33.0(eslint@9.30.1)(typescript@5.8.3))(eslint@9.30.1))(eslint@9.30.1))(eslint@9.30.1)
       eslint-plugin-jsdoc: 50.6.17(eslint@9.30.1)
       eslint-plugin-prettier: 5.4.0(eslint-config-prettier@10.1.5(eslint@9.30.1))(eslint@9.30.1)(prettier@3.6.2)
       eslint-plugin-regex: 1.10.0(eslint@9.30.1)
@@ -7587,7 +7591,7 @@ snapshots:
       tinyglobby: 0.2.14
       unrs-resolver: 1.7.4
     optionalDependencies:
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.33.0(eslint@9.30.1)(typescript@5.8.3))(eslint-import-resolver-typescript@4.4.1)(eslint@9.30.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.33.0(eslint@9.30.1)(typescript@5.8.3))(eslint-import-resolver-typescript@4.4.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.33.0(eslint@9.30.1)(typescript@5.8.3))(eslint@9.30.1))(eslint@9.30.1))(eslint@9.30.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -7602,7 +7606,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.33.0(eslint@9.30.1)(typescript@5.8.3))(eslint-import-resolver-typescript@4.4.1)(eslint@9.30.1):
+  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.33.0(eslint@9.30.1)(typescript@5.8.3))(eslint-import-resolver-typescript@4.4.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.33.0(eslint@9.30.1)(typescript@5.8.3))(eslint@9.30.1))(eslint@9.30.1))(eslint@9.30.1):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.8
