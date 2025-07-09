@@ -1,9 +1,6 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import { SseStream } from '@sap-ai-sdk/core';
 import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
-import {
-  mergeChoices
-} from './internal.js';
 import type {
   CompletionPostResponseStreaming
 } from './client/api/schema/index.js';
@@ -50,6 +47,23 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
     }
   }
 
+  static async *_processOrchestrationStreamChunkResponse(
+    stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
+    response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
+  ): AsyncGenerator<OrchestrationStreamChunkResponse> {
+    if (!response) {
+      throw new Error('Response is required to process completion post response streaming.');
+    }
+    for await (const chunk of stream) {
+      // process request id
+      // process orchestration result
+      // process module results
+      yield chunk;
+    }
+
+    // post processing for aggregation
+  }
+
   static async *_processStreamEnd(
     stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
     response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
@@ -61,41 +75,7 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
       yield chunk;
     }
 
-    response.openStream = false;
-  }
-
-  /**
-   * @internal
-   */
-  static async *_processModuleResults(
-    stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
-    response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
-  ): AsyncGenerator<OrchestrationStreamChunkResponse> {
-    if (!response) {
-      throw new Error('Response is required to process module results.');
-    }
-    for await (const chunk of stream) {
-      const moduleResults = chunk.data.module_results;
-      if (moduleResults) {
-        const accumulator = response._getModuleResultsAccumulator();
-        for (const [moduleName, moduleResult] of Object.entries(moduleResults)) {
-          switch (moduleName) {
-            case 'llm': {
-              const mergedLlmResult = mergeLlmModuleResult(accumulator[moduleName], moduleResult);
-              accumulator[moduleName] = mergedLlmResult;
-              break;
-            }
-            case 'output_unmasking':
-              accumulator[moduleName] = mergeChoices(accumulator[moduleName], moduleResult);
-              break;
-            default:
-              accumulator[moduleName] = moduleResult;
-          }
-        }
-      }
-      yield chunk;
-    }
-    response._setModuleResults(response._getModuleResultsAccumulator());
+    response._openStream = false;
   }
 
   /**
