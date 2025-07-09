@@ -4,7 +4,6 @@ import { isZodSchemaV4 } from '@langchain/core/utils/types';
 import * as z from 'zod/v4';
 import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
 import type {
-  FunctionDefinition,
   ToolDefinition
 } from '@langchain/core/language_models/base';
 import type { ChatOrchestrationToolType } from './types.js';
@@ -16,7 +15,6 @@ import type {
   ChatMessageContent,
   CompletionPostResponse,
   FunctionObject,
-  FunctionParameters,
   MessageToolCalls,
   SystemChatMessage,
   Template,
@@ -321,18 +319,12 @@ export function mapOutputToChatResult(
   };
 }
 
-type ToolDefinitionLike = Pick<ToolDefinition, 'type'> & {
-  function: Omit<FunctionDefinition, 'parameters'> & {
-    parameters?: FunctionParameters;
-  };
-};
-
 /**
  * @internal
  */
 export function isToolDefinitionLike(
   tool: ChatOrchestrationToolType
-): tool is ToolDefinitionLike {
+): tool is ChatCompletionTool | ToolDefinition {
   return (
     typeof tool === 'object' &&
     tool !== null &&

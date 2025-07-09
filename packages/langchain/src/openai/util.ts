@@ -3,6 +3,7 @@ import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
 import * as z from 'zod/v4';
 import { v4 as uuidv4 } from 'uuid';
 import { isZodSchemaV4 } from '@langchain/core/utils/types';
+import type { BindToolsInput } from '@langchain/core/language_models/chat_models';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type {
   AzureOpenAiChatCompletionRequestUserMessage,
@@ -11,7 +12,6 @@ import type {
   AzureOpenAiChatCompletionRequestMessage,
   AzureOpenAiCreateChatCompletionResponse,
   AzureOpenAiCreateChatCompletionRequest,
-  AzureOpenAiFunctionParameters,
   AzureOpenAiChatCompletionMessageToolCalls,
   AzureOpenAiChatCompletionRequestToolMessage,
   AzureOpenAiChatCompletionRequestFunctionMessage,
@@ -34,7 +34,6 @@ import type {
   ChatAzureOpenAIToolType
 } from './types.js';
 import type {
-  FunctionDefinition,
   ToolDefinition
 } from '@langchain/core/language_models/base';
 
@@ -350,18 +349,12 @@ function removeUndefinedProperties<T extends object>(obj: T): T {
   return result;
 }
 
-type ToolDefinitionLike = Pick<ToolDefinition, 'type'> & {
-  function: Omit<FunctionDefinition, 'parameters'> & {
-    parameters?: AzureOpenAiFunctionParameters;
-  };
-};
-
 /**
  * @internal
  */
 export function isToolDefinitionLike(
   tool: ChatAzureOpenAIToolType
-): tool is ToolDefinitionLike {
+): tool is AzureOpenAiChatCompletionTool | ToolDefinition {
   return (
     typeof tool === 'object' &&
     tool !== null &&
