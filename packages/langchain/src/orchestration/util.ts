@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
-import { isZodSchema } from '@langchain/core/utils/types';
-import { zodToJsonSchema } from 'zod-to-json-schema';
+import { isZodSchemaV4 } from '@langchain/core/utils/types';
+// eslint-disable-next-line import/no-internal-modules
+import * as z from 'zod/v4';
 import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
 import type {
   FunctionDefinition,
@@ -67,8 +68,8 @@ export function mapToolToOrchestrationFunction(
   return {
     name: tool.name,
     description: tool.description,
-    parameters: isZodSchema(tool.schema)
-      ? zodToJsonSchema(tool.schema)
+    parameters: isZodSchemaV4(tool.schema)
+      ? z.toJSONSchema(tool.schema)
       : tool.schema,
     ...(strict !== undefined && { strict })
   };

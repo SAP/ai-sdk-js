@@ -1,7 +1,8 @@
 import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
-import { zodToJsonSchema } from 'zod-to-json-schema';
+// eslint-disable-next-line import/no-internal-modules
+import * as z from 'zod/v4';
 import { v4 as uuidv4 } from 'uuid';
-import { isZodSchema } from '@langchain/core/utils/types';
+import { isZodSchemaV4 } from '@langchain/core/utils/types';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type {
   AzureOpenAiChatCompletionRequestUserMessage,
@@ -70,8 +71,8 @@ export function mapToolToOpenAiFunction(
   return {
     name: tool.name,
     description: tool.description,
-    parameters: isZodSchema(tool.schema)
-      ? zodToJsonSchema(tool.schema)
+    parameters: isZodSchemaV4(tool.schema)
+      ? z.toJSONSchema(tool.schema)
       : tool.schema,
     ...(strict !== undefined && { strict })
   };

@@ -13,7 +13,8 @@ import { ToolNode } from '@langchain/langgraph/prebuilt';
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { tool } from '@langchain/core/tools';
-import { z } from 'zod';
+// eslint-disable-next-line import/no-internal-modules
+import * as z from 'zod/v4';
 import type { AIMessage } from '@langchain/core/messages';
 /**
  * This example demonstrates how to create a travel itinerary assistant using LangGraph.

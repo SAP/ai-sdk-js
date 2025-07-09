@@ -10,8 +10,8 @@ import {
   buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
-import { z } from 'zod';
-import { zodToJsonSchema } from 'zod-to-json-schema';
+// eslint-disable-next-line import/no-internal-modules
+import * as z from 'zod/v4';
 import type {
   OrchestrationStreamChunkResponse,
   OrchestrationStreamResponse,
@@ -536,7 +536,7 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
         json_schema: {
           name: 'translation_response',
           strict: true,
-          schema: zodToJsonSchema(translationSchema)
+          schema: z.toJSONSchema(translationSchema)
         }
       }
     }
@@ -573,7 +573,7 @@ const addNumbersTool: ChatCompletionTool = {
   function: {
     name: 'add',
     description: 'Add two numbers',
-    parameters: zodToJsonSchema(addNumbersSchema)
+    parameters: z.toJSONSchema(addNumbersSchema)
   }
 };
 

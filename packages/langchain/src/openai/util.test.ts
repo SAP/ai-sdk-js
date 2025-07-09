@@ -5,8 +5,7 @@ import {
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
-import { z } from 'zod';
-import { zodToJsonSchema } from 'zod-to-json-schema';
+import * as z from 'zod/v4';
 import { tool } from '@langchain/core/tools';
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
 import {
@@ -87,7 +86,7 @@ describe('Mapping Functions', () => {
           function: {
             name: 'test',
             description: 'Add two numbers',
-            parameters: zodToJsonSchema(addNumbersSchema)
+            parameters: z.toJSONSchema(addNumbersSchema)
           }
         }
       ],
