@@ -127,13 +127,6 @@ export class OrchestrationStreamResponse<T> {
       );
     }
 
-  get stream(): OrchestrationStream<T> {
-    if (!this._stream) {
-      throw new Error('Response stream is undefined.');
-    }
-    return this._stream;
-  }
-
   public getResponse(): CompletionPostResponse | undefined {
     if(!this._openStream) {
       return this._data as CompletionPostResponse;
@@ -141,6 +134,13 @@ export class OrchestrationStreamResponse<T> {
     logger.warn(
       'The stream is still open, the response is not available yet. Please wait until the stream is closed.'
     );
+  }
+
+  get stream(): OrchestrationStream<T> {
+    if (!this._stream) {
+      throw new Error('Response stream is undefined.');
+    }
+    return this._stream;
   }
 
   private getChoices() {

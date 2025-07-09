@@ -1,16 +1,12 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import { SseStream } from '@sap-ai-sdk/core';
 import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
+import { mergeStreamResponse } from './util/stream.js';
 import type {
   CompletionPostResponseStreaming
 } from './client/api/schema/index.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { OrchestrationStreamResponse } from './orchestration-stream-response.js';
-
-const logger = createLogger({
-  package: 'orchestration',
-  messageContext: 'orchestration-chat-completion-stream'
-});
 
 /**
  * Orchestration stream containing post-processing functions.
@@ -55,13 +51,9 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
       throw new Error('Response is required to process completion post response streaming.');
     }
     for await (const chunk of stream) {
-      // process request id
-      // process orchestration result
-      // process module results
+      mergeStreamResponse(chunk.data, response);
       yield chunk;
     }
-
-    // post processing for aggregation
   }
 
   static async *_processStreamEnd(
