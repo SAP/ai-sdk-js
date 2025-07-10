@@ -1,14 +1,22 @@
+import { createLogger } from '@sap-cloud-sdk/util';
 import type {
   CompletionPostResponseStreaming,
   LlmChoice,
   LlmChoiceStreaming,
   LlmModuleResult,
   LLMModuleResultStreaming,
+  MessageToolCall,
   ModuleResults,
   ModuleResultsStreaming,
   OrchestrationStreamChunkResponse,
-  OrchestrationStreamResponse
+  OrchestrationStreamResponse,
+  ResponseChatMessage
 } from '../index.js';
+
+const logger = createLogger({
+  package: 'orchestration',
+  messageContext: 'stream-util'
+});
 
 /**
  * @internal
@@ -102,4 +110,91 @@ function mergeLlmChoices(
         : undefined
     })) ?? [])
   ] as LlmChoice[];
+}
+
+/**
+ * @internal
+ */
+export function validateResponse(
+  response: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
+): void {
+  if (response._openStream) {
+    throw new Error(
+      "Stream wasn't closed properly. Please ensure the stream is closed after processing."
+    );
+  }
+
+  validateLlmModuleResult(response._data.module_results?.llm);
+
+  validateLlmModuleResult(response._data.orchestration_result);
+
+  validateChoices(response._data.module_results?.output_unmasking);
+}
+
+function validateLlmModuleResult(
+  llmModuleResult: LlmModuleResult | undefined
+): void {
+  if (llmModuleResult) {
+    if (!llmModuleResult.usage) {
+      logger.warn('LlmModuleResult is missing usage information.');
+    }
+    if (!llmModuleResult.choices || llmModuleResult.choices.length === 0) {
+      logger.warn('LlmModuleResult must contain at least one choice.');
+    }
+
+    validateChoices(llmModuleResult.choices);
+  }
+}
+
+function validateChoices(choices: LlmChoice[] | undefined): void {
+  if (choices) {
+    for (const choice of choices) {
+      if (!choice.message) {
+        logger.warn('LlmChoice is missing message information.');
+      }
+      if (!choice.finish_reason) {
+        logger.warn('LlmChoice is missing finish reason.');
+      }
+      if (!choice.index && choice.index !== 0) {
+        logger.warn('LlmChoice must have a valid index.');
+      }
+      validateMessage(choice.message);
+    }
+  }
+}
+
+function validateMessage(message: ResponseChatMessage): void {
+  if (!message.role) {
+    logger.warn('Message is missing role information.');
+  }
+  if (!message.content && !message.tool_calls) {
+    logger.warn('Message contains neither content nor tool calls.');
+  }
+
+  if (message.tool_calls) {
+    for (const toolCall of message.tool_calls) {
+      validateToolCall(toolCall);
+    }
+  }
+}
+
+/**
+ * @internal
+ */
+export function validateToolCall(toolCall: Partial<MessageToolCall>): void {
+  if (typeof toolCall.id !== 'string') {
+    logger.warn('ToolCall is missing id information.');
+  }
+  if (typeof toolCall.function?.name !== 'string') {
+    logger.warn('ToolCall is missing function name information.');
+  }
+  if (typeof toolCall.function?.arguments !== 'string') {
+    logger.warn('ToolCall is missing function arguments information.');
+  }
+
+  try {
+    JSON.parse(toolCall.function?.arguments ?? '');
+  } catch {
+    logger.warn('ToolCall arguments are not valid JSON.');
+  }
 }
