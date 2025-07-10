@@ -128,6 +128,28 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
     } as Partial<AzureOpenAiChatCallOptions>);
   }
 
+  withStructuredOutput<
+    RunOutput extends Record<string, any> = Record<string, any>
+  >(
+    outputSchema: InteropZodType<RunOutput> | Record<string, any>,
+    config?: StructuredOutputMethodOptions<false>
+  ): Runnable<BaseLanguageModelInput, RunOutput>;
+
+  withStructuredOutput<
+    RunOutput extends Record<string, any> = Record<string, any>
+  >(
+    outputSchema: InteropZodType<RunOutput> | Record<string, any>,
+    config?: StructuredOutputMethodOptions<true>
+  ): Runnable<BaseLanguageModelInput, { raw: BaseMessage; parsed: RunOutput }>;
+
+  withStructuredOutput<
+    RunOutput extends Record<string, any> = Record<string, any>
+  >(
+    outputSchema: InteropZodType<RunOutput> | Record<string, any>,
+    config?: StructuredOutputMethodOptions<boolean>
+  ):
+    | Runnable<BaseLanguageModelInput, RunOutput>
+    | Runnable<BaseLanguageModelInput, { raw: BaseMessage; parsed: RunOutput }>;
   override withStructuredOutput<
     RunOutput extends Record<string, any> = Record<string, any>
   >(
@@ -152,7 +174,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
 
     if (config?.strict !== undefined && method === 'jsonMode') {
       throw new Error(
-        "Argument `strict` is only supported for `method` = 'function_calling'"
+        "Argument 'strict' is not supported for 'method' = 'jsonMode'."
       );
     }
 
@@ -193,7 +215,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
           json_schema: {
             name: name ?? 'extract',
             description: getSchemaDescription(schema),
-            schema,
+            schema: asJsonSchema,
             strict: config?.strict
           }
         },

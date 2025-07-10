@@ -229,8 +229,8 @@ export async function streamChain(
 }
 
 /**
- * With Structured Output using `json_schema`.
- * @returns The answer from GPT with structured output.
+ * With Structured Output using `jsonSchema` option with `strict: true`.
+ * @returns The answer from GPT with exactly the structure defined in the schema.
  */
 export async function invokeWithStructuredOutputJsonSchema(): Promise<string> {
   // initialize client with options
@@ -238,66 +238,23 @@ export async function invokeWithStructuredOutputJsonSchema(): Promise<string> {
     modelName: 'gpt-4o'
   });
 
-  const jokeSchema = {
-    type: 'object',
-    additionalProperties: false,
-    properties: {
-      setup: { type: 'string', description: 'The setup for the joke' },
-      punchline: { type: 'string', description: "The joke's punchline" },
-      rating: {
-        type: 'number',
-        description: 'How funny the joke is, from 1 to 10'
-      }
-    },
-    required: ['setup', 'punchline', 'rating']
-  };
-  const structuredLlm = llm.withStructuredOutput(jokeSchema, {
+  const joke = z.object({
+  setup: z.string().describe("The setup of the joke"),
+  punchline: z.string().describe("The punchline to the joke"),
+  rating: z.number().describe("How funny the joke is, from 1 to 10"),
+});
+  const structuredLlm = llm.withStructuredOutput(joke, {
     name: 'joke',
     strict: true
   });
 
   const finalResponse = await structuredLlm.invoke('Tell me a joke about cats');
-  const parser = new StringOutputParser();
-  return parser.invoke(JSON.stringify(finalResponse));
-}
-
-/**
- * With Structured Output error handling when refusal is expected.
- * @returns The answer from GPT with structured output.
- */
-export async function invokeWithStructuredOutputRefusal(): Promise<string> {
-  // initialize client with options
-  const llm = new AzureOpenAiChatClient({
-    modelName: 'gpt-4o'
-  });
-
-  const jokeSchema = {
-    type: 'object',
-    additionalProperties: false,
-    properties: {
-      setup: { type: 'string', description: 'The setup for the joke' },
-      punchline: { type: 'string', description: "The joke's punchline" },
-      rating: {
-        type: 'number',
-        description: 'How funny the joke is, from 1 to 10'
-      }
-    },
-    required: ['setup', 'punchline', 'rating']
-  };
-  const structuredLlm = llm.withStructuredOutput(jokeSchema, {
-    name: 'joke',
-    strict: true
-  });
-
-  const finalResponse = await structuredLlm.invoke('Tell me a joke about cats');
-  const parser = new StringOutputParser();
-  return parser.invoke(JSON.stringify(finalResponse));
+  return JSON.stringify(finalResponse);
 }
 
 /**
  * Invoke with structured output using tool calling.
- * Tool calling is used when input is either a zod schema or an OpenAI Function Definition JSON schema (with name, description and parameters).
- * Used for models that dont support `response_format` or `json_schema`.
+ * Used for models that don't support `response_format` or `json_schema`.
  * @example JSON Schema:
  * {
  *   name: "joke",
@@ -317,21 +274,16 @@ export async function invokeWithStructuredOutputRefusal(): Promise<string> {
 export async function invokeWithStructuredOutputToolCalling(): Promise<string> {
   // initialize client with options
   const llm = new AzureOpenAiChatClient({
-    modelName: 'gpt-35-turbo'
+    modelName: 'gpt-4o'
   });
 
   const joke = z.object({
     setup: z.string().describe('The setup of the joke'),
-    punchline: z.string().describe('The punchline to the joke'),
-    rating: z
-      .number()
-      .optional()
-      .describe('How funny the joke is, from 1 to 10')
+    punchline: z.string().describe('The punchline to the joke')
   });
 
-  const structuredLlm = llm.withStructuredOutput(joke);
+  const structuredLlm = llm.withStructuredOutput(joke, { name: 'joke', method: 'functionCalling' });
 
   const finalResponse = await structuredLlm.invoke('Tell me a joke about cats');
-  const parser = new StringOutputParser();
-  return parser.invoke(JSON.stringify(finalResponse));
+  return JSON.stringify(finalResponse);
 }

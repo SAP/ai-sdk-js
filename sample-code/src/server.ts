@@ -397,8 +397,7 @@ app.get(
 /* LangChain */
 app.get('/langchain/invoke', async (req, res) => {
   try {
-    const response = await invoke();
-    res.send(JSON.stringify(response));
+    res.header('Content-Type', 'text/plain').send(await invoke());
   } catch (error: any) {
     sendError(res, error);
   }
@@ -407,7 +406,7 @@ app.get('/langchain/invoke', async (req, res) => {
 app.get('/langchain/invoke-with-structured-output', async (req, res) => {
   try {
     const response = await invokeWithStructuredOutputJsonSchema();
-    res.header('Content-Type', 'text/plain').send(response);
+    res.send(response);
   } catch (error: any) {
     sendError(res, error);
   }
