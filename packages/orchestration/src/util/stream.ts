@@ -150,11 +150,12 @@ function mergeToolCalls(
   if (!existing || existing.length === 0) {
     return transformStreamingToolCalls(incoming);
   }
-  const mergedToolCalls = [...(existing ?? [])];
+  const mergedToolCalls = [...existing];
   for (const toolCall of incoming) {
     const existingToolCall = mergedToolCalls.find(
       tc => tc.id === toolCall.id
     );
+    // TODO: THIS
     if (existingToolCall) {
       // Merge existing tool call with incoming tool call
       existingToolCall.function.name =
@@ -163,17 +164,10 @@ function mergeToolCalls(
         toolCall.function?.arguments ?? existingToolCall.function.arguments;
     } else {
       // Add new tool call
-      mergedToolCalls.push({
-        id: toolCall.id ?? '',
-        type: toolCall.type ?? 'function',
-        function: {
-          name: toolCall.function?.name ?? '',
-          arguments: toolCall.function?.arguments ?? ''
-        }
-      });
-    }
+      mergedToolCalls.push(transformStreamingToolCall(toolCall));
+      }
   }
-  return mergedToolCalls.length > 0 ? mergedToolCalls : undefined;
+  return mergedToolCalls;
 }
 
 function mergeLogProbs(
@@ -212,14 +206,20 @@ function transformStreamingToolCalls(
   if (!toolCalls || toolCalls.length === 0) {
     return undefined;
   }
-  return toolCalls?.map(toolCall => ({
+  return toolCalls?.map(toolCall => transformStreamingToolCall(toolCall));
+}
+
+function transformStreamingToolCall(
+  toolCall: ToolCallChunk
+): MessageToolCall {
+  return {
     id: toolCall.id ?? '',
     type: toolCall.type ?? 'function',
     function: {
       name: toolCall.function?.name ?? '',
       arguments: toolCall.function?.arguments ?? ''
     }
-  }));
+  };
 }
 
 /**
