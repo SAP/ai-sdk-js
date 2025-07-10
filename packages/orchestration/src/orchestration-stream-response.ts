@@ -57,7 +57,6 @@ export class OrchestrationStreamResponse<T> {
    * @param choiceIndex - The index of the choice to parse.
    * @returns The message content.
    */
-  // need to check for content filter hits in the post processing
   public getContent(choiceIndex = 0): string | undefined {
     if (!this._openStream) {
       const choice = this.findChoiceByIndex(choiceIndex);

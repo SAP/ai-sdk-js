@@ -107,8 +107,11 @@ function mergeLlmChoices(
     if (existingChoice) {
       // Merge existing choice with incoming choice
       existingChoice.index = choice.index ?? existingChoice.index;
-      existingChoice.finish_reason =
-        choice.finish_reason ?? existingChoice.finish_reason;
+      existingChoice.finish_reason = handleFinishReason(
+        existingChoice.finish_reason,
+        choice.finish_reason,
+        choice.index
+      );
       existingChoice.logprobs = mergeLogProbs(
         existingChoice.logprobs,
         choice.logprobs
@@ -152,20 +155,19 @@ function mergeToolCalls(
   }
   const mergedToolCalls = [...existing];
   for (const toolCall of incoming) {
-    const existingToolCall = mergedToolCalls.find(
-      tc => tc.id === toolCall.id
-    );
+    const existingToolCall = mergedToolCalls.find(tc => tc.id === toolCall.id);
     if (existingToolCall) {
       // Merge existing tool call with incoming tool call
       existingToolCall.id = toolCall.id ?? existingToolCall.id;
       existingToolCall.function.name =
         toolCall.function?.name ?? existingToolCall.function.name;
       existingToolCall.function.arguments =
-        existingToolCall.function.arguments + (toolCall.function?.arguments ?? '');
+        existingToolCall.function.arguments +
+        (toolCall.function?.arguments ?? '');
     } else {
       // Add new tool call
-        mergedToolCalls.push(transformStreamingToolCall(toolCall));
-      }
+      mergedToolCalls.push(transformStreamingToolCall(toolCall));
+    }
   }
   return mergedToolCalls;
 }
@@ -184,6 +186,40 @@ function mergeLogProbs(
     content: [...(existing.content ?? []), ...(incoming.content ?? [])],
     refusal: [...(existing.refusal ?? []), ...(incoming.refusal ?? [])]
   };
+}
+
+function handleFinishReason(
+  existing: string | undefined,
+  incoming: string | undefined,
+  choiceIndex: number | undefined
+): string {
+  if (!incoming) {
+    return existing ?? '';
+  }
+
+  switch (incoming) {
+    case 'content_filter':
+      logger.error(
+        `Choice ${choiceIndex}: Stream finished with content filter hit.`
+      );
+      break;
+    case 'length':
+      logger.error(
+        `Choice ${choiceIndex}: Stream finished with token length exceeded.`
+      );
+      break;
+    case 'stop':
+    case 'tool_calls':
+    case 'function_call':
+      logger.debug(`Choice ${choiceIndex}: Stream finished.`);
+      break;
+    default:
+      logger.error(
+        `Choice ${choiceIndex}: Stream finished with unknown reason '${incoming}'.`
+      );
+  }
+
+  return incoming;
 }
 
 function transformStreamingChoice(choice: LlmChoiceStreaming): LlmChoice {
@@ -209,9 +245,7 @@ function transformStreamingToolCalls(
   return toolCalls?.map(toolCall => transformStreamingToolCall(toolCall));
 }
 
-function transformStreamingToolCall(
-  toolCall: ToolCallChunk
-): MessageToolCall {
+function transformStreamingToolCall(toolCall: ToolCallChunk): MessageToolCall {
   return {
     id: toolCall.id ?? '',
     type: toolCall.type ?? 'function',
