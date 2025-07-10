@@ -275,7 +275,7 @@ export function validateResponse(
 }
 
 function validateLlmModuleResult(
-  llmModuleResult: LlmModuleResult | undefined
+  llmModuleResult: Partial<LlmModuleResult> | undefined
 ): void {
   if (llmModuleResult) {
     if (!llmModuleResult.usage) {
@@ -289,11 +289,13 @@ function validateLlmModuleResult(
   }
 }
 
-function validateChoices(choices: LlmChoice[] | undefined): void {
+function validateChoices(choices: Partial<LlmChoice>[] | undefined): void {
   if (choices) {
     for (const choice of choices) {
       if (!choice.message) {
         logger.warn('LlmChoice is missing message information.');
+      } else {
+        validateMessage(choice.message);
       }
       if (!choice.finish_reason) {
         logger.warn('LlmChoice is missing a finish reason.');
@@ -301,12 +303,11 @@ function validateChoices(choices: LlmChoice[] | undefined): void {
       if (!choice.index && choice.index !== 0) {
         logger.warn('LlmChoice must have a valid index.');
       }
-      validateMessage(choice.message);
     }
   }
 }
 
-function validateMessage(message: ResponseChatMessage): void {
+function validateMessage(message: Partial<ResponseChatMessage>): void {
   if (!message.role) {
     logger.warn('Message is missing role information.');
   }
