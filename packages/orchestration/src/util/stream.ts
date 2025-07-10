@@ -158,7 +158,6 @@ function mergeToolCalls(
     const existingToolCall = mergedToolCalls.find(tc => tc.id === toolCall.id);
     if (existingToolCall) {
       // Merge existing tool call with incoming tool call
-      existingToolCall.id = toolCall.id ?? existingToolCall.id;
       existingToolCall.function.name =
         toolCall.function?.name ?? existingToolCall.function.name;
       existingToolCall.function.arguments =
