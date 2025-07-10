@@ -240,10 +240,10 @@ export async function invokeWithStructuredOutputJsonSchema(): Promise<string> {
   });
 
   const joke = z.object({
-  setup: z.string().describe("The setup of the joke"),
-  punchline: z.string().describe("The punchline to the joke"),
-  rating: z.number().describe("How funny the joke is, from 1 to 10"),
-});
+    setup: z.string().describe('The setup of the joke'),
+    punchline: z.string().describe('The punchline to the joke'),
+    rating: z.number().describe('How funny the joke is, from 1 to 10')
+  });
   const structuredLlm = llm.withStructuredOutput(joke, {
     name: 'joke',
     strict: true
@@ -283,7 +283,10 @@ export async function invokeWithStructuredOutputToolCalling(): Promise<string> {
     punchline: z.string().describe('The punchline to the joke')
   });
 
-  const structuredLlm = llm.withStructuredOutput(joke, { name: 'joke', method: 'functionCalling' });
+  const structuredLlm = llm.withStructuredOutput(joke, {
+    name: 'joke',
+    method: 'functionCalling'
+  });
 
   const finalResponse = await structuredLlm.invoke('Tell me a joke about cats');
   return JSON.stringify(finalResponse);
