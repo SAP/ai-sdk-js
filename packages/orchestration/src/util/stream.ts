@@ -126,24 +126,54 @@ function mergeLlmChoices(
 }
 
 function mergeMessage(
-  existing: ResponseChatMessage | undefined,
+  existing: ResponseChatMessage,
   incoming: ChatDelta | undefined
 ): ResponseChatMessage {
   if (!incoming) {
     return existing;
   }
-  if (!existing) {
-    return incoming;
-  }
   return {
-    role: incoming.role ?? existing.role,
-    content: [...(existing.content ?? []), ...(incoming.content ?? [])],
-    tool_calls: [
-      ...(existing.tool_calls ?? []),
-      ...(incoming.tool_calls ?? [])
-    ],
-    refusal: [...(existing.refusal ?? []), ...(incoming.refusal ?? [])]
+    role: existing.role,
+    content: existing.content + (incoming.content ?? ''),
+    tool_calls: mergeToolCalls(existing.tool_calls, incoming.tool_calls),
+    refusal: incoming.refusal ?? existing.refusal
   };
+}
+
+function mergeToolCalls(
+  existing: MessageToolCall[] | undefined,
+  incoming: ToolCallChunk[] | undefined
+): MessageToolCall[] | undefined {
+  if (!incoming || incoming.length === 0) {
+    return existing;
+  }
+  if (!existing || existing.length === 0) {
+    return transformStreamingToolCalls(incoming);
+  }
+  const mergedToolCalls = [...(existing ?? [])];
+  for (const toolCall of incoming) {
+    const existingToolCall = mergedToolCalls.find(
+      tc => tc.id === toolCall.id
+    );
+    if (existingToolCall) {
+      // Merge existing tool call with incoming tool call
+      existingToolCall.function.name =
+        toolCall.function?.name ?? existingToolCall.function.name;
+      existingToolCall.function.arguments =
+        toolCall.function?.arguments ?? existingToolCall.function.arguments;
+    } else {
+      // Add new tool call
+      mergedToolCalls.push({
+        id: toolCall.id ?? '',
+        type: toolCall.type ?? 'function',
+        function: {
+          name: toolCall.function?.name ?? '',
+          arguments: toolCall.function?.arguments ?? ''
+        }
+      });
+    }
+  }
+  return mergedToolCalls.length > 0 ? mergedToolCalls : undefined;
 }
 
 function mergeLogProbs(
@@ -258,10 +288,7 @@ function validateMessage(message: ResponseChatMessage): void {
   }
 }
 
-/**
- * @internal
- */
-export function validateToolCall(toolCall: Partial<MessageToolCall>): void {
+function validateToolCall(toolCall: Partial<MessageToolCall>): void {
   if (typeof toolCall.id !== 'string') {
     logger.warn('ToolCall is missing id information.');
   }
