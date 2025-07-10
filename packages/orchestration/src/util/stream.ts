@@ -10,7 +10,8 @@ import type {
   ModuleResultsStreaming,
   OrchestrationStreamChunkResponse,
   OrchestrationStreamResponse,
-  ResponseChatMessage
+  ResponseChatMessage,
+  ToolCallChunk
 } from '../index.js';
 
 const logger = createLogger({
@@ -98,18 +99,53 @@ function mergeLlmChoices(
   existing: LlmChoice[] | undefined,
   incoming: LlmChoiceStreaming[] | undefined
 ): LlmChoice[] {
-  return [
-    ...(existing ?? []),
-    ...(incoming?.map(choice => ({
-      ...choice,
-      message: choice.message
-        ? {
-            ...choice.message,
-            content: choice.message.content
-          }
-        : undefined
-    })) ?? [])
-  ] as LlmChoice[];
+  const mergedChoices = [...existing ?? []];
+  for(const choice of incoming ?? []) {
+    const existingChoice = mergedChoices.find(c => c.index === choice.index);
+    if (existingChoice) {
+      // Merge existing choice with incoming choice
+      existingChoice.message = {
+        ...existingChoice.message,
+        ...choice.message
+      };
+    } else {
+      // Add new choice
+      mergedChoices.push(transforStreamingChoice(choice));
+    }
+  }
+  return mergedChoices;
+}
+
+function transforStreamingChoice(
+  choice: LlmChoiceStreaming
+): LlmChoice {
+  return {
+    index: choice.index,
+    message: {
+      role: 'assistant',
+      content: choice.delta.content,
+      tool_calls: transformStreamingToolCalls(choice.delta.tool_calls),
+      refusal: choice.delta.refusal,
+    },
+    finish_reason: choice.finish_reason ?? '',
+    logprobs: choice.logprobs
+  };
+}
+
+function transformStreamingToolCalls(
+  toolCalls: ToolCallChunk[] | undefined
+): MessageToolCall[] | undefined {
+  if(!toolCalls || toolCalls.length === 0) {
+    return undefined;
+  }
+  return toolCalls?.map(toolCall => ({
+    id: toolCall.id ?? '',
+    type: toolCall.type ?? 'function',
+    function: {
+      name: toolCall.function?.name ?? '',
+      arguments: toolCall.function?.arguments ?? ''
+    }
+  }));
 }
 
 /**
@@ -153,7 +189,7 @@ function validateChoices(choices: LlmChoice[] | undefined): void {
         logger.warn('LlmChoice is missing message information.');
       }
       if (!choice.finish_reason) {
-        logger.warn('LlmChoice is missing finish reason.');
+        logger.warn('LlmChoice is missing a finish reason.');
       }
       if (!choice.index && choice.index !== 0) {
         logger.warn('LlmChoice must have a valid index.');
