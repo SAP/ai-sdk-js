@@ -6,8 +6,8 @@ import {
 import type {
   DataRepositoryType,
   DocumentsListResponse,
-  PipelineStatus,
-  RetievalSearchResults
+  GetPipelineStatus,
+  RetrievalSearchResults
 } from '@sap-ai-sdk/document-grounding';
 
 /**
@@ -91,7 +91,7 @@ export async function retrieveDocuments(
   query: string,
   dataRepositoryType: DataRepositoryType = 'vector',
   dataRepositories: string[] = ['*']
-): Promise<RetievalSearchResults> {
+): Promise<RetrievalSearchResults> {
   return RetrievalApi.search(
     {
       query,
@@ -119,7 +119,7 @@ export async function retrieveDocuments(
  */
 export async function getPipelineStatus(
   pipelineId: string
-): Promise<PipelineStatus> {
+): Promise<GetPipelineStatus> {
   return PipelinesApi.getPipelineStatus(pipelineId, {
     'AI-Resource-Group': 'ai-sdk-js-e2e'
   }).execute();
