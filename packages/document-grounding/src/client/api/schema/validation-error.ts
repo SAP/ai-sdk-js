@@ -5,6 +5,10 @@
  */
 
 /**
- * Representation of the 'DataRepositoryType' schema.
+ * Representation of the 'ValidationError' schema.
  */
-export type DataRepositoryType = 'vector' | 'help.sap.com' | any;
+export type ValidationError = {
+  loc: string[];
+  msg: string;
+  type: string;
+} & Record<string, any>;

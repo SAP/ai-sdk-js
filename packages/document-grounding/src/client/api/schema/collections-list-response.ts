@@ -8,6 +8,6 @@ import type { Collection } from './collection.js';
  * A response containing collections retrieved from the server.
  */
 export type CollectionsListResponse = {
-  resources: Collection[];
   count?: number;
+  resources: Collection[];
 } & Record<string, any>;

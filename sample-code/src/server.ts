@@ -64,8 +64,8 @@ import {
   createPromptTemplate,
   deletePromptTemplate
 } from './prompt-registry.js';
+import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type { AIMessageChunk } from '@langchain/core/messages';
-import type { RetievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type { AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 
@@ -645,7 +645,7 @@ app.get('/document-grounding/retrieve-documents', async (req, res) => {
     console.log(JSON.stringify(retrievalResult));
 
     res.write('Retrieved documents:\n');
-    (retrievalResult.results as RetievalPerFilterSearchResult[]).forEach(
+    (retrievalResult.results as RetrievalPerFilterSearchResult[]).forEach(
       perFilterSearchResult => {
         res.write(`  - Filter: ${perFilterSearchResult.filterId}\n`);
         perFilterSearchResult.results!.forEach(

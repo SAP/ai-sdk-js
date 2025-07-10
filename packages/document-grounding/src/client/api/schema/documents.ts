@@ -8,6 +8,6 @@ import type { DocumentWithoutChunks } from './document-without-chunks.js';
  * A response containing documents retrieved from the server.
  */
 export type Documents = {
-  resources: DocumentWithoutChunks[];
   count?: number;
+  resources: DocumentWithoutChunks[];
 } & Record<string, any>;

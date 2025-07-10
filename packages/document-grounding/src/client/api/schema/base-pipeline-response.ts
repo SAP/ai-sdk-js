@@ -3,11 +3,12 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { Pipeline } from './pipeline.js';
+import type { MetaData } from './meta-data.js';
 /**
- * Representation of the 'Pipelines' schema.
+ * Representation of the 'BasePipelineResponse' schema.
  */
-export type Pipelines = {
-  resources: Pipeline[];
-  count?: number;
+export type BasePipelineResponse = {
+  id: string;
+  type: string;
+  metadata?: MetaData;
 } & Record<string, any>;

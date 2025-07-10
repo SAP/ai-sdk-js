@@ -3,11 +3,10 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { DataRepository } from './data-repository.js';
+import type { ValidationError } from './validation-error.js';
 /**
- * Representation of the 'DataRepositories' schema.
+ * Representation of the 'HTTPValidationError' schema.
  */
-export type DataRepositories = {
-  count?: number;
-  resources: DataRepository[];
+export type HTTPValidationError = {
+  detail?: ValidationError[];
 } & Record<string, any>;
