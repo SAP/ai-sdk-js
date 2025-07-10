@@ -1,5 +1,7 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import type {
+  ChatDelta,
+  ChoiceLogprobs,
   CompletionPostResponseStreaming,
   LlmChoice,
   LlmChoiceStreaming,
@@ -104,19 +106,53 @@ function mergeLlmChoices(
     const existingChoice = mergedChoices.find(c => c.index === choice.index);
     if (existingChoice) {
       // Merge existing choice with incoming choice
-      existingChoice.message = {
-        ...existingChoice.message,
-        ...choice.message
-      };
+      existingChoice.finish_reason = choice.finish_reason ?? existingChoice.finish_reason;
+      existingChoice.logprobs = mergeLogProbs(existingChoice.logprobs, choice.logprobs);
+      existingChoice.index = choice.index ?? existingChoice.index;
+      existingChoice.message = mergeMessage(existingChoice.message, choice.delta);
     } else {
       // Add new choice
-      mergedChoices.push(transforStreamingChoice(choice));
+      mergedChoices.push(transformStreamingChoice(choice));
     }
   }
   return mergedChoices;
 }
 
-function transforStreamingChoice(
+function mergeMessage(
+  existing: ResponseChatMessage | undefined,
+  incoming: ChatDelta | undefined
+): ResponseChatMessage {
+  if (!incoming) {
+    return existing;
+  }
+  if (!existing) {
+    return incoming;
+  }
+  return {
+    role: incoming.role ?? existing.role,
+    content: [...(existing.content ?? []), ...(incoming.content ?? [])],
+    tool_calls: [...(existing.tool_calls ?? []), ...(incoming.tool_calls ?? [])],
+    refusal: [...(existing.refusal ?? []), ...(incoming.refusal ?? [])],
+  };
+}
+
+function mergeLogProbs(
+  existing: ChoiceLogprobs | undefined,
+  incoming: ChoiceLogprobs | undefined
+): ChoiceLogprobs | undefined {
+  if (!incoming) {
+    return existing;
+  }
+  if(!existing) {
+    return incoming;
+  }
+  return {
+    content: [...(existing.content ?? []), ...(incoming.content ?? [])],
+    refusal: [...(existing.refusal ?? []), ...(incoming.refusal ?? [])],
+  };
+}
+
+function transformStreamingChoice(
   choice: LlmChoiceStreaming
 ): LlmChoice {
   return {
