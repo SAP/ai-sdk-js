@@ -24,7 +24,7 @@ function mergeModuleResults(
         mergedModuleResults[moduleName] = mergeLlmModule(mergedModuleResults[moduleName], moduleResult);
         break;
       case 'output_unmasking':
-        mergedModuleResults[moduleName] = mergeOutputUnmaskingModule(mergedModuleResults[moduleName], moduleResult);
+        mergedModuleResults[moduleName] = mergeLlmChoices(mergedModuleResults[moduleName], moduleResult);
         break;
       default:
         mergedModuleResults[moduleName] = moduleResult;
@@ -36,13 +36,42 @@ function mergeModuleResults(
 function mergeLlmModule(
   existing: LlmModuleResult | undefined,
   incoming: LLMModuleResultStreaming | undefined
-): LlmModuleResult {
-  return { ...existing, ...incoming } as LlmModuleResult;
+): LlmModuleResult | undefined {
+  if(!incoming) {
+    return existing
+  }
+  const mergedModuleResults = {
+    ...incoming,
+    usage: mergeTokenUsage(existing?.usage, incoming.usage),
+    choices: mergeLlmChoices(existing?.choices, incoming?.choices)
+  };
+  return mergedModuleResults;
 }
 
-function mergeOutputUnmaskingModule(
+function mergeTokenUsage(
+  existing: { prompt_tokens: number; completion_tokens: number; total_tokens: number } | undefined,
+  incoming: { prompt_tokens: number; completion_tokens: number; total_tokens: number } | undefined
+): { prompt_tokens: number; completion_tokens: number; total_tokens: number } {
+  return {
+    prompt_tokens: incoming?.prompt_tokens ?? existing?.prompt_tokens ?? 0,
+    completion_tokens: incoming?.completion_tokens ?? existing?.completion_tokens ?? 0,
+    total_tokens: incoming?.total_tokens ?? existing?.total_tokens ?? 0
+  };
+}
+
+function mergeLlmChoices(
   existing: LlmChoice[] | undefined,
   incoming: LlmChoiceStreaming[] | undefined
 ): LlmChoice[] {
-  return [...(existing || []), ...(incoming || [])] as LlmChoice[];
+  return [
+    ...(existing ?? []),
+    ...(incoming?.map(choice => ({
+      incoming: choice.delta.
+      ...choice,
+      message: choice.message ? {
+        ...choice.message,
+        content: choice.message.content
+      } : undefined
+    })) ?? [])
+  ] as LlmChoice[];
 }
