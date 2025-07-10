@@ -1,4 +1,4 @@
-import type { CompletionPostResponseStreaming, LlmModuleResult, ModuleResults, OrchestrationStreamChunkResponse, OrchestrationStreamResponse } from '../index.js';
+import type { CompletionPostResponseStreaming, LlmChoice, LlmChoiceStreaming, LlmModuleResult, LLMModuleResultStreaming, ModuleResults, ModuleResultsStreaming, OrchestrationStreamChunkResponse, OrchestrationStreamResponse } from '../index.js';
 
 /**
  * @internal
@@ -10,19 +10,39 @@ export function mergeStreamResponse(
     const data = response._data;
     data.request_id = chunk.request_id;
     data.module_results = mergeModuleResults(data.module_results, chunk.module_results);
-    data.orchestration_result = mergeOrchestrationResult(data.orchestration_result, chunk.orchestration_result);
+    data.orchestration_result = mergeLlmModule(data.orchestration_result, chunk.orchestration_result);
 }
 
 function mergeModuleResults(
-  existing: Record<string, any> | undefined,
-  incoming: Record<string, any> | undefined
+  existing: ModuleResults | undefined,
+  incoming: ModuleResultsStreaming | undefined
 ): ModuleResults {
-  return { ...existing, ...incoming } as ModuleResults;
+  const mergedModuleResults = { ...existing };
+  for(const [moduleName, moduleResult] of Object.entries(incoming || {})) {
+    switch(moduleName) {
+      case 'llm':
+        mergedModuleResults[moduleName] = mergeLlmModule(mergedModuleResults[moduleName], moduleResult);
+        break;
+      case 'output_unmasking':
+        mergedModuleResults[moduleName] = mergeOutputUnmaskingModule(mergedModuleResults[moduleName], moduleResult);
+        break;
+      default:
+        mergedModuleResults[moduleName] = moduleResult;
+    }
+  }
+  return mergedModuleResults;
 }
 
-function mergeOrchestrationResult(
-  existing: Record<string, any> | undefined,
-  incoming: Record<string, any> | undefined
+function mergeLlmModule(
+  existing: LlmModuleResult | undefined,
+  incoming: LLMModuleResultStreaming | undefined
 ): LlmModuleResult {
   return { ...existing, ...incoming } as LlmModuleResult;
+}
+
+function mergeOutputUnmaskingModule(
+  existing: LlmChoice[] | undefined,
+  incoming: LlmChoiceStreaming[] | undefined
+): LlmChoice[] {
+  return [...(existing || []), ...(incoming || [])] as LlmChoice[];
 }
