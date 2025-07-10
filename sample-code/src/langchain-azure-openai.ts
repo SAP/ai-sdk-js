@@ -15,7 +15,8 @@ import {
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
-import { z } from 'zod';
+// eslint-disable-next-line import/no-internal-modules
+import * as z from 'zod/v4';
 import { tool } from '@langchain/core/tools';
 import type { AIMessageChunk, BaseMessage } from '@langchain/core/messages';
 

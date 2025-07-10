@@ -1,5 +1,5 @@
-import { zodToJsonSchema } from 'zod-to-json-schema';
-import { z } from 'zod';
+// eslint-disable-next-line import/no-internal-modules
+import * as z from 'zod/v4';
 import type { ChatCompletionTool } from '../packages/orchestration/src/client/api/schema/index.js';
 
 /**
@@ -20,7 +20,7 @@ export const addNumbersTool: ChatCompletionTool = {
   function: {
     name: 'add',
     description: 'Adds two numbers',
-    parameters: zodToJsonSchema(addNumbersSchema)
+    parameters: z.toJSONSchema(addNumbersSchema)
   }
 };
 
@@ -42,6 +42,6 @@ export const multiplyNumbersTool: ChatCompletionTool = {
   function: {
     name: 'multiply',
     description: 'Multiplies two numbers',
-    parameters: zodToJsonSchema(multiplyNumbersSchema)
+    parameters: z.toJSONSchema(multiplyNumbersSchema)
   }
 };

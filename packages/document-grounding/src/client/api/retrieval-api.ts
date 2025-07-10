@@ -8,7 +8,7 @@ import type {
   DataRepositories,
   DataRepository,
   RetrievalSearchInput,
-  RetievalSearchResults
+  RetrievalSearchResults
 } from './schema/index.js';
 /**
  * Representation of the 'RetrievalApi'.
@@ -17,7 +17,7 @@ import type {
 export const RetrievalApi = {
   _defaultBasePath: '/lm/document-grounding',
   /**
-   * List all DataRepository objects.
+   * List all Data Repositories
    * @param queryParameters - Object containing the following keys: $top, $skip, $count.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
@@ -36,8 +36,8 @@ export const RetrievalApi = {
       RetrievalApi._defaultBasePath
     ),
   /**
-   * List single DataRepository object.
-   * @param repositoryId - Path parameter.
+   * List data repository by id
+   * @param repositoryId - Repository ID
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -64,7 +64,7 @@ export const RetrievalApi = {
     body: RetrievalSearchInput,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<RetievalSearchResults>(
+    new OpenApiRequestBuilder<RetrievalSearchResults>(
       'post',
       '/retrieval/search',
       {

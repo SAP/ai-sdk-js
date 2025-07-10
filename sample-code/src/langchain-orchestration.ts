@@ -19,7 +19,8 @@ import {
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
-import z from 'zod';
+// eslint-disable-next-line import/no-internal-modules
+import * as z from 'zod/v4';
 import type { BaseMessage, AIMessageChunk } from '@langchain/core/messages';
 import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
 

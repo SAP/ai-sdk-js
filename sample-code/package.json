@@ -21,7 +21,7 @@
     "lint:fix": "eslint . --fix && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -w --log-level error"
   },
   "dependencies": {
-    "@langchain/langgraph": "^0.3.6",
+    "@langchain/langgraph": "^0.3.7",
     "langchain": "0.3.29",
     "@langchain/core": "0.3.62",
     "@langchain/textsplitters": "0.1.0",
@@ -35,7 +35,6 @@
     "@types/express": "^5.0.3",
     "express": "^5.1.0",
     "uuid": "^11.1.0",
-    "zod": "^3.25.67",
-    "zod-to-json-schema": "^3.24.6"
+    "zod": "^3.25.76"
   }
 }
