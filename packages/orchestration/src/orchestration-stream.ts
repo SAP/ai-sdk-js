@@ -1,9 +1,7 @@
 import { SseStream } from '@sap-ai-sdk/core';
 import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 import { mergeStreamResponse } from './util/index.js';
-import type {
-  CompletionPostResponseStreaming
-} from './client/api/schema/index.js';
+import type { CompletionPostResponseStreaming } from './client/api/schema/index.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 
@@ -47,7 +45,9 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
     response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   ): AsyncGenerator<OrchestrationStreamChunkResponse> {
     if (!response) {
-      throw new Error('Response is required to process completion post response streaming.');
+      throw new Error(
+        'Response is required to process completion post response streaming.'
+      );
     }
     for await (const chunk of stream) {
       mergeStreamResponse(chunk.data, response);
