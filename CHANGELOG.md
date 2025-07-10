@@ -28,6 +28,30 @@
 
 -
 
+# 1.16.0
+## Compatibility Notes
+
+- [document-grounding] Refactor `Pipelines` to `GetPipelines`, `Pipeline` to `GetPipeline`, `PipelinePostRequest` to `CreatePipeline`, `PipelineStatus` to `GetPipelineStatus`, and `RetievalSearchResults` to `RetrievalSearchResults`. (efffc16)
+- [langchain] Adjust content of chat result in LangChain Orchestration by removing `finish_reason`, `index`, `function_call`, `request_id` from `additional_kwargs` and adding `tool_calls` and `request_id` in `generationInfo`.` (e9c19b4)
+- [orchestration] The type of `logprobs` in the response is corrected as a result of a bug fix from the Orchestration service. (9a0d6f7)
+- [orchestration] The `ModuleResults` and `LlmModuleResult` types are now only meant to be used for the non-streaming case.
+  Previously, they represented both streaming and non-streaming response.
+  For streaming, use `ModuleResultsStreaming` and `LlmModuleResultStreaming` types instead.
+  - @sap-ai-sdk/ai-api@1.16.0
+  - @sap-ai-sdk/core@1.16.0
+  - @sap-ai-sdk/prompt-registry@1.16.0 (9a0d6f7)
+
+## New Features
+
+- [document-grounding] Support the new pipeline trigger API and the enhanced pipeline status API. (efffc16)
+- [foundation-models] Support Azure OpenAI streaming with tool calls. (e9c19b4)
+- [langchain] Support LangChain OpenAI streaming. (e9c19b4)
+
+## Fixed Issues
+
+- [langchain] Retry on timeout for non-streaming requests in LangChain Orchestration client. (268c38e)
+- [orchestration] The `role` property of the `ResponseChatMessage` type is now mandatory as it is always returned. (9a0d6f7)
+
 # 1.15.0
 ## New Features
 

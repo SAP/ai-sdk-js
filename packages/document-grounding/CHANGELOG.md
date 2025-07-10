@@ -1,5 +1,16 @@
 # @sap-ai-sdk/document-grounding
 
+## 1.16.0
+
+### Minor Changes
+
+- efffc16: [feat] Support the new pipeline trigger API and the enhanced pipeline status API.
+- efffc16: [compat] Refactor `Pipelines` to `GetPipelines`, `Pipeline` to `GetPipeline`, `PipelinePostRequest` to `CreatePipeline`, `PipelineStatus` to `GetPipelineStatus`, and `RetievalSearchResults` to `RetrievalSearchResults`.
+
+### Patch Changes
+
+- @sap-ai-sdk/core@1.16.0
+
 ## 1.15.0
 
 ### Patch Changes
