@@ -143,9 +143,11 @@ export class OrchestrationClient {
     const stream = OrchestrationStream._create(streamResponse, controller);
     response.stream = stream
       ._pipe(OrchestrationStream._processChunk)
-      ._pipe(OrchestrationStream._processToolCalls, response)
-      ._pipe(OrchestrationStream._processFinishReason, response)
-      ._pipe(OrchestrationStream._processTokenUsage, response);
+      ._pipe(
+        OrchestrationStream._processOrchestrationStreamChunkResponse,
+        response
+      )
+      ._pipe(OrchestrationStream._processStreamEnd, response);
 
     return response;
   }
