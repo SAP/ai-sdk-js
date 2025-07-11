@@ -26,6 +26,8 @@ export {
 } from './orchestration.js';
 export {
   invoke,
+  invokeWithStructuredOutputJsonSchema,
+  invokeWithStructuredOutputToolCalling,
   invokeChain,
   invokeRagChain
 } from './langchain-azure-openai.js';
