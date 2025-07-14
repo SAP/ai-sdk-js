@@ -338,7 +338,10 @@ export async function orchestrationCompletionMasking(): Promise<
           'Write a professional email to my doctor, {{?user}}, at {{?email}}, asking to reschedule my appointment originally set for 2024-12-15 due to a personal conflict. My patient ID is 8947-2219-550.'
       }
     ],
-    inputParams: { user: 'Dr. Emily Smith', email: 'emily.smith@healthclinic.com' }
+    inputParams: {
+      user: 'Dr. Emily Smith',
+      email: 'emily.smith@healthclinic.com'
+    }
   });
   return response.getContent();
 }
