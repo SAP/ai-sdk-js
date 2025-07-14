@@ -197,6 +197,7 @@ describe('orchestration', () => {
            "name": "add",
          },
          "id": "mock_id",
+         "index": 0,
          "type": "function",
        },
        {
@@ -205,6 +206,7 @@ describe('orchestration', () => {
            "name": "add",
          },
          "id": "mock_id",
+         "index": 1,
          "type": "function",
        },
      ]

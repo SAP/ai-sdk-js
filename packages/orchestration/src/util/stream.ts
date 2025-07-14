@@ -155,7 +155,9 @@ function mergeToolCalls(
   }
   const mergedToolCalls = [...existing];
   for (const toolCall of incoming) {
-    const existingToolCall = mergedToolCalls.find(tc => tc.id === toolCall.id);
+    const existingToolCall = mergedToolCalls.find(
+      tc => tc.index === toolCall.index
+    );
     if (existingToolCall) {
       // Merge existing tool call with incoming tool call
       existingToolCall.function.name =
@@ -246,6 +248,7 @@ function transformStreamingToolCalls(
 
 function transformStreamingToolCall(toolCall: ToolCallChunk): MessageToolCall {
   return {
+    index: toolCall.index,
     id: toolCall.id ?? '',
     type: toolCall.type ?? 'function',
     function: {
