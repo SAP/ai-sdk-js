@@ -250,6 +250,7 @@ export interface DocumentGroundingServiceConfig {
 
 /**
  * Represents a standard entity for DPI Masking Config.
+ * @internal
  */
 export type StandardEntity = DPIStandardEntity & {
   kind: 'standard-entity';
@@ -257,13 +258,15 @@ export type StandardEntity = DPIStandardEntity & {
 
 /**
  * Represents a custom entity for DPI Masking Config.
+ * @internal
  */
 export type CustomEntity = DPICustomEntity & {
   kind: 'custom-entity';
 };
 
 /**
- * Defines the type of the DPI masking entity .
+ * Defines the type of the DPI masking entity.
+ * @internal
  */
 export type DpiEntity = DpiEntities | StandardEntity | CustomEntity;
 

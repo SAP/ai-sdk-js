@@ -18,18 +18,7 @@ export function buildDpiMaskingProvider(
       if (typeof entity === 'string') {
         return { type: entity };
       }
-
-      return entity.kind === 'custom-entity'
-        ? {
-            regex: entity.regex,
-            replacement_strategy: entity.replacement_strategy
-          }
-        : {
-            type: entity.type,
-            ...(entity.replacement_strategy && {
-              replacement_strategy: entity.replacement_strategy
-            })
-          };
+      return { ...entity };
     }),
     ...(mask_grounding_input !== undefined && {
       mask_grounding_input: {
