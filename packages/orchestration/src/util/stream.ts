@@ -89,6 +89,9 @@ function mergeTokenUsage(
     | { prompt_tokens: number; completion_tokens: number; total_tokens: number }
     | undefined
 ): { prompt_tokens: number; completion_tokens: number; total_tokens: number } {
+  if(incoming) {
+    logger.debug(`Token usage: ${JSON.stringify(incoming)}`);
+  }
   return {
     prompt_tokens: incoming?.prompt_tokens ?? existing?.prompt_tokens ?? 0,
     completion_tokens:

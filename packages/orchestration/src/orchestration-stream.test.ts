@@ -53,13 +53,13 @@ describe('Orchestration chat completion stream', () => {
   it('should process the finish reasons', async () => {
     const logger = createLogger({
       package: 'orchestration',
-      messageContext: 'orchestration-chat-completion-stream'
+      messageContext: 'stream-util'
     });
     const debugSpy = jest.spyOn(logger, 'debug');
     const asyncGeneratorChunk = OrchestrationStream._processChunk(
       originalChatCompletionStream
     );
-    const asyncGeneratorFinishReason = OrchestrationStream._processFinishReason(
+    const asyncGeneratorFinishReason = OrchestrationStream._processOrchestrationStreamChunkResponse(
       new OrchestrationStream(() => asyncGeneratorChunk, new AbortController()),
       new OrchestrationStreamResponse()
     );
@@ -73,13 +73,13 @@ describe('Orchestration chat completion stream', () => {
   it('should process the token usage', async () => {
     const logger = createLogger({
       package: 'orchestration',
-      messageContext: 'orchestration-chat-completion-stream'
+      messageContext: 'stream-util'
     });
     const debugSpy = jest.spyOn(logger, 'debug');
     const asyncGeneratorChunk = OrchestrationStream._processChunk(
       originalChatCompletionStream
     );
-    const asyncGeneratorTokenUsage = OrchestrationStream._processTokenUsage(
+    const asyncGeneratorTokenUsage = OrchestrationStream._processOrchestrationStreamChunkResponse(
       new OrchestrationStream(() => asyncGeneratorChunk, new AbortController()),
       new OrchestrationStreamResponse()
     );
