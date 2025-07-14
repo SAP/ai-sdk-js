@@ -14,12 +14,12 @@ export function buildDpiMaskingProvider(
   return {
     type: 'sap_data_privacy_integration',
     method,
-    entities: entities.map(entity => {
-      if (typeof entity === 'string') {
-        return { type: entity };
-      }
-      return { ...entity };
-    }),
+    entities: entities.map(entity =>
+      typeof entity === 'string'
+        ? { type: entity }
+        : // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          (({ kind, ...rest }) => rest)(entity)
+    ),
     ...(mask_grounding_input !== undefined && {
       mask_grounding_input: {
         enabled: mask_grounding_input
