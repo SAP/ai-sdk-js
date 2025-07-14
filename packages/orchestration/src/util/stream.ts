@@ -109,7 +109,6 @@ function mergeLlmChoices(
     const existingChoice = mergedChoices.find(c => c.index === choice.index);
     if (existingChoice) {
       // Merge existing choice with incoming choice
-      existingChoice.index = choice.index ?? existingChoice.index;
       existingChoice.finish_reason = handleFinishReason(
         existingChoice.finish_reason,
         choice.finish_reason,
