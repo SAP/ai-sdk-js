@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@sap-ai-sdk/sample-code",
-  "version": "1.15.0",
+  "version": "1.16.0",
   "private": "true",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -35,7 +35,6 @@
     "@types/express": "^5.0.3",
     "express": "^5.1.0",
     "uuid": "^11.1.0",
-    "zod": "^3.25.67",
-    "zod-to-json-schema": "^3.24.6"
+    "zod": "^3.25.76"
   }
 }

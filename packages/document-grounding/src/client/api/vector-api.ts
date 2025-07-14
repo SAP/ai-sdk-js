@@ -65,7 +65,7 @@ export const VectorApi = {
     ),
   /**
    * Gets a specific collection by ID.
-   * @param collectionId - Path parameter.
+   * @param collectionId - Collection ID
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -84,7 +84,7 @@ export const VectorApi = {
     ),
   /**
    * Deletes a specific collection by ID. This operation is asynchronous. Poll the collection for a 404 status code.
-   * @param collectionId - Path parameter.
+   * @param collectionId - Collection ID
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -103,8 +103,8 @@ export const VectorApi = {
     ),
   /**
    * Gets a specific document in a collection by ID.
-   * @param collectionId - Path parameter.
-   * @param documentId - Path parameter.
+   * @param collectionId - Collection ID
+   * @param documentId - Document ID
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -124,8 +124,8 @@ export const VectorApi = {
     ),
   /**
    * Deletes a specific document of a collection.
-   * @param collectionId - Path parameter.
-   * @param documentId - Path parameter.
+   * @param collectionId - Collection ID
+   * @param documentId - Document ID
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -145,7 +145,7 @@ export const VectorApi = {
     ),
   /**
    * Gets a list of documents of a collection.
-   * @param collectionId - Path parameter.
+   * @param collectionId - Collection ID
    * @param queryParameters - Object containing the following keys: $top, $skip, $count.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
@@ -167,7 +167,7 @@ export const VectorApi = {
     ),
   /**
    * Create and stores one or multiple documents into a collection. If omitted, 'id' will be auto-generated.
-   * @param collectionId - Path parameter.
+   * @param collectionId - Collection ID
    * @param body - Request body.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
@@ -189,7 +189,7 @@ export const VectorApi = {
     ),
   /**
    * Upserts the data of multiple documents into a collection.
-   * @param collectionId - Path parameter.
+   * @param collectionId - Collection ID
    * @param body - Request body.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
@@ -210,7 +210,7 @@ export const VectorApi = {
       VectorApi._defaultBasePath
     ),
   /**
-   * Search chunk by vector
+   * Search chunks
    * @param body - Request body.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
@@ -230,7 +230,7 @@ export const VectorApi = {
     ),
   /**
    * Gets a specific collection status from monitor by ID.
-   * @param id - Path parameter.
+   * @param id - Collection ID
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -251,7 +251,7 @@ export const VectorApi = {
     ),
   /**
    * Gets a specific collection status from monitor by ID.
-   * @param id - Path parameter.
+   * @param id - Collection ID
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */

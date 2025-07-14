@@ -17,5 +17,5 @@ export type DocumentKeyValueListPair = {
    * Default match mode for search filters
    * Default: "ANY".
    */
-  matchMode?: 'ANY' | 'ALL' | any | Record<string, any>;
+  matchMode?: 'ANY' | 'ALL' | any | null;
 } & Record<string, any>;

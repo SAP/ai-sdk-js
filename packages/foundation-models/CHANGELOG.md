@@ -1,5 +1,16 @@
 # @sap-ai-sdk/foundation-models
 
+## 1.16.0
+
+### Minor Changes
+
+- e9c19b4: [New Functionality] Support Azure OpenAI streaming with tool calls.
+
+### Patch Changes
+
+- @sap-ai-sdk/ai-api@1.16.0
+- @sap-ai-sdk/core@1.16.0
+
 ## 1.15.0
 
 ### Patch Changes

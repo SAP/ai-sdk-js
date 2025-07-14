@@ -1,5 +1,18 @@
 # @sap-ai-sdk/orchestration
 
+## 1.16.0
+
+### Patch Changes
+
+- 9a0d6f7: [Fixed Issue] The `role` property of the `ResponseChatMessage` type is now mandatory as it is always returned.
+- 9a0d6f7: [Compatibility Note] The type of `logprobs` in the response is corrected as a result of a bug fix from the Orchestration service.
+- 9a0d6f7: [Compatibility Note] The `ModuleResults` and `LlmModuleResult` types are now only meant to be used for the non-streaming case.
+  Previously, they represented both streaming and non-streaming response.
+  For streaming, use `ModuleResultsStreaming` and `LlmModuleResultStreaming` types instead.
+  - @sap-ai-sdk/ai-api@1.16.0
+  - @sap-ai-sdk/core@1.16.0
+  - @sap-ai-sdk/prompt-registry@1.16.0
+
 ## 1.15.0
 
 ### Patch Changes
