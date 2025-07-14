@@ -842,6 +842,7 @@ describe('orchestration service client', () => {
            "name": "add",
          },
          "id": "call_HPgxxSmD2ctYfcJ3gp1JBc7i",
+         "index": 0,
          "type": "function",
        },
        {
@@ -850,6 +851,7 @@ describe('orchestration service client', () => {
            "name": "multiply",
          },
          "id": "call_PExve0Dd9hxD8hOk4Uhr1yhO",
+         "index": 1,
          "type": "function",
        },
      ]
