@@ -50,14 +50,13 @@ describe('masking util', () => {
       entities: [
         'profile-address',
         {
-          kind: 'standard-entity',
           type: 'profile-phone',
           replacement_strategy: {
             method: 'fabricated_data'
           }
         },
         {
-          kind: 'custom-entity',
+          type: 'custom',
           regex: '\\b[0-9]{4}-[0-9]{4}-[0-9]{3,5}\\b',
           replacement_strategy: {
             method: 'constant',

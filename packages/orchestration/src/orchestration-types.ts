@@ -249,27 +249,15 @@ export interface DocumentGroundingServiceConfig {
 }
 
 /**
- * Represents a standard entity for DPI Masking Config.
- * @internal
- */
-export type StandardEntity = DPIStandardEntity & {
-  kind: 'standard-entity';
-};
-
-/**
- * Represents a custom entity for DPI Masking Config.
- * @internal
- */
-export type CustomEntity = DPICustomEntity & {
-  kind: 'custom-entity';
-};
-
-/**
  * Defines the type of the DPI masking entity.
  * @internal
  */
-export type DpiEntity = DpiEntities | StandardEntity | CustomEntity;
-
+export type DpiEntity =
+  | DpiEntities
+  | DPIStandardEntity
+  | (DPICustomEntity & {
+      type: 'custom';
+    });
 /**
  * Represents the configuration for the masking provider SAP Data Privacy Integration.
  */
