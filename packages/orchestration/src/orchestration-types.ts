@@ -20,7 +20,9 @@ import type {
   TemplatingChatMessage,
   OutputTranslationModuleConfig,
   AzureContentSafetyOutput,
-  AzureContentSafetyOutputFilterConfig
+  AzureContentSafetyOutputFilterConfig,
+  DPIStandardEntity,
+  DPICustomEntity
 } from './client/api/schema/index.js';
 
 /**
@@ -247,13 +249,32 @@ export interface DocumentGroundingServiceConfig {
 }
 
 /**
+ * Represents a standard entity for DPI Masking Config.
+ */
+export type StandardEntity = DPIStandardEntity & {
+  kind: 'standard-entity';
+};
+
+/**
+ * Represents a custom entity for DPI Masking Config.
+ */
+export type CustomEntity = DPICustomEntity & {
+  kind: 'custom-entity';
+};
+
+/**
+ * Defines the type of the DPI masking entity .
+ */
+export type DpiEntity = DpiEntities | StandardEntity | CustomEntity;
+
+/**
  * Represents the configuration for the masking provider SAP Data Privacy Integration.
  */
 export type DpiMaskingConfig = Omit<
   DpiConfig,
   'type' | 'entities' | 'mask_grounding_input'
 > & {
-  entities: [DpiEntities, ...DpiEntities[]];
+  entities: [DpiEntity, ...DpiEntity[]];
   mask_grounding_input?: boolean;
 };
 
