@@ -19,8 +19,7 @@ export function buildDpiMaskingProvider(
         return { type: entity };
       }
       return entity.type === 'custom'
-        ? // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          (({ type, ...rest }) => rest)(entity)
+        ? (({ type: _, ...rest }) => rest)(entity)
         : entity;
     }),
     ...(mask_grounding_input !== undefined && {

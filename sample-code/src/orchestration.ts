@@ -307,7 +307,12 @@ export async function orchestrationCompletionMasking(): Promise<
           method: 'pseudonymization',
           entities: [
             'profile-email',
-            'profile-person',
+            {
+              type: 'profile-person',
+              replacement_strategy: {
+                method: 'fabricated_data'
+              }
+            },
             {
               type: 'custom',
               regex: '\\b[0-9]{4}-[0-9]{4}-[0-9]{3,5}\\b',
