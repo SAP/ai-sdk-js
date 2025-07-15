@@ -4,7 +4,7 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-pnpmfileChecksum: sha256-7lht5Q+T9K1tkr5FYaoHEDBAtJqjkSrAs2jGbKMfTIY=
+pnpmfileChecksum: fb3vh7gyjzvxzzal7fbygn3ogm
 
 importers:
 
@@ -228,8 +228,8 @@ importers:
         specifier: ^9.1.0
         version: 9.1.0(@eslint/js@9.31.0)(express@5.1.0)
       '@sap/xssec':
-        specifier: ^4.8.0
-        version: 4.8.0
+        specifier: ^4.9.0
+        version: 4.9.0
       express:
         specifier: ^5.1.0
         version: 5.1.0
@@ -1282,8 +1282,8 @@ packages:
     resolution: {integrity: sha512-dnhyeuX60M0trbg+2TTSWO5okdhqesjcl6BM2WQIxUY7MVizCraybx4V3QCvHc3RKScA1W/SXp2xj3z46vvu1Q==}
     engines: {node: '>=18'}
 
-  '@sap/xssec@4.8.0':
-    resolution: {integrity: sha512-9R9nfx6LK53B938CeUY4aIrH5kcxxkdpiQARtzH5uLFYDzUW08n5LPRkoCxR41zrIDXdWQFmQ/Xd7n4Vv+CDlQ==}
+  '@sap/xssec@4.9.0':
+    resolution: {integrity: sha512-x2f1AvS9KDs3djtDsRgH4Md3Ze5vc2NZHAlpCf+oRokWaQCmMNmS57DE6Zm80IVCCzo1mr8VtSrjWMPTshfUpw==}
     engines: {node: '>=18'}
 
   '@sinclair/typebox@0.27.8':
@@ -6277,7 +6277,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@sap/xssec@4.8.0':
+  '@sap/xssec@4.9.0':
     dependencies:
       debug: 4.4.1(supports-color@8.1.1)
       jwt-decode: 4.0.0
