@@ -15,5 +15,8 @@
     "generate-schema:orchestration": "pnpm generate-config:orchestration && pnpm ts-to-zod --all --skipValidation",
     "generate-schema": "pnpm generate-schema:azure-openai && pnpm generate-schema:orchestration",
     "postgenerate-schema": "rm ./ts-to-zod.config.cjs"
+  },
+  "devDependencies": {
+    "zod": "^3.25.76"
   }
 }

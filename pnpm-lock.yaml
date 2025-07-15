@@ -314,7 +314,11 @@ importers:
         specifier: ^17.2.0
         version: 17.2.0
 
-  tests/schema-tests: {}
+  tests/schema-tests:
+    devDependencies:
+      zod:
+        specifier: ^3.25.76
+        version: 3.25.76
 
   tests/smoke-tests:
     dependencies:
