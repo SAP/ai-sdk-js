@@ -50,7 +50,7 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
       );
     }
     for await (const chunk of stream) {
-      mergeStreamResponse(chunk.data, response);
+      mergeStreamResponse(response, chunk.data);
       yield chunk;
     }
   }

@@ -25,8 +25,8 @@ const logger = createLogger({
  * @internal
  */
 export function mergeStreamResponse(
-  chunk: CompletionPostResponseStreaming,
-  response: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
+  response: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>,
+  chunk: CompletionPostResponseStreaming
 ): void {
   const data = response._data;
   data.request_id = chunk.request_id;
