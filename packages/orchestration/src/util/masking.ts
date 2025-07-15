@@ -14,9 +14,14 @@ export function buildDpiMaskingProvider(
   return {
     type: 'sap_data_privacy_integration',
     method,
-    entities: entities.map(entity => ({
-      type: entity
-    })),
+    entities: entities.map(entity => {
+      if (typeof entity === 'string') {
+        return { type: entity };
+      }
+      return entity.type === 'custom'
+        ? (({ type: _, ...rest }) => rest)(entity)
+        : entity;
+    }),
     ...(mask_grounding_input !== undefined && {
       mask_grounding_input: {
         enabled: mask_grounding_input
