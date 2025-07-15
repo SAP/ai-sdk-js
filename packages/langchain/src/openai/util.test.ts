@@ -5,7 +5,7 @@ import {
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
-import * as z from 'zod/v4';
+import * as z from 'zod';
 import { tool } from '@langchain/core/tools';
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
 import {

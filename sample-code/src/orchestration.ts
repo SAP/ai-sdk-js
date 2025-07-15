@@ -10,8 +10,7 @@ import {
   buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
-// eslint-disable-next-line import/no-internal-modules
-import * as z from 'zod/v4';
+import * as z from 'zod';
 import type {
   OrchestrationStreamChunkResponse,
   OrchestrationStreamResponse,
