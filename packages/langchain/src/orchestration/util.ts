@@ -1,7 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { isZodSchemaV4 } from '@langchain/core/utils/types';
-// eslint-disable-next-line import/no-internal-modules
-import * as z from 'zod/v4';
+import * as z from 'zod';
 import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
 import type { ToolDefinition } from '@langchain/core/language_models/base';
 import type { ChatOrchestrationToolType } from './types.js';

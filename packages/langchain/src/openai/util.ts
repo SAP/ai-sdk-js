@@ -1,6 +1,5 @@
 import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
-// eslint-disable-next-line import/no-internal-modules
-import * as z from 'zod/v4';
+import * as z from 'zod';
 import { v4 as uuidv4 } from 'uuid';
 import { isZodSchemaV4 } from '@langchain/core/utils/types';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
