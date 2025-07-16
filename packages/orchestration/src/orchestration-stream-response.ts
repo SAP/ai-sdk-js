@@ -138,8 +138,10 @@ export class OrchestrationStreamResponse<T> {
 
   private isStreamOpen(): boolean {
     if (this._openStream) {
+      const stacktrace = new Error().stack;
       logger.warn(
-        'The stream is still open, the requested data is not available yet. Please wait until the stream is closed.'
+        `The stream is still open, the requested data is not available yet. Please wait until the stream is closed.
+        Stacktrace: ${stacktrace}`
       );
     }
     return this._openStream;
