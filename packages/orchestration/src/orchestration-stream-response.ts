@@ -14,12 +14,6 @@ const logger = createLogger({
   messageContext: 'orchestration-stream-response'
 });
 
-function openStreamWarning(missingData: string): void {
-  logger.warn(
-    `The stream is still open, the ${missingData} data is not available yet. Please wait until the stream is closed.`
-  );
-}
-
 /**
  * Orchestration stream response.
  */
@@ -33,10 +27,10 @@ export class OrchestrationStreamResponse<T> {
    * @returns The token usage for the response.
    */
   public getTokenUsage(): TokenUsage | undefined {
-    if (!this._openStream) {
-      return this._data.orchestration_result?.usage;
+    if (this.isStreamOpen()) {
+      return;
     }
-    openStreamWarning('token usage');
+    return this._data.orchestration_result?.usage;
   }
 
   /**
@@ -45,10 +39,10 @@ export class OrchestrationStreamResponse<T> {
    * @returns The finish reason for the specified choice index.
    */
   public getFinishReason(choiceIndex = 0): string | undefined {
-    if (!this._openStream) {
-      return this.findChoiceByIndex(choiceIndex)?.finish_reason;
+    if (this.isStreamOpen()) {
+      return;
     }
-    openStreamWarning('finish reason');
+    return this.findChoiceByIndex(choiceIndex)?.finish_reason;
   }
 
   /**
@@ -58,11 +52,11 @@ export class OrchestrationStreamResponse<T> {
    * @returns The message content.
    */
   public getContent(choiceIndex = 0): string | undefined {
-    if (!this._openStream) {
-      const choice = this.findChoiceByIndex(choiceIndex);
-      return choice?.message?.content;
+    if (this.isStreamOpen()) {
+      return;
     }
-    openStreamWarning('content');
+    const choice = this.findChoiceByIndex(choiceIndex);
+    return choice?.message?.content;
   }
 
   /**
@@ -71,11 +65,11 @@ export class OrchestrationStreamResponse<T> {
    * @returns The message tool calls.
    */
   public getToolCalls(choiceIndex = 0): MessageToolCalls | undefined {
-    if (!this._openStream) {
-      const choice = this.findChoiceByIndex(choiceIndex);
-      return choice?.message?.tool_calls;
+    if (this.isStreamOpen()) {
+      return;
     }
-    openStreamWarning('tool calls');
+    const choice = this.findChoiceByIndex(choiceIndex);
+    return choice?.message?.tool_calls;
   }
 
   /**
@@ -84,11 +78,11 @@ export class OrchestrationStreamResponse<T> {
    * @returns The refusal string.
    */
   public getRefusal(choiceIndex = 0): string | undefined {
-    if (!this._openStream) {
-      const choice = this.findChoiceByIndex(choiceIndex);
-      return choice?.message?.refusal;
+    if (this.isStreamOpen()) {
+      return;
     }
-    openStreamWarning('refusal message');
+    const choice = this.findChoiceByIndex(choiceIndex);
+    return choice?.message?.refusal;
   }
 
   /**
@@ -97,13 +91,12 @@ export class OrchestrationStreamResponse<T> {
    * @returns A list of all messages.
    */
   public getAllMessages(choiceIndex = 0): ChatMessages | undefined {
-    if (!this._openStream) {
-      const messages: ChatMessage[] =
-        this._data.module_results?.templating ?? [];
-      const content = this.findChoiceByIndex(choiceIndex)?.message;
-      return content ? [...messages, content] : messages;
+    if (this.isStreamOpen()) {
+      return;
     }
-    openStreamWarning('messages');
+    const messages: ChatMessage[] = this._data.module_results?.templating ?? [];
+    const content = this.findChoiceByIndex(choiceIndex)?.message;
+    return content ? [...messages, content] : messages;
   }
 
   /**
@@ -115,17 +108,17 @@ export class OrchestrationStreamResponse<T> {
   public getAssistantMessage(
     choiceIndex = 0
   ): AssistantChatMessage | undefined {
-    if (!this._openStream) {
-      return this.findChoiceByIndex(choiceIndex)?.message;
+    if (this.isStreamOpen()) {
+      return;
     }
-    openStreamWarning('assistant message');
+    return this.findChoiceByIndex(choiceIndex)?.message;
   }
 
   public getResponse(): CompletionPostResponse | undefined {
-    if (!this._openStream) {
-      return this._data as CompletionPostResponse;
+    if (this.isStreamOpen()) {
+      return;
     }
-    openStreamWarning('response');
+    return this._data as CompletionPostResponse;
   }
 
   get stream(): OrchestrationStream<T> {
@@ -141,6 +134,15 @@ export class OrchestrationStreamResponse<T> {
 
   private findChoiceByIndex(index: number) {
     return this.getChoices().find((c: { index: number }) => c.index === index);
+  }
+
+  private isStreamOpen(): boolean {
+    if (this._openStream) {
+      logger.warn(
+        'The stream is still open, the requested data is not available yet. Please wait until the stream is closed.'
+      );
+    }
+    return this._openStream;
   }
 
   /**

@@ -396,11 +396,9 @@ describe('stream-util', () => {
                       arguments: '{"param1":"value1"}'
                     }
                   }
-                ],
-                refusal: undefined
+                ]
               },
-              finish_reason: '',
-              logprobs: undefined
+              finish_reason: ''
             }
           ]
         }
@@ -462,8 +460,7 @@ describe('stream-util', () => {
               },
               finish_reason: '',
               logprobs: {
-                content: [{ token: 'Test', logprob: -0.1 }],
-                refusal: []
+                content: [{ token: 'Test', logprob: -0.1 }]
               }
             }
           ]
@@ -480,8 +477,7 @@ describe('stream-util', () => {
               index: 0,
               delta: { content: ' message' },
               logprobs: {
-                content: [{ token: ' message', logprob: -0.2 }],
-                refusal: []
+                content: [{ token: ' message', logprob: -0.2 }]
               }
             }
           ]
@@ -529,8 +525,7 @@ describe('stream-util', () => {
               index: 0,
               delta: { content: ' message' },
               logprobs: {
-                content: [{ token: ' message', logprob: -0.2 }],
-                refusal: []
+                content: [{ token: ' message', logprob: -0.2 }]
               }
             }
           ]
@@ -582,12 +577,9 @@ describe('stream-util', () => {
                 index: 0,
                 message: {
                   role: 'assistant',
-                  content: 'Test message',
-                  tool_calls: undefined,
-                  refusal: undefined
+                  content: 'Test message'
                 },
-                finish_reason: 'stop',
-                logprobs: undefined
+                finish_reason: 'stop'
               }
             ]
           }
@@ -600,12 +592,9 @@ describe('stream-util', () => {
               index: 0,
               message: {
                 role: 'assistant',
-                content: 'Test message',
-                tool_calls: undefined,
-                refusal: undefined
+                content: 'Test message'
               },
-              finish_reason: 'stop',
-              logprobs: undefined
+              finish_reason: 'stop'
             }
           ]
         }
@@ -641,11 +630,9 @@ describe('stream-util', () => {
                       arguments: '{"param1":"value1"}'
                     }
                   }
-                ],
-                refusal: undefined
+                ]
               },
-              finish_reason: 'tool_calls',
-              logprobs: undefined
+              finish_reason: 'tool_calls'
             }
           ]
         }
@@ -687,11 +674,9 @@ describe('stream-util', () => {
                       arguments: '{"param1":invalid_json}'
                     }
                   }
-                ],
-                refusal: undefined
+                ]
               },
-              finish_reason: 'tool_calls',
-              logprobs: undefined
+              finish_reason: 'tool_calls'
             }
           ]
         }
