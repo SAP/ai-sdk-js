@@ -17,6 +17,8 @@ paths:
       description: Create or update a prompt template
       tags:
         - prompt templates
+      parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
       requestBody:
         required: true
         content:
@@ -43,6 +45,7 @@ paths:
       tags:
         - prompt templates
       parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
         - name: scenario
           in: query
           schema:
@@ -86,6 +89,7 @@ paths:
       tags:
         - prompt templates
       parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
         - name: scenario
           in: path
           required: true
@@ -122,6 +126,7 @@ paths:
       tags:
         - prompt templates
       parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
         - name: promptTemplateId
           in: path
           required: true
@@ -148,6 +153,7 @@ paths:
       tags:
         - prompt templates
       parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
         - name: promptTemplateId
           in: path
           required: true
@@ -174,6 +180,8 @@ paths:
       description: Import prompt template
       tags:
         - prompt templates
+      parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
       requestBody:
         content:
           multipart/form-data:
@@ -202,6 +210,7 @@ paths:
       tags:
         - prompt templates
       parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
         - name: promptTemplateId
           in: path
           required: true
@@ -228,6 +237,7 @@ paths:
       tags:
         - prompt templates
       parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
         - name: promptTemplateId
           in: path
           required: true
@@ -265,6 +275,7 @@ paths:
       tags:
         - prompt templates
       parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
         - name: scenario
           in: path
           required: true
@@ -594,6 +605,8 @@ components:
           type: string
         isVersionHead:
           type: boolean
+        resourceGroupId:
+          type: string
         spec:
           $ref: '#/components/schemas/PromptTemplateSpec'
     PromptTemplateListResponse:
@@ -682,3 +695,11 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    ai-resource-group:
+      name: AI-Resource-Group
+      in: header
+      description: Specify a resource group id to use
+      required: false
+      schema:
+        type: string
