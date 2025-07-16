@@ -96,13 +96,11 @@ export class OrchestrationResponse {
     return this.findChoiceByIndex(choiceIndex)?.message;
   }
 
-  private getChoices() {
+  private getChoices(): LlmChoice[] {
     return this.data.orchestration_result.choices;
   }
 
-  private findChoiceByIndex(index: number) {
-    return (this.getChoices() as LlmChoice[]).find(
-      (c: { index: number }) => c.index === index
-    );
+  private findChoiceByIndex(index: number): LlmChoice | undefined {
+    return this.getChoices().find((c: { index: number }) => c.index === index);
   }
 }
