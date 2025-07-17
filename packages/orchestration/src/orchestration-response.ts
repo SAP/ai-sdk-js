@@ -96,11 +96,16 @@ export class OrchestrationResponse {
     return this.findChoiceByIndex(choiceIndex)?.message;
   }
 
-  private getChoices(): LlmChoice[] {
-    return this.data.orchestration_result.choices;
+  /**
+   * Finds a specific choice from LLM module results.
+   * @param index - The index of the choice to find.
+   * @returns The LLM choice object.
+   */
+  findChoiceByIndex(index: number): LlmChoice | undefined {
+    return this.getChoices().find((c: { index: number }) => c.index === index);
   }
 
-  private findChoiceByIndex(index: number): LlmChoice | undefined {
-    return this.getChoices().find((c: { index: number }) => c.index === index);
+  private getChoices(): LlmChoice[] {
+    return this.data.orchestration_result.choices;
   }
 }
