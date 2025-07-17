@@ -97,9 +97,9 @@ export class OrchestrationResponse {
   }
 
   /**
-   * Finds a specific choice from LLM module results.
+   * Parses the response and returns the choice by index.
    * @param index - The index of the choice to find.
-   * @returns The LLM choice object.
+   * @returns An {@link LLMChoice} object associated with the index.
    */
   findChoiceByIndex(index: number): LlmChoice | undefined {
     return this.getChoices().find((c: { index: number }) => c.index === index);
