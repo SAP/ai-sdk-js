@@ -51,7 +51,7 @@ export class OrchestrationStreamChunkResponse {
   /**
    * Parses the chunk response and returns the choice by index.
    * @param index - The index of the choice to find.
-   * @returns An {@link LLMChoiceStreaming} object associated withe index.
+   * @returns An {@link LLMChoiceStreaming} object associated with the index.
    */
   findChoiceByIndex(index: number): LlmChoiceStreaming | undefined {
     return this.getChoices()?.find(
