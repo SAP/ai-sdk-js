@@ -857,4 +857,70 @@ describe('orchestration service client', () => {
      ]
     `);
   });
+  describe('OrchestrationClient Stream Error Handling', () => {
+    it('should abort controller and re-throw error when network request fails', async () => {
+      const config: OrchestrationModuleConfig = {
+        llm: {
+          model_name: 'gpt-4o',
+          model_params: {}
+        },
+        templating: {
+          template: [
+            {
+              role: 'user',
+              content: 'Test prompt'
+            }
+          ]
+        }
+      };
+
+      const controller = new AbortController();
+
+      // Mock network failure
+      mockInference(
+        {
+          data: constructCompletionPostRequest(config, undefined, true)
+        },
+        {
+          status: 500,
+          data: 'Internal Server Error'
+        },
+        {
+          url: 'inference/deployments/1234/completion'
+        }
+      );
+
+      const client = new OrchestrationClient(config);
+
+      await expect(client.stream(undefined, controller)).rejects.toThrow();
+      expect(controller.signal.aborted).toBe(true);
+    });
+
+    it('should handle aborted requests gracefully', async () => {
+      const config: OrchestrationModuleConfig = {
+        llm: {
+          model_name: 'gpt-4o',
+          model_params: {}
+        },
+        templating: {
+          template: [
+            {
+              role: 'user',
+              content: 'Test prompt'
+            }
+          ]
+        }
+      };
+
+      const controller = new AbortController();
+
+      // Abort immediately
+      controller.abort();
+
+      const client = new OrchestrationClient(config);
+
+      await expect(client.stream(undefined, controller)).rejects.toThrow();
+      expect(controller.signal.aborted).toBe(true);
+    });
+  });
 });
