@@ -6,9 +6,9 @@
 import type { DocumentKeyValueListPair } from './document-key-value-list-pair.js';
 import type { Chunk } from './chunk.js';
 /**
- * Representation of the 'RetrievalDocument' schema.
+ * Representation of the 'Document' schema.
  */
-export type RetrievalDocument = {
+export type Document = {
   id: string;
   /**
    * Default: [].

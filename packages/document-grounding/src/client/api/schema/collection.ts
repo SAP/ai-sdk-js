@@ -9,7 +9,7 @@ import type { KeyValueListPair } from './key-value-list-pair.js';
  * A logical grouping of content.
  */
 export type Collection = {
-  title?: string;
+  title?: string | null;
   embeddingConfig: EmbeddingConfig;
   /**
    * Metadata attached to collection. Useful to restrict search to a subset of collections.

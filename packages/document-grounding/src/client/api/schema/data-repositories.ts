@@ -8,6 +8,6 @@ import type { DataRepository } from './data-repository.js';
  * Representation of the 'DataRepositories' schema.
  */
 export type DataRepositories = {
-  resources: DataRepository[];
   count?: number;
+  resources: DataRepository[];
 } & Record<string, any>;

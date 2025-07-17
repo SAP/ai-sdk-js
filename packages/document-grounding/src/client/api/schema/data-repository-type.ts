@@ -7,4 +7,4 @@
 /**
  * Representation of the 'DataRepositoryType' schema.
  */
-export type DataRepositoryType = 'vector' | any;
+export type DataRepositoryType = 'vector' | 'help.sap.com' | any;

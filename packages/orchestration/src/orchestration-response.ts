@@ -5,7 +5,8 @@ import type {
   ChatMessage,
   ChatMessages,
   AssistantChatMessage,
-  MessageToolCalls
+  MessageToolCalls,
+  LlmChoice
 } from './client/api/schema/index.js';
 
 /**
@@ -95,14 +96,16 @@ export class OrchestrationResponse {
     return this.findChoiceByIndex(choiceIndex)?.message;
   }
 
-  private getChoices() {
-    return this.data.orchestration_result.choices;
+  /**
+   * Parses the response and returns the choice by index.
+   * @param index - The index of the choice to find.
+   * @returns An {@link LLMChoice} object associated with the index.
+   */
+  findChoiceByIndex(index: number): LlmChoice | undefined {
+    return this.getChoices().find((c: { index: number }) => c.index === index);
   }
 
-  private findChoiceByIndex(index: number) {
-    // TODO: replace cast with LLMChoice[] after the bug in orchestration, where
-    // 'role' in ResponseChatMessage is optional when it should be mandatory, is fixed.
-    // https://github.com/SAP/ai-sdk-js-backlog/issues/306
-    return this.getChoices().find((c: { index: number }) => c.index === index);
+  private getChoices(): LlmChoice[] {
+    return this.data.orchestration_result.choices;
   }
 }

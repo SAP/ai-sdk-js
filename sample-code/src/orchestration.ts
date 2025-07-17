@@ -10,8 +10,8 @@ import {
   buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
-import { z } from 'zod';
-import { zodToJsonSchema } from 'zod-to-json-schema';
+// eslint-disable-next-line import/no-internal-modules
+import * as z from 'zod/v4';
 import type {
   OrchestrationStreamChunkResponse,
   OrchestrationStreamResponse,
@@ -305,7 +305,31 @@ export async function orchestrationCompletionMasking(): Promise<
       masking_providers: [
         buildDpiMaskingProvider({
           method: 'pseudonymization',
-          entities: ['profile-email', 'profile-person']
+          entities: [
+            'profile-email',
+            {
+              type: 'profile-person',
+              replacement_strategy: {
+                method: 'fabricated_data'
+              }
+            },
+            {
+              type: 'custom',
+              regex: '\\b[0-9]{4}-[0-9]{4}-[0-9]{3,5}\\b',
+              replacement_strategy: {
+                method: 'constant',
+                value: 'REDACTED_ID'
+              }
+            },
+            {
+              type: 'custom',
+              regex: '[0-9]{4}[-/][0-9]{2}[-/][0-9]{2}',
+              replacement_strategy: {
+                method: 'constant',
+                value: 'REDACTED_DATE'
+              }
+            }
+          ]
         })
       ]
     }
@@ -316,10 +340,13 @@ export async function orchestrationCompletionMasking(): Promise<
       {
         role: 'user',
         content:
-          'Please write an email to {{?user}} ({{?email}}), informing them about the amazing capabilities of generative AI! Be brief and concise, write at most 6 sentences.'
+          'Write a professional email to my doctor, {{?user}}, at {{?email}}, asking to reschedule my appointment originally set for 2024-12-15 due to a personal conflict. My patient ID is 8947-2219-550.'
       }
     ],
-    inputParams: { user: 'Alice Anderson', email: 'alice.anderson@sap.com' }
+    inputParams: {
+      user: 'Dr. Emily Smith',
+      email: 'emily.smith@healthclinic.com'
+    }
   });
   return response.getContent();
 }
@@ -536,7 +563,7 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
         json_schema: {
           name: 'translation_response',
           strict: true,
-          schema: zodToJsonSchema(translationSchema)
+          schema: z.toJSONSchema(translationSchema)
         }
       }
     }
@@ -573,7 +600,7 @@ const addNumbersTool: ChatCompletionTool = {
   function: {
     name: 'add',
     description: 'Add two numbers',
-    parameters: zodToJsonSchema(addNumbersSchema)
+    parameters: z.toJSONSchema(addNumbersSchema)
   }
 };
 

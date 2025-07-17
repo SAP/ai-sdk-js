@@ -17,7 +17,7 @@ describe('masking util', () => {
     expect(actualDpiMaskingProvider).toStrictEqual(expectedDpiMaskingProvider);
   });
 
-  it('builds DPI masking provider with all parameters', () => {
+  it('builds DPI masking provider with standard and custom entities', () => {
     const expectedDpiMaskingProvider: DpiConfig = {
       type: 'sap_data_privacy_integration',
       method: 'pseudonymization',
@@ -26,7 +26,17 @@ describe('masking util', () => {
           type: 'profile-address'
         },
         {
-          type: 'profile-phone'
+          type: 'profile-phone',
+          replacement_strategy: {
+            method: 'fabricated_data'
+          }
+        },
+        {
+          regex: '\\b[0-9]{4}-[0-9]{4}-[0-9]{3,5}\\b',
+          replacement_strategy: {
+            method: 'constant',
+            value: 'REDACTED_ID'
+          }
         }
       ],
       allowlist: ['SAP', 'Joule'],
@@ -37,7 +47,23 @@ describe('masking util', () => {
 
     const actualDpiMaskingProvider = buildDpiMaskingProvider({
       method: 'pseudonymization',
-      entities: ['profile-address', 'profile-phone'],
+      entities: [
+        'profile-address',
+        {
+          type: 'profile-phone',
+          replacement_strategy: {
+            method: 'fabricated_data'
+          }
+        },
+        {
+          type: 'custom',
+          regex: '\\b[0-9]{4}-[0-9]{4}-[0-9]{3,5}\\b',
+          replacement_strategy: {
+            method: 'constant',
+            value: 'REDACTED_ID'
+          }
+        }
+      ],
       allowlist: ['SAP', 'Joule'],
       mask_grounding_input: true
     });
