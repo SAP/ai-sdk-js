@@ -73,21 +73,31 @@ export class OrchestrationClient {
     options?: StreamOptions,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
-    if (typeof this.config === 'string' && options) {
-      logger.warn(
-        'Stream options are not supported when using a JSON module config.'
-      );
-    }
+    try {
+      if (typeof this.config === 'string' && options) {
+        logger.warn(
+          'Stream options are not supported when using a JSON module config.'
+        );
+      }
 
-    return this.createStreamResponse(
-      {
-        prompt,
-        requestConfig,
-        stream: true,
-        streamOptions: options
-      },
-      controller
-    );
+      return this.createStreamResponse(
+        {
+          prompt,
+          requestConfig,
+          stream: true,
+          streamOptions: options
+        },
+        controller
+      );
+    } catch (error) {
+      logger.error('Error while creating stream response:', error);
+
+      if (!controller.signal.aborted) {
+        controller.abort();
+      }
+
+      throw error;
+    }
   }
 
   private async executeRequest(options: RequestOptions): Promise<HttpResponse> {
@@ -131,25 +141,38 @@ export class OrchestrationClient {
     const response =
       new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
 
-    const streamResponse = await this.executeRequest({
-      ...options,
-      requestConfig: {
-        ...options.requestConfig,
-        responseType: 'stream',
-        signal: controller.signal
+    try {
+      const streamResponse = await this.executeRequest({
+        ...options,
+        requestConfig: {
+          ...options.requestConfig,
+          responseType: 'stream',
+          signal: controller.signal
+        }
+      });
+
+      const stream = OrchestrationStream._create(streamResponse, controller);
+      response.stream = stream
+        ._pipe(OrchestrationStream._processChunk)
+        ._pipe(
+          OrchestrationStream._processOrchestrationStreamChunkResponse,
+          response
+        )
+        ._pipe(OrchestrationStream._processStreamEnd, response);
+
+      return response;
+    } catch (error) {
+      logger.error(
+        'Error while creating orchestration stream response:',
+        error
+      );
+
+      if (!controller.signal.aborted) {
+        controller.abort();
       }
-    });
 
-    const stream = OrchestrationStream._create(streamResponse, controller);
-    response.stream = stream
-      ._pipe(OrchestrationStream._processChunk)
-      ._pipe(
-        OrchestrationStream._processOrchestrationStreamChunkResponse,
-        response
-      )
-      ._pipe(OrchestrationStream._processStreamEnd, response);
-
-    return response;
+      throw error;
+    }
   }
 
   /**
