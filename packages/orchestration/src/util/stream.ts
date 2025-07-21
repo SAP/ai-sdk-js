@@ -272,80 +272,110 @@ export function validateResponse(
     );
   }
 
-  validateLlmModuleResult(response._data.module_results?.llm);
+  validateLlmModuleResult(response._data.module_results?.llm, 'llm');
 
-  validateLlmModuleResult(response._data.orchestration_result);
+  validateLlmModuleResult(response._data.orchestration_result, 'orchestration');
 
-  validateChoices(response._data.module_results?.output_unmasking);
+  validateChoices(
+    response._data.module_results?.output_unmasking,
+    'output_unmasking'
+  );
 }
 
 function validateLlmModuleResult(
-  llmModuleResult: Partial<LlmModuleResult> | undefined
+  llmModuleResult: Partial<LlmModuleResult> | undefined,
+  sourceModule: string
 ): void {
   if (llmModuleResult) {
     if (!llmModuleResult.usage) {
-      logger.warn('LlmModuleResult is missing usage information.');
+      logger.warn(
+        `${sourceModule}: LlmModuleResult is missing usage information.`
+      );
     }
     if (!llmModuleResult.choices || llmModuleResult.choices.length === 0) {
-      logger.warn('LlmModuleResult must contain at least one choice.');
+      logger.warn(
+        `${sourceModule}: LlmModuleResult must contain at least one choice.`
+      );
     }
 
-    validateChoices(llmModuleResult.choices);
+    validateChoices(llmModuleResult.choices, sourceModule);
   }
 }
 
-function validateChoices(choices: Partial<LlmChoice>[] | undefined): void {
+function validateChoices(
+  choices: Partial<LlmChoice>[] | undefined,
+  sourceModule: string
+): void {
   if (choices) {
     for (const choice of choices) {
       if (!choice.message) {
-        logger.warn('LlmChoice is missing message information.');
+        logger.warn(
+          `${sourceModule}: LlmChoice ${choice.index} is missing a message.`
+        );
       } else {
-        validateMessage(choice.message);
+        validateMessage(choice.message, sourceModule, choice.index);
       }
       if (!choice.finish_reason) {
-        logger.warn('LlmChoice is missing a finish reason.');
+        logger.warn(
+          `${sourceModule}: LlmChoice ${choice.index} is missing a finish reason.`
+        );
       }
       if (!choice.index && choice.index !== 0) {
-        logger.warn('LlmChoice must have a valid index.');
+        logger.warn(`${sourceModule}: LlmChoice must have a valid index.`);
       }
     }
   }
 }
 
-function validateMessage(message: Partial<ResponseChatMessage>): void {
+function validateMessage(
+  message: Partial<ResponseChatMessage>,
+  sourceModule: string,
+  sourceChoice: number | undefined
+): void {
   if (!message.role) {
-    logger.warn('Message is missing role information.');
+    logger.warn(
+      `${sourceModule}: LlmChoice ${sourceChoice}: message is missing role.`
+    );
   }
   if (!message.content && !message.tool_calls) {
-    logger.warn('Message contains neither content nor tool calls.');
+    logger.warn(
+      `${sourceModule}: LlmChoice ${sourceChoice}: message contains neither content nor tool calls.`
+    );
   }
 
   if (message.tool_calls) {
     for (const toolCall of message.tool_calls) {
-      validateToolCall(toolCall);
+      validateToolCall(toolCall, sourceModule, sourceChoice);
     }
   }
 }
 
-function validateToolCall(toolCall: Partial<MessageToolCall>): void {
+function validateToolCall(
+  toolCall: Partial<MessageToolCall>,
+  sourceModule: string,
+  sourceChoice: number | undefined
+): void {
   if (typeof toolCall.id !== 'string') {
-    logger.warn('ToolCall is missing id information.');
+    logger.warn(
+      `${sourceModule}: LlmChoice ${sourceChoice}: ToolCall is missing id.`
+    );
   }
   if (typeof toolCall.function?.name !== 'string') {
-    logger.warn('ToolCall is missing function name information.');
+    logger.warn(
+      `${sourceModule}: LlmChoice ${sourceChoice}: ToolCall is missing function name.`
+    );
   }
   if (typeof toolCall.function?.arguments !== 'string') {
-    logger.warn('ToolCall is missing function arguments information.');
+    logger.warn(
+      `${sourceModule}: LlmChoice ${sourceChoice}: ToolCall is missing function arguments.`
+    );
   }
 
   try {
     JSON.parse(toolCall.function?.arguments ?? '');
   } catch {
     logger.warn(
-      'ToolCall arguments are not valid JSON for tool: ' +
-        toolCall.function?.name ||
-        toolCall.id ||
-        'unknown'
+      `${sourceModule}: LlmChoice ${sourceChoice}: ToolCall arguments are not valid JSON for tool: ${toolCall.function?.name || toolCall.id || 'unknown'}`
     );
   }
 }

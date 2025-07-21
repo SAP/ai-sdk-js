@@ -687,9 +687,7 @@ describe('stream-util', () => {
       validateResponse(response);
 
       expect(warnSpy).toHaveBeenCalledWith(
-        expect.stringContaining(
-          'ToolCall arguments are not valid JSON for tool: test_function'
-        )
+        'orchestration: LlmChoice 0: ToolCall arguments are not valid JSON for tool: test_function'
       );
     });
   });
