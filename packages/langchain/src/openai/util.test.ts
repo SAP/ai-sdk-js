@@ -8,6 +8,7 @@ import {
 import { tool } from '@langchain/core/tools';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
+import { addNumbersSchema } from '../../../../test-util/tools.js';
 import {
   isToolDefinitionLike,
   mapLangChainToAiClient,
@@ -22,7 +23,6 @@ import type {
   AzureOpenAiCreateChatCompletionRequest
 } from '@sap-ai-sdk/foundation-models';
 import type { AzureOpenAiChatCallOptions } from './types.js';
-import { addNumbersSchema } from '../../../../test-util/tools.js';
 
 // Signal and Prompt Index are provided by the super class in every call
 const defaultOptions = {
