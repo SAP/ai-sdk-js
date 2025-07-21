@@ -1,6 +1,5 @@
 import nock from 'nock';
 import { apiVersion } from '@sap-ai-sdk/foundation-models/internal.js';
-import z from 'zod';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import { getSchemaDescription } from '@langchain/core/utils/types';
 import { jest } from '@jest/globals';

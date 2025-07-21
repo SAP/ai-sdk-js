@@ -12,6 +12,7 @@ import {
 import { createLogger } from '@sap-cloud-sdk/util';
 // eslint-disable-next-line import/no-internal-modules
 import * as z from 'zod/v4';
+import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import type {
   OrchestrationStreamChunkResponse,
   OrchestrationStreamResponse,
@@ -22,7 +23,6 @@ import type {
   ToolChatMessage,
   DataRepositoryType
 } from '@sap-ai-sdk/orchestration';
-import { toJsonSchema } from '@langchain/core/utils/json_schema';
 
 const logger = createLogger({
   package: 'sample-code',
