@@ -240,7 +240,7 @@ describe('Chat client', () => {
         "Argument 'strict' is not supported for 'method' = 'jsonMode'."
       );
     });
-    it('should use `functionCalling` if method is specified', async () => {
+    it('should use `functionCalling` method if specified', async () => {
       const spy = jest.spyOn(client, 'withConfig');
       client.withStructuredOutput(joke, { method: 'functionCalling' });
       const asJsonSchema = toJsonSchema(joke);
