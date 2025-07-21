@@ -5,9 +5,10 @@ import {
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
-import * as z from 'zod/v4';
 import { tool } from '@langchain/core/tools';
+import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
+import { addNumbersSchema } from '../../../../test-util/tools.js';
 import {
   isToolDefinitionLike,
   mapLangChainToAiClient,
@@ -47,12 +48,6 @@ describe('Mapping Functions', () => {
       new SystemMessage('System Test Content'),
       new AIMessage('AI Test Content')
     ];
-    const addNumbersSchema = z
-      .object({
-        a: z.number().describe('The first number to be added.'),
-        b: z.number().describe('The second number to be added.')
-      })
-      .strict();
 
     const myTool = tool(({ a, b }) => a + b, {
       name: 'test',
@@ -86,7 +81,7 @@ describe('Mapping Functions', () => {
           function: {
             name: 'test',
             description: 'Add two numbers',
-            parameters: z.toJSONSchema(addNumbersSchema)
+            parameters: toJsonSchema(addNumbersSchema)
           }
         }
       ],
@@ -216,10 +211,7 @@ describe('Mapping Functions', () => {
       const toolInput = {
         name: 'test',
         description: 'Some description',
-        schema: z.object({
-          a: z.number().describe('The first number to be added.'),
-          b: z.number().describe('The second number to be added.')
-        })
+        schema: addNumbersSchema
       };
       const expectedOutput = {
         name: 'test',

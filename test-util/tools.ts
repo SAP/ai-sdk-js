@@ -45,3 +45,12 @@ export const multiplyNumbersTool: ChatCompletionTool = {
     parameters: z.toJSONSchema(multiplyNumbersSchema)
   }
 };
+
+/**
+ * @internal
+ */
+export const joke = z.object({
+      setup: z.string().describe('The setup of the joke'),
+      punchline: z.string().describe('The punchline to the joke'),
+      rating: z.number().describe('How funny the joke is, from 1 to 10')
+    });

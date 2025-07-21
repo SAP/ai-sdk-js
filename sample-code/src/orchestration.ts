@@ -12,6 +12,7 @@ import {
 import { createLogger } from '@sap-cloud-sdk/util';
 // eslint-disable-next-line import/no-internal-modules
 import * as z from 'zod/v4';
+import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import type {
   OrchestrationStreamChunkResponse,
   OrchestrationStreamResponse,
@@ -563,7 +564,7 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
         json_schema: {
           name: 'translation_response',
           strict: true,
-          schema: z.toJSONSchema(translationSchema)
+          schema: toJsonSchema(translationSchema)
         }
       }
     }
@@ -600,7 +601,7 @@ const addNumbersTool: ChatCompletionTool = {
   function: {
     name: 'add',
     description: 'Add two numbers',
-    parameters: z.toJSONSchema(addNumbersSchema)
+    parameters: toJsonSchema(addNumbersSchema)
   }
 };
 
