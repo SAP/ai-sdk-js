@@ -22,6 +22,7 @@ import type {
   ToolChatMessage,
   DataRepositoryType
 } from '@sap-ai-sdk/orchestration';
+import { toJsonSchema } from '@langchain/core/utils/json_schema';
 
 const logger = createLogger({
   package: 'sample-code',
@@ -563,7 +564,7 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
         json_schema: {
           name: 'translation_response',
           strict: true,
-          schema: z.toJSONSchema(translationSchema)
+          schema: toJsonSchema(translationSchema)
         }
       }
     }
@@ -600,7 +601,7 @@ const addNumbersTool: ChatCompletionTool = {
   function: {
     name: 'add',
     description: 'Add two numbers',
-    parameters: z.toJSONSchema(addNumbersSchema)
+    parameters: toJsonSchema(addNumbersSchema)
   }
 };
 

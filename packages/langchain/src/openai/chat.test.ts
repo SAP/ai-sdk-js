@@ -4,7 +4,7 @@ import z from 'zod';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import { getSchemaDescription } from '@langchain/core/utils/types';
 import { jest } from '@jest/globals';
-import { addNumbersTool } from '../../../../test-util/tools.js';
+import { addNumbersTool, joke } from '../../../../test-util/tools.js';
 import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
@@ -188,13 +188,7 @@ describe('Chat client', () => {
   });
 
   describe('withStructuredOutput', () => {
-    const joke = z.object({
-      setup: z.string().describe('The setup of the joke'),
-      punchline: z.string().describe('The punchline to the joke'),
-      rating: z.number().describe('How funny the joke is, from 1 to 10')
-    });
-
-    it('should use jsonSchema by default', async () => {
+    it('should use `jsonSchema` method by default', async () => {
       const spy = jest.spyOn(client, 'withConfig');
       client.withStructuredOutput(joke, {
         name: 'joke',
@@ -216,7 +210,7 @@ describe('Chat client', () => {
       );
     });
 
-    it('should use `jsonMode` if method is specified', async () => {
+    it('should use `jsonMode` method if specified', async () => {
       const spy = jest.spyOn(client, 'withConfig');
       client.withStructuredOutput(joke, { method: 'jsonMode' });
 

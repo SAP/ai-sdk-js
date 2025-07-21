@@ -5,7 +5,6 @@ import {
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
-import * as z from 'zod/v4';
 import { tool } from '@langchain/core/tools';
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
 import {
@@ -22,6 +21,7 @@ import type {
   AzureOpenAiCreateChatCompletionRequest
 } from '@sap-ai-sdk/foundation-models';
 import type { AzureOpenAiChatCallOptions } from './types.js';
+import { toJsonSchema } from '@langchain/core/utils/json_schema';
 
 // Signal and Prompt Index are provided by the super class in every call
 const defaultOptions = {
@@ -86,7 +86,7 @@ describe('Mapping Functions', () => {
           function: {
             name: 'test',
             description: 'Add two numbers',
-            parameters: z.toJSONSchema(addNumbersSchema)
+            parameters: toJsonSchema(addNumbersSchema)
           }
         }
       ],

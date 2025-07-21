@@ -1,6 +1,4 @@
 import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
-// eslint-disable-next-line import/no-internal-modules
-import * as z from 'zod/v4';
 import { v4 as uuidv4 } from 'uuid';
 import { isZodSchemaV4 } from '@langchain/core/utils/types';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
@@ -33,6 +31,7 @@ import type {
   ChatAzureOpenAIToolType
 } from './types.js';
 import type { ToolDefinition } from '@langchain/core/language_models/base';
+import { toJsonSchema } from '@langchain/core/utils/json_schema';
 
 /**
  * Maps a {@link ChatAzureOpenAIToolType} to {@link AzureOpenAiFunctionObject}.
@@ -68,7 +67,7 @@ export function mapToolToOpenAiFunction(
     name: tool.name,
     description: tool.description,
     parameters: isZodSchemaV4(tool.schema)
-      ? z.toJSONSchema(tool.schema)
+      ? toJsonSchema(tool.schema)
       : tool.schema,
     ...(strict !== undefined && { strict })
   };
