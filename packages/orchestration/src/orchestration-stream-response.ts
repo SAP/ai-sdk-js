@@ -1,4 +1,3 @@
-import { createLogger } from '@sap-cloud-sdk/util';
 import type {
   AssistantChatMessage,
   ChatMessage,
@@ -8,11 +7,6 @@ import type {
   TokenUsage
 } from './client/api/schema/index.js';
 import type { OrchestrationStream } from './orchestration-stream.js';
-
-const logger = createLogger({
-  package: 'orchestration',
-  messageContext: 'orchestration-stream-response'
-});
 
 /**
  * Orchestration stream response.
@@ -138,10 +132,8 @@ export class OrchestrationStreamResponse<T> {
 
   private isStreamOpen(): boolean {
     if (this._openStream) {
-      const stacktrace = new Error().stack;
-      logger.warn(
-        `The stream is still open, the requested data is not available yet. Please wait until the stream is closed.
-        Stacktrace: ${stacktrace}`
+      throw Error(
+        'The stream is still open, the requested data is not available yet. Please wait until the stream is closed.'
       );
     }
     return this._openStream;

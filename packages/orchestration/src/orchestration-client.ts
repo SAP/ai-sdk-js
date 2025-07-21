@@ -90,12 +90,8 @@ export class OrchestrationClient {
         controller
       );
     } catch (error) {
-      logger.error('Error while creating stream response:', error);
-
-      if (!controller.signal.aborted) {
-        controller.abort();
-      }
-
+      logger.error('Error while creating the stream response:', error);
+      controller.abort();
       throw error;
     }
   }
@@ -163,14 +159,10 @@ export class OrchestrationClient {
       return response;
     } catch (error) {
       logger.error(
-        'Error while creating orchestration stream response:',
+        'Error while creating and processing the orchestration stream response:',
         error
       );
-
-      if (!controller.signal.aborted) {
-        controller.abort();
-      }
-
+      controller.abort();
       throw error;
     }
   }
