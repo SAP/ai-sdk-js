@@ -1,5 +1,24 @@
 # @sap-ai-sdk/langchain
 
+## 1.16.0
+
+### Minor Changes
+
+- e9c19b4: [New Functionality] Support LangChain OpenAI streaming.
+- 268c38e: [Fixed Issue] Retry on timeout for non-streaming requests in LangChain Orchestration client.
+- e9c19b4: [Compatibility Note] Adjust content of chat result in LangChain Orchestration by removing `finish_reason`, `index`, `function_call`, `request_id` from `additional_kwargs` and adding `tool_calls` and `request_id` in `generationInfo`.`
+
+### Patch Changes
+
+- Updated dependencies [9a0d6f7]
+- Updated dependencies [e9c19b4]
+- Updated dependencies [9a0d6f7]
+- Updated dependencies [9a0d6f7]
+  - @sap-ai-sdk/orchestration@1.16.0
+  - @sap-ai-sdk/foundation-models@1.16.0
+  - @sap-ai-sdk/ai-api@1.16.0
+  - @sap-ai-sdk/core@1.16.0
+
 ## 1.15.0
 
 ### Minor Changes

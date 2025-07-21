@@ -1,5 +1,25 @@
 # @sap-ai-sdk/sample-code
 
+## 1.16.0
+
+### Patch Changes
+
+- Updated dependencies [9a0d6f7]
+- Updated dependencies [efffc16]
+- Updated dependencies [e9c19b4]
+- Updated dependencies [9a0d6f7]
+- Updated dependencies [9a0d6f7]
+- Updated dependencies [e9c19b4]
+- Updated dependencies [268c38e]
+- Updated dependencies [e9c19b4]
+- Updated dependencies [efffc16]
+  - @sap-ai-sdk/orchestration@1.16.0
+  - @sap-ai-sdk/document-grounding@1.16.0
+  - @sap-ai-sdk/foundation-models@1.16.0
+  - @sap-ai-sdk/langchain@1.16.0
+  - @sap-ai-sdk/ai-api@1.16.0
+  - @sap-ai-sdk/prompt-registry@1.16.0
+
 ## 1.15.0
 
 ### Patch Changes
