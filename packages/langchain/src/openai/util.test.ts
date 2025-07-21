@@ -22,6 +22,7 @@ import type {
   AzureOpenAiCreateChatCompletionRequest
 } from '@sap-ai-sdk/foundation-models';
 import type { AzureOpenAiChatCallOptions } from './types.js';
+import { addNumbersSchema } from '../../../../test-util/tools.js';
 
 // Signal and Prompt Index are provided by the super class in every call
 const defaultOptions = {
@@ -47,12 +48,6 @@ describe('Mapping Functions', () => {
       new SystemMessage('System Test Content'),
       new AIMessage('AI Test Content')
     ];
-    const addNumbersSchema = z
-      .object({
-        a: z.number().describe('The first number to be added.'),
-        b: z.number().describe('The second number to be added.')
-      })
-      .strict();
 
     const myTool = tool(({ a, b }) => a + b, {
       name: 'test',
@@ -216,10 +211,7 @@ describe('Mapping Functions', () => {
       const toolInput = {
         name: 'test',
         description: 'Some description',
-        schema: z.object({
-          a: z.number().describe('The first number to be added.'),
-          b: z.number().describe('The second number to be added.')
-        })
+        schema: addNumbersSchema
       };
       const expectedOutput = {
         name: 'test',
