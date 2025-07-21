@@ -12,6 +12,7 @@ import {
   parseFileToString
 } from '../../../../test-util/mock-http.js';
 import { AzureOpenAiChatClient } from './chat.js';
+import type { AzureOpenAiFunctionObject } from '@sap-ai-sdk/foundation-models';
 import type { AIMessageChunk } from '@langchain/core/messages';
 describe('Chat client', () => {
   let client: AzureOpenAiChatClient;
@@ -275,6 +276,45 @@ describe('Chat client', () => {
       expect(spy).toHaveBeenCalledWith(
         expect.objectContaining({
           tools: expect.any(Array)
+        })
+      );
+    });
+
+    it('should use `functionCalling` with openai function json schema', async () => {
+      const openAiFunctionJsonSchema: AzureOpenAiFunctionObject = {
+        name: 'joke',
+        description: 'Joke to tell user.',
+        parameters: {
+          title: 'Joke',
+          type: 'object',
+          properties: {
+            setup: { type: 'string', description: 'The setup for the joke' },
+            punchline: { type: 'string', description: "The joke's punchline" }
+          },
+          required: ['setup', 'punchline']
+        }
+      };
+
+      const spy = jest.spyOn(client, 'withConfig');
+      client.withStructuredOutput(openAiFunctionJsonSchema, {
+        name: 'joke',
+        method: 'functionCalling'
+      });
+
+      expect(spy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          tools: [
+            {
+              type: 'function' as const,
+              function: openAiFunctionJsonSchema
+            }
+          ],
+          tool_choice: {
+            type: 'function' as const,
+            function: {
+              name: 'joke'
+            }
+          }
         })
       );
     });
