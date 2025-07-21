@@ -159,10 +159,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
     | Runnable<BaseLanguageModelInput, RunOutput>
     | Runnable<
         BaseLanguageModelInput,
-        {
-          raw: BaseMessage;
-          parsed: RunOutput;
-        }
+        { raw: BaseMessage; parsed: RunOutput }
       > {
     const schema = outputSchema;
     const name = config?.name;

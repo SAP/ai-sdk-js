@@ -1,15 +1,18 @@
 import nock from 'nock';
 import { apiVersion } from '@sap-ai-sdk/foundation-models/internal.js';
+import z from 'zod';
+import { toJsonSchema } from '@langchain/core/utils/json_schema';
+import { getSchemaDescription } from '@langchain/core/utils/types';
+import { jest } from '@jest/globals';
+import { addNumbersTool } from '../../../../test-util/tools.js';
 import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
   mockInference,
   parseFileToString
 } from '../../../../test-util/mock-http.js';
-import { addNumbersTool } from '../../../../test-util/tools.js';
 import { AzureOpenAiChatClient } from './chat.js';
 import type { AIMessageChunk } from '@langchain/core/messages';
-
 describe('Chat client', () => {
   let client: AzureOpenAiChatClient;
   let mockResponseStream: string;
@@ -180,6 +183,100 @@ describe('Chat client', () => {
         endpoint
       );
       await client.bindTools([addNumbersTool]).invoke('What is 1 + 2?');
+    });
+  });
+
+  describe('withStructuredOutput', () => {
+    const joke = z.object({
+      setup: z.string().describe('The setup of the joke'),
+      punchline: z.string().describe('The punchline to the joke'),
+      rating: z.number().describe('How funny the joke is, from 1 to 10')
+    });
+
+    it('should use jsonSchema by default', async () => {
+      const spy = jest.spyOn(client, 'withConfig');
+      client.withStructuredOutput(joke, {
+        name: 'joke',
+        strict: true
+      });
+
+      expect(spy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          response_format: {
+            type: 'json_schema',
+            json_schema: {
+              name: 'joke',
+              description: getSchemaDescription(joke),
+              schema: toJsonSchema(joke),
+              strict: true
+            }
+          }
+        })
+      );
+    });
+
+    it('should use `jsonMode` if method is specified', async () => {
+      const spy = jest.spyOn(client, 'withConfig');
+      client.withStructuredOutput(joke, { method: 'jsonMode' });
+
+      expect(spy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          response_format: {
+            type: 'json_object'
+          }
+        })
+      );
+    });
+
+    it('should throw error if strict is used with `jsonMode`', () => {
+      expect(() => {
+        client.withStructuredOutput(joke, {
+          name: 'joke',
+          strict: true,
+          method: 'jsonMode'
+        });
+      }).toThrow(
+        "Argument 'strict' is not supported for 'method' = 'jsonMode'."
+      );
+    });
+    it('should use `functionCalling` if method is specified', async () => {
+      const spy = jest.spyOn(client, 'withConfig');
+      client.withStructuredOutput(joke, { method: 'functionCalling' });
+      const asJsonSchema = toJsonSchema(joke);
+      expect(spy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          tools: [
+            {
+              type: 'function' as const,
+              function: {
+                name: 'extract',
+                description: asJsonSchema.description,
+                parameters: asJsonSchema
+              }
+            }
+          ],
+          tool_choice: {
+            type: 'function' as const,
+            function: {
+              name: 'extract'
+            }
+          }
+        })
+      );
+    });
+
+    it('should use `functionCalling` for older deprecated models', async () => {
+      const oldClient = new AzureOpenAiChatClient({
+        modelName: 'gpt-35-turbo'
+      });
+      const spy = jest.spyOn(oldClient, 'withConfig');
+
+      oldClient.withStructuredOutput(joke);
+      expect(spy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          tools: expect.any(Array)
+        })
+      );
     });
   });
 
