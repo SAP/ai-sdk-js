@@ -42,6 +42,7 @@ export type AwsBedrockChatModel = LiteralUnion<
   | 'anthropic--claude-3-sonnet'
   | 'anthropic--claude-3.5-sonnet'
   | 'anthropic--claude-3.7-sonnet'
+  | 'anthropic--claude-4-opus'
   | 'amazon--titan-text-express'
   | 'amazon--titan-text-lite'
   | 'amazon--nova-pro'
