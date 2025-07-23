@@ -1,1 +1,2 @@
-export { registryControllerPromptControllerCreateUpdatePromptTemplateBody as promptTemplatePostRequestSchema } from './prompt-registry.zod.js';
+import { registryControllerPromptControllerCreateUpdatePromptTemplateBody } from './prompt-registry.zod.js';
+export const promptTemplatePostRequestSchema = registryControllerPromptControllerCreateUpdatePromptTemplateBody;
