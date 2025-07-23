@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { isZodSchemaV4 } from '@langchain/core/utils/types';
+import { isInteropZodSchema } from '@langchain/core/utils/types';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
 import type { ToolDefinition } from '@langchain/core/language_models/base';
@@ -63,7 +63,7 @@ export function mapToolToOrchestrationFunction(
   return {
     name: tool.name,
     description: tool.description,
-    parameters: isZodSchemaV4(tool.schema)
+    parameters: isInteropZodSchema(tool.schema)
       ? toJsonSchema(tool.schema)
       : tool.schema,
     ...(strict !== undefined && { strict })
