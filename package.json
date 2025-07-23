@@ -38,7 +38,7 @@
     "ts-to-zod": "^3.15.0",
     "zod": "^3.25.76",
     "@changesets/cli": "^2.29.5",
-    "@jest/globals": "^30.0.4",
+    "@jest/globals": "^30.0.5",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
