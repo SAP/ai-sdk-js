@@ -8,7 +8,5 @@ export type {
   GcpVertexAiChatModel,
   AwsBedrockChatModel,
   AiCoreOpenSourceChatModel,
-  AwsBedrockEmbeddingModel,
-  NvidiaEmbeddingModel
 } from './model-types.js';
 export { SseStream, LineDecoder, SSEDecoder } from './stream/index.js';
