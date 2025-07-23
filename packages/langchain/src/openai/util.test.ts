@@ -8,7 +8,10 @@ import {
 import { tool } from '@langchain/core/tools';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
-import { addNumbersSchema } from '../../../../test-util/tools.js';
+import {
+  addNumbersSchema,
+  addNumbersSchemaV3
+} from '../../../../test-util/tools.js';
 import {
   isToolDefinitionLike,
   mapLangChainToAiClient,
@@ -207,7 +210,37 @@ describe('Mapping Functions', () => {
       expect(result).toEqual(expectedOutput);
     });
 
-    it('should map a structured tool with Zod schema', async () => {
+    it('should map a structured tool with Zod V3 schema', async () => {
+      const toolInput = {
+        name: 'test',
+        description: 'Some description',
+        schema: addNumbersSchemaV3
+      };
+      const expectedOutput = {
+        name: 'test',
+        description: 'Some description',
+        parameters: {
+          type: 'object',
+          $schema: 'http://json-schema.org/draft-07/schema#',
+          additionalProperties: false,
+          properties: {
+            a: {
+              type: 'number',
+              description: 'The first number to be added.'
+            },
+            b: {
+              type: 'number',
+              description: 'The second number to be added.'
+            }
+          },
+          required: ['a', 'b']
+        }
+      };
+      const result = mapToolToOpenAiFunction(toolInput);
+      expect(result).toEqual(expectedOutput);
+    });
+
+    it('should map a structured tool with Zod V4 schema', async () => {
       const toolInput = {
         name: 'test',
         description: 'Some description',

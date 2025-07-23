@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`mapOrchestrationChunkToLangChainMessageChunk should map a chunk with content to AIMessageChunk: AIMessageChunk with content 1`] = `
 {
