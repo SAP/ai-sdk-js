@@ -545,12 +545,13 @@ export interface TranslationResponse {
 export async function orchestrationResponseFormat(): Promise<TranslationResponse> {
   const translationSchema = z
     .object({
-      language: z
-        .string()
-        .describe(
+      language: z.string().meta({
+        description:
           'The language of the translation, randomly chosen by the LLM.'
-        ),
-      translation: z.string().describe('The translation of the input sentence.')
+      }),
+      translation: z
+        .string()
+        .meta({ description: 'The translation of the input sentence.' })
     })
     .strict();
   const orchestrationClient = new OrchestrationClient({
@@ -591,8 +592,8 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
 
 const addNumbersSchema = z
   .object({
-    a: z.number().describe('The first number to be added.'),
-    b: z.number().describe('The second number to be added.')
+    a: z.number().meta({ description: 'The first number to be added.' }),
+    b: z.number().meta({ description: 'The second number to be added.' })
   })
   .strict();
 

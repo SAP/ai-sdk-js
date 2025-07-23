@@ -160,7 +160,9 @@ export async function invokeToolChain(): Promise<string> {
     name: 'shareholder_value',
     description: 'Multiplies the shareholder value',
     schema: z.object({
-      value: z.number().describe('The value that is supposed to be increased.')
+      value: z
+        .number()
+        .meta({ description: 'The value that is supposed to be increased.' })
     })
   });
 
@@ -240,9 +242,11 @@ export async function invokeWithStructuredOutputJsonSchema(): Promise<string> {
   });
 
   const joke = z.object({
-    setup: z.string().describe('The setup of the joke'),
-    punchline: z.string().describe('The punchline to the joke'),
-    rating: z.number().describe('How funny the joke is, from 1 to 10')
+    setup: z.string().meta({ description: 'The setup of the joke' }),
+    punchline: z.string().meta({ description: 'The punchline to the joke' }),
+    rating: z
+      .number()
+      .meta({ description: 'How funny the joke is, from 1 to 10' })
   });
   const structuredLlm = llm.withStructuredOutput(joke, {
     name: 'joke',
@@ -279,8 +283,8 @@ export async function invokeWithStructuredOutputToolCalling(): Promise<string> {
   });
 
   const joke = z.object({
-    setup: z.string().describe('The setup of the joke'),
-    punchline: z.string().describe('The punchline to the joke')
+    setup: z.string().meta({ description: 'The setup of the joke' }),
+    punchline: z.string().meta({ description: 'The punchline to the joke' })
   });
 
   const structuredLlm = llm.withStructuredOutput(joke, {

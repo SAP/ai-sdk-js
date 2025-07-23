@@ -56,9 +56,6 @@ build/Release
 .vscode
 /pnpm-publish-summary.json
 /tests/smoke-tests/deployment
-/tests/schema-tests/test/foundation-models/azure-openai/ts-to-zod
-/tests/schema-tests/test/orchestration/ts-to-zod
-ts-to-zod.config.cjs
 
 # IDEA
 .idea
