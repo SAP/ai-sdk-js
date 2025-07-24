@@ -233,7 +233,11 @@ export async function streamChain(
  * With Structured Output using `jsonSchema` option with `strict: true`.
  * @returns The answer from GPT with exactly the structure defined in the schema.
  */
-export async function invokeWithStructuredOutputJsonSchema(): Promise<string> {
+export async function invokeWithStructuredOutputJsonSchema(): Promise<{
+  setup: string;
+  punchline: string;
+  rating: number;
+}> {
   // initialize client with options
   const llm = new AzureOpenAiChatClient({
     modelName: 'gpt-4o'
@@ -249,8 +253,7 @@ export async function invokeWithStructuredOutputJsonSchema(): Promise<string> {
     strict: true
   });
 
-  const finalResponse = await structuredLlm.invoke('Tell me a joke about cats');
-  return JSON.stringify(finalResponse);
+  return structuredLlm.invoke('Tell me a joke about cats');
 }
 
 /**
