@@ -906,7 +906,7 @@ describe('orchestration service client', () => {
       );
     });
 
-    it('should handle aborted requests gracefully', async () => {
+    it('should throw error when stream is called with already aborted controller', async () => {
       const config: OrchestrationModuleConfig = {
         llm: {
           model_name: 'gpt-4o',

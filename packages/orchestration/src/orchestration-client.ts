@@ -90,7 +90,6 @@ export class OrchestrationClient {
         controller
       );
     } catch (error) {
-      logger.error('Error while creating the stream response:', error);
       controller.abort();
       throw error;
     }

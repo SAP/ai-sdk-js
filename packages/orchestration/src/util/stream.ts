@@ -194,7 +194,7 @@ function mergeLogProbs(
 function handleFinishReason(
   existing: string | undefined,
   incoming: string | undefined,
-  choiceIndex: number | undefined
+  choiceIndex: number
 ): string {
   if (!incoming) {
     return existing ?? '';
