@@ -266,12 +266,6 @@ function transformStreamingToolCall(toolCall: ToolCallChunk): MessageToolCall {
 export function validateResponse(
   response: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
 ): void {
-  if (response._openStream) {
-    throw new Error(
-      "Stream wasn't closed properly. Please ensure the stream is closed after processing."
-    );
-  }
-
   validateLlmModuleResult(response._data.module_results?.llm, 'llm');
 
   validateLlmModuleResult(response._data.orchestration_result, 'orchestration');
