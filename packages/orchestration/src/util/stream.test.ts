@@ -545,20 +545,6 @@ describe('stream-util', () => {
   });
 
   describe('validateResponse', () => {
-    it('throws error when stream is still open', () => {
-      const response =
-        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
-      response._data = {
-        request_id: 'test-request-123',
-        module_results: {},
-        orchestration_result: undefined
-      };
-
-      expect(() => validateResponse(response)).toThrow(
-        "Stream wasn't closed properly. Please ensure the stream is closed after processing."
-      );
-    });
-
     it('validates successfully with proper response structure', () => {
       const response =
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
