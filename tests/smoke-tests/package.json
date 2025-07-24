@@ -15,9 +15,9 @@
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
-    "@langchain/langgraph": "^0.3.9",
+    "@langchain/langgraph": "^0.3.11",
     "langchain": "0.3.30",
-    "@langchain/core": "0.3.62",
+    "@langchain/core": "0.3.66",
     "@langchain/textsplitters": "0.1.0",
     "@sap-ai-sdk/ai-api": "canary",
     "@sap-ai-sdk/document-grounding": "canary",
@@ -25,7 +25,7 @@
     "@sap-ai-sdk/langchain": "canary",
     "@sap-ai-sdk/orchestration": "canary",
     "@sap-ai-sdk/prompt-registry": "canary",
-    "@sap-cloud-sdk/util": "^4.0.2",
+    "@sap-cloud-sdk/util": "^4.1.0",
     "express": "^5.1.0",
     "uuid": "^11.1.0",
     "zod": "^3.25.76"
@@ -33,7 +33,7 @@
   "devDependencies": {
     "@types/express": "^5.0.3",
     "dotenv": "^17.2.0",
-    "dotenv-cli": "^8.0.0"
+    "dotenv-cli": "^9.0.0"
   },
   "engines": {
     "node": "20.x || 22.x"

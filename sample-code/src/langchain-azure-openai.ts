@@ -228,3 +228,69 @@ export async function streamChain(
     }
   );
 }
+
+/**
+ * With Structured Output using `jsonSchema` option with `strict: true`.
+ * @returns The answer from GPT with exactly the structure defined in the schema.
+ */
+export async function invokeWithStructuredOutputJsonSchema(): Promise<{
+  setup: string;
+  punchline: string;
+  rating: number;
+}> {
+  // initialize client with options
+  const llm = new AzureOpenAiChatClient({
+    modelName: 'gpt-4o'
+  });
+
+  const joke = z.object({
+    setup: z.string().describe('The setup of the joke'),
+    punchline: z.string().describe('The punchline to the joke'),
+    rating: z.number().describe('How funny the joke is, from 1 to 10')
+  });
+  const structuredLlm = llm.withStructuredOutput(joke, {
+    name: 'joke',
+    strict: true
+  });
+
+  return structuredLlm.invoke('Tell me a joke about cats');
+}
+
+/**
+ * Invoke with structured output using tool calling.
+ * Used for models that don't support `response_format` or `json_schema`.
+ * @example JSON Schema:
+ * {
+ *   name: "joke",
+ *   description: "Joke to tell user.",
+ *   parameters: {
+ *     title: "Joke",
+ *     type: "object",
+ *     properties: {
+ *       setup: { type: "string", description: "The setup for the joke" },
+ *       punchline: { type: "string", description: "The joke's punchline" },
+ *     },
+ *     required: ["setup", "punchline"],
+ *   },
+ * }
+ * @returns The answer from GPT with structured output using tool calls.
+ */
+export async function invokeWithStructuredOutputToolCalling(): Promise<string> {
+  // initialize client with options
+  const llm = new AzureOpenAiChatClient({
+    modelName: 'gpt-4o'
+  });
+
+  const joke = z.object({
+    setup: z.string().describe('The setup of the joke'),
+    punchline: z.string().describe('The punchline to the joke')
+  });
+
+  const structuredLlm = llm.withStructuredOutput(joke, {
+    name: 'joke',
+    method: 'functionCalling'
+  });
+
+  const finalResponse = await structuredLlm.invoke('Tell me a joke about cats');
+  return JSON.stringify(finalResponse);
+}

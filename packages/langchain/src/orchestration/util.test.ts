@@ -9,9 +9,14 @@ import {
 import { OrchestrationStreamChunkResponse } from '@sap-ai-sdk/orchestration';
 import { jest } from '@jest/globals';
 import {
+  addNumbersSchema,
+  addNumbersSchemaV3
+} from '../../../../test-util/tools.js';
+import {
   mapLangChainMessagesToOrchestrationMessages,
   mapOutputToChatResult,
-  mapOrchestrationChunkToLangChainMessageChunk
+  mapOrchestrationChunkToLangChainMessageChunk,
+  mapToolToOrchestrationFunction
 } from './util.js';
 import type { OrchestrationMessage } from './orchestration-message.js';
 import type { ToolCallChunk } from '@langchain/core/messages/tool';
@@ -19,7 +24,8 @@ import type {
   CompletionPostResponse,
   MessageToolCall,
   ToolCallChunk as OrchestrationToolCallChunk,
-  CompletionPostResponseStreaming
+  CompletionPostResponseStreaming,
+  FunctionObject
 } from '@sap-ai-sdk/orchestration';
 
 describe('mapLangChainMessagesToOrchestrationMessages', () => {
@@ -268,6 +274,60 @@ describe('mapOutputToChatResult', () => {
         type: 'tool_call'
       }
     ]);
+  });
+});
+
+describe('mapToolToOrchestrationFunction', () => {
+  it('should map zod v3 schemas correctly', () => {
+    const expected: FunctionObject = {
+      name: 'test',
+      description: 'Add two numbers',
+      parameters: {
+        type: 'object',
+        properties: {
+          a: { type: 'number', description: 'The first number to be added.' },
+          b: { type: 'number', description: 'The second number to be added.' }
+        },
+        required: ['a', 'b'],
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        additionalProperties: false
+      }
+    };
+
+    const myTool = {
+      name: 'test',
+      description: 'Add two numbers',
+      schema: addNumbersSchemaV3
+    };
+
+    const result = mapToolToOrchestrationFunction(myTool);
+    expect(result).toEqual(expected);
+  });
+
+  it('should map zod v4 schemas correctly', () => {
+    const expected: FunctionObject = {
+      name: 'test',
+      description: 'Add two numbers',
+      parameters: {
+        type: 'object',
+        properties: {
+          a: { type: 'number', description: 'The first number to be added.' },
+          b: { type: 'number', description: 'The second number to be added.' }
+        },
+        required: ['a', 'b'],
+        $schema: 'https://json-schema.org/draft/2020-12/schema',
+        additionalProperties: false
+      }
+    };
+
+    const myTool = {
+      name: 'test',
+      description: 'Add two numbers',
+      schema: addNumbersSchema
+    };
+
+    const result = mapToolToOrchestrationFunction(myTool);
+    expect(result).toEqual(expected);
   });
 });
 
