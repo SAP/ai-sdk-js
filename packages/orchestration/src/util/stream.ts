@@ -314,9 +314,6 @@ function validateChoices(
           `${sourceModule}: LlmChoice ${choice.index} is missing a finish reason.`
         );
       }
-      if (!choice.index && choice.index !== 0) {
-        logger.warn(`${sourceModule}: LlmChoice must have a valid index.`);
-      }
     }
   }
 }
