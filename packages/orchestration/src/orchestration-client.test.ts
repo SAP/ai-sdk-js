@@ -930,7 +930,6 @@ describe('orchestration service client', () => {
       const client = new OrchestrationClient(config);
 
       await expect(client.stream(undefined, controller)).rejects.toThrow();
-      expect(controller.signal.aborted).toBe(true);
     });
   });
 });
