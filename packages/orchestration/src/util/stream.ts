@@ -302,11 +302,7 @@ function validateChoices(
 ): void {
   if (choices) {
     for (const choice of choices) {
-      if (!choice.message) {
-        logger.warn(
-          `${sourceModule}: LlmChoice ${choice.index} is missing a message.`
-        );
-      } else {
+      if (choice.message) {
         validateMessage(choice.message, sourceModule, choice.index);
       }
       if (!choice.finish_reason) {
@@ -323,11 +319,6 @@ function validateMessage(
   sourceModule: string,
   sourceChoice: number | undefined
 ): void {
-  if (!message.role) {
-    logger.warn(
-      `${sourceModule}: LlmChoice ${sourceChoice}: message is missing role.`
-    );
-  }
   if (!message.content && !message.tool_calls) {
     logger.warn(
       `${sourceModule}: LlmChoice ${sourceChoice}: message contains neither content nor tool calls.`
