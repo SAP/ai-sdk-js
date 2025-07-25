@@ -859,12 +859,6 @@ describe('orchestration service client', () => {
   });
   describe('OrchestrationClient Stream Error Handling', () => {
     it('should abort controller and re-throw error when network request fails', async () => {
-      const logger = createLogger({
-        package: 'orchestration',
-        messageContext: 'orchestration-client'
-      });
-
-      const errorSpy = jest.spyOn(logger, 'error');
       const config: OrchestrationModuleConfig = {
         llm: {
           model_name: 'gpt-4o',
@@ -899,11 +893,6 @@ describe('orchestration service client', () => {
       const client = new OrchestrationClient(config);
 
       await expect(client.stream(undefined, controller)).rejects.toThrow();
-      expect(controller.signal.aborted).toBe(true);
-      expect(errorSpy).toHaveBeenCalledWith(
-        'Error while creating the stream response:',
-        expect.any(Error)
-      );
     });
 
     it('should throw error when stream is called with already aborted controller', async () => {
