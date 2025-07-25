@@ -28,10 +28,9 @@
     "e2e-tests": "pnpm -F=@sap-ai-sdk/e2e-tests",
     "type-tests": "pnpm -F=@sap-ai-sdk/type-tests",
     "smoke-tests": "pnpm -F=@sap-ai-sdk/smoke-tests",
-    "schema-tests": "pnpm -F=@sap-ai-sdk/schema-tests",
     "sample-code": "pnpm -F=@sap-ai-sdk/sample-code",
     "sample-cap": "pnpm -F=@sap-ai-sdk/sample-cap",
-    "check:deps": "pnpm -r -F !./tests/smoke-tests -F !./tests/schema-tests -F !./sample-cap exec depcheck --ignores=\"nock,@jest/globals\" --quiet"
+    "check:deps": "pnpm -r -F !./tests/smoke-tests -F !./sample-cap exec depcheck --ignores=\"nock,@jest/globals\" --quiet"
   },
   "devDependencies": {
     "orval": "^7.10.0",
