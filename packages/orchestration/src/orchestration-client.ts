@@ -73,21 +73,26 @@ export class OrchestrationClient {
     options?: StreamOptions,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
-    if (typeof this.config === 'string' && options) {
-      logger.warn(
-        'Stream options are not supported when using a JSON module config.'
-      );
-    }
+    try {
+      if (typeof this.config === 'string' && options) {
+        logger.warn(
+          'Stream options are not supported when using a JSON module config.'
+        );
+      }
 
-    return this.createStreamResponse(
-      {
-        prompt,
-        requestConfig,
-        stream: true,
-        streamOptions: options
-      },
-      controller
-    );
+      return await this.createStreamResponse(
+        {
+          prompt,
+          requestConfig,
+          stream: true,
+          streamOptions: options
+        },
+        controller
+      );
+    } catch (error) {
+      controller.abort();
+      throw error;
+    }
   }
 
   private async executeRequest(options: RequestOptions): Promise<HttpResponse> {
@@ -143,9 +148,11 @@ export class OrchestrationClient {
     const stream = OrchestrationStream._create(streamResponse, controller);
     response.stream = stream
       ._pipe(OrchestrationStream._processChunk)
-      ._pipe(OrchestrationStream._processToolCalls, response)
-      ._pipe(OrchestrationStream._processFinishReason, response)
-      ._pipe(OrchestrationStream._processTokenUsage, response);
+      ._pipe(
+        OrchestrationStream._processOrchestrationStreamChunkResponse,
+        response
+      )
+      ._pipe(OrchestrationStream._processStreamEnd, response);
 
     return response;
   }

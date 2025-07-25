@@ -53,16 +53,20 @@ describe('Orchestration chat completion stream', () => {
   it('should process the finish reasons', async () => {
     const logger = createLogger({
       package: 'orchestration',
-      messageContext: 'orchestration-chat-completion-stream'
+      messageContext: 'stream-util'
     });
     const debugSpy = jest.spyOn(logger, 'debug');
     const asyncGeneratorChunk = OrchestrationStream._processChunk(
       originalChatCompletionStream
     );
-    const asyncGeneratorFinishReason = OrchestrationStream._processFinishReason(
-      new OrchestrationStream(() => asyncGeneratorChunk, new AbortController()),
-      new OrchestrationStreamResponse()
-    );
+    const asyncGeneratorFinishReason =
+      OrchestrationStream._processOrchestrationStreamChunkResponse(
+        new OrchestrationStream(
+          () => asyncGeneratorChunk,
+          new AbortController()
+        ),
+        new OrchestrationStreamResponse()
+      );
 
     for await (const chunk of asyncGeneratorFinishReason) {
       expect(chunk).toBeDefined();
@@ -73,16 +77,20 @@ describe('Orchestration chat completion stream', () => {
   it('should process the token usage', async () => {
     const logger = createLogger({
       package: 'orchestration',
-      messageContext: 'orchestration-chat-completion-stream'
+      messageContext: 'stream-util'
     });
     const debugSpy = jest.spyOn(logger, 'debug');
     const asyncGeneratorChunk = OrchestrationStream._processChunk(
       originalChatCompletionStream
     );
-    const asyncGeneratorTokenUsage = OrchestrationStream._processTokenUsage(
-      new OrchestrationStream(() => asyncGeneratorChunk, new AbortController()),
-      new OrchestrationStreamResponse()
-    );
+    const asyncGeneratorTokenUsage =
+      OrchestrationStream._processOrchestrationStreamChunkResponse(
+        new OrchestrationStream(
+          () => asyncGeneratorChunk,
+          new AbortController()
+        ),
+        new OrchestrationStreamResponse()
+      );
 
     for await (const chunk of asyncGeneratorTokenUsage) {
       expect(chunk).toBeDefined();
