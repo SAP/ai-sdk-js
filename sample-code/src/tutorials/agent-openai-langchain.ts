@@ -44,7 +44,9 @@ const getWeatherTool = tool(
   {
     name: 'get_weather',
     description: 'Get current weather information for a city',
-    schema: z.object({ city: z.string().describe('The city name') })
+    schema: z.object({
+      city: z.string().meta({ description: 'The city name' })
+    })
   }
 );
 
@@ -58,7 +60,9 @@ const getRestaurantsTool = tool(
   {
     name: 'get_restaurants',
     description: 'Get restaurant recommendations for a city',
-    schema: z.object({ city: z.string().describe('The city name') })
+    schema: z.object({
+      city: z.string().meta({ description: 'The city name' })
+    })
   }
 );
 
