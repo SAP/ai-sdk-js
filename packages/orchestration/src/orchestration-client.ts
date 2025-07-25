@@ -2,7 +2,7 @@ import { executeRequest } from '@sap-ai-sdk/core';
 import { resolveDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
 import { createLogger } from '@sap-cloud-sdk/util';
 import yaml from 'yaml';
-import { promptTemplatePostRequestSchema } from '@sap-ai-sdk/prompt-registry';
+import { registryControllerPromptControllerCreateUpdatePromptTemplateBody } from '@sap-ai-sdk/prompt-registry/internal.js';
 import { OrchestrationStream } from './orchestration-stream.js';
 import { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 import { OrchestrationResponse } from './orchestration-response.js';
@@ -181,7 +181,10 @@ export class OrchestrationClient {
       throw new Error(`Error parsing YAML: ${error}`);
     }
 
-    const result = promptTemplatePostRequestSchema.safeParse(parsedObject);
+    const result =
+      registryControllerPromptControllerCreateUpdatePromptTemplateBody.safeParse(
+        parsedObject
+      );
     if (!result.success) {
       throw new Error(
         `Prompt Template YAML does not conform to the defined type. Validation errors: ${result.error}`
