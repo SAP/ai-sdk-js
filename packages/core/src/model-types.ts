@@ -26,6 +26,8 @@ export type AzureOpenAiEmbeddingModel = LiteralUnion<
  * GCP Vertex AI models for chat completion.
  */
 export type GcpVertexAiChatModel = LiteralUnion<
+  | 'gemini-1.5-pro'
+  | 'gemini-1.5-flash'
   | 'gemini-2.0-flash'
   | 'gemini-2.0-flash-lite'
   | 'gemini-2.5-flash'
@@ -43,8 +45,6 @@ export type AwsBedrockChatModel = LiteralUnion<
   | 'anthropic--claude-3.7-sonnet'
   | 'anthropic--claude-4-opus'
   | 'anthropic--claude-4-sonnet'
-  | 'amazon--titan-text-express'
-  | 'amazon--titan-text-lite'
   | 'amazon--nova-pro'
   | 'amazon--nova-lite'
   | 'amazon--nova-micro'
