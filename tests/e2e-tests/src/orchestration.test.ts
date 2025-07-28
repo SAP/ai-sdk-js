@@ -77,7 +77,9 @@ describe('orchestration', () => {
 
   it('should complete a chat with masked grounding input', async () => {
     const response = await orchestrationMaskGroundingInput();
-    const parsedGroundingInput = response.data.module_results.input_masking!.data!.masked_grounding_input[0];
+    const parsedGroundingInput =
+      response.data.module_results.input_masking!.data!
+        .masked_grounding_input[0];
     expect(parsedGroundingInput).toEqual(
       "What is MASKED_ORG_1's product Joule?"
     );
