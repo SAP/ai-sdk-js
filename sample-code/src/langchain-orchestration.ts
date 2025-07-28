@@ -279,7 +279,9 @@ export async function invokeToolChain(): Promise<string> {
     name: 'shareholder_value',
     description: 'Multiplies the shareholder value',
     schema: z.object({
-      value: z.number().describe('The value that is supposed to be increased.')
+      value: z
+        .number()
+        .meta({ description: 'The value that is supposed to be increased.' })
     })
   });
 
