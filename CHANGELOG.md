@@ -28,6 +28,21 @@
 
 -
 
+# 1.17.0
+## New Features
+
+- [langchain] Support `withStructuredOutput()` method in OpenAI LangChain client. (8bb24c3)
+
+## Fixed Issues
+
+- [langchain] Use `isInteropZodSchema` instead of `isZodSchemaV4` in LangChain Azure OpenAI and Orchestration clients to support both Zod v3 and v4 schemas. (8d54af6)
+
+## Improvements
+
+- [orchestration] Add support for standard and custom DPI entities in `buildDpiMaskingProvider()` function.
+  Allow configuration of masking strategies via `replacement_strategy` for both entity types. (fab35bc)
+- [orchestration] Add utility functions `getContent()`, `getRefusal()`, `getAllMessages()`, `getAssistantMessage()`, and `getResponse()` to stream response. (225f40c)
+
 # 1.16.0
 ## Compatibility Notes
 
