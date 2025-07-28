@@ -1,5 +1,19 @@
 # @sap-ai-sdk/orchestration
 
+## 1.17.0
+
+### Minor Changes
+
+- fab35bc: [Improvement] Add support for standard and custom DPI entities in `buildDpiMaskingProvider()` function.
+  Allow configuration of masking strategies via `replacement_strategy` for both entity types.
+- 225f40c: [Improvement] Add utility functions `getContent()`, `getRefusal()`, `getAllMessages()`, `getAssistantMessage()`, and `getResponse()` to stream response.
+
+### Patch Changes
+
+- @sap-ai-sdk/ai-api@1.17.0
+- @sap-ai-sdk/core@1.17.0
+- @sap-ai-sdk/prompt-registry@1.17.0
+
 ## 1.16.0
 
 ### Patch Changes

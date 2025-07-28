@@ -1,5 +1,21 @@
 # @sap-ai-sdk/langchain
 
+## 1.17.0
+
+### Minor Changes
+
+- 8bb24c3: [feat] Support `withStructuredOutput()` method in OpenAI LangChain client.
+
+### Patch Changes
+
+- 8d54af6: [fix] Use `isInteropZodSchema` instead of `isZodSchemaV4` in LangChain Azure OpenAI and Orchestration clients to support both Zod v3 and v4 schemas.
+- Updated dependencies [fab35bc]
+- Updated dependencies [225f40c]
+  - @sap-ai-sdk/orchestration@1.17.0
+  - @sap-ai-sdk/ai-api@1.17.0
+  - @sap-ai-sdk/core@1.17.0
+  - @sap-ai-sdk/foundation-models@1.17.0
+
 ## 1.16.0
 
 ### Minor Changes
