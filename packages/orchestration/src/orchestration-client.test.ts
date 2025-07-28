@@ -842,6 +842,7 @@ describe('orchestration service client', () => {
            "name": "add",
          },
          "id": "call_HPgxxSmD2ctYfcJ3gp1JBc7i",
+         "index": 0,
          "type": "function",
        },
        {
@@ -850,9 +851,74 @@ describe('orchestration service client', () => {
            "name": "multiply",
          },
          "id": "call_PExve0Dd9hxD8hOk4Uhr1yhO",
+         "index": 1,
          "type": "function",
        },
      ]
     `);
+  });
+  describe('OrchestrationClient Stream Error Handling', () => {
+    it('should abort controller and re-throw error when network request fails', async () => {
+      const config: OrchestrationModuleConfig = {
+        llm: {
+          model_name: 'gpt-4o',
+          model_params: {}
+        },
+        templating: {
+          template: [
+            {
+              role: 'user',
+              content: 'Test prompt'
+            }
+          ]
+        }
+      };
+
+      const controller = new AbortController();
+
+      // Mock network failure
+      mockInference(
+        {
+          data: constructCompletionPostRequest(config, undefined, true)
+        },
+        {
+          status: 500,
+          data: { error: 'Internal Server Error' }
+        },
+        {
+          url: 'inference/deployments/1234/completion'
+        }
+      );
+
+      const client = new OrchestrationClient(config);
+
+      await expect(client.stream(undefined, controller)).rejects.toThrow();
+    });
+
+    it('should throw error when stream is called with already aborted controller', async () => {
+      const config: OrchestrationModuleConfig = {
+        llm: {
+          model_name: 'gpt-4o',
+          model_params: {}
+        },
+        templating: {
+          template: [
+            {
+              role: 'user',
+              content: 'Test prompt'
+            }
+          ]
+        }
+      };
+
+      const controller = new AbortController();
+
+      // Abort immediately
+      controller.abort();
+
+      const client = new OrchestrationClient(config);
+
+      await expect(client.stream(undefined, controller)).rejects.toThrow();
+    });
   });
 });

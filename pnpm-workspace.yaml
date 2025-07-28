@@ -9,7 +9,6 @@ packages:
   - sample-cap
   - sample-code
   - tests/e2e-tests
-  - tests/schema-tests
   - tests/smoke-tests
   - tests/type-tests
   

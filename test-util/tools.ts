@@ -1,14 +1,24 @@
-// eslint-disable-next-line import/no-internal-modules
-import * as z from 'zod/v4';
+import * as zodV4 from 'zod/v4';
+import * as zodV3 from 'zod/v3';
 import type { ChatCompletionTool } from '../packages/orchestration/src/client/api/schema/index.js';
 
 /**
  * @internal
  */
-export const addNumbersSchema = z
+export const addNumbersSchemaV3 = zodV3
   .object({
-    a: z.number().describe('The first number to be added.'),
-    b: z.number().describe('The second number to be added.')
+    a: zodV3.number().describe('The first number to be added.'),
+    b: zodV3.number().describe('The second number to be added.')
+  })
+  .strict();
+
+/**
+ * @internal
+ */
+export const addNumbersSchema = zodV4
+  .object({
+    a: zodV4.number().meta({ description: 'The first number to be added.' }),
+    b: zodV4.number().meta({ description: 'The second number to be added.' })
   })
   .strict();
 
@@ -20,17 +30,17 @@ export const addNumbersTool: ChatCompletionTool = {
   function: {
     name: 'add',
     description: 'Adds two numbers',
-    parameters: z.toJSONSchema(addNumbersSchema)
+    parameters: zodV4.toJSONSchema(addNumbersSchema)
   }
 };
 
 /**
  * @internal
  */
-const multiplyNumbersSchema = z
+const multiplyNumbersSchema = zodV4
   .object({
-    a: z.number().describe('The first number to multiply.'),
-    b: z.number().describe('The second number to multiply.')
+    a: zodV4.number().meta({ description: 'The first number to multiply.' }),
+    b: zodV4.number().meta({ description: 'The second number to multiply.' })
   })
   .strict();
 
@@ -42,15 +52,15 @@ export const multiplyNumbersTool: ChatCompletionTool = {
   function: {
     name: 'multiply',
     description: 'Multiplies two numbers',
-    parameters: z.toJSONSchema(multiplyNumbersSchema)
+    parameters: zodV4.toJSONSchema(multiplyNumbersSchema)
   }
 };
 
 /**
  * @internal
  */
-export const joke = z.object({
-      setup: z.string().describe('The setup of the joke'),
-      punchline: z.string().describe('The punchline to the joke'),
-      rating: z.number().describe('How funny the joke is, from 1 to 10')
-    });
+export const joke = zodV4.object({
+  setup: zodV4.string().meta({ description: 'The setup of the joke' }),
+  punchline: zodV4.string().meta({ description: 'The punchline to the joke' }),
+  rating: zodV4.number().meta({ description: 'How funny the joke is, from 1 to 10' })
+});

@@ -1,6 +1,6 @@
 import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
 import { v4 as uuidv4 } from 'uuid';
-import { isZodSchemaV4 } from '@langchain/core/utils/types';
+import { isInteropZodSchema } from '@langchain/core/utils/types';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type {
@@ -66,7 +66,7 @@ export function mapToolToOpenAiFunction(
   return {
     name: tool.name,
     description: tool.description,
-    parameters: isZodSchemaV4(tool.schema)
+    parameters: isInteropZodSchema(tool.schema)
       ? toJsonSchema(tool.schema)
       : tool.schema,
     ...(strict !== undefined && { strict })
