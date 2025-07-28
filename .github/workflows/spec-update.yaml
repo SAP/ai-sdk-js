@@ -16,7 +16,7 @@ on:
       file-ref:
         description: "Branch or tag to checkout the spec file from"
         required: false
-        default: main
+        default: v1-main
         type: string
       create-pr:
         description: "Create a pull request after updating the spec file"
@@ -32,7 +32,7 @@ on:
       file-ref:
         description: "Branch or tag to checkout the spec file from"
         required: false
-        default: main
+        default: v1-main
         type: string
       create-pr:
         description: "Create a pull request after updating the spec file"
@@ -58,7 +58,7 @@ jobs:
       REF: ${{ inputs.file-ref }}
       CREATE_PR: ${{ inputs.create-pr }}
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      - uses: sap/ai-sdk-js/.github/actions/setup@v1-main
         with:
           node-version: 20
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -69,12 +69,12 @@ jobs:
         run: |
           git config --global user.email "cloudsdk@sap.com"
           git config --global user.name "SAP Cloud SDK Bot"
-          git fetch --unshallow origin main
+          git fetch --unshallow origin v1-main
           
           BRANCH="spec-update/$CHOICE/$REF"
           git fetch origin $BRANCH || true
           git checkout -B $BRANCH origin/$BRANCH || git checkout -b $BRANCH
-          git rebase main
+          git rebase v1-main
           git push --force --set-upstream origin $BRANCH
           echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
 
@@ -166,7 +166,7 @@ jobs:
             exit 0
           fi
           
-          PR_URL=$(gh pr create --base main --head $BRANCH --title "feat: Update $CHOICE specification" --body "
+          PR_URL=$(gh pr create --base v1-main --head $BRANCH --title "feat: Update $CHOICE specification" --body "
           ## Context
           
           Update $CHOICE specification file based on $REF.
@@ -191,7 +191,7 @@ jobs:
           BRANCH: ${{ steps.branch.outputs.branch }}
           PR_URL: ${{ steps.create-pr.outputs.pr_url }}
         run: |
-          DIFF_URL="https://github.com/SAP/ai-sdk-js/compare/main...$BRANCH"
+          DIFF_URL="https://github.com/SAP/ai-sdk-js/compare/v1-main...$BRANCH"
           echo "## Workflow Execution Summary" >> $GITHUB_STEP_SUMMARY
 
           echo "**Choice:** $CHOICE" >> $GITHUB_STEP_SUMMARY
