@@ -3,6 +3,10 @@ name: 'Spec File Update Workflow'
 on:
   workflow_dispatch:
     inputs:
+      ref:
+        description: 'Branch to run the workflow from'
+        required: false # Set to true if you want to force selection, but false for default
+        default: 'main'
       file:
         description: 'Which spec file to update'
         type: choice
