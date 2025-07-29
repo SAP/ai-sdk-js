@@ -1,14 +1,14 @@
-name: 'Spec File Update Workflow'
+name: "Spec File Update Workflow"
 
 on:
   workflow_dispatch:
     inputs:
       ref:
-        description: 'Branch to run the workflow from'
+        description: "Branch to run the workflow from"
         required: false # Set to true if you want to force selection, but false for default
         default: 'main'
       file:
-        description: 'Which spec file to update'
+        description: "Which spec file to update"
         type: choice
         required: false
         options:
@@ -18,35 +18,35 @@ on:
           - prompt-registry
         default: orchestration
       file-ref:
-        description: 'Branch or tag to checkout the spec file from'
+        description: "Branch or tag to checkout the spec file from"
         required: false
         default: main
         type: string
       create-pr:
-        description: 'Create a pull request after updating the spec file'
+        description: "Create a pull request after updating the spec file"
         required: false
         default: true
         type: boolean
   workflow_call:
     inputs:
       file:
-        description: 'Which spec file to update'
+        description: "Which spec file to update"
         required: true
         type: string
       file-ref:
-        description: 'Branch or tag to checkout the spec file from'
+        description: "Branch or tag to checkout the spec file from"
         required: false
         default: main
         type: string
       create-pr:
-        description: 'Create a pull request after updating the spec file'
+        description: "Create a pull request after updating the spec file"
         required: false
         default: true
         type: boolean
 
 jobs:
   generate:
-    name: 'Download, Generate, Compile and Push'
+    name: "Download, Generate, Compile and Push"
     runs-on: [ubuntu-latest]
     permissions:
       pull-requests: write
@@ -67,7 +67,7 @@ jobs:
           node-version: 20
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 'Checkout or Create Branch'
+      - name: "Checkout or Create Branch"
         id: branch
         # Checkout branch if it exists, otherwise create it
         run: |
@@ -82,7 +82,7 @@ jobs:
           git push --force --set-upstream origin $BRANCH
           echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
 
-      - name: 'Download specification file'
+      - name: "Download specification file"
         id: download
         env:
           GH_HOST: github.tools.sap
@@ -110,7 +110,7 @@ jobs:
           echo "Downloading $CHOICE specification file from $API_URL ..."
           gh api $API_URL -H "Accept: application/vnd.github.raw" > $FILE_PATH
 
-      - name: 'Exit if there are no changes'
+      - name: "Exit if there are no changes"
         id: spec_diff
         # Before checking for changed files, run the linter as that also formats spec files
         run: |
@@ -125,13 +125,13 @@ jobs:
             echo "spec_diff=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: 'Generate'
+      - name: "Generate"
         id: generate
         if: steps.spec_diff.outputs.spec_diff == 'true'
         run: |
           pnpm generate
 
-      - name: 'Compile and Test'
+      - name: "Compile and Test"
         id: compile
         if: steps.spec_diff.outputs.spec_diff == 'true'
         # Compilation can easily fail e.g. from re-namings and has to be fixed manually.
@@ -149,7 +149,7 @@ jobs:
             echo "test_result=skipped" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: 'Push changes'
+      - name: "Push changes"
         id: push
         if: steps.spec_diff.outputs.spec_diff == 'true'
         run: |
@@ -158,7 +158,7 @@ jobs:
           git commit -m "Update $CHOICE based on $REF"
           git push --set-upstream origin ${{ steps.branch.outputs.branch }}
 
-      - name: 'Create PR'
+      - name: "Create PR"
         id: create-pr
         if: ${{ env.CREATE_PR == 'true' && steps.spec_diff.outputs.spec_diff == 'true'}}
         env:
