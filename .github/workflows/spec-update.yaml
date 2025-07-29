@@ -48,6 +48,7 @@ jobs:
   generate:
     name: 'Download, Generate, Compile and Push'
     runs-on: [ubuntu-latest]
+    if: github.ref == 'refs/heads/main'
     permissions:
       pull-requests: write
       contents: write
@@ -74,6 +75,7 @@ jobs:
           git config --global user.email "cloudsdk@sap.com"
           git config --global user.name "SAP Cloud SDK Bot"
           git fetch --unshallow origin main
+
           BRANCH="spec-update/$CHOICE/$REF"
           git fetch origin $BRANCH || true
           git checkout -B $BRANCH origin/$BRANCH || git checkout -b $BRANCH
@@ -105,6 +107,7 @@ jobs:
               FILE_PATH='packages/prompt-registry/src/spec/prompt-registry.yaml'
               ;;
           esac
+
           echo "Downloading $CHOICE specification file from $API_URL ..."
           gh api $API_URL -H "Accept: application/vnd.github.raw" > $FILE_PATH
 
@@ -167,14 +170,20 @@ jobs:
             echo "An open PR already exists for this branch. Skipping PR creation."
             exit 0
           fi
+
           PR_URL=$(gh pr create --base main --head $BRANCH --title "feat: Update $CHOICE specification" --body "
           ## Context
+
           Update $CHOICE specification file based on $REF.
+
           This PR was created automatically by the [spec-update workflow](https://github.com/SAP/ai-sdk-js/actions/workflows/spec-update.yaml).
           You can commit on top of this branch, but as long as this PR is open the action can't be re-run.
+
           - Compilation outcome: ${{ steps.compile.outputs.compilation_result }}
           - Test run outcome: ${{ steps.compile.outputs.test_result }}
+
           Before merging, make sure to update tests and release notes, if necessary.
+
           ## Definition of Done
 
           - [ ] Unit / type tests cover new classes
@@ -198,6 +207,7 @@ jobs:
           echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
           echo "| File Download | ${{ steps.download.outcome == 'success' && '✅' || '❌' }} ${{ steps.download.outcome }}" >> $GITHUB_STEP_SUMMARY
           echo "| Spec File Changes | ${{ steps.spec_diff.outputs.spec_diff == 'true' && '🔄 Changes Detected' || '⏹️ No Changes' }}" >> $GITHUB_STEP_SUMMARY
+
           if ${{ steps.spec_diff.outputs.spec_diff == 'true' }}; then
             echo "| Client Generation | ${{ steps.generate.outcome == 'success' && '✅' || '❌' }} ${{ steps.generate.outcome }}" >> $GITHUB_STEP_SUMMARY
             echo "| Client Compilation | ${{ steps.compile.outputs.compilation_result == 'success' && '✅' || '❌' }} ${{ steps.compile.outputs.compilation_result }}" >> $GITHUB_STEP_SUMMARY
