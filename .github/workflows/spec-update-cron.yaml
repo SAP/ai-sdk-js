@@ -11,17 +11,17 @@ on:
 
 jobs:
   spec-update-ai-api:
-    uses: SAP/ai-sdk-js/.github/workflows/spec-update.yaml@v1-main
+    uses: SAP/ai-sdk-js/.github/workflows/spec-update.yaml@v1.17.0
     with:
       file: ai-api
     secrets: inherit
   spec-update-document-grounding:
-    uses: SAP/ai-sdk-js/.github/workflows/spec-update.yaml@v1-main
+    uses: SAP/ai-sdk-js/.github/workflows/spec-update.yaml@v1.17.0
     with:
       file: document-grounding
     secrets: inherit
   spec-update-prompt-registry:
-    uses: SAP/ai-sdk-js/.github/workflows/spec-update.yaml@v1-main
+    uses: SAP/ai-sdk-js/.github/workflows/spec-update.yaml@v1.17.0
     with:
       file: prompt-registry
     secrets: inherit
