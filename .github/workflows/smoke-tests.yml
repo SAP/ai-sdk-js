@@ -9,7 +9,7 @@ jobs:
   smoke-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      - uses: sap/ai-sdk-js/.github/actions/setup@v1-main
       - run: pnpm smoke-tests create-deployment
       - uses: vchrisb/setup-cf@5aa69781ba95297cea2b80e71926198bed38ef5e
         with:
