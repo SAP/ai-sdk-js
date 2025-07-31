@@ -38,7 +38,7 @@ const logger = createLogger({
  * Get the orchestration client.
  */
 export class OrchestrationClient {
-  private historyEnabled: boolean = false;
+  private historyEnabled = false;
   private history?: ChatMessages;
   /**
    * Creates an instance of the orchestration client.
@@ -64,6 +64,7 @@ export class OrchestrationClient {
     if (clientConfig?.enableClientHistory) {
       this.historyEnabled = true;
       this.history = clientConfig.history;
+      this.historyIncrementIndex = clientConfig.history?.length ?? 0;
     }
   }
 
@@ -72,6 +73,11 @@ export class OrchestrationClient {
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationResponse> {
     if (this.historyEnabled) {
+      if (prompt?.messagesHistory) {
+        throw new Error(
+          'Providing a message history when client history is enabled is not supported. Please remove the `messagesHistory` property from the prompt.'
+        );
+      }
       prompt = {
         ...prompt,
         messagesHistory: this.history
@@ -102,6 +108,18 @@ export class OrchestrationClient {
         );
       }
 
+      if (this.historyEnabled) {
+        if (prompt?.messagesHistory) {
+          throw new Error(
+            'Providing a message history when client history is enabled is not supported. Please remove the `messagesHistory` property from the prompt.'
+          );
+        }
+        prompt = {
+          ...prompt,
+          messagesHistory: this.history
+        };
+      }
+
       const streamResponse = await this.createStreamResponse(
         {
           prompt,
@@ -119,6 +137,15 @@ export class OrchestrationClient {
       controller.abort();
       throw error;
     }
+  }
+
+  getMessageHistory(): ChatMessages | undefined {
+    if (!this.historyEnabled) {
+      throw new Error(
+        'Message history is not enabled for this client. Please enable it by passing `enableClientHistory: true` in the client configuration.'
+      );
+    }
+    return this.history;
   }
 
   private async executeRequest(options: RequestOptions): Promise<HttpResponse> {
