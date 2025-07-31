@@ -10,7 +10,10 @@ import {
   constructCompletionPostRequest,
   constructCompletionPostRequestFromJsonModuleConfig
 } from './util/index.js';
-import type { ChatMessages, TemplatingChatMessage } from './client/api/schema/index.js';
+import type {
+  ChatMessages,
+  TemplatingChatMessage
+} from './client/api/schema/index.js';
 import type {
   HttpResponse,
   CustomRequestConfig
@@ -48,7 +51,7 @@ export class OrchestrationClient {
     private config: OrchestrationModuleConfig | string,
     clientConfig?: ClientConfig,
     private deploymentConfig?: ResourceGroupConfig,
-    private destination?: HttpDestinationOrFetchOptions,
+    private destination?: HttpDestinationOrFetchOptions
   ) {
     if (typeof config === 'string') {
       this.validateJsonConfig(config);
@@ -58,7 +61,7 @@ export class OrchestrationClient {
           ? this.parseAndMergeTemplating(config) // parse and assign if templating is a string
           : config;
     }
-    if(clientConfig?.enableClientHistory) {
+    if (clientConfig?.enableClientHistory) {
       this.historyEnabled = true;
       this.history = clientConfig.history;
     }
@@ -68,7 +71,7 @@ export class OrchestrationClient {
     prompt?: Prompt,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationResponse> {
-    if(this.historyEnabled) {
+    if (this.historyEnabled) {
       prompt = {
         ...prompt,
         messagesHistory: this.history
@@ -80,7 +83,7 @@ export class OrchestrationClient {
       stream: false
     });
     const orchestrationResponse = new OrchestrationResponse(response);
-    if(this.historyEnabled) {
+    if (this.historyEnabled) {
       this.history = orchestrationResponse.getAllMessages();
     }
     return orchestrationResponse;
@@ -108,7 +111,7 @@ export class OrchestrationClient {
         },
         controller
       );
-      if(this.historyEnabled) {
+      if (this.historyEnabled) {
         this.history = streamResponse.getAllMessages();
       }
       return streamResponse;
