@@ -1,12 +1,12 @@
-# History Maintenance
+# Chat History Maintenance
 
 ## Status
 
-In Progress
+Accepted
 
 ## Context
 
-With the introduction of history maintenance, we must distinguish between client-side and server-side approaches.  
+With the introduction of chat history maintenance, we must distinguish between client-side and server-side approaches.  
 This ADR primarily focuses on **client-side history maintenance**, but also outlines the alternative **server-side** approach for context.
 
 ---
@@ -99,10 +99,15 @@ Two design choices emerge:
 
 ---
 
+## Proposal:
+
+We instantiate a new client for every conversation; this way, we can simplify multiple concerns:
+- We leave tenant-isolation concerns to our users
+- We don't need to handle internal conversation id's, instead a simple stream-lock
+- Conversations are only created at client instantiation, where we can pass history as an instantiation parameter
+
+---
+
 ## Decision
 
-_(To be filled once a decision has been made.)_
-
-## Consequences
-
-_(To be filled once a decision has been made.)_
+Proposal accepted as-is
