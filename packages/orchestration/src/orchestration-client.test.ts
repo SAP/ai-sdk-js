@@ -679,7 +679,7 @@ describe('orchestration service client', () => {
       customChatCompletionEndpoint
     );
 
-    const clientWithResourceGroup = new OrchestrationClient(config, {
+    const clientWithResourceGroup = new OrchestrationClient(config, undefined, {
       resourceGroup: 'custom-resource-group'
     });
 

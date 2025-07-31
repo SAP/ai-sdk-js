@@ -10,13 +10,14 @@ import {
   constructCompletionPostRequest,
   constructCompletionPostRequestFromJsonModuleConfig
 } from './util/index.js';
-import type { TemplatingChatMessage } from './client/api/schema/index.js';
+import type { ChatMessages, TemplatingChatMessage } from './client/api/schema/index.js';
 import type {
   HttpResponse,
   CustomRequestConfig
 } from '@sap-cloud-sdk/http-client';
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api/internal.js';
 import type {
+  ClientConfig,
   OrchestrationModuleConfig,
   Prompt,
   RequestOptions,
@@ -34,16 +35,20 @@ const logger = createLogger({
  * Get the orchestration client.
  */
 export class OrchestrationClient {
+  private historyEnabled: boolean = false;
+  private history?: ChatMessages;
   /**
    * Creates an instance of the orchestration client.
    * @param config - Orchestration module configuration. This can either be an `OrchestrationModuleConfig` object or a JSON string obtained from AI Launchpad.
+   * @param clientConfig - Client configuration for the orchestration client.
    * @param deploymentConfig - Deployment configuration.
    * @param destination - The destination to use for the request.
    */
   constructor(
     private config: OrchestrationModuleConfig | string,
+    clientConfig?: ClientConfig,
     private deploymentConfig?: ResourceGroupConfig,
-    private destination?: HttpDestinationOrFetchOptions
+    private destination?: HttpDestinationOrFetchOptions,
   ) {
     if (typeof config === 'string') {
       this.validateJsonConfig(config);
@@ -53,18 +58,32 @@ export class OrchestrationClient {
           ? this.parseAndMergeTemplating(config) // parse and assign if templating is a string
           : config;
     }
+    if(clientConfig?.enableClientHistory) {
+      this.historyEnabled = true;
+      this.history = clientConfig.history;
+    }
   }
 
   async chatCompletion(
     prompt?: Prompt,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationResponse> {
+    if(this.historyEnabled) {
+      prompt = {
+        ...prompt,
+        messagesHistory: this.history
+      };
+    }
     const response = await this.executeRequest({
       prompt,
       requestConfig,
       stream: false
     });
-    return new OrchestrationResponse(response);
+    const orchestrationResponse = new OrchestrationResponse(response);
+    if(this.historyEnabled) {
+      this.history = orchestrationResponse.getAllMessages();
+    }
+    return orchestrationResponse;
   }
 
   async stream(
@@ -80,7 +99,7 @@ export class OrchestrationClient {
         );
       }
 
-      return await this.createStreamResponse(
+      const streamResponse = await this.createStreamResponse(
         {
           prompt,
           requestConfig,
@@ -89,6 +108,10 @@ export class OrchestrationClient {
         },
         controller
       );
+      if(this.historyEnabled) {
+        this.history = streamResponse.getAllMessages();
+      }
+      return streamResponse;
     } catch (error) {
       controller.abort();
       throw error;
