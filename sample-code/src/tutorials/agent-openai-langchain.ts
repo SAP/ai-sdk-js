@@ -1,4 +1,4 @@
-/* eslint-disable no-console import/no-internal-modules */
+/* eslint-disable no-console, import/no-internal-modules*/
 import {
   StateGraph,
   MessagesAnnotation,
@@ -13,12 +13,12 @@ import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { tool } from '@langchain/core/tools';
 import * as z from 'zod/v4';
+import { getMcpTools } from './mcp/mcp-adapter.js';
 import type { AIMessage } from '@langchain/core/messages';
-import { getWeatherTools } from './mcp/mcp-adapter.js';
 /**
- * This example demonstrates how to create a travel itinerary assistant using LangGraph.
+ * This example demonstrates how to create a travel itinerary assistant using LangGraph and MCP.
  * The assistant can check the weather and recommend restaurants based on the city provided.
- * It uses tools to fetch weather and restaurant data, and maintains conversation context.
+ * It uses tools (defined and fetched from MCP server) to fetch weather and restaurant data, and maintains conversation context.
  */
 const mockRestaurantData: Record<string, string[]> = {
   paris: ['Le Comptoir du Relais', "L'As du Fallafel", 'Breizh Café'],
@@ -42,7 +42,7 @@ const getRestaurantsTool = tool(
 );
 
 // Define the tools for the agent to use
-const tools = [...getWeatherTools, getRestaurantsTool];
+const tools = [...getMcpTools, getRestaurantsTool];
 const toolNode = new ToolNode(tools);
 
 // Create a model
