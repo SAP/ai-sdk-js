@@ -57,7 +57,6 @@ export type AwsBedrockChatModel = LiteralUnion<
 export type AiCoreOpenSourceChatModel = LiteralUnion<
   | 'mistralai--mistral-large-instruct'
   | 'mistralai--mistral-small-instruct'
-  | 'meta--llama3.1-70b-instruct'
   | 'ibm--granite-13b-chat'
   | 'alephalpha-pharia-1-7b-control'
   | 'deepseek-ai--deepseek-r1'
