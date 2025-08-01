@@ -14,13 +14,15 @@
   "scripts": {
     "start": "node --loader ts-node/esm src/server.ts",
     "local": "node --env-file=.env --loader ts-node/esm src/server.ts",
-    "agent-tutorial": "node --env-file=.env --loader ts-node/esm src/tutorials/agent-openai-langchain.ts",
+    "agent-tutorial": "node --env-file=.env --loader ts-node/esm src/tutorials/travel-itinerary-agent.ts",
     "compile": "tsc",
     "dev": "tsc -w",
     "lint": "eslint . && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -w --log-level error"
   },
   "dependencies": {
+    "@langchain/mcp-adapters": "^0.6.0",
+    "@modelcontextprotocol/sdk": "^1.13.1",
     "@langchain/langgraph": "^0.4.1",
     "langchain": "0.3.30",
     "@langchain/core": "0.3.66",
