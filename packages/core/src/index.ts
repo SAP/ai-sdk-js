@@ -7,8 +7,6 @@ export type {
   AzureOpenAiEmbeddingModel,
   GcpVertexAiChatModel,
   AwsBedrockChatModel,
-  AiCoreOpenSourceChatModel,
-  AwsBedrockEmbeddingModel,
-  NvidiaEmbeddingModel
+  AiCoreOpenSourceChatModel
 } from './model-types.js';
 export { SseStream, LineDecoder, SSEDecoder } from './stream/index.js';

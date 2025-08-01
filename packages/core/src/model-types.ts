@@ -6,7 +6,6 @@ type LiteralUnion<T extends U, U = string> = T | (U & Record<never, never>);
 export type AzureOpenAiChatModel = LiteralUnion<
   | 'gpt-4o-mini'
   | 'gpt-4o'
-  | 'gpt-4'
   | 'gpt-4.1'
   | 'gpt-4.1-mini'
   | 'gpt-4.1-nano'
@@ -31,6 +30,8 @@ export type GcpVertexAiChatModel = LiteralUnion<
   | 'gemini-1.5-flash'
   | 'gemini-2.0-flash'
   | 'gemini-2.0-flash-lite'
+  | 'gemini-2.5-flash'
+  | 'gemini-2.5-pro'
 >;
 
 /**
@@ -42,33 +43,21 @@ export type AwsBedrockChatModel = LiteralUnion<
   | 'anthropic--claude-3-sonnet'
   | 'anthropic--claude-3.5-sonnet'
   | 'anthropic--claude-3.7-sonnet'
-  | 'amazon--titan-text-express'
-  | 'amazon--titan-text-lite'
+  | 'anthropic--claude-4-opus'
+  | 'anthropic--claude-4-sonnet'
   | 'amazon--nova-pro'
   | 'amazon--nova-lite'
   | 'amazon--nova-micro'
+  | 'amazon--nova-premier'
 >;
-
-/**
- * AWS Bedrock models for embedding.
- */
-export type AwsBedrockEmbeddingModel = LiteralUnion<'amazon--titan-embed-text'>;
 
 /**
  * AI Core open source models for chat completion.
  */
 export type AiCoreOpenSourceChatModel = LiteralUnion<
-  | 'mistralai--mixtral-8x7b-instruct-v01'
   | 'mistralai--mistral-large-instruct'
   | 'mistralai--mistral-small-instruct'
-  | 'meta--llama3.1-70b-instruct'
   | 'ibm--granite-13b-chat'
   | 'alephalpha-pharia-1-7b-control'
   | 'deepseek-ai--deepseek-r1'
 >;
-
-/**
- * Nvidia models for embedding.
- */
-export type NvidiaEmbeddingModel =
-  LiteralUnion<'nvidia--llama-3.2-nv-embedqa-1b'>;
