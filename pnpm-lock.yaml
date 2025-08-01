@@ -29,23 +29,23 @@ importers:
         specifier: workspace:^
         version: link:packages/orchestration
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
       '@sap-cloud-sdk/eslint-config':
-        specifier: ^4.1.0
-        version: 4.1.0(@typescript-eslint/eslint-plugin@8.38.0(@typescript-eslint/parser@8.38.0(eslint@9.32.0)(typescript@5.8.3))(eslint@9.32.0)(typescript@5.8.3))(eslint@9.32.0)(prettier@3.6.2)(typescript@5.8.3)
+        specifier: ^4.1.1
+        version: 4.1.1(@typescript-eslint/eslint-plugin@8.38.0(@typescript-eslint/parser@8.38.0(eslint@9.32.0)(typescript@5.8.3))(eslint@9.32.0)(typescript@5.8.3))(eslint@9.32.0)(prettier@3.6.2)(typescript@5.8.3)
       '@sap-cloud-sdk/generator-common':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
       '@sap-cloud-sdk/http-client':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
       '@sap-cloud-sdk/openapi-generator':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
       '@sap-cloud-sdk/util':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
       '@types/jest':
         specifier: ^30.0.0
         version: 30.0.0
@@ -107,26 +107,26 @@ importers:
         specifier: workspace:^
         version: link:../core
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
       '@sap-cloud-sdk/util':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
 
   packages/core:
     dependencies:
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
       '@sap-cloud-sdk/http-client':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
       '@sap-cloud-sdk/openapi':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
       '@sap-cloud-sdk/util':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
 
   packages/document-grounding:
     dependencies:
@@ -143,14 +143,14 @@ importers:
         specifier: workspace:^
         version: link:../core
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
       '@sap-cloud-sdk/http-client':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
       '@sap-cloud-sdk/util':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
 
   packages/langchain:
     dependencies:
@@ -170,8 +170,8 @@ importers:
         specifier: workspace:^
         version: link:../orchestration
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
       uuid:
         specifier: ^11.1.0
         version: 11.1.0
@@ -188,18 +188,18 @@ importers:
         specifier: workspace:^
         version: link:../prompt-registry
       '@sap-cloud-sdk/util':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
       yaml:
         specifier: ^2.8.0
         version: 2.8.0
     devDependencies:
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
       '@sap-cloud-sdk/http-client':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
 
   packages/prompt-registry:
     dependencies:
@@ -265,8 +265,8 @@ importers:
         specifier: workspace:^
         version: link:../packages/prompt-registry
       '@sap-cloud-sdk/util':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
       '@types/express':
         specifier: ^5.0.3
         version: 5.0.3
@@ -298,8 +298,8 @@ importers:
         specifier: workspace:^
         version: link:../../sample-code
       '@sap-cloud-sdk/util':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
     devDependencies:
       '@types/async-retry':
         specifier: ^1.4.9
@@ -341,8 +341,8 @@ importers:
         specifier: canary
         version: 1.17.1-20250801013354.0
       '@sap-cloud-sdk/util':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
       express:
         specifier: ^5.1.0
         version: 5.1.0
@@ -378,11 +378,11 @@ importers:
         specifier: workspace:^
         version: link:../../packages/orchestration
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
       '@sap-cloud-sdk/http-client':
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
       tsd:
         specifier: ^0.32.0
         version: 0.32.0
@@ -894,10 +894,6 @@ packages:
     resolution: {integrity: sha512-gtF186CXhIl1p4pJNGZw8Yc6RlshoePRvE0X91oPGb3vZ8pM3qOS9W9NGPat9LziaBV7XrJWGylNQXkGcnM3IQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@eslint/js@9.31.0':
-    resolution: {integrity: sha512-LOm5OVt7D4qiKCqoiPbA7LWmI+tbw1VbTUowBcUMgQSuM6poJufkFkYDcQpo5KfgD39TnNySV26QjOh7VFpSyw==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
   '@eslint/js@9.32.0':
     resolution: {integrity: sha512-BBpRFZK3eX6uMLKz8WxFOBIFFcGFJ/g8XuwjTHCqHROSIsopI+ddn/d5Cfh36+7+e5edVS8dbSHnBNhrLEX0zg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
@@ -1255,44 +1251,29 @@ packages:
   '@sap-ai-sdk/prompt-registry@1.17.1-20250801013354.0':
     resolution: {integrity: sha512-Cr6HF66gQG4yKk0lOOR1VrKSFO3UcohdR3oOzj4pcxumQPahiuULM6NWMg0xYbdK1bDHWOK09E0TnTfGP4IQtA==}
 
-  '@sap-cloud-sdk/connectivity@4.1.0':
-    resolution: {integrity: sha512-NUxa7H0MA50bRIbmrO26zjNFfoT38qzrNuDGbhRwmo7IilZ9tgPrtNsDcFW9bnBPjtVwwASJX0bUXhG16nhNDQ==}
-
   '@sap-cloud-sdk/connectivity@4.1.1':
     resolution: {integrity: sha512-vFs5H06JoRm9dIKIfZgYoWl1x0JM9MkkPx4W94oyRGl2HzgOR3LQi7Ev9/3X5idlUgxlISufpCqMI8eWKpDR1A==}
 
-  '@sap-cloud-sdk/eslint-config@4.1.0':
-    resolution: {integrity: sha512-L+Qu03zLILb04ZA7tXfJj5IPMUiqOpEeaWyFF5y2cuzGcBE2KFOxaWc3Wh1Jxi+K4X8R6h7lXCRZ8TTzooZpzQ==}
+  '@sap-cloud-sdk/eslint-config@4.1.1':
+    resolution: {integrity: sha512-lprJD8/gRBBzWqekOW1phpDsa7AmkbE7RWF1S2K1Kyda7C/HeDpmrRgPHoo0Y0/VJACNXpA0InhClQGHzB5Kow==}
     peerDependencies:
       eslint: ^8.0.0
 
-  '@sap-cloud-sdk/generator-common@4.1.0':
-    resolution: {integrity: sha512-ij6ekBOn8Lqc3C3WJySdiSlj7gZo1LH+y6LnpHYFvPASLjB2fDiX4JVITW5PleSEdnbb8VJyezsjG+IKMhQCig==}
-
-  '@sap-cloud-sdk/http-client@4.1.0':
-    resolution: {integrity: sha512-eg2TjRnz8w1OpSC8Lylyg2NqDjigu4I3PnADHjQ8GNzyKkrCzgvf1QlO49UAg/3HXM58gZMKy7zdlSZ4uOJ/6w==}
+  '@sap-cloud-sdk/generator-common@4.1.1':
+    resolution: {integrity: sha512-lcSjM61ZxTgdLxpUE0qYOJCduRXGU/vkXooxZ/R+ihAhLtR6SiG5Wr8kyiJsAo8zhxPAXGKE7s2PySMCNYUkBg==}
 
   '@sap-cloud-sdk/http-client@4.1.1':
     resolution: {integrity: sha512-Uxm6IAKgjxX4byW3wrpFrv+hwaQ+iyY3pwgybofjh6XDbDFEGzfedxOR1MBpn76rINvFF+Whv9fFJLVRbNs7cg==}
 
-  '@sap-cloud-sdk/openapi-generator@4.1.0':
-    resolution: {integrity: sha512-Jp8LDBgxMFgUzgvo0IPk8TX+X2f9wRK59VxDrQyfl2eqrhS6hpveyNqfCQ62+h+rHPMIR26gahvoxohU+Xfu4g==}
+  '@sap-cloud-sdk/openapi-generator@4.1.1':
+    resolution: {integrity: sha512-r8hw4sYytAl85zhQ3gH66va0ApdEH0PswXV/gmWHnjIY/De9Od/5elu0AMSPg5Nn1czgkPf58/81yQBBunm7tw==}
     hasBin: true
-
-  '@sap-cloud-sdk/openapi@4.1.0':
-    resolution: {integrity: sha512-EnpHLS11Wke3GAt6YzS8bb3ijNRleLyMo0OCCalLW/DqKkCvtA1u0tx1LtPGuZb/rVSfzWS8BRbGl0TC3Jy4bw==}
 
   '@sap-cloud-sdk/openapi@4.1.1':
     resolution: {integrity: sha512-6ZBVXz0zaxp8sFBXhDgj4VUam5fo8jkz+oZnCgMpGHinvYL1FleACYYP7owSmg/dbENlVTfSxIto7N3zy5vt2A==}
 
-  '@sap-cloud-sdk/resilience@4.1.0':
-    resolution: {integrity: sha512-liFJPtsX/npbDPJWZrc7GmOvsEOviryx5gijE3F3gfRUFSAP8UcqGrrvYA+ifREW3ZAeQ7ur74PInN5WHTKajw==}
-
   '@sap-cloud-sdk/resilience@4.1.1':
     resolution: {integrity: sha512-S3lnaJ03YQFxYA9G1Nhuiye7uHg64mWsKMKyrXuuj1mvXW06D0mAbCuggzH5QN+W0RQRmb4PWlce5eCKHUFKXg==}
-
-  '@sap-cloud-sdk/util@4.1.0':
-    resolution: {integrity: sha512-4OI7lYd2GHQDPysEwFvCKbZ0m40VA0C47rnxWvd6ExzkfT/cKzryesB4jA3vwvgRO14q8MKoG3RcR+9ZPzaeSw==}
 
   '@sap-cloud-sdk/util@4.1.1':
     resolution: {integrity: sha512-3m3RVe0l0VJMJrB7iTnZBp+PDTUCW4A3tL1w8V2EZNG+BLcU0GK4NUBwBtdsVHcRiRCKEVGWe5muNEQtHxzP+g==}
@@ -2563,8 +2544,8 @@ packages:
       '@typescript-eslint/parser':
         optional: true
 
-  eslint-plugin-jsdoc@51.4.1:
-    resolution: {integrity: sha512-y4CA9OkachG8v5nAtrwvcvjIbdcKgSyS6U//IfQr4FZFFyeBFwZFf/tfSsMr46mWDJgidZjBTqoCRlXywfFBMg==}
+  eslint-plugin-jsdoc@52.0.2:
+    resolution: {integrity: sha512-fYrnc7OpRifxxKjH78Y9/D/EouQDYD3G++bpR1Y+A+fy+CMzKZAdGIiHTIxCd2U10hb2y1NxN5TJt9aupq1vmw==}
     engines: {node: '>=20.11.0'}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
@@ -2798,8 +2779,8 @@ packages:
   fn.name@1.1.0:
     resolution: {integrity: sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==}
 
-  follow-redirects@1.15.9:
-    resolution: {integrity: sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ==}
+  follow-redirects@1.15.11:
+    resolution: {integrity: sha512-deG2P0JfjrTxl50XGCDyfI97ZGVCxIpfKYmfyrQ54n5FO/0gfIES8C/Psl6kWVDolizcaaxZJnTS0QSMxvnsBQ==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
@@ -5702,8 +5683,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@eslint/js@9.31.0': {}
-
   '@eslint/js@9.32.0': {}
 
   '@eslint/object-schema@2.1.6': {}
@@ -6257,18 +6236,18 @@ snapshots:
   '@sap-ai-sdk/ai-api@1.17.1-20250801013354.0':
     dependencies:
       '@sap-ai-sdk/core': 1.17.1-20250801013354.0
-      '@sap-cloud-sdk/connectivity': 4.1.0
-      '@sap-cloud-sdk/util': 4.1.0
+      '@sap-cloud-sdk/connectivity': 4.1.1
+      '@sap-cloud-sdk/util': 4.1.1
     transitivePeerDependencies:
       - debug
       - supports-color
 
   '@sap-ai-sdk/core@1.17.1-20250801013354.0':
     dependencies:
-      '@sap-cloud-sdk/connectivity': 4.1.0
+      '@sap-cloud-sdk/connectivity': 4.1.1
       '@sap-cloud-sdk/http-client': 4.1.1
       '@sap-cloud-sdk/openapi': 4.1.1
-      '@sap-cloud-sdk/util': 4.1.0
+      '@sap-cloud-sdk/util': 4.1.1
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -6284,9 +6263,9 @@ snapshots:
     dependencies:
       '@sap-ai-sdk/ai-api': 1.17.1-20250801013354.0
       '@sap-ai-sdk/core': 1.17.1-20250801013354.0
-      '@sap-cloud-sdk/connectivity': 4.1.0
-      '@sap-cloud-sdk/http-client': 4.1.0
-      '@sap-cloud-sdk/util': 4.1.0
+      '@sap-cloud-sdk/connectivity': 4.1.1
+      '@sap-cloud-sdk/http-client': 4.1.1
+      '@sap-cloud-sdk/util': 4.1.1
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -6298,7 +6277,7 @@ snapshots:
       '@sap-ai-sdk/core': 1.17.1-20250801013354.0
       '@sap-ai-sdk/foundation-models': 1.17.1-20250801013354.0
       '@sap-ai-sdk/orchestration': 1.17.1-20250801013354.0
-      '@sap-cloud-sdk/connectivity': 4.1.0
+      '@sap-cloud-sdk/connectivity': 4.1.1
       uuid: 11.1.0
     transitivePeerDependencies:
       - '@opentelemetry/api'
@@ -6313,7 +6292,7 @@ snapshots:
       '@sap-ai-sdk/ai-api': 1.17.1-20250801013354.0
       '@sap-ai-sdk/core': 1.17.1-20250801013354.0
       '@sap-ai-sdk/prompt-registry': 1.17.1-20250801013354.0
-      '@sap-cloud-sdk/util': 4.1.0
+      '@sap-cloud-sdk/util': 4.1.1
       yaml: 2.8.0
     transitivePeerDependencies:
       - debug
@@ -6323,19 +6302,6 @@ snapshots:
     dependencies:
       '@sap-ai-sdk/core': 1.17.1-20250801013354.0
       zod: 3.25.76
-    transitivePeerDependencies:
-      - debug
-      - supports-color
-
-  '@sap-cloud-sdk/connectivity@4.1.0':
-    dependencies:
-      '@sap-cloud-sdk/resilience': 4.1.0
-      '@sap-cloud-sdk/util': 4.1.0
-      '@sap/xsenv': 5.6.1
-      '@sap/xssec': 4.9.0
-      async-retry: 1.3.3
-      axios: 1.11.0
-      jsonwebtoken: 9.0.2
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -6353,16 +6319,16 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/eslint-config@4.1.0(@typescript-eslint/eslint-plugin@8.38.0(@typescript-eslint/parser@8.38.0(eslint@9.32.0)(typescript@5.8.3))(eslint@9.32.0)(typescript@5.8.3))(eslint@9.32.0)(prettier@3.6.2)(typescript@5.8.3)':
+  '@sap-cloud-sdk/eslint-config@4.1.1(@typescript-eslint/eslint-plugin@8.38.0(@typescript-eslint/parser@8.38.0(eslint@9.32.0)(typescript@5.8.3))(eslint@9.32.0)(typescript@5.8.3))(eslint@9.32.0)(prettier@3.6.2)(typescript@5.8.3)':
     dependencies:
-      '@eslint/js': 9.31.0
+      '@eslint/js': 9.32.0
       '@stylistic/eslint-plugin': 3.1.0(eslint@9.32.0)(typescript@5.8.3)
       '@typescript-eslint/parser': 8.38.0(eslint@9.32.0)(typescript@5.8.3)
       eslint: 9.32.0
       eslint-config-prettier: 10.1.8(eslint@9.32.0)
       eslint-import-resolver-typescript: 4.4.4(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.38.0(eslint@9.32.0)(typescript@5.8.3))(eslint@9.32.0))(eslint@9.32.0)
       eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.38.0(eslint@9.32.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.32.0)
-      eslint-plugin-jsdoc: 51.4.1(eslint@9.32.0)
+      eslint-plugin-jsdoc: 52.0.2(eslint@9.32.0)
       eslint-plugin-prettier: 5.5.3(eslint-config-prettier@10.1.8(eslint@9.32.0))(eslint@9.32.0)(prettier@3.6.2)
       eslint-plugin-regex: 1.10.0(eslint@9.32.0)
       eslint-plugin-unused-imports: 4.1.4(@typescript-eslint/eslint-plugin@8.38.0(@typescript-eslint/parser@8.38.0(eslint@9.32.0)(typescript@5.8.3))(eslint@9.32.0)(typescript@5.8.3))(eslint@9.32.0)
@@ -6376,9 +6342,9 @@ snapshots:
       - supports-color
       - typescript
 
-  '@sap-cloud-sdk/generator-common@4.1.0':
+  '@sap-cloud-sdk/generator-common@4.1.1':
     dependencies:
-      '@sap-cloud-sdk/util': 4.1.0
+      '@sap-cloud-sdk/util': 4.1.1
       fast-levenshtein: 3.0.0
       fs-extra: 11.3.0
       glob: 11.0.3
@@ -6388,16 +6354,6 @@ snapshots:
       yargs: 17.7.2
     transitivePeerDependencies:
       - debug
-
-  '@sap-cloud-sdk/http-client@4.1.0':
-    dependencies:
-      '@sap-cloud-sdk/connectivity': 4.1.0
-      '@sap-cloud-sdk/resilience': 4.1.0
-      '@sap-cloud-sdk/util': 4.1.0
-      axios: 1.11.0
-    transitivePeerDependencies:
-      - debug
-      - supports-color
 
   '@sap-cloud-sdk/http-client@4.1.1':
     dependencies:
@@ -6409,29 +6365,18 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/openapi-generator@4.1.0':
+  '@sap-cloud-sdk/openapi-generator@4.1.1':
     dependencies:
       '@apidevtools/swagger-parser': 12.0.0(openapi-types@12.1.3)
-      '@sap-cloud-sdk/generator-common': 4.1.0
-      '@sap-cloud-sdk/openapi': 4.1.0
-      '@sap-cloud-sdk/util': 4.1.0
+      '@sap-cloud-sdk/generator-common': 4.1.1
+      '@sap-cloud-sdk/openapi': 4.1.1
+      '@sap-cloud-sdk/util': 4.1.1
       js-yaml: 4.1.0
       openapi-types: 12.1.3
       swagger2openapi: 7.0.8
     transitivePeerDependencies:
       - debug
       - encoding
-      - supports-color
-
-  '@sap-cloud-sdk/openapi@4.1.0':
-    dependencies:
-      '@sap-cloud-sdk/connectivity': 4.1.0
-      '@sap-cloud-sdk/http-client': 4.1.0
-      '@sap-cloud-sdk/resilience': 4.1.0
-      '@sap-cloud-sdk/util': 4.1.0
-      axios: 1.11.0
-    transitivePeerDependencies:
-      - debug
       - supports-color
 
   '@sap-cloud-sdk/openapi@4.1.1':
@@ -6445,32 +6390,12 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/resilience@4.1.0':
-    dependencies:
-      '@sap-cloud-sdk/util': 4.1.0
-      async-retry: 1.3.3
-      axios: 1.11.0
-      opossum: 9.0.0
-    transitivePeerDependencies:
-      - debug
-
   '@sap-cloud-sdk/resilience@4.1.1':
     dependencies:
       '@sap-cloud-sdk/util': 4.1.1
       async-retry: 1.3.3
       axios: 1.11.0
       opossum: 9.0.0
-    transitivePeerDependencies:
-      - debug
-
-  '@sap-cloud-sdk/util@4.1.0':
-    dependencies:
-      axios: 1.11.0
-      chalk: 4.1.2
-      logform: 2.7.0
-      voca: 1.4.1
-      winston: 3.17.0
-      winston-transport: 4.9.0
     transitivePeerDependencies:
       - debug
 
@@ -7305,7 +7230,7 @@ snapshots:
 
   axios@1.11.0:
     dependencies:
-      follow-redirects: 1.15.9
+      follow-redirects: 1.15.11
       form-data: 4.0.4
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -8027,7 +7952,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-jsdoc@51.4.1(eslint@9.32.0):
+  eslint-plugin-jsdoc@52.0.2(eslint@9.32.0):
     dependencies:
       '@es-joy/jsdoccomment': 0.52.0
       are-docs-informative: 0.0.2
@@ -8364,7 +8289,7 @@ snapshots:
 
   fn.name@1.1.0: {}
 
-  follow-redirects@1.15.9: {}
+  follow-redirects@1.15.11: {}
 
   for-each@0.3.5:
     dependencies:
