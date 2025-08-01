@@ -9,7 +9,7 @@ const server = new McpServer({
 });
 
 server.tool(
-  'get-weather',
+  'get_weather',
   'Tool to fetch weather details for a specific city',
   {
     city: z
