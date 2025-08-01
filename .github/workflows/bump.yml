@@ -67,7 +67,7 @@ jobs:
           git config --local user.name "SAP Cloud SDK Bot"
           BRANCH_NAME="update-release-notes-js-${{ needs.bump.outputs.version }}"
           git checkout -b "${BRANCH_NAME}"
-          git add docs-js/release-notes.mdx
+          git add docs-js_versioned_docs/version-v1/release-notes.mdx
           if git diff --staged --quiet; then
             echo "No changes to commit."
             # Output an empty pr_url if no changes
@@ -89,7 +89,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
 
-#Added as a separate job to avoid running into incompatibility issues with pnpm and npm
+  #Added as a separate job to avoid running into incompatibility issues with pnpm and npm
   lint-docs:
     name: Run Lint Fix on Docs
     runs-on: ubuntu-latest
@@ -124,7 +124,7 @@ jobs:
         run: |
           git config --local user.email "cloudsdk@sap.com"
           git config --local user.name "SAP Cloud SDK Bot"
-          git add docs-js/release-notes.mdx
+          git add docs-js_versioned_docs/version-v1/release-notes.mdx
           if git diff --staged --quiet; then
             echo "No lint fixes to commit"
           else
