@@ -33,7 +33,7 @@
     "check:deps": "pnpm -r -F !./tests/smoke-tests -F !./sample-cap exec depcheck --ignores=\"nock,@jest/globals\" --quiet"
   },
   "devDependencies": {
-    "orval": "^7.10.0",
+    "orval": "^7.11.1",
     "zod": "^3.25.76",
     "@changesets/cli": "^2.29.5",
     "@jest/globals": "^30.0.5",
