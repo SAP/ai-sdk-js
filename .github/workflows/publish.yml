@@ -64,7 +64,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
       - name: publish
         run: |
-          pnpm changeset publish
+          pnpm changeset publish --tag next
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}
 
