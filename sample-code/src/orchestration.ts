@@ -153,16 +153,15 @@ export async function orchestrationMessageHistory(): Promise<OrchestrationRespon
     llm: {
       model_name: 'gpt-4o'
     }
-  });
+  }, { enableClientHistory: true });
 
-  const firstResponse = await orchestrationClient.chatCompletion({
+  await orchestrationClient.chatCompletion({
     messages: [{ role: 'user', content: 'What is the capital of France?' }]
   });
 
   // User can then ask a follow-up question
   const nextResponse = await orchestrationClient.chatCompletion({
     messages: [{ role: 'user', content: 'What is the typical food there?' }],
-    messagesHistory: firstResponse.getAllMessages()
   });
 
   return nextResponse;
@@ -466,7 +465,7 @@ export async function orchestrationGrounding(
           metadata_params: ['context']
         })
       })
-    },
+    }, undefined,
     { resourceGroup: 'ai-sdk-js-e2e' }
   );
 
@@ -633,7 +632,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
     templating: {
       tools: [addNumbersTool]
     }
-  });
+  }, { enableClientHistory: true });
 
   const response = await orchestrationClient.chatCompletion({
     messages: [
@@ -644,7 +643,6 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
       { role: 'user', content: 'What is 2 + 3?' }
     ]
   });
-  const allMessages = response.getAllMessages();
   const initialResponse = response.getAssistantMessage();
   let toolMessage: ToolChatMessage;
   // Use the initial response to execute the tool and get the response.
@@ -662,8 +660,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
 
   // Call the model with a new message and the message history
   return orchestrationClient.chatCompletion({
-    messages: [toolMessage],
-    messagesHistory: allMessages
+    messages: [toolMessage]
   });
 }
 
