@@ -1,6 +1,6 @@
 # SAP Cloud SDK for AI for JavaScript Version 2 Upgrade Guide <!-- omit from toc -->
 
-The purpose of this document is to collect information on the AI SDK version 1 to version 2 migration.
+The purpose of this document is to collect information on the SAP Cloud SDK for AI version 1 to version 2 migration.
 It should include information on all steps a user needs to take when updating the SDK version from 1 to 2.
 
 This document should be written in a style which addresses the consumer of the SDK.
