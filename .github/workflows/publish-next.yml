@@ -1,19 +1,19 @@
-name: publish-canary
+name: publish-next
 
 on:
   schedule:
     - cron: '0 1 * * *'
   workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Dist tag for the release. If you chose something different than "canary", make sure to delete it once it is not needed anymore.'
-        type: string
-        required: false
-        default: 'canary'
 
 jobs:
+  e2e-tests:
+    name: 'Run E2E Tests'
+    uses: ./.github/workflows/e2e-tests.yaml
+    secrets: inherit
+
   publish:
     runs-on: ubuntu-latest
+    needs: [e2e-tests]
 
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
@@ -37,6 +37,6 @@ jobs:
           pnpm changeset pre enter ${date}
           pnpm changeset version
           pnpm changeset pre exit
-          pnpm changeset publish --tag ${{ github.event_name == 'schedule' && 'canary' || inputs.tag }}
+          pnpm changeset publish --tag next
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}
