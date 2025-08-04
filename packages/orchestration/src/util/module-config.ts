@@ -29,23 +29,22 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
   prompt?: Prompt,
   stream?: boolean
 ): Record<string, any> {
-  let orchestration_config = { ...config };
   if (stream) {
-    orchestration_config = {
-      ...orchestration_config,
+    config = {
+      ...config,
       stream: {
-        ...(orchestration_config.stream || {}),
+        ...(config.stream || {}),
         enabled: true
       }
     };
   } else {
-    delete orchestration_config.stream;
+    delete config.stream;
   }
 
   return {
     messages_history: prompt?.messagesHistory || [],
     input_params: prompt?.inputParams || {},
-    config: orchestration_config
+    config
   };
 }
 
