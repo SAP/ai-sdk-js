@@ -49,7 +49,7 @@ export class OrchestrationClient {
       this.validateJsonConfig(config);
     } else {
       this.config =
-        typeof config.templating === 'string'
+        typeof config.prompt_templating.prompt === 'string'
           ? this.parseAndMergeTemplating(config) // parse and assign if templating is a string
           : config;
     }
@@ -120,7 +120,7 @@ export class OrchestrationClient {
 
     return executeRequest(
       {
-        url: `/inference/deployments/${deploymentId}/completion`,
+        url: `/inference/deployments/${deploymentId}/v2/completion`,
         ...(this.deploymentConfig ?? {})
       },
       body,
@@ -179,11 +179,11 @@ export class OrchestrationClient {
     config: OrchestrationModuleConfig
   ): OrchestrationModuleConfig {
     let parsedObject;
-    if (typeof config.templating === 'string' && !config.templating.trim()) {
+    if (typeof config.prompt_templating.prompt === 'string' && !config.prompt_templating.prompt.trim()) {
       throw new Error('Templating YAML string must be non-empty.');
     }
     try {
-      parsedObject = yaml.parse(config.templating as string);
+      parsedObject = yaml.parse(config.prompt_templating.prompt as string);
     } catch (error) {
       throw new Error(`Error parsing YAML: ${error}`);
     }
@@ -200,11 +200,14 @@ export class OrchestrationClient {
     const { template, defaults, response_format, tools } = result.data.spec;
     return {
       ...config,
-      templating: {
-        template: template as TemplatingChatMessage,
-        ...(defaults && { defaults }),
-        ...(response_format && { response_format }),
-        ...(tools && { tools })
+      prompt_templating: {
+        ...config.prompt_templating,
+        prompt: {
+          template: template as TemplatingChatMessage,
+          ...(defaults && { defaults }),
+          ...(response_format && { response_format }),
+          ...(tools && { tools })
+        }
       }
     };
   }

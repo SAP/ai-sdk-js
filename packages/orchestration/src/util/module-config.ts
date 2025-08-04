@@ -145,17 +145,19 @@ export function constructCompletionPostRequest(
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
   const { prompt_templating, filtering, masking, grounding, translation } = config;
-  // If prompt_templating.prompt is not defined, we initialize it with an empty Template object
-  prompt_templating.prompt = prompt_templating.prompt || { template: [] };
+
   // Templating is not a string here as it is already parsed in `parseAndMergeTemplating` method
   const promptTemplate = { ...(prompt_templating.prompt as Template | TemplateRef) };
+
+  // If prompt_templating.prompt is not defined, we initialize it with an empty Template object
+  prompt_templating.prompt = prompt_templating.prompt || { template: [] };
 
   if (isTemplate(promptTemplate)) {
     if (!promptTemplate.template?.length && !prompt?.messages?.length) {
       throw new Error('Either a prompt template or messages must be defined.');
     }
     promptTemplate.template = [
-      ...promptTemplate.template,
+      ...(promptTemplate.template || []),
       ...(prompt?.messages || [])
     ];
   }
