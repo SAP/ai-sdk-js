@@ -12,8 +12,10 @@ export function buildDocumentGroundingConfig(
   return {
     type: 'document_grounding_service',
     config: {
-      input_params: groundingConfig.input_params,
-      output_param: groundingConfig.output_param,
+      placeholders: {
+        input: groundingConfig.placeholders.input,
+        output: groundingConfig.placeholders.output
+      },
       ...(groundingConfig.filters && {
         filters: groundingConfig.filters?.map(filter => ({
           data_repository_type: 'vector',
