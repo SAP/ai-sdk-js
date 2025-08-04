@@ -128,9 +128,6 @@ export class OrchestrationClient {
         },
         controller
       );
-      if (this.historyEnabled) {
-        this.history = streamResponse.getAllMessages();
-      }
       return streamResponse;
     } catch (error) {
       controller.abort();
@@ -145,6 +142,22 @@ export class OrchestrationClient {
       );
     }
     return this.history;
+  }
+
+  private async *processStreamEnd(
+    stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
+    response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
+  ): AsyncGenerator<OrchestrationStreamChunkResponse> {
+    if (!response) {
+      throw new Error('Response is required to process stream end.');
+    }
+    for await (const chunk of stream) {
+      yield chunk;
+    }
+
+    if (this.historyEnabled) {
+      this.history = response.getAllMessages();
+    }
   }
 
   private async executeRequest(options: RequestOptions): Promise<HttpResponse> {
@@ -198,13 +211,15 @@ export class OrchestrationClient {
     });
 
     const stream = OrchestrationStream._create(streamResponse, controller);
+
     response.stream = stream
       ._pipe(OrchestrationStream._processChunk)
       ._pipe(
         OrchestrationStream._processOrchestrationStreamChunkResponse,
         response
       )
-      ._pipe(OrchestrationStream._processStreamEnd, response);
+      ._pipe(OrchestrationStream._processStreamEnd, response)
+      ._pipe(this.processStreamEnd.bind(this), response);
 
     return response;
   }

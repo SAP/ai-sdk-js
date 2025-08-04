@@ -88,6 +88,55 @@ export async function chatCompletionStream(
 }
 
 /**
+ * Ask ChatGPT through the orchestration service about SAP Cloud SDK with streaming.
+ * @param controller - The abort controller.
+ * @param streamOptions - The stream options.
+ * @returns The response from the orchestration service containing the response content.
+ */
+export async function chatCompletionStreamWithHistory(
+  controller: AbortController,
+  streamOptions?: StreamOptions
+): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
+  const orchestrationClient = new OrchestrationClient(
+    {
+      // define the language model to be used
+      llm: {
+        model_name: 'gpt-4o'
+      }
+    },
+    { enableClientHistory: true }
+  );
+
+  // eslint-disable-next-line no-console
+  console.log('First Response');
+  const streamResponse = await orchestrationClient.stream(
+    {
+      messages: [
+        {
+          role: 'user',
+          content: 'Give me a brief introduction to the SAP Cloud SDK.'
+        }
+      ]
+    },
+    controller,
+    streamOptions
+  );
+
+  for await (const _ of streamResponse.stream) {
+    // Consume the stream to ensure it is processed
+  }
+
+  return orchestrationClient.stream({
+    messages: [
+      {
+        role: 'user',
+        content: 'What is the most important feature of it?'
+      }
+    ]
+  });
+}
+
+/**
  * Ask about the capital of any country using a template.
  * @returns The orchestration service response.
  */
@@ -148,12 +197,15 @@ export async function chatCompletionStreamWithJsonModuleConfig(
  * @returns The orchestration service response.
  */
 export async function orchestrationMessageHistory(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
-    }
-  }, { enableClientHistory: true });
+  const orchestrationClient = new OrchestrationClient(
+    {
+      // define the language model to be used
+      llm: {
+        model_name: 'gpt-4o'
+      }
+    },
+    { enableClientHistory: true }
+  );
 
   await orchestrationClient.chatCompletion({
     messages: [{ role: 'user', content: 'What is the capital of France?' }]
@@ -161,7 +213,7 @@ export async function orchestrationMessageHistory(): Promise<OrchestrationRespon
 
   // User can then ask a follow-up question
   const nextResponse = await orchestrationClient.chatCompletion({
-    messages: [{ role: 'user', content: 'What is the typical food there?' }],
+    messages: [{ role: 'user', content: 'What is the typical food there?' }]
   });
 
   return nextResponse;
@@ -465,7 +517,8 @@ export async function orchestrationGrounding(
           metadata_params: ['context']
         })
       })
-    }, undefined,
+    },
+    undefined,
     { resourceGroup: 'ai-sdk-js-e2e' }
   );
 
@@ -624,15 +677,18 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
     }
   };
 
-  const orchestrationClient = new OrchestrationClient({
-    // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
+  const orchestrationClient = new OrchestrationClient(
+    {
+      // define the language model to be used
+      llm: {
+        model_name: 'gpt-4o'
+      },
+      templating: {
+        tools: [addNumbersTool]
+      }
     },
-    templating: {
-      tools: [addNumbersTool]
-    }
-  }, { enableClientHistory: true });
+    { enableClientHistory: true }
+  );
 
   const response = await orchestrationClient.chatCompletion({
     messages: [
