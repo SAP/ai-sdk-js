@@ -6,7 +6,7 @@ Accepted
 
 ## Context
 
-With the introduction of chat history maintenance, we must distinguish between client-side and server-side approaches.  
+With the introduction of chat history maintenance, we must distinguish between client-side and server-side approaches.
 This ADR primarily focuses on **client-side history maintenance**, but also outlines the alternative **server-side** approach for context.
 
 ---
