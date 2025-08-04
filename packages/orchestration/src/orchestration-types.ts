@@ -11,14 +11,13 @@ import type {
   FilteringStreamOptions,
   GlobalStreamOptions,
   GroundingModuleConfig,
-  InputTranslationModuleConfig,
+  TranslationModuleConfig,
   LlamaGuard38B,
+  LLMModelDetails as OriginalLLMModelDetails,
   MaskingModuleConfig,
-  LlmModuleConfig as OriginalLlmModuleConfig,
   Template as OriginalTemplate,
   TemplateRef,
   TemplatingChatMessage,
-  OutputTranslationModuleConfig,
   AzureContentSafetyOutput,
   AzureContentSafetyOutputFilterConfig,
   DPIStandardEntity,
@@ -61,12 +60,42 @@ export interface Prompt {
 }
 
 /**
- * LLM module configuration.
+ * LLM model details.
  */
-export type LlmModuleConfig = OriginalLlmModuleConfig & {
-  /** */
-  model_name: ChatModel;
-  model_params?: LlmModelParams;
+export type LlmModelDetails = Omit<OriginalLLMModelDetails, 'name' | 'params'> & {
+  name: ChatModel;
+  params?: LlmModelParams;
+};
+
+/**
+ * Prompt templating module configuration.
+ */
+export interface PromptTemplatingModuleConfig {
+  /**
+   * The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.
+   */
+  /**
+   * Static prompts. Can be:
+   * - A `template`: an array of templated chat messages (with {{?placeholders}}).
+   * - An `id` or `scenario`, `name` and `version`: reference to a remote prompt template.
+   *
+   * This is meant for static instructions included with every call.
+   * For per-request templating, use `messages` in `.chatCompletion()` instead.
+   * @example
+   * prompt: {
+   *   template: [
+   *     {
+   *       role: 'system',
+   *       content: 'You are an assistant for {{?product}}.'
+   *     }
+   *   ]
+   * }
+   */
+  prompt?: Template | TemplateRef | string;
+  /**
+   * LLM model details.
+   */
+  model: LlmModelDetails;
 };
 
 /**
@@ -108,34 +137,16 @@ export type Template = Omit<OriginalTemplate, 'template'> & {
  * Representation of the 'TemplatingModuleConfig' schema.
  * The type can be either a `Template` or a `TemplateRef`.
  */
-export type TemplatingModuleConfig = Xor<Template, TemplateRef>;
+export type PromptTemplate = Xor<Template, TemplateRef>;
 
 /**
  * Orchestration module configuration.
  */
 export interface OrchestrationModuleConfig {
   /**
-   * Templating configuration for static prompts. Can be:
-   * - A `template`: an array of templated chat messages (with {{?placeholders}}).
-   * - An `id` or `scenario`, `name` and `version`: reference to a remote prompt template.
-   *
-   * This is meant for static instructions included with every call.
-   * For per-request templating, use `messages` in `.chatCompletion()` instead.
-   * @example
-   * templating: {
-   *   template: [
-   *     {
-   *       role: 'system',
-   *       content: 'You are an assistant for {{?product}}.'
-   *     }
-   *   ]
-   * }
+   * Prompt templating configuration.
    */
-  templating?: TemplatingModuleConfig | string;
-  /**
-   * LLM module configuration.
-   */
-  llm: LlmModuleConfig;
+  prompt_templating: PromptTemplatingModuleConfig;
   /**
    * Filtering module configuration for both input and output filters.
    * To configure a filter, use convenience functions like `buildAzureContentSafetyFilter`, `buildLlamaGuardFilter`, etc..
@@ -158,17 +169,13 @@ export interface OrchestrationModuleConfig {
    */
   grounding?: GroundingModuleConfig;
   /**
+   * Translation module configuration.
+   */
+  translation?: TranslationModuleConfig;
+  /**
    * Global streaming options.
    */
   streaming?: GlobalStreamOptions;
-  /**
-   * Input translation module configuration.
-   */
-  inputTranslation?: InputTranslationModuleConfig;
-  /**
-   * Output translation module configuration.
-   */
-  outputTranslation?: OutputTranslationModuleConfig;
 }
 
 /**
@@ -200,7 +207,7 @@ export interface StreamOptions {
   /**
    * LLM specific stream options.
    */
-  llm?: { include_usage?: boolean; [key: string]: any } | null;
+  prompt_templating?: { include_usage?: boolean;[key: string]: any } | null;
   /**
    * Output filtering stream options.
    */
@@ -230,18 +237,24 @@ export type DocumentGroundingServiceFilter = Omit<
  */
 export interface DocumentGroundingServiceConfig {
   /**
-   * Defines the filters to apply during the grounding process.
+   * Document grounding service filters to be used.
    */
   filters?: DocumentGroundingServiceFilter[];
   /**
-   * Contains the input parameters used for grounding input questions.
+   * Placeholders to be used for grounding input questions and output.
    */
-  input_params: string[];
-  /**
-   * Parameter name used for grounding output.
-   * @example "groundingOutput"
-   */
-  output_param: string;
+  placeholders: {
+    /**
+     * Contains the input parameters used for grounding input questions
+     * Min Items: 1.
+     */
+    input: string[];
+    /**
+     * Placeholder name for grounding output.
+     * @example "groundingOutput"
+     */
+    output: string;
+  };
   /**
    * Parameter name used for specifying metadata parameters.
    */
@@ -256,8 +269,8 @@ export type DpiEntity =
   | DpiEntities
   | DPIStandardEntity
   | (DPICustomEntity & {
-      type: 'custom';
-    });
+    type: 'custom';
+  });
 /**
  * Represents the configuration for the masking provider SAP Data Privacy Integration.
  */
@@ -276,19 +289,19 @@ export interface AzureContentFilter {
   /**
    * The filter category for hate content.
    */
-  Hate?: AzureFilterThreshold;
+  hate?: AzureFilterThreshold;
   /**
    * The filter category for self-harm content.
    */
-  SelfHarm?: AzureFilterThreshold;
+  self_harm?: AzureFilterThreshold;
   /**
    * The filter category for sexual content.
    */
-  Sexual?: AzureFilterThreshold;
+  sexual?: AzureFilterThreshold;
   /**
    * The filter category for violence content.
    */
-  Violence?: AzureFilterThreshold;
+  violence?: AzureFilterThreshold;
 }
 
 /**
