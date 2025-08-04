@@ -5,32 +5,31 @@
  */
 
 /**
- * Representation of the 'LlmModuleConfig' schema.
+ * Representation of the 'LLMModelDetails' schema.
  */
-export type LlmModuleConfig = {
+export type LLMModelDetails = {
   /**
-   * Model name as in LLM Access configuration
+   * Name of the model as in LLM Access configuration
    * @example "gpt-4o-mini"
    */
-  model_name: string;
+  name: string;
   /**
-   * Model parameters
+   * Version of the model to be used
+   * Default: "latest".
+   */
+  version?: string;
+  /**
+   * Additional parameters for the model. Default values are used for mandatory parameters.
    * @example {
    *   "max_tokens": 300,
    *   "temperature": 0.1,
    *   "frequency_penalty": 0,
    *   "presence_penalty": 0,
    *   "n": 2,
-   *   "logprobs": true,
    *   "stream_options": {
    *     "include_usage": true
    *   }
    * }
    */
-  model_params?: Record<string, any>;
-  /**
-   * Version of the model to use
-   * Default: "latest".
-   */
-  model_version?: string;
+  params?: Record<string, any>;
 };
