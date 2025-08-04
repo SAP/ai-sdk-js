@@ -64,7 +64,6 @@ export class OrchestrationClient {
     if (clientConfig?.enableClientHistory) {
       this.historyEnabled = true;
       this.history = clientConfig.history;
-      this.historyIncrementIndex = clientConfig.history?.length ?? 0;
     }
   }
 
