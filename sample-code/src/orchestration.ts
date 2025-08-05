@@ -97,14 +97,12 @@ export async function chatCompletionStreamWithHistory(
   controller: AbortController,
   streamOptions?: StreamOptions
 ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
-  const orchestrationClient = new OrchestrationClient(
-    {
-      // define the language model to be used
-      llm: {
-        model_name: 'gpt-4o'
-      }
+  const orchestrationClient = new OrchestrationClient({
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o'
     }
-  );
+  });
 
   // eslint-disable-next-line no-console
   console.log('First Response');
