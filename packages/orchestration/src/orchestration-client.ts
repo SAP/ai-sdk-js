@@ -38,8 +38,8 @@ const logger = createLogger({
  * Get the orchestration client.
  */
 export class OrchestrationClient {
-  private historyEnabled = false;
-  private history?: ChatMessages;
+  private useClientHistory = true;
+  private messagesHistory?: ChatMessages;
   /**
    * Creates an instance of the orchestration client.
    * @param config - Orchestration module configuration. This can either be an `OrchestrationModuleConfig` object or a JSON string obtained from AI Launchpad.
@@ -61,9 +61,10 @@ export class OrchestrationClient {
           ? this.parseAndMergeTemplating(config) // parse and assign if templating is a string
           : config;
     }
-    if (clientConfig?.enableClientHistory) {
-      this.historyEnabled = true;
-      this.history = clientConfig.history;
+    if (clientConfig?.useClientHistory === false) {
+      this.useClientHistory = false;
+    } else {
+      this.messagesHistory = clientConfig?.messagesHistory;
     }
   }
 
@@ -71,7 +72,7 @@ export class OrchestrationClient {
     prompt?: Prompt,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationResponse> {
-    if (this.historyEnabled) {
+    if (this.useClientHistory) {
       if (prompt?.messagesHistory) {
         throw new Error(
           'Providing a message history when client history is enabled is not supported. Please remove the `messagesHistory` property from the prompt.'
@@ -79,7 +80,7 @@ export class OrchestrationClient {
       }
       prompt = {
         ...prompt,
-        messagesHistory: this.history
+        messagesHistory: this.messagesHistory
       };
     }
     const response = await this.executeRequest({
@@ -88,8 +89,8 @@ export class OrchestrationClient {
       stream: false
     });
     const orchestrationResponse = new OrchestrationResponse(response);
-    if (this.historyEnabled) {
-      this.history = orchestrationResponse.getAllMessages();
+    if (this.useClientHistory) {
+      this.messagesHistory = orchestrationResponse.getAllMessages();
     }
     return orchestrationResponse;
   }
@@ -107,7 +108,7 @@ export class OrchestrationClient {
         );
       }
 
-      if (this.historyEnabled) {
+      if (this.useClientHistory) {
         if (prompt?.messagesHistory) {
           throw new Error(
             'Providing a message history when client history is enabled is not supported. Please remove the `messagesHistory` property from the prompt.'
@@ -115,7 +116,7 @@ export class OrchestrationClient {
         }
         prompt = {
           ...prompt,
-          messagesHistory: this.history
+          messagesHistory: this.messagesHistory
         };
       }
 
@@ -136,12 +137,12 @@ export class OrchestrationClient {
   }
 
   getMessageHistory(): ChatMessages | undefined {
-    if (!this.historyEnabled) {
+    if (!this.useClientHistory) {
       throw new Error(
-        'Message history is not enabled for this client. Please enable it by passing `enableClientHistory: true` in the client configuration.'
+        'Message history is not enabled for this client. Please enable it by passing `useClientHistory: true` in the client configuration.'
       );
     }
-    return this.history;
+    return this.messagesHistory;
   }
 
   private async *processStreamEnd(
@@ -157,8 +158,8 @@ export class OrchestrationClient {
 
     response._openStream = false;
 
-    if (this.historyEnabled) {
-      this.history = response.getAllMessages();
+    if (this.useClientHistory) {
+      this.messagesHistory = response.getAllMessages();
     }
   }
 

@@ -22,6 +22,7 @@ import {
 } from './util/index.js';
 import type { CompletionPostResponse } from './client/api/schema/index.js';
 import type {
+  ClientConfig,
   OrchestrationModuleConfig,
   Prompt
 } from './orchestration-types.js';
@@ -390,13 +391,14 @@ describe('orchestration service client', () => {
     expect(response.data).toEqual(mockResponse);
   });
 
-  it('sends message_history together with messages', async () => {
-    const config: OrchestrationModuleConfig = {
+  it('sends message_history together with messages, with disabled client-side history', async () => {
+    const orchestrationConfig: OrchestrationModuleConfig = {
       llm: {
         model_name: 'gpt-4o',
         model_params: { max_tokens: 50, temperature: 0.1 }
       }
     };
+    const clientConfig: ClientConfig = { useClientHistory: false };
     const prompt: Prompt = {
       messages: [{ role: 'user', content: "What's my name?" }],
       messagesHistory: [
@@ -423,7 +425,7 @@ describe('orchestration service client', () => {
     );
     mockInference(
       {
-        data: constructCompletionPostRequest(config, prompt)
+        data: constructCompletionPostRequest(orchestrationConfig, prompt)
       },
       {
         data: mockResponse,
@@ -434,9 +436,66 @@ describe('orchestration service client', () => {
       }
     );
 
-    const response = await new OrchestrationClient(config).chatCompletion(
-      prompt
+    const response = await new OrchestrationClient(
+      orchestrationConfig,
+      clientConfig
+    ).chatCompletion(prompt);
+    expect(response.data).toEqual(mockResponse);
+  });
+
+  it('sends message_history together with messages', async () => {
+    const config: OrchestrationModuleConfig = {
+      llm: {
+        model_name: 'gpt-4o',
+        model_params: { max_tokens: 50, temperature: 0.1 }
+      }
+    };
+    const clientConfig: ClientConfig = {
+      messagesHistory: [
+        {
+          role: 'system',
+          content:
+            'You are a helpful assistant who remembers all details the user shares with you.'
+        },
+        {
+          role: 'user',
+          content: 'Hi! Im Bob'
+        },
+        {
+          role: 'assistant',
+          content:
+            "Hi Bob, nice to meet you! I'm an AI assistant. I'll remember that your name is Bob as we continue our conversation."
+        }
+      ]
+    };
+    const prompt: Prompt = {
+      messages: [{ role: 'user', content: "What's my name?" }]
+    };
+
+    const mockResponse = await parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'orchestration-chat-completion-message-history.json'
     );
+    mockInference(
+      {
+        data: constructCompletionPostRequest(config, {
+          ...prompt,
+          messagesHistory: clientConfig.messagesHistory
+        })
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/completion'
+      }
+    );
+
+    const response = await new OrchestrationClient(
+      config,
+      clientConfig
+    ).chatCompletion(prompt);
     expect(response.data).toEqual(mockResponse);
   });
 
@@ -635,22 +694,22 @@ describe('orchestration service client', () => {
   });
 
   it('executes a request with the custom resource group', async () => {
-    const prompt: Prompt = {
-      messagesHistory: [
-        {
-          role: 'user',
-          content: 'Where is the deepest place on earth located'
-        }
-      ]
-    };
-
-    const config: OrchestrationModuleConfig = {
+    const orchestrationConfig: OrchestrationModuleConfig = {
       llm: {
         model_name: 'gpt-4o'
       },
       templating: {
         template: [{ role: 'user', content: "What's my name?" }]
       }
+    };
+
+    const clientConfig: ClientConfig = {
+      messagesHistory: [
+        {
+          role: 'user',
+          content: 'Where is the deepest place on earth located'
+        }
+      ]
     };
 
     const customChatCompletionEndpoint = {
@@ -670,7 +729,9 @@ describe('orchestration service client', () => {
 
     mockInference(
       {
-        data: constructCompletionPostRequest(config, prompt)
+        data: constructCompletionPostRequest(orchestrationConfig, {
+          ...clientConfig
+        })
       },
       {
         data: mockResponse,
@@ -679,11 +740,15 @@ describe('orchestration service client', () => {
       customChatCompletionEndpoint
     );
 
-    const clientWithResourceGroup = new OrchestrationClient(config, undefined, {
-      resourceGroup: 'custom-resource-group'
-    });
+    const clientWithResourceGroup = new OrchestrationClient(
+      orchestrationConfig,
+      clientConfig,
+      {
+        resourceGroup: 'custom-resource-group'
+      }
+    );
 
-    const response = await clientWithResourceGroup.chatCompletion(prompt);
+    const response = await clientWithResourceGroup.chatCompletion();
     expect(response.data).toEqual(mockResponse);
   });
 

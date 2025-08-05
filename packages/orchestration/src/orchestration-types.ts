@@ -348,9 +348,9 @@ export interface ClientConfig {
   /**
    * Enable client-side maintained chat history for the orchestration client.
    */
-  enableClientHistory: boolean;
+  useClientHistory?: boolean;
   /**
    * The chat history to be used by the orchestration client.
    */
-  history?: ChatMessages;
+  messagesHistory?: ChatMessages;
 }

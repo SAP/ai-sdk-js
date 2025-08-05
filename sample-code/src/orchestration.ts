@@ -197,15 +197,12 @@ export async function chatCompletionStreamWithJsonModuleConfig(
  * @returns The orchestration service response.
  */
 export async function orchestrationMessageHistory(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient(
-    {
-      // define the language model to be used
-      llm: {
-        model_name: 'gpt-4o'
-      }
-    },
-    { enableClientHistory: true }
-  );
+  const orchestrationClient = new OrchestrationClient({
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o'
+    }
+  });
 
   await orchestrationClient.chatCompletion({
     messages: [{ role: 'user', content: 'What is the capital of France?' }]
@@ -677,18 +674,15 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
     }
   };
 
-  const orchestrationClient = new OrchestrationClient(
-    {
-      // define the language model to be used
-      llm: {
-        model_name: 'gpt-4o'
-      },
-      templating: {
-        tools: [addNumbersTool]
-      }
+  const orchestrationClient = new OrchestrationClient({
+    // define the language model to be used
+    llm: {
+      model_name: 'gpt-4o'
     },
-    { enableClientHistory: true }
-  );
+    templating: {
+      tools: [addNumbersTool]
+    }
+  });
 
   const response = await orchestrationClient.chatCompletion({
     messages: [
