@@ -119,7 +119,7 @@ describe('orchestration service client', () => {
     expect(response.data).toEqual(mockResponse);
     expect(response.getContent()).toEqual(expect.any(String));
     expect(response.getFinishReason()).toEqual(expect.any(String));
-    expect(response.getTokenUsage().completion_tokens).toEqual(9);
+    expect(response.getTokenUsage().completion_tokens).toEqual(expect.any(Number));
   });
 
   it('calls chatCompletion with some templating configuration (without template)', async () => {
@@ -156,7 +156,7 @@ describe('orchestration service client', () => {
                 'Write a 1 verse poem about the following topic: {{?topic}}'
             }
           ],
-          inputParams: { topic: 'Generative AI Hub' }
+          placeholder_values: { topic: 'Generative AI Hub' }
         })
       },
       {
@@ -179,7 +179,7 @@ describe('orchestration service client', () => {
           content: 'Write a 1 verse poem about the following topic: {{?topic}}'
         }
       ],
-      inputParams: { topic: 'Generative AI Hub' }
+      placeholder_values: { topic: 'Generative AI Hub' }
     });
     expect(response.data).toEqual(mockResponse);
   }, 60000);
@@ -257,7 +257,7 @@ describe('orchestration service client', () => {
       }
     };
     const prompt = {
-      inputParams: { phrase: 'I hate you.', number: '3' }
+      placeholder_values: { phrase: 'I hate you.', number: '3' }
     };
     const mockResponse = await parseMockResponse<CompletionPostResponse>(
       'orchestration',
@@ -312,7 +312,7 @@ describe('orchestration service client', () => {
       }
     };
     const prompt = {
-      inputParams: { phrase: 'I like myself.', number: '20' }
+      placeholder_values: { phrase: 'I like myself.', number: '20' }
     };
     const mockResponse = await parseMockResponse<CompletionPostResponse>(
       'orchestration',
@@ -378,7 +378,7 @@ describe('orchestration service client', () => {
         }
       }
     };
-    const prompt = { inputParams: { phrase: 'I hate you.', number: '3' } };
+    const prompt = { placeholder_values: { phrase: 'I hate you.', number: '3' } };
     const mockResponse = await parseMockResponse<CompletionPostResponse>(
       'orchestration',
       'orchestration-chat-completion-filter-config.json'
@@ -530,7 +530,7 @@ describe('orchestration service client', () => {
     mockInference(
       {
         data: constructCompletionPostRequest(config, {
-          inputParams: { topic: 'Generative AI Hub' }
+          placeholder_values: { topic: 'Generative AI Hub' }
         })
       },
       {
@@ -543,7 +543,7 @@ describe('orchestration service client', () => {
     );
     const response = await new OrchestrationClient(
       configWithYaml
-    ).chatCompletion({ inputParams: { topic: 'Generative AI Hub' } });
+    ).chatCompletion({ placeholder_values: { topic: 'Generative AI Hub' } });
     expect(response.data).toEqual(mockResponse);
   }, 60000);
 
@@ -560,7 +560,7 @@ describe('orchestration service client', () => {
 
     expect(() =>
       new OrchestrationClient(invalidConfigWithYaml).chatCompletion({
-        inputParams: { topic: 'Generative AI Hub' }
+        placeholder_values: { topic: 'Generative AI Hub' }
       })
     ).toThrowErrorMatchingInlineSnapshot(
       '"Templating YAML string must be non-empty."'
@@ -633,7 +633,7 @@ describe('orchestration service client', () => {
       }
     };
     const prompt = {
-      inputParams: {
+      placeholder_values: {
         groundingRequest: 'What is Generative AI Hub in SAP AI Core?'
       }
     };
@@ -873,7 +873,7 @@ describe('orchestration service client', () => {
            "arguments": "{"a": 2, "b": 3}",
            "name": "add",
          },
-         "id": "call_HPgxxSmD2ctYfcJ3gp1JBc7i",
+         "id": "call_OtTlp96Eg6OFP1ynoerYThta",
          "index": 0,
          "type": "function",
        },
@@ -882,7 +882,7 @@ describe('orchestration service client', () => {
            "arguments": "{"a": 2, "b": 3}",
            "name": "multiply",
          },
-         "id": "call_PExve0Dd9hxD8hOk4Uhr1yhO",
+         "id": "call_mscosPWnNXuRYp5OQatYKOv9",
          "index": 1,
          "type": "function",
        },

@@ -1,53 +1,55 @@
 {
-    "request_id": "request-id",
-    "module_results": {
-        "templating": [
-            {
-                "role": "user",
-                "content": "Hello!"
-            }
-        ],
-        "llm": {
-            "id": "llm-id",
-            "object": "chat.completion",
-            "created": 172,
-            "model": "gpt-4o",
-            "choices": [
-                {
-                    "index": 0,
-                    "message": {
-                        "role": "assistant",
-                        "content": "Hello! How can I assist you today?"
-                    },
-                    "finish_reason": "stop"
-                }
-            ],
-            "usage": {
-                "completion_tokens": 9,
-                "prompt_tokens": 9,
-                "total_tokens": 18
-            }
+  "request_id": "903367ba-f7b6-42a5-857f-8cff615e201b",
+  "intermediate_results": {
+    "templating": [
+      {
+        "content": "Hello!",
+        "role": "user"
+      }
+    ],
+    "llm": {
+      "id": "chatcmpl-C19HolLlkUltFBAMq4Jdgi4dMUFKg",
+      "object": "chat.completion",
+      "created": 1754390060,
+      "model": "gpt-4o-2024-08-06",
+      "system_fingerprint": "fp_ee1d74bde0",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Hello! How can I assist you today?"
+          },
+          "finish_reason": "stop"
         }
-    },
-    "orchestration_result": {
-        "id": "orchestration-id",
-        "object": "chat.completion",
-        "created": 172,
-        "model": "gpt-4o",
-        "choices": [
-            {
-                "index": 0,
-                "message": {
-                    "role": "assistant",
-                    "content": "Hello! How can I assist you today?"
-                },
-                "finish_reason": "stop"
-            }
-        ],
-        "usage": {
-            "completion_tokens": 9,
-            "prompt_tokens": 9,
-            "total_tokens": 18
-        }
+      ],
+      "usage": {
+        "completion_tokens": 10,
+        "prompt_tokens": 9,
+        "total_tokens": 19
+      }
     }
+  },
+  "final_result": {
+    "id": "chatcmpl-C19HolLlkUltFBAMq4Jdgi4dMUFKg",
+    "object": "chat.completion",
+    "created": 1754390060,
+    "model": "gpt-4o-2024-08-06",
+    "system_fingerprint": "fp_ee1d74bde0",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Hello! How can I assist you today?"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 10,
+      "prompt_tokens": 9,
+      "total_tokens": 19
+    }
+  }
 }

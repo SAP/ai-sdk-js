@@ -43,7 +43,7 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
 
   return {
     messages_history: prompt?.messagesHistory || [],
-    input_params: prompt?.inputParams || {},
+    placeholder_values: prompt?.placeholder_values || {},
     config
   };
 }
@@ -166,10 +166,10 @@ export function constructCompletionPostRequest(
       ...prompt_templating,
       prompt: promptTemplate,
     },
-    filtering,
-    masking,
-    grounding,
-    translation
+    ...(filtering && Object.keys(filtering).length && { filtering }),
+    ...(masking && Object.keys(masking).length && { masking }),
+    ...(grounding && Object.keys(grounding).length && { grounding }),
+    ...(translation && Object.keys(translation).length && { translation })
   };
 
   return {
@@ -179,8 +179,8 @@ export function constructCompletionPostRequest(
           mergeStreamOptions(config.streaming, streamOptions)
         )
       : { modules: moduleConfigurations },
-    ...(prompt?.inputParams && {
-      input_params: prompt.inputParams
+    ...(prompt?.placeholder_values && {
+      placeholder_values: prompt.placeholder_values
     }),
     ...(prompt?.messagesHistory && {
       messages_history: prompt.messagesHistory

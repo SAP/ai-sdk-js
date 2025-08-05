@@ -21,8 +21,8 @@ describe('stream-util', () => {
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
       const chunk: CompletionPostResponseStreaming = {
         request_id: 'test-request-123',
-        module_results: {},
-        orchestration_result: {
+        intermediate_results: {},
+        final_result: {
           ...llmBase,
           choices: [],
           usage: { prompt_tokens: 10, completion_tokens: 5, total_tokens: 15 }
@@ -32,8 +32,8 @@ describe('stream-util', () => {
       mergeStreamResponse(response, chunk);
 
       expect(response._data.request_id).toBe('test-request-123');
-      expect(response._data.orchestration_result).toBeDefined();
-      expect(response._data.orchestration_result?.usage).toEqual({
+      expect(response._data.final_result).toBeDefined();
+      expect(response._data.final_result?.usage).toEqual({
         prompt_tokens: 10,
         completion_tokens: 5,
         total_tokens: 15
@@ -43,7 +43,7 @@ describe('stream-util', () => {
     it('merges module results with llm module', () => {
       const chunk: CompletionPostResponseStreaming = {
         request_id: 'test-request-123',
-        module_results: {
+        intermediate_results: {
           llm: {
             ...llmBase,
             usage: {
@@ -66,12 +66,12 @@ describe('stream-util', () => {
 
       mergeStreamResponse(response, chunk);
 
-      expect(response._data.module_results?.llm?.usage).toEqual({
+      expect(response._data.intermediate_results?.llm?.usage).toEqual({
         prompt_tokens: 20,
         completion_tokens: 10,
         total_tokens: 30
       });
-      expect(response._data.module_results?.llm?.choices).toEqual([
+      expect(response._data.intermediate_results?.llm?.choices).toEqual([
         {
           index: 0,
           message: {
@@ -86,7 +86,7 @@ describe('stream-util', () => {
     it('merges output_unmasking module results', () => {
       const chunk: CompletionPostResponseStreaming = {
         request_id: 'test-request-123',
-        module_results: {
+        intermediate_results: {
           output_unmasking: [
             {
               index: 0,
@@ -101,9 +101,9 @@ describe('stream-util', () => {
 
       mergeStreamResponse(response, chunk);
 
-      expect(response._data.module_results?.output_unmasking).toHaveLength(1);
+      expect(response._data.intermediate_results?.output_unmasking).toHaveLength(1);
       expect(
-        response._data.module_results?.output_unmasking?.[0].message.content
+        response._data.intermediate_results?.output_unmasking?.[0].message.content
       ).toBe('Unmasked content');
     });
   });
@@ -112,7 +112,7 @@ describe('stream-util', () => {
     it('merges token usage with existing values', () => {
       const chunk: CompletionPostResponseStreaming = {
         request_id: 'test-request-123',
-        orchestration_result: {
+        final_result: {
           ...llmBase,
           usage: { prompt_tokens: 15, completion_tokens: 8, total_tokens: 23 },
           choices: []
@@ -123,7 +123,7 @@ describe('stream-util', () => {
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
       response._data = {
         request_id: 'test-request-123',
-        orchestration_result: {
+        final_result: {
           ...llmBase,
           usage: { prompt_tokens: 1, completion_tokens: 2, total_tokens: 3 },
           choices: []
@@ -132,7 +132,7 @@ describe('stream-util', () => {
 
       mergeStreamResponse(response, chunk);
 
-      expect(response._data.orchestration_result?.usage).toEqual({
+      expect(response._data.final_result?.usage).toEqual({
         prompt_tokens: 15,
         completion_tokens: 8,
         total_tokens: 23
@@ -142,19 +142,19 @@ describe('stream-util', () => {
     it('handles missing token usage gracefully', () => {
       const chunk: CompletionPostResponseStreaming = {
         request_id: 'test-request-123',
-        orchestration_result: {
+        final_result: {
           ...llmBase,
           choices: []
         }
       };
 
-      delete chunk.orchestration_result?.usage;
+      delete chunk.final_result?.usage;
 
       const response =
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
       response._data = {
         request_id: 'test-request-123',
-        orchestration_result: {
+        final_result: {
           ...llmBase,
           usage: { prompt_tokens: 10, completion_tokens: 5, total_tokens: 15 },
           choices: []
@@ -163,7 +163,7 @@ describe('stream-util', () => {
 
       mergeStreamResponse(response, chunk);
 
-      expect(response._data.orchestration_result?.usage).toEqual({
+      expect(response._data.final_result?.usage).toEqual({
         prompt_tokens: 10,
         completion_tokens: 5,
         total_tokens: 15
@@ -177,7 +177,7 @@ describe('stream-util', () => {
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
       response._data = {
         request_id: 'test-request-123',
-        orchestration_result: {
+        final_result: {
           ...llmBase,
           choices: [
             {
@@ -198,7 +198,7 @@ describe('stream-util', () => {
 
       const chunk: CompletionPostResponseStreaming = {
         request_id: 'test-request-123',
-        orchestration_result: {
+        final_result: {
           ...llmBase,
           choices: [
             {
@@ -213,10 +213,10 @@ describe('stream-util', () => {
       mergeStreamResponse(response, chunk);
 
       expect(
-        response._data.orchestration_result?.choices[0].message.content
+        response._data.final_result?.choices[0].message.content
       ).toBe('Hello World');
       expect(
-        response._data.orchestration_result?.choices[0].finish_reason
+        response._data.final_result?.choices[0].finish_reason
       ).toBe('stop');
     });
 
@@ -225,7 +225,7 @@ describe('stream-util', () => {
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
       response._data = {
         request_id: 'test-request-123',
-        orchestration_result: {
+        final_result: {
           ...llmBase,
           choices: [
             {
@@ -242,7 +242,7 @@ describe('stream-util', () => {
 
       const chunk: CompletionPostResponseStreaming = {
         request_id: 'test-request-123',
-        orchestration_result: {
+        final_result: {
           ...llmBase,
           choices: [
             {
@@ -256,9 +256,9 @@ describe('stream-util', () => {
 
       mergeStreamResponse(response, chunk);
 
-      expect(response._data.orchestration_result?.choices).toHaveLength(2);
+      expect(response._data.final_result?.choices).toHaveLength(2);
       expect(
-        response._data.orchestration_result?.choices[1].message.content
+        response._data.final_result?.choices[1].message.content
       ).toBe('Second choice');
     });
 
@@ -267,7 +267,7 @@ describe('stream-util', () => {
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
       response._data = {
         request_id: 'test-request-123',
-        orchestration_result: {
+        final_result: {
           ...llmBase,
           choices: [
             {
@@ -284,7 +284,7 @@ describe('stream-util', () => {
 
       const chunk: CompletionPostResponseStreaming = {
         request_id: 'test-request-123',
-        orchestration_result: {
+        final_result: {
           ...llmBase,
           choices: [
             {
@@ -299,7 +299,7 @@ describe('stream-util', () => {
       mergeStreamResponse(response, chunk);
 
       expect(
-        response._data.orchestration_result?.choices[0].finish_reason
+        response._data.final_result?.choices[0].finish_reason
       ).toBe('content_filter');
     });
   });
@@ -310,7 +310,7 @@ describe('stream-util', () => {
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
       response._data = {
         request_id: 'test-request-123',
-        orchestration_result: {
+        final_result: {
           ...llmBase,
           choices: [
             {
@@ -338,7 +338,7 @@ describe('stream-util', () => {
 
       const chunk: CompletionPostResponseStreaming = {
         request_id: 'test-request-123',
-        orchestration_result: {
+        final_result: {
           ...llmBase,
           choices: [
             {
@@ -365,7 +365,7 @@ describe('stream-util', () => {
       mergeStreamResponse(response, chunk);
 
       expect(
-        response._data.orchestration_result?.choices[0].message.tool_calls?.[0]
+        response._data.final_result?.choices[0].message.tool_calls?.[0]
           .function.arguments
       ).toBe('{"param1":"value1"}');
     });
@@ -375,8 +375,8 @@ describe('stream-util', () => {
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
       response._data = {
         request_id: 'test-request-123',
-        module_results: {},
-        orchestration_result: {
+        intermediate_results: {},
+        final_result: {
           ...llmBase,
           choices: [
             {
@@ -404,7 +404,7 @@ describe('stream-util', () => {
 
       const chunk: CompletionPostResponseStreaming = {
         request_id: 'test-request-123',
-        orchestration_result: {
+        final_result: {
           ...llmBase,
           choices: [
             {
@@ -431,10 +431,10 @@ describe('stream-util', () => {
       mergeStreamResponse(response, chunk);
 
       expect(
-        response._data.orchestration_result?.choices[0].message.tool_calls
+        response._data.final_result?.choices[0].message.tool_calls
       ).toHaveLength(2);
       expect(
-        response._data.orchestration_result?.choices[0].message.tool_calls?.[1]
+        response._data.final_result?.choices[0].message.tool_calls?.[1]
           .function.name
       ).toBe('second_function');
     });
@@ -446,8 +446,8 @@ describe('stream-util', () => {
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
       response._data = {
         request_id: 'test-request-123',
-        module_results: {},
-        orchestration_result: {
+        intermediate_results: {},
+        final_result: {
           ...llmBase,
           choices: [
             {
@@ -467,8 +467,8 @@ describe('stream-util', () => {
 
       const chunk: CompletionPostResponseStreaming = {
         request_id: 'test-request-123',
-        module_results: {},
-        orchestration_result: {
+        intermediate_results: {},
+        final_result: {
           ...llmBase,
           choices: [
             {
@@ -485,10 +485,10 @@ describe('stream-util', () => {
       mergeStreamResponse(response, chunk);
 
       expect(
-        response._data.orchestration_result?.choices[0]?.logprobs?.content
+        response._data.final_result?.choices[0]?.logprobs?.content
       ).toHaveLength(2);
       expect(
-        response._data.orchestration_result?.choices?.[0]?.logprobs
+        response._data.final_result?.choices?.[0]?.logprobs
           ?.content?.[1]?.token ?? ''
       ).toBe(' message');
     });
@@ -498,8 +498,8 @@ describe('stream-util', () => {
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
       response._data = {
         request_id: 'test-request-123',
-        module_results: {},
-        orchestration_result: {
+        intermediate_results: {},
+        final_result: {
           ...llmBase,
           choices: [
             {
@@ -516,7 +516,7 @@ describe('stream-util', () => {
 
       const chunk: CompletionPostResponseStreaming = {
         request_id: 'test-request-123',
-        orchestration_result: {
+        final_result: {
           ...llmBase,
           choices: [
             {
@@ -533,10 +533,10 @@ describe('stream-util', () => {
       mergeStreamResponse(response, chunk);
 
       expect(
-        response._data.orchestration_result?.choices[0].logprobs?.content
+        response._data.final_result?.choices[0].logprobs?.content
       ).toHaveLength(1);
       expect(
-        response._data.orchestration_result?.choices[0].logprobs?.content?.[0]
+        response._data.final_result?.choices[0].logprobs?.content?.[0]
           ?.token ?? ''
       ).toBe(' message');
     });

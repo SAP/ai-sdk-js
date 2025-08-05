@@ -52,11 +52,11 @@ export interface Prompt {
   /**
    * Template parameters.
    * @example
-   * inputParams: {
+   * placeholder_values: {
    *   product: 'SAP Cloud SDK'
    * }
    */
-  inputParams?: Record<string, string>;
+  placeholder_values?: Record<string, string>;
 }
 
 /**
@@ -115,7 +115,7 @@ export type LlmModelParams = {
  */
 export type Template = Omit<OriginalTemplate, 'template'> & {
   /**
-   * A chat message array to be formatted with values from `inputParams`.
+   * A chat message array to be formatted with values from `placeholder_values`.
    * Both `role` and `content` can use {{?variable}} placeholders.
    *
    * For dynamic templating (changing per request), pass templated messages directly in `.chatCompletion({ messages })`.
