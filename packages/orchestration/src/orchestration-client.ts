@@ -155,6 +155,8 @@ export class OrchestrationClient {
       yield chunk;
     }
 
+    response._openStream = false;
+
     if (this.historyEnabled) {
       this.history = response.getAllMessages();
     }
@@ -218,7 +220,6 @@ export class OrchestrationClient {
         OrchestrationStream._processOrchestrationStreamChunkResponse,
         response
       )
-      ._pipe(OrchestrationStream._processStreamEnd, response)
       ._pipe(this.processStreamEnd.bind(this), response);
 
     return response;
