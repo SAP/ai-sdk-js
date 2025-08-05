@@ -12,6 +12,7 @@ export type {
   DocumentGroundingServiceFilter,
   DpiMaskingConfig,
   LlmModelParams,
+  LlmModelDetails,
   LlamaGuardCategory,
   AzureContentFilter,
   AzureFilterThreshold,

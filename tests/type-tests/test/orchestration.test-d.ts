@@ -21,7 +21,7 @@
 //   MessageToolCalls
 // } from '@sap-ai-sdk/orchestration';
 
-import { expectType } from 'tsd';
+import { expectError } from 'tsd';
 
 // /**
 //  * Chat Completion.
@@ -411,6 +411,6 @@ import { expectType } from 'tsd';
 //   })
 // );
 
-expectType<string>('dummy');
+expectError<number>('dummy');
 
 // TODO: Fix this file for orchestration v2
