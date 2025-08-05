@@ -104,8 +104,6 @@ export async function chatCompletionStreamWithHistory(
     }
   });
 
-  // eslint-disable-next-line no-console
-  console.log('First Response');
   const streamResponse = await orchestrationClient.stream(
     {
       messages: [
@@ -127,7 +125,7 @@ export async function chatCompletionStreamWithHistory(
     messages: [
       {
         role: 'user',
-        content: 'What is the most important feature of it?'
+        content: 'What is the most important feature of it? Give many details.'
       }
     ]
   });

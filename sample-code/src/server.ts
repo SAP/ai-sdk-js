@@ -15,6 +15,7 @@ import {
   orchestrationOutputFiltering,
   orchestrationRequestConfig,
   chatCompletionStream as orchestrationChatCompletionStream,
+  chatCompletionStreamWithHistory as orchestrationChatCompletionStreamWithHistory,
   orchestrationFromJson,
   orchestrationGrounding,
   orchestrationChatCompletionImage,
@@ -351,7 +352,8 @@ app.get(
   async (req, res) => {
     const controller = new AbortController();
     try {
-      const response = await orchestrationChatCompletionStream(controller);
+      const response =
+        await orchestrationChatCompletionStreamWithHistory(controller);
 
       // Set headers for event stream.
       res.setHeader('Content-Type', 'text/event-stream');
