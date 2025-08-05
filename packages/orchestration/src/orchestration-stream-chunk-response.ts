@@ -18,7 +18,7 @@ export class OrchestrationStreamChunkResponse {
    * @returns Token usage.
    */
   getTokenUsage(): TokenUsage | undefined {
-    return this.data.final_result?.usage;
+    return this.data.orchestration_result?.usage;
   }
 
   /**
@@ -60,6 +60,6 @@ export class OrchestrationStreamChunkResponse {
   }
 
   private getChoices(): LlmChoiceStreaming[] | undefined {
-    return this.data.final_result?.choices;
+    return this.data.orchestration_result?.choices;
   }
 }

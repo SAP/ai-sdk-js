@@ -3,7 +3,8 @@ import {
   buildAzureContentSafetyFilter
 } from './util/index.js';
 import type {
-  CompletionPostRequest
+  CompletionPostRequest,
+  TemplatingModuleConfig
 } from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
@@ -12,22 +13,22 @@ import type {
 
 describe('construct completion post request', () => {
   const defaultConfig: OrchestrationModuleConfig = {
-    prompt_templating: {
-      prompt: {
-        template: [{ role: 'user', content: 'Hi' }]
-      },
-      model: {
-        name: 'gpt-4o',
-        params: { max_tokens: 50, temperature: 0.1 }
-      }
+    llm: {
+      model_name: 'gpt-4o',
+      model_params: { max_tokens: 50, temperature: 0.1 }
+    },
+    templating: {
+      template: [{ role: 'user', content: 'Hi' }]
     }
   };
 
-  it('should construct completion post request with prompt templating module', async () => {
+  it('should construct completion post request with llm and templating module', async () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
-      config: {
-        modules: {
-          prompt_templating: defaultConfig.prompt_templating as any
+      orchestration_config: {
+        module_configurations: {
+          templating_module_config:
+            defaultConfig.templating as TemplatingModuleConfig,
+          llm_module_config: defaultConfig.llm
         }
       }
     };
@@ -37,20 +38,16 @@ describe('construct completion post request', () => {
   });
 
   // TODO: Adapt the test after Cloud SDK fix for: https://github.com/SAP/cloud-sdk-backlog/issues/1234
-  xit('should construct completion post request with empty templating module', async () => {
+  xit('should construct completion post request with llm and empty templating module', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
-        prompt: { template: [] },
-        model: {
-          name: 'gpt-4o',
-          params: { max_tokens: 50, temperature: 0.1 }
-        }
-      }
+      ...defaultConfig,
+      templating: { template: [] }
     };
     const expectedCompletionPostRequest: CompletionPostRequest = {
-      config: {
-        modules: {
-          prompt_templating: config.prompt_templating as any
+      orchestration_config: {
+        module_configurations: {
+          templating_module_config: config.templating as TemplatingModuleConfig,
+          llm_module_config: config.llm
         }
       }
     };
@@ -59,105 +56,74 @@ describe('construct completion post request', () => {
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
-  it('should construct completion post request with input params', async () => {
+  it('should construct completion post request with llm and templating module with input params', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
-        prompt: {
-          template: [
-            {
-              role: 'user',
-              content: 'Create {{?number}} paraphrases of {{?phrase}}'
-            }
-          ]
-        },
-        model: {
-          name: 'gpt-4o',
-          params: { max_tokens: 50, temperature: 0.1 }
-        }
+      ...defaultConfig,
+      templating: {
+        template: [
+          {
+            role: 'user',
+            content: 'Create {{?number}} paraphrases of {{?phrase}}'
+          }
+        ]
       }
     };
-    const placeholder_values = { phrase: 'I hate you.', number: '3' };
+    const inputParams = { phrase: 'I hate you.', number: '3' };
     const expectedCompletionPostRequest: CompletionPostRequest = {
-      config: {
-        modules: {
-          prompt_templating: {
-            ...config.prompt_templating,
-            prompt: {
-              template: [
-                {
-                  role: 'user',
-                  content: 'Create {{?number}} paraphrases of {{?phrase}}'
-                }
-              ]
-            }
-          }
+      orchestration_config: {
+        module_configurations: {
+          templating_module_config: config.templating as TemplatingModuleConfig,
+          llm_module_config: config.llm
         }
       },
-      placeholder_values
+      input_params: inputParams
     };
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(config, { placeholder_values });
+      constructCompletionPostRequest(config, { inputParams });
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
-  it('should construct completion post request with empty input params', async () => {
+  it('should construct completion post request with llm and templating module with empty input params', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
-        prompt: {
-          template: [
-            {
-              role: 'user',
-              content: 'Create {{?number}} paraphrases of {{?phrase}}'
-            }
-          ]
-        },
-        model: {
-          name: 'gpt-4o',
-          params: { max_tokens: 50, temperature: 0.1 }
-        }
+      ...defaultConfig,
+      templating: {
+        template: [
+          {
+            role: 'user',
+            content: 'Create {{?number}} paraphrases of {{?phrase}}'
+          }
+        ]
       }
     };
-    const placeholder_values = {};
+    const inputParams = {};
     const expectedCompletionPostRequest: CompletionPostRequest = {
-      config: {
-        modules: {
-          prompt_templating: {
-            ...config.prompt_templating,
-            prompt: {
-              template: [
-                {
-                  role: 'user',
-                  content: 'Create {{?number}} paraphrases of {{?phrase}}'
-                }
-              ]
-            }
-          }
+      orchestration_config: {
+        module_configurations: {
+          templating_module_config: config.templating as TemplatingModuleConfig,
+          llm_module_config: config.llm
         }
       },
-      placeholder_values
+      input_params: inputParams
     };
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(config, { placeholder_values });
+      constructCompletionPostRequest(config, { inputParams });
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
   it('should construct completion post request with empty model params', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
-        prompt: {
-          template: [{ role: 'user', content: 'Hi' }]
-        },
-        model: {
-          name: 'gpt-4o',
-          params: {}
-        }
+      ...defaultConfig,
+      llm: {
+        model_name: 'gpt-4o',
+        model_params: {}
       },
       filtering: {}
     };
     const expectedCompletionPostRequest: CompletionPostRequest = {
-      config: {
-        modules: {
-          prompt_templating: config.prompt_templating as any
+      orchestration_config: {
+        module_configurations: {
+          templating_module_config: config.templating as TemplatingModuleConfig,
+          llm_module_config: config.llm
         }
       }
     };
@@ -168,43 +134,32 @@ describe('construct completion post request', () => {
 
   it('should construct completion post request with message history', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
-        prompt: {
-          template: [{ role: 'user', content: "What's my name?" }]
-        },
-        model: {
-          name: 'gpt-4o',
-          params: { max_tokens: 50, temperature: 0.1 }
-        }
+      ...defaultConfig,
+      templating: {
+        template: [{ role: 'user', content: "What's my name?" }]
       }
     };
     const messagesHistory = [
       {
-        role: 'system' as const,
+        role: 'system',
         content:
           'You are a helpful assistant who remembers all details the user shares with you.'
       },
       {
-        role: 'user' as const,
+        role: 'user',
         content: 'Hi! Im Bob'
       },
       {
-        role: 'assistant' as const,
+        role: 'assistant',
         content:
           "Hi Bob, nice to meet you! I'm an AI assistant. I'll remember that your name is Bob as we continue our conversation."
       }
     ];
     const expectedCompletionPostRequest: CompletionPostRequest = {
-      config: {
-        modules: {
-          prompt_templating: {
-            ...config.prompt_templating,
-            prompt: {
-              template: [
-                { role: 'user', content: "What's my name?" }
-              ]
-            }
-          }
+      orchestration_config: {
+        module_configurations: {
+          templating_module_config: config.templating as TemplatingModuleConfig,
+          llm_module_config: config.llm
         }
       },
       messages_history: messagesHistory
@@ -216,31 +171,24 @@ describe('construct completion post request', () => {
 
   it('should construct completion post request with filtering', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
-        prompt: {
-          template: [{ role: 'user', content: 'Hi' }]
-        },
-        model: {
-          name: 'gpt-4o',
-          params: { max_tokens: 50, temperature: 0.1 }
-        }
-      },
+      ...defaultConfig,
       filtering: {
         input: {
           filters: [
             buildAzureContentSafetyFilter({
-              hate: 'ALLOW_SAFE_LOW_MEDIUM',
-              self_harm: 'ALLOW_SAFE'
+              Hate: 'ALLOW_SAFE_LOW_MEDIUM',
+              SelfHarm: 'ALLOW_SAFE'
             })
           ]
         }
       }
     };
     const expectedCompletionPostRequest: CompletionPostRequest = {
-      config: {
-        modules: {
-          prompt_templating: config.prompt_templating as any,
-          filtering: config.filtering
+      orchestration_config: {
+        module_configurations: {
+          templating_module_config: config.templating as TemplatingModuleConfig,
+          llm_module_config: config.llm,
+          filtering_module_config: config.filtering
         }
       }
     };
@@ -252,21 +200,14 @@ describe('construct completion post request', () => {
   // TODO: Adapt the test after Cloud SDK fix for: https://github.com/SAP/cloud-sdk-backlog/issues/1234
   it('should construct completion post request with empty filtering', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
-        prompt: {
-          template: [{ role: 'user', content: 'Hi' }]
-        },
-        model: {
-          name: 'gpt-4o',
-          params: { max_tokens: 50, temperature: 0.1 }
-        }
-      },
+      ...defaultConfig,
       filtering: {}
     };
     const expectedCompletionPostRequest: CompletionPostRequest = {
-      config: {
-        modules: {
-          prompt_templating: config.prompt_templating as any
+      orchestration_config: {
+        module_configurations: {
+          templating_module_config: config.templating as TemplatingModuleConfig,
+          llm_module_config: config.llm
         }
       }
     };
@@ -277,21 +218,13 @@ describe('construct completion post request', () => {
 
   it('should construct completion post request with stream options', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
-        prompt: {
-          template: [{ role: 'user', content: 'Hi' }]
-        },
-        model: {
-          name: 'gpt-4o',
-          params: { max_tokens: 50, temperature: 0.1 }
-        }
-      },
+      ...defaultConfig,
       filtering: {
         output: {
           filters: [
             buildAzureContentSafetyFilter({
-              hate: 'ALLOW_SAFE_LOW_MEDIUM',
-              self_harm: 'ALLOW_SAFE'
+              Hate: 'ALLOW_SAFE_LOW_MEDIUM',
+              SelfHarm: 'ALLOW_SAFE'
             })
           ]
         }
@@ -304,23 +237,19 @@ describe('construct completion post request', () => {
     };
 
     const expectedCompletionPostRequest: CompletionPostRequest = {
-      config: {
-        stream: {
-          enabled: true,
-          chunk_size: 100
-        },
-        modules: {
-          prompt_templating: {
-            ...config.prompt_templating,
-            model: {
-              ...config.prompt_templating.model,
-              params: {
-                ...config.prompt_templating.model.params,
-                stream_options: { include_usage: true }
-              }
+      orchestration_config: {
+        stream: true,
+        stream_options: streamOptions.global,
+        module_configurations: {
+          templating_module_config: config.templating as TemplatingModuleConfig,
+          llm_module_config: {
+            ...config.llm,
+            model_params: {
+              ...config.llm.model_params,
+              stream_options: { include_usage: true }
             }
-          } as any,
-          filtering: {
+          },
+          filtering_module_config: {
             output: {
               ...config.filtering!.output!,
               stream_options: streamOptions.outputFiltering
@@ -328,12 +257,12 @@ describe('construct completion post request', () => {
           }
         }
       },
-      placeholder_values: { phrase: 'I hate you.' }
+      input_params: { phrase: 'I hate you.' }
     };
     const completionPostRequest: CompletionPostRequest =
       constructCompletionPostRequest(
         config,
-        { placeholder_values: { phrase: 'I hate you.' } },
+        { inputParams: { phrase: 'I hate you.' } },
         true,
         streamOptions
       );

@@ -9,14 +9,14 @@ import type { ChatMessages } from './chat-messages.js';
  * Representation of the 'CompletionPostRequest' schema.
  */
 export type CompletionPostRequest = {
-  config: OrchestrationConfig;
+  orchestration_config: OrchestrationConfig;
   /**
    * @example {
    *   "groundingInput": "What is SAP Joule?",
    *   "inputContext": "optimizing supply chain management"
    * }
    */
-  placeholder_values?: Record<string, string>;
+  input_params?: Record<string, string>;
   /**
    * History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
    */

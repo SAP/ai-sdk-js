@@ -18,7 +18,7 @@ describe('construct completion post request from JSON', () => {
       }`;
 
     const expectedCompletionPostRequestFromJson: Record<string, any> = {
-      placeholder_values: {},
+      input_params: {},
       messages_history: [],
       orchestration_config: JSON.parse(jsonConfig)
     };
@@ -53,27 +53,27 @@ describe('construct completion post request from JSON', () => {
               }
             }
         }`;
-    const placeholder_values = { number: '3' };
+    const inputParams = { number: '3' };
 
     const messagesHistory = [
       {
-        role: 'system' as const,
+        role: 'system',
         content:
           'You are a helpful assistant who remembers all details the user shares with you.'
       },
       {
-        role: 'user' as const,
+        role: 'user',
         content: 'Hi! Im Bob'
       },
       {
-        role: 'assistant' as const,
+        role: 'assistant',
         content:
           "Hi Bob, nice to meet you! I'm an AI assistant. I'll remember that your name is Bob as we continue our conversation."
       }
     ];
 
     const expectedCompletionPostRequestFromJson: Record<string, any> = {
-      placeholder_values,
+      input_params: inputParams,
       messages_history: messagesHistory,
       orchestration_config: JSON.parse(jsonConfig)
     };
@@ -82,7 +82,7 @@ describe('construct completion post request from JSON', () => {
       constructCompletionPostRequestFromJsonModuleConfig(
         JSON.parse(jsonConfig),
         {
-          placeholder_values,
+          inputParams,
           messagesHistory
         }
       );

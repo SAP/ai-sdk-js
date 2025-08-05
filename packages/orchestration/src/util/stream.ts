@@ -30,13 +30,13 @@ export function mergeStreamResponse(
 ): void {
   const data = response._data;
   data.request_id = chunk.request_id;
-  data.intermediate_results = mergeModuleResults(
-    data.intermediate_results,
-    chunk.intermediate_results
+  data.module_results = mergeModuleResults(
+    data.module_results,
+    chunk.module_results
   );
-  data.final_result = mergeLlmModule(
-    data.final_result,
-    chunk.final_result
+  data.orchestration_result = mergeLlmModule(
+    data.orchestration_result,
+    chunk.orchestration_result
   );
 }
 

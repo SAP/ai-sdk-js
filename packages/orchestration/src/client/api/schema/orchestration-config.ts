@@ -9,6 +9,10 @@ import type { GlobalStreamOptions } from './global-stream-options.js';
  * Representation of the 'OrchestrationConfig' schema.
  */
 export type OrchestrationConfig = {
-  modules: ModuleConfigs;
-  stream?: GlobalStreamOptions;
+  module_configurations: ModuleConfigs;
+  /**
+   * If true, the response will be streamed back to the client
+   */
+  stream?: boolean;
+  stream_options?: GlobalStreamOptions;
 };

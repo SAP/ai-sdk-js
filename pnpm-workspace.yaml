@@ -4,6 +4,7 @@ packages:
   - packages/foundation-models
   - packages/langchain
   - packages/orchestration
+  - packages/orchestration-v2
   - packages/document-grounding
   - packages/prompt-registry
   - sample-cap

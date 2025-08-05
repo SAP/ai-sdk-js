@@ -2,7 +2,8 @@ import { createLogger } from '@sap-cloud-sdk/util';
 import type {
   Prompt,
   StreamOptions,
-  OrchestrationModuleConfig,
+  LlmModuleConfig,
+  OrchestrationModuleConfig
 } from '../orchestration-types.js';
 import type {
   CompletionPostRequest,
@@ -12,8 +13,7 @@ import type {
   OutputFilteringConfig,
   GlobalStreamOptions,
   Template,
-  PromptTemplatingModuleConfig,
-  TemplateRef
+  TemplatingModuleConfig
 } from '../client/api/schema/index.js';
 
 const logger = createLogger({
@@ -29,49 +29,41 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
   prompt?: Prompt,
   stream?: boolean
 ): Record<string, any> {
+  const orchestration_config = { ...config };
   if (stream) {
-    config = {
-      ...config,
-      stream: {
-        ...(config.stream || {}),
-        enabled: true
-      }
-    };
+    orchestration_config.stream = true;
   } else {
-    delete config.stream;
+    delete orchestration_config.stream;
   }
 
   return {
     messages_history: prompt?.messagesHistory || [],
-    placeholder_values: prompt?.placeholder_values || {},
-    config
+    input_params: prompt?.inputParams || {},
+    orchestration_config
   };
 }
 
 /**
  * @internal
  */
-export function addStreamOptionsToPromptTemplatingModuleConfig(
-  promptTemplatingModuleConfig: PromptTemplatingModuleConfig,
+export function addStreamOptionsToLlmModuleConfig(
+  llmModuleConfig: LlmModuleConfig,
   streamOptions?: StreamOptions
-): PromptTemplatingModuleConfig {
-  if (streamOptions?.prompt_templating === null) {
-    return promptTemplatingModuleConfig;
+): LlmModuleConfig {
+  if (streamOptions?.llm === null) {
+    return llmModuleConfig;
   }
   return {
-    ...promptTemplatingModuleConfig,
-    model: {
-      ...promptTemplatingModuleConfig.model,
-      params: {
-        ...(promptTemplatingModuleConfig.model.params || {}),
-        ...(streamOptions?.prompt_templating !== null && {
-          stream_options: {
-            include_usage: true,
-            ...(promptTemplatingModuleConfig.model.params?.stream_options || {}),
-            ...(streamOptions?.prompt_templating || {})
-          }
-        })
-      }
+    ...llmModuleConfig,
+    model_params: {
+      ...llmModuleConfig.model_params,
+      ...(streamOptions?.llm !== null && {
+        stream_options: {
+          include_usage: true,
+          ...(llmModuleConfig.model_params?.stream_options || {}),
+          ...(streamOptions?.llm || {})
+        }
+      })
     }
   };
 }
@@ -99,33 +91,31 @@ export function addStreamOptions(
   moduleConfigs: ModuleConfigs,
   streamOptions?: StreamOptions
 ): OrchestrationConfig {
-  const { prompt_templating, filtering } = moduleConfigs;
+  const { llm_module_config, filtering_module_config } = moduleConfigs;
   const outputFiltering = streamOptions?.outputFiltering;
-  const globalStreamOptions = streamOptions?.global;
+  const globalOptions = streamOptions?.global;
 
-  if (!moduleConfigs?.filtering?.output && outputFiltering) {
+  if (!moduleConfigs?.filtering_module_config?.output && outputFiltering) {
     logger.warn(
       'Output filter stream options are not applied because filtering module is not configured.'
     );
   }
 
   return {
-    stream: {
-      ...(globalStreamOptions || {}),
-      enabled: true,
-    },
-    modules: {
+    stream: true,
+    ...(globalOptions && { stream_options: globalOptions }),
+    module_configurations: {
       ...moduleConfigs,
-      prompt_templating: addStreamOptionsToPromptTemplatingModuleConfig(
-        prompt_templating,
+      llm_module_config: addStreamOptionsToLlmModuleConfig(
+        llm_module_config,
         streamOptions
       ),
       ...(outputFiltering &&
-        filtering?.output && {
-          filtering: {
-            ...filtering,
+        filtering_module_config?.output && {
+          filtering_module_config: {
+            ...filtering_module_config,
             output: addStreamOptionsToOutputFilteringConfig(
-              filtering.output,
+              filtering_module_config.output,
               outputFiltering
             )
           }
@@ -143,44 +133,55 @@ export function constructCompletionPostRequest(
   stream?: boolean,
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
-  const { prompt_templating, filtering, masking, grounding, translation } = config;
-
   // Templating is not a string here as it is already parsed in `parseAndMergeTemplating` method
-  const promptTemplate = { ...(prompt_templating.prompt as Template | TemplateRef) };
+  const templatingConfig = { ...(config.templating as TemplatingModuleConfig) };
 
-  // If prompt_templating.prompt is not defined, we initialize it with an empty Template object
-  prompt_templating.prompt = prompt_templating.prompt || { template: [] };
-
-  if (isTemplate(promptTemplate)) {
-    if (!promptTemplate.template?.length && !prompt?.messages?.length) {
+  if (isTemplate(templatingConfig)) {
+    if (!templatingConfig.template?.length && !prompt?.messages?.length) {
       throw new Error('Either a prompt template or messages must be defined.');
     }
-    promptTemplate.template = [
-      ...(promptTemplate.template || []),
-      ...(prompt?.messages || [])
-    ];
+    if (prompt?.messages?.length) {
+      templatingConfig.template = [
+        ...(templatingConfig.template || []),
+        ...prompt.messages
+      ];
+    }
   }
 
   const moduleConfigurations: ModuleConfigs = {
-    prompt_templating: {
-      ...prompt_templating,
-      prompt: promptTemplate,
-    },
-    ...(filtering && Object.keys(filtering).length && { filtering }),
-    ...(masking && Object.keys(masking).length && { masking }),
-    ...(grounding && Object.keys(grounding).length && { grounding }),
-    ...(translation && Object.keys(translation).length && { translation })
+    templating_module_config: templatingConfig,
+    llm_module_config: config.llm,
+    ...(config?.filtering &&
+      Object.keys(config.filtering).length && {
+        filtering_module_config: config.filtering
+      }),
+    ...(config?.masking &&
+      Object.keys(config.masking).length && {
+        masking_module_config: config.masking
+      }),
+    ...(config?.grounding &&
+      Object.keys(config.grounding).length && {
+        grounding_module_config: config.grounding
+      }),
+    ...(config?.inputTranslation &&
+      Object.keys(config.inputTranslation).length && {
+        input_translation_module_config: config.inputTranslation
+      }),
+    ...(config?.outputTranslation &&
+      Object.keys(config.outputTranslation).length && {
+        output_translation_module_config: config.outputTranslation
+      })
   };
 
   return {
-    config: stream
+    orchestration_config: stream
       ? addStreamOptions(
           moduleConfigurations,
           mergeStreamOptions(config.streaming, streamOptions)
         )
-      : { modules: moduleConfigurations },
-    ...(prompt?.placeholder_values && {
-      placeholder_values: prompt.placeholder_values
+      : { module_configurations: moduleConfigurations },
+    ...(prompt?.inputParams && {
+      input_params: prompt.inputParams
     }),
     ...(prompt?.messagesHistory && {
       messages_history: prompt.messagesHistory
@@ -204,7 +205,7 @@ function mergeStreamOptions(
 }
 
 function isTemplate(
-  templating: Template | TemplateRef
+  templating: TemplatingModuleConfig
 ): templating is Template {
   return (
     templating &&

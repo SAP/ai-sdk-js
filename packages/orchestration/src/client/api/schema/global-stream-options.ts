@@ -5,13 +5,9 @@
  */
 
 /**
- * Options for streaming. Will be ignored if enabled is false.
+ * Options for streaming. Will be ignored if stream is false.
  */
 export type GlobalStreamOptions = {
-  /**
-   * If true, the response will be streamed back to the client
-   */
-  enabled?: boolean;
   /**
    * Minimum number of characters per chunk that post-LLM modules operate on.
    * Default: 100.

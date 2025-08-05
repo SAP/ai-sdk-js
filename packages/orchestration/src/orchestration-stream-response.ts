@@ -24,7 +24,7 @@ export class OrchestrationStreamResponse<T> {
     if (this.isStreamOpen()) {
       return;
     }
-    return this._data.final_result?.usage;
+    return this._data.orchestration_result?.usage;
   }
 
   /**
@@ -88,7 +88,7 @@ export class OrchestrationStreamResponse<T> {
     if (this.isStreamOpen()) {
       return;
     }
-    const messages: ChatMessage[] = this._data.intermediate_results?.templating ?? [];
+    const messages: ChatMessage[] = this._data.module_results?.templating ?? [];
     const content = this.findChoiceByIndex(choiceIndex)?.message;
     return content ? [...messages, content] : messages;
   }
@@ -123,7 +123,7 @@ export class OrchestrationStreamResponse<T> {
   }
 
   private getChoices() {
-    return this._data.final_result?.choices ?? [];
+    return this._data.orchestration_result?.choices ?? [];
   }
 
   private findChoiceByIndex(index: number) {
