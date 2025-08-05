@@ -17,7 +17,8 @@ export type {
   AzureFilterThreshold,
   TranslationConfigParams,
   AzureContentSafety,
-  AzureContentSafetyFilterConfig
+  AzureContentSafetyFilterConfig,
+  ClientConfig
 } from './orchestration-types.js';
 
 export { OrchestrationStreamResponse } from './orchestration-stream-response.js';
