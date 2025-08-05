@@ -2,4 +2,5 @@
 '@sap-ai-sdk/orchestration': minor
 ---
 
-[New Functionality] Enable client-side, automatically maintained, chat history. Users should no longer pass message history outside of initialization.
+[New Functionality] Client-side, automatically-maintained, message chat history is now enabled by default. 
+ - Users now either disable client-side history or pass the history at client initialization
