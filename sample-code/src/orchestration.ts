@@ -103,8 +103,7 @@ export async function chatCompletionStreamWithHistory(
       llm: {
         model_name: 'gpt-4o'
       }
-    },
-    { enableClientHistory: true }
+    }
   );
 
   // eslint-disable-next-line no-console

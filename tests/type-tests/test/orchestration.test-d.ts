@@ -149,7 +149,7 @@ expectType<Promise<OrchestrationResponse>>(
       }
     },
     {
-      enableClientHistory: true
+      useClientHistory: true
     },
     {
       resourceGroup: 'resourceGroup'
