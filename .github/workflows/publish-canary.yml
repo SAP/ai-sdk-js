@@ -10,6 +10,7 @@ on:
         type: string
         required: false
         default: 'next'
+        
 jobs:
   publish:
     runs-on: ubuntu-latest
