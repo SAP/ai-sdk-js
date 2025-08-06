@@ -25,6 +25,9 @@ paths:
       summary: orchestrated completion inference
       description: Run an orchestrated completion inference request
       operationId: orchestration.v1.endpoints.create
+      parameters:
+        - $ref: '#/components/parameters/AIObjectStoreResourceGroup'
+        - $ref: '#/components/parameters/AIObjectStoreSecretName'
       requestBody:
         required: true
         content:
@@ -47,6 +50,25 @@ paths:
           $ref: '#/components/responses/CommonError'
 
 components:
+  parameters:
+    AIObjectStoreResourceGroup:
+      in: header
+      name: AI-Object-Store-Resource-Group
+      required: false
+      schema:
+        maxLength: 253
+        minLength: 3
+        pattern: ^[a-zA-Z0-9][a-zA-Z0-9.-]{1,251}[a-zA-Z0-9]$
+        type: string
+    AIObjectStoreSecretName:
+      in: header
+      name: AI-Object-Store-Secret-Name
+      required: false
+      schema:
+        maxLength: 233
+        minLength: 1
+        pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$
+        type: string
   schemas:
     CompletionPostRequest:
       type: object
