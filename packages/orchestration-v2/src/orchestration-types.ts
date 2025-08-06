@@ -149,7 +149,7 @@ export interface OrchestrationModuleConfig {
   /**
    * Prompt templating configuration.
    */
-  prompt_templating: PromptTemplatingModuleConfig;
+  promptTemplating: PromptTemplatingModuleConfig;
   /**
    * Filtering module configuration for both input and output filters.
    * To configure a filter, use convenience functions like `buildAzureContentSafetyFilter`, `buildLlamaGuardFilter`, etc..
@@ -210,7 +210,7 @@ export interface StreamOptions {
   /**
    * LLM specific stream options.
    */
-  prompt_templating?: { include_usage?: boolean; [key: string]: any } | null;
+  promptTemplating?: { include_usage?: boolean; [key: string]: any } | null;
   /**
    * Output filtering stream options.
    */

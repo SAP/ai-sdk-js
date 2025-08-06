@@ -10,7 +10,7 @@ import type {
 
 describe('construct completion post request', () => {
   const defaultConfig: OrchestrationModuleConfig = {
-    prompt_templating: {
+    promptTemplating: {
       prompt: {
         template: [{ role: 'user', content: 'Hi' }]
       },
@@ -25,7 +25,7 @@ describe('construct completion post request', () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       config: {
         modules: {
-          prompt_templating: defaultConfig.prompt_templating as any
+          prompt_templating: defaultConfig.promptTemplating as any
         }
       }
     };
@@ -37,7 +37,7 @@ describe('construct completion post request', () => {
   // TODO: Adapt the test after Cloud SDK fix for: https://github.com/SAP/cloud-sdk-backlog/issues/1234
   xit('should construct completion post request with empty templating module', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         prompt: { template: [] },
         model: {
           name: 'gpt-4o',
@@ -48,7 +48,7 @@ describe('construct completion post request', () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       config: {
         modules: {
-          prompt_templating: config.prompt_templating as any
+          prompt_templating: config.promptTemplating as any
         }
       }
     };
@@ -59,7 +59,7 @@ describe('construct completion post request', () => {
 
   it('should construct completion post request with input params', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         prompt: {
           template: [
             {
@@ -79,7 +79,7 @@ describe('construct completion post request', () => {
       config: {
         modules: {
           prompt_templating: {
-            ...config.prompt_templating,
+            ...config.promptTemplating,
             prompt: {
               template: [
                 {
@@ -100,7 +100,7 @@ describe('construct completion post request', () => {
 
   it('should construct completion post request with empty input params', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         prompt: {
           template: [
             {
@@ -120,7 +120,7 @@ describe('construct completion post request', () => {
       config: {
         modules: {
           prompt_templating: {
-            ...config.prompt_templating,
+            ...config.promptTemplating,
             prompt: {
               template: [
                 {
@@ -141,7 +141,7 @@ describe('construct completion post request', () => {
 
   it('should construct completion post request with empty model params', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         prompt: {
           template: [{ role: 'user', content: 'Hi' }]
         },
@@ -155,7 +155,7 @@ describe('construct completion post request', () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       config: {
         modules: {
-          prompt_templating: config.prompt_templating as any
+          prompt_templating: config.promptTemplating as any
         }
       }
     };
@@ -166,7 +166,7 @@ describe('construct completion post request', () => {
 
   it('should construct completion post request with message history', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         prompt: {
           template: [{ role: 'user', content: "What's my name?" }]
         },
@@ -196,7 +196,7 @@ describe('construct completion post request', () => {
       config: {
         modules: {
           prompt_templating: {
-            ...config.prompt_templating,
+            ...config.promptTemplating,
             prompt: {
               template: [{ role: 'user', content: "What's my name?" }]
             }
@@ -212,7 +212,7 @@ describe('construct completion post request', () => {
 
   it('should construct completion post request with filtering', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         prompt: {
           template: [{ role: 'user', content: 'Hi' }]
         },
@@ -235,7 +235,7 @@ describe('construct completion post request', () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       config: {
         modules: {
-          prompt_templating: config.prompt_templating as any,
+          prompt_templating: config.promptTemplating as any,
           filtering: config.filtering
         }
       }
@@ -248,7 +248,7 @@ describe('construct completion post request', () => {
   // TODO: Adapt the test after Cloud SDK fix for: https://github.com/SAP/cloud-sdk-backlog/issues/1234
   it('should construct completion post request with empty filtering', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         prompt: {
           template: [{ role: 'user', content: 'Hi' }]
         },
@@ -262,7 +262,7 @@ describe('construct completion post request', () => {
     const expectedCompletionPostRequest: CompletionPostRequest = {
       config: {
         modules: {
-          prompt_templating: config.prompt_templating as any
+          prompt_templating: config.promptTemplating as any
         }
       }
     };
@@ -273,7 +273,7 @@ describe('construct completion post request', () => {
 
   it('should construct completion post request with stream options', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         prompt: {
           template: [{ role: 'user', content: 'Hi' }]
         },
@@ -307,11 +307,11 @@ describe('construct completion post request', () => {
         },
         modules: {
           prompt_templating: {
-            ...config.prompt_templating,
+            ...config.promptTemplating,
             model: {
-              ...config.prompt_templating.model,
+              ...config.promptTemplating.model,
               params: {
-                ...config.prompt_templating.model.params,
+                ...config.promptTemplating.model.params,
                 stream_options: { include_usage: true }
               }
             }

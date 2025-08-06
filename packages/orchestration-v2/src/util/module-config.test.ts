@@ -18,7 +18,7 @@ import type {
 
 describe('stream util tests', () => {
   const defaultOrchestrationModuleConfig: OrchestrationModuleConfig = {
-    prompt_templating: {
+    promptTemplating: {
       prompt: {
         template: [
           { role: 'user', content: 'Create paraphrases of {{?phrase}}' }
@@ -33,43 +33,43 @@ describe('stream util tests', () => {
 
   const defaultModuleConfigs: ModuleConfigs = {
     prompt_templating:
-      defaultOrchestrationModuleConfig.prompt_templating as PromptTemplatingModuleConfig
+      defaultOrchestrationModuleConfig.promptTemplating as PromptTemplatingModuleConfig
   };
 
   const defaultStreamOptions: StreamOptions = {
     global: { enabled: true, chunk_size: 100 },
-    prompt_templating: { include_usage: false },
+    promptTemplating: { include_usage: false },
     outputFiltering: { overlap: 100 }
   };
 
   it('should add include_usage to prompt templating module config', () => {
-    const prompt_templating = addStreamOptionsToPromptTemplatingModuleConfig(
+    const promptTemplating = addStreamOptionsToPromptTemplatingModuleConfig(
       defaultModuleConfigs.prompt_templating
     );
-    expect(prompt_templating.model.params?.stream_options).toEqual({
+    expect(promptTemplating.model.params?.stream_options).toEqual({
       include_usage: true
     });
   });
 
   it('should set include_usage to false in prompt templating module config', () => {
-    const prompt_templating = addStreamOptionsToPromptTemplatingModuleConfig(
+    const promptTemplating = addStreamOptionsToPromptTemplatingModuleConfig(
       defaultModuleConfigs.prompt_templating,
       defaultStreamOptions
     );
-    expect(prompt_templating.model.params?.stream_options).toEqual({
+    expect(promptTemplating.model.params?.stream_options).toEqual({
       include_usage: false
     });
   });
 
   it('should not add any stream options to prompt templating module config', () => {
-    const prompt_templating = addStreamOptionsToPromptTemplatingModuleConfig(
+    const promptTemplating = addStreamOptionsToPromptTemplatingModuleConfig(
       defaultModuleConfigs.prompt_templating,
       {
-        prompt_templating: null
+        promptTemplating: null
       }
     );
     expect(
-      Object.keys(prompt_templating.model.params ?? {}).every(
+      Object.keys(promptTemplating.model.params ?? {}).every(
         key => key !== 'stream_options'
       )
     ).toBe(true);
@@ -115,7 +115,7 @@ describe('stream util tests', () => {
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { prompt_templating, ...streamOptions } = defaultStreamOptions;
+    const { promptTemplating, ...streamOptions } = defaultStreamOptions;
 
     const expectedOrchestrationConfig: OrchestrationConfig = {
       stream: streamOptions.global,

@@ -82,7 +82,7 @@ describe('orchestration service client', () => {
 
   it('calls chatCompletion with minimal configuration', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         model: {
           name: 'gpt-4o',
           params: { max_tokens: 50, temperature: 0.1 }
@@ -126,7 +126,7 @@ describe('orchestration service client', () => {
 
   it('calls chatCompletion with some templating configuration (without template)', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         model: {
           name: 'gpt-4o',
           params: { max_tokens: 500 }
@@ -225,7 +225,7 @@ describe('orchestration service client', () => {
 
   it('calls chatCompletion with filter configuration supplied using convenience function', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         model: {
           name: 'gpt-4o',
           params: { max_tokens: 50, temperature: 0.1 }
@@ -290,7 +290,7 @@ describe('orchestration service client', () => {
       self_harm: 'ALLOW_SAFE'
     });
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         model: {
           name: 'gpt-4o',
           params: { max_tokens: 50, temperature: 0.1 }
@@ -341,7 +341,7 @@ describe('orchestration service client', () => {
 
   it('calls chatCompletion with filtering configuration', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         model: {
           name: 'gpt-4o',
           params: { max_tokens: 50, temperature: 0.1 }
@@ -408,7 +408,7 @@ describe('orchestration service client', () => {
 
   it('sends message_history together with messages', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         model: {
           name: 'gpt-4o',
           params: { max_tokens: 50, temperature: 0.1 }
@@ -464,7 +464,7 @@ describe('orchestration service client', () => {
       'orchestration-chat-completion-yaml-template.yaml'
     );
     const configWithYaml: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         model: {
           name: 'gpt-4o',
           params: { max_tokens: 500 }
@@ -474,7 +474,7 @@ describe('orchestration service client', () => {
     };
 
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         model: {
           name: 'gpt-4o',
           params: { max_tokens: 500 }
@@ -553,7 +553,7 @@ describe('orchestration service client', () => {
 
   it('throws when template is an empty string', async () => {
     const invalidConfigWithYaml: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         model: {
           name: 'gpt-4o',
           params: { max_tokens: 500 }
@@ -573,7 +573,7 @@ describe('orchestration service client', () => {
 
   it('throws when template YAML string does not conform to the expected specification', async () => {
     const invalidConfigWithYaml: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         model: {
           name: 'gpt-4o',
           params: { max_tokens: 500 }
@@ -605,7 +605,7 @@ describe('orchestration service client', () => {
 
   it('calls chatCompletion with grounding configuration', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         model: {
           name: 'gpt-4o'
         },
@@ -675,7 +675,7 @@ describe('orchestration service client', () => {
     };
 
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         model: {
           name: 'gpt-4o'
         },
@@ -721,7 +721,7 @@ describe('orchestration service client', () => {
 
   it('executes a streaming request with correct chunk response', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         model: {
           name: 'gpt-4o',
           params: {}
@@ -827,7 +827,7 @@ describe('orchestration service client', () => {
 
   it('executes a streaming request with multiple tools and parses the tool calls properly', async () => {
     const config: OrchestrationModuleConfig = {
-      prompt_templating: {
+      promptTemplating: {
         model: {
           name: 'gpt-4o',
           params: {}
@@ -896,7 +896,7 @@ describe('orchestration service client', () => {
   describe('OrchestrationClient Stream Error Handling', () => {
     it('should abort controller and re-throw error when network request fails', async () => {
       const config: OrchestrationModuleConfig = {
-        prompt_templating: {
+        promptTemplating: {
           model: {
             name: 'gpt-4o',
             params: {}
@@ -935,7 +935,7 @@ describe('orchestration service client', () => {
 
     it('should throw error when stream is called with already aborted controller', async () => {
       const config: OrchestrationModuleConfig = {
-        prompt_templating: {
+        promptTemplating: {
           model: {
             name: 'gpt-4o',
             params: {}

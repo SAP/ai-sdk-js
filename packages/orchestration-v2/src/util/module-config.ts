@@ -55,7 +55,7 @@ export function addStreamOptionsToPromptTemplatingModuleConfig(
   promptTemplatingModuleConfig: PromptTemplatingModuleConfig,
   streamOptions?: StreamOptions
 ): PromptTemplatingModuleConfig {
-  if (streamOptions?.prompt_templating === null) {
+  if (streamOptions?.promptTemplating === null) {
     return promptTemplatingModuleConfig;
   }
   return {
@@ -64,12 +64,12 @@ export function addStreamOptionsToPromptTemplatingModuleConfig(
       ...promptTemplatingModuleConfig.model,
       params: {
         ...(promptTemplatingModuleConfig.model.params || {}),
-        ...(streamOptions?.prompt_templating !== null && {
+        ...(streamOptions?.promptTemplating !== null && {
           stream_options: {
             include_usage: true,
             ...(promptTemplatingModuleConfig.model.params?.stream_options ||
               {}),
-            ...(streamOptions?.prompt_templating || {})
+            ...(streamOptions?.promptTemplating || {})
           }
         })
       }
@@ -144,16 +144,16 @@ export function constructCompletionPostRequest(
   stream?: boolean,
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
-  const { prompt_templating, filtering, masking, grounding, translation } =
+  const { promptTemplating, filtering, masking, grounding, translation } =
     config;
 
   // Templating is not a string here as it is already parsed in `parseAndMergeTemplating` method
   const promptTemplate = {
-    ...(prompt_templating.prompt as Template | TemplateRef)
+    ...(promptTemplating.prompt as Template | TemplateRef)
   };
 
-  // If prompt_templating.prompt is not defined, we initialize it with an empty Template object
-  prompt_templating.prompt = prompt_templating.prompt || { template: [] };
+  // If promptTemplating.prompt is not defined, we initialize it with an empty Template object
+  promptTemplating.prompt = promptTemplating.prompt || { template: [] };
 
   if (isTemplate(promptTemplate)) {
     if (!promptTemplate.template?.length && !prompt?.messages?.length) {
@@ -167,7 +167,7 @@ export function constructCompletionPostRequest(
 
   const moduleConfigurations: ModuleConfigs = {
     prompt_templating: {
-      ...prompt_templating,
+      ...promptTemplating,
       prompt: promptTemplate
     },
     ...(filtering && Object.keys(filtering).length && { filtering }),
