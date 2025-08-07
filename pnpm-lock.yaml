@@ -408,9 +408,9 @@ importers:
       '@sap-ai-sdk/foundation-models':
         specifier: workspace:^
         version: link:../../packages/foundation-models
-      '@sap-ai-sdk/orchestration':
+      '@sap-ai-sdk/orchestration-v2':
         specifier: workspace:^
-        version: link:../../packages/orchestration
+        version: link:../../packages/orchestration-v2
       '@sap-cloud-sdk/connectivity':
         specifier: ^4.1.1
         version: 4.1.1

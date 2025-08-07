@@ -1,3 +1,4 @@
+import type { Xor } from '@sap-cloud-sdk/util';
 import type { CustomRequestConfig } from '@sap-cloud-sdk/http-client';
 import type { ChatModel } from './model-types.js';
 import type {
@@ -94,7 +95,7 @@ export interface PromptTemplatingModule {
    *   ]
    * }
    */
-  prompt?: PromptTemplate | TemplateRef | string;
+  prompt?: Xor<PromptTemplate, TemplateRef> | string;
   /**
    * LLM model details.
    */
