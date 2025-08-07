@@ -20,7 +20,7 @@ describe('construct completion post request from JSON', () => {
     }`;
 
     const expectedCompletionPostRequestFromJson: Record<string, any> = {
-      placeholderValues: {},
+      placeholder_values: {},
       messages_history: [],
       config: JSON.parse(jsonConfig)
     };
@@ -77,7 +77,7 @@ describe('construct completion post request from JSON', () => {
     ];
 
     const expectedCompletionPostRequestFromJson: Record<string, any> = {
-      placeholderValues,
+      placeholder_values: placeholderValues,
       messages_history: messagesHistory,
       config: JSON.parse(jsonConfig)
     };
