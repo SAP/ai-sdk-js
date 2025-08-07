@@ -1,4 +1,6 @@
 import { createLogger } from '@sap-cloud-sdk/util';
+import type { OrchestrationStreamChunkResponse } from '../orchestration-stream-chunk-response.js';
+import type { OrchestrationStreamResponse } from '../orchestration-stream-response.js';
 import type {
   ChatDelta,
   ChoiceLogprobs,
@@ -10,11 +12,9 @@ import type {
   MessageToolCall,
   ModuleResults,
   ModuleResultsStreaming,
-  OrchestrationStreamChunkResponse,
-  OrchestrationStreamResponse,
   ResponseChatMessage,
   ToolCallChunk
-} from '../index.js';
+} from '../client/api/schema/index.js';
 
 const logger = createLogger({
   package: 'orchestration',

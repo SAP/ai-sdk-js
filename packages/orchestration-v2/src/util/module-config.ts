@@ -1,6 +1,6 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import type {
-  Prompt,
+  ChatCompletionRequest,
   StreamOptions,
   OrchestrationModuleConfig
 } from '../orchestration-types.js';
@@ -10,7 +10,6 @@ import type {
   ModuleConfigs,
   OrchestrationConfig,
   OutputFilteringConfig,
-  GlobalStreamOptions,
   Template,
   PromptTemplatingModuleConfig,
   TemplateRef
@@ -26,7 +25,7 @@ const logger = createLogger({
  */
 export function constructCompletionPostRequestFromJsonModuleConfig(
   config: Record<string, any>,
-  prompt?: Prompt,
+  prompt?: ChatCompletionRequest,
   stream?: boolean
 ): Record<string, any> {
   if (stream) {
@@ -140,35 +139,35 @@ export function addStreamOptions(
  */
 export function constructCompletionPostRequest(
   config: OrchestrationModuleConfig,
-  prompt?: Prompt,
+  request?: ChatCompletionRequest,
   stream?: boolean,
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
   const { promptTemplating, filtering, masking, grounding, translation } =
     config;
 
-  // Templating is not a string here as it is already parsed in `parseAndMergeTemplating` method
-  const promptTemplate = {
+  // prompt is not a string here as it is already parsed in `parseAndMergeTemplating` method
+  const prompt = {
     ...(promptTemplating.prompt as Template | TemplateRef)
   };
 
   // If promptTemplating.prompt is not defined, we initialize it with an empty Template object
   promptTemplating.prompt = promptTemplating.prompt || { template: [] };
 
-  if (isTemplate(promptTemplate)) {
-    if (!promptTemplate.template?.length && !prompt?.messages?.length) {
+  if (isTemplate(prompt)) {
+    if (!prompt.template?.length && !request?.messages?.length) {
       throw new Error('Either a prompt template or messages must be defined.');
     }
-    promptTemplate.template = [
-      ...(promptTemplate.template || []),
-      ...(prompt?.messages || [])
+    prompt.template = [
+      ...(prompt.template || []),
+      ...(request?.messages || [])
     ];
   }
 
   const moduleConfigurations: ModuleConfigs = {
     prompt_templating: {
       ...promptTemplating,
-      prompt: promptTemplate
+      prompt
     },
     ...(filtering && Object.keys(filtering).length && { filtering }),
     ...(masking && Object.keys(masking).length && { masking }),
@@ -178,31 +177,13 @@ export function constructCompletionPostRequest(
 
   return {
     config: stream
-      ? addStreamOptions(
-          moduleConfigurations,
-          mergeStreamOptions(config.streaming, streamOptions)
-        )
+      ? addStreamOptions(moduleConfigurations, streamOptions)
       : { modules: moduleConfigurations },
-    ...(prompt?.placeholderValues && {
-      placeholder_values: prompt.placeholderValues
+    ...(request?.placeholderValues && {
+      placeholder_values: request.placeholderValues
     }),
-    ...(prompt?.messagesHistory && {
-      messages_history: prompt.messagesHistory
-    })
-  };
-}
-
-function mergeStreamOptions(
-  globalOptions?: GlobalStreamOptions,
-  streamOptions?: StreamOptions
-): StreamOptions {
-  return {
-    ...streamOptions,
-    ...((globalOptions || streamOptions?.global) && {
-      global: {
-        ...globalOptions,
-        ...streamOptions?.global
-      }
+    ...(request?.messagesHistory && {
+      messages_history: request.messagesHistory
     })
   };
 }

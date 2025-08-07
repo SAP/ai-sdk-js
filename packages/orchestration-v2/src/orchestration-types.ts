@@ -1,4 +1,3 @@
-import type { Xor } from '@sap-cloud-sdk/util';
 import type { CustomRequestConfig } from '@sap-cloud-sdk/http-client';
 import type { ChatModel } from './model-types.js';
 import type {
@@ -7,27 +6,28 @@ import type {
   DocumentGroundingFilter,
   DpiConfig,
   DpiEntities,
-  FilteringModuleConfig,
   FilteringStreamOptions,
-  GlobalStreamOptions,
-  GroundingModuleConfig,
-  TranslationModuleConfig,
   LlamaGuard38B,
   LLMModelDetails as OriginalLLMModelDetails,
-  MaskingModuleConfig,
-  Template as OriginalTemplate,
+  Template,
   TemplateRef,
   TemplatingChatMessage,
   AzureContentSafetyOutput,
   AzureContentSafetyOutputFilterConfig,
   DPIStandardEntity,
-  DPICustomEntity
+  DPICustomEntity,
+  InputFilteringConfig,
+  OutputFilteringConfig,
+  MaskingProviderConfig,
+  SAPDocumentTranslation,
+  GlobalStreamOptions,
+  ErrorResponse
 } from './client/api/schema/index.js';
 
 /**
- * Prompt configuration.
+ * Chat completion request configuration.
  */
-export interface Prompt {
+export interface ChatCompletionRequest {
   /**
    * Chat History.
    */
@@ -73,7 +73,7 @@ export type LlmModelDetails = Omit<
 /**
  * Prompt templating module configuration.
  */
-export interface PromptTemplatingModuleConfig {
+export interface PromptTemplatingModule {
   /**
    * The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.
    */
@@ -94,12 +94,94 @@ export interface PromptTemplatingModuleConfig {
    *   ]
    * }
    */
-  prompt?: Template | TemplateRef | string;
+  prompt?: PromptTemplate | TemplateRef | string;
   /**
    * LLM model details.
    */
   model: LlmModelDetails;
 }
+
+/**
+ * Representation of the 'FilteringModuleConfig' schema.
+ */
+export interface FilteringModule {
+  /**
+   * List of provider type and filters.
+   */
+  input?: InputFilteringConfig;
+  /**
+   * List of provider type and filters.
+   */
+  output?: OutputFilteringConfig;
+};
+
+/**
+ * Representation of the 'MaskingModuleConfig' schema.
+ */
+export interface MaskingModule {
+  /**
+   * List of masking service providers
+   * Min Items: 1.
+   */
+  masking_providers: MaskingProviderConfig[];
+};
+
+/**
+ * Representation of the 'GroundingModuleConfig' schema.
+ */
+export interface GroundingModule {
+  /**
+   * @example "document_grounding_service"
+   */
+  type: 'document_grounding_service' | any;
+  /**
+   * Grounding service configuration.
+   */
+  config: {
+    /**
+     * Document grounding service filters to be used.
+     */
+    filters?: DocumentGroundingFilter[];
+    /**
+     * Placeholders to be used for grounding input questions and output.
+     */
+    placeholders: {
+      /**
+       * Contains the input parameters used for grounding input questions
+       * Min Items: 1.
+       */
+      input: string[];
+      /**
+       * Placeholder name for grounding output.
+       * @example "groundingOutput"
+       */
+      output: string;
+    };
+    /**
+     * Parameter name used for specifying metadata parameters.
+     */
+    metadata_params?: string[];
+  };
+};
+
+/**
+ * Configuration for translation module.
+ */
+export interface TranslationModule {
+  /**
+   * Configuration for input translation.
+   */
+  input?: SAPDocumentTranslation;
+  /**
+   * Configuration for output translation.
+   */
+  output?: SAPDocumentTranslation;
+};
+
+/**
+ * Orchestration error response.
+ */
+export type OrchestrationErrorResponse = ErrorResponse;
 
 /**
  * Model Parameters for LLM module configuration.
@@ -116,7 +198,7 @@ export type LlmModelParams = {
 /**
  * Representation of the 'Template' schema.
  */
-export type Template = Omit<OriginalTemplate, 'template'> & {
+export type PromptTemplate = Omit<Template, 'template'> & {
   /**
    * A chat message array to be formatted with values from `placeholderValues`.
    * Both `role` and `content` can use {{?variable}} placeholders.
@@ -137,19 +219,13 @@ export type Template = Omit<OriginalTemplate, 'template'> & {
 };
 
 /**
- * Representation of the 'TemplatingModuleConfig' schema.
- * The type can be either a `Template` or a `TemplateRef`.
- */
-export type PromptTemplate = Xor<Template, TemplateRef>;
-
-/**
  * Orchestration module configuration.
  */
 export interface OrchestrationModuleConfig {
   /**
    * Prompt templating configuration.
    */
-  promptTemplating: PromptTemplatingModuleConfig;
+  promptTemplating: PromptTemplatingModule;
   /**
    * Filtering module configuration for both input and output filters.
    * To configure a filter, use convenience functions like `buildAzureContentSafetyFilter`, `buildLlamaGuardFilter`, etc..
@@ -162,23 +238,19 @@ export interface OrchestrationModuleConfig {
    *   }
    * }
    */
-  filtering?: FilteringModuleConfig;
+  filtering?: FilteringModule;
   /**
    * Masking module configuration.
    */
-  masking?: MaskingModuleConfig;
+  masking?: MaskingModule;
   /**
    * Grounding module configuraton.
    */
-  grounding?: GroundingModuleConfig;
+  grounding?: GroundingModule;
   /**
    * Translation module configuration.
    */
-  translation?: TranslationModuleConfig;
-  /**
-   * Global streaming options.
-   */
-  streaming?: GlobalStreamOptions;
+  translation?: TranslationModule;
 }
 
 /**
@@ -188,7 +260,7 @@ export interface RequestOptions {
   /**
    * Prompt configuration.
    */
-  prompt?: Prompt;
+  request?: ChatCompletionRequest;
   /**
    * Custom request configuration.
    */
@@ -266,14 +338,14 @@ export interface DocumentGroundingServiceConfig {
 
 /**
  * Defines the type of the DPI masking entity.
- * @internal
  */
-export type DpiEntity =
+type DpiEntity =
   | DpiEntities
   | DPIStandardEntity
   | (DPICustomEntity & {
       type: 'custom';
     });
+
 /**
  * Represents the configuration for the masking provider SAP Data Privacy Integration.
  */
@@ -320,7 +392,6 @@ export const supportedAzureFilterThresholds = {
 
 /**
  * The Azure threshold level supported for each azure content filter category.
- *
  */
 export type AzureFilterThreshold = keyof typeof supportedAzureFilterThresholds;
 

@@ -18,7 +18,7 @@ import type {
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api/internal.js';
 import type {
   OrchestrationModuleConfig,
-  Prompt,
+  ChatCompletionRequest,
   RequestOptions,
   StreamOptions
 } from './orchestration-types.js';
@@ -56,11 +56,11 @@ export class OrchestrationClient {
   }
 
   async chatCompletion(
-    prompt?: Prompt,
+    request?: ChatCompletionRequest,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationResponse> {
     const response = await this.executeRequest({
-      prompt,
+      request,
       requestConfig,
       stream: false
     });
@@ -68,7 +68,7 @@ export class OrchestrationClient {
   }
 
   async stream(
-    prompt?: Prompt,
+    request?: ChatCompletionRequest,
     controller = new AbortController(),
     options?: StreamOptions,
     requestConfig?: CustomRequestConfig
@@ -82,7 +82,7 @@ export class OrchestrationClient {
 
       return await this.createStreamResponse(
         {
-          prompt,
+          request,
           requestConfig,
           stream: true,
           streamOptions: options
@@ -96,18 +96,18 @@ export class OrchestrationClient {
   }
 
   private async executeRequest(options: RequestOptions): Promise<HttpResponse> {
-    const { prompt, requestConfig, stream, streamOptions } = options;
+    const { request, requestConfig, stream, streamOptions } = options;
 
     const body =
       typeof this.config === 'string'
         ? constructCompletionPostRequestFromJsonModuleConfig(
             JSON.parse(this.config),
-            prompt,
+            request,
             stream
           )
         : constructCompletionPostRequest(
             this.config,
-            prompt,
+            request,
             stream,
             streamOptions
           );

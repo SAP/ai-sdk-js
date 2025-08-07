@@ -17,7 +17,7 @@ import type {
 } from '../orchestration-types.js';
 
 describe('stream util tests', () => {
-  const defaultOrchestrationModuleConfig: OrchestrationModuleConfig = {
+  const defaultOrchestrationModules: OrchestrationModuleConfig = {
     promptTemplating: {
       prompt: {
         template: [
@@ -33,7 +33,7 @@ describe('stream util tests', () => {
 
   const defaultModuleConfigs: ModuleConfigs = {
     prompt_templating:
-      defaultOrchestrationModuleConfig.promptTemplating as PromptTemplatingModuleConfig
+      defaultOrchestrationModules.promptTemplating as PromptTemplatingModuleConfig
   };
 
   const defaultStreamOptions: StreamOptions = {
@@ -77,7 +77,7 @@ describe('stream util tests', () => {
 
   it('should add stream options to output filtering config', () => {
     const config: OrchestrationModuleConfig = {
-      ...defaultOrchestrationModuleConfig,
+      ...defaultOrchestrationModules,
       filtering: {
         output: {
           filters: [

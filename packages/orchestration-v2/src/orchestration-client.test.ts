@@ -23,7 +23,7 @@ import {
 import type { CompletionPostResponse } from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
-  Prompt
+  ChatCompletionRequest
 } from './orchestration-types.js';
 
 const defaultJsonConfig = `{
@@ -90,7 +90,7 @@ describe('orchestration service client', () => {
       }
     };
 
-    const prompt: Prompt = {
+    const prompt: ChatCompletionRequest = {
       messages: [{ role: 'user', content: 'Hello' }]
     };
 
@@ -415,7 +415,7 @@ describe('orchestration service client', () => {
         }
       }
     };
-    const prompt: Prompt = {
+    const prompt: ChatCompletionRequest = {
       messages: [{ role: 'user', content: "What's my name?" }],
       messagesHistory: [
         {
@@ -665,7 +665,7 @@ describe('orchestration service client', () => {
   });
 
   it('executes a request with the custom resource group', async () => {
-    const prompt: Prompt = {
+    const prompt: ChatCompletionRequest = {
       messagesHistory: [
         {
           role: 'user',
