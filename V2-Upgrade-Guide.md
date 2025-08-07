@@ -1,37 +1,46 @@
-# SAP AI SDK for JavaScript Orchestration v2 Upgrade Guide
+# SAP Cloud SDK for AI v2 Upgrade Guide
 
-This document guides you through upgrading from version 1.x to version 2.x of the `@sap-ai-sdk/orchestration` package.
+This document guides you through upgrading from version 1.x to version 2.x of the SAP Cloud SDK for AI packages.
 It covers all breaking changes and migration steps required for the upgrade.
-Version 2.x of the orchestration package introduces significant structural changes to align with the updated Orchestration service API.
+Version 2.x introduces significant structural changes to align with updated service APIs.
 
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
 - [How to Upgrade](#how-to-upgrade)
 - [Breaking Changes](#breaking-changes)
-  - [Module Configuration Structure](#module-configuration-structure)
-  - [Parameter Name Changes](#parameter-name-changes)
-  - [Streaming Configuration](#streaming-configuration)
-  - [Grounding Configuration](#grounding-configuration)
-  - [Removed Functions](#removed-functions)
-  - [Azure Content Filter Changes](#azure-content-filter-changes)
+  - [`@sap-ai-sdk/orchestration`](#sap-ai-sdkorchestration)
 
 ## How to Upgrade
 
-Update the orchestration package to version 2.x in your `package.json` file:
+Update all SAP Cloud SDK for AI packages to version 2.x in your `package.json` file:
 
 ```diff
 {
   "dependencies": {
+-   "@sap-ai-sdk/ai-api": "^1.x.x",
+-   "@sap-ai-sdk/core": "^1.x.x",
+-   "@sap-ai-sdk/document-grounding": "^1.x.x",
+-   "@sap-ai-sdk/foundation-models": "^1.x.x",
+-   "@sap-ai-sdk/langchain": "^1.x.x",
 -   "@sap-ai-sdk/orchestration": "^1.x.x",
-+   "@sap-ai-sdk/orchestration": "^2.x.x"
+-   "@sap-ai-sdk/prompt-registry": "^1.x.x",
++   "@sap-ai-sdk/ai-api": "^2.x.x",
++   "@sap-ai-sdk/core": "^2.x.x",
++   "@sap-ai-sdk/document-grounding": "^2.x.x",
++   "@sap-ai-sdk/foundation-models": "^2.x.x",
++   "@sap-ai-sdk/langchain": "^2.x.x",
++   "@sap-ai-sdk/orchestration": "^2.x.x",
++   "@sap-ai-sdk/prompt-registry": "^2.x.x"
   }
 }
 ```
 
 ## Breaking Changes
 
-### Module Configuration Structure
+### `@sap-ai-sdk/orchestration`
+
+#### Module Configuration Structure
 
 The most significant change is the consolidation of `llm` and `templating` modules into a single `promptTemplating` module.
 
@@ -67,11 +76,11 @@ const config = {
 };
 ```
 
-### Parameter Name Changes
+#### Parameter Name Changes
 
 Several parameter names have been updated for consistency.
 
-#### Input Parameters
+##### Input Parameters
 **v1:**
 ```typescript
 orchestrationClient.chatCompletion({
@@ -86,7 +95,7 @@ orchestrationClient.chatCompletion({
 });
 ```
 
-#### Model Configuration
+##### Model Configuration
 **v1:**
 ```typescript
 llm: {
@@ -105,8 +114,7 @@ promptTemplating: {
 }
 ```
 
-
-### Streaming Configuration
+#### Streaming Configuration
 
 The streaming configuration has been updated to reflect the new module structure.
 
@@ -124,7 +132,7 @@ streamOptions: {
 }
 ```
 
-### Grounding Configuration
+#### Grounding Configuration
 
 The grounding configuration structure has been updated to use `placeholders` instead of separate `input_params` and `output_param`.
 
@@ -148,7 +156,7 @@ buildDocumentGroundingConfig({
 })
 ```
 
-### Removed Functions
+#### Removed Functions
 
 The deprecated `buildAzureContentFilter()` function has been removed in v2.
 Use `buildAzureContentSafetyFilter()` instead.
@@ -171,7 +179,7 @@ const filter = buildAzureContentSafetyFilter({
 });
 ```
 
-### Azure Content Filter Changes
+#### Azure Content Filter Changes
 
 The Azure content filter property names have been updated to use lowercase with underscores.
 
