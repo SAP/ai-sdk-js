@@ -9,7 +9,7 @@ It will eventually end up in the SDK docs portal and release notes for version 2
 Please add your items below when creating a change which will involve manual tasks for the user when performing the upgrade.
 Add sections to the document as you see fit.
 
-<!-- Everything below this line should be written in the style of end user documentation. If you need to add hints for SDK developers, to that above. -->
+<!-- Everything below this line should be written in the style of end user documentation. If you need to add hints for SDK developers, do that above. -->
 
 # How to Upgrade to Version 2 of the SAP Cloud SDK for AI for JavaScript <!-- omit from toc -->
 

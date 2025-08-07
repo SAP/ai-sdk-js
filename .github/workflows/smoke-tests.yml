@@ -3,7 +3,7 @@ name: smoke test
 on:
   workflow_dispatch:
   schedule:
-    - cron: 0 2 * * * # Will only work after merge to default branch
+    - cron: 0 2 * * *
 
 jobs:
   smoke-tests:

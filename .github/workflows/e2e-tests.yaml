@@ -2,9 +2,9 @@ name: e2e tests
 
 on:
   workflow_dispatch:
-  workflow_call: 
+  workflow_call:
   schedule:
-    - cron: 0 22 * * * # Will only work after merge to default branch
+    - cron: 0 22 * * *
 
 jobs:
   e2e-tests:
@@ -57,4 +57,3 @@ jobs:
               "username": "GitHub E2E Test Runner",
               "text": "⚠️ E2E Test Failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-js/actions/runs/${{ github.run_id }}|here>"
             }
-          
