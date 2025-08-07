@@ -325,9 +325,9 @@ importers:
       '@sap-ai-sdk/foundation-models':
         specifier: workspace:^
         version: link:../../packages/foundation-models
-      '@sap-ai-sdk/orchestration':
+      '@sap-ai-sdk/orchestration-v2':
         specifier: workspace:^
-        version: link:../../packages/orchestration
+        version: link:../../packages/orchestration-v2
       '@sap-ai-sdk/sample-code':
         specifier: workspace:^
         version: link:../../sample-code
