@@ -158,7 +158,7 @@ describe('orchestration service client', () => {
                 'Write a 1 verse poem about the following topic: {{?topic}}'
             }
           ],
-          placeholder_values: { topic: 'Generative AI Hub' }
+          placeholderValues: { topic: 'Generative AI Hub' }
         })
       },
       {
@@ -181,7 +181,7 @@ describe('orchestration service client', () => {
           content: 'Write a 1 verse poem about the following topic: {{?topic}}'
         }
       ],
-      placeholder_values: { topic: 'Generative AI Hub' }
+      placeholderValues: { topic: 'Generative AI Hub' }
     });
     expect(response.data).toEqual(mockResponse);
   }, 60000);
@@ -259,7 +259,7 @@ describe('orchestration service client', () => {
       }
     };
     const prompt = {
-      placeholder_values: { phrase: 'I hate you.', number: '3' }
+      placeholderValues: { phrase: 'I hate you.', number: '3' }
     };
     const mockResponse = await parseMockResponse<CompletionPostResponse>(
       'orchestration',
@@ -314,7 +314,7 @@ describe('orchestration service client', () => {
       }
     };
     const prompt = {
-      placeholder_values: { phrase: 'I like myself.', number: '20' }
+      placeholderValues: { phrase: 'I like myself.', number: '20' }
     };
     const mockResponse = await parseMockResponse<CompletionPostResponse>(
       'orchestration',
@@ -381,7 +381,7 @@ describe('orchestration service client', () => {
       }
     };
     const prompt = {
-      placeholder_values: { phrase: 'I hate you.', number: '3' }
+      placeholderValues: { phrase: 'I hate you.', number: '3' }
     };
     const mockResponse = await parseMockResponse<CompletionPostResponse>(
       'orchestration',
@@ -534,7 +534,7 @@ describe('orchestration service client', () => {
     mockInference(
       {
         data: constructCompletionPostRequest(config, {
-          placeholder_values: { topic: 'Generative AI Hub' }
+          placeholderValues: { topic: 'Generative AI Hub' }
         })
       },
       {
@@ -547,7 +547,7 @@ describe('orchestration service client', () => {
     );
     const response = await new OrchestrationClient(
       configWithYaml
-    ).chatCompletion({ placeholder_values: { topic: 'Generative AI Hub' } });
+    ).chatCompletion({ placeholderValues: { topic: 'Generative AI Hub' } });
     expect(response.data).toEqual(mockResponse);
   }, 60000);
 
@@ -564,7 +564,7 @@ describe('orchestration service client', () => {
 
     expect(() =>
       new OrchestrationClient(invalidConfigWithYaml).chatCompletion({
-        placeholder_values: { topic: 'Generative AI Hub' }
+        placeholderValues: { topic: 'Generative AI Hub' }
       })
     ).toThrowErrorMatchingInlineSnapshot(
       '"Templating YAML string must be non-empty."'
@@ -637,7 +637,7 @@ describe('orchestration service client', () => {
       }
     };
     const prompt = {
-      placeholder_values: {
+      placeholderValues: {
         groundingRequest: 'What is Generative AI Hub in SAP AI Core?'
       }
     };

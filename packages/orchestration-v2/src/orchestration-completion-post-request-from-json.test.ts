@@ -20,7 +20,7 @@ describe('construct completion post request from JSON', () => {
     }`;
 
     const expectedCompletionPostRequestFromJson: Record<string, any> = {
-      placeholder_values: {},
+      placeholderValues: {},
       messages_history: [],
       config: JSON.parse(jsonConfig)
     };
@@ -57,7 +57,7 @@ describe('construct completion post request from JSON', () => {
         }
       }
     }`;
-    const placeholder_values = { number: '3' };
+    const placeholderValues = { number: '3' };
 
     const messagesHistory = [
       {
@@ -77,7 +77,7 @@ describe('construct completion post request from JSON', () => {
     ];
 
     const expectedCompletionPostRequestFromJson: Record<string, any> = {
-      placeholder_values,
+      placeholderValues,
       messages_history: messagesHistory,
       config: JSON.parse(jsonConfig)
     };
@@ -86,7 +86,7 @@ describe('construct completion post request from JSON', () => {
       constructCompletionPostRequestFromJsonModuleConfig(
         JSON.parse(jsonConfig),
         {
-          placeholder_values,
+          placeholderValues,
           messagesHistory
         }
       );

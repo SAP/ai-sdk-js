@@ -43,7 +43,7 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
 
   return {
     messages_history: prompt?.messagesHistory || [],
-    placeholder_values: prompt?.placeholder_values || {},
+    placeholderValues: prompt?.placeholderValues || {},
     config
   };
 }
@@ -183,8 +183,8 @@ export function constructCompletionPostRequest(
           mergeStreamOptions(config.streaming, streamOptions)
         )
       : { modules: moduleConfigurations },
-    ...(prompt?.placeholder_values && {
-      placeholder_values: prompt.placeholder_values
+    ...(prompt?.placeholderValues && {
+      placeholder_values: prompt.placeholderValues
     }),
     ...(prompt?.messagesHistory && {
       messages_history: prompt.messagesHistory

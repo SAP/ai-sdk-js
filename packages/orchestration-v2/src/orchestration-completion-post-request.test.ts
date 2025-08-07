@@ -74,7 +74,7 @@ describe('construct completion post request', () => {
         }
       }
     };
-    const placeholder_values = { phrase: 'I hate you.', number: '3' };
+    const placeholderValues = { phrase: 'I hate you.', number: '3' };
     const expectedCompletionPostRequest: CompletionPostRequest = {
       config: {
         modules: {
@@ -91,10 +91,10 @@ describe('construct completion post request', () => {
           }
         }
       },
-      placeholder_values
+      placeholder_values: placeholderValues
     };
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(config, { placeholder_values });
+      constructCompletionPostRequest(config, { placeholderValues });
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
@@ -115,7 +115,7 @@ describe('construct completion post request', () => {
         }
       }
     };
-    const placeholder_values = {};
+    const placeholderValues = {};
     const expectedCompletionPostRequest: CompletionPostRequest = {
       config: {
         modules: {
@@ -132,10 +132,10 @@ describe('construct completion post request', () => {
           }
         }
       },
-      placeholder_values
+      placeholder_values: placeholderValues
     };
     const completionPostRequest: CompletionPostRequest =
-      constructCompletionPostRequest(config, { placeholder_values });
+      constructCompletionPostRequest(config, { placeholderValues });
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
 
@@ -299,6 +299,8 @@ describe('construct completion post request', () => {
       outputFiltering: { overlap: 100 }
     };
 
+    const placeholderValues = { phrase: 'I hate you.' };
+
     const expectedCompletionPostRequest: CompletionPostRequest = {
       config: {
         stream: {
@@ -324,12 +326,12 @@ describe('construct completion post request', () => {
           }
         }
       },
-      placeholder_values: { phrase: 'I hate you.' }
+      placeholder_values: placeholderValues
     };
     const completionPostRequest: CompletionPostRequest =
       constructCompletionPostRequest(
         config,
-        { placeholder_values: { phrase: 'I hate you.' } },
+        { placeholderValues },
         true,
         streamOptions
       );

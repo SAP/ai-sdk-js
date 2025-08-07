@@ -113,7 +113,7 @@ export async function orchestrationTemplating(): Promise<OrchestrationResponse> 
 
   return orchestrationClient.chatCompletion({
     // give the actual value for the variable "country"
-    placeholder_values: { country: 'France' }
+    placeholderValues: { country: 'France' }
   });
 }
 
@@ -146,7 +146,7 @@ export async function chatCompletionStreamWithJsonModuleConfig(
   const orchestrationClient = new OrchestrationClient(jsonConfig);
 
   return orchestrationClient.stream(
-    { placeholder_values: { input: 'SAP Cloud SDK' } },
+    { placeholderValues: { input: 'SAP Cloud SDK' } },
     controller
   );
 }
@@ -200,7 +200,7 @@ export async function orchestrationPromptRegistry(): Promise<OrchestrationRespon
   });
 
   return orchestrationClient.chatCompletion({
-    placeholder_values: { input: 'France' }
+    placeholderValues: { input: 'France' }
   });
 }
 
@@ -362,7 +362,7 @@ export async function orchestrationCompletionMasking(): Promise<
           'Write a professional email to my doctor, {{?user}}, at {{?email}}, asking to reschedule my appointment originally set for 2024-12-15 due to a personal conflict. My patient ID is 8947-2219-550.'
       }
     ],
-    placeholder_values: {
+    placeholderValues: {
       user: 'Dr. Emily Smith',
       email: 'emily.smith@healthclinic.com'
     }
@@ -412,7 +412,7 @@ export async function orchestrationMaskGroundingInput(): Promise<OrchestrationRe
           'UserQuestion: {{?groundingInput}} Context: {{?groundingOutput}}'
       }
     ],
-    placeholder_values: { groundingInput: "What is SAP's product Joule?" }
+    placeholderValues: { groundingInput: "What is SAP's product Joule?" }
   });
 }
 
@@ -506,7 +506,7 @@ export async function orchestrationGrounding(
           'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
       }
     ],
-    placeholder_values: {
+    placeholderValues: {
       groundingRequest: query
     }
   });
@@ -548,7 +548,7 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
         ]
       }
     ],
-    placeholder_values: {
+    placeholderValues: {
       // Alternatively, you can provide a public URL of the image here instead.
       imageUrl: encodedString
     }
@@ -615,7 +615,7 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
         content: '{{?input}}'
       }
     ],
-    placeholder_values: {
+    placeholderValues: {
       input: 'Hello World! Why is this phrase so famous?'
     }
   });
