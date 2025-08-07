@@ -18,11 +18,13 @@ import type {
   OrchestrationStreamResponse,
   OrchestrationResponse,
   StreamOptions,
-  ErrorResponse,
+  OrchestrationErrorResponse
+} from '@sap-ai-sdk/orchestration-v2';
+import type {
   ChatCompletionTool,
   ToolChatMessage,
   DataRepositoryType
-} from '@sap-ai-sdk/orchestration-v2';
+} from '@sap-ai-sdk/orchestration-v2/internal.js';
 
 const logger = createLogger({
   package: 'sample-code',
@@ -208,7 +210,7 @@ export async function orchestrationPromptRegistry(): Promise<OrchestrationRespon
  * Apply multiple content filters to the input.
  * @returns The orchestration service error response.
  */
-export async function orchestrationInputFiltering(): Promise<ErrorResponse> {
+export async function orchestrationInputFiltering(): Promise<OrchestrationErrorResponse> {
   // Build Azure content filter with only safe content allowed for hate and violence
   const azureContentSafetyFilter = buildAzureContentSafetyFilter({
     hate: 'ALLOW_SAFE',
