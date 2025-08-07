@@ -18,15 +18,20 @@ export type GroundingModuleConfig = {
      */
     filters?: DocumentGroundingFilter[];
     /**
-     * Contains the input parameters used for grounding input questions
-     * Min Items: 1.
+     * Placeholders to be used for grounding input questions and output
      */
-    input_params: string[];
-    /**
-     * Parameter name used for grounding output
-     * @example "groundingOutput"
-     */
-    output_param: string;
+    placeholders: {
+      /**
+       * Contains the input parameters used for grounding input questions
+       * Min Items: 1.
+       */
+      input: string[];
+      /**
+       * Placeholder name for grounding output
+       * @example "groundingOutput"
+       */
+      output: string;
+    };
     /**
      * Parameter name used for specifying metadata parameters
      */

@@ -3,10 +3,8 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { Error } from './error.js';
+
 /**
- * Representation of the 'ErrorResponse' schema.
+ * Representation of the 'Embedding' schema.
  */
-export type ErrorResponse = {
-  error: Error;
-} & Record<string, any>;
+export type Embedding = number[] | string;
