@@ -47,10 +47,3 @@ export type LangChainOrchestrationModuleConfig = Omit<
 > & {
   templating?: TemplatingModuleConfig;
 };
-
-/**
- * Orchestration module configuration for LangChain.
- * @deprecated Use `LangChainOrchestrationModuleConfig` instead.
- */
-export type LangchainOrchestrationModuleConfig =
-  LangChainOrchestrationModuleConfig;
