@@ -42,7 +42,7 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
 
   return {
     messages_history: prompt?.messagesHistory || [],
-    placeholderValues: prompt?.placeholderValues || {},
+    placeholder_values: prompt?.placeholderValues || {},
     config
   };
 }
