@@ -59,7 +59,9 @@ describe('orchestration', () => {
     const response = await orchestrationOutputFiltering();
 
     expect(response.data.intermediate_results).toBeDefined();
-    expect(response.data.intermediate_results.output_filtering!.data).toBeDefined();
+    expect(
+      response.data.intermediate_results.output_filtering!.data
+    ).toBeDefined();
     expect(response.getContent).toThrow(Error);
     expect(response.getFinishReason()).toEqual('content_filter');
   });
@@ -172,7 +174,7 @@ describe('orchestration', () => {
         prompt: {
           tools: [addNumbersTool]
         }
-      },
+      }
     };
 
     const response = await new OrchestrationClient(config).stream({

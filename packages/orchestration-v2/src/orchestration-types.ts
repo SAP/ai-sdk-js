@@ -113,7 +113,7 @@ export interface FilteringModule {
    * List of provider type and filters.
    */
   output?: OutputFilteringConfig;
-};
+}
 
 /**
  * Representation of the 'MaskingModuleConfig' schema.
@@ -124,7 +124,7 @@ export interface MaskingModule {
    * Min Items: 1.
    */
   masking_providers: MaskingProviderConfig[];
-};
+}
 
 /**
  * Representation of the 'GroundingModuleConfig' schema.
@@ -162,7 +162,7 @@ export interface GroundingModule {
      */
     metadata_params?: string[];
   };
-};
+}
 
 /**
  * Configuration for translation module.
@@ -176,7 +176,7 @@ export interface TranslationModule {
    * Configuration for output translation.
    */
   output?: SAPDocumentTranslation;
-};
+}
 
 /**
  * Orchestration error response.

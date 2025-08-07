@@ -616,7 +616,8 @@ app.get(
 
       // Print the grounding data.
       const groundingResultString =
-        groundingResult.data.intermediate_results.grounding?.data?.grounding_result;
+        groundingResult.data.intermediate_results.grounding?.data
+          ?.grounding_result;
       res.write(
         `Orchestration grounding metadata:\t${JSON.stringify(JSON.parse(groundingResultString)[0].metadata)}\n`
       );
