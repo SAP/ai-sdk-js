@@ -44,7 +44,7 @@ expectType<CompletionPostResponse>(
           name: 'gpt-4o'
         },
         prompt: {
-          defaults: { name: 'Bob' },
+          defaults: { name: 'Bob' }
         }
       }
     }).chatCompletion({
