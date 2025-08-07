@@ -51,7 +51,7 @@ jobs:
           token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           excluded-check-runs: |
             {
-              \"Build Cloud SDK Documentation\": [\"dependabot\"]    
+              \"Build Cloud SDK Documentation\": [\"dependabot\"]
             }
 
   publish-npm:
