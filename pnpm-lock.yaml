@@ -292,6 +292,9 @@ importers:
       '@sap-ai-sdk/langchain':
         specifier: workspace:^
         version: link:../packages/langchain
+      '@sap-ai-sdk/orchestration':
+        specifier: workspace:^
+        version: link:../packages/orchestration
       '@sap-ai-sdk/orchestration-v2':
         specifier: workspace:^
         version: link:../packages/orchestration-v2
