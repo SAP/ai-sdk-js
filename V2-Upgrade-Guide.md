@@ -10,6 +10,7 @@ Version 2.x introduces significant structural changes to align with updated serv
 - [How to Upgrade](#how-to-upgrade)
 - [Breaking Changes](#breaking-changes)
   - [`@sap-ai-sdk/orchestration`](#sap-ai-sdkorchestration)
+  - [`@sap-ai-sdk/langchain`](#sap-ai-sdklangchain)
 
 ## How to Upgrade
 
@@ -114,22 +115,46 @@ promptTemplating: {
 }
 ```
 
-#### Streaming Configuration
+#### Global Streaming Configuration
 
-The streaming configuration has been updated to reflect the new module structure.
+The global streaming configuration has been updated to use an `enabled` flag instead of a top-level `stream` property.
 
 **v1:**
 ```typescript
-streamOptions: {
-  llm: { include_usage: true }
-}
+const config = {
+  stream: true,
+  streamOptions: {
+    llm: { include_usage: true }
+  }
+};
 ```
 
 **v2:**
 ```typescript
-streamOptions: {
-  promptTemplating: { include_usage: true }
-}
+const config = {
+  streamOptions: {
+    enabled: true,
+    promptTemplating: { include_usage: true }
+  }
+};
+```
+
+#### Response Structure Changes
+
+The response structure has been updated with new property names.
+
+**v1:**
+```typescript
+// Response properties
+response.orchestration_result
+response.module_results
+```
+
+**v2:**
+```typescript
+// Response properties
+response.final_result
+response.intermediate_results
 ```
 
 #### Grounding Configuration
@@ -201,4 +226,72 @@ buildAzureContentSafetyFilter({
   sexual: 'ALLOW_SAFE_LOW_MEDIUM',
   violence: 'ALLOW_ALL'
 })
+```
+
+### `@sap-ai-sdk/langchain`
+
+#### Configuration Structure
+
+The LangChain orchestration configuration follows the same structural changes as the core orchestration package.
+
+**v1:**
+```typescript
+const config: LangChainOrchestrationModuleConfig = {
+  llm: {
+    model_name: 'gpt-4o',
+    model_params: {}
+  },
+  templating: {
+    template: messages
+  }
+};
+```
+
+**v2:**
+```typescript
+const config: LangChainOrchestrationModuleConfig = {
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o',
+      params: {}
+    },
+    prompt: {
+      template: messages
+    }
+  }
+};
+```
+
+#### Parameter Changes
+
+Input parameters for LangChain orchestration calls have been updated.
+
+**v1:**
+```typescript
+await orchestrationClient.invoke(messages, {
+  inputParams: { country: 'France' }
+});
+```
+
+**v2:**
+```typescript
+await orchestrationClient.invoke(messages, {
+  placeholderValues: { country: 'France' }
+});
+```
+
+#### Response Property Changes
+
+LangChain message responses now use updated property names for intermediate results.
+
+**v1:**
+```typescript
+// Access module results in response
+message.additional_kwargs.module_results
+```
+
+**v2:**
+```typescript
+// Access intermediate results in response
+message.additional_kwargs.intermediate_results
 ```
