@@ -6,7 +6,7 @@ import {
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
-import { OrchestrationStreamChunkResponse } from '@sap-ai-sdk/orchestration';
+import { OrchestrationStreamChunkResponse } from '@sap-ai-sdk/orchestration-v2';
 import { jest } from '@jest/globals';
 import {
   addNumbersSchema,
@@ -26,7 +26,7 @@ import type {
   ToolCallChunk as OrchestrationToolCallChunk,
   CompletionPostResponseStreaming,
   FunctionObject
-} from '@sap-ai-sdk/orchestration';
+} from '@sap-ai-sdk/orchestration-v2/internal.js';
 
 describe('mapLangChainMessagesToOrchestrationMessages', () => {
   it('should map an array of LangChain messages to Orchestration messages', () => {
@@ -176,7 +176,7 @@ describe('mapBaseMessageToChatMessage', () => {
 describe('mapOutputToChatResult', () => {
   it('should map CompletionPostResponse to ChatResult', () => {
     const completionResponse: CompletionPostResponse = {
-      orchestration_result: {
+      final_result: {
         id: 'test-id',
         object: 'chat.completion',
         created: 1634840000,
@@ -198,7 +198,7 @@ describe('mapOutputToChatResult', () => {
         }
       },
       request_id: 'req-123',
-      module_results: {}
+      intermediate_results: {}
     };
 
     const result = mapOutputToChatResult(completionResponse);
@@ -236,7 +236,7 @@ describe('mapOutputToChatResult', () => {
     };
 
     const completionResponse: CompletionPostResponse = {
-      orchestration_result: {
+      final_result: {
         id: 'test-id',
         object: 'chat.completion',
         created: 1634840000,
@@ -259,7 +259,7 @@ describe('mapOutputToChatResult', () => {
         }
       },
       request_id: 'req-123',
-      module_results: {}
+      intermediate_results: {}
     };
 
     const result = mapOutputToChatResult(completionResponse);
@@ -344,7 +344,7 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
   ): OrchestrationStreamChunkResponse {
     const mockData: CompletionPostResponseStreaming = {
       request_id: 'req-123',
-      module_results: {
+      intermediate_results: {
         llm: {
           id: 'test-id',
           object: 'chat.completion.chunk',
@@ -365,7 +365,7 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
           usage: tokenUsage
         }
       },
-      orchestration_result: {
+      final_result: {
         id: 'test-id',
         object: 'chat.completion.chunk',
         created: 1634840000,
@@ -400,7 +400,7 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
     expect(result).toBeInstanceOf(AIMessageChunk);
     expect(result.content).toBe('Test content');
     expect(result.additional_kwargs).toEqual({
-      module_results: mockChunk.data.module_results
+      intermediate_results: mockChunk.data.intermediate_results
     });
     expect(result.tool_call_chunks).toEqual([]);
     expect(result).toMatchSnapshot('AIMessageChunk with content');

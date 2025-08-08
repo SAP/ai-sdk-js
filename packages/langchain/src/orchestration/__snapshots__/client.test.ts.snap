@@ -1,0 +1,280 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`orchestration service client resilience returns successful response when maxRetries equals retry configuration 1`] = `
+{
+  "id": [
+    "langchain_core",
+    "messages",
+    "AIMessage",
+  ],
+  "kwargs": {
+    "additional_kwargs": {},
+    "content": "Hello! How can I assist you today?",
+    "invalid_tool_calls": [],
+    "response_metadata": {
+      "created": 1754390060,
+      "finish_reason": "stop",
+      "id": "chatcmpl-C19HolLlkUltFBAMq4Jdgi4dMUFKg",
+      "index": 0,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "request_id": "903367ba-f7b6-42a5-857f-8cff615e201b",
+      "system_fingerprint": "fp_ee1d74bde0",
+      "tokenUsage": {
+        "completionTokens": 10,
+        "promptTokens": 9,
+        "totalTokens": 19,
+      },
+      "tool_calls": undefined,
+    },
+    "tool_calls": [],
+  },
+  "lc": 1,
+  "type": "constructor",
+}
+`;
+
+exports[`orchestration service client resilience returns successful response when timeout is bigger than delay 1`] = `
+{
+  "id": [
+    "langchain_core",
+    "messages",
+    "AIMessage",
+  ],
+  "kwargs": {
+    "additional_kwargs": {},
+    "content": "Hello! How can I assist you today?",
+    "invalid_tool_calls": [],
+    "response_metadata": {
+      "created": 1754390060,
+      "finish_reason": "stop",
+      "id": "chatcmpl-C19HolLlkUltFBAMq4Jdgi4dMUFKg",
+      "index": 0,
+      "model": "gpt-4o-2024-08-06",
+      "object": "chat.completion",
+      "request_id": "903367ba-f7b6-42a5-857f-8cff615e201b",
+      "system_fingerprint": "fp_ee1d74bde0",
+      "tokenUsage": {
+        "completionTokens": 10,
+        "promptTokens": 9,
+        "totalTokens": 19,
+      },
+      "tool_calls": undefined,
+    },
+    "tool_calls": [],
+  },
+  "lc": 1,
+  "type": "constructor",
+}
+`;
+
+exports[`orchestration service client streaming supports streaming responses 1`] = `
+{
+  "id": [
+    "langchain_core",
+    "messages",
+    "AIMessageChunk",
+  ],
+  "kwargs": {
+    "additional_kwargs": {
+      "intermediate_results": {
+        "llm": {
+          "choices": [
+            {
+              "delta": {
+                "content": "The SAP Cloud SDK is a comprehensive development toolkit designed to simplify and accelerate the creation of applications that integrate with SAP solutions, particularly those built on the SAP Business Technology Platform (BTP). It provides developers with libraries, tools, and best practices that streamline the process of connecting to SAP systems, such as S/4HANA and other services available on the SAP Cloud Platform.
+
+Key features of the SAP Cloud SDK include:
+
+1. **Simplified Connectivity**: The SDK offers pre-built libraries to easily interact with SAP services, providing capabilities for authentication, service consumption, and OData/REST client generation.
+
+2. **Multi-cloud Support**: It supports multiple cloud environments, ensuring that applications remain flexible and can be deployed across various cloud providers.
+
+3. **Best Practices and Guidelines**: The SDK includes best practices for development, ensuring high-quality, scalable, and maintainable code.
+
+4. **Project Scaffolding and Code Samples**: Developers can quickly start their projects using provided templates and samples, accelerating the development process and reducing the learning curve.
+
+5. **Extensive Documentation and Community Support**: Ample documentation, tutorials, and an active community help developers overcome challenges and adopt the SDK efficiently.
+
+Overall, the SAP Cloud SDK is an essential tool for developers looking to build cloud-native applications and extensions that seamlessly integrate with SAP's enterprise solutions.",
+                "role": "assistantassistantassistantassistantassistantassistantassistantassistantassistantassistantassistantassistantassistantassistantassistantassistant",
+              },
+              "finish_reason": "stop",
+              "index": 0,
+            },
+          ],
+          "created": 1734524005,
+          "id": "chatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wpchatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wp",
+          "model": "gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06",
+          "object": "chat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunk",
+          "system_fingerprint": "fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48fp_4e924a4b48",
+          "usage": {
+            "completion_tokens": 271,
+            "prompt_tokens": 17,
+            "total_tokens": 288,
+          },
+        },
+        "templating": [
+          {
+            "content": "Give me a short introduction of SAP Cloud SDK.",
+            "role": "user",
+          },
+        ],
+      },
+    },
+    "content": "The SAP Cloud SDK is a comprehensive development toolkit designed to simplify and accelerate the creation of applications that integrate with SAP solutions, particularly those built on the SAP Business Technology Platform (BTP). It provides developers with libraries, tools, and best practices that streamline the process of connecting to SAP systems, such as S/4HANA and other services available on the SAP Cloud Platform.
+
+Key features of the SAP Cloud SDK include:
+
+1. **Simplified Connectivity**: The SDK offers pre-built libraries to easily interact with SAP services, providing capabilities for authentication, service consumption, and OData/REST client generation.
+
+2. **Multi-cloud Support**: It supports multiple cloud environments, ensuring that applications remain flexible and can be deployed across various cloud providers.
+
+3. **Best Practices and Guidelines**: The SDK includes best practices for development, ensuring high-quality, scalable, and maintainable code.
+
+4. **Project Scaffolding and Code Samples**: Developers can quickly start their projects using provided templates and samples, accelerating the development process and reducing the learning curve.
+
+5. **Extensive Documentation and Community Support**: Ample documentation, tutorials, and an active community help developers overcome challenges and adopt the SDK efficiently.
+
+Overall, the SAP Cloud SDK is an essential tool for developers looking to build cloud-native applications and extensions that seamlessly integrate with SAP's enterprise solutions.",
+    "id": undefined,
+    "invalid_tool_calls": [],
+    "response_metadata": {
+      "completion": 0,
+      "created": 1734524005,
+      "finish_reason": "stop",
+      "id": "chatcmpl-AfnDZfYvuE4SDplaLGF9v0PJjB0wp",
+      "model_name": "gpt-4o-2024-08-06",
+      "prompt": 0,
+      "request_id": "66172762-8c47-4438-89e7-2689be8f370b",
+      "system_fingerprint": "fp_4e924a4b48",
+      "token_usage": {
+        "completion_tokens": 271,
+        "prompt_tokens": 17,
+        "total_tokens": 288,
+      },
+    },
+    "tool_call_chunks": [],
+    "tool_calls": [],
+    "usage_metadata": {
+      "input_tokens": 17,
+      "output_tokens": 271,
+      "total_tokens": 288,
+    },
+  },
+  "lc": 1,
+  "type": "constructor",
+}
+`;
+
+exports[`orchestration service client streaming supports streaming responses with tool calls 1`] = `
+{
+  "id": [
+    "langchain_core",
+    "messages",
+    "AIMessageChunk",
+  ],
+  "kwargs": {
+    "additional_kwargs": {
+      "intermediate_results": {
+        "llm": {
+          "choices": [
+            {
+              "delta": {
+                "content": "",
+                "role": "assistantassistantassistantassistantassistantassistantassistantassistantassistantassistantassistant",
+                "tool_calls": [
+                  {
+                    "function": {
+                      "arguments": "{"a": 2, "b": 3}",
+                      "name": "add",
+                    },
+                    "id": "call_OtTlp96Eg6OFP1ynoerYThta",
+                    "index": 0,
+                    "type": "function",
+                  },
+                  {
+                    "function": {
+                      "arguments": "{"a": 2, "b": 3}",
+                      "name": "multiply",
+                    },
+                    "id": "call_mscosPWnNXuRYp5OQatYKOv9",
+                    "index": 1,
+                    "type": "function",
+                  },
+                ],
+              },
+              "finish_reason": "length",
+              "index": 0,
+              "logprobs": {},
+            },
+          ],
+          "created": 1754389566,
+          "id": "chatcmpl-C199qIYfGHCzodxVADImgbbpEBBVtchatcmpl-C199qIYfGHCzodxVADImgbbpEBBVtchatcmpl-C199qIYfGHCzodxVADImgbbpEBBVtchatcmpl-C199qIYfGHCzodxVADImgbbpEBBVtchatcmpl-C199qIYfGHCzodxVADImgbbpEBBVtchatcmpl-C199qIYfGHCzodxVADImgbbpEBBVtchatcmpl-C199qIYfGHCzodxVADImgbbpEBBVtchatcmpl-C199qIYfGHCzodxVADImgbbpEBBVtchatcmpl-C199qIYfGHCzodxVADImgbbpEBBVtchatcmpl-C199qIYfGHCzodxVADImgbbpEBBVtchatcmpl-C199qIYfGHCzodxVADImgbbpEBBVt",
+          "model": "gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06gpt-4o-2024-08-06",
+          "object": "chat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunkchat.completion.chunk",
+          "system_fingerprint": "fp_ee1d74bde0fp_ee1d74bde0fp_ee1d74bde0fp_ee1d74bde0fp_ee1d74bde0fp_ee1d74bde0fp_ee1d74bde0fp_ee1d74bde0fp_ee1d74bde0fp_ee1d74bde0fp_ee1d74bde0",
+        },
+        "templating": [
+          {
+            "content": "Add 2 and 3, and multiply 2 and 3.",
+            "role": "user",
+          },
+        ],
+      },
+    },
+    "content": "",
+    "id": undefined,
+    "invalid_tool_calls": [],
+    "response_metadata": {
+      "completion": 0,
+      "created": 1754389566,
+      "finish_reason": "length",
+      "id": "chatcmpl-C199qIYfGHCzodxVADImgbbpEBBVt",
+      "model_name": "gpt-4o-2024-08-06",
+      "prompt": 0,
+      "request_id": "6ea22532-3626-4b9e-a51a-568ea0570363",
+      "system_fingerprint": "fp_ee1d74bde0",
+    },
+    "tool_call_chunks": [
+      {
+        "args": "{"a": 2, "b": 3}",
+        "id": "call_OtTlp96Eg6OFP1ynoerYThta",
+        "index": 0,
+        "name": "add",
+        "type": "tool_call_chunk",
+      },
+      {
+        "args": "{"a": 2, "b": 3}",
+        "id": "call_mscosPWnNXuRYp5OQatYKOv9",
+        "index": 1,
+        "name": "multiply",
+        "type": "tool_call_chunk",
+      },
+    ],
+    "tool_calls": [
+      {
+        "args": {
+          "a": 2,
+          "b": 3,
+        },
+        "id": "call_OtTlp96Eg6OFP1ynoerYThta",
+        "name": "add",
+        "type": "tool_call",
+      },
+      {
+        "args": {
+          "a": 2,
+          "b": 3,
+        },
+        "id": "call_mscosPWnNXuRYp5OQatYKOv9",
+        "name": "multiply",
+        "type": "tool_call",
+      },
+    ],
+    "usage_metadata": undefined,
+  },
+  "lc": 1,
+  "type": "constructor",
+}
+`;
