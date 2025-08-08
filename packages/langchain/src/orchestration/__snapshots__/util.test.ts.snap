@@ -9,7 +9,7 @@ exports[`mapOrchestrationChunkToLangChainMessageChunk should map a chunk with co
   ],
   "kwargs": {
     "additional_kwargs": {
-      "module_results": {
+      "intermediate_results": {
         "llm": {
           "choices": [
             {
@@ -52,7 +52,7 @@ exports[`mapOrchestrationChunkToLangChainMessageChunk should map a chunk with to
   ],
   "kwargs": {
     "additional_kwargs": {
-      "module_results": {
+      "intermediate_results": {
         "llm": {
           "choices": [
             {

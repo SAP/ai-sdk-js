@@ -13,27 +13,27 @@ import { addNumbersTool } from '../../../../test-util/tools.js';
 import { OrchestrationClient } from './client.js';
 import type { LangChainOrchestrationModuleConfig } from './types.js';
 import type { ToolCall } from '@langchain/core/messages/tool';
-import type {
-  CompletionPostResponse,
-  ErrorResponse
-} from '@sap-ai-sdk/orchestration';
+import type { OrchestrationErrorResponse } from '@sap-ai-sdk/orchestration';
+import type { CompletionPostResponse } from '@sap-ai-sdk/orchestration/internal.js';
 
 jest.setTimeout(30000);
 
 describe('orchestration service client', () => {
   let mockResponse: CompletionPostResponse;
-  let mockResponseInputFilterError: ErrorResponse;
+  let mockResponseInputFilterError: OrchestrationErrorResponse;
   let mockResponseStream: string;
   let mockResponseStreamToolCalls: string;
   const messages = [{ role: 'user' as const, content: 'Hello!' }];
   const config: LangChainOrchestrationModuleConfig = {
-    llm: {
-      model_name: 'gpt-4o',
-      model_params: {}
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o',
+        params: {}
+      }
     }
   };
   const endpoint = {
-    url: 'inference/deployments/1234/completion'
+    url: 'inference/deployments/1234/v2/completion'
   };
 
   beforeAll(async () => {
@@ -43,10 +43,11 @@ describe('orchestration service client', () => {
       'orchestration',
       'orchestration-chat-completion-success-response.json'
     );
-    mockResponseInputFilterError = await parseMockResponse<ErrorResponse>(
-      'orchestration',
-      'orchestration-chat-completion-input-filter-error.json'
-    );
+    mockResponseInputFilterError =
+      await parseMockResponse<OrchestrationErrorResponse>(
+        'orchestration',
+        'orchestration-chat-completion-input-filter-error.json'
+      );
     mockResponseStream = await parseFileToString(
       'orchestration',
       'orchestration-chat-completion-stream-chunks.txt'
@@ -75,8 +76,11 @@ describe('orchestration service client', () => {
         data: constructCompletionPostRequest(
           {
             ...config,
-            templating: {
-              template: messages
+            promptTemplating: {
+              ...config.promptTemplating,
+              prompt: {
+                template: messages
+              }
             }
           },
           { messages: [] },
@@ -215,7 +219,7 @@ describe('orchestration service client', () => {
     let client: OrchestrationClient;
     const toolResponse = {
       data: {
-        orchestration_result: {
+        final_result: {
           choices: [
             {
               message: {
@@ -247,23 +251,25 @@ describe('orchestration service client', () => {
       mockInference(
         {
           data: {
-            orchestration_config: {
-              module_configurations: {
-                templating_module_config: {
-                  tools: [
-                    {
-                      type: 'function',
-                      function: {
-                        ...addNumbersTool.function,
-                        strict: true // Will be tested
+            config: {
+              modules: {
+                prompt_templating: {
+                  model: {
+                    name: 'gpt-4o',
+                    params: {}
+                  },
+                  prompt: {
+                    tools: [
+                      {
+                        type: 'function',
+                        function: {
+                          ...addNumbersTool.function,
+                          strict: true // Will be tested
+                        }
                       }
-                    }
-                  ],
-                  template: [{ role: 'user', content: 'What is 1 + 2?' }]
-                },
-                llm_module_config: {
-                  model_name: 'gpt-4o',
-                  model_params: {}
+                    ],
+                    template: [{ role: 'user', content: 'What is 1 + 2?' }]
+                  }
                 }
               }
             }
@@ -281,23 +287,25 @@ describe('orchestration service client', () => {
       mockInference(
         {
           data: {
-            orchestration_config: {
-              module_configurations: {
-                templating_module_config: {
-                  tools: [
-                    {
-                      type: 'function',
-                      function: {
-                        ...addNumbersTool.function,
-                        strict: false // Will be tested
+            config: {
+              modules: {
+                prompt_templating: {
+                  model: {
+                    name: 'gpt-4o',
+                    params: {}
+                  },
+                  prompt: {
+                    tools: [
+                      {
+                        type: 'function',
+                        function: {
+                          ...addNumbersTool.function,
+                          strict: false // Will be tested
+                        }
                       }
-                    }
-                  ],
-                  template: [{ role: 'user', content: 'What is 1 + 2?' }]
-                },
-                llm_module_config: {
-                  model_name: 'gpt-4o',
-                  model_params: {}
+                    ],
+                    template: [{ role: 'user', content: 'What is 1 + 2?' }]
+                  }
                 }
               }
             }
@@ -315,23 +323,25 @@ describe('orchestration service client', () => {
       mockInference(
         {
           data: {
-            orchestration_config: {
-              module_configurations: {
-                templating_module_config: {
-                  tools: [
-                    {
-                      type: 'function',
-                      function: {
-                        ...addNumbersTool.function,
-                        strict: undefined // Will be tested
+            config: {
+              modules: {
+                prompt_templating: {
+                  model: {
+                    name: 'gpt-4o',
+                    params: {}
+                  },
+                  prompt: {
+                    tools: [
+                      {
+                        type: 'function',
+                        function: {
+                          ...addNumbersTool.function,
+                          strict: undefined // Will be tested
+                        }
                       }
-                    }
-                  ],
-                  template: [{ role: 'user', content: 'What is 1 + 2?' }]
-                },
-                llm_module_config: {
-                  model_name: 'gpt-4o',
-                  model_params: {}
+                    ],
+                    template: [{ role: 'user', content: 'What is 1 + 2?' }]
+                  }
                 }
               }
             }
@@ -351,8 +361,11 @@ describe('orchestration service client', () => {
           data: constructCompletionPostRequest(
             {
               ...config,
-              templating: {
-                template: messages
+              promptTemplating: {
+                ...config.promptTemplating,
+                prompt: {
+                  template: messages
+                }
               }
             },
             { messages: [] },
@@ -382,8 +395,11 @@ describe('orchestration service client', () => {
           data: constructCompletionPostRequest(
             {
               ...config,
-              templating: {
-                template: messages
+              promptTemplating: {
+                ...config.promptTemplating,
+                prompt: {
+                  template: messages
+                }
               }
             },
             { messages: [] },
@@ -415,8 +431,11 @@ describe('orchestration service client', () => {
           data: constructCompletionPostRequest(
             {
               ...config,
-              templating: {
-                template: messages
+              promptTemplating: {
+                ...config.promptTemplating,
+                prompt: {
+                  template: messages
+                }
               }
             },
             { messages: [] },
@@ -460,8 +479,11 @@ describe('orchestration service client', () => {
           data: constructCompletionPostRequest(
             {
               ...config,
-              templating: {
-                template: messages
+              promptTemplating: {
+                ...config.promptTemplating,
+                prompt: {
+                  template: messages
+                }
               }
             },
             { messages: [] },

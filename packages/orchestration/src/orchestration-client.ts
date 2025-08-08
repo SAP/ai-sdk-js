@@ -22,7 +22,7 @@ import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api/internal.js';
 import type {
   ClientConfig,
   OrchestrationModuleConfig,
-  Prompt,
+  ChatCompletionRequest,
   RequestOptions,
   StreamOptions
 } from './orchestration-types.js';
@@ -57,7 +57,7 @@ export class OrchestrationClient {
       this.validateJsonConfig(config);
     } else {
       this.config =
-        typeof config.templating === 'string'
+        typeof config.promptTemplating.prompt === 'string'
           ? this.parseAndMergeTemplating(config) // parse and assign if templating is a string
           : config;
     }
@@ -69,22 +69,22 @@ export class OrchestrationClient {
   }
 
   async chatCompletion(
-    prompt?: Prompt,
+    request?: ChatCompletionRequest,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationResponse> {
     if (this.useClientHistory) {
-      if (prompt?.messagesHistory) {
+      if (request?.messagesHistory) {
         throw new Error(
           'Providing a message history when client history is enabled is not supported. Please remove the `messagesHistory` property from the prompt.'
         );
       }
-      prompt = {
-        ...prompt,
+      request = {
+        ...request,
         messagesHistory: this.messagesHistory
       };
     }
     const response = await this.executeRequest({
-      prompt,
+      request,
       requestConfig,
       stream: false
     });
@@ -96,7 +96,7 @@ export class OrchestrationClient {
   }
 
   async stream(
-    prompt?: Prompt,
+    request?: ChatCompletionRequest,
     controller = new AbortController(),
     options?: StreamOptions,
     requestConfig?: CustomRequestConfig
@@ -109,20 +109,20 @@ export class OrchestrationClient {
       }
 
       if (this.useClientHistory) {
-        if (prompt?.messagesHistory) {
+        if (request?.messagesHistory) {
           throw new Error(
             'Providing a message history when client history is enabled is not supported. Please remove the `messagesHistory` property from the prompt.'
           );
         }
-        prompt = {
-          ...prompt,
+        request = {
+          ...request,
           messagesHistory: this.messagesHistory
         };
       }
 
       const streamResponse = await this.createStreamResponse(
         {
-          prompt,
+          request,
           requestConfig,
           stream: true,
           streamOptions: options
@@ -164,18 +164,18 @@ export class OrchestrationClient {
   }
 
   private async executeRequest(options: RequestOptions): Promise<HttpResponse> {
-    const { prompt, requestConfig, stream, streamOptions } = options;
+    const { request, requestConfig, stream, streamOptions } = options;
 
     const body =
       typeof this.config === 'string'
         ? constructCompletionPostRequestFromJsonModuleConfig(
             JSON.parse(this.config),
-            prompt,
+            request,
             stream
           )
         : constructCompletionPostRequest(
             this.config,
-            prompt,
+            request,
             stream,
             streamOptions
           );
@@ -188,7 +188,7 @@ export class OrchestrationClient {
 
     return executeRequest(
       {
-        url: `/inference/deployments/${deploymentId}/completion`,
+        url: `/inference/deployments/${deploymentId}/v2/completion`,
         ...(this.deploymentConfig ?? {})
       },
       body,
@@ -248,11 +248,14 @@ export class OrchestrationClient {
     config: OrchestrationModuleConfig
   ): OrchestrationModuleConfig {
     let parsedObject;
-    if (typeof config.templating === 'string' && !config.templating.trim()) {
+    if (
+      typeof config.promptTemplating.prompt === 'string' &&
+      !config.promptTemplating.prompt.trim()
+    ) {
       throw new Error('Templating YAML string must be non-empty.');
     }
     try {
-      parsedObject = yaml.parse(config.templating as string);
+      parsedObject = yaml.parse(config.promptTemplating.prompt as string);
     } catch (error) {
       throw new Error(`Error parsing YAML: ${error}`);
     }
@@ -269,11 +272,14 @@ export class OrchestrationClient {
     const { template, defaults, response_format, tools } = result.data.spec;
     return {
       ...config,
-      templating: {
-        template: template as TemplatingChatMessage,
-        ...(defaults && { defaults }),
-        ...(response_format && { response_format }),
-        ...(tools && { tools })
+      promptTemplating: {
+        ...config.promptTemplating,
+        prompt: {
+          template: template as TemplatingChatMessage,
+          ...(defaults && { defaults }),
+          ...(response_format && { response_format }),
+          ...(tools && { tools })
+        }
       }
     };
   }

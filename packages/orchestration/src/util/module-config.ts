@@ -1,8 +1,7 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import type {
-  Prompt,
+  ChatCompletionRequest,
   StreamOptions,
-  LlmModuleConfig,
   OrchestrationModuleConfig
 } from '../orchestration-types.js';
 import type {
@@ -11,9 +10,9 @@ import type {
   ModuleConfigs,
   OrchestrationConfig,
   OutputFilteringConfig,
-  GlobalStreamOptions,
   Template,
-  TemplatingModuleConfig
+  PromptTemplatingModuleConfig,
+  TemplateRef
 } from '../client/api/schema/index.js';
 
 const logger = createLogger({
@@ -26,44 +25,53 @@ const logger = createLogger({
  */
 export function constructCompletionPostRequestFromJsonModuleConfig(
   config: Record<string, any>,
-  prompt?: Prompt,
+  prompt?: ChatCompletionRequest,
   stream?: boolean
 ): Record<string, any> {
-  const orchestration_config = { ...config };
   if (stream) {
-    orchestration_config.stream = true;
+    config = {
+      ...config,
+      stream: {
+        ...(config.stream || {}),
+        enabled: true
+      }
+    };
   } else {
-    delete orchestration_config.stream;
+    delete config.stream;
   }
 
   return {
     messages_history: prompt?.messagesHistory || [],
-    input_params: prompt?.inputParams || {},
-    orchestration_config
+    placeholder_values: prompt?.placeholderValues || {},
+    config
   };
 }
 
 /**
  * @internal
  */
-export function addStreamOptionsToLlmModuleConfig(
-  llmModuleConfig: LlmModuleConfig,
+export function addStreamOptionsToPromptTemplatingModuleConfig(
+  promptTemplatingModuleConfig: PromptTemplatingModuleConfig,
   streamOptions?: StreamOptions
-): LlmModuleConfig {
-  if (streamOptions?.llm === null) {
-    return llmModuleConfig;
+): PromptTemplatingModuleConfig {
+  if (streamOptions?.promptTemplating === null) {
+    return promptTemplatingModuleConfig;
   }
   return {
-    ...llmModuleConfig,
-    model_params: {
-      ...llmModuleConfig.model_params,
-      ...(streamOptions?.llm !== null && {
-        stream_options: {
-          include_usage: true,
-          ...(llmModuleConfig.model_params?.stream_options || {}),
-          ...(streamOptions?.llm || {})
-        }
-      })
+    ...promptTemplatingModuleConfig,
+    model: {
+      ...promptTemplatingModuleConfig.model,
+      params: {
+        ...(promptTemplatingModuleConfig.model.params || {}),
+        ...(streamOptions?.promptTemplating !== null && {
+          stream_options: {
+            include_usage: true,
+            ...(promptTemplatingModuleConfig.model.params?.stream_options ||
+              {}),
+            ...(streamOptions?.promptTemplating || {})
+          }
+        })
+      }
     }
   };
 }
@@ -91,31 +99,33 @@ export function addStreamOptions(
   moduleConfigs: ModuleConfigs,
   streamOptions?: StreamOptions
 ): OrchestrationConfig {
-  const { llm_module_config, filtering_module_config } = moduleConfigs;
+  const { prompt_templating, filtering } = moduleConfigs;
   const outputFiltering = streamOptions?.outputFiltering;
-  const globalOptions = streamOptions?.global;
+  const globalStreamOptions = streamOptions?.global;
 
-  if (!moduleConfigs?.filtering_module_config?.output && outputFiltering) {
+  if (!moduleConfigs?.filtering?.output && outputFiltering) {
     logger.warn(
       'Output filter stream options are not applied because filtering module is not configured.'
     );
   }
 
   return {
-    stream: true,
-    ...(globalOptions && { stream_options: globalOptions }),
-    module_configurations: {
+    stream: {
+      ...(globalStreamOptions || {}),
+      enabled: true
+    },
+    modules: {
       ...moduleConfigs,
-      llm_module_config: addStreamOptionsToLlmModuleConfig(
-        llm_module_config,
+      prompt_templating: addStreamOptionsToPromptTemplatingModuleConfig(
+        prompt_templating,
         streamOptions
       ),
       ...(outputFiltering &&
-        filtering_module_config?.output && {
-          filtering_module_config: {
-            ...filtering_module_config,
+        filtering?.output && {
+          filtering: {
+            ...filtering,
             output: addStreamOptionsToOutputFilteringConfig(
-              filtering_module_config.output,
+              filtering.output,
               outputFiltering
             )
           }
@@ -129,83 +139,57 @@ export function addStreamOptions(
  */
 export function constructCompletionPostRequest(
   config: OrchestrationModuleConfig,
-  prompt?: Prompt,
+  request?: ChatCompletionRequest,
   stream?: boolean,
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
-  // Templating is not a string here as it is already parsed in `parseAndMergeTemplating` method
-  const templatingConfig = { ...(config.templating as TemplatingModuleConfig) };
+  const { promptTemplating, filtering, masking, grounding, translation } =
+    config;
 
-  if (isTemplate(templatingConfig)) {
-    if (!templatingConfig.template?.length && !prompt?.messages?.length) {
+  // prompt is not a string here as it is already parsed in `parseAndMergeTemplating` method
+  const prompt = {
+    ...(promptTemplating.prompt as Template | TemplateRef)
+  };
+
+  // If promptTemplating.prompt is not defined, we initialize it with an empty Template object
+  promptTemplating.prompt = promptTemplating.prompt || { template: [] };
+
+  if (isTemplate(prompt)) {
+    if (!prompt.template?.length && !request?.messages?.length) {
       throw new Error('Either a prompt template or messages must be defined.');
     }
-    if (prompt?.messages?.length) {
-      templatingConfig.template = [
-        ...(templatingConfig.template || []),
-        ...prompt.messages
-      ];
-    }
+    prompt.template = [
+      ...(prompt.template || []),
+      ...(request?.messages || [])
+    ];
   }
 
   const moduleConfigurations: ModuleConfigs = {
-    templating_module_config: templatingConfig,
-    llm_module_config: config.llm,
-    ...(config?.filtering &&
-      Object.keys(config.filtering).length && {
-        filtering_module_config: config.filtering
-      }),
-    ...(config?.masking &&
-      Object.keys(config.masking).length && {
-        masking_module_config: config.masking
-      }),
-    ...(config?.grounding &&
-      Object.keys(config.grounding).length && {
-        grounding_module_config: config.grounding
-      }),
-    ...(config?.inputTranslation &&
-      Object.keys(config.inputTranslation).length && {
-        input_translation_module_config: config.inputTranslation
-      }),
-    ...(config?.outputTranslation &&
-      Object.keys(config.outputTranslation).length && {
-        output_translation_module_config: config.outputTranslation
-      })
+    prompt_templating: {
+      ...promptTemplating,
+      prompt
+    },
+    ...(filtering && Object.keys(filtering).length && { filtering }),
+    ...(masking && Object.keys(masking).length && { masking }),
+    ...(grounding && Object.keys(grounding).length && { grounding }),
+    ...(translation && Object.keys(translation).length && { translation })
   };
 
   return {
-    orchestration_config: stream
-      ? addStreamOptions(
-          moduleConfigurations,
-          mergeStreamOptions(config.streaming, streamOptions)
-        )
-      : { module_configurations: moduleConfigurations },
-    ...(prompt?.inputParams && {
-      input_params: prompt.inputParams
+    config: stream
+      ? addStreamOptions(moduleConfigurations, streamOptions)
+      : { modules: moduleConfigurations },
+    ...(request?.placeholderValues && {
+      placeholder_values: request.placeholderValues
     }),
-    ...(prompt?.messagesHistory && {
-      messages_history: prompt.messagesHistory
-    })
-  };
-}
-
-function mergeStreamOptions(
-  globalOptions?: GlobalStreamOptions,
-  streamOptions?: StreamOptions
-): StreamOptions {
-  return {
-    ...streamOptions,
-    ...((globalOptions || streamOptions?.global) && {
-      global: {
-        ...globalOptions,
-        ...streamOptions?.global
-      }
+    ...(request?.messagesHistory && {
+      messages_history: request.messagesHistory
     })
   };
 }
 
 function isTemplate(
-  templating: TemplatingModuleConfig
+  templating: Template | TemplateRef
 ): templating is Template {
   return (
     templating &&

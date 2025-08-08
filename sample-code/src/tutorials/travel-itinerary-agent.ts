@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable no-console, import/no-internal-modules*/
 import {
   StateGraph,
   MessagesAnnotation,
@@ -8,47 +8,22 @@ import {
   interrupt,
   Command
 } from '@langchain/langgraph';
-// eslint-disable-next-line import/no-internal-modules
 import { ToolNode } from '@langchain/langgraph/prebuilt';
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { tool } from '@langchain/core/tools';
-// eslint-disable-next-line import/no-internal-modules
 import * as z from 'zod/v4';
+import { getMcpTools } from './mcp/mcp-adapter.js';
 import type { AIMessage } from '@langchain/core/messages';
 /**
- * This example demonstrates how to create a travel itinerary assistant using LangGraph.
+ * This example demonstrates how to create a travel itinerary assistant using LangGraph and MCP.
  * The assistant can check the weather and recommend restaurants based on the city provided.
- * It uses tools to fetch weather and restaurant data, and maintains conversation context.
+ * It uses tools (defined and fetched from MCP server) to fetch weather and restaurant data, and maintains conversation context.
  */
-const mockWeatherData: Record<
-  string,
-  { temperature: string; condition: string }
-> = {
-  paris: { temperature: '22°C', condition: 'Mild and pleasant' },
-  reykjavik: { temperature: '3°C', condition: 'Cold and windy' }
-};
-
 const mockRestaurantData: Record<string, string[]> = {
   paris: ['Le Comptoir du Relais', "L'As du Fallafel", 'Breizh Café'],
   reykjavik: ['Dill Restaurant', 'Fish Market', 'Grillmarkaðurinn']
 };
-
-const getWeatherTool = tool(
-  async ({ city }) => {
-    const weather = mockWeatherData[city.toLowerCase()];
-    return weather
-      ? `Current weather in ${city}: ${weather.temperature}, ${weather.condition}`
-      : `Weather data not available for ${city}.`;
-  },
-  {
-    name: 'get_weather',
-    description: 'Get current weather information for a city',
-    schema: z.object({
-      city: z.string().meta({ description: 'The city name' })
-    })
-  }
-);
 
 const getRestaurantsTool = tool(
   async ({ city }) => {
@@ -67,7 +42,7 @@ const getRestaurantsTool = tool(
 );
 
 // Define the tools for the agent to use
-const tools = [getWeatherTool, getRestaurantsTool];
+const tools = [...getMcpTools, getRestaurantsTool];
 const toolNode = new ToolNode(tools);
 
 // Create a model

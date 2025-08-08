@@ -1,4 +1,6 @@
 import { createLogger } from '@sap-cloud-sdk/util';
+import type { OrchestrationStreamChunkResponse } from '../orchestration-stream-chunk-response.js';
+import type { OrchestrationStreamResponse } from '../orchestration-stream-response.js';
 import type {
   ChatDelta,
   ChoiceLogprobs,
@@ -10,11 +12,9 @@ import type {
   MessageToolCall,
   ModuleResults,
   ModuleResultsStreaming,
-  OrchestrationStreamChunkResponse,
-  OrchestrationStreamResponse,
   ResponseChatMessage,
   ToolCallChunk
-} from '../index.js';
+} from '../client/api/schema/index.js';
 
 const logger = createLogger({
   package: 'orchestration',
@@ -30,14 +30,11 @@ export function mergeStreamResponse(
 ): void {
   const data = response._data;
   data.request_id = chunk.request_id;
-  data.module_results = mergeModuleResults(
-    data.module_results,
-    chunk.module_results
+  data.intermediate_results = mergeModuleResults(
+    data.intermediate_results,
+    chunk.intermediate_results
   );
-  data.orchestration_result = mergeLlmModule(
-    data.orchestration_result,
-    chunk.orchestration_result
-  );
+  data.final_result = mergeLlmModule(data.final_result, chunk.final_result);
 }
 
 function mergeModuleResults(

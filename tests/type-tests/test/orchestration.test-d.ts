@@ -7,27 +7,31 @@ import {
   buildDpiMaskingProvider
 } from '@sap-ai-sdk/orchestration';
 import type {
-  CompletionPostResponse,
-  OrchestrationResponse,
-  TokenUsage,
   ChatModel,
-  GroundingModuleConfig,
   LlmModelParams,
   AzureContentSafetyFilterConfig,
+  OrchestrationResponse
+} from '@sap-ai-sdk/orchestration';
+import type {
+  CompletionPostResponse,
+  TokenUsage,
+  GroundingModuleConfig,
   ChatMessages,
   LlamaGuard38BFilterConfig,
   DpiConfig,
   AssistantChatMessage,
   MessageToolCalls
-} from '@sap-ai-sdk/orchestration';
+} from '@sap-ai-sdk/orchestration/internal.js';
 
 /**
  * Chat Completion.
  */
 expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient({
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
     }
   }).chatCompletion()
 );
@@ -35,11 +39,13 @@ expectType<Promise<OrchestrationResponse>>(
 expectType<CompletionPostResponse>(
   (
     await new OrchestrationClient({
-      templating: {
-        defaults: { name: 'Bob' }
-      },
-      llm: {
-        model_name: 'gpt-4o'
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o'
+        },
+        prompt: {
+          defaults: { name: 'Bob' }
+        }
       }
     }).chatCompletion({
       messages: [{ role: 'user', content: 'Hello! {{?name}}' }]
@@ -50,11 +56,13 @@ expectType<CompletionPostResponse>(
 expectType<string | undefined>(
   (
     await new OrchestrationClient({
-      templating: {
-        template: [{ role: 'user', content: 'Hello!' }]
-      },
-      llm: {
-        model_name: 'gpt-4o'
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o'
+        },
+        prompt: {
+          template: [{ role: 'user', content: 'Hello!' }]
+        }
       }
     }).chatCompletion()
   ).getContent()
@@ -63,11 +71,13 @@ expectType<string | undefined>(
 expectType<string | undefined>(
   (
     await new OrchestrationClient({
-      templating: {
-        template: [{ role: 'user', content: 'Hello!' }]
-      },
-      llm: {
-        model_name: 'gpt-4o'
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o'
+        },
+        prompt: {
+          template: [{ role: 'user', content: 'Hello!' }]
+        }
       }
     }).chatCompletion()
   ).getFinishReason()
@@ -76,11 +86,13 @@ expectType<string | undefined>(
 expectType<TokenUsage>(
   (
     await new OrchestrationClient({
-      templating: {
-        template: [{ role: 'user', content: 'Hello!' }]
-      },
-      llm: {
-        model_name: 'gpt-4o'
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o-mini'
+        },
+        prompt: {
+          template: [{ role: 'user', content: 'Hello!' }]
+        }
       }
     }).chatCompletion()
   ).getTokenUsage()
@@ -89,11 +101,13 @@ expectType<TokenUsage>(
 expectType<ChatMessages>(
   (
     await new OrchestrationClient({
-      templating: {
-        template: [{ role: 'user', content: 'Hello!' }]
-      },
-      llm: {
-        model_name: 'gpt-4o-mini'
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o-mini'
+        },
+        prompt: {
+          template: [{ role: 'user', content: 'Hello!' }]
+        }
       }
     }).chatCompletion()
   ).getAllMessages()
@@ -102,11 +116,13 @@ expectType<ChatMessages>(
 expectType<MessageToolCalls | undefined>(
   (
     await new OrchestrationClient({
-      templating: {
-        template: [{ role: 'user', content: 'Hello!' }]
-      },
-      llm: {
-        model_name: 'gpt-4o-mini'
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o-mini'
+        },
+        prompt: {
+          template: [{ role: 'user', content: 'Hello!' }]
+        }
       }
     }).chatCompletion()
   ).getToolCalls()
@@ -115,11 +131,13 @@ expectType<MessageToolCalls | undefined>(
 expectType<string | undefined>(
   (
     await new OrchestrationClient({
-      templating: {
-        template: [{ role: 'user', content: 'Hello!' }]
-      },
-      llm: {
-        model_name: 'gpt-4o-mini'
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o-mini'
+        },
+        prompt: {
+          template: [{ role: 'user', content: 'Hello!' }]
+        }
       }
     }).chatCompletion()
   ).getRefusal()
@@ -128,11 +146,13 @@ expectType<string | undefined>(
 expectType<AssistantChatMessage | undefined>(
   (
     await new OrchestrationClient({
-      templating: {
-        template: [{ role: 'user', content: 'Hello!' }]
-      },
-      llm: {
-        model_name: 'gpt-4o-mini'
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o-mini'
+        },
+        prompt: {
+          template: [{ role: 'user', content: 'Hello!' }]
+        }
       }
     }).chatCompletion()
   ).getAssistantMessage()
@@ -141,11 +161,13 @@ expectType<AssistantChatMessage | undefined>(
 expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient(
     {
-      templating: {
-        template: [{ role: 'user', content: 'Hello!' }]
-      },
-      llm: {
-        model_name: 'gpt-4o'
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o'
+        },
+        prompt: {
+          template: [{ role: 'user', content: 'Hello!' }]
+        }
       }
     },
     {
@@ -166,12 +188,14 @@ expectType<Promise<OrchestrationResponse>>(
  */
 expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient({
-    templating: {
-      template: [{ role: 'user', content: 'Hello!' }]
-    },
-    llm: {
-      model_name: 'gpt-4o',
-      model_params: { max_tokens: 50, temperature: 0.1 }
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o',
+        params: { max_tokens: 50, temperature: 0.1 }
+      },
+      prompt: {
+        template: [{ role: 'user', content: 'Hello!' }]
+      }
     },
     filtering: {
       input: {
@@ -179,10 +203,10 @@ expectType<Promise<OrchestrationResponse>>(
           {
             type: 'azure_content_safety',
             config: {
-              Hate: 0,
-              SelfHarm: 2,
-              Sexual: 4,
-              Violence: 6
+              hate: 0,
+              self_harm: 2,
+              sexual: 4,
+              violence: 6
             }
           }
         ]
@@ -192,10 +216,10 @@ expectType<Promise<OrchestrationResponse>>(
           {
             type: 'azure_content_safety',
             config: {
-              Hate: 6,
-              SelfHarm: 4,
-              Sexual: 2,
-              Violence: 0
+              hate: 6,
+              self_harm: 4,
+              sexual: 2,
+              violence: 0
             }
           }
         ]
@@ -214,7 +238,7 @@ expectType<Promise<OrchestrationResponse>>(
           role: 'user'
         }
       ],
-      inputParams: {
+      placeholderValues: {
         name: 'Bob'
       }
     },
@@ -252,27 +276,34 @@ expectType<Promise<OrchestrationResponse>>(
 expectError<any>(new OrchestrationClient({}).chatCompletion());
 
 /**
- * Model_name is mandatory in llm_module_config.
+ * Either template or template_ref should be provided in prompt.
  */
 expectError<any>(
   new OrchestrationClient({
-    templating: {
-      template: [{ role: 'user', content: 'Hello!' }],
-      template_ref: { id: 'template_id' }
-    },
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      },
+      prompt: {
+        template: [{ role: 'user', content: 'Hello!' }],
+        template_ref: { id: 'template_id' }
+      }
     }
   }).chatCompletion()
 );
 
+/**
+ * Model_name is mandatory in llm_module_config.
+ */
 expectError<any>(
   new OrchestrationClient({
-    templating: {
-      template: [{ role: 'user', content: 'Hello!' }]
-    },
-    llm: {
-      model_params: { max_tokens: 50 }
+    promptTemplating: {
+      model: {
+        params: { max_tokens: 50 }
+      },
+      prompt: {
+        template: [{ role: 'user', content: 'Hello!' }]
+      }
     }
   }).chatCompletion()
 );
@@ -282,11 +313,13 @@ expectError<any>(
  */
 expectError<any>(
   new OrchestrationClient({
-    templating: {
-      template: [{ role: 'not-exist', content: 'Hello!' }]
-    },
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      },
+      prompt: {
+        template: [{ role: 'not-exist', content: 'Hello!' }]
+      }
     }
   })
 );
@@ -296,11 +329,13 @@ expectError<any>(
  */
 expectError<any>(
   new OrchestrationClient({
-    templating: {
-      template: [{ role: 'tool', content: 'Hello!' }]
-    },
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      },
+      prompt: {
+        template: [{ role: 'tool', content: 'Hello!' }]
+      }
     }
   })
 );
@@ -319,15 +354,17 @@ expectAssignable<LlmModelParams>({
  */
 expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient({
-    templating: {
-      template: [{ role: 'user', content: 'Hello!' }]
-    },
-    llm: {
-      model_name: 'gpt-4o',
-      model_params: {
-        max_tokens: 50,
-        temperature: 0.1,
-        random_property: 'random - value'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o',
+        params: {
+          max_tokens: 50,
+          temperature: 0.1,
+          random_property: 'random - value'
+        }
+      },
+      prompt: {
+        template: [{ role: 'user', content: 'Hello!' }]
       }
     }
   }).chatCompletion()
@@ -340,17 +377,17 @@ expect<ChatModel>('custom-model');
  */
 expectType<AzureContentSafetyFilterConfig>(
   buildAzureContentSafetyFilter({
-    Hate: 'ALLOW_ALL',
-    SelfHarm: 'ALLOW_SAFE_LOW',
-    Sexual: 'ALLOW_SAFE_LOW_MEDIUM',
-    Violence: 'ALLOW_SAFE'
+    hate: 'ALLOW_ALL',
+    self_harm: 'ALLOW_SAFE_LOW',
+    sexual: 'ALLOW_SAFE_LOW_MEDIUM',
+    violence: 'ALLOW_SAFE'
   })
 );
 
 expectError<AzureContentSafetyFilterConfig>(
   buildAzureContentSafetyFilter({
-    Hate: 2,
-    SelfHarm: 4
+    hate: 2,
+    self_harm: 4
   })
 );
 
@@ -370,26 +407,28 @@ expectError<LlamaGuard38BFilterConfig>(buildLlamaGuardFilter('unknown-string'));
  */
 expectType<GroundingModuleConfig>(
   buildDocumentGroundingConfig({
-    input_params: ['test'],
-    output_param: 'test'
+    placeholders: {
+      input: ['test'],
+      output: 'test'
+    }
   })
 );
 
 expectError<GroundingModuleConfig>(
   buildDocumentGroundingConfig({
-    input_params: ['test']
+    placeholders: {
+      input: ['test']
+    }
   })
 );
 
 expectType<GroundingModuleConfig>(
   buildDocumentGroundingConfig({
-    input_params: ['test'],
-    output_param: 'test',
-    filters: [
-      {
-        id: 'test'
-      }
-    ]
+    placeholders: {
+      input: ['test'],
+      output: 'test'
+    },
+    filters: [{ id: 'test' }]
   })
 );
 

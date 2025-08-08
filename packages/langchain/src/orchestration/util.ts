@@ -2,9 +2,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { isInteropZodSchema } from '@langchain/core/utils/types';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
+import type { Xor } from '@sap-cloud-sdk/util';
 import type { ToolDefinition } from '@langchain/core/language_models/base';
 import type { ChatOrchestrationToolType } from './types.js';
 import type { ChatResult } from '@langchain/core/outputs';
+import type {
+  OrchestrationStreamChunkResponse,
+  PromptTemplate
+} from '@sap-ai-sdk/orchestration';
 import type {
   AssistantChatMessage,
   ChatCompletionTool,
@@ -14,14 +19,11 @@ import type {
   FunctionObject,
   MessageToolCalls,
   SystemChatMessage,
-  Template,
   ToolChatMessage,
   UserChatMessage,
-  TemplatingModuleConfig,
   TemplateRef,
-  ToolCallChunk as OrchestrationToolCallChunk,
-  OrchestrationStreamChunkResponse
-} from '@sap-ai-sdk/orchestration';
+  ToolCallChunk as OrchestrationToolCallChunk
+} from '@sap-ai-sdk/orchestration/internal.js';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type {
   BaseMessage,
@@ -86,15 +88,6 @@ export function mapToolToChatCompletionTool(
     function: mapToolToOrchestrationFunction(tool, strict)
   };
 }
-/**
- * Checks if the object is a {@link Template}.
- * @param object - The object to check.
- * @returns True if the object is a {@link Template}.
- * @internal
- */
-export function isTemplate(object: TemplatingModuleConfig): object is Template {
-  return 'template' in object;
-}
 
 /**
  * Checks if the object is a {@link TemplateRef}.
@@ -103,9 +96,9 @@ export function isTemplate(object: TemplatingModuleConfig): object is Template {
  * @internal
  */
 export function isTemplateRef(
-  object: TemplatingModuleConfig
+  object: Xor<PromptTemplate, TemplateRef>
 ): object is TemplateRef {
-  return 'template_ref' in object;
+  return object && typeof object === 'object' && 'template_ref' in object;
 }
 
 /**
@@ -277,10 +270,9 @@ function mapOrchestrationToLangChainToolCallChunk(
 export function mapOutputToChatResult(
   completionResponse: CompletionPostResponse
 ): ChatResult {
-  const { orchestration_result, module_results, request_id } =
-    completionResponse;
+  const { final_result, intermediate_results, request_id } = completionResponse;
   const { choices, created, id, model, object, usage, system_fingerprint } =
-    orchestration_result;
+    final_result;
   return {
     generations: choices.map(choice => ({
       text: choice.message.content ?? '',
@@ -292,7 +284,7 @@ export function mapOutputToChatResult(
       }),
       additional_kwargs: {
         tool_calls: choice.message.tool_calls,
-        module_results
+        intermediate_results
       },
       generationInfo: {
         finish_reason: choice.finish_reason,
@@ -341,14 +333,14 @@ export function isToolDefinitionLike(
 export function mapOrchestrationChunkToLangChainMessageChunk(
   chunk: OrchestrationStreamChunkResponse
 ): AIMessageChunk {
-  const choice = chunk.data.orchestration_result?.choices[0];
+  const choice = chunk.data.final_result?.choices[0];
   const content = chunk.getDeltaContent() ?? '';
   const toolCallChunks = choice?.delta.tool_calls;
   return new AIMessageChunk({
     content,
     additional_kwargs: {
-      // TODO: Fix duplicated module results when using concat() method for streaming chunks.
-      module_results: chunk.data.module_results
+      // TODO: Fix duplicated intermediate results when using concat() method for streaming chunks.
+      intermediate_results: chunk.data.intermediate_results
     },
     ...(toolCallChunks && {
       tool_call_chunks: mapOrchestrationToLangChainToolCallChunk(toolCallChunks)

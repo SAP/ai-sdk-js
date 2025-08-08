@@ -18,11 +18,13 @@ import type {
   OrchestrationStreamResponse,
   OrchestrationResponse,
   StreamOptions,
-  ErrorResponse,
+  OrchestrationErrorResponse
+} from '@sap-ai-sdk/orchestration';
+import type {
   ChatCompletionTool,
   ToolChatMessage,
   DataRepositoryType
-} from '@sap-ai-sdk/orchestration';
+} from '@sap-ai-sdk/orchestration/internal.js';
 
 const logger = createLogger({
   package: 'sample-code',
@@ -40,8 +42,10 @@ const __dirname = join(dirname(__filename), '..');
 export async function orchestrationChatCompletion(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
     }
   });
 
@@ -68,8 +72,10 @@ export async function chatCompletionStream(
 ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
     }
   });
 
@@ -99,8 +105,10 @@ export async function chatCompletionStreamWithHistory(
 ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
     }
   });
 
@@ -138,20 +146,22 @@ export async function chatCompletionStreamWithHistory(
 export async function orchestrationTemplating(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
-    },
-    templating: {
-      template: [
-        // define "country" as variable by wrapping it with "{{? ... }}"
-        { role: 'user', content: 'What is the capital of {{?country}}?' }
-      ]
+    promptTemplating: {
+      prompt: {
+        template: [
+          // define "country" as variable by wrapping it with "{{? ... }}"
+          { role: 'user', content: 'What is the capital of {{?country}}?' }
+        ]
+      },
+      model: {
+        name: 'gpt-4o'
+      }
     }
   });
 
   return orchestrationClient.chatCompletion({
     // give the actual value for the variable "country"
-    inputParams: { country: 'France' }
+    placeholderValues: { country: 'France' }
   });
 }
 
@@ -164,17 +174,19 @@ export async function chatCompletionStreamWithJsonModuleConfig(
   controller: AbortController
 ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
   const jsonConfig = `{
-    "module_configurations": {
-      "llm_module_config": {
-        "model_name": "gpt-4o",
-        "model_params": {
-          "stream_options": {
-            "include_usage": true
+    "modules": {
+      "prompt_templating": {
+        "model": {
+          "name": "gpt-4o",
+          "params": {
+            "stream_options": {
+              "include_usage": true
+            }
           }
+        },
+        "prompt": {
+          "template": [{ "role": "user", "content": "Give me a long introduction of {{?input}}" }]
         }
-      },
-      "templating_module_config": {
-        "template": [{ "role": "user", "content": "Give me a long introduction of {{?input}}" }]
       }
     }
   }`;
@@ -182,7 +194,7 @@ export async function chatCompletionStreamWithJsonModuleConfig(
   const orchestrationClient = new OrchestrationClient(jsonConfig);
 
   return orchestrationClient.stream(
-    { inputParams: { input: 'SAP Cloud SDK' } },
+    { placeholderValues: { input: 'SAP Cloud SDK' } },
     controller
   );
 }
@@ -194,8 +206,10 @@ export async function chatCompletionStreamWithJsonModuleConfig(
 export async function orchestrationMessageHistory(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
     }
   });
 
@@ -218,20 +232,22 @@ export async function orchestrationMessageHistory(): Promise<OrchestrationRespon
 export async function orchestrationPromptRegistry(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
-    },
-    templating: {
-      template_ref: {
-        name: 'get-capital',
-        scenario: 'e2e-test',
-        version: '0.0.1'
+    promptTemplating: {
+      prompt: {
+        template_ref: {
+          name: 'get-capital',
+          scenario: 'e2e-test',
+          version: '0.0.1'
+        }
+      },
+      model: {
+        name: 'gpt-4o'
       }
     }
   });
 
   return orchestrationClient.chatCompletion({
-    inputParams: { input: 'France' }
+    placeholderValues: { input: 'France' }
   });
 }
 
@@ -239,11 +255,11 @@ export async function orchestrationPromptRegistry(): Promise<OrchestrationRespon
  * Apply multiple content filters to the input.
  * @returns The orchestration service error response.
  */
-export async function orchestrationInputFiltering(): Promise<ErrorResponse> {
+export async function orchestrationInputFiltering(): Promise<OrchestrationErrorResponse> {
   // Build Azure content filter with only safe content allowed for hate and violence
   const azureContentSafetyFilter = buildAzureContentSafetyFilter({
-    Hate: 'ALLOW_SAFE',
-    Violence: 'ALLOW_SAFE'
+    hate: 'ALLOW_SAFE',
+    violence: 'ALLOW_SAFE'
   });
 
   // Build Llama guard content filter with categories 'privacy' enabled
@@ -251,8 +267,10 @@ export async function orchestrationInputFiltering(): Promise<ErrorResponse> {
 
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
     },
     filtering: {
       input: {
@@ -286,8 +304,8 @@ export async function orchestrationInputFiltering(): Promise<ErrorResponse> {
 export async function orchestrationOutputFiltering(): Promise<OrchestrationResponse> {
   // Build Azure content filter with only safe content allowed for hate and violence
   const azureContentFilter = buildAzureContentSafetyFilter({
-    Hate: 'ALLOW_SAFE',
-    Violence: 'ALLOW_SAFE'
+    hate: 'ALLOW_SAFE',
+    violence: 'ALLOW_SAFE'
   });
 
   // Build Llama guard content filter with categories 'privacy' enabled
@@ -295,8 +313,10 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
 
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
     },
     filtering: {
       output: {
@@ -321,10 +341,10 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
     result.getContent();
   } catch {
     logger.info(
-      `Result from output content filter: ${result.data.module_results.output_filtering!.message}`
+      `Result from output content filter: ${result.data.intermediate_results.output_filtering!.message}`
     );
     logger.info(
-      `The original response from the LLM was as follows:\n${result.data.module_results.llm?.choices[0].message.content}`
+      `The original response from the LLM was as follows:\n${result.data.intermediate_results.llm?.choices[0].message.content}`
     );
     return result;
   }
@@ -342,8 +362,10 @@ export async function orchestrationCompletionMasking(): Promise<
 > {
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
     },
     masking: {
       masking_providers: [
@@ -387,7 +409,7 @@ export async function orchestrationCompletionMasking(): Promise<
           'Write a professional email to my doctor, {{?user}}, at {{?email}}, asking to reschedule my appointment originally set for 2024-12-15 due to a personal conflict. My patient ID is 8947-2219-550.'
       }
     ],
-    inputParams: {
+    placeholderValues: {
       user: 'Dr. Emily Smith',
       email: 'emily.smith@healthclinic.com'
     }
@@ -402,12 +424,16 @@ export async function orchestrationCompletionMasking(): Promise<
 export async function orchestrationMaskGroundingInput(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
     },
     grounding: buildDocumentGroundingConfig({
-      input_params: ['groundingInput'],
-      output_param: 'groundingOutput',
+      placeholders: {
+        input: ['groundingInput'],
+        output: 'groundingOutput'
+      },
       filters: [
         {
           data_repository_type: 'help.sap.com'
@@ -433,7 +459,7 @@ export async function orchestrationMaskGroundingInput(): Promise<OrchestrationRe
           'UserQuestion: {{?groundingInput}} Context: {{?groundingOutput}}'
       }
     ],
-    inputParams: { groundingInput: "What is SAP's product Joule?" }
+    placeholderValues: { groundingInput: "What is SAP's product Joule?" }
   });
 }
 
@@ -444,8 +470,10 @@ export async function orchestrationMaskGroundingInput(): Promise<OrchestrationRe
 export async function orchestrationRequestConfig(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
     }
   });
 
@@ -493,12 +521,16 @@ export async function orchestrationGrounding(
   const orchestrationClient = new OrchestrationClient(
     {
       // define the language model to be used
-      llm: {
-        model_name: 'gpt-4o'
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o'
+        }
       },
       grounding: buildDocumentGroundingConfig({
-        input_params: ['groundingRequest'],
-        output_param: 'groundingOutput',
+        placeholders: {
+          input: ['groundingRequest'],
+          output: 'groundingOutput'
+        },
         filters: [
           {
             data_repository_type: dataRepositoryType,
@@ -522,7 +554,7 @@ export async function orchestrationGrounding(
           'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
       }
     ],
-    inputParams: {
+    placeholderValues: {
       groundingRequest: query
     }
   });
@@ -535,8 +567,10 @@ export async function orchestrationGrounding(
 export async function orchestrationChatCompletionImage(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
     }
   });
 
@@ -562,7 +596,7 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
         ]
       }
     ],
-    inputParams: {
+    placeholderValues: {
       // Alternatively, you can provide a public URL of the image here instead.
       imageUrl: encodedString
     }
@@ -600,17 +634,19 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
     .strict();
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
-    },
-    templating: {
-      response_format: {
-        type: 'json_schema',
-        json_schema: {
-          name: 'translation_response',
-          strict: true,
-          schema: toJsonSchema(translationSchema)
+    promptTemplating: {
+      prompt: {
+        response_format: {
+          type: 'json_schema',
+          json_schema: {
+            name: 'translation_response',
+            strict: true,
+            schema: toJsonSchema(translationSchema)
+          }
         }
+      },
+      model: {
+        name: 'gpt-4o'
       }
     }
   });
@@ -627,7 +663,7 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
         content: '{{?input}}'
       }
     ],
-    inputParams: {
+    placeholderValues: {
       input: 'Hello World! Why is this phrase so famous?'
     }
   });
@@ -671,11 +707,13 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
 
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
-    },
-    templating: {
-      tools: [addNumbersTool]
+    promptTemplating: {
+      prompt: {
+        tools: [addNumbersTool]
+      },
+      model: {
+        name: 'gpt-4o'
+      }
     }
   });
 
@@ -716,17 +754,21 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
 export async function orchestrationTranslation(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
     },
-    inputTranslation: buildTranslationConfig({
-      sourceLanguage: 'en-US',
-      targetLanguage: 'de-DE'
-    }),
-    outputTranslation: buildTranslationConfig({
-      sourceLanguage: 'de-DE',
-      targetLanguage: 'fr-FR'
-    })
+    translation: {
+      input: buildTranslationConfig({
+        sourceLanguage: 'en-US',
+        targetLanguage: 'de-DE'
+      }),
+      output: buildTranslationConfig({
+        sourceLanguage: 'de-DE',
+        targetLanguage: 'fr-FR'
+      })
+    }
   });
 
   return orchestrationClient.chatCompletion({
@@ -751,12 +793,13 @@ export async function chatCompletionStreamWithTools(
 ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
-    },
-    // define the prompt
-    templating: {
-      tools: [addNumbersTool]
+    promptTemplating: {
+      prompt: {
+        tools: [addNumbersTool]
+      },
+      model: {
+        name: 'gpt-4o'
+      }
     }
   });
   return orchestrationClient.stream(

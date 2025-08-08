@@ -5,8 +5,10 @@ describe('document grounding util', () => {
   it('builds simple grounding configuration', () => {
     const groundingConfig: DocumentGroundingServiceConfig = {
       filters: [{}],
-      input_params: ['input'],
-      output_param: 'output',
+      placeholders: {
+        input: ['input'],
+        output: 'output'
+      },
       metadata_params: ['param1', 'param2']
     };
     expect(buildDocumentGroundingConfig(groundingConfig)).toEqual({
@@ -17,8 +19,10 @@ describe('document grounding util', () => {
             data_repository_type: 'vector'
           }
         ],
-        input_params: ['input'],
-        output_param: 'output',
+        placeholders: {
+          input: ['input'],
+          output: 'output'
+        },
         metadata_params: ['param1', 'param2']
       }
     });
@@ -32,8 +36,10 @@ describe('document grounding util', () => {
           data_repository_type: 'help.sap.com'
         }
       ],
-      input_params: ['input'],
-      output_param: 'output'
+      placeholders: {
+        input: ['input'],
+        output: 'output'
+      }
     };
     expect(buildDocumentGroundingConfig(groundingConfig)).toEqual({
       type: 'document_grounding_service',
@@ -44,8 +50,10 @@ describe('document grounding util', () => {
             data_repository_type: 'help.sap.com'
           }
         ],
-        input_params: ['input'],
-        output_param: 'output'
+        placeholders: {
+          input: ['input'],
+          output: 'output'
+        }
       }
     });
   });

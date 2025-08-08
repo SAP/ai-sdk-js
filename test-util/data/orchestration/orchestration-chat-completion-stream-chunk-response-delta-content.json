@@ -1,6 +1,6 @@
 {
     "request_id": "ceaa358c-48b8-4ce1-8a62-b0c47675fc9c",
-    "module_results": {
+    "intermediate_results": {
         "llm": {
             "id": "chatcmpl-AfmsPYkaH9uHogKZusAaVPC3zSNys",
             "object": "chat.completion.chunk",
@@ -19,7 +19,7 @@
             ]
         }
     },
-    "orchestration_result": {
+    "final_result": {
         "id": "chatcmpl-AfmsPYkaH9uHogKZusAaVPC3zSNys",
         "object": "chat.completion.chunk",
         "created": 1734522693,

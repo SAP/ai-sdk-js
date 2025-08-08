@@ -1,10 +1,14 @@
 import type {
-  Prompt,
-  TemplatingModuleConfig,
   OrchestrationModuleConfig as OrchestrationModuleConfigWithStringTemplating,
-  ChatCompletionTool,
+  PromptTemplate,
+  PromptTemplatingModule,
   StreamOptions
 } from '@sap-ai-sdk/orchestration';
+import type {
+  ChatCompletionTool,
+  TemplateRef
+} from '@sap-ai-sdk/orchestration/internal.js';
+import type { Xor } from '@sap-cloud-sdk/util';
 import type {
   BaseChatModelCallOptions,
   BindToolsInput
@@ -34,7 +38,7 @@ export type OrchestrationCallOptions = Pick<
   strict?: boolean;
   tools?: ChatOrchestrationToolType[];
   promptIndex?: number;
-  inputParams?: Prompt['inputParams'];
+  placeholderValues?: Record<string, string>;
   streamOptions?: StreamOptions;
 };
 
@@ -43,14 +47,9 @@ export type OrchestrationCallOptions = Pick<
  */
 export type LangChainOrchestrationModuleConfig = Omit<
   OrchestrationModuleConfigWithStringTemplating,
-  'templating'
+  'promptTemplating'
 > & {
-  templating?: TemplatingModuleConfig;
+  promptTemplating: Omit<PromptTemplatingModule, 'prompt'> & {
+    prompt?: Xor<PromptTemplate, TemplateRef>;
+  };
 };
-
-/**
- * Orchestration module configuration for LangChain.
- * @deprecated Use `LangChainOrchestrationModuleConfig` instead.
- */
-export type LangchainOrchestrationModuleConfig =
-  LangChainOrchestrationModuleConfig;

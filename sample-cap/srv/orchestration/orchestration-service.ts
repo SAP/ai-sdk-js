@@ -2,17 +2,19 @@ import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 export default class OrchestrationService {
   async chatCompletion(req: any) {
-    const { template, inputParams } = req.data;
-    const llm = {
-      model_name: 'gpt-4o'
+    const { template, placeholderValues } = req.data;
+    const model = {
+      name: 'gpt-4o'
     };
-    const templating = { template };
+    const prompt = { template };
 
     const response = await new OrchestrationClient({
-      llm,
-      templating
+      promptTemplating: {
+        model,
+        prompt
+      }
     }).chatCompletion({
-      inputParams: mapInputParams(inputParams)
+      placeholderValues: mapPlaceholderValues(placeholderValues)
     });
 
     return response.getContent();
@@ -20,29 +22,29 @@ export default class OrchestrationService {
 }
 
 /**
- * Map input parameters since CAP does not support dynamic object keys.
+ * Map placeholder values since CAP does not support dynamic object keys.
  *
  * For example:
  *
  * ```ts
- * inputParams: [{
+ * placeholderValues: [{
  *   name: 'param1',
  *   value: 'value1'
  * }]
  * ```
  * =>
  * ```ts
- * mappedInputParams: {
+ * mappedPlaceholderValues: {
  *   param1: 'value1'
  * }
  * ```
- * @param inputParams - Array of `InputParam` entity.
- * @returns Mapped input parameters for AI Core.
+ * @param inputParams - Array of `PlaceholderValue` entity.
+ * @returns Mapped placeholder values for orchestration service.
  */
-function mapInputParams(
-  inputParams: { name: string; value: string }[]
+function mapPlaceholderValues(
+  placeholderValues: { name: string; value: string }[]
 ): Record<string, string> {
-  return inputParams.reduce(
+  return placeholderValues.reduce(
     (acc, { name, value }) => ({ ...acc, [name]: value }),
     {} as Record<string, string>
   );
