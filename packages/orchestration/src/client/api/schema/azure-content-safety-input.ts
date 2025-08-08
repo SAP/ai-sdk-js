@@ -8,12 +8,12 @@ import type { AzureThreshold } from './azure-threshold.js';
  * Filter configuration for Azure Content Safety
  */
 export type AzureContentSafetyInput = {
-  Hate?: AzureThreshold;
-  SelfHarm?: AzureThreshold;
-  Sexual?: AzureThreshold;
-  Violence?: AzureThreshold;
+  hate?: AzureThreshold;
+  self_harm?: AzureThreshold;
+  sexual?: AzureThreshold;
+  violence?: AzureThreshold;
   /**
    * A flag to use prompt shield
    */
-  PromptShield?: boolean;
+  prompt_shield?: boolean;
 };

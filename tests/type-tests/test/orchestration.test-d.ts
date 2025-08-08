@@ -5,13 +5,13 @@ import {
   buildDocumentGroundingConfig,
   buildLlamaGuardFilter,
   buildDpiMaskingProvider
-} from '@sap-ai-sdk/orchestration-v2';
+} from '@sap-ai-sdk/orchestration';
 import type {
   ChatModel,
   LlmModelParams,
   AzureContentSafetyFilterConfig,
   OrchestrationResponse
-} from '@sap-ai-sdk/orchestration-v2';
+} from '@sap-ai-sdk/orchestration';
 import type {
   CompletionPostResponse,
   TokenUsage,
@@ -21,7 +21,7 @@ import type {
   DpiConfig,
   AssistantChatMessage,
   MessageToolCalls
-} from '@sap-ai-sdk/orchestration-v2/internal.js';
+} from '@sap-ai-sdk/orchestration/internal.js';
 
 /**
  * Chat Completion.

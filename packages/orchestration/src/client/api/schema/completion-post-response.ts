@@ -14,6 +14,6 @@ export type CompletionPostResponse = {
    * @example "d4a67ea1-2bf9-4df7-8105-d48203ccff76"
    */
   request_id: string;
-  module_results: ModuleResults;
-  orchestration_result: LlmModuleResult;
+  intermediate_results: ModuleResults;
+  final_result: LlmModuleResult;
 } & Record<string, any>;

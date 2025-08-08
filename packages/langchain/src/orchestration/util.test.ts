@@ -6,7 +6,7 @@ import {
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
-import { OrchestrationStreamChunkResponse } from '@sap-ai-sdk/orchestration-v2';
+import { OrchestrationStreamChunkResponse } from '@sap-ai-sdk/orchestration';
 import { jest } from '@jest/globals';
 import {
   addNumbersSchema,
@@ -26,7 +26,7 @@ import type {
   ToolCallChunk as OrchestrationToolCallChunk,
   CompletionPostResponseStreaming,
   FunctionObject
-} from '@sap-ai-sdk/orchestration-v2/internal.js';
+} from '@sap-ai-sdk/orchestration/internal.js';
 
 describe('mapLangChainMessagesToOrchestrationMessages', () => {
   it('should map an array of LangChain messages to Orchestration messages', () => {

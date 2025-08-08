@@ -26,7 +26,7 @@ export class OrchestrationResponse {
    * @returns Token usage.
    */
   getTokenUsage(): TokenUsage {
-    return this.data.orchestration_result.usage!;
+    return this.data.final_result.usage!;
   }
   /**
    * Reason for stopping the completion.
@@ -82,7 +82,8 @@ export class OrchestrationResponse {
    * @returns A list of all messages.
    */
   getAllMessages(choiceIndex = 0): ChatMessages {
-    const messages: ChatMessage[] = this.data.module_results.templating ?? [];
+    const messages: ChatMessage[] =
+      this.data.intermediate_results.templating ?? [];
     const content = this.findChoiceByIndex(choiceIndex)?.message;
     return content ? [...messages, content] : messages;
   }
@@ -106,6 +107,6 @@ export class OrchestrationResponse {
   }
 
   private getChoices(): LlmChoice[] {
-    return this.data.orchestration_result.choices;
+    return this.data.final_result.choices;
   }
 }

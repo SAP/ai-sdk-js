@@ -3,11 +3,11 @@ import type {
   PromptTemplate,
   PromptTemplatingModule,
   StreamOptions
-} from '@sap-ai-sdk/orchestration-v2';
+} from '@sap-ai-sdk/orchestration';
 import type {
   ChatCompletionTool,
   TemplateRef
-} from '@sap-ai-sdk/orchestration-v2/internal.js';
+} from '@sap-ai-sdk/orchestration/internal.js';
 import type { Xor } from '@sap-cloud-sdk/util';
 import type {
   BaseChatModelCallOptions,

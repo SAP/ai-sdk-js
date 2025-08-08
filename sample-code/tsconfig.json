@@ -9,9 +9,17 @@
   "include": ["src/**/*.ts"],
   "exclude": ["dist/**/*", "**/*.test.ts", "node_modules/**/*"],
   "references": [
-    { "path": "../packages/ai-api" },
-    { "path": "../packages/foundation-models" },
-    { "path": "../packages/orchestration" },
-    { "path": "../packages/langchain" }
+    {
+      "path": "../packages/ai-api"
+    },
+    {
+      "path": "../packages/foundation-models"
+    },
+    {
+      "path": "../packages/orchestration"
+    },
+    {
+      "path": "../packages/langchain"
+    }
   ]
 }

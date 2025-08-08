@@ -4,7 +4,7 @@ import {
   buildAzureContentSafetyFilter,
   buildDpiMaskingProvider,
   buildLlamaGuardFilter
-} from '@sap-ai-sdk/orchestration-v2';
+} from '@sap-ai-sdk/orchestration';
 import {
   START,
   END,

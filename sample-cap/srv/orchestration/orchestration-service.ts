@@ -1,4 +1,4 @@
-import { OrchestrationClient } from '@sap-ai-sdk/orchestration-v2';
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 export default class OrchestrationService {
   async chatCompletion(req: any) {

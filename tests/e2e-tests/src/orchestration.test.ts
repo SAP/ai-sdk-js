@@ -18,7 +18,7 @@ import {
   OrchestrationClient,
   type OrchestrationModuleConfig,
   type OrchestrationResponse
-} from '@sap-ai-sdk/orchestration-v2';
+} from '@sap-ai-sdk/orchestration';
 import { addNumbersTool } from '../../../test-util/tools.js';
 import { loadEnv } from './utils/load-env.js';
 

@@ -68,7 +68,7 @@ import {
 import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type { AIMessageChunk } from '@langchain/core/messages';
 import type { AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
-import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration-v2';
+import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 
 const app = express();
 const port = 8080;

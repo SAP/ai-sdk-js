@@ -1,5 +1,0 @@
-import config from '../../jest.config.mjs';
-export default {
-  ...config,
-  displayName: 'orchestration-v2',
-};

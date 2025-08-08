@@ -1,5 +1,5 @@
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
-import { OrchestrationClient as OrchestrationClientBase } from '@sap-ai-sdk/orchestration-v2';
+import { OrchestrationClient as OrchestrationClientBase } from '@sap-ai-sdk/orchestration';
 import { ChatGenerationChunk } from '@langchain/core/outputs';
 import { type BaseMessage } from '@langchain/core/messages';
 import {

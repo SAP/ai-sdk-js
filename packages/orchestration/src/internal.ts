@@ -1,4 +1,3 @@
-export * from './orchestration-client.js';
+export * from './index.js';
 export * from './util/index.js';
-export * from './orchestration-types.js';
-export * from './orchestration-response.js';
+export * from './client/api/schema/index.js';

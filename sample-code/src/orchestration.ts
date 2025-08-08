@@ -8,7 +8,7 @@ import {
   buildLlamaGuardFilter,
   buildDpiMaskingProvider,
   buildTranslationConfig
-} from '@sap-ai-sdk/orchestration-v2';
+} from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
 // eslint-disable-next-line import/no-internal-modules
 import * as z from 'zod/v4';
@@ -19,12 +19,12 @@ import type {
   OrchestrationResponse,
   StreamOptions,
   OrchestrationErrorResponse
-} from '@sap-ai-sdk/orchestration-v2';
+} from '@sap-ai-sdk/orchestration';
 import type {
   ChatCompletionTool,
   ToolChatMessage,
   DataRepositoryType
-} from '@sap-ai-sdk/orchestration-v2/internal.js';
+} from '@sap-ai-sdk/orchestration/internal.js';
 
 const logger = createLogger({
   package: 'sample-code',

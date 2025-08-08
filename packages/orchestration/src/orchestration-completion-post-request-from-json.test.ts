@@ -3,24 +3,26 @@ import { constructCompletionPostRequestFromJsonModuleConfig } from './util/modul
 describe('construct completion post request from JSON', () => {
   it('should construct completion post request from JSON', () => {
     const jsonConfig = `{
-      "module_configurations": {
-          "llm_module_config": {
-              "model_name": "gpt-4o",
-              "model_params": {
-                "max_tokens": 50,
-                "temperature": 0.1
-              }
+      "modules": {
+        "prompt_templating": {
+          "model": {
+            "name": "gpt-4o",
+            "params": {
+              "max_tokens": 50,
+              "temperature": 0.1
+            }
           },
-          "templating_module_config": {
-              "template": [{ "role": "user", "content": "Hello!" }]
+          "prompt": {
+            "template": [{ "role": "user", "content": "Hello!" }]
           }
-          }
-      }`;
+        }
+      }
+    }`;
 
     const expectedCompletionPostRequestFromJson: Record<string, any> = {
-      input_params: {},
+      placeholder_values: {},
       messages_history: [],
-      orchestration_config: JSON.parse(jsonConfig)
+      config: JSON.parse(jsonConfig)
     };
 
     const completionPostRequestFromJson: Record<string, any> =
@@ -35,54 +37,56 @@ describe('construct completion post request from JSON', () => {
 
   it('should construct completion post request from JSON with input params and message history', () => {
     const jsonConfig = `{
-            "module_configurations": {
-              "llm_module_config": {
-                "model_name": "gpt-4o",
-                "model_params": {
-                  "max_tokens": 50,
-                  "temperature": 0.1
-                }
-              },
-              "templating_module_config": {
-                "template": [
-                    {
-                        "role": "user",
-                        "content": "Give me {{?number}} words that rhyme with my name."
-                    }
-                ]
-              }
+      "modules": {
+        "prompt_templating": {
+          "model": {
+            "name": "gpt-4o",
+            "params": {
+              "max_tokens": 50,
+              "temperature": 0.1
             }
-        }`;
-    const inputParams = { number: '3' };
+          },
+          "prompt": {
+            "template": [
+              {
+                "role": "user",
+                "content": "Give me {{?number}} words that rhyme with my name."
+              }
+            ]
+          }
+        }
+      }
+    }`;
+    const placeholderValues = { number: '3' };
 
     const messagesHistory = [
       {
-        role: 'system',
+        role: 'system' as const,
         content:
           'You are a helpful assistant who remembers all details the user shares with you.'
       },
       {
-        role: 'user',
+        role: 'user' as const,
         content: 'Hi! Im Bob'
       },
       {
-        role: 'assistant',
+        role: 'assistant' as const,
         content:
           "Hi Bob, nice to meet you! I'm an AI assistant. I'll remember that your name is Bob as we continue our conversation."
       }
     ];
 
     const expectedCompletionPostRequestFromJson: Record<string, any> = {
-      input_params: inputParams,
+      placeholder_values: placeholderValues,
       messages_history: messagesHistory,
-      orchestration_config: JSON.parse(jsonConfig)
+      config: JSON.parse(jsonConfig)
     };
 
     const completionPostRequestFromJson: Record<string, any> =
       constructCompletionPostRequestFromJsonModuleConfig(
         JSON.parse(jsonConfig),
         {
-          inputParams,
+          placeholderValues,
           messagesHistory
         }
       );

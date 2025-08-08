@@ -8,7 +8,7 @@
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
-    "@sap-ai-sdk/orchestration-v2": "workspace:^",
+    "@sap-ai-sdk/orchestration": "workspace:^",
     "express": "^5.1.0",
     "@sap/xssec": "^4.9.0",
     "@sap/cds": "^9.2.0"

@@ -9,7 +9,7 @@ import type { ChatResult } from '@langchain/core/outputs';
 import type {
   OrchestrationStreamChunkResponse,
   PromptTemplate
-} from '@sap-ai-sdk/orchestration-v2';
+} from '@sap-ai-sdk/orchestration';
 import type {
   AssistantChatMessage,
   ChatCompletionTool,
@@ -23,7 +23,7 @@ import type {
   UserChatMessage,
   TemplateRef,
   ToolCallChunk as OrchestrationToolCallChunk
-} from '@sap-ai-sdk/orchestration-v2/internal.js';
+} from '@sap-ai-sdk/orchestration/internal.js';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type {
   BaseMessage,
