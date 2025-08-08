@@ -274,7 +274,7 @@ export function mapOutputToChatResult(
   const { choices, created, id, model, object, usage, system_fingerprint } =
     final_result;
   return {
-    generations: choices.map((choice: any) => ({
+    generations: choices.map(choice => ({
       text: choice.message.content ?? '',
       message: new AIMessage({
         content: choice.message.content ?? '',
@@ -333,7 +333,7 @@ export function isToolDefinitionLike(
 export function mapOrchestrationChunkToLangChainMessageChunk(
   chunk: OrchestrationStreamChunkResponse
 ): AIMessageChunk {
-  const choice: any = chunk.data.final_result?.choices[0];
+  const choice = chunk.data.final_result?.choices[0];
   const content = chunk.getDeltaContent() ?? '';
   const toolCallChunks = choice?.delta.tool_calls;
   return new AIMessageChunk({
