@@ -433,7 +433,3 @@
 //     expect(result).toMatchSnapshot('AIMessageChunk with tool call chunks');
 //   });
 // });
-
-it('dummy', () => {});
-
-// TODO: Fix this file for orchestration v2

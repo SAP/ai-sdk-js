@@ -492,7 +492,3 @@
 //     });
 //   });
 // });
-
-it('dummy', () => {});
-
-// TODO: Fix this file for orchestration v2
