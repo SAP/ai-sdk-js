@@ -96,6 +96,7 @@ export class OrchestrationClient extends BaseChatModel<
       () => {
         const orchestrationClient = new OrchestrationClientBase(
           mergedOrchestrationConfig,
+          { useClientHistory: false },
           this.deploymentConfig,
           this.destination
         );
@@ -160,6 +161,7 @@ export class OrchestrationClient extends BaseChatModel<
 
     const orchestrationClient = new OrchestrationClientBase(
       mergedOrchestrationConfig,
+      { useClientHistory: false },
       this.deploymentConfig,
       this.destination
     );
