@@ -257,7 +257,8 @@ export class OrchestrationClient extends BaseChatModel<
             ...this.orchestrationConfig.promptTemplating.model.params,
             ...(stop.length && {
               stop: [
-                ...(this.orchestrationConfig.promptTemplating.model.params?.stop || []),
+                ...(this.orchestrationConfig.promptTemplating.model.params
+                  ?.stop || []),
                 ...stop
               ]
             })
@@ -270,7 +271,10 @@ export class OrchestrationClient extends BaseChatModel<
       if (!config.promptTemplating.prompt) {
         config.promptTemplating.prompt = {};
       }
-      if (typeof config.promptTemplating.prompt === 'object' && !isTemplateRef(config.promptTemplating.prompt)) {
+      if (
+        typeof config.promptTemplating.prompt === 'object' &&
+        !isTemplateRef(config.promptTemplating.prompt)
+      ) {
         config.promptTemplating.prompt.tools = [
           // Preserve existing tools configured in the templating module
           ...(config.promptTemplating.prompt.tools || []),

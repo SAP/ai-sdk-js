@@ -13,9 +13,7 @@ import { addNumbersTool } from '../../../../test-util/tools.js';
 import { OrchestrationClient } from './client.js';
 import type { LangChainOrchestrationModuleConfig } from './types.js';
 import type { ToolCall } from '@langchain/core/messages/tool';
-import type {
-  OrchestrationErrorResponse
-} from '@sap-ai-sdk/orchestration-v2';
+import type { OrchestrationErrorResponse } from '@sap-ai-sdk/orchestration-v2';
 import type { CompletionPostResponse } from '@sap-ai-sdk/orchestration-v2/internal.js';
 
 jest.setTimeout(30000);
@@ -45,10 +43,11 @@ describe('orchestration service client', () => {
       'orchestration',
       'orchestration-chat-completion-success-response.json'
     );
-    mockResponseInputFilterError = await parseMockResponse<OrchestrationErrorResponse>(
-      'orchestration',
-      'orchestration-chat-completion-input-filter-error.json'
-    );
+    mockResponseInputFilterError =
+      await parseMockResponse<OrchestrationErrorResponse>(
+        'orchestration',
+        'orchestration-chat-completion-input-filter-error.json'
+      );
     mockResponseStream = await parseFileToString(
       'orchestration',
       'orchestration-chat-completion-stream-chunks.txt'

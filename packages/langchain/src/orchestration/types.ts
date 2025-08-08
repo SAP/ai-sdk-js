@@ -4,7 +4,10 @@ import type {
   PromptTemplatingModule,
   StreamOptions
 } from '@sap-ai-sdk/orchestration-v2';
-import type { ChatCompletionTool, TemplateRef } from '@sap-ai-sdk/orchestration-v2/internal.js';
+import type {
+  ChatCompletionTool,
+  TemplateRef
+} from '@sap-ai-sdk/orchestration-v2/internal.js';
 import type { Xor } from '@sap-cloud-sdk/util';
 import type {
   BaseChatModelCallOptions,
@@ -42,7 +45,10 @@ export type OrchestrationCallOptions = Pick<
 /**
  * Orchestration module configuration for LangChain.
  */
-export type LangChainOrchestrationModuleConfig = Omit<OrchestrationModuleConfigWithStringTemplating, 'promptTemplating'> & {
+export type LangChainOrchestrationModuleConfig = Omit<
+  OrchestrationModuleConfigWithStringTemplating,
+  'promptTemplating'
+> & {
   promptTemplating: Omit<PromptTemplatingModule, 'prompt'> & {
     prompt?: Xor<PromptTemplate, TemplateRef>;
   };

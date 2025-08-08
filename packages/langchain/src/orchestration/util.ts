@@ -6,7 +6,10 @@ import type { Xor } from '@sap-cloud-sdk/util';
 import type { ToolDefinition } from '@langchain/core/language_models/base';
 import type { ChatOrchestrationToolType } from './types.js';
 import type { ChatResult } from '@langchain/core/outputs';
-import type { OrchestrationStreamChunkResponse, PromptTemplate } from '@sap-ai-sdk/orchestration-v2';
+import type {
+  OrchestrationStreamChunkResponse,
+  PromptTemplate
+} from '@sap-ai-sdk/orchestration-v2';
 import type {
   AssistantChatMessage,
   ChatCompletionTool,
@@ -92,7 +95,9 @@ export function mapToolToChatCompletionTool(
  * @returns True if the object is a {@link TemplateRef}.
  * @internal
  */
-export function isTemplateRef(object: Xor<PromptTemplate, TemplateRef>): object is TemplateRef {
+export function isTemplateRef(
+  object: Xor<PromptTemplate, TemplateRef>
+): object is TemplateRef {
   return object && typeof object === 'object' && 'template_ref' in object;
 }
 
@@ -265,8 +270,7 @@ function mapOrchestrationToLangChainToolCallChunk(
 export function mapOutputToChatResult(
   completionResponse: CompletionPostResponse
 ): ChatResult {
-  const { final_result, intermediate_results, request_id } =
-    completionResponse;
+  const { final_result, intermediate_results, request_id } = completionResponse;
   const { choices, created, id, model, object, usage, system_fingerprint } =
     final_result;
   return {
