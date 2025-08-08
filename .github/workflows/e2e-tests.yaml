@@ -2,8 +2,6 @@ name: e2e tests
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: 0 22 * * *
 
 jobs:
   e2e-tests:
@@ -54,6 +52,6 @@ jobs:
           payload: |
             {
               "username": "GitHub E2E Test Runner",
-              "text": "⚠️ E2E Test Failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-js/actions/runs/${{ github.run_id }}|here>"
+              "text": "⚠️ E2E Test Failed-v1! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-js/actions/runs/${{ github.run_id }}|here>"
             }
           
