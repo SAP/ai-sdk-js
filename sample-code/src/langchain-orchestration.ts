@@ -31,8 +31,10 @@ import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
 export async function invokeChain(): Promise<string> {
   const orchestrationConfig: LangChainOrchestrationModuleConfig = {
     // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
     }
   };
 
@@ -53,8 +55,10 @@ export async function invokeChain(): Promise<string> {
 export async function invokeChainWithInputFilter(): Promise<string> {
   const orchestrationConfig: LangChainOrchestrationModuleConfig = {
     // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
     },
     filtering: {
       input: {
@@ -80,14 +84,16 @@ export async function invokeChainWithInputFilter(): Promise<string> {
 export async function invokeChainWithOutputFilter(): Promise<string> {
   const orchestrationConfig: LangChainOrchestrationModuleConfig = {
     // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
     },
     filtering: {
       output: {
         filters: [
           buildAzureContentSafetyFilter({
-            Hate: 'ALLOW_SAFE'
+            hate: 'ALLOW_SAFE'
           })
         ]
       }
@@ -112,8 +118,10 @@ export async function invokeChainWithOutputFilter(): Promise<string> {
 export async function invokeLangGraphChain(): Promise<string> {
   const orchestrationConfig: LangChainOrchestrationModuleConfig = {
     // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
     }
   };
 
@@ -168,8 +176,10 @@ export async function streamChain(
   controller = new AbortController()
 ): Promise<AsyncIterable<AIMessageChunk>> {
   const orchestrationConfig: LangChainOrchestrationModuleConfig = {
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
     }
   };
 
@@ -195,8 +205,10 @@ export async function streamChain(
 export async function invokeChainWithMasking(): Promise<string> {
   const orchestrationConfig: LangChainOrchestrationModuleConfig = {
     // define the language model to be used
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
     },
     masking: {
       masking_providers: [
@@ -225,7 +237,7 @@ export async function invokeChainWithMasking(): Promise<string> {
         }
       ],
       {
-        inputParams: {
+        placeholderValues: {
           orgCV:
             'Patrick Morgan \n' +
             '+49 (970) 333-3833 \n' +
@@ -264,8 +276,10 @@ export async function invokeChainWithMasking(): Promise<string> {
 export async function invokeToolChain(): Promise<string> {
   // initialize client with options
   const client = new OrchestrationClient({
-    llm: {
-      model_name: 'gpt-4o'
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
     }
   });
 

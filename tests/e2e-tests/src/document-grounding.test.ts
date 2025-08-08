@@ -27,8 +27,8 @@ describe('document grounding', () => {
       'help.sap.com'
     );
     expect(result.getContent()).toEqual(expect.any(String));
-    expect(result.data.module_results).toBeDefined();
-    expect(result.data.module_results.grounding!.data).toBeDefined();
+    expect(result.data.intermediate_results).toBeDefined();
+    expect(result.data.intermediate_results.grounding!.data).toBeDefined();
   });
 
   it('should get the result based on grounding context from SharePoint data respository via orchestration API', async () => {
@@ -38,8 +38,8 @@ describe('document grounding', () => {
       ['0bd2adc2-8d0d-478a-94f6-a0c10958f602']
     );
     expect(result.getContent()).toContain('&)UPnkL_izT)&1u%?2Kg*Y.@qFqR@/');
-    expect(result.data.module_results).toBeDefined();
-    expect(result.data.module_results.grounding!.data).toBeDefined();
+    expect(result.data.intermediate_results).toBeDefined();
+    expect(result.data.intermediate_results.grounding!.data).toBeDefined();
   });
 
   it('should get the result based on grounding context from S3 data respository via orchestration API', async () => {
@@ -49,8 +49,8 @@ describe('document grounding', () => {
       ['8907272b-682e-4574-b8b8-9b75c393f362']
     );
     expect(result.getContent()).toContain('Dubai Chocolate');
-    expect(result.data.module_results).toBeDefined();
-    expect(result.data.module_results.grounding!.data).toBeDefined();
+    expect(result.data.intermediate_results).toBeDefined();
+    expect(result.data.intermediate_results.grounding!.data).toBeDefined();
   });
 
   it('should get the pipeline status', async () => {

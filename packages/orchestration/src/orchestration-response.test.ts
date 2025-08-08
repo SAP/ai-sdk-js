@@ -67,7 +67,7 @@ describe('OrchestrationResponse', () => {
 
   it('should return the tool calls response', () => {
     const localMockResponse = JSON.parse(JSON.stringify(mockResponse));
-    localMockResponse.orchestration_result.choices = [
+    localMockResponse.final_result.choices = [
       {
         index: 0,
         message: {
@@ -103,7 +103,7 @@ describe('OrchestrationResponse', () => {
 
   it('should return the refusal message from model', () => {
     const localMockResponse = JSON.parse(JSON.stringify(mockResponse));
-    localMockResponse.orchestration_result.choices = [
+    localMockResponse.final_result.choices = [
       {
         index: 0,
         message: {
@@ -145,7 +145,7 @@ describe('OrchestrationResponse', () => {
   });
 
   it('should throw if content that was filtered is accessed', () => {
-    mockResponse.orchestration_result.choices = [
+    mockResponse.final_result.choices = [
       {
         index: 0,
         message: {

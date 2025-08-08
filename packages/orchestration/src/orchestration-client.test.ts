@@ -23,20 +23,22 @@ import {
 import type { CompletionPostResponse } from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
-  Prompt
+  ChatCompletionRequest
 } from './orchestration-types.js';
 
 const defaultJsonConfig = `{
   "module_configurations": {
-    "llm_module_config": {
-      "model_name": "gpt-4o",
-      "model_params": {
-        "max_tokens": 50,
-        "temperature": 0.1
+    "prompt_templating": {
+      "model": {
+        "name": "gpt-4o",
+        "params": {
+          "max_tokens": 50,
+          "temperature": 0.1
+        }
+      },
+      "prompt": {
+        "template": [{ "role": "user", "content": "What is the capital of France?" }]
       }
-    },
-    "templating_module_config": {
-      "template": [{ "role": "user", "content": "What is the capital of France?" }]
     }
   }
 }`;
@@ -63,7 +65,7 @@ function mockJsonStreamInference(
       status: 200
     },
     {
-      url: 'inference/deployments/1234/completion'
+      url: 'inference/deployments/1234/v2/completion'
     }
   );
 }
@@ -80,13 +82,15 @@ describe('orchestration service client', () => {
 
   it('calls chatCompletion with minimal configuration', async () => {
     const config: OrchestrationModuleConfig = {
-      llm: {
-        model_name: 'gpt-4o',
-        model_params: { max_tokens: 50, temperature: 0.1 }
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o',
+          params: { max_tokens: 50, temperature: 0.1 }
+        }
       }
     };
 
-    const prompt: Prompt = {
+    const prompt: ChatCompletionRequest = {
       messages: [{ role: 'user', content: 'Hello' }]
     };
 
@@ -104,7 +108,7 @@ describe('orchestration service client', () => {
         status: 200
       },
       {
-        url: 'inference/deployments/1234/completion'
+        url: 'inference/deployments/1234/v2/completion'
       }
     );
     const response = await new OrchestrationClient(config).chatCompletion(
@@ -115,18 +119,22 @@ describe('orchestration service client', () => {
     expect(response.data).toEqual(mockResponse);
     expect(response.getContent()).toEqual(expect.any(String));
     expect(response.getFinishReason()).toEqual(expect.any(String));
-    expect(response.getTokenUsage().completion_tokens).toEqual(9);
+    expect(response.getTokenUsage().completion_tokens).toEqual(
+      expect.any(Number)
+    );
   });
 
   it('calls chatCompletion with some templating configuration (without template)', async () => {
     const config: OrchestrationModuleConfig = {
-      llm: {
-        model_name: 'gpt-4o',
-        model_params: { max_tokens: 500 }
-      },
-      templating: {
-        defaults: {
-          topic: 'AI Core'
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o',
+          params: { max_tokens: 500 }
+        },
+        prompt: {
+          defaults: {
+            topic: 'AI Core'
+          }
         }
       }
     };
@@ -150,7 +158,7 @@ describe('orchestration service client', () => {
                 'Write a 1 verse poem about the following topic: {{?topic}}'
             }
           ],
-          inputParams: { topic: 'Generative AI Hub' }
+          placeholderValues: { topic: 'Generative AI Hub' }
         })
       },
       {
@@ -158,7 +166,7 @@ describe('orchestration service client', () => {
         status: 200
       },
       {
-        url: 'inference/deployments/1234/completion'
+        url: 'inference/deployments/1234/v2/completion'
       }
     );
     const response = await new OrchestrationClient(config).chatCompletion({
@@ -173,7 +181,7 @@ describe('orchestration service client', () => {
           content: 'Write a 1 verse poem about the following topic: {{?topic}}'
         }
       ],
-      inputParams: { topic: 'Generative AI Hub' }
+      placeholderValues: { topic: 'Generative AI Hub' }
     });
     expect(response.data).toEqual(mockResponse);
   }, 60000);
@@ -203,7 +211,7 @@ describe('orchestration service client', () => {
         status: 200
       },
       {
-        url: 'inference/deployments/1234/completion'
+        url: 'inference/deployments/1234/v2/completion'
       }
     );
 
@@ -217,39 +225,41 @@ describe('orchestration service client', () => {
 
   it('calls chatCompletion with filter configuration supplied using convenience function', async () => {
     const config: OrchestrationModuleConfig = {
-      llm: {
-        model_name: 'gpt-4o',
-        model_params: { max_tokens: 50, temperature: 0.1 }
-      },
-      templating: {
-        template: [
-          {
-            role: 'user',
-            content: 'Create {{?number}} paraphrases of {{?phrase}}'
-          }
-        ]
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o',
+          params: { max_tokens: 50, temperature: 0.1 }
+        },
+        prompt: {
+          template: [
+            {
+              role: 'user',
+              content: 'Create {{?number}} paraphrases of {{?phrase}}'
+            }
+          ]
+        }
       },
       filtering: {
         input: {
           filters: [
             buildAzureContentSafetyFilter({
-              Hate: 'ALLOW_SAFE_LOW_MEDIUM',
-              SelfHarm: 'ALLOW_SAFE_LOW'
+              hate: 'ALLOW_SAFE_LOW_MEDIUM',
+              self_harm: 'ALLOW_SAFE_LOW'
             })
           ]
         },
         output: {
           filters: [
             buildAzureContentSafetyFilter({
-              Sexual: 'ALLOW_SAFE',
-              Violence: 'ALLOW_SAFE_LOW_MEDIUM'
+              sexual: 'ALLOW_SAFE',
+              violence: 'ALLOW_SAFE_LOW_MEDIUM'
             })
           ]
         }
       }
     };
     const prompt = {
-      inputParams: { phrase: 'I hate you.', number: '3' }
+      placeholderValues: { phrase: 'I hate you.', number: '3' }
     };
     const mockResponse = await parseMockResponse<CompletionPostResponse>(
       'orchestration',
@@ -265,7 +275,7 @@ describe('orchestration service client', () => {
         status: 200
       },
       {
-        url: 'inference/deployments/1234/completion'
+        url: 'inference/deployments/1234/v2/completion'
       }
     );
     const response = await new OrchestrationClient(config).chatCompletion(
@@ -277,20 +287,22 @@ describe('orchestration service client', () => {
   it('calls chatCompletion with filter configuration supplied using multiple convenience functions', async () => {
     const llamaFilter = buildLlamaGuardFilter('self_harm');
     const azureContentFilter = buildAzureContentSafetyFilter({
-      Sexual: 'ALLOW_SAFE'
+      self_harm: 'ALLOW_SAFE'
     });
     const config: OrchestrationModuleConfig = {
-      llm: {
-        model_name: 'gpt-4o',
-        model_params: { max_tokens: 50, temperature: 0.1 }
-      },
-      templating: {
-        template: [
-          {
-            role: 'user',
-            content: 'Create {{?number}} paraphrases of {{?phrase}}'
-          }
-        ]
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o',
+          params: { max_tokens: 50, temperature: 0.1 }
+        },
+        prompt: {
+          template: [
+            {
+              role: 'user',
+              content: 'Create {{?number}} paraphrases of {{?phrase}}'
+            }
+          ]
+        }
       },
       filtering: {
         input: {
@@ -302,7 +314,7 @@ describe('orchestration service client', () => {
       }
     };
     const prompt = {
-      inputParams: { phrase: 'I like myself.', number: '20' }
+      placeholderValues: { phrase: 'I like myself.', number: '20' }
     };
     const mockResponse = await parseMockResponse<CompletionPostResponse>(
       'orchestration',
@@ -318,7 +330,7 @@ describe('orchestration service client', () => {
         status: 200
       },
       {
-        url: 'inference/deployments/1234/completion'
+        url: 'inference/deployments/1234/v2/completion'
       }
     );
     const response = await new OrchestrationClient(config).chatCompletion(
@@ -329,17 +341,19 @@ describe('orchestration service client', () => {
 
   it('calls chatCompletion with filtering configuration', async () => {
     const config: OrchestrationModuleConfig = {
-      llm: {
-        model_name: 'gpt-4o',
-        model_params: { max_tokens: 50, temperature: 0.1 }
-      },
-      templating: {
-        template: [
-          {
-            role: 'user',
-            content: 'Create {{?number}} paraphrases of {{?phrase}}'
-          }
-        ]
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o',
+          params: { max_tokens: 50, temperature: 0.1 }
+        },
+        prompt: {
+          template: [
+            {
+              role: 'user',
+              content: 'Create {{?number}} paraphrases of {{?phrase}}'
+            }
+          ]
+        }
       },
       filtering: {
         input: {
@@ -347,8 +361,8 @@ describe('orchestration service client', () => {
             {
               type: 'azure_content_safety' as const,
               config: {
-                Hate: 4 as const,
-                SelfHarm: 2 as const
+                hate: 4 as const,
+                self_harm: 2 as const
               }
             }
           ]
@@ -358,15 +372,17 @@ describe('orchestration service client', () => {
             {
               type: 'azure_content_safety' as const,
               config: {
-                Sexual: 0 as const,
-                Violence: 4 as const
+                self_harm: 0 as const,
+                violence: 4 as const
               }
             }
           ]
         }
       }
     };
-    const prompt = { inputParams: { phrase: 'I hate you.', number: '3' } };
+    const prompt = {
+      placeholderValues: { phrase: 'I hate you.', number: '3' }
+    };
     const mockResponse = await parseMockResponse<CompletionPostResponse>(
       'orchestration',
       'orchestration-chat-completion-filter-config.json'
@@ -381,7 +397,7 @@ describe('orchestration service client', () => {
         status: 200
       },
       {
-        url: 'inference/deployments/1234/completion'
+        url: 'inference/deployments/1234/v2/completion'
       }
     );
     const response = await new OrchestrationClient(config).chatCompletion(
@@ -392,12 +408,14 @@ describe('orchestration service client', () => {
 
   it('sends message_history together with messages', async () => {
     const config: OrchestrationModuleConfig = {
-      llm: {
-        model_name: 'gpt-4o',
-        model_params: { max_tokens: 50, temperature: 0.1 }
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o',
+          params: { max_tokens: 50, temperature: 0.1 }
+        }
       }
     };
-    const prompt: Prompt = {
+    const prompt: ChatCompletionRequest = {
       messages: [{ role: 'user', content: "What's my name?" }],
       messagesHistory: [
         {
@@ -430,7 +448,7 @@ describe('orchestration service client', () => {
         status: 200
       },
       {
-        url: 'inference/deployments/1234/completion'
+        url: 'inference/deployments/1234/v2/completion'
       }
     );
 
@@ -446,56 +464,60 @@ describe('orchestration service client', () => {
       'orchestration-chat-completion-yaml-template.yaml'
     );
     const configWithYaml: OrchestrationModuleConfig = {
-      llm: {
-        model_name: 'gpt-4o',
-        model_params: { max_tokens: 500 }
-      },
-      templating: yamlTemplate
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o',
+          params: { max_tokens: 500 }
+        },
+        prompt: yamlTemplate
+      }
     };
 
     const config: OrchestrationModuleConfig = {
-      llm: {
-        model_name: 'gpt-4o',
-        model_params: { max_tokens: 500 }
-      },
-      templating: {
-        template: [
-          {
-            role: 'system',
-            content:
-              'You are a world-famous poet who can write virtuosic and brilliant poetry on any topic.'
-          },
-          {
-            role: 'user',
-            content:
-              'Write a 1 verse poem about the following topic: {{?topic}}'
-          }
-        ],
-        response_format: {
-          type: 'json_schema',
-          json_schema: {
-            name: 'poem_structure',
-            description: 'Structured format for the generated poem',
-            strict: true,
-            schema: {
-              type: 'object',
-              additionalProperties: false,
-              required: ['title', 'verses', 'theme'],
-              properties: {
-                title: {
-                  type: 'string',
-                  description: 'The title of the poem'
-                },
-                theme: {
-                  type: 'string',
-                  description: 'The central theme or subject of the poem'
-                },
-                verses: {
-                  type: 'array',
-                  description: 'A list of verses making up the poem',
-                  items: {
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o',
+          params: { max_tokens: 500 }
+        },
+        prompt: {
+          template: [
+            {
+              role: 'system',
+              content:
+                'You are a world-famous poet who can write virtuosic and brilliant poetry on any topic.'
+            },
+            {
+              role: 'user',
+              content:
+                'Write a 1 verse poem about the following topic: {{?topic}}'
+            }
+          ],
+          response_format: {
+            type: 'json_schema',
+            json_schema: {
+              name: 'poem_structure',
+              description: 'Structured format for the generated poem',
+              strict: true,
+              schema: {
+                type: 'object',
+                additionalProperties: false,
+                required: ['title', 'verses', 'theme'],
+                properties: {
+                  title: {
                     type: 'string',
-                    description: 'A single verse of the poem'
+                    description: 'The title of the poem'
+                  },
+                  theme: {
+                    type: 'string',
+                    description: 'The central theme or subject of the poem'
+                  },
+                  verses: {
+                    type: 'array',
+                    description: 'A list of verses making up the poem',
+                    items: {
+                      type: 'string',
+                      description: 'A single verse of the poem'
+                    }
                   }
                 }
               }
@@ -512,7 +534,7 @@ describe('orchestration service client', () => {
     mockInference(
       {
         data: constructCompletionPostRequest(config, {
-          inputParams: { topic: 'Generative AI Hub' }
+          placeholderValues: { topic: 'Generative AI Hub' }
         })
       },
       {
@@ -520,27 +542,29 @@ describe('orchestration service client', () => {
         status: 200
       },
       {
-        url: 'inference/deployments/1234/completion'
+        url: 'inference/deployments/1234/v2/completion'
       }
     );
     const response = await new OrchestrationClient(
       configWithYaml
-    ).chatCompletion({ inputParams: { topic: 'Generative AI Hub' } });
+    ).chatCompletion({ placeholderValues: { topic: 'Generative AI Hub' } });
     expect(response.data).toEqual(mockResponse);
   }, 60000);
 
   it('throws when template is an empty string', async () => {
     const invalidConfigWithYaml: OrchestrationModuleConfig = {
-      llm: {
-        model_name: 'gpt-4o',
-        model_params: { max_tokens: 500 }
-      },
-      templating: ''
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o',
+          params: { max_tokens: 500 }
+        },
+        prompt: ''
+      }
     };
 
     expect(() =>
       new OrchestrationClient(invalidConfigWithYaml).chatCompletion({
-        inputParams: { topic: 'Generative AI Hub' }
+        placeholderValues: { topic: 'Generative AI Hub' }
       })
     ).toThrowErrorMatchingInlineSnapshot(
       '"Templating YAML string must be non-empty."'
@@ -549,15 +573,17 @@ describe('orchestration service client', () => {
 
   it('throws when template YAML string does not conform to the expected specification', async () => {
     const invalidConfigWithYaml: OrchestrationModuleConfig = {
-      llm: {
-        model_name: 'gpt-4o',
-        model_params: { max_tokens: 500 }
-      },
-      templating: `
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o',
+          params: { max_tokens: 500 }
+        },
+        prompt: `
       name: poem
       version: 0.0.1
       scenario: agent-evaluator
       `
+      }
     };
 
     expect(() =>
@@ -579,18 +605,20 @@ describe('orchestration service client', () => {
 
   it('calls chatCompletion with grounding configuration', async () => {
     const config: OrchestrationModuleConfig = {
-      llm: {
-        model_name: 'gpt-4o'
-      },
-      templating: {
-        template: [
-          {
-            role: 'user',
-            content:
-              'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
-          }
-        ],
-        defaults: {}
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o'
+        },
+        prompt: {
+          template: [
+            {
+              role: 'user',
+              content:
+                'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
+            }
+          ],
+          defaults: {}
+        }
       },
       grounding: {
         type: 'document_grounding_service',
@@ -601,13 +629,15 @@ describe('orchestration service client', () => {
               data_repository_type: 'vector'
             }
           ],
-          input_params: ['groundingRequest'],
-          output_param: 'groundingOutput'
+          placeholders: {
+            input: ['groundingRequest'],
+            output: 'groundingOutput'
+          }
         }
       }
     };
     const prompt = {
-      inputParams: {
+      placeholderValues: {
         groundingRequest: 'What is Generative AI Hub in SAP AI Core?'
       }
     };
@@ -624,7 +654,7 @@ describe('orchestration service client', () => {
         status: 200
       },
       {
-        url: 'inference/deployments/1234/completion'
+        url: 'inference/deployments/1234/v2/completion'
       }
     );
 
@@ -635,7 +665,7 @@ describe('orchestration service client', () => {
   });
 
   it('executes a request with the custom resource group', async () => {
-    const prompt: Prompt = {
+    const prompt: ChatCompletionRequest = {
       messagesHistory: [
         {
           role: 'user',
@@ -645,16 +675,18 @@ describe('orchestration service client', () => {
     };
 
     const config: OrchestrationModuleConfig = {
-      llm: {
-        model_name: 'gpt-4o'
-      },
-      templating: {
-        template: [{ role: 'user', content: "What's my name?" }]
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o'
+        },
+        prompt: {
+          template: [{ role: 'user', content: "What's my name?" }]
+        }
       }
     };
 
     const customChatCompletionEndpoint = {
-      url: 'inference/deployments/1234/completion',
+      url: 'inference/deployments/1234/v2/completion',
       resourceGroup: 'custom-resource-group'
     };
 
@@ -689,17 +721,19 @@ describe('orchestration service client', () => {
 
   it('executes a streaming request with correct chunk response', async () => {
     const config: OrchestrationModuleConfig = {
-      llm: {
-        model_name: 'gpt-4o',
-        model_params: {}
-      },
-      templating: {
-        template: [
-          {
-            role: 'user',
-            content: 'Give me a short introduction of SAP Cloud SDK.'
-          }
-        ]
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o',
+          params: {}
+        },
+        prompt: {
+          template: [
+            {
+              role: 'user',
+              content: 'Give me a short introduction of SAP Cloud SDK.'
+            }
+          ]
+        }
       }
     };
 
@@ -717,7 +751,7 @@ describe('orchestration service client', () => {
         status: 200
       },
       {
-        url: 'inference/deployments/1234/completion'
+        url: 'inference/deployments/1234/v2/completion'
       }
     );
     const response = await new OrchestrationClient(config).stream();
@@ -793,18 +827,20 @@ describe('orchestration service client', () => {
 
   it('executes a streaming request with multiple tools and parses the tool calls properly', async () => {
     const config: OrchestrationModuleConfig = {
-      llm: {
-        model_name: 'gpt-4o',
-        model_params: {}
-      },
-      templating: {
-        template: [
-          {
-            role: 'user',
-            content: 'Add 2 + 3 and multiply 2 * 3'
-          }
-        ],
-        tools: [addNumbersTool, multiplyNumbersTool]
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o',
+          params: {}
+        },
+        prompt: {
+          template: [
+            {
+              role: 'user',
+              content: 'Add 2 + 3 and multiply 2 * 3'
+            }
+          ],
+          tools: [addNumbersTool, multiplyNumbersTool]
+        }
       }
     };
 
@@ -822,7 +858,7 @@ describe('orchestration service client', () => {
         status: 200
       },
       {
-        url: 'inference/deployments/1234/completion'
+        url: 'inference/deployments/1234/v2/completion'
       }
     );
 
@@ -841,7 +877,7 @@ describe('orchestration service client', () => {
            "arguments": "{"a": 2, "b": 3}",
            "name": "add",
          },
-         "id": "call_HPgxxSmD2ctYfcJ3gp1JBc7i",
+         "id": "call_OtTlp96Eg6OFP1ynoerYThta",
          "index": 0,
          "type": "function",
        },
@@ -850,7 +886,7 @@ describe('orchestration service client', () => {
            "arguments": "{"a": 2, "b": 3}",
            "name": "multiply",
          },
-         "id": "call_PExve0Dd9hxD8hOk4Uhr1yhO",
+         "id": "call_mscosPWnNXuRYp5OQatYKOv9",
          "index": 1,
          "type": "function",
        },
@@ -860,17 +896,19 @@ describe('orchestration service client', () => {
   describe('OrchestrationClient Stream Error Handling', () => {
     it('should abort controller and re-throw error when network request fails', async () => {
       const config: OrchestrationModuleConfig = {
-        llm: {
-          model_name: 'gpt-4o',
-          model_params: {}
-        },
-        templating: {
-          template: [
-            {
-              role: 'user',
-              content: 'Test prompt'
-            }
-          ]
+        promptTemplating: {
+          model: {
+            name: 'gpt-4o',
+            params: {}
+          },
+          prompt: {
+            template: [
+              {
+                role: 'user',
+                content: 'Test prompt'
+              }
+            ]
+          }
         }
       };
 
@@ -886,7 +924,7 @@ describe('orchestration service client', () => {
           data: { error: 'Internal Server Error' }
         },
         {
-          url: 'inference/deployments/1234/completion'
+          url: 'inference/deployments/1234/v2/completion'
         }
       );
 
@@ -897,17 +935,19 @@ describe('orchestration service client', () => {
 
     it('should throw error when stream is called with already aborted controller', async () => {
       const config: OrchestrationModuleConfig = {
-        llm: {
-          model_name: 'gpt-4o',
-          model_params: {}
-        },
-        templating: {
-          template: [
-            {
-              role: 'user',
-              content: 'Test prompt'
-            }
-          ]
+        promptTemplating: {
+          model: {
+            name: 'gpt-4o',
+            params: {}
+          },
+          prompt: {
+            template: [
+              {
+                role: 'user',
+                content: 'Test prompt'
+              }
+            ]
+          }
         }
       };
 

@@ -1,18 +1,297 @@
-# SAP Cloud SDK for AI for JavaScript Version 2 Upgrade Guide <!-- omit from toc -->
+# SAP Cloud SDK for AI v2 Upgrade Guide
 
-The purpose of this document is to collect information on the SAP Cloud SDK for AI version 1 to version 2 migration.
-It should include information on all steps a user needs to take when updating the SDK version from 1 to 2.
+This document guides you through upgrading from version 1.x to version 2.x of the SAP Cloud SDK for AI packages.
+It covers all breaking changes and migration steps required for the upgrade.
+Version 2.x introduces significant structural changes to align with updated service APIs.
 
-This document should be written in a style which addresses the consumer of the SDK.
-It will eventually end up in the SDK docs portal and release notes for version 2.
+## Table of Contents
 
-Please add your items below when creating a change which will involve manual tasks for the user when performing the upgrade.
-Add sections to the document as you see fit.
+- [Table of Contents](#table-of-contents)
+- [How to Upgrade](#how-to-upgrade)
+- [Breaking Changes](#breaking-changes)
+  - [`@sap-ai-sdk/orchestration`](#sap-ai-sdkorchestration)
+  - [`@sap-ai-sdk/langchain`](#sap-ai-sdklangchain)
 
-<!-- Everything below this line should be written in the style of end user documentation. If you need to add hints for SDK developers, do that above. -->
+## How to Upgrade
 
-# How to Upgrade to Version 2 of the SAP Cloud SDK for AI for JavaScript <!-- omit from toc -->
+Update all SAP Cloud SDK for AI packages to version 2.x in your `package.json` file:
 
-This document will guide you through the steps necessary to upgrade to version 2 of the SAP Cloud SDK for AI.
-Depending on your project, some steps might not be applicable.
-The To-Do list is:
+```diff
+{
+  "dependencies": {
+-   "@sap-ai-sdk/ai-api": "^1.x.x",
+-   "@sap-ai-sdk/core": "^1.x.x",
+-   "@sap-ai-sdk/document-grounding": "^1.x.x",
+-   "@sap-ai-sdk/foundation-models": "^1.x.x",
+-   "@sap-ai-sdk/langchain": "^1.x.x",
+-   "@sap-ai-sdk/orchestration": "^1.x.x",
+-   "@sap-ai-sdk/prompt-registry": "^1.x.x",
++   "@sap-ai-sdk/ai-api": "^2.x.x",
++   "@sap-ai-sdk/core": "^2.x.x",
++   "@sap-ai-sdk/document-grounding": "^2.x.x",
++   "@sap-ai-sdk/foundation-models": "^2.x.x",
++   "@sap-ai-sdk/langchain": "^2.x.x",
++   "@sap-ai-sdk/orchestration": "^2.x.x",
++   "@sap-ai-sdk/prompt-registry": "^2.x.x"
+  }
+}
+```
+
+## Breaking Changes
+
+### `@sap-ai-sdk/orchestration`
+
+#### Module Configuration Structure
+
+The most significant change is the consolidation of `llm` and `templating` modules into a single `promptTemplating` module.
+
+**v1:**
+```typescript
+const config = {
+  llm: {
+    model_name: 'gpt-4o',
+    model_params: {}
+  },
+  templating: {
+    template: [
+      { role: 'user', content: 'What is the capital of {{?country}}?' }
+    ]
+  }
+};
+```
+
+**v2:**
+```typescript
+const config = {
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o',
+      params: {}
+    },
+    prompt: {
+      template: [
+        { role: 'user', content: 'What is the capital of {{?country}}?' }
+      ]
+    }
+  }
+};
+```
+
+#### Parameter Name Changes
+
+Several parameter names have been updated for consistency.
+
+##### Input Parameters
+**v1:**
+```typescript
+orchestrationClient.chatCompletion({
+  inputParams: { country: 'France' }
+});
+```
+
+**v2:**
+```typescript
+orchestrationClient.chatCompletion({
+  placeholderValues: { country: 'France' }
+});
+```
+
+##### Model Configuration
+**v1:**
+```typescript
+llm: {
+  model_name: 'gpt-4o',
+  model_params: { temperature: 0.7 }
+}
+```
+
+**v2:**
+```typescript
+promptTemplating: {
+  model: {
+    name: 'gpt-4o',
+    params: { temperature: 0.7 }
+  }
+}
+```
+
+#### Global Streaming Configuration
+
+The global streaming configuration has been updated to use an `enabled` flag instead of a top-level `stream` property.
+
+**v1:**
+```typescript
+const config = {
+  stream: true,
+  streamOptions: {
+    llm: { include_usage: true }
+  }
+};
+```
+
+**v2:**
+```typescript
+const config = {
+  streamOptions: {
+    enabled: true,
+    promptTemplating: { include_usage: true }
+  }
+};
+```
+
+#### Response Structure Changes
+
+The response structure has been updated with new property names.
+
+**v1:**
+```typescript
+// Response properties
+response.orchestration_result
+response.module_results
+```
+
+**v2:**
+```typescript
+// Response properties
+response.final_result
+response.intermediate_results
+```
+
+#### Grounding Configuration
+
+The grounding configuration structure has been updated to use `placeholders` instead of separate `input_params` and `output_param`.
+
+**v1:**
+```typescript
+buildDocumentGroundingConfig({
+  input_params: ['groundingInput'],
+  output_param: 'groundingOutput',
+  filters: [...]
+})
+```
+
+**v2:**
+```typescript
+buildDocumentGroundingConfig({
+  placeholders: {
+    input: ['groundingInput'],
+    output: 'groundingOutput'
+  },
+  filters: [...]
+})
+```
+
+#### Removed Functions
+
+The deprecated `buildAzureContentFilter()` function has been removed in v2.
+Use `buildAzureContentSafetyFilter()` instead.
+
+**v1:**
+```typescript
+// This function is deprecated and removed in v2
+const filter = buildAzureContentFilter({
+  Hate: 'ALLOW_SAFE',
+  Violence: 'ALLOW_SAFE_LOW_MEDIUM'
+});
+```
+
+**v2:**
+```typescript
+// Use this function instead
+const filter = buildAzureContentSafetyFilter({
+  hate: 'ALLOW_SAFE',
+  violence: 'ALLOW_SAFE_LOW_MEDIUM'
+});
+```
+
+#### Azure Content Filter Changes
+
+The Azure content filter property names have been updated to use lowercase with underscores.
+
+**v1:**
+```typescript
+buildAzureContentSafetyFilter({
+  Hate: 'ALLOW_SAFE',
+  SelfHarm: 'ALLOW_SAFE_LOW',
+  Sexual: 'ALLOW_SAFE_LOW_MEDIUM',
+  Violence: 'ALLOW_ALL'
+})
+```
+
+**v2:**
+```typescript
+buildAzureContentSafetyFilter({
+  hate: 'ALLOW_SAFE',
+  self_harm: 'ALLOW_SAFE_LOW',
+  sexual: 'ALLOW_SAFE_LOW_MEDIUM',
+  violence: 'ALLOW_ALL'
+})
+```
+
+### `@sap-ai-sdk/langchain`
+
+#### Configuration Structure
+
+The LangChain orchestration configuration follows the same structural changes as the core orchestration package.
+
+**v1:**
+```typescript
+const config: LangChainOrchestrationModuleConfig = {
+  llm: {
+    model_name: 'gpt-4o',
+    model_params: {}
+  },
+  templating: {
+    template: messages
+  }
+};
+```
+
+**v2:**
+```typescript
+const config: LangChainOrchestrationModuleConfig = {
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o',
+      params: {}
+    },
+    prompt: {
+      template: messages
+    }
+  }
+};
+```
+
+#### Parameter Changes
+
+Input parameters for LangChain orchestration calls have been updated.
+
+**v1:**
+```typescript
+await orchestrationClient.invoke(messages, {
+  inputParams: { country: 'France' }
+});
+```
+
+**v2:**
+```typescript
+await orchestrationClient.invoke(messages, {
+  placeholderValues: { country: 'France' }
+});
+```
+
+#### Response Property Changes
+
+LangChain message responses now use updated property names for intermediate results.
+
+**v1:**
+```typescript
+// Access module results in response
+message.additional_kwargs.module_results
+```
+
+**v2:**
+```typescript
+// Access intermediate results in response
+message.additional_kwargs.intermediate_results
+```

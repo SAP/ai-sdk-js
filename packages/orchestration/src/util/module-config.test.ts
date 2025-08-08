@@ -2,70 +2,74 @@ import { createLogger } from '@sap-cloud-sdk/util';
 import { jest } from '@jest/globals';
 import {
   addStreamOptions,
-  addStreamOptionsToLlmModuleConfig,
+  addStreamOptionsToPromptTemplatingModuleConfig,
   addStreamOptionsToOutputFilteringConfig
 } from './module-config.js';
 import { buildAzureContentSafetyFilter } from './filtering.js';
 import type {
   ModuleConfigs,
   OrchestrationConfig,
-  TemplatingModuleConfig
+  PromptTemplatingModuleConfig
 } from '../client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
   StreamOptions
 } from '../orchestration-types.js';
+
 describe('stream util tests', () => {
-  const defaultOrchestrationModuleConfig: OrchestrationModuleConfig = {
-    llm: {
-      model_name: 'gpt-4o',
-      model_params: { max_tokens: 50, temperature: 0.1 }
-    },
-    templating: {
-      template: [{ role: 'user', content: 'Create paraphrases of {{?phrase}}' }]
+  const defaultOrchestrationModules: OrchestrationModuleConfig = {
+    promptTemplating: {
+      prompt: {
+        template: [
+          { role: 'user', content: 'Create paraphrases of {{?phrase}}' }
+        ]
+      },
+      model: {
+        name: 'gpt-4o',
+        params: { max_tokens: 50, temperature: 0.1 }
+      }
     }
   };
 
   const defaultModuleConfigs: ModuleConfigs = {
-    llm_module_config: defaultOrchestrationModuleConfig.llm,
-    templating_module_config:
-      defaultOrchestrationModuleConfig.templating as TemplatingModuleConfig
+    prompt_templating:
+      defaultOrchestrationModules.promptTemplating as PromptTemplatingModuleConfig
   };
 
   const defaultStreamOptions: StreamOptions = {
-    global: { chunk_size: 100 },
-    llm: { include_usage: false },
+    global: { enabled: true, chunk_size: 100 },
+    promptTemplating: { include_usage: false },
     outputFiltering: { overlap: 100 }
   };
 
-  it('should add include_usage to llm module config', () => {
-    const llmConfig = addStreamOptionsToLlmModuleConfig(
-      defaultOrchestrationModuleConfig.llm
+  it('should add include_usage to prompt templating module config', () => {
+    const promptTemplating = addStreamOptionsToPromptTemplatingModuleConfig(
+      defaultModuleConfigs.prompt_templating
     );
-    expect(llmConfig.model_params?.stream_options).toEqual({
+    expect(promptTemplating.model.params?.stream_options).toEqual({
       include_usage: true
     });
   });
 
-  it('should set include_usage to false in llm module config', () => {
-    const llmConfig = addStreamOptionsToLlmModuleConfig(
-      defaultOrchestrationModuleConfig.llm,
+  it('should set include_usage to false in prompt templating module config', () => {
+    const promptTemplating = addStreamOptionsToPromptTemplatingModuleConfig(
+      defaultModuleConfigs.prompt_templating,
       defaultStreamOptions
     );
-    expect(llmConfig.model_params?.stream_options).toEqual({
+    expect(promptTemplating.model.params?.stream_options).toEqual({
       include_usage: false
     });
   });
 
-  it('should not add any stream options to llm module config', () => {
-    const llmConfig = addStreamOptionsToLlmModuleConfig(
-      defaultOrchestrationModuleConfig.llm,
+  it('should not add any stream options to prompt templating module config', () => {
+    const promptTemplating = addStreamOptionsToPromptTemplatingModuleConfig(
+      defaultModuleConfigs.prompt_templating,
       {
-        llm: null
+        promptTemplating: null
       }
     );
     expect(
-      Object.keys(llmConfig.model_params ?? {}).every(
+      Object.keys(promptTemplating.model.params ?? {}).every(
         key => key !== 'stream_options'
       )
     ).toBe(true);
@@ -73,13 +77,13 @@ describe('stream util tests', () => {
 
   it('should add stream options to output filtering config', () => {
     const config: OrchestrationModuleConfig = {
-      ...defaultOrchestrationModuleConfig,
+      ...defaultOrchestrationModules,
       filtering: {
         output: {
           filters: [
             buildAzureContentSafetyFilter({
-              Hate: 'ALLOW_SAFE_LOW_MEDIUM',
-              SelfHarm: 'ALLOW_SAFE'
+              hate: 'ALLOW_SAFE_LOW_MEDIUM',
+              self_harm: 'ALLOW_SAFE'
             })
           ]
         }
@@ -98,12 +102,12 @@ describe('stream util tests', () => {
   it('should add stream options to orchestration config', () => {
     const config: ModuleConfigs = {
       ...defaultModuleConfigs,
-      filtering_module_config: {
+      filtering: {
         output: {
           filters: [
             buildAzureContentSafetyFilter({
-              Hate: 'ALLOW_SAFE_LOW_MEDIUM',
-              SelfHarm: 'ALLOW_SAFE'
+              hate: 'ALLOW_SAFE_LOW_MEDIUM',
+              self_harm: 'ALLOW_SAFE'
             })
           ]
         }
@@ -111,23 +115,25 @@ describe('stream util tests', () => {
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { llm, ...streamOptions } = defaultStreamOptions;
+    const { promptTemplating, ...streamOptions } = defaultStreamOptions;
 
     const expectedOrchestrationConfig: OrchestrationConfig = {
-      stream: true,
-      stream_options: streamOptions.global,
-      module_configurations: {
+      stream: streamOptions.global,
+      modules: {
         ...config,
-        llm_module_config: {
-          ...config.llm_module_config,
-          model_params: {
-            ...config.llm_module_config.model_params,
-            stream_options: { include_usage: true }
+        prompt_templating: {
+          ...config.prompt_templating,
+          model: {
+            ...config.prompt_templating.model,
+            params: {
+              ...(config.prompt_templating.model.params || {}),
+              stream_options: { include_usage: true }
+            }
           }
         },
-        filtering_module_config: {
+        filtering: {
           output: {
-            ...config.filtering_module_config!.output!,
+            ...config.filtering!.output!,
             stream_options: streamOptions.outputFiltering
           }
         }
@@ -150,8 +156,6 @@ describe('stream util tests', () => {
     expect(warnSpy).toHaveBeenCalledWith(
       'Output filter stream options are not applied because filtering module is not configured.'
     );
-    expect(
-      config.module_configurations.filtering_module_config
-    ).toBeUndefined();
+    expect(config.modules.filtering).toBeUndefined();
   });
 });

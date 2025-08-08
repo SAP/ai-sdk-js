@@ -1,7 +1,7 @@
 @path: 'orchestration'
 @requires: 'any'
 service OrchestrationService {
-  action chatCompletion(template : array of Template, inputParams : array of InputParam) returns String;
+  action chatCompletion(template : array of Template, placeholderValues : array of PlaceholderValue) returns String;
 }
 
 type Template {
@@ -9,7 +9,7 @@ type Template {
   content : String;
 }
 
-type InputParam {
+type PlaceholderValue {
   name  : String;
   value : String;
 }

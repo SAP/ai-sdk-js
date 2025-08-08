@@ -13,6 +13,6 @@ export type CompletionPostResponseStreaming = {
    * ID of the request
    */
   request_id: string;
-  module_results?: ModuleResultsStreaming;
-  orchestration_result?: LLMModuleResultStreaming;
+  intermediate_results?: ModuleResultsStreaming;
+  final_result?: LLMModuleResultStreaming;
 } & Record<string, any>;

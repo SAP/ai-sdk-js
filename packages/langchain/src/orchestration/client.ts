@@ -85,7 +85,7 @@ export class OrchestrationClient extends BaseChatModel<
     options: typeof this.ParsedCallOptions,
     runManager?: CallbackManagerForLLMRun
   ): Promise<ChatResult> {
-    const { inputParams, customRequestConfig } = options;
+    const { placeholderValues, customRequestConfig } = options;
     const allMessages = mapLangChainMessagesToOrchestrationMessages(messages);
     const mergedOrchestrationConfig = this.mergeOrchestrationConfig(options);
 
@@ -103,7 +103,7 @@ export class OrchestrationClient extends BaseChatModel<
         return orchestrationClient.chatCompletion(
           {
             messages: allMessages,
-            inputParams
+            placeholderValues
           },
           {
             ...customRequestConfig,
@@ -155,7 +155,7 @@ export class OrchestrationClient extends BaseChatModel<
     const orchestrationMessages =
       mapLangChainMessagesToOrchestrationMessages(messages);
 
-    const { inputParams, customRequestConfig } = options;
+    const { placeholderValues, customRequestConfig } = options;
     const mergedOrchestrationConfig = this.mergeOrchestrationConfig(options);
 
     const orchestrationClient = new OrchestrationClientBase(
@@ -174,7 +174,7 @@ export class OrchestrationClient extends BaseChatModel<
           options.signal.addEventListener('abort', () => controller.abort());
         }
         return orchestrationClient.stream(
-          { messages: orchestrationMessages, inputParams },
+          { messages: orchestrationMessages, placeholderValues },
           controller,
           options.streamOptions,
           customRequestConfig
@@ -183,7 +183,7 @@ export class OrchestrationClient extends BaseChatModel<
     );
 
     for await (const chunk of response.stream) {
-      const orchestrationResult = chunk.data.orchestration_result;
+      const orchestrationResult = chunk.data.final_result;
       // There can be only none or one choice inside a chunk
       const choice = orchestrationResult?.choices[0];
 
@@ -249,28 +249,35 @@ export class OrchestrationClient extends BaseChatModel<
     const { tools = [], stop = [] } = options;
     const config: LangChainOrchestrationModuleConfig = {
       ...this.orchestrationConfig,
-      llm: {
-        ...this.orchestrationConfig.llm,
-        model_params: {
-          ...this.orchestrationConfig.llm.model_params,
-          ...(stop.length && {
-            stop: [
-              ...(this.orchestrationConfig.llm.model_params?.stop || []),
-              ...stop
-            ]
-          })
+      promptTemplating: {
+        ...this.orchestrationConfig.promptTemplating,
+        model: {
+          ...this.orchestrationConfig.promptTemplating.model,
+          params: {
+            ...this.orchestrationConfig.promptTemplating.model.params,
+            ...(stop.length && {
+              stop: [
+                ...(this.orchestrationConfig.promptTemplating.model.params
+                  ?.stop || []),
+                ...stop
+              ]
+            })
+          }
         }
       }
     };
-    config.templating = this.orchestrationConfig.templating;
+
     if (tools.length) {
-      if (!config.templating) {
-        config.templating = {};
+      if (!config.promptTemplating.prompt) {
+        config.promptTemplating.prompt = {};
       }
-      if (!isTemplateRef(config.templating)) {
-        config.templating.tools = [
+      if (
+        typeof config.promptTemplating.prompt === 'object' &&
+        !isTemplateRef(config.promptTemplating.prompt)
+      ) {
+        config.promptTemplating.prompt.tools = [
           // Preserve existing tools configured in the templating module
-          ...(config.templating.tools || []),
+          ...(config.promptTemplating.prompt.tools || []),
           // Add new tools set with LangChain `bindTools()` or `invoke()` methods
           ...tools.map(t => mapToolToChatCompletionTool(t))
         ];
