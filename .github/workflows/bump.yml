@@ -17,7 +17,7 @@ jobs:
     outputs:
       version: ${{ steps.bump.outputs.version }}
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@v1.17.0
+      - uses: sap/ai-sdk-js/.github/actions/setup@v1-main
         with:
           token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           ref: 'v1-main'
@@ -45,7 +45,7 @@ jobs:
       pr_url: ${{ steps.open_pr.outputs.pr_url }}
     steps:
       - name: Checkout current repository
-        uses: sap/ai-sdk-js/.github/actions/setup@v1.17.0
+        uses: sap/ai-sdk-js/.github/actions/setup@v1-main
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Checkout Docs Repo
