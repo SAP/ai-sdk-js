@@ -2,14 +2,12 @@ name: smoke test
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: 0 2 * * *
 
 jobs:
   smoke-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@v1.17.0
+      - uses: sap/ai-sdk-js/.github/actions/setup@v1-main
       - run: pnpm smoke-tests create-deployment
       - uses: vchrisb/setup-cf@5aa69781ba95297cea2b80e71926198bed38ef5e
         with:
@@ -34,5 +32,5 @@ jobs:
           payload: |
             {
               "username": "GitHub E2E Test Runner",
-              "text": "⚠️ Smoke Test Failed 🚭! Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-js/actions/runs/${{ github.run_id }}|here>"
+              "text": "⚠️ Smoke Test Failed-v1 🚭! Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-js/actions/runs/${{ github.run_id }}|here>"
             }

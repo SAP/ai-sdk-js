@@ -2,21 +2,6 @@ version: 2
 updates:
   - package-ecosystem: npm
     directory: '/'
-    target-branch: 'main'
-    schedule:
-      interval: daily
-      time: '01:00'
-      timezone: 'Europe/Berlin'
-    open-pull-requests-limit: 10
-    ignore:
-      # We only want to do major node updates on purpose, so don't create dependabot PRs for major versions
-      - dependency-name: '@types/node'
-        update-types: ['version-update:semver-major']
-    groups:
-      sap-cloud-sdk:
-        patterns: ['@sap-cloud-sdk/*']
-  - package-ecosystem: npm
-    directory: '/'
     target-branch: 'v1-main'
     schedule:
       interval: daily

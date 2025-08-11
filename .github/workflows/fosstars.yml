@@ -2,8 +2,6 @@ name: 'Fosstars (Security)'
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 0 * * *'
 
 jobs:
   fosstars-rating:
