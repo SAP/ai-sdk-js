@@ -407,7 +407,7 @@ describe('orchestration service client', () => {
     expect(response.data).toEqual(mockResponse);
   });
 
-  it('sends message_history together with messages', async () => {
+  it('sends message_history together with messages without client-side history', async () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
@@ -508,7 +508,7 @@ describe('orchestration service client', () => {
         status: 200
       },
       {
-        url: 'inference/deployments/1234/completion'
+        url: 'inference/deployments/1234/v2/completion'
       }
     );
 
