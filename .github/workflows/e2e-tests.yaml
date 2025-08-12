@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
   schedule:
     - cron: 0 22 * * *
+  workflow_call:
 
 jobs:
   e2e-tests:
