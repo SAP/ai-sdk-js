@@ -2,6 +2,13 @@ name: e2e tests
 
 on:
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      branch:
+        description: 'Which branch to test'
+        required: true
+        type: string
+        default: 'v1-main'
 
 jobs:
   e2e-tests:
