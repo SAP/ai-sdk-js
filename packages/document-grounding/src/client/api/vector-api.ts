@@ -14,7 +14,7 @@ import type {
   DocumentsListResponse,
   DocumentUpdateRequest,
   TextSearchRequest,
-  SearchResults,
+  VectorSearchResults,
   CollectionCreatedResponse,
   CollectionPendingResponse,
   CollectionDeletedResponse
@@ -219,7 +219,7 @@ export const VectorApi = {
     body: TextSearchRequest,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<SearchResults>(
+    new OpenApiRequestBuilder<VectorSearchResults>(
       'post',
       '/vector/search',
       {
