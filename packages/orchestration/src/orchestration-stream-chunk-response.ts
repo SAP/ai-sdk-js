@@ -9,8 +9,8 @@ import type {
  * Orchestration stream chunk response.
  */
 export class OrchestrationStreamChunkResponse {
-  constructor(public readonly data: CompletionPostResponseStreaming) {
-    this.data = data;
+  constructor(public readonly _data: CompletionPostResponseStreaming) {
+    this._data = _data;
   }
 
   /**
@@ -18,7 +18,7 @@ export class OrchestrationStreamChunkResponse {
    * @returns Token usage.
    */
   getTokenUsage(): TokenUsage | undefined {
-    return this.data.final_result?.usage;
+    return this._data.final_result?.usage;
   }
 
   /**
@@ -60,6 +60,6 @@ export class OrchestrationStreamChunkResponse {
   }
 
   private getChoices(): LlmChoiceStreaming[] | undefined {
-    return this.data.final_result?.choices;
+    return this._data.final_result?.choices;
   }
 }

@@ -296,10 +296,10 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
     result.getContent();
   } catch {
     logger.info(
-      `Result from output content filter: ${result.data.intermediate_results.output_filtering!.message}`
+      `Result from output content filter: ${result._data.intermediate_results.output_filtering!.message}`
     );
     logger.info(
-      `The original response from the LLM was as follows:\n${result.data.intermediate_results.llm?.choices[0].message.content}`
+      `The original response from the LLM was as follows:\n${result._data.intermediate_results.llm?.choices[0].message.content}`
     );
     return result;
   }

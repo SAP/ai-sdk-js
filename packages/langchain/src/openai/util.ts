@@ -2,22 +2,9 @@ import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
 import { v4 as uuidv4 } from 'uuid';
 import { isInteropZodSchema } from '@langchain/core/utils/types';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
+import type { AzureOpenAiFunctionObject, AzureOpenAiChatCompletionTool, AzureOpenAiChatCompletionMessageToolCalls, AzureOpenAiCreateChatCompletionResponse, AzureOpenAiChatCompletionRequestAssistantMessage, AzureOpenAiChatCompletionRequestUserMessage, AzureOpenAiChatCompletionRequestToolMessage, AzureOpenAiChatCompletionRequestFunctionMessage, AzureOpenAiChatCompletionRequestSystemMessage, AzureOpenAiChatCompletionRequestMessage, AzureOpenAiCreateChatCompletionRequest, AzureOpenAiChatCompletionMessageToolCallChunk } from '@sap-ai-sdk/foundation-models/internal.js';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
-import type {
-  AzureOpenAiChatCompletionRequestUserMessage,
-  AzureOpenAiChatCompletionRequestAssistantMessage,
-  AzureOpenAiChatCompletionTool,
-  AzureOpenAiChatCompletionRequestMessage,
-  AzureOpenAiCreateChatCompletionResponse,
-  AzureOpenAiCreateChatCompletionRequest,
-  AzureOpenAiChatCompletionMessageToolCalls,
-  AzureOpenAiChatCompletionRequestToolMessage,
-  AzureOpenAiChatCompletionRequestFunctionMessage,
-  AzureOpenAiChatCompletionRequestSystemMessage,
-  AzureOpenAiFunctionObject,
-  AzureOpenAiChatCompletionStreamChunkResponse,
-  AzureOpenAiChatCompletionMessageToolCallChunk
-} from '@sap-ai-sdk/foundation-models';
+import type { AzureOpenAiChatCompletionStreamChunkResponse } from '@sap-ai-sdk/foundation-models';
 import type {
   BaseMessage,
   FunctionMessage,
@@ -307,7 +294,7 @@ export function mapLangChainToAiClient(
 export function mapAzureOpenAiChunkToLangChainMessageChunk(
   chunk: AzureOpenAiChatCompletionStreamChunkResponse
 ): AIMessageChunk {
-  const choice = chunk.data.choices[0];
+  const choice = chunk._data.choices[0];
   const content = choice?.delta.content ?? '';
   const toolCallChunks = choice?.delta.tool_calls;
   return new AIMessageChunk({

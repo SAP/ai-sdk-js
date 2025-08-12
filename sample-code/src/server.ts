@@ -276,7 +276,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       res
         .header('Content-Type', 'text/plain')
         .send(
-          `Output filter applied successfully with threshold results:\n${JSON.stringify(result.data.intermediate_results.output_filtering!.data!, null, 2)}`
+          `Output filter applied successfully with threshold results:\n${JSON.stringify(result._data.intermediate_results.output_filtering!.data!, null, 2)}`
         );
     } else if (sampleCase === 'responseFormat') {
       res
@@ -285,7 +285,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
           `Response format applied successfully with response:\n${JSON.stringify(result, null, 2)}`
         );
     } else {
-      console.log(JSON.stringify(result.data, null, 2));
+      console.log(JSON.stringify(result._data, null, 2));
       res.header('Content-Type', 'text/plain').send(result.getContent());
     }
   } catch (error: any) {
@@ -616,7 +616,7 @@ app.get(
 
       // Print the grounding data.
       const groundingResultString =
-        groundingResult.data.intermediate_results.grounding?.data
+        groundingResult._data.intermediate_results.grounding?.data
           ?.grounding_result;
       res.write(
         `Orchestration grounding metadata:\t${JSON.stringify(JSON.parse(groundingResultString)[0].metadata)}\n`

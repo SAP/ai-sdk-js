@@ -1,8 +1,8 @@
 export type {
   AzureOpenAiChatModel,
+  AzureOpenAiChatCompletionParameters,
   AzureOpenAiEmbeddingModel,
-  AzureOpenAiEmbeddingParameters,
-  AzureOpenAiEmbeddingOutput
+  AzureOpenAiEmbeddingParameters
 } from './azure-openai/index.js';
 
 export {
@@ -14,5 +14,3 @@ export {
   AzureOpenAiChatCompletionStreamResponse,
   AzureOpenAiChatCompletionStream
 } from './azure-openai/index.js';
-
-export type * from './azure-openai/client/inference/schema/index.js';

@@ -109,13 +109,6 @@ export class OrchestrationStreamResponse<T> {
     return this.findChoiceByIndex(choiceIndex)?.message;
   }
 
-  public getResponse(): CompletionPostResponse | undefined {
-    if (this.isStreamOpen()) {
-      return;
-    }
-    return this._data as CompletionPostResponse;
-  }
-
   get stream(): OrchestrationStream<T> {
     if (!this._stream) {
       throw new Error('Response stream is undefined.');

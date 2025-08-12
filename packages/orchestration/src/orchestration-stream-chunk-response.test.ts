@@ -47,13 +47,13 @@ describe('Orchestration chat completion stream chunk response', () => {
 
   it('should return the chat completion stream chunk response', () => {
     expect(
-      orchestrationStreamChunkResponses.tokenUsageResponse.data
+      orchestrationStreamChunkResponses.tokenUsageResponse._data
     ).toStrictEqual(mockResponses.tokenUsageAndFinishReasonResponse);
     expect(
-      orchestrationStreamChunkResponses.finishReasonResponse.data
+      orchestrationStreamChunkResponses.finishReasonResponse._data
     ).toStrictEqual(mockResponses.tokenUsageAndFinishReasonResponse);
     expect(
-      orchestrationStreamChunkResponses.deltaContentResponse.data
+      orchestrationStreamChunkResponses.deltaContentResponse._data
     ).toStrictEqual(mockResponses.deltaContentResponse);
   });
 

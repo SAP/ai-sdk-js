@@ -119,7 +119,7 @@ export class OrchestrationClient extends BaseChatModel<
       typeof content === 'string' ? content : ''
     );
 
-    return mapOutputToChatResult(res.data);
+    return mapOutputToChatResult(res._data);
   }
 
   override bindTools(
@@ -183,7 +183,7 @@ export class OrchestrationClient extends BaseChatModel<
     );
 
     for await (const chunk of response.stream) {
-      const orchestrationResult = chunk.data.final_result;
+      const orchestrationResult = chunk._data.final_result;
       // There can be only none or one choice inside a chunk
       const choice = orchestrationResult?.choices[0];
 
@@ -206,7 +206,7 @@ export class OrchestrationClient extends BaseChatModel<
         generationInfo.model_name = orchestrationResult.model;
         generationInfo.id = orchestrationResult.id;
         generationInfo.created = orchestrationResult.created;
-        generationInfo.request_id = chunk.data.request_id;
+        generationInfo.request_id = chunk._data.request_id;
       }
 
       // Process token usage
