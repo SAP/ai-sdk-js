@@ -38,7 +38,7 @@ const logger = createLogger({
  * Get the orchestration client.
  */
 export class OrchestrationClient {
-  private useClientHistory = true;
+  private useClientHistory = false;
   private messagesHistory?: ChatMessages;
   /**
    * Creates an instance of the orchestration client.
@@ -61,9 +61,8 @@ export class OrchestrationClient {
           ? this.parseAndMergeTemplating(config) // parse and assign if templating is a string
           : config;
     }
-    if (clientConfig?.useClientHistory === false) {
-      this.useClientHistory = false;
-    } else {
+    if (clientConfig?.useClientHistory) {
+      this.useClientHistory = true;
       this.messagesHistory = clientConfig?.messagesHistory;
     }
   }

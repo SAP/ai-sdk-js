@@ -407,7 +407,7 @@ describe('orchestration service client', () => {
     expect(response.data).toEqual(mockResponse);
   });
 
-  it('sends message_history together with messages without client-side history', async () => {
+  it('sends message_history together with messages', async () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
@@ -416,7 +416,6 @@ describe('orchestration service client', () => {
         }
       }
     };
-    const clientConfig: ClientConfig = { useClientHistory: false };
     const prompt: ChatCompletionRequest = {
       messages: [{ role: 'user', content: "What's my name?" }],
       messagesHistory: [
@@ -454,14 +453,13 @@ describe('orchestration service client', () => {
       }
     );
 
-    const response = await new OrchestrationClient(
-      config,
-      clientConfig
-    ).chatCompletion(prompt);
+    const response = await new OrchestrationClient(config).chatCompletion(
+      prompt
+    );
     expect(response.data).toEqual(mockResponse);
   });
 
-  it('sends message_history together with messages', async () => {
+  it('sends message_history together with messages with client-side history', async () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
@@ -471,6 +469,7 @@ describe('orchestration service client', () => {
       }
     };
     const clientConfig: ClientConfig = {
+      useClientHistory: true,
       messagesHistory: [
         {
           role: 'system',
@@ -726,6 +725,15 @@ describe('orchestration service client', () => {
   });
 
   it('executes a request with the custom resource group', async () => {
+    const prompt: ChatCompletionRequest = {
+      messagesHistory: [
+        {
+          role: 'user',
+          content: 'Where is the deepest place on earth located'
+        }
+      ]
+    };
+
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
@@ -735,15 +743,6 @@ describe('orchestration service client', () => {
           template: [{ role: 'user', content: "What's my name?" }]
         }
       }
-    };
-
-    const clientConfig: ClientConfig = {
-      messagesHistory: [
-        {
-          role: 'user',
-          content: 'Where is the deepest place on earth located'
-        }
-      ]
     };
 
     const customChatCompletionEndpoint = {
@@ -763,7 +762,7 @@ describe('orchestration service client', () => {
 
     mockInference(
       {
-        data: constructCompletionPostRequest(config, clientConfig)
+        data: constructCompletionPostRequest(config, prompt)
       },
       {
         data: mockResponse,
@@ -772,15 +771,11 @@ describe('orchestration service client', () => {
       customChatCompletionEndpoint
     );
 
-    const clientWithResourceGroup = new OrchestrationClient(
-      config,
-      clientConfig,
-      {
-        resourceGroup: 'custom-resource-group'
-      }
-    );
+    const clientWithResourceGroup = new OrchestrationClient(config, undefined, {
+      resourceGroup: 'custom-resource-group'
+    });
 
-    const response = await clientWithResourceGroup.chatCompletion();
+    const response = await clientWithResourceGroup.chatCompletion(prompt);
     expect(response.data).toEqual(mockResponse);
   });
 
