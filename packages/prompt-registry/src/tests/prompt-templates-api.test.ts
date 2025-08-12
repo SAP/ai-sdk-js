@@ -41,7 +41,7 @@ describe('prompt templates', () => {
 
     const result: PromptTemplateListResponse =
       await PromptTemplatesApi.listPromptTemplates({
-        
+        scenario: 'test'
       }).execute();
 
     expect(result).toEqual(expectedResponse);
