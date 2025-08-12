@@ -3,16 +3,14 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { EmbeddingConfig } from './embedding-config.js';
 import type { VectorKeyValueListPair } from './vector-key-value-list-pair.js';
 /**
- * A request for creating a new, single collection.
+ * Representation of the 'VectorChunk' schema.
  */
-export type CollectionRequest = {
-  title?: string | null;
-  embeddingConfig: EmbeddingConfig;
+export type VectorChunk = {
+  id: string;
+  content: string;
   /**
-   * Metadata attached to collection. Useful to restrict search to a subset of collections.
    * Default: [].
    */
   metadata?: VectorKeyValueListPair[];

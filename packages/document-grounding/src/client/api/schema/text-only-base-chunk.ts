@@ -3,11 +3,11 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { KeyValueListPair } from './key-value-list-pair.js';
+import type { VectorKeyValueListPair } from './vector-key-value-list-pair.js';
 /**
  * Representation of the 'TextOnlyBaseChunk' schema.
  */
 export type TextOnlyBaseChunk = {
   content: string;
-  metadata: KeyValueListPair[];
+  metadata: VectorKeyValueListPair[];
 } & Record<string, any>;
