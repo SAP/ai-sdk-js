@@ -26,7 +26,7 @@ jobs:
   checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      - uses: sap/ai-sdk-js/.github/actions/setup@v1-main
       - name: REUSE Compliance Check
         uses: fsfe/reuse-action@v5
       - run: pnpm generate
