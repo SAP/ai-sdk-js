@@ -22,7 +22,6 @@ import type {
   ChatCompletionTool,
   ToolChatMessage
 } from '@sap-ai-sdk/orchestration';
-import type { DataRepositoryType } from '@sap-ai-sdk/orchestration/internal.js';
 
 const logger = createLogger({
   package: 'sample-code',
@@ -468,7 +467,7 @@ export async function orchestrationFromJson(): Promise<
  */
 export async function orchestrationGrounding(
   query: string,
-  dataRepositoryType: DataRepositoryType = 'vector',
+  dataRepositoryType: 'vector' | 'help.sap.com' = 'vector',
   dataRepositories: string[] = ['*']
 ): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient(
