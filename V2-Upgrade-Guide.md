@@ -9,6 +9,7 @@ Version 2.x introduces significant structural changes to align with updated serv
 - [Table of Contents](#table-of-contents)
 - [How to Upgrade](#how-to-upgrade)
 - [Breaking Changes](#breaking-changes)
+  - [`@sap-ai-sdk/foundation-models`](#sap-ai-sdkfoundation-models)
   - [`@sap-ai-sdk/orchestration`](#sap-ai-sdkorchestration)
   - [`@sap-ai-sdk/langchain`](#sap-ai-sdklangchain)
 
@@ -39,7 +40,102 @@ Update all SAP Cloud SDK for AI packages to version 2.x in your `package.json` f
 
 ## Breaking Changes
 
+### `@sap-ai-sdk/foundation-models`
+
+#### Type Import Changes
+
+Generated types are no longer exported from `@sap-ai-sdk/foundation-models` and must be imported from `@sap-ai-sdk/foundation-models/internal.js`.
+
+**v1:**
+```typescript
+import type { 
+  AzureOpenAiCreateChatCompletionRequest,
+  AzureOpenAiCreateChatCompletionResponse 
+} from '@sap-ai-sdk/foundation-models';
+```
+
+**v2:**
+```typescript
+// Generated types must be imported from internal
+import type { 
+  AzureOpenAiCreateChatCompletionRequest,
+  AzureOpenAiCreateChatCompletionResponse 
+} from '@sap-ai-sdk/foundation-models/internal.js';
+```
+
+```typescript
+// Frequently used types remain available from main package
+import type { 
+  AzureOpenAiChatCompletionTool,
+  AzureOpenAiFunctionObject,
+  AzureOpenAiChatCompletionRequestMessage,
+  AzureOpenAiChatCompletionRequestSystemMessage,
+  AzureOpenAiChatCompletionRequestUserMessage,
+  AzureOpenAiChatCompletionRequestAssistantMessage,
+  AzureOpenAiChatCompletionRequestToolMessage
+} from '@sap-ai-sdk/foundation-models';
+```
+
+#### Chat Completion Parameter Type
+
+The `AzureOpenAiCreateChatCompletionRequest` type is no longer exported publicly. Use the new `AzureOpenAiChatCompletionParameters` type instead.
+
+**v1:**
+```typescript
+import type { AzureOpenAiCreateChatCompletionRequest } from '@sap-ai-sdk/foundation-models';
+
+const request: AzureOpenAiCreateChatCompletionRequest = {
+  messages: [{ role: 'user', content: 'Hello' }],
+  max_tokens: 100
+};
+```
+
+**v2:**
+```typescript
+import type { AzureOpenAiChatCompletionParameters } from '@sap-ai-sdk/foundation-models';
+
+const request: AzureOpenAiChatCompletionParameters = {
+  messages: [{ role: 'user', content: 'Hello' }],
+  max_tokens: 100
+};
+```
+
 ### `@sap-ai-sdk/orchestration`
+
+#### Type Import Changes
+
+Generated types are no longer exported from `@sap-ai-sdk/orchestration` and must be imported from `@sap-ai-sdk/orchestration/internal.js`.
+
+**v1:**
+```typescript
+import type { 
+  CompletionPostResponse,
+  LlmChoice 
+} from '@sap-ai-sdk/orchestration';
+```
+
+**v2:**
+```typescript
+// Generated types must be imported from internal
+import type { 
+  CompletionPostResponse,
+  LlmChoice 
+} from '@sap-ai-sdk/orchestration/internal.js';
+```
+
+```typescript
+// Frequently used types remain available from main package
+import type { 
+  ChatMessage,
+  SystemChatMessage,
+  UserChatMessage,
+  AssistantChatMessage,
+  ToolChatMessage,
+  DeveloperChatMessage,
+  ChatCompletionTool,
+  FunctionObject 
+} from '@sap-ai-sdk/orchestration';
+```
 
 #### Module Configuration Structure
 
