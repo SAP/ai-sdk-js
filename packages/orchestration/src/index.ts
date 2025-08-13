@@ -23,7 +23,8 @@ export type {
   OrchestrationErrorResponse,
   LlamaGuardFilterConfig,
   DocumentGroundingConfig,
-  DpiMaskingProviderConfig
+  DpiMaskingProviderConfig,
+  TranslationConfig
 } from './orchestration-types.js';
 export { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 export { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
