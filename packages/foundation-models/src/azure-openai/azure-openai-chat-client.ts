@@ -7,10 +7,10 @@ import { apiVersion, type AzureOpenAiChatModel } from './model-types.js';
 import { AzureOpenAiChatCompletionResponse } from './azure-openai-chat-completion-response.js';
 import { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.js';
 import { AzureOpenAiChatCompletionStream } from './azure-openai-chat-completion-stream.js';
+import type { AzureOpenAiChatCompletionParameters } from './azure-openai-chat-completion-types.js';
 import type { ModelDeployment } from '@sap-ai-sdk/ai-api';
 import type { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-import type { AzureOpenAiCreateChatCompletionRequest } from './client/inference/schema/index.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 /**
@@ -25,7 +25,7 @@ export class AzureOpenAiChatClient {
   constructor(
     private modelDeployment: ModelDeployment<AzureOpenAiChatModel>,
     private destination?: HttpDestinationOrFetchOptions
-  ) {}
+  ) { }
 
   /**
    * Creates a completion for the chat messages.
@@ -34,7 +34,7 @@ export class AzureOpenAiChatClient {
    * @returns The completion result.
    */
   async run(
-    request: AzureOpenAiCreateChatCompletionRequest,
+    request: AzureOpenAiChatCompletionParameters,
     requestConfig?: CustomRequestConfig
   ): Promise<AzureOpenAiChatCompletionResponse> {
     const response = await this.executeRequest(request, requestConfig);
@@ -49,7 +49,7 @@ export class AzureOpenAiChatClient {
    * @returns A response containing the chat completion stream.
    */
   async stream(
-    request: AzureOpenAiCreateChatCompletionRequest,
+    request: AzureOpenAiChatCompletionParameters,
     controller = new AbortController(),
     requestConfig?: CustomRequestConfig
   ): Promise<
@@ -68,7 +68,7 @@ export class AzureOpenAiChatClient {
   }
 
   private async executeRequest(
-    reqeust: AzureOpenAiCreateChatCompletionRequest,
+    reqeust: AzureOpenAiChatCompletionParameters,
     requestConfig?: CustomRequestConfig
   ): Promise<HttpResponse> {
     const deploymentId = await getDeploymentId(
@@ -90,7 +90,7 @@ export class AzureOpenAiChatClient {
   }
 
   private async createStream(
-    reqeust: AzureOpenAiCreateChatCompletionRequest,
+    reqeust: AzureOpenAiChatCompletionParameters,
     controller: AbortController,
     requestConfig?: CustomRequestConfig
   ): Promise<AzureOpenAiChatCompletionStream<any>> {

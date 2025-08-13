@@ -13,11 +13,10 @@ import type {
   AzureOpenAiChatCompletionRequestFunctionMessage,
   AzureOpenAiChatCompletionRequestSystemMessage,
   AzureOpenAiChatCompletionRequestMessage,
-  AzureOpenAiCreateChatCompletionRequest,
   AzureOpenAiChatCompletionMessageToolCallChunk
 } from '@sap-ai-sdk/foundation-models/internal.js';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
-import type { AzureOpenAiChatCompletionStreamChunkResponse } from '@sap-ai-sdk/foundation-models';
+import type { AzureOpenAiChatCompletionParameters, AzureOpenAiChatCompletionStreamChunkResponse } from '@sap-ai-sdk/foundation-models';
 import type {
   BaseMessage,
   FunctionMessage,
@@ -58,8 +57,8 @@ export function mapToolToOpenAiFunction(
         // Notice that LangChain ToolDeifnition does not have strict property.
         ('strict' in tool.function &&
           tool.function.strict !== undefined && {
-            strict: tool.function.strict
-          }))
+          strict: tool.function.strict
+        }))
     };
   }
   // StructuredTool like object
@@ -274,8 +273,8 @@ export function mapLangChainToAiClient(
   client: AzureOpenAiChatClient,
   messages: BaseMessage[],
   options?: AzureOpenAiChatCallOptions & { promptIndex?: number }
-): AzureOpenAiCreateChatCompletionRequest {
-  return removeUndefinedProperties<AzureOpenAiCreateChatCompletionRequest>({
+): AzureOpenAiChatCompletionParameters {
+  return removeUndefinedProperties<AzureOpenAiChatCompletionParameters>({
     messages: messages.map(mapBaseMessageToAzureOpenAiChatMessage),
     max_tokens: client.max_tokens === -1 ? undefined : client.max_tokens,
     presence_penalty: client.presence_penalty,

@@ -5,6 +5,7 @@ import type {
   BindToolsInput
 } from '@langchain/core/language_models/chat_models';
 import type {
+  AzureOpenAiChatCompletionParameters,
   AzureOpenAiChatModel,
   AzureOpenAiEmbeddingModel
 } from '@sap-ai-sdk/foundation-models';
@@ -12,8 +13,7 @@ import type { CustomRequestConfig } from '@sap-ai-sdk/core';
 import type { ModelConfig, ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
 import type {
   AzureOpenAiChatCompletionsRequestCommon,
-  AzureOpenAiChatCompletionTool,
-  AzureOpenAiCreateChatCompletionRequest
+  AzureOpenAiChatCompletionTool
 } from '@sap-ai-sdk/foundation-models/internal.js';
 
 /**
@@ -51,7 +51,7 @@ export type ChatAzureOpenAIToolType =
  */
 export type AzureOpenAiChatCallOptions = BaseChatModelCallOptions &
   Pick<
-    AzureOpenAiCreateChatCompletionRequest,
+    AzureOpenAiChatCompletionParameters,
     | 'data_sources'
     | 'n'
     | 'seed'
