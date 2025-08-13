@@ -22,9 +22,7 @@ import type {
   ChatCompletionTool,
   ToolChatMessage
 } from '@sap-ai-sdk/orchestration';
-import type {
-  DataRepositoryType
-} from '@sap-ai-sdk/orchestration/internal.js';
+import type { DataRepositoryType } from '@sap-ai-sdk/orchestration/internal.js';
 
 const logger = createLogger({
   package: 'sample-code',

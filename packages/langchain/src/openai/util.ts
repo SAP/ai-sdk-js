@@ -2,7 +2,20 @@ import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
 import { v4 as uuidv4 } from 'uuid';
 import { isInteropZodSchema } from '@langchain/core/utils/types';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
-import type { AzureOpenAiFunctionObject, AzureOpenAiChatCompletionTool, AzureOpenAiChatCompletionMessageToolCalls, AzureOpenAiCreateChatCompletionResponse, AzureOpenAiChatCompletionRequestAssistantMessage, AzureOpenAiChatCompletionRequestUserMessage, AzureOpenAiChatCompletionRequestToolMessage, AzureOpenAiChatCompletionRequestFunctionMessage, AzureOpenAiChatCompletionRequestSystemMessage, AzureOpenAiChatCompletionRequestMessage, AzureOpenAiCreateChatCompletionRequest, AzureOpenAiChatCompletionMessageToolCallChunk } from '@sap-ai-sdk/foundation-models/internal.js';
+import type {
+  AzureOpenAiFunctionObject,
+  AzureOpenAiChatCompletionTool,
+  AzureOpenAiChatCompletionMessageToolCalls,
+  AzureOpenAiCreateChatCompletionResponse,
+  AzureOpenAiChatCompletionRequestAssistantMessage,
+  AzureOpenAiChatCompletionRequestUserMessage,
+  AzureOpenAiChatCompletionRequestToolMessage,
+  AzureOpenAiChatCompletionRequestFunctionMessage,
+  AzureOpenAiChatCompletionRequestSystemMessage,
+  AzureOpenAiChatCompletionRequestMessage,
+  AzureOpenAiCreateChatCompletionRequest,
+  AzureOpenAiChatCompletionMessageToolCallChunk
+} from '@sap-ai-sdk/foundation-models/internal.js';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type { AzureOpenAiChatCompletionStreamChunkResponse } from '@sap-ai-sdk/foundation-models';
 import type {
