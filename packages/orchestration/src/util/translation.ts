@@ -1,4 +1,7 @@
-import type { TranslationConfig, TranslationConfigParams } from '../orchestration-types.js';
+import type {
+  TranslationConfig,
+  TranslationConfigParams
+} from '../orchestration-types.js';
 
 /**
  * Convenience function to build a document translation configuration for orchestration service.
