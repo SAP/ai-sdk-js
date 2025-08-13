@@ -11,7 +11,7 @@ For packages like `ai-api`, `document-grounding`, and `prompt-registry`, the gen
 However, for packages like `foundation-models` and `orchestration`, only the generated types are used, and the client is implemented manually to provide more convenient features.
 
 Currently, all generated types in `foundation-models` and `orchestration` packages are exported publicly. 
-It means that if the schema in OpenAPI specification changes, we need to add wrappers or aliases, or deprecate the old types to avoid breaking changes
+It means that if the schema in OpenAPI specification changes, we need to add wrappers or aliases, or deprecate the old types to avoid breaking changes.
 This can sometimes be tricky as those changed types might directly be used in the public client APIs and could lead to deprecation of the APIs in order to fully support the upcoming new features.
 
 ## Decision
@@ -39,10 +39,7 @@ For `@sap-ai-sdk/orchestration`, additionally:
 
 - Types of all modules used in `OrchestrationModuleConfig` interface.
 
-# Discussion <!-- Optional -->
-
-<!-- Details on the discussion leading to the decision.
-Often a list of options with pros and cons including the selection implementation. -->
+# Discussion
 
 We need to decide if we categorize types used in `sample-code` or documentation as frequently used types if they can only be imported from internal after applying the above general strategy.
 

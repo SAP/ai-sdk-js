@@ -78,7 +78,8 @@ import type {
 
 #### Chat Completion Parameter Type
 
-The `AzureOpenAiCreateChatCompletionRequest` type is no longer exported publicly. Use the new `AzureOpenAiChatCompletionParameters` type instead.
+The `AzureOpenAiCreateChatCompletionRequest` type is no longer exported publicly.
+Use the new `AzureOpenAiChatCompletionParameters` type instead.
 
 **v1:**
 ```typescript
