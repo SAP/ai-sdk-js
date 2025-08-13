@@ -36,3 +36,19 @@ export {
   buildDpiMaskingProvider,
   buildTranslationConfig
 } from './util/index.js';
+
+/**
+ * Exporting frequently used types.
+ * In case of breaking changes, create wrappers in `orchestration-types.ts`.
+ * Explicitly export the wrapper also in `internal.ts`.
+ */
+export type {
+  ChatMessage,
+  SystemChatMessage,
+  UserChatMessage,
+  AssistantChatMessage,
+  ToolChatMessage,
+  DeveloperChatMessage,
+  ChatCompletionTool,
+  FunctionObject
+} from './client/api/schema/index.js';

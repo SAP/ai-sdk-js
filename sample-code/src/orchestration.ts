@@ -18,11 +18,11 @@ import type {
   OrchestrationStreamResponse,
   OrchestrationResponse,
   StreamOptions,
-  OrchestrationErrorResponse
+  OrchestrationErrorResponse,
+  ChatCompletionTool,
+  ToolChatMessage
 } from '@sap-ai-sdk/orchestration';
 import type {
-  ChatCompletionTool,
-  ToolChatMessage,
   DataRepositoryType
 } from '@sap-ai-sdk/orchestration/internal.js';
 

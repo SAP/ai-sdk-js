@@ -7,13 +7,11 @@ import type {
   AzureOpenAiChatCompletionResponse,
   AzureOpenAiEmbeddingResponse,
   AzureOpenAiChatCompletionStreamResponse,
-  AzureOpenAiChatCompletionStreamChunkResponse
-} from '@sap-ai-sdk/foundation-models';
-import type {
+  AzureOpenAiChatCompletionStreamChunkResponse,
   AzureOpenAiChatCompletionTool,
   AzureOpenAiChatCompletionRequestMessage,
   AzureOpenAiChatCompletionRequestToolMessage
-} from '@sap-ai-sdk/foundation-models/internal.js';
+} from '@sap-ai-sdk/foundation-models';
 
 const logger = createLogger({
   package: 'sample-code',
