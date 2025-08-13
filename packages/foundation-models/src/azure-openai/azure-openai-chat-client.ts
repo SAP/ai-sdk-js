@@ -25,7 +25,7 @@ export class AzureOpenAiChatClient {
   constructor(
     private modelDeployment: ModelDeployment<AzureOpenAiChatModel>,
     private destination?: HttpDestinationOrFetchOptions
-  ) { }
+  ) {}
 
   /**
    * Creates a completion for the chat messages.
