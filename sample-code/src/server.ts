@@ -180,7 +180,7 @@ app.get('/azure-openai/chat-completion-with-destination', async (req, res) => {
 app.get('/azure-openai/chat-completion-stream', async (req, res) => {
   const controller = new AbortController();
   try {
-    const response = await azureChatCompletionStream(controller);
+    const response = await azureChatCompletionStream(controller.signal);
 
     // Set headers for event stream.
     res.setHeader('Content-Type', 'text/event-stream');
