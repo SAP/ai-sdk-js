@@ -797,11 +797,11 @@ components:
             - $ref: '#/components/schemas/Template'
             - $ref: '#/components/schemas/TemplateRef'
         model:
-          description: >
-            The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.
           $ref: '#/components/schemas/LLMModelDetails'
     LLMModelDetails:
       type: object
+      description: >
+        The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.
       required:
         - name
       additionalProperties: false
@@ -1228,19 +1228,33 @@ components:
           type: boolean
 
     # --- Masking module ---
-
     MaskingModuleConfig:
-      type: object
-      required:
-        - masking_providers
-      additionalProperties: false
-      properties:
-        masking_providers:
-          type: array
-          minItems: 1
-          items:
-            $ref: '#/components/schemas/MaskingProviderConfig'
-          description: List of masking service providers
+      oneOf:
+        - type: object
+          title: MaskingModuleConfigProviders
+          properties:
+            providers:
+              description: List of masking service providers
+              type: array
+              minItems: 1
+              items:
+                $ref: '#/components/schemas/MaskingProviderConfig'
+          required:
+            - providers
+          additionalProperties: false
+        - type: object
+          title: MaskingModuleConfigMaskingProviders
+          properties:
+            masking_providers:
+              deprecated: true
+              description: 'This field is **DEPRECATED** and will be removed on August 05, 2026. Use `providers` property instead. List of masking service providers.'
+              type: array
+              minItems: 1
+              items:
+                $ref: '#/components/schemas/MaskingProviderConfig'
+          required:
+            - masking_providers
+          additionalProperties: false
 
     MaskingProviderConfig:
       oneOf:
