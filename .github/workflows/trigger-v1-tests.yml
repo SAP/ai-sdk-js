@@ -2,8 +2,8 @@ name: trigger v1 tests
 
 on:
   schedule:
-    # At 3 AM UTC every day
-    - cron: 0 3 * * *
+    # At 4 AM UTC every day
+    - cron: 0 4 * * *
 
 jobs:
   smoke-tests-v1:

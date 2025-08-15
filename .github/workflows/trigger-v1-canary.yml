@@ -2,8 +2,8 @@ name: trigger v1 canary release
 
 on:
   schedule:
-    # At 4 AM UTC every day
-    - cron: 0 4 * * *
+    # At 3 AM UTC every day
+    - cron: 0 3 * * *
 
 jobs:
   canary-release:
