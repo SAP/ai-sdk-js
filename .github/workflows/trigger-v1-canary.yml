@@ -7,7 +7,7 @@ on:
 
 jobs:
   canary-release:
-    uses: SAP/ai-sdk-js/.github/workflows/publish-canary.yml@v1-main
+    uses: SAP/ai-sdk-js/.github/workflows/publish-canary.yml@v1.17.0
     with:
       branch: v1-main
     secrets: inherit
