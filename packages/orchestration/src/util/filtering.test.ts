@@ -7,6 +7,7 @@ describe('Content filter util', () => {
   describe('Azure content filter', () => {
     it('builds filter config', async () => {
       const filterConfig = buildAzureContentSafetyFilter({
+        type: 'input',
         hate: 'ALLOW_SAFE_LOW_MEDIUM',
         self_harm: 'ALLOW_SAFE'
       });
@@ -29,8 +30,8 @@ describe('Content filter util', () => {
     });
 
     it('throw error when configuring empty filter', async () => {
-      expect(() => buildAzureContentSafetyFilter({})).toThrow(
-        'Filtering configuration cannot be an empty object'
+      expect(() => buildAzureContentSafetyFilter({ type: 'input' })).toThrow(
+        'Filtering parameters cannot be empty'
       );
     });
   });

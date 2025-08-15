@@ -243,6 +243,7 @@ describe('orchestration service client', () => {
         input: {
           filters: [
             buildAzureContentSafetyFilter({
+              type: 'input',
               hate: 'ALLOW_SAFE_LOW_MEDIUM',
               self_harm: 'ALLOW_SAFE_LOW'
             })
@@ -251,6 +252,7 @@ describe('orchestration service client', () => {
         output: {
           filters: [
             buildAzureContentSafetyFilter({
+              type: 'output',
               sexual: 'ALLOW_SAFE',
               violence: 'ALLOW_SAFE_LOW_MEDIUM'
             })
@@ -286,7 +288,13 @@ describe('orchestration service client', () => {
 
   it('calls chatCompletion with filter configuration supplied using multiple convenience functions', async () => {
     const llamaFilter = buildLlamaGuardFilter('self_harm');
-    const azureContentFilter = buildAzureContentSafetyFilter({
+    const azureContentInputFilter = buildAzureContentSafetyFilter({
+      type: 'input',
+      self_harm: 'ALLOW_SAFE',
+      prompt_shield: true
+    });
+    const azureContentOutputFilter = buildAzureContentSafetyFilter({
+      type: 'output',
       self_harm: 'ALLOW_SAFE'
     });
     const config: OrchestrationModuleConfig = {
@@ -306,10 +314,10 @@ describe('orchestration service client', () => {
       },
       filtering: {
         input: {
-          filters: [llamaFilter, azureContentFilter]
+          filters: [llamaFilter, azureContentInputFilter]
         },
         output: {
-          filters: [llamaFilter, azureContentFilter]
+          filters: [llamaFilter, azureContentOutputFilter]
         }
       }
     };

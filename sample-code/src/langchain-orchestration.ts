@@ -93,6 +93,7 @@ export async function invokeChainWithOutputFilter(): Promise<string> {
       output: {
         filters: [
           buildAzureContentSafetyFilter({
+            type: 'output',
             hate: 'ALLOW_SAFE'
           })
         ]

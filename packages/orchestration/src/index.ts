@@ -15,11 +15,13 @@ export type {
   LlmModelParams,
   LlmModelDetails,
   LlamaGuardCategory,
-  AzureContentFilter,
   AzureFilterThreshold,
   TranslationConfigParams,
   AzureContentSafety,
-  AzureContentSafetyFilterConfig,
+  AzureContentSafetyFilterInputParameters,
+  AzureContentSafetyFilterOutputParameters,
+  AzureContentSafetyFilterParameters,
+  AzureContentSafetyFilterReturnType,
   OrchestrationErrorResponse
 } from './orchestration-types.js';
 export { OrchestrationStreamResponse } from './orchestration-stream-response.js';
