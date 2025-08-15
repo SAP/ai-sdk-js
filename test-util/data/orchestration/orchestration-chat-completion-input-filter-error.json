@@ -3,7 +3,7 @@
   "code": 400,
   "message": "Content filtered due to safety violations. Please modify the prompt and try again.",
   "location": "Filtering Module - Input Filter",
-  "module_results": {
+  "intermediate_results": {
     "templating": [
       {
         "role": "user",

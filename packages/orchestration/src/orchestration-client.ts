@@ -10,13 +10,17 @@ import {
   constructCompletionPostRequest,
   constructCompletionPostRequestFromJsonModuleConfig
 } from './util/index.js';
-import type { TemplatingChatMessage } from './client/api/schema/index.js';
+import type {
+  ChatMessages,
+  TemplatingChatMessage
+} from './client/api/schema/index.js';
 import type {
   HttpResponse,
   CustomRequestConfig
 } from '@sap-cloud-sdk/http-client';
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api/internal.js';
 import type {
+  ClientConfig,
   OrchestrationModuleConfig,
   ChatCompletionRequest,
   RequestOptions,
@@ -34,14 +38,18 @@ const logger = createLogger({
  * Get the orchestration client.
  */
 export class OrchestrationClient {
+  private useClientHistory = false;
+  private messagesHistory?: ChatMessages;
   /**
    * Creates an instance of the orchestration client.
    * @param config - Orchestration module configuration. This can either be an `OrchestrationModuleConfig` object or a JSON string obtained from AI Launchpad.
+   * @param clientConfig - Client configuration for the orchestration client.
    * @param deploymentConfig - Deployment configuration.
    * @param destination - The destination to use for the request.
    */
   constructor(
     private config: OrchestrationModuleConfig | string,
+    clientConfig?: ClientConfig,
     private deploymentConfig?: ResourceGroupConfig,
     private destination?: HttpDestinationOrFetchOptions
   ) {
@@ -53,18 +61,37 @@ export class OrchestrationClient {
           ? this.parseAndMergeTemplating(config) // parse and assign if templating is a string
           : config;
     }
+    if (clientConfig?.useClientHistory) {
+      this.useClientHistory = true;
+      this.messagesHistory = clientConfig?.messagesHistory;
+    }
   }
 
   async chatCompletion(
     request?: ChatCompletionRequest,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationResponse> {
+    if (this.useClientHistory) {
+      if (request?.messagesHistory) {
+        throw new Error(
+          'Providing a message history when client history is enabled is not supported. Please remove the `messagesHistory` property from the prompt.'
+        );
+      }
+      request = {
+        ...request,
+        messagesHistory: this.messagesHistory
+      };
+    }
     const response = await this.executeRequest({
       request,
       requestConfig,
       stream: false
     });
-    return new OrchestrationResponse(response);
+    const orchestrationResponse = new OrchestrationResponse(response);
+    if (this.useClientHistory) {
+      this.messagesHistory = orchestrationResponse.getAllMessages();
+    }
+    return orchestrationResponse;
   }
 
   async stream(
@@ -80,7 +107,19 @@ export class OrchestrationClient {
         );
       }
 
-      return await this.createStreamResponse(
+      if (this.useClientHistory) {
+        if (request?.messagesHistory) {
+          throw new Error(
+            'Providing a message history when client history is enabled is not supported. Please remove the `messagesHistory` property from the prompt.'
+          );
+        }
+        request = {
+          ...request,
+          messagesHistory: this.messagesHistory
+        };
+      }
+
+      const streamResponse = await this.createStreamResponse(
         {
           request,
           requestConfig,
@@ -89,9 +128,37 @@ export class OrchestrationClient {
         },
         controller
       );
+      return streamResponse;
     } catch (error) {
       controller.abort();
       throw error;
+    }
+  }
+
+  getMessageHistory(): ChatMessages | undefined {
+    if (!this.useClientHistory) {
+      throw new Error(
+        'Message history is not enabled for this client. Please enable it by passing `useClientHistory: true` in the client configuration.'
+      );
+    }
+    return this.messagesHistory;
+  }
+
+  private async *processStreamEnd(
+    stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
+    response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
+  ): AsyncGenerator<OrchestrationStreamChunkResponse> {
+    if (!response) {
+      throw new Error('Response is required to process stream end.');
+    }
+    for await (const chunk of stream) {
+      yield chunk;
+    }
+
+    response._openStream = false;
+
+    if (this.useClientHistory) {
+      this.messagesHistory = response.getAllMessages();
     }
   }
 
@@ -146,13 +213,14 @@ export class OrchestrationClient {
     });
 
     const stream = OrchestrationStream._create(streamResponse, controller);
+
     response.stream = stream
       ._pipe(OrchestrationStream._processChunk)
       ._pipe(
         OrchestrationStream._processOrchestrationStreamChunkResponse,
         response
       )
-      ._pipe(OrchestrationStream._processStreamEnd, response);
+      ._pipe(this.processStreamEnd.bind(this), response);
 
     return response;
   }

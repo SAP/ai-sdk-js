@@ -1,6 +1,6 @@
 {
   "request_id": "c0fcfb38-ef61-4fe3-a403-c3205237b6ba",
-  "module_results": {
+  "intermediate_results": {
     "templating": [
       {
         "role": "system",
@@ -49,7 +49,7 @@
       }
     }
   },
-  "orchestration_result": {
+  "final_result": {
     "id": "chatcmpl-A1CB6j0yGKuiP9SOMIPVsuSsVia0m",
     "object": "chat.completion",
     "created": 1724848504,
