@@ -88,7 +88,7 @@ export async function chatCompletionStream(
         }
       ]
     },
-    controller,
+    controller.signal,
     streamOptions
   );
 }
@@ -149,7 +149,7 @@ export async function chatCompletionStreamWithJsonModuleConfig(
 
   return orchestrationClient.stream(
     { placeholderValues: { input: 'SAP Cloud SDK' } },
-    controller
+    controller.signal
   );
 }
 
@@ -764,7 +764,7 @@ export async function chatCompletionStreamWithTools(
         { role: 'user', content: 'Add the numbers 2 and 3, as well as 4 and 5' }
       ]
     },
-    controller,
+    controller.signal,
     streamOptions
   );
 }

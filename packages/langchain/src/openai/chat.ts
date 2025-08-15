@@ -352,17 +352,12 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
       {
         signal: options.signal
       },
-      () => {
-        const controller = new AbortController();
-        if (options.signal) {
-          options.signal.addEventListener('abort', () => controller.abort());
-        }
-        return this.openAiChatClient.stream(
+      () =>
+        this.openAiChatClient.stream(
           mapLangChainToAiClient(this, messages, options),
-          controller,
+          options.signal,
           options.requestConfig
-        );
-      }
+        )
     );
 
     for await (const chunk of response.stream) {

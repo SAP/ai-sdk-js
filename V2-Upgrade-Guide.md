@@ -9,6 +9,7 @@ Version 2.x introduces significant structural changes to align with updated serv
 - [Table of Contents](#table-of-contents)
 - [How to Upgrade](#how-to-upgrade)
 - [Breaking Changes](#breaking-changes)
+  - [`@sap-ai-sdk/foundation-models`](#sap-ai-sdkfoundation-models)
   - [`@sap-ai-sdk/orchestration`](#sap-ai-sdkorchestration)
   - [`@sap-ai-sdk/langchain`](#sap-ai-sdklangchain)
 
@@ -39,7 +40,59 @@ Update all SAP Cloud SDK for AI packages to version 2.x in your `package.json` f
 
 ## Breaking Changes
 
+### `@sap-ai-sdk/foundation-models`
+
+#### Stream Method Parameter Change
+
+The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter.
+
+**v1:**
+```typescript
+const controller = new AbortController();
+const response = await azureOpenAiChatClient.stream(
+  {
+    messages: [{ role: 'user', content: 'Hello' }],
+    max_tokens: 100
+  },
+  controller  // Pass the controller
+);
+```
+
+**v2:**
+```typescript
+const controller = new AbortController();
+const response = await azureOpenAiChatClient.stream(
+  {
+    messages: [{ role: 'user', content: 'Hello' }],
+    max_tokens: 100
+  },
+  controller.signal  // Pass the signal instead
+);
+```
+
 ### `@sap-ai-sdk/orchestration`
+
+#### Stream Method Parameter Change
+
+The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter.
+
+**v1:**
+```typescript
+const controller = new AbortController();
+const response = await orchestrationClient.stream(
+  { messages: [{ role: 'user', content: 'Hello' }] },
+  controller  // Pass the controller
+);
+```
+
+**v2:**
+```typescript
+const controller = new AbortController();
+const response = await orchestrationClient.stream(
+  { messages: [{ role: 'user', content: 'Hello' }] },
+  controller.signal  // Pass the signal instead
+);
+```
 
 #### Module Configuration Structure
 
