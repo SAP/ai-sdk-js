@@ -82,6 +82,7 @@ describe('stream util tests', () => {
         output: {
           filters: [
             buildAzureContentSafetyFilter({
+              type: 'output',
               hate: 'ALLOW_SAFE_LOW_MEDIUM',
               self_harm: 'ALLOW_SAFE'
             })
@@ -106,6 +107,7 @@ describe('stream util tests', () => {
         output: {
           filters: [
             buildAzureContentSafetyFilter({
+              type: 'output',
               hate: 'ALLOW_SAFE_LOW_MEDIUM',
               self_harm: 'ALLOW_SAFE'
             })

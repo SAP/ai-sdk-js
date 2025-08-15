@@ -211,15 +211,6 @@ export async function orchestrationPromptRegistry(): Promise<OrchestrationRespon
  * @returns The orchestration service error response.
  */
 export async function orchestrationInputFiltering(): Promise<OrchestrationErrorResponse> {
-  // Build Azure content filter with only safe content allowed for hate and violence
-  const azureContentSafetyFilter = buildAzureContentSafetyFilter({
-    hate: 'ALLOW_SAFE',
-    violence: 'ALLOW_SAFE'
-  });
-
-  // Build Llama guard content filter with categories 'privacy' enabled
-  const llamaGuardFilter = buildLlamaGuardFilter('privacy');
-
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
     promptTemplating: {
@@ -229,7 +220,16 @@ export async function orchestrationInputFiltering(): Promise<OrchestrationErrorR
     },
     filtering: {
       input: {
-        filters: [azureContentSafetyFilter, llamaGuardFilter]
+        filters: [
+          // Build Azure content filter with only safe content allowed for hate and violence
+          buildAzureContentSafetyFilter({
+            type: 'input',
+            hate: 'ALLOW_SAFE',
+            violence: 'ALLOW_SAFE'
+          }),
+          // Build Llama guard content filter with categories 'privacy' enabled
+          buildLlamaGuardFilter('privacy')
+        ]
       }
     }
   });
@@ -257,15 +257,6 @@ export async function orchestrationInputFiltering(): Promise<OrchestrationErrorR
  * @returns The orchestration service response.
  */
 export async function orchestrationOutputFiltering(): Promise<OrchestrationResponse> {
-  // Build Azure content filter with only safe content allowed for hate and violence
-  const azureContentFilter = buildAzureContentSafetyFilter({
-    hate: 'ALLOW_SAFE',
-    violence: 'ALLOW_SAFE'
-  });
-
-  // Build Llama guard content filter with categories 'privacy' enabled
-  const llamaGuardFilter = buildLlamaGuardFilter('privacy');
-
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
     promptTemplating: {
@@ -275,7 +266,16 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
     },
     filtering: {
       output: {
-        filters: [azureContentFilter, llamaGuardFilter]
+        filters: [
+          // Build Azure content filter with only safe content allowed for hate and violence
+          buildAzureContentSafetyFilter({
+            type: 'output',
+            hate: 'ALLOW_SAFE',
+            violence: 'ALLOW_SAFE'
+          }),
+          // Build Llama guard content filter with categories 'privacy' enabled
+          buildLlamaGuardFilter('privacy')
+        ]
       }
     }
   });

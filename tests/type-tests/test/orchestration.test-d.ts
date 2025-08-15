@@ -9,8 +9,8 @@ import {
 import type {
   ChatModel,
   LlmModelParams,
-  AzureContentSafetyFilterConfig,
-  OrchestrationResponse
+  OrchestrationResponse,
+  AzureContentSafetyFilterReturnType
 } from '@sap-ai-sdk/orchestration';
 import type {
   CompletionPostResponse,
@@ -372,19 +372,33 @@ expect<ChatModel>('custom-model');
 /**
  * Filtering Util for Azure content safety.
  */
-expectType<AzureContentSafetyFilterConfig>(
+expectType<AzureContentSafetyFilterReturnType<'input'>>(
   buildAzureContentSafetyFilter({
+    type: 'input',
     hate: 'ALLOW_ALL',
     self_harm: 'ALLOW_SAFE_LOW',
     sexual: 'ALLOW_SAFE_LOW_MEDIUM',
-    violence: 'ALLOW_SAFE'
+    violence: 'ALLOW_SAFE',
+    prompt_shield: true
   })
 );
 
-expectError<AzureContentSafetyFilterConfig>(
+expectError<AzureContentSafetyFilterReturnType<'input'>>(
   buildAzureContentSafetyFilter({
+    type: 'input',
     hate: 2,
     self_harm: 4
+  })
+);
+
+expectError<AzureContentSafetyFilterReturnType<'output'>>(
+  buildAzureContentSafetyFilter({
+    type: 'output',
+    hate: 'ALLOW_ALL',
+    self_harm: 'ALLOW_SAFE_LOW',
+    sexual: 'ALLOW_SAFE_LOW_MEDIUM',
+    violence: 'ALLOW_SAFE',
+    prompt_shield: true
   })
 );
 
