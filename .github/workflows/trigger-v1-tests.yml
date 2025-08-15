@@ -7,12 +7,12 @@ on:
 
 jobs:
   smoke-tests-v1:
-    uses: SAP/ai-sdk-js/.github/workflows/smoke-tests.yml@v1-main
+    uses: SAP/ai-sdk-js/.github/workflows/smoke-tests.yml@v1.17.0
     with:
       branch: v1-main
     secrets: inherit
   e2e-tests-v1:
-    uses: SAP/ai-sdk-js/.github/workflows/e2e-tests.yaml@v1-main
+    uses: SAP/ai-sdk-js/.github/workflows/e2e-tests.yaml@v1.17.0
     with:
       branch: v1-main
     secrets: inherit
