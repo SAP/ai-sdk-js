@@ -8,6 +8,13 @@ on:
         type: string
         required: false
         default: 'canary'
+  workflow_call:
+    inputs:
+      branch:
+        description: 'Which branch to test'
+        required: true
+        type: string
+        default: 'v1-main'
 
 jobs:
   publish:
@@ -16,6 +23,7 @@ jobs:
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@v1-main
         with:
+          ref: ${{ inputs.branch }}
           pnpm-install-args: ''
 
       - name: prepare canary changeset
