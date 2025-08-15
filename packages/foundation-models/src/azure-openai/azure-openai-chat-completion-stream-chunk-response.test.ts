@@ -57,13 +57,13 @@ describe('OpenAI chat completion stream chunk response', () => {
 
   it('should return the chat completion stream chunk response', () => {
     expect(
-      azureOpenAiChatCompletionStreamChunkResponses.tokenUsageResponse.data
+      azureOpenAiChatCompletionStreamChunkResponses.tokenUsageResponse._data
     ).toStrictEqual(mockResponses.tokenUsageResponse);
     expect(
-      azureOpenAiChatCompletionStreamChunkResponses.finishReasonResponse.data
+      azureOpenAiChatCompletionStreamChunkResponses.finishReasonResponse._data
     ).toStrictEqual(mockResponses.finishReasonResponse);
     expect(
-      azureOpenAiChatCompletionStreamChunkResponses.deltaContentResponse.data
+      azureOpenAiChatCompletionStreamChunkResponses.deltaContentResponse._data
     ).toStrictEqual(mockResponses.deltaContentResponse);
   });
 

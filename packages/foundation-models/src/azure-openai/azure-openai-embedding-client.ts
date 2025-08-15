@@ -25,12 +25,12 @@ export class AzureOpenAiEmbeddingClient {
 
   /**
    * Creates an embedding vector representing the given text.
-   * @param data - The text to embed.
+   * @param request - Request containing embedding input parameters.
    * @param requestConfig - The request configuration.
    * @returns The completion result.
    */
   async run(
-    data: AzureOpenAiEmbeddingParameters,
+    request: AzureOpenAiEmbeddingParameters,
     requestConfig?: CustomRequestConfig
   ): Promise<AzureOpenAiEmbeddingResponse> {
     const deploymentId = await getDeploymentId(
@@ -45,7 +45,7 @@ export class AzureOpenAiEmbeddingClient {
         apiVersion,
         resourceGroup
       },
-      data,
+      request,
       requestConfig,
       this.destination
     );

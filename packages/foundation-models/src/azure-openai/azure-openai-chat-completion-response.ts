@@ -11,9 +11,9 @@ export class AzureOpenAiChatCompletionResponse {
   /**
    * The chat completion response.
    */
-  public readonly data: AzureOpenAiCreateChatCompletionResponse;
+  public readonly _data: AzureOpenAiCreateChatCompletionResponse;
   constructor(public readonly rawResponse: HttpResponse) {
-    this.data = rawResponse.data;
+    this._data = rawResponse.data;
   }
 
   /**
@@ -21,7 +21,7 @@ export class AzureOpenAiChatCompletionResponse {
    * @returns Token usage.
    */
   getTokenUsage(): AzureOpenAiCompletionUsage | undefined {
-    return this.data.usage;
+    return this._data.usage;
   }
 
   /**
@@ -34,7 +34,7 @@ export class AzureOpenAiChatCompletionResponse {
   ):
     | AzureOpenAiCreateChatCompletionResponse['choices'][0]['finish_reason']
     | undefined {
-    return this.data.choices.find(c => c.index === choiceIndex)?.finish_reason;
+    return this._data.choices.find(c => c.index === choiceIndex)?.finish_reason;
   }
 
   /**
@@ -43,7 +43,7 @@ export class AzureOpenAiChatCompletionResponse {
    * @returns The message content.
    */
   getContent(choiceIndex = 0): string | undefined | null {
-    return this.data.choices.find(c => c.index === choiceIndex)?.message
+    return this._data.choices.find(c => c.index === choiceIndex)?.message
       ?.content;
   }
 }

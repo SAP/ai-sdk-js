@@ -26,7 +26,7 @@ describe('OpenAI chat completion response', () => {
   });
 
   it('should return the chat completion response', () => {
-    expect(azureOpenAiChatResponse.data).toStrictEqual(mockResponse);
+    expect(azureOpenAiChatResponse._data).toStrictEqual(mockResponse);
   });
 
   it('should return raw response', () => {

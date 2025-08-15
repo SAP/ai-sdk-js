@@ -9,9 +9,9 @@ import type {
  */
 export class AzureOpenAiChatCompletionStreamChunkResponse {
   constructor(
-    public readonly data: AzureOpenAiCreateChatCompletionStreamResponse
+    public readonly _data: AzureOpenAiCreateChatCompletionStreamResponse
   ) {
-    this.data = data;
+    this._data = _data;
   }
 
   /**
@@ -19,7 +19,7 @@ export class AzureOpenAiChatCompletionStreamChunkResponse {
    * @returns Token usage.
    */
   getTokenUsage(): AzureOpenAiCompletionUsage | null {
-    return this.data.usage;
+    return this._data.usage;
   }
 
   /**
@@ -67,6 +67,6 @@ export class AzureOpenAiChatCompletionStreamChunkResponse {
   }
 
   private getChoices() {
-    return this.data.choices;
+    return this._data.choices;
   }
 }

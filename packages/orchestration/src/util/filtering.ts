@@ -1,10 +1,10 @@
 import { supportedAzureFilterThresholds } from '../orchestration-types.js';
-import type { LlamaGuard38BFilterConfig } from '../client/api/schema/index.js';
 import type {
   AzureContentFilter,
   AzureContentSafetyFilterConfig,
   AzureFilterThreshold,
-  LlamaGuardCategory
+  LlamaGuardCategory,
+  LlamaGuardFilterConfig
 } from '../orchestration-types.js';
 
 /**
@@ -43,7 +43,7 @@ export function buildAzureContentSafetyFilter(
  */
 export function buildLlamaGuardFilter(
   ...categories: [LlamaGuardCategory, ...LlamaGuardCategory[]]
-): LlamaGuard38BFilterConfig {
+): LlamaGuardFilterConfig {
   return {
     type: 'llama_guard_3_8b',
     config: Object.fromEntries(

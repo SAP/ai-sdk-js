@@ -1,5 +1,7 @@
-import type { TranslationConfigParams } from '../orchestration-types.js';
-import type { SAPDocumentTranslation } from '../client/api/schema/index.js';
+import type {
+  TranslationConfig,
+  TranslationConfigParams
+} from '../orchestration-types.js';
 
 /**
  * Convenience function to build a document translation configuration for orchestration service.
@@ -11,7 +13,7 @@ import type { SAPDocumentTranslation } from '../client/api/schema/index.js';
  */
 export function buildTranslationConfig(
   config: TranslationConfigParams
-): SAPDocumentTranslation {
+): TranslationConfig {
   return {
     type: 'sap_document_translation',
     config: {
