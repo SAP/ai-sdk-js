@@ -1,4 +1,4 @@
-name: trigger canary release
+name: trigger v1 canary release
 
 on:
   schedule:
