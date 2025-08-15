@@ -1,12 +1,24 @@
-# Enable workflow while releasing v2
-# name: bump
+#Fully Enable workflow while releasing v2
+name: bump
 
-# on:
-#   workflow_dispatch:
-#     inputs:
-#       majorVersion:
-#         description: Mandatory, when bumping a major version. Semver compatible version string (X.Y.Z). Must not be set for patch and minor version releases.
-#         required: false
+on:
+  workflow_dispatch:
+    inputs:
+      majorVersion:
+        description: Mandatory, when bumping a major version. Semver compatible version string (X.Y.Z). Must not be set for patch and minor version releases.
+        required: false
+
+jobs:
+  check-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if running on main branch
+        run: |
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            echo "Workflow triggered on main branch. Exiting without doing anything."
+            exit 0
+          fi
+
 # env:
 #   DOCS_REPO: SAP/ai-sdk
 #   DOCS_CHECKOUT_PATH: ./ai-sdk-docs
