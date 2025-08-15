@@ -2,8 +2,13 @@ name: e2e tests
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: 0 22 * * *
+  workflow_call:
+    inputs:
+      branch:
+        description: 'Which branch to test'
+        required: true
+        type: string
+        default: 'v1-main'
 
 jobs:
   e2e-tests:
@@ -20,7 +25,9 @@ jobs:
     name: 'Build and Test'
     runs-on: ubuntu-latest
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@v1.17.0
+      - uses: sap/ai-sdk-js/.github/actions/setup@v1-main
+        with:
+          ref: ${{ inputs.branch }}
       - name: Create .env file
         env:
           AICORE_SERVICE_KEY: ${{ secrets[matrix.secret-name] }}
@@ -54,6 +61,5 @@ jobs:
           payload: |
             {
               "username": "GitHub E2E Test Runner",
-              "text": "⚠️ E2E Test Failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-js/actions/runs/${{ github.run_id }}|here>"
+              "text": "⚠️ E2E Test for v1 Failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-js/actions/runs/${{ github.run_id }}|here>"
             }
-          

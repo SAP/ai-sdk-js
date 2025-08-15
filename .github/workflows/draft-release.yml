@@ -8,7 +8,7 @@ jobs:
   draft-github-release:
     runs-on: ubuntu-latest
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@v1.17.0
+      - uses: sap/ai-sdk-js/.github/actions/setup@v1-main
       - name: Get Changelog
         uses: sap/cloud-sdk-js/.github/actions/get-changelog@main
         id: get-changelog

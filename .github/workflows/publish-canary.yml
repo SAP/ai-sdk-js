@@ -1,8 +1,6 @@
 name: publish-canary
 
 on:
-  schedule:
-    - cron: '0 1 * * *'
   workflow_dispatch:
     inputs:
       tag:
@@ -10,14 +8,22 @@ on:
         type: string
         required: false
         default: 'canary'
+  workflow_call:
+    inputs:
+      branch:
+        description: 'Which branch to test'
+        required: true
+        type: string
+        default: 'v1-main'
 
 jobs:
   publish:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@v1.17.0
+      - uses: sap/ai-sdk-js/.github/actions/setup@v1-main
         with:
+          ref: ${{ inputs.branch }}
           pnpm-install-args: ''
 
       - name: prepare canary changeset
