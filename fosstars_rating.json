@@ -244,9 +244,9 @@
         }
       }
     },
-    "value" : 6.868881366860092,
+    "value" : 4.880486782720826,
     "weight" : 1.0,
-    "confidence" : 9.645390070921987,
+    "confidence" : 9.260153233870382,
     "usedValues" : [ {
       "type" : "ScoreValue",
       "score" : {
@@ -501,9 +501,9 @@
           }
         }
       },
-      "value" : 9.09090909090909,
+      "value" : 4.545454545454545,
       "weight" : 1.0,
-      "confidence" : 10.0,
+      "confidence" : 8.607220666044194,
       "usedValues" : [ {
         "type" : "ScoreValue",
         "score" : {
@@ -724,9 +724,9 @@
             }
           }
         },
-        "value" : 10.0,
+        "value" : 0.0,
         "weight" : 1.0,
-        "confidence" : 9.999999999999998,
+        "confidence" : 4.15032679738562,
         "usedValues" : [ {
           "type" : "ScoreValue",
           "score" : {
@@ -735,30 +735,27 @@
           },
           "value" : 0.0,
           "weight" : 0.3,
-          "confidence" : 10.0,
+          "confidence" : 2.5,
           "usedValues" : [ {
-            "type" : "BooleanValue",
+            "type" : "UnknownValue",
             "feature" : {
               "type" : "BooleanFeature",
               "name" : "If a project runs GoSec scan checks for commits"
             },
-            "flag" : false,
             "explanation" : [ ]
           }, {
-            "type" : "BooleanValue",
+            "type" : "UnknownValue",
             "feature" : {
               "type" : "BooleanFeature",
               "name" : "If a project runs GoSec scans"
             },
-            "flag" : false,
             "explanation" : [ ]
           }, {
-            "type" : "BooleanValue",
+            "type" : "UnknownValue",
             "feature" : {
               "type" : "BooleanFeature",
               "name" : "If a project runs GoSec scans with rules"
             },
-            "flag" : false,
             "explanation" : [ ]
           }, {
             "type" : "LanguagesValue",
@@ -786,22 +783,20 @@
           },
           "value" : 0.0,
           "weight" : 0.35,
-          "confidence" : 10.0,
+          "confidence" : 3.3333333333333335,
           "usedValues" : [ {
-            "type" : "BooleanValue",
+            "type" : "UnknownValue",
             "feature" : {
               "type" : "BooleanFeature",
               "name" : "If a project runs Bandit scan checks for commits"
             },
-            "flag" : false,
             "explanation" : [ ]
           }, {
-            "type" : "BooleanValue",
+            "type" : "UnknownValue",
             "feature" : {
               "type" : "BooleanFeature",
               "name" : "If a project runs Bandit scans"
             },
-            "flag" : false,
             "explanation" : [ ]
           }, {
             "type" : "LanguagesValue",
@@ -862,24 +857,22 @@
             "type" : "CodeqlScore",
             "name" : "How a project uses CodeQL"
           },
-          "value" : 10.0,
+          "value" : 0.0,
           "weight" : 1.0,
-          "confidence" : 10.0,
+          "confidence" : 3.3333333333333335,
           "usedValues" : [ {
-            "type" : "BooleanValue",
+            "type" : "UnknownValue",
             "feature" : {
               "type" : "BooleanFeature",
               "name" : "If a project runs CodeQL checks for commits"
             },
-            "flag" : true,
             "explanation" : [ ]
           }, {
-            "type" : "BooleanValue",
+            "type" : "UnknownValue",
             "feature" : {
               "type" : "BooleanFeature",
               "name" : "If a project runs CodeQL scans"
             },
-            "flag" : true,
             "explanation" : [ ]
           }, {
             "type" : "LanguagesValue",
@@ -907,22 +900,20 @@
           },
           "value" : 0.0,
           "weight" : 0.35,
-          "confidence" : 10.0,
+          "confidence" : 3.3333333333333335,
           "usedValues" : [ {
-            "type" : "BooleanValue",
+            "type" : "UnknownValue",
             "feature" : {
               "type" : "BooleanFeature",
               "name" : "If a project runs Pylint scan checks for commits"
             },
-            "flag" : false,
             "explanation" : [ ]
           }, {
-            "type" : "BooleanValue",
+            "type" : "UnknownValue",
             "feature" : {
               "type" : "BooleanFeature",
               "name" : "If a project runs Pylint scans"
             },
-            "flag" : false,
             "explanation" : [ ]
           }, {
             "type" : "LanguagesValue",
@@ -950,22 +941,20 @@
           },
           "value" : 0.0,
           "weight" : 0.2,
-          "confidence" : 10.0,
+          "confidence" : 3.3333333333333335,
           "usedValues" : [ {
-            "type" : "BooleanValue",
+            "type" : "UnknownValue",
             "feature" : {
               "type" : "BooleanFeature",
               "name" : "If a project runs Mypy scan checks for commits"
             },
-            "flag" : false,
             "explanation" : [ ]
           }, {
-            "type" : "BooleanValue",
+            "type" : "UnknownValue",
             "feature" : {
               "type" : "BooleanFeature",
               "name" : "If a project runs Mypy scans"
             },
-            "flag" : false,
             "explanation" : [ ]
           }, {
             "type" : "LanguagesValue",
@@ -1339,7 +1328,7 @@
           "type" : "PositiveIntegerFeature",
           "name" : "Number of commits in the last three months"
         },
-        "number" : 183,
+        "number" : 186,
         "explanation" : [ ]
       }, {
         "type" : "IntegerValue",
@@ -1350,7 +1339,7 @@
         "number" : 3,
         "explanation" : [ ]
       } ],
-      "explanation" : [ "183 commits in the last 3 months results to 10.00 points", "3 contributors increase the score value from 10.00 to 11.00" ],
+      "explanation" : [ "186 commits in the last 3 months results to 10.00 points", "3 contributors increase the score value from 10.00 to 11.00" ],
       "isUnknown" : false,
       "isNotApplicable" : false,
       "feature" : {
@@ -1519,9 +1508,9 @@
         },
         "name" : "Assesses security testing and vulnerability discovery"
       },
-      "value" : 10.0,
+      "value" : 2.0,
       "weight" : 0.6,
-      "confidence" : 10.0,
+      "confidence" : 9.303610333022096,
       "usedValues" : [ {
         "type" : "VulnerabilitiesValue",
         "feature" : {
@@ -1625,9 +1614,9 @@
             }
           }
         },
-        "value" : 9.09090909090909,
+        "value" : 4.545454545454545,
         "weight" : 1.0,
-        "confidence" : 10.0,
+        "confidence" : 8.607220666044194,
         "usedValues" : [ {
           "type" : "ScoreValue",
           "score" : {
@@ -1848,9 +1837,9 @@
               }
             }
           },
-          "value" : 10.0,
+          "value" : 0.0,
           "weight" : 1.0,
-          "confidence" : 9.999999999999998,
+          "confidence" : 4.15032679738562,
           "usedValues" : [ {
             "type" : "ScoreValue",
             "score" : {
@@ -1859,30 +1848,27 @@
             },
             "value" : 0.0,
             "weight" : 0.3,
-            "confidence" : 10.0,
+            "confidence" : 2.5,
             "usedValues" : [ {
-              "type" : "BooleanValue",
+              "type" : "UnknownValue",
               "feature" : {
                 "type" : "BooleanFeature",
                 "name" : "If a project runs GoSec scan checks for commits"
               },
-              "flag" : false,
               "explanation" : [ ]
             }, {
-              "type" : "BooleanValue",
+              "type" : "UnknownValue",
               "feature" : {
                 "type" : "BooleanFeature",
                 "name" : "If a project runs GoSec scans"
               },
-              "flag" : false,
               "explanation" : [ ]
             }, {
-              "type" : "BooleanValue",
+              "type" : "UnknownValue",
               "feature" : {
                 "type" : "BooleanFeature",
                 "name" : "If a project runs GoSec scans with rules"
               },
-              "flag" : false,
               "explanation" : [ ]
             }, {
               "type" : "LanguagesValue",
@@ -1910,22 +1896,20 @@
             },
             "value" : 0.0,
             "weight" : 0.35,
-            "confidence" : 10.0,
+            "confidence" : 3.3333333333333335,
             "usedValues" : [ {
-              "type" : "BooleanValue",
+              "type" : "UnknownValue",
               "feature" : {
                 "type" : "BooleanFeature",
                 "name" : "If a project runs Bandit scan checks for commits"
               },
-              "flag" : false,
               "explanation" : [ ]
             }, {
-              "type" : "BooleanValue",
+              "type" : "UnknownValue",
               "feature" : {
                 "type" : "BooleanFeature",
                 "name" : "If a project runs Bandit scans"
               },
-              "flag" : false,
               "explanation" : [ ]
             }, {
               "type" : "LanguagesValue",
@@ -1986,24 +1970,22 @@
               "type" : "CodeqlScore",
               "name" : "How a project uses CodeQL"
             },
-            "value" : 10.0,
+            "value" : 0.0,
             "weight" : 1.0,
-            "confidence" : 10.0,
+            "confidence" : 3.3333333333333335,
             "usedValues" : [ {
-              "type" : "BooleanValue",
+              "type" : "UnknownValue",
               "feature" : {
                 "type" : "BooleanFeature",
                 "name" : "If a project runs CodeQL checks for commits"
               },
-              "flag" : true,
               "explanation" : [ ]
             }, {
-              "type" : "BooleanValue",
+              "type" : "UnknownValue",
               "feature" : {
                 "type" : "BooleanFeature",
                 "name" : "If a project runs CodeQL scans"
               },
-              "flag" : true,
               "explanation" : [ ]
             }, {
               "type" : "LanguagesValue",
@@ -2031,22 +2013,20 @@
             },
             "value" : 0.0,
             "weight" : 0.35,
-            "confidence" : 10.0,
+            "confidence" : 3.3333333333333335,
             "usedValues" : [ {
-              "type" : "BooleanValue",
+              "type" : "UnknownValue",
               "feature" : {
                 "type" : "BooleanFeature",
                 "name" : "If a project runs Pylint scan checks for commits"
               },
-              "flag" : false,
               "explanation" : [ ]
             }, {
-              "type" : "BooleanValue",
+              "type" : "UnknownValue",
               "feature" : {
                 "type" : "BooleanFeature",
                 "name" : "If a project runs Pylint scans"
               },
-              "flag" : false,
               "explanation" : [ ]
             }, {
               "type" : "LanguagesValue",
@@ -2074,22 +2054,20 @@
             },
             "value" : 0.0,
             "weight" : 0.2,
-            "confidence" : 10.0,
+            "confidence" : 3.3333333333333335,
             "usedValues" : [ {
-              "type" : "BooleanValue",
+              "type" : "UnknownValue",
               "feature" : {
                 "type" : "BooleanFeature",
                 "name" : "If a project runs Mypy scan checks for commits"
               },
-              "flag" : false,
               "explanation" : [ ]
             }, {
-              "type" : "BooleanValue",
+              "type" : "UnknownValue",
               "feature" : {
                 "type" : "BooleanFeature",
                 "name" : "If a project runs Mypy scans"
               },
-              "flag" : false,
               "explanation" : [ ]
             }, {
               "type" : "LanguagesValue",
@@ -2727,5 +2705,5 @@
       }
     }
   },
-  "label" : [ "OssSecurityRating$SecurityLabel", "GOOD" ]
+  "label" : [ "OssSecurityRating$SecurityLabel", "MODERATE" ]
 }

@@ -1,8 +1,8 @@
-**Rating**: **GOOD**
+**Rating**: **MODERATE**
 
-**Score**: **6.87**, max score value is 10.0
+**Score**: **4.88**, max score value is 10.0
 
-**Confidence**: High (9.65, max confidence value is 10.0)
+**Confidence**: High (9.26, max confidence value is 10.0)
 
 ## Details
 
@@ -14,7 +14,7 @@ The rating is based on **security score for open-source projects**.
 
 It used the following sub-scores:
 
-1.  **[Security testing](#security-testing)**: **9.09** (weight is 1.0)
+1.  **[Security testing](#security-testing)**: **4.55** (weight is 1.0)
     1.  **[Dependency testing](#dependency-testing)**: **10.0** (weight is 1.0)
         1.  **[Dependabot score](#dependabot-score)**: **10.0** (weight is 1.0)
             
@@ -22,8 +22,8 @@ It used the following sub-scores:
             
         1.  **[OWASP Dependency Check score](#owasp-dependency-check-score)**: **N/A** (weight is 1.0)
             
-    1.  **[Static analysis](#static-analysis)**: **10.0** (weight is 1.0)
-        1.  **[How a project uses CodeQL](#how-a-project-uses-codeql)**: **10.0** (weight is 1.0)
+    1.  **[Static analysis](#static-analysis)**: **0.0** (weight is 1.0)
+        1.  **[How a project uses CodeQL](#how-a-project-uses-codeql)**: **0.0** (weight is 1.0)
             
         1.  **[Bandit score](#bandit-score)**: **N/A** (weight is 0.35)
             
@@ -43,8 +43,8 @@ It used the following sub-scores:
         
 1.  **[Security awareness](#security-awareness)**: **3.5** (weight is 0.9)
     
-1.  **[Vulnerability discovery and security testing](#vulnerability-discovery-and-security-testing)**: **10.0** (weight is 0.6)
-    1.  **[Security testing](#security-testing)**: **9.09** (weight is 1.0)
+1.  **[Vulnerability discovery and security testing](#vulnerability-discovery-and-security-testing)**: **2.0** (weight is 0.6)
+    1.  **[Security testing](#security-testing)**: **4.55** (weight is 1.0)
         1.  **[Dependency testing](#dependency-testing)**: **10.0** (weight is 1.0)
             1.  **[Dependabot score](#dependabot-score)**: **10.0** (weight is 1.0)
                 
@@ -52,8 +52,8 @@ It used the following sub-scores:
                 
             1.  **[OWASP Dependency Check score](#owasp-dependency-check-score)**: **N/A** (weight is 1.0)
                 
-        1.  **[Static analysis](#static-analysis)**: **10.0** (weight is 1.0)
-            1.  **[How a project uses CodeQL](#how-a-project-uses-codeql)**: **10.0** (weight is 1.0)
+        1.  **[Static analysis](#static-analysis)**: **0.0** (weight is 1.0)
+            1.  **[How a project uses CodeQL](#how-a-project-uses-codeql)**: **0.0** (weight is 1.0)
                 
             1.  **[Bandit score](#bandit-score)**: **N/A** (weight is 0.35)
                 
@@ -100,26 +100,9 @@ More info:
 1.  [NoHttp tool home page](https://github.com/spring-io/nohttp)
 
 
-You can open a pull request to run Bandit scans in the project using GitHub action workflow.
-More info:
-1.  [GitHub workflow action job config to run Bandit code scanning for a repository.](https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idstepsrun)
-1.  [An example to run Bandit scan check as part of GitHub action workflow.](https://github.com/TNLinc/CV/blob/main/.github/workflows/bandit.yml#L28)
-
-
-It would be good to have SecGo as analysis step for all commits, yes initiating it with PR would be great.
-More info:
-1.  [GitHub workflow action config to run Bandit code scanning job on every PR of a project.](https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#example-using-a-list-of-events)
-1.  [An eample to trigger Bandit scan check on every pull-request.](https://github.com/TNLinc/CV/blob/main/.github/workflows/bandit.yml#L3)
-
-
 You can create Snyk account and configure your project.
 More info:
 1.  [Getting started with snyk for open source](https://docs.snyk.io/products/snyk-open-source/getting-started-snyk-open-source)
-
-
-You can open a pull request to trigger GoSec scans job in the project using GitHub action workflow for every pull-request.
-More info:
-1.  [GitHub workflow action config to run GoSec code scanning job on every PR of a project.](https://github.com/securego/gosec#github-action)
 
 
 
@@ -129,7 +112,7 @@ Below are the details about all the used sub-scores.
 
 ### Security testing
 
-Score: **9.09**, confidence is 10.0 (max), weight is 1.0 (high)
+Score: **4.55**, confidence is 8.61 (low), weight is 1.0 (high)
 
 
 
@@ -146,8 +129,8 @@ This sub-score is based on the following sub-scores:
         
     1.  **[OWASP Dependency Check score](#owasp-dependency-check-score)**: **N/A** (weight is 1.0)
         
-1.  **[Static analysis](#static-analysis)**: **10.0** (weight is 1.0)
-    1.  **[How a project uses CodeQL](#how-a-project-uses-codeql)**: **10.0** (weight is 1.0)
+1.  **[Static analysis](#static-analysis)**: **0.0** (weight is 1.0)
+    1.  **[How a project uses CodeQL](#how-a-project-uses-codeql)**: **0.0** (weight is 1.0)
         
     1.  **[Bandit score](#bandit-score)**: **N/A** (weight is 0.35)
         
@@ -201,7 +184,7 @@ This sub-score is based on 18 features:
 
 ### Vulnerability discovery and security testing
 
-Score: **10.0**, confidence is 10.0 (max), weight is 0.6 (medium)
+Score: **2.0**, confidence is 9.3 (high), weight is 0.6 (medium)
 
 The scores checks how security testing is done and how many vulnerabilities were recently discovered. If testing is good, and there are no recent vulnerabilities, then the score value is max. If there are vulnerabilities, then the score value is high. If testing is bad, and there are no recent vulnerabilities, then the score value is low. If there are vulnerabilities, then the score is min.
 
@@ -211,7 +194,7 @@ This sub-score is based on the following sub-score:
 
 
 
-1.  **[Security testing](#security-testing)**: **9.09** (weight is 1.0)
+1.  **[Security testing](#security-testing)**: **4.55** (weight is 1.0)
     1.  **[Dependency testing](#dependency-testing)**: **10.0** (weight is 1.0)
         1.  **[Dependabot score](#dependabot-score)**: **10.0** (weight is 1.0)
             
@@ -219,8 +202,8 @@ This sub-score is based on the following sub-score:
             
         1.  **[OWASP Dependency Check score](#owasp-dependency-check-score)**: **N/A** (weight is 1.0)
             
-    1.  **[Static analysis](#static-analysis)**: **10.0** (weight is 1.0)
-        1.  **[How a project uses CodeQL](#how-a-project-uses-codeql)**: **10.0** (weight is 1.0)
+    1.  **[Static analysis](#static-analysis)**: **0.0** (weight is 1.0)
+        1.  **[How a project uses CodeQL](#how-a-project-uses-codeql)**: **0.0** (weight is 1.0)
             
         1.  **[Bandit score](#bandit-score)**: **N/A** (weight is 0.35)
             
@@ -285,14 +268,14 @@ Score: **10.0**, confidence is 10.0 (max), weight is 0.5 (medium)
 
 The score evaluates how active a project is. It's based on number of commits and contributors in the last 3 months.
 
-183 commits in the last 3 months results to 10.00 points
+186 commits in the last 3 months results to 10.00 points
 3 contributors increase the score value from 10.00 to 11.00
 
 This sub-score is based on 2 features:
 
 
 
-1.  **Number of commits in the last three months:** 183
+1.  **Number of commits in the last three months:** 186
 1.  **Number of contributors in the last three months:** 3
 
 
@@ -350,7 +333,7 @@ This sub-score is based on the following sub-scores:
 
 ### Static analysis
 
-Score: **10.0**, confidence is 10.0 (max), weight is 1.0 (high)
+Score: **0.0**, confidence is 4.15 (low), weight is 1.0 (high)
 
 
 
@@ -360,7 +343,7 @@ This sub-score is based on the following sub-scores:
 
 
 
-1.  **[How a project uses CodeQL](#how-a-project-uses-codeql)**: **10.0** (weight is 1.0)
+1.  **[How a project uses CodeQL](#how-a-project-uses-codeql)**: **0.0** (weight is 1.0)
     
 1.  **[Bandit score](#bandit-score)**: **N/A** (weight is 0.35)
     
@@ -479,7 +462,7 @@ This sub-score is based on 3 features:
 
 ### How a project uses CodeQL
 
-Score: **10.0**, confidence is 10.0 (max), weight is 1.0 (high)
+Score: **0.0**, confidence is 3.33 (low), weight is 1.0 (high)
 
 
 
@@ -489,14 +472,14 @@ This sub-score is based on 3 features:
 
 
 
-1.  **Does it run CodeQL scans?** Yes
-1.  **Does it use CodeQL checks for pull requests?** Yes
+1.  **Does it run CodeQL scans?** unknown
+1.  **Does it use CodeQL checks for pull requests?** unknown
 1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT, OTHER
 
 
 ### Bandit score
 
-Score: **N/A**, confidence is 10.0 (max), weight is 0.35 (medium)
+Score: **N/A**, confidence is 3.33 (low), weight is 0.35 (medium)
 
 
 
@@ -506,8 +489,8 @@ This sub-score is based on 3 features:
 
 
 
-1.  **If a project runs Bandit scan checks for commits:** No
-1.  **If a project runs Bandit scans:** No
+1.  **If a project runs Bandit scan checks for commits:** unknown
+1.  **If a project runs Bandit scans:** unknown
 1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT, OTHER
 
 
@@ -529,7 +512,7 @@ This sub-score is based on 2 features:
 
 ### How a project uses Pylint
 
-Score: **N/A**, confidence is 10.0 (max), weight is 0.35 (medium)
+Score: **N/A**, confidence is 3.33 (low), weight is 0.35 (medium)
 
 
 
@@ -539,14 +522,14 @@ This sub-score is based on 3 features:
 
 
 
-1.  **Does it run Pylint scans on all commits?** No
-1.  **Does it run Pylint scans?** No
+1.  **Does it run Pylint scans on all commits?** unknown
+1.  **Does it run Pylint scans?** unknown
 1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT, OTHER
 
 
 ### GoSec score
 
-Score: **N/A**, confidence is 10.0 (max), weight is 0.3 (medium)
+Score: **N/A**, confidence is 2.5 (low), weight is 0.3 (medium)
 
 
 
@@ -556,15 +539,15 @@ This sub-score is based on 4 features:
 
 
 
-1.  **Does it run GoSec scans on all pull requests?** No
-1.  **Does it run GoSec scans with rules?** No
-1.  **Does it run GoSec scans?** No
+1.  **Does it run GoSec scans on all pull requests?** unknown
+1.  **Does it run GoSec scans with rules?** unknown
+1.  **Does it run GoSec scans?** unknown
 1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT, OTHER
 
 
 ### How a project uses MyPy
 
-Score: **N/A**, confidence is 10.0 (max), weight is 0.2 (low)
+Score: **N/A**, confidence is 3.33 (low), weight is 0.2 (low)
 
 
 
@@ -574,8 +557,8 @@ This sub-score is based on 3 features:
 
 
 
-1.  **Does it run MyPy scans on all commits?** No
-1.  **Does it run MyPy scans?** No
+1.  **Does it run MyPy scans on all commits?** unknown
+1.  **Does it run MyPy scans?** unknown
 1.  **Programming languages:** JAVASCRIPT, TYPESCRIPT, OTHER
 
 
