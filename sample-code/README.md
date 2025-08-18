@@ -347,7 +347,6 @@ The created collection will be deleted at the end of the flow.
 
 Create a prompt template and delete it.
 
-
 ## Tutorial
 
 ### Getting Started with Agents and MCP
@@ -358,4 +357,4 @@ To run the tutorial, execute the following command in the `sample-code` director
 
 ```bash
 pnpm agent-tutorial
-``` 
+```
