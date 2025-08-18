@@ -13,6 +13,7 @@ Parts of the sample code are also used in E2E tests.
   - [LangChain](#langchain)
   - [Document Grounding](#document-grounding)
   - [Prompt Registry](#prompt-registry)
+- [Tutorial](#tutorial)
 
 ## Local Deployment
 
@@ -345,3 +346,16 @@ The created collection will be deleted at the end of the flow.
 `GET /prompt-registry/template`
 
 Create a prompt template and delete it.
+
+
+## Tutorial
+
+### Getting Started with Agents and MCP
+
+This tutorial will guide you through the process of building an agent using the LangChain OpenAI Client and the Model Context Protocol (MCP).
+
+To run the tutorial, execute the following command in the `sample-code` directory:
+
+```bash
+pnpm agent-tutorial
+``` 
