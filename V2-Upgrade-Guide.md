@@ -101,6 +101,16 @@ const request: AzureOpenAiChatCompletionParameters = {
 };
 ```
 
+#### Response Object Data Property Changes
+
+The `data` property in response objects is renamed to `_data`.
+Prefer using the provided getter methods instead of accessing the data object directly.
+
+**Affected Response Classes:**
+- `AzureOpenAiChatCompletionResponse`
+- `AzureOpenAiChatCompletionStreamChunkResponse`
+- `AzureOpenAiEmbeddingResponse`
+
 ### `@sap-ai-sdk/orchestration`
 
 #### Type Import Changes
@@ -137,6 +147,16 @@ import type {
   FunctionObject
 } from '@sap-ai-sdk/orchestration';
 ```
+
+#### Response Object Data Property Changes
+
+The `data` property in response objects is renamed to `_data`.
+Prefer using the provided getter methods instead of accessing the data object directly.
+
+**Affected Response Classes:**
+- `OrchestrationResponse`
+- `OrchestrationStreamResponse`
+- `OrchestrationStreamChunkResponse`
 
 #### Module Configuration Structure
 
