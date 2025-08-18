@@ -9,7 +9,7 @@ const client = new MultiServerMCPClient({
   mcpServers: {
     weather: {
       command: 'npx',
-      args: ['tsx', './src/tutorials/mcp-server/weather-mcp.ts']
+      args: ['tsx', './src/tutorials/mcp/weather-mcp-server.ts']
     }
   }
 });
