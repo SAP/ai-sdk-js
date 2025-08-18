@@ -45,8 +45,7 @@ export class AzureOpenAiChatCompletionResponse {
    * @returns The message content.
    */
   getContent(choiceIndex = 0): string | undefined | null {
-    return this.findChoiceByIndex(choiceIndex)?.message
-      ?.content;
+    return this.findChoiceByIndex(choiceIndex)?.message?.content;
   }
 
   /**
@@ -54,7 +53,9 @@ export class AzureOpenAiChatCompletionResponse {
    * @param choiceIndex - The index of the choice to parse.
    * @returns The message tool calls.
    */
-  getToolCalls(choiceIndex = 0): AzureOpenAiChatCompletionMessageToolCalls | undefined {
+  getToolCalls(
+    choiceIndex = 0
+  ): AzureOpenAiChatCompletionMessageToolCalls | undefined {
     const choice = this.findChoiceByIndex(choiceIndex);
     return choice?.message?.tool_calls;
   }
@@ -74,7 +75,9 @@ export class AzureOpenAiChatCompletionResponse {
    * @param choiceIndex - The index of the choice to use (default is 0).
    * @returns The assistant message.
    */
-  getAssistantMessage(choiceIndex = 0): AzureOpenAiChatCompletionResponseMessage | undefined {
+  getAssistantMessage(
+    choiceIndex = 0
+  ): AzureOpenAiChatCompletionResponseMessage | undefined {
     return this.findChoiceByIndex(choiceIndex)?.message;
   }
 
@@ -83,7 +86,9 @@ export class AzureOpenAiChatCompletionResponse {
    * @param index - The index of the choice to find.
    * @returns An {@link LLMChoice} object associated with the index.
    */
-  findChoiceByIndex(index: number): AzureOpenAiCreateChatCompletionResponse['choices'][number] | undefined {
+  findChoiceByIndex(
+    index: number
+  ): AzureOpenAiCreateChatCompletionResponse['choices'][number] | undefined {
     return this.getChoices().find((c: { index: number }) => c.index === index);
   }
 

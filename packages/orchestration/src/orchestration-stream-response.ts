@@ -101,9 +101,7 @@ export class OrchestrationStreamResponse<T> {
    * @param choiceIndex - The index of the choice to use (default is 0).
    * @returns The assistant message.
    */
-  getAssistantMessage(
-    choiceIndex = 0
-  ): AssistantChatMessage | undefined {
+  getAssistantMessage(choiceIndex = 0): AssistantChatMessage | undefined {
     if (this.isStreamOpen()) {
       return;
     }
