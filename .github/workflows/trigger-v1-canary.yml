@@ -4,6 +4,7 @@ on:
   schedule:
     # At 3 AM UTC every day
     - cron: 0 3 * * *
+  workflow_dispatch:
 
 jobs:
   canary-release:

@@ -4,6 +4,7 @@ on:
   schedule:
     # At 4 AM UTC every day
     - cron: 0 4 * * *
+  workflow_dispatch:
 
 jobs:
   smoke-tests-v1:
