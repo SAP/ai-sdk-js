@@ -55,6 +55,20 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
     }
   }
 
+  static async *_processStreamEnd(
+    stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
+    response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
+  ): AsyncGenerator<OrchestrationStreamChunkResponse> {
+    if (!response) {
+      throw new Error('Response is required to process stream end.');
+    }
+    for await (const chunk of stream) {
+      yield chunk;
+    }
+
+    response._openStream = false;
+  }
+
   /**
    * Transform a stream of chunks into a stream of content strings.
    * @param stream - Orchestration stream.

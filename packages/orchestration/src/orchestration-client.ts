@@ -144,7 +144,7 @@ export class OrchestrationClient {
     return this.messagesHistory;
   }
 
-  private async *processStreamEnd(
+  private async *processMessageHistory(
     stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
     response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   ): AsyncGenerator<OrchestrationStreamChunkResponse> {
@@ -154,8 +154,6 @@ export class OrchestrationClient {
     for await (const chunk of stream) {
       yield chunk;
     }
-
-    response._openStream = false;
 
     if (this.useClientHistory) {
       this.messagesHistory = response.getAllMessages();
@@ -220,7 +218,8 @@ export class OrchestrationClient {
         OrchestrationStream._processOrchestrationStreamChunkResponse,
         response
       )
-      ._pipe(this.processStreamEnd.bind(this), response);
+      ._pipe(OrchestrationStream._processStreamEnd, response)
+      ._pipe(this.processMessageHistory.bind(this), response);
 
     return response;
   }
