@@ -54,9 +54,5 @@ export type {
   ToolChatMessage,
   DeveloperChatMessage,
   ChatCompletionTool,
-  FunctionObject,
-  ModuleResultsStreaming,
-  LlmChoiceStreaming,
-  ModuleResults,
-  LlmChoice
+  FunctionObject
 } from './client/api/schema/index.js';

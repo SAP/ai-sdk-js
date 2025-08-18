@@ -134,11 +134,7 @@ import type {
   ToolChatMessage,
   DeveloperChatMessage,
   ChatCompletionTool,
-  FunctionObject,
-  ModuleResultsStreaming,
-  LlmChoiceStreaming,
-  ModuleResults,
-  LlmChoice
+  FunctionObject
 } from '@sap-ai-sdk/orchestration';
 ```
 
