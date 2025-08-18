@@ -1,6 +1,7 @@
 import type {
   CompletionPostResponseStreaming,
   LlmChoiceStreaming,
+  ModuleResultsStreaming,
   TokenUsage,
   ToolCallChunk
 } from './client/api/schema/index.js';
@@ -46,6 +47,14 @@ export class OrchestrationStreamChunkResponse {
    */
   getDeltaContent(choiceIndex = 0): string | undefined {
     return this.findChoiceByIndex(choiceIndex)?.delta.content;
+  }
+
+  /**
+   * Gets the intermediate results from the chunk.
+   * @returns The intermediate results.
+   */
+  getIntermediateResults(): ModuleResultsStreaming | undefined {
+    return this._data.intermediate_results;
   }
 
   /**

@@ -4,6 +4,7 @@ import type {
   ChatMessages,
   CompletionPostResponse,
   MessageToolCalls,
+  ModuleResults,
   TokenUsage
 } from './client/api/schema/index.js';
 import type { OrchestrationStream } from './orchestration-stream.js';
@@ -99,7 +100,6 @@ export class OrchestrationStreamResponse<T> {
    * @param choiceIndex - The index of the choice to use (default is 0).
    * @returns The assistant message.
    */
-
   public getAssistantMessage(
     choiceIndex = 0
   ): AssistantChatMessage | undefined {
@@ -107,6 +107,17 @@ export class OrchestrationStreamResponse<T> {
       return;
     }
     return this.findChoiceByIndex(choiceIndex)?.message;
+  }
+
+  /**
+   * Gets the intermediate results from the orchestration response.
+   * @returns The intermediate results.
+   */
+  getIntermediateResults(): ModuleResults | undefined {
+    if (this.isStreamOpen()) {
+      return;
+    }
+    return this._data.intermediate_results;
   }
 
   get stream(): OrchestrationStream<T> {
