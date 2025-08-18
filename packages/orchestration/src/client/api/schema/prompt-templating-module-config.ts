@@ -16,4 +16,17 @@ export type PromptTemplatingModuleConfig = {
    */
   prompt: Template | TemplateRef;
   model: LLMModelDetails;
+  /**
+   * Timeout for the LLM request in seconds. This parameter will be ignored for Vertex AI models. Support for Vertex AI models will be added in the future.
+   * Default: 600.
+   * Maximum: 600.
+   * Minimum: 1.
+   */
+  timeout?: number;
+  /**
+   * Maximum number of retries for the LLM request. This parameter will be ignored for Vertex AI models. Support for Vertex AI models will be added in the future.
+   * Default: 2.
+   * Maximum: 10.
+   */
+  max_retries?: number;
 };

@@ -5,7 +5,8 @@
  */
 
 /**
- * Representation of the 'LLMModelDetails' schema.
+ * The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.
+ *
  */
 export type LLMModelDetails = {
   /**
