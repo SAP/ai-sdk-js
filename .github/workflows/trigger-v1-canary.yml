@@ -1,0 +1,14 @@
+name: trigger v1 canary release
+
+on:
+  schedule:
+    # At 3 AM UTC every Monday (weekly)
+    - cron: 0 3 * * 1
+  workflow_dispatch:
+
+jobs:
+  canary-release:
+    uses: SAP/ai-sdk-js/.github/workflows/publish-canary.yml@v1-main
+    with:
+      branch: v1-main
+    secrets: inherit
