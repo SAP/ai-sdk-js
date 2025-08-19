@@ -15,7 +15,9 @@ import type {
   HttpResponse,
   CustomRequestConfig
 } from '@sap-cloud-sdk/http-client';
-import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api/internal.js';
+import type {
+  DeploymentIdConfig,
+  ResourceGroupConfig } from '@sap-ai-sdk/ai-api/internal.js';
 import type {
   OrchestrationModuleConfig,
   ChatCompletionRequest,
@@ -42,7 +44,7 @@ export class OrchestrationClient {
    */
   constructor(
     private config: OrchestrationModuleConfig | string,
-    private deploymentConfig?: ResourceGroupConfig,
+    private deploymentConfig?: Partial<ResourceGroupConfig & DeploymentIdConfig>,
     private destination?: HttpDestinationOrFetchOptions
   ) {
     if (typeof config === 'string') {
