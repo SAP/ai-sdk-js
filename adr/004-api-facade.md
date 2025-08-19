@@ -2,7 +2,7 @@
 
 ## Status
 
-proposed
+decided
 
 ## Context
 
@@ -43,15 +43,3 @@ For types used in `sample-code` and documentation, they should all be public.
 For `@sap-ai-sdk/orchestration`, additionally:
 
 - Types of all modules used in `OrchestrationModuleConfig` interface.
-
-# Discussion
-
-We need to decide if we categorize types used in `sample-code` or documentation as frequently used types if they can only be imported from internal after applying the above general strategy.
-
-## Option A
-
-We exceptionally export them.
-
-## Option B
-
-We accept that user sometimes needs to import from internal.
