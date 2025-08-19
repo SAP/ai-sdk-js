@@ -1,0 +1,19 @@
+name: trigger v1 tests
+
+on:
+  schedule:
+    # At 4 AM UTC every Monday (weekly)
+    - cron: 0 4 * * 1
+  workflow_dispatch:
+
+jobs:
+  smoke-tests-v1:
+    uses: SAP/ai-sdk-js/.github/workflows/smoke-tests.yml@v1-main
+    with:
+      branch: v1-main
+    secrets: inherit
+  e2e-tests-v1:
+    uses: SAP/ai-sdk-js/.github/workflows/e2e-tests.yaml@v1-main
+    with:
+      branch: v1-main
+    secrets: inherit
