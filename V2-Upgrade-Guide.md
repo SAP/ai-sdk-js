@@ -44,7 +44,10 @@ Update all SAP Cloud SDK for AI packages to version 2.x in your `package.json` f
 
 #### Type Import Changes
 
-Generated types are no longer exported from `@sap-ai-sdk/foundation-models` and must be imported from `@sap-ai-sdk/foundation-models/internal.js`.
+Generated types are no longer exported from `@sap-ai-sdk/foundation-models`.
+For frequently used types in most cases, they remain available from the public exports.
+For edge cases where the underlying generated types are used, they must be imported from `@sap-ai-sdk/foundation-models/internal.js`.
+
 
 **v1:**
 ```typescript
@@ -115,7 +118,9 @@ Prefer using the provided getter methods instead of accessing the data object di
 
 #### Type Import Changes
 
-Generated types are no longer exported from `@sap-ai-sdk/orchestration` and must be imported from `@sap-ai-sdk/orchestration/internal.js`.
+Generated types are no longer exported from `@sap-ai-sdk/orchestration`.
+For frequently used types in most cases, they remain available from the public exports.
+For edge cases where the underlying generated types are used, they must be imported from `@sap-ai-sdk/orchestration/internal.js`.
 
 **v1:**
 ```typescript
