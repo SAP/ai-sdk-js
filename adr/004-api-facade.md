@@ -26,6 +26,11 @@ The following content should
 
 - Types of **parameters** of all public functions / methods.
 - Types of **return values** of all public functions / methods.
+  - Exception: If the return type is a complex generated type which introduces high change risk, and user rarely needs it for typing objects, we can consider not exporting it publicly.
+    - `ModuleResultsStreaming` not public (`getIntermediateResults()`)
+    - `LlmChoiceStreaming` not public (`findChoiceByIndex()`)
+    - `ModuleResults` not public (`getIntermediateResults()`)
+    - `LlmChoice` not public (`findChoiceByIndex()`)
 - Types of **(error) responses** of all public functions / methods.
 - Types of **publicly exported objects** and **public fields**.
 
@@ -33,7 +38,7 @@ For frequently customer-used types, we need to discuss case by case.
 Especially how we export them, e.g., by creating aliases or accepting direct exports of generated types if not changed frequently.
 This can be types of different messages, tools or any other objects which might be created as a separate variable instead of the inline approach due to reuse or clean code reasons.
 
-For types used in `sample-code` and documentation: **TBD**
+For types used in `sample-code` and documentation, they should all be public.
 
 For `@sap-ai-sdk/orchestration`, additionally:
 
