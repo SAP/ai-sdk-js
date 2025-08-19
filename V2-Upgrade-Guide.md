@@ -48,22 +48,13 @@ Generated types are no longer exported from `@sap-ai-sdk/foundation-models`.
 For frequently used types in most cases, they remain available from the public exports.
 For edge cases where the underlying generated types are used, they must be imported from `@sap-ai-sdk/foundation-models/internal.js`.
 
-
-**v1:**
-```typescript
-import type { 
-  AzureOpenAiCreateChatCompletionRequest,
-  AzureOpenAiCreateChatCompletionResponse 
-} from '@sap-ai-sdk/foundation-models';
-```
-
-**v2:**
-```typescript
+```diff
 // Generated types must be imported from internal
 import type { 
   AzureOpenAiCreateChatCompletionRequest,
   AzureOpenAiCreateChatCompletionResponse 
-} from '@sap-ai-sdk/foundation-models/internal.js';
+- } from '@sap-ai-sdk/foundation-models';
++ } from '@sap-ai-sdk/foundation-models/internal.js';
 ```
 
 ```typescript
@@ -84,21 +75,12 @@ import type {
 The `AzureOpenAiCreateChatCompletionRequest` type is no longer exported publicly.
 Use the new `AzureOpenAiChatCompletionParameters` type instead.
 
-**v1:**
-```typescript
-import type { AzureOpenAiCreateChatCompletionRequest } from '@sap-ai-sdk/foundation-models';
+```diff
+- import type { AzureOpenAiCreateChatCompletionRequest } from '@sap-ai-sdk/foundation-models';
++ import type { AzureOpenAiChatCompletionParameters } from '@sap-ai-sdk/foundation-models';
 
-const request: AzureOpenAiCreateChatCompletionRequest = {
-  messages: [{ role: 'user', content: 'Hello' }],
-  max_tokens: 100
-};
-```
-
-**v2:**
-```typescript
-import type { AzureOpenAiChatCompletionParameters } from '@sap-ai-sdk/foundation-models';
-
-const request: AzureOpenAiChatCompletionParameters = {
+- const request: AzureOpenAiCreateChatCompletionRequest = {
++ const request: AzureOpenAiChatCompletionParameters = {
   messages: [{ role: 'user', content: 'Hello' }],
   max_tokens: 100
 };
@@ -122,21 +104,13 @@ Generated types are no longer exported from `@sap-ai-sdk/orchestration`.
 For frequently used types in most cases, they remain available from the public exports.
 For edge cases where the underlying generated types are used, they must be imported from `@sap-ai-sdk/orchestration/internal.js`.
 
-**v1:**
-```typescript
-import type { 
-  CompletionPostResponse,
-  LlmChoice 
-} from '@sap-ai-sdk/orchestration';
-```
-
-**v2:**
-```typescript
+```diff
 // Generated types must be imported from internal
 import type { 
   CompletionPostResponse,
   LlmChoice 
-} from '@sap-ai-sdk/orchestration/internal.js';
+- } from '@sap-ai-sdk/orchestration';
++ } from '@sap-ai-sdk/orchestration/internal.js';
 ```
 
 ```typescript
@@ -167,35 +141,28 @@ Prefer using the provided getter methods instead of accessing the data object di
 
 The most significant change is the consolidation of `llm` and `templating` modules into a single `promptTemplating` module.
 
-**v1:**
-```typescript
+```diff
 const config = {
-  llm: {
-    model_name: 'gpt-4o',
-    model_params: {}
-  },
-  templating: {
-    template: [
-      { role: 'user', content: 'What is the capital of {{?country}}?' }
-    ]
-  }
-};
-```
-
-**v2:**
-```typescript
-const config = {
-  promptTemplating: {
-    model: {
-      name: 'gpt-4o',
-      params: {}
-    },
-    prompt: {
-      template: [
-        { role: 'user', content: 'What is the capital of {{?country}}?' }
-      ]
-    }
-  }
+- llm: {
+-   model_name: 'gpt-4o',
+-   model_params: {}
+- },
+- templating: {
+-   template: [
+-     { role: 'user', content: 'What is the capital of {{?country}}?' }
+-   ]
+- }
++ promptTemplating: {
++   model: {
++     name: 'gpt-4o',
++     params: {}
++   },
++   prompt: {
++     template: [
++       { role: 'user', content: 'What is the capital of {{?country}}?' }
++     ]
++   }
++ }
 };
 ```
 
@@ -204,59 +171,40 @@ const config = {
 Several parameter names have been updated for consistency.
 
 ##### Input Parameters
-**v1:**
-```typescript
-orchestrationClient.chatCompletion({
-  inputParams: { country: 'France' }
-});
-```
 
-**v2:**
-```typescript
+```diff
 orchestrationClient.chatCompletion({
-  placeholderValues: { country: 'France' }
+- inputParams: { country: 'France' }
++ placeholderValues: { country: 'France' }
 });
 ```
 
 ##### Model Configuration
-**v1:**
-```typescript
-llm: {
-  model_name: 'gpt-4o',
-  model_params: { temperature: 0.7 }
-}
-```
 
-**v2:**
-```typescript
-promptTemplating: {
-  model: {
-    name: 'gpt-4o',
-    params: { temperature: 0.7 }
-  }
-}
+```diff
+- llm: {
+-   model_name: 'gpt-4o',
+-   model_params: { temperature: 0.7 }
+- }
++ promptTemplating: {
++   model: {
++     name: 'gpt-4o',
++     params: { temperature: 0.7 }
++   }
++ }
 ```
 
 #### Global Streaming Configuration
 
 The global streaming configuration has been updated to use an `enabled` flag instead of a top-level `stream` property.
 
-**v1:**
-```typescript
+```diff
 const config = {
-  stream: true,
+- stream: true,
   streamOptions: {
-    llm: { include_usage: true }
-  }
-};
-```
-
-**v2:**
-```typescript
-const config = {
-  streamOptions: {
-    enabled: true,
-    promptTemplating: { include_usage: true }
+-   llm: { include_usage: true }
++   enabled: true,
++   promptTemplating: { include_usage: true }
   }
 };
 ```
@@ -265,40 +213,26 @@ const config = {
 
 The response structure has been updated with new property names.
 
-**v1:**
-```typescript
+```diff
 // Response properties
-response.orchestration_result
-response.module_results
-```
-
-**v2:**
-```typescript
-// Response properties
-response.final_result
-response.intermediate_results
+- response.orchestration_result
+- response.module_results
++ response.final_result
++ response.intermediate_results
 ```
 
 #### Grounding Configuration
 
 The grounding configuration structure has been updated to use `placeholders` instead of separate `input_params` and `output_param`.
 
-**v1:**
-```typescript
+```diff
 buildDocumentGroundingConfig({
-  input_params: ['groundingInput'],
-  output_param: 'groundingOutput',
-  filters: [...]
-})
-```
-
-**v2:**
-```typescript
-buildDocumentGroundingConfig({
-  placeholders: {
-    input: ['groundingInput'],
-    output: 'groundingOutput'
-  },
+- input_params: ['groundingInput'],
+- output_param: 'groundingOutput',
++ placeholders: {
++   input: ['groundingInput'],
++   output: 'groundingOutput'
++ },
   filters: [...]
 })
 ```
@@ -308,45 +242,33 @@ buildDocumentGroundingConfig({
 The deprecated `buildAzureContentFilter()` function has been removed in v2.
 Use `buildAzureContentSafetyFilter()` instead.
 
-**v1:**
-```typescript
-// This function is deprecated and removed in v2
-const filter = buildAzureContentFilter({
-  Hate: 'ALLOW_SAFE',
-  Violence: 'ALLOW_SAFE_LOW_MEDIUM'
-});
-```
-
-**v2:**
-```typescript
-// Use this function instead
-const filter = buildAzureContentSafetyFilter({
-  hate: 'ALLOW_SAFE',
-  violence: 'ALLOW_SAFE_LOW_MEDIUM'
-});
+```diff
+- // This function is deprecated and removed in v2
+- const filter = buildAzureContentFilter({
+-   Hate: 'ALLOW_SAFE',
+-   Violence: 'ALLOW_SAFE_LOW_MEDIUM'
+- });
++ // Use this function instead
++ const filter = buildAzureContentSafetyFilter({
++   hate: 'ALLOW_SAFE',
++   violence: 'ALLOW_SAFE_LOW_MEDIUM'
++ });
 ```
 
 #### Azure Content Filter Changes
 
 The Azure content filter property names have been updated to use lowercase with underscores.
 
-**v1:**
-```typescript
+```diff
 buildAzureContentSafetyFilter({
-  Hate: 'ALLOW_SAFE',
-  SelfHarm: 'ALLOW_SAFE_LOW',
-  Sexual: 'ALLOW_SAFE_LOW_MEDIUM',
-  Violence: 'ALLOW_ALL'
-})
-```
-
-**v2:**
-```typescript
-buildAzureContentSafetyFilter({
-  hate: 'ALLOW_SAFE',
-  self_harm: 'ALLOW_SAFE_LOW',
-  sexual: 'ALLOW_SAFE_LOW_MEDIUM',
-  violence: 'ALLOW_ALL'
+- Hate: 'ALLOW_SAFE',
+- SelfHarm: 'ALLOW_SAFE_LOW',
+- Sexual: 'ALLOW_SAFE_LOW_MEDIUM',
+- Violence: 'ALLOW_ALL'
++ hate: 'ALLOW_SAFE',
++ self_harm: 'ALLOW_SAFE_LOW',
++ sexual: 'ALLOW_SAFE_LOW_MEDIUM',
++ violence: 'ALLOW_ALL'
 })
 ```
 
@@ -356,31 +278,24 @@ buildAzureContentSafetyFilter({
 
 The LangChain orchestration configuration follows the same structural changes as the core orchestration package.
 
-**v1:**
-```typescript
+```diff
 const config: LangChainOrchestrationModuleConfig = {
-  llm: {
-    model_name: 'gpt-4o',
-    model_params: {}
-  },
-  templating: {
-    template: messages
-  }
-};
-```
-
-**v2:**
-```typescript
-const config: LangChainOrchestrationModuleConfig = {
-  promptTemplating: {
-    model: {
-      name: 'gpt-4o',
-      params: {}
-    },
-    prompt: {
-      template: messages
-    }
-  }
+- llm: {
+-   model_name: 'gpt-4o',
+-   model_params: {}
+- },
+- templating: {
+-   template: messages
+- }
++ promptTemplating: {
++   model: {
++     name: 'gpt-4o',
++     params: {}
++   },
++   prompt: {
++     template: messages
++   }
++ }
 };
 ```
 
@@ -388,17 +303,10 @@ const config: LangChainOrchestrationModuleConfig = {
 
 Input parameters for LangChain orchestration calls have been updated.
 
-**v1:**
-```typescript
+```diff
 await orchestrationClient.invoke(messages, {
-  inputParams: { country: 'France' }
-});
-```
-
-**v2:**
-```typescript
-await orchestrationClient.invoke(messages, {
-  placeholderValues: { country: 'France' }
+- inputParams: { country: 'France' }
++ placeholderValues: { country: 'France' }
 });
 ```
 
@@ -406,14 +314,9 @@ await orchestrationClient.invoke(messages, {
 
 LangChain message responses now use updated property names for intermediate results.
 
-**v1:**
-```typescript
-// Access module results in response
-message.additional_kwargs.module_results
-```
-
-**v2:**
-```typescript
-// Access intermediate results in response
-message.additional_kwargs.intermediate_results
+```diff
+- // Access module results in response
+- message.additional_kwargs.module_results
++ // Access intermediate results in response
++ message.additional_kwargs.intermediate_results
 ```
