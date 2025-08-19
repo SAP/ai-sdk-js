@@ -36,3 +36,6 @@ updates:
       interval: 'weekly'
       time: '01:00'
       timezone: 'Europe/Berlin'
+    ignore:
+    - dependency-name: 'SAP/ai-sdk-js'
+      update-types: ['version-update:semver-major', 'version-update:semver-minor', 'version-update:semver-patch']
