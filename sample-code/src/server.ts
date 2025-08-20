@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import express from 'express';
+import { getDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
 import {
   chatCompletion,
   chatCompletionStream as azureChatCompletionStream,
@@ -69,7 +70,6 @@ import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-ground
 import type { AIMessageChunk } from '@langchain/core/messages';
 import type { AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
-import { getDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
 
 const app = express();
 const port = 8080;
@@ -728,7 +728,11 @@ app.get('/prompt-registry/template', async (req, res) => {
 app.get('/test/deployment-id', async (req, res) => {
   try {
     // Example: test with a model name (foundation-models)
-    const deploymentId1 = await getDeploymentId('gpt-4o', 'azure-openai', 'foundation-models');
+    const deploymentId1 = await getDeploymentId(
+      'gpt-4o',
+      'azure-openai',
+      'foundation-models'
+    );
 
     // Example: test with a deploymentId config (orchestration)
     const deploymentId2 = await getDeploymentId(
