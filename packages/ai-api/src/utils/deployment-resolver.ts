@@ -182,6 +182,7 @@ export async function getAllDeployments(
 export async function getDeploymentId(
   modelDeployment: ModelDeployment,
   executableId: string,
+  scenarioId: string,
   destination?: HttpDestinationOrFetchOptions
 ): Promise<string> {
   if (isDeploymentIdConfig(modelDeployment)) {
@@ -194,9 +195,9 @@ export async function getDeploymentId(
       : modelDeployment;
 
   return resolveDeploymentId({
-    scenarioId: 'foundation-models',
+    scenarioId: scenarioId,
     executableId,
-    model: translateToFoundationModel(model),
+    model: scenarioId === 'foundation-models' ? translateToFoundationModel(model) : undefined,
     resourceGroup: model.resourceGroup,
     destination
   });
