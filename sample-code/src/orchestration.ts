@@ -94,6 +94,52 @@ export async function chatCompletionStream(
 }
 
 /**
+ * Ask ChatGPT through the orchestration service about SAP Cloud SDK with streaming.
+ * @param controller - The abort controller.
+ * @param streamOptions - The stream options.
+ * @returns The response from the orchestration service containing the response content.
+ */
+export async function chatCompletionStreamWithHistory(
+  controller: AbortController,
+  streamOptions?: StreamOptions
+): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
+  const orchestrationClient = new OrchestrationClient({
+    // define the language model to be used
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
+    }
+  });
+
+  const streamResponse = await orchestrationClient.stream(
+    {
+      messages: [
+        {
+          role: 'user',
+          content: 'Give me a brief introduction to the SAP Cloud SDK.'
+        }
+      ]
+    },
+    controller,
+    streamOptions
+  );
+
+  for await (const _ of streamResponse.stream) {
+    // Consume the stream to ensure it is processed
+  }
+
+  return orchestrationClient.stream({
+    messages: [
+      {
+        role: 'user',
+        content: 'What is the most important feature of it? Give many details.'
+      }
+    ]
+  });
+}
+
+/**
  * Ask about the capital of any country using a template.
  * @returns The orchestration service response.
  */
@@ -167,14 +213,13 @@ export async function orchestrationMessageHistory(): Promise<OrchestrationRespon
     }
   });
 
-  const firstResponse = await orchestrationClient.chatCompletion({
+  await orchestrationClient.chatCompletion({
     messages: [{ role: 'user', content: 'What is the capital of France?' }]
   });
 
   // User can then ask a follow-up question
   const nextResponse = await orchestrationClient.chatCompletion({
-    messages: [{ role: 'user', content: 'What is the typical food there?' }],
-    messagesHistory: firstResponse.getAllMessages()
+    messages: [{ role: 'user', content: 'What is the typical food there?' }]
   });
 
   return nextResponse;
@@ -497,6 +542,7 @@ export async function orchestrationGrounding(
         })
       })
     },
+    undefined,
     { resourceGroup: 'ai-sdk-js-e2e' }
   );
 
@@ -680,7 +726,6 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
       { role: 'user', content: 'What is 2 + 3?' }
     ]
   });
-  const allMessages = response.getAllMessages();
   const initialResponse = response.getAssistantMessage();
   let toolMessage: ToolChatMessage;
   // Use the initial response to execute the tool and get the response.
@@ -698,8 +743,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
 
   // Call the model with a new message and the message history
   return orchestrationClient.chatCompletion({
-    messages: [toolMessage],
-    messagesHistory: allMessages
+    messages: [toolMessage]
   });
 }
 

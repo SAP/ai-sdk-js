@@ -428,3 +428,17 @@ export type AzureContentSafety = AzureContentSafetyOutput;
  */
 export type AzureContentSafetyFilterConfig =
   AzureContentSafetyOutputFilterConfig;
+
+/**
+ * Client configuration for the orchestration client.
+ */
+export interface ClientConfig {
+  /**
+   * Enable client-side maintained chat history for the orchestration client.
+   */
+  useClientHistory?: boolean;
+  /**
+   * The chat history to be used by the orchestration client.
+   */
+  messagesHistory?: ChatMessages;
+}
