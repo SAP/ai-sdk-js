@@ -11,7 +11,7 @@ info:
   description: Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
   contact:
     name: SAP AI Core
-  version: 0.0.2
+  version: 0.0.1
 
 tags:
   - name: OrchestrationCompletion
