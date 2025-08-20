@@ -36,6 +36,7 @@ export class AzureOpenAiEmbeddingClient {
     const deploymentId = await getDeploymentId(
       this.modelDeployment,
       'azure-openai',
+      'foundation-models',
       this.destination
     );
     const resourceGroup = getResourceGroup(this.modelDeployment);
