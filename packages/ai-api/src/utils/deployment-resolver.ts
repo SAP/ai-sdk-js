@@ -176,6 +176,7 @@ export async function getAllDeployments(
  * Get the deployment ID for a given model deployment configuration and executable ID using the 'foundation-models' scenario.
  * @param modelDeployment - The model deployment configuration.
  * @param executableId - The executable ID.
+ * @param scenarioId - The scenario ID.
  * @returns The ID of the deployment, if found.
  * @internal
  */
