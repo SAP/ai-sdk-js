@@ -195,9 +195,12 @@ export async function getDeploymentId(
       : modelDeployment;
 
   return resolveDeploymentId({
-    scenarioId: scenarioId,
+    scenarioId,
     executableId,
-    model: scenarioId === 'foundation-models' ? translateToFoundationModel(model) : undefined,
+    model:
+      scenarioId === 'foundation-models'
+        ? translateToFoundationModel(model)
+        : undefined,
     resourceGroup: model.resourceGroup,
     destination
   });
