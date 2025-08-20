@@ -102,28 +102,22 @@ export interface DeploymentResolutionOptions {
 }
 
 /**
- * Query the AI Core service for a deployment that matches the given criteria. If more than one deployment matches the criteria, the first one's ID is returned.
+ * Query the AI Core service for a deployment that matches the given criteria.
+ * If more than one deployment matches the criteria, the first one's ID is returned.
  * @param opts - The options for the deployment resolution.
  * @returns A promise of a deployment, if a deployment was found, fails otherwise.
  * @internal
  */
-export async function resolveDeploymentId(
+export async function resolveDeployment(
   opts: DeploymentResolutionOptions
-): Promise<string> {
+): Promise<AiDeployment> {
   const { model } = opts;
-
-  const cachedDeployment = deploymentCache.get(opts);
-  if (cachedDeployment?.id) {
-    return cachedDeployment.id;
-  }
-
   let deployments = await getAllDeployments(opts);
 
   if (model) {
     deployments = deployments.filter(
       deployment => extractModel(deployment)?.name === model.name
     );
-
     if (model.version) {
       deployments = deployments.filter(
         deployment => extractModel(deployment)?.version === model.version
@@ -136,7 +130,36 @@ export async function resolveDeploymentId(
       `No deployment matched the given criteria: ${JSON.stringify(opts)}. Make sure the deployment is successful, as it is a prerequisite before consuming orchestration or foundation models.`
     );
   }
-  return deployments[0].id;
+  return deployments[0];
+}
+
+/**
+ * Query the AI Core service for a deployment that matches the given criteria.
+ * If more than one deployment matches the criteria, the first one's ID is returned.
+ * @param opts - The options for the deployment resolution.
+ * @returns A promise of a deployment, if a deployment was found, fails otherwise.
+ * @internal
+ */
+export async function resolveDeploymentId(
+  opts: DeploymentResolutionOptions
+): Promise<string> {
+  const cachedDeployment = deploymentCache.get(opts);
+  if (cachedDeployment?.id) {
+    return cachedDeployment.id;
+  }
+  return (await resolveDeployment(opts)).id;
+}
+
+/**
+ * Query the AI Core service for a deployment that matches the given criteria.
+ * If more than one deployment matches the criteria, the first one's URL is returned.
+ * @param opts - The options for the deployment resolution.
+ * @returns A promise of the deployment URL, if a deployment was found, fails otherwise.
+ */
+export async function resolveDeploymentUrl(
+  opts: DeploymentResolutionOptions
+): Promise<string| undefined> {
+  return (await resolveDeployment(opts)).deploymentUrl;
 }
 
 /**
