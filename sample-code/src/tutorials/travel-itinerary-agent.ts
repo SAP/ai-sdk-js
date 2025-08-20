@@ -16,6 +16,8 @@ import * as z from 'zod/v4';
 import { getMcpTools } from './mcp/mcp-adapter.js';
 import type { AIMessage } from '@langchain/core/messages';
 /**
+ * **NOTE**: If any code is modified in `tutorials` dir, ensure that the changes are reflected in the documentation portal.
+ *
  * This example demonstrates how to create a travel itinerary assistant using LangGraph and MCP.
  * The assistant can check the weather and recommend restaurants based on the city provided.
  * It uses tools (defined and fetched from MCP server) to fetch weather and restaurant data, and maintains conversation context.
