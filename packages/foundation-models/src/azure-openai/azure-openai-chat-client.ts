@@ -44,17 +44,23 @@ export class AzureOpenAiChatClient {
   /**
    * Creates a completion stream for the chat messages.
    * @param request - Request containing chat completion input parameters.
-   * @param controller - The abort controller.
+   * @param signal - The abort signal.
    * @param requestConfig - The request configuration.
    * @returns A response containing the chat completion stream.
    */
   async stream(
     request: AzureOpenAiChatCompletionParameters,
-    controller = new AbortController(),
+    signal?: AbortSignal,
     requestConfig?: CustomRequestConfig
   ): Promise<
     AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>
   > {
+    const controller = new AbortController();
+    if (signal) {
+      signal.addEventListener('abort', () => {
+        controller.abort();
+      });
+    }
     const response =
       new AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>();
     response.stream = (

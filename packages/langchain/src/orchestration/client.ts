@@ -168,18 +168,13 @@ export class OrchestrationClient extends BaseChatModel<
       {
         signal: options.signal
       },
-      () => {
-        const controller = new AbortController();
-        if (options.signal) {
-          options.signal.addEventListener('abort', () => controller.abort());
-        }
-        return orchestrationClient.stream(
+      () =>
+        orchestrationClient.stream(
           { messages: orchestrationMessages, placeholderValues },
-          controller,
+          options.signal,
           options.streamOptions,
           customRequestConfig
-        );
-      }
+        )
     );
 
     for await (const chunk of response.stream) {

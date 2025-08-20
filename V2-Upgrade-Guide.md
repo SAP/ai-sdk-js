@@ -42,12 +42,39 @@ Update all SAP Cloud SDK for AI packages to version 2.x in your `package.json` f
 
 ### `@sap-ai-sdk/foundation-models`
 
+#### Stream Method Parameter Change
+
+The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter.
+
+**v1:**
+```typescript
+const controller = new AbortController();
+const response = await azureOpenAiChatClient.stream(
+  {
+    messages: [{ role: 'user', content: 'Hello' }],
+    max_tokens: 100
+  },
+  controller  // Pass the controller
+);
+```
+
+**v2:**
+```typescript
+const controller = new AbortController();
+const response = await azureOpenAiChatClient.stream(
+  {
+    messages: [{ role: 'user', content: 'Hello' }],
+    max_tokens: 100
+  },
+  controller.signal  // Pass the signal instead
+);
+```
+
 #### Type Import Changes
 
 Generated types are no longer exported from `@sap-ai-sdk/foundation-models`.
 For frequently used types in most cases, they remain available from the public exports.
 For edge cases where the underlying generated types are used, they must be imported from `@sap-ai-sdk/foundation-models/internal.js`.
-
 
 **v1:**
 ```typescript
@@ -115,6 +142,28 @@ Prefer using the provided getter methods instead of accessing the data object di
 - `AzureOpenAiEmbeddingResponse`
 
 ### `@sap-ai-sdk/orchestration`
+
+#### Stream Method Parameter Change
+
+The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter.
+
+**v1:**
+```typescript
+const controller = new AbortController();
+const response = await orchestrationClient.stream(
+  { messages: [{ role: 'user', content: 'Hello' }] },
+  controller  // Pass the controller
+);
+```
+
+**v2:**
+```typescript
+const controller = new AbortController();
+const response = await orchestrationClient.stream(
+  { messages: [{ role: 'user', content: 'Hello' }] },
+  controller.signal  // Pass the signal instead
+);
+```
 
 #### Type Import Changes
 
@@ -416,4 +465,3 @@ message.additional_kwargs.module_results
 ```typescript
 // Access intermediate results in response
 message.additional_kwargs.intermediate_results
-```

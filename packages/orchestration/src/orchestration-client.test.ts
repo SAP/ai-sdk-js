@@ -930,7 +930,9 @@ describe('orchestration service client', () => {
 
       const client = new OrchestrationClient(config);
 
-      await expect(client.stream(undefined, controller)).rejects.toThrow();
+      await expect(
+        client.stream(undefined, controller.signal)
+      ).rejects.toThrow();
     });
 
     it('should throw error when stream is called with already aborted controller', async () => {
@@ -958,7 +960,9 @@ describe('orchestration service client', () => {
 
       const client = new OrchestrationClient(config);
 
-      await expect(client.stream(undefined, controller)).rejects.toThrow();
+      await expect(
+        client.stream(undefined, controller.signal)
+      ).rejects.toThrow();
     });
   });
 });
