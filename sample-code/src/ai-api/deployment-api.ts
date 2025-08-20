@@ -1,4 +1,5 @@
 import { DeploymentApi } from '@sap-ai-sdk/ai-api';
+import { resolveDeploymentUrl } from '@sap-ai-sdk/ai-api/internal.js';
 import type {
   AiDeploymentBulkModificationResponse,
   AiDeploymentCreationResponse,
@@ -7,7 +8,6 @@ import type {
   AiDeploymentModificationRequestList,
   AiDeploymentStatus
 } from '@sap-ai-sdk/ai-api';
-import { resolveDeploymentUrl } from '@sap-ai-sdk/ai-api/internal.js';
 
 /**
  * Get all deployments filtered by status.
