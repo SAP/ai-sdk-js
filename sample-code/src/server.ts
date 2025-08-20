@@ -30,7 +30,8 @@ import {
   getDeploymentsWithDestination,
   createDeployment,
   stopDeployments,
-  deleteDeployments
+  deleteDeployments,
+  getDeploymentUrl
   // eslint-disable-next-line import/no-internal-modules
 } from './ai-api/deployment-api.js';
 import {
@@ -153,6 +154,14 @@ app.get('/ai-api/scenarios', async (req, res) => {
 app.get('/ai-api/models', async (req, res) => {
   try {
     res.send(await getModelsInScenario('foundation-models', 'default'));
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/ai-api/deployment-url', async (req, res) => {
+  try {
+    res.send(await getDeploymentUrl('gpt-4o', 'foundation-models', 'default'));
   } catch (error: any) {
     sendError(res, error);
   }

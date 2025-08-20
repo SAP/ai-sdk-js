@@ -7,6 +7,7 @@ import type {
   AiDeploymentModificationRequestList,
   AiDeploymentStatus
 } from '@sap-ai-sdk/ai-api';
+import { resolveDeploymentUrl } from '@sap-ai-sdk/ai-api/internal.js';
 
 /**
  * Get all deployments filtered by status.
@@ -124,4 +125,24 @@ export async function deleteDeployments(
       }).execute()
     )
   );
+}
+
+/**
+ * Get the deployment URL for a given model and scenario.
+ * @param model - Model name.
+ * @param scenarioId - Scenario ID.
+ * @param resourceGroup - AI-Resource-Group where the resources are available.
+ * @returns The deployment URL.
+ */
+export async function getDeploymentUrl(
+  model: string,
+  scenarioId: string,
+  resourceGroup: string
+): Promise<string | undefined> {
+  const url = await resolveDeploymentUrl({
+    scenarioId,
+    model: { name: model },
+    resourceGroup
+  });
+  return url;
 }
