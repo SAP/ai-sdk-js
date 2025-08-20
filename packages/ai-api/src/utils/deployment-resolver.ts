@@ -158,7 +158,7 @@ export async function resolveDeploymentId(
  */
 export async function resolveDeploymentUrl(
   opts: DeploymentResolutionOptions
-): Promise<string| undefined> {
+): Promise<string | undefined> {
   return (await resolveDeployment(opts)).deploymentUrl;
 }
 
