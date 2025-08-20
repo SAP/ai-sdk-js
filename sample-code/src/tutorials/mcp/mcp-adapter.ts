@@ -1,3 +1,5 @@
+// NOTE: ALL code changes in this file MUST be reflected in the documentation portal.
+
 import { MultiServerMCPClient } from '@langchain/mcp-adapters';
 
 // Create client and connect to server
