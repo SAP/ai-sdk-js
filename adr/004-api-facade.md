@@ -17,7 +17,7 @@ This can sometimes be tricky as those changed types might directly be used in th
 ## Decision
 
 For manual-written client, proper wrappers are needed and only necessary types are exported publicly.
-Generated types should only be exported via `internal.js`.
+Generated types should in general be exported via `internal.js` with exceptions, see blow.
 
 The following content should
 
