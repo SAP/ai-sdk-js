@@ -1,5 +1,4 @@
 import { DeploymentApi } from '@sap-ai-sdk/ai-api';
-import { resolveDeploymentUrl } from '@sap-ai-sdk/ai-api/internal.js';
 import type {
   AiDeploymentBulkModificationResponse,
   AiDeploymentCreationResponse,
