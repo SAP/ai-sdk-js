@@ -63,7 +63,13 @@ function createDeploymentCache(cache: Cache<Deployment>) {
           entry,
           { id: entry.id, url: entry.url },
           ...(entry.model
-            ? [{ id: entry.id, url: entry.url, model: { name: entry.model.name } }]
+            ? [
+                {
+                  id: entry.id,
+                  url: entry.url,
+                  model: { name: entry.model.name }
+                }
+              ]
             : [])
         ])
         .forEach(entry => {
