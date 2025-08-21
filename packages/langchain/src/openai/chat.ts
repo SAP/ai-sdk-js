@@ -104,7 +104,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
       typeof content === 'string' ? content : ''
     );
 
-    return mapOutputToChatResult(res.data);
+    return mapOutputToChatResult(res._data);
   }
 
   override bindTools(
@@ -362,7 +362,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
 
     for await (const chunk of response.stream) {
       // There can be only none or one choice inside a chunk
-      const choice = chunk.data.choices[0];
+      const choice = chunk._data.choices[0];
 
       // Map the chunk to a LangChain message chunk
       const messageChunk = mapAzureOpenAiChunkToLangChainMessageChunk(chunk);
@@ -378,10 +378,10 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
       if (choice?.finish_reason) {
         generationInfo.finish_reason = choice.finish_reason;
         // Only include system fingerprint in the last chunk for now to avoid concatenation issues
-        generationInfo.system_fingerprint = chunk.data.system_fingerprint;
-        generationInfo.model_name = chunk.data.model;
-        generationInfo.id = chunk.data.id;
-        generationInfo.created = chunk.data.created;
+        generationInfo.system_fingerprint = chunk._data.system_fingerprint;
+        generationInfo.model_name = chunk._data.model;
+        generationInfo.id = chunk._data.id;
+        generationInfo.created = chunk._data.created;
         generationInfo.index = choice.index;
       }
 

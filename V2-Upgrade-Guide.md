@@ -70,6 +70,77 @@ const response = await azureOpenAiChatClient.stream(
 );
 ```
 
+#### Type Import Changes
+
+Generated types are no longer exported from `@sap-ai-sdk/foundation-models`.
+For frequently used types in most cases, they remain available from the public exports.
+For edge cases where the underlying generated types are used, they must be imported from `@sap-ai-sdk/foundation-models/internal.js`.
+
+**v1:**
+```typescript
+import type { 
+  AzureOpenAiCreateChatCompletionRequest,
+  AzureOpenAiCreateChatCompletionResponse 
+} from '@sap-ai-sdk/foundation-models';
+```
+
+**v2:**
+```typescript
+// Generated types must be imported from internal
+import type { 
+  AzureOpenAiCreateChatCompletionRequest,
+  AzureOpenAiCreateChatCompletionResponse 
+} from '@sap-ai-sdk/foundation-models/internal.js';
+```
+
+```typescript
+// Frequently used types remain available from main package
+import type { 
+  AzureOpenAiChatCompletionTool,
+  AzureOpenAiFunctionObject,
+  AzureOpenAiChatCompletionRequestMessage,
+  AzureOpenAiChatCompletionRequestSystemMessage,
+  AzureOpenAiChatCompletionRequestUserMessage,
+  AzureOpenAiChatCompletionRequestAssistantMessage,
+  AzureOpenAiChatCompletionRequestToolMessage
+} from '@sap-ai-sdk/foundation-models';
+```
+
+#### Chat Completion Parameter Type
+
+The `AzureOpenAiCreateChatCompletionRequest` type is no longer exported publicly.
+Use the new `AzureOpenAiChatCompletionParameters` type instead.
+
+**v1:**
+```typescript
+import type { AzureOpenAiCreateChatCompletionRequest } from '@sap-ai-sdk/foundation-models';
+
+const request: AzureOpenAiCreateChatCompletionRequest = {
+  messages: [{ role: 'user', content: 'Hello' }],
+  max_tokens: 100
+};
+```
+
+**v2:**
+```typescript
+import type { AzureOpenAiChatCompletionParameters } from '@sap-ai-sdk/foundation-models';
+
+const request: AzureOpenAiChatCompletionParameters = {
+  messages: [{ role: 'user', content: 'Hello' }],
+  max_tokens: 100
+};
+```
+
+#### Response Object Data Property Changes
+
+The `data` property in response objects is renamed to `_data`.
+Prefer using the provided getter methods instead of accessing the data object directly.
+
+**Affected Response Classes:**
+- `AzureOpenAiChatCompletionResponse`
+- `AzureOpenAiChatCompletionStreamChunkResponse`
+- `AzureOpenAiEmbeddingResponse`
+
 ### `@sap-ai-sdk/orchestration`
 
 #### Stream Method Parameter Change
@@ -93,6 +164,53 @@ const response = await orchestrationClient.stream(
   controller.signal  // Pass the signal instead
 );
 ```
+
+#### Type Import Changes
+
+Generated types are no longer exported from `@sap-ai-sdk/orchestration`.
+For frequently used types in most cases, they remain available from the public exports.
+For edge cases where the underlying generated types are used, they must be imported from `@sap-ai-sdk/orchestration/internal.js`.
+
+**v1:**
+```typescript
+import type { 
+  CompletionPostResponse,
+  LlmChoice 
+} from '@sap-ai-sdk/orchestration';
+```
+
+**v2:**
+```typescript
+// Generated types must be imported from internal
+import type { 
+  CompletionPostResponse,
+  LlmChoice 
+} from '@sap-ai-sdk/orchestration/internal.js';
+```
+
+```typescript
+// Frequently used types remain available from main package
+import type { 
+  ChatMessage,
+  SystemChatMessage,
+  UserChatMessage,
+  AssistantChatMessage,
+  ToolChatMessage,
+  DeveloperChatMessage,
+  ChatCompletionTool,
+  FunctionObject
+} from '@sap-ai-sdk/orchestration';
+```
+
+#### Response Object Data Property Changes
+
+The `data` property in response objects is renamed to `_data`.
+Prefer using the provided getter methods instead of accessing the data object directly.
+
+**Affected Response Classes:**
+- `OrchestrationResponse`
+- `OrchestrationStreamResponse`
+- `OrchestrationStreamChunkResponse`
 
 #### Module Configuration Structure
 
@@ -347,4 +465,3 @@ message.additional_kwargs.module_results
 ```typescript
 // Access intermediate results in response
 message.additional_kwargs.intermediate_results
-```
