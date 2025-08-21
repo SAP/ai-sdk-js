@@ -139,17 +139,15 @@ describe('orchestration', () => {
     };
 
     try {
-      await new OrchestrationClient(config).stream(
-        {
-          messages: [
-            {
-              role: 'user',
-              content: 'Give me a short introduction on {{ ?__input__ }}.'
-            }
-          ],
-          placeholderValues: { __input__: 'SAP Cloud SDK' }
-        }
-      );
+      await new OrchestrationClient(config).stream({
+        messages: [
+          {
+            role: 'user',
+            content: 'Give me a short introduction on {{ ?__input__ }}.'
+          }
+        ],
+        placeholderValues: { __input__: 'SAP Cloud SDK' }
+      });
     } catch (err: any) {
       expect(err.stack).toContain(
         'Caused by:\nHTTP Response: Request failed with status code 400'
