@@ -159,6 +159,10 @@ export async function resolveDeploymentId(
 export async function resolveDeploymentUrl(
   opts: DeploymentResolutionOptions
 ): Promise<string | undefined> {
+  const cachedDeployment = deploymentCache.get(opts);
+  if (cachedDeployment?.url) {
+    return cachedDeployment.url;
+  }
   return (await resolveDeployment(opts)).deploymentUrl;
 }
 

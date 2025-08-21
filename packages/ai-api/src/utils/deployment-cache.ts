@@ -14,6 +14,7 @@ function getCacheKey({
 
 interface Deployment {
   id: string;
+  url?: string;
   model?: FoundationModel;
 }
 
@@ -60,9 +61,9 @@ function createDeploymentCache(cache: Cache<Deployment>) {
         .map(deployment => transformDeploymentForCache(deployment))
         .flatMap(entry => [
           entry,
-          { id: entry.id },
+          { id: entry.id, url: entry.url },
           ...(entry.model
-            ? [{ id: entry.id, model: { name: entry.model.name } }]
+            ? [{ id: entry.id, url: entry.url, model: { name: entry.model.name } }]
             : [])
         ])
         .forEach(entry => {
@@ -78,6 +79,7 @@ function createDeploymentCache(cache: Cache<Deployment>) {
 function transformDeploymentForCache(deployment: AiDeployment): Deployment {
   return {
     id: deployment.id,
+    url: deployment.url,
     model: extractModel(deployment)
   };
 }
