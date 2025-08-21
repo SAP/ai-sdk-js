@@ -3,29 +3,22 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-
+import type { SAPDocumentTranslationOutputTargetLanguage } from './sap-document-translation-output-target-language.js';
 /**
- * Representation of the 'SAPDocumentTranslation' schema.
+ * Representation of the 'SAPDocumentTranslationOutput' schema.
  */
-export type SAPDocumentTranslation = {
+export type SAPDocumentTranslationOutput = {
   /**
-   * Type of document translation provider
+   * Configuration for `sap_document_translation` translation provider.
    * @example "sap_document_translation"
    */
   type: 'sap_document_translation';
-  /**
-   * Configuration for `sap_document_translation` translation provider.
-   */
   config: {
     /**
      * Language of the text to be translated.
      * @example "de-DE"
      */
     source_language?: string;
-    /**
-     * Language to which the text should be translated.
-     * @example "en-US"
-     */
-    target_language: string;
+    target_language: SAPDocumentTranslationOutputTargetLanguage;
   };
 };
