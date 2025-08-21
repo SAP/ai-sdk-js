@@ -148,8 +148,7 @@ describe('orchestration', () => {
             }
           ],
           placeholderValues: { __input__: 'SAP Cloud SDK' }
-        },
-        new AbortController()
+        }
       );
     } catch (err: any) {
       expect(err.stack).toContain(
