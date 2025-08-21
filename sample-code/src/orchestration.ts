@@ -18,13 +18,10 @@ import type {
   OrchestrationStreamResponse,
   OrchestrationResponse,
   StreamOptions,
-  OrchestrationErrorResponse
-} from '@sap-ai-sdk/orchestration';
-import type {
+  OrchestrationErrorResponse,
   ChatCompletionTool,
-  ToolChatMessage,
-  DataRepositoryType
-} from '@sap-ai-sdk/orchestration/internal.js';
+  ToolChatMessage
+} from '@sap-ai-sdk/orchestration';
 
 const logger = createLogger({
   package: 'sample-code',
@@ -296,10 +293,10 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
     result.getContent();
   } catch {
     logger.info(
-      `Result from output content filter: ${result.data.intermediate_results.output_filtering!.message}`
+      `Result from output content filter: ${result.getIntermediateResults().output_filtering!.message}`
     );
     logger.info(
-      `The original response from the LLM was as follows:\n${result.data.intermediate_results.llm?.choices[0].message.content}`
+      `The original response from the LLM was as follows:\n${result.getIntermediateResults().llm?.choices[0].message.content}`
     );
     return result;
   }
@@ -470,7 +467,7 @@ export async function orchestrationFromJson(): Promise<
  */
 export async function orchestrationGrounding(
   query: string,
-  dataRepositoryType: DataRepositoryType = 'vector',
+  dataRepositoryType: 'vector' | 'help.sap.com' = 'vector',
   dataRepositories: string[] = ['*']
 ): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient(

@@ -125,7 +125,7 @@ export async function chatCompletionWithFunctionCall(): Promise<AzureOpenAiChatC
     tools
   });
 
-  const initialResponseMessage = response.data.choices[0].message;
+  const initialResponseMessage = response.getAssistantMessage()!;
   // Add the model's response for calling functions into the message history
   messages.push(initialResponseMessage);
 

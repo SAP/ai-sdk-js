@@ -10,7 +10,8 @@ import type {
   ChatModel,
   LlmModelParams,
   AzureContentSafetyFilterConfig,
-  OrchestrationResponse
+  OrchestrationResponse,
+  AssistantChatMessage
 } from '@sap-ai-sdk/orchestration';
 import type {
   CompletionPostResponse,
@@ -19,7 +20,6 @@ import type {
   ChatMessages,
   LlamaGuard38BFilterConfig,
   DpiConfig,
-  AssistantChatMessage,
   MessageToolCalls
 } from '@sap-ai-sdk/orchestration/internal.js';
 
@@ -50,7 +50,7 @@ expectType<CompletionPostResponse>(
     }).chatCompletion({
       messages: [{ role: 'user', content: 'Hello! {{?name}}' }]
     })
-  ).data
+  )._data
 );
 
 expectType<string | undefined>(
