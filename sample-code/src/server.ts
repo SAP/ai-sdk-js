@@ -1,6 +1,10 @@
 /* eslint-disable no-console */
 import express from 'express';
 import {
+  resolveDeploymentUrl,
+  type AiDeploymentStatus
+} from '@sap-ai-sdk/ai-api';
+import {
   chatCompletion,
   chatCompletionStream as azureChatCompletionStream,
   chatCompletionWithDestination,
@@ -67,7 +71,6 @@ import {
 } from './prompt-registry.js';
 import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type { AIMessageChunk } from '@langchain/core/messages';
-import type { AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 
 const app = express();
@@ -153,6 +156,19 @@ app.get('/ai-api/scenarios', async (req, res) => {
 app.get('/ai-api/models', async (req, res) => {
   try {
     res.send(await getModelsInScenario('foundation-models', 'default'));
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/ai-api/deployment-url', async (req, res) => {
+  try {
+    res.send(
+      await resolveDeploymentUrl({
+        scenarioId: 'foundation-models',
+        model: { name: 'gpt-4o' }
+      })
+    );
   } catch (error: any) {
     sendError(res, error);
   }
