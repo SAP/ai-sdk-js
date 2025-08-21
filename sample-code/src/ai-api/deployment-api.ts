@@ -126,23 +126,3 @@ export async function deleteDeployments(
     )
   );
 }
-
-/**
- * Get the deployment URL for a given model and scenario.
- * @param model - Model name.
- * @param scenarioId - Scenario ID.
- * @param resourceGroup - AI-Resource-Group where the resources are available.
- * @returns The deployment URL.
- */
-export async function getDeploymentUrl(
-  model: string,
-  scenarioId: string,
-  resourceGroup: string
-): Promise<string | undefined> {
-  const url = await resolveDeploymentUrl({
-    scenarioId,
-    model: { name: model },
-    resourceGroup
-  });
-  return url;
-}
