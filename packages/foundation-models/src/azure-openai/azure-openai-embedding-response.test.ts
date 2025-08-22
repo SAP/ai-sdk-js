@@ -25,7 +25,7 @@ describe('Azure OpenAI embedding response', () => {
   });
 
   it('should return the embedding response', () => {
-    expect(embeddingResponse.data).toStrictEqual(mockedData);
+    expect(embeddingResponse._data).toStrictEqual(mockedData);
   });
 
   it('should return raw response', () => {

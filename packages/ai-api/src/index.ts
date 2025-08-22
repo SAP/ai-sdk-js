@@ -6,3 +6,5 @@ export type {
   ModelConfig,
   ResourceGroupConfig
 } from './utils/index.js';
+
+export { resolveDeploymentUrl } from './utils/index.js';

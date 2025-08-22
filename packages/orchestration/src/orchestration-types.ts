@@ -22,7 +22,9 @@ import type {
   MaskingProviderConfig,
   SAPDocumentTranslation,
   GlobalStreamOptions,
-  ErrorResponse
+  ErrorResponse,
+  GroundingModuleConfig,
+  LlamaGuard38BFilterConfig
 } from './client/api/schema/index.js';
 
 /**
@@ -428,3 +430,23 @@ export type AzureContentSafety = AzureContentSafetyOutput;
  */
 export type AzureContentSafetyFilterConfig =
   AzureContentSafetyOutputFilterConfig;
+
+/**
+ * Representation of the 'LlamaGuard38BFilterConfig' schema.
+ */
+export type LlamaGuardFilterConfig = LlamaGuard38BFilterConfig;
+
+/**
+ * Representation of the 'GroundingModuleConfig' schema.
+ */
+export type DocumentGroundingConfig = GroundingModuleConfig;
+
+/**
+ * Representation of the 'DpiConfig' schema.
+ */
+export type DpiMaskingProviderConfig = DpiConfig;
+
+/**
+ * Representation of the 'SAPDocumentTranslation' schema.
+ */
+export type TranslationConfig = SAPDocumentTranslation;

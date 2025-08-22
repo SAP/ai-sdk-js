@@ -3,17 +3,19 @@ import {
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient
 } from '@sap-ai-sdk/foundation-models';
-import type { AzureOpenAiCreateChatCompletionStreamResponse } from '@sap-ai-sdk/foundation-models/src/index.js';
 import type {
   AzureOpenAiEmbeddingResponse,
   AzureOpenAiChatCompletionResponse,
-  AzureOpenAiCreateChatCompletionResponse,
-  AzureOpenAiCompletionUsage,
   AzureOpenAiChatModel,
   AzureOpenAiChatCompletionStreamResponse,
   AzureOpenAiChatCompletionStreamChunkResponse,
   AzureOpenAiChatCompletionStream
 } from '@sap-ai-sdk/foundation-models';
+import type {
+  AzureOpenAiCreateChatCompletionResponse,
+  AzureOpenAiCompletionUsage,
+  AzureOpenAiCreateChatCompletionStreamResponse
+} from '@sap-ai-sdk/foundation-models/internal.js';
 
 /**
  * Chat completion.
@@ -38,7 +40,7 @@ expectType<AzureOpenAiCreateChatCompletionResponse>(
     await new AzureOpenAiChatClient('gpt-4').run({
       messages: [{ role: 'user', content: 'test prompt' }]
     })
-  ).data
+  )._data
 );
 
 expectType<string | undefined | null>(

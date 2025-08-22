@@ -11,7 +11,7 @@ import {
   parseFileToString
 } from '../../../../test-util/mock-http.js';
 import { AzureOpenAiChatClient } from './chat.js';
-import type { AzureOpenAiFunctionObject } from '@sap-ai-sdk/foundation-models';
+import type { AzureOpenAiFunctionObject } from '@sap-ai-sdk/foundation-models/internal.js';
 import type { AIMessageChunk } from '@langchain/core/messages';
 describe('Chat client', () => {
   let client: AzureOpenAiChatClient;

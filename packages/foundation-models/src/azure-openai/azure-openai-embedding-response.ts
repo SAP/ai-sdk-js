@@ -14,10 +14,10 @@ export class AzureOpenAiEmbeddingResponse {
   /**
    * The embedding response.
    */
-  public readonly data: AzureOpenAiEmbeddingOutput;
+  public readonly _data: AzureOpenAiEmbeddingOutput;
 
   constructor(public readonly rawResponse: HttpResponse) {
-    this.data = rawResponse.data;
+    this._data = rawResponse.data;
   }
 
   /**
@@ -27,7 +27,7 @@ export class AzureOpenAiEmbeddingResponse {
    */
   getEmbedding(dataIndex = 0): number[] | undefined {
     this.logInvalidDataIndex(dataIndex);
-    return this.data.data[dataIndex]?.embedding;
+    return this._data.data[dataIndex]?.embedding;
   }
 
   /**
@@ -35,11 +35,11 @@ export class AzureOpenAiEmbeddingResponse {
    * @returns The embedding vectors.
    */
   getEmbeddings(): number[][] {
-    return this.data.data.map(({ embedding }) => embedding);
+    return this._data.data.map(({ embedding }) => embedding);
   }
 
   private logInvalidDataIndex(dataIndex: number): void {
-    if (dataIndex < 0 || dataIndex >= this.data.data.length) {
+    if (dataIndex < 0 || dataIndex >= this._data.data.length) {
       logger.error(`Data index ${dataIndex} is out of bounds.`);
     }
   }

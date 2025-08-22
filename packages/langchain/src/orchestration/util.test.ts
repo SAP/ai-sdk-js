@@ -400,7 +400,7 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
     expect(result).toBeInstanceOf(AIMessageChunk);
     expect(result.content).toBe('Test content');
     expect(result.additional_kwargs).toEqual({
-      intermediate_results: mockChunk.data.intermediate_results
+      intermediate_results: mockChunk._data.intermediate_results
     });
     expect(result.tool_call_chunks).toEqual([]);
     expect(result).toMatchSnapshot('AIMessageChunk with content');

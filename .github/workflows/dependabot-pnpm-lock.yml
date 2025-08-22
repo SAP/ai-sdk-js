@@ -5,6 +5,9 @@ on:
     types: [opened, synchronize]
     paths:
       - '**/package.json'
+    branches:
+      - main
+      - v1-main
   workflow_dispatch:
 
 jobs:

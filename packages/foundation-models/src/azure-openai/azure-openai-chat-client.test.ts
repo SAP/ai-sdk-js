@@ -54,7 +54,7 @@ describe('Azure OpenAI chat client', () => {
     );
 
     const response = await client.run(prompt);
-    expect(response.data).toEqual(mockResponse);
+    expect(response._data).toEqual(mockResponse);
   });
   it('allows a custom api-version', async () => {
     const prompt = {
@@ -86,7 +86,7 @@ describe('Azure OpenAI chat client', () => {
     const response = await client.run(prompt, {
       params: { 'api-version': 'foo-bar' }
     });
-    expect(response.data).toEqual(mockResponse);
+    expect(response._data).toEqual(mockResponse);
   });
 
   it('throws on bad request', async () => {
@@ -158,7 +158,7 @@ describe('Azure OpenAI chat client', () => {
     });
 
     const response = await clientWithResourceGroup.run(prompt);
-    expect(response.data).toEqual(mockResponse);
+    expect(response._data).toEqual(mockResponse);
   });
 
   it('executes a streaming request with correct chunk response', async () => {
@@ -198,7 +198,7 @@ describe('Azure OpenAI chat client', () => {
 
     const response = await client.stream(prompt);
     for await (const chunk of response.stream) {
-      expect(chunk.data).toEqual(JSON.parse(initialResponse));
+      expect(chunk._data).toEqual(JSON.parse(initialResponse));
       break;
     }
   });

@@ -30,7 +30,7 @@ describe('OrchestrationResponse', () => {
   });
 
   it('should return the completion response', () => {
-    expect(orchestrationResponse.data).toStrictEqual(mockResponse);
+    expect(orchestrationResponse._data).toStrictEqual(mockResponse);
   });
 
   it('should get token usage', () => {

@@ -1,6 +1,7 @@
 import type {
   CompletionPostResponseStreaming,
   LlmChoiceStreaming,
+  ModuleResultsStreaming,
   TokenUsage,
   ToolCallChunk
 } from './client/api/schema/index.js';
@@ -9,8 +10,8 @@ import type {
  * Orchestration stream chunk response.
  */
 export class OrchestrationStreamChunkResponse {
-  constructor(public readonly data: CompletionPostResponseStreaming) {
-    this.data = data;
+  constructor(public readonly _data: CompletionPostResponseStreaming) {
+    this._data = _data;
   }
 
   /**
@@ -18,7 +19,7 @@ export class OrchestrationStreamChunkResponse {
    * @returns Token usage.
    */
   getTokenUsage(): TokenUsage | undefined {
-    return this.data.final_result?.usage;
+    return this._data.final_result?.usage;
   }
 
   /**
@@ -49,6 +50,14 @@ export class OrchestrationStreamChunkResponse {
   }
 
   /**
+   * Gets the intermediate results from the chunk.
+   * @returns The intermediate results.
+   */
+  getIntermediateResults(): ModuleResultsStreaming | undefined {
+    return this._data.intermediate_results;
+  }
+
+  /**
    * Parses the chunk response and returns the choice by index.
    * @param index - The index of the choice to find.
    * @returns An {@link LLMChoiceStreaming} object associated with the index.
@@ -60,6 +69,6 @@ export class OrchestrationStreamChunkResponse {
   }
 
   private getChoices(): LlmChoiceStreaming[] | undefined {
-    return this.data.final_result?.choices;
+    return this._data.final_result?.choices;
   }
 }
