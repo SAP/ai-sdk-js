@@ -224,7 +224,7 @@ describe('construct completion post request', () => {
       filtering: {
         input: {
           filters: [
-            buildAzureContentSafetyFilter({
+            buildAzureContentSafetyFilter('input', {
               hate: 'ALLOW_SAFE_LOW_MEDIUM',
               self_harm: 'ALLOW_SAFE'
             })
@@ -285,7 +285,7 @@ describe('construct completion post request', () => {
       filtering: {
         output: {
           filters: [
-            buildAzureContentSafetyFilter({
+            buildAzureContentSafetyFilter('output', {
               hate: 'ALLOW_SAFE_LOW_MEDIUM',
               self_harm: 'ALLOW_SAFE'
             })

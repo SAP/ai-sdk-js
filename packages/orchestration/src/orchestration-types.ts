@@ -13,8 +13,6 @@ import type {
   Template,
   TemplateRef,
   TemplatingChatMessage,
-  AzureContentSafetyOutput,
-  AzureContentSafetyOutputFilterConfig,
   DPIStandardEntity,
   DPICustomEntity,
   InputFilteringConfig,
@@ -23,6 +21,8 @@ import type {
   SAPDocumentTranslation,
   GlobalStreamOptions,
   ErrorResponse,
+  AzureContentSafetyInputFilterConfig,
+  AzureContentSafetyOutputFilterConfig,
   GroundingModuleConfig,
   LlamaGuard38BFilterConfig
 } from './client/api/schema/index.js';
@@ -236,7 +236,7 @@ export interface OrchestrationModuleConfig {
    * filtering: {
    *   input: {
    *     filters: [
-   *       buildAzureContentSafetyFilter({ Hate: 'ALLOW_SAFE', Violence: 'ALLOW_SAFE_LOW_MEDIUM' })
+   *       buildAzureContentSafetyFilter('input', { hate: 'ALLOW_SAFE', violence: 'ALLOW_SAFE_LOW_MEDIUM' })
    *     ]
    *   }
    * }
@@ -361,9 +361,35 @@ export type DpiMaskingConfig = Omit<
 };
 
 /**
- * Filter configuration for Azure content safety Filter.
+ * Input parameters for Azure content safety input filter.
  */
-export interface AzureContentFilter {
+export interface AzureContentSafetyFilterInputParameters {
+  /**
+   * The filter category for hate content.
+   */
+  hate?: AzureFilterThreshold;
+  /**
+   * The filter category for self-harm content.
+   */
+  self_harm?: AzureFilterThreshold;
+  /**
+   * The filter category for sexual content.
+   */
+  sexual?: AzureFilterThreshold;
+  /**
+   * The filter category for violence content.
+   */
+  violence?: AzureFilterThreshold;
+  /**
+   * A flag to use prompt shield.
+   */
+  prompt_shield?: boolean;
+}
+
+/**
+ * Output Parameters for Azure content safety output filter.
+ */
+export interface AzureContentSafetyFilterOutputParameters {
   /**
    * The filter category for hate content.
    */
@@ -421,15 +447,19 @@ export interface TranslationConfigParams {
 }
 
 /**
- * Filter configuration for Azure Content Safety.
+ * Parameters for Azure content safety filters.
  */
-export type AzureContentSafety = AzureContentSafetyOutput;
-
+export type AzureContentSafetyFilterParameters<T extends 'input' | 'output'> =
+  T extends 'input'
+    ? AzureContentSafetyFilterInputParameters
+    : AzureContentSafetyFilterOutputParameters;
 /**
- * Representation of the Azure Content Safety filter config schema.
+ * Filter return type for Azure Content Safety.
  */
-export type AzureContentSafetyFilterConfig =
-  AzureContentSafetyOutputFilterConfig;
+export type AzureContentSafetyFilterReturnType<T extends 'input' | 'output'> =
+  T extends 'input'
+    ? AzureContentSafetyInputFilterConfig
+    : AzureContentSafetyOutputFilterConfig;
 
 /**
  * Representation of the 'LlamaGuard38BFilterConfig' schema.

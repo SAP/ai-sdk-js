@@ -1,7 +1,12 @@
 import { supportedAzureFilterThresholds } from '../orchestration-types.js';
 import type {
-  AzureContentFilter,
-  AzureContentSafetyFilterConfig,
+  AzureContentSafetyInputFilterConfig,
+  AzureContentSafetyOutputFilterConfig
+} from '../client/api/schema/index.js';
+import type {
+  AzureContentSafetyFilterInputParameters,
+  AzureContentSafetyFilterParameters,
+  AzureContentSafetyFilterReturnType,
   AzureFilterThreshold,
   LlamaGuardCategory,
   LlamaGuardFilterConfig
@@ -9,30 +14,54 @@ import type {
 
 /**
  * Convenience function to build Azure content filter.
+ * @param type - Type of the filter, either 'input' or 'output'.
  * @param config - Configuration for Azure content safety filter.
  * If skipped, the default configuration of `ALLOW_SAFE_LOW` is used for all filter categories.
- * @returns Filter config object.
- * @example "buildAzureContentSafetyFilter({ Hate: 'ALLOW_SAFE', Violence: 'ALLOW_SAFE_LOW_MEDIUM' })"
+ * @returns Azure content safety configuration.
+ * @example "buildAzureContentSafetyFilter({ type: 'input', hate: 'ALLOW_SAFE', violence: 'ALLOW_SAFE_LOW_MEDIUM' })"
  */
-export function buildAzureContentSafetyFilter(
-  config?: AzureContentFilter
-): AzureContentSafetyFilterConfig {
-  if (config && !Object.keys(config).length) {
-    throw new Error('Filtering configuration cannot be an empty object');
+export function buildAzureContentSafetyFilter<T extends 'input' | 'output'>(
+  type: T,
+  config?: AzureContentSafetyFilterParameters<T>
+): AzureContentSafetyFilterReturnType<T> {
+  if (!config) {
+    return {
+      type: 'azure_content_safety'
+    };
   }
-  return {
-    type: 'azure_content_safety',
-    ...(config && {
+
+  if (!Object.keys(config).length) {
+    throw new Error('Filtering parameters cannot be empty');
+  }
+
+  if (type === 'input') {
+    const { prompt_shield, ...rest } =
+      config as AzureContentSafetyFilterInputParameters;
+    return {
+      type: 'azure_content_safety',
       config: {
         ...Object.fromEntries(
-          Object.entries(config).map(([key, value]) => [
+          Object.entries(rest).map(([key, value]) => [
             key,
             supportedAzureFilterThresholds[value as AzureFilterThreshold]
           ])
-        )
+        ),
+        ...(prompt_shield !== undefined && { prompt_shield })
       }
-    })
-  };
+    } as AzureContentSafetyInputFilterConfig;
+  }
+
+  return {
+    type: 'azure_content_safety',
+    config: {
+      ...Object.fromEntries(
+        Object.entries(config).map(([key, value]) => [
+          key,
+          supportedAzureFilterThresholds[value as AzureFilterThreshold]
+        ])
+      )
+    }
+  } as AzureContentSafetyOutputFilterConfig;
 }
 
 /**

@@ -9,16 +9,16 @@ import {
 import type {
   ChatModel,
   LlmModelParams,
-  AzureContentSafetyFilterConfig,
   OrchestrationResponse,
-  AssistantChatMessage
+  AzureContentSafetyFilterReturnType,
+  AssistantChatMessage,
+  LlamaGuardFilterConfig
 } from '@sap-ai-sdk/orchestration';
 import type {
   CompletionPostResponse,
   TokenUsage,
   GroundingModuleConfig,
   ChatMessages,
-  LlamaGuard38BFilterConfig,
   DpiConfig,
   MessageToolCalls
 } from '@sap-ai-sdk/orchestration/internal.js';
@@ -372,32 +372,43 @@ expect<ChatModel>('custom-model');
 /**
  * Filtering Util for Azure content safety.
  */
-expectType<AzureContentSafetyFilterConfig>(
-  buildAzureContentSafetyFilter({
+expectType<AzureContentSafetyFilterReturnType<'input'>>(
+  buildAzureContentSafetyFilter('input', {
     hate: 'ALLOW_ALL',
     self_harm: 'ALLOW_SAFE_LOW',
     sexual: 'ALLOW_SAFE_LOW_MEDIUM',
-    violence: 'ALLOW_SAFE'
+    violence: 'ALLOW_SAFE',
+    prompt_shield: true
   })
 );
 
-expectError<AzureContentSafetyFilterConfig>(
-  buildAzureContentSafetyFilter({
+expectError<AzureContentSafetyFilterReturnType<'input'>>(
+  buildAzureContentSafetyFilter('input', {
     hate: 2,
     self_harm: 4
+  })
+);
+
+expectError<AzureContentSafetyFilterReturnType<'output'>>(
+  buildAzureContentSafetyFilter('output', {
+    hate: 'ALLOW_ALL',
+    self_harm: 'ALLOW_SAFE_LOW',
+    sexual: 'ALLOW_SAFE_LOW_MEDIUM',
+    violence: 'ALLOW_SAFE',
+    prompt_shield: true
   })
 );
 
 /**
  * Filtering Util for Llama guard.
  */
-expectType<LlamaGuard38BFilterConfig>(
+expectType<LlamaGuardFilterConfig>(
   buildLlamaGuardFilter('code_interpreter_abuse', 'defamation')
 );
 
-expectError<LlamaGuard38BFilterConfig>(buildLlamaGuardFilter());
+expectError<LlamaGuardFilterConfig>(buildLlamaGuardFilter());
 
-expectError<LlamaGuard38BFilterConfig>(buildLlamaGuardFilter('unknown-string'));
+expectError<LlamaGuardFilterConfig>(buildLlamaGuardFilter('unknown-string'));
 
 /**
  * Grounding util.
