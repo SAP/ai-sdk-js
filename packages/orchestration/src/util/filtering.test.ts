@@ -6,8 +6,7 @@ import {
 describe('Content filter util', () => {
   describe('Azure content filter', () => {
     it('builds filter config', async () => {
-      const filterConfig = buildAzureContentSafetyFilter({
-        type: 'input',
+      const filterConfig = buildAzureContentSafetyFilter('input', {
         hate: 'ALLOW_SAFE_LOW_MEDIUM',
         self_harm: 'ALLOW_SAFE'
       });
@@ -22,7 +21,7 @@ describe('Content filter util', () => {
     });
 
     it('builds filter config with no config', async () => {
-      const filterConfig = buildAzureContentSafetyFilter();
+      const filterConfig = buildAzureContentSafetyFilter('input');
       const expectedFilterConfig = {
         type: 'azure_content_safety'
       };
@@ -30,7 +29,7 @@ describe('Content filter util', () => {
     });
 
     it('throw error when configuring empty filter', async () => {
-      expect(() => buildAzureContentSafetyFilter({ type: 'input' })).toThrow(
+      expect(() => buildAzureContentSafetyFilter('input', {})).toThrow(
         'Filtering parameters cannot be empty'
       );
     });

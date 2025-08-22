@@ -14,12 +14,14 @@ import type {
 
 /**
  * Convenience function to build Azure content filter.
+ * @param type - Type of the filter, either 'input' or 'output'.
  * @param config - Configuration for Azure content safety filter.
  * If skipped, the default configuration of `ALLOW_SAFE_LOW` is used for all filter categories.
  * @returns Azure content safety configuration.
  * @example "buildAzureContentSafetyFilter({ type: 'input', hate: 'ALLOW_SAFE', violence: 'ALLOW_SAFE_LOW_MEDIUM' })"
  */
 export function buildAzureContentSafetyFilter<T extends 'input' | 'output'>(
+  type: T,
   config?: AzureContentSafetyFilterParameters<T>
 ): AzureContentSafetyFilterReturnType<T> {
   if (!config) {
@@ -28,15 +30,13 @@ export function buildAzureContentSafetyFilter<T extends 'input' | 'output'>(
     };
   }
 
-  const { type, ...parameters } = config;
-
-  if (!Object.keys(parameters).length) {
+  if (!Object.keys(config).length) {
     throw new Error('Filtering parameters cannot be empty');
   }
 
   if (type === 'input') {
     const { prompt_shield, ...rest } =
-      parameters as AzureContentSafetyFilterInputParameters;
+      config as AzureContentSafetyFilterInputParameters;
     return {
       type: 'azure_content_safety',
       config: {

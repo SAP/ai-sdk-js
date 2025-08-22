@@ -219,8 +219,7 @@ export async function orchestrationInputFiltering(): Promise<OrchestrationErrorR
       input: {
         filters: [
           // Build Azure content filter with only safe content allowed for hate and violence
-          buildAzureContentSafetyFilter({
-            type: 'input',
+          buildAzureContentSafetyFilter('input', {
             hate: 'ALLOW_SAFE',
             violence: 'ALLOW_SAFE'
           }),
@@ -265,8 +264,7 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
       output: {
         filters: [
           // Build Azure content filter with only safe content allowed for hate and violence
-          buildAzureContentSafetyFilter({
-            type: 'output',
+          buildAzureContentSafetyFilter('output', {
             hate: 'ALLOW_SAFE',
             violence: 'ALLOW_SAFE'
           }),

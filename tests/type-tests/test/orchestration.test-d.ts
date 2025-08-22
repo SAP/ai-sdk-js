@@ -373,8 +373,7 @@ expect<ChatModel>('custom-model');
  * Filtering Util for Azure content safety.
  */
 expectType<AzureContentSafetyFilterReturnType<'input'>>(
-  buildAzureContentSafetyFilter({
-    type: 'input',
+  buildAzureContentSafetyFilter('input', {
     hate: 'ALLOW_ALL',
     self_harm: 'ALLOW_SAFE_LOW',
     sexual: 'ALLOW_SAFE_LOW_MEDIUM',
@@ -384,16 +383,14 @@ expectType<AzureContentSafetyFilterReturnType<'input'>>(
 );
 
 expectError<AzureContentSafetyFilterReturnType<'input'>>(
-  buildAzureContentSafetyFilter({
-    type: 'input',
+  buildAzureContentSafetyFilter('input', {
     hate: 2,
     self_harm: 4
   })
 );
 
 expectError<AzureContentSafetyFilterReturnType<'output'>>(
-  buildAzureContentSafetyFilter({
-    type: 'output',
+  buildAzureContentSafetyFilter('output', {
     hate: 'ALLOW_ALL',
     self_harm: 'ALLOW_SAFE_LOW',
     sexual: 'ALLOW_SAFE_LOW_MEDIUM',

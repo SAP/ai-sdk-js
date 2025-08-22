@@ -236,7 +236,7 @@ export interface OrchestrationModuleConfig {
    * filtering: {
    *   input: {
    *     filters: [
-   *       buildAzureContentSafetyFilter({ type: 'input', hate: 'ALLOW_SAFE', violence: 'ALLOW_SAFE_LOW_MEDIUM' })
+   *       buildAzureContentSafetyFilter('input', { hate: 'ALLOW_SAFE', violence: 'ALLOW_SAFE_LOW_MEDIUM' })
    *     ]
    *   }
    * }
@@ -451,8 +451,8 @@ export interface TranslationConfigParams {
  */
 export type AzureContentSafetyFilterParameters<T extends 'input' | 'output'> =
   T extends 'input'
-    ? { type: T } & AzureContentSafetyFilterInputParameters
-    : { type: T } & AzureContentSafetyFilterOutputParameters;
+    ? AzureContentSafetyFilterInputParameters
+    : AzureContentSafetyFilterOutputParameters;
 /**
  * Filter return type for Azure Content Safety.
  */
