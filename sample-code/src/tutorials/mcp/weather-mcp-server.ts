@@ -1,3 +1,5 @@
+// NOTE: ALL code changes in this file MUST be reflected in the documentation portal.
+
 /* eslint-disable import/no-internal-modules */
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';

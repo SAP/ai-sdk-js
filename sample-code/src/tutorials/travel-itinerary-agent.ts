@@ -1,3 +1,5 @@
+// NOTE: ALL code changes in this file MUST be reflected in the documentation portal.
+
 /* eslint-disable no-console, import/no-internal-modules*/
 import {
   StateGraph,
@@ -48,7 +50,8 @@ const toolNode = new ToolNode(tools);
 // Create a model
 const model = new AzureOpenAiChatClient({
   modelName: 'gpt-4o',
-  temperature: 0.7
+  temperature: 0.7,
+  maxRetries: 0
 });
 
 // create a model with access to the tools

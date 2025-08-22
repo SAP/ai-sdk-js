@@ -2,21 +2,23 @@ import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
 import { v4 as uuidv4 } from 'uuid';
 import { isInteropZodSchema } from '@langchain/core/utils/types';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
-import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type {
-  AzureOpenAiChatCompletionRequestUserMessage,
-  AzureOpenAiChatCompletionRequestAssistantMessage,
+  AzureOpenAiFunctionObject,
   AzureOpenAiChatCompletionTool,
-  AzureOpenAiChatCompletionRequestMessage,
-  AzureOpenAiCreateChatCompletionResponse,
-  AzureOpenAiCreateChatCompletionRequest,
   AzureOpenAiChatCompletionMessageToolCalls,
+  AzureOpenAiCreateChatCompletionResponse,
+  AzureOpenAiChatCompletionRequestAssistantMessage,
+  AzureOpenAiChatCompletionRequestUserMessage,
   AzureOpenAiChatCompletionRequestToolMessage,
   AzureOpenAiChatCompletionRequestFunctionMessage,
   AzureOpenAiChatCompletionRequestSystemMessage,
-  AzureOpenAiFunctionObject,
-  AzureOpenAiChatCompletionStreamChunkResponse,
+  AzureOpenAiChatCompletionRequestMessage,
   AzureOpenAiChatCompletionMessageToolCallChunk
+} from '@sap-ai-sdk/foundation-models/internal.js';
+import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
+import type {
+  AzureOpenAiChatCompletionParameters,
+  AzureOpenAiChatCompletionStreamChunkResponse
 } from '@sap-ai-sdk/foundation-models';
 import type {
   BaseMessage,
@@ -274,8 +276,8 @@ export function mapLangChainToAiClient(
   client: AzureOpenAiChatClient,
   messages: BaseMessage[],
   options?: AzureOpenAiChatCallOptions & { promptIndex?: number }
-): AzureOpenAiCreateChatCompletionRequest {
-  return removeUndefinedProperties<AzureOpenAiCreateChatCompletionRequest>({
+): AzureOpenAiChatCompletionParameters {
+  return removeUndefinedProperties<AzureOpenAiChatCompletionParameters>({
     messages: messages.map(mapBaseMessageToAzureOpenAiChatMessage),
     max_tokens: client.max_tokens === -1 ? undefined : client.max_tokens,
     presence_penalty: client.presence_penalty,
@@ -307,7 +309,7 @@ export function mapLangChainToAiClient(
 export function mapAzureOpenAiChunkToLangChainMessageChunk(
   chunk: AzureOpenAiChatCompletionStreamChunkResponse
 ): AIMessageChunk {
-  const choice = chunk.data.choices[0];
+  const choice = chunk._data.choices[0];
   const content = choice?.delta.content ?? '';
   const toolCallChunks = choice?.delta.tool_calls;
   return new AIMessageChunk({

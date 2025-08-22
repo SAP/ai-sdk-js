@@ -13,7 +13,6 @@ import type {
   Template,
   TemplateRef,
   TemplatingChatMessage,
-  AzureContentSafetyOutput,
   DPIStandardEntity,
   DPICustomEntity,
   InputFilteringConfig,
@@ -23,7 +22,9 @@ import type {
   GlobalStreamOptions,
   ErrorResponse,
   AzureContentSafetyInputFilterConfig,
-  AzureContentSafetyOutputFilterConfig
+  AzureContentSafetyOutputFilterConfig,
+  GroundingModuleConfig,
+  LlamaGuard38BFilterConfig
 } from './client/api/schema/index.js';
 
 /**
@@ -446,11 +447,6 @@ export interface TranslationConfigParams {
 }
 
 /**
- * Filter configuration for Azure Content Safety.
- */
-export type AzureContentSafety = AzureContentSafetyOutput;
-
-/**
  * Parameters for Azure content safety filters.
  */
 export type AzureContentSafetyFilterParameters<T extends 'input' | 'output'> =
@@ -464,3 +460,23 @@ export type AzureContentSafetyFilterReturnType<T extends 'input' | 'output'> =
   T extends 'input'
     ? AzureContentSafetyInputFilterConfig
     : AzureContentSafetyOutputFilterConfig;
+
+/**
+ * Representation of the 'LlamaGuard38BFilterConfig' schema.
+ */
+export type LlamaGuardFilterConfig = LlamaGuard38BFilterConfig;
+
+/**
+ * Representation of the 'GroundingModuleConfig' schema.
+ */
+export type DocumentGroundingConfig = GroundingModuleConfig;
+
+/**
+ * Representation of the 'DpiConfig' schema.
+ */
+export type DpiMaskingProviderConfig = DpiConfig;
+
+/**
+ * Representation of the 'SAPDocumentTranslation' schema.
+ */
+export type TranslationConfig = SAPDocumentTranslation;

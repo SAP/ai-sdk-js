@@ -1,15 +1,15 @@
 import { supportedAzureFilterThresholds } from '../orchestration-types.js';
 import type {
   AzureContentSafetyInputFilterConfig,
-  AzureContentSafetyOutputFilterConfig,
-  LlamaGuard38BFilterConfig
+  AzureContentSafetyOutputFilterConfig
 } from '../client/api/schema/index.js';
 import type {
   AzureContentSafetyFilterInputParameters,
   AzureContentSafetyFilterParameters,
   AzureContentSafetyFilterReturnType,
   AzureFilterThreshold,
-  LlamaGuardCategory
+  LlamaGuardCategory,
+  LlamaGuardFilterConfig
 } from '../orchestration-types.js';
 
 /**
@@ -72,7 +72,7 @@ export function buildAzureContentSafetyFilter<T extends 'input' | 'output'>(
  */
 export function buildLlamaGuardFilter(
   ...categories: [LlamaGuardCategory, ...LlamaGuardCategory[]]
-): LlamaGuard38BFilterConfig {
+): LlamaGuardFilterConfig {
   return {
     type: 'llama_guard_3_8b',
     config: Object.fromEntries(

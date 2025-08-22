@@ -1,21 +1,38 @@
 /**
  * Azure OpenAI embedding input parameters.
  */
-export interface AzureOpenAiEmbeddingParameters {
+export type AzureOpenAiEmbeddingParameters = {
   /**
-   * Input text to get embeddings for, encoded as a string. The number of input tokens varies depending on what model you are using. Unless you're embedding code, we suggest replacing newlines (\n) in your input with a single space, as we have observed inferior results when newlines are present.
+   * Input text to get embeddings for, encoded as a string. To get embeddings for multiple inputs in a single request, pass an array of strings. Each input must not exceed 2048 tokens in length.
+   * Unless you are embedding code, we suggest replacing newlines (\n) in your input with a single space, as we have observed inferior results when newlines are present.
    */
-  input: string[] | string;
+  input: string | string[];
   /**
-   * A unique identifier representing for your end-user. This will help Azure OpenAI monitor and detect abuse. Do not pass PII identifiers instead use pseudoanonymized values such as GUIDs.
+   * A unique identifier representing your end-user, which can help monitoring and detecting abuse.
    */
   user?: string;
-}
+  /**
+   * Input type of embedding search to use.
+   * @example "query"
+   */
+  input_type?: string;
+  /**
+   * The format to return the embeddings in. Can be either `float` or `base64`. Defaults to `float`.
+   * @example "float"
+   */
+  encoding_format?: string | null;
+  /**
+   * The number of dimensions the resulting output embeddings should have. Only supported in `text-embedding-3` and later models.
+   * @example 1
+   */
+  dimensions?: number | null;
+} & Record<string, any>;
 
 /**
  * Azure OpenAI embedding output.
+ * @internal
  */
-export interface AzureOpenAiEmbeddingOutput {
+export type AzureOpenAiEmbeddingOutput = {
   /**
    * List object.
    */
@@ -40,7 +57,7 @@ export interface AzureOpenAiEmbeddingOutput {
      * Index of choice.
      */
     index: number;
-  }[];
+  } & Record<string, any>[];
   /**
    * Token Usage.
    */
@@ -53,5 +70,5 @@ export interface AzureOpenAiEmbeddingOutput {
      * Total tokens consumed.
      */
     total_tokens: number;
-  };
-}
+  } & Record<string, any>;
+} & Record<string, any>;

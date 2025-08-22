@@ -69,10 +69,17 @@ export class OrchestrationClient {
 
   async stream(
     request?: ChatCompletionRequest,
-    controller = new AbortController(),
+    signal?: AbortSignal,
     options?: StreamOptions,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
+    const controller = new AbortController();
+    if (signal) {
+      signal.addEventListener('abort', () => {
+        controller.abort();
+      });
+    }
+
     try {
       if (typeof this.config === 'string' && options) {
         logger.warn(

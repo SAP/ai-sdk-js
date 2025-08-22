@@ -333,14 +333,14 @@ export function isToolDefinitionLike(
 export function mapOrchestrationChunkToLangChainMessageChunk(
   chunk: OrchestrationStreamChunkResponse
 ): AIMessageChunk {
-  const choice = chunk.data.final_result?.choices[0];
+  const choice = chunk._data.final_result?.choices[0];
   const content = chunk.getDeltaContent() ?? '';
   const toolCallChunks = choice?.delta.tool_calls;
   return new AIMessageChunk({
     content,
     additional_kwargs: {
       // TODO: Fix duplicated intermediate results when using concat() method for streaming chunks.
-      intermediate_results: chunk.data.intermediate_results
+      intermediate_results: chunk._data.intermediate_results
     },
     ...(toolCallChunks && {
       tool_call_chunks: mapOrchestrationToLangChainToolCallChunk(toolCallChunks)

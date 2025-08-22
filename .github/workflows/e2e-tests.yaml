@@ -54,5 +54,5 @@ jobs:
           payload: |
             {
               "username": "GitHub E2E Test Runner",
-              "text": "⚠️ E2E Test Failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-js/actions/runs/${{ github.run_id }}|here>"
+              "text": "⚠️ E2E Test for v2 Failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-js/actions/runs/${{ github.run_id }}|here>"
             }

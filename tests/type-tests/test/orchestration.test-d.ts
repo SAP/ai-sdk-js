@@ -10,16 +10,16 @@ import type {
   ChatModel,
   LlmModelParams,
   OrchestrationResponse,
-  AzureContentSafetyFilterReturnType
+  AzureContentSafetyFilterReturnType,
+  AssistantChatMessage,
+  LlamaGuardFilterConfig
 } from '@sap-ai-sdk/orchestration';
 import type {
   CompletionPostResponse,
   TokenUsage,
   GroundingModuleConfig,
   ChatMessages,
-  LlamaGuard38BFilterConfig,
   DpiConfig,
-  AssistantChatMessage,
   MessageToolCalls
 } from '@sap-ai-sdk/orchestration/internal.js';
 
@@ -50,7 +50,7 @@ expectType<CompletionPostResponse>(
     }).chatCompletion({
       messages: [{ role: 'user', content: 'Hello! {{?name}}' }]
     })
-  ).data
+  )._data
 );
 
 expectType<string | undefined>(
@@ -405,13 +405,13 @@ expectError<AzureContentSafetyFilterReturnType<'output'>>(
 /**
  * Filtering Util for Llama guard.
  */
-expectType<LlamaGuard38BFilterConfig>(
+expectType<LlamaGuardFilterConfig>(
   buildLlamaGuardFilter('code_interpreter_abuse', 'defamation')
 );
 
-expectError<LlamaGuard38BFilterConfig>(buildLlamaGuardFilter());
+expectError<LlamaGuardFilterConfig>(buildLlamaGuardFilter());
 
-expectError<LlamaGuard38BFilterConfig>(buildLlamaGuardFilter('unknown-string'));
+expectError<LlamaGuardFilterConfig>(buildLlamaGuardFilter('unknown-string'));
 
 /**
  * Grounding util.

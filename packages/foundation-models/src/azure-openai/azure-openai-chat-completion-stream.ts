@@ -61,7 +61,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
       throw new Error('Response is required to process tool calls.');
     }
     for await (const chunk of stream) {
-      chunk.data.choices.forEach(choice => {
+      chunk._data.choices.forEach(choice => {
         const choiceIndex = choice.index;
         const toolCallsChunks = chunk.getDeltaToolCalls(choiceIndex);
         if (toolCallsChunks) {
@@ -113,7 +113,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
     response?: AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>
   ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse> {
     for await (const chunk of stream) {
-      chunk.data.choices.forEach(choice => {
+      chunk._data.choices.forEach(choice => {
         const choiceIndex = choice.index;
         if (choiceIndex >= 0) {
           const finishReason = chunk.getFinishReason(choiceIndex);

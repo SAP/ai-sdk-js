@@ -3,7 +3,9 @@ import type {
   ChatMessage,
   ChatMessages,
   CompletionPostResponse,
+  LlmChoice,
   MessageToolCalls,
+  ModuleResults,
   TokenUsage
 } from './client/api/schema/index.js';
 import type { OrchestrationStream } from './orchestration-stream.js';
@@ -20,7 +22,7 @@ export class OrchestrationStreamResponse<T> {
    * Gets the token usage for the response.
    * @returns The token usage for the response.
    */
-  public getTokenUsage(): TokenUsage | undefined {
+  getTokenUsage(): TokenUsage | undefined {
     if (this.isStreamOpen()) {
       return;
     }
@@ -32,7 +34,7 @@ export class OrchestrationStreamResponse<T> {
    * @param choiceIndex - The index of the choice to get the finish reason for.
    * @returns The finish reason for the specified choice index.
    */
-  public getFinishReason(choiceIndex = 0): string | undefined {
+  getFinishReason(choiceIndex = 0): string | undefined {
     if (this.isStreamOpen()) {
       return;
     }
@@ -45,7 +47,7 @@ export class OrchestrationStreamResponse<T> {
    * @param choiceIndex - The index of the choice to parse.
    * @returns The message content.
    */
-  public getContent(choiceIndex = 0): string | undefined {
+  getContent(choiceIndex = 0): string | undefined {
     if (this.isStreamOpen()) {
       return;
     }
@@ -58,7 +60,7 @@ export class OrchestrationStreamResponse<T> {
    * @param choiceIndex - The index of the choice to parse.
    * @returns The message tool calls.
    */
-  public getToolCalls(choiceIndex = 0): MessageToolCalls | undefined {
+  getToolCalls(choiceIndex = 0): MessageToolCalls | undefined {
     if (this.isStreamOpen()) {
       return;
     }
@@ -71,7 +73,7 @@ export class OrchestrationStreamResponse<T> {
    * @param choiceIndex - The index of the choice to parse.
    * @returns The refusal string.
    */
-  public getRefusal(choiceIndex = 0): string | undefined {
+  getRefusal(choiceIndex = 0): string | undefined {
     if (this.isStreamOpen()) {
       return;
     }
@@ -84,7 +86,7 @@ export class OrchestrationStreamResponse<T> {
    * @param choiceIndex - The index of the choice to parse.
    * @returns A list of all messages.
    */
-  public getAllMessages(choiceIndex = 0): ChatMessages | undefined {
+  getAllMessages(choiceIndex = 0): ChatMessages | undefined {
     if (this.isStreamOpen()) {
       return;
     }
@@ -99,21 +101,34 @@ export class OrchestrationStreamResponse<T> {
    * @param choiceIndex - The index of the choice to use (default is 0).
    * @returns The assistant message.
    */
-
-  public getAssistantMessage(
-    choiceIndex = 0
-  ): AssistantChatMessage | undefined {
+  getAssistantMessage(choiceIndex = 0): AssistantChatMessage | undefined {
     if (this.isStreamOpen()) {
       return;
     }
     return this.findChoiceByIndex(choiceIndex)?.message;
   }
 
-  public getResponse(): CompletionPostResponse | undefined {
+  /**
+   * Gets the intermediate results from the orchestration response.
+   * @returns The intermediate results.
+   */
+  getIntermediateResults(): ModuleResults | undefined {
     if (this.isStreamOpen()) {
       return;
     }
-    return this._data as CompletionPostResponse;
+    return this._data.intermediate_results;
+  }
+
+  /**
+   * Parses the response and returns the choice by index.
+   * @param index - The index of the choice to find.
+   * @returns An {@link LLMChoice} object associated with the index.
+   */
+  findChoiceByIndex(index: number): LlmChoice | undefined {
+    if (this.isStreamOpen()) {
+      return;
+    }
+    return this.getChoices().find((c: { index: number }) => c.index === index);
   }
 
   get stream(): OrchestrationStream<T> {
@@ -125,10 +140,6 @@ export class OrchestrationStreamResponse<T> {
 
   private getChoices() {
     return this._data.final_result?.choices ?? [];
-  }
-
-  private findChoiceByIndex(index: number) {
-    return this.getChoices().find((c: { index: number }) => c.index === index);
   }
 
   private isStreamOpen(): boolean {

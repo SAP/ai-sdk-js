@@ -21,10 +21,8 @@ import {
 } from './util.js';
 import { AzureOpenAiChatClient } from './chat.js';
 import type { BaseMessage } from '@langchain/core/messages';
-import type {
-  AzureOpenAiCreateChatCompletionResponse,
-  AzureOpenAiCreateChatCompletionRequest
-} from '@sap-ai-sdk/foundation-models';
+import type { AzureOpenAiCreateChatCompletionResponse } from '@sap-ai-sdk/foundation-models/internal.js';
+import type { AzureOpenAiChatCompletionParameters } from '@sap-ai-sdk/foundation-models';
 import type { AzureOpenAiChatCallOptions } from './types.js';
 
 // Signal and Prompt Index are provided by the super class in every call
@@ -58,7 +56,7 @@ describe('Mapping Functions', () => {
       schema: addNumbersSchema
     });
 
-    const request: AzureOpenAiCreateChatCompletionRequest = {
+    const request: AzureOpenAiChatCompletionParameters = {
       messages: [
         {
           role: 'tool',
