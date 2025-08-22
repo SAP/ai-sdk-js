@@ -7,7 +7,7 @@
 /**
  * Options for streaming. Will be ignored if enabled is false.
  *
- * **Note**: The `delimiters` field is required when either `config.modules.translation.input` or `config.modules.translation.output` are configured.
+ * **Note**: The `delimiters` field is required when either `config.modules.translation.input` or `config.modules.translation.output` is configured.
  *
  */
 export type GlobalStreamOptions = {
