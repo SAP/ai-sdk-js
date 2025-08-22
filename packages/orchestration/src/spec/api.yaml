@@ -621,7 +621,10 @@ components:
               items:
                 $ref: '#/components/schemas/LLMChoiceStreaming'
     GlobalStreamOptions:
-      description: Options for streaming. Will be ignored if enabled is false.
+      description: |
+        Options for streaming. Will be ignored if enabled is false.
+
+        **Note**: The `delimiters` field is required when either `config.modules.translation.input` or `config.modules.translation.output` are configured.
       type: object
       additionalProperties: false
       properties:
@@ -638,7 +641,10 @@ components:
         delimiters:
           type: array
           minItems: 1
-          description: List of delimiters to split the input text into chunks. Please note, this is a required parameter when `config.modules.translation.input` or `config.modules.translation.output` are configured.
+          description: |
+            List of delimiters to split the input text into chunks. 
+
+            **Required** if `config.modules.translation.input` or `config.modules.translation.output` are configured.
           items:
             type: string
           example: ["\n", '.', '?', '!']

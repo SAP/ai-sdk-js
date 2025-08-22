@@ -6,6 +6,9 @@
 
 /**
  * Options for streaming. Will be ignored if enabled is false.
+ *
+ * **Note**: The `delimiters` field is required when either `config.modules.translation.input` or `config.modules.translation.output` are configured.
+ *
  */
 export type GlobalStreamOptions = {
   /**
@@ -20,7 +23,10 @@ export type GlobalStreamOptions = {
    */
   chunk_size?: number;
   /**
-   * List of delimiters to split the input text into chunks. Please note, this is a required parameter when `config.modules.translation.input` or `config.modules.translation.output` are configured.
+   * List of delimiters to split the input text into chunks.
+   *
+   * **Required** if `config.modules.translation.input` or `config.modules.translation.output` are configured.
+   *
    * @example [
    *   "\n",
    *   ".",
