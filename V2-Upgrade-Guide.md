@@ -369,7 +369,7 @@ const filter = buildAzureContentFilter({
 **v2:**
 ```typescript
 // Use this function instead
-const filter = buildAzureContentSafetyFilter({
+const filter = buildAzureContentSafetyFilter('input', { // For output filter, use type 'output'
   hate: 'ALLOW_SAFE',
   violence: 'ALLOW_SAFE_LOW_MEDIUM'
 });
@@ -377,7 +377,9 @@ const filter = buildAzureContentSafetyFilter({
 
 #### Azure Content Filter Changes
 
-The Azure content filter property names have been updated to use lowercase with underscores.
+The `buildAzureContentSafetyFilter()` function now requires a `type` parameter as the first argument to distinguish between input and output filter configurations.
+This change allows input and output filters to have different configuration options, such as the `prompt_shield` property that is only available for input filters.
+Additionally, the Azure content filter property names have been updated to use lowercase with underscores.
 
 **v1:**
 ```typescript
@@ -391,7 +393,16 @@ buildAzureContentSafetyFilter({
 
 **v2:**
 ```typescript
-buildAzureContentSafetyFilter({
+// For input filters
+buildAzureContentSafetyFilter('input', {
+  hate: 'ALLOW_SAFE',
+  self_harm: 'ALLOW_SAFE_LOW',
+  sexual: 'ALLOW_SAFE_LOW_MEDIUM',
+  violence: 'ALLOW_ALL'
+})
+
+// For output filters
+buildAzureContentSafetyFilter('output', {
   hate: 'ALLOW_SAFE',
   self_harm: 'ALLOW_SAFE_LOW',
   sexual: 'ALLOW_SAFE_LOW_MEDIUM',
