@@ -25,7 +25,7 @@ export type GlobalStreamOptions = {
   /**
    * List of delimiters to split the input text into chunks.
    *
-   * **Required** if `config.modules.translation.input` or `config.modules.translation.output` are configured.
+   * **Required** if `config.modules.translation.input` or `config.modules.translation.output` is configured.
    *
    * @example [
    *   "\n",
