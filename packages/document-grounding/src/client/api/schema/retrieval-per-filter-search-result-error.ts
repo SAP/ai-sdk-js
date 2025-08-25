@@ -5,11 +5,8 @@
  */
 
 /**
- * Representation of the 'CommonConfiguration' schema.
+ * Representation of the 'RetrievalPerFilterSearchResultError' schema.
  */
-export type CommonConfiguration = {
-  /**
-   * @example "generic-secret-name"
-   */
-  destination: string;
+export type RetrievalPerFilterSearchResultError = {
+  message: string;
 } & Record<string, any>;
