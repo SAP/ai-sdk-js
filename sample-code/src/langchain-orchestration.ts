@@ -62,7 +62,7 @@ export async function invokeChainWithInputFilter(): Promise<string> {
     },
     filtering: {
       input: {
-        filters: [buildLlamaGuardFilter('self_harm')]
+        filters: [buildLlamaGuardFilter('input', ['self_harm'])]
       }
     }
   };

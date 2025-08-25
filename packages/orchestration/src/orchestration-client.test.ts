@@ -285,7 +285,7 @@ describe('orchestration service client', () => {
   });
 
   it('calls chatCompletion with filter configuration supplied using multiple convenience functions', async () => {
-    const llamaFilter = buildLlamaGuardFilter('self_harm');
+    const llamaFilter = buildLlamaGuardFilter('input', ['self_harm']);
     const azureContentInputFilter = buildAzureContentSafetyFilter('input', {
       self_harm: 'ALLOW_SAFE',
       prompt_shield: true
