@@ -1,5 +1,5 @@
 import { executeRequest } from '@sap-ai-sdk/core';
-import { resolveDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
+import { getOrchestrationDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
 import { createLogger } from '@sap-cloud-sdk/util';
 import yaml from 'yaml';
 import { registryControllerPromptControllerCreateUpdatePromptTemplateBody } from '@sap-ai-sdk/prompt-registry/internal.js';
@@ -124,13 +124,11 @@ export class OrchestrationClient {
             streamOptions
           );
 
-    const deploymentId = this.deploymentConfig?.deploymentId
-      ? this.deploymentConfig.deploymentId
-      : await resolveDeploymentId({
-          scenarioId: 'orchestration',
-          ...(this.deploymentConfig ?? {}),
-          destination: this.destination
-        });
+    const deploymentId = await getOrchestrationDeploymentId(
+      this.deploymentConfig ?? {},
+      'orchestration',
+      this.destination
+    );
 
     return executeRequest(
       {
