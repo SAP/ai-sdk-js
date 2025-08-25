@@ -22,34 +22,44 @@ export const PromptTemplatesApi = {
   /**
    * List prompt templates
    * @param queryParameters - Object containing the following keys: scenario, name, version, retrieve, includeSpec.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  listPromptTemplates: (queryParameters?: {
-    scenario?: string;
-    name?: string;
-    version?: string;
-    retrieve?: string;
-    includeSpec?: boolean;
-  }) =>
+  listPromptTemplates: (
+    queryParameters?: {
+      scenario?: string;
+      name?: string;
+      version?: string;
+      retrieve?: string;
+      includeSpec?: boolean;
+    },
+    headerParameters?: { 'AI-Resource-Group'?: string }
+  ) =>
     new OpenApiRequestBuilder<PromptTemplateListResponse>(
       'get',
       '/lm/promptTemplates',
       {
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       PromptTemplatesApi._defaultBasePath
     ),
   /**
    * Create or update a prompt template
    * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  createUpdatePromptTemplate: (body: PromptTemplatePostRequest) =>
+  createUpdatePromptTemplate: (
+    body: PromptTemplatePostRequest,
+    headerParameters?: { 'AI-Resource-Group'?: string }
+  ) =>
     new OpenApiRequestBuilder<PromptTemplatePostResponse>(
       'post',
       '/lm/promptTemplates',
       {
-        body
+        body,
+        headerParameters
       },
       PromptTemplatesApi._defaultBasePath
     ),
@@ -58,74 +68,97 @@ export const PromptTemplatesApi = {
    * @param scenario - Path parameter.
    * @param version - Path parameter.
    * @param name - Path parameter.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   listPromptTemplateHistory: (
     scenario: string,
     version: string,
-    name: string
+    name: string,
+    headerParameters?: { 'AI-Resource-Group'?: string }
   ) =>
     new OpenApiRequestBuilder<PromptTemplateListResponse>(
       'get',
       '/lm/scenarios/{scenario}/promptTemplates/{name}/versions/{version}/history',
       {
-        pathParameters: { scenario, version, name }
+        pathParameters: { scenario, version, name },
+        headerParameters
       },
       PromptTemplatesApi._defaultBasePath
     ),
   /**
    * Get prompt template by UUID
    * @param promptTemplateId - Path parameter.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  getPromptTemplateByUuid: (promptTemplateId: string) =>
+  getPromptTemplateByUuid: (
+    promptTemplateId: string,
+    headerParameters?: { 'AI-Resource-Group'?: string }
+  ) =>
     new OpenApiRequestBuilder<PromptTemplateGetResponse>(
       'get',
       '/lm/promptTemplates/{promptTemplateId}',
       {
-        pathParameters: { promptTemplateId }
+        pathParameters: { promptTemplateId },
+        headerParameters
       },
       PromptTemplatesApi._defaultBasePath
     ),
   /**
    * Delete prompt template
    * @param promptTemplateId - Path parameter.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  deletePromptTemplate: (promptTemplateId: string) =>
+  deletePromptTemplate: (
+    promptTemplateId: string,
+    headerParameters?: { 'AI-Resource-Group'?: string }
+  ) =>
     new OpenApiRequestBuilder<PromptTemplateDeleteResponse>(
       'delete',
       '/lm/promptTemplates/{promptTemplateId}',
       {
-        pathParameters: { promptTemplateId }
+        pathParameters: { promptTemplateId },
+        headerParameters
       },
       PromptTemplatesApi._defaultBasePath
     ),
   /**
    * Import prompt template
    * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  importPromptTemplate: (body: any | undefined) =>
+  importPromptTemplate: (
+    body: any | undefined,
+    headerParameters?: { 'AI-Resource-Group'?: string }
+  ) =>
     new OpenApiRequestBuilder<PromptTemplatePostResponse>(
       'post',
       '/lm/promptTemplates/import',
       {
-        body
+        body,
+        headerParameters
       },
       PromptTemplatesApi._defaultBasePath
     ),
   /**
    * Export prompt template
    * @param promptTemplateId - Path parameter.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  exportPromptTemplate: (promptTemplateId: string) =>
+  exportPromptTemplate: (
+    promptTemplateId: string,
+    headerParameters?: { 'AI-Resource-Group'?: string }
+  ) =>
     new OpenApiRequestBuilder<string>(
       'get',
       '/lm/promptTemplates/{promptTemplateId}/export',
       {
-        pathParameters: { promptTemplateId }
+        pathParameters: { promptTemplateId },
+        headerParameters
       },
       PromptTemplatesApi._defaultBasePath
     ),
@@ -134,12 +167,14 @@ export const PromptTemplatesApi = {
    * @param promptTemplateId - Path parameter.
    * @param body - Request body.
    * @param queryParameters - Object containing the following keys: metadata.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   parsePromptTemplateById: (
     promptTemplateId: string,
     body: PromptTemplateSubstitutionRequest | undefined,
-    queryParameters?: { metadata?: boolean }
+    queryParameters?: { metadata?: boolean },
+    headerParameters?: { 'AI-Resource-Group'?: string }
   ) =>
     new OpenApiRequestBuilder<PromptTemplateSubstitutionResponse>(
       'post',
@@ -147,7 +182,8 @@ export const PromptTemplatesApi = {
       {
         pathParameters: { promptTemplateId },
         body,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       PromptTemplatesApi._defaultBasePath
     ),
@@ -158,6 +194,7 @@ export const PromptTemplatesApi = {
    * @param name - Path parameter.
    * @param body - Request body.
    * @param queryParameters - Object containing the following keys: metadata.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   parsePromptTemplateByNameVersion: (
@@ -165,7 +202,8 @@ export const PromptTemplatesApi = {
     version: string,
     name: string,
     body: PromptTemplateSubstitutionRequest | undefined,
-    queryParameters?: { metadata?: boolean }
+    queryParameters?: { metadata?: boolean },
+    headerParameters?: { 'AI-Resource-Group'?: string }
   ) =>
     new OpenApiRequestBuilder<PromptTemplateSubstitutionResponse>(
       'post',
@@ -173,7 +211,8 @@ export const PromptTemplatesApi = {
       {
         pathParameters: { scenario, version, name },
         body,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       PromptTemplatesApi._defaultBasePath
     )
