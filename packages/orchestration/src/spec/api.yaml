@@ -172,6 +172,18 @@ components:
           default: 'latest'
         params:
           $ref: '#/components/schemas/EmbeddingsModelParams'
+        timeout:
+          description: Timeout for the Embeddings request in seconds. This parameter is currently ignored for Vertex AI models.
+          type: integer
+          default: 600
+          minimum: 1
+          maximum: 600
+        max_retries:
+          description: Maximum number of retries for the Embeddings request. This parameter is currently ignored for Vertex AI models.
+          type: integer
+          default: 2
+          minimum: 0
+          maximum: 5
     EmbeddingsModelParams:
       type: object
       description: Additional parameters for generating input's embeddings. Default values are used for mandatory parameters.
@@ -826,6 +838,18 @@ components:
             n: 2
             stream_options:
               include_usage: true
+        timeout:
+          description: Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.
+          type: integer
+          default: 600
+          minimum: 1
+          maximum: 600
+        max_retries:
+          description: Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.
+          type: integer
+          default: 2
+          minimum: 0
+          maximum: 5
 
     # --- Templating Module with User Defined Template ---
     # response_format api definition taken from: https://github.com/openai/openai-openapi/blob/e0cb2d721753e13e69e918465795d6e9f87ab15a/openapi.yaml#L12286
