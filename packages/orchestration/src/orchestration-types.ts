@@ -433,7 +433,8 @@ export type LlamaGuardCategory = keyof LlamaGuard38B;
  * Filter return type for Llama Guard.
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export type LlamaGuardFilterReturnType<T extends 'input' | 'output'> = LlamaGuard38BFilterConfig;
+export type LlamaGuardFilterReturnType<T extends 'input' | 'output'> =
+  LlamaGuard38BFilterConfig;
 
 /**
  * Translation configuration for SAP Document Translation.
