@@ -102,28 +102,22 @@ export interface DeploymentResolutionOptions {
 }
 
 /**
- * Query the AI Core service for a deployment that matches the given criteria. If more than one deployment matches the criteria, the first one's ID is returned.
+ * Query the AI Core service for a deployment that matches the given criteria.
+ * If more than one deployment matches the criteria, the first one's ID is returned.
  * @param opts - The options for the deployment resolution.
  * @returns A promise of a deployment, if a deployment was found, fails otherwise.
  * @internal
  */
-export async function resolveDeploymentId(
+export async function resolveDeployment(
   opts: DeploymentResolutionOptions
-): Promise<string> {
+): Promise<AiDeployment> {
   const { model } = opts;
-
-  const cachedDeployment = deploymentCache.get(opts);
-  if (cachedDeployment?.id) {
-    return cachedDeployment.id;
-  }
-
   let deployments = await getAllDeployments(opts);
 
   if (model) {
     deployments = deployments.filter(
       deployment => extractModel(deployment)?.name === model.name
     );
-
     if (model.version) {
       deployments = deployments.filter(
         deployment => extractModel(deployment)?.version === model.version
@@ -136,7 +130,40 @@ export async function resolveDeploymentId(
       `No deployment matched the given criteria: ${JSON.stringify(opts)}. Make sure the deployment is successful, as it is a prerequisite before consuming orchestration or foundation models.`
     );
   }
-  return deployments[0].id;
+  return deployments[0];
+}
+
+/**
+ * Query the AI Core service for a deployment that matches the given criteria.
+ * If more than one deployment matches the criteria, the first one's ID is returned.
+ * @param opts - The options for the deployment resolution.
+ * @returns A promise of a deployment, if a deployment was found, fails otherwise.
+ * @internal
+ */
+export async function resolveDeploymentId(
+  opts: DeploymentResolutionOptions
+): Promise<string> {
+  const cachedDeployment = deploymentCache.get(opts);
+  if (cachedDeployment?.id) {
+    return cachedDeployment.id;
+  }
+  return (await resolveDeployment(opts)).id;
+}
+
+/**
+ * Query the AI Core service for a deployment that matches the given criteria.
+ * If more than one deployment matches the criteria, the first one's URL is returned.
+ * @param opts - The options for the deployment resolution.
+ * @returns A promise of the deployment URL, if a deployment was found, fails otherwise.
+ */
+export async function resolveDeploymentUrl(
+  opts: DeploymentResolutionOptions
+): Promise<string | undefined> {
+  const cachedDeployment = deploymentCache.get(opts);
+  if (cachedDeployment?.url) {
+    return cachedDeployment.url;
+  }
+  return (await resolveDeployment(opts)).deploymentUrl;
 }
 
 /**
@@ -176,14 +203,12 @@ export async function getAllDeployments(
  * Get the deployment ID for a given model deployment configuration and executable ID using the 'foundation-models' scenario.
  * @param modelDeployment - The model deployment configuration.
  * @param executableId - The executable ID.
- * @param scenarioId - The scenario ID.
  * @returns The ID of the deployment, if found.
  * @internal
  */
-export async function getDeploymentId(
+export async function getFoundationModelDeploymentId(
   modelDeployment: ModelDeployment,
   executableId: string,
-  scenarioId: string,
   destination?: HttpDestinationOrFetchOptions
 ): Promise<string> {
   if (isDeploymentIdConfig(modelDeployment)) {
@@ -196,13 +221,33 @@ export async function getDeploymentId(
       : modelDeployment;
 
   return resolveDeploymentId({
-    scenarioId,
+    scenarioId: 'foundation-models',
     executableId,
-    model:
-      scenarioId === 'foundation-models'
-        ? translateToFoundationModel(model)
-        : undefined,
+    model: translateToFoundationModel(model),
     resourceGroup: model.resourceGroup,
+    destination
+  });
+}
+
+/**
+ * Get the deployment ID for an orchestration scenario.
+ */
+export async function getOrchestrationDeploymentId(
+  deploymentConfig: ResourceGroupConfig | DeploymentIdConfig,
+  executableId: string,
+  destination?: HttpDestinationOrFetchOptions
+): Promise<string> {
+  if (
+    typeof deploymentConfig === 'object' &&
+    'deploymentId' in deploymentConfig
+  ) {
+    return deploymentConfig.deploymentId;
+  }
+
+  return resolveDeploymentId({
+    scenarioId: 'orchestration',
+    executableId,
+    resourceGroup: deploymentConfig.resourceGroup,
     destination
   });
 }

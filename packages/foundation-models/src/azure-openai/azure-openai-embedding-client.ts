@@ -1,6 +1,6 @@
 import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
 import {
-  getDeploymentId,
+  getFoundationModelDeploymentId,
   getResourceGroup,
   type ModelDeployment
 } from '@sap-ai-sdk/ai-api/internal.js';
@@ -25,18 +25,17 @@ export class AzureOpenAiEmbeddingClient {
 
   /**
    * Creates an embedding vector representing the given text.
-   * @param data - The text to embed.
+   * @param request - Request containing embedding input parameters.
    * @param requestConfig - The request configuration.
    * @returns The completion result.
    */
   async run(
-    data: AzureOpenAiEmbeddingParameters,
+    request: AzureOpenAiEmbeddingParameters,
     requestConfig?: CustomRequestConfig
   ): Promise<AzureOpenAiEmbeddingResponse> {
-    const deploymentId = await getDeploymentId(
+    const deploymentId = await getFoundationModelDeploymentId(
       this.modelDeployment,
       'azure-openai',
-      'foundation-models',
       this.destination
     );
     const resourceGroup = getResourceGroup(this.modelDeployment);
@@ -46,7 +45,7 @@ export class AzureOpenAiEmbeddingClient {
         apiVersion,
         resourceGroup
       },
-      data,
+      request,
       requestConfig,
       this.destination
     );

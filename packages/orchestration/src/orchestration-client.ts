@@ -117,11 +117,13 @@ export class OrchestrationClient {
             streamOptions
           );
 
-    const deploymentId = await resolveDeploymentId({
-      scenarioId: 'orchestration',
-      ...(this.deploymentConfig ?? {}),
-      destination: this.destination
-    });
+    const deploymentId = this.deploymentConfig?.deploymentId
+      ? this.deploymentConfig.deploymentId
+      : await resolveDeploymentId({
+          scenarioId: 'orchestration',
+          ...(this.deploymentConfig ?? {}),
+          destination: this.destination
+        });
 
     return executeRequest(
       {

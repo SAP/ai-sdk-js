@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import express from 'express';
-import { getDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
+import { getFoundationModelDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
 import {
   chatCompletion,
   chatCompletionStream as azureChatCompletionStream,
@@ -728,22 +728,13 @@ app.get('/prompt-registry/template', async (req, res) => {
 app.get('/test/deployment-id', async (req, res) => {
   try {
     // Example: test with a model name (foundation-models)
-    const deploymentId1 = await getDeploymentId(
+    const deploymentId1 = await getFoundationModelDeploymentId(
       'gpt-4o',
       'azure-openai',
-      'foundation-models'
-    );
-
-    // Example: test with a deploymentId config (orchestration)
-    const deploymentId2 = await getDeploymentId(
-      { deploymentId: 'd123456789', resourceGroup: 'my-group' },
-      'orchestration-executable',
-      'orchestration'
     );
 
     res.send({
       foundationModelsDeploymentId: deploymentId1,
-      orchestrationDeploymentId: deploymentId2
     });
   } catch (error: any) {
     sendError(res, error);
