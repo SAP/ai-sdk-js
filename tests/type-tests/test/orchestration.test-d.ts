@@ -403,12 +403,14 @@ expectError<AzureContentSafetyFilterReturnType<'output'>>(
  * Filtering Util for Llama guard.
  */
 expectType<LlamaGuardFilterConfig>(
-  buildLlamaGuardFilter('code_interpreter_abuse', 'defamation')
+  buildLlamaGuardFilter('input',['code_interpreter_abuse', 'defamation'])
 );
 
 expectError<LlamaGuardFilterConfig>(buildLlamaGuardFilter());
 
 expectError<LlamaGuardFilterConfig>(buildLlamaGuardFilter('unknown-string'));
+
+expectError<LlamaGuardFilterConfig>(buildLlamaGuardFilter('output',[]));
 
 /**
  * Grounding util.
