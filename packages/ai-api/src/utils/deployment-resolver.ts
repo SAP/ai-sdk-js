@@ -206,7 +206,7 @@ export async function getAllDeployments(
  * @returns The ID of the deployment, if found.
  * @internal
  */
-export async function getDeploymentId(
+export async function getFoundationModelDeploymentId(
   modelDeployment: ModelDeployment,
   executableId: string,
   destination?: HttpDestinationOrFetchOptions
@@ -225,6 +225,29 @@ export async function getDeploymentId(
     executableId,
     model: translateToFoundationModel(model),
     resourceGroup: model.resourceGroup,
+    destination
+  });
+}
+
+/**
+ * Get the deployment ID for an orchestration scenario.
+ */
+export async function getOrchestrationDeploymentId(
+  deploymentConfig: ResourceGroupConfig | DeploymentIdConfig,
+  executableId: string,
+  destination?: HttpDestinationOrFetchOptions
+): Promise<string> {
+  if (
+    typeof deploymentConfig === 'object' &&
+    'deploymentId' in deploymentConfig
+  ) {
+    return deploymentConfig.deploymentId;
+  }
+
+  return resolveDeploymentId({
+    scenarioId: 'orchestration',
+    executableId,
+    resourceGroup: deploymentConfig.resourceGroup,
     destination
   });
 }

@@ -1,5 +1,5 @@
 import { executeRequest } from '@sap-ai-sdk/core';
-import { resolveDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
+import { getOrchestrationDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
 import { createLogger } from '@sap-cloud-sdk/util';
 import yaml from 'yaml';
 import { registryControllerPromptControllerCreateUpdatePromptTemplateBody } from '@sap-ai-sdk/prompt-registry/internal.js';
@@ -15,7 +15,10 @@ import type {
   HttpResponse,
   CustomRequestConfig
 } from '@sap-cloud-sdk/http-client';
-import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api/internal.js';
+import type {
+  DeploymentIdConfig,
+  ResourceGroupConfig
+} from '@sap-ai-sdk/ai-api/internal.js';
 import type {
   OrchestrationModuleConfig,
   ChatCompletionRequest,
@@ -42,7 +45,9 @@ export class OrchestrationClient {
    */
   constructor(
     private config: OrchestrationModuleConfig | string,
-    private deploymentConfig?: ResourceGroupConfig,
+    private deploymentConfig?: Partial<
+      ResourceGroupConfig & DeploymentIdConfig
+    >,
     private destination?: HttpDestinationOrFetchOptions
   ) {
     if (typeof config === 'string') {
@@ -119,11 +124,11 @@ export class OrchestrationClient {
             streamOptions
           );
 
-    const deploymentId = await resolveDeploymentId({
-      scenarioId: 'orchestration',
-      ...(this.deploymentConfig ?? {}),
-      destination: this.destination
-    });
+    const deploymentId = await getOrchestrationDeploymentId(
+      this.deploymentConfig ?? {},
+      'orchestration',
+      this.destination
+    );
 
     return executeRequest(
       {

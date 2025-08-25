@@ -1,6 +1,6 @@
 import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
 import {
-  getDeploymentId,
+  getFoundationModelDeploymentId,
   getResourceGroup,
   type ModelDeployment
 } from '@sap-ai-sdk/ai-api/internal.js';
@@ -33,7 +33,7 @@ export class AzureOpenAiEmbeddingClient {
     request: AzureOpenAiEmbeddingParameters,
     requestConfig?: CustomRequestConfig
   ): Promise<AzureOpenAiEmbeddingResponse> {
-    const deploymentId = await getDeploymentId(
+    const deploymentId = await getFoundationModelDeploymentId(
       this.modelDeployment,
       'azure-openai',
       this.destination
