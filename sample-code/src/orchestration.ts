@@ -224,7 +224,7 @@ export async function orchestrationInputFiltering(): Promise<OrchestrationErrorR
             violence: 'ALLOW_SAFE'
           }),
           // Build Llama guard content filter with categories 'privacy' enabled
-          buildLlamaGuardFilter('privacy')
+          buildLlamaGuardFilter('input', ['privacy'])
         ]
       }
     }
@@ -269,7 +269,7 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
             violence: 'ALLOW_SAFE'
           }),
           // Build Llama guard content filter with categories 'privacy' enabled
-          buildLlamaGuardFilter('privacy')
+          buildLlamaGuardFilter('output', ['privacy'])
         ]
       }
     }

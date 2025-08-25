@@ -37,7 +37,7 @@ describe('Content filter util', () => {
 
   describe('Llama Guard filter', () => {
     it('builds filter config with custom config', async () => {
-      const filterConfig = buildLlamaGuardFilter('elections', 'hate');
+      const filterConfig = buildLlamaGuardFilter('input', ['elections', 'hate']);
       const expectedFilterConfig = {
         type: 'llama_guard_3_8b',
         config: {
@@ -49,11 +49,11 @@ describe('Content filter util', () => {
     });
 
     it('builds filter config without duplicates', async () => {
-      const filterConfig = buildLlamaGuardFilter(
+      const filterConfig = buildLlamaGuardFilter('output', [
         'non_violent_crimes',
         'privacy',
         'non_violent_crimes'
-      );
+      ]);
       const expectedFilterConfig = {
         type: 'llama_guard_3_8b',
         config: {

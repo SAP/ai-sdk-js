@@ -430,6 +430,12 @@ export type AzureFilterThreshold = keyof typeof supportedAzureFilterThresholds;
 export type LlamaGuardCategory = keyof LlamaGuard38B;
 
 /**
+ * Filter return type for Llama Guard.
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export type LlamaGuardFilterReturnType<T extends 'input' | 'output'> = LlamaGuard38BFilterConfig;
+
+/**
  * Translation configuration for SAP Document Translation.
  * See https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages-6854bbb1bd824ffebc3a097a7c0fd45d for list of supported languages.
  */
