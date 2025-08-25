@@ -2,6 +2,10 @@
 import express from 'express';
 import { getFoundationModelDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
 import {
+  resolveDeploymentUrl,
+  type AiDeploymentStatus
+} from '@sap-ai-sdk/ai-api';
+import {
   chatCompletion,
   chatCompletionStream as azureChatCompletionStream,
   chatCompletionWithDestination,
@@ -68,7 +72,6 @@ import {
 } from './prompt-registry.js';
 import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type { AIMessageChunk } from '@langchain/core/messages';
-import type { AiDeploymentStatus } from '@sap-ai-sdk/ai-api';
 import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
 
 const app = express();
@@ -159,6 +162,19 @@ app.get('/ai-api/models', async (req, res) => {
   }
 });
 
+app.get('/ai-api/deployment-url', async (req, res) => {
+  try {
+    res.send(
+      await resolveDeploymentUrl({
+        scenarioId: 'foundation-models',
+        model: { name: 'gpt-4o' }
+      })
+    );
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
 /* Foundation Models (Azure OpenAI) */
 app.get('/azure-openai/chat-completion', async (req, res) => {
   try {
@@ -181,7 +197,7 @@ app.get('/azure-openai/chat-completion-with-destination', async (req, res) => {
 app.get('/azure-openai/chat-completion-stream', async (req, res) => {
   const controller = new AbortController();
   try {
-    const response = await azureChatCompletionStream(controller);
+    const response = await azureChatCompletionStream(controller.signal);
 
     // Set headers for event stream.
     res.setHeader('Content-Type', 'text/event-stream');
@@ -277,7 +293,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       res
         .header('Content-Type', 'text/plain')
         .send(
-          `Output filter applied successfully with threshold results:\n${JSON.stringify(result.data.intermediate_results.output_filtering!.data!, null, 2)}`
+          `Output filter applied successfully with threshold results:\n${JSON.stringify(result.getIntermediateResults().output_filtering!.data!, null, 2)}`
         );
     } else if (sampleCase === 'responseFormat') {
       res
@@ -286,7 +302,6 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
           `Response format applied successfully with response:\n${JSON.stringify(result, null, 2)}`
         );
     } else {
-      console.log(JSON.stringify(result.data, null, 2));
       res.header('Content-Type', 'text/plain').send(result.getContent());
     }
   } catch (error: any) {
@@ -617,7 +632,7 @@ app.get(
 
       // Print the grounding data.
       const groundingResultString =
-        groundingResult.data.intermediate_results.grounding?.data
+        groundingResult.getIntermediateResults().grounding?.data
           ?.grounding_result;
       res.write(
         `Orchestration grounding metadata:\t${JSON.stringify(JSON.parse(groundingResultString)[0].metadata)}\n`

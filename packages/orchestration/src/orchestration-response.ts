@@ -6,7 +6,8 @@ import type {
   ChatMessages,
   AssistantChatMessage,
   MessageToolCalls,
-  LlmChoice
+  LlmChoice,
+  ModuleResults
 } from './client/api/schema/index.js';
 
 /**
@@ -16,9 +17,9 @@ export class OrchestrationResponse {
   /**
    * The completion post response.
    */
-  public readonly data: CompletionPostResponse;
+  public readonly _data: CompletionPostResponse;
   constructor(public readonly rawResponse: HttpResponse) {
-    this.data = rawResponse.data;
+    this._data = rawResponse.data;
   }
 
   /**
@@ -26,7 +27,7 @@ export class OrchestrationResponse {
    * @returns Token usage.
    */
   getTokenUsage(): TokenUsage {
-    return this.data.final_result.usage!;
+    return this._data.final_result.usage!;
   }
   /**
    * Reason for stopping the completion.
@@ -83,7 +84,7 @@ export class OrchestrationResponse {
    */
   getAllMessages(choiceIndex = 0): ChatMessages {
     const messages: ChatMessage[] =
-      this.data.intermediate_results.templating ?? [];
+      this._data.intermediate_results.templating ?? [];
     const content = this.findChoiceByIndex(choiceIndex)?.message;
     return content ? [...messages, content] : messages;
   }
@@ -98,6 +99,14 @@ export class OrchestrationResponse {
   }
 
   /**
+   * Gets the intermediate results from the orchestration response.
+   * @returns The intermediate results.
+   */
+  getIntermediateResults(): ModuleResults {
+    return this._data.intermediate_results;
+  }
+
+  /**
    * Parses the response and returns the choice by index.
    * @param index - The index of the choice to find.
    * @returns An {@link LLMChoice} object associated with the index.
@@ -107,6 +116,6 @@ export class OrchestrationResponse {
   }
 
   private getChoices(): LlmChoice[] {
-    return this.data.final_result.choices;
+    return this._data.final_result.choices;
   }
 }

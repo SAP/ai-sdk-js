@@ -18,13 +18,10 @@ import type {
   OrchestrationStreamResponse,
   OrchestrationResponse,
   StreamOptions,
-  OrchestrationErrorResponse
-} from '@sap-ai-sdk/orchestration';
-import type {
+  OrchestrationErrorResponse,
   ChatCompletionTool,
-  ToolChatMessage,
-  DataRepositoryType
-} from '@sap-ai-sdk/orchestration/internal.js';
+  ToolChatMessage
+} from '@sap-ai-sdk/orchestration';
 
 const logger = createLogger({
   package: 'sample-code',
@@ -88,7 +85,7 @@ export async function chatCompletionStream(
         }
       ]
     },
-    controller,
+    controller.signal,
     streamOptions
   );
 }
@@ -149,7 +146,7 @@ export async function chatCompletionStreamWithJsonModuleConfig(
 
   return orchestrationClient.stream(
     { placeholderValues: { input: 'SAP Cloud SDK' } },
-    controller
+    controller.signal
   );
 }
 
@@ -211,15 +208,6 @@ export async function orchestrationPromptRegistry(): Promise<OrchestrationRespon
  * @returns The orchestration service error response.
  */
 export async function orchestrationInputFiltering(): Promise<OrchestrationErrorResponse> {
-  // Build Azure content filter with only safe content allowed for hate and violence
-  const azureContentSafetyFilter = buildAzureContentSafetyFilter({
-    hate: 'ALLOW_SAFE',
-    violence: 'ALLOW_SAFE'
-  });
-
-  // Build Llama guard content filter with categories 'privacy' enabled
-  const llamaGuardFilter = buildLlamaGuardFilter('privacy');
-
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
     promptTemplating: {
@@ -229,7 +217,15 @@ export async function orchestrationInputFiltering(): Promise<OrchestrationErrorR
     },
     filtering: {
       input: {
-        filters: [azureContentSafetyFilter, llamaGuardFilter]
+        filters: [
+          // Build Azure content filter with only safe content allowed for hate and violence
+          buildAzureContentSafetyFilter('input', {
+            hate: 'ALLOW_SAFE',
+            violence: 'ALLOW_SAFE'
+          }),
+          // Build Llama guard content filter with categories 'privacy' enabled
+          buildLlamaGuardFilter('privacy')
+        ]
       }
     }
   });
@@ -257,15 +253,6 @@ export async function orchestrationInputFiltering(): Promise<OrchestrationErrorR
  * @returns The orchestration service response.
  */
 export async function orchestrationOutputFiltering(): Promise<OrchestrationResponse> {
-  // Build Azure content filter with only safe content allowed for hate and violence
-  const azureContentFilter = buildAzureContentSafetyFilter({
-    hate: 'ALLOW_SAFE',
-    violence: 'ALLOW_SAFE'
-  });
-
-  // Build Llama guard content filter with categories 'privacy' enabled
-  const llamaGuardFilter = buildLlamaGuardFilter('privacy');
-
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
     promptTemplating: {
@@ -275,7 +262,15 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
     },
     filtering: {
       output: {
-        filters: [azureContentFilter, llamaGuardFilter]
+        filters: [
+          // Build Azure content filter with only safe content allowed for hate and violence
+          buildAzureContentSafetyFilter('output', {
+            hate: 'ALLOW_SAFE',
+            violence: 'ALLOW_SAFE'
+          }),
+          // Build Llama guard content filter with categories 'privacy' enabled
+          buildLlamaGuardFilter('privacy')
+        ]
       }
     }
   });
@@ -296,10 +291,10 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
     result.getContent();
   } catch {
     logger.info(
-      `Result from output content filter: ${result.data.intermediate_results.output_filtering!.message}`
+      `Result from output content filter: ${result.getIntermediateResults().output_filtering!.message}`
     );
     logger.info(
-      `The original response from the LLM was as follows:\n${result.data.intermediate_results.llm?.choices[0].message.content}`
+      `The original response from the LLM was as follows:\n${result.getIntermediateResults().llm?.choices[0].message.content}`
     );
     return result;
   }
@@ -470,7 +465,7 @@ export async function orchestrationFromJson(): Promise<
  */
 export async function orchestrationGrounding(
   query: string,
-  dataRepositoryType: DataRepositoryType = 'vector',
+  dataRepositoryType: 'vector' | 'help.sap.com' = 'vector',
   dataRepositories: string[] = ['*']
 ): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient(
@@ -764,7 +759,7 @@ export async function chatCompletionStreamWithTools(
         { role: 'user', content: 'Add the numbers 2 and 3, as well as 4 and 5' }
       ]
     },
-    controller,
+    controller.signal,
     streamOptions
   );
 }

@@ -116,7 +116,7 @@ describe('orchestration service client', () => {
     );
 
     expect(response).toBeInstanceOf(OrchestrationResponse);
-    expect(response.data).toEqual(mockResponse);
+    expect(response._data).toEqual(mockResponse);
     expect(response.getContent()).toEqual(expect.any(String));
     expect(response.getFinishReason()).toEqual(expect.any(String));
     expect(response.getTokenUsage().completion_tokens).toEqual(
@@ -183,7 +183,7 @@ describe('orchestration service client', () => {
       ],
       placeholderValues: { topic: 'Generative AI Hub' }
     });
-    expect(response.data).toEqual(mockResponse);
+    expect(response._data).toEqual(mockResponse);
   }, 60000);
 
   it('should throw an error when invalid JSON is provided', () => {
@@ -220,7 +220,7 @@ describe('orchestration service client', () => {
     ).chatCompletion();
 
     expect(response).toBeInstanceOf(OrchestrationResponse);
-    expect(response.data).toEqual(mockResponse);
+    expect(response._data).toEqual(mockResponse);
   });
 
   it('calls chatCompletion with filter configuration supplied using convenience function', async () => {
@@ -242,7 +242,7 @@ describe('orchestration service client', () => {
       filtering: {
         input: {
           filters: [
-            buildAzureContentSafetyFilter({
+            buildAzureContentSafetyFilter('input', {
               hate: 'ALLOW_SAFE_LOW_MEDIUM',
               self_harm: 'ALLOW_SAFE_LOW'
             })
@@ -250,7 +250,7 @@ describe('orchestration service client', () => {
         },
         output: {
           filters: [
-            buildAzureContentSafetyFilter({
+            buildAzureContentSafetyFilter('output', {
               sexual: 'ALLOW_SAFE',
               violence: 'ALLOW_SAFE_LOW_MEDIUM'
             })
@@ -281,12 +281,16 @@ describe('orchestration service client', () => {
     const response = await new OrchestrationClient(config).chatCompletion(
       prompt
     );
-    expect(response.data).toEqual(mockResponse);
+    expect(response._data).toEqual(mockResponse);
   });
 
   it('calls chatCompletion with filter configuration supplied using multiple convenience functions', async () => {
     const llamaFilter = buildLlamaGuardFilter('self_harm');
-    const azureContentFilter = buildAzureContentSafetyFilter({
+    const azureContentInputFilter = buildAzureContentSafetyFilter('input', {
+      self_harm: 'ALLOW_SAFE',
+      prompt_shield: true
+    });
+    const azureContentOutputFilter = buildAzureContentSafetyFilter('output', {
       self_harm: 'ALLOW_SAFE'
     });
     const config: OrchestrationModuleConfig = {
@@ -306,10 +310,10 @@ describe('orchestration service client', () => {
       },
       filtering: {
         input: {
-          filters: [llamaFilter, azureContentFilter]
+          filters: [llamaFilter, azureContentInputFilter]
         },
         output: {
-          filters: [llamaFilter, azureContentFilter]
+          filters: [llamaFilter, azureContentOutputFilter]
         }
       }
     };
@@ -336,7 +340,7 @@ describe('orchestration service client', () => {
     const response = await new OrchestrationClient(config).chatCompletion(
       prompt
     );
-    expect(response.data).toEqual(mockResponse);
+    expect(response._data).toEqual(mockResponse);
   });
 
   it('calls chatCompletion with filtering configuration', async () => {
@@ -403,7 +407,7 @@ describe('orchestration service client', () => {
     const response = await new OrchestrationClient(config).chatCompletion(
       prompt
     );
-    expect(response.data).toEqual(mockResponse);
+    expect(response._data).toEqual(mockResponse);
   });
 
   it('sends message_history together with messages', async () => {
@@ -455,7 +459,7 @@ describe('orchestration service client', () => {
     const response = await new OrchestrationClient(config).chatCompletion(
       prompt
     );
-    expect(response.data).toEqual(mockResponse);
+    expect(response._data).toEqual(mockResponse);
   });
 
   it('calls chatCompletion with template passed as YAML config', async () => {
@@ -548,7 +552,7 @@ describe('orchestration service client', () => {
     const response = await new OrchestrationClient(
       configWithYaml
     ).chatCompletion({ placeholderValues: { topic: 'Generative AI Hub' } });
-    expect(response.data).toEqual(mockResponse);
+    expect(response._data).toEqual(mockResponse);
   }, 60000);
 
   it('throws when template is an empty string', async () => {
@@ -661,7 +665,7 @@ describe('orchestration service client', () => {
     const response = await new OrchestrationClient(config).chatCompletion(
       prompt
     );
-    expect(response.data).toEqual(mockResponse);
+    expect(response._data).toEqual(mockResponse);
   });
 
   it('executes a request with the custom resource group', async () => {
@@ -716,7 +720,7 @@ describe('orchestration service client', () => {
     });
 
     const response = await clientWithResourceGroup.chatCompletion(prompt);
-    expect(response.data).toEqual(mockResponse);
+    expect(response._data).toEqual(mockResponse);
   });
 
   it('executes a streaming request with correct chunk response', async () => {
@@ -762,7 +766,7 @@ describe('orchestration service client', () => {
     );
 
     for await (const chunk of response.stream) {
-      expect(chunk.data).toEqual(JSON.parse(initialResponse));
+      expect(chunk._data).toEqual(JSON.parse(initialResponse));
       break;
     }
   });
@@ -787,7 +791,7 @@ describe('orchestration service client', () => {
     );
 
     for await (const chunk of response.stream) {
-      expect(chunk.data).toEqual(JSON.parse(initialResponse));
+      expect(chunk._data).toEqual(JSON.parse(initialResponse));
       break;
     }
   });
@@ -820,7 +824,7 @@ describe('orchestration service client', () => {
     );
 
     for await (const chunk of response.stream) {
-      expect(chunk.data).toEqual(JSON.parse(initialResponse));
+      expect(chunk._data).toEqual(JSON.parse(initialResponse));
       break;
     }
   });
@@ -930,7 +934,9 @@ describe('orchestration service client', () => {
 
       const client = new OrchestrationClient(config);
 
-      await expect(client.stream(undefined, controller)).rejects.toThrow();
+      await expect(
+        client.stream(undefined, controller.signal)
+      ).rejects.toThrow();
     });
 
     it('should throw error when stream is called with already aborted controller', async () => {
@@ -958,7 +964,9 @@ describe('orchestration service client', () => {
 
       const client = new OrchestrationClient(config);
 
-      await expect(client.stream(undefined, controller)).rejects.toThrow();
+      await expect(
+        client.stream(undefined, controller.signal)
+      ).rejects.toThrow();
     });
   });
 });

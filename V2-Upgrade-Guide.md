@@ -9,6 +9,7 @@ Version 2.x introduces significant structural changes to align with updated serv
 - [Table of Contents](#table-of-contents)
 - [How to Upgrade](#how-to-upgrade)
 - [Breaking Changes](#breaking-changes)
+  - [`@sap-ai-sdk/foundation-models`](#sap-ai-sdkfoundation-models)
   - [`@sap-ai-sdk/orchestration`](#sap-ai-sdkorchestration)
   - [`@sap-ai-sdk/langchain`](#sap-ai-sdklangchain)
 
@@ -39,7 +40,177 @@ Update all SAP Cloud SDK for AI packages to version 2.x in your `package.json` f
 
 ## Breaking Changes
 
+### `@sap-ai-sdk/foundation-models`
+
+#### Stream Method Parameter Change
+
+The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter.
+
+**v1:**
+```typescript
+const controller = new AbortController();
+const response = await azureOpenAiChatClient.stream(
+  {
+    messages: [{ role: 'user', content: 'Hello' }],
+    max_tokens: 100
+  },
+  controller  // Pass the controller
+);
+```
+
+**v2:**
+```typescript
+const controller = new AbortController();
+const response = await azureOpenAiChatClient.stream(
+  {
+    messages: [{ role: 'user', content: 'Hello' }],
+    max_tokens: 100
+  },
+  controller.signal  // Pass the signal instead
+);
+```
+
+#### Type Import Changes
+
+Generated types are no longer exported from `@sap-ai-sdk/foundation-models`.
+For frequently used types in most cases, they remain available from the public exports.
+For edge cases where the underlying generated types are used, they must be imported from `@sap-ai-sdk/foundation-models/internal.js`.
+
+**v1:**
+```typescript
+import type { 
+  AzureOpenAiCreateChatCompletionRequest,
+  AzureOpenAiCreateChatCompletionResponse 
+} from '@sap-ai-sdk/foundation-models';
+```
+
+**v2:**
+```typescript
+// Generated types must be imported from internal
+import type { 
+  AzureOpenAiCreateChatCompletionRequest,
+  AzureOpenAiCreateChatCompletionResponse 
+} from '@sap-ai-sdk/foundation-models/internal.js';
+```
+
+```typescript
+// Frequently used types remain available from main package
+import type { 
+  AzureOpenAiChatCompletionTool,
+  AzureOpenAiFunctionObject,
+  AzureOpenAiChatCompletionRequestMessage,
+  AzureOpenAiChatCompletionRequestSystemMessage,
+  AzureOpenAiChatCompletionRequestUserMessage,
+  AzureOpenAiChatCompletionRequestAssistantMessage,
+  AzureOpenAiChatCompletionRequestToolMessage
+} from '@sap-ai-sdk/foundation-models';
+```
+
+#### Chat Completion Parameter Type
+
+The `AzureOpenAiCreateChatCompletionRequest` type is no longer exported publicly.
+Use the new `AzureOpenAiChatCompletionParameters` type instead.
+
+**v1:**
+```typescript
+import type { AzureOpenAiCreateChatCompletionRequest } from '@sap-ai-sdk/foundation-models';
+
+const request: AzureOpenAiCreateChatCompletionRequest = {
+  messages: [{ role: 'user', content: 'Hello' }],
+  max_tokens: 100
+};
+```
+
+**v2:**
+```typescript
+import type { AzureOpenAiChatCompletionParameters } from '@sap-ai-sdk/foundation-models';
+
+const request: AzureOpenAiChatCompletionParameters = {
+  messages: [{ role: 'user', content: 'Hello' }],
+  max_tokens: 100
+};
+```
+
+#### Response Object Data Property Changes
+
+The `data` property in response objects is renamed to `_data`.
+Prefer using the provided getter methods instead of accessing the data object directly.
+
+**Affected Response Classes:**
+- `AzureOpenAiChatCompletionResponse`
+- `AzureOpenAiChatCompletionStreamChunkResponse`
+- `AzureOpenAiEmbeddingResponse`
+
 ### `@sap-ai-sdk/orchestration`
+
+#### Stream Method Parameter Change
+
+The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter.
+
+**v1:**
+```typescript
+const controller = new AbortController();
+const response = await orchestrationClient.stream(
+  { messages: [{ role: 'user', content: 'Hello' }] },
+  controller  // Pass the controller
+);
+```
+
+**v2:**
+```typescript
+const controller = new AbortController();
+const response = await orchestrationClient.stream(
+  { messages: [{ role: 'user', content: 'Hello' }] },
+  controller.signal  // Pass the signal instead
+);
+```
+
+#### Type Import Changes
+
+Generated types are no longer exported from `@sap-ai-sdk/orchestration`.
+For frequently used types in most cases, they remain available from the public exports.
+For edge cases where the underlying generated types are used, they must be imported from `@sap-ai-sdk/orchestration/internal.js`.
+
+**v1:**
+```typescript
+import type { 
+  CompletionPostResponse,
+  LlmChoice 
+} from '@sap-ai-sdk/orchestration';
+```
+
+**v2:**
+```typescript
+// Generated types must be imported from internal
+import type { 
+  CompletionPostResponse,
+  LlmChoice 
+} from '@sap-ai-sdk/orchestration/internal.js';
+```
+
+```typescript
+// Frequently used types remain available from main package
+import type { 
+  ChatMessage,
+  SystemChatMessage,
+  UserChatMessage,
+  AssistantChatMessage,
+  ToolChatMessage,
+  DeveloperChatMessage,
+  ChatCompletionTool,
+  FunctionObject
+} from '@sap-ai-sdk/orchestration';
+```
+
+#### Response Object Data Property Changes
+
+The `data` property in response objects is renamed to `_data`.
+Prefer using the provided getter methods instead of accessing the data object directly.
+
+**Affected Response Classes:**
+- `OrchestrationResponse`
+- `OrchestrationStreamResponse`
+- `OrchestrationStreamChunkResponse`
 
 #### Module Configuration Structure
 
@@ -198,7 +369,7 @@ const filter = buildAzureContentFilter({
 **v2:**
 ```typescript
 // Use this function instead
-const filter = buildAzureContentSafetyFilter({
+const filter = buildAzureContentSafetyFilter('input', { // For output filter, use type 'output'
   hate: 'ALLOW_SAFE',
   violence: 'ALLOW_SAFE_LOW_MEDIUM'
 });
@@ -206,7 +377,9 @@ const filter = buildAzureContentSafetyFilter({
 
 #### Azure Content Filter Changes
 
-The Azure content filter property names have been updated to use lowercase with underscores.
+The `buildAzureContentSafetyFilter()` function now requires a `type` parameter as the first argument to distinguish between input and output filter configurations.
+This change allows input and output filters to have different configuration options, such as the `prompt_shield` property that is only available for input filters.
+Additionally, the Azure content filter property names have been updated to use lowercase with underscores.
 
 **v1:**
 ```typescript
@@ -220,7 +393,16 @@ buildAzureContentSafetyFilter({
 
 **v2:**
 ```typescript
-buildAzureContentSafetyFilter({
+// For input filters
+buildAzureContentSafetyFilter('input', {
+  hate: 'ALLOW_SAFE',
+  self_harm: 'ALLOW_SAFE_LOW',
+  sexual: 'ALLOW_SAFE_LOW_MEDIUM',
+  violence: 'ALLOW_ALL'
+})
+
+// For output filters
+buildAzureContentSafetyFilter('output', {
   hate: 'ALLOW_SAFE',
   self_harm: 'ALLOW_SAFE_LOW',
   sexual: 'ALLOW_SAFE_LOW_MEDIUM',
@@ -294,4 +476,3 @@ message.additional_kwargs.module_results
 ```typescript
 // Access intermediate results in response
 message.additional_kwargs.intermediate_results
-```

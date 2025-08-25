@@ -47,7 +47,7 @@ describe('Azure OpenAI embedding client', () => {
       embeddingsEndpoint
     );
     const response = await client.run(prompt);
-    expect(response.data).toEqual(mockResponse);
+    expect(response._data).toEqual(mockResponse);
   });
 
   it('throws on bad request', async () => {

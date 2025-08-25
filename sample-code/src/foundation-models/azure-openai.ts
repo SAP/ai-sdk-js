@@ -35,11 +35,11 @@ export async function chatCompletion(): Promise<AzureOpenAiChatCompletionRespons
 
 /**
  * Ask Azure OpenAI model about SAP Cloud SDK with streaming.
- * @param controller - The abort controller.
+ * @param signal - The abort signal.
  * @returns The response from Azure OpenAI containing the response content.
  */
 export async function chatCompletionStream(
-  controller: AbortController
+  signal: AbortSignal
 ): Promise<
   AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>
 > {
@@ -52,7 +52,7 @@ export async function chatCompletionStream(
         }
       ]
     },
-    controller
+    signal
   );
   return response;
 }
@@ -125,7 +125,7 @@ export async function chatCompletionWithFunctionCall(): Promise<AzureOpenAiChatC
     tools
   });
 
-  const initialResponseMessage = response.data.choices[0].message;
+  const initialResponseMessage = response.getAssistantMessage()!;
   // Add the model's response for calling functions into the message history
   messages.push(initialResponseMessage);
 

@@ -26,9 +26,9 @@ loadEnv();
 
 describe('orchestration', () => {
   const assertContent = (response: OrchestrationResponse) => {
-    expect(response.data.intermediate_results).toBeDefined();
-    expect(response.data.intermediate_results.templating).not.toHaveLength(0);
-    expect(response.data.final_result.choices).not.toHaveLength(0);
+    expect(response.getIntermediateResults()).toBeDefined();
+    expect(response.getIntermediateResults().templating).not.toHaveLength(0);
+    expect(response.findChoiceByIndex(0)).toBeDefined();
     expect(response.getContent()).toEqual(expect.any(String));
     expect(response.getFinishReason()).toEqual('stop');
   };
@@ -58,9 +58,9 @@ describe('orchestration', () => {
   it('should trigger an output filter', async () => {
     const response = await orchestrationOutputFiltering();
 
-    expect(response.data.intermediate_results).toBeDefined();
+    expect(response.getIntermediateResults()).toBeDefined();
     expect(
-      response.data.intermediate_results.output_filtering!.data
+      response.getIntermediateResults().output_filtering!.data
     ).toBeDefined();
     expect(response.getContent).toThrow(Error);
     expect(response.getFinishReason()).toEqual('content_filter');
@@ -80,7 +80,7 @@ describe('orchestration', () => {
   it('should complete a chat with masked grounding input', async () => {
     const response = await orchestrationMaskGroundingInput();
     const parsedGroundingInput =
-      response.data.intermediate_results.input_masking!.data!
+      response.getIntermediateResults().input_masking!.data!
         .masked_grounding_input[0];
     expect(parsedGroundingInput).toEqual(
       "What is MASKED_ORG_1's product Joule?"
@@ -139,18 +139,15 @@ describe('orchestration', () => {
     };
 
     try {
-      await new OrchestrationClient(config).stream(
-        {
-          messages: [
-            {
-              role: 'user',
-              content: 'Give me a short introduction on {{ ?__input__ }}.'
-            }
-          ],
-          placeholderValues: { __input__: 'SAP Cloud SDK' }
-        },
-        new AbortController()
-      );
+      await new OrchestrationClient(config).stream({
+        messages: [
+          {
+            role: 'user',
+            content: 'Give me a short introduction on {{ ?__input__ }}.'
+          }
+        ],
+        placeholderValues: { __input__: 'SAP Cloud SDK' }
+      });
     } catch (err: any) {
       expect(err.stack).toContain(
         'Caused by:\nHTTP Response: Request failed with status code 400'

@@ -15,12 +15,17 @@ export type {
   LlmModelParams,
   LlmModelDetails,
   LlamaGuardCategory,
-  AzureContentFilter,
   AzureFilterThreshold,
   TranslationConfigParams,
-  AzureContentSafety,
-  AzureContentSafetyFilterConfig,
-  OrchestrationErrorResponse
+  AzureContentSafetyFilterInputParameters,
+  AzureContentSafetyFilterOutputParameters,
+  AzureContentSafetyFilterParameters,
+  AzureContentSafetyFilterReturnType,
+  OrchestrationErrorResponse,
+  LlamaGuardFilterConfig,
+  DocumentGroundingConfig,
+  DpiMaskingProviderConfig,
+  TranslationConfig
 } from './orchestration-types.js';
 export { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 export { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
@@ -36,3 +41,19 @@ export {
   buildDpiMaskingProvider,
   buildTranslationConfig
 } from './util/index.js';
+
+/**
+ * Exporting frequently used types.
+ * In case of breaking changes, create wrappers in `orchestration-types.ts`.
+ * Explicitly export the wrapper also in `internal.ts`.
+ */
+export type {
+  ChatMessage,
+  SystemChatMessage,
+  UserChatMessage,
+  AssistantChatMessage,
+  ToolChatMessage,
+  DeveloperChatMessage,
+  ChatCompletionTool,
+  FunctionObject
+} from './client/api/schema/index.js';
