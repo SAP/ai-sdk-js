@@ -1,6 +1,6 @@
 import type {
   TranslationConfig,
-  TranslationParameters as TranslationConfigParameters
+  TranslationConfigParameters
 } from '../orchestration-types.js';
 
 /**

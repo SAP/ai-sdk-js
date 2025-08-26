@@ -481,7 +481,7 @@ export interface TranslationOutputParameters {
 /**
  * Parameters for translation configurations.
  */
-export type TranslationParameters<T extends 'input' | 'output'> =
+export type TranslationConfigParameters<T extends 'input' | 'output'> =
   T extends 'input' ? TranslationInputParameters : TranslationOutputParameters;
 
 /**
