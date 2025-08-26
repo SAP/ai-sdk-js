@@ -489,9 +489,7 @@ export interface TranslationOutputParameters {
  * Parameters for translation configurations.
  */
 export type TranslationParameters<T extends 'input' | 'output'> =
-  T extends 'input'
-    ? TranslationInputParameters
-    : TranslationOutputParameters;
+  T extends 'input' ? TranslationInputParameters : TranslationOutputParameters;
 
 /**
  * Parameters for Azure content safety filters.

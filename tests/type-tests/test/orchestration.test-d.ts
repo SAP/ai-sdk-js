@@ -471,10 +471,12 @@ expectError<TranslationConfig>(
 
 expectError<TranslationConfig>(buildTranslationConfig('input', {}));
 
-expectError<TranslationConfig>(buildTranslationConfig('unknown-type', {
-  sourceLanguage: 'de-DE',
-  targetLanguage: 'en-US'
-}));
+expectError<TranslationConfig>(
+  buildTranslationConfig('unknown-type', {
+    sourceLanguage: 'de-DE',
+    targetLanguage: 'en-US'
+  })
+);
 
 /**
  * Masking util.
