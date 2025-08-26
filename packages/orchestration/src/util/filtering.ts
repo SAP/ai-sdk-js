@@ -9,7 +9,7 @@ import type {
   AzureContentSafetyFilterReturnType,
   AzureFilterThreshold,
   LlamaGuardCategory,
-  LlamaGuardFilterConfig
+  LlamaGuardFilterReturnType
 } from '../orchestration-types.js';
 
 /**
@@ -74,7 +74,7 @@ export function buildAzureContentSafetyFilter<T extends 'input' | 'output'>(
 export function buildLlamaGuardFilter<T extends 'input' | 'output'>(
   type: T,
   categories: [LlamaGuardCategory, ...LlamaGuardCategory[]]
-): LlamaGuardFilterConfig {
+): LlamaGuardFilterReturnType<T> {
   return {
     type: 'llama_guard_3_8b',
     config: Object.fromEntries(

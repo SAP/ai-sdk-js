@@ -12,8 +12,7 @@ import type {
   LlmModelParams,
   OrchestrationResponse,
   AzureContentSafetyFilterReturnType,
-  AssistantChatMessage,
-  LlamaGuardFilterConfig
+  AssistantChatMessage
 } from '@sap-ai-sdk/orchestration';
 import type {
   CompletionPostResponse,
@@ -22,7 +21,8 @@ import type {
   ChatMessages,
   DpiConfig,
   MessageToolCalls,
-  TranslationConfig
+  TranslationConfig,
+  LlamaGuardFilterReturnType
 } from '@sap-ai-sdk/orchestration/internal.js';
 
 /**
@@ -404,15 +404,23 @@ expectError<AzureContentSafetyFilterReturnType<'output'>>(
 /**
  * Filtering Util for Llama guard.
  */
-expectType<LlamaGuardFilterConfig>(
+expectType<LlamaGuardFilterReturnType<'input'>>(
   buildLlamaGuardFilter('input', ['code_interpreter_abuse', 'defamation'])
 );
 
-expectError<LlamaGuardFilterConfig>(buildLlamaGuardFilter());
+expectType<LlamaGuardFilterReturnType<'output'>>(
+  buildLlamaGuardFilter('output', ['elections'])
+);
 
-expectError<LlamaGuardFilterConfig>(buildLlamaGuardFilter('unknown-string'));
+expectError<LlamaGuardFilterReturnType<'input'>>(buildLlamaGuardFilter());
 
-expectError<LlamaGuardFilterConfig>(buildLlamaGuardFilter('output', []));
+expectError<LlamaGuardFilterReturnType<'input'>>(
+  buildLlamaGuardFilter('unknown-string')
+);
+
+expectError<LlamaGuardFilterReturnType<'input'>>(
+  buildLlamaGuardFilter('output', [])
+);
 
 /**
  * Grounding util.

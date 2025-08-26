@@ -488,6 +488,13 @@ export type AzureContentSafetyFilterReturnType<T extends 'input' | 'output'> =
 export type LlamaGuardFilterConfig = LlamaGuard38BFilterConfig;
 
 /**
+ * Filter return type for Llama Guard.
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export type LlamaGuardFilterReturnType<T extends 'input' | 'output'> =
+  LlamaGuardFilterConfig;
+
+/**
  * Representation of the 'GroundingModuleConfig' schema.
  */
 export type DocumentGroundingConfig = GroundingModuleConfig;
