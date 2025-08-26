@@ -1,6 +1,6 @@
 import type {
   TranslationConfig,
-  TranslationParameters
+  TranslationParameters as TranslationConfigParameters
 } from '../orchestration-types.js';
 
 /**
@@ -9,12 +9,12 @@ import type {
  * @param config - Config for SAP Document Translation service.
  * The target language is mandatory, while source language will be auto-detected if not provided.
  * See https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages-6854bbb1bd824ffebc3a097a7c0fd45d for list of supported languages.
- * @returns A `SAPDocumentTranslation` configuration object.
+ * @returns SAP Document Translation configuration.
  * @example "buildTranslationConfig('input', { sourceLanguage: 'de-DE', targetLanguage: 'en-US' })"
  */
 export function buildTranslationConfig<T extends 'input' | 'output'>(
   type: T,
-  config: TranslationParameters<T>
+  config: TranslationConfigParameters<T>
 ): TranslationConfig {
   return {
     type: 'sap_document_translation',

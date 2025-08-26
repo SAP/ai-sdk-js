@@ -15,7 +15,6 @@ export type {
   LlmModelParams,
   LlmModelDetails,
   LlamaGuardCategory,
-  LlamaGuardFilterReturnType,
   AzureFilterThreshold,
   TranslationConfigParams,
   AzureContentSafetyFilterInputParameters,
