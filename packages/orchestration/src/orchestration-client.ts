@@ -1,5 +1,5 @@
 import { executeRequest } from '@sap-ai-sdk/core';
-import { getOrchestrationDeploymentId, resolveDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
+import { resolveDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
 import { createLogger } from '@sap-cloud-sdk/util';
 import yaml from 'yaml';
 import { registryControllerPromptControllerCreateUpdatePromptTemplateBody } from '@sap-ai-sdk/prompt-registry/internal.js';
