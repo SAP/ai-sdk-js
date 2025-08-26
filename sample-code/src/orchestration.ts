@@ -711,11 +711,11 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
       }
     },
     translation: {
-      input: buildTranslationConfig({
+      input: buildTranslationConfig('input', {
         sourceLanguage: 'en-US',
         targetLanguage: 'de-DE'
       }),
-      output: buildTranslationConfig({
+      output: buildTranslationConfig('output', {
         sourceLanguage: 'de-DE',
         targetLanguage: 'fr-FR'
       })

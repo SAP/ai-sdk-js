@@ -4,7 +4,8 @@ import {
   buildAzureContentSafetyFilter,
   buildDocumentGroundingConfig,
   buildLlamaGuardFilter,
-  buildDpiMaskingProvider
+  buildDpiMaskingProvider,
+  buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
 import type {
   ChatModel,
@@ -20,7 +21,8 @@ import type {
   GroundingModuleConfig,
   ChatMessages,
   DpiConfig,
-  MessageToolCalls
+  MessageToolCalls,
+  TranslationConfig
 } from '@sap-ai-sdk/orchestration/internal.js';
 
 /**
@@ -441,6 +443,38 @@ expectType<GroundingModuleConfig>(
     filters: [{ id: 'test' }]
   })
 );
+
+/**
+ * Translation util.
+ */
+expectType<TranslationConfig>(
+  buildTranslationConfig('input', {
+    sourceLanguage: 'de-DE',
+    targetLanguage: 'en-US'
+  })
+);
+
+expectType<TranslationConfig>(
+  buildTranslationConfig('output', {
+    sourceLanguage: 'en-US',
+    targetLanguage: 'fr-FR'
+  })
+);
+
+expectError<TranslationConfig>(buildTranslationConfig('input'));
+
+expectError<TranslationConfig>(
+  buildTranslationConfig('input', {
+    sourceLanguage: 'de-DE'
+  })
+);
+
+expectError<TranslationConfig>(buildTranslationConfig('input', {}));
+
+expectError<TranslationConfig>(buildTranslationConfig('unknown-type', {
+  sourceLanguage: 'de-DE',
+  targetLanguage: 'en-US'
+}));
 
 /**
  * Masking util.

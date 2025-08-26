@@ -454,6 +454,46 @@ export interface TranslationConfigParams {
 }
 
 /**
+ * Input parameters for translation input configuration.
+ */
+export interface TranslationInputParameters {
+  /**
+   * Language of the text to be translated.
+   * @example sourceLanguage: "de-DE"
+   */
+  sourceLanguage?: string;
+  /**
+   * Language to which the text should be translated.
+   * @example targetLanguage: "en-US"
+   */
+  targetLanguage: string;
+}
+
+/**
+ * Output parameters for translation output configuration.
+ */
+export interface TranslationOutputParameters {
+  /**
+   * Language of the text to be translated.
+   * @example sourceLanguage: "de-DE"
+   */
+  sourceLanguage?: string;
+  /**
+   * Language to which the text should be translated.
+   * @example targetLanguage: "en-US"
+   */
+  targetLanguage: string;
+}
+
+/**
+ * Parameters for translation configurations.
+ */
+export type TranslationParameters<T extends 'input' | 'output'> =
+  T extends 'input'
+    ? TranslationInputParameters
+    : TranslationOutputParameters;
+
+/**
  * Parameters for Azure content safety filters.
  */
 export type AzureContentSafetyFilterParameters<T extends 'input' | 'output'> =
