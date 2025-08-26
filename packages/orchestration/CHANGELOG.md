@@ -1,5 +1,15 @@
 # @sap-ai-sdk/orchestration
 
+## 1.18.0
+
+### Patch Changes
+
+- Updated dependencies [97711bc]
+- Updated dependencies [b2629b4]
+  - @sap-ai-sdk/core@1.18.0
+  - @sap-ai-sdk/ai-api@1.18.0
+  - @sap-ai-sdk/prompt-registry@1.18.0
+
 ## 1.17.0
 
 ### Minor Changes
