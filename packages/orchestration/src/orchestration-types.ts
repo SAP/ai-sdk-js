@@ -430,23 +430,6 @@ export type AzureFilterThreshold = keyof typeof supportedAzureFilterThresholds;
 export type LlamaGuardCategory = keyof LlamaGuard38B;
 
 /**
- * Translation configuration for SAP Document Translation.
- * See https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages-6854bbb1bd824ffebc3a097a7c0fd45d for list of supported languages.
- */
-export interface TranslationConfigParams {
-  /**
-   * Language of the text to be translated.
-   * @example sourceLanguage: "de-DE"
-   */
-  sourceLanguage?: string;
-  /**
-   * Language to which the text should be translated.
-   * @example targetLanguage: "en-US"
-   */
-  targetLanguage: string;
-}
-
-/**
  * Input parameters for translation input configuration.
  */
 export interface TranslationInputParameters {
@@ -481,7 +464,7 @@ export interface TranslationOutputParameters {
 /**
  * Parameters for translation configurations.
  */
-export type TranslationConfigParameters<T extends 'input' | 'output'> =
+export type TranslationConfigParams<T extends 'input' | 'output'> =
   T extends 'input' ? TranslationInputParameters : TranslationOutputParameters;
 
 /**
