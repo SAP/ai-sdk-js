@@ -409,6 +409,50 @@ buildAzureContentSafetyFilter('output', {
   violence: 'ALLOW_ALL'
 })
 ```
+#### Llama Guard Filter Changes
+
+The `buildLlamaGuardFilter()` function now requires a `type` parameter as the first argument to distinguish between input and output filter configurations, and accepts categories as an array instead of individual parameters.
+
+**v1:**
+```typescript
+buildLlamaGuardFilter('self_harm');
+```
+
+**v2:**
+```typescript
+// For input filters
+buildLlamaGuardFilter('input', ['self_harm', 'violence']);
+
+// For output filters
+buildLlamaGuardFilter('output', ['self_harm', 'violence']);
+```
+
+#### Translation Configuration Changes
+
+The `buildTranslationConfig()` function now requires a `type` parameter as the first argument to distinguish between input and output translation configurations.
+
+**v1:**
+```typescript
+buildTranslationConfig({
+  sourceLanguage: 'en-US',
+  targetLanguage: 'de-DE'
+});
+```
+
+**v2:**
+```typescript
+// For input translation
+buildTranslationConfig('input', {
+  sourceLanguage: 'en-US',
+  targetLanguage: 'de-DE'
+});
+
+// For output translation
+buildTranslationConfig('output', {
+  sourceLanguage: 'de-DE',
+  targetLanguage: 'fr-FR'
+});
+```
 
 ### `@sap-ai-sdk/langchain`
 
