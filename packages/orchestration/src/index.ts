@@ -17,7 +17,6 @@ export type {
   LlamaGuardCategory,
   LlamaGuardFilterReturnType,
   AzureFilterThreshold,
-  TranslationConfigParams,
   AzureContentSafetyFilterInputParameters,
   AzureContentSafetyFilterOutputParameters,
   AzureContentSafetyFilterParameters,
@@ -26,7 +25,10 @@ export type {
   LlamaGuardFilterConfig,
   DocumentGroundingConfig,
   DpiMaskingProviderConfig,
-  TranslationConfig
+  TranslationConfig,
+  TranslationConfigParams,
+  TranslationInputParameters,
+  TranslationOutputParameters
 } from './orchestration-types.js';
 export { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 export { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
