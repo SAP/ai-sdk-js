@@ -745,11 +745,11 @@ app.get('/test/deployment-id', async (req, res) => {
     // Example: test with a model name (foundation-models)
     const deploymentId1 = await getFoundationModelDeploymentId(
       'gpt-4o',
-      'azure-openai',
+      'azure-openai'
     );
 
     res.send({
-      foundationModelsDeploymentId: deploymentId1,
+      foundationModelsDeploymentId: deploymentId1
     });
   } catch (error: any) {
     sendError(res, error);
