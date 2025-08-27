@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import express from 'express';
-import { getFoundationModelDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
 import {
   resolveDeploymentUrl,
   type AiDeploymentStatus
@@ -735,22 +734,6 @@ app.get('/prompt-registry/template', async (req, res) => {
     res.write(`Prompt template deleted: ${response.message}\n`);
 
     res.end();
-  } catch (error: any) {
-    sendError(res, error);
-  }
-});
-
-app.get('/test/deployment-id', async (req, res) => {
-  try {
-    // Example: test with a model name (foundation-models)
-    const deploymentId1 = await getFoundationModelDeploymentId(
-      'gpt-4o',
-      'azure-openai'
-    );
-
-    res.send({
-      foundationModelsDeploymentId: deploymentId1
-    });
   } catch (error: any) {
     sendError(res, error);
   }

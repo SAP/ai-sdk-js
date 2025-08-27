@@ -1,5 +1,5 @@
 import { executeRequest } from '@sap-ai-sdk/core';
-import { resolveDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
+import { getOrchestrationDeploymentId } from './deployment-resolver.js';
 import { createLogger } from '@sap-cloud-sdk/util';
 import yaml from 'yaml';
 import { registryControllerPromptControllerCreateUpdatePromptTemplateBody } from '@sap-ai-sdk/prompt-registry/internal.js';
@@ -45,9 +45,7 @@ export class OrchestrationClient {
    */
   constructor(
     private config: OrchestrationModuleConfig | string,
-    private deploymentConfig?: Partial<
-      ResourceGroupConfig & DeploymentIdConfig
-    >,
+    private deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
     private destination?: HttpDestinationOrFetchOptions
   ) {
     if (typeof config === 'string') {
@@ -124,13 +122,15 @@ export class OrchestrationClient {
             streamOptions
           );
 
-    const deploymentId = this.deploymentConfig?.deploymentId
-      ? this.deploymentConfig.deploymentId
-      : await resolveDeploymentId({
-          scenarioId: 'orchestration',
-          ...(this.deploymentConfig ?? {}),
-          destination: this.destination
-        });
+    const deploymentId = await getOrchestrationDeploymentId(
+      this.deploymentConfig ?? {},
+      'orchestration',
+      this.destination
+    );
+
+    if (!deploymentId) {
+      throw new Error('Failed to resolve deployment ID');
+    }
 
     return executeRequest(
       {

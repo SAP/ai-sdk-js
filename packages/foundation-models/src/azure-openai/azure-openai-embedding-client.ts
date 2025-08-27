@@ -1,9 +1,9 @@
 import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
 import {
-  getFoundationModelDeploymentId,
   getResourceGroup,
   type ModelDeployment
 } from '@sap-ai-sdk/ai-api/internal.js';
+import { getFoundationModelDeploymentId } from '../deployment-resolver.js';
 import { AzureOpenAiEmbeddingResponse } from './azure-openai-embedding-response.js';
 import { apiVersion, type AzureOpenAiEmbeddingModel } from './model-types.js';
 import type { AzureOpenAiEmbeddingParameters } from './azure-openai-embedding-types.js';
