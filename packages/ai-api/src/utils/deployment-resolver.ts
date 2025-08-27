@@ -62,19 +62,6 @@ export function getResourceGroup(
 }
 
 /**
- * Type guard to check if the given deployment configuration is a deployment ID configuration.
- * @param modelDeployment - Configuration to check.
- * @returns `true` if the configuration is a deployment ID configuration, `false` otherwise.
- */
-function isDeploymentIdConfig(
-  modelDeployment: ModelDeployment
-): modelDeployment is DeploymentIdConfig {
-  return (
-    typeof modelDeployment === 'object' && 'deploymentId' in modelDeployment
-  );
-}
-
-/**
  * The options for the deployment resolution.
  * @internal
  */

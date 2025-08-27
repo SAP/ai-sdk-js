@@ -1,5 +1,8 @@
 import { resolveDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
-import type { DeploymentIdConfig, ResourceGroupConfig } from '@sap-ai-sdk/ai-api/internal.js';
+import type {
+  DeploymentIdConfig,
+  ResourceGroupConfig
+} from '@sap-ai-sdk/ai-api/internal.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 /**

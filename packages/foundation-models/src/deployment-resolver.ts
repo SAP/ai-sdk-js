@@ -1,4 +1,9 @@
-import { resolveDeploymentId, type DeploymentResolutionOptions, type ModelDeployment, type ModelConfig } from '@sap-ai-sdk/ai-api/internal.js';
+import {
+  resolveDeploymentId,
+  type DeploymentResolutionOptions,
+  type ModelDeployment,
+  type ModelConfig
+} from '@sap-ai-sdk/ai-api/internal.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 function isDeploymentIdConfig(
@@ -9,7 +14,10 @@ function isDeploymentIdConfig(
   );
 }
 
-function translateToFoundationModel(modelConfig: ModelConfig): { name: string; version?: string } {
+function translateToFoundationModel(modelConfig: ModelConfig): {
+  name: string;
+  version?: string;
+} {
   if (typeof modelConfig === 'string') {
     return { name: modelConfig };
   }
