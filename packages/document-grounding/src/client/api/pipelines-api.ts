@@ -13,7 +13,8 @@ import type {
   GetPipelineExecutions,
   GetPipelineExecutionById,
   DocumentsStatusResponse,
-  PipelineDocumentResponse
+  PipelineDocumentResponse,
+  ManualPipelineTrigger
 } from './schema/index.js';
 /**
  * Representation of the 'PipelinesApi'.
@@ -250,6 +251,25 @@ export const PipelinesApi = {
       '/pipelines/{pipelineId}/documents/{documentId}',
       {
         pathParameters: { pipelineId, documentId },
+        headerParameters
+      },
+      PipelinesApi._defaultBasePath
+    ),
+  /**
+   * Manually trigger a pipeline
+   * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  manualTriggerPipeline: (
+    body: ManualPipelineTrigger,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
+    new OpenApiRequestBuilder<any>(
+      'post',
+      '/pipelines/trigger',
+      {
+        body,
         headerParameters
       },
       PipelinesApi._defaultBasePath
