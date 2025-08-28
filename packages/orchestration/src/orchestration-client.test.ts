@@ -74,9 +74,13 @@ describe('orchestration service client', () => {
   beforeEach(() => {
     mockClientCredentialsGrantCall();
     mockDeploymentsList(
-  { scenarioId: 'orchestration', executableId: 'orchestration', resourceGroup: 'default' },
-  { id: '1234' }
-);
+      {
+        scenarioId: 'orchestration',
+        executableId: 'orchestration',
+        resourceGroup: 'default'
+      },
+      { id: '1234' }
+    );
   });
 
   afterEach(() => {
@@ -703,9 +707,13 @@ describe('orchestration service client', () => {
     );
 
     mockDeploymentsList(
-  { scenarioId: 'orchestration', executableId: 'orchestration', resourceGroup: 'custom-resource-group' },
-  { id: '1234', model: { name: 'gpt-4o', version: 'latest' } },
-);
+      {
+        scenarioId: 'orchestration',
+        executableId: 'orchestration',
+        resourceGroup: 'custom-resource-group'
+      },
+      { id: '1234', model: { name: 'gpt-4o', version: 'latest' } }
+    );
 
     mockInference(
       {
