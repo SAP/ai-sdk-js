@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { KeyValueListPair } from './key-value-list-pair.js';
+import type { VectorKeyValueListPair } from './vector-key-value-list-pair.js';
 import type { DocumentOutput } from './document-output.js';
 /**
  * Representation of the 'DocumentsChunk' schema.
@@ -17,6 +17,6 @@ export type DocumentsChunk = {
   /**
    * Default: [].
    */
-  metadata?: KeyValueListPair[];
+  metadata?: VectorKeyValueListPair[];
   documents: DocumentOutput[];
 } & Record<string, any>;
