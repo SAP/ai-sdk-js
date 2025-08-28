@@ -96,7 +96,7 @@ components:
             - $ref: '#/components/schemas/ChatMessages'
           description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
 
-    # Embedings Schemas
+    # Embeddings Schemas
     EmbeddingsPostRequest:
       type: object
       additionalProperties: false
