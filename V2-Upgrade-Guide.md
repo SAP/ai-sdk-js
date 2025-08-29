@@ -411,7 +411,7 @@ buildAzureContentSafetyFilter('output', {
 ```
 #### Llama Guard Filter Changes
 
-The `buildLlamaGuardFilter()` function now requires a `type` parameter as the first argument to distinguish between input and output filter configurations, and accepts categories as an array instead of individual parameters.
+The `buildLlamaGuardFilter()` function is now renamed to `buildLlamaGuard38BFilter()` function and now requires a `type` parameter as the first argument to distinguish between input and output filter configurations, and accepts categories as an array instead of individual parameters.
 
 **v1:**
 ```typescript
@@ -421,10 +421,10 @@ buildLlamaGuardFilter('self_harm');
 **v2:**
 ```typescript
 // For input filters
-buildLlamaGuardFilter('input', ['self_harm', 'violence']);
+buildLlamaGuard38BFilter('input', ['self_harm', 'violence']);
 
 // For output filters
-buildLlamaGuardFilter('output', ['self_harm', 'violence']);
+buildLlamaGuard38BFilter('output', ['self_harm', 'violence']);
 ```
 
 #### Translation Configuration Changes
