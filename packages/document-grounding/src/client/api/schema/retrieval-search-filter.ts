@@ -3,19 +3,19 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { SearchConfiguration } from './search-configuration.js';
+import type { RetrievalSearchConfiguration } from './retrieval-search-configuration.js';
 import type { DataRepositoryType } from './data-repository-type.js';
-import type { KeyValueListPair } from './key-value-list-pair.js';
-import type { SearchDocumentKeyValueListPair } from './search-document-key-value-list-pair.js';
+import type { RetrievalKeyValueListPair } from './retrieval-key-value-list-pair.js';
+import type { RetrievalSearchDocumentKeyValueListPair } from './retrieval-search-document-key-value-list-pair.js';
 /**
  * Limit scope of search to certain DataRepositories, Documents or Chunks.
  */
 export type RetrievalSearchFilter = {
   /**
-   * Identifier of this SearchFilter - unique per request.
+   * Identifier of this RetrievalSearchFilter - unique per request.
    */
   id: string;
-  searchConfiguration?: SearchConfiguration;
+  searchConfiguration?: RetrievalSearchConfiguration;
   /**
    * Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids.
    * Default: [
@@ -28,15 +28,15 @@ export type RetrievalSearchFilter = {
    * Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=['*']
    * Default: [].
    */
-  dataRepositoryMetadata?: KeyValueListPair[];
+  dataRepositoryMetadata?: RetrievalKeyValueListPair[];
   /**
    * Restrict documents considered during search to those annotated with the given metadata.
    * Default: [].
    */
-  documentMetadata?: SearchDocumentKeyValueListPair[];
+  documentMetadata?: RetrievalSearchDocumentKeyValueListPair[];
   /**
    * Restrict chunks considered during search to those with the given metadata.
    * Default: [].
    */
-  chunkMetadata?: KeyValueListPair[];
+  chunkMetadata?: RetrievalKeyValueListPair[];
 } & Record<string, any>;
