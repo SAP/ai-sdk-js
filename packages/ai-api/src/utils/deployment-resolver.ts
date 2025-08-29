@@ -62,19 +62,6 @@ export function getResourceGroup(
 }
 
 /**
- * Type guard to check if the given deployment configuration is a deployment ID configuration.
- * @param modelDeployment - Configuration to check.
- * @returns `true` if the configuration is a deployment ID configuration, `false` otherwise.
- */
-function isDeploymentIdConfig(
-  modelDeployment: ModelDeployment
-): modelDeployment is DeploymentIdConfig {
-  return (
-    typeof modelDeployment === 'object' && 'deploymentId' in modelDeployment
-  );
-}
-
-/**
  * The options for the deployment resolution.
  * @internal
  */
@@ -197,45 +184,4 @@ export async function getAllDeployments(
   } catch (error: any) {
     throw new ErrorWithCause('Failed to fetch the list of deployments.', error);
   }
-}
-
-/**
- * Get the deployment ID for a given model deployment configuration and executable ID using the 'foundation-models' scenario.
- * @param modelDeployment - The model deployment configuration.
- * @param executableId - The executable ID.
- * @returns The ID of the deployment, if found.
- * @internal
- */
-export async function getDeploymentId(
-  modelDeployment: ModelDeployment,
-  executableId: string,
-  destination?: HttpDestinationOrFetchOptions
-): Promise<string> {
-  if (isDeploymentIdConfig(modelDeployment)) {
-    return modelDeployment.deploymentId;
-  }
-
-  const model =
-    typeof modelDeployment === 'string'
-      ? { modelName: modelDeployment }
-      : modelDeployment;
-
-  return resolveDeploymentId({
-    scenarioId: 'foundation-models',
-    executableId,
-    model: translateToFoundationModel(model),
-    resourceGroup: model.resourceGroup,
-    destination
-  });
-}
-
-function translateToFoundationModel(modelConfig: ModelConfig): FoundationModel {
-  if (typeof modelConfig === 'string') {
-    return { name: modelConfig };
-  }
-
-  return {
-    name: modelConfig.modelName,
-    ...(modelConfig.modelVersion && { version: modelConfig.modelVersion })
-  };
 }

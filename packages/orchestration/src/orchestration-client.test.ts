@@ -73,7 +73,14 @@ function mockJsonStreamInference(
 describe('orchestration service client', () => {
   beforeEach(() => {
     mockClientCredentialsGrantCall();
-    mockDeploymentsList({ scenarioId: 'orchestration' }, { id: '1234' });
+    mockDeploymentsList(
+      {
+        scenarioId: 'orchestration',
+        executableId: 'orchestration',
+        resourceGroup: 'default'
+      },
+      { id: '1234' }
+    );
   });
 
   afterEach(() => {
@@ -700,7 +707,11 @@ describe('orchestration service client', () => {
     );
 
     mockDeploymentsList(
-      { scenarioId: 'orchestration', resourceGroup: 'custom-resource-group' },
+      {
+        scenarioId: 'orchestration',
+        executableId: 'orchestration',
+        resourceGroup: 'custom-resource-group'
+      },
       { id: '1234', model: { name: 'gpt-4o', version: 'latest' } }
     );
 
