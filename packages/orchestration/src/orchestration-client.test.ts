@@ -18,7 +18,7 @@ import {
   constructCompletionPostRequestFromJsonModuleConfig,
   constructCompletionPostRequest,
   buildAzureContentSafetyFilter,
-  buildLlamaGuardFilter
+  buildLlamaGuard38BFilter
 } from './util/index.js';
 import type { CompletionPostResponse } from './client/api/schema/index.js';
 import type {
@@ -285,7 +285,7 @@ describe('orchestration service client', () => {
   });
 
   it('calls chatCompletion with filter configuration supplied using multiple convenience functions', async () => {
-    const llamaFilter = buildLlamaGuardFilter('input', ['self_harm']);
+    const llamaFilter = buildLlamaGuard38BFilter('input', ['self_harm']);
     const azureContentInputFilter = buildAzureContentSafetyFilter('input', {
       self_harm: 'ALLOW_SAFE',
       prompt_shield: true

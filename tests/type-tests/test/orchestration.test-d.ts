@@ -3,7 +3,7 @@ import {
   OrchestrationClient,
   buildAzureContentSafetyFilter,
   buildDocumentGroundingConfig,
-  buildLlamaGuardFilter,
+  buildLlamaGuard38BFilter,
   buildDpiMaskingProvider,
   buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
@@ -405,21 +405,21 @@ expectError<AzureContentSafetyFilterReturnType<'output'>>(
  * Filtering Util for Llama guard.
  */
 expectType<LlamaGuardFilterReturnType<'input'>>(
-  buildLlamaGuardFilter('input', ['code_interpreter_abuse', 'defamation'])
+  buildLlamaGuard38BFilter('input', ['code_interpreter_abuse', 'defamation'])
 );
 
 expectType<LlamaGuardFilterReturnType<'output'>>(
-  buildLlamaGuardFilter('output', ['elections'])
+  buildLlamaGuard38BFilter('output', ['elections'])
 );
 
-expectError<LlamaGuardFilterReturnType<'input'>>(buildLlamaGuardFilter());
+expectError<LlamaGuardFilterReturnType<'input'>>(buildLlamaGuard38BFilter());
 
 expectError<LlamaGuardFilterReturnType<'input'>>(
-  buildLlamaGuardFilter('unknown-string')
+  buildLlamaGuard38BFilter('unknown-string')
 );
 
 expectError<LlamaGuardFilterReturnType<'input'>>(
-  buildLlamaGuardFilter('output', [])
+  buildLlamaGuard38BFilter('output', [])
 );
 
 /**

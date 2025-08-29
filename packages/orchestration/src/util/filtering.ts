@@ -65,13 +65,13 @@ export function buildAzureContentSafetyFilter<T extends 'input' | 'output'>(
 }
 
 /**
- * Convenience function to build Llama guard filter.
+ * Convenience function to build Llama Guard 38B filter.
  * @param type - Type of the filter, either 'input' or 'output'.
  * @param categories - Categories to be enabled for filtering. Provide at least one category.
- * @returns Llama Guard filter configuration.
- * @example "buildLlamaGuardFilter('input', ['elections', 'hate'])"
+ * @returns Llama Guard 38B filter configuration.
+ * @example "buildLlamaGuard38BFilter('input', ['elections', 'hate'])"
  */
-export function buildLlamaGuardFilter<T extends 'input' | 'output'>(
+export function buildLlamaGuard38BFilter<T extends 'input' | 'output'>(
   type: T,
   categories: [LlamaGuardCategory, ...LlamaGuardCategory[]]
 ): LlamaGuardFilterReturnType<T> {

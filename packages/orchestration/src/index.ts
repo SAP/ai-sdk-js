@@ -40,7 +40,7 @@ export type { ChatModel } from './model-types.js';
 
 export {
   buildAzureContentSafetyFilter,
-  buildLlamaGuardFilter,
+  buildLlamaGuard38BFilter,
   buildDocumentGroundingConfig,
   buildDpiMaskingProvider,
   buildTranslationConfig

@@ -231,7 +231,7 @@ export interface OrchestrationModuleConfig {
   promptTemplating: PromptTemplatingModule;
   /**
    * Filtering module configuration for both input and output filters.
-   * To configure a filter, use convenience functions like `buildAzureContentSafetyFilter`, `buildLlamaGuardFilter`, etc..
+   * To configure a filter, use convenience functions like `buildAzureContentSafetyFilter`, `buildLlamaGuard38BFilter`, etc..
    * @example
    * filtering: {
    *   input: {
@@ -490,7 +490,7 @@ export type AzureContentSafetyFilterReturnType<T extends 'input' | 'output'> =
     : AzureContentSafetyOutputFilterConfig;
 
 /**
- * Representation of the 'LlamaGuard38BFilterConfig' schema.
+ * Union type representation of all Llama Guard filter types.
  */
 export type LlamaGuardFilterConfig = LlamaGuard38BFilterConfig;
 
