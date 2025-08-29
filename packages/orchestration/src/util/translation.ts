@@ -1,6 +1,6 @@
 import type {
-  TranslationConfig,
-  TranslationConfigParams
+  TranslationConfigParams,
+  TranslationReturnType
 } from '../orchestration-types.js';
 
 /**
@@ -15,7 +15,7 @@ import type {
 export function buildTranslationConfig<T extends 'input' | 'output'>(
   type: T,
   config: TranslationConfigParams<T>
-): TranslationConfig {
+): TranslationReturnType<T> {
   return {
     type: 'sap_document_translation',
     config: {

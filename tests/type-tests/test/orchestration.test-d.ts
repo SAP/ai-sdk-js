@@ -7,6 +7,7 @@ import {
   buildDpiMaskingProvider,
   buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
+import type { TranslationReturnType } from '@sap-ai-sdk/orchestration/src/orchestration-types.js';
 import type {
   ChatModel,
   LlmModelParams,
@@ -21,7 +22,6 @@ import type {
   ChatMessages,
   DpiConfig,
   MessageToolCalls,
-  TranslationConfig,
   LlamaGuardFilterReturnType
 } from '@sap-ai-sdk/orchestration/internal.js';
 
@@ -455,31 +455,33 @@ expectType<GroundingModuleConfig>(
 /**
  * Translation util.
  */
-expectType<TranslationConfig>(
+expectType<TranslationReturnType<'input'>>(
   buildTranslationConfig('input', {
     sourceLanguage: 'de-DE',
     targetLanguage: 'en-US'
   })
 );
 
-expectType<TranslationConfig>(
+expectType<TranslationReturnType<'output'>>(
   buildTranslationConfig('output', {
     sourceLanguage: 'en-US',
     targetLanguage: 'fr-FR'
   })
 );
 
-expectError<TranslationConfig>(buildTranslationConfig('input'));
+expectError<TranslationReturnType<'input'>>(buildTranslationConfig('input'));
 
-expectError<TranslationConfig>(
+expectError<TranslationReturnType<'input'>>(
   buildTranslationConfig('input', {
     sourceLanguage: 'de-DE'
   })
 );
 
-expectError<TranslationConfig>(buildTranslationConfig('input', {}));
+expectError<TranslationReturnType<'input'>>(
+  buildTranslationConfig('input', {})
+);
 
-expectError<TranslationConfig>(
+expectError<TranslationReturnType<'input'>>(
   buildTranslationConfig('unknown-type', {
     sourceLanguage: 'de-DE',
     targetLanguage: 'en-US'

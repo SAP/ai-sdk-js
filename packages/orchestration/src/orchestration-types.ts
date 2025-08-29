@@ -468,6 +468,13 @@ export type TranslationConfigParams<T extends 'input' | 'output'> =
   T extends 'input' ? TranslationInputParameters : TranslationOutputParameters;
 
 /**
+ * Return type for translation configurations.
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export type TranslationReturnType<T extends 'input' | 'output'> =
+  TranslationConfig;
+
+/**
  * Parameters for Azure content safety filters.
  */
 export type AzureContentSafetyFilterParameters<T extends 'input' | 'output'> =
