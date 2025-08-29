@@ -3,16 +3,17 @@ import {
   OrchestrationClient,
   buildAzureContentSafetyFilter,
   buildDocumentGroundingConfig,
-  buildLlamaGuardFilter,
-  buildDpiMaskingProvider
+  buildLlamaGuard38BFilter,
+  buildDpiMaskingProvider,
+  buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
+import type { TranslationReturnType } from '@sap-ai-sdk/orchestration/src/orchestration-types.js';
 import type {
   ChatModel,
   LlmModelParams,
   OrchestrationResponse,
   AzureContentSafetyFilterReturnType,
-  AssistantChatMessage,
-  LlamaGuardFilterConfig
+  AssistantChatMessage
 } from '@sap-ai-sdk/orchestration';
 import type {
   CompletionPostResponse,
@@ -20,7 +21,8 @@ import type {
   GroundingModuleConfig,
   ChatMessages,
   DpiConfig,
-  MessageToolCalls
+  MessageToolCalls,
+  LlamaGuardFilterReturnType
 } from '@sap-ai-sdk/orchestration/internal.js';
 
 /**
@@ -402,13 +404,23 @@ expectError<AzureContentSafetyFilterReturnType<'output'>>(
 /**
  * Filtering Util for Llama guard.
  */
-expectType<LlamaGuardFilterConfig>(
-  buildLlamaGuardFilter('code_interpreter_abuse', 'defamation')
+expectType<LlamaGuardFilterReturnType<'input'>>(
+  buildLlamaGuard38BFilter('input', ['code_interpreter_abuse', 'defamation'])
 );
 
-expectError<LlamaGuardFilterConfig>(buildLlamaGuardFilter());
+expectType<LlamaGuardFilterReturnType<'output'>>(
+  buildLlamaGuard38BFilter('output', ['elections'])
+);
 
-expectError<LlamaGuardFilterConfig>(buildLlamaGuardFilter('unknown-string'));
+expectError<LlamaGuardFilterReturnType<'input'>>(buildLlamaGuard38BFilter());
+
+expectError<LlamaGuardFilterReturnType<'input'>>(
+  buildLlamaGuard38BFilter('unknown-string')
+);
+
+expectError<LlamaGuardFilterReturnType<'input'>>(
+  buildLlamaGuard38BFilter('output', [])
+);
 
 /**
  * Grounding util.
@@ -437,6 +449,42 @@ expectType<GroundingModuleConfig>(
       output: 'test'
     },
     filters: [{ id: 'test' }]
+  })
+);
+
+/**
+ * Translation util.
+ */
+expectType<TranslationReturnType<'input'>>(
+  buildTranslationConfig('input', {
+    sourceLanguage: 'de-DE',
+    targetLanguage: 'en-US'
+  })
+);
+
+expectType<TranslationReturnType<'output'>>(
+  buildTranslationConfig('output', {
+    sourceLanguage: 'en-US',
+    targetLanguage: 'fr-FR'
+  })
+);
+
+expectError<TranslationReturnType<'input'>>(buildTranslationConfig('input'));
+
+expectError<TranslationReturnType<'input'>>(
+  buildTranslationConfig('input', {
+    sourceLanguage: 'de-DE'
+  })
+);
+
+expectError<TranslationReturnType<'input'>>(
+  buildTranslationConfig('input', {})
+);
+
+expectError<TranslationReturnType<'input'>>(
+  buildTranslationConfig('unknown-type', {
+    sourceLanguage: 'de-DE',
+    targetLanguage: 'en-US'
   })
 );
 

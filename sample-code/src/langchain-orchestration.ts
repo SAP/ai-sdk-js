@@ -3,7 +3,7 @@ import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import {
   buildAzureContentSafetyFilter,
   buildDpiMaskingProvider,
-  buildLlamaGuardFilter
+  buildLlamaGuard38BFilter
 } from '@sap-ai-sdk/orchestration';
 import {
   START,
@@ -62,7 +62,7 @@ export async function invokeChainWithInputFilter(): Promise<string> {
     },
     filtering: {
       input: {
-        filters: [buildLlamaGuardFilter('self_harm')]
+        filters: [buildLlamaGuard38BFilter('input', ['self_harm'])]
       }
     }
   };

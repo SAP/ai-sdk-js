@@ -1,6 +1,6 @@
 import {
   buildAzureContentSafetyFilter,
-  buildLlamaGuardFilter
+  buildLlamaGuard38BFilter
 } from './filtering.js';
 
 describe('Content filter util', () => {
@@ -37,7 +37,10 @@ describe('Content filter util', () => {
 
   describe('Llama Guard filter', () => {
     it('builds filter config with custom config', async () => {
-      const filterConfig = buildLlamaGuardFilter('elections', 'hate');
+      const filterConfig = buildLlamaGuard38BFilter('input', [
+        'elections',
+        'hate'
+      ]);
       const expectedFilterConfig = {
         type: 'llama_guard_3_8b',
         config: {
@@ -49,11 +52,11 @@ describe('Content filter util', () => {
     });
 
     it('builds filter config without duplicates', async () => {
-      const filterConfig = buildLlamaGuardFilter(
+      const filterConfig = buildLlamaGuard38BFilter('output', [
         'non_violent_crimes',
         'privacy',
         'non_violent_crimes'
-      );
+      ]);
       const expectedFilterConfig = {
         type: 'llama_guard_3_8b',
         config: {

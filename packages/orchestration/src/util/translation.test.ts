@@ -3,7 +3,7 @@ import type { SAPDocumentTranslation } from '../client/api/schema/index.js';
 
 describe('Translation module config', () => {
   it('builds translation config', async () => {
-    const translationConfig = buildTranslationConfig({
+    const translationConfig = buildTranslationConfig('input', {
       sourceLanguage: 'de-DE',
       targetLanguage: 'en-US'
     });

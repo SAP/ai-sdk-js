@@ -15,8 +15,8 @@ export type {
   LlmModelParams,
   LlmModelDetails,
   LlamaGuardCategory,
+  LlamaGuardFilterReturnType,
   AzureFilterThreshold,
-  TranslationConfigParams,
   AzureContentSafetyFilterInputParameters,
   AzureContentSafetyFilterOutputParameters,
   AzureContentSafetyFilterParameters,
@@ -25,7 +25,11 @@ export type {
   LlamaGuardFilterConfig,
   DocumentGroundingConfig,
   DpiMaskingProviderConfig,
-  TranslationConfig
+  TranslationConfig,
+  TranslationConfigParams,
+  TranslationInputParameters,
+  TranslationOutputParameters,
+  TranslationReturnType
 } from './orchestration-types.js';
 export { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 export { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
@@ -36,7 +40,7 @@ export type { ChatModel } from './model-types.js';
 
 export {
   buildAzureContentSafetyFilter,
-  buildLlamaGuardFilter,
+  buildLlamaGuard38BFilter,
   buildDocumentGroundingConfig,
   buildDpiMaskingProvider,
   buildTranslationConfig

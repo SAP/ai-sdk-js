@@ -5,7 +5,7 @@ import {
   OrchestrationClient,
   buildDocumentGroundingConfig,
   buildAzureContentSafetyFilter,
-  buildLlamaGuardFilter,
+  buildLlamaGuard38BFilter,
   buildDpiMaskingProvider,
   buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
@@ -224,7 +224,7 @@ export async function orchestrationInputFiltering(): Promise<OrchestrationErrorR
             violence: 'ALLOW_SAFE'
           }),
           // Build Llama guard content filter with categories 'privacy' enabled
-          buildLlamaGuardFilter('privacy')
+          buildLlamaGuard38BFilter('input', ['privacy'])
         ]
       }
     }
@@ -269,7 +269,7 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
             violence: 'ALLOW_SAFE'
           }),
           // Build Llama guard content filter with categories 'privacy' enabled
-          buildLlamaGuardFilter('privacy')
+          buildLlamaGuard38BFilter('output', ['privacy'])
         ]
       }
     }
@@ -711,11 +711,11 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
       }
     },
     translation: {
-      input: buildTranslationConfig({
+      input: buildTranslationConfig('input', {
         sourceLanguage: 'en-US',
         targetLanguage: 'de-DE'
       }),
-      output: buildTranslationConfig({
+      output: buildTranslationConfig('output', {
         sourceLanguage: 'de-DE',
         targetLanguage: 'fr-FR'
       })

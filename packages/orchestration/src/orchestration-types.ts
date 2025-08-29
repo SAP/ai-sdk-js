@@ -231,7 +231,7 @@ export interface OrchestrationModuleConfig {
   promptTemplating: PromptTemplatingModule;
   /**
    * Filtering module configuration for both input and output filters.
-   * To configure a filter, use convenience functions like `buildAzureContentSafetyFilter`, `buildLlamaGuardFilter`, etc..
+   * To configure a filter, use convenience functions like `buildAzureContentSafetyFilter`, `buildLlamaGuard38BFilter`, etc..
    * @example
    * filtering: {
    *   input: {
@@ -430,10 +430,9 @@ export type AzureFilterThreshold = keyof typeof supportedAzureFilterThresholds;
 export type LlamaGuardCategory = keyof LlamaGuard38B;
 
 /**
- * Translation configuration for SAP Document Translation.
- * See https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages-6854bbb1bd824ffebc3a097a7c0fd45d for list of supported languages.
+ * Input parameters for translation input configuration.
  */
-export interface TranslationConfigParams {
+export interface TranslationInputParameters {
   /**
    * Language of the text to be translated.
    * @example sourceLanguage: "de-DE"
@@ -445,6 +444,35 @@ export interface TranslationConfigParams {
    */
   targetLanguage: string;
 }
+
+/**
+ * Output parameters for translation output configuration.
+ */
+export interface TranslationOutputParameters {
+  /**
+   * Language of the text to be translated.
+   * @example sourceLanguage: "de-DE"
+   */
+  sourceLanguage?: string;
+  /**
+   * Language to which the text should be translated.
+   * @example targetLanguage: "en-US"
+   */
+  targetLanguage: string;
+}
+
+/**
+ * Parameters for translation configurations.
+ */
+export type TranslationConfigParams<T extends 'input' | 'output'> =
+  T extends 'input' ? TranslationInputParameters : TranslationOutputParameters;
+
+/**
+ * Return type for translation configurations.
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export type TranslationReturnType<T extends 'input' | 'output'> =
+  TranslationConfig;
 
 /**
  * Parameters for Azure content safety filters.
@@ -462,9 +490,16 @@ export type AzureContentSafetyFilterReturnType<T extends 'input' | 'output'> =
     : AzureContentSafetyOutputFilterConfig;
 
 /**
- * Representation of the 'LlamaGuard38BFilterConfig' schema.
+ * Union type representation of all Llama Guard filter types.
  */
 export type LlamaGuardFilterConfig = LlamaGuard38BFilterConfig;
+
+/**
+ * Filter return type for Llama Guard.
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export type LlamaGuardFilterReturnType<T extends 'input' | 'output'> =
+  LlamaGuardFilterConfig;
 
 /**
  * Representation of the 'GroundingModuleConfig' schema.
