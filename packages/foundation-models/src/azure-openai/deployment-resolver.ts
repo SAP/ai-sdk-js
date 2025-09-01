@@ -30,13 +30,13 @@ function translateToFoundationModel(modelConfig: ModelConfig): {
 /**
  * Get the deployment ID for a foundation model scenario.
  * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
- * @param scenarioId - The scenario ID.
+ * @param executableId - The scenario ID.
  * @param destination - The destination to use for the request.
  * @returns The ID of the deployment, if found.
  */
 export async function getFoundationModelDeploymentId(
   modelDeployment: ModelDeployment,
-  scenarioId: string,
+  executableId: string,
   destination?: HttpDestinationOrFetchOptions
 ): Promise<string> {
   if (isDeploymentIdConfig(modelDeployment)) {
@@ -49,8 +49,8 @@ export async function getFoundationModelDeploymentId(
       : modelDeployment;
 
   return resolveDeploymentId({
-    scenarioId,
-    executableId: 'foundation-models',
+    scenarioId: 'foundation-models',
+    executableId,
     model: translateToFoundationModel(model),
     resourceGroup: model.resourceGroup,
     destination
