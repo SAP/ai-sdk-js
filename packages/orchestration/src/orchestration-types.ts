@@ -361,7 +361,7 @@ export type DpiMaskingConfig = Omit<
 /**
  * Output Parameters for Azure content safety output filter.
  */
-export type AzureContentSafetyFilterOutputParameters = {
+export interface AzureContentSafetyFilterOutputParameters {
   /**
    * The filter category for hate content.
    */
@@ -382,12 +382,13 @@ export type AzureContentSafetyFilterOutputParameters = {
 /**
  * Input parameters for Azure content safety input filter.
  */
-export type AzureContentSafetyFilterInputParameters = AzureContentSafetyFilterOutputParameters & {
-  /**
-   * A flag to use prompt shield.
-   */
-  prompt_shield?: boolean;
-}
+export type AzureContentSafetyFilterInputParameters =
+  AzureContentSafetyFilterOutputParameters & {
+    /**
+     * A flag to use prompt shield.
+     */
+    prompt_shield?: boolean;
+  };
 
 /**
  * A descriptive constant for Azure content safety filter threshold.
@@ -420,7 +421,7 @@ export type ConfigType = 'input' | 'output';
  * Parameters for translation configuration.
  * @internal
  */
-type TranslationConfigParameters = {
+interface TranslationConfigParameters {
   /**
    * Language of the text to be translated.
    * @example sourceLanguage: 'de-DE'
@@ -446,8 +447,9 @@ export type TranslationInputParameters = TranslationConfigParameters;
 /**
  * Parameters for translation configurations.
  */
-export type TranslationConfigParams<T extends ConfigType> =
-  T extends 'input' ? TranslationInputParameters : TranslationOutputParameters;
+export type TranslationConfigParams<T extends ConfigType> = T extends 'input'
+  ? TranslationInputParameters
+  : TranslationOutputParameters;
 
 /**
  * Input configuration for translation module.
@@ -462,8 +464,9 @@ export type TranslationOutputConfig = SAPDocumentTranslation;
 /**
  * Return type for translation configurations.
  */
-export type TranslationReturnType<T extends ConfigType> =
-  T extends 'input' ? TranslationInputConfig : TranslationOutputConfig;
+export type TranslationReturnType<T extends ConfigType> = T extends 'input'
+  ? TranslationInputConfig
+  : TranslationOutputConfig;
 
 /**
  * Parameters for Azure content safety filters.
