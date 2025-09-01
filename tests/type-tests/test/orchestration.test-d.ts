@@ -412,7 +412,9 @@ expectType<LlamaGuard38BFilterReturnType<'output'>>(
   buildLlamaGuard38BFilter('output', ['elections'])
 );
 
-expectError<LlamaGuard38BFilterReturnType<'input'>>(buildLlamaGuard38BFilter('input'));
+expectError<LlamaGuard38BFilterReturnType<'input'>>(
+  buildLlamaGuard38BFilter('input')
+);
 
 expectError<LlamaGuard38BFilterReturnType<'input'>>(
   buildLlamaGuard38BFilter('input', 'unknown-string')
