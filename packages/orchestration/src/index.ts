@@ -14,22 +14,25 @@ export type {
   DpiMaskingConfig,
   LlmModelParams,
   LlmModelDetails,
-  LlamaGuardCategory,
-  LlamaGuardFilterReturnType,
+  LlamaGuard38BCategory,
+  LlamaGuard38BFilterReturnType,
+  LlamaGuard38BInputFilterConfig,
+  LlamaGuard38BOutputFilterConfig,
   AzureFilterThreshold,
   AzureContentSafetyFilterInputParameters,
   AzureContentSafetyFilterOutputParameters,
   AzureContentSafetyFilterParameters,
   AzureContentSafetyFilterReturnType,
   OrchestrationErrorResponse,
-  LlamaGuardFilterConfig,
   DocumentGroundingConfig,
   DpiMaskingProviderConfig,
   TranslationConfig,
   TranslationConfigParams,
   TranslationInputParameters,
   TranslationOutputParameters,
-  TranslationReturnType
+  TranslationReturnType,
+  TranslationInputConfig,
+  TranslationOutputConfig
 } from './orchestration-types.js';
 export { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 export { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';

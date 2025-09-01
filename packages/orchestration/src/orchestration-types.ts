@@ -425,9 +425,9 @@ export const supportedAzureFilterThresholds = {
 export type AzureFilterThreshold = keyof typeof supportedAzureFilterThresholds;
 
 /**
- * The filter categories supported for Llama guard filter.
+ * The filter categories supported for Llama Guard 3 8B filter.
  */
-export type LlamaGuardCategory = keyof LlamaGuard38B;
+export type LlamaGuard38BCategory = keyof LlamaGuard38B;
 
 /**
  * Input parameters for translation input configuration.
@@ -468,11 +468,22 @@ export type TranslationConfigParams<T extends 'input' | 'output'> =
   T extends 'input' ? TranslationInputParameters : TranslationOutputParameters;
 
 /**
+ * Input configuration for translation module.
+ */
+export type TranslationInputConfig = TranslationConfig;
+
+/**
+ * Output configuration for translation module.
+ */
+export type TranslationOutputConfig = TranslationConfig;
+
+/**
  * Return type for translation configurations.
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export type TranslationReturnType<T extends 'input' | 'output'> =
-  TranslationConfig;
+  T extends 'input'
+    ? TranslationInputConfig
+    : TranslationOutputConfig;
 
 /**
  * Parameters for Azure content safety filters.
@@ -481,6 +492,7 @@ export type AzureContentSafetyFilterParameters<T extends 'input' | 'output'> =
   T extends 'input'
     ? AzureContentSafetyFilterInputParameters
     : AzureContentSafetyFilterOutputParameters;
+
 /**
  * Filter return type for Azure Content Safety.
  */
@@ -490,16 +502,22 @@ export type AzureContentSafetyFilterReturnType<T extends 'input' | 'output'> =
     : AzureContentSafetyOutputFilterConfig;
 
 /**
- * Union type representation of all Llama Guard filter types.
+ * Input filter configuration for Llama Guard 3 8B.
  */
-export type LlamaGuardFilterConfig = LlamaGuard38BFilterConfig;
+export type LlamaGuard38BInputFilterConfig = LlamaGuard38BFilterConfig;
 
 /**
- * Filter return type for Llama Guard.
+ * Output filter configuration for Llama Guard 3 8B.
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export type LlamaGuardFilterReturnType<T extends 'input' | 'output'> =
-  LlamaGuardFilterConfig;
+export type LlamaGuard38BOutputFilterConfig = LlamaGuard38BFilterConfig;
+
+/**
+ * Filter return type for Llama Guard 3 8B.
+ */
+export type LlamaGuard38BFilterReturnType<T extends 'input' | 'output'> =
+  T extends 'input'
+    ? LlamaGuard38BInputFilterConfig
+    : LlamaGuard38BOutputFilterConfig;
 
 /**
  * Representation of the 'GroundingModuleConfig' schema.
