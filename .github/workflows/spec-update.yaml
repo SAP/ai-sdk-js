@@ -57,10 +57,13 @@ jobs:
       CHOICE: ${{ inputs.file }}
       REF: ${{ inputs.file-ref }}
       CREATE_PR: ${{ inputs.create-pr }}
+    strategy:
+      matrix:
+        node-version: ${{ fromJSON(vars.SUPPORTED_NODE_VERSIONS) }}
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
-          node-version: 20
+          node-version: ${{ matrix.node-version }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'Checkout or Create Branch'
