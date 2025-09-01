@@ -1,6 +1,5 @@
 import {
   resolveDeploymentId,
-  type DeploymentResolutionOptions,
   type ModelDeployment,
   type ModelConfig
 } from '@sap-ai-sdk/ai-api/internal.js';
@@ -55,5 +54,5 @@ export async function getFoundationModelDeploymentId(
     model: translateToFoundationModel(model),
     resourceGroup: model.resourceGroup,
     destination
-  } as DeploymentResolutionOptions);
+  });
 }

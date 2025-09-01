@@ -26,8 +26,7 @@ export async function getOrchestrationDeploymentId(
 
   return resolveDeploymentId({
     scenarioId: 'orchestration',
-    executableId,
-    resourceGroup: deploymentConfig.resourceGroup,
+    ...(deploymentConfig ?? {}),
     destination
   });
 }

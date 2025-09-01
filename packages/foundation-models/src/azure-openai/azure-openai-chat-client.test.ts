@@ -134,9 +134,9 @@ describe('Azure OpenAI chat client', () => {
 
     mockDeploymentsList(
       {
-        scenarioId: 'azure-openai',
+        scenarioId: 'foundation-models',
         resourceGroup: 'custom-resource-group',
-        executableId: 'foundation-models'
+        executableId: 'azure-openai'
       },
       { id: '1234', model: { name: 'gpt-4o', version: 'latest' } }
     );
