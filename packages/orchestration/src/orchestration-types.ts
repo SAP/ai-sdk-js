@@ -481,9 +481,7 @@ export type TranslationOutputConfig = TranslationConfig;
  * Return type for translation configurations.
  */
 export type TranslationReturnType<T extends 'input' | 'output'> =
-  T extends 'input'
-    ? TranslationInputConfig
-    : TranslationOutputConfig;
+  T extends 'input' ? TranslationInputConfig : TranslationOutputConfig;
 
 /**
  * Parameters for Azure content safety filters.
