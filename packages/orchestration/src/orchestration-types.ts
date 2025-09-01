@@ -451,12 +451,12 @@ export interface TranslationInputParameters {
 export interface TranslationOutputParameters {
   /**
    * Language of the text to be translated.
-   * @example sourceLanguage: "de-DE"
+   * @example sourceLanguage: 'de-DE'
    */
   sourceLanguage?: string;
   /**
    * Language to which the text should be translated.
-   * @example targetLanguage: "en-US"
+   * @example targetLanguage: 'en-US'
    */
   targetLanguage: string;
 }
