@@ -23,7 +23,6 @@ import type {
   ErrorResponse,
   AzureContentSafetyInputFilterConfig,
   AzureContentSafetyOutputFilterConfig,
-  GroundingModuleConfig,
   LlamaGuard38BFilterConfig
 } from './client/api/schema/index.js';
 
@@ -105,7 +104,7 @@ export interface PromptTemplatingModule {
 }
 
 /**
- * Representation of the 'FilteringModuleConfig' schema.
+ * Representation of the `FilteringModuleConfig` schema.
  */
 export interface FilteringModule {
   /**
@@ -119,7 +118,7 @@ export interface FilteringModule {
 }
 
 /**
- * Representation of the 'MaskingModuleConfig' schema.
+ * Representation of the `MaskingModuleConfig` schema.
  */
 export interface MaskingModule {
   /**
@@ -130,55 +129,17 @@ export interface MaskingModule {
 }
 
 /**
- * Representation of the 'GroundingModuleConfig' schema.
- */
-export interface GroundingModule {
-  /**
-   * @example "document_grounding_service"
-   */
-  type: 'document_grounding_service' | any;
-  /**
-   * Grounding service configuration.
-   */
-  config: {
-    /**
-     * Document grounding service filters to be used.
-     */
-    filters?: DocumentGroundingFilter[];
-    /**
-     * Placeholders to be used for grounding input questions and output.
-     */
-    placeholders: {
-      /**
-       * Contains the input parameters used for grounding input questions
-       * Min Items: 1.
-       */
-      input: string[];
-      /**
-       * Placeholder name for grounding output.
-       * @example "groundingOutput"
-       */
-      output: string;
-    };
-    /**
-     * Parameter name used for specifying metadata parameters.
-     */
-    metadata_params?: string[];
-  };
-}
-
-/**
  * Configuration for translation module.
  */
 export interface TranslationModule {
   /**
    * Configuration for input translation.
    */
-  input?: SAPDocumentTranslation;
+  input?: TranslationInputConfig;
   /**
    * Configuration for output translation.
    */
-  output?: SAPDocumentTranslation;
+  output?: TranslationOutputConfig;
 }
 
 /**
@@ -295,6 +256,43 @@ export interface StreamOptions {
    */
   global?: GlobalStreamOptions;
 }
+/**
+ * Representation of the `GroundingModuleConfig` schema.
+ */
+export interface GroundingModule {
+  /**
+   * @example 'document_grounding_service'
+   */
+  type: 'document_grounding_service' | any;
+  /**
+   * Grounding service configuration.
+   */
+  config: {
+    /**
+     * Document grounding service filters to be used.
+     */
+    filters?: DocumentGroundingFilter[];
+    /**
+     * Placeholders to be used for grounding input questions and output.
+     */
+    placeholders: {
+      /**
+       * Contains the input parameters used for grounding input questions
+       * Min Items: 1.
+       */
+      input: string[];
+      /**
+       * Placeholder name for grounding output.
+       * @example 'groundingOutput'
+       */
+      output: string;
+    };
+    /**
+     * Parameter name used for specifying metadata parameters.
+     */
+    metadata_params?: string[];
+  };
+}
 
 /**
  * Represents a filter configuration for the Document Grounding Service.
@@ -361,9 +359,9 @@ export type DpiMaskingConfig = Omit<
 };
 
 /**
- * Input parameters for Azure content safety input filter.
+ * Output Parameters for Azure content safety output filter.
  */
-export interface AzureContentSafetyFilterInputParameters {
+export type AzureContentSafetyFilterOutputParameters = {
   /**
    * The filter category for hate content.
    */
@@ -380,32 +378,15 @@ export interface AzureContentSafetyFilterInputParameters {
    * The filter category for violence content.
    */
   violence?: AzureFilterThreshold;
+}
+/**
+ * Input parameters for Azure content safety input filter.
+ */
+export type AzureContentSafetyFilterInputParameters = AzureContentSafetyFilterOutputParameters & {
   /**
    * A flag to use prompt shield.
    */
   prompt_shield?: boolean;
-}
-
-/**
- * Output Parameters for Azure content safety output filter.
- */
-export interface AzureContentSafetyFilterOutputParameters {
-  /**
-   * The filter category for hate content.
-   */
-  hate?: AzureFilterThreshold;
-  /**
-   * The filter category for self-harm content.
-   */
-  self_harm?: AzureFilterThreshold;
-  /**
-   * The filter category for sexual content.
-   */
-  sexual?: AzureFilterThreshold;
-  /**
-   * The filter category for violence content.
-   */
-  violence?: AzureFilterThreshold;
 }
 
 /**
@@ -430,25 +411,16 @@ export type AzureFilterThreshold = keyof typeof supportedAzureFilterThresholds;
 export type LlamaGuard38BCategory = keyof LlamaGuard38B;
 
 /**
- * Input parameters for translation input configuration.
+ * Type for module configurations (input or output).
+ * @internal
  */
-export interface TranslationInputParameters {
-  /**
-   * Language of the text to be translated.
-   * @example sourceLanguage: "de-DE"
-   */
-  sourceLanguage?: string;
-  /**
-   * Language to which the text should be translated.
-   * @example targetLanguage: "en-US"
-   */
-  targetLanguage: string;
-}
+export type ConfigType = 'input' | 'output';
 
 /**
- * Output parameters for translation output configuration.
+ * Parameters for translation configuration.
+ * @internal
  */
-export interface TranslationOutputParameters {
+type TranslationConfigParameters = {
   /**
    * Language of the text to be translated.
    * @example sourceLanguage: 'de-DE'
@@ -462,31 +434,41 @@ export interface TranslationOutputParameters {
 }
 
 /**
+ * Output parameters for translation output configuration.
+ */
+export type TranslationOutputParameters = TranslationConfigParameters;
+
+/**
+ * Input parameters for translation input configuration.
+ */
+export type TranslationInputParameters = TranslationConfigParameters;
+
+/**
  * Parameters for translation configurations.
  */
-export type TranslationConfigParams<T extends 'input' | 'output'> =
+export type TranslationConfigParams<T extends ConfigType> =
   T extends 'input' ? TranslationInputParameters : TranslationOutputParameters;
 
 /**
  * Input configuration for translation module.
  */
-export type TranslationInputConfig = TranslationConfig;
+export type TranslationInputConfig = SAPDocumentTranslation;
 
 /**
  * Output configuration for translation module.
  */
-export type TranslationOutputConfig = TranslationConfig;
+export type TranslationOutputConfig = SAPDocumentTranslation;
 
 /**
  * Return type for translation configurations.
  */
-export type TranslationReturnType<T extends 'input' | 'output'> =
+export type TranslationReturnType<T extends ConfigType> =
   T extends 'input' ? TranslationInputConfig : TranslationOutputConfig;
 
 /**
  * Parameters for Azure content safety filters.
  */
-export type AzureContentSafetyFilterParameters<T extends 'input' | 'output'> =
+export type AzureContentSafetyFilterParameters<T extends ConfigType> =
   T extends 'input'
     ? AzureContentSafetyFilterInputParameters
     : AzureContentSafetyFilterOutputParameters;
@@ -494,7 +476,7 @@ export type AzureContentSafetyFilterParameters<T extends 'input' | 'output'> =
 /**
  * Filter return type for Azure Content Safety.
  */
-export type AzureContentSafetyFilterReturnType<T extends 'input' | 'output'> =
+export type AzureContentSafetyFilterReturnType<T extends ConfigType> =
   T extends 'input'
     ? AzureContentSafetyInputFilterConfig
     : AzureContentSafetyOutputFilterConfig;
@@ -512,22 +494,12 @@ export type LlamaGuard38BOutputFilterConfig = LlamaGuard38BFilterConfig;
 /**
  * Filter return type for Llama Guard 3 8B.
  */
-export type LlamaGuard38BFilterReturnType<T extends 'input' | 'output'> =
+export type LlamaGuard38BFilterReturnType<T extends ConfigType> =
   T extends 'input'
     ? LlamaGuard38BInputFilterConfig
     : LlamaGuard38BOutputFilterConfig;
 
 /**
- * Representation of the 'GroundingModuleConfig' schema.
- */
-export type DocumentGroundingConfig = GroundingModuleConfig;
-
-/**
  * Representation of the 'DpiConfig' schema.
  */
 export type DpiMaskingProviderConfig = DpiConfig;
-
-/**
- * Representation of the 'SAPDocumentTranslation' schema.
- */
-export type TranslationConfig = SAPDocumentTranslation;

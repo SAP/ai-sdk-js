@@ -7,22 +7,22 @@ import {
   buildDpiMaskingProvider,
   buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
-import type { TranslationReturnType } from '@sap-ai-sdk/orchestration/src/orchestration-types.js';
 import type {
   ChatModel,
   LlmModelParams,
   OrchestrationResponse,
+  GroundingModule,
   AzureContentSafetyFilterReturnType,
-  AssistantChatMessage
+  AssistantChatMessage,
+  TranslationReturnType,
+  LlamaGuard38BFilterReturnType
 } from '@sap-ai-sdk/orchestration';
 import type {
   CompletionPostResponse,
   TokenUsage,
-  GroundingModuleConfig,
   ChatMessages,
   DpiConfig,
-  MessageToolCalls,
-  LlamaGuard38BFilterReturnType
+  MessageToolCalls
 } from '@sap-ai-sdk/orchestration/internal.js';
 
 /**
@@ -427,7 +427,7 @@ expectError<LlamaGuard38BFilterReturnType<'input'>>(
 /**
  * Grounding util.
  */
-expectType<GroundingModuleConfig>(
+expectType<GroundingModule>(
   buildDocumentGroundingConfig({
     placeholders: {
       input: ['test'],
@@ -436,7 +436,7 @@ expectType<GroundingModuleConfig>(
   })
 );
 
-expectError<GroundingModuleConfig>(
+expectError<GroundingModule>(
   buildDocumentGroundingConfig({
     placeholders: {
       input: ['test']
@@ -444,7 +444,7 @@ expectError<GroundingModuleConfig>(
   })
 );
 
-expectType<GroundingModuleConfig>(
+expectType<GroundingModule>(
   buildDocumentGroundingConfig({
     placeholders: {
       input: ['test'],

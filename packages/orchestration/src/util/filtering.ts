@@ -9,7 +9,8 @@ import type {
   AzureContentSafetyFilterReturnType,
   AzureFilterThreshold,
   LlamaGuard38BCategory,
-  LlamaGuard38BFilterReturnType
+  LlamaGuard38BFilterReturnType,
+  ConfigType
 } from '../orchestration-types.js';
 
 /**
@@ -20,7 +21,7 @@ import type {
  * @returns Azure content safety configuration.
  * @example "buildAzureContentSafetyFilter({ type: 'input', hate: 'ALLOW_SAFE', violence: 'ALLOW_SAFE_LOW_MEDIUM' })"
  */
-export function buildAzureContentSafetyFilter<T extends 'input' | 'output'>(
+export function buildAzureContentSafetyFilter<T extends ConfigType>(
   type: T,
   config?: AzureContentSafetyFilterParameters<T>
 ): AzureContentSafetyFilterReturnType<T> {
@@ -71,7 +72,7 @@ export function buildAzureContentSafetyFilter<T extends 'input' | 'output'>(
  * @returns Llama Guard 3 8B filter configuration.
  * @example buildLlamaGuard38BFilter('input', ['elections', 'hate'])
  */
-export function buildLlamaGuard38BFilter<T extends 'input' | 'output'>(
+export function buildLlamaGuard38BFilter<T extends ConfigType>(
   type: T,
   categories: [LlamaGuard38BCategory, ...LlamaGuard38BCategory[]]
 ): LlamaGuard38BFilterReturnType<T> {

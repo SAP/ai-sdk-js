@@ -1,6 +1,7 @@
 import type {
   TranslationConfigParams,
-  TranslationReturnType
+  TranslationReturnType,
+  ConfigType
 } from '../orchestration-types.js';
 
 /**
@@ -12,7 +13,7 @@ import type {
  * @returns SAP Document Translation configuration.
  * @example buildTranslationConfig('input', { sourceLanguage: 'de-DE', targetLanguage: 'en-US' })
  */
-export function buildTranslationConfig<T extends 'input' | 'output'>(
+export function buildTranslationConfig<T extends ConfigType>(
   type: T,
   config: TranslationConfigParams<T>
 ): TranslationReturnType<T> {
