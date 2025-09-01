@@ -22,7 +22,7 @@ import type {
   ChatMessages,
   DpiConfig,
   MessageToolCalls,
-  LlamaGuardFilterReturnType
+  LlamaGuard38BFilterReturnType
 } from '@sap-ai-sdk/orchestration/internal.js';
 
 /**
@@ -404,21 +404,21 @@ expectError<AzureContentSafetyFilterReturnType<'output'>>(
 /**
  * Filtering Util for Llama guard.
  */
-expectType<LlamaGuardFilterReturnType<'input'>>(
+expectType<LlamaGuard38BFilterReturnType<'input'>>(
   buildLlamaGuard38BFilter('input', ['code_interpreter_abuse', 'defamation'])
 );
 
-expectType<LlamaGuardFilterReturnType<'output'>>(
+expectType<LlamaGuard38BFilterReturnType<'output'>>(
   buildLlamaGuard38BFilter('output', ['elections'])
 );
 
-expectError<LlamaGuardFilterReturnType<'input'>>(buildLlamaGuard38BFilter());
+expectError<LlamaGuard38BFilterReturnType<'input'>>(buildLlamaGuard38BFilter('input'));
 
-expectError<LlamaGuardFilterReturnType<'input'>>(
-  buildLlamaGuard38BFilter('unknown-string')
+expectError<LlamaGuard38BFilterReturnType<'input'>>(
+  buildLlamaGuard38BFilter('input', 'unknown-string')
 );
 
-expectError<LlamaGuardFilterReturnType<'input'>>(
+expectError<LlamaGuard38BFilterReturnType<'input'>>(
   buildLlamaGuard38BFilter('output', [])
 );
 
