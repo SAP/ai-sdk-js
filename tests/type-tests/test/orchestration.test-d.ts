@@ -3,21 +3,23 @@ import {
   OrchestrationClient,
   buildAzureContentSafetyFilter,
   buildDocumentGroundingConfig,
-  buildLlamaGuardFilter,
-  buildDpiMaskingProvider
+  buildLlamaGuard38BFilter,
+  buildDpiMaskingProvider,
+  buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
 import type {
   ChatModel,
   LlmModelParams,
   OrchestrationResponse,
+  GroundingModule,
   AzureContentSafetyFilterReturnType,
   AssistantChatMessage,
-  LlamaGuardFilterConfig
+  TranslationReturnType,
+  LlamaGuard38BFilterReturnType
 } from '@sap-ai-sdk/orchestration';
 import type {
   CompletionPostResponse,
   TokenUsage,
-  GroundingModuleConfig,
   ChatMessages,
   DpiConfig,
   MessageToolCalls
@@ -402,18 +404,30 @@ expectError<AzureContentSafetyFilterReturnType<'output'>>(
 /**
  * Filtering Util for Llama guard.
  */
-expectType<LlamaGuardFilterConfig>(
-  buildLlamaGuardFilter('code_interpreter_abuse', 'defamation')
+expectType<LlamaGuard38BFilterReturnType<'input'>>(
+  buildLlamaGuard38BFilter('input', ['code_interpreter_abuse', 'defamation'])
 );
 
-expectError<LlamaGuardFilterConfig>(buildLlamaGuardFilter());
+expectType<LlamaGuard38BFilterReturnType<'output'>>(
+  buildLlamaGuard38BFilter('output', ['elections'])
+);
 
-expectError<LlamaGuardFilterConfig>(buildLlamaGuardFilter('unknown-string'));
+expectError<LlamaGuard38BFilterReturnType<'input'>>(
+  buildLlamaGuard38BFilter('input')
+);
+
+expectError<LlamaGuard38BFilterReturnType<'input'>>(
+  buildLlamaGuard38BFilter('input', 'unknown-string')
+);
+
+expectError<LlamaGuard38BFilterReturnType<'input'>>(
+  buildLlamaGuard38BFilter('output', [])
+);
 
 /**
  * Grounding util.
  */
-expectType<GroundingModuleConfig>(
+expectType<GroundingModule>(
   buildDocumentGroundingConfig({
     placeholders: {
       input: ['test'],
@@ -422,7 +436,7 @@ expectType<GroundingModuleConfig>(
   })
 );
 
-expectError<GroundingModuleConfig>(
+expectError<GroundingModule>(
   buildDocumentGroundingConfig({
     placeholders: {
       input: ['test']
@@ -430,13 +444,49 @@ expectError<GroundingModuleConfig>(
   })
 );
 
-expectType<GroundingModuleConfig>(
+expectType<GroundingModule>(
   buildDocumentGroundingConfig({
     placeholders: {
       input: ['test'],
       output: 'test'
     },
     filters: [{ id: 'test' }]
+  })
+);
+
+/**
+ * Translation util.
+ */
+expectType<TranslationReturnType<'input'>>(
+  buildTranslationConfig('input', {
+    sourceLanguage: 'de-DE',
+    targetLanguage: 'en-US'
+  })
+);
+
+expectType<TranslationReturnType<'output'>>(
+  buildTranslationConfig('output', {
+    sourceLanguage: 'en-US',
+    targetLanguage: 'fr-FR'
+  })
+);
+
+expectError<TranslationReturnType<'input'>>(buildTranslationConfig('input'));
+
+expectError<TranslationReturnType<'input'>>(
+  buildTranslationConfig('input', {
+    sourceLanguage: 'de-DE'
+  })
+);
+
+expectError<TranslationReturnType<'input'>>(
+  buildTranslationConfig('input', {})
+);
+
+expectError<TranslationReturnType<'input'>>(
+  buildTranslationConfig('unknown-type', {
+    sourceLanguage: 'de-DE',
+    targetLanguage: 'en-US'
   })
 );
 

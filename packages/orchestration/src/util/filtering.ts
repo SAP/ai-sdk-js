@@ -8,8 +8,9 @@ import type {
   AzureContentSafetyFilterParameters,
   AzureContentSafetyFilterReturnType,
   AzureFilterThreshold,
-  LlamaGuardCategory,
-  LlamaGuardFilterConfig
+  LlamaGuard38BCategory,
+  LlamaGuard38BFilterReturnType,
+  ConfigType
 } from '../orchestration-types.js';
 
 /**
@@ -20,7 +21,7 @@ import type {
  * @returns Azure content safety configuration.
  * @example "buildAzureContentSafetyFilter({ type: 'input', hate: 'ALLOW_SAFE', violence: 'ALLOW_SAFE_LOW_MEDIUM' })"
  */
-export function buildAzureContentSafetyFilter<T extends 'input' | 'output'>(
+export function buildAzureContentSafetyFilter<T extends ConfigType>(
   type: T,
   config?: AzureContentSafetyFilterParameters<T>
 ): AzureContentSafetyFilterReturnType<T> {
@@ -65,14 +66,16 @@ export function buildAzureContentSafetyFilter<T extends 'input' | 'output'>(
 }
 
 /**
- * Convenience function to build Llama guard filter.
+ * Convenience function to build Llama Guard 3 8B filter.
+ * @param type - Type of the filter, either `input` or `output`.
  * @param categories - Categories to be enabled for filtering. Provide at least one category.
- * @returns Filter config object.
- * @example "buildLlamaGuardFilter('self_harm', 'hate')"
+ * @returns Llama Guard 3 8B filter configuration.
+ * @example buildLlamaGuard38BFilter('input', ['elections', 'hate'])
  */
-export function buildLlamaGuardFilter(
-  ...categories: [LlamaGuardCategory, ...LlamaGuardCategory[]]
-): LlamaGuardFilterConfig {
+export function buildLlamaGuard38BFilter<T extends ConfigType>(
+  type: T,
+  categories: [LlamaGuard38BCategory, ...LlamaGuard38BCategory[]]
+): LlamaGuard38BFilterReturnType<T> {
   return {
     type: 'llama_guard_3_8b',
     config: Object.fromEntries(
