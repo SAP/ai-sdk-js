@@ -33,6 +33,7 @@ function translateToFoundationModel(modelConfig: ModelConfig): {
  * @param executableId - The scenario ID.
  * @param destination - The destination to use for the request.
  * @returns The ID of the deployment, if found.
+ * @internal
  */
 export async function getFoundationModelDeploymentId(
   modelDeployment: ModelDeployment,
