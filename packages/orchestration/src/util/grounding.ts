@@ -1,6 +1,6 @@
 import type {
   DocumentGroundingServiceConfig,
-  DocumentGroundingConfig
+  GroundingModule
 } from '../orchestration-types.js';
 
 /**
@@ -10,7 +10,7 @@ import type {
  */
 export function buildDocumentGroundingConfig(
   groundingConfig: DocumentGroundingServiceConfig
-): DocumentGroundingConfig {
+): GroundingModule {
   return {
     type: 'document_grounding_service',
     config: {
