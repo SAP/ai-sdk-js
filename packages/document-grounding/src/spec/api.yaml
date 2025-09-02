@@ -781,7 +781,7 @@ paths:
           description: Resource Group ID
       tags:
         - Vector
-      summary: Search chunks by vector
+      summary: Search chunk by vector
       description: Search chunks
       operationId: vector.v1.vector_endpoints.search_chunk
       x-sap-cloud-sdk-operation-name: search
