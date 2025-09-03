@@ -46,7 +46,7 @@ expectType<Promise<OrchestrationResponse>>(
     {
       promptTemplating: {
         model: {
-          name: 'gpt-4o',
+          name: 'gpt-4o'
         }
       }
     },
