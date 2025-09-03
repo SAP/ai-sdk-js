@@ -14,8 +14,8 @@ importers:
         specifier: ^2.29.6
         version: 2.29.6(@types/node@20.19.11)
       '@jest/globals':
-        specifier: ^30.1.1
-        version: 30.1.1
+        specifier: ^30.1.2
+        version: 30.1.2
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:packages/ai-api
@@ -333,22 +333,22 @@ importers:
         version: 0.1.0(@langchain/core@0.3.72(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))
       '@sap-ai-sdk/ai-api':
         specifier: next
-        version: 2.0.0-20250902013117.0
+        version: 2.0.0-20250903013053.0
       '@sap-ai-sdk/document-grounding':
         specifier: next
-        version: 2.0.0-20250902013117.0
+        version: 2.0.0-20250903013053.0
       '@sap-ai-sdk/foundation-models':
         specifier: next
-        version: 2.0.0-20250902013117.0
+        version: 2.0.0-20250903013053.0
       '@sap-ai-sdk/langchain':
         specifier: next
-        version: 2.0.0-20250902013117.0(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
+        version: 2.0.0-20250903013053.0(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
       '@sap-ai-sdk/orchestration':
         specifier: next
-        version: 2.0.0-20250902013117.0
+        version: 2.0.0-20250903013053.0
       '@sap-ai-sdk/prompt-registry':
         specifier: next
-        version: 2.0.0-20250902013117.0
+        version: 2.0.0-20250903013053.0
       '@sap-cloud-sdk/util':
         specifier: ^4.1.1
         version: 4.1.1
@@ -992,10 +992,6 @@ packages:
     resolution: {integrity: sha512-n5H8QLDJ47QqbCNn5SuFjCRDrOLEZ0h8vAHCK5RL9Ls7Xa8AQLa/YxAc9UjFqoEDM48muwtBGjtMY5cr0PLDCw==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
-  '@jest/environment@30.1.1':
-    resolution: {integrity: sha512-yWHbU+3j7ehQE+NRpnxRvHvpUhoohIjMePBbIr8lfe0cWVb0WeTf80DNux1GPJa18CDHiIU5DtksGUfxcDE+Rw==}
-    engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
-
   '@jest/environment@30.1.2':
     resolution: {integrity: sha512-N8t1Ytw4/mr9uN28OnVf0SYE2dGhaIxOVYcwsf9IInBKjvofAjbFRvedvBBlyTYk2knbJTiEjEJ2PyyDIBnd9w==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
@@ -1004,24 +1000,12 @@ packages:
     resolution: {integrity: sha512-F3lmTT7CXWYywoVUGTCmom0vXq3HTTkaZyTAzIy+bXSBizB7o5qzlC9VCtq0arOa8GqmNsbg/cE9C6HLn7Szew==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
-  '@jest/expect-utils@30.1.1':
-    resolution: {integrity: sha512-5YUHr27fpJ64dnvtu+tt11ewATynrHkGYD+uSFgRr8V2eFJis/vEXgToyLwccIwqBihVfz9jwio+Zr1ab1Zihw==}
-    engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
-
   '@jest/expect-utils@30.1.2':
     resolution: {integrity: sha512-HXy1qT/bfdjCv7iC336ExbqqYtZvljrV8odNdso7dWK9bSeHtLlvwWWC3YSybSPL03Gg5rug6WLCZAZFH72m0A==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
-  '@jest/expect@30.1.1':
-    resolution: {integrity: sha512-3vHIHsF+qd3D8FU2c7U5l3rg1fhDwAYcGyHyZAi94YIlTwcJ+boNhRyJf373cl4wxbOX+0Q7dF40RTrTFTSuig==}
-    engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
-
   '@jest/expect@30.1.2':
     resolution: {integrity: sha512-tyaIExOwQRCxPCGNC05lIjWJztDwk2gPDNSDGg1zitXJJ8dC3++G/CRjE5mb2wQsf89+lsgAgqxxNpDLiCViTA==}
-    engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
-
-  '@jest/fake-timers@30.1.1':
-    resolution: {integrity: sha512-fK/25dNgBNYPw3eLi2CRs57g1H04qBAFNMsUY3IRzkfx/m4THe0E1zF+yGQBOMKKc2XQVdc9EYbJ4hEm7/2UtA==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   '@jest/fake-timers@30.1.2':
@@ -1034,10 +1018,6 @@ packages:
 
   '@jest/get-type@30.1.0':
     resolution: {integrity: sha512-eMbZE2hUnx1WV0pmURZY9XoXPkUYjpc55mb0CrhtdWLtzMQPFvu/rZkTLZFTsdaVQa+Tr4eWAteqcUzoawq/uA==}
-    engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
-
-  '@jest/globals@30.1.1':
-    resolution: {integrity: sha512-NNUUkHT2TU/xztZl6r1UXvJL+zvCwmZsQDmK69fVHHcB9fBtlu3FInnzOve/ZoyKnWY8JXWJNT+Lkmu1+ubXUA==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   '@jest/globals@30.1.2':
@@ -1065,10 +1045,6 @@ packages:
     resolution: {integrity: sha512-DmdYgtezMkh3cpU8/1uyXakv3tJRcmcXxBOcO0tbaozPwpmh4YMsnWrQm9ZmZMfa5ocbxzbFk6O4bDPEc/iAnA==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
-  '@jest/snapshot-utils@30.1.1':
-    resolution: {integrity: sha512-TkVBc9wuN22TT8hESRFmjjg/xIMu7z0J3UDYtIRydzCqlLPTB7jK1DDBKdnTUZ4zL3z3rnPpzV6rL1Uzh87sXg==}
-    engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
-
   '@jest/snapshot-utils@30.1.2':
     resolution: {integrity: sha512-vHoMTpimcPSR7OxS2S0V1Cpg8eKDRxucHjoWl5u4RQcnxqQrV3avETiFpl8etn4dqxEGarBeHbIBety/f8mLXw==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
@@ -1083,10 +1059,6 @@ packages:
 
   '@jest/test-sequencer@30.1.2':
     resolution: {integrity: sha512-v3vawuj2LC0XjpzF4q0pI0ZlQvMBDNqfRZZ2yHqcsGt7JEYsDK2L1WwrybEGlnOaEvnDFML/Y9xWLiW47Dda8A==}
-    engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
-
-  '@jest/transform@30.1.1':
-    resolution: {integrity: sha512-PHIA2AbAASBfk6evkNifvmx9lkOSkmvaQoO6VSpuL8+kQqDMHeDoJ7RU3YP1wWAMD7AyQn9UL5iheuFYCC4lqQ==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   '@jest/transform@30.1.2':
@@ -1274,26 +1246,26 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
-  '@sap-ai-sdk/ai-api@2.0.0-20250902013117.0':
-    resolution: {integrity: sha512-qzzT/hrXgatXB/q9Ro39UxRU9wwFc/PB0H30zznViyhiMc5WM+b2kcVbd8bNS9zivX+6qpAGlc1aELZbyeMHRg==}
+  '@sap-ai-sdk/ai-api@2.0.0-20250903013053.0':
+    resolution: {integrity: sha512-D9UtyAYY3Jqr6tZQVf5LErqbEY5nEzdHewUwIgNjxyBvIg3OUGkYwN9y8OOtBXeQzB946mimSK8K+ZEM2mLcxA==}
 
-  '@sap-ai-sdk/core@2.0.0-20250902013117.0':
-    resolution: {integrity: sha512-1oRPs0lIkmDgaAF9n4oJShjjB6qzBOSfWWPZ0XW0pmCgnsgt1XSHxbtzZ951+EIT94DiVZZ0ARsyWlMWAC9X3w==}
+  '@sap-ai-sdk/core@2.0.0-20250903013053.0':
+    resolution: {integrity: sha512-tsIykZuL01Py9C8WlWsH68vh9WUF/iJvtzkox/fJTL3rbAY8lPFEM8XXkHOKE8J6ThxgxoAE6Fmg/66YuHlUuA==}
 
-  '@sap-ai-sdk/document-grounding@2.0.0-20250902013117.0':
-    resolution: {integrity: sha512-Uxq7OH+zFoPyi3kWUHagpIio5H+T50HoJleC9Dk9peeDfpEz8iHbSQTALlHOKwJUvbE8lag99S7mKBLYlWfxvA==}
+  '@sap-ai-sdk/document-grounding@2.0.0-20250903013053.0':
+    resolution: {integrity: sha512-/xPPdSq75vv77brcOB9+keoXGlRHnl5rTCsw6QtT+/9Gy9kt9mhF9DFVkZH0t3kpCmrgk/IjXE242BKFvCvEWQ==}
 
-  '@sap-ai-sdk/foundation-models@2.0.0-20250902013117.0':
-    resolution: {integrity: sha512-/cBjGVAyGLhns72kpDuIBZXJp9MxSArziMwvx4hvjM9tWf/hXUL6kApHPYqz7DHksSgolliP+0CtAF3O8WaY/Q==}
+  '@sap-ai-sdk/foundation-models@2.0.0-20250903013053.0':
+    resolution: {integrity: sha512-T4xhpENlmfsgWlAyynCcC4qPcAW6RrHsETd486aZwNHDah0m6Hcrawh4BVimVznU84ZgfvwGBQ7nMTB10yAReA==}
 
-  '@sap-ai-sdk/langchain@2.0.0-20250902013117.0':
-    resolution: {integrity: sha512-+sNN12WNw9QC211JroTuC25xdcm6qw7U1tUTm0d2metvrzIH6fx7F9k43WUHeaZxXCt25PD8mTqQGkZCF9y3fQ==}
+  '@sap-ai-sdk/langchain@2.0.0-20250903013053.0':
+    resolution: {integrity: sha512-h+Q7jD4jJmJUDnWb3O/OFgylfpT0IMBQU2zpr0nR5LM81r3n2PlutrDEuOBL+58aXQq9Rg+80XgzA1eD+IFPpw==}
 
-  '@sap-ai-sdk/orchestration@2.0.0-20250902013117.0':
-    resolution: {integrity: sha512-6OmpflViy/y9xAYcHc2GmTmu1KgEJ3vTWyb9n0cTKHcSNVKrxcSOskJWYlX98ZaPpZcP8q67YuMSCu7TibFd2g==}
+  '@sap-ai-sdk/orchestration@2.0.0-20250903013053.0':
+    resolution: {integrity: sha512-4cmbQcDVAZqQlehZXsjFnDsbRdbFrhust25fZSFRP/3DO5v+VxekksUB92NE/g5qh+UmRA2vMIXvNUXC10iobw==}
 
-  '@sap-ai-sdk/prompt-registry@2.0.0-20250902013117.0':
-    resolution: {integrity: sha512-sSWjCKhWZPscLFt0qZvkrqAIawOuab8nLGd0lUgFR/DJdKEEA1QLgJttYYJLV40NgZpoRdtN3Qmw/Ib4jAkMSg==}
+  '@sap-ai-sdk/prompt-registry@2.0.0-20250903013053.0':
+    resolution: {integrity: sha512-e+5rTuTHSjRR3XpAIkJ9M7k/K07ld0N4cn4MeqV+zpm1RtEekrQ/kmbNIy+GvSidTnW7h5s1SUwWoNgQQC8OlA==}
 
   '@sap-cloud-sdk/connectivity@4.1.1':
     resolution: {integrity: sha512-vFs5H06JoRm9dIKIfZgYoWl1x0JM9MkkPx4W94oyRGl2HzgOR3LQi7Ev9/3X5idlUgxlISufpCqMI8eWKpDR1A==}
@@ -2417,8 +2389,8 @@ packages:
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  electron-to-chromium@1.5.211:
-    resolution: {integrity: sha512-IGBvimJkotaLzFnwIVgW9/UD/AOJ2tByUmeOrtqBfACSbAw5b1G0XpvdaieKyc7ULmbwXVx+4e4Be8pOPBrYkw==}
+  electron-to-chromium@1.5.213:
+    resolution: {integrity: sha512-xr9eRzSLNa4neDO0xVFrkXu3vyIzG4Ay08dApecw42Z1NbmCt+keEpXdvlYGVe0wtvY5dhW0Ay0lY0IOfsCg0Q==}
 
   emittery@0.13.1:
     resolution: {integrity: sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ==}
@@ -2701,10 +2673,6 @@ packages:
 
   expect@30.0.5:
     resolution: {integrity: sha512-P0te2pt+hHI5qLJkIR+iMvS+lYUZml8rKKsohVHAGY+uClp9XVbdyYNJOIjSRpHVp8s8YqxJCiHUkSYZGr8rtQ==}
-    engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
-
-  expect@30.1.1:
-    resolution: {integrity: sha512-OKe7cdic4qbfWd/CcgwJvvCrNX2KWfuMZee9AfJHL1gTYmvqjBjZG1a2NwfhspBzxzlXwsN75WWpKTYfsJpBxg==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   expect@30.1.2:
@@ -3327,10 +3295,6 @@ packages:
     resolution: {integrity: sha512-1UIqE9PoEKaHcIKvq2vbibrCog4Y8G0zmOxgQUVEiTqwR5hJVMCoDsN1vFvI5JvwD37hjueZ1C4l2FyGnfpE0A==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
-  jest-diff@30.1.1:
-    resolution: {integrity: sha512-LUU2Gx8EhYxpdzTR6BmjL1ifgOAQJQELTHOiPv9KITaKjZvJ9Jmgigx01tuZ49id37LorpGc9dPBPlXTboXScw==}
-    engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
-
   jest-diff@30.1.2:
     resolution: {integrity: sha512-4+prq+9J61mOVXCa4Qp8ZjavdxzrWQXrI80GNxP8f4tkI2syPuPrJgdRPZRrfUTRvIoUwcmNLbqEJy9W800+NQ==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
@@ -3361,10 +3325,6 @@ packages:
 
   jest-matcher-utils@30.0.5:
     resolution: {integrity: sha512-uQgGWt7GOrRLP1P7IwNWwK1WAQbq+m//ZY0yXygyfWp0rJlksMSLQAA4wYQC3b6wl3zfnchyTx+k3HZ5aPtCbQ==}
-    engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
-
-  jest-matcher-utils@30.1.1:
-    resolution: {integrity: sha512-SuH2QVemK48BNTqReti6FtjsMPFsSOD/ZzRxU1TttR7RiRsRSe78d03bb4Cx6D4bQC/80Q8U4VnaaAH9FlbZ9w==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   jest-matcher-utils@30.1.2:
@@ -3410,10 +3370,6 @@ packages:
 
   jest-runtime@30.1.2:
     resolution: {integrity: sha512-zU02si+lAITgyRmVRgJn/AB4cnakq8+o7bP+5Z+N1A4r2mq40zGbmrg3UpYQWCkeim17tx8w1Tnmt6tQ6y9PGA==}
-    engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
-
-  jest-snapshot@30.1.1:
-    resolution: {integrity: sha512-7/iBEzoJqEt2TjkQY+mPLHP8cbPhLReZVkkxjTMzIzoTC4cZufg7HzKo/n9cIkXKj2LG0x3mmBHsZto+7TOmFg==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
   jest-snapshot@30.1.2:
@@ -5850,13 +5806,6 @@ snapshots:
 
   '@jest/diff-sequences@30.0.1': {}
 
-  '@jest/environment@30.1.1':
-    dependencies:
-      '@jest/fake-timers': 30.1.1
-      '@jest/types': 30.0.5
-      '@types/node': 20.19.11
-      jest-mock: 30.0.5
-
   '@jest/environment@30.1.2':
     dependencies:
       '@jest/fake-timers': 30.1.2
@@ -5868,20 +5817,9 @@ snapshots:
     dependencies:
       '@jest/get-type': 30.0.1
 
-  '@jest/expect-utils@30.1.1':
-    dependencies:
-      '@jest/get-type': 30.1.0
-
   '@jest/expect-utils@30.1.2':
     dependencies:
       '@jest/get-type': 30.1.0
-
-  '@jest/expect@30.1.1':
-    dependencies:
-      expect: 30.1.1
-      jest-snapshot: 30.1.1
-    transitivePeerDependencies:
-      - supports-color
 
   '@jest/expect@30.1.2':
     dependencies:
@@ -5889,15 +5827,6 @@ snapshots:
       jest-snapshot: 30.1.2
     transitivePeerDependencies:
       - supports-color
-
-  '@jest/fake-timers@30.1.1':
-    dependencies:
-      '@jest/types': 30.0.5
-      '@sinonjs/fake-timers': 13.0.5
-      '@types/node': 20.19.11
-      jest-message-util: 30.1.0
-      jest-mock: 30.0.5
-      jest-util: 30.0.5
 
   '@jest/fake-timers@30.1.2':
     dependencies:
@@ -5911,15 +5840,6 @@ snapshots:
   '@jest/get-type@30.0.1': {}
 
   '@jest/get-type@30.1.0': {}
-
-  '@jest/globals@30.1.1':
-    dependencies:
-      '@jest/environment': 30.1.1
-      '@jest/expect': 30.1.1
-      '@jest/types': 30.0.5
-      jest-mock: 30.0.5
-    transitivePeerDependencies:
-      - supports-color
 
   '@jest/globals@30.1.2':
     dependencies:
@@ -5971,13 +5891,6 @@ snapshots:
     dependencies:
       '@sinclair/typebox': 0.34.41
 
-  '@jest/snapshot-utils@30.1.1':
-    dependencies:
-      '@jest/types': 30.0.5
-      chalk: 4.1.2
-      graceful-fs: 4.2.11
-      natural-compare: 1.4.0
-
   '@jest/snapshot-utils@30.1.2':
     dependencies:
       '@jest/types': 30.0.5
@@ -6004,26 +5917,6 @@ snapshots:
       graceful-fs: 4.2.11
       jest-haste-map: 30.1.0
       slash: 3.0.0
-
-  '@jest/transform@30.1.1':
-    dependencies:
-      '@babel/core': 7.28.3
-      '@jest/types': 30.0.5
-      '@jridgewell/trace-mapping': 0.3.30
-      babel-plugin-istanbul: 7.0.0
-      chalk: 4.1.2
-      convert-source-map: 2.0.0
-      fast-json-stable-stringify: 2.1.0
-      graceful-fs: 4.2.11
-      jest-haste-map: 30.1.0
-      jest-regex-util: 30.0.1
-      jest-util: 30.0.5
-      micromatch: 4.0.8
-      pirates: 4.0.7
-      slash: 3.0.0
-      write-file-atomic: 5.0.1
-    transitivePeerDependencies:
-      - supports-color
 
   '@jest/transform@30.1.2':
     dependencies:
@@ -6355,16 +6248,16 @@ snapshots:
 
   '@rtsao/scc@1.1.0': {}
 
-  '@sap-ai-sdk/ai-api@2.0.0-20250902013117.0':
+  '@sap-ai-sdk/ai-api@2.0.0-20250903013053.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.0.0-20250902013117.0
+      '@sap-ai-sdk/core': 2.0.0-20250903013053.0
       '@sap-cloud-sdk/connectivity': 4.1.1
       '@sap-cloud-sdk/util': 4.1.1
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/core@2.0.0-20250902013117.0':
+  '@sap-ai-sdk/core@2.0.0-20250903013053.0':
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.1.1
       '@sap-cloud-sdk/http-client': 4.1.1
@@ -6374,17 +6267,17 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/document-grounding@2.0.0-20250902013117.0':
+  '@sap-ai-sdk/document-grounding@2.0.0-20250903013053.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.0.0-20250902013117.0
+      '@sap-ai-sdk/core': 2.0.0-20250903013053.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/foundation-models@2.0.0-20250902013117.0':
+  '@sap-ai-sdk/foundation-models@2.0.0-20250903013053.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.0.0-20250902013117.0
-      '@sap-ai-sdk/core': 2.0.0-20250902013117.0
+      '@sap-ai-sdk/ai-api': 2.0.0-20250903013053.0
+      '@sap-ai-sdk/core': 2.0.0-20250903013053.0
       '@sap-cloud-sdk/connectivity': 4.1.1
       '@sap-cloud-sdk/http-client': 4.1.1
       '@sap-cloud-sdk/util': 4.1.1
@@ -6392,13 +6285,13 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/langchain@2.0.0-20250902013117.0(openai@5.12.2(ws@8.18.3)(zod@3.25.76))':
+  '@sap-ai-sdk/langchain@2.0.0-20250903013053.0(openai@5.12.2(ws@8.18.3)(zod@3.25.76))':
     dependencies:
       '@langchain/core': 0.3.72(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
-      '@sap-ai-sdk/ai-api': 2.0.0-20250902013117.0
-      '@sap-ai-sdk/core': 2.0.0-20250902013117.0
-      '@sap-ai-sdk/foundation-models': 2.0.0-20250902013117.0
-      '@sap-ai-sdk/orchestration': 2.0.0-20250902013117.0
+      '@sap-ai-sdk/ai-api': 2.0.0-20250903013053.0
+      '@sap-ai-sdk/core': 2.0.0-20250903013053.0
+      '@sap-ai-sdk/foundation-models': 2.0.0-20250903013053.0
+      '@sap-ai-sdk/orchestration': 2.0.0-20250903013053.0
       '@sap-cloud-sdk/connectivity': 4.1.1
       '@sap-cloud-sdk/util': 4.1.1
       uuid: 11.1.0
@@ -6410,20 +6303,20 @@ snapshots:
       - openai
       - supports-color
 
-  '@sap-ai-sdk/orchestration@2.0.0-20250902013117.0':
+  '@sap-ai-sdk/orchestration@2.0.0-20250903013053.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.0.0-20250902013117.0
-      '@sap-ai-sdk/core': 2.0.0-20250902013117.0
-      '@sap-ai-sdk/prompt-registry': 2.0.0-20250902013117.0
+      '@sap-ai-sdk/ai-api': 2.0.0-20250903013053.0
+      '@sap-ai-sdk/core': 2.0.0-20250903013053.0
+      '@sap-ai-sdk/prompt-registry': 2.0.0-20250903013053.0
       '@sap-cloud-sdk/util': 4.1.1
       yaml: 2.8.1
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/prompt-registry@2.0.0-20250902013117.0':
+  '@sap-ai-sdk/prompt-registry@2.0.0-20250903013053.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.0.0-20250902013117.0
+      '@sap-ai-sdk/core': 2.0.0-20250903013053.0
       zod: 3.25.76
     transitivePeerDependencies:
       - debug
@@ -7482,7 +7375,7 @@ snapshots:
   browserslist@4.25.4:
     dependencies:
       caniuse-lite: 1.0.30001739
-      electron-to-chromium: 1.5.211
+      electron-to-chromium: 1.5.213
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.25.4)
 
@@ -7820,7 +7713,7 @@ snapshots:
 
   ee-first@1.1.1: {}
 
-  electron-to-chromium@1.5.211: {}
+  electron-to-chromium@1.5.213: {}
 
   emittery@0.13.1: {}
 
@@ -8214,15 +8107,6 @@ snapshots:
       '@jest/get-type': 30.0.1
       jest-matcher-utils: 30.0.5
       jest-message-util: 30.0.5
-      jest-mock: 30.0.5
-      jest-util: 30.0.5
-
-  expect@30.1.1:
-    dependencies:
-      '@jest/expect-utils': 30.1.1
-      '@jest/get-type': 30.1.0
-      jest-matcher-utils: 30.1.1
-      jest-message-util: 30.1.0
       jest-mock: 30.0.5
       jest-util: 30.0.5
 
@@ -8984,13 +8868,6 @@ snapshots:
       chalk: 4.1.2
       pretty-format: 30.0.5
 
-  jest-diff@30.1.1:
-    dependencies:
-      '@jest/diff-sequences': 30.0.1
-      '@jest/get-type': 30.1.0
-      chalk: 4.1.2
-      pretty-format: 30.0.5
-
   jest-diff@30.1.2:
     dependencies:
       '@jest/diff-sequences': 30.0.1
@@ -9047,13 +8924,6 @@ snapshots:
       '@jest/get-type': 30.0.1
       chalk: 4.1.2
       jest-diff: 30.0.5
-      pretty-format: 30.0.5
-
-  jest-matcher-utils@30.1.1:
-    dependencies:
-      '@jest/get-type': 30.1.0
-      chalk: 4.1.2
-      jest-diff: 30.1.1
       pretty-format: 30.0.5
 
   jest-matcher-utils@30.1.2:
@@ -9168,32 +9038,6 @@ snapshots:
       jest-util: 30.0.5
       slash: 3.0.0
       strip-bom: 4.0.0
-    transitivePeerDependencies:
-      - supports-color
-
-  jest-snapshot@30.1.1:
-    dependencies:
-      '@babel/core': 7.28.3
-      '@babel/generator': 7.28.3
-      '@babel/plugin-syntax-jsx': 7.27.1(@babel/core@7.28.3)
-      '@babel/plugin-syntax-typescript': 7.27.1(@babel/core@7.28.3)
-      '@babel/types': 7.28.2
-      '@jest/expect-utils': 30.1.1
-      '@jest/get-type': 30.1.0
-      '@jest/snapshot-utils': 30.1.1
-      '@jest/transform': 30.1.1
-      '@jest/types': 30.0.5
-      babel-preset-current-node-syntax: 1.2.0(@babel/core@7.28.3)
-      chalk: 4.1.2
-      expect: 30.1.1
-      graceful-fs: 4.2.11
-      jest-diff: 30.1.1
-      jest-matcher-utils: 30.1.1
-      jest-message-util: 30.1.0
-      jest-util: 30.0.5
-      pretty-format: 30.0.5
-      semver: 7.7.2
-      synckit: 0.11.11
     transitivePeerDependencies:
       - supports-color
 
