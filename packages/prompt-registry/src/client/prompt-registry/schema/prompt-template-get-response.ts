@@ -21,5 +21,6 @@ export type PromptTemplateGetResponse = {
   creationTimestamp?: string;
   managedBy?: string;
   isVersionHead?: boolean;
+  resourceGroupId?: string;
   spec?: PromptTemplateSpec;
 } & Record<string, any>;
