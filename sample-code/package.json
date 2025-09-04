@@ -25,7 +25,7 @@
     "@modelcontextprotocol/sdk": "^1.17.5",
     "@langchain/langgraph": "^0.4.9",
     "langchain": "0.3.32",
-    "@langchain/core": "0.3.73",
+    "@langchain/core": "0.3.74",
     "@langchain/textsplitters": "0.1.0",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/document-grounding": "workspace:^",
