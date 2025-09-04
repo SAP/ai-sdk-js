@@ -10,9 +10,26 @@ import { z as zod } from 'zod';
 /**
  * Create or update a prompt template.
  */
+export const registryControllerPromptControllerCreateUpdatePromptTemplateHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use')
+  });
+
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodyNameMax = 120;
+
+export const registryControllerPromptControllerCreateUpdatePromptTemplateBodyNameRegExp =
+  new RegExp('^[a-zA-Z0-9_-]+$');
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodyVersionMax = 10;
+
+export const registryControllerPromptControllerCreateUpdatePromptTemplateBodyVersionRegExp =
+  new RegExp('^[a-zA-Z0-9._-]+$');
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodyScenarioMax = 120;
+
+export const registryControllerPromptControllerCreateUpdatePromptTemplateBodyScenarioRegExp =
+  new RegExp('^[a-zA-Z0-9_-]+$');
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecTemplateItemContentItemImageUrlDetailDefault =
   'auto';
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatJsonSchemaNameMax = 64;
@@ -32,16 +49,25 @@ export const registryControllerPromptControllerCreateUpdatePromptTemplateBody =
       .string()
       .max(
         registryControllerPromptControllerCreateUpdatePromptTemplateBodyNameMax
+      )
+      .regex(
+        registryControllerPromptControllerCreateUpdatePromptTemplateBodyNameRegExp
       ),
     version: zod
       .string()
       .max(
         registryControllerPromptControllerCreateUpdatePromptTemplateBodyVersionMax
+      )
+      .regex(
+        registryControllerPromptControllerCreateUpdatePromptTemplateBodyVersionRegExp
       ),
     scenario: zod
       .string()
       .max(
         registryControllerPromptControllerCreateUpdatePromptTemplateBodyScenarioMax
+      )
+      .regex(
+        registryControllerPromptControllerCreateUpdatePromptTemplateBodyScenarioRegExp
       ),
     spec: zod.object({
       template: zod.array(
@@ -213,6 +239,14 @@ export const registryControllerPromptControllerListPromptTemplatesQueryParams =
     includeSpec: zod.boolean().optional()
   });
 
+export const registryControllerPromptControllerListPromptTemplatesHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use')
+  });
+
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecTemplateItemContentItemImageUrlDetailDefault =
   'auto';
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatJsonSchemaNameMax = 64;
@@ -238,6 +272,7 @@ export const registryControllerPromptControllerListPromptTemplatesResponse =
         creationTimestamp: zod.string().optional(),
         managedBy: zod.string().optional(),
         isVersionHead: zod.boolean().optional(),
+        resourceGroupId: zod.string().optional(),
         spec: zod
           .object({
             template: zod.array(
@@ -395,6 +430,14 @@ export const registryControllerPromptControllerListPromptTemplateHistoryParams =
     name: zod.string()
   });
 
+export const registryControllerPromptControllerListPromptTemplateHistoryHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use')
+  });
+
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecTemplateItemContentItemImageUrlDetailDefault =
   'auto';
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatJsonSchemaNameMax = 64;
@@ -420,6 +463,7 @@ export const registryControllerPromptControllerListPromptTemplateHistoryResponse
         creationTimestamp: zod.string().optional(),
         managedBy: zod.string().optional(),
         isVersionHead: zod.boolean().optional(),
+        resourceGroupId: zod.string().optional(),
         spec: zod
           .object({
             template: zod.array(
@@ -575,6 +619,14 @@ export const registryControllerPromptControllerGetPromptTemplateByUuidParams =
     promptTemplateId: zod.string().uuid()
   });
 
+export const registryControllerPromptControllerGetPromptTemplateByUuidHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use')
+  });
+
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecTemplateItemContentItemImageUrlDetailDefault =
   'auto';
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatJsonSchemaNameMax = 64;
@@ -597,6 +649,7 @@ export const registryControllerPromptControllerGetPromptTemplateByUuidResponse =
     creationTimestamp: zod.string().optional(),
     managedBy: zod.string().optional(),
     isVersionHead: zod.boolean().optional(),
+    resourceGroupId: zod.string().optional(),
     spec: zod
       .object({
         template: zod.array(
@@ -748,6 +801,14 @@ export const registryControllerPromptControllerDeletePromptTemplateParams =
     promptTemplateId: zod.string().uuid()
   });
 
+export const registryControllerPromptControllerDeletePromptTemplateHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use')
+  });
+
 export const registryControllerPromptControllerDeletePromptTemplateResponse =
   zod.object({
     message: zod.string()
@@ -756,6 +817,14 @@ export const registryControllerPromptControllerDeletePromptTemplateResponse =
 /**
  * Import prompt template.
  */
+export const registryControllerPromptControllerImportPromptTemplateHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use')
+  });
+
 export const registryControllerPromptControllerImportPromptTemplateBody =
   zod.object({
     file: zod.instanceof(File).optional()
@@ -778,6 +847,14 @@ export const registryControllerPromptControllerExportPromptTemplateParams =
     promptTemplateId: zod.string().uuid()
   });
 
+export const registryControllerPromptControllerExportPromptTemplateHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use')
+  });
+
 /**
  * Parse prompt template by ID.
  */
@@ -791,6 +868,14 @@ export const registryControllerPromptControllerParsePromptTemplateByIdQueryMetad
 export const registryControllerPromptControllerParsePromptTemplateByIdQueryParams =
   zod.object({
     metadata: zod.boolean().optional()
+  });
+
+export const registryControllerPromptControllerParsePromptTemplateByIdHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use')
   });
 
 export const registryControllerPromptControllerParsePromptTemplateByIdBody =
@@ -856,6 +941,7 @@ export const registryControllerPromptControllerParsePromptTemplateByIdResponse =
         creationTimestamp: zod.string().optional(),
         managedBy: zod.string().optional(),
         isVersionHead: zod.boolean().optional(),
+        resourceGroupId: zod.string().optional(),
         spec: zod
           .object({
             template: zod.array(
@@ -1020,6 +1106,14 @@ export const registryControllerPromptControllerParsePromptTemplateByNameVersionQ
     metadata: zod.boolean().optional()
   });
 
+export const registryControllerPromptControllerParsePromptTemplateByNameVersionHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use')
+  });
+
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionBody =
   zod.object({
     inputParams: zod.object({}).optional()
@@ -1083,6 +1177,7 @@ export const registryControllerPromptControllerParsePromptTemplateByNameVersionR
         creationTimestamp: zod.string().optional(),
         managedBy: zod.string().optional(),
         isVersionHead: zod.boolean().optional(),
+        resourceGroupId: zod.string().optional(),
         spec: zod
           .object({
             template: zod.array(
