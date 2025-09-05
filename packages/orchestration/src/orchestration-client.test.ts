@@ -1,6 +1,7 @@
 import nock from 'nock';
 import { jest } from '@jest/globals';
 import { createLogger } from '@sap-cloud-sdk/util';
+import { resolveDeployment } from '@sap-ai-sdk/ai-api/internal.js';
 import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
@@ -20,16 +21,12 @@ import {
   buildAzureContentSafetyFilter,
   buildLlamaGuard38BFilter
 } from './util/index.js';
+import { getOrchestrationDeploymentId } from './deployment-resolver.js';
 import type { CompletionPostResponse } from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
   ChatCompletionRequest
 } from './orchestration-types.js';
-import { getOrchestrationDeploymentId } from './deployment-resolver.js';
-import { resolveDeployment } from '@sap-ai-sdk/ai-api/internal.js';
-
-
-import { de } from 'zod/v4/locales';
 
 const defaultJsonConfig = `{
   "module_configurations": {
