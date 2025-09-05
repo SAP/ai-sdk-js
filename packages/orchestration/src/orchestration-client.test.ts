@@ -974,15 +974,7 @@ describe('orchestration service client', () => {
 
   describe('OrchestrationClient deploymentId behavior', () => {
     it('does not call resolveDeployment when deploymentId is provided', async () => {
-      const config = {
-        promptTemplating: {
-          model: { name: 'gpt-4o' }
-        }
-      };
-
       const deploymentConfig = { deploymentId: 'test-deployment-id' };
-
-      const client = new OrchestrationClient(config, deploymentConfig);
 
       // Spy on the resolveDeployment function
       const spy = jest.spyOn({ resolveDeployment }, 'resolveDeployment');
