@@ -46,6 +46,23 @@ Get all deployments in resource group `default`.
 Get all deployments targeting a custom destination.
 Provide a destination when calling the `execute()` method.
 
+The guide to create a custom tutorial: https://sap.github.io/cloud-sdk/docs/js/features/connectivity/destinations#local-environment-variable
+
+To create a custom destination, the following template can be used in the `.env` file:
+
+```json
+destinations='[{
+  "name": "<destination name>",
+  "url": "<destination url>",
+  "authentication": "OAuth2ClientCredentials",
+  "authTokens": [{
+    "http_header": {
+      "key": "Authorization",
+      "value": "Bearer <your token>" }
+  }]
+}]'
+```
+
 #### Create a Deployment
 
 `POST /ai-api/deployment/create`
@@ -102,6 +119,8 @@ Get chat completion response.
 
 Get chat completion response targeting a custom destination.
 Provide a destination when initializing the `AzureOpenAiChatClient`.
+
+To reference a custom destination check out this: [Jump to "Get all Deployments with Custom Destination"](#get-all-deployments-with-custom-destination)
 
 #### Chat Completion Streaming
 
