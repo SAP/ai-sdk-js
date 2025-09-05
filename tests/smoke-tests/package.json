@@ -15,9 +15,9 @@
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
-    "@langchain/langgraph": "^0.4.8",
-    "langchain": "0.3.31",
-    "@langchain/core": "0.3.72",
+    "@langchain/langgraph": "^0.4.9",
+    "langchain": "0.3.32",
+    "@langchain/core": "0.3.74",
     "@langchain/textsplitters": "0.1.0",
     "@sap-ai-sdk/ai-api": "next",
     "@sap-ai-sdk/document-grounding": "next",
@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
-    "dotenv": "^17.2.1",
+    "dotenv": "^17.2.2",
     "dotenv-cli": "^9.0.0"
   },
   "engines": {
