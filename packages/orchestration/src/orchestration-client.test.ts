@@ -25,6 +25,11 @@ import type {
   OrchestrationModuleConfig,
   ChatCompletionRequest
 } from './orchestration-types.js';
+import { getOrchestrationDeploymentId } from './deployment-resolver.js';
+import { resolveDeployment } from '@sap-ai-sdk/ai-api/internal.js';
+
+
+import { de } from 'zod/v4/locales';
 
 const defaultJsonConfig = `{
   "module_configurations": {
@@ -967,6 +972,31 @@ describe('orchestration service client', () => {
       await expect(
         client.stream(undefined, controller.signal)
       ).rejects.toThrow();
+    });
+  });
+
+  describe('OrchestrationClient deploymentId behavior', () => {
+    it('does not call resolveDeployment when deploymentId is provided', async () => {
+      const config = {
+        promptTemplating: {
+          model: { name: 'gpt-4o' }
+        }
+      };
+
+      const deploymentConfig = { deploymentId: 'test-deployment-id' };
+
+      const client = new OrchestrationClient(config, deploymentConfig);
+
+      // Spy on the resolveDeployment function
+      const spy = jest.spyOn({ resolveDeployment }, 'resolveDeployment');
+
+      // Call getOrchestrationDeploymentId
+      const result = await getOrchestrationDeploymentId(deploymentConfig);
+
+      expect(result).toBe('test-deployment-id');
+      expect(spy).not.toHaveBeenCalled();
+
+      spy.mockRestore();
     });
   });
 });
