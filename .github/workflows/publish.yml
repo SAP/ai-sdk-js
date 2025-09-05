@@ -7,7 +7,7 @@
 
 # env:
 #   DOCS_REPO: SAP/ai-sdk
-#   NODE_VERSION: 20
+#   NODE_VERSION: ${{ vars.DEFAULT_NODE_VERSION }}
 
 # jobs:
 #   check-release-notes-pr:

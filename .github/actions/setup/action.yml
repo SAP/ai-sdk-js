@@ -3,7 +3,7 @@ description: Setup repo, node and pnpm.
 inputs:
   node-version:
     description: 'Node.js version'
-    default: '20'
+    default: ${{ vars.DEFAULT_NODE_VERSION }}
   registry-url:
     description: 'The registry URL to use for npm packages'
     default: 'https://registry.npmjs.org'
