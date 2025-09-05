@@ -38,6 +38,22 @@ expectType<Promise<OrchestrationResponse>>(
   }).chatCompletion()
 );
 
+/**
+ * Chat Completion with deploymentId.
+ */
+expectType<Promise<OrchestrationResponse>>(
+  new OrchestrationClient(
+    {
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o'
+        }
+      }
+    },
+    { deploymentId: 'deploymentId' } as any
+  ).chatCompletion()
+);
+
 expectType<CompletionPostResponse>(
   (
     await new OrchestrationClient({
