@@ -10,12 +10,30 @@ import * as zod from 'zod';
 /**
  * Create or update a prompt template.
  */
+export const registryControllerPromptControllerCreateUpdatePromptTemplateHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use'),
+    'AI-Resource-Group-Scope': zod
+      .enum(['true', 'True', 'false', 'False'])
+      .optional()
+      .describe('Specify whether the resource group scope is to be used')
+  });
+
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodyNameMax = 120;
 
+export const registryControllerPromptControllerCreateUpdatePromptTemplateBodyNameRegExp =
+  new RegExp('^[a-zA-Z0-9_-]+$');
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodyVersionMax = 10;
 
+export const registryControllerPromptControllerCreateUpdatePromptTemplateBodyVersionRegExp =
+  new RegExp('^[a-zA-Z0-9._-]+$');
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodyScenarioMax = 120;
 
+export const registryControllerPromptControllerCreateUpdatePromptTemplateBodyScenarioRegExp =
+  new RegExp('^[a-zA-Z0-9_-]+$');
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecTemplateItemContentItemImageUrlDetailDefault =
   'auto';
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatJsonSchemaNameMax = 64;
@@ -35,16 +53,25 @@ export const registryControllerPromptControllerCreateUpdatePromptTemplateBody =
       .string()
       .max(
         registryControllerPromptControllerCreateUpdatePromptTemplateBodyNameMax
+      )
+      .regex(
+        registryControllerPromptControllerCreateUpdatePromptTemplateBodyNameRegExp
       ),
     version: zod
       .string()
       .max(
         registryControllerPromptControllerCreateUpdatePromptTemplateBodyVersionMax
+      )
+      .regex(
+        registryControllerPromptControllerCreateUpdatePromptTemplateBodyVersionRegExp
       ),
     scenario: zod
       .string()
       .max(
         registryControllerPromptControllerCreateUpdatePromptTemplateBodyScenarioMax
+      )
+      .regex(
+        registryControllerPromptControllerCreateUpdatePromptTemplateBodyScenarioRegExp
       ),
     spec: zod.object({
       template: zod.array(
@@ -216,6 +243,18 @@ export const registryControllerPromptControllerListPromptTemplatesQueryParams =
     includeSpec: zod.boolean().optional()
   });
 
+export const registryControllerPromptControllerListPromptTemplatesHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use'),
+    'AI-Resource-Group-Scope': zod
+      .enum(['true', 'True', 'false', 'False'])
+      .optional()
+      .describe('Specify whether the resource group scope is to be used')
+  });
+
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecTemplateItemContentItemImageUrlDetailDefault =
   'auto';
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatJsonSchemaNameMax = 64;
@@ -241,6 +280,7 @@ export const registryControllerPromptControllerListPromptTemplatesResponse =
         creationTimestamp: zod.string().optional(),
         managedBy: zod.string().optional(),
         isVersionHead: zod.boolean().optional(),
+        resourceGroupId: zod.string().optional(),
         spec: zod
           .object({
             template: zod.array(
@@ -398,6 +438,18 @@ export const registryControllerPromptControllerListPromptTemplateHistoryParams =
     name: zod.string()
   });
 
+export const registryControllerPromptControllerListPromptTemplateHistoryHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use'),
+    'AI-Resource-Group-Scope': zod
+      .enum(['true', 'True', 'false', 'False'])
+      .optional()
+      .describe('Specify whether the resource group scope is to be used')
+  });
+
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecTemplateItemContentItemImageUrlDetailDefault =
   'auto';
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatJsonSchemaNameMax = 64;
@@ -423,6 +475,7 @@ export const registryControllerPromptControllerListPromptTemplateHistoryResponse
         creationTimestamp: zod.string().optional(),
         managedBy: zod.string().optional(),
         isVersionHead: zod.boolean().optional(),
+        resourceGroupId: zod.string().optional(),
         spec: zod
           .object({
             template: zod.array(
@@ -578,6 +631,18 @@ export const registryControllerPromptControllerGetPromptTemplateByUuidParams =
     promptTemplateId: zod.string().uuid()
   });
 
+export const registryControllerPromptControllerGetPromptTemplateByUuidHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use'),
+    'AI-Resource-Group-Scope': zod
+      .enum(['true', 'True', 'false', 'False'])
+      .optional()
+      .describe('Specify whether the resource group scope is to be used')
+  });
+
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecTemplateItemContentItemImageUrlDetailDefault =
   'auto';
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatJsonSchemaNameMax = 64;
@@ -600,6 +665,7 @@ export const registryControllerPromptControllerGetPromptTemplateByUuidResponse =
     creationTimestamp: zod.string().optional(),
     managedBy: zod.string().optional(),
     isVersionHead: zod.boolean().optional(),
+    resourceGroupId: zod.string().optional(),
     spec: zod
       .object({
         template: zod.array(
@@ -751,6 +817,18 @@ export const registryControllerPromptControllerDeletePromptTemplateParams =
     promptTemplateId: zod.string().uuid()
   });
 
+export const registryControllerPromptControllerDeletePromptTemplateHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use'),
+    'AI-Resource-Group-Scope': zod
+      .enum(['true', 'True', 'false', 'False'])
+      .optional()
+      .describe('Specify whether the resource group scope is to be used')
+  });
+
 export const registryControllerPromptControllerDeletePromptTemplateResponse =
   zod.object({
     message: zod.string()
@@ -759,6 +837,18 @@ export const registryControllerPromptControllerDeletePromptTemplateResponse =
 /**
  * Import prompt template.
  */
+export const registryControllerPromptControllerImportPromptTemplateHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use'),
+    'AI-Resource-Group-Scope': zod
+      .enum(['true', 'True', 'false', 'False'])
+      .optional()
+      .describe('Specify whether the resource group scope is to be used')
+  });
+
 export const registryControllerPromptControllerImportPromptTemplateBody =
   zod.object({
     file: zod.instanceof(File).optional()
@@ -781,6 +871,18 @@ export const registryControllerPromptControllerExportPromptTemplateParams =
     promptTemplateId: zod.string().uuid()
   });
 
+export const registryControllerPromptControllerExportPromptTemplateHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use'),
+    'AI-Resource-Group-Scope': zod
+      .enum(['true', 'True', 'false', 'False'])
+      .optional()
+      .describe('Specify whether the resource group scope is to be used')
+  });
+
 /**
  * Parse prompt template by ID.
  */
@@ -794,6 +896,18 @@ export const registryControllerPromptControllerParsePromptTemplateByIdQueryMetad
 export const registryControllerPromptControllerParsePromptTemplateByIdQueryParams =
   zod.object({
     metadata: zod.boolean().optional()
+  });
+
+export const registryControllerPromptControllerParsePromptTemplateByIdHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use'),
+    'AI-Resource-Group-Scope': zod
+      .enum(['true', 'True', 'false', 'False'])
+      .optional()
+      .describe('Specify whether the resource group scope is to be used')
   });
 
 export const registryControllerPromptControllerParsePromptTemplateByIdBody =
@@ -859,6 +973,7 @@ export const registryControllerPromptControllerParsePromptTemplateByIdResponse =
         creationTimestamp: zod.string().optional(),
         managedBy: zod.string().optional(),
         isVersionHead: zod.boolean().optional(),
+        resourceGroupId: zod.string().optional(),
         spec: zod
           .object({
             template: zod.array(
@@ -1023,6 +1138,18 @@ export const registryControllerPromptControllerParsePromptTemplateByNameVersionQ
     metadata: zod.boolean().optional()
   });
 
+export const registryControllerPromptControllerParsePromptTemplateByNameVersionHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use'),
+    'AI-Resource-Group-Scope': zod
+      .enum(['true', 'True', 'false', 'False'])
+      .optional()
+      .describe('Specify whether the resource group scope is to be used')
+  });
+
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionBody =
   zod.object({
     inputParams: zod.object({}).optional()
@@ -1086,6 +1213,7 @@ export const registryControllerPromptControllerParsePromptTemplateByNameVersionR
         creationTimestamp: zod.string().optional(),
         managedBy: zod.string().optional(),
         isVersionHead: zod.boolean().optional(),
+        resourceGroupId: zod.string().optional(),
         spec: zod
           .object({
             template: zod.array(
@@ -1231,4 +1359,4367 @@ export const registryControllerPromptControllerParsePromptTemplateByNameVersionR
           .optional()
       })
       .optional()
+  });
+
+/**
+ * Create or update an orchestration config.
+ */
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use')
+  });
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodyNameMax = 120;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodyNameRegExp =
+  new RegExp('^[a-zA-Z0-9_-]+$');
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodyVersionMax = 10;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodyVersionRegExp =
+  new RegExp('^[a-zA-Z0-9._-]+$');
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodyScenarioMax = 120;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodyScenarioRegExp =
+  new RegExp('^[a-zA-Z0-9_-]+$');
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingPromptTemplateItemContentItemImageUrlDetailDefault =
+  'auto';
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingPromptResponseFormatJsonSchemaNameMax = 64;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingPromptResponseFormatJsonSchemaNameRegExp =
+  new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingPromptResponseFormatJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingPromptToolsItemFunctionNameMax = 64;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingPromptToolsItemFunctionNameRegExp =
+  new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingPromptToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingModelVersionDefault =
+  'latest';
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingModelTimeoutMax = 600;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingModelMaxRetriesDefault = 2;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingModelMaxRetriesMin = 0;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingModelMaxRetriesMax = 5;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesFilteringInputFiltersItemConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesFilteringOutputStreamOptionsOverlapDefault = 0;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesFilteringOutputStreamOptionsOverlapMin = 0;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesFilteringOutputStreamOptionsOverlapMax = 10000;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesMaskingProvidersItemMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesMaskingMaskingProvidersItemMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesGroundingConfigFiltersItemSearchConfigMaxChunkCountMin = 0;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesGroundingConfigFiltersItemSearchConfigMaxDocumentCountMin = 0;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesGroundingConfigFiltersItemDataRepositoriesDefault =
+  ['*'];
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesGroundingConfigFiltersItemDataRepositoryMetadataItemKeyMax = 1024;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesGroundingConfigFiltersItemDataRepositoryMetadataItemValueItemMax = 1024;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesGroundingConfigFiltersItemDocumentMetadataItemKeyMax = 1024;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesGroundingConfigFiltersItemDocumentMetadataItemValueItemMax = 1024;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesGroundingConfigFiltersItemChunkMetadataItemKeyMax = 1024;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesGroundingConfigFiltersItemChunkMetadataItemValueItemMax = 1024;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamChunkSizeDefault = 100;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamChunkSizeMax = 10000;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBody =
+  zod.object({
+    name: zod
+      .string()
+      .max(
+        registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodyNameMax
+      )
+      .regex(
+        registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodyNameRegExp
+      ),
+    version: zod
+      .string()
+      .max(
+        registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodyVersionMax
+      )
+      .regex(
+        registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodyVersionRegExp
+      ),
+    scenario: zod
+      .string()
+      .max(
+        registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodyScenarioMax
+      )
+      .regex(
+        registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodyScenarioRegExp
+      ),
+    spec: zod.object({
+      modules: zod.object({
+        prompt_templating: zod.object({
+          prompt: zod
+            .union([
+              zod.object({
+                template: zod
+                  .array(
+                    zod.union([
+                      zod.object({
+                        role: zod.enum(['system']),
+                        content: zod.union([
+                          zod.string(),
+                          zod
+                            .array(
+                              zod.object({
+                                type: zod.enum(['text']),
+                                text: zod.string()
+                              })
+                            )
+                            .min(1)
+                        ])
+                      }),
+                      zod.object({
+                        content: zod.union([
+                          zod.string(),
+                          zod
+                            .array(
+                              zod.object({
+                                type: zod.enum(['text', 'image_url']),
+                                text: zod.string().optional(),
+                                image_url: zod
+                                  .object({
+                                    url: zod.string(),
+                                    detail: zod
+                                      .string()
+                                      .default(
+                                        registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingPromptTemplateItemContentItemImageUrlDetailDefault
+                                      )
+                                  })
+                                  .optional()
+                              })
+                            )
+                            .min(1)
+                        ]),
+                        role: zod.enum(['user'])
+                      }),
+                      zod.object({
+                        role: zod.enum(['assistant']),
+                        content: zod
+                          .union([
+                            zod.string(),
+                            zod
+                              .array(
+                                zod.object({
+                                  type: zod.enum(['text']),
+                                  text: zod.string()
+                                })
+                              )
+                              .min(1)
+                          ])
+                          .optional(),
+                        refusal: zod.string().optional(),
+                        tool_calls: zod
+                          .array(
+                            zod.object({
+                              id: zod
+                                .string()
+                                .describe('The ID of the tool call.'),
+                              type: zod
+                                .enum(['function'])
+                                .describe(
+                                  'The type of the tool. Currently, only `function` is supported.'
+                                ),
+                              function: zod
+                                .object({
+                                  name: zod
+                                    .string()
+                                    .describe(
+                                      'The name of the function to call.'
+                                    ),
+                                  arguments: zod
+                                    .string()
+                                    .describe(
+                                      'The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.'
+                                    )
+                                })
+                                .describe('The function that the model called.')
+                            })
+                          )
+                          .optional()
+                          .describe(
+                            'The tool calls generated by the model, such as function calls.'
+                          )
+                      }),
+                      zod.object({
+                        role: zod.enum(['tool']),
+                        tool_call_id: zod.string(),
+                        content: zod.union([
+                          zod.string(),
+                          zod
+                            .array(
+                              zod.object({
+                                type: zod.enum(['text']),
+                                text: zod.string()
+                              })
+                            )
+                            .min(1)
+                        ])
+                      }),
+                      zod.object({
+                        role: zod.enum(['developer']),
+                        content: zod.union([
+                          zod.string(),
+                          zod
+                            .array(
+                              zod.object({
+                                type: zod.enum(['text']),
+                                text: zod.string()
+                              })
+                            )
+                            .min(1)
+                        ])
+                      })
+                    ])
+                  )
+                  .min(1)
+                  .describe(
+                    'A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'
+                  ),
+                defaults: zod
+                  .record(zod.string(), zod.string())
+                  .optional()
+                  .describe(
+                    'Optional default values for the template. If a parameter has no default it is required.'
+                  ),
+                response_format: zod
+                  .union([
+                    zod.object({
+                      type: zod
+                        .enum(['text'])
+                        .describe(
+                          'The type of response format being defined: `text`'
+                        )
+                    }),
+                    zod.object({
+                      type: zod
+                        .enum(['json_object'])
+                        .describe(
+                          'The type of response format being defined: `json_object`'
+                        )
+                    }),
+                    zod.object({
+                      type: zod
+                        .enum(['json_schema'])
+                        .describe(
+                          'The type of response format being defined: `json_schema`'
+                        ),
+                      json_schema: zod.object({
+                        description: zod
+                          .string()
+                          .optional()
+                          .describe(
+                            'A description of what the response format is for, used by the model to determine how to respond in the format.'
+                          ),
+                        name: zod
+                          .string()
+                          .max(
+                            registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingPromptResponseFormatJsonSchemaNameMax
+                          )
+                          .regex(
+                            registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingPromptResponseFormatJsonSchemaNameRegExp
+                          )
+                          .describe(
+                            'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
+                          ),
+                        schema: zod
+                          .record(zod.string(), zod.any())
+                          .optional()
+                          .describe(
+                            'The schema for the response format, described as a JSON Schema object.'
+                          ),
+                        strict: zod
+                          .boolean()
+                          .nullish()
+                          .describe(
+                            'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).'
+                          )
+                      })
+                    })
+                  ])
+                  .optional()
+                  .describe(
+                    'Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'
+                  ),
+                tools: zod
+                  .array(
+                    zod.object({
+                      type: zod
+                        .enum(['function'])
+                        .describe(
+                          'The type of the tool. Currently, only `function` is supported.'
+                        ),
+                      function: zod.object({
+                        description: zod
+                          .string()
+                          .optional()
+                          .describe(
+                            'A description of what the function does, used by the model to choose when and how to call the function.'
+                          ),
+                        name: zod
+                          .string()
+                          .max(
+                            registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingPromptToolsItemFunctionNameMax
+                          )
+                          .regex(
+                            registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingPromptToolsItemFunctionNameRegExp
+                          )
+                          .describe(
+                            'The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
+                          ),
+                        parameters: zod
+                          .record(zod.string(), zod.any())
+                          .optional()
+                          .describe(
+                            'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
+                          ),
+                        strict: zod
+                          .boolean()
+                          .nullish()
+                          .describe(
+                            'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'
+                          )
+                      })
+                    })
+                  )
+                  .optional()
+                  .describe(
+                    'A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n'
+                  )
+              }),
+              zod.object({
+                template_ref: zod
+                  .union([
+                    zod.object({
+                      id: zod
+                        .string()
+                        .describe('ID of the template in prompt registry')
+                    }),
+                    zod.object({
+                      scenario: zod.string().describe('Scenario name'),
+                      name: zod.string().describe('Name of the template'),
+                      version: zod.string().describe('Version of the template')
+                    })
+                  ])
+                  .describe(
+                    'Reference to a template in the prompt registry by ID or by scenario, name and version'
+                  )
+              })
+            ])
+            .describe(
+              'The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.\n'
+            ),
+          model: zod
+            .object({
+              name: zod
+                .string()
+                .describe('Name of the model as in LLM Access configuration'),
+              version: zod
+                .string()
+                .default(
+                  registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingModelVersionDefault
+                )
+                .describe('Version of the model to be used'),
+              params: zod
+                .record(zod.string(), zod.any())
+                .optional()
+                .describe(
+                  'Additional parameters for the model. Default values are used for mandatory parameters.'
+                ),
+              timeout: zod
+                .number()
+                .min(1)
+                .max(
+                  registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingModelTimeoutMax
+                )
+                .default(
+                  registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingModelTimeoutDefault
+                )
+                .describe(
+                  'Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'
+                ),
+              max_retries: zod
+                .number()
+                .min(
+                  registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingModelMaxRetriesMin
+                )
+                .max(
+                  registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingModelMaxRetriesMax
+                )
+                .default(
+                  registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesPromptTemplatingModelMaxRetriesDefault
+                )
+                .describe(
+                  'Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.'
+                )
+            })
+            .describe(
+              'The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n'
+            )
+        }),
+        filtering: zod
+          .object({
+            input: zod
+              .object({
+                filters: zod
+                  .array(
+                    zod.union([
+                      zod.object({
+                        type: zod
+                          .enum(['azure_content_safety'])
+                          .describe('Name of the filter provider type'),
+                        config: zod
+                          .object({
+                            hate: zod
+                              .union([
+                                zod.literal(0),
+                                zod.literal(2),
+                                zod.literal(4),
+                                zod.literal(6)
+                              ])
+                              .optional(),
+                            self_harm: zod
+                              .union([
+                                zod.literal(0),
+                                zod.literal(2),
+                                zod.literal(4),
+                                zod.literal(6)
+                              ])
+                              .optional(),
+                            sexual: zod
+                              .union([
+                                zod.literal(0),
+                                zod.literal(2),
+                                zod.literal(4),
+                                zod.literal(6)
+                              ])
+                              .optional(),
+                            violence: zod
+                              .union([
+                                zod.literal(0),
+                                zod.literal(2),
+                                zod.literal(4),
+                                zod.literal(6)
+                              ])
+                              .optional(),
+                            prompt_shield: zod
+                              .boolean()
+                              .optional()
+                              .describe('A flag to use prompt shield')
+                          })
+                          .optional()
+                          .describe(
+                            'Filter configuration for Azure Content Safety'
+                          )
+                      }),
+                      zod.object({
+                        type: zod
+                          .enum(['llama_guard_3_8b'])
+                          .describe('Name of the filter provider type'),
+                        config: zod
+                          .object({
+                            violent_crimes: zod.boolean().optional(),
+                            non_violent_crimes: zod.boolean().optional(),
+                            sex_crimes: zod.boolean().optional(),
+                            child_exploitation: zod.boolean().optional(),
+                            defamation: zod.boolean().optional(),
+                            specialized_advice: zod.boolean().optional(),
+                            privacy: zod.boolean().optional(),
+                            intellectual_property: zod.boolean().optional(),
+                            indiscriminate_weapons: zod.boolean().optional(),
+                            hate: zod.boolean().optional(),
+                            self_harm: zod.boolean().optional(),
+                            sexual_content: zod.boolean().optional(),
+                            elections: zod.boolean().optional(),
+                            code_interpreter_abuse: zod.boolean().optional()
+                          })
+                          .describe('Filter configuration for Llama Guard 3 8B')
+                      })
+                    ])
+                  )
+                  .min(1)
+                  .describe(
+                    'Configuration for content filtering services that should be used for the given filtering step (input filtering).'
+                  )
+              })
+              .optional()
+              .describe('List of provider type and filters'),
+            output: zod
+              .object({
+                filters: zod
+                  .array(
+                    zod.union([
+                      zod.object({
+                        type: zod
+                          .enum(['azure_content_safety'])
+                          .describe('Name of the filter provider type'),
+                        config: zod
+                          .object({
+                            hate: zod
+                              .union([
+                                zod.literal(0),
+                                zod.literal(2),
+                                zod.literal(4),
+                                zod.literal(6)
+                              ])
+                              .optional(),
+                            self_harm: zod
+                              .union([
+                                zod.literal(0),
+                                zod.literal(2),
+                                zod.literal(4),
+                                zod.literal(6)
+                              ])
+                              .optional(),
+                            sexual: zod
+                              .union([
+                                zod.literal(0),
+                                zod.literal(2),
+                                zod.literal(4),
+                                zod.literal(6)
+                              ])
+                              .optional(),
+                            violence: zod
+                              .union([
+                                zod.literal(0),
+                                zod.literal(2),
+                                zod.literal(4),
+                                zod.literal(6)
+                              ])
+                              .optional()
+                          })
+                          .optional()
+                          .describe(
+                            'Filter configuration for Azure Content Safety'
+                          )
+                      }),
+                      zod.object({
+                        type: zod
+                          .enum(['llama_guard_3_8b'])
+                          .describe('Name of the filter provider type'),
+                        config: zod
+                          .object({
+                            violent_crimes: zod.boolean().optional(),
+                            non_violent_crimes: zod.boolean().optional(),
+                            sex_crimes: zod.boolean().optional(),
+                            child_exploitation: zod.boolean().optional(),
+                            defamation: zod.boolean().optional(),
+                            specialized_advice: zod.boolean().optional(),
+                            privacy: zod.boolean().optional(),
+                            intellectual_property: zod.boolean().optional(),
+                            indiscriminate_weapons: zod.boolean().optional(),
+                            hate: zod.boolean().optional(),
+                            self_harm: zod.boolean().optional(),
+                            sexual_content: zod.boolean().optional(),
+                            elections: zod.boolean().optional(),
+                            code_interpreter_abuse: zod.boolean().optional()
+                          })
+                          .describe('Filter configuration for Llama Guard 3 8B')
+                      })
+                    ])
+                  )
+                  .min(1)
+                  .describe(
+                    'Configuration for content filtering services that should be used for the given filtering step (output filtering).'
+                  ),
+                stream_options: zod
+                  .object({
+                    overlap: zod
+                      .number()
+                      .min(
+                        registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesFilteringOutputStreamOptionsOverlapMin
+                      )
+                      .max(
+                        registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesFilteringOutputStreamOptionsOverlapMax
+                      )
+                      .optional()
+                      .describe(
+                        'Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.'
+                      )
+                  })
+                  .optional()
+                  .describe(
+                    'Stream options for output filtering. Will be ignored if stream is false.'
+                  )
+              })
+              .optional()
+              .describe('List of provider type and filters')
+          })
+          .optional(),
+        masking: zod
+          .union([
+            zod.object({
+              providers: zod
+                .array(
+                  zod.object({
+                    type: zod
+                      .enum(['sap_data_privacy_integration'])
+                      .describe('Type of masking service provider'),
+                    method: zod
+                      .enum(['anonymization', 'pseudonymization'])
+                      .describe('Type of masking method to be used'),
+                    entities: zod
+                      .array(
+                        zod.union([
+                          zod.object({
+                            type: zod
+                              .enum([
+                                'profile-person',
+                                'profile-org',
+                                'profile-university',
+                                'profile-location',
+                                'profile-email',
+                                'profile-phone',
+                                'profile-address',
+                                'profile-sapids-internal',
+                                'profile-sapids-public',
+                                'profile-url',
+                                'profile-username-password',
+                                'profile-nationalid',
+                                'profile-iban',
+                                'profile-ssn',
+                                'profile-credit-card-number',
+                                'profile-passport',
+                                'profile-driverlicense',
+                                'profile-nationality',
+                                'profile-religious-group',
+                                'profile-political-group',
+                                'profile-pronouns-gender',
+                                'profile-ethnicity',
+                                'profile-gender',
+                                'profile-sexual-orientation',
+                                'profile-trade-union',
+                                'profile-sensitive-data'
+                              ])
+                              .describe(
+                                'Default entities supported by data privacy and integration service'
+                              ),
+                            replacement_strategy: zod
+                              .union([
+                                zod
+                                  .object({
+                                    method: zod.enum(['constant']),
+                                    value: zod
+                                      .string()
+                                      .describe(
+                                        'Value to be used for replacement'
+                                      )
+                                  })
+                                  .describe(
+                                    'Replaces the entity with the specified value followed by an incrementing number'
+                                  ),
+                                zod
+                                  .object({
+                                    method: zod.enum(['fabricated_data'])
+                                  })
+                                  .describe(
+                                    'Replaces the entity with a randomly generated value appropriate to its type.'
+                                  )
+                              ])
+                              .optional()
+                              .describe(
+                                'Replacement strategy to be used for the entity'
+                              )
+                          }),
+                          zod.object({
+                            regex: zod
+                              .string()
+                              .describe(
+                                'Regular expression to match the entity'
+                              ),
+                            replacement_strategy: zod
+                              .object({
+                                method: zod.enum(['constant']),
+                                value: zod
+                                  .string()
+                                  .describe('Value to be used for replacement')
+                              })
+                              .describe(
+                                'Replaces the entity with the specified value followed by an incrementing number'
+                              )
+                              .describe(
+                                'Replacement strategy to be used for the entity'
+                              )
+                          })
+                        ])
+                      )
+                      .min(1)
+                      .describe('List of entities to be masked'),
+                    allowlist: zod
+                      .array(zod.string())
+                      .optional()
+                      .describe('List of strings that should not be masked'),
+                    mask_grounding_input: zod
+                      .object({
+                        enabled: zod
+                          .boolean()
+                          .optional()
+                          .describe(
+                            'controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'
+                          )
+                      })
+                      .optional()
+                  })
+                )
+                .min(1)
+                .describe('List of masking service providers')
+            }),
+            zod.object({
+              masking_providers: zod
+                .array(
+                  zod.object({
+                    type: zod
+                      .enum(['sap_data_privacy_integration'])
+                      .describe('Type of masking service provider'),
+                    method: zod
+                      .enum(['anonymization', 'pseudonymization'])
+                      .describe('Type of masking method to be used'),
+                    entities: zod
+                      .array(
+                        zod.union([
+                          zod.object({
+                            type: zod
+                              .enum([
+                                'profile-person',
+                                'profile-org',
+                                'profile-university',
+                                'profile-location',
+                                'profile-email',
+                                'profile-phone',
+                                'profile-address',
+                                'profile-sapids-internal',
+                                'profile-sapids-public',
+                                'profile-url',
+                                'profile-username-password',
+                                'profile-nationalid',
+                                'profile-iban',
+                                'profile-ssn',
+                                'profile-credit-card-number',
+                                'profile-passport',
+                                'profile-driverlicense',
+                                'profile-nationality',
+                                'profile-religious-group',
+                                'profile-political-group',
+                                'profile-pronouns-gender',
+                                'profile-ethnicity',
+                                'profile-gender',
+                                'profile-sexual-orientation',
+                                'profile-trade-union',
+                                'profile-sensitive-data'
+                              ])
+                              .describe(
+                                'Default entities supported by data privacy and integration service'
+                              ),
+                            replacement_strategy: zod
+                              .union([
+                                zod
+                                  .object({
+                                    method: zod.enum(['constant']),
+                                    value: zod
+                                      .string()
+                                      .describe(
+                                        'Value to be used for replacement'
+                                      )
+                                  })
+                                  .describe(
+                                    'Replaces the entity with the specified value followed by an incrementing number'
+                                  ),
+                                zod
+                                  .object({
+                                    method: zod.enum(['fabricated_data'])
+                                  })
+                                  .describe(
+                                    'Replaces the entity with a randomly generated value appropriate to its type.'
+                                  )
+                              ])
+                              .optional()
+                              .describe(
+                                'Replacement strategy to be used for the entity'
+                              )
+                          }),
+                          zod.object({
+                            regex: zod
+                              .string()
+                              .describe(
+                                'Regular expression to match the entity'
+                              ),
+                            replacement_strategy: zod
+                              .object({
+                                method: zod.enum(['constant']),
+                                value: zod
+                                  .string()
+                                  .describe('Value to be used for replacement')
+                              })
+                              .describe(
+                                'Replaces the entity with the specified value followed by an incrementing number'
+                              )
+                              .describe(
+                                'Replacement strategy to be used for the entity'
+                              )
+                          })
+                        ])
+                      )
+                      .min(1)
+                      .describe('List of entities to be masked'),
+                    allowlist: zod
+                      .array(zod.string())
+                      .optional()
+                      .describe('List of strings that should not be masked'),
+                    mask_grounding_input: zod
+                      .object({
+                        enabled: zod
+                          .boolean()
+                          .optional()
+                          .describe(
+                            'controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'
+                          )
+                      })
+                      .optional()
+                  })
+                )
+                .min(1)
+                .describe(
+                  'This field is **DEPRECATED** and will be removed on August 05, 2026. Use `providers` property instead. List of masking service providers.'
+                )
+            })
+          ])
+          .optional(),
+        grounding: zod
+          .object({
+            type: zod.string(),
+            config: zod.object({
+              filters: zod
+                .array(
+                  zod.object({
+                    id: zod
+                      .string()
+                      .optional()
+                      .describe(
+                        'Identifier of this SearchFilter - unique per request.'
+                      ),
+                    search_config: zod
+                      .object({
+                        max_chunk_count: zod
+                          .number()
+                          .min(
+                            registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesGroundingConfigFiltersItemSearchConfigMaxChunkCountMin
+                          )
+                          .optional()
+                          .describe(
+                            "Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'."
+                          ),
+                        max_document_count: zod
+                          .number()
+                          .min(
+                            registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesGroundingConfigFiltersItemSearchConfigMaxDocumentCountMin
+                          )
+                          .optional()
+                          .describe(
+                            "[Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned."
+                          )
+                      })
+                      .optional(),
+                    data_repositories: zod
+                      .array(zod.string())
+                      .default(
+                        registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesGroundingConfigFiltersItemDataRepositoriesDefault
+                      )
+                      .describe(
+                        "Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids."
+                      ),
+                    data_repository_type: zod
+                      .enum(['vector', 'help.sap.com'])
+                      .describe(
+                        'Only include DataRepositories with the given type.'
+                      ),
+                    data_repository_metadata: zod
+                      .array(
+                        zod.object({
+                          key: zod
+                            .string()
+                            .max(
+                              registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesGroundingConfigFiltersItemDataRepositoryMetadataItemKeyMax
+                            ),
+                          value: zod.array(
+                            zod
+                              .string()
+                              .max(
+                                registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesGroundingConfigFiltersItemDataRepositoryMetadataItemValueItemMax
+                              )
+                          )
+                        })
+                      )
+                      .optional()
+                      .describe(
+                        "Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=['*']"
+                      ),
+                    document_metadata: zod
+                      .array(
+                        zod.object({
+                          key: zod
+                            .string()
+                            .max(
+                              registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesGroundingConfigFiltersItemDocumentMetadataItemKeyMax
+                            ),
+                          value: zod.array(
+                            zod
+                              .string()
+                              .max(
+                                registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesGroundingConfigFiltersItemDocumentMetadataItemValueItemMax
+                              )
+                          ),
+                          select_mode: zod
+                            .array(zod.enum(['ignoreIfKeyAbsent']))
+                            .optional()
+                            .describe('Select mode for search filters')
+                        })
+                      )
+                      .optional()
+                      .describe(
+                        'Restrict documents considered during search to those annotated with the given metadata.'
+                      ),
+                    chunk_metadata: zod
+                      .array(
+                        zod.object({
+                          key: zod
+                            .string()
+                            .max(
+                              registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesGroundingConfigFiltersItemChunkMetadataItemKeyMax
+                            ),
+                          value: zod.array(
+                            zod
+                              .string()
+                              .max(
+                                registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesGroundingConfigFiltersItemChunkMetadataItemValueItemMax
+                              )
+                          )
+                        })
+                      )
+                      .optional()
+                      .describe(
+                        'Restrict chunks considered during search to those with the given metadata.'
+                      )
+                  })
+                )
+                .optional()
+                .describe('Document grounding service filters to be used'),
+              placeholders: zod
+                .object({
+                  input: zod
+                    .array(zod.string())
+                    .min(1)
+                    .describe(
+                      'Contains the input parameters used for grounding input questions'
+                    ),
+                  output: zod
+                    .string()
+                    .describe('Placeholder name for grounding output')
+                })
+                .describe(
+                  'Placeholders to be used for grounding input questions and output'
+                ),
+              metadata_params: zod
+                .array(zod.string())
+                .optional()
+                .describe(
+                  'Parameter name used for specifying metadata parameters'
+                )
+            })
+          })
+          .optional(),
+        translation: zod
+          .object({
+            input: zod
+              .object({
+                type: zod
+                  .enum(['sap_document_translation'])
+                  .describe('Type of document translation provider'),
+                config: zod
+                  .object({
+                    source_language: zod
+                      .string()
+                      .optional()
+                      .describe('Language of the text to be translated.'),
+                    target_language: zod
+                      .string()
+                      .describe(
+                        'Language to which the text should be translated.'
+                      )
+                  })
+                  .describe(
+                    'Configuration for `sap_document_translation` translation provider.'
+                  )
+              })
+              .optional()
+              .describe('Configuration for input translation'),
+            output: zod
+              .object({
+                type: zod
+                  .enum(['sap_document_translation'])
+                  .describe('Type of document translation provider'),
+                config: zod
+                  .object({
+                    source_language: zod
+                      .string()
+                      .optional()
+                      .describe('Language of the text to be translated.'),
+                    target_language: zod
+                      .string()
+                      .describe(
+                        'Language to which the text should be translated.'
+                      )
+                  })
+                  .describe(
+                    'Configuration for `sap_document_translation` translation provider.'
+                  )
+              })
+              .optional()
+              .describe('Configuration for output translation')
+          })
+          .optional()
+          .describe('Configuration for translation module')
+      }),
+      stream: zod
+        .object({
+          enabled: zod
+            .boolean()
+            .optional()
+            .describe(
+              'If true, the response will be streamed back to the client'
+            ),
+          chunk_size: zod
+            .number()
+            .min(1)
+            .max(
+              registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamChunkSizeMax
+            )
+            .default(
+              registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamChunkSizeDefault
+            )
+            .describe(
+              'Minimum number of characters per chunk that post-LLM modules operate on.'
+            ),
+          delimiters: zod
+            .array(zod.string())
+            .min(1)
+            .optional()
+            .describe(
+              'List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.'
+            )
+        })
+        .optional()
+        .describe('Options for streaming. Will be ignored if enabled is false.')
+    })
+  });
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigResponse =
+  zod.object({
+    message: zod.string(),
+    id: zod.string().uuid(),
+    scenario: zod.string(),
+    name: zod.string(),
+    version: zod.string(),
+    model_name: zod.string()
+  });
+
+/**
+ * List orchestration configs.
+ */
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryRetrieveDefault =
+  'both';
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryIncludeSpecDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryResolveTemplateRefDefault = false;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryParams =
+  zod.object({
+    scenario: zod.string().optional(),
+    name: zod.string().optional(),
+    version: zod.string().optional(),
+    model_name: zod.string().optional(),
+    retrieve: zod
+      .enum(['both', 'imperative', 'declarative'])
+      .default(
+        registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryRetrieveDefault
+      ),
+    include_spec: zod.boolean().optional(),
+    resolve_template_ref: zod.boolean().optional()
+  });
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use')
+  });
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingPromptTemplateItemContentItemImageUrlDetailDefault =
+  'auto';
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingPromptResponseFormatJsonSchemaNameMax = 64;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingPromptResponseFormatJsonSchemaNameRegExp =
+  new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingPromptResponseFormatJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingPromptToolsItemFunctionNameMax = 64;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingPromptToolsItemFunctionNameRegExp =
+  new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingPromptToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingModelVersionDefault =
+  'latest';
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingModelTimeoutMax = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingModelMaxRetriesDefault = 2;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingModelMaxRetriesMin = 0;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingModelMaxRetriesMax = 5;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesFilteringInputFiltersItemConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesFilteringOutputStreamOptionsOverlapDefault = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesFilteringOutputStreamOptionsOverlapMin = 0;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesFilteringOutputStreamOptionsOverlapMax = 10000;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesMaskingProvidersItemMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesMaskingMaskingProvidersItemMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesGroundingConfigFiltersItemSearchConfigMaxChunkCountMin = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesGroundingConfigFiltersItemSearchConfigMaxDocumentCountMin = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesGroundingConfigFiltersItemDataRepositoriesDefault =
+  ['*'];
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesGroundingConfigFiltersItemDataRepositoryMetadataItemKeyMax = 1024;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesGroundingConfigFiltersItemDataRepositoryMetadataItemValueItemMax = 1024;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesGroundingConfigFiltersItemDocumentMetadataItemKeyMax = 1024;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesGroundingConfigFiltersItemDocumentMetadataItemValueItemMax = 1024;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesGroundingConfigFiltersItemChunkMetadataItemKeyMax = 1024;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesGroundingConfigFiltersItemChunkMetadataItemValueItemMax = 1024;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamChunkSizeDefault = 100;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamChunkSizeMax = 10000;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponse =
+  zod.object({
+    count: zod.number(),
+    resources: zod.array(
+      zod.object({
+        id: zod.string().uuid().optional(),
+        name: zod.string().optional(),
+        version: zod.string().optional(),
+        scenario: zod.string().optional(),
+        model_name: zod.string().optional(),
+        creation_timestamp: zod.string().optional(),
+        managed_by: zod.string().optional(),
+        is_version_head: zod.boolean().optional(),
+        resource_group_id: zod.string().optional(),
+        spec: zod
+          .object({
+            modules: zod.object({
+              prompt_templating: zod.object({
+                prompt: zod
+                  .union([
+                    zod.object({
+                      template: zod
+                        .array(
+                          zod.union([
+                            zod.object({
+                              role: zod.enum(['system']),
+                              content: zod.union([
+                                zod.string(),
+                                zod
+                                  .array(
+                                    zod.object({
+                                      type: zod.enum(['text']),
+                                      text: zod.string()
+                                    })
+                                  )
+                                  .min(1)
+                              ])
+                            }),
+                            zod.object({
+                              content: zod.union([
+                                zod.string(),
+                                zod
+                                  .array(
+                                    zod.object({
+                                      type: zod.enum(['text', 'image_url']),
+                                      text: zod.string().optional(),
+                                      image_url: zod
+                                        .object({
+                                          url: zod.string(),
+                                          detail: zod
+                                            .string()
+                                            .default(
+                                              registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingPromptTemplateItemContentItemImageUrlDetailDefault
+                                            )
+                                        })
+                                        .optional()
+                                    })
+                                  )
+                                  .min(1)
+                              ]),
+                              role: zod.enum(['user'])
+                            }),
+                            zod.object({
+                              role: zod.enum(['assistant']),
+                              content: zod
+                                .union([
+                                  zod.string(),
+                                  zod
+                                    .array(
+                                      zod.object({
+                                        type: zod.enum(['text']),
+                                        text: zod.string()
+                                      })
+                                    )
+                                    .min(1)
+                                ])
+                                .optional(),
+                              refusal: zod.string().optional(),
+                              tool_calls: zod
+                                .array(
+                                  zod.object({
+                                    id: zod
+                                      .string()
+                                      .describe('The ID of the tool call.'),
+                                    type: zod
+                                      .enum(['function'])
+                                      .describe(
+                                        'The type of the tool. Currently, only `function` is supported.'
+                                      ),
+                                    function: zod
+                                      .object({
+                                        name: zod
+                                          .string()
+                                          .describe(
+                                            'The name of the function to call.'
+                                          ),
+                                        arguments: zod
+                                          .string()
+                                          .describe(
+                                            'The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.'
+                                          )
+                                      })
+                                      .describe(
+                                        'The function that the model called.'
+                                      )
+                                  })
+                                )
+                                .optional()
+                                .describe(
+                                  'The tool calls generated by the model, such as function calls.'
+                                )
+                            }),
+                            zod.object({
+                              role: zod.enum(['tool']),
+                              tool_call_id: zod.string(),
+                              content: zod.union([
+                                zod.string(),
+                                zod
+                                  .array(
+                                    zod.object({
+                                      type: zod.enum(['text']),
+                                      text: zod.string()
+                                    })
+                                  )
+                                  .min(1)
+                              ])
+                            }),
+                            zod.object({
+                              role: zod.enum(['developer']),
+                              content: zod.union([
+                                zod.string(),
+                                zod
+                                  .array(
+                                    zod.object({
+                                      type: zod.enum(['text']),
+                                      text: zod.string()
+                                    })
+                                  )
+                                  .min(1)
+                              ])
+                            })
+                          ])
+                        )
+                        .min(1)
+                        .describe(
+                          'A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'
+                        ),
+                      defaults: zod
+                        .record(zod.string(), zod.string())
+                        .optional()
+                        .describe(
+                          'Optional default values for the template. If a parameter has no default it is required.'
+                        ),
+                      response_format: zod
+                        .union([
+                          zod.object({
+                            type: zod
+                              .enum(['text'])
+                              .describe(
+                                'The type of response format being defined: `text`'
+                              )
+                          }),
+                          zod.object({
+                            type: zod
+                              .enum(['json_object'])
+                              .describe(
+                                'The type of response format being defined: `json_object`'
+                              )
+                          }),
+                          zod.object({
+                            type: zod
+                              .enum(['json_schema'])
+                              .describe(
+                                'The type of response format being defined: `json_schema`'
+                              ),
+                            json_schema: zod.object({
+                              description: zod
+                                .string()
+                                .optional()
+                                .describe(
+                                  'A description of what the response format is for, used by the model to determine how to respond in the format.'
+                                ),
+                              name: zod
+                                .string()
+                                .max(
+                                  registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingPromptResponseFormatJsonSchemaNameMax
+                                )
+                                .regex(
+                                  registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingPromptResponseFormatJsonSchemaNameRegExp
+                                )
+                                .describe(
+                                  'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
+                                ),
+                              schema: zod
+                                .record(zod.string(), zod.any())
+                                .optional()
+                                .describe(
+                                  'The schema for the response format, described as a JSON Schema object.'
+                                ),
+                              strict: zod
+                                .boolean()
+                                .nullish()
+                                .describe(
+                                  'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).'
+                                )
+                            })
+                          })
+                        ])
+                        .optional()
+                        .describe(
+                          'Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'
+                        ),
+                      tools: zod
+                        .array(
+                          zod.object({
+                            type: zod
+                              .enum(['function'])
+                              .describe(
+                                'The type of the tool. Currently, only `function` is supported.'
+                              ),
+                            function: zod.object({
+                              description: zod
+                                .string()
+                                .optional()
+                                .describe(
+                                  'A description of what the function does, used by the model to choose when and how to call the function.'
+                                ),
+                              name: zod
+                                .string()
+                                .max(
+                                  registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingPromptToolsItemFunctionNameMax
+                                )
+                                .regex(
+                                  registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingPromptToolsItemFunctionNameRegExp
+                                )
+                                .describe(
+                                  'The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
+                                ),
+                              parameters: zod
+                                .record(zod.string(), zod.any())
+                                .optional()
+                                .describe(
+                                  'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
+                                ),
+                              strict: zod
+                                .boolean()
+                                .nullish()
+                                .describe(
+                                  'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'
+                                )
+                            })
+                          })
+                        )
+                        .optional()
+                        .describe(
+                          'A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n'
+                        )
+                    }),
+                    zod.object({
+                      template_ref: zod
+                        .union([
+                          zod.object({
+                            id: zod
+                              .string()
+                              .describe('ID of the template in prompt registry')
+                          }),
+                          zod.object({
+                            scenario: zod.string().describe('Scenario name'),
+                            name: zod.string().describe('Name of the template'),
+                            version: zod
+                              .string()
+                              .describe('Version of the template')
+                          })
+                        ])
+                        .describe(
+                          'Reference to a template in the prompt registry by ID or by scenario, name and version'
+                        )
+                    })
+                  ])
+                  .describe(
+                    'The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.\n'
+                  ),
+                model: zod
+                  .object({
+                    name: zod
+                      .string()
+                      .describe(
+                        'Name of the model as in LLM Access configuration'
+                      ),
+                    version: zod
+                      .string()
+                      .default(
+                        registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingModelVersionDefault
+                      )
+                      .describe('Version of the model to be used'),
+                    params: zod
+                      .record(zod.string(), zod.any())
+                      .optional()
+                      .describe(
+                        'Additional parameters for the model. Default values are used for mandatory parameters.'
+                      ),
+                    timeout: zod
+                      .number()
+                      .min(1)
+                      .max(
+                        registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingModelTimeoutMax
+                      )
+                      .default(
+                        registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingModelTimeoutDefault
+                      )
+                      .describe(
+                        'Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'
+                      ),
+                    max_retries: zod
+                      .number()
+                      .min(
+                        registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingModelMaxRetriesMin
+                      )
+                      .max(
+                        registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingModelMaxRetriesMax
+                      )
+                      .default(
+                        registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesPromptTemplatingModelMaxRetriesDefault
+                      )
+                      .describe(
+                        'Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.'
+                      )
+                  })
+                  .describe(
+                    'The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n'
+                  )
+              }),
+              filtering: zod
+                .object({
+                  input: zod
+                    .object({
+                      filters: zod
+                        .array(
+                          zod.union([
+                            zod.object({
+                              type: zod
+                                .enum(['azure_content_safety'])
+                                .describe('Name of the filter provider type'),
+                              config: zod
+                                .object({
+                                  hate: zod
+                                    .union([
+                                      zod.literal(0),
+                                      zod.literal(2),
+                                      zod.literal(4),
+                                      zod.literal(6)
+                                    ])
+                                    .optional(),
+                                  self_harm: zod
+                                    .union([
+                                      zod.literal(0),
+                                      zod.literal(2),
+                                      zod.literal(4),
+                                      zod.literal(6)
+                                    ])
+                                    .optional(),
+                                  sexual: zod
+                                    .union([
+                                      zod.literal(0),
+                                      zod.literal(2),
+                                      zod.literal(4),
+                                      zod.literal(6)
+                                    ])
+                                    .optional(),
+                                  violence: zod
+                                    .union([
+                                      zod.literal(0),
+                                      zod.literal(2),
+                                      zod.literal(4),
+                                      zod.literal(6)
+                                    ])
+                                    .optional(),
+                                  prompt_shield: zod
+                                    .boolean()
+                                    .optional()
+                                    .describe('A flag to use prompt shield')
+                                })
+                                .optional()
+                                .describe(
+                                  'Filter configuration for Azure Content Safety'
+                                )
+                            }),
+                            zod.object({
+                              type: zod
+                                .enum(['llama_guard_3_8b'])
+                                .describe('Name of the filter provider type'),
+                              config: zod
+                                .object({
+                                  violent_crimes: zod.boolean().optional(),
+                                  non_violent_crimes: zod.boolean().optional(),
+                                  sex_crimes: zod.boolean().optional(),
+                                  child_exploitation: zod.boolean().optional(),
+                                  defamation: zod.boolean().optional(),
+                                  specialized_advice: zod.boolean().optional(),
+                                  privacy: zod.boolean().optional(),
+                                  intellectual_property: zod
+                                    .boolean()
+                                    .optional(),
+                                  indiscriminate_weapons: zod
+                                    .boolean()
+                                    .optional(),
+                                  hate: zod.boolean().optional(),
+                                  self_harm: zod.boolean().optional(),
+                                  sexual_content: zod.boolean().optional(),
+                                  elections: zod.boolean().optional(),
+                                  code_interpreter_abuse: zod
+                                    .boolean()
+                                    .optional()
+                                })
+                                .describe(
+                                  'Filter configuration for Llama Guard 3 8B'
+                                )
+                            })
+                          ])
+                        )
+                        .min(1)
+                        .describe(
+                          'Configuration for content filtering services that should be used for the given filtering step (input filtering).'
+                        )
+                    })
+                    .optional()
+                    .describe('List of provider type and filters'),
+                  output: zod
+                    .object({
+                      filters: zod
+                        .array(
+                          zod.union([
+                            zod.object({
+                              type: zod
+                                .enum(['azure_content_safety'])
+                                .describe('Name of the filter provider type'),
+                              config: zod
+                                .object({
+                                  hate: zod
+                                    .union([
+                                      zod.literal(0),
+                                      zod.literal(2),
+                                      zod.literal(4),
+                                      zod.literal(6)
+                                    ])
+                                    .optional(),
+                                  self_harm: zod
+                                    .union([
+                                      zod.literal(0),
+                                      zod.literal(2),
+                                      zod.literal(4),
+                                      zod.literal(6)
+                                    ])
+                                    .optional(),
+                                  sexual: zod
+                                    .union([
+                                      zod.literal(0),
+                                      zod.literal(2),
+                                      zod.literal(4),
+                                      zod.literal(6)
+                                    ])
+                                    .optional(),
+                                  violence: zod
+                                    .union([
+                                      zod.literal(0),
+                                      zod.literal(2),
+                                      zod.literal(4),
+                                      zod.literal(6)
+                                    ])
+                                    .optional()
+                                })
+                                .optional()
+                                .describe(
+                                  'Filter configuration for Azure Content Safety'
+                                )
+                            }),
+                            zod.object({
+                              type: zod
+                                .enum(['llama_guard_3_8b'])
+                                .describe('Name of the filter provider type'),
+                              config: zod
+                                .object({
+                                  violent_crimes: zod.boolean().optional(),
+                                  non_violent_crimes: zod.boolean().optional(),
+                                  sex_crimes: zod.boolean().optional(),
+                                  child_exploitation: zod.boolean().optional(),
+                                  defamation: zod.boolean().optional(),
+                                  specialized_advice: zod.boolean().optional(),
+                                  privacy: zod.boolean().optional(),
+                                  intellectual_property: zod
+                                    .boolean()
+                                    .optional(),
+                                  indiscriminate_weapons: zod
+                                    .boolean()
+                                    .optional(),
+                                  hate: zod.boolean().optional(),
+                                  self_harm: zod.boolean().optional(),
+                                  sexual_content: zod.boolean().optional(),
+                                  elections: zod.boolean().optional(),
+                                  code_interpreter_abuse: zod
+                                    .boolean()
+                                    .optional()
+                                })
+                                .describe(
+                                  'Filter configuration for Llama Guard 3 8B'
+                                )
+                            })
+                          ])
+                        )
+                        .min(1)
+                        .describe(
+                          'Configuration for content filtering services that should be used for the given filtering step (output filtering).'
+                        ),
+                      stream_options: zod
+                        .object({
+                          overlap: zod
+                            .number()
+                            .min(
+                              registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesFilteringOutputStreamOptionsOverlapMin
+                            )
+                            .max(
+                              registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesFilteringOutputStreamOptionsOverlapMax
+                            )
+                            .optional()
+                            .describe(
+                              'Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.'
+                            )
+                        })
+                        .optional()
+                        .describe(
+                          'Stream options for output filtering. Will be ignored if stream is false.'
+                        )
+                    })
+                    .optional()
+                    .describe('List of provider type and filters')
+                })
+                .optional(),
+              masking: zod
+                .union([
+                  zod.object({
+                    providers: zod
+                      .array(
+                        zod.object({
+                          type: zod
+                            .enum(['sap_data_privacy_integration'])
+                            .describe('Type of masking service provider'),
+                          method: zod
+                            .enum(['anonymization', 'pseudonymization'])
+                            .describe('Type of masking method to be used'),
+                          entities: zod
+                            .array(
+                              zod.union([
+                                zod.object({
+                                  type: zod
+                                    .enum([
+                                      'profile-person',
+                                      'profile-org',
+                                      'profile-university',
+                                      'profile-location',
+                                      'profile-email',
+                                      'profile-phone',
+                                      'profile-address',
+                                      'profile-sapids-internal',
+                                      'profile-sapids-public',
+                                      'profile-url',
+                                      'profile-username-password',
+                                      'profile-nationalid',
+                                      'profile-iban',
+                                      'profile-ssn',
+                                      'profile-credit-card-number',
+                                      'profile-passport',
+                                      'profile-driverlicense',
+                                      'profile-nationality',
+                                      'profile-religious-group',
+                                      'profile-political-group',
+                                      'profile-pronouns-gender',
+                                      'profile-ethnicity',
+                                      'profile-gender',
+                                      'profile-sexual-orientation',
+                                      'profile-trade-union',
+                                      'profile-sensitive-data'
+                                    ])
+                                    .describe(
+                                      'Default entities supported by data privacy and integration service'
+                                    ),
+                                  replacement_strategy: zod
+                                    .union([
+                                      zod
+                                        .object({
+                                          method: zod.enum(['constant']),
+                                          value: zod
+                                            .string()
+                                            .describe(
+                                              'Value to be used for replacement'
+                                            )
+                                        })
+                                        .describe(
+                                          'Replaces the entity with the specified value followed by an incrementing number'
+                                        ),
+                                      zod
+                                        .object({
+                                          method: zod.enum(['fabricated_data'])
+                                        })
+                                        .describe(
+                                          'Replaces the entity with a randomly generated value appropriate to its type.'
+                                        )
+                                    ])
+                                    .optional()
+                                    .describe(
+                                      'Replacement strategy to be used for the entity'
+                                    )
+                                }),
+                                zod.object({
+                                  regex: zod
+                                    .string()
+                                    .describe(
+                                      'Regular expression to match the entity'
+                                    ),
+                                  replacement_strategy: zod
+                                    .object({
+                                      method: zod.enum(['constant']),
+                                      value: zod
+                                        .string()
+                                        .describe(
+                                          'Value to be used for replacement'
+                                        )
+                                    })
+                                    .describe(
+                                      'Replaces the entity with the specified value followed by an incrementing number'
+                                    )
+                                    .describe(
+                                      'Replacement strategy to be used for the entity'
+                                    )
+                                })
+                              ])
+                            )
+                            .min(1)
+                            .describe('List of entities to be masked'),
+                          allowlist: zod
+                            .array(zod.string())
+                            .optional()
+                            .describe(
+                              'List of strings that should not be masked'
+                            ),
+                          mask_grounding_input: zod
+                            .object({
+                              enabled: zod
+                                .boolean()
+                                .optional()
+                                .describe(
+                                  'controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'
+                                )
+                            })
+                            .optional()
+                        })
+                      )
+                      .min(1)
+                      .describe('List of masking service providers')
+                  }),
+                  zod.object({
+                    masking_providers: zod
+                      .array(
+                        zod.object({
+                          type: zod
+                            .enum(['sap_data_privacy_integration'])
+                            .describe('Type of masking service provider'),
+                          method: zod
+                            .enum(['anonymization', 'pseudonymization'])
+                            .describe('Type of masking method to be used'),
+                          entities: zod
+                            .array(
+                              zod.union([
+                                zod.object({
+                                  type: zod
+                                    .enum([
+                                      'profile-person',
+                                      'profile-org',
+                                      'profile-university',
+                                      'profile-location',
+                                      'profile-email',
+                                      'profile-phone',
+                                      'profile-address',
+                                      'profile-sapids-internal',
+                                      'profile-sapids-public',
+                                      'profile-url',
+                                      'profile-username-password',
+                                      'profile-nationalid',
+                                      'profile-iban',
+                                      'profile-ssn',
+                                      'profile-credit-card-number',
+                                      'profile-passport',
+                                      'profile-driverlicense',
+                                      'profile-nationality',
+                                      'profile-religious-group',
+                                      'profile-political-group',
+                                      'profile-pronouns-gender',
+                                      'profile-ethnicity',
+                                      'profile-gender',
+                                      'profile-sexual-orientation',
+                                      'profile-trade-union',
+                                      'profile-sensitive-data'
+                                    ])
+                                    .describe(
+                                      'Default entities supported by data privacy and integration service'
+                                    ),
+                                  replacement_strategy: zod
+                                    .union([
+                                      zod
+                                        .object({
+                                          method: zod.enum(['constant']),
+                                          value: zod
+                                            .string()
+                                            .describe(
+                                              'Value to be used for replacement'
+                                            )
+                                        })
+                                        .describe(
+                                          'Replaces the entity with the specified value followed by an incrementing number'
+                                        ),
+                                      zod
+                                        .object({
+                                          method: zod.enum(['fabricated_data'])
+                                        })
+                                        .describe(
+                                          'Replaces the entity with a randomly generated value appropriate to its type.'
+                                        )
+                                    ])
+                                    .optional()
+                                    .describe(
+                                      'Replacement strategy to be used for the entity'
+                                    )
+                                }),
+                                zod.object({
+                                  regex: zod
+                                    .string()
+                                    .describe(
+                                      'Regular expression to match the entity'
+                                    ),
+                                  replacement_strategy: zod
+                                    .object({
+                                      method: zod.enum(['constant']),
+                                      value: zod
+                                        .string()
+                                        .describe(
+                                          'Value to be used for replacement'
+                                        )
+                                    })
+                                    .describe(
+                                      'Replaces the entity with the specified value followed by an incrementing number'
+                                    )
+                                    .describe(
+                                      'Replacement strategy to be used for the entity'
+                                    )
+                                })
+                              ])
+                            )
+                            .min(1)
+                            .describe('List of entities to be masked'),
+                          allowlist: zod
+                            .array(zod.string())
+                            .optional()
+                            .describe(
+                              'List of strings that should not be masked'
+                            ),
+                          mask_grounding_input: zod
+                            .object({
+                              enabled: zod
+                                .boolean()
+                                .optional()
+                                .describe(
+                                  'controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'
+                                )
+                            })
+                            .optional()
+                        })
+                      )
+                      .min(1)
+                      .describe(
+                        'This field is **DEPRECATED** and will be removed on August 05, 2026. Use `providers` property instead. List of masking service providers.'
+                      )
+                  })
+                ])
+                .optional(),
+              grounding: zod
+                .object({
+                  type: zod.string(),
+                  config: zod.object({
+                    filters: zod
+                      .array(
+                        zod.object({
+                          id: zod
+                            .string()
+                            .optional()
+                            .describe(
+                              'Identifier of this SearchFilter - unique per request.'
+                            ),
+                          search_config: zod
+                            .object({
+                              max_chunk_count: zod
+                                .number()
+                                .min(
+                                  registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesGroundingConfigFiltersItemSearchConfigMaxChunkCountMin
+                                )
+                                .optional()
+                                .describe(
+                                  "Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'."
+                                ),
+                              max_document_count: zod
+                                .number()
+                                .min(
+                                  registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesGroundingConfigFiltersItemSearchConfigMaxDocumentCountMin
+                                )
+                                .optional()
+                                .describe(
+                                  "[Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned."
+                                )
+                            })
+                            .optional(),
+                          data_repositories: zod
+                            .array(zod.string())
+                            .default(
+                              registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesGroundingConfigFiltersItemDataRepositoriesDefault
+                            )
+                            .describe(
+                              "Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids."
+                            ),
+                          data_repository_type: zod
+                            .enum(['vector', 'help.sap.com'])
+                            .describe(
+                              'Only include DataRepositories with the given type.'
+                            ),
+                          data_repository_metadata: zod
+                            .array(
+                              zod.object({
+                                key: zod
+                                  .string()
+                                  .max(
+                                    registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesGroundingConfigFiltersItemDataRepositoryMetadataItemKeyMax
+                                  ),
+                                value: zod.array(
+                                  zod
+                                    .string()
+                                    .max(
+                                      registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesGroundingConfigFiltersItemDataRepositoryMetadataItemValueItemMax
+                                    )
+                                )
+                              })
+                            )
+                            .optional()
+                            .describe(
+                              "Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=['*']"
+                            ),
+                          document_metadata: zod
+                            .array(
+                              zod.object({
+                                key: zod
+                                  .string()
+                                  .max(
+                                    registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesGroundingConfigFiltersItemDocumentMetadataItemKeyMax
+                                  ),
+                                value: zod.array(
+                                  zod
+                                    .string()
+                                    .max(
+                                      registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesGroundingConfigFiltersItemDocumentMetadataItemValueItemMax
+                                    )
+                                ),
+                                select_mode: zod
+                                  .array(zod.enum(['ignoreIfKeyAbsent']))
+                                  .optional()
+                                  .describe('Select mode for search filters')
+                              })
+                            )
+                            .optional()
+                            .describe(
+                              'Restrict documents considered during search to those annotated with the given metadata.'
+                            ),
+                          chunk_metadata: zod
+                            .array(
+                              zod.object({
+                                key: zod
+                                  .string()
+                                  .max(
+                                    registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesGroundingConfigFiltersItemChunkMetadataItemKeyMax
+                                  ),
+                                value: zod.array(
+                                  zod
+                                    .string()
+                                    .max(
+                                      registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesGroundingConfigFiltersItemChunkMetadataItemValueItemMax
+                                    )
+                                )
+                              })
+                            )
+                            .optional()
+                            .describe(
+                              'Restrict chunks considered during search to those with the given metadata.'
+                            )
+                        })
+                      )
+                      .optional()
+                      .describe(
+                        'Document grounding service filters to be used'
+                      ),
+                    placeholders: zod
+                      .object({
+                        input: zod
+                          .array(zod.string())
+                          .min(1)
+                          .describe(
+                            'Contains the input parameters used for grounding input questions'
+                          ),
+                        output: zod
+                          .string()
+                          .describe('Placeholder name for grounding output')
+                      })
+                      .describe(
+                        'Placeholders to be used for grounding input questions and output'
+                      ),
+                    metadata_params: zod
+                      .array(zod.string())
+                      .optional()
+                      .describe(
+                        'Parameter name used for specifying metadata parameters'
+                      )
+                  })
+                })
+                .optional(),
+              translation: zod
+                .object({
+                  input: zod
+                    .object({
+                      type: zod
+                        .enum(['sap_document_translation'])
+                        .describe('Type of document translation provider'),
+                      config: zod
+                        .object({
+                          source_language: zod
+                            .string()
+                            .optional()
+                            .describe('Language of the text to be translated.'),
+                          target_language: zod
+                            .string()
+                            .describe(
+                              'Language to which the text should be translated.'
+                            )
+                        })
+                        .describe(
+                          'Configuration for `sap_document_translation` translation provider.'
+                        )
+                    })
+                    .optional()
+                    .describe('Configuration for input translation'),
+                  output: zod
+                    .object({
+                      type: zod
+                        .enum(['sap_document_translation'])
+                        .describe('Type of document translation provider'),
+                      config: zod
+                        .object({
+                          source_language: zod
+                            .string()
+                            .optional()
+                            .describe('Language of the text to be translated.'),
+                          target_language: zod
+                            .string()
+                            .describe(
+                              'Language to which the text should be translated.'
+                            )
+                        })
+                        .describe(
+                          'Configuration for `sap_document_translation` translation provider.'
+                        )
+                    })
+                    .optional()
+                    .describe('Configuration for output translation')
+                })
+                .optional()
+                .describe('Configuration for translation module')
+            }),
+            stream: zod
+              .object({
+                enabled: zod
+                  .boolean()
+                  .optional()
+                  .describe(
+                    'If true, the response will be streamed back to the client'
+                  ),
+                chunk_size: zod
+                  .number()
+                  .min(1)
+                  .max(
+                    registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamChunkSizeMax
+                  )
+                  .default(
+                    registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamChunkSizeDefault
+                  )
+                  .describe(
+                    'Minimum number of characters per chunk that post-LLM modules operate on.'
+                  ),
+                delimiters: zod
+                  .array(zod.string())
+                  .min(1)
+                  .optional()
+                  .describe(
+                    'List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.'
+                  )
+              })
+              .optional()
+              .describe(
+                'Options for streaming. Will be ignored if enabled is false.'
+              )
+          })
+          .optional()
+      })
+    )
+  });
+
+/**
+ * List orchestration config history.
+ */
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryParams =
+  zod.object({
+    scenario: zod.string(),
+    version: zod.string(),
+    name: zod.string(),
+    model_name: zod.string()
+  });
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryIncludeSpecDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryResolveTemplateRefDefault = false;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryParams =
+  zod.object({
+    include_spec: zod.boolean().optional(),
+    resolve_template_ref: zod.boolean().optional()
+  });
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use')
+  });
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingPromptTemplateItemContentItemImageUrlDetailDefault =
+  'auto';
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingPromptResponseFormatJsonSchemaNameMax = 64;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingPromptResponseFormatJsonSchemaNameRegExp =
+  new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingPromptResponseFormatJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingPromptToolsItemFunctionNameMax = 64;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingPromptToolsItemFunctionNameRegExp =
+  new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingPromptToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingModelVersionDefault =
+  'latest';
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingModelTimeoutMax = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingModelMaxRetriesDefault = 2;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingModelMaxRetriesMin = 0;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingModelMaxRetriesMax = 5;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesFilteringInputFiltersItemConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesFilteringOutputStreamOptionsOverlapDefault = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesFilteringOutputStreamOptionsOverlapMin = 0;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesFilteringOutputStreamOptionsOverlapMax = 10000;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesMaskingProvidersItemMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesMaskingMaskingProvidersItemMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesGroundingConfigFiltersItemSearchConfigMaxChunkCountMin = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesGroundingConfigFiltersItemSearchConfigMaxDocumentCountMin = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesGroundingConfigFiltersItemDataRepositoriesDefault =
+  ['*'];
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesGroundingConfigFiltersItemDataRepositoryMetadataItemKeyMax = 1024;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesGroundingConfigFiltersItemDataRepositoryMetadataItemValueItemMax = 1024;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesGroundingConfigFiltersItemDocumentMetadataItemKeyMax = 1024;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesGroundingConfigFiltersItemDocumentMetadataItemValueItemMax = 1024;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesGroundingConfigFiltersItemChunkMetadataItemKeyMax = 1024;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesGroundingConfigFiltersItemChunkMetadataItemValueItemMax = 1024;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamChunkSizeDefault = 100;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamChunkSizeMax = 10000;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponse =
+  zod.object({
+    count: zod.number(),
+    resources: zod.array(
+      zod.object({
+        id: zod.string().uuid().optional(),
+        name: zod.string().optional(),
+        version: zod.string().optional(),
+        scenario: zod.string().optional(),
+        model_name: zod.string().optional(),
+        creation_timestamp: zod.string().optional(),
+        managed_by: zod.string().optional(),
+        is_version_head: zod.boolean().optional(),
+        resource_group_id: zod.string().optional(),
+        spec: zod
+          .object({
+            modules: zod.object({
+              prompt_templating: zod.object({
+                prompt: zod
+                  .union([
+                    zod.object({
+                      template: zod
+                        .array(
+                          zod.union([
+                            zod.object({
+                              role: zod.enum(['system']),
+                              content: zod.union([
+                                zod.string(),
+                                zod
+                                  .array(
+                                    zod.object({
+                                      type: zod.enum(['text']),
+                                      text: zod.string()
+                                    })
+                                  )
+                                  .min(1)
+                              ])
+                            }),
+                            zod.object({
+                              content: zod.union([
+                                zod.string(),
+                                zod
+                                  .array(
+                                    zod.object({
+                                      type: zod.enum(['text', 'image_url']),
+                                      text: zod.string().optional(),
+                                      image_url: zod
+                                        .object({
+                                          url: zod.string(),
+                                          detail: zod
+                                            .string()
+                                            .default(
+                                              registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingPromptTemplateItemContentItemImageUrlDetailDefault
+                                            )
+                                        })
+                                        .optional()
+                                    })
+                                  )
+                                  .min(1)
+                              ]),
+                              role: zod.enum(['user'])
+                            }),
+                            zod.object({
+                              role: zod.enum(['assistant']),
+                              content: zod
+                                .union([
+                                  zod.string(),
+                                  zod
+                                    .array(
+                                      zod.object({
+                                        type: zod.enum(['text']),
+                                        text: zod.string()
+                                      })
+                                    )
+                                    .min(1)
+                                ])
+                                .optional(),
+                              refusal: zod.string().optional(),
+                              tool_calls: zod
+                                .array(
+                                  zod.object({
+                                    id: zod
+                                      .string()
+                                      .describe('The ID of the tool call.'),
+                                    type: zod
+                                      .enum(['function'])
+                                      .describe(
+                                        'The type of the tool. Currently, only `function` is supported.'
+                                      ),
+                                    function: zod
+                                      .object({
+                                        name: zod
+                                          .string()
+                                          .describe(
+                                            'The name of the function to call.'
+                                          ),
+                                        arguments: zod
+                                          .string()
+                                          .describe(
+                                            'The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.'
+                                          )
+                                      })
+                                      .describe(
+                                        'The function that the model called.'
+                                      )
+                                  })
+                                )
+                                .optional()
+                                .describe(
+                                  'The tool calls generated by the model, such as function calls.'
+                                )
+                            }),
+                            zod.object({
+                              role: zod.enum(['tool']),
+                              tool_call_id: zod.string(),
+                              content: zod.union([
+                                zod.string(),
+                                zod
+                                  .array(
+                                    zod.object({
+                                      type: zod.enum(['text']),
+                                      text: zod.string()
+                                    })
+                                  )
+                                  .min(1)
+                              ])
+                            }),
+                            zod.object({
+                              role: zod.enum(['developer']),
+                              content: zod.union([
+                                zod.string(),
+                                zod
+                                  .array(
+                                    zod.object({
+                                      type: zod.enum(['text']),
+                                      text: zod.string()
+                                    })
+                                  )
+                                  .min(1)
+                              ])
+                            })
+                          ])
+                        )
+                        .min(1)
+                        .describe(
+                          'A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'
+                        ),
+                      defaults: zod
+                        .record(zod.string(), zod.string())
+                        .optional()
+                        .describe(
+                          'Optional default values for the template. If a parameter has no default it is required.'
+                        ),
+                      response_format: zod
+                        .union([
+                          zod.object({
+                            type: zod
+                              .enum(['text'])
+                              .describe(
+                                'The type of response format being defined: `text`'
+                              )
+                          }),
+                          zod.object({
+                            type: zod
+                              .enum(['json_object'])
+                              .describe(
+                                'The type of response format being defined: `json_object`'
+                              )
+                          }),
+                          zod.object({
+                            type: zod
+                              .enum(['json_schema'])
+                              .describe(
+                                'The type of response format being defined: `json_schema`'
+                              ),
+                            json_schema: zod.object({
+                              description: zod
+                                .string()
+                                .optional()
+                                .describe(
+                                  'A description of what the response format is for, used by the model to determine how to respond in the format.'
+                                ),
+                              name: zod
+                                .string()
+                                .max(
+                                  registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingPromptResponseFormatJsonSchemaNameMax
+                                )
+                                .regex(
+                                  registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingPromptResponseFormatJsonSchemaNameRegExp
+                                )
+                                .describe(
+                                  'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
+                                ),
+                              schema: zod
+                                .record(zod.string(), zod.any())
+                                .optional()
+                                .describe(
+                                  'The schema for the response format, described as a JSON Schema object.'
+                                ),
+                              strict: zod
+                                .boolean()
+                                .nullish()
+                                .describe(
+                                  'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).'
+                                )
+                            })
+                          })
+                        ])
+                        .optional()
+                        .describe(
+                          'Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'
+                        ),
+                      tools: zod
+                        .array(
+                          zod.object({
+                            type: zod
+                              .enum(['function'])
+                              .describe(
+                                'The type of the tool. Currently, only `function` is supported.'
+                              ),
+                            function: zod.object({
+                              description: zod
+                                .string()
+                                .optional()
+                                .describe(
+                                  'A description of what the function does, used by the model to choose when and how to call the function.'
+                                ),
+                              name: zod
+                                .string()
+                                .max(
+                                  registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingPromptToolsItemFunctionNameMax
+                                )
+                                .regex(
+                                  registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingPromptToolsItemFunctionNameRegExp
+                                )
+                                .describe(
+                                  'The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
+                                ),
+                              parameters: zod
+                                .record(zod.string(), zod.any())
+                                .optional()
+                                .describe(
+                                  'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
+                                ),
+                              strict: zod
+                                .boolean()
+                                .nullish()
+                                .describe(
+                                  'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'
+                                )
+                            })
+                          })
+                        )
+                        .optional()
+                        .describe(
+                          'A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n'
+                        )
+                    }),
+                    zod.object({
+                      template_ref: zod
+                        .union([
+                          zod.object({
+                            id: zod
+                              .string()
+                              .describe('ID of the template in prompt registry')
+                          }),
+                          zod.object({
+                            scenario: zod.string().describe('Scenario name'),
+                            name: zod.string().describe('Name of the template'),
+                            version: zod
+                              .string()
+                              .describe('Version of the template')
+                          })
+                        ])
+                        .describe(
+                          'Reference to a template in the prompt registry by ID or by scenario, name and version'
+                        )
+                    })
+                  ])
+                  .describe(
+                    'The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.\n'
+                  ),
+                model: zod
+                  .object({
+                    name: zod
+                      .string()
+                      .describe(
+                        'Name of the model as in LLM Access configuration'
+                      ),
+                    version: zod
+                      .string()
+                      .default(
+                        registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingModelVersionDefault
+                      )
+                      .describe('Version of the model to be used'),
+                    params: zod
+                      .record(zod.string(), zod.any())
+                      .optional()
+                      .describe(
+                        'Additional parameters for the model. Default values are used for mandatory parameters.'
+                      ),
+                    timeout: zod
+                      .number()
+                      .min(1)
+                      .max(
+                        registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingModelTimeoutMax
+                      )
+                      .default(
+                        registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingModelTimeoutDefault
+                      )
+                      .describe(
+                        'Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'
+                      ),
+                    max_retries: zod
+                      .number()
+                      .min(
+                        registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingModelMaxRetriesMin
+                      )
+                      .max(
+                        registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingModelMaxRetriesMax
+                      )
+                      .default(
+                        registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesPromptTemplatingModelMaxRetriesDefault
+                      )
+                      .describe(
+                        'Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.'
+                      )
+                  })
+                  .describe(
+                    'The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n'
+                  )
+              }),
+              filtering: zod
+                .object({
+                  input: zod
+                    .object({
+                      filters: zod
+                        .array(
+                          zod.union([
+                            zod.object({
+                              type: zod
+                                .enum(['azure_content_safety'])
+                                .describe('Name of the filter provider type'),
+                              config: zod
+                                .object({
+                                  hate: zod
+                                    .union([
+                                      zod.literal(0),
+                                      zod.literal(2),
+                                      zod.literal(4),
+                                      zod.literal(6)
+                                    ])
+                                    .optional(),
+                                  self_harm: zod
+                                    .union([
+                                      zod.literal(0),
+                                      zod.literal(2),
+                                      zod.literal(4),
+                                      zod.literal(6)
+                                    ])
+                                    .optional(),
+                                  sexual: zod
+                                    .union([
+                                      zod.literal(0),
+                                      zod.literal(2),
+                                      zod.literal(4),
+                                      zod.literal(6)
+                                    ])
+                                    .optional(),
+                                  violence: zod
+                                    .union([
+                                      zod.literal(0),
+                                      zod.literal(2),
+                                      zod.literal(4),
+                                      zod.literal(6)
+                                    ])
+                                    .optional(),
+                                  prompt_shield: zod
+                                    .boolean()
+                                    .optional()
+                                    .describe('A flag to use prompt shield')
+                                })
+                                .optional()
+                                .describe(
+                                  'Filter configuration for Azure Content Safety'
+                                )
+                            }),
+                            zod.object({
+                              type: zod
+                                .enum(['llama_guard_3_8b'])
+                                .describe('Name of the filter provider type'),
+                              config: zod
+                                .object({
+                                  violent_crimes: zod.boolean().optional(),
+                                  non_violent_crimes: zod.boolean().optional(),
+                                  sex_crimes: zod.boolean().optional(),
+                                  child_exploitation: zod.boolean().optional(),
+                                  defamation: zod.boolean().optional(),
+                                  specialized_advice: zod.boolean().optional(),
+                                  privacy: zod.boolean().optional(),
+                                  intellectual_property: zod
+                                    .boolean()
+                                    .optional(),
+                                  indiscriminate_weapons: zod
+                                    .boolean()
+                                    .optional(),
+                                  hate: zod.boolean().optional(),
+                                  self_harm: zod.boolean().optional(),
+                                  sexual_content: zod.boolean().optional(),
+                                  elections: zod.boolean().optional(),
+                                  code_interpreter_abuse: zod
+                                    .boolean()
+                                    .optional()
+                                })
+                                .describe(
+                                  'Filter configuration for Llama Guard 3 8B'
+                                )
+                            })
+                          ])
+                        )
+                        .min(1)
+                        .describe(
+                          'Configuration for content filtering services that should be used for the given filtering step (input filtering).'
+                        )
+                    })
+                    .optional()
+                    .describe('List of provider type and filters'),
+                  output: zod
+                    .object({
+                      filters: zod
+                        .array(
+                          zod.union([
+                            zod.object({
+                              type: zod
+                                .enum(['azure_content_safety'])
+                                .describe('Name of the filter provider type'),
+                              config: zod
+                                .object({
+                                  hate: zod
+                                    .union([
+                                      zod.literal(0),
+                                      zod.literal(2),
+                                      zod.literal(4),
+                                      zod.literal(6)
+                                    ])
+                                    .optional(),
+                                  self_harm: zod
+                                    .union([
+                                      zod.literal(0),
+                                      zod.literal(2),
+                                      zod.literal(4),
+                                      zod.literal(6)
+                                    ])
+                                    .optional(),
+                                  sexual: zod
+                                    .union([
+                                      zod.literal(0),
+                                      zod.literal(2),
+                                      zod.literal(4),
+                                      zod.literal(6)
+                                    ])
+                                    .optional(),
+                                  violence: zod
+                                    .union([
+                                      zod.literal(0),
+                                      zod.literal(2),
+                                      zod.literal(4),
+                                      zod.literal(6)
+                                    ])
+                                    .optional()
+                                })
+                                .optional()
+                                .describe(
+                                  'Filter configuration for Azure Content Safety'
+                                )
+                            }),
+                            zod.object({
+                              type: zod
+                                .enum(['llama_guard_3_8b'])
+                                .describe('Name of the filter provider type'),
+                              config: zod
+                                .object({
+                                  violent_crimes: zod.boolean().optional(),
+                                  non_violent_crimes: zod.boolean().optional(),
+                                  sex_crimes: zod.boolean().optional(),
+                                  child_exploitation: zod.boolean().optional(),
+                                  defamation: zod.boolean().optional(),
+                                  specialized_advice: zod.boolean().optional(),
+                                  privacy: zod.boolean().optional(),
+                                  intellectual_property: zod
+                                    .boolean()
+                                    .optional(),
+                                  indiscriminate_weapons: zod
+                                    .boolean()
+                                    .optional(),
+                                  hate: zod.boolean().optional(),
+                                  self_harm: zod.boolean().optional(),
+                                  sexual_content: zod.boolean().optional(),
+                                  elections: zod.boolean().optional(),
+                                  code_interpreter_abuse: zod
+                                    .boolean()
+                                    .optional()
+                                })
+                                .describe(
+                                  'Filter configuration for Llama Guard 3 8B'
+                                )
+                            })
+                          ])
+                        )
+                        .min(1)
+                        .describe(
+                          'Configuration for content filtering services that should be used for the given filtering step (output filtering).'
+                        ),
+                      stream_options: zod
+                        .object({
+                          overlap: zod
+                            .number()
+                            .min(
+                              registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesFilteringOutputStreamOptionsOverlapMin
+                            )
+                            .max(
+                              registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesFilteringOutputStreamOptionsOverlapMax
+                            )
+                            .optional()
+                            .describe(
+                              'Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.'
+                            )
+                        })
+                        .optional()
+                        .describe(
+                          'Stream options for output filtering. Will be ignored if stream is false.'
+                        )
+                    })
+                    .optional()
+                    .describe('List of provider type and filters')
+                })
+                .optional(),
+              masking: zod
+                .union([
+                  zod.object({
+                    providers: zod
+                      .array(
+                        zod.object({
+                          type: zod
+                            .enum(['sap_data_privacy_integration'])
+                            .describe('Type of masking service provider'),
+                          method: zod
+                            .enum(['anonymization', 'pseudonymization'])
+                            .describe('Type of masking method to be used'),
+                          entities: zod
+                            .array(
+                              zod.union([
+                                zod.object({
+                                  type: zod
+                                    .enum([
+                                      'profile-person',
+                                      'profile-org',
+                                      'profile-university',
+                                      'profile-location',
+                                      'profile-email',
+                                      'profile-phone',
+                                      'profile-address',
+                                      'profile-sapids-internal',
+                                      'profile-sapids-public',
+                                      'profile-url',
+                                      'profile-username-password',
+                                      'profile-nationalid',
+                                      'profile-iban',
+                                      'profile-ssn',
+                                      'profile-credit-card-number',
+                                      'profile-passport',
+                                      'profile-driverlicense',
+                                      'profile-nationality',
+                                      'profile-religious-group',
+                                      'profile-political-group',
+                                      'profile-pronouns-gender',
+                                      'profile-ethnicity',
+                                      'profile-gender',
+                                      'profile-sexual-orientation',
+                                      'profile-trade-union',
+                                      'profile-sensitive-data'
+                                    ])
+                                    .describe(
+                                      'Default entities supported by data privacy and integration service'
+                                    ),
+                                  replacement_strategy: zod
+                                    .union([
+                                      zod
+                                        .object({
+                                          method: zod.enum(['constant']),
+                                          value: zod
+                                            .string()
+                                            .describe(
+                                              'Value to be used for replacement'
+                                            )
+                                        })
+                                        .describe(
+                                          'Replaces the entity with the specified value followed by an incrementing number'
+                                        ),
+                                      zod
+                                        .object({
+                                          method: zod.enum(['fabricated_data'])
+                                        })
+                                        .describe(
+                                          'Replaces the entity with a randomly generated value appropriate to its type.'
+                                        )
+                                    ])
+                                    .optional()
+                                    .describe(
+                                      'Replacement strategy to be used for the entity'
+                                    )
+                                }),
+                                zod.object({
+                                  regex: zod
+                                    .string()
+                                    .describe(
+                                      'Regular expression to match the entity'
+                                    ),
+                                  replacement_strategy: zod
+                                    .object({
+                                      method: zod.enum(['constant']),
+                                      value: zod
+                                        .string()
+                                        .describe(
+                                          'Value to be used for replacement'
+                                        )
+                                    })
+                                    .describe(
+                                      'Replaces the entity with the specified value followed by an incrementing number'
+                                    )
+                                    .describe(
+                                      'Replacement strategy to be used for the entity'
+                                    )
+                                })
+                              ])
+                            )
+                            .min(1)
+                            .describe('List of entities to be masked'),
+                          allowlist: zod
+                            .array(zod.string())
+                            .optional()
+                            .describe(
+                              'List of strings that should not be masked'
+                            ),
+                          mask_grounding_input: zod
+                            .object({
+                              enabled: zod
+                                .boolean()
+                                .optional()
+                                .describe(
+                                  'controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'
+                                )
+                            })
+                            .optional()
+                        })
+                      )
+                      .min(1)
+                      .describe('List of masking service providers')
+                  }),
+                  zod.object({
+                    masking_providers: zod
+                      .array(
+                        zod.object({
+                          type: zod
+                            .enum(['sap_data_privacy_integration'])
+                            .describe('Type of masking service provider'),
+                          method: zod
+                            .enum(['anonymization', 'pseudonymization'])
+                            .describe('Type of masking method to be used'),
+                          entities: zod
+                            .array(
+                              zod.union([
+                                zod.object({
+                                  type: zod
+                                    .enum([
+                                      'profile-person',
+                                      'profile-org',
+                                      'profile-university',
+                                      'profile-location',
+                                      'profile-email',
+                                      'profile-phone',
+                                      'profile-address',
+                                      'profile-sapids-internal',
+                                      'profile-sapids-public',
+                                      'profile-url',
+                                      'profile-username-password',
+                                      'profile-nationalid',
+                                      'profile-iban',
+                                      'profile-ssn',
+                                      'profile-credit-card-number',
+                                      'profile-passport',
+                                      'profile-driverlicense',
+                                      'profile-nationality',
+                                      'profile-religious-group',
+                                      'profile-political-group',
+                                      'profile-pronouns-gender',
+                                      'profile-ethnicity',
+                                      'profile-gender',
+                                      'profile-sexual-orientation',
+                                      'profile-trade-union',
+                                      'profile-sensitive-data'
+                                    ])
+                                    .describe(
+                                      'Default entities supported by data privacy and integration service'
+                                    ),
+                                  replacement_strategy: zod
+                                    .union([
+                                      zod
+                                        .object({
+                                          method: zod.enum(['constant']),
+                                          value: zod
+                                            .string()
+                                            .describe(
+                                              'Value to be used for replacement'
+                                            )
+                                        })
+                                        .describe(
+                                          'Replaces the entity with the specified value followed by an incrementing number'
+                                        ),
+                                      zod
+                                        .object({
+                                          method: zod.enum(['fabricated_data'])
+                                        })
+                                        .describe(
+                                          'Replaces the entity with a randomly generated value appropriate to its type.'
+                                        )
+                                    ])
+                                    .optional()
+                                    .describe(
+                                      'Replacement strategy to be used for the entity'
+                                    )
+                                }),
+                                zod.object({
+                                  regex: zod
+                                    .string()
+                                    .describe(
+                                      'Regular expression to match the entity'
+                                    ),
+                                  replacement_strategy: zod
+                                    .object({
+                                      method: zod.enum(['constant']),
+                                      value: zod
+                                        .string()
+                                        .describe(
+                                          'Value to be used for replacement'
+                                        )
+                                    })
+                                    .describe(
+                                      'Replaces the entity with the specified value followed by an incrementing number'
+                                    )
+                                    .describe(
+                                      'Replacement strategy to be used for the entity'
+                                    )
+                                })
+                              ])
+                            )
+                            .min(1)
+                            .describe('List of entities to be masked'),
+                          allowlist: zod
+                            .array(zod.string())
+                            .optional()
+                            .describe(
+                              'List of strings that should not be masked'
+                            ),
+                          mask_grounding_input: zod
+                            .object({
+                              enabled: zod
+                                .boolean()
+                                .optional()
+                                .describe(
+                                  'controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'
+                                )
+                            })
+                            .optional()
+                        })
+                      )
+                      .min(1)
+                      .describe(
+                        'This field is **DEPRECATED** and will be removed on August 05, 2026. Use `providers` property instead. List of masking service providers.'
+                      )
+                  })
+                ])
+                .optional(),
+              grounding: zod
+                .object({
+                  type: zod.string(),
+                  config: zod.object({
+                    filters: zod
+                      .array(
+                        zod.object({
+                          id: zod
+                            .string()
+                            .optional()
+                            .describe(
+                              'Identifier of this SearchFilter - unique per request.'
+                            ),
+                          search_config: zod
+                            .object({
+                              max_chunk_count: zod
+                                .number()
+                                .min(
+                                  registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesGroundingConfigFiltersItemSearchConfigMaxChunkCountMin
+                                )
+                                .optional()
+                                .describe(
+                                  "Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'."
+                                ),
+                              max_document_count: zod
+                                .number()
+                                .min(
+                                  registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesGroundingConfigFiltersItemSearchConfigMaxDocumentCountMin
+                                )
+                                .optional()
+                                .describe(
+                                  "[Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned."
+                                )
+                            })
+                            .optional(),
+                          data_repositories: zod
+                            .array(zod.string())
+                            .default(
+                              registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesGroundingConfigFiltersItemDataRepositoriesDefault
+                            )
+                            .describe(
+                              "Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids."
+                            ),
+                          data_repository_type: zod
+                            .enum(['vector', 'help.sap.com'])
+                            .describe(
+                              'Only include DataRepositories with the given type.'
+                            ),
+                          data_repository_metadata: zod
+                            .array(
+                              zod.object({
+                                key: zod
+                                  .string()
+                                  .max(
+                                    registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesGroundingConfigFiltersItemDataRepositoryMetadataItemKeyMax
+                                  ),
+                                value: zod.array(
+                                  zod
+                                    .string()
+                                    .max(
+                                      registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesGroundingConfigFiltersItemDataRepositoryMetadataItemValueItemMax
+                                    )
+                                )
+                              })
+                            )
+                            .optional()
+                            .describe(
+                              "Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=['*']"
+                            ),
+                          document_metadata: zod
+                            .array(
+                              zod.object({
+                                key: zod
+                                  .string()
+                                  .max(
+                                    registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesGroundingConfigFiltersItemDocumentMetadataItemKeyMax
+                                  ),
+                                value: zod.array(
+                                  zod
+                                    .string()
+                                    .max(
+                                      registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesGroundingConfigFiltersItemDocumentMetadataItemValueItemMax
+                                    )
+                                ),
+                                select_mode: zod
+                                  .array(zod.enum(['ignoreIfKeyAbsent']))
+                                  .optional()
+                                  .describe('Select mode for search filters')
+                              })
+                            )
+                            .optional()
+                            .describe(
+                              'Restrict documents considered during search to those annotated with the given metadata.'
+                            ),
+                          chunk_metadata: zod
+                            .array(
+                              zod.object({
+                                key: zod
+                                  .string()
+                                  .max(
+                                    registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesGroundingConfigFiltersItemChunkMetadataItemKeyMax
+                                  ),
+                                value: zod.array(
+                                  zod
+                                    .string()
+                                    .max(
+                                      registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesGroundingConfigFiltersItemChunkMetadataItemValueItemMax
+                                    )
+                                )
+                              })
+                            )
+                            .optional()
+                            .describe(
+                              'Restrict chunks considered during search to those with the given metadata.'
+                            )
+                        })
+                      )
+                      .optional()
+                      .describe(
+                        'Document grounding service filters to be used'
+                      ),
+                    placeholders: zod
+                      .object({
+                        input: zod
+                          .array(zod.string())
+                          .min(1)
+                          .describe(
+                            'Contains the input parameters used for grounding input questions'
+                          ),
+                        output: zod
+                          .string()
+                          .describe('Placeholder name for grounding output')
+                      })
+                      .describe(
+                        'Placeholders to be used for grounding input questions and output'
+                      ),
+                    metadata_params: zod
+                      .array(zod.string())
+                      .optional()
+                      .describe(
+                        'Parameter name used for specifying metadata parameters'
+                      )
+                  })
+                })
+                .optional(),
+              translation: zod
+                .object({
+                  input: zod
+                    .object({
+                      type: zod
+                        .enum(['sap_document_translation'])
+                        .describe('Type of document translation provider'),
+                      config: zod
+                        .object({
+                          source_language: zod
+                            .string()
+                            .optional()
+                            .describe('Language of the text to be translated.'),
+                          target_language: zod
+                            .string()
+                            .describe(
+                              'Language to which the text should be translated.'
+                            )
+                        })
+                        .describe(
+                          'Configuration for `sap_document_translation` translation provider.'
+                        )
+                    })
+                    .optional()
+                    .describe('Configuration for input translation'),
+                  output: zod
+                    .object({
+                      type: zod
+                        .enum(['sap_document_translation'])
+                        .describe('Type of document translation provider'),
+                      config: zod
+                        .object({
+                          source_language: zod
+                            .string()
+                            .optional()
+                            .describe('Language of the text to be translated.'),
+                          target_language: zod
+                            .string()
+                            .describe(
+                              'Language to which the text should be translated.'
+                            )
+                        })
+                        .describe(
+                          'Configuration for `sap_document_translation` translation provider.'
+                        )
+                    })
+                    .optional()
+                    .describe('Configuration for output translation')
+                })
+                .optional()
+                .describe('Configuration for translation module')
+            }),
+            stream: zod
+              .object({
+                enabled: zod
+                  .boolean()
+                  .optional()
+                  .describe(
+                    'If true, the response will be streamed back to the client'
+                  ),
+                chunk_size: zod
+                  .number()
+                  .min(1)
+                  .max(
+                    registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamChunkSizeMax
+                  )
+                  .default(
+                    registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamChunkSizeDefault
+                  )
+                  .describe(
+                    'Minimum number of characters per chunk that post-LLM modules operate on.'
+                  ),
+                delimiters: zod
+                  .array(zod.string())
+                  .min(1)
+                  .optional()
+                  .describe(
+                    'List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.'
+                  )
+              })
+              .optional()
+              .describe(
+                'Options for streaming. Will be ignored if enabled is false.'
+              )
+          })
+          .optional()
+      })
+    )
+  });
+
+/**
+ * Get orchestration config by UUID.
+ */
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidParams =
+  zod.object({
+    orchestrationConfigId: zod.string().uuid()
+  });
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidQueryResolveTemplateRefDefault = false;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidQueryParams =
+  zod.object({
+    resolve_template_ref: zod.boolean().optional()
+  });
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use')
+  });
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingPromptTemplateItemContentItemImageUrlDetailDefault =
+  'auto';
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingPromptResponseFormatJsonSchemaNameMax = 64;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingPromptResponseFormatJsonSchemaNameRegExp =
+  new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingPromptResponseFormatJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingPromptToolsItemFunctionNameMax = 64;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingPromptToolsItemFunctionNameRegExp =
+  new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingPromptToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingModelVersionDefault =
+  'latest';
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingModelTimeoutMax = 600;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingModelMaxRetriesDefault = 2;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingModelMaxRetriesMin = 0;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingModelMaxRetriesMax = 5;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesFilteringInputFiltersItemConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesFilteringOutputStreamOptionsOverlapDefault = 0;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesFilteringOutputStreamOptionsOverlapMin = 0;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesFilteringOutputStreamOptionsOverlapMax = 10000;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesMaskingProvidersItemMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesMaskingMaskingProvidersItemMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesGroundingConfigFiltersItemSearchConfigMaxChunkCountMin = 0;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesGroundingConfigFiltersItemSearchConfigMaxDocumentCountMin = 0;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesGroundingConfigFiltersItemDataRepositoriesDefault =
+  ['*'];
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesGroundingConfigFiltersItemDataRepositoryMetadataItemKeyMax = 1024;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesGroundingConfigFiltersItemDataRepositoryMetadataItemValueItemMax = 1024;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesGroundingConfigFiltersItemDocumentMetadataItemKeyMax = 1024;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesGroundingConfigFiltersItemDocumentMetadataItemValueItemMax = 1024;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesGroundingConfigFiltersItemChunkMetadataItemKeyMax = 1024;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesGroundingConfigFiltersItemChunkMetadataItemValueItemMax = 1024;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamChunkSizeDefault = 100;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamChunkSizeMax = 10000;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponse =
+  zod.object({
+    id: zod.string().uuid().optional(),
+    name: zod.string().optional(),
+    version: zod.string().optional(),
+    scenario: zod.string().optional(),
+    model_name: zod.string().optional(),
+    creation_timestamp: zod.string().optional(),
+    managed_by: zod.string().optional(),
+    is_version_head: zod.boolean().optional(),
+    resource_group_id: zod.string().optional(),
+    spec: zod
+      .object({
+        modules: zod.object({
+          prompt_templating: zod.object({
+            prompt: zod
+              .union([
+                zod.object({
+                  template: zod
+                    .array(
+                      zod.union([
+                        zod.object({
+                          role: zod.enum(['system']),
+                          content: zod.union([
+                            zod.string(),
+                            zod
+                              .array(
+                                zod.object({
+                                  type: zod.enum(['text']),
+                                  text: zod.string()
+                                })
+                              )
+                              .min(1)
+                          ])
+                        }),
+                        zod.object({
+                          content: zod.union([
+                            zod.string(),
+                            zod
+                              .array(
+                                zod.object({
+                                  type: zod.enum(['text', 'image_url']),
+                                  text: zod.string().optional(),
+                                  image_url: zod
+                                    .object({
+                                      url: zod.string(),
+                                      detail: zod
+                                        .string()
+                                        .default(
+                                          registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingPromptTemplateItemContentItemImageUrlDetailDefault
+                                        )
+                                    })
+                                    .optional()
+                                })
+                              )
+                              .min(1)
+                          ]),
+                          role: zod.enum(['user'])
+                        }),
+                        zod.object({
+                          role: zod.enum(['assistant']),
+                          content: zod
+                            .union([
+                              zod.string(),
+                              zod
+                                .array(
+                                  zod.object({
+                                    type: zod.enum(['text']),
+                                    text: zod.string()
+                                  })
+                                )
+                                .min(1)
+                            ])
+                            .optional(),
+                          refusal: zod.string().optional(),
+                          tool_calls: zod
+                            .array(
+                              zod.object({
+                                id: zod
+                                  .string()
+                                  .describe('The ID of the tool call.'),
+                                type: zod
+                                  .enum(['function'])
+                                  .describe(
+                                    'The type of the tool. Currently, only `function` is supported.'
+                                  ),
+                                function: zod
+                                  .object({
+                                    name: zod
+                                      .string()
+                                      .describe(
+                                        'The name of the function to call.'
+                                      ),
+                                    arguments: zod
+                                      .string()
+                                      .describe(
+                                        'The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.'
+                                      )
+                                  })
+                                  .describe(
+                                    'The function that the model called.'
+                                  )
+                              })
+                            )
+                            .optional()
+                            .describe(
+                              'The tool calls generated by the model, such as function calls.'
+                            )
+                        }),
+                        zod.object({
+                          role: zod.enum(['tool']),
+                          tool_call_id: zod.string(),
+                          content: zod.union([
+                            zod.string(),
+                            zod
+                              .array(
+                                zod.object({
+                                  type: zod.enum(['text']),
+                                  text: zod.string()
+                                })
+                              )
+                              .min(1)
+                          ])
+                        }),
+                        zod.object({
+                          role: zod.enum(['developer']),
+                          content: zod.union([
+                            zod.string(),
+                            zod
+                              .array(
+                                zod.object({
+                                  type: zod.enum(['text']),
+                                  text: zod.string()
+                                })
+                              )
+                              .min(1)
+                          ])
+                        })
+                      ])
+                    )
+                    .min(1)
+                    .describe(
+                      'A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'
+                    ),
+                  defaults: zod
+                    .record(zod.string(), zod.string())
+                    .optional()
+                    .describe(
+                      'Optional default values for the template. If a parameter has no default it is required.'
+                    ),
+                  response_format: zod
+                    .union([
+                      zod.object({
+                        type: zod
+                          .enum(['text'])
+                          .describe(
+                            'The type of response format being defined: `text`'
+                          )
+                      }),
+                      zod.object({
+                        type: zod
+                          .enum(['json_object'])
+                          .describe(
+                            'The type of response format being defined: `json_object`'
+                          )
+                      }),
+                      zod.object({
+                        type: zod
+                          .enum(['json_schema'])
+                          .describe(
+                            'The type of response format being defined: `json_schema`'
+                          ),
+                        json_schema: zod.object({
+                          description: zod
+                            .string()
+                            .optional()
+                            .describe(
+                              'A description of what the response format is for, used by the model to determine how to respond in the format.'
+                            ),
+                          name: zod
+                            .string()
+                            .max(
+                              registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingPromptResponseFormatJsonSchemaNameMax
+                            )
+                            .regex(
+                              registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingPromptResponseFormatJsonSchemaNameRegExp
+                            )
+                            .describe(
+                              'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
+                            ),
+                          schema: zod
+                            .record(zod.string(), zod.any())
+                            .optional()
+                            .describe(
+                              'The schema for the response format, described as a JSON Schema object.'
+                            ),
+                          strict: zod
+                            .boolean()
+                            .nullish()
+                            .describe(
+                              'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).'
+                            )
+                        })
+                      })
+                    ])
+                    .optional()
+                    .describe(
+                      'Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'
+                    ),
+                  tools: zod
+                    .array(
+                      zod.object({
+                        type: zod
+                          .enum(['function'])
+                          .describe(
+                            'The type of the tool. Currently, only `function` is supported.'
+                          ),
+                        function: zod.object({
+                          description: zod
+                            .string()
+                            .optional()
+                            .describe(
+                              'A description of what the function does, used by the model to choose when and how to call the function.'
+                            ),
+                          name: zod
+                            .string()
+                            .max(
+                              registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingPromptToolsItemFunctionNameMax
+                            )
+                            .regex(
+                              registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingPromptToolsItemFunctionNameRegExp
+                            )
+                            .describe(
+                              'The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
+                            ),
+                          parameters: zod
+                            .record(zod.string(), zod.any())
+                            .optional()
+                            .describe(
+                              'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
+                            ),
+                          strict: zod
+                            .boolean()
+                            .nullish()
+                            .describe(
+                              'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'
+                            )
+                        })
+                      })
+                    )
+                    .optional()
+                    .describe(
+                      'A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n'
+                    )
+                }),
+                zod.object({
+                  template_ref: zod
+                    .union([
+                      zod.object({
+                        id: zod
+                          .string()
+                          .describe('ID of the template in prompt registry')
+                      }),
+                      zod.object({
+                        scenario: zod.string().describe('Scenario name'),
+                        name: zod.string().describe('Name of the template'),
+                        version: zod
+                          .string()
+                          .describe('Version of the template')
+                      })
+                    ])
+                    .describe(
+                      'Reference to a template in the prompt registry by ID or by scenario, name and version'
+                    )
+                })
+              ])
+              .describe(
+                'The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.\n'
+              ),
+            model: zod
+              .object({
+                name: zod
+                  .string()
+                  .describe('Name of the model as in LLM Access configuration'),
+                version: zod
+                  .string()
+                  .default(
+                    registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingModelVersionDefault
+                  )
+                  .describe('Version of the model to be used'),
+                params: zod
+                  .record(zod.string(), zod.any())
+                  .optional()
+                  .describe(
+                    'Additional parameters for the model. Default values are used for mandatory parameters.'
+                  ),
+                timeout: zod
+                  .number()
+                  .min(1)
+                  .max(
+                    registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingModelTimeoutMax
+                  )
+                  .default(
+                    registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingModelTimeoutDefault
+                  )
+                  .describe(
+                    'Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'
+                  ),
+                max_retries: zod
+                  .number()
+                  .min(
+                    registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingModelMaxRetriesMin
+                  )
+                  .max(
+                    registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingModelMaxRetriesMax
+                  )
+                  .default(
+                    registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesPromptTemplatingModelMaxRetriesDefault
+                  )
+                  .describe(
+                    'Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.'
+                  )
+              })
+              .describe(
+                'The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n'
+              )
+          }),
+          filtering: zod
+            .object({
+              input: zod
+                .object({
+                  filters: zod
+                    .array(
+                      zod.union([
+                        zod.object({
+                          type: zod
+                            .enum(['azure_content_safety'])
+                            .describe('Name of the filter provider type'),
+                          config: zod
+                            .object({
+                              hate: zod
+                                .union([
+                                  zod.literal(0),
+                                  zod.literal(2),
+                                  zod.literal(4),
+                                  zod.literal(6)
+                                ])
+                                .optional(),
+                              self_harm: zod
+                                .union([
+                                  zod.literal(0),
+                                  zod.literal(2),
+                                  zod.literal(4),
+                                  zod.literal(6)
+                                ])
+                                .optional(),
+                              sexual: zod
+                                .union([
+                                  zod.literal(0),
+                                  zod.literal(2),
+                                  zod.literal(4),
+                                  zod.literal(6)
+                                ])
+                                .optional(),
+                              violence: zod
+                                .union([
+                                  zod.literal(0),
+                                  zod.literal(2),
+                                  zod.literal(4),
+                                  zod.literal(6)
+                                ])
+                                .optional(),
+                              prompt_shield: zod
+                                .boolean()
+                                .optional()
+                                .describe('A flag to use prompt shield')
+                            })
+                            .optional()
+                            .describe(
+                              'Filter configuration for Azure Content Safety'
+                            )
+                        }),
+                        zod.object({
+                          type: zod
+                            .enum(['llama_guard_3_8b'])
+                            .describe('Name of the filter provider type'),
+                          config: zod
+                            .object({
+                              violent_crimes: zod.boolean().optional(),
+                              non_violent_crimes: zod.boolean().optional(),
+                              sex_crimes: zod.boolean().optional(),
+                              child_exploitation: zod.boolean().optional(),
+                              defamation: zod.boolean().optional(),
+                              specialized_advice: zod.boolean().optional(),
+                              privacy: zod.boolean().optional(),
+                              intellectual_property: zod.boolean().optional(),
+                              indiscriminate_weapons: zod.boolean().optional(),
+                              hate: zod.boolean().optional(),
+                              self_harm: zod.boolean().optional(),
+                              sexual_content: zod.boolean().optional(),
+                              elections: zod.boolean().optional(),
+                              code_interpreter_abuse: zod.boolean().optional()
+                            })
+                            .describe(
+                              'Filter configuration for Llama Guard 3 8B'
+                            )
+                        })
+                      ])
+                    )
+                    .min(1)
+                    .describe(
+                      'Configuration for content filtering services that should be used for the given filtering step (input filtering).'
+                    )
+                })
+                .optional()
+                .describe('List of provider type and filters'),
+              output: zod
+                .object({
+                  filters: zod
+                    .array(
+                      zod.union([
+                        zod.object({
+                          type: zod
+                            .enum(['azure_content_safety'])
+                            .describe('Name of the filter provider type'),
+                          config: zod
+                            .object({
+                              hate: zod
+                                .union([
+                                  zod.literal(0),
+                                  zod.literal(2),
+                                  zod.literal(4),
+                                  zod.literal(6)
+                                ])
+                                .optional(),
+                              self_harm: zod
+                                .union([
+                                  zod.literal(0),
+                                  zod.literal(2),
+                                  zod.literal(4),
+                                  zod.literal(6)
+                                ])
+                                .optional(),
+                              sexual: zod
+                                .union([
+                                  zod.literal(0),
+                                  zod.literal(2),
+                                  zod.literal(4),
+                                  zod.literal(6)
+                                ])
+                                .optional(),
+                              violence: zod
+                                .union([
+                                  zod.literal(0),
+                                  zod.literal(2),
+                                  zod.literal(4),
+                                  zod.literal(6)
+                                ])
+                                .optional()
+                            })
+                            .optional()
+                            .describe(
+                              'Filter configuration for Azure Content Safety'
+                            )
+                        }),
+                        zod.object({
+                          type: zod
+                            .enum(['llama_guard_3_8b'])
+                            .describe('Name of the filter provider type'),
+                          config: zod
+                            .object({
+                              violent_crimes: zod.boolean().optional(),
+                              non_violent_crimes: zod.boolean().optional(),
+                              sex_crimes: zod.boolean().optional(),
+                              child_exploitation: zod.boolean().optional(),
+                              defamation: zod.boolean().optional(),
+                              specialized_advice: zod.boolean().optional(),
+                              privacy: zod.boolean().optional(),
+                              intellectual_property: zod.boolean().optional(),
+                              indiscriminate_weapons: zod.boolean().optional(),
+                              hate: zod.boolean().optional(),
+                              self_harm: zod.boolean().optional(),
+                              sexual_content: zod.boolean().optional(),
+                              elections: zod.boolean().optional(),
+                              code_interpreter_abuse: zod.boolean().optional()
+                            })
+                            .describe(
+                              'Filter configuration for Llama Guard 3 8B'
+                            )
+                        })
+                      ])
+                    )
+                    .min(1)
+                    .describe(
+                      'Configuration for content filtering services that should be used for the given filtering step (output filtering).'
+                    ),
+                  stream_options: zod
+                    .object({
+                      overlap: zod
+                        .number()
+                        .min(
+                          registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesFilteringOutputStreamOptionsOverlapMin
+                        )
+                        .max(
+                          registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesFilteringOutputStreamOptionsOverlapMax
+                        )
+                        .optional()
+                        .describe(
+                          'Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.'
+                        )
+                    })
+                    .optional()
+                    .describe(
+                      'Stream options for output filtering. Will be ignored if stream is false.'
+                    )
+                })
+                .optional()
+                .describe('List of provider type and filters')
+            })
+            .optional(),
+          masking: zod
+            .union([
+              zod.object({
+                providers: zod
+                  .array(
+                    zod.object({
+                      type: zod
+                        .enum(['sap_data_privacy_integration'])
+                        .describe('Type of masking service provider'),
+                      method: zod
+                        .enum(['anonymization', 'pseudonymization'])
+                        .describe('Type of masking method to be used'),
+                      entities: zod
+                        .array(
+                          zod.union([
+                            zod.object({
+                              type: zod
+                                .enum([
+                                  'profile-person',
+                                  'profile-org',
+                                  'profile-university',
+                                  'profile-location',
+                                  'profile-email',
+                                  'profile-phone',
+                                  'profile-address',
+                                  'profile-sapids-internal',
+                                  'profile-sapids-public',
+                                  'profile-url',
+                                  'profile-username-password',
+                                  'profile-nationalid',
+                                  'profile-iban',
+                                  'profile-ssn',
+                                  'profile-credit-card-number',
+                                  'profile-passport',
+                                  'profile-driverlicense',
+                                  'profile-nationality',
+                                  'profile-religious-group',
+                                  'profile-political-group',
+                                  'profile-pronouns-gender',
+                                  'profile-ethnicity',
+                                  'profile-gender',
+                                  'profile-sexual-orientation',
+                                  'profile-trade-union',
+                                  'profile-sensitive-data'
+                                ])
+                                .describe(
+                                  'Default entities supported by data privacy and integration service'
+                                ),
+                              replacement_strategy: zod
+                                .union([
+                                  zod
+                                    .object({
+                                      method: zod.enum(['constant']),
+                                      value: zod
+                                        .string()
+                                        .describe(
+                                          'Value to be used for replacement'
+                                        )
+                                    })
+                                    .describe(
+                                      'Replaces the entity with the specified value followed by an incrementing number'
+                                    ),
+                                  zod
+                                    .object({
+                                      method: zod.enum(['fabricated_data'])
+                                    })
+                                    .describe(
+                                      'Replaces the entity with a randomly generated value appropriate to its type.'
+                                    )
+                                ])
+                                .optional()
+                                .describe(
+                                  'Replacement strategy to be used for the entity'
+                                )
+                            }),
+                            zod.object({
+                              regex: zod
+                                .string()
+                                .describe(
+                                  'Regular expression to match the entity'
+                                ),
+                              replacement_strategy: zod
+                                .object({
+                                  method: zod.enum(['constant']),
+                                  value: zod
+                                    .string()
+                                    .describe(
+                                      'Value to be used for replacement'
+                                    )
+                                })
+                                .describe(
+                                  'Replaces the entity with the specified value followed by an incrementing number'
+                                )
+                                .describe(
+                                  'Replacement strategy to be used for the entity'
+                                )
+                            })
+                          ])
+                        )
+                        .min(1)
+                        .describe('List of entities to be masked'),
+                      allowlist: zod
+                        .array(zod.string())
+                        .optional()
+                        .describe('List of strings that should not be masked'),
+                      mask_grounding_input: zod
+                        .object({
+                          enabled: zod
+                            .boolean()
+                            .optional()
+                            .describe(
+                              'controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'
+                            )
+                        })
+                        .optional()
+                    })
+                  )
+                  .min(1)
+                  .describe('List of masking service providers')
+              }),
+              zod.object({
+                masking_providers: zod
+                  .array(
+                    zod.object({
+                      type: zod
+                        .enum(['sap_data_privacy_integration'])
+                        .describe('Type of masking service provider'),
+                      method: zod
+                        .enum(['anonymization', 'pseudonymization'])
+                        .describe('Type of masking method to be used'),
+                      entities: zod
+                        .array(
+                          zod.union([
+                            zod.object({
+                              type: zod
+                                .enum([
+                                  'profile-person',
+                                  'profile-org',
+                                  'profile-university',
+                                  'profile-location',
+                                  'profile-email',
+                                  'profile-phone',
+                                  'profile-address',
+                                  'profile-sapids-internal',
+                                  'profile-sapids-public',
+                                  'profile-url',
+                                  'profile-username-password',
+                                  'profile-nationalid',
+                                  'profile-iban',
+                                  'profile-ssn',
+                                  'profile-credit-card-number',
+                                  'profile-passport',
+                                  'profile-driverlicense',
+                                  'profile-nationality',
+                                  'profile-religious-group',
+                                  'profile-political-group',
+                                  'profile-pronouns-gender',
+                                  'profile-ethnicity',
+                                  'profile-gender',
+                                  'profile-sexual-orientation',
+                                  'profile-trade-union',
+                                  'profile-sensitive-data'
+                                ])
+                                .describe(
+                                  'Default entities supported by data privacy and integration service'
+                                ),
+                              replacement_strategy: zod
+                                .union([
+                                  zod
+                                    .object({
+                                      method: zod.enum(['constant']),
+                                      value: zod
+                                        .string()
+                                        .describe(
+                                          'Value to be used for replacement'
+                                        )
+                                    })
+                                    .describe(
+                                      'Replaces the entity with the specified value followed by an incrementing number'
+                                    ),
+                                  zod
+                                    .object({
+                                      method: zod.enum(['fabricated_data'])
+                                    })
+                                    .describe(
+                                      'Replaces the entity with a randomly generated value appropriate to its type.'
+                                    )
+                                ])
+                                .optional()
+                                .describe(
+                                  'Replacement strategy to be used for the entity'
+                                )
+                            }),
+                            zod.object({
+                              regex: zod
+                                .string()
+                                .describe(
+                                  'Regular expression to match the entity'
+                                ),
+                              replacement_strategy: zod
+                                .object({
+                                  method: zod.enum(['constant']),
+                                  value: zod
+                                    .string()
+                                    .describe(
+                                      'Value to be used for replacement'
+                                    )
+                                })
+                                .describe(
+                                  'Replaces the entity with the specified value followed by an incrementing number'
+                                )
+                                .describe(
+                                  'Replacement strategy to be used for the entity'
+                                )
+                            })
+                          ])
+                        )
+                        .min(1)
+                        .describe('List of entities to be masked'),
+                      allowlist: zod
+                        .array(zod.string())
+                        .optional()
+                        .describe('List of strings that should not be masked'),
+                      mask_grounding_input: zod
+                        .object({
+                          enabled: zod
+                            .boolean()
+                            .optional()
+                            .describe(
+                              'controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'
+                            )
+                        })
+                        .optional()
+                    })
+                  )
+                  .min(1)
+                  .describe(
+                    'This field is **DEPRECATED** and will be removed on August 05, 2026. Use `providers` property instead. List of masking service providers.'
+                  )
+              })
+            ])
+            .optional(),
+          grounding: zod
+            .object({
+              type: zod.string(),
+              config: zod.object({
+                filters: zod
+                  .array(
+                    zod.object({
+                      id: zod
+                        .string()
+                        .optional()
+                        .describe(
+                          'Identifier of this SearchFilter - unique per request.'
+                        ),
+                      search_config: zod
+                        .object({
+                          max_chunk_count: zod
+                            .number()
+                            .min(
+                              registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesGroundingConfigFiltersItemSearchConfigMaxChunkCountMin
+                            )
+                            .optional()
+                            .describe(
+                              "Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'."
+                            ),
+                          max_document_count: zod
+                            .number()
+                            .min(
+                              registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesGroundingConfigFiltersItemSearchConfigMaxDocumentCountMin
+                            )
+                            .optional()
+                            .describe(
+                              "[Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned."
+                            )
+                        })
+                        .optional(),
+                      data_repositories: zod
+                        .array(zod.string())
+                        .default(
+                          registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesGroundingConfigFiltersItemDataRepositoriesDefault
+                        )
+                        .describe(
+                          "Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids."
+                        ),
+                      data_repository_type: zod
+                        .enum(['vector', 'help.sap.com'])
+                        .describe(
+                          'Only include DataRepositories with the given type.'
+                        ),
+                      data_repository_metadata: zod
+                        .array(
+                          zod.object({
+                            key: zod
+                              .string()
+                              .max(
+                                registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesGroundingConfigFiltersItemDataRepositoryMetadataItemKeyMax
+                              ),
+                            value: zod.array(
+                              zod
+                                .string()
+                                .max(
+                                  registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesGroundingConfigFiltersItemDataRepositoryMetadataItemValueItemMax
+                                )
+                            )
+                          })
+                        )
+                        .optional()
+                        .describe(
+                          "Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=['*']"
+                        ),
+                      document_metadata: zod
+                        .array(
+                          zod.object({
+                            key: zod
+                              .string()
+                              .max(
+                                registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesGroundingConfigFiltersItemDocumentMetadataItemKeyMax
+                              ),
+                            value: zod.array(
+                              zod
+                                .string()
+                                .max(
+                                  registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesGroundingConfigFiltersItemDocumentMetadataItemValueItemMax
+                                )
+                            ),
+                            select_mode: zod
+                              .array(zod.enum(['ignoreIfKeyAbsent']))
+                              .optional()
+                              .describe('Select mode for search filters')
+                          })
+                        )
+                        .optional()
+                        .describe(
+                          'Restrict documents considered during search to those annotated with the given metadata.'
+                        ),
+                      chunk_metadata: zod
+                        .array(
+                          zod.object({
+                            key: zod
+                              .string()
+                              .max(
+                                registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesGroundingConfigFiltersItemChunkMetadataItemKeyMax
+                              ),
+                            value: zod.array(
+                              zod
+                                .string()
+                                .max(
+                                  registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesGroundingConfigFiltersItemChunkMetadataItemValueItemMax
+                                )
+                            )
+                          })
+                        )
+                        .optional()
+                        .describe(
+                          'Restrict chunks considered during search to those with the given metadata.'
+                        )
+                    })
+                  )
+                  .optional()
+                  .describe('Document grounding service filters to be used'),
+                placeholders: zod
+                  .object({
+                    input: zod
+                      .array(zod.string())
+                      .min(1)
+                      .describe(
+                        'Contains the input parameters used for grounding input questions'
+                      ),
+                    output: zod
+                      .string()
+                      .describe('Placeholder name for grounding output')
+                  })
+                  .describe(
+                    'Placeholders to be used for grounding input questions and output'
+                  ),
+                metadata_params: zod
+                  .array(zod.string())
+                  .optional()
+                  .describe(
+                    'Parameter name used for specifying metadata parameters'
+                  )
+              })
+            })
+            .optional(),
+          translation: zod
+            .object({
+              input: zod
+                .object({
+                  type: zod
+                    .enum(['sap_document_translation'])
+                    .describe('Type of document translation provider'),
+                  config: zod
+                    .object({
+                      source_language: zod
+                        .string()
+                        .optional()
+                        .describe('Language of the text to be translated.'),
+                      target_language: zod
+                        .string()
+                        .describe(
+                          'Language to which the text should be translated.'
+                        )
+                    })
+                    .describe(
+                      'Configuration for `sap_document_translation` translation provider.'
+                    )
+                })
+                .optional()
+                .describe('Configuration for input translation'),
+              output: zod
+                .object({
+                  type: zod
+                    .enum(['sap_document_translation'])
+                    .describe('Type of document translation provider'),
+                  config: zod
+                    .object({
+                      source_language: zod
+                        .string()
+                        .optional()
+                        .describe('Language of the text to be translated.'),
+                      target_language: zod
+                        .string()
+                        .describe(
+                          'Language to which the text should be translated.'
+                        )
+                    })
+                    .describe(
+                      'Configuration for `sap_document_translation` translation provider.'
+                    )
+                })
+                .optional()
+                .describe('Configuration for output translation')
+            })
+            .optional()
+            .describe('Configuration for translation module')
+        }),
+        stream: zod
+          .object({
+            enabled: zod
+              .boolean()
+              .optional()
+              .describe(
+                'If true, the response will be streamed back to the client'
+              ),
+            chunk_size: zod
+              .number()
+              .min(1)
+              .max(
+                registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamChunkSizeMax
+              )
+              .default(
+                registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamChunkSizeDefault
+              )
+              .describe(
+                'Minimum number of characters per chunk that post-LLM modules operate on.'
+              ),
+            delimiters: zod
+              .array(zod.string())
+              .min(1)
+              .optional()
+              .describe(
+                'List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.'
+              )
+          })
+          .optional()
+          .describe(
+            'Options for streaming. Will be ignored if enabled is false.'
+          )
+      })
+      .optional()
+  });
+
+/**
+ * Delete orchestration config.
+ */
+export const registryControllerOrchestrationConfigControllerDeleteOrchestrationConfigParams =
+  zod.object({
+    orchestrationConfigId: zod.string().uuid()
+  });
+
+export const registryControllerOrchestrationConfigControllerDeleteOrchestrationConfigHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use')
+  });
+
+export const registryControllerOrchestrationConfigControllerDeleteOrchestrationConfigResponse =
+  zod.object({
+    message: zod.string()
+  });
+
+/**
+ * Import orchestration config.
+ */
+export const registryControllerOrchestrationConfigControllerImportOrchestrationConfigHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use')
+  });
+
+export const registryControllerOrchestrationConfigControllerImportOrchestrationConfigBody =
+  zod.object({
+    file: zod.instanceof(File).optional()
+  });
+
+export const registryControllerOrchestrationConfigControllerImportOrchestrationConfigResponse =
+  zod.object({
+    message: zod.string(),
+    id: zod.string().uuid(),
+    scenario: zod.string(),
+    name: zod.string(),
+    version: zod.string(),
+    model_name: zod.string()
+  });
+
+/**
+ * Export orchestration config.
+ */
+export const registryControllerOrchestrationConfigControllerExportOrchestrationConfigParams =
+  zod.object({
+    orchestrationConfigId: zod.string().uuid()
+  });
+
+export const registryControllerOrchestrationConfigControllerExportOrchestrationConfigHeader =
+  zod.object({
+    'AI-Resource-Group': zod
+      .string()
+      .optional()
+      .describe('Specify a resource group id to use')
   });
