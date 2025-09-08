@@ -16,7 +16,7 @@ jobs:
         node-version: ${{ fromJSON(vars.SUPPORTED_NODE_VERSIONS) }}
 
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@fix-default-node-version-with-vars
+      - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
           node-version: ${{ matrix.node-version }}
       - run: pnpm test:unit
@@ -25,7 +25,7 @@ jobs:
   checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@fix-default-node-version-with-vars
+      - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
       - name: REUSE Compliance Check
