@@ -1,7 +1,7 @@
 import nock from 'nock';
 import { jest } from '@jest/globals';
 import { createLogger } from '@sap-cloud-sdk/util';
-import { resolveDeployment } from '@sap-ai-sdk/ai-api/internal.js';
+import { resolveDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
 import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
@@ -977,7 +977,7 @@ describe('orchestration service client', () => {
       const deploymentConfig = { deploymentId: 'test-deployment-id' };
 
       // Spy on the resolveDeployment function
-      const spy = jest.spyOn({ resolveDeployment }, 'resolveDeployment');
+      const spy = jest.spyOn({ resolveDeploymentId }, 'resolveDeploymentId');
 
       // Call getOrchestrationDeploymentId
       const result = await getOrchestrationDeploymentId(deploymentConfig);
