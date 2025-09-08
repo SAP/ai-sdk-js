@@ -46,8 +46,6 @@ Get all deployments in resource group `default`.
 Get all deployments targeting a custom destination.
 Provide a destination when calling the `execute()` method.
 
-The guide to create a custom tutorial: https://sap.github.io/cloud-sdk/docs/js/features/connectivity/destinations#local-environment-variable
-
 To create a custom destination, the following template can be used in the `.env` file:
 
 ```json
@@ -62,6 +60,8 @@ destinations='[{
   }]
 }]'
 ```
+
+Refer to our [guide](https://sap.github.io/cloud-sdk/docs/js/features/connectivity/destinations#local-environment-variable) for more details on testing locally with custom destinations.
 
 #### Create a Deployment
 
