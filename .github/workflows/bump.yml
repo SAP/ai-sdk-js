@@ -22,7 +22,6 @@ jobs:
 # env:
 #   DOCS_REPO: SAP/ai-sdk
 #   DOCS_CHECKOUT_PATH: ./ai-sdk-docs
-#   NODE_VERSION: ${{ vars.DEFAULT_NODE_VERSION }}
 
 # jobs:
 #   bump:
@@ -34,6 +33,7 @@ jobs:
 #         with:
 #           token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
 #           ref: 'main'
+#           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
 #       - name: bump version
 #         uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
 #         id: bump
@@ -60,7 +60,7 @@ jobs:
 #       - name: Checkout current repository
 #         uses: sap/ai-sdk-js/.github/actions/setup@main
 #         with:
-#           node-version: ${{ env.NODE_VERSION }}
+#           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
 #       - name: Checkout Docs Repo
 #         uses: actions/checkout@v4
 #         with:
@@ -120,7 +120,7 @@ jobs:
 #       - name: Setup Node.js
 #         uses: actions/setup-node@v4
 #         with:
-#           node-version: ${{ env.NODE_VERSION }}
+#           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
 
 #       - name: Install Dependencies
 #         working-directory: ${{ env.DOCS_CHECKOUT_PATH }}

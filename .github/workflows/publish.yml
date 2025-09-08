@@ -7,7 +7,6 @@
 
 # env:
 #   DOCS_REPO: SAP/ai-sdk
-#   NODE_VERSION: ${{ vars.DEFAULT_NODE_VERSION }}
 
 # jobs:
 #   check-release-notes-pr:
@@ -19,7 +18,7 @@
 #     steps:
 #       - uses: sap/ai-sdk-js/.github/actions/setup@main
 #         with:
-#           node-version: ${{ env.NODE_VERSION }}
+#           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
 #       - name: Determine Docs PR Branch Name
 #         id: determine-branch-name
 #         run: |
@@ -62,7 +61,7 @@
 #     steps:
 #       - uses: sap/ai-sdk-js/.github/actions/setup@main
 #         with:
-#           node-version: ${{ env.NODE_VERSION }}
+#           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
 #       - name: publish
 #         run: |
 #           pnpm changeset publish
