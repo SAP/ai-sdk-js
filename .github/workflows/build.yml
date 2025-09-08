@@ -16,7 +16,7 @@ jobs:
         node-version: ${{ fromJSON(vars.SUPPORTED_NODE_VERSIONS) }}
 
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      - uses: sap/ai-sdk-js/.github/actions/setup@fix-default-node-version-with-vars
         with:
           node-version: ${{ matrix.node-version }}
       - run: pnpm test:unit
@@ -25,7 +25,7 @@ jobs:
   checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      - uses: sap/ai-sdk-js/.github/actions/setup@fix-default-node-version-with-vars
         with:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
       - name: REUSE Compliance Check
@@ -45,14 +45,14 @@ jobs:
       - name: Set NODE_PATH
         run: echo "NODE_PATH=$(pwd)/node_modules" >> $GITHUB_ENV
       - name: Check public API
-        uses: sap/cloud-sdk-js/.github/actions/check-public-api@main
+        uses: sap/cloud-sdk-js/.github/actions/check-public-api@fix-default-node-version-with-vars
         with:
           force_internal_exports: 'false'
           ignored_path_pattern: '.*?/client/.*?/schema|.*?/zod/.*?'
       - name: Check dependencies
         run: pnpm check:deps
       - name: License Check
-        uses: sap/cloud-sdk-js/.github/actions/check-license@main
+        uses: sap/cloud-sdk-js/.github/actions/check-license@fix-default-node-version-with-vars
 
   dependabot:
     runs-on: ubuntu-latest
