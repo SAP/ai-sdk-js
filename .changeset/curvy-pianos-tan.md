@@ -1,5 +1,5 @@
 ---
-'@sap-ai-sdk/orchestration': patch
+'@sap-ai-sdk/orchestration': minor
 ---
 
 [feat] Add `deploymentId` as the optional parameter for OrchestrationClient initialization.
