@@ -17,6 +17,7 @@ jobs:
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           pnpm-install-args: ''
 
       - name: prepare canary changeset
