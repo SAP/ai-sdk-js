@@ -16,4 +16,5 @@ export type OrchestrationConfigPostResponse = {
   scenario: string;
   name: string;
   version: string;
+  model_name: string;
 } & Record<string, any>;
