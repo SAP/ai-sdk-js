@@ -48,7 +48,7 @@ Provide a destination when calling the `execute()` method.
 
 To create a custom destination, the following template can be used in the `.env` file:
 
-```json
+```bash
 destinations='[{
   "name": "<destination name>",
   "url": "<destination url>",
