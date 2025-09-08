@@ -120,7 +120,7 @@ Get chat completion response.
 Get chat completion response targeting a custom destination.
 Provide a destination when initializing the `AzureOpenAiChatClient`.
 
-To reference a custom destination check out this: [Jump to "Get all Deployments with Custom Destination"](#get-all-deployments-with-custom-destination)
+To reference a custom destination check out: [Get all Deployments with Custom Destination](#get-all-deployments-with-custom-destination)
 
 #### Chat Completion Streaming
 
