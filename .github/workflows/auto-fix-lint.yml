@@ -18,6 +18,7 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
       - run: pnpm lint:fix
       - name: Commit Changes if needed
         run: |

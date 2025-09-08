@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
+        with:
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
       - run: pnpm smoke-tests create-deployment
       - uses: vchrisb/setup-cf@5aa69781ba95297cea2b80e71926198bed38ef5e
         with:
