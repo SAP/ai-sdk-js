@@ -52,7 +52,7 @@ jobs:
       - name: Check dependencies
         run: pnpm check:deps
       - name: License Check
-        uses: sap/cloud-sdk-js/.github/actions/check-license@fix-default-node-version-with-vars
+        uses: sap/cloud-sdk-js/.github/actions/check-license@main
 
   dependabot:
     runs-on: ubuntu-latest
