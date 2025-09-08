@@ -3,11 +3,11 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { PromptTemplateSpec } from './prompt-template-spec.js';
+import type { OrchestrationConfig } from './orchestration-config.js';
 /**
- * Representation of the 'PromptTemplateGetResponse' schema.
+ * Representation of the 'OrchestrationConfigResource' schema.
  */
-export type PromptTemplateGetResponse = {
+export type OrchestrationConfigResource = {
   /**
    * Format: "uuid".
    */
@@ -18,9 +18,9 @@ export type PromptTemplateGetResponse = {
   /**
    * Format: "timestamp".
    */
-  creationTimestamp?: string;
-  managedBy?: string;
-  isVersionHead?: boolean;
-  resourceGroupId?: string;
-  spec?: PromptTemplateSpec;
+  creation_timestamp?: string;
+  managed_by?: string;
+  is_version_head?: boolean;
+  resource_group_id?: string;
+  spec?: OrchestrationConfig;
 } & Record<string, any>;

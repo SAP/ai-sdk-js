@@ -1,14 +1,13 @@
 openapi: 3.0.0
-
 info:
   version: 0.0.1
   title: Prompt Registry API
   description: Prompt Storage service for Design time & Runtime prompt templates.
-
 tags:
   - name: prompt templates
     description: Tag for prompt templates operations
-
+  - name: orchestration configs
+    description: Tag for orchestration configs operations
 paths:
   /lm/promptTemplates:
     post:
@@ -17,6 +16,9 @@ paths:
       description: Create or update a prompt template
       tags:
         - prompt templates
+      parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
+        - $ref: '#/components/parameters/ai-resource-group-scope'
       requestBody:
         required: true
         content:
@@ -24,16 +26,16 @@ paths:
             schema:
               $ref: '#/components/schemas/PromptTemplatePostRequest'
       responses:
-        200:
+        '200':
           description: Successful response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PromptTemplatePostResponse'
-        403:
-          $ref: '#/components/responses/ForbiddenError'
-        400:
+        '400':
           $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
         default:
           $ref: '#/components/responses/CommonError'
     get:
@@ -43,6 +45,8 @@ paths:
       tags:
         - prompt templates
       parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
+        - $ref: '#/components/parameters/ai-resource-group-scope'
         - name: scenario
           in: query
           schema:
@@ -66,15 +70,15 @@ paths:
             type: boolean
             default: false
       responses:
-        200:
+        '200':
           description: Successful response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PromptTemplateListResponse'
-        400:
+        '400':
           $ref: '#/components/responses/BadRequest'
-        403:
+        '403':
           $ref: '#/components/responses/ForbiddenError'
         default:
           $ref: '#/components/responses/CommonError'
@@ -86,6 +90,8 @@ paths:
       tags:
         - prompt templates
       parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
+        - $ref: '#/components/parameters/ai-resource-group-scope'
         - name: scenario
           in: path
           required: true
@@ -102,15 +108,15 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        '200':
           description: Successful response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PromptTemplateListResponse'
-        400:
+        '400':
           $ref: '#/components/responses/BadRequest'
-        403:
+        '403':
           $ref: '#/components/responses/ForbiddenError'
         default:
           $ref: '#/components/responses/CommonError'
@@ -122,6 +128,8 @@ paths:
       tags:
         - prompt templates
       parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
+        - $ref: '#/components/parameters/ai-resource-group-scope'
         - name: promptTemplateId
           in: path
           required: true
@@ -129,15 +137,15 @@ paths:
             type: string
             format: uuid
       responses:
-        200:
+        '200':
           description: Successful response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PromptTemplateGetResponse'
-        400:
+        '400':
           $ref: '#/components/responses/BadRequest'
-        403:
+        '403':
           $ref: '#/components/responses/ForbiddenError'
         default:
           $ref: '#/components/responses/CommonError'
@@ -148,6 +156,8 @@ paths:
       tags:
         - prompt templates
       parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
+        - $ref: '#/components/parameters/ai-resource-group-scope'
         - name: promptTemplateId
           in: path
           required: true
@@ -155,16 +165,16 @@ paths:
             type: string
             format: uuid
       responses:
-        200:
+        '200':
           description: Successful response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PromptTemplateDeleteResponse'
-        404:
-          $ref: '#/components/responses/NotFound'
-        403:
+        '403':
           $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFound'
         default:
           $ref: '#/components/responses/CommonError'
   /lm/promptTemplates/import:
@@ -174,6 +184,9 @@ paths:
       description: Import prompt template
       tags:
         - prompt templates
+      parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
+        - $ref: '#/components/parameters/ai-resource-group-scope'
       requestBody:
         content:
           multipart/form-data:
@@ -184,13 +197,13 @@ paths:
                   type: string
                   format: binary
       responses:
-        200:
+        '200':
           description: Successful response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PromptTemplatePostResponse'
-        400:
+        '400':
           $ref: '#/components/responses/BadRequest'
         default:
           $ref: '#/components/responses/CommonError'
@@ -202,6 +215,8 @@ paths:
       tags:
         - prompt templates
       parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
+        - $ref: '#/components/parameters/ai-resource-group-scope'
         - name: promptTemplateId
           in: path
           required: true
@@ -209,14 +224,14 @@ paths:
             type: string
             format: uuid
       responses:
-        200:
+        '200':
           description: Successful response
           content:
             application/octet-stream:
               schema:
                 type: string
                 format: binary
-        400:
+        '400':
           $ref: '#/components/responses/BadRequest'
         default:
           $ref: '#/components/responses/CommonError'
@@ -228,6 +243,8 @@ paths:
       tags:
         - prompt templates
       parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
+        - $ref: '#/components/parameters/ai-resource-group-scope'
         - name: promptTemplateId
           in: path
           required: true
@@ -245,15 +262,15 @@ paths:
             schema:
               $ref: '#/components/schemas/PromptTemplateSubstitutionRequest'
       responses:
-        200:
+        '200':
           description: Successful response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PromptTemplateSubstitutionResponse'
-        400:
+        '400':
           $ref: '#/components/responses/BadRequest'
-        403:
+        '403':
           $ref: '#/components/responses/ForbiddenError'
         default:
           $ref: '#/components/responses/CommonError'
@@ -265,6 +282,8 @@ paths:
       tags:
         - prompt templates
       parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
+        - $ref: '#/components/parameters/ai-resource-group-scope'
         - name: scenario
           in: path
           required: true
@@ -291,22 +310,273 @@ paths:
             schema:
               $ref: '#/components/schemas/PromptTemplateSubstitutionRequest'
       responses:
-        200:
+        '200':
           description: Successful response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PromptTemplateSubstitutionResponse'
-        400:
+        '400':
           $ref: '#/components/responses/BadRequest'
-        403:
+        '403':
           $ref: '#/components/responses/ForbiddenError'
         default:
           $ref: '#/components/responses/CommonError'
-
+  /registry/v2/orchestrationConfigs:
+    post:
+      operationId: registry.controller.orchestration_config_controller.create_update_orchestration_config
+      x-sap-cloud-sdk-operation-name: createUpdateOrchestrationConfig
+      description: Create or update an orchestration config
+      tags:
+        - orchestration configs
+      parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrchestrationConfigPostRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrchestrationConfigPostResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        default:
+          $ref: '#/components/responses/CommonError'
+    get:
+      operationId: registry.controller.orchestration_config_controller.list_orchestration_configs
+      x-sap-cloud-sdk-operation-name: listOrchestrationConfigs
+      description: List orchestration configs
+      tags:
+        - orchestration configs
+      parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
+        - name: scenario
+          in: query
+          schema:
+            type: string
+        - name: name
+          in: query
+          schema:
+            type: string
+        - name: version
+          in: query
+          schema:
+            type: string
+        - name: model_name
+          in: query
+          schema:
+            type: string
+        - name: retrieve
+          in: query
+          schema:
+            type: string
+            default: both
+            enum:
+              - both
+              - imperative
+              - declarative
+        - name: include_spec
+          in: query
+          schema:
+            type: boolean
+            default: false
+        - name: resolve_template_ref
+          in: query
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrchestrationConfigListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        default:
+          $ref: '#/components/responses/CommonError'
+  /registry/v2/scenarios/{scenario}/orchestrationConfigs/{name}/versions/{version}/models/{model_name}/history:
+    get:
+      operationId: registry.controller.orchestration_config_controller.list_orchestration_config_history
+      x-sap-cloud-sdk-operation-name: listOrchestrationConfigHistory
+      description: List orchestration config history
+      tags:
+        - orchestration configs
+      parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
+        - name: scenario
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: version
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: model_name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: include_spec
+          in: query
+          schema:
+            type: boolean
+            default: false
+        - name: resolve_template_ref
+          in: query
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrchestrationConfigListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        default:
+          $ref: '#/components/responses/CommonError'
+  /registry/v2/orchestrationConfigs/{orchestrationConfigId}:
+    get:
+      operationId: registry.controller.orchestration_config_controller.get_orchestration_config_by_uuid
+      x-sap-cloud-sdk-operation-name: getOrchestrationConfigByUuid
+      description: Get orchestration config by UUID
+      tags:
+        - orchestration configs
+      parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
+        - name: orchestrationConfigId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: resolve_template_ref
+          in: query
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrchestrationConfigGetResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        default:
+          $ref: '#/components/responses/CommonError'
+    delete:
+      operationId: registry.controller.orchestration_config_controller.delete_orchestration_config
+      x-sap-cloud-sdk-operation-name: deleteOrchestrationConfig
+      description: Delete orchestration config
+      tags:
+        - orchestration configs
+      parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
+        - name: orchestrationConfigId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrchestrationConfigDeleteResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/CommonError'
+  /registry/v2/orchestrationConfigs/import:
+    post:
+      operationId: registry.controller.orchestration_config_controller.import_orchestration_config
+      x-sap-cloud-sdk-operation-name: importOrchestrationConfig
+      description: Import orchestration config
+      tags:
+        - orchestration configs
+      parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrchestrationConfigPostResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        default:
+          $ref: '#/components/responses/CommonError'
+  /registry/v2/orchestrationConfigs/{orchestrationConfigId}/export:
+    get:
+      operationId: registry.controller.orchestration_config_controller.export_orchestration_config
+      x-sap-cloud-sdk-operation-name: exportOrchestrationConfig
+      description: Export orchestration config
+      tags:
+        - orchestration configs
+      parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
+        - name: orchestrationConfigId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        default:
+          $ref: '#/components/responses/CommonError'
 components:
   schemas:
-    Template:
+    PromptTemplate:
       oneOf:
         - $ref: '#/components/schemas/SingleChatTemplate'
         - $ref: '#/components/schemas/MultiChatTemplate'
@@ -347,7 +617,8 @@ components:
       properties:
         type:
           type: string
-          enum: ['text']
+          enum:
+            - text
         text:
           type: string
     ImageContent:
@@ -358,7 +629,8 @@ components:
       properties:
         type:
           type: string
-          enum: ['image_url']
+          enum:
+            - image_url
         image_url:
           type: object
           required:
@@ -369,7 +641,7 @@ components:
               type: string
             detail:
               type: string
-              default: 'auto'
+              default: auto
     PromptTemplateSpec:
       type: object
       required:
@@ -380,19 +652,17 @@ components:
         template:
           type: array
           items:
-            $ref: '#/components/schemas/Template'
+            $ref: '#/components/schemas/PromptTemplate'
         defaults:
           type: object
         additionalFields:
           type: object
-          description: >
+          description: |
             DEPRECATED. Please use additional_fields instead.
           deprecated: true
         response_format:
-          description: >
-            Response format that the model output should adhere to.
-            This is the same as the OpenAI definition.
-
+          description: |
+            Response format that the model output should adhere to. This is the same as the OpenAI definition.
             Compatible with GPT-4o, GPT-4o mini, GPT-4 (Turbo) and all GPT-3.5 Turbo models newer than gpt-3.5-turbo-1106.
           oneOf:
             - $ref: '#/components/schemas/ResponseFormatText'
@@ -400,13 +670,10 @@ components:
             - $ref: '#/components/schemas/ResponseFormatJsonSchema'
         tools:
           type: array
-          description: >
-            A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for.
-            This is the same as the OpenAI definition.
+          description: |
+            A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.
           items:
             $ref: '#/components/schemas/ChatCompletionTool'
-
-    # below ReponseFormats are copied from openapi spec: https://github.com/openai/openai-openapi/blob/e0cb2d721753e13e69e918465795d6e9f87ab15a/openapi.yaml#L12286
     ResponseFormatText:
       type: object
       additionalProperties: false
@@ -444,15 +711,11 @@ components:
           properties:
             description:
               type: string
-              description:
-                A description of what the response format is for, used by the model
-                to determine how to respond in the format.
+              description: A description of what the response format is for, used by the model to determine how to respond in the format.
             name:
               type: string
-              description:
-                The name of the response format. Must be a-z, A-Z, 0-9, or contain
-                underscores and dashes, with a maximum length of 64.
-              pattern: '^[a-zA-Z0-9-_]+$'
+              description: The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.
+              pattern: ^[a-zA-Z0-9-_]+$
               maxLength: 64
             schema:
               $ref: '#/components/schemas/ResponseFormatJsonSchemaSchema'
@@ -460,12 +723,7 @@ components:
               type: boolean
               nullable: true
               default: false
-              description:
-                Whether to enable strict schema adherence when generating the
-                output. If set to true, the model will always follow the exact
-                schema defined in the `schema` field. Only a subset of JSON
-                Schema is supported when `strict` is `true`. To learn more, read
-                the [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+              description: Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
           required:
             - name
       required:
@@ -475,8 +733,6 @@ components:
       type: object
       description: The schema for the response format, described as a JSON Schema object.
       additionalProperties: true
-
-    # below tool-related definitions are copied from openai spec: https://github.com/openai/openai-openapi/blob/e0cb2d721753e13e69e918465795d6e9f87ab15a/openapi.yaml#L11547
     ChatCompletionTool:
       type: object
       additionalProperties: false
@@ -497,15 +753,11 @@ components:
       properties:
         description:
           type: string
-          description:
-            A description of what the function does, used by the model to
-            choose when and how to call the function.
+          description: A description of what the function does, used by the model to choose when and how to call the function.
         name:
           type: string
-          description:
-            The name of the function to be called. Must be a-z, A-Z, 0-9, or
-            contain underscores and dashes, with a maximum length of 64.
-          pattern: '^[a-zA-Z0-9-_]+$'
+          description: The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.
+          pattern: ^[a-zA-Z0-9-_]+$
           maxLength: 64
         parameters:
           $ref: '#/components/schemas/FunctionParameters'
@@ -513,26 +765,13 @@ components:
           type: boolean
           nullable: true
           default: false
-          description:
-            Whether to enable strict schema adherence when generating the
-            function call. If set to true, the model will follow the exact
-            schema defined in the `parameters` field. Only a subset of JSON
-            Schema is supported when `strict` is `true`. Learn more about
-            Structured Outputs in the [function calling
-            guide](docs/guides/function-calling).
+          description: Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).
       required:
         - name
     FunctionParameters:
       type: object
-      description: >-
-        The parameters the functions accepts, described as a JSON Schema object.
-        See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the
-        [JSON Schema
-        reference](https://json-schema.org/understanding-json-schema/) for
-        documentation about the format. 
-        Omitting `parameters` defines a function with an empty parameter list.
+      description: The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.
       additionalProperties: true
-
     PromptTemplatePostRequest:
       type: object
       required:
@@ -544,12 +783,15 @@ components:
         name:
           type: string
           maxLength: 120
+          pattern: ^[a-zA-Z0-9_-]+$
         version:
           type: string
           maxLength: 10
+          pattern: ^[a-zA-Z0-9._-]+$
         scenario:
           type: string
           maxLength: 120
+          pattern: ^[a-zA-Z0-9_-]+$
         spec:
           $ref: '#/components/schemas/PromptTemplateSpec'
     PromptTemplatePostResponse:
@@ -591,6 +833,8 @@ components:
           type: string
         isVersionHead:
           type: boolean
+        resourceGroupId:
+          type: string
         spec:
           $ref: '#/components/schemas/PromptTemplateSpec'
     PromptTemplateListResponse:
@@ -641,7 +885,7 @@ components:
         parsedPrompt:
           type: array
           items:
-            $ref: '#/components/schemas/Template'
+            $ref: '#/components/schemas/PromptTemplate'
         resource:
           $ref: '#/components/schemas/PromptTemplateGetResponse'
     ErrorResponse:
@@ -654,6 +898,1014 @@ components:
           type: string
         message:
           type: string
+    OrchestrationConfigResource:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        version:
+          type: string
+        scenario:
+          type: string
+        creation_timestamp:
+          type: string
+          format: timestamp
+        managed_by:
+          type: string
+        is_version_head:
+          type: boolean
+        resource_group_id:
+          type: string
+        spec:
+          $ref: '#/components/schemas/OrchestrationConfig'
+    OrchestrationConfigListResponse:
+      type: object
+      required:
+        - count
+        - resources
+      properties:
+        count:
+          type: integer
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrchestrationConfigGetResponse'
+    OrchestrationConfigPostRequest:
+      type: object
+      required:
+        - name
+        - version
+        - scenario
+        - spec
+      properties:
+        name:
+          type: string
+          maxLength: 120
+          pattern: ^[a-zA-Z0-9_-]+$
+        version:
+          type: string
+          maxLength: 10
+          pattern: ^[a-zA-Z0-9._-]+$
+        scenario:
+          type: string
+          maxLength: 120
+          pattern: ^[a-zA-Z0-9_-]+$
+        spec:
+          $ref: '#/components/schemas/OrchestrationConfig'
+    OrchestrationConfigPostResponse:
+      type: object
+      required:
+        - message
+        - id
+        - scenario
+        - name
+        - version
+        - model_name
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+          format: uuid
+        scenario:
+          type: string
+        name:
+          type: string
+        version:
+          type: string
+        model_name:
+          type: string
+    OrchestrationConfigGetResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        version:
+          type: string
+        scenario:
+          type: string
+        model_name:
+          type: string
+        creation_timestamp:
+          type: string
+          format: timestamp
+        managed_by:
+          type: string
+        is_version_head:
+          type: boolean
+        resource_group_id:
+          type: string
+        spec:
+          $ref: '#/components/schemas/OrchestrationConfig'
+    OrchestrationConfigDeleteResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+    RuntimeOrchestrationConfigFile:
+      type: object
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+          properties:
+            name:
+              type: string
+            version:
+              type: string
+            scenario:
+              type: string
+        spec:
+          $ref: '#/components/schemas/OrchestrationConfig'
+    ChatMessageContent:
+      oneOf:
+        - type: string
+        - type: array
+          items:
+            $ref: '#/components/schemas/TextContent'
+          minItems: 1
+    SystemChatMessage:
+      type: object
+      additionalProperties: false
+      properties:
+        role:
+          type: string
+          enum:
+            - system
+        content:
+          $ref: '#/components/schemas/ChatMessageContent'
+      required:
+        - role
+        - content
+    ImageContentUrl:
+      type: object
+      required:
+        - url
+      additionalProperties: false
+      properties:
+        url:
+          type: string
+        detail:
+          type: string
+          default: auto
+    UserChatMessageContentItem:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          enum:
+            - text
+            - image_url
+        text:
+          type: string
+        image_url:
+          $ref: '#/components/schemas/ImageContentUrl'
+      required:
+        - type
+    UserChatMessageContent:
+      oneOf:
+        - type: string
+        - type: array
+          items:
+            $ref: '#/components/schemas/UserChatMessageContentItem'
+          minItems: 1
+    UserChatMessage:
+      type: object
+      additionalProperties: false
+      properties:
+        content:
+          $ref: '#/components/schemas/UserChatMessageContent'
+        role:
+          type: string
+          enum:
+            - user
+      required:
+        - content
+        - role
+    MessageToolCall:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the tool call.
+        type:
+          type: string
+          enum:
+            - function
+          description: The type of the tool. Currently, only `function` is supported.
+        function:
+          type: object
+          description: The function that the model called.
+          properties:
+            name:
+              type: string
+              description: The name of the function to call.
+            arguments:
+              type: string
+              description: The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.
+          required:
+            - name
+            - arguments
+      required:
+        - id
+        - type
+        - function
+    MessageToolCalls:
+      type: array
+      description: The tool calls generated by the model, such as function calls.
+      items:
+        $ref: '#/components/schemas/MessageToolCall'
+    AssistantChatMessage:
+      type: object
+      additionalProperties: false
+      properties:
+        role:
+          type: string
+          enum:
+            - assistant
+        content:
+          $ref: '#/components/schemas/ChatMessageContent'
+        refusal:
+          type: string
+        tool_calls:
+          $ref: '#/components/schemas/MessageToolCalls'
+      required:
+        - role
+    ToolChatMessage:
+      type: object
+      additionalProperties: false
+      properties:
+        role:
+          type: string
+          enum:
+            - tool
+          example: tool
+        tool_call_id:
+          type: string
+        content:
+          $ref: '#/components/schemas/ChatMessageContent'
+      required:
+        - role
+        - content
+        - tool_call_id
+    DeveloperChatMessage:
+      type: object
+      additionalProperties: false
+      properties:
+        role:
+          type: string
+          enum:
+            - developer
+        content:
+          $ref: '#/components/schemas/ChatMessageContent'
+      required:
+        - role
+        - content
+    ChatMessage:
+      oneOf:
+        - $ref: '#/components/schemas/SystemChatMessage'
+        - $ref: '#/components/schemas/UserChatMessage'
+        - $ref: '#/components/schemas/AssistantChatMessage'
+        - $ref: '#/components/schemas/ToolChatMessage'
+        - $ref: '#/components/schemas/DeveloperChatMessage'
+    TemplatingChatMessage:
+      type: array
+      minItems: 1
+      items:
+        $ref: '#/components/schemas/ChatMessage'
+    Template:
+      type: object
+      required:
+        - template
+      additionalProperties: false
+      properties:
+        template:
+          allOf:
+            - $ref: '#/components/schemas/TemplatingChatMessage'
+          description: A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
+        defaults:
+          description: Optional default values for the template. If a parameter has no default it is required.
+          type: object
+          additionalProperties:
+            type: string
+        response_format:
+          description: |
+            Response format that the model output should adhere to. This is the same as the OpenAI definition.
+          oneOf:
+            - $ref: '#/components/schemas/ResponseFormatText'
+            - $ref: '#/components/schemas/ResponseFormatJsonObject'
+            - $ref: '#/components/schemas/ResponseFormatJsonSchema'
+        tools:
+          type: array
+          description: |
+            A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.
+          items:
+            $ref: '#/components/schemas/ChatCompletionTool'
+      example:
+        template:
+          - role: user
+            content: How can the features of AI in SAP BTP specifically {{'{{?groundingOutput}}'}}, be applied to {{'{{?inputContext}}'}}
+        defaults:
+          inputContext: The default text that will be used in the template if inputContext is not set
+    TemplateRefByID:
+      type: object
+      required:
+        - id
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          description: ID of the template in prompt registry
+          example: template_id
+    TemplateRefByScenarioNameVersion:
+      type: object
+      required:
+        - scenario
+        - name
+        - version
+      additionalProperties: false
+      properties:
+        scenario:
+          type: string
+          description: Scenario name
+          example: some-scenario
+        name:
+          type: string
+          description: Name of the template
+          example: some-template-name
+        version:
+          type: string
+          description: Version of the template
+          example: some version, can be `latest`
+    TemplateRef:
+      type: object
+      required:
+        - template_ref
+      additionalProperties: false
+      properties:
+        template_ref:
+          description: Reference to a template in the prompt registry by ID or by scenario, name and version
+          oneOf:
+            - $ref: '#/components/schemas/TemplateRefByID'
+            - $ref: '#/components/schemas/TemplateRefByScenarioNameVersion'
+    LLMModelDetails:
+      type: object
+      description: |
+        The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.
+      required:
+        - name
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          description: Name of the model as in LLM Access configuration
+          example: gpt-4o-mini
+        version:
+          type: string
+          description: Version of the model to be used
+          default: latest
+        params:
+          type: object
+          description: Additional parameters for the model. Default values are used for mandatory parameters.
+          additionalProperties: true
+          example:
+            max_tokens: 300
+            temperature: 0.1
+            frequency_penalty: 0
+            presence_penalty: 0
+            'n': 2
+            stream_options:
+              include_usage: true
+        timeout:
+          description: Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.
+          type: integer
+          default: 600
+          minimum: 1
+          maximum: 600
+        max_retries:
+          description: Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.
+          type: integer
+          default: 2
+          minimum: 0
+          maximum: 5
+    PromptTemplatingModuleConfig:
+      type: object
+      required:
+        - prompt
+        - model
+      additionalProperties: false
+      properties:
+        prompt:
+          description: |
+            The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.
+          oneOf:
+            - $ref: '#/components/schemas/Template'
+            - $ref: '#/components/schemas/TemplateRef'
+        model:
+          $ref: '#/components/schemas/LLMModelDetails'
+    AzureThreshold:
+      type: integer
+      enum:
+        - 0
+        - 2
+        - 4
+        - 6
+      example: 0
+    AzureContentSafetyInput:
+      description: Filter configuration for Azure Content Safety
+      type: object
+      additionalProperties: false
+      properties:
+        hate:
+          $ref: '#/components/schemas/AzureThreshold'
+        self_harm:
+          $ref: '#/components/schemas/AzureThreshold'
+        sexual:
+          $ref: '#/components/schemas/AzureThreshold'
+        violence:
+          $ref: '#/components/schemas/AzureThreshold'
+        prompt_shield:
+          type: boolean
+          description: A flag to use prompt shield
+          default: false
+    AzureContentSafetyInputFilterConfig:
+      type: object
+      required:
+        - type
+      additionalProperties: false
+      properties:
+        type:
+          description: Name of the filter provider type
+          type: string
+          enum:
+            - azure_content_safety
+          example: azure_content_safety
+        config:
+          $ref: '#/components/schemas/AzureContentSafetyInput'
+    LlamaGuard38b:
+      description: Filter configuration for Llama Guard 3 8B
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
+        violent_crimes:
+          type: boolean
+        non_violent_crimes:
+          type: boolean
+        sex_crimes:
+          type: boolean
+        child_exploitation:
+          type: boolean
+        defamation:
+          type: boolean
+        specialized_advice:
+          type: boolean
+        privacy:
+          type: boolean
+        intellectual_property:
+          type: boolean
+        indiscriminate_weapons:
+          type: boolean
+        hate:
+          type: boolean
+        self_harm:
+          type: boolean
+        sexual_content:
+          type: boolean
+        elections:
+          type: boolean
+        code_interpreter_abuse:
+          type: boolean
+    LlamaGuard38bFilterConfig:
+      type: object
+      required:
+        - type
+        - config
+      additionalProperties: false
+      properties:
+        type:
+          description: Name of the filter provider type
+          type: string
+          enum:
+            - llama_guard_3_8b
+          example: llama_guard_3_8b
+        config:
+          $ref: '#/components/schemas/LlamaGuard38b'
+    InputFilterConfig:
+      oneOf:
+        - $ref: '#/components/schemas/AzureContentSafetyInputFilterConfig'
+        - $ref: '#/components/schemas/LlamaGuard38bFilterConfig'
+    InputFilteringConfig:
+      type: object
+      required:
+        - filters
+      additionalProperties: false
+      properties:
+        filters:
+          description: Configuration for content filtering services that should be used for the given filtering step (input filtering).
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/InputFilterConfig'
+    AzureContentSafetyOutput:
+      description: Filter configuration for Azure Content Safety
+      type: object
+      additionalProperties: false
+      properties:
+        hate:
+          $ref: '#/components/schemas/AzureThreshold'
+        self_harm:
+          $ref: '#/components/schemas/AzureThreshold'
+        sexual:
+          $ref: '#/components/schemas/AzureThreshold'
+        violence:
+          $ref: '#/components/schemas/AzureThreshold'
+    AzureContentSafetyOutputFilterConfig:
+      type: object
+      required:
+        - type
+      additionalProperties: false
+      properties:
+        type:
+          description: Name of the filter provider type
+          type: string
+          enum:
+            - azure_content_safety
+          example: azure_content_safety
+        config:
+          $ref: '#/components/schemas/AzureContentSafetyOutput'
+    OutputFilterConfig:
+      oneOf:
+        - $ref: '#/components/schemas/AzureContentSafetyOutputFilterConfig'
+        - $ref: '#/components/schemas/LlamaGuard38bFilterConfig'
+    FilteringStreamOptions:
+      description: Stream options for output filtering. Will be ignored if stream is false.
+      type: object
+      additionalProperties: false
+      properties:
+        overlap:
+          type: integer
+          description: Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.
+          default: 0
+          minimum: 0
+          maximum: 10000
+    OutputFilteringConfig:
+      type: object
+      required:
+        - filters
+      additionalProperties: false
+      properties:
+        filters:
+          description: Configuration for content filtering services that should be used for the given filtering step (output filtering).
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/OutputFilterConfig'
+        stream_options:
+          $ref: '#/components/schemas/FilteringStreamOptions'
+    FilteringModuleConfig:
+      type: object
+      additionalProperties: false
+      properties:
+        input:
+          allOf:
+            - $ref: '#/components/schemas/InputFilteringConfig'
+          description: List of provider type and filters
+        output:
+          allOf:
+            - $ref: '#/components/schemas/OutputFilteringConfig'
+          description: List of provider type and filters
+      minProperties: 1
+    DPIEntities:
+      description: Default entities supported by data privacy and integration service
+      type: string
+      enum:
+        - profile-person
+        - profile-org
+        - profile-university
+        - profile-location
+        - profile-email
+        - profile-phone
+        - profile-address
+        - profile-sapids-internal
+        - profile-sapids-public
+        - profile-url
+        - profile-username-password
+        - profile-nationalid
+        - profile-iban
+        - profile-ssn
+        - profile-credit-card-number
+        - profile-passport
+        - profile-driverlicense
+        - profile-nationality
+        - profile-religious-group
+        - profile-political-group
+        - profile-pronouns-gender
+        - profile-ethnicity
+        - profile-gender
+        - profile-sexual-orientation
+        - profile-trade-union
+        - profile-sensitive-data
+    DPIMethodConstant:
+      description: Replaces the entity with the specified value followed by an incrementing number
+      type: object
+      required:
+        - method
+        - value
+      additionalProperties: false
+      properties:
+        method:
+          type: string
+          enum:
+            - constant
+        value:
+          description: Value to be used for replacement
+          example: NAME_REDACTED
+          type: string
+    DPIMethodFabricatedData:
+      description: Replaces the entity with a randomly generated value appropriate to its type.
+      type: object
+      required:
+        - method
+      additionalProperties: false
+      properties:
+        method:
+          type: string
+          enum:
+            - fabricated_data
+    DPIStandardEntity:
+      type: object
+      required:
+        - type
+      additionalProperties: false
+      properties:
+        type:
+          $ref: '#/components/schemas/DPIEntities'
+        replacement_strategy:
+          description: Replacement strategy to be used for the entity
+          oneOf:
+            - $ref: '#/components/schemas/DPIMethodConstant'
+            - $ref: '#/components/schemas/DPIMethodFabricatedData'
+    DPICustomEntity:
+      type: object
+      required:
+        - regex
+        - replacement_strategy
+      additionalProperties: false
+      properties:
+        regex:
+          description: Regular expression to match the entity
+          type: string
+        replacement_strategy:
+          description: Replacement strategy to be used for the entity
+          oneOf:
+            - $ref: '#/components/schemas/DPIMethodConstant'
+    DPIEntityConfig:
+      oneOf:
+        - $ref: '#/components/schemas/DPIStandardEntity'
+        - $ref: '#/components/schemas/DPICustomEntity'
+    DPIConfig:
+      type: object
+      required:
+        - type
+        - method
+        - entities
+      additionalProperties: false
+      properties:
+        type:
+          description: Type of masking service provider
+          type: string
+          enum:
+            - sap_data_privacy_integration
+        method:
+          description: Type of masking method to be used
+          type: string
+          enum:
+            - anonymization
+            - pseudonymization
+        entities:
+          description: List of entities to be masked
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/DPIEntityConfig'
+        allowlist:
+          description: List of strings that should not be masked
+          type: array
+          example:
+            - SAP
+            - Joule
+          items:
+            type: string
+        mask_grounding_input:
+          type: object
+          additionalProperties: false
+          properties:
+            enabled:
+              type: boolean
+              default: false
+              description: controls whether the input to the grounding module will be masked with the configuration supplied in the masking module
+    MaskingProviderConfig:
+      oneOf:
+        - $ref: '#/components/schemas/DPIConfig'
+    MaskingModuleConfig:
+      oneOf:
+        - type: object
+          title: MaskingModuleConfigProviders
+          properties:
+            providers:
+              description: List of masking service providers
+              type: array
+              minItems: 1
+              items:
+                $ref: '#/components/schemas/MaskingProviderConfig'
+          required:
+            - providers
+          additionalProperties: false
+        - type: object
+          title: MaskingModuleConfigMaskingProviders
+          properties:
+            masking_providers:
+              deprecated: true
+              description: This field is **DEPRECATED** and will be removed on August 05, 2026. Use `providers` property instead. List of masking service providers.
+              type: array
+              minItems: 1
+              items:
+                $ref: '#/components/schemas/MaskingProviderConfig'
+          required:
+            - masking_providers
+          additionalProperties: false
+    GroundingFilterId:
+      title: Id
+      description: Identifier of this SearchFilter - unique per request.
+      type: string
+    GroundingFilterSearchConfiguration:
+      additionalProperties: false
+      properties:
+        max_chunk_count:
+          type: integer
+          minimum: 0
+          exclusiveMinimum: true
+          title: Maxchunkcount
+          description: Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'.
+        max_document_count:
+          type: integer
+          minimum: 0
+          exclusiveMinimum: true
+          title: Maxdocumentcount
+          description: "[Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned."
+      title: SearchConfiguration
+      minProperties: 0
+      maxProperties: 1
+    DataRepositoryType:
+      type: string
+      description: Only include DataRepositories with the given type.
+      enum:
+        - vector
+        - help.sap.com
+      title: DataRepositoryType
+    KeyValueListPair:
+      additionalProperties: false
+      properties:
+        key:
+          type: string
+          maxLength: 1024
+          title: Key
+        value:
+          type: array
+          items:
+            type: string
+            maxLength: 1024
+          title: Value
+      type: object
+      required:
+        - key
+        - value
+      title: KeyValueListPair
+    SearchSelectOptionEnum:
+      type: string
+      enum:
+        - ignoreIfKeyAbsent
+      title: SearchSelectOptionEnum
+    SearchDocumentKeyValueListPair:
+      additionalProperties: false
+      properties:
+        key:
+          type: string
+          maxLength: 1024
+          title: Key
+        value:
+          type: array
+          items:
+            type: string
+            maxLength: 1024
+          title: Value
+        select_mode:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchSelectOptionEnum'
+          title: Selectmode
+          description: Select mode for search filters
+      type: object
+      required:
+        - key
+        - value
+      title: SearchDocumentKeyValueListPair
+    DocumentGroundingFilter:
+      type: object
+      required:
+        - data_repository_type
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/GroundingFilterId'
+        search_config:
+          $ref: '#/components/schemas/GroundingFilterSearchConfiguration'
+        data_repositories:
+          type: array
+          items:
+            type: string
+          title: DataRepositories
+          description: Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids.
+          default:
+            - '*'
+        data_repository_type:
+          $ref: '#/components/schemas/DataRepositoryType'
+        data_repository_metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyValueListPair'
+          title: Datarepositorymetadata
+          description: Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=['*']
+        document_metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchDocumentKeyValueListPair'
+          title: Documentmetadata
+          description: Restrict documents considered during search to those annotated with the given metadata.
+        chunk_metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyValueListPair'
+          title: Chunkmetadata
+          description: Restrict chunks considered during search to those with the given metadata.
+      minProperties: 1
+    GroundingModuleConfig:
+      type: object
+      required:
+        - type
+        - config
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          anyOf:
+            - enum:
+                - document_grounding_service
+            - {}
+          example: document_grounding_service
+        config:
+          type: object
+          required:
+            - placeholders
+          additionalProperties: false
+          properties:
+            filters:
+              type: array
+              items:
+                oneOf:
+                  - $ref: '#/components/schemas/DocumentGroundingFilter'
+              description: Document grounding service filters to be used
+            placeholders:
+              type: object
+              additionalProperties: false
+              required:
+                - input
+                - output
+              properties:
+                input:
+                  type: array
+                  minItems: 1
+                  items:
+                    type: string
+                    example: groundingInput
+                  description: Contains the input parameters used for grounding input questions
+                output:
+                  type: string
+                  description: Placeholder name for grounding output
+                  example: groundingOutput
+              description: Placeholders to be used for grounding input questions and output
+            metadata_params:
+              type: array
+              items:
+                type: string
+              description: Parameter name used for specifying metadata parameters
+    SAPDocumentTranslation:
+      type: object
+      required:
+        - type
+        - config
+      additionalProperties: false
+      properties:
+        type:
+          description: Type of document translation provider
+          type: string
+          enum:
+            - sap_document_translation
+          example: sap_document_translation
+        config:
+          description: Configuration for `sap_document_translation` translation provider.
+          type: object
+          required:
+            - target_language
+          additionalProperties: false
+          properties:
+            source_language:
+              type: string
+              description: Language of the text to be translated.
+              example: de-DE
+            target_language:
+              type: string
+              description: Language to which the text should be translated.
+              example: en-US
+    TranslationModuleConfig:
+      type: object
+      description: Configuration for translation module
+      additionalProperties: false
+      properties:
+        input:
+          description: Configuration for input translation
+          oneOf:
+            - $ref: '#/components/schemas/SAPDocumentTranslation'
+        output:
+          description: Configuration for output translation
+          oneOf:
+            - $ref: '#/components/schemas/SAPDocumentTranslation'
+    ModuleConfigs:
+      type: object
+      required:
+        - prompt_templating
+      additionalProperties: false
+      properties:
+        prompt_templating:
+          $ref: '#/components/schemas/PromptTemplatingModuleConfig'
+        filtering:
+          $ref: '#/components/schemas/FilteringModuleConfig'
+        masking:
+          $ref: '#/components/schemas/MaskingModuleConfig'
+        grounding:
+          $ref: '#/components/schemas/GroundingModuleConfig'
+        translation:
+          $ref: '#/components/schemas/TranslationModuleConfig'
+    GlobalStreamOptions:
+      description: Options for streaming. Will be ignored if enabled is false.
+      type: object
+      additionalProperties: false
+      properties:
+        enabled:
+          type: boolean
+          description: If true, the response will be streamed back to the client
+          default: false
+        chunk_size:
+          type: integer
+          description: Minimum number of characters per chunk that post-LLM modules operate on.
+          default: 100
+          minimum: 1
+          maximum: 10000
+        delimiters:
+          type: array
+          minItems: 1
+          description: List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.
+          items:
+            type: string
+          example:
+            - |+
+
+            - .
+            - '?'
+            - '!'
+    OrchestrationConfig:
+      type: object
+      required:
+        - modules
+      additionalProperties: false
+      properties:
+        modules:
+          $ref: '#/components/schemas/ModuleConfigs'
+        stream:
+          $ref: '#/components/schemas/GlobalStreamOptions'
   responses:
     BadRequest:
       description: Bad Request
@@ -679,3 +1931,23 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    ai-resource-group:
+      name: AI-Resource-Group
+      in: header
+      description: Specify a resource group id to use
+      required: false
+      schema:
+        type: string
+    ai-resource-group-scope:
+      name: AI-Resource-Group-Scope
+      in: header
+      description: Specify whether the resource group scope is to be used
+      required: false
+      schema:
+        type: string
+        enum:
+          - 'true'
+          - 'True'
+          - 'false'
+          - 'False'
