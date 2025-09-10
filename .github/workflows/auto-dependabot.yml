@@ -16,16 +16,21 @@ jobs:
       - run: git fetch --depth=1
       - uses: actions/setup-node@v5
         with:
-          node-version: 22
-          cache: 'yarn'
-      - name: Install Dependencies & Compile
-        run: yarn install --frozen-lockfile --ignore-engines
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+          cache: 'pnpm'
+      - name: Setup Environment
+        uses: sap/ai-sdk-js/.github/actions/setup@main
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+          pnpm-install-args: --lockfile-only
       - name: Commit Changes if needed
         run: |
           diff=`git diff`
           if [ ! -z "$diff" ]; then
             git config --global user.email "cloud-sdk-js@github.com"
             git config --global user.name "cloud-sdk-js"
-            git commit -m "Regenerate check-public-api action" -a
+            git commit -m "Update dependency" -a
             git push
           fi
