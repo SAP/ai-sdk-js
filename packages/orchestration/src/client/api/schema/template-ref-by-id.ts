@@ -13,4 +13,8 @@ export type TemplateRefByID = {
    * @example "template_id"
    */
   id: string;
+  /**
+   * Whether the template is resource group scoped
+   */
+  is_rg_scoped: boolean;
 };

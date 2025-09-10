@@ -23,4 +23,8 @@ export type TemplateRefByScenarioNameVersion = {
    * @example "some version, can be `latest`"
    */
   version: string;
+  /**
+   * Whether the template is resource group scoped
+   */
+  is_rg_scoped: boolean;
 };

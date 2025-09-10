@@ -172,6 +172,18 @@ components:
           default: 'latest'
         params:
           $ref: '#/components/schemas/EmbeddingsModelParams'
+        timeout:
+          description: Timeout for the Embeddings request in seconds. This parameter is currently ignored for Vertex AI models.
+          type: integer
+          default: 600
+          minimum: 1
+          maximum: 600
+        max_retries:
+          description: Maximum number of retries for the Embeddings request. This parameter is currently ignored for Vertex AI models.
+          type: integer
+          default: 2
+          minimum: 0
+          maximum: 5
     EmbeddingsModelParams:
       type: object
       description: Additional parameters for generating input's embeddings. Default values are used for mandatory parameters.
@@ -797,11 +809,11 @@ components:
             - $ref: '#/components/schemas/Template'
             - $ref: '#/components/schemas/TemplateRef'
         model:
-          description: >
-            The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.
           $ref: '#/components/schemas/LLMModelDetails'
     LLMModelDetails:
       type: object
+      description: >
+        The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.
       required:
         - name
       additionalProperties: false
@@ -826,6 +838,18 @@ components:
             n: 2
             stream_options:
               include_usage: true
+        timeout:
+          description: Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.
+          type: integer
+          default: 600
+          minimum: 1
+          maximum: 600
+        max_retries:
+          description: Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.
+          type: integer
+          default: 2
+          minimum: 0
+          maximum: 5
 
     # --- Templating Module with User Defined Template ---
     # response_format api definition taken from: https://github.com/openai/openai-openapi/blob/e0cb2d721753e13e69e918465795d6e9f87ab15a/openapi.yaml#L12286
@@ -1012,12 +1036,17 @@ components:
       type: object
       required:
         - id
+        - is_rg_scoped
       additionalProperties: false
       properties:
         id:
           type: string
           description: ID of the template in prompt registry
           example: 'template_id'
+        is_rg_scoped:
+          type: boolean
+          description: Whether the template is resource group scoped
+          default: false
 
     TemplateRefByScenarioNameVersion:
       type: object
@@ -1025,6 +1054,7 @@ components:
         - scenario
         - name
         - version
+        - is_rg_scoped
       additionalProperties: false
       properties:
         scenario:
@@ -1039,6 +1069,10 @@ components:
           type: string
           description: Version of the template
           example: 'some version, can be `latest`'
+        is_rg_scoped:
+          type: boolean
+          description: Whether the template is resource group scoped
+          default: false
 
     # --- Filtering Module ---
     FilteringModuleConfig:
@@ -1228,19 +1262,33 @@ components:
           type: boolean
 
     # --- Masking module ---
-
     MaskingModuleConfig:
-      type: object
-      required:
-        - masking_providers
-      additionalProperties: false
-      properties:
-        masking_providers:
-          type: array
-          minItems: 1
-          items:
-            $ref: '#/components/schemas/MaskingProviderConfig'
-          description: List of masking service providers
+      oneOf:
+        - type: object
+          title: MaskingModuleConfigProviders
+          properties:
+            providers:
+              description: List of masking service providers
+              type: array
+              minItems: 1
+              items:
+                $ref: '#/components/schemas/MaskingProviderConfig'
+          required:
+            - providers
+          additionalProperties: false
+        - type: object
+          title: MaskingModuleConfigMaskingProviders
+          properties:
+            masking_providers:
+              deprecated: true
+              description: 'This field is **DEPRECATED** and will be removed on August 05, 2026. Use `providers` property instead. List of masking service providers.'
+              type: array
+              minItems: 1
+              items:
+                $ref: '#/components/schemas/MaskingProviderConfig'
+          required:
+            - masking_providers
+          additionalProperties: false
 
     MaskingProviderConfig:
       oneOf:
