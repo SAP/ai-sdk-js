@@ -1,0 +1,27 @@
+name: auto-dependabot-fix
+
+on:
+  pull_request_target: ~
+
+jobs:
+  building:
+    if: github.actor == 'dependabot[bot]' && !github.event.pull_request.head.repo.fork
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Environment
+        uses: sap/ai-sdk-js/.github/actions/setup@main
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+          pnpm-install-args: --lockfile-only
+      - name: Commit Changes if needed
+        run: |
+          diff=`git diff`
+          if [ ! -z "$diff" ]; then
+            git config --global user.email "cloud-sdk-js@github.com"
+            git config --global user.name "cloud-sdk-js"
+            git commit -m "Update dependency" -a
+            git push
+          fi
+          
