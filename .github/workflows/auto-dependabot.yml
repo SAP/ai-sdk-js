@@ -8,16 +8,6 @@ jobs:
     if: github.actor == 'dependabot[bot]' && !github.event.pull_request.head.repo.fork
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
-      - run: git fetch --depth=1
-      - uses: actions/setup-node@v5
-        with:
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
-          cache: 'pnpm'
       - name: Setup Environment
         uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
@@ -34,3 +24,4 @@ jobs:
             git commit -m "Update dependency" -a
             git push
           fi
+          
