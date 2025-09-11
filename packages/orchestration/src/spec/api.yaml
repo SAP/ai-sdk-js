@@ -1036,7 +1036,6 @@ components:
       type: object
       required:
         - id
-        - is_rg_scoped
       additionalProperties: false
       properties:
         id:
@@ -1054,7 +1053,6 @@ components:
         - scenario
         - name
         - version
-        - is_rg_scoped
       additionalProperties: false
       properties:
         scenario:
