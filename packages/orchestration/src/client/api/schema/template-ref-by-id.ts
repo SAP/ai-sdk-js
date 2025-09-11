@@ -16,5 +16,5 @@ export type TemplateRefByID = {
   /**
    * Whether the template is resource group scoped
    */
-  is_rg_scoped: boolean;
+  is_rg_scoped?: boolean;
 };
