@@ -863,7 +863,7 @@ components:
         template:
           allOf:
             - $ref: '#/components/schemas/TemplatingChatMessage'
-          description: A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
+          description: A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
         defaults:
           description: Optional default values for the template. If a parameter has no default it is required.
           type: object
