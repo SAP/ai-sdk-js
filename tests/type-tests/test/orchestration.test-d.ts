@@ -50,7 +50,7 @@ expectType<Promise<OrchestrationResponse>>(
         }
       }
     },
-    { deploymentId: 'deploymentId' } as any
+    { deploymentId: 'deploymentId' }
   ).chatCompletion()
 );
 
