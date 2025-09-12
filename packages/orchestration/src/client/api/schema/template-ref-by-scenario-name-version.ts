@@ -24,7 +24,9 @@ export type TemplateRefByScenarioNameVersion = {
    */
   version: string;
   /**
-   * Whether the template is resource group scoped
+   * Defines the scope that is searched for the referenced template.  'tenant' indicates the template is shared across all resource groups within the tenant,  while 'resource_group' indicates the template is only accessible within the specific resource group.
+   *
+   * Default: "tenant".
    */
-  is_rg_scoped?: boolean;
+  scope?: 'resource_group' | 'tenant';
 };
