@@ -4,7 +4,7 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-pnpmfileChecksum: sha256-7lht5Q+T9K1tkr5FYaoHEDBAtJqjkSrAs2jGbKMfTIY=
+pnpmfileChecksum: fb3vh7gyjzvxzzal7fbygn3ogm
 
 importers:
 
@@ -232,8 +232,8 @@ importers:
         version: 5.1.0
     devDependencies:
       '@sap/cds-dk':
-        specifier: ^9.3.0
-        version: 9.3.0(@eslint/js@9.35.0)
+        specifier: ^9.3.1
+        version: 9.3.1(@eslint/js@9.35.0)
 
   sample-code:
     dependencies:
@@ -281,7 +281,7 @@ importers:
         version: 5.1.0
       langchain:
         specifier: 0.3.33
-        version: 0.3.33(@langchain/core@0.3.75(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(axios@1.11.0)(handlebars@4.7.8)(openai@5.12.2(ws@8.18.3)(zod@3.25.76))(ws@8.18.3)
+        version: 0.3.33(@langchain/core@0.3.75(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(axios@1.12.1)(handlebars@4.7.8)(openai@5.12.2(ws@8.18.3)(zod@3.25.76))(ws@8.18.3)
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
@@ -354,7 +354,7 @@ importers:
         version: 5.1.0
       langchain:
         specifier: 0.3.33
-        version: 0.3.33(@langchain/core@0.3.75(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(axios@1.11.0)(handlebars@4.7.8)(openai@5.12.2(ws@8.18.3)(zod@3.25.76))(ws@8.18.3)
+        version: 0.3.33(@langchain/core@0.3.75(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(axios@1.12.1)(handlebars@4.7.8)(openai@5.12.2(ws@8.18.3)(zod@3.25.76))(ws@8.18.3)
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
@@ -1322,8 +1322,8 @@ packages:
     engines: {node: '>=20'}
     hasBin: true
 
-  '@sap/cds-dk@9.3.0':
-    resolution: {integrity: sha512-p2cjXJSjiH9xoQsduje6Ku3xKDLTNSs8OEJ0cwjYyHc3GRVwe3UsMnmlHTX3HtR9XTKvr7XVQXipDgKee+EAdA==}
+  '@sap/cds-dk@9.3.1':
+    resolution: {integrity: sha512-Afa7hg+YwPgSq+tGY7CX2ZOo0decIp0qEyLaDdeXViAVPYZGiUjWp9Zyb8PoNElC5UNkRMDRJ4ZGOKjzf+mM+A==}
     hasBin: true
 
   '@sap/cds-fiori@2.0.1':
@@ -1332,8 +1332,8 @@ packages:
       '@sap/cds': '>=8'
       express: '>=4'
 
-  '@sap/cds-mtxs@3.3.0':
-    resolution: {integrity: sha512-udIzKk+qUoYWLJKbGUJm0csuZP5r54msnTNy11bFDsuESio07ppgDkCIk+oGXCjsJLeoLZULCGgFvifLRi0ATg==}
+  '@sap/cds-mtxs@3.3.1':
+    resolution: {integrity: sha512-66yWxkVlqu5FsOHxDF8w2JJSlcbgtT2PTegBSECEq9+fjMOaqlxnBHpXXTODCUgK762Ad3kyCUZqW///gmpuMA==}
     hasBin: true
     peerDependencies:
       '@sap/cds': ^9
@@ -1990,6 +1990,9 @@ packages:
 
   axios@1.11.0:
     resolution: {integrity: sha512-1Lx3WLFQWm3ooKDYZD1eXmoGO9fxYQjrycfHFC8P0sCfQVXyROp0p9PFWBehewBOdCwHc+f/b8I0fMto5eSfwA==}
+
+  axios@1.12.1:
+    resolution: {integrity: sha512-Kn4kbSXpkFHCGE6rBFNwIv0GQs4AvDT80jlveJDKFxjbTYMUeB4QtsdPCv6H8Cm19Je7IU6VFtRl2zWZI0rudQ==}
 
   babel-jest@30.1.2:
     resolution: {integrity: sha512-IQCus1rt9kaSh7PQxLYRY5NmkNrNlU2TpabzwV7T2jljnpdHOcmnYYv8QmE04Li4S3a2Lj8/yXyET5pBarPr6g==}
@@ -6448,7 +6451,7 @@ snapshots:
       eslint: 9.35.0
       eslint-config-prettier: 10.1.8(eslint@9.35.0)
       eslint-import-resolver-typescript: 4.4.4(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.38.0(eslint@9.35.0)(typescript@5.8.3))(eslint@9.35.0))(eslint@9.35.0)
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.38.0(eslint@9.35.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.4.4(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.38.0(eslint@9.35.0)(typescript@5.8.3))(eslint@9.35.0))(eslint@9.35.0))(eslint@9.35.0)
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.38.0(eslint@9.35.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.35.0)
       eslint-plugin-jsdoc: 52.0.2(eslint@9.35.0)
       eslint-plugin-prettier: 5.5.3(eslint-config-prettier@10.1.8(eslint@9.35.0))(eslint@9.35.0)(prettier@3.6.2)
       eslint-plugin-regex: 1.10.0(eslint@9.35.0)
@@ -6533,14 +6536,14 @@ snapshots:
 
   '@sap/cds-compiler@6.3.0': {}
 
-  '@sap/cds-dk@9.3.0(@eslint/js@9.35.0)':
+  '@sap/cds-dk@9.3.1(@eslint/js@9.35.0)':
     dependencies:
       '@cap-js/asyncapi': 1.0.3(@sap/cds@9.3.1(@eslint/js@9.35.0)(express@5.1.0))
       '@cap-js/openapi': 1.2.3(@sap/cds@9.3.1(@eslint/js@9.35.0)(express@5.1.0))
       '@sap/cds': 9.3.1(@eslint/js@9.35.0)(express@4.21.2)
-      '@sap/cds-mtxs': 3.3.0(@sap/cds@9.3.1(@eslint/js@9.35.0)(express@5.1.0))(hdb@0.19.12)
+      '@sap/cds-mtxs': 3.3.1(@sap/cds@9.3.1(@eslint/js@9.35.0)(express@5.1.0))(hdb@0.19.12)
       '@sap/hdi-deploy': 5.5.0(hdb@0.19.12)
-      axios: 1.11.0
+      axios: 1.12.1
       express: 4.21.2
       hdb: 0.19.12
       livereload-js: 4.0.2
@@ -6570,7 +6573,7 @@ snapshots:
       '@sap/cds': 9.3.1(@eslint/js@9.35.0)(express@5.1.0)
       express: 5.1.0
 
-  '@sap/cds-mtxs@3.3.0(@sap/cds@9.3.1(@eslint/js@9.35.0)(express@5.1.0))(hdb@0.19.12)':
+  '@sap/cds-mtxs@3.3.1(@sap/cds@9.3.1(@eslint/js@9.35.0)(express@5.1.0))(hdb@0.19.12)':
     dependencies:
       '@sap/cds': 9.3.1(@eslint/js@9.35.0)(express@5.1.0)
       '@sap/hdi-deploy': 5.5.0(hdb@0.19.12)
@@ -7364,6 +7367,14 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
+  axios@1.12.1:
+    dependencies:
+      follow-redirects: 1.15.11
+      form-data: 4.0.4
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+
   babel-jest@30.1.2(@babel/core@7.28.3):
     dependencies:
       '@babel/core': 7.28.3
@@ -8038,7 +8049,7 @@ snapshots:
       tinyglobby: 0.2.14
       unrs-resolver: 1.11.1
     optionalDependencies:
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.38.0(eslint@9.35.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.4.4(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.38.0(eslint@9.35.0)(typescript@5.8.3))(eslint@9.35.0))(eslint@9.35.0))(eslint@9.35.0)
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.38.0(eslint@9.35.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.35.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -8053,7 +8064,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.38.0(eslint@9.35.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.4.4(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.38.0(eslint@9.35.0)(typescript@5.8.3))(eslint@9.35.0))(eslint@9.35.0))(eslint@9.35.0):
+  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.38.0(eslint@9.35.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.35.0):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9
@@ -9359,7 +9370,7 @@ snapshots:
 
   kuler@2.0.0: {}
 
-  langchain@0.3.33(@langchain/core@0.3.75(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(axios@1.11.0)(handlebars@4.7.8)(openai@5.12.2(ws@8.18.3)(zod@3.25.76))(ws@8.18.3):
+  langchain@0.3.33(@langchain/core@0.3.75(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(axios@1.12.1)(handlebars@4.7.8)(openai@5.12.2(ws@8.18.3)(zod@3.25.76))(ws@8.18.3):
     dependencies:
       '@langchain/core': 0.3.75(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
       '@langchain/openai': 0.6.11(@langchain/core@0.3.75(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(ws@8.18.3)
@@ -9374,7 +9385,7 @@ snapshots:
       yaml: 2.8.1
       zod: 3.25.76
     optionalDependencies:
-      axios: 1.11.0
+      axios: 1.12.1
       handlebars: 4.7.8
     transitivePeerDependencies:
       - '@opentelemetry/api'
