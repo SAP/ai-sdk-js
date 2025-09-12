@@ -286,6 +286,45 @@ promptTemplating: {
 }
 ```
 
+##### Prompt Registry Template Reference
+
+Due to the consolidation of `llm` and `templating` into `promptTemplating`, move Prompt Registry template reference from `templating.template_ref` to `promptTemplating.prompt.template_ref`.
+
+**v1:**
+```typescript
+const config = {
+  llm: {
+    model_name: 'gpt-4o',
+    model_params: {}
+  },
+  templating: {
+    template_ref: {
+      name: 'my-get-capital-template',
+      scenario: 'my-scenario',
+      version: '0.0.1'
+    }
+  }
+};
+```
+
+**v2:**
+```typescript
+const config = {
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    },
+    prompt: {
+      template_ref: {
+        name: 'my-get-capital-template',
+        scenario: 'my-scenario',
+        version: '0.0.1'
+      }
+    }
+  }
+};
+```
+
 #### Global Streaming Configuration
 
 The global streaming configuration has been updated to use an `enabled` flag instead of a top-level `stream` property.
@@ -398,8 +437,9 @@ buildAzureContentSafetyFilter('input', {
   hate: 'ALLOW_SAFE',
   self_harm: 'ALLOW_SAFE_LOW',
   sexual: 'ALLOW_SAFE_LOW_MEDIUM',
-  violence: 'ALLOW_ALL'
-})
+  violence: 'ALLOW_ALL',
+  prompt_shield: true // Only available for input
+});
 
 // For output filters
 buildAzureContentSafetyFilter('output', {
@@ -407,7 +447,7 @@ buildAzureContentSafetyFilter('output', {
   self_harm: 'ALLOW_SAFE_LOW',
   sexual: 'ALLOW_SAFE_LOW_MEDIUM',
   violence: 'ALLOW_ALL'
-})
+});
 ```
 #### Llama Guard Filter Changes
 
@@ -505,6 +545,57 @@ await orchestrationClient.invoke(messages, {
 await orchestrationClient.invoke(messages, {
   placeholderValues: { country: 'France' }
 });
+```
+
+#### Stream Method Parameter Change
+
+The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter.
+
+**v1:**
+```typescript
+const controller = new AbortController();
+const orchestrationConfig: LangchainOrchestrationModuleConfig = {
+  llm: {
+    model_name: 'gpt-4o'
+  }
+};
+
+const client = new OrchestrationClient(orchestrationConfig);
+const response = await client.stream(
+  [
+    {
+      role: 'user',
+      content:
+        'Write a 100 word explanation about SAP Cloud SDK and its capabilities'
+    }
+  ],
+  controller
+);
+```
+
+**v2:**
+```typescript
+const orchestrationConfig: LangChainOrchestrationModuleConfig = {
+  promptTemplating: {
+    model: {
+      name: 'gpt-4o'
+    }
+  }
+};
+
+const client = new OrchestrationClient(orchestrationConfig);
+const response = await client.stream(
+  [
+    {
+      role: 'user',
+      content:
+        'Write a 100 word explanation about SAP Cloud SDK and its capabilities'
+    }
+  ],
+  {
+    signal: controller.signal
+  }
+);
 ```
 
 #### Response Property Changes
