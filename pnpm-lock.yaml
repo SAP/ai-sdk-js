@@ -235,8 +235,8 @@ importers:
         version: 5.1.0
     devDependencies:
       '@sap/cds-dk':
-        specifier: ^9.3.0
-        version: 9.3.0(@eslint/js@9.34.0)
+        specifier: ^9.3.1
+        version: 9.3.1(@eslint/js@9.34.0)
 
   sample-code:
     dependencies:
@@ -1299,8 +1299,8 @@ packages:
     engines: {node: '>=20'}
     hasBin: true
 
-  '@sap/cds-dk@9.3.0':
-    resolution: {integrity: sha512-p2cjXJSjiH9xoQsduje6Ku3xKDLTNSs8OEJ0cwjYyHc3GRVwe3UsMnmlHTX3HtR9XTKvr7XVQXipDgKee+EAdA==}
+  '@sap/cds-dk@9.3.1':
+    resolution: {integrity: sha512-Afa7hg+YwPgSq+tGY7CX2ZOo0decIp0qEyLaDdeXViAVPYZGiUjWp9Zyb8PoNElC5UNkRMDRJ4ZGOKjzf+mM+A==}
     hasBin: true
 
   '@sap/cds-fiori@2.0.1':
@@ -1309,8 +1309,8 @@ packages:
       '@sap/cds': '>=8'
       express: '>=4'
 
-  '@sap/cds-mtxs@3.3.0':
-    resolution: {integrity: sha512-udIzKk+qUoYWLJKbGUJm0csuZP5r54msnTNy11bFDsuESio07ppgDkCIk+oGXCjsJLeoLZULCGgFvifLRi0ATg==}
+  '@sap/cds-mtxs@3.3.1':
+    resolution: {integrity: sha512-66yWxkVlqu5FsOHxDF8w2JJSlcbgtT2PTegBSECEq9+fjMOaqlxnBHpXXTODCUgK762Ad3kyCUZqW///gmpuMA==}
     hasBin: true
     peerDependencies:
       '@sap/cds': ^9
@@ -6419,12 +6419,12 @@ snapshots:
 
   '@sap/cds-compiler@6.3.0': {}
 
-  '@sap/cds-dk@9.3.0(@eslint/js@9.34.0)':
+  '@sap/cds-dk@9.3.1(@eslint/js@9.34.0)':
     dependencies:
       '@cap-js/asyncapi': 1.0.3(@sap/cds@9.3.1(@eslint/js@9.34.0)(express@5.1.0))
       '@cap-js/openapi': 1.2.3(@sap/cds@9.3.1(@eslint/js@9.34.0)(express@5.1.0))
       '@sap/cds': 9.3.1(@eslint/js@9.34.0)(express@4.21.2)
-      '@sap/cds-mtxs': 3.3.0(@sap/cds@9.3.1(@eslint/js@9.34.0)(express@5.1.0))(hdb@0.19.12)
+      '@sap/cds-mtxs': 3.3.1(@sap/cds@9.3.1(@eslint/js@9.34.0)(express@5.1.0))(hdb@0.19.12)
       '@sap/hdi-deploy': 5.5.0(hdb@0.19.12)
       axios: 1.11.0
       express: 4.21.2
@@ -6456,7 +6456,7 @@ snapshots:
       '@sap/cds': 9.3.1(@eslint/js@9.34.0)(express@5.1.0)
       express: 5.1.0
 
-  '@sap/cds-mtxs@3.3.0(@sap/cds@9.3.1(@eslint/js@9.34.0)(express@5.1.0))(hdb@0.19.12)':
+  '@sap/cds-mtxs@3.3.1(@sap/cds@9.3.1(@eslint/js@9.34.0)(express@5.1.0))(hdb@0.19.12)':
     dependencies:
       '@sap/cds': 9.3.1(@eslint/js@9.34.0)(express@5.1.0)
       '@sap/hdi-deploy': 5.5.0(hdb@0.19.12)
