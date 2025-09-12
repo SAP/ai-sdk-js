@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { SearchFilter } from './search-filter.js';
+import type { VectorSearchFilter } from './vector-search-filter.js';
 /**
  * Representation of the 'TextSearchRequest' schema.
  */
@@ -14,5 +14,5 @@ export type TextSearchRequest = {
    * Min Length: 1.
    */
   query: string;
-  filters: SearchFilter[];
+  filters: VectorSearchFilter[];
 } & Record<string, any>;
