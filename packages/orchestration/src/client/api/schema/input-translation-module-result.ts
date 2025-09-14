@@ -9,8 +9,8 @@
  */
 export type InputTranslationModuleResult = {
   /**
-   * Some message created from the translation module
-   * @example "Input to LLM is translated successfully."
+   * Status message describing the translation operation outcome.
+   * @example "Translated successfully placeholders 'issue_title', 'issue_description'."
    */
   message: string;
   data?: {
