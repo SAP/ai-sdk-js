@@ -214,7 +214,7 @@ Prefer using the provided getter methods instead of accessing the data object di
 
 #### Module Configuration Structure
 
-The most significant change is the consolidation of `llm` and `templating` modules into a single `promptTemplating` module.
+The most significant change is the consolidation of `llm` and `templating` modules into a single `promptTemplating` module.In the new structure, the `templating` module is renamed to `prompt`.
 
 **v1:**
 ```typescript
@@ -247,6 +247,8 @@ const config = {
   }
 };
 ```
+
+As part of the configuration structure change, all properties previously in `templating`: `template`, `tools`, `template_ref`, `defaults`, and `response_format` are now located in `promptTemplating.prompt`.
 
 #### Parameter Name Changes
 
