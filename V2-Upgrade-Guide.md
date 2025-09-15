@@ -248,7 +248,6 @@ const config = {
 };
 ```
 
-As part of the configuration structure change, all properties previously in `templating`: `template`, `tools`, `template_ref`, `defaults`, and `response_format` are now located in `promptTemplating.prompt`.
 
 #### Parameter Name Changes
 
