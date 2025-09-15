@@ -917,7 +917,9 @@ describe('orchestration service client', () => {
 
       const client = new OrchestrationClient(invalidJsonConfig);
 
-      await expect(client.stream()).rejects.toThrow('Invalid JSON configuration');
+      await expect(client.stream()).rejects.toThrow(
+        'Invalid JSON configuration'
+      );
     });
 
     it('should abort controller and re-throw error when network request fails', async () => {
