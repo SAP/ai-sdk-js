@@ -17,7 +17,7 @@
   "dependencies": {
     "@langchain/langgraph": "^0.4.9",
     "langchain": "0.3.33",
-    "@langchain/core": "0.3.74",
+    "@langchain/core": "0.3.75",
     "@langchain/textsplitters": "0.1.0",
     "@sap-ai-sdk/ai-api": "next",
     "@sap-ai-sdk/document-grounding": "next",
@@ -27,7 +27,7 @@
     "@sap-ai-sdk/prompt-registry": "next",
     "@sap-cloud-sdk/util": "^4.1.1",
     "express": "^5.1.0",
-    "uuid": "^11.1.0",
+    "uuid": "^13.0.0",
     "zod": "^3.25.76"
   },
   "devDependencies": {
