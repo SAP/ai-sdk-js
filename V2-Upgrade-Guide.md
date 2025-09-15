@@ -214,7 +214,7 @@ Prefer using the provided getter methods instead of accessing the data object di
 
 #### Module Configuration Structure
 
-The most significant change is the consolidation of `llm` and `templating` modules into a single `promptTemplating` module.In the new structure, the `templating` module is renamed to `prompt`.
+The most significant change is the consolidation of `llm` and `templating` modules into a single `promptTemplating` module as `model` and `prompt` properties respectively.
 
 **v1:**
 ```typescript
