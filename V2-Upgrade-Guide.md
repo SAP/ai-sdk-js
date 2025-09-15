@@ -389,7 +389,7 @@ buildAzureContentSafetyFilter({
   SelfHarm: 'ALLOW_SAFE_LOW',
   Sexual: 'ALLOW_SAFE_LOW_MEDIUM',
   Violence: 'ALLOW_ALL'
-})
+});
 ```
 
 **v2:**
