@@ -288,45 +288,6 @@ promptTemplating: {
 }
 ```
 
-##### Prompt Registry Template Reference
-
-Due to the consolidation of `llm` and `templating` into `promptTemplating`, move Prompt Registry template reference from `templating.template_ref` to `promptTemplating.prompt.template_ref`.
-
-**v1:**
-```typescript
-const config = {
-  llm: {
-    model_name: 'gpt-4o',
-    model_params: {}
-  },
-  templating: {
-    template_ref: {
-      name: 'my-get-capital-template',
-      scenario: 'my-scenario',
-      version: '0.0.1'
-    }
-  }
-};
-```
-
-**v2:**
-```typescript
-const config = {
-  promptTemplating: {
-    model: {
-      name: 'gpt-4o'
-    },
-    prompt: {
-      template_ref: {
-        name: 'my-get-capital-template',
-        scenario: 'my-scenario',
-        version: '0.0.1'
-      }
-    }
-  }
-};
-```
-
 #### Global Streaming Configuration
 
 The global streaming configuration has been updated to use an `enabled` flag instead of a top-level `stream` property.
