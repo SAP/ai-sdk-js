@@ -248,7 +248,6 @@ const config = {
 };
 ```
 
-
 #### Parameter Name Changes
 
 Several parameter names have been updated for consistency.
