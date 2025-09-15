@@ -365,7 +365,7 @@ Use `buildAzureContentSafetyFilter()` instead.
 const filter = buildAzureContentFilter({
   Hate: 'ALLOW_SAFE',
   Violence: 'ALLOW_SAFE_LOW_MEDIUM'
-})
+});
 ```
 
 **v2:**
@@ -374,7 +374,7 @@ const filter = buildAzureContentFilter({
 const filter = buildAzureContentSafetyFilter('input', { // For output filter, use type 'output'
   hate: 'ALLOW_SAFE',
   violence: 'ALLOW_SAFE_LOW_MEDIUM'
-})
+});
 ```
 
 #### Azure Content Filter Changes
