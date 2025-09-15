@@ -340,7 +340,7 @@ buildDocumentGroundingConfig({
   input_params: ['groundingInput'],
   output_param: 'groundingOutput',
   filters: [...]
-})
+});
 ```
 
 **v2:**
@@ -351,7 +351,7 @@ buildDocumentGroundingConfig({
     output: 'groundingOutput'
   },
   filters: [...]
-})
+});
 ```
 
 #### Removed Functions
