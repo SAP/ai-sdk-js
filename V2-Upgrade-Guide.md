@@ -417,7 +417,6 @@ const filter = buildAzureContentSafetyFilter('input', { // For output filter, us
 #### Azure Content Filter Changes
 
 The `buildAzureContentSafetyFilter()` function now requires a `type` parameter as the first argument to distinguish between input and output filter configurations.
-This change allows input and output filters to have different configuration options, such as the `prompt_shield` property that is only available for input filters.
 Additionally, the Azure content filter property names have been updated to use lowercase with underscores.
 
 **v1:**
@@ -437,8 +436,7 @@ buildAzureContentSafetyFilter('input', {
   hate: 'ALLOW_SAFE',
   self_harm: 'ALLOW_SAFE_LOW',
   sexual: 'ALLOW_SAFE_LOW_MEDIUM',
-  violence: 'ALLOW_ALL',
-  prompt_shield: true // Only available for input
+  violence: 'ALLOW_ALL'
 });
 
 // For output filters
@@ -545,57 +543,6 @@ await orchestrationClient.invoke(messages, {
 await orchestrationClient.invoke(messages, {
   placeholderValues: { country: 'France' }
 });
-```
-
-#### Stream Method Parameter Change
-
-The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter.
-
-**v1:**
-```typescript
-const controller = new AbortController();
-const orchestrationConfig: LangchainOrchestrationModuleConfig = {
-  llm: {
-    model_name: 'gpt-4o'
-  }
-};
-
-const client = new OrchestrationClient(orchestrationConfig);
-const response = await client.stream(
-  [
-    {
-      role: 'user',
-      content:
-        'Write a 100 word explanation about SAP Cloud SDK and its capabilities'
-    }
-  ],
-  controller
-);
-```
-
-**v2:**
-```typescript
-const orchestrationConfig: LangChainOrchestrationModuleConfig = {
-  promptTemplating: {
-    model: {
-      name: 'gpt-4o'
-    }
-  }
-};
-
-const client = new OrchestrationClient(orchestrationConfig);
-const response = await client.stream(
-  [
-    {
-      role: 'user',
-      content:
-        'Write a 100 word explanation about SAP Cloud SDK and its capabilities'
-    }
-  ],
-  {
-    signal: controller.signal
-  }
-);
 ```
 
 #### Response Property Changes
