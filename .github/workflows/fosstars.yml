@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
-          token: '${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}'
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
       - name: 'Run Fosstars Rating'
         uses: SAP/fosstars-rating-core-action@v1.14.0
         with:
