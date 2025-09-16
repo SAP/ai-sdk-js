@@ -6,7 +6,7 @@ on:
     - cron: '0 0 * * *'
   pull_request:
     branches:
-      - main  
+      - main
 
 jobs:
   security-checks:
@@ -33,6 +33,7 @@ jobs:
             --pnpm pnpm
             --nvdApiKey ${{ secrets.NVD_API_KEY }}
       - name: 'Upload OWASP Dependency Check Report'
+        if: always() && steps.depcheck.conclusion != 'skipped'
         uses: actions/upload-artifact@v4
         with:
           name: owasp-dependency-check-report
