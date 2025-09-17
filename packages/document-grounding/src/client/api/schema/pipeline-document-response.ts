@@ -12,6 +12,7 @@ export type PipelineDocumentResponse = {
    * @example "uuid"
    */
   id?: string;
+  status?: DocumentStatus;
   /**
    * @example "location"
    */
@@ -20,9 +21,15 @@ export type PipelineDocumentResponse = {
    * @example "location"
    */
   downloadLocation?: string | null;
+  absoluteUrl?: string | null;
+  title?: string | null;
+  metadataId?: string | null;
+  /**
+   * @example "2024-02-15T12:45:00Z"
+   */
+  createdTimestamp?: string;
   /**
    * @example "2024-02-15T12:45:00Z"
    */
   lastUpdatedTimestamp?: string;
-  status?: DocumentStatus;
 } & Record<string, any>;

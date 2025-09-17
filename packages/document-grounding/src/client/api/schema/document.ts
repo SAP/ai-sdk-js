@@ -3,8 +3,8 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { DocumentKeyValueListPair } from './document-key-value-list-pair.js';
-import type { Chunk } from './chunk.js';
+import type { RetrievalDocumentKeyValueListPair } from './retrieval-document-key-value-list-pair.js';
+import type { RetrievalChunk } from './retrieval-chunk.js';
 /**
  * Representation of the 'Document' schema.
  */
@@ -13,6 +13,6 @@ export type Document = {
   /**
    * Default: [].
    */
-  metadata?: DocumentKeyValueListPair[];
-  chunks: Chunk[];
+  metadata?: RetrievalDocumentKeyValueListPair[];
+  chunks: RetrievalChunk[];
 } & Record<string, any>;
