@@ -12,4 +12,8 @@ export type AzureContentSafetyOutput = {
   self_harm?: AzureThreshold;
   sexual?: AzureThreshold;
   violence?: AzureThreshold;
+  /**
+   * A flag to detect protected material for code
+   */
+  detect_protected_material_for_code?: boolean;
 };
