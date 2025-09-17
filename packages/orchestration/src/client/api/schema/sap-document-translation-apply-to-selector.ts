@@ -8,7 +8,7 @@
  * This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{"category": "placeholders", "items": ["user_input"], "source_language": "de-DE"}` targets the value of "user_input" in `placeholder_values` specified in the request payload; and considers the value to be in German.
  *
  */
-export type SAPDocumentTranslationTargetSelector = {
+export type SAPDocumentTranslationApplyToSelector = {
   /**
    * Category to apply translation to.
    */

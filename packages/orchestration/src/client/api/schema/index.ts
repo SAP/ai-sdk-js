@@ -97,7 +97,7 @@ export * from './translation-module-config.js';
 export * from './sap-document-translation-input.js';
 export * from './sap-document-translation-output.js';
 export * from './sap-document-translation-output-target-language.js';
-export * from './sap-document-translation-target-selector.js';
+export * from './sap-document-translation-apply-to-selector.js';
 export * from './error.js';
 export * from './error-streaming.js';
 export * from './error-response.js';

@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { SAPDocumentTranslationTargetSelector } from './sap-document-translation-target-selector.js';
+import type { SAPDocumentTranslationApplyToSelector } from './sap-document-translation-apply-to-selector.js';
 /**
  * Representation of the 'SAPDocumentTranslationInput' schema.
  */
@@ -30,7 +30,7 @@ export type SAPDocumentTranslationInput = {
     /**
      * Min Items: 1.
      */
-    apply_to?: SAPDocumentTranslationTargetSelector[];
+    apply_to?: SAPDocumentTranslationApplyToSelector[];
     /**
      * Language to which the text should be translated.
      * @example "en-US"
