@@ -225,8 +225,8 @@ importers:
         specifier: ^9.3.1
         version: 9.3.1(@eslint/js@9.35.0)(express@5.1.0)
       '@sap/xssec':
-        specifier: ^4.9.1
-        version: 4.9.1
+        specifier: ^4.9.2
+        version: 4.9.2
       express:
         specifier: ^5.1.0
         version: 5.1.0
@@ -1380,8 +1380,8 @@ packages:
     resolution: {integrity: sha512-x2f1AvS9KDs3djtDsRgH4Md3Ze5vc2NZHAlpCf+oRokWaQCmMNmS57DE6Zm80IVCCzo1mr8VtSrjWMPTshfUpw==}
     engines: {node: '>=18'}
 
-  '@sap/xssec@4.9.1':
-    resolution: {integrity: sha512-DENmjd04ndQbNC8vP8PU1Ee4pRtaSDnDgHpcesEAokjsQVFG4rFtVuzObQHDrNT89gyBhyHtVEkV6+g1XFDNbw==}
+  '@sap/xssec@4.9.2':
+    resolution: {integrity: sha512-HlXnMnIbEGzdyKbW0SHcHlM7KtMhikx9Px04rBSfCOPKPNtA6oZk5uGVP3WMWy37aYT0rChVbMfQB83gqZ6Hxg==}
     engines: {node: '>=18'}
 
   '@shikijs/engine-oniguruma@3.9.1':
@@ -5399,7 +5399,7 @@ snapshots:
       '@babel/parser': 7.27.3
       '@babel/template': 7.27.2
       '@babel/types': 7.27.3
-      debug: 4.4.1
+      debug: 4.4.3
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -5725,7 +5725,7 @@ snapshots:
   '@eslint/config-array@0.21.0':
     dependencies:
       '@eslint/object-schema': 2.1.6
-      debug: 4.4.1
+      debug: 4.4.3
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -5739,7 +5739,7 @@ snapshots:
   '@eslint/eslintrc@3.3.1':
     dependencies:
       ajv: 6.12.6
-      debug: 4.4.1
+      debug: 4.4.3
       espree: 10.4.0
       globals: 14.0.0
       ignore: 5.3.2
@@ -6249,7 +6249,7 @@ snapshots:
       ajv: 8.17.1
       chalk: 4.1.2
       compare-versions: 6.1.1
-      debug: 4.4.1
+      debug: 4.4.3
       esbuild: 0.25.9
       esutils: 2.0.3
       fs-extra: 11.3.0
@@ -6615,9 +6615,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@sap/xssec@4.9.1':
+  '@sap/xssec@4.9.2':
     dependencies:
-      debug: 4.4.1
+      debug: 4.4.3
       jwt-decode: 4.0.0
     transitivePeerDependencies:
       - supports-color
@@ -7014,7 +7014,7 @@ snapshots:
       '@typescript-eslint/types': 8.38.0
       '@typescript-eslint/typescript-estree': 8.38.0(typescript@5.8.3)
       '@typescript-eslint/visitor-keys': 8.38.0
-      debug: 4.4.1
+      debug: 4.4.3
       eslint: 9.35.0
       typescript: 5.8.3
     transitivePeerDependencies:
@@ -8025,7 +8025,7 @@ snapshots:
 
   eslint-import-resolver-typescript@4.4.4(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.38.0(eslint@9.35.0)(typescript@5.8.3))(eslint@9.35.0))(eslint@9.35.0):
     dependencies:
-      debug: 4.4.1
+      debug: 4.4.3
       eslint: 9.35.0
       eslint-import-context: 0.1.9(unrs-resolver@1.11.1)
       get-tsconfig: 4.10.1
@@ -8083,7 +8083,7 @@ snapshots:
       '@es-joy/jsdoccomment': 0.52.0
       are-docs-informative: 0.0.2
       comment-parser: 1.4.1
-      debug: 4.4.1
+      debug: 4.4.3
       escape-string-regexp: 4.0.0
       eslint: 9.35.0
       espree: 10.4.0
