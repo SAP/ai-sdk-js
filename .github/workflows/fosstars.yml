@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
+  pull_request:
+    branches:
+      - main
 
 jobs:
   security-checks:
@@ -13,10 +16,6 @@ jobs:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
-      - name: 'Run Fosstars Rating'
-        uses: SAP/fosstars-rating-core-action@v1.14.0
-        with:
-          token: '${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}'
       - name: 'Run OWASP Dependency Check'
         uses: dependency-check/Dependency-Check_Action@main
         id: depcheck
@@ -35,6 +34,10 @@ jobs:
           name: owasp-dependency-check-report
           path: reports/
           retention-days: 7
+      - name: 'Run Fosstars Rating'
+        uses: SAP/fosstars-rating-core-action@v1.14.0
+        with:
+          token: '${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}'
       - name: 'Slack Notification'
         if: failure()
         uses: slackapi/slack-github-action@v2.1.1
