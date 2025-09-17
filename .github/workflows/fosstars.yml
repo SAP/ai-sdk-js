@@ -6,12 +6,38 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  fosstars-rating:
+  security-checks:
     runs-on: ubuntu-latest
     name: 'Security rating'
     steps:
-      - uses: actions/checkout@v5
-      - uses: SAP/fosstars-rating-core-action@v1.14.0
+      - uses: sap/ai-sdk-js/.github/actions/setup@main
+        with:
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+      - name: 'Run OWASP Dependency Check'
+        uses: dependency-check/Dependency-Check_Action@main
+        id: depcheck
+        with:
+          project: ${{ github.repository }}
+          path: '.'
+          format: 'HTML'
+          out: 'reports'
+          # OWASP Dependency-Check configuration:
+          # - --failOnCVSS 7: Fail the step if any dependency has CVSS >= 7 (High/Critical).
+          # - --nvdApiKey: Use an National Vulnerability Database (NVD) API key to increase rate limits
+          #   for NVD data sync and improve reliability.
+          # Request an API key if required at: https://nvd.nist.gov/developers/request-an-api-key
+          args: >
+            --failOnCVSS 7
+            --nvdApiKey ${{ secrets.NVD_API_KEY }}
+      - name: 'Upload OWASP Dependency Check Report'
+        if: always() && steps.depcheck.conclusion != 'skipped'
+        uses: actions/upload-artifact@v4
+        with:
+          name: owasp-dependency-check-report
+          path: reports/
+          retention-days: 7
+      - name: 'Run Fosstars Rating'
+        uses: SAP/fosstars-rating-core-action@v1.14.0
         with:
           token: '${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}'
       - name: 'Slack Notification'
@@ -22,7 +48,6 @@ jobs:
           webhook-type: incoming-webhook
           payload: |
             {
-              "username": "Fosstars Rating",
-              "text": "Fosstars rating <https://github.com/SAP/ai-sdk-js/actions/runs/${{ github.run_id }}|failed>.",
+              "username": "Security Checks",
+              "text": "Security checks (Fosstars rating and OWASP dependency check) <https://github.com/SAP/ai-sdk-js/actions/runs/${{ github.run_id }}|failed>.",
             }
-
