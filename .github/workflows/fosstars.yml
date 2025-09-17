@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
+  pull_request:
+    branches:
+      - main
 
 jobs:
   security-checks:
@@ -21,6 +24,11 @@ jobs:
           path: '.'
           format: 'HTML'
           out: 'reports'
+          # OWASP Dependency-Check configuration:
+          # - --failOnCVSS 7: Fail the step if any dependency has CVSS >= 7 (High/Critical).
+          # - --nvdApiKey: Use an National Vulnerability Database (NVD) API key to increase rate limits
+          #   for NVD data sync and improve reliability.
+          # Request an API key if required at: https://nvd.nist.gov/developers/request-an-api-key
           args: >
             --failOnCVSS 7
             --nvdApiKey ${{ secrets.NVD_API_KEY }}
