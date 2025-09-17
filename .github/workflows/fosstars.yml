@@ -30,7 +30,7 @@ jobs:
           out: 'reports'
           args: >
             --failOnCVSS 7
-            --pnpm pnpm
+            --pnpm $(which pnpm)
             --nvdApiKey ${{ secrets.NVD_API_KEY }}
       - name: 'Upload OWASP Dependency Check Report'
         if: always() && steps.depcheck.conclusion != 'skipped'
