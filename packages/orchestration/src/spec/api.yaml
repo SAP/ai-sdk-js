@@ -1042,6 +1042,16 @@ components:
           type: string
           description: ID of the template in prompt registry
           example: 'template_id'
+        scope:
+          type: string
+          description: >
+            Defines the scope that is searched for the referenced template. 
+            'tenant' indicates the template is shared across all resource groups within the tenant, 
+            while 'resource_group' indicates the template is only accessible within the specific resource group.
+          enum:
+            - resource_group
+            - tenant
+          default: tenant
 
     TemplateRefByScenarioNameVersion:
       type: object
@@ -1063,6 +1073,16 @@ components:
           type: string
           description: Version of the template
           example: 'some version, can be `latest`'
+        scope:
+          type: string
+          description: >
+            Defines the scope that is searched for the referenced template. 
+            'tenant' indicates the template is shared across all resource groups within the tenant, 
+            while 'resource_group' indicates the template is only accessible within the specific resource group.
+          enum:
+            - resource_group
+            - tenant
+          default: tenant
 
     # --- Filtering Module ---
     FilteringModuleConfig:
