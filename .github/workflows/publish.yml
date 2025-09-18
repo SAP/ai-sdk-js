@@ -6,7 +6,6 @@ on:
 
 env:
   DOCS_REPO: SAP/ai-sdk
-  NODE_VERSION: 20
 
 jobs:
   check-release-notes-pr:
