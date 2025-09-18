@@ -1,7 +1,7 @@
 import { OrchestrationStreamResponse } from '../index.js';
 import { mergeStreamResponse } from './stream.js';
+import type { CompletionPostResponseStreaming } from '../internal.js';
 import type {
-  CompletionPostResponseStreaming,
   OrchestrationStreamChunkResponse
 } from '../index.js';
 
