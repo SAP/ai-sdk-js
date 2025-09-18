@@ -941,9 +941,9 @@ describe('orchestration service client', () => {
       // Call the streaming API
       const response = await new OrchestrationClient(config).stream();
 
-      // Iterate over each chunk and assert its structure
+      // Iterate over each chunk
       for await (const chunk of response.stream) {
-        // You can add more assertions based on your expected chunk structure
+        // Just see that we can iterate over the chunks without errors
       }
     });
 
