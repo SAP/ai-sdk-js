@@ -943,7 +943,10 @@ describe('orchestration service client', () => {
 
       // Iterate over each chunk
       for await (const chunk of response.stream) {
-        // Just see that we can iterate over the chunks without errors
+        if (chunk._data.error) {
+          expect(chunk._data.error).toHaveProperty('message');
+          break;
+        }
       }
     });
 
