@@ -1,9 +1,7 @@
 import { OrchestrationStreamResponse } from '../index.js';
 import { mergeStreamResponse } from './stream.js';
 import type { CompletionPostResponseStreaming } from '../internal.js';
-import type {
-  OrchestrationStreamChunkResponse
-} from '../index.js';
+import type { OrchestrationStreamChunkResponse } from '../index.js';
 
 const llmBase = {
   id: 'orchestration-id-1',
