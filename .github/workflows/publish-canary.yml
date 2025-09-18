@@ -23,35 +23,13 @@ jobs:
       - name: prepare canary changeset
         run: |
           rm -f .changeset/*.md || true
-          project_version=$(cat package.json | jq '.version' | tr -d '"')
-          echo The project version is: $project_version
-
-          # If still on v1, do a major bump, otherwise do a patch
-          if [[ $project_version == 1* ]]; then
-            echo "Creating major version bump changeset"
-            cat <<EOT >> .changeset/major-release-changeset.md
-          ---
-          '@sap-ai-sdk/ai-api': major
-          '@sap-ai-sdk/core': major
-          '@sap-ai-sdk/document-grounding': major
-          '@sap-ai-sdk/foundation-models': major
-          '@sap-ai-sdk/langchain': major
-          '@sap-ai-sdk/orchestration': major
-          '@sap-ai-sdk/prompt-registry': major
-          ---
-
-          Major version release
-          EOT
-          else
-            echo "Creating patch version bump changeset"
-            cat <<EOT >> .changeset/canary-release-changeset.md
+          cat <<EOT >> .changeset/canary-release-changeset.md
           ---
           '@sap-ai-sdk/core': patch
           ---
 
           Canary release
           EOT
-          fi
 
       - name: publish
         run: |
