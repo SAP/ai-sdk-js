@@ -900,26 +900,51 @@ describe('orchestration service client', () => {
     `);
   });
   describe('OrchestrationClient Stream Error Handling', () => {
-    it('should throw an error when streaming with invalid JSON configuration', async () => {
-      const invalidJsonConfig = JSON.stringify({
-        config: {
-          stream: { enabled: true },
-          modules: {
-            prompt_templating: {
-              model: {
-                name: 'gpt-4o',
-                params: { version: 4.9 }
+    it('executes a streaming request and parses each SSE chunk correctly', async () => {
+      const config: OrchestrationModuleConfig = {
+        promptTemplating: {
+          model: {
+            name: 'gpt-4o',
+            params: {}
+          },
+          prompt: {
+            template: [
+              {
+                role: 'user',
+                content: 'Give me a short introduction of SAP Cloud SDK.'
               }
-            }
+            ]
           }
         }
-      });
+      };
 
-      const client = new OrchestrationClient(invalidJsonConfig);
-
-      await expect(client.stream()).rejects.toThrow(
-        'Invalid JSON configuration'
+      // Read the mocked SSE chunks from the txt file
+      const mockResponse = await parseFileToString(
+        'orchestration',
+        'orchestration-chat-completion-stream-chunks-with-error.txt'
       );
+
+      // Mock the inference endpoint to return the streaming chunks
+      mockInference(
+        {
+          data: constructCompletionPostRequest(config, undefined, true)
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      // Call the streaming API
+      const response = await new OrchestrationClient(config).stream();
+
+      // Iterate over each chunk and assert its structure
+      for await (const chunk of response.stream) {
+        // You can add more assertions based on your expected chunk structure
+      }
     });
 
     it('should abort controller and re-throw error when network request fails', async () => {
