@@ -214,7 +214,7 @@ Prefer using the provided getter methods instead of accessing the data object di
 
 #### Module Configuration Structure
 
-The most significant change is the consolidation of `llm` and `templating` modules into a single `promptTemplating` module.
+The most significant change is the consolidation of `llm` and `templating` modules into a single `promptTemplating` module as `model` and `prompt` properties respectively.
 
 **v1:**
 ```typescript
@@ -338,7 +338,7 @@ buildDocumentGroundingConfig({
   input_params: ['groundingInput'],
   output_param: 'groundingOutput',
   filters: [...]
-})
+});
 ```
 
 **v2:**
@@ -349,7 +349,7 @@ buildDocumentGroundingConfig({
     output: 'groundingOutput'
   },
   filters: [...]
-})
+});
 ```
 
 #### Removed Functions
@@ -378,7 +378,6 @@ const filter = buildAzureContentSafetyFilter('input', { // For output filter, us
 #### Azure Content Filter Changes
 
 The `buildAzureContentSafetyFilter()` function now requires a `type` parameter as the first argument to distinguish between input and output filter configurations.
-This change allows input and output filters to have different configuration options, such as the `prompt_shield` property that is only available for input filters.
 Additionally, the Azure content filter property names have been updated to use lowercase with underscores.
 
 **v1:**
@@ -388,7 +387,7 @@ buildAzureContentSafetyFilter({
   SelfHarm: 'ALLOW_SAFE_LOW',
   Sexual: 'ALLOW_SAFE_LOW_MEDIUM',
   Violence: 'ALLOW_ALL'
-})
+});
 ```
 
 **v2:**
@@ -399,7 +398,7 @@ buildAzureContentSafetyFilter('input', {
   self_harm: 'ALLOW_SAFE_LOW',
   sexual: 'ALLOW_SAFE_LOW_MEDIUM',
   violence: 'ALLOW_ALL'
-})
+});
 
 // For output filters
 buildAzureContentSafetyFilter('output', {
@@ -407,7 +406,7 @@ buildAzureContentSafetyFilter('output', {
   self_harm: 'ALLOW_SAFE_LOW',
   sexual: 'ALLOW_SAFE_LOW_MEDIUM',
   violence: 'ALLOW_ALL'
-})
+});
 ```
 #### Llama Guard Filter Changes
 

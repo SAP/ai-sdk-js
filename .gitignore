@@ -61,3 +61,6 @@ build/Release
 .idea
 
 .nvmrc
+
+# macOS
+.DS_Store
