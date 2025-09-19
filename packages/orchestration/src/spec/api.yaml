@@ -96,7 +96,7 @@ components:
             - $ref: '#/components/schemas/ChatMessages'
           description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
 
-    # Embedings Schemas
+    # Embeddings Schemas
     EmbeddingsPostRequest:
       type: object
       additionalProperties: false
@@ -595,7 +595,7 @@ components:
         templating:
           $ref: '#/components/schemas/TemplatingChatMessage'
         input_translation:
-          $ref: '#/components/schemas/GenericModuleResult'
+          $ref: '#/components/schemas/InputTranslationModuleResult'
         input_masking:
           $ref: '#/components/schemas/GenericModuleResult'
         input_filtering:
@@ -668,6 +668,44 @@ components:
         data:
           type: object
           description: Additional data object from the module
+
+    InputTranslationModuleResult:
+      type: object
+      description: Input Translation module result
+      required:
+        - message
+      additionalProperties: false
+      properties:
+        message:
+          type: string
+          description: Status message describing the translation operation outcome.
+          example: Translated successfully placeholders 'issue_title', 'issue_description'.
+        data:
+          type: object
+          additionalProperties: false
+          properties:
+            translated_template:
+              type: string
+              deprecated: true
+              example: "[{'role': 'user', 'content': 'translated content'}, ...]"
+            translated_template_roles:
+              type: object
+              additionalProperties:
+                type: array
+                items:
+                  type: string
+              example:
+                user:
+                  ['translated user content', 'another translated user content']
+                system: ['translated system message']
+            translated_placeholders:
+              type: object
+              additionalProperties:
+                type: string
+              example:
+                groundingInput: 'translated grounding input'
+                inputContext: 'translated input context'
+
     LLMModuleResult:
       type: object
       description: Output from LLM. Follows the OpenAI spec.
@@ -1619,12 +1657,13 @@ components:
         input:
           description: Configuration for input translation
           oneOf:
-            - $ref: '#/components/schemas/SAPDocumentTranslation'
+            - $ref: '#/components/schemas/SAPDocumentTranslationInput'
         output:
           description: Configuration for output translation
           oneOf:
-            - $ref: '#/components/schemas/SAPDocumentTranslation'
-    SAPDocumentTranslation:
+            - $ref: '#/components/schemas/SAPDocumentTranslationOutput'
+
+    SAPDocumentTranslationInput:
       type: object
       required:
         - type
@@ -1635,23 +1674,94 @@ components:
           description: Type of document translation provider
           type: string
           enum:
-            - sap_document_translation # this would be different for other translation provider
+            - sap_document_translation
           example: sap_document_translation
+        translate_messages_history:
+          type: boolean
+          description: If true, the messages history will be translated as well.
+          default: true
         config: # `config` key, parameters specific to SAP Translation Hub that are sent to the service, might differ for translation provider
           description: Configuration for `sap_document_translation` translation provider.
           type: object
+          additionalProperties: false
           required:
             - target_language
+          properties:
+            source_language:
+              type: string
+              description: Language of the text to be translated.
+              example: 'de-DE'
+            apply_to:
+              type: array
+              minItems: 1
+              items:
+                $ref: '#/components/schemas/SAPDocumentTranslationApplyToSelector'
+            target_language:
+              type: string
+              description: Language to which the text should be translated.
+              example: 'en-US'
+
+    SAPDocumentTranslationOutput:
+      type: object
+      required:
+        - type
+        - config
+      additionalProperties: false
+      properties:
+        type:
+          description: Configuration for `sap_document_translation` translation provider.
+          type: string
+          enum:
+            - sap_document_translation
+          example: sap_document_translation
+        config:
+          type: object
           additionalProperties: false
+          required:
+            - target_language
           properties:
             source_language:
               type: string
               description: Language of the text to be translated.
               example: 'de-DE'
             target_language:
-              type: string
-              description: Language to which the text should be translated.
-              example: 'en-US'
+              $ref: '#/components/schemas/SAPDocumentTranslationOutputTargetLanguage'
+
+    SAPDocumentTranslationOutputTargetLanguage:
+      oneOf:
+        - type: string
+          description: Language to which the text should be translated.
+          example: 'en-US'
+        - $ref: '#/components/schemas/SAPDocumentTranslationApplyToSelector'
+
+    SAPDocumentTranslationApplyToSelector:
+      type: object
+      description: >
+        This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{"category": "placeholders", "items": ["user_input"], "source_language": "de-DE"}` targets the value of "user_input" in `placeholder_values` specified in the request payload; and considers the value to be in German.
+      required:
+        - category
+        - items
+      additionalProperties: false
+      properties:
+        category:
+          type: string
+          description: Category to apply translation to.
+          enum:
+            - placeholders
+            - template_roles
+        items:
+          type: array
+          description: List of placeholders or roles to apply translation to
+          items:
+            type: string
+          example:
+            - groundingInput
+            - inputContext
+        source_language:
+          type: string
+          description: Language of the text to be translated.
+          example: 'de-DE'
+
     Error:
       type: object
       required:
