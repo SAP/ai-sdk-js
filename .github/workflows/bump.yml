@@ -20,6 +20,7 @@ jobs:
         with:
           token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           ref: 'main'
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
       - name: bump version
         uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
         id: bump
