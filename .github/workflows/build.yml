@@ -56,7 +56,7 @@ jobs:
 
   dependabot:
     runs-on: ubuntu-latest
-    if: ${{ github.actor == 'dependabot[bot]' && github.event_name == 'pull_request' }}
+    if: ${{ (github.actor == 'dependabot[bot]' || startsWith(github.event.pull_request.title, 'chore(deps')) && github.event_name == 'pull_request' }}
     needs: [test, checks]
     permissions:
       pull-requests: write
