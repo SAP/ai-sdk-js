@@ -60,6 +60,11 @@ jobs:
       pull-requests: write
       contents: write
     steps:
+      - name: Debug info
+        run: |
+          echo "Actor: ${{ github.actor }}"
+          echo "Event: ${{ github.event_name }}"
+          echo "PR title: ${{ github.event.pull_request.title }}"
       - name: Dependabot metadata
         id: metadata
         uses: dependabot/fetch-metadata@v2.4.0
