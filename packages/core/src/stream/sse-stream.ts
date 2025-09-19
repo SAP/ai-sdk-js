@@ -61,6 +61,7 @@ export class SseStream<Item> implements AsyncIterable<Item> {
           return;
         }
         logger.error('Error while iterating over SSE stream:', e);
+        throw e;
       } finally {
         // Make sure that the controller is aborted if the stream was not fully consumed
         if (!done) {
