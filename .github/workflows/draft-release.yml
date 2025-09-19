@@ -1,23 +1,22 @@
-# Enable workflow while releasing v2
-# name: draft-release
+name: draft-release
 
-# on:
-#   push:
-#     tags: ['v*']
+on:
+  push:
+    tags: ['v*']
 
-# jobs:
-#   draft-github-release:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: sap/ai-sdk-js/.github/actions/setup@main
-#         with:
-#           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
-#       - name: Get Changelog
-#         uses: sap/cloud-sdk-js/.github/actions/get-changelog@main
-#         id: get-changelog
-#       - uses: ncipollo/release-action@v1
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#         with:
-#           draft: true
-#           body: ${{ steps.get-changelog.outputs.changelog }}
+jobs:
+  draft-github-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: sap/ai-sdk-js/.github/actions/setup@main
+        with:
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+      - name: Get Changelog
+        uses: sap/cloud-sdk-js/.github/actions/get-changelog@main
+        id: get-changelog
+      - uses: ncipollo/release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          draft: true
+          body: ${{ steps.get-changelog.outputs.changelog }}
