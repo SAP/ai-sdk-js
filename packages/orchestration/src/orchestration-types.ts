@@ -120,13 +120,13 @@ export interface FilteringModule {
 /**
  * Representation of the `MaskingModuleConfig` schema.
  */
-export interface MaskingModule {
+export type MaskingModule = {
   /**
    * List of masking service providers
    * Min Items: 1.
    */
   masking_providers: MaskingProviderConfig[];
-}
+};
 
 /**
  * Configuration for translation module.
