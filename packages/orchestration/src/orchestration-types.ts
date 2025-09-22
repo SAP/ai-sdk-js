@@ -120,13 +120,14 @@ export interface FilteringModule {
 /**
  * Representation of the `MaskingModuleConfig` schema.
  */
-export interface MaskingModule {
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type MaskingModule = {
   /**
    * List of masking service providers
    * Min Items: 1.
    */
   masking_providers: MaskingProviderConfig[];
-}
+};
 
 /**
  * Configuration for translation module.
