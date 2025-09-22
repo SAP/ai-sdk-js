@@ -28,6 +28,57 @@
 
 -
 
+# 2.0.0
+## Compatibility Notes
+
+- [foundation-models, orchestration] Change stream method parameter from `AbortController` to `AbortSignal`.
+  The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter in both Azure OpenAI and Orchestration clients. (4c00c27)
+- [foundation-models, orchestration] Response object `data` property is renamed to `_data`.
+  Use getter methods like `getContent()`, `getTokenUsage()`, `getAssistantMessage()` instead of direct data access. (5c52cb6)
+- [foundation-models] Move generated types to internal exports while keeping frequently used types in main exports.
+  - Generated types are no longer exported from `@sap-ai-sdk/foundation-models` and must be imported from `@sap-ai-sdk/foundation-models/internal.js` instead.
+  - Frequently used types (`AzureOpenAiChatCompletionTool`, `AzureOpenAiFunctionObject`, `AzureOpenAiChatCompletionRequestMessage`, `AzureOpenAiChatCompletionRequestSystemMessage`, `AzureOpenAiChatCompletionRequestUserMessage`, `AzureOpenAiChatCompletionRequestAssistantMessage`, `AzureOpenAiChatCompletionRequestToolMessage`) remain available from main package exports.
+  - Add new type `AzureOpenAiChatCompletionParameters` to replace `AzureOpenAiCreateChatCompletionRequest` which is no longer exported publicly. (5c52cb6)
+- [langchain] Major breaking changes for LangChain orchestration v2:
+  - Update LangChain orchestration configuration structure to use `promptTemplating` instead of separate `llm` and `templating` properties.
+  - Replace `llm.model_name` with `promptTemplating.model.name` and `llm.model_params` with `promptTemplating.model.params`.
+  - The `templating.template` property is now `promptTemplating.prompt.template`.
+  - Rename `inputParams` parameter to `placeholderValues` in LangChain orchestration client methods.
+  - Update message response property names from `module_results` to `intermediate_results` in additional kwargs. (86e6370)
+- [langchain] Update imports to use new API facade from foundation-models package.
+  - Some generated types now need to be imported from `@sap-ai-sdk/foundation-models/internal.js` instead of `@sap-ai-sdk/foundation-models`.
+  - Update to use new `AzureOpenAiChatCompletionParameters` type to replace `AzureOpenAiCreateChatCompletionRequest` which is no longer exported publicly. (5c52cb6)
+- [orchestration] `buildTranslationConfig()` function now requires `type` parameter to distinguish between `input` and `output` translation configuration. (740ba78)
+- [orchestration] `buildLlamaGuardFilter()` function has been renamed to `buildLlamaGuard38BFilter()`. It now requires a type parameter to distinguish between `input` and `output` filter configurations, and accepts filter categories as an array. (740ba78)
+- [orchestration] Move generated types to internal exports while keeping frequently used types in main exports.
+  - Generated types are no longer exported from `@sap-ai-sdk/orchestration` and must be imported from `@sap-ai-sdk/orchestration/internal.js` instead.
+  - Frequently used types (`ChatMessage`, `SystemChatMessage`, `UserChatMessage`, `AssistantChatMessage`, `ToolChatMessage`, `DeveloperChatMessage`, `ChatCompletionTool`, `FunctionObject`) remain available from main package exports. (5c52cb6)
+- [orchestration] `buildAzureContentSafetyFilter()` function now requires `type` parameter to distinguish between `input` and `output` filter configuration. (997e8ec)
+- [orchestration] Major breaking changes for orchestration v2:
+  - Consolidate `llm` and `templating` modules into a single `promptTemplating` module.
+  - The `llm.model_name` property is now `promptTemplating.model.name` and `llm.model_params` is now `promptTemplating.model.params`.
+  - The `templating.template` property is now `promptTemplating.prompt.template`.
+  - Rename `inputParams` parameter to `placeholderValues` in orchestration client methods.
+  - Update response property names from `orchestration_result` to `final_result` and `module_results` to `intermediate_results`.
+  - Replace top-level `stream` property with `streamOptions.enabled` and update streaming module options from `llm` to `promptTemplating`.
+  - Update grounding configuration to use `placeholders.input` and `placeholders.output` instead of separate `input_params` and `output_param`.
+  - Update Azure content filter property names to lowercase with underscores: `Hate` to `hate`, `SelfHarm` to `self_harm`, `Sexual` to `sexual`, and `Violence` to `violence`.
+  - Remove deprecated `buildAzureContentFilter()` function and use `buildAzureContentSafetyFilter()` instead. (86e6370)
+
+## New Features
+
+- [ai-api] Add `resolveDeploymentUrl()` function to resolve the deployment URL that matches the given criteria. (14745de)
+- [foundation-models] Add `getTokenUsage()`, `getFinishReason()`, `getContent()`, `getToolCalls()`, `getRefusal()`, `getAssistantMessage()`, `findChoiceByIndex()` methods to Azure OpenAI chat completion response. (5c52cb6)
+- [orchestration] Add `prompt_shield` property to `buildAzureContentSafetyFilter()` function for input filter configuration to allow enabling prompt attack detection. (997e8ec)
+- [orchestration] Add `getIntermediateResults()` method to `OrchestrationResponse`, `OrchestrationStreamResponse`, `OrchestrationStreamChunkResponse` classes for accessing intermediate processing results from orchestration modules. (5c52cb6)
+- [orchestration] Add `deploymentId` as the optional parameter for OrchestrationClient initialization. (0a418d0)
+- [orchestration] Add `findChoiceByIndex()` method to find specific choices by index in streaming responses. (5c52cb6)
+
+## Improvements
+
+- [core] Add `gpt-5`,`gpt-5-mini` and `gpt-5-nano` to and remove `gemini-1.5-flash`, `gemini-1.5-pro` and `ibm--granite-13b-chat` from the available model list. (500c0dd)
+- [core] Add `anthropic--claude-4-opus`, `anthropic--claude-4-sonnet`, `amazon--nova-premier`, `gemini-2.5-flash` and `gemini-2.5-pro` to and remove `mistralai--mixtral-8x7b-instruct-v01`, `meta--llama3.1-70b-instruct`, `nvidia--llama-3.2-nv-embedqa-1b`, `amazon--titan-embed-text`, `gpt-4`, `amazon--titan-text-express` and `amazon--titan-text-lite` from the available model list. (9e1c43a)
+
 # 1.17.0
 ## New Features
 
