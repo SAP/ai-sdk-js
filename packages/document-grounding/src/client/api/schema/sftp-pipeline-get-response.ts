@@ -4,11 +4,11 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import type { BasePipelineResponse } from './base-pipeline-response.js';
-import type { CommonConfiguration } from './common-configuration.js';
+import type { SFTPConfiguration } from './sftp-configuration.js';
 /**
  * Representation of the 'SFTPPipelineGetResponse' schema.
  */
 export type SFTPPipelineGetResponse = BasePipelineResponse & {
   type?: 'SFTP';
-  configuration: CommonConfiguration;
+  configuration: SFTPConfiguration;
 } & Record<string, any>;

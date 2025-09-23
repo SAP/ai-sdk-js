@@ -7,11 +7,6 @@
 /**
  * Representation of the 'DocumentStatus' schema.
  * @example "INDEXED"
+ * Pattern: "^(TO_BE_PROCESSED|INDEXED|REINDEXED|DEINDEXED|FAILED|FAILED_TO_BE_RETRIED|TO_BE_SCHEDULED|.+)$".
  */
-export type DocumentStatus =
-  | 'TO_BE_PROCESSED'
-  | 'INDEXED'
-  | 'REINDEXED'
-  | 'DEINDEXED'
-  | 'FAILED'
-  | 'FAILED_TO_BE_RETRIED';
+export type DocumentStatus = string;

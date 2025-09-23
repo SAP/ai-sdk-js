@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { KeyValueListPair } from './key-value-list-pair.js';
+import type { RetrievalKeyValueListPair } from './retrieval-key-value-list-pair.js';
 import type { Document } from './document.js';
 /**
  * DataRepository schema returned by the Vector search endpoint
@@ -18,6 +18,6 @@ export type DataRepositoryWithDocuments = {
   /**
    * Metadata attached to DataRepository. Useful to later limit search to a subset of DataRepositories.
    */
-  metadata?: KeyValueListPair[];
+  metadata?: RetrievalKeyValueListPair[];
   documents: Document[];
 } & Record<string, any>;
