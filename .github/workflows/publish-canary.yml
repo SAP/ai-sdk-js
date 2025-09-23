@@ -1,6 +1,8 @@
 name: publish-canary
 
 on:
+  schedule:
+    - cron: '0 1 * * *'
   workflow_dispatch:
     inputs:
       tag:
