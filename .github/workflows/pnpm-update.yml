@@ -1,8 +1,8 @@
-name: Nightly Dependency Update
+name: Monthly pnpm Dependency Update
 
 on:
   schedule:
-    - cron: '0 2 * * *'
+    - cron: '0 2 1 * *'
   workflow_dispatch:
 
 jobs:
@@ -15,16 +15,16 @@ jobs:
           token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
 
-      - name: Update Dependencies
+      - name: Update Transitive Dependencies
         run: |
-          pnpm update
+          pnpm install --lockfile-only
           if [[ -n "$(git status --porcelain)" ]]; then
             git config --global user.email "cloud-sdk-js@github.com"
             git config --global user.name "cloud-sdk-js"
-            git checkout -b "bot/nightly-dependency-update-$(date +%Y-%m-%d)"
+            git checkout -b "bot/monthly-transitive-dependency-update-$(date +%Y-%m-%d)"
             git add .
-            git commit -m "chore: update dependencies"
-            git push --set-upstream origin "bot/nightly-dependency-update-$(date +%Y-%m-%d)"
+            git commit -m "chore: update pnpm transitive dependencies"
+            git push --set-upstream origin "bot/monthly-transitive-dependency-update-$(date +%Y-%m-%d)"
           else
             echo "No changes to commit"
             exit 0
@@ -38,12 +38,12 @@ jobs:
           script: |
             const { repo, owner } = context.repo;
             const result = await github.rest.pulls.create({
-              title: 'Nightly Dependency Update',
+              title: 'Monthly Transitive Dependency Update',
               owner,
               repo,
-              head: `bot/nightly-dependency-update-${new Date().toISOString().split('T')[0]}`,
+              head: `bot/monthly-transitive-dependency-update-${new Date().toISOString().split('T')[0]}`,
               base: 'main',
-              body: 'This is an automated PR to update dependencies.'
+              body: 'This is an automated PR to update pnpm transitive dependencies.'
             });
             console.log(`Pull Request created: ${result.data.html_url}`);
 
@@ -57,7 +57,7 @@ jobs:
             const pulls = await github.rest.pulls.list({
               owner,
               repo,
-              head: `bot/nightly-dependency-update-${new Date().toISOString().split('T')[0]}`,
+              head: `bot/monthly-transitive-dependency-update-${new Date().toISOString().split('T')[0]}`,
               base: 'main',
               state: 'open'
             });
