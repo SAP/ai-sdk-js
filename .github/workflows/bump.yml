@@ -51,7 +51,7 @@ jobs:
         with:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
       - name: Checkout Docs Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: ${{ env.DOCS_REPO }}
           token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
