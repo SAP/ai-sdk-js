@@ -15,15 +15,14 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.actor == 'dependabot[bot]' }}
     permissions:
+      checks: write
       contents: write
-      pull-requests: write
 
     steps:
       - name: Setup Environment
         uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
           ref: ${{ github.head_ref }}
-          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           pnpm-install-args: --lockfile-only
 
