@@ -1,5 +1,15 @@
 # @sap-ai-sdk/core
 
+## 2.0.0
+
+### Minor Changes
+
+- 500c0dd: [Improvement] Add `gpt-5`,`gpt-5-mini` and `gpt-5-nano` to and remove `gemini-1.5-flash`, `gemini-1.5-pro` and `ibm--granite-13b-chat` from the available model list.
+
+### Patch Changes
+
+- 9e1c43a: [Improvement] Add `anthropic--claude-4-opus`, `anthropic--claude-4-sonnet`, `amazon--nova-premier`, `gemini-2.5-flash` and `gemini-2.5-pro` to and remove `mistralai--mixtral-8x7b-instruct-v01`, `meta--llama3.1-70b-instruct`, `nvidia--llama-3.2-nv-embedqa-1b`, `amazon--titan-embed-text`, `gpt-4`, `amazon--titan-text-express` and `amazon--titan-text-lite` from the available model list.
+
 ## 1.17.0
 
 ## 1.16.0

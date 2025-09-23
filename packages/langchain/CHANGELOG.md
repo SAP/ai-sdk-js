@@ -1,5 +1,43 @@
 # @sap-ai-sdk/langchain
 
+## 2.0.0
+
+### Major Changes
+
+- 86e6370: [Compatibility Note] Major breaking changes for LangChain orchestration v2:
+  - Update LangChain orchestration configuration structure to use `promptTemplating` instead of separate `llm` and `templating` properties.
+  - Replace `llm.model_name` with `promptTemplating.model.name` and `llm.model_params` with `promptTemplating.model.params`.
+  - The `templating.template` property is now `promptTemplating.prompt.template`.
+  - Rename `inputParams` parameter to `placeholderValues` in LangChain orchestration client methods.
+  - Update message response property names from `module_results` to `intermediate_results` in additional kwargs.
+
+### Patch Changes
+
+- 5c52cb6: [Compatibility Note] Update imports to use new API facade from foundation-models package.
+  - Some generated types now need to be imported from `@sap-ai-sdk/foundation-models/internal.js` instead of `@sap-ai-sdk/foundation-models`.
+  - Update to use new `AzureOpenAiChatCompletionParameters` type to replace `AzureOpenAiCreateChatCompletionRequest` which is no longer exported publicly.
+- Updated dependencies [5c52cb6]
+- Updated dependencies [5c52cb6]
+- Updated dependencies [740ba78]
+- Updated dependencies [4c00c27]
+- Updated dependencies [500c0dd]
+- Updated dependencies [9e1c43a]
+- Updated dependencies [0a418d0]
+- Updated dependencies [740ba78]
+- Updated dependencies [5c52cb6]
+- Updated dependencies [5c52cb6]
+- Updated dependencies [5c52cb6]
+- Updated dependencies [5c52cb6]
+- Updated dependencies [997e8ec]
+- Updated dependencies [997e8ec]
+- Updated dependencies [5c52cb6]
+- Updated dependencies [86e6370]
+- Updated dependencies [14745de]
+  - @sap-ai-sdk/orchestration@2.0.0
+  - @sap-ai-sdk/foundation-models@2.0.0
+  - @sap-ai-sdk/core@2.0.0
+  - @sap-ai-sdk/ai-api@2.0.0
+
 ## 1.17.0
 
 ### Minor Changes

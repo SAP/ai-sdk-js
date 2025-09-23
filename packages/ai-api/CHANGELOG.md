@@ -1,5 +1,17 @@
 # @sap-ai-sdk/ai-api
 
+## 2.0.0
+
+### Minor Changes
+
+- 14745de: [New Functionality] Add `resolveDeploymentUrl()` function to resolve the deployment URL that matches the given criteria.
+
+### Patch Changes
+
+- Updated dependencies [500c0dd]
+- Updated dependencies [9e1c43a]
+  - @sap-ai-sdk/core@2.0.0
+
 ## 1.17.0
 
 ### Patch Changes
