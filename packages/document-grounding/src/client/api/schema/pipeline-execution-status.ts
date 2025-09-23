@@ -7,11 +7,6 @@
 /**
  * Representation of the 'PipelineExecutionStatus' schema.
  * @example "INPROGRESS"
+ * Pattern: "^(NEW|UNKNOWN|INPROGRESS|FINISHED|FINISHEDWITHERRORS|TIMEOUT|.+)$".
  */
-export type PipelineExecutionStatus =
-  | 'NEW'
-  | 'UNKNOWN'
-  | 'INPROGRESS'
-  | 'FINISHED'
-  | 'FINISHEDWITHERRORS'
-  | 'TIMEOUT';
+export type PipelineExecutionStatus = string;
