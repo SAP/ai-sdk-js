@@ -941,13 +941,14 @@ describe('orchestration service client', () => {
       // Call the streaming API
       const response = await new OrchestrationClient(config).stream();
 
-      // Iterate over each chunk
-      for await (const chunk of response.stream) {
-        if (chunk._data.error) {
-          expect(chunk._data.error).toHaveProperty('message');
-          break;
+      // Expect the iteration over the stream to throw an error
+      await expect(async () => {
+        for await (const chunk of response.stream) {
+          if (chunk._data.error) {
+            throw new Error(chunk._data.error.message);
+          }
         }
-      }
+      }).rejects.toThrow();
     });
 
     it('should abort controller and re-throw error when network request fails', async () => {
