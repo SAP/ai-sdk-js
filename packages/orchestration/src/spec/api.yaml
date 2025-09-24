@@ -78,85 +78,9 @@ components:
   schemas:
     CompletionPostRequest:
       oneOf:
-        - type: object
-          title: 'Completion Request Configuration'
-          required:
-            - config
-          additionalProperties: false
-          properties:
-            config:
-              $ref: '#/components/schemas/OrchestrationConfig'
-            placeholder_values:
-              type: object
-              example:
-                groundingInput: 'What is SAP Joule?'
-                inputContext: 'optimizing supply chain management'
-              additionalProperties:
-                type: string
-            messages_history:
-              allOf:
-                - $ref: '#/components/schemas/ChatMessages'
-              description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
-        - type: object
-          title: 'Completion Request Configuration Reference By Id'
-          required:
-            - config_ref
-          additionalProperties: false
-          properties:
-            config_ref:
-              type: object
-              required:
-                - id
-              additionalProperties: false
-              properties:
-                id:
-                  type: string
-                  example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
-            placeholder_values:
-              type: object
-              example:
-                groundingInput: 'What is SAP Joule?'
-                inputContext: 'optimizing supply chain management'
-              additionalProperties:
-                type: string
-            messages_history:
-              allOf:
-                - $ref: '#/components/schemas/ChatMessages'
-              description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
-        - type: object
-          title: 'Completion Request Configuration Reference By Name-Scenario-Version-ModelName'
-          required:
-            - config_ref
-          additionalProperties: false
-          properties:
-            config_ref:
-              type: object
-              required:
-                - scenario
-                - name
-                - version
-                - model_name
-              additionalProperties: false
-              properties:
-                scenario:
-                  type: string
-                name:
-                  type: string
-                version:
-                  type: string
-                model_name:
-                  type: string
-            placeholder_values:
-              type: object
-              example:
-                groundingInput: 'What is SAP Joule?'
-                inputContext: 'optimizing supply chain management'
-              additionalProperties:
-                type: string
-            messages_history:
-              allOf:
-                - $ref: '#/components/schemas/ChatMessages'
-              description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
+        - $ref: '#/components/schemas/CompletionRequestConfiguration'
+        - $ref: '#/components/schemas/CompletionRequestConfigurationReferenceById'
+        - $ref: '#/components/schemas/CompletionRequestConfigurationReferenceByNameScenarioVersionModelName'
 
     # Embeddings Schemas
     EmbeddingsPostRequest:
@@ -1946,6 +1870,96 @@ components:
           items:
             $ref: '#/components/schemas/ChatCompletionTokenLogprob'
           description: A list of message refusal tokens with log probability information.
+    CompletionRequestConfiguration:
+      type: object
+      title: 'Completion Request Configuration'
+      required:
+        - config
+      additionalProperties: false
+      properties:
+        config:
+          $ref: '#/components/schemas/OrchestrationConfig'
+        placeholder_values:
+          type: object
+          example:
+            groundingInput: 'What is SAP Joule?'
+            inputContext: 'optimizing supply chain management'
+          additionalProperties:
+            type: string
+        messages_history:
+          allOf:
+            - $ref: '#/components/schemas/ChatMessages'
+          description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
+
+    CompletionRequestConfigurationReferenceById:
+      type: object
+      title: 'Completion Request Configuration Reference By Id'
+      required:
+        - config_ref
+      additionalProperties: false
+      properties:
+        config_ref:
+          $ref: '#/components/schemas/CompletionRequestConfigurationReferenceByIdConfigRef'
+        placeholder_values:
+          type: object
+          example:
+            groundingInput: 'What is SAP Joule?'
+            inputContext: 'optimizing supply chain management'
+          additionalProperties:
+            type: string
+        messages_history:
+          allOf:
+            - $ref: '#/components/schemas/ChatMessages'
+          description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
+
+    CompletionRequestConfigurationReferenceByIdConfigRef:
+      type: object
+      required:
+        - id
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+
+    CompletionRequestConfigurationReferenceByNameScenarioVersionModelName:
+      type: object
+      title: 'Completion Request Configuration Reference By Name-Scenario-Version-ModelName'
+      required:
+        - config_ref
+      additionalProperties: false
+      properties:
+        config_ref:
+          $ref: '#/components/schemas/CompletionRequestConfigurationReferenceByNameScenarioVersionModelNameConfigRef'
+        placeholder_values:
+          type: object
+          example:
+            groundingInput: 'What is SAP Joule?'
+            inputContext: 'optimizing supply chain management'
+          additionalProperties:
+            type: string
+        messages_history:
+          allOf:
+            - $ref: '#/components/schemas/ChatMessages'
+          description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
+
+    CompletionRequestConfigurationReferenceByNameScenarioVersionModelNameConfigRef:
+      type: object
+      required:
+        - scenario
+        - name
+        - version
+        - model_name
+      additionalProperties: false
+      properties:
+        scenario:
+          type: string
+        name:
+          type: string
+        version:
+          type: string
+        model_name:
+          type: string
 
   responses:
     BadRequest:
