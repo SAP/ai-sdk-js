@@ -17,7 +17,7 @@ jobs:
 
       - name: Update Transitive Dependencies
         run: |
-          pnpm install --lockfile-only
+          pnpm --no-save update
           if [[ -n "$(git status --porcelain)" ]]; then
             git config --global user.email "cloud-sdk-js@github.com"
             git config --global user.name "cloud-sdk-js"
