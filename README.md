@@ -81,9 +81,6 @@ $ npm install @sap-ai-sdk/orchestration
 
 ### @sap-ai-sdk/document-grounding
 
-> [!warning]
-> This package is still in **beta** and is subject to breaking changes. Use it with caution.
-
 This package incorporates generative AI document grounding [Pipeline API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/pipeline-api-a9badce6a4da4df68e98549d64aa2217), [Vector API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/vector-api-0358c5ca839d4cf7b4982dbcbc1ba7ff) and [Retrieval API](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/retrieval-api) into your AI activities in SAP AI Core and SAP AI Launchpad.
 
 #### Installation

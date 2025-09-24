@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/langchain",
-  "version": "1.17.0",
+  "version": "2.0.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
@@ -33,6 +33,6 @@
     "@sap-cloud-sdk/connectivity": "^4.1.2",
     "@sap-cloud-sdk/util": "^4.1.2",
     "uuid": "^13.0.0",
-    "@langchain/core": "0.3.75"
+    "@langchain/core": "0.3.77"
   }
 }

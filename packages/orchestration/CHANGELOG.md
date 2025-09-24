@@ -1,5 +1,46 @@
 # @sap-ai-sdk/orchestration
 
+## 2.0.0
+
+### Major Changes
+
+- 740ba78: [Compatibility Note] `buildTranslationConfig()` function now requires `type` parameter to distinguish between `input` and `output` translation configuration.
+- 4c00c27: [Compatibility Note] Change stream method parameter from `AbortController` to `AbortSignal`.
+  The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter in both Azure OpenAI and Orchestration clients.
+- 740ba78: [Compatibility Note] `buildLlamaGuardFilter()` function has been renamed to `buildLlamaGuard38BFilter()`. It now requires a type parameter to distinguish between `input` and `output` filter configurations, and accepts filter categories as an array.
+- 5c52cb6: [Compatibility Note] Move generated types to internal exports while keeping frequently used types in main exports.
+  - Generated types are no longer exported from `@sap-ai-sdk/orchestration` and must be imported from `@sap-ai-sdk/orchestration/internal.js` instead.
+  - Frequently used types (`ChatMessage`, `SystemChatMessage`, `UserChatMessage`, `AssistantChatMessage`, `ToolChatMessage`, `DeveloperChatMessage`, `ChatCompletionTool`, `FunctionObject`) remain available from main package exports.
+- 5c52cb6: [Compatibility Note] Response object `data` property is renamed to `_data`.
+  Use getter methods like `getContent()`, `getTokenUsage()`, `getAssistantMessage()` instead of direct data access.
+- 997e8ec: [Compatibility Note] `buildAzureContentSafetyFilter()` function now requires `type` parameter to distinguish between `input` and `output` filter configuration.
+- 997e8ec: [New Functionality] Add `prompt_shield` property to `buildAzureContentSafetyFilter()` function for input filter configuration to allow enabling prompt attack detection.
+- 86e6370: [Compatibility Note] Major breaking changes for orchestration v2:
+  - Consolidate `llm` and `templating` modules into a single `promptTemplating` module.
+  - The `llm.model_name` property is now `promptTemplating.model.name` and `llm.model_params` is now `promptTemplating.model.params`.
+  - The `templating.template` property is now `promptTemplating.prompt.template`.
+  - Rename `inputParams` parameter to `placeholderValues` in orchestration client methods.
+  - Update response property names from `orchestration_result` to `final_result` and `module_results` to `intermediate_results`.
+  - Replace top-level `stream` property with `streamOptions.enabled` and update streaming module options from `llm` to `promptTemplating`.
+  - Update grounding configuration to use `placeholders.input` and `placeholders.output` instead of separate `input_params` and `output_param`.
+  - Update Azure content filter property names to lowercase with underscores: `Hate` to `hate`, `SelfHarm` to `self_harm`, `Sexual` to `sexual`, and `Violence` to `violence`.
+  - Remove deprecated `buildAzureContentFilter()` function and use `buildAzureContentSafetyFilter()` instead.
+
+### Minor Changes
+
+- 5c52cb6: [New Functionality] Add `getIntermediateResults()` method to `OrchestrationResponse`, `OrchestrationStreamResponse`, `OrchestrationStreamChunkResponse` classes for accessing intermediate processing results from orchestration modules.
+- 0a418d0: [feat] Add `deploymentId` as the optional parameter for OrchestrationClient initialization.
+- 5c52cb6: [New Functionality] Add `findChoiceByIndex()` method to find specific choices by index in streaming responses.
+
+### Patch Changes
+
+- Updated dependencies [500c0dd]
+- Updated dependencies [9e1c43a]
+- Updated dependencies [14745de]
+  - @sap-ai-sdk/core@2.0.0
+  - @sap-ai-sdk/ai-api@2.0.0
+  - @sap-ai-sdk/prompt-registry@2.0.0
+
 ## 1.17.0
 
 ### Minor Changes

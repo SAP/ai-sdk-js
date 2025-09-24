@@ -1,5 +1,30 @@
 # @sap-ai-sdk/foundation-models
 
+## 2.0.0
+
+### Major Changes
+
+- 4c00c27: [Compatibility Note] Change stream method parameter from `AbortController` to `AbortSignal`.
+  The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter in both Azure OpenAI and Orchestration clients.
+- 5c52cb6: [Compatibility Note] Response object `data` property is renamed to `_data`.
+  Use getter methods like `getContent()`, `getTokenUsage()`, `getAssistantMessage()` instead of direct data access.
+- 5c52cb6: [Compatibility Note] Move generated types to internal exports while keeping frequently used types in main exports.
+  - Generated types are no longer exported from `@sap-ai-sdk/foundation-models` and must be imported from `@sap-ai-sdk/foundation-models/internal.js` instead.
+  - Frequently used types (`AzureOpenAiChatCompletionTool`, `AzureOpenAiFunctionObject`, `AzureOpenAiChatCompletionRequestMessage`, `AzureOpenAiChatCompletionRequestSystemMessage`, `AzureOpenAiChatCompletionRequestUserMessage`, `AzureOpenAiChatCompletionRequestAssistantMessage`, `AzureOpenAiChatCompletionRequestToolMessage`) remain available from main package exports.
+  - Add new type `AzureOpenAiChatCompletionParameters` to replace `AzureOpenAiCreateChatCompletionRequest` which is no longer exported publicly.
+
+### Minor Changes
+
+- 5c52cb6: [New Functionality] Add `getTokenUsage()`, `getFinishReason()`, `getContent()`, `getToolCalls()`, `getRefusal()`, `getAssistantMessage()`, `findChoiceByIndex()` methods to Azure OpenAI chat completion response.
+
+### Patch Changes
+
+- Updated dependencies [500c0dd]
+- Updated dependencies [9e1c43a]
+- Updated dependencies [14745de]
+  - @sap-ai-sdk/core@2.0.0
+  - @sap-ai-sdk/ai-api@2.0.0
+
 ## 1.17.0
 
 ### Patch Changes

@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@sap-ai-sdk/smoke-tests",
-  "version": "1.17.0",
+  "version": "2.0.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "private": "true",
@@ -17,7 +17,7 @@
   "dependencies": {
     "@langchain/langgraph": "^0.4.9",
     "langchain": "0.3.34",
-    "@langchain/core": "0.3.75",
+    "@langchain/core": "0.3.77",
     "@langchain/textsplitters": "0.1.0",
     "@sap-ai-sdk/ai-api": "next",
     "@sap-ai-sdk/document-grounding": "next",
