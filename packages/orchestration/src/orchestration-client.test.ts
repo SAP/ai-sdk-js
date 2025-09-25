@@ -900,7 +900,7 @@ describe('orchestration service client', () => {
     `);
   });
   describe('OrchestrationClient Stream Error Handling', () => {
-    it('executes a streaming request and parses each SSE chunk correctly', async () => {
+    it('throws error when getting an SSE error chunk ', async () => {
       const config: OrchestrationModuleConfig = {
         promptTemplating: {
           model: {
