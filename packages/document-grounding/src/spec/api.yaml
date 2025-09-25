@@ -1403,11 +1403,6 @@ components:
           type: string
           example: uuid
 
-    PipelineExecutionStatus:
-      type: string
-      pattern: '^(NEW|UNKNOWN|INPROGRESS|FINISHED|FINISHEDWITHERRORS|TIMEOUT|.+)$'
-      example: 'INPROGRESS'
-
     PipelineExecutionData:
       type: object
       properties:
@@ -1415,7 +1410,16 @@ components:
           type: string
           example: uuid
         status:
-          $ref: '#/components/schemas/PipelineExecutionStatus'
+          anyOf:
+            - type: string
+              enum:
+                - NEW
+                - UNKNOWN
+                - INPROGRESS
+                - FINISHED
+                - FINISHEDWITHERRORS
+                - TIMEOUT
+            - type: string
         createdAt:
           type: string
           pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
@@ -1445,7 +1449,16 @@ components:
           example: '2024-02-15T12:45:00.000Z'
           nullable: true
         status:
-          $ref: '#/components/schemas/PipelineExecutionStatus'
+          anyOf:
+            - type: string
+              enum:
+                - NEW
+                - UNKNOWN
+                - INPROGRESS
+                - FINISHED
+                - FINISHEDWITHERRORS
+                - TIMEOUT
+            - type: string
 
     getPipelineExecutions:
       type: object
@@ -1471,12 +1484,16 @@ components:
           type: string
           example: '2024-02-15T12:45:00Z' # UTC
         status:
-          $ref: '#/components/schemas/PipelineExecutionStatus'
-
-    DocumentStatus:
-      type: string
-      pattern: '^(TO_BE_PROCESSED|INDEXED|REINDEXED|DEINDEXED|FAILED|FAILED_TO_BE_RETRIED|TO_BE_SCHEDULED|.+)$'
-      example: 'INDEXED'
+          anyOf:
+            - type: string
+              enum:
+                - NEW
+                - UNKNOWN
+                - INPROGRESS
+                - FINISHED
+                - FINISHEDWITHERRORS
+                - TIMEOUT
+            - type: string
 
     DocumentsStatusResponse:
       type: object
@@ -1493,7 +1510,18 @@ components:
                 type: string
                 example: uuid
               status:
-                $ref: '#/components/schemas/DocumentStatus'
+                anyOf:
+                  - type: string
+                    enum:
+                      - TO_BE_PROCESSED
+                      - INDEXED
+                      - REINDEXED
+                      - DEINDEXED
+                      - FAILED
+                      - FAILED_TO_BE_RETRIED
+                      - TO_BE_SCHEDULED
+                  - type: string
+                example: 'INDEXED'
               viewLocation:
                 type: string
                 example: 'location'
@@ -1525,7 +1553,18 @@ components:
           type: string
           example: uuid
         status:
-          $ref: '#/components/schemas/DocumentStatus'
+          anyOf:
+            - type: string
+              enum:
+                - TO_BE_PROCESSED
+                - INDEXED
+                - REINDEXED
+                - DEINDEXED
+                - FAILED
+                - FAILED_TO_BE_RETRIED
+                - TO_BE_SCHEDULED
+            - type: string
+          example: 'INDEXED'
         viewLocation:
           type: string
           example: 'location'
@@ -1703,7 +1742,16 @@ components:
           type: string
           example: uuid
         status:
-          $ref: '#/components/schemas/PipelineExecutionStatus'
+          anyOf:
+            - type: string
+              enum:
+                - NEW
+                - UNKNOWN
+                - INPROGRESS
+                - FINISHED
+                - FINISHEDWITHERRORS
+                - TIMEOUT
+            - type: string
 
     MSSharePointConfigurationMinimal:
       type: object
