@@ -944,9 +944,7 @@ describe('orchestration service client', () => {
       // Expect the iteration over the stream to throw an error
       await expect(async () => {
         for await (const chunk of response.stream) {
-          if (chunk._data.error) {
-            throw new Error(chunk._data.error.message);
-          }
+          /* empty */
         }
       }).rejects.toThrow();
     });
