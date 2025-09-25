@@ -14,9 +14,6 @@ jobs:
   update-lockfile:
     runs-on: ubuntu-latest
     if: ${{ github.actor == 'dependabot[bot]' }}
-    permissions:
-      checks: write
-      contents: write
 
     steps:
       - name: Setup Environment
@@ -25,6 +22,7 @@ jobs:
           ref: ${{ github.head_ref }}
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           pnpm-install-args: --lockfile-only
+          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
 
       - name: Commit and push if changed
         run: |
