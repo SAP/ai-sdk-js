@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { PipelineExecutionStatus } from './pipeline-execution-status.js';
+
 /**
  * Representation of the 'BasePipelineMinimalResponse' schema.
  */
@@ -12,5 +12,12 @@ export type BasePipelineMinimalResponse = {
    * @example "uuid"
    */
   id: string;
-  status: PipelineExecutionStatus;
+  status:
+    | 'NEW'
+    | 'UNKNOWN'
+    | 'INPROGRESS'
+    | 'FINISHED'
+    | 'FINISHEDWITHERRORS'
+    | 'TIMEOUT'
+    | string;
 } & Record<string, any>;
