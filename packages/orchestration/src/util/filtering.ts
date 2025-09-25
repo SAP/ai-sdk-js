@@ -19,7 +19,7 @@ import type {
  * @param config - Configuration for Azure content safety filter.
  * If skipped, the default configuration of `ALLOW_SAFE_LOW` is used for all filter categories.
  * @returns Azure content safety configuration.
- * @example "buildAzureContentSafetyFilter({ type: 'input', hate: 'ALLOW_SAFE', violence: 'ALLOW_SAFE_LOW_MEDIUM' })"
+ * @example "buildAzureContentSafetyFilter('input', { hate: 'ALLOW_SAFE', violence: 'ALLOW_SAFE_LOW_MEDIUM' })"
  */
 export function buildAzureContentSafetyFilter<T extends ConfigType>(
   type: T,
