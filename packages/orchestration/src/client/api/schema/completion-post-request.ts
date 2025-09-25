@@ -5,11 +5,11 @@
  */
 import type { CompletionRequestConfiguration } from './completion-request-configuration.js';
 import type { CompletionRequestConfigurationReferenceById } from './completion-request-configuration-reference-by-id.js';
-import type { CompletionRequestConfigurationReferenceByNameScenarioVersionModelName } from './completion-request-configuration-reference-by-name-scenario-version-model-name.js';
+import type { CompletionRequestConfigurationReferenceByNameScenarioVersion } from './completion-request-configuration-reference-by-name-scenario-version.js';
 /**
  * Representation of the 'CompletionPostRequest' schema.
  */
 export type CompletionPostRequest =
   | CompletionRequestConfiguration
   | CompletionRequestConfigurationReferenceById
-  | CompletionRequestConfigurationReferenceByNameScenarioVersionModelName;
+  | CompletionRequestConfigurationReferenceByNameScenarioVersion;

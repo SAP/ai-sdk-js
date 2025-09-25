@@ -5,12 +5,11 @@
  */
 
 /**
- * Representation of the 'CompletionRequestConfigurationReferenceByNameScenarioVersionModelNameConfigRef' schema.
+ * Representation of the 'CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef' schema.
  */
-export type CompletionRequestConfigurationReferenceByNameScenarioVersionModelNameConfigRef =
+export type CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef =
   {
     scenario: string;
     name: string;
     version: string;
-    model_name: string;
   };
