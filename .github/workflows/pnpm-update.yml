@@ -1,0 +1,94 @@
+name: Monthly pnpm Dependency Update
+
+on:
+  schedule:
+    - cron: '0 2 1 * *'
+  workflow_dispatch:
+
+jobs:
+  update-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Environment
+        uses: sap/ai-sdk-js/.github/actions/setup@main
+        with:
+          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+
+      - name: Update Transitive Dependencies
+        run: |
+          pnpm --no-save update
+          pnpm audit --audit-level moderate
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git config --global user.email "cloud-sdk-js@github.com"
+            git config --global user.name "cloud-sdk-js"
+            git checkout -b "bot/monthly-transitive-dependency-update-$(date +%Y-%m-%d)"
+            git add .
+            git commit -m "chore: update pnpm transitive dependencies"
+            git push --set-upstream origin "bot/monthly-transitive-dependency-update-$(date +%Y-%m-%d)"
+          else
+            echo "No changes to commit"
+            exit 0
+          fi
+
+      - name: Create Pull Request
+        if: success()
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          script: |
+            const { repo, owner } = context.repo;
+            const result = await github.rest.pulls.create({
+              title: 'Monthly Transitive Dependency Update',
+              owner,
+              repo,
+              head: `bot/monthly-transitive-dependency-update-${new Date().toISOString().split('T')[0]}`,
+              base: 'main',
+              body: 'This is an automated PR to update pnpm transitive dependencies.'
+            });
+            console.log(`Pull Request created: ${result.data.html_url}`);
+
+      - name: Auto-merge if checks pass
+        if: success()
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          script: |
+            const { repo, owner } = context.repo;
+            const pulls = await github.rest.pulls.list({
+              owner,
+              repo,
+              head: `bot/monthly-transitive-dependency-update-${new Date().toISOString().split('T')[0]}`,
+              base: 'main',
+              state: 'open'
+            });
+            
+            if (pulls.data.length === 0) {
+              console.log('No matching pull request found');
+              return;
+            }
+            
+            const pr = pulls.data[0];
+            
+            // Wait for checks to complete
+            await new Promise(resolve => setTimeout(resolve, 300000)); // Wait 5 minutes
+            
+            const { data: checks } = await github.rest.checks.listForRef({
+              owner,
+              repo,
+              ref: pr.head.sha
+            });
+            
+            const allChecksPassed = checks.check_runs.every(run => run.conclusion === 'success');
+            
+            if (allChecksPassed) {
+              await github.rest.pulls.merge({
+                owner,
+                repo,
+                pull_number: pr.number,
+                merge_method: 'squash'
+              });
+              console.log(`Pull Request #${pr.number} merged successfully`);
+            } else {
+              console.log(`Not all checks passed for PR #${pr.number}`);
+            }
