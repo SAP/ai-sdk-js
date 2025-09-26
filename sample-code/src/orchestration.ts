@@ -735,7 +735,7 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
 /**
  * Ask ChatGPT to add two numbers using tools and stream the response.
  * @param controller - The abort controller.
- * @param streamOptions - The stream options.
+ * @param requestBody - The request body containing messages and other options.
  * @returns The response from the orchestration service containing the response content.
  */
 export async function chatCompletionStreamWithTools(
