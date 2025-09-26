@@ -39,7 +39,7 @@ jobs:
           script: |
             const { repo, owner } = context.repo;
             const result = await github.rest.pulls.create({
-              title: 'Monthly Transitive Dependency Update',
+              title: 'chore: Monthly Transitive Dependency Update',
               owner,
               repo,
               head: `bot/monthly-transitive-dependency-update-${new Date().toISOString().split('T')[0]}`,
