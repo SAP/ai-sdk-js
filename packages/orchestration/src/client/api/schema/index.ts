@@ -104,3 +104,8 @@ export * from './error-response.js';
 export * from './error-response-streaming.js';
 export * from './chat-completion-token-logprob.js';
 export * from './choice-logprobs.js';
+export * from './completion-request-configuration.js';
+export * from './completion-request-configuration-reference-by-id.js';
+export * from './completion-request-configuration-reference-by-id-config-ref.js';
+export * from './completion-request-configuration-reference-by-name-scenario-version.js';
+export * from './completion-request-configuration-reference-by-name-scenario-version-config-ref.js';
