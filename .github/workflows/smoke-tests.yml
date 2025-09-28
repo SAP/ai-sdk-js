@@ -13,7 +13,7 @@ jobs:
         with:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
       - run: pnpm smoke-tests create-deployment
-      - uses: vchrisb/setup-cf@5aa69781ba95297cea2b80e71926198bed38ef5e
+      - uses: vchrisb/setup-cf@5a1d7d281a5b72b9db8114aa99030f7e66ad8d8b
         with:
           api: ${{ vars.CF_API_URL }}
           username: ${{ secrets.CF_USER }}
