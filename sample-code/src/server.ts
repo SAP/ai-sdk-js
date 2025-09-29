@@ -393,7 +393,7 @@ app.post(
         if (!connectionAlive) {
           break;
         }
-        res.write(chunk.getDeltaToolCalls() + '\n');
+        res.write(JSON.stringify(chunk.getDeltaToolCalls()) + '\n');
       }
 
       // Write the finish reason and token usage after the stream ends.
@@ -402,11 +402,12 @@ app.post(
         const tokenUsage = response.getTokenUsage();
         res.write('\n\n---------------------------\n');
         res.write(`Finish reason: ${finishReason}\n`);
-        res.write(response.getContent())
+        res.write(` -  Content: ${response.getContent()}`);
         res.write('Token usage:\n');
         res.write(`  - Completion tokens: ${tokenUsage?.completion_tokens}\n`);
         res.write(`  - Prompt tokens: ${tokenUsage?.prompt_tokens}\n`);
         res.write(`  - Total tokens: ${tokenUsage?.total_tokens}\n`);
+        res.write(`  - Tool calls: ${JSON.stringify(response.getToolCalls())}`);
       }
     } catch (error: any) {
       sendError(res, error, false);

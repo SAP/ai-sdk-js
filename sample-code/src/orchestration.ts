@@ -749,7 +749,7 @@ export async function chatCompletionStreamWithTools(
         tools: [addNumbersTool]
       },
       model: {
-        name: 'gpt-4o'
+        name: 'anthropic--claude-3.7-sonnet'
       }
     }
   });
