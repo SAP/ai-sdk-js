@@ -1,4 +1,3 @@
-
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type {
   EmbeddingsPostResponse,
@@ -6,7 +5,10 @@ import type {
   EmbeddingsUsage,
   ModuleResultsBase
 } from './client/api/schema/index.js';
-import type { EmbeddingData, EmbeddingUsageInfo } from './orchestration-types.js';
+import type {
+  EmbeddingData,
+  EmbeddingUsageInfo
+} from './orchestration-types.js';
 
 /**
  * Response wrapper for orchestration embedding requests.
