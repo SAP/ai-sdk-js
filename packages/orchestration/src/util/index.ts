@@ -4,4 +4,3 @@ export * from './module-config.js';
 export * from './masking.js';
 export * from './translation.js';
 export * from './stream.js';
-export * from './embedding.js';
