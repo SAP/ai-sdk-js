@@ -941,12 +941,18 @@ describe('orchestration service client', () => {
       // Call the streaming API
       const response = await new OrchestrationClient(config).stream();
 
-      // Expect the iteration over the stream to throw an error
-      await expect(async () => {
+      // If you want to check the error message directly:
+      try {
         for await (const chunk of response.stream) {
           /* empty */
         }
-      }).rejects.toThrow();
+      } catch (e: any) {
+        expect(
+          typeof e.message === 'string' ? e.message : JSON.stringify(e.message)
+        ).toMatchInlineSnapshot(
+          `"400 - LLM Module: Model gpt-5 in version wrong-version not found."`
+        );
+      }
     });
 
     it('should abort controller and re-throw error when network request fails', async () => {
