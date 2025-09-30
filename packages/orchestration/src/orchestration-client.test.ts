@@ -943,14 +943,14 @@ describe('orchestration service client', () => {
 
       // If you want to check the error message directly:
       try {
-        for await (const chunk of response.stream) {
+        for await (const _ of response.stream) {
           /* empty */
         }
       } catch (e: any) {
         expect(
           typeof e.message === 'string' ? e.message : JSON.stringify(e.message)
-        ).toMatchInlineSnapshot(
-          `"400 - LLM Module: Model gpt-5 in version wrong-version not found."`
+        ).toThrowErrorMatchingInlineSnapshot(
+          '"400 - LLM Module: Model gpt-5 in version wrong-version not found."'
         );
       }
     });
