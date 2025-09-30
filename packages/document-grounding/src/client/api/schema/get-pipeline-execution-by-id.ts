@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-
+import type { DocumentStatus } from './document-status.js';
 /**
  * Representation of the 'GetPipelineExecutionById' schema.
  */
@@ -20,12 +20,5 @@ export type GetPipelineExecutionById = {
    * @example "2024-02-15T12:45:00Z"
    */
   modifiedAt?: string;
-  status?:
-    | 'NEW'
-    | 'UNKNOWN'
-    | 'INPROGRESS'
-    | 'FINISHED'
-    | 'FINISHEDWITHERRORS'
-    | 'TIMEOUT'
-    | any;
+  status?: DocumentStatus;
 } & Record<string, any>;

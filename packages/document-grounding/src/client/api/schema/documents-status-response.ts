@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-
+import type { DocumentStatus } from './document-status.js';
 /**
  * Representation of the 'DocumentsStatusResponse' schema.
  */
@@ -17,18 +17,7 @@ export type DocumentsStatusResponse = {
      * @example "uuid"
      */
     id?: string;
-    /**
-     * @example "INDEXED"
-     */
-    status?:
-      | 'TO_BE_PROCESSED'
-      | 'INDEXED'
-      | 'REINDEXED'
-      | 'DEINDEXED'
-      | 'FAILED'
-      | 'FAILED_TO_BE_RETRIED'
-      | 'TO_BE_SCHEDULED'
-      | any;
+    status?: DocumentStatus;
     /**
      * @example "location"
      */

@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-
+import type { PipelineExecutionStatus } from './pipeline-execution-status.js';
 /**
  * Representation of the 'GetPipelineStatus' schema.
  */
@@ -23,12 +23,5 @@ export type GetPipelineStatus = {
    * Pattern: "^$|^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{3})?Z$".
    */
   lastCompletedAt?: string | null;
-  status?:
-    | 'NEW'
-    | 'UNKNOWN'
-    | 'INPROGRESS'
-    | 'FINISHED'
-    | 'FINISHEDWITHERRORS'
-    | 'TIMEOUT'
-    | any;
+  status?: PipelineExecutionStatus;
 } & Record<string, any>;
