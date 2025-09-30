@@ -23,7 +23,7 @@ jobs:
           if [[ -n "$(git status --porcelain)" ]]; then
             git config --global user.email "cloud-sdk-js@github.com"
             git config --global user.name "cloud-sdk-js"
-            BRANCH_NAME="bot/monthly-transitive-dependency-update-$(date -u +%Y-%m-%d)"
+            BRANCH_NAME="bot/monthly-transitive-dependency-update-$(date -u +%Y-%m-%d-%H%M%S)"
             git checkout -b "$BRANCH_NAME"
             git add .
             git commit -m "chore: update pnpm transitive dependencies"
@@ -34,14 +34,14 @@ jobs:
 
       - name: Create Pull Request
         if: success()
-        uses: actions/github-script@v6
+        uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           script: |
             const { repo, owner } = context.repo;
             const branch = `bot/monthly-transitive-dependency-update-${new Date().toISOString().split('T')[0]}`;
             const result = await github.rest.pulls.create({
-              title: 'Monthly Transitive Dependency Update',
+              title: 'chore: Monthly Transitive Dependency Update',
               owner,
               repo,
               head: branch,
@@ -52,7 +52,7 @@ jobs:
 
       - name: Auto-merge if checks pass
         if: success()
-        uses: actions/github-script@v6
+        uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           script: |
@@ -63,7 +63,7 @@ jobs:
             const pulls = await github.rest.pulls.list({
               owner,
               repo,
-              head: `${owner}:${branch}`,
+              head: branch,
               base: 'main',
               state: 'open'
             });
@@ -94,17 +94,18 @@ jobs:
 
                 if (!allAcceptable) {
                   throw new Error(`PR #${pr.number} has failed checks that prevent merging.`);
+                  return 'failed';
                 }
 
                 return 'success';
               },
               {
-                retries: 30,
-                factor: 1.5,
-                minTimeout: 10000,
-                maxTimeout: 60000,
+                retries: 5,
+                minTimeout: 2 * 60 * 1000,
+                maxTimeout: 2 * 60 * 1000,
                 onRetry: (error, attempt) => {
-                  console.log(`Attempt ${attempt} failed: ${error.message}. Retrying...`);
+                  const timestamp = new Date().toISOString();
+                  console.log(`[${timestamp}] Attempt ${attempt} failed: ${error.message}. Retrying...`);
                 }
               }
             );
@@ -117,4 +118,7 @@ jobs:
                 merge_method: 'squash'
               });
               console.log(`PR #${pr.number} merged successfully.`);
+            }
+            else {
+              console.log(`PR #${pr.number} could not be merged due to failed checks.`);
             }
