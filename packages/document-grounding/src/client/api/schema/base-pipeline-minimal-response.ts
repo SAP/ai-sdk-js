@@ -19,5 +19,5 @@ export type BasePipelineMinimalResponse = {
     | 'FINISHED'
     | 'FINISHEDWITHERRORS'
     | 'TIMEOUT'
-    | string;
+    | any;
 } & Record<string, any>;

@@ -27,5 +27,5 @@ export type GetPipelineExecutionById = {
     | 'FINISHED'
     | 'FINISHEDWITHERRORS'
     | 'TIMEOUT'
-    | string;
+    | any;
 } & Record<string, any>;

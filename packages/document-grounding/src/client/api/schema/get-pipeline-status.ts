@@ -30,5 +30,5 @@ export type GetPipelineStatus = {
     | 'FINISHED'
     | 'FINISHEDWITHERRORS'
     | 'TIMEOUT'
-    | string;
+    | any;
 } & Record<string, any>;

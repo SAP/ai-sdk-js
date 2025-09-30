@@ -28,7 +28,7 @@ export type DocumentsStatusResponse = {
       | 'FAILED'
       | 'FAILED_TO_BE_RETRIED'
       | 'TO_BE_SCHEDULED'
-      | string;
+      | any;
     /**
      * @example "location"
      */
