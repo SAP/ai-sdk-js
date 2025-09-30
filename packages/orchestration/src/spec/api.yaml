@@ -1315,7 +1315,7 @@ components:
           properties:
             masking_providers:
               deprecated: true
-              description: 'This field is **DEPRECATED** and will be removed on August 05, 2026. Use `providers` property instead. List of masking service providers.'
+              description: 'List of masking service providers. **DEPRECATED**:  will be removed Sept 15, 2026. Use `providers` property instead.'
               type: array
               minItems: 1
               items:
