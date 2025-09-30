@@ -5,8 +5,8 @@ import type { ServerSentEvent } from './sse-decoder.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 
 const logger = createLogger({
-  package: 'foundation-models',
-  messageContext: 'azure-openai-sse-stream'
+  package: 'core',
+  messageContext: 'sse-stream'
 });
 
 type Bytes = string | ArrayBuffer | Uint8Array | Buffer | null | undefined;
@@ -39,20 +39,25 @@ export class SseStream<Item> implements AsyncIterable<Item> {
             continue;
           }
 
+          let data: any;
+
           try {
-            const data = JSON.parse(sse.data);
-            if (data?.error) {
-              throw new Error(data.error);
-            }
-            // Yield also the event if it exists, otherwise just the data
-            yield sse.event === null
-              ? data
-              : ({ event: sse.event, data } as any);
+            data = JSON.parse(sse.data);
           } catch (e: any) {
             logger.error(`Could not parse message into JSON: ${sse.data}`);
             logger.error(`From chunk: ${sse.raw}`);
             throw e;
           }
+
+          if (data?.error) {
+            logger.error(`Error received from server: ${JSON.stringify(data.error)}`);
+            throw new Error(JSON.stringify(data.error));
+          }
+
+          // Yield also the event if it exists, otherwise just the data
+          yield sse.event === null
+            ? data
+            : ({ event: sse.event, data } as any);
         }
         done = true;
       } catch (e: any) {
@@ -60,7 +65,8 @@ export class SseStream<Item> implements AsyncIterable<Item> {
         if (e instanceof Error && e.name === 'CanceledError') {
           return;
         }
-        logger.error('Error while iterating over SSE stream:', e);
+
+        logger.error(`Error while iterating over SSE stream: ${e.message}`);
         throw e;
       } finally {
         // Make sure that the controller is aborted if the stream was not fully consumed
