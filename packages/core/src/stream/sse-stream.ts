@@ -50,14 +50,14 @@ export class SseStream<Item> implements AsyncIterable<Item> {
           }
 
           if (data?.error) {
-            logger.error(`Error received from server: ${JSON.stringify(data.error)}`);
+            logger.error(
+              `Error received from server: ${JSON.stringify(data.error)}`
+            );
             throw new Error(JSON.stringify(data.error));
           }
 
           // Yield also the event if it exists, otherwise just the data
-          yield sse.event === null
-            ? data
-            : ({ event: sse.event, data } as any);
+          yield sse.event === null ? data : ({ event: sse.event, data } as any);
         }
         done = true;
       } catch (e: any) {
