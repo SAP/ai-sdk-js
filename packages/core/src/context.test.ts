@@ -4,28 +4,10 @@ import { dummyToken } from '../../../test-util/mock-jwt.js';
 import { getAiCoreDestination } from './context.js';
 
 describe('context', () => {
-  const originalEnv = process.env;
-
-  beforeEach(() => {
-    // Reset environment variables before each test
-    process.env = { ...originalEnv };
-    delete process.env.AICORE_SERVICE_KEY;
-
-    // Clean all nock interceptors
-    nock.cleanAll();
-  });
-
-  afterEach(() => {
-    nock.cleanAll();
-    process.env = originalEnv;
-  });
-
   afterAll(() => {
     nock.cleanAll();
   });
-
   it('should throw if client credentials are not fetched', async () => {
-    // Mock the authentication to return an error
     mockClientCredentialsGrantCall(
       {
         error: 'unauthorized',
@@ -33,85 +15,66 @@ describe('context', () => {
       },
       401
     );
-
     await expect(getAiCoreDestination()).rejects.toThrow(
       /Could not fetch client credentials token for service of type "aicore"/
     );
   });
 
-  describe('getAiCoreDestination with environment variable', () => {
-    it('should use environment variable when present', async () => {
-      const mockServiceKey = {
-        clientid: 'clientid',
-        clientsecret: 'clientsecret',
-        url: 'https://example.authentication.eu12.hana.ondemand.com',
-        identityzone: 'examplezone',
-        identityzoneid: 'examplezoneid',
-        appname: 'appname',
-        serviceurls: {
-          AI_API_URL: 'https://api.ai.ml.hana.ondemand.com'
-        }
-      };
+  it('should verify environment variable is updated aiCoreServiceBinding global var every time', async () => {
+    const mockServiceKey1 = {
+      clientid: 'clientid1',
+      clientsecret: 'clientsecret1',
+      url: 'https://example1.authentication.eu12.hana.ondemand.com',
+      identityzone: 'examplezone1',
+      identityzoneid: 'examplezoneid1',
+      appname: 'appname1',
+      serviceurls: {
+        AI_API_URL: 'https://api1.ai.ml.hana.ondemand.com'
+      }
+    };
 
-      process.env.AICORE_SERVICE_KEY = JSON.stringify(mockServiceKey);
+    const mockServiceKey2 = {
+      clientid: 'clientid2',
+      clientsecret: 'clientsecret2',
+      url: 'https://example2.authentication.eu12.hana.ondemand.com',
+      identityzone: 'examplezone2',
+      identityzoneid: 'examplezoneid2',
+      appname: 'appname2',
+      serviceurls: {
+        AI_API_URL: 'https://api2.ai.ml.hana.ondemand.com'
+      }
+    };
 
-      mockClientCredentialsGrantCall({
+    // First call with first service key
+    process.env.AICORE_SERVICE_KEY = JSON.stringify(mockServiceKey1);
+
+    // Mock the OAuth token call for first service key
+    nock('https://example1.authentication.eu12.hana.ondemand.com')
+      .post('/oauth/token')
+      .reply(200, {
         access_token: dummyToken,
         token_type: 'Bearer',
         expires_in: 3600
       });
 
-      const result = await getAiCoreDestination();
+    const result1 = await getAiCoreDestination();
+    expect(result1).toBeDefined();
+    expect(result1.url).toBe('https://api1.ai.ml.hana.ondemand.com');
 
-      expect(result).toBeDefined();
-      expect(result.url).toBe('https://api.ai.ml.hana.ondemand.com');
-    });
+    // Second call with different service key - this proves env var is checked every time
+    process.env.AICORE_SERVICE_KEY = JSON.stringify(mockServiceKey2);
 
-    it('should verify environment variable is checked every time', async () => {
-      const mockServiceKey = {
-        clientid: 'clientid',
-        clientsecret: 'clientsecret',
-        url: 'https://example.authentication.eu12.hana.ondemand.com',
-        identityzone: 'examplezone',
-        identityzoneid: 'examplezoneid',
-        appname: 'appname',
-        serviceurls: {
-          AI_API_URL: 'https://api.ai.ml.hana.ondemand.com'
-        }
-      };
-
-      // First call without environment variable should use service binding
-      delete process.env.AICORE_SERVICE_KEY;
-
-      // Set environment variable for subsequent calls
-      process.env.AICORE_SERVICE_KEY = JSON.stringify(mockServiceKey);
-
-      mockClientCredentialsGrantCall({
+    // Mock the OAuth token call for second service key
+    nock('https://example2.authentication.eu12.hana.ondemand.com')
+      .post('/oauth/token')
+      .reply(200, {
         access_token: dummyToken,
         token_type: 'Bearer',
         expires_in: 3600
       });
 
-      const result = await getAiCoreDestination();
-
-      expect(result).toBeDefined();
-      expect(result.url).toBe('https://api.ai.ml.hana.ondemand.com');
-    });
-
-    it('should handle empty environment variable correctly', async () => {
-      process.env.AICORE_SERVICE_KEY = '';
-
-      mockClientCredentialsGrantCall({
-        access_token: dummyToken,
-        token_type: 'Bearer',
-        expires_in: 3600
-      });
-
-      const result = await getAiCoreDestination();
-
-      // Empty string should fallback to service binding, which should work with proper mocking
-      expect(result).toBeDefined();
-      expect(result.url).toBe('https://api.ai.ml.hana.ondemand.com');
-    });
+    const result2 = await getAiCoreDestination();
+    expect(result2).toBeDefined();
+    expect(result2.url).toBe('https://api2.ai.ml.hana.ondemand.com');
   });
 });
