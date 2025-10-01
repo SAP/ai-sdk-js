@@ -5,9 +5,13 @@
  */
 import type { IncludePathsArray } from './include-paths-array.js';
 /**
- * Representation of the 'SharePointSite' schema.
+ * Representation of the 'SharePointSiteDetail' schema.
  */
-export type SharePointSite = {
+export type SharePointSiteDetail = {
+  /**
+   * @example "sharepoint-site-id"
+   */
+  id?: string;
   /**
    * @example "sharepoint-site-name"
    */

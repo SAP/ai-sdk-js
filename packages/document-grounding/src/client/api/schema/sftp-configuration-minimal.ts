@@ -5,12 +5,10 @@
  */
 import type { IncludePathsArray } from './include-paths-array.js';
 /**
- * Representation of the 'SharePointSite' schema.
+ * Representation of the 'SFTPConfigurationMinimal' schema.
  */
-export type SharePointSite = {
-  /**
-   * @example "sharepoint-site-name"
-   */
-  name: string;
-  includePaths?: IncludePathsArray;
-} & Record<string, any>;
+export type SFTPConfigurationMinimal = {
+  sftp: {
+    includePaths?: IncludePathsArray;
+  } & Record<string, any>;
+};

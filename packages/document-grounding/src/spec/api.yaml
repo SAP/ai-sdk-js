@@ -148,6 +148,37 @@ paths:
           description: No Content
         '400':
           $ref: '#/components/responses/BadRequest'
+    patch:
+      tags:
+        - Pipelines
+      operationId: pipeline.v1.pipeline_endpoints.patch_pipeline_by_id
+      summary: Patch pipeline
+      description: Patch a pipeline by pipeline id
+      x-sap-cloud-sdk-operation-name: patchPipelineById
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+        - name: pipelineId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the pipeline to patch.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/patchPipeline'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
   '/pipelines/{pipelineId}/status':
     get:
       tags:
@@ -176,6 +207,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/getPipelineStatus'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  '/pipelines/search':
+    post:
+      tags:
+        - Pipelines
+      operationId: pipeline.v1.pipeline_endpoints.search_pipeline
+      summary: Pipeline Search by Metadata
+      description: Search for pipelines based on metadata
+      x-sap-cloud-sdk-operation-name: searchPipelinesByMetadata
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/count'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/searchPipeline'
+      responses:
+        '200':
+          description: Returns pipelines for the tenant that matches the metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/searchPipelinesResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
 
@@ -1008,6 +1072,9 @@ components:
         pipelineId:
           type: string
           example: uuid
+        metadataOnly:
+          type: boolean
+          example: True
 
     MSSharePointPipelineCreateRequest:
       type: object
@@ -1091,6 +1158,9 @@ components:
           example: generic-secret-name
         sharePoint:
           $ref: '#/components/schemas/SharePointConfig'
+        cronExpression:
+          type: string
+          example: '0 3 * * *' # Every day at 3:00 AM UTC
       additionalProperties: true
 
     SharePointConfig:
@@ -1111,12 +1181,7 @@ components:
           type: string
           example: sharepoint-site-name
         includePaths:
-          type: array
-          items:
-            type: string
-          example:
-            - /testFolder1
-            - /testFolder2
+          $ref: '#/components/schemas/IncludePathsArray'
       additionalProperties: true
 
     SFTPConfiguration:
@@ -1131,12 +1196,10 @@ components:
           type: object
           properties:
             includePaths:
-              type: array
-              items:
-                type: string
-              example:
-                - /testFolder1
-                - /testFolder2
+              $ref: '#/components/schemas/IncludePathsArray'
+        cronExpression:
+          type: string
+          example: '0 3 * * *' # Every day at 3:00 AM UTC
       additionalProperties: true
 
     S3Configuration:
@@ -1151,23 +1214,48 @@ components:
           type: object
           properties:
             includePaths:
-              type: array
-              items:
-                type: string
-              example:
-                - /testFolder1
-                - /testFolder2
+              $ref: '#/components/schemas/IncludePathsArray'
+        cronExpression:
+          type: string
+          example: '0 3 * * *' # Every day at 3:00 AM UTC
       additionalProperties: true
 
     MetaData:
       type: object
-      required:
-        - destination
       properties:
         destination:
           type: string
           example: destination-name
-      additionalProperties: true
+        dataRepositoryMetadata:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                minLength: 1
+                maxLength: 1024
+                nullable: false
+              value:
+                type: array
+                items:
+                  type: string
+                  minLength: 1
+                  maxLength: 1024
+                  nullable: false
+                nullable: false
+                minItems: 1
+            required:
+              - key
+              - value
+          example:
+            - key: purpose
+              value:
+                - demonstration
+            - key: sample-key
+              value:
+                - sample-value1
+                - sample-value2
 
     getPipelines:
       type: object
@@ -1279,7 +1367,7 @@ components:
       type: object
       required:
         - destination
-        # - sharePoint # Commented out this required field due to an issue on the document grounding side, where the attribute is sent as 'sharepoint' in the response. This should be uncommented once the issue is resolved on the DG side.
+        - sharePoint
       properties:
         destination:
           type: string
@@ -1307,26 +1395,6 @@ components:
           type: array
           items:
             type: string
-
-    getPipelineStatus:
-      type: object
-      properties:
-        lastStarted:
-          type: string
-          pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
-          example: '2024-02-15T12:45:00.000Z'
-        createdAt:
-          type: string
-          pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
-          example: '2024-02-15T12:45:00.000Z'
-          nullable: true
-        lastCompletedAt:
-          type: string
-          pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
-          example: '2024-02-15T12:45:00.000Z'
-          nullable: true
-        status:
-          $ref: '#/components/schemas/PipelineExecutionStatus'
 
     pipelineId:
       type: object
@@ -1364,6 +1432,26 @@ components:
           pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
           example: '2024-02-15T12:45:00Z'
           nullable: true
+
+    getPipelineStatus:
+      type: object
+      properties:
+        lastStarted:
+          type: string
+          pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
+          example: '2024-02-15T12:45:00.000Z'
+        createdAt:
+          type: string
+          pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
+          example: '2024-02-15T12:45:00.000Z'
+          nullable: true
+        lastCompletedAt:
+          type: string
+          pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
+          example: '2024-02-15T12:45:00.000Z'
+          nullable: true
+        status:
+          $ref: '#/components/schemas/PipelineExecutionStatus'
 
     getPipelineExecutions:
       type: object
@@ -1474,6 +1562,256 @@ components:
         lastUpdatedTimestamp:
           type: string
           example: '2024-02-15T12:45:00Z'
+    searchPipeline:
+      type: object
+      properties:
+        dataRepositoryMetadata:
+          type: array
+          description: Search for metadata happens at key level. Pipelines matching the search criteria will be returned.
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                minLength: 1
+                maxLength: 1024
+                nullable: false
+              value:
+                type: array
+                items:
+                  type: string
+                  minLength: 1
+                  maxLength: 1024
+                  nullable: false
+                nullable: false
+                minItems: 1
+          example:
+            - key: purpose
+              value:
+                - demonstration
+            - key: sample-key
+              value:
+                - sample-value1
+                - sample-value2
+
+    searchPipelinesResponse:
+      type: object
+      required:
+        - resources
+      properties:
+        count:
+          type: integer
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/PipelineMinimalResponse'
+
+    PipelineMinimalResponse:
+      oneOf:
+        - $ref: '#/components/schemas/MSSharePointPipelineMinimalResponse'
+        - $ref: '#/components/schemas/S3PipelineMinimalResponse'
+        - $ref: '#/components/schemas/SFTPPipelineMinimalResponse'
+        - $ref: '#/components/schemas/SDMPipelineMinimalResponse'
+        - $ref: '#/components/schemas/WorkZonePipelineMinimalResponse'
+      discriminator:
+        propertyName: type
+        mapping:
+          MSSharePoint: '#/components/schemas/MSSharePointPipelineMinimalResponse'
+          S3: '#/components/schemas/S3PipelineMinimalResponse'
+          SFTP: '#/components/schemas/SFTPPipelineMinimalResponse'
+          SDM: '#/components/schemas/SDMPipelineMinimalResponse'
+          WorkZone: '#/components/schemas/WorkZonePipelineMinimalResponse'
+
+    MSSharePointPipelineMinimalResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasePipelineMinimalResponse'
+        - type: object
+          required:
+            - type
+            - configuration
+          properties:
+            type:
+              type: string
+              enum:
+                - MSSharePoint
+            configuration:
+              $ref: '#/components/schemas/MSSharePointConfigurationMinimal'
+            metadata:
+              type: boolean
+              example: true
+
+    S3PipelineMinimalResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasePipelineMinimalResponse'
+        - type: object
+          required:
+            - type
+            - configuration
+          properties:
+            type:
+              type: string
+              enum:
+                - S3
+            configuration:
+              $ref: '#/components/schemas/S3ConfigurationMinimal'
+            metadata:
+              type: boolean
+              example: true
+
+    SFTPPipelineMinimalResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasePipelineMinimalResponse'
+        - type: object
+          required:
+            - type
+            - configuration
+          properties:
+            type:
+              type: string
+              enum:
+                - SFTP
+            configuration:
+              $ref: '#/components/schemas/SFTPConfigurationMinimal'
+            metadata:
+              type: boolean
+              example: true
+
+    SDMPipelineMinimalResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasePipelineMinimalResponse'
+        - type: object
+          required:
+            - type
+          properties:
+            type:
+              type: string
+              enum:
+                - SDM
+            metadata:
+              type: boolean
+              example: true
+
+    WorkZonePipelineMinimalResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasePipelineMinimalResponse'
+        - type: object
+          required:
+            - type
+          properties:
+            type:
+              type: string
+              enum:
+                - WorkZone
+            metadata:
+              type: boolean
+              example: true
+
+    BasePipelineMinimalResponse:
+      type: object
+      required:
+        - id
+        - status
+      properties:
+        id:
+          type: string
+          example: uuid
+        status:
+          $ref: '#/components/schemas/PipelineExecutionStatus'
+
+    MSSharePointConfigurationMinimal:
+      type: object
+      required:
+        - sharePoint
+      properties:
+        sharePoint:
+          $ref: '#/components/schemas/SharePointSiteDetail'
+
+    SharePointSiteDetail:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: string
+          example: sharepoint-site-id
+        name:
+          type: string
+          example: sharepoint-site-name
+        includePaths:
+          $ref: '#/components/schemas/IncludePathsArray'
+
+    S3ConfigurationMinimal:
+      type: object
+      required:
+        - s3
+      properties:
+        s3:
+          type: object
+          properties:
+            includePaths:
+              $ref: '#/components/schemas/IncludePathsArray'
+      additionalProperties: false
+
+    SFTPConfigurationMinimal:
+      type: object
+      required:
+        - sftp
+      properties:
+        sftp:
+          type: object
+          properties:
+            includePaths:
+              $ref: '#/components/schemas/IncludePathsArray'
+      additionalProperties: false
+
+    IncludePathsArray:
+      type: array
+      items:
+        type: string
+      example:
+        - /testFolder1
+        - /testFolder2
+
+    patchPipeline:
+      type: object
+      properties:
+        metadata:
+          type: object
+          properties:
+            dataRepositoryMetadata:
+              type: array
+              description: Patch for metadata happens at key level. Value for the specific key would be inserted/replaced.
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                    minLength: 1
+                    maxLength: 1024
+                    nullable: false
+                  value:
+                    type: array
+                    items:
+                      type: string
+                      minLength: 1
+                      maxLength: 1024
+                      nullable: false
+                    nullable: false
+                    minItems: 1
+              example:
+                - key: purpose
+                  value:
+                    - demonstration
+                - key: sample-key
+                  value:
+                    - sample-value1
+                    - sample-value2
+        configuration:
+          type: object
+          properties:
+            cronExpression:
+              type: string
+              example: '0 3 * * *' # Every day at 3:00 AM UTC
 
     Chunk:
       properties:

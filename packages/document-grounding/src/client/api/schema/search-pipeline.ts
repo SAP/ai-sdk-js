@@ -5,14 +5,11 @@
  */
 
 /**
- * Representation of the 'MetaData' schema.
+ * Representation of the 'SearchPipeline' schema.
  */
-export type MetaData = {
+export type SearchPipeline = {
   /**
-   * @example "destination-name"
-   */
-  destination?: string;
-  /**
+   * Search for metadata happens at key level. Pipelines matching the search criteria will be returned.
    * @example [
    *   {
    *     "key": "purpose",
@@ -34,10 +31,10 @@ export type MetaData = {
      * Max Length: 1024.
      * Min Length: 1.
      */
-    key: string;
+    key?: string;
     /**
      * Min Items: 1.
      */
-    value: string[];
+    value?: string[];
   } & Record<string, any>)[];
 } & Record<string, any>;
