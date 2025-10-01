@@ -1234,7 +1234,7 @@ components:
           $ref: '#/components/schemas/AzureThreshold'
         violence:
           $ref: '#/components/schemas/AzureThreshold'
-        protected_material_detection_for_code:
+        protected_material_code_detection:
           type: boolean
           description: Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.
           default: false
