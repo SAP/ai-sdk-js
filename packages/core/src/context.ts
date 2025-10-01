@@ -45,10 +45,15 @@ export async function getAiCoreDestination(
     return resolvedDestination;
   }
 
-  // Otherwise, get the destination from env or service binding with default service name "aicore".
+  const aiCoreEnv = getAiCoreServiceKeyFromEnv();
+  if (aiCoreEnv) {
+    // Environment variable exists - use it directly
+    aiCoreServiceBinding = aiCoreEnv;
+  }
+
+  // No environment variable - use cached service binding or fetch it
   if (!aiCoreServiceBinding) {
-    aiCoreServiceBinding =
-      getAiCoreServiceKeyFromEnv() || getServiceBinding('aicore');
+    aiCoreServiceBinding = getServiceBinding('aicore');
     if (!aiCoreServiceBinding) {
       throw new Error(
         'Could not find service credentials for AI Core. Please check the service binding.'
