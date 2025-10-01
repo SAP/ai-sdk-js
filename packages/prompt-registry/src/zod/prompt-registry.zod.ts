@@ -2429,8 +2429,7 @@ export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestr
     id: zod.string().uuid(),
     scenario: zod.string(),
     name: zod.string(),
-    version: zod.string(),
-    model_name: zod.string()
+    version: zod.string()
   });
 
 /**
@@ -2446,7 +2445,6 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
     scenario: zod.string().optional(),
     name: zod.string().optional(),
     version: zod.string().optional(),
-    model_name: zod.string().optional(),
     retrieve: zod
       .enum(['both', 'imperative', 'declarative'])
       .default(
@@ -2514,7 +2512,6 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
         name: zod.string().optional(),
         version: zod.string().optional(),
         scenario: zod.string().optional(),
-        model_name: zod.string().optional(),
         creation_timestamp: zod.string().optional(),
         managed_by: zod.string().optional(),
         is_version_head: zod.boolean().optional(),
@@ -3530,8 +3527,7 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
   zod.object({
     scenario: zod.string(),
     version: zod.string(),
-    name: zod.string(),
-    model_name: zod.string()
+    name: zod.string()
   });
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryIncludeSpecDefault = false;
@@ -3601,7 +3597,6 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
         name: zod.string().optional(),
         version: zod.string().optional(),
         scenario: zod.string().optional(),
-        model_name: zod.string().optional(),
         creation_timestamp: zod.string().optional(),
         managed_by: zod.string().optional(),
         is_version_head: zod.boolean().optional(),
@@ -4680,7 +4675,6 @@ export const registryControllerOrchestrationConfigControllerGetOrchestrationConf
     name: zod.string().optional(),
     version: zod.string().optional(),
     scenario: zod.string().optional(),
-    model_name: zod.string().optional(),
     creation_timestamp: zod.string().optional(),
     managed_by: zod.string().optional(),
     is_version_head: zod.boolean().optional(),
@@ -5710,8 +5704,7 @@ export const registryControllerOrchestrationConfigControllerImportOrchestrationC
     id: zod.string().uuid(),
     scenario: zod.string(),
     name: zod.string(),
-    version: zod.string(),
-    model_name: zod.string()
+    version: zod.string()
   });
 
 /**
