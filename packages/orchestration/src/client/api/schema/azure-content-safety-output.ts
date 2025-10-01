@@ -13,7 +13,7 @@ export type AzureContentSafetyOutput = {
   sexual?: AzureThreshold;
   violence?: AzureThreshold;
   /**
-   * A flag to detect protected material for code
+   * Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.
    */
   protected_material_detection_for_code?: boolean;
 };
