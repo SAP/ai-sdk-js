@@ -370,10 +370,6 @@ paths:
           in: query
           schema:
             type: string
-        - name: model_name
-          in: query
-          schema:
-            type: string
         - name: retrieve
           in: query
           schema:
@@ -406,7 +402,7 @@ paths:
           $ref: '#/components/responses/ForbiddenError'
         default:
           $ref: '#/components/responses/CommonError'
-  /registry/v2/scenarios/{scenario}/orchestrationConfigs/{name}/versions/{version}/models/{model_name}/history:
+  /registry/v2/scenarios/{scenario}/orchestrationConfigs/{name}/versions/{version}/history:
     get:
       operationId: registry.controller.orchestration_config_controller.list_orchestration_config_history
       x-sap-cloud-sdk-operation-name: listOrchestrationConfigHistory
@@ -426,11 +422,6 @@ paths:
           schema:
             type: string
         - name: name
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: model_name
           in: path
           required: true
           schema:
@@ -963,7 +954,6 @@ components:
         - scenario
         - name
         - version
-        - model_name
       properties:
         message:
           type: string
@@ -976,8 +966,6 @@ components:
           type: string
         version:
           type: string
-        model_name:
-          type: string
     OrchestrationConfigGetResponse:
       type: object
       properties:
@@ -989,8 +977,6 @@ components:
         version:
           type: string
         scenario:
-          type: string
-        model_name:
           type: string
         creation_timestamp:
           type: string

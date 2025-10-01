@@ -19,7 +19,7 @@ export const OrchestrationConfigsApi = {
   _defaultBasePath: undefined,
   /**
    * List orchestration configs
-   * @param queryParameters - Object containing the following keys: scenario, name, version, model_name, retrieve, include_spec, resolve_template_ref.
+   * @param queryParameters - Object containing the following keys: scenario, name, version, retrieve, include_spec, resolve_template_ref.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -28,7 +28,6 @@ export const OrchestrationConfigsApi = {
       scenario?: string;
       name?: string;
       version?: string;
-      model_name?: string;
       retrieve?: 'both' | 'imperative' | 'declarative';
       include_spec?: boolean;
       resolve_template_ref?: boolean;
@@ -68,7 +67,6 @@ export const OrchestrationConfigsApi = {
    * @param scenario - Path parameter.
    * @param version - Path parameter.
    * @param name - Path parameter.
-   * @param modelName - Path parameter.
    * @param queryParameters - Object containing the following keys: include_spec, resolve_template_ref.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
@@ -77,7 +75,6 @@ export const OrchestrationConfigsApi = {
     scenario: string,
     version: string,
     name: string,
-    modelName: string,
     queryParameters?: {
       include_spec?: boolean;
       resolve_template_ref?: boolean;
@@ -86,9 +83,9 @@ export const OrchestrationConfigsApi = {
   ) =>
     new OpenApiRequestBuilder<OrchestrationConfigListResponse>(
       'get',
-      '/registry/v2/scenarios/{scenario}/orchestrationConfigs/{name}/versions/{version}/models/{modelName}/history',
+      '/registry/v2/scenarios/{scenario}/orchestrationConfigs/{name}/versions/{version}/history',
       {
-        pathParameters: { scenario, version, name, modelName },
+        pathParameters: { scenario, version, name },
         queryParameters,
         headerParameters
       },
