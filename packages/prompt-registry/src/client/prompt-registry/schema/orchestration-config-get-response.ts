@@ -15,7 +15,6 @@ export type OrchestrationConfigGetResponse = {
   name?: string;
   version?: string;
   scenario?: string;
-  model_name?: string;
   /**
    * Format: "timestamp".
    */
