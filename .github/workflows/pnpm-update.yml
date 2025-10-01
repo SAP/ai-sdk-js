@@ -23,7 +23,7 @@ jobs:
           if [[ -n "$(git status --porcelain)" ]]; then
             git config --global user.email "cloud-sdk-js@github.com"
             git config --global user.name "cloud-sdk-js"
-            BRANCH_NAME="bot/monthly-transitive-dependency-update-$(date -u +%Y-%m-%d-%H%M%S)"
+            BRANCH_NAME="bot/monthly-transitive-dependency-update-$(date -u +%Y%m%d-%H%M%S)"
             git checkout -b "$BRANCH_NAME"
             git add .
             git commit -m "chore: update pnpm transitive dependencies"
@@ -39,7 +39,14 @@ jobs:
           github-token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           script: |
             const { repo, owner } = context.repo;
-            const branch = `bot/monthly-transitive-dependency-update-${new Date().toISOString().split('T')[0]}`;
+            const now = new Date();
+            const pad = num => num.toString().padStart(2, '0');
+            const formattedDate = `${now.getUTCFullYear()}${pad(
+              now.getUTCMonth() + 1
+            )}${pad(now.getUTCDate())}-${pad(now.getUTCHours())}${pad(
+              now.getUTCMinutes()
+            )}${pad(now.getUTCSeconds())}`;
+            const branch = `bot/monthly-transitive-dependency-update-${formattedDate}`;
             const result = await github.rest.pulls.create({
               title: 'chore: Monthly Transitive Dependency Update',
               owner,
@@ -58,7 +65,14 @@ jobs:
           script: |
             const retry = require('async-retry');
             const { repo, owner } = context.repo;
-            const branch = `bot/monthly-transitive-dependency-update-${new Date().toISOString().split('T')[0]}`;
+            const now = new Date();
+            const pad = num => num.toString().padStart(2, '0');
+            const formattedDate = `${now.getUTCFullYear()}${pad(
+              now.getUTCMonth() + 1
+            )}${pad(now.getUTCDate())}-${pad(now.getUTCHours())}${pad(
+              now.getUTCMinutes()
+            )}${pad(now.getUTCSeconds())}`;
+            const branch = `bot/monthly-transitive-dependency-update-${formattedDate}`;
 
             const pulls = await github.rest.pulls.list({
               owner,
