@@ -15,5 +15,5 @@ export type AzureContentSafetyOutput = {
   /**
    * A flag to detect protected material for code
    */
-  detect_protected_material_for_code?: boolean;
+  protected_material_detection_for_code?: boolean;
 };
