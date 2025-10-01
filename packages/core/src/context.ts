@@ -44,7 +44,8 @@ export async function getAiCoreDestination(
   }
 
   // Get service binding from environment variable or service binding
-  const aiCoreServiceBinding = getAiCoreServiceKeyFromEnv() || getServiceBinding('aicore');
+  const aiCoreServiceBinding =
+    getAiCoreServiceKeyFromEnv() || getServiceBinding('aicore');
   if (!aiCoreServiceBinding) {
     throw new Error(
       'Could not find service credentials for AI Core. Please check the service binding.'
