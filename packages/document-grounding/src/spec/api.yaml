@@ -1478,7 +1478,7 @@ components:
           type: string
           example: '2024-02-15T12:45:00Z' # UTC
         status:
-          $ref: '#/components/schemas/DocumentStatus'
+          $ref: '#/components/schemas/PipelineExecutionStatus'
 
     DocumentStatus:
       type: string
