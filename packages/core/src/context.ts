@@ -17,8 +17,6 @@ const logger = createLogger({
   messageContext: 'context'
 });
 
-let aiCoreServiceBinding: Service | undefined;
-
 /**
  * Returns a destination object.
  * @param destination - The destination to use for the request.
@@ -45,20 +43,12 @@ export async function getAiCoreDestination(
     return resolvedDestination;
   }
 
-  const aiCoreEnv = getAiCoreServiceKeyFromEnv();
-  if (aiCoreEnv) {
-    // Environment variable exists - use it directly
-    aiCoreServiceBinding = aiCoreEnv;
-  }
-
-  // No environment variable - use cached service binding or fetch it
+  // Get service binding from environment variable or service binding
+  const aiCoreServiceBinding = getAiCoreServiceKeyFromEnv() || getServiceBinding('aicore');
   if (!aiCoreServiceBinding) {
-    aiCoreServiceBinding = getServiceBinding('aicore');
-    if (!aiCoreServiceBinding) {
-      throw new Error(
-        'Could not find service credentials for AI Core. Please check the service binding.'
-      );
-    }
+    throw new Error(
+      'Could not find service credentials for AI Core. Please check the service binding.'
+    );
   }
 
   const aiCoreDestination = (await transformServiceBindingToDestination(
