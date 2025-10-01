@@ -12,4 +12,8 @@ export type ManualPipelineTrigger = {
    * @example "uuid"
    */
   pipelineId?: string;
+  /**
+   * @example true
+   */
+  metadataOnly?: boolean;
 } & Record<string, any>;
