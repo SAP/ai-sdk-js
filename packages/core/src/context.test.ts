@@ -16,6 +16,7 @@ describe('context', () => {
   });
 
   afterEach(() => {
+    nock.cleanAll();
     process.env = originalEnv;
   });
 
@@ -24,12 +25,6 @@ describe('context', () => {
   });
 
   it('should throw if client credentials are not fetched', async () => {
-    // Clean up any existing mocks first
-    nock.cleanAll();
-
-    // Don't set environment variable so it falls back to service binding
-    delete process.env.AICORE_SERVICE_KEY;
-
     // Mock the authentication to return an error
     mockClientCredentialsGrantCall(
       {
