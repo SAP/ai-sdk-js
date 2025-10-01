@@ -1,0 +1,5 @@
+data: {"request_id": "14424a52-0a8d-4004-a766-c6010d8091c9", "intermediate_results": {"templating": [{"content": "HelloWorld!", "role": "user"}], "input_filtering": {"message": "Input Filter passed successfully.", "data": {"azure_content_safety": {"Hate": 0}}}}, "final_result": {"id": "", "object": "", "created": 0, "model": "", "system_fingerprint": "", "choices": [{"index": 0, "delta": {"content": ""}}]}}
+
+
+data: {"error": {"request_id": "ecb33455-6983-4baa-9889-ab391ddcd9b4", "code": 400, "message": "400 - LLM Module: Model gpt-5 in version wrong-version not found.", "location": "LLM Module"}}
+
