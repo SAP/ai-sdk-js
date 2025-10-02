@@ -28,7 +28,8 @@ import {
   orchestrationPromptRegistry,
   orchestrationMessageHistory,
   orchestrationResponseFormat,
-  orchestrationTranslation
+  orchestrationTranslation,
+  orchestrationChatCompletionWithReasoningModel
 } from './orchestration.js';
 import {
   getDeployments,
@@ -290,7 +291,8 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       image: orchestrationChatCompletionImage,
       responseFormat: orchestrationResponseFormat,
       maskGroundingInput: orchestrationMaskGroundingInput,
-      translation: orchestrationTranslation
+      translation: orchestrationTranslation,
+      reasoningModel: orchestrationChatCompletionWithReasoningModel // <-- Add this line
     }[sampleCase] || orchestrationChatCompletion;
 
   try {

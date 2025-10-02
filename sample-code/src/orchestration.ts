@@ -91,6 +91,31 @@ export async function chatCompletionStream(
 }
 
 /**
+ * Example: Specify API version in the path parameter for reasoning models.
+ */
+export async function orchestrationChatCompletionWithReasoningModel(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: {
+      model: {
+        name: 'o3',
+        params: {
+          max_completion_tokens: 100
+        }
+      }
+    }
+  }, 
+  );
+
+  const result = await orchestrationClient.chatCompletion({
+    messages: [{ role: 'user', content: 'What is the capital of France?' }]
+  });
+
+  logger.info(result.getContent());
+  return result;
+}
+
+
+/**
  * Ask about the capital of any country using a template.
  * @returns The orchestration service response.
  */
