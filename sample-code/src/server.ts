@@ -194,14 +194,17 @@ app.get('/azure-openai/chat-completion-with-destination', async (req, res) => {
   }
 });
 
-app.get('/azure-openai/chat-completion-with-reasoning-model', async (req, res) => {
-  try {
-    const response = await chatCompletionWithReasoningModel();
-    res.header('Content-Type', 'text/plain').send(response.getContent());
-  } catch (error: any) {
-    sendError(res, error);
+app.get(
+  '/azure-openai/chat-completion-with-reasoning-model',
+  async (req, res) => {
+    try {
+      const response = await chatCompletionWithReasoningModel();
+      res.header('Content-Type', 'text/plain').send(response.getContent());
+    } catch (error: any) {
+      sendError(res, error);
+    }
   }
-});
+);
 
 app.get('/azure-openai/chat-completion-stream', async (req, res) => {
   const controller = new AbortController();
