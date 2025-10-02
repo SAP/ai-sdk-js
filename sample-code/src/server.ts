@@ -9,7 +9,8 @@ import {
   chatCompletionStream as azureChatCompletionStream,
   chatCompletionWithDestination,
   computeEmbedding,
-  chatCompletionWithFunctionCall
+  chatCompletionWithFunctionCall,
+  chatCompletionWithReasoningModel
   // eslint-disable-next-line import/no-internal-modules
 } from './foundation-models/azure-openai.js';
 import {
@@ -187,6 +188,15 @@ app.get('/azure-openai/chat-completion', async (req, res) => {
 app.get('/azure-openai/chat-completion-with-destination', async (req, res) => {
   try {
     const response = await chatCompletionWithDestination();
+    res.header('Content-Type', 'text/plain').send(response.getContent());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/azure-openai/chat-completion-with-reasoning-model', async (req, res) => {
+  try {
+    const response = await chatCompletionWithReasoningModel();
     res.header('Content-Type', 'text/plain').send(response.getContent());
   } catch (error: any) {
     sendError(res, error);
