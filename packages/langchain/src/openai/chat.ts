@@ -53,6 +53,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
   frequency_penalty?: number;
   stop?: string | string[];
   max_tokens?: number;
+  max_completion_tokens?: number | null;
   supportsStrictToolCalling?: boolean;
   modelName: string;
   private openAiChatClient: AzureOpenAiChatClientBase;
@@ -72,6 +73,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
     this.presence_penalty = fields.presence_penalty;
     this.frequency_penalty = fields.frequency_penalty;
     this.max_tokens = fields.max_tokens;
+    this.max_completion_tokens = fields.max_completion_tokens;
     if (fields.supportsStrictToolCalling !== undefined) {
       this.supportsStrictToolCalling = fields.supportsStrictToolCalling;
     }
