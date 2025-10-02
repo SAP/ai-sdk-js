@@ -91,7 +91,8 @@ export async function chatCompletionStream(
 }
 
 /**
- * Example: Specify API version in the path parameter for reasoning models.
+ * Ask the reasoning model through the orchestration service what the capital city of France is.
+ * @returns The response from the orchestration service containing the response content.
  */
 export async function orchestrationChatCompletionWithReasoningModel(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
@@ -103,8 +104,7 @@ export async function orchestrationChatCompletionWithReasoningModel(): Promise<O
         }
       }
     }
-  }, 
-  );
+  });
 
   const result = await orchestrationClient.chatCompletion({
     messages: [{ role: 'user', content: 'What is the capital of France?' }]
@@ -113,7 +113,6 @@ export async function orchestrationChatCompletionWithReasoningModel(): Promise<O
   logger.info(result.getContent());
   return result;
 }
-
 
 /**
  * Ask about the capital of any country using a template.
