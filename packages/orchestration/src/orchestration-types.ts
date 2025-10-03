@@ -23,7 +23,9 @@ import type {
   ErrorResponse,
   AzureContentSafetyInputFilterConfig,
   AzureContentSafetyOutputFilterConfig,
-  LlamaGuard38BFilterConfig
+  LlamaGuard38BFilterConfig,
+  EmbeddingsModelDetails as OriginalEmbeddingsModelDetails,
+  EmbeddingsModelParams as OriginalEmbeddingsModelParams
 } from './client/api/schema/index.js';
 
 /**
@@ -506,3 +508,103 @@ export type LlamaGuard38BFilterReturnType<T extends ConfigType> =
  * Representation of the 'DpiConfig' schema.
  */
 export type DpiMaskingProviderConfig = DpiConfig;
+
+/**
+ * Embedding request configuration.
+ */
+export interface EmbeddingRequest {
+  /**
+   * Text input for which embeddings need to be generated.
+   * Can be a single string or array of strings.
+   * @example
+   * input: "This is a text to embed" or
+   * input: ["Text 1", "Text 2", "Text 3"]
+   */
+  input: string | string[];
+
+  /**
+   * Type of embedding input.
+   * @default 'text'
+   */
+  type?: 'text' | 'document' | 'query';
+}
+
+/**
+ * Embedding model details.
+ */
+export type EmbeddingModelDetails = Omit<
+  OriginalEmbeddingsModelDetails,
+  'params'
+> & {
+  params?: EmbeddingModelParams;
+};
+
+/**
+ * Embedding model parameters.
+ */
+export type EmbeddingModelParams = OriginalEmbeddingsModelParams;
+
+/**
+ * Embedding model configuration.
+ */
+export interface EmbeddingModelConfig {
+  /**
+   * Model details for embedding generation.
+   */
+  model: EmbeddingModelDetails;
+}
+
+/**
+ * Embedding module configuration.
+ */
+export interface EmbeddingModuleConfig {
+  /**
+   * Embeddings model configuration.
+   */
+  embeddings: EmbeddingModelConfig;
+
+  /**
+   * Optional masking module configuration.
+   */
+  masking?: MaskingModule;
+}
+
+/**
+ * Orchestration embedding configuration.
+ */
+export interface OrchestrationEmbeddingConfig {
+  /**
+   * Module configuration for embeddings.
+   */
+  modules: EmbeddingModuleConfig;
+}
+
+/**
+ * Embedding data item.
+ */
+export interface EmbeddingData {
+  /**
+   * The embedding vector (array of numbers) or base64 string.
+   */
+  embedding: number[] | string;
+
+  /**
+   * Index of the embedding in the list.
+   */
+  index: number;
+}
+
+/**
+ * Usage information for embedding requests.
+ */
+export interface EmbeddingUsageInfo {
+  /**
+   * Number of tokens used by the prompt.
+   */
+  promptTokens: number;
+
+  /**
+   * Total number of tokens used.
+   */
+  totalTokens: number;
+}
