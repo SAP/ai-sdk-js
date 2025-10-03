@@ -43,6 +43,27 @@ export async function invoke(): Promise<string> {
 }
 
 /**
+ * Ask o3 about the capital of France.
+ * @returns The answer from GPT-4o3.
+ */
+export async function invokeO3(): Promise<string> {
+  const client = new AzureOpenAiChatClient({
+    modelName: 'o3',
+    max_completion_tokens: 1000
+  });
+
+  const response = await client.invoke('What is the capital of France?', {
+    requestConfig: {
+      params: {
+        'api-version': '2024-12-01-preview'
+      }
+    }
+  });
+  const parser = new StringOutputParser();
+  return parser.invoke(response);
+}
+
+/**
  * Ask GPT about the capital of France, as part of a chain.
  * @returns The answer from ChatGPT.
  */

@@ -25,6 +25,7 @@ export type AzureOpenAiChatModelParams = Pick<
   | 'top_p'
   | 'stop'
   | 'max_tokens'
+  | 'max_completion_tokens'
   | 'presence_penalty'
   | 'frequency_penalty'
   | 'logit_bias'

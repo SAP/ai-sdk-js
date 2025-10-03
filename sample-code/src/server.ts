@@ -9,7 +9,8 @@ import {
   chatCompletionStream as azureChatCompletionStream,
   chatCompletionWithDestination,
   computeEmbedding,
-  chatCompletionWithFunctionCall
+  chatCompletionWithFunctionCall,
+  chatCompletionWithReasoningModel
   // eslint-disable-next-line import/no-internal-modules
 } from './foundation-models/azure-openai.js';
 import {
@@ -27,7 +28,8 @@ import {
   orchestrationPromptRegistry,
   orchestrationMessageHistory,
   orchestrationResponseFormat,
-  orchestrationTranslation
+  orchestrationTranslation,
+  orchestrationChatCompletionWithReasoningModel
 } from './orchestration.js';
 import {
   getDeployments,
@@ -48,7 +50,8 @@ import {
   invoke,
   invokeToolChain,
   streamChain,
-  invokeWithStructuredOutputJsonSchema
+  invokeWithStructuredOutputJsonSchema,
+  invokeO3
 } from './langchain-azure-openai.js';
 import {
   invokeChain as invokeChainOrchestration,
@@ -193,6 +196,18 @@ app.get('/azure-openai/chat-completion-with-destination', async (req, res) => {
   }
 });
 
+app.get(
+  '/azure-openai/chat-completion-with-reasoning-model',
+  async (req, res) => {
+    try {
+      const response = await chatCompletionWithReasoningModel();
+      res.header('Content-Type', 'text/plain').send(response.getContent());
+    } catch (error: any) {
+      sendError(res, error);
+    }
+  }
+);
+
 app.get('/azure-openai/chat-completion-stream', async (req, res) => {
   const controller = new AbortController();
   try {
@@ -277,7 +292,8 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       image: orchestrationChatCompletionImage,
       responseFormat: orchestrationResponseFormat,
       maskGroundingInput: orchestrationMaskGroundingInput,
-      translation: orchestrationTranslation
+      translation: orchestrationTranslation,
+      reasoningModel: orchestrationChatCompletionWithReasoningModel // <-- Add this line
     }[sampleCase] || orchestrationChatCompletion;
 
   try {
@@ -413,6 +429,14 @@ app.get(
 app.get('/langchain/invoke', async (req, res) => {
   try {
     res.header('Content-Type', 'text/plain').send(await invoke());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/langchain/reasoning-model', async (req, res) => {
+  try {
+    res.header('Content-Type', 'text/plain').send(await invokeO3());
   } catch (error: any) {
     sendError(res, error);
   }
