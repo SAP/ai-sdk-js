@@ -4,7 +4,7 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import type { EmbeddingConfig } from './embedding-config.js';
-import type { KeyValueListPair } from './key-value-list-pair.js';
+import type { VectorKeyValueListPair } from './vector-key-value-list-pair.js';
 /**
  * A logical grouping of content.
  */
@@ -15,7 +15,7 @@ export type Collection = {
    * Metadata attached to collection. Useful to restrict search to a subset of collections.
    * Default: [].
    */
-  metadata?: KeyValueListPair[];
+  metadata?: VectorKeyValueListPair[];
   /**
    * Unique identifier of a collection.
    * Format: "uuid".

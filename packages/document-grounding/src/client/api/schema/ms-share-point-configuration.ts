@@ -13,4 +13,8 @@ export type MSSharePointConfiguration = {
    */
   destination: string;
   sharePoint: SharePointConfig;
+  /**
+   * @example "0 3 * * *"
+   */
+  cronExpression?: string;
 } & Record<string, any>;
