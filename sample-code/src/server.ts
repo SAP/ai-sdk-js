@@ -468,13 +468,16 @@ app.get('/langchain/invoke-chain-orchestration', async (req, res) => {
   }
 });
 
-app.get('/langchain/invoke-chain-orchestration-reasoning-model', async (req, res) => {
-  try {
-    res.send(await invokeChainReasoningModel());
-  } catch (error: any) {
-    sendError(res, error);
+app.get(
+  '/langchain/invoke-chain-orchestration-reasoning-model',
+  async (req, res) => {
+    try {
+      res.send(await invokeChainReasoningModel());
+    } catch (error: any) {
+      sendError(res, error);
+    }
   }
-});
+);
 
 app.get(
   '/langchain/invoke-chain-orchestration-input-filter',
