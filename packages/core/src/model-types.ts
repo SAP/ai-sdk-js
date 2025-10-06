@@ -46,6 +46,7 @@ export type AwsBedrockChatModel = LiteralUnion<
   | 'anthropic--claude-3.7-sonnet'
   | 'anthropic--claude-4-opus'
   | 'anthropic--claude-4-sonnet'
+  | 'cohere--command-a-reasoning'
   | 'amazon--nova-pro'
   | 'amazon--nova-lite'
   | 'amazon--nova-micro'
@@ -58,6 +59,6 @@ export type AwsBedrockChatModel = LiteralUnion<
 export type AiCoreOpenSourceChatModel = LiteralUnion<
   | 'mistralai--mistral-large-instruct'
   | 'mistralai--mistral-small-instruct'
+  | 'mistralai--mistral-medium-instruct'
   | 'alephalpha-pharia-1-7b-control'
-  | 'deepseek-ai--deepseek-r1'
 >;
