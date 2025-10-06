@@ -49,6 +49,32 @@ export async function invokeChain(): Promise<string> {
 }
 
 /**
+ * Ask O3 model about an introduction to SAP Cloud SDK.
+ * @returns The answer from the reasoning model.
+ */
+export async function invokeChainReasoningModel(): Promise<string> {
+  const orchestrationConfig: LangChainOrchestrationModuleConfig = {
+    promptTemplating: {
+      model: {
+        name: 'o3',
+        params: {
+          max_completion_tokens: 200
+        }
+      }
+    }
+  };
+
+  return new OrchestrationClient(orchestrationConfig)
+    .pipe(new StringOutputParser())
+    .invoke([
+      {
+        role: 'user',
+        content: 'What is the capital of France?'
+      }
+    ]);
+}
+
+/**
  * Trigger input content filter.
  * @returns The answer from ChatGPT.
  */

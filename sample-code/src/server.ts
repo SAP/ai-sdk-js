@@ -51,7 +51,7 @@ import {
   invokeToolChain,
   streamChain,
   invokeWithStructuredOutputJsonSchema,
-  invokeO3
+  invokeReasoningModel
 } from './langchain-azure-openai.js';
 import {
   invokeChain as invokeChainOrchestration,
@@ -60,7 +60,8 @@ import {
   invokeLangGraphChain as invokeLangGraphChainOrchestration,
   invokeChainWithMasking,
   invokeToolChain as invokeToolChainOrchestration,
-  streamChain as streamChainOrchestration
+  streamChain as streamChainOrchestration,
+  invokeChainReasoningModel
 } from './langchain-orchestration.js';
 import {
   createCollection,
@@ -436,7 +437,7 @@ app.get('/langchain/invoke', async (req, res) => {
 
 app.get('/langchain/reasoning-model', async (req, res) => {
   try {
-    res.header('Content-Type', 'text/plain').send(await invokeO3());
+    res.header('Content-Type', 'text/plain').send(await invokeReasoningModel());
   } catch (error: any) {
     sendError(res, error);
   }
@@ -462,6 +463,14 @@ app.get('/langchain/invoke-chain', async (req, res) => {
 app.get('/langchain/invoke-chain-orchestration', async (req, res) => {
   try {
     res.send(await invokeChainOrchestration());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/langchain/invoke-chain-orchestration-reasoning-model', async (req, res) => {
+  try {
+    res.send(await invokeChainReasoningModel());
   } catch (error: any) {
     sendError(res, error);
   }

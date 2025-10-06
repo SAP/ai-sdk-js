@@ -43,10 +43,10 @@ export async function invoke(): Promise<string> {
 }
 
 /**
- * Ask o3 about the capital of France.
- * @returns The answer from GPT-4o3.
+ * Ask O3 about the capital of France.
+ * @returns The answer from the reasoning model.
  */
-export async function invokeO3(): Promise<string> {
+export async function invokeReasoningModel(): Promise<string> {
   const client = new AzureOpenAiChatClient({
     modelName: 'o3',
     max_completion_tokens: 1000
