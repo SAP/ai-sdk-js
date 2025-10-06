@@ -56,6 +56,5 @@ export type AwsBedrockChatModel = LiteralUnion<
  * AI Core open source models for chat completion.
  */
 export type AiCoreOpenSourceChatModel = LiteralUnion<
-  | 'mistralai--mistral-large-instruct'
-  | 'mistralai--mistral-small-instruct'
+  'mistralai--mistral-large-instruct' | 'mistralai--mistral-small-instruct'
 >;
