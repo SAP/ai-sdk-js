@@ -1,5 +1,5 @@
 import { StringOutputParser } from '@langchain/core/output_parsers';
-import { AzureOpenAiChatClient, OrchestrationClient } from '@sap-ai-sdk/langchain';
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import {
   buildAzureContentSafetyFilter,
   buildDpiMaskingProvider,
@@ -21,6 +21,7 @@ import {
 } from '@langchain/core/messages';
 // eslint-disable-next-line import/no-internal-modules
 import * as z from 'zod/v4';
+// eslint-disable-next-line import/no-internal-modules
 import { getMcpTools } from './tutorials/mcp/mcp-adapter.js';
 import type { BaseMessage, AIMessageChunk } from '@langchain/core/messages';
 import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
@@ -343,13 +344,16 @@ export async function invokeToolChain(): Promise<string> {
  * @returns LLM response.
  */
 export async function invokeMcpToolChain(): Promise<string> {
-  const client = new OrchestrationClient({
-    promptTemplating: {
-      model: {
-        name: 'gpt-4o'
+  const client = new OrchestrationClient(
+    {
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o'
+        }
       }
-    }
-  }, { maxRetries: 0 });
+    },
+    { maxRetries: 0 }
+  );
 
   const tools = [...getMcpTools];
 
@@ -385,4 +389,4 @@ export async function invokeMcpToolChain(): Promise<string> {
 
   // parse the response
   return parser.invoke(finalResponse);
-};
+}

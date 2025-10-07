@@ -14,9 +14,7 @@ server.tool(
   'get_weather',
   'Tool to fetch weather details for a specific city',
   {
-    city: z
-      .string()
-      .describe('The name of the city to get the weather for')
+    city: z.string().describe('The name of the city to get the weather for')
   },
   async ({ city }) => {
     try {

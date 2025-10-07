@@ -58,7 +58,7 @@ import {
   invokeChainWithMasking,
   invokeToolChain as invokeToolChainOrchestration,
   streamChain as streamChainOrchestration,
-  invokeMcpToolChain
+  invokeMcpToolChain as invokeMcpToolChainOrchestration
 } from './langchain-orchestration.js';
 import {
   createCollection,
@@ -492,7 +492,9 @@ app.get('/langchain/invoke-tool-chain', async (req, res) => {
 
 app.get('/langchain/invoke-mcp-tool-chain', async (req, res) => {
   try {
-    res.header('Content-Type', 'text/plain').send(await invokeMcpToolChain());
+    res
+      .header('Content-Type', 'text/plain')
+      .send(await invokeMcpToolChainOrchestration());
   } catch (error: any) {
     sendError(res, error);
   }
