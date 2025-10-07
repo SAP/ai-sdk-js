@@ -1,6 +1,6 @@
 import type { Xor } from '@sap-cloud-sdk/util';
 import type { CustomRequestConfig } from '@sap-cloud-sdk/http-client';
-import type { ChatModel } from './model-types.js';
+import type { ChatModel, EmbeddingModel } from './model-types.js';
 import type {
   ChatMessages,
   DataRepositoryType,
@@ -534,8 +534,9 @@ export interface EmbeddingRequest {
  */
 export type EmbeddingModelDetails = Omit<
   OriginalEmbeddingsModelDetails,
-  'params'
+  'name' | 'params'
 > & {
+  name: EmbeddingModel;
   params?: EmbeddingModelParams;
 };
 

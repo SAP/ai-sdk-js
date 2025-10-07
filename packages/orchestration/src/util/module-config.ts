@@ -2,7 +2,9 @@ import { createLogger } from '@sap-cloud-sdk/util';
 import type {
   ChatCompletionRequest,
   StreamOptions,
-  OrchestrationModuleConfig
+  OrchestrationModuleConfig,
+  EmbeddingModuleConfig,
+  EmbeddingRequest
 } from '../orchestration-types.js';
 import type {
   CompletionPostRequest,
@@ -12,7 +14,10 @@ import type {
   OutputFilteringConfig,
   Template,
   PromptTemplatingModuleConfig,
-  TemplateRef
+  TemplateRef,
+  EmbeddingsPostRequest,
+  EmbeddingsOrchestrationConfig,
+  EmbeddingsModuleConfigs
 } from '../client/api/schema/index.js';
 
 const logger = createLogger({
@@ -196,4 +201,59 @@ function isTemplate(
     typeof templating === 'object' &&
     !('template_ref' in templating)
   );
+}
+
+/**
+ * Constructs an embedding post request from the given configuration and request.
+ * @internal
+ */
+export function constructEmbeddingPostRequest(
+  config: EmbeddingModuleConfig,
+  request: EmbeddingRequest
+): EmbeddingsPostRequest {
+  const orchestrationConfig: EmbeddingsOrchestrationConfig = {
+    modules: buildEmbeddingModulesConfig(config)
+  };
+
+  const embeddingRequest: EmbeddingsPostRequest = {
+    config: orchestrationConfig,
+    input: {
+      text: request.input,
+      ...(request.type && { type: request.type })
+    }
+  };
+
+  logger.debug('Constructed embedding request', {
+    hasEmbeddingsConfig: !!orchestrationConfig.modules.embeddings,
+    hasMaskingConfig: !!orchestrationConfig.modules.masking,
+    inputType: request.type
+  });
+
+  return embeddingRequest;
+}
+
+function buildEmbeddingModulesConfig(
+  config: EmbeddingModuleConfig
+): EmbeddingsModuleConfigs {
+  const modules: EmbeddingsModuleConfigs = {
+    embeddings: {
+      model: {
+        name: config.embeddings.model.name,
+        ...(config.embeddings.model.version && {
+          version: config.embeddings.model.version
+        }),
+        ...(config.embeddings.model.params && {
+          params: config.embeddings.model.params
+        })
+      }
+    }
+  };
+
+  if (config.masking) {
+    modules.masking = {
+      masking_providers: config.masking.masking_providers
+    };
+  }
+
+  return modules;
 }

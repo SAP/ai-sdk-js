@@ -2,6 +2,7 @@ import { executeRequest } from '@sap-ai-sdk/core';
 import { createLogger } from '@sap-cloud-sdk/util';
 import { getOrchestrationDeploymentId } from './deployment-resolver.js';
 import { OrchestrationEmbeddingResponse } from './orchestration-embedding-response.js';
+import { constructEmbeddingPostRequest } from './util/index.js';
 import type {
   HttpResponse,
   CustomRequestConfig
@@ -11,14 +12,9 @@ import type {
   ResourceGroupConfig
 } from '@sap-ai-sdk/ai-api/internal.js';
 import type {
-  OrchestrationEmbeddingConfig,
+  EmbeddingModuleConfig,
   EmbeddingRequest
 } from './orchestration-types.js';
-import type {
-  EmbeddingsPostRequest,
-  EmbeddingsOrchestrationConfig,
-  EmbeddingsModuleConfigs
-} from './client/api/schema/index.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 const logger = createLogger({
@@ -32,12 +28,12 @@ const logger = createLogger({
 export class OrchestrationEmbeddingClient {
   /**
    * Creates an instance of the orchestration embedding client.
-   * @param config - Orchestration embedding configuration.
+   * @param config - Embedding module configuration.
    * @param deploymentConfig - Deployment configuration.
    * @param destination - The destination to use for the request.
    */
   constructor(
-    private config: OrchestrationEmbeddingConfig,
+    private config: EmbeddingModuleConfig,
     private deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
     private destination?: HttpDestinationOrFetchOptions
   ) {}
@@ -66,7 +62,7 @@ export class OrchestrationEmbeddingClient {
     request: EmbeddingRequest,
     requestConfig?: CustomRequestConfig
   ): Promise<HttpResponse> {
-    const body = this.constructEmbeddingPostRequest(request);
+    const body = constructEmbeddingPostRequest(this.config, request);
 
     const deploymentId = await getOrchestrationDeploymentId(
       this.deploymentConfig ?? {},
@@ -91,51 +87,5 @@ export class OrchestrationEmbeddingClient {
       requestConfig,
       this.destination
     );
-  }
-
-  private constructEmbeddingPostRequest(
-    request: EmbeddingRequest
-  ): EmbeddingsPostRequest {
-    const orchestrationConfig: EmbeddingsOrchestrationConfig = {
-      modules: this.buildModulesConfig()
-    };
-
-    const embeddingRequest: EmbeddingsPostRequest = {
-      config: orchestrationConfig,
-      input: {
-        text: request.input,
-        ...(request.type && { type: request.type })
-      }
-    };
-
-    logger.debug('Constructed embedding request', {
-      hasEmbeddingsConfig: !!orchestrationConfig.modules.embeddings,
-      hasMaskingConfig: !!orchestrationConfig.modules.masking,
-      inputType: request.type
-    });
-
-    return embeddingRequest;
-  }
-
-  private buildModulesConfig(): EmbeddingsModuleConfigs {
-    const modules: EmbeddingsModuleConfigs = {
-      embeddings: {
-        model: {
-          name: this.config.modules.embeddings.model.name,
-          version: this.config.modules.embeddings.model.version ?? 'latest',
-          ...(this.config.modules.embeddings.model.params && {
-            params: this.config.modules.embeddings.model.params
-          })
-        }
-      }
-    };
-
-    if (this.config.modules.masking) {
-      modules.masking = {
-        masking_providers: this.config.modules.masking.masking_providers
-      };
-    }
-
-    return modules;
   }
 }
