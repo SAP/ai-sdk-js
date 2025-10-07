@@ -47,7 +47,7 @@ export { OrchestrationClient } from './orchestration-client.js';
 export { OrchestrationResponse } from './orchestration-response.js';
 export { OrchestrationEmbeddingClient } from './orchestration-embedding-client.js';
 export { OrchestrationEmbeddingResponse } from './orchestration-embedding-response.js';
-export type { ChatModel } from './model-types.js';
+export type { ChatModel, EmbeddingModel } from './model-types.js';
 
 export {
   buildAzureContentSafetyFilter,
