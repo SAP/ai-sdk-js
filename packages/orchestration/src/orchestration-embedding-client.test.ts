@@ -6,7 +6,7 @@ import {
   mockInference,
   parseMockResponse
 } from '../../../test-util/mock-http.js';
-import { buildDpiMaskingProvider } from '../internal.js';
+import { buildDpiMaskingProvider } from './util/masking.js';
 import { OrchestrationEmbeddingClient } from './orchestration-embedding-client.js';
 import { OrchestrationEmbeddingResponse } from './orchestration-embedding-response.js';
 import { constructEmbeddingPostRequest } from './util/module-config.js';
