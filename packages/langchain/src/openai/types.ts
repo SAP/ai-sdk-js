@@ -17,6 +17,15 @@ import type {
 } from '@sap-ai-sdk/foundation-models/internal.js';
 
 /**
+ * Type that enforces mutual exclusivity between max_tokens and max_completion_tokens.
+ * Only one of these properties can be specified, not both.
+ */
+type ExclusiveTokenParams =
+  | ({ max_tokens: number } & { max_completion_tokens?: never })
+  | ({ max_completion_tokens: number | null } & { max_tokens?: never })
+  | { max_tokens?: never; max_completion_tokens?: never };
+
+/**
  * Input type for {@link AzureOpenAiChatClient} initialization.
  */
 export type AzureOpenAiChatModelParams = Pick<
@@ -24,21 +33,20 @@ export type AzureOpenAiChatModelParams = Pick<
   | 'temperature'
   | 'top_p'
   | 'stop'
-  | 'max_tokens'
-  | 'max_completion_tokens'
   | 'presence_penalty'
   | 'frequency_penalty'
   | 'logit_bias'
   | 'user'
-> & {
-  /**
-   * Whether the model supports the `strict` argument when passing in tools.
-   * If `undefined` the `strict` argument will not be passed to OpenAI.
-   */
-  supportsStrictToolCalling?: boolean;
-} & BaseChatModelParams &
-  ModelConfig<AzureOpenAiChatModel> &
-  ResourceGroupConfig;
+> &
+  ExclusiveTokenParams & {
+    /**
+     * Whether the model supports the `strict` argument when passing in tools.
+     * If `undefined` the `strict` argument will not be passed to OpenAI.
+     */
+    supportsStrictToolCalling?: boolean;
+  } & BaseChatModelParams &
+    ModelConfig<AzureOpenAiChatModel> &
+    ResourceGroupConfig;
 
 /**
  * Tool type for LangChain Azure OpenAI client.

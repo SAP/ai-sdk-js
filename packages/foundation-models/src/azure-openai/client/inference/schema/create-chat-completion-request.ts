@@ -14,11 +14,21 @@ import type { AzureOpenAiChatCompletionTool } from './chat-completion-tool.js';
 import type { AzureOpenAiChatCompletionToolChoiceOption } from './chat-completion-tool-choice-option.js';
 import type { AzureOpenAiChatCompletionFunctionCallOption } from './chat-completion-function-call-option.js';
 import type { AzureOpenAiChatCompletionFunctions } from './chat-completion-functions.js';
+
+/**
+ * Type that enforces mutual exclusivity between max_tokens and max_completion_tokens.
+ * Only one of these properties can be specified, not both.
+ */
+type ExclusiveTokenParams =
+  | ({ max_tokens: number | null } & { max_completion_tokens?: never })
+  | ({ max_completion_tokens: number | null } & { max_tokens?: never })
+  | { max_tokens?: never; max_completion_tokens?: never };
 /**
  * Representation of the 'AzureOpenAiCreateChatCompletionRequest' schema.
  */
 export type AzureOpenAiCreateChatCompletionRequest =
-  AzureOpenAiChatCompletionsRequestCommon & {
+  AzureOpenAiChatCompletionsRequestCommon &
+  ExclusiveTokenParams & {
     /**
      * A list of messages comprising the conversation so far. [Example Python code](https://github.com/openai/openai-cookbook/blob/main/examples/How_to_format_inputs_to_ChatGPT_models.ipynb).
      * Min Items: 1.
@@ -52,13 +62,6 @@ export type AzureOpenAiCreateChatCompletionRequest =
      * Maximum: 20.
      */
     top_logprobs?: number | null;
-    /**
-     * The maximum number of [tokens](/tokenizer) that can be generated in the chat completion.
-     *
-     * The total length of input tokens and generated tokens is limited by the model's context length. [Example Python code](https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken) for counting tokens.
-     *
-     */
-    max_tokens?: number | null;
     /**
      * How many chat completion choices to generate for each input message. Note that you will be charged based on the number of generated tokens across all of the choices. Keep `n` as `1` to minimize costs.
      * @example 1
