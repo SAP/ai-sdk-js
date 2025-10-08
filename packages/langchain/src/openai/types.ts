@@ -45,8 +45,8 @@ export type AzureOpenAiChatModelParams = Pick<
      */
     supportsStrictToolCalling?: boolean;
   } & BaseChatModelParams &
-    ModelConfig<AzureOpenAiChatModel> &
-    ResourceGroupConfig;
+  ModelConfig<AzureOpenAiChatModel> &
+  ResourceGroupConfig;
 
 /**
  * Tool type for LangChain Azure OpenAI client.
