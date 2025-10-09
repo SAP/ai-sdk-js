@@ -235,8 +235,8 @@ importers:
         version: 5.1.0
     devDependencies:
       '@sap/cds-dk':
-        specifier: ^9.3.2
-        version: 9.3.2(@eslint/js@9.37.0)
+        specifier: ^9.4.1
+        version: 9.4.1(@eslint/js@9.37.0)
 
   sample-code:
     dependencies:
@@ -591,8 +591,8 @@ packages:
     peerDependencies:
       '@sap/cds': '>=7.6'
 
-  '@cap-js/db-service@2.4.0':
-    resolution: {integrity: sha512-tWZUkgAPgZQIVu3xownD9cA9joXPI84KDstx3ZezOxXJuRsapgM2QEs0TXwQK5XLG43FUAsGO7wVJPoZ29ZH2Q==}
+  '@cap-js/db-service@2.5.1':
+    resolution: {integrity: sha512-dpz9lvOepcXOgE8uTs9abCotLcCt1odpwlrUT4AW2pnSrMB0EVMRbHKVIlufmrm8Kh/Y5c2d6ODald8eahsEDw==}
     peerDependencies:
       '@sap/cds': '>=9'
 
@@ -601,8 +601,8 @@ packages:
     peerDependencies:
       '@sap/cds': '>=7.6'
 
-  '@cap-js/sqlite@2.0.2':
-    resolution: {integrity: sha512-oNg2f56sfELshyp0eSmYYwG1lt4Zmc135sLIzS8iykHdRVxxJpTrPj0jx0Y4Hc6sfC9u25LRXVu/ZKqjm9Yu+Q==}
+  '@cap-js/sqlite@2.0.3':
+    resolution: {integrity: sha512-Zm2JLpPuddFkeqM47TX7V7IC6x3WOfn5lTRbaiVOMvRQoshCNXTkjv083ssfiwF/jF/46/PSVox+fTElozg6XA==}
     peerDependencies:
       '@sap/cds': '>=9'
 
@@ -1261,8 +1261,8 @@ packages:
     engines: {node: '>=20'}
     hasBin: true
 
-  '@sap/cds-dk@9.3.2':
-    resolution: {integrity: sha512-CIYEQQUV427FA9y/Vfa0q3lR9pedUVsALEJD+v8CUQXslzTS6szCk2WmyiwVqJAc6s7Y+T4bKBW13lnmiKRMOQ==}
+  '@sap/cds-dk@9.4.1':
+    resolution: {integrity: sha512-Mqx23EU99c9XNqBLtkusNl4Q2WEjT2fx2GgUJwtKFl2WbUPNX3YjlmdvJnPKOQQkJ5Bi/5S6BLjTAipKivKIzw==}
     hasBin: true
 
   '@sap/cds-fiori@2.1.0':
@@ -1271,8 +1271,8 @@ packages:
       '@sap/cds': '>=8'
       express: ^4
 
-  '@sap/cds-mtxs@3.3.1':
-    resolution: {integrity: sha512-66yWxkVlqu5FsOHxDF8w2JJSlcbgtT2PTegBSECEq9+fjMOaqlxnBHpXXTODCUgK762Ad3kyCUZqW///gmpuMA==}
+  '@sap/cds-mtxs@3.4.1':
+    resolution: {integrity: sha512-G+IBGTxAjXG6YIf19NC+QcbeHPoMKylB/X+pxQwBUxwLPk56YXUUo6dPAkAMZjUTamykukP48tWacjU4Wo0qFg==}
     hasBin: true
     peerDependencies:
       '@sap/cds': ^9
@@ -1291,8 +1291,8 @@ packages:
       tar:
         optional: true
 
-  '@sap/hdi-deploy@5.5.0':
-    resolution: {integrity: sha512-nxamWIBz+D/4wcvgYgxGSJLsyJ1KNtU9X6gfMHiyi/IjozGN/3WdeT11++jy5qeZNkdinuND55RRlRcnsu3W5g==}
+  '@sap/hdi-deploy@5.5.1':
+    resolution: {integrity: sha512-5r9SIkXX7cO+MwRFF32O566sMx6LP1mLin0eT9F+Adqy+0SrdwkWv4JslQzYetiWLuNsfqQljcao62alaxts8A==}
     engines: {node: '>=18.x'}
     peerDependencies:
       '@sap/hana-client': ^2 >= 2.6
@@ -1964,8 +1964,8 @@ packages:
     resolution: {integrity: sha512-pbnl5XzGBdrFU/wT4jqmJVPn2B6UHPBOhzMQkY/SPUPB6QtUXtmBHBIwCbXJol93mOpGMnQyP/+BB19q04xj7g==}
     engines: {node: '>=4'}
 
-  better-sqlite3@12.2.0:
-    resolution: {integrity: sha512-eGbYq2CT+tos1fBwLQ/tkBt9J5M3JEHjku4hbvQUePCckkvVf14xWj+1m7dGoK81M/fOjFT7yM9UMeKT/+vFLQ==}
+  better-sqlite3@12.4.1:
+    resolution: {integrity: sha512-3yVdyZhklTiNrtg+4WqHpJpFDd+WHTg2oM7UcR80GqL05AOV0xEJzc6qNvFYoEtE+hRp1n9MpN6/+4yhlGkDXQ==}
     engines: {node: 20.x || 22.x || 23.x || 24.x}
 
   bindings@1.5.0:
@@ -2319,8 +2319,8 @@ packages:
     resolution: {integrity: sha512-reYkTUJAZb9gUuZ2RvVCNhVHdg62RHnJ7WJl8ftMi4diZ6NWlciOzQN88pUhSELEwflJht4oQDv0F0BMlwaYtA==}
     engines: {node: '>=8'}
 
-  detect-libc@2.1.0:
-    resolution: {integrity: sha512-vEtk+OcP7VBRtQZ1EJ3bdgzSfBjgnEalLTp5zjJrS+2Z1w2KZly4SBdac/WDU3hhsNAZ9E8SC96ME4Ey8MZ7cg==}
+  detect-libc@2.1.2:
+    resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
     engines: {node: '>=8'}
 
   detect-newline@3.1.0:
@@ -3849,8 +3849,8 @@ packages:
     resolution: {integrity: sha512-Q7HjkpyPeLa0ZVZC5qpxBt5EyLczFJ91MEewQiIi9taWuA0KB/MDJlUWtON+7dGouVdADTQsf9RA7TZk6D8VMw==}
     engines: {node: '>=18.20.0 <20 || >=20.12.1'}
 
-  node-abi@3.77.0:
-    resolution: {integrity: sha512-DSmt0OEcLoK4i3NuscSbGjOf3bqiDEutejqENSplMSFA/gmB8mkED9G4pKWnPl7MDU4rSHebKPHeitpDfyH0cQ==}
+  node-abi@3.78.0:
+    resolution: {integrity: sha512-E2wEyrgX/CqvicaQYU3Ze1PFGjc4QYPGsjUrlYkqAE0WjHEZwgOsGMPMzkMse4LjJbDmaEuDX3CM036j5K2DSQ==}
     engines: {node: '>=10'}
 
   node-cache@5.1.2:
@@ -4377,6 +4377,11 @@ packages:
 
   semver@7.7.2:
     resolution: {integrity: sha512-RF0Fw+rO5AMf9MAyaRXI4AV0Ulj5lMHqVxxdSgiVbixSCXoEmmX/jk0CuJw4+3SqroYO9VoUh+HcuJivvtJemA==}
+    engines: {node: '>=10'}
+    hasBin: true
+
+  semver@7.7.3:
+    resolution: {integrity: sha512-SdsKMrI9TdgjdweUSR9MweHA4EJ8YxHn8DFaDisvhVlUOe4BF1tLD7GAj0lIqWVl+dPb/rExr0Btby5loQm20Q==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -5273,7 +5278,7 @@ snapshots:
     dependencies:
       '@sap/cds': 9.4.2(@eslint/js@9.37.0)(express@5.1.0)
 
-  '@cap-js/db-service@2.4.0(@sap/cds@9.4.2(@eslint/js@9.37.0)(express@5.1.0))':
+  '@cap-js/db-service@2.5.1(@sap/cds@9.4.2(@eslint/js@9.37.0)(express@5.1.0))':
     dependencies:
       '@sap/cds': 9.4.2(@eslint/js@9.37.0)(express@5.1.0)
       generic-pool: 3.9.0
@@ -5284,11 +5289,11 @@ snapshots:
       '@sap/cds': 9.4.2(@eslint/js@9.37.0)(express@5.1.0)
       pluralize: 8.0.0
 
-  '@cap-js/sqlite@2.0.2(@sap/cds@9.4.2(@eslint/js@9.37.0)(express@5.1.0))':
+  '@cap-js/sqlite@2.0.3(@sap/cds@9.4.2(@eslint/js@9.37.0)(express@5.1.0))':
     dependencies:
-      '@cap-js/db-service': 2.4.0(@sap/cds@9.4.2(@eslint/js@9.37.0)(express@5.1.0))
+      '@cap-js/db-service': 2.5.1(@sap/cds@9.4.2(@eslint/js@9.37.0)(express@5.1.0))
       '@sap/cds': 9.4.2(@eslint/js@9.37.0)(express@5.1.0)
-      better-sqlite3: 12.2.0
+      better-sqlite3: 12.4.1
     optional: true
 
   '@cfworker/json-schema@4.1.1': {}
@@ -6366,13 +6371,13 @@ snapshots:
 
   '@sap/cds-compiler@6.4.2': {}
 
-  '@sap/cds-dk@9.3.2(@eslint/js@9.37.0)':
+  '@sap/cds-dk@9.4.1(@eslint/js@9.37.0)':
     dependencies:
       '@cap-js/asyncapi': 1.0.3(@sap/cds@9.4.2(@eslint/js@9.37.0)(express@5.1.0))
       '@cap-js/openapi': 1.2.3(@sap/cds@9.4.2(@eslint/js@9.37.0)(express@5.1.0))
       '@sap/cds': 9.4.2(@eslint/js@9.37.0)(express@4.21.2)
-      '@sap/cds-mtxs': 3.3.1(@sap/cds@9.4.2(@eslint/js@9.37.0)(express@5.1.0))(hdb@0.19.12)
-      '@sap/hdi-deploy': 5.5.0(hdb@0.19.12)
+      '@sap/cds-mtxs': 3.4.1(@sap/cds@9.4.2(@eslint/js@9.37.0)(express@5.1.0))(hdb@0.19.12)
+      '@sap/hdi-deploy': 5.5.1(hdb@0.19.12)
       axios: 1.12.2
       express: 4.21.2
       hdb: 0.19.12
@@ -6383,7 +6388,7 @@ snapshots:
       xml-js: 1.6.11
       yaml: 2.8.1
     optionalDependencies:
-      '@cap-js/sqlite': 2.0.2(@sap/cds@9.4.2(@eslint/js@9.37.0)(express@5.1.0))
+      '@cap-js/sqlite': 2.0.3(@sap/cds@9.4.2(@eslint/js@9.37.0)(express@5.1.0))
     transitivePeerDependencies:
       - '@eslint/js'
       - '@sap/hana-client'
@@ -6403,10 +6408,10 @@ snapshots:
       '@sap/cds': 9.4.2(@eslint/js@9.37.0)(express@5.1.0)
       express: 5.1.0
 
-  '@sap/cds-mtxs@3.3.1(@sap/cds@9.4.2(@eslint/js@9.37.0)(express@5.1.0))(hdb@0.19.12)':
+  '@sap/cds-mtxs@3.4.1(@sap/cds@9.4.2(@eslint/js@9.37.0)(express@5.1.0))(hdb@0.19.12)':
     dependencies:
       '@sap/cds': 9.4.2(@eslint/js@9.37.0)(express@5.1.0)
-      '@sap/hdi-deploy': 5.5.0(hdb@0.19.12)
+      '@sap/hdi-deploy': 5.5.1(hdb@0.19.12)
     transitivePeerDependencies:
       - '@sap/hana-client'
       - hdb
@@ -6430,7 +6435,7 @@ snapshots:
     optionalDependencies:
       express: 5.1.0
 
-  '@sap/hdi-deploy@5.5.0(hdb@0.19.12)':
+  '@sap/hdi-deploy@5.5.1(hdb@0.19.12)':
     dependencies:
       '@sap/hdi': 4.8.0(hdb@0.19.12)
       '@sap/xsenv': 5.6.1
@@ -7261,7 +7266,7 @@ snapshots:
     dependencies:
       is-windows: 1.0.2
 
-  better-sqlite3@12.2.0:
+  better-sqlite3@12.4.1:
     dependencies:
       bindings: 1.5.0
       prebuild-install: 7.1.3
@@ -7619,7 +7624,7 @@ snapshots:
 
   detect-indent@6.1.0: {}
 
-  detect-libc@2.1.0:
+  detect-libc@2.1.2:
     optional: true
 
   detect-newline@3.1.0: {}
@@ -9428,9 +9433,9 @@ snapshots:
       json-stringify-safe: 5.0.1
       propagate: 2.0.1
 
-  node-abi@3.77.0:
+  node-abi@3.78.0:
     dependencies:
-      semver: 7.7.2
+      semver: 7.7.3
     optional: true
 
   node-cache@5.1.2:
@@ -9757,13 +9762,13 @@ snapshots:
 
   prebuild-install@7.1.3:
     dependencies:
-      detect-libc: 2.1.0
+      detect-libc: 2.1.2
       expand-template: 2.0.3
       github-from-package: 0.0.0
       minimist: 1.2.8
       mkdirp-classic: 0.5.3
       napi-build-utils: 2.0.0
-      node-abi: 3.77.0
+      node-abi: 3.78.0
       pump: 3.0.3
       rc: 1.2.8
       simple-get: 4.0.1
@@ -9994,6 +9999,9 @@ snapshots:
   semver@6.3.1: {}
 
   semver@7.7.2: {}
+
+  semver@7.7.3:
+    optional: true
 
   send@0.19.0:
     dependencies:
