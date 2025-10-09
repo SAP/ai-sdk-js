@@ -100,7 +100,7 @@ export async function orchestrationChatCompletionWithReasoningModel(): Promise<O
       model: {
         name: 'o3',
         params: {
-          max_completion_tokens: 100
+          max_tokens: 100
         }
       }
     }
