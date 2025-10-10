@@ -61,10 +61,7 @@ export type AwsBedrockEmbeddingModel = LiteralUnion<'amazon--titan-embed-text'>;
  * AI Core open source models for chat completion.
  */
 export type AiCoreOpenSourceChatModel = LiteralUnion<
-  | 'mistralai--mistral-large-instruct'
-  | 'mistralai--mistral-small-instruct'
-  | 'alephalpha-pharia-1-7b-control'
-  | 'deepseek-ai--deepseek-r1'
+  'mistralai--mistral-large-instruct' | 'mistralai--mistral-small-instruct'
 >;
 
 /**
