@@ -4,6 +4,7 @@ import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
   mockInference,
+  parseFileToString,
   parseMockResponse
 } from '../../../test-util/mock-http.js';
 import { buildDpiMaskingProvider } from './util/masking.js';
@@ -46,7 +47,7 @@ describe('orchestration embedding service client', () => {
 
     const mockResponse = await parseMockResponse<EmbeddingsPostResponse>(
       'orchestration',
-      'orchestration-embedding-with-masking-response.json'
+      'orchestration-embedding-simple-response.json'
     );
 
     mockInference(
@@ -89,7 +90,7 @@ describe('orchestration embedding service client', () => {
 
     const mockResponse = await parseMockResponse<EmbeddingsPostResponse>(
       'orchestration',
-      'orchestration-embedding-with-masking-response.json'
+      'orchestration-embedding-simple-response.json'
     );
 
     mockInference(
@@ -130,7 +131,7 @@ describe('orchestration embedding service client', () => {
 
     const mockResponse = await parseMockResponse<EmbeddingsPostResponse>(
       'orchestration',
-      'orchestration-embedding-with-masking-response.json'
+      'orchestration-embedding-simple-response.json'
     );
 
     mockInference(
@@ -175,7 +176,8 @@ describe('orchestration embedding service client', () => {
     };
 
     const request: EmbeddingRequest = {
-      input: 'My name is John Doe. I live in New York.'
+      input:
+        'My name is Tom. I am applying as a Senior Software Dev. I work closely with Jerry.'
     };
 
     const mockResponse = await parseMockResponse<EmbeddingsPostResponse>(
@@ -204,6 +206,11 @@ describe('orchestration embedding service client', () => {
     expect(response.requestId).toBe('random-request-id');
     expect(response.intermediateResults).toBeDefined();
     expect(response.intermediateResults?.input_masking).toBeDefined();
+    expect(
+      response.intermediateResults?.input_masking?.data?.masked_input
+    ).toContain(
+      'My name is MASKED_PERSON. I am applying as a Senior Software Dev. I work closely with MASKED_PERSON.'
+    );
   });
 
   it('executes a request with the custom resource group', async () => {
@@ -257,11 +264,11 @@ describe('orchestration embedding service client', () => {
     expect(response.requestId).toBe('random-request-id');
   });
 
-  it('passes custom request config', async () => {
+  it('handles HTTP error responses', async () => {
     const config: EmbeddingModuleConfig = {
       embeddings: {
         model: {
-          name: 'text-embedding-3-small'
+          name: 'text-embedding-3'
         }
       }
     };
@@ -270,11 +277,9 @@ describe('orchestration embedding service client', () => {
       input: 'Test text for embedding'
     };
 
-    const customRequestConfig = { timeout: 5000 };
-
-    const mockResponse = await parseMockResponse<EmbeddingsPostResponse>(
+    const mockResponse = await parseFileToString(
       'orchestration',
-      'orchestration-embedding-with-masking-response.json'
+      'orchestration-embedding-error.json'
     );
 
     mockInference(
@@ -283,41 +288,6 @@ describe('orchestration embedding service client', () => {
       },
       {
         data: mockResponse,
-        status: 200
-      },
-      {
-        url: 'inference/deployments/1234/v2/embeddings'
-      }
-    );
-
-    const response = await new OrchestrationEmbeddingClient(config).embed(
-      request,
-      customRequestConfig
-    );
-
-    expect(response).toBeInstanceOf(OrchestrationEmbeddingResponse);
-    expect(response.requestId).toBe('random-request-id');
-  });
-
-  it('handles HTTP error responses', async () => {
-    const config: EmbeddingModuleConfig = {
-      embeddings: {
-        model: {
-          name: 'text-embedding-3-small'
-        }
-      }
-    };
-
-    const request: EmbeddingRequest = {
-      input: 'Test text for embedding'
-    };
-
-    mockInference(
-      {
-        data: constructEmbeddingPostRequest(config, request)
-      },
-      {
-        data: { error: 'Bad Request' },
         status: 400
       },
       {
@@ -327,6 +297,6 @@ describe('orchestration embedding service client', () => {
 
     await expect(
       new OrchestrationEmbeddingClient(config).embed(request)
-    ).rejects.toThrow();
+    ).rejects.toThrow('Request failed with status code 400');
   });
 });
