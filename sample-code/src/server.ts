@@ -27,7 +27,8 @@ import {
   orchestrationPromptRegistry,
   orchestrationMessageHistory,
   orchestrationResponseFormat,
-  orchestrationTranslation
+  orchestrationTranslation,
+  orchestrationEmbeddingWithMasking
 } from './orchestration.js';
 import {
   getDeployments,
@@ -744,6 +745,22 @@ app.get('/prompt-registry/template', async (req, res) => {
     const response = await deletePromptTemplate(id);
     res.write(`Prompt template deleted: ${response.message}\n`);
 
+    res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+/* Orchestration Embedding with Masking */
+app.get('/ox/embedding-with-masking', async (req, res) => {
+  try {
+    const response = await orchestrationEmbeddingWithMasking();
+
+    // Send formatted response
+    res.setHeader('Content-Type', 'text/plain');
+    res.write(`Embeddings: ${JSON.stringify(response.embeddings)}\n`);
+    res.write(`Usage - Prompt tokens: ${response.usage?.promptTokens}\n`);
+    res.write(`Usage - Total tokens: ${response.usage?.totalTokens}\n`);
     res.end();
   } catch (error: any) {
     sendError(res, error);
