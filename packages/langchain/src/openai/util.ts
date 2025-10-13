@@ -279,7 +279,18 @@ export function mapLangChainToAiClient(
 ): AzureOpenAiChatCompletionParameters {
   return removeUndefinedProperties<AzureOpenAiChatCompletionParameters>({
     messages: messages.map(mapBaseMessageToAzureOpenAiChatMessage),
-    max_tokens: client.max_tokens === -1 ? undefined : client.max_tokens,
+    max_tokens:
+      client.max_completion_tokens !== undefined
+        ? undefined
+        : client.max_tokens === -1
+          ? undefined
+          : client.max_tokens,
+    max_completion_tokens:
+      client.max_completion_tokens !== undefined
+        ? client.max_completion_tokens
+        : client.max_tokens === -1
+          ? undefined
+          : client.max_tokens,
     presence_penalty: client.presence_penalty,
     frequency_penalty: client.frequency_penalty,
     temperature: client.temperature,
