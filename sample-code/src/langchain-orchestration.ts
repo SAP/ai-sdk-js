@@ -22,7 +22,7 @@ import {
 // eslint-disable-next-line import/no-internal-modules
 import * as z from 'zod/v4';
 // eslint-disable-next-line import/no-internal-modules
-import { getMcpTools } from './tutorials/mcp/mcp-adapter.js';
+import { mcpClient } from './tutorials/mcp/mcp-adapter.js';
 import type { BaseMessage, AIMessageChunk } from '@langchain/core/messages';
 import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
 
@@ -355,7 +355,7 @@ export async function invokeMcpToolChain(): Promise<string> {
     { maxRetries: 0 }
   );
 
-  const tools = [...getMcpTools];
+  const tools = await mcpClient.getTools();
 
   const messages: BaseMessage[] = [
     new HumanMessage('What is the weather like in Berlin?')

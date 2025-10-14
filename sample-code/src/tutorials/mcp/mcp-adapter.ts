@@ -2,8 +2,10 @@
 
 import { MultiServerMCPClient } from '@langchain/mcp-adapters';
 
-// Create client and connect to server
-const client = new MultiServerMCPClient({
+/**
+ * Client to connect to multiple MCP servers.
+ */
+export const mcpClient = new MultiServerMCPClient({
   throwOnLoadError: true,
   prefixToolNameWithServerName: false,
   additionalToolNamePrefix: '',
@@ -15,9 +17,3 @@ const client = new MultiServerMCPClient({
     }
   }
 });
-
-/**
- * Fetches tools from the MCP server.
- * @returns An array of tools for fetching weather data.
- */
-export const getMcpTools = await client.getTools();
