@@ -7,6 +7,9 @@ on:
 env:
   DOCS_REPO: SAP/ai-sdk
 
+permissions:
+  id-token: write
+
 jobs:
   check-release-notes-pr:
     name: Check Release Notes PR Status
@@ -61,11 +64,11 @@ jobs:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+      - name: Re-install npm  # v11 will be default when node 24 is used
+        run: npm install -g npm@latest
       - name: publish
         run: |
           pnpm changeset publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}
 
   merge-release-notes-pr:
     name: Merge Release Notes PR (if needed)
