@@ -14,4 +14,17 @@ export type EmbeddingsModelDetails = {
    */
   version?: string;
   params?: EmbeddingsModelParams;
+  /**
+   * Timeout for the Embeddings request in seconds. This parameter is currently ignored for Vertex AI models.
+   * Default: 600.
+   * Maximum: 600.
+   * Minimum: 1.
+   */
+  timeout?: number;
+  /**
+   * Maximum number of retries for the Embeddings request. This parameter is currently ignored for Vertex AI models.
+   * Default: 2.
+   * Maximum: 5.
+   */
+  max_retries?: number;
 };
