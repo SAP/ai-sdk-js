@@ -13,7 +13,7 @@ export type AzureContentSafetyInput = {
   sexual?: AzureThreshold;
   violence?: AzureThreshold;
   /**
-   * A flag to use prompt shield
+   * Filter prompts for harmful content such as jailbreaks and prompt injections.
    */
   prompt_shield?: boolean;
 };
