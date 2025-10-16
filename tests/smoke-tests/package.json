@@ -17,7 +17,7 @@
   "dependencies": {
     "@langchain/langgraph": "^1.0.0-alpha.5",
     "langchain": "1.0.0-alpha.8",
-    "@langchain/core": "0.3.78",
+    "@langchain/core": "^1.0.0-alpha.6",
     "@langchain/textsplitters": "1.0.0-alpha.1",
     "@langchain/mcp-adapters": "^0.6.0",
     "@sap-ai-sdk/ai-api": "canary",
@@ -29,7 +29,7 @@
     "@sap-cloud-sdk/util": "^4.1.2",
     "express": "^5.1.0",
     "uuid": "^13.0.0",
-    "zod": "^3.25.76"
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
