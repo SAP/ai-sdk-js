@@ -15,4 +15,5 @@ export type DocumentStatus =
   | 'DEINDEXED'
   | 'FAILED'
   | 'FAILED_TO_BE_RETRIED'
-  | 'TO_BE_SCHEDULED';
+  | 'TO_BE_SCHEDULED'
+  | any;

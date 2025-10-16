@@ -1403,17 +1403,6 @@ components:
           type: string
           example: uuid
 
-    PipelineExecutionStatus:
-      type: string
-      enum:
-        - NEW
-        - UNKNOWN
-        - INPROGRESS
-        - FINISHED
-        - FINISHEDWITHERRORS
-        - TIMEOUT
-      example: 'INPROGRESS'
-
     PipelineExecutionData:
       type: object
       properties:
@@ -1453,6 +1442,18 @@ components:
         status:
           $ref: '#/components/schemas/PipelineExecutionStatus'
 
+    PipelineExecutionStatus:
+      type: string
+      anyOf:
+        - enum:
+            - NEW
+            - UNKNOWN
+            - INPROGRESS
+            - FINISHED
+            - FINISHEDWITHERRORS
+            - TIMEOUT
+        - {}
+
     getPipelineExecutions:
       type: object
       properties:
@@ -1481,14 +1482,16 @@ components:
 
     DocumentStatus:
       type: string
-      enum:
-        - TO_BE_PROCESSED
-        - INDEXED
-        - REINDEXED
-        - DEINDEXED
-        - FAILED
-        - FAILED_TO_BE_RETRIED
-        - TO_BE_SCHEDULED
+      anyOf:
+        - enum:
+            - TO_BE_PROCESSED
+            - INDEXED
+            - REINDEXED
+            - DEINDEXED
+            - FAILED
+            - FAILED_TO_BE_RETRIED
+            - TO_BE_SCHEDULED
+        - {}
       example: 'INDEXED'
 
     DocumentsStatusResponse:
@@ -1585,6 +1588,9 @@ components:
                   nullable: false
                 nullable: false
                 minItems: 1
+            required:
+              - key
+              - value
           example:
             - key: purpose
               value:
@@ -1798,6 +1804,9 @@ components:
                       nullable: false
                     nullable: false
                     minItems: 1
+                required:
+                  - key
+                  - value
               example:
                 - key: purpose
                   value:
