@@ -32,6 +32,10 @@ export type BckndServiceCapabilities = {
      */
     createExecutions?: boolean;
     /**
+     * Services that only support create, read and delete of prompt templates
+     */
+    userPromptTemplates?: boolean;
+    /**
      * true-> AI API implementation supports resource groups (Main Tenant scenario), false-> implementation does not support resource groups (Service Tenant scenario)
      */
     multitenant?: boolean;
