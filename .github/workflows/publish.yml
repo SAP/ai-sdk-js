@@ -63,9 +63,7 @@ jobs:
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
-      - name: Re-install npm  # v11 will be default when node 24 is used
-        run: npm install -g npm@latest
+          node-version: 24 # Will install npm 11 needed for trusted publishing
       - name: publish
         run: |
           pnpm changeset publish
