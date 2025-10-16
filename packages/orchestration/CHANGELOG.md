@@ -1,15 +1,5 @@
 # @sap-ai-sdk/orchestration
 
-## 2.1.0
-
-### Patch Changes
-
-- e70355b: [Fixed Issue] Fix JSDoc example of `buildAzureContentSafetyFilter()` function.
-- Updated dependencies [d086718]
-  - @sap-ai-sdk/core@2.1.0
-  - @sap-ai-sdk/ai-api@2.1.0
-  - @sap-ai-sdk/prompt-registry@2.1.0
-
 ## 2.0.0
 
 ### Major Changes

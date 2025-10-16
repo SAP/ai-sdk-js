@@ -1,12 +1,5 @@
 # @sap-ai-sdk/ai-api
 
-## 2.1.0
-
-### Patch Changes
-
-- Updated dependencies [d086718]
-  - @sap-ai-sdk/core@2.1.0
-
 ## 2.0.0
 
 ### Minor Changes
