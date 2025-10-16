@@ -32,11 +32,11 @@ export type PatchPipeline = {
        * Max Length: 1024.
        * Min Length: 1.
        */
-      key?: string;
+      key: string;
       /**
        * Min Items: 1.
        */
-      value?: string[];
+      value: string[];
     } & Record<string, any>)[];
   } & Record<string, any>;
   configuration?: {
