@@ -10,6 +10,10 @@ import {
 import { createStuffDocumentsChain } from 'langchain/chains/combine_documents';
 import { MemoryVectorStore } from 'langchain/vectorstores/memory';
 import { TextLoader } from 'langchain/document_loaders/fs/text';
+// TODO: switch to @langchain/classic:
+// import { createStuffDocumentsChain } from '@langchain/classic/chains/combine_documents';
+// import { MemoryVectorStore } from '@langchain/classic/vectorstores/memory';
+// import { TextLoader } from '@langchain/classic/document_loaders/fs/text';
 import {
   HumanMessage,
   SystemMessage,

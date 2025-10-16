@@ -2,6 +2,13 @@ import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
 import { v4 as uuidv4 } from 'uuid';
 import { isInteropZodSchema } from '@langchain/core/utils/types';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
+import {
+  type BaseMessage,
+  FunctionMessage,
+  HumanMessage,
+  SystemMessage,
+  ToolMessage
+} from '@langchain/core/messages';
 import type {
   AzureOpenAiFunctionObject,
   AzureOpenAiChatCompletionTool,
@@ -20,13 +27,6 @@ import type {
   AzureOpenAiChatCompletionParameters,
   AzureOpenAiChatCompletionStreamChunkResponse
 } from '@sap-ai-sdk/foundation-models';
-import type {
-  BaseMessage,
-  FunctionMessage,
-  HumanMessage,
-  SystemMessage,
-  ToolMessage
-} from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
 import type { AzureOpenAiChatClient } from './chat.js';
 import type {
@@ -248,20 +248,22 @@ function mapSystemMessageToAzureOpenAiSystemMessage(
 function mapBaseMessageToAzureOpenAiChatMessage(
   message: BaseMessage
 ): AzureOpenAiChatCompletionRequestMessage {
-  switch (message.getType()) {
-    case 'ai':
-      return mapAiMessageToAzureOpenAiAssistantMessage(message);
-    case 'human':
-      return mapHumanMessageToAzureOpenAiUserMessage(message);
-    case 'system':
-      return mapSystemMessageToAzureOpenAiSystemMessage(message);
-    case 'function':
-      return mapFunctionMessageToAzureOpenAiFunctionMessage(message);
-    case 'tool':
-      return mapToolMessageToAzureOpenAiToolMessage(message as ToolMessage);
-    default:
-      throw new Error(`Unsupported message type: ${message.getType()}`);
+  if (message instanceof AIMessage) {
+    return mapAiMessageToAzureOpenAiAssistantMessage(message);
   }
+  if (message instanceof HumanMessage) {
+    return mapHumanMessageToAzureOpenAiUserMessage(message);
+  }
+  if (message instanceof SystemMessage) {
+    return mapSystemMessageToAzureOpenAiSystemMessage(message);
+  }
+  if (message instanceof FunctionMessage) {
+    return mapFunctionMessageToAzureOpenAiFunctionMessage(message);
+  }
+  if (message instanceof ToolMessage) {
+    return mapToolMessageToAzureOpenAiToolMessage(message);
+  }
+  throw new Error(`Unsupported message type: ${message.type}`);
 }
 
 /**

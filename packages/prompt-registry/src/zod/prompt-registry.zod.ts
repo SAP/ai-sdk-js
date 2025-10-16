@@ -185,7 +185,7 @@ export const registryControllerPromptControllerCreateUpdatePromptTemplateBody =
 export const registryControllerPromptControllerCreateUpdatePromptTemplateResponse =
   zod.object({
     message: zod.string(),
-    id: zod.string().uuid(),
+    id: zod.uuid(),
     scenario: zod.string(),
     name: zod.string(),
     version: zod.string()
@@ -227,7 +227,7 @@ export const registryControllerPromptControllerListPromptTemplatesResponse =
     count: zod.number(),
     resources: zod.array(
       zod.object({
-        id: zod.string().uuid().optional(),
+        id: zod.uuid().optional(),
         name: zod.string().optional(),
         version: zod.string().optional(),
         scenario: zod.string().optional(),
@@ -407,7 +407,7 @@ export const registryControllerPromptControllerListPromptTemplateHistoryResponse
     count: zod.number(),
     resources: zod.array(
       zod.object({
-        id: zod.string().uuid().optional(),
+        id: zod.uuid().optional(),
         name: zod.string().optional(),
         version: zod.string().optional(),
         scenario: zod.string().optional(),
@@ -566,7 +566,7 @@ export const registryControllerPromptControllerListPromptTemplateHistoryResponse
  */
 export const registryControllerPromptControllerGetPromptTemplateByUuidParams =
   zod.object({
-    promptTemplateId: zod.string().uuid()
+    promptTemplateId: zod.uuid()
   });
 
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecTemplateItemContentItemImageUrlDetailDefault =
@@ -582,7 +582,7 @@ export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSp
 
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponse =
   zod.object({
-    id: zod.string().uuid().optional(),
+    id: zod.uuid().optional(),
     name: zod.string().optional(),
     version: zod.string().optional(),
     scenario: zod.string().optional(),
@@ -737,7 +737,7 @@ export const registryControllerPromptControllerGetPromptTemplateByUuidResponse =
  */
 export const registryControllerPromptControllerDeletePromptTemplateParams =
   zod.object({
-    promptTemplateId: zod.string().uuid()
+    promptTemplateId: zod.uuid()
   });
 
 export const registryControllerPromptControllerDeletePromptTemplateResponse =
@@ -756,7 +756,7 @@ export const registryControllerPromptControllerImportPromptTemplateBody =
 export const registryControllerPromptControllerImportPromptTemplateResponse =
   zod.object({
     message: zod.string(),
-    id: zod.string().uuid(),
+    id: zod.uuid(),
     scenario: zod.string(),
     name: zod.string(),
     version: zod.string()
@@ -767,7 +767,7 @@ export const registryControllerPromptControllerImportPromptTemplateResponse =
  */
 export const registryControllerPromptControllerExportPromptTemplateParams =
   zod.object({
-    promptTemplateId: zod.string().uuid()
+    promptTemplateId: zod.uuid()
   });
 
 /**
@@ -775,7 +775,7 @@ export const registryControllerPromptControllerExportPromptTemplateParams =
  */
 export const registryControllerPromptControllerParsePromptTemplateByIdParams =
   zod.object({
-    promptTemplateId: zod.string().uuid()
+    promptTemplateId: zod.uuid()
   });
 
 export const registryControllerPromptControllerParsePromptTemplateByIdQueryMetadataDefault = false;
@@ -839,7 +839,7 @@ export const registryControllerPromptControllerParsePromptTemplateByIdResponse =
       .optional(),
     resource: zod
       .object({
-        id: zod.string().uuid().optional(),
+        id: zod.uuid().optional(),
         name: zod.string().optional(),
         version: zod.string().optional(),
         scenario: zod.string().optional(),
@@ -1064,7 +1064,7 @@ export const registryControllerPromptControllerParsePromptTemplateByNameVersionR
       .optional(),
     resource: zod
       .object({
-        id: zod.string().uuid().optional(),
+        id: zod.uuid().optional(),
         name: zod.string().optional(),
         version: zod.string().optional(),
         scenario: zod.string().optional(),

@@ -597,13 +597,12 @@ describe('orchestration service client', () => {
     ).toThrowErrorMatchingInlineSnapshot(`
      "Prompt Template YAML does not conform to the defined type. Validation errors: [
        {
-         "code": "invalid_type",
          "expected": "object",
-         "received": "undefined",
+         "code": "invalid_type",
          "path": [
            "spec"
          ],
-         "message": "Required"
+         "message": "Invalid input: expected object, received undefined"
        }
      ]"
     `);

@@ -10,7 +10,7 @@ import {
   interrupt,
   Command
 } from '@langchain/langgraph';
-import { ToolNode } from '@langchain/langgraph/prebuilt';
+import { ToolNode } from 'langchain';
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { tool } from '@langchain/core/tools';
