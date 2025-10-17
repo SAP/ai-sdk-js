@@ -10,6 +10,11 @@
     "grounding",
     "vector"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/ai-sdk-js.git",
+    "directory": "packages/document-grounding"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
