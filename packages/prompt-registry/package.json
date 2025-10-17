@@ -10,7 +10,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/SAP/ai-sdk-js.git",
+    "url": "https://github.com/SAP/ai-sdk-js",
     "directory": "packages/prompt-registry"
   },
   "type": "module",
