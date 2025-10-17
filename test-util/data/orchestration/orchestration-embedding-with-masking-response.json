@@ -1,0 +1,29 @@
+{
+  "request_id": "random-request-id",
+  "intermediate_results": {
+    "input_masking": {
+      "message": "Embedding input is masked successfully.",
+      "data": {
+        "masked_input": "My name is MASKED_PERSON. I am applying as a Senior Software Dev. I work closely with MASKED_PERSON."
+      }
+    }
+  },
+  "final_result": {
+    "object": "list",
+    "data": [
+      {
+        "object": "embedding",
+        "embedding": [
+          0.00215346971526742, -0.03091943822801113, -0.014349391683936119,
+          0.011959005147218704
+        ],
+        "index": 0
+      }
+    ],
+    "model": "text-embedding-3-small",
+    "usage": {
+      "prompt_tokens": 24,
+      "total_tokens": 24
+    }
+  }
+}

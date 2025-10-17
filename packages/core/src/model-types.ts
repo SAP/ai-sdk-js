@@ -53,8 +53,19 @@ export type AwsBedrockChatModel = LiteralUnion<
 >;
 
 /**
+ * AWS Bedrock models for embedding.
+ */
+export type AwsBedrockEmbeddingModel = LiteralUnion<'amazon--titan-embed-text'>;
+
+/**
  * AI Core open source models for chat completion.
  */
 export type AiCoreOpenSourceChatModel = LiteralUnion<
   'mistralai--mistral-large-instruct' | 'mistralai--mistral-small-instruct'
 >;
+
+/**
+ * AI Core sap managed model for embedding.
+ */
+export type AiCoreOpenSourceEmbeddingModel =
+  LiteralUnion<'nvidia--llama-3.2-nv-embedqa-1b'>;
