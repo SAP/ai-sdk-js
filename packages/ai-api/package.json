@@ -7,7 +7,7 @@
     "sap-ai-sdk",
     "ai-api"
   ],
-"repository": {
+  "repository": {
     "type": "git",
     "url": "https://github.com/SAP/ai-sdk-js",
     "directory": "packages/ai-api"
