@@ -28,15 +28,6 @@
 
 -
 
-# 2.1.0
-## Fixed Issues
-
-- [orchestration] Fix JSDoc example of `buildAzureContentSafetyFilter()` function. (ce146d9)
-
-## Improvements
-
-- [core] Remove `alephalpha-pharia-1-7b-control` and `deepseek-ai--deepseek-r1` from available model list. (ce146d9)
-
 # 2.0.0
 ## Compatibility Notes
 
