@@ -3,22 +3,13 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { OrchestrationConfig } from './orchestration-config.js';
-import type { ChatMessages } from './chat-messages.js';
+import type { CompletionRequestConfiguration } from './completion-request-configuration.js';
+import type { CompletionRequestConfigurationReferenceById } from './completion-request-configuration-reference-by-id.js';
+import type { CompletionRequestConfigurationReferenceByNameScenarioVersion } from './completion-request-configuration-reference-by-name-scenario-version.js';
 /**
  * Representation of the 'CompletionPostRequest' schema.
  */
-export type CompletionPostRequest = {
-  config: OrchestrationConfig;
-  /**
-   * @example {
-   *   "groundingInput": "What is SAP Joule?",
-   *   "inputContext": "optimizing supply chain management"
-   * }
-   */
-  placeholder_values?: Record<string, string>;
-  /**
-   * History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
-   */
-  messages_history?: ChatMessages;
-};
+export type CompletionPostRequest =
+  | CompletionRequestConfiguration
+  | CompletionRequestConfigurationReferenceById
+  | CompletionRequestConfigurationReferenceByNameScenarioVersion;
