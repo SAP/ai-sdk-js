@@ -1,5 +1,11 @@
 # @sap-ai-sdk/core
 
+## 2.1.0
+
+### Minor Changes
+
+- 0cf7d80: [Improvement] Remove `alephalpha-pharia-1-7b-control` and `deepseek-ai--deepseek-r1` from available model list.
+
 ## 2.0.0
 
 ### Minor Changes
