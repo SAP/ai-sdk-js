@@ -8,6 +8,11 @@
     "foundation-models",
     "llm-access"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/ai-sdk-js",
+    "directory": "packages/foundation-models"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

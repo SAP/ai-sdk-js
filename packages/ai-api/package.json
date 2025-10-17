@@ -7,6 +7,11 @@
     "sap-ai-sdk",
     "ai-api"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/ai-sdk-js",
+    "directory": "packages/ai-api"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

@@ -7,6 +7,11 @@
     "sap-ai-sdk",
     "langchain"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/ai-sdk-js",
+    "directory": "packages/langchain"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
