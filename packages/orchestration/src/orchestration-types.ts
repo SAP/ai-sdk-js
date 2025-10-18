@@ -148,10 +148,18 @@ export interface TranslationModule {
 export type OrchestrationErrorResponse = ErrorResponse;
 
 /**
+ * Type that enforces mutual exclusivity between max_tokens and max_completion_tokens.
+ * Only one of these properties can be specified, not both.
+ */
+type ExclusiveTokenParams =
+  | ({ max_tokens: number } & { max_completion_tokens?: never })
+  | ({ max_completion_tokens: number | null } & { max_tokens?: never })
+  | { max_tokens?: never; max_completion_tokens?: never };
+
+/**
  * Model Parameters for LLM module configuration.
  */
-export type LlmModelParams = {
-  max_tokens?: number;
+export type LlmModelParams = ExclusiveTokenParams & {
   temperature?: number;
   frequency_penalty?: number;
   presence_penalty?: number;

@@ -91,6 +91,30 @@ export async function chatCompletionStream(
 }
 
 /**
+ * Ask the reasoning model through the orchestration service what the capital city of France is.
+ * @returns The response from the orchestration service containing the response content.
+ */
+export async function orchestrationChatCompletionWithReasoningModel(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: {
+      model: {
+        name: 'o3',
+        params: {
+          max_tokens: 100
+        }
+      }
+    }
+  });
+
+  const result = await orchestrationClient.chatCompletion({
+    messages: [{ role: 'user', content: 'What is the capital of France?' }]
+  });
+
+  logger.info(result.getContent());
+  return result;
+}
+
+/**
  * Ask about the capital of any country using a template.
  * @returns The orchestration service response.
  */
