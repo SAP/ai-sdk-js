@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-
+import type { IncludePathsArray } from './include-paths-array.js';
 /**
  * Representation of the 'SharePointSite' schema.
  */
@@ -12,11 +12,5 @@ export type SharePointSite = {
    * @example "sharepoint-site-name"
    */
   name: string;
-  /**
-   * @example [
-   *   "/testFolder1",
-   *   "/testFolder2"
-   * ]
-   */
-  includePaths?: string[];
+  includePaths?: IncludePathsArray;
 } & Record<string, any>;
