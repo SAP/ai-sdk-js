@@ -18,7 +18,7 @@
     "@langchain/langgraph": "^0.4.9",
     "langchain": "0.3.36",
     "@langchain/core": "0.3.78",
-    "@langchain/textsplitters": "0.1.0",
+    "@langchain/textsplitters": "1.0.0",
     "@sap-ai-sdk/ai-api": "^1.18.0",
     "@sap-ai-sdk/document-grounding": "^1.18.0",
     "@sap-ai-sdk/foundation-models": "^1.18.0",
