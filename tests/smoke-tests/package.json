@@ -19,7 +19,7 @@
     "langchain": "0.3.36",
     "@langchain/core": "0.3.78",
     "@langchain/textsplitters": "0.1.0",
-    "@langchain/mcp-adapters": "^0.6.0",
+    "@langchain/mcp-adapters": "^1.0.0",
     "@sap-ai-sdk/ai-api": "canary",
     "@sap-ai-sdk/document-grounding": "canary",
     "@sap-ai-sdk/foundation-models": "canary",
