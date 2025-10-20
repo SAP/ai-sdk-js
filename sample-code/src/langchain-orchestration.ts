@@ -21,6 +21,8 @@ import {
 } from '@langchain/core/messages';
 // eslint-disable-next-line import/no-internal-modules
 import * as z from 'zod/v4';
+// eslint-disable-next-line import/no-internal-modules
+import { mcpClient } from './tutorials/mcp/mcp-adapter.js';
 import type { BaseMessage, AIMessageChunk } from '@langchain/core/messages';
 import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
 
@@ -319,6 +321,58 @@ export async function invokeToolChain(): Promise<string> {
 
     const toolMessage = new ToolMessage({
       content: shareholderValue,
+      tool_call_id: response.tool_calls[0].id ?? 'default'
+    });
+
+    messages.push(toolMessage);
+  } else {
+    const failMessage = new SystemMessage('No tool calls were made');
+    messages.push(failMessage);
+  }
+
+  const finalResponse = await client.invoke(messages);
+
+  // create an output parser
+  const parser = new StringOutputParser();
+
+  // parse the response
+  return parser.invoke(finalResponse);
+}
+
+/**
+ * Invoke a chain that uses tools fetched from an MCP server.
+ * @returns LLM response.
+ */
+export async function invokeMcpToolChain(): Promise<string> {
+  const client = new OrchestrationClient(
+    {
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o'
+        }
+      }
+    },
+    { maxRetries: 0 }
+  );
+
+  const tools = await mcpClient.getTools();
+
+  const messages: BaseMessage[] = [
+    new HumanMessage('What is the weather like in Berlin?')
+  ];
+
+  const response = await client.bindTools(tools).invoke(messages);
+
+  messages.push(response);
+
+  if (
+    Array.isArray(response.tool_calls) &&
+    response.tool_calls[0].name === 'get_weather'
+  ) {
+    const toolCallResult = await tools[0].invoke(response.tool_calls[0].args);
+
+    const toolMessage = new ToolMessage({
+      content: toolCallResult,
       tool_call_id: response.tool_calls[0].id ?? 'default'
     });
 
