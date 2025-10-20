@@ -15,11 +15,11 @@
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
-    "@langchain/langgraph": "^1.0.0-alpha.5",
-    "langchain": "1.0.0-alpha.8",
-    "@langchain/core": "^1.0.0-alpha.6",
-    "@langchain/textsplitters": "1.0.0-alpha.1",
-    "@langchain/mcp-adapters": "^0.6.0",
+    "@langchain/langgraph": "^1.0.0",
+    "langchain": "^1.0.1",
+    "@langchain/core": "^1.0.1",
+    "@langchain/textsplitters": "^1.0.0",
+    "@langchain/mcp-adapters": "^1.0.0",
     "@sap-ai-sdk/ai-api": "canary",
     "@sap-ai-sdk/document-grounding": "canary",
     "@sap-ai-sdk/foundation-models": "canary",

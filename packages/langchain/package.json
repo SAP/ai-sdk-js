@@ -26,13 +26,13 @@
     "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
+    "@langchain/core": "^1.0.1",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-cloud-sdk/connectivity": "^4.1.2",
     "@sap-cloud-sdk/util": "^4.1.2",
-    "uuid": "^13.0.0",
-    "@langchain/core": "1.0.0-alpha.6"
+    "uuid": "^13.0.0"
   }
 }
