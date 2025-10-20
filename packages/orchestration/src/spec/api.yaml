@@ -585,6 +585,7 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/ModuleConfigs'
+      minItems: 1
       description: >
         A list of module configurations. The first configuration in the list that succeeds will be used.
     # Abstract base class encompassing fields for both `ModuleResults` and `ModuleResultsStreaming`
@@ -1798,6 +1799,7 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Error'
+      minItems: 1
 
     ErrorStreaming:
       type: object
@@ -1827,6 +1829,7 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/ErrorStreaming'
+      minItems: 1
 
     ErrorResponse:
       type: object
