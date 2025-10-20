@@ -1,6 +1,4 @@
-import { defineConfig } from 'orval';
-
-export default defineConfig({
+const config = {
   prompt_registry: {
     output: {
       client: 'zod',
@@ -25,4 +23,6 @@ export default defineConfig({
       }
     }
   }
-});
+};
+
+export default config;
