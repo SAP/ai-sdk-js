@@ -5,7 +5,7 @@
  * Prompt Storage service for Design time & Runtime prompt templates.
  * OpenAPI spec version: 0.0.1.
  */
-import { z as zod } from 'zod';
+import zod from 'zod';
 
 /**
  * Create or update a prompt template.
@@ -16,12 +16,10 @@ export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySce
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecTemplateItemContentItemImageUrlDetailDefault =
   'auto';
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatJsonSchemaNameMax = 64;
-
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatJsonSchemaNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatJsonSchemaStrictDefault = false;
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecToolsItemFunctionNameMax = 64;
-
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecToolsItemFunctionNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecToolsItemFunctionStrictDefault = false;
@@ -216,12 +214,10 @@ export const registryControllerPromptControllerListPromptTemplatesQueryParams =
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecTemplateItemContentItemImageUrlDetailDefault =
   'auto';
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatJsonSchemaNameMax = 64;
-
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatJsonSchemaNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatJsonSchemaStrictDefault = false;
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecToolsItemFunctionNameMax = 64;
-
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecToolsItemFunctionNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecToolsItemFunctionStrictDefault = false;
@@ -398,12 +394,10 @@ export const registryControllerPromptControllerListPromptTemplateHistoryParams =
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecTemplateItemContentItemImageUrlDetailDefault =
   'auto';
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatJsonSchemaNameMax = 64;
-
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatJsonSchemaNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatJsonSchemaStrictDefault = false;
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecToolsItemFunctionNameMax = 64;
-
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecToolsItemFunctionNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecToolsItemFunctionStrictDefault = false;
@@ -578,12 +572,10 @@ export const registryControllerPromptControllerGetPromptTemplateByUuidParams =
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecTemplateItemContentItemImageUrlDetailDefault =
   'auto';
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatJsonSchemaNameMax = 64;
-
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatJsonSchemaNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatJsonSchemaStrictDefault = false;
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecToolsItemFunctionNameMax = 64;
-
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecToolsItemFunctionNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecToolsItemFunctionStrictDefault = false;
@@ -803,12 +795,10 @@ export const registryControllerPromptControllerParsePromptTemplateByIdResponsePa
 export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecTemplateItemContentItemImageUrlDetailDefault =
   'auto';
 export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecResponseFormatJsonSchemaNameMax = 64;
-
 export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecResponseFormatJsonSchemaNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecResponseFormatJsonSchemaStrictDefault = false;
 export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecToolsItemFunctionNameMax = 64;
-
 export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecToolsItemFunctionNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecToolsItemFunctionStrictDefault = false;
@@ -1030,12 +1020,10 @@ export const registryControllerPromptControllerParsePromptTemplateByNameVersionR
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecTemplateItemContentItemImageUrlDetailDefault =
   'auto';
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecResponseFormatJsonSchemaNameMax = 64;
-
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecResponseFormatJsonSchemaNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecResponseFormatJsonSchemaStrictDefault = false;
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecToolsItemFunctionNameMax = 64;
-
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecToolsItemFunctionNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecToolsItemFunctionStrictDefault = false;

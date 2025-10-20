@@ -3,7 +3,7 @@
 /* eslint-disable import/no-internal-modules */
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import * as z from 'zod/v4';
+import * as z from 'zod/v3';
 
 const server = new McpServer({
   name: 'Open-Meteo Weather MCP Server',
@@ -14,9 +14,7 @@ server.tool(
   'get_weather',
   'Tool to fetch weather details for a specific city',
   {
-    city: z
-      .string()
-      .meta({ description: 'The name of the city to get the weather for' })
+    city: z.string().describe('The name of the city to get the weather for')
   },
   async ({ city }) => {
     try {

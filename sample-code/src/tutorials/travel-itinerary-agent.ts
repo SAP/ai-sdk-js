@@ -15,7 +15,7 @@ import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { tool } from '@langchain/core/tools';
 import * as z from 'zod/v4';
-import { getMcpTools } from './mcp/mcp-adapter.js';
+import { mcpClient } from './mcp/mcp-adapter.js';
 import type { AIMessage } from '@langchain/core/messages';
 /**
  * This example demonstrates how to create a travel itinerary assistant using LangGraph and MCP.
@@ -44,7 +44,7 @@ const getRestaurantsTool = tool(
 );
 
 // Define the tools for the agent to use
-const tools = [...getMcpTools, getRestaurantsTool];
+const tools = [...(await mcpClient.getTools()), getRestaurantsTool];
 const toolNode = new ToolNode(tools);
 
 // Create a model
