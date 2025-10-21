@@ -114,7 +114,9 @@ function mapBaseMessageToChatMessage(message: BaseMessage): ChatMessage {
     case 'human':
       return mapHumanMessageToChatMessage(message as HumanMessage);
     case 'system':
-      return mapSystemMessageToOrchestrationSystemMessage(message as SystemMessage);
+      return mapSystemMessageToOrchestrationSystemMessage(
+        message as SystemMessage
+      );
     case 'tool':
       return mapToolMessageToOrchestrationToolMessage(message as ToolMessage);
     default:

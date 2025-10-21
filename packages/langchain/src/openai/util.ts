@@ -254,9 +254,13 @@ function mapBaseMessageToAzureOpenAiChatMessage(
     case 'human':
       return mapHumanMessageToAzureOpenAiUserMessage(message as HumanMessage);
     case 'system':
-      return mapSystemMessageToAzureOpenAiSystemMessage(message as SystemMessage);
+      return mapSystemMessageToAzureOpenAiSystemMessage(
+        message as SystemMessage
+      );
     case 'function':
-      return mapFunctionMessageToAzureOpenAiFunctionMessage(message as FunctionMessage);
+      return mapFunctionMessageToAzureOpenAiFunctionMessage(
+        message as FunctionMessage
+      );
     case 'tool':
       return mapToolMessageToAzureOpenAiToolMessage(message as ToolMessage);
     default:
