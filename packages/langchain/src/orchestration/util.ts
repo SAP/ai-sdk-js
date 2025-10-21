@@ -154,7 +154,7 @@ function mapAiMessageToOrchestrationAssistantMessage(
 ): AssistantChatMessage {
   const tool_calls =
     mapLangChainToolCallToOrchestrationToolCall(message.tool_calls) ??
-    message.tool_calls;
+    message.additional_kwargs.tool_calls;
   return {
     ...(tool_calls?.length ? { tool_calls } : {}),
     content: message.content,
