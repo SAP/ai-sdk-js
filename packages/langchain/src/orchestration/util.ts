@@ -2,12 +2,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { isInteropZodSchema } from '@langchain/core/utils/types';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
-import {
-  type BaseMessage,
-  HumanMessage,
-  SystemMessage,
-  ToolMessage
-} from '@langchain/core/messages';
 import type { Xor } from '@sap-cloud-sdk/util';
 import type { ToolDefinition } from '@langchain/core/language_models/base';
 import type { ChatOrchestrationToolType } from './types.js';
@@ -31,6 +25,12 @@ import type {
   ToolCallChunk as OrchestrationToolCallChunk
 } from '@sap-ai-sdk/orchestration/internal.js';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
+import type {
+  BaseMessage,
+  HumanMessage,
+  SystemMessage,
+  ToolMessage
+} from '@langchain/core/messages';
 
 /**
  * Maps a {@link ChatOrchestrationToolType} to {@link FunctionObject}.
@@ -108,19 +108,18 @@ export function isTemplateRef(
  */
 // TODO: Add mapping of refusal property, once LangChain base class supports it natively.
 function mapBaseMessageToChatMessage(message: BaseMessage): ChatMessage {
-  if (message instanceof AIMessage) {
-    return mapAiMessageToOrchestrationAssistantMessage(message);
+  switch (message.type) {
+    case 'ai':
+      return mapAiMessageToOrchestrationAssistantMessage(message as AIMessage);
+    case 'human':
+      return mapHumanMessageToChatMessage(message as HumanMessage);
+    case 'system':
+      return mapSystemMessageToOrchestrationSystemMessage(message as SystemMessage);
+    case 'tool':
+      return mapToolMessageToOrchestrationToolMessage(message as ToolMessage);
+    default:
+      throw new Error(`Unsupported message type: ${message.type}`);
   }
-  if (message instanceof HumanMessage) {
-    return mapHumanMessageToChatMessage(message);
-  }
-  if (message instanceof SystemMessage) {
-    return mapSystemMessageToOrchestrationSystemMessage(message);
-  }
-  if (message instanceof ToolMessage) {
-    return mapToolMessageToOrchestrationToolMessage(message);
-  }
-  throw new Error(`Unsupported message type: ${message.type}`);
 }
 
 /**
