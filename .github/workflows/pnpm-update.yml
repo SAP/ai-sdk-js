@@ -56,7 +56,7 @@ jobs:
 
       - name: Install async-retry for auto-merge
         if: steps.update-deps.outputs.branch-created == 'true'
-        run: npm install async-retry
+        run: pnpm install async-retry -w
 
       - name: Auto-merge if checks pass
         if: steps.update-deps.outputs.branch-created == 'true' && success()
