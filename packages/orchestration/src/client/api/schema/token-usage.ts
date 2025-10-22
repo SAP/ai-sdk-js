@@ -32,7 +32,7 @@ export type TokenUsage = {
      * Cached tokens present in the prompt.
      */
     cached_tokens?: number;
-  };
+  } & Record<string, any>;
   /**
    * Breakdown of tokens used in a completion.
    */
@@ -56,5 +56,5 @@ export type TokenUsage = {
      *
      */
     rejected_prediction_tokens?: number;
-  };
-};
+  } & Record<string, any>;
+} & Record<string, any>;
