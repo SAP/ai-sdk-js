@@ -116,7 +116,7 @@ export const registryControllerPromptControllerCreateUpdatePromptTemplateBody =
                   'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                 ),
               schema: zod
-                .record(zod.string(), zod.any())
+                .record(zod.string(), zod.unknown())
                 .optional()
                 .describe(
                   'The schema for the response format, described as a JSON Schema object.'
@@ -161,7 +161,7 @@ export const registryControllerPromptControllerCreateUpdatePromptTemplateBody =
                   'The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                 ),
               parameters: zod
-                .record(zod.string(), zod.any())
+                .record(zod.string(), zod.unknown())
                 .optional()
                 .describe(
                   'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
@@ -312,7 +312,7 @@ export const registryControllerPromptControllerListPromptTemplatesResponse =
                         'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                       ),
                     schema: zod
-                      .record(zod.string(), zod.any())
+                      .record(zod.string(), zod.unknown())
                       .optional()
                       .describe(
                         'The schema for the response format, described as a JSON Schema object.'
@@ -357,7 +357,7 @@ export const registryControllerPromptControllerListPromptTemplatesResponse =
                         'The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                       ),
                     parameters: zod
-                      .record(zod.string(), zod.any())
+                      .record(zod.string(), zod.unknown())
                       .optional()
                       .describe(
                         'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
@@ -492,7 +492,7 @@ export const registryControllerPromptControllerListPromptTemplateHistoryResponse
                         'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                       ),
                     schema: zod
-                      .record(zod.string(), zod.any())
+                      .record(zod.string(), zod.unknown())
                       .optional()
                       .describe(
                         'The schema for the response format, described as a JSON Schema object.'
@@ -537,7 +537,7 @@ export const registryControllerPromptControllerListPromptTemplateHistoryResponse
                         'The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                       ),
                     parameters: zod
-                      .record(zod.string(), zod.any())
+                      .record(zod.string(), zod.unknown())
                       .optional()
                       .describe(
                         'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
@@ -665,7 +665,7 @@ export const registryControllerPromptControllerGetPromptTemplateByUuidResponse =
                     'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                   ),
                 schema: zod
-                  .record(zod.string(), zod.any())
+                  .record(zod.string(), zod.unknown())
                   .optional()
                   .describe(
                     'The schema for the response format, described as a JSON Schema object.'
@@ -710,7 +710,7 @@ export const registryControllerPromptControllerGetPromptTemplateByUuidResponse =
                     'The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                   ),
                 parameters: zod
-                  .record(zod.string(), zod.any())
+                  .record(zod.string(), zod.unknown())
                   .optional()
                   .describe(
                     'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
@@ -924,7 +924,7 @@ export const registryControllerPromptControllerParsePromptTemplateByIdResponse =
                         'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                       ),
                     schema: zod
-                      .record(zod.string(), zod.any())
+                      .record(zod.string(), zod.unknown())
                       .optional()
                       .describe(
                         'The schema for the response format, described as a JSON Schema object.'
@@ -969,7 +969,7 @@ export const registryControllerPromptControllerParsePromptTemplateByIdResponse =
                         'The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                       ),
                     parameters: zod
-                      .record(zod.string(), zod.any())
+                      .record(zod.string(), zod.unknown())
                       .optional()
                       .describe(
                         'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
@@ -1149,7 +1149,7 @@ export const registryControllerPromptControllerParsePromptTemplateByNameVersionR
                         'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                       ),
                     schema: zod
-                      .record(zod.string(), zod.any())
+                      .record(zod.string(), zod.unknown())
                       .optional()
                       .describe(
                         'The schema for the response format, described as a JSON Schema object.'
@@ -1194,7 +1194,7 @@ export const registryControllerPromptControllerParsePromptTemplateByNameVersionR
                         'The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                       ),
                     parameters: zod
-                      .record(zod.string(), zod.any())
+                      .record(zod.string(), zod.unknown())
                       .optional()
                       .describe(
                         'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'

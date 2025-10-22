@@ -57,15 +57,15 @@ jobs:
     name: Publish to NPM
     runs-on: ubuntu-latest
     needs: [check-release-notes-pr]
+    permissions:
+      id-token: write
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+          node-version: 24 # Will install npm 11 needed for trusted publishing
       - name: publish
         run: |
           pnpm changeset publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}
 
   merge-release-notes-pr:
     name: Merge Release Notes PR (if needed)
