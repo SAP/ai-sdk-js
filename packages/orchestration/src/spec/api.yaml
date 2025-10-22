@@ -192,6 +192,7 @@ components:
       additionalProperties: false
       required:
         - request_id
+        - final_result
       properties:
         request_id:
           type: string
@@ -799,11 +800,9 @@ components:
           description: Reason for stopping the model
 
     # Copied from the azure openai spec https://github.com/Azure/azure-rest-api-specs/blob/91e3aca0bfa4b59a9f578959d0b214a26b90df40/specification/cognitiveservices/data-plane/AzureOpenAI/inference/preview/2025-02-01-preview/inference.yaml#L4615-L4669
-    # Except for explicitly defining additionalProperties.
     TokenUsage:
       type: object
       description: Usage of tokens in the response
-      additionalProperties: False
       properties:
         prompt_tokens:
           type: integer
@@ -817,7 +816,6 @@ components:
         prompt_tokens_details:
           type: object
           description: Details of the prompt tokens.
-          additionalProperties: False
           properties:
             audio_tokens:
               type: integer
@@ -828,7 +826,6 @@ components:
         completion_tokens_details:
           type: object
           description: Breakdown of tokens used in a completion.
-          additionalProperties: False
           properties:
             accepted_prediction_tokens:
               type: integer
