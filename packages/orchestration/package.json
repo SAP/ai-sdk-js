@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/orchestration",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
@@ -8,6 +8,11 @@
     "orchestration",
     "llm-access"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/ai-sdk-js",
+    "directory": "packages/orchestration"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
