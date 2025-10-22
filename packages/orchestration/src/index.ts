@@ -36,7 +36,6 @@ export type {
   EmbeddingModelDetails,
   EmbeddingModelParams,
   EmbeddingModuleConfig,
-  OrchestrationEmbeddingConfig,
   EmbeddingData
 } from './orchestration-types.js';
 export { OrchestrationStreamResponse } from './orchestration-stream-response.js';

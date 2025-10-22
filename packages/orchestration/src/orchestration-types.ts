@@ -569,17 +569,6 @@ export interface EmbeddingModuleConfig {
    */
   masking?: MaskingModule;
 }
-
-/**
- * Orchestration embedding configuration.
- */
-export interface OrchestrationEmbeddingConfig {
-  /**
-   * Module configuration for embeddings.
-   */
-  modules: EmbeddingModuleConfig;
-}
-
 /**
  * Embedding data item.
  */
