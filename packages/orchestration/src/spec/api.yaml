@@ -817,7 +817,7 @@ components:
         prompt_tokens_details:
           type: object
           description: Details of the prompt tokens.
-          additionalProperties: True
+          additionalProperties: False
           properties:
             audio_tokens:
               type: integer
@@ -828,7 +828,7 @@ components:
         completion_tokens_details:
           type: object
           description: Breakdown of tokens used in a completion.
-          additionalProperties: True
+          additionalProperties: False
           properties:
             accepted_prediction_tokens:
               type: integer
