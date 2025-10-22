@@ -594,18 +594,3 @@ export interface EmbeddingData {
    */
   index: number;
 }
-
-/**
- * Usage information for embedding requests.
- */
-export interface EmbeddingUsageInfo {
-  /**
-   * Number of tokens used by the prompt.
-   */
-  promptTokens: number;
-
-  /**
-   * Total number of tokens used.
-   */
-  totalTokens: number;
-}
