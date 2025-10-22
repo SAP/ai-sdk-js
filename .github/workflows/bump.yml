@@ -15,12 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.bump.outputs.version }}
-    permissions:
-      checks: write
-      contents: write
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
+          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           ref: 'main'
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
       - name: bump version
