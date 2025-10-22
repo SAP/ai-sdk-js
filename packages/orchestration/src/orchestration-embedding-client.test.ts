@@ -68,11 +68,10 @@ describe('orchestration embedding service client', () => {
     );
 
     expect(response).toBeInstanceOf(OrchestrationEmbeddingResponse);
-    expect(response.requestId).toBe('random-request-id');
-    expect(response.model).toBe('text-embedding-3-small');
-    expect(response.embeddings).toHaveLength(1);
-    expect(response.embeddings![0].embedding).toEqual(expect.any(Array));
-    expect(response.usage?.promptTokens).toEqual(expect.any(Number));
+    expect(response._data.request_id).toBe('random-request-id');
+    expect(response._data.final_result?.model).toBe('text-embedding-3-small');
+    expect(response.getEmbeddings()?.[0].embedding).toEqual(expect.any(Array));
+    expect(response.getTokenUsage()?.prompt_tokens).toEqual(expect.any(Number));
   });
 
   it('calls embed with array input', async () => {
@@ -111,7 +110,8 @@ describe('orchestration embedding service client', () => {
     );
 
     expect(response).toBeInstanceOf(OrchestrationEmbeddingResponse);
-    expect(response.requestId).toBe('random-request-id');
+    expect(response._data.request_id).toBe('random-request-id');
+    expect(response.getEmbeddings()?.[0].embedding).toEqual(expect.any(Array));
   });
 
   it('calls embed with input type specification', async () => {
@@ -152,7 +152,8 @@ describe('orchestration embedding service client', () => {
     );
 
     expect(response).toBeInstanceOf(OrchestrationEmbeddingResponse);
-    expect(response.requestId).toBe('random-request-id');
+    expect(response._data.request_id).toBe('random-request-id');
+    expect(response.getEmbeddings()?.[0].embedding).toEqual(expect.any(Array));
   });
 
   it('calls embed with masking configuration', async () => {
@@ -203,14 +204,15 @@ describe('orchestration embedding service client', () => {
     );
 
     expect(response).toBeInstanceOf(OrchestrationEmbeddingResponse);
-    expect(response.requestId).toBe('random-request-id');
-    expect(response.intermediateResults).toBeDefined();
-    expect(response.intermediateResults?.input_masking).toBeDefined();
+    expect(response._data.request_id).toBe('random-request-id');
+    expect(response.getIntermediateResults()).toBeDefined();
+    expect(response.getIntermediateResults()?.input_masking).toBeDefined();
     expect(
-      response.intermediateResults?.input_masking?.data?.masked_input
+      response.getIntermediateResults()?.input_masking?.data?.masked_input
     ).toContain(
       'My name is MASKED_PERSON. I am applying as a Senior Software Dev. I work closely with MASKED_PERSON.'
     );
+    expect(response.getEmbeddings()?.[0].embedding).toEqual(expect.any(Array));
   });
 
   it('executes a request with the custom resource group', async () => {
@@ -261,7 +263,7 @@ describe('orchestration embedding service client', () => {
 
     const response = await clientWithResourceGroup.embed(request);
     expect(response).toBeInstanceOf(OrchestrationEmbeddingResponse);
-    expect(response.requestId).toBe('random-request-id');
+    expect(response._data.request_id).toBe('random-request-id');
   });
 
   it('handles HTTP error responses', async () => {
