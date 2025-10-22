@@ -54,6 +54,10 @@ jobs:
             });
             console.log(`Pull Request created: ${result.data.html_url}`);
 
+      - name: Install async-retry for auto-merge
+        if: steps.update-deps.outputs.branch-created == 'true'
+        run: npm install async-retry
+
       - name: Auto-merge if checks pass
         if: steps.update-deps.outputs.branch-created == 'true' && success()
         uses: actions/github-script@v8
