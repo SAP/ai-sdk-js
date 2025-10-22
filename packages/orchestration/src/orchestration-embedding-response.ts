@@ -21,12 +21,8 @@ export class OrchestrationEmbeddingResponse {
    * Final embedding results.
    * @returns Array of embedding data or undefined if no results.
    */
-  getEmbeddings(): EmbeddingData[] | undefined {
-    if (!this._data.final_result?.data) {
-      return undefined;
-    }
-
-    return this._data.final_result.data.map((result: EmbeddingResult) => ({
+  getEmbeddings(): EmbeddingData[] {
+    return this._data.final_result!.data.map((result: EmbeddingResult) => ({
       embedding: result.embedding,
       index: result.index
     }));
@@ -36,8 +32,8 @@ export class OrchestrationEmbeddingResponse {
    * Usage information.
    * @returns Usage information or undefined.
    */
-  getTokenUsage(): EmbeddingsUsage | undefined {
-    return this._data.final_result?.usage;
+  getTokenUsage(): EmbeddingsUsage {
+    return this._data.final_result!.usage;
   }
 
   /**

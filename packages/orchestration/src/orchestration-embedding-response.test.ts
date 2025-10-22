@@ -198,30 +198,4 @@ describe('OrchestrationEmbeddingResponse', () => {
       index: 0
     });
   });
-
-  // Todo: Confirm with orchestration team if final_result can be undefined
-  it('should return undefined for methods when final result is not defined', () => {
-    const responseWithoutFinalResult: EmbeddingsPostResponse = {
-      request_id: 'test-request-id',
-      intermediate_results: {
-        input_masking: {
-          message: 'Test message',
-          data: { test: 'data' }
-        }
-      }
-    };
-
-    const httpResponse: HttpResponse = {
-      data: responseWithoutFinalResult,
-      status: 200,
-      headers: {},
-      request: {}
-    };
-
-    const response = new OrchestrationEmbeddingResponse(httpResponse);
-
-    expect(response.getEmbeddings()).toBeUndefined();
-    expect(response.getTokenUsage()).toBeUndefined();
-    expect(response.getIntermediateResults()).toBeDefined(); // This should still work
-  });
 });
