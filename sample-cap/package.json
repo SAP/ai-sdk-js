@@ -14,7 +14,7 @@
     "@sap/cds": "^9.4.3"
   },
   "devDependencies": {
-    "@sap/cds-dk": "^9.4.1"
+    "@sap/cds-dk": "^9.4.2"
   },
   "scripts": {
     "prebuild": "rm -rf dist",
