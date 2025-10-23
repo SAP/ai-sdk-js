@@ -31,11 +31,8 @@ describe('OrchestrationEmbeddingResponse', () => {
   });
 
   it('should get embeddings', () => {
-    const embeddings = embeddingResponse.getEmbeddings();
-    expect(embeddings![0]).toMatchObject({
-      embedding: expect.any(Array),
-      index: expect.any(Number)
-    });
+    const embeddings = embeddingResponse.getEmbeddingVectors();
+    expect(embeddings).toEqual(expect.any(Array));
   });
 
   it('should get token usage', () => {
@@ -106,7 +103,7 @@ describe('OrchestrationEmbeddingResponse', () => {
     };
 
     const response = new OrchestrationEmbeddingResponse(httpResponse);
-    const embeddings = response.getEmbeddings();
+    const embeddings = response.getEmbeddingVectors();
     const usage = response.getTokenUsage();
 
     expect(embeddings).toEqual([]);
@@ -116,7 +113,7 @@ describe('OrchestrationEmbeddingResponse', () => {
     });
   });
 
-  it('should handle multiple embeddings', () => {
+  it('should handle multiple embedding vectors', () => {
     const responseWithMultipleEmbeddings: EmbeddingsPostResponse = {
       request_id: 'test-request-id',
       final_result: {
@@ -149,17 +146,11 @@ describe('OrchestrationEmbeddingResponse', () => {
     };
 
     const response = new OrchestrationEmbeddingResponse(httpResponse);
-    const embeddings = response.getEmbeddings();
-
-    expect(embeddings).toHaveLength(2);
-    expect(embeddings![0]).toEqual({
-      embedding: [0.1, 0.2, 0.3, 0.4, 0.5],
-      index: 0
-    });
-    expect(embeddings![1]).toEqual({
-      embedding: [0.6, 0.7, 0.8, 0.9, 1.0],
-      index: 1
-    });
+    const embeddings = response.getEmbeddingVectors();
+    expect(embeddings).toEqual([
+      [0.1, 0.2, 0.3, 0.4, 0.5],
+      [0.6, 0.7, 0.8, 0.9, 1.0]
+    ]);
   });
 
   it('should handle string embeddings', () => {
@@ -190,12 +181,8 @@ describe('OrchestrationEmbeddingResponse', () => {
     };
 
     const response = new OrchestrationEmbeddingResponse(httpResponse);
-    const embeddings = response.getEmbeddings();
+    const embeddings = response.getEmbeddingVectors();
 
-    expect(embeddings).toHaveLength(1);
-    expect(embeddings![0]).toEqual({
-      embedding: 'base64-encoded-embedding-string',
-      index: 0
-    });
+    expect(embeddings).toEqual(['base64-encoded-embedding-string']);
   });
 });

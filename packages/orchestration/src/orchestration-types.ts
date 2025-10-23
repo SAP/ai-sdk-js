@@ -569,17 +569,3 @@ export interface EmbeddingModuleConfig {
    */
   masking?: MaskingModule;
 }
-/**
- * Embedding data item.
- */
-export interface EmbeddingData {
-  /**
-   * The embedding vector (array of numbers) or base64 string.
-   */
-  embedding: number[] | string;
-
-  /**
-   * Index of the embedding in the list.
-   */
-  index: number;
-}

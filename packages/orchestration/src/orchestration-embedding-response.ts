@@ -5,7 +5,6 @@ import type {
   EmbeddingsUsage,
   ModuleResultsBase
 } from './client/api/schema/index.js';
-import type { EmbeddingData } from './orchestration-types.js';
 
 /**
  * Response wrapper for orchestration embedding requests.
@@ -19,13 +18,12 @@ export class OrchestrationEmbeddingResponse {
 
   /**
    * Final embedding results.
-   * @returns Array of embedding data or undefined if no results.
+   * @returns Array of embedding vectors, where each element is either a number array or a base-64 encoded string of the embedding.
    */
-  getEmbeddings(): EmbeddingData[] {
-    return this._data.final_result!.data.map((result: EmbeddingResult) => ({
-      embedding: result.embedding,
-      index: result.index
-    }));
+  getEmbeddingVectors(): (number[] | string)[] {
+    return this._data.final_result!.data.map(
+      (result: EmbeddingResult) => result.embedding
+    );
   }
 
   /**
