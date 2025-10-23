@@ -192,6 +192,7 @@ components:
       additionalProperties: false
       required:
         - request_id
+        - final_result
       properties:
         request_id:
           type: string
