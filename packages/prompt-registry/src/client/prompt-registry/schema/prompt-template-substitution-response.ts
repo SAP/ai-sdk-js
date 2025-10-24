@@ -3,12 +3,12 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { Template } from './template.js';
+import type { PromptTemplate } from './prompt-template.js';
 import type { PromptTemplateGetResponse } from './prompt-template-get-response.js';
 /**
  * Representation of the 'PromptTemplateSubstitutionResponse' schema.
  */
 export type PromptTemplateSubstitutionResponse = {
-  parsedPrompt?: Template[];
+  parsedPrompt?: PromptTemplate[];
   resource?: PromptTemplateGetResponse;
 } & Record<string, any>;
