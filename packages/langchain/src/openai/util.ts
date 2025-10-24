@@ -35,7 +35,6 @@ import type {
 } from './types.js';
 import type { ToolDefinition } from '@langchain/core/language_models/base';
 
-
 /**
  * Determines if the model is a reasoning model.
  * @param modelName - The name of the model.
@@ -43,9 +42,15 @@ import type { ToolDefinition } from '@langchain/core/language_models/base';
  * @internal
  */
 export function isReasoningModel(modelName: string): boolean {
-  if (!modelName) return false;
-  if (/^o\d/.test(modelName ?? "")) return true;
-  if (modelName.startsWith("gpt-5") && !modelName.startsWith("gpt-5-chat")) return true;
+  if (!modelName) {
+    return false;
+  }
+  if (/^o\d/.test(modelName ?? '')) {
+    return true;
+  }
+  if (modelName.startsWith('gpt-5') && !modelName.startsWith('gpt-5-chat')) {
+    return true;
+  }
   return false;
 }
 
@@ -291,7 +296,6 @@ export function mapLangChainToAiClient(
   messages: BaseMessage[],
   options?: AzureOpenAiChatCallOptions & { promptIndex?: number }
 ): AzureOpenAiChatCompletionParameters {
-
   const params: AzureOpenAiChatCompletionParameters = {
     messages: messages.map(mapBaseMessageToAzureOpenAiChatMessage),
     presence_penalty: client.presence_penalty,
@@ -314,9 +318,11 @@ export function mapLangChainToAiClient(
   };
 
   if (isReasoningModel(client.modelName)) {
-    params.max_completion_tokens = client.max_tokens === -1 ? undefined : client.max_tokens;
+    params.max_completion_tokens =
+      client.max_tokens === -1 ? undefined : client.max_tokens;
   } else {
-    params.max_tokens = client.max_tokens === -1 ? undefined : client.max_tokens;
+    params.max_tokens =
+      client.max_tokens === -1 ? undefined : client.max_tokens;
   }
 
   return removeUndefinedProperties<AzureOpenAiChatCompletionParameters>(params);
