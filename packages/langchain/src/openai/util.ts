@@ -35,6 +35,20 @@ import type {
 } from './types.js';
 import type { ToolDefinition } from '@langchain/core/language_models/base';
 
+
+/**
+ * Determines if the model is a reasoning model.
+ * @param modelName - The name of the model.
+ * @returns True if the model is a reasoning model, false otherwise.
+ * @internal
+ */
+export function isReasoningModel(modelName: string): boolean {
+  if (!modelName) return false;
+  if (/^o\d/.test(modelName ?? "")) return true;
+  if (modelName.startsWith("gpt-5") && !modelName.startsWith("gpt-5-chat")) return true;
+  return false;
+}
+
 /**
  * Maps a {@link ChatAzureOpenAIToolType} to {@link AzureOpenAiFunctionObject}.
  * @param tool - Base class for tools that accept input of any shape defined by a Zod schema.
@@ -277,9 +291,9 @@ export function mapLangChainToAiClient(
   messages: BaseMessage[],
   options?: AzureOpenAiChatCallOptions & { promptIndex?: number }
 ): AzureOpenAiChatCompletionParameters {
-  return removeUndefinedProperties<AzureOpenAiChatCompletionParameters>({
+
+  const params: AzureOpenAiChatCompletionParameters = {
     messages: messages.map(mapBaseMessageToAzureOpenAiChatMessage),
-    max_tokens: client.max_tokens === -1 ? undefined : client.max_tokens,
     presence_penalty: client.presence_penalty,
     frequency_penalty: client.frequency_penalty,
     temperature: client.temperature,
@@ -297,7 +311,15 @@ export function mapLangChainToAiClient(
     functions: options?.functions?.map(f => mapToolToOpenAiFunction(f)),
     tools: options?.tools?.map(t => mapToolToOpenAiTool(t)),
     tool_choice: options?.tool_choice
-  });
+  };
+
+  if (isReasoningModel(client.modelName)) {
+    params.max_completion_tokens = client.max_tokens === -1 ? undefined : client.max_tokens;
+  } else {
+    params.max_tokens = client.max_tokens === -1 ? undefined : client.max_tokens;
+  }
+
+  return removeUndefinedProperties<AzureOpenAiChatCompletionParameters>(params);
 }
 
 /**
