@@ -16,10 +16,11 @@ jobs:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
 
       - name: Update Transitive Dependencies
+        id: update-deps
         run: |
           pnpm --no-save update
-          pnpm audit --audit-level moderate
-          
+          pnpm audit --audit-level high
+
           if [[ -n "$(git status --porcelain)" ]]; then
             git config --global user.email "cloud-sdk-js@github.com"
             git config --global user.name "cloud-sdk-js"
@@ -28,25 +29,21 @@ jobs:
             git add .
             git commit -m "chore: update pnpm transitive dependencies"
             git push --set-upstream origin "$BRANCH_NAME"
+            echo "branch-created=true" >> $GITHUB_OUTPUT
+            echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
           else
             echo "No changes to commit"
+            echo "branch-created=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Create Pull Request
-        if: success()
+        if: steps.update-deps.outputs.branch-created == 'true'
         uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           script: |
             const { repo, owner } = context.repo;
-            const now = new Date();
-            const pad = num => num.toString().padStart(2, '0');
-            const formattedDate = `${now.getUTCFullYear()}${pad(
-              now.getUTCMonth() + 1
-            )}${pad(now.getUTCDate())}-${pad(now.getUTCHours())}${pad(
-              now.getUTCMinutes()
-            )}${pad(now.getUTCSeconds())}`;
-            const branch = `bot/monthly-transitive-dependency-update-${formattedDate}`;
+            const branch = '${{ steps.update-deps.outputs.branch-name }}';
             const result = await github.rest.pulls.create({
               title: 'chore: Monthly Transitive Dependency Update',
               owner,
@@ -57,22 +54,19 @@ jobs:
             });
             console.log(`Pull Request created: ${result.data.html_url}`);
 
+      - name: Install async-retry for auto-merge
+        if: steps.update-deps.outputs.branch-created == 'true'
+        run: pnpm install async-retry -w
+
       - name: Auto-merge if checks pass
-        if: success()
+        if: steps.update-deps.outputs.branch-created == 'true' && success()
         uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           script: |
             const retry = require('async-retry');
             const { repo, owner } = context.repo;
-            const now = new Date();
-            const pad = num => num.toString().padStart(2, '0');
-            const formattedDate = `${now.getUTCFullYear()}${pad(
-              now.getUTCMonth() + 1
-            )}${pad(now.getUTCDate())}-${pad(now.getUTCHours())}${pad(
-              now.getUTCMinutes()
-            )}${pad(now.getUTCSeconds())}`;
-            const branch = `bot/monthly-transitive-dependency-update-${formattedDate}`;
+            const branch = '${{ steps.update-deps.outputs.branch-name }}';
 
             const pulls = await github.rest.pulls.list({
               owner,
