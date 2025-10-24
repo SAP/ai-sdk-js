@@ -5,6 +5,7 @@ import type {
   EmbeddingsUsage,
   ModuleResultsBase
 } from './client/api/schema/index.js';
+import type { EmbeddingData } from './orchestration-types.js';
 
 /**
  * Response wrapper for orchestration embedding requests.
@@ -17,12 +18,31 @@ export class OrchestrationEmbeddingResponse {
   }
 
   /**
-   * Final embedding results.
-   * @returns Array of embedding vectors, where each element is either a number array or a base-64 encoded string of the embedding.
+   * Final embedding results with index information.
+   * @returns Array of embedding data objects containing both vectors and indices.
    */
-  getEmbeddingVectors(): (number[] | string)[] {
+  getEmbeddings(): EmbeddingData[] {
     return this._data.final_result!.data.map(
-      (result: EmbeddingResult) => result.embedding
+      (result: EmbeddingResult) => ({
+        embedding: result.embedding,
+        index: result.index
+      })
+    );
+  }
+
+  /**
+   * Final embedding results as number arrays only.
+   * @returns Array of embedding vectors as number arrays.
+   * @throws Error if embedding is a string (base64-encoded).
+   */
+  getEmbeddingVectors(): (number[])[] {
+    return this._data.final_result!.data.map(
+      (result: EmbeddingResult) => {
+        if (typeof result.embedding === 'string') {
+          throw new Error('String embeddings are not supported in getEmbeddingVectors(). Use getEmbeddings() instead.');
+        }
+        return result.embedding;
+      }
     );
   }
 

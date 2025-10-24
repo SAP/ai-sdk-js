@@ -2,6 +2,7 @@ import { parseMockResponse } from '../../../test-util/mock-http.js';
 import { OrchestrationEmbeddingResponse } from './orchestration-embedding-response.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { EmbeddingsPostResponse } from './client/api/schema/index.js';
+import type { EmbeddingData } from './orchestration-types.js';
 
 describe('OrchestrationEmbeddingResponse', () => {
   let mockResponse: EmbeddingsPostResponse;
@@ -153,7 +154,7 @@ describe('OrchestrationEmbeddingResponse', () => {
     ]);
   });
 
-  it('should handle string embeddings', () => {
+  it('should throw error for string embeddings for embedding vectors', () => {
     const responseWithStringEmbedding: EmbeddingsPostResponse = {
       request_id: 'test-request-id',
       final_result: {
@@ -181,8 +182,123 @@ describe('OrchestrationEmbeddingResponse', () => {
     };
 
     const response = new OrchestrationEmbeddingResponse(httpResponse);
-    const embeddings = response.getEmbeddingVectors();
 
-    expect(embeddings).toEqual(['base64-encoded-embedding-string']);
+    expect(() => response.getEmbeddingVectors()).toThrow(
+      'String embeddings are not supported in getEmbeddingVectors(). Use getEmbeddings() instead.'
+    );
+  });
+
+  describe('getEmbeddings', () => {
+    it('should return embedding data with indices for number arrays', () => {
+      const responseWithMultipleEmbeddings: EmbeddingsPostResponse = {
+        request_id: 'test-request-id',
+        final_result: {
+          object: 'list',
+          data: [
+            {
+              object: 'embedding',
+              embedding: [0.1, 0.2, 0.3, 0.4, 0.5],
+              index: 0
+            },
+            {
+              object: 'embedding',
+              embedding: [0.6, 0.7, 0.8, 0.9, 1.0],
+              index: 1
+            }
+          ],
+          model: 'text-embedding-3-small',
+          usage: {
+            prompt_tokens: 15,
+            total_tokens: 15
+          }
+        }
+      };
+
+      const httpResponse: HttpResponse = {
+        data: responseWithMultipleEmbeddings,
+        status: 200,
+        headers: {},
+        request: {}
+      };
+
+      const response = new OrchestrationEmbeddingResponse(httpResponse);
+      const embeddings: EmbeddingData[] = response.getEmbeddings();
+
+      expect(embeddings).toEqual([
+        {
+          embedding: [0.1, 0.2, 0.3, 0.4, 0.5],
+          index: 0
+        },
+        {
+          embedding: [0.6, 0.7, 0.8, 0.9, 1.0],
+          index: 1
+        }
+      ]);
+    });
+
+    it('should return embedding data with indices for string embeddings', () => {
+      const responseWithStringEmbedding: EmbeddingsPostResponse = {
+        request_id: 'test-request-id',
+        final_result: {
+          object: 'list',
+          data: [
+            {
+              object: 'embedding',
+              embedding: 'base64-encoded-embedding-string',
+              index: 0
+            }
+          ],
+          model: 'text-embedding-3-small',
+          usage: {
+            prompt_tokens: 5,
+            total_tokens: 5
+          }
+        }
+      };
+
+      const httpResponse: HttpResponse = {
+        data: responseWithStringEmbedding,
+        status: 200,
+        headers: {},
+        request: {}
+      };
+
+      const response = new OrchestrationEmbeddingResponse(httpResponse);
+      const embeddings: EmbeddingData[] = response.getEmbeddings();
+
+      expect(embeddings).toEqual([
+        {
+          embedding: 'base64-encoded-embedding-string',
+          index: 0
+        }
+      ]);
+    });
+
+    it('should return empty array for empty data', () => {
+      const responseWithEmptyData: EmbeddingsPostResponse = {
+        request_id: 'test-request-id',
+        final_result: {
+          object: 'list',
+          data: [],
+          model: 'text-embedding-3-small',
+          usage: {
+            prompt_tokens: 0,
+            total_tokens: 0
+          }
+        }
+      };
+
+      const httpResponse: HttpResponse = {
+        data: responseWithEmptyData,
+        status: 200,
+        headers: {},
+        request: {}
+      };
+
+      const response = new OrchestrationEmbeddingResponse(httpResponse);
+      const embeddings: EmbeddingData[] = response.getEmbeddings();
+
+      expect(embeddings).toEqual([]);
+    });
   });
 });

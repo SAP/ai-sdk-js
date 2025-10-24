@@ -35,7 +35,8 @@ export type {
   EmbeddingModelConfig,
   EmbeddingModelDetails,
   EmbeddingModelParams,
-  EmbeddingModuleConfig
+  EmbeddingModuleConfig,
+  EmbeddingData
 } from './orchestration-types.js';
 export { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 export { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
