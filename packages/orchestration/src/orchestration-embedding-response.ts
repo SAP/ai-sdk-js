@@ -22,12 +22,10 @@ export class OrchestrationEmbeddingResponse {
    * @returns Array of embedding data objects containing both vectors and indices.
    */
   getEmbeddings(): EmbeddingData[] {
-    return this._data.final_result!.data.map(
-      (result: EmbeddingResult) => ({
-        embedding: result.embedding,
-        index: result.index
-      })
-    );
+    return this._data.final_result!.data.map((result: EmbeddingResult) => ({
+      embedding: result.embedding,
+      index: result.index
+    }));
   }
 
   /**
@@ -35,15 +33,15 @@ export class OrchestrationEmbeddingResponse {
    * @returns Array of embedding vectors as number arrays.
    * @throws Error if embedding is a string (base64-encoded).
    */
-  getEmbeddingVectors(): (number[])[] {
-    return this._data.final_result!.data.map(
-      (result: EmbeddingResult) => {
-        if (typeof result.embedding === 'string') {
-          throw new Error('String embeddings are not supported in getEmbeddingVectors(). Use getEmbeddings() instead.');
-        }
-        return result.embedding;
+  getEmbeddingVectors(): number[][] {
+    return this._data.final_result!.data.map((result: EmbeddingResult) => {
+      if (typeof result.embedding === 'string') {
+        throw new Error(
+          'String embeddings are not supported in getEmbeddingVectors(). Use getEmbeddings() instead.'
+        );
       }
-    );
+      return result.embedding;
+    });
   }
 
   /**
