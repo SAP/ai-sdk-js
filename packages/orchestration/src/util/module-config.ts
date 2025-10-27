@@ -228,25 +228,20 @@ export function constructEmbeddingPostRequest(
 function buildEmbeddingModulesConfig(
   config: EmbeddingModuleConfig
 ): EmbeddingsModuleConfigs {
+  const { embeddings, masking } = config;
+  const { model } = embeddings;
+  const { name, version, params } = model;
+
   const modules: EmbeddingsModuleConfigs = {
     embeddings: {
       model: {
-        name: config.embeddings.model.name,
-        ...(config.embeddings.model.version && {
-          version: config.embeddings.model.version
-        }),
-        ...(config.embeddings.model.params && {
-          params: config.embeddings.model.params
-        })
+        name,
+        ...(version && { version }),
+        ...(params && { params })
       }
-    }
+    },
+    ...(masking && Object.keys(masking).length && { masking })
   };
-
-  if (config.masking) {
-    modules.masking = {
-      masking_providers: config.masking.masking_providers
-    };
-  }
 
   return modules;
 }
