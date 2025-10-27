@@ -222,13 +222,6 @@ export function constructEmbeddingPostRequest(
       ...(request.type && { type: request.type })
     }
   };
-
-  logger.debug('Constructed embedding request', {
-    hasEmbeddingsConfig: !!orchestrationConfig.modules.embeddings,
-    hasMaskingConfig: !!orchestrationConfig.modules.masking,
-    inputType: request.type
-  });
-
   return embeddingRequest;
 }
 
