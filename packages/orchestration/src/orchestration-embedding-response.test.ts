@@ -154,7 +154,7 @@ describe('OrchestrationEmbeddingResponse', () => {
     ]);
   });
 
-  it('should throw error for string embeddings for embedding vectors', () => {
+  it('should throw error when using `getEmbeddingVectors()` for string embeddings', () => {
     const responseWithStringEmbedding: EmbeddingsPostResponse = {
       request_id: 'test-request-id',
       final_result: {
