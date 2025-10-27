@@ -148,8 +148,26 @@ export function constructCompletionPostRequest(
   stream?: boolean,
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
-  const { promptTemplating, filtering, masking, grounding, translation } =
-    config;
+  const moduleConfigurations = buildCompletionModulesConfig(config, request);
+
+  return {
+    config: stream
+      ? addStreamOptions(moduleConfigurations, streamOptions)
+      : { modules: moduleConfigurations },
+    ...(request?.placeholderValues && {
+      placeholder_values: request.placeholderValues
+    }),
+    ...(request?.messagesHistory && {
+      messages_history: request.messagesHistory
+    })
+  };
+}
+
+function buildCompletionModulesConfig(
+  config: OrchestrationModuleConfig,
+  request?: ChatCompletionRequest
+): ModuleConfigs {
+  const { promptTemplating, filtering, masking, grounding, translation } = config;
 
   // prompt is not a string here as it is already parsed in `parseAndMergeTemplating` method
   const prompt = {
@@ -169,7 +187,7 @@ export function constructCompletionPostRequest(
     ];
   }
 
-  const moduleConfigurations: ModuleConfigs = {
+  return {
     prompt_templating: {
       ...promptTemplating,
       prompt
@@ -178,18 +196,6 @@ export function constructCompletionPostRequest(
     ...(masking && Object.keys(masking).length && { masking }),
     ...(grounding && Object.keys(grounding).length && { grounding }),
     ...(translation && Object.keys(translation).length && { translation })
-  };
-
-  return {
-    config: stream
-      ? addStreamOptions(moduleConfigurations, streamOptions)
-      : { modules: moduleConfigurations },
-    ...(request?.placeholderValues && {
-      placeholder_values: request.placeholderValues
-    }),
-    ...(request?.messagesHistory && {
-      messages_history: request.messagesHistory
-    })
   };
 }
 
