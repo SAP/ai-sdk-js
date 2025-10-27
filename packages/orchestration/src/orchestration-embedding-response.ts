@@ -22,6 +22,7 @@ export class OrchestrationEmbeddingResponse {
    * @returns Array of embedding data objects containing both vectors and indices.
    */
   getEmbeddings(): EmbeddingData[] {
+    // TODO: Remove non-null assertion when final_result is made mandatory in the schema
     return this._data.final_result!.data.map((result: EmbeddingResult) => ({
       embedding: result.embedding,
       index: result.index
@@ -34,6 +35,7 @@ export class OrchestrationEmbeddingResponse {
    * @throws Error if embedding is a string (base64-encoded).
    */
   getEmbeddingVectors(): number[][] {
+    // TODO: Remove non-null assertion when final_result is made mandatory in the schema
     return this._data.final_result!.data.map((result: EmbeddingResult) => {
       if (typeof result.embedding === 'string') {
         throw new Error(
