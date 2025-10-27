@@ -167,7 +167,8 @@ function buildCompletionModulesConfig(
   config: OrchestrationModuleConfig,
   request?: ChatCompletionRequest
 ): ModuleConfigs {
-  const { promptTemplating, filtering, masking, grounding, translation } = config;
+  const { promptTemplating, filtering, masking, grounding, translation } =
+    config;
 
   // prompt is not a string here as it is already parsed in `parseAndMergeTemplating` method
   const prompt = {
