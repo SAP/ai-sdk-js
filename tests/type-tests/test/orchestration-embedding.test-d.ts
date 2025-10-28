@@ -233,7 +233,7 @@ expectAssignable<EmbeddingModelDetails>({
 /**
  * Error: Empty embedding configuration should fail.
  */
-expectError(new OrchestrationEmbeddingClient({} as any));
+expectError(new OrchestrationEmbeddingClient({}));
 
 /**
  * Error: Missing model name should fail.
@@ -243,7 +243,7 @@ expectError(
     embeddings: {
       model: {
         params: { dimensions: 1536 }
-      } as any
+      }
     }
   })
 );
@@ -260,7 +260,7 @@ expectError(
     }
   }).embed({
     input: 'Test text',
-    type: 'invalid-type' as any
+    type: 'invalid-type'
   })
 );
 
@@ -274,14 +274,15 @@ expectError(
         name: 'text-embedding-ada-002'
       }
     }
-  }).embed({} as any)
+  }).embed({})
 );
 
 /**
  * Error: Invalid embedding object type should fail.
  */
 expectError<EmbeddingData>({
-  object: 'invalid-object' as any,
+  object: 'invalid-object',
   embedding: [0.1, 0.2],
   index: 0
 });
+
