@@ -274,7 +274,7 @@ describe('orchestration embedding service client', () => {
     expect(response._data.request_id).toBe('random-request-id');
   });
 
-  it('handles HTTP error responses', async () => {
+  it('handles orchestration service error responses with detailed error messages', async () => {
     const config: EmbeddingModuleConfig = {
       embeddings: {
         model: {
@@ -305,8 +305,13 @@ describe('orchestration embedding service client', () => {
       }
     );
 
-    await expect(
-      new OrchestrationEmbeddingClient(config).embed(request)
-    ).rejects.toThrow('Request failed with status code 400');
+    try {
+      await new OrchestrationEmbeddingClient(config).embed(request);
+      fail('Expected an error to be thrown');
+    } catch (error: any) {
+      expect(error.cause?.response?.data?.error?.message).toBe(
+        "400 - Embedding Module: Model name must be one of dict_keys(['text-embedding-ada-002', 'text-embedding-3-small', 'text-embedding-3-large', 'amazon--titan-embed-text', 'nvidia--llama-3.2-nv-embedqa-1b'])."
+      );
+    }
   });
 });
