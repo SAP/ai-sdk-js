@@ -285,4 +285,3 @@ expectError<EmbeddingData>({
   embedding: [0.1, 0.2],
   index: 0
 });
-
