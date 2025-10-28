@@ -70,7 +70,7 @@ describe('orchestration embedding service client', () => {
     expect(response).toBeInstanceOf(OrchestrationEmbeddingResponse);
     expect(response._data.request_id).toBe('random-request-id');
     expect(response._data.final_result?.model).toBe('text-embedding-3-small');
-    expect(response.getEmbeddingVectors()).toEqual(expect.any(Array));
+    expect(response.getEmbeddings().map(item => item.embedding)).toEqual(expect.any(Array));
     expect(response.getTokenUsage()?.prompt_tokens).toEqual(expect.any(Number));
   });
 
@@ -111,7 +111,7 @@ describe('orchestration embedding service client', () => {
 
     expect(response).toBeInstanceOf(OrchestrationEmbeddingResponse);
     expect(response._data.request_id).toBe('random-request-id');
-    expect(response.getEmbeddingVectors()).toEqual(expect.any(Array));
+    expect(response.getEmbeddings().map(item => item.embedding)).toEqual(expect.any(Array));
   });
 
   it('calls embed with input type specification', async () => {
@@ -153,7 +153,7 @@ describe('orchestration embedding service client', () => {
 
     expect(response).toBeInstanceOf(OrchestrationEmbeddingResponse);
     expect(response._data.request_id).toBe('random-request-id');
-    expect(response.getEmbeddingVectors()).toEqual(expect.any(Array));
+    expect(response.getEmbeddings().map(item => item.embedding)).toEqual(expect.any(Array));
   });
 
   it('calls embed with masking configuration', async () => {
@@ -212,7 +212,7 @@ describe('orchestration embedding service client', () => {
     ).toContain(
       'My name is MASKED_PERSON. I am applying as a Senior Software Dev. I work closely with MASKED_PERSON.'
     );
-    expect(response.getEmbeddingVectors()).toEqual(expect.any(Array));
+    expect(response.getEmbeddings().map(item => item.embedding)).toEqual(expect.any(Array));
   });
 
   it('executes a request with the custom resource group', async () => {

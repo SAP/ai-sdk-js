@@ -18,34 +18,17 @@ export class OrchestrationEmbeddingResponse {
   }
 
   /**
-   * Final embedding results with index information.
-   * @returns Array of embedding data objects containing both vectors and indices.
+   * Final embedding results with index and object type (which is always `embedding`) information.
+   * @returns Array of embedding data objects containing both vectors, indices, and object types.
    */
   getEmbeddings(): EmbeddingData[] {
     // TODO: Remove non-null assertion when final_result is made mandatory in the schema
     return this._data.final_result!.data.map((result: EmbeddingResult) => ({
       embedding: result.embedding,
-      index: result.index
+      index: result.index,
+      object: 'embedding'
     }));
   }
-
-  /**
-   * Final embedding results as number arrays only.
-   * @returns Array of embedding vectors as number arrays.
-   * @throws Error if embedding is a string (base64-encoded).
-   */
-  getEmbeddingVectors(): number[][] {
-    // TODO: Remove non-null assertion when final_result is made mandatory in the schema
-    return this._data.final_result!.data.map((result: EmbeddingResult) => {
-      if (typeof result.embedding === 'string') {
-        throw new Error(
-          'String embeddings are not supported in getEmbeddingVectors(). Use getEmbeddings() instead.'
-        );
-      }
-      return result.embedding;
-    });
-  }
-
   /**
    * Usage information.
    * @returns Usage information or undefined.

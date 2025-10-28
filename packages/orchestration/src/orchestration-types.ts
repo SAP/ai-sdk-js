@@ -575,6 +575,10 @@ export interface EmbeddingModuleConfig {
  */
 export interface EmbeddingData {
   /**
+   * The object type, which is always "embedding".
+   */
+  object: 'embedding';
+  /**
    * The embedding vector, either as a number array or base64-encoded string.
    */
   embedding: number[] | string;

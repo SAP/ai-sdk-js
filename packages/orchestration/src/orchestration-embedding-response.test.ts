@@ -32,7 +32,9 @@ describe('OrchestrationEmbeddingResponse', () => {
   });
 
   it('should get embeddings', () => {
-    const embeddings = embeddingResponse.getEmbeddingVectors();
+    const embeddings = embeddingResponse
+      .getEmbeddings()
+      .map(item => item.embedding);
     expect(embeddings).toEqual(expect.any(Array));
   });
 
@@ -104,7 +106,7 @@ describe('OrchestrationEmbeddingResponse', () => {
     };
 
     const response = new OrchestrationEmbeddingResponse(httpResponse);
-    const embeddings = response.getEmbeddingVectors();
+    const embeddings = response.getEmbeddings().map(item => item.embedding);
     const usage = response.getTokenUsage();
 
     expect(embeddings).toEqual([]);
@@ -147,7 +149,7 @@ describe('OrchestrationEmbeddingResponse', () => {
     };
 
     const response = new OrchestrationEmbeddingResponse(httpResponse);
-    const embeddings = response.getEmbeddingVectors();
+    const embeddings = response.getEmbeddings().map(item => item.embedding);
     expect(embeddings).toEqual([
       [0.1, 0.2, 0.3, 0.4, 0.5],
       [0.6, 0.7, 0.8, 0.9, 1.0]
@@ -183,9 +185,8 @@ describe('OrchestrationEmbeddingResponse', () => {
 
     const response = new OrchestrationEmbeddingResponse(httpResponse);
 
-    expect(() => response.getEmbeddingVectors()).toThrow(
-      'String embeddings are not supported in getEmbeddingVectors(). Use getEmbeddings() instead.'
-    );
+    const embeddings = response.getEmbeddings().map(item => item.embedding);
+    expect(embeddings).toEqual(['base64-encoded-embedding-string']);
   });
 
   describe('getEmbeddings', () => {
@@ -227,11 +228,13 @@ describe('OrchestrationEmbeddingResponse', () => {
       expect(embeddings).toEqual([
         {
           embedding: [0.1, 0.2, 0.3, 0.4, 0.5],
-          index: 0
+          index: 0,
+          object: 'embedding'
         },
         {
           embedding: [0.6, 0.7, 0.8, 0.9, 1.0],
-          index: 1
+          index: 1,
+          object: 'embedding'
         }
       ]);
     });
@@ -269,7 +272,8 @@ describe('OrchestrationEmbeddingResponse', () => {
       expect(embeddings).toEqual([
         {
           embedding: 'base64-encoded-embedding-string',
-          index: 0
+          index: 0,
+          object: 'embedding'
         }
       ]);
     });
