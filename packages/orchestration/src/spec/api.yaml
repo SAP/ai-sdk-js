@@ -856,7 +856,7 @@ components:
           description: Additional parameters for the model. Default values are used for mandatory parameters.
           additionalProperties: true
           example:
-            max_tokens: 300
+            max_completion_tokens: 300 # max_tokens param has been deprecated in Azure Open AI spec
             temperature: 0.1
             frequency_penalty: 0
             presence_penalty: 0
