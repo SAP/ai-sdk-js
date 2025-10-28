@@ -38,6 +38,6 @@
     "@sap-cloud-sdk/connectivity": "^4.1.2",
     "@sap-cloud-sdk/util": "^4.1.2",
     "uuid": "^13.0.0",
-    "@langchain/core": "0.3.78"
+    "@langchain/core": "0.3.79"
   }
 }
