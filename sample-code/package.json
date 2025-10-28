@@ -23,9 +23,9 @@
   "dependencies": {
     "@langchain/langgraph": "^0.4.9",
     "@langchain/mcp-adapters": "^0.6.0",
-    "@modelcontextprotocol/sdk": "^1.20.1",
+    "@modelcontextprotocol/sdk": "^1.20.2",
     "langchain": "0.3.36",
-    "@langchain/core": "0.3.78",
+    "@langchain/core": "0.3.79",
     "@langchain/textsplitters": "0.1.0",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/document-grounding": "workspace:^",
@@ -34,7 +34,7 @@
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/prompt-registry": "workspace:^",
     "@sap-cloud-sdk/util": "^4.1.2",
-    "@types/express": "^5.0.3",
+    "@types/express": "^5.0.5",
     "express": "^5.1.0",
     "uuid": "^13.0.0",
     "zod": "^3.25.76"

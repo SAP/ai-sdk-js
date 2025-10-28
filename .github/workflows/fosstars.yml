@@ -37,7 +37,7 @@ jobs:
 
       - name: 'Upload OWASP Dependency Check Report'
         if: always() && steps.depcheck.conclusion != 'skipped'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: owasp-dependency-check-report
           path: reports/
