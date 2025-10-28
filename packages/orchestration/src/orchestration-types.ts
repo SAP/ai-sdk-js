@@ -523,7 +523,7 @@ export interface EmbeddingRequest {
   input: string | string[];
 
   /**
-   * Type of embedding input.
+   * Represents the task for which the embeddings need to be generated.
    * @default 'text'
    */
   type?: 'text' | 'document' | 'query';
