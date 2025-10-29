@@ -26,4 +26,8 @@ export type ErrorStreaming = {
    */
   location: string;
   intermediate_results?: ModuleResultsStreaming;
+  /**
+   * HTTP headers returned from the failed request attempt
+   */
+  headers?: Record<string, string>;
 } & Record<string, any>;
