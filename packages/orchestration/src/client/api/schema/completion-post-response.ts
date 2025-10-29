@@ -5,6 +5,7 @@
  */
 import type { ModuleResults } from './module-results.js';
 import type { LlmModuleResult } from './llm-module-result.js';
+import type { Error } from './error.js';
 /**
  * Representation of the 'CompletionPostResponse' schema.
  */
@@ -16,4 +17,8 @@ export type CompletionPostResponse = {
   request_id: string;
   intermediate_results: ModuleResults;
   final_result: LlmModuleResult;
+  /**
+   * List of errors encountered during processing for unsuccessful modules configurations
+   */
+  intermediate_failures?: Error[];
 } & Record<string, any>;

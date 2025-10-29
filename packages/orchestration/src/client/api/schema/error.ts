@@ -26,4 +26,8 @@ export type Error = {
    */
   location: string;
   intermediate_results?: ModuleResults;
+  /**
+   * HTTP headers returned from the failed request attempt
+   */
+  headers?: Record<string, string>;
 } & Record<string, any>;
