@@ -22,7 +22,7 @@ export type LLMModelDetails = {
   /**
    * Additional parameters for the model. Default values are used for mandatory parameters.
    * @example {
-   *   "max_tokens": 300,
+   *   "max_completion_tokens": 300,
    *   "temperature": 0.1,
    *   "frequency_penalty": 0,
    *   "presence_penalty": 0,
