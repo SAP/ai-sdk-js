@@ -285,9 +285,6 @@ importers:
       express:
         specifier: ^5.1.0
         version: 5.1.0
-      langchain:
-        specifier: ^1.0.2
-        version: 1.0.2(@langchain/core@1.0.2(openai@6.7.0(ws@8.18.3)(zod@4.1.12)))(openai@6.7.0(ws@8.18.3)(zod@4.1.12))(zod-to-json-schema@3.24.6(zod@4.1.12))
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
