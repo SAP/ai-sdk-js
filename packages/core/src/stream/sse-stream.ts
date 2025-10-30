@@ -43,7 +43,9 @@ export class SseStream<Item> implements AsyncIterable<Item> {
           }
 
           if (data?.error) {
-            throw new Error(`Error received from the server.\n${JSON.stringify(data.error)}`);
+            throw new Error(
+              `Error received from the server.\n${JSON.stringify(data.error)}`
+            );
           }
 
           // Yield also the event if it exists, otherwise just the data
