@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@sap-ai-sdk/sample-code",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": "true",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -34,7 +34,7 @@
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/prompt-registry": "workspace:^",
     "@sap-cloud-sdk/util": "^4.1.2",
-    "@types/express": "^5.0.3",
+    "@types/express": "^5.0.5",
     "express": "^5.1.0",
     "langchain": "^1.0.2",
     "uuid": "^13.0.0",

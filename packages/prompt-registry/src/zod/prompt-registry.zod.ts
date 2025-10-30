@@ -5,21 +5,26 @@
  * Prompt Storage service for Design time & Runtime prompt templates.
  * OpenAPI spec version: 0.0.1.
  */
-import zod from 'zod';
+import * as zod from 'zod';
 
 /**
  * Create or update a prompt template.
  */
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodyNameMax = 120;
+
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodyVersionMax = 10;
+
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodyScenarioMax = 120;
+
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecTemplateItemContentItemImageUrlDetailDefault =
   'auto';
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatJsonSchemaNameMax = 64;
+
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatJsonSchemaNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatJsonSchemaStrictDefault = false;
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecToolsItemFunctionNameMax = 64;
+
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecToolsItemFunctionNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecToolsItemFunctionStrictDefault = false;
@@ -116,7 +121,7 @@ export const registryControllerPromptControllerCreateUpdatePromptTemplateBody =
                   'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                 ),
               schema: zod
-                .record(zod.string(), zod.any())
+                .record(zod.string(), zod.unknown())
                 .optional()
                 .describe(
                   'The schema for the response format, described as a JSON Schema object.'
@@ -161,7 +166,7 @@ export const registryControllerPromptControllerCreateUpdatePromptTemplateBody =
                   'The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                 ),
               parameters: zod
-                .record(zod.string(), zod.any())
+                .record(zod.string(), zod.unknown())
                 .optional()
                 .describe(
                   'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
@@ -214,10 +219,12 @@ export const registryControllerPromptControllerListPromptTemplatesQueryParams =
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecTemplateItemContentItemImageUrlDetailDefault =
   'auto';
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatJsonSchemaNameMax = 64;
+
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatJsonSchemaNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatJsonSchemaStrictDefault = false;
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecToolsItemFunctionNameMax = 64;
+
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecToolsItemFunctionNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecToolsItemFunctionStrictDefault = false;
@@ -312,7 +319,7 @@ export const registryControllerPromptControllerListPromptTemplatesResponse =
                         'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                       ),
                     schema: zod
-                      .record(zod.string(), zod.any())
+                      .record(zod.string(), zod.unknown())
                       .optional()
                       .describe(
                         'The schema for the response format, described as a JSON Schema object.'
@@ -357,7 +364,7 @@ export const registryControllerPromptControllerListPromptTemplatesResponse =
                         'The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                       ),
                     parameters: zod
-                      .record(zod.string(), zod.any())
+                      .record(zod.string(), zod.unknown())
                       .optional()
                       .describe(
                         'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
@@ -394,10 +401,12 @@ export const registryControllerPromptControllerListPromptTemplateHistoryParams =
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecTemplateItemContentItemImageUrlDetailDefault =
   'auto';
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatJsonSchemaNameMax = 64;
+
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatJsonSchemaNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatJsonSchemaStrictDefault = false;
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecToolsItemFunctionNameMax = 64;
+
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecToolsItemFunctionNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecToolsItemFunctionStrictDefault = false;
@@ -492,7 +501,7 @@ export const registryControllerPromptControllerListPromptTemplateHistoryResponse
                         'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                       ),
                     schema: zod
-                      .record(zod.string(), zod.any())
+                      .record(zod.string(), zod.unknown())
                       .optional()
                       .describe(
                         'The schema for the response format, described as a JSON Schema object.'
@@ -537,7 +546,7 @@ export const registryControllerPromptControllerListPromptTemplateHistoryResponse
                         'The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                       ),
                     parameters: zod
-                      .record(zod.string(), zod.any())
+                      .record(zod.string(), zod.unknown())
                       .optional()
                       .describe(
                         'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
@@ -572,10 +581,12 @@ export const registryControllerPromptControllerGetPromptTemplateByUuidParams =
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecTemplateItemContentItemImageUrlDetailDefault =
   'auto';
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatJsonSchemaNameMax = 64;
+
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatJsonSchemaNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatJsonSchemaStrictDefault = false;
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecToolsItemFunctionNameMax = 64;
+
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecToolsItemFunctionNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecToolsItemFunctionStrictDefault = false;
@@ -665,7 +676,7 @@ export const registryControllerPromptControllerGetPromptTemplateByUuidResponse =
                     'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                   ),
                 schema: zod
-                  .record(zod.string(), zod.any())
+                  .record(zod.string(), zod.unknown())
                   .optional()
                   .describe(
                     'The schema for the response format, described as a JSON Schema object.'
@@ -710,7 +721,7 @@ export const registryControllerPromptControllerGetPromptTemplateByUuidResponse =
                     'The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                   ),
                 parameters: zod
-                  .record(zod.string(), zod.any())
+                  .record(zod.string(), zod.unknown())
                   .optional()
                   .describe(
                     'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
@@ -795,10 +806,12 @@ export const registryControllerPromptControllerParsePromptTemplateByIdResponsePa
 export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecTemplateItemContentItemImageUrlDetailDefault =
   'auto';
 export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecResponseFormatJsonSchemaNameMax = 64;
+
 export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecResponseFormatJsonSchemaNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecResponseFormatJsonSchemaStrictDefault = false;
 export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecToolsItemFunctionNameMax = 64;
+
 export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecToolsItemFunctionNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecToolsItemFunctionStrictDefault = false;
@@ -924,7 +937,7 @@ export const registryControllerPromptControllerParsePromptTemplateByIdResponse =
                         'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                       ),
                     schema: zod
-                      .record(zod.string(), zod.any())
+                      .record(zod.string(), zod.unknown())
                       .optional()
                       .describe(
                         'The schema for the response format, described as a JSON Schema object.'
@@ -969,7 +982,7 @@ export const registryControllerPromptControllerParsePromptTemplateByIdResponse =
                         'The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                       ),
                     parameters: zod
-                      .record(zod.string(), zod.any())
+                      .record(zod.string(), zod.unknown())
                       .optional()
                       .describe(
                         'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
@@ -1020,10 +1033,12 @@ export const registryControllerPromptControllerParsePromptTemplateByNameVersionR
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecTemplateItemContentItemImageUrlDetailDefault =
   'auto';
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecResponseFormatJsonSchemaNameMax = 64;
+
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecResponseFormatJsonSchemaNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecResponseFormatJsonSchemaStrictDefault = false;
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecToolsItemFunctionNameMax = 64;
+
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecToolsItemFunctionNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecToolsItemFunctionStrictDefault = false;
@@ -1149,7 +1164,7 @@ export const registryControllerPromptControllerParsePromptTemplateByNameVersionR
                         'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                       ),
                     schema: zod
-                      .record(zod.string(), zod.any())
+                      .record(zod.string(), zod.unknown())
                       .optional()
                       .describe(
                         'The schema for the response format, described as a JSON Schema object.'
@@ -1194,7 +1209,7 @@ export const registryControllerPromptControllerParsePromptTemplateByNameVersionR
                         'The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
                       ),
                     parameters: zod
-                      .record(zod.string(), zod.any())
+                      .record(zod.string(), zod.unknown())
                       .optional()
                       .describe(
                         'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'

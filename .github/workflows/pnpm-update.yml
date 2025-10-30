@@ -2,7 +2,7 @@ name: Monthly pnpm Dependency Update
 
 on:
   schedule:
-    - cron: '0 2 1 * *'
+    - cron: '0 2 1 * *'  # Runs at 02:00 UTC on the 1st of every month
   workflow_dispatch:
 
 jobs:
@@ -16,79 +16,116 @@ jobs:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
 
       - name: Update Transitive Dependencies
+        id: update-deps
         run: |
           pnpm --no-save update
-          pnpm audit --audit-level moderate
+          pnpm audit --audit-level high
+
           if [[ -n "$(git status --porcelain)" ]]; then
             git config --global user.email "cloud-sdk-js@github.com"
             git config --global user.name "cloud-sdk-js"
-            git checkout -b "bot/monthly-transitive-dependency-update-$(date +%Y-%m-%d)"
+            BRANCH_NAME="bot/monthly-transitive-dependency-update-$(date -u +%Y%m%d-%H%M%S)"
+            git checkout -b "$BRANCH_NAME"
             git add .
             git commit -m "chore: update pnpm transitive dependencies"
-            git push --set-upstream origin "bot/monthly-transitive-dependency-update-$(date +%Y-%m-%d)"
+            git push --set-upstream origin "$BRANCH_NAME"
+            echo "branch-created=true" >> $GITHUB_OUTPUT
+            echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
           else
             echo "No changes to commit"
-            exit 0
+            echo "branch-created=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Create Pull Request
-        if: success()
+        if: steps.update-deps.outputs.branch-created == 'true'
         uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           script: |
             const { repo, owner } = context.repo;
+            const branch = '${{ steps.update-deps.outputs.branch-name }}';
             const result = await github.rest.pulls.create({
               title: 'chore: Monthly Transitive Dependency Update',
               owner,
               repo,
-              head: `bot/monthly-transitive-dependency-update-${new Date().toISOString().split('T')[0]}`,
+              head: branch,
               base: 'main',
               body: 'This is an automated PR to update pnpm transitive dependencies.'
             });
             console.log(`Pull Request created: ${result.data.html_url}`);
 
+      - name: Install async-retry for auto-merge
+        if: steps.update-deps.outputs.branch-created == 'true'
+        run: pnpm install async-retry -w
+
       - name: Auto-merge if checks pass
-        if: success()
+        if: steps.update-deps.outputs.branch-created == 'true' && success()
         uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           script: |
+            const retry = require('async-retry');
             const { repo, owner } = context.repo;
+            const branch = '${{ steps.update-deps.outputs.branch-name }}';
+
             const pulls = await github.rest.pulls.list({
               owner,
               repo,
-              head: `bot/monthly-transitive-dependency-update-${new Date().toISOString().split('T')[0]}`,
+              head: branch,
               base: 'main',
               state: 'open'
             });
-            
+
             if (pulls.data.length === 0) {
               console.log('No matching pull request found');
               return;
             }
-            
+
             const pr = pulls.data[0];
-            
-            // Wait for checks to complete
-            await new Promise(resolve => setTimeout(resolve, 300000)); // Wait 5 minutes
-            
-            const { data: checks } = await github.rest.checks.listForRef({
-              owner,
-              repo,
-              ref: pr.head.sha
-            });
-            
-            const allChecksPassed = checks.check_runs.every(run => run.conclusion === 'success');
-            
-            if (allChecksPassed) {
+
+            const result = await retry(
+              async () => {
+                const { data: checks } = await github.rest.checks.listForRef({
+                  owner,
+                  repo,
+                  ref: pr.head.sha
+                });
+
+                const allCompleted = checks.check_runs.every(run => run.status === 'completed');
+                const allAcceptable = checks.check_runs.every(run =>
+                  ['success', 'skipped', 'neutral'].includes(run.conclusion)
+                );
+
+                if (!allCompleted) {
+                  throw new Error(`PR #${pr.number} still has pending checks. Retrying...`);
+                }
+
+                if (!allAcceptable) {
+                  console.log(`PR #${pr.number} has failed checks that prevent merging.`);
+                }
+
+                return 'success';
+              },
+              {
+                retries: 5,
+                minTimeout: 2 * 60 * 1000,
+                maxTimeout: 2 * 60 * 1000,
+                onRetry: (error, attempt) => {
+                  const timestamp = new Date().toISOString();
+                  console.log(`[${timestamp}] Attempt ${attempt} failed: ${error.message}. Retrying...`);
+                }
+              }
+            );
+
+            if (result === 'success') {
               await github.rest.pulls.merge({
                 owner,
                 repo,
                 pull_number: pr.number,
                 merge_method: 'squash'
               });
-              console.log(`Pull Request #${pr.number} merged successfully`);
-            } else {
-              console.log(`Not all checks passed for PR #${pr.number}`);
+              console.log(`PR #${pr.number} merged successfully.`);
+            }
+            else {
+              console.log(`PR #${pr.number} could not be merged due to failed checks.`);
             }

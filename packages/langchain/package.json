@@ -1,12 +1,17 @@
 {
   "name": "@sap-ai-sdk/langchain",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
     "sap-ai-sdk",
     "langchain"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/ai-sdk-js",
+    "directory": "packages/langchain"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
