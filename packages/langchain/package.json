@@ -25,7 +25,7 @@
   ],
   "scripts": {
     "compile": "tsc",
-    "compile:cjs": "tsc -p tsconfig.cjs.json",
+    "compile:cjs": "mv package.json package.json.bak && echo '{ \"type\": \"commonjs\" }' > package.json && tsc -p tsconfig.cjs.json && mv package.json.bak package.json",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint \"**/*.ts\" && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
