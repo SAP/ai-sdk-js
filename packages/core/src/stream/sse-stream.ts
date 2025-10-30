@@ -1,13 +1,8 @@
-import { createLogger, ErrorWithCause } from '@sap-cloud-sdk/util';
+import { ErrorWithCause } from '@sap-cloud-sdk/util';
 import { LineDecoder } from './line-decoder.js';
 import { SSEDecoder } from './sse-decoder.js';
 import type { ServerSentEvent } from './sse-decoder.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-
-const logger = createLogger({
-  package: 'core',
-  messageContext: 'sse-stream'
-});
 
 type Bytes = string | ArrayBuffer | Uint8Array | Buffer | null | undefined;
 
