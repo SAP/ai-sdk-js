@@ -21,12 +21,12 @@
     "lint:fix": "eslint . --fix && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -w --log-level error"
   },
   "dependencies": {
-    "@langchain/mcp-adapters": "^1.0.0",
+    "@langchain/mcp-adapters": "^0.6.0",
     "@modelcontextprotocol/sdk": "^1.20.2",
-    "@langchain/langgraph": "^1.0.1",
+    "@langchain/langgraph": "^0.4.9",
     "langchain": "0.3.36",
     "@langchain/core": "0.3.78",
-    "@langchain/textsplitters": "1.0.0",
+    "@langchain/textsplitters": "0.1.0",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/document-grounding": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
