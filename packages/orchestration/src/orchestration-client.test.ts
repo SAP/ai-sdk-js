@@ -899,7 +899,7 @@ describe('orchestration service client', () => {
     `);
   });
   describe('OrchestrationClient Stream Error Handling', () => {
-    it('throws error when getting an SSE error chunk ', async () => {
+    it('throws error when getting an SSE error chunk', async () => {
       const config: OrchestrationModuleConfig = {
         promptTemplating: {
           model: {
@@ -944,9 +944,7 @@ describe('orchestration service client', () => {
         for await (const _ of response.stream) {
           /* empty */
         }
-      }).rejects.toThrowErrorMatchingInlineSnapshot(
-        '"{"request_id":"ecb33455-6983-4baa-9889-ab391ddcd9b4","code":400,"message":"400 - LLM Module: Model gpt-5 in version wrong-version not found.","location":"LLM Module"}"'
-      );
+      }).rejects.toThrowErrorMatchingSnapshot();
     });
 
     it('should abort controller and re-throw error when network request fails', async () => {

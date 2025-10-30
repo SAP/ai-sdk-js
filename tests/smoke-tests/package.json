@@ -34,7 +34,7 @@
   "devDependencies": {
     "@types/express": "^5.0.5",
     "dotenv": "^17.2.3",
-    "dotenv-cli": "^9.0.0"
+    "dotenv-cli": "^11.0.0"
   },
   "engines": {
     "node": "20.x || 22.x || 24.x"
