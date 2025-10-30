@@ -235,8 +235,8 @@ importers:
         version: 5.1.0
     devDependencies:
       '@sap/cds-dk':
-        specifier: ^9.4.2
-        version: 9.4.2(@eslint/js@9.38.0)
+        specifier: ^9.4.3
+        version: 9.4.3(@eslint/js@9.38.0)
 
   sample-code:
     dependencies:
@@ -284,7 +284,7 @@ importers:
         version: 5.1.0
       langchain:
         specifier: 0.3.36
-        version: 0.3.36(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(axios@1.12.2)(handlebars@4.7.8)(openai@5.12.2(ws@8.18.3)(zod@3.25.76))(ws@8.18.3)
+        version: 0.3.36(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(axios@1.13.1)(handlebars@4.7.8)(openai@5.12.2(ws@8.18.3)(zod@3.25.76))(ws@8.18.3)
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
@@ -360,7 +360,7 @@ importers:
         version: 5.1.0
       langchain:
         specifier: 0.3.36
-        version: 0.3.36(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(axios@1.12.2)(handlebars@4.7.8)(openai@5.12.2(ws@8.18.3)(zod@3.25.76))(ws@8.18.3)
+        version: 0.3.36(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(axios@1.13.1)(handlebars@4.7.8)(openai@5.12.2(ws@8.18.3)(zod@3.25.76))(ws@8.18.3)
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
@@ -1263,8 +1263,8 @@ packages:
     engines: {node: '>=20'}
     hasBin: true
 
-  '@sap/cds-dk@9.4.2':
-    resolution: {integrity: sha512-umNz4D30a/Oh3cFQU1wK8rxoIOBQrBiUs/k6OfG2ibQaF/rGOXz8N8lGzkY7pC535RJbtJ31OwNjKAcLGrchVQ==}
+  '@sap/cds-dk@9.4.3':
+    resolution: {integrity: sha512-kVz08dhBF7Zms1disoXUoEIrR/ctJkZd7gky1I/sww4fwl832elW6ZxTs85HLn+LeF0Gr3/HX+jJoqRy+3GYNg==}
     hasBin: true
 
   '@sap/cds-fiori@2.1.0':
@@ -1273,8 +1273,8 @@ packages:
       '@sap/cds': '>=8'
       express: ^4
 
-  '@sap/cds-mtxs@3.4.2':
-    resolution: {integrity: sha512-bpKHKbehDSZpe9IoY1Vn2LQ5kgQns6RdlMsTOE9rw9zP//Yq5hFtl7SKFEM0A0/+WL3E+Rp/7Y2tc76erKYqdA==}
+  '@sap/cds-mtxs@3.4.3':
+    resolution: {integrity: sha512-vgABFr7huaKWGx2fWHeGom5bVgsQKD7/gqkC7aQ/7yC9hdZdrx0mz4iZ0ASHUZ5PZWp2FWLD+eaJ9sXKUGHgpA==}
     hasBin: true
     peerDependencies:
       '@sap/cds': ^9
@@ -1933,6 +1933,9 @@ packages:
 
   axios@1.12.2:
     resolution: {integrity: sha512-vMJzPewAlRyOgxV2dU0Cuz2O8zzzx9VYtbJOaBgXFeLc4IV/Eg50n4LowmehOOR61S8ZMpc2K5Sa7g6A4jfkUw==}
+
+  axios@1.13.1:
+    resolution: {integrity: sha512-hU4EGxxt+j7TQijx1oYdAjw4xuIp1wRQSsbMFwSthCWeBQur1eF+qJ5iQ5sN3Tw8YRzQNKb8jszgBdMDVqwJcw==}
 
   babel-jest@30.2.0:
     resolution: {integrity: sha512-0YiBEOxWqKkSQWL9nNGGEgndoeL0ZpWrbLMNL5u/Kaxrli3Eaxlt3ZtIDktEvXt4L/R9r3ODr2zKwGM/2BjxVw==}
@@ -3878,8 +3881,8 @@ packages:
     resolution: {integrity: sha512-Q7HjkpyPeLa0ZVZC5qpxBt5EyLczFJ91MEewQiIi9taWuA0KB/MDJlUWtON+7dGouVdADTQsf9RA7TZk6D8VMw==}
     engines: {node: '>=18.20.0 <20 || >=20.12.1'}
 
-  node-abi@3.78.0:
-    resolution: {integrity: sha512-E2wEyrgX/CqvicaQYU3Ze1PFGjc4QYPGsjUrlYkqAE0WjHEZwgOsGMPMzkMse4LjJbDmaEuDX3CM036j5K2DSQ==}
+  node-abi@3.79.0:
+    resolution: {integrity: sha512-Pr/5KdBQGG8TirdkS0qN3B+f3eo8zTOfZQWAxHoJqopMz2/uvRnG+S4fWu/6AZxKei2CP2p/psdQ5HFC2Ap5BA==}
     engines: {node: '>=10'}
 
   node-cache@5.1.2:
@@ -6404,14 +6407,14 @@ snapshots:
 
   '@sap/cds-compiler@6.4.2': {}
 
-  '@sap/cds-dk@9.4.2(@eslint/js@9.38.0)':
+  '@sap/cds-dk@9.4.3(@eslint/js@9.38.0)':
     dependencies:
       '@cap-js/asyncapi': 1.0.3(@sap/cds@9.4.4(@eslint/js@9.38.0)(express@5.1.0))
       '@cap-js/openapi': 1.2.3(@sap/cds@9.4.4(@eslint/js@9.38.0)(express@5.1.0))
       '@sap/cds': 9.4.4(@eslint/js@9.38.0)(express@4.21.2)
-      '@sap/cds-mtxs': 3.4.2(@sap/cds@9.4.4(@eslint/js@9.38.0)(express@5.1.0))(hdb@0.19.12)
+      '@sap/cds-mtxs': 3.4.3(@sap/cds@9.4.4(@eslint/js@9.38.0)(express@5.1.0))(hdb@0.19.12)
       '@sap/hdi-deploy': 5.5.1(hdb@0.19.12)
-      axios: 1.12.2
+      axios: 1.13.1
       express: 4.21.2
       hdb: 0.19.12
       livereload-js: 4.0.2
@@ -6441,7 +6444,7 @@ snapshots:
       '@sap/cds': 9.4.4(@eslint/js@9.38.0)(express@5.1.0)
       express: 5.1.0
 
-  '@sap/cds-mtxs@3.4.2(@sap/cds@9.4.4(@eslint/js@9.38.0)(express@5.1.0))(hdb@0.19.12)':
+  '@sap/cds-mtxs@3.4.3(@sap/cds@9.4.4(@eslint/js@9.38.0)(express@5.1.0))(hdb@0.19.12)':
     dependencies:
       '@sap/cds': 9.4.4(@eslint/js@9.38.0)(express@5.1.0)
       '@sap/hdi-deploy': 5.5.1(hdb@0.19.12)
@@ -7241,6 +7244,14 @@ snapshots:
       possible-typed-array-names: 1.1.0
 
   axios@1.12.2:
+    dependencies:
+      follow-redirects: 1.15.11
+      form-data: 4.0.4
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+
+  axios@1.13.1:
     dependencies:
       follow-redirects: 1.15.11
       form-data: 4.0.4
@@ -9189,7 +9200,7 @@ snapshots:
 
   kuler@2.0.0: {}
 
-  langchain@0.3.36(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(axios@1.12.2)(handlebars@4.7.8)(openai@5.12.2(ws@8.18.3)(zod@3.25.76))(ws@8.18.3):
+  langchain@0.3.36(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(axios@1.13.1)(handlebars@4.7.8)(openai@5.12.2(ws@8.18.3)(zod@3.25.76))(ws@8.18.3):
     dependencies:
       '@langchain/core': 0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
       '@langchain/openai': 0.6.16(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(ws@8.18.3)
@@ -9204,7 +9215,7 @@ snapshots:
       yaml: 2.8.1
       zod: 3.25.76
     optionalDependencies:
-      axios: 1.12.2
+      axios: 1.13.1
       handlebars: 4.7.8
     transitivePeerDependencies:
       - '@opentelemetry/api'
@@ -9494,7 +9505,7 @@ snapshots:
       json-stringify-safe: 5.0.1
       propagate: 2.0.1
 
-  node-abi@3.78.0:
+  node-abi@3.79.0:
     dependencies:
       semver: 7.7.3
     optional: true
@@ -9829,7 +9840,7 @@ snapshots:
       minimist: 1.2.8
       mkdirp-classic: 0.5.3
       napi-build-utils: 2.0.0
-      node-abi: 3.78.0
+      node-abi: 3.79.0
       pump: 3.0.3
       rc: 1.2.8
       simple-get: 4.0.1
