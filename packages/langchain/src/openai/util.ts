@@ -248,19 +248,23 @@ function mapSystemMessageToAzureOpenAiSystemMessage(
 function mapBaseMessageToAzureOpenAiChatMessage(
   message: BaseMessage
 ): AzureOpenAiChatCompletionRequestMessage {
-  switch (message.getType()) {
+  switch (message.type) {
     case 'ai':
-      return mapAiMessageToAzureOpenAiAssistantMessage(message);
+      return mapAiMessageToAzureOpenAiAssistantMessage(message as AIMessage);
     case 'human':
-      return mapHumanMessageToAzureOpenAiUserMessage(message);
+      return mapHumanMessageToAzureOpenAiUserMessage(message as HumanMessage);
     case 'system':
-      return mapSystemMessageToAzureOpenAiSystemMessage(message);
+      return mapSystemMessageToAzureOpenAiSystemMessage(
+        message as SystemMessage
+      );
     case 'function':
-      return mapFunctionMessageToAzureOpenAiFunctionMessage(message);
+      return mapFunctionMessageToAzureOpenAiFunctionMessage(
+        message as FunctionMessage
+      );
     case 'tool':
       return mapToolMessageToAzureOpenAiToolMessage(message as ToolMessage);
     default:
-      throw new Error(`Unsupported message type: ${message.getType()}`);
+      throw new Error(`Unsupported message type: ${message.type}`);
   }
 }
 

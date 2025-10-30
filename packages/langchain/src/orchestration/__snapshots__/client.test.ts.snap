@@ -157,7 +157,9 @@ Overall, the SAP Cloud SDK is an essential tool for developers looking to build 
     "tool_call_chunks": [],
     "tool_calls": [],
     "usage_metadata": {
+      "input_token_details": {},
       "input_tokens": 17,
+      "output_token_details": {},
       "output_tokens": 271,
       "total_tokens": 288,
     },
