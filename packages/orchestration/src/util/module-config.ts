@@ -2,7 +2,9 @@ import { createLogger } from '@sap-cloud-sdk/util';
 import type {
   ChatCompletionRequest,
   StreamOptions,
-  OrchestrationModuleConfig
+  OrchestrationModuleConfig,
+  EmbeddingModuleConfig,
+  EmbeddingRequest
 } from '../orchestration-types.js';
 import type {
   CompletionPostRequest,
@@ -12,7 +14,10 @@ import type {
   OutputFilteringConfig,
   Template,
   PromptTemplatingModuleConfig,
-  TemplateRef
+  TemplateRef,
+  EmbeddingsPostRequest,
+  EmbeddingsOrchestrationConfig,
+  EmbeddingsModuleConfigs
 } from '../client/api/schema/index.js';
 
 const logger = createLogger({
@@ -143,6 +148,25 @@ export function constructCompletionPostRequest(
   stream?: boolean,
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
+  const moduleConfigurations = buildCompletionModulesConfig(config, request);
+
+  return {
+    config: stream
+      ? addStreamOptions(moduleConfigurations, streamOptions)
+      : { modules: moduleConfigurations },
+    ...(request?.placeholderValues && {
+      placeholder_values: request.placeholderValues
+    }),
+    ...(request?.messagesHistory && {
+      messages_history: request.messagesHistory
+    })
+  };
+}
+
+function buildCompletionModulesConfig(
+  config: OrchestrationModuleConfig,
+  request?: ChatCompletionRequest
+): ModuleConfigs {
   const { promptTemplating, filtering, masking, grounding, translation } =
     config;
 
@@ -164,7 +188,7 @@ export function constructCompletionPostRequest(
     ];
   }
 
-  const moduleConfigurations: ModuleConfigs = {
+  return {
     prompt_templating: {
       ...promptTemplating,
       prompt
@@ -173,18 +197,6 @@ export function constructCompletionPostRequest(
     ...(masking && Object.keys(masking).length && { masking }),
     ...(grounding && Object.keys(grounding).length && { grounding }),
     ...(translation && Object.keys(translation).length && { translation })
-  };
-
-  return {
-    config: stream
-      ? addStreamOptions(moduleConfigurations, streamOptions)
-      : { modules: moduleConfigurations },
-    ...(request?.placeholderValues && {
-      placeholder_values: request.placeholderValues
-    }),
-    ...(request?.messagesHistory && {
-      messages_history: request.messagesHistory
-    })
   };
 }
 
@@ -196,4 +208,47 @@ function isTemplate(
     typeof templating === 'object' &&
     !('template_ref' in templating)
   );
+}
+
+/**
+ * Constructs an embedding post request from the given configuration and request.
+ * @internal
+ */
+export function constructEmbeddingPostRequest(
+  config: EmbeddingModuleConfig,
+  request: EmbeddingRequest
+): EmbeddingsPostRequest {
+  const orchestrationConfig: EmbeddingsOrchestrationConfig = {
+    modules: buildEmbeddingModulesConfig(config)
+  };
+
+  const embeddingRequest: EmbeddingsPostRequest = {
+    config: orchestrationConfig,
+    input: {
+      text: request.input,
+      ...(request.type && { type: request.type })
+    }
+  };
+  return embeddingRequest;
+}
+
+function buildEmbeddingModulesConfig(
+  config: EmbeddingModuleConfig
+): EmbeddingsModuleConfigs {
+  const { embeddings, masking } = config;
+  const { model } = embeddings;
+  const { name, version, params } = model;
+
+  const modules: EmbeddingsModuleConfigs = {
+    embeddings: {
+      model: {
+        name,
+        ...(version && { version }),
+        ...(params && { params })
+      }
+    },
+    ...(masking && Object.keys(masking).length && { masking })
+  };
+
+  return modules;
 }

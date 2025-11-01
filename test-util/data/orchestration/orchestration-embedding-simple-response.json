@@ -1,0 +1,18 @@
+{
+  "request_id": "random-request-id",
+  "final_result": {
+    "object": "list",
+    "data": [
+      {
+        "object": "embedding",
+        "embedding": [0.40689898, -0.5339842, -0.71838975, -0.1822372],
+        "index": 0
+      }
+    ],
+    "model": "text-embedding-3-small",
+    "usage": {
+      "prompt_tokens": 20,
+      "total_tokens": 20
+    }
+  }
+}
