@@ -17,13 +17,28 @@ export function buildTranslationConfig<T extends ConfigType>(
   type: T,
   config: TranslationConfigParams<T>
 ): TranslationReturnType<T> {
+  const baseConfig = {
+    ...(config.sourceLanguage && {
+      source_language: config.sourceLanguage
+    }),
+    target_language: config.targetLanguage
+  };
+
+  if (type === 'input') {
+    const inputConfig = config as TranslationConfigParams<'input'>;
+    return {
+      type: 'sap_document_translation',
+      config: {
+        ...baseConfig,
+        ...(inputConfig.applyTo && {
+          apply_to: inputConfig.applyTo
+        })
+      }
+    } as TranslationReturnType<T>;
+  }
+
   return {
     type: 'sap_document_translation',
-    config: {
-      ...(config.sourceLanguage && {
-        source_language: config.sourceLanguage
-      }),
-      target_language: config.targetLanguage
-    }
-  };
+    config: baseConfig
+  } as TranslationReturnType<T>;
 }
