@@ -20,7 +20,6 @@ jobs:
         run: |
           pnpm --no-save update
           pnpm audit --audit-level high
-
           if [[ -n "$(git status --porcelain)" ]]; then
             git config --global user.email "cloud-sdk-js@github.com"
             git config --global user.name "cloud-sdk-js"
@@ -35,7 +34,6 @@ jobs:
             echo "No changes to commit"
             echo "branch-created=false" >> $GITHUB_OUTPUT
           fi
-
       - name: Create Pull Request
         if: steps.update-deps.outputs.branch-created == 'true'
         uses: actions/github-script@v8
@@ -53,7 +51,6 @@ jobs:
               body: 'This is an automated PR to update pnpm transitive dependencies.'
             });
             console.log(`Pull Request created: ${result.data.html_url}`);
-
       - name: Install async-retry for auto-merge
         if: steps.update-deps.outputs.branch-created == 'true'
         run: pnpm install async-retry -w
@@ -67,7 +64,6 @@ jobs:
             const retry = require('async-retry');
             const { repo, owner } = context.repo;
             const branch = '${{ steps.update-deps.outputs.branch-name }}';
-
             const pulls = await github.rest.pulls.list({
               owner,
               repo,
@@ -75,14 +71,11 @@ jobs:
               base: 'main',
               state: 'open'
             });
-
             if (pulls.data.length === 0) {
               console.log('No matching pull request found');
               return;
             }
-
             const pr = pulls.data[0];
-
             const result = await retry(
               async () => {
                 const { data: checks } = await github.rest.checks.listForRef({
@@ -90,20 +83,16 @@ jobs:
                   repo,
                   ref: pr.head.sha
                 });
-
                 const allCompleted = checks.check_runs.every(run => run.status === 'completed');
                 const allAcceptable = checks.check_runs.every(run =>
                   ['success', 'skipped', 'neutral'].includes(run.conclusion)
                 );
-
                 if (!allCompleted) {
                   throw new Error(`PR #${pr.number} still has pending checks. Retrying...`);
                 }
-
                 if (!allAcceptable) {
                   console.log(`PR #${pr.number} has failed checks that prevent merging.`);
                 }
-
                 return 'success';
               },
               {
@@ -116,7 +105,6 @@ jobs:
                 }
               }
             );
-
             if (result === 'success') {
               await github.rest.pulls.merge({
                 owner,
