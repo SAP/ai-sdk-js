@@ -155,7 +155,7 @@ importers:
   packages/langchain:
     dependencies:
       '@langchain/core':
-        specifier: ^1.0.2
+        specifier: ^1.0.3
         version: 1.0.3(openai@6.8.1(ws@8.18.3)(zod@4.1.12))
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
@@ -244,7 +244,7 @@ importers:
         specifier: ^1.0.1
         version: 1.0.1(@langchain/core@1.0.3(openai@6.8.1(ws@8.18.3)(zod@4.1.12)))(openai@6.8.1(ws@8.18.3)(zod@4.1.12))(ws@8.18.3)
       '@langchain/core':
-        specifier: ^1.0.2
+        specifier: ^1.0.3
         version: 1.0.3(openai@6.8.1(ws@8.18.3)(zod@4.1.12))
       '@langchain/langgraph':
         specifier: ^1.0.1
@@ -323,7 +323,7 @@ importers:
   tests/smoke-tests:
     dependencies:
       '@langchain/core':
-        specifier: ^1.0.2
+        specifier: ^1.0.3
         version: 1.0.3(openai@6.8.1(ws@8.18.3)(zod@4.1.12))
       '@langchain/langgraph':
         specifier: ^1.0.1
@@ -359,7 +359,7 @@ importers:
         specifier: ^5.1.0
         version: 5.1.0
       langchain:
-        specifier: ^1.0.2
+        specifier: ^1.0.3
         version: 1.0.3(@langchain/core@1.0.3(openai@6.8.1(ws@8.18.3)(zod@4.1.12)))(openai@6.8.1(ws@8.18.3)(zod@4.1.12))(zod-to-json-schema@3.24.6(zod@4.1.12))
       uuid:
         specifier: ^13.0.0
