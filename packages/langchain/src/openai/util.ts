@@ -127,6 +127,11 @@ export function mapOutputToChatResult(
         tool_calls: mapAzureOpenAiToLangChainToolCall(
           choice.message.tool_calls
         ),
+        usage_metadata: {
+          input_tokens: choice.message.usage?.prompt_tokens ?? 0,
+          output_tokens: choice.message.usage?.completion_tokens ?? 0,
+          total_tokens: choice.message.usage?.total_tokens ?? 0
+        },
         additional_kwargs: {
           function_call: choice.message.function_call,
           tool_calls: choice.message.tool_calls

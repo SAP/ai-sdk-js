@@ -28,6 +28,11 @@ exports[`orchestration service client resilience returns successful response whe
       "tool_calls": undefined,
     },
     "tool_calls": [],
+    "usage_metadata": {
+      "input_tokens": 9,
+      "output_tokens": 10,
+      "total_tokens": 19,
+    },
   },
   "lc": 1,
   "type": "constructor",
@@ -62,6 +67,11 @@ exports[`orchestration service client resilience returns successful response whe
       "tool_calls": undefined,
     },
     "tool_calls": [],
+    "usage_metadata": {
+      "input_tokens": 9,
+      "output_tokens": 10,
+      "total_tokens": 19,
+    },
   },
   "lc": 1,
   "type": "constructor",
