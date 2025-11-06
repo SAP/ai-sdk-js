@@ -422,7 +422,6 @@ export type ConfigType = 'input' | 'output';
 
 /**
  * Input parameters for translation configuration.
- * @internal
  */
 interface TranslationConfigParametersInput {
   /**
@@ -443,7 +442,6 @@ interface TranslationConfigParametersInput {
 
 /**
  * Output parameters for translation configuration.
- * @internal
  */
 interface TranslationConfigParametersOutput {
   /**
