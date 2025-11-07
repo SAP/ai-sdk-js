@@ -25,8 +25,7 @@ import type {
   LlamaGuard38BFilterConfig,
   SAPDocumentTranslationInput,
   SAPDocumentTranslationOutput,
-  SAPDocumentTranslationApplyToSelector,
-  SAPDocumentTranslationOutputTargetLanguage
+  SAPDocumentTranslationApplyToSelector
 } from './client/api/schema/index.js';
 
 /**
@@ -451,11 +450,11 @@ interface TranslationConfigParametersOutput {
    * @example sourceLanguage: 'de-DE'
    */
   sourceLanguage?: string;
-  /**
+    /**
    * Language to which the text should be translated.
    * @example targetLanguage: 'en-US'
    */
-  targetLanguage: SAPDocumentTranslationOutputTargetLanguage;
+  targetLanguage: string;
 }
 
 /**
