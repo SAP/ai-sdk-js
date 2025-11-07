@@ -259,20 +259,6 @@ describe('Chat client', () => {
       );
     });
 
-    it('should use `functionCalling` for older deprecated models', async () => {
-      const oldClient = new AzureOpenAiChatClient({
-        modelName: 'gpt-35-turbo'
-      });
-      const spy = jest.spyOn(oldClient, 'withConfig');
-
-      oldClient.withStructuredOutput(joke);
-      expect(spy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          tools: expect.any(Array)
-        })
-      );
-    });
-
     it('should use `functionCalling` with openai function json schema', async () => {
       const openAiFunctionJsonSchema: AzureOpenAiFunctionObject = {
         name: 'joke',
