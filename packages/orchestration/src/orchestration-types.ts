@@ -450,7 +450,7 @@ interface TranslationConfigParametersOutput {
    * @example sourceLanguage: 'de-DE'
    */
   sourceLanguage?: string;
-    /**
+  /**
    * Language to which the text should be translated.
    * @example targetLanguage: 'en-US'
    */
