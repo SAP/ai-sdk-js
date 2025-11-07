@@ -24,8 +24,7 @@ import type {
   AzureContentSafetyOutputFilterConfig,
   LlamaGuard38BFilterConfig,
   SAPDocumentTranslationInput,
-  SAPDocumentTranslationOutput,
-  SAPDocumentTranslationApplyToSelector
+  SAPDocumentTranslationOutput
 } from './client/api/schema/index.js';
 
 /**
@@ -434,10 +433,6 @@ interface TranslationConfigParametersInput {
    * @example targetLanguage: 'en-US'
    */
   targetLanguage: string;
-  /**
-   * List of selectors to apply translation to.
-   */
-  applyTo?: SAPDocumentTranslationApplyToSelector[];
 }
 
 /**
