@@ -436,7 +436,6 @@ interface TranslationConfigParametersInput {
 
 /**
  * Output parameters for translation configuration.
- * @internal
  */
 interface TranslationConfigParametersOutput {
   /**
