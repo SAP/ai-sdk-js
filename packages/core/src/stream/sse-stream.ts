@@ -1,13 +1,8 @@
-import { createLogger } from '@sap-cloud-sdk/util';
+import { ErrorWithCause } from '@sap-cloud-sdk/util';
 import { LineDecoder } from './line-decoder.js';
 import { SSEDecoder } from './sse-decoder.js';
 import type { ServerSentEvent } from './sse-decoder.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-
-const logger = createLogger({
-  package: 'core',
-  messageContext: 'sse-stream'
-});
 
 type Bytes = string | ArrayBuffer | Uint8Array | Buffer | null | undefined;
 
@@ -44,16 +39,13 @@ export class SseStream<Item> implements AsyncIterable<Item> {
           try {
             data = JSON.parse(sse.data);
           } catch (e: any) {
-            logger.error(`Could not parse message into JSON: ${sse.data}`);
-            logger.error(`From chunk: ${sse.raw}`);
-            throw e;
+            throw new ErrorWithCause('Could not parse message into JSON', e);
           }
 
           if (data?.error) {
-            logger.error(
-              `Error received from server: ${JSON.stringify(data.error)}`
+            throw new Error(
+              `Error received from the server.\n${JSON.stringify(data.error)}`
             );
-            throw new Error(JSON.stringify(data.error));
           }
 
           // Yield also the event if it exists, otherwise just the data
@@ -65,9 +57,7 @@ export class SseStream<Item> implements AsyncIterable<Item> {
         if (e instanceof Error && e.name === 'CanceledError') {
           return;
         }
-
-        logger.error(`Error while iterating over SSE stream: ${e.message}`);
-        throw e;
+        throw new ErrorWithCause('Error while iterating over SSE stream.', e);
       } finally {
         // Make sure that the controller is aborted if the stream was not fully consumed
         if (!done) {

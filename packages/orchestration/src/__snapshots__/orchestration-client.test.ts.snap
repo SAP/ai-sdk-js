@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`orchestration service client OrchestrationClient Stream Error Handling throws error when getting an SSE error chunk 1`] = `
+"Error while iterating over SSE stream.
+Cause: Error received from the server.
+{"request_id":"ecb33455-6983-4baa-9889-ab391ddcd9b4","code":400,"message":"400 - LLM Module: Model gpt-5 in version wrong-version not found.","location":"LLM Module"}"
+`;
