@@ -56,6 +56,8 @@ export type AwsBedrockChatModel = LiteralUnion<
  * AWS Bedrock models for embedding.
  */
 export type AwsBedrockEmbeddingModel = LiteralUnion<'amazon--titan-embed-text'>;
+
+/**
  * Perplexity models for chat completion.
  */
 export type PerplexityChatModel = LiteralUnion<'sonar' | 'sonar-pro'>;

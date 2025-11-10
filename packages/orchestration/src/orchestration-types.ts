@@ -24,7 +24,7 @@ import type {
   AzureContentSafetyOutputFilterConfig,
   LlamaGuard38BFilterConfig,
   EmbeddingsModelDetails as OriginalEmbeddingsModelDetails,
-  EmbeddingsModelParams as OriginalEmbeddingsModelParams
+  EmbeddingsModelParams as OriginalEmbeddingsModelParams,
   SAPDocumentTranslationInput,
   SAPDocumentTranslationOutput
 } from './client/api/schema/index.js';
