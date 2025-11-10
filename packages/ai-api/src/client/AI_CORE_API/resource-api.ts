@@ -7,7 +7,8 @@ import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';
 import type {
   BckndResourceGetResponse,
   BckndResourcePatchBody,
-  BckndResourcePatchResponse
+  BckndResourcePatchResponse,
+  BckndInstanceTypeGetResponse
 } from './schema/index.js';
 /**
  * Representation of the 'ResourceApi'.
@@ -44,6 +45,22 @@ export const ResourceApi = {
       '/admin/resources/nodes',
       {
         body,
+        headerParameters
+      },
+      ResourceApi._defaultBasePath
+    ),
+  /**
+   * Lists all the instance types available in the cluster.
+   * @param headerParameters - Object containing the following keys: Authorization.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  kubesubmitV4InstanceTypesGet: (headerParameters?: {
+    Authorization?: string;
+  }) =>
+    new OpenApiRequestBuilder<BckndInstanceTypeGetResponse>(
+      'get',
+      '/admin/resources/instanceTypes',
+      {
         headerParameters
       },
       ResourceApi._defaultBasePath

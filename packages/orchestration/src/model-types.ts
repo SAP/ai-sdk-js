@@ -2,7 +2,8 @@ import type {
   AiCoreOpenSourceChatModel,
   AwsBedrockChatModel,
   AzureOpenAiChatModel,
-  GcpVertexAiChatModel
+  GcpVertexAiChatModel,
+  PerplexityChatModel
 } from '@sap-ai-sdk/core';
 
 /**
@@ -12,4 +13,5 @@ export type ChatModel =
   | AzureOpenAiChatModel
   | GcpVertexAiChatModel
   | AwsBedrockChatModel
+  | PerplexityChatModel
   | AiCoreOpenSourceChatModel;
