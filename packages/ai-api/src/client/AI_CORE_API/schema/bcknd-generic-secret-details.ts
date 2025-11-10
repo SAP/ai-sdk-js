@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-
+import type { BckndGenericSecretLabels } from './bcknd-generic-secret-labels.js';
 /**
  * Representation of the 'BckndGenericSecretDetails' schema.
  */
@@ -16,6 +16,7 @@ export type BckndGenericSecretDetails = {
    * Timestamp at which secret was created
    */
   createdAt: string;
+  labels?: BckndGenericSecretLabels;
   /**
    * Sync status of the replicated secrets in all resource groups of the tenant
    */
