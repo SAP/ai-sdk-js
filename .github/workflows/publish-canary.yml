@@ -47,4 +47,4 @@ jobs:
         node-version: 24 # Will install npm 11 needed for trusted publishing
     - name: publish
       run: |
-        pnpm changeset publish
+        pnpm changeset publish --tag ${{ inputs.tag }}
