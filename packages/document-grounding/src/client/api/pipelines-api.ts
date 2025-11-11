@@ -9,11 +9,15 @@ import type {
   CreatePipeline,
   PipelineId,
   GetPipeline,
+  PatchPipeline,
   GetPipelineStatus,
+  SearchPipeline,
+  SearchPipelinesResponse,
   GetPipelineExecutions,
   GetPipelineExecutionById,
   DocumentsStatusResponse,
-  PipelineDocumentResponse
+  PipelineDocumentResponse,
+  ManualPipelineTrigger
 } from './schema/index.js';
 /**
  * Representation of the 'PipelinesApi'.
@@ -79,6 +83,28 @@ export const PipelinesApi = {
       PipelinesApi._defaultBasePath
     ),
   /**
+   * Patch a pipeline by pipeline id
+   * @param pipelineId - The ID of the pipeline to patch.
+   * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  patchPipelineById: (
+    pipelineId: string,
+    body: PatchPipeline,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
+    new OpenApiRequestBuilder<any>(
+      'patch',
+      '/pipelines/{pipelineId}',
+      {
+        pathParameters: { pipelineId },
+        body,
+        headerParameters
+      },
+      PipelinesApi._defaultBasePath
+    ),
+  /**
    * Delete a pipeline by pipeline id
    * @param pipelineId - The ID of the pipeline to delete.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
@@ -112,6 +138,28 @@ export const PipelinesApi = {
       '/pipelines/{pipelineId}/status',
       {
         pathParameters: { pipelineId },
+        headerParameters
+      },
+      PipelinesApi._defaultBasePath
+    ),
+  /**
+   * Search for pipelines based on metadata
+   * @param body - Request body.
+   * @param queryParameters - Object containing the following keys: $top, $skip, $count.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  searchPipelinesByMetadata: (
+    body: SearchPipeline,
+    queryParameters: { $top?: number; $skip?: number; $count?: boolean },
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
+    new OpenApiRequestBuilder<SearchPipelinesResponse>(
+      'post',
+      '/pipelines/search',
+      {
+        body,
+        queryParameters,
         headerParameters
       },
       PipelinesApi._defaultBasePath
@@ -250,6 +298,25 @@ export const PipelinesApi = {
       '/pipelines/{pipelineId}/documents/{documentId}',
       {
         pathParameters: { pipelineId, documentId },
+        headerParameters
+      },
+      PipelinesApi._defaultBasePath
+    ),
+  /**
+   * Manually trigger a pipeline
+   * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  manualTriggerPipeline: (
+    body: ManualPipelineTrigger,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
+    new OpenApiRequestBuilder<any>(
+      'post',
+      '/pipelines/trigger',
+      {
+        body,
         headerParameters
       },
       PipelinesApi._defaultBasePath

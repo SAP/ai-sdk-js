@@ -6,7 +6,6 @@
 
 /**
  * Representation of the 'PipelineExecutionStatus' schema.
- * @example "INPROGRESS"
  */
 export type PipelineExecutionStatus =
   | 'NEW'
@@ -14,4 +13,5 @@ export type PipelineExecutionStatus =
   | 'INPROGRESS'
   | 'FINISHED'
   | 'FINISHEDWITHERRORS'
-  | 'TIMEOUT';
+  | 'TIMEOUT'
+  | any;
