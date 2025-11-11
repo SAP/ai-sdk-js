@@ -9,8 +9,10 @@ on:
         required: false
         default: 'canary'
 jobs:
-  prepare-release:
+  publish:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
 
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
@@ -29,22 +31,10 @@ jobs:
           Canary release
           EOT
 
-      - name: version canary release
+      - name: publish
         run: |
           date=`date +%Y%m%d%H%M%S`
           pnpm changeset pre enter ${date}
           pnpm changeset version
           pnpm changeset pre exit
-
-  publish-npm:
-    needs: prepare-release
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-    steps:
-    - uses: sap/ai-sdk-js/.github/actions/setup@main
-      with:
-        node-version: 24 # Will install npm 11 needed for trusted publishing
-    - name: publish
-      run: |
-        pnpm changeset publish --tag ${{ inputs.tag }}
+          pnpm changeset publish --tag ${{ inputs.tag }}
