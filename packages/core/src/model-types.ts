@@ -53,8 +53,16 @@ export type AwsBedrockChatModel = LiteralUnion<
 >;
 
 /**
+ * Perplexity models for chat completion.
+ */
+export type PerplexityChatModel = LiteralUnion<'sonar' | 'sonar-pro'>;
+
+/**
  * AI Core open source models for chat completion.
  */
 export type AiCoreOpenSourceChatModel = LiteralUnion<
-  'mistralai--mistral-large-instruct' | 'mistralai--mistral-small-instruct'
+  | 'cohere--command-a-reasoning'
+  | 'mistralai--mistral-large-instruct'
+  | 'mistralai--mistral-medium-instruct'
+  | 'mistralai--mistral-small-instruct'
 >;

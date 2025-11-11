@@ -18,12 +18,13 @@ import type {
   InputFilteringConfig,
   OutputFilteringConfig,
   MaskingProviderConfig,
-  SAPDocumentTranslation,
   GlobalStreamOptions,
   ErrorResponse,
   AzureContentSafetyInputFilterConfig,
   AzureContentSafetyOutputFilterConfig,
-  LlamaGuard38BFilterConfig
+  LlamaGuard38BFilterConfig,
+  SAPDocumentTranslationInput,
+  SAPDocumentTranslationOutput
 } from './client/api/schema/index.js';
 
 /**
@@ -418,10 +419,25 @@ export type LlamaGuard38BCategory = keyof LlamaGuard38B;
 export type ConfigType = 'input' | 'output';
 
 /**
- * Parameters for translation configuration.
- * @internal
+ * Input parameters for translation configuration.
  */
-interface TranslationConfigParameters {
+interface TranslationConfigParametersInput {
+  /**
+   * Language of the text to be translated.
+   * @example sourceLanguage: 'de-DE'
+   */
+  sourceLanguage?: string;
+  /**
+   * Language to which the text should be translated.
+   * @example targetLanguage: 'en-US'
+   */
+  targetLanguage: string;
+}
+
+/**
+ * Output parameters for translation configuration.
+ */
+interface TranslationConfigParametersOutput {
   /**
    * Language of the text to be translated.
    * @example sourceLanguage: 'de-DE'
@@ -437,12 +453,12 @@ interface TranslationConfigParameters {
 /**
  * Output parameters for translation output configuration.
  */
-export type TranslationOutputParameters = TranslationConfigParameters;
+export type TranslationOutputParameters = TranslationConfigParametersOutput;
 
 /**
  * Input parameters for translation input configuration.
  */
-export type TranslationInputParameters = TranslationConfigParameters;
+export type TranslationInputParameters = TranslationConfigParametersInput;
 
 /**
  * Parameters for translation configurations.
@@ -454,12 +470,12 @@ export type TranslationConfigParams<T extends ConfigType> = T extends 'input'
 /**
  * Input configuration for translation module.
  */
-export type TranslationInputConfig = SAPDocumentTranslation;
+export type TranslationInputConfig = SAPDocumentTranslationInput;
 
 /**
  * Output configuration for translation module.
  */
-export type TranslationOutputConfig = SAPDocumentTranslation;
+export type TranslationOutputConfig = SAPDocumentTranslationOutput;
 
 /**
  * Return type for translation configurations.
