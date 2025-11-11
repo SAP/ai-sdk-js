@@ -1,9 +1,7 @@
 name: publish-canary
 
 on:
-  schedule:
-    - cron: '0 1 * * *'
-  workflow_dispatch:
+  workflow_call:
     inputs:
       tag:
         description: 'Dist tag for the release. If you chose something different than "canary", make sure to delete it once it is not needed anymore.'
@@ -11,7 +9,7 @@ on:
         required: false
         default: 'canary'
 jobs:
-  publish:
+  prepare-release:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,12 +29,22 @@ jobs:
           Canary release
           EOT
 
-      - name: publish
+      - name: version canary release
         run: |
           date=`date +%Y%m%d%H%M%S`
           pnpm changeset pre enter ${date}
           pnpm changeset version
           pnpm changeset pre exit
-          pnpm changeset publish --tag ${{ github.event_name == 'schedule' && 'canary' || inputs.tag }}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}
+
+  publish-npm:
+    needs: prepare-release
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+    - uses: sap/ai-sdk-js/.github/actions/setup@main
+      with:
+        node-version: 24 # Will install npm 11 needed for trusted publishing
+    - name: publish
+      run: |
+        pnpm changeset publish
