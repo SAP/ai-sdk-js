@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+          node-version: 24 # Will install npm 11 needed for trusted publishing
           pnpm-install-args: ''
 
       - name: prepare canary changeset
