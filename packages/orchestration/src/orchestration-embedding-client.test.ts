@@ -69,11 +69,11 @@ describe('orchestration embedding service client', () => {
 
     expect(response).toBeInstanceOf(OrchestrationEmbeddingResponse);
     expect(response._data.request_id).toBe('random-request-id');
-    expect(response._data.final_result?.model).toBe('text-embedding-3-small');
+    expect(response._data.final_result.model).toBe('text-embedding-3-small');
     expect(response.getEmbeddings().map(item => item.embedding)).toEqual(
       expect.any(Array)
     );
-    expect(response.getTokenUsage()?.prompt_tokens).toEqual(expect.any(Number));
+    expect(response.getTokenUsage().prompt_tokens).toEqual(expect.any(Number));
   });
 
   it('calls embed with array input', async () => {
