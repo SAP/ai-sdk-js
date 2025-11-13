@@ -379,6 +379,10 @@ export interface AzureContentSafetyFilterOutputParameters {
    * The filter category for violence content.
    */
   violence?: AzureFilterThreshold;
+  /**
+   * Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.
+   */
+  protected_material_code?: boolean;
 }
 /**
  * Input parameters for Azure content safety input filter.

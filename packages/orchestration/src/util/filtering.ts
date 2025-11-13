@@ -31,31 +31,35 @@ export function buildAzureContentSafetyFilter<T extends ConfigType>(
   }
 
   if (type === 'input') {
-    const { prompt_shield, ...rest } =
+    const { prompt_shield, protected_material_code, ...inputRest } =
       config as AzureContentSafetyFilterParameters<'input'>;
     return {
       type: 'azure_content_safety',
       config: {
         ...Object.fromEntries(
-          Object.entries(rest).map(([key, value]) => [
+          Object.entries(inputRest).map(([key, value]) => [
             key,
             supportedAzureFilterThresholds[value as AzureFilterThreshold]
           ])
         ),
-        ...(prompt_shield !== undefined && { prompt_shield })
+        ...(prompt_shield !== undefined && { prompt_shield }),
+        ...(protected_material_code !== undefined && { protected_material_code })
       }
     } as AzureContentSafetyFilterReturnType<T>;
   }
 
+  const { protected_material_code, ...outputRest } =
+    config as AzureContentSafetyFilterParameters<'output'>;
   return {
     type: 'azure_content_safety',
     config: {
       ...Object.fromEntries(
-        Object.entries(config).map(([key, value]) => [
+        Object.entries(outputRest).map(([key, value]) => [
           key,
           supportedAzureFilterThresholds[value as AzureFilterThreshold]
         ])
-      )
+      ),
+      ...(protected_material_code !== undefined && { protected_material_code })
     }
   } as AzureContentSafetyFilterReturnType<T>;
 }

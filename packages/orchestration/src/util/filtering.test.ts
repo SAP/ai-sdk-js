@@ -33,6 +33,36 @@ describe('Content filter util', () => {
         'Filtering parameters cannot be empty'
       );
     });
+
+    it('builds output filter config with protected_material_code', async () => {
+      const filterConfig = buildAzureContentSafetyFilter('output', {
+        hate: 'ALLOW_SAFE',
+        protected_material_code: true
+      });
+      const expectedFilterConfig = {
+        type: 'azure_content_safety',
+        config: {
+          hate: 0,
+          protected_material_code: true
+        }
+      };
+      expect(filterConfig).toEqual(expectedFilterConfig);
+    });
+
+    it('builds input filter config with protected_material_code', async () => {
+      const filterConfig = buildAzureContentSafetyFilter('input', {
+        hate: 'ALLOW_SAFE',
+        protected_material_code: true
+      });
+      const expectedFilterConfig = {
+        type: 'azure_content_safety',
+        config: {
+          hate: 0,
+          protected_material_code: true
+        }
+      };
+      expect(filterConfig).toEqual(expectedFilterConfig);
+    });
   });
 
   describe('Llama Guard filter', () => {
