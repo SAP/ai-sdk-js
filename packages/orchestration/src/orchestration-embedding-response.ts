@@ -23,7 +23,7 @@ export class OrchestrationEmbeddingResponse {
    */
   getEmbeddings(): EmbeddingData[] {
     // TODO: Remove non-null assertion when final_result is made mandatory in the schema
-    return this._data.final_result!.data.map((result: EmbeddingResult) => ({
+    return this._data.final_result.data.map((result: EmbeddingResult) => ({
       embedding: result.embedding,
       index: result.index,
       object: 'embedding'
@@ -34,7 +34,7 @@ export class OrchestrationEmbeddingResponse {
    * @returns Usage information or undefined.
    */
   getTokenUsage(): EmbeddingsUsage {
-    return this._data.final_result!.usage;
+    return this._data.final_result.usage;
   }
 
   /**
