@@ -1,6 +1,12 @@
 import { constructCompletionPostRequest } from '@sap-ai-sdk/orchestration/internal.js';
 import { jest } from '@jest/globals';
 import nock from 'nock';
+import {
+  START,
+  END,
+  MessagesAnnotation,
+  StateGraph
+} from '@langchain/langgraph';
 import { type AIMessageChunk } from '@langchain/core/messages';
 import {
   mockClientCredentialsGrantCall,
@@ -704,5 +710,64 @@ describe('orchestration service client', () => {
       });
       expect(finalOutput).toMatchSnapshot();
     });
+  });
+
+  it('streams when invoked in a streaming langgraph', async () => {
+    mockInference(
+      {
+        data: constructCompletionPostRequest(
+          {
+            ...config,
+            promptTemplating: {
+              ...config.promptTemplating,
+              prompt: {
+                template: messages
+              }
+            }
+          },
+          { messages: [] },
+          true
+        )
+      },
+      {
+        data: mockResponseStream,
+        status: 200
+      },
+      endpoint
+    );
+    jest.spyOn(OrchestrationClient.prototype, '_streamResponseChunks');
+
+    const llm = new OrchestrationClient(config);
+
+    // Define the function that calls the model
+    const callModel = async (state: typeof MessagesAnnotation.State) => {
+      const response = await llm.invoke(state.messages);
+      // Update message history with response:
+      return { messages: response };
+    };
+
+    // Define a new graph
+    const workflow = new StateGraph(MessagesAnnotation)
+      // Define the (single) node in the graph
+      .addNode('model', callModel)
+      .addEdge(START, 'model')
+      .addEdge('model', END);
+
+    const app = workflow.compile();
+    const stream = await app.stream(
+      {
+        messages
+      },
+      // langgraph will only enable streaming in a granular streaming mode
+      { streamMode: 'messages' as const }
+    );
+
+    let finalOutput;
+    for await (const chunk of stream) {
+      finalOutput =
+        finalOutput !== undefined ? finalOutput.concat(chunk) : chunk;
+    }
+
+    expect(llm._streamResponseChunks).toHaveBeenCalled();
   });
 });

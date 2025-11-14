@@ -3,6 +3,12 @@ import { apiVersion } from '@sap-ai-sdk/foundation-models/internal.js';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import { getSchemaDescription } from '@langchain/core/utils/types';
 import { jest } from '@jest/globals';
+import {
+  START,
+  END,
+  MessagesAnnotation,
+  StateGraph
+} from '@langchain/langgraph';
 import { addNumbersTool, joke } from '../../../../test-util/tools.js';
 import {
   mockClientCredentialsGrantCall,
@@ -608,6 +614,59 @@ describe('Chat client', () => {
         b: 2
       });
       expect(finalOutput).toMatchSnapshot();
+    });
+    it('streams when invoked in a streaming langgraph', async () => {
+      mockInference(
+        {
+          data: {
+            messages: [
+              {
+                role: 'user',
+                content: 'Hello!'
+              }
+            ],
+            stream: true,
+            stream_options: {
+              include_usage: true
+            }
+          }
+        },
+        {
+          data: mockResponseStream,
+          status: 200
+        },
+        endpoint
+      );
+      jest.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
+      // Simulate a minimal streaming langgraph-like workflow
+      const llm = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
+
+      // Simulate a node function that calls the model using invoke
+      const callModel = async (state: { messages: any }) => {
+        const messages = await llm.invoke(state.messages);
+        return { messages };
+      };
+
+      // Define a new graph
+      const workflow = new StateGraph(MessagesAnnotation)
+        // Define the (single) node in the graph
+        .addNode('model', callModel)
+        .addEdge(START, 'model')
+        .addEdge('model', END);
+
+      const app = workflow.compile();
+      const stream = await app.stream(
+        { messages: [{ role: 'user', content: 'Hello!' }] },
+        // langgraph will only enable streaming in a granular streaming mode
+        { streamMode: 'messages' as const }
+      );
+
+      let finalOutput;
+      for await (const chunk of stream) {
+        finalOutput =
+          finalOutput !== undefined ? finalOutput.concat(chunk) : chunk;
+      }
+      expect(llm._streamResponseChunks).toHaveBeenCalled();
     });
   });
 });

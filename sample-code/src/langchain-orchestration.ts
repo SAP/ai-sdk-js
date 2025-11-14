@@ -207,7 +207,10 @@ export async function invokeLangGraphChain(): Promise<string> {
 export async function invokeLangGraphChainStream(): Promise<string> {
   const app = createLangGraphApp();
 
-  const config = { configurable: { thread_id: uuidv4() } };
+  const config = {
+    configurable: { thread_id: uuidv4() },
+    streamMode: 'messages' as const
+  };
   const input = [
     {
       role: 'user',
@@ -216,10 +219,14 @@ export async function invokeLangGraphChainStream(): Promise<string> {
   ];
   const stream = await app.stream({ messages: input }, config);
 
-  let firstResponse = '';
+  let firstResponse;
   for await (const chunk of stream) {
-    firstResponse += chunk.model?.messages.content;
+    firstResponse =
+      firstResponse === undefined ? chunk : firstResponse.concat(chunk);
   }
+  const firstResponseStr = firstResponse!
+    .map(chunk => chunk?.content ?? '')
+    .join('');
 
   const input2 = [
     {
@@ -229,12 +236,16 @@ export async function invokeLangGraphChainStream(): Promise<string> {
   ];
   const stream2 = await app.stream({ messages: input2 }, config);
 
-  let secondResponse = '';
+  let secondResponse;
   for await (const chunk of stream2) {
-    secondResponse += chunk.model?.messages.content;
+    secondResponse =
+      secondResponse === undefined ? chunk : secondResponse.concat(chunk);
   }
+  const secondResponseStr = secondResponse!
+    .map(chunk => chunk?.content ?? '')
+    .join('');
 
-  return `${firstResponse}\n\n${secondResponse}`;
+  return `${firstResponseStr}\n\n${secondResponseStr}`;
 }
 
 /**
