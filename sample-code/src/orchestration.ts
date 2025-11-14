@@ -3,6 +3,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import {
   OrchestrationClient,
+  OrchestrationEmbeddingClient,
   buildDocumentGroundingConfig,
   buildAzureContentSafetyFilter,
   buildLlamaGuard38BFilter,
@@ -17,6 +18,7 @@ import type {
   OrchestrationStreamChunkResponse,
   OrchestrationStreamResponse,
   OrchestrationResponse,
+  OrchestrationEmbeddingResponse,
   StreamOptions,
   OrchestrationErrorResponse,
   ChatCompletionTool,
@@ -762,4 +764,38 @@ export async function chatCompletionStreamWithTools(
     controller.signal,
     streamOptions
   );
+}
+
+/**
+ * Generate embeddings with masking for personal information.
+ * @returns The orchestration embedding response with masking applied.
+ */
+export async function orchestrationEmbeddingWithMasking(): Promise<OrchestrationEmbeddingResponse> {
+  const sampleText =
+    'Hello, my name is Alice Johnson and my email is alice.johnson@company.com. Please process this information for embedding.';
+
+  // Create orchestration embedding client with masking configuration
+  const embeddingClient = new OrchestrationEmbeddingClient({
+    embeddings: {
+      model: {
+        name: 'text-embedding-3-large',
+        version: 'latest',
+        params: { dimensions: 4 }
+      }
+    },
+    masking: {
+      masking_providers: [
+        buildDpiMaskingProvider({
+          method: 'anonymization',
+          entities: ['profile-email', 'profile-person']
+        })
+      ]
+    }
+  });
+
+  const response = await embeddingClient.embed({
+    input: sampleText,
+    type: 'text'
+  });
+  return response;
 }

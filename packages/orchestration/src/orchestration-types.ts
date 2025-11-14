@@ -1,6 +1,6 @@
 import type { Xor } from '@sap-cloud-sdk/util';
 import type { CustomRequestConfig } from '@sap-cloud-sdk/http-client';
-import type { ChatModel } from './model-types.js';
+import type { ChatModel, EmbeddingModel } from './model-types.js';
 import type {
   ChatMessages,
   DataRepositoryType,
@@ -23,6 +23,8 @@ import type {
   AzureContentSafetyInputFilterConfig,
   AzureContentSafetyOutputFilterConfig,
   LlamaGuard38BFilterConfig,
+  EmbeddingsModelDetails as OriginalEmbeddingsModelDetails,
+  EmbeddingsModelParams as OriginalEmbeddingsModelParams,
   SAPDocumentTranslationInput,
   SAPDocumentTranslationOutput
 } from './client/api/schema/index.js';
@@ -522,3 +524,82 @@ export type LlamaGuard38BFilterReturnType<T extends ConfigType> =
  * Representation of the 'DpiConfig' schema.
  */
 export type DpiMaskingProviderConfig = DpiConfig;
+
+/**
+ * Embedding request configuration.
+ */
+export interface EmbeddingRequest {
+  /**
+   * Text input for which embeddings need to be generated.
+   * Can be a single string or array of strings.
+   * @example
+   * input: "This is a text to embed" or
+   * input: ["Text 1", "Text 2", "Text 3"]
+   */
+  input: string | string[];
+
+  /**
+   * Represents the task for which the embeddings need to be generated.
+   * @default 'text'
+   */
+  type?: 'text' | 'document' | 'query';
+}
+
+/**
+ * Embedding model details.
+ */
+export type EmbeddingModelDetails = Omit<
+  OriginalEmbeddingsModelDetails,
+  'name' | 'params'
+> & {
+  name: EmbeddingModel;
+  params?: EmbeddingModelParams;
+};
+
+/**
+ * Embedding model parameters.
+ */
+export type EmbeddingModelParams = OriginalEmbeddingsModelParams;
+
+/**
+ * Embedding model configuration.
+ */
+export interface EmbeddingModelConfig {
+  /**
+   * Model details for embedding generation.
+   */
+  model: EmbeddingModelDetails;
+}
+
+/**
+ * Embedding module configuration.
+ */
+export interface EmbeddingModuleConfig {
+  /**
+   * Embeddings model configuration.
+   */
+  embeddings: EmbeddingModelConfig;
+
+  /**
+   * Masking module configuration.
+   */
+  masking?: MaskingModule;
+}
+
+/**
+ * Embedding data with vector and index information.
+ */
+export interface EmbeddingData {
+  /**
+   * The object type, which is always "embedding".
+   */
+  object: 'embedding';
+  /**
+   * The embedding vector, either as a number array or base64-encoded string.
+   */
+  embedding: number[] | string;
+  /**
+   * The index of the embedding in the list of embeddings.
+   */
+  index: number;
+}
