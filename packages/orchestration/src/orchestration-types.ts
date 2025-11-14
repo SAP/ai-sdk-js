@@ -581,7 +581,7 @@ export interface EmbeddingModuleConfig {
   embeddings: EmbeddingModelConfig;
 
   /**
-   * Optional masking module configuration.
+   * Masking module configuration.
    */
   masking?: MaskingModule;
 }
