@@ -22,7 +22,8 @@ export {
   chatCompletionStreamWithJsonModuleConfig,
   chatCompletionStream,
   orchestrationMessageHistoryWithToolCalling,
-  orchestrationTranslation
+  orchestrationTranslation,
+  orchestrationEmbeddingWithMasking
 } from './orchestration.js';
 export {
   invoke,
