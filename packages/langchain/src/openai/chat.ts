@@ -56,6 +56,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
   supportsStrictToolCalling?: boolean;
   modelName: string;
   streaming: boolean;
+  disableStreaming: boolean;
   private openAiChatClient: AzureOpenAiChatClientBase;
 
   constructor(
@@ -73,7 +74,13 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
     this.presence_penalty = fields.presence_penalty;
     this.frequency_penalty = fields.frequency_penalty;
     this.max_tokens = fields.max_tokens;
-    this.streaming = fields.streaming ?? false;
+    this.disableStreaming = fields.disableStreaming ?? false;
+    // If both streaming and disableStreaming are set, disable streaming
+    this.streaming = (fields.streaming ?? false) && !this.disableStreaming;
+    // if streaming is false, streaming is disabled
+    if (fields?.streaming === false) {
+      this.disableStreaming = true;
+    }
     if (fields.supportsStrictToolCalling !== undefined) {
       this.supportsStrictToolCalling = fields.supportsStrictToolCalling;
     }
@@ -88,7 +95,8 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
     options: typeof this.ParsedCallOptions,
     runManager?: CallbackManagerForLLMRun
   ): Promise<ChatResult> {
-    if (options?.stream ?? this.streaming) {
+    // If both streaming and disableStreaming are set, disable streaming
+    if ((options?.stream ?? this.streaming) && !this.disableStreaming) {
       let generation;
       const stream = this._streamResponseChunks(messages, options, runManager);
       for await (const chunk of stream) {

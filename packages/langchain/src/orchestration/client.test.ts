@@ -465,6 +465,122 @@ describe('orchestration service client', () => {
       expect(client._streamResponseChunks).toHaveBeenCalled();
     });
 
+    it('does not stream when disableStreaming is set to true', async () => {
+      mockInference(
+        {
+          data: constructCompletionPostRequest(
+            {
+              ...config,
+              promptTemplating: {
+                ...config.promptTemplating,
+                prompt: {
+                  template: messages
+                }
+              }
+            },
+            { messages: [] },
+            false
+          )
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        endpoint
+      );
+
+      jest.spyOn(OrchestrationClient.prototype, '_streamResponseChunks');
+
+      const client = new OrchestrationClient(config, {
+        streaming: true,
+        disableStreaming: true
+      } as any);
+      expect(client.streaming).toBe(false);
+      expect(client.disableStreaming).toBe(true);
+      client.streaming = true; // try to override
+
+      const finalOutput = await client.invoke([
+        { role: 'user', content: 'Hello!' }
+      ]);
+      expect(finalOutput).toMatchSnapshot();
+      expect(client._streamResponseChunks).not.toHaveBeenCalled();
+    });
+
+    it('has langchain handle disabling streaming via disableStreaming flag in stream', async () => {
+      mockInference(
+        {
+          data: constructCompletionPostRequest(
+            {
+              ...config,
+              promptTemplating: {
+                ...config.promptTemplating,
+                prompt: {
+                  template: messages
+                }
+              }
+            },
+            { messages: [] },
+            false
+          )
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        endpoint
+      );
+
+      jest.spyOn(OrchestrationClient.prototype, '_streamResponseChunks');
+
+      const client = new OrchestrationClient(config, {
+        streaming: true,
+        disableStreaming: true
+      } as any);
+      expect(client.streaming).toBe(false);
+      expect(client.disableStreaming).toBe(true);
+
+      const stream = await client.stream('Hello!');
+      let finalOutput: AIMessageChunk | undefined;
+
+      for await (const chunk of stream) {
+        finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
+      }
+      expect(finalOutput).toMatchSnapshot();
+      expect(client._streamResponseChunks).not.toHaveBeenCalled();
+    });
+
+    it('should handle streaming and disabling streaming flags as expected', async () => {
+      let testClient = new OrchestrationClient(config, {
+        streaming: true,
+        disableStreaming: true
+      } as any);
+
+      // streaming should be disabled due to disableStreaming being true
+      expect(testClient.streaming).toBe(false);
+      expect(testClient.disableStreaming).toBe(true);
+
+      testClient = new OrchestrationClient(config, {
+        streaming: false
+      } as any);
+
+      // streaming should be disabled
+      expect(testClient.streaming).toBe(false);
+      expect(testClient.disableStreaming).toBe(true);
+
+      testClient = new OrchestrationClient(config, {
+        streaming: true
+      } as any);
+
+      // auto-streaming should be enabled
+      expect(testClient.streaming).toBe(true);
+      expect(testClient.disableStreaming).toBe(false);
+
+      testClient = new OrchestrationClient(config);
+      // auto-streaming and disableStreaming should be disabled by default
+      expect(testClient.streaming).toBe(false);
+      expect(testClient.disableStreaming).toBe(false);
+    });
+
     it('streams and aborts with a signal', async () => {
       mockInference(
         {

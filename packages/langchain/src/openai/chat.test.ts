@@ -414,6 +414,127 @@ describe('Chat client', () => {
       expect(client._streamResponseChunks).toHaveBeenCalled();
     });
 
+    it('supports disabling auto-streaming via disableStreaming flag', async () => {
+      mockInference(
+        {
+          data: {
+            messages: [
+              {
+                role: 'user' as const,
+                content: 'What is the capital of France?'
+              }
+            ]
+          }
+        },
+        {
+          data: {
+            choices: [
+              {
+                message: {
+                  role: 'assistant',
+                  content: 'The capital of France is Paris.'
+                },
+                index: 0
+              }
+            ]
+          },
+          status: 200
+        },
+        endpoint
+      );
+      jest.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
+
+      client.streaming = true;
+      client.disableStreaming = true;
+
+      const finalOutput = await client.invoke('What is the capital of France?');
+
+      expect(finalOutput).toMatchSnapshot();
+      expect(client._streamResponseChunks).not.toHaveBeenCalled();
+    });
+
+    it('has langchain handle disabling streaming via disableStreaming flag in stream', async () => {
+      mockInference(
+        {
+          data: {
+            messages: [
+              {
+                role: 'user' as const,
+                content: 'What is the capital of France?'
+              }
+            ]
+          }
+        },
+        {
+          data: {
+            choices: [
+              {
+                message: {
+                  role: 'assistant',
+                  content: 'The capital of France is Paris.'
+                },
+                index: 0
+              }
+            ]
+          },
+          status: 200
+        },
+        endpoint
+      );
+      jest.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
+
+      client.disableStreaming = true;
+      client.streaming = true;
+
+      const stream = await client.stream('What is the capital of France?');
+
+      let finalOutput: AIMessageChunk | undefined;
+      for await (const chunk of stream) {
+        finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
+      }
+
+      expect(finalOutput).toMatchSnapshot();
+      expect(client._streamResponseChunks).not.toHaveBeenCalled();
+    });
+
+    it('should handle streaming and disabling streaming flags as expected', async () => {
+      let testClient = new AzureOpenAiChatClient({
+        modelName: 'gpt-4o',
+        streaming: true,
+        disableStreaming: true
+      });
+
+      // streaming should be disabled due to disableStreaming being true
+      expect(testClient.streaming).toBe(false);
+      expect(testClient.disableStreaming).toBe(true);
+
+      testClient = new AzureOpenAiChatClient({
+        modelName: 'gpt-4o',
+        streaming: false
+      });
+
+      // streaming should be disabled
+      expect(testClient.streaming).toBe(false);
+      expect(testClient.disableStreaming).toBe(true);
+
+      testClient = new AzureOpenAiChatClient({
+        modelName: 'gpt-4o',
+        streaming: true
+      });
+
+      // auto-streaming should be enabled
+      expect(testClient.streaming).toBe(true);
+      expect(testClient.disableStreaming).toBe(false);
+
+      testClient = new AzureOpenAiChatClient({
+        modelName: 'gpt-4o'
+      });
+
+      // auto-streaming and disable-streaming should be disabled by default
+      expect(testClient.streaming).toBe(false);
+      expect(testClient.disableStreaming).toBe(false);
+    });
+
     it('streams and aborts with a signal', async () => {
       mockInference(
         {

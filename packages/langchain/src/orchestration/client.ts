@@ -39,6 +39,7 @@ export class OrchestrationClient extends BaseChatModel<
   OrchestrationMessageChunk
 > {
   streaming: boolean;
+  disableStreaming: boolean;
 
   constructor(
     public orchestrationConfig: LangChainOrchestrationModuleConfig,
@@ -57,9 +58,16 @@ export class OrchestrationClient extends BaseChatModel<
 
     super(langchainOptions);
 
+    this.disableStreaming = langchainOptions?.disableStreaming ?? false;
     // Todo: Extend BaseChatModelParams?
     this.streaming =
-      (langchainOptions as { streaming?: boolean })?.streaming ?? false;
+      ((langchainOptions as { streaming?: boolean })?.streaming ?? false) &&
+      // disable streaming has higher priority
+      !this.disableStreaming;
+    // if streaming is false, disable streaming
+    if ((langchainOptions as { streaming?: boolean })?.streaming === false) {
+      this.disableStreaming = true;
+    }
   }
 
   _llmType(): string {
@@ -91,7 +99,7 @@ export class OrchestrationClient extends BaseChatModel<
     options: typeof this.ParsedCallOptions,
     runManager?: CallbackManagerForLLMRun
   ): Promise<ChatResult> {
-    if (options?.stream ?? this.streaming) {
+    if ((options?.stream ?? this.streaming) && !this.disableStreaming) {
       let generation;
       const stream = this._streamResponseChunks(messages, options, runManager);
       for await (const chunk of stream) {

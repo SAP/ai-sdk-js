@@ -37,6 +37,8 @@ export type AzureOpenAiChatModelParams = Pick<
   supportsStrictToolCalling?: boolean;
   /**
    * Whether the model should stream all results.
+   * If {@link disableStreaming} is set to `true`, this option will be ignored.
+   * If {@link streaming} is explicitly set to `false`, {@link disableStreaming} will be set to `true`.
    * Defaults to `false`.
    */
   streaming?: boolean;
