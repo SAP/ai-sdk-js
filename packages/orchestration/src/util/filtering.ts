@@ -43,13 +43,17 @@ export function buildAzureContentSafetyFilter<T extends ConfigType>(
           ])
         ),
         ...(prompt_shield !== undefined && { prompt_shield }),
-        ...(protected_material_code !== undefined && { protected_material_code })
+        ...(protected_material_code !== undefined && {
+          protected_material_code
+        })
       }
     } as AzureContentSafetyFilterReturnType<T>;
   }
 
-  const { protected_material_code, ...outputRest } =
-    config as AzureContentSafetyFilterParameters<'output'>;
+  const {
+    protected_material_code: outputProtectedMaterialCode,
+    ...outputRest
+  } = config as AzureContentSafetyFilterParameters<'output'>;
   return {
     type: 'azure_content_safety',
     config: {
@@ -59,7 +63,9 @@ export function buildAzureContentSafetyFilter<T extends ConfigType>(
           supportedAzureFilterThresholds[value as AzureFilterThreshold]
         ])
       ),
-      ...(protected_material_code !== undefined && { protected_material_code })
+      ...(outputProtectedMaterialCode !== undefined && {
+        protected_material_code: outputProtectedMaterialCode
+      })
     }
   } as AzureContentSafetyFilterReturnType<T>;
 }
