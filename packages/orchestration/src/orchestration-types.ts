@@ -26,7 +26,8 @@ import type {
   EmbeddingsModelDetails as OriginalEmbeddingsModelDetails,
   EmbeddingsModelParams as OriginalEmbeddingsModelParams,
   SAPDocumentTranslationInput,
-  SAPDocumentTranslationOutput
+  SAPDocumentTranslationOutput,
+  SAPDocumentTranslationApplyToSelector
 } from './client/api/schema/index.js';
 
 /**
@@ -437,30 +438,36 @@ interface TranslationConfigParametersInput {
 }
 
 /**
- * Output parameters for translation configuration.
+ * Input parameters for translation input configuration.
  */
-interface TranslationConfigParametersOutput {
+export type TranslationInputParameters = TranslationConfigParametersInput & {
+  /**
+   * If true, the messages history will be translated as well.
+   * @example translateMessagesHistory: true
+   */
+  translateMessagesHistory?: boolean;
+  /**
+   * Configuration for applying translation to specific placeholders or message roles.
+   * @example applyTo: [{ category: 'placeholders', items: ['user_input'], source_language: 'de-DE' }]
+   */
+  applyTo?: SAPDocumentTranslationApplyToSelector[];
+};
+
+/**
+ * Output parameters for translation output configuration.
+ */
+export interface TranslationOutputParameters {
   /**
    * Language of the text to be translated.
    * @example sourceLanguage: 'de-DE'
    */
   sourceLanguage?: string;
   /**
-   * Language to which the text should be translated.
-   * @example targetLanguage: 'en-US'
+   * Configuration for applying translation to specific placeholders or message roles, or a target language string.
+   * @example targetLanguage: { category: 'placeholders', items: ['assistant_response'] }
    */
-  targetLanguage: string;
+  targetLanguage?: string | SAPDocumentTranslationApplyToSelector;
 }
-
-/**
- * Output parameters for translation output configuration.
- */
-export type TranslationOutputParameters = TranslationConfigParametersOutput;
-
-/**
- * Input parameters for translation input configuration.
- */
-export type TranslationInputParameters = TranslationConfigParametersInput;
 
 /**
  * Parameters for translation configurations.
