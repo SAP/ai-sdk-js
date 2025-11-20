@@ -55,7 +55,8 @@ export default [
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       'import/no-internal-modules': 'off',
       'no-unused-expressions': 'off',
-      'jsdoc/require-jsdoc': 'off'
+      'jsdoc/require-jsdoc': 'off',
+      'no-useless-escape': 'off'
     }
   }
 ];
