@@ -10,6 +10,7 @@ export {
   orchestrationChatCompletion,
   orchestrationTemplating,
   orchestrationPromptRegistry,
+  orchestrationCompletionPromptRegistryScoped,
   orchestrationInputFiltering,
   orchestrationOutputFiltering,
   orchestrationRequestConfig,
