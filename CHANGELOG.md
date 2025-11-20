@@ -28,6 +28,40 @@
 
 -
 
+# 2.2.0
+## Compatibility Notes
+
+- [document-grounding] `MSSharePointConfigurationGetResponse` now requires the `sharePoint` property (e2c34f3)
+- [document-grounding] `CommonConfiguration` was replaced with backend-specific types: `SFTPConfiguration` and `S3Configuration` (e2c34f3)
+- [document-grounding] Some types have been renamed to include endpoint-specific prefixes.
+  Some instances of the prior names may still exist:
+  - `SearchResults` was renamed to `VectorSearchResults` / `RetrievalSearchResults`
+  - `Chunk` was renamed to `VectorChunk` / `RetrievalChunk`
+  - `SearchFilter` was renamed to `VectorSearchFilter`
+  - `KeyValueListPair` was renamed to `VectorKeyValueListPair` / `RetrievalKeyValueListPair`
+  - `DocumentKeyValueListPair` was renamed to `VectorDocumentKeyValueListPair` / `RetrievalDocumentKeyValueListPair`
+  - `SearchConfiguration` was renamed to `VectorSearchConfiguration` / `RetrievalSearchConfiguration`
+  - `SearchSelectOptionEnum` was renamed to `VectorSearchSelectOptionEnum` / `RetrievalSearchSelectOptionEnum`
+  - `PerFilterSearchResult` was renamed to `RetrievalPerFilterSearchResult`
+  - `PerFilterSearchError` was renamed to `RetrievalPerFilterSearchError`
+  - `DataRepositorySearchResult` was renamed to `RetrievalDataRepositorySearchResult`
+  - `SearchInput` was renamed to `RetrievalSearchInput` (e2c34f3)
+- [langchain] Remove structured ouput handling for deprecated gpt-4 & gpt-3 models (6100bca)
+
+## New Features
+
+- [ai-api] Update `ai-api` package with the new specification (2509b). (58464e9)
+- [core, orchestration] Introduce orchestration embedding client for consuming embedding feature of the orchestration service. (347eac1)
+- [document-grounding] Update document-grounding specification (e2c34f3)
+
+## Fixed Issues
+
+- [core] Replace active logging during streaming with error throwing to avoid logging the response payload. (5225275)
+
+## Improvements
+
+- [core, orchestration] Add `cohere--command-a-reasoning`, `mistralai--mistral-medium-instruct` and perplexity-ai `sonar` and `sonar-pro` to model list (6100bca)
+
 # 2.1.0
 ## Fixed Issues
 

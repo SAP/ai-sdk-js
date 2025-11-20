@@ -1,5 +1,22 @@
 # @sap-ai-sdk/orchestration
 
+## 2.2.0
+
+### Minor Changes
+
+- 6100bca: [Improvement] Add `cohere--command-a-reasoning`, `mistralai--mistral-medium-instruct` and perplexity-ai `sonar` and `sonar-pro` to model list
+- 347eac1: [New Functionality] Introduce orchestration embedding client for consuming embedding feature of the orchestration service.
+
+### Patch Changes
+
+- Updated dependencies [6100bca]
+- Updated dependencies [5225275]
+- Updated dependencies [347eac1]
+- Updated dependencies [58464e9]
+  - @sap-ai-sdk/core@2.2.0
+  - @sap-ai-sdk/ai-api@2.2.0
+  - @sap-ai-sdk/prompt-registry@2.2.0
+
 ## 2.1.0
 
 ### Patch Changes
