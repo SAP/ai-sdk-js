@@ -1,20 +1,20 @@
 /* eslint-disable import/no-internal-modules */
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import * as z from 'zod/v4';
+import * as z from 'zod/v3';
 
 const server = new McpServer({
   name: 'Open-Meteo Weather MCP Server',
   version: '1.0.0'
 });
 
-server.tool(
+server.registerTool(
   'get_weather',
-  'Tool to fetch weather details for a specific city',
   {
-    city: z
-      .string()
-      .meta({ description: 'The name of the city to get the weather for' })
+    description: 'Tool to fetch weather details for a specific city',
+    inputSchema: z.object({
+      city: z.string().describe('The name of the city to get the weather for')
+    }).shape
   },
   async ({ city }) => {
     try {
