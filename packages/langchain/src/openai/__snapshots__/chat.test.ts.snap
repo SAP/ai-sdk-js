@@ -30,7 +30,9 @@ exports[`Chat client streaming supports streaming responses 1`] = `
     "tool_call_chunks": [],
     "tool_calls": [],
     "usage_metadata": {
+      "input_token_details": {},
       "input_tokens": 14,
+      "output_token_details": {},
       "output_tokens": 7,
       "total_tokens": 21,
     },
@@ -98,7 +100,9 @@ exports[`Chat client streaming supports streaming responses with tool calls 1`] 
       },
     ],
     "usage_metadata": {
+      "input_token_details": {},
       "input_tokens": 52,
+      "output_token_details": {},
       "output_tokens": 18,
       "total_tokens": 70,
     },

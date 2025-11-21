@@ -15,12 +15,10 @@ export const addNumbersSchemaV3 = zodV3
 /**
  * @internal
  */
-export const addNumbersSchema = zodV4
-  .object({
-    a: zodV4.number().meta({ description: 'The first number to be added.' }),
-    b: zodV4.number().meta({ description: 'The second number to be added.' })
-  })
-  .strict();
+export const addNumbersSchema = zodV4.strictObject({
+  a: zodV4.number().meta({ description: 'The first number to be added.' }),
+  b: zodV4.number().meta({ description: 'The second number to be added.' })
+});
 
 /**
  * @internal
@@ -37,12 +35,10 @@ export const addNumbersTool: ChatCompletionTool = {
 /**
  * @internal
  */
-const multiplyNumbersSchema = zodV4
-  .object({
-    a: zodV4.number().meta({ description: 'The first number to multiply.' }),
-    b: zodV4.number().meta({ description: 'The second number to multiply.' })
-  })
-  .strict();
+const multiplyNumbersSchema = zodV4.strictObject({
+  a: zodV4.number().meta({ description: 'The first number to multiply.' }),
+  b: zodV4.number().meta({ description: 'The second number to multiply.' })
+});
 
 /**
  * @internal

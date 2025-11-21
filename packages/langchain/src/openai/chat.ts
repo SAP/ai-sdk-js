@@ -207,7 +207,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
           }
         },
         ls_structured_output_format: {
-          kwargs: { method: 'jsonSchema' },
+          kwargs: { method: 'functionCalling' },
           schema: asJsonSchema
         }
       } as Partial<AzureOpenAiChatCallOptions>);
