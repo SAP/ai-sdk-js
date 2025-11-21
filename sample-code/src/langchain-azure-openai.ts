@@ -46,6 +46,29 @@ export async function invoke(): Promise<string> {
 }
 
 /**
+ * Ask GPT about the capital of France, using streaming internally.
+ * @returns The answer from GPT.
+ */
+export async function invokeWithStreaming(): Promise<string> {
+  // initialize client with options
+  const client = new AzureOpenAiChatClient({
+    modelName: 'gpt-4o',
+    max_tokens: 1000,
+    temperature: 0.7,
+    streaming: true
+  });
+
+  // invoke a prompt
+  const response = await client.invoke('What is the capital of France?');
+
+  // create an output parser
+  const parser = new StringOutputParser();
+
+  // parse the response
+  return parser.invoke(response);
+}
+
+/**
  * Ask GPT about the capital of France, as part of a chain.
  * @returns The answer from ChatGPT.
  */

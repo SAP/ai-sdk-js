@@ -27,6 +27,7 @@ export {
 } from './orchestration.js';
 export {
   invoke,
+  invokeWithStreaming,
   invokeWithStructuredOutputJsonSchema,
   invokeWithStructuredOutputToolCalling,
   invokeChain,
@@ -34,7 +35,9 @@ export {
 } from './langchain-azure-openai.js';
 export {
   invokeChain as orchestrationInvokeChain,
+  invokeChainWithStreaming as orchestrationInvokeChainWithStreaming,
   invokeLangGraphChain,
+  invokeLangGraphChainStream,
   streamChain
 } from './langchain-orchestration.js';
 export {
