@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { KeyValueListPair } from './key-value-list-pair.js';
+import type { RetrievalKeyValueListPair } from './retrieval-key-value-list-pair.js';
 import type { DataRepositoryType } from './data-repository-type.js';
 /**
  * DataRepository schema expected by Retrieval.
@@ -19,6 +19,6 @@ export type DataRepository = {
    * Metadata attached to DataRepository. Useful to later limit search to a subset of DataRepositories.
    * Default: [].
    */
-  metadata?: KeyValueListPair[];
+  metadata?: RetrievalKeyValueListPair[];
   type: DataRepositoryType;
 } & Record<string, any>;

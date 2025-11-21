@@ -1,6 +1,6 @@
 import type { Xor } from '@sap-cloud-sdk/util';
 import type { CustomRequestConfig } from '@sap-cloud-sdk/http-client';
-import type { ChatModel } from './model-types.js';
+import type { ChatModel, EmbeddingModel } from './model-types.js';
 import type {
   ChatMessages,
   DataRepositoryType,
@@ -18,12 +18,15 @@ import type {
   InputFilteringConfig,
   OutputFilteringConfig,
   MaskingProviderConfig,
-  SAPDocumentTranslation,
   GlobalStreamOptions,
   ErrorResponse,
   AzureContentSafetyInputFilterConfig,
   AzureContentSafetyOutputFilterConfig,
-  LlamaGuard38BFilterConfig
+  LlamaGuard38BFilterConfig,
+  EmbeddingsModelDetails as OriginalEmbeddingsModelDetails,
+  EmbeddingsModelParams as OriginalEmbeddingsModelParams,
+  SAPDocumentTranslationInput,
+  SAPDocumentTranslationOutput
 } from './client/api/schema/index.js';
 
 /**
@@ -418,10 +421,25 @@ export type LlamaGuard38BCategory = keyof LlamaGuard38B;
 export type ConfigType = 'input' | 'output';
 
 /**
- * Parameters for translation configuration.
- * @internal
+ * Input parameters for translation configuration.
  */
-interface TranslationConfigParameters {
+interface TranslationConfigParametersInput {
+  /**
+   * Language of the text to be translated.
+   * @example sourceLanguage: 'de-DE'
+   */
+  sourceLanguage?: string;
+  /**
+   * Language to which the text should be translated.
+   * @example targetLanguage: 'en-US'
+   */
+  targetLanguage: string;
+}
+
+/**
+ * Output parameters for translation configuration.
+ */
+interface TranslationConfigParametersOutput {
   /**
    * Language of the text to be translated.
    * @example sourceLanguage: 'de-DE'
@@ -437,12 +455,12 @@ interface TranslationConfigParameters {
 /**
  * Output parameters for translation output configuration.
  */
-export type TranslationOutputParameters = TranslationConfigParameters;
+export type TranslationOutputParameters = TranslationConfigParametersOutput;
 
 /**
  * Input parameters for translation input configuration.
  */
-export type TranslationInputParameters = TranslationConfigParameters;
+export type TranslationInputParameters = TranslationConfigParametersInput;
 
 /**
  * Parameters for translation configurations.
@@ -454,12 +472,12 @@ export type TranslationConfigParams<T extends ConfigType> = T extends 'input'
 /**
  * Input configuration for translation module.
  */
-export type TranslationInputConfig = SAPDocumentTranslation;
+export type TranslationInputConfig = SAPDocumentTranslationInput;
 
 /**
  * Output configuration for translation module.
  */
-export type TranslationOutputConfig = SAPDocumentTranslation;
+export type TranslationOutputConfig = SAPDocumentTranslationOutput;
 
 /**
  * Return type for translation configurations.
@@ -506,3 +524,82 @@ export type LlamaGuard38BFilterReturnType<T extends ConfigType> =
  * Representation of the 'DpiConfig' schema.
  */
 export type DpiMaskingProviderConfig = DpiConfig;
+
+/**
+ * Embedding request configuration.
+ */
+export interface EmbeddingRequest {
+  /**
+   * Text input for which embeddings need to be generated.
+   * Can be a single string or array of strings.
+   * @example
+   * input: "This is a text to embed" or
+   * input: ["Text 1", "Text 2", "Text 3"]
+   */
+  input: string | string[];
+
+  /**
+   * Represents the task for which the embeddings need to be generated.
+   * @default 'text'
+   */
+  type?: 'text' | 'document' | 'query';
+}
+
+/**
+ * Embedding model details.
+ */
+export type EmbeddingModelDetails = Omit<
+  OriginalEmbeddingsModelDetails,
+  'name' | 'params'
+> & {
+  name: EmbeddingModel;
+  params?: EmbeddingModelParams;
+};
+
+/**
+ * Embedding model parameters.
+ */
+export type EmbeddingModelParams = OriginalEmbeddingsModelParams;
+
+/**
+ * Embedding model configuration.
+ */
+export interface EmbeddingModelConfig {
+  /**
+   * Model details for embedding generation.
+   */
+  model: EmbeddingModelDetails;
+}
+
+/**
+ * Embedding module configuration.
+ */
+export interface EmbeddingModuleConfig {
+  /**
+   * Embeddings model configuration.
+   */
+  embeddings: EmbeddingModelConfig;
+
+  /**
+   * Masking module configuration.
+   */
+  masking?: MaskingModule;
+}
+
+/**
+ * Embedding data with vector and index information.
+ */
+export interface EmbeddingData {
+  /**
+   * The object type, which is always "embedding".
+   */
+  object: 'embedding';
+  /**
+   * The embedding vector, either as a number array or base64-encoded string.
+   */
+  embedding: number[] | string;
+  /**
+   * The index of the embedding in the list of embeddings.
+   */
+  index: number;
+}

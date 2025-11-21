@@ -11,5 +11,5 @@ import type { EmbeddingsResponse } from './embeddings-response.js';
 export type EmbeddingsPostResponse = {
   request_id: string;
   intermediate_results?: ModuleResultsBase;
-  final_result?: EmbeddingsResponse;
+  final_result: EmbeddingsResponse;
 };

@@ -1,5 +1,16 @@
 # @sap-ai-sdk/core
 
+## 2.2.0
+
+### Minor Changes
+
+- 6100bca: [Improvement] Add `cohere--command-a-reasoning`, `mistralai--mistral-medium-instruct` and perplexity-ai `sonar` and `sonar-pro` to model list
+- 347eac1: [New Functionality] Introduce orchestration embedding client for consuming embedding feature of the orchestration service.
+
+### Patch Changes
+
+- 5225275: [Fixed Issue] Replace active logging during streaming with error throwing to avoid logging the response payload.
+
 ## 2.1.0
 
 ### Minor Changes

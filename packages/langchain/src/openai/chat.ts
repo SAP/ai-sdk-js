@@ -175,18 +175,8 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
       );
     }
 
-    // TODO: Remove this once the deprecated models are removed
-    if (
-      !this.modelName.startsWith('gpt-3') &&
-      !this.modelName.startsWith('gpt-4-') &&
-      this.modelName !== 'gpt-4'
-    ) {
-      if (method === undefined) {
-        method = 'jsonSchema';
-      }
-    } else if (method === 'jsonSchema') {
-      // Falling back to tool calling.`
-      method = '';
+    if (method === undefined) {
+      method = 'jsonSchema';
     }
 
     if (method === 'jsonMode') {
