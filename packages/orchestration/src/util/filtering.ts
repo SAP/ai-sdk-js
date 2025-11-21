@@ -31,41 +31,34 @@ export function buildAzureContentSafetyFilter<T extends ConfigType>(
   }
 
   if (type === 'input') {
-    const { prompt_shield, protected_material_code, ...inputRest } =
+    const { prompt_shield, ...rest } =
       config as AzureContentSafetyFilterParameters<'input'>;
     return {
       type: 'azure_content_safety',
       config: {
         ...Object.fromEntries(
-          Object.entries(inputRest).map(([key, value]) => [
+          Object.entries(rest).map(([key, value]) => [
             key,
             supportedAzureFilterThresholds[value as AzureFilterThreshold]
           ])
         ),
-        ...(prompt_shield !== undefined && { prompt_shield }),
-        ...(protected_material_code !== undefined && {
-          protected_material_code
-        })
+        ...(prompt_shield !== undefined && { prompt_shield })
       }
     } as AzureContentSafetyFilterReturnType<T>;
   }
 
-  const {
-    protected_material_code: outputProtectedMaterialCode,
-    ...outputRest
-  } = config as AzureContentSafetyFilterParameters<'output'>;
+  const { protected_material_code, ...restConfig } =
+    config as AzureContentSafetyFilterParameters<'output'>;
   return {
     type: 'azure_content_safety',
     config: {
       ...Object.fromEntries(
-        Object.entries(outputRest).map(([key, value]) => [
+        Object.entries(restConfig).map(([key, value]) => [
           key,
           supportedAzureFilterThresholds[value as AzureFilterThreshold]
         ])
       ),
-      ...(outputProtectedMaterialCode !== undefined && {
-        protected_material_code: outputProtectedMaterialCode
-      })
+      ...(protected_material_code !== undefined && { protected_material_code })
     }
   } as AzureContentSafetyFilterReturnType<T>;
 }
