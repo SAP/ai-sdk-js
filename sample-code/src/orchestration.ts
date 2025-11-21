@@ -701,7 +701,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
 }
 
 /**
- * Use translation module for input and output translation.
+ * Use translation module for input and output translation with advanced features.
  * @returns The orchestration service response.
  */
 export async function orchestrationTranslation(): Promise<OrchestrationResponse> {
@@ -715,11 +715,22 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
     translation: {
       input: buildTranslationConfig('input', {
         sourceLanguage: 'en-US',
-        targetLanguage: 'de-DE'
+        targetLanguage: 'de-DE',
+        translateMessagesHistory: true,
+        applyTo: [
+          {
+            category: 'placeholders',
+            items: ['user_input'],
+            source_language: 'en-US'
+          }
+        ]
       }),
       output: buildTranslationConfig('output', {
         sourceLanguage: 'de-DE',
-        targetLanguage: 'fr-FR'
+        targetLanguage: {
+          category: 'placeholders',
+          items: ['assistant_response']
+        }
       })
     }
   });
@@ -728,9 +739,13 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
     messages: [
       {
         role: 'user',
-        content: 'Write an abstract for a thriller playing at SAP headquarters.'
+        content: '{{?user_input}}'
       }
-    ]
+    ],
+    placeholderValues: {
+      user_input:
+        'Write an abstract for a thriller playing at SAP headquarters.'
+    }
   });
 }
 
