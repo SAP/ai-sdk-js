@@ -37,6 +37,7 @@ export default [
     ignores: [
       '**/*.d.ts',
       '**/dist/**/*',
+      '**/dist-cjs/**/*',
       '**/coverage/**/*',
       'packages/**/client/**/*'
     ]
