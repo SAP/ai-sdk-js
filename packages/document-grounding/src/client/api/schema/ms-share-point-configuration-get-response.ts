@@ -9,5 +9,5 @@ import type { SharePointConfigGetResponse } from './share-point-config-get-respo
  */
 export type MSSharePointConfigurationGetResponse = {
   destination: string;
-  sharePoint?: SharePointConfigGetResponse;
+  sharePoint: SharePointConfigGetResponse;
 } & Record<string, any>;

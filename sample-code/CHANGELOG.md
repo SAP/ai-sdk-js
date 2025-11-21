@@ -1,5 +1,28 @@
 # @sap-ai-sdk/sample-code
 
+## 2.2.0
+
+### Minor Changes
+
+- 347eac1: [New Functionality] Introduce orchestration embedding client for consuming embedding feature of the orchestration service.
+
+### Patch Changes
+
+- Updated dependencies [6100bca]
+- Updated dependencies [e2c34f3]
+- Updated dependencies [6100bca]
+- Updated dependencies [e2c34f3]
+- Updated dependencies [347eac1]
+- Updated dependencies [e2c34f3]
+- Updated dependencies [e2c34f3]
+- Updated dependencies [58464e9]
+  - @sap-ai-sdk/langchain@2.2.0
+  - @sap-ai-sdk/document-grounding@2.2.0
+  - @sap-ai-sdk/orchestration@2.2.0
+  - @sap-ai-sdk/ai-api@2.2.0
+  - @sap-ai-sdk/foundation-models@2.2.0
+  - @sap-ai-sdk/prompt-registry@2.2.0
+
 ## 2.1.0
 
 ### Patch Changes
