@@ -49,7 +49,8 @@ import {
   invoke,
   invokeToolChain,
   streamChain,
-  invokeWithStructuredOutputJsonSchema
+  invokeWithStructuredOutputJsonSchema,
+  invokeReasoning
 } from './langchain-azure-openai.js';
 import {
   invokeChain as invokeChainOrchestration,
@@ -431,6 +432,14 @@ app.get(
 app.get('/langchain/invoke', async (req, res) => {
   try {
     res.header('Content-Type', 'text/plain').send(await invoke());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/langchain/invoke-reasoning', async (req, res) => {
+  try {
+    res.header('Content-Type', 'text/plain').send(await invokeReasoning());
   } catch (error: any) {
     sendError(res, error);
   }
