@@ -223,8 +223,7 @@ export async function orchestrationInputFiltering(): Promise<OrchestrationErrorR
           // Build Azure content filter with only safe content allowed for hate and violence
           buildAzureContentSafetyFilter('input', {
             hate: 'ALLOW_SAFE',
-            violence: 'ALLOW_SAFE',
-            protected_material_code: true
+            violence: 'ALLOW_SAFE'
           }),
           // Build Llama guard content filter with categories 'privacy' enabled
           buildLlamaGuard38BFilter('input', ['privacy'])
@@ -269,8 +268,7 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
           // Build Azure content filter with only safe content allowed for hate and violence
           buildAzureContentSafetyFilter('output', {
             hate: 'ALLOW_SAFE',
-            violence: 'ALLOW_SAFE',
-            protected_material_code: true
+            violence: 'ALLOW_SAFE'
           }),
           // Build Llama guard content filter with categories 'privacy' enabled
           buildLlamaGuard38BFilter('output', ['privacy'])

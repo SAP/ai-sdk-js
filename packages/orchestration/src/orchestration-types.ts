@@ -296,7 +296,6 @@ export interface GroundingModule {
     metadata_params?: string[];
   };
 }
-
 /**
  * Represents a filter configuration for the Document Grounding Service.
  */
@@ -389,13 +388,28 @@ export interface AzureContentSafetyFilterOutputParameters {
 /**
  * Input parameters for Azure content safety input filter.
  */
-export type AzureContentSafetyFilterInputParameters =
-  AzureContentSafetyFilterOutputParameters & {
-    /**
-     * A flag to use prompt shield.
-     */
-    prompt_shield?: boolean;
-  };
+export interface AzureContentSafetyFilterInputParameters {
+  /**
+   * The filter category for hate content.
+   */
+  hate?: AzureFilterThreshold;
+  /**
+   * The filter category for self-harm content.
+   */
+  self_harm?: AzureFilterThreshold;
+  /**
+   * The filter category for sexual content.
+   */
+  sexual?: AzureFilterThreshold;
+  /**
+   * The filter category for violence content.
+   */
+  violence?: AzureFilterThreshold;
+  /**
+   * A flag to use prompt shield.
+   */
+  prompt_shield?: boolean;
+}
 
 /**
  * A descriptive constant for Azure content safety filter threshold.
