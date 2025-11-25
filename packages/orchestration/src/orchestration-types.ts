@@ -386,7 +386,8 @@ export interface AzureContentSafetyFilterBaseParameters {
 /**
  * Output Parameters for Azure content safety output filter.
  */
-export interface AzureContentSafetyFilterOutputParameters extends AzureContentSafetyFilterBaseParameters {
+export interface AzureContentSafetyFilterOutputParameters
+  extends AzureContentSafetyFilterBaseParameters {
   /**
    * Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.
    */
@@ -395,7 +396,8 @@ export interface AzureContentSafetyFilterOutputParameters extends AzureContentSa
 /**
  * Input parameters for Azure content safety input filter.
  */
-export interface AzureContentSafetyFilterInputParameters extends AzureContentSafetyFilterBaseParameters {
+export interface AzureContentSafetyFilterInputParameters
+  extends AzureContentSafetyFilterBaseParameters {
   /**
    * A flag to use prompt shield.
    */
