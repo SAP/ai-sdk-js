@@ -361,9 +361,10 @@ export type DpiMaskingConfig = Omit<
 };
 
 /**
- * Output Parameters for Azure content safety output filter.
+ * Base parameters for Azure content safety filter.
+ * @internal
  */
-export interface AzureContentSafetyFilterOutputParameters {
+export interface AzureContentSafetyFilterBaseParameters {
   /**
    * The filter category for hate content.
    */
@@ -380,6 +381,12 @@ export interface AzureContentSafetyFilterOutputParameters {
    * The filter category for violence content.
    */
   violence?: AzureFilterThreshold;
+}
+
+/**
+ * Output Parameters for Azure content safety output filter.
+ */
+export interface AzureContentSafetyFilterOutputParameters extends AzureContentSafetyFilterBaseParameters {
   /**
    * Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.
    */
@@ -388,23 +395,7 @@ export interface AzureContentSafetyFilterOutputParameters {
 /**
  * Input parameters for Azure content safety input filter.
  */
-export interface AzureContentSafetyFilterInputParameters {
-  /**
-   * The filter category for hate content.
-   */
-  hate?: AzureFilterThreshold;
-  /**
-   * The filter category for self-harm content.
-   */
-  self_harm?: AzureFilterThreshold;
-  /**
-   * The filter category for sexual content.
-   */
-  sexual?: AzureFilterThreshold;
-  /**
-   * The filter category for violence content.
-   */
-  violence?: AzureFilterThreshold;
+export interface AzureContentSafetyFilterInputParameters extends AzureContentSafetyFilterBaseParameters {
   /**
    * A flag to use prompt shield.
    */
