@@ -80,8 +80,8 @@ importers:
         specifier: ^14.0.10
         version: 14.0.10
       orval:
-        specifier: ^7.16.1
-        version: 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
+        specifier: ^7.17.0
+        version: 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
       prettier:
         specifier: ^3.6.2
         version: 3.6.2
@@ -336,22 +336,22 @@ importers:
         version: 0.1.0(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))
       '@sap-ai-sdk/ai-api':
         specifier: canary
-        version: 2.2.1-20251123013335.0
+        version: 2.2.1-20251124013349.0
       '@sap-ai-sdk/document-grounding':
         specifier: canary
-        version: 2.2.1-20251123013335.0
+        version: 2.2.1-20251124013349.0
       '@sap-ai-sdk/foundation-models':
         specifier: canary
-        version: 2.2.1-20251123013335.0
+        version: 2.2.1-20251124013349.0
       '@sap-ai-sdk/langchain':
         specifier: canary
-        version: 2.2.1-20251123013335.0(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
+        version: 2.2.1-20251124013349.0(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
       '@sap-ai-sdk/orchestration':
         specifier: canary
-        version: 2.2.1-20251123013335.0
+        version: 2.2.1-20251124013349.0
       '@sap-ai-sdk/prompt-registry':
         specifier: canary
-        version: 2.2.1-20251123013335.0
+        version: 2.2.1-20251124013349.0
       '@sap-cloud-sdk/util':
         specifier: ^4.1.2
         version: 4.1.2
@@ -1167,35 +1167,35 @@ packages:
   '@open-draft/until@2.1.0':
     resolution: {integrity: sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg==}
 
-  '@orval/angular@7.16.1':
-    resolution: {integrity: sha512-RggE6Hq0cIGkQGnU7A7POgIU4wdnSlfiCDwFUnNseUJJnkvg9ODeKW75UqefCM/j9mrX4F2+lMVHF8kN5/GJ2g==}
+  '@orval/angular@7.17.0':
+    resolution: {integrity: sha512-3DnUU/2vUhKC33bmM2xMGRbbJRs8Qvubvjg+0QGh3AxedOYWRcLTxsuZNyr6n4y2TomrsbB1rFMTveTotE2VuA==}
 
-  '@orval/axios@7.16.1':
-    resolution: {integrity: sha512-VYyLtBhrR5lk2Kat5VbfQEOnJMH5FAUjgjYBeO45jaOe5K2KYk7NiHNKNZNshi9dHUIb9HxiwFp0oEMzzmGFOg==}
+  '@orval/axios@7.17.0':
+    resolution: {integrity: sha512-qbTOOOGjtfFDgpY1pHJNEO71CybSQiPJxuspVJDnWeoR7cwxOuZuWLWX3QE0bZ/2NHUg11rcuHwzzvPHGYmb0w==}
 
-  '@orval/core@7.16.1':
-    resolution: {integrity: sha512-54VnuOjLH5g3I8BSPUTSO5tTxLq9ZWd1ylVfsoIw992TI34prckTFDMj16c18U5jN4SUTwYik7Y1/Ptw5tmplQ==}
+  '@orval/core@7.17.0':
+    resolution: {integrity: sha512-oLHJitYNUbPYCijKt77az9Q7PnQE8ga79hVUt46c5cL4dXjjbRMLXSCIxB4M5lbu4D9q4G6ZgjCAxv+Fr7wGRA==}
 
-  '@orval/fetch@7.16.1':
-    resolution: {integrity: sha512-j/hb/VBIzJktOziOfzxn1YJLbUmSqyybS7c75ELv+m7VEIrxSIX+zsolfAw3eIlNGN6T62ExF71sOfbXDfJSGw==}
+  '@orval/fetch@7.17.0':
+    resolution: {integrity: sha512-VZuSKa2tMhHyL4BKiPyXmNj0Z5jF92lisTgWdm24WdmFfrzeGCHDyBbim6ivOMnrcvf0v7o16EeaTdMeNiaGdQ==}
 
-  '@orval/hono@7.16.1':
-    resolution: {integrity: sha512-e3TvUD5Vc1RPSIyHd6rzgbPxzj7wAU0tWdv/3Az5suxqZdIQVUstHsnUs2Y25843l/WnI5IMgMYrvU4wrobw8A==}
+  '@orval/hono@7.17.0':
+    resolution: {integrity: sha512-/78Gb346+I0jPLML/s/QK7O8sJoiCIQxKT0sJ3YVXPLSKQ4aBEYGcXthAW/LwJTZWz8Rm0vGGnz4svra3gafwg==}
 
-  '@orval/mcp@7.16.1':
-    resolution: {integrity: sha512-xO94xmlVwlgeFFOO5/iPzshzLGGnXUNAsF3uwl2B4nuWOyCfANxkcpfDXTCCc9XbOfEET/Mxx/Bst10JYP7r1g==}
+  '@orval/mcp@7.17.0':
+    resolution: {integrity: sha512-izVIA3XgBpdQ6u2VLD7lxXbksq2K0wf8ypmQAufd5SewSoyEPcu8jIlLovGLTI5WiBr0pJnHLoltJ4Pl/zkZ0A==}
 
-  '@orval/mock@7.16.1':
-    resolution: {integrity: sha512-dHNC8j196oqlc16BLIguj7Upqi/Kob2glKKv6DItLXzpQ1xqfFutY8qTDlDhbfDkqFOLFcTFaCXBV+/rgXJtNg==}
+  '@orval/mock@7.17.0':
+    resolution: {integrity: sha512-A/A/50XXBgidhTlQDyPQp6nIUfrP27GagyEQ70ztXS5Z9y1WJe7K5ZjjCnISOc7cFTZJmsYKvuCUo4ptfTm1bA==}
 
-  '@orval/query@7.16.1':
-    resolution: {integrity: sha512-zb25SNUOiH2PXV5ng8aMDVMe1B0Ply0cDbQlpzbOhPyqpHt6x/UB+CpTIt8dIL8oun9Lur508/R8iNnq7McRgw==}
+  '@orval/query@7.17.0':
+    resolution: {integrity: sha512-h/XZRpOLOewIPa/3uSk68M6CSgylrGSUxHux9uEH3P2nYWjwYV+GxuOUptzuONA37LGd76mgytW6tK27VmYeCA==}
 
-  '@orval/swr@7.16.1':
-    resolution: {integrity: sha512-W+S9HreJFVAlbvJspOQk7O2m2aS1sVhd6kz6irHLSH4jmQ5Q/ye4B9ojveDuPbps4q1vNLgx1qP6z0Pls1Nt5w==}
+  '@orval/swr@7.17.0':
+    resolution: {integrity: sha512-ZC5ZjzILWt8WE3V4gWRIg9XWHjQBubUJzin67aKERlybPN+sqMdgMEl9/XL+emUItkAIdex9cCaDHZwqjrmbKg==}
 
-  '@orval/zod@7.16.1':
-    resolution: {integrity: sha512-27Az6bfO10e+JqOHGkJNrz2SnVBvvl/dJ4i3RTwN1EaS8yT0KropZYskc2UZB2rBmQkthGGpcOQBYzdx5+sBJQ==}
+  '@orval/zod@7.17.0':
+    resolution: {integrity: sha512-ldwGUR4K0YIay+4UGR7ykTYD99Cs+CHIAOAVVny8/h9dU0CD/6sxomHuCzrC0Z2QxVZ4rL7k8g10Kffmp+dHBw==}
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -1208,26 +1208,26 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
-  '@sap-ai-sdk/ai-api@2.2.1-20251123013335.0':
-    resolution: {integrity: sha512-DIwWxGW+C6neLci5ngsH5CRlzcpbZtBr0Ly7JuLJFyFmQci0Ljsk60CjXd4IqOXIpjxTR9KY8TUrZ/3ZNjScXw==}
+  '@sap-ai-sdk/ai-api@2.2.1-20251124013349.0':
+    resolution: {integrity: sha512-dxJ56MWi1GQoc4jpZ0kapFgYvkENRfmiwLFT9ntFUSn67BFz7FdNoPONDOMfWDQ+t7cH8XLpUW+75zyxLsn57w==}
 
-  '@sap-ai-sdk/core@2.2.1-20251123013335.0':
-    resolution: {integrity: sha512-w9iBccrg10rl1pqUsKXoYb2amQOgi0QiCLjZJ3N0A2JTAdNuUkcxAWh3zcck3q3ldmqBU8uhRZWAwkkCYmMunQ==}
+  '@sap-ai-sdk/core@2.2.1-20251124013349.0':
+    resolution: {integrity: sha512-Zi0ZLcJLl/dL7wpzzjefPrL+/cj99+qXgFe7RddSlI+N0SAr2xhjsGFHef267zBm8+Sd5prib+BWnfXJ0sfc8w==}
 
-  '@sap-ai-sdk/document-grounding@2.2.1-20251123013335.0':
-    resolution: {integrity: sha512-ZUldfjvZQ9doRwWJ/TjLjA80BWFDnFfLfYVbziIFhOGvpneBQ+yogb4DLgAIUX8c0IM2wc3jEQXobMmiNXweAQ==}
+  '@sap-ai-sdk/document-grounding@2.2.1-20251124013349.0':
+    resolution: {integrity: sha512-JTdcOjXL3/PosBGe36m1GrLr6I+rYzsF3ECrC1/BpqEzWBz7HCCn2Fe8Cx9oEkzrVGgz5hOHPFTAqlOuXW6HSg==}
 
-  '@sap-ai-sdk/foundation-models@2.2.1-20251123013335.0':
-    resolution: {integrity: sha512-GRRj1NGIKjgL+2BUwJIWEmjMBABD5V0Z8yqAXMgp4mO8rRrr+2EHkEQ2qsaRcM1LQBLdk2Izg5dWHwcoV8GXMQ==}
+  '@sap-ai-sdk/foundation-models@2.2.1-20251124013349.0':
+    resolution: {integrity: sha512-PT2RDlPC75GaF6rQEyCN4eQU3+6KOzAKdiWpFZDkaIM9NBDTCx0vkhDE42GiMg4hp5MdPKRXIUxg4U2CnB3NBw==}
 
-  '@sap-ai-sdk/langchain@2.2.1-20251123013335.0':
-    resolution: {integrity: sha512-WYaKQWjHdcjDRRIjk7DsadeaaFFF5w0gpe12FYypfkTMF4YQwyqw/5uozebiQz8fvA51Dr5+Qe53+B4BSF0gvw==}
+  '@sap-ai-sdk/langchain@2.2.1-20251124013349.0':
+    resolution: {integrity: sha512-4+4KuePytgVYAryH6p+v168hkvbjsl7krjlXaFB7HlacO/wFuTub/id58CQWxrHGAaW6XE2yLUtHy4VMx6zgmQ==}
 
-  '@sap-ai-sdk/orchestration@2.2.1-20251123013335.0':
-    resolution: {integrity: sha512-Y6JmJ6FUY6TOhpSMLpA4VIdgvADObW8iUHXmcwe/xHc5Vq0Op8PshyZ9oBFHepJSiH+OFOUOrU7uoG3Zh2pRcw==}
+  '@sap-ai-sdk/orchestration@2.2.1-20251124013349.0':
+    resolution: {integrity: sha512-7xpxcYMR2nBvbAV5ZwxEa2KQjCh5WSCw25jRe7UQnMnj+/HMmAJE+sEbJRFZB7s+gBJLULusryFh6Tmb6kW8gg==}
 
-  '@sap-ai-sdk/prompt-registry@2.2.1-20251123013335.0':
-    resolution: {integrity: sha512-qaUDsyNitRCXvqe4NwKmejGe7fIkqtHWrcUC2/h/KQ5bn1nMla+lesvAoUYOByvqdSYfjerxPreZqYEYTTCrhA==}
+  '@sap-ai-sdk/prompt-registry@2.2.1-20251124013349.0':
+    resolution: {integrity: sha512-OpWOuFj5emZyIrepnTX1peDM2LHq5fhaEjGlk5tZYpeF49J3wCLctzKAyPz/vnsVnGI//bpetRTfE3rjVfPX5A==}
 
   '@sap-cloud-sdk/connectivity@4.1.2':
     resolution: {integrity: sha512-PJNBg+yhyo4Y/PZBcqbN8eD+RFVolgOcWgqVTdHef6Wch8t6SVlDqxLzf4mJ4nTpAY2E3ERFjIwlP+MUUXcf5A==}
@@ -4038,8 +4038,8 @@ packages:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
     engines: {node: '>= 0.8.0'}
 
-  orval@7.16.1:
-    resolution: {integrity: sha512-Rz13jq4zk86QEBHfbb8aflO7P2YjmhBDPZCpamKwci9l1ByPifHVtVuEI+4uZVrJRSFWI2hOlNR3X5rMmZ8V0g==}
+  orval@7.17.0:
+    resolution: {integrity: sha512-iBqZC7HpSSL1CJ9jRCD+5vCYpedd03Udh+izcyFnWyVUN0ywuzGonizJgl5iGTgoe+VXsMM7ndV5h+DkghreMg==}
     engines: {node: '>=22.18.0'}
     hasBin: true
 
@@ -6092,25 +6092,25 @@ snapshots:
 
   '@open-draft/until@2.1.0': {}
 
-  '@orval/angular@7.16.1(openapi-types@12.1.3)(typescript@5.9.3)':
+  '@orval/angular@7.17.0(openapi-types@12.1.3)(typescript@5.9.3)':
     dependencies:
-      '@orval/core': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/core': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
     transitivePeerDependencies:
       - encoding
       - openapi-types
       - supports-color
       - typescript
 
-  '@orval/axios@7.16.1(openapi-types@12.1.3)(typescript@5.9.3)':
+  '@orval/axios@7.17.0(openapi-types@12.1.3)(typescript@5.9.3)':
     dependencies:
-      '@orval/core': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/core': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
     transitivePeerDependencies:
       - encoding
       - openapi-types
       - supports-color
       - typescript
 
-  '@orval/core@7.16.1(openapi-types@12.1.3)(typescript@5.9.3)':
+  '@orval/core@7.17.0(openapi-types@12.1.3)(typescript@5.9.3)':
     dependencies:
       '@apidevtools/swagger-parser': 12.1.0(openapi-types@12.1.3)
       '@ibm-cloud/openapi-ruleset': 1.33.3
@@ -6137,9 +6137,9 @@ snapshots:
       - supports-color
       - typescript
 
-  '@orval/fetch@7.16.1(openapi-types@12.1.3)(typescript@5.9.3)':
+  '@orval/fetch@7.17.0(openapi-types@12.1.3)(typescript@5.9.3)':
     dependencies:
-      '@orval/core': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/core': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
       openapi3-ts: 4.5.0
     transitivePeerDependencies:
       - encoding
@@ -6147,10 +6147,10 @@ snapshots:
       - supports-color
       - typescript
 
-  '@orval/hono@7.16.1(openapi-types@12.1.3)(typescript@5.9.3)':
+  '@orval/hono@7.17.0(openapi-types@12.1.3)(typescript@5.9.3)':
     dependencies:
-      '@orval/core': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
-      '@orval/zod': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/core': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/zod': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
       fs-extra: 11.3.2
       lodash.uniq: 4.5.0
       openapi3-ts: 4.5.0
@@ -6160,11 +6160,11 @@ snapshots:
       - supports-color
       - typescript
 
-  '@orval/mcp@7.16.1(openapi-types@12.1.3)(typescript@5.9.3)':
+  '@orval/mcp@7.17.0(openapi-types@12.1.3)(typescript@5.9.3)':
     dependencies:
-      '@orval/core': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
-      '@orval/fetch': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
-      '@orval/zod': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/core': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/fetch': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/zod': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
       openapi3-ts: 4.5.0
     transitivePeerDependencies:
       - encoding
@@ -6172,9 +6172,9 @@ snapshots:
       - supports-color
       - typescript
 
-  '@orval/mock@7.16.1(openapi-types@12.1.3)(typescript@5.9.3)':
+  '@orval/mock@7.17.0(openapi-types@12.1.3)(typescript@5.9.3)':
     dependencies:
-      '@orval/core': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/core': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
       openapi3-ts: 4.5.0
     transitivePeerDependencies:
       - encoding
@@ -6182,10 +6182,10 @@ snapshots:
       - supports-color
       - typescript
 
-  '@orval/query@7.16.1(openapi-types@12.1.3)(typescript@5.9.3)':
+  '@orval/query@7.17.0(openapi-types@12.1.3)(typescript@5.9.3)':
     dependencies:
-      '@orval/core': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
-      '@orval/fetch': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/core': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/fetch': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
       chalk: 4.1.2
       lodash.omitby: 4.6.0
     transitivePeerDependencies:
@@ -6194,19 +6194,19 @@ snapshots:
       - supports-color
       - typescript
 
-  '@orval/swr@7.16.1(openapi-types@12.1.3)(typescript@5.9.3)':
+  '@orval/swr@7.17.0(openapi-types@12.1.3)(typescript@5.9.3)':
     dependencies:
-      '@orval/core': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
-      '@orval/fetch': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/core': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/fetch': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
     transitivePeerDependencies:
       - encoding
       - openapi-types
       - supports-color
       - typescript
 
-  '@orval/zod@7.16.1(openapi-types@12.1.3)(typescript@5.9.3)':
+  '@orval/zod@7.17.0(openapi-types@12.1.3)(typescript@5.9.3)':
     dependencies:
-      '@orval/core': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/core': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
       lodash.uniq: 4.5.0
       openapi3-ts: 4.5.0
     transitivePeerDependencies:
@@ -6222,16 +6222,16 @@ snapshots:
 
   '@rtsao/scc@1.1.0': {}
 
-  '@sap-ai-sdk/ai-api@2.2.1-20251123013335.0':
+  '@sap-ai-sdk/ai-api@2.2.1-20251124013349.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.2.1-20251123013335.0
+      '@sap-ai-sdk/core': 2.2.1-20251124013349.0
       '@sap-cloud-sdk/connectivity': 4.1.2
       '@sap-cloud-sdk/util': 4.1.2
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/core@2.2.1-20251123013335.0':
+  '@sap-ai-sdk/core@2.2.1-20251124013349.0':
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.1.2
       '@sap-cloud-sdk/http-client': 4.1.2
@@ -6241,17 +6241,17 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/document-grounding@2.2.1-20251123013335.0':
+  '@sap-ai-sdk/document-grounding@2.2.1-20251124013349.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.2.1-20251123013335.0
+      '@sap-ai-sdk/core': 2.2.1-20251124013349.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/foundation-models@2.2.1-20251123013335.0':
+  '@sap-ai-sdk/foundation-models@2.2.1-20251124013349.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.2.1-20251123013335.0
-      '@sap-ai-sdk/core': 2.2.1-20251123013335.0
+      '@sap-ai-sdk/ai-api': 2.2.1-20251124013349.0
+      '@sap-ai-sdk/core': 2.2.1-20251124013349.0
       '@sap-cloud-sdk/connectivity': 4.1.2
       '@sap-cloud-sdk/http-client': 4.1.2
       '@sap-cloud-sdk/util': 4.1.2
@@ -6259,13 +6259,13 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/langchain@2.2.1-20251123013335.0(openai@5.12.2(ws@8.18.3)(zod@3.25.76))':
+  '@sap-ai-sdk/langchain@2.2.1-20251124013349.0(openai@5.12.2(ws@8.18.3)(zod@3.25.76))':
     dependencies:
       '@langchain/core': 0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
-      '@sap-ai-sdk/ai-api': 2.2.1-20251123013335.0
-      '@sap-ai-sdk/core': 2.2.1-20251123013335.0
-      '@sap-ai-sdk/foundation-models': 2.2.1-20251123013335.0
-      '@sap-ai-sdk/orchestration': 2.2.1-20251123013335.0
+      '@sap-ai-sdk/ai-api': 2.2.1-20251124013349.0
+      '@sap-ai-sdk/core': 2.2.1-20251124013349.0
+      '@sap-ai-sdk/foundation-models': 2.2.1-20251124013349.0
+      '@sap-ai-sdk/orchestration': 2.2.1-20251124013349.0
       '@sap-cloud-sdk/connectivity': 4.1.2
       '@sap-cloud-sdk/util': 4.1.2
       uuid: 13.0.0
@@ -6277,20 +6277,20 @@ snapshots:
       - openai
       - supports-color
 
-  '@sap-ai-sdk/orchestration@2.2.1-20251123013335.0':
+  '@sap-ai-sdk/orchestration@2.2.1-20251124013349.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.2.1-20251123013335.0
-      '@sap-ai-sdk/core': 2.2.1-20251123013335.0
-      '@sap-ai-sdk/prompt-registry': 2.2.1-20251123013335.0
+      '@sap-ai-sdk/ai-api': 2.2.1-20251124013349.0
+      '@sap-ai-sdk/core': 2.2.1-20251124013349.0
+      '@sap-ai-sdk/prompt-registry': 2.2.1-20251124013349.0
       '@sap-cloud-sdk/util': 4.1.2
       yaml: 2.8.1
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/prompt-registry@2.2.1-20251123013335.0':
+  '@sap-ai-sdk/prompt-registry@2.2.1-20251124013349.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.2.1-20251123013335.0
+      '@sap-ai-sdk/core': 2.2.1-20251124013349.0
       zod: 3.25.76
     transitivePeerDependencies:
       - debug
@@ -9682,20 +9682,20 @@ snapshots:
       type-check: 0.4.0
       word-wrap: 1.2.5
 
-  orval@7.16.1(openapi-types@12.1.3)(typescript@5.9.3):
+  orval@7.17.0(openapi-types@12.1.3)(typescript@5.9.3):
     dependencies:
       '@apidevtools/swagger-parser': 12.1.0(openapi-types@12.1.3)
       '@commander-js/extra-typings': 14.0.0(commander@14.0.2)
-      '@orval/angular': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
-      '@orval/axios': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
-      '@orval/core': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
-      '@orval/fetch': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
-      '@orval/hono': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
-      '@orval/mcp': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
-      '@orval/mock': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
-      '@orval/query': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
-      '@orval/swr': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
-      '@orval/zod': 7.16.1(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/angular': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/axios': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/core': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/fetch': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/hono': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/mcp': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/mock': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/query': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/swr': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
+      '@orval/zod': 7.17.0(openapi-types@12.1.3)(typescript@5.9.3)
       chalk: 4.1.2
       chokidar: 4.0.3
       commander: 14.0.2
