@@ -210,7 +210,7 @@ describe('orchestration service client', () => {
       );
       const client = new OrchestrationClient(config, { maxRetries: 0 });
       await expect(client.stream('Hello!', { timeout: 1000 })).rejects.toThrow(
-        'AbortError'
+        'Aborted'
       );
     });
   });

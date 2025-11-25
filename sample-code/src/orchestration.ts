@@ -572,17 +572,15 @@ export interface TranslationResponse {
  * @returns Response that adheres to `TranslationResponse` type.
  */
 export async function orchestrationResponseFormat(): Promise<TranslationResponse> {
-  const translationSchema = z
-    .object({
-      language: z.string().meta({
-        description:
-          'The language of the translation, randomly chosen by the LLM.'
-      }),
-      translation: z
-        .string()
-        .meta({ description: 'The translation of the input sentence.' })
-    })
-    .strict();
+  const translationSchema = z.strictObject({
+    language: z.string().meta({
+      description:
+        'The language of the translation, randomly chosen by the LLM.'
+    }),
+    translation: z
+      .string()
+      .meta({ description: 'The translation of the input sentence.' })
+  });
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
     promptTemplating: {
@@ -621,12 +619,10 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
   return JSON.parse(response.getContent()!) as TranslationResponse;
 }
 
-const addNumbersSchema = z
-  .object({
-    a: z.number().meta({ description: 'The first number to be added.' }),
-    b: z.number().meta({ description: 'The second number to be added.' })
-  })
-  .strict();
+const addNumbersSchema = z.strictObject({
+  a: z.number().meta({ description: 'The first number to be added.' }),
+  b: z.number().meta({ description: 'The second number to be added.' })
+});
 
 const addNumbersTool: ChatCompletionTool = {
   type: 'function',
