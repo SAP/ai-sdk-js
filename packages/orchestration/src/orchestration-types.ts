@@ -360,11 +360,7 @@ export type DpiMaskingConfig = Omit<
   mask_grounding_input?: boolean;
 };
 
-/**
- * Base parameters for Azure content safety filter.
- * @internal
- */
-export interface AzureContentSafetyFilterBaseParameters {
+interface AzureContentSafetyFilterBaseParameters {
   /**
    * The filter category for hate content.
    */
