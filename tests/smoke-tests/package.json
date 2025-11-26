@@ -15,6 +15,7 @@
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
+    "@langchain/classic": "^1.0.5",
     "@langchain/core": "^1.1.0",
     "@langchain/langgraph": "^1.0.2",
     "@langchain/mcp-adapters": "^1.0.1",
