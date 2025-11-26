@@ -206,6 +206,39 @@ export async function orchestrationPromptRegistry(): Promise<OrchestrationRespon
 }
 
 /**
+ * Use a template stored in the prompt registry store at
+ * the resource group scope.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationCompletionPromptRegistryScoped(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient(
+    {
+      promptTemplating: {
+        prompt: {
+          // refer to a prompt template stored at resource group scope
+          template_ref: {
+            name: 'e2e-test-scoped',
+            scenario: 'e2e-test-scoped',
+            version: '0.0.1',
+            scope: 'resource_group'
+          }
+        },
+        // define the language model to be used
+        model: {
+          name: 'gpt-4o'
+        }
+      }
+    },
+    // provide resource group where the template is stored
+    { resourceGroup: 'ai-sdk-js-e2e' }
+  );
+
+  return orchestrationClient.chatCompletion({
+    placeholderValues: { country: 'France' }
+  });
+}
+
+/**
  * Apply multiple content filters to the input.
  * @returns The orchestration service error response.
  */
