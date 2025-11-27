@@ -108,17 +108,19 @@ export function isTemplateRef(
  */
 // TODO: Add mapping of refusal property, once LangChain base class supports it natively.
 function mapBaseMessageToChatMessage(message: BaseMessage): ChatMessage {
-  switch (message.getType()) {
+  switch (message.type) {
     case 'ai':
-      return mapAiMessageToOrchestrationAssistantMessage(message);
+      return mapAiMessageToOrchestrationAssistantMessage(message as AIMessage);
     case 'human':
-      return mapHumanMessageToChatMessage(message);
+      return mapHumanMessageToChatMessage(message as HumanMessage);
     case 'system':
-      return mapSystemMessageToOrchestrationSystemMessage(message);
+      return mapSystemMessageToOrchestrationSystemMessage(
+        message as SystemMessage
+      );
     case 'tool':
       return mapToolMessageToOrchestrationToolMessage(message as ToolMessage);
     default:
-      throw new Error(`Unsupported message type: ${message.getType()}`);
+      throw new Error(`Unsupported message type: ${message.type}`);
   }
 }
 
@@ -280,7 +282,12 @@ export function mapOutputToChatResult(
         content: choice.message.content ?? '',
         tool_calls: mapOrchestrationToLangChainToolCall(
           choice.message.tool_calls
-        )
+        ),
+        usage_metadata: {
+          input_tokens: usage?.prompt_tokens ?? 0,
+          output_tokens: usage?.completion_tokens ?? 0,
+          total_tokens: usage?.total_tokens ?? 0
+        }
       }),
       additional_kwargs: {
         tool_calls: choice.message.tool_calls,

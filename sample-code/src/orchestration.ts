@@ -206,6 +206,39 @@ export async function orchestrationPromptRegistry(): Promise<OrchestrationRespon
 }
 
 /**
+ * Use a template stored in the prompt registry store at
+ * the resource group scope.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationCompletionPromptRegistryScoped(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient(
+    {
+      promptTemplating: {
+        prompt: {
+          // refer to a prompt template stored at resource group scope
+          template_ref: {
+            name: 'e2e-test-scoped',
+            scenario: 'e2e-test-scoped',
+            version: '0.0.1',
+            scope: 'resource_group'
+          }
+        },
+        // define the language model to be used
+        model: {
+          name: 'gpt-4o'
+        }
+      }
+    },
+    // provide resource group where the template is stored
+    { resourceGroup: 'ai-sdk-js-e2e' }
+  );
+
+  return orchestrationClient.chatCompletion({
+    placeholderValues: { country: 'France' }
+  });
+}
+
+/**
  * Apply multiple content filters to the input.
  * @returns The orchestration service error response.
  */
@@ -572,17 +605,15 @@ export interface TranslationResponse {
  * @returns Response that adheres to `TranslationResponse` type.
  */
 export async function orchestrationResponseFormat(): Promise<TranslationResponse> {
-  const translationSchema = z
-    .object({
-      language: z.string().meta({
-        description:
-          'The language of the translation, randomly chosen by the LLM.'
-      }),
-      translation: z
-        .string()
-        .meta({ description: 'The translation of the input sentence.' })
-    })
-    .strict();
+  const translationSchema = z.strictObject({
+    language: z.string().meta({
+      description:
+        'The language of the translation, randomly chosen by the LLM.'
+    }),
+    translation: z
+      .string()
+      .meta({ description: 'The translation of the input sentence.' })
+  });
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
     promptTemplating: {
@@ -621,12 +652,10 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
   return JSON.parse(response.getContent()!) as TranslationResponse;
 }
 
-const addNumbersSchema = z
-  .object({
-    a: z.number().meta({ description: 'The first number to be added.' }),
-    b: z.number().meta({ description: 'The second number to be added.' })
-  })
-  .strict();
+const addNumbersSchema = z.strictObject({
+  a: z.number().meta({ description: 'The first number to be added.' }),
+  b: z.number().meta({ description: 'The second number to be added.' })
+});
 
 const addNumbersTool: ChatCompletionTool = {
   type: 'function',

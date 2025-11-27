@@ -297,7 +297,6 @@ export interface GroundingModule {
     metadata_params?: string[];
   };
 }
-
 /**
  * Represents a filter configuration for the Document Grounding Service.
  */
@@ -362,10 +361,7 @@ export type DpiMaskingConfig = Omit<
   mask_grounding_input?: boolean;
 };
 
-/**
- * Output Parameters for Azure content safety output filter.
- */
-export interface AzureContentSafetyFilterOutputParameters {
+interface AzureContentSafetyFilterBaseParameters {
   /**
    * The filter category for hate content.
    */
@@ -383,16 +379,27 @@ export interface AzureContentSafetyFilterOutputParameters {
    */
   violence?: AzureFilterThreshold;
 }
+
+/**
+ * Output Parameters for Azure content safety output filter.
+ */
+export interface AzureContentSafetyFilterOutputParameters
+  extends AzureContentSafetyFilterBaseParameters {
+  /**
+   * Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.
+   */
+  protected_material_code?: boolean;
+}
 /**
  * Input parameters for Azure content safety input filter.
  */
-export type AzureContentSafetyFilterInputParameters =
-  AzureContentSafetyFilterOutputParameters & {
-    /**
-     * A flag to use prompt shield.
-     */
-    prompt_shield?: boolean;
-  };
+export interface AzureContentSafetyFilterInputParameters
+  extends AzureContentSafetyFilterBaseParameters {
+  /**
+   * A flag to use prompt shield.
+   */
+  prompt_shield?: boolean;
+}
 
 /**
  * A descriptive constant for Azure content safety filter threshold.
