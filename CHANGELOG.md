@@ -28,6 +28,16 @@
 
 -
 
+# 2.3.0
+## Compatibility Notes
+
+- [langchain, orchestration, prompt-registry] `zod` was upgraded to v4 (7c9605d)
+
+## New Features
+
+- [langchain] Bump langchain to v1 (7c9605d)
+- [orchestration] Added support for `protected_material_code` property to `buildAzureContentSafetyFilter()` function for output filter configuration to allow detecting protected code content from known github repositories. (485e21b)
+
 # 2.2.0
 ## Compatibility Notes
 
