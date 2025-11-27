@@ -31,6 +31,8 @@ export type {
   TranslationReturnType,
   TranslationInputConfig,
   TranslationOutputConfig,
+  DocumentTranslationApplyToSelector,
+  TranslationTargetLanguage,
   EmbeddingRequest,
   EmbeddingModelConfig,
   EmbeddingModelDetails,

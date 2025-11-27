@@ -429,6 +429,19 @@ export type LlamaGuard38BCategory = keyof LlamaGuard38B;
 export type ConfigType = 'input' | 'output';
 
 /**
+ * Configuration selector for applying translation to specific placeholders or message roles.
+ */
+export type DocumentTranslationApplyToSelector =
+  SAPDocumentTranslationApplyToSelector;
+
+/**
+ * Target language for translation, either a language code or a selector configuration.
+ */
+export type TranslationTargetLanguage =
+  | string
+  | DocumentTranslationApplyToSelector;
+
+/**
  * Input parameters for translation configuration.
  */
 interface TranslationConfigParametersInput {
@@ -441,13 +454,7 @@ interface TranslationConfigParametersInput {
    * Language to which the text should be translated.
    * @example targetLanguage: 'en-US'
    */
-  targetLanguage: string;
-}
-
-/**
- * Input parameters for translation input configuration.
- */
-export type TranslationInputParameters = TranslationConfigParametersInput & {
+  targetLanguage: TranslationTargetLanguage;
   /**
    * If true, the messages history will be translated as well.
    * @example translateMessagesHistory: true
@@ -457,24 +464,34 @@ export type TranslationInputParameters = TranslationConfigParametersInput & {
    * Configuration for applying translation to specific placeholders or message roles.
    * @example applyTo: [{ category: 'placeholders', items: ['user_input'], source_language: 'de-DE' }]
    */
-  applyTo?: SAPDocumentTranslationApplyToSelector[];
-};
+  applyTo?: DocumentTranslationApplyToSelector[];
+}
 
 /**
- * Output parameters for translation output configuration.
+ * Output parameters for translation configuration.
  */
-export interface TranslationOutputParameters {
+interface TranslationConfigParametersOutput {
   /**
    * Language of the text to be translated.
    * @example sourceLanguage: 'de-DE'
    */
   sourceLanguage?: string;
   /**
-   * Configuration for applying translation to specific placeholders or message roles, or a target language string.
-   * @example targetLanguage: { category: 'placeholders', items: ['assistant_response'] }
+   * Language to which the text should be translated.
+   * @example targetLanguage: 'en-US'
    */
-  targetLanguage?: string | SAPDocumentTranslationApplyToSelector;
+  targetLanguage: TranslationTargetLanguage;
 }
+
+/**
+ * Output parameters for translation output configuration.
+ */
+export type TranslationOutputParameters = TranslationConfigParametersOutput;
+
+/**
+ * Input parameters for translation input configuration.
+ */
+export type TranslationInputParameters = TranslationConfigParametersInput;
 
 /**
  * Parameters for translation configurations.
