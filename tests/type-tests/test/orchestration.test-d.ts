@@ -15,7 +15,10 @@ import type {
   AzureContentSafetyFilterReturnType,
   AssistantChatMessage,
   TranslationReturnType,
-  LlamaGuard38BFilterReturnType
+  LlamaGuard38BFilterReturnType,
+  TranslationConfigParams,
+  DocumentTranslationApplyToSelector,
+  TranslationTargetLanguage
 } from '@sap-ai-sdk/orchestration';
 import type {
   CompletionPostResponse,
@@ -521,6 +524,47 @@ expectError<TranslationReturnType<'input'>>(
 );
 
 /**
+ * Test that new wrapper types are available and can be used.
+ */
+const selector: DocumentTranslationApplyToSelector = {
+  category: 'placeholders',
+  items: ['user_input'],
+  source_language: 'de-DE'
+};
+
+const targetLang: TranslationTargetLanguage = 'en-US';
+
+/**
+ * Test buildTranslationConfig accepts the new targetLanguage types.
+ */
+expectType<TranslationReturnType<'input'>>(
+  buildTranslationConfig('input', {
+    targetLanguage: 'en-US'
+  })
+);
+
+expectType<TranslationReturnType<'input'>>(
+  buildTranslationConfig('input', {
+    targetLanguage: selector
+  })
+);
+
+expectType<TranslationReturnType<'output'>>(
+  buildTranslationConfig('output', {
+    targetLanguage: targetLang
+  })
+);
+
+expectType<TranslationReturnType<'output'>>(
+  buildTranslationConfig('output', {
+    targetLanguage: {
+      category: 'placeholders',
+      items: ['assistant_response']
+    }
+  })
+);
+
+/**
  * Masking util.
  */
 expectType<DpiConfig>(
@@ -536,5 +580,86 @@ expectError<DpiConfig>(
   buildDpiMaskingProvider({
     method: 'anonymization',
     entities: []
+  })
+);
+
+/**
+ * Additional tests for DocumentTranslationApplyToSelector variations.
+ */
+const applyToSelector: DocumentTranslationApplyToSelector = {
+  category: 'placeholders',
+  items: ['user_input', 'retrieved_context'],
+  source_language: 'fr-FR'
+};
+
+/**
+ * Test that applyTo selectors are assignable.
+ */
+expectAssignable<DocumentTranslationApplyToSelector>(applyToSelector);
+
+/**
+ * Test error cases for invalid applyTo selectors.
+ */
+expectError<DocumentTranslationApplyToSelector>({ category: 'invalid' });
+
+/**
+ * Test chat completion with messagesHistory targeting specific message types.
+ */
+expectType<Promise<OrchestrationResponse>>(
+  new OrchestrationClient({
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      },
+      prompt: {
+        template: [{ role: 'user', content: 'Hello!' }]
+      }
+    },
+    translation: {
+      input: {
+        type: 'sap_document_translation',
+        config: {
+          apply_to: [
+            {
+              category: 'template_roles',
+              items: ['user'],
+              source_language: 'en-US'
+            }
+          ],
+          target_language: 'de-DE'
+        }
+      }
+    }
+  }).chatCompletion()
+);
+
+/**
+ * Test translation config validation for messages_history selector.
+ */
+expectType<TranslationReturnType<'input'>>(
+  buildTranslationConfig('input', {
+    sourceLanguage: 'en-US',
+    targetLanguage: 'de-DE',
+    applyTo: [
+      {
+        category: 'template_roles',
+        items: ['user'],
+        source_language: 'en-US'
+      }
+    ]
+  })
+);
+
+/**
+ * Test invalid messages_history selector items.
+ */
+expectError<TranslationReturnType<'input'>>(
+  buildTranslationConfig('input', {
+    apply_to: {
+      category: 'messages_history',
+      items: ['invalid_role'],
+      source_language: 'en-US'
+    },
+    target_language: 'fr-FR'
   })
 );
