@@ -8,8 +8,6 @@ import {
   AzureOpenAiEmbeddingClient
 } from '@sap-ai-sdk/langchain';
 // eslint-disable-next-line import/no-internal-modules
-import { createStuffDocumentsChain } from '@langchain/classic/chains/combine_documents';
-// eslint-disable-next-line import/no-internal-modules
 import { MemoryVectorStore } from '@langchain/classic/vectorstores/memory';
 // eslint-disable-next-line import/no-internal-modules
 import { TextLoader } from '@langchain/classic/document_loaders/fs/text';
@@ -20,6 +18,7 @@ import {
 } from '@langchain/core/messages';
 // eslint-disable-next-line import/no-internal-modules
 import * as z from 'zod/v4';
+import { createAgent } from 'langchain';
 import { tool } from '@langchain/core/tools';
 import type { AIMessageChunk, BaseMessage } from '@langchain/core/messages';
 
@@ -96,49 +95,59 @@ export async function invokeRagChain(): Promise<string> {
     maxRetries: 0
   });
 
-  // Create a vector store from the document
-  const vectorStore = await MemoryVectorStore.fromDocuments(
-    splits,
-    embeddingClient
+  // Create a vector store from document splits
+  const vectorStore = new MemoryVectorStore(embeddingClient);
+  await vectorStore.addDocuments(splits);
+
+  // Construct a tool for retrieving context
+  const retrieveSchema = z.object({ query: z.string() });
+  const retrieve = tool(
+    async ({ query }) => {
+      const retrievedDocs = await vectorStore.similaritySearch(query, 2);
+      const serialized = retrievedDocs
+        .map(
+          doc => `Source: ${doc.metadata.source}\nContent: ${doc.pageContent}`
+        )
+        .join('\n');
+      return [serialized];
+    },
+    {
+      name: 'retrieve',
+      description: 'Retrieve information related to a query.',
+      schema: retrieveSchema,
+      responseFormat: 'contentlist'
+    }
   );
 
-  // Create a prompt template
-  const promptTemplate = ChatPromptTemplate.fromTemplate(
+  // Initialize the chat client
+  const chatClient = new AzureOpenAiChatClient({
+    modelName: 'gpt-4o',
+    max_tokens: 1000,
+    temperature: 0.7
+  });
+
+  // Create a system prompt
+  const systemPrompt = new SystemMessage(
     `You are an assistant for question-answering tasks.
-      Use the following pieces of retrieved context to answer the question.
+      You have access to a tool that retrieves information related to a query.
+      Use the tool to help answer user queries.
       If you don't know the answer, just say that you don't know.
       Use ten sentences maximum and keep the answer concise.
-      Always include code snippets in your answer including class instantiation.
-
-      Question: {question}
-      Context: {context}
-      Answer:`
+      Always include code snippets in your answer including class instantiation.`
   );
 
-  // Initialize the chat client with 0 retries for fast testing
-  const llm = new AzureOpenAiChatClient({
-    modelName: 'gpt-4o',
-    maxRetries: 0
+  const agent = createAgent({
+    model: chatClient,
+    tools: [retrieve],
+    systemPrompt
   });
 
-  // Create a chain to combine an LLM call with the prompt template and output parser
-  const ragChain = await createStuffDocumentsChain({
-    llm,
-    prompt: promptTemplate,
-    outputParser: new StringOutputParser()
-  });
+  const inputMessage =
+    'How do you use templating in the SAP Orchestration client?';
 
-  // Create a retriever for the vector store
-  const retriever = vectorStore.asRetriever();
-
-  // Create a prompt
-  const prompt = 'How do you use templating in the SAP Orchestration client?';
-
-  // Invoke the chat client combined with the prompt, prompt template, output parser and vector store context
-  return ragChain.invoke({
-    question: prompt,
-    context: await retriever.invoke(prompt)
-  });
+  const agentInputs = { messages: [{ role: 'user', content: inputMessage }] };
+  const result = await agent.invoke(agentInputs);
+  return result.messages.at(-1)!.content as string;
 }
 
 /**
