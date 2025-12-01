@@ -29,7 +29,7 @@ importers:
         specifier: workspace:^
         version: link:packages/orchestration
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.1.2
+        specifier: ^4.2.0
         version: 4.2.0
       '@sap-cloud-sdk/eslint-config':
         specifier: ^4.1.2
@@ -38,13 +38,13 @@ importers:
         specifier: ^4.1.2
         version: 4.2.0
       '@sap-cloud-sdk/http-client':
-        specifier: ^4.1.2
+        specifier: ^4.2.0
         version: 4.2.0
       '@sap-cloud-sdk/openapi-generator':
         specifier: ^4.1.2
         version: 4.2.0
       '@sap-cloud-sdk/util':
-        specifier: ^4.1.2
+        specifier: ^4.2.0
         version: 4.2.0
       '@types/jest':
         specifier: ^30.0.0
@@ -107,26 +107,26 @@ importers:
         specifier: workspace:^
         version: link:../core
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^4.2.0
+        version: 4.2.0
       '@sap-cloud-sdk/util':
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^4.2.0
+        version: 4.2.0
 
   packages/core:
     dependencies:
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^4.2.0
+        version: 4.2.0
       '@sap-cloud-sdk/http-client':
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^4.2.0
+        version: 4.2.0
       '@sap-cloud-sdk/openapi':
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^4.2.0
+        version: 4.2.0
       '@sap-cloud-sdk/util':
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^4.2.0
+        version: 4.2.0
 
   packages/document-grounding:
     dependencies:
@@ -143,14 +143,14 @@ importers:
         specifier: workspace:^
         version: link:../core
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^4.2.0
+        version: 4.2.0
       '@sap-cloud-sdk/http-client':
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^4.2.0
+        version: 4.2.0
       '@sap-cloud-sdk/util':
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^4.2.0
+        version: 4.2.0
 
   packages/langchain:
     dependencies:
@@ -170,11 +170,11 @@ importers:
         specifier: workspace:^
         version: link:../orchestration
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^4.2.0
+        version: 4.2.0
       '@sap-cloud-sdk/util':
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^4.2.0
+        version: 4.2.0
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
@@ -191,18 +191,18 @@ importers:
         specifier: workspace:^
         version: link:../prompt-registry
       '@sap-cloud-sdk/util':
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^4.2.0
+        version: 4.2.0
       yaml:
         specifier: ^2.8.2
         version: 2.8.2
     devDependencies:
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^4.2.0
+        version: 4.2.0
       '@sap-cloud-sdk/http-client':
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^4.2.0
+        version: 4.2.0
 
   packages/prompt-registry:
     dependencies:
@@ -277,8 +277,8 @@ importers:
         specifier: workspace:^
         version: link:../packages/prompt-registry
       '@sap-cloud-sdk/util':
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^4.2.0
+        version: 4.2.0
       '@types/express':
         specifier: ^5.0.5
         version: 5.0.5
@@ -307,8 +307,8 @@ importers:
         specifier: workspace:^
         version: link:../../sample-code
       '@sap-cloud-sdk/util':
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^4.2.0
+        version: 4.2.0
     devDependencies:
       '@types/async-retry':
         specifier: ^1.4.9
@@ -353,8 +353,8 @@ importers:
         specifier: canary
         version: 2.3.1-20251201013447.0
       '@sap-cloud-sdk/util':
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^4.2.0
+        version: 4.2.0
       express:
         specifier: ^5.1.0
         version: 5.1.0
@@ -390,11 +390,11 @@ importers:
         specifier: workspace:^
         version: link:../../packages/orchestration
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^4.2.0
+        version: 4.2.0
       '@sap-cloud-sdk/http-client':
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^4.2.0
+        version: 4.2.0
       tsd:
         specifier: ^0.33.0
         version: 0.33.0
@@ -1404,9 +1404,6 @@ packages:
   '@sap-ai-sdk/prompt-registry@2.3.1-20251201013447.0':
     resolution: {integrity: sha512-IMiyhMGMR8i0BdfyawSeHTOOwCvSNvVzSlpXCHiCx+JbkpyOgvJzaFCG1WQU1uRf/UMJksY/DR6jBuWmfwJBCw==}
 
-  '@sap-cloud-sdk/connectivity@4.1.2':
-    resolution: {integrity: sha512-PJNBg+yhyo4Y/PZBcqbN8eD+RFVolgOcWgqVTdHef6Wch8t6SVlDqxLzf4mJ4nTpAY2E3ERFjIwlP+MUUXcf5A==}
-
   '@sap-cloud-sdk/connectivity@4.2.0':
     resolution: {integrity: sha512-dvQpjYWp9EhoUip4ftvnsVOG6BHJO+fOOuVs0R7V1IRyl7F49QPdpI/YoMzk3W7Rex9NozRa/0EXAe9L0CrFbA==}
 
@@ -1418,9 +1415,6 @@ packages:
   '@sap-cloud-sdk/generator-common@4.2.0':
     resolution: {integrity: sha512-7cNWEqPhpNUF86A+AY4HUfVnf5M+WsEy0zF0c+RC6Pnj1FoTM11YAgKzok6ggBEC28hYEEx+lh2gh+PEKPlKpQ==}
 
-  '@sap-cloud-sdk/http-client@4.1.2':
-    resolution: {integrity: sha512-qQny7j22oyZxMZ64S6FSmtt5CCB4JyZND043ZTURamoIyuXsM3RegRN+rhjzwoBP4NLws4Rt4VfUOQ/X+DXXFQ==}
-
   '@sap-cloud-sdk/http-client@4.2.0':
     resolution: {integrity: sha512-jpMeQpcyY3wfEbNlo0yqgu6jp+Rr3nOBYPt/k6GdjgR9qQFPgY1m2ZEsyd8B1Dhzb+BS3iW7fHunshVvGjCgtQ==}
 
@@ -1428,20 +1422,11 @@ packages:
     resolution: {integrity: sha512-GBVvGQPPbkc8CUoUGtisrbodzmJoJ6zNJ5KA/+RTaIvdL9wjQ7Qx38zBoOnNNJa9owNjBwzyjV3VpPB3esv/Ng==}
     hasBin: true
 
-  '@sap-cloud-sdk/openapi@4.1.2':
-    resolution: {integrity: sha512-KJ/xjnmvKwLhlUv6duoH6pLDYS34NHryS44j5vSTJMK4EzIfKo2R62RKAM3Pm+3zkWnQh9U2Q48Hbpornt8k1Q==}
-
   '@sap-cloud-sdk/openapi@4.2.0':
     resolution: {integrity: sha512-lubhOWJqE6n8MZcBjjd6uMFfI8Im3Jma1Mimsh/lJgJP2seOQ7eXnD0zi1zLC8ah4x+k86QrLozdJ5F5Izgvzw==}
 
-  '@sap-cloud-sdk/resilience@4.1.2':
-    resolution: {integrity: sha512-rMcM6Sn0WswNQK9583UCBEwzqvPSETae8GzzFrTQ7+JM6RA6PU5/WiPmhqzQQw1MFQvwuX6uMDwPf4U3AdemMQ==}
-
   '@sap-cloud-sdk/resilience@4.2.0':
     resolution: {integrity: sha512-ZR2UugUEKEawIu6SIfz9OM8nQO43s/37jnmU4L+vTQN+ptFdFg+2bJAjj+F3jyqSaBx6JbALs9r6X2eWRc+ZDQ==}
-
-  '@sap-cloud-sdk/util@4.1.2':
-    resolution: {integrity: sha512-lsxsBc60pokMDCHvs0/CXTa6fjVEMzTeSyB8CerG6L0sN4sK8Ppm63VVcSh/E+X+U4aVMHmLuOmmd6XyLGAc3Q==}
 
   '@sap-cloud-sdk/util@4.2.0':
     resolution: {integrity: sha512-sAyb1hWATZKKu+NZWX65oIdSI4uKj//0UOl4vtzMPNgYXhF806aAWbj2tLZAHI4UTtQWedbfcHhwO7BLl9MvQQ==}
@@ -6440,7 +6425,7 @@ snapshots:
     dependencies:
       '@sap-ai-sdk/core': 2.3.1-20251201013447.0
       '@sap-cloud-sdk/connectivity': 4.2.0
-      '@sap-cloud-sdk/util': 4.1.2
+      '@sap-cloud-sdk/util': 4.2.0
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -6450,7 +6435,7 @@ snapshots:
       '@sap-cloud-sdk/connectivity': 4.2.0
       '@sap-cloud-sdk/http-client': 4.2.0
       '@sap-cloud-sdk/openapi': 4.2.0
-      '@sap-cloud-sdk/util': 4.1.2
+      '@sap-cloud-sdk/util': 4.2.0
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -6468,7 +6453,7 @@ snapshots:
       '@sap-ai-sdk/core': 2.3.1-20251201013447.0
       '@sap-cloud-sdk/connectivity': 4.2.0
       '@sap-cloud-sdk/http-client': 4.2.0
-      '@sap-cloud-sdk/util': 4.1.2
+      '@sap-cloud-sdk/util': 4.2.0
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -6481,7 +6466,7 @@ snapshots:
       '@sap-ai-sdk/foundation-models': 2.3.1-20251201013447.0
       '@sap-ai-sdk/orchestration': 2.3.1-20251201013447.0
       '@sap-cloud-sdk/connectivity': 4.2.0
-      '@sap-cloud-sdk/util': 4.1.2
+      '@sap-cloud-sdk/util': 4.2.0
       uuid: 13.0.0
     transitivePeerDependencies:
       - '@opentelemetry/api'
@@ -6496,7 +6481,7 @@ snapshots:
       '@sap-ai-sdk/ai-api': 2.3.1-20251201013447.0
       '@sap-ai-sdk/core': 2.3.1-20251201013447.0
       '@sap-ai-sdk/prompt-registry': 2.3.1-20251201013447.0
-      '@sap-cloud-sdk/util': 4.1.2
+      '@sap-cloud-sdk/util': 4.2.0
       yaml: 2.8.2
     transitivePeerDependencies:
       - debug
@@ -6506,19 +6491,6 @@ snapshots:
     dependencies:
       '@sap-ai-sdk/core': 2.3.1-20251201013447.0
       zod: 4.1.13
-    transitivePeerDependencies:
-      - debug
-      - supports-color
-
-  '@sap-cloud-sdk/connectivity@4.1.2':
-    dependencies:
-      '@sap-cloud-sdk/resilience': 4.1.2
-      '@sap-cloud-sdk/util': 4.1.2
-      '@sap/xsenv': 6.0.0
-      '@sap/xssec': 4.11.2
-      async-retry: 1.3.3
-      axios: 1.13.2
-      jsonwebtoken: 9.0.2
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -6572,16 +6544,6 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@sap-cloud-sdk/http-client@4.1.2':
-    dependencies:
-      '@sap-cloud-sdk/connectivity': 4.1.2
-      '@sap-cloud-sdk/resilience': 4.1.2
-      '@sap-cloud-sdk/util': 4.1.2
-      axios: 1.13.2
-    transitivePeerDependencies:
-      - debug
-      - supports-color
-
   '@sap-cloud-sdk/http-client@4.2.0':
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.2.0
@@ -6606,17 +6568,6 @@ snapshots:
       - encoding
       - supports-color
 
-  '@sap-cloud-sdk/openapi@4.1.2':
-    dependencies:
-      '@sap-cloud-sdk/connectivity': 4.1.2
-      '@sap-cloud-sdk/http-client': 4.1.2
-      '@sap-cloud-sdk/resilience': 4.1.2
-      '@sap-cloud-sdk/util': 4.1.2
-      axios: 1.13.2
-    transitivePeerDependencies:
-      - debug
-      - supports-color
-
   '@sap-cloud-sdk/openapi@4.2.0':
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.2.0
@@ -6628,32 +6579,12 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/resilience@4.1.2':
-    dependencies:
-      '@sap-cloud-sdk/util': 4.1.2
-      async-retry: 1.3.3
-      axios: 1.13.2
-      opossum: 9.0.0
-    transitivePeerDependencies:
-      - debug
-
   '@sap-cloud-sdk/resilience@4.2.0':
     dependencies:
       '@sap-cloud-sdk/util': 4.2.0
       async-retry: 1.3.3
       axios: 1.13.2
       opossum: 9.0.0
-    transitivePeerDependencies:
-      - debug
-
-  '@sap-cloud-sdk/util@4.1.2':
-    dependencies:
-      axios: 1.13.2
-      chalk: 4.1.2
-      logform: 2.7.0
-      voca: 1.4.1
-      winston: 3.18.3
-      winston-transport: 4.9.0
     transitivePeerDependencies:
       - debug
 
