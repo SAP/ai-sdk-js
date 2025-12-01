@@ -1,5 +1,21 @@
 # @sap-ai-sdk/langchain
 
+## 2.3.0
+
+### Minor Changes
+
+- 7c9605d: [Compatibility Note] `zod` was upgraded to v4
+- 7c9605d: [feat] Bump langchain to v1
+
+### Patch Changes
+
+- Updated dependencies [7c9605d]
+- Updated dependencies [485e21b]
+  - @sap-ai-sdk/orchestration@2.3.0
+  - @sap-ai-sdk/ai-api@2.3.0
+  - @sap-ai-sdk/core@2.3.0
+  - @sap-ai-sdk/foundation-models@2.3.0
+
 ## 2.2.0
 
 ### Minor Changes

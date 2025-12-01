@@ -417,6 +417,20 @@ expectError<AzureContentSafetyFilterReturnType<'output'>>(
   })
 );
 
+expectType<AzureContentSafetyFilterReturnType<'output'>>(
+  buildAzureContentSafetyFilter('output', {
+    hate: 'ALLOW_SAFE',
+    protected_material_code: true
+  })
+);
+
+expectError<AzureContentSafetyFilterReturnType<'input'>>(
+  buildAzureContentSafetyFilter('input', {
+    hate: 'ALLOW_SAFE',
+    protected_material_code: true
+  })
+);
+
 /**
  * Filtering Util for Llama guard.
  */

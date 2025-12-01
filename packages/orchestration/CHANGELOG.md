@@ -1,5 +1,19 @@
 # @sap-ai-sdk/orchestration
 
+## 2.3.0
+
+### Minor Changes
+
+- 7c9605d: [Compatibility Note] `zod` was upgraded to v4
+- 485e21b: [New Functionality] Added support for `protected_material_code` property to `buildAzureContentSafetyFilter()` function for output filter configuration to allow detecting protected code content from known github repositories.
+
+### Patch Changes
+
+- Updated dependencies [7c9605d]
+  - @sap-ai-sdk/prompt-registry@2.3.0
+  - @sap-ai-sdk/ai-api@2.3.0
+  - @sap-ai-sdk/core@2.3.0
+
 ## 2.2.0
 
 ### Minor Changes
