@@ -6234,9 +6234,9 @@ snapshots:
     transitivePeerDependencies:
       - ws
 
-  '@langchain/textsplitters@1.0.1(@langchain/core@1.1.0(openai@6.9.1(ws@8.18.3)(zod@3.25.76)))':
+  '@langchain/textsplitters@1.0.1(@langchain/core@1.1.0(openai@6.9.1(ws@8.18.3)(zod@4.1.13)))':
     dependencies:
-      '@langchain/core': 1.1.0(openai@6.9.1(ws@8.18.3)(zod@3.25.76))
+      '@langchain/core': 1.1.0(openai@6.9.1(ws@8.18.3)(zod@4.1.13))
       js-tiktoken: 1.0.21
 
   '@manypkg/find-root@1.1.0':
