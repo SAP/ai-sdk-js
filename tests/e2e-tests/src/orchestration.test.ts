@@ -2,6 +2,7 @@ import {
   orchestrationChatCompletion,
   orchestrationTemplating,
   orchestrationPromptRegistry,
+  orchestrationCompletionPromptRegistryScoped,
   orchestrationInputFiltering,
   orchestrationOutputFiltering,
   orchestrationRequestConfig,
@@ -12,7 +13,8 @@ import {
   chatCompletionStream,
   orchestrationResponseFormat,
   orchestrationMessageHistoryWithToolCalling,
-  orchestrationTranslation
+  orchestrationTranslation,
+  orchestrationEmbeddingWithMasking
 } from '@sap-ai-sdk/sample-code';
 import {
   OrchestrationClient,
@@ -47,6 +49,12 @@ describe('orchestration', () => {
 
   it('should complete a chat with a template reference', async () => {
     const response = await orchestrationPromptRegistry();
+
+    assertContent(response);
+  });
+
+  it('should complete a chat with a scoped template reference', async () => {
+    const response = await orchestrationCompletionPromptRegistryScoped();
 
     assertContent(response);
   });
@@ -214,5 +222,14 @@ describe('orchestration', () => {
        },
      ]
     `);
+  });
+
+  it('should generate embeddings with masking', async () => {
+    const response = await orchestrationEmbeddingWithMasking();
+    expect(response).toBeDefined();
+    expect(response.getEmbeddings().map(item => item.embedding)).toEqual(
+      expect.arrayContaining([expect.arrayContaining([expect.any(Number)])])
+    );
+    expect(response.getIntermediateResults()?.input_masking).toBeDefined();
   });
 });

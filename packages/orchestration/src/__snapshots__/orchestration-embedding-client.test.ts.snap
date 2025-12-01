@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`orchestration embedding service client handles orchestration service error responses with detailed error messages 1`] = `
+{
+  "code": 400,
+  "intermediate_results": {
+    "input_masking": {
+      "data": {
+        "masked_input": "My name is MASKED_PERSON. I am applying as a Senior Software Dev. I work closely with MASKED_PERSON.",
+      },
+      "message": "Embedding input is masked successfully.",
+    },
+  },
+  "location": "Embedding Module",
+  "message": "400 - Embedding Module: Model name must be one of dict_keys(['text-embedding-ada-002', 'text-embedding-3-small', 'text-embedding-3-large', 'amazon--titan-embed-text', 'nvidia--llama-3.2-nv-embedqa-1b']).",
+  "request_id": "random-request-id",
+}
+`;

@@ -1,10 +1,5 @@
 import { supportedAzureFilterThresholds } from '../orchestration-types.js';
 import type {
-  AzureContentSafetyInputFilterConfig,
-  AzureContentSafetyOutputFilterConfig
-} from '../client/api/schema/index.js';
-import type {
-  AzureContentSafetyFilterInputParameters,
   AzureContentSafetyFilterParameters,
   AzureContentSafetyFilterReturnType,
   AzureFilterThreshold,
@@ -37,7 +32,7 @@ export function buildAzureContentSafetyFilter<T extends ConfigType>(
 
   if (type === 'input') {
     const { prompt_shield, ...rest } =
-      config as AzureContentSafetyFilterInputParameters;
+      config as AzureContentSafetyFilterParameters<'input'>;
     return {
       type: 'azure_content_safety',
       config: {
@@ -49,20 +44,23 @@ export function buildAzureContentSafetyFilter<T extends ConfigType>(
         ),
         ...(prompt_shield !== undefined && { prompt_shield })
       }
-    } as AzureContentSafetyInputFilterConfig;
+    } as AzureContentSafetyFilterReturnType<T>;
   }
 
+  const { protected_material_code, ...restConfig } =
+    config as AzureContentSafetyFilterParameters<'output'>;
   return {
     type: 'azure_content_safety',
     config: {
       ...Object.fromEntries(
-        Object.entries(config).map(([key, value]) => [
+        Object.entries(restConfig).map(([key, value]) => [
           key,
           supportedAzureFilterThresholds[value as AzureFilterThreshold]
         ])
-      )
+      ),
+      ...(protected_material_code !== undefined && { protected_material_code })
     }
-  } as AzureContentSafetyOutputFilterConfig;
+  } as AzureContentSafetyFilterReturnType<T>;
 }
 
 /**

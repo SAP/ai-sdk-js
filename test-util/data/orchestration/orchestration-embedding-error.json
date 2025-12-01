@@ -1,0 +1,16 @@
+{
+  "error": {
+    "request_id": "random-request-id",
+    "code": 400,
+    "message": "400 - Embedding Module: Model name must be one of dict_keys(['text-embedding-ada-002', 'text-embedding-3-small', 'text-embedding-3-large', 'amazon--titan-embed-text', 'nvidia--llama-3.2-nv-embedqa-1b']).",
+    "location": "Embedding Module",
+    "intermediate_results": {
+      "input_masking": {
+        "message": "Embedding input is masked successfully.",
+        "data": {
+          "masked_input": "My name is MASKED_PERSON. I am applying as a Senior Software Dev. I work closely with MASKED_PERSON."
+        }
+      }
+    }
+  }
+}

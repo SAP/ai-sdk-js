@@ -77,26 +77,12 @@ paths:
 components:
   schemas:
     CompletionPostRequest:
-      type: object
-      required:
-        - config
-      additionalProperties: false
-      properties:
-        config:
-          $ref: '#/components/schemas/OrchestrationConfig'
-        placeholder_values:
-          type: object
-          example:
-            groundingInput: 'What is SAP Joule?'
-            inputContext: 'optimizing supply chain management'
-          additionalProperties:
-            type: string
-        messages_history:
-          allOf:
-            - $ref: '#/components/schemas/ChatMessages'
-          description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
+      oneOf:
+        - $ref: '#/components/schemas/CompletionRequestConfiguration'
+        - $ref: '#/components/schemas/CompletionRequestConfigurationReferenceById'
+        - $ref: '#/components/schemas/CompletionRequestConfigurationReferenceByNameScenarioVersion'
 
-    # Embedings Schemas
+    # Embeddings Schemas
     EmbeddingsPostRequest:
       type: object
       additionalProperties: false
@@ -172,6 +158,18 @@ components:
           default: 'latest'
         params:
           $ref: '#/components/schemas/EmbeddingsModelParams'
+        timeout:
+          description: Timeout for the Embeddings request in seconds. This parameter is currently ignored for Vertex AI models.
+          type: integer
+          default: 600
+          minimum: 1
+          maximum: 600
+        max_retries:
+          description: Maximum number of retries for the Embeddings request. This parameter is currently ignored for Vertex AI models.
+          type: integer
+          default: 2
+          minimum: 0
+          maximum: 5
     EmbeddingsModelParams:
       type: object
       description: Additional parameters for generating input's embeddings. Default values are used for mandatory parameters.
@@ -194,6 +192,7 @@ components:
       additionalProperties: false
       required:
         - request_id
+        - final_result
       properties:
         request_id:
           type: string
@@ -532,6 +531,11 @@ components:
           $ref: '#/components/schemas/ModuleResults'
         final_result:
           $ref: '#/components/schemas/LLMModuleResult'
+        intermediate_failures:
+          type: array
+          description: List of errors encountered during processing for unsuccessful modules configurations
+          items:
+            $ref: '#/components/schemas/Error'
 
     CompletionPostResponseStreaming:
       type: object
@@ -545,6 +549,11 @@ components:
           $ref: '#/components/schemas/ModuleResultsStreaming'
         final_result:
           $ref: '#/components/schemas/LLMModuleResultStreaming'
+        intermediate_failures:
+          type: array
+          description: List of errors encountered during processing for unsuccessful modules configurations
+          items:
+            $ref: '#/components/schemas/ErrorStreaming'
     OrchestrationConfig:
       type: object
       required:
@@ -552,7 +561,9 @@ components:
       additionalProperties: false
       properties:
         modules:
-          $ref: '#/components/schemas/ModuleConfigs'
+          oneOf:
+            - $ref: '#/components/schemas/ModuleConfigs'
+            - $ref: '#/components/schemas/ModuleConfigsList'
         stream:
           $ref: '#/components/schemas/GlobalStreamOptions'
     ModuleConfigs:
@@ -571,6 +582,13 @@ components:
           $ref: '#/components/schemas/GroundingModuleConfig'
         translation:
           $ref: '#/components/schemas/TranslationModuleConfig'
+    ModuleConfigsList:
+      type: array
+      items:
+        $ref: '#/components/schemas/ModuleConfigs'
+      minItems: 1
+      description: >
+        A list of module configurations. The first configuration in the list that succeeds will be used.
     # Abstract base class encompassing fields for both `ModuleResults` and `ModuleResultsStreaming`
     # Not to be instantiated by llm-orchestration code
     ModuleResultsBase:
@@ -583,7 +601,7 @@ components:
         templating:
           $ref: '#/components/schemas/TemplatingChatMessage'
         input_translation:
-          $ref: '#/components/schemas/GenericModuleResult'
+          $ref: '#/components/schemas/InputTranslationModuleResult'
         input_masking:
           $ref: '#/components/schemas/GenericModuleResult'
         input_filtering:
@@ -656,6 +674,44 @@ components:
         data:
           type: object
           description: Additional data object from the module
+
+    InputTranslationModuleResult:
+      type: object
+      description: Input Translation module result
+      required:
+        - message
+      additionalProperties: false
+      properties:
+        message:
+          type: string
+          description: Status message describing the translation operation outcome.
+          example: Translated successfully placeholders 'issue_title', 'issue_description'.
+        data:
+          type: object
+          additionalProperties: false
+          properties:
+            translated_template:
+              type: string
+              deprecated: true
+              example: "[{'role': 'user', 'content': 'translated content'}, ...]"
+            translated_template_roles:
+              type: object
+              additionalProperties:
+                type: array
+                items:
+                  type: string
+              example:
+                user:
+                  ['translated user content', 'another translated user content']
+                system: ['translated system message']
+            translated_placeholders:
+              type: object
+              additionalProperties:
+                type: string
+              example:
+                groundingInput: 'translated grounding input'
+                inputContext: 'translated input context'
+
     LLMModuleResult:
       type: object
       description: Output from LLM. Follows the OpenAI spec.
@@ -797,11 +853,11 @@ components:
             - $ref: '#/components/schemas/Template'
             - $ref: '#/components/schemas/TemplateRef'
         model:
-          description: >
-            The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.
           $ref: '#/components/schemas/LLMModelDetails'
     LLMModelDetails:
       type: object
+      description: >
+        The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.
       required:
         - name
       additionalProperties: false
@@ -819,13 +875,25 @@ components:
           description: Additional parameters for the model. Default values are used for mandatory parameters.
           additionalProperties: true
           example:
-            max_tokens: 300
+            max_completion_tokens: 300 # max_tokens param has been deprecated in Azure Open AI spec
             temperature: 0.1
             frequency_penalty: 0
             presence_penalty: 0
             n: 2
             stream_options:
               include_usage: true
+        timeout:
+          description: Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.
+          type: integer
+          default: 600
+          minimum: 1
+          maximum: 600
+        max_retries:
+          description: Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.
+          type: integer
+          default: 2
+          minimum: 0
+          maximum: 5
 
     # --- Templating Module with User Defined Template ---
     # response_format api definition taken from: https://github.com/openai/openai-openapi/blob/e0cb2d721753e13e69e918465795d6e9f87ab15a/openapi.yaml#L12286
@@ -839,7 +907,7 @@ components:
         template:
           allOf:
             - $ref: '#/components/schemas/TemplatingChatMessage'
-          description: A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
+          description: A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
         defaults:
           description: Optional default values for the template. If a parameter has no default it is required.
           type: object
@@ -1018,6 +1086,16 @@ components:
           type: string
           description: ID of the template in prompt registry
           example: 'template_id'
+        scope:
+          type: string
+          description: >
+            Defines the scope that is searched for the referenced template. 
+            'tenant' indicates the template is shared across all resource groups within the tenant, 
+            while 'resource_group' indicates the template is only accessible within the specific resource group.
+          enum:
+            - resource_group
+            - tenant
+          default: tenant
 
     TemplateRefByScenarioNameVersion:
       type: object
@@ -1039,6 +1117,16 @@ components:
           type: string
           description: Version of the template
           example: 'some version, can be `latest`'
+        scope:
+          type: string
+          description: >
+            Defines the scope that is searched for the referenced template. 
+            'tenant' indicates the template is shared across all resource groups within the tenant, 
+            while 'resource_group' indicates the template is only accessible within the specific resource group.
+          enum:
+            - resource_group
+            - tenant
+          default: tenant
 
     # --- Filtering Module ---
     FilteringModuleConfig:
@@ -1150,7 +1238,7 @@ components:
           $ref: '#/components/schemas/AzureThreshold'
         prompt_shield:
           type: boolean
-          description: A flag to use prompt shield
+          description: Filter prompts for harmful content such as jailbreaks and prompt injections.
           default: false
 
     AzureContentSafetyOutput:
@@ -1166,6 +1254,10 @@ components:
           $ref: '#/components/schemas/AzureThreshold'
         violence:
           $ref: '#/components/schemas/AzureThreshold'
+        protected_material_code:
+          type: boolean
+          description: Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.
+          default: false
 
     AzureThreshold:
       type: integer
@@ -1228,19 +1320,33 @@ components:
           type: boolean
 
     # --- Masking module ---
-
     MaskingModuleConfig:
-      type: object
-      required:
-        - masking_providers
-      additionalProperties: false
-      properties:
-        masking_providers:
-          type: array
-          minItems: 1
-          items:
-            $ref: '#/components/schemas/MaskingProviderConfig'
-          description: List of masking service providers
+      oneOf:
+        - type: object
+          title: MaskingModuleConfigProviders
+          properties:
+            providers:
+              description: List of masking service providers
+              type: array
+              minItems: 1
+              items:
+                $ref: '#/components/schemas/MaskingProviderConfig'
+          required:
+            - providers
+          additionalProperties: false
+        - type: object
+          title: MaskingModuleConfigMaskingProviders
+          properties:
+            masking_providers:
+              deprecated: true
+              description: 'List of masking service providers. **DEPRECATED**:  will be removed Sept 15, 2026. Use `providers` property instead.'
+              type: array
+              minItems: 1
+              items:
+                $ref: '#/components/schemas/MaskingProviderConfig'
+          required:
+            - masking_providers
+          additionalProperties: false
 
     MaskingProviderConfig:
       oneOf:
@@ -1561,12 +1667,13 @@ components:
         input:
           description: Configuration for input translation
           oneOf:
-            - $ref: '#/components/schemas/SAPDocumentTranslation'
+            - $ref: '#/components/schemas/SAPDocumentTranslationInput'
         output:
           description: Configuration for output translation
           oneOf:
-            - $ref: '#/components/schemas/SAPDocumentTranslation'
-    SAPDocumentTranslation:
+            - $ref: '#/components/schemas/SAPDocumentTranslationOutput'
+
+    SAPDocumentTranslationInput:
       type: object
       required:
         - type
@@ -1577,23 +1684,94 @@ components:
           description: Type of document translation provider
           type: string
           enum:
-            - sap_document_translation # this would be different for other translation provider
+            - sap_document_translation
           example: sap_document_translation
+        translate_messages_history:
+          type: boolean
+          description: If true, the messages history will be translated as well.
+          default: true
         config: # `config` key, parameters specific to SAP Translation Hub that are sent to the service, might differ for translation provider
           description: Configuration for `sap_document_translation` translation provider.
           type: object
+          additionalProperties: false
           required:
             - target_language
+          properties:
+            source_language:
+              type: string
+              description: Language of the text to be translated.
+              example: 'de-DE'
+            apply_to:
+              type: array
+              minItems: 1
+              items:
+                $ref: '#/components/schemas/SAPDocumentTranslationApplyToSelector'
+            target_language:
+              type: string
+              description: Language to which the text should be translated.
+              example: 'en-US'
+
+    SAPDocumentTranslationOutput:
+      type: object
+      required:
+        - type
+        - config
+      additionalProperties: false
+      properties:
+        type:
+          description: Configuration for `sap_document_translation` translation provider.
+          type: string
+          enum:
+            - sap_document_translation
+          example: sap_document_translation
+        config:
+          type: object
           additionalProperties: false
+          required:
+            - target_language
           properties:
             source_language:
               type: string
               description: Language of the text to be translated.
               example: 'de-DE'
             target_language:
-              type: string
-              description: Language to which the text should be translated.
-              example: 'en-US'
+              $ref: '#/components/schemas/SAPDocumentTranslationOutputTargetLanguage'
+
+    SAPDocumentTranslationOutputTargetLanguage:
+      oneOf:
+        - type: string
+          description: Language to which the text should be translated.
+          example: 'en-US'
+        - $ref: '#/components/schemas/SAPDocumentTranslationApplyToSelector'
+
+    SAPDocumentTranslationApplyToSelector:
+      type: object
+      description: >
+        This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{"category": "placeholders", "items": ["user_input"], "source_language": "de-DE"}` targets the value of "user_input" in `placeholder_values` specified in the request payload; and considers the value to be in German.
+      required:
+        - category
+        - items
+      additionalProperties: false
+      properties:
+        category:
+          type: string
+          description: Category to apply translation to.
+          enum:
+            - placeholders
+            - template_roles
+        items:
+          type: array
+          description: List of placeholders or roles to apply translation to
+          items:
+            type: string
+          example:
+            - groundingInput
+            - inputContext
+        source_language:
+          type: string
+          description: Language of the text to be translated.
+          example: 'de-DE'
+
     Error:
       type: object
       required:
@@ -1617,6 +1795,17 @@ components:
           example: 'LLM Module'
         intermediate_results:
           $ref: '#/components/schemas/ModuleResults'
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'HTTP headers returned from the failed request attempt'
+
+    ErrorList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Error'
+      minItems: 1
 
     ErrorStreaming:
       type: object
@@ -1641,6 +1830,17 @@ components:
           example: 'LLM Module'
         intermediate_results:
           $ref: '#/components/schemas/ModuleResultsStreaming'
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'HTTP headers returned from the failed request attempt'
+
+    ErrorStreamingList:
+      type: array
+      items:
+        $ref: '#/components/schemas/ErrorStreaming'
+      minItems: 1
 
     ErrorResponse:
       type: object
@@ -1648,7 +1848,9 @@ components:
         - error
       properties:
         error:
-          $ref: '#/components/schemas/Error'
+          oneOf:
+            - $ref: '#/components/schemas/Error'
+            - $ref: '#/components/schemas/ErrorList'
 
     ErrorResponseStreaming:
       type: object
@@ -1656,7 +1858,9 @@ components:
         - error
       properties:
         error:
-          $ref: '#/components/schemas/ErrorStreaming'
+          oneOf:
+            - $ref: '#/components/schemas/ErrorStreaming'
+            - $ref: '#/components/schemas/ErrorStreamingList'
 
     # ref : https://github.com/openai/openai-python/blob/main/src/openai/types/chat/chat_completion_token_logprob.py
     ChatCompletionTokenLogprob:
@@ -1716,6 +1920,93 @@ components:
           items:
             $ref: '#/components/schemas/ChatCompletionTokenLogprob'
           description: A list of message refusal tokens with log probability information.
+    CompletionRequestConfiguration:
+      type: object
+      title: 'Completion Request Configuration'
+      required:
+        - config
+      additionalProperties: false
+      properties:
+        config:
+          $ref: '#/components/schemas/OrchestrationConfig'
+        placeholder_values:
+          type: object
+          example:
+            groundingInput: 'What is SAP Joule?'
+            inputContext: 'optimizing supply chain management'
+          additionalProperties:
+            type: string
+        messages_history:
+          allOf:
+            - $ref: '#/components/schemas/ChatMessages'
+          description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
+
+    CompletionRequestConfigurationReferenceById:
+      type: object
+      title: 'Completion Request Configuration Reference By Id'
+      required:
+        - config_ref
+      additionalProperties: false
+      properties:
+        config_ref:
+          $ref: '#/components/schemas/CompletionRequestConfigurationReferenceByIdConfigRef'
+        placeholder_values:
+          type: object
+          example:
+            groundingInput: 'What is SAP Joule?'
+            inputContext: 'optimizing supply chain management'
+          additionalProperties:
+            type: string
+        messages_history:
+          allOf:
+            - $ref: '#/components/schemas/ChatMessages'
+          description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
+
+    CompletionRequestConfigurationReferenceByIdConfigRef:
+      type: object
+      required:
+        - id
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+
+    CompletionRequestConfigurationReferenceByNameScenarioVersion:
+      type: object
+      title: 'Completion Request Configuration Reference By Name-Scenario-Version'
+      required:
+        - config_ref
+      additionalProperties: false
+      properties:
+        config_ref:
+          $ref: '#/components/schemas/CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef'
+        placeholder_values:
+          type: object
+          example:
+            groundingInput: 'What is SAP Joule?'
+            inputContext: 'optimizing supply chain management'
+          additionalProperties:
+            type: string
+        messages_history:
+          allOf:
+            - $ref: '#/components/schemas/ChatMessages'
+          description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
+
+    CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef:
+      type: object
+      required:
+        - scenario
+        - name
+        - version
+      additionalProperties: false
+      properties:
+        scenario:
+          type: string
+        name:
+          type: string
+        version:
+          type: string
 
   responses:
     BadRequest:

@@ -3,6 +3,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import {
   OrchestrationClient,
+  OrchestrationEmbeddingClient,
   buildDocumentGroundingConfig,
   buildAzureContentSafetyFilter,
   buildLlamaGuard38BFilter,
@@ -17,6 +18,7 @@ import type {
   OrchestrationStreamChunkResponse,
   OrchestrationStreamResponse,
   OrchestrationResponse,
+  OrchestrationEmbeddingResponse,
   StreamOptions,
   OrchestrationErrorResponse,
   ChatCompletionTool,
@@ -200,6 +202,39 @@ export async function orchestrationPromptRegistry(): Promise<OrchestrationRespon
 
   return orchestrationClient.chatCompletion({
     placeholderValues: { input: 'France' }
+  });
+}
+
+/**
+ * Use a template stored in the prompt registry store at
+ * the resource group scope.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationCompletionPromptRegistryScoped(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient(
+    {
+      promptTemplating: {
+        prompt: {
+          // refer to a prompt template stored at resource group scope
+          template_ref: {
+            name: 'e2e-test-scoped',
+            scenario: 'e2e-test-scoped',
+            version: '0.0.1',
+            scope: 'resource_group'
+          }
+        },
+        // define the language model to be used
+        model: {
+          name: 'gpt-4o'
+        }
+      }
+    },
+    // provide resource group where the template is stored
+    { resourceGroup: 'ai-sdk-js-e2e' }
+  );
+
+  return orchestrationClient.chatCompletion({
+    placeholderValues: { country: 'France' }
   });
 }
 
@@ -570,17 +605,15 @@ export interface TranslationResponse {
  * @returns Response that adheres to `TranslationResponse` type.
  */
 export async function orchestrationResponseFormat(): Promise<TranslationResponse> {
-  const translationSchema = z
-    .object({
-      language: z.string().meta({
-        description:
-          'The language of the translation, randomly chosen by the LLM.'
-      }),
-      translation: z
-        .string()
-        .meta({ description: 'The translation of the input sentence.' })
-    })
-    .strict();
+  const translationSchema = z.strictObject({
+    language: z.string().meta({
+      description:
+        'The language of the translation, randomly chosen by the LLM.'
+    }),
+    translation: z
+      .string()
+      .meta({ description: 'The translation of the input sentence.' })
+  });
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
     promptTemplating: {
@@ -619,12 +652,10 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
   return JSON.parse(response.getContent()!) as TranslationResponse;
 }
 
-const addNumbersSchema = z
-  .object({
-    a: z.number().meta({ description: 'The first number to be added.' }),
-    b: z.number().meta({ description: 'The second number to be added.' })
-  })
-  .strict();
+const addNumbersSchema = z.strictObject({
+  a: z.number().meta({ description: 'The first number to be added.' }),
+  b: z.number().meta({ description: 'The second number to be added.' })
+});
 
 const addNumbersTool: ChatCompletionTool = {
   type: 'function',
@@ -762,4 +793,38 @@ export async function chatCompletionStreamWithTools(
     controller.signal,
     streamOptions
   );
+}
+
+/**
+ * Generate embeddings with masking for personal information.
+ * @returns The orchestration embedding response with masking applied.
+ */
+export async function orchestrationEmbeddingWithMasking(): Promise<OrchestrationEmbeddingResponse> {
+  const sampleText =
+    'Hello, my name is Alice Johnson and my email is alice.johnson@company.com. Please process this information for embedding.';
+
+  // Create orchestration embedding client with masking configuration
+  const embeddingClient = new OrchestrationEmbeddingClient({
+    embeddings: {
+      model: {
+        name: 'text-embedding-3-large',
+        version: 'latest',
+        params: { dimensions: 4 }
+      }
+    },
+    masking: {
+      masking_providers: [
+        buildDpiMaskingProvider({
+          method: 'anonymization',
+          entities: ['profile-email', 'profile-person']
+        })
+      ]
+    }
+  });
+
+  const response = await embeddingClient.embed({
+    input: sampleText,
+    type: 'text'
+  });
+  return response;
 }

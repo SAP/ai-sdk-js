@@ -27,7 +27,8 @@ import {
   orchestrationPromptRegistry,
   orchestrationMessageHistory,
   orchestrationResponseFormat,
-  orchestrationTranslation
+  orchestrationTranslation,
+  orchestrationEmbeddingWithMasking
 } from './orchestration.js';
 import {
   getDeployments,
@@ -72,7 +73,10 @@ import {
 } from './prompt-registry.js';
 import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type { AIMessageChunk } from '@langchain/core/messages';
-import type { OrchestrationResponse } from '@sap-ai-sdk/orchestration';
+import type {
+  OrchestrationEmbeddingResponse,
+  OrchestrationResponse
+} from '@sap-ai-sdk/orchestration';
 
 const app = express();
 const port = 8080;
@@ -278,11 +282,12 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       image: orchestrationChatCompletionImage,
       responseFormat: orchestrationResponseFormat,
       maskGroundingInput: orchestrationMaskGroundingInput,
-      translation: orchestrationTranslation
+      translation: orchestrationTranslation,
+      embeddingWithMasking: orchestrationEmbeddingWithMasking
     }[sampleCase] || orchestrationChatCompletion;
 
   try {
-    const result = (await testCase()) as OrchestrationResponse;
+    const result = await testCase();
     if (sampleCase === 'inputFiltering') {
       res
         .header('Content-Type', 'text/plain')
@@ -293,7 +298,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       res
         .header('Content-Type', 'text/plain')
         .send(
-          `Output filter applied successfully with threshold results:\n${JSON.stringify(result.getIntermediateResults().output_filtering!.data!, null, 2)}`
+          `Output filter applied successfully with threshold results:\n${JSON.stringify((result as OrchestrationResponse).getIntermediateResults().output_filtering!.data!, null, 2)}`
         );
     } else if (sampleCase === 'responseFormat') {
       res
@@ -301,8 +306,20 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
         .send(
           `Response format applied successfully with response:\n${JSON.stringify(result, null, 2)}`
         );
+    } else if (sampleCase === 'embeddingWithMasking') {
+      const embeddingResult = result as OrchestrationEmbeddingResponse;
+      const embedding = embeddingResult
+        .getEmbeddings()
+        .map(item => item.embedding);
+      res
+        .header('Content-Type', 'text/plain')
+        .send(
+          `Embedding with masking applied successfully:${JSON.stringify(embeddingResult.getIntermediateResults()?.input_masking?.data, null, 2)}\nEmbeddings: ${embedding}\nUsage - Prompt tokens: ${embeddingResult.getTokenUsage()?.prompt_tokens}\nUsage - Total tokens: ${embeddingResult.getTokenUsage()?.total_tokens}`
+        );
     } else {
-      res.header('Content-Type', 'text/plain').send(result.getContent());
+      res
+        .header('Content-Type', 'text/plain')
+        .send((result as OrchestrationResponse).getContent());
     }
   } catch (error: any) {
     sendError(res, error);

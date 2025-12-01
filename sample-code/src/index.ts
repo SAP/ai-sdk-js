@@ -10,6 +10,7 @@ export {
   orchestrationChatCompletion,
   orchestrationTemplating,
   orchestrationPromptRegistry,
+  orchestrationCompletionPromptRegistryScoped,
   orchestrationInputFiltering,
   orchestrationOutputFiltering,
   orchestrationRequestConfig,
@@ -22,7 +23,8 @@ export {
   chatCompletionStreamWithJsonModuleConfig,
   chatCompletionStream,
   orchestrationMessageHistoryWithToolCalling,
-  orchestrationTranslation
+  orchestrationTranslation,
+  orchestrationEmbeddingWithMasking
 } from './orchestration.js';
 export {
   invoke,
