@@ -226,13 +226,13 @@ importers:
         version: link:../packages/orchestration
       '@sap/cds':
         specifier: ^9.5.1
-        version: 9.5.1(@eslint/js@9.39.1)(express@5.2.0)
+        version: 9.5.1(@eslint/js@9.39.1)(express@5.2.1)
       '@sap/xssec':
         specifier: ^4.11.2
         version: 4.11.2
       express:
-        specifier: ^5.2.0
-        version: 5.2.0
+        specifier: ^5.2.1
+        version: 5.2.1
     devDependencies:
       '@sap/cds-dk':
         specifier: ^9.4.3
@@ -280,11 +280,11 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0
       '@types/express':
-        specifier: ^5.0.5
-        version: 5.0.5
+        specifier: ^5.0.6
+        version: 5.0.6
       express:
-        specifier: ^5.2.0
-        version: 5.2.0
+        specifier: ^5.2.1
+        version: 5.2.1
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
@@ -356,8 +356,8 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0
       express:
-        specifier: ^5.2.0
-        version: 5.2.0
+        specifier: ^5.2.1
+        version: 5.2.1
       langchain:
         specifier: ^1.1.2
         version: 1.1.2(@langchain/core@1.1.1(openai@6.9.1(ws@8.18.3)(zod@4.1.13)))(openai@6.9.1(ws@8.18.3)(zod@4.1.13))(zod-to-json-schema@3.25.0(zod@4.1.13))
@@ -369,8 +369,8 @@ importers:
         version: 4.1.13
     devDependencies:
       '@types/express':
-        specifier: ^5.0.5
-        version: 5.0.5
+        specifier: ^5.0.6
+        version: 5.0.6
       dotenv:
         specifier: ^17.2.3
         version: 17.2.3
@@ -1663,8 +1663,8 @@ packages:
   '@types/express-serve-static-core@5.1.0':
     resolution: {integrity: sha512-jnHMsrd0Mwa9Cf4IdOzbz543y4XJepXrbia2T4b6+spXC2We3t1y6K44D3mR8XMFSXMCf3/l7rCgddfx7UNVBA==}
 
-  '@types/express@5.0.5':
-    resolution: {integrity: sha512-LuIQOcb6UmnF7C1PCFmEU1u2hmiHL43fgFQX67sN3H4Z+0Yk0Neo++mFsBjhOAuLzvlQeqAAkeDOZrJs9rzumQ==}
+  '@types/express@5.0.6':
+    resolution: {integrity: sha512-sKYVuV7Sv9fbPIt/442koC7+IIwK5olP1KWeD88e/idgoJqDm3JV/YUiPwkoKK92ylff2MGxSz1CSjsXelx0YA==}
 
   '@types/hast@3.0.4':
     resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
@@ -1692,9 +1692,6 @@ packages:
 
   '@types/jsonwebtoken@9.0.10':
     resolution: {integrity: sha512-asx5hIG9Qmf/1oStypjanR7iKTv0gXQ1Ov/jfrX6kS/EO0OFni8orbmGCn0672NHR3kXHwpAwR+B368ZGN/2rA==}
-
-  '@types/mime@1.3.5':
-    resolution: {integrity: sha512-/pyBZWSLD2n0dcHE3hq8s8ZvcETHtEuF+3E7XVt0Ig2nvsVQXdghHVcEkIWjy9A0wKfTn97a/PSDYohKIlnP/w==}
 
   '@types/minimatch@3.0.5':
     resolution: {integrity: sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==}
@@ -1732,14 +1729,11 @@ packages:
   '@types/retry@0.12.5':
     resolution: {integrity: sha512-3xSjTp3v03X/lSQLkczaN9UIEwJMoMCA1+Nb5HfbJEQWogdeQIyVtTvxPXDQjZ5zws8rFQfVfRdz03ARihPJgw==}
 
-  '@types/send@0.17.6':
-    resolution: {integrity: sha512-Uqt8rPBE8SY0RK8JB1EzVOIZ32uqy8HwdxCnoCOsYrvnswqmFZ/k+9Ikidlk/ImhsdvBsloHbAlewb2IEBV/Og==}
-
   '@types/send@1.2.1':
     resolution: {integrity: sha512-arsCikDvlU99zl1g69TcAB3mzZPpxgw0UQnaHeC1Nwb015xp8bknZv5rIfri9xTOcMuaVgvabfIRA7PSZVuZIQ==}
 
-  '@types/serve-static@1.15.10':
-    resolution: {integrity: sha512-tRs1dB+g8Itk72rlSI2ZrW6vZg0YrLI81iQSTkMmOqnqCaNr/8Ek4VwWcN5vZgCYWbg/JJSGBlUaYGAOP73qBw==}
+  '@types/serve-static@2.2.0':
+    resolution: {integrity: sha512-8mam4H1NHLtu7nmtalF7eyBH14QyOASmcxHhSfEoRyr0nP/YdoesEtU+uSRvMe96TW/HPTtkoKqQLl53N7UXMQ==}
 
   '@types/stack-utils@2.0.3':
     resolution: {integrity: sha512-9aEbYZ3TbYMznPdcdr3SmIrLXwC/AKZXQeCf9Pgao5CKb8CyHuEX5jzWPTkvregvhRJHcpRO6BFoGW9ycaOkYw==}
@@ -2855,8 +2849,8 @@ packages:
     resolution: {integrity: sha512-F2X8g9P1X7uCPZMA3MVf9wcTqlyNp7IhH5qPCI0izhaOIYXaW9L535tGA3qmjRzpH+bZczqq7hVKxTR4NWnu+g==}
     engines: {node: '>= 0.10.0'}
 
-  express@5.2.0:
-    resolution: {integrity: sha512-XdpJDLxfztVY59X0zPI6sibRiGcxhTPXRD3IhJmjKf2jwMvkRGV1j7loB8U+heeamoU3XvihAaGRTR4aXXUN3A==}
+  express@5.2.1:
+    resolution: {integrity: sha512-hIS4idWWai69NezIdRt2xFVofaF4j+6INOpJlVOLDO8zXGpUVEVzIYk12UUi2JzjEzWL3IOAxcTubgz9Po0yXw==}
     engines: {node: '>= 18'}
 
   extendable-error@0.1.7:
@@ -5432,25 +5426,25 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@cap-js/asyncapi@1.0.3(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.0))':
+  '@cap-js/asyncapi@1.0.3(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))':
     dependencies:
-      '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@5.2.0)
+      '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@5.2.1)
 
-  '@cap-js/db-service@2.6.0(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.0))':
+  '@cap-js/db-service@2.6.0(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))':
     dependencies:
-      '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@5.2.0)
+      '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@5.2.1)
       generic-pool: 3.9.0
     optional: true
 
-  '@cap-js/openapi@1.2.3(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.0))':
+  '@cap-js/openapi@1.2.3(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))':
     dependencies:
-      '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@5.2.0)
+      '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@5.2.1)
       pluralize: 8.0.0
 
-  '@cap-js/sqlite@2.0.4(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.0))':
+  '@cap-js/sqlite@2.0.4(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))':
     dependencies:
-      '@cap-js/db-service': 2.6.0(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.0))
-      '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@5.2.0)
+      '@cap-js/db-service': 2.6.0(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))
+      '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@5.2.1)
       better-sqlite3: 12.4.6
     optional: true
 
@@ -6252,8 +6246,8 @@ snapshots:
       cross-spawn: 7.0.6
       eventsource: 3.0.7
       eventsource-parser: 3.0.6
-      express: 5.2.0
-      express-rate-limit: 7.5.1(express@5.2.0)
+      express: 5.2.1
+      express-rate-limit: 7.5.1(express@5.2.1)
       pkce-challenge: 5.0.1
       raw-body: 3.0.2
       zod: 4.1.13
@@ -6612,10 +6606,10 @@ snapshots:
 
   '@sap/cds-dk@9.4.3(@eslint/js@9.39.1)':
     dependencies:
-      '@cap-js/asyncapi': 1.0.3(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.0))
-      '@cap-js/openapi': 1.2.3(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.0))
+      '@cap-js/asyncapi': 1.0.3(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))
+      '@cap-js/openapi': 1.2.3(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))
       '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@4.22.1)
-      '@sap/cds-mtxs': 3.4.4(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.0))(hdb@0.19.12)
+      '@sap/cds-mtxs': 3.4.4(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))(hdb@0.19.12)
       '@sap/hdi-deploy': 5.5.1(hdb@0.19.12)
       axios: 1.13.2
       express: 4.22.1
@@ -6627,7 +6621,7 @@ snapshots:
       xml-js: 1.6.11
       yaml: 2.8.2
     optionalDependencies:
-      '@cap-js/sqlite': 2.0.4(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.0))
+      '@cap-js/sqlite': 2.0.4(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))
     transitivePeerDependencies:
       - '@eslint/js'
       - '@sap/hana-client'
@@ -6637,19 +6631,19 @@ snapshots:
       - tar
       - utf-8-validate
 
-  '@sap/cds-fiori@2.1.1(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.0))(express@4.22.1)':
+  '@sap/cds-fiori@2.1.1(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))(express@4.22.1)':
     dependencies:
-      '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@5.2.0)
+      '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@5.2.1)
       express: 4.22.1
 
-  '@sap/cds-fiori@2.1.1(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.0))(express@5.2.0)':
+  '@sap/cds-fiori@2.1.1(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))(express@5.2.1)':
     dependencies:
-      '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@5.2.0)
-      express: 5.2.0
+      '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@5.2.1)
+      express: 5.2.1
 
-  '@sap/cds-mtxs@3.4.4(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.0))(hdb@0.19.12)':
+  '@sap/cds-mtxs@3.4.4(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))(hdb@0.19.12)':
     dependencies:
-      '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@5.2.0)
+      '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@5.2.1)
       '@sap/hdi-deploy': 5.5.1(hdb@0.19.12)
     transitivePeerDependencies:
       - '@sap/hana-client'
@@ -6660,19 +6654,19 @@ snapshots:
     dependencies:
       '@eslint/js': 9.39.1
       '@sap/cds-compiler': 6.5.0
-      '@sap/cds-fiori': 2.1.1(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.0))(express@4.22.1)
+      '@sap/cds-fiori': 2.1.1(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))(express@4.22.1)
       js-yaml: 4.1.1
     optionalDependencies:
       express: 4.22.1
 
-  '@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.0)':
+  '@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1)':
     dependencies:
       '@eslint/js': 9.39.1
       '@sap/cds-compiler': 6.5.0
-      '@sap/cds-fiori': 2.1.1(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.0))(express@5.2.0)
+      '@sap/cds-fiori': 2.1.1(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))(express@5.2.1)
       js-yaml: 4.1.1
     optionalDependencies:
-      express: 5.2.0
+      express: 5.2.1
 
   '@sap/hdi-deploy@5.5.1(hdb@0.19.12)':
     dependencies:
@@ -6995,11 +6989,11 @@ snapshots:
       '@types/range-parser': 1.2.7
       '@types/send': 1.2.1
 
-  '@types/express@5.0.5':
+  '@types/express@5.0.6':
     dependencies:
       '@types/body-parser': 1.19.6
       '@types/express-serve-static-core': 5.1.0
-      '@types/serve-static': 1.15.10
+      '@types/serve-static': 2.2.0
 
   '@types/hast@3.0.4':
     dependencies:
@@ -7031,8 +7025,6 @@ snapshots:
       '@types/ms': 2.1.0
       '@types/node': 22.19.1
 
-  '@types/mime@1.3.5': {}
-
   '@types/minimatch@3.0.5': {}
 
   '@types/minimist@1.2.5': {}
@@ -7061,20 +7053,14 @@ snapshots:
 
   '@types/retry@0.12.5': {}
 
-  '@types/send@0.17.6':
-    dependencies:
-      '@types/mime': 1.3.5
-      '@types/node': 22.19.1
-
   '@types/send@1.2.1':
     dependencies:
       '@types/node': 22.19.1
 
-  '@types/serve-static@1.15.10':
+  '@types/serve-static@2.2.0':
     dependencies:
       '@types/http-errors': 2.0.5
       '@types/node': 22.19.1
-      '@types/send': 0.17.6
 
   '@types/stack-utils@2.0.3': {}
 
@@ -8341,9 +8327,9 @@ snapshots:
       jest-mock: 30.2.0
       jest-util: 30.2.0
 
-  express-rate-limit@7.5.1(express@5.2.0):
+  express-rate-limit@7.5.1(express@5.2.1):
     dependencies:
-      express: 5.2.0
+      express: 5.2.1
 
   express@4.22.1:
     dependencies:
@@ -8381,7 +8367,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  express@5.2.0:
+  express@5.2.1:
     dependencies:
       accepts: 2.0.0
       body-parser: 2.2.1
