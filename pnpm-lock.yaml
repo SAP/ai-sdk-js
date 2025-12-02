@@ -287,7 +287,7 @@ importers:
         version: 5.2.1
       langchain:
         specifier: ^1.0.0
-        version: 1.1.1(@langchain/core@1.1.0(openai@6.9.1(ws@8.18.3)(zod@4.1.13)))(openai@6.9.1(ws@8.18.3)(zod@4.1.13))(zod-to-json-schema@3.25.0(zod@4.1.13))
+        version: 1.1.2(@langchain/core@1.1.1(openai@6.9.1(ws@8.18.3)(zod@4.1.13)))(openai@6.9.1(ws@8.18.3)(zod@4.1.13))(zod-to-json-schema@3.25.0(zod@4.1.13))
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
@@ -327,7 +327,7 @@ importers:
     dependencies:
       '@langchain/classic':
         specifier: ^1.0.5
-        version: 1.0.5(@langchain/core@1.1.0(openai@6.9.1(ws@8.18.3)(zod@4.1.13)))(openai@6.9.1(ws@8.18.3)(zod@4.1.13))(ws@8.18.3)
+        version: 1.0.5(@langchain/core@1.1.1(openai@6.9.1(ws@8.18.3)(zod@4.1.13)))(openai@6.9.1(ws@8.18.3)(zod@4.1.13))(ws@8.18.3)
       '@langchain/core':
         specifier: ^1.1.1
         version: 1.1.1(openai@6.9.1(ws@8.18.3)(zod@4.1.13))
@@ -600,18 +600,18 @@ packages:
     peerDependencies:
       '@sap/cds': '>=7.6'
 
-  '@cap-js/db-service@2.6.0':
-    resolution: {integrity: sha512-t72/FcAYFbPdx+5iV+lVKcwF2MLOx8II3jJdlC1dX/KXQORoS3wDFwWbakP0f/eharE5hfa7KMFJqrSMtDigbQ==}
+  '@cap-js/db-service@2.7.0':
+    resolution: {integrity: sha512-g6LDETBPWr8LYs3emrpEA4+FdVCkGgFmKHaeMPVBFXgFTUv14uYnarqWuFubBTrp5JF6S3wgljMJujld5+DL8A==}
     peerDependencies:
-      '@sap/cds': '>=9'
+      '@sap/cds': '>=9.4.5'
 
   '@cap-js/openapi@1.2.3':
     resolution: {integrity: sha512-UnEUBrBIjMvYYJTtAmSrnWLKIjnaK9KcCS6pPoVBRgZrMaL0bl/aB3KMH4xzc6LWjtbxzlyI71XC7No4+SKerg==}
     peerDependencies:
       '@sap/cds': '>=7.6'
 
-  '@cap-js/sqlite@2.0.4':
-    resolution: {integrity: sha512-QPVkycLJG6EubtjrPeiK4dTI1zPH/nabvhiYnTeg2AbeQ8mbazm5pjmcLrzOOKF/5bGS8KQo2J+49fU5LPRR3A==}
+  '@cap-js/sqlite@2.1.0':
+    resolution: {integrity: sha512-5jz7GlsrYCd5VlFEzImz5SCBkNa6Ps1wB9+1MceGlMrQLt0lDxiK1NqA+pIrcMeGWkQIcbNLteuP26ZQkGRidw==}
     peerDependencies:
       '@sap/cds': '>=9'
 
@@ -1055,8 +1055,8 @@ packages:
   '@exodus/schemasafe@1.3.0':
     resolution: {integrity: sha512-5Aap/GaRupgNx/feGBwLLTVv8OQFfv3pq2lPRzPg9R+IOBnDgghTGW7l7EuVXOvg5cc/xSAlRW8rBrjIC3Nvqw==}
 
-  '@gerrit0/mini-shiki@3.17.0':
-    resolution: {integrity: sha512-Bpf6WuFar20ZXL6qU6VpVl4bVQfyyYiX+6O4xrns4nkU3Mr8paeupDbS1HENpcLOYj7pN4Rkd/yCaPA0vQwKww==}
+  '@gerrit0/mini-shiki@3.17.1':
+    resolution: {integrity: sha512-u7gBnLsvhyVpwR4G8LcSHDlPn8Hg8zNeuzzR4+p2AxvQrQ+BDGo/mLMCpo58VFiIbl8+ie42fqunDclZ4RxNWw==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -1260,8 +1260,8 @@ packages:
     peerDependencies:
       '@langchain/core': ^1.0.1
 
-  '@langchain/langgraph-sdk@1.0.2':
-    resolution: {integrity: sha512-r3noE2KouUdfRCmHxZcS06Io8I3jplEXA+ORpYECa89VAdHWaknWRJMIBBwVJkQQJ9fvNBmOmyfTcbRkeTTakw==}
+  '@langchain/langgraph-sdk@1.0.3':
+    resolution: {integrity: sha512-6M4i0XsVO5Eb2vv/3OtIPHW3UqO4zYyXl6AOfS0Jf6d7JiWiSXqzLN8UoS0hpu1ItkcW1j575CRiP/6jn6XXFg==}
     peerDependencies:
       '@langchain/core': ^1.0.1
       react: ^18 || ^19
@@ -1452,8 +1452,8 @@ packages:
       '@sap/cds': '>=8'
       express: ^4
 
-  '@sap/cds-mtxs@3.4.4':
-    resolution: {integrity: sha512-bbZFJEZAbq/Y8pes8O6047tC70owhyk35xRcaagiAcTB9xN8NCsTumCBR614qziPIxKqOTBg7Hjp2PZfSko6GQ==}
+  '@sap/cds-mtxs@3.5.0':
+    resolution: {integrity: sha512-bcStMhOvn7pbseJvzjNtOagw7lmAdyPKpKr17pDuSjy5bQkTPCTdSu61ZfJI464ljWY6pBmyYcdVf15X0Jmqqg==}
     hasBin: true
     peerDependencies:
       '@sap/cds': ^9
@@ -1508,17 +1508,17 @@ packages:
     resolution: {integrity: sha512-/zrJ553umNJATDDoVE1gj2vIs1KE8a+x5+57NmkRAvivayLbTEqC6+m/jGpuoXsAktycl75EHCWUWbgFH5Fgtg==}
     engines: {node: '>=18'}
 
-  '@shikijs/engine-oniguruma@3.17.0':
-    resolution: {integrity: sha512-flSbHZAiOZDNTrEbULY8DLWavu/TyVu/E7RChpLB4WvKX4iHMfj80C6Hi3TjIWaQtHOW0KC6kzMcuB5TO1hZ8Q==}
+  '@shikijs/engine-oniguruma@3.18.0':
+    resolution: {integrity: sha512-15+O2iy+nYU/IdiBIExXuK0JJABa/8tdnRDODBmLhdygQ43aCuipN5N9vTfS8jvkMByHMR09b5jtX2la0CCoOA==}
 
-  '@shikijs/langs@3.17.0':
-    resolution: {integrity: sha512-icmur2n5Ojb+HAiQu6NEcIIJ8oWDFGGEpiqSCe43539Sabpx7Y829WR3QuUW2zjTM4l6V8Sazgb3rrHO2orEAw==}
+  '@shikijs/langs@3.18.0':
+    resolution: {integrity: sha512-Deq7ZoYBtimN0M8pD5RU5TKz7DhUSTPtQOBuJpMxPDDJ+MJ7nT90DEmhDM2V0Nzp6DjfTAd+Z7ibpzr8arWqiA==}
 
-  '@shikijs/themes@3.17.0':
-    resolution: {integrity: sha512-/xEizMHLBmMHwtx4JuOkRf3zwhWD2bmG5BRr0IPjpcWpaq4C3mYEuTk/USAEglN0qPrTwEHwKVpSu/y2jhferA==}
+  '@shikijs/themes@3.18.0':
+    resolution: {integrity: sha512-wzg6vNniXC5J4ChNBJJIZFTWxmrERJMWknehmM++0OAKJqZ41WpnO7PmPOumvMsUaL1SC08Nb/JVdaJd2aTsZg==}
 
-  '@shikijs/types@3.17.0':
-    resolution: {integrity: sha512-wjLVfutYWVUnxAjsWEob98xgyaGv0dTEnMZDruU5mRjVN7szcGOfgO+997W2yR6odp+1PtSBNeSITRRTfUzK/g==}
+  '@shikijs/types@3.18.0':
+    resolution: {integrity: sha512-YLmpuroH06TpvqRXKR0YqlI0nQ56c8+BO/m9A9ht36WRdxmML4ivUsnpXuJU7PiClLRD2M66ilY2YJ0KE+8q7A==}
 
   '@shikijs/vscode-textmate@10.0.2':
     resolution: {integrity: sha512-83yeghZ2xxin3Nj8z1NMd/NCuca+gsYXswywDy5bHvwlWL8tpTQmzGeUuHd9FC3E/SBEMvzJRwWEOz5gGes9Qg==}
@@ -2150,8 +2150,8 @@ packages:
     resolution: {integrity: sha512-pbnl5XzGBdrFU/wT4jqmJVPn2B6UHPBOhzMQkY/SPUPB6QtUXtmBHBIwCbXJol93mOpGMnQyP/+BB19q04xj7g==}
     engines: {node: '>=4'}
 
-  better-sqlite3@12.4.6:
-    resolution: {integrity: sha512-gaYt9yqTbQ1iOxLpJA8FPR5PiaHP+jlg8I5EX0Rs2KFwNzhBsF40KzMZS5FwelY7RG0wzaucWdqSAJM3uNCPCg==}
+  better-sqlite3@12.5.0:
+    resolution: {integrity: sha512-WwCZ/5Diz7rsF29o27o0Gcc1Du+l7Zsv7SYtVPG0X3G/uUI1LqdxrQI7c9Hs2FWpqXXERjW9hp6g3/tH7DlVKg==}
     engines: {node: 20.x || 22.x || 23.x || 24.x || 25.x}
 
   bindings@1.5.0:
@@ -2554,8 +2554,8 @@ packages:
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  electron-to-chromium@1.5.262:
-    resolution: {integrity: sha512-NlAsMteRHek05jRUxUR0a5jpjYq9ykk6+kO0yRaMi5moe7u0fVIOeQ3Y30A8dIiWFBNUoQGi1ljb1i5VtS9WQQ==}
+  electron-to-chromium@1.5.263:
+    resolution: {integrity: sha512-DrqJ11Knd+lo+dv+lltvfMDLU27g14LMdH2b0O3Pio4uk0x+z7OR+JrmyacTPN2M8w3BrZ7/RTwG3R9B7irPlg==}
 
   emittery@0.13.1:
     resolution: {integrity: sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ==}
@@ -3675,23 +3675,6 @@ packages:
     engines: {node: '>=20'}
     peerDependencies:
       '@langchain/core': 1.1.1
-
-  langsmith@0.3.81:
-    resolution: {integrity: sha512-NFmp7TDrrbCE6TIfHqutN9xhdgvx0EOhULVo8bDW+ib5idprwjMTvmS0S1n9uVFwjN03zU2zVEWViXnwy5XPrw==}
-    peerDependencies:
-      '@opentelemetry/api': '*'
-      '@opentelemetry/exporter-trace-otlp-proto': '*'
-      '@opentelemetry/sdk-trace-base': '*'
-      openai: '*'
-    peerDependenciesMeta:
-      '@opentelemetry/api':
-        optional: true
-      '@opentelemetry/exporter-trace-otlp-proto':
-        optional: true
-      '@opentelemetry/sdk-trace-base':
-        optional: true
-      openai:
-        optional: true
 
   langsmith@0.3.82:
     resolution: {integrity: sha512-RTcxtRm0zp2lV+pMesMW7EZSsIlqN7OmR2F6sZ/sOFQwmcLVl+VErMPV4VkX4Sycs4/EIAFT5hpr36EqiHoikQ==}
@@ -5436,7 +5419,7 @@ snapshots:
     dependencies:
       '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@5.2.1)
 
-  '@cap-js/db-service@2.6.0(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))':
+  '@cap-js/db-service@2.7.0(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))':
     dependencies:
       '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@5.2.1)
       generic-pool: 3.9.0
@@ -5447,11 +5430,11 @@ snapshots:
       '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@5.2.1)
       pluralize: 8.0.0
 
-  '@cap-js/sqlite@2.0.4(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))':
+  '@cap-js/sqlite@2.1.0(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))':
     dependencies:
-      '@cap-js/db-service': 2.6.0(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))
+      '@cap-js/db-service': 2.7.0(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))
       '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@5.2.1)
-      better-sqlite3: 12.4.6
+      better-sqlite3: 12.5.0
     optional: true
 
   '@cfworker/json-schema@4.1.1': {}
@@ -5844,12 +5827,12 @@ snapshots:
 
   '@exodus/schemasafe@1.3.0': {}
 
-  '@gerrit0/mini-shiki@3.17.0':
+  '@gerrit0/mini-shiki@3.17.1':
     dependencies:
-      '@shikijs/engine-oniguruma': 3.17.0
-      '@shikijs/langs': 3.17.0
-      '@shikijs/themes': 3.17.0
-      '@shikijs/types': 3.17.0
+      '@shikijs/engine-oniguruma': 3.18.0
+      '@shikijs/langs': 3.18.0
+      '@shikijs/themes': 3.18.0
+      '@shikijs/types': 3.18.0
       '@shikijs/vscode-textmate': 10.0.2
 
   '@humanfs/core@0.19.1': {}
@@ -6147,7 +6130,7 @@ snapshots:
       yaml: 2.8.2
       zod: 4.1.13
     optionalDependencies:
-      langsmith: 0.3.81(openai@6.9.1(ws@8.18.3)(zod@4.1.13))
+      langsmith: 0.3.82(openai@6.9.1(ws@8.18.3)(zod@4.1.13))
     transitivePeerDependencies:
       - '@opentelemetry/api'
       - '@opentelemetry/exporter-trace-otlp-proto'
@@ -6179,7 +6162,7 @@ snapshots:
       '@langchain/core': 1.1.1(openai@6.9.1(ws@8.18.3)(zod@4.1.13))
       uuid: 10.0.0
 
-  '@langchain/langgraph-sdk@1.0.2(@langchain/core@1.1.1(openai@6.9.1(ws@8.18.3)(zod@4.1.13)))':
+  '@langchain/langgraph-sdk@1.0.3(@langchain/core@1.1.1(openai@6.9.1(ws@8.18.3)(zod@4.1.13)))':
     dependencies:
       p-queue: 6.6.2
       p-retry: 4.6.2
@@ -6191,7 +6174,7 @@ snapshots:
     dependencies:
       '@langchain/core': 1.1.1(openai@6.9.1(ws@8.18.3)(zod@4.1.13))
       '@langchain/langgraph-checkpoint': 1.0.0(@langchain/core@1.1.1(openai@6.9.1(ws@8.18.3)(zod@4.1.13)))
-      '@langchain/langgraph-sdk': 1.0.2(@langchain/core@1.1.1(openai@6.9.1(ws@8.18.3)(zod@4.1.13)))
+      '@langchain/langgraph-sdk': 1.0.3(@langchain/core@1.1.1(openai@6.9.1(ws@8.18.3)(zod@4.1.13)))
       uuid: 10.0.0
       zod: 4.1.13
     optionalDependencies:
@@ -6615,7 +6598,7 @@ snapshots:
       '@cap-js/asyncapi': 1.0.3(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))
       '@cap-js/openapi': 1.2.3(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))
       '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@4.22.1)
-      '@sap/cds-mtxs': 3.4.4(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))(hdb@0.19.12)
+      '@sap/cds-mtxs': 3.5.0(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))(hdb@0.19.12)
       '@sap/hdi-deploy': 5.5.1(hdb@0.19.12)
       axios: 1.13.2
       express: 4.22.1
@@ -6627,7 +6610,7 @@ snapshots:
       xml-js: 1.6.11
       yaml: 2.8.2
     optionalDependencies:
-      '@cap-js/sqlite': 2.0.4(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))
+      '@cap-js/sqlite': 2.1.0(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))
     transitivePeerDependencies:
       - '@eslint/js'
       - '@sap/hana-client'
@@ -6647,7 +6630,7 @@ snapshots:
       '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@5.2.1)
       express: 5.2.1
 
-  '@sap/cds-mtxs@3.4.4(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))(hdb@0.19.12)':
+  '@sap/cds-mtxs@3.5.0(@sap/cds@9.5.1(@eslint/js@9.39.1)(express@5.2.1))(hdb@0.19.12)':
     dependencies:
       '@sap/cds': 9.5.1(@eslint/js@9.39.1)(express@5.2.1)
       '@sap/hdi-deploy': 5.5.1(hdb@0.19.12)
@@ -6716,20 +6699,20 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@shikijs/engine-oniguruma@3.17.0':
+  '@shikijs/engine-oniguruma@3.18.0':
     dependencies:
-      '@shikijs/types': 3.17.0
+      '@shikijs/types': 3.18.0
       '@shikijs/vscode-textmate': 10.0.2
 
-  '@shikijs/langs@3.17.0':
+  '@shikijs/langs@3.18.0':
     dependencies:
-      '@shikijs/types': 3.17.0
+      '@shikijs/types': 3.18.0
 
-  '@shikijs/themes@3.17.0':
+  '@shikijs/themes@3.18.0':
     dependencies:
-      '@shikijs/types': 3.17.0
+      '@shikijs/types': 3.18.0
 
-  '@shikijs/types@3.17.0':
+  '@shikijs/types@3.18.0':
     dependencies:
       '@shikijs/vscode-textmate': 10.0.2
       '@types/hast': 3.0.4
@@ -6770,7 +6753,7 @@ snapshots:
     dependencies:
       '@stoplight/json': 3.21.7
       '@stoplight/path': 1.3.2
-      '@stoplight/types': 13.6.0
+      '@stoplight/types': 13.20.0
       '@types/urijs': 1.19.26
       dependency-graph: 0.11.0
       fast-memoize: 2.5.2
@@ -6783,7 +6766,7 @@ snapshots:
     dependencies:
       '@stoplight/ordered-object-literal': 1.0.5
       '@stoplight/path': 1.3.2
-      '@stoplight/types': 13.6.0
+      '@stoplight/types': 13.20.0
       jsonc-parser: 2.2.1
       lodash: 4.17.21
       safe-stable-stringify: 1.1.1
@@ -6884,7 +6867,7 @@ snapshots:
     dependencies:
       '@stoplight/json': 3.21.7
       '@stoplight/path': 1.3.2
-      '@stoplight/types': 13.6.0
+      '@stoplight/types': 13.20.0
       abort-controller: 3.0.0
       lodash: 4.17.21
       node-fetch: 2.7.0
@@ -7504,7 +7487,7 @@ snapshots:
     dependencies:
       is-windows: 1.0.2
 
-  better-sqlite3@12.4.6:
+  better-sqlite3@12.5.0:
     dependencies:
       bindings: 1.5.0
       prebuild-install: 7.1.3
@@ -7570,7 +7553,7 @@ snapshots:
     dependencies:
       baseline-browser-mapping: 2.8.32
       caniuse-lite: 1.0.30001757
-      electron-to-chromium: 1.5.262
+      electron-to-chromium: 1.5.263
       node-releases: 2.0.27
       update-browserslist-db: 1.1.4(browserslist@4.28.0)
 
@@ -7904,7 +7887,7 @@ snapshots:
 
   ee-first@1.1.1: {}
 
-  electron-to-chromium@1.5.262: {}
+  electron-to-chromium@1.5.263: {}
 
   emittery@0.13.1: {}
 
@@ -9428,19 +9411,6 @@ snapshots:
       - react-dom
       - zod-to-json-schema
 
-  langsmith@0.3.81(openai@6.9.1(ws@8.18.3)(zod@4.1.13)):
-    dependencies:
-      '@types/uuid': 10.0.0
-      chalk: 4.1.2
-      console-table-printer: 2.15.0
-      p-queue: 6.6.2
-      p-retry: 4.6.2
-      semver: 7.7.3
-      uuid: 10.0.0
-    optionalDependencies:
-      openai: 6.9.1(ws@8.18.3)(zod@4.1.13)
-    optional: true
-
   langsmith@0.3.82(openai@6.9.1(ws@8.18.3)(zod@4.1.13)):
     dependencies:
       '@types/uuid': 10.0.0
@@ -10808,7 +10778,7 @@ snapshots:
 
   typedoc@0.28.15(typescript@5.9.3):
     dependencies:
-      '@gerrit0/mini-shiki': 3.17.0
+      '@gerrit0/mini-shiki': 3.17.1
       lunr: 2.3.9
       markdown-it: 14.1.0
       minimatch: 9.0.5
