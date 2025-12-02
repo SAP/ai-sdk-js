@@ -226,13 +226,13 @@ importers:
         version: link:../packages/orchestration
       '@sap/cds':
         specifier: ^9.4.4
-        version: 9.4.4(@eslint/js@9.39.1)(express@5.1.0)
+        version: 9.4.4(@eslint/js@9.39.1)(express@5.2.0)
       '@sap/xssec':
         specifier: ^4.11.2
         version: 4.11.2
       express:
-        specifier: ^5.1.0
-        version: 5.1.0
+        specifier: ^5.2.0
+        version: 5.2.0
     devDependencies:
       '@sap/cds-dk':
         specifier: ^9.4.3
@@ -283,8 +283,8 @@ importers:
         specifier: ^5.0.5
         version: 5.0.5
       express:
-        specifier: ^5.1.0
-        version: 5.1.0
+        specifier: ^5.2.0
+        version: 5.2.0
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
@@ -356,8 +356,8 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0
       express:
-        specifier: ^5.1.0
-        version: 5.1.0
+        specifier: ^5.2.0
+        version: 5.2.0
       langchain:
         specifier: ^1.1.1
         version: 1.1.1(@langchain/core@1.1.0(openai@6.9.1(ws@8.18.3)(zod@4.1.13)))(openai@6.9.1(ws@8.18.3)(zod@4.1.13))(zod-to-json-schema@3.25.0(zod@4.1.13))
@@ -2160,12 +2160,12 @@ packages:
   bl@4.1.0:
     resolution: {integrity: sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w==}
 
-  body-parser@1.20.3:
-    resolution: {integrity: sha512-7rAxByjUMqQ3/bHJy7D6OGXvx/MMc4IqBn/X0fcM1QUcAItpZrBEYhWGem+tzXH90c+G01ypMcYJBO9Y30203g==}
+  body-parser@1.20.4:
+    resolution: {integrity: sha512-ZTgYYLMOXY9qKU/57FAo8F+HA2dGX7bqGc71txDRC1rS4frdFI5R7NhluHxH6M0YItAP0sHB4uqAOcYKxO6uGA==}
     engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
 
-  body-parser@2.2.0:
-    resolution: {integrity: sha512-02qvAaxv8tp7fBa/mw1ga98OGm+eCbqzJOKoRt70sLmfEEi+jyBYVTDGfCL/k06/4EMk/z01gCe7HoCH/f2LTg==}
+  body-parser@2.2.1:
+    resolution: {integrity: sha512-nfDwkulwiZYQIGwxdy0RUmowMhKcFVcYXUU7m4QlKYim1rUtg83xm2yjZ40QjDuc291AJjjeSc9b++AWHSgSHw==}
     engines: {node: '>=18'}
 
   brace-expansion@1.1.12:
@@ -2346,16 +2346,12 @@ packages:
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
 
-  cookie-signature@1.0.6:
-    resolution: {integrity: sha512-QADzlaHc8icV8I7vbaJXJwod9HWYp8uCqf1xa4OfNu1T7JVxQIrUgOWtHdNDtPiywmFbiS12VjotIXLrKM3orQ==}
+  cookie-signature@1.0.7:
+    resolution: {integrity: sha512-NXdYc3dLr47pBkpUCHtKSwIOQXLVn8dZEuywboCOJY/osA0wFSLlSawr3KN8qXJEyX66FcONTH8EIlVuK0yyFA==}
 
   cookie-signature@1.2.2:
     resolution: {integrity: sha512-D76uU73ulSXrD1UXF4KE2TMxVVwhsnCgfAyTg9k8P6KGZjlXKrOLe4dJQKI3Bxi5wjesZoFXJWElNWBjPZMbhg==}
     engines: {node: '>=6.6.0'}
-
-  cookie@0.7.1:
-    resolution: {integrity: sha512-6DnInpx7SJ2AK3+CTUE/ZM0vWTUboZCegxhC2xiIydHR9jNuTAASBrfEpHhiGOZw/nX51bHt6YQl8jsGo4y/0w==}
-    engines: {node: '>= 0.6'}
 
   cookie@0.7.2:
     resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
@@ -2855,12 +2851,12 @@ packages:
     peerDependencies:
       express: '>= 4.11'
 
-  express@4.21.2:
-    resolution: {integrity: sha512-28HqgMZAmih1Czt9ny7qr6ek2qddF4FclbMzwhCREB6OFfH+rXAnuNCwo1/wFvrtbgsQDb4kSbX9de9lFbrXnA==}
+  express@4.22.1:
+    resolution: {integrity: sha512-F2X8g9P1X7uCPZMA3MVf9wcTqlyNp7IhH5qPCI0izhaOIYXaW9L535tGA3qmjRzpH+bZczqq7hVKxTR4NWnu+g==}
     engines: {node: '>= 0.10.0'}
 
-  express@5.1.0:
-    resolution: {integrity: sha512-DT9ck5YIRU+8GYzzU5kT3eHGA5iL+1Zd0EutOmTE9Dtk+Tvuzd23VBU+ec7HPNSTxXYO55gPV/hq4pSBJDjFpA==}
+  express@5.2.0:
+    resolution: {integrity: sha512-XdpJDLxfztVY59X0zPI6sibRiGcxhTPXRD3IhJmjKf2jwMvkRGV1j7loB8U+heeamoU3XvihAaGRTR4aXXUN3A==}
     engines: {node: '>= 18'}
 
   extendable-error@0.1.7:
@@ -2934,13 +2930,13 @@ packages:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
     engines: {node: '>=8'}
 
-  finalhandler@1.3.1:
-    resolution: {integrity: sha512-6BN9trH7bp3qvnrRyzsBz+g3lZxTNZTbVO2EV1CS0WIcDbawYVdYvGflME/9QP0h0pYlCDBCTjYa9nZzMDpyxQ==}
+  finalhandler@1.3.2:
+    resolution: {integrity: sha512-aA4RyPcd3badbdABGDuTXCMTtOneUCAYH/gxoYRTZlIJdF0YPWuGqiAsIrhNnnqdXGswYk6dGujem4w80UJFhg==}
     engines: {node: '>= 0.8'}
 
-  finalhandler@2.1.0:
-    resolution: {integrity: sha512-/t88Ty3d5JWQbWYgaOGCCYfXRwV1+be02WqYYlL6h0lEiUAMPM8o8qKGO01YIkOHzka2up08wvgYD0mDiI+q3Q==}
-    engines: {node: '>= 0.8'}
+  finalhandler@2.1.1:
+    resolution: {integrity: sha512-S8KoZgRZN+a5rNwqTxlZZePjT/4cnm0ROV70LedRHZ0p8u9fRID0hJUZQpkKLzro8LfmC8sx23bY6tVNxv8pQA==}
+    engines: {node: '>= 18.0.0'}
 
   find-up@4.1.0:
     resolution: {integrity: sha512-PpOwAdQ/YlXQ2vj8a3h8IipDuYRi3wceVQQGYWxNINccq40Anw7BlsEXCMbt1Zt+OLA6Fq9suIpIWD0OsnISlw==}
@@ -3200,10 +3196,6 @@ packages:
 
   iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
-    engines: {node: '>=0.10.0'}
-
-  iconv-lite@0.6.3:
-    resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
 
   iconv-lite@0.7.0:
@@ -4364,10 +4356,6 @@ packages:
   pure-rand@7.0.1:
     resolution: {integrity: sha512-oTUZM/NAZS8p7ANR3SHh30kXB+zK2r2BPcEn/awJIbOvq82WoMN4p62AWWp3Hhw50G0xMsw1mhIBLqHw64EcNQ==}
 
-  qs@6.13.0:
-    resolution: {integrity: sha512-+38qI9SOr8tfZ4QmJNplMUxqjbe7LKvvZgWdExBOmd+egZTtjLB67Gu0HRX3u/XOq7UU2Nx6nsjvS16Z9uwfpg==}
-    engines: {node: '>=0.6'}
-
   qs@6.14.0:
     resolution: {integrity: sha512-YWWTjgABSKcvs/nWBi9PycY/JiPJqOD4JA6o9Sej2AtvSGarXxKC3OQSk4pAarbdQlKAh5D4FCQkJNkW+GAn3w==}
     engines: {node: '>=0.6'}
@@ -4386,8 +4374,8 @@ packages:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
     engines: {node: '>= 0.6'}
 
-  raw-body@2.5.2:
-    resolution: {integrity: sha512-8zGqypfENjCIqGhgXToC8aB2r7YrBX+AQAfIPs/Mlk+BtPTztOvTS01NRW/3Eh60J+a48lt8qsCzirQ6loCVfA==}
+  raw-body@2.5.3:
+    resolution: {integrity: sha512-s4VSOf6yN0rvbRZGxs8Om5CWj6seneMwK3oDb4lWDH0UPhWcxwOWw5+qk24bxq87szX1ydrwylIOp2uG1ojUpA==}
     engines: {node: '>= 0.8'}
 
   raw-body@3.0.2:
@@ -4536,6 +4524,10 @@ packages:
 
   send@0.19.0:
     resolution: {integrity: sha512-dW41u5VfLXu8SJh5bwRmyYUbAoSB3c9uQh6L8h/KtsFREPWpbX1lrljJo186Jc4nmci/sGUZ9a0a0J2zgfq2hw==}
+    engines: {node: '>= 0.8.0'}
+
+  send@0.19.1:
+    resolution: {integrity: sha512-p4rRk4f23ynFEfcD9LA0xRYngj+IyGiEYyqqOak8kaN0TvNmuxC2dcVeBn62GpCeR2CpWqyHCNScTP91QbAVFg==}
     engines: {node: '>= 0.8.0'}
 
   send@1.2.0:
@@ -5423,25 +5415,25 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@cap-js/asyncapi@1.0.3(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.1.0))':
+  '@cap-js/asyncapi@1.0.3(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.2.0))':
     dependencies:
-      '@sap/cds': 9.4.4(@eslint/js@9.39.1)(express@5.1.0)
+      '@sap/cds': 9.4.4(@eslint/js@9.39.1)(express@5.2.0)
 
-  '@cap-js/db-service@2.6.0(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.1.0))':
+  '@cap-js/db-service@2.6.0(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.2.0))':
     dependencies:
-      '@sap/cds': 9.4.4(@eslint/js@9.39.1)(express@5.1.0)
+      '@sap/cds': 9.4.4(@eslint/js@9.39.1)(express@5.2.0)
       generic-pool: 3.9.0
     optional: true
 
-  '@cap-js/openapi@1.2.3(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.1.0))':
+  '@cap-js/openapi@1.2.3(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.2.0))':
     dependencies:
-      '@sap/cds': 9.4.4(@eslint/js@9.39.1)(express@5.1.0)
+      '@sap/cds': 9.4.4(@eslint/js@9.39.1)(express@5.2.0)
       pluralize: 8.0.0
 
-  '@cap-js/sqlite@2.0.4(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.1.0))':
+  '@cap-js/sqlite@2.0.4(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.2.0))':
     dependencies:
-      '@cap-js/db-service': 2.6.0(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.1.0))
-      '@sap/cds': 9.4.4(@eslint/js@9.39.1)(express@5.1.0)
+      '@cap-js/db-service': 2.6.0(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.2.0))
+      '@sap/cds': 9.4.4(@eslint/js@9.39.1)(express@5.2.0)
       better-sqlite3: 12.4.6
     optional: true
 
@@ -6243,8 +6235,8 @@ snapshots:
       cross-spawn: 7.0.6
       eventsource: 3.0.7
       eventsource-parser: 3.0.6
-      express: 5.1.0
-      express-rate-limit: 7.5.1(express@5.1.0)
+      express: 5.2.0
+      express-rate-limit: 7.5.1(express@5.2.0)
       pkce-challenge: 5.0.1
       raw-body: 3.0.2
       zod: 4.1.13
@@ -6603,13 +6595,13 @@ snapshots:
 
   '@sap/cds-dk@9.4.3(@eslint/js@9.39.1)':
     dependencies:
-      '@cap-js/asyncapi': 1.0.3(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.1.0))
-      '@cap-js/openapi': 1.2.3(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.1.0))
-      '@sap/cds': 9.4.4(@eslint/js@9.39.1)(express@4.21.2)
-      '@sap/cds-mtxs': 3.4.4(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.1.0))(hdb@0.19.12)
+      '@cap-js/asyncapi': 1.0.3(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.2.0))
+      '@cap-js/openapi': 1.2.3(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.2.0))
+      '@sap/cds': 9.4.4(@eslint/js@9.39.1)(express@4.22.1)
+      '@sap/cds-mtxs': 3.4.4(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.2.0))(hdb@0.19.12)
       '@sap/hdi-deploy': 5.5.1(hdb@0.19.12)
       axios: 1.13.2
-      express: 4.21.2
+      express: 4.22.1
       hdb: 0.19.12
       livereload-js: 4.0.2
       mustache: 4.2.0
@@ -6618,7 +6610,7 @@ snapshots:
       xml-js: 1.6.11
       yaml: 2.8.2
     optionalDependencies:
-      '@cap-js/sqlite': 2.0.4(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.1.0))
+      '@cap-js/sqlite': 2.0.4(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.2.0))
     transitivePeerDependencies:
       - '@eslint/js'
       - '@sap/hana-client'
@@ -6628,42 +6620,42 @@ snapshots:
       - tar
       - utf-8-validate
 
-  '@sap/cds-fiori@2.1.1(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.1.0))(express@4.21.2)':
+  '@sap/cds-fiori@2.1.1(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.2.0))(express@4.22.1)':
     dependencies:
-      '@sap/cds': 9.4.4(@eslint/js@9.39.1)(express@5.1.0)
-      express: 4.21.2
+      '@sap/cds': 9.4.4(@eslint/js@9.39.1)(express@5.2.0)
+      express: 4.22.1
 
-  '@sap/cds-fiori@2.1.1(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.1.0))(express@5.1.0)':
+  '@sap/cds-fiori@2.1.1(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.2.0))(express@5.2.0)':
     dependencies:
-      '@sap/cds': 9.4.4(@eslint/js@9.39.1)(express@5.1.0)
-      express: 5.1.0
+      '@sap/cds': 9.4.4(@eslint/js@9.39.1)(express@5.2.0)
+      express: 5.2.0
 
-  '@sap/cds-mtxs@3.4.4(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.1.0))(hdb@0.19.12)':
+  '@sap/cds-mtxs@3.4.4(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.2.0))(hdb@0.19.12)':
     dependencies:
-      '@sap/cds': 9.4.4(@eslint/js@9.39.1)(express@5.1.0)
+      '@sap/cds': 9.4.4(@eslint/js@9.39.1)(express@5.2.0)
       '@sap/hdi-deploy': 5.5.1(hdb@0.19.12)
     transitivePeerDependencies:
       - '@sap/hana-client'
       - hdb
       - supports-color
 
-  '@sap/cds@9.4.4(@eslint/js@9.39.1)(express@4.21.2)':
+  '@sap/cds@9.4.4(@eslint/js@9.39.1)(express@4.22.1)':
     dependencies:
       '@eslint/js': 9.39.1
       '@sap/cds-compiler': 6.4.6
-      '@sap/cds-fiori': 2.1.1(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.1.0))(express@4.21.2)
+      '@sap/cds-fiori': 2.1.1(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.2.0))(express@4.22.1)
       js-yaml: 4.1.1
     optionalDependencies:
-      express: 4.21.2
+      express: 4.22.1
 
-  '@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.1.0)':
+  '@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.2.0)':
     dependencies:
       '@eslint/js': 9.39.1
       '@sap/cds-compiler': 6.4.6
-      '@sap/cds-fiori': 2.1.1(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.1.0))(express@5.1.0)
+      '@sap/cds-fiori': 2.1.1(@sap/cds@9.4.4(@eslint/js@9.39.1)(express@5.2.0))(express@5.2.0)
       js-yaml: 4.1.1
     optionalDependencies:
-      express: 5.1.0
+      express: 5.2.0
 
   '@sap/hdi-deploy@5.5.1(hdb@0.19.12)':
     dependencies:
@@ -7521,30 +7513,30 @@ snapshots:
       readable-stream: 3.6.2
     optional: true
 
-  body-parser@1.20.3:
+  body-parser@1.20.4:
     dependencies:
       bytes: 3.1.2
       content-type: 1.0.5
       debug: 2.6.9
       depd: 2.0.0
       destroy: 1.2.0
-      http-errors: 2.0.0
+      http-errors: 2.0.1
       iconv-lite: 0.4.24
       on-finished: 2.4.1
-      qs: 6.13.0
-      raw-body: 2.5.2
+      qs: 6.14.0
+      raw-body: 2.5.3
       type-is: 1.6.18
       unpipe: 1.0.0
     transitivePeerDependencies:
       - supports-color
 
-  body-parser@2.2.0:
+  body-parser@2.2.1:
     dependencies:
       bytes: 3.1.2
       content-type: 1.0.5
       debug: 4.4.3
       http-errors: 2.0.1
-      iconv-lite: 0.6.3
+      iconv-lite: 0.7.0
       on-finished: 2.4.1
       qs: 6.14.0
       raw-body: 3.0.2
@@ -7715,11 +7707,9 @@ snapshots:
 
   convert-source-map@2.0.0: {}
 
-  cookie-signature@1.0.6: {}
+  cookie-signature@1.0.7: {}
 
   cookie-signature@1.2.2: {}
-
-  cookie@0.7.1: {}
 
   cookie@0.7.2: {}
 
@@ -8334,59 +8324,60 @@ snapshots:
       jest-mock: 30.2.0
       jest-util: 30.2.0
 
-  express-rate-limit@7.5.1(express@5.1.0):
+  express-rate-limit@7.5.1(express@5.2.0):
     dependencies:
-      express: 5.1.0
+      express: 5.2.0
 
-  express@4.21.2:
+  express@4.22.1:
     dependencies:
       accepts: 1.3.8
       array-flatten: 1.1.1
-      body-parser: 1.20.3
+      body-parser: 1.20.4
       content-disposition: 0.5.4
       content-type: 1.0.5
-      cookie: 0.7.1
-      cookie-signature: 1.0.6
+      cookie: 0.7.2
+      cookie-signature: 1.0.7
       debug: 2.6.9
       depd: 2.0.0
       encodeurl: 2.0.0
       escape-html: 1.0.3
       etag: 1.8.1
-      finalhandler: 1.3.1
+      finalhandler: 1.3.2
       fresh: 0.5.2
-      http-errors: 2.0.0
+      http-errors: 2.0.1
       merge-descriptors: 1.0.3
       methods: 1.1.2
       on-finished: 2.4.1
       parseurl: 1.3.3
       path-to-regexp: 0.1.12
       proxy-addr: 2.0.7
-      qs: 6.13.0
+      qs: 6.14.0
       range-parser: 1.2.1
       safe-buffer: 5.2.1
-      send: 0.19.0
+      send: 0.19.1
       serve-static: 1.16.2
       setprototypeof: 1.2.0
-      statuses: 2.0.1
+      statuses: 2.0.2
       type-is: 1.6.18
       utils-merge: 1.0.1
       vary: 1.1.2
     transitivePeerDependencies:
       - supports-color
 
-  express@5.1.0:
+  express@5.2.0:
     dependencies:
       accepts: 2.0.0
-      body-parser: 2.2.0
+      body-parser: 2.2.1
       content-disposition: 1.0.1
       content-type: 1.0.5
       cookie: 0.7.2
       cookie-signature: 1.2.2
       debug: 4.4.3
+      depd: 2.0.0
       encodeurl: 2.0.0
       escape-html: 1.0.3
       etag: 1.8.1
-      finalhandler: 2.1.0
+      finalhandler: 2.1.1
       fresh: 2.0.0
       http-errors: 2.0.1
       merge-descriptors: 2.0.0
@@ -8466,19 +8457,19 @@ snapshots:
     dependencies:
       to-regex-range: 5.0.1
 
-  finalhandler@1.3.1:
+  finalhandler@1.3.2:
     dependencies:
       debug: 2.6.9
       encodeurl: 2.0.0
       escape-html: 1.0.3
       on-finished: 2.4.1
       parseurl: 1.3.3
-      statuses: 2.0.1
+      statuses: 2.0.2
       unpipe: 1.0.0
     transitivePeerDependencies:
       - supports-color
 
-  finalhandler@2.1.0:
+  finalhandler@2.1.1:
     dependencies:
       debug: 4.4.3
       encodeurl: 2.0.0
@@ -8765,10 +8756,6 @@ snapshots:
   human-signals@2.1.0: {}
 
   iconv-lite@0.4.24:
-    dependencies:
-      safer-buffer: 2.1.2
-
-  iconv-lite@0.6.3:
     dependencies:
       safer-buffer: 2.1.2
 
@@ -10092,10 +10079,6 @@ snapshots:
 
   pure-rand@7.0.1: {}
 
-  qs@6.13.0:
-    dependencies:
-      side-channel: 1.1.0
-
   qs@6.14.0:
     dependencies:
       side-channel: 1.1.0
@@ -10108,10 +10091,10 @@ snapshots:
 
   range-parser@1.2.1: {}
 
-  raw-body@2.5.2:
+  raw-body@2.5.3:
     dependencies:
       bytes: 3.1.2
-      http-errors: 2.0.0
+      http-errors: 2.0.1
       iconv-lite: 0.4.24
       unpipe: 1.0.0
 
@@ -10279,6 +10262,24 @@ snapshots:
       depd: 2.0.0
       destroy: 1.2.0
       encodeurl: 1.0.2
+      escape-html: 1.0.3
+      etag: 1.8.1
+      fresh: 0.5.2
+      http-errors: 2.0.0
+      mime: 1.6.0
+      ms: 2.1.3
+      on-finished: 2.4.1
+      range-parser: 1.2.1
+      statuses: 2.0.1
+    transitivePeerDependencies:
+      - supports-color
+
+  send@0.19.1:
+    dependencies:
+      debug: 2.6.9
+      depd: 2.0.0
+      destroy: 1.2.0
+      encodeurl: 2.0.0
       escape-html: 1.0.3
       etag: 1.8.1
       fresh: 0.5.2
