@@ -26,12 +26,12 @@
     "@sap-ai-sdk/orchestration": "^1.18.0",
     "@sap-ai-sdk/prompt-registry": "^1.18.0",
     "@sap-cloud-sdk/util": "^4.1.2",
-    "express": "^5.1.0",
+    "express": "^5.2.1",
     "uuid": "^13.0.0",
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@types/express": "^5.0.5",
+    "@types/express": "^5.0.6",
     "dotenv": "^17.2.3",
     "dotenv-cli": "^11.0.0"
   },
