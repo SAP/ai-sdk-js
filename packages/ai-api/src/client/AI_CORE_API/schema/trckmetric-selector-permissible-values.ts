@@ -7,8 +7,9 @@
 /**
  * Permissible value for $select could be either * or one or many of the values from metrics, tags, custominfo
  */
-export type TrckmetricSelectorPermissibleValues =
+export type TrckmetricSelectorPermissibleValues = (
   | 'metrics'
   | 'tags'
   | 'customInfo'
-  | '*'[];
+  | '*'
+)[];
