@@ -11,5 +11,5 @@ export type BckndServiceServicePlanItemMetadata = {
   /**
    * supported platforms of the service plan
    */
-  supportedPlatforms?: 'cloudfoundry' | 'kubernetes' | 'sapbtp'[];
+  supportedPlatforms?: ('cloudfoundry' | 'kubernetes' | 'sapbtp')[];
 } & Record<string, any>;
