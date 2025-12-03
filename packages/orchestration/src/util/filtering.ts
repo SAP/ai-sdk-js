@@ -47,15 +47,18 @@ export function buildAzureContentSafetyFilter<T extends ConfigType>(
     } as AzureContentSafetyFilterReturnType<T>;
   }
 
+  const { protected_material_code, ...restConfig } =
+    config as AzureContentSafetyFilterParameters<'output'>;
   return {
     type: 'azure_content_safety',
     config: {
       ...Object.fromEntries(
-        Object.entries(config).map(([key, value]) => [
+        Object.entries(restConfig).map(([key, value]) => [
           key,
           supportedAzureFilterThresholds[value as AzureFilterThreshold]
         ])
-      )
+      ),
+      ...(protected_material_code !== undefined && { protected_material_code })
     }
   } as AzureContentSafetyFilterReturnType<T>;
 }

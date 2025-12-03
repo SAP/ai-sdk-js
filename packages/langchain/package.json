@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/langchain",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
@@ -25,19 +25,19 @@
   ],
   "scripts": {
     "compile": "tsc",
-    "compile:cjs": "tsc -p tsconfig.cjs.json",
+    "compile:cjs": "mv package.json package.json.bak && echo '{ \"type\": \"commonjs\" }' > package.json && tsc -p tsconfig.cjs.json && mv package.json.bak package.json",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint \"**/*.ts\" && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
+    "@langchain/core": "^1.1.1",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.1.2",
-    "@sap-cloud-sdk/util": "^4.1.2",
-    "uuid": "^13.0.0",
-    "@langchain/core": "0.3.79"
+    "@sap-cloud-sdk/connectivity": "^4.2.0",
+    "@sap-cloud-sdk/util": "^4.2.0",
+    "uuid": "^13.0.0"
   }
 }

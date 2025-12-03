@@ -146,6 +146,11 @@ export function mapOutputToChatResult(
         tool_calls: mapAzureOpenAiToLangChainToolCall(
           choice.message.tool_calls
         ),
+        usage_metadata: {
+          input_tokens: choice.message.usage?.prompt_tokens ?? 0,
+          output_tokens: choice.message.usage?.completion_tokens ?? 0,
+          total_tokens: choice.message.usage?.total_tokens ?? 0
+        },
         additional_kwargs: {
           function_call: choice.message.function_call,
           tool_calls: choice.message.tool_calls
@@ -267,19 +272,23 @@ function mapSystemMessageToAzureOpenAiSystemMessage(
 function mapBaseMessageToAzureOpenAiChatMessage(
   message: BaseMessage
 ): AzureOpenAiChatCompletionRequestMessage {
-  switch (message.getType()) {
+  switch (message.type) {
     case 'ai':
-      return mapAiMessageToAzureOpenAiAssistantMessage(message);
+      return mapAiMessageToAzureOpenAiAssistantMessage(message as AIMessage);
     case 'human':
-      return mapHumanMessageToAzureOpenAiUserMessage(message);
+      return mapHumanMessageToAzureOpenAiUserMessage(message as HumanMessage);
     case 'system':
-      return mapSystemMessageToAzureOpenAiSystemMessage(message);
+      return mapSystemMessageToAzureOpenAiSystemMessage(
+        message as SystemMessage
+      );
     case 'function':
-      return mapFunctionMessageToAzureOpenAiFunctionMessage(message);
+      return mapFunctionMessageToAzureOpenAiFunctionMessage(
+        message as FunctionMessage
+      );
     case 'tool':
       return mapToolMessageToAzureOpenAiToolMessage(message as ToolMessage);
     default:
-      throw new Error(`Unsupported message type: ${message.getType()}`);
+      throw new Error(`Unsupported message type: ${message.type}`);
   }
 }
 

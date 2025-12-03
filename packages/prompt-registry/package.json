@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/prompt-registry",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
@@ -36,6 +36,6 @@
   },
   "dependencies": {
     "@sap-ai-sdk/core": "workspace:^",
-    "zod": "^3.25.76"
+    "zod": "^4.1.12"
   }
 }
