@@ -49,7 +49,7 @@ export async function invoke(): Promise<string> {
 export async function invokeReasoning(): Promise<string> {
   // initialize client with options
   const client = new AzureOpenAiChatClient({
-    modelName: 'o3',
+    modelName: 'gpt-5-mini',
     max_tokens: 1000
   });
 
