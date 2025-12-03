@@ -250,8 +250,8 @@ importers:
         specifier: 0.1.0
         version: 0.1.0(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))
       '@modelcontextprotocol/sdk':
-        specifier: ^1.23.0
-        version: 1.23.0(@cfworker/json-schema@4.1.1)(zod@3.25.76)
+        specifier: ^1.24.1
+        version: 1.24.1(@cfworker/json-schema@4.1.1)(zod@3.25.76)
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../packages/ai-api
@@ -1301,8 +1301,8 @@ packages:
   '@manypkg/get-packages@1.1.3':
     resolution: {integrity: sha512-fo+QhuU3qE/2TQMQmbVMqaQ6EWbMhi4ABWP+O4AM1NqPBuy0OrApV5LO6BrrgnhtAHS2NH6RrVk9OL181tTi8A==}
 
-  '@modelcontextprotocol/sdk@1.23.0':
-    resolution: {integrity: sha512-MCGd4K9aZKvuSqdoBkdMvZNcYXCkZRYVs/Gh92mdV5IHbctX9H9uIvd4X93+9g8tBbXv08sxc/QHXTzf8y65bA==}
+  '@modelcontextprotocol/sdk@1.24.1':
+    resolution: {integrity: sha512-YTg4v6bKSst8EJM8NXHC3nGm8kgHD08IbIBbognUeLAgGLVgLpYrgQswzLQd4OyTL4l614ejhqsDrV1//t02Qw==}
     engines: {node: '>=18'}
     peerDependencies:
       '@cfworker/json-schema': ^4.1.1
@@ -3592,6 +3592,9 @@ packages:
   jiti@2.6.1:
     resolution: {integrity: sha512-ekilCSN1jwRvIbgeg/57YFh8qQDNbwDb9xT/qu2DAHbFFZUicIl4ygVaAvzveMhMVr3LnpSKTNnwt8PoOfmKhQ==}
     hasBin: true
+
+  jose@6.1.3:
+    resolution: {integrity: sha512-0TpaTfihd4QMNwrz/ob2Bp7X04yuxJkjRGi4aKmOqwhov54i6u79oCv7T+C7lo70MKH6BesI3vscD1yb/yzKXQ==}
 
   js-tiktoken@1.0.21:
     resolution: {integrity: sha512-biOj/6M5qdgx5TKjDnFT1ymSpM5tbd3ylwDtrQvFQSu0Z7bBYko2dF+W/aUkXUPuk6IVpRxk/3Q2sHOzGlS36g==}
@@ -6328,7 +6331,7 @@ snapshots:
   '@langchain/mcp-adapters@0.6.0(@cfworker/json-schema@4.1.1)(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))':
     dependencies:
       '@langchain/core': 0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
-      '@modelcontextprotocol/sdk': 1.23.0(@cfworker/json-schema@4.1.1)(zod@3.25.76)
+      '@modelcontextprotocol/sdk': 1.24.1(@cfworker/json-schema@4.1.1)(zod@3.25.76)
       debug: 4.4.3
       zod: 3.25.76
     optionalDependencies:
@@ -6367,7 +6370,7 @@ snapshots:
       globby: 11.1.0
       read-yaml-file: 1.1.0
 
-  '@modelcontextprotocol/sdk@1.23.0(@cfworker/json-schema@4.1.1)(zod@3.25.76)':
+  '@modelcontextprotocol/sdk@1.24.1(@cfworker/json-schema@4.1.1)(zod@3.25.76)':
     dependencies:
       ajv: 8.17.1
       ajv-formats: 3.0.1(ajv@8.17.1)
@@ -6378,6 +6381,7 @@ snapshots:
       eventsource-parser: 3.0.6
       express: 5.2.1
       express-rate-limit: 7.5.1(express@5.2.1)
+      jose: 6.1.3
       pkce-challenge: 5.0.1
       raw-body: 3.0.2
       zod: 3.25.76
@@ -9516,6 +9520,8 @@ snapshots:
       - ts-node
 
   jiti@2.6.1: {}
+
+  jose@6.1.3: {}
 
   js-tiktoken@1.0.21:
     dependencies:
