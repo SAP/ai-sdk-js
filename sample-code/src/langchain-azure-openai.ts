@@ -46,7 +46,7 @@ export async function invoke(): Promise<string> {
  * Ask GPT about the capital of France.
  * @returns The answer from GPT-o3.
  */
-export async function invokeReasoning(): Promise<string> {
+export async function invokeReasoningWithMaxTokens(): Promise<string> {
   // initialize client with options
   const client = new AzureOpenAiChatClient({
     modelName: 'gpt-5-mini',
