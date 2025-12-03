@@ -452,7 +452,7 @@ interface TranslationConfigParametersInput {
    * Language to which the text should be translated.
    * @example targetLanguage: 'en-US'
    */
-  targetLanguage: TranslationTargetLanguage;
+  targetLanguage: string;
   /**
    * If true, the messages history will be translated as well.
    * @example translateMessagesHistory: true
