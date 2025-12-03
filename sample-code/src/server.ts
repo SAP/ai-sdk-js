@@ -50,7 +50,7 @@ import {
   invokeToolChain,
   streamChain,
   invokeWithStructuredOutputJsonSchema,
-  invokeReasoning
+  invokeReasoningWithMaxTokens
 } from './langchain-azure-openai.js';
 import {
   invokeChain as invokeChainOrchestration,
@@ -437,9 +437,9 @@ app.get('/langchain/invoke', async (req, res) => {
   }
 });
 
-app.get('/langchain/invoke-reasoning', async (req, res) => {
+app.get('/langchain/invoke-reasoning-with-max-tokens', async (req, res) => {
   try {
-    res.header('Content-Type', 'text/plain').send(await invokeReasoning());
+    res.header('Content-Type', 'text/plain').send(await invokeReasoningWithMaxTokens());
   } catch (error: any) {
     sendError(res, error);
   }
