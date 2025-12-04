@@ -5,8 +5,8 @@
  */
 
 /**
- * Representation of the 'PromptTemplateSubstitutionRequest' schema.
+ * Representation of the 'OrchestrationConfigDeleteResponse' schema.
  */
-export type PromptTemplateSubstitutionRequest = {
-  inputParams: Record<string, any>;
+export type OrchestrationConfigDeleteResponse = {
+  message: string;
 } & Record<string, any>;
