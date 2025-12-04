@@ -27,7 +27,7 @@ function mapSelectorToBaseType(
  * See https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages-6854bbb1bd824ffebc3a097a7c0fd45d for list of supported languages.
  * @returns SAP Document Translation configuration.
  * @example buildTranslationConfig('input', { sourceLanguage: 'de-DE', targetLanguage: 'en-US' })
- * @example buildTranslationConfig('input', { sourceLanguage: 'de-DE', targetLanguage: 'en-US', translateMessagesHistory: true })
+ * @example buildTranslationConfig('input', { sourceLanguage: 'de-DE', targetLanguage: 'en-US', translateMessagesHistory: false })
  * @example buildTranslationConfig('output', { targetLanguage: { category: 'placeholders', items: ['assistant_response'] } })
  */
 export function buildTranslationConfig<T extends ConfigType>(

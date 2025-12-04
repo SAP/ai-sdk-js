@@ -476,7 +476,7 @@ interface TranslationConfigParametersInput {
   targetLanguage: string;
   /**
    * If true, the messages history will be translated as well.
-   * @example translateMessagesHistory: true
+   * @default true
    */
   translateMessagesHistory?: boolean;
   /**
