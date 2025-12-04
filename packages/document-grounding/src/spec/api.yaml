@@ -1652,7 +1652,6 @@ components:
         - type: object
           required:
             - type
-            - configuration
           properties:
             type:
               type: string
@@ -1670,7 +1669,6 @@ components:
         - type: object
           required:
             - type
-            - configuration
           properties:
             type:
               type: string
@@ -2285,6 +2283,11 @@ components:
             Metadata attached to collection. Useful to restrict search to a
             subset of collections.
           default: []
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: Unique identifier of a collection.
       type: object
       required:
         - embeddingConfig

@@ -10,7 +10,7 @@ import type { S3ConfigurationMinimal } from './s-3-configuration-minimal.js';
  */
 export type S3PipelineMinimalResponse = BasePipelineMinimalResponse & {
   type: 'S3';
-  configuration: S3ConfigurationMinimal;
+  configuration?: S3ConfigurationMinimal;
   /**
    * @example true
    */
