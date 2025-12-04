@@ -26,8 +26,7 @@ import type {
   EmbeddingsModelDetails as OriginalEmbeddingsModelDetails,
   EmbeddingsModelParams as OriginalEmbeddingsModelParams,
   SAPDocumentTranslationInput,
-  SAPDocumentTranslationOutput,
-  SAPDocumentTranslationApplyToSelector
+  SAPDocumentTranslationOutput
 } from './client/api/schema/index.js';
 
 /**
@@ -427,10 +426,32 @@ export type LlamaGuard38BCategory = keyof LlamaGuard38B;
 export type ConfigType = 'input' | 'output';
 
 /**
+ * Category for translation application scope.
+ */
+export type TranslationApplyToCategory = 'placeholders' | 'template_roles';
+
+/**
  * Configuration selector for applying translation to specific placeholders or message roles.
  */
-export type DocumentTranslationApplyToSelector =
-  SAPDocumentTranslationApplyToSelector;
+export interface DocumentTranslationApplyToSelector {
+  /**
+   * Category to apply translation to.
+   */
+  category: TranslationApplyToCategory;
+  /**
+   * List of placeholders or roles to apply translation to.
+   * @example [
+   *   "groundingInput",
+   *   "inputContext"
+   * ]
+   */
+  items: string[];
+  /**
+   * Language of the text to be translated.
+   * @example "de-DE"
+   */
+  sourceLanguage?: string;
+}
 
 /**
  * Target language for translation, either a language code or a selector configuration.
@@ -460,7 +481,7 @@ interface TranslationConfigParametersInput {
   translateMessagesHistory?: boolean;
   /**
    * Configuration for applying translation to specific placeholders or message roles.
-   * @example applyTo: [{ category: 'placeholders', items: ['user_input'], source_language: 'de-DE' }]
+   * @example applyTo: [{ category: 'placeholders', items: ['user_input'], sourceLanguage: 'de-DE' }]
    */
   applyTo?: DocumentTranslationApplyToSelector[];
 }

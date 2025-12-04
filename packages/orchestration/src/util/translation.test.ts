@@ -49,7 +49,7 @@ describe('Translation module config', () => {
         {
           category: 'placeholders',
           items: ['user_input'],
-          source_language: 'de-DE'
+          sourceLanguage: 'de-DE'
         }
       ]
     });

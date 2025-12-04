@@ -750,7 +750,7 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
           {
             category: 'placeholders',
             items: ['user_input'],
-            source_language: 'en-US'
+            sourceLanguage: 'en-US'
           }
         ]
       }),

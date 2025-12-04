@@ -1,9 +1,23 @@
+import type { SAPDocumentTranslationApplyToSelector } from '../client/api/schema/index.js';
 import type {
   TranslationConfigParams,
   TranslationReturnType,
   ConfigType,
-  TranslationInputParameters
+  TranslationInputParameters,
+  DocumentTranslationApplyToSelector
 } from '../orchestration-types.js';
+
+function mapSelectorToBaseType(
+  selector: DocumentTranslationApplyToSelector
+): SAPDocumentTranslationApplyToSelector {
+  return {
+    category: selector.category,
+    items: selector.items,
+    ...(selector.sourceLanguage && {
+      source_language: selector.sourceLanguage
+    })
+  };
+}
 
 /**
  * Convenience function to build a document translation configuration for orchestration service.
@@ -20,13 +34,6 @@ export function buildTranslationConfig<T extends ConfigType>(
   type: T,
   config: TranslationConfigParams<T>
 ): TranslationReturnType<T> {
-  const baseConfig = {
-    ...(config.sourceLanguage && {
-      source_language: config.sourceLanguage
-    }),
-    target_language: config.targetLanguage
-  };
-
   if (type === 'input') {
     const inputConfig = config as TranslationInputParameters;
     return {
@@ -35,9 +42,12 @@ export function buildTranslationConfig<T extends ConfigType>(
         translate_messages_history: inputConfig.translateMessagesHistory
       }),
       config: {
-        ...baseConfig,
+        ...(inputConfig.sourceLanguage && {
+          source_language: inputConfig.sourceLanguage
+        }),
+        target_language: inputConfig.targetLanguage,
         ...(inputConfig.applyTo && {
-          apply_to: inputConfig.applyTo
+          apply_to: inputConfig.applyTo.map(mapSelectorToBaseType)
         })
       }
     } as TranslationReturnType<T>;
@@ -45,6 +55,14 @@ export function buildTranslationConfig<T extends ConfigType>(
 
   return {
     type: 'sap_document_translation',
-    config: baseConfig
+    config: {
+      ...(config.sourceLanguage && {
+        source_language: config.sourceLanguage
+      }),
+      target_language:
+        typeof config.targetLanguage === 'string'
+          ? config.targetLanguage
+          : mapSelectorToBaseType(config.targetLanguage)
+    }
   } as TranslationReturnType<T>;
 }
