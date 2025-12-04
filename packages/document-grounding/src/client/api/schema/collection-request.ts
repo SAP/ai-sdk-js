@@ -16,4 +16,9 @@ export type CollectionRequest = {
    * Default: [].
    */
   metadata?: VectorKeyValueListPair[];
+  /**
+   * Unique identifier of a collection.
+   * Format: "uuid".
+   */
+  id?: string;
 } & Record<string, any>;
