@@ -32,6 +32,7 @@ export type {
   TranslationInputConfig,
   TranslationOutputConfig,
   DocumentTranslationApplyToSelector,
+  TranslationApplyToCategory,
   TranslationTargetLanguage,
   EmbeddingRequest,
   EmbeddingModelConfig,
