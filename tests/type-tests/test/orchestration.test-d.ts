@@ -558,4 +558,3 @@ expectType<TranslationReturnType<'input'>>(
     ]
   })
 );
-
