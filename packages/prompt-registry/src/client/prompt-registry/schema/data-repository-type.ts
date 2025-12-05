@@ -3,6 +3,8 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-export * from './prompt-templates-api.js';
-export * from './orchestration-configs-api.js';
-export * from './schema/index.js';
+
+/**
+ * Only include DataRepositories with the given type.
+ */
+export type DataRepositoryType = 'vector' | 'help.sap.com';
