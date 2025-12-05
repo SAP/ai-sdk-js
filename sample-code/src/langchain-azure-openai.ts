@@ -127,14 +127,12 @@ export async function invokeRagChain(): Promise<string> {
   });
 
   // Create a system prompt
-  const systemPrompt = new SystemMessage(
-    `You are an assistant for question-answering tasks.
+  const systemPrompt = `You are an assistant for question-answering tasks.
       You have access to a tool that retrieves information related to a query.
       Use the tool to help answer user queries.
       If you don't know the answer, just say that you don't know.
       Use ten sentences maximum and keep the answer concise.
-      Always include code snippets in your answer including class instantiation.`
-  );
+      Always include code snippets in your answer including class instantiation.`;
 
   const agent = createAgent({
     model: chatClient,
