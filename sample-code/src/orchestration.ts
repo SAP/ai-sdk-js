@@ -735,7 +735,6 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
  */
 export async function orchestrationTranslation(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
-
     promptTemplating: {
       model: {
         name: 'gpt-4o'
