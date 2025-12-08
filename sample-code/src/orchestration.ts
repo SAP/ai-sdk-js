@@ -735,7 +735,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
  */
 export async function orchestrationTranslation(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
-    // define the language model to be used
+
     promptTemplating: {
       model: {
         name: 'gpt-4o'
@@ -743,7 +743,6 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
     },
     translation: {
       input: buildTranslationConfig('input', {
-        sourceLanguage: 'en-US',
         targetLanguage: 'de-DE',
         translateMessagesHistory: true,
         applyTo: [
@@ -758,7 +757,7 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
         sourceLanguage: 'de-DE',
         targetLanguage: {
           category: 'placeholders',
-          items: ['assistant_response']
+          items: ['user_input']
         }
       })
     }
