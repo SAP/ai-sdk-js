@@ -426,6 +426,41 @@ export type LlamaGuard38BCategory = keyof LlamaGuard38B;
 export type ConfigType = 'input' | 'output';
 
 /**
+ * Category for translation application scope.
+ */
+export type TranslationApplyToCategory = 'placeholders' | 'template_roles';
+
+/**
+ * Configuration selector for applying translation to specific placeholders or message roles.
+ */
+export interface DocumentTranslationApplyToSelector {
+  /**
+   * Category to apply translation to.
+   */
+  category: TranslationApplyToCategory;
+  /**
+   * List of placeholders or roles to apply translation to.
+   * @example [
+   *   "groundingInput",
+   *   "inputContext"
+   * ]
+   */
+  items: string[];
+  /**
+   * Language of the text to be translated.
+   * @example "de-DE"
+   */
+  sourceLanguage?: string;
+}
+
+/**
+ * Target language for translation, either a language code or a selector configuration.
+ */
+export type TranslationTargetLanguage =
+  | string
+  | DocumentTranslationApplyToSelector;
+
+/**
  * Input parameters for translation configuration.
  */
 interface TranslationConfigParametersInput {
@@ -439,6 +474,16 @@ interface TranslationConfigParametersInput {
    * @example targetLanguage: 'en-US'
    */
   targetLanguage: string;
+  /**
+   * If true, the messages history will be translated as well.
+   * @default true
+   */
+  translateMessagesHistory?: boolean;
+  /**
+   * Configuration for applying translation to specific placeholders or message roles.
+   * @example applyTo: [{ category: 'placeholders', items: ['user_input'], sourceLanguage: 'de-DE' }]
+   */
+  applyTo?: DocumentTranslationApplyToSelector[];
 }
 
 /**
@@ -454,7 +499,7 @@ interface TranslationConfigParametersOutput {
    * Language to which the text should be translated.
    * @example targetLanguage: 'en-US'
    */
-  targetLanguage: string;
+  targetLanguage: TranslationTargetLanguage;
 }
 
 /**

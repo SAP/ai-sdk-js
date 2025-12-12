@@ -730,12 +730,11 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
 }
 
 /**
- * Use translation module for input and output translation.
+ * Use translation module for input and output translation with advanced features.
  * @returns The orchestration service response.
  */
 export async function orchestrationTranslation(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
-    // define the language model to be used
     promptTemplating: {
       model: {
         name: 'gpt-4o'
@@ -743,12 +742,19 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
     },
     translation: {
       input: buildTranslationConfig('input', {
-        sourceLanguage: 'en-US',
-        targetLanguage: 'de-DE'
+        targetLanguage: 'de-DE',
+        translateMessagesHistory: true,
+        applyTo: [
+          {
+            category: 'placeholders',
+            items: ['user_input'],
+            sourceLanguage: 'en-US'
+          }
+        ]
       }),
       output: buildTranslationConfig('output', {
         sourceLanguage: 'de-DE',
-        targetLanguage: 'fr-FR'
+        targetLanguage: 'en-US'
       })
     }
   });
@@ -757,9 +763,13 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
     messages: [
       {
         role: 'user',
-        content: 'Write an abstract for a thriller playing at SAP headquarters.'
+        content: '{{?user_input}}'
       }
-    ]
+    ],
+    placeholderValues: {
+      user_input:
+        'Write an abstract for a thriller playing at SAP headquarters.'
+    }
   });
 }
 
