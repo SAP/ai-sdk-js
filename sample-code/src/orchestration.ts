@@ -754,10 +754,7 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
       }),
       output: buildTranslationConfig('output', {
         sourceLanguage: 'de-DE',
-        targetLanguage: {
-          category: 'placeholders',
-          items: ['user_input']
-        }
+        targetLanguage: 'en-US'
       })
     }
   });
