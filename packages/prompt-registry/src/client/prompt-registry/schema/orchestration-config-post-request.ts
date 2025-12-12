@@ -3,11 +3,11 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { PromptTemplateSpec } from './prompt-template-spec.js';
+import type { OrchestrationConfig } from './orchestration-config.js';
 /**
- * Representation of the 'PromptTemplatePostRequest' schema.
+ * Representation of the 'OrchestrationConfigPostRequest' schema.
  */
-export type PromptTemplatePostRequest = {
+export type OrchestrationConfigPostRequest = {
   /**
    * Max Length: 120.
    * Pattern: "^[a-zA-Z0-9_-]+$".
@@ -23,5 +23,5 @@ export type PromptTemplatePostRequest = {
    * Pattern: "^[a-zA-Z0-9_-]+$".
    */
   scenario: string;
-  spec: PromptTemplateSpec;
+  spec: OrchestrationConfig;
 } & Record<string, any>;
