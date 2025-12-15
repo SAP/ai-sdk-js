@@ -53,7 +53,7 @@
     "@types/mock-fs": "^4.13.4",
     "@types/node": "^20.19.26",
     "depcheck": "^1.4.7",
-    "eslint": "^9.39.1",
+    "eslint": "^9.39.2",
     "glob": "^13.0.0",
     "jest": "^30.2.0",
     "jsonwebtoken": "^9.0.3",
