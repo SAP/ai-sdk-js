@@ -1,29 +1,44 @@
 openapi: 3.0.0
-
-servers:
-  - url: '/v2'
-    description: Internal Orchestration Service API
-
-x-sap-shortText: 'Orchestration provides common capabilities for business AI scenarios, such as content filtering, data masking, and grounding'
-
 info:
-  title: Internal Orchestration Service API
+  title: Orchestration v2
   description: Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
-  contact:
-    name: SAP AI Core
-  version: 0.0.1
-
+  version: 0.110.12
+x-sap-shortText: Enhance content generation with additional capabilities for business AI scenarios.
+servers:
+  - url: https://api.ai.{region}.ml.hana.ondemand.com/v2/inference/deployments/{orchestration_deployment_id}
+    description: Production endpoint for SAP AI Core
+    variables:
+      region:
+        enum:
+          - prod.eu-central-1.aws
+          - prodeuonly.eu-central-1.aws
+          - prod.us-east-1.aws
+          - prod.ap-northeast-1.aws
+          - prod.ap-southeast-2.aws
+          - prod-eu20.westeurope.azure
+          - prod-us21.eastus.azure
+          - prod-eu30.europe-west3.gcp
+          - prod-us30.us-central1.gcp
+        default: prod.eu-central-1.aws
+      orchestration_deployment_id:
+        description: The deployment ID of the orchestration service. To be obtained from the SAP AI Core service using the deployments endpoint.
+        default: x111111
+externalDocs:
+  description: Documentation for SAP AI Core - Orchestration
+  url: https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration
+security:
+  - Oauth2: []
 tags:
-  - name: OrchestrationCompletion
+  - name: Orchestrated Completion
     description: Run an orchestrated completion inference request
-  - name: OrchestrationEmbeddings
+  - name: Orchestrated Embeddings
     description: Make an embeddings request
 
 paths:
   /completion:
     post:
       tags:
-        - OrchestrationCompletion
+        - Orchestrated Completion
       summary: orchestrated completion inference
       description: Run an orchestrated completion inference request
       operationId: orchestration.v2.endpoints.create
@@ -51,7 +66,7 @@ paths:
   /embeddings:
     post:
       tags:
-        - OrchestrationEmbeddings
+        - Orchestrated Embeddings
       summary: orchestrated embeddings inference
       description: >
         Generate embeddings for input strings.
@@ -75,6 +90,16 @@ paths:
           $ref: '#/components/responses/CommonError'
 
 components:
+  securitySchemes:
+    Oauth2:
+      type: oauth2
+      description:
+        OAuth client credentials (client ID and secret) are required. These
+        can be requested from SAP BTP cloud cockpit.
+      flows:
+        clientCredentials:
+          tokenUrl: https://(subdomain_identity_zone).authentication.(host)/oauth/token
+          scopes: {}
   schemas:
     CompletionPostRequest:
       oneOf:
@@ -817,26 +842,58 @@ components:
         finish_reason:
           type: string
           description: Reason for stopping the model
+
+    # Copied from the azure openai spec https://github.com/Azure/azure-rest-api-specs/blob/91e3aca0bfa4b59a9f578959d0b214a26b90df40/specification/cognitiveservices/data-plane/AzureOpenAI/inference/preview/2025-02-01-preview/inference.yaml#L4615-L4669
     TokenUsage:
       type: object
       description: Usage of tokens in the response
-      required:
-        - completion_tokens
-        - prompt_tokens
-        - total_tokens
       properties:
-        completion_tokens:
-          type: integer
-          description: Number of tokens used in the input
-          example: 20
         prompt_tokens:
           type: integer
-          description: Number of tokens used in the output
-          example: 30
+          description: Number of tokens in the prompt.
+        completion_tokens:
+          type: integer
+          description: Number of tokens in the generated completion.
         total_tokens:
           type: integer
-          description: Total number of tokens used
-          example: 50
+          description: Total number of tokens used in the request (prompt + completion).
+        prompt_tokens_details:
+          type: object
+          description: Details of the prompt tokens.
+          properties:
+            audio_tokens:
+              type: integer
+              description: Audio input tokens present in the prompt.
+            cached_tokens:
+              type: integer
+              description: Cached tokens present in the prompt.
+        completion_tokens_details:
+          type: object
+          description: Breakdown of tokens used in a completion.
+          properties:
+            accepted_prediction_tokens:
+              type: integer
+              description: |
+                When using Predicted Outputs, the number of tokens in the
+                prediction that appeared in the completion.
+            audio_tokens:
+              type: integer
+              description: Audio input tokens generated by the model.
+            reasoning_tokens:
+              type: integer
+              description: Tokens generated by the model for reasoning.
+            rejected_prediction_tokens:
+              type: integer
+              description: >
+                When using Predicted Outputs, the number of tokens in the
+                prediction that did not appear in the completion. However, like
+                reasoning tokens, these tokens are still counted in the total
+                completion tokens for purposes of billing, output, and context
+                window limits.
+      required:
+        - prompt_tokens
+        - completion_tokens
+        - total_tokens
 
     # --- Prompt Templating Module ---
     PromptTemplatingModuleConfig:
@@ -2021,11 +2078,3 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-
-  # https://pages.github.tools.sap/CPA/api-metadata-validator/rules/oas/sap-oas3-security/
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-      description: To use this API, you must have an AI Core access token.
