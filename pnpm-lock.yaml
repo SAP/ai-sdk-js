@@ -98,8 +98,8 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       zod:
-        specifier: ^3.25.76
-        version: 3.25.76
+        specifier: ^4.2.0
+        version: 4.2.0
 
   packages/ai-api:
     dependencies:
@@ -207,8 +207,8 @@ importers:
         specifier: workspace:^
         version: link:../core
       zod:
-        specifier: ^3.25.76
-        version: 3.25.76
+        specifier: ^4.2.0
+        version: 4.2.0
 
   sample-cap:
     dependencies:
@@ -239,19 +239,19 @@ importers:
     dependencies:
       '@langchain/core':
         specifier: 0.3.79
-        version: 0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
+        version: 0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0))
       '@langchain/langgraph':
         specifier: ^0.4.9
-        version: 0.4.9(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(zod-to-json-schema@3.25.0(zod@3.25.76))
+        version: 0.4.9(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0)))(zod-to-json-schema@3.25.0(zod@4.2.0))
       '@langchain/mcp-adapters':
         specifier: ^0.6.0
-        version: 0.6.0(@cfworker/json-schema@4.1.1)(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(hono@4.11.1)
+        version: 0.6.0(@cfworker/json-schema@4.1.1)(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0)))(hono@4.11.1)
       '@langchain/textsplitters':
         specifier: 0.1.0
-        version: 0.1.0(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))
+        version: 0.1.0(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0)))
       '@modelcontextprotocol/sdk':
         specifier: ^1.25.0
-        version: 1.25.0(@cfworker/json-schema@4.1.1)(hono@4.11.1)(zod@3.25.76)
+        version: 1.25.0(@cfworker/json-schema@4.1.1)(hono@4.11.1)(zod@4.2.0)
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../packages/ai-api
@@ -281,13 +281,13 @@ importers:
         version: 5.2.1
       langchain:
         specifier: 0.3.36
-        version: 0.3.36(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(axios@1.13.2)(handlebars@4.7.8)(openai@5.12.2(ws@8.18.3)(zod@3.25.76))(ws@8.18.3)
+        version: 0.3.36(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0)))(axios@1.13.2)(handlebars@4.7.8)(openai@5.12.2(ws@8.18.3)(zod@4.2.0))(ws@8.18.3)
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
       zod:
-        specifier: ^3.25.76
-        version: 3.25.76
+        specifier: ^4.2.0
+        version: 4.2.0
 
   tests/e2e-tests:
     dependencies:
@@ -321,13 +321,13 @@ importers:
     dependencies:
       '@langchain/core':
         specifier: 0.3.79
-        version: 0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
+        version: 0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0))
       '@langchain/langgraph':
         specifier: ^0.4.9
-        version: 0.4.9(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(zod-to-json-schema@3.25.0(zod@3.25.76))
+        version: 0.4.9(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0)))(zod-to-json-schema@3.25.0(zod@4.2.0))
       '@langchain/textsplitters':
         specifier: 0.1.0
-        version: 0.1.0(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))
+        version: 0.1.0(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0)))
       '@sap-ai-sdk/ai-api':
         specifier: ^1.18.0
         version: 1.18.0
@@ -339,7 +339,7 @@ importers:
         version: 1.18.0
       '@sap-ai-sdk/langchain':
         specifier: ^1.18.0
-        version: 1.18.0(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
+        version: 1.18.0(openai@5.12.2(ws@8.18.3)(zod@4.2.0))
       '@sap-ai-sdk/orchestration':
         specifier: ^1.18.0
         version: 1.18.0
@@ -354,13 +354,13 @@ importers:
         version: 5.2.1
       langchain:
         specifier: 0.3.36
-        version: 0.3.36(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(axios@1.13.2)(handlebars@4.7.8)(openai@5.12.2(ws@8.18.3)(zod@3.25.76))(ws@8.18.3)
+        version: 0.3.36(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0)))(axios@1.13.2)(handlebars@4.7.8)(openai@5.12.2(ws@8.18.3)(zod@4.2.0))(ws@8.18.3)
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
       zod:
-        specifier: ^3.25.76
-        version: 3.25.76
+        specifier: ^4.2.0
+        version: 4.2.0
     devDependencies:
       '@types/express':
         specifier: ^5.0.6
@@ -5352,6 +5352,9 @@ packages:
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
+  zod@4.2.0:
+    resolution: {integrity: sha512-Bd5fw9wlIhtqCCxotZgdTOMwGm1a0u75wARVEY9HMs1X17trvA/lMi4+MGK5EUfYkXVTbX8UDiDKW4OgzHVUZw==}
+
 snapshots:
 
   '@apidevtools/json-schema-ref-parser@14.0.1':
@@ -6299,14 +6302,14 @@ snapshots:
     dependencies:
       jsep: 1.4.0
 
-  '@langchain/core@0.3.72(openai@5.12.2(ws@8.18.3)(zod@3.25.76))':
+  '@langchain/core@0.3.72(openai@5.12.2(ws@8.18.3)(zod@4.2.0))':
     dependencies:
       '@cfworker/json-schema': 4.1.1
       ansi-styles: 5.2.0
       camelcase: 6.3.0
       decamelize: 1.2.0
       js-tiktoken: 1.0.21
-      langsmith: 0.3.76(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
+      langsmith: 0.3.76(openai@5.12.2(ws@8.18.3)(zod@4.2.0))
       mustache: 4.2.0
       p-queue: 6.6.2
       p-retry: 4.6.2
@@ -6339,36 +6342,56 @@ snapshots:
       - '@opentelemetry/sdk-trace-base'
       - openai
 
-  '@langchain/langgraph-checkpoint@0.1.1(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))':
+  '@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0))':
     dependencies:
-      '@langchain/core': 0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
+      '@cfworker/json-schema': 4.1.1
+      ansi-styles: 5.2.0
+      camelcase: 6.3.0
+      decamelize: 1.2.0
+      js-tiktoken: 1.0.21
+      langsmith: 0.3.76(openai@5.12.2(ws@8.18.3)(zod@4.2.0))
+      mustache: 4.2.0
+      p-queue: 6.6.2
+      p-retry: 4.6.2
+      uuid: 10.0.0
+      zod: 3.25.76
+      zod-to-json-schema: 3.24.6(zod@3.25.76)
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - '@opentelemetry/exporter-trace-otlp-proto'
+      - '@opentelemetry/sdk-trace-base'
+      - openai
+
+  '@langchain/langgraph-checkpoint@0.1.1(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0)))':
+    dependencies:
+      '@langchain/core': 0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0))
       uuid: 10.0.0
 
-  '@langchain/langgraph-sdk@0.1.10(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))':
+  '@langchain/langgraph-sdk@0.1.10(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0)))':
     dependencies:
       '@types/json-schema': 7.0.15
       p-queue: 6.6.2
       p-retry: 4.6.2
       uuid: 9.0.1
     optionalDependencies:
-      '@langchain/core': 0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
+      '@langchain/core': 0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0))
 
-  '@langchain/langgraph@0.4.9(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(zod-to-json-schema@3.25.0(zod@3.25.76))':
+  '@langchain/langgraph@0.4.9(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0)))(zod-to-json-schema@3.25.0(zod@4.2.0))':
     dependencies:
-      '@langchain/core': 0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
-      '@langchain/langgraph-checkpoint': 0.1.1(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))
-      '@langchain/langgraph-sdk': 0.1.10(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))
+      '@langchain/core': 0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0))
+      '@langchain/langgraph-checkpoint': 0.1.1(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0)))
+      '@langchain/langgraph-sdk': 0.1.10(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0)))
       uuid: 10.0.0
       zod: 3.25.76
     optionalDependencies:
-      zod-to-json-schema: 3.25.0(zod@3.25.76)
+      zod-to-json-schema: 3.25.0(zod@4.2.0)
     transitivePeerDependencies:
       - react
       - react-dom
 
-  '@langchain/mcp-adapters@0.6.0(@cfworker/json-schema@4.1.1)(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(hono@4.11.1)':
+  '@langchain/mcp-adapters@0.6.0(@cfworker/json-schema@4.1.1)(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0)))(hono@4.11.1)':
     dependencies:
-      '@langchain/core': 0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
+      '@langchain/core': 0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0))
       '@modelcontextprotocol/sdk': 1.25.0(@cfworker/json-schema@4.1.1)(hono@4.11.1)(zod@3.25.76)
       debug: 4.4.3
       zod: 3.25.76
@@ -6379,18 +6402,18 @@ snapshots:
       - hono
       - supports-color
 
-  '@langchain/openai@0.6.16(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(ws@8.18.3)':
+  '@langchain/openai@0.6.16(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0)))(ws@8.18.3)':
     dependencies:
-      '@langchain/core': 0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
+      '@langchain/core': 0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0))
       js-tiktoken: 1.0.21
       openai: 5.12.2(ws@8.18.3)(zod@3.25.76)
       zod: 3.25.76
     transitivePeerDependencies:
       - ws
 
-  '@langchain/textsplitters@0.1.0(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))':
+  '@langchain/textsplitters@0.1.0(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0)))':
     dependencies:
-      '@langchain/core': 0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
+      '@langchain/core': 0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0))
       js-tiktoken: 1.0.21
 
   '@manypkg/find-root@1.1.0':
@@ -6427,6 +6450,30 @@ snapshots:
       raw-body: 3.0.2
       zod: 3.25.76
       zod-to-json-schema: 3.25.0(zod@3.25.76)
+    optionalDependencies:
+      '@cfworker/json-schema': 4.1.1
+    transitivePeerDependencies:
+      - hono
+      - supports-color
+
+  '@modelcontextprotocol/sdk@1.25.0(@cfworker/json-schema@4.1.1)(hono@4.11.1)(zod@4.2.0)':
+    dependencies:
+      '@hono/node-server': 1.19.7(hono@4.11.1)
+      ajv: 8.17.1
+      ajv-formats: 3.0.1(ajv@8.17.1)
+      content-type: 1.0.5
+      cors: 2.8.5
+      cross-spawn: 7.0.6
+      eventsource: 3.0.7
+      eventsource-parser: 3.0.6
+      express: 5.2.1
+      express-rate-limit: 7.5.1(express@5.2.1)
+      jose: 6.1.3
+      json-schema-typed: 8.0.2
+      pkce-challenge: 5.0.1
+      raw-body: 3.0.2
+      zod: 4.2.0
+      zod-to-json-schema: 3.25.0(zod@4.2.0)
     optionalDependencies:
       '@cfworker/json-schema': 4.1.1
     transitivePeerDependencies:
@@ -6637,9 +6684,9 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/langchain@1.18.0(openai@5.12.2(ws@8.18.3)(zod@3.25.76))':
+  '@sap-ai-sdk/langchain@1.18.0(openai@5.12.2(ws@8.18.3)(zod@4.2.0))':
     dependencies:
-      '@langchain/core': 0.3.72(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
+      '@langchain/core': 0.3.72(openai@5.12.2(ws@8.18.3)(zod@4.2.0))
       '@sap-ai-sdk/ai-api': 1.18.0
       '@sap-ai-sdk/core': 1.18.0
       '@sap-ai-sdk/foundation-models': 1.18.0
@@ -9711,15 +9758,15 @@ snapshots:
 
   kuler@2.0.0: {}
 
-  langchain@0.3.36(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(axios@1.13.2)(handlebars@4.7.8)(openai@5.12.2(ws@8.18.3)(zod@3.25.76))(ws@8.18.3):
+  langchain@0.3.36(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0)))(axios@1.13.2)(handlebars@4.7.8)(openai@5.12.2(ws@8.18.3)(zod@4.2.0))(ws@8.18.3):
     dependencies:
-      '@langchain/core': 0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
-      '@langchain/openai': 0.6.16(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))(ws@8.18.3)
-      '@langchain/textsplitters': 0.1.0(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@3.25.76)))
+      '@langchain/core': 0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0))
+      '@langchain/openai': 0.6.16(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0)))(ws@8.18.3)
+      '@langchain/textsplitters': 0.1.0(@langchain/core@0.3.79(openai@5.12.2(ws@8.18.3)(zod@4.2.0)))
       js-tiktoken: 1.0.21
       js-yaml: 4.1.0
       jsonpointer: 5.0.1
-      langsmith: 0.3.73(openai@5.12.2(ws@8.18.3)(zod@3.25.76))
+      langsmith: 0.3.73(openai@5.12.2(ws@8.18.3)(zod@4.2.0))
       openapi-types: 12.1.3
       p-retry: 4.6.2
       uuid: 10.0.0
@@ -9735,7 +9782,7 @@ snapshots:
       - openai
       - ws
 
-  langsmith@0.3.73(openai@5.12.2(ws@8.18.3)(zod@3.25.76)):
+  langsmith@0.3.73(openai@5.12.2(ws@8.18.3)(zod@4.2.0)):
     dependencies:
       '@types/uuid': 10.0.0
       chalk: 4.1.2
@@ -9745,7 +9792,7 @@ snapshots:
       semver: 7.7.3
       uuid: 10.0.0
     optionalDependencies:
-      openai: 5.12.2(ws@8.18.3)(zod@3.25.76)
+      openai: 5.12.2(ws@8.18.3)(zod@4.2.0)
 
   langsmith@0.3.76(openai@5.12.2(ws@8.18.3)(zod@3.25.76)):
     dependencies:
@@ -9758,6 +9805,18 @@ snapshots:
       uuid: 10.0.0
     optionalDependencies:
       openai: 5.12.2(ws@8.18.3)(zod@3.25.76)
+
+  langsmith@0.3.76(openai@5.12.2(ws@8.18.3)(zod@4.2.0)):
+    dependencies:
+      '@types/uuid': 10.0.0
+      chalk: 4.1.2
+      console-table-printer: 2.15.0
+      p-queue: 6.6.2
+      p-retry: 4.6.2
+      semver: 7.7.3
+      uuid: 10.0.0
+    optionalDependencies:
+      openai: 5.12.2(ws@8.18.3)(zod@4.2.0)
 
   leven@3.1.0: {}
 
@@ -10156,6 +10215,12 @@ snapshots:
     optionalDependencies:
       ws: 8.18.3
       zod: 3.25.76
+
+  openai@5.12.2(ws@8.18.3)(zod@4.2.0):
+    optionalDependencies:
+      ws: 8.18.3
+      zod: 4.2.0
+    optional: true
 
   openapi-types@12.1.3: {}
 
@@ -11396,4 +11461,10 @@ snapshots:
     dependencies:
       zod: 3.25.76
 
+  zod-to-json-schema@3.25.0(zod@4.2.0):
+    dependencies:
+      zod: 4.2.0
+
   zod@3.25.76: {}
+
+  zod@4.2.0: {}
