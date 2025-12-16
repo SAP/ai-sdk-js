@@ -8,5 +8,5 @@
  * Representation of the 'PromptTemplateSubstitutionRequest' schema.
  */
 export type PromptTemplateSubstitutionRequest = {
-  inputParams?: Record<string, any>;
+  inputParams: Record<string, any>;
 } & Record<string, any>;

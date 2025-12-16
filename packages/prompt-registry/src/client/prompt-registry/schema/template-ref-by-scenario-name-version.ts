@@ -23,4 +23,10 @@ export type TemplateRefByScenarioNameVersion = {
    * @example "some version, can be `latest`"
    */
   version: string;
+  /**
+   * Defines the scope that is searched for the referenced template.  'tenant' indicates the template is shared across all resource groups within the tenant,  while 'resource_group' indicates the template is only accessible within the specific resource group.
+   *
+   * Default: "tenant".
+   */
+  scope?: 'resource_group' | 'tenant';
 };
