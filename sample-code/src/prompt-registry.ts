@@ -26,7 +26,11 @@ export async function createPromptTemplate(
         }
       ]
     }
-  }).execute();
+  })
+  .addCustomHeaders({
+    'AI-Resource-Group-Scope': 'true',
+    'AI-Resource-Group': 'zhongpin'
+}).execute();
 }
 
 /**
@@ -37,5 +41,10 @@ export async function createPromptTemplate(
 export async function deletePromptTemplate(
   id: string
 ): Promise<PromptTemplateDeleteResponse> {
-  return PromptTemplatesApi.deletePromptTemplate(id).execute();
+  return PromptTemplatesApi.deletePromptTemplate(id)
+  .addCustomHeaders({
+    'AI-Resource-Group-Scope': 'true',
+    'AI-Resource-Group': 'zhongpin'
+})
+  .execute();
 }
