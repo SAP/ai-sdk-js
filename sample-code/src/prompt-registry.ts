@@ -27,10 +27,11 @@ export async function createPromptTemplate(
       ]
     }
   })
-  .addCustomHeaders({
-    'AI-Resource-Group-Scope': 'true',
-    'AI-Resource-Group': 'zhongpin'
-}).execute();
+    .addCustomHeaders({
+      'AI-Resource-Group-Scope': 'true',
+      'AI-Resource-Group': 'zhongpin'
+    })
+    .execute();
 }
 
 /**
@@ -42,9 +43,9 @@ export async function deletePromptTemplate(
   id: string
 ): Promise<PromptTemplateDeleteResponse> {
   return PromptTemplatesApi.deletePromptTemplate(id)
-  .addCustomHeaders({
-    'AI-Resource-Group-Scope': 'true',
-    'AI-Resource-Group': 'zhongpin'
-})
-  .execute();
+    .addCustomHeaders({
+      'AI-Resource-Group-Scope': 'true',
+      'AI-Resource-Group': 'zhongpin'
+    })
+    .execute();
 }
