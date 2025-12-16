@@ -24,7 +24,7 @@ import type { ChatCompletionTool } from './chat-completion-tool.js';
  */
 export type Template = {
   /**
-   * A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
+   * A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
    */
   template: TemplatingChatMessage;
   /**
