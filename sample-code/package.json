@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@langchain/mcp-adapters": "^0.6.0",
-    "@modelcontextprotocol/sdk": "^1.25.0",
+    "@modelcontextprotocol/sdk": "^1.25.1",
     "@langchain/langgraph": "^0.4.9",
     "langchain": "0.3.36",
     "@langchain/core": "0.3.79",
