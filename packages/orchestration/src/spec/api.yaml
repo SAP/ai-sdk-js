@@ -5,7 +5,7 @@ info:
   version: 0.110.12
 x-sap-shortText: Enhance content generation with additional capabilities for business AI scenarios.
 servers:
-  - url: https://api.ai.{region}.ml.hana.ondemand.com/v2/inference/deployments/{orchestration_deployment_id}
+  - url: https://api.ai.{region}.ml.hana.ondemand.com/v2/inference/deployments/{orchestration_deployment_id}/v2
     description: Production endpoint for SAP AI Core
     variables:
       region:
@@ -91,15 +91,11 @@ paths:
 
 components:
   securitySchemes:
-    Oauth2:
-      type: oauth2
-      description:
-        OAuth client credentials (client ID and secret) are required. These
-        can be requested from SAP BTP cloud cockpit.
-      flows:
-        clientCredentials:
-          tokenUrl: https://(subdomain_identity_zone).authentication.(host)/oauth/token
-          scopes: {}
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: To use this API, you must have an AI Core access token.
   schemas:
     CompletionPostRequest:
       oneOf:
