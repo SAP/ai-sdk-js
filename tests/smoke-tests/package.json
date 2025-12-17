@@ -30,7 +30,7 @@
     "express": "^5.2.1",
     "langchain": "^1.2.1",
     "uuid": "^13.0.0",
-    "zod": "^4.2.0"
+    "zod": "^4.2.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
