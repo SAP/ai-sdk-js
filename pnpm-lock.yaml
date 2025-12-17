@@ -256,8 +256,8 @@ importers:
         specifier: ^1.0.1
         version: 1.0.1(@langchain/core@1.1.5(openai@6.10.0(ws@8.18.3)(zod@4.2.0)))
       '@modelcontextprotocol/sdk':
-        specifier: ^1.25.0
-        version: 1.25.0(@cfworker/json-schema@4.1.1)(hono@4.11.1)(zod@4.2.0)
+        specifier: ^1.25.1
+        version: 1.25.1(@cfworker/json-schema@4.1.1)(hono@4.11.1)(zod@4.2.0)
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../packages/ai-api
@@ -1324,8 +1324,8 @@ packages:
     resolution: {integrity: sha512-3Y2h3MZKjec1eAqSTBclATlX+AbC6n1LgfVzRMJLt3v6w0RCYgwLrjbxPDbhsYHt6Wdqc/aCceNJYgj448ELQQ==}
     engines: {node: '>=18'}
 
-  '@modelcontextprotocol/sdk@1.25.0':
-    resolution: {integrity: sha512-z0Zhn/LmQ3yz91dEfd5QgS7DpSjA4pk+3z2++zKgn5L6iDFM9QapsVoAQSbKLvlrFsZk9+ru6yHHWNq2lCYJKQ==}
+  '@modelcontextprotocol/sdk@1.25.1':
+    resolution: {integrity: sha512-yO28oVFFC7EBoiKdAn+VqRm+plcfv4v0xp6osG/VsCB0NlPZWi87ajbCZZ8f/RvOFLEu7//rSRmuZZ7lMoe3gQ==}
     engines: {node: '>=18'}
     peerDependencies:
       '@cfworker/json-schema': ^4.1.1
@@ -6276,7 +6276,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@modelcontextprotocol/sdk@1.25.0(@cfworker/json-schema@4.1.1)(hono@4.11.1)(zod@4.2.0)':
+  '@modelcontextprotocol/sdk@1.25.1(@cfworker/json-schema@4.1.1)(hono@4.11.1)(zod@4.2.0)':
     dependencies:
       '@hono/node-server': 1.19.7(hono@4.11.1)
       ajv: 8.17.1
