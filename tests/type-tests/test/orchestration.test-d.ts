@@ -15,7 +15,10 @@ import type {
   AzureContentSafetyFilterReturnType,
   AssistantChatMessage,
   TranslationReturnType,
-  LlamaGuard38BFilterReturnType
+  LlamaGuard38BFilterReturnType,
+  TranslationConfigParams,
+  DocumentTranslationApplyToSelector,
+  TranslationTargetLanguage
 } from '@sap-ai-sdk/orchestration';
 import type {
   CompletionPostResponse,
@@ -536,5 +539,22 @@ expectError<DpiConfig>(
   buildDpiMaskingProvider({
     method: 'anonymization',
     entities: []
+  })
+);
+
+/**
+ * Translation config with applyTo selector for placeholders.
+ */
+expectType<TranslationReturnType<'input'>>(
+  buildTranslationConfig('input', {
+    sourceLanguage: 'de-DE',
+    targetLanguage: 'en-US',
+    applyTo: [
+      {
+        category: 'placeholders',
+        items: ['user_input', 'context'],
+        sourceLanguage: 'de-DE'
+      }
+    ]
   })
 );
