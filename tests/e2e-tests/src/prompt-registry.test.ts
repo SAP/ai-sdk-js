@@ -9,7 +9,7 @@ loadEnv();
 describe('prompt registry', () => {
   it('should create a prompt template and then delete', async () => {
     const { id } = await createPromptTemplate(
-      'ai-sdk-js-e2e-test',
+      'ai-sdk-js-test-custom-resource-group-prompt-template',
       'orchestration'
     );
     expect(id.length).toEqual(36);
