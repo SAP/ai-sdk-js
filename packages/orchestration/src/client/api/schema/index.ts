@@ -27,6 +27,7 @@ export * from './user-chat-message.js';
 export * from './user-chat-message-content.js';
 export * from './user-chat-message-content-item.js';
 export * from './image-content-url.js';
+export * from './input-file.js';
 export * from './tool-chat-message.js';
 export * from './developer-chat-message.js';
 export * from './response-chat-message.js';
