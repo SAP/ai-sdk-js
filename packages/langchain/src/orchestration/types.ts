@@ -36,6 +36,7 @@ export type OrchestrationCallOptions = Pick<
 > & {
   customRequestConfig?: CustomRequestConfig;
   strict?: boolean;
+  stream?: boolean;
   tools?: ChatOrchestrationToolType[];
   promptIndex?: number;
   placeholderValues?: Record<string, string>;

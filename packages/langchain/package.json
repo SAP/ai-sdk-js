@@ -39,5 +39,8 @@
     "@sap-cloud-sdk/connectivity": "^4.2.0",
     "@sap-cloud-sdk/util": "^4.2.0",
     "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@langchain/langgraph": "^1.0.7"
   }
 }
