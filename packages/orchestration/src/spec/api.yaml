@@ -26,8 +26,6 @@ servers:
 externalDocs:
   description: Documentation for SAP AI Core - Orchestration
   url: https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration
-security:
-  - Oauth2: []
 tags:
   - name: Orchestrated Completion
     description: Run an orchestrated completion inference request
@@ -91,11 +89,15 @@ paths:
 
 components:
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-      description: To use this API, you must have an AI Core access token.
+    Oauth2:
+      type: oauth2
+      description:
+        OAuth client credentials (client ID and secret) are required. These
+        can be requested from SAP BTP cloud cockpit.
+      flows:
+        clientCredentials:
+          tokenUrl: https://(subdomain_identity_zone).authentication.(host)/oauth/token
+          scopes: {}
   schemas:
     CompletionPostRequest:
       oneOf:
