@@ -122,7 +122,7 @@ describe('orchestration', () => {
     }
     expect(response.getFinishReason()).toEqual('stop');
     expect(response.getTokenUsage()).toBeDefined();
-  });
+  }, 120000);
 
   it('should return stream of orchestration responses, using a JSON client', async () => {
     const response = await chatCompletionStreamWithJsonModuleConfig(
@@ -134,13 +134,13 @@ describe('orchestration', () => {
     }
     expect(response.getFinishReason()).toEqual('stop');
     expect(response.getTokenUsage()).toBeDefined();
-  });
+  }, 1200000);
 
   it('should return error message when incorrect templating is provided on orchestration stream call', async () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-4o',
+          name: 'gpt-5',
           params: {}
         }
       }
@@ -173,7 +173,7 @@ describe('orchestration', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-4o',
+          name: 'gpt-5',
           params: {}
         },
         prompt: {

@@ -35,7 +35,7 @@ export async function invokeChain(): Promise<string> {
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     }
   };
@@ -59,7 +59,7 @@ export async function invokeChainWithInputFilter(): Promise<string> {
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     },
     filtering: {
@@ -88,7 +88,7 @@ export async function invokeChainWithOutputFilter(): Promise<string> {
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     },
     filtering: {
@@ -122,7 +122,7 @@ export async function invokeLangGraphChain(): Promise<string> {
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     }
   };
@@ -180,7 +180,7 @@ export async function streamChain(
   const orchestrationConfig: LangChainOrchestrationModuleConfig = {
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     }
   };
@@ -209,7 +209,7 @@ export async function invokeChainWithMasking(): Promise<string> {
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     },
     masking: {
@@ -280,7 +280,7 @@ export async function invokeToolChain(): Promise<string> {
   const client = new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     }
   });
@@ -348,7 +348,7 @@ export async function invokeMcpToolChain(): Promise<string> {
     {
       promptTemplating: {
         model: {
-          name: 'gpt-4o'
+          name: 'gpt-5'
         }
       }
     },

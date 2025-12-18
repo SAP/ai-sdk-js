@@ -43,7 +43,7 @@ export async function orchestrationChatCompletion(): Promise<OrchestrationRespon
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     }
   });
@@ -73,7 +73,7 @@ export async function chatCompletionStream(
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     }
   });
@@ -107,7 +107,7 @@ export async function orchestrationTemplating(): Promise<OrchestrationResponse> 
         ]
       },
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     }
   });
@@ -130,7 +130,7 @@ export async function chatCompletionStreamWithJsonModuleConfig(
     "modules": {
       "prompt_templating": {
         "model": {
-          "name": "gpt-4o",
+          "name": "gpt-5",
           "params": {
             "stream_options": {
               "include_usage": true
@@ -161,7 +161,7 @@ export async function orchestrationMessageHistory(): Promise<OrchestrationRespon
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     }
   });
@@ -195,7 +195,7 @@ export async function orchestrationPromptRegistry(): Promise<OrchestrationRespon
         }
       },
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     }
   });
@@ -225,7 +225,7 @@ export async function orchestrationCompletionPromptRegistryScoped(): Promise<Orc
         },
         // define the language model to be used
         model: {
-          name: 'gpt-4o'
+          name: 'gpt-5'
         }
       }
     },
@@ -247,7 +247,7 @@ export async function orchestrationInputFiltering(): Promise<OrchestrationErrorR
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     },
     filtering: {
@@ -292,7 +292,7 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     },
     filtering: {
@@ -349,7 +349,7 @@ export async function orchestrationCompletionMasking(): Promise<
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     },
     masking: {
@@ -411,7 +411,7 @@ export async function orchestrationMaskGroundingInput(): Promise<OrchestrationRe
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     },
     grounding: buildDocumentGroundingConfig({
@@ -457,7 +457,7 @@ export async function orchestrationRequestConfig(): Promise<OrchestrationRespons
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     }
   });
@@ -508,7 +508,7 @@ export async function orchestrationGrounding(
       // define the language model to be used
       promptTemplating: {
         model: {
-          name: 'gpt-4o'
+          name: 'gpt-5'
         }
       },
       grounding: buildDocumentGroundingConfig({
@@ -553,7 +553,7 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     }
   });
@@ -628,7 +628,7 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
         }
       },
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     }
   });
@@ -692,7 +692,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
         tools: [addNumbersTool]
       },
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     }
   });
@@ -737,7 +737,7 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
   const orchestrationClient = new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     },
     translation: {
@@ -790,7 +790,7 @@ export async function chatCompletionStreamWithTools(
         tools: [addNumbersTool]
       },
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5'
       }
     }
   });
