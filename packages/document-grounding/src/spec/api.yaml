@@ -3021,7 +3021,6 @@ components:
         - ids
       title: DocumentBulkDeleteRequest
       description: A request to delete documents by their IDs.
-
     DocumentBulkDeleteResponse:
       properties:
         deleted:
