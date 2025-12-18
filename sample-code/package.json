@@ -24,7 +24,7 @@
     "@langchain/classic": "^1.0.6",
     "langchain": "^1.2.1",
     "@langchain/core": "^1.1.6",
-    "@langchain/langgraph": "^1.0.5",
+    "@langchain/langgraph": "^1.0.7",
     "@langchain/mcp-adapters": "^1.1.0",
     "@langchain/textsplitters": "^1.0.1",
     "@modelcontextprotocol/sdk": "^1.25.1",
