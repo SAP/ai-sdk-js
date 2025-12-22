@@ -846,12 +846,12 @@ components:
       type: object
       description: Usage of tokens in the response
       properties:
-        prompt_tokens:
-          type: integer
-          description: Number of tokens in the prompt.
         completion_tokens:
           type: integer
           description: Number of tokens in the generated completion.
+        prompt_tokens:
+          type: integer
+          description: Number of tokens in the prompt.
         total_tokens:
           type: integer
           description: Total number of tokens used in the request (prompt + completion).
@@ -889,8 +889,8 @@ components:
                 completion tokens for purposes of billing, output, and context
                 window limits.
       required:
-        - prompt_tokens
         - completion_tokens
+        - prompt_tokens
         - total_tokens
 
     # --- Prompt Templating Module ---
