@@ -30,7 +30,7 @@ export async function createPromptTemplate(
     },
     {
       'AI-Resource-Group-Scope': 'true',
-      'AI-Resource-Group': 'zhongpin'
+      'AI-Resource-Group': 'ai-sdk-js-e2e'
     }
   ).execute();
 }
@@ -45,6 +45,6 @@ export async function deletePromptTemplate(
 ): Promise<PromptTemplateDeleteResponse> {
   return PromptTemplatesApi.deletePromptTemplate(id, {
     'AI-Resource-Group-Scope': 'true',
-    'AI-Resource-Group': 'zhongpin'
+    'AI-Resource-Group': 'ai-sdk-js-e2e'
   }).execute();
 }

@@ -28,8 +28,8 @@
     "compile": "tsc",
     "compile:cjs": "tsc -p tsconfig.cjs.json",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
-    "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
+    "lint": "eslint . --ignore-pattern 'src/zod/**/*' && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore --ignore-path .prettierignore -c",
+    "lint:fix": "eslint . --fix --ignore-pattern 'src/zod/**/*' && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore --ignore-path .prettierignore -w --log-level error",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/prompt-registry.yaml -o ./src/client",
     "postgenerate": "pnpm update-imports && pnpm orval && pnpm lint:fix",
     "update-imports": "node --no-warnings --loader ts-node/esm ../../scripts/update-imports.ts ./src/client/prompt-registry"
