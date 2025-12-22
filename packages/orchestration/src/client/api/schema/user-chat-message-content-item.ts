@@ -12,5 +12,5 @@ export type UserChatMessageContentItem = {
   type: 'text' | 'image_url' | 'pdf_file';
   text?: string;
   image_url?: ImageContentUrl;
-  pdf_file?: InputFile;
+  file?: InputFile;
 };
