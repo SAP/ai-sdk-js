@@ -39,4 +39,8 @@ export type LlmModuleResult = {
    */
   choices: LlmChoice[];
   usage: TokenUsage;
+  /**
+   * List of citations associated with the response.
+   */
+  citations?: string[];
 } & Record<string, any>;
