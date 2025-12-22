@@ -80,4 +80,4 @@ export type AiCoreOpenSourceEmbeddingModel =
 /**
  * AI Core SAP managed model supported only for orchestration.
  */
-export type SupportedModelType = LiteralUnion<'sap-abap-1'>;
+export type AiCoreSap = LiteralUnion<'sap-abap-1'>;
