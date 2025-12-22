@@ -355,7 +355,7 @@ components:
           type: string
         image_url:
           $ref: '#/components/schemas/ImageContentUrl'
-        pdf_file:
+        file:
           $ref: '#/components/schemas/InputFile'
       required:
         - type
