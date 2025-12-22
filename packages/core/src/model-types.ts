@@ -29,7 +29,7 @@ export type AzureOpenAiEmbeddingModel = LiteralUnion<
  * GCP Vertex AI models for chat completion.
  */
 export type GcpVertexAiChatModel = LiteralUnion<
-  'gemini-2.5-flash' | 'gemini-2.5-pro'
+  'gemini-2.5-flash' | 'gemini-2.5-flash-lite' | 'gemini-2.5-pro'
 >;
 
 /**
@@ -37,6 +37,7 @@ export type GcpVertexAiChatModel = LiteralUnion<
  */
 export type AwsBedrockChatModel = LiteralUnion<
   | 'anthropic--claude-3-haiku'
+  | 'anthropic--claude-4.5-haiku'
   | 'anthropic--claude-3-opus'
   | 'anthropic--claude-3-sonnet'
   | 'anthropic--claude-3.5-sonnet'
@@ -75,3 +76,8 @@ export type AiCoreOpenSourceChatModel = LiteralUnion<
  */
 export type AiCoreOpenSourceEmbeddingModel =
   LiteralUnion<'nvidia--llama-3.2-nv-embedqa-1b'>;
+
+/**
+ * AI Core SAP managed model supported only for orchestration.
+ */
+export type SupportedModelType = LiteralUnion<'sap-abap-1'>;
