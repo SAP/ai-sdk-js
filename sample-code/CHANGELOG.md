@@ -1,5 +1,19 @@
 # @sap-ai-sdk/sample-code
 
+## 2.4.0
+
+### Patch Changes
+
+- Updated dependencies [aa097da]
+- Updated dependencies [a3cbc6e]
+- Updated dependencies [a3cbc6e]
+  - @sap-ai-sdk/orchestration@2.4.0
+  - @sap-ai-sdk/prompt-registry@2.4.0
+  - @sap-ai-sdk/ai-api@2.4.0
+  - @sap-ai-sdk/document-grounding@2.4.0
+  - @sap-ai-sdk/foundation-models@2.4.0
+  - @sap-ai-sdk/langchain@2.4.0
+
 ## 2.3.0
 
 ### Patch Changes

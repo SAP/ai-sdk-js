@@ -1,5 +1,20 @@
 # @sap-ai-sdk/orchestration
 
+## 2.4.0
+
+### Minor Changes
+
+- aa097da: [New Functionality] Added support for `applyTo` and `translateMessagesHistory` in order to enable selective input translation and automatic inference of target language for output translation parameters.
+
+### Patch Changes
+
+- Updated dependencies [2e1d2c2]
+- Updated dependencies [a3cbc6e]
+- Updated dependencies [a3cbc6e]
+  - @sap-ai-sdk/core@2.4.0
+  - @sap-ai-sdk/prompt-registry@2.4.0
+  - @sap-ai-sdk/ai-api@2.4.0
+
 ## 2.3.0
 
 ### Minor Changes

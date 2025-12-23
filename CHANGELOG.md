@@ -28,6 +28,21 @@
 
 -
 
+# 2.4.0
+## Compatibility Notes
+
+- [prompt-registry] In the prompt-registry client schema, the `Template` type was renamed to `PromptTemplate`. (a3cbc6e)
+
+## New Features
+
+- [orchestration] Added support for `applyTo` and `translateMessagesHistory` in order to enable selective input translation and automatic inference of target language for output translation parameters. (aa097da)
+- [prompt-registry] Update prompt-registry specification adding support for resource group scoped prompt templates. (a3cbc6e)
+
+## Improvements
+
+- [core] Added `anthropic--claude-4.5-sonnet` , `anthropic--claude-4.5-haiku` , `gemini-2.5-flash-lite` and `sap-abap-1` to the available model list.
+  Removed deprecated models `gemini-2.0-flash` and `gemini-2.0-flash-lite` scheduled for retirement. (2e1d2c2)
+
 # 2.3.0
 ## Compatibility Notes
 
