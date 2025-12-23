@@ -3,3 +3,4 @@ dist/
 dist-cjs/
 coverage/
 pnpm-lock.yaml
+packages/prompt-registry/src/zod
