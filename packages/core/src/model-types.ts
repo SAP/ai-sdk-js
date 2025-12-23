@@ -29,10 +29,7 @@ export type AzureOpenAiEmbeddingModel = LiteralUnion<
  * GCP Vertex AI models for chat completion.
  */
 export type GcpVertexAiChatModel = LiteralUnion<
-  | 'gemini-2.0-flash'
-  | 'gemini-2.0-flash-lite'
-  | 'gemini-2.5-flash'
-  | 'gemini-2.5-pro'
+  'gemini-2.5-flash' | 'gemini-2.5-flash-lite' | 'gemini-2.5-pro'
 >;
 
 /**
@@ -40,12 +37,14 @@ export type GcpVertexAiChatModel = LiteralUnion<
  */
 export type AwsBedrockChatModel = LiteralUnion<
   | 'anthropic--claude-3-haiku'
+  | 'anthropic--claude-4.5-haiku'
   | 'anthropic--claude-3-opus'
   | 'anthropic--claude-3-sonnet'
   | 'anthropic--claude-3.5-sonnet'
   | 'anthropic--claude-3.7-sonnet'
   | 'anthropic--claude-4-opus'
   | 'anthropic--claude-4-sonnet'
+  | 'anthropic--claude-4.5-sonnet'
   | 'amazon--nova-pro'
   | 'amazon--nova-lite'
   | 'amazon--nova-micro'
@@ -70,6 +69,7 @@ export type AiCoreOpenSourceChatModel = LiteralUnion<
   | 'mistralai--mistral-large-instruct'
   | 'mistralai--mistral-medium-instruct'
   | 'mistralai--mistral-small-instruct'
+  | 'sap-abap-1'
 >;
 
 /**

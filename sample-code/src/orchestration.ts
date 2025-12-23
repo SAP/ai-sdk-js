@@ -838,3 +838,29 @@ export async function orchestrationEmbeddingWithMasking(): Promise<Orchestration
   });
   return response;
 }
+
+/**
+ * Ask SAP ABAP model about ABAP programming concepts.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationSapAbapChatCompletion(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: {
+      model: {
+        name: 'sap-abap-1',
+        version: 'latest'
+      }
+    }
+  });
+
+  const result = await orchestrationClient.chatCompletion({
+    messages: [
+      {
+        role: 'user',
+        content: 'Explain the concept of internal tables in ABAP.'
+      }
+    ]
+  });
+
+  return result;
+}
