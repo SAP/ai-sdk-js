@@ -39,7 +39,8 @@ export default [
       '**/dist/**/*',
       '**/dist-cjs/**/*',
       '**/coverage/**/*',
-      'packages/**/client/**/*'
+      'packages/**/client/**/*',
+      'packages/prompt-registry/src/zod/**/*'
     ]
   },
   {
@@ -48,8 +49,7 @@ export default [
       '**/test-util/**/*',
       '**/*.test.ts',
       '**/*.spec.ts',
-      '**/dist-cjs/**/*',
-      'packages/prompt-registry/src/zod/*'
+      '**/dist-cjs/**/*'
     ],
     rules: {
       '@typescript-eslint/explicit-module-boundary-types': 'off',

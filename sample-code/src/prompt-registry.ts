@@ -14,19 +14,25 @@ export async function createPromptTemplate(
   name: string,
   scenario: string
 ): Promise<PromptTemplatePostResponse> {
-  return PromptTemplatesApi.createUpdatePromptTemplate({
-    name,
-    scenario,
-    version: '0.0.1',
-    spec: {
-      template: [
-        {
-          content: 'Hello, world!',
-          role: 'user'
-        }
-      ]
+  return PromptTemplatesApi.createUpdatePromptTemplate(
+    {
+      name,
+      scenario,
+      version: '0.0.1',
+      spec: {
+        template: [
+          {
+            content: 'Hello, world!',
+            role: 'user'
+          }
+        ]
+      }
+    },
+    {
+      'AI-Resource-Group-Scope': 'true',
+      'AI-Resource-Group': 'ai-sdk-js-e2e'
     }
-  }).execute();
+  ).execute();
 }
 
 /**
@@ -37,5 +43,8 @@ export async function createPromptTemplate(
 export async function deletePromptTemplate(
   id: string
 ): Promise<PromptTemplateDeleteResponse> {
-  return PromptTemplatesApi.deletePromptTemplate(id).execute();
+  return PromptTemplatesApi.deletePromptTemplate(id, {
+    'AI-Resource-Group-Scope': 'true',
+    'AI-Resource-Group': 'ai-sdk-js-e2e'
+  }).execute();
 }
