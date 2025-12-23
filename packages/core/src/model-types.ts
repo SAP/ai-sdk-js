@@ -69,6 +69,7 @@ export type AiCoreOpenSourceChatModel = LiteralUnion<
   | 'mistralai--mistral-large-instruct'
   | 'mistralai--mistral-medium-instruct'
   | 'mistralai--mistral-small-instruct'
+  | 'sap-abap-1'
 >;
 
 /**
@@ -76,8 +77,3 @@ export type AiCoreOpenSourceChatModel = LiteralUnion<
  */
 export type AiCoreOpenSourceEmbeddingModel =
   LiteralUnion<'nvidia--llama-3.2-nv-embedqa-1b'>;
-
-/**
- * AI Core SAP managed model supported only for orchestration.
- */
-export type AiCoreSap = LiteralUnion<'sap-abap-1'>;
