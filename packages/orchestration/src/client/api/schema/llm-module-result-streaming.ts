@@ -5,6 +5,7 @@
  */
 import type { LlmChoiceStreaming } from './llm-choice-streaming.js';
 import type { TokenUsage } from './token-usage.js';
+import type { Citation } from './citation.js';
 /**
  * Output of LLM module. Follows the OpenAI spec.
  */
@@ -37,5 +38,5 @@ export type LLMModuleResultStreaming = {
   /**
    * List of citations associated with the response.
    */
-  citations?: string[];
+  citations?: Citation[];
 } & Record<string, any>;
