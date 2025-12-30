@@ -28,7 +28,8 @@ import {
   orchestrationMessageHistory,
   orchestrationResponseFormat,
   orchestrationTranslation,
-  orchestrationEmbeddingWithMasking
+  orchestrationEmbeddingWithMasking,
+  orchestrationSapAbapChatCompletion
 } from './orchestration.js';
 import {
   getDeployments,
@@ -284,7 +285,8 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       responseFormat: orchestrationResponseFormat,
       maskGroundingInput: orchestrationMaskGroundingInput,
       translation: orchestrationTranslation,
-      embeddingWithMasking: orchestrationEmbeddingWithMasking
+      embeddingWithMasking: orchestrationEmbeddingWithMasking,
+      sapAbap: orchestrationSapAbapChatCompletion
     }[sampleCase] || orchestrationChatCompletion;
 
   try {

@@ -1,5 +1,17 @@
 # @sap-ai-sdk/prompt-registry
 
+## 2.4.0
+
+### Minor Changes
+
+- a3cbc6e: [New Functionality] Update prompt-registry specification adding support for resource group scoped prompt templates.
+- a3cbc6e: [Compatibility Note] In the prompt-registry client schema, the `Template` type was renamed to `PromptTemplate`.
+
+### Patch Changes
+
+- Updated dependencies [2e1d2c2]
+  - @sap-ai-sdk/core@2.4.0
+
 ## 2.3.0
 
 ### Minor Changes

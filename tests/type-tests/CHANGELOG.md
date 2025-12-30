@@ -1,5 +1,11 @@
 # @sap-ai-sdk/type-tests
 
+## 2.4.0
+
+### Minor Changes
+
+- aa097da: [New Functionality] Added support for `applyTo` and `translateMessagesHistory` in order to enable selective input translation and automatic inference of target language for output translation parameters.
+
 ## 2.3.0
 
 ## 2.2.0
