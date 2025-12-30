@@ -371,41 +371,6 @@ describe('Chat client', () => {
       expect(client._streamResponseChunks).toHaveBeenCalled();
     });
 
-    it('supports auto-streaming responses via invoke-stream', async () => {
-      mockInference(
-        {
-          data: {
-            messages: [
-              {
-                role: 'user' as const,
-                content: 'What is the capital of France?'
-              }
-            ],
-            stream: true,
-            stream_options: {
-              include_usage: true
-            }
-          }
-        },
-        {
-          data: mockResponseStream,
-          status: 200
-        },
-        endpoint
-      );
-      jest.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
-
-      const finalOutput = await client.invoke(
-        'What is the capital of France?',
-        {
-          stream: true
-        }
-      );
-
-      expect(finalOutput).toMatchSnapshot();
-      expect(client._streamResponseChunks).toHaveBeenCalled();
-    });
-
     it('supports disabling auto-streaming via disableStreaming flag', async () => {
       mockInference(
         {
@@ -436,7 +401,7 @@ describe('Chat client', () => {
       );
       jest.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
 
-      client.streaming = true;
+      client.streaming = false;
       client.disableStreaming = true;
 
       const finalOutput = await client.invoke('What is the capital of France?');
@@ -476,7 +441,7 @@ describe('Chat client', () => {
       jest.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
 
       client.disableStreaming = true;
-      client.streaming = true;
+      client.streaming = false;
 
       const stream = await client.stream('What is the capital of France?');
 

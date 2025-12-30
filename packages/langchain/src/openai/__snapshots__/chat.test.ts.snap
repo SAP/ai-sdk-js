@@ -84,48 +84,6 @@ exports[`Chat client streaming supports auto-streaming responses 1`] = `
 }
 `;
 
-exports[`Chat client streaming supports auto-streaming responses via invoke-stream 1`] = `
-{
-  "id": [
-    "langchain_core",
-    "messages",
-    "AIMessageChunk",
-  ],
-  "kwargs": {
-    "additional_kwargs": {},
-    "content": "The capital of France is Paris.",
-    "id": undefined,
-    "invalid_tool_calls": [],
-    "response_metadata": {
-      "completion": 0,
-      "created": 1730125149,
-      "finish_reason": "stop",
-      "id": "chatcmpl-ANKsHIdjvozwuOGpGI6rygvwSJH0I",
-      "index": 0,
-      "model_name": "gpt-4o",
-      "prompt": 0,
-      "system_fingerprint": "fp_808245b034",
-      "token_usage": {
-        "completion_tokens": 7,
-        "prompt_tokens": 14,
-        "total_tokens": 21,
-      },
-    },
-    "tool_call_chunks": [],
-    "tool_calls": [],
-    "usage_metadata": {
-      "input_token_details": {},
-      "input_tokens": 14,
-      "output_token_details": {},
-      "output_tokens": 7,
-      "total_tokens": 21,
-    },
-  },
-  "lc": 1,
-  "type": "constructor",
-}
-`;
-
 exports[`Chat client streaming supports disabling auto-streaming via disableStreaming flag 1`] = `
 {
   "id": [

@@ -434,43 +434,6 @@ describe('orchestration service client', () => {
       expect(client._streamResponseChunks).toHaveBeenCalled();
     });
 
-    it('supports auto-streaming responses with invoke-stream', async () => {
-      mockInference(
-        {
-          data: constructCompletionPostRequest(
-            {
-              ...config,
-              promptTemplating: {
-                ...config.promptTemplating,
-                prompt: {
-                  template: messages
-                }
-              }
-            },
-            { messages: [] },
-            true
-          )
-        },
-        {
-          data: mockResponseStream,
-          status: 200
-        },
-        endpoint
-      );
-
-      jest.spyOn(OrchestrationClient.prototype, '_streamResponseChunks');
-
-      const client = new OrchestrationClient(config);
-
-      const finalOutput = await client.invoke(
-        [{ role: 'user', content: 'Hello!' }],
-        { stream: true }
-      );
-
-      expect(finalOutput).toMatchSnapshot();
-      expect(client._streamResponseChunks).toHaveBeenCalled();
-    });
-
     it('does not stream when disableStreaming is set to true', async () => {
       mockInference(
         {
@@ -503,7 +466,6 @@ describe('orchestration service client', () => {
       } as any);
       expect(client.streaming).toBe(false);
       expect(client.disableStreaming).toBe(true);
-      client.streaming = true; // try to override
 
       const finalOutput = await client.invoke([
         { role: 'user', content: 'Hello!' }

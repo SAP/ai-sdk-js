@@ -36,12 +36,17 @@ export type AzureOpenAiChatModelParams = Pick<
    */
   supportsStrictToolCalling?: boolean;
   /**
-   * Whether the model should stream all results.
+   * Whether the model should automatically stream responses when using `invoke()`.
    * If {@link disableStreaming} is set to `true`, this option will be ignored.
    * If {@link streaming} is explicitly set to `false`, {@link disableStreaming} will be set to `true`.
-   * Defaults to `false`.
    */
   streaming?: boolean;
+  /**
+   * Whether streaming should be disabled.
+   * If `true`, `stream()` calls will be redirected to `invoke()`.
+   * Setting `streaming: false` will automatically set this to `true`.
+   */
+  disableStreaming?: boolean;
 } & BaseChatModelParams &
   ModelConfig<AzureOpenAiChatModel> &
   ResourceGroupConfig;
@@ -70,7 +75,6 @@ export type AzureOpenAiChatCallOptions = BaseChatModelCallOptions &
     | 'function_call'
   > & {
     strict?: boolean;
-    stream?: boolean;
     tools?: ChatAzureOpenAIToolType[];
     promptIndex?: number;
     requestConfig?: CustomRequestConfig;

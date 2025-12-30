@@ -51,33 +51,6 @@ export async function invokeChain(): Promise<string> {
 }
 
 /**
- * Ask GPT about an introduction to SAP Cloud SDK.
- * Internally uses streaming, despite using the non-streaming invoke method.
- * @returns The answer from ChatGPT.
- */
-export async function invokeChainWithStreaming(): Promise<string> {
-  const orchestrationConfig: LangChainOrchestrationModuleConfig = {
-    // define the language model to be used
-    promptTemplating: {
-      model: {
-        name: 'gpt-4o'
-      }
-    }
-  };
-
-  return new OrchestrationClient(orchestrationConfig, {
-    streaming: true
-  } as any)
-    .pipe(new StringOutputParser())
-    .invoke([
-      {
-        role: 'user',
-        content: 'Tell me about SAP Cloud SDK'
-      }
-    ]);
-}
-
-/**
  * Trigger input content filter.
  * @returns The answer from ChatGPT.
  */
@@ -172,7 +145,7 @@ function createLangGraphApp() {
 
 /**
  * Invoke the model with memory.
- * @returns The answer from ChatGPT.
+ * @returns The answer from the LangGraph workflow.
  */
 export async function invokeLangGraphChain(): Promise<string> {
   const app = createLangGraphApp();
@@ -202,7 +175,7 @@ export async function invokeLangGraphChain(): Promise<string> {
 
 /**
  * Stream responses using LangGraph Orchestration client.
- * @returns The answer from ChatGPT.
+ * @returns The answer from the LangGraph workflow.
  */
 export async function invokeLangGraphChainStream(): Promise<string> {
   const app = createLangGraphApp();

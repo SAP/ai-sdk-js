@@ -33,13 +33,13 @@ function isInputFilteringError(error: any): boolean {
 
 /**
  * The Orchestration client.
+ * @remark `langchainOptions` supports passing `streaming` flag for auto-streaming behavior, despite not being part of `BaseChatModelParams`.
  */
 export class OrchestrationClient extends BaseChatModel<
   OrchestrationCallOptions,
   OrchestrationMessageChunk
 > {
-  streaming: boolean;
-  disableStreaming: boolean;
+  streaming: boolean = false;
 
   constructor(
     public orchestrationConfig: LangChainOrchestrationModuleConfig,
@@ -58,16 +58,23 @@ export class OrchestrationClient extends BaseChatModel<
 
     super(langchainOptions);
 
-    this.disableStreaming = langchainOptions?.disableStreaming ?? false;
-    // Todo: Extend BaseChatModelParams?
-    this.streaming =
-      ((langchainOptions as { streaming?: boolean })?.streaming ?? false) &&
-      // disable streaming has higher priority
-      !this.disableStreaming;
-    // if streaming is false, disable streaming
+    // Initialize streaming flags with LangChain-compatible behavior:
+    // - `streaming`: true enables auto-streaming in `invoke()` calls
+    // - `disableStreaming`: true overrides streaming flag
+    // - `streaming`: `false` causes `disableStreaming` to be set to `true` for framework compatibility
+    this.disableStreaming =
+      langchainOptions.disableStreaming ?? this.disableStreaming;
+
+    // If streaming is explicitly false, streaming is disabled
     if ((langchainOptions as { streaming?: boolean })?.streaming === false) {
       this.disableStreaming = true;
     }
+
+    // Enable streaming only when `streaming` is `true` (default `false`) and `disableStreaming` is not `true` (default `undefined`).
+    this.streaming =
+      ((langchainOptions as { streaming?: boolean })?.streaming ??
+        this.streaming) &&
+      this.disableStreaming !== true;
   }
 
   _llmType(): string {
@@ -99,7 +106,8 @@ export class OrchestrationClient extends BaseChatModel<
     options: typeof this.ParsedCallOptions,
     runManager?: CallbackManagerForLLMRun
   ): Promise<ChatResult> {
-    if ((options?.stream ?? this.streaming) && !this.disableStreaming) {
+    // Auto-streaming: transparently stream and concatenate when enabled
+    if (this.streaming) {
       let generation;
       const stream = this._streamResponseChunks(messages, options, runManager);
       for await (const chunk of stream) {
