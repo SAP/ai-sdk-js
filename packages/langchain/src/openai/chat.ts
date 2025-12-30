@@ -77,14 +77,14 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
     // - `streaming`: true enables auto-streaming in `invoke()` calls
     // - `disableStreaming`: true overrides streaming flag
     // - `streaming`: `false` causes `disableStreaming` to be set to `true` for framework compatibility
-    this.disableStreaming = fields.disableStreaming ?? this.disableStreaming;
+    this.disableStreaming = fields?.disableStreaming === true;
     // if streaming is explicitly false, streaming is disabled
     if (fields?.streaming === false) {
       this.disableStreaming = true;
     }
     // Enable streaming only when `streaming` is `true` (default `false`) and `disableStreaming` is not `true` (default `undefined`).
     this.streaming =
-      (fields?.streaming ?? this.streaming) && this.disableStreaming !== true;
+      fields?.streaming === true && this.disableStreaming !== true;
 
     if (fields.supportsStrictToolCalling !== undefined) {
       this.supportsStrictToolCalling = fields.supportsStrictToolCalling;

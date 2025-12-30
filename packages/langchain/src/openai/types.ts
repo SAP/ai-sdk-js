@@ -41,12 +41,6 @@ export type AzureOpenAiChatModelParams = Pick<
    * If {@link streaming} is explicitly set to `false`, {@link disableStreaming} will be set to `true`.
    */
   streaming?: boolean;
-  /**
-   * Whether streaming should be disabled.
-   * If `true`, `stream()` calls will be redirected to `invoke()`.
-   * Setting `streaming: false` will automatically set this to `true`.
-   */
-  disableStreaming?: boolean;
 } & BaseChatModelParams &
   ModelConfig<AzureOpenAiChatModel> &
   ResourceGroupConfig;

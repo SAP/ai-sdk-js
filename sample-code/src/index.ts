@@ -28,7 +28,6 @@ export {
 } from './orchestration.js';
 export {
   invoke,
-  invokeWithStreaming,
   invokeWithStructuredOutputJsonSchema,
   invokeWithStructuredOutputToolCalling,
   invokeChain,

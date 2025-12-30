@@ -33,7 +33,7 @@ function isInputFilteringError(error: any): boolean {
 
 /**
  * The Orchestration client.
- * @remark `langchainOptions` supports passing `streaming` flag for auto-streaming behavior, despite not being part of `BaseChatModelParams`.
+ * Remark: `langchainOptions` supports passing `streaming` flag for auto-streaming behavior, despite not being part of `BaseChatModelParams`.
  */
 export class OrchestrationClient extends BaseChatModel<
   OrchestrationCallOptions,
@@ -62,8 +62,7 @@ export class OrchestrationClient extends BaseChatModel<
     // - `streaming`: true enables auto-streaming in `invoke()` calls
     // - `disableStreaming`: true overrides streaming flag
     // - `streaming`: `false` causes `disableStreaming` to be set to `true` for framework compatibility
-    this.disableStreaming =
-      langchainOptions.disableStreaming ?? this.disableStreaming;
+    this.disableStreaming = langchainOptions?.disableStreaming === true;
 
     // If streaming is explicitly false, streaming is disabled
     if ((langchainOptions as { streaming?: boolean })?.streaming === false) {
@@ -72,8 +71,7 @@ export class OrchestrationClient extends BaseChatModel<
 
     // Enable streaming only when `streaming` is `true` (default `false`) and `disableStreaming` is not `true` (default `undefined`).
     this.streaming =
-      ((langchainOptions as { streaming?: boolean })?.streaming ??
-        this.streaming) &&
+      (langchainOptions as { streaming?: boolean })?.streaming === true &&
       this.disableStreaming !== true;
   }
 
