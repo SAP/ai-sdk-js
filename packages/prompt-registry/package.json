@@ -31,7 +31,7 @@
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/prompt-registry.yaml -o ./src/client",
-    "postgenerate": "pnpm update-imports && pnpm orval",
+    "postgenerate": "pnpm update-imports && pnpm orval && pnpm lint:fix",
     "update-imports": "node --no-warnings --loader ts-node/esm ../../scripts/update-imports.ts ./src/client/prompt-registry"
   },
   "dependencies": {
