@@ -55,6 +55,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
   max_tokens?: number;
   supportsStrictToolCalling?: boolean;
   modelName: string;
+  streaming: boolean = false;
   private openAiChatClient: AzureOpenAiChatClientBase;
 
   constructor(
@@ -72,6 +73,19 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
     this.presence_penalty = fields.presence_penalty;
     this.frequency_penalty = fields.frequency_penalty;
     this.max_tokens = fields.max_tokens;
+    // Initialize streaming flags with LangChain-compatible behavior:
+    // - `streaming`: true enables auto-streaming in `invoke()` calls
+    // - `disableStreaming`: true overrides streaming flag
+    // - `streaming`: `false` causes `disableStreaming` to be set to `true` for framework compatibility
+    this.disableStreaming = fields?.disableStreaming === true;
+    // if streaming is explicitly false, streaming is disabled
+    if (fields?.streaming === false) {
+      this.disableStreaming = true;
+    }
+    // Enable streaming only when `streaming` is `true` (default `false`) and `disableStreaming` is not `true` (default `undefined`).
+    this.streaming =
+      fields?.streaming === true && this.disableStreaming !== true;
+
     if (fields.supportsStrictToolCalling !== undefined) {
       this.supportsStrictToolCalling = fields.supportsStrictToolCalling;
     }
@@ -86,6 +100,21 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
     options: typeof this.ParsedCallOptions,
     runManager?: CallbackManagerForLLMRun
   ): Promise<ChatResult> {
+    // Auto-streaming: if streaming is enabled, use _streamResponseChunks
+    // and concatenate chunks transparently for the caller
+    if (this.streaming) {
+      let generation;
+      const stream = this._streamResponseChunks(messages, options, runManager);
+      for await (const chunk of stream) {
+        generation =
+          generation === undefined ? chunk : generation.concat(chunk);
+      }
+      if (generation === undefined) {
+        throw new Error('No chunks were generated from the stream.');
+      }
+      return { generations: [generation] };
+    }
+
     const res = await this.caller.callWithOptions(
       {
         signal: options.signal
