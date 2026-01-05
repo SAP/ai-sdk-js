@@ -56,10 +56,6 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
 }
 
 /**
- * Constructs a completion post request with a config reference.
- * @param configRef - The config reference (by ID or by name/scenario/version).
- * @param request - Optional chat completion request with placeholder values and messages history.
- * @returns The completion post request with config reference.
  * @internal
  */
 export function constructCompletionPostRequestFromConfigReference(

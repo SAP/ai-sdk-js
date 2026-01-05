@@ -206,6 +206,25 @@ export async function orchestrationPromptRegistry(): Promise<OrchestrationRespon
 }
 
 /**
+ * Use a pre-configured orchestration setup via config reference.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationConfigReference(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    scenario: 'sdk-test-scenario',
+    name: 'test-config-for-OrchestrationTest',
+    version: '0.0.1'
+  });
+
+  return orchestrationClient.chatCompletion({
+    placeholderValues: {
+      phrase: 'Happy New Year!',
+      number: '3'
+    }
+  });
+}
+
+/**
  * Use a template stored in the prompt registry store at
  * the resource group scope.
  * @returns The orchestration service response.

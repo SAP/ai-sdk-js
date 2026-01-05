@@ -59,7 +59,6 @@ export class OrchestrationClient {
     if (typeof config === 'string') {
       this.validateJsonConfig(config);
     } else if (this.isConfigReference(config)) {
-      // Config reference - no processing needed
       this.config = config;
     } else {
       this.config =

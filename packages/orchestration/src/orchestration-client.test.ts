@@ -1224,53 +1224,6 @@ describe('orchestration service client', () => {
         'The messages field in request is not supported when using an orchestration config reference. Messages should be part of the referenced configuration or provided via messagesHistory. The messages field will be ignored.'
       );
     });
-
-    it('warns when messages field is provided with config reference by name/scenario/version', async () => {
-      const logger = createLogger({
-        package: 'orchestration',
-        messageContext: 'orchestration-client'
-      });
-
-      const warnSpy = jest.spyOn(logger, 'warn');
-
-      const configRef: OrchestrationConfigReference = {
-        scenario: 'foundation-models',
-        name: 'test-config',
-        version: '1.0.0'
-      };
-
-      const mockResponse = await parseMockResponse<CompletionPostResponse>(
-        'orchestration',
-        'orchestration-chat-completion-success-response.json'
-      );
-
-      mockInference(
-        {
-          data: {
-            config_ref: {
-              scenario: configRef.scenario,
-              name: configRef.name,
-              version: configRef.version
-            }
-          }
-        },
-        {
-          data: mockResponse,
-          status: 200
-        },
-        {
-          url: 'inference/deployments/1234/v2/completion'
-        }
-      );
-
-      await new OrchestrationClient(configRef).chatCompletion({
-        messages: [{ role: 'user', content: 'test message' }]
-      });
-
-      expect(warnSpy).toHaveBeenCalledWith(
-        'The messages field in request is not supported when using an orchestration config reference. Messages should be part of the referenced configuration or provided via messagesHistory. The messages field will be ignored.'
-      );
-    });
   });
 
   describe('OrchestrationClient deploymentId behavior', () => {
