@@ -9,7 +9,7 @@ import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity'
 
 /**
  * The model deployment configuration when using a model.
- * @typeParam ModelNameT - String literal type representing the name of the model.
+ * @template ModelNameT - String literal type representing the name of the model.
  */
 export interface ModelConfig<ModelNameT = string> {
   /**
@@ -44,7 +44,7 @@ export interface ResourceGroupConfig {
 
 /**
  * The configuration of a model deployment.
- * @typeParam ModelNameT - String literal type representing the name of the model.
+ * @template ModelNameT - String literal type representing the name of the model.
  */
 export type ModelDeployment<ModelNameT = string> =
   | ModelNameT
