@@ -14,12 +14,12 @@ import type { NewTokenIndices } from '@langchain/core/callbacks/base';
 import type { BaseLanguageModelInput } from '@langchain/core/language_models/base';
 import type { Runnable, RunnableLike } from '@langchain/core/runnables';
 import type { ChatResult } from '@langchain/core/outputs';
-import type { BaseChatModelParams } from '@langchain/core/language_models/chat_models';
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
 import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import type {
   OrchestrationCallOptions,
   LangChainOrchestrationModuleConfig,
+  LangChainOrchestrationChatModelParams,
   ChatOrchestrationToolType
 } from './types.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
@@ -33,7 +33,6 @@ function isInputFilteringError(error: any): boolean {
 
 /**
  * The Orchestration client.
- * Remark: `langchainOptions` supports passing `streaming` flag for auto-streaming behavior, despite not being part of `BaseChatModelParams`.
  */
 export class OrchestrationClient extends BaseChatModel<
   OrchestrationCallOptions,
@@ -43,7 +42,7 @@ export class OrchestrationClient extends BaseChatModel<
 
   constructor(
     public orchestrationConfig: LangChainOrchestrationModuleConfig,
-    public langchainOptions: BaseChatModelParams = {},
+    public langchainOptions: LangChainOrchestrationChatModelParams = {},
     public deploymentConfig?: ResourceGroupConfig,
     public destination?: HttpDestinationOrFetchOptions
   ) {
@@ -65,14 +64,13 @@ export class OrchestrationClient extends BaseChatModel<
     this.disableStreaming = langchainOptions?.disableStreaming === true;
 
     // If streaming is explicitly false, streaming is disabled
-    if ((langchainOptions as { streaming?: boolean })?.streaming === false) {
+    if (langchainOptions?.streaming === false) {
       this.disableStreaming = true;
     }
 
     // Enable streaming only when `streaming` is `true` (default `false`) and `disableStreaming` is not `true` (default `undefined`).
     this.streaming =
-      (langchainOptions as { streaming?: boolean })?.streaming === true &&
-      this.disableStreaming !== true;
+      langchainOptions?.streaming === true && this.disableStreaming !== true;
   }
 
   _llmType(): string {

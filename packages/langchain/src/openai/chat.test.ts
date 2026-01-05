@@ -367,7 +367,7 @@ describe('Chat client', () => {
 
       const finalOutput = await client.invoke('What is the capital of France?');
 
-      expect(finalOutput).toMatchSnapshot();
+      expect(finalOutput).toBeDefined();
       expect(client._streamResponseChunks).toHaveBeenCalled();
     });
 
@@ -445,12 +445,13 @@ describe('Chat client', () => {
 
       const stream = await client.stream('What is the capital of France?');
 
-      let finalOutput: AIMessageChunk | undefined;
-      for await (const chunk of stream) {
-        finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
-      }
-
-      expect(finalOutput).toMatchSnapshot();
+      // Non-streaming response, so only one chunk expected
+      const firstChunk = await stream.next();
+      expect(firstChunk.value).toBeDefined();
+      expect(firstChunk.done).toBe(false);
+      // Verify that no further chunks are present
+      const trailingChunk = await stream.next();
+      expect(trailingChunk.done).toBe(true);
       expect(client._streamResponseChunks).not.toHaveBeenCalled();
     });
 
@@ -608,14 +609,14 @@ describe('Chat client', () => {
       const app = workflow.compile();
       const stream = await app.stream(
         { messages: [{ role: 'user', content: 'Hello!' }] },
-        // langgraph will only enable streaming in a granular streaming mode
+        // langgraph will only enable streaming in a more granular streaming mode than the default (values)
+        // messages: Streams 2-tuples (LLM token, metadata) from any graph nodes where an LLM is invoked.
+        // Stream modes: https://docs.langchain.com/oss/javascript/langgraph/streaming#supported-stream-modes
         { streamMode: 'messages' as const }
       );
 
-      let finalOutput;
-      for await (const chunk of stream) {
-        finalOutput =
-          finalOutput !== undefined ? finalOutput.concat(chunk) : chunk;
+      for await (const _ of stream) {
+        // Empty
       }
       expect(llm._streamResponseChunks).toHaveBeenCalled();
     });

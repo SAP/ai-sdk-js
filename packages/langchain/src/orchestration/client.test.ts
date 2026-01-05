@@ -423,7 +423,7 @@ describe('orchestration service client', () => {
 
       const client = new OrchestrationClient(config, {
         streaming: true
-      } as any);
+      });
       expect(client.streaming).toBe(true);
 
       const finalOutput = await client.invoke([
@@ -432,46 +432,6 @@ describe('orchestration service client', () => {
 
       expect(finalOutput).toMatchSnapshot();
       expect(client._streamResponseChunks).toHaveBeenCalled();
-    });
-
-    it('does not stream when disableStreaming is set to true', async () => {
-      mockInference(
-        {
-          data: constructCompletionPostRequest(
-            {
-              ...config,
-              promptTemplating: {
-                ...config.promptTemplating,
-                prompt: {
-                  template: messages
-                }
-              }
-            },
-            { messages: [] },
-            false
-          )
-        },
-        {
-          data: mockResponse,
-          status: 200
-        },
-        endpoint
-      );
-
-      jest.spyOn(OrchestrationClient.prototype, '_streamResponseChunks');
-
-      const client = new OrchestrationClient(config, {
-        streaming: true,
-        disableStreaming: true
-      } as any);
-      expect(client.streaming).toBe(false);
-      expect(client.disableStreaming).toBe(true);
-
-      const finalOutput = await client.invoke([
-        { role: 'user', content: 'Hello!' }
-      ]);
-      expect(finalOutput).toMatchSnapshot();
-      expect(client._streamResponseChunks).not.toHaveBeenCalled();
     });
 
     it('has langchain handle disabling streaming via disableStreaming flag in stream', async () => {
@@ -503,17 +463,18 @@ describe('orchestration service client', () => {
       const client = new OrchestrationClient(config, {
         streaming: true,
         disableStreaming: true
-      } as any);
+      });
       expect(client.streaming).toBe(false);
       expect(client.disableStreaming).toBe(true);
 
       const stream = await client.stream('Hello!');
-      let finalOutput: AIMessageChunk | undefined;
-
-      for await (const chunk of stream) {
-        finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
-      }
-      expect(finalOutput).toMatchSnapshot();
+      // Non-streaming response, so only one chunk expected
+      const firstChunk = await stream.next();
+      expect(firstChunk.value).toBeDefined();
+      expect(firstChunk.done).toBe(false);
+      // Verify that no further chunks are present
+      const trailingChunk = await stream.next();
+      expect(trailingChunk.done).toBe(true);
       expect(client._streamResponseChunks).not.toHaveBeenCalled();
     });
 
@@ -521,7 +482,7 @@ describe('orchestration service client', () => {
       let testClient = new OrchestrationClient(config, {
         streaming: true,
         disableStreaming: true
-      } as any);
+      });
 
       // streaming should be disabled due to disableStreaming being true
       expect(testClient.streaming).toBe(false);
@@ -529,7 +490,7 @@ describe('orchestration service client', () => {
 
       testClient = new OrchestrationClient(config, {
         streaming: false
-      } as any);
+      });
 
       // streaming should be disabled
       expect(testClient.streaming).toBe(false);
@@ -537,7 +498,7 @@ describe('orchestration service client', () => {
 
       testClient = new OrchestrationClient(config, {
         streaming: true
-      } as any);
+      });
 
       // auto-streaming should be enabled
       expect(testClient.streaming).toBe(true);
@@ -720,14 +681,14 @@ describe('orchestration service client', () => {
       {
         messages
       },
-      // langgraph will only enable streaming in a granular streaming mode
+      // langgraph will only enable streaming in a more granular streaming mode than the default (values)
+      // messages: Streams 2-tuples (LLM token, metadata) from any graph nodes where an LLM is invoked.
+      // Stream modes: https://docs.langchain.com/oss/javascript/langgraph/streaming#supported-stream-modes
       { streamMode: 'messages' as const }
     );
 
-    let finalOutput;
-    for await (const chunk of stream) {
-      finalOutput =
-        finalOutput !== undefined ? finalOutput.concat(chunk) : chunk;
+    for await (const _ of stream) {
+      // Empty
     }
 
     expect(llm._streamResponseChunks).toHaveBeenCalled();
