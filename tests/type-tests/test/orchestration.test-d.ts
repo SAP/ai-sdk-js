@@ -646,13 +646,17 @@ expectType<Promise<OrchestrationResponse>>(
 /**
  * Streaming with Config References.
  */
-expectType<Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>>>(
+expectType<
+  Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>>
+>(
   new OrchestrationClient({
     id: 'test-config-id'
   }).stream()
 );
 
-expectType<Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>>>(
+expectType<
+  Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>>
+>(
   new OrchestrationClient({
     scenario: 'streaming-test',
     name: 'stream-config',
