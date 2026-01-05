@@ -18,7 +18,10 @@ import type {
   LlamaGuard38BFilterReturnType,
   TranslationConfigParams,
   DocumentTranslationApplyToSelector,
-  TranslationTargetLanguage
+  TranslationTargetLanguage,
+  OrchestrationConfigReference,
+  OrchestrationStreamResponse,
+  OrchestrationStreamChunkResponse
 } from '@sap-ai-sdk/orchestration';
 import type {
   CompletionPostResponse,
@@ -556,5 +559,105 @@ expectType<TranslationReturnType<'input'>>(
         sourceLanguage: 'de-DE'
       }
     ]
+  })
+);
+
+/**
+ * Config Reference Types.
+ */
+expectAssignable<OrchestrationConfigReference>({
+  id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+});
+
+expectAssignable<OrchestrationConfigReference>({
+  scenario: 'foundation-models',
+  name: 'my-orchestration-config',
+  version: '1.0.0'
+});
+
+/**
+ * Config reference cannot have both ID and name/scenario/version (Xor enforcement).
+ */
+expectError<OrchestrationConfigReference>({
+  id: 'some-id',
+  scenario: 'foundation-models',
+  name: 'my-orchestration-config',
+  version: '1.0.0'
+});
+
+/**
+ * Config reference by name requires all three fields: scenario, name, version.
+ */
+expectError<OrchestrationConfigReference>({
+  scenario: 'foundation-models',
+  name: 'my-orchestration-config'
+});
+
+expectError<OrchestrationConfigReference>({
+  name: 'my-orchestration-config',
+  version: '1.0.0'
+});
+
+/**
+ * Empty config reference should be an error.
+ */
+expectError<OrchestrationConfigReference>({});
+
+/**
+ * Chat Completion with Config References.
+ */
+
+expectType<Promise<OrchestrationResponse>>(
+  new OrchestrationClient({
+    id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+  }).chatCompletion()
+);
+
+expectType<Promise<OrchestrationResponse>>(
+  new OrchestrationClient({
+    scenario: 'foundation-models',
+    name: 'my-orchestration-config',
+    version: '1.0.0'
+  }).chatCompletion()
+);
+
+expectType<Promise<OrchestrationResponse>>(
+  new OrchestrationClient({
+    id: 'test-config-id'
+  }).chatCompletion({
+    placeholderValues: {
+      topic: 'AI',
+      context: 'technology'
+    }
+  })
+);
+
+expectType<Promise<OrchestrationResponse>>(
+  new OrchestrationClient({
+    id: 'test-config-id'
+  }).chatCompletion({
+    placeholderValues: { name: 'Alice' },
+    messagesHistory: [
+      { role: 'system', content: 'You are a helpful assistant.' }
+    ]
+  })
+);
+
+/**
+ * Streaming with Config References.
+ */
+expectType<Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>>>(
+  new OrchestrationClient({
+    id: 'test-config-id'
+  }).stream()
+);
+
+expectType<Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>>>(
+  new OrchestrationClient({
+    scenario: 'streaming-test',
+    name: 'stream-config',
+    version: '1.0.0'
+  }).stream({
+    placeholderValues: { topic: 'AI' }
   })
 );

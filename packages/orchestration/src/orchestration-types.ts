@@ -225,13 +225,13 @@ export interface OrchestrationModuleConfig {
  * Use this to reference a pre-configured orchestration setup without
  * defining the full configuration in code. The configuration must be
  * created via the Prompt Registry API before it can be referenced.
+ * Reference by ID.
  * @example
- * // Reference by ID
  * const configRef: OrchestrationConfigReference = {
  *   id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
  * };
+ * Reference by scenario, name and version.
  * @example
- * // Reference by scenario, name, and version
  * const configRef: OrchestrationConfigReference = {
  *   scenario: 'foundation-models',
  *   name: 'my-orchestration-config',
