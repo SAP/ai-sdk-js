@@ -1,5 +1,6 @@
 export type {
   OrchestrationModuleConfig,
+  OrchestrationConfigReference,
   PromptTemplatingModule,
   MaskingModule,
   GroundingModule,

@@ -3,11 +3,14 @@ import type {
   ChatCompletionRequest,
   StreamOptions,
   OrchestrationModuleConfig,
+  OrchestrationConfigReference,
   EmbeddingModuleConfig,
   EmbeddingRequest
 } from '../orchestration-types.js';
 import type {
   CompletionPostRequest,
+  CompletionRequestConfigurationReferenceById,
+  CompletionRequestConfigurationReferenceByNameScenarioVersion,
   FilteringStreamOptions,
   ModuleConfigs,
   OrchestrationConfig,
@@ -49,6 +52,46 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
     messages_history: prompt?.messagesHistory || [],
     placeholder_values: prompt?.placeholderValues || {},
     config
+  };
+}
+
+/**
+ * Constructs a completion post request with a config reference.
+ * @param configRef - The config reference (by ID or by name/scenario/version).
+ * @param request - Optional chat completion request with placeholder values and messages history.
+ * @returns The completion post request with config reference.
+ * @internal
+ */
+export function constructCompletionPostRequestFromConfigReference(
+  configRef: OrchestrationConfigReference,
+  request?: ChatCompletionRequest
+):
+  | CompletionRequestConfigurationReferenceById
+  | CompletionRequestConfigurationReferenceByNameScenarioVersion {
+  // Determine if it's by-id or by-name reference
+  if ('id' in configRef && configRef.id !== undefined) {
+    return {
+      config_ref: { id: configRef.id },
+      ...(request?.placeholderValues && {
+        placeholder_values: request.placeholderValues
+      }),
+      ...(request?.messagesHistory && {
+        messages_history: request.messagesHistory
+      })
+    };
+  }
+  return {
+    config_ref: {
+      scenario: configRef.scenario,
+      name: configRef.name,
+      version: configRef.version
+    },
+    ...(request?.placeholderValues && {
+      placeholder_values: request.placeholderValues
+    }),
+    ...(request?.messagesHistory && {
+      messages_history: request.messagesHistory
+    })
   };
 }
 

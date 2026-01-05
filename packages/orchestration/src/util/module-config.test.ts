@@ -3,7 +3,8 @@ import { jest } from '@jest/globals';
 import {
   addStreamOptions,
   addStreamOptionsToPromptTemplatingModuleConfig,
-  addStreamOptionsToOutputFilteringConfig
+  addStreamOptionsToOutputFilteringConfig,
+  constructCompletionPostRequestFromConfigReference
 } from './module-config.js';
 import { buildAzureContentSafetyFilter } from './filtering.js';
 import type {
@@ -13,6 +14,8 @@ import type {
 } from '../client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
+  OrchestrationConfigReference,
+  ChatCompletionRequest,
   StreamOptions
 } from '../orchestration-types.js';
 
@@ -157,5 +160,108 @@ describe('stream util tests', () => {
       'Output filter stream options are not applied because filtering module is not configured.'
     );
     expect(config.modules.filtering).toBeUndefined();
+  });
+});
+
+describe('constructCompletionPostRequestFromConfigReference', () => {
+  it('constructs request with config reference by ID', () => {
+    const configRef: OrchestrationConfigReference = {
+      id: 'test-config-id'
+    };
+
+    const result = constructCompletionPostRequestFromConfigReference(configRef);
+
+    expect(result).toEqual({
+      config_ref: { id: 'test-config-id' }
+    });
+  });
+
+  it('constructs request with config reference by ID and placeholder values', () => {
+    const configRef: OrchestrationConfigReference = {
+      id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+    };
+    const request: ChatCompletionRequest = {
+      placeholderValues: { topic: 'AI', context: 'technology' }
+    };
+
+    const result = constructCompletionPostRequestFromConfigReference(
+      configRef,
+      request
+    );
+
+    expect(result).toEqual({
+      config_ref: { id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479' },
+      placeholder_values: { topic: 'AI', context: 'technology' }
+    });
+  });
+
+  it('constructs request with config reference by name/scenario/version', () => {
+    const configRef: OrchestrationConfigReference = {
+      scenario: 'foundation-models',
+      name: 'my-orchestration-config',
+      version: '1.0.0'
+    };
+
+    const result = constructCompletionPostRequestFromConfigReference(configRef);
+
+    expect(result).toEqual({
+      config_ref: {
+        scenario: 'foundation-models',
+        name: 'my-orchestration-config',
+        version: '1.0.0'
+      }
+    });
+  });
+
+  it('constructs request with config reference by name and messages history', () => {
+    const configRef: OrchestrationConfigReference = {
+      scenario: 'customer-support',
+      name: 'example-config',
+      version: '0.0.1'
+    };
+    const request: ChatCompletionRequest = {
+      messagesHistory: [
+        { role: 'user', content: 'Previous question' },
+        { role: 'assistant', content: 'Previous answer' }
+      ]
+    };
+
+    const result = constructCompletionPostRequestFromConfigReference(
+      configRef,
+      request
+    );
+
+    expect(result).toEqual({
+      config_ref: {
+        scenario: 'customer-support',
+        name: 'example-config',
+        version: '0.0.1'
+      },
+      messages_history: [
+        { role: 'user', content: 'Previous question' },
+        { role: 'assistant', content: 'Previous answer' }
+      ]
+    });
+  });
+
+  it('constructs request with both placeholder values and messages history', () => {
+    const configRef: OrchestrationConfigReference = {
+      id: 'test-id'
+    };
+    const request: ChatCompletionRequest = {
+      placeholderValues: { key: 'value' },
+      messagesHistory: [{ role: 'user', content: 'test message' }]
+    };
+
+    const result = constructCompletionPostRequestFromConfigReference(
+      configRef,
+      request
+    );
+
+    expect(result).toEqual({
+      config_ref: { id: 'test-id' },
+      placeholder_values: { key: 'value' },
+      messages_history: [{ role: 'user', content: 'test message' }]
+    });
   });
 });

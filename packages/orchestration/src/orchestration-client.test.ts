@@ -25,6 +25,7 @@ import { getOrchestrationDeploymentId } from './deployment-resolver.js';
 import type { CompletionPostResponse } from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
+  OrchestrationConfigReference,
   ChatCompletionRequest
 } from './orchestration-types.js';
 
@@ -1016,6 +1017,259 @@ describe('orchestration service client', () => {
       await expect(
         client.stream(undefined, controller.signal)
       ).rejects.toThrow();
+    });
+  });
+
+  describe('config reference support', () => {
+    it('calls chatCompletion with config reference by ID', async () => {
+      const configRef: OrchestrationConfigReference = {
+        id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+      };
+
+      const prompt: ChatCompletionRequest = {
+        placeholderValues: { topic: 'AI' }
+      };
+
+      const mockResponse = await parseMockResponse<CompletionPostResponse>(
+        'orchestration',
+        'orchestration-chat-completion-success-response.json'
+      );
+
+      mockInference(
+        {
+          data: {
+            config_ref: { id: configRef.id },
+            placeholder_values: prompt.placeholderValues
+          }
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(configRef).chatCompletion(
+        prompt
+      );
+
+      expect(response).toBeInstanceOf(OrchestrationResponse);
+      expect(response._data).toEqual(mockResponse);
+    });
+
+    it('calls chatCompletion with config reference by name,scenario,version', async () => {
+      const configRef: OrchestrationConfigReference = {
+        scenario: 'sdk-test-scenario',
+        name: 'test-orchestration-config',
+        version: '1.0.0'
+      };
+
+      const prompt: ChatCompletionRequest = {
+        messagesHistory: [{ role: 'user', content: 'Previous message' }],
+        placeholderValues: { context: 'test' }
+      };
+
+      const mockResponse = await parseMockResponse<CompletionPostResponse>(
+        'orchestration',
+        'orchestration-chat-completion-success-response.json'
+      );
+
+      mockInference(
+        {
+          data: {
+            config_ref: {
+              scenario: configRef.scenario,
+              name: configRef.name,
+              version: configRef.version
+            },
+            placeholder_values: prompt.placeholderValues,
+            messages_history: prompt.messagesHistory
+          }
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(configRef).chatCompletion(
+        prompt
+      );
+
+      expect(response).toBeInstanceOf(OrchestrationResponse);
+      expect(response._data).toEqual(mockResponse);
+    });
+
+    it('executes streaming request with config reference by ID', async () => {
+      const configRef: OrchestrationConfigReference = {
+        id: 'test-config-id'
+      };
+
+      const mockResponse = await parseFileToString(
+        'orchestration',
+        'orchestration-chat-completion-stream-chunks.txt'
+      );
+
+      mockInference(
+        {
+          data: {
+            config_ref: { id: configRef.id }
+          }
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(configRef).stream();
+
+      const initialResponse = await parseFileToString(
+        'orchestration',
+        'orchestration-chat-completion-stream-chunk-response-initial.json'
+      );
+
+      for await (const chunk of response.stream) {
+        expect(chunk._data).toEqual(JSON.parse(initialResponse));
+        break;
+      }
+    });
+
+    it('warns when stream options are provided with config reference', async () => {
+      const logger = createLogger({
+        package: 'orchestration',
+        messageContext: 'orchestration-client'
+      });
+
+      const warnSpy = jest.spyOn(logger, 'warn');
+
+      const configRef: OrchestrationConfigReference = {
+        id: 'test-config-id'
+      };
+
+      const mockResponse = await parseFileToString(
+        'orchestration',
+        'orchestration-chat-completion-stream-chunks.txt'
+      );
+
+      mockInference(
+        {
+          data: {
+            config_ref: { id: configRef.id }
+          }
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      await new OrchestrationClient(configRef).stream(undefined, undefined, {
+        global: { enabled: true }
+      });
+
+      expect(warnSpy).toHaveBeenCalledWith(
+        'Stream options are not supported when using an orchestration config reference. Streaming is only supported if the referenced config has streaming configured.'
+      );
+    });
+
+    it('warns when messages field is provided with config reference by ID', async () => {
+      const logger = createLogger({
+        package: 'orchestration',
+        messageContext: 'orchestration-client'
+      });
+
+      const warnSpy = jest.spyOn(logger, 'warn');
+
+      const configRef: OrchestrationConfigReference = {
+        id: 'test-config-id'
+      };
+
+      const mockResponse = await parseMockResponse<CompletionPostResponse>(
+        'orchestration',
+        'orchestration-chat-completion-success-response.json'
+      );
+
+      mockInference(
+        {
+          data: {
+            config_ref: { id: configRef.id }
+          }
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      await new OrchestrationClient(configRef).chatCompletion({
+        messages: [{ role: 'user', content: 'test' }]
+      });
+
+      expect(warnSpy).toHaveBeenCalledWith(
+        "The 'messages' field in request is not supported when using a config reference. Messages should be part of the referenced configuration or provided via 'messagesHistory'. The 'messages' field will be ignored."
+      );
+    });
+
+    it('warns when messages field is provided with config reference by name/scenario/version', async () => {
+      const logger = createLogger({
+        package: 'orchestration',
+        messageContext: 'orchestration-client'
+      });
+
+      const warnSpy = jest.spyOn(logger, 'warn');
+
+      const configRef: OrchestrationConfigReference = {
+        scenario: 'foundation-models',
+        name: 'test-config',
+        version: '1.0.0'
+      };
+
+      const mockResponse = await parseMockResponse<CompletionPostResponse>(
+        'orchestration',
+        'orchestration-chat-completion-success-response.json'
+      );
+
+      mockInference(
+        {
+          data: {
+            config_ref: {
+              scenario: configRef.scenario,
+              name: configRef.name,
+              version: configRef.version
+            }
+          }
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      await new OrchestrationClient(configRef).chatCompletion({
+        messages: [{ role: 'user', content: 'test message' }]
+      });
+
+      expect(warnSpy).toHaveBeenCalledWith(
+        "The 'messages' field in request is not supported when using a config reference. Messages should be part of the referenced configuration or provided via 'messagesHistory'. The 'messages' field will be ignored."
+      );
     });
   });
 
