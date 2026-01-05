@@ -1,5 +1,47 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
+exports[`Chat client streaming supports disabling auto-streaming via disableStreaming flag 1`] = `
+{
+  "id": [
+    "langchain_core",
+    "messages",
+    "AIMessage",
+  ],
+  "kwargs": {
+    "additional_kwargs": {
+      "function_call": undefined,
+      "tool_calls": undefined,
+    },
+    "content": "The capital of France is Paris.",
+    "invalid_tool_calls": [],
+    "response_metadata": {
+      "created": undefined,
+      "finish_reason": undefined,
+      "function_call": undefined,
+      "id": undefined,
+      "index": 0,
+      "model": undefined,
+      "object": undefined,
+      "promptFilterResults": undefined,
+      "tokenUsage": {
+        "completionTokens": 0,
+        "promptTokens": 0,
+        "totalTokens": 0,
+      },
+      "tool_calls": undefined,
+    },
+    "tool_calls": [],
+    "usage_metadata": {
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0,
+    },
+  },
+  "lc": 1,
+  "type": "constructor",
+}
+`;
+
 exports[`Chat client streaming supports streaming responses 1`] = `
 {
   "id": [

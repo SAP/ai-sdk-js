@@ -11,6 +11,7 @@ import type {
 import type { Xor } from '@sap-cloud-sdk/util';
 import type {
   BaseChatModelCallOptions,
+  BaseChatModelParams,
   BindToolsInput
 } from '@langchain/core/language_models/chat_models';
 import type { CustomRequestConfig } from '@sap-ai-sdk/core';
@@ -19,6 +20,18 @@ import type { CustomRequestConfig } from '@sap-ai-sdk/core';
  * Tool type for LangChain Orchestration client.
  */
 export type ChatOrchestrationToolType = ChatCompletionTool | BindToolsInput;
+
+/**
+ * Langchain parameters for {@link OrchestrationClient} constructor `langchainOptions` argument.
+ */
+export type LangChainOrchestrationChatModelParams = BaseChatModelParams & {
+  /**
+   * Whether the model should automatically stream responses when using `invoke()`.
+   * If {@link disableStreaming} is set to `true`, this option will be ignored.
+   * If {@link streaming} is explicitly set to `false`, {@link disableStreaming} will be set to `true`.
+   */
+  streaming?: boolean;
+};
 
 /**
  * Options for an orchestration call.
