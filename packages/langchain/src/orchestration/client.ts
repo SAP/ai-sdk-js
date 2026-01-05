@@ -14,12 +14,12 @@ import type { NewTokenIndices } from '@langchain/core/callbacks/base';
 import type { BaseLanguageModelInput } from '@langchain/core/language_models/base';
 import type { Runnable, RunnableLike } from '@langchain/core/runnables';
 import type { ChatResult } from '@langchain/core/outputs';
-import type { BaseChatModelParams } from '@langchain/core/language_models/chat_models';
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
 import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import type {
   OrchestrationCallOptions,
   LangChainOrchestrationModuleConfig,
+  LangChainOrchestrationChatModelParams,
   ChatOrchestrationToolType
 } from './types.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
@@ -38,9 +38,11 @@ export class OrchestrationClient extends BaseChatModel<
   OrchestrationCallOptions,
   OrchestrationMessageChunk
 > {
+  streaming: boolean = false;
+
   constructor(
     public orchestrationConfig: LangChainOrchestrationModuleConfig,
-    public langchainOptions: BaseChatModelParams = {},
+    public langchainOptions: LangChainOrchestrationChatModelParams = {},
     public deploymentConfig?: ResourceGroupConfig,
     public destination?: HttpDestinationOrFetchOptions
   ) {
@@ -54,6 +56,21 @@ export class OrchestrationClient extends BaseChatModel<
     };
 
     super(langchainOptions);
+
+    // Initialize streaming flags with LangChain-compatible behavior:
+    // - `streaming`: true enables auto-streaming in `invoke()` calls
+    // - `disableStreaming`: true overrides streaming flag
+    // - `streaming`: `false` causes `disableStreaming` to be set to `true` for framework compatibility
+    this.disableStreaming = langchainOptions?.disableStreaming === true;
+
+    // If streaming is explicitly false, streaming is disabled
+    if (langchainOptions?.streaming === false) {
+      this.disableStreaming = true;
+    }
+
+    // Enable streaming only when `streaming` is `true` (default `false`) and `disableStreaming` is not `true` (default `undefined`).
+    this.streaming =
+      langchainOptions?.streaming === true && this.disableStreaming !== true;
   }
 
   _llmType(): string {
@@ -85,6 +102,20 @@ export class OrchestrationClient extends BaseChatModel<
     options: typeof this.ParsedCallOptions,
     runManager?: CallbackManagerForLLMRun
   ): Promise<ChatResult> {
+    // Auto-streaming: transparently stream and concatenate when enabled
+    if (this.streaming) {
+      let generation;
+      const stream = this._streamResponseChunks(messages, options, runManager);
+      for await (const chunk of stream) {
+        generation =
+          generation === undefined ? chunk : generation.concat(chunk);
+      }
+      if (generation === undefined) {
+        throw new Error('No chunks were generated from the stream.');
+      }
+      return { generations: [generation] };
+    }
+
     const { placeholderValues, customRequestConfig } = options;
     const allMessages = mapLangChainMessagesToOrchestrationMessages(messages);
     const mergedOrchestrationConfig = this.mergeOrchestrationConfig(options);

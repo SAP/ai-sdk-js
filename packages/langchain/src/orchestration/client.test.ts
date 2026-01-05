@@ -1,6 +1,12 @@
 import { constructCompletionPostRequest } from '@sap-ai-sdk/orchestration/internal.js';
 import { jest } from '@jest/globals';
 import nock from 'nock';
+import {
+  START,
+  END,
+  MessagesAnnotation,
+  StateGraph
+} from '@langchain/langgraph';
 import { type AIMessageChunk } from '@langchain/core/messages';
 import {
   mockClientCredentialsGrantCall,
@@ -389,6 +395,121 @@ describe('orchestration service client', () => {
       expect(finalOutput).toMatchSnapshot();
     });
 
+    it('supports auto-streaming responses', async () => {
+      mockInference(
+        {
+          data: constructCompletionPostRequest(
+            {
+              ...config,
+              promptTemplating: {
+                ...config.promptTemplating,
+                prompt: {
+                  template: messages
+                }
+              }
+            },
+            { messages: [] },
+            true
+          )
+        },
+        {
+          data: mockResponseStream,
+          status: 200
+        },
+        endpoint
+      );
+
+      jest.spyOn(OrchestrationClient.prototype, '_streamResponseChunks');
+
+      const client = new OrchestrationClient(config, {
+        streaming: true
+      });
+      expect(client.streaming).toBe(true);
+
+      const finalOutput = await client.invoke([
+        { role: 'user', content: 'Hello!' }
+      ]);
+
+      expect(finalOutput).toMatchSnapshot();
+      expect(client._streamResponseChunks).toHaveBeenCalled();
+    });
+
+    it('has langchain handle disabling streaming via disableStreaming flag in stream', async () => {
+      mockInference(
+        {
+          data: constructCompletionPostRequest(
+            {
+              ...config,
+              promptTemplating: {
+                ...config.promptTemplating,
+                prompt: {
+                  template: messages
+                }
+              }
+            },
+            { messages: [] },
+            false
+          )
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        endpoint
+      );
+
+      jest.spyOn(OrchestrationClient.prototype, '_streamResponseChunks');
+
+      const client = new OrchestrationClient(config, {
+        streaming: true,
+        disableStreaming: true
+      });
+      expect(client.streaming).toBe(false);
+      expect(client.disableStreaming).toBe(true);
+
+      const stream = await client.stream('Hello!');
+      // Non-streaming response, so only one chunk expected
+      const firstChunk = await stream.next();
+      expect(firstChunk.value).toBeDefined();
+      expect(firstChunk.done).toBe(false);
+      // Verify that no further chunks are present
+      const trailingChunk = await stream.next();
+      expect(trailingChunk.done).toBe(true);
+      expect(client._streamResponseChunks).not.toHaveBeenCalled();
+    });
+
+    it('should handle streaming and disabling streaming flags as expected', async () => {
+      let testClient = new OrchestrationClient(config, {
+        streaming: true,
+        disableStreaming: true
+      });
+
+      // streaming should be disabled due to disableStreaming being true
+      expect(testClient.streaming).toBe(false);
+      expect(testClient.disableStreaming).toBe(true);
+
+      testClient = new OrchestrationClient(config, {
+        streaming: false
+      });
+
+      // streaming should be disabled
+      expect(testClient.streaming).toBe(false);
+      expect(testClient.disableStreaming).toBe(true);
+
+      testClient = new OrchestrationClient(config, {
+        streaming: true
+      });
+
+      // auto-streaming should be enabled
+      expect(testClient.streaming).toBe(true);
+      expect(testClient.disableStreaming).toBe(false);
+
+      testClient = new OrchestrationClient(config);
+      // auto-streaming and disableStreaming should be disabled by default
+      expect(testClient.streaming).toBe(false);
+      expect(testClient.disableStreaming).toBe(false);
+    });
+
     it('streams and aborts with a signal', async () => {
       mockInference(
         {
@@ -512,5 +633,64 @@ describe('orchestration service client', () => {
       });
       expect(finalOutput).toMatchSnapshot();
     });
+  });
+
+  it('streams when invoked in a streaming langgraph', async () => {
+    mockInference(
+      {
+        data: constructCompletionPostRequest(
+          {
+            ...config,
+            promptTemplating: {
+              ...config.promptTemplating,
+              prompt: {
+                template: messages
+              }
+            }
+          },
+          { messages: [] },
+          true
+        )
+      },
+      {
+        data: mockResponseStream,
+        status: 200
+      },
+      endpoint
+    );
+    jest.spyOn(OrchestrationClient.prototype, '_streamResponseChunks');
+
+    const llm = new OrchestrationClient(config);
+
+    // Define the function that calls the model
+    const callModel = async (state: typeof MessagesAnnotation.State) => {
+      const response = await llm.invoke(state.messages);
+      // Update message history with response:
+      return { messages: response };
+    };
+
+    // Define a new graph
+    const workflow = new StateGraph(MessagesAnnotation)
+      // Define the (single) node in the graph
+      .addNode('model', callModel)
+      .addEdge(START, 'model')
+      .addEdge('model', END);
+
+    const app = workflow.compile();
+    const stream = await app.stream(
+      {
+        messages
+      },
+      // langgraph will only enable streaming in a more granular streaming mode than the default (values)
+      // messages: Streams 2-tuples (LLM token, metadata) from any graph nodes where an LLM is invoked.
+      // Stream modes: https://docs.langchain.com/oss/javascript/langgraph/streaming#supported-stream-modes
+      { streamMode: 'messages' as const }
+    );
+
+    for await (const _ of stream) {
+      // Empty
+    }
+
+    expect(llm._streamResponseChunks).toHaveBeenCalled();
   });
 });

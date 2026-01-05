@@ -35,6 +35,12 @@ export type AzureOpenAiChatModelParams = Pick<
    * If `undefined` the `strict` argument will not be passed to OpenAI.
    */
   supportsStrictToolCalling?: boolean;
+  /**
+   * Whether the model should automatically stream responses when using `invoke()`.
+   * If {@link disableStreaming} is set to `true`, this option will be ignored.
+   * If {@link streaming} is explicitly set to `false`, {@link disableStreaming} will be set to `true`.
+   */
+  streaming?: boolean;
 } & BaseChatModelParams &
   ModelConfig<AzureOpenAiChatModel> &
   ResourceGroupConfig;
