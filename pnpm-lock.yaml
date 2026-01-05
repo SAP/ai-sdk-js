@@ -181,7 +181,7 @@ importers:
     devDependencies:
       '@langchain/langgraph':
         specifier: ^1.0.7
-        version: 1.0.7(@langchain/core@1.1.8(openai@6.14.0(ws@8.18.3)(zod@4.2.1)))(zod-to-json-schema@3.25.0(zod@4.2.1))(zod@4.2.1)
+        version: 1.0.7(@langchain/core@1.1.8(openai@6.14.0(ws@8.18.3)(zod@4.3.5)))(zod-to-json-schema@3.25.0(zod@4.3.5))(zod@4.3.5)
 
   packages/orchestration:
     dependencies:
