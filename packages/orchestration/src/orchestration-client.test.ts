@@ -1224,6 +1224,44 @@ describe('orchestration service client', () => {
         'The messages field in request is not supported when using an orchestration config reference. Messages should be part of the referenced configuration or provided via messagesHistory. The messages field will be ignored.'
       );
     });
+
+    it('throws error when server returns non-streaming JSON response for config reference without streaming enabled', async () => {
+      const configRef: OrchestrationConfigReference = {
+        id: 'test-config-id-without-streaming'
+      };
+
+      // Load non-streaming JSON response (raw string without SSE format)
+      const mockResponse = await parseFileToString(
+        'orchestration',
+        'orchestration-chat-completion-success-response.json'
+      );
+
+      // Mock the inference endpoint to return non-SSE formatted response
+      // This simulates a config reference where streaming is not enabled
+      mockInference(
+        {
+          data: {
+            config_ref: { id: configRef.id }
+          }
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      // Call the streaming API with config reference
+      const response = await new OrchestrationClient(configRef).stream();
+
+      await expect(async () => {
+        for await (const _ of response.stream) {
+          /* empty */
+        }
+      }).rejects.toThrowErrorMatchingSnapshot();
+    });
   });
 
   describe('OrchestrationClient deploymentId behavior', () => {
