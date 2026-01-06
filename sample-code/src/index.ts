@@ -24,7 +24,8 @@ export {
   chatCompletionStream,
   orchestrationMessageHistoryWithToolCalling,
   orchestrationTranslation,
-  orchestrationEmbeddingWithMasking
+  orchestrationEmbeddingWithMasking,
+  orchestrationConfigReference
 } from './orchestration.js';
 export {
   invoke,
