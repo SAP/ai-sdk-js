@@ -64,31 +64,17 @@ export function constructCompletionPostRequestFromConfigReference(
 ):
   | CompletionRequestConfigurationReferenceById
   | CompletionRequestConfigurationReferenceByNameScenarioVersion {
-  // Determine if it's by-id or by-name reference
-  if ('id' in configRef && configRef.id !== undefined) {
-    return {
-      config_ref: { id: configRef.id },
-      ...(request?.placeholderValues && {
-        placeholder_values: request.placeholderValues
-      }),
-      ...(request?.messagesHistory && {
-        messages_history: request.messagesHistory
-      })
-    };
-  }
   return {
-    config_ref: {
-      scenario: configRef.scenario,
-      name: configRef.name,
-      version: configRef.version
-    },
+    config_ref: configRef,
     ...(request?.placeholderValues && {
       placeholder_values: request.placeholderValues
     }),
     ...(request?.messagesHistory && {
       messages_history: request.messagesHistory
     })
-  };
+  } as
+    | CompletionRequestConfigurationReferenceById
+    | CompletionRequestConfigurationReferenceByNameScenarioVersion;
 }
 
 /**
