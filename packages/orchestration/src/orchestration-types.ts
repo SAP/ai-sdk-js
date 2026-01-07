@@ -233,9 +233,9 @@ export interface OrchestrationModuleConfig {
  * Reference by scenario, name and version.
  * @example
  * const configRef: OrchestrationConfigReference = {
- *   scenario: 'foundation-models',
- *   name: 'my-orchestration-config',
- *   version: '1.0.0'
+ *   scenario: 'customer-support',
+ *   name: 'example-orchestration-config',
+ *   version: '0.0.1'
  * };
  */
 export type OrchestrationConfigReference = Xor<
