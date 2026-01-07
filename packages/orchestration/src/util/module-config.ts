@@ -3,7 +3,7 @@ import type {
   ChatCompletionRequest,
   StreamOptions,
   OrchestrationModuleConfig,
-  OrchestrationConfigReference,
+  OrchestrationConfigRef,
   EmbeddingModuleConfig,
   EmbeddingRequest
 } from '../orchestration-types.js';
@@ -59,7 +59,7 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
  * @internal
  */
 export function constructCompletionPostRequestFromConfigReference(
-  configRef: OrchestrationConfigReference,
+  configRef: OrchestrationConfigRef,
   request?: ChatCompletionRequest
 ):
   | CompletionRequestConfigurationReferenceById

@@ -22,7 +22,7 @@ import type {
 } from '@sap-ai-sdk/ai-api/internal.js';
 import type {
   OrchestrationModuleConfig,
-  OrchestrationConfigReference,
+  OrchestrationConfigRef,
   ChatCompletionRequest,
   RequestOptions,
   StreamOptions
@@ -44,15 +44,12 @@ export class OrchestrationClient {
    * @param config - Orchestration configuration. Can be:
    * - An `OrchestrationModuleConfig` object for inline configuration
    * - A JSON string obtained from AI Launchpad
-   * - An object of type`OrchestrationConfigReference` to reference a stored configuration by ID or name.
+   * - An object of type`OrchestrationConfigRef` to reference a stored configuration by ID or name.
    * @param deploymentConfig - Deployment configuration.
    * @param destination - The destination to use for the request.
    */
   constructor(
-    private config:
-      | OrchestrationModuleConfig
-      | string
-      | OrchestrationConfigReference,
+    private config: OrchestrationModuleConfig | string | OrchestrationConfigRef,
     private deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
     private destination?: HttpDestinationOrFetchOptions
   ) {
@@ -138,8 +135,8 @@ export class OrchestrationClient {
    * @returns True if config is a config reference.
    */
   private isConfigReference(
-    config: OrchestrationModuleConfig | string | OrchestrationConfigReference
-  ): config is OrchestrationConfigReference {
+    config: OrchestrationModuleConfig | string | OrchestrationConfigRef
+  ): config is OrchestrationConfigRef {
     return (
       typeof config === 'object' &&
       config !== null &&

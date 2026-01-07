@@ -16,10 +16,7 @@ import type {
   AssistantChatMessage,
   TranslationReturnType,
   LlamaGuard38BFilterReturnType,
-  TranslationConfigParams,
-  DocumentTranslationApplyToSelector,
-  TranslationTargetLanguage,
-  OrchestrationConfigReference,
+  OrchestrationConfigRef,
   OrchestrationStreamResponse,
   OrchestrationStreamChunkResponse
 } from '@sap-ai-sdk/orchestration';
@@ -565,11 +562,11 @@ expectType<TranslationReturnType<'input'>>(
 /**
  * Config Reference Types.
  */
-expectAssignable<OrchestrationConfigReference>({
+expectAssignable<OrchestrationConfigRef>({
   id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
 });
 
-expectAssignable<OrchestrationConfigReference>({
+expectAssignable<OrchestrationConfigRef>({
   scenario: 'foundation-models',
   name: 'my-orchestration-config',
   version: '1.0.0'
@@ -578,7 +575,7 @@ expectAssignable<OrchestrationConfigReference>({
 /**
  * Config reference cannot have both ID and name/scenario/version (Xor enforcement).
  */
-expectError<OrchestrationConfigReference>({
+expectError<OrchestrationConfigRef>({
   id: 'some-id',
   scenario: 'foundation-models',
   name: 'my-orchestration-config',
@@ -588,12 +585,12 @@ expectError<OrchestrationConfigReference>({
 /**
  * Config reference by name requires all three fields: scenario, name, version.
  */
-expectError<OrchestrationConfigReference>({
+expectError<OrchestrationConfigRef>({
   scenario: 'foundation-models',
   name: 'my-orchestration-config'
 });
 
-expectError<OrchestrationConfigReference>({
+expectError<OrchestrationConfigRef>({
   name: 'my-orchestration-config',
   version: '1.0.0'
 });
@@ -601,7 +598,7 @@ expectError<OrchestrationConfigReference>({
 /**
  * Empty config reference should be an error.
  */
-expectError<OrchestrationConfigReference>({});
+expectError<OrchestrationConfigRef>({});
 
 /**
  * Chat Completion with Config References.

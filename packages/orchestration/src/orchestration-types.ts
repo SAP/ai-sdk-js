@@ -227,18 +227,18 @@ export interface OrchestrationModuleConfig {
  * created via the Prompt Registry API before it can be referenced.
  * Reference by ID.
  * @example
- * const configRef: OrchestrationConfigReference = {
+ * const configRef: OrchestrationConfigRef = {
  *   id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
  * };
  * Reference by scenario, name and version.
  * @example
- * const configRef: OrchestrationConfigReference = {
+ * const configRef: OrchestrationConfigRef = {
  *   scenario: 'customer-support',
  *   name: 'example-orchestration-config',
  *   version: '0.0.1'
  * };
  */
-export type OrchestrationConfigReference = Xor<
+export type OrchestrationConfigRef = Xor<
   {
     /** Orchestration configuration ID. */
     id: string;
