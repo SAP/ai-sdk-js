@@ -74,7 +74,7 @@ export class OrchestrationClient {
   ): Promise<OrchestrationResponse> {
     if (this.isConfigReference(this.config) && request?.messages?.length) {
       logger.warn(
-        'The messages field in request is not supported when using an orchestration config reference. Messages should be part of the referenced configuration or provided via messagesHistory. The messages field will be ignored.'
+        'The `messages` field in `request` is not supported when using an orchestration config reference. Messages should be part of the referenced configuration or provided via `messagesHistory`. The `messages` field will be ignored.'
       );
     }
     const response = await this.executeRequest({
@@ -112,7 +112,7 @@ export class OrchestrationClient {
         }
         if (request?.messages?.length) {
           logger.warn(
-            'The messages field in request is not supported when using an orchestration config reference. Messages should be part of the referenced configuration or provided via messagesHistory. The messages field will be ignored.'
+            'The `messages` field in `request` is not supported when using an orchestration config reference. Messages should be part of the referenced configuration or provided via `messagesHistory`. The `messages` field will be ignored.'
           );
         }
       }
