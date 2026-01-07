@@ -817,7 +817,7 @@ describe('orchestration service client', () => {
     );
 
     expect(warnSpy).toHaveBeenCalledWith(
-      'Stream options are not supported when using a JSON module config.'
+      'Stream `options` are not supported when using a JSON module config.'
     );
 
     const initialResponse = await parseFileToString(
@@ -1180,7 +1180,7 @@ describe('orchestration service client', () => {
       });
 
       expect(warnSpy).toHaveBeenCalledWith(
-        'Stream options are not supported when using an orchestration config reference. Streaming is only supported if the referenced config has streaming configured.'
+        'Stream `options` are not supported when using an orchestration config reference. Streaming is only supported if the referenced config has streaming configured.'
       );
     });
 
