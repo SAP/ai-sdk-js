@@ -44,7 +44,7 @@ export class OrchestrationClient {
    * @param config - Orchestration configuration. Can be:
    * - An `OrchestrationModuleConfig` object for inline configuration
    * - A JSON string obtained from AI Launchpad
-   * - An `OrchestrationConfigReference` to reference a stored configuration by ID or name.
+   * - An object of type`OrchestrationConfigReference` to reference a stored configuration by ID or name.
    * @param deploymentConfig - Deployment configuration.
    * @param destination - The destination to use for the request.
    */
