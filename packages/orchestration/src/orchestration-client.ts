@@ -59,7 +59,8 @@ export class OrchestrationClient {
     } else if (!isConfigReference(config)) {
       this.config =
         typeof config.promptTemplating.prompt === 'string'
-          ? this.parseAndMergeTemplating(config) : config;
+          ? this.parseAndMergeTemplating(config)
+          : config;
     }
   }
 
