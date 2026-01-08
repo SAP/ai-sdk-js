@@ -132,7 +132,7 @@ export class OrchestrationClient {
   /**
    * Type guard to check if config is a config reference.
    * @param config - The config to check.
-   * @returns True if config is a config reference.
+   * @returns Whether the config is a config reference.
    */
   private isConfigReference(
     config: OrchestrationModuleConfig | string | OrchestrationConfigRef
