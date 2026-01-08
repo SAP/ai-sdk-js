@@ -25,7 +25,7 @@ import { getOrchestrationDeploymentId } from './deployment-resolver.js';
 import type { CompletionPostResponse } from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
-  OrchestrationConfigReference,
+  OrchestrationConfigRef,
   ChatCompletionRequest
 } from './orchestration-types.js';
 
@@ -1022,7 +1022,7 @@ describe('orchestration service client', () => {
 
   describe('config reference support', () => {
     it('calls chatCompletion with config reference by ID', async () => {
-      const configRef: OrchestrationConfigReference = {
+      const configRef: OrchestrationConfigRef = {
         id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
       };
 
@@ -1060,7 +1060,7 @@ describe('orchestration service client', () => {
     });
 
     it('calls chatCompletion with config reference by name,scenario,version', async () => {
-      const configRef: OrchestrationConfigReference = {
+      const configRef: OrchestrationConfigRef = {
         scenario: 'sdk-test-scenario',
         name: 'test-orchestration-config',
         version: '1.0.0'
@@ -1106,7 +1106,7 @@ describe('orchestration service client', () => {
     });
 
     it('executes streaming request with config reference by ID', async () => {
-      const configRef: OrchestrationConfigReference = {
+      const configRef: OrchestrationConfigRef = {
         id: 'test-config-id'
       };
 
@@ -1151,7 +1151,7 @@ describe('orchestration service client', () => {
 
       const warnSpy = jest.spyOn(logger, 'warn');
 
-      const configRef: OrchestrationConfigReference = {
+      const configRef: OrchestrationConfigRef = {
         id: 'test-config-id'
       };
 
@@ -1192,7 +1192,7 @@ describe('orchestration service client', () => {
 
       const warnSpy = jest.spyOn(logger, 'warn');
 
-      const configRef: OrchestrationConfigReference = {
+      const configRef: OrchestrationConfigRef = {
         id: 'test-config-id'
       };
 
@@ -1226,7 +1226,7 @@ describe('orchestration service client', () => {
     });
 
     it('throws error when server returns non-streaming JSON response for config reference without streaming enabled', async () => {
-      const configRef: OrchestrationConfigReference = {
+      const configRef: OrchestrationConfigRef = {
         id: 'test-config-id-without-streaming'
       };
 
