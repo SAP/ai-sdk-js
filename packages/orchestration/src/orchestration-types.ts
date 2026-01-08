@@ -263,7 +263,6 @@ export function isConfigReference(
 ): config is OrchestrationConfigRef {
   return (
     typeof config === 'object' &&
-    config !== null &&
     ('id' in config ||
       ('scenario' in config && 'name' in config && 'version' in config))
   );
