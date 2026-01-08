@@ -56,13 +56,10 @@ export class OrchestrationClient {
   ) {
     if (typeof config === 'string') {
       this.validateJsonConfig(config);
-    } else if (isConfigReference(config)) {
-      this.config = config;
-    } else {
+    } else if (!isConfigReference(config)) {
       this.config =
         typeof config.promptTemplating.prompt === 'string'
-          ? this.parseAndMergeTemplating(config) // parse and assign if templating is a string
-          : config;
+          ? this.parseAndMergeTemplating(config) : config;
     }
   }
 
