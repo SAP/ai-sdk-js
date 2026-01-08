@@ -209,7 +209,7 @@ export async function orchestrationPromptRegistry(): Promise<OrchestrationRespon
  * Use a pre-configured orchestration setup via config reference.
  * @returns The orchestration service response.
  */
-export async function orchestrationConfigReference(): Promise<OrchestrationResponse> {
+export async function OrchestrationConfigRef(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
     scenario: 'sdk-test-scenario',
     name: 'test-config-for-OrchestrationTest',

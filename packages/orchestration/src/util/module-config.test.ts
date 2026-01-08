@@ -14,7 +14,7 @@ import type {
 } from '../client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
-  OrchestrationConfigReference,
+  OrchestrationConfigRef,
   ChatCompletionRequest,
   StreamOptions
 } from '../orchestration-types.js';
@@ -165,7 +165,7 @@ describe('stream util tests', () => {
 
 describe('constructCompletionPostRequestFromConfigReference', () => {
   it('constructs request with config reference by ID', () => {
-    const configRef: OrchestrationConfigReference = {
+    const configRef: OrchestrationConfigRef = {
       id: 'test-config-id'
     };
 
@@ -177,7 +177,7 @@ describe('constructCompletionPostRequestFromConfigReference', () => {
   });
 
   it('constructs request with config reference by ID and placeholder values', () => {
-    const configRef: OrchestrationConfigReference = {
+    const configRef: OrchestrationConfigRef = {
       id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
     };
     const request: ChatCompletionRequest = {
@@ -196,7 +196,7 @@ describe('constructCompletionPostRequestFromConfigReference', () => {
   });
 
   it('constructs request with config reference by name/scenario/version', () => {
-    const configRef: OrchestrationConfigReference = {
+    const configRef: OrchestrationConfigRef = {
       scenario: 'foundation-models',
       name: 'my-orchestration-config',
       version: '1.0.0'
@@ -214,7 +214,7 @@ describe('constructCompletionPostRequestFromConfigReference', () => {
   });
 
   it('constructs request with config reference by name and messages history', () => {
-    const configRef: OrchestrationConfigReference = {
+    const configRef: OrchestrationConfigRef = {
       scenario: 'customer-support',
       name: 'example-config',
       version: '0.0.1'
@@ -245,7 +245,7 @@ describe('constructCompletionPostRequestFromConfigReference', () => {
   });
 
   it('constructs request with both placeholder values and messages history', () => {
-    const configRef: OrchestrationConfigReference = {
+    const configRef: OrchestrationConfigRef = {
       id: 'test-id'
     };
     const request: ChatCompletionRequest = {
