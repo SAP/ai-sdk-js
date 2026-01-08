@@ -5,3 +5,8 @@ exports[`orchestration service client OrchestrationClient Stream Error Handling 
 Cause: Error received from the server.
 {"request_id":"ecb33455-6983-4baa-9889-ab391ddcd9b4","code":400,"message":"400 - LLM Module: Model gpt-5 in version wrong-version not found.","location":"LLM Module"}"
 `;
+
+exports[`orchestration service client config reference support throws error when server returns non-streaming JSON response for config reference without streaming enabled 1`] = `
+"Error while iterating over SSE stream.
+Cause: Invalid SSE payload: {"
+`;

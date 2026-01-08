@@ -8,8 +8,10 @@ import { OrchestrationStreamResponse } from './orchestration-stream-response.js'
 import { OrchestrationResponse } from './orchestration-response.js';
 import {
   constructCompletionPostRequest,
-  constructCompletionPostRequestFromJsonModuleConfig
+  constructCompletionPostRequestFromJsonModuleConfig,
+  constructCompletionPostRequestFromConfigReference
 } from './util/index.js';
+import { isConfigReference } from './orchestration-types.js';
 import type { TemplatingChatMessage } from './client/api/schema/index.js';
 import type {
   HttpResponse,
@@ -21,6 +23,7 @@ import type {
 } from '@sap-ai-sdk/ai-api/internal.js';
 import type {
   OrchestrationModuleConfig,
+  OrchestrationConfigRef,
   ChatCompletionRequest,
   RequestOptions,
   StreamOptions
@@ -39,21 +42,24 @@ const logger = createLogger({
 export class OrchestrationClient {
   /**
    * Creates an instance of the orchestration client.
-   * @param config - Orchestration module configuration. This can either be an `OrchestrationModuleConfig` object or a JSON string obtained from AI Launchpad.
+   * @param config - Orchestration configuration. Can be:
+   * - An `OrchestrationModuleConfig` object for inline configuration
+   * - A JSON string obtained from AI Launchpad
+   * - An object of type`OrchestrationConfigRef` to reference a stored configuration by ID or name.
    * @param deploymentConfig - Deployment configuration.
    * @param destination - The destination to use for the request.
    */
   constructor(
-    private config: OrchestrationModuleConfig | string,
+    private config: OrchestrationModuleConfig | string | OrchestrationConfigRef,
     private deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
     private destination?: HttpDestinationOrFetchOptions
   ) {
     if (typeof config === 'string') {
       this.validateJsonConfig(config);
-    } else {
+    } else if (!isConfigReference(config)) {
       this.config =
         typeof config.promptTemplating.prompt === 'string'
-          ? this.parseAndMergeTemplating(config) // parse and assign if templating is a string
+          ? this.parseAndMergeTemplating(config)
           : config;
     }
   }
@@ -62,6 +68,11 @@ export class OrchestrationClient {
     request?: ChatCompletionRequest,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationResponse> {
+    if (isConfigReference(this.config) && request?.messages?.length) {
+      logger.warn(
+        'The messages field in request is not supported when using an orchestration config reference. Messages should be part of the referenced configuration or provided via messagesHistory. The messages field will be ignored.'
+      );
+    }
     const response = await this.executeRequest({
       request,
       requestConfig,
@@ -89,6 +100,18 @@ export class OrchestrationClient {
           'Stream options are not supported when using a JSON module config.'
         );
       }
+      if (isConfigReference(this.config)) {
+        if (options) {
+          logger.warn(
+            'Stream options are not supported when using an orchestration config reference. Streaming is only supported if the referenced config has streaming configured.'
+          );
+        }
+        if (request?.messages?.length) {
+          logger.warn(
+            'The messages field in request is not supported when using an orchestration config reference. Messages should be part of the referenced configuration or provided via messagesHistory. The messages field will be ignored.'
+          );
+        }
+      }
 
       return await this.createStreamResponse(
         {
@@ -115,12 +138,17 @@ export class OrchestrationClient {
             request,
             stream
           )
-        : constructCompletionPostRequest(
-            this.config,
-            request,
-            stream,
-            streamOptions
-          );
+        : isConfigReference(this.config)
+          ? constructCompletionPostRequestFromConfigReference(
+              this.config,
+              request
+            )
+          : constructCompletionPostRequest(
+              this.config,
+              request,
+              stream,
+              streamOptions
+            );
 
     const deploymentId = await getOrchestrationDeploymentId(
       this.deploymentConfig ?? {},
