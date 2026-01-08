@@ -254,6 +254,22 @@ export type OrchestrationConfigRef = Xor<
 >;
 
 /**
+ * Type guard to check if config is a config reference.
+ * @param config - The config to check.
+ * @returns Type predicate indicating whether the config is a config reference.
+ */
+export function isConfigReference(
+  config: OrchestrationModuleConfig | string | OrchestrationConfigRef
+): config is OrchestrationConfigRef {
+  return (
+    typeof config === 'object' &&
+    config !== null &&
+    ('id' in config ||
+      ('scenario' in config && 'name' in config && 'version' in config))
+  );
+}
+
+/**
  * Request options for orchestration.
  */
 export interface RequestOptions {

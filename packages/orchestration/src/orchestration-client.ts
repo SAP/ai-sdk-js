@@ -11,6 +11,7 @@ import {
   constructCompletionPostRequestFromJsonModuleConfig,
   constructCompletionPostRequestFromConfigReference
 } from './util/index.js';
+import { isConfigReference } from './orchestration-types.js';
 import type { TemplatingChatMessage } from './client/api/schema/index.js';
 import type {
   HttpResponse,
@@ -55,7 +56,7 @@ export class OrchestrationClient {
   ) {
     if (typeof config === 'string') {
       this.validateJsonConfig(config);
-    } else if (this.isConfigReference(config)) {
+    } else if (isConfigReference(config)) {
       this.config = config;
     } else {
       this.config =
@@ -69,7 +70,7 @@ export class OrchestrationClient {
     request?: ChatCompletionRequest,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationResponse> {
-    if (this.isConfigReference(this.config) && request?.messages?.length) {
+    if (isConfigReference(this.config) && request?.messages?.length) {
       logger.warn(
         'The `messages` field in `request` is not supported when using an orchestration config reference. Messages should be part of the referenced configuration or provided via `messagesHistory`. The `messages` field will be ignored.'
       );
@@ -101,7 +102,7 @@ export class OrchestrationClient {
           'Stream `options` are not supported when using a JSON module config.'
         );
       }
-      if (this.isConfigReference(this.config)) {
+      if (isConfigReference(this.config)) {
         if (options) {
           logger.warn(
             'Stream `options` are not supported when using an orchestration config reference. Streaming is only supported if the referenced config has streaming configured.'
@@ -129,22 +130,6 @@ export class OrchestrationClient {
     }
   }
 
-  /**
-   * Type guard to check if config is a config reference.
-   * @param config - The config to check.
-   * @returns Whether the config is a config reference.
-   */
-  private isConfigReference(
-    config: OrchestrationModuleConfig | string | OrchestrationConfigRef
-  ): config is OrchestrationConfigRef {
-    return (
-      typeof config === 'object' &&
-      config !== null &&
-      ('id' in config ||
-        ('scenario' in config && 'name' in config && 'version' in config))
-    );
-  }
-
   private async executeRequest(options: RequestOptions): Promise<HttpResponse> {
     const { request, requestConfig, stream, streamOptions } = options;
 
@@ -155,7 +140,7 @@ export class OrchestrationClient {
             request,
             stream
           )
-        : this.isConfigReference(this.config)
+        : isConfigReference(this.config)
           ? constructCompletionPostRequestFromConfigReference(
               this.config,
               request
