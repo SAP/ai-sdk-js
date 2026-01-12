@@ -5,6 +5,7 @@
  */
 import type { LlmChoice } from './llm-choice.js';
 import type { TokenUsage } from './token-usage.js';
+import type { Citation } from './citation.js';
 /**
  * Output from LLM. Follows the OpenAI spec.
  */
@@ -39,4 +40,8 @@ export type LlmModuleResult = {
    */
   choices: LlmChoice[];
   usage: TokenUsage;
+  /**
+   * List of citations associated with the response.
+   */
+  citations?: Citation[];
 } & Record<string, any>;
