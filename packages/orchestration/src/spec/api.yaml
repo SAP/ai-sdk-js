@@ -773,6 +773,11 @@ components:
             $ref: '#/components/schemas/LLMChoice'
         usage:
           $ref: '#/components/schemas/TokenUsage'
+        citations:
+          type: array
+          description: List of citations associated with the response.
+          items:
+            $ref: '#/components/schemas/Citation'
     LLMModuleResultStreaming:
       type: object
       description: Output of LLM module. Follows the OpenAI spec.
@@ -805,6 +810,32 @@ components:
             $ref: '#/components/schemas/LLMChoiceStreaming'
         usage:
           $ref: '#/components/schemas/TokenUsage'
+        citations:
+          type: array
+          description: List of citations associated with the response.
+          items:
+            $ref: '#/components/schemas/Citation'
+    Citation:
+      type: object
+      required:
+        - title
+        - url
+      properties:
+        ref_id:
+          type: integer
+          description: Unique identifier for inline citation
+        title:
+          type: string
+          description: Title of the citation
+        url:
+          type: string
+          description: URL of the citation
+        start_index:
+          type: integer
+          description: Start index of the citation in the response text
+        end_index:
+          type: integer
+          description: End index of the citation in the response text
     LLMChoice:
       type: object
       required:
