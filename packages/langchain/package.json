@@ -31,7 +31,6 @@
     "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
-    "@langchain/core": "^1.1.8",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
@@ -42,5 +41,8 @@
   },
   "devDependencies": {
     "@langchain/langgraph": "^1.0.7"
+  },
+  "peerDependencies": {
+    "@langchain/core": "^1.1.8"
   }
 }
