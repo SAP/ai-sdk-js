@@ -74,6 +74,7 @@ import {
   createPromptTemplate,
   deletePromptTemplate
 } from './prompt-registry.js';
+import { predict } from './rpt.js';
 import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type { AIMessageChunk } from '@langchain/core/messages';
 import type {
@@ -775,6 +776,17 @@ app.get('/prompt-registry/template', async (req, res) => {
 
     const response = await deletePromptTemplate(id);
     res.write(`Prompt template deleted: ${response.message}\n`);
+
+    res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/rpt', async (req, res) => {
+  try {
+    const data = await predict();
+    res.write(`Prediction: ${data}\n`);
 
     res.end();
   } catch (error: any) {

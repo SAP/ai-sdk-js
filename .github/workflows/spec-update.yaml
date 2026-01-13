@@ -12,6 +12,7 @@ on:
           - document-grounding
           - orchestration
           - prompt-registry
+          - rpt
         default: orchestration
       file-ref:
         description: 'Branch or tag to checkout the spec file from'
@@ -100,6 +101,10 @@ jobs:
             prompt-registry)
               API_URL="repos/AI/prompt-registry/contents/src/spec/generated/prompt-registry-combined.yaml?ref=$REF"
               FILE_PATH='packages/prompt-registry/src/spec/prompt-registry.yaml'
+              ;;
+            rpt)
+              API_URL="repos/DL-COE/sap-rpt-1-public-content/contents/sap-rpt-1_openapi.json?ref=$REF"
+              FILE_PATH='packages/rpt/src/spec/rpt.json'
               ;;
           esac
 

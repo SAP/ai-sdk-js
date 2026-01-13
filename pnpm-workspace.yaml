@@ -1,11 +1,12 @@
 packages:
   - packages/ai-api
   - packages/core
+  - packages/document-grounding
   - packages/foundation-models
   - packages/langchain
   - packages/orchestration
-  - packages/document-grounding
   - packages/prompt-registry
+  - packages/rpt
   - sample-cap
   - sample-code
   - tests/e2e-tests
