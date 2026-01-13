@@ -43,6 +43,6 @@
     "@langchain/langgraph": "^1.0.7"
   },
   "peerDependencies": {
-    "@langchain/core": "^1.1.8"
+    "@langchain/core": "=1.1.8"
   }
 }
