@@ -45,7 +45,7 @@ This package provides tools to manage your scenarios and workflows in SAP AI Cor
 
 #### Installation
 
-```
+```bash
 npm install @sap-ai-sdk/ai-api
 ```
 
@@ -55,7 +55,7 @@ This package incorporates generative AI foundation models into your AI activitie
 
 #### Installation
 
-```
+```bash
 npm install @sap-ai-sdk/foundation-models
 ```
 
@@ -65,7 +65,7 @@ This package provides LangChain model clients, built on top of the foundation mo
 
 #### Installation
 
-```
+```bash
 npm install @sap-ai-sdk/langchain
 ```
 
@@ -75,7 +75,7 @@ This package incorporates generative AI [orchestration](https://help.sap.com/doc
 
 #### Installation
 
-```
+```bash
 npm install @sap-ai-sdk/orchestration
 ```
 
@@ -85,7 +85,7 @@ This package incorporates generative AI document grounding [Pipeline API](https:
 
 #### Installation
 
-```
+```bash
 npm install @sap-ai-sdk/document-grounding
 ```
 
@@ -95,7 +95,7 @@ This package incorporates generative AI [prompt registry](https://help.sap.com/d
 
 #### Installation
 
-```
+```bash
 npm install @sap-ai-sdk/prompt-registry
 ```
 
