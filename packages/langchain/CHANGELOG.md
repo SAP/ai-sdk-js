@@ -1,5 +1,25 @@
 # @sap-ai-sdk/langchain
 
+## 2.5.0
+
+### Minor Changes
+
+- 5b88f6f: [Compatibility Note] The `@langchain/core` package is now a peer dependency.
+  You now have to install the `@langchain/core` package as a direct dependency of your project.
+- b91e0a7: [feat] Support disabling streaming completely via the langchain option `disableStreaming`.
+- b91e0a7: [feat] Support auto-streaming via the langchain option `streaming`. When enabled (e.g., transparently by LangGraph), responses are automatically streamed in `invoke()` calls.
+- 5b88f6f: [Improvement] Move the `@langchain/core` package from dependencies to peer dependencies.
+  This reduces the chance of version incompatibilities between langchain-related packages.
+
+### Patch Changes
+
+- 9ff7cec: [Fix] Pin `@langchain/core` to v1.1.8 to avoid a regression.
+- Updated dependencies [2f19a40]
+  - @sap-ai-sdk/orchestration@2.5.0
+  - @sap-ai-sdk/ai-api@2.5.0
+  - @sap-ai-sdk/core@2.5.0
+  - @sap-ai-sdk/foundation-models@2.5.0
+
 ## 2.4.0
 
 ### Patch Changes

@@ -28,6 +28,27 @@
 
 -
 
+# 2.5.0
+## Compatibility Notes
+
+- [langchain] The `@langchain/core` package is now a peer dependency.
+  You now have to install the `@langchain/core` package as a direct dependency of your project. (5b88f6f)
+
+## New Features
+
+- [langchain] Support disabling streaming completely via the langchain option `disableStreaming`. (b91e0a7)
+- [langchain] Support auto-streaming via the langchain option `streaming`. When enabled (e.g., transparently by LangGraph), responses are automatically streamed in `invoke()` calls. (b91e0a7)
+- [orchestration] Add support for orchestration configuration references in the orchestration client. (2f19a40)
+
+## Fixed Issues
+
+- [langchain] Pin `@langchain/core` to v1.1.8 to avoid a regression. (9ff7cec)
+
+## Improvements
+
+- [langchain] Move the `@langchain/core` package from dependencies to peer dependencies.
+  This reduces the chance of version incompatibilities between langchain-related packages. (5b88f6f)
+
 # 2.4.0
 ## Compatibility Notes
 

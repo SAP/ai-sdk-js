@@ -1,5 +1,17 @@
 # @sap-ai-sdk/orchestration
 
+## 2.5.0
+
+### Minor Changes
+
+- 2f19a40: [New Functionality] Add support for orchestration configuration references in the orchestration client.
+
+### Patch Changes
+
+- @sap-ai-sdk/ai-api@2.5.0
+- @sap-ai-sdk/core@2.5.0
+- @sap-ai-sdk/prompt-registry@2.5.0
+
 ## 2.4.0
 
 ### Minor Changes

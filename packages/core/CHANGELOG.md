@@ -1,5 +1,7 @@
 # @sap-ai-sdk/core
 
+## 2.5.0
+
 ## 2.4.0
 
 ### Minor Changes
