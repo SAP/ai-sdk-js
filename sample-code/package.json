@@ -21,10 +21,10 @@
     "lint:fix": "eslint . --fix && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -w --log-level error"
   },
   "dependencies": {
-    "@langchain/classic": "^1.0.7",
-    "langchain": "^1.2.3",
-    "@langchain/core": "^1.1.8",
-    "@langchain/langgraph": "^1.0.7",
+    "@langchain/classic": "^1.0.8",
+    "langchain": "^1.2.7",
+    "@langchain/core": "^1.1.12",
+    "@langchain/langgraph": "^1.0.15",
     "@langchain/mcp-adapters": "^1.1.1",
     "@langchain/textsplitters": "^1.0.1",
     "@modelcontextprotocol/sdk": "^1.25.2",
