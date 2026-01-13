@@ -5,14 +5,14 @@ When contributing to this repository, please first discuss the changes you wish 
 All members of the project community must abide by the [SAP Open Source Code of Conduct](https://github.com/SAP/.github/blob/main/CODE_OF_CONDUCT.md).
 Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting [a project maintainer](.reuse/dep5).
 
-Once you are ready to make a change, please test it appropriately, create a pull request and describe your change in the pull request. 
+Once you are ready to make a change, please test it appropriately, create a pull request and describe your change in the pull request.
 The owners of the repository will review your changes as soon as possible.
 
 ## Project Structure
 
 This project contains multiple packages, that are managed using pnpm workspaces.
 Productive packages are located in the `packages` directory, test packages are located in the `tests` directory.
-Some of the packages are interdependent, therefore pnpm install won't work from within those packages. 
+Some of the packages are interdependent, therefore pnpm install won't work from within those packages.
 Run `pnpm install` in the root directory instead.
 
 ## Testing
@@ -38,26 +38,26 @@ Unit tests test specific modules of a package, units that are tested for behavio
 You can run all unit tests by executing:
 
 ```bash
-$ pnpm test:unit
+pnpm test:unit
 ```
 
-To run unit tests for a specific package add the workspace name to the command. 
+To run unit tests for a specific package add the workspace name to the command.
 For the ai-api package this would be:
 
 ```bash
-$ pnpm ai-api test
+pnpm ai-api test
 ```
 
 ### Type Tests
 
-As this project is written in TypeScript, it will be consumable by other TypeScript projects. 
+As this project is written in TypeScript, it will be consumable by other TypeScript projects.
 We use `tsd` to test that our resulting API meets our expectations.
 The type tests are located at [`tests/type-tests`](./tests/type-tests).
 
 To run the type tests, execute:
 
 ```bash
-$ pnpm test:type
+pnpm test:type
 ```
 
 ### E2E tests (locally)
@@ -83,7 +83,7 @@ pnpm test:e2e
 To fix all linting issues, run:
 
 ```bash
-$ pnpm lint:fix
+pnpm lint:fix
 ```
 
 ## Releases
@@ -91,7 +91,7 @@ $ pnpm lint:fix
 To release a new version, ensure that the following prerequisites are met:
 
 - The smoke tests are passing.
-- There are changesets under the `.changeset` directory. 
+- There are changesets under the `.changeset` directory.
   Without changesets, there should be nothing to release.
 
 If this is the case, follow these steps:
@@ -125,8 +125,8 @@ You are welcome to contribute code in order to fix a bug or to implement a new f
 The following rules govern code contributions:
 
 - Contributions must be licensed under the [Apache 2.0 License](./LICENSE)
-- Due to legal reasons, contributors will be asked to accept a Developer Certificate of Origin (DCO) when they create the first pull request to this project. 
-  This happens in an automated fashion during the submission process. 
+- Due to legal reasons, contributors will be asked to accept a Developer Certificate of Origin (DCO) when they create the first pull request to this project.
+  This happens in an automated fashion during the submission process.
   SAP uses [the standard DCO text of the Linux Foundation](https://developercertificate.org/).
 
 Also make sure to follow our [style guide](./STYLEGUIDE)

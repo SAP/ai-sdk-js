@@ -6,8 +6,8 @@
 
 SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI Core**, **SAP Generative AI Hub**, and **Orchestration Service**.
 
-Integrate chat completion into your business applications with SAP Cloud SDK for AI. 
-Leverage the generative AI hub of [SAP AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/what-is-sap-ai-core) to make use of templating, grounding, data masking, content filtering and more. 
+Integrate chat completion into your business applications with SAP Cloud SDK for AI.
+Leverage the generative AI hub of [SAP AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/what-is-sap-ai-core) to make use of templating, grounding, data masking, content filtering and more.
 Set up your SAP AI Core instance with SAP Cloud SDK for AI.
 
 ### Table of Contents
@@ -45,8 +45,8 @@ This package provides tools to manage your scenarios and workflows in SAP AI Cor
 
 #### Installation
 
-```
-$ npm install @sap-ai-sdk/ai-api
+```bash
+npm install @sap-ai-sdk/ai-api
 ```
 
 ### @sap-ai-sdk/foundation-models
@@ -55,8 +55,8 @@ This package incorporates generative AI foundation models into your AI activitie
 
 #### Installation
 
-```
-$ npm install @sap-ai-sdk/foundation-models
+```bash
+npm install @sap-ai-sdk/foundation-models
 ```
 
 ### @sap-ai-sdk/langchain
@@ -65,8 +65,8 @@ This package provides LangChain model clients, built on top of the foundation mo
 
 #### Installation
 
-```
-$ npm install @sap-ai-sdk/langchain
+```bash
+npm install @sap-ai-sdk/langchain
 ```
 
 ### @sap-ai-sdk/orchestration
@@ -75,8 +75,8 @@ This package incorporates generative AI [orchestration](https://help.sap.com/doc
 
 #### Installation
 
-```
-$ npm install @sap-ai-sdk/orchestration
+```bash
+npm install @sap-ai-sdk/orchestration
 ```
 
 ### @sap-ai-sdk/document-grounding
@@ -85,8 +85,8 @@ This package incorporates generative AI document grounding [Pipeline API](https:
 
 #### Installation
 
-```
-$ npm install @sap-ai-sdk/document-grounding
+```bash
+npm install @sap-ai-sdk/document-grounding
 ```
 
 ### @sap-ai-sdk/prompt-registry
@@ -95,8 +95,8 @@ This package incorporates generative AI [prompt registry](https://help.sap.com/d
 
 #### Installation
 
-```
-$ npm install @sap-ai-sdk/prompt-registry
+```bash
+npm install @sap-ai-sdk/prompt-registry
 ```
 
 ## SAP Cloud SDK for AI Sample Project

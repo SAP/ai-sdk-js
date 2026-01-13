@@ -13,8 +13,8 @@ This package incorporates generative AI foundation models into your AI activitie
 
 ## Installation
 
-```
-$ npm install @sap-ai-sdk/foundation-models
+```bash
+npm install @sap-ai-sdk/foundation-models
 ```
 
 ## Documentation

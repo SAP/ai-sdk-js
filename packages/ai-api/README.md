@@ -20,8 +20,8 @@ We maintain a list of [currently available and tested AI Core APIs](https://gith
 
 ## Installation
 
-```
-$ npm install @sap-ai-sdk/ai-api
+```bash
+npm install @sap-ai-sdk/ai-api
 ```
 
 ## Documentation
