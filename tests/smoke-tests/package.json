@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@langchain/classic": "^1.0.7",
-    "@langchain/core": "^1.1.8",
+    "@langchain/core": "=1.1.8",
     "@langchain/langgraph": "^1.0.7",
     "@langchain/mcp-adapters": "^1.1.1",
     "@langchain/textsplitters": "^1.0.1",
