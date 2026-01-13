@@ -13,8 +13,8 @@ This package incorporates generative AI prompt registry capabilities into your A
 
 ## Installation
 
-```
-$ npm install @sap-ai-sdk/prompt-registry
+```bash
+npm install @sap-ai-sdk/prompt-registry
 ```
 
 ## Documentation

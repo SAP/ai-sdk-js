@@ -8,8 +8,8 @@ This package contains core utility functions that we reuse in the SDK to set the
 
 ### Installation
 
-```
-$ npm install @sap-ai-sdk/core
+```bash
+npm install @sap-ai-sdk/core
 ```
 
 ## Documentation
