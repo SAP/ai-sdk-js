@@ -13,7 +13,11 @@ This package provides LangChain clients built on top of the foundation model and
 
 ## Installation
 
-```
+```bash
+# Install langchain
+$ npm install langchain @langchain/core
+
+# Install SAP Cloud SDK for AI langchain package
 $ npm install @sap-ai-sdk/langchain
 ```
 
