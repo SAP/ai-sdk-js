@@ -37,7 +37,7 @@ export {
 export {
   invokeChain as orchestrationInvokeChain,
   invokeLangGraphChain,
-  invokeDynamicModelAgent
+  invokeDynamicModelAgent,
   invokeLangGraphChainStream,
   streamChain
 } from './langchain-orchestration.js';
