@@ -14,7 +14,8 @@ import {
   orchestrationResponseFormat,
   orchestrationMessageHistoryWithToolCalling,
   orchestrationTranslation,
-  orchestrationEmbeddingWithMasking
+  orchestrationEmbeddingWithMasking,
+  OrchestrationConfigRef
 } from '@sap-ai-sdk/sample-code';
 import {
   OrchestrationClient,
@@ -55,6 +56,12 @@ describe('orchestration', () => {
 
   it('should complete a chat with a scoped template reference', async () => {
     const response = await orchestrationCompletionPromptRegistryScoped();
+
+    assertContent(response);
+  });
+
+  it('should complete a chat with orchestration config reference', async () => {
+    const response = await OrchestrationConfigRef();
 
     assertContent(response);
   });

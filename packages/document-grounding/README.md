@@ -16,8 +16,8 @@ This package incorporates generative AI document grounding capabilities into you
 
 ## Installation
 
-```
-$ npm install @sap-ai-sdk/document-grounding
+```bash
+npm install @sap-ai-sdk/document-grounding
 ```
 
 ## Documentation

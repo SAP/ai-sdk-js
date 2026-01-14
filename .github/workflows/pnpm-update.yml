@@ -18,7 +18,7 @@ jobs:
       - name: Update Transitive Dependencies
         id: update-deps
         run: |
-          pnpm --no-save update
+          pnpm --no-save update --recursive
           pnpm audit --audit-level high
 
           if [[ -n "$(git status --porcelain)" ]]; then

@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/ai-api",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@sap-ai-sdk/core": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.2.0",
-    "@sap-cloud-sdk/util": "^4.2.0"
+    "@sap-cloud-sdk/connectivity": "^4.3.1",
+    "@sap-cloud-sdk/util": "^4.3.1"
   }
 }

@@ -1,5 +1,6 @@
 export type {
   OrchestrationModuleConfig,
+  OrchestrationConfigRef,
   PromptTemplatingModule,
   MaskingModule,
   GroundingModule,
@@ -39,7 +40,8 @@ export type {
   EmbeddingModelDetails,
   EmbeddingModelParams,
   EmbeddingModuleConfig,
-  EmbeddingData
+  EmbeddingData,
+  isConfigReference
 } from './orchestration-types.js';
 export { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 export { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';

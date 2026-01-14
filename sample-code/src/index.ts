@@ -24,7 +24,8 @@ export {
   chatCompletionStream,
   orchestrationMessageHistoryWithToolCalling,
   orchestrationTranslation,
-  orchestrationEmbeddingWithMasking
+  orchestrationEmbeddingWithMasking,
+  OrchestrationConfigRef
 } from './orchestration.js';
 export {
   invoke,
@@ -36,8 +37,9 @@ export {
 export {
   invokeChain as orchestrationInvokeChain,
   invokeLangGraphChain,
-  streamChain,
   invokeDynamicModelAgent
+  invokeLangGraphChainStream,
+  streamChain
 } from './langchain-orchestration.js';
 export {
   getDeployments,

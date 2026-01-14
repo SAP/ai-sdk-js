@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/langchain",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
@@ -31,13 +31,18 @@
     "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
-    "@langchain/core": "^1.1.8",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.2.0",
-    "@sap-cloud-sdk/util": "^4.2.0",
+    "@sap-cloud-sdk/connectivity": "^4.3.1",
+    "@sap-cloud-sdk/util": "^4.3.1",
     "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@langchain/langgraph": "^1.0.7"
+  },
+  "peerDependencies": {
+    "@langchain/core": "=1.1.8"
   }
 }

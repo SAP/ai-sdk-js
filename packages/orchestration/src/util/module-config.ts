@@ -3,11 +3,14 @@ import type {
   ChatCompletionRequest,
   StreamOptions,
   OrchestrationModuleConfig,
+  OrchestrationConfigRef,
   EmbeddingModuleConfig,
   EmbeddingRequest
 } from '../orchestration-types.js';
 import type {
   CompletionPostRequest,
+  CompletionRequestConfigurationReferenceById,
+  CompletionRequestConfigurationReferenceByNameScenarioVersion,
   FilteringStreamOptions,
   ModuleConfigs,
   OrchestrationConfig,
@@ -50,6 +53,28 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
     placeholder_values: prompt?.placeholderValues || {},
     config
   };
+}
+
+/**
+ * @internal
+ */
+export function constructCompletionPostRequestFromConfigReference(
+  configRef: OrchestrationConfigRef,
+  request?: ChatCompletionRequest
+):
+  | CompletionRequestConfigurationReferenceById
+  | CompletionRequestConfigurationReferenceByNameScenarioVersion {
+  return {
+    config_ref: configRef,
+    ...(request?.placeholderValues && {
+      placeholder_values: request.placeholderValues
+    }),
+    ...(request?.messagesHistory && {
+      messages_history: request.messagesHistory
+    })
+  } as
+    | CompletionRequestConfigurationReferenceById
+    | CompletionRequestConfigurationReferenceByNameScenarioVersion;
 }
 
 /**

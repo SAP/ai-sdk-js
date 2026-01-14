@@ -13,8 +13,8 @@ This package incorporates generative AI orchestration capabilities into your AI 
 
 ## Installation
 
-```
-$ npm install @sap-ai-sdk/orchestration
+```bash
+npm install @sap-ai-sdk/orchestration
 ```
 
 ## Documentation

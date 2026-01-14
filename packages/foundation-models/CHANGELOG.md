@@ -1,5 +1,12 @@
 # @sap-ai-sdk/foundation-models
 
+## 2.5.0
+
+### Patch Changes
+
+- @sap-ai-sdk/ai-api@2.5.0
+- @sap-ai-sdk/core@2.5.0
+
 ## 2.4.0
 
 ### Patch Changes

@@ -3,6 +3,12 @@ import { apiVersion } from '@sap-ai-sdk/foundation-models/internal.js';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import { getSchemaDescription } from '@langchain/core/utils/types';
 import { jest } from '@jest/globals';
+import {
+  START,
+  END,
+  MessagesAnnotation,
+  StateGraph
+} from '@langchain/langgraph';
 import { addNumbersTool, joke } from '../../../../test-util/tools.js';
 import {
   mockClientCredentialsGrantCall,
@@ -332,6 +338,161 @@ describe('Chat client', () => {
       expect(finalOutput).toMatchSnapshot();
     });
 
+    it('supports auto-streaming responses', async () => {
+      mockInference(
+        {
+          data: {
+            messages: [
+              {
+                role: 'user' as const,
+                content: 'What is the capital of France?'
+              }
+            ],
+            stream: true,
+            stream_options: {
+              include_usage: true
+            }
+          }
+        },
+        {
+          data: mockResponseStream,
+          status: 200
+        },
+        endpoint
+      );
+      jest.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
+
+      client.streaming = true;
+      expect(client.streaming).toBe(true);
+
+      const finalOutput = await client.invoke('What is the capital of France?');
+
+      expect(finalOutput).toBeDefined();
+      expect(client._streamResponseChunks).toHaveBeenCalled();
+    });
+
+    it('supports disabling auto-streaming via disableStreaming flag', async () => {
+      mockInference(
+        {
+          data: {
+            messages: [
+              {
+                role: 'user' as const,
+                content: 'What is the capital of France?'
+              }
+            ]
+          }
+        },
+        {
+          data: {
+            choices: [
+              {
+                message: {
+                  role: 'assistant',
+                  content: 'The capital of France is Paris.'
+                },
+                index: 0
+              }
+            ]
+          },
+          status: 200
+        },
+        endpoint
+      );
+      jest.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
+
+      client.streaming = false;
+      client.disableStreaming = true;
+
+      const finalOutput = await client.invoke('What is the capital of France?');
+
+      expect(finalOutput).toMatchSnapshot();
+      expect(client._streamResponseChunks).not.toHaveBeenCalled();
+    });
+
+    it('has langchain handle disabling streaming via disableStreaming flag in stream', async () => {
+      mockInference(
+        {
+          data: {
+            messages: [
+              {
+                role: 'user' as const,
+                content: 'What is the capital of France?'
+              }
+            ]
+          }
+        },
+        {
+          data: {
+            choices: [
+              {
+                message: {
+                  role: 'assistant',
+                  content: 'The capital of France is Paris.'
+                },
+                index: 0
+              }
+            ]
+          },
+          status: 200
+        },
+        endpoint
+      );
+      jest.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
+
+      client.disableStreaming = true;
+      client.streaming = false;
+
+      const stream = await client.stream('What is the capital of France?');
+
+      // Non-streaming response, so only one chunk expected
+      const firstChunk = await stream.next();
+      expect(firstChunk.value).toBeDefined();
+      expect(firstChunk.done).toBe(false);
+      // Verify that no further chunks are present
+      const trailingChunk = await stream.next();
+      expect(trailingChunk.done).toBe(true);
+      expect(client._streamResponseChunks).not.toHaveBeenCalled();
+    });
+
+    it('should handle streaming and disabling streaming flags as expected', async () => {
+      let testClient = new AzureOpenAiChatClient({
+        modelName: 'gpt-4o',
+        streaming: true,
+        disableStreaming: true
+      });
+
+      // streaming should be disabled due to disableStreaming being true
+      expect(testClient.streaming).toBe(false);
+      expect(testClient.disableStreaming).toBe(true);
+
+      testClient = new AzureOpenAiChatClient({
+        modelName: 'gpt-4o',
+        streaming: false
+      });
+
+      // streaming should be disabled
+      expect(testClient.streaming).toBe(false);
+      expect(testClient.disableStreaming).toBe(true);
+
+      testClient = new AzureOpenAiChatClient({
+        modelName: 'gpt-4o',
+        streaming: true
+      });
+
+      // auto-streaming should be enabled
+      expect(testClient.streaming).toBe(true);
+      expect(testClient.disableStreaming).toBe(false);
+
+      testClient = new AzureOpenAiChatClient({
+        modelName: 'gpt-4o'
+      });
+
+      // auto-streaming and disable-streaming should be disabled by default
+      expect(testClient.streaming).toBe(false);
+      expect(testClient.disableStreaming).toBe(false);
+    });
+
     it('streams and aborts with a signal', async () => {
       mockInference(
         {
@@ -405,6 +566,59 @@ describe('Chat client', () => {
         b: 2
       });
       expect(finalOutput).toMatchSnapshot();
+    });
+    it('streams when invoked in a streaming langgraph', async () => {
+      mockInference(
+        {
+          data: {
+            messages: [
+              {
+                role: 'user',
+                content: 'Hello!'
+              }
+            ],
+            stream: true,
+            stream_options: {
+              include_usage: true
+            }
+          }
+        },
+        {
+          data: mockResponseStream,
+          status: 200
+        },
+        endpoint
+      );
+      jest.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
+      // Simulate a minimal streaming langgraph-like workflow
+      const llm = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
+
+      // Simulate a node function that calls the model using invoke
+      const callModel = async (state: { messages: any }) => {
+        const messages = await llm.invoke(state.messages);
+        return { messages };
+      };
+
+      // Define a new graph
+      const workflow = new StateGraph(MessagesAnnotation)
+        // Define the (single) node in the graph
+        .addNode('model', callModel)
+        .addEdge(START, 'model')
+        .addEdge('model', END);
+
+      const app = workflow.compile();
+      const stream = await app.stream(
+        { messages: [{ role: 'user', content: 'Hello!' }] },
+        // langgraph will only enable streaming in a more granular streaming mode than the default (values)
+        // messages: Streams 2-tuples (LLM token, metadata) from any graph nodes where an LLM is invoked.
+        // Stream modes: https://docs.langchain.com/oss/javascript/langgraph/streaming#supported-stream-modes
+        { streamMode: 'messages' as const }
+      );
+
+      for await (const _ of stream) {
+        // Empty
+      }
+      expect(llm._streamResponseChunks).toHaveBeenCalled();
     });
   });
 });
