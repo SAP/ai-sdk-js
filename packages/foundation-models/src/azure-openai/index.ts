@@ -7,4 +7,5 @@ export * from './azure-openai-chat-completion-types.js';
 export * from './azure-openai-embedding-client.js';
 export * from './azure-openai-embedding-response.js';
 export * from './azure-openai-embedding-types.js';
+export * from './deployment-resolver.js';
 export * from './model-types.js';
