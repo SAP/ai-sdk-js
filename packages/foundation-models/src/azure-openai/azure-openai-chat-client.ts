@@ -72,7 +72,7 @@ export class AzureOpenAiChatClient {
   }
 
   private async executeRequest(
-    reqeust: AzureOpenAiChatCompletionParameters,
+    request: AzureOpenAiChatCompletionParameters,
     requestConfig?: CustomRequestConfig
   ): Promise<HttpResponse> {
     const deploymentId = await getFoundationModelDeploymentId(
@@ -87,20 +87,20 @@ export class AzureOpenAiChatClient {
         apiVersion,
         resourceGroup
       },
-      reqeust,
+      request,
       requestConfig,
       this.destination
     );
   }
 
   private async createStream(
-    reqeust: AzureOpenAiChatCompletionParameters,
+    request: AzureOpenAiChatCompletionParameters,
     controller: AbortController,
     requestConfig?: CustomRequestConfig
   ): Promise<AzureOpenAiChatCompletionStream<any>> {
     const response = await this.executeRequest(
       {
-        ...reqeust,
+        ...request,
         stream: true,
         stream_options: {
           include_usage: true
