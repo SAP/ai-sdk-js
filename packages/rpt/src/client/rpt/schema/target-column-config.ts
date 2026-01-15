@@ -19,9 +19,9 @@ export type TargetColumnConfig = {
   /**
    * The type of prediction task for this column. If not provided, the model will infer the task type from the data.
    */
-  task_type?: 'classification' | 'regression' | any;
+  task_type?: 'classification' | 'regression' | null;
   /**
    * How many predictions to output per classification column.If not provided, only a single prediction is returned. Only relevant for classification.
    */
-  top_k?: number | any;
+  top_k?: number | null;
 } & Record<string, any>;
