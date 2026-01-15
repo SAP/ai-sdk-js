@@ -5,10 +5,13 @@
  */
 
 /**
- * Representation of the 'ValidationError' schema.
+ * A request to delete documents by their IDs.
  */
-export type ValidationError = {
-  loc: (string | number)[];
-  msg: string;
-  type: string;
+export type DocumentBulkDeleteRequest = {
+  /**
+   * List of document IDs to delete
+   * Min Items: 1.
+   * Max Items: 100.
+   */
+  ids: string[];
 } & Record<string, any>;

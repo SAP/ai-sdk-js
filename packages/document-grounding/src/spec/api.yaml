@@ -547,13 +547,10 @@ paths:
       responses:
         '202':
           description: Successful Response
-          headers:
-            Location:
-              description: The newly created collections monitor url
+          content:
+            application/json:
               schema:
-                type: string
-                format: uri
-
+                $ref: '#/components/schemas/CollectionPendingResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
         '422':
@@ -618,12 +615,10 @@ paths:
       responses:
         '202':
           description: Successful Response
-          headers:
-            Location:
-              description: The deleted collections monitor url
+          content:
+            application/json:
               schema:
-                type: string
-                format: uri
+                $ref: '#/components/schemas/CollectionPendingResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -938,6 +933,142 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/CollectionDeletedResponse'
                   - $ref: '#/components/schemas/CollectionPendingResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  '/vector/documents':
+    delete:
+      tags:
+        - Vector
+      summary: Delete list of documents across collections
+      description: Deletes list of documents across collections.
+      operationId: vector.v1.vector_endpoints.delete_all_documents
+      x-sap-cloud-sdk-operation-name: deleteAllDocuments
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentBulkDeleteRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentBulkDeleteResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  '/vector/collections/metadata':
+    patch:
+      tags:
+        - Vector
+      summary: Patch collections metadata
+      description: Allows to add, remove and modify the collections metadata.
+      operationId: vector.v1.vector_endpoints.update_collections_metadata
+      x-sap-cloud-sdk-operation-name: updateCollectionsMetadata
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetadataUpdates'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  '/vector/documents/metadata':
+    patch:
+      tags:
+        - Vector
+      summary: Patch documents metadata
+      description: Allows to add, remove and modify the documents metadata.
+      operationId: vector.v1.vector_endpoints.update_documents_metadata
+      x-sap-cloud-sdk-operation-name: updateDocumentsMetadata
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetadataUpdates'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  '/vector/chunks/metadata':
+    patch:
+      tags:
+        - Vector
+      summary: Patch chunks metadata
+      description: Allows to add, remove and modify the chunks metadata.
+      operationId: vector.v1.vector_endpoints.update_chunks_metadata
+      x-sap-cloud-sdk-operation-name: updateChunksMetadata
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetadataUpdates'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -1652,7 +1783,6 @@ components:
         - type: object
           required:
             - type
-            - configuration
           properties:
             type:
               type: string
@@ -1670,7 +1800,6 @@ components:
         - type: object
           required:
             - type
-            - configuration
           properties:
             type:
               type: string
@@ -1892,16 +2021,12 @@ components:
             maxLength: 1024
           title: Value
         matchMode:
-          type: string
-          nullable: true
           title: MatchMode
           description: Default match mode for search filters
-          default: ANY
           anyOf:
-            - enum:
-                - ANY
-                - ALL
-            - {}
+            - $ref: '#/components/schemas/FilterMatchModeEnum'
+            - type: 'null'
+          default: ANY
       type: object
       required:
         - key
@@ -2006,6 +2131,7 @@ components:
       required:
         - key
         - value
+      description: Collection metadata during ingestion
       title: VectorKeyValueListPair
     RetrievalKeyValueListPair:
       properties:
@@ -2125,19 +2251,26 @@ components:
     VectorSearchConfiguration:
       properties:
         maxChunkCount:
-          nullable: true
-          type: integer
-          minimum: 0
-          exclusiveMinimum: true
+          anyOf:
+            - type: integer
+              exclusiveMinimum: 0
+              maximum: 10000000
+            - type: 'null'
           title: Maxchunkcount
-          description: Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'.
+          description:
+            Maximum number of chunks to be returned. Cannot be used with
+            'maxDocumentCount'.
         maxDocumentCount:
-          nullable: true
-          type: integer
-          minimum: 0
-          exclusiveMinimum: true
+          anyOf:
+            - type: integer
+              exclusiveMinimum: 0
+              maximum: 10000000
+            - type: 'null'
           title: Maxdocumentcount
-          description: "[Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned."
+          description:
+            "[Only supports 'vector' dataRepositoryType] - Maximum number
+            of documents to be returned. Cannot be used with 'maxChunkCount'. If
+            maxDocumentCount is given, then only one chunk per document is returned."
       type: object
       title: VectorSearchConfiguration
     RetrievalSearchConfiguration:
@@ -2194,9 +2327,11 @@ components:
             maxLength: 1024
           title: Value
         selectMode:
-          type: array
-          items:
-            $ref: '#/components/schemas/VectorSearchSelectOptionEnum'
+          anyOf:
+            - type: array
+              items:
+                $ref: '#/components/schemas/VectorSearchSelectOptionEnum'
+            - type: 'null'
           title: Selectmode
           description: Select mode for search filters
       type: object
@@ -2245,8 +2380,7 @@ components:
         results:
           type: array
           items:
-            anyOf:
-              - $ref: '#/components/schemas/VectorPerFilterSearchResult'
+            $ref: '#/components/schemas/VectorPerFilterSearchResult'
           title: Results
           description: List of returned results.
       type: object
@@ -2271,8 +2405,9 @@ components:
     CollectionRequest:
       properties:
         title:
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Title
         embeddingConfig:
           $ref: '#/components/schemas/EmbeddingConfig'
@@ -2285,6 +2420,13 @@ components:
             Metadata attached to collection. Useful to restrict search to a
             subset of collections.
           default: []
+        id:
+          anyOf:
+            - type: string
+              format: uuid
+            - type: 'null'
+          title: Id
+          description: Unique identifier of a collection.
       type: object
       required:
         - embeddingConfig
@@ -2305,16 +2447,12 @@ components:
       title: CollectionCreatedResponse
     CollectionPendingResponse:
       properties:
-        Location:
+        monitorURL:
           type: string
-          title: Location
-        status:
-          type: string
-          title: Status
+          title: MonitorURL
       type: object
       required:
-        - Location
-        - status
+        - monitorURL
       title: CollectionPendingResponse
     CollectionDeletedResponse:
       properties:
@@ -2333,7 +2471,7 @@ components:
       properties:
         chunks:
           items:
-            $ref: '#/components/schemas/TextOnlyBaseChunk'
+            $ref: '#/components/schemas/TextOnlyBaseChunkCreate'
           type: array
           title: Chunks
         metadata:
@@ -2341,10 +2479,10 @@ components:
             $ref: '#/components/schemas/VectorDocumentKeyValueListPair'
           type: array
           title: Metadata
+          default: []
       type: object
       required:
         - chunks
-        - metadata
       title: BaseDocument
       description: Base class for documents, document requests and responses.
     DocumentCreateRequest:
@@ -2358,14 +2496,14 @@ components:
       required:
         - documents
       title: DocumentCreateRequest
-      description: >-
-        A create request containing one or more new documents to create and
-        store in a collection.
+      description:
+        A create request containing one or more new documents to create
+        and store in a collection.
     Document-Input:
       properties:
         chunks:
           items:
-            $ref: '#/components/schemas/TextOnlyBaseChunk'
+            $ref: '#/components/schemas/TextOnlyBaseChunkCreate'
           type: array
           title: Chunks
         metadata:
@@ -2373,6 +2511,7 @@ components:
             $ref: '#/components/schemas/VectorDocumentKeyValueListPair'
           type: array
           title: Metadata
+          default: []
         id:
           type: string
           format: uuid
@@ -2381,7 +2520,6 @@ components:
       type: object
       required:
         - chunks
-        - metadata
         - id
       title: Document
       description: A single document stored in a collection by ID.
@@ -2396,7 +2534,7 @@ components:
       required:
         - documents
       title: DocumentUpdateRequest
-      description: >-
+      description:
         An update request containing one or more documents to update existing
         documents in a collection by ID.
     DocumentWithoutChunks:
@@ -2416,9 +2554,9 @@ components:
         - metadata
         - id
       title: DocumentWithoutChunks
-      description: >-
-        A single document stored in a collection by ID without exposing its
-        chunks.
+      description:
+        A single document stored in a collection by ID without exposing
+        its chunks.
     DocumentsListResponse:
       properties:
         documents:
@@ -2429,8 +2567,8 @@ components:
       type: object
       required:
         - documents
-      title: Documents
-      description: A response containing documents created or updated, retrieved from the server.
+      title: DocumentsListResponse
+      description: A response containing documents retrieved from the server.
     Documents:
       properties:
         count:
@@ -2455,11 +2593,34 @@ components:
             $ref: '#/components/schemas/VectorKeyValueListPair'
           type: array
           title: Metadata
+          default: []
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: Unique identifier of a chuk.
       type: object
       required:
         - content
-        - metadata
+        - id
       title: TextOnlyBaseChunk
+      description: Schema for a text-only chunk.
+    TextOnlyBaseChunkCreate:
+      properties:
+        content:
+          type: string
+          title: Content
+        metadata:
+          items:
+            $ref: '#/components/schemas/VectorKeyValueListPair'
+          type: array
+          title: Metadata
+          default: []
+      type: object
+      required:
+        - content
+      title: TextOnlyBaseChunk
+      description: Schema for a text-only chunk.
     DocumentResponse:
       properties:
         chunks:
@@ -2472,6 +2633,7 @@ components:
             $ref: '#/components/schemas/VectorDocumentKeyValueListPair'
           type: array
           title: Metadata
+          default: []
         id:
           type: string
           format: uuid
@@ -2480,12 +2642,11 @@ components:
       type: object
       required:
         - chunks
-        - metadata
         - id
       title: DocumentResponse
-      description: >-
+      description:
         A response containing information about a newly created, single
-        document.
+        document
     SearchSelectOptionEnum:
       type: string
       anyOf:
@@ -2496,11 +2657,8 @@ components:
       title: SearchSelectOptionEnum
     VectorSearchSelectOptionEnum:
       type: string
-      anyOf:
-        - enum:
-            - ignoreIfKeyAbsent
-        - {}
-      default: ignoreIfKeyAbsent
+      enum:
+        - ignoreIfKeyAbsent
       title: VectorSearchSelectOptionEnum
     RetrievalSearchSelectOptionEnum:
       type: string
@@ -2572,35 +2730,43 @@ components:
         configuration:
           $ref: '#/components/schemas/VectorSearchConfiguration'
         collectionMetadata:
-          items:
-            $ref: '#/components/schemas/VectorKeyValueListPair'
-          type: array
-          maxItems: 2000
+          anyOf:
+            - type: array
+              items:
+                $ref: '#/components/schemas/VectorKeyValueListPair'
+            - type: 'null'
           title: Collectionmetadata
-          description: >-
-            Restrict collections considered during search to those annotated
-            with the given metadata. Useful when combined with collections=['*']
+          description: Restrict collections considered during search to those annotated with the given metadata. Useful when combined with collections=['*']
           default: []
         documentMetadata:
-          items:
-            $ref: '#/components/schemas/VectorSearchDocumentKeyValueListPair'
-          type: array
-          maxItems: 2000
+          anyOf:
+            - type: array
+              items:
+                $ref: '#/components/schemas/VectorSearchDocumentKeyValueListPair'
+            - type: 'null'
           title: Documentmetadata
-          description: >-
-            Restrict documents considered during search to those annotated with
-            the given metadata.
+          description:
+            Restrict documents considered during search to those annotated
+            with the given metadata.
           default: []
         chunkMetadata:
           items:
             $ref: '#/components/schemas/VectorKeyValueListPair'
           type: array
-          maxItems: 2000
           title: Chunkmetadata
-          description: >-
-            Restrict chunks considered during search to those with the given
-            metadata.
+          description:
+            Restrict chunks considered during search to those with the
+            given metadata.
           default: []
+        filter:
+          title: Filter
+          description:
+            Advanced filter expression for combining metadata filters with
+            boolean logic
+          anyOf:
+            - $ref: '#/components/schemas/BinaryBooleanFilter'
+            - $ref: '#/components/schemas/ScopedKeyValueListPair'
+            - type: 'null'
       type: object
       required:
         - id
@@ -2610,9 +2776,11 @@ components:
     TextSearchRequest:
       properties:
         query:
-          type: string
-          maxLength: 2000
-          minLength: 1
+          anyOf:
+            - type: string
+              maxLength: 2000
+              minLength: 1
+            - type: 'null'
           title: Query
           description: Query string
         filters:
@@ -2637,8 +2805,9 @@ components:
     Collection:
       properties:
         title:
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
           title: Title
         embeddingConfig:
           $ref: '#/components/schemas/EmbeddingConfig'
@@ -2647,9 +2816,9 @@ components:
             $ref: '#/components/schemas/VectorKeyValueListPair'
           type: array
           title: Metadata
-          description: >-
-            Metadata attached to collection. Useful to restrict search to a
-            subset of collections.
+          description:
+            Metadata attached to collection. Useful to restrict search
+            to a subset of collections.
           default: []
         id:
           type: string
@@ -2952,9 +3121,11 @@ components:
     ValidationError:
       properties:
         loc:
-          type: array
           items:
-            type: string
+            anyOf:
+              - type: string
+              - type: integer
+          type: array
           title: Location
         msg:
           type: string
@@ -2968,6 +3139,212 @@ components:
         - msg
         - type
       title: ValidationError
+    DocumentBulkDeleteRequest:
+      properties:
+        ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          maxItems: 100
+          minItems: 1
+          title: Ids
+          description: List of document IDs to delete
+      type: object
+      required:
+        - ids
+      title: DocumentBulkDeleteRequest
+      description: A request to delete documents by their IDs.
+    DocumentBulkDeleteResponse:
+      properties:
+        deleted:
+          type: array
+          items:
+            type: string
+            format: uuid
+          title: Deleted
+          description: List of successfully deleted document IDs
+        notFound:
+          type: array
+          items:
+            type: string
+            format: uuid
+          title: NotFound
+          description: List of document IDs that were not found
+      type: object
+      required:
+        - deleted
+        - notFound
+      title: DocumentBulkDeleteResponse
+      description: Response after deleting documents in bulk.
+    BinaryBooleanFilter:
+      type: object
+      required:
+        - operator
+        - left
+        - right
+      properties:
+        operator:
+          type: string
+          title: Operator
+          description: Boolean operator for combining filter conditions
+          enum:
+            - and
+            - or
+        left:
+          title: Left
+          description: Left operand of the boolean expression
+          anyOf:
+            - $ref: '#/components/schemas/BinaryBooleanFilter'
+            - $ref: '#/components/schemas/ScopedKeyValueListPair'
+        right:
+          title: Right
+          description: Right operand of the boolean expression
+          anyOf:
+            - $ref: '#/components/schemas/BinaryBooleanFilter'
+            - $ref: '#/components/schemas/ScopedKeyValueListPair'
+      title: BinaryBooleanFilter
+    ScopedKeyValueListPair:
+      type: object
+      required:
+        - key
+        - value
+        - scope
+      properties:
+        key:
+          type: string
+          maxLength: 1024
+          title: Key
+        value:
+          type: array
+          items:
+            type: string
+            maxLength: 1024
+          title: Value
+        scope:
+          type: string
+          title: Scope
+          description: Scope of the metadata filter (e.g., collection, document, chunk)
+          enum:
+            - collection
+            - document
+            - chunk
+          default: document
+      title: ScopedKeyValueListPair
+    MetadataUpdates:
+      properties:
+        updates:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetadataUpdateItem'
+          title: Updates
+          description: List of metadata updates.
+      type: object
+      required:
+        - updates
+      title: MetadataUpdates
+    MetadataUpdateItem:
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          title: Ids
+          description: List of collection or document or chunk ids for which the metadata should be updated
+        metadataUpdates:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetadataKeyUpdate'
+          title: MetadataUpdates
+          description: List of metadata updates for the given resource ids
+      type: object
+      required:
+        - ids
+        - metadataUpdates
+      title: MetadataUpdateItem
+    MetadataKeyUpdate:
+      properties:
+        key:
+          type: string
+          minLength: 1
+          title: Key
+          description: Key to update
+        operations:
+          anyOf:
+            - type: array
+              items:
+                $ref: '#/components/schemas/MetadataOperation'
+            - type: 'null'
+          title: Operations
+          description: Update operation executed for the key
+      type: object
+      required:
+        - key
+      title: MetadataKeyUpdate
+    MetadataOperation:
+      type: object
+      required:
+        - op
+      properties:
+        op:
+          $ref: '#/components/schemas/MetadataOperationEnum'
+        values:
+          anyOf:
+            - type: array
+              items:
+                type: string
+            - type: 'null'
+          title: Values
+          description: List of values to update.
+      title: MetadataOperation
+    MetadataOperationEnum:
+      type: string
+      enum:
+        - add
+        - remove
+        - replace
+        - delete_key
+      title: MetadataOperationEnum
+    MetadataResponse:
+      type: object
+      properties:
+        current_metadata:
+          anyOf:
+            - type: array
+              items:
+                $ref: '#/components/schemas/MetadataItem'
+            - type: 'null'
+          title: CurrentMetadata
+          description: List of metadata after updates.
+          default: []
+      title: MetadataResponse
+    MetadataItem:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: ID of collection
+        metadata:
+          anyOf:
+            - type: array
+              items:
+                $ref: '#/components/schemas/VectorKeyValueListPair'
+            - type: 'null'
+          title: Metadata
+          description: List of metadata of the collections or documents or chunks
+          default: []
+      title: MetadataItem
+    FilterMatchModeEnum:
+      type: string
+      enum:
+        - ANY
+        - ALL
+      title: FilterMatchModeEnum
 
     ### ###  ########################  ### ###
     ### ###  ###       Error      ###  ### ###

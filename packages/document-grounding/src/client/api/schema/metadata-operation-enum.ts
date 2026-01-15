@@ -5,6 +5,6 @@
  */
 
 /**
- * Representation of the 'VectorSearchSelectOptionEnum' schema.
+ * Representation of the 'MetadataOperationEnum' schema.
  */
-export type VectorSearchSelectOptionEnum = 'ignoreIfKeyAbsent';
+export type MetadataOperationEnum = 'add' | 'remove' | 'replace' | 'delete_key';

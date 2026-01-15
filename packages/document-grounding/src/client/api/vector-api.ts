@@ -7,6 +7,7 @@ import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';
 import type {
   CollectionsListResponse,
   CollectionRequest,
+  CollectionPendingResponse,
   Collection,
   DocumentResponse,
   Documents,
@@ -16,8 +17,11 @@ import type {
   TextSearchRequest,
   VectorSearchResults,
   CollectionCreatedResponse,
-  CollectionPendingResponse,
-  CollectionDeletedResponse
+  CollectionDeletedResponse,
+  DocumentBulkDeleteRequest,
+  DocumentBulkDeleteResponse,
+  MetadataUpdates,
+  MetadataResponse
 } from './schema/index.js';
 /**
  * Representation of the 'VectorApi'.
@@ -54,7 +58,7 @@ export const VectorApi = {
     body: CollectionRequest,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<any>(
+    new OpenApiRequestBuilder<CollectionPendingResponse>(
       'post',
       '/vector/collections',
       {
@@ -92,7 +96,7 @@ export const VectorApi = {
     collectionId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<any>(
+    new OpenApiRequestBuilder<CollectionPendingResponse>(
       'delete',
       '/vector/collections/{collectionId}',
       {
@@ -266,6 +270,82 @@ export const VectorApi = {
       '/vector/collections/{id}/deletionStatus',
       {
         pathParameters: { id },
+        headerParameters
+      },
+      VectorApi._defaultBasePath
+    ),
+  /**
+   * Deletes list of documents across collections.
+   * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  deleteAllDocuments: (
+    body: DocumentBulkDeleteRequest,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
+    new OpenApiRequestBuilder<DocumentBulkDeleteResponse>(
+      'delete',
+      '/vector/documents',
+      {
+        body,
+        headerParameters
+      },
+      VectorApi._defaultBasePath
+    ),
+  /**
+   * Allows to add, remove and modify the collections metadata.
+   * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  updateCollectionsMetadata: (
+    body: MetadataUpdates,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
+    new OpenApiRequestBuilder<MetadataResponse>(
+      'patch',
+      '/vector/collections/metadata',
+      {
+        body,
+        headerParameters
+      },
+      VectorApi._defaultBasePath
+    ),
+  /**
+   * Allows to add, remove and modify the documents metadata.
+   * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  updateDocumentsMetadata: (
+    body: MetadataUpdates,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
+    new OpenApiRequestBuilder<MetadataResponse>(
+      'patch',
+      '/vector/documents/metadata',
+      {
+        body,
+        headerParameters
+      },
+      VectorApi._defaultBasePath
+    ),
+  /**
+   * Allows to add, remove and modify the chunks metadata.
+   * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  updateChunksMetadata: (
+    body: MetadataUpdates,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
+    new OpenApiRequestBuilder<MetadataResponse>(
+      'patch',
+      '/vector/chunks/metadata',
+      {
+        body,
         headerParameters
       },
       VectorApi._defaultBasePath
