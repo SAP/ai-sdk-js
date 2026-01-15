@@ -10,9 +10,7 @@ import type { VectorSearchFilter } from './vector-search-filter.js';
 export type TextSearchRequest = {
   /**
    * Query string
-   * Max Length: 2000.
-   * Min Length: 1.
    */
-  query: string;
+  query: string | any;
   filters: VectorSearchFilter[];
 } & Record<string, any>;

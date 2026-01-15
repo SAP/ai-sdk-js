@@ -9,11 +9,15 @@ import type { VectorKeyValueListPair } from './vector-key-value-list-pair.js';
  * A request for creating a new, single collection.
  */
 export type CollectionRequest = {
-  title?: string | null;
+  title?: string | any;
   embeddingConfig: EmbeddingConfig;
   /**
    * Metadata attached to collection. Useful to restrict search to a subset of collections.
    * Default: [].
    */
   metadata?: VectorKeyValueListPair[];
+  /**
+   * Unique identifier of a collection.
+   */
+  id?: string | any;
 } & Record<string, any>;
