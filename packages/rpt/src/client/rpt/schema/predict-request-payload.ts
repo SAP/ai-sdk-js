@@ -17,11 +17,11 @@ export type PredictRequestPayload = {
   /**
    * Table rows, i.e. list of objects where each object is a mapping of column names to values. Either "rows" or "columns" must be provided.
    */
-  rows?: Record<string, string | number | number | null>[];
+  rows?: Record<string, string | number | number>[];
   /**
    * Alternative to rows: columns of data where each key is a column name and the value is a list of all column values. Either "rows" or "columns" must be provided.
    */
-  columns?: Record<string, (string | number | number | null)[]> | null;
+  columns?: Record<string, (string | number | number)[]> | null;
   /**
    * The name of the index column. If provided, the service will return this column's value in each prediction object to facilitate aligning the output predictions with the input rows on the client side. If not provided, the column will not be included in the output.
    */

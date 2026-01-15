@@ -15,5 +15,5 @@ export type PredictionResult = {
   /**
    * The confidence of the prediction (currently not provided).
    */
-  confidence?: number | any;
+  confidence?: number | null;
 } & Record<string, any>;
