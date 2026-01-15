@@ -786,7 +786,7 @@ app.get('/prompt-registry/template', async (req, res) => {
 app.get('/rpt', async (req, res) => {
   try {
     const data = await predict();
-    res.write(`Prediction: ${data}\n`);
+    res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
 
     res.end();
   } catch (error: any) {
