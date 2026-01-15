@@ -9,4 +9,4 @@ import type { ColumnType } from './column-type.js';
  */
 export type SchemaFieldConfig = {
   dtype: ColumnType;
-} & Record<string, any>;
+};
