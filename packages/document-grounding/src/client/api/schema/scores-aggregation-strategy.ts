@@ -5,6 +5,9 @@
  */
 
 /**
- * Representation of the 'RetrievalSearchSelectOptionEnum' schema.
+ * Representation of the 'ScoresAggregationStrategy' schema.
  */
-export type RetrievalSearchSelectOptionEnum = 'ignoreIfKeyAbsent';
+export type ScoresAggregationStrategy =
+  | 'weighted_average'
+  | 'rrf'
+  | 'weighted_rrf';

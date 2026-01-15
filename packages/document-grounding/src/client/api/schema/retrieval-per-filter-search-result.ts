@@ -14,4 +14,8 @@ export type RetrievalPerFilterSearchResult = {
    * Default: [].
    */
   results?: RetrievalDataRepositorySearchResult[];
+  /**
+   * Friendly Destination Name of remote instance (grounding.name). Only present if dataRepositoryType = remote:dg.
+   */
+  remoteGroundingName?: string | any;
 } & Record<string, any>;

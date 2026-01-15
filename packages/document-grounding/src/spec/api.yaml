@@ -2015,15 +2015,16 @@ components:
           title: Value
         matchMode:
           type: string
-          nullable: true
           title: MatchMode
           description: Default match mode for search filters
           default: ANY
           anyOf:
-            - enum:
+            - type: string
+              title: FilterMatchModeEnum
+              enum:
                 - ANY
                 - ALL
-            - {}
+            - type: 'null'
       type: object
       required:
         - key
@@ -2209,17 +2210,19 @@ components:
     RetrievalSearchConfiguration:
       properties:
         maxChunkCount:
-          nullable: true
-          type: integer
-          minimum: 0
-          exclusiveMinimum: true
+          anyOf:
+            - type: integer
+              exclusiveMinimum: 0
+              maximum: 10000000
+            - type: 'null'
           title: Maxchunkcount
           description: Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'.
         maxDocumentCount:
-          nullable: true
-          type: integer
-          minimum: 0
-          exclusiveMinimum: true
+          anyOf:
+            - type: integer
+              exclusiveMinimum: 0
+              maximum: 10000000
+            - type: 'null'
           title: Maxdocumentcount
           description: "[Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned."
       type: object
@@ -2283,9 +2286,11 @@ components:
             maxLength: 1024
           title: Value
         selectMode:
-          type: array
-          items:
-            $ref: '#/components/schemas/RetrievalSearchSelectOptionEnum'
+          anyOf:
+            - type: array
+              items:
+                $ref: '#/components/schemas/RetrievalSearchSelectOptionEnum'
+            - type: 'null'
           title: Selectmode
           description: Select mode for search filters
       type: object
@@ -2575,10 +2580,8 @@ components:
       title: VectorSearchSelectOptionEnum
     RetrievalSearchSelectOptionEnum:
       type: string
-      anyOf:
-        - enum:
-            - ignoreIfKeyAbsent
-        - {}
+      enum:
+        - ignoreIfKeyAbsent
       title: RetrievalSearchSelectOptionEnum
     SearchFilter:
       properties:
@@ -2910,24 +2913,25 @@ components:
           title: Id
           description: Identifier of this RetrievalSearchFilter - unique per request.
         searchConfiguration:
-          type: object
-          nullable: true
-          $ref: '#/components/schemas/RetrievalSearchConfiguration'
+          anyOf:
+            - $ref: '#/components/schemas/RetrievalSearchConfiguration'
+            - type: 'null'
           default: {}
-          minProperties: 0
-          maxProperties: 2
         dataRepositories:
           type: array
           items:
             type: string
           title: Datarepositories
           description: Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids.
-          default:
-            - '*'
+          default: ['*']
         dataRepositoryType:
-          type: string
           $ref: '#/components/schemas/DataRepositoryType'
           description: Only include DataRepositories with the given type.
+        remoteName:
+          description: Destination Name of remote instance.
+          anyOf:
+            - type: string
+            - type: 'null'
         dataRepositoryMetadata:
           type: array
           items:
@@ -2958,20 +2962,441 @@ components:
     RetrievalSearchInput:
       properties:
         query:
-          type: string
-          minLength: 1
+          anyOf:
+            - type: string
+              minLength: 1
+            - type: 'null'
           title: Query
           description: Query string
         filters:
           type: array
           items:
-            $ref: '#/components/schemas/RetrievalSearchFilter'
+            anyOf:
+              - $ref: '#/components/schemas/RetrievalSearchFilter'
+              - $ref: '#/components/schemas/RetrievalVectorSearchFilter'
           title: Filters
+        postProcessing:
+          type: array
+          items:
+            type: object
+            required:
+              - strategy
+              - inputs
+            properties:
+              id:
+                description: New ID for each PostProcessingOperation.
+                default: ae9eee48-4671-4321-a3e5-640adaaf26ae
+                anyOf:
+                  - type: string
+                  - type: 'null'
+              maxChunkCount:
+                description: 'Maximum number of chunks to be retained in final PerSearchFilterResult.'
+                anyOf:
+                  - type: integer
+                    minimum: 0
+                    maximum: 10000000
+                  - type: 'null'
+                default: 5
+              strategy:
+                description: 'Merging and scoring strategy to derive final PerSearchFilterResult.'
+                oneOf:
+                  - $ref: '#/components/schemas/MergeStrategyScoreReuse'
+                  - $ref: '#/components/schemas/MergeStrategyReranker'
+              inputs:
+                type: array
+                items:
+                  oneOf:
+                    - $ref: '#/components/schemas/PostProcessingObjectReference'
+                    - $ref: '#/components/schemas/PostProcessingOperation'
+          description: List of operations to be performed across PerFilterSearchResults.
+          default: []
       type: object
       required:
         - query
         - filters
       title: RetrievalSearchInput
+    RetrievalVectorSearchFilter:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Identifier of this RetrievalSearchFilter - unique per request.
+        searchConfiguration:
+          anyOf:
+            - $ref: '#/components/schemas/RetrievalSearchConfiguration'
+            - type: 'null'
+          default: {}
+        dataRepositories:
+          type: array
+          items:
+            type: string
+          title: Datarepositories
+          description: Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids.
+          default:
+            - '*'
+        dataRepositoryType:
+          anyOf:
+            - $ref: '#/components/schemas/DataRepositoryType'
+            - type: 'null'
+          default: vector
+        remoteName:
+          description: Destination Name of remote instance.
+          anyOf:
+            - type: string
+            - type: 'null'
+        dataRepositoryMetadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/RetrievalKeyValueListPair'
+          title: Datarepositorymetadata
+          description: Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=['*']
+          default: []
+        documentMetadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/RetrievalSearchDocumentKeyValueListPair'
+          title: Documentmetadata
+          description: Restrict documents considered during search to those annotated with the given metadata.
+          default: []
+        chunkMetadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/RetrievalKeyValueListPair'
+          title: Chunkmetadata
+          description: Restrict chunks considered during search to those with the given metadata.
+          default: []
+        filter:
+          anyOf:
+            - $ref: '#/components/schemas/BinaryBooleanFilter'
+            - $ref: '#/components/schemas/ScopedKeyValueListPair'
+            - type: 'null'
+          description: Filter to apply on the search results. This cannot be used together with 'documentMetadata'. The depth of the filter must not exceed 5 levels.
+        scoringConfiguration:
+          anyOf:
+            - $ref: '#/components/schemas/VectorScoringConfiguration'
+            - type: 'null'
+          description: Scoring configuration for retrieval and ranking.
+          default:
+            denseRetrieval:
+              enabled: true
+              weight: 1
+            keywordRetrieval:
+              enabled: true
+              extractKeyWordsFromQuery: false
+              weight: 1
+            boosting:
+              enabled: true
+              metadata: []
+              scoreComputationStrategy: match_count
+              weight: 1
+            aggregationStrategy: weighted_average
+      type: object
+      required:
+        - id
+      title: RetrievalVectorSearchFilter
+    BinaryBooleanFilter:
+      properties:
+        operator:
+          type: string
+          title: Operator
+          enum:
+            - and
+            - or
+        left:
+          title: Left
+          anyOf:
+            - $ref: '#/components/schemas/BinaryBooleanFilter'
+            - $ref: '#/components/schemas/ScopedKeyValueListPair'
+        right:
+          title: Right
+          anyOf:
+            - $ref: '#/components/schemas/BinaryBooleanFilter'
+            - $ref: '#/components/schemas/ScopedKeyValueListPair'
+      type: object
+      required:
+        - operator
+        - left
+        - right
+      title: BinaryBooleanFilter
+    ScopedKeyValueListPair:
+      properties:
+        key:
+          type: string
+          maxLength: 1024
+          title: Key
+        value:
+          type: array
+          items:
+            type: string
+            maxLength: 1024
+          title: Value
+        scope:
+          type: string
+          title: Scope
+          enum:
+            - repository
+            - document
+            - chunk
+          default: document
+      type: object
+      required:
+        - key
+        - value
+      title: ScopedKeyValueListPair
+    MergeStrategyScoreReuse:
+      properties:
+        type:
+          description: 'The type of merge strategy.'
+          anyOf:
+            - $ref: '#/components/schemas/MergeStrategyType'
+            - type: 'null'
+          default: scoreReuse
+      type: object
+      title: MergeStrategyScoreReuse
+      description: The MergeStrategyScoreReuse merges the given PerFilterSearchResult instances according to the scores returned by the downstream retrieval process. It is important that the scores are comparable, meaning they should come from the same embedding model or reranker model.
+    MergeStrategyReranker:
+      properties:
+        type:
+          anyOf:
+            - $ref: '#/components/schemas/MergeStrategyType'
+            - type: 'null'
+          default: reranker
+        model:
+          description: The RerankerModel to use.
+          anyOf:
+            - type: string
+              title: RerankerModel
+              enum:
+                - cohere-3.5
+            - type: 'null'
+          default: cohere-3.5
+        boosting:
+          description: Key-value pairs to be included in the ranking process, to boost related chunks according to chunk content and metadata, if includeMetaData is true.
+          anyOf:
+            - type: array
+              items:
+                type: object
+                required:
+                  - key
+                  - value
+                  - scope
+                properties:
+                  key:
+                    type: string
+                    maxLength: 1024
+                  value:
+                    type: array
+                    items:
+                      type: string
+                      maxLength: 1024
+                  scope:
+                    type: array
+                    description: PerFilterSearchResult ID or a new ID for each PostProcessingOperation.
+                    items:
+                      type: string
+            - type: 'null'
+        includeAllMetaData:
+          description: If true, document and chunk metadata are sent to the reranker LLM along with the text content of the chunk.
+          anyOf:
+            - type: boolean
+            - type: 'null'
+          default: false
+      type: object
+      title: MergeStrategyReranker
+      description: The MergeStrategyReranker will call a reranker LLM to merge the given PerFilterSearchResult instances. This strategy adds latency, but yields good results.
+    MergeStrategyType:
+      enum:
+        - reranker
+        - scoreReuse
+        - reciprocalRankFusion
+        - random
+      type: string
+      title: MergeStrategyType
+    PostProcessingObjectReference:
+      properties:
+        id:
+          description: PerFilterSearchResult ID or PostProcessingOperation ID.
+          anyOf:
+            - type: string
+            - type: 'null'
+          default: '6d3eeafd-f3db-4e8e-949a-0e40e50eab64'
+      type: object
+      title: PostProcessingObjectReference
+    PostProcessingOperation:
+      properties:
+        id:
+          anyOf:
+            - type: string
+            - type: 'null'
+          description: New ID for each PostProcessingOperation.
+          default: ae9eee48-4671-4321-a3e5-640adaaf26ae
+          title: Id
+        maxChunkCount:
+          title: Maxchunkcount
+          description: Maximum number of chunks to be retained in final PerSearchFilterResult.
+          default: 5
+          anyOf:
+            - type: integer
+              exclusiveMinimum: 0
+              maximum: 10000000
+            - type: 'null'
+        strategy:
+          title: Strategy
+          description: Merging and scoring strategy to derive final PerSearchFilterResult.
+          oneOf:
+            - $ref: '#/components/schemas/MergeStrategyScoreReuse'
+            - $ref: '#/components/schemas/MergeStrategyReranker'
+        inputs:
+          title: Inputs
+          type: array
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/PostProcessingObjectReference'
+              - $ref: '#/components/schemas/PostProcessingOperation'
+      type: object
+      required:
+        - strategy
+        - inputs
+      title: PostProcessingOperation
+    VectorScoringConfiguration:
+      properties:
+        denseRetrieval:
+          anyOf:
+            - $ref: '#/components/schemas/DenseRetrievalScoringConfiguration'
+            - type: 'null'
+          default:
+            enabled: true
+            weight: 1
+        keywordRetrieval:
+          anyOf:
+            - $ref: '#/components/schemas/KeyWordRetrievalScoringConfiguration'
+            - type: 'null'
+          default:
+            enabled: true
+            weight: 1
+            extractKeyWordsFromQuery: false
+        boosting:
+          anyOf:
+            - $ref: '#/components/schemas/BoostingScoringConfiguration'
+            - type: 'null'
+          default:
+            enabled: true
+            metadata: []
+            weight: 1
+            scoreComputationStrategy: match_count
+        scoreThreshold:
+          title: Scorethreshold
+          description: Minimum chunk score threshold.
+          anyOf:
+            - type: number
+            - type: 'null'
+        aggregationStrategy:
+          description: Methodology to calculate the final aggregate score.
+          anyOf:
+            - $ref: '#/components/schemas/ScoresAggregationStrategy'
+            - type: 'null'
+          default: weighted_average
+      type: object
+      title: VectorScoringConfiguration
+    DenseRetrievalScoringConfiguration:
+      properties:
+        enabled:
+          anyOf:
+            - type: boolean
+            - type: 'null'
+          description: Enable dense retrieval.
+          default: true
+        weight:
+          anyOf:
+            - type: integer
+            - type: 'null'
+          description: Contribution to final score.
+          default: 1
+      type: object
+      title: DenseRetrievalScoringConfiguration
+    KeyWordRetrievalScoringConfiguration:
+      properties:
+        enabled:
+          anyOf:
+            - type: boolean
+            - type: 'null'
+          default: true
+          description: Enable dense retrieval.
+        weight:
+          anyOf:
+            - type: integer
+            - type: 'null'
+          default: 1
+          description: Contribution to final score.
+        extractKeyWordsFromQuery:
+          anyOf:
+            - type: boolean
+            - type: 'null'
+          default: false
+          description: Extract Keywords from Query.
+      type: object
+      title: KeyWordRetrievalScoringConfiguration
+    BoostingScoringConfiguration:
+      properties:
+        enabled:
+          anyOf:
+            - type: boolean
+            - type: 'null'
+          default: true
+          description: Enable metadata-based boosting.
+        metadata:
+          anyOf:
+            - type: array
+              items:
+                type: object
+                required:
+                  - key
+                  - value
+                  - weight
+                properties:
+                  key:
+                    type: string
+                    maxLength: 1024
+                  value:
+                    type: array
+                    items:
+                      type: string
+                      maxLength: 1024
+                  scope:
+                    type: string
+                    enum: [repository, document, chunk]
+                    default: document
+                  weight:
+                    type: integer
+            - type: 'null'
+          default: []
+        weight:
+          anyOf:
+            - type: integer
+            - type: 'null'
+          default: 1
+          description: Contribution to final score.
+        scoreComputationStrategy:
+          description: How the similarity between document metadata and boosted key-value pairs is computed.
+          anyOf:
+            - $ref: '#/components/schemas/BoostingScoreComputationStrategy'
+            - type: 'null'
+          default: match_count
+      type: object
+      title: BoostingScoringConfiguration
+    BoostingScoreComputationStrategy:
+      enum:
+        - match_count
+        - embedding
+      type: string
+      title: BoostingScoreComputationStrategy
+    ScoresAggregationStrategy:
+      enum:
+        - weighted_average
+        - rrf
+        - weighted_rrf
+      type: string
+      title: ScoresAggregationStrategy
     RetrievalDataRepositorySearchResult:
       properties:
         dataRepository:
@@ -2992,6 +3417,13 @@ components:
           title: Results
           description: List of returned results.
           default: []
+        remoteGroundingName:
+          anyOf:
+            - type: string
+            - type: 'null'
+          description:
+            Friendly Destination Name of remote instance (grounding.name).
+            Only present if dataRepositoryType = remote:dg.
       type: object
       required:
         - filterId
