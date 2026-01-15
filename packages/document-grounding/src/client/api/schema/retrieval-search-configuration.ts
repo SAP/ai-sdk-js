@@ -11,9 +11,9 @@ export type RetrievalSearchConfiguration = {
   /**
    * Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'.
    */
-  maxChunkCount?: number | null;
+  maxChunkCount?: number | any;
   /**
    * [Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned.
    */
-  maxDocumentCount?: number | null;
+  maxDocumentCount?: number | any;
 } & Record<string, any>;

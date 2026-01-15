@@ -7,10 +7,13 @@ import type { RetrievalSearchConfiguration } from './retrieval-search-configurat
 import type { DataRepositoryType } from './data-repository-type.js';
 import type { RetrievalKeyValueListPair } from './retrieval-key-value-list-pair.js';
 import type { RetrievalSearchDocumentKeyValueListPair } from './retrieval-search-document-key-value-list-pair.js';
+import type { BinaryBooleanFilter } from './binary-boolean-filter.js';
+import type { ScopedKeyValueListPair } from './scoped-key-value-list-pair.js';
+import type { VectorScoringConfiguration } from './vector-scoring-configuration.js';
 /**
- * Limit scope of search to certain DataRepositories, Documents or Chunks.
+ * Representation of the 'RetrievalVectorSearchFilter' schema.
  */
-export type RetrievalSearchFilter = {
+export type RetrievalVectorSearchFilter = {
   /**
    * Identifier of this RetrievalSearchFilter - unique per request.
    */
@@ -26,7 +29,10 @@ export type RetrievalSearchFilter = {
    * ].
    */
   dataRepositories?: string[];
-  dataRepositoryType: DataRepositoryType;
+  /**
+   * Default: "vector".
+   */
+  dataRepositoryType?: DataRepositoryType | any;
   /**
    * Destination Name of remote instance.
    */
@@ -46,4 +52,30 @@ export type RetrievalSearchFilter = {
    * Default: [].
    */
   chunkMetadata?: RetrievalKeyValueListPair[];
+  /**
+   * Filter to apply on the search results. This cannot be used together with 'documentMetadata'. The depth of the filter must not exceed 5 levels.
+   */
+  filter?: BinaryBooleanFilter | ScopedKeyValueListPair | any;
+  /**
+   * Scoring configuration for retrieval and ranking.
+   * Default: {
+   *   "denseRetrieval": {
+   *     "enabled": true,
+   *     "weight": 1
+   *   },
+   *   "keywordRetrieval": {
+   *     "enabled": true,
+   *     "extractKeyWordsFromQuery": false,
+   *     "weight": 1
+   *   },
+   *   "boosting": {
+   *     "enabled": true,
+   *     "metadata": [],
+   *     "scoreComputationStrategy": "match_count",
+   *     "weight": 1
+   *   },
+   *   "aggregationStrategy": "weighted_average"
+   * }.
+   */
+  scoringConfiguration?: VectorScoringConfiguration | any;
 } & Record<string, any>;

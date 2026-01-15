@@ -5,17 +5,16 @@
  */
 
 /**
- * Representation of the 'RetrievalDocumentKeyValueListPair' schema.
+ * Representation of the 'ScopedKeyValueListPair' schema.
  */
-export type RetrievalDocumentKeyValueListPair = {
+export type ScopedKeyValueListPair = {
   /**
    * Max Length: 1024.
    */
   key: string;
   value: string[];
   /**
-   * Default match mode for search filters
-   * Default: "ANY".
+   * Default: "document".
    */
-  matchMode?: 'ANY' | 'ALL' | any;
+  scope?: 'repository' | 'document' | 'chunk';
 } & Record<string, any>;

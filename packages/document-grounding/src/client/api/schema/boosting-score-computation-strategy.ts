@@ -5,6 +5,6 @@
  */
 
 /**
- * Representation of the 'RetrievalSearchSelectOptionEnum' schema.
+ * Representation of the 'BoostingScoreComputationStrategy' schema.
  */
-export type RetrievalSearchSelectOptionEnum = 'ignoreIfKeyAbsent';
+export type BoostingScoreComputationStrategy = 'match_count' | 'embedding';

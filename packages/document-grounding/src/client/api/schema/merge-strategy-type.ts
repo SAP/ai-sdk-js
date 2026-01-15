@@ -5,6 +5,10 @@
  */
 
 /**
- * Representation of the 'RetrievalSearchSelectOptionEnum' schema.
+ * Representation of the 'MergeStrategyType' schema.
  */
-export type RetrievalSearchSelectOptionEnum = 'ignoreIfKeyAbsent';
+export type MergeStrategyType =
+  | 'reranker'
+  | 'scoreReuse'
+  | 'reciprocalRankFusion'
+  | 'random';
