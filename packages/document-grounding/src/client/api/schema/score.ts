@@ -5,6 +5,8 @@
  */
 
 /**
- * Representation of the 'DataRepositoryType' schema.
+ * Representation of the 'Score' schema.
  */
-export type DataRepositoryType = 'vector' | 'help.sap.com' | 'remote:dg';
+export type Score = {
+  value: number;
+} & Record<string, any>;

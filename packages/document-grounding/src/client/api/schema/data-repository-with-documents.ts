@@ -17,7 +17,16 @@ export type DataRepositoryWithDocuments = {
   title: string;
   /**
    * Metadata attached to DataRepository. Useful to later limit search to a subset of DataRepositories.
+   * Default: [].
    */
   metadata?: RetrievalKeyValueListPair[];
+  /**
+   * Friendly destination Name (grounding.name) of remote instance.
+   */
+  remoteGroundingName?: string | any;
+  /**
+   * Optional message.
+   */
+  message?: string | any;
   documents: Document[];
 } & Record<string, any>;

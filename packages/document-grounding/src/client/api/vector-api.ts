@@ -17,7 +17,9 @@ import type {
   VectorSearchResults,
   CollectionCreatedResponse,
   CollectionPendingResponse,
-  CollectionDeletedResponse
+  CollectionDeletedResponse,
+  DocumentBulkDeleteRequest,
+  DocumentBulkDeleteResponse
 } from './schema/index.js';
 /**
  * Representation of the 'VectorApi'.
@@ -266,6 +268,25 @@ export const VectorApi = {
       '/vector/collections/{id}/deletionStatus',
       {
         pathParameters: { id },
+        headerParameters
+      },
+      VectorApi._defaultBasePath
+    ),
+  /**
+   * Deletes list of documents across collections.
+   * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  deleteAllDocuments: (
+    body: DocumentBulkDeleteRequest,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
+    new OpenApiRequestBuilder<DocumentBulkDeleteResponse>(
+      'delete',
+      '/vector/documents',
+      {
+        body,
         headerParameters
       },
       VectorApi._defaultBasePath
