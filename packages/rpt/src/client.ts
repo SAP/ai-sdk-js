@@ -1,7 +1,7 @@
 import { getResourceGroup } from '@sap-ai-sdk/ai-api/internal.js';
 import { getFoundationModelDeploymentId } from '@sap-ai-sdk/foundation-models/internal.js';
-import { RptApi } from './index.js';
-import type { DataSchema, PredictionRequestPayload } from './types.js';
+import { RptApi } from './internal.js';
+import type { DataSchema, PredictionData } from './types.js';
 import type {
   PredictRequestPayload,
   PredictResponsePayload
@@ -22,8 +22,8 @@ export class RptClient {
   ) {}
 
   async predict<T extends DataSchema>(
-    dataSchema: T,
-    predictionPayload: PredictionRequestPayload<T>
+    predictionPayload: PredictionData<T>,
+    dataSchema?: T
   ): Promise<PredictResponsePayload> {
     // eslint-disable-next-line jsdoc/require-jsdoc
     const deploymentId = await getFoundationModelDeploymentId(
@@ -37,7 +37,7 @@ export class RptClient {
 
     // eslint-disable-next-line jsdoc/require-jsdoc
     const body = {
-      data_schema: dataSchema,
+      data_schema: dataSchema || null,
       ...predictionPayload
     } satisfies PredictRequestPayload;
 

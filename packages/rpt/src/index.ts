@@ -1,3 +1,7 @@
-export * from './client/rpt/schema/index.js';
-export { DefaultApi as RptApi } from './client/rpt/index.js';
 export * from './client.js';
+export * from './types.js';
+export type {
+  PredictResponseMetadata,
+  PredictResponsePayload,
+  PredictResponseStatus
+} from './client/rpt/schema/index.js';
