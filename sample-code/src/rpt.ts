@@ -5,14 +5,14 @@ import type {
   PredictionData
 } from '@sap-ai-sdk/rpt';
 
-/**
- * NOTES:
- *
- * Error due to incorrect usage of `null` in the spec.
- * Currently the spec is adjusted manually.
- * I replaced all occurrences of `"type": "null"` with `"nullable": true`.
- * Asked colleagues to fix, otherwise we need to add a workaround to the generator.
- */
+//
+// NOTES:
+//
+// Error due to incorrect usage of `null` in the spec.
+// Currently the spec is adjusted manually.
+// I replaced all occurrences of `"type": "null"` with `"nullable": true`.
+// Asked colleagues to fix, otherwise we need to add a workaround to the generator.
+//
 
 const schema = {
   PRODUCT: { dtype: 'string' },
@@ -107,17 +107,19 @@ const data = {
 } satisfies PredictionData<typeof schema>;
 
 /**
- * Predict the sales group of products.
+ * Predict the sales group of products by passing a schema.
  * @returns The prediction results.
  */
-export async function predict(): Promise<PredictResponsePayload> {
+export async function predictWithSchema(): Promise<PredictResponsePayload> {
   const client = new RptClient();
   return client.predict(schema, data);
 }
 
-// eslint-disable-next-line jsdoc/require-jsdoc
-export async function predict2(): Promise<PredictResponsePayload> {
-  // eslint-disable-next-line jsdoc/require-jsdoc
+/**
+ * Predict the sales group of products using automatic data type parsing.
+ * @returns The prediction results.
+ */
+export async function predictAutomaticParsing(): Promise<PredictResponsePayload> {
   const client = new RptClient();
   return client.predict({
     prediction_config: {
