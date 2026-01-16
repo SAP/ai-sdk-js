@@ -38,6 +38,7 @@ export {
   invokeChain as orchestrationInvokeChain,
   invokeLangGraphChain,
   invokeLangGraphChainStream,
+  invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
   streamChain
 } from './langchain-orchestration.js';
 export {
