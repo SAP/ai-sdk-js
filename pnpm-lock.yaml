@@ -219,9 +219,15 @@ importers:
 
   packages/rpt:
     dependencies:
+      '@sap-ai-sdk/ai-api':
+        specifier: workspace:^
+        version: link:../ai-api
       '@sap-ai-sdk/core':
         specifier: workspace:^
         version: link:../core
+      '@sap-ai-sdk/foundation-models':
+        specifier: workspace:^
+        version: link:../foundation-models
 
   sample-cap:
     dependencies:

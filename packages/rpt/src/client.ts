@@ -10,6 +10,9 @@ import type { SAPRptModel } from '@sap-ai-sdk/core/internal.js';
 import type { ModelDeployment } from '@sap-ai-sdk/ai-api';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
+/**
+ * Representation of an RPT client to make predictions.
+ */
 export class RptClient {
   /**
    * Creates an instance of the RPT client.
@@ -21,10 +24,19 @@ export class RptClient {
     private destination?: HttpDestinationOrFetchOptions
   ) {}
 
+  /**
+   * Predict based on data schema and prediction data.
+   * @param dataSchema - Prediction data follows this schema.
+   * @param predictionData - Data to base prediction on.
+   */
   async predict<T extends DataSchema>(
     dataSchema: T,
     predictionData: PredictionData<T>
   ): Promise<PredictResponsePayload>;
+  /**
+   * Predict based on prediction data. Uses automatic data type parsing.
+   * @param predictionData - Data to base prediction on.
+   */
   async predict<T extends DataSchema>(
     predictionData: PredictionData<T>
   ): Promise<PredictResponsePayload>;
@@ -32,7 +44,6 @@ export class RptClient {
     dataSchemaOrPredictionData: T | PredictionData<T>,
     predictionDataOrUndefined?: PredictionData<T>
   ): Promise<PredictResponsePayload> {
-    // eslint-disable-next-line jsdoc/require-jsdoc
     const [predictionData, dataSchema] = (
       predictionDataOrUndefined
         ? [predictionDataOrUndefined, dataSchemaOrPredictionData]
@@ -46,10 +57,8 @@ export class RptClient {
       this.destination
     );
 
-    // eslint-disable-next-line jsdoc/require-jsdoc
     const resourceGroup = getResourceGroup(this.modelDeployment);
 
-    // eslint-disable-next-line jsdoc/require-jsdoc
     const body = {
       data_schema: dataSchema,
       ...predictionData
