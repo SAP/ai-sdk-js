@@ -1,7 +1,7 @@
 import {
   orchestrationInvokeChain,
   invokeLangGraphChain,
-  invokeDynamicModelAgent
+  invokeDynamicModelAgent,
   invokeLangGraphChainStream
 } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
