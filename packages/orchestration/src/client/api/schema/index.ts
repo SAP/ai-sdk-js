@@ -49,6 +49,7 @@ export * from './generic-module-result.js';
 export * from './input-translation-module-result.js';
 export * from './llm-module-result.js';
 export * from './llm-module-result-streaming.js';
+export * from './citation.js';
 export * from './llm-choice.js';
 export * from './llm-choice-streaming.js';
 export * from './token-usage.js';
