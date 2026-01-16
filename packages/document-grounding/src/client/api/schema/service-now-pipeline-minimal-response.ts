@@ -4,13 +4,13 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import type { BasePipelineMinimalResponse } from './base-pipeline-minimal-response.js';
-import type { S3ConfigurationMinimal } from './s-3-configuration-minimal.js';
+import type { ServiceNowConfigurationMinimal } from './service-now-configuration-minimal.js';
 /**
- * Representation of the 'S3PipelineMinimalResponse' schema.
+ * Representation of the 'ServiceNowPipelineMinimalResponse' schema.
  */
-export type S3PipelineMinimalResponse = BasePipelineMinimalResponse & {
-  type: 'S3';
-  configuration?: S3ConfigurationMinimal;
+export type ServiceNowPipelineMinimalResponse = BasePipelineMinimalResponse & {
+  type: 'ServiceNow';
+  configuration?: ServiceNowConfigurationMinimal;
   /**
    * @example true
    */
