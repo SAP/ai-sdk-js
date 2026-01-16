@@ -944,6 +944,40 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
+  '/vector/documents':
+    delete:
+      tags:
+        - Vector
+      summary: Delete list of documents across collections
+      description: Deletes list of documents across collections.
+      operationId: vector.v1.vector_endpoints.delete_all_documents
+      x-sap-cloud-sdk-operation-name: deleteAllDocuments
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentBulkDeleteRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentBulkDeleteResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
   '/retrieval/dataRepositories':
     get:
       parameters:
@@ -1057,6 +1091,7 @@ components:
         - $ref: '#/components/schemas/SFTPPipelineCreateRequest'
         - $ref: '#/components/schemas/SDMPipelineCreateRequest'
         - $ref: '#/components/schemas/WorkZonePipelineCreateRequest'
+        - $ref: '#/components/schemas/ServiceNowPipelineCreateRequest'
       discriminator:
         propertyName: type
         mapping:
@@ -1065,6 +1100,7 @@ components:
           SFTP: '#/components/schemas/SFTPPipelineCreateRequest'
           SDM: '#/components/schemas/SDMPipelineCreateRequest'
           WorkZone: '#/components/schemas/WorkZonePipelineCreateRequest'
+          ServiceNow: '#/components/schemas/ServiceNowPipelineCreateRequest'
 
     manualPipelineTrigger:
       type: object
@@ -1146,6 +1182,67 @@ components:
         metadata:
           $ref: '#/components/schemas/MetaData'
       additionalProperties: true
+
+    ServiceNowPipelineCreateRequest:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum: ['ServiceNow']
+        metadata:
+          $ref: '#/components/schemas/MetaData'
+        configuration:
+          $ref: '#/components/schemas/ServiceNowConfigurationStruct'
+      additionalProperties: false
+
+    ServiceNowConfigurationStruct:
+      type: object
+      required:
+        - destination
+      properties:
+        destination:
+          type: string
+          example: destination-name
+        serviceNow:
+          $ref: '#/components/schemas/ServiceNowConfig'
+        metadataConfigId:
+          type: string
+          example: uuid
+        cronExpression:
+          type: string
+          description: |
+            Optional cron expression for scheduling pipeline execution.
+            Must represent an interval greater than 1 hour.
+          example: '0 */20 * * *'
+      additionalProperties: false
+
+    ServiceNowConfig:
+      type: object
+      properties:
+        includePaths:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          example:
+            - active=true
+            - sys_domain_path=/health
+      additionalProperties: false
+
+    ServiceNowConfigurationMinimal:
+      type: object
+      required:
+        - serviceNow
+      properties:
+        serviceNow:
+          type: object
+          properties:
+            includePaths:
+              $ref: '#/components/schemas/IncludePathsArray'
+          additionalProperties: false
+      additionalProperties: false
 
     MSSharePointConfiguration:
       type: object
@@ -1276,6 +1373,7 @@ components:
         - $ref: '#/components/schemas/SFTPPipelineGetResponse'
         - $ref: '#/components/schemas/SDMPipelineGetResponse'
         - $ref: '#/components/schemas/WorkZonePipelineGetResponse'
+        - $ref: '#/components/schemas/ServiceNowPipelineGetResponse'
       discriminator:
         propertyName: type
         mapping:
@@ -1284,6 +1382,7 @@ components:
           SFTP: '#/components/schemas/SFTPPipelineGetResponse'
           SDM: '#/components/schemas/SDMPipelineGetResponse'
           WorkZone: '#/components/schemas/WorkZonePipelineGetResponse'
+          ServiceNow: '#/components/schemas/ServiceNowPipelineGetResponse'
 
     MSSharePointPipelineGetResponse:
       allOf:
@@ -1349,6 +1448,19 @@ components:
               enum: [WorkZone]
             metadata:
               $ref: '#/components/schemas/MetaData'
+
+    ServiceNowPipelineGetResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasePipelineResponse'
+        - type: object
+          required:
+            - configuration
+          properties:
+            type:
+              type: string
+              enum: ['ServiceNow']
+            configuration:
+              $ref: '#/components/schemas/ServiceNowConfigurationMinimal'
 
     BasePipelineResponse:
       type: object
@@ -1619,6 +1731,7 @@ components:
         - $ref: '#/components/schemas/SFTPPipelineMinimalResponse'
         - $ref: '#/components/schemas/SDMPipelineMinimalResponse'
         - $ref: '#/components/schemas/WorkZonePipelineMinimalResponse'
+        - $ref: '#/components/schemas/ServiceNowPipelineMinimalResponse'
       discriminator:
         propertyName: type
         mapping:
@@ -1627,6 +1740,7 @@ components:
           SFTP: '#/components/schemas/SFTPPipelineMinimalResponse'
           SDM: '#/components/schemas/SDMPipelineMinimalResponse'
           WorkZone: '#/components/schemas/WorkZonePipelineMinimalResponse'
+          ServiceNow: '#/components/schemas/ServiceNowPipelineMinimalResponse'
 
     MSSharePointPipelineMinimalResponse:
       allOf:
@@ -1652,7 +1766,6 @@ components:
         - type: object
           required:
             - type
-            - configuration
           properties:
             type:
               type: string
@@ -1670,7 +1783,6 @@ components:
         - type: object
           required:
             - type
-            - configuration
           properties:
             type:
               type: string
@@ -1708,6 +1820,22 @@ components:
               type: string
               enum:
                 - WorkZone
+            metadata:
+              type: boolean
+              example: true
+
+    ServiceNowPipelineMinimalResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasePipelineMinimalResponse'
+        - type: object
+          required:
+            - type
+          properties:
+            type:
+              type: string
+              enum: ['ServiceNow']
+            configuration:
+              $ref: '#/components/schemas/ServiceNowConfigurationMinimal'
             metadata:
               type: boolean
               example: true
@@ -2285,6 +2413,11 @@ components:
             Metadata attached to collection. Useful to restrict search to a
             subset of collections.
           default: []
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: Unique identifier of a collection.
       type: object
       required:
         - embeddingConfig
@@ -2968,6 +3101,44 @@ components:
         - msg
         - type
       title: ValidationError
+    DocumentBulkDeleteRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          minItems: 1
+          maxItems: 100
+          title: Ids
+          description: List of document IDs to delete
+      type: object
+      required:
+        - ids
+      title: DocumentBulkDeleteRequest
+      description: A request to delete documents by their IDs.
+    DocumentBulkDeleteResponse:
+      properties:
+        deleted:
+          type: array
+          items:
+            type: string
+            format: uuid
+          title: Deleted
+          description: List of successfully deleted document IDs
+        notFound:
+          type: array
+          items:
+            type: string
+            format: uuid
+          title: NotFound
+          description: List of document IDs that were not found
+      type: object
+      required:
+        - deleted
+        - notFound
+      title: DocumentBulkDeleteResponse
+      description: Response after deleting documents in bulk.
 
     ### ###  ########################  ### ###
     ### ###  ###       Error      ###  ### ###
