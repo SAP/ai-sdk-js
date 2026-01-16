@@ -373,10 +373,13 @@ components:
           enum:
             - text
             - image_url
+            - file
         text:
           type: string
         image_url:
           $ref: '#/components/schemas/ImageContentUrl'
+        file:
+          $ref: '#/components/schemas/FileContent'
       required:
         - type
     ImageContentUrl:
@@ -390,6 +393,18 @@ components:
         detail: # keep? openai specific
           type: string
           default: 'auto'
+    FileContent:
+      type: object
+      required:
+        - file_data
+      additionalProperties: false
+      properties:
+        file_data:
+          type: string
+          description: Base64 encoded file content or file URL
+        filename:
+          type: string
+          description: Name of the file
     ToolChatMessage:
       type: object
       additionalProperties: false
