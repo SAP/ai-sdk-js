@@ -112,7 +112,7 @@ const data = {
  */
 export async function predict(): Promise<PredictResponsePayload> {
   const client = new RptClient();
-  return client.predict(data, schema);
+  return client.predict(schema, data);
 }
 
 // eslint-disable-next-line jsdoc/require-jsdoc
