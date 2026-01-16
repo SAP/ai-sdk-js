@@ -8,6 +8,7 @@ import type { S3PipelineMinimalResponse } from './s-3-pipeline-minimal-response.
 import type { SFTPPipelineMinimalResponse } from './sftp-pipeline-minimal-response.js';
 import type { SDMPipelineMinimalResponse } from './sdm-pipeline-minimal-response.js';
 import type { WorkZonePipelineMinimalResponse } from './work-zone-pipeline-minimal-response.js';
+import type { ServiceNowPipelineMinimalResponse } from './service-now-pipeline-minimal-response.js';
 /**
  * Representation of the 'PipelineMinimalResponse' schema.
  */
@@ -16,4 +17,5 @@ export type PipelineMinimalResponse =
   | ({ type: 'S3' } & S3PipelineMinimalResponse)
   | ({ type: 'SFTP' } & SFTPPipelineMinimalResponse)
   | ({ type: 'SDM' } & SDMPipelineMinimalResponse)
-  | ({ type: 'WorkZone' } & WorkZonePipelineMinimalResponse);
+  | ({ type: 'WorkZone' } & WorkZonePipelineMinimalResponse)
+  | ({ type: 'ServiceNow' } & ServiceNowPipelineMinimalResponse);
