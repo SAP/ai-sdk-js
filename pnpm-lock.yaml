@@ -225,8 +225,8 @@ importers:
         specifier: ^9.6.3
         version: 9.6.3(@eslint/js@9.39.2)(express@5.2.1)
       '@sap/xssec':
-        specifier: ^4.12.1
-        version: 4.12.1
+        specifier: ^4.12.2
+        version: 4.12.2
       express:
         specifier: ^5.2.1
         version: 5.2.1
@@ -1500,6 +1500,10 @@ packages:
 
   '@sap/xssec@4.12.1':
     resolution: {integrity: sha512-LcCnFuoNKosXJ9H71Yd9vRNknB+LHsghro1eHgQ8jUmacSt/C2USL7BsJ4TDb4DxeeZB4wieUEy5HBPZM9T+Jw==}
+    engines: {node: '>=18'}
+
+  '@sap/xssec@4.12.2':
+    resolution: {integrity: sha512-T4yy/lXZerAREJnb2Yte3oL4iDJOKlmWrMwMLXY5/U33tuKDVzIVO3VQqfLTGTIJABk4msE+km0YWpds+fSv3w==}
     engines: {node: '>=18'}
 
   '@shikijs/engine-oniguruma@3.21.0':
@@ -6817,6 +6821,13 @@ snapshots:
       - supports-color
 
   '@sap/xssec@4.12.1':
+    dependencies:
+      debug: 4.4.3
+      jwt-decode: 4.0.0
+    transitivePeerDependencies:
+      - supports-color
+
+  '@sap/xssec@4.12.2':
     dependencies:
       debug: 4.4.3
       jwt-decode: 4.0.0
