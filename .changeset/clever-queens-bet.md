@@ -2,4 +2,4 @@
 '@sap-ai-sdk/langchain': minor
 ---
 
-[feat] Support `withStructuredOutput()` method in the Orchestration LangChain client.
+[feat] Support the `withStructuredOutput()` method in the Orchestration LangChain client.
