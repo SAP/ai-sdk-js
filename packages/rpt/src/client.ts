@@ -1,7 +1,7 @@
 import { getResourceGroup } from '@sap-ai-sdk/ai-api/internal.js';
 import { getFoundationModelDeploymentId } from '@sap-ai-sdk/foundation-models/internal.js';
 import { RptApi } from './internal.js';
-import type { DataSchema, PredictionData } from './types.js';
+import { type DataSchema, type PredictionData } from './types.js';
 import type {
   PredictRequestPayload,
   PredictResponsePayload
@@ -22,9 +22,23 @@ export class RptClient {
   ) {}
 
   async predict<T extends DataSchema>(
-    predictionPayload: PredictionData<T>,
-    dataSchema?: T
+    dataSchema: T,
+    predictionData: PredictionData<T>
+  ): Promise<PredictResponsePayload>;
+  async predict<T extends DataSchema>(
+    predictionData: PredictionData<T>
+  ): Promise<PredictResponsePayload>;
+  async predict<T extends DataSchema>(
+    dataSchemaOrPredictionData: T | PredictionData<T>,
+    predictionDataOrUndefined?: PredictionData<T>
   ): Promise<PredictResponsePayload> {
+    // eslint-disable-next-line jsdoc/require-jsdoc
+    const [predictionData, dataSchema] = (
+      predictionDataOrUndefined
+        ? [predictionDataOrUndefined, dataSchemaOrPredictionData]
+        : [dataSchemaOrPredictionData, null]
+    ) as [PredictionData<T>, T];
+
     // eslint-disable-next-line jsdoc/require-jsdoc
     const deploymentId = await getFoundationModelDeploymentId(
       this.modelDeployment,
@@ -37,8 +51,8 @@ export class RptClient {
 
     // eslint-disable-next-line jsdoc/require-jsdoc
     const body = {
-      data_schema: dataSchema || null,
-      ...predictionPayload
+      data_schema: dataSchema,
+      ...predictionData
     } satisfies PredictRequestPayload;
 
     return RptApi.predict(body)
