@@ -1038,5 +1038,136 @@ describe('orchestration service client', () => {
         })
       );
     });
+
+    describe('with content filtering', () => {
+      it('should throw immediately when input filter error occurs with jsonSchema method', async () => {
+        // Mock should only be called once - no retries on input filter error
+        mockInference(
+          (req: any) => {
+            const body = JSON.parse(req.body as string);
+            // Verify it has json_schema response_format
+            return (
+              body.orchestration_config.templating_module_config.prompt
+                ?.response_format?.type === 'json_schema'
+            );
+          },
+          {
+            data: mockResponseInputFilterError,
+            status: 400
+          },
+          endpoint
+        ); // Verify it's only called once despite high maxRetries
+
+        const llm = new OrchestrationClient(config, {
+          maxRetries: 1000 // Should not retry on input filtering errors
+        });
+        const structured = llm.withStructuredOutput(jokeSchema, {
+          method: 'jsonSchema'
+        });
+
+        await expect(structured.invoke('Tell me a joke')).rejects.toThrow(
+          'Request failed with status code 400'
+        );
+      }, 1000);
+
+      it('should throw immediately when input filter error occurs with functionCalling method', async () => {
+        mockInference(
+          (req: any) => {
+            const body = JSON.parse(req.body as string);
+            // Verify it has tools configured
+            return (
+              Array.isArray(
+                body.orchestration_config.templating_module_config.prompt?.tools
+              ) &&
+              body.orchestration_config.templating_module_config.prompt.tools
+                .length > 0
+            );
+          },
+          {
+            data: mockResponseInputFilterError,
+            status: 400
+          },
+          endpoint
+        );
+
+        const llm = new OrchestrationClient(config, {
+          maxRetries: 1000
+        });
+        const structured = llm.withStructuredOutput(jokeSchema, {
+          method: 'functionCalling'
+        });
+
+        await expect(structured.invoke('Tell me a joke')).rejects.toThrow(
+          'Request failed with status code 400'
+        );
+      }, 1000);
+
+      it('should throw immediately when input filter error occurs with jsonMode method', async () => {
+        mockInference(
+          (req: any) => {
+            const body = JSON.parse(req.body as string);
+            // Verify it has json_object response_format
+            return (
+              body.orchestration_config.templating_module_config.prompt
+                ?.response_format?.type === 'json_object'
+            );
+          },
+          {
+            data: mockResponseInputFilterError,
+            status: 400
+          },
+          endpoint
+        );
+
+        const llm = new OrchestrationClient(config, {
+          maxRetries: 1000
+        });
+        const structured = llm.withStructuredOutput(jokeSchema, {
+          method: 'jsonMode'
+        });
+
+        await expect(structured.invoke('Tell me a joke')).rejects.toThrow(
+          'Request failed with status code 400'
+        );
+      }, 1000);
+
+      it('should return null parsed value with includeRaw when parsing fails (simulating partial filtered output)', async () => {
+        const mockInvalidJsonResponse: CompletionPostResponse = {
+          ...mockResponse,
+          final_result: {
+            ...mockResponse.final_result,
+            choices: [
+              {
+                index: 0,
+                message: {
+                  role: 'assistant',
+                  content: 'Invalid JSON that cannot be parsed'
+                },
+                finish_reason: 'stop'
+              }
+            ]
+          }
+        };
+
+        mockInference(
+          () => ({
+            orchestrationConfig: expect.anything(),
+            params: expect.anything()
+          }),
+          { data: mockInvalidJsonResponse, status: 200 },
+          endpoint
+        );
+
+        const llm = new OrchestrationClient(config);
+        const structured = llm.withStructuredOutput(jokeSchema, {
+          includeRaw: true
+        });
+        const result = await structured.invoke('Tell me a joke');
+
+        expect(result).toHaveProperty('raw');
+        expect(result).toHaveProperty('parsed');
+        expect(result.parsed).toBeNull(); // Parser fallback should return null
+      });
+    });
   });
 });
