@@ -783,7 +783,7 @@ app.get('/prompt-registry/template', async (req, res) => {
   }
 });
 
-app.get('/rpt/predict-schema', async (req, res) => {
+app.get('/rpt/predict', async (req, res) => {
   try {
     const data = await predictWithSchema();
     res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
