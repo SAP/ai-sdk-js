@@ -414,6 +414,9 @@ importers:
       '@sap-ai-sdk/orchestration':
         specifier: workspace:^
         version: link:../../packages/orchestration
+      '@sap-ai-sdk/rpt':
+        specifier: workspace:^
+        version: link:../../packages/rpt
       '@sap-cloud-sdk/connectivity':
         specifier: ^4.3.1
         version: 4.3.1
