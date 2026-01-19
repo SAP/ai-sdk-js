@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  hono: '>=4.11.4'
+
 pnpmfileChecksum: sha256-7lht5Q+T9K1tkr5FYaoHEDBAtJqjkSrAs2jGbKMfTIY=
 
 importers:
@@ -11,7 +14,7 @@ importers:
   .:
     devDependencies:
       '@changesets/cli':
-        specifier: ^2.29.8
+        specifier: ^2.29.7
         version: 2.29.8(@types/node@22.19.7)
       '@jest/globals':
         specifier: ^30.2.0
@@ -58,6 +61,9 @@ importers:
       '@types/node':
         specifier: ^22.19.7
         version: 22.19.7
+      cross-env:
+        specifier: ^10.0.1
+        version: 10.1.0
       depcheck:
         specifier: ^1.4.7
         version: 1.4.7
@@ -255,13 +261,13 @@ importers:
         version: 1.0.15(@langchain/core@1.1.8(openai@6.16.0(ws@8.19.0)(zod@4.3.5)))(zod-to-json-schema@3.25.1(zod@4.3.5))(zod@4.3.5)
       '@langchain/mcp-adapters':
         specifier: ^1.1.1
-        version: 1.1.1(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.8(openai@6.16.0(ws@8.19.0)(zod@4.3.5)))(@langchain/langgraph@1.0.15(@langchain/core@1.1.8(openai@6.16.0(ws@8.19.0)(zod@4.3.5)))(zod-to-json-schema@3.25.1(zod@4.3.5))(zod@4.3.5))(hono@4.11.1)
+        version: 1.1.1(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.8(openai@6.16.0(ws@8.19.0)(zod@4.3.5)))(@langchain/langgraph@1.0.15(@langchain/core@1.1.8(openai@6.16.0(ws@8.19.0)(zod@4.3.5)))(zod-to-json-schema@3.25.1(zod@4.3.5))(zod@4.3.5))(hono@4.11.4)
       '@langchain/textsplitters':
         specifier: ^1.0.1
         version: 1.0.1(@langchain/core@1.1.8(openai@6.16.0(ws@8.19.0)(zod@4.3.5)))
       '@modelcontextprotocol/sdk':
         specifier: ^1.25.2
-        version: 1.25.2(@cfworker/json-schema@4.1.1)(hono@4.11.1)(zod@4.3.5)
+        version: 1.25.2(@cfworker/json-schema@4.1.1)(hono@4.11.4)(zod@4.3.5)
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../packages/ai-api
@@ -289,6 +295,9 @@ importers:
       express:
         specifier: ^5.2.1
         version: 5.2.1
+      hono:
+        specifier: '>=4.11.4'
+        version: 4.11.4
       langchain:
         specifier: ^1.2.3
         version: 1.2.7(@langchain/core@1.1.8(openai@6.16.0(ws@8.19.0)(zod@4.3.5)))(openai@6.16.0(ws@8.19.0)(zod@4.3.5))(zod-to-json-schema@3.25.1(zod@4.3.5))
@@ -1070,7 +1079,7 @@ packages:
     resolution: {integrity: sha512-0/g2lIOPzX8f3vzW1ggQgvG5mjtFBDBHFAzI5SFAi2DzSqS9luJwqg9T6O/gKYLi+inS7eNxBeIFkkghIPvrMA==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
-      hono: ^4
+      hono: '>=4.11.4'
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -3231,8 +3240,8 @@ packages:
     resolution: {integrity: sha512-eSmmWE5bZTK2Nou4g0AI3zZ9rswp7GRKoKXS1BLUkvPviOqs4YTN1djQIqrXy9k5gEtdLPy86JjRwsNM9tnDcA==}
     engines: {node: '>=0.10.0'}
 
-  hono@4.11.1:
-    resolution: {integrity: sha512-KsFcH0xxHes0J4zaQgWbYwmz3UPOOskdqZmItstUG93+Wk1ePBLkLGwbP9zlmh1BFUiL8Qp+Xfu9P7feJWpGNg==}
+  hono@4.11.4:
+    resolution: {integrity: sha512-U7tt8JsyrxSRKspfhtLET79pU8K+tInj5QZXs1jSugO1Vq5dFj3kmZsRldo29mTBfcjDRVRXrEZ6LS63Cog9ZA==}
     engines: {node: '>=16.9.0'}
 
   hosted-git-info@2.8.9:
@@ -5953,9 +5962,9 @@ snapshots:
       '@shikijs/types': 3.21.0
       '@shikijs/vscode-textmate': 10.0.2
 
-  '@hono/node-server@1.19.8(hono@4.11.1)':
+  '@hono/node-server@1.19.8(hono@4.11.4)':
     dependencies:
-      hono: 4.11.1
+      hono: 4.11.4
 
   '@humanfs/core@0.19.1': {}
 
@@ -6345,11 +6354,11 @@ snapshots:
       - react
       - react-dom
 
-  '@langchain/mcp-adapters@1.1.1(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.8(openai@6.16.0(ws@8.19.0)(zod@4.3.5)))(@langchain/langgraph@1.0.15(@langchain/core@1.1.8(openai@6.16.0(ws@8.19.0)(zod@4.3.5)))(zod-to-json-schema@3.25.1(zod@4.3.5))(zod@4.3.5))(hono@4.11.1)':
+  '@langchain/mcp-adapters@1.1.1(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.8(openai@6.16.0(ws@8.19.0)(zod@4.3.5)))(@langchain/langgraph@1.0.15(@langchain/core@1.1.8(openai@6.16.0(ws@8.19.0)(zod@4.3.5)))(zod-to-json-schema@3.25.1(zod@4.3.5))(zod@4.3.5))(hono@4.11.4)':
     dependencies:
       '@langchain/core': 1.1.8(openai@6.16.0(ws@8.19.0)(zod@4.3.5))
       '@langchain/langgraph': 1.0.15(@langchain/core@1.1.8(openai@6.16.0(ws@8.19.0)(zod@4.3.5)))(zod-to-json-schema@3.25.1(zod@4.3.5))(zod@4.3.5)
-      '@modelcontextprotocol/sdk': 1.25.2(@cfworker/json-schema@4.1.1)(hono@4.11.1)(zod@4.3.5)
+      '@modelcontextprotocol/sdk': 1.25.2(@cfworker/json-schema@4.1.1)(hono@4.11.4)(zod@4.3.5)
       debug: 4.4.3
       zod: 4.3.5
     optionalDependencies:
@@ -6363,7 +6372,7 @@ snapshots:
     dependencies:
       '@langchain/core': 1.1.8(openai@6.16.0(ws@8.19.0)(zod@4.3.5))
       '@langchain/langgraph': 1.0.7(@langchain/core@1.1.8(openai@6.16.0(ws@8.19.0)(zod@4.3.5)))(zod-to-json-schema@3.25.1(zod@4.3.5))(zod@4.3.5)
-      '@modelcontextprotocol/sdk': 1.25.2(@cfworker/json-schema@4.1.1)(hono@4.11.1)(zod@4.3.5)
+      '@modelcontextprotocol/sdk': 1.25.2(@cfworker/json-schema@4.1.1)(hono@4.11.4)(zod@4.3.5)
       debug: 4.4.3
       zod: 4.3.5
     optionalDependencies:
@@ -6412,9 +6421,9 @@ snapshots:
       globby: 11.1.0
       read-yaml-file: 1.1.0
 
-  '@modelcontextprotocol/sdk@1.25.2(@cfworker/json-schema@4.1.1)(hono@4.11.1)(zod@4.3.5)':
+  '@modelcontextprotocol/sdk@1.25.2(@cfworker/json-schema@4.1.1)(hono@4.11.4)(zod@4.3.5)':
     dependencies:
-      '@hono/node-server': 1.19.8(hono@4.11.1)
+      '@hono/node-server': 1.19.8(hono@4.11.4)
       ajv: 8.17.1
       ajv-formats: 3.0.1(ajv@8.17.1)
       content-type: 1.0.5
@@ -8913,7 +8922,7 @@ snapshots:
     dependencies:
       parse-passwd: 1.0.0
 
-  hono@4.11.1: {}
+  hono@4.11.4: {}
 
   hosted-git-info@2.8.9: {}
 

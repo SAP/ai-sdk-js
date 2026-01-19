@@ -32,6 +32,11 @@
     "sample-cap": "pnpm -F=@sap-ai-sdk/sample-cap",
     "check:deps": "pnpm -r -F !./tests/smoke-tests -F !./sample-cap exec depcheck --ignores=\"nock,@jest/globals\" --quiet"
   },
+  "pnpm": {
+    "overrides": {
+      "hono": ">=4.11.4"
+    }
+  },
   "devDependencies": {
     "@changesets/cli": "^2.29.8",
     "@jest/globals": "^30.2.0",
