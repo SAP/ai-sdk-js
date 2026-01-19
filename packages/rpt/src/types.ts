@@ -73,9 +73,7 @@ interface PredictionConfig<T extends DataSchema> {
 /**
  * Optional schema defining the data types of each column. If provided, this will override automatic data type parsing.
  */
-export type DataSchema =
-  | Pick<PredictRequestPayload, 'data_schema'>['data_schema']
-  | null;
+export type DataSchema = PredictRequestPayload['data_schema'];
 
 /**
  * Representation of all data needed for prediction.
