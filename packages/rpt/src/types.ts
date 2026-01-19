@@ -1,14 +1,14 @@
 import type { Xor } from '@sap-cloud-sdk/util';
-import type { PredictRequestPayload, ColumnType } from './client/rpt/index.js';
+import type { ColumnType, SchemaFieldConfig } from './client/rpt/index.js';
 
 /**
  * Represents a string literal type that includes all column names from the data schema.
  * If no data schema is given, the type is string.
  * @template T - Type of the `data_schema` property. Can be null or undefined.
  */
-type ColNames<T extends DataSchema> =
-  // The conditional type is needed to exclude number and symbol from the indexing type
-  T extends Record<string, any> ? keyof T : string;
+type ColNames<T extends DataSchema> = T extends any[]
+  ? T[number]['name']
+  : string;
 
 /**
  * Maps the type from the spec ('numeric', 'string', 'date') to a TypeScript type.
@@ -24,8 +24,12 @@ type TsType<T extends ColumnType> = T extends 'numeric' ? number : string;
  */
 type RowType<T extends DataSchema> =
   // `data_schema` is defined
-  T extends Record<string, any>
-    ? { [P in keyof T]: TsType<T[P]['dtype']> }
+  T extends any[]
+    ? {
+        [N in T[number]['name']]: TsType<
+          Extract<T[number], { name: N }>['dtype']
+        >;
+      }
     : Record<string, string | number>;
 
 /**
@@ -73,7 +77,7 @@ interface PredictionConfig<T extends DataSchema> {
 /**
  * Optional schema defining the data types of each column. If provided, this will override automatic data type parsing.
  */
-export type DataSchema = PredictRequestPayload['data_schema'];
+export type DataSchema = ({ name: string } & SchemaFieldConfig)[] | null;
 
 /**
  * Representation of all data needed for prediction.

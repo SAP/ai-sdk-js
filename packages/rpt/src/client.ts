@@ -59,7 +59,12 @@ export class RptClient {
     const resourceGroup = getResourceGroup(this.modelDeployment);
 
     const body = {
-      data_schema: dataSchema,
+      data_schema: dataSchema?.reduce(
+        (merged, { name, ...schemaFieldConfig }) => ({
+          ...merged,
+          [name]: schemaFieldConfig
+        })
+      ),
       ...predictionData
     } satisfies PredictRequestPayload;
 
