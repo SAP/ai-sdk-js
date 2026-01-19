@@ -12,5 +12,5 @@ export type MetadataResponse = {
    * List of metadata after updates.
    * Default: [].
    */
-  current_metadata?: MetadataItem[] | any;
+  current_metadata?: MetadataItem[] | null;
 } & Record<string, any>;

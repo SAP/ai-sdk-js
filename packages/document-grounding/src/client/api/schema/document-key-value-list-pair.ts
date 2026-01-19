@@ -13,9 +13,5 @@ export type DocumentKeyValueListPair = {
    */
   key: string;
   value: string[];
-  /**
-   * Default match mode for search filters
-   * Default: "ANY".
-   */
-  matchMode?: FilterMatchModeEnum | any;
+  matchMode?: FilterMatchModeEnum;
 } & Record<string, any>;

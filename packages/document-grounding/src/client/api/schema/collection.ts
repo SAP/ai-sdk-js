@@ -9,7 +9,7 @@ import type { VectorKeyValueListPair } from './vector-key-value-list-pair.js';
  * A logical grouping of content.
  */
 export type Collection = {
-  title?: string | any;
+  title?: string | null;
   embeddingConfig: EmbeddingConfig;
   /**
    * Metadata attached to collection. Useful to restrict search to a subset of collections.

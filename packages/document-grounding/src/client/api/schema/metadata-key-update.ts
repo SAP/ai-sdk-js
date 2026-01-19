@@ -16,5 +16,5 @@ export type MetadataKeyUpdate = {
   /**
    * Update operation executed for the key
    */
-  operations?: MetadataOperation[] | any;
+  operations?: MetadataOperation[] | null;
 } & Record<string, any>;

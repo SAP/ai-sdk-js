@@ -7,7 +7,6 @@ import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';
 import type {
   CollectionsListResponse,
   CollectionRequest,
-  CollectionPendingResponse,
   Collection,
   DocumentResponse,
   Documents,
@@ -17,6 +16,7 @@ import type {
   TextSearchRequest,
   VectorSearchResults,
   CollectionCreatedResponse,
+  CollectionPendingResponse,
   CollectionDeletedResponse,
   DocumentBulkDeleteRequest,
   DocumentBulkDeleteResponse,
@@ -58,7 +58,7 @@ export const VectorApi = {
     body: CollectionRequest,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<CollectionPendingResponse>(
+    new OpenApiRequestBuilder<any>(
       'post',
       '/vector/collections',
       {
@@ -96,7 +96,7 @@ export const VectorApi = {
     collectionId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<CollectionPendingResponse>(
+    new OpenApiRequestBuilder<any>(
       'delete',
       '/vector/collections/{collectionId}',
       {

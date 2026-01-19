@@ -17,5 +17,5 @@ export type MetadataItem = {
    * List of metadata of the collections or documents or chunks
    * Default: [].
    */
-  metadata?: VectorKeyValueListPair[] | any;
+  metadata?: VectorKeyValueListPair[] | null;
 } & Record<string, any>;

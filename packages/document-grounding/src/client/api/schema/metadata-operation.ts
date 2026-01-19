@@ -12,5 +12,5 @@ export type MetadataOperation = {
   /**
    * List of values to update.
    */
-  values?: string[] | any;
+  values?: string[] | null;
 } & Record<string, any>;

@@ -16,5 +16,5 @@ export type VectorSearchDocumentKeyValueListPair = {
   /**
    * Select mode for search filters
    */
-  selectMode?: VectorSearchSelectOptionEnum[] | any;
+  selectMode?: VectorSearchSelectOptionEnum[] | null;
 } & Record<string, any>;

@@ -22,12 +22,12 @@ export type VectorSearchFilter = {
    * Restrict collections considered during search to those annotated with the given metadata. Useful when combined with collections=['*']
    * Default: [].
    */
-  collectionMetadata?: VectorKeyValueListPair[] | any;
+  collectionMetadata?: VectorKeyValueListPair[] | null;
   /**
    * Restrict documents considered during search to those annotated with the given metadata.
    * Default: [].
    */
-  documentMetadata?: VectorSearchDocumentKeyValueListPair[] | any;
+  documentMetadata?: VectorSearchDocumentKeyValueListPair[] | null;
   /**
    * Restrict chunks considered during search to those with the given metadata.
    * Default: [].
@@ -36,5 +36,5 @@ export type VectorSearchFilter = {
   /**
    * Advanced filter expression for combining metadata filters with boolean logic
    */
-  filter?: BinaryBooleanFilter | ScopedKeyValueListPair | any;
+  filter?: BinaryBooleanFilter | ScopedKeyValueListPair | null;
 } & Record<string, any>;

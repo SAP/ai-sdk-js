@@ -547,10 +547,12 @@ paths:
       responses:
         '202':
           description: Successful Response
-          content:
-            application/json:
+          headers:
+            Location:
+              description: The newly created collections monitor url
               schema:
-                $ref: '#/components/schemas/CollectionPendingResponse'
+                type: string
+                format: uri
         '400':
           $ref: '#/components/responses/BadRequest'
         '422':
@@ -615,10 +617,12 @@ paths:
       responses:
         '202':
           description: Successful Response
-          content:
-            application/json:
+          headers:
+            Location:
+              description: The deleted collections monitor url
               schema:
-                $ref: '#/components/schemas/CollectionPendingResponse'
+                type: string
+                format: uri
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -2023,9 +2027,8 @@ components:
         matchMode:
           title: MatchMode
           description: Default match mode for search filters
-          anyOf:
-            - $ref: '#/components/schemas/FilterMatchModeEnum'
-            - type: 'null'
+          $ref: '#/components/schemas/FilterMatchModeEnum'
+          nullable: true
           default: ANY
       type: object
       required:
@@ -2045,16 +2048,11 @@ components:
             maxLength: 1024
           title: Value
         matchMode:
-          type: string
-          nullable: true
           title: MatchMode
           description: Default match mode for search filters
+          $ref: '#/components/schemas/FilterMatchModeEnum'
+          nullable: true
           default: ANY
-          anyOf:
-            - enum:
-                - ANY
-                - ALL
-            - {}
       type: object
       required:
         - key
@@ -2251,26 +2249,21 @@ components:
     VectorSearchConfiguration:
       properties:
         maxChunkCount:
-          anyOf:
-            - type: integer
-              exclusiveMinimum: 0
-              maximum: 10000000
-            - type: 'null'
+          type: integer
+          exclusiveMinimum: true
+          minimum: 0
+          maximum: 10000000
+          nullable: true
           title: Maxchunkcount
-          description:
-            Maximum number of chunks to be returned. Cannot be used with
-            'maxDocumentCount'.
+          description: Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'.
         maxDocumentCount:
-          anyOf:
-            - type: integer
-              exclusiveMinimum: 0
-              maximum: 10000000
-            - type: 'null'
+          type: integer
+          exclusiveMinimum: true
+          minimum: 0
+          maximum: 10000000
+          nullable: true
           title: Maxdocumentcount
-          description:
-            "[Only supports 'vector' dataRepositoryType] - Maximum number
-            of documents to be returned. Cannot be used with 'maxChunkCount'. If
-            maxDocumentCount is given, then only one chunk per document is returned."
+          description: "[Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned."
       type: object
       title: VectorSearchConfiguration
     RetrievalSearchConfiguration:
@@ -2327,11 +2320,10 @@ components:
             maxLength: 1024
           title: Value
         selectMode:
-          anyOf:
-            - type: array
-              items:
-                $ref: '#/components/schemas/VectorSearchSelectOptionEnum'
-            - type: 'null'
+          type: array
+          items:
+            $ref: '#/components/schemas/VectorSearchSelectOptionEnum'
+          nullable: true
           title: Selectmode
           description: Select mode for search filters
       type: object
@@ -2405,9 +2397,8 @@ components:
     CollectionRequest:
       properties:
         title:
-          anyOf:
-            - type: string
-            - type: 'null'
+          type: string
+          nullable: true
           title: Title
         embeddingConfig:
           $ref: '#/components/schemas/EmbeddingConfig'
@@ -2421,10 +2412,9 @@ components:
             subset of collections.
           default: []
         id:
-          anyOf:
-            - type: string
-              format: uuid
-            - type: 'null'
+          type: string
+          format: uuid
+          nullable: true
           title: Id
           description: Unique identifier of a collection.
       type: object
@@ -2496,9 +2486,9 @@ components:
       required:
         - documents
       title: DocumentCreateRequest
-      description:
-        A create request containing one or more new documents to create
-        and store in a collection.
+      description: >-
+        A create request containing one or more new documents to create and
+        store in a collection.
     Document-Input:
       properties:
         chunks:
@@ -2644,9 +2634,9 @@ components:
         - chunks
         - id
       title: DocumentResponse
-      description:
+      description: >-
         A response containing information about a newly created, single
-        document
+        document.
     SearchSelectOptionEnum:
       type: string
       anyOf:
@@ -2730,33 +2720,33 @@ components:
         configuration:
           $ref: '#/components/schemas/VectorSearchConfiguration'
         collectionMetadata:
-          anyOf:
-            - type: array
-              items:
-                $ref: '#/components/schemas/VectorKeyValueListPair'
-            - type: 'null'
+          type: array
+          items:
+            $ref: '#/components/schemas/VectorKeyValueListPair'
+          nullable: true
           title: Collectionmetadata
-          description: Restrict collections considered during search to those annotated with the given metadata. Useful when combined with collections=['*']
+          description: >-
+            Restrict collections considered during search to those annotated
+            with the given metadata. Useful when combined with collections=['*']
           default: []
         documentMetadata:
-          anyOf:
-            - type: array
-              items:
-                $ref: '#/components/schemas/VectorSearchDocumentKeyValueListPair'
-            - type: 'null'
+          type: array
+          items:
+            $ref: '#/components/schemas/VectorSearchDocumentKeyValueListPair'
+          nullable: true
           title: Documentmetadata
-          description:
-            Restrict documents considered during search to those annotated
-            with the given metadata.
+          description: >-
+            Restrict documents considered during search to those annotated with
+            the given metadata.
           default: []
         chunkMetadata:
           items:
             $ref: '#/components/schemas/VectorKeyValueListPair'
           type: array
           title: Chunkmetadata
-          description:
-            Restrict chunks considered during search to those with the
-            given metadata.
+          description: >-
+            Restrict chunks considered during search to those with the given
+            metadata.
           default: []
         filter:
           title: Filter
@@ -2766,7 +2756,7 @@ components:
           anyOf:
             - $ref: '#/components/schemas/BinaryBooleanFilter'
             - $ref: '#/components/schemas/ScopedKeyValueListPair'
-            - type: 'null'
+          nullable: true
       type: object
       required:
         - id
@@ -2776,11 +2766,10 @@ components:
     TextSearchRequest:
       properties:
         query:
-          anyOf:
-            - type: string
-              maxLength: 2000
-              minLength: 1
-            - type: 'null'
+          type: string
+          maxLength: 2000
+          minLength: 1
+          nullable: true
           title: Query
           description: Query string
         filters:
@@ -2805,9 +2794,8 @@ components:
     Collection:
       properties:
         title:
-          anyOf:
-            - type: string
-            - type: 'null'
+          type: string
+          nullable: true
           title: Title
         embeddingConfig:
           $ref: '#/components/schemas/EmbeddingConfig'
@@ -2816,9 +2804,9 @@ components:
             $ref: '#/components/schemas/VectorKeyValueListPair'
           type: array
           title: Metadata
-          description:
-            Metadata attached to collection. Useful to restrict search
-            to a subset of collections.
+          description: >-
+            Metadata attached to collection. Useful to restrict search to a
+            subset of collections.
           default: []
         id:
           type: string
@@ -3271,11 +3259,10 @@ components:
           title: Key
           description: Key to update
         operations:
-          anyOf:
-            - type: array
-              items:
-                $ref: '#/components/schemas/MetadataOperation'
-            - type: 'null'
+          type: array
+          items:
+            $ref: '#/components/schemas/MetadataOperation'
+          nullable: true
           title: Operations
           description: Update operation executed for the key
       type: object
@@ -3290,11 +3277,10 @@ components:
         op:
           $ref: '#/components/schemas/MetadataOperationEnum'
         values:
-          anyOf:
-            - type: array
-              items:
-                type: string
-            - type: 'null'
+          type: array
+          items:
+            type: string
+          nullable: true
           title: Values
           description: List of values to update.
       title: MetadataOperation
@@ -3310,11 +3296,10 @@ components:
       type: object
       properties:
         current_metadata:
-          anyOf:
-            - type: array
-              items:
-                $ref: '#/components/schemas/MetadataItem'
-            - type: 'null'
+          type: array
+          items:
+            $ref: '#/components/schemas/MetadataItem'
+          nullable: true
           title: CurrentMetadata
           description: List of metadata after updates.
           default: []
@@ -3330,11 +3315,10 @@ components:
           title: Id
           description: ID of collection
         metadata:
-          anyOf:
-            - type: array
-              items:
-                $ref: '#/components/schemas/VectorKeyValueListPair'
-            - type: 'null'
+          type: array
+          items:
+            $ref: '#/components/schemas/VectorKeyValueListPair'
+          nullable: true
           title: Metadata
           description: List of metadata of the collections or documents or chunks
           default: []
