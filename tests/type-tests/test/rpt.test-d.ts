@@ -33,11 +33,11 @@ expectType<Promise<PredictResponsePayload>>(
  */
 expectType<Promise<PredictResponsePayload>>(
   new RptClient().predict(
-    {
-      PRODUCT: { dtype: 'string' },
-      __row_idx__: { dtype: 'string' },
-      SALESGROUP: { dtype: 'string' }
-    },
+    [
+      { name: 'PRODUCT', dtype: 'string' },
+      { name: '__row_idx__', dtype: 'string' },
+      { name: 'SALESGROUP', dtype: 'string' }
+    ],
     {
       prediction_config: {
         target_columns: [
