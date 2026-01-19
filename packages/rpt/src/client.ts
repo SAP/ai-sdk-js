@@ -50,7 +50,6 @@ export class RptClient {
         : [dataSchemaOrPredictionData, null]
     ) as [PredictionData<T>, T];
 
-    // eslint-disable-next-line jsdoc/require-jsdoc
     const deploymentId = await getFoundationModelDeploymentId(
       this.modelDeployment,
       'aicore-sap',
