@@ -117,5 +117,5 @@ export async function predictWithSchema(): Promise<PredictResponsePayload> {
  */
 export async function predictAutomaticParsing(): Promise<PredictResponsePayload> {
   const client = new RptClient();
-  return client.predict(data);
+  return client.predictWithAutomaticSchemaInference(data);
 }
