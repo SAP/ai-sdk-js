@@ -12,7 +12,7 @@ export type BoostingScoringConfiguration = {
    * Enable metadata-based boosting.
    * Default: true.
    */
-  enabled?: boolean | any;
+  enabled?: boolean | null;
   /**
    * Default: [].
    */
@@ -29,15 +29,11 @@ export type BoostingScoringConfiguration = {
         scope?: 'repository' | 'document' | 'chunk';
         weight: number;
       } & Record<string, any>)[]
-    | any;
+    | null;
   /**
    * Contribution to final score.
    * Default: 1.
    */
-  weight?: number | any;
-  /**
-   * How the similarity between document metadata and boosted key-value pairs is computed.
-   * Default: "match_count".
-   */
-  scoreComputationStrategy?: BoostingScoreComputationStrategy | any;
+  weight?: number | null;
+  scoreComputationStrategy?: BoostingScoreComputationStrategy;
 } & Record<string, any>;

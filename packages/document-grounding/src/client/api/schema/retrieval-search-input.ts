@@ -15,8 +15,9 @@ import type { PostProcessingOperation } from './post-processing-operation.js';
 export type RetrievalSearchInput = {
   /**
    * Query string
+   * Min Length: 1.
    */
-  query: string | any;
+  query: string | null;
   filters: (RetrievalSearchFilter | RetrievalVectorSearchFilter)[];
   /**
    * List of operations to be performed across PerFilterSearchResults.
@@ -27,12 +28,13 @@ export type RetrievalSearchInput = {
      * New ID for each PostProcessingOperation.
      * Default: "ae9eee48-4671-4321-a3e5-640adaaf26ae".
      */
-    id?: string | any;
+    id?: string | null;
     /**
      * Maximum number of chunks to be retained in final PerSearchFilterResult.
      * Default: 5.
+     * Maximum: 10000000.
      */
-    maxChunkCount?: number | any;
+    maxChunkCount?: number | null;
     /**
      * Merging and scoring strategy to derive final PerSearchFilterResult.
      */

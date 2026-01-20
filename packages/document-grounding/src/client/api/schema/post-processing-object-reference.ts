@@ -12,5 +12,5 @@ export type PostProcessingObjectReference = {
    * PerFilterSearchResult ID or PostProcessingOperation ID.
    * Default: "6d3eeafd-f3db-4e8e-949a-0e40e50eab64".
    */
-  id?: string | any;
+  id?: string | null;
 } & Record<string, any>;

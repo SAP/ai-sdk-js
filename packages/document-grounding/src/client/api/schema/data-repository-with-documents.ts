@@ -23,10 +23,10 @@ export type DataRepositoryWithDocuments = {
   /**
    * Friendly destination Name (grounding.name) of remote instance.
    */
-  remoteGroundingName?: string | any;
+  remoteGroundingName?: string | null;
   /**
    * Optional message.
    */
-  message?: string | any;
+  message?: string | null;
   documents: Document[];
 } & Record<string, any>;

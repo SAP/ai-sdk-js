@@ -8,15 +8,12 @@ import type { MergeStrategyType } from './merge-strategy-type.js';
  * The MergeStrategyReranker will call a reranker LLM to merge the given PerFilterSearchResult instances. This strategy adds latency, but yields good results.
  */
 export type MergeStrategyReranker = {
-  /**
-   * Default: "reranker".
-   */
-  type?: MergeStrategyType | any;
+  type?: MergeStrategyType;
   /**
    * The RerankerModel to use.
    * Default: "cohere-3.5".
    */
-  model?: 'cohere-3.5' | any;
+  model?: 'cohere-3.5' | null;
   /**
    * Key-value pairs to be included in the ranking process, to boost related chunks according to chunk content and metadata, if includeMetaData is true.
    */
@@ -32,9 +29,9 @@ export type MergeStrategyReranker = {
          */
         scope: string[];
       } & Record<string, any>)[]
-    | any;
+    | null;
   /**
    * If true, document and chunk metadata are sent to the reranker LLM along with the text content of the chunk.
    */
-  includeAllMetaData?: boolean | any;
+  includeAllMetaData?: boolean | null;
 } & Record<string, any>;

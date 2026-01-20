@@ -12,14 +12,14 @@ export type KeyWordRetrievalScoringConfiguration = {
    * Enable dense retrieval.
    * Default: true.
    */
-  enabled?: boolean | any;
+  enabled?: boolean | null;
   /**
    * Contribution to final score.
    * Default: 1.
    */
-  weight?: number | any;
+  weight?: number | null;
   /**
    * Extract Keywords from Query.
    */
-  extractKeyWordsFromQuery?: boolean | any;
+  extractKeyWordsFromQuery?: boolean | null;
 } & Record<string, any>;

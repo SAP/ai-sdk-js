@@ -12,10 +12,10 @@ export type DenseRetrievalScoringConfiguration = {
    * Enable dense retrieval.
    * Default: true.
    */
-  enabled?: boolean | any;
+  enabled?: boolean | null;
   /**
    * Contribution to final score.
    * Default: 1.
    */
-  weight?: number | any;
+  weight?: number | null;
 } & Record<string, any>;

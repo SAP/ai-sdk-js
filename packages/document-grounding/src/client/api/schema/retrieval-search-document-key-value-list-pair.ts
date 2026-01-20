@@ -16,5 +16,5 @@ export type RetrievalSearchDocumentKeyValueListPair = {
   /**
    * Select mode for search filters
    */
-  selectMode?: RetrievalSearchSelectOptionEnum[] | any;
+  selectMode?: RetrievalSearchSelectOptionEnum[] | null;
 } & Record<string, any>;

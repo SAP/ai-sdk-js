@@ -16,6 +16,6 @@ export type RetrievalChunk = {
    * Default: [].
    */
   metadata?: RetrievalKeyValueListPair[];
-  searchScores?: SearchScores | any;
-  postProcessingScore?: Score | any;
+  searchScores?: SearchScores;
+  postProcessingScore?: Score;
 } & Record<string, any>;

@@ -15,10 +15,7 @@ export type RetrievalSearchFilter = {
    * Identifier of this RetrievalSearchFilter - unique per request.
    */
   id: string;
-  /**
-   * Default: {}.
-   */
-  searchConfiguration?: RetrievalSearchConfiguration | any;
+  searchConfiguration?: RetrievalSearchConfiguration;
   /**
    * Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids.
    * Default: [
@@ -30,7 +27,7 @@ export type RetrievalSearchFilter = {
   /**
    * Destination Name of remote instance.
    */
-  remoteName?: string | any;
+  remoteName?: string | null;
   /**
    * Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=['*']
    * Default: [].

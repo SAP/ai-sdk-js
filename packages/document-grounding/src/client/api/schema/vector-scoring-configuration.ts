@@ -11,37 +11,12 @@ import type { ScoresAggregationStrategy } from './scores-aggregation-strategy.js
  * Representation of the 'VectorScoringConfiguration' schema.
  */
 export type VectorScoringConfiguration = {
-  /**
-   * Default: {
-   *   "enabled": true,
-   *   "weight": 1
-   * }.
-   */
-  denseRetrieval?: DenseRetrievalScoringConfiguration | any;
-  /**
-   * Default: {
-   *   "enabled": true,
-   *   "weight": 1,
-   *   "extractKeyWordsFromQuery": false
-   * }.
-   */
-  keywordRetrieval?: KeyWordRetrievalScoringConfiguration | any;
-  /**
-   * Default: {
-   *   "enabled": true,
-   *   "metadata": [],
-   *   "weight": 1,
-   *   "scoreComputationStrategy": "match_count"
-   * }.
-   */
-  boosting?: BoostingScoringConfiguration | any;
+  denseRetrieval?: DenseRetrievalScoringConfiguration;
+  keywordRetrieval?: KeyWordRetrievalScoringConfiguration;
+  boosting?: BoostingScoringConfiguration;
   /**
    * Minimum chunk score threshold.
    */
-  scoreThreshold?: number | any;
-  /**
-   * Methodology to calculate the final aggregate score.
-   * Default: "weighted_average".
-   */
-  aggregationStrategy?: ScoresAggregationStrategy | any;
+  scoreThreshold?: number | null;
+  aggregationStrategy?: ScoresAggregationStrategy;
 } & Record<string, any>;

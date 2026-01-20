@@ -18,10 +18,7 @@ export type RetrievalVectorSearchFilter = {
    * Identifier of this RetrievalSearchFilter - unique per request.
    */
   id: string;
-  /**
-   * Default: {}.
-   */
-  searchConfiguration?: RetrievalSearchConfiguration | any;
+  searchConfiguration?: RetrievalSearchConfiguration;
   /**
    * Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids.
    * Default: [
@@ -29,14 +26,11 @@ export type RetrievalVectorSearchFilter = {
    * ].
    */
   dataRepositories?: string[];
-  /**
-   * Default: "vector".
-   */
-  dataRepositoryType?: DataRepositoryType | any;
+  dataRepositoryType?: DataRepositoryType;
   /**
    * Destination Name of remote instance.
    */
-  remoteName?: string | any;
+  remoteName?: string | null;
   /**
    * Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=['*']
    * Default: [].
@@ -55,27 +49,6 @@ export type RetrievalVectorSearchFilter = {
   /**
    * Filter to apply on the search results. This cannot be used together with 'documentMetadata'. The depth of the filter must not exceed 5 levels.
    */
-  filter?: BinaryBooleanFilter | ScopedKeyValueListPair | any;
-  /**
-   * Scoring configuration for retrieval and ranking.
-   * Default: {
-   *   "denseRetrieval": {
-   *     "enabled": true,
-   *     "weight": 1
-   *   },
-   *   "keywordRetrieval": {
-   *     "enabled": true,
-   *     "extractKeyWordsFromQuery": false,
-   *     "weight": 1
-   *   },
-   *   "boosting": {
-   *     "enabled": true,
-   *     "metadata": [],
-   *     "scoreComputationStrategy": "match_count",
-   *     "weight": 1
-   *   },
-   *   "aggregationStrategy": "weighted_average"
-   * }.
-   */
-  scoringConfiguration?: VectorScoringConfiguration | any;
+  filter?: BinaryBooleanFilter | ScopedKeyValueListPair | null;
+  scoringConfiguration?: VectorScoringConfiguration;
 } & Record<string, any>;
