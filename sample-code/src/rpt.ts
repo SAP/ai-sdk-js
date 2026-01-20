@@ -1,9 +1,5 @@
 import { RptClient } from '@sap-ai-sdk/rpt';
-import type {
-  DataSchema,
-  PredictResponsePayload,
-  PredictionData
-} from '@sap-ai-sdk/rpt';
+import type { PredictResponsePayload, PredictionData } from '@sap-ai-sdk/rpt';
 
 //
 // NOTES:
@@ -14,14 +10,14 @@ import type {
 // Asked colleagues to fix, otherwise we need to add a workaround to the generator.
 //
 
-const schema: DataSchema = [
+const schema = [
   { name: 'PRODUCT', dtype: 'string' },
   { name: 'PRICE', dtype: 'numeric' },
   { name: 'CUSTOMER', dtype: 'string' },
   { name: 'COUNTRY', dtype: 'string' },
   { name: '__row_idx__', dtype: 'string' },
   { name: 'SALESGROUP', dtype: 'string' }
-];
+] as const;
 
 const data: PredictionData<typeof schema> = {
   prediction_config: {
