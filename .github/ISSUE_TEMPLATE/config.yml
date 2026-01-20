@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: SAP Cloud SDK for AI (Java) issues
+  - name: SAP Cloud SDK for AI (Java) Issues
     url: https://github.com/SAP/ai-sdk-java/issues/new/choose
     about: Please report issues concerning the SAP Cloud SDK for AI (Java) here.
+  - name: SAP AI Core Service Issues
+    url: https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/support-process
+    about: Please refer to the SAP AI Core Support Process for issues concerning SAP AI Core services (Orchestration, Grounding, Prompt Registry, ...).

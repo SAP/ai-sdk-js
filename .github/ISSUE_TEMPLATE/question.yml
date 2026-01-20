@@ -7,8 +7,21 @@ body:
   - type: markdown
     attributes:
       value: |
-        Please note that this repository is for JavaScript / TypeScript related issues only. 
-        If you have a question about the SAP Cloud SDK for AI (Java), open a GitHub issue here: https://github.com/SAP/ai-sdk-java/issues/new/choose
+        Please note that this repository is for JS/TS and SDK related issues only.
+
+          - Issue for SAP Cloud SDK for AI (Java), open [here](https://github.com/SAP/ai-sdk-java/issues/new/choose).
+          - Issue for SAP AI Core services (Orchestration, Grounding, Prompt Registry, ...), please refer to the [SAP AI Core Support Process](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/support-process).
+  - type: checkboxes
+    attributes:
+      label: "Checklist"
+      description: "Before submitting your issue, please make sure to check the following:"
+      options:
+        - label: "My issue is not an AI Core service issue, but an SDK issue."
+          required: true
+        - label: "My issue is a JS/TS related issue, not a Java related issue."
+          required: true
+        - label: "My issue is not already reported or documented."
+          required: true
   - type: textarea
     attributes:
       label: "Describe the Question"
