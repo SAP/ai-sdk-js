@@ -224,7 +224,7 @@
                   "detail": [
                     {
                       "loc": [],
-                      "msg": "Request body too large (\u003E10485760 bytes)",
+                      "msg": "Request body too large (>10485760 bytes)",
                       "type": "value_error"
                     }
                   ]
@@ -374,7 +374,7 @@
                   "detail": [
                     {
                       "loc": [],
-                      "msg": "Request body too large (\u003E10485760 bytes)",
+                      "msg": "Request body too large (>10485760 bytes)",
                       "type": "value_error"
                     }
                   ]
@@ -757,5 +757,6 @@
         "type": "object"
       }
     }
-  }
+  },
+  "x-sap-cloud-sdk-api-name": "RptApi"
 }

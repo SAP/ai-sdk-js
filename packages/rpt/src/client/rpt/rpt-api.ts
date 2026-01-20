@@ -9,10 +9,10 @@ import type {
   PredictResponsePayload
 } from './schema/index.js';
 /**
- * Representation of the 'DefaultApi'.
+ * Representation of the 'RptApi'.
  * This API is part of the 'rpt' service.
  */
-export const DefaultApi = {
+export const RptApi = {
   _defaultBasePath: undefined,
   /**
    * Make in-context predictions for specified target columns.
@@ -28,7 +28,7 @@ export const DefaultApi = {
       {
         body
       },
-      DefaultApi._defaultBasePath
+      RptApi._defaultBasePath
     ),
   /**
    * Make in-context predictions for specified target columns based on provided table data Parquet file.
@@ -42,6 +42,6 @@ export const DefaultApi = {
       {
         body
       },
-      DefaultApi._defaultBasePath
+      RptApi._defaultBasePath
     )
 };

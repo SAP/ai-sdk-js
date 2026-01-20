@@ -32,7 +32,8 @@
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/rpt.json -o ./src/client",
     "postgenerate": "pnpm update-imports && pnpm lint:fix",
-    "update-imports": "node --no-warnings --loader ts-node/esm ../../scripts/update-imports.ts ./src/client/rpt"
+    "update-imports": "node --no-warnings --loader ts-node/esm ../../scripts/update-imports.ts ./src/client/rpt",
+    "pregenerate": "node --no-warnings --loader ts-node/esm ../../scripts/pregenerate-rpt.ts ./src/spec/rpt.json"
   },
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
