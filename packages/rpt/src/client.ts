@@ -28,28 +28,36 @@ export class RptClient {
    * Predict based on data schema and prediction data.
    * @param dataSchema - Prediction data follows this schema.
    * @param predictionData - Data to base prediction on.
+   * @returns Prediction response.
    */
   async predict<const T extends DataSchema>(
     dataSchema: T,
     predictionData: PredictionData<T>
-  ): Promise<PredictResponsePayload>;
+  ): Promise<PredictResponsePayload> {
+    return this.executePrediction(predictionData, dataSchema);
+  }
+
   /**
    * Predict based on prediction data. Uses automatic data type parsing.
    * @param predictionData - Data to base prediction on.
+   * @returns Prediction response.
    */
-  async predict<const T extends DataSchema>(
+  async predictWithAutomaticSchemaInference<const T extends DataSchema>(
     predictionData: PredictionData<T>
-  ): Promise<PredictResponsePayload>;
-  async predict<const T extends DataSchema>(
-    dataSchemaOrPredictionData: T | PredictionData<T>,
-    predictionDataOrUndefined?: PredictionData<T>
   ): Promise<PredictResponsePayload> {
-    const [predictionData, dataSchema] = (
-      predictionDataOrUndefined
-        ? [predictionDataOrUndefined, dataSchemaOrPredictionData]
-        : [dataSchemaOrPredictionData, null]
-    ) as [PredictionData<T>, T];
+    return this.executePrediction(predictionData);
+  }
 
+  /**
+   * Predict based on data schema and prediction data.
+   * @param predictionData - Data to base prediction on.
+   * @param dataSchema - Prediction data follows this schema.
+   * @returns Prediction response.
+   */
+  private async executePrediction<const T extends DataSchema>(
+    predictionData: PredictionData<T>,
+    dataSchema?: T
+  ): Promise<PredictResponsePayload> {
     const deploymentId = await getFoundationModelDeploymentId(
       this.modelDeployment,
       'aicore-sap',
@@ -59,12 +67,11 @@ export class RptClient {
     const resourceGroup = getResourceGroup(this.modelDeployment);
 
     const body = {
-      data_schema: dataSchema?.reduce(
-        (merged, { name, ...schemaFieldConfig }) => ({
+      data_schema:
+        dataSchema?.reduce((merged, { name, ...schemaFieldConfig }) => ({
           ...merged,
           [name]: schemaFieldConfig
-        })
-      ),
+        })) || null,
       ...predictionData
     } satisfies PredictRequestPayload;
 
