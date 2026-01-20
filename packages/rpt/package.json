@@ -1,7 +1,7 @@
 {
   "name": "@sap-ai-sdk/rpt",
   "version": "2.4.0",
-  "description": "",
+  "description": "This package provides a client for SAP’s Relational Pretrained Transformer model, SAP-RPT-1.",
   "license": "Apache-2.0",
   "keywords": [
     "sap-ai-sdk",
