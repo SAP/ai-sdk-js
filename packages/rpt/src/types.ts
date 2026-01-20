@@ -72,6 +72,7 @@ interface PredictionConfig<T extends DataSchema> {
   }[];
 }
 
+// TODO: no dataschema exposed
 /**
  * Optional schema defining the data types of each column. If provided, this will override automatic data type parsing.
  */

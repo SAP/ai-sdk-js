@@ -24,6 +24,7 @@ export class RptClient {
     private destination?: HttpDestinationOrFetchOptions
   ) {}
 
+  // TODO: add note about const
   /**
    * Predict based on data schema and prediction data.
    * @param dataSchema - Prediction data follows this schema.

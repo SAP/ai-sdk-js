@@ -1,5 +1,9 @@
 import { RptClient } from '@sap-ai-sdk/rpt';
-import type { PredictResponsePayload, PredictionData } from '@sap-ai-sdk/rpt';
+import type {
+  DataSchema,
+  PredictResponsePayload,
+  PredictionData
+} from '@sap-ai-sdk/rpt';
 
 //
 // NOTES:
@@ -81,3 +85,5 @@ export async function predictAutomaticParsing(): Promise<PredictResponsePayload>
   const client = new RptClient();
   return client.predictWithAutomaticSchemaInference(data);
 }
+
+
