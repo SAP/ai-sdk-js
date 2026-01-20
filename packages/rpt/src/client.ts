@@ -24,10 +24,9 @@ export class RptClient {
     private destination?: HttpDestinationOrFetchOptions
   ) {}
 
-  // TODO: add note about const
   /**
    * Predict based on data schema and prediction data.
-   * @param dataSchema - Prediction data follows this schema.
+   * @param dataSchema - Prediction data follows this schema. When using TypeScript, the data schema type is used to infer the types of the prediction data. In that case, the data schema must be provided as a constant (`as const`).
    * @param predictionData - Data to base prediction on.
    * @returns Prediction response.
    */
@@ -43,8 +42,8 @@ export class RptClient {
    * @param predictionData - Data to base prediction on.
    * @returns Prediction response.
    */
-  async predictWithAutomaticSchemaInference<const T extends DataSchema>(
-    predictionData: PredictionData<T>
+  async predictWithAutomaticSchemaInference(
+    predictionData: PredictionData<DataSchema>
   ): Promise<PredictResponsePayload> {
     return this.executePrediction(predictionData);
   }

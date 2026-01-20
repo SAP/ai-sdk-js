@@ -1,5 +1,5 @@
 export * from './client.js';
-export * from './types.js';
+export type { PredictionData } from './types.js';
 export type {
   PredictResponseMetadata,
   PredictResponsePayload,
