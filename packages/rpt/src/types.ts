@@ -4,7 +4,7 @@ import type { ColumnType, SchemaFieldConfig } from './client/rpt/index.js';
 /**
  * Represents a string literal type that includes all column names from the data schema.
  * If no data schema is given, the type is string.
- * @template T - Type of the `data_schema` property. Can be null or undefined.
+ * @template T - Type of the data schema.
  */
 type ColNames<T extends DataSchema> = T extends readonly any[]
   ? T[number]['name']
@@ -12,7 +12,7 @@ type ColNames<T extends DataSchema> = T extends readonly any[]
 
 /**
  * Maps the type from the spec ('numeric', 'string', 'date') to a TypeScript type.
- * @template T - Type of the `data_schema` property. Can be null or undefined.
+ * @template T - Type of the data schema.
  */
 type TsType<T extends ColumnType> = T extends 'numeric' ? number : string;
 
@@ -20,23 +20,21 @@ type TsType<T extends ColumnType> = T extends 'numeric' ? number : string;
  * Represents the type of the `rows` property.
  * It is an object that maps the known column names to values.
  * If no data schema is given, it maps string to values.
- * @template T - Type of the `data_schema` property. Can be null or undefined.
+ * @template T - Type of the data schema.
  */
-type RowType<T extends DataSchema> =
-  // `data_schema` is defined
-  T extends readonly any[]
-    ? {
-        [N in T[number]['name']]: TsType<
-          Extract<T[number], { name: N }>['dtype']
-        >;
-      }
-    : Record<string, string | number>;
+type RowType<T extends DataSchema> = T extends readonly any[]
+  ? {
+      [N in T[number]['name']]: TsType<
+        Extract<T[number], { name: N }>['dtype']
+      >;
+    }
+  : Record<string, string | number>;
 
 /**
  * Represents the type of the `columns` property.
  * It is an object that maps the known column names to a list of values.
  * If no data schema is given, it maps string to a list of values.
- * @template T - Type of the `data_schema` property. Can be null or undefined.
+ * @template T - Type of the data schema.
  */
 type ColType<T extends DataSchema> = {
   [P in keyof RowType<T>]: RowType<T>[P][];
@@ -51,7 +49,7 @@ type ColType<T extends DataSchema> = {
 //
 /**
  * Represents the type of the `prediction_config` property.
- * @template T - Type of the `data_schema` property. Can be null or undefined.
+ * @template T - Type of the data schema.
  */
 interface PredictionConfig<T extends DataSchema> {
   target_columns: {
@@ -83,7 +81,7 @@ export type DataSchema =
 
 /**
  * Representation of all data needed for prediction.
- * @template T - Type of the `data_schema` property. Can be null or undefined.
+ * @template T - Type of the data schema.
  */
 export type PredictionData<T extends DataSchema> = {
   prediction_config: PredictionConfig<T>;
