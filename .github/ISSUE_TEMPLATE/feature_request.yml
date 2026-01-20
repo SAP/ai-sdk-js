@@ -8,9 +8,8 @@ body:
     attributes:
       value: |
         Please note that this repository is for JS/TS and SDK related issues only.
-
-            - Issue for SAP Cloud SDK for AI (Java), open [here](https://github.com/SAP/ai-sdk-java/issues/new/choose).
-            - Issue for SAP AI Core services (Orchestration, Grounding, Prompt Registry, ...), please refer to the [SAP AI Core Support Process](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/support-process).
+        Issue for SAP Cloud SDK for AI (Java), please open [here](https://github.com/SAP/ai-sdk-java/issues/new/choose).
+        Issue for SAP AI Core services (Orchestration, Grounding, Prompt Registry, ...), please refer to the [SAP AI Core Support Process](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/support-process).
   - type: checkboxes
     attributes:
       label: "Checklist"
