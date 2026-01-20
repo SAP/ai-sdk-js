@@ -13,8 +13,7 @@ import type { PredictResponsePayload, PredictionData } from '@sap-ai-sdk/rpt';
 const schema = [
   { name: 'PRODUCT', dtype: 'string' },
   { name: 'PRICE', dtype: 'numeric' },
-  { name: 'CUSTOMER', dtype: 'string' },
-  { name: 'COUNTRY', dtype: 'string' },
+  { name: 'PRODUCTION_DATE', dtype: 'date' },
   { name: '__row_idx__', dtype: 'string' },
   { name: 'SALESGROUP', dtype: 'string' }
 ] as const;
@@ -30,74 +29,37 @@ const data: PredictionData<typeof schema> = {
     {
       PRODUCT: 'Laptop',
       PRICE: 999.99,
-      CUSTOMER: 'Acme Corp',
-      COUNTRY: 'USA',
+      PRODUCTION_DATE: '2025-01-15',
       __row_idx__: '35',
       SALESGROUP: '[PREDICT]'
     },
     {
       PRODUCT: 'Office chair',
       PRICE: 142.99,
-      CUSTOMER: 'Möbel Boerner',
-      COUNTRY: 'Germany',
+      PRODUCTION_DATE: '2025-07-13',
       __row_idx__: '571',
       SALESGROUP: '[PREDICT]'
     },
     {
       PRODUCT: 'Desktop Computer',
       PRICE: 750.5,
-      CUSTOMER: 'Global Tech',
-      COUNTRY: 'Canada',
+      PRODUCTION_DATE: '2024-12-02',
       __row_idx__: '42',
       SALESGROUP: 'Enterprise Solutions'
     },
     {
       PRODUCT: 'Macbook',
       PRICE: 750.5,
-      CUSTOMER: 'Global Tech',
-      COUNTRY: 'Canada',
+      PRODUCTION_DATE: '2026-01-31',
       __row_idx__: '99',
       SALESGROUP: 'Enterprise Solutions'
     },
     {
       PRODUCT: 'Chromebook',
       PRICE: 750.5,
-      CUSTOMER: 'Global Tech',
-      COUNTRY: 'US',
+      PRODUCTION_DATE: '2024-12-05',
       __row_idx__: '689',
       SALESGROUP: 'Enterprise Solutions'
-    },
-    {
-      PRODUCT: 'Smartphone',
-      PRICE: 499.99,
-      CUSTOMER: 'Mobile World',
-      COUNTRY: 'UK',
-      __row_idx__: '43',
-      SALESGROUP: 'Consumer Electronics'
-    },
-    {
-      PRODUCT: 'Office Chair',
-      PRICE: 150.8,
-      CUSTOMER: 'Furniture Ltd',
-      COUNTRY: 'Germany',
-      __row_idx__: '44',
-      SALESGROUP: 'Office Furniture'
-    },
-    {
-      PRODUCT: 'Server Rack',
-      PRICE: 1200,
-      CUSTOMER: 'Data Dynamics',
-      COUNTRY: 'Australia',
-      __row_idx__: '104',
-      SALESGROUP: 'Data Infrastructure'
-    },
-    {
-      PRODUCT: 'Wireless Router',
-      PRICE: 89.99,
-      CUSTOMER: 'Tech Forward',
-      COUNTRY: 'India',
-      __row_idx__: '204',
-      SALESGROUP: 'Networking Devices'
     }
   ]
 };
