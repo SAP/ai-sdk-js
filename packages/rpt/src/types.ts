@@ -6,7 +6,7 @@ import type { ColumnType, SchemaFieldConfig } from './client/rpt/index.js';
  * If no data schema is given, the type is string.
  * @template T - Type of the `data_schema` property. Can be null or undefined.
  */
-type ColNames<T extends DataSchema> = T extends any[]
+type ColNames<T extends DataSchema> = T extends readonly any[]
   ? T[number]['name']
   : string;
 
@@ -24,7 +24,7 @@ type TsType<T extends ColumnType> = T extends 'numeric' ? number : string;
  */
 type RowType<T extends DataSchema> =
   // `data_schema` is defined
-  T extends any[]
+  T extends readonly any[]
     ? {
         [N in T[number]['name']]: TsType<
           Extract<T[number], { name: N }>['dtype']
@@ -77,7 +77,9 @@ interface PredictionConfig<T extends DataSchema> {
 /**
  * Optional schema defining the data types of each column. If provided, this will override automatic data type parsing.
  */
-export type DataSchema = ({ name: string } & SchemaFieldConfig)[] | null;
+export type DataSchema =
+  | readonly ({ name: string } & SchemaFieldConfig)[]
+  | null;
 
 /**
  * Representation of all data needed for prediction.

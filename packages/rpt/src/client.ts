@@ -29,7 +29,7 @@ export class RptClient {
    * @param dataSchema - Prediction data follows this schema.
    * @param predictionData - Data to base prediction on.
    */
-  async predict<T extends DataSchema>(
+  async predict<const T extends DataSchema>(
     dataSchema: T,
     predictionData: PredictionData<T>
   ): Promise<PredictResponsePayload>;
@@ -37,10 +37,10 @@ export class RptClient {
    * Predict based on prediction data. Uses automatic data type parsing.
    * @param predictionData - Data to base prediction on.
    */
-  async predict<T extends DataSchema>(
+  async predict<const T extends DataSchema>(
     predictionData: PredictionData<T>
   ): Promise<PredictResponsePayload>;
-  async predict<T extends DataSchema>(
+  async predict<const T extends DataSchema>(
     dataSchemaOrPredictionData: T | PredictionData<T>,
     predictionDataOrUndefined?: PredictionData<T>
   ): Promise<PredictResponsePayload> {

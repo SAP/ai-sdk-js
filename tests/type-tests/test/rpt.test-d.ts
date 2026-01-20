@@ -66,11 +66,11 @@ expectType<Promise<PredictResponsePayload>>(
  */
 expectError(
   new RptClient().predict(
-    {
-      PRODUCT: { dtype: 'string' },
-      ID: { dtype: 'string' },
-      SALESGROUP: { dtype: 'string' }
-    },
+    [
+      { name: 'PRODUCT', dtype: 'string' },
+      { name: 'ID', dtype: 'string' },
+      { name: 'SALESGROUP', dtype: 'string' }
+    ],
     {
       prediction_config: {
         target_columns: [
