@@ -31,8 +31,9 @@
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/rpt.json -o ./src/client",
-    "postgenerate": "pnpm update-imports && pnpm lint:fix",
+    "postgenerate": "pnpm update-imports && pnpm make-rpt-internal && pnpm lint:fix",
     "update-imports": "node --no-warnings --loader ts-node/esm ../../scripts/update-imports.ts ./src/client/rpt",
+    "make-rpt-internal": "node --no-warnings --loader ts-node/esm ../../scripts/postgenerate-rpt.ts ./src/client/rpt/rpt-api.ts",
     "pregenerate": "node --no-warnings --loader ts-node/esm ../../scripts/pregenerate-rpt.ts ./src/spec/rpt.json"
   },
   "dependencies": {

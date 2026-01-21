@@ -11,6 +11,7 @@ import type {
 /**
  * Representation of the 'RptApi'.
  * This API is part of the 'rpt' service.
+ * @internal
  */
 export const RptApi = {
   _defaultBasePath: undefined,
