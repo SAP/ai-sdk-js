@@ -29,7 +29,7 @@ runs:
         token: ${{ inputs.token }}
     - uses: pnpm/action-setup@v4
       with:
-        version: 10.28.0
+        version: '10.28.0'
     - uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.node-version }}
