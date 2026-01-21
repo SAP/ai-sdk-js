@@ -19,7 +19,7 @@ body:
           required: true
         - label: "My issue is a JS/TS related issue, not a [Java related issue](https://github.com/SAP/ai-sdk-java/issues)."
           required: true
-        - label: "My issue is not already reported or documented."
+        - label: "My issue is not [already reported or documented](https://github.com/SAP/ai-sdk-js/issues)."
           required: true
   - type: textarea
     attributes:
