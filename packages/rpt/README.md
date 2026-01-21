@@ -1,5 +1,7 @@
 # @sap-ai-sdk/rpt
 
+This package is currently experimental and subject to change. Do not use in production.
+
 SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI Core**, **SAP Generative AI Hub**, and **Orchestration Service**.
 
 This package provides a client for SAP’s Relational Pretrained Transformer model, [SAP-RPT-1](https://www.sap.com/products/artificial-intelligence/sap-rpt.html).

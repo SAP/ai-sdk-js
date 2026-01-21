@@ -1,14 +1,36 @@
-import { mockInference } from '../../../test-util/mock-http.js';
+import nock from 'nock';
+import {
+  mockInference,
+  mockClientCredentialsGrantCall,
+  mockDeploymentsList
+} from '../../../test-util/mock-http.js';
 import { RptClient } from './client.js';
 
 describe('rpt', () => {
+  beforeEach(() => {
+    mockClientCredentialsGrantCall();
+  });
+
+  afterEach(() => {
+    nock.cleanAll();
+  });
+
   it('should transform body', async () => {
+    mockDeploymentsList(
+      {
+        scenarioId: 'foundation-models',
+        executableId: 'aicore-sap'
+      },
+      { id: '1234', model: { name: 'sap-rpt-1-small', version: 'latest' } }
+    );
     const requestSpy = mockInference(
       {
         data: {
-          product: { dtype: 'string' },
-          id: { dtype: 'numeric' },
-          production_date: { dtype: 'date' }
+          data_schema: {
+            product: { dtype: 'string' },
+            id: { dtype: 'numeric' },
+            production_date: { dtype: 'date' }
+          }
         }
       },
       {
@@ -19,7 +41,8 @@ describe('rpt', () => {
         url: 'inference/deployments/1234/predict'
       }
     );
-    new RptClient().predict(
+
+    await new RptClient().predict(
       [
         { name: 'product', dtype: 'string' },
         { name: 'id', dtype: 'numeric' },
@@ -27,7 +50,6 @@ describe('rpt', () => {
       ],
       {} as any
     );
-
     expect(requestSpy.isDone()).toBe(true);
   });
 });

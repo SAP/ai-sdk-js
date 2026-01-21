@@ -12,6 +12,7 @@ import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity'
 
 /**
  * Representation of an RPT client to make predictions.
+ * @experimental This class is experimental and may change at any time without prior notice.
  */
 export class RptClient {
   /**
@@ -68,10 +69,13 @@ export class RptClient {
 
     const body = {
       data_schema:
-        dataSchema?.reduce((merged, { name, ...schemaFieldConfig }) => ({
-          ...merged,
-          [name]: schemaFieldConfig
-        })) || null,
+        dataSchema?.reduce(
+          (merged, { name, ...schemaFieldConfig }) => ({
+            ...merged,
+            [name]: schemaFieldConfig
+          }),
+          {}
+        ) || null,
       ...predictionData
     } satisfies PredictRequestPayload;
 
