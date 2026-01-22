@@ -37,6 +37,14 @@ export class OrchestrationStreamResponse<T> {
   }
 
   /**
+   * Gets the request ID for the stream response.
+   * @returns The request ID, or undefined if the first chunk has not been received yet.
+   */
+  getRequestId(): string | undefined {
+    return this._data.request_id;
+  }
+
+  /**
    * Gets the finish reason for a specific choice index.
    * @param choiceIndex - The index of the choice to get the finish reason for.
    * @returns The finish reason for the specified choice index.
