@@ -6,6 +6,9 @@ import type {
 } from '@sap-ai-sdk/orchestration';
 import type {
   ChatCompletionTool,
+  ResponseFormatJsonObject,
+  ResponseFormatJsonSchema,
+  ResponseFormatText,
   TemplateRef
 } from '@sap-ai-sdk/orchestration/internal.js';
 import type { Xor } from '@sap-cloud-sdk/util';
@@ -53,6 +56,10 @@ export type OrchestrationCallOptions = Pick<
   promptIndex?: number;
   placeholderValues?: Record<string, string>;
   streamOptions?: StreamOptions;
+  responseFormat?:
+    | ResponseFormatText
+    | ResponseFormatJsonObject
+    | ResponseFormatJsonSchema;
 };
 
 /**

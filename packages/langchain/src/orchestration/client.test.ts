@@ -8,6 +8,7 @@ import {
   StateGraph
 } from '@langchain/langgraph';
 import { type AIMessageChunk } from '@langchain/core/messages';
+import { z } from 'zod';
 import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
@@ -692,5 +693,481 @@ describe('orchestration service client', () => {
     }
 
     expect(llm._streamResponseChunks).toHaveBeenCalled();
+  });
+
+  describe('withStructuredOutput', () => {
+    const jokeSchema = z.object({
+      setup: z.string().describe('The setup of the joke'),
+      punchline: z.string().describe('The punchline of the joke')
+    });
+
+    const translationSchema = z.object({
+      language: z.string().describe('Target language'),
+      translation: z.string().describe('Translated text')
+    });
+
+    it('should create response_format config with jsonSchema by default', () => {
+      const llm = new OrchestrationClient(config);
+      const spy = jest.spyOn(llm, 'withConfig');
+
+      llm.withStructuredOutput(jokeSchema, { name: 'joke', strict: true });
+
+      expect(spy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          responseFormat: {
+            type: 'json_schema',
+            json_schema: {
+              name: 'joke',
+              description: undefined,
+              schema: expect.objectContaining({
+                type: 'object',
+                properties: expect.objectContaining({
+                  setup: expect.any(Object),
+                  punchline: expect.any(Object)
+                })
+              }),
+              strict: true
+            }
+          }
+        })
+      );
+    });
+
+    it('should work with plain JSON schema', () => {
+      const llm = new OrchestrationClient(config);
+      const spy = jest.spyOn(llm, 'withConfig');
+
+      const plainSchema = {
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          age: { type: 'number' }
+        },
+        required: ['name', 'age']
+      };
+
+      llm.withStructuredOutput(plainSchema, { name: 'person' });
+
+      expect(spy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          responseFormat: {
+            type: 'json_schema',
+            json_schema: {
+              name: 'person',
+              description: undefined,
+              schema: plainSchema
+            }
+          }
+        })
+      );
+    });
+
+    it('should use default name "extract" when not provided', () => {
+      const llm = new OrchestrationClient(config);
+      const spy = jest.spyOn(llm, 'withConfig');
+
+      llm.withStructuredOutput(jokeSchema);
+
+      expect(spy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          responseFormat: expect.objectContaining({
+            json_schema: expect.objectContaining({
+              name: 'extract'
+            })
+          })
+        })
+      );
+    });
+
+    it('should throw error when using withStructuredOutput with TemplateRef', async () => {
+      const configWithRef: LangChainOrchestrationModuleConfig = {
+        promptTemplating: {
+          model: {
+            name: 'gpt-4o',
+            params: {}
+          },
+          prompt: {
+            template_ref: {
+              name: 'my-template',
+              version: '1',
+              scenario: 'translation'
+            }
+          }
+        }
+      };
+
+      const llm = new OrchestrationClient(configWithRef);
+      const structured = llm.withStructuredOutput(translationSchema);
+
+      // The error should be thrown during invoke when mergeOrchestrationConfig is called
+      await expect(structured.invoke('Test message')).rejects.toThrow(
+        'Cannot use withStructuredOutput with TemplateRef'
+      );
+    });
+
+    it('should parse structured output correctly', async () => {
+      const mockStructuredResponse: CompletionPostResponse = {
+        ...mockResponse,
+        final_result: {
+          ...mockResponse.final_result,
+          choices: [
+            {
+              index: 0,
+              message: {
+                role: 'assistant',
+                content:
+                  '{"setup":"Why did the chicken cross the road?","punchline":"To get to the other side!"}'
+              },
+              finish_reason: 'stop'
+            }
+          ]
+        }
+      };
+
+      mockInference(
+        () => ({
+          orchestrationConfig: expect.anything(),
+          params: expect.anything()
+        }),
+        { data: mockStructuredResponse, status: 200 },
+        endpoint
+      );
+
+      const llm = new OrchestrationClient(config);
+      const structured = llm.withStructuredOutput(jokeSchema);
+      const result = await structured.invoke('Tell me a joke');
+
+      expect(result).toEqual({
+        setup: 'Why did the chicken cross the road?',
+        punchline: 'To get to the other side!'
+      });
+    });
+
+    it('should handle includeRaw option', async () => {
+      const mockStructuredResponse: CompletionPostResponse = {
+        ...mockResponse,
+        final_result: {
+          ...mockResponse.final_result,
+          choices: [
+            {
+              index: 0,
+              message: {
+                role: 'assistant',
+                content: '{"language":"German","translation":"Apfel"}'
+              },
+              finish_reason: 'stop'
+            }
+          ]
+        }
+      };
+
+      mockInference(
+        () => ({
+          orchestrationConfig: expect.anything(),
+          params: expect.anything()
+        }),
+        { data: mockStructuredResponse, status: 200 },
+        endpoint
+      );
+
+      const llm = new OrchestrationClient(config);
+      const structured = llm.withStructuredOutput(translationSchema, {
+        includeRaw: true
+      });
+      const result = await structured.invoke("What's 'Apple' in German?");
+
+      expect(result).toHaveProperty('raw');
+      expect(result).toHaveProperty('parsed');
+      expect(result.parsed).toEqual({
+        language: 'German',
+        translation: 'Apfel'
+      });
+    });
+
+    it('should merge response_format with existing config', async () => {
+      const configWithTemplate: LangChainOrchestrationModuleConfig = {
+        promptTemplating: {
+          model: {
+            name: 'gpt-4o',
+            params: {}
+          },
+          prompt: {
+            template: messages
+          }
+        }
+      };
+
+      const llm = new OrchestrationClient(configWithTemplate);
+
+      const mockStructuredResponse: CompletionPostResponse = {
+        ...mockResponse,
+        final_result: {
+          ...mockResponse.final_result,
+          choices: [
+            {
+              index: 0,
+              message: {
+                role: 'assistant',
+                content: '{"language":"German","translation":"Apfel"}'
+              },
+              finish_reason: 'stop'
+            }
+          ]
+        }
+      };
+
+      mockInference(
+        req => {
+          const parsedReq = JSON.parse(req.body as string);
+          expect(
+            parsedReq.orchestration_config.templating_module_config.prompt
+              .response_format
+          ).toBeDefined();
+          expect(
+            parsedReq.orchestration_config.templating_module_config.prompt
+              .response_format.type
+          ).toBe('json_schema');
+          return true;
+        },
+        { data: mockStructuredResponse, status: 200 },
+        endpoint
+      );
+
+      const structured = llm.withStructuredOutput(translationSchema, {
+        strict: true
+      });
+      await structured.invoke("What's 'Apple' in German?");
+    });
+
+    it('should use `jsonMode` method if specified', async () => {
+      const llm = new OrchestrationClient(config);
+      const spy = jest.spyOn(llm, 'withConfig');
+
+      llm.withStructuredOutput(jokeSchema, { method: 'jsonMode' });
+
+      expect(spy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          responseFormat: {
+            type: 'json_object'
+          }
+        })
+      );
+    });
+
+    it('should throw error if strict is used with `jsonMode`', () => {
+      const llm = new OrchestrationClient(config);
+
+      expect(() => {
+        llm.withStructuredOutput(jokeSchema, {
+          name: 'joke',
+          strict: true,
+          method: 'jsonMode'
+        });
+      }).toThrow(
+        'The "strict" option is not supported with the "jsonMode" structured output method'
+      );
+    });
+
+    it('should use `functionCalling` method if specified', async () => {
+      const llm = new OrchestrationClient(config);
+      const spy = jest.spyOn(llm, 'withConfig');
+
+      llm.withStructuredOutput(jokeSchema, { method: 'functionCalling' });
+
+      expect(spy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          tools: [
+            {
+              type: 'function' as const,
+              function: {
+                name: 'extract',
+                description: undefined,
+                parameters: expect.objectContaining({
+                  type: 'object',
+                  properties: expect.objectContaining({
+                    setup: expect.any(Object),
+                    punchline: expect.any(Object)
+                  })
+                })
+              }
+            }
+          ]
+        })
+      );
+    });
+
+    it('should use `functionCalling` with plain JSON schema', async () => {
+      const llm = new OrchestrationClient(config);
+      const spy = jest.spyOn(llm, 'withConfig');
+
+      const plainJsonSchema = {
+        name: 'joke',
+        description: 'Joke to tell user.',
+        parameters: {
+          type: 'object' as const,
+          properties: {
+            setup: {
+              type: 'string' as const,
+              description: 'The setup for the joke'
+            },
+            punchline: {
+              type: 'string' as const,
+              description: "The joke's punchline"
+            }
+          },
+          required: ['setup', 'punchline']
+        }
+      };
+
+      llm.withStructuredOutput(plainJsonSchema.parameters, {
+        name: plainJsonSchema.name,
+        method: 'functionCalling'
+      });
+
+      expect(spy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          tools: [
+            {
+              type: 'function' as const,
+              function: expect.objectContaining({
+                name: 'joke',
+                parameters: plainJsonSchema.parameters
+              })
+            }
+          ]
+        })
+      );
+    });
+
+    describe('with content filtering', () => {
+      it('should throw immediately when input filter error occurs with jsonSchema method', async () => {
+        // Mock should only be called once - no retries on input filter error
+        mockInference(
+          (req: any) => {
+            const body = JSON.parse(req.body as string);
+            // Verify it has json_schema response_format
+            return (
+              body.orchestration_config.templating_module_config.prompt
+                ?.response_format?.type === 'json_schema'
+            );
+          },
+          {
+            data: mockResponseInputFilterError,
+            status: 400
+          },
+          endpoint
+        ); // Verify it's only called once despite high maxRetries
+
+        const llm = new OrchestrationClient(config, {
+          maxRetries: 1000 // Should not retry on input filtering errors
+        });
+        const structured = llm.withStructuredOutput(jokeSchema, {
+          method: 'jsonSchema'
+        });
+
+        await expect(structured.invoke('Tell me a joke')).rejects.toThrow(
+          'Request failed with status code 400'
+        );
+      }, 1000);
+
+      it('should throw immediately when input filter error occurs with functionCalling method', async () => {
+        mockInference(
+          (req: any) => {
+            const body = JSON.parse(req.body as string);
+            // Verify it has tools configured
+            return (
+              Array.isArray(
+                body.orchestration_config.templating_module_config.prompt?.tools
+              ) &&
+              body.orchestration_config.templating_module_config.prompt.tools
+                .length > 0
+            );
+          },
+          {
+            data: mockResponseInputFilterError,
+            status: 400
+          },
+          endpoint
+        );
+
+        const llm = new OrchestrationClient(config, {
+          maxRetries: 1000
+        });
+        const structured = llm.withStructuredOutput(jokeSchema, {
+          method: 'functionCalling'
+        });
+
+        await expect(structured.invoke('Tell me a joke')).rejects.toThrow(
+          'Request failed with status code 400'
+        );
+      }, 1000);
+
+      it('should throw immediately when input filter error occurs with jsonMode method', async () => {
+        mockInference(
+          (req: any) => {
+            const body = JSON.parse(req.body as string);
+            // Verify it has json_object response_format
+            return (
+              body.orchestration_config.templating_module_config.prompt
+                ?.response_format?.type === 'json_object'
+            );
+          },
+          {
+            data: mockResponseInputFilterError,
+            status: 400
+          },
+          endpoint
+        );
+
+        const llm = new OrchestrationClient(config, {
+          maxRetries: 1000
+        });
+        const structured = llm.withStructuredOutput(jokeSchema, {
+          method: 'jsonMode'
+        });
+
+        await expect(structured.invoke('Tell me a joke')).rejects.toThrow(
+          'Request failed with status code 400'
+        );
+      }, 1000);
+
+      it('should return null parsed value with includeRaw when parsing fails (simulating partial filtered output)', async () => {
+        const mockInvalidJsonResponse: CompletionPostResponse = {
+          ...mockResponse,
+          final_result: {
+            ...mockResponse.final_result,
+            choices: [
+              {
+                index: 0,
+                message: {
+                  role: 'assistant',
+                  content: 'Invalid JSON that cannot be parsed'
+                },
+                finish_reason: 'stop'
+              }
+            ]
+          }
+        };
+
+        mockInference(
+          () => ({
+            orchestrationConfig: expect.anything(),
+            params: expect.anything()
+          }),
+          { data: mockInvalidJsonResponse, status: 200 },
+          endpoint
+        );
+
+        const llm = new OrchestrationClient(config);
+        const structured = llm.withStructuredOutput(jokeSchema, {
+          includeRaw: true
+        });
+        const result = await structured.invoke('Tell me a joke');
+
+        expect(result).toHaveProperty('raw');
+        expect(result).toHaveProperty('parsed');
+        expect(result.parsed).toBeNull(); // Parser fallback should return null
+      });
+    });
   });
 });
