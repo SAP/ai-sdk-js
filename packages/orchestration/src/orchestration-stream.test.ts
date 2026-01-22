@@ -65,7 +65,7 @@ describe('Orchestration chat completion stream', () => {
           () => asyncGeneratorChunk,
           new AbortController()
         ),
-        new OrchestrationStreamResponse()
+        new OrchestrationStreamResponse({} as any)
       );
 
     for await (const chunk of asyncGeneratorFinishReason) {
@@ -89,7 +89,7 @@ describe('Orchestration chat completion stream', () => {
           () => asyncGeneratorChunk,
           new AbortController()
         ),
-        new OrchestrationStreamResponse()
+        new OrchestrationStreamResponse({} as any)
       );
 
     for await (const chunk of asyncGeneratorTokenUsage) {

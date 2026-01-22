@@ -1,3 +1,4 @@
+import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type {
   AssistantChatMessage,
   ChatMessage,
@@ -17,6 +18,12 @@ export class OrchestrationStreamResponse<T> {
   public _openStream = true;
   public _data: Partial<CompletionPostResponse> = {};
   private _stream: OrchestrationStream<T> | undefined;
+
+  /**
+   * Creates an orchestration stream response.
+   * @param rawHttpResponse - The raw HTTP response from the orchestration service. This does not containy any of the SSE stream payload data.
+   */
+  constructor(public readonly rawHttpResponse: HttpResponse) {}
 
   /**
    * Gets the token usage for the response.

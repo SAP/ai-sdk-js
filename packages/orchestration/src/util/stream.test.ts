@@ -16,7 +16,9 @@ describe('stream-util', () => {
   describe('mergeStreamResponse', () => {
     it('merges basic stream response properties', () => {
       const response =
-        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
+        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
+          {} as any
+        );
       const chunk: CompletionPostResponseStreaming = {
         request_id: 'test-request-123',
         intermediate_results: {},
@@ -60,7 +62,9 @@ describe('stream-util', () => {
       };
 
       const response =
-        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
+        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
+          {} as any
+        );
 
       mergeStreamResponse(response, chunk);
 
@@ -95,7 +99,9 @@ describe('stream-util', () => {
       };
 
       const response =
-        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
+        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
+          {} as any
+        );
 
       mergeStreamResponse(response, chunk);
 
@@ -121,7 +127,9 @@ describe('stream-util', () => {
       };
 
       const response =
-        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
+        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
+          {} as any
+        );
       response._data = {
         request_id: 'test-request-123',
         final_result: {
@@ -152,7 +160,9 @@ describe('stream-util', () => {
       delete chunk.final_result?.usage;
 
       const response =
-        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
+        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
+          {} as any
+        );
       response._data = {
         request_id: 'test-request-123',
         final_result: {
@@ -175,7 +185,9 @@ describe('stream-util', () => {
   describe('choice merging', () => {
     it('merges content from multiple chunks', () => {
       const response =
-        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
+        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
+          {} as any
+        );
       response._data = {
         request_id: 'test-request-123',
         final_result: {
@@ -223,7 +235,9 @@ describe('stream-util', () => {
 
     it('adds new choice when index does not exist', () => {
       const response =
-        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
+        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
+          {} as any
+        );
       response._data = {
         request_id: 'test-request-123',
         final_result: {
@@ -265,7 +279,9 @@ describe('stream-util', () => {
 
     it('handles finish reasons correctly', () => {
       const response =
-        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
+        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
+          {} as any
+        );
       response._data = {
         request_id: 'test-request-123',
         final_result: {
@@ -308,7 +324,9 @@ describe('stream-util', () => {
   describe('tool call merging', () => {
     it('merges tool call arguments from multiple chunks', () => {
       const response =
-        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
+        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
+          {} as any
+        );
       response._data = {
         request_id: 'test-request-123',
         final_result: {
@@ -373,7 +391,9 @@ describe('stream-util', () => {
 
     it('adds new tool call when index does not exist', () => {
       const response =
-        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
+        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
+          {} as any
+        );
       response._data = {
         request_id: 'test-request-123',
         intermediate_results: {},
@@ -444,7 +464,9 @@ describe('stream-util', () => {
   describe('logprobs merging', () => {
     it('merges logprobs content arrays', () => {
       const response =
-        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
+        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
+          {} as any
+        );
       response._data = {
         request_id: 'test-request-123',
         intermediate_results: {},
@@ -496,7 +518,9 @@ describe('stream-util', () => {
 
     it('handles missing logprobs gracefully', () => {
       const response =
-        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
+        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
+          {} as any
+        );
       response._data = {
         request_id: 'test-request-123',
         intermediate_results: {},
