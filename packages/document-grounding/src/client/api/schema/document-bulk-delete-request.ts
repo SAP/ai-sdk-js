@@ -5,11 +5,13 @@
  */
 
 /**
- * Error message if any.
+ * A request to delete documents by their IDs.
  */
-export type PerFilterSearchResultError = {
+export type DocumentBulkDeleteRequest = {
   /**
-   * Default: "Unknown Error Occurred".
+   * List of document IDs to delete
+   * Min Items: 1.
+   * Max Items: 100.
    */
-  message: string;
+  ids: string[];
 } & Record<string, any>;

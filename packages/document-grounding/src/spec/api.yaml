@@ -944,6 +944,40 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
+  '/vector/documents':
+    delete:
+      tags:
+        - Vector
+      summary: Delete list of documents across collections
+      description: Deletes list of documents across collections.
+      operationId: vector.v1.vector_endpoints.delete_all_documents
+      x-sap-cloud-sdk-operation-name: deleteAllDocuments
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentBulkDeleteRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentBulkDeleteResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
   '/retrieval/dataRepositories':
     get:
       parameters:
@@ -1652,7 +1686,6 @@ components:
         - type: object
           required:
             - type
-            - configuration
           properties:
             type:
               type: string
@@ -1670,7 +1703,6 @@ components:
         - type: object
           required:
             - type
-            - configuration
           properties:
             type:
               type: string
@@ -2141,6 +2173,10 @@ components:
       type: object
       title: VectorSearchConfiguration
     RetrievalSearchConfiguration:
+      nullable: true
+      default: {}
+      minProperties: 0
+      maxProperties: 2
       properties:
         maxChunkCount:
           nullable: true
@@ -2285,6 +2321,11 @@ components:
             Metadata attached to collection. Useful to restrict search to a
             subset of collections.
           default: []
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: Unique identifier of a collection.
       type: object
       required:
         - embeddingConfig
@@ -2710,6 +2751,7 @@ components:
         - dataRepository
       title: DataRepositorySearchResult
     DataRepositoryType:
+      description: Only include DataRepositories with the given type.
       type: string
       anyOf:
         - enum:
@@ -2783,19 +2825,23 @@ components:
         - filterId
       title: PerFilterSearchResult
     PerFilterSearchResultError:
+      description: Error message if any.
       properties:
         message:
           type: string
           title: Message
+          default: Unknown Error Occurred
       type: object
       required:
         - message
       title: PerFilterSearchResultError
     RetrievalPerFilterSearchResultError:
+      description: Error message if any.
       properties:
         message:
           type: string
           title: Message
+          default: Unknown Error Occurred
       type: object
       required:
         - message
@@ -2807,9 +2853,6 @@ components:
           title: Filterid
         error:
           $ref: '#/components/schemas/PerFilterSearchResultError'
-          description: Error message if any.
-          default:
-            message: Unknown Error Occurred
       type: object
       required:
         - filterId
@@ -2821,12 +2864,7 @@ components:
           title: Id
           description: Identifier of this RetrievalSearchFilter - unique per request.
         searchConfiguration:
-          type: object
-          nullable: true
           $ref: '#/components/schemas/RetrievalSearchConfiguration'
-          default: {}
-          minProperties: 0
-          maxProperties: 2
         dataRepositories:
           type: array
           items:
@@ -2836,9 +2874,7 @@ components:
           default:
             - '*'
         dataRepositoryType:
-          type: string
           $ref: '#/components/schemas/DataRepositoryType'
-          description: Only include DataRepositories with the given type.
         dataRepositoryMetadata:
           type: array
           items:
@@ -2914,9 +2950,6 @@ components:
           title: Filterid
         error:
           $ref: '#/components/schemas/RetrievalPerFilterSearchResultError'
-          description: Error message if any.
-          default:
-            message: Unknown Error Occurred
       type: object
       required:
         - filterId
@@ -2968,6 +3001,44 @@ components:
         - msg
         - type
       title: ValidationError
+    DocumentBulkDeleteRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          minItems: 1
+          maxItems: 100
+          title: Ids
+          description: List of document IDs to delete
+      type: object
+      required:
+        - ids
+      title: DocumentBulkDeleteRequest
+      description: A request to delete documents by their IDs.
+    DocumentBulkDeleteResponse:
+      properties:
+        deleted:
+          type: array
+          items:
+            type: string
+            format: uuid
+          title: Deleted
+          description: List of successfully deleted document IDs
+        notFound:
+          type: array
+          items:
+            type: string
+            format: uuid
+          title: NotFound
+          description: List of document IDs that were not found
+      type: object
+      required:
+        - deleted
+        - notFound
+      title: DocumentBulkDeleteResponse
+      description: Response after deleting documents in bulk.
 
     ### ###  ########################  ### ###
     ### ###  ###       Error      ###  ### ###

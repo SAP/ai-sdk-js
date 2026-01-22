@@ -113,5 +113,7 @@ export * from './retrieval-per-filter-search-result-with-error.js';
 export * from './retrieval-search-results.js';
 export * from './data-repository-search-results.js';
 export * from './validation-error.js';
+export * from './document-bulk-delete-request.js';
+export * from './document-bulk-delete-response.js';
 export * from './api-error.js';
 export * from './details-error-response.js';
