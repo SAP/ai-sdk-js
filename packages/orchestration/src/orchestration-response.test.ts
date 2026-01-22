@@ -146,9 +146,11 @@ describe('OrchestrationResponse', () => {
 
   it('should get request ID from response', () => {
     const responseWithRequestId = new OrchestrationResponse({
-      ...rawResponse,
+      ...rawResponse
     });
-    expect(responseWithRequestId.getRequestId()).toBe('903367ba-f7b6-42a5-857f-8cff615e201b');
+    expect(responseWithRequestId.getRequestId()).toBe(
+      '903367ba-f7b6-42a5-857f-8cff615e201b'
+    );
   });
 
   it('should throw if content that was filtered is accessed', () => {
