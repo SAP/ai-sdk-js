@@ -12,4 +12,4 @@ export type ServiceNowPipelineCreateRequest = {
   type: 'ServiceNow';
   metadata?: MetaData;
   configuration?: ServiceNowConfigurationStruct;
-};
+} & Record<string, any>;

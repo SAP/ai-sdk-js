@@ -9,6 +9,7 @@ import type { SFTPPipelineGetResponse } from './sftp-pipeline-get-response.js';
 import type { SDMPipelineGetResponse } from './sdm-pipeline-get-response.js';
 import type { WorkZonePipelineGetResponse } from './work-zone-pipeline-get-response.js';
 import type { ServiceNowPipelineGetResponse } from './service-now-pipeline-get-response.js';
+import type { GoogleDrivePipelineGetResponse } from './google-drive-pipeline-get-response.js';
 /**
  * Representation of the 'GetPipeline' schema.
  */
@@ -18,4 +19,5 @@ export type GetPipeline =
   | ({ type: 'SFTP' } & SFTPPipelineGetResponse)
   | ({ type: 'SDM' } & SDMPipelineGetResponse)
   | ({ type: 'WorkZone' } & WorkZonePipelineGetResponse)
-  | ({ type: 'ServiceNow' } & ServiceNowPipelineGetResponse);
+  | ({ type: 'ServiceNow' } & ServiceNowPipelineGetResponse)
+  | ({ type: 'GoogleDrive' } & GoogleDrivePipelineGetResponse);

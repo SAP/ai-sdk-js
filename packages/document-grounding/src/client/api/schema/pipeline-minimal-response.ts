@@ -9,6 +9,7 @@ import type { SFTPPipelineMinimalResponse } from './sftp-pipeline-minimal-respon
 import type { SDMPipelineMinimalResponse } from './sdm-pipeline-minimal-response.js';
 import type { WorkZonePipelineMinimalResponse } from './work-zone-pipeline-minimal-response.js';
 import type { ServiceNowPipelineMinimalResponse } from './service-now-pipeline-minimal-response.js';
+import type { GoogleDrivePipelineMinimalResponse } from './google-drive-pipeline-minimal-response.js';
 /**
  * Representation of the 'PipelineMinimalResponse' schema.
  */
@@ -18,4 +19,5 @@ export type PipelineMinimalResponse =
   | ({ type: 'SFTP' } & SFTPPipelineMinimalResponse)
   | ({ type: 'SDM' } & SDMPipelineMinimalResponse)
   | ({ type: 'WorkZone' } & WorkZonePipelineMinimalResponse)
-  | ({ type: 'ServiceNow' } & ServiceNowPipelineMinimalResponse);
+  | ({ type: 'ServiceNow' } & ServiceNowPipelineMinimalResponse)
+  | ({ type: 'GoogleDrive' } & GoogleDrivePipelineMinimalResponse);

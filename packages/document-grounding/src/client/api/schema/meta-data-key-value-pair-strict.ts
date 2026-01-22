@@ -5,15 +5,16 @@
  */
 
 /**
- * Representation of the 'ServiceNowConfig' schema.
+ * Representation of the 'MetaDataKeyValuePairStrict' schema.
  */
-export type ServiceNowConfig = {
+export type MetaDataKeyValuePairStrict = {
   /**
-   * @example [
-   *   "active=true",
-   *   "sys_domain_path=/health"
-   * ]
+   * Max Length: 1024.
+   * Min Length: 1.
+   */
+  key: string;
+  /**
    * Min Items: 1.
    */
-  includePaths?: string[];
+  value: string[];
 } & Record<string, any>;

@@ -8,7 +8,11 @@ import type { IncludePathsArray } from './include-paths-array.js';
  * Representation of the 'ServiceNowConfigurationMinimal' schema.
  */
 export type ServiceNowConfigurationMinimal = {
-  serviceNow: {
+  /**
+   * @example "destination-name"
+   */
+  destination: string;
+  serviceNow?: {
     includePaths?: IncludePathsArray;
-  };
+  } & Record<string, any>;
 };

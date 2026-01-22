@@ -1092,6 +1092,8 @@ components:
         - $ref: '#/components/schemas/SDMPipelineCreateRequest'
         - $ref: '#/components/schemas/WorkZonePipelineCreateRequest'
         - $ref: '#/components/schemas/ServiceNowPipelineCreateRequest'
+        - $ref: '#/components/schemas/GoogleDrivePipelineCreateRequest'
+        - $ref: '#/components/schemas/metadataConfiguration'
       discriminator:
         propertyName: type
         mapping:
@@ -1101,6 +1103,8 @@ components:
           SDM: '#/components/schemas/SDMPipelineCreateRequest'
           WorkZone: '#/components/schemas/WorkZonePipelineCreateRequest'
           ServiceNow: '#/components/schemas/ServiceNowPipelineCreateRequest'
+          GoogleDrive: '#/components/schemas/GoogleDrivePipelineCreateRequest'
+          metadata: '#/components/schemas/metadataConfiguration'
 
     manualPipelineTrigger:
       type: object
@@ -1195,7 +1199,81 @@ components:
           $ref: '#/components/schemas/MetaData'
         configuration:
           $ref: '#/components/schemas/ServiceNowConfigurationStruct'
-      additionalProperties: false
+      additionalProperties: true
+
+    metadataConfiguration:
+      type: object
+      required:
+        - type
+        - configuration
+      properties:
+        type:
+          type: string
+          enum: ['metadata']
+        configuration:
+          $ref: '#/components/schemas/MetadataConfigurationStruct'
+        metadata:
+          type: object
+          properties:
+            dataRepositoryMetadata:
+              $ref: '#/components/schemas/DataRepositoryMetaDataStrict'
+          required:
+            - dataRepositoryMetadata
+      additionalProperties: true
+
+    MetadataConfigurationStruct:
+      type: object
+      properties:
+        metadataConfigId:
+          type: string
+          minLength: 1
+          example: uuid
+        cronExpression:
+          type: string
+          description: |
+            Optional cron expression for scheduling pipeline execution.
+            Must represent an interval greater than 1 hour.
+          example: '0 */20 * * *'
+      required:
+        - metadataConfigId
+      additionalProperties: true
+
+    # null is not allowed as the 'value' inside the items
+    DataRepositoryMetaDataStrict:
+      type: array
+      items:
+        $ref: '#/components/schemas/MetaDataKeyValuePairStrict'
+      example:
+        - key: purpose
+          value:
+            - demonstration
+        - key: sample-key
+          value:
+            - sample-value1
+            - sample-value2
+
+    # null is not allowed as the 'value'
+    MetaDataKeyValuePairStrict:
+      type: object
+      properties:
+        key:
+          type: string
+          minLength: 1
+          maxLength: 1024
+          nullable: false
+        value:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 1024
+            nullable: false
+          nullable: false
+          minItems: 1
+      required:
+        - key
+        - value
+      additionalProperties: true
 
     ServiceNowConfigurationStruct:
       type: object
@@ -1216,7 +1294,7 @@ components:
             Optional cron expression for scheduling pipeline execution.
             Must represent an interval greater than 1 hour.
           example: '0 */20 * * *'
-      additionalProperties: false
+      additionalProperties: true
 
     ServiceNowConfig:
       type: object
@@ -1229,19 +1307,110 @@ components:
           example:
             - active=true
             - sys_domain_path=/health
-      additionalProperties: false
+      additionalProperties: true
+
+    GoogleDrivePipelineCreateRequest:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum: ['GoogleDrive']
+        metadata:
+          $ref: '#/components/schemas/MetaData'
+        configuration:
+          $ref: '#/components/schemas/GoogleDriveConfigurationStruct'
+
+    GoogleDriveConfigurationStruct:
+      type: object
+      required:
+        - destination
+        - googleDrive
+      properties:
+        destination:
+          type: string
+          example: destination-name
+        googleDrive:
+          $ref: '#/components/schemas/GoogleDriveConfig'
+        cronExpression:
+          type: string
+          description: |
+            Optional cron expression for scheduling pipeline execution.
+            Must represent an interval greater than 1 hour.
+          example: '0 */20 * * *'
+        metadataConfigId:
+          type: string
+          example: uuid
+      additionalProperties: true
+
+    GoogleDriveConfig:
+      type: object
+      required:
+        - folder
+      properties:
+        folder:
+          $ref: '#/components/schemas/GoogleDriveFolder'
+      additionalProperties: true
+
+    GoogleDriveFolder:
+      type: object
+      required:
+        - driverType
+      properties:
+        id:
+          type: string
+          example: '1n0SMFydu2ru3mgn7eK_BYpOlmhK5Vhij'
+        driveId:
+          type: string
+          example: '0AGVUFpXcXc5Uk9PVA'
+        driverType:
+          type: string
+          enum: ['SHARED_FOLDER', 'SHARED_DRIVE']
+          example: 'SHARED_FOLDER'
+        includePaths:
+          $ref: '#/components/schemas/IncludePathsArray'
+      additionalProperties: true
+
+    GoogleDriveFolderDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1n0SMFydu2ru3mgn7eK_BYpOlmhK5Vhij'
+        driveId:
+          type: string
+          example: '0AGVUFpXcXc5Uk9PVA'
+        driverType:
+          type: string
+          enum: ['SHARED_FOLDER', 'SHARED_DRIVE']
+          example: 'SHARED_FOLDER'
+        includePaths:
+          $ref: '#/components/schemas/IncludePathsArray'
+      additionalProperties: true
 
     ServiceNowConfigurationMinimal:
       type: object
       required:
-        - serviceNow
+        - destination
       properties:
+        destination:
+          type: string
+          example: destination-name
         serviceNow:
           type: object
           properties:
             includePaths:
               $ref: '#/components/schemas/IncludePathsArray'
-          additionalProperties: false
+      additionalProperties: false
+
+    GoogleDriveConfigurationMinimal:
+      type: object
+      required:
+        - googleDrive
+      properties:
+        googleDrive:
+          $ref: '#/components/schemas/GoogleDriveFolderDetail'
       additionalProperties: false
 
     MSSharePointConfiguration:
@@ -1324,35 +1493,8 @@ components:
           type: string
           example: destination-name
         dataRepositoryMetadata:
-          type: array
-          items:
-            type: object
-            properties:
-              key:
-                type: string
-                minLength: 1
-                maxLength: 1024
-                nullable: false
-              value:
-                type: array
-                items:
-                  type: string
-                  minLength: 1
-                  maxLength: 1024
-                  nullable: false
-                nullable: false
-                minItems: 1
-            required:
-              - key
-              - value
-          example:
-            - key: purpose
-              value:
-                - demonstration
-            - key: sample-key
-              value:
-                - sample-value1
-                - sample-value2
+          $ref: '#/components/schemas/DataRepositoryMetaDataStrict'
+      additionalProperties: true
 
     getPipelines:
       type: object
@@ -1374,6 +1516,7 @@ components:
         - $ref: '#/components/schemas/SDMPipelineGetResponse'
         - $ref: '#/components/schemas/WorkZonePipelineGetResponse'
         - $ref: '#/components/schemas/ServiceNowPipelineGetResponse'
+        - $ref: '#/components/schemas/GoogleDrivePipelineGetResponse'
       discriminator:
         propertyName: type
         mapping:
@@ -1383,6 +1526,7 @@ components:
           SDM: '#/components/schemas/SDMPipelineGetResponse'
           WorkZone: '#/components/schemas/WorkZonePipelineGetResponse'
           ServiceNow: '#/components/schemas/ServiceNowPipelineGetResponse'
+          GoogleDrive: '#/components/schemas/GoogleDrivePipelineGetResponse'
 
     MSSharePointPipelineGetResponse:
       allOf:
@@ -1461,6 +1605,19 @@ components:
               enum: ['ServiceNow']
             configuration:
               $ref: '#/components/schemas/ServiceNowConfigurationMinimal'
+
+    GoogleDrivePipelineGetResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasePipelineResponse'
+        - type: object
+          required:
+            - configuration
+          properties:
+            type:
+              type: string
+              enum: ['GoogleDrive']
+            configuration:
+              $ref: '#/components/schemas/GoogleDriveConfigurationMinimal'
 
     BasePipelineResponse:
       type: object
@@ -1732,6 +1889,7 @@ components:
         - $ref: '#/components/schemas/SDMPipelineMinimalResponse'
         - $ref: '#/components/schemas/WorkZonePipelineMinimalResponse'
         - $ref: '#/components/schemas/ServiceNowPipelineMinimalResponse'
+        - $ref: '#/components/schemas/GoogleDrivePipelineMinimalResponse'
       discriminator:
         propertyName: type
         mapping:
@@ -1741,6 +1899,7 @@ components:
           SDM: '#/components/schemas/SDMPipelineMinimalResponse'
           WorkZone: '#/components/schemas/WorkZonePipelineMinimalResponse'
           ServiceNow: '#/components/schemas/ServiceNowPipelineMinimalResponse'
+          GoogleDrive: '#/components/schemas/GoogleDrivePipelineMinimalResponse'
 
     MSSharePointPipelineMinimalResponse:
       allOf:
@@ -1833,9 +1992,25 @@ components:
           properties:
             type:
               type: string
-              enum: ['ServiceNow']
+              enum:
+                - ServiceNow
+            metadata:
+              type: boolean
+              example: true
+
+    GoogleDrivePipelineMinimalResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasePipelineMinimalResponse'
+        - type: object
+          required:
+            - type
+          properties:
+            type:
+              type: string
+              enum:
+                - GoogleDrive
             configuration:
-              $ref: '#/components/schemas/ServiceNowConfigurationMinimal'
+              $ref: '#/components/schemas/GoogleDriveConfigurationMinimal'
             metadata:
               type: boolean
               example: true
@@ -2269,6 +2444,10 @@ components:
       type: object
       title: VectorSearchConfiguration
     RetrievalSearchConfiguration:
+      nullable: true
+      default: {}
+      minProperties: 0
+      maxProperties: 2
       properties:
         maxChunkCount:
           nullable: true
@@ -2843,6 +3022,7 @@ components:
         - dataRepository
       title: DataRepositorySearchResult
     DataRepositoryType:
+      description: Only include DataRepositories with the given type.
       type: string
       anyOf:
         - enum:
@@ -2916,19 +3096,23 @@ components:
         - filterId
       title: PerFilterSearchResult
     PerFilterSearchResultError:
+      description: Error message if any.
       properties:
         message:
           type: string
           title: Message
+          default: Unknown Error Occurred
       type: object
       required:
         - message
       title: PerFilterSearchResultError
     RetrievalPerFilterSearchResultError:
+      description: Error message if any.
       properties:
         message:
           type: string
           title: Message
+          default: Unknown Error Occurred
       type: object
       required:
         - message
@@ -2940,9 +3124,6 @@ components:
           title: Filterid
         error:
           $ref: '#/components/schemas/PerFilterSearchResultError'
-          description: Error message if any.
-          default:
-            message: Unknown Error Occurred
       type: object
       required:
         - filterId
@@ -2954,12 +3135,7 @@ components:
           title: Id
           description: Identifier of this RetrievalSearchFilter - unique per request.
         searchConfiguration:
-          type: object
-          nullable: true
           $ref: '#/components/schemas/RetrievalSearchConfiguration'
-          default: {}
-          minProperties: 0
-          maxProperties: 2
         dataRepositories:
           type: array
           items:
@@ -2969,9 +3145,7 @@ components:
           default:
             - '*'
         dataRepositoryType:
-          type: string
           $ref: '#/components/schemas/DataRepositoryType'
-          description: Only include DataRepositories with the given type.
         dataRepositoryMetadata:
           type: array
           items:
@@ -3047,9 +3221,6 @@ components:
           title: Filterid
         error:
           $ref: '#/components/schemas/RetrievalPerFilterSearchResultError'
-          description: Error message if any.
-          default:
-            message: Unknown Error Occurred
       type: object
       required:
         - filterId
