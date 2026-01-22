@@ -9,6 +9,8 @@ import type { SFTPPipelineCreateRequest } from './sftp-pipeline-create-request.j
 import type { SDMPipelineCreateRequest } from './sdm-pipeline-create-request.js';
 import type { WorkZonePipelineCreateRequest } from './work-zone-pipeline-create-request.js';
 import type { ServiceNowPipelineCreateRequest } from './service-now-pipeline-create-request.js';
+import type { GoogleDrivePipelineCreateRequest } from './google-drive-pipeline-create-request.js';
+import type { MetadataConfiguration } from './metadata-configuration.js';
 /**
  * Representation of the 'CreatePipeline' schema.
  */
@@ -18,4 +20,6 @@ export type CreatePipeline =
   | ({ type: 'SFTP' } & SFTPPipelineCreateRequest)
   | ({ type: 'SDM' } & SDMPipelineCreateRequest)
   | ({ type: 'WorkZone' } & WorkZonePipelineCreateRequest)
-  | ({ type: 'ServiceNow' } & ServiceNowPipelineCreateRequest);
+  | ({ type: 'ServiceNow' } & ServiceNowPipelineCreateRequest)
+  | ({ type: 'GoogleDrive' } & GoogleDrivePipelineCreateRequest)
+  | ({ type: 'metadata' } & MetadataConfiguration);

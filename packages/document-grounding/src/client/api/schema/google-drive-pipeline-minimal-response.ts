@@ -4,11 +4,13 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import type { BasePipelineMinimalResponse } from './base-pipeline-minimal-response.js';
+import type { GoogleDriveConfigurationMinimal } from './google-drive-configuration-minimal.js';
 /**
- * Representation of the 'ServiceNowPipelineMinimalResponse' schema.
+ * Representation of the 'GoogleDrivePipelineMinimalResponse' schema.
  */
-export type ServiceNowPipelineMinimalResponse = BasePipelineMinimalResponse & {
-  type: 'ServiceNow';
+export type GoogleDrivePipelineMinimalResponse = BasePipelineMinimalResponse & {
+  type: 'GoogleDrive';
+  configuration?: GoogleDriveConfigurationMinimal;
   /**
    * @example true
    */

@@ -3,20 +3,16 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { ServiceNowConfig } from './service-now-config.js';
+
 /**
- * Representation of the 'ServiceNowConfigurationStruct' schema.
+ * Representation of the 'MetadataConfigurationStruct' schema.
  */
-export type ServiceNowConfigurationStruct = {
-  /**
-   * @example "destination-name"
-   */
-  destination: string;
-  serviceNow?: ServiceNowConfig;
+export type MetadataConfigurationStruct = {
   /**
    * @example "uuid"
+   * Min Length: 1.
    */
-  metadataConfigId?: string;
+  metadataConfigId: string;
   /**
    * Optional cron expression for scheduling pipeline execution.
    * Must represent an interval greater than 1 hour.

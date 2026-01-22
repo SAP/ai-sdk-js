@@ -3,20 +3,16 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { ServiceNowConfig } from './service-now-config.js';
+import type { GoogleDriveConfig } from './google-drive-config.js';
 /**
- * Representation of the 'ServiceNowConfigurationStruct' schema.
+ * Representation of the 'GoogleDriveConfigurationStruct' schema.
  */
-export type ServiceNowConfigurationStruct = {
+export type GoogleDriveConfigurationStruct = {
   /**
    * @example "destination-name"
    */
   destination: string;
-  serviceNow?: ServiceNowConfig;
-  /**
-   * @example "uuid"
-   */
-  metadataConfigId?: string;
+  googleDrive: GoogleDriveConfig;
   /**
    * Optional cron expression for scheduling pipeline execution.
    * Must represent an interval greater than 1 hour.
@@ -24,4 +20,8 @@ export type ServiceNowConfigurationStruct = {
    * @example "0 \*\/20 * * *"
    */
   cronExpression?: string;
+  /**
+   * @example "uuid"
+   */
+  metadataConfigId?: string;
 } & Record<string, any>;

@@ -3,13 +3,10 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-
+import type { GoogleDriveFolder } from './google-drive-folder.js';
 /**
- * Error message if any.
+ * Representation of the 'GoogleDriveConfig' schema.
  */
-export type PerFilterSearchResultError = {
-  /**
-   * Default: "Unknown Error Occurred".
-   */
-  message: string;
+export type GoogleDriveConfig = {
+  folder: GoogleDriveFolder;
 } & Record<string, any>;
