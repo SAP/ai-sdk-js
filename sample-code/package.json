@@ -22,7 +22,6 @@
   },
   "dependencies": {
     "@langchain/classic": "^1.0.7",
-    "hono": ">=4.11.4",
     "langchain": "^1.2.3",
     "@langchain/core": "=1.1.8",
     "@langchain/langgraph": "^1.0.7",
