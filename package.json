@@ -30,7 +30,7 @@
     "smoke-tests": "pnpm -F=@sap-ai-sdk/smoke-tests",
     "sample-code": "pnpm -F=@sap-ai-sdk/sample-code",
     "sample-cap": "pnpm -F=@sap-ai-sdk/sample-cap",
-    "check:deps": "pnpm -r -F !./tests/smoke-tests -F !./sample-cap exec depcheck --ignores=\"nock,@jest/globals\" --quiet"
+    "check:deps": "pnpm -r -F !. -F !./tests/smoke-tests -F !./sample-cap exec depcheck --ignores=\"nock,@jest/globals\" --quiet"
   },
   "devDependencies": {
     "orval": "^7.18.0",
