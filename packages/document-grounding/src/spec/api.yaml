@@ -1028,6 +1028,15 @@ paths:
             format: uuid
             title: Repositoryid
           description: Repository ID
+        - name: remoteName
+          in: query
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            nullable: true
+            title: Remotename
+          description: Remote name if DataRepository is from remote DG.
       responses:
         '200':
           description: Successful Response
