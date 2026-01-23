@@ -433,7 +433,7 @@ export async function invokeDynamicModelAgent(): Promise<string> {
     middleware: [dynamicModelSelection]
   });
 
-  const inputMessage = 'What is the SAP?';
+  const inputMessage = 'What is SAP?';
 
   const agentInputs = { messages: [{ role: 'user', content: inputMessage }] };
   const result = await agent.invoke(agentInputs);
