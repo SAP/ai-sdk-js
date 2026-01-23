@@ -1,11 +1,12 @@
 import { createLogger } from '@sap-cloud-sdk/util';
-import type {
-  ChatCompletionRequest,
-  StreamOptions,
-  OrchestrationModuleConfig,
-  OrchestrationConfigRef,
-  EmbeddingModuleConfig,
-  EmbeddingRequest
+import {
+  isOrchestrationModuleConfigList,
+  type ChatCompletionRequest,
+  type StreamOptions,
+  type OrchestrationModuleConfig,
+  type OrchestrationConfigRef,
+  type EmbeddingModuleConfig,
+  type EmbeddingRequest
 } from '../orchestration-types.js';
 import type {
   CompletionPostRequest,
@@ -168,12 +169,23 @@ export function addStreamOptions(
  * @internal
  */
 export function constructCompletionPostRequest(
-  config: OrchestrationModuleConfig,
+  config: OrchestrationModuleConfig | OrchestrationModuleConfig[],
   request?: ChatCompletionRequest,
   stream?: boolean,
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
-  const moduleConfigurations = buildCompletionModulesConfig(config, request);
+  if (isOrchestrationModuleConfigList(config) && stream) {
+    throw new Error(
+      'Streaming is not supported when using multiple orchestration module configurations for fallback. Please use a single configuration.'
+    );
+  }
+
+  // The orchestration service expects the config structure to match the input:
+  // - Single config (OrchestrationModuleConfig) → single ModuleConfigs object
+  // - Config array (OrchestrationModuleConfigList) → array of ModuleConfigs for fallback behavior
+  const moduleConfigurations = Array.isArray(config)
+    ? config.map(c => buildCompletionModulesConfig(c, request))
+    : buildCompletionModulesConfig(config, request);
 
   return {
     config: stream

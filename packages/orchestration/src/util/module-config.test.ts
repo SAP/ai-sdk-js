@@ -1,9 +1,11 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import { jest } from '@jest/globals';
+import { isOrchestrationModuleConfigList } from '../orchestration-types.js';
 import {
   addStreamOptions,
   addStreamOptionsToPromptTemplatingModuleConfig,
   addStreamOptionsToOutputFilteringConfig,
+  constructCompletionPostRequest,
   constructCompletionPostRequestFromConfigReference
 } from './module-config.js';
 import { buildAzureContentSafetyFilter } from './filtering.js';
@@ -16,6 +18,7 @@ import type {
   OrchestrationModuleConfig,
   OrchestrationConfigRef,
   ChatCompletionRequest,
+  OrchestrationModuleConfigList,
   StreamOptions
 } from '../orchestration-types.js';
 
@@ -263,5 +266,105 @@ describe('constructCompletionPostRequestFromConfigReference', () => {
       placeholder_values: { key: 'value' },
       messages_history: [{ role: 'user', content: 'test message' }]
     });
+  });
+});
+
+describe('constructCompletionPostRequest with module fallback configs', () => {
+  const primaryConfig: OrchestrationModuleConfig = {
+    promptTemplating: {
+      prompt: {
+        template: [{ role: 'user', content: 'Hello {{?name}}' }]
+      },
+      model: {
+        name: 'gpt-4o',
+        params: { max_tokens: 100, timeout: 5 }
+      }
+    }
+  };
+
+  const fallbackConfig: OrchestrationModuleConfig = {
+    promptTemplating: {
+      prompt: {
+        template: [{ role: 'user', content: 'Hello {{?name}}' }]
+      },
+      model: {
+        name: 'gpt-4o-mini',
+        params: { max_tokens: 50 }
+      }
+    }
+  };
+
+  it('should construct request with single config (preserves single format)', () => {
+    const request: ChatCompletionRequest = {
+      placeholderValues: { name: 'World' }
+    };
+
+    const result = constructCompletionPostRequest(primaryConfig, request);
+
+    // Single config should produce single ModuleConfigs, not an array
+    expect(isOrchestrationModuleConfigList(result.config.modules)).toBe(false);
+    expect(
+      (result.config.modules as ModuleConfigs).prompt_templating
+    ).toBeDefined();
+  });
+
+  it('should construct request with module fallback config array (ModuleConfigsList)', () => {
+    const fallbackList: OrchestrationModuleConfigList = [
+      primaryConfig,
+      fallbackConfig
+    ];
+    const request: ChatCompletionRequest = {
+      placeholderValues: { name: 'World' }
+    };
+
+    const result = constructCompletionPostRequest(fallbackList, request);
+
+    // Array config should produce ModuleConfigs[]
+    expect(Array.isArray(result.config.modules)).toBe(true);
+    const modules = result.config.modules as ModuleConfigs[];
+    expect(modules).toHaveLength(2);
+    expect(modules[0].prompt_templating.model.name).toBe('gpt-4o');
+    expect(modules[1].prompt_templating.model.name).toBe('gpt-4o-mini');
+  });
+
+  it('should apply request messages to each config in the module fallback array', () => {
+    const fallbackList: OrchestrationModuleConfigList = [
+      primaryConfig,
+      fallbackConfig
+    ];
+    const request: ChatCompletionRequest = {
+      messages: [{ role: 'user', content: 'Additional message' }]
+    };
+
+    const result = constructCompletionPostRequest(fallbackList, request);
+
+    const modules = result.config.modules as ModuleConfigs[];
+    // Each config should have the request messages appended
+    expect(modules[0].prompt_templating.prompt.template).toContainEqual({
+      role: 'user',
+      content: 'Additional message'
+    });
+    expect(modules[1].prompt_templating.prompt.template).toContainEqual({
+      role: 'user',
+      content: 'Additional message'
+    });
+  });
+
+  it('should error when trying to construct streaming request with module fallback configs', () => {
+    const fallbackList: OrchestrationModuleConfigList = [
+      primaryConfig,
+      fallbackConfig
+    ];
+    const request: ChatCompletionRequest = {
+      messages: [{ role: 'user', content: 'Additional message' }]
+    };
+
+    expect(() =>
+      constructCompletionPostRequest(fallbackList, request, true, {
+        global: { enabled: true }
+      })
+    ).toThrow(
+      'Streaming is not supported when using multiple orchestration module configurations for fallback. Please use a single configuration.'
+    );
   });
 });

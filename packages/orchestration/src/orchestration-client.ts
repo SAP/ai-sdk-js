@@ -11,7 +11,10 @@ import {
   constructCompletionPostRequestFromJsonModuleConfig,
   constructCompletionPostRequestFromConfigReference
 } from './util/index.js';
-import { isConfigReference } from './orchestration-types.js';
+import {
+  isConfigReference,
+  isOrchestrationModuleConfigList
+} from './orchestration-types.js';
 import type { TemplatingChatMessage } from './client/api/schema/index.js';
 import type {
   HttpResponse,
@@ -23,6 +26,7 @@ import type {
 } from '@sap-ai-sdk/ai-api/internal.js';
 import type {
   OrchestrationModuleConfig,
+  OrchestrationModuleConfigList,
   OrchestrationConfigRef,
   ChatCompletionRequest,
   RequestOptions,
@@ -44,23 +48,45 @@ export class OrchestrationClient {
    * Creates an instance of the orchestration client.
    * @param config - Orchestration configuration. Can be:
    * - An `OrchestrationModuleConfig` object for inline configuration
+   * - An `OrchestrationModuleConfigList` array for module fallback (tries each config in order until one succeeds)
    * - A JSON string obtained from AI Launchpad
    * - An object of type`OrchestrationConfigRef` to reference a stored configuration by ID or name.
    * @param deploymentConfig - Deployment configuration.
    * @param destination - The destination to use for the request.
    */
   constructor(
-    private config: OrchestrationModuleConfig | string | OrchestrationConfigRef,
+    private config:
+      | OrchestrationModuleConfig
+      | OrchestrationModuleConfigList
+      | string
+      | OrchestrationConfigRef,
     private deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
     private destination?: HttpDestinationOrFetchOptions
   ) {
+    const parseOrchestrationModuleConfig = (c: OrchestrationModuleConfig) =>
+      typeof c.promptTemplating.prompt === 'string'
+        ? this.parseAndMergeTemplating(c)
+        : c;
+
     if (typeof config === 'string') {
       this.validateJsonConfig(config);
+    } else if (isOrchestrationModuleConfigList(config)) {
+      // Handle array of configs (fallback support)
+      this.config = config.map(
+        parseOrchestrationModuleConfig
+      ) as OrchestrationModuleConfigList;
+
+      // Warn about duplicate models in fallback chain
+      const models = this.config.map(c => c.promptTemplating.model.name);
+      const uniqueModels = new Set(models);
+      if (uniqueModels.size < models.length) {
+        logger.warn(
+          `Fallback configurations contain duplicate models: [${models.join(', ')}]. ` +
+            'Consider using different models for meaningful fallback behavior.'
+        );
+      }
     } else if (!isConfigReference(config)) {
-      this.config =
-        typeof config.promptTemplating.prompt === 'string'
-          ? this.parseAndMergeTemplating(config)
-          : config;
+      this.config = parseOrchestrationModuleConfig(config);
     }
   }
 
@@ -87,6 +113,12 @@ export class OrchestrationClient {
     options?: StreamOptions,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
+    if (isOrchestrationModuleConfigList(this.config)) {
+      throw new Error(
+        'Streaming is not supported when using multiple orchestration module configurations for fallback. Please use a single configuration.'
+      );
+    }
+
     const controller = new AbortController();
     if (signal) {
       signal.addEventListener('abort', () => {
@@ -159,7 +191,7 @@ export class OrchestrationClient {
       throw new Error('Failed to resolve deployment ID');
     }
 
-    return executeRequest(
+    const response = await executeRequest(
       {
         url: `/inference/deployments/${deploymentId}/v2/completion`,
         ...(this.deploymentConfig ?? {})
@@ -168,6 +200,15 @@ export class OrchestrationClient {
       requestConfig,
       this.destination
     );
+
+    // Log summary when fallbacks were used
+    if (!stream && response.data?.intermediate_failures?.length > 0) {
+      logger.info(
+        `Orchestration used ${response.data.intermediate_failures.length} fallback(s) before success`
+      );
+    }
+
+    return response;
   }
 
   private async createStreamResponse(
