@@ -5,6 +5,7 @@ import {
   type StreamOptions,
   type OrchestrationModuleConfig,
   type OrchestrationConfigRef,
+  type OrchestrationModuleConfigList,
   type EmbeddingModuleConfig,
   type EmbeddingRequest
 } from '../orchestration-types.js';
@@ -169,7 +170,7 @@ export function addStreamOptions(
  * @internal
  */
 export function constructCompletionPostRequest(
-  config: OrchestrationModuleConfig | OrchestrationModuleConfig[],
+  config: OrchestrationModuleConfig | OrchestrationModuleConfigList,
   request?: ChatCompletionRequest,
   stream?: boolean,
   streamOptions?: StreamOptions
@@ -189,7 +190,7 @@ export function constructCompletionPostRequest(
 
   return {
     config: stream
-      ? addStreamOptions(moduleConfigurations, streamOptions)
+      ? addStreamOptions(moduleConfigurations as ModuleConfigs, streamOptions)
       : { modules: moduleConfigurations },
     ...(request?.placeholderValues && {
       placeholder_values: request.placeholderValues
