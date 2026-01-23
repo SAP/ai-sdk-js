@@ -1,5 +1,5 @@
 ---
-'@sap-ai-sdk/orchestration': major
+'@sap-ai-sdk/orchestration': minor
 ---
 
 [compat] Change `OrchestrationStreamResponse` constructor to require raw HTTP response.
