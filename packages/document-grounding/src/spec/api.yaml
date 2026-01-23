@@ -2173,6 +2173,10 @@ components:
       type: object
       title: VectorSearchConfiguration
     RetrievalSearchConfiguration:
+      nullable: true
+      default: {}
+      minProperties: 0
+      maxProperties: 2
       properties:
         maxChunkCount:
           nullable: true
@@ -2754,6 +2758,7 @@ components:
         - dataRepository
       title: DataRepositorySearchResult
     DataRepositoryType:
+      description: Only include DataRepositories with the given type.
       type: string
       enum:
         - vector
@@ -2835,19 +2840,23 @@ components:
         - filterId
       title: PerFilterSearchResult
     PerFilterSearchResultError:
+      description: Error message if any.
       properties:
         message:
           type: string
           title: Message
+          default: Unknown Error Occurred
       type: object
       required:
         - message
       title: PerFilterSearchResultError
     RetrievalPerFilterSearchResultError:
+      description: Error message if any.
       properties:
         message:
           type: string
           title: Message
+          default: Unknown Error Occurred
       type: object
       required:
         - message
@@ -2859,9 +2868,6 @@ components:
           title: Filterid
         error:
           $ref: '#/components/schemas/PerFilterSearchResultError'
-          description: Error message if any.
-          default:
-            message: Unknown Error Occurred
       type: object
       required:
         - filterId
@@ -3396,9 +3402,6 @@ components:
           title: Filterid
         error:
           $ref: '#/components/schemas/RetrievalPerFilterSearchResultError'
-          description: Error message if any.
-          default:
-            message: Unknown Error Occurred
       type: object
       required:
         - filterId
