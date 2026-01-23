@@ -18,7 +18,7 @@
     "@langchain/classic": "^1.0.10",
     "@langchain/core": "^1.1.16",
     "@langchain/langgraph": "^1.1.1",
-    "@langchain/mcp-adapters": "^1.1.1",
+    "@langchain/mcp-adapters": "^1.1.2",
     "@langchain/textsplitters": "^1.0.1",
     "@sap-ai-sdk/ai-api": "canary",
     "@sap-ai-sdk/document-grounding": "canary",
@@ -29,9 +29,9 @@
     "@sap-cloud-sdk/util": "^4.3.1",
     "express": "^5.2.1",
     "hono": "^4.11.5",
-    "langchain": "^1.2.11",
+    "langchain": "^1.2.12",
     "uuid": "^13.0.0",
-    "zod": "^4.3.5"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
