@@ -7,8 +7,8 @@ import type { RetrievalSearchConfiguration } from './retrieval-search-configurat
 import type { DataRepositoryType } from './data-repository-type.js';
 import type { RetrievalKeyValueListPair } from './retrieval-key-value-list-pair.js';
 import type { RetrievalSearchDocumentKeyValueListPair } from './retrieval-search-document-key-value-list-pair.js';
-import type { BinaryBooleanFilter } from './binary-boolean-filter.js';
-import type { ScopedKeyValueListPair } from './scoped-key-value-list-pair.js';
+import type { RetrievalBinaryBooleanFilter } from './retrieval-binary-boolean-filter.js';
+import type { RetrievalScopedKeyValueListPair } from './retrieval-scoped-key-value-list-pair.js';
 import type { VectorScoringConfiguration } from './vector-scoring-configuration.js';
 /**
  * Representation of the 'RetrievalVectorSearchFilter' schema.
@@ -49,6 +49,9 @@ export type RetrievalVectorSearchFilter = {
   /**
    * Filter to apply on the search results. This cannot be used together with 'documentMetadata'. The depth of the filter must not exceed 5 levels.
    */
-  filter?: BinaryBooleanFilter | ScopedKeyValueListPair | null;
+  filter?:
+    | RetrievalBinaryBooleanFilter
+    | RetrievalScopedKeyValueListPair
+    | null;
   scoringConfiguration?: VectorScoringConfiguration;
 } & Record<string, any>;

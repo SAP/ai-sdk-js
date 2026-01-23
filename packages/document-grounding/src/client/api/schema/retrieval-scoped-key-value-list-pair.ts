@@ -5,17 +5,16 @@
  */
 
 /**
- * Representation of the 'ScopedKeyValueListPair' schema.
+ * Representation of the 'RetrievalScopedKeyValueListPair' schema.
  */
-export type ScopedKeyValueListPair = {
+export type RetrievalScopedKeyValueListPair = {
   /**
    * Max Length: 1024.
    */
   key: string;
   value: string[];
   /**
-   * Scope of the metadata filter (e.g., collection, document, chunk)
    * Default: "document".
    */
-  scope?: 'collection' | 'document' | 'chunk';
+  scope?: 'repository' | 'document' | 'chunk';
 } & Record<string, any>;
