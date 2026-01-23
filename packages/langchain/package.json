@@ -40,9 +40,9 @@
     "uuid": "^13.0.0"
   },
   "devDependencies": {
-    "@langchain/langgraph": "^1.0.7"
+    "@langchain/langgraph": "^1.1.1"
   },
   "peerDependencies": {
-    "@langchain/core": "=1.1.8"
+    "@langchain/core": "^1.1.16"
   }
 }
