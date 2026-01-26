@@ -5,7 +5,8 @@ import {
   buildDocumentGroundingConfig,
   buildLlamaGuard38BFilter,
   buildDpiMaskingProvider,
-  buildTranslationConfig
+  buildTranslationConfig,
+  isConfigReference
 } from '@sap-ai-sdk/orchestration';
 import type {
   ChatModel,
@@ -660,5 +661,32 @@ expectType<
     version: '1.0.0'
   }).stream({
     placeholderValues: { topic: 'AI' }
+  })
+);
+
+/**
+ * isConfigReference function should be importable as a value (not just a type).
+ */
+expectType<boolean>(
+  isConfigReference({
+    id: 'test-config-id'
+  })
+);
+
+expectType<boolean>(
+  isConfigReference({
+    scenario: 'foundation-models',
+    name: 'my-orchestration-config',
+    version: '1.0.0'
+  })
+);
+
+expectType<boolean>(
+  isConfigReference({
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
+    }
   })
 );
