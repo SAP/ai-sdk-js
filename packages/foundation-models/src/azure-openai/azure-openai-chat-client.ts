@@ -1,6 +1,8 @@
 import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
-import { getResourceGroup } from '@sap-ai-sdk/ai-api/internal.js';
-import { getFoundationModelDeploymentId } from './deployment-resolver.js';
+import {
+  getFoundationModelDeploymentId,
+  getResourceGroup
+} from '@sap-ai-sdk/ai-api/internal.js';
 import { apiVersion, type AzureOpenAiChatModel } from './model-types.js';
 import { AzureOpenAiChatCompletionResponse } from './azure-openai-chat-completion-response.js';
 import { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.js';
@@ -94,13 +96,13 @@ export class AzureOpenAiChatClient {
   }
 
   private async createStream(
-    reqeust: AzureOpenAiChatCompletionParameters,
+    request: AzureOpenAiChatCompletionParameters,
     controller: AbortController,
     requestConfig?: CustomRequestConfig
   ): Promise<AzureOpenAiChatCompletionStream<any>> {
     const response = await this.executeRequest(
       {
-        ...reqeust,
+        ...request,
         stream: true,
         stream_options: {
           include_usage: true
