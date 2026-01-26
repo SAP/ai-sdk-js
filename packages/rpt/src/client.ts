@@ -6,7 +6,7 @@ import type {
   PredictRequestPayload,
   PredictResponsePayload
 } from './client/rpt/index.js';
-import type { SAPRptModel } from '@sap-ai-sdk/core/internal.js';
+import type { SapRptModel } from '@sap-ai-sdk/core/internal.js';
 import type { ModelDeployment } from '@sap-ai-sdk/ai-api';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
@@ -21,7 +21,7 @@ export class RptClient {
    * @param destination - The destination to use for the request.
    */
   constructor(
-    private modelDeployment: ModelDeployment<SAPRptModel> = 'sap-rpt-1-small',
+    private modelDeployment: ModelDeployment<SapRptModel> = 'sap-rpt-1-small',
     private destination?: HttpDestinationOrFetchOptions
   ) {}
 
@@ -39,11 +39,11 @@ export class RptClient {
   }
 
   /**
-   * Predict based on prediction data. Uses automatic data type parsing.
+   * Predict based on prediction data. Automatically infers schema based on the data.
    * @param predictionData - Data to base prediction on.
    * @returns Prediction response.
    */
-  async predictWithAutomaticSchemaInference(
+  async predictWithoutSchema(
     predictionData: PredictionData<DataSchema>
   ): Promise<PredictResponsePayload> {
     return this.executePrediction(predictionData);

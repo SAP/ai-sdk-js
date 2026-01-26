@@ -81,4 +81,4 @@ export type AiCoreOpenSourceEmbeddingModel =
 /**
  * SAP RPT models.
  */
-export type SAPRptModel = LiteralUnion<'sap-rpt-1-small' | 'sap-rpt-1-large'>;
+export type SapRptModel = LiteralUnion<'sap-rpt-1-small' | 'sap-rpt-1-large'>;

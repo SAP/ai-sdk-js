@@ -11,10 +11,20 @@ type ColNames<T extends DataSchema> = T extends readonly any[]
   : string;
 
 /**
+ * Represents a date string in the format YYYY-MM-DD.
+ */
+export type DateString =
+  `${number}${number}${number}${number}-${number}${number}-${number}${number}`;
+
+/**
  * Maps the type from the spec ('numeric', 'string', 'date') to a TypeScript type.
  * @template T - Type of the data schema.
  */
-type TsType<T extends ColumnType> = T extends 'numeric' ? number : string;
+type TsType<T extends ColumnType> = T extends 'numeric'
+  ? number
+  : T extends 'date'
+    ? DateString
+    : string;
 
 /**
  * Represents the type of the `rows` property.
@@ -73,7 +83,8 @@ interface PredictionConfig<T extends DataSchema> {
 }
 
 /**
- * Optional schema defining the data types of each column. If provided, this will override automatic data type parsing.
+ * Representation of a schema defining the data types of each column.
+ * This type should never be used directly, it is only used for generic type inference.
  * @internal
  */
 export type DataSchema =
