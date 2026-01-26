@@ -1,5 +1,7 @@
-import { getResourceGroup } from '@sap-ai-sdk/ai-api/internal.js';
-import { getFoundationModelDeploymentId } from '@sap-ai-sdk/foundation-models/internal.js';
+import {
+  getFoundationModelDeploymentId,
+  getResourceGroup
+} from '@sap-ai-sdk/ai-api/internal.js';
 import { RptApi } from './internal.js';
 import { type DataSchema, type PredictionData } from './types.js';
 import type {
