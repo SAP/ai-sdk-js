@@ -1,7 +1,7 @@
 import { executeRequest } from '@sap-ai-sdk/core';
 import { createLogger } from '@sap-cloud-sdk/util';
 import yaml from 'yaml';
-import { registryControllerPromptControllerCreateUpdatePromptTemplateBody } from '@sap-ai-sdk/prompt-registry/internal.js';
+import { RegistryControllerPromptControllerCreateUpdatePromptTemplateBody } from '@sap-ai-sdk/prompt-registry/internal.js';
 import { getOrchestrationDeploymentId } from './deployment-resolver.js';
 import { OrchestrationStream } from './orchestration-stream.js';
 import { OrchestrationStreamResponse } from './orchestration-stream-response.js';
@@ -233,7 +233,7 @@ export class OrchestrationClient {
     }
 
     const result =
-      registryControllerPromptControllerCreateUpdatePromptTemplateBody.safeParse(
+      RegistryControllerPromptControllerCreateUpdatePromptTemplateBody.safeParse(
         parsedObject
       );
     if (!result.success) {
