@@ -10,8 +10,8 @@ import type { OrchestrationStreamResponse } from './orchestration-stream-respons
  */
 export class OrchestrationStream<Item> extends SseStream<Item> {
   /**
-   * Create an orchestration stream based on the http response or a lazy response provider.
-   * @param response - Http response or a function that returns a promise of http response.
+   * Create an orchestration stream based on the http response.
+   * @param response - Http response.
    * @returns An orchestration stream.
    * @internal
    */
