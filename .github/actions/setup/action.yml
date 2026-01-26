@@ -9,7 +9,7 @@ inputs:
     default: 'https://registry.npmjs.org'
   pnpm-version:
     description: 'PNPM version'
-    default: '10.28.0' # 10.28.1 has issues with depdendency checks
+    default: '10'
   pnpm-install-args:
     description: 'Arguments to pass to pnpm install'
     default: '--frozen-lockfile'
