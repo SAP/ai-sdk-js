@@ -39,7 +39,7 @@ expectType<Promise<PredictResponsePayload>>(
  * Prediction without schema.
  */
 expectType<Promise<PredictResponsePayload>>(
-  new RptClient().predictWithAutomaticSchemaInference({
+  new RptClient().predictWithoutSchema({
     prediction_config: {
       target_columns: [
         { name: 'SALESGROUP', prediction_placeholder: '[PREDICT]' }
