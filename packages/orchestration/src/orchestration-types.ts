@@ -334,8 +334,11 @@ export interface RequestOptions {
   stream?: boolean;
   /**
    * Options for the stream.
+   * When using module fallback (OrchestrationModuleConfigList), can be:
+   * - A single StreamOptions object applied to all configs
+   * - An array of StreamOptions matching the length of the config array for per-config options.
    */
-  streamOptions?: StreamOptions;
+  streamOptions?: StreamOptions | StreamOptionsArray;
 }
 
 /**
@@ -355,6 +358,20 @@ export interface StreamOptions {
    */
   global?: GlobalStreamOptions;
 }
+
+/**
+ * Array type for stream options when using module fallback.
+ * Each element corresponds to the stream options for one config in the fallback chain.
+ *
+ * Global options (chunk_size, etc.) apply to the entire stream and can only be
+ * specified in the first element. This is enforced at the type level using `Omit<StreamOptions, 'global'>[]`
+ * for subsequent elements, ensuring type-safe configuration.
+ */
+export type StreamOptionsArray = [
+  StreamOptions,
+  ...Omit<StreamOptions, 'global'>[]
+];
+
 /**
  * Representation of the `GroundingModuleConfig` schema.
  */

@@ -1,10 +1,10 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import {
-  isOrchestrationModuleConfigList,
   type ChatCompletionRequest,
   type StreamOptions,
-  type OrchestrationModuleConfig,
+  type StreamOptionsArray,
   type OrchestrationConfigRef,
+  type OrchestrationModuleConfig,
   type OrchestrationModuleConfigList,
   type EmbeddingModuleConfig,
   type EmbeddingRequest
@@ -126,61 +126,181 @@ export function addStreamOptionsToOutputFilteringConfig(
 
 /**
  * @internal
+ * Validates that stream options are compatible with module configs.
+ * @throws TypeError if streamOptions array is provided for single moduleConfigs.
+ * @throws RangeError if streamOptions array length doesn't match moduleConfigs array length.
+ */
+export function validateStreamOptions(
+  moduleConfigs: ModuleConfigs | ModuleConfigs[],
+  streamOptions?: StreamOptions | StreamOptionsArray
+): void {
+  if (Array.isArray(streamOptions)) {
+    if (!Array.isArray(moduleConfigs)) {
+      throw new TypeError(
+        'Cannot use array of stream options with single module configuration. ' +
+          'Use either a single StreamOptions object or provide an array of OrchestrationModuleConfig.'
+      );
+    }
+
+    if (streamOptions.length !== moduleConfigs.length) {
+      throw new RangeError(
+        `StreamOptions array length (${streamOptions.length}) must match moduleConfigs array length (${moduleConfigs.length}). ` +
+          'Either provide matching arrays or use a single StreamOptions object that will apply to all configs.'
+      );
+    }
+  }
+}
+
+/**
+ * @internal
+ * Implementation
  */
 export function addStreamOptions(
-  moduleConfigs: ModuleConfigs,
-  streamOptions?: StreamOptions
+  moduleConfigs: ModuleConfigs | ModuleConfigs[],
+  streamOptions?: StreamOptions | StreamOptionsArray
 ): OrchestrationConfig {
-  const { prompt_templating, filtering } = moduleConfigs;
-  const outputFiltering = streamOptions?.outputFiltering;
-  const globalStreamOptions = streamOptions?.global;
+  // Validate stream options compatibility
+  validateStreamOptions(moduleConfigs, streamOptions);
 
-  if (!moduleConfigs?.filtering?.output && outputFiltering) {
-    logger.warn(
-      'Output filter stream options are not applied because filtering module is not configured.'
-    );
+  // Handle array of stream options
+  if (Array.isArray(streamOptions)) {
+    // Global stream options from first streamOptions, or default
+    const firstGlobalOptions = streamOptions[0]?.global;
+
+    // Type assertion safe due to validation above
+    const configsArray = moduleConfigs as ModuleConfigs[];
+
+    return {
+      stream: {
+        ...(firstGlobalOptions || {}),
+        enabled: true
+      },
+      modules: configsArray.map((config, index) =>
+        addStreamOptionsToSingleModuleConfig(config, streamOptions[index])
+      )
+    };
   }
 
+  // Handle single streamOptions (existing logic)
+  const globalStreamOptions = streamOptions?.global;
+  const outputFiltering = streamOptions?.outputFiltering;
+
+  // Check if output filtering options are provided but no config has output filtering
+  if (outputFiltering) {
+    const configs = Array.isArray(moduleConfigs)
+      ? moduleConfigs
+      : [moduleConfigs];
+    const configsWithoutFilter: number[] = [];
+
+    configs.forEach((config, index) => {
+      if (!config.filtering?.output) {
+        configsWithoutFilter.push(index);
+      }
+    });
+
+    // Warn about output filter stream options that won't be applied due to missing output filters.
+    // Three scenarios:
+    // 1. All configs lack output filtering - warn that options are unused
+    // 2. Some configs lack output filtering - warn about specific configs affected
+    // 3. All configs have output filtering - no warning needed
+    if (configsWithoutFilter.length === configs.length) {
+      // Scenario 1: No configs have output filtering
+      logger.warn(
+        'Output filter stream options are not applied because no module configuration has output filtering enabled.'
+      );
+    } else if (configsWithoutFilter.length > 0) {
+      // Scenario 2: Some configs have output filtering, some don't
+      const configWord =
+        configs.length > 1 ? 'configurations' : 'configuration';
+      const positions = configsWithoutFilter.map(i => `#${i + 1}`).join(', ');
+      logger.warn(
+        `Output filter stream options will not be applied to ${configWord} ${positions} because output filtering is not configured for those modules.`
+      );
+    }
+  }
+
+  // Handle array of module configs (module fallback support)
+  if (Array.isArray(moduleConfigs)) {
+    return {
+      stream: {
+        ...(globalStreamOptions || {}),
+        enabled: true
+      },
+      modules: moduleConfigs.map(config =>
+        addStreamOptionsToSingleModuleConfig(config, streamOptions)
+      )
+    };
+  }
+
+  // Handle single module config
   return {
     stream: {
       ...(globalStreamOptions || {}),
       enabled: true
     },
-    modules: {
-      ...moduleConfigs,
-      prompt_templating: addStreamOptionsToPromptTemplatingModuleConfig(
-        prompt_templating,
-        streamOptions
-      ),
-      ...(outputFiltering &&
-        filtering?.output && {
-          filtering: {
-            ...filtering,
-            output: addStreamOptionsToOutputFilteringConfig(
-              filtering.output,
-              outputFiltering
-            )
-          }
-        })
-    }
+    modules: addStreamOptionsToSingleModuleConfig(moduleConfigs, streamOptions)
+  };
+}
+
+function addStreamOptionsToSingleModuleConfig(
+  moduleConfigs: ModuleConfigs,
+  streamOptions?: StreamOptions
+): ModuleConfigs {
+  const { prompt_templating, filtering } = moduleConfigs;
+  const outputFiltering = streamOptions?.outputFiltering;
+
+  return {
+    ...moduleConfigs,
+    prompt_templating: addStreamOptionsToPromptTemplatingModuleConfig(
+      prompt_templating,
+      streamOptions
+    ),
+    ...(outputFiltering &&
+      filtering?.output && {
+        filtering: {
+          ...filtering,
+          output: addStreamOptionsToOutputFilteringConfig(
+            filtering.output,
+            outputFiltering
+          )
+        }
+      })
   };
 }
 
 /**
  * @internal
+ * Overload for single config with single stream options
  */
 export function constructCompletionPostRequest(
   config: OrchestrationModuleConfig | OrchestrationModuleConfigList,
   request?: ChatCompletionRequest,
   stream?: boolean,
   streamOptions?: StreamOptions
-): CompletionPostRequest {
-  if (isOrchestrationModuleConfigList(config) && stream) {
-    throw new Error(
-      'Streaming is not supported when using multiple orchestration module configurations for fallback. Please use a single configuration.'
-    );
-  }
+): CompletionPostRequest;
 
+/**
+ * @internal
+ * Overload for array config with single or array stream options
+ */
+export function constructCompletionPostRequest(
+  config: OrchestrationModuleConfigList,
+  request?: ChatCompletionRequest,
+  stream?: boolean,
+  streamOptions?: StreamOptions | StreamOptionsArray
+): CompletionPostRequest;
+
+/**
+ * @internal
+ * Implementation
+ */
+export function constructCompletionPostRequest(
+  config: OrchestrationModuleConfig | OrchestrationModuleConfigList,
+  request?: ChatCompletionRequest,
+  stream?: boolean,
+  streamOptions?: StreamOptions | StreamOptionsArray
+): CompletionPostRequest {
+  // Preserve format: single config → ModuleConfigs, array → ModuleConfigs[]
   // The orchestration service expects the config structure to match the input:
   // - Single config (OrchestrationModuleConfig) → single ModuleConfigs object
   // - Config array (OrchestrationModuleConfigList) → array of ModuleConfigs for fallback behavior

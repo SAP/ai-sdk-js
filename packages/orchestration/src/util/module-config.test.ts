@@ -1,12 +1,21 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import { jest } from '@jest/globals';
-import { isOrchestrationModuleConfigList } from '../orchestration-types.js';
+import {
+  isOrchestrationModuleConfigList,
+  type OrchestrationModuleConfig,
+  type OrchestrationModuleConfigList,
+  type OrchestrationConfigRef,
+  type ChatCompletionRequest,
+  type StreamOptions,
+  type StreamOptionsArray
+} from '../orchestration-types.js';
 import {
   addStreamOptions,
   addStreamOptionsToPromptTemplatingModuleConfig,
   addStreamOptionsToOutputFilteringConfig,
+  constructCompletionPostRequestFromConfigReference,
   constructCompletionPostRequest,
-  constructCompletionPostRequestFromConfigReference
+  validateStreamOptions
 } from './module-config.js';
 import { buildAzureContentSafetyFilter } from './filtering.js';
 import type {
@@ -14,13 +23,6 @@ import type {
   OrchestrationConfig,
   PromptTemplatingModuleConfig
 } from '../client/api/schema/index.js';
-import type {
-  OrchestrationModuleConfig,
-  OrchestrationConfigRef,
-  ChatCompletionRequest,
-  OrchestrationModuleConfigList,
-  StreamOptions
-} from '../orchestration-types.js';
 
 describe('stream util tests', () => {
   const defaultOrchestrationModules: OrchestrationModuleConfig = {
@@ -160,7 +162,7 @@ describe('stream util tests', () => {
     const config = addStreamOptions(defaultModuleConfigs, defaultStreamOptions);
 
     expect(warnSpy).toHaveBeenCalledWith(
-      'Output filter stream options are not applied because filtering module is not configured.'
+      'Output filter stream options are not applied because no module configuration has output filtering enabled.'
     );
     expect(config.modules.filtering).toBeUndefined();
   });
@@ -350,21 +352,354 @@ describe('constructCompletionPostRequest with module fallback configs', () => {
     });
   });
 
-  it('should error when trying to construct streaming request with module fallback configs', () => {
+  it('should handle streaming with module fallback configs', () => {
     const fallbackList: OrchestrationModuleConfigList = [
       primaryConfig,
       fallbackConfig
     ];
-    const request: ChatCompletionRequest = {
-      messages: [{ role: 'user', content: 'Additional message' }]
+
+    const result = constructCompletionPostRequest(
+      fallbackList,
+      undefined,
+      true
+    );
+
+    expect(result.config.stream?.enabled).toBe(true);
+    const modules = result.config.modules as ModuleConfigs[];
+    expect(Array.isArray(modules)).toBe(true);
+    expect(modules).toHaveLength(2);
+    // Stream options should be applied to each config
+    expect(
+      modules[0].prompt_templating.model.params?.stream_options
+    ).toBeDefined();
+    expect(
+      modules[1].prompt_templating.model.params?.stream_options
+    ).toBeDefined();
+  });
+});
+
+describe('addStreamOptions with module fallback configs', () => {
+  const createModuleConfig = (modelName: string): ModuleConfigs => ({
+    prompt_templating: {
+      prompt: { template: [{ role: 'user', content: 'test' }] },
+      model: { name: modelName, params: { max_tokens: 100 } }
+    }
+  });
+
+  it('should add stream options to array of module configs', () => {
+    const configs: ModuleConfigs[] = [
+      createModuleConfig('gpt-4o'),
+      createModuleConfig('gpt-4o-mini')
+    ];
+
+    const result = addStreamOptions(configs);
+
+    expect(result.stream?.enabled).toBe(true);
+    expect(Array.isArray(result.modules)).toBe(true);
+    const modules = result.modules as ModuleConfigs[];
+    expect(modules).toHaveLength(2);
+    expect(modules[0].prompt_templating.model.params?.stream_options).toEqual({
+      include_usage: true
+    });
+    expect(modules[1].prompt_templating.model.params?.stream_options).toEqual({
+      include_usage: true
+    });
+  });
+
+  it('should apply global stream options to array configs', () => {
+    const configs: ModuleConfigs[] = [
+      createModuleConfig('gpt-4o'),
+      createModuleConfig('gpt-4o-mini')
+    ];
+    const streamOptions: StreamOptions = {
+      global: { chunk_size: 100 }
     };
 
+    const result = addStreamOptions(configs, streamOptions);
+
+    expect(result.stream).toEqual({ enabled: true, chunk_size: 100 });
+  });
+
+  it('should warn only once when output filtering options are set but no config has filtering', () => {
+    const logger = createLogger({
+      package: 'orchestration',
+      messageContext: 'orchestration-utils'
+    });
+    const warnSpy = jest.spyOn(logger, 'warn');
+
+    const configs: ModuleConfigs[] = [
+      createModuleConfig('gpt-4o'),
+      createModuleConfig('gpt-4o-mini')
+    ];
+    const streamOptions: StreamOptions = {
+      outputFiltering: { overlap: 50 }
+    };
+
+    addStreamOptions(configs, streamOptions);
+
+    expect(warnSpy).toHaveBeenCalledTimes(1);
+    expect(warnSpy).toHaveBeenCalledWith(
+      'Output filter stream options are not applied because no module configuration has output filtering enabled.'
+    );
+  });
+
+  it('should warn for specific configs without output filtering when some configs have it', () => {
+    const logger = createLogger({
+      package: 'orchestration',
+      messageContext: 'orchestration-utils'
+    });
+    const warnSpy = jest.spyOn(logger, 'warn');
+    warnSpy.mockClear();
+
+    const configWithFilter: ModuleConfigs = {
+      prompt_templating: {
+        prompt: { template: [{ role: 'user', content: 'test' }] },
+        model: { name: 'gpt-4o', params: { max_tokens: 100 } }
+      },
+      filtering: {
+        output: {
+          filters: [
+            buildAzureContentSafetyFilter('output', { hate: 'ALLOW_SAFE' })
+          ]
+        }
+      }
+    };
+
+    const configs: ModuleConfigs[] = [
+      createModuleConfig('gpt-4o-mini'),
+      configWithFilter
+    ];
+    const streamOptions: StreamOptions = {
+      outputFiltering: { overlap: 50 }
+    };
+
+    addStreamOptions(configs, streamOptions);
+
+    expect(warnSpy).toHaveBeenCalledTimes(1);
+    expect(warnSpy).toHaveBeenCalledWith(
+      'Output filter stream options will not be applied to configurations #1 because output filtering is not configured for those modules.'
+    );
+  });
+
+  it('should not warn when all configs have output filtering', () => {
+    const logger = createLogger({
+      package: 'orchestration',
+      messageContext: 'orchestration-utils'
+    });
+    const warnSpy = jest.spyOn(logger, 'warn');
+    warnSpy.mockClear();
+
+    const configWithFilter1: ModuleConfigs = {
+      prompt_templating: {
+        prompt: { template: [{ role: 'user', content: 'test' }] },
+        model: { name: 'gpt-4o', params: { max_tokens: 100 } }
+      },
+      filtering: {
+        output: {
+          filters: [
+            buildAzureContentSafetyFilter('output', { hate: 'ALLOW_SAFE' })
+          ]
+        }
+      }
+    };
+
+    const configWithFilter2: ModuleConfigs = {
+      prompt_templating: {
+        prompt: { template: [{ role: 'user', content: 'test2' }] },
+        model: { name: 'gpt-4o-mini', params: { max_tokens: 50 } }
+      },
+      filtering: {
+        output: {
+          filters: [
+            buildAzureContentSafetyFilter('output', { self_harm: 'ALLOW_SAFE' })
+          ]
+        }
+      }
+    };
+
+    const configs: ModuleConfigs[] = [configWithFilter1, configWithFilter2];
+    const streamOptions: StreamOptions = {
+      outputFiltering: { overlap: 50 }
+    };
+
+    addStreamOptions(configs, streamOptions);
+
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
+
+  it('should handle array of stream options for array of module configs', () => {
+    const configs: ModuleConfigs[] = [
+      createModuleConfig('gpt-4o'),
+      createModuleConfig('gpt-4o-mini')
+    ];
+    const streamOptionsArray: StreamOptions[] = [
+      {
+        global: { chunk_size: 100 },
+        promptTemplating: { include_usage: true }
+      },
+      {
+        global: { chunk_size: 50 },
+        promptTemplating: { include_usage: false }
+      }
+    ];
+
+    const result = addStreamOptions(
+      configs,
+      streamOptionsArray as StreamOptionsArray
+    );
+
+    expect(result.stream).toEqual({ enabled: true, chunk_size: 100 }); // From first streamOptions
+    const modules = result.modules as ModuleConfigs[];
+    expect(modules[0].prompt_templating.model.params?.stream_options).toEqual({
+      include_usage: true
+    });
+    expect(modules[1].prompt_templating.model.params?.stream_options).toEqual({
+      include_usage: false
+    });
+  });
+
+  it('should warn for multiple non-consecutive configs without output filtering', () => {
+    const logger = createLogger({
+      package: 'orchestration',
+      messageContext: 'orchestration-utils'
+    });
+    const warnSpy = jest.spyOn(logger, 'warn');
+    warnSpy.mockClear();
+
+    const configWithFilter: ModuleConfigs = {
+      prompt_templating: {
+        prompt: { template: [{ role: 'user', content: 'test' }] },
+        model: { name: 'gpt-4o', params: { max_tokens: 100 } }
+      },
+      filtering: {
+        output: {
+          filters: [
+            buildAzureContentSafetyFilter('output', { hate: 'ALLOW_SAFE' })
+          ]
+        }
+      }
+    };
+
+    const configs: ModuleConfigs[] = [
+      createModuleConfig('gpt-4o'),
+      configWithFilter,
+      createModuleConfig('gpt-4o-mini')
+    ];
+    const streamOptions: StreamOptions = {
+      outputFiltering: { overlap: 50 }
+    };
+
+    addStreamOptions(configs, streamOptions);
+
+    expect(warnSpy).toHaveBeenCalledTimes(1);
+    expect(warnSpy).toHaveBeenCalledWith(
+      'Output filter stream options will not be applied to configurations #1, #3 because output filtering is not configured for those modules.'
+    );
+  });
+});
+
+describe('validateStreamOptions', () => {
+  const createModuleConfig = (modelName: string): ModuleConfigs => ({
+    prompt_templating: {
+      prompt: { template: [{ role: 'user', content: 'test' }] },
+      model: { name: modelName, params: { max_tokens: 100 } }
+    }
+  });
+
+  it('should not throw for single config with single stream options', () => {
+    const config = createModuleConfig('gpt-4o');
+    const streamOptions: StreamOptions = {
+      global: { chunk_size: 100 }
+    };
+
+    expect(() => validateStreamOptions(config, streamOptions)).not.toThrow();
+  });
+
+  it('should not throw for array config with array stream options of same length', () => {
+    const configs = [
+      createModuleConfig('gpt-4o'),
+      createModuleConfig('gpt-4o-mini')
+    ];
+    const streamOptionsArray: StreamOptionsArray = [
+      { promptTemplating: { include_usage: true } },
+      { promptTemplating: { include_usage: false } }
+    ];
+
     expect(() =>
-      constructCompletionPostRequest(fallbackList, request, true, {
-        global: { enabled: true }
-      })
+      validateStreamOptions(configs, streamOptionsArray)
+    ).not.toThrow();
+  });
+
+  it('should not throw for array config with single stream options', () => {
+    const configs = [
+      createModuleConfig('gpt-4o'),
+      createModuleConfig('gpt-4o-mini')
+    ];
+    const streamOptions: StreamOptions = {
+      global: { chunk_size: 100 }
+    };
+
+    expect(() => validateStreamOptions(configs, streamOptions)).not.toThrow();
+  });
+
+  it('should throw TypeError when array stream options provided for single config', () => {
+    const config = createModuleConfig('gpt-4o');
+    const streamOptionsArray: StreamOptionsArray = [
+      { promptTemplating: { include_usage: true } }
+    ];
+
+    expect(() => validateStreamOptions(config, streamOptionsArray)).toThrow(
+      TypeError
+    );
+    expect(() => validateStreamOptions(config, streamOptionsArray)).toThrow(
+      'Cannot use array of stream options with single module configuration'
+    );
+  });
+
+  it('should throw RangeError when stream options array length does not match configs array length', () => {
+    const configs = [
+      createModuleConfig('gpt-4o'),
+      createModuleConfig('gpt-4o-mini')
+    ];
+    const streamOptionsArray: StreamOptionsArray = [
+      { promptTemplating: { include_usage: true } }
+      // Missing second element
+    ];
+
+    expect(() => validateStreamOptions(configs, streamOptionsArray)).toThrow(
+      RangeError
+    );
+    expect(() => validateStreamOptions(configs, streamOptionsArray)).toThrow(
+      'StreamOptions array length (1) must match moduleConfigs array length (2)'
+    );
+  });
+
+  it('should provide helpful error message for mismatched lengths', () => {
+    const configs = [
+      createModuleConfig('gpt-4o'),
+      createModuleConfig('gpt-4o-mini'),
+      createModuleConfig('claude-3')
+    ];
+    const streamOptionsArray: StreamOptions[] = [
+      { promptTemplating: { include_usage: true } }
+    ];
+
+    expect(() =>
+      validateStreamOptions(configs, streamOptionsArray as StreamOptionsArray)
     ).toThrow(
-      'Streaming is not supported when using multiple orchestration module configurations for fallback. Please use a single configuration.'
+      'Either provide matching arrays or use a single StreamOptions object that will apply to all configs'
+    );
+  });
+
+  it('should throw RangeError for empty stream options array', () => {
+    const configs = [createModuleConfig('gpt-4o')];
+    const emptyArray = [] as any;
+
+    expect(() => validateStreamOptions(configs, emptyArray)).toThrow(
+      RangeError
+    );
+    expect(() => validateStreamOptions(configs, emptyArray)).toThrow(
+      'StreamOptions array length (0) must match moduleConfigs array length (1)'
     );
   });
 });

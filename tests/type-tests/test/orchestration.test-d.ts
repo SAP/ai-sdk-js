@@ -5,8 +5,7 @@ import {
   buildDocumentGroundingConfig,
   buildLlamaGuard38BFilter,
   buildDpiMaskingProvider,
-  buildTranslationConfig,
-  isConfigReference
+  buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
 import type {
   ChatModel,
@@ -20,7 +19,8 @@ import type {
   OrchestrationConfigRef,
   OrchestrationStreamResponse,
   OrchestrationStreamChunkResponse,
-  OrchestrationModuleConfigList
+  OrchestrationModuleConfigList,
+  StreamOptionsArray
 } from '@sap-ai-sdk/orchestration';
 import type {
   CompletionPostResponse,
@@ -667,33 +667,6 @@ expectType<
 );
 
 /**
- * isConfigReference function should be importable as a value (not just a type).
- */
-expectType<boolean>(
-  isConfigReference({
-    id: 'test-config-id'
-  })
-);
-
-expectType<boolean>(
-  isConfigReference({
-    scenario: 'foundation-models',
-    name: 'my-orchestration-config',
-    version: '1.0.0'
-  })
-);
-
-expectType<boolean>(
-  isConfigReference({
-    promptTemplating: {
-      model: {
-        name: 'gpt-4o'
-      }
-    }
-  })
-);
-
-/**
  * Module Fallback Configs (OrchestrationModuleConfigList).
  */
 expectAssignable<OrchestrationModuleConfigList>([
@@ -764,4 +737,99 @@ expectType<
       }
     }
   ]).stream()
+);
+
+/**
+ * StreamOptionsArray type ensures only first element can have global options.
+ */
+expectAssignable<StreamOptionsArray>([
+  {
+    global: { chunk_size: 100 },
+    promptTemplating: { include_usage: true }
+  },
+  {
+    promptTemplating: { include_usage: false }
+  }
+]);
+
+/**
+ * StreamOptionsArray must not be empty.
+ */
+expectError<StreamOptionsArray>([]);
+
+/**
+ * Second element in StreamOptionsArray cannot have global options.
+ */
+expectError<StreamOptionsArray>([
+  {
+    global: { chunk_size: 100 },
+    promptTemplating: { include_usage: true }
+  },
+  {
+    global: { chunk_size: 50 },
+    promptTemplating: { include_usage: false }
+  }
+]);
+
+/**
+ * Streaming with single config and single stream options.
+ */
+expectType<
+  Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>>
+>(
+  new OrchestrationClient({
+    promptTemplating: {
+      model: { name: 'gpt-4o' },
+      prompt: { template: [{ role: 'user', content: 'Hello' }] }
+    }
+  }).stream({}, undefined, {
+    global: { chunk_size: 100 },
+    promptTemplating: { include_usage: true }
+  })
+);
+
+/**
+ * Streaming with module fallback configs and StreamOptionsArray.
+ */
+expectType<
+  Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>>
+>(
+  new OrchestrationClient([
+    {
+      promptTemplating: {
+        model: { name: 'gpt-4o' },
+        prompt: { template: [{ role: 'user', content: 'Primary' }] }
+      }
+    },
+    {
+      promptTemplating: {
+        model: { name: 'gpt-4o-mini' },
+        prompt: { template: [{ role: 'user', content: 'Fallback' }] }
+      }
+    }
+  ]).stream({}, undefined, [
+    {
+      global: { chunk_size: 100 },
+      promptTemplating: { include_usage: true }
+    },
+    {
+      promptTemplating: { include_usage: false }
+    }
+  ])
+);
+
+/**
+ * GetIntermediateFailures() method on OrchestrationResponse.
+ */
+expectType<OrchestrationError[] | undefined>(
+  (
+    await new OrchestrationClient([
+      {
+        promptTemplating: {
+          model: { name: 'gpt-4o' },
+          prompt: { template: [{ role: 'user', content: 'Test' }] }
+        }
+      }
+    ]).chatCompletion()
+  ).getIntermediateFailures()
 );

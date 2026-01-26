@@ -26,7 +26,8 @@ import type { CompletionPostResponse } from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
   OrchestrationConfigRef,
-  ChatCompletionRequest
+  ChatCompletionRequest,
+  StreamOptionsArray
 } from './orchestration-types.js';
 
 const defaultJsonConfig = `{
@@ -1278,6 +1279,267 @@ describe('orchestration service client', () => {
       expect(spy).not.toHaveBeenCalled();
 
       spy.mockRestore();
+    });
+  });
+
+  describe('Orchestration Client with module fallback configs', () => {
+    it('calls chatCompletion with module fallback configuration array', async () => {
+      const primaryConfig: OrchestrationModuleConfig = {
+        promptTemplating: {
+          model: { name: 'gpt-4o', params: { max_tokens: 100, timeout: 5 } },
+          prompt: {
+            template: [{ role: 'user', content: 'Try primary model' }]
+          }
+        }
+      };
+
+      const fallbackConfig: OrchestrationModuleConfig = {
+        promptTemplating: {
+          model: { name: 'gpt-4o-mini', params: { max_tokens: 50 } },
+          prompt: {
+            template: [{ role: 'user', content: 'Fallback model' }]
+          }
+        }
+      };
+
+      const mockResponse = await parseMockResponse<CompletionPostResponse>(
+        'orchestration',
+        'orchestration-chat-completion-success-response.json'
+      );
+
+      mockInference(
+        {
+          data: constructCompletionPostRequest([primaryConfig, fallbackConfig])
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient([
+        primaryConfig,
+        fallbackConfig
+      ]).chatCompletion();
+
+      expect(response).toBeInstanceOf(OrchestrationResponse);
+      expect(response.getContent()).toBe('Hello! How can I assist you today?');
+    });
+
+    it('calls streaming with module fallback configuration array', async () => {
+      const primaryConfig: OrchestrationModuleConfig = {
+        promptTemplating: {
+          model: { name: 'gpt-4o' },
+          prompt: {
+            template: [{ role: 'user', content: 'Primary model' }]
+          }
+        }
+      };
+
+      const fallbackConfig: OrchestrationModuleConfig = {
+        promptTemplating: {
+          model: { name: 'gpt-4o-mini' },
+          prompt: {
+            template: [{ role: 'user', content: 'Fallback model' }]
+          }
+        }
+      };
+
+      mockInference(
+        {
+          data: constructCompletionPostRequest(
+            [primaryConfig, fallbackConfig],
+            undefined,
+            true
+          )
+        },
+        {
+          data: streamMockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient([
+        primaryConfig,
+        fallbackConfig
+      ]).stream();
+
+      const chunks: string[] = [];
+      for await (const chunk of response.stream) {
+        const content = chunk.getDeltaContent();
+        if (content) {
+          chunks.push(content);
+        }
+      }
+
+      // Verify that streaming completed successfully and returned content
+      expect(chunks.length).toBeGreaterThan(0);
+      expect(chunks.join('')).toContain('SAP Cloud SDK');
+    });
+
+    it('returns intermediate failures from fallback attempts', async () => {
+      const primaryConfig: OrchestrationModuleConfig = {
+        promptTemplating: {
+          model: { name: 'non-existing-model' },
+          prompt: {
+            template: [{ role: 'user', content: 'Test' }]
+          }
+        }
+      };
+
+      const fallbackConfig: OrchestrationModuleConfig = {
+        promptTemplating: {
+          model: { name: 'gpt-4o-mini' },
+          prompt: {
+            template: [{ role: 'user', content: 'Test' }]
+          }
+        }
+      };
+
+      const mockResponseWithErrors = {
+        ...(await parseMockResponse<CompletionPostResponse>(
+          'orchestration',
+          'orchestration-chat-completion-success-response.json'
+        )),
+        intermediate_failures: [
+          {
+            message: 'Model non-existing-model not found',
+            code: 'MODEL_NOT_FOUND',
+            location: 'config[0]'
+          }
+        ]
+      };
+
+      mockInference(
+        {
+          data: constructCompletionPostRequest([primaryConfig, fallbackConfig])
+        },
+        {
+          data: mockResponseWithErrors,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient([
+        primaryConfig,
+        fallbackConfig
+      ]).chatCompletion();
+
+      const failures = response.getIntermediateFailures();
+      expect(failures).toBeDefined();
+      expect(failures).toHaveLength(1);
+      expect(failures![0].message).toBe('Model non-existing-model not found');
+    });
+
+    it('should throw when provided empty config array', () => {
+      expect(() => new OrchestrationClient([])).toThrow(
+        'Configuration array must not be empty.'
+      );
+    });
+  });
+
+  describe('Orchestration Client with per-config stream options', () => {
+    it('calls streaming with array of stream options matching module fallback configs', async () => {
+      const primaryConfig: OrchestrationModuleConfig = {
+        promptTemplating: {
+          model: { name: 'gpt-4o' },
+          prompt: {
+            template: [{ role: 'user', content: 'Primary' }]
+          }
+        }
+      };
+
+      const fallbackConfig: OrchestrationModuleConfig = {
+        promptTemplating: {
+          model: { name: 'gpt-4o-mini' },
+          prompt: {
+            template: [{ role: 'user', content: 'Fallback' }]
+          }
+        }
+      };
+
+      const streamOptions: StreamOptionsArray = [
+        { promptTemplating: { include_usage: true } },
+        { promptTemplating: { include_usage: false } }
+      ];
+
+      mockInference(
+        {
+          data: constructCompletionPostRequest(
+            [primaryConfig, fallbackConfig],
+            undefined,
+            true,
+            streamOptions
+          )
+        },
+        {
+          data: streamMockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient([
+        primaryConfig,
+        fallbackConfig
+      ]).stream({}, undefined, streamOptions);
+
+      const chunks: string[] = [];
+      for await (const chunk of response.stream) {
+        const content = chunk.getDeltaContent();
+        if (content) {
+          chunks.push(content);
+        }
+      }
+
+      expect(chunks.length).toBeGreaterThan(0);
+      expect(chunks.join('')).toContain('SAP Cloud SDK');
+    });
+
+    it('throws error when stream options array length does not match configs array', async () => {
+      const primaryConfig: OrchestrationModuleConfig = {
+        promptTemplating: {
+          model: { name: 'gpt-4o' },
+          prompt: {
+            template: [{ role: 'user', content: 'Primary' }]
+          }
+        }
+      };
+
+      const fallbackConfig: OrchestrationModuleConfig = {
+        promptTemplating: {
+          model: { name: 'gpt-4o-mini' },
+          prompt: {
+            template: [{ role: 'user', content: 'Fallback' }]
+          }
+        }
+      };
+
+      const streamOptions = [
+        { promptTemplating: { include_usage: true } }
+        // Missing second element
+      ];
+
+      await expect(
+        new OrchestrationClient([primaryConfig, fallbackConfig]).stream(
+          {},
+          undefined,
+          streamOptions
+        )
+      ).rejects.toThrow(
+        'StreamOptions array length (1) must match moduleConfigs array length (2)'
+      );
     });
   });
 });
