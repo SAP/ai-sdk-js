@@ -57,6 +57,7 @@ type ColType<T extends DataSchema> = {
 // type PredictionConfig<T extends DataSchema> = {target_columns: (Omit<TargetColumnConfig, 'name'> & {name: ColNames<T>;})[]}
 // ```
 //
+
 /**
  * Represents the type of the `prediction_config` property.
  * @template T - Type of the data schema.

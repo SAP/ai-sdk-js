@@ -1,15 +1,6 @@
 import { RptClient } from '@sap-ai-sdk/rpt';
 import type { PredictResponsePayload, PredictionData } from '@sap-ai-sdk/rpt';
 
-//
-// NOTES:
-//
-// Error due to incorrect usage of `null` in the spec.
-// Currently the spec is adjusted manually.
-// I replaced all occurrences of `"type": "null"` with `"nullable": true`.
-// Asked colleagues to fix, otherwise we need to add a workaround to the generator.
-//
-
 const schema = [
   { name: 'PRODUCT', dtype: 'string' },
   { name: 'PRICE', dtype: 'numeric' },

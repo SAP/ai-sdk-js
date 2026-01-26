@@ -644,17 +644,6 @@
             "default": null,
             "description": "The type of prediction task for this column. If not provided, the model will infer the task type from the data.",
             "title": "Task Type"
-          },
-          "top_k": {
-            "anyOf": [
-              {
-                "type": "integer"
-              }
-            ],
-            "nullable": true,
-            "default": null,
-            "description": "How many predictions to output per classification column.If not provided, only a single prediction is returned. Only relevant for classification.",
-            "title": "Top K"
           }
         },
         "required": ["name", "prediction_placeholder"],
