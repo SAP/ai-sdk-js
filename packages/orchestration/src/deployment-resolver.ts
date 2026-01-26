@@ -1,4 +1,7 @@
-import { resolveDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
+import {
+  isDeploymentIdConfig,
+  resolveDeploymentId
+} from '@sap-ai-sdk/ai-api/internal.js';
 import type {
   DeploymentIdConfig,
   ResourceGroupConfig
@@ -16,16 +19,13 @@ export async function getOrchestrationDeploymentId(
   deploymentConfig: ResourceGroupConfig | DeploymentIdConfig,
   destination?: HttpDestinationOrFetchOptions
 ): Promise<string> {
-  if (
-    typeof deploymentConfig === 'object' &&
-    'deploymentId' in deploymentConfig
-  ) {
+  if (isDeploymentIdConfig(deploymentConfig)) {
     return deploymentConfig.deploymentId;
   }
 
   return resolveDeploymentId({
     scenarioId: 'orchestration',
-    ...(deploymentConfig ?? {}),
+    ...deploymentConfig,
     destination
   });
 }

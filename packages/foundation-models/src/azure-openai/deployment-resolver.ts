@@ -1,31 +1,11 @@
 import {
   resolveDeploymentId,
-  type ModelDeployment,
-  type ModelConfig
+  isDeploymentIdConfig,
+  getResourceGroup,
+  translateToFoundationModel,
+  type ModelDeployment
 } from '@sap-ai-sdk/ai-api/internal.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
-
-function isDeploymentIdConfig(
-  modelDeployment: ModelDeployment
-): modelDeployment is { deploymentId: string } {
-  return (
-    typeof modelDeployment === 'object' && 'deploymentId' in modelDeployment
-  );
-}
-
-function translateToFoundationModel(modelConfig: ModelConfig): {
-  name: string;
-  version?: string;
-} {
-  if (typeof modelConfig === 'string') {
-    return { name: modelConfig };
-  }
-
-  return {
-    name: modelConfig.modelName,
-    ...(modelConfig.modelVersion && { version: modelConfig.modelVersion })
-  };
-}
 
 /**
  * Get the deployment ID for a foundation model scenario.
@@ -44,16 +24,11 @@ export async function getFoundationModelDeploymentId(
     return modelDeployment.deploymentId;
   }
 
-  const model =
-    typeof modelDeployment === 'string'
-      ? { modelName: modelDeployment }
-      : modelDeployment;
-
   return resolveDeploymentId({
     scenarioId: 'foundation-models',
     executableId,
-    model: translateToFoundationModel(model),
-    resourceGroup: model.resourceGroup,
+    model: translateToFoundationModel(modelDeployment),
+    resourceGroup: getResourceGroup(modelDeployment),
     destination
   });
 }

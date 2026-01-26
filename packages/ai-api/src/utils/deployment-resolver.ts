@@ -121,6 +121,20 @@ export async function resolveDeployment(
 }
 
 /**
+ * Type guard to check if the model deployment is a deployment ID config.
+ * @param modelDeployment - The model deployment configuration.
+ * @returns Whether the model deployment is a deployment ID config.
+ * @internal
+ */
+export function isDeploymentIdConfig(
+  modelDeployment: ModelDeployment | ResourceGroupConfig
+): modelDeployment is { deploymentId: string } {
+  return (
+    typeof modelDeployment === 'object' && 'deploymentId' in modelDeployment
+  );
+}
+
+/**
  * Query the AI Core service for a deployment that matches the given criteria.
  * If more than one deployment matches the criteria, the first one's ID is returned.
  * @param opts - The options for the deployment resolution.
