@@ -1,5 +1,6 @@
 import { OrchestrationStreamResponse } from '../index.js';
 import { mergeStreamResponse } from './stream.js';
+import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { CompletionPostResponseStreaming } from '../internal.js';
 import type { OrchestrationStreamChunkResponse } from '../index.js';
 
@@ -12,12 +13,21 @@ const llmBase = {
   usage: { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0 }
 };
 
+const emptyHttpResponse: HttpResponse = {
+  data: {},
+  status: 200,
+  statusText: 'OK',
+  request: {},
+  headers: {},
+  config: {}
+};
+
 describe('stream-util', () => {
   describe('mergeStreamResponse', () => {
     it('merges basic stream response properties', () => {
       const response =
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
-          {} as any
+          emptyHttpResponse
         );
       const chunk: CompletionPostResponseStreaming = {
         request_id: 'test-request-123',
@@ -63,7 +73,7 @@ describe('stream-util', () => {
 
       const response =
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
-          {} as any
+          emptyHttpResponse
         );
 
       mergeStreamResponse(response, chunk);
@@ -100,7 +110,7 @@ describe('stream-util', () => {
 
       const response =
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
-          {} as any
+          emptyHttpResponse
         );
 
       mergeStreamResponse(response, chunk);
@@ -128,7 +138,7 @@ describe('stream-util', () => {
 
       const response =
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
-          {} as any
+          emptyHttpResponse
         );
       response._data = {
         request_id: 'test-request-123',
@@ -161,7 +171,7 @@ describe('stream-util', () => {
 
       const response =
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
-          {} as any
+          emptyHttpResponse
         );
       response._data = {
         request_id: 'test-request-123',
@@ -186,7 +196,7 @@ describe('stream-util', () => {
     it('merges content from multiple chunks', () => {
       const response =
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
-          {} as any
+          emptyHttpResponse
         );
       response._data = {
         request_id: 'test-request-123',
@@ -236,7 +246,7 @@ describe('stream-util', () => {
     it('adds new choice when index does not exist', () => {
       const response =
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
-          {} as any
+          emptyHttpResponse
         );
       response._data = {
         request_id: 'test-request-123',
@@ -280,7 +290,7 @@ describe('stream-util', () => {
     it('handles finish reasons correctly', () => {
       const response =
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
-          {} as any
+          emptyHttpResponse
         );
       response._data = {
         request_id: 'test-request-123',
@@ -325,7 +335,7 @@ describe('stream-util', () => {
     it('merges tool call arguments from multiple chunks', () => {
       const response =
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
-          {} as any
+          emptyHttpResponse
         );
       response._data = {
         request_id: 'test-request-123',
@@ -392,7 +402,7 @@ describe('stream-util', () => {
     it('adds new tool call when index does not exist', () => {
       const response =
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
-          {} as any
+          emptyHttpResponse
         );
       response._data = {
         request_id: 'test-request-123',
@@ -465,7 +475,7 @@ describe('stream-util', () => {
     it('merges logprobs content arrays', () => {
       const response =
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
-          {} as any
+          emptyHttpResponse
         );
       response._data = {
         request_id: 'test-request-123',
@@ -519,7 +529,7 @@ describe('stream-util', () => {
     it('handles missing logprobs gracefully', () => {
       const response =
         new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
-          {} as any
+          emptyHttpResponse
         );
       response._data = {
         request_id: 'test-request-123',

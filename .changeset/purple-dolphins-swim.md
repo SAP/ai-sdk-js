@@ -2,6 +2,5 @@
 '@sap-ai-sdk/orchestration': minor
 ---
 
-[compat] Change `OrchestrationStreamResponse` constructor to require raw HTTP response.
-The constructor now requires an `HttpResponse` parameter to initialize the response object.
-Code directly instantiating this class must be updated to pass the raw response.
+[compat] Support for constructing an `OrchestrationStreamResponse` without an `HttpResponse` has been deprecated, and will be removed in the next major release.
+Code directly instantiating this class should be updated to provide an `HttpResponse` object as the first parameter.

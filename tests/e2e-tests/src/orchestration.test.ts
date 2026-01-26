@@ -123,9 +123,6 @@ describe('orchestration', () => {
 
   it('should return stream of orchestration responses', async () => {
     const response = await chatCompletionStream(new AbortController());
-    expect(response.rawHttpResponse.config.headers['X-Request-ID']).toBe(
-      'custom-request-id-123'
-    );
 
     for await (const chunk of response.stream) {
       expect(chunk).toBeDefined();

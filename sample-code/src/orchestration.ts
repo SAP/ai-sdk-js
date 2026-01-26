@@ -88,10 +88,7 @@ export async function chatCompletionStream(
       ]
     },
     controller.signal,
-    streamOptions,
-    {
-      headers: { 'X-Request-ID': 'custom-request-id-123' }
-    }
+    streamOptions
   );
 }
 

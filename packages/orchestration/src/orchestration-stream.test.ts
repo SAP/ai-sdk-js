@@ -4,11 +4,20 @@ import { LineDecoder, SSEDecoder } from '@sap-ai-sdk/core';
 import { parseFileToString } from '../../../test-util/mock-http.js';
 import { OrchestrationStream } from './orchestration-stream.js';
 import { OrchestrationStreamResponse } from './orchestration-stream-response.js';
+import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { CompletionPostResponseStreaming } from './client/api/schema/index.js';
 
 describe('Orchestration chat completion stream', () => {
   let sseChunks: string[];
   let originalChatCompletionStream: OrchestrationStream<CompletionPostResponseStreaming>;
+  const emptyHttpResponse: HttpResponse = {
+    data: {},
+    status: 200,
+    statusText: 'OK',
+    request: {},
+    headers: {},
+    config: {}
+  };
 
   beforeEach(async () => {
     const rawChunksString = await parseFileToString(
@@ -65,7 +74,7 @@ describe('Orchestration chat completion stream', () => {
           () => asyncGeneratorChunk,
           new AbortController()
         ),
-        new OrchestrationStreamResponse({} as any)
+        new OrchestrationStreamResponse(emptyHttpResponse)
       );
 
     for await (const chunk of asyncGeneratorFinishReason) {
@@ -89,7 +98,7 @@ describe('Orchestration chat completion stream', () => {
           () => asyncGeneratorChunk,
           new AbortController()
         ),
-        new OrchestrationStreamResponse({} as any)
+        new OrchestrationStreamResponse(emptyHttpResponse)
       );
 
     for await (const chunk of asyncGeneratorTokenUsage) {
@@ -115,5 +124,24 @@ describe('Orchestration chat completion stream', () => {
       output += chunk;
     }
     expect(output).toMatchSnapshot();
+  });
+
+  it('should not read from the stream in any way before streaming starts', async () => {
+    const mockNext = jest.fn();
+    async function* mockIterator(): AsyncGenerator<any> {
+      mockNext();
+      for (const sseChunk of sseChunks) {
+        yield sseChunk;
+      }
+    }
+
+    const stream = new OrchestrationStream(mockIterator, new AbortController());
+
+    expect(mockNext).not.toHaveBeenCalled();
+
+    const iterator = stream[Symbol.asyncIterator]();
+    await iterator.next();
+
+    expect(mockNext).toHaveBeenCalledTimes(1);
   });
 });
