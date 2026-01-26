@@ -1,7 +1,8 @@
 import {
   resolveDeploymentId,
   type ModelDeployment,
-  type ModelConfig
+  type ModelConfig,
+  type FoundationModel
 } from '@sap-ai-sdk/ai-api/internal.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
@@ -13,10 +14,7 @@ function isDeploymentIdConfig(
   );
 }
 
-function translateToFoundationModel(modelConfig: ModelConfig): {
-  name: string;
-  version?: string;
-} {
+function translateToFoundationModel(modelConfig: ModelConfig): FoundationModel {
   if (typeof modelConfig === 'string') {
     return { name: modelConfig };
   }
