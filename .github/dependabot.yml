@@ -34,6 +34,9 @@ updates:
         update-types: ['version-update:semver-major']
       - dependency-name: '@langchain/*'
         update-types: ['version-update:semver-major']
+      # Avoid breaking orval updates for sdk v1-main
+      - dependency-name: 'orval'
+        update-types: ['version-update:semver-major']
     groups:
       sap-cloud-sdk:
         patterns: ['@sap-cloud-sdk/*']
