@@ -53,7 +53,7 @@ export class OrchestrationEmbeddingClient {
     const body = constructEmbeddingPostRequest(this.config, request);
 
     const deploymentId = await getOrchestrationDeploymentId(
-      this.deploymentConfig ?? {},
+      this.deploymentConfig || {},
       this.destination
     );
 
