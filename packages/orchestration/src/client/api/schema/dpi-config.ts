@@ -35,4 +35,8 @@ export type DpiConfig = {
      */
     enabled?: boolean;
   };
+  /**
+   * Type of masking method to be used for file inputs. Must be set if file inputs are provided.
+   */
+  mask_file_input_method?: 'anonymization' | 'skip';
 };
