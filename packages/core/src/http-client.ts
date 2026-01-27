@@ -26,6 +26,7 @@ export type CustomRequestConfig = Pick<
   | 'proxy'
   | 'httpAgent'
   | 'httpsAgent'
+  | 'signal'
   | 'parameterEncoder'
 > &
   Record<string, any>;

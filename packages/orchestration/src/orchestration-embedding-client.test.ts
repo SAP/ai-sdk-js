@@ -312,4 +312,39 @@ describe('orchestration embedding service client', () => {
       expect(error.cause?.response?.data?.error).toMatchSnapshot();
     }
   });
+
+  it('should throw error when chatCompletion is called with already aborted controller', async () => {
+    const config: EmbeddingModuleConfig = {
+      embeddings: {
+        model: {
+          name: 'text-embedding-3'
+        }
+      }
+    };
+
+    const request: EmbeddingRequest = {
+      input: 'Test text for embedding'
+    };
+    const scope = mockInference(
+      {
+        data: constructEmbeddingPostRequest(config, request)
+      },
+      {
+        data: {},
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/v2/embeddings'
+      },
+      {
+        delay: 1000
+      }
+    );
+
+    const client = new OrchestrationEmbeddingClient(config);
+
+    await expect(client.embed(request, AbortSignal.abort())).rejects.toThrow();
+
+    expect(scope.isDone()).toBe(false);
+  });
 });
