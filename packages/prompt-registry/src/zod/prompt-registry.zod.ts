@@ -16,20 +16,20 @@ export const registryControllerPromptControllerCreateUpdatePromptTemplateBodyVer
 
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodyScenarioMax = 120;
 
-export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecTemplateItemContentItemImageUrlDetailDefault =
+export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecTemplateItemTwoContentItemOneImageUrlDetailDefault =
   'auto';
-export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatJsonSchemaNameMax = 64;
+export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatThreeJsonSchemaNameMax = 64;
 
-export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatJsonSchemaNameRegExp =
+export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatThreeJsonSchemaNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatJsonSchemaStrictDefault = false;
+export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatThreeJsonSchemaStrictDefault = false;
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecToolsItemFunctionNameMax = 64;
 
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecToolsItemFunctionNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecToolsItemFunctionStrictDefault = false;
 
-export const registryControllerPromptControllerCreateUpdatePromptTemplateBody =
+export const RegistryControllerPromptControllerCreateUpdatePromptTemplateBody =
   zod.object({
     name: zod
       .string()
@@ -64,7 +64,7 @@ export const registryControllerPromptControllerCreateUpdatePromptTemplateBody =
                     detail: zod
                       .string()
                       .default(
-                        registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecTemplateItemContentItemImageUrlDetailDefault
+                        registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecTemplateItemTwoContentItemOneImageUrlDetailDefault
                       )
                   })
                 }),
@@ -112,10 +112,10 @@ export const registryControllerPromptControllerCreateUpdatePromptTemplateBody =
               name: zod
                 .string()
                 .max(
-                  registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatJsonSchemaNameMax
+                  registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatThreeJsonSchemaNameMax
                 )
                 .regex(
-                  registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatJsonSchemaNameRegExp
+                  registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatThreeJsonSchemaNameRegExp
                 )
                 .describe(
                   'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
@@ -128,7 +128,9 @@ export const registryControllerPromptControllerCreateUpdatePromptTemplateBody =
                 ),
               strict: zod
                 .boolean()
-                .nullish()
+                .default(
+                  registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatThreeJsonSchemaStrictDefault
+                )
                 .describe(
                   'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).'
                 )
@@ -173,7 +175,9 @@ export const registryControllerPromptControllerCreateUpdatePromptTemplateBody =
                 ),
               strict: zod
                 .boolean()
-                .nullish()
+                .default(
+                  registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecToolsItemFunctionStrictDefault
+                )
                 .describe(
                   'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'
                 )
@@ -187,7 +191,7 @@ export const registryControllerPromptControllerCreateUpdatePromptTemplateBody =
     })
   });
 
-export const registryControllerPromptControllerCreateUpdatePromptTemplateResponse =
+export const RegistryControllerPromptControllerCreateUpdatePromptTemplateResponse =
   zod.object({
     message: zod.string(),
     id: zod.string().uuid(),
@@ -203,7 +207,7 @@ export const registryControllerPromptControllerListPromptTemplatesQueryRetrieveD
   'both';
 export const registryControllerPromptControllerListPromptTemplatesQueryIncludeSpecDefault = false;
 
-export const registryControllerPromptControllerListPromptTemplatesQueryParams =
+export const RegistryControllerPromptControllerListPromptTemplatesQueryParams =
   zod.object({
     scenario: zod.string().optional(),
     name: zod.string().optional(),
@@ -213,23 +217,27 @@ export const registryControllerPromptControllerListPromptTemplatesQueryParams =
       .default(
         registryControllerPromptControllerListPromptTemplatesQueryRetrieveDefault
       ),
-    includeSpec: zod.boolean().optional()
+    includeSpec: zod
+      .boolean()
+      .default(
+        registryControllerPromptControllerListPromptTemplatesQueryIncludeSpecDefault
+      )
   });
 
-export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecTemplateItemContentItemImageUrlDetailDefault =
+export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecTemplateItemTwoContentItemOneImageUrlDetailDefault =
   'auto';
-export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatJsonSchemaNameMax = 64;
+export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatThreeJsonSchemaNameMax = 64;
 
-export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatJsonSchemaNameRegExp =
+export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatThreeJsonSchemaNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatJsonSchemaStrictDefault = false;
+export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatThreeJsonSchemaStrictDefault = false;
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecToolsItemFunctionNameMax = 64;
 
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecToolsItemFunctionNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecToolsItemFunctionStrictDefault = false;
 
-export const registryControllerPromptControllerListPromptTemplatesResponse =
+export const RegistryControllerPromptControllerListPromptTemplatesResponse =
   zod.object({
     count: zod.number(),
     resources: zod.array(
@@ -260,7 +268,7 @@ export const registryControllerPromptControllerListPromptTemplatesResponse =
                           detail: zod
                             .string()
                             .default(
-                              registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecTemplateItemContentItemImageUrlDetailDefault
+                              registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecTemplateItemTwoContentItemOneImageUrlDetailDefault
                             )
                         })
                       }),
@@ -310,10 +318,10 @@ export const registryControllerPromptControllerListPromptTemplatesResponse =
                     name: zod
                       .string()
                       .max(
-                        registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatJsonSchemaNameMax
+                        registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatThreeJsonSchemaNameMax
                       )
                       .regex(
-                        registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatJsonSchemaNameRegExp
+                        registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatThreeJsonSchemaNameRegExp
                       )
                       .describe(
                         'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
@@ -326,7 +334,9 @@ export const registryControllerPromptControllerListPromptTemplatesResponse =
                       ),
                     strict: zod
                       .boolean()
-                      .nullish()
+                      .default(
+                        registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatThreeJsonSchemaStrictDefault
+                      )
                       .describe(
                         'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).'
                       )
@@ -371,7 +381,9 @@ export const registryControllerPromptControllerListPromptTemplatesResponse =
                       ),
                     strict: zod
                       .boolean()
-                      .nullish()
+                      .default(
+                        registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecToolsItemFunctionStrictDefault
+                      )
                       .describe(
                         'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'
                       )
@@ -391,27 +403,27 @@ export const registryControllerPromptControllerListPromptTemplatesResponse =
 /**
  * List prompt template history.
  */
-export const registryControllerPromptControllerListPromptTemplateHistoryParams =
+export const RegistryControllerPromptControllerListPromptTemplateHistoryParams =
   zod.object({
     scenario: zod.string(),
     version: zod.string(),
     name: zod.string()
   });
 
-export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecTemplateItemContentItemImageUrlDetailDefault =
+export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecTemplateItemTwoContentItemOneImageUrlDetailDefault =
   'auto';
-export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatJsonSchemaNameMax = 64;
+export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatThreeJsonSchemaNameMax = 64;
 
-export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatJsonSchemaNameRegExp =
+export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatThreeJsonSchemaNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatJsonSchemaStrictDefault = false;
+export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatThreeJsonSchemaStrictDefault = false;
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecToolsItemFunctionNameMax = 64;
 
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecToolsItemFunctionNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecToolsItemFunctionStrictDefault = false;
 
-export const registryControllerPromptControllerListPromptTemplateHistoryResponse =
+export const RegistryControllerPromptControllerListPromptTemplateHistoryResponse =
   zod.object({
     count: zod.number(),
     resources: zod.array(
@@ -442,7 +454,7 @@ export const registryControllerPromptControllerListPromptTemplateHistoryResponse
                           detail: zod
                             .string()
                             .default(
-                              registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecTemplateItemContentItemImageUrlDetailDefault
+                              registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecTemplateItemTwoContentItemOneImageUrlDetailDefault
                             )
                         })
                       }),
@@ -492,10 +504,10 @@ export const registryControllerPromptControllerListPromptTemplateHistoryResponse
                     name: zod
                       .string()
                       .max(
-                        registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatJsonSchemaNameMax
+                        registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatThreeJsonSchemaNameMax
                       )
                       .regex(
-                        registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatJsonSchemaNameRegExp
+                        registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatThreeJsonSchemaNameRegExp
                       )
                       .describe(
                         'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
@@ -508,7 +520,9 @@ export const registryControllerPromptControllerListPromptTemplateHistoryResponse
                       ),
                     strict: zod
                       .boolean()
-                      .nullish()
+                      .default(
+                        registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatThreeJsonSchemaStrictDefault
+                      )
                       .describe(
                         'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).'
                       )
@@ -553,7 +567,9 @@ export const registryControllerPromptControllerListPromptTemplateHistoryResponse
                       ),
                     strict: zod
                       .boolean()
-                      .nullish()
+                      .default(
+                        registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecToolsItemFunctionStrictDefault
+                      )
                       .describe(
                         'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'
                       )
@@ -573,25 +589,25 @@ export const registryControllerPromptControllerListPromptTemplateHistoryResponse
 /**
  * Get prompt template by UUID.
  */
-export const registryControllerPromptControllerGetPromptTemplateByUuidParams =
+export const RegistryControllerPromptControllerGetPromptTemplateByUuidParams =
   zod.object({
     promptTemplateId: zod.string().uuid()
   });
 
-export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecTemplateItemContentItemImageUrlDetailDefault =
+export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecTemplateItemTwoContentItemOneImageUrlDetailDefault =
   'auto';
-export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatJsonSchemaNameMax = 64;
+export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatThreeJsonSchemaNameMax = 64;
 
-export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatJsonSchemaNameRegExp =
+export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatThreeJsonSchemaNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatJsonSchemaStrictDefault = false;
+export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatThreeJsonSchemaStrictDefault = false;
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecToolsItemFunctionNameMax = 64;
 
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecToolsItemFunctionNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecToolsItemFunctionStrictDefault = false;
 
-export const registryControllerPromptControllerGetPromptTemplateByUuidResponse =
+export const RegistryControllerPromptControllerGetPromptTemplateByUuidResponse =
   zod.object({
     id: zod.string().uuid().optional(),
     name: zod.string().optional(),
@@ -619,7 +635,7 @@ export const registryControllerPromptControllerGetPromptTemplateByUuidResponse =
                       detail: zod
                         .string()
                         .default(
-                          registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecTemplateItemContentItemImageUrlDetailDefault
+                          registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecTemplateItemTwoContentItemOneImageUrlDetailDefault
                         )
                     })
                   }),
@@ -667,10 +683,10 @@ export const registryControllerPromptControllerGetPromptTemplateByUuidResponse =
                 name: zod
                   .string()
                   .max(
-                    registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatJsonSchemaNameMax
+                    registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatThreeJsonSchemaNameMax
                   )
                   .regex(
-                    registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatJsonSchemaNameRegExp
+                    registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatThreeJsonSchemaNameRegExp
                   )
                   .describe(
                     'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
@@ -683,7 +699,9 @@ export const registryControllerPromptControllerGetPromptTemplateByUuidResponse =
                   ),
                 strict: zod
                   .boolean()
-                  .nullish()
+                  .default(
+                    registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatThreeJsonSchemaStrictDefault
+                  )
                   .describe(
                     'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).'
                   )
@@ -728,7 +746,9 @@ export const registryControllerPromptControllerGetPromptTemplateByUuidResponse =
                   ),
                 strict: zod
                   .boolean()
-                  .nullish()
+                  .default(
+                    registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecToolsItemFunctionStrictDefault
+                  )
                   .describe(
                     'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'
                   )
@@ -746,12 +766,12 @@ export const registryControllerPromptControllerGetPromptTemplateByUuidResponse =
 /**
  * Delete prompt template.
  */
-export const registryControllerPromptControllerDeletePromptTemplateParams =
+export const RegistryControllerPromptControllerDeletePromptTemplateParams =
   zod.object({
     promptTemplateId: zod.string().uuid()
   });
 
-export const registryControllerPromptControllerDeletePromptTemplateResponse =
+export const RegistryControllerPromptControllerDeletePromptTemplateResponse =
   zod.object({
     message: zod.string()
   });
@@ -759,12 +779,12 @@ export const registryControllerPromptControllerDeletePromptTemplateResponse =
 /**
  * Import prompt template.
  */
-export const registryControllerPromptControllerImportPromptTemplateBody =
+export const RegistryControllerPromptControllerImportPromptTemplateBody =
   zod.object({
     file: zod.instanceof(File).optional()
   });
 
-export const registryControllerPromptControllerImportPromptTemplateResponse =
+export const RegistryControllerPromptControllerImportPromptTemplateResponse =
   zod.object({
     message: zod.string(),
     id: zod.string().uuid(),
@@ -776,7 +796,7 @@ export const registryControllerPromptControllerImportPromptTemplateResponse =
 /**
  * Export prompt template.
  */
-export const registryControllerPromptControllerExportPromptTemplateParams =
+export const RegistryControllerPromptControllerExportPromptTemplateParams =
   zod.object({
     promptTemplateId: zod.string().uuid()
   });
@@ -784,39 +804,43 @@ export const registryControllerPromptControllerExportPromptTemplateParams =
 /**
  * Parse prompt template by ID.
  */
-export const registryControllerPromptControllerParsePromptTemplateByIdParams =
+export const RegistryControllerPromptControllerParsePromptTemplateByIdParams =
   zod.object({
     promptTemplateId: zod.string().uuid()
   });
 
 export const registryControllerPromptControllerParsePromptTemplateByIdQueryMetadataDefault = false;
 
-export const registryControllerPromptControllerParsePromptTemplateByIdQueryParams =
+export const RegistryControllerPromptControllerParsePromptTemplateByIdQueryParams =
   zod.object({
-    metadata: zod.boolean().optional()
+    metadata: zod
+      .boolean()
+      .default(
+        registryControllerPromptControllerParsePromptTemplateByIdQueryMetadataDefault
+      )
   });
 
-export const registryControllerPromptControllerParsePromptTemplateByIdBody =
+export const RegistryControllerPromptControllerParsePromptTemplateByIdBody =
   zod.object({
     inputParams: zod.object({}).optional()
   });
 
-export const registryControllerPromptControllerParsePromptTemplateByIdResponseParsedPromptItemContentItemImageUrlDetailDefault =
+export const registryControllerPromptControllerParsePromptTemplateByIdResponseParsedPromptItemTwoContentItemOneImageUrlDetailDefault =
   'auto';
-export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecTemplateItemContentItemImageUrlDetailDefault =
+export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecTemplateItemTwoContentItemOneImageUrlDetailDefault =
   'auto';
-export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecResponseFormatJsonSchemaNameMax = 64;
+export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecResponseFormatThreeJsonSchemaNameMax = 64;
 
-export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecResponseFormatJsonSchemaNameRegExp =
+export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecResponseFormatThreeJsonSchemaNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecResponseFormatJsonSchemaStrictDefault = false;
+export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecResponseFormatThreeJsonSchemaStrictDefault = false;
 export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecToolsItemFunctionNameMax = 64;
 
 export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecToolsItemFunctionNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecToolsItemFunctionStrictDefault = false;
 
-export const registryControllerPromptControllerParsePromptTemplateByIdResponse =
+export const RegistryControllerPromptControllerParsePromptTemplateByIdResponse =
   zod.object({
     parsedPrompt: zod
       .array(
@@ -836,7 +860,7 @@ export const registryControllerPromptControllerParsePromptTemplateByIdResponse =
                     detail: zod
                       .string()
                       .default(
-                        registryControllerPromptControllerParsePromptTemplateByIdResponseParsedPromptItemContentItemImageUrlDetailDefault
+                        registryControllerPromptControllerParsePromptTemplateByIdResponseParsedPromptItemTwoContentItemOneImageUrlDetailDefault
                       )
                   })
                 }),
@@ -878,7 +902,7 @@ export const registryControllerPromptControllerParsePromptTemplateByIdResponse =
                           detail: zod
                             .string()
                             .default(
-                              registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecTemplateItemContentItemImageUrlDetailDefault
+                              registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecTemplateItemTwoContentItemOneImageUrlDetailDefault
                             )
                         })
                       }),
@@ -928,10 +952,10 @@ export const registryControllerPromptControllerParsePromptTemplateByIdResponse =
                     name: zod
                       .string()
                       .max(
-                        registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecResponseFormatJsonSchemaNameMax
+                        registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecResponseFormatThreeJsonSchemaNameMax
                       )
                       .regex(
-                        registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecResponseFormatJsonSchemaNameRegExp
+                        registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecResponseFormatThreeJsonSchemaNameRegExp
                       )
                       .describe(
                         'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
@@ -944,7 +968,9 @@ export const registryControllerPromptControllerParsePromptTemplateByIdResponse =
                       ),
                     strict: zod
                       .boolean()
-                      .nullish()
+                      .default(
+                        registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecResponseFormatThreeJsonSchemaStrictDefault
+                      )
                       .describe(
                         'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).'
                       )
@@ -989,7 +1015,9 @@ export const registryControllerPromptControllerParsePromptTemplateByIdResponse =
                       ),
                     strict: zod
                       .boolean()
-                      .nullish()
+                      .default(
+                        registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecToolsItemFunctionStrictDefault
+                      )
                       .describe(
                         'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'
                       )
@@ -1009,7 +1037,7 @@ export const registryControllerPromptControllerParsePromptTemplateByIdResponse =
 /**
  * Parse prompt template by name and version.
  */
-export const registryControllerPromptControllerParsePromptTemplateByNameVersionParams =
+export const RegistryControllerPromptControllerParsePromptTemplateByNameVersionParams =
   zod.object({
     scenario: zod.string(),
     version: zod.string(),
@@ -1018,32 +1046,36 @@ export const registryControllerPromptControllerParsePromptTemplateByNameVersionP
 
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionQueryMetadataDefault = false;
 
-export const registryControllerPromptControllerParsePromptTemplateByNameVersionQueryParams =
+export const RegistryControllerPromptControllerParsePromptTemplateByNameVersionQueryParams =
   zod.object({
-    metadata: zod.boolean().optional()
+    metadata: zod
+      .boolean()
+      .default(
+        registryControllerPromptControllerParsePromptTemplateByNameVersionQueryMetadataDefault
+      )
   });
 
-export const registryControllerPromptControllerParsePromptTemplateByNameVersionBody =
+export const RegistryControllerPromptControllerParsePromptTemplateByNameVersionBody =
   zod.object({
     inputParams: zod.object({}).optional()
   });
 
-export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseParsedPromptItemContentItemImageUrlDetailDefault =
+export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseParsedPromptItemTwoContentItemOneImageUrlDetailDefault =
   'auto';
-export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecTemplateItemContentItemImageUrlDetailDefault =
+export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecTemplateItemTwoContentItemOneImageUrlDetailDefault =
   'auto';
-export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecResponseFormatJsonSchemaNameMax = 64;
+export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecResponseFormatThreeJsonSchemaNameMax = 64;
 
-export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecResponseFormatJsonSchemaNameRegExp =
+export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecResponseFormatThreeJsonSchemaNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecResponseFormatJsonSchemaStrictDefault = false;
+export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecResponseFormatThreeJsonSchemaStrictDefault = false;
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecToolsItemFunctionNameMax = 64;
 
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecToolsItemFunctionNameRegExp =
   new RegExp('^[a-zA-Z0-9-_]+$');
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecToolsItemFunctionStrictDefault = false;
 
-export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponse =
+export const RegistryControllerPromptControllerParsePromptTemplateByNameVersionResponse =
   zod.object({
     parsedPrompt: zod
       .array(
@@ -1063,7 +1095,7 @@ export const registryControllerPromptControllerParsePromptTemplateByNameVersionR
                     detail: zod
                       .string()
                       .default(
-                        registryControllerPromptControllerParsePromptTemplateByNameVersionResponseParsedPromptItemContentItemImageUrlDetailDefault
+                        registryControllerPromptControllerParsePromptTemplateByNameVersionResponseParsedPromptItemTwoContentItemOneImageUrlDetailDefault
                       )
                   })
                 }),
@@ -1105,7 +1137,7 @@ export const registryControllerPromptControllerParsePromptTemplateByNameVersionR
                           detail: zod
                             .string()
                             .default(
-                              registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecTemplateItemContentItemImageUrlDetailDefault
+                              registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecTemplateItemTwoContentItemOneImageUrlDetailDefault
                             )
                         })
                       }),
@@ -1155,10 +1187,10 @@ export const registryControllerPromptControllerParsePromptTemplateByNameVersionR
                     name: zod
                       .string()
                       .max(
-                        registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecResponseFormatJsonSchemaNameMax
+                        registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecResponseFormatThreeJsonSchemaNameMax
                       )
                       .regex(
-                        registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecResponseFormatJsonSchemaNameRegExp
+                        registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecResponseFormatThreeJsonSchemaNameRegExp
                       )
                       .describe(
                         'The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'
@@ -1171,7 +1203,9 @@ export const registryControllerPromptControllerParsePromptTemplateByNameVersionR
                       ),
                     strict: zod
                       .boolean()
-                      .nullish()
+                      .default(
+                        registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecResponseFormatThreeJsonSchemaStrictDefault
+                      )
                       .describe(
                         'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).'
                       )
@@ -1216,7 +1250,9 @@ export const registryControllerPromptControllerParsePromptTemplateByNameVersionR
                       ),
                     strict: zod
                       .boolean()
-                      .nullish()
+                      .default(
+                        registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecToolsItemFunctionStrictDefault
+                      )
                       .describe(
                         'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'
                       )
