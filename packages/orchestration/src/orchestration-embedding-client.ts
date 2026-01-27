@@ -1,5 +1,5 @@
 import { executeRequest } from '@sap-ai-sdk/core';
-import { getOrchestrationDeploymentId } from './deployment-resolver.js';
+import { getOrchestrationDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
 import { OrchestrationEmbeddingResponse } from './orchestration-embedding-response.js';
 import { constructEmbeddingPostRequest } from './util/index.js';
 import type {

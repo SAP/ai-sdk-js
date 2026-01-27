@@ -2,7 +2,7 @@ import { executeRequest } from '@sap-ai-sdk/core';
 import { createLogger } from '@sap-cloud-sdk/util';
 import yaml from 'yaml';
 import { registryControllerPromptControllerCreateUpdatePromptTemplateBody } from '@sap-ai-sdk/prompt-registry/internal.js';
-import { getOrchestrationDeploymentId } from './deployment-resolver.js';
+import { getOrchestrationDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
 import { OrchestrationStream } from './orchestration-stream.js';
 import { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 import { OrchestrationResponse } from './orchestration-response.js';
