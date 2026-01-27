@@ -222,8 +222,8 @@ importers:
         specifier: workspace:^
         version: link:../packages/orchestration
       '@sap/cds':
-        specifier: ^9.6.3
-        version: 9.6.3(@eslint/js@9.39.2)(express@5.2.1)
+        specifier: ^9.6.4
+        version: 9.6.4(@eslint/js@9.39.2)(express@5.2.1)
       '@sap/xssec':
         specifier: ^4.12.2
         version: 4.12.2
@@ -1057,7 +1057,7 @@ packages:
     resolution: {integrity: sha512-vHL6w3ecZsky+8P5MD+eFfaGTyCeOHUIFYMGpQGbrBTSmNNoxv0if69rEZ5giu36weC5saFuznL411gRX7bJDw==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
-      hono: '>=4.11.4'
+      hono: ^4
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -1217,6 +1217,10 @@ packages:
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
 
+  '@langchain/core@0.3.72':
+    resolution: {integrity: sha512-WsGWVZYnlKffj2eEfDocPNiaTRoxyYiLSQdQ7oxZvxGZBqo/90vpjbC33UGK1uPNBM4kT+pkdaol/MnvKUh8TQ==}
+    engines: {node: '>=18'}
+
   '@langchain/core@0.3.80':
     resolution: {integrity: sha512-vcJDV2vk1AlCwSh3aBm/urQ1ZrlXFFBocv11bz/NBUfLWD5/UDNMzwPdaAd2dKvNmTWa9FM2lirLU3+JCf4cRA==}
     engines: {node: '>=18'}
@@ -1225,12 +1229,12 @@ packages:
     resolution: {integrity: sha512-h2bP0RUikQZu0Um1ZUPErQLXyhzroJqKRbRcxYRTAh49oNlsfeq4A3K4YEDRbGGuyPZI/Jiqwhks1wZwY73AZw==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@langchain/core': '>=0.3.80'
+      '@langchain/core': '>=0.2.31 <0.4.0 || ^1.0.0-alpha'
 
   '@langchain/langgraph-sdk@0.1.10':
     resolution: {integrity: sha512-9srSCb2bSvcvehMgjA2sMMwX0o1VUgPN6ghwm5Fwc9JGAKsQa6n1S4eCwy1h4abuYxwajH5n3spBw+4I2WYbgw==}
     peerDependencies:
-      '@langchain/core': '>=0.3.80'
+      '@langchain/core': '>=0.2.31 <0.4.0 || ^1.0.0-alpha'
       react: ^18 || ^19
       react-dom: ^18 || ^19
     peerDependenciesMeta:
@@ -1245,7 +1249,7 @@ packages:
     resolution: {integrity: sha512-+rcdTGi4Ium4X/VtIX3Zw4RhxEkYWpwUyz806V6rffjHOAMamg6/WZDxpJbrP33RV/wJG1GH12Z29oX3Pqq3Aw==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@langchain/core': '>=0.3.80'
+      '@langchain/core': '>=0.3.58 < 0.4.0'
       zod-to-json-schema: ^3.x
     peerDependenciesMeta:
       zod-to-json-schema:
@@ -1255,19 +1259,19 @@ packages:
     resolution: {integrity: sha512-NHQNH9NciLhxlCnL/4HDebiYT3UQvpBfF5KPlIi/uSXn8te/bYjPV64gUyAloNNo+fjj4qDvKP1/nHj0r7fKFw==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@langchain/core': '>=0.3.80'
+      '@langchain/core': ^0.3.66
 
   '@langchain/openai@0.6.17':
     resolution: {integrity: sha512-JVSzD+FL5v/2UQxKd+ikB1h4PQOtn0VlK8nqW2kPp0fshItCv4utrjBKXC/rubBnSXoRTyonBINe8QRZ6OojVQ==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@langchain/core': '>=0.3.80'
+      '@langchain/core': '>=0.3.68 <0.4.0'
 
   '@langchain/textsplitters@0.1.0':
     resolution: {integrity: sha512-djI4uw9rlkAb5iMhtLED+xJebDdAG935AdP4eRTB02R7OB/act55Bj9wsskhZsvuyQRpO4O1wQOp85s6T6GWmw==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@langchain/core': '>=0.3.80'
+      '@langchain/core': '>=0.2.21 <0.4.0'
 
   '@manypkg/find-root@1.1.0':
     resolution: {integrity: sha512-mki5uBvhHzO8kYYix/WRy2WX8S3B5wdVSc9D6KcU5lQNglP2yt58/VfLuAK49glRXChosY8ap2oJ1qgma3GUVA==}
@@ -1405,8 +1409,8 @@ packages:
   '@sap-cloud-sdk/util@4.3.1':
     resolution: {integrity: sha512-ew3+RiyUAKKhb/h/M1g2di9DjoeDQ3uQIDS7a+rN9lqlaP2+mb0mbK8x1PHLJ8agvZNjFR5y5k2jKmIiHVFT3A==}
 
-  '@sap/cds-compiler@6.6.0':
-    resolution: {integrity: sha512-cttVQhuzobLsnaGjmCz6gOXdUdHRawTbUK8UsUPnOIOboAOJRvLbrX4RF/iY6VxewpupDcx+FhfDCbAupO3EwQ==}
+  '@sap/cds-compiler@6.6.2':
+    resolution: {integrity: sha512-/Lx5vR+IOOhlhlBho8wwDz/Xj6sa2kUMx7lZIbiBuuprzKGNP1bLxTUwEoLfu0LrU/85wFCkJOicZuvr+YGElQ==}
     engines: {node: '>=20'}
     hasBin: true
 
@@ -1426,8 +1430,8 @@ packages:
     peerDependencies:
       '@sap/cds': ^9
 
-  '@sap/cds@9.6.3':
-    resolution: {integrity: sha512-VZ5fDJt6ZAI6UzQnOzOgjgVjRRbI9Z1T1eVVCZ7FJkVTPSC05LVcKJ4nhjKgecE6sGkn7QyphIhu/933oYPccw==}
+  '@sap/cds@9.6.4':
+    resolution: {integrity: sha512-GPVuMxfQsuSs4q27gdFoof4rJhugXwhn7CSsP25XIRbyxZF4Us6pJrDgHUCip0IV9xUn/2CY/BxXPlhE0+Y+FA==}
     engines: {node: '>=20'}
     hasBin: true
     peerDependencies:
@@ -1945,6 +1949,9 @@ packages:
   arg@4.1.3:
     resolution: {integrity: sha512-58S9QDqG0Xx27YwPSt9fJxivjYl432YCwfDMfZ+71RAqUrZef7LrKQZ3LHLOwCS4FLNBplP533Zx895SeOCHvA==}
 
+  argparse@1.0.10:
+    resolution: {integrity: sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg==}
+
   argparse@2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
 
@@ -2411,8 +2418,8 @@ packages:
     resolution: {integrity: sha512-EjePK1srD3P08o2j4f0ExnylqRs5B9tJjcp9t1krH2qRi8CCdsYfwe9JgSLurFBWwq4uOlipzfk5fHNvwFKr8Q==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  diff@8.0.3:
-    resolution: {integrity: sha512-qejHi7bcSD4hQAZE0tNAawRK1ZtafHDmMTMkrrIGgSLl7hTnQHmKCeB45xAcbfTqK2zowkM3j3bHt/4b/ARbYQ==}
+  diff@4.0.4:
+    resolution: {integrity: sha512-X07nttJQkwkfKfvTPG/KSnE2OMdcUCao6+eXF3wmnIQRn2aPAHH3VxDbDOdegkd6JbPsXqShpvEOHfAT+nCNwQ==}
     engines: {node: '>=0.3.1'}
 
   dir-glob@3.0.1:
@@ -2671,6 +2678,11 @@ packages:
   espree@10.4.0:
     resolution: {integrity: sha512-j6PAQ2uUr79PZhBjP5C5fhl8e39FmRnOjsD5lGnWrFU8i2G776tBK7+nP8KuQUTTyAZUwfQqXAgrVH5MbH9CYQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  esprima@4.0.1:
+    resolution: {integrity: sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==}
+    engines: {node: '>=4'}
+    hasBin: true
 
   esquery@1.6.0:
     resolution: {integrity: sha512-ca9pw9fomFcKPvFLXhBKUK90ZvGibiGOvRJNbjljY7s7uq/5YO4BOzcYtJqExdx99rF6aAcnRxHmcUHcz6sQsg==}
@@ -3520,6 +3532,10 @@ packages:
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
+  js-yaml@3.14.2:
+    resolution: {integrity: sha512-PMSmkqxr106Xa156c2M265Z+FTrPl+oxd/rgOQy2tijQeK5TxQ43psO1ZCwhVOSdnn+RzkzlRz/eY4BgJBYVpg==}
+    hasBin: true
+
   js-yaml@4.1.1:
     resolution: {integrity: sha512-qQKT4zQxXl8lLwBtHMWwaTcGfFOZviOJet3Oy/xmGk2gZH677CJM9EvtfdSkgWcATZhj/55JZ0rmy3myCT5lsA==}
     hasBin: true
@@ -3605,7 +3621,7 @@ packages:
       '@langchain/aws': '*'
       '@langchain/cerebras': '*'
       '@langchain/cohere': '*'
-      '@langchain/core': '>=0.3.80'
+      '@langchain/core': '>=0.3.58 <0.4.0'
       '@langchain/deepseek': '*'
       '@langchain/google-genai': '*'
       '@langchain/google-vertexai': '*'
@@ -4640,6 +4656,9 @@ packages:
   spdx-license-ids@3.0.22:
     resolution: {integrity: sha512-4PRT4nh1EImPbt2jASOKHX7PB7I+e4IWNLvkKFDxNhJlfjbYlleYQh285Z/3mPTHSAK/AvdMmw5BNNuYH8ShgQ==}
 
+  sprintf-js@1.0.3:
+    resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==}
+
   stable-hash-x@0.2.0:
     resolution: {integrity: sha512-o3yWv49B/o4QZk5ZcsALc6t0+eCelPc44zZsLtCQnZPDwFpDYSWcDnrv2TtMmMbQ7uKo3J0HTURCqckw23czNQ==}
     engines: {node: '>=12.0.0'}
@@ -5410,25 +5429,25 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@cap-js/asyncapi@1.0.3(@sap/cds@9.6.3(@eslint/js@9.39.2)(express@5.2.1))':
+  '@cap-js/asyncapi@1.0.3(@sap/cds@9.6.4(@eslint/js@9.39.2)(express@5.2.1))':
     dependencies:
-      '@sap/cds': 9.6.3(@eslint/js@9.39.2)(express@5.2.1)
+      '@sap/cds': 9.6.4(@eslint/js@9.39.2)(express@5.2.1)
 
-  '@cap-js/db-service@2.8.1(@sap/cds@9.6.3(@eslint/js@9.39.2)(express@5.2.1))':
+  '@cap-js/db-service@2.8.1(@sap/cds@9.6.4(@eslint/js@9.39.2)(express@5.2.1))':
     dependencies:
-      '@sap/cds': 9.6.3(@eslint/js@9.39.2)(express@5.2.1)
+      '@sap/cds': 9.6.4(@eslint/js@9.39.2)(express@5.2.1)
       generic-pool: 3.9.0
     optional: true
 
-  '@cap-js/openapi@1.3.1(@sap/cds@9.6.3(@eslint/js@9.39.2)(express@5.2.1))':
+  '@cap-js/openapi@1.3.1(@sap/cds@9.6.4(@eslint/js@9.39.2)(express@5.2.1))':
     dependencies:
-      '@sap/cds': 9.6.3(@eslint/js@9.39.2)(express@5.2.1)
+      '@sap/cds': 9.6.4(@eslint/js@9.39.2)(express@5.2.1)
       pluralize: 8.0.0
 
-  '@cap-js/sqlite@2.1.2(@sap/cds@9.6.3(@eslint/js@9.39.2)(express@5.2.1))':
+  '@cap-js/sqlite@2.1.2(@sap/cds@9.6.4(@eslint/js@9.39.2)(express@5.2.1))':
     dependencies:
-      '@cap-js/db-service': 2.8.1(@sap/cds@9.6.3(@eslint/js@9.39.2)(express@5.2.1))
-      '@sap/cds': 9.6.3(@eslint/js@9.39.2)(express@5.2.1)
+      '@cap-js/db-service': 2.8.1(@sap/cds@9.6.4(@eslint/js@9.39.2)(express@5.2.1))
+      '@sap/cds': 9.6.4(@eslint/js@9.39.2)(express@5.2.1)
       better-sqlite3: 12.6.0
     optional: true
 
@@ -5879,7 +5898,7 @@ snapshots:
       camelcase: 5.3.1
       find-up: 4.1.0
       get-package-type: 0.1.0
-      js-yaml: 4.1.1
+      js-yaml: 3.14.2
       resolve-from: 5.0.0
 
   '@istanbuljs/schema@0.1.3': {}
@@ -6104,6 +6123,26 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  '@langchain/core@0.3.72(openai@5.12.2(ws@8.19.0)(zod@3.25.76))':
+    dependencies:
+      '@cfworker/json-schema': 4.1.1
+      ansi-styles: 5.2.0
+      camelcase: 6.3.0
+      decamelize: 1.2.0
+      js-tiktoken: 1.0.21
+      langsmith: 0.3.87(openai@5.12.2(ws@8.19.0)(zod@3.25.76))
+      mustache: 4.2.0
+      p-queue: 6.6.2
+      p-retry: 4.6.2
+      uuid: 10.0.0
+      zod: 3.25.76
+      zod-to-json-schema: 3.25.1(zod@3.25.76)
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - '@opentelemetry/exporter-trace-otlp-proto'
+      - '@opentelemetry/sdk-trace-base'
+      - openai
 
   '@langchain/core@0.3.80(openai@5.12.2(ws@8.19.0)(zod@3.25.76))':
     dependencies:
@@ -6400,7 +6439,7 @@ snapshots:
 
   '@sap-ai-sdk/langchain@1.18.0(openai@5.12.2(ws@8.19.0)(zod@3.25.76))':
     dependencies:
-      '@langchain/core': 0.3.80(openai@5.12.2(ws@8.19.0)(zod@3.25.76))
+      '@langchain/core': 0.3.72(openai@5.12.2(ws@8.19.0)(zod@3.25.76))
       '@sap-ai-sdk/ai-api': 1.18.0
       '@sap-ai-sdk/core': 1.18.0
       '@sap-ai-sdk/foundation-models': 1.18.0
@@ -6539,14 +6578,14 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@sap/cds-compiler@6.6.0': {}
+  '@sap/cds-compiler@6.6.2': {}
 
   '@sap/cds-dk@9.6.1(@eslint/js@9.39.2)':
     dependencies:
-      '@cap-js/asyncapi': 1.0.3(@sap/cds@9.6.3(@eslint/js@9.39.2)(express@5.2.1))
-      '@cap-js/openapi': 1.3.1(@sap/cds@9.6.3(@eslint/js@9.39.2)(express@5.2.1))
-      '@sap/cds': 9.6.3(@eslint/js@9.39.2)(express@4.22.1)
-      '@sap/cds-mtxs': 3.6.1(@sap/cds@9.6.3(@eslint/js@9.39.2)(express@5.2.1))(hdb@2.26.4)
+      '@cap-js/asyncapi': 1.0.3(@sap/cds@9.6.4(@eslint/js@9.39.2)(express@5.2.1))
+      '@cap-js/openapi': 1.3.1(@sap/cds@9.6.4(@eslint/js@9.39.2)(express@5.2.1))
+      '@sap/cds': 9.6.4(@eslint/js@9.39.2)(express@4.22.1)
+      '@sap/cds-mtxs': 3.6.1(@sap/cds@9.6.4(@eslint/js@9.39.2)(express@5.2.1))(hdb@2.26.4)
       '@sap/hdi-deploy': 5.6.0(hdb@2.26.4)
       axios: 1.13.2
       express: 4.22.1
@@ -6557,7 +6596,7 @@ snapshots:
       xml-js: 1.6.11
       yaml: 2.8.2
     optionalDependencies:
-      '@cap-js/sqlite': 2.1.2(@sap/cds@9.6.3(@eslint/js@9.39.2)(express@5.2.1))
+      '@cap-js/sqlite': 2.1.2(@sap/cds@9.6.4(@eslint/js@9.39.2)(express@5.2.1))
     transitivePeerDependencies:
       - '@eslint/js'
       - '@sap/hana-client'
@@ -6567,39 +6606,39 @@ snapshots:
       - tar
       - utf-8-validate
 
-  '@sap/cds-fiori@2.1.1(@sap/cds@9.6.3(@eslint/js@9.39.2)(express@5.2.1))(express@4.22.1)':
+  '@sap/cds-fiori@2.1.1(@sap/cds@9.6.4(@eslint/js@9.39.2)(express@5.2.1))(express@4.22.1)':
     dependencies:
-      '@sap/cds': 9.6.3(@eslint/js@9.39.2)(express@5.2.1)
+      '@sap/cds': 9.6.4(@eslint/js@9.39.2)(express@5.2.1)
       express: 4.22.1
 
-  '@sap/cds-fiori@2.1.1(@sap/cds@9.6.3(@eslint/js@9.39.2)(express@5.2.1))(express@5.2.1)':
+  '@sap/cds-fiori@2.1.1(@sap/cds@9.6.4(@eslint/js@9.39.2)(express@5.2.1))(express@5.2.1)':
     dependencies:
-      '@sap/cds': 9.6.3(@eslint/js@9.39.2)(express@5.2.1)
+      '@sap/cds': 9.6.4(@eslint/js@9.39.2)(express@5.2.1)
       express: 5.2.1
 
-  '@sap/cds-mtxs@3.6.1(@sap/cds@9.6.3(@eslint/js@9.39.2)(express@5.2.1))(hdb@2.26.4)':
+  '@sap/cds-mtxs@3.6.1(@sap/cds@9.6.4(@eslint/js@9.39.2)(express@5.2.1))(hdb@2.26.4)':
     dependencies:
-      '@sap/cds': 9.6.3(@eslint/js@9.39.2)(express@5.2.1)
+      '@sap/cds': 9.6.4(@eslint/js@9.39.2)(express@5.2.1)
       '@sap/hdi-deploy': 5.6.0(hdb@2.26.4)
     transitivePeerDependencies:
       - '@sap/hana-client'
       - hdb
       - supports-color
 
-  '@sap/cds@9.6.3(@eslint/js@9.39.2)(express@4.22.1)':
+  '@sap/cds@9.6.4(@eslint/js@9.39.2)(express@4.22.1)':
     dependencies:
       '@eslint/js': 9.39.2
-      '@sap/cds-compiler': 6.6.0
-      '@sap/cds-fiori': 2.1.1(@sap/cds@9.6.3(@eslint/js@9.39.2)(express@5.2.1))(express@4.22.1)
+      '@sap/cds-compiler': 6.6.2
+      '@sap/cds-fiori': 2.1.1(@sap/cds@9.6.4(@eslint/js@9.39.2)(express@5.2.1))(express@4.22.1)
       js-yaml: 4.1.1
     optionalDependencies:
       express: 4.22.1
 
-  '@sap/cds@9.6.3(@eslint/js@9.39.2)(express@5.2.1)':
+  '@sap/cds@9.6.4(@eslint/js@9.39.2)(express@5.2.1)':
     dependencies:
       '@eslint/js': 9.39.2
-      '@sap/cds-compiler': 6.6.0
-      '@sap/cds-fiori': 2.1.1(@sap/cds@9.6.3(@eslint/js@9.39.2)(express@5.2.1))(express@5.2.1)
+      '@sap/cds-compiler': 6.6.2
+      '@sap/cds-fiori': 2.1.1(@sap/cds@9.6.4(@eslint/js@9.39.2)(express@5.2.1))(express@5.2.1)
       js-yaml: 4.1.1
     optionalDependencies:
       express: 5.2.1
@@ -7137,6 +7176,10 @@ snapshots:
 
   arg@4.1.3: {}
 
+  argparse@1.0.10:
+    dependencies:
+      sprintf-js: 1.0.3
+
   argparse@2.0.1: {}
 
   array-buffer-byte-length@1.0.2:
@@ -7614,7 +7657,7 @@ snapshots:
       findup-sync: 5.0.0
       ignore: 5.3.2
       is-core-module: 2.16.1
-      js-yaml: 4.1.1
+      js-yaml: 3.14.2
       json5: 2.2.3
       lodash: 4.17.23
       minimatch: 7.4.6
@@ -7646,7 +7689,7 @@ snapshots:
 
   diff-sequences@29.6.3: {}
 
-  diff@8.0.3: {}
+  diff@4.0.4: {}
 
   dir-glob@3.0.1:
     dependencies:
@@ -8044,6 +8087,8 @@ snapshots:
       acorn: 8.15.0
       acorn-jsx: 5.3.2(acorn@8.15.0)
       eslint-visitor-keys: 4.2.1
+
+  esprima@4.0.1: {}
 
   esquery@1.6.0:
     dependencies:
@@ -9188,6 +9233,11 @@ snapshots:
 
   js-tokens@4.0.0: {}
 
+  js-yaml@3.14.2:
+    dependencies:
+      argparse: 1.0.10
+      esprima: 4.0.1
+
   js-yaml@4.1.1:
     dependencies:
       argparse: 2.0.1
@@ -9995,7 +10045,7 @@ snapshots:
   read-yaml-file@1.1.0:
     dependencies:
       graceful-fs: 4.2.11
-      js-yaml: 4.1.1
+      js-yaml: 3.14.2
       pify: 4.0.1
       strip-bom: 3.0.0
 
@@ -10319,6 +10369,8 @@ snapshots:
 
   spdx-license-ids@3.0.22: {}
 
+  sprintf-js@1.0.3: {}
+
   stable-hash-x@0.2.0: {}
 
   stack-trace@0.0.10: {}
@@ -10529,7 +10581,7 @@ snapshots:
       acorn-walk: 8.3.4
       arg: 4.1.3
       create-require: 1.1.1
-      diff: 8.0.3
+      diff: 4.0.4
       make-error: 1.3.6
       typescript: 5.9.3
       v8-compile-cache-lib: 3.0.1
