@@ -52,4 +52,31 @@ describe('rpt', () => {
     );
     expect(requestSpy.isDone()).toBe(true);
   });
+
+  it('should transform body without schema', async () => {
+    mockDeploymentsList(
+      {
+        scenarioId: 'foundation-models',
+        executableId: 'aicore-sap'
+      },
+      { id: '1234', model: { name: 'sap-rpt-1-small', version: 'latest' } }
+    );
+    const requestSpy = mockInference(
+      {
+        data: {
+          data_schema: null
+        }
+      },
+      {
+        data: 'ok',
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/predict'
+      }
+    );
+
+    await new RptClient().predictWithoutSchema({} as any);
+    expect(requestSpy.isDone()).toBe(true);
+  });
 });
