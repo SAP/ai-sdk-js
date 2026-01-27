@@ -151,7 +151,7 @@ export class OrchestrationClient {
             );
 
     const deploymentId = await getOrchestrationDeploymentId(
-      this.deploymentConfig ?? {},
+      this.deploymentConfig || {},
       this.destination
     );
 

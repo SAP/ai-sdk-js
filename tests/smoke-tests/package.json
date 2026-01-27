@@ -15,7 +15,7 @@
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
-    "@langchain/classic": "^1.0.10",
+    "@langchain/classic": "^1.0.11",
     "@langchain/core": "^1.1.17",
     "@langchain/langgraph": "^1.1.2",
     "@langchain/mcp-adapters": "^1.1.2",
@@ -28,8 +28,8 @@
     "@sap-ai-sdk/prompt-registry": "canary",
     "@sap-cloud-sdk/util": "^4.3.1",
     "express": "^5.2.1",
-    "hono": "^4.11.5",
-    "langchain": "^1.2.13",
+    "hono": "^4.11.6",
+    "langchain": "^1.2.14",
     "uuid": "^13.0.0",
     "zod": "^4.3.6"
   },

@@ -21,6 +21,7 @@ import {
 } from '@langchain/core/messages';
 // eslint-disable-next-line import/no-internal-modules
 import * as z from 'zod/v4';
+import { createAgent, createMiddleware } from 'langchain';
 // eslint-disable-next-line import/no-internal-modules
 import { mcpClient } from './tutorials/mcp/mcp-adapter.js';
 import type { BaseMessage, AIMessageChunk } from '@langchain/core/messages';
@@ -389,6 +390,55 @@ export async function invokeToolChain(): Promise<string> {
 
   // parse the response
   return parser.invoke(finalResponse);
+}
+
+/**
+ * Invoke an agent with dynamic model selection based on message count.
+ * Uses a basic model for simple conversations and an advanced model for complex ones.
+ * This demonstrates using createAgent from langchain with middleware for dynamic model selection.
+ * @returns The answer from the agent.
+ */
+export async function invokeDynamicModelAgent(): Promise<string> {
+  const basicModel = new OrchestrationClient({
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o-mini'
+      }
+    }
+  });
+
+  const advancedModel = new OrchestrationClient({
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
+    }
+  });
+
+  const dynamicModelSelection = createMiddleware({
+    name: 'DynamicModelSelection',
+    wrapModelCall: (request, handler) => {
+      const messageCount = request.messages.length;
+
+      return handler({
+        ...request,
+        model: messageCount > 10 ? advancedModel : basicModel
+      });
+    }
+  });
+
+  const agent = createAgent({
+    model: basicModel,
+    tools: [],
+    middleware: [dynamicModelSelection]
+  });
+
+  const inputMessage = 'What is SAP?';
+
+  const agentInputs = { messages: [{ role: 'user', content: inputMessage }] };
+  const result = await agent.invoke(agentInputs);
+
+  return result.messages.at(-1)!.content as string;
 }
 
 /**
