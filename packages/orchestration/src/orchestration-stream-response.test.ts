@@ -31,10 +31,39 @@ describe('OrchestrationStreamResponse', () => {
     streamResponse = new OrchestrationStreamResponse(rawResponse);
   });
 
+  function closeStream(data: any = mockChunkResponse): void {
+    streamResponse._data = data;
+    streamResponse._openStream = false;
+  }
+
+  it('should initialize with raw HTTP response and default state', () => {
+    expect(streamResponse.rawResponse).toBe(rawResponse);
+    expect(streamResponse._data).toEqual({});
+    expect(streamResponse._openStream).toBe(true);
+  });
+
+  describe('stream open validation', () => {
+    it('should throw error when accessing data while stream is open', () => {
+      const errorMessage =
+        'The stream is still open, the requested data is not available yet. Please wait until the stream is closed.';
+
+      expect(() => streamResponse.getTokenUsage()).toThrow(errorMessage);
+      expect(() => streamResponse.getFinishReason()).toThrow(errorMessage);
+      expect(() => streamResponse.getContent()).toThrow(errorMessage);
+      expect(() => streamResponse.getToolCalls()).toThrow(errorMessage);
+      expect(() => streamResponse.getRefusal()).toThrow(errorMessage);
+      expect(() => streamResponse.getAllMessages()).toThrow(errorMessage);
+      expect(() => streamResponse.getAssistantMessage()).toThrow(errorMessage);
+      expect(() => streamResponse.getIntermediateResults()).toThrow(
+        errorMessage
+      );
+      expect(() => streamResponse.findChoiceByIndex(0)).toThrow(errorMessage);
+    });
+  });
+
   describe('getRequestId', () => {
     it('should return request ID from complete success response', () => {
-      streamResponse._data = mockCompleteSuccessResponse;
-      streamResponse._openStream = false;
+      closeStream(mockCompleteSuccessResponse);
 
       expect(streamResponse.getRequestId()).toMatchInlineSnapshot(
         '"c2a9c683-df21-9e11-b49a-81a66c265927"'
@@ -78,6 +107,205 @@ describe('OrchestrationStreamResponse', () => {
       expect(() => response.rawResponse).toThrow(
         'The raw response is not available. Please provide the raw response when constructing `OrchestrationStreamResponse`'
       );
+    });
+  });
+
+  describe('getFinishReason', () => {
+    it('should return finish reason for default index', () => {
+      closeStream();
+
+      expect(streamResponse.getFinishReason()).toBe('stop');
+    });
+
+    it('should return undefined for non-existent choice index', () => {
+      closeStream();
+
+      expect(streamResponse.getFinishReason(1)).toBeUndefined();
+    });
+  });
+
+  describe('getContent', () => {
+    it('should return content from response', () => {
+      closeStream(mockCompleteSuccessResponse);
+
+      expect(streamResponse.getContent()).toBe(
+        'Der Orchestrierungsdienst funktioniert!'
+      );
+    });
+
+    it('should return undefined for non-existent choice index', () => {
+      closeStream();
+
+      expect(streamResponse.getContent(1)).toBeUndefined();
+    });
+  });
+
+  describe('getToolCalls', () => {
+    it('should return tool calls when present', () => {
+      closeStream({
+        final_result: {
+          choices: [
+            {
+              index: 0,
+              message: {
+                role: 'assistant',
+                tool_calls: [
+                  {
+                    type: 'function',
+                    function: {
+                      name: 'get_weather',
+                      arguments: '{"location": "Berlin"}'
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      });
+
+      const toolCalls = streamResponse.getToolCalls();
+      expect(toolCalls).toHaveLength(1);
+      expect(toolCalls?.[0]).toMatchObject({
+        type: 'function',
+        function: {
+          name: 'get_weather'
+        }
+      });
+    });
+
+    it('should return undefined when no tool calls present', () => {
+      closeStream({
+        final_result: {
+          choices: [
+            {
+              index: 0,
+              message: {
+                role: 'assistant',
+                content: 'Hello!'
+              }
+            }
+          ]
+        }
+      });
+
+      expect(streamResponse.getToolCalls()).toBeUndefined();
+    });
+  });
+
+  describe('getRefusal', () => {
+    it('should return refusal message when present', () => {
+      closeStream({
+        final_result: {
+          choices: [
+            {
+              index: 0,
+              message: {
+                role: 'assistant',
+                refusal: 'I cannot help with that request.'
+              }
+            }
+          ]
+        }
+      });
+
+      expect(streamResponse.getRefusal()).toBe(
+        'I cannot help with that request.'
+      );
+    });
+
+    it('should return undefined when no refusal present', () => {
+      closeStream(mockCompleteSuccessResponse);
+
+      expect(streamResponse.getRefusal()).toBeUndefined();
+    });
+  });
+
+  describe('getAllMessages', () => {
+    it('should return all messages including templating and assistant response', () => {
+      closeStream(mockCompleteSuccessResponse);
+
+      const messages = streamResponse.getAllMessages();
+      expect(messages).toHaveLength(2);
+      expect(messages?.[0]).toMatchObject({
+        role: 'user',
+        content: 'Translate to German: `Orchestration Service is working!`'
+      });
+      expect(messages?.[1]).toMatchObject({
+        role: 'assistant',
+        content: 'Der Orchestrierungsdienst funktioniert!'
+      });
+    });
+
+    it('should return only templating messages when no assistant message', () => {
+      closeStream({
+        intermediate_results: {
+          templating: [{ role: 'user', content: 'Hello!' }]
+        },
+        final_result: {
+          choices: []
+        }
+      } as any);
+
+      const messages = streamResponse.getAllMessages();
+      expect(messages).toHaveLength(1);
+      expect(messages?.[0]).toMatchObject({
+        role: 'user',
+        content: 'Hello!'
+      });
+    });
+  });
+
+  describe('getAssistantMessage', () => {
+    it('should return assistant message from response', () => {
+      closeStream(mockCompleteSuccessResponse);
+
+      expect(streamResponse.getAssistantMessage()).toMatchObject({
+        role: 'assistant',
+        content: 'Der Orchestrierungsdienst funktioniert!'
+      });
+    });
+  });
+
+  describe('getIntermediateResults', () => {
+    it('should return intermediate results when available', () => {
+      closeStream();
+
+      const intermediateResults = streamResponse.getIntermediateResults();
+      expect(intermediateResults).toBeDefined();
+      expect(intermediateResults?.llm).toBeDefined();
+    });
+  });
+
+  describe('findChoiceByIndex', () => {
+    it('should find choice by valid index', () => {
+      closeStream();
+
+      const choice = streamResponse.findChoiceByIndex(0);
+      expect(choice).toBeDefined();
+      expect(choice?.index).toBe(0);
+      expect(choice?.finish_reason).toBe('stop');
+    });
+
+    it('should return undefined for invalid index', () => {
+      closeStream();
+
+      expect(streamResponse.findChoiceByIndex(99)).toBeUndefined();
+    });
+  });
+
+  describe('stream getter and setter', () => {
+    it('should throw error when stream is not set', () => {
+      expect(() => streamResponse.stream).toThrow(
+        'Response stream is undefined.'
+      );
+    });
+
+    it('should return stream when set', () => {
+      const mockStream = {} as any;
+      streamResponse.stream = mockStream;
+
+      expect(streamResponse.stream).toBe(mockStream);
     });
   });
 });
