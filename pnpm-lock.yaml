@@ -255,13 +255,13 @@ importers:
         version: 1.1.2(@langchain/core@1.1.17(openai@6.16.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6)
       '@langchain/mcp-adapters':
         specifier: ^1.1.2
-        version: 1.1.2(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.17(openai@6.16.0(ws@8.19.0)(zod@4.3.6)))(@langchain/langgraph@1.1.2(@langchain/core@1.1.17(openai@6.16.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6))(hono@4.11.5)
+        version: 1.1.2(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.17(openai@6.16.0(ws@8.19.0)(zod@4.3.6)))(@langchain/langgraph@1.1.2(@langchain/core@1.1.17(openai@6.16.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6))(hono@4.11.6)
       '@langchain/textsplitters':
         specifier: ^1.0.1
         version: 1.0.1(@langchain/core@1.1.17(openai@6.16.0(ws@8.19.0)(zod@4.3.6)))
       '@modelcontextprotocol/sdk':
         specifier: ^1.25.3
-        version: 1.25.3(@cfworker/json-schema@4.1.1)(hono@4.11.5)(zod@4.3.6)
+        version: 1.25.3(@cfworker/json-schema@4.1.1)(hono@4.11.6)(zod@4.3.6)
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../packages/ai-api
@@ -340,7 +340,7 @@ importers:
         version: 1.1.2(@langchain/core@1.1.17(openai@6.16.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6)
       '@langchain/mcp-adapters':
         specifier: ^1.1.2
-        version: 1.1.2(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.17(openai@6.16.0(ws@8.19.0)(zod@4.3.6)))(@langchain/langgraph@1.1.2(@langchain/core@1.1.17(openai@6.16.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6))(hono@4.11.5)
+        version: 1.1.2(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.17(openai@6.16.0(ws@8.19.0)(zod@4.3.6)))(@langchain/langgraph@1.1.2(@langchain/core@1.1.17(openai@6.16.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6))(hono@4.11.6)
       '@langchain/textsplitters':
         specifier: ^1.0.1
         version: 1.0.1(@langchain/core@1.1.17(openai@6.16.0(ws@8.19.0)(zod@4.3.6)))
@@ -369,8 +369,8 @@ importers:
         specifier: ^5.2.1
         version: 5.2.1
       hono:
-        specifier: ^4.11.5
-        version: 4.11.5
+        specifier: ^4.11.6
+        version: 4.11.6
       langchain:
         specifier: ^1.2.14
         version: 1.2.14(@langchain/core@1.1.17(openai@6.16.0(ws@8.19.0)(zod@4.3.6)))(openai@6.16.0(ws@8.19.0)(zod@4.3.6))(zod-to-json-schema@3.25.1(zod@4.3.6))
@@ -3187,8 +3187,8 @@ packages:
     resolution: {integrity: sha512-eSmmWE5bZTK2Nou4g0AI3zZ9rswp7GRKoKXS1BLUkvPviOqs4YTN1djQIqrXy9k5gEtdLPy86JjRwsNM9tnDcA==}
     engines: {node: '>=0.10.0'}
 
-  hono@4.11.5:
-    resolution: {integrity: sha512-WemPi9/WfyMwZs+ZUXdiwcCh9Y+m7L+8vki9MzDw3jJ+W9Lc+12HGsd368Qc1vZi1xwW8BWMMsnK5efYKPdt4g==}
+  hono@4.11.6:
+    resolution: {integrity: sha512-ofIiiHyl34SV6AuhE3YT2mhO5HRWokce+eUYE82TsP6z0/H3JeJcjVWEMSIAiw2QkjDOEpES/lYsg8eEbsLtdw==}
     engines: {node: '>=16.9.0'}
 
   hosted-git-info@2.8.9:
@@ -5895,9 +5895,9 @@ snapshots:
       '@shikijs/types': 3.21.0
       '@shikijs/vscode-textmate': 10.0.2
 
-  '@hono/node-server@1.19.9(hono@4.11.5)':
+  '@hono/node-server@1.19.9(hono@4.11.6)':
     dependencies:
-      hono: 4.11.5
+      hono: 4.11.6
 
   '@humanfs/core@0.19.1': {}
 
@@ -6246,11 +6246,11 @@ snapshots:
       - react
       - react-dom
 
-  '@langchain/mcp-adapters@1.1.2(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.17(openai@6.16.0(ws@8.19.0)(zod@4.3.6)))(@langchain/langgraph@1.1.2(@langchain/core@1.1.17(openai@6.16.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6))(hono@4.11.5)':
+  '@langchain/mcp-adapters@1.1.2(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.17(openai@6.16.0(ws@8.19.0)(zod@4.3.6)))(@langchain/langgraph@1.1.2(@langchain/core@1.1.17(openai@6.16.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6))(hono@4.11.6)':
     dependencies:
       '@langchain/core': 1.1.17(openai@6.16.0(ws@8.19.0)(zod@4.3.6))
       '@langchain/langgraph': 1.1.2(@langchain/core@1.1.17(openai@6.16.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6)
-      '@modelcontextprotocol/sdk': 1.25.3(@cfworker/json-schema@4.1.1)(hono@4.11.5)(zod@4.3.6)
+      '@modelcontextprotocol/sdk': 1.25.3(@cfworker/json-schema@4.1.1)(hono@4.11.6)(zod@4.3.6)
       debug: 4.4.3
       zod: 4.3.6
     optionalDependencies:
@@ -6290,9 +6290,9 @@ snapshots:
       globby: 11.1.0
       read-yaml-file: 1.1.0
 
-  '@modelcontextprotocol/sdk@1.25.3(@cfworker/json-schema@4.1.1)(hono@4.11.5)(zod@4.3.6)':
+  '@modelcontextprotocol/sdk@1.25.3(@cfworker/json-schema@4.1.1)(hono@4.11.6)(zod@4.3.6)':
     dependencies:
-      '@hono/node-server': 1.19.9(hono@4.11.5)
+      '@hono/node-server': 1.19.9(hono@4.11.6)
       ajv: 8.17.1
       ajv-formats: 3.0.1(ajv@8.17.1)
       content-type: 1.0.5
@@ -8791,7 +8791,7 @@ snapshots:
     dependencies:
       parse-passwd: 1.0.0
 
-  hono@4.11.5: {}
+  hono@4.11.6: {}
 
   hosted-git-info@2.8.9: {}
 
