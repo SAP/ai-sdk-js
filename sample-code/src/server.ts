@@ -62,7 +62,8 @@ import {
   invokeChainWithMasking,
   invokeToolChain as invokeToolChainOrchestration,
   streamChain as streamChainOrchestration,
-  invokeMcpToolChain as invokeMcpToolChainOrchestration
+  invokeMcpToolChain as invokeMcpToolChainOrchestration,
+  invokeDynamicModelAgent
 } from './langchain-orchestration.js';
 import {
   createCollection,
@@ -548,6 +549,16 @@ app.get('/langchain/invoke-stateful-chain', async (req, res) => {
     res
       .header('Content-Type', 'text/plain')
       .send(await invokeLangGraphChainOrchestration());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/langchain/invoke-dynamic-model-agent', async (req, res) => {
+  try {
+    res
+      .header('Content-Type', 'text/plain')
+      .send(await invokeDynamicModelAgent());
   } catch (error: any) {
     sendError(res, error);
   }
