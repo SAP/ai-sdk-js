@@ -225,9 +225,12 @@ importers:
       '@sap-ai-sdk/core':
         specifier: workspace:^
         version: link:../core
-      '@sap-ai-sdk/foundation-models':
-        specifier: workspace:^
-        version: link:../foundation-models
+      '@sap-cloud-sdk/connectivity':
+        specifier: ^4.3.1
+        version: 4.3.1
+      '@sap-cloud-sdk/util':
+        specifier: ^4.3.1
+        version: 4.3.1
 
   sample-cap:
     dependencies:
