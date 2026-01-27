@@ -6,7 +6,7 @@ import type { PredictResponsePayload } from '@sap-ai-sdk/rpt';
  * Prediction with schema.
  */
 expectType<Promise<PredictResponsePayload>>(
-  new RptClient().predict(
+  new RptClient().predictWithSchema(
     [
       { name: 'PRODUCT', dtype: 'string' },
       { name: '__row_idx__', dtype: 'string' },
@@ -65,7 +65,7 @@ expectType<Promise<PredictResponsePayload>>(
  * Prediction with schema and incorrect prediction config.
  */
 expectError(
-  new RptClient().predict(
+  new RptClient().predictWithSchema(
     [
       { name: 'PRODUCT', dtype: 'string' },
       { name: 'ID', dtype: 'string' },

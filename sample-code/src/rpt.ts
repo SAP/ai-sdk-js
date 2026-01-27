@@ -61,7 +61,7 @@ const data: PredictionData<typeof schema> = {
  */
 export async function predictWithSchema(): Promise<PredictResponsePayload> {
   const client = new RptClient();
-  return client.predict(schema, data);
+  return client.predictWithSchema(schema, data);
 }
 
 /**

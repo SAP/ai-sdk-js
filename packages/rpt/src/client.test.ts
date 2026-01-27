@@ -42,7 +42,7 @@ describe('rpt', () => {
       }
     );
 
-    await new RptClient().predict(
+    await new RptClient().predictWithSchema(
       [
         { name: 'product', dtype: 'string' },
         { name: 'id', dtype: 'numeric' },
