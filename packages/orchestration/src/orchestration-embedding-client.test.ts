@@ -343,7 +343,9 @@ describe('orchestration embedding service client', () => {
 
     const client = new OrchestrationEmbeddingClient(config);
 
-    await expect(client.embed(request, { signal: AbortSignal.abort() })).rejects.toThrow();
+    await expect(
+      client.embed(request, { signal: AbortSignal.abort() })
+    ).rejects.toThrow();
 
     expect(scope.isDone()).toBe(false);
   });
