@@ -66,3 +66,5 @@ export {
   createPromptTemplate,
   deletePromptTemplate
 } from './prompt-registry.js';
+
+export { predictWithSchema, predictAutomaticParsing } from './rpt.js';

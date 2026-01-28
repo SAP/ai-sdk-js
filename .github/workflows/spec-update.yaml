@@ -12,6 +12,14 @@ on:
           - document-grounding
           - orchestration
           - prompt-registry
+        #
+        # NOTES:
+        #
+        # Currently the spec is adjusted manually, changes:
+        # - Replaced all occurrences of `"type": "null"` with `"nullable": true`, otherwise types are incorrect. (Colleagues are informed.)
+        # - Removed top_k parameter, it is not yet released.
+        #
+        # - rpt
         default: orchestration
       file-ref:
         description: 'Branch or tag to checkout the spec file from'
@@ -101,6 +109,10 @@ jobs:
               API_URL="repos/AI/prompt-registry/contents/src/spec/generated/prompt-registry-combined.yaml?ref=$REF"
               FILE_PATH='packages/prompt-registry/src/spec/prompt-registry.yaml'
               ;;
+            # rpt)
+            #   API_URL="repos/DL-COE/sap-rpt-1-public-content/contents/sap-rpt-1_openapi.json?ref=$REF"
+            #   FILE_PATH='packages/rpt/src/spec/rpt.json'
+            #   ;;
           esac
 
           echo "Downloading $CHOICE specification file from $API_URL ..."

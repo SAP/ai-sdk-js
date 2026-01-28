@@ -217,6 +217,21 @@ importers:
         specifier: ^4.3.6
         version: 4.3.6
 
+  packages/rpt:
+    dependencies:
+      '@sap-ai-sdk/ai-api':
+        specifier: workspace:^
+        version: link:../ai-api
+      '@sap-ai-sdk/core':
+        specifier: workspace:^
+        version: link:../core
+      '@sap-cloud-sdk/connectivity':
+        specifier: ^4.3.1
+        version: 4.3.1
+      '@sap-cloud-sdk/util':
+        specifier: ^4.3.1
+        version: 4.3.1
+
   sample-cap:
     dependencies:
       '@sap-ai-sdk/ai-api':
@@ -280,6 +295,9 @@ importers:
       '@sap-ai-sdk/prompt-registry':
         specifier: workspace:^
         version: link:../packages/prompt-registry
+      '@sap-ai-sdk/rpt':
+        specifier: workspace:^
+        version: link:../packages/rpt
       '@sap-cloud-sdk/util':
         specifier: ^4.3.1
         version: 4.3.1
@@ -402,6 +420,9 @@ importers:
       '@sap-ai-sdk/orchestration':
         specifier: workspace:^
         version: link:../../packages/orchestration
+      '@sap-ai-sdk/rpt':
+        specifier: workspace:^
+        version: link:../../packages/rpt
       '@sap-cloud-sdk/connectivity':
         specifier: ^4.3.1
         version: 4.3.1

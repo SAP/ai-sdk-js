@@ -1,0 +1,751 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SAP-RPT-1 Tabular AI",
+    "description": "A REST API for in-context learning with the SAP-RPT-1 model.",
+    "version": "0.1.0",
+    "x-logo": {
+      "url": "https://www.sap.com/favicon.ico"
+    }
+  },
+  "servers": [
+    {
+      "url": "/v1"
+    }
+  ],
+  "paths": {
+    "/predict": {
+      "post": {
+        "summary": "Make in-context predictions for specified target columns based on provided table data JSON (optionally gzip-compressed).",
+        "description": "Make in-context predictions for specified target columns.\nEither \"rows\" or \"columns\" must be provided and must contain both context and query rows.\nYou can optionally send gzip-compressed JSON payloads and set a \"Content-Encoding: gzip\" header.",
+        "operationId": "predict",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PredictRequestPayload"
+              },
+              "examples": {
+                "classification_example": {
+                  "summary": "Classification Example",
+                  "description": "Predict product category using in-context learning",
+                  "value": {
+                    "index_column": "id",
+                    "prediction_config": {
+                      "target_columns": [
+                        {
+                          "name": "category",
+                          "prediction_placeholder": "?",
+                          "task_type": "classification"
+                        }
+                      ]
+                    },
+                    "columns": {
+                      "id": [1, 2, 3, 4],
+                      "product": ["Laptop", "Mouse", "Keyboard", "Monitor"],
+                      "price": [899, 25, 75, 350],
+                      "category": [
+                        "Electronics",
+                        "Accessories",
+                        "Accessories",
+                        "?"
+                      ],
+                      "stock": ["150", "500", "320", "200"]
+                    },
+                    "data_schema": {
+                      "id": {
+                        "dtype": "numeric"
+                      },
+                      "product": {
+                        "dtype": "string"
+                      },
+                      "price": {
+                        "dtype": "numeric"
+                      },
+                      "category": {
+                        "dtype": "string"
+                      },
+                      "stock": {
+                        "dtype": "numeric"
+                      }
+                    }
+                  }
+                },
+                "regression_example": {
+                  "summary": "Regression Example",
+                  "description": "Predict multiple columns including regression using in-context learning",
+                  "value": {
+                    "index_column": "ID",
+                    "prediction_config": {
+                      "target_columns": [
+                        {
+                          "name": "PRICE",
+                          "prediction_placeholder": "[?]",
+                          "task_type": "regression"
+                        },
+                        {
+                          "name": "COSTCENTER",
+                          "prediction_placeholder": "[PREDICT]",
+                          "task_type": "classification"
+                        }
+                      ]
+                    },
+                    "columns": {
+                      "PRODUCT": [
+                        "Couch",
+                        "Office Chair",
+                        "Server Rack",
+                        "Server Rack"
+                      ],
+                      "PRICE": ["[?]", 150.8, "210.0", "[?]"],
+                      "ORDERDATE": [
+                        "2025-11-28",
+                        "2025-11-02",
+                        "2025-11-01",
+                        "2025-11-01"
+                      ],
+                      "ID": ["35", "44", "108", "104"],
+                      "COSTCENTER": [
+                        "[PREDICT]",
+                        "Office Furniture",
+                        "Data Infrastructure",
+                        "[PREDICT]"
+                      ]
+                    },
+                    "data_schema": {
+                      "PRODUCT": {
+                        "dtype": "string"
+                      },
+                      "PRICE": {
+                        "dtype": "numeric"
+                      },
+                      "ORDERDATE": {
+                        "dtype": "date"
+                      },
+                      "ID": {
+                        "dtype": "string"
+                      },
+                      "COSTCENTER": {
+                        "dtype": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Prediction",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PredictResponsePayload"
+                },
+                "example": {
+                  "id": "781bf15e-602a-4503-a8ff-dc32b20f804a",
+                  "status": {
+                    "code": 0,
+                    "message": "ok"
+                  },
+                  "predictions": [
+                    {
+                      "COSTCENTER": [
+                        {
+                          "prediction": "Office Furniture",
+                          "confidence": 0.52
+                        }
+                      ],
+                      "PRICE": [
+                        {
+                          "prediction": 195.090179443359
+                        }
+                      ],
+                      "ID": "35"
+                    },
+                    {
+                      "COSTCENTER": [
+                        {
+                          "prediction": "Data Infrastructure",
+                          "confidence": 1
+                        }
+                      ],
+                      "PRICE": [
+                        {
+                          "prediction": 209.380523681641
+                        }
+                      ],
+                      "ID": "104"
+                    }
+                  ],
+                  "metadata": {
+                    "num_columns": 5,
+                    "num_rows": 2,
+                    "num_predictions": 4,
+                    "num_query_rows": 2
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid input data",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "550e8400-e29b-41d4-a716-446655440000",
+                  "status": {
+                    "code": 2,
+                    "message": "Invalid input"
+                  },
+                  "detail": [
+                    {
+                      "loc": ["body", "prediction_config"],
+                      "msg": "Field required",
+                      "type": "missing"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Payload Too Large",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "550e8400-e29b-41d4-a716-446655440000",
+                  "status": {
+                    "code": 2,
+                    "message": "Invalid input"
+                  },
+                  "detail": [
+                    {
+                      "loc": [],
+                      "msg": "Request body too large (>10485760 bytes)",
+                      "type": "value_error"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "550e8400-e29b-41d4-a716-446655440000",
+                  "status": {
+                    "code": 2,
+                    "message": "Invalid input"
+                  },
+                  "detail": [
+                    {
+                      "loc": ["body", "prediction_config"],
+                      "msg": "Field required",
+                      "type": "value_error"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "550e8400-e29b-41d4-a716-446655440000",
+                  "status": {
+                    "code": 3,
+                    "message": "Internal server error"
+                  },
+                  "detail": []
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/predict_parquet": {
+      "post": {
+        "summary": "Make in-context predictions for specified target columns based on provided table data Parquet file.",
+        "description": "Make in-context predictions for specified target columns based on provided table data Parquet file.",
+        "operationId": "predict_parquet",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_predict_parquet"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Prediction",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PredictResponsePayload"
+                },
+                "example": {
+                  "id": "781bf15e-602a-4503-a8ff-dc32b20f804a",
+                  "status": {
+                    "code": 0,
+                    "message": "ok"
+                  },
+                  "predictions": [
+                    {
+                      "COSTCENTER": [
+                        {
+                          "prediction": "Office Furniture",
+                          "confidence": 0.52
+                        }
+                      ],
+                      "PRICE": [
+                        {
+                          "prediction": 195.090179443359
+                        }
+                      ],
+                      "ID": "35"
+                    },
+                    {
+                      "COSTCENTER": [
+                        {
+                          "prediction": "Data Infrastructure",
+                          "confidence": 1
+                        }
+                      ],
+                      "PRICE": [
+                        {
+                          "prediction": 209.380523681641
+                        }
+                      ],
+                      "ID": "104"
+                    }
+                  ],
+                  "metadata": {
+                    "num_columns": 5,
+                    "num_rows": 2,
+                    "num_predictions": 4,
+                    "num_query_rows": 2
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid input data",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "550e8400-e29b-41d4-a716-446655440000",
+                  "status": {
+                    "code": 2,
+                    "message": "Invalid input"
+                  },
+                  "detail": [
+                    {
+                      "loc": ["body", "prediction_config"],
+                      "msg": "Field required",
+                      "type": "missing"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Payload Too Large",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "550e8400-e29b-41d4-a716-446655440000",
+                  "status": {
+                    "code": 2,
+                    "message": "Invalid input"
+                  },
+                  "detail": [
+                    {
+                      "loc": [],
+                      "msg": "Request body too large (>10485760 bytes)",
+                      "type": "value_error"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "550e8400-e29b-41d4-a716-446655440000",
+                  "status": {
+                    "code": 2,
+                    "message": "Invalid input"
+                  },
+                  "detail": [
+                    {
+                      "loc": ["body", "prediction_config"],
+                      "msg": "Field required",
+                      "type": "value_error"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "550e8400-e29b-41d4-a716-446655440000",
+                  "status": {
+                    "code": 3,
+                    "message": "Internal server error"
+                  },
+                  "detail": []
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Body_predict_parquet": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File",
+            "description": "Parquet file containing the data"
+          },
+          "prediction_config": {
+            "type": "string",
+            "title": "Prediction Config",
+            "description": "JSON string for prediction_config"
+          },
+          "index_column": {
+            "type": "string",
+            "title": "Index Column",
+            "description": "Optional index column name"
+          },
+          "parse_data_types": {
+            "type": "boolean",
+            "title": "Parse Data Types",
+            "description": "Whether to parse data types",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": ["file", "prediction_config"],
+        "title": "Body_predict_parquet"
+      },
+      "PredictResponseMetadata": {
+        "properties": {
+          "num_columns": {
+            "type": "integer",
+            "title": "Num Columns",
+            "description": "Number of columns in the input data."
+          },
+          "num_rows": {
+            "type": "integer",
+            "title": "Num Rows",
+            "description": "Number of rows in the input data."
+          },
+          "num_predictions": {
+            "type": "integer",
+            "title": "Num Predictions",
+            "description": "Number of table cells containing the specified placeholder value."
+          },
+          "num_query_rows": {
+            "type": "integer",
+            "title": "Num Query Rows",
+            "description": "Number of rows for which a prediction was made."
+          }
+        },
+        "type": "object",
+        "required": [
+          "num_columns",
+          "num_rows",
+          "num_predictions",
+          "num_query_rows"
+        ],
+        "title": "PredictResponseMetadata",
+        "description": "Metadata about the prediction request."
+      },
+      "PredictResponsePayload": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Unique ID for the request."
+          },
+          "status": {
+            "$ref": "#/components/schemas/PredictResponseStatus",
+            "description": "Status message that can indicate warnings (e.g. about suboptimal data)."
+          },
+          "predictions": {
+            "items": {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "$ref": "#/components/schemas/PredictionResult"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ]
+              },
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Predictions",
+            "description": "Mapping of column names to their list of prediction results or index column."
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/PredictResponseMetadata"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["id", "status", "predictions", "metadata"],
+        "title": "PredictResponsePayload",
+        "description": "Response payload for prediction requests.\nContains a list of prediction results."
+      },
+      "PredictResponseStatus": {
+        "properties": {
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "description": "Status code (zero means success, other status codes indicate warnings)"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Status message, either \"ok\" or contains a warning / more information."
+          }
+        },
+        "type": "object",
+        "required": ["code", "message"],
+        "title": "PredictResponseStatus",
+        "description": "Output status for prediction requests."
+      },
+      "PredictionResult": {
+        "properties": {
+          "prediction": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Prediction",
+            "description": "The predicted value for the column."
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "type": "number"
+              }
+            ],
+            "nullable": true,
+            "title": "Confidence",
+            "description": "The confidence of the prediction (currently not provided)."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": ["prediction"],
+        "title": "PredictionResult",
+        "description": "A single prediction result for a single column in a single row."
+      },
+      "ColumnType": {
+        "enum": ["string", "numeric", "date"],
+        "title": "ColumnType",
+        "type": "string"
+      },
+      "PredictionConfig": {
+        "additionalProperties": false,
+        "description": "Configuration of the prediction model.",
+        "properties": {
+          "target_columns": {
+            "items": {
+              "$ref": "#/components/schemas/TargetColumnConfig"
+            },
+            "title": "Target Columns",
+            "type": "array"
+          }
+        },
+        "required": ["target_columns"],
+        "title": "PredictionConfig",
+        "type": "object"
+      },
+      "SchemaFieldConfig": {
+        "description": "Configuration for a single field in the input data schema.",
+        "properties": {
+          "dtype": {
+            "$ref": "#/components/schemas/ColumnType",
+            "description": "The data type of the target column. Supported types are ['string', 'numeric', 'date']."
+          }
+        },
+        "required": ["dtype"],
+        "title": "SchemaFieldConfig",
+        "type": "object"
+      },
+      "TargetColumnConfig": {
+        "description": "Configuration for a target column in the prediction model.",
+        "properties": {
+          "name": {
+            "description": "The name of the target column.",
+            "title": "Name",
+            "type": "string"
+          },
+          "prediction_placeholder": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "description": "The placeholder value in any column for which to predict a value. The model will predict a value for all table cells containing this value.",
+            "title": "Prediction Placeholder"
+          },
+          "task_type": {
+            "anyOf": [
+              {
+                "enum": ["classification", "regression"],
+                "type": "string"
+              }
+            ],
+            "nullable": true,
+            "default": null,
+            "description": "The type of prediction task for this column. If not provided, the model will infer the task type from the data.",
+            "title": "Task Type"
+          }
+        },
+        "required": ["name", "prediction_placeholder"],
+        "title": "TargetColumnConfig",
+        "type": "object"
+      },
+      "PredictRequestPayload": {
+        "additionalProperties": false,
+        "description": "Users need to specify a list of rows, which contains both the context rows\nand the rows for which to predict a label, and a mapping of column names\nto placeholder values. The model will predict the value for any column\nspecified in `predict_columns` for all rows that have the placeholder\nvalue in that column.",
+        "properties": {
+          "prediction_config": {
+            "$ref": "#/components/schemas/PredictionConfig",
+            "description": "Configuration of target columns and placeholder value."
+          },
+          "rows": {
+            "default": null,
+            "description": "Table rows, i.e. list of objects where each object is a mapping of column names to values. Either \"rows\" or \"columns\" must be provided.",
+            "items": {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ]
+              },
+              "nullable": true,
+              "type": "object"
+            },
+            "title": "Rows",
+            "type": "array"
+          },
+          "columns": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "items": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "nullable": true,
+                  "type": "array"
+                },
+                "type": "object"
+              }
+            ],
+            "nullable": true,
+            "default": null,
+            "description": "Alternative to rows: columns of data where each key is a column name and the value is a list of all column values. Either \"rows\" or \"columns\" must be provided.",
+            "title": "Columns"
+          },
+          "index_column": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "nullable": true,
+            "default": null,
+            "description": "The name of the index column. If provided, the service will return this column's value in each prediction object to facilitate aligning the output predictions with the input rows on the client side. If not provided, the column will not be included in the output.",
+            "title": "Index Column"
+          },
+          "parse_data_types": {
+            "default": true,
+            "description": "Whether to parse the data types of the columns. If set to True, numeric columns will be parsed to float or integer and dates in ISO format YYYY-MM-DD will be parsed.",
+            "title": "Parse Data Types",
+            "type": "boolean"
+          },
+          "data_schema": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/SchemaFieldConfig"
+                },
+                "type": "object"
+              }
+            ],
+            "nullable": true,
+            "default": null,
+            "description": "Optional schema defining the data types of each column. If provided, this will override automatic data type parsing.",
+            "title": "Data Schema"
+          }
+        },
+        "required": ["prediction_config"],
+        "title": "PredictRequestPayload",
+        "type": "object"
+      }
+    }
+  },
+  "x-sap-cloud-sdk-api-name": "RptApi"
+}
