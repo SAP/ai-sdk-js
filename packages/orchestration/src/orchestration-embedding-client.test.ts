@@ -313,7 +313,7 @@ describe('orchestration embedding service client', () => {
     }
   });
 
-  it('should throw error when chatCompletion is called with already aborted controller', async () => {
+  it('should throw error when embedding is called with already aborted controller', async () => {
     const config: EmbeddingModuleConfig = {
       embeddings: {
         model: {
@@ -343,7 +343,7 @@ describe('orchestration embedding service client', () => {
 
     const client = new OrchestrationEmbeddingClient(config);
 
-    await expect(client.embed(request, AbortSignal.abort())).rejects.toThrow();
+    await expect(client.embed(request, { signal: AbortSignal.abort() })).rejects.toThrow();
 
     expect(scope.isDone()).toBe(false);
   });
