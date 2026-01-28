@@ -5,6 +5,6 @@
  */
 
 /**
- * Representation of the 'VectorSearchSelectOptionEnum' schema.
+ * Representation of the 'BoostingScoreComputationStrategy' schema.
  */
-export type VectorSearchSelectOptionEnum = 'ignoreIfKeyAbsent';
+export type BoostingScoreComputationStrategy = 'match_count' | 'embedding';

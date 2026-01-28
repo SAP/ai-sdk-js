@@ -5,6 +5,8 @@
  */
 
 /**
- * Representation of the 'VectorSearchSelectOptionEnum' schema.
+ * Representation of the 'Score' schema.
  */
-export type VectorSearchSelectOptionEnum = 'ignoreIfKeyAbsent';
+export type Score = {
+  value: number;
+} & Record<string, any>;

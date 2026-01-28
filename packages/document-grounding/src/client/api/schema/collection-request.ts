@@ -20,5 +20,5 @@ export type CollectionRequest = {
    * Unique identifier of a collection.
    * Format: "uuid".
    */
-  id?: string;
+  id?: string | null;
 } & Record<string, any>;

@@ -7,15 +7,10 @@ import type { VectorKeyValueListPair } from './vector-key-value-list-pair.js';
 /**
  * Schema for a text-only chunk.
  */
-export type TextOnlyBaseChunk = {
+export type TextOnlyBaseChunkCreate = {
   content: string;
   /**
    * Default: [].
    */
   metadata?: VectorKeyValueListPair[];
-  /**
-   * Unique identifier of a chuk.
-   * Format: "uuid".
-   */
-  id: string;
 } & Record<string, any>;

@@ -5,6 +5,6 @@
  */
 
 /**
- * Representation of the 'VectorSearchSelectOptionEnum' schema.
+ * Representation of the 'FilterMatchModeEnum' schema.
  */
-export type VectorSearchSelectOptionEnum = 'ignoreIfKeyAbsent';
+export type FilterMatchModeEnum = 'ANY' | 'ALL';
