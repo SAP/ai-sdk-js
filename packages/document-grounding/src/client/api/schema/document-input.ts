@@ -3,14 +3,17 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { TextOnlyBaseChunk } from './text-only-base-chunk.js';
+import type { TextOnlyBaseChunkCreate } from './text-only-base-chunk-create.js';
 import type { VectorDocumentKeyValueListPair } from './vector-document-key-value-list-pair.js';
 /**
  * A single document stored in a collection by ID.
  */
 export type DocumentInput = {
-  chunks: TextOnlyBaseChunk[];
-  metadata: VectorDocumentKeyValueListPair[];
+  chunks: TextOnlyBaseChunkCreate[];
+  /**
+   * Default: [].
+   */
+  metadata?: VectorDocumentKeyValueListPair[];
   /**
    * Unique identifier of a document.
    * Format: "uuid".

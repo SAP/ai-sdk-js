@@ -3,15 +3,18 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { FilterMatchModeEnum } from './filter-match-mode-enum.js';
+
 /**
- * Representation of the 'RetrievalDocumentKeyValueListPair' schema.
+ * Representation of the 'RetrievalScopedKeyValueListPair' schema.
  */
-export type RetrievalDocumentKeyValueListPair = {
+export type RetrievalScopedKeyValueListPair = {
   /**
    * Max Length: 1024.
    */
   key: string;
   value: string[];
-  matchMode?: FilterMatchModeEnum;
+  /**
+   * Default: "document".
+   */
+  scope?: 'repository' | 'document' | 'chunk';
 } & Record<string, any>;

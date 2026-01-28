@@ -7,10 +7,13 @@ import type { RetrievalSearchConfiguration } from './retrieval-search-configurat
 import type { DataRepositoryType } from './data-repository-type.js';
 import type { RetrievalKeyValueListPair } from './retrieval-key-value-list-pair.js';
 import type { RetrievalSearchDocumentKeyValueListPair } from './retrieval-search-document-key-value-list-pair.js';
+import type { RetrievalBinaryBooleanFilter } from './retrieval-binary-boolean-filter.js';
+import type { RetrievalScopedKeyValueListPair } from './retrieval-scoped-key-value-list-pair.js';
+import type { VectorScoringConfiguration } from './vector-scoring-configuration.js';
 /**
- * Limit scope of search to certain DataRepositories, Documents or Chunks.
+ * Representation of the 'RetrievalVectorSearchFilter' schema.
  */
-export type RetrievalSearchFilter = {
+export type RetrievalVectorSearchFilter = {
   /**
    * Identifier of this RetrievalSearchFilter - unique per request.
    */
@@ -23,7 +26,7 @@ export type RetrievalSearchFilter = {
    * ].
    */
   dataRepositories?: string[];
-  dataRepositoryType: DataRepositoryType;
+  dataRepositoryType?: DataRepositoryType;
   /**
    * Destination Name of remote instance.
    */
@@ -43,4 +46,12 @@ export type RetrievalSearchFilter = {
    * Default: [].
    */
   chunkMetadata?: RetrievalKeyValueListPair[];
+  /**
+   * Filter to apply on the search results. This cannot be used together with 'documentMetadata'. The depth of the filter must not exceed 5 levels.
+   */
+  filter?:
+    | RetrievalBinaryBooleanFilter
+    | RetrievalScopedKeyValueListPair
+    | null;
+  scoringConfiguration?: VectorScoringConfiguration;
 } & Record<string, any>;
