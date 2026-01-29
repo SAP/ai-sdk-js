@@ -221,6 +221,28 @@ export interface OrchestrationModuleConfig {
 }
 
 /**
+ * Non-empty list of orchestration module configurations for module fallback.
+ * The orchestration service will try each configuration in order until one succeeds.
+ * @example
+ * const fallbackConfig: OrchestrationModuleConfigList = [
+ *   {
+ *     promptTemplating: {
+ *       model: { name: 'gpt-4o', params: { timeout: 5 } }
+ *     }
+ *   },
+ *   {
+ *     promptTemplating: {
+ *       model: { name: 'gpt-4o-mini' }
+ *     }
+ *   }
+ * ];
+ */
+export type OrchestrationModuleConfigList = [
+  OrchestrationModuleConfig,
+  ...OrchestrationModuleConfig[]
+];
+
+/**
  * Reference to an orchestration configuration created via the Prompt Registry API.
  * Use this to reference a pre-configured orchestration setup without
  * defining the full configuration in code. The configuration must be
@@ -259,13 +281,39 @@ export type OrchestrationConfigRef = Xor<
  * @returns Type predicate indicating whether the config is a config reference.
  */
 export function isConfigReference(
-  config: OrchestrationModuleConfig | string | OrchestrationConfigRef
+  config:
+    | OrchestrationModuleConfig
+    | OrchestrationModuleConfigList
+    | string
+    | OrchestrationConfigRef
 ): config is OrchestrationConfigRef {
   return (
     typeof config === 'object' &&
+    !Array.isArray(config) &&
     ('id' in config ||
       ('scenario' in config && 'name' in config && 'version' in config))
   );
+}
+
+/**
+ * Type guard to check if config is a list of orchestration module configs.
+ * @internal
+ * @param config - The config to check.
+ * @throws {Error} With message "Configuration array must not be empty." if config is an empty array.
+ * @returns True if config is a non-empty array. Does not validate that array elements are valid OrchestrationModuleConfig objects.
+ */
+export function isOrchestrationModuleConfigList(
+  config:
+    | OrchestrationModuleConfig
+    | OrchestrationModuleConfigList
+    | string
+    | OrchestrationConfigRef
+): config is OrchestrationModuleConfigList {
+  const isArray = Array.isArray(config);
+  if (isArray && config.length === 0) {
+    throw new Error('Configuration array must not be empty.');
+  }
+  return isArray;
 }
 
 /**
