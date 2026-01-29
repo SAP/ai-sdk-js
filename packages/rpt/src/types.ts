@@ -121,3 +121,18 @@ export type PredictionData<T extends DataSchema> = {
     columns: ColType<T>;
   }
 >;
+
+/**
+ * Options for Parquet-based predictions.
+ */
+export interface PredictionOptionsParquet {
+  /**
+   * The name of the index column. If provided, the service will return this column's value in each prediction object to facilitate aligning the output predictions with the input rows on the client side. If not provided, the column will not be included in the output.
+   */
+  index_column?: string;
+  /**
+   * Whether to parse the data types of the columns. If set to True, numeric columns will be parsed to float or integer and dates in ISO format YYYY-MM-DD will be parsed.
+   * Default: true.
+   */
+  parse_data_types?: boolean;
+}

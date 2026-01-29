@@ -1,5 +1,9 @@
 export * from './client.js';
-export type { PredictionData, DateString } from './types.js';
+export type {
+  DateString,
+  PredictionData,
+  PredictionOptionsParquet
+} from './types.js';
 export type {
   PredictResponseMetadata,
   PredictResponsePayload,
