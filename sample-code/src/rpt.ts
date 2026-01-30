@@ -1,5 +1,9 @@
 import { RptClient } from '@sap-ai-sdk/rpt';
-import type { PredictResponsePayload, PredictionData } from '@sap-ai-sdk/rpt';
+import type {
+  PredictResponsePayload,
+  PredictionData,
+  RequestCompressionAlgorithm
+} from '@sap-ai-sdk/rpt';
 
 const schema = [
   { name: 'PRODUCT', dtype: 'string' },
@@ -62,6 +66,23 @@ const data: PredictionData<typeof schema> = {
 export async function predictWithSchema(): Promise<PredictResponsePayload> {
   const client = new RptClient();
   return client.predictWithSchema(schema, data);
+}
+
+/**
+ * Predict the sales group of products with gzip compression.
+ * @param algorithm - The compression algorithm to use.
+ * @returns The prediction results.
+ */
+export async function predictWithSchemaCompressed(
+  algorithm: RequestCompressionAlgorithm = 'gzip'
+): Promise<PredictResponsePayload> {
+  const client = new RptClient();
+  return client.predictWithSchema(schema, data, {
+    requestCompression: {
+      mode: true, // force-enable compression
+      algorithm
+    }
+  });
 }
 
 /**
