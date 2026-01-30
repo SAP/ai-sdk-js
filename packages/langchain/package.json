@@ -35,8 +35,8 @@
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.3.1",
-    "@sap-cloud-sdk/util": "^4.3.1",
+    "@sap-cloud-sdk/connectivity": "^4.4.0",
+    "@sap-cloud-sdk/util": "^4.4.0",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
