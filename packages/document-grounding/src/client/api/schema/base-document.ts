@@ -10,5 +10,8 @@ import type { VectorDocumentKeyValueListPair } from './vector-document-key-value
  */
 export type BaseDocument = {
   chunks: TextOnlyBaseChunk[];
-  metadata: VectorDocumentKeyValueListPair[];
+  /**
+   * Default: [].
+   */
+  metadata?: VectorDocumentKeyValueListPair[];
 } & Record<string, any>;

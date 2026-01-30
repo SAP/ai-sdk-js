@@ -5,10 +5,10 @@
  */
 
 /**
- * Representation of the 'ValidationError' schema.
+ * Representation of the 'MergeStrategyType' schema.
  */
-export type ValidationError = {
-  loc: (string | number)[];
-  msg: string;
-  type: string;
-} & Record<string, any>;
+export type MergeStrategyType =
+  | 'reranker'
+  | 'scoreReuse'
+  | 'reciprocalRankFusion'
+  | 'random';

@@ -5,12 +5,17 @@
  */
 
 /**
- * Collection metadata during ingestion
+ * Representation of the 'ScopedKeyValueListPair' schema.
  */
-export type VectorKeyValueListPair = {
+export type ScopedKeyValueListPair = {
   /**
    * Max Length: 1024.
    */
   key: string;
   value: string[];
+  /**
+   * Scope of the metadata filter (e.g., collection, document, chunk)
+   * Default: "document".
+   */
+  scope?: 'collection' | 'document' | 'chunk';
 } & Record<string, any>;

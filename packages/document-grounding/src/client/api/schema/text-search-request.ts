@@ -13,6 +13,6 @@ export type TextSearchRequest = {
    * Max Length: 2000.
    * Min Length: 1.
    */
-  query: string;
+  query: string | null;
   filters: VectorSearchFilter[];
 } & Record<string, any>;

@@ -5,10 +5,9 @@
  */
 
 /**
- * Representation of the 'ValidationError' schema.
+ * Representation of the 'ScoresAggregationStrategy' schema.
  */
-export type ValidationError = {
-  loc: (string | number)[];
-  msg: string;
-  type: string;
-} & Record<string, any>;
+export type ScoresAggregationStrategy =
+  | 'weighted_average'
+  | 'rrf'
+  | 'weighted_rrf';

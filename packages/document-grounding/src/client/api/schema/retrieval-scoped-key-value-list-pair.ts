@@ -5,12 +5,16 @@
  */
 
 /**
- * Collection metadata during ingestion
+ * Representation of the 'RetrievalScopedKeyValueListPair' schema.
  */
-export type VectorKeyValueListPair = {
+export type RetrievalScopedKeyValueListPair = {
   /**
    * Max Length: 1024.
    */
   key: string;
   value: string[];
+  /**
+   * Default: "document".
+   */
+  scope?: 'repository' | 'document' | 'chunk';
 } & Record<string, any>;

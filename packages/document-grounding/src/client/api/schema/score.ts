@@ -5,10 +5,8 @@
  */
 
 /**
- * Representation of the 'ValidationError' schema.
+ * Representation of the 'Score' schema.
  */
-export type ValidationError = {
-  loc: (string | number)[];
-  msg: string;
-  type: string;
+export type Score = {
+  value: number;
 } & Record<string, any>;

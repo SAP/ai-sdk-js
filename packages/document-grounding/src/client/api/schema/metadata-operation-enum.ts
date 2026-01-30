@@ -5,10 +5,6 @@
  */
 
 /**
- * Representation of the 'ValidationError' schema.
+ * Representation of the 'MetadataOperationEnum' schema.
  */
-export type ValidationError = {
-  loc: (string | number)[];
-  msg: string;
-  type: string;
-} & Record<string, any>;
+export type MetadataOperationEnum = 'add' | 'remove' | 'replace' | 'delete_key';
