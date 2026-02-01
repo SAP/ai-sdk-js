@@ -1,3 +1,6 @@
+import { openAsBlob } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { RptClient } from '@sap-ai-sdk/rpt';
 import type { PredictResponsePayload, PredictionData } from '@sap-ai-sdk/rpt';
 
@@ -71,4 +74,21 @@ export async function predictWithSchema(): Promise<PredictResponsePayload> {
 export async function predictAutomaticParsing(): Promise<PredictResponsePayload> {
   const client = new RptClient();
   return client.predictWithoutSchema(data);
+}
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const parquetFilePath = join(__dirname, 'product_data.parquet');
+
+/**
+ * Predict the sales group of products by passing a Parquet file.
+ * @returns The prediction results.
+ */
+export async function predictParquet(): Promise<PredictResponsePayload> {
+  const parquetFileBlob = await openAsBlob(parquetFilePath);
+  const client = new RptClient();
+  return client.predictParquet(parquetFileBlob, data.prediction_config, {
+    index_column: data.index_column,
+    parse_data_types: false
+  });
 }

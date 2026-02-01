@@ -2,11 +2,16 @@ import {
   getFoundationModelDeploymentId,
   getResourceGroup
 } from '@sap-ai-sdk/ai-api/internal.js';
-import { RptApi } from './internal.js';
-import { type DataSchema, type PredictionData } from './types.js';
+import { type PredictionConfig, RptApi } from './internal.js';
+import {
+  type DataSchema,
+  type PredictionData,
+  type PredictionOptionsParquet
+} from './types.js';
 import type {
   PredictRequestPayload,
-  PredictResponsePayload
+  PredictResponsePayload,
+  BodyPredictParquet
 } from './client/rpt/index.js';
 import type { SapRptModel } from '@sap-ai-sdk/core/internal.js';
 import type { ModelDeployment } from '@sap-ai-sdk/ai-api';
@@ -54,6 +59,61 @@ export class RptClient {
   }
 
   /**
+   * Predict based on Parquet file data.
+   * @param parquetData - Parquet file data as Blob.
+   * @param predictionConfig - Configuration for the prediction.
+   * @param options - Additional options for the prediction.
+   * @param options.index_column - Name of the index column in the Parquet file.
+   * @param options.parseDataTypes - Whether to parse data types from the Parquet file.
+   * @returns Prediction response.
+   */
+  async predictParquet(
+    parquetData: Blob,
+    predictionConfig: PredictionConfig,
+    options?: PredictionOptionsParquet
+  ): Promise<PredictResponsePayload> {
+    // Validate that parquetData is of type Blob
+    // JavaScript has a few Blob-like types for binary data (e.g., Buffer, ArrayBuffer, etc.) which
+    // users might try to use here.
+    if (!(parquetData instanceof Blob)) {
+      throw new Error(
+        `parquetData must be of type Blob. Received: ${typeof parquetData}`
+      );
+    }
+
+    const { resourceGroup, deploymentId } =
+      await this.getResourceGroupAndDeploymentId();
+
+    // Construct intermediate body object to handle type-safety
+    const bodyObject: BodyPredictParquet = {
+      // The schema says bytes, but SAP Cloud SDK generates it as string
+      file: parquetData as unknown as string,
+      prediction_config: JSON.stringify(predictionConfig),
+      ...(options || {})
+    };
+
+    const body = new FormData();
+    // A filename is required, using a generic one here
+    body.append('file', parquetData, 'data.parquet');
+    body.append('prediction_config', bodyObject.prediction_config);
+
+    for (const [key, value] of Object.entries(options || {})) {
+      if (value !== undefined) {
+        body.append(key, String(value));
+      }
+    }
+
+    return RptApi.predictParquet(body)
+      .setBasePath(`/inference/deployments/${deploymentId}`)
+      .addCustomHeaders({
+        'ai-resource-group': resourceGroup || 'default',
+        // SAP Cloud SDK does not (yet) set the Content-Type header automatically for multipart/form-data
+        'content-type': 'multipart/form-data'
+      })
+      .execute(this.destination);
+  }
+
+  /**
    * Predict based on data schema and prediction data.
    * @param predictionData - Data to base prediction on.
    * @param dataSchema - Prediction data follows this schema.
@@ -63,13 +123,8 @@ export class RptClient {
     predictionData: PredictionData<T>,
     dataSchema?: T
   ): Promise<PredictResponsePayload> {
-    const deploymentId = await getFoundationModelDeploymentId(
-      this.modelDeployment,
-      'aicore-sap',
-      this.destination
-    );
-
-    const resourceGroup = getResourceGroup(this.modelDeployment);
+    const { resourceGroup, deploymentId } =
+      await this.getResourceGroupAndDeploymentId();
 
     const body = {
       data_schema: dataSchema
@@ -87,5 +142,21 @@ export class RptClient {
       .setBasePath(`/inference/deployments/${deploymentId}`)
       .addCustomHeaders({ 'ai-resource-group': resourceGroup || 'default' })
       .execute(this.destination);
+  }
+
+  /**
+   * Gets the resource group and deployment ID for the RPT model.
+   * @returns Object containing resource group and deployment ID.
+   */
+  private async getResourceGroupAndDeploymentId() {
+    const deploymentId = await getFoundationModelDeploymentId(
+      this.modelDeployment,
+      'aicore-sap',
+      this.destination
+    );
+
+    const resourceGroup = getResourceGroup(this.modelDeployment);
+
+    return { resourceGroup, deploymentId };
   }
 }

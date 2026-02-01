@@ -66,7 +66,7 @@ export async function executeRequest(
 
   const mergedRequestConfig = {
     ...mergeWithDefaultRequestConfig(apiVersion, resourceGroup, requestConfig),
-    data: JSON.stringify(data)
+    data: data instanceof FormData ? data : JSON.stringify(data)
   };
 
   try {
