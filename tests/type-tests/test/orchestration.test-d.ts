@@ -19,14 +19,16 @@ import type {
   LlamaGuard38BFilterReturnType,
   OrchestrationConfigRef,
   OrchestrationStreamResponse,
-  OrchestrationStreamChunkResponse
+  OrchestrationStreamChunkResponse,
+  OrchestrationModuleConfigList
 } from '@sap-ai-sdk/orchestration';
 import type {
   CompletionPostResponse,
   TokenUsage,
   ChatMessages,
   DpiConfig,
-  MessageToolCalls
+  MessageToolCalls,
+  OrchestrationError
 } from '@sap-ai-sdk/orchestration/internal.js';
 
 /**
@@ -689,4 +691,77 @@ expectType<boolean>(
       }
     }
   })
+);
+
+/**
+ * Module Fallback Configs (OrchestrationModuleConfigList).
+ */
+expectAssignable<OrchestrationModuleConfigList>([
+  {
+    promptTemplating: {
+      model: { name: 'gpt-4o', params: { timeout: 5 } },
+      prompt: { template: [{ role: 'user', content: 'Hello' }] }
+    }
+  },
+  {
+    promptTemplating: {
+      model: { name: 'gpt-4o-mini' },
+      prompt: { template: [{ role: 'user', content: 'Hello' }] }
+    }
+  }
+]);
+
+/**
+ * Module fallback config array must not be empty.
+ */
+expectError<OrchestrationModuleConfigList>([]);
+
+/**
+ * Module fallback config array elements must be valid OrchestrationModuleConfig objects.
+ */
+expectError<OrchestrationModuleConfigList>([
+  { promptTemplating: { model: { name: 'gpt-4o' } } },
+  { invalidProperty: 'not-a-valid-config' }
+]);
+
+/**
+ * Chat Completion with module fallback configs.
+ */
+expectType<Promise<OrchestrationResponse>>(
+  new OrchestrationClient([
+    {
+      promptTemplating: {
+        model: { name: 'gpt-4o', params: { timeout: 5 } },
+        prompt: { template: [{ role: 'user', content: 'Try primary model' }] }
+      }
+    },
+    {
+      promptTemplating: {
+        model: { name: 'gpt-4o-mini' },
+        prompt: { template: [{ role: 'user', content: 'Fallback model' }] }
+      }
+    }
+  ]).chatCompletion()
+);
+
+/**
+ * Streaming with module fallback configs.
+ */
+expectType<
+  Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>>
+>(
+  new OrchestrationClient([
+    {
+      promptTemplating: {
+        model: { name: 'gpt-4o' },
+        prompt: { template: [{ role: 'user', content: 'Primary' }] }
+      }
+    },
+    {
+      promptTemplating: {
+        model: { name: 'gpt-4o-mini' },
+        prompt: { template: [{ role: 'user', content: 'Fallback' }] }
+      }
+    }
+  ]).stream()
 );

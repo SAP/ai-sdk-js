@@ -1,5 +1,6 @@
 export type {
   OrchestrationModuleConfig,
+  OrchestrationModuleConfigList,
   OrchestrationConfigRef,
   PromptTemplatingModule,
   MaskingModule,
@@ -73,5 +74,6 @@ export type {
   ToolChatMessage,
   DeveloperChatMessage,
   ChatCompletionTool,
-  FunctionObject
+  FunctionObject,
+  Error as OrchestrationError
 } from './client/api/schema/index.js';

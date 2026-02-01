@@ -25,7 +25,8 @@ export {
   orchestrationMessageHistoryWithToolCalling,
   orchestrationTranslation,
   orchestrationEmbeddingWithMasking,
-  OrchestrationConfigRef
+  OrchestrationConfigRef,
+  orchestrationWithFallbackConfigs
 } from './orchestration.js';
 export {
   invoke,
