@@ -37,6 +37,7 @@ export {
 export {
   invokeChain as orchestrationInvokeChain,
   invokeLangGraphChain,
+  invokeDynamicModelAgent,
   invokeLangGraphChainStream,
   invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
   streamChain
@@ -66,3 +67,5 @@ export {
   createPromptTemplate,
   deletePromptTemplate
 } from './prompt-registry.js';
+
+export { predictWithSchema, predictAutomaticParsing } from './rpt.js';

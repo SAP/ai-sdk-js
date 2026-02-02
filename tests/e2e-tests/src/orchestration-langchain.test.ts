@@ -2,7 +2,8 @@ import {
   orchestrationInvokeChain,
   invokeLangGraphChain,
   invokeLangGraphChainStream,
-  orchestrationInvokeWithStructuredOutput
+  orchestrationInvokeWithStructuredOutput,
+  invokeDynamicModelAgent
 } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
 
@@ -19,7 +20,12 @@ describe('Orchestration LangChain client', () => {
     expect(result).toContain('SAP Cloud SDK');
   });
 
-  it('executes an stream with LangGraph', async () => {
+  it('executes an invoke with dynamic model selection agent', async () => {
+    const result = await invokeDynamicModelAgent();
+    expect(result).toContain('SAP');
+  });
+
+  it('executes a stream with LangGraph', async () => {
     const result = await invokeLangGraphChainStream();
     expect(result).toContain('SAP Cloud SDK');
   });

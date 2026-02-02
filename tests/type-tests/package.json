@@ -13,11 +13,12 @@
     "directory": "test"
   },
   "devDependencies": {
+    "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
-    "@sap-ai-sdk/core": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.3.1",
-    "@sap-cloud-sdk/http-client": "^4.3.1",
+    "@sap-ai-sdk/rpt": "workspace:^",
+    "@sap-cloud-sdk/connectivity": "^4.4.0",
+    "@sap-cloud-sdk/http-client": "^4.4.0",
     "tsd": "^0.33.0"
   }
 }

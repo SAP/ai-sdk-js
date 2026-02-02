@@ -63,7 +63,8 @@ import {
   invokeToolChain as invokeToolChainOrchestration,
   streamChain as streamChainOrchestration,
   invokeMcpToolChain as invokeMcpToolChainOrchestration,
-  invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput
+  invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
+  invokeDynamicModelAgent
 } from './langchain-orchestration.js';
 import {
   createCollection,
@@ -75,6 +76,7 @@ import {
   createPromptTemplate,
   deletePromptTemplate
 } from './prompt-registry.js';
+import { predictAutomaticParsing, predictWithSchema } from './rpt.js';
 import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type { AIMessageChunk } from '@langchain/core/messages';
 import type {
@@ -584,6 +586,16 @@ app.get('/langchain/invoke-stateful-chain', async (req, res) => {
   }
 });
 
+app.get('/langchain/invoke-dynamic-model-agent', async (req, res) => {
+  try {
+    res
+      .header('Content-Type', 'text/plain')
+      .send(await invokeDynamicModelAgent());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
 app.get('/langchain/stream-azure-openai', async (req, res) => {
   const controller = new AbortController();
   try {
@@ -807,6 +819,28 @@ app.get('/prompt-registry/template', async (req, res) => {
 
     const response = await deletePromptTemplate(id);
     res.write(`Prompt template deleted: ${response.message}\n`);
+
+    res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/rpt/predict', async (req, res) => {
+  try {
+    const data = await predictWithSchema();
+    res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
+
+    res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/rpt/predict-automatic', async (req, res) => {
+  try {
+    const data = await predictAutomaticParsing();
+    res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
 
     res.end();
   } catch (error: any) {
