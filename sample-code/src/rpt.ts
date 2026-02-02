@@ -2,7 +2,7 @@ import { RptClient } from '@sap-ai-sdk/rpt';
 import type {
   PredictResponsePayload,
   PredictionData,
-  RequestCompressionAlgorithm
+  RptRequestCompressionAlgorithm
 } from '@sap-ai-sdk/rpt';
 
 const schema = [
@@ -74,7 +74,7 @@ export async function predictWithSchema(): Promise<PredictResponsePayload> {
  * @returns The prediction results.
  */
 export async function predictWithSchemaCompressed(
-  algorithm: RequestCompressionAlgorithm = 'gzip'
+  algorithm: RptRequestCompressionAlgorithm = 'gzip'
 ): Promise<PredictResponsePayload> {
   const client = new RptClient();
   return client.predictWithSchema(schema, data, {

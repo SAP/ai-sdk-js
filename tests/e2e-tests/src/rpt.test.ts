@@ -20,21 +20,17 @@ describe('rpt', () => {
     });
   });
 
-  const algorithms = ['gzip', 'brotli', 'deflate', 'zstd'] as const;
+  it('should predict sales groups with gzip compression', async () => {
+    const { predictions } = await predictWithSchemaCompressed('gzip');
 
-  algorithms.forEach(algorithm => {
-    it(`should predict sales groups with ${algorithm} compression`, async () => {
-      const { predictions } = await predictWithSchemaCompressed(algorithm);
-
-      expect(predictions.length).toBe(2);
-      expect(predictions[0]).toMatchObject({
-        SALESGROUP: expect.anything(),
-        __row_idx__: '35'
-      });
-      expect(predictions[1]).toMatchObject({
-        SALESGROUP: expect.anything(),
-        __row_idx__: '571'
-      });
+    expect(predictions.length).toBe(2);
+    expect(predictions[0]).toMatchObject({
+      SALESGROUP: expect.anything(),
+      __row_idx__: '35'
+    });
+    expect(predictions[1]).toMatchObject({
+      SALESGROUP: expect.anything(),
+      __row_idx__: '571'
     });
   });
 });

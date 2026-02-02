@@ -2,7 +2,6 @@ import {
   getFoundationModelDeploymentId,
   getResourceGroup
 } from '@sap-ai-sdk/ai-api/internal.js';
-import { createLogger } from '@sap-cloud-sdk/util';
 import { executeRequest } from '@sap-ai-sdk/core';
 import { compressRequest } from './vendor/index.js';
 import type { DataSchema, PredictionData, RptRequestOptions } from './types.js';
@@ -13,11 +12,6 @@ import type {
 import type { SapRptModel } from '@sap-ai-sdk/core/internal.js';
 import type { ModelDeployment } from '@sap-ai-sdk/ai-api';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
-
-const logger = createLogger({
-  package: 'rpt',
-  messageContext: 'RptClient'
-});
 
 /**
  * Representation of an RPT client to make predictions.
@@ -99,14 +93,10 @@ export class RptClient {
     const { requestCompression, ...customRequest } = customRequestAll;
 
     if (requestCompression?.mode !== false) {
-      if (customRequest.middlewares) {
-        logger.warn(
-          'Custom middlewares are not supported when request compression is enabled. ' +
-            'The compression middleware will not be applied. ' +
-            'Please disable request compression in RptRequestOptions to avoid this warning (`requestCompression.mode = false`).'
-        );
-      }
-      customRequest.middlewares = [compressRequest(requestCompression)];
+      customRequest.middleware = [
+        compressRequest(requestCompression),
+        ...(customRequest.middleware || [])
+      ];
     }
 
     const response = await executeRequest(
