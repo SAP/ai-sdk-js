@@ -35,8 +35,13 @@ describe('rpt', () => {
     verifyPredictions(predictions, false);
   });
 
-  it('should predict sales groups from Parquet file', async () => {
-    const { predictions } = await predictParquet();
+  it('should predict sales groups from Parquet file [Blob]', async () => {
+    const { predictions } = await predictParquet('Blob');
+    verifyPredictions(predictions);
+  });
+
+  it('should predict sales groups from Parquet file [File]', async () => {
+    const { predictions } = await predictParquet('File');
     verifyPredictions(predictions);
   });
 });

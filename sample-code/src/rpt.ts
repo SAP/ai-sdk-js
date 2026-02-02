@@ -82,13 +82,26 @@ const parquetFilePath = join(__dirname, 'product_data.parquet');
 
 /**
  * Predict the sales group of products by passing a Parquet file.
+ * @param type - The type of the file to be sent, either 'Blob' or 'File' (a `Blob` with a filename).
  * @returns The prediction results.
  */
-export async function predictParquet(): Promise<PredictResponsePayload> {
+export async function predictParquet(
+  type: 'Blob' | 'File' = 'Blob'
+): Promise<PredictResponsePayload> {
+  // You can choose to pass either a Blob or a File.
   const parquetFileBlob = await openAsBlob(parquetFilePath);
-  const client = new RptClient();
-  return client.predictParquet(parquetFileBlob, data.prediction_config, {
-    index_column: data.index_column,
-    parse_data_types: false
+  // If type is 'File', the filename will be forwarded to the RPT service instead of a generic name.
+  const parquetFile = new File([parquetFileBlob], 'product_data.parquet', {
+    type: 'application/vnd.apache.parquet'
   });
+  // Send the Parquet file to the RPT service for predictions
+  const client = new RptClient();
+  return client.predictParquet(
+    type === 'File' ? parquetFile : parquetFileBlob,
+    data.prediction_config,
+    {
+      index_column: data.index_column,
+      parse_data_types: false
+    }
+  );
 }

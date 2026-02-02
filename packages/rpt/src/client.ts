@@ -60,7 +60,7 @@ export class RptClient {
 
   /**
    * Predict based on Parquet file data.
-   * @param parquetData - Parquet file data as Blob.
+   * @param parquetData - Parquet file data as Blob. Can also be a File to forward the filename.
    * @param predictionConfig - Configuration for the prediction.
    * @param options - Additional options for the prediction.
    * @param options.index_column - Name of the index column in the Parquet file.
@@ -68,16 +68,17 @@ export class RptClient {
    * @returns Prediction response.
    */
   async predictParquet(
-    parquetData: Blob,
+    parquetData: Blob | File,
     predictionConfig: PredictionConfig,
     options?: PredictionOptionsParquet
   ): Promise<PredictResponsePayload> {
     // Validate that parquetData is of type Blob
     // JavaScript has a few Blob-like types for binary data (e.g., Buffer, ArrayBuffer, etc.) which
     // users might try to use here.
+    // Note: This check also covers File
     if (!(parquetData instanceof Blob)) {
       throw new Error(
-        `parquetData must be of type Blob. Received: ${typeof parquetData}`
+        `parquetData must be of type Blob or File. Received: ${typeof parquetData}`
       );
     }
 
@@ -93,8 +94,18 @@ export class RptClient {
     };
 
     const body = new FormData();
-    // A filename is required, using a generic one here
-    body.append('file', parquetData, 'data.parquet');
+    if (parquetData instanceof File) {
+      // If the Blob is a File, preserve the filename
+      body.append('file', parquetData);
+    } else {
+      // For generic Blobs, extend with a filename & mime type
+      const newBlob = new Blob([parquetData], {
+        type: 'application/vnd.apache.parquet'
+      });
+      // TODO: RPT-API requires a filename, even if MIME type is set correctly
+      body.append('file', newBlob, 'blob.parquet');
+    }
+
     body.append('prediction_config', bodyObject.prediction_config);
 
     for (const [key, value] of Object.entries(options || {})) {
