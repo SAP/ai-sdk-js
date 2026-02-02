@@ -380,6 +380,9 @@ importers:
       '@sap-ai-sdk/prompt-registry':
         specifier: canary
         version: 2.5.1-20260201013523.0
+      '@sap-ai-sdk/rpt':
+        specifier: canary
+        version: 2.5.1-20260202120807.0
       '@sap-cloud-sdk/util':
         specifier: ^4.4.0
         version: 4.4.0
@@ -1248,8 +1251,14 @@ packages:
   '@sap-ai-sdk/ai-api@2.5.1-20260201013523.0':
     resolution: {integrity: sha512-GN/q+cvQHbXpWADwKCDq2ebdcmsifZ/95rHCQ9mbTZknAJ8mHYtFXEa2R6d8xlDa07PHmXPgHXufHcW8LZU/Bw==}
 
+  '@sap-ai-sdk/ai-api@2.5.1-20260202120807.0':
+    resolution: {integrity: sha512-u6WHL5bNqzEFrf7GpuHdJ5QoZeAr6xTrVj64eMVMvrb4TsYxrR7wZuFTnpqZLvjuaqWGuneebPBEiaqjtA+4Rw==}
+
   '@sap-ai-sdk/core@2.5.1-20260201013523.0':
     resolution: {integrity: sha512-3YA7dz212jJ2xIWHCwZVg0mKgukD5Oz9x8O4Ir7PWSjNu9tnPR9gg47EcWU+//ok6hslou332LbR8L6WkQKA+Q==}
+
+  '@sap-ai-sdk/core@2.5.1-20260202120807.0':
+    resolution: {integrity: sha512-SqD4WCsJwUNUNKaRyr6USiERlPSHkPe5Z/LxnObah/Mgz8J9J2qTPiW8mTiQ+HwM7K3J7Q/L3PMQ6MEOGCjpWQ==}
 
   '@sap-ai-sdk/document-grounding@2.5.1-20260201013523.0':
     resolution: {integrity: sha512-IJhY/ZUu+GETCnAqduff19pm/TQ8qgfk0F1xi7fmBWhzYZ170HiL0PvB03XFwoFe8QpD5vt7SBRuUp7qgxirVA==}
@@ -1267,6 +1276,9 @@ packages:
 
   '@sap-ai-sdk/prompt-registry@2.5.1-20260201013523.0':
     resolution: {integrity: sha512-sarWhOHJEuq0F7wbWP6JX4j12fcLjDV37htTzUjPYMRGBKHR6tnMSI58qNmehWgGLKCHOFdzN3hjHWQMUjMAOQ==}
+
+  '@sap-ai-sdk/rpt@2.5.1-20260202120807.0':
+    resolution: {integrity: sha512-r4rAiQr6CSP4CRYdyiP96C6pyin91IRKEL1rR7LTwFcV8EzGVkNTFl0a8UCkxPQYbUwYax0L9Tmz8EoZWWEQrQ==}
 
   '@sap-cloud-sdk/connectivity@4.4.0':
     resolution: {integrity: sha512-jGbFpQT2QHEmUBfAXNiX3hcNxF2QVJnFDhI4mZPSvhBzueRC6iJISB+Ls2RVmNS10wLcvI91zlmsGyYw+oeYsQ==}
@@ -1680,49 +1692,41 @@ packages:
     resolution: {integrity: sha512-34gw7PjDGB9JgePJEmhEqBhWvCiiWCuXsL9hYphDF7crW7UgI05gyBAi6MF58uGcMOiOqSJ2ybEeCvHcq0BCmQ==}
     cpu: [arm64]
     os: [linux]
-    libc: [glibc]
 
   '@unrs/resolver-binding-linux-arm64-musl@1.11.1':
     resolution: {integrity: sha512-RyMIx6Uf53hhOtJDIamSbTskA99sPHS96wxVE/bJtePJJtpdKGXO1wY90oRdXuYOGOTuqjT8ACccMc4K6QmT3w==}
     cpu: [arm64]
     os: [linux]
-    libc: [musl]
 
   '@unrs/resolver-binding-linux-ppc64-gnu@1.11.1':
     resolution: {integrity: sha512-D8Vae74A4/a+mZH0FbOkFJL9DSK2R6TFPC9M+jCWYia/q2einCubX10pecpDiTmkJVUH+y8K3BZClycD8nCShA==}
     cpu: [ppc64]
     os: [linux]
-    libc: [glibc]
 
   '@unrs/resolver-binding-linux-riscv64-gnu@1.11.1':
     resolution: {integrity: sha512-frxL4OrzOWVVsOc96+V3aqTIQl1O2TjgExV4EKgRY09AJ9leZpEg8Ak9phadbuX0BA4k8U5qtvMSQQGGmaJqcQ==}
     cpu: [riscv64]
     os: [linux]
-    libc: [glibc]
 
   '@unrs/resolver-binding-linux-riscv64-musl@1.11.1':
     resolution: {integrity: sha512-mJ5vuDaIZ+l/acv01sHoXfpnyrNKOk/3aDoEdLO/Xtn9HuZlDD6jKxHlkN8ZhWyLJsRBxfv9GYM2utQ1SChKew==}
     cpu: [riscv64]
     os: [linux]
-    libc: [musl]
 
   '@unrs/resolver-binding-linux-s390x-gnu@1.11.1':
     resolution: {integrity: sha512-kELo8ebBVtb9sA7rMe1Cph4QHreByhaZ2QEADd9NzIQsYNQpt9UkM9iqr2lhGr5afh885d/cB5QeTXSbZHTYPg==}
     cpu: [s390x]
     os: [linux]
-    libc: [glibc]
 
   '@unrs/resolver-binding-linux-x64-gnu@1.11.1':
     resolution: {integrity: sha512-C3ZAHugKgovV5YvAMsxhq0gtXuwESUKc5MhEtjBpLoHPLYM+iuwSj3lflFwK3DPm68660rZ7G8BMcwSro7hD5w==}
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
 
   '@unrs/resolver-binding-linux-x64-musl@1.11.1':
     resolution: {integrity: sha512-rV0YSoyhK2nZ4vEswT/QwqzqQXw5I6CjoaYMOX0TqBlWhojUf8P94mvI7nuJTeaCkkds3QE4+zS8Ko+GdXuZtA==}
     cpu: [x64]
     os: [linux]
-    libc: [musl]
 
   '@unrs/resolver-binding-wasm32-wasi@1.11.1':
     resolution: {integrity: sha512-5u4RkfxJm+Ng7IWgkzi3qrFOvLvQYnPBmjmZQ8+szTK/b31fQCnleNl1GgEt7nIsZRIf5PLhPwT0WM+q45x/UQ==}
@@ -6111,7 +6115,26 @@ snapshots:
       - debug
       - supports-color
 
+  '@sap-ai-sdk/ai-api@2.5.1-20260202120807.0':
+    dependencies:
+      '@sap-ai-sdk/core': 2.5.1-20260202120807.0
+      '@sap-cloud-sdk/connectivity': 4.4.0
+      '@sap-cloud-sdk/util': 4.4.0
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
   '@sap-ai-sdk/core@2.5.1-20260201013523.0':
+    dependencies:
+      '@sap-cloud-sdk/connectivity': 4.4.0
+      '@sap-cloud-sdk/http-client': 4.4.0
+      '@sap-cloud-sdk/openapi': 4.4.0
+      '@sap-cloud-sdk/util': 4.4.0
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
+  '@sap-ai-sdk/core@2.5.1-20260202120807.0':
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.4.0
       '@sap-cloud-sdk/http-client': 4.4.0
@@ -6168,6 +6191,16 @@ snapshots:
     dependencies:
       '@sap-ai-sdk/core': 2.5.1-20260201013523.0
       zod: 4.3.6
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
+  '@sap-ai-sdk/rpt@2.5.1-20260202120807.0':
+    dependencies:
+      '@sap-ai-sdk/ai-api': 2.5.1-20260202120807.0
+      '@sap-ai-sdk/core': 2.5.1-20260202120807.0
+      '@sap-cloud-sdk/connectivity': 4.4.0
+      '@sap-cloud-sdk/util': 4.4.0
     transitivePeerDependencies:
       - debug
       - supports-color
