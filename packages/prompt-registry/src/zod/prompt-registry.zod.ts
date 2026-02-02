@@ -3,12 +3,12 @@
  * Do not edit manually.
  * Prompt Registry API
  * Prompt Storage service for Design time & Runtime prompt templates.
- * OpenAPI spec version: 0.0.1.
+ * OpenAPI spec version: 0.0.1
  */
 import * as zod from 'zod';
 
 /**
- * Create or update a prompt template.
+ * Create or update a prompt template
  */
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodyNameMax = 120;
 
@@ -16,8 +16,7 @@ export const registryControllerPromptControllerCreateUpdatePromptTemplateBodyVer
 
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodyScenarioMax = 120;
 
-export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecTemplateItemTwoContentItemOneImageUrlDetailDefault =
-  'auto';
+export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecTemplateItemTwoContentItemOneImageUrlDetailDefault = `auto`;
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatThreeJsonSchemaNameMax = 64;
 
 export const registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatThreeJsonSchemaNameRegExp =
@@ -132,7 +131,7 @@ export const RegistryControllerPromptControllerCreateUpdatePromptTemplateBody =
                   registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatThreeJsonSchemaStrictDefault
                 )
                 .describe(
-                  'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).'
+                  'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).'
                 )
             })
           })
@@ -171,7 +170,7 @@ export const RegistryControllerPromptControllerCreateUpdatePromptTemplateBody =
                 .record(zod.string(), zod.unknown())
                 .optional()
                 .describe(
-                  'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
+                  'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
                 ),
               strict: zod
                 .boolean()
@@ -179,7 +178,7 @@ export const RegistryControllerPromptControllerCreateUpdatePromptTemplateBody =
                   registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecToolsItemFunctionStrictDefault
                 )
                 .describe(
-                  'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'
+                  'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).'
                 )
             })
           })
@@ -201,10 +200,9 @@ export const RegistryControllerPromptControllerCreateUpdatePromptTemplateRespons
   });
 
 /**
- * List prompt templates.
+ * List prompt templates
  */
-export const registryControllerPromptControllerListPromptTemplatesQueryRetrieveDefault =
-  'both';
+export const registryControllerPromptControllerListPromptTemplatesQueryRetrieveDefault = `both`;
 export const registryControllerPromptControllerListPromptTemplatesQueryIncludeSpecDefault = false;
 
 export const RegistryControllerPromptControllerListPromptTemplatesQueryParams =
@@ -224,8 +222,7 @@ export const RegistryControllerPromptControllerListPromptTemplatesQueryParams =
       )
   });
 
-export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecTemplateItemTwoContentItemOneImageUrlDetailDefault =
-  'auto';
+export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecTemplateItemTwoContentItemOneImageUrlDetailDefault = `auto`;
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatThreeJsonSchemaNameMax = 64;
 
 export const registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatThreeJsonSchemaNameRegExp =
@@ -338,7 +335,7 @@ export const RegistryControllerPromptControllerListPromptTemplatesResponse =
                         registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatThreeJsonSchemaStrictDefault
                       )
                       .describe(
-                        'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).'
+                        'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).'
                       )
                   })
                 })
@@ -377,7 +374,7 @@ export const RegistryControllerPromptControllerListPromptTemplatesResponse =
                       .record(zod.string(), zod.unknown())
                       .optional()
                       .describe(
-                        'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
+                        'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
                       ),
                     strict: zod
                       .boolean()
@@ -385,7 +382,7 @@ export const RegistryControllerPromptControllerListPromptTemplatesResponse =
                         registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecToolsItemFunctionStrictDefault
                       )
                       .describe(
-                        'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'
+                        'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).'
                       )
                   })
                 })
@@ -401,7 +398,7 @@ export const RegistryControllerPromptControllerListPromptTemplatesResponse =
   });
 
 /**
- * List prompt template history.
+ * List prompt template history
  */
 export const RegistryControllerPromptControllerListPromptTemplateHistoryParams =
   zod.object({
@@ -410,8 +407,7 @@ export const RegistryControllerPromptControllerListPromptTemplateHistoryParams =
     name: zod.string()
   });
 
-export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecTemplateItemTwoContentItemOneImageUrlDetailDefault =
-  'auto';
+export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecTemplateItemTwoContentItemOneImageUrlDetailDefault = `auto`;
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatThreeJsonSchemaNameMax = 64;
 
 export const registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatThreeJsonSchemaNameRegExp =
@@ -524,7 +520,7 @@ export const RegistryControllerPromptControllerListPromptTemplateHistoryResponse
                         registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatThreeJsonSchemaStrictDefault
                       )
                       .describe(
-                        'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).'
+                        'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).'
                       )
                   })
                 })
@@ -563,7 +559,7 @@ export const RegistryControllerPromptControllerListPromptTemplateHistoryResponse
                       .record(zod.string(), zod.unknown())
                       .optional()
                       .describe(
-                        'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
+                        'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
                       ),
                     strict: zod
                       .boolean()
@@ -571,7 +567,7 @@ export const RegistryControllerPromptControllerListPromptTemplateHistoryResponse
                         registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecToolsItemFunctionStrictDefault
                       )
                       .describe(
-                        'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'
+                        'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).'
                       )
                   })
                 })
@@ -587,15 +583,14 @@ export const RegistryControllerPromptControllerListPromptTemplateHistoryResponse
   });
 
 /**
- * Get prompt template by UUID.
+ * Get prompt template by UUID
  */
 export const RegistryControllerPromptControllerGetPromptTemplateByUuidParams =
   zod.object({
     promptTemplateId: zod.string().uuid()
   });
 
-export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecTemplateItemTwoContentItemOneImageUrlDetailDefault =
-  'auto';
+export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecTemplateItemTwoContentItemOneImageUrlDetailDefault = `auto`;
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatThreeJsonSchemaNameMax = 64;
 
 export const registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatThreeJsonSchemaNameRegExp =
@@ -703,7 +698,7 @@ export const RegistryControllerPromptControllerGetPromptTemplateByUuidResponse =
                     registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatThreeJsonSchemaStrictDefault
                   )
                   .describe(
-                    'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).'
+                    'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).'
                   )
               })
             })
@@ -742,7 +737,7 @@ export const RegistryControllerPromptControllerGetPromptTemplateByUuidResponse =
                   .record(zod.string(), zod.unknown())
                   .optional()
                   .describe(
-                    'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
+                    'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
                   ),
                 strict: zod
                   .boolean()
@@ -750,7 +745,7 @@ export const RegistryControllerPromptControllerGetPromptTemplateByUuidResponse =
                     registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecToolsItemFunctionStrictDefault
                   )
                   .describe(
-                    'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'
+                    'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).'
                   )
               })
             })
@@ -764,7 +759,7 @@ export const RegistryControllerPromptControllerGetPromptTemplateByUuidResponse =
   });
 
 /**
- * Delete prompt template.
+ * Delete prompt template
  */
 export const RegistryControllerPromptControllerDeletePromptTemplateParams =
   zod.object({
@@ -777,7 +772,7 @@ export const RegistryControllerPromptControllerDeletePromptTemplateResponse =
   });
 
 /**
- * Import prompt template.
+ * Import prompt template
  */
 export const RegistryControllerPromptControllerImportPromptTemplateBody =
   zod.object({
@@ -794,7 +789,7 @@ export const RegistryControllerPromptControllerImportPromptTemplateResponse =
   });
 
 /**
- * Export prompt template.
+ * Export prompt template
  */
 export const RegistryControllerPromptControllerExportPromptTemplateParams =
   zod.object({
@@ -802,7 +797,7 @@ export const RegistryControllerPromptControllerExportPromptTemplateParams =
   });
 
 /**
- * Parse prompt template by ID.
+ * Parse prompt template by ID
  */
 export const RegistryControllerPromptControllerParsePromptTemplateByIdParams =
   zod.object({
@@ -825,10 +820,8 @@ export const RegistryControllerPromptControllerParsePromptTemplateByIdBody =
     inputParams: zod.object({}).optional()
   });
 
-export const registryControllerPromptControllerParsePromptTemplateByIdResponseParsedPromptItemTwoContentItemOneImageUrlDetailDefault =
-  'auto';
-export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecTemplateItemTwoContentItemOneImageUrlDetailDefault =
-  'auto';
+export const registryControllerPromptControllerParsePromptTemplateByIdResponseParsedPromptItemTwoContentItemOneImageUrlDetailDefault = `auto`;
+export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecTemplateItemTwoContentItemOneImageUrlDetailDefault = `auto`;
 export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecResponseFormatThreeJsonSchemaNameMax = 64;
 
 export const registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecResponseFormatThreeJsonSchemaNameRegExp =
@@ -972,7 +965,7 @@ export const RegistryControllerPromptControllerParsePromptTemplateByIdResponse =
                         registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecResponseFormatThreeJsonSchemaStrictDefault
                       )
                       .describe(
-                        'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).'
+                        'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).'
                       )
                   })
                 })
@@ -1011,7 +1004,7 @@ export const RegistryControllerPromptControllerParsePromptTemplateByIdResponse =
                       .record(zod.string(), zod.unknown())
                       .optional()
                       .describe(
-                        'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
+                        'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
                       ),
                     strict: zod
                       .boolean()
@@ -1019,7 +1012,7 @@ export const RegistryControllerPromptControllerParsePromptTemplateByIdResponse =
                         registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecToolsItemFunctionStrictDefault
                       )
                       .describe(
-                        'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'
+                        'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).'
                       )
                   })
                 })
@@ -1035,7 +1028,7 @@ export const RegistryControllerPromptControllerParsePromptTemplateByIdResponse =
   });
 
 /**
- * Parse prompt template by name and version.
+ * Parse prompt template by name and version
  */
 export const RegistryControllerPromptControllerParsePromptTemplateByNameVersionParams =
   zod.object({
@@ -1060,10 +1053,8 @@ export const RegistryControllerPromptControllerParsePromptTemplateByNameVersionB
     inputParams: zod.object({}).optional()
   });
 
-export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseParsedPromptItemTwoContentItemOneImageUrlDetailDefault =
-  'auto';
-export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecTemplateItemTwoContentItemOneImageUrlDetailDefault =
-  'auto';
+export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseParsedPromptItemTwoContentItemOneImageUrlDetailDefault = `auto`;
+export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecTemplateItemTwoContentItemOneImageUrlDetailDefault = `auto`;
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecResponseFormatThreeJsonSchemaNameMax = 64;
 
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecResponseFormatThreeJsonSchemaNameRegExp =
@@ -1207,7 +1198,7 @@ export const RegistryControllerPromptControllerParsePromptTemplateByNameVersionR
                         registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecResponseFormatThreeJsonSchemaStrictDefault
                       )
                       .describe(
-                        'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).'
+                        'Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).'
                       )
                   })
                 })
@@ -1246,7 +1237,7 @@ export const RegistryControllerPromptControllerParsePromptTemplateByNameVersionR
                       .record(zod.string(), zod.unknown())
                       .optional()
                       .describe(
-                        'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
+                        'The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'
                       ),
                     strict: zod
                       .boolean()
@@ -1254,7 +1245,7 @@ export const RegistryControllerPromptControllerParsePromptTemplateByNameVersionR
                         registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecToolsItemFunctionStrictDefault
                       )
                       .describe(
-                        'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'
+                        'Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).'
                       )
                   })
                 })
