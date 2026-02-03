@@ -3,7 +3,8 @@ export type {
   PredictionData,
   DateString,
   RptRequestOptions,
-  RptRequestCompressionAlgorithm
+  RptRequestCompressionAlgorithm,
+  RptRequestCompressionMiddlewareOptions
 } from './types.js';
 export type {
   PredictResponseMetadata,
