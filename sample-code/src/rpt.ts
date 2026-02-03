@@ -89,7 +89,9 @@ export async function predictParquet(
   type: 'Blob' | 'File' = 'Blob'
 ): Promise<PredictResponsePayload> {
   // You can choose to pass either a Blob or a File.
-  const parquetFileBlob = await openAsBlob(parquetFilePath);
+  const parquetFileBlob = await openAsBlob(parquetFilePath, {
+    type: 'application/vnd.apache.parquet'
+  });
   // If type is 'File', the filename will be forwarded to the RPT service instead of a generic name.
   const parquetFile = new File([parquetFileBlob], 'product_data.parquet', {
     type: 'application/vnd.apache.parquet'
