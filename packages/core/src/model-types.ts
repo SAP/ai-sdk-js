@@ -77,3 +77,8 @@ export type AiCoreOpenSourceChatModel = LiteralUnion<
  */
 export type AiCoreOpenSourceEmbeddingModel =
   LiteralUnion<'nvidia--llama-3.2-nv-embedqa-1b'>;
+
+/**
+ * SAP RPT models.
+ */
+export type SapRptModel = LiteralUnion<'sap-rpt-1-small' | 'sap-rpt-1-large'>;

@@ -1,3 +1,4 @@
+import type { ModelConfig } from './deployment-resolver.js';
 import type { AiDeployment } from '../client/AI_CORE_API/index.js';
 
 /**
@@ -34,4 +35,23 @@ export function extractModel(
   if (isFoundationModel(model)) {
     return model;
   }
+}
+
+/**
+ * Translate a model configuration to a foundation model.
+ * @param modelConfig - Representation of a model.
+ * @returns The model as foundation model.
+ * @internal
+ */
+export function translateToFoundationModel(
+  modelConfig: string | ModelConfig
+): FoundationModel {
+  if (typeof modelConfig === 'string') {
+    return { name: modelConfig };
+  }
+
+  return {
+    name: modelConfig.modelName,
+    ...(modelConfig.modelVersion && { version: modelConfig.modelVersion })
+  };
 }
