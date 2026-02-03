@@ -330,9 +330,11 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
         result as OrchestrationResponse
       ).getIntermediateFailures();
       const content = (result as OrchestrationResponse).getContent();
-      res.send(
-        `Fallback modules executed successfully.\nIntermediate Failures: ${JSON.stringify(intermediateFailures, null, 2)}\nFinal Content: ${content}`
-      );
+      res
+        .header('Content-Type', 'text/plain')
+        .send(
+          `Fallback modules executed successfully.\nIntermediate Failures: ${JSON.stringify(intermediateFailures, null, 2)}\nFinal Content: ${content}`
+        );
     } else {
       res
         .header('Content-Type', 'text/plain')

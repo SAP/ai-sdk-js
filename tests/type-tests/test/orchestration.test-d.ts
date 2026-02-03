@@ -699,13 +699,13 @@ expectType<boolean>(
 expectAssignable<OrchestrationModuleConfigList>([
   {
     promptTemplating: {
-      model: { name: 'gpt-4o', params: { timeout: 5 } },
+      model: { name: 'gpt-4o', timeout: 5 },
       prompt: { template: [{ role: 'user', content: 'Hello' }] }
     }
   },
   {
     promptTemplating: {
-      model: { name: 'gpt-4o-mini' },
+      model: { name: 'gpt-5-mini' },
       prompt: { template: [{ role: 'user', content: 'Hello' }] }
     }
   }
@@ -731,13 +731,13 @@ expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient([
     {
       promptTemplating: {
-        model: { name: 'gpt-4o', params: { timeout: 5 } },
+        model: { name: 'gpt-4o', timeout: 5 },
         prompt: { template: [{ role: 'user', content: 'Try primary model' }] }
       }
     },
     {
       promptTemplating: {
-        model: { name: 'gpt-4o-mini' },
+        model: { name: 'gpt-5-mini' },
         prompt: { template: [{ role: 'user', content: 'Fallback model' }] }
       }
     }
@@ -759,7 +759,7 @@ expectType<
     },
     {
       promptTemplating: {
-        model: { name: 'gpt-4o-mini' },
+        model: { name: 'gpt-5-mini' },
         prompt: { template: [{ role: 'user', content: 'Fallback' }] }
       }
     }
