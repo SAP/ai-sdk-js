@@ -5,7 +5,7 @@
  */
 
 /**
- * Representation of the 'VectorKeyValueListPair' schema.
+ * Collection metadata during ingestion
  */
 export type VectorKeyValueListPair = {
   /**
