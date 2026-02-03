@@ -1,8 +1,8 @@
 import { executeRequest } from '@sap-ai-sdk/core';
 import { createLogger } from '@sap-cloud-sdk/util';
 import yaml from 'yaml';
-import { registryControllerPromptControllerCreateUpdatePromptTemplateBody } from '@sap-ai-sdk/prompt-registry/internal.js';
-import { getOrchestrationDeploymentId } from './deployment-resolver.js';
+import { RegistryControllerPromptControllerCreateUpdatePromptTemplateBody } from '@sap-ai-sdk/prompt-registry/internal.js';
+import { getOrchestrationDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
 import { OrchestrationStream } from './orchestration-stream.js';
 import { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 import { OrchestrationResponse } from './orchestration-response.js';
@@ -13,7 +13,8 @@ import {
 } from './util/index.js';
 import {
   isConfigReference,
-  isOrchestrationModuleConfigList
+  isOrchestrationModuleConfigList,
+  assertIsOrchestrationModuleConfigList
 } from './orchestration-types.js';
 import type { TemplatingChatMessage } from './client/api/schema/index.js';
 import type {
@@ -64,30 +65,12 @@ export class OrchestrationClient {
     private deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
     private destination?: HttpDestinationOrFetchOptions
   ) {
-    const parseOrchestrationModuleConfig = (c: OrchestrationModuleConfig) =>
-      typeof c.promptTemplating.prompt === 'string'
-        ? this.parseAndMergeTemplating(c)
-        : c;
-
     if (typeof config === 'string') {
       this.validateJsonConfig(config);
-    } else if (isOrchestrationModuleConfigList(config)) {
-      // Handle array of configs (fallback support)
-      this.config = config.map(
-        parseOrchestrationModuleConfig
-      ) as OrchestrationModuleConfigList;
-
-      // Warn about duplicate models in fallback chain
-      const models = this.config.map(c => c.promptTemplating.model.name);
-      const uniqueModels = new Set(models);
-      if (uniqueModels.size < models.length) {
-        logger.warn(
-          `Fallback configurations contain duplicate models: [${models.join(', ')}]. ` +
-            'Consider using different models for meaningful fallback behavior.'
-        );
-      }
+    } else if (Array.isArray(config)) {
+      this.config = this.parseModuleConfigList(config);
     } else if (!isConfigReference(config)) {
-      this.config = parseOrchestrationModuleConfig(config);
+      this.config = this.parseTemplatingModule(config);
     }
   }
 
@@ -185,7 +168,7 @@ export class OrchestrationClient {
               );
 
     const deploymentId = await getOrchestrationDeploymentId(
-      this.deploymentConfig ?? {},
+      this.deploymentConfig || {},
       this.destination
     );
 
@@ -204,9 +187,11 @@ export class OrchestrationClient {
     );
 
     // Log summary when fallbacks were used
-    if (response.data?.intermediate_failures?.length > 0) {
+    if (response.data?.intermediate_failures) {
+      const failureCount = response.data.intermediate_failures.length;
+      const successModel = response.data.final_result?.model;
       logger.info(
-        `Orchestration used ${response.data.intermediate_failures.length} fallback(s) before success`
+        `Orchestration used ${failureCount} fallback(s) before success${successModel ? `. Succeeded with model: ${successModel}` : ''}.`
       );
     }
 
@@ -276,7 +261,7 @@ export class OrchestrationClient {
     }
 
     const result =
-      registryControllerPromptControllerCreateUpdatePromptTemplateBody.safeParse(
+      RegistryControllerPromptControllerCreateUpdatePromptTemplateBody.safeParse(
         parsedObject
       );
     if (!result.success) {
@@ -297,5 +282,52 @@ export class OrchestrationClient {
         }
       }
     };
+  }
+
+  /**
+   * Parse a single orchestration module config, handling YAML prompt templates.
+   * @param config - The orchestration module configuration.
+   * @returns The parsed configuration.
+   */
+  private parseTemplatingModule(
+    config: OrchestrationModuleConfig
+  ): OrchestrationModuleConfig {
+    return typeof config.promptTemplating.prompt === 'string'
+      ? this.parseAndMergeTemplating(config)
+      : config;
+  }
+
+  /**
+   * Parse and validate a list of orchestration module configs for fallback.
+   * @param config - The array of configurations.
+   * @returns The validated and parsed configuration list.
+   * @throws {Error} If the array is empty or contains invalid elements.
+   */
+  private parseModuleConfigList(
+    config:
+      | OrchestrationModuleConfig
+      | OrchestrationModuleConfigList
+      | string
+      | OrchestrationConfigRef
+  ): OrchestrationModuleConfigList {
+    // Parse each config in the list
+    const parsedConfigs = (config as OrchestrationModuleConfig[]).map(c =>
+      this.parseTemplatingModule(c)
+    ) as OrchestrationModuleConfigList;
+
+    // Validate and assert it's a proper config list (throws if invalid)
+    assertIsOrchestrationModuleConfigList(config);
+
+    // Warn about duplicate models in fallback chain
+    const models = parsedConfigs.map(c => c.promptTemplating.model.name);
+    const uniqueModels = new Set(models);
+    if (uniqueModels.size < models.length) {
+      logger.warn(
+        `Fallback configurations contain duplicate models: [${models.join(', ')}]. ` +
+          'Consider using different models for meaningful fallback behavior.'
+      );
+    }
+
+    return parsedConfigs;
   }
 }

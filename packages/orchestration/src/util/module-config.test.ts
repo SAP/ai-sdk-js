@@ -279,7 +279,8 @@ describe('constructCompletionPostRequest with module fallback configs', () => {
       },
       model: {
         name: 'gpt-4o',
-        params: { max_tokens: 100, timeout: 5 }
+        timeout: 5,
+        params: { max_tokens: 100 }
       }
     }
   };
@@ -290,7 +291,7 @@ describe('constructCompletionPostRequest with module fallback configs', () => {
         template: [{ role: 'user', content: 'Hello {{?name}}' }]
       },
       model: {
-        name: 'gpt-4o-mini',
+        name: 'gpt-5-mini',
         params: { max_tokens: 50 }
       }
     }
@@ -326,7 +327,7 @@ describe('constructCompletionPostRequest with module fallback configs', () => {
     const modules = result.config.modules as ModuleConfigs[];
     expect(modules).toHaveLength(2);
     expect(modules[0].prompt_templating.model.name).toBe('gpt-4o');
-    expect(modules[1].prompt_templating.model.name).toBe('gpt-4o-mini');
+    expect(modules[1].prompt_templating.model.name).toBe('gpt-5-mini');
   });
 
   it('should apply request messages to each config in the module fallback array', () => {

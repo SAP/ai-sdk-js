@@ -1,6 +1,8 @@
-import { resolveDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
+import {
+  resolveDeploymentId,
+  getOrchestrationDeploymentId
+} from '@sap-ai-sdk/ai-api/internal.js';
 import { jest } from '@jest/globals';
-import { getOrchestrationDeploymentId } from './deployment-resolver.js';
 
 describe('OrchestrationClient deploymentId behavior', () => {
   it('does not call resolveDeployment when deploymentId is provided', async () => {

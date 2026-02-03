@@ -227,12 +227,12 @@ export interface OrchestrationModuleConfig {
  * const fallbackConfig: OrchestrationModuleConfigList = [
  *   {
  *     promptTemplating: {
- *       model: { name: 'gpt-4o', params: { timeout: 5 } }
+ *       model: { name: 'gpt-4o', timeout: 5 }
  *     }
  *   },
  *   {
  *     promptTemplating: {
- *       model: { name: 'gpt-4o-mini' }
+ *       model: { name: 'gpt-5-mini' }
  *     }
  *   }
  * ];
@@ -296,11 +296,48 @@ export function isConfigReference(
 }
 
 /**
- * Type guard to check if config is a list of orchestration module configs.
+ * Validates and asserts that config is a valid list of orchestration module configs.
+ * @internal
+ * @param config - The config to validate.
+ * @throws {Error} If config is not an array, is empty, or contains invalid elements.
+ */
+export function assertIsOrchestrationModuleConfigList(
+  config:
+    | OrchestrationModuleConfig
+    | OrchestrationModuleConfigList
+    | string
+    | OrchestrationConfigRef
+): asserts config is OrchestrationModuleConfigList {
+  if (!Array.isArray(config)) {
+    throw new Error('Configuration must be an array for module fallback.');
+  }
+
+  if (config.length === 0) {
+    throw new Error('Configuration array must not be empty.');
+  }
+
+  // Check if each element has the required promptTemplating property
+  const allValid = config.every(
+    item =>
+      item &&
+      typeof item === 'object' &&
+      'promptTemplating' in item &&
+      item.promptTemplating &&
+      typeof item.promptTemplating === 'object'
+  );
+
+  if (!allValid) {
+    throw new Error(
+      'Configuration array must contain valid OrchestrationModuleConfig objects with promptTemplating property.'
+    );
+  }
+}
+
+/**
+ * Type guard to check if config is a valid list of orchestration module configs.
  * @internal
  * @param config - The config to check.
- * @throws {Error} With message "Configuration array must not be empty." if config is an empty array.
- * @returns True if config is a non-empty array. Does not validate that array elements are valid OrchestrationModuleConfig objects.
+ * @returns True if config is a non-empty array with valid OrchestrationModuleConfig elements.
  */
 export function isOrchestrationModuleConfigList(
   config:
@@ -309,11 +346,12 @@ export function isOrchestrationModuleConfigList(
     | string
     | OrchestrationConfigRef
 ): config is OrchestrationModuleConfigList {
-  const isArray = Array.isArray(config);
-  if (isArray && config.length === 0) {
-    throw new Error('Configuration array must not be empty.');
+  try {
+    assertIsOrchestrationModuleConfigList(config);
+    return true;
+  } catch {
+    return false;
   }
-  return isArray;
 }
 
 /**
