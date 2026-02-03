@@ -26,6 +26,7 @@
     "@sap-ai-sdk/langchain": "canary",
     "@sap-ai-sdk/orchestration": "canary",
     "@sap-ai-sdk/prompt-registry": "canary",
+    "@sap-ai-sdk/rpt": "canary",
     "@sap-cloud-sdk/util": "^4.4.0",
     "express": "^5.2.1",
     "hono": "^4.11.7",
