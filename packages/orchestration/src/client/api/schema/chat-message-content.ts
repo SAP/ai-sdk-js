@@ -7,4 +7,4 @@ import type { TextContent } from './text-content.js';
 /**
  * Representation of the 'ChatMessageContent' schema.
  */
-export type ChatMessageContent = string | TextContent[];
+export type ChatMessageContent = number | TextContent[];
