@@ -15,7 +15,7 @@ export type EmbeddingResult = {
   object: 'embedding';
   embedding: Embedding;
   /**
-   * The index of the embedding in the list of embeddings.
+   * The index of the embedding in the list of embeddings. testestest
    */
   index: number;
 };
