@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-
+import type { FilterMatchModeEnum } from './filter-match-mode-enum.js';
 /**
  * Representation of the 'VectorDocumentKeyValueListPair' schema.
  */
@@ -13,9 +13,5 @@ export type VectorDocumentKeyValueListPair = {
    */
   key: string;
   value: string[];
-  /**
-   * Default match mode for search filters
-   * Default: "ANY".
-   */
-  matchMode?: 'ANY' | 'ALL' | any | null;
+  matchMode?: FilterMatchModeEnum;
 } & Record<string, any>;

@@ -25,6 +25,10 @@ export type RetrievalSearchFilter = {
   dataRepositories?: string[];
   dataRepositoryType: DataRepositoryType;
   /**
+   * Destination Name of remote instance.
+   */
+  remoteName?: string | null;
+  /**
    * Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=['*']
    * Default: [].
    */

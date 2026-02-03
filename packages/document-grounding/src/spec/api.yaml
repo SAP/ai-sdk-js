@@ -553,7 +553,6 @@ paths:
               schema:
                 type: string
                 format: uri
-
         '400':
           $ref: '#/components/responses/BadRequest'
         '422':
@@ -944,6 +943,142 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
+  '/vector/documents':
+    delete:
+      tags:
+        - Vector
+      summary: Delete list of documents across collections
+      description: Deletes list of documents across collections.
+      operationId: vector.v1.vector_endpoints.delete_all_documents
+      x-sap-cloud-sdk-operation-name: deleteAllDocuments
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentBulkDeleteRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentBulkDeleteResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  '/vector/collections/metadata':
+    patch:
+      tags:
+        - Vector
+      summary: Patch collections metadata
+      description: Allows to add, remove and modify the collections metadata.
+      operationId: vector.v1.vector_endpoints.update_collections_metadata
+      x-sap-cloud-sdk-operation-name: updateCollectionsMetadata
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetadataUpdates'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  '/vector/documents/metadata':
+    patch:
+      tags:
+        - Vector
+      summary: Patch documents metadata
+      description: Allows to add, remove and modify the documents metadata.
+      operationId: vector.v1.vector_endpoints.update_documents_metadata
+      x-sap-cloud-sdk-operation-name: updateDocumentsMetadata
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetadataUpdates'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  '/vector/chunks/metadata':
+    patch:
+      tags:
+        - Vector
+      summary: Patch chunks metadata
+      description: Allows to add, remove and modify the chunks metadata.
+      operationId: vector.v1.vector_endpoints.update_chunks_metadata
+      x-sap-cloud-sdk-operation-name: updateChunksMetadata
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetadataUpdates'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
   '/retrieval/dataRepositories':
     get:
       parameters:
@@ -994,6 +1129,15 @@ paths:
             format: uuid
             title: Repositoryid
           description: Repository ID
+        - name: remoteName
+          in: query
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            nullable: true
+            title: Remotename
+          description: Remote name if DataRepository is from remote DG.
       responses:
         '200':
           description: Successful Response
@@ -1447,11 +1591,16 @@ components:
       anyOf:
         - enum:
             - NEW
+            - CREATING
+            - CREATED
+            - CREATION_FAILED
             - UNKNOWN
             - INPROGRESS
             - FINISHED
             - FINISHEDWITHERRORS
             - TIMEOUT
+            - DELETION_INPROGRESS
+            - DELETION_FAILED
         - {}
 
     getPipelineExecutions:
@@ -1652,7 +1801,6 @@ components:
         - type: object
           required:
             - type
-            - configuration
           properties:
             type:
               type: string
@@ -1670,7 +1818,6 @@ components:
         - type: object
           required:
             - type
-            - configuration
           properties:
             type:
               type: string
@@ -1874,6 +2021,12 @@ components:
             $ref: '#/components/schemas/RetrievalKeyValueListPair'
           title: Metadata
           default: []
+        searchScores:
+          $ref: '#/components/schemas/SearchScores'
+          nullable: true
+        postProcessingScore:
+          $ref: '#/components/schemas/Score'
+          nullable: true
       type: object
       required:
         - id
@@ -1892,16 +2045,11 @@ components:
             maxLength: 1024
           title: Value
         matchMode:
-          type: string
-          nullable: true
           title: MatchMode
           description: Default match mode for search filters
+          $ref: '#/components/schemas/FilterMatchModeEnum'
+          nullable: true
           default: ANY
-          anyOf:
-            - enum:
-                - ANY
-                - ALL
-            - {}
       type: object
       required:
         - key
@@ -1920,16 +2068,11 @@ components:
             maxLength: 1024
           title: Value
         matchMode:
-          type: string
-          nullable: true
           title: MatchMode
           description: Default match mode for search filters
+          $ref: '#/components/schemas/FilterMatchModeEnum'
+          nullable: true
           default: ANY
-          anyOf:
-            - enum:
-                - ANY
-                - ALL
-            - {}
       type: object
       required:
         - key
@@ -1948,22 +2091,16 @@ components:
             maxLength: 1024
           title: Value
         matchMode:
-          type: string
-          nullable: true
           title: MatchMode
+          nullable: true
           description: Default match mode for search filters
+          $ref: '#/components/schemas/FilterMatchModeEnum'
           default: ANY
-          anyOf:
-            - enum:
-                - ANY
-                - ALL
-            - {}
       type: object
       required:
         - key
         - value
-      title: DocumentKeyValueListPair
-
+      title: RetrievalDocumentKeyValueListPair
     HTTPValidationError:
       properties:
         detail:
@@ -2006,6 +2143,7 @@ components:
       required:
         - key
         - value
+      description: Collection metadata during ingestion
       title: VectorKeyValueListPair
     RetrievalKeyValueListPair:
       properties:
@@ -2125,28 +2263,35 @@ components:
     VectorSearchConfiguration:
       properties:
         maxChunkCount:
-          nullable: true
           type: integer
-          minimum: 0
           exclusiveMinimum: true
+          minimum: 0
+          maximum: 10000000
+          nullable: true
           title: Maxchunkcount
           description: Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'.
         maxDocumentCount:
-          nullable: true
           type: integer
-          minimum: 0
           exclusiveMinimum: true
+          minimum: 0
+          maximum: 10000000
+          nullable: true
           title: Maxdocumentcount
           description: "[Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned."
       type: object
       title: VectorSearchConfiguration
     RetrievalSearchConfiguration:
+      nullable: true
+      default: {}
+      minProperties: 0
+      maxProperties: 2
       properties:
         maxChunkCount:
           nullable: true
           type: integer
           minimum: 0
           exclusiveMinimum: true
+          maximum: 10000000
           title: Maxchunkcount
           description: Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'.
         maxDocumentCount:
@@ -2154,6 +2299,7 @@ components:
           type: integer
           minimum: 0
           exclusiveMinimum: true
+          maximum: 10000000
           title: Maxdocumentcount
           description: "[Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned."
       type: object
@@ -2197,6 +2343,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/VectorSearchSelectOptionEnum'
+          nullable: true
           title: Selectmode
           description: Select mode for search filters
       type: object
@@ -2220,6 +2367,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RetrievalSearchSelectOptionEnum'
+          nullable: true
           title: Selectmode
           description: Select mode for search filters
       type: object
@@ -2245,8 +2393,7 @@ components:
         results:
           type: array
           items:
-            anyOf:
-              - $ref: '#/components/schemas/VectorPerFilterSearchResult'
+            $ref: '#/components/schemas/VectorPerFilterSearchResult'
           title: Results
           description: List of returned results.
       type: object
@@ -2285,6 +2432,12 @@ components:
             Metadata attached to collection. Useful to restrict search to a
             subset of collections.
           default: []
+        id:
+          type: string
+          format: uuid
+          nullable: true
+          title: Id
+          description: Unique identifier of a collection.
       type: object
       required:
         - embeddingConfig
@@ -2305,16 +2458,12 @@ components:
       title: CollectionCreatedResponse
     CollectionPendingResponse:
       properties:
-        Location:
+        monitorURL:
           type: string
-          title: Location
-        status:
-          type: string
-          title: Status
+          title: MonitorURL
       type: object
       required:
-        - Location
-        - status
+        - monitorURL
       title: CollectionPendingResponse
     CollectionDeletedResponse:
       properties:
@@ -2333,7 +2482,7 @@ components:
       properties:
         chunks:
           items:
-            $ref: '#/components/schemas/TextOnlyBaseChunk'
+            $ref: '#/components/schemas/TextOnlyBaseChunkCreate'
           type: array
           title: Chunks
         metadata:
@@ -2341,10 +2490,10 @@ components:
             $ref: '#/components/schemas/VectorDocumentKeyValueListPair'
           type: array
           title: Metadata
+          default: []
       type: object
       required:
         - chunks
-        - metadata
       title: BaseDocument
       description: Base class for documents, document requests and responses.
     DocumentCreateRequest:
@@ -2365,7 +2514,7 @@ components:
       properties:
         chunks:
           items:
-            $ref: '#/components/schemas/TextOnlyBaseChunk'
+            $ref: '#/components/schemas/TextOnlyBaseChunkCreate'
           type: array
           title: Chunks
         metadata:
@@ -2373,6 +2522,7 @@ components:
             $ref: '#/components/schemas/VectorDocumentKeyValueListPair'
           type: array
           title: Metadata
+          default: []
         id:
           type: string
           format: uuid
@@ -2381,7 +2531,6 @@ components:
       type: object
       required:
         - chunks
-        - metadata
         - id
       title: Document
       description: A single document stored in a collection by ID.
@@ -2396,7 +2545,7 @@ components:
       required:
         - documents
       title: DocumentUpdateRequest
-      description: >-
+      description:
         An update request containing one or more documents to update existing
         documents in a collection by ID.
     DocumentWithoutChunks:
@@ -2416,9 +2565,9 @@ components:
         - metadata
         - id
       title: DocumentWithoutChunks
-      description: >-
-        A single document stored in a collection by ID without exposing its
-        chunks.
+      description:
+        A single document stored in a collection by ID without exposing
+        its chunks.
     DocumentsListResponse:
       properties:
         documents:
@@ -2429,8 +2578,8 @@ components:
       type: object
       required:
         - documents
-      title: Documents
-      description: A response containing documents created or updated, retrieved from the server.
+      title: DocumentsListResponse
+      description: A response containing documents retrieved from the server.
     Documents:
       properties:
         count:
@@ -2455,11 +2604,34 @@ components:
             $ref: '#/components/schemas/VectorKeyValueListPair'
           type: array
           title: Metadata
+          default: []
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: Unique identifier of a chuk.
       type: object
       required:
         - content
-        - metadata
+        - id
       title: TextOnlyBaseChunk
+      description: Schema for a text-only chunk.
+    TextOnlyBaseChunkCreate:
+      properties:
+        content:
+          type: string
+          title: Content
+        metadata:
+          items:
+            $ref: '#/components/schemas/VectorKeyValueListPair'
+          type: array
+          title: Metadata
+          default: []
+      type: object
+      required:
+        - content
+      title: TextOnlyBaseChunk
+      description: Schema for a text-only chunk.
     DocumentResponse:
       properties:
         chunks:
@@ -2472,6 +2644,7 @@ components:
             $ref: '#/components/schemas/VectorDocumentKeyValueListPair'
           type: array
           title: Metadata
+          default: []
         id:
           type: string
           format: uuid
@@ -2480,7 +2653,6 @@ components:
       type: object
       required:
         - chunks
-        - metadata
         - id
       title: DocumentResponse
       description: >-
@@ -2496,18 +2668,13 @@ components:
       title: SearchSelectOptionEnum
     VectorSearchSelectOptionEnum:
       type: string
-      anyOf:
-        - enum:
-            - ignoreIfKeyAbsent
-        - {}
-      default: ignoreIfKeyAbsent
+      enum:
+        - ignoreIfKeyAbsent
       title: VectorSearchSelectOptionEnum
     RetrievalSearchSelectOptionEnum:
       type: string
-      anyOf:
-        - enum:
-            - ignoreIfKeyAbsent
-        - {}
+      enum:
+        - ignoreIfKeyAbsent
       title: RetrievalSearchSelectOptionEnum
     SearchFilter:
       properties:
@@ -2572,20 +2739,20 @@ components:
         configuration:
           $ref: '#/components/schemas/VectorSearchConfiguration'
         collectionMetadata:
+          type: array
           items:
             $ref: '#/components/schemas/VectorKeyValueListPair'
-          type: array
-          maxItems: 2000
+          nullable: true
           title: Collectionmetadata
           description: >-
             Restrict collections considered during search to those annotated
             with the given metadata. Useful when combined with collections=['*']
           default: []
         documentMetadata:
+          type: array
           items:
             $ref: '#/components/schemas/VectorSearchDocumentKeyValueListPair'
-          type: array
-          maxItems: 2000
+          nullable: true
           title: Documentmetadata
           description: >-
             Restrict documents considered during search to those annotated with
@@ -2595,12 +2762,20 @@ components:
           items:
             $ref: '#/components/schemas/VectorKeyValueListPair'
           type: array
-          maxItems: 2000
           title: Chunkmetadata
           description: >-
             Restrict chunks considered during search to those with the given
             metadata.
           default: []
+        filter:
+          title: Filter
+          description:
+            Advanced filter expression for combining metadata filters with
+            boolean logic
+          anyOf:
+            - $ref: '#/components/schemas/BinaryBooleanFilter'
+            - $ref: '#/components/schemas/ScopedKeyValueListPair'
+          nullable: true
       type: object
       required:
         - id
@@ -2613,6 +2788,7 @@ components:
           type: string
           maxLength: 2000
           minLength: 1
+          nullable: true
           title: Query
           description: Query string
         filters:
@@ -2692,6 +2868,12 @@ components:
           title: Metadata
           description: Metadata attached to DataRepository. Useful to later limit search to a subset of DataRepositories.
           default: []
+        remoteGroundingName:
+          type: string
+          nullable: true
+        message:
+          type: string
+          nullable: true
         type:
           $ref: '#/components/schemas/DataRepositoryType'
       type: object
@@ -2710,12 +2892,12 @@ components:
         - dataRepository
       title: DataRepositorySearchResult
     DataRepositoryType:
+      description: Only include DataRepositories with the given type.
       type: string
-      anyOf:
-        - enum:
-            - vector
-            - help.sap.com
-        - {}
+      enum:
+        - vector
+        - help.sap.com
+        - remote:dg
       title: DataRepositoryType
     DataRepositoryWithDocuments:
       properties:
@@ -2733,6 +2915,15 @@ components:
             $ref: '#/components/schemas/RetrievalKeyValueListPair'
           title: Metadata
           description: Metadata attached to DataRepository. Useful to later limit search to a subset of DataRepositories.
+          default: []
+        remoteGroundingName:
+          type: string
+          nullable: true
+          description: Friendly destination Name (grounding.name) of remote instance.
+        message:
+          type: string
+          nullable: true
+          description: Optional message.
         documents:
           type: array
           items:
@@ -2783,19 +2974,23 @@ components:
         - filterId
       title: PerFilterSearchResult
     PerFilterSearchResultError:
+      description: Error message if any.
       properties:
         message:
           type: string
           title: Message
+          default: Unknown Error Occurred
       type: object
       required:
         - message
       title: PerFilterSearchResultError
     RetrievalPerFilterSearchResultError:
+      description: Error message if any.
       properties:
         message:
           type: string
           title: Message
+          default: Unknown Error Occurred
       type: object
       required:
         - message
@@ -2807,9 +3002,6 @@ components:
           title: Filterid
         error:
           $ref: '#/components/schemas/PerFilterSearchResultError'
-          description: Error message if any.
-          default:
-            message: Unknown Error Occurred
       type: object
       required:
         - filterId
@@ -2821,24 +3013,23 @@ components:
           title: Id
           description: Identifier of this RetrievalSearchFilter - unique per request.
         searchConfiguration:
-          type: object
           nullable: true
           $ref: '#/components/schemas/RetrievalSearchConfiguration'
           default: {}
-          minProperties: 0
-          maxProperties: 2
         dataRepositories:
           type: array
           items:
             type: string
           title: Datarepositories
           description: Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids.
-          default:
-            - '*'
+          default: ['*']
         dataRepositoryType:
-          type: string
           $ref: '#/components/schemas/DataRepositoryType'
           description: Only include DataRepositories with the given type.
+        remoteName:
+          description: Destination Name of remote instance.
+          type: string
+          nullable: true
         dataRepositoryMetadata:
           type: array
           items:
@@ -2871,18 +3062,437 @@ components:
         query:
           type: string
           minLength: 1
+          nullable: true
           title: Query
           description: Query string
         filters:
           type: array
           items:
-            $ref: '#/components/schemas/RetrievalSearchFilter'
+            anyOf:
+              - $ref: '#/components/schemas/RetrievalSearchFilter'
+              - $ref: '#/components/schemas/RetrievalVectorSearchFilter'
           title: Filters
+        postProcessing:
+          type: array
+          items:
+            type: object
+            required:
+              - strategy
+              - inputs
+            properties:
+              id:
+                description: New ID for each PostProcessingOperation.
+                default: ae9eee48-4671-4321-a3e5-640adaaf26ae
+                type: string
+                nullable: true
+              maxChunkCount:
+                description: 'Maximum number of chunks to be retained in final PerSearchFilterResult.'
+                type: integer
+                exclusiveMinimum: true
+                minimum: 0
+                maximum: 10000000
+                nullable: true
+                default: 5
+              strategy:
+                description: 'Merging and scoring strategy to derive final PerSearchFilterResult.'
+                oneOf:
+                  - $ref: '#/components/schemas/MergeStrategyScoreReuse'
+                  - $ref: '#/components/schemas/MergeStrategyReranker'
+              inputs:
+                type: array
+                items:
+                  oneOf:
+                    - $ref: '#/components/schemas/PostProcessingObjectReference'
+                    - $ref: '#/components/schemas/PostProcessingOperation'
+          description: List of operations to be performed across PerFilterSearchResults.
+          default: []
       type: object
       required:
         - query
         - filters
       title: RetrievalSearchInput
+    Score:
+      type: object
+      properties:
+        value:
+          type: number
+      required:
+        - value
+      title: Score
+    SearchScores:
+      properties:
+        aggregatedScore:
+          type: object
+          properties:
+            value:
+              type: number
+        denseRetrievalScore:
+          type: object
+          properties:
+            value:
+              type: number
+      required:
+        - aggregatedScore
+        - denseRetrievalScore
+      title: SearchScores
+    RetrievalVectorSearchFilter:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Identifier of this RetrievalSearchFilter - unique per request.
+        searchConfiguration:
+          $ref: '#/components/schemas/RetrievalSearchConfiguration'
+          nullable: true
+          default: {}
+        dataRepositories:
+          type: array
+          items:
+            type: string
+          title: Datarepositories
+          description: Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids.
+          default:
+            - '*'
+        dataRepositoryType:
+          $ref: '#/components/schemas/DataRepositoryType'
+          nullable: true
+          default: vector
+        remoteName:
+          description: Destination Name of remote instance.
+          type: string
+          nullable: true
+        dataRepositoryMetadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/RetrievalKeyValueListPair'
+          title: Datarepositorymetadata
+          description: Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=['*']
+          default: []
+        documentMetadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/RetrievalSearchDocumentKeyValueListPair'
+          title: Documentmetadata
+          description: Restrict documents considered during search to those annotated with the given metadata.
+          default: []
+        chunkMetadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/RetrievalKeyValueListPair'
+          title: Chunkmetadata
+          description: Restrict chunks considered during search to those with the given metadata.
+          default: []
+        filter:
+          anyOf:
+            - $ref: '#/components/schemas/RetrievalBinaryBooleanFilter'
+            - $ref: '#/components/schemas/RetrievalScopedKeyValueListPair'
+          nullable: true
+          description: Filter to apply on the search results. This cannot be used together with 'documentMetadata'. The depth of the filter must not exceed 5 levels.
+        scoringConfiguration:
+          $ref: '#/components/schemas/VectorScoringConfiguration'
+          nullable: true
+          description: Scoring configuration for retrieval and ranking.
+          default:
+            denseRetrieval:
+              enabled: true
+              weight: 1
+            keywordRetrieval:
+              enabled: true
+              extractKeyWordsFromQuery: false
+              weight: 1
+            boosting:
+              enabled: true
+              metadata: []
+              scoreComputationStrategy: match_count
+              weight: 1
+            aggregationStrategy: weighted_average
+      type: object
+      required:
+        - id
+      title: RetrievalVectorSearchFilter
+    RetrievalBinaryBooleanFilter:
+      properties:
+        operator:
+          type: string
+          title: Operator
+          enum:
+            - and
+            - or
+        left:
+          title: Left
+          anyOf:
+            - $ref: '#/components/schemas/RetrievalBinaryBooleanFilter'
+            - $ref: '#/components/schemas/RetrievalScopedKeyValueListPair'
+        right:
+          title: Right
+          anyOf:
+            - $ref: '#/components/schemas/RetrievalBinaryBooleanFilter'
+            - $ref: '#/components/schemas/RetrievalScopedKeyValueListPair'
+      type: object
+      required:
+        - operator
+        - left
+        - right
+      title: RetrievalBinaryBooleanFilter
+    RetrievalScopedKeyValueListPair:
+      properties:
+        key:
+          type: string
+          maxLength: 1024
+          title: Key
+        value:
+          type: array
+          items:
+            type: string
+            maxLength: 1024
+          title: Value
+        scope:
+          type: string
+          title: Scope
+          enum:
+            - repository
+            - document
+            - chunk
+          default: document
+      type: object
+      required:
+        - key
+        - value
+      title: RetrievalScopedKeyValueListPair
+    MergeStrategyScoreReuse:
+      properties:
+        type:
+          description: 'The type of merge strategy.'
+          $ref: '#/components/schemas/MergeStrategyType'
+          nullable: true
+          default: scoreReuse
+      type: object
+      title: MergeStrategyScoreReuse
+      description: The MergeStrategyScoreReuse merges the given PerFilterSearchResult instances according to the scores returned by the downstream retrieval process. It is important that the scores are comparable, meaning they should come from the same embedding model or reranker model.
+    MergeStrategyReranker:
+      properties:
+        type:
+          $ref: '#/components/schemas/MergeStrategyType'
+          nullable: true
+          default: reranker
+        model:
+          description: The RerankerModel to use.
+          type: string
+          enum:
+            - cohere-3.5
+          nullable: true
+          title: RerankerModel
+          default: cohere-3.5
+        boosting:
+          description: Key-value pairs to be included in the ranking process, to boost related chunks according to chunk content and metadata, if includeMetaData is true.
+          type: array
+          items:
+            type: object
+            required:
+              - key
+              - value
+              - scope
+            properties:
+              key:
+                type: string
+                maxLength: 1024
+              value:
+                type: array
+                items:
+                  type: string
+                  maxLength: 1024
+              scope:
+                type: array
+                description: PerFilterSearchResult ID or a new ID for each PostProcessingOperation.
+                items:
+                  type: string
+          nullable: true
+        includeAllMetaData:
+          description: If true, document and chunk metadata are sent to the reranker LLM along with the text content of the chunk.
+          type: boolean
+          nullable: true
+          default: false
+      type: object
+      title: MergeStrategyReranker
+      description: The MergeStrategyReranker will call a reranker LLM to merge the given PerFilterSearchResult instances. This strategy adds latency, but yields good results.
+    MergeStrategyType:
+      enum:
+        - reranker
+        - scoreReuse
+        - reciprocalRankFusion
+        - random
+      type: string
+      title: MergeStrategyType
+    PostProcessingObjectReference:
+      properties:
+        id:
+          description: PerFilterSearchResult ID or PostProcessingOperation ID.
+          type: string
+          nullable: true
+          default: '6d3eeafd-f3db-4e8e-949a-0e40e50eab64'
+      type: object
+      title: PostProcessingObjectReference
+    PostProcessingOperation:
+      properties:
+        id:
+          type: string
+          nullable: true
+          description: New ID for each PostProcessingOperation.
+          default: ae9eee48-4671-4321-a3e5-640adaaf26ae
+          title: Id
+        maxChunkCount:
+          title: Maxchunkcount
+          description: Maximum number of chunks to be retained in final PerSearchFilterResult.
+          default: 5
+          type: integer
+          exclusiveMinimum: true
+          minimum: 0
+          maximum: 10000000
+          nullable: true
+        strategy:
+          title: Strategy
+          description: Merging and scoring strategy to derive final PerSearchFilterResult.
+          oneOf:
+            - $ref: '#/components/schemas/MergeStrategyScoreReuse'
+            - $ref: '#/components/schemas/MergeStrategyReranker'
+        inputs:
+          title: Inputs
+          type: array
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/PostProcessingObjectReference'
+              - $ref: '#/components/schemas/PostProcessingOperation'
+      type: object
+      required:
+        - strategy
+        - inputs
+      title: PostProcessingOperation
+    VectorScoringConfiguration:
+      properties:
+        denseRetrieval:
+          $ref: '#/components/schemas/DenseRetrievalScoringConfiguration'
+          nullable: true
+          default:
+            enabled: true
+            weight: 1
+        keywordRetrieval:
+          $ref: '#/components/schemas/KeyWordRetrievalScoringConfiguration'
+          nullable: true
+          default:
+            enabled: true
+            weight: 1
+            extractKeyWordsFromQuery: false
+        boosting:
+          $ref: '#/components/schemas/BoostingScoringConfiguration'
+          nullable: true
+          default:
+            enabled: true
+            metadata: []
+            weight: 1
+            scoreComputationStrategy: match_count
+        scoreThreshold:
+          title: Scorethreshold
+          description: Minimum chunk score threshold.
+          type: number
+          nullable: true
+        aggregationStrategy:
+          description: Methodology to calculate the final aggregate score.
+          $ref: '#/components/schemas/ScoresAggregationStrategy'
+          nullable: true
+          default: weighted_average
+      type: object
+      title: VectorScoringConfiguration
+    DenseRetrievalScoringConfiguration:
+      properties:
+        enabled:
+          type: boolean
+          nullable: true
+          description: Enable dense retrieval.
+          default: true
+        weight:
+          type: integer
+          nullable: true
+          description: Contribution to final score.
+          default: 1
+      type: object
+      title: DenseRetrievalScoringConfiguration
+    KeyWordRetrievalScoringConfiguration:
+      properties:
+        enabled:
+          type: boolean
+          nullable: true
+          default: true
+          description: Enable dense retrieval.
+        weight:
+          type: integer
+          nullable: true
+          default: 1
+          description: Contribution to final score.
+        extractKeyWordsFromQuery:
+          type: boolean
+          nullable: true
+          default: false
+          description: Extract Keywords from Query.
+      type: object
+      title: KeyWordRetrievalScoringConfiguration
+    BoostingScoringConfiguration:
+      properties:
+        enabled:
+          type: boolean
+          nullable: true
+          default: true
+          description: Enable metadata-based boosting.
+        metadata:
+          type: array
+          items:
+            type: object
+            required:
+              - key
+              - value
+              - weight
+            properties:
+              key:
+                type: string
+                maxLength: 1024
+              value:
+                type: array
+                items:
+                  type: string
+                  maxLength: 1024
+              scope:
+                type: string
+                enum: [repository, document, chunk]
+                default: document
+              weight:
+                type: integer
+          nullable: true
+          default: []
+        weight:
+          type: integer
+          nullable: true
+          default: 1
+          description: Contribution to final score.
+        scoreComputationStrategy:
+          description: How the similarity between document metadata and boosted key-value pairs is computed.
+          $ref: '#/components/schemas/BoostingScoreComputationStrategy'
+          nullable: true
+          default: match_count
+      type: object
+      title: BoostingScoringConfiguration
+    BoostingScoreComputationStrategy:
+      enum:
+        - match_count
+        - embedding
+      type: string
+      title: BoostingScoreComputationStrategy
+    ScoresAggregationStrategy:
+      enum:
+        - weighted_average
+        - rrf
+        - weighted_rrf
+      type: string
+      title: ScoresAggregationStrategy
+
     RetrievalDataRepositorySearchResult:
       properties:
         dataRepository:
@@ -2903,6 +3513,12 @@ components:
           title: Results
           description: List of returned results.
           default: []
+        remoteGroundingName:
+          type: string
+          nullable: true
+          description:
+            Friendly Destination Name of remote instance (grounding.name).
+            Only present if dataRepositoryType = remote:dg.
       type: object
       required:
         - filterId
@@ -2914,9 +3530,6 @@ components:
           title: Filterid
         error:
           $ref: '#/components/schemas/RetrievalPerFilterSearchResultError'
-          description: Error message if any.
-          default:
-            message: Unknown Error Occurred
       type: object
       required:
         - filterId
@@ -2952,9 +3565,11 @@ components:
     ValidationError:
       properties:
         loc:
-          type: array
           items:
-            type: string
+            anyOf:
+              - type: string
+              - type: integer
+          type: array
           title: Location
         msg:
           type: string
@@ -2968,6 +3583,207 @@ components:
         - msg
         - type
       title: ValidationError
+    DocumentBulkDeleteRequest:
+      properties:
+        ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          maxItems: 100
+          minItems: 1
+          title: Ids
+          description: List of document IDs to delete
+      type: object
+      required:
+        - ids
+      title: DocumentBulkDeleteRequest
+      description: A request to delete documents by their IDs.
+    DocumentBulkDeleteResponse:
+      properties:
+        deleted:
+          type: array
+          items:
+            type: string
+            format: uuid
+          title: Deleted
+          description: List of successfully deleted document IDs
+        notFound:
+          type: array
+          items:
+            type: string
+            format: uuid
+          title: NotFound
+          description: List of document IDs that were not found
+      type: object
+      required:
+        - deleted
+        - notFound
+      title: DocumentBulkDeleteResponse
+      description: Response after deleting documents in bulk.
+    BinaryBooleanFilter:
+      type: object
+      required:
+        - operator
+        - left
+        - right
+      properties:
+        operator:
+          type: string
+          title: Operator
+          description: Boolean operator for combining filter conditions
+          enum:
+            - and
+            - or
+        left:
+          title: Left
+          description: Left operand of the boolean expression
+          anyOf:
+            - $ref: '#/components/schemas/BinaryBooleanFilter'
+            - $ref: '#/components/schemas/ScopedKeyValueListPair'
+        right:
+          title: Right
+          description: Right operand of the boolean expression
+          anyOf:
+            - $ref: '#/components/schemas/BinaryBooleanFilter'
+            - $ref: '#/components/schemas/ScopedKeyValueListPair'
+      title: BinaryBooleanFilter
+    ScopedKeyValueListPair:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          type: string
+          maxLength: 1024
+          title: Key
+        value:
+          type: array
+          items:
+            type: string
+            maxLength: 1024
+          title: Value
+        scope:
+          type: string
+          title: Scope
+          description: Scope of the metadata filter (e.g., collection, document, chunk)
+          enum:
+            - collection
+            - document
+            - chunk
+          default: document
+      title: ScopedKeyValueListPair
+    MetadataUpdates:
+      properties:
+        updates:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetadataUpdateItem'
+          title: Updates
+          description: List of metadata updates.
+      type: object
+      required:
+        - updates
+      title: MetadataUpdates
+    MetadataUpdateItem:
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          title: Ids
+          description: List of collection or document or chunk ids for which the metadata should be updated
+        metadataUpdates:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetadataKeyUpdate'
+          title: MetadataUpdates
+          description: List of metadata updates for the given resource ids
+      type: object
+      required:
+        - ids
+        - metadataUpdates
+      title: MetadataUpdateItem
+    MetadataKeyUpdate:
+      properties:
+        key:
+          type: string
+          minLength: 1
+          title: Key
+          description: Key to update
+        operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetadataOperation'
+          nullable: true
+          title: Operations
+          description: Update operation executed for the key
+      type: object
+      required:
+        - key
+      title: MetadataKeyUpdate
+    MetadataOperation:
+      type: object
+      required:
+        - op
+      properties:
+        op:
+          $ref: '#/components/schemas/MetadataOperationEnum'
+        values:
+          type: array
+          items:
+            type: string
+          nullable: true
+          title: Values
+          description: List of values to update.
+      title: MetadataOperation
+    MetadataOperationEnum:
+      type: string
+      enum:
+        - add
+        - remove
+        - replace
+        - delete_key
+      title: MetadataOperationEnum
+    MetadataResponse:
+      type: object
+      properties:
+        current_metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetadataItem'
+          nullable: true
+          title: CurrentMetadata
+          description: List of metadata after updates.
+          default: []
+      title: MetadataResponse
+    MetadataItem:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: ID of collection
+        metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/VectorKeyValueListPair'
+          nullable: true
+          title: Metadata
+          description: List of metadata of the collections or documents or chunks
+          default: []
+      title: MetadataItem
+    FilterMatchModeEnum:
+      type: string
+      enum:
+        - ANY
+        - ALL
+      title: FilterMatchModeEnum
 
     ### ###  ########################  ### ###
     ### ###  ###       Error      ###  ### ###

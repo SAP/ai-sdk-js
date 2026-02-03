@@ -8,6 +8,5 @@
  * Representation of the 'CollectionPendingResponse' schema.
  */
 export type CollectionPendingResponse = {
-  Location: string;
-  status: string;
+  monitorURL: string;
 } & Record<string, any>;
