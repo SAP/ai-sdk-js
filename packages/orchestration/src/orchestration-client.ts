@@ -308,13 +308,13 @@ export class OrchestrationClient {
       | string
       | OrchestrationConfigRef
   ): OrchestrationModuleConfigList {
+    // Validate and assert it's a proper config list (throws if invalid)
+    assertIsOrchestrationModuleConfigList(config);
+
     // Parse each config in the list
     const parsedConfigs = (config as OrchestrationModuleConfig[]).map(c =>
       this.parseTemplatingModule(c)
     ) as OrchestrationModuleConfigList;
-
-    // Validate and assert it's a proper config list (throws if invalid)
-    assertIsOrchestrationModuleConfigList(config);
 
     // Warn about duplicate models in fallback chain
     const models = parsedConfigs.map(c => c.promptTemplating.model.name);
