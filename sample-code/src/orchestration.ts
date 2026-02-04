@@ -911,7 +911,7 @@ export async function orchestrationWithFallbackConfigs(): Promise<OrchestrationR
       }
     },
     {
-      // Second configuration with a valid model
+      // Third configuration with a valid model that will succeed
       promptTemplating: {
         model: {
           name: 'gpt-4o'
