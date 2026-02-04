@@ -947,7 +947,8 @@ export async function orchestrationStreamWithFallbackConfigs(): Promise<
       }
     },
     // In the streaming scenario, timeouts will not trigger module fallback.
-    // Therefore, this this is not tested in this example.
+    // In the streaming scenario, timeouts will not trigger module fallback.
+    // Therefore, this is not tested in this example.
     {
       promptTemplating: {
         model: {
