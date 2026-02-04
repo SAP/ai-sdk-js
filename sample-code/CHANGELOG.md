@@ -1,5 +1,19 @@
 # @sap-ai-sdk/sample-code
 
+## 2.6.0
+
+### Patch Changes
+
+- Updated dependencies [f3b6dc5]
+- Updated dependencies [790ad05]
+  - @sap-ai-sdk/orchestration@2.6.0
+  - @sap-ai-sdk/rpt@2.6.0
+  - @sap-ai-sdk/ai-api@2.6.0
+  - @sap-ai-sdk/document-grounding@2.6.0
+  - @sap-ai-sdk/foundation-models@2.6.0
+  - @sap-ai-sdk/langchain@2.6.0
+  - @sap-ai-sdk/prompt-registry@2.6.0
+
 ## 2.5.0
 
 ### Patch Changes
