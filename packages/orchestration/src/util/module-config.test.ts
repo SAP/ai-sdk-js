@@ -390,7 +390,7 @@ describe('addStreamOptions with module fallback configs', () => {
   it('should add stream options to array of module configs', () => {
     const configs: ModuleConfigs[] = [
       createModuleConfig('gpt-4o'),
-      createModuleConfig('gpt-4o-mini')
+      createModuleConfig('gpt-5-mini')
     ];
 
     const result = addStreamOptions(configs);
@@ -410,7 +410,7 @@ describe('addStreamOptions with module fallback configs', () => {
   it('should apply global stream options to array configs', () => {
     const configs: ModuleConfigs[] = [
       createModuleConfig('gpt-4o'),
-      createModuleConfig('gpt-4o-mini')
+      createModuleConfig('gpt-5-mini')
     ];
     const streamOptions: StreamOptions = {
       global: { chunk_size: 100 }
@@ -430,7 +430,7 @@ describe('addStreamOptions with module fallback configs', () => {
 
     const configs: ModuleConfigs[] = [
       createModuleConfig('gpt-4o'),
-      createModuleConfig('gpt-4o-mini')
+      createModuleConfig('gpt-5-mini')
     ];
     const streamOptions: StreamOptions = {
       outputFiltering: { overlap: 50 }
@@ -467,7 +467,7 @@ describe('addStreamOptions with module fallback configs', () => {
     };
 
     const configs: ModuleConfigs[] = [
-      createModuleConfig('gpt-4o-mini'),
+      createModuleConfig('gpt-5-mini'),
       configWithFilter
     ];
     const streamOptions: StreamOptions = {
@@ -507,7 +507,7 @@ describe('addStreamOptions with module fallback configs', () => {
     const configWithFilter2: ModuleConfigs = {
       prompt_templating: {
         prompt: { template: [{ role: 'user', content: 'test2' }] },
-        model: { name: 'gpt-4o-mini', params: { max_tokens: 50 } }
+        model: { name: 'gpt-5-mini', params: { max_tokens: 50 } }
       },
       filtering: {
         output: {
@@ -531,7 +531,7 @@ describe('addStreamOptions with module fallback configs', () => {
   it('should handle array of stream options for array of module configs', () => {
     const configs: ModuleConfigs[] = [
       createModuleConfig('gpt-4o'),
-      createModuleConfig('gpt-4o-mini')
+      createModuleConfig('gpt-5-mini')
     ];
     const streamOptionsArray: StreamOptions[] = [
       {
@@ -584,7 +584,7 @@ describe('addStreamOptions with module fallback configs', () => {
     const configs: ModuleConfigs[] = [
       createModuleConfig('gpt-4o'),
       configWithFilter,
-      createModuleConfig('gpt-4o-mini')
+      createModuleConfig('gpt-5-mini')
     ];
     const streamOptions: StreamOptions = {
       outputFiltering: { overlap: 50 }
@@ -619,7 +619,7 @@ describe('validateStreamOptions', () => {
   it('should not throw for array config with array stream options of same length', () => {
     const configs = [
       createModuleConfig('gpt-4o'),
-      createModuleConfig('gpt-4o-mini')
+      createModuleConfig('gpt-5-mini')
     ];
     const streamOptionsArray: StreamOptionsArray = [
       { promptTemplating: { include_usage: true } },
@@ -634,7 +634,7 @@ describe('validateStreamOptions', () => {
   it('should not throw for array config with single stream options', () => {
     const configs = [
       createModuleConfig('gpt-4o'),
-      createModuleConfig('gpt-4o-mini')
+      createModuleConfig('gpt-5-mini')
     ];
     const streamOptions: StreamOptions = {
       global: { chunk_size: 100 }
@@ -660,7 +660,7 @@ describe('validateStreamOptions', () => {
   it('should throw RangeError when stream options array length does not match configs array length', () => {
     const configs = [
       createModuleConfig('gpt-4o'),
-      createModuleConfig('gpt-4o-mini')
+      createModuleConfig('gpt-5-mini')
     ];
     const streamOptionsArray: StreamOptionsArray = [
       { promptTemplating: { include_usage: true } }
@@ -678,7 +678,7 @@ describe('validateStreamOptions', () => {
   it('should provide helpful error message for mismatched lengths', () => {
     const configs = [
       createModuleConfig('gpt-4o'),
-      createModuleConfig('gpt-4o-mini'),
+      createModuleConfig('gpt-5-mini'),
       createModuleConfig('claude-3')
     ];
     const streamOptionsArray: StreamOptions[] = [

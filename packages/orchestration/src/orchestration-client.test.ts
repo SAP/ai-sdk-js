@@ -1297,7 +1297,7 @@ describe('orchestration service client', () => {
 
       const fallbackConfig: OrchestrationModuleConfig = {
         promptTemplating: {
-          model: { name: 'gpt-4o-mini', params: { max_tokens: 50 } },
+          model: { name: 'gpt-5-mini', params: { max_tokens: 50 } },
           prompt: {
             template: [{ role: 'user', content: 'Fallback model' }]
           }
@@ -1343,7 +1343,7 @@ describe('orchestration service client', () => {
 
       const fallbackConfig: OrchestrationModuleConfig = {
         promptTemplating: {
-          model: { name: 'gpt-4o-mini' },
+          model: { name: 'gpt-5-mini' },
           prompt: {
             template: [{ role: 'user', content: 'Fallback model' }]
           }
@@ -1397,7 +1397,7 @@ describe('orchestration service client', () => {
 
       const fallbackConfig: OrchestrationModuleConfig = {
         promptTemplating: {
-          model: { name: 'gpt-4o-mini' },
+          model: { name: 'gpt-5-mini' },
           prompt: {
             template: [{ role: 'user', content: 'Test' }]
           }
@@ -1462,7 +1462,7 @@ describe('orchestration service client', () => {
 
       const fallbackConfig: OrchestrationModuleConfig = {
         promptTemplating: {
-          model: { name: 'gpt-4o-mini' },
+          model: { name: 'gpt-5-mini' },
           prompt: {
             template: [{ role: 'user', content: 'Fallback' }]
           }
@@ -1521,7 +1521,7 @@ describe('orchestration service client', () => {
 
       const fallbackConfig: OrchestrationModuleConfig = {
         promptTemplating: {
-          model: { name: 'gpt-4o-mini' },
+          model: { name: 'gpt-5-mini' },
           prompt: {
             template: [{ role: 'user', content: 'Fallback' }]
           }

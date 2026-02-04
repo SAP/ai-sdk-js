@@ -951,7 +951,7 @@ export async function orchestrationStreamWithFallbackConfigs(): Promise<
     {
       promptTemplating: {
         model: {
-          name: 'gpt-4o-mini'
+          name: 'gpt-5-mini'
         }
       }
     }
