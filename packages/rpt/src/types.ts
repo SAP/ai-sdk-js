@@ -142,7 +142,7 @@ export type RptRequestCompressionMiddlewareOptions<
 > = RequestCompressionMiddlewareOptions<C>;
 
 /**
- * Custom options for how requests are made to the RPT service endpoint are performed.
+ * Custom options for how requests to the RPT service endpoint are performed.
  * @template C - The compression algorithm type.
  */
 export interface RptRequestOptions<
