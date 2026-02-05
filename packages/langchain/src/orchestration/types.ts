@@ -49,6 +49,7 @@ export type OrchestrationCallOptions = Pick<
   | 'runId'
   | 'runName'
   | 'tags'
+  | 'ls_structured_output_format'
 > & {
   customRequestConfig?: CustomRequestConfig;
   strict?: boolean;

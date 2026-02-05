@@ -235,12 +235,18 @@ export class OrchestrationClient extends BaseChatModel<
     let llm: Runnable<BaseLanguageModelInput>;
     let outputParser: Runnable<AIMessageChunk, RunOutput>;
 
-    // jsonSchema method: Use orchestration's native responseFormat
     // Convert schema to JSON Schema format
     const jsonSchema = toJsonSchema(outputSchema);
+    // Metadata for langsmith
+    const lsStructuredOutputFormat = {
+      ls_structured_output_format: {
+        kwargs: { method },
+        schema: jsonSchema
+      }
+    } as const satisfies Partial<OrchestrationCallOptions>;
 
-    // Delegate to BaseChatModel for function calling method
     if (method === 'functionCalling') {
+      // functionCalling method: Provide tool for structured output construction.
       outputParser = new JsonOutputKeyToolsParser({
         returnSingle: true,
         keyName: name,
@@ -249,6 +255,7 @@ export class OrchestrationClient extends BaseChatModel<
         })
       });
       llm = this.withConfig({
+        // TODO: Set `tool_choice` if it becomes supported in Orchestration
         tools: [
           {
             type: 'function' as const,
@@ -259,10 +266,11 @@ export class OrchestrationClient extends BaseChatModel<
               ...(strict !== undefined && { strict })
             }
           }
-        ]
-        // TODO: Set `tool_choice` if it becomes supported in Orchestration
+        ],
+        ...lsStructuredOutputFormat
       } satisfies Partial<OrchestrationCallOptions>);
     } else if (method === 'jsonMode') {
+      // jsonMode method: Use orchestration's native JSON response format
       if (strict !== undefined) {
         throw new Error(
           'The "strict" option is not supported with the "jsonMode" structured output method. Please use "jsonSchema" or "functionCalling" methods for strict output instead.'
@@ -271,12 +279,15 @@ export class OrchestrationClient extends BaseChatModel<
       outputParser = isInteropZodSchema(outputSchema)
         ? StructuredOutputParser.fromZodSchema(outputSchema)
         : new JsonOutputParser<RunOutput>();
+
       llm = this.withConfig({
         responseFormat: {
           type: 'json_object'
-        }
+        },
+        ...lsStructuredOutputFormat
       } satisfies Partial<OrchestrationCallOptions>);
     } else if (method === 'jsonSchema') {
+      // jsonSchema method: Use orchestration's native JSON Schema response format
       outputParser = isInteropZodSchema(outputSchema)
         ? StructuredOutputParser.fromZodSchema(outputSchema)
         : new JsonOutputParser<RunOutput>();
@@ -289,7 +300,8 @@ export class OrchestrationClient extends BaseChatModel<
             schema: jsonSchema,
             ...(strict !== undefined && { strict })
           }
-        }
+        },
+        ...lsStructuredOutputFormat
       } satisfies Partial<OrchestrationCallOptions>);
     } else {
       method satisfies never;
