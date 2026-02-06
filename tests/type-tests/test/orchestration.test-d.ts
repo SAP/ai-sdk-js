@@ -112,7 +112,7 @@ expectType<TokenUsage>(
     await new OrchestrationClient({
       promptTemplating: {
         model: {
-          name: 'gpt-4o-mini'
+          name: 'gpt-5-mini'
         },
         prompt: {
           template: [{ role: 'user', content: 'Hello!' }]
@@ -127,7 +127,7 @@ expectType<ChatMessages>(
     await new OrchestrationClient({
       promptTemplating: {
         model: {
-          name: 'gpt-4o-mini'
+          name: 'gpt-5-mini'
         },
         prompt: {
           template: [{ role: 'user', content: 'Hello!' }]
@@ -142,7 +142,7 @@ expectType<MessageToolCalls | undefined>(
     await new OrchestrationClient({
       promptTemplating: {
         model: {
-          name: 'gpt-4o-mini'
+          name: 'gpt-5-mini'
         },
         prompt: {
           template: [{ role: 'user', content: 'Hello!' }]
@@ -157,7 +157,7 @@ expectType<string | undefined>(
     await new OrchestrationClient({
       promptTemplating: {
         model: {
-          name: 'gpt-4o-mini'
+          name: 'gpt-5-mini'
         },
         prompt: {
           template: [{ role: 'user', content: 'Hello!' }]
@@ -172,7 +172,7 @@ expectType<AssistantChatMessage | undefined>(
     await new OrchestrationClient({
       promptTemplating: {
         model: {
-          name: 'gpt-4o-mini'
+          name: 'gpt-5-mini'
         },
         prompt: {
           template: [{ role: 'user', content: 'Hello!' }]
