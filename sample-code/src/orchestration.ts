@@ -493,6 +493,35 @@ export async function orchestrationRequestConfig(): Promise<OrchestrationRespons
 }
 
 /**
+ * Ask about the capital of France and add custom headers.
+ * This example demonstrates how to send metering information like premium-billing and user-context
+ * headers when making requests.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationWithCustomHeaders(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    // define the language model to be used
+    promptTemplating: {
+      model: {
+        name: 'gpt-4o'
+      }
+    }
+  });
+
+  return orchestrationClient.chatCompletion(
+    {
+      messages: [{ role: 'user', content: 'What is the capital of France?' }]
+    },
+    {
+      headers: {
+        'premium-billing': 'true',
+        'user-context': 'user-identifier-123'
+      }
+    }
+  );
+}
+
+/**
  * Use the orchestration service with JSON obtained from AI Launchpad.
  * @returns The orchestration service response.
  */
