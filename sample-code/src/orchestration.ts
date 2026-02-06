@@ -36,9 +36,12 @@ const __dirname = join(dirname(__filename), '..');
 
 /**
  * A simple LLM request, asking about the capital of France.
+ * @param signal - An abort signal to allow cancelling the request early. Remark: HTTP request cancellation may not cancel the request on the orchestration service.
  * @returns The orchestration service response.
  */
-export async function orchestrationChatCompletion(): Promise<OrchestrationResponse> {
+export async function orchestrationChatCompletion(
+  signal?: AbortSignal
+): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
     promptTemplating: {
@@ -49,9 +52,12 @@ export async function orchestrationChatCompletion(): Promise<OrchestrationRespon
   });
 
   // execute the request
-  const result = await orchestrationClient.chatCompletion({
-    messages: [{ role: 'user', content: 'What is the capital of France?' }]
-  });
+  const result = await orchestrationClient.chatCompletion(
+    {
+      messages: [{ role: 'user', content: 'What is the capital of France?' }]
+    },
+    { signal }
+  );
 
   // use getContent() to access the LLM response
   logger.info(result.getContent());
