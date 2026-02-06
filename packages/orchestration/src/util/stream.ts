@@ -5,6 +5,8 @@ import type {
   ChatDelta,
   ChoiceLogprobs,
   CompletionPostResponseStreaming,
+  Error as OrchestrationError,
+  ErrorStreaming,
   LlmChoice,
   LlmChoiceStreaming,
   LlmModuleResult,
@@ -34,7 +36,43 @@ export function mergeStreamResponse(
     data.intermediate_results,
     chunk.intermediate_results
   );
+  data.intermediate_failures = mergeIntermediateFailures(
+    data.intermediate_failures,
+    chunk.intermediate_failures
+  );
   data.final_result = mergeLlmModule(data.final_result, chunk.final_result);
+}
+
+function mergeIntermediateFailures(
+  existing: OrchestrationError[] | undefined,
+  incoming: ErrorStreaming[] | undefined
+): OrchestrationError[] | undefined {
+  if (!incoming || incoming.length === 0) {
+    return existing;
+  }
+
+  // Convert ErrorStreaming to Error by transforming intermediate_results
+  const transformedIncoming: OrchestrationError[] = incoming.map(error => ({
+    ...error,
+    intermediate_results: error.intermediate_results
+      ? mergeModuleResults(undefined, error.intermediate_results)
+      : undefined
+  }));
+
+  if (!existing || existing.length === 0) {
+    return transformedIncoming;
+  }
+
+  // Deduplicate based on message, code, and location to avoid duplicates across chunks.
+  // The 'location' field uniquely identifies which config in a fallback chain failed,
+  // ensuring that failures from different configs (e.g., "config[0]", "config[1]") are kept separate.
+  const existingSet = new Set(
+    existing.map(f => `${f.message}|${f.code}|${f.location}`)
+  );
+  const newFailures = transformedIncoming.filter(
+    f => !existingSet.has(`${f.message}|${f.code}|${f.location}`)
+  );
+  return [...existing, ...newFailures];
 }
 
 function mergeModuleResults(
