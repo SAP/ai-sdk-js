@@ -39,6 +39,7 @@ export {
   invokeLangGraphChain,
   invokeDynamicModelAgent,
   invokeLangGraphChainStream,
+  invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
   streamChain
 } from './langchain-orchestration.js';
 export {
