@@ -232,8 +232,8 @@ importers:
         version: 5.2.1
     devDependencies:
       '@sap/cds-dk':
-        specifier: ^9.7.0
-        version: 9.7.0(@eslint/js@9.39.2)
+        specifier: ^9.7.1
+        version: 9.7.1(@eslint/js@9.39.2)
 
   sample-code:
     dependencies:
@@ -1414,8 +1414,8 @@ packages:
     engines: {node: '>=20'}
     hasBin: true
 
-  '@sap/cds-dk@9.7.0':
-    resolution: {integrity: sha512-6xqkMrA846UYbIN0XuseS/jeXFJfkZJhbY1bZPZUjRy4oi0jXRbhw69yCFEwlCgkuh0t4rX/URqZZ6ciFrnfKA==}
+  '@sap/cds-dk@9.7.1':
+    resolution: {integrity: sha512-pRaCBjJzLvFoCzeEvqOnJJMyzmd3PHN65YZKuH/5TzMaRSRrB++NQcXnbaDOSlLxZghSpshf7IiUwhAGNnkW7A==}
     hasBin: true
 
   '@sap/cds-fiori@2.2.0':
@@ -3019,8 +3019,8 @@ packages:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
 
-  hdb@2.26.4:
-    resolution: {integrity: sha512-v0uIr9mD9iw2Ws+H6+iLNO6W+uIqeXwt8Mwe1c0CZQOn1Sk631Uy4zgdz1wOz4IY3WgxdVjBAYWZ9AS8A/dLIQ==}
+  hdb@2.27.1:
+    resolution: {integrity: sha512-xYL/W+fq2TyGHyzm8muolQnw8tdh4+2NQ8mQP2FpLSuhfJ8l0jQNSUZoAXic7NfMEan1Jvf8V1L4blwkgTc6+A==}
     engines: {node: '>= 18'}
 
   homedir-polyfill@1.0.3:
@@ -4447,6 +4447,11 @@ packages:
 
   semver@7.7.3:
     resolution: {integrity: sha512-SdsKMrI9TdgjdweUSR9MweHA4EJ8YxHn8DFaDisvhVlUOe4BF1tLD7GAj0lIqWVl+dPb/rExr0Btby5loQm20Q==}
+    engines: {node: '>=10'}
+    hasBin: true
+
+  semver@7.7.4:
+    resolution: {integrity: sha512-vFKC2IEtQnVhpT78h1Yp8wzwrf8CM+MzKMHGJZfBtzhZNycRFnXsHk6E5TxIkkMsgNS7mdX3AGB7x2QM2di4lA==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -6483,16 +6488,16 @@ snapshots:
 
   '@sap/cds-compiler@6.7.1': {}
 
-  '@sap/cds-dk@9.7.0(@eslint/js@9.39.2)':
+  '@sap/cds-dk@9.7.1(@eslint/js@9.39.2)':
     dependencies:
       '@cap-js/asyncapi': 1.0.3(@sap/cds@9.7.0(@eslint/js@9.39.2))
       '@cap-js/openapi': 1.3.1(@sap/cds@9.7.0(@eslint/js@9.39.2))
       '@sap/cds': 9.7.0(@eslint/js@9.39.2)
-      '@sap/cds-mtxs': 3.7.0(@sap/cds@9.7.0(@eslint/js@9.39.2))(hdb@2.26.4)
-      '@sap/hdi-deploy': 5.6.1(hdb@2.26.4)
+      '@sap/cds-mtxs': 3.7.0(@sap/cds@9.7.0(@eslint/js@9.39.2))(hdb@2.27.1)
+      '@sap/hdi-deploy': 5.6.1(hdb@2.27.1)
       axios: 1.13.4
       express: 5.2.1
-      hdb: 2.26.4
+      hdb: 2.27.1
       livereload-js: 4.0.2
       mustache: 4.2.0
       ws: 8.19.0
@@ -6513,10 +6518,10 @@ snapshots:
     dependencies:
       '@sap/cds': 9.7.0(@eslint/js@9.39.2)
 
-  '@sap/cds-mtxs@3.7.0(@sap/cds@9.7.0(@eslint/js@9.39.2))(hdb@2.26.4)':
+  '@sap/cds-mtxs@3.7.0(@sap/cds@9.7.0(@eslint/js@9.39.2))(hdb@2.27.1)':
     dependencies:
       '@sap/cds': 9.7.0(@eslint/js@9.39.2)
-      '@sap/hdi-deploy': 5.6.1(hdb@2.26.4)
+      '@sap/hdi-deploy': 5.6.1(hdb@2.27.1)
     transitivePeerDependencies:
       - '@sap/hana-client'
       - hdb
@@ -6532,24 +6537,24 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@sap/hdi-deploy@5.6.1(hdb@2.26.4)':
+  '@sap/hdi-deploy@5.6.1(hdb@2.27.1)':
     dependencies:
-      '@sap/hdi': 4.8.0(hdb@2.26.4)
+      '@sap/hdi': 4.8.0(hdb@2.27.1)
       '@sap/xsenv': 6.1.0
       async: 3.2.6
       dotenv: 16.6.1
       handlebars: 4.7.8
       micromatch: 4.0.8
     optionalDependencies:
-      hdb: 2.26.4
+      hdb: 2.27.1
     transitivePeerDependencies:
       - supports-color
 
-  '@sap/hdi@4.8.0(hdb@2.26.4)':
+  '@sap/hdi@4.8.0(hdb@2.27.1)':
     dependencies:
       async: 3.2.6
     optionalDependencies:
-      hdb: 2.26.4
+      hdb: 2.27.1
 
   '@sap/xsenv@6.1.0':
     dependencies:
@@ -8383,7 +8388,7 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
-  hdb@2.26.4:
+  hdb@2.27.1:
     dependencies:
       iconv-lite: 0.7.0
     optionalDependencies:
@@ -9372,7 +9377,7 @@ snapshots:
 
   node-abi@3.87.0:
     dependencies:
-      semver: 7.7.3
+      semver: 7.7.4
     optional: true
 
   node-cache@5.1.2:
@@ -9957,6 +9962,9 @@ snapshots:
   semver@7.7.2: {}
 
   semver@7.7.3: {}
+
+  semver@7.7.4:
+    optional: true
 
   send@1.2.0:
     dependencies:
