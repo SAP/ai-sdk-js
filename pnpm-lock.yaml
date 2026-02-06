@@ -4,6 +4,10 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@sap-cloud-sdk/openapi': git+https://github.com/SAP/cloud-sdk-js.git#davidkna-sap_doc-multipart&path:/packages/openapi
+  '@sap-cloud-sdk/openapi-generator': git+https://github.com/SAP/cloud-sdk-js.git#davidkna-sap_doc-multipart&path:/packages/openapi-generator
+
 pnpmfileChecksum: sha256-7lht5Q+T9K1tkr5FYaoHEDBAtJqjkSrAs2jGbKMfTIY=
 
 importers:
@@ -41,8 +45,8 @@ importers:
         specifier: ^4.4.0
         version: 4.4.0
       '@sap-cloud-sdk/openapi-generator':
-        specifier: ^4.4.0
-        version: 4.4.0
+        specifier: git+https://github.com/SAP/cloud-sdk-js.git#davidkna-sap_doc-multipart&path:/packages/openapi-generator
+        version: https://codeload.github.com/SAP/cloud-sdk-js/tar.gz/4c1a18aa2d5d23afdb6e30ae4fc7cebca6be0401#path:/packages/openapi-generator
       '@sap-cloud-sdk/util':
         specifier: ^4.4.0
         version: 4.4.0
@@ -122,8 +126,8 @@ importers:
         specifier: ^4.4.0
         version: 4.4.0
       '@sap-cloud-sdk/openapi':
-        specifier: ^4.4.0
-        version: 4.4.0
+        specifier: git+https://github.com/SAP/cloud-sdk-js.git#davidkna-sap_doc-multipart&path:/packages/openapi
+        version: https://codeload.github.com/SAP/cloud-sdk-js/tar.gz/4c1a18aa2d5d23afdb6e30ae4fc7cebca6be0401#path:/packages/openapi
       '@sap-cloud-sdk/util':
         specifier: ^4.4.0
         version: 4.4.0
@@ -1291,12 +1295,14 @@ packages:
   '@sap-cloud-sdk/http-client@4.4.0':
     resolution: {integrity: sha512-Xf14z57uGCECXHST+sQzA59j5e4G3gLW7jEnPrk2QNZ09X0GaEHqPxKGXP4F7/qMFz/apuP4OZLDVzsT+0te8A==}
 
-  '@sap-cloud-sdk/openapi-generator@4.4.0':
-    resolution: {integrity: sha512-AEJ1htZnaBi9bF7uIz4h182rQ8Tunrby9hfruutaXLLaeZPS/rj9397UYZWk1vP4YNUYgnbpzw8ZIZQAed/dZg==}
+  '@sap-cloud-sdk/openapi-generator@https://codeload.github.com/SAP/cloud-sdk-js/tar.gz/4c1a18aa2d5d23afdb6e30ae4fc7cebca6be0401#path:/packages/openapi-generator':
+    resolution: {path: /packages/openapi-generator, tarball: https://codeload.github.com/SAP/cloud-sdk-js/tar.gz/4c1a18aa2d5d23afdb6e30ae4fc7cebca6be0401}
+    version: 4.4.0
     hasBin: true
 
-  '@sap-cloud-sdk/openapi@4.4.0':
-    resolution: {integrity: sha512-2RX23HQIwum7lWTUXrPsC+u/ZpV7Zip5c1X9SUMyxuztnMjFxEOKeqbXt6hqpk/LN6Iy+TwPBt04E2gkyu3cXg==}
+  '@sap-cloud-sdk/openapi@https://codeload.github.com/SAP/cloud-sdk-js/tar.gz/4c1a18aa2d5d23afdb6e30ae4fc7cebca6be0401#path:/packages/openapi':
+    resolution: {path: /packages/openapi, tarball: https://codeload.github.com/SAP/cloud-sdk-js/tar.gz/4c1a18aa2d5d23afdb6e30ae4fc7cebca6be0401}
+    version: 4.4.0
 
   '@sap-cloud-sdk/resilience@4.4.0':
     resolution: {integrity: sha512-hNN1Zj2ge46lWfqTPWYY5l3XDxg7iW9pMjAIoR5mViVldhGNIAGxMPFUts9eorjxRypne5vjV+BxH5wT6mPieA==}
@@ -1685,41 +1691,49 @@ packages:
     resolution: {integrity: sha512-34gw7PjDGB9JgePJEmhEqBhWvCiiWCuXsL9hYphDF7crW7UgI05gyBAi6MF58uGcMOiOqSJ2ybEeCvHcq0BCmQ==}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   '@unrs/resolver-binding-linux-arm64-musl@1.11.1':
     resolution: {integrity: sha512-RyMIx6Uf53hhOtJDIamSbTskA99sPHS96wxVE/bJtePJJtpdKGXO1wY90oRdXuYOGOTuqjT8ACccMc4K6QmT3w==}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   '@unrs/resolver-binding-linux-ppc64-gnu@1.11.1':
     resolution: {integrity: sha512-D8Vae74A4/a+mZH0FbOkFJL9DSK2R6TFPC9M+jCWYia/q2einCubX10pecpDiTmkJVUH+y8K3BZClycD8nCShA==}
     cpu: [ppc64]
     os: [linux]
+    libc: [glibc]
 
   '@unrs/resolver-binding-linux-riscv64-gnu@1.11.1':
     resolution: {integrity: sha512-frxL4OrzOWVVsOc96+V3aqTIQl1O2TjgExV4EKgRY09AJ9leZpEg8Ak9phadbuX0BA4k8U5qtvMSQQGGmaJqcQ==}
     cpu: [riscv64]
     os: [linux]
+    libc: [glibc]
 
   '@unrs/resolver-binding-linux-riscv64-musl@1.11.1':
     resolution: {integrity: sha512-mJ5vuDaIZ+l/acv01sHoXfpnyrNKOk/3aDoEdLO/Xtn9HuZlDD6jKxHlkN8ZhWyLJsRBxfv9GYM2utQ1SChKew==}
     cpu: [riscv64]
     os: [linux]
+    libc: [musl]
 
   '@unrs/resolver-binding-linux-s390x-gnu@1.11.1':
     resolution: {integrity: sha512-kELo8ebBVtb9sA7rMe1Cph4QHreByhaZ2QEADd9NzIQsYNQpt9UkM9iqr2lhGr5afh885d/cB5QeTXSbZHTYPg==}
     cpu: [s390x]
     os: [linux]
+    libc: [glibc]
 
   '@unrs/resolver-binding-linux-x64-gnu@1.11.1':
     resolution: {integrity: sha512-C3ZAHugKgovV5YvAMsxhq0gtXuwESUKc5MhEtjBpLoHPLYM+iuwSj3lflFwK3DPm68660rZ7G8BMcwSro7hD5w==}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@unrs/resolver-binding-linux-x64-musl@1.11.1':
     resolution: {integrity: sha512-rV0YSoyhK2nZ4vEswT/QwqzqQXw5I6CjoaYMOX0TqBlWhojUf8P94mvI7nuJTeaCkkds3QE4+zS8Ko+GdXuZtA==}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   '@unrs/resolver-binding-wasm32-wasi@1.11.1':
     resolution: {integrity: sha512-5u4RkfxJm+Ng7IWgkzi3qrFOvLvQYnPBmjmZQ8+szTK/b31fQCnleNl1GgEt7nIsZRIf5PLhPwT0WM+q45x/UQ==}
@@ -6112,7 +6126,7 @@ snapshots:
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.4.0
       '@sap-cloud-sdk/http-client': 4.4.0
-      '@sap-cloud-sdk/openapi': 4.4.0
+      '@sap-cloud-sdk/openapi': https://codeload.github.com/SAP/cloud-sdk-js/tar.gz/4c1a18aa2d5d23afdb6e30ae4fc7cebca6be0401#path:/packages/openapi
       '@sap-cloud-sdk/util': 4.4.0
     transitivePeerDependencies:
       - debug
@@ -6239,12 +6253,13 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/openapi-generator@4.4.0':
+  '@sap-cloud-sdk/openapi-generator@https://codeload.github.com/SAP/cloud-sdk-js/tar.gz/4c1a18aa2d5d23afdb6e30ae4fc7cebca6be0401#path:/packages/openapi-generator':
     dependencies:
       '@apidevtools/swagger-parser': 12.1.0(openapi-types@12.1.3)
       '@sap-cloud-sdk/generator-common': 4.4.0
-      '@sap-cloud-sdk/openapi': 4.4.0
+      '@sap-cloud-sdk/openapi': https://codeload.github.com/SAP/cloud-sdk-js/tar.gz/4c1a18aa2d5d23afdb6e30ae4fc7cebca6be0401#path:/packages/openapi
       '@sap-cloud-sdk/util': 4.4.0
+      content-type: 1.0.5
       js-yaml: 4.1.1
       openapi-types: 12.1.3
       swagger2openapi: 7.0.8
@@ -6253,7 +6268,7 @@ snapshots:
       - encoding
       - supports-color
 
-  '@sap-cloud-sdk/openapi@4.4.0':
+  '@sap-cloud-sdk/openapi@https://codeload.github.com/SAP/cloud-sdk-js/tar.gz/4c1a18aa2d5d23afdb6e30ae4fc7cebca6be0401#path:/packages/openapi':
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.4.0
       '@sap-cloud-sdk/http-client': 4.4.0

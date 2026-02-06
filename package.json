@@ -64,5 +64,15 @@
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "zod": "^4.3.6"
+  },
+  "pnpm": {
+    "overrides": {
+      "@sap-cloud-sdk/openapi": "git+https://github.com/SAP/cloud-sdk-js.git#davidkna-sap_doc-multipart&path:/packages/openapi",
+      "@sap-cloud-sdk/openapi-generator": "git+https://github.com/SAP/cloud-sdk-js.git#davidkna-sap_doc-multipart&path:/packages/openapi-generator"
+    },
+    "onlyBuiltDependencies": [
+      "@sap-cloud-sdk/openapi",
+      "@sap-cloud-sdk/openapi-generator"
+    ]
   }
 }
