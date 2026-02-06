@@ -1203,7 +1203,7 @@ components:
         - $ref: '#/components/schemas/WorkZonePipelineCreateRequest'
         - $ref: '#/components/schemas/ServiceNowPipelineCreateRequest'
         - $ref: '#/components/schemas/GoogleDrivePipelineCreateRequest'
-        - $ref: '#/components/schemas/metadataConfiguration'
+        - $ref: '#/components/schemas/MetadataConfiguration'
       discriminator:
         propertyName: type
         mapping:
@@ -1214,7 +1214,7 @@ components:
           WorkZone: '#/components/schemas/WorkZonePipelineCreateRequest'
           ServiceNow: '#/components/schemas/ServiceNowPipelineCreateRequest'
           GoogleDrive: '#/components/schemas/GoogleDrivePipelineCreateRequest'
-          metadata: '#/components/schemas/metadataConfiguration'
+          metadata: '#/components/schemas/MetadataConfiguration'
 
     manualPipelineTrigger:
       type: object
@@ -1311,7 +1311,7 @@ components:
           $ref: '#/components/schemas/ServiceNowConfigurationStruct'
       additionalProperties: true
 
-    metadataConfiguration:
+    MetadataConfiguration:
       type: object
       required:
         - type
