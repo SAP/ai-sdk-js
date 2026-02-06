@@ -494,6 +494,18 @@ export async function invokeMcpToolChain(): Promise<string> {
 }
 
 /**
+ * Joke interface for structured output example.
+ */
+interface Joke {
+  /** The setup of the joke. */
+  setup: string;
+  /** The punchline to the joke. */
+  punchline: string;
+  /** How funny the joke is, from 1 to 10. */
+  rating: number;
+}
+
+/**
  * With Structured Output using `jsonSchema` option with `strict: true` if supported by the method.
  * @param method - The method to use for structured output. `jsonSchema` uses native structured output support, `jsonMode` forces JSON mode, and `functionCalling` uses tool calling.
  * @param includeRaw - If true, returns an object with both raw message and parsed result.
@@ -506,17 +518,9 @@ export async function invokeWithStructuredOutput<T extends boolean = false>(
   T extends true
     ? {
         raw: BaseMessage;
-        parsed: {
-          setup: string;
-          punchline: string;
-          rating: number;
-        };
+        parsed: Joke;
       }
-    : {
-        setup: string;
-        punchline: string;
-        rating: number;
-      }
+    : Joke
 > {
   // initialize client with options
   const llm = new OrchestrationClient({
