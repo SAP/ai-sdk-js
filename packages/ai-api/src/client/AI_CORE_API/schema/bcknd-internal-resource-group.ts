@@ -35,5 +35,9 @@ export type BckndInternalResourceGroup = {
    * status message
    */
   statusMessage?: string;
+  /**
+   * service plan
+   */
+  servicePlan?: string;
   annotations?: BckndInternalResourceGroupAnnotations;
 } & Record<string, any>;

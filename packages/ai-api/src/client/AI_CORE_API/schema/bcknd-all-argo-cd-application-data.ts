@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { BckndArgoCDApplicationData } from './bcknd-argo-cd-application-data.js';
+import type { BckndArgoCDApplicationDataResponse } from './bcknd-argo-cd-application-data-response.js';
 /**
  * list of applications
  */
@@ -12,5 +12,5 @@ export type BckndAllArgoCDApplicationData = {
    * Number of the resource instances in the list
    */
   count: number;
-  resources: BckndArgoCDApplicationData[];
+  resources: BckndArgoCDApplicationDataResponse[];
 } & Record<string, any>;
