@@ -402,7 +402,7 @@ export async function invokeDynamicModelAgent(): Promise<string> {
   const basicModel = new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-4o-mini'
+        name: 'gpt-5-mini'
       }
     }
   });
