@@ -82,37 +82,21 @@ export class RptClient {
       );
     }
 
+    // Workaround: Endpoint requires a filename that ends with .parquet
+    // Preserve any filename if parquetData is already a File
+    const parquetFile =
+      parquetData instanceof File
+        ? parquetData
+        : new File([parquetData], 'blob.parquet', { type: parquetData.type });
+
     const { resourceGroup, deploymentId } =
       await this.getResourceGroupAndDeploymentId();
 
-    // Construct intermediate body object to handle type-safety
-    const bodyObject: BodyPredictParquet = {
-      // The schema says bytes, but SAP Cloud SDK generates it as string
-      file: parquetData as unknown as string,
-      prediction_config: JSON.stringify(predictionConfig),
+    const body: BodyPredictParquet = {
+      file: parquetFile,
+      prediction_config: predictionConfig,
       ...(options || {})
     };
-
-    const body = new FormData();
-    if (parquetData instanceof File) {
-      // If the Blob is a File, preserve the filename
-      body.append('file', parquetData);
-    } else {
-      // For generic Blobs, extend with a filename & mime type
-      const newBlob = new Blob([parquetData], {
-        type: 'application/vnd.apache.parquet'
-      });
-      // TODO: RPT-API requires a filename, even if MIME type is set correctly
-      body.append('file', newBlob, 'blob.parquet');
-    }
-
-    body.append('prediction_config', bodyObject.prediction_config);
-
-    for (const [key, value] of Object.entries(options || {})) {
-      if (value !== undefined) {
-        body.append(key, String(value));
-      }
-    }
 
     return RptApi.predictParquet(body)
       .setBasePath(`/inference/deployments/${deploymentId}`)
