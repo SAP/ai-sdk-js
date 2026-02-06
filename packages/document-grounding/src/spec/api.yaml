@@ -1603,7 +1603,35 @@ components:
           type: string
           example: destination-name
         dataRepositoryMetadata:
-          $ref: '#/components/schemas/DataRepositoryMetaDataStrict'
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                minLength: 1
+                maxLength: 1024
+                nullable: false
+              value:
+                type: array
+                items:
+                  type: string
+                  minLength: 1
+                  maxLength: 1024
+                  nullable: false
+                nullable: false
+                minItems: 1
+            required:
+              - key
+              - value
+          example:
+            - key: purpose
+              value:
+                - demonstration
+            - key: sample-key
+              value:
+                - sample-value1
+                - sample-value2
       additionalProperties: true
 
     getPipelines:
