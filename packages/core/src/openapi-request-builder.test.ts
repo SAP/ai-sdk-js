@@ -24,14 +24,10 @@ describe('OpenApiRequestBuilder', () => {
       .query({ 'api-version': 'mock-api-version' })
       .reply(200, mockResponse);
 
-    const builder = new OpenApiRequestBuilder(
-      'post',
-      '/some/endpoint',
-      {
-        queryParameters: { 'api-version': 'mock-api-version' },
-        body: mockRequest
-      }
-    );
+    const builder = new OpenApiRequestBuilder('post', '/some/endpoint', {
+      queryParameters: { 'api-version': 'mock-api-version' },
+      body: mockRequest
+    });
 
     const response = await builder.execute(undefined, {
       headers: {
@@ -54,14 +50,10 @@ describe('OpenApiRequestBuilder', () => {
         'x-custom-response-header': 'response-value'
       });
 
-    const builder = new OpenApiRequestBuilder(
-      'post',
-      '/some/endpoint',
-      {
-        queryParameters: { 'api-version': 'mock-api-version' },
-        body: mockRequest
-      }
-    );
+    const builder = new OpenApiRequestBuilder('post', '/some/endpoint', {
+      queryParameters: { 'api-version': 'mock-api-version' },
+      body: mockRequest
+    });
 
     const response = await builder.executeRaw(undefined, {
       headers: {
@@ -84,14 +76,10 @@ describe('OpenApiRequestBuilder', () => {
       .query({ 'api-version': 'mock-api-version' })
       .reply(200, mockResponse);
 
-    const builder = new OpenApiRequestBuilder(
-      'post',
-      '/some/endpoint',
-      {
-        queryParameters: { 'api-version': 'mock-api-version' },
-        body: mockRequest
-      }
-    );
+    const builder = new OpenApiRequestBuilder('post', '/some/endpoint', {
+      queryParameters: { 'api-version': 'mock-api-version' },
+      body: mockRequest
+    });
 
     const response = await builder.execute();
 
