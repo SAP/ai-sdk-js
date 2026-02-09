@@ -7,4 +7,4 @@
 /**
  * Representation of the 'Embedding' schema.
  */
-export type Embedding = number[] | string;
+export type Embedding = number[] | string | Record<string, any>;
