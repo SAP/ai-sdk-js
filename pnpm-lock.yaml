@@ -180,8 +180,8 @@ importers:
         version: 13.0.0
     devDependencies:
       '@langchain/langgraph':
-        specifier: ^1.1.3
-        version: 1.1.3(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6)
+        specifier: ^1.1.4
+        version: 1.1.4(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6)
 
   packages/orchestration:
     dependencies:
@@ -266,11 +266,11 @@ importers:
         specifier: ^1.1.19
         version: 1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6))
       '@langchain/langgraph':
-        specifier: ^1.1.3
-        version: 1.1.3(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6)
+        specifier: ^1.1.4
+        version: 1.1.4(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6)
       '@langchain/mcp-adapters':
         specifier: ^1.1.2
-        version: 1.1.2(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(@langchain/langgraph@1.1.3(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6))
+        version: 1.1.2(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(@langchain/langgraph@1.1.4(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6))
       '@langchain/textsplitters':
         specifier: ^1.0.1
         version: 1.0.1(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))
@@ -354,35 +354,35 @@ importers:
         specifier: ^1.1.19
         version: 1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6))
       '@langchain/langgraph':
-        specifier: ^1.1.3
-        version: 1.1.3(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6)
+        specifier: ^1.1.4
+        version: 1.1.4(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6)
       '@langchain/mcp-adapters':
         specifier: ^1.1.2
-        version: 1.1.2(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(@langchain/langgraph@1.1.3(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6))
+        version: 1.1.2(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(@langchain/langgraph@1.1.4(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6))
       '@langchain/textsplitters':
         specifier: ^1.0.1
         version: 1.0.1(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))
       '@sap-ai-sdk/ai-api':
         specifier: canary
-        version: 2.6.1-20260205013615.0
+        version: 2.6.1-20260208013601.0
       '@sap-ai-sdk/document-grounding':
         specifier: canary
-        version: 2.6.1-20260205013615.0
+        version: 2.6.1-20260208013601.0
       '@sap-ai-sdk/foundation-models':
         specifier: canary
-        version: 2.6.1-20260205013615.0
+        version: 2.6.1-20260208013601.0
       '@sap-ai-sdk/langchain':
         specifier: canary
-        version: 2.6.1-20260205013615.0(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))
+        version: 2.6.1-20260208013601.0(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))
       '@sap-ai-sdk/orchestration':
         specifier: canary
-        version: 2.6.1-20260205013615.0
+        version: 2.6.1-20260208013601.0
       '@sap-ai-sdk/prompt-registry':
         specifier: canary
-        version: 2.6.1-20260205013615.0
+        version: 2.6.1-20260208013601.0
       '@sap-ai-sdk/rpt':
         specifier: canary
-        version: 2.6.1-20260205013615.0
+        version: 2.6.1-20260208013601.0
       '@sap-cloud-sdk/util':
         specifier: ^4.4.0
         version: 4.4.0
@@ -1116,10 +1116,10 @@ packages:
     peerDependencies:
       '@langchain/core': ^1.0.1
 
-  '@langchain/langgraph-sdk@1.5.5':
-    resolution: {integrity: sha512-SyiAs6TVXPWlt/8cI9pj/43nbIvclY3ytKqUFbL5MplCUnItetEyqvH87EncxyVF5D7iJKRZRfSVYBMmOZbjbQ==}
+  '@langchain/langgraph-sdk@1.6.0':
+    resolution: {integrity: sha512-J/B1SkCG0U+eXEXH/X89dDHxP8I0eULjLtXYvZ39uk2TxEKjLsrW4LY5J7Qwrf0GCDA+IM/agjKSLXALnctWTw==}
     peerDependencies:
-      '@langchain/core': ^1.1.15
+      '@langchain/core': ^1.1.16
       react: ^18 || ^19
       react-dom: ^18 || ^19
     peerDependenciesMeta:
@@ -1130,11 +1130,11 @@ packages:
       react-dom:
         optional: true
 
-  '@langchain/langgraph@1.1.3':
-    resolution: {integrity: sha512-o/cEWeocDDSpyBI2MfX07LkNG4LzdRKxwcgUcbR4PyRzhxxCkeIZRCCYkXVQoDbdKqAczJa0D7+yjU9rmA5iHQ==}
+  '@langchain/langgraph@1.1.4':
+    resolution: {integrity: sha512-9OhRF+7Zvcpure8TLtBrxfJDo0PAoHZhfzcPL6M3CsGXiYqLWm5tQe+FYqn9zRIV7IwphqVEl1QDNbOkVgo+kw==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@langchain/core': ^1.0.1
+      '@langchain/core': ^1.1.16
       zod: ^3.25.32 || ^4.2.0
       zod-to-json-schema: ^3.x
     peerDependenciesMeta:
@@ -1248,31 +1248,31 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
-  '@sap-ai-sdk/ai-api@2.6.1-20260205013615.0':
-    resolution: {integrity: sha512-kmQ1ZdUeYOH+O4xm1G3SbTIWXhIxFVLli49Tg+sRU4uTVpakmFM2q/CLJEsllgBEm7ddeIpWRfLY1TJKnMybGg==}
+  '@sap-ai-sdk/ai-api@2.6.1-20260208013601.0':
+    resolution: {integrity: sha512-v5DXEGKWhhc3WtTTka7pd4nT+QNUTaSbY/7O/9Rky5uw+vZDQSdSe0fv24+zcWFTD/xkg4oVRhVqPQyFxstbsg==}
 
-  '@sap-ai-sdk/core@2.6.1-20260205013615.0':
-    resolution: {integrity: sha512-DKBKgrHdP3Yz4KTR7bM0Sw2wPLGsWXfueiGBzeShKAGoksW/vuhEeIMQYJyfsy+uLZJw9fMw4sHOMWdm9X7N8g==}
+  '@sap-ai-sdk/core@2.6.1-20260208013601.0':
+    resolution: {integrity: sha512-WShisBJDbg3rENW/aI4uxQ+ZwnVf7NCK9Rxhs8pRzVfzVfuBg8ndgf4/gUY3QiWE2L1FkNd1L6mPj7GhuGdHhw==}
 
-  '@sap-ai-sdk/document-grounding@2.6.1-20260205013615.0':
-    resolution: {integrity: sha512-vtKMlMITa5A/T2RsDiSlzsCClcDtyKOrfZaVYgUrSspGYVn9rXp4AA1E1lty4qs61StaBjVG0di/CckGspMwCQ==}
+  '@sap-ai-sdk/document-grounding@2.6.1-20260208013601.0':
+    resolution: {integrity: sha512-wpENF4LYNusg9/l+2Vlpgz2/i5VhK5KxRFkc+0vSwFYAc9SuDIuopXOuP3Z9uYcsrR3nCQVGUTQzbTlsmPzAoQ==}
 
-  '@sap-ai-sdk/foundation-models@2.6.1-20260205013615.0':
-    resolution: {integrity: sha512-4D+gm66OtVOA+Xa/xIDmKU4i0iDnXQYAhtkV97Dh/hea5bmmVOP6ZRPbp3ANaWeZxGP7RYRxriALtXS+2ofR8w==}
+  '@sap-ai-sdk/foundation-models@2.6.1-20260208013601.0':
+    resolution: {integrity: sha512-kPCTjpMY3zuOrw6GiaHx/Z+cMqo70Wcki+2LGIz4w6AX2/4U64EBiyjYnFcVm/lF91M3r5Joqle/FX7qIk40AQ==}
 
-  '@sap-ai-sdk/langchain@2.6.1-20260205013615.0':
-    resolution: {integrity: sha512-LfjV/gnxi7FoCgFc/ix1BNdSxJd+cWBhhvsiuQgEGp1cRdZH/RT2CjsXrasYS0LLe+7z8voUHA5Do+nsHpUnOw==}
+  '@sap-ai-sdk/langchain@2.6.1-20260208013601.0':
+    resolution: {integrity: sha512-654NGWFh6vEfHKk8ZYE8dKQFa8epP5miPaE9xMHDOTHxmKZBTR4zOfaX4j3EmUzwcDHritHnLzTE7A54Kw6Ggw==}
     peerDependencies:
       '@langchain/core': ^1.1.16
 
-  '@sap-ai-sdk/orchestration@2.6.1-20260205013615.0':
-    resolution: {integrity: sha512-ttsZNTrtbHe6mvNF+ei5oB1Ew2gRpakqxW1jAHBMxOGtdyZ96muhfSkditrSX16Lf9c62mTIjTCz8VkdO5H1Ug==}
+  '@sap-ai-sdk/orchestration@2.6.1-20260208013601.0':
+    resolution: {integrity: sha512-uVNFz5LFnUbmowc8A2BbYWrBAjeH6psFoAKih4xanGRkIo9aHcpWspHY+Pf/Vpie3vkjnS3b5kbEpKeu35w3Hw==}
 
-  '@sap-ai-sdk/prompt-registry@2.6.1-20260205013615.0':
-    resolution: {integrity: sha512-rwJIxN7e9MQj5RqAuccJYrjBNcQIAhJxuVMOzYAVbTZjnuYf1Egr9RVsPgzVpzQWGqgrfyVe2GukPjsdfRX+Lg==}
+  '@sap-ai-sdk/prompt-registry@2.6.1-20260208013601.0':
+    resolution: {integrity: sha512-RIcuPiK5ZHyoYLgcdlKwckhtWBhGYf6HyccaRe4o+5hMTq5GcwHBaw9hx7X+DEnDOzToUQT5ykzXl1f6cUp+ng==}
 
-  '@sap-ai-sdk/rpt@2.6.1-20260205013615.0':
-    resolution: {integrity: sha512-mAnYEWlu6/j/VjvNHqpxoOw5li1Nz384mkn/1FI9i2af8rdorQWhdWhkQZ9/aWKSZjze+dOYG95fUEz/3OjxtQ==}
+  '@sap-ai-sdk/rpt@2.6.1-20260208013601.0':
+    resolution: {integrity: sha512-+qDjaicLHfEpnt0KB9gWSOYCPr80eu0/e3AJPi9PikEaf7KYGlq/al8HLzHwn488fxG6pca0OL4KpV5wi+d2qw==}
 
   '@sap-cloud-sdk/connectivity@4.4.0':
     resolution: {integrity: sha512-jGbFpQT2QHEmUBfAXNiX3hcNxF2QVJnFDhI4mZPSvhBzueRC6iJISB+Ls2RVmNS10wLcvI91zlmsGyYw+oeYsQ==}
@@ -5776,19 +5776,20 @@ snapshots:
       '@langchain/core': 1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6))
       uuid: 10.0.0
 
-  '@langchain/langgraph-sdk@1.5.5(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))':
+  '@langchain/langgraph-sdk@1.6.0(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))':
     dependencies:
+      '@types/json-schema': 7.0.15
       p-queue: 9.1.0
       p-retry: 7.1.1
       uuid: 13.0.0
     optionalDependencies:
       '@langchain/core': 1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6))
 
-  '@langchain/langgraph@1.1.3(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6)':
+  '@langchain/langgraph@1.1.4(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6)':
     dependencies:
       '@langchain/core': 1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6))
       '@langchain/langgraph-checkpoint': 1.0.0(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))
-      '@langchain/langgraph-sdk': 1.5.5(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))
+      '@langchain/langgraph-sdk': 1.6.0(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))
       '@standard-schema/spec': 1.1.0
       uuid: 10.0.0
       zod: 4.3.6
@@ -5798,10 +5799,10 @@ snapshots:
       - react
       - react-dom
 
-  '@langchain/mcp-adapters@1.1.2(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(@langchain/langgraph@1.1.3(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6))':
+  '@langchain/mcp-adapters@1.1.2(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(@langchain/langgraph@1.1.4(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6))':
     dependencies:
       '@langchain/core': 1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6))
-      '@langchain/langgraph': 1.1.3(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6)
+      '@langchain/langgraph': 1.1.4(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6)
       '@modelcontextprotocol/sdk': 1.26.0(@cfworker/json-schema@4.1.1)(zod@4.3.6)
       debug: 4.4.3
       zod: 4.3.6
@@ -6007,16 +6008,16 @@ snapshots:
 
   '@rtsao/scc@1.1.0': {}
 
-  '@sap-ai-sdk/ai-api@2.6.1-20260205013615.0':
+  '@sap-ai-sdk/ai-api@2.6.1-20260208013601.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.6.1-20260205013615.0
+      '@sap-ai-sdk/core': 2.6.1-20260208013601.0
       '@sap-cloud-sdk/connectivity': 4.4.0
       '@sap-cloud-sdk/util': 4.4.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/core@2.6.1-20260205013615.0':
+  '@sap-ai-sdk/core@2.6.1-20260208013601.0':
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.4.0
       '@sap-cloud-sdk/http-client': 4.4.0
@@ -6026,17 +6027,17 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/document-grounding@2.6.1-20260205013615.0':
+  '@sap-ai-sdk/document-grounding@2.6.1-20260208013601.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.6.1-20260205013615.0
+      '@sap-ai-sdk/core': 2.6.1-20260208013601.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/foundation-models@2.6.1-20260205013615.0':
+  '@sap-ai-sdk/foundation-models@2.6.1-20260208013601.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.6.1-20260205013615.0
-      '@sap-ai-sdk/core': 2.6.1-20260205013615.0
+      '@sap-ai-sdk/ai-api': 2.6.1-20260208013601.0
+      '@sap-ai-sdk/core': 2.6.1-20260208013601.0
       '@sap-cloud-sdk/connectivity': 4.4.0
       '@sap-cloud-sdk/http-client': 4.4.0
       '@sap-cloud-sdk/util': 4.4.0
@@ -6044,13 +6045,13 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/langchain@2.6.1-20260205013615.0(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))':
+  '@sap-ai-sdk/langchain@2.6.1-20260208013601.0(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))':
     dependencies:
       '@langchain/core': 1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6))
-      '@sap-ai-sdk/ai-api': 2.6.1-20260205013615.0
-      '@sap-ai-sdk/core': 2.6.1-20260205013615.0
-      '@sap-ai-sdk/foundation-models': 2.6.1-20260205013615.0
-      '@sap-ai-sdk/orchestration': 2.6.1-20260205013615.0
+      '@sap-ai-sdk/ai-api': 2.6.1-20260208013601.0
+      '@sap-ai-sdk/core': 2.6.1-20260208013601.0
+      '@sap-ai-sdk/foundation-models': 2.6.1-20260208013601.0
+      '@sap-ai-sdk/orchestration': 2.6.1-20260208013601.0
       '@sap-cloud-sdk/connectivity': 4.4.0
       '@sap-cloud-sdk/util': 4.4.0
       uuid: 13.0.0
@@ -6058,29 +6059,29 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/orchestration@2.6.1-20260205013615.0':
+  '@sap-ai-sdk/orchestration@2.6.1-20260208013601.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.6.1-20260205013615.0
-      '@sap-ai-sdk/core': 2.6.1-20260205013615.0
-      '@sap-ai-sdk/prompt-registry': 2.6.1-20260205013615.0
+      '@sap-ai-sdk/ai-api': 2.6.1-20260208013601.0
+      '@sap-ai-sdk/core': 2.6.1-20260208013601.0
+      '@sap-ai-sdk/prompt-registry': 2.6.1-20260208013601.0
       '@sap-cloud-sdk/util': 4.4.0
       yaml: 2.8.2
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/prompt-registry@2.6.1-20260205013615.0':
+  '@sap-ai-sdk/prompt-registry@2.6.1-20260208013601.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.6.1-20260205013615.0
+      '@sap-ai-sdk/core': 2.6.1-20260208013601.0
       zod: 4.3.6
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/rpt@2.6.1-20260205013615.0':
+  '@sap-ai-sdk/rpt@2.6.1-20260208013601.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.6.1-20260205013615.0
-      '@sap-ai-sdk/core': 2.6.1-20260205013615.0
+      '@sap-ai-sdk/ai-api': 2.6.1-20260208013601.0
+      '@sap-ai-sdk/core': 2.6.1-20260208013601.0
       '@sap-cloud-sdk/connectivity': 4.4.0
       '@sap-cloud-sdk/util': 4.4.0
     transitivePeerDependencies:
@@ -8748,7 +8749,7 @@ snapshots:
   langchain@1.2.18(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(openai@6.18.0(ws@8.19.0)(zod@4.3.6))(zod-to-json-schema@3.25.1(zod@4.3.6)):
     dependencies:
       '@langchain/core': 1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6))
-      '@langchain/langgraph': 1.1.3(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6)
+      '@langchain/langgraph': 1.1.4(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6)
       '@langchain/langgraph-checkpoint': 1.0.0(@langchain/core@1.1.19(openai@6.18.0(ws@8.19.0)(zod@4.3.6)))
       langsmith: 0.4.12(openai@6.18.0(ws@8.19.0)(zod@4.3.6))
       uuid: 10.0.0
