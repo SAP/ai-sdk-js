@@ -2,7 +2,7 @@ import { OpenApiRequestBuilder as CloudSDKOpenApiRequestBuilder } from '@sap-clo
 import { executeRequest } from './http-client.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 import type { OpenApiRequestParameters } from '@sap-cloud-sdk/openapi';
-import type { HttpResponse, Method } from '@sap-cloud-sdk/http-client';
+import type { HttpResponse, Method, CustomRequestConfig } from '@sap-cloud-sdk/http-client';
 
 /**
  * Request builder for OpenAPI requests.
@@ -23,10 +23,12 @@ export class OpenApiRequestBuilder<
   /**
    * Execute request and get the response data. Use this to conveniently access the data of a service without technical information about the response.
    * @param destination - The destination to execute the request against.
+   * @param requestConfig - Custom request configuration.
    * @returns A promise resolving to an HttpResponse.
    */
   async executeRaw(
-    destination?: HttpDestinationOrFetchOptions
+    destination?: HttpDestinationOrFetchOptions,
+    requestConfig?: CustomRequestConfig
   ): Promise<HttpResponse> {
     const { url, data, ...rest } = await this.requestConfig();
     // TODO: Remove explicit url! once we updated the type in the Cloud SDK, since url is always defined.
@@ -35,13 +37,16 @@ export class OpenApiRequestBuilder<
       data,
       {
         ...rest,
+        ...requestConfig,
         headers: {
           ...rest.headers?.requestConfig,
-          ...rest.headers?.custom
+          ...rest.headers?.custom,
+          ...requestConfig?.headers
         },
         params: {
           ...rest.params?.requestConfig,
-          ...rest.params?.custom
+          ...rest.params?.custom,
+          ...requestConfig?.params
         }
       },
       destination
@@ -51,12 +56,14 @@ export class OpenApiRequestBuilder<
   /**
    * Execute request and get the response data. Use this to conveniently access the data of a service without technical information about the response.
    * @param destination - The destination to execute the request against.
+   * @param requestConfig - Custom request configuration.
    * @returns A promise resolving to the requested return type.
    */
   async execute(
-    destination?: HttpDestinationOrFetchOptions
+    destination?: HttpDestinationOrFetchOptions,
+    requestConfig?: CustomRequestConfig
   ): Promise<ResponseT> {
-    const response = await this.executeRaw(destination);
+    const response = await this.executeRaw(destination, requestConfig);
     if ('data' in response) {
       return response.data;
     }
