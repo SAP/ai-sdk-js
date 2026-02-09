@@ -131,7 +131,7 @@ export interface PredictionOptionsParquet {
    */
   index_column?: string;
   /**
-   * Whether to parse the data types of the columns. If set to True, numeric columns will be parsed to float or integer and dates in ISO format YYYY-MM-DD will be parsed.
+   * Whether to parse the data types of the columns. If set to true, numeric columns will be parsed to float or integer and dates in ISO format YYYY-MM-DD will be parsed.
    * Default: true.
    */
   parse_data_types?: boolean;
