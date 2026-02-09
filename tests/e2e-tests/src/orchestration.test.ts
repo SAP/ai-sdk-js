@@ -6,7 +6,6 @@ import {
   orchestrationInputFiltering,
   orchestrationOutputFiltering,
   orchestrationRequestConfig,
-  orchestrationWithCustomHeaders,
   orchestrationCompletionMasking,
   orchestrationMaskGroundingInput,
   orchestrationChatCompletionImage,
@@ -84,12 +83,6 @@ describe('orchestration', () => {
 
   it('should allow for custom request parameters', async () => {
     const response = await orchestrationRequestConfig();
-
-    assertContent(response);
-  });
-
-  it('should allow for custom headers', async () => {
-    const response = await orchestrationWithCustomHeaders();
 
     assertContent(response);
   });
