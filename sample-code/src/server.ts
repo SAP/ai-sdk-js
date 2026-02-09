@@ -78,7 +78,7 @@ import {
 import {
   predictAutomaticParsing,
   predictWithSchema,
-  predictParquet
+  predictParquetBlob
 } from './rpt.js';
 import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type { AIMessageChunk } from '@langchain/core/messages';
@@ -822,7 +822,7 @@ app.get('/rpt/predict-automatic', async (req, res) => {
 
 app.get('/rpt/predict-parquet', async (_req, res) => {
   try {
-    const data = await predictParquet();
+    const data = await predictParquetBlob();
     res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
 
     res.end();
