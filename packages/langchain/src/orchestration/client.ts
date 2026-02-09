@@ -1,7 +1,23 @@
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
+import { JsonOutputKeyToolsParser } from '@langchain/core/output_parsers/openai_tools';
+import {
+  JsonOutputParser,
+  StructuredOutputParser
+} from '@langchain/core/output_parsers';
+import {
+  RunnablePassthrough,
+  RunnableSequence,
+  type Runnable,
+  type RunnableLike
+} from '@langchain/core/runnables';
+import { toJsonSchema } from '@langchain/core/utils/json_schema';
+import {
+  getSchemaDescription,
+  isInteropZodSchema,
+  type InteropZodType
+} from '@langchain/core/utils/types';
 import { OrchestrationClient as OrchestrationClientBase } from '@sap-ai-sdk/orchestration';
 import { ChatGenerationChunk } from '@langchain/core/outputs';
-import { type BaseMessage } from '@langchain/core/messages';
 import {
   isTemplateRef,
   mapLangChainMessagesToOrchestrationMessages,
@@ -9,20 +25,23 @@ import {
   mapToolToChatCompletionTool,
   mapOrchestrationChunkToLangChainMessageChunk
 } from './util.js';
-import type { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
 import type { NewTokenIndices } from '@langchain/core/callbacks/base';
-import type { BaseLanguageModelInput } from '@langchain/core/language_models/base';
-import type { Runnable, RunnableLike } from '@langchain/core/runnables';
+import type {
+  BaseLanguageModelInput,
+  StructuredOutputMethodOptions
+} from '@langchain/core/language_models/base';
 import type { ChatResult } from '@langchain/core/outputs';
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
 import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
+import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+import type { AIMessageChunk, BaseMessage } from '@langchain/core/messages';
+import type { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
 import type {
   OrchestrationCallOptions,
   LangChainOrchestrationModuleConfig,
   LangChainOrchestrationChatModelParams,
   ChatOrchestrationToolType
 } from './types.js';
-import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 function isInputFilteringError(error: any): boolean {
   return (
@@ -54,7 +73,6 @@ export class OrchestrationClient extends BaseChatModel<
       }
       onFailedAttempt?.(error);
     };
-
     super(langchainOptions);
 
     // Initialize streaming flags with LangChain-compatible behavior:
@@ -171,6 +189,150 @@ export class OrchestrationClient extends BaseChatModel<
     } as Partial<OrchestrationCallOptions>);
   }
 
+  withStructuredOutput<
+    RunOutput extends Record<string, any> = Record<string, any>
+  >(
+    outputSchema: InteropZodType<RunOutput> | Record<string, any>,
+    config?: StructuredOutputMethodOptions<false>
+  ): Runnable<BaseLanguageModelInput, RunOutput>;
+
+  withStructuredOutput<
+    RunOutput extends Record<string, any> = Record<string, any>
+  >(
+    outputSchema: InteropZodType<RunOutput> | Record<string, any>,
+    config?: StructuredOutputMethodOptions<true>
+  ): Runnable<BaseLanguageModelInput, { raw: BaseMessage; parsed: RunOutput }>;
+
+  withStructuredOutput<
+    RunOutput extends Record<string, any> = Record<string, any>
+  >(
+    outputSchema: InteropZodType<RunOutput> | Record<string, any>,
+    config?: StructuredOutputMethodOptions<boolean>
+  ):
+    | Runnable<BaseLanguageModelInput, RunOutput>
+    | Runnable<BaseLanguageModelInput, { raw: BaseMessage; parsed: RunOutput }>;
+  override withStructuredOutput<
+    RunOutput extends Record<string, any> = Record<string, any>
+  >(
+    outputSchema: InteropZodType<RunOutput> | Record<string, any>,
+    config?: StructuredOutputMethodOptions<boolean>
+  ):
+    | Runnable<BaseLanguageModelInput, RunOutput>
+    | Runnable<
+        BaseLanguageModelInput,
+        { raw: BaseMessage; parsed: RunOutput }
+      > {
+    // Extract config options
+    const method = (config?.method ?? 'jsonSchema') as
+      | 'jsonSchema'
+      | 'functionCalling'
+      | 'jsonMode';
+    const name = config?.name ?? 'extract';
+    const description = getSchemaDescription(outputSchema);
+    const strict = config?.strict;
+    const includeRaw = config?.includeRaw;
+
+    let llm: Runnable<BaseLanguageModelInput>;
+    let outputParser: Runnable<AIMessageChunk, RunOutput>;
+
+    // Convert schema to JSON Schema format
+    const jsonSchema = toJsonSchema(outputSchema);
+    // Metadata for langsmith
+    const lsStructuredOutputFormat = {
+      ls_structured_output_format: {
+        kwargs: { method },
+        schema: jsonSchema
+      }
+    } as const satisfies Partial<OrchestrationCallOptions>;
+
+    if (method === 'functionCalling') {
+      // functionCalling method: Provide tool for structured output construction.
+      outputParser = new JsonOutputKeyToolsParser({
+        returnSingle: true,
+        keyName: name,
+        ...(isInteropZodSchema(outputSchema) && {
+          zodSchema: outputSchema as InteropZodType<RunOutput>
+        })
+      });
+      llm = this.withConfig({
+        // TODO: Set `tool_choice` if it becomes supported in Orchestration
+        tools: [
+          {
+            type: 'function' as const,
+            function: {
+              name,
+              description,
+              parameters: jsonSchema,
+              ...(strict !== undefined && { strict })
+            }
+          }
+        ],
+        ...lsStructuredOutputFormat
+      } satisfies Partial<OrchestrationCallOptions>);
+    } else if (method === 'jsonMode') {
+      // jsonMode method: Use orchestration's native JSON response format
+      if (strict !== undefined) {
+        throw new Error(
+          'The "strict" option is not supported with the "jsonMode" structured output method. Please use "jsonSchema" or "functionCalling" methods for strict output instead.'
+        );
+      }
+      outputParser = isInteropZodSchema(outputSchema)
+        ? StructuredOutputParser.fromZodSchema(outputSchema)
+        : new JsonOutputParser<RunOutput>();
+
+      llm = this.withConfig({
+        responseFormat: {
+          type: 'json_object'
+        },
+        ...lsStructuredOutputFormat
+      } satisfies Partial<OrchestrationCallOptions>);
+    } else if (method === 'jsonSchema') {
+      // jsonSchema method: Use orchestration's native JSON Schema response format
+      outputParser = isInteropZodSchema(outputSchema)
+        ? StructuredOutputParser.fromZodSchema(outputSchema)
+        : new JsonOutputParser<RunOutput>();
+      llm = this.withConfig({
+        responseFormat: {
+          type: 'json_schema' as const,
+          json_schema: {
+            name,
+            description,
+            schema: jsonSchema,
+            ...(strict !== undefined && { strict })
+          }
+        },
+        ...lsStructuredOutputFormat
+      } satisfies Partial<OrchestrationCallOptions>);
+    } else {
+      method satisfies never;
+      throw new Error(
+        `Unsupported structured output method: ${method}. Supported methods are 'jsonSchema', 'functionCalling', and 'jsonMode'.`
+      );
+    }
+
+    if (!includeRaw) {
+      return llm.pipe(outputParser) as Runnable<
+        BaseLanguageModelInput,
+        RunOutput
+      >;
+    }
+
+    const parserAssign = RunnablePassthrough.assign({
+      parsed: (input: any, parserConfig) =>
+        outputParser.invoke(input.raw, parserConfig)
+    });
+    const parserNone = RunnablePassthrough.assign({
+      parsed: () => null
+    });
+    const parsedWithFallback = parserAssign.withFallbacks({
+      fallbacks: [parserNone]
+    });
+    return RunnableSequence.from<
+      BaseLanguageModelInput,
+      { raw: BaseMessage; parsed: RunOutput }
+    >([{ raw: llm }, parsedWithFallback]);
+  }
+
   /**
    * Stream response chunks from the Orchestration client.
    * @param messages - The messages to send to the model.
@@ -272,7 +434,7 @@ export class OrchestrationClient extends BaseChatModel<
   private mergeOrchestrationConfig(
     options: typeof this.ParsedCallOptions
   ): LangChainOrchestrationModuleConfig {
-    const { tools = [], stop = [] } = options;
+    const { tools = [], stop = [], responseFormat } = options;
     const config: LangChainOrchestrationModuleConfig = {
       ...this.orchestrationConfig,
       promptTemplating: {
@@ -309,6 +471,31 @@ export class OrchestrationClient extends BaseChatModel<
         ];
       }
     }
+
+    // Handle responseFormat for structured output
+    if (responseFormat) {
+      // Ensure prompt object exists
+      if (!config.promptTemplating.prompt) {
+        config.promptTemplating.prompt = {};
+      }
+
+      // Check if prompt is a TemplateRef
+      if (
+        typeof config.promptTemplating.prompt === 'object' &&
+        isTemplateRef(config.promptTemplating.prompt)
+      ) {
+        throw new Error(
+          'Cannot use withStructuredOutput with TemplateRef. ' +
+            'Structured output requires inline template definition to set responseFormat.'
+        );
+      }
+
+      // Add responseFormat to prompt
+      if (typeof config.promptTemplating.prompt === 'object') {
+        config.promptTemplating.prompt.response_format = responseFormat;
+      }
+    }
+
     return config;
   }
 }
