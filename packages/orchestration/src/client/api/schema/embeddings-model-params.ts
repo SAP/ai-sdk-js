@@ -14,9 +14,16 @@ export type EmbeddingsModelParams = {
    */
   dimensions?: number;
   /**
-   * OpenAI's spec allows for 'float' and 'base64' encoding formats.
+   * The format to return the embeddings in. Can be a single format or an array of formats. OpenAI's spec allows for 'float' and 'base64' encoding formats.
    *
    */
-  encoding_format?: 'float' | 'base64' | 'binary';
+  encoding_format?:
+    | 'float'
+    | 'base64'
+    | 'binary'
+    | 'int8'
+    | 'uint8'
+    | 'ubinary'
+    | ('float' | 'base64' | 'binary' | 'int8' | 'uint8' | 'ubinary')[];
   normalize?: boolean;
 } & Record<string, any>;

@@ -1,29 +1,42 @@
 openapi: 3.0.0
-
-servers:
-  - url: '/v2'
-    description: Internal Orchestration Service API
-
-x-sap-shortText: 'Orchestration provides common capabilities for business AI scenarios, such as content filtering, data masking, and grounding'
-
 info:
-  title: Internal Orchestration Service API
+  title: Orchestration v2
   description: Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
-  contact:
-    name: SAP AI Core
-  version: 0.0.1
-
+  version: 0.110.12
+x-sap-shortText: Enhance content generation with additional capabilities for business AI scenarios.
+servers:
+  - url: https://api.ai.{region}.ml.hana.ondemand.com/v2/inference/deployments/{orchestration_deployment_id}/v2
+    description: Production endpoint for SAP AI Core
+    variables:
+      region:
+        enum:
+          - prod.eu-central-1.aws
+          - prodeuonly.eu-central-1.aws
+          - prod.us-east-1.aws
+          - prod.ap-northeast-1.aws
+          - prod.ap-southeast-2.aws
+          - prod-eu20.westeurope.azure
+          - prod-us21.eastus.azure
+          - prod-eu30.europe-west3.gcp
+          - prod-us30.us-central1.gcp
+        default: prod.eu-central-1.aws
+      orchestration_deployment_id:
+        description: The deployment ID of the orchestration service. To be obtained from the SAP AI Core service using the deployments endpoint.
+        default: x111111
+externalDocs:
+  description: Documentation for SAP AI Core - Orchestration
+  url: https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration
 tags:
-  - name: OrchestrationCompletion
+  - name: Orchestrated Completion
     description: Run an orchestrated completion inference request
-  - name: OrchestrationEmbeddings
+  - name: Orchestrated Embeddings
     description: Make an embeddings request
 
 paths:
   /completion:
     post:
       tags:
-        - OrchestrationCompletion
+        - Orchestrated Completion
       summary: orchestrated completion inference
       description: Run an orchestrated completion inference request
       operationId: orchestration.v2.endpoints.create
@@ -51,7 +64,7 @@ paths:
   /embeddings:
     post:
       tags:
-        - OrchestrationEmbeddings
+        - Orchestrated Embeddings
       summary: orchestrated embeddings inference
       description: >
         Generate embeddings for input strings.
@@ -69,12 +82,135 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmbeddingsPostResponse'
+              examples:
+                array_embeddings:
+                  summary: Array format (single encoding_format)
+                  description: Standard response format when a single encoding format is requested. Used by OpenAI, AWS Bedrock, VertexAI, Nvidia, and Cohere with single format.
+                  value:
+                    request_id: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
+                    final_result:
+                      object: 'list'
+                      data:
+                        - object: 'embedding'
+                          embedding:
+                            - 0.015282119
+                            - 0.013516456
+                            - 0.002541946
+                            - -0.010837519
+                          index: 0
+                        - object: 'embedding'
+                          embedding:
+                            - 0.035031624
+                            - -0.0077586817
+                            - 0.018221147
+                            - 0.00446712
+                          index: 1
+                      model: 'text-embedding-ada-002'
+                      usage:
+                        prompt_tokens: 5
+                        total_tokens: 5
+                base64_embeddings:
+                  summary: Base64 string format (single encoding_format)
+                  description: Response format when base64 encoding format is requested. The embedding is returned as a base64-encoded string.
+                  value:
+                    request_id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890'
+                    final_result:
+                      object: 'list'
+                      data:
+                        - object: 'embedding'
+                          embedding: '2mF6PCB0XTzHliY72Y8xvOalM6uLmZjLyu7ze9=='
+                          index: 0
+                        - object: 'embedding'
+                          embedding: '8nB7QDB1YUzImiZ82Z9ywPbmN7vMnajMzv8zf+=='
+                          index: 1
+                      model: 'text-embedding-3-large'
+                      usage:
+                        prompt_tokens: 5
+                        total_tokens: 5
+                cohere_multi_type_embeddings:
+                  summary: Dictionary format (multiple encoding_formats - Cohere only)
+                  description: Response format when multiple encoding formats are requested (Cohere-specific feature). Each result contains a dictionary mapping format names to their respective embeddings.
+                  value:
+                    request_id: 'f5ba36c6-a687-4e0c-b7e4-26b623256baf'
+                    final_result:
+                      object: 'list'
+                      data:
+                        - object: 'embedding'
+                          embedding:
+                            float:
+                              - 0.015282119
+                              - 0.013516456
+                              - 0.002541946
+                              - -0.010837519
+                            uint8:
+                              - 142
+                              - 137
+                              - 124
+                              - 106
+                          index: 0
+                        - object: 'embedding'
+                          embedding:
+                            float:
+                              - 0.035031624
+                              - -0.0077586817
+                              - 0.018221147
+                              - 0.00446712
+                            uint8:
+                              - 151
+                              - 119
+                              - 133
+                              - 125
+                          index: 1
+                      model: 'cohere--single-serving-embed'
+                      usage:
+                        prompt_tokens: 12
+                        total_tokens: 12
+                cohere_mixed_types_embeddings:
+                  summary: Dictionary format with mixed types (Cohere only)
+                  description: Response format when multiple encoding formats of different types are requested (e.g., float arrays and base64 strings).
+                  value:
+                    request_id: '11c785a2-09c7-4b12-b86e-3a3ff7ece72e'
+                    final_result:
+                      object: 'list'
+                      data:
+                        - object: 'embedding'
+                          embedding:
+                            float:
+                              - 0.015282119
+                              - 0.013516456
+                              - 0.002541946
+                              - -0.010837519
+                            base64: '2mF6PCB0XTzHliY72Y8xvOalM6uLmZjLyu7ze9=='
+                          index: 0
+                        - object: 'embedding'
+                          embedding:
+                            float:
+                              - 0.035031624
+                              - -0.0077586817
+                              - 0.018221147
+                              - 0.00446712
+                            base64: '8nB7QDB1YUzImiZ82Z9ywPbmN7vMnajMzv8zf+=='
+                          index: 1
+                      model: 'cohere--single-serving-embed'
+                      usage:
+                        prompt_tokens: 12
+                        total_tokens: 12
         '400':
           $ref: '#/components/responses/BadRequest'
         default:
           $ref: '#/components/responses/CommonError'
 
 components:
+  securitySchemes:
+    Oauth2:
+      type: oauth2
+      description:
+        OAuth client credentials (client ID and secret) are required. These
+        can be requested from SAP BTP cloud cockpit.
+      flows:
+        clientCredentials:
+          tokenUrl: https://(subdomain_identity_zone).authentication.(host)/oauth/token
+          scopes: {}
   schemas:
     CompletionPostRequest:
       oneOf:
@@ -112,7 +248,17 @@ components:
           $ref: '#/components/schemas/EmbeddingsInputText'
         type:
           type: string
-          enum: ['text', 'document', 'query']
+          enum:
+            [
+              'text',
+              'document',
+              'query',
+              'search_document',
+              'search_query',
+              'classification',
+              'clustering',
+              'image'
+            ]
     EmbeddingsInputText:
       oneOf:
         - type: string
@@ -180,9 +326,16 @@ components:
           description: >
             The number of dimensions the resulting output embeddings should have.
         encoding_format:
-          type: string
-          enum: [float, base64, binary]
+          oneOf:
+            - type: string
+              enum: [float, base64, binary, int8, uint8, ubinary]
+            - type: array
+              items:
+                type: string
+                enum: [float, base64, binary, int8, uint8, ubinary]
+              minItems: 1
           description: >
+            The format to return the embeddings in. Can be a single format or an array of formats.
             OpenAI's spec allows for 'float' and 'base64' encoding formats.
         normalize:
           type: boolean
@@ -267,6 +420,9 @@ components:
           description: 'An array of numbers representing the embedding.'
         - type: string
           description: 'A single base64 string representing the embedding.'
+        - type: object
+          additionalProperties: true
+          description: 'A dictionary mapping encoding format names to their embeddings (arrays or base64 strings). Used when multiple encoding formats are requested (Cohere-specific).'
 
     # Chat Completion Schemas
     ChatMessages:
@@ -350,10 +506,13 @@ components:
           enum:
             - text
             - image_url
+            - file
         text:
           type: string
         image_url:
           $ref: '#/components/schemas/ImageContentUrl'
+        file:
+          $ref: '#/components/schemas/FileContent'
       required:
         - type
     ImageContentUrl:
@@ -367,6 +526,18 @@ components:
         detail: # keep? openai specific
           type: string
           default: 'auto'
+    FileContent:
+      type: object
+      required:
+        - file_data
+      additionalProperties: false
+      properties:
+        file_data:
+          type: string
+          description: Base64 encoded file content or file URL
+        filename:
+          type: string
+          description: Name of the file
     ToolChatMessage:
       type: object
       additionalProperties: false
@@ -750,6 +921,11 @@ components:
             $ref: '#/components/schemas/LLMChoice'
         usage:
           $ref: '#/components/schemas/TokenUsage'
+        citations:
+          type: array
+          description: List of citations associated with the response.
+          items:
+            $ref: '#/components/schemas/Citation'
     LLMModuleResultStreaming:
       type: object
       description: Output of LLM module. Follows the OpenAI spec.
@@ -782,6 +958,32 @@ components:
             $ref: '#/components/schemas/LLMChoiceStreaming'
         usage:
           $ref: '#/components/schemas/TokenUsage'
+        citations:
+          type: array
+          description: List of citations associated with the response.
+          items:
+            $ref: '#/components/schemas/Citation'
+    Citation:
+      type: object
+      required:
+        - title
+        - url
+      properties:
+        ref_id:
+          type: integer
+          description: Unique identifier for inline citation
+        title:
+          type: string
+          description: Title of the citation
+        url:
+          type: string
+          description: URL of the citation
+        start_index:
+          type: integer
+          description: Start index of the citation in the response text
+        end_index:
+          type: integer
+          description: End index of the citation in the response text
     LLMChoice:
       type: object
       required:
@@ -817,26 +1019,58 @@ components:
         finish_reason:
           type: string
           description: Reason for stopping the model
+
+    # Copied from the azure openai spec https://github.com/Azure/azure-rest-api-specs/blob/91e3aca0bfa4b59a9f578959d0b214a26b90df40/specification/cognitiveservices/data-plane/AzureOpenAI/inference/preview/2025-02-01-preview/inference.yaml#L4615-L4669
     TokenUsage:
       type: object
       description: Usage of tokens in the response
+      properties:
+        completion_tokens:
+          type: integer
+          description: Number of tokens in the generated completion.
+        prompt_tokens:
+          type: integer
+          description: Number of tokens in the prompt.
+        total_tokens:
+          type: integer
+          description: Total number of tokens used in the request (prompt + completion).
+        prompt_tokens_details:
+          type: object
+          description: Details of the prompt tokens.
+          properties:
+            audio_tokens:
+              type: integer
+              description: Audio input tokens present in the prompt.
+            cached_tokens:
+              type: integer
+              description: Cached tokens present in the prompt.
+        completion_tokens_details:
+          type: object
+          description: Breakdown of tokens used in a completion.
+          properties:
+            accepted_prediction_tokens:
+              type: integer
+              description: |
+                When using Predicted Outputs, the number of tokens in the
+                prediction that appeared in the completion.
+            audio_tokens:
+              type: integer
+              description: Audio input tokens generated by the model.
+            reasoning_tokens:
+              type: integer
+              description: Tokens generated by the model for reasoning.
+            rejected_prediction_tokens:
+              type: integer
+              description: >
+                When using Predicted Outputs, the number of tokens in the
+                prediction that did not appear in the completion. However, like
+                reasoning tokens, these tokens are still counted in the total
+                completion tokens for purposes of billing, output, and context
+                window limits.
       required:
         - completion_tokens
         - prompt_tokens
         - total_tokens
-      properties:
-        completion_tokens:
-          type: integer
-          description: Number of tokens used in the input
-          example: 20
-        prompt_tokens:
-          type: integer
-          description: Number of tokens used in the output
-          example: 30
-        total_tokens:
-          type: integer
-          description: Total number of tokens used
-          example: 50
 
     # --- Prompt Templating Module ---
     PromptTemplatingModuleConfig:
@@ -2021,11 +2255,3 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-
-  # https://pages.github.tools.sap/CPA/api-metadata-validator/rules/oas/sap-oas3-security/
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-      description: To use this API, you must have an AI Core access token.
