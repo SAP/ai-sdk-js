@@ -40,6 +40,9 @@ paths:
       summary: orchestrated completion inference
       description: Run an orchestrated completion inference request
       operationId: orchestration.v2.endpoints.create
+      parameters:
+        - $ref: '#/components/parameters/AIResourceGroup'
+        - $ref: '#/components/parameters/AIObjectStoreSecretName'
       requestBody:
         required: true
         content:
@@ -88,6 +91,27 @@ paths:
           $ref: '#/components/responses/CommonError'
 
 components:
+  parameters:
+    AIResourceGroup:
+      in: header
+      name: AI-Resource-Group
+      description: 'Feedback specific - resource group of the feedback service object store secret.'
+      required: false
+      schema:
+        maxLength: 253
+        minLength: 3
+        pattern: ^[a-zA-Z0-9][a-zA-Z0-9.-]{1,251}[a-zA-Z0-9]$
+        type: string
+    AIObjectStoreSecretName:
+      in: header
+      name: AI-Object-Store-Secret-Name
+      description: 'Feedback specific - name of the feedback service object store secret.'
+      required: false
+      schema:
+        maxLength: 233
+        minLength: 1
+        pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$
+        type: string
   securitySchemes:
     Oauth2:
       type: oauth2
