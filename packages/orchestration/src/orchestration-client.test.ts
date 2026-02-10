@@ -637,8 +637,8 @@ describe('orchestration service client', () => {
     const client = new OrchestrationClient(config);
 
     await expect(
-      client.chatCompletion(undefined, AbortSignal.abort())
-    ).rejects.toThrow();
+      client.chatCompletion(undefined, { signal: AbortSignal.abort() })
+    ).rejects.toMatchObject({ name: 'AbortError' });
 
     expect(scope.isDone()).toBe(false);
   });
