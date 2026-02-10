@@ -105,7 +105,7 @@ describe('vector api', () => {
     };
 
     nock(aiCoreDestination.url)
-    .matchHeader('x-custom-header', 'custom-value')
+      .matchHeader('x-custom-header', 'custom-value')
       .get('/v2/lm/document-grounding/vector/collections')
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'
