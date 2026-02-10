@@ -44,6 +44,7 @@ describe('OpenApiRequestBuilder', () => {
     const mockRequest = { prompt: 'some test prompt' };
 
     const scope = nock(aiCoreDestination.url)
+      .matchHeader('x-billing-id', '12345')
       .post('/v2/some/endpoint', mockRequest)
       .query({ 'api-version': 'mock-api-version' })
       .reply(200, mockResponse, {
