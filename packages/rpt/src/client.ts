@@ -92,7 +92,7 @@ export class RptClient {
 
     const { requestCompression, ...customRequest } = customRequestAll;
 
-    if (requestCompression?.mode !== false) {
+    if (requestCompression?.mode !== 'never') {
       customRequest.middleware = [
         compressRequest(requestCompression),
         ...(customRequest.middleware || [])

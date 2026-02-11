@@ -63,6 +63,25 @@ export type RequestCompressionAlgorithm =
   | 'zstd';
 
 /**
+ * Options for different request compressors to configure their behavior (e.g., compression level).
+ * @internal (vendored)
+ */
+export interface RequestCompressorOptions {
+  /** Options to control gzip compression. */
+  gzip: zlib.ZlibOptions;
+  /** Options to control brotli compression. */
+  brotli: zlib.BrotliOptions;
+  /** Options to control deflate compression. */
+  deflate: zlib.ZlibOptions;
+  /**
+   * Options to control zstd compression.
+   * @remarks
+   * Zstd options will become available once Node.js v22.15.0 is the minimum supported version.
+   */
+  zstd: Record<string, any>;
+}
+
+/**
  * Configuration for the request compression middleware.
  */
 export interface RequestCompressionMiddlewareOptions<
@@ -77,21 +96,16 @@ export interface RequestCompressionMiddlewareOptions<
   /**
    * Options for the chosen compression algorithm, e.g. to control the compression effort.
    */
-  compressOptions?: C extends 'brotli'
-    ? zlib.BrotliOptions
-    : C extends 'zstd'
-      ? // TODO: Use `zlib.ZstdOptions` when available in `@types/node` for oldest supported Node.js version
-        Record<string, any>
-      : zlib.ZlibOptions;
+  compressOptions?: RequestCompressorOptions[C];
   /**
-   * Compression mode. Can be 'auto', 'passthrough' or a boolean.
+   * Compression mode. Can be 'auto', 'header-only' or a boolean.
    * - In 'auto' mode, the payload is compressed based on the `autoCompressMinSize` threshold.
-   * - In 'passthrough' mode, it is assumed that the payload is already compressed.
-   * - If `true` is provided, the payload will always be compressed.
-   * - If `false` is provided, the payload will never be compressed.
+   * - In 'header-only' mode, it is assumed that the payload is already compressed. The middleware will only set the appropriate Content-Encoding header without modifying the payload.
+   * - If 'always' is provided, the payload will always be compressed.
+   * - If 'never' is provided, the payload will never be compressed.
    * @defaultValue 'auto'
    */
-  mode?: 'auto' | 'passthrough' | boolean;
+  mode?: 'auto' | 'header-only' | 'always' | 'never';
   /**
    * Minimum size in bytes a payload must have to be compressed in 'auto' mode.
    * @defaultValue 1024
@@ -104,40 +118,49 @@ export interface RequestCompressionMiddlewareOptions<
  * @param payload - The HTTP request payload.
  * @param options - Configuration options for request compression.
  * @returns Returns one of:
- * - `true` if the payload should be compressed and Content-Encoding header should be set.
- * - `'header-only'` if only the Content-Encoding header should be set (passthrough mode).
- * - `false` if compression should be skipped entirely (no header, no compression).
+ * - `'compress'` if the payload should be compressed and Content-Encoding header should be set.
+ * - `'header-only'` if only the Content-Encoding header should be set (header-only mode).
+ * - `'skip'` if compression should be skipped entirely (no header, no compression).
  */
 function checkIfNeedsCompression<
   C extends RequestCompressionAlgorithm = 'gzip'
 >(
   payload: unknown,
   options?: RequestCompressionMiddlewareOptions<C>
-): boolean | 'header-only' {
+): 'compress' | 'header-only' | 'skip' {
   const mode = options?.mode ?? 'auto';
-  if (mode === 'passthrough') {
+  if (mode === 'header-only') {
     return 'header-only';
   }
-  if (mode === 'auto') {
-    const minSize = options?.autoCompressMinSize ?? 1024;
-    let payloadSize: number;
-    try {
-      payloadSize = Buffer.byteLength(payload as any);
-    } catch (e: any) {
-      throw new ErrorWithCause(
+  if (mode === 'never') {
+    return 'skip';
+  }
+  if (mode === 'always') {
+    return 'compress';
+  }
+
+  const minSize = options?.autoCompressMinSize ?? 1024;
+  let payloadSize: number;
+  try {
+    payloadSize = Buffer.byteLength(payload as any);
+  } catch (e: any) {
+    logger.error(
+      new ErrorWithCause(
         "Could not determine payload size for 'auto' compression decision.",
         e
-      );
-    }
-    const shouldCompress = payloadSize >= minSize;
-    const comparison = shouldCompress ? '>=' : '<';
-    const action = shouldCompress ? 'Compressing' : 'Skipping compression';
-    logger.debug(
-      `Auto compression: payload size ${payloadSize} bytes ${comparison} threshold ${minSize} bytes. ${action}.`
+      )
     );
-    return shouldCompress;
+    // Skip compression if payload size cannot be determined.
+    // In this case `zlib` will likely fail as well.
+    return 'skip';
   }
-  return Boolean(mode);
+  const shouldCompress = payloadSize >= minSize;
+  const comparison = shouldCompress ? '>=' : '<';
+  const action = shouldCompress ? 'Compressing' : 'Skipping compression';
+  logger.debug(
+    `Auto compression: payload size ${payloadSize} bytes ${comparison} threshold ${minSize} bytes. ${action}.`
+  );
+  return shouldCompress ? 'compress' : 'skip';
 }
 
 function getContentEncodingValue(
@@ -177,7 +200,7 @@ export function compressRequest<C extends RequestCompressionAlgorithm = 'gzip'>(
         options
       );
 
-      if (needsCompression === false) {
+      if (needsCompression === 'skip') {
         return middlewareOptions.fn(requestConfig);
       }
 
