@@ -28,11 +28,11 @@ export type Embedding =
        */
       base64?: string;
       /**
-       * Binary encoding format - as integers
+       * Binary encoding format - array of integers
        */
-      binary?: number;
+      binary?: number[];
       /**
-       * Ubinary encoding format - as unsigned integers
+       * Ubinary encoding format - array of unsigned integers
        */
-      ubinary?: number;
+      ubinary?: number[];
     };
