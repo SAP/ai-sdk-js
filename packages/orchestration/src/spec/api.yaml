@@ -467,11 +467,15 @@ components:
               type: string
               description: 'Base64 encoding format - base64 encoded string'
             binary:
-              type: integer
-              description: 'Binary encoding format - as integers'
+              type: array
+              items:
+                type: integer
+              description: 'Binary encoding format - array of integers'
             ubinary:
-              type: integer
-              description: 'Ubinary encoding format - as unsigned integers'
+              type: array
+              items:
+                type: integer
+              description: 'Ubinary encoding format - array of unsigned integers'
 
     # Chat Completion Schemas
     ChatMessages:
