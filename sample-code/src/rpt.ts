@@ -79,7 +79,7 @@ export async function predictWithSchemaCompressed(
   const client = new RptClient();
   return client.predictWithSchema(schema, data, {
     requestCompression: {
-      mode: true, // force-enable compression
+      mode: 'always', // force-enable compression
       algorithm
     }
   });
