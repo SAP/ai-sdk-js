@@ -867,6 +867,8 @@ components:
           $ref: '#/components/schemas/PromptTemplateSpec'
     PromptTemplateSubstitutionRequest:
       type: object
+      required:
+        - inputParams
       properties:
         inputParams:
           type: object
@@ -1283,7 +1285,7 @@ components:
           description: Additional parameters for the model. Default values are used for mandatory parameters.
           additionalProperties: true
           example:
-            max_tokens: 300
+            max_completion_tokens: 300
             temperature: 0.1
             frequency_penalty: 0
             presence_penalty: 0
@@ -1942,6 +1944,13 @@ components:
           $ref: '#/components/schemas/GroundingModuleConfig'
         translation:
           $ref: '#/components/schemas/TranslationModuleConfig'
+    ModuleConfigsList:
+      type: array
+      items:
+        $ref: '#/components/schemas/ModuleConfigs'
+      minItems: 1
+      description: |
+        A list of module configurations. The first configuration in the list that succeeds will be used.
     GlobalStreamOptions:
       description: Options for streaming. Will be ignored if enabled is false.
       type: object
@@ -1976,7 +1985,9 @@ components:
       additionalProperties: false
       properties:
         modules:
-          $ref: '#/components/schemas/ModuleConfigs'
+          oneOf:
+            - $ref: '#/components/schemas/ModuleConfigs'
+            - $ref: '#/components/schemas/ModuleConfigsList'
         stream:
           $ref: '#/components/schemas/GlobalStreamOptions'
   responses:
