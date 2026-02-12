@@ -34,4 +34,8 @@ export type BckndResourceGroup = {
    * status message
    */
   statusMessage?: string;
+  /**
+   * service plan
+   */
+  servicePlan?: string;
 } & Record<string, any>;

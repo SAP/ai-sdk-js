@@ -6,10 +6,11 @@
 import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';
 import type {
   BckndAllArgoCDApplicationData,
-  BckndArgoCDApplicationData,
+  BckndArgoCDApplicationDataRequest,
   BckndArgoCDApplicationDataRepoName,
   BckndArgoCDApplicationCreationResponse,
   BckndArgoCDApplicationStatus,
+  BckndArgoCDApplicationDataResponse,
   BckndArgoCDApplicationBaseData,
   BckndArgoCDApplicationModificationResponse,
   BckndArgoCDApplicationDeletionResponse,
@@ -49,7 +50,9 @@ export const ApplicationApi = {
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   kubesubmitV4ApplicationsCreate: (
-    body: BckndArgoCDApplicationData | BckndArgoCDApplicationDataRepoName,
+    body:
+      | BckndArgoCDApplicationDataRequest
+      | BckndArgoCDApplicationDataRepoName,
     headerParameters?: { Authorization?: string }
   ) =>
     new OpenApiRequestBuilder<BckndArgoCDApplicationCreationResponse>(
@@ -92,7 +95,7 @@ export const ApplicationApi = {
     applicationName: string,
     headerParameters?: { Authorization?: string }
   ) =>
-    new OpenApiRequestBuilder<BckndArgoCDApplicationData>(
+    new OpenApiRequestBuilder<BckndArgoCDApplicationDataResponse>(
       'get',
       '/admin/applications/{applicationName}',
       {
