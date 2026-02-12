@@ -88,5 +88,6 @@ export * from './sap-document-translation-output-target-language.js';
 export * from './sap-document-translation-output.js';
 export * from './translation-module-config.js';
 export * from './module-configs.js';
+export * from './module-configs-list.js';
 export * from './global-stream-options.js';
 export * from './orchestration-config.js';
