@@ -1,5 +1,18 @@
 # @sap-ai-sdk/orchestration
 
+## 2.6.0
+
+### Minor Changes
+
+- f3b6dc5: [Fixed Issue] Export `isConfigReference()` method as a value instead of type-only export.
+  This function can now be imported and used at runtime to check if a configuration is an orchestration configuration reference type.
+
+### Patch Changes
+
+- @sap-ai-sdk/ai-api@2.6.0
+- @sap-ai-sdk/core@2.6.0
+- @sap-ai-sdk/prompt-registry@2.6.0
+
 ## 2.5.0
 
 ### Minor Changes

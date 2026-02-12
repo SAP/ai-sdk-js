@@ -88,4 +88,38 @@ describe('vector api', () => {
 
     expect(result).toEqual(expectedResponse);
   });
+
+  it('should support using custom request headers', async () => {
+    const expectedResponse: CollectionsListResponse = {
+      resources: [
+        {
+          title: 'ai-sdk-js-demo',
+          embeddingConfig: {
+            modelName: 'text-embedding-3-small'
+          },
+          metadata: [],
+          id: '7171c2b2-835b-4745-8824-ff5c7e98a416'
+        }
+      ],
+      count: 1
+    };
+
+    nock(aiCoreDestination.url)
+      .matchHeader('x-custom-header', 'custom-value')
+      .get('/v2/lm/document-grounding/vector/collections')
+      .reply(200, expectedResponse, {
+        'Content-Type': 'application/json'
+      });
+
+    const result: CollectionsListResponse = await VectorApi.getAllCollections(
+      {},
+      { 'AI-Resource-Group': 'default' }
+    ).execute(undefined, {
+      headers: {
+        'x-custom-header': 'custom-value'
+      }
+    });
+
+    expect(result).toEqual(expectedResponse);
+  });
 });

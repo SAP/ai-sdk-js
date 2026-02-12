@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@sap-ai-sdk/smoke-tests",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "private": "true",
@@ -15,9 +15,9 @@
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
-    "@langchain/classic": "^1.0.12",
-    "@langchain/core": "^1.1.17",
-    "@langchain/langgraph": "^1.1.2",
+    "@langchain/classic": "^1.0.17",
+    "@langchain/core": "^1.1.22",
+    "@langchain/langgraph": "^1.1.4",
     "@langchain/mcp-adapters": "^1.1.2",
     "@langchain/textsplitters": "^1.0.1",
     "@sap-ai-sdk/ai-api": "canary",
@@ -26,16 +26,17 @@
     "@sap-ai-sdk/langchain": "canary",
     "@sap-ai-sdk/orchestration": "canary",
     "@sap-ai-sdk/prompt-registry": "canary",
+    "@sap-ai-sdk/rpt": "canary",
     "@sap-cloud-sdk/util": "^4.4.0",
     "express": "^5.2.1",
-    "hono": "^4.11.7",
-    "langchain": "^1.2.15",
+    "hono": "^4.11.9",
+    "langchain": "^1.2.21",
     "uuid": "^13.0.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
-    "dotenv": "^17.2.3",
+    "dotenv": "^17.2.4",
     "dotenv-cli": "^11.0.0"
   },
   "engines": {

@@ -28,6 +28,16 @@
 
 -
 
+# 2.6.0
+## New Features
+
+- [rpt] Release Beta version of a client for the SAP-RPT-1 model. (790ad05)
+
+## Fixed Issues
+
+- [orchestration] Export `isConfigReference()` method as a value instead of type-only export.
+  This function can now be imported and used at runtime to check if a configuration is an orchestration configuration reference type. (f3b6dc5)
+
 # 2.5.0
 ## Compatibility Notes
 
