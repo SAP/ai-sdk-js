@@ -48,22 +48,22 @@ export const RptApi = {
           prediction_config: {
             contentType: 'application/json',
             isImplicit: true,
-            contentTypeParsed: [{ parameters: {}, type: 'application/json' }]
+            parsedContentTypes: [{ parameters: {}, type: 'application/json' }]
           },
           index_column: {
             contentType: 'text/plain',
             isImplicit: true,
-            contentTypeParsed: [{ parameters: {}, type: 'text/plain' }]
+            parsedContentTypes: [{ parameters: {}, type: 'text/plain' }]
           },
           parse_data_types: {
             contentType: 'text/plain',
             isImplicit: true,
-            contentTypeParsed: [{ parameters: {}, type: 'text/plain' }]
+            parsedContentTypes: [{ parameters: {}, type: 'text/plain' }]
           },
           file: {
             contentType: 'application/vnd.apache.parquet',
             isImplicit: false,
-            contentTypeParsed: [
+            parsedContentTypes: [
               { parameters: {}, type: 'application/vnd.apache.parquet' }
             ]
           }
