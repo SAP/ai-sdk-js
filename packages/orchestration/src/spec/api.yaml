@@ -340,6 +340,11 @@ components:
           default: 2
           minimum: 0
           maximum: 5
+    EncodingFormat:
+      type: string
+      enum: [float, base64, binary, int8, uint8, ubinary]
+      description: Encoding format for embeddings.
+
     EmbeddingsModelParams:
       type: object
       description: Additional parameters for generating input's embeddings. Default values are used for mandatory parameters.
@@ -351,12 +356,10 @@ components:
             The number of dimensions the resulting output embeddings should have.
         encoding_format:
           oneOf:
-            - type: string
-              enum: [float, base64, binary, int8, uint8, ubinary]
+            - $ref: '#/components/schemas/EncodingFormat'
             - type: array
               items:
-                type: string
-                enum: [float, base64, binary, int8, uint8, ubinary]
+                $ref: '#/components/schemas/EncodingFormat'
               minItems: 1
           description: >
             The format to return the embeddings in. Can be a single format or an array of formats.
@@ -436,46 +439,52 @@ components:
         index:
           type: integer
           description: The index of the embedding in the list of embeddings.
-    Embedding:
-      oneOf:
-        - type: array
+    EmbeddingFloatArray:
+      type: array
+      items:
+        type: number
+      description: 'An array of numbers representing the embedding.'
+    EmbeddingBase64String:
+      type: string
+      description: 'A single base64 string representing the embedding.'
+    EmbeddingMultiFormat:
+      type: object
+      description: 'A dictionary mapping encoding format names to their embeddings. Used when multiple encoding formats are requested (Cohere-specific).'
+      additionalProperties: false
+      properties:
+        float:
+          type: array
           items:
             type: number
-          description: 'An array of numbers representing the embedding.'
-        - type: string
-          description: 'A single base64 string representing the embedding.'
-        - type: object
-          description: 'A dictionary mapping encoding format names to their embeddings. Used when multiple encoding formats are requested (Cohere-specific).'
-          additionalProperties: false
-          properties:
-            float:
-              type: array
-              items:
-                type: number
-              description: 'Float encoding format - array of floating point numbers'
-            int8:
-              type: array
-              items:
-                type: integer
-              description: 'Int8 encoding format - array of 8-bit integers'
-            uint8:
-              type: array
-              items:
-                type: integer
-              description: 'Uint8 encoding format - array of unsigned 8-bit integers'
-            base64:
-              type: string
-              description: 'Base64 encoding format - base64 encoded string'
-            binary:
-              type: array
-              items:
-                type: integer
-              description: 'Binary encoding format - array of integers'
-            ubinary:
-              type: array
-              items:
-                type: integer
-              description: 'Ubinary encoding format - array of unsigned integers'
+          description: 'Float encoding format - array of floating point numbers'
+        int8:
+          type: array
+          items:
+            type: integer
+          description: 'Int8 encoding format - array of 8-bit integers'
+        uint8:
+          type: array
+          items:
+            type: integer
+          description: 'Uint8 encoding format - array of unsigned 8-bit integers'
+        base64:
+          type: string
+          description: 'Base64 encoding format - base64 encoded string'
+        binary:
+          type: array
+          items:
+            type: integer
+          description: 'Binary encoding format - array of integers'
+        ubinary:
+          type: array
+          items:
+            type: integer
+          description: 'Ubinary encoding format - array of unsigned integers'
+    Embedding:
+      oneOf:
+        - $ref: '#/components/schemas/EmbeddingFloatArray'
+        - $ref: '#/components/schemas/EmbeddingBase64String'
+        - $ref: '#/components/schemas/EmbeddingMultiFormat'
 
     # Chat Completion Schemas
     ChatMessages:
