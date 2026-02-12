@@ -107,6 +107,11 @@ paths:
           required: true
           schema:
             type: string
+        - name: includeSpec
+          in: query
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Successful response
@@ -381,10 +386,24 @@ paths:
               - declarative
         - name: include_spec
           in: query
+          deprecated: true
+          description: 'DEPRECATED: Use includeSpec instead'
+          schema:
+            type: boolean
+            default: false
+        - name: includeSpec
+          in: query
           schema:
             type: boolean
             default: false
         - name: resolve_template_ref
+          in: query
+          deprecated: true
+          description: 'DEPRECATED: Use resolveTemplateRef instead'
+          schema:
+            type: boolean
+            default: false
+        - name: resolveTemplateRef
           in: query
           schema:
             type: boolean
@@ -428,10 +447,24 @@ paths:
             type: string
         - name: include_spec
           in: query
+          deprecated: true
+          description: 'DEPRECATED: Use includeSpec instead'
+          schema:
+            type: boolean
+            default: false
+        - name: includeSpec
+          in: query
           schema:
             type: boolean
             default: false
         - name: resolve_template_ref
+          in: query
+          deprecated: true
+          description: 'DEPRECATED: Use resolveTemplateRef instead'
+          schema:
+            type: boolean
+            default: false
+        - name: resolveTemplateRef
           in: query
           schema:
             type: boolean
@@ -465,6 +498,13 @@ paths:
             type: string
             format: uuid
         - name: resolve_template_ref
+          in: query
+          deprecated: true
+          description: 'DEPRECATED: Use resolveTemplateRef instead'
+          schema:
+            type: boolean
+            default: false
+        - name: resolveTemplateRef
           in: query
           schema:
             type: boolean

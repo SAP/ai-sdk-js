@@ -19,7 +19,7 @@ export const OrchestrationConfigsApi = {
   _defaultBasePath: undefined,
   /**
    * List orchestration configs
-   * @param queryParameters - Object containing the following keys: scenario, name, version, retrieve, include_spec, resolve_template_ref.
+   * @param queryParameters - Object containing the following keys: scenario, name, version, retrieve, include_spec, includeSpec, resolve_template_ref, resolveTemplateRef.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -30,7 +30,9 @@ export const OrchestrationConfigsApi = {
       version?: string;
       retrieve?: 'both' | 'imperative' | 'declarative';
       include_spec?: boolean;
+      includeSpec?: boolean;
       resolve_template_ref?: boolean;
+      resolveTemplateRef?: boolean;
     },
     headerParameters?: { 'AI-Resource-Group'?: string }
   ) =>
@@ -67,7 +69,7 @@ export const OrchestrationConfigsApi = {
    * @param scenario - Path parameter.
    * @param version - Path parameter.
    * @param name - Path parameter.
-   * @param queryParameters - Object containing the following keys: include_spec, resolve_template_ref.
+   * @param queryParameters - Object containing the following keys: include_spec, includeSpec, resolve_template_ref, resolveTemplateRef.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -77,7 +79,9 @@ export const OrchestrationConfigsApi = {
     name: string,
     queryParameters?: {
       include_spec?: boolean;
+      includeSpec?: boolean;
       resolve_template_ref?: boolean;
+      resolveTemplateRef?: boolean;
     },
     headerParameters?: { 'AI-Resource-Group'?: string }
   ) =>
@@ -94,13 +98,16 @@ export const OrchestrationConfigsApi = {
   /**
    * Get orchestration config by UUID
    * @param orchestrationConfigId - Path parameter.
-   * @param queryParameters - Object containing the following keys: resolve_template_ref.
+   * @param queryParameters - Object containing the following keys: resolve_template_ref, resolveTemplateRef.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   getOrchestrationConfigByUuid: (
     orchestrationConfigId: string,
-    queryParameters?: { resolve_template_ref?: boolean },
+    queryParameters?: {
+      resolve_template_ref?: boolean;
+      resolveTemplateRef?: boolean;
+    },
     headerParameters?: { 'AI-Resource-Group'?: string }
   ) =>
     new OpenApiRequestBuilder<OrchestrationConfigGetResponse>(

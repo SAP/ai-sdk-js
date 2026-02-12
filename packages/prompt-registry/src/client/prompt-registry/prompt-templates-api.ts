@@ -74,6 +74,7 @@ export const PromptTemplatesApi = {
    * @param scenario - Path parameter.
    * @param version - Path parameter.
    * @param name - Path parameter.
+   * @param queryParameters - Object containing the following keys: includeSpec.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Resource-Group-Scope.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -81,6 +82,7 @@ export const PromptTemplatesApi = {
     scenario: string,
     version: string,
     name: string,
+    queryParameters?: { includeSpec?: boolean },
     headerParameters?: {
       'AI-Resource-Group'?: string;
       'AI-Resource-Group-Scope'?: 'true' | 'True' | 'false' | 'False';
@@ -91,6 +93,7 @@ export const PromptTemplatesApi = {
       '/lm/scenarios/{scenario}/promptTemplates/{name}/versions/{version}/history',
       {
         pathParameters: { scenario, version, name },
+        queryParameters,
         headerParameters
       },
       PromptTemplatesApi._defaultBasePath
