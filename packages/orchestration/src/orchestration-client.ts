@@ -305,10 +305,7 @@ export class OrchestrationClient {
    */
   private parseModuleConfigList(
     config:
-      | OrchestrationModuleConfig
-      | OrchestrationModuleConfigList
-      | string
-      | OrchestrationConfigRef
+      OrchestrationModuleConfigList
   ): OrchestrationModuleConfigList {
     // Validate and assert it's a proper config list (throws if invalid)
     assertIsOrchestrationModuleConfigList(config);
