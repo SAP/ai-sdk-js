@@ -304,8 +304,7 @@ export class OrchestrationClient {
    * @throws {Error} If the array is empty or contains invalid elements.
    */
   private parseModuleConfigList(
-    config:
-      OrchestrationModuleConfigList
+    config: OrchestrationModuleConfigList
   ): OrchestrationModuleConfigList {
     // Validate and assert it's a proper config list (throws if invalid)
     assertIsOrchestrationModuleConfigList(config);
