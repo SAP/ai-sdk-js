@@ -395,7 +395,6 @@ paths:
           in: query
           schema:
             type: boolean
-            default: false
         - name: resolve_template_ref
           in: query
           deprecated: true
@@ -407,7 +406,6 @@ paths:
           in: query
           schema:
             type: boolean
-            default: false
       responses:
         '200':
           description: Successful response
@@ -456,7 +454,6 @@ paths:
           in: query
           schema:
             type: boolean
-            default: false
         - name: resolve_template_ref
           in: query
           deprecated: true
@@ -468,7 +465,6 @@ paths:
           in: query
           schema:
             type: boolean
-            default: false
       responses:
         '200':
           description: Successful response
@@ -508,7 +504,6 @@ paths:
           in: query
           schema:
             type: boolean
-            default: false
       responses:
         '200':
           description: Successful response

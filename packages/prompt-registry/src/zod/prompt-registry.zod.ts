@@ -1305,7 +1305,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 /**
  * List orchestration configs
  */
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryRetrieveDefault = `both`;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryIncludeSpecDefault = false;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryIncludeSpecDefaultOne = false;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryResolveTemplateRefDefault = false;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryResolveTemplateRefDefaultOne = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryRetrieveDefault = `both`;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryIncludeSpecDefault = false;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryResolveTemplateRefDefault = false;
 
 export const RegistryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryParams = zod.object({
   "scenario": zod.string().optional(),
@@ -1313,9 +1313,9 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "version": zod.string().optional(),
   "retrieve": zod.enum(['both', 'imperative', 'declarative']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryRetrieveDefault),
   "include_spec": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryIncludeSpecDefault).describe('DEPRECATED: Use includeSpec instead'),
-  "includeSpec": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryIncludeSpecDefaultOne),
+  "includeSpec": zod.boolean().optional(),
   "resolve_template_ref": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryResolveTemplateRefDefault).describe('DEPRECATED: Use resolveTemplateRef instead'),
-  "resolveTemplateRef": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryResolveTemplateRefDefaultOne)
+  "resolveTemplateRef": zod.boolean().optional()
 })
 
 export const RegistryControllerOrchestrationConfigControllerListOrchestrationConfigsHeader = zod.object({
@@ -1983,13 +1983,13 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "name": zod.string()
 })
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryIncludeSpecDefault = false;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryIncludeSpecDefaultOne = false;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryResolveTemplateRefDefault = false;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryResolveTemplateRefDefaultOne = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryIncludeSpecDefault = false;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryResolveTemplateRefDefault = false;
 
 export const RegistryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryParams = zod.object({
   "include_spec": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryIncludeSpecDefault).describe('DEPRECATED: Use includeSpec instead'),
-  "includeSpec": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryIncludeSpecDefaultOne),
+  "includeSpec": zod.boolean().optional(),
   "resolve_template_ref": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryResolveTemplateRefDefault).describe('DEPRECATED: Use resolveTemplateRef instead'),
-  "resolveTemplateRef": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryResolveTemplateRefDefaultOne)
+  "resolveTemplateRef": zod.boolean().optional()
 })
 
 export const RegistryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryHeader = zod.object({
@@ -2655,11 +2655,11 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "orchestrationConfigId": zod.uuid()
 })
 
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidQueryResolveTemplateRefDefault = false;export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidQueryResolveTemplateRefDefaultOne = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidQueryResolveTemplateRefDefault = false;
 
 export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidQueryParams = zod.object({
   "resolve_template_ref": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidQueryResolveTemplateRefDefault).describe('DEPRECATED: Use resolveTemplateRef instead'),
-  "resolveTemplateRef": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidQueryResolveTemplateRefDefaultOne)
+  "resolveTemplateRef": zod.boolean().optional()
 })
 
 export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidHeader = zod.object({
