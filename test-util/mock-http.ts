@@ -86,7 +86,7 @@ export function getMockedAiCoreDestination(
 export function createMockDestinationProvider(
   destination: HttpDestination = getMockedAiCoreDestination()
 ): DestinationProvider {
-  return () => destination;
+  return async () => destination;
 }
 
 export function mockClientCredentialsGrantCall(
