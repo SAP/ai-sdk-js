@@ -120,6 +120,7 @@ export class OrchestrationClient extends BaseChatModel<
     options: typeof this.ParsedCallOptions,
     runManager?: CallbackManagerForLLMRun
   ): Promise<ChatResult> {
+    options.signal?.throwIfAborted();
     // Auto-streaming: transparently stream and concatenate when enabled
     if (this.streaming) {
       let generation;
@@ -345,6 +346,7 @@ export class OrchestrationClient extends BaseChatModel<
     options: typeof this.ParsedCallOptions,
     runManager?: CallbackManagerForLLMRun
   ): AsyncGenerator<ChatGenerationChunk> {
+    options.signal?.throwIfAborted();
     const orchestrationMessages =
       mapLangChainMessagesToOrchestrationMessages(messages);
 

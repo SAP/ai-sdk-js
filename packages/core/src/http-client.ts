@@ -28,7 +28,8 @@ export type CustomRequestConfig = Pick<
   | 'httpsAgent'
   | 'parameterEncoder'
 > &
-  Record<string, any>;
+  // TODO: Move to `Pick` after updating SAP Cloud SDK dependency
+  { signal?: AbortSignal } & Record<string, any>;
 
 /**
  * The options to call an endpoint.
