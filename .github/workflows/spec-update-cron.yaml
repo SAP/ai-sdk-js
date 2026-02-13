@@ -8,43 +8,72 @@ on:
     #  2025-05-01 03:21:00
     #  2025-05-16 03:21:00
     - cron: 21 3 1/15 * *
+  workflow_dispatch:
 
 jobs:
-  spec-update-ai-api:
-    uses: SAP/ai-sdk-js/.github/workflows/spec-update.yaml@main
-    with:
-      file: ai-api
-    secrets: inherit
-  spec-update-document-grounding:
-    uses: SAP/ai-sdk-js/.github/workflows/spec-update.yaml@main
-    with:
-      file: document-grounding
-    secrets: inherit
-  spec-update-prompt-registry:
-    uses: SAP/ai-sdk-js/.github/workflows/spec-update.yaml@main
-    with:
-      file: prompt-registry
-    secrets: inherit
-  spec-update-orchestration:
-    uses: SAP/ai-sdk-js/.github/workflows/spec-update.yaml@main
-    with:
-      file: orchestration
-    secrets: inherit
-  # see comments in spec-update.yaml
-  # get-rpt-tag:
-  #   runs-on: ubuntu-latest
-  #   outputs:
-  #     tag: ${{ steps.get-tag.outputs.tag }}
-  #   steps:
-  #     - name: Get latest tag
-  #       id: get-tag
-  #       run: |
-  #         TAG=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' https://github.tools.sap/DL-COE/sap-rpt-1-public-content | tail --lines=1 | cut -f 2)
-  #         echo "tag=$TAG" >> $GITHUB_OUTPUT
-  # spec-update-rpt:
-  #   needs: get-rpt-tag
-  #   uses: SAP/ai-sdk-js/.github/workflows/spec-update.yaml@main
-  #   with:
-  #     file: rpt
-  #     file-ref: ${{ needs.get-rpt-tag.outputs.tag }}
-  #   secrets: inherit
+  update-all-specs:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+
+    strategy:
+      matrix:
+        file:
+          - ai-api
+          - document-grounding
+          - prompt-registry
+          - orchestration
+    steps:
+      - name: 'Checkout repository'
+        uses: actions/checkout@v6
+
+      - name: 'Get orchestration latest release'
+        id: get-orch-version
+        if: matrix.file == 'orchestration'
+        run: |
+          # Fetch the latest release from the orchestration repo using the API
+          ORCH_VERSION=$(curl --silent --request GET \
+            --url "https://github.tools.sap/api/v3/repos/AI/llm-orchestration/releases/latest" \
+            -H "Authorization: Bearer $GH_TOOLS_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" | jq -r '.tag_name // "main"')
+          
+          if [ -z "$ORCH_VERSION" ] || [ "$ORCH_VERSION" = "null" ]; then
+            echo "No release found, defaulting to main"
+            ORCH_VERSION="main"
+          fi
+          
+          echo "Orchestration version: $ORCH_VERSION"
+          echo "version=$ORCH_VERSION" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOOLS_TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
+
+      - name: 'Trigger spec update'
+        run: |
+          BRANCH="main"
+
+          if [ "${{ matrix.file }}" = "orchestration" ]; then
+            BRANCH="${{ steps.get-orch-version.outputs.version }}"
+          fi
+
+          echo "Triggering spec-update for ${{ matrix.file }} with ref $BRANCH"
+
+          gh workflow run spec-update.yaml \
+            --ref main \
+            --field file=${{ matrix.file }} \
+            --field file-ref=$BRANCH \
+            --field create-pr=true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 'Slack Notification'
+        if: failure()
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK }}
+          webhook-type: incoming-webhook
+          payload: |
+            blocks:
+              - type: 'section'
+                text:
+                  type: 'mrkdwn'
+                  text: '⚠️ Weekly spec update failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-js/actions/runs/${{ github.run_id }}|here>'
