@@ -1,0 +1,44 @@
+name: api-docs
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'v*-main'
+    paths:
+      - 'knowledge-base/api-reference/**'
+  workflow_dispatch:
+
+jobs:
+  push-to-documentation-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Add key
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          echo "${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          cat <<EOT >> ~/.ssh/config
+          Host github.com
+          HostName github.com
+          IdentityFile ~/.ssh/id_rsa
+          EOT
+      - name: Push generated API documentation to the SAP/ai-sdk repo
+        env:
+          USE_SSH: true
+          GIT_USER: ai-sdk-js
+        run: |
+          git config --global user.email "ai-sdk-js@github.com"
+          git config --global user.name "ai-sdk-js"
+          M_VERSION=`awk -F'"' '/"version": "[0-9\.]+"/{ print $4; exit; }' package.json | awk -F'.' '{print "v"$1; exit; }'`
+          cd ..
+          git clone --depth 1 git@github.com:SAP/ai-sdk.git
+          rsync -avz ai-sdk-js/knowledge-base/api-reference/ ai-sdk/static/api/$M_VERSION/
+          cd ai-sdk
+          git add -A
+          git commit -a -m "Update SAP AI SDK for JavaScript API documentation" || exit 0
+          git push
