@@ -3,6 +3,7 @@ import { json } from 'node:stream/consumers';
 import {
   ErrorWithCause,
   mergeIgnoreCase,
+  pickValueIgnoreCase,
   removeLeadingSlashes,
   removeTrailingSlashes
 } from '@sap-cloud-sdk/util';
@@ -105,15 +106,24 @@ function mergeWithDefaultRequestConfig(
     method: 'post',
     headers: {
       'content-type': 'application/json',
-      'ai-resource-group': resourceGroup,
-      'ai-client-type': 'AI SDK JavaScript'
+      'ai-resource-group': resourceGroup
     },
     params: apiVersion ? { 'api-version': apiVersion } : {}
   };
+
   return {
     ...defaultConfig,
     ...requestConfig,
-    headers: mergeIgnoreCase(defaultConfig.headers, requestConfig?.headers),
+    headers: {
+      ...mergeIgnoreCase(defaultConfig.headers, requestConfig?.headers),
+      // add 'ai-client-type' header and merge with custom client type if needed
+      'ai-client-type': [
+        'AI SDK JavaScript',
+        pickValueIgnoreCase(requestConfig?.headers, 'ai-client-type')
+      ]
+        .filter(clientType => clientType)
+        .join(', ')
+    },
     params: mergeIgnoreCase(defaultConfig.params, requestConfig?.params)
   };
 }
