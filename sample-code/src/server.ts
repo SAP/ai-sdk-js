@@ -64,6 +64,7 @@ import {
   invokeToolChain as invokeToolChainOrchestration,
   streamChain as streamChainOrchestration,
   invokeMcpToolChain as invokeMcpToolChainOrchestration,
+  invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
   invokeDynamicModelAgent
 } from './langchain-orchestration.js';
 import {
@@ -473,6 +474,37 @@ app.get('/langchain/invoke-with-structured-output', async (req, res) => {
     sendError(res, error);
   }
 });
+
+app.get(
+  '/langchain/invoke-with-structured-output-orchestration',
+  async (req, res) => {
+    try {
+      const validMethods = [
+        'functionCalling',
+        'jsonMode',
+        'jsonSchema'
+      ] as const;
+      const method = (req.query.method as string | undefined) ?? 'jsonSchema';
+      if (!validMethods.includes(method as (typeof validMethods)[number])) {
+        return res.status(400).json({
+          error: `Invalid method '${method}'. Valid methods are: ${validMethods.join(
+            ', '
+          )}.`
+        });
+      }
+
+      const includeRaw =
+        req.query.includeRaw === 'true' || req.query.includeRaw === '1';
+      const response = await orchestrationInvokeWithStructuredOutput(
+        method as (typeof validMethods)[number],
+        includeRaw
+      );
+      res.send(response);
+    } catch (error: any) {
+      sendError(res, error);
+    }
+  }
+);
 
 app.get('/langchain/invoke-chain', async (req, res) => {
   try {

@@ -492,3 +492,61 @@ export async function invokeMcpToolChain(): Promise<string> {
   // parse the response
   return parser.invoke(finalResponse);
 }
+
+/**
+ * Joke interface for structured output example.
+ */
+interface Joke {
+  /** The setup of the joke. */
+  setup: string;
+  /** The punchline to the joke. */
+  punchline: string;
+  /** How funny the joke is, from 1 to 10. */
+  rating: number;
+}
+
+/**
+ * With Structured Output using `jsonSchema` option with `strict: true` if supported by the method.
+ * @param method - The method to use for structured output. `jsonSchema` uses native structured output support, `jsonMode` forces JSON mode, and `functionCalling` uses tool calling.
+ * @param includeRaw - If true, returns an object with both raw message and parsed result.
+ * @returns The answer from GPT with exactly the structure defined in the schema.
+ */
+export async function invokeWithStructuredOutput<T extends boolean = false>(
+  method: 'jsonSchema' | 'jsonMode' | 'functionCalling' = 'jsonSchema',
+  includeRaw = false as T
+): Promise<
+  T extends true
+    ? {
+        raw: BaseMessage;
+        parsed: Joke;
+      }
+    : Joke
+> {
+  // initialize client with options
+  const llm = new OrchestrationClient({
+    promptTemplating: {
+      model: {
+        name: 'anthropic--claude-4.5-haiku'
+      }
+    }
+  });
+
+  const schema = z.object({
+    setup: z.string().meta({ description: 'The setup of the joke' }),
+    punchline: z.string().meta({ description: 'The punchline to the joke' }),
+    rating: z
+      .number()
+      .meta({ description: 'How funny the joke is, from 1 to 10' })
+  });
+
+  const structuredLlm = llm.withStructuredOutput(schema, {
+    name: 'joke',
+    method,
+    strict: method === 'jsonMode' ? undefined : true,
+    includeRaw
+  });
+
+  return structuredLlm.invoke('Tell me a joke about cats') as ReturnType<
+    typeof invokeWithStructuredOutput<T>
+  >;
+}
