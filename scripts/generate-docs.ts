@@ -47,7 +47,7 @@ async function adjustForGitHubPages() {
 
   await Promise.all(
     htmlPaths.map((filePath: string) =>
-      transformFile(filePath, file =>
+      transformFile(filePath, (file: string) =>
         file.replace(/<a href="[^>]*_[^>]*.html[^>]*>/gi, removeUnderlinePrefix)
       )
     )
@@ -87,7 +87,7 @@ async function adjustSearchJs(paths: string[]) {
     throw Error(`Expected one 'search.js', but found: ${filtered.length}.`);
   }
 
-  await transformFile(filtered[0], async file => {
+  await transformFile(filtered[0], async (file: string) => {
     const dataRegexResult = /window.searchData = "(.*)";/.exec(file);
     if (!dataRegexResult) {
       throw Error(
@@ -111,7 +111,7 @@ async function adjustNavigationJs(paths: string[]) {
     throw Error(`Expected one 'navigation.js', but found: ${filtered.length}.`);
   }
 
-  await transformFile(filtered[0], async file => {
+  await transformFile(filtered[0], async (file: string) => {
     const dataRegexResult = /window.navigationData = "(.*)"/.exec(file);
     if (!dataRegexResult) {
       throw Error(
@@ -153,11 +153,11 @@ async function insertCopyright() {
   await Promise.all(
     filePaths.map(async (filePath: string) => {
       const copyrightDiv = `<div class="container"><p>Copyright Ⓒ ${new Date().getFullYear()} SAP SE or an SAP affiliate company. All rights reserved.</p></div>`;
-      return transformFile(filePath, file => {
+      return transformFile(filePath, (file: string) => {
         const lines = file.split('\n');
         // Insert the copyright div before the line including </footer>
         lines.splice(
-          lines.findIndex(line => line.includes('</footer>')),
+          lines.findIndex((line: string) => line.includes('</footer>')),
           0,
           copyrightDiv
         );
