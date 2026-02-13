@@ -14,7 +14,8 @@ import {
   mockDeploymentsList,
   mockInference,
   parseMockResponse,
-  parseFileToString
+  parseFileToString,
+  getMockedAiCoreDestination
 } from '../../../../test-util/mock-http.js';
 import { addNumbersTool } from '../../../../test-util/tools.js';
 import { OrchestrationClient } from './client.js';
@@ -1168,6 +1169,43 @@ describe('orchestration service client', () => {
         expect(result).toHaveProperty('parsed');
         expect(result.parsed).toBeNull(); // Parser fallback should return null
       });
+    });
+  });
+
+  describe('destination provider', () => {
+    it('executes invoke with destination provider function', async () => {
+      mockInference(
+        {
+          data: constructCompletionPostRequest(
+            {
+              ...config,
+              promptTemplating: {
+                ...config.promptTemplating,
+                prompt: {
+                  template: messages
+                }
+              }
+            },
+            { messages: [] }
+          )
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        endpoint
+      );
+
+      const destinationProvider = async () => getMockedAiCoreDestination();
+      const client = new OrchestrationClient(
+        config,
+        {},
+        undefined,
+        destinationProvider
+      );
+
+      const response = await client.invoke(messages);
+      expect(response).toBeDefined();
     });
   });
 });
