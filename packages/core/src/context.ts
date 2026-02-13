@@ -81,7 +81,7 @@ export async function getAiCoreDestination(
     {
       useCache: true
     }
-  )) as HttpDestination;
+  )) as Promise<HttpDestination>;
   return aiCoreDestination;
 }
 

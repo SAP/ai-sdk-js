@@ -17,7 +17,7 @@ import type {
  *   const serviceBinding = getCustomServiceBinding();
  *   return transformServiceBindingToDestination(serviceBinding, {
  *       useCache: true
- *   }) as HttpDestination;
+ *   }) as Promise<HttpDestination>;
  * };
  * ```
  */
