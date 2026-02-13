@@ -15,6 +15,36 @@ describe('http-client', () => {
     nock.cleanAll();
   });
 
+  it('adds ai-client-type header', async () => {
+    const scope = nock(aiCoreDestination.url, {
+      reqheaders: {
+        'ai-client-type': 'AI SDK JavaScript'
+      }
+    })
+      .post('/v2/some/endpoint')
+      .reply(200);
+
+    await executeRequest({ url: '/some/endpoint' }, { prompt: 'test' });
+    expect(scope.isDone()).toBe(true);
+  });
+
+  it('adds ai-client-type header, when there is a custom ai-client-type header', async () => {
+    const scope = nock(aiCoreDestination.url, {
+      reqheaders: {
+        'ai-client-type': /.*AI SDK JavaScript.*/
+      }
+    })
+      .post('/v2/some/endpoint')
+      .reply(200);
+
+    await executeRequest(
+      { url: '/some/endpoint' },
+      { prompt: 'test' },
+      { headers: { 'ai-client-type': 'custom client' } }
+    );
+    expect(scope.isDone()).toBe(true);
+  });
+
   it('should execute a request to the AI Core service', async () => {
     const mockPrompt = { prompt: 'some test prompt' };
     const mockPromptResponse = { completion: 'some test completion' };
