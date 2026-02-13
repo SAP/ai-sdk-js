@@ -29,7 +29,7 @@ import type {
   StreamOptions
 } from './orchestration-types.js';
 import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
-import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+import type { DestinationResolvable } from '@sap-ai-sdk/core';
 
 const logger = createLogger({
   package: 'orchestration',
@@ -47,12 +47,12 @@ export class OrchestrationClient {
    * - A JSON string obtained from AI Launchpad
    * - An object of type`OrchestrationConfigRef` to reference a stored configuration by ID or name.
    * @param deploymentConfig - Deployment configuration.
-   * @param destination - The destination to use for the request.
+   * @param destination - The destination to use for the request. Can be an HttpDestination, fetch options, or a provider function.
    */
   constructor(
     private config: OrchestrationModuleConfig | string | OrchestrationConfigRef,
     private deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
-    private destination?: HttpDestinationOrFetchOptions
+    private destination?: DestinationResolvable
   ) {
     if (typeof config === 'string') {
       this.validateJsonConfig(config);

@@ -1,4 +1,4 @@
-import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
+import { executeRequest } from '@sap-ai-sdk/core';
 import {
   getFoundationModelDeploymentId,
   getResourceGroup,
@@ -6,9 +6,11 @@ import {
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { AzureOpenAiEmbeddingResponse } from './azure-openai-embedding-response.js';
 import { apiVersion, type AzureOpenAiEmbeddingModel } from './model-types.js';
+import type {
+  CustomRequestConfig,
+  DestinationResolvable
+} from '@sap-ai-sdk/core';
 import type { AzureOpenAiEmbeddingParameters } from './azure-openai-embedding-types.js';
-import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
-
 /**
  * Azure OpenAI client for embeddings.
  */
@@ -16,11 +18,11 @@ export class AzureOpenAiEmbeddingClient {
   /**
    * Creates an instance of the Azure OpenAI embedding client.
    * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
+   * @param destination - The destination to use for the request. Can be an HttpDestination, fetch options, or a provider function.
    */
-
   constructor(
     private modelDeployment: ModelDeployment<AzureOpenAiEmbeddingModel>,
-    private destination?: HttpDestinationOrFetchOptions
+    private destination?: DestinationResolvable
   ) {}
 
   /**

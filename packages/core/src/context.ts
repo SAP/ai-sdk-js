@@ -1,4 +1,4 @@
-import { createLogger } from '@sap-cloud-sdk/util';
+import { createLogger, ErrorWithCause } from '@sap-cloud-sdk/util';
 import {
   assertHttpDestination,
   getServiceBinding,
@@ -7,10 +7,10 @@ import {
 } from '@sap-cloud-sdk/connectivity';
 import type {
   HttpDestination,
-  HttpDestinationOrFetchOptions,
   Service,
   ServiceCredentials
 } from '@sap-cloud-sdk/connectivity';
+import type { DestinationResolvable } from './destination-provider-types.js';
 
 const logger = createLogger({
   package: 'core',
@@ -20,13 +20,33 @@ const logger = createLogger({
 let aiCoreServiceBinding: Service | undefined;
 
 /**
- * Returns a destination object.
- * @param destination - The destination to use for the request.
- * @returns The destination object.
+ * Resolves a destination for AI Core requests.
+ * Accepts an HttpDestination, DestinationFetchOptions, or a provider function.
+ * Falls back to the default AI Core service binding if no destination is provided.
+ * @param destination - The destination to resolve. Can be an HttpDestination, fetch options, or a provider function.
+ * @returns The resolved HttpDestination.
  */
 export async function getAiCoreDestination(
-  destination?: HttpDestinationOrFetchOptions
+  destination?: DestinationResolvable
 ): Promise<HttpDestination> {
+  if (typeof destination === 'function') {
+    try {
+      const resolvedDestination = await destination();
+      if (!resolvedDestination) {
+        throw new Error(
+          'Provider function returned null or undefined. Ensure the provider returns a valid HttpDestination object.'
+        );
+      }
+      assertHttpDestination(resolvedDestination);
+      return resolvedDestination;
+    } catch (error) {
+      throw new ErrorWithCause(
+        'Failed to resolve destination from provider function.',
+        error as Error
+      );
+    }
+  }
+
   // If Destination is provided, get the destination and return it.
   if (destination) {
     // If fetch options provided, by default cache the destination.

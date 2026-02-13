@@ -38,7 +38,7 @@ import type {
   AzureOpenAiChatModelParams,
   ChatAzureOpenAIToolType
 } from './types.js';
-import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+import type { DestinationResolvable } from '@sap-ai-sdk/core';
 import type { JsonSchema7Type } from '@langchain/core/utils/json_schema';
 
 /**
@@ -60,7 +60,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
 
   constructor(
     fields: AzureOpenAiChatModelParams,
-    destination?: HttpDestinationOrFetchOptions
+    destination?: DestinationResolvable
   ) {
     super(fields);
     this.openAiChatClient = new AzureOpenAiChatClientBase(fields, destination);

@@ -8,11 +8,11 @@ import {
 } from '@sap-cloud-sdk/util';
 import { executeHttpRequest } from '@sap-cloud-sdk/http-client';
 import { getAiCoreDestination } from './context.js';
-import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 import type {
   HttpRequestConfig,
   HttpResponse
 } from '@sap-cloud-sdk/http-client';
+import type { DestinationResolvable } from './destination-provider-types.js';
 
 /**
  * The type for parameters in custom request configuration.
@@ -53,14 +53,14 @@ export interface EndpointOptions {
  * @param endpointOptions - The options to call an endpoint.
  * @param data - The input parameters for the request.
  * @param requestConfig - The request configuration.
- * @param destination - The destination to use for the request.
+ * @param destination - The destination to use for the request. Can be an HttpDestination, fetch options, or a provider function.
  * @returns The {@link HttpResponse} from the AI Core service.
  */
 export async function executeRequest(
   endpointOptions: EndpointOptions,
   data: any,
   requestConfig?: CustomRequestConfig,
-  destination?: HttpDestinationOrFetchOptions
+  destination?: DestinationResolvable
 ): Promise<HttpResponse> {
   const aiCoreDestination = await getAiCoreDestination(destination);
   const { url, apiVersion, resourceGroup = 'default' } = endpointOptions;

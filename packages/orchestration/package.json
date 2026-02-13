@@ -42,7 +42,6 @@
     "yaml": "^2.8.2"
   },
   "devDependencies": {
-    "@sap-cloud-sdk/http-client": "^4.4.0",
-    "@sap-cloud-sdk/connectivity": "^4.4.0"
+    "@sap-cloud-sdk/http-client": "^4.4.0"
   }
 }

@@ -10,7 +10,8 @@ import {
   mockDeploymentsList,
   mockInference,
   parseFileToString,
-  parseMockResponse
+  parseMockResponse,
+  getMockedAiCoreDestination
 } from '../../../test-util/mock-http.js';
 import {
   addNumbersTool,
@@ -1297,6 +1298,51 @@ describe('orchestration service client', () => {
           /* empty */
         }
       }).rejects.toThrowErrorMatchingSnapshot();
+    });
+  });
+
+  describe('destination provider', () => {
+    it('executes chatCompletion with destination provider function', async () => {
+      const config: OrchestrationModuleConfig = {
+        promptTemplating: {
+          model: {
+            name: 'gpt-4o',
+            params: { max_tokens: 50, temperature: 0.1 }
+          }
+        }
+      };
+
+      const prompt: ChatCompletionRequest = {
+        messages: [{ role: 'user', content: 'Hello' }]
+      };
+
+      const mockResponse = await parseMockResponse<CompletionPostResponse>(
+        'orchestration',
+        'orchestration-chat-completion-success-response.json'
+      );
+
+      mockInference(
+        {
+          data: constructCompletionPostRequest(config, prompt)
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const destinationProvider = () => getMockedAiCoreDestination();
+      const response = await new OrchestrationClient(
+        config,
+        undefined,
+        destinationProvider
+      ).chatCompletion(prompt);
+
+      expect(response).toBeInstanceOf(OrchestrationResponse);
+      expect(response.getContent()).toEqual(expect.any(String));
     });
   });
 

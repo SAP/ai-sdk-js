@@ -10,7 +10,7 @@ import type {
 } from './client/rpt/index.js';
 import type { SapRptModel } from '@sap-ai-sdk/core/internal.js';
 import type { ModelDeployment } from '@sap-ai-sdk/ai-api';
-import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+import type { DestinationResolvable } from '@sap-ai-sdk/core';
 
 /**
  * Representation of an RPT client to make predictions.
@@ -20,11 +20,11 @@ export class RptClient {
   /**
    * Creates an instance of the RPT client.
    * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
-   * @param destination - The destination to use for the request.
+   * @param destination - The destination to use for the request. Can be an HttpDestination, fetch options, or a provider function.
    */
   constructor(
     private modelDeployment: ModelDeployment<SapRptModel> = 'sap-rpt-1-small',
-    private destination?: HttpDestinationOrFetchOptions
+    private destination?: DestinationResolvable
   ) {}
 
   /**

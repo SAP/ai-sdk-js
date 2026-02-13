@@ -33,7 +33,7 @@ import type {
 import type { ChatResult } from '@langchain/core/outputs';
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
 import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
-import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+import type { DestinationResolvable } from '@sap-ai-sdk/core';
 import type { AIMessageChunk, BaseMessage } from '@langchain/core/messages';
 import type { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
 import type {
@@ -63,7 +63,7 @@ export class OrchestrationClient extends BaseChatModel<
     public orchestrationConfig: LangChainOrchestrationModuleConfig,
     public langchainOptions: LangChainOrchestrationChatModelParams = {},
     public deploymentConfig?: ResourceGroupConfig,
-    public destination?: HttpDestinationOrFetchOptions
+    public destination?: DestinationResolvable
   ) {
     // Avoid retry if the error is due to input filtering
     const { onFailedAttempt } = langchainOptions;

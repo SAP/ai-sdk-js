@@ -22,6 +22,12 @@ import {
   type OrchestrationModuleConfig,
   type OrchestrationResponse
 } from '@sap-ai-sdk/orchestration';
+import {
+  transformServiceBindingToDestination,
+  type HttpDestination,
+  type ServiceCredentials,
+  type Service
+} from '@sap-cloud-sdk/connectivity';
 import { addNumbersTool } from '../../../test-util/tools.js';
 import { loadEnv } from './utils/load-env.js';
 
@@ -238,5 +244,38 @@ describe('orchestration', () => {
       expect.arrayContaining([expect.arrayContaining([expect.any(Number)])])
     );
     expect(response.getIntermediateResults()?.input_masking).toBeDefined();
+  });
+
+  it('should complete a chat with destination provider using transformServiceBindingToDestination', async () => {
+    const provider = async (): Promise<HttpDestination> => {
+      const credentials = JSON.parse(
+        process.env.AICORE_SERVICE_KEY!
+      ) as ServiceCredentials;
+      const serviceBinding: Service = {
+        name: 'aicore',
+        label: 'aicore',
+        tags: ['aicore'],
+        credentials
+      };
+      return transformServiceBindingToDestination(serviceBinding, {
+        useCache: true
+      }) as Promise<HttpDestination>;
+    };
+
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o-mini',
+          params: { max_tokens: 50, temperature: 0.1 }
+        }
+      }
+    };
+
+    const client = new OrchestrationClient(config, undefined, provider);
+    const response = await client.chatCompletion({
+      messages: [{ role: 'user', content: 'Hello, how are you?' }]
+    });
+
+    assertContent(response);
   });
 });

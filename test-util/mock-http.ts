@@ -8,7 +8,10 @@ import {
   type HttpDestination,
   type ServiceCredentials
 } from '@sap-cloud-sdk/connectivity';
-import { type EndpointOptions } from '@sap-ai-sdk/core';
+import {
+  type EndpointOptions,
+  type DestinationProvider
+} from '@sap-ai-sdk/core';
 import {
   type FoundationModel,
   type DeploymentResolutionOptions
@@ -72,6 +75,18 @@ export function getMockedAiCoreDestination(
     ...createDestinationTokens()
   };
   return mockDestination;
+}
+
+/**
+ * Create a mock destination provider for testing.
+ * @param destination - The destination to return, defaults to mocked AI Core destination.
+ * @returns A destination provider function.
+ * @internal
+ */
+export function createMockDestinationProvider(
+  destination: HttpDestination = getMockedAiCoreDestination()
+): DestinationProvider {
+  return () => destination;
 }
 
 export function mockClientCredentialsGrantCall(
