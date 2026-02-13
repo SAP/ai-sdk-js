@@ -14,7 +14,7 @@ import type {
   EmbeddingModuleConfig,
   EmbeddingRequest
 } from './orchestration-types.js';
-import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+import type { DestinationResolvable } from '@sap-ai-sdk/core';
 
 /**
  * Orchestration embedding client for generating embeddings with optional orchestration modules.
@@ -24,12 +24,12 @@ export class OrchestrationEmbeddingClient {
    * Creates an instance of the orchestration embedding client.
    * @param config - Embedding module configuration.
    * @param deploymentConfig - Deployment configuration.
-   * @param destination - The destination to use for the request.
+   * @param destination - The destination to use for the request. Can be an HttpDestination, fetch options, or a provider function.
    */
   constructor(
     private config: EmbeddingModuleConfig,
     private deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
-    private destination?: HttpDestinationOrFetchOptions
+    private destination?: DestinationResolvable
   ) {}
 
   /**

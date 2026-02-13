@@ -3,6 +3,10 @@ export { executeRequest } from './http-client.js';
 export { getAiCoreDestination } from './context.js';
 export { OpenApiRequestBuilder } from './openapi-request-builder.js';
 export type {
+  DestinationProvider,
+  DestinationResolvable
+} from './destination-provider-types.js';
+export type {
   AzureOpenAiChatModel,
   AzureOpenAiEmbeddingModel,
   GcpVertexAiChatModel,

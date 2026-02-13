@@ -9,7 +9,7 @@ import {
   translateToFoundationModel,
   type FoundationModel
 } from './model.js';
-import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+import type { DestinationResolvable } from '@sap-ai-sdk/core';
 
 /**
  * The model deployment configuration when using a model.
@@ -89,7 +89,7 @@ export interface DeploymentResolutionOptions {
   /**
    * The destination to use for the request.
    */
-  destination?: HttpDestinationOrFetchOptions;
+  destination?: DestinationResolvable;
 }
 
 /**
@@ -215,7 +215,7 @@ export async function getAllDeployments(
 export async function getFoundationModelDeploymentId(
   modelDeployment: ModelDeployment,
   executableId: string,
-  destination?: HttpDestinationOrFetchOptions
+  destination?: DestinationResolvable
 ): Promise<string> {
   if (isDeploymentIdConfig(modelDeployment)) {
     return modelDeployment.deploymentId;
@@ -239,7 +239,7 @@ export async function getFoundationModelDeploymentId(
  */
 export async function getOrchestrationDeploymentId(
   deploymentConfig: ResourceGroupConfig | DeploymentIdConfig,
-  destination?: HttpDestinationOrFetchOptions
+  destination?: DestinationResolvable
 ): Promise<string> {
   if (isDeploymentIdConfig(deploymentConfig)) {
     return deploymentConfig.deploymentId;

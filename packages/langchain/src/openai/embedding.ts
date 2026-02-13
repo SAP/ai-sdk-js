@@ -1,6 +1,6 @@
 import { AzureOpenAiEmbeddingClient as AzureOpenAiEmbeddingClientBase } from '@sap-ai-sdk/foundation-models';
 import { Embeddings } from '@langchain/core/embeddings';
-import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+import type { DestinationResolvable } from '@sap-ai-sdk/core';
 import type {
   AzureOpenAiEmbeddingModel,
   AzureOpenAiEmbeddingParameters,
@@ -20,7 +20,7 @@ export class AzureOpenAiEmbeddingClient extends Embeddings {
 
   constructor(
     fields: AzureOpenAiEmbeddingModelParams,
-    destination?: HttpDestinationOrFetchOptions
+    destination?: DestinationResolvable
   ) {
     super(fields);
     this.openAiEmbeddingClient = new AzureOpenAiEmbeddingClientBase(

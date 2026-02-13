@@ -1,4 +1,4 @@
-import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
+import { executeRequest } from '@sap-ai-sdk/core';
 import {
   getFoundationModelDeploymentId,
   getResourceGroup
@@ -7,12 +7,14 @@ import { apiVersion, type AzureOpenAiChatModel } from './model-types.js';
 import { AzureOpenAiChatCompletionResponse } from './azure-openai-chat-completion-response.js';
 import { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.js';
 import { AzureOpenAiChatCompletionStream } from './azure-openai-chat-completion-stream.js';
+import type {
+  CustomRequestConfig,
+  DestinationResolvable
+} from '@sap-ai-sdk/core';
 import type { AzureOpenAiChatCompletionParameters } from './azure-openai-chat-completion-types.js';
 import type { ModelDeployment } from '@sap-ai-sdk/ai-api';
 import type { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
-
 /**
  * Azure OpenAI client for chat completion.
  */
@@ -20,11 +22,11 @@ export class AzureOpenAiChatClient {
   /**
    * Creates an instance of the Azure OpenAI chat client.
    * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
-   * @param destination - The destination to use for the request.
+   * @param destination - The destination to use for the request. Can be an HttpDestination, fetch options, or a provider function.
    */
   constructor(
     private modelDeployment: ModelDeployment<AzureOpenAiChatModel>,
-    private destination?: HttpDestinationOrFetchOptions
+    private destination?: DestinationResolvable
   ) {}
 
   /**
