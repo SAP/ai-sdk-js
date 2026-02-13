@@ -309,11 +309,11 @@ export function assertIsOrchestrationModuleConfigList(
     | OrchestrationConfigRef
 ): asserts config is OrchestrationModuleConfigList {
   if (!Array.isArray(config)) {
-    throw new Error('Configuration must be an array for module fallback.');
+    throw new TypeError('Configuration must be an array for module fallback.');
   }
 
   if (config.length === 0) {
-    throw new Error('Configuration array must not be empty.');
+    throw new RangeError('Configuration array must not be empty.');
   }
 
   // Check if each element has the required promptTemplating property
@@ -327,7 +327,7 @@ export function assertIsOrchestrationModuleConfigList(
   );
 
   if (!allValid) {
-    throw new Error(
+    throw new TypeError(
       'Configuration array must contain valid OrchestrationModuleConfig objects with promptTemplating property.'
     );
   }

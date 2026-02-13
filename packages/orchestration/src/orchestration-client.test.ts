@@ -612,6 +612,40 @@ describe('orchestration service client', () => {
     `);
   });
 
+  it('should throw error when chatCompletion is called with already aborted controller', async () => {
+    const scope = mockInference(
+      { data: '' },
+      { data: '', status: 200 },
+      { url: 'inference/deployments/1234/v2/completion' },
+      { delay: 10000 }
+    );
+
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o',
+          params: {}
+        },
+        prompt: {
+          template: [
+            {
+              role: 'user',
+              content: 'Test prompt'
+            }
+          ]
+        }
+      }
+    };
+
+    const client = new OrchestrationClient(config);
+
+    await expect(
+      client.chatCompletion(undefined, { signal: AbortSignal.abort() })
+    ).rejects.toMatchObject({ name: 'AbortError' });
+
+    expect(scope.isDone()).toBe(false);
+  });
+
   it('calls chatCompletion with grounding configuration', async () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
