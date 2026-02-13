@@ -51,7 +51,6 @@ function mergeIntermediateFailures(
     return existing;
   }
 
-  // Convert ErrorStreaming to Error by transforming intermediate_results
   const transformedIncoming: OrchestrationError[] = incoming.map(error => ({
     ...error,
     intermediate_results: error.intermediate_results
@@ -63,14 +62,12 @@ function mergeIntermediateFailures(
     return transformedIncoming;
   }
 
-  // Deduplicate based on message, code, and location to avoid duplicates across chunks.
-  // The 'location' field uniquely identifies which config in a fallback chain failed,
-  // ensuring that failures from different configs (e.g., "config[0]", "config[1]") are kept separate.
+  // Deduplicate mesages with structural equality checks
   const existingSet = new Set(
-    existing.map(f => `${f.message}|${f.code}|${f.location}`)
+    existing.map(f => JSON.stringify(Object.entries(f).sort()))
   );
   const newFailures = transformedIncoming.filter(
-    f => !existingSet.has(`${f.message}|${f.code}|${f.location}`)
+    f => !existingSet.has(JSON.stringify(Object.entries(f).sort()))
   );
   return [...existing, ...newFailures];
 }

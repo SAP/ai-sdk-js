@@ -74,7 +74,6 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
 
     response._openStream = false;
 
-    // Log summary when fallbacks were used
     const intermediateFailures = response._data.intermediate_failures;
     if (intermediateFailures && intermediateFailures.length > 0) {
       logger.info(

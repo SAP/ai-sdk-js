@@ -22,7 +22,8 @@ import type {
   TemplateRef,
   EmbeddingsPostRequest,
   EmbeddingsOrchestrationConfig,
-  EmbeddingsModuleConfigs
+  EmbeddingsModuleConfigs,
+  GlobalStreamOptions
 } from '../client/api/schema/index.js';
 
 const logger = createLogger({
@@ -153,92 +154,131 @@ export function validateStreamOptions(
 
 /**
  * @internal
+ * Warns if output filtering stream options are provided but some configs lack output filtering.
+ */
+function warnAboutMissingOutputFiltering(
+  moduleConfigs: ModuleConfigs | ModuleConfigs[],
+  streamOptions?: StreamOptions
+): void {
+  if (!streamOptions?.outputFiltering) {
+    return;
+  }
+
+  const configs = Array.isArray(moduleConfigs)
+    ? moduleConfigs
+    : [moduleConfigs];
+  const configsWithoutFilter: number[] = configs
+    .map((cfg, idx) => [cfg, idx] as const)
+    .filter(([cfg]) => !cfg.filtering?.output)
+    .map(([, idx]) => idx);
+
+  // Three scenarios:
+  // 1. All configs lack output filtering - warn that options are unused
+  // 2. Some configs lack output filtering - warn about specific configs affected
+  // 3. All configs have output filtering - no warning needed
+  if (configsWithoutFilter.length === configs.length) {
+    logger.warn(
+      'Output filter stream options are not applied because no module configuration has output filtering enabled.'
+    );
+  } else if (configsWithoutFilter.length > 0) {
+    const configWord = configs.length > 1 ? 'configurations' : 'configuration';
+    const positions = configsWithoutFilter.map(i => `#${i + 1}`).join(', ');
+    logger.warn(
+      `Output filter stream options will not be applied to ${configWord} ${positions} because output filtering is not configured for those modules.`
+    );
+  }
+}
+
+/**
+ * @internal
+ * Extracts global stream configuration from stream options and applies defaults.
+ */
+function getGlobalStreamConfig(
+  streamOptions?: StreamOptions | StreamOptionsArray
+): GlobalStreamOptions {
+  const globalOptions = Array.isArray(streamOptions)
+    ? streamOptions[0]?.global
+    : streamOptions?.global;
+
+  return {
+    enabled: true,
+    ...(globalOptions || {})
+  };
+}
+
+/**
+ * @internal
+ * Builds module configs for array of configs with array of stream options (one-to-one mapping).
+ */
+function buildModulesForArrayConfigsWithArrayOptions(
+  moduleConfigs: ModuleConfigs[],
+  streamOptions: StreamOptionsArray
+): ModuleConfigs[] {
+  return moduleConfigs.map((config, index) =>
+    addStreamOptionsToSingleModuleConfig(config, streamOptions[index])
+  );
+}
+
+/**
+ * @internal
+ * Build modules for array of configs with single stream options (one-to-many mapping).
+ */
+function buildModulesForArrayConfigsWithSingleOptions(
+  moduleConfigs: ModuleConfigs[],
+  streamOptions?: StreamOptions
+): ModuleConfigs[] {
+  return moduleConfigs.map(config =>
+    addStreamOptionsToSingleModuleConfig(config, streamOptions)
+  );
+}
+
+/**
+ * @internal
+ * Build modules for single config with single stream options (one-to-one mapping).
+ */
+function buildModulesForSingleConfigWithSingleOptions(
+  moduleConfig: ModuleConfigs,
+  streamOptions?: StreamOptions
+): ModuleConfigs {
+  return addStreamOptionsToSingleModuleConfig(moduleConfig, streamOptions);
+}
+
+/**
+ * @internal
  * Implementation
  */
 export function addStreamOptions(
   moduleConfigs: ModuleConfigs | ModuleConfigs[],
   streamOptions?: StreamOptions | StreamOptionsArray
 ): OrchestrationConfig {
-  // Validate stream options compatibility
   validateStreamOptions(moduleConfigs, streamOptions);
 
-  // Handle array of stream options
+  let modules: ModuleConfigs | ModuleConfigs[];
+
   if (Array.isArray(streamOptions)) {
-    // Global stream options from first streamOptions, or default
-    const firstGlobalOptions = streamOptions[0]?.global;
-
-    // Type assertion safe due to validation above
     const configsArray = moduleConfigs as ModuleConfigs[];
-
-    return {
-      stream: {
-        ...(firstGlobalOptions || {}),
-        enabled: true
-      },
-      modules: configsArray.map((config, index) =>
-        addStreamOptionsToSingleModuleConfig(config, streamOptions[index])
-      )
-    };
-  }
-
-  // Handle single streamOptions (existing logic)
-  const globalStreamOptions = streamOptions?.global;
-  const outputFiltering = streamOptions?.outputFiltering;
-
-  // Check if output filtering options are provided but no config has output filtering
-  if (outputFiltering) {
-    const configs = Array.isArray(moduleConfigs)
-      ? moduleConfigs
-      : [moduleConfigs];
-    const configsWithoutFilter: number[] = [];
-
-    configs.forEach((config, index) => {
-      if (!config.filtering?.output) {
-        configsWithoutFilter.push(index);
-      }
-    });
-
-    // Warn about output filter stream options that won't be applied due to missing output filters.
-    // Three scenarios:
-    // 1. All configs lack output filtering - warn that options are unused
-    // 2. Some configs lack output filtering - warn about specific configs affected
-    // 3. All configs have output filtering - no warning needed
-    if (configsWithoutFilter.length === configs.length) {
-      // Scenario 1: No configs have output filtering
-      logger.warn(
-        'Output filter stream options are not applied because no module configuration has output filtering enabled.'
+    modules = buildModulesForArrayConfigsWithArrayOptions(
+      configsArray,
+      streamOptions
+    );
+  } else {
+    warnAboutMissingOutputFiltering(moduleConfigs, streamOptions);
+    if (Array.isArray(moduleConfigs)) {
+      modules = buildModulesForArrayConfigsWithSingleOptions(
+        moduleConfigs,
+        streamOptions
       );
-    } else if (configsWithoutFilter.length > 0) {
-      // Scenario 2: Some configs have output filtering, some don't
-      const configWord =
-        configs.length > 1 ? 'configurations' : 'configuration';
-      const positions = configsWithoutFilter.map(i => `#${i + 1}`).join(', ');
-      logger.warn(
-        `Output filter stream options will not be applied to ${configWord} ${positions} because output filtering is not configured for those modules.`
+    } else {
+      modules = buildModulesForSingleConfigWithSingleOptions(
+        moduleConfigs,
+        streamOptions
       );
     }
   }
 
-  // Handle array of module configs (module fallback support)
-  if (Array.isArray(moduleConfigs)) {
-    return {
-      stream: {
-        ...(globalStreamOptions || {}),
-        enabled: true
-      },
-      modules: moduleConfigs.map(config =>
-        addStreamOptionsToSingleModuleConfig(config, streamOptions)
-      )
-    };
-  }
-
-  // Handle single module config
   return {
-    stream: {
-      ...(globalStreamOptions || {}),
-      enabled: true
-    },
-    modules: addStreamOptionsToSingleModuleConfig(moduleConfigs, streamOptions)
+    stream: getGlobalStreamConfig(streamOptions),
+    modules
   };
 }
 
