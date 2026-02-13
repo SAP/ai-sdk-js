@@ -443,7 +443,7 @@ components:
       type: array
       items:
         type: number
-      description: 'An array of floating point numbers representing the embedding.'
+      description: 'An array of floating point numbers representing the embedding. '
     EmbeddingBase64String:
       type: string
       description: 'A single base64 string representing the embedding.'
