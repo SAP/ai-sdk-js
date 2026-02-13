@@ -5,6 +5,6 @@
  */
 
 /**
- * An array of numbers representing the embedding.
+ * An array of floating point numbers representing the embedding.
  */
 export type EmbeddingFloatArray = number[];
