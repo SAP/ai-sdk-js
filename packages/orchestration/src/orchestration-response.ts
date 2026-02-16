@@ -137,6 +137,14 @@ export class OrchestrationResponse {
     return this.getChoices().find((c: { index: number }) => c.index === index);
   }
 
+  /**
+   * Gets the request ID from the orchestration response.
+   * @returns The request ID.
+   */
+  getRequestId(): string {
+    return this._data.request_id;
+  }
+
   private getChoices(): LlmChoice[] {
     return this._data.final_result.choices;
   }

@@ -5,7 +5,6 @@ import {
   mockDestination
 } from '../../../test-util/mock-http.js';
 import { executeRequest, getTargetUrl } from './http-client.js';
-
 describe('http-client', () => {
   beforeEach(() => {
     mockClientCredentialsGrantCall();
@@ -13,6 +12,36 @@ describe('http-client', () => {
 
   afterEach(() => {
     nock.cleanAll();
+  });
+
+  it('adds ai-client-type header', async () => {
+    const scope = nock(aiCoreDestination.url, {
+      reqheaders: {
+        'ai-client-type': 'AI SDK JavaScript'
+      }
+    })
+      .post('/v2/some/endpoint')
+      .reply(200);
+
+    await executeRequest({ url: '/some/endpoint' }, { prompt: 'test' });
+    expect(scope.isDone()).toBe(true);
+  });
+
+  it('adds ai-client-type header, when there is a custom ai-client-type header', async () => {
+    const scope = nock(aiCoreDestination.url, {
+      reqheaders: {
+        'ai-client-type': 'AI SDK JavaScript, custom client'
+      }
+    })
+      .post('/v2/some/endpoint')
+      .reply(200);
+
+    await executeRequest(
+      { url: '/some/endpoint' },
+      { prompt: 'test' },
+      { headers: { 'AI-client-type': 'custom client' } }
+    );
+    expect(scope.isDone()).toBe(true);
   });
 
   it('should execute a request to the AI Core service', async () => {

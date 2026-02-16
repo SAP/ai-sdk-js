@@ -1,5 +1,14 @@
 # @sap-ai-sdk/prompt-registry
 
+## 2.7.0
+
+### Patch Changes
+
+- Updated dependencies [b11b00c]
+- Updated dependencies [56e9c3f]
+- Updated dependencies [b12626b]
+  - @sap-ai-sdk/core@2.7.0
+
 ## 2.6.0
 
 ### Patch Changes

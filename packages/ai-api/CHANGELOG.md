@@ -1,5 +1,20 @@
 # @sap-ai-sdk/ai-api
 
+## 2.7.0
+
+### Minor Changes
+
+- 8616d5e: [Compatibility Note] Extract functionality around execution scheduling from the `ExecutionApi` to `ExecutionScheduleApi`.
+- 8616d5e: [Compatibility Note] Remove the `BckndEvent` type.
+- 8616d5e: [Compatibility Note] Split the `BckndArgoCDApplicationData` into `BckndArgoCDApplicationDataResponse` and `BckndArgoCDApplicationDataRequest`.
+
+### Patch Changes
+
+- Updated dependencies [b11b00c]
+- Updated dependencies [56e9c3f]
+- Updated dependencies [b12626b]
+  - @sap-ai-sdk/core@2.7.0
+
 ## 2.6.0
 
 ### Patch Changes
