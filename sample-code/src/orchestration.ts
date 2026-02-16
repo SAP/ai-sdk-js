@@ -889,3 +889,50 @@ export async function orchestrationSapAbapChatCompletion(): Promise<Orchestratio
 
   return result;
 }
+
+/**
+ * Use multiple orchestration module configurations with module fallback.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationWithFallbackConfigs(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient([
+    {
+      // First configuration with a non-existent model to trigger module fallback
+      promptTemplating: {
+        model: {
+          name: 'non-existent-model'
+        }
+      }
+    },
+    {
+      // Second configuration with a slow model with a short timeout to trigger fallback
+      promptTemplating: {
+        model: {
+          name: 'gpt-5',
+          timeout: 1, // 1 s timeout to trigger timeout error
+          params: {
+            reasoning_effort: 'high'
+          }
+        }
+      }
+    },
+    {
+      // Third configuration with a valid model that will succeed
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o'
+        }
+      }
+    }
+  ]);
+
+  return orchestrationClient.chatCompletion({
+    messages: [
+      {
+        role: 'user',
+        content:
+          'Write a POSIX-compatible shell script that authenticates with SAP AI Core, calls the orchestration service, and sends a chat completion request implementing both input and output content filtering.'
+      }
+    ]
+  });
+}

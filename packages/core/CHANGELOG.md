@@ -1,5 +1,21 @@
 # @sap-ai-sdk/core
 
+## 2.7.0
+
+### Minor Changes
+
+- b12626b: [compat] Remove deprecated and retired models from model list.
+  Remove retired model `anthropic--claude-3-sonnet` from model list, use suggested replacement `anthropic--claude-4.5-sonnet` instead.
+  Remove retired model `anthropic--claude-3-opus` from model list.
+  Remove deprecated model `gpt-4o-mini`, use suggested replacement `gpt-5-mini` instead.
+  Remove deprecated models `anthropic--claude-3.5-sonnet` and `anthropic--claude-3.7-sonnet`.
+
+### Patch Changes
+
+- b11b00c: [feat] Advertise AbortSignal support for HTTP request cancellation.
+  This change adds typings, documentation and examples for using AbortSignal with the HTTP client to enable request cancellation.
+- 56e9c3f: [Improvement] Combine 'ai-client-type' headers if a custom 'ai-client-type' header is set.
+
 ## 2.6.0
 
 ## 2.5.0
