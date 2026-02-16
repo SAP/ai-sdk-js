@@ -64,6 +64,7 @@ jobs:
         with:
           github-token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           script: |
+            const { setTimeout } = require('node:timers/promises');
             const retry = require('async-retry');
             const { repo, owner } = context.repo;
             const branch = '${{ steps.update-deps.outputs.branch-name }}';
@@ -82,6 +83,9 @@ jobs:
             }
 
             const pr = pulls.data[0];
+
+            // Wait 2 minutes for jobs to start
+            await setTimeout(2 * 60 * 1000);
 
             const result = await retry(
               async () => {
@@ -102,6 +106,7 @@ jobs:
 
                 if (!allAcceptable) {
                   console.log(`PR #${pr.number} has failed checks that prevent merging.`);
+                  return 'failed-checks';
                 }
 
                 return 'success';

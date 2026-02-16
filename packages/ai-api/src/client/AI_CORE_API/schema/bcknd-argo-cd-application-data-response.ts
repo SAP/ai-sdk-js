@@ -5,13 +5,13 @@
  */
 
 /**
- * Representation of the 'BckndArgoCDApplicationDataRepoName' schema.
+ * Representation of the 'BckndArgoCDApplicationDataResponse' schema.
  */
-export type BckndArgoCDApplicationDataRepoName = {
+export type BckndArgoCDApplicationDataResponse = {
   /**
-   * Name of the repository to synchronise
+   * URL of the repository to synchronise
    */
-  repositoryName: string;
+  repositoryUrl: string;
   /**
    * revision to synchronise
    */
@@ -21,8 +21,8 @@ export type BckndArgoCDApplicationDataRepoName = {
    */
   path: string;
   /**
-   * ArgoCD application name in the request body
-   * Max Length: 54.
+   * ArgoCD application name in the response body
+   * Max Length: 63.
    * Min Length: 3.
    * Pattern: "^[a-z0-9\\-]+$".
    */

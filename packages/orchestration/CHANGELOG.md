@@ -1,5 +1,41 @@
 # @sap-ai-sdk/orchestration
 
+## 2.7.0
+
+### Minor Changes
+
+- 6b49479: [feat] Add `rawResponse` property to `OrchestrationStreamResponse`.
+  The new property exposes the raw HTTP response from the orchestration service for advanced use cases.
+- 6b49479: [feat] Add `getRequestId()` method to `OrchestrationResponse`, `OrchestrationStreamResponse` and `OrchestrationEmbeddingResponse`.
+  The new method allows retrieving the request ID from the orchestration service responses, which can be useful for debugging and tracking requests.
+- 6b49479: [compat] Support for constructing an `OrchestrationStreamResponse` without an `HttpResponse` has been deprecated, and will be removed in the next major release.
+  Code directly instantiating this class should be updated to provide an `HttpResponse` object as the first parameter to allow reading from raw HTTP response.
+
+### Patch Changes
+
+- Updated dependencies [b11b00c]
+- Updated dependencies [8616d5e]
+- Updated dependencies [56e9c3f]
+- Updated dependencies [8616d5e]
+- Updated dependencies [b12626b]
+- Updated dependencies [8616d5e]
+  - @sap-ai-sdk/core@2.7.0
+  - @sap-ai-sdk/ai-api@2.7.0
+  - @sap-ai-sdk/prompt-registry@2.7.0
+
+## 2.6.0
+
+### Minor Changes
+
+- f3b6dc5: [Fixed Issue] Export `isConfigReference()` method as a value instead of type-only export.
+  This function can now be imported and used at runtime to check if a configuration is an orchestration configuration reference type.
+
+### Patch Changes
+
+- @sap-ai-sdk/ai-api@2.6.0
+- @sap-ai-sdk/core@2.6.0
+- @sap-ai-sdk/prompt-registry@2.6.0
+
 ## 2.5.0
 
 ### Minor Changes

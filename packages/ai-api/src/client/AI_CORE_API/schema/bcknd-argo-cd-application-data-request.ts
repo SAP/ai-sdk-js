@@ -5,9 +5,9 @@
  */
 
 /**
- * Representation of the 'BckndArgoCDApplicationData' schema.
+ * Representation of the 'BckndArgoCDApplicationDataRequest' schema.
  */
-export type BckndArgoCDApplicationData = {
+export type BckndArgoCDApplicationDataRequest = {
   /**
    * URL of the repository to synchronise
    */
@@ -21,7 +21,7 @@ export type BckndArgoCDApplicationData = {
    */
   path: string;
   /**
-   * ArgoCD application name
+   * ArgoCD application name in the request body
    * Max Length: 54.
    * Min Length: 3.
    * Pattern: "^[a-z0-9\\-]+$".
