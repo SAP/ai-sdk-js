@@ -62,7 +62,7 @@ function mergeIntermediateFailures(
     return transformedIncoming;
   }
 
-  // Deduplicate mesages with structural equality checks
+  // Deduplicate messages with structural equality checks
   const existingSet = new Set(
     existing.map(f => JSON.stringify(Object.entries(f).sort()))
   );
