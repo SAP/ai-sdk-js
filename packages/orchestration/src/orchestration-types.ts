@@ -335,7 +335,6 @@ export function assertIsOrchestrationModuleConfigList(
 
 /**
  * Type guard to check if config is a valid list of orchestration module configs.
- * @internal
  * @param config - The config to check.
  * @returns True if config is a non-empty array with valid OrchestrationModuleConfig elements.
  */
