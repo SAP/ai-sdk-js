@@ -128,12 +128,9 @@ function mergeWithDefaultRequestConfig(
     ...defaultConfig,
     ...requestConfig,
     headers: {
-      ...mergeIgnoreCase(
-        mergedHeaders,
-        {
-          'ai-client-type': aiClientType
-        }
-      )
+      ...mergeIgnoreCase(mergedHeaders, {
+        'ai-client-type': aiClientType
+      })
     },
     params: mergeIgnoreCase(defaultConfig.params, requestConfig?.params)
   };
