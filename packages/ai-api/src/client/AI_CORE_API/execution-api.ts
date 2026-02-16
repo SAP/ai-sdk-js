@@ -56,8 +56,8 @@ export const ExecutionApi = {
       'get',
       '/lm/executions',
       {
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       ExecutionApi._defaultBasePath
     ),
@@ -76,7 +76,10 @@ export const ExecutionApi = {
       '/lm/executions',
       {
         body,
-        headerParameters
+        headerParameters: {
+          'content-type': 'application/json',
+          ...headerParameters
+        }
       },
       ExecutionApi._defaultBasePath
     ),
@@ -95,7 +98,10 @@ export const ExecutionApi = {
       '/lm/executions',
       {
         body,
-        headerParameters
+        headerParameters: {
+          'content-type': 'application/merge-patch+json',
+          ...headerParameters
+        }
       },
       ExecutionApi._defaultBasePath
     ),
@@ -116,8 +122,8 @@ export const ExecutionApi = {
       '/lm/executions/{executionId}',
       {
         pathParameters: { executionId },
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       ExecutionApi._defaultBasePath
     ),
@@ -139,7 +145,10 @@ export const ExecutionApi = {
       {
         pathParameters: { executionId },
         body,
-        headerParameters
+        headerParameters: {
+          'content-type': 'application/json',
+          ...headerParameters
+        }
       },
       ExecutionApi._defaultBasePath
     ),
@@ -191,8 +200,8 @@ export const ExecutionApi = {
       'get',
       '/lm/executions/$count',
       {
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       ExecutionApi._defaultBasePath
     ),
@@ -218,8 +227,8 @@ export const ExecutionApi = {
       '/lm/executions/{executionId}/logs',
       {
         pathParameters: { executionId },
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       ExecutionApi._defaultBasePath
     )
