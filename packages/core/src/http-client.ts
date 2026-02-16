@@ -111,18 +111,29 @@ function mergeWithDefaultRequestConfig(
     params: apiVersion ? { 'api-version': apiVersion } : {}
   };
 
+  const mergedHeaders = mergeIgnoreCase(
+    defaultConfig.headers,
+    requestConfig?.headers
+  );
+
+  // merge 'ai-client-type' header value with custom client type if needed
+  const aiClientType = [
+    'AI SDK JavaScript',
+    pickValueIgnoreCase(requestConfig?.headers, 'ai-client-type')
+  ]
+    .filter(clientType => clientType)
+    .join(', ');
+
   return {
     ...defaultConfig,
     ...requestConfig,
     headers: {
-      ...mergeIgnoreCase(defaultConfig.headers, requestConfig?.headers),
-      // add 'ai-client-type' header and merge with custom client type if needed
-      'ai-client-type': [
-        'AI SDK JavaScript',
-        pickValueIgnoreCase(requestConfig?.headers, 'ai-client-type')
-      ]
-        .filter(clientType => clientType)
-        .join(', ')
+      ...mergeIgnoreCase(
+        mergedHeaders,
+        {
+          'ai-client-type': aiClientType
+        }
+      )
     },
     params: mergeIgnoreCase(defaultConfig.params, requestConfig?.params)
   };

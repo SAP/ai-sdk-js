@@ -5,7 +5,6 @@ import {
   mockDestination
 } from '../../../test-util/mock-http.js';
 import { executeRequest, getTargetUrl } from './http-client.js';
-
 describe('http-client', () => {
   beforeEach(() => {
     mockClientCredentialsGrantCall();
@@ -40,7 +39,7 @@ describe('http-client', () => {
     await executeRequest(
       { url: '/some/endpoint' },
       { prompt: 'test' },
-      { headers: { 'ai-client-type': 'custom client' } }
+      { headers: { 'AI-client-type': 'custom client' } }
     );
     expect(scope.isDone()).toBe(true);
   });
