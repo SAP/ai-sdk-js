@@ -155,25 +155,38 @@ export function validateStreamOptions(
 /**
  * @internal
  * Warns if output filtering stream options are provided but some configs lack output filtering.
+ * Supports both single stream options applied to all configs, and array stream options with per-config settings.
+ * @param moduleConfigs - Single or array of module configurations.
+ * @param streamOptions - Single stream options or array of stream options.
  */
 function warnAboutMissingOutputFiltering(
   moduleConfigs: ModuleConfigs | ModuleConfigs[],
-  streamOptions?: StreamOptions
+  streamOptions?: StreamOptions | StreamOptionsArray
 ): void {
-  if (!streamOptions?.outputFiltering) {
-    return;
-  }
-
   const configs = Array.isArray(moduleConfigs)
     ? moduleConfigs
     : [moduleConfigs];
+
+  // Collect indices where output filtering options are set but config lacks output filtering
   const configsWithoutFilter: number[] = configs
-    .map((cfg, idx) => [cfg, idx] as const)
-    .filter(([cfg]) => !cfg.filtering?.output)
-    .map(([, idx]) => idx);
+    .map((cfg, idx) => {
+      const opts = Array.isArray(streamOptions)
+        ? streamOptions[idx]
+        : streamOptions;
+      // Only flag if stream options request output filtering but config doesn't have it
+      if (opts?.outputFiltering && !cfg.filtering?.output) {
+        return idx;
+      }
+      return undefined;
+    })
+    .filter(idx => idx !== undefined);
+
+  if (configsWithoutFilter.length === 0) {
+    return;
+  }
 
   // Three scenarios:
-  // 1. All configs lack output filtering - warn that options are unused
+  // 1. All configs with output filtering options lack output filtering - warn that options are unused
   // 2. Some configs lack output filtering - warn about specific configs affected
   // 3. All configs have output filtering - no warning needed
   if (configsWithoutFilter.length === configs.length) {
@@ -181,7 +194,8 @@ function warnAboutMissingOutputFiltering(
       'Output filter stream options are not applied because no module configuration has output filtering enabled.'
     );
   } else if (configsWithoutFilter.length > 0) {
-    const configWord = configs.length > 1 ? 'configurations' : 'configuration';
+    const configWord =
+      configsWithoutFilter.length > 1 ? 'configurations' : 'configuration';
     const positions = configsWithoutFilter.map(i => `#${i + 1}`).join(', ');
     logger.warn(
       `Output filter stream options will not be applied to ${configWord} ${positions} because output filtering is not configured for those modules.`
@@ -255,6 +269,8 @@ export function addStreamOptions(
 
   let modules: ModuleConfigs | ModuleConfigs[];
 
+  warnAboutMissingOutputFiltering(moduleConfigs, streamOptions);
+
   if (Array.isArray(streamOptions)) {
     const configsArray = moduleConfigs as ModuleConfigs[];
     modules = buildModulesForArrayConfigsWithArrayOptions(
@@ -262,7 +278,6 @@ export function addStreamOptions(
       streamOptions
     );
   } else {
-    warnAboutMissingOutputFiltering(moduleConfigs, streamOptions);
     if (Array.isArray(moduleConfigs)) {
       modules = buildModulesForArrayConfigsWithSingleOptions(
         moduleConfigs,
