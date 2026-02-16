@@ -10,6 +10,7 @@ export type {
   AiCoreOpenSourceChatModel,
   AiCoreOpenSourceEmbeddingModel,
   AwsBedrockEmbeddingModel,
-  PerplexityChatModel
+  PerplexityChatModel,
+  SapRptModel
 } from './model-types.js';
 export { SseStream, LineDecoder, SSEDecoder } from './stream/index.js';

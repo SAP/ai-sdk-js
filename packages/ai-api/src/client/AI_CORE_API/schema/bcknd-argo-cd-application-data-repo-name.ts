@@ -21,7 +21,7 @@ export type BckndArgoCDApplicationDataRepoName = {
    */
   path: string;
   /**
-   * ArgoCD application name
+   * ArgoCD application name in the request body
    * Max Length: 54.
    * Min Length: 3.
    * Pattern: "^[a-z0-9\\-]+$".

@@ -1,7 +1,10 @@
 import nock from 'nock';
 import { jest } from '@jest/globals';
 import { createLogger } from '@sap-cloud-sdk/util';
-import { resolveDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
+import {
+  resolveDeploymentId,
+  getOrchestrationDeploymentId
+} from '@sap-ai-sdk/ai-api/internal.js';
 import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
@@ -21,7 +24,6 @@ import {
   buildAzureContentSafetyFilter,
   buildLlamaGuard38BFilter
 } from './util/index.js';
-import { getOrchestrationDeploymentId } from './deployment-resolver.js';
 import type { CompletionPostResponse } from './client/api/schema/index.js';
 import type {
   OrchestrationModuleConfig,
@@ -607,6 +609,40 @@ describe('orchestration service client', () => {
        }
      ]"
     `);
+  });
+
+  it('should throw error when chatCompletion is called with already aborted controller', async () => {
+    const scope = mockInference(
+      { data: '' },
+      { data: '', status: 200 },
+      { url: 'inference/deployments/1234/v2/completion' },
+      { delay: 10000 }
+    );
+
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: {
+          name: 'gpt-4o',
+          params: {}
+        },
+        prompt: {
+          template: [
+            {
+              role: 'user',
+              content: 'Test prompt'
+            }
+          ]
+        }
+      }
+    };
+
+    const client = new OrchestrationClient(config);
+
+    await expect(
+      client.chatCompletion(undefined, { signal: AbortSignal.abort() })
+    ).rejects.toMatchObject({ name: 'AbortError' });
+
+    expect(scope.isDone()).toBe(false);
   });
 
   it('calls chatCompletion with grounding configuration', async () => {

@@ -7,7 +7,8 @@ import type {
   AssistantChatMessage,
   MessageToolCalls,
   LlmChoice,
-  ModuleResults
+  ModuleResults,
+  Error as OrchestrationError
 } from './client/api/schema/index.js';
 
 /**
@@ -104,6 +105,27 @@ export class OrchestrationResponse {
    */
   getIntermediateResults(): ModuleResults {
     return this._data.intermediate_results;
+  }
+
+  /**
+   * Gets the intermediate failures from the orchestration response.
+   * When using module fallback, this contains errors from module configurations
+   * that failed before a successful one was found.
+   *
+   * Each failure includes:
+   * - message: Description of what went wrong
+   * - code: Error code identifying the type of failure
+   * - location: Position in the fallback chain (e.g., "config[0]", "config[1]").
+   * @example
+   * const response = await client.chatCompletion();
+   * const failures = response.getIntermediateFailures();
+   * if (failures) {
+   *   failures.forEach(f => console.log(`${f.location}: ${f.message}`));
+   * }
+   * @returns The intermediate failures, or undefined if there were none.
+   */
+  getIntermediateFailures(): OrchestrationError[] | undefined {
+    return this._data.intermediate_failures;
   }
 
   /**

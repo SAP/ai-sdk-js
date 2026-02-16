@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/langchain",
-  "version": "2.5.0",
+  "version": "2.7.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
@@ -35,12 +35,13 @@
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.3.1",
-    "@sap-cloud-sdk/util": "^4.3.1",
+    "@sap-cloud-sdk/connectivity": "^4.4.0",
+    "@sap-cloud-sdk/util": "^4.4.0",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
-    "@langchain/langgraph": "^1.1.2"
+    "@langchain/langgraph": "^1.1.4",
+    "zod": "^4.3.6"
   },
   "peerDependencies": {
     "@langchain/core": "^1.1.16"

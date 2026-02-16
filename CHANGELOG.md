@@ -28,6 +28,45 @@
 
 -
 
+# 2.7.0
+## Compatibility Notes
+
+- [ai-api] Extract functionality around execution scheduling from the `ExecutionApi` to `ExecutionScheduleApi`. (8616d5e)
+- [ai-api] Remove the `BckndEvent` type. (8616d5e)
+- [ai-api] Split the `BckndArgoCDApplicationData` into `BckndArgoCDApplicationDataResponse` and `BckndArgoCDApplicationDataRequest`. (8616d5e)
+- [core] Remove deprecated and retired models from model list.
+  Remove retired model `anthropic--claude-3-sonnet` from model list, use suggested replacement `anthropic--claude-4.5-sonnet` instead.
+  Remove retired model `anthropic--claude-3-opus` from model list.
+  Remove deprecated model `gpt-4o-mini`, use suggested replacement `gpt-5-mini` instead.
+  Remove deprecated models `anthropic--claude-3.5-sonnet` and `anthropic--claude-3.7-sonnet`. (b12626b)
+- [orchestration] Support for constructing an `OrchestrationStreamResponse` without an `HttpResponse` has been deprecated, and will be removed in the next major release.
+  Code directly instantiating this class should be updated to provide an `HttpResponse` object as the first parameter to allow reading from raw HTTP response. (6b49479)
+
+## New Features
+
+- [core] Advertise AbortSignal support for HTTP request cancellation.
+  This change adds typings, documentation and examples for using AbortSignal with the HTTP client to enable request cancellation. (b11b00c)
+- [langchain] Support the `withStructuredOutput()` method in the Orchestration LangChain client. (4fce347)
+- [orchestration] Add `rawResponse` property to `OrchestrationStreamResponse`.
+  The new property exposes the raw HTTP response from the orchestration service for advanced use cases. (6b49479)
+- [orchestration] Add `getRequestId()` method to `OrchestrationResponse`, `OrchestrationStreamResponse` and `OrchestrationEmbeddingResponse`.
+  The new method allows retrieving the request ID from the orchestration service responses, which can be useful for debugging and tracking requests. (6b49479)
+
+## Improvements
+
+- [core] Combine 'ai-client-type' headers if a custom 'ai-client-type' header is set. (56e9c3f)
+- [rpt] Restrict the `task_type` property in the `PredictionConfig` type. (12b4129)
+
+# 2.6.0
+## New Features
+
+- [rpt] Release Beta version of a client for the SAP-RPT-1 model. (790ad05)
+
+## Fixed Issues
+
+- [orchestration] Export `isConfigReference()` method as a value instead of type-only export.
+  This function can now be imported and used at runtime to check if a configuration is an orchestration configuration reference type. (f3b6dc5)
+
 # 2.5.0
 ## Compatibility Notes
 

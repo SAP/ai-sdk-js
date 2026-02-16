@@ -25,7 +25,8 @@ export {
   orchestrationMessageHistoryWithToolCalling,
   orchestrationTranslation,
   orchestrationEmbeddingWithMasking,
-  OrchestrationConfigRef
+  OrchestrationConfigRef,
+  orchestrationWithFallbackConfigs
 } from './orchestration.js';
 export {
   invoke,
@@ -39,6 +40,7 @@ export {
   invokeLangGraphChain,
   invokeDynamicModelAgent,
   invokeLangGraphChainStream,
+  invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
   streamChain
 } from './langchain-orchestration.js';
 export {
@@ -66,3 +68,5 @@ export {
   createPromptTemplate,
   deletePromptTemplate
 } from './prompt-registry.js';
+
+export { predictWithSchema, predictAutomaticParsing } from './rpt.js';

@@ -1,0 +1,45 @@
+{
+  "name": "@sap-ai-sdk/rpt",
+  "version": "2.7.0",
+  "description": "This package provides a client for SAP’s Relational Pretrained Transformer model, SAP-RPT-1.",
+  "license": "Apache-2.0",
+  "keywords": [
+    "sap-ai-sdk",
+    "ai-api",
+    "rpt"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/ai-sdk-js",
+    "directory": "packages/rpt"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts",
+    "dist/**/*.d.ts.map",
+    "internal.js",
+    "internal.d.ts"
+  ],
+  "scripts": {
+    "compile": "tsc",
+    "compile:cjs": "tsc -p tsconfig.cjs.json",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
+    "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
+    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/rpt.json -o ./src/client",
+    "postgenerate": "pnpm update-imports && pnpm make-rpt-internal && pnpm lint:fix",
+    "update-imports": "node --no-warnings --loader ts-node/esm ../../scripts/update-imports.ts ./src/client/rpt",
+    "make-rpt-internal": "node --no-warnings --loader ts-node/esm ../../scripts/postgenerate-rpt.ts ./src/client/rpt/rpt-api.ts",
+    "pregenerate": "node --no-warnings --loader ts-node/esm ../../scripts/pregenerate-rpt.ts ./src/spec/rpt.json"
+  },
+  "dependencies": {
+    "@sap-ai-sdk/ai-api": "workspace:^",
+    "@sap-ai-sdk/core": "workspace:^",
+    "@sap-cloud-sdk/connectivity": "^4.4.0",
+    "@sap-cloud-sdk/util": "^4.4.0"
+  }
+}

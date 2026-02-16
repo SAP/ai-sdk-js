@@ -30,7 +30,8 @@ import {
   orchestrationResponseFormat,
   orchestrationTranslation,
   orchestrationEmbeddingWithMasking,
-  orchestrationSapAbapChatCompletion
+  orchestrationSapAbapChatCompletion,
+  orchestrationWithFallbackConfigs
 } from './orchestration.js';
 import {
   getDeployments,
@@ -63,6 +64,7 @@ import {
   invokeToolChain as invokeToolChainOrchestration,
   streamChain as streamChainOrchestration,
   invokeMcpToolChain as invokeMcpToolChainOrchestration,
+  invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
   invokeDynamicModelAgent
 } from './langchain-orchestration.js';
 import {
@@ -75,6 +77,7 @@ import {
   createPromptTemplate,
   deletePromptTemplate
 } from './prompt-registry.js';
+import { predictAutomaticParsing, predictWithSchema } from './rpt.js';
 import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type { AIMessageChunk } from '@langchain/core/messages';
 import type {
@@ -289,7 +292,8 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       maskGroundingInput: orchestrationMaskGroundingInput,
       translation: orchestrationTranslation,
       embeddingWithMasking: orchestrationEmbeddingWithMasking,
-      sapAbap: orchestrationSapAbapChatCompletion
+      sapAbap: orchestrationSapAbapChatCompletion,
+      fallbackModules: orchestrationWithFallbackConfigs
     }[sampleCase] || orchestrationChatCompletion;
 
   try {
@@ -321,6 +325,16 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
         .header('Content-Type', 'text/plain')
         .send(
           `Embedding with masking applied successfully:${JSON.stringify(embeddingResult.getIntermediateResults()?.input_masking?.data, null, 2)}\nEmbeddings: ${embedding}\nUsage - Prompt tokens: ${embeddingResult.getTokenUsage()?.prompt_tokens}\nUsage - Total tokens: ${embeddingResult.getTokenUsage()?.total_tokens}`
+        );
+    } else if (sampleCase === 'fallbackModules') {
+      const intermediateFailures = (
+        result as OrchestrationResponse
+      ).getIntermediateFailures();
+      const content = (result as OrchestrationResponse).getContent();
+      res
+        .header('Content-Type', 'text/plain')
+        .send(
+          `Fallback modules executed successfully.\nIntermediate Failures: ${JSON.stringify(intermediateFailures, null, 2)}\nFinal Content: ${content}`
         );
     } else {
       res
@@ -460,6 +474,37 @@ app.get('/langchain/invoke-with-structured-output', async (req, res) => {
     sendError(res, error);
   }
 });
+
+app.get(
+  '/langchain/invoke-with-structured-output-orchestration',
+  async (req, res) => {
+    try {
+      const validMethods = [
+        'functionCalling',
+        'jsonMode',
+        'jsonSchema'
+      ] as const;
+      const method = (req.query.method as string | undefined) ?? 'jsonSchema';
+      if (!validMethods.includes(method as (typeof validMethods)[number])) {
+        return res.status(400).json({
+          error: `Invalid method '${method}'. Valid methods are: ${validMethods.join(
+            ', '
+          )}.`
+        });
+      }
+
+      const includeRaw =
+        req.query.includeRaw === 'true' || req.query.includeRaw === '1';
+      const response = await orchestrationInvokeWithStructuredOutput(
+        method as (typeof validMethods)[number],
+        includeRaw
+      );
+      res.send(response);
+    } catch (error: any) {
+      sendError(res, error);
+    }
+  }
+);
 
 app.get('/langchain/invoke-chain', async (req, res) => {
   try {
@@ -786,6 +831,28 @@ app.get('/prompt-registry/template', async (req, res) => {
 
     const response = await deletePromptTemplate(id);
     res.write(`Prompt template deleted: ${response.message}\n`);
+
+    res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/rpt/predict', async (req, res) => {
+  try {
+    const data = await predictWithSchema();
+    res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
+
+    res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/rpt/predict-automatic', async (req, res) => {
+  try {
+    const data = await predictAutomaticParsing();
+    res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
 
     res.end();
   } catch (error: any) {

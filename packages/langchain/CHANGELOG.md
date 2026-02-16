@@ -1,5 +1,37 @@
 # @sap-ai-sdk/langchain
 
+## 2.7.0
+
+### Minor Changes
+
+- 4fce347: [feat] Support the `withStructuredOutput()` method in the Orchestration LangChain client.
+
+### Patch Changes
+
+- Updated dependencies [6b49479]
+- Updated dependencies [b11b00c]
+- Updated dependencies [8616d5e]
+- Updated dependencies [56e9c3f]
+- Updated dependencies [6b49479]
+- Updated dependencies [6b49479]
+- Updated dependencies [8616d5e]
+- Updated dependencies [b12626b]
+- Updated dependencies [8616d5e]
+  - @sap-ai-sdk/orchestration@2.7.0
+  - @sap-ai-sdk/core@2.7.0
+  - @sap-ai-sdk/ai-api@2.7.0
+  - @sap-ai-sdk/foundation-models@2.7.0
+
+## 2.6.0
+
+### Patch Changes
+
+- Updated dependencies [f3b6dc5]
+  - @sap-ai-sdk/orchestration@2.6.0
+  - @sap-ai-sdk/ai-api@2.6.0
+  - @sap-ai-sdk/core@2.6.0
+  - @sap-ai-sdk/foundation-models@2.6.0
+
 ## 2.5.0
 
 ### Minor Changes
