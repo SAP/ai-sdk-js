@@ -30,7 +30,7 @@ describe('http-client', () => {
   it('adds ai-client-type header, when there is a custom ai-client-type header', async () => {
     const scope = nock(aiCoreDestination.url, {
       reqheaders: {
-        'ai-client-type': /.*AI SDK JavaScript.*/
+        'ai-client-type': 'AI SDK JavaScript, custom client'
       }
     })
       .post('/v2/some/endpoint')
