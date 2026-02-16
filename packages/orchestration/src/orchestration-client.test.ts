@@ -907,6 +907,8 @@ describe('orchestration service client', () => {
 
     const response = await new OrchestrationClient(config).stream();
 
+    expect(response.rawResponse).toBeDefined();
+
     for await (const _ of response.stream) {
       /* empty */
     }

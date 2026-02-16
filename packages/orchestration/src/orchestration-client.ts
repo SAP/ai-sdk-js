@@ -204,9 +204,6 @@ export class OrchestrationClient {
     options: RequestOptions,
     controller: AbortController
   ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
-    const response =
-      new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
-
     const streamResponse = await this.executeRequest({
       ...options,
       requestConfig: {
@@ -215,6 +212,11 @@ export class OrchestrationClient {
         signal: controller.signal
       }
     });
+
+    const response =
+      new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
+        streamResponse
+      );
 
     const stream = OrchestrationStream._create(streamResponse, controller);
     response.stream = stream

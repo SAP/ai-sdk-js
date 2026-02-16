@@ -44,7 +44,10 @@ export type {
   EmbeddingModuleConfig,
   EmbeddingData
 } from './orchestration-types.js';
-export { isConfigReference } from './orchestration-types.js';
+export {
+  isConfigReference,
+  isOrchestrationModuleConfigList
+} from './orchestration-types.js';
 export { OrchestrationStreamResponse } from './orchestration-stream-response.js';
 export { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 export { OrchestrationStream } from './orchestration-stream.js';

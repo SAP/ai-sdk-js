@@ -1,20 +1,12 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import { jest } from '@jest/globals';
-import {
-  isOrchestrationModuleConfigList,
-  type OrchestrationModuleConfig,
-  type OrchestrationModuleConfigList,
-  type OrchestrationConfigRef,
-  type ChatCompletionRequest,
-  type StreamOptions,
-  type StreamOptionsArray
-} from '../orchestration-types.js';
+import { isOrchestrationModuleConfigList } from '../orchestration-types.js';
 import {
   addStreamOptions,
-  addStreamOptionsToPromptTemplatingModuleConfig,
   addStreamOptionsToOutputFilteringConfig,
-  constructCompletionPostRequestFromConfigReference,
+  addStreamOptionsToPromptTemplatingModuleConfig,
   constructCompletionPostRequest,
+  constructCompletionPostRequestFromConfigReference,
   validateStreamOptions
 } from './module-config.js';
 import { buildAzureContentSafetyFilter } from './filtering.js';
@@ -23,6 +15,13 @@ import type {
   OrchestrationConfig,
   PromptTemplatingModuleConfig
 } from '../client/api/schema/index.js';
+import type {
+  OrchestrationModuleConfig,
+  OrchestrationConfigRef,
+  ChatCompletionRequest,
+  OrchestrationModuleConfigList,
+  StreamOptions
+} from '../orchestration-types.js';
 
 describe('stream util tests', () => {
   const defaultOrchestrationModules: OrchestrationModuleConfig = {
