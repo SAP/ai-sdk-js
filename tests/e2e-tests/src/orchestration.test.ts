@@ -15,7 +15,8 @@ import {
   orchestrationMessageHistoryWithToolCalling,
   orchestrationTranslation,
   orchestrationEmbeddingWithMasking,
-  OrchestrationConfigRef
+  OrchestrationConfigRef,
+  orchestrationWithFallbackConfigs
 } from '@sap-ai-sdk/sample-code';
 import {
   OrchestrationClient,
@@ -238,5 +239,14 @@ describe('orchestration', () => {
       expect.arrayContaining([expect.arrayContaining([expect.any(Number)])])
     );
     expect(response.getIntermediateResults()?.input_masking).toBeDefined();
+  });
+
+  it('should execute module fallback configs until one succeeds', async () => {
+    const response = await orchestrationWithFallbackConfigs();
+
+    expect(response.getIntermediateFailures()).toEqual(expect.any(Array));
+    expect(response.getIntermediateFailures()).toHaveLength(2);
+
+    assertContent(response);
   });
 });
