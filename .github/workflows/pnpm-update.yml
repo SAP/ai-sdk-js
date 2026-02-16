@@ -106,6 +106,7 @@ jobs:
 
                 if (!allAcceptable) {
                   console.log(`PR #${pr.number} has failed checks that prevent merging.`);
+                  return 'failed-checks';
                 }
 
                 return 'success';
