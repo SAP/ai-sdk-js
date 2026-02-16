@@ -1,12 +1,18 @@
 /* eslint-disable no-console */
 import { readFileSync, renameSync, readdirSync, lstatSync } from 'fs';
-import { resolve, basename, extname } from 'path';
+import { resolve, basename, extname, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import execa from 'execa';
 import { transformFile } from './util.js';
-import { deflate } from 'zlib';
+import { deflate, inflate } from 'zlib';
 import { promisify } from 'util';
 
 const deflateP = promisify(deflate);
+const inflateP = promisify(inflate);
+
+// ES module equivalent of __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const docPath = resolve(
   JSON.parse(readFileSync('tsconfig.typedoc.json', 'utf8')).typedocOptions.out
@@ -63,13 +69,9 @@ async function adjustForGitHubPages() {
  * @link https://github.com/TypeStrong/typedoc/blob/82449253188582f6b63695fecf608d9887ba1761/src/lib/output/themes/default/assets/typedoc/utils/decompress.ts
  */
 async function decompressJson(base64: string) {
-  const binaryData = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
-  const blob = new Blob([binaryData]);
-  const decompressedStream = blob
-    .stream()
-    .pipeThrough(new DecompressionStream('deflate'));
-  const decompressedText = await new Response(decompressedStream).text();
-  return JSON.parse(decompressedText);
+  const buffer = Buffer.from(base64, 'base64');
+  const decompressed = await inflateP(buffer);
+  return JSON.parse(decompressed.toString('utf8'));
 }
 
 /**
