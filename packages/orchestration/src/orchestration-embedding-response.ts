@@ -44,4 +44,12 @@ export class OrchestrationEmbeddingResponse {
   getIntermediateResults(): ModuleResultsBase | undefined {
     return this._data.intermediate_results;
   }
+
+  /**
+   * Gets the request ID for the embedding response.
+   * @returns The request ID.
+   */
+  getRequestId(): string {
+    return this._data.request_id;
+  }
 }
