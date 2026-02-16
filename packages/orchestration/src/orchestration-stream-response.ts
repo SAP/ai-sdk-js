@@ -1,3 +1,5 @@
+import { createLogger } from '@sap-cloud-sdk/util';
+import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type {
   AssistantChatMessage,
   ChatMessage,
@@ -10,6 +12,11 @@ import type {
 } from './client/api/schema/index.js';
 import type { OrchestrationStream } from './orchestration-stream.js';
 
+const logger = createLogger({
+  package: 'orchestration',
+  messageContext: 'orchestration-stream-response'
+});
+
 /**
  * Orchestration stream response.
  */
@@ -17,6 +24,44 @@ export class OrchestrationStreamResponse<T> {
   public _openStream = true;
   public _data: Partial<CompletionPostResponse> = {};
   private _stream: OrchestrationStream<T> | undefined;
+  private _rawResponse: HttpResponse | undefined;
+
+  /**
+   * @deprecated Since v2.6.0. Provide an HttpResponse parameter when constructing OrchestrationStreamResponse. This constructor overload will be removed in v3.0.0.
+   * Creates an orchestration stream response.
+   */
+  constructor();
+
+  /**
+   * Creates an orchestration stream response.
+   * @param rawResponse - The raw HTTP response from the orchestration service. SSE data is not part of the immediate response.
+   */
+  // eslint-disable-next-line @typescript-eslint/unified-signatures
+  constructor(rawResponse: HttpResponse);
+
+  constructor(rawResponse?: HttpResponse) {
+    if (!rawResponse) {
+      logger.warn(
+        'Constructing OrchestrationStreamResponse without raw HTTP response is deprecated and can lead to runtime errors when accessing `rawResponse`.'
+      );
+      return;
+    }
+    this._rawResponse = rawResponse;
+  }
+
+  /**
+   * Gets the raw HTTP response from the orchestration service. SSE data is not part of the immediate response.
+   * @returns The raw HTTP response.
+   * @throws {Error} When OrchestrationStreamResponse was constructed without a raw response parameter (deprecated).
+   */
+  get rawResponse(): HttpResponse {
+    if (!this._rawResponse) {
+      throw new Error(
+        'The raw response is not available. Please provide the raw response when constructing `OrchestrationStreamResponse`'
+      );
+    }
+    return this._rawResponse;
+  }
 
   /**
    * Gets the token usage for the response.
@@ -27,6 +72,14 @@ export class OrchestrationStreamResponse<T> {
       return;
     }
     return this._data.final_result?.usage;
+  }
+
+  /**
+   * Gets the request ID for the stream response.
+   * @returns The request ID, or undefined if the first chunk has not been received yet.
+   */
+  getRequestId(): string | undefined {
+    return this._data.request_id;
   }
 
   /**
