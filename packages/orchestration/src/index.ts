@@ -11,7 +11,7 @@ export type {
   ChatCompletionRequest,
   RequestOptions,
   StreamOptions,
-  StreamOptionsArray,
+  ModuleStreamOptions,
   DocumentGroundingServiceConfig,
   DocumentGroundingServiceFilter,
   DpiMaskingConfig,

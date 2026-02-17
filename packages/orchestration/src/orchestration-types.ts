@@ -371,11 +371,8 @@ export interface RequestOptions {
   stream?: boolean;
   /**
    * Options for the stream.
-   * When using module fallback (OrchestrationModuleConfigList), can be:
-   * - A single StreamOptions object applied to all configs
-   * - An array of StreamOptions matching the length of the config array for per-config options.
    */
-  streamOptions?: StreamOptions | StreamOptionsArray;
+  streamOptions?: StreamOptions;
 }
 
 /**
@@ -394,20 +391,43 @@ export interface StreamOptions {
    * Global stream options.
    */
   global?: GlobalStreamOptions;
+  /**
+   * Per module-config overrides.
+   * Sparse object or array where keys/indices correspond to config index in the module config list.
+   * If using an array, the index corresponds to the config index. If using an object, the keys correspond to config indices.
+   * Configs will inherit from shared options, and any key defined in overrides will take precedence.
+   * @example
+   * ```typescript
+   *
+   * const optionsWithOverrides: StreamOptions = {
+   *   global: { chunk_size: 100 },
+   *   promptTemplating: { include_usage: false },
+   *   overrides: {
+   *     0: { promptTemplating: { include_usage: true } },  // config 0
+   *     // 1: uses base configuration
+   *     2: { outputFiltering: { overlap: 50 } }            // config 2
+   *   }
+   * };
+   *
+   * // Alternative: overrides as an array
+   * const arrayOverrideOptions: StreamOptions = {
+   *   global: { chunk_size: 128 },
+   *   promptTemplating: { include_usage: false },
+   *   overrides: [
+   *      { promptTemplating: { include_usage: true }, outputFiltering: { overlap: 50 } }, // config 0
+   *      undefined, // config 1 uses base configuration
+   *      { promptTemplating: { include_usage: false }, outputFiltering: { overlap: 0 } }  // config 2
+   *   ]
+   * };
+   * ```
+   */
+  overrides?: Partial<Record<number, ModuleStreamOptions>>;
 }
 
 /**
- * Array type for stream options when using module fallback.
- * Each element corresponds to the stream options for one config in the fallback chain.
- *
- * Global options (chunk_size, etc.) apply to the entire stream and can only be
- * specified in the first element. This is enforced at the type level using `Omit<StreamOptions, 'global'>[]`
- * for subsequent elements, ensuring type-safe configuration.
+ * Shared stream options applied to all module configurations.
  */
-export type StreamOptionsArray = [
-  StreamOptions,
-  ...Omit<StreamOptions, 'global'>[]
-];
+export type ModuleStreamOptions = Omit<StreamOptions, 'global' | 'overrides'>;
 
 /**
  * Representation of the `GroundingModuleConfig` schema.

@@ -31,8 +31,7 @@ import type {
   OrchestrationConfigRef,
   ChatCompletionRequest,
   RequestOptions,
-  StreamOptions,
-  StreamOptionsArray
+  StreamOptions
 } from './orchestration-types.js';
 import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
@@ -95,7 +94,7 @@ export class OrchestrationClient {
   async stream(
     request?: ChatCompletionRequest,
     signal?: AbortSignal,
-    options?: StreamOptions | StreamOptionsArray,
+    options?: StreamOptions,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
     const controller = new AbortController();

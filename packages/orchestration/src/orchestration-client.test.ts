@@ -29,7 +29,7 @@ import type {
   OrchestrationModuleConfig,
   OrchestrationConfigRef,
   ChatCompletionRequest,
-  StreamOptionsArray
+  StreamOptions
 } from './orchestration-types.js';
 
 const defaultJsonConfig = `{
@@ -1486,7 +1486,7 @@ describe('orchestration service client', () => {
   });
 
   describe('Orchestration Client with per-config stream options', () => {
-    it('calls streaming with array of stream options matching module fallback configs', async () => {
+    it('calls streaming with stream options for module fallback configs', async () => {
       const primaryConfig: OrchestrationModuleConfig = {
         promptTemplating: {
           model: { name: 'gpt-4o' },
@@ -1505,10 +1505,12 @@ describe('orchestration service client', () => {
         }
       };
 
-      const streamOptions: StreamOptionsArray = [
-        { promptTemplating: { include_usage: true } },
-        { promptTemplating: { include_usage: false } }
-      ];
+      const streamOptions: StreamOptions = {
+        promptTemplating: { include_usage: false },
+        overrides: {
+          0: { promptTemplating: { include_usage: true } }
+        }
+      };
 
       mockInference(
         {
@@ -1545,7 +1547,7 @@ describe('orchestration service client', () => {
       expect(chunks.join('')).toContain('SAP Cloud SDK');
     });
 
-    it('throws error when stream options array length does not match configs array', async () => {
+    it('calls streaming with array-based overrides', async () => {
       const primaryConfig: OrchestrationModuleConfig = {
         promptTemplating: {
           model: { name: 'gpt-4o' },
@@ -1564,19 +1566,108 @@ describe('orchestration service client', () => {
         }
       };
 
-      const streamOptions = [
-        { promptTemplating: { include_usage: true } }
-        // Missing second element
-      ];
+      const streamOptions: StreamOptions = {
+        global: { chunk_size: 100 },
+        overrides: [
+          { promptTemplating: { include_usage: true } },
+          { promptTemplating: { include_usage: false } }
+        ] as any
+      };
 
-      await expect(
-        new OrchestrationClient([primaryConfig, fallbackConfig]).stream(
-          {},
-          undefined,
-          streamOptions
-        )
-      ).rejects.toThrow(
-        'StreamOptions array length (1) must match moduleConfigs array length (2)'
+      mockInference(
+        {
+          data: constructCompletionPostRequest(
+            [primaryConfig, fallbackConfig],
+            undefined,
+            true,
+            streamOptions
+          )
+        },
+        {
+          data: streamMockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient([
+        primaryConfig,
+        fallbackConfig
+      ]).stream({}, undefined, streamOptions);
+
+      const chunks: string[] = [];
+      for await (const chunk of response.stream) {
+        const content = chunk.getDeltaContent();
+        if (content) {
+          chunks.push(content);
+        }
+      }
+
+      expect(chunks.length).toBeGreaterThan(0);
+      expect(chunks.join('')).toContain('SAP Cloud SDK');
+    });
+
+    it('warns when override index is out of bounds', async () => {
+      const primaryConfig: OrchestrationModuleConfig = {
+        promptTemplating: {
+          model: { name: 'gpt-4o' },
+          prompt: {
+            template: [{ role: 'user', content: 'Primary' }]
+          }
+        }
+      };
+
+      const fallbackConfig: OrchestrationModuleConfig = {
+        promptTemplating: {
+          model: { name: 'gpt-5-mini' },
+          prompt: {
+            template: [{ role: 'user', content: 'Fallback' }]
+          }
+        }
+      };
+
+      const streamOptions: StreamOptions = {
+        overrides: {
+          0: { promptTemplating: { include_usage: true } },
+          2: { promptTemplating: { include_usage: false } }
+        }
+      };
+
+      const logger = createLogger({
+        package: 'orchestration',
+        messageContext: 'orchestration-utils'
+      });
+      const warnSpy = jest.spyOn(logger, 'warn');
+
+      mockInference(
+        {
+          data: constructCompletionPostRequest(
+            [primaryConfig, fallbackConfig],
+            undefined,
+            true,
+            streamOptions
+          )
+        },
+        {
+          data: streamMockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      await new OrchestrationClient([primaryConfig, fallbackConfig]).stream(
+        {},
+        undefined,
+        streamOptions
+      );
+
+      expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('2'));
+      expect(warnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('do not correspond to any module configuration')
       );
     });
   });
