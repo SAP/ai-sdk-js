@@ -202,7 +202,7 @@ export class OrchestrationClient {
       ...config,
       templating: {
         template: template as TemplatingChatMessage,
-        ...(defaults && { defaults }),
+        ...(defaults && { defaults: defaults as Record<string, string> }),
         ...(response_format && { response_format }),
         ...(tools && { tools })
       }
