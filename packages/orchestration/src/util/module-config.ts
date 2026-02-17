@@ -135,12 +135,7 @@ function warnAboutUnusedOverrides(
 
   const unusedOverrides = overrideKeys.filter(key => {
     const index = parseFloat(key);
-    return (
-      isNaN(index) ||
-      Math.ceil(index) !== Math.floor(index) ||
-      index < 0 ||
-      index >= configurationCount
-    );
+    return !Number.isInteger(index) || index < 0 || index >= configurationCount;
   });
 
   if (unusedOverrides.length) {

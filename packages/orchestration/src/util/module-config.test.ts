@@ -570,7 +570,7 @@ describe('addStreamOptions with module fallback configs', () => {
         { outputFiltering: { overlap: 50 } },
         { promptTemplating: { include_usage: true } },
         undefined
-      ] as any // Array syntax is valid at runtime
+      ]
     };
 
     const result = addStreamOptions(configs, streamOptions);
@@ -600,13 +600,13 @@ describe('addStreamOptions with module fallback configs', () => {
     ];
 
     // Sparse array: only override indices 0 and 3
-    const overridesArray: any[] = [];
+    const overridesArray = new Array(configs.length);
     overridesArray[0] = { promptTemplating: { include_usage: true } };
     overridesArray[3] = { promptTemplating: { include_usage: true } };
 
     const streamOptions: StreamOptions = {
       promptTemplating: { include_usage: false },
-      overrides: overridesArray as any
+      overrides: overridesArray
     };
 
     const result = addStreamOptions(configs, streamOptions);
@@ -862,7 +862,7 @@ describe('warnAboutUnusedOverrides', () => {
     const streamOptions = {
       overrides: {
         '-1': { promptTemplating: { include_usage: true } }
-      } as any
+      }
     };
 
     addStreamOptions(configs, streamOptions);
@@ -955,7 +955,7 @@ describe('warnAboutUnusedOverrides', () => {
         { promptTemplating: { include_usage: true } },
         { promptTemplating: { include_usage: false } }
         // Missing third element
-      ] as any
+      ]
     };
 
     addStreamOptions(configs, streamOptions);
@@ -985,10 +985,10 @@ describe('warnAboutUnusedOverrides', () => {
     // Explicitly using object syntax (spread array)
     const streamOptions: StreamOptions = {
       overrides: {
-        ...([
+        ...[
           { promptTemplating: { include_usage: true } },
           { promptTemplating: { include_usage: false } }
-        ] as any)
+        ]
       }
     };
 
