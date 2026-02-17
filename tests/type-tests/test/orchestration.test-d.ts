@@ -722,10 +722,9 @@ expectError<OrchestrationModuleConfigList>([]);
  * Module fallback config array elements must be valid OrchestrationModuleConfig objects.
  */
 expectError<OrchestrationModuleConfigList>([
-    { promptTemplating: { model: { name: 'gpt-4o' } } },
-    { invalidProperty: 'not-a-valid-config' }
-  ]
-);
+  { promptTemplating: { model: { name: 'gpt-4o' } } },
+  { invalidProperty: 'not-a-valid-config' }
+]);
 
 /**
  * Chat Completion with module fallback configs.
