@@ -112,6 +112,7 @@ describe('rpt', () => {
     expect(result.predictions).toEqual([{ SALESGROUP: 'test' }]);
   });
 
+  // Only uses the required parameters, the Parquet file and the prediction configuration, only giving the mandatory first two paramters to the method.
   it('should upload Parquet file without optional parameters', async () => {
     mockDeploymentsList(
       {

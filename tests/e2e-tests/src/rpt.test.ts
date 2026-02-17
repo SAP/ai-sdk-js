@@ -1,7 +1,8 @@
 import {
   predictWithSchema,
   predictAutomaticParsing,
-  predictParquet
+  predictParquetBlob,
+  predictParquetFile
 } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
 import type { PredictResponsePayload } from '@sap-ai-sdk/rpt';
@@ -36,12 +37,12 @@ describe('rpt', () => {
   });
 
   it('should predict sales groups from Parquet file [Blob]', async () => {
-    const { predictions } = await predictParquet('Blob');
+    const { predictions } = await predictParquetBlob();
     verifyPredictions(predictions);
   });
 
   it('should predict sales groups from Parquet file [File]', async () => {
-    const { predictions } = await predictParquet('File');
+    const { predictions } = await predictParquetFile();
     verifyPredictions(predictions);
   });
 });
