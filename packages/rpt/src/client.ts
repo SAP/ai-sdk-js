@@ -60,6 +60,7 @@ export class RptClient {
 
   /**
    * Predict based on Parquet file data.
+   * Parquet is a binary tabular data format with typed columns.
    * @param parquetData - Parquet file data as Blob. Can also be a File to forward the filename.
    * @param predictionConfig - Configuration for the prediction.
    * @param options - Additional options for the prediction.
