@@ -7,6 +7,7 @@ export * from './artifact-api.js';
 export * from './configuration-api.js';
 export * from './deployment-api.js';
 export * from './execution-api.js';
+export * from './execution-schedule-api.js';
 export * from './scenario-api.js';
 export * from './executable-api.js';
 export * from './meta-api.js';

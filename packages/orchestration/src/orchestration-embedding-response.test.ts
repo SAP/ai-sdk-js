@@ -38,6 +38,12 @@ describe('OrchestrationEmbeddingResponse', () => {
     expect(embeddings).toEqual(expect.any(Array));
   });
 
+  it('should get request ID', () => {
+    const requestId = embeddingResponse.getRequestId();
+
+    expect(requestId).toBe('random-request-id');
+  });
+
   it('should get token usage', () => {
     const usage = embeddingResponse.getTokenUsage();
 

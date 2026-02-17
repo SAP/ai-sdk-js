@@ -4,7 +4,6 @@ type LiteralUnion<T extends U, U = string> = T | (U & Record<never, never>);
  * Azure OpenAI models for chat completion.
  */
 export type AzureOpenAiChatModel = LiteralUnion<
-  | 'gpt-4o-mini'
   | 'gpt-4o'
   | 'gpt-4.1'
   | 'gpt-4.1-mini'
@@ -38,10 +37,6 @@ export type GcpVertexAiChatModel = LiteralUnion<
 export type AwsBedrockChatModel = LiteralUnion<
   | 'anthropic--claude-3-haiku'
   | 'anthropic--claude-4.5-haiku'
-  | 'anthropic--claude-3-opus'
-  | 'anthropic--claude-3-sonnet'
-  | 'anthropic--claude-3.5-sonnet'
-  | 'anthropic--claude-3.7-sonnet'
   | 'anthropic--claude-4-opus'
   | 'anthropic--claude-4-sonnet'
   | 'anthropic--claude-4.5-sonnet'
