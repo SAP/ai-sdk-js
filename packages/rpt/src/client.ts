@@ -101,9 +101,7 @@ export class RptClient {
     return RptApi.predictParquet(body)
       .setBasePath(`/inference/deployments/${deploymentId}`)
       .addCustomHeaders({
-        'ai-resource-group': resourceGroup || 'default',
-        // SAP Cloud SDK does not (yet) set the Content-Type header automatically for multipart/form-data
-        'content-type': 'multipart/form-data'
+        'ai-resource-group': resourceGroup || 'default'
       })
       .execute(this.destination);
   }
