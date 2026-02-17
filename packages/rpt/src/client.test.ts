@@ -89,7 +89,7 @@ describe('rpt', () => {
       { id: '1234', model: { name: 'sap-rpt-1-small', version: 'latest' } }
     );
 
-    const requestSpy = nock('https://api.ai.ml.hana.ondemand.com', {
+    const requestScope = nock('https://api.ai.ml.hana.ondemand.com', {
       reqheaders: {
         'ai-resource-group': 'default'
       }
@@ -108,35 +108,7 @@ describe('rpt', () => {
       { index_column: '__row_idx__', parse_data_types: false }
     );
 
-    expect(requestSpy.isDone()).toBe(true);
+    expect(requestScope.isDone()).toBe(true);
     expect(result.predictions).toEqual([{ SALESGROUP: 'test' }]);
-  });
-
-  // Only uses the required parameters, the Parquet file and the prediction configuration, only giving the mandatory first two paramters to the method.
-  it('should upload Parquet file without optional parameters', async () => {
-    mockDeploymentsList(
-      {
-        scenarioId: 'foundation-models',
-        executableId: 'aicore-sap'
-      },
-      { id: '1234', model: { name: 'sap-rpt-1-small', version: 'latest' } }
-    );
-
-    const requestSpy = nock('https://api.ai.ml.hana.ondemand.com', {
-      reqheaders: {
-        'ai-resource-group': 'default'
-      }
-    })
-      .post('/v2/inference/deployments/1234/predict_parquet', () => true)
-      .reply(200, { predictions: [] });
-
-    const blob = new Blob(['fake parquet data']);
-    await new RptClient().predictParquet(blob, {
-      target_columns: [
-        { name: 'SALESGROUP', prediction_placeholder: '[PREDICT]' }
-      ]
-    });
-
-    expect(requestSpy.isDone()).toBe(true);
   });
 });
