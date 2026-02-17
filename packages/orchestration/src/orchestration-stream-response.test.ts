@@ -111,15 +111,13 @@ describe('OrchestrationStreamResponse', () => {
   });
 
   describe('getFinishReason', () => {
-    it('should return finish reason for default index', () => {
-      closeStream();
+    beforeEach(closeStream);
 
+    it('should return finish reason for default index', () => {
       expect(streamResponse.getFinishReason()).toBe('stop');
     });
 
     it('should return undefined for non-existent choice index', () => {
-      closeStream();
-
       expect(streamResponse.getFinishReason(1)).toBeUndefined();
     });
   });
