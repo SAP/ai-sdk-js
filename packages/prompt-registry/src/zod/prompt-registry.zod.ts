@@ -76,9 +76,10 @@ export const RegistryControllerPromptControllerCreateUpdatePromptTemplateBody =
           })
         ])
       ),
-      defaults: zod.object({}).optional(),
+      defaults: zod.object({}).passthrough().optional(),
       additionalFields: zod
         .object({})
+        .passthrough()
         .optional()
         .describe('DEPRECATED. Please use additional_fields instead.\n'),
       response_format: zod
@@ -278,9 +279,10 @@ export const RegistryControllerPromptControllerListPromptTemplatesResponse =
                 })
               ])
             ),
-            defaults: zod.object({}).optional(),
+            defaults: zod.object({}).passthrough().optional(),
             additionalFields: zod
               .object({})
+              .passthrough()
               .optional()
               .describe('DEPRECATED. Please use additional_fields instead.\n'),
             response_format: zod
@@ -463,9 +465,10 @@ export const RegistryControllerPromptControllerListPromptTemplateHistoryResponse
                 })
               ])
             ),
-            defaults: zod.object({}).optional(),
+            defaults: zod.object({}).passthrough().optional(),
             additionalFields: zod
               .object({})
+              .passthrough()
               .optional()
               .describe('DEPRECATED. Please use additional_fields instead.\n'),
             response_format: zod
@@ -643,9 +646,10 @@ export const RegistryControllerPromptControllerGetPromptTemplateByUuidResponse =
             })
           ])
         ),
-        defaults: zod.object({}).optional(),
+        defaults: zod.object({}).passthrough().optional(),
         additionalFields: zod
           .object({})
+          .passthrough()
           .optional()
           .describe('DEPRECATED. Please use additional_fields instead.\n'),
         response_format: zod
@@ -817,7 +821,7 @@ export const RegistryControllerPromptControllerParsePromptTemplateByIdQueryParam
 
 export const RegistryControllerPromptControllerParsePromptTemplateByIdBody =
   zod.object({
-    inputParams: zod.object({}).optional()
+    inputParams: zod.object({}).passthrough().optional()
   });
 
 export const registryControllerPromptControllerParsePromptTemplateByIdResponseParsedPromptItemTwoContentItemOneImageUrlDetailDefault = `auto`;
@@ -908,9 +912,10 @@ export const RegistryControllerPromptControllerParsePromptTemplateByIdResponse =
                 })
               ])
             ),
-            defaults: zod.object({}).optional(),
+            defaults: zod.object({}).passthrough().optional(),
             additionalFields: zod
               .object({})
+              .passthrough()
               .optional()
               .describe('DEPRECATED. Please use additional_fields instead.\n'),
             response_format: zod
@@ -1050,7 +1055,7 @@ export const RegistryControllerPromptControllerParsePromptTemplateByNameVersionQ
 
 export const RegistryControllerPromptControllerParsePromptTemplateByNameVersionBody =
   zod.object({
-    inputParams: zod.object({}).optional()
+    inputParams: zod.object({}).passthrough().optional()
   });
 
 export const registryControllerPromptControllerParsePromptTemplateByNameVersionResponseParsedPromptItemTwoContentItemOneImageUrlDetailDefault = `auto`;
@@ -1141,9 +1146,10 @@ export const RegistryControllerPromptControllerParsePromptTemplateByNameVersionR
                 })
               ])
             ),
-            defaults: zod.object({}).optional(),
+            defaults: zod.object({}).passthrough().optional(),
             additionalFields: zod
               .object({})
+              .passthrough()
               .optional()
               .describe('DEPRECATED. Please use additional_fields instead.\n'),
             response_format: zod
