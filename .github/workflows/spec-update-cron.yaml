@@ -27,44 +27,39 @@ jobs:
       - name: 'Checkout repository'
         uses: actions/checkout@v6
 
-      - name: 'Get orchestration latest release'
-        id: get-orch-version
+      - name: 'Get orchestration version'
         if: matrix.file == 'orchestration'
         run: |
-          # Fetch the latest release from the orchestration repo using the API
           ORCH_VERSION=$(curl --silent --request GET \
-            --url "https://github.tools.sap/api/v3/repos/AI/llm-orchestration/releases/latest" \
-            -H "Authorization: Bearer $GH_TOOLS_TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" | jq -r '.tag_name // "main"')
-          
-          if [ -z "$ORCH_VERSION" ] || [ "$ORCH_VERSION" = "null" ]; then
-            echo "No release found, defaulting to main"
-            ORCH_VERSION="main"
+            --url "https://github.tools.sap/api/v3/repos/MLF-prod/mlf-gitops-prod/contents/services/llm-orchestration/source/Chart.yaml?ref=aws.eu-central-1.prod-eu/current" \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Accept: application/vnd.github.v3.raw" | grep 'version:' | awk '{print $2}')
+
+          if [ -z "$ORCH_VERSION" ]; then
+              echo "Failed to fetch orchestration version"
+              exit 1
           fi
-          
           echo "Orchestration version: $ORCH_VERSION"
-          echo "version=$ORCH_VERSION" >> "$GITHUB_OUTPUT"
+          echo "ORCH_VERSION=$ORCH_VERSION" >> "$GITHUB_ENV"
         env:
-          GH_TOOLS_TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
+          TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
 
       - name: 'Trigger spec update'
         run: |
           BRANCH="main"
-
           if [ "${{ matrix.file }}" = "orchestration" ]; then
-            BRANCH="${{ steps.get-orch-version.outputs.version }}"
+            # remove hotfix suffix 0.110.13-2 -> 0.110.13
+            ORCH_VERSION=$(echo "$ORCH_VERSION" | sed 's/-.*//')
+            BRANCH="rel-$ORCH_VERSION"
           fi
-
-          echo "Triggering spec-update for ${{ matrix.file }} with ref $BRANCH"
+          echo "Using branch: $BRANCH"
 
           gh workflow run spec-update.yaml \
-            --ref main \
             --field file=${{ matrix.file }} \
             --field file-ref=$BRANCH \
             --field create-pr=true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: 'Slack Notification'
         if: failure()
         uses: slackapi/slack-github-action@v2.1.1
