@@ -58,10 +58,10 @@ export const RegistryControllerPromptControllerCreateUpdatePromptTemplateBody = 
   "text": zod.string()
 })]))
 })])),
-  "defaults": zod.object({
+  "defaults": zod.looseObject({
 
 }).optional(),
-  "additionalFields": zod.object({
+  "additionalFields": zod.looseObject({
 
 }).optional().describe('DEPRECATED. Please use additional_fields instead.\n'),
   "response_format": zod.union([zod.object({
@@ -154,10 +154,10 @@ export const RegistryControllerPromptControllerListPromptTemplatesResponse = zod
   "text": zod.string()
 })]))
 })])),
-  "defaults": zod.object({
+  "defaults": zod.looseObject({
 
 }).optional(),
-  "additionalFields": zod.object({
+  "additionalFields": zod.looseObject({
 
 }).optional().describe('DEPRECATED. Please use additional_fields instead.\n'),
   "response_format": zod.union([zod.object({
@@ -239,10 +239,10 @@ export const RegistryControllerPromptControllerListPromptTemplateHistoryResponse
   "text": zod.string()
 })]))
 })])),
-  "defaults": zod.object({
+  "defaults": zod.looseObject({
 
 }).optional(),
-  "additionalFields": zod.object({
+  "additionalFields": zod.looseObject({
 
 }).optional().describe('DEPRECATED. Please use additional_fields instead.\n'),
   "response_format": zod.union([zod.object({
@@ -320,10 +320,10 @@ export const RegistryControllerPromptControllerGetPromptTemplateByUuidResponse =
   "text": zod.string()
 })]))
 })])),
-  "defaults": zod.object({
+  "defaults": zod.looseObject({
 
 }).optional(),
-  "additionalFields": zod.object({
+  "additionalFields": zod.looseObject({
 
 }).optional().describe('DEPRECATED. Please use additional_fields instead.\n'),
   "response_format": zod.union([zod.object({
@@ -422,7 +422,7 @@ export const RegistryControllerPromptControllerParsePromptTemplateByIdHeader = z
 })
 
 export const RegistryControllerPromptControllerParsePromptTemplateByIdBody = zod.object({
-  "inputParams": zod.object({
+  "inputParams": zod.looseObject({
 
 }).optional()
 })
@@ -480,10 +480,10 @@ export const RegistryControllerPromptControllerParsePromptTemplateByIdResponse =
   "text": zod.string()
 })]))
 })])),
-  "defaults": zod.object({
+  "defaults": zod.looseObject({
 
 }).optional(),
-  "additionalFields": zod.object({
+  "additionalFields": zod.looseObject({
 
 }).optional().describe('DEPRECATED. Please use additional_fields instead.\n'),
   "response_format": zod.union([zod.object({
@@ -534,7 +534,7 @@ export const RegistryControllerPromptControllerParsePromptTemplateByNameVersionH
 })
 
 export const RegistryControllerPromptControllerParsePromptTemplateByNameVersionBody = zod.object({
-  "inputParams": zod.object({
+  "inputParams": zod.looseObject({
 
 }).optional()
 })
@@ -592,10 +592,10 @@ export const RegistryControllerPromptControllerParsePromptTemplateByNameVersionR
   "text": zod.string()
 })]))
 })])),
-  "defaults": zod.object({
+  "defaults": zod.looseObject({
 
 }).optional(),
-  "additionalFields": zod.object({
+  "additionalFields": zod.looseObject({
 
 }).optional().describe('DEPRECATED. Please use additional_fields instead.\n'),
   "response_format": zod.union([zod.object({
