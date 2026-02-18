@@ -33,42 +33,42 @@ export class RptClient {
    * Prefer using this method when the data schema is known.
    * @param dataSchema - Prediction data follows this schema. When using TypeScript, the data schema type is used to infer the types of the prediction data. In that case, the data schema must be provided as a constant (`as const`).
    * @param predictionData - Data to base prediction on.
-   * @param customRequest - Custom request options.
+   * @param requestConfig - Custom request configuration.
    * @returns Prediction response.
    */
   async predictWithSchema<const T extends DataSchema>(
     dataSchema: T,
     predictionData: PredictionData<T>,
-    customRequest: RptRequestOptions = {}
+    requestConfig: RptRequestOptions = {}
   ): Promise<PredictResponsePayload> {
-    return this.executePrediction(predictionData, dataSchema, customRequest);
+    return this.executePrediction(predictionData, dataSchema, requestConfig);
   }
 
   /**
    * Predict based on prediction data with data schema inferred.
    * Prefer using `predictWithSchema` when the data schema is known.
    * @param predictionData - Data to base prediction on.
-   * @param customRequest - Custom request options.
+   * @param requestConfig - Custom request configuration.
    * @returns Prediction response.
    */
   async predictWithoutSchema(
     predictionData: PredictionData<DataSchema>,
-    customRequest: RptRequestOptions = {}
+    requestConfig: RptRequestOptions = {}
   ): Promise<PredictResponsePayload> {
-    return this.executePrediction(predictionData, undefined, customRequest);
+    return this.executePrediction(predictionData, undefined, requestConfig);
   }
 
   /**
    * Predict based on data schema and prediction data.
    * @param predictionData - Data to base prediction on.
    * @param dataSchema - Prediction data follows this schema.
-   * @param customRequest - Custom request options.
+   * @param requestConfig - Custom request configuration.
    * @returns Prediction response.
    */
   private async executePrediction<const T extends DataSchema>(
     predictionData: PredictionData<T>,
     dataSchema?: T,
-    customRequest: RptRequestOptions = {}
+    requestConfig: RptRequestOptions = {}
   ): Promise<PredictResponsePayload> {
     const deploymentId = await getFoundationModelDeploymentId(
       this.modelDeployment,
@@ -90,7 +90,7 @@ export class RptClient {
       ...predictionData
     } satisfies PredictRequestPayload;
 
-    const { requestCompression, ...customRequestConfig } = customRequest;
+    const { requestCompression, ...customRequestConfig } = requestConfig;
 
     if (requestCompression?.mode !== 'never') {
       customRequestConfig.middleware = [
