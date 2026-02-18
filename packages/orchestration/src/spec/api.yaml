@@ -85,6 +85,119 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmbeddingsPostResponse'
+              examples:
+                array_embeddings:
+                  summary: Array format (single encoding_format)
+                  description: Standard response format when a single encoding format is requested. Used by OpenAI, AWS Bedrock, VertexAI, Nvidia, and Cohere with single format.
+                  value:
+                    request_id: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
+                    final_result:
+                      object: 'list'
+                      data:
+                        - object: 'embedding'
+                          embedding:
+                            - 0.015282119
+                            - 0.013516456
+                            - 0.002541946
+                            - -0.010837519
+                          index: 0
+                        - object: 'embedding'
+                          embedding:
+                            - 0.035031624
+                            - -0.0077586817
+                            - 0.018221147
+                            - 0.00446712
+                          index: 1
+                      model: 'text-embedding-ada-002'
+                      usage:
+                        prompt_tokens: 5
+                        total_tokens: 5
+                base64_embeddings:
+                  summary: Base64 string format (single encoding_format)
+                  description: Response format when base64 encoding format is requested. The embedding is returned as a base64-encoded string.
+                  value:
+                    request_id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890'
+                    final_result:
+                      object: 'list'
+                      data:
+                        - object: 'embedding'
+                          embedding: '2mF6PCB0XTzHliY72Y8xvOalM6uLmZjLyu7ze9=='
+                          index: 0
+                        - object: 'embedding'
+                          embedding: '8nB7QDB1YUzImiZ82Z9ywPbmN7vMnajMzv8zf+=='
+                          index: 1
+                      model: 'text-embedding-3-large'
+                      usage:
+                        prompt_tokens: 5
+                        total_tokens: 5
+                cohere_multi_type_embeddings:
+                  summary: Dictionary format (multiple encoding_formats - Cohere only)
+                  description: Response format when multiple encoding formats are requested (Cohere-specific feature). Each result contains a dictionary mapping format names to their respective embeddings.
+                  value:
+                    request_id: 'f5ba36c6-a687-4e0c-b7e4-26b623256baf'
+                    final_result:
+                      object: 'list'
+                      data:
+                        - object: 'embedding'
+                          embedding:
+                            float:
+                              - 0.015282119
+                              - 0.013516456
+                              - 0.002541946
+                              - -0.010837519
+                            uint8:
+                              - 142
+                              - 137
+                              - 124
+                              - 106
+                          index: 0
+                        - object: 'embedding'
+                          embedding:
+                            float:
+                              - 0.035031624
+                              - -0.0077586817
+                              - 0.018221147
+                              - 0.00446712
+                            uint8:
+                              - 151
+                              - 119
+                              - 133
+                              - 125
+                          index: 1
+                      model: 'cohere--single-serving-embed'
+                      usage:
+                        prompt_tokens: 12
+                        total_tokens: 12
+                cohere_mixed_types_embeddings:
+                  summary: Dictionary format with mixed types (Cohere only)
+                  description: Response format when multiple encoding formats of different types are requested (e.g., float arrays and base64 strings).
+                  value:
+                    request_id: '11c785a2-09c7-4b12-b86e-3a3ff7ece72e'
+                    final_result:
+                      object: 'dict'
+                      data:
+                        - object: 'embedding'
+                          embedding:
+                            float:
+                              - 0.015282119
+                              - 0.013516456
+                              - 0.002541946
+                              - -0.010837519
+                            base64: '2mF6PCB0XTzHliY72Y8xvOalM6uLmZjLyu7ze9=='
+                          index: 0
+                        - object: 'embedding'
+                          embedding:
+                            float:
+                              - 0.035031624
+                              - -0.0077586817
+                              - 0.018221147
+                              - 0.00446712
+                            base64: '8nB7QDB1YUzImiZ82Z9ywPbmN7vMnajMzv8zf+=='
+                          index: 1
+                      model: 'cohere--single-serving-embed'
+                      usage:
+                        prompt_tokens: 12
+                        total_tokens: 12
         '400':
           $ref: '#/components/responses/BadRequest'
         default:
@@ -159,7 +272,17 @@ components:
           $ref: '#/components/schemas/EmbeddingsInputText'
         type:
           type: string
-          enum: ['text', 'document', 'query']
+          enum:
+            [
+              'text',
+              'document',
+              'query',
+              'search_document',
+              'search_query',
+              'classification',
+              'clustering',
+              'image'
+            ]
     EmbeddingsInputText:
       oneOf:
         - type: string
@@ -217,6 +340,11 @@ components:
           default: 2
           minimum: 0
           maximum: 5
+    EncodingFormat:
+      type: string
+      enum: [float, base64, binary, int8, uint8, ubinary]
+      description: Encoding format for embeddings.
+
     EmbeddingsModelParams:
       type: object
       description: Additional parameters for generating input's embeddings. Default values are used for mandatory parameters.
@@ -227,9 +355,14 @@ components:
           description: >
             The number of dimensions the resulting output embeddings should have.
         encoding_format:
-          type: string
-          enum: [float, base64, binary]
+          oneOf:
+            - $ref: '#/components/schemas/EncodingFormat'
+            - type: array
+              items:
+                $ref: '#/components/schemas/EncodingFormat'
+              minItems: 1
           description: >
+            The format to return the embeddings in. Can be a single format or an array of formats.
             OpenAI's spec allows for 'float' and 'base64' encoding formats.
         normalize:
           type: boolean
@@ -306,14 +439,52 @@ components:
         index:
           type: integer
           description: The index of the embedding in the list of embeddings.
-    Embedding:
-      oneOf:
-        - type: array
+    EmbeddingFloatArray:
+      type: array
+      items:
+        type: number
+      description: 'An array of floating point numbers representing the embedding. '
+    EmbeddingBase64String:
+      type: string
+      description: 'A single base64 string representing the embedding.'
+    EmbeddingMultiFormat:
+      type: object
+      description: 'A dictionary mapping encoding format names to their embeddings. Used when multiple encoding formats are requested (Cohere-specific).'
+      additionalProperties: false
+      properties:
+        float:
+          type: array
           items:
             type: number
-          description: 'An array of numbers representing the embedding.'
-        - type: string
-          description: 'A single base64 string representing the embedding.'
+          description: 'Float encoding format - array of floating point numbers'
+        int8:
+          type: array
+          items:
+            type: integer
+          description: 'Int8 encoding format - array of 8-bit integers'
+        uint8:
+          type: array
+          items:
+            type: integer
+          description: 'Uint8 encoding format - array of unsigned 8-bit integers'
+        base64:
+          type: string
+          description: 'Base64 encoding format - base64 encoded string'
+        binary:
+          type: array
+          items:
+            type: integer
+          description: 'Binary encoding format - array of integers'
+        ubinary:
+          type: array
+          items:
+            type: integer
+          description: 'Ubinary encoding format - array of unsigned integers'
+    Embedding:
+      oneOf:
+        - $ref: '#/components/schemas/EmbeddingFloatArray'
+        - $ref: '#/components/schemas/EmbeddingBase64String'
+        - $ref: '#/components/schemas/EmbeddingMultiFormat'
 
     # Chat Completion Schemas
     ChatMessages:
