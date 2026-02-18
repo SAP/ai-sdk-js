@@ -1,51 +1,50 @@
 /* eslint-disable no-console */
-import { readFileSync, renameSync, readdirSync, lstatSync } from 'fs';
-import { resolve, basename, extname, dirname } from 'path';
-import { fileURLToPath } from 'url';
-import execa from 'execa';
+import { readFile, rename, readdir, stat } from 'node:fs/promises';
+import { resolve, basename, extname } from 'node:path';
+import { deflate, inflate } from 'node:zlib';
+import { promisify } from 'node:util';
+import { execa } from 'execa';
 import { transformFile } from './util.js';
-import { deflate, inflate } from 'zlib';
-import { promisify } from 'util';
 
 const deflateP = promisify(deflate);
 const inflateP = promisify(inflate);
 
-// ES module equivalent of __dirname
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+async function getDocPath(): Promise<string> {
+  const configContent = await readFile('tsconfig.typedoc.json', 'utf8');
+  return resolve(JSON.parse(configContent).typedocOptions.out);
+}
 
-const docPath = resolve(
-  JSON.parse(readFileSync('tsconfig.typedoc.json', 'utf8')).typedocOptions.out
-);
+async function isDirectory(entryPath: string): Promise<boolean> {
+  const stats = await stat(entryPath);
+  return stats.isDirectory();
+}
 
-const isDirectory = (entryPath: string) => lstatSync(entryPath).isDirectory();
 const flatten = (arr: any[]): any[] =>
   arr.reduce(
     (prev, curr) =>
       curr instanceof Array ? [...prev, ...flatten(curr)] : [...prev, curr],
     []
   );
-const inputDirAbsPath = (input: string) => resolve(__dirname, input);
 
-const readDir = (input: string): any =>
-  pipe(inputDirAbsPath, (absPath: string) =>
-    readdirSync(absPath)
-      .map(file => resolve(absPath, file))
-      .map(file => (isDirectory(file) ? readDir(file) : file))
-  )(input);
+async function readDir(absPath: string): Promise<string[]> {
+  const entries = await readdir(absPath);
+  const paths = await Promise.all(
+    entries.map(async (file: string) => {
+      const filePath = resolve(absPath, file);
+      const isDir = await isDirectory(filePath);
+      return isDir ? readDir(filePath) : filePath;
+    })
+  );
+  return flatten(paths);
+}
 
 const isHtmlFile = (fileName: string) => extname(fileName) === '.html';
 const isSearchJs = (fileName: string) => basename(fileName) === 'search.js';
 const isNavigationJs = (fileName: string) =>
   basename(fileName) === 'navigation.js';
 
-const pipe =
-  (...fns: Function[]) =>
-  (start: any) =>
-    fns.reduce((state, fn) => fn(state), start);
-
-async function adjustForGitHubPages() {
-  const documentationFilePaths = flatten(readDir(resolve(docPath)));
+async function adjustForGitHubPages(docPath: string) {
+  const documentationFilePaths = await readDir(resolve(docPath));
   const htmlPaths = documentationFilePaths.filter(isHtmlFile);
 
   await adjustSearchJs(documentationFilePaths);
@@ -59,8 +58,8 @@ async function adjustForGitHubPages() {
     )
   );
 
-  htmlPaths.forEach((filePath: string) =>
-    removeUnderlinePrefixFromFileName(filePath)
+  await Promise.all(
+    htmlPaths.map((filePath: string) => removeUnderlinePrefixFromFileName(filePath))
   );
 }
 
@@ -142,15 +141,16 @@ function removeUnderlinePrefix(str: string) {
   return str.substring(0, i) + str.substring(i + 1);
 }
 
-function removeUnderlinePrefixFromFileName(filePath: string) {
+async function removeUnderlinePrefixFromFileName(filePath: string): Promise<void> {
   const newPath = filePath.replace(/_.*.html/gi, function (x) {
     return x.substring(1);
   });
-  renameSync(filePath, newPath);
+  await rename(filePath, newPath);
 }
 
-async function insertCopyright() {
-  const filePaths = flatten(readDir(docPath)).filter(isHtmlFile);
+async function insertCopyright(docPath: string) {
+  const allPaths = await readDir(resolve(docPath));
+  const filePaths = allPaths.filter(isHtmlFile);
 
   await Promise.all(
     filePaths.map(async (filePath: string) => {
@@ -179,16 +179,14 @@ function validateLogs(generationLogs: string) {
 }
 
 async function generateDocs() {
-  const generationLogs = await execa.command(
-    'typedoc --tsconfig tsconfig.typedoc.json',
-    {
-      cwd: resolve(),
-      encoding: 'utf8'
-    }
-  );
+  const generationLogs = await execa('typedoc', ['--tsconfig', 'tsconfig.typedoc.json'], {
+    cwd: resolve()
+  });
   validateLogs(generationLogs.stdout);
-  await adjustForGitHubPages();
-  await insertCopyright();
+  
+  const docPath = await getDocPath();
+  await adjustForGitHubPages(docPath);
+  await insertCopyright(docPath);
 }
 
 process.on('unhandledRejection', reason => {

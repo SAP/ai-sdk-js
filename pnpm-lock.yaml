@@ -65,8 +65,8 @@ importers:
         specifier: ^9.39.2
         version: 9.39.2(jiti@2.6.1)
       execa:
-        specifier: ^5.0.0
-        version: 5.1.1
+        specifier: ^9.6.1
+        version: 9.6.1
       glob:
         specifier: ^13.0.3
         version: 13.0.3
