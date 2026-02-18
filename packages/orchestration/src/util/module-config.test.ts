@@ -580,8 +580,9 @@ describe('addStreamOptions with module fallback configs', () => {
     expect(modules[0].prompt_templating.model.params?.stream_options).toEqual({
       include_usage: true
     });
+    // Override at index 1 has no promptTemplating, so default include_usage is applied
     expect(modules[1].prompt_templating.model.params?.stream_options).toEqual({
-      include_usage: false
+      include_usage: true
     });
     expect(modules[2].prompt_templating.model.params?.stream_options).toEqual({
       include_usage: true
@@ -827,8 +828,8 @@ describe('warnAboutUnusedOverrides', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const warnSpy = jest.spyOn(logger, 'warn');
-    warnSpy.mockClear();
+    const debugSpy = jest.spyOn(logger, 'debug');
+    debugSpy.mockClear();
 
     const configs = [createModuleConfig('gpt-4o')];
     const streamOptions: StreamOptions = {
@@ -841,8 +842,8 @@ describe('warnAboutUnusedOverrides', () => {
 
     addStreamOptions(configs, streamOptions);
 
-    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('1, 5'));
-    expect(warnSpy).toHaveBeenCalledWith(
+    expect(debugSpy).toHaveBeenCalledWith(expect.stringContaining('1, 5'));
+    expect(debugSpy).toHaveBeenCalledWith(
       expect.stringContaining('do not correspond to any module configuration')
     );
   });
@@ -852,8 +853,8 @@ describe('warnAboutUnusedOverrides', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const warnSpy = jest.spyOn(logger, 'warn');
-    warnSpy.mockClear();
+    const debugSpy = jest.spyOn(logger, 'debug');
+    debugSpy.mockClear();
 
     const configs = [
       createModuleConfig('gpt-4o'),
@@ -867,7 +868,7 @@ describe('warnAboutUnusedOverrides', () => {
 
     addStreamOptions(configs, streamOptions);
 
-    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('-1'));
+    expect(debugSpy).toHaveBeenCalledWith(expect.stringContaining('-1'));
   });
 
   it('should warn for non-numeric keys', () => {
@@ -875,8 +876,8 @@ describe('warnAboutUnusedOverrides', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const warnSpy = jest.spyOn(logger, 'warn');
-    warnSpy.mockClear();
+    const debugSpy = jest.spyOn(logger, 'debug');
+    debugSpy.mockClear();
 
     const configs = [createModuleConfig('gpt-4o')];
     const streamOptions = {
@@ -887,7 +888,7 @@ describe('warnAboutUnusedOverrides', () => {
 
     addStreamOptions(configs, streamOptions);
 
-    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('invalid'));
+    expect(debugSpy).toHaveBeenCalledWith(expect.stringContaining('invalid'));
   });
 
   it('should warn for non-integer (float) number keys', () => {
@@ -895,8 +896,8 @@ describe('warnAboutUnusedOverrides', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const warnSpy = jest.spyOn(logger, 'warn');
-    warnSpy.mockClear();
+    const debugSpy = jest.spyOn(logger, 'debug');
+    debugSpy.mockClear();
 
     const configs = [createModuleConfig('gpt-4o')];
     const streamOptions = {
@@ -907,7 +908,7 @@ describe('warnAboutUnusedOverrides', () => {
 
     addStreamOptions(configs, streamOptions);
 
-    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('0.5'));
+    expect(debugSpy).toHaveBeenCalledWith(expect.stringContaining('0.5'));
   });
 
   it('should not warn for valid override indices', () => {
@@ -915,8 +916,8 @@ describe('warnAboutUnusedOverrides', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const warnSpy = jest.spyOn(logger, 'warn');
-    warnSpy.mockClear();
+    const debugSpy = jest.spyOn(logger, 'debug');
+    debugSpy.mockClear();
 
     const configs = [
       createModuleConfig('gpt-4o'),
@@ -932,7 +933,7 @@ describe('warnAboutUnusedOverrides', () => {
     addStreamOptions(configs, streamOptions);
 
     // Should not have warnings about unused overrides
-    expect(warnSpy).not.toHaveBeenCalledWith(
+    expect(debugSpy).not.toHaveBeenCalledWith(
       expect.stringContaining('do not correspond to any module configuration')
     );
   });
@@ -942,8 +943,8 @@ describe('warnAboutUnusedOverrides', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const warnSpy = jest.spyOn(logger, 'warn');
-    warnSpy.mockClear();
+    const debugSpy = jest.spyOn(logger, 'debug');
+    debugSpy.mockClear();
 
     const configs = [
       createModuleConfig('gpt-4o'),
@@ -960,12 +961,12 @@ describe('warnAboutUnusedOverrides', () => {
 
     addStreamOptions(configs, streamOptions);
 
-    expect(warnSpy).toHaveBeenCalled();
-    const warningMessage = warnSpy.mock.calls[0][0];
-    expect(warningMessage).toContain('Override array has 2 element(s)');
-    expect(warningMessage).toContain('but there are 3 module');
-    expect(warningMessage).toContain('configuration(s)');
-    expect(warningMessage).toContain('{...streamOptionsArray}');
+    expect(debugSpy).toHaveBeenCalled();
+    const debugMessage = debugSpy.mock.calls[0][0];
+    expect(debugMessage).toContain('Override array has 2 element(s)');
+    expect(debugMessage).toContain('but there are 3 module');
+    expect(debugMessage).toContain('configuration(s)');
+    expect(debugMessage).toContain('{...streamOptionsArray}');
   });
 
   it('should not warn when using object syntax for sparse overrides', () => {
@@ -973,8 +974,8 @@ describe('warnAboutUnusedOverrides', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const warnSpy = jest.spyOn(logger, 'warn');
-    warnSpy.mockClear();
+    const debugSpy = jest.spyOn(logger, 'debug');
+    debugSpy.mockClear();
 
     const configs = [
       createModuleConfig('gpt-4o'),
@@ -995,7 +996,7 @@ describe('warnAboutUnusedOverrides', () => {
     addStreamOptions(configs, streamOptions);
 
     // Should not warn about array length
-    expect(warnSpy).not.toHaveBeenCalledWith(
+    expect(debugSpy).not.toHaveBeenCalledWith(
       expect.stringContaining('Override array has')
     );
   });

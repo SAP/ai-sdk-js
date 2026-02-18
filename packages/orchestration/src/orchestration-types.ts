@@ -376,9 +376,9 @@ export interface RequestOptions {
 }
 
 /**
- * Options for the stream.
+ * Base stream options without per-config overrides.
  */
-export interface StreamOptions {
+export interface BaseStreamOptions {
   /**
    * LLM specific stream options.
    */
@@ -392,10 +392,23 @@ export interface StreamOptions {
    */
   global?: GlobalStreamOptions;
   /**
-   * Per module-config overrides.
-   * Sparse object or array where keys/indices correspond to config index in the module config list.
-   * If using an array, the index corresponds to the config index. If using an object, the keys correspond to config indices.
-   * Configs will inherit from shared options, and any key defined in overrides will take precedence.
+   * Please use `StreamOptionsWithOverrides` if you want to specify per-config stream options for module fallback.
+   */
+  overrides?: never;
+}
+
+/**
+ * Stream options with support for per-config overrides in module fallback scenarios.
+ * The `overrides` property allows you to specify stream options that apply to specific module configurations by their index in the fallback list. If an override is not provided for a config, it will use the shared options defined in `BaseStreamOptions`.
+ */
+export type StreamOptionsWithOverrides = Omit<
+  BaseStreamOptions,
+  'overrides'
+> & {
+  /**
+   * Per-config stream options that override shared settings.
+   * Use object numeric keys for config indices you want to override.
+   * Omit keys for configs that should use shared options or set their value to undefined.
    * @example
    * ```typescript
    *
@@ -408,26 +421,24 @@ export interface StreamOptions {
    *     2: { outputFiltering: { overlap: 50 } }            // config 2
    *   }
    * };
-   *
-   * // Alternative: overrides as an array
-   * const arrayOverrideOptions: StreamOptions = {
-   *   global: { chunk_size: 128 },
-   *   promptTemplating: { include_usage: false },
-   *   overrides: [
-   *      { promptTemplating: { include_usage: true }, outputFiltering: { overlap: 50 } }, // config 0
-   *      undefined, // config 1 uses base configuration
-   *      { promptTemplating: { include_usage: false }, outputFiltering: { overlap: 0 } }  // config 2
-   *   ]
-   * };
    * ```
    */
-  overrides?: Partial<Record<number, ModuleStreamOptions>>;
-}
+  overrides: Partial<Record<number, ModuleStreamOptions>>;
+};
+
+/**
+ * Stream options for orchestration requests.
+ * Either shared stream options for every module configuration or stream options with per-config overrides for module fallback.
+ */
+export type StreamOptions = BaseStreamOptions | StreamOptionsWithOverrides;
 
 /**
  * Shared stream options applied to all module configurations.
  */
-export type ModuleStreamOptions = Omit<StreamOptions, 'global' | 'overrides'>;
+export type ModuleStreamOptions = Omit<
+  BaseStreamOptions,
+  'global' | 'overrides'
+>;
 
 /**
  * Representation of the `GroundingModuleConfig` schema.

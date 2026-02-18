@@ -31,7 +31,8 @@ import type {
   OrchestrationConfigRef,
   ChatCompletionRequest,
   RequestOptions,
-  StreamOptions
+  StreamOptions,
+  BaseStreamOptions
 } from './orchestration-types.js';
 import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
@@ -165,7 +166,7 @@ export class OrchestrationClient {
                 this.config,
                 request,
                 stream,
-                streamOptions as StreamOptions | undefined
+                streamOptions as BaseStreamOptions | undefined
               );
 
     const deploymentId = await getOrchestrationDeploymentId(

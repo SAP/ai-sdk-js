@@ -2,6 +2,7 @@ import { createLogger } from '@sap-cloud-sdk/util';
 import {
   type ChatCompletionRequest,
   type StreamOptions,
+  type BaseStreamOptions,
   type ModuleStreamOptions,
   type OrchestrationConfigRef,
   type OrchestrationModuleConfig,
@@ -84,7 +85,7 @@ export function constructCompletionPostRequestFromConfigReference(
  */
 export function addStreamOptionsToPromptTemplatingModuleConfig(
   promptTemplatingModuleConfig: PromptTemplatingModuleConfig,
-  streamOptions?: StreamOptions
+  streamOptions?: ModuleStreamOptions
 ): PromptTemplatingModuleConfig {
   if (streamOptions?.promptTemplating === null) {
     return promptTemplatingModuleConfig;
@@ -139,7 +140,7 @@ function warnAboutUnusedOverrides(
   });
 
   if (unusedOverrides.length) {
-    logger.warn(
+    logger.debug(
       `The following override keys do not correspond to any module configuration and will be ignored: ${unusedOverrides.join(', ')}.`
     );
   }
@@ -156,7 +157,7 @@ function warnAboutShortOverridesArray(
     return;
   }
   const arrayLength = streamOptions.overrides.length;
-  logger.warn(
+  logger.debug(
     `Override array has ${arrayLength} element(s) but there are ${configurationCount} module configuration(s). ` +
       `Configs at indices ${arrayLength}-${configurationCount - 1} will use shared options. ` +
       'If this is intentional, use object input to silence this warning: `{...streamOptionsArray}`'
@@ -164,10 +165,11 @@ function warnAboutShortOverridesArray(
 }
 
 /**
- * Merges shared stream options with per-config overrides for a specific module configuration.
+ * Gets stream options for a specific module configuration.
+ * Returns the override for the given index if it exists, otherwise returns shared options.
  * @param streamOptions - The stream options containing shared settings and optional overrides.
  * @param index - The index of the module configuration.
- * @returns Merged stream options (shared + override for this index), or undefined if streamOptions is not provided.
+ * @returns Override options for this index if present, otherwise shared options, or undefined if streamOptions is not provided.
  */
 function getStreamOptionsForItem(
   streamOptions: StreamOptions | undefined,
@@ -177,11 +179,7 @@ function getStreamOptionsForItem(
     return undefined;
   }
   const { global: _global, overrides, ...shared } = streamOptions;
-
-  return {
-    ...shared,
-    ...overrides?.[index]
-  };
+  return (overrides && overrides[index]) || shared;
 }
 
 /**
@@ -242,17 +240,25 @@ function buildModules(
   configs: ModuleConfigs[],
   options?: StreamOptions
 ): ModuleConfigs[] {
-  const { global: _global, overrides, ...shared } = options || {};
-
   return configs.map((config, index) => {
-    const merged: Partial<ModuleStreamOptions> = {
-      ...shared,
-      ...overrides?.[index]
-    };
-
-    return addStreamOptionsToSingleModuleConfig(config, merged);
+    const itemStreamOptions = getStreamOptionsForItem(options, index);
+    return addStreamOptionsToSingleModuleConfig(config, itemStreamOptions);
   });
 }
+
+// Overload for array with stream options (can have overrides)
+/** @internal */
+export function addStreamOptions(
+  moduleConfigs: ModuleConfigs[],
+  streamOptions?: StreamOptions
+): OrchestrationConfig;
+
+// Overload for single module configuration (no overrides allowed)
+/** @internal */
+export function addStreamOptions(
+  moduleConfigs: ModuleConfigs,
+  streamOptions?: BaseStreamOptions
+): OrchestrationConfig;
 
 /**
  * @internal
@@ -270,6 +276,11 @@ export function addStreamOptions(
     ? moduleConfigs
     : [moduleConfigs];
 
+  if (!Array.isArray(moduleConfigs) && streamOptions?.overrides) {
+    logger.warn(
+      'Overrides in stream options are not supported when a single module configuration is provided.'
+    );
+  }
   warnAboutUnusedOverrides(streamOptions, configs.length);
   warnAboutShortOverridesArray(streamOptions, configs.length);
   warnAboutMissingOutputFiltering(moduleConfigs, streamOptions);
@@ -287,7 +298,7 @@ export function addStreamOptions(
 
 function addStreamOptionsToSingleModuleConfig(
   moduleConfigs: ModuleConfigs,
-  streamOptions?: StreamOptions
+  streamOptions?: ModuleStreamOptions
 ): ModuleConfigs {
   const { prompt_templating, filtering } = moduleConfigs;
   const outputFiltering = streamOptions?.outputFiltering;
@@ -315,6 +326,22 @@ function addStreamOptionsToSingleModuleConfig(
  * @internal
  */
 export function constructCompletionPostRequest(
+  config: OrchestrationModuleConfig,
+  request?: ChatCompletionRequest,
+  stream?: boolean,
+  streamOptions?: BaseStreamOptions
+): CompletionPostRequest;
+
+/** @internal */
+export function constructCompletionPostRequest(
+  config: OrchestrationModuleConfigList,
+  request?: ChatCompletionRequest,
+  stream?: boolean,
+  streamOptions?: StreamOptions
+): CompletionPostRequest;
+
+/** @internal */
+export function constructCompletionPostRequest(
   config: OrchestrationModuleConfig | OrchestrationModuleConfigList,
   request?: ChatCompletionRequest,
   stream?: boolean,
@@ -324,14 +351,27 @@ export function constructCompletionPostRequest(
   // The orchestration service expects the config structure to match the input:
   // - Single config (OrchestrationModuleConfig) → single ModuleConfigs object
   // - Config array (OrchestrationModuleConfigList) → array of ModuleConfigs for fallback behavior
+  /**
+   * Module configurations for the orchestration request.
+   */
   const moduleConfigurations = Array.isArray(config)
     ? config.map(c => buildCompletionModulesConfig(c, request))
     : buildCompletionModulesConfig(config, request);
 
+  /**
+   * Orchestration configuration with or without streaming enabled.
+   */
+  const configWithStream = stream
+    ? Array.isArray(moduleConfigurations)
+      ? addStreamOptions(moduleConfigurations, streamOptions)
+      : addStreamOptions(
+          moduleConfigurations,
+          streamOptions as BaseStreamOptions | undefined
+        )
+    : { modules: moduleConfigurations };
+
   return {
-    config: stream
-      ? addStreamOptions(moduleConfigurations as ModuleConfigs, streamOptions)
-      : { modules: moduleConfigurations },
+    config: configWithStream,
     ...(request?.placeholderValues && {
       placeholder_values: request.placeholderValues
     }),

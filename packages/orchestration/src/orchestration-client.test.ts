@@ -29,7 +29,8 @@ import type {
   OrchestrationModuleConfig,
   OrchestrationConfigRef,
   ChatCompletionRequest,
-  StreamOptions
+  StreamOptions,
+  StreamOptionsWithOverrides
 } from './orchestration-types.js';
 
 const defaultJsonConfig = `{
@@ -1505,7 +1506,7 @@ describe('orchestration service client', () => {
         }
       };
 
-      const streamOptions: StreamOptions = {
+      const streamOptions: StreamOptionsWithOverrides = {
         promptTemplating: { include_usage: false },
         overrides: {
           0: { promptTemplating: { include_usage: true } }
@@ -1628,7 +1629,7 @@ describe('orchestration service client', () => {
         }
       };
 
-      const streamOptions: StreamOptions = {
+      const streamOptions: StreamOptionsWithOverrides = {
         overrides: {
           0: { promptTemplating: { include_usage: true } },
           2: { promptTemplating: { include_usage: false } }
@@ -1639,7 +1640,7 @@ describe('orchestration service client', () => {
         package: 'orchestration',
         messageContext: 'orchestration-utils'
       });
-      const warnSpy = jest.spyOn(logger, 'warn');
+      const debugSpy = jest.spyOn(logger, 'debug');
 
       mockInference(
         {
@@ -1665,8 +1666,8 @@ describe('orchestration service client', () => {
         streamOptions
       );
 
-      expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('2'));
-      expect(warnSpy).toHaveBeenCalledWith(
+      expect(debugSpy).toHaveBeenCalledWith(expect.stringContaining('2'));
+      expect(debugSpy).toHaveBeenCalledWith(
         expect.stringContaining('do not correspond to any module configuration')
       );
     });

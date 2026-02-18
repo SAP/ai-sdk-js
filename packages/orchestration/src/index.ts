@@ -11,6 +11,8 @@ export type {
   ChatCompletionRequest,
   RequestOptions,
   StreamOptions,
+  StreamOptionsWithOverrides,
+  BaseStreamOptions,
   ModuleStreamOptions,
   DocumentGroundingServiceConfig,
   DocumentGroundingServiceFilter,
