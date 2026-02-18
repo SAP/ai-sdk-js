@@ -279,7 +279,7 @@ export class OrchestrationClient {
         ...config.promptTemplating,
         prompt: {
           template: template as TemplatingChatMessage,
-          ...(defaults && { defaults }),
+          ...(defaults && { defaults: defaults as Record<string, string> }),
           ...(response_format && { response_format }),
           ...(tools && { tools })
         }
