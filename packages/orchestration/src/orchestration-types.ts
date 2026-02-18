@@ -221,6 +221,28 @@ export interface OrchestrationModuleConfig {
 }
 
 /**
+ * Non-empty list of orchestration module configurations for module fallback.
+ * The orchestration service will try each configuration in order until one succeeds.
+ * @example
+ * const fallbackConfig: OrchestrationModuleConfigList = [
+ *   {
+ *     promptTemplating: {
+ *       model: { name: 'gpt-4o', timeout: 5 }
+ *     }
+ *   },
+ *   {
+ *     promptTemplating: {
+ *       model: { name: 'gpt-5-mini' }
+ *     }
+ *   }
+ * ];
+ */
+export type OrchestrationModuleConfigList = [
+  OrchestrationModuleConfig,
+  ...OrchestrationModuleConfig[]
+];
+
+/**
  * Reference to an orchestration configuration created via the Prompt Registry API.
  * Use this to reference a pre-configured orchestration setup without
  * defining the full configuration in code. The configuration must be
@@ -259,13 +281,76 @@ export type OrchestrationConfigRef = Xor<
  * @returns Type predicate indicating whether the config is a config reference.
  */
 export function isConfigReference(
-  config: OrchestrationModuleConfig | string | OrchestrationConfigRef
+  config:
+    | OrchestrationModuleConfig
+    | OrchestrationModuleConfigList
+    | string
+    | OrchestrationConfigRef
 ): config is OrchestrationConfigRef {
   return (
     typeof config === 'object' &&
+    !Array.isArray(config) &&
     ('id' in config ||
       ('scenario' in config && 'name' in config && 'version' in config))
   );
+}
+
+/**
+ * Validates and asserts that config is a valid list of orchestration module configs.
+ * @internal
+ * @param config - The config to validate.
+ * @throws {Error} If config is not an array, is empty, or contains invalid elements.
+ */
+export function assertIsOrchestrationModuleConfigList(
+  config:
+    | OrchestrationModuleConfig
+    | OrchestrationModuleConfigList
+    | string
+    | OrchestrationConfigRef
+): asserts config is OrchestrationModuleConfigList {
+  if (!Array.isArray(config)) {
+    throw new TypeError('Configuration must be an array for module fallback.');
+  }
+
+  if (config.length === 0) {
+    throw new RangeError('Configuration array must not be empty.');
+  }
+
+  // Check if each element has the required promptTemplating property
+  const allValid = config.every(
+    item =>
+      item &&
+      typeof item === 'object' &&
+      'promptTemplating' in item &&
+      item.promptTemplating &&
+      typeof item.promptTemplating === 'object'
+  );
+
+  if (!allValid) {
+    throw new TypeError(
+      'Configuration array must contain valid OrchestrationModuleConfig objects with promptTemplating property.'
+    );
+  }
+}
+
+/**
+ * Type guard to check if config is a valid list of orchestration module configs.
+ * @param config - The config to check.
+ * @returns True if config is a non-empty array with valid OrchestrationModuleConfig elements.
+ */
+export function isOrchestrationModuleConfigList(
+  config:
+    | OrchestrationModuleConfig
+    | OrchestrationModuleConfigList
+    | string
+    | OrchestrationConfigRef
+): config is OrchestrationModuleConfigList {
+  try {
+    assertIsOrchestrationModuleConfigList(config);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 /**
