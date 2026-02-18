@@ -80,7 +80,7 @@ describe('rpt', () => {
     expect(requestSpy.isDone()).toBe(true);
   });
 
-  it('should upload Parquet file with all parameters', async () => {
+  it('should upload Parquet file', async () => {
     mockDeploymentsList(
       {
         scenarioId: 'foundation-models',
