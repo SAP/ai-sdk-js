@@ -21,7 +21,7 @@ describe('rpt', () => {
   });
 
   it('should predict sales groups with gzip compression', async () => {
-    const { predictions } = await predictWithSchemaCompressed('gzip');
+    const { predictions } = await predictWithSchemaCompressed();
 
     expect(predictions.length).toBe(2);
     expect(predictions[0]).toMatchObject({

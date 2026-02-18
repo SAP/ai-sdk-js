@@ -70,17 +70,13 @@ export async function predictWithSchema(): Promise<PredictResponsePayload> {
 
 /**
  * Predict the sales group of products with gzip compression.
- * @param algorithm - The compression algorithm to use.
  * @returns The prediction results.
  */
-export async function predictWithSchemaCompressed(
-  algorithm: RptRequestCompressionAlgorithm = 'gzip'
-): Promise<PredictResponsePayload> {
+export async function predictWithSchemaCompressed(): Promise<PredictResponsePayload> {
   const client = new RptClient();
   return client.predictWithSchema(schema, data, {
     requestCompression: {
-      mode: 'always', // force-enable compression
-      algorithm
+      mode: 'always' // force-enable compression
     }
   });
 }

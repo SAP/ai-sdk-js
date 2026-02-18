@@ -2,7 +2,7 @@ import {
   getFoundationModelDeploymentId,
   getResourceGroup
 } from '@sap-ai-sdk/ai-api/internal.js';
-import { executeRequest } from '@sap-ai-sdk/core';
+import { RptApi } from './internal.js';
 import { compressRequest } from './vendor/index.js';
 import type { DataSchema, PredictionData, RptRequestOptions } from './types.js';
 import type {
@@ -62,13 +62,13 @@ export class RptClient {
    * Predict based on data schema and prediction data.
    * @param predictionData - Data to base prediction on.
    * @param dataSchema - Prediction data follows this schema.
-   * @param customRequestAll - Custom request options.
+   * @param customRequest - Custom request options.
    * @returns Prediction response.
    */
   private async executePrediction<const T extends DataSchema>(
     predictionData: PredictionData<T>,
     dataSchema?: T,
-    customRequestAll: RptRequestOptions = {}
+    customRequest: RptRequestOptions = {}
   ): Promise<PredictResponsePayload> {
     const deploymentId = await getFoundationModelDeploymentId(
       this.modelDeployment,
@@ -90,28 +90,19 @@ export class RptClient {
       ...predictionData
     } satisfies PredictRequestPayload;
 
-    const { requestCompression, ...customRequest } = customRequestAll;
+    const { requestCompression, ...customRequestConfig } = customRequest;
 
     if (requestCompression?.mode !== 'never') {
-      customRequest.middleware = [
+      customRequestConfig.middleware = [
         compressRequest(requestCompression),
-        ...(customRequest.middleware || [])
+        ...(customRequestConfig.middleware || [])
       ];
     }
 
-    const response = await executeRequest(
-      {
-        url: `/inference/deployments/${deploymentId}/predict`,
-        resourceGroup: resourceGroup || 'default'
-      },
-      body,
-      customRequest,
-      this.destination
-    );
-
-    if (response.data) {
-      return response.data;
-    }
-    throw new Error('No data received from RPT prediction request');
+    return RptApi.predict(body)
+      .setBasePath(`/inference/deployments/${deploymentId}`)
+      .addCustomHeaders({ 'ai-resource-group': resourceGroup || 'default' })
+      .addCustomRequestConfiguration(customRequestConfig)
+      .execute(this.destination);
   }
 }
