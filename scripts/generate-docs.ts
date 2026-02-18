@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { readFile, rename, readdir, stat } from 'node:fs/promises';
-import { resolve, basename, extname } from 'node:path';
+import { resolve, basename, extname, dirname } from 'node:path';
 import { deflate, inflate } from 'node:zlib';
 import { promisify } from 'node:util';
 import { execa } from 'execa';
@@ -59,7 +59,13 @@ async function adjustForGitHubPages(docPath: string) {
   );
 
   await Promise.all(
-    htmlPaths.map((filePath: string) => removeUnderlinePrefixFromFileName(filePath))
+    htmlPaths.map((filePath: string) => {
+      const dir = dirname(filePath);
+      const filename = basename(filePath);
+      const newFilename = removeUnderlinePrefix(filename);
+      const newPath = resolve(dir, newFilename);
+      return rename(filePath, newPath);
+    })
   );
 }
 
@@ -135,17 +141,9 @@ async function adjustNavigationJs(paths: string[]) {
   });
 }
 
-function removeUnderlinePrefix(str: string) {
-  const i = str.indexOf('_');
-  // Remove the first `_`
-  return str.substring(0, i) + str.substring(i + 1);
-}
-
-async function removeUnderlinePrefixFromFileName(filePath: string): Promise<void> {
-  const newPath = filePath.replace(/_.*.html/gi, function (x) {
-    return x.substring(1);
-  });
-  await rename(filePath, newPath);
+function removeUnderlinePrefix(str: string): string {
+  // Remove all leading underscores
+  return str.replace(/^_+/, '');
 }
 
 async function insertCopyright(docPath: string) {
