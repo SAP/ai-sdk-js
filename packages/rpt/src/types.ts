@@ -128,10 +128,7 @@ export type PredictionData<T extends DataSchema> = {
 /**
  * Compression algorithm to use for request Body.
  */
-export type RptRequestCompressionAlgorithm = Extract<
-  'gzip',
-  RequestCompressionAlgorithm
->;
+export type RptRequestCompressionAlgorithm = 'gzip';
 
 /**
  * Compression middleware options for requests to the RPT service endpoint.
