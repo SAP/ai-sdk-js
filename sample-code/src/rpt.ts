@@ -1,9 +1,5 @@
 import { RptClient } from '@sap-ai-sdk/rpt';
-import type {
-  PredictResponsePayload,
-  PredictionData,
-  RptRequestCompressionAlgorithm
-} from '@sap-ai-sdk/rpt';
+import type { PredictResponsePayload, PredictionData } from '@sap-ai-sdk/rpt';
 
 const schema = [
   { name: 'PRODUCT', dtype: 'string' },
