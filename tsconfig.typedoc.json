@@ -1,0 +1,73 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "./packages/ai-api/**/*",
+    "./packages/core/**/*",
+    "./packages/document-grounding/**/*",
+    "./packages/foundation-models/**/*",
+    "./packages/langchain/**/*",
+    "./packages/orchestration/**/*",
+    "./packages/prompt-registry/**/*",
+    "./packages/rpt/**/*"
+  ],
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/dist/**",
+    "**/dist-cjs/**",
+    "**/node_modules/**"
+  ],
+  "references": [
+    {
+      "path": "./packages/ai-api"
+    },
+    {
+      "path": "./packages/core"
+    },
+    {
+      "path": "./packages/document-grounding"
+    },
+    {
+      "path": "./packages/foundation-models"
+    },
+    {
+      "path": "./packages/langchain"
+    },
+    {
+      "path": "./packages/orchestration"
+    },
+    {
+      "path": "./packages/prompt-registry"
+    },
+    {
+      "path": "./packages/rpt"
+    }
+  ],
+  "typedocOptions": {
+    "out": "knowledge-base/api-reference",
+    "entryPoints": [
+      "packages/ai-api",
+      "packages/core",
+      "packages/document-grounding",
+      "packages/foundation-models",
+      "packages/langchain",
+      "packages/orchestration",
+      "packages/prompt-registry",
+      "packages/rpt"
+    ],
+    "entryPointStrategy": "packages",
+    "name": "SAP AI SDK for JavaScript",
+    "readme": "README.md",
+    "theme": "default",
+    "includeVersion": true,
+    "hideGenerator": true,
+    "excludePrivate": true,
+    "treatWarningsAsErrors": false,
+    "validation": {
+      "invalidLink": true
+    },
+    "navigation": {
+      "includeFolders": false
+    }
+  }
+}
