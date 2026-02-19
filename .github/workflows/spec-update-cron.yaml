@@ -33,7 +33,7 @@ jobs:
           ORCH_VERSION=$(curl --silent --request GET \
             --url "https://github.tools.sap/api/v3/repos/MLF-prod/mlf-gitops-prod/contents/services/llm-orchestration/source/Chart.yaml?ref=aws.eu-central-1.prod-eu/current" \
             -H "Authorization: Bearer $TOKEN" \
-            -H "Accept: application/vnd.github.v3.raw" | grep 'version:' | awk '{print $2}')
+            -H "Accept: application/vnd.github.v3.raw" | yq -r .version)
 
           if [ -z "$ORCH_VERSION" ]; then
               echo "Failed to fetch orchestration version"
@@ -44,6 +44,18 @@ jobs:
         env:
           TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
 
+      # - name: 'Get RPT version tag'
+      #  if: matrix.file == 'prompt-registry'
+      #   run: |
+      #     # Extracted from your commented-out code
+      #     TAG=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' https://github.tools.sap/DL-COE/sap-rpt-1-public-content | tail --lines=1 | cut -f 2)
+          
+      #     if [ -z "$TAG" ]; then
+      #         echo "Failed to fetch RPT tag"
+      #         exit 1
+      #     fi
+      #     echo "RPT_TAG=$TAG" >> "$GITHUB_ENV"
+
       - name: 'Trigger spec update'
         run: |
           BRANCH="main"
@@ -51,10 +63,14 @@ jobs:
             # remove hotfix suffix 0.110.13-2 -> 0.110.13
             ORCH_VERSION=$(echo "$ORCH_VERSION" | sed 's/-.*//')
             BRANCH="rel-$ORCH_VERSION"
+          # elif [ "${{ matrix.file }}" = "prompt-registry" ]; then
+          #   BRANCH="$RPT_TAG"
+          # fi
           fi
           echo "Using branch: $BRANCH"
 
           gh workflow run spec-update.yaml \
+            --ref main \
             --field file=${{ matrix.file }} \
             --field file-ref=$BRANCH \
             --field create-pr=true
