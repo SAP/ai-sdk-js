@@ -3,6 +3,7 @@ import { json } from 'node:stream/consumers';
 import {
   ErrorWithCause,
   mergeIgnoreCase,
+  pickValueIgnoreCase,
   removeLeadingSlashes,
   removeTrailingSlashes
 } from '@sap-cloud-sdk/util';
@@ -28,7 +29,8 @@ export type CustomRequestConfig = Pick<
   | 'httpsAgent'
   | 'parameterEncoder'
 > &
-  Record<string, any>;
+  // TODO: Move to `Pick` after updating SAP Cloud SDK dependency
+  { signal?: AbortSignal } & Record<string, any>;
 
 /**
  * The options to call an endpoint.
@@ -104,15 +106,32 @@ function mergeWithDefaultRequestConfig(
     method: 'post',
     headers: {
       'content-type': 'application/json',
-      'ai-resource-group': resourceGroup,
-      'ai-client-type': 'AI SDK JavaScript'
+      'ai-resource-group': resourceGroup
     },
     params: apiVersion ? { 'api-version': apiVersion } : {}
   };
+
+  const mergedHeaders = mergeIgnoreCase(
+    defaultConfig.headers,
+    requestConfig?.headers
+  );
+
+  // merge 'ai-client-type' header value with custom client type if needed
+  const aiClientType = [
+    'AI SDK JavaScript',
+    pickValueIgnoreCase(requestConfig?.headers, 'ai-client-type')
+  ]
+    .filter(clientType => clientType)
+    .join(', ');
+
   return {
     ...defaultConfig,
     ...requestConfig,
-    headers: mergeIgnoreCase(defaultConfig.headers, requestConfig?.headers),
+    headers: {
+      ...mergeIgnoreCase(mergedHeaders, {
+        'ai-client-type': aiClientType
+      })
+    },
     params: mergeIgnoreCase(defaultConfig.params, requestConfig?.params)
   };
 }

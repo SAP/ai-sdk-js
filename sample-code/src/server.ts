@@ -30,7 +30,8 @@ import {
   orchestrationResponseFormat,
   orchestrationTranslation,
   orchestrationEmbeddingWithMasking,
-  orchestrationSapAbapChatCompletion
+  orchestrationSapAbapChatCompletion,
+  orchestrationWithFallbackConfigs
 } from './orchestration.js';
 import {
   getDeployments,
@@ -291,7 +292,8 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       maskGroundingInput: orchestrationMaskGroundingInput,
       translation: orchestrationTranslation,
       embeddingWithMasking: orchestrationEmbeddingWithMasking,
-      sapAbap: orchestrationSapAbapChatCompletion
+      sapAbap: orchestrationSapAbapChatCompletion,
+      fallbackModules: orchestrationWithFallbackConfigs
     }[sampleCase] || orchestrationChatCompletion;
 
   try {
@@ -323,6 +325,16 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
         .header('Content-Type', 'text/plain')
         .send(
           `Embedding with masking applied successfully:${JSON.stringify(embeddingResult.getIntermediateResults()?.input_masking?.data, null, 2)}\nEmbeddings: ${embedding}\nUsage - Prompt tokens: ${embeddingResult.getTokenUsage()?.prompt_tokens}\nUsage - Total tokens: ${embeddingResult.getTokenUsage()?.total_tokens}`
+        );
+    } else if (sampleCase === 'fallbackModules') {
+      const intermediateFailures = (
+        result as OrchestrationResponse
+      ).getIntermediateFailures();
+      const content = (result as OrchestrationResponse).getContent();
+      res
+        .header('Content-Type', 'text/plain')
+        .send(
+          `Fallback modules executed successfully.\nIntermediate Failures: ${JSON.stringify(intermediateFailures, null, 2)}\nFinal Content: ${content}`
         );
     } else {
       res
