@@ -187,7 +187,7 @@ function getContentEncodingValue(
  * @returns An HTTP middleware that compresses request payloads based on the provided options.
  * @internal (vendored)
  */
-export function compressRequest<C extends RequestCompressionAlgorithm = 'gzip'>(
+export function compress<C extends RequestCompressionAlgorithm = 'gzip'>(
   options?: RequestCompressionMiddlewareOptions<C>
 ): HttpMiddleware {
   return (middlewareOptions: HttpMiddlewareOptions) =>

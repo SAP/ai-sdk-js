@@ -71,7 +71,7 @@ export async function predictWithSchema(): Promise<PredictResponsePayload> {
 export async function predictWithSchemaCompressed(): Promise<PredictResponsePayload> {
   const client = new RptClient();
   return client.predictWithSchema(schema, data, {
-    requestCompression: {
+    compress: {
       mode: 'always' // force-enable compression
     }
   });

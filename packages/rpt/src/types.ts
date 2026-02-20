@@ -151,5 +151,5 @@ export interface RptRequestOptions extends CustomRequestConfig {
    * Prediction requests with parquet will not be compressed even if the option is set, as they are already in a compressed binary format.
    * Compression will be disabled if custom middlewares are provided in the destination or fetch options.
    */
-  requestCompression?: RptRequestCompressionMiddlewareOptions;
+  compress?: RptRequestCompressionMiddlewareOptions;
 }

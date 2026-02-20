@@ -3,7 +3,7 @@ import {
   getResourceGroup
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { RptApi } from './internal.js';
-import { compressRequest } from './vendor/index.js';
+import { compress as compressMiddleware } from './vendor/index.js';
 import type { DataSchema, PredictionData, RptRequestOptions } from './types.js';
 import type {
   PredictRequestPayload,
@@ -90,11 +90,11 @@ export class RptClient {
       ...predictionData
     } satisfies PredictRequestPayload;
 
-    const { requestCompression, ...customRequestConfig } = requestConfig;
+    const { compress, ...customRequestConfig } = requestConfig;
 
-    if (requestCompression?.mode !== 'never') {
+    if (compress?.mode !== 'never') {
       customRequestConfig.middleware = [
-        compressRequest(requestCompression),
+        compressMiddleware(compress),
         ...(customRequestConfig.middleware || [])
       ];
     }
