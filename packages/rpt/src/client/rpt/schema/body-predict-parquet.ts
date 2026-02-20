@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-
+import type { PredictionConfig } from './prediction-config.js';
 /**
  * Representation of the 'BodyPredictParquet' schema.
  */
@@ -12,11 +12,8 @@ export type BodyPredictParquet = {
    * Parquet file containing the data
    * Format: "binary".
    */
-  file: string;
-  /**
-   * JSON string for prediction_config
-   */
-  prediction_config: string;
+  file: Blob;
+  prediction_config: PredictionConfig;
   /**
    * Optional index column name
    */

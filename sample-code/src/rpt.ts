@@ -1,3 +1,5 @@
+import { openAsBlob } from 'node:fs';
+import { join } from 'node:path';
 import { RptClient } from '@sap-ai-sdk/rpt';
 import type { PredictResponsePayload, PredictionData } from '@sap-ai-sdk/rpt';
 
@@ -71,4 +73,42 @@ export async function predictWithSchema(): Promise<PredictResponsePayload> {
 export async function predictAutomaticParsing(): Promise<PredictResponsePayload> {
   const client = new RptClient();
   return client.predictWithoutSchema(data);
+}
+
+const parquetFilePath = join(import.meta.dirname, 'product_data.parquet');
+
+/**
+ * Predict the sales group of products by passing a Parquet file with filename (`File`).
+ * @returns The prediction results.
+ */
+export async function predictParquetFile(): Promise<PredictResponsePayload> {
+  const parquetFileBlob = await openAsBlob(parquetFilePath, {
+    type: 'application/vnd.apache.parquet'
+  });
+  // Create a File with a filename that will be forwarded to the RPT service
+  const parquetFile = new File([parquetFileBlob], 'product_data.parquet', {
+    type: 'application/vnd.apache.parquet'
+  });
+  // Send the Parquet file to the RPT service for predictions
+  const client = new RptClient();
+  return client.predictParquet(parquetFile, data.prediction_config, {
+    index_column: data.index_column,
+    parse_data_types: false
+  });
+}
+
+/**
+ * Predict the sales group of products by passing a Parquet file without a filename (`Blob`).
+ * @returns The prediction results.
+ */
+export async function predictParquetBlob(): Promise<PredictResponsePayload> {
+  const parquetFileBlob = await openAsBlob(parquetFilePath, {
+    type: 'application/vnd.apache.parquet'
+  });
+  // Send the Parquet blob to the RPT service for predictions
+  const client = new RptClient();
+  return client.predictParquet(parquetFileBlob, data.prediction_config, {
+    index_column: data.index_column,
+    parse_data_types: false
+  });
 }

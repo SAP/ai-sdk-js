@@ -137,4 +137,55 @@ describe('http-client', () => {
       'http://example.com/abc/some/endpoint'
     );
   });
+
+  it('should pass FormData without stringifying', async () => {
+    const formData = new FormData();
+    formData.append('file', new Blob(['test data']));
+    formData.append('config', 'test config');
+
+    const scope = nock(aiCoreDestination.url, {
+      reqheaders: {
+        'ai-resource-group': 'default',
+        'ai-client-type': 'AI SDK JavaScript'
+      }
+    })
+      .post(
+        '/v2/upload/endpoint',
+        (body: any) => typeof body === 'object' && body !== null
+      )
+      .query({ 'api-version': 'mock-api-version' })
+      .reply(200, { status: 'uploaded' });
+
+    const res = await executeRequest(
+      { url: '/upload/endpoint', apiVersion: 'mock-api-version' },
+      formData
+    );
+
+    expect(scope.isDone()).toBe(true);
+    expect(res.status).toBe(200);
+    expect(res.data).toEqual({ status: 'uploaded' });
+  });
+
+  it('should stringify non-FormData objects', async () => {
+    const jsonData = { key: 'value', nested: { prop: 'data' } };
+
+    const scope = nock(aiCoreDestination.url, {
+      reqheaders: {
+        'ai-resource-group': 'default',
+        'ai-client-type': 'AI SDK JavaScript'
+      }
+    })
+      .post('/v2/json/endpoint', JSON.stringify(jsonData))
+      .query({ 'api-version': 'mock-api-version' })
+      .reply(200, { status: 'received' });
+
+    const res = await executeRequest(
+      { url: '/json/endpoint', apiVersion: 'mock-api-version' },
+      jsonData
+    );
+
+    expect(scope.isDone()).toBe(true);
+    expect(res.status).toBe(200);
+    expect(res.data).toEqual({ status: 'received' });
+  });
 });

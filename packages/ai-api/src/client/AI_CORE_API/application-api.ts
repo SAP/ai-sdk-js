@@ -37,8 +37,8 @@ export const ApplicationApi = {
       'get',
       '/admin/applications',
       {
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       ApplicationApi._defaultBasePath
     ),
@@ -60,7 +60,10 @@ export const ApplicationApi = {
       '/admin/applications',
       {
         body,
-        headerParameters
+        headerParameters: {
+          'content-type': 'application/json',
+          ...headerParameters
+        }
       },
       ApplicationApi._defaultBasePath
     ),
@@ -123,7 +126,10 @@ export const ApplicationApi = {
       {
         pathParameters: { applicationName },
         body,
-        headerParameters
+        headerParameters: {
+          'content-type': 'application/json',
+          ...headerParameters
+        }
       },
       ApplicationApi._defaultBasePath
     ),

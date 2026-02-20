@@ -281,6 +281,11 @@
             "multipart/form-data": {
               "schema": {
                 "$ref": "#/components/schemas/Body_predict_parquet"
+              },
+              "encoding": {
+                "file": {
+                  "contentType": "application/vnd.apache.parquet"
+                }
               }
             }
           },
@@ -433,9 +438,8 @@
             "description": "Parquet file containing the data"
           },
           "prediction_config": {
-            "type": "string",
-            "title": "Prediction Config",
-            "description": "JSON string for prediction_config"
+            "description": "JSON string for prediction_config",
+            "$ref": "#/components/schemas/PredictionConfig"
           },
           "index_column": {
             "type": "string",

@@ -12,7 +12,7 @@ export type AzureOpenAiCreateTranslationRequest = {
    * The audio file to translate.
    * Format: "binary".
    */
-  file: string;
+  file: Blob;
   /**
    * An optional text to guide the model's style or continue a previous audio segment. The prompt should be in English.
    */

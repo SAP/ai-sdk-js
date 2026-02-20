@@ -35,8 +35,8 @@ export const SecretApi = {
       'get',
       '/admin/secrets',
       {
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       SecretApi._defaultBasePath
     ),
@@ -59,7 +59,10 @@ export const SecretApi = {
       '/admin/secrets',
       {
         body,
-        headerParameters
+        headerParameters: {
+          'content-type': 'application/json',
+          ...headerParameters
+        }
       },
       SecretApi._defaultBasePath
     ),
@@ -108,7 +111,10 @@ export const SecretApi = {
       {
         pathParameters: { secretName },
         body,
-        headerParameters
+        headerParameters: {
+          'content-type': 'application/json',
+          ...headerParameters
+        }
       },
       SecretApi._defaultBasePath
     ),

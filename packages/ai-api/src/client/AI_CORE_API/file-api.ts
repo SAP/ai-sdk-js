@@ -21,7 +21,7 @@ export const FileApi = {
     path: string,
     headerParameters?: { 'AI-Resource-Group'?: string }
   ) =>
-    new OpenApiRequestBuilder<string>(
+    new OpenApiRequestBuilder<Blob>(
       'get',
       '/lm/dataset/files/{path}',
       {
@@ -66,8 +66,8 @@ export const FileApi = {
       {
         pathParameters: { path },
         body,
-        queryParameters,
-        headerParameters
+        headerParameters: { 'content-type': '*/*', ...headerParameters },
+        queryParameters
       },
       FileApi._defaultBasePath
     ),

@@ -34,8 +34,8 @@ export const ObjectStoreSecretApi = {
       'get',
       '/admin/objectStoreSecrets',
       {
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       ObjectStoreSecretApi._defaultBasePath
     ),
@@ -55,7 +55,10 @@ export const ObjectStoreSecretApi = {
       '/admin/objectStoreSecrets',
       {
         body,
-        headerParameters
+        headerParameters: {
+          'content-type': 'application/json',
+          ...headerParameters
+        }
       },
       ObjectStoreSecretApi._defaultBasePath
     ),
@@ -100,7 +103,10 @@ export const ObjectStoreSecretApi = {
       {
         pathParameters: { objectStoreName },
         body,
-        headerParameters
+        headerParameters: {
+          'content-type': 'application/json',
+          ...headerParameters
+        }
       },
       ObjectStoreSecretApi._defaultBasePath
     ),

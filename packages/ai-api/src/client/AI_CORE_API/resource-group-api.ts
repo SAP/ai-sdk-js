@@ -39,8 +39,8 @@ export const ResourceGroupApi = {
       'get',
       '/admin/resourceGroups',
       {
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       ResourceGroupApi._defaultBasePath
     ),
@@ -60,7 +60,10 @@ export const ResourceGroupApi = {
       '/admin/resourceGroups',
       {
         body,
-        headerParameters
+        headerParameters: {
+          'content-type': 'application/json',
+          ...headerParameters
+        }
       },
       ResourceGroupApi._defaultBasePath
     ),
@@ -103,7 +106,10 @@ export const ResourceGroupApi = {
       {
         pathParameters: { resourceGroupId },
         body,
-        headerParameters
+        headerParameters: {
+          'content-type': 'application/json',
+          ...headerParameters
+        }
       },
       ResourceGroupApi._defaultBasePath
     ),
