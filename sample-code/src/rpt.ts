@@ -65,6 +65,19 @@ export async function predictWithSchema(): Promise<PredictResponsePayload> {
 }
 
 /**
+ * Predict the sales group of products with gzip compression.
+ * @returns The prediction results.
+ */
+export async function predictWithSchemaCompressed(): Promise<PredictResponsePayload> {
+  const client = new RptClient();
+  return client.predictWithSchema(schema, data, {
+    compress: {
+      mode: 'always' // force-enable compression
+    }
+  });
+}
+
+/**
  * Predict the sales group of products using automatic data type parsing.
  * @returns The prediction results.
  */

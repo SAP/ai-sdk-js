@@ -1,5 +1,9 @@
 import type { Xor } from '@sap-cloud-sdk/util';
 import type { ColumnType, SchemaFieldConfig } from './client/rpt/index.js';
+import type { CustomRequestConfig } from '@sap-cloud-sdk/http-client';
+import type { RequestCompressionMiddlewareOptions } from './vendor/index.js';
+
+export type { RequestCompressionMiddlewareOptions } from './vendor/index.js';
 
 /**
  * Represents a string literal type that includes all column names from the data schema.
@@ -117,3 +121,35 @@ export type PredictionData<T extends DataSchema> = {
     columns: ColType<T>;
   }
 >;
+
+/**
+ * Compression middleware options for requests to the RPT service endpoint.
+ */
+export type RptRequestCompressionMiddlewareOptions = Omit<
+  RequestCompressionMiddlewareOptions<'gzip'>,
+  'algorithm'
+> & {
+  /**
+   * The compression mode to use for requests to the RPT service endpoint.
+   * - `always`: Compress the request body for every request.
+   * - `auto`: Compress the request body only if it exceeds a certain size threshold (e.g., 1KB). This is the default behavior.
+   * - `never`: Do not compress the request body.
+   */
+  mode: Exclude<
+    RequestCompressionMiddlewareOptions['mode'],
+    undefined | 'header-only'
+  >;
+};
+
+/**
+ * Custom options for how requests to the RPT service endpoint are performed.
+ */
+export interface RptRequestOptions extends CustomRequestConfig {
+  /**
+   * Options to configure request compression.
+   * @remarks This option does not affect responses, only requests.
+   * Prediction requests with parquet will not be compressed even if the option is set, as they are already in a compressed binary format.
+   * Compression will be disabled if custom middlewares are provided in the destination or fetch options.
+   */
+  compress?: RptRequestCompressionMiddlewareOptions;
+}

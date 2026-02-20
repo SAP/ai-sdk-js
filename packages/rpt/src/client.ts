@@ -3,7 +3,8 @@ import {
   getResourceGroup
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { RptApi } from './internal.js';
-import { type DataSchema, type PredictionData } from './types.js';
+import { compress as compressMiddleware } from './vendor/index.js';
+import type { DataSchema, PredictionData, RptRequestOptions } from './types.js';
 import type {
   PredictRequestPayload,
   PredictResponsePayload
@@ -32,36 +33,42 @@ export class RptClient {
    * Prefer using this method when the data schema is known.
    * @param dataSchema - Prediction data follows this schema. When using TypeScript, the data schema type is used to infer the types of the prediction data. In that case, the data schema must be provided as a constant (`as const`).
    * @param predictionData - Data to base prediction on.
+   * @param requestConfig - Custom request configuration.
    * @returns Prediction response.
    */
   async predictWithSchema<const T extends DataSchema>(
     dataSchema: T,
-    predictionData: PredictionData<T>
+    predictionData: PredictionData<T>,
+    requestConfig: RptRequestOptions = {}
   ): Promise<PredictResponsePayload> {
-    return this.executePrediction(predictionData, dataSchema);
+    return this.executePrediction(predictionData, dataSchema, requestConfig);
   }
 
   /**
    * Predict based on prediction data with data schema inferred.
    * Prefer using `predictWithSchema` when the data schema is known.
    * @param predictionData - Data to base prediction on.
+   * @param requestConfig - Custom request configuration.
    * @returns Prediction response.
    */
   async predictWithoutSchema(
-    predictionData: PredictionData<DataSchema>
+    predictionData: PredictionData<DataSchema>,
+    requestConfig: RptRequestOptions = {}
   ): Promise<PredictResponsePayload> {
-    return this.executePrediction(predictionData);
+    return this.executePrediction(predictionData, undefined, requestConfig);
   }
 
   /**
    * Predict based on data schema and prediction data.
    * @param predictionData - Data to base prediction on.
    * @param dataSchema - Prediction data follows this schema.
+   * @param requestConfig - Custom request configuration.
    * @returns Prediction response.
    */
   private async executePrediction<const T extends DataSchema>(
     predictionData: PredictionData<T>,
-    dataSchema?: T
+    dataSchema?: T,
+    requestConfig: RptRequestOptions = {}
   ): Promise<PredictResponsePayload> {
     const deploymentId = await getFoundationModelDeploymentId(
       this.modelDeployment,
@@ -83,9 +90,19 @@ export class RptClient {
       ...predictionData
     } satisfies PredictRequestPayload;
 
+    const { compress, ...customRequestConfig } = requestConfig;
+
+    if (compress?.mode !== 'never') {
+      customRequestConfig.middleware = [
+        compressMiddleware(compress),
+        ...(customRequestConfig.middleware || [])
+      ];
+    }
+
     return RptApi.predict(body)
       .setBasePath(`/inference/deployments/${deploymentId}`)
       .addCustomHeaders({ 'ai-resource-group': resourceGroup || 'default' })
+      .addCustomRequestConfiguration(customRequestConfig)
       .execute(this.destination);
   }
 }
