@@ -1,9 +1,15 @@
 import { SseStream } from '@sap-ai-sdk/core';
+import { createLogger } from '@sap-cloud-sdk/util';
 import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 import { mergeStreamResponse } from './util/index.js';
 import type { CompletionPostResponseStreaming } from './client/api/schema/index.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { OrchestrationStreamResponse } from './orchestration-stream-response.js';
+
+const logger = createLogger({
+  package: 'orchestration',
+  messageContext: 'orchestration-stream'
+});
 
 /**
  * Orchestration stream containing post-processing functions.
@@ -67,6 +73,13 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
     }
 
     response._openStream = false;
+
+    const intermediateFailures = response._data.intermediate_failures;
+    if (intermediateFailures && intermediateFailures.length > 0) {
+      logger.info(
+        `Orchestration used ${intermediateFailures.length} fallback(s) before success`
+      );
+    }
   }
 
   /**

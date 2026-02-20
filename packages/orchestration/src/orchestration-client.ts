@@ -31,7 +31,8 @@ import type {
   OrchestrationConfigRef,
   ChatCompletionRequest,
   RequestOptions,
-  StreamOptions
+  StreamOptions,
+  BaseStreamOptions
 } from './orchestration-types.js';
 import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
@@ -97,12 +98,6 @@ export class OrchestrationClient {
     options?: StreamOptions,
     requestConfig?: CustomRequestConfig
   ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
-    if (isOrchestrationModuleConfigList(this.config)) {
-      throw new Error(
-        'Streaming is not supported when using multiple orchestration module configurations for fallback. Please use a single configuration.'
-      );
-    }
-
     const controller = new AbortController();
     if (signal) {
       signal.throwIfAborted();
@@ -160,12 +155,19 @@ export class OrchestrationClient {
               this.config,
               request
             )
-          : constructCompletionPostRequest(
-              this.config,
-              request,
-              stream,
-              streamOptions
-            );
+          : isOrchestrationModuleConfigList(this.config)
+            ? constructCompletionPostRequest(
+                this.config,
+                request,
+                stream,
+                streamOptions
+              )
+            : constructCompletionPostRequest(
+                this.config,
+                request,
+                stream,
+                streamOptions as BaseStreamOptions | undefined
+              );
 
     const deploymentId = await getOrchestrationDeploymentId(
       this.deploymentConfig || {},
@@ -187,7 +189,7 @@ export class OrchestrationClient {
     );
 
     // Log summary when fallbacks were used
-    if (!stream && response.data?.intermediate_failures) {
+    if (response.data?.intermediate_failures) {
       const failureCount = response.data.intermediate_failures.length;
       const successModel = response.data.final_result?.model;
       logger.info(

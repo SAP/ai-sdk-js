@@ -5,6 +5,8 @@ import type {
   ChatDelta,
   ChoiceLogprobs,
   CompletionPostResponseStreaming,
+  Error as OrchestrationError,
+  ErrorStreaming,
   LlmChoice,
   LlmChoiceStreaming,
   LlmModuleResult,
@@ -34,7 +36,40 @@ export function mergeStreamResponse(
     data.intermediate_results,
     chunk.intermediate_results
   );
+  data.intermediate_failures = mergeIntermediateFailures(
+    data.intermediate_failures,
+    chunk.intermediate_failures
+  );
   data.final_result = mergeLlmModule(data.final_result, chunk.final_result);
+}
+
+function mergeIntermediateFailures(
+  existing: OrchestrationError[] | undefined,
+  incoming: ErrorStreaming[] | undefined
+): OrchestrationError[] | undefined {
+  if (!incoming || incoming.length === 0) {
+    return existing;
+  }
+
+  const transformedIncoming: OrchestrationError[] = incoming.map(error => ({
+    ...error,
+    intermediate_results: error.intermediate_results
+      ? mergeModuleResults(undefined, error.intermediate_results)
+      : undefined
+  }));
+
+  if (!existing || existing.length === 0) {
+    return transformedIncoming;
+  }
+
+  // Deduplicate messages with structural equality checks
+  const existingSet = new Set(
+    existing.map(f => JSON.stringify(Object.entries(f).sort()))
+  );
+  const newFailures = transformedIncoming.filter(
+    f => !existingSet.has(JSON.stringify(Object.entries(f).sort()))
+  );
+  return [...existing, ...newFailures];
 }
 
 function mergeModuleResults(
