@@ -1854,6 +1854,13 @@ components:
       anyOf:
         - enum:
             - NEW
+            - UNKNOWN
+            - INPROGRESS
+            - FINISHED
+            - FINISHEDWITHERRORS
+            - TIMEOUT
+        - enum:
+            - NEW
             - CREATING
             - CREATED
             - CREATION_FAILED

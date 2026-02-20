@@ -9,6 +9,12 @@
  */
 export type PipelineExecutionStatus =
   | 'NEW'
+  | 'UNKNOWN'
+  | 'INPROGRESS'
+  | 'FINISHED'
+  | 'FINISHEDWITHERRORS'
+  | 'TIMEOUT'
+  | 'NEW'
   | 'CREATING'
   | 'CREATED'
   | 'CREATION_FAILED'
