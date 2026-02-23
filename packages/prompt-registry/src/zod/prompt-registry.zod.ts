@@ -128,6 +128,7 @@ export const RegistryControllerPromptControllerCreateUpdatePromptTemplateBody =
                 ),
               strict: zod
                 .boolean()
+                .nullish()
                 .default(
                   registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecResponseFormatThreeJsonSchemaStrictDefault
                 )
@@ -175,6 +176,7 @@ export const RegistryControllerPromptControllerCreateUpdatePromptTemplateBody =
                 ),
               strict: zod
                 .boolean()
+                .nullish()
                 .default(
                   registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecToolsItemFunctionStrictDefault
                 )
@@ -333,6 +335,7 @@ export const RegistryControllerPromptControllerListPromptTemplatesResponse =
                       ),
                     strict: zod
                       .boolean()
+                      .nullish()
                       .default(
                         registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecResponseFormatThreeJsonSchemaStrictDefault
                       )
@@ -380,6 +383,7 @@ export const RegistryControllerPromptControllerListPromptTemplatesResponse =
                       ),
                     strict: zod
                       .boolean()
+                      .nullish()
                       .default(
                         registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecToolsItemFunctionStrictDefault
                       )
@@ -519,6 +523,7 @@ export const RegistryControllerPromptControllerListPromptTemplateHistoryResponse
                       ),
                     strict: zod
                       .boolean()
+                      .nullish()
                       .default(
                         registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecResponseFormatThreeJsonSchemaStrictDefault
                       )
@@ -566,6 +571,7 @@ export const RegistryControllerPromptControllerListPromptTemplateHistoryResponse
                       ),
                     strict: zod
                       .boolean()
+                      .nullish()
                       .default(
                         registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecToolsItemFunctionStrictDefault
                       )
@@ -698,6 +704,7 @@ export const RegistryControllerPromptControllerGetPromptTemplateByUuidResponse =
                   ),
                 strict: zod
                   .boolean()
+                  .nullish()
                   .default(
                     registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecResponseFormatThreeJsonSchemaStrictDefault
                   )
@@ -745,6 +752,7 @@ export const RegistryControllerPromptControllerGetPromptTemplateByUuidResponse =
                   ),
                 strict: zod
                   .boolean()
+                  .nullish()
                   .default(
                     registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecToolsItemFunctionStrictDefault
                   )
@@ -966,6 +974,7 @@ export const RegistryControllerPromptControllerParsePromptTemplateByIdResponse =
                       ),
                     strict: zod
                       .boolean()
+                      .nullish()
                       .default(
                         registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecResponseFormatThreeJsonSchemaStrictDefault
                       )
@@ -1013,6 +1022,7 @@ export const RegistryControllerPromptControllerParsePromptTemplateByIdResponse =
                       ),
                     strict: zod
                       .boolean()
+                      .nullish()
                       .default(
                         registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecToolsItemFunctionStrictDefault
                       )
@@ -1200,6 +1210,7 @@ export const RegistryControllerPromptControllerParsePromptTemplateByNameVersionR
                       ),
                     strict: zod
                       .boolean()
+                      .nullish()
                       .default(
                         registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecResponseFormatThreeJsonSchemaStrictDefault
                       )
@@ -1247,6 +1258,7 @@ export const RegistryControllerPromptControllerParsePromptTemplateByNameVersionR
                       ),
                     strict: zod
                       .boolean()
+                      .nullish()
                       .default(
                         registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecToolsItemFunctionStrictDefault
                       )
