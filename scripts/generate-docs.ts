@@ -156,11 +156,12 @@ async function insertCopyright(docPath: string) {
       return transformFile(filePath, (file: string) => {
         const lines = file.split('\n');
         // Insert the copyright div before the line including </footer>
-        lines.splice(
-          lines.findIndex((line: string) => line.includes('</footer>')),
-          0,
-          copyrightDiv
-        );
+        const footerIndex = lines.findIndex((line: string) => line.includes('</footer>'));
+        if (footerIndex === -1) {
+          console.warn(`No </footer> found in ${filePath}`);
+          return file; // Return unchanged
+        }
+        lines.splice(footerIndex, 0, copyrightDiv);
         return lines.join('\n');
       });
     })
