@@ -57,7 +57,7 @@
     ],
     "entryPointStrategy": "packages",
     "name": "SAP AI SDK for JavaScript",
-    "readme": "README.md",
+    "readme": "DOCUMENTATION.md",
     "theme": "default",
     "includeVersion": true,
     "hideGenerator": true,
