@@ -11,6 +11,68 @@ The orchestration package supports multi-modal messages containing files (PDF, C
 The OpenAPI specification describes `file.file_data` as "Base64 encoded file content or file URL".
 
 In practice, the orchestration service only accepts RFC 2397 data URIs with a non-empty MIME type for inline file content.
+
+<details>
+<summary>Example error responses</summary>
+
+Plain base64 string without `data:` prefix:
+
+```json
+{
+  "error": {
+    "request_id": "aa1b6e55-5df4-9533-932d-7961e23ea453",
+    "code": 400,
+    "message": "400 - Request Body: Invalid file_data format. Must be either a base64 data URI (e.g., 'data:application/pdf;base64,...') or a valid public HTTP/HTTPS URL.",
+    "location": "Request Body",
+    "headers": { "Content-Type": "application/json" }
+  }
+}
+```
+
+Data URI without MIME type (e.g. `data:;base64,...`):
+
+```json
+{
+  "error": {
+    "request_id": "aa1b6e55-5df4-9533-932d-7961e23ea453",
+    "code": 400,
+    "message": "400 - Request Body: Invalid file_data format. MIME type is required in data URI (e.g., 'data:application/pdf;base64,...').",
+    "location": "Request Body",
+    "headers": { "Content-Type": "application/json" }
+  }
+}
+```
+
+Response for unsupported MIME type (claude).
+
+```json5
+{
+  "error": {
+    "request_id": "6226262a-80a9-9072-b9aa-3040fa54db4c",
+    "code": 400,
+    "message": "400 - LLM Module: Model 'anthropic--claude-4.5-haiku' only supports PDF documents. Please provide a valid PDF file.",
+    "location": "LLM Module",
+    "intermediate_results": { /*...*/ }
+  }
+}
+```
+
+Response for unsupported MIME type (gemini).
+
+```json5
+{
+  "error": {
+    "request_id": "7a4a3f19-643a-94dd-8b72-f83b1bcb5544",
+    "code": 400,
+    "message": "400 - LLM Module: Unable to submit request because it has a mimeType parameter with value xx, which is not supported. Update the mimeType and try again. Learn more: https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/gemini",
+    "location": "LLM Module",
+    "intermediate_results": { /*...*/ }
+  }
+}
+```
+
+</details>
+
 Other formats (e.g. plain base64 without the `data:` prefix, or data URIs with an empty MIME type) are rejected.
 
 The required format is:
@@ -51,7 +113,7 @@ client.chatCompletion({
 This is error-prone and requires knowledge that the SDK could encapsulate:
 
 - The RFC 2397 prefix and the MIME type are mandatory; missing or empty MIME types are rejected by the service.
-- Long MIME types (e.g. for DOCX) are easy to mistype.
+- Long MIME types (e.g. `application/vnd.openxmlformats-officedocument.wordprocessingml.document` for DOCX) are easy to mistype.
 
 Image inputs are already reasonably ergonomic (`image_url.url` is a plain string) and are not the primary focus of this ADR.
 
@@ -69,7 +131,9 @@ In addition, (input) masking currently only supports PDF.
 | mistral-medium   | ❌  | ❌  |  ❌  | ❌  |
 
 Helpful links:
+
 <!-- vale off -->
+
 - [OpenAI Responses SDK-API for PDF](https://developers.openai.com/api/docs/guides/pdf-files/#uploading-files)
 - [Langchain PDF input](https://docs.langchain.com/oss/javascript/langchain/messages#multimodal)
 - [Vercel AI SDK PDF input](https://ai-sdk.dev/providers/ai-sdk-providers/openai#pdf-support)
@@ -79,6 +143,24 @@ Helpful links:
 ## Proposed Decision
 
 Accept a structured `{ data: string; mimeType: string }` shape for `file_data` in the SDK (Option D) and serialize it to the required RFC 2397 data URI string at request-construction time.
+
+### Type Definitions
+
+```ts
+interface FileData {
+  data: string; // Base64-encoded file content, potentiall also allow raw binary types like `Buffer` as returned by `fs.readFile` in Node.js
+  mimeType: string; // RFC 2045 MIME type (e.g., 'application/pdf')
+}
+
+interface FileContent {
+  // RFC 2397 data URI string or structured FileData object
+  file_data: string | FileData; 
+  // Some models require a filename
+  // Orchestration will generate one if not provided
+  // We should document that providing a filename is recommended.
+  filename?: string; 
+}
+```
 
 Optionally add SDK helpers as follow-ups:
 
@@ -111,6 +193,7 @@ This would be a best-effort heuristic and would require a fallback (e.g. default
 - Does not require new input types or helpers.
 
 **Cons:**
+
 - Content-type sniffing can be unreliable and may lead to incorrect types, especially for non-binary files (CSV).
 - Increases implementation complexity for a format the service currently rejects.
 
@@ -155,6 +238,7 @@ client.chatCompletion({
 - Still needs base64 encoding in the SDK
 - Manual content-type management when creating `File`/`Blob` instances, easy to forget or get wrong.
 - Also requires validation and helpful error messages for missing/empty MIME types.
+- Users will need to know correct MIME types
 
 ---
 
@@ -194,6 +278,10 @@ client.chatCompletion({
 
 - Still requires manual file reading + base64.
 - Orchestration service explicitly did not implement this API shape.
+- Users will need to know correct MIME types
+
+**Alternative**: Support `format` propertiy with common file types (e.g. `pdf`, `csv`, `docx`, `mp3`) and infer MIME types internally.
+
 
 ---
 
@@ -223,7 +311,6 @@ const file = await fileContentFromPath('./data.bin', {
   mimeType: 'application/pdf',
   filename: 'report.pdf'
 });
-
 ```
 
 **Alternative**: Build full `file` message content.
@@ -273,6 +360,7 @@ client.chatCompletion({
 - Eliminates RFC 2397 formatting errors
 
 **Cons:**
+
 - Users still read + base64-encode the file.
 - Discoverability.
 - Does not prevent misuse of the underlying `file_data` field with incorrect formats.
