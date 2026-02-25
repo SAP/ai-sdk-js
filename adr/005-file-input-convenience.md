@@ -138,6 +138,10 @@ Helpful links:
 - [Langchain PDF input](https://docs.langchain.com/oss/javascript/langchain/messages#multimodal)
 - [Vercel AI SDK PDF input](https://ai-sdk.dev/providers/ai-sdk-providers/openai#pdf-support)
 - Other providers mostly split base64 encoding and MIME type management into separate properties, without requiring users to manually construct data URIs.
+- [RFC 2397 - The "data" URL scheme](https://datatracker.ietf.org/doc/html/rfc2397)
+- [RFC 6838 - Media Types](https://datatracker.ietf.org/doc/html/rfc6838)
+- [MDN Web Docs - Data URLs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs)
+- [MDN Web Docs - MIME types](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)
 <!-- vale on -->
 
 ## Proposed Decision
