@@ -64,10 +64,10 @@ function mergeIntermediateFailures(
 
   // Deduplicate messages with structural equality checks
   const existingSet = new Set(
-    existing.map(f => JSON.stringify(Object.entries(f).sort()))
+    existing.map(f => JSON.stringify([f.request_id, f.code, f.message]))
   );
   const newFailures = transformedIncoming.filter(
-    f => !existingSet.has(JSON.stringify(Object.entries(f).sort()))
+    f => !existingSet.has(JSON.stringify([f.request_id, f.code, f.message]))
   );
   return [...existing, ...newFailures];
 }

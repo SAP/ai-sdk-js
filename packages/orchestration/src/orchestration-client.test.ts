@@ -1572,7 +1572,7 @@ describe('orchestration service client', () => {
         overrides: [
           { promptTemplating: { include_usage: true } },
           { promptTemplating: { include_usage: false } }
-        ] as any
+        ]
       };
 
       mockInference(

@@ -423,6 +423,20 @@ describe('addStreamOptions with module fallback configs', () => {
     expect(result.stream).toEqual({ enabled: true, chunk_size: 100 });
   });
 
+  it('should throw when overrides are provided for a single module config', () => {
+    const config = createModuleConfig('gpt-4o');
+    const streamOptions: StreamOptions = {
+      overrides: {
+        0: { promptTemplating: { include_usage: true } }
+      }
+    };
+
+    // @ts-expect-error overrides are not supported for single configs
+    expect(() => addStreamOptions(config, streamOptions)).toThrow(
+      'Overrides in stream options are not supported when a single module configuration is provided.'
+    );
+  });
+
   it('should warn only once when output filtering options are set but no config has filtering', () => {
     const logger = createLogger({
       package: 'orchestration',

@@ -399,7 +399,9 @@ export interface BaseStreamOptions {
 
 /**
  * Stream options with support for per-config overrides in module fallback scenarios.
- * The `overrides` property allows you to specify stream options that apply to specific module configurations by their index in the fallback list. If an override is not provided for a config, it will use the shared options defined in `BaseStreamOptions`.
+ * The `overrides` property allows you to specify stream options that apply to specific module configurations by their index in the fallback list.
+ * If an override is not provided for a config, it will use the shared options defined in `BaseStreamOptions`.
+ * Overrides do not merge with shared options.
  */
 export type StreamOptionsWithOverrides = Omit<
   BaseStreamOptions,
@@ -416,9 +418,9 @@ export type StreamOptionsWithOverrides = Omit<
    *   global: { chunk_size: 100 },
    *   promptTemplating: { include_usage: false },
    *   overrides: {
-   *     0: { promptTemplating: { include_usage: true } },  // config 0
-   *     // 1: uses base configuration
-   *     2: { outputFiltering: { overlap: 50 } }            // config 2
+   *     0: { promptTemplating: { include_usage: true } },  // config 0, replaces base options fully
+   *     // 1: resolves base options because no override is provided (`{ promptTemplating: { include_usage: false } }`)
+   *     2: { outputFiltering: { overlap: 50 } }            // config 2, replaces base options fully
    *   }
    * };
    * ```

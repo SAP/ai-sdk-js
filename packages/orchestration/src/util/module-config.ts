@@ -277,7 +277,7 @@ export function addStreamOptions(
     : [moduleConfigs];
 
   if (!Array.isArray(moduleConfigs) && streamOptions?.overrides) {
-    logger.warn(
+    throw new Error(
       'Overrides in stream options are not supported when a single module configuration is provided.'
     );
   }
