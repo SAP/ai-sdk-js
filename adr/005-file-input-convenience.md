@@ -134,7 +134,7 @@ Helpful links:
 
 <!-- vale off -->
 
-- [OpenAI Responses SDK-API for PDF](https://developers.openai.com/api/docs/guides/pdf-files/#uploading-files)
+- [OpenAI Responses SDK-API for PDF](https://developers.openai.com/api/docs/guides/file-inputs#uploading-files)
 - [Langchain PDF input](https://docs.langchain.com/oss/javascript/langchain/messages#multimodal)
 - [Vercel AI SDK PDF input](https://ai-sdk.dev/providers/ai-sdk-providers/openai#pdf-support)
 - Other providers mostly split base64 encoding and MIME type management into separate properties, without requiring users to manually construct data URIs.
