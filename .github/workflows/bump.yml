@@ -31,6 +31,13 @@ jobs:
         uses: sap/cloud-sdk-js/.github/actions/merge-and-write-changelogs@main
         env:
           VERSION: ${{ steps.bump.outputs.version }}
+      - name: Update DOCUMENTATION.md and generate API docs
+        run: |
+          pnpm node --loader ts-node/esm scripts/update-documentation-md.ts
+          pnpm generate
+          pnpm doc
+        env:
+          version: ${{ steps.bump.outputs.version }}
       - uses: sap/cloud-sdk-js/.github/actions/commit-and-tag@main
         name: Commit and tag
         with:
