@@ -93,6 +93,7 @@ import { readFile } from 'node:fs/promises';
 
 const base64 = await readFile('./document.pdf', 'base64');
 const fileData = `data:application/pdf;base64,${base64}`;
+const httpFile = 'https://example.com/document.pdf';
 
 client.chatCompletion({
   messages: [
@@ -103,6 +104,10 @@ client.chatCompletion({
         {
           type: 'file',
           file: { file_data: fileData, filename: 'document.pdf' }
+        },
+        {
+          type: 'file',
+          file: { file_data: httpFile, filename: 'document.pdf' }
         }
       ]
     }
@@ -146,30 +151,90 @@ Helpful links:
 
 ## Proposed Decision
 
-Accept a structured `{ data: string; mimeType: string }` shape for `file_data` in the SDK (Option D) and serialize it to the required RFC 2397 data URI string at request-construction time.
+Based on Option D, accept a discriminated union of either a base64 string or `Buffer` with an explicit MIME type, or a URL (either a data URI or a public HTTPS URL).
+The SDK will handle assembling the data URI for base64 inputs, and require users to make a conscious choice about whether to provide a URL or base64 content with a MIME type.
 
 ### Type Definitions
 
 ```ts
-interface FileData {
-  data: string; // Base64-encoded file content, potentiall also allow raw binary types like `Buffer` as returned by `fs.readFile` in Node.js
-  mimeType: string; // RFC 2045 MIME type (e.g., 'application/pdf')
+interface FileContentBase {
+  filename?: string; // optional filename for both URL and base64 inputs
 }
 
-interface FileContent {
-  // RFC 2397 data URI string or structured FileData object
-  file_data: string | FileData; 
-  // Some models require a filename
-  // Orchestration will generate one if not provided
-  // We should document that providing a filename is recommended.
-  filename?: string; 
+interface FileUrlContent extends FileContentBase {
+  type: 'url';
+  url: string; // RFC 2397 data URI or public HTTPS URL
+  mimeType?: never; // explicitly disallow MIME type for URLs, since it's not required or supported by the service
 }
+
+interface FileBase64Content extends FileContentBase {
+  type: 'base64';
+  data: string | Buffer; // Either a base64 string or raw binary data (e.g. Buffer in Node.js). The SDK will handle encoding to base64 and assembling the data URI.
+  mimeType: string; // required for base64 content
+}
+
+// Future:
+// interface FileS3Content extends FileContentBase {
+//   type: 's3';
+//   bucket: string;
+//   key: string;
+//   region?: string;
+//   mimeType: string;
+// }
+
+type FileContentInput = FileUrlContent | FileBase64Content;
 ```
 
 Optionally add SDK helpers as follow-ups:
 
 - `buildFileContent(base64, mimeType, filename?)` (Option F), as a lightweight convenience wrapper around Option D.
 - `fileContentFromPath(path, options?)` (Option E) as a Node.js-only helper, isolated from the main ESM entry point.
+
+Example usage:
+
+```ts
+import { readFile } from 'node:fs/promises';
+
+// Raw readFile with base64 FileContentInput
+const fileContent: FileContentInput = {
+  type: 'base64',
+  data: await readFile('./document.pdf'),
+  mimeType: 'application/pdf',
+  filename: 'document.pdf'
+};
+
+// Provide base64 string directly, SDK handles data URI assembly
+const fileContentBase64: FileContentInput = {
+  type: 'base64',
+  data: await readFile('./document.pdf', 'base64'),
+  mimeType: 'application/pdf',
+  filename: 'document.pdf'
+};
+
+// URL input
+const fileContentUrl: FileContentInput = {
+  type: 'url',
+  url: 'https://example.com/document.pdf',
+  filename: 'document.pdf'
+};
+
+// Or manual data URI if users want to construct it themselves
+const fileContentDataUri: FileContentInput = {
+  type: 'url',
+  url: 'data:application/pdf;base64,BASE64_ENCODED_DATA_HERE',
+};
+
+client.chatCompletion({
+  messages: [
+    {
+      role: 'user',
+      content: [
+        { type: 'text', text: 'Summarise this document.' },
+        { type: 'file', file: fileContent }
+      ]
+    }
+  ]
+```
 
 ## Discussion
 
@@ -285,7 +350,6 @@ client.chatCompletion({
 - Users will need to know correct MIME types
 
 **Alternative**: Support `format` propertiy with common file types (e.g. `pdf`, `csv`, `docx`, `mp3`) and infer MIME types internally.
-
 
 ---
 
