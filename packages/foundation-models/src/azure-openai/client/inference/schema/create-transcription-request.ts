@@ -12,7 +12,7 @@ export type AzureOpenAiCreateTranscriptionRequest = {
    * The audio file object to transcribe.
    * Format: "binary".
    */
-  file: string;
+  file: Blob;
   /**
    * An optional text to guide the model's style or continue a previous audio segment. The prompt should match the audio language.
    */

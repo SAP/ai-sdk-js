@@ -33,8 +33,8 @@ export const RepositoryApi = {
       'get',
       '/admin/repositories',
       {
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       RepositoryApi._defaultBasePath
     ),
@@ -53,7 +53,10 @@ export const RepositoryApi = {
       '/admin/repositories',
       {
         body,
-        headerParameters
+        headerParameters: {
+          'content-type': 'application/json',
+          ...headerParameters
+        }
       },
       RepositoryApi._defaultBasePath
     ),
@@ -95,7 +98,10 @@ export const RepositoryApi = {
       {
         pathParameters: { repositoryName },
         body,
-        headerParameters
+        headerParameters: {
+          'content-type': 'application/json',
+          ...headerParameters
+        }
       },
       RepositoryApi._defaultBasePath
     ),
