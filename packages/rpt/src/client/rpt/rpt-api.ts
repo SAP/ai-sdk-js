@@ -45,6 +45,13 @@ export const RptApi = {
       {
         body,
         _encoding: {
+          file: {
+            contentType: 'application/octet-stream',
+            isImplicit: true,
+            parsedContentTypes: [
+              { parameters: {}, type: 'application/octet-stream' }
+            ]
+          },
           prediction_config: {
             contentType: 'application/json',
             isImplicit: true,
@@ -59,13 +66,6 @@ export const RptApi = {
             contentType: 'text/plain',
             isImplicit: true,
             parsedContentTypes: [{ parameters: {}, type: 'text/plain' }]
-          },
-          file: {
-            contentType: 'application/vnd.apache.parquet',
-            isImplicit: false,
-            parsedContentTypes: [
-              { parameters: {}, type: 'application/vnd.apache.parquet' }
-            ]
           }
         },
         headerParameters: { 'content-type': 'multipart/form-data' }
