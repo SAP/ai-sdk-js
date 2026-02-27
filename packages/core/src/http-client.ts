@@ -29,7 +29,8 @@ export type CustomRequestConfig = Pick<
   | 'httpsAgent'
   | 'parameterEncoder'
   | 'signal'
-> & Record<string, any>;
+> &
+  Record<string, any>;
 
 /**
  * The options to call an endpoint.
