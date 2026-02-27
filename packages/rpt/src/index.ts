@@ -2,7 +2,9 @@ export * from './client.js';
 export type {
   DateString,
   PredictionData,
-  PredictionOptionsParquet
+  PredictionOptionsParquet,
+  RptRequestOptions,
+  RptRequestCompressionMiddlewareOptions
 } from './types.js';
 export type {
   PredictResponseMetadata,

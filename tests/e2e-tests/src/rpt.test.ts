@@ -1,5 +1,6 @@
 import {
   predictWithSchema,
+  predictWithSchemaCompressed,
   predictAutomaticParsing,
   predictParquetBlob,
   predictParquetFile
@@ -43,6 +44,12 @@ describe('rpt', () => {
 
   it('should predict sales groups from Parquet file [File]', async () => {
     const { predictions } = await predictParquetFile();
+    verifyPredictions(predictions);
+  });
+
+  it('should predict sales groups with gzip compression', async () => {
+    const { predictions } = await predictWithSchemaCompressed();
+
     verifyPredictions(predictions);
   });
 });

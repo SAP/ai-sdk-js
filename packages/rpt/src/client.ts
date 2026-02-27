@@ -2,11 +2,13 @@ import {
   getFoundationModelDeploymentId,
   getResourceGroup
 } from '@sap-ai-sdk/ai-api/internal.js';
+import { compress as compressMiddleware } from '@sap-cloud-sdk/http-client';
 import { type PredictionConfig, RptApi } from './internal.js';
-import {
-  type DataSchema,
-  type PredictionData,
-  type PredictionOptionsParquet
+import type {
+  DataSchema,
+  PredictionData,
+  RptRequestOptions,
+  PredictionOptionsParquet
 } from './types.js';
 import type {
   PredictRequestPayload,
@@ -37,25 +39,29 @@ export class RptClient {
    * Prefer using this method when the data schema is known.
    * @param dataSchema - Prediction data follows this schema. When using TypeScript, the data schema type is used to infer the types of the prediction data. In that case, the data schema must be provided as a constant (`as const`).
    * @param predictionData - Data to base prediction on.
+   * @param requestConfig - Custom request configuration.
    * @returns Prediction response.
    */
   async predictWithSchema<const T extends DataSchema>(
     dataSchema: T,
-    predictionData: PredictionData<T>
+    predictionData: PredictionData<T>,
+    requestConfig: RptRequestOptions = {}
   ): Promise<PredictResponsePayload> {
-    return this.executePrediction(predictionData, dataSchema);
+    return this.executePrediction(predictionData, dataSchema, requestConfig);
   }
 
   /**
    * Predict based on prediction data with data schema inferred.
    * Prefer using `predictWithSchema` when the data schema is known.
    * @param predictionData - Data to base prediction on.
+   * @param requestConfig - Custom request configuration.
    * @returns Prediction response.
    */
   async predictWithoutSchema(
-    predictionData: PredictionData<DataSchema>
+    predictionData: PredictionData<DataSchema>,
+    requestConfig: RptRequestOptions = {}
   ): Promise<PredictResponsePayload> {
-    return this.executePrediction(predictionData);
+    return this.executePrediction(predictionData, undefined, requestConfig);
   }
 
   /**
@@ -66,12 +72,14 @@ export class RptClient {
    * @param options - Additional options for the prediction.
    * @param options.index_column - Name of the index column in the Parquet file.
    * @param options.parseDataTypes - Whether to parse data types from the Parquet file.
+   * @param requestConfig - Custom request configuration. Compression options will be ignored for this method, as Parquet files are already in a compressed format.
    * @returns Prediction response.
    */
   async predictParquet(
     parquetData: Blob | File,
     predictionConfig: PredictionConfig,
-    options?: PredictionOptionsParquet
+    options?: PredictionOptionsParquet,
+    requestConfig: Omit<RptRequestOptions, 'compress'> = {}
   ): Promise<PredictResponsePayload> {
     // Validate that parquetData is of type Blob
     // JavaScript has a few Blob-like types for binary data (e.g., Buffer, ArrayBuffer, etc.) which
@@ -104,6 +112,7 @@ export class RptClient {
       .addCustomHeaders({
         'ai-resource-group': resourceGroup || 'default'
       })
+      .addCustomRequestConfiguration(requestConfig)
       .execute(this.destination);
   }
 
@@ -111,11 +120,13 @@ export class RptClient {
    * Predict based on data schema and prediction data.
    * @param predictionData - Data to base prediction on.
    * @param dataSchema - Prediction data follows this schema.
+   * @param requestConfig - Custom request configuration.
    * @returns Prediction response.
    */
   private async executePrediction<const T extends DataSchema>(
     predictionData: PredictionData<T>,
-    dataSchema?: T
+    dataSchema?: T,
+    requestConfig: RptRequestOptions = {}
   ): Promise<PredictResponsePayload> {
     const { resourceGroup, deploymentId } =
       await this.getResourceGroupAndDeploymentId();
@@ -132,9 +143,19 @@ export class RptClient {
       ...predictionData
     } satisfies PredictRequestPayload;
 
+    const { compress, ...customRequestConfig } = requestConfig;
+
+    if (compress?.mode !== 'never') {
+      customRequestConfig.middleware = [
+        compressMiddleware(compress),
+        ...(customRequestConfig.middleware || [])
+      ];
+    }
+
     return RptApi.predict(body)
       .setBasePath(`/inference/deployments/${deploymentId}`)
       .addCustomHeaders({ 'ai-resource-group': resourceGroup || 'default' })
+      .addCustomRequestConfiguration(customRequestConfig)
       .execute(this.destination);
   }
 
