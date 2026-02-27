@@ -936,3 +936,34 @@ export async function orchestrationWithFallbackConfigs(): Promise<OrchestrationR
     ]
   });
 }
+
+/**
+ * Use multiple orchestration module configurations with module fallback and streaming.
+ * @returns The orchestration stream response.
+ */
+export async function orchestrationStreamWithFallbackConfigs(): Promise<
+  OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
+> {
+  const orchestrationClient = new OrchestrationClient([
+    {
+      promptTemplating: {
+        model: {
+          name: 'non-existent-model'
+        }
+      }
+    },
+    // In the streaming scenario, timeouts will not trigger module fallback.
+    // Therefore, this is not tested in this example.
+    {
+      promptTemplating: {
+        model: {
+          name: 'gpt-5-mini'
+        }
+      }
+    }
+  ]);
+
+  return orchestrationClient.stream({
+    messages: [{ role: 'user', content: 'Give me a short introduction.' }]
+  });
+}
