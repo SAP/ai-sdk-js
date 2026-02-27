@@ -38,8 +38,8 @@ export const OrchestrationConfigsApi = {
       'get',
       '/registry/v2/orchestrationConfigs',
       {
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       OrchestrationConfigsApi._defaultBasePath
     ),
@@ -58,7 +58,10 @@ export const OrchestrationConfigsApi = {
       '/registry/v2/orchestrationConfigs',
       {
         body,
-        headerParameters
+        headerParameters: {
+          'content-type': 'application/json',
+          ...headerParameters
+        }
       },
       OrchestrationConfigsApi._defaultBasePath
     ),
@@ -86,8 +89,8 @@ export const OrchestrationConfigsApi = {
       '/registry/v2/scenarios/{scenario}/orchestrationConfigs/{name}/versions/{version}/history',
       {
         pathParameters: { scenario, version, name },
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       OrchestrationConfigsApi._defaultBasePath
     ),
@@ -108,8 +111,8 @@ export const OrchestrationConfigsApi = {
       '/registry/v2/orchestrationConfigs/{orchestrationConfigId}',
       {
         pathParameters: { orchestrationConfigId },
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       OrchestrationConfigsApi._defaultBasePath
     ),
@@ -139,7 +142,14 @@ export const OrchestrationConfigsApi = {
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   importOrchestrationConfig: (
-    body: any | undefined,
+    body:
+      | ({
+          /**
+           * Format: "binary".
+           */
+          file?: Blob;
+        } & Record<string, any>)
+      | undefined,
     headerParameters?: { 'AI-Resource-Group'?: string }
   ) =>
     new OpenApiRequestBuilder<OrchestrationConfigPostResponse>(
@@ -147,7 +157,19 @@ export const OrchestrationConfigsApi = {
       '/registry/v2/orchestrationConfigs/import',
       {
         body,
-        headerParameters
+        _encoding: {
+          file: {
+            contentType: 'application/octet-stream',
+            isImplicit: true,
+            parsedContentTypes: [
+              { parameters: {}, type: 'application/octet-stream' }
+            ]
+          }
+        },
+        headerParameters: {
+          'content-type': 'multipart/form-data',
+          ...headerParameters
+        }
       },
       OrchestrationConfigsApi._defaultBasePath
     ),
@@ -161,7 +183,7 @@ export const OrchestrationConfigsApi = {
     orchestrationConfigId: string,
     headerParameters?: { 'AI-Resource-Group'?: string }
   ) =>
-    new OpenApiRequestBuilder<string>(
+    new OpenApiRequestBuilder<Blob>(
       'get',
       '/registry/v2/orchestrationConfigs/{orchestrationConfigId}/export',
       {

@@ -46,8 +46,8 @@ export const ArtifactApi = {
       'get',
       '/lm/artifacts',
       {
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       ArtifactApi._defaultBasePath
     ),
@@ -66,7 +66,10 @@ export const ArtifactApi = {
       '/lm/artifacts',
       {
         body,
-        headerParameters
+        headerParameters: {
+          'content-type': 'application/json',
+          ...headerParameters
+        }
       },
       ArtifactApi._defaultBasePath
     ),
@@ -87,8 +90,8 @@ export const ArtifactApi = {
       '/lm/artifacts/{artifactId}',
       {
         pathParameters: { artifactId },
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       ArtifactApi._defaultBasePath
     ),
@@ -117,8 +120,8 @@ export const ArtifactApi = {
       'get',
       '/lm/artifacts/$count',
       {
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       ArtifactApi._defaultBasePath
     )
