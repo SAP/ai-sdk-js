@@ -20,7 +20,9 @@ import type {
   OrchestrationConfigRef,
   OrchestrationStreamResponse,
   OrchestrationStreamChunkResponse,
-  OrchestrationModuleConfigList
+  OrchestrationModuleConfigList,
+  StreamOptions,
+  ModuleStreamOptions
 } from '@sap-ai-sdk/orchestration';
 import type {
   CompletionPostResponse,
@@ -764,4 +766,152 @@ expectType<
       }
     }
   ]).stream()
+);
+
+/**
+ * StreamOptions type with object overrides.
+ */
+expectAssignable<StreamOptions>({
+  global: { chunk_size: 100 },
+  promptTemplating: { include_usage: false },
+  overrides: {
+    0: { promptTemplating: { include_usage: true } }
+  }
+});
+
+/**
+ * StreamOptions type with array overrides.
+ */
+expectAssignable<StreamOptions>({
+  global: { chunk_size: 100 },
+  promptTemplating: { include_usage: false },
+  overrides: [{ promptTemplating: { include_usage: true } }]
+});
+
+/**
+ * StreamOptions with non-integer keys in overrides should be an error.
+ */
+expectError<StreamOptions>({
+  global: { chunk_size: 100 },
+  overrides: {
+    'not-a-number': { promptTemplating: { include_usage: true } }
+  }
+});
+
+/**
+ * StreamOptions can have only base properties without overrides/global.
+ */
+expectAssignable<StreamOptions>({
+  promptTemplating: { include_usage: true }
+});
+
+/**
+ * StreamOptions can have only overrides.
+ */
+expectAssignable<StreamOptions>({
+  overrides: {
+    0: { promptTemplating: { include_usage: true } },
+    1: { outputFiltering: { overlap: 50 } }
+  }
+});
+
+/**
+ * StreamOptions overrides cannot have global property.
+ */
+expectError<StreamOptions>({
+  overrides: [{ global: { chunk_size: 100 } }]
+});
+
+expectError<ModuleStreamOptions>({
+  global: { chunk_size: 100 },
+  promptTemplating: { include_usage: true }
+});
+
+/**
+ * Streaming with single config and single stream options.
+ */
+expectType<
+  Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>>
+>(
+  new OrchestrationClient({
+    promptTemplating: {
+      model: { name: 'gpt-4o' },
+      prompt: { template: [{ role: 'user', content: 'Hello' }] }
+    }
+  }).stream({}, undefined, {
+    global: { chunk_size: 100 },
+    promptTemplating: { include_usage: true }
+  })
+);
+
+/**
+ * Streaming with module fallback configs and StreamOptions.
+ */
+expectType<
+  Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>>
+>(
+  new OrchestrationClient([
+    {
+      promptTemplating: {
+        model: { name: 'gpt-4o' },
+        prompt: { template: [{ role: 'user', content: 'Primary' }] }
+      }
+    },
+    {
+      promptTemplating: {
+        model: { name: 'gpt-5-mini' },
+        prompt: { template: [{ role: 'user', content: 'Fallback' }] }
+      }
+    }
+  ]).stream({}, undefined, {
+    global: { chunk_size: 100 },
+    promptTemplating: { include_usage: false },
+    overrides: {
+      0: { promptTemplating: { include_usage: true } }
+    }
+  })
+);
+
+/**
+ * Streaming with module fallback configs and array-based overrides.
+ */
+expectType<
+  Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>>
+>(
+  new OrchestrationClient([
+    {
+      promptTemplating: {
+        model: { name: 'gpt-4o' },
+        prompt: { template: [{ role: 'user', content: 'Primary' }] }
+      }
+    },
+    {
+      promptTemplating: {
+        model: { name: 'gpt-5-mini' },
+        prompt: { template: [{ role: 'user', content: 'Fallback' }] }
+      }
+    }
+  ]).stream({}, undefined, {
+    global: { chunk_size: 100 },
+    overrides: [
+      { promptTemplating: { include_usage: true } },
+      { promptTemplating: { include_usage: false } }
+    ] as any
+  })
+);
+
+/**
+ * GetIntermediateFailures() method on OrchestrationResponse.
+ */
+expectType<OrchestrationError[] | undefined>(
+  (
+    await new OrchestrationClient([
+      {
+        promptTemplating: {
+          model: { name: 'gpt-4o' },
+          prompt: { template: [{ role: 'user', content: 'Test' }] }
+        }
+      }
+    ]).chatCompletion()
+  ).getIntermediateFailures()
 );
