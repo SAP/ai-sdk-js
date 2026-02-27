@@ -26,7 +26,9 @@ export {
   orchestrationTranslation,
   orchestrationEmbeddingWithMasking,
   OrchestrationConfigRef,
-  orchestrationWithFallbackConfigs
+  orchestrationWithFallbackConfigs,
+  orchestrationSonarWithCitations,
+  orchestrationSonarStreamWithCitations
 } from './orchestration.js';
 export {
   invoke,

@@ -8,7 +8,8 @@ import type {
   LlmChoice,
   MessageToolCalls,
   ModuleResults,
-  TokenUsage
+  TokenUsage,
+  Citation
 } from './client/api/schema/index.js';
 import type { OrchestrationStream } from './orchestration-stream.js';
 
@@ -170,6 +171,18 @@ export class OrchestrationStreamResponse<T> {
       return;
     }
     return this._data.intermediate_results;
+  }
+
+  /**
+   * Gets the citations from the orchestration response.
+   * Citations are returned by models like Perplexity Sonar that provide source references.
+   * @returns The citations, or undefined if there are none.
+   */
+  getCitations(): Citation[] | undefined {
+    if (this.isStreamOpen()) {
+      return;
+    }
+    return this._data.final_result?.citations;
   }
 
   /**

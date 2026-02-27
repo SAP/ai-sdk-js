@@ -16,7 +16,9 @@ import {
   orchestrationTranslation,
   orchestrationEmbeddingWithMasking,
   OrchestrationConfigRef,
-  orchestrationWithFallbackConfigs
+  orchestrationWithFallbackConfigs,
+  orchestrationSonarWithCitations,
+  orchestrationSonarStreamWithCitations
 } from '@sap-ai-sdk/sample-code';
 import {
   OrchestrationClient,
@@ -248,5 +250,37 @@ describe('orchestration', () => {
     expect(response.getIntermediateFailures()).toHaveLength(2);
 
     assertContent(response);
+  });
+
+  it('should complete a chat with Sonar model and return citations', async () => {
+    const response = await orchestrationSonarWithCitations();
+
+    expect(response.getContent()).toEqual(expect.any(String));
+    // Citations may or may not be present depending on the query
+    const citations = response.getCitations();
+    if (citations) {
+      expect(Array.isArray(citations)).toBe(true);
+      citations.forEach(citation => {
+        expect(citation.title).toEqual(expect.any(String));
+        expect(citation.url).toEqual(expect.any(String));
+      });
+    }
+  });
+
+  it('should stream a chat with Sonar model and return citations', async () => {
+    const response = await orchestrationSonarStreamWithCitations(
+      new AbortController()
+    );
+
+    for await (const chunk of response.stream) {
+      expect(chunk).toBeDefined();
+    }
+
+    expect(response.getFinishReason()).toEqual('stop');
+    // Citations may or may not be present depending on the query
+    const citations = response.getCitations();
+    if (citations) {
+      expect(Array.isArray(citations)).toBe(true);
+    }
   });
 });

@@ -31,7 +31,8 @@ import {
   orchestrationTranslation,
   orchestrationEmbeddingWithMasking,
   orchestrationSapAbapChatCompletion,
-  orchestrationWithFallbackConfigs
+  orchestrationWithFallbackConfigs,
+  orchestrationSonarWithCitations
 } from './orchestration.js';
 import {
   getDeployments,
@@ -293,7 +294,8 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       translation: orchestrationTranslation,
       embeddingWithMasking: orchestrationEmbeddingWithMasking,
       sapAbap: orchestrationSapAbapChatCompletion,
-      fallbackModules: orchestrationWithFallbackConfigs
+      fallbackModules: orchestrationWithFallbackConfigs,
+      sonarWithCitations: orchestrationSonarWithCitations
     }[sampleCase] || orchestrationChatCompletion;
 
   try {
@@ -336,6 +338,20 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
         .send(
           `Fallback modules executed successfully.\nIntermediate Failures: ${JSON.stringify(intermediateFailures, null, 2)}\nFinal Content: ${content}`
         );
+    } else if (sampleCase === 'sonarWithCitations') {
+      const sonarResult = result as OrchestrationResponse;
+      const content = sonarResult.getContent();
+      const citations = sonarResult.getCitations();
+      let response = `Response: ${content}\n\n`;
+      if (citations && citations.length > 0) {
+        response += 'Citations:\n';
+        citations.forEach(citation => {
+          response += `  [${citation.ref_id ?? ''}] ${citation.title}: ${citation.url}\n`;
+        });
+      } else {
+        response += 'No citations found in the response.\n';
+      }
+      res.header('Content-Type', 'text/plain').send(response);
     } else {
       res
         .header('Content-Type', 'text/plain')
