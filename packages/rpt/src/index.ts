@@ -1,7 +1,8 @@
 export * from './client.js';
 export type {
-  PredictionData,
   DateString,
+  PredictionData,
+  PredictionOptionsParquet,
   RptRequestOptions,
   RptRequestCompressionMiddlewareOptions
 } from './types.js';

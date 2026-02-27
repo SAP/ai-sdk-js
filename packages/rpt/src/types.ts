@@ -1,9 +1,9 @@
 import type { Xor } from '@sap-cloud-sdk/util';
-import type { ColumnType, SchemaFieldConfig } from './client/rpt/index.js';
 import type {
   CustomRequestConfig,
   RequestCompressionMiddlewareOptions
 } from '@sap-cloud-sdk/http-client';
+import type { ColumnType, SchemaFieldConfig } from './client/rpt/index.js';
 
 /**
  * Represents a string literal type that includes all column names from the data schema.
@@ -152,4 +152,19 @@ export interface RptRequestOptions extends CustomRequestConfig {
    * Compression will be disabled if custom middlewares are provided in the destination or fetch options.
    */
   compress?: RptRequestCompressionMiddlewareOptions;
+}
+
+/**
+ * Options for Parquet-based predictions.
+ */
+export interface PredictionOptionsParquet {
+  /**
+   * The name of the index column. If provided, the service will return this column's value in each prediction object to facilitate aligning the output predictions with the input rows on the client side. If not provided, the column will not be included in the output.
+   */
+  index_column?: string;
+  /**
+   * Whether to parse the data types of the columns. If set to true, numeric columns will be parsed to float or integer and dates in ISO format YYYY-MM-DD will be parsed.
+   * Default: true.
+   */
+  parse_data_types?: boolean;
 }

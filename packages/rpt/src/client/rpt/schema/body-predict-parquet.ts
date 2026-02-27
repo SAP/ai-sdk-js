@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-
+import type { PredictionConfig } from './prediction-config.js';
 /**
  * Representation of the 'BodyPredictParquet' schema.
  */
@@ -13,10 +13,7 @@ export type BodyPredictParquet = {
    * Format: "binary".
    */
   file: Blob;
-  /**
-   * JSON string for prediction_config
-   */
-  prediction_config: string;
+  prediction_config: PredictionConfig;
   /**
    * Optional index column name
    */

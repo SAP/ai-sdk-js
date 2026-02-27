@@ -73,5 +73,7 @@ export {
 export {
   predictWithSchema,
   predictAutomaticParsing,
+  predictParquetFile,
+  predictParquetBlob,
   predictWithSchemaCompressed
 } from './rpt.js';
