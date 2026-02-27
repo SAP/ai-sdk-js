@@ -1,9 +1,9 @@
 import type { Xor } from '@sap-cloud-sdk/util';
 import type { ColumnType, SchemaFieldConfig } from './client/rpt/index.js';
-import type { CustomRequestConfig } from '@sap-cloud-sdk/http-client';
-import type { RequestCompressionMiddlewareOptions } from './vendor/index.js';
-
-export type { RequestCompressionMiddlewareOptions } from './vendor/index.js';
+import type {
+  CustomRequestConfig,
+  RequestCompressionMiddlewareOptions
+} from '@sap-cloud-sdk/http-client';
 
 /**
  * Represents a string literal type that includes all column names from the data schema.

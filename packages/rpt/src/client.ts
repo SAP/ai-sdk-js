@@ -2,8 +2,8 @@ import {
   getFoundationModelDeploymentId,
   getResourceGroup
 } from '@sap-ai-sdk/ai-api/internal.js';
+import { compress as compressMiddleware } from '@sap-cloud-sdk/http-client';
 import { RptApi } from './internal.js';
-import { compress as compressMiddleware } from './vendor/index.js';
 import type { DataSchema, PredictionData, RptRequestOptions } from './types.js';
 import type {
   PredictRequestPayload,

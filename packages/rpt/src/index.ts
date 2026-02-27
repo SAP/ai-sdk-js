@@ -10,4 +10,3 @@ export type {
   PredictResponsePayload,
   PredictResponseStatus
 } from './client/rpt/schema/index.js';
-export type { RequestCompressionMiddlewareOptions } from './vendor/index.js';
