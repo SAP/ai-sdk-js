@@ -244,7 +244,7 @@
         }
       }
     },
-    "value" : 6.870406189555125,
+    "value" : 5.391021072991958,
     "weight" : 1.0,
     "confidence" : 9.645390070921986,
     "usedValues" : [ {
@@ -501,7 +501,7 @@
           }
         }
       },
-      "value" : 9.09090909090909,
+      "value" : 6.937799043062201,
       "weight" : 1.0,
       "confidence" : 10.0,
       "usedValues" : [ {
@@ -555,7 +555,7 @@
               "name" : "A set of programming languages"
             },
             "languages" : {
-              "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
+              "elements" : [ "PYTHON", "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
             },
             "explanation" : [ ]
           } ],
@@ -608,7 +608,7 @@
               "name" : "A set of programming languages"
             },
             "languages" : {
-              "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
+              "elements" : [ "PYTHON", "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
             },
             "explanation" : [ ]
           } ],
@@ -722,7 +722,7 @@
             "name" : "A set of programming languages"
           },
           "languages" : {
-            "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
+            "elements" : [ "PYTHON", "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
           },
           "explanation" : [ ]
         }, {
@@ -794,7 +794,7 @@
             }
           }
         },
-        "value" : 10.0,
+        "value" : 5.263157894736842,
         "weight" : 1.0,
         "confidence" : 9.999999999999998,
         "usedValues" : [ {
@@ -837,7 +837,7 @@
               "name" : "A set of programming languages"
             },
             "languages" : {
-              "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
+              "elements" : [ "PYTHON", "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
             },
             "explanation" : [ ]
           } ],
@@ -880,13 +880,13 @@
               "name" : "A set of programming languages"
             },
             "languages" : {
-              "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
+              "elements" : [ "PYTHON", "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
             },
             "explanation" : [ ]
           } ],
-          "explanation" : [ "The score is N/A because the project uses languages that are not supported by Bandit." ],
+          "explanation" : [ ],
           "isUnknown" : false,
-          "isNotApplicable" : true,
+          "isNotApplicable" : false,
           "feature" : {
             "type" : "BanditScore",
             "name" : "How a project uses Bandit"
@@ -907,7 +907,7 @@
               "name" : "A set of programming languages"
             },
             "languages" : {
-              "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
+              "elements" : [ "PYTHON", "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
             },
             "explanation" : [ ]
           }, {
@@ -958,7 +958,7 @@
               "name" : "A set of programming languages"
             },
             "languages" : {
-              "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
+              "elements" : [ "PYTHON", "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
             },
             "explanation" : [ ]
           } ],
@@ -1001,13 +1001,13 @@
               "name" : "A set of programming languages"
             },
             "languages" : {
-              "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
+              "elements" : [ "PYTHON", "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
             },
             "explanation" : [ ]
           } ],
-          "explanation" : [ "The score is N/A because the project uses languages that are not supported by Pylint." ],
+          "explanation" : [ ],
           "isUnknown" : false,
-          "isNotApplicable" : true,
+          "isNotApplicable" : false,
           "feature" : {
             "type" : "PylintScore",
             "name" : "How a project uses Pylint"
@@ -1044,13 +1044,13 @@
               "name" : "A set of programming languages"
             },
             "languages" : {
-              "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
+              "elements" : [ "PYTHON", "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
             },
             "explanation" : [ ]
           } ],
-          "explanation" : [ "The score is N/A because the project uses languages that are not supported by MyPy." ],
+          "explanation" : [ ],
           "isUnknown" : false,
-          "isNotApplicable" : true,
+          "isNotApplicable" : false,
           "feature" : {
             "type" : "MyPyScore",
             "name" : "How a project uses MyPy"
@@ -1126,7 +1126,7 @@
             "name" : "A set of programming languages"
           },
           "languages" : {
-            "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
+            "elements" : [ "PYTHON", "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
           },
           "explanation" : [ ]
         }, {
@@ -1339,7 +1339,7 @@
           "type" : "PositiveIntegerFeature",
           "name" : "Number of commits in the last three months"
         },
-        "number" : 154,
+        "number" : 160,
         "explanation" : [ ]
       }, {
         "type" : "IntegerValue",
@@ -1350,7 +1350,7 @@
         "number" : 3,
         "explanation" : [ ]
       } ],
-      "explanation" : [ "154 commits in the last 3 months results to 10.00 points", "3 contributors increase the score value from 10.00 to 11.00" ],
+      "explanation" : [ "160 commits in the last 3 months results to 10.00 points", "3 contributors increase the score value from 10.00 to 11.00" ],
       "isUnknown" : false,
       "isNotApplicable" : false,
       "feature" : {
@@ -1454,7 +1454,7 @@
         },
         "name" : "Assesses security testing and vulnerability discovery"
       },
-      "value" : 10.0,
+      "value" : 2.0,
       "weight" : 0.6,
       "confidence" : 10.0,
       "usedValues" : [ {
@@ -1560,7 +1560,7 @@
             }
           }
         },
-        "value" : 9.09090909090909,
+        "value" : 6.937799043062201,
         "weight" : 1.0,
         "confidence" : 10.0,
         "usedValues" : [ {
@@ -1614,7 +1614,7 @@
                 "name" : "A set of programming languages"
               },
               "languages" : {
-                "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
+                "elements" : [ "PYTHON", "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
               },
               "explanation" : [ ]
             } ],
@@ -1667,7 +1667,7 @@
                 "name" : "A set of programming languages"
               },
               "languages" : {
-                "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
+                "elements" : [ "PYTHON", "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
               },
               "explanation" : [ ]
             } ],
@@ -1781,7 +1781,7 @@
               "name" : "A set of programming languages"
             },
             "languages" : {
-              "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
+              "elements" : [ "PYTHON", "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
             },
             "explanation" : [ ]
           }, {
@@ -1853,7 +1853,7 @@
               }
             }
           },
-          "value" : 10.0,
+          "value" : 5.263157894736842,
           "weight" : 1.0,
           "confidence" : 9.999999999999998,
           "usedValues" : [ {
@@ -1896,7 +1896,7 @@
                 "name" : "A set of programming languages"
               },
               "languages" : {
-                "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
+                "elements" : [ "PYTHON", "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
               },
               "explanation" : [ ]
             } ],
@@ -1939,13 +1939,13 @@
                 "name" : "A set of programming languages"
               },
               "languages" : {
-                "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
+                "elements" : [ "PYTHON", "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
               },
               "explanation" : [ ]
             } ],
-            "explanation" : [ "The score is N/A because the project uses languages that are not supported by Bandit." ],
+            "explanation" : [ ],
             "isUnknown" : false,
-            "isNotApplicable" : true,
+            "isNotApplicable" : false,
             "feature" : {
               "type" : "BanditScore",
               "name" : "How a project uses Bandit"
@@ -1966,7 +1966,7 @@
                 "name" : "A set of programming languages"
               },
               "languages" : {
-                "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
+                "elements" : [ "PYTHON", "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
               },
               "explanation" : [ ]
             }, {
@@ -2017,7 +2017,7 @@
                 "name" : "A set of programming languages"
               },
               "languages" : {
-                "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
+                "elements" : [ "PYTHON", "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
               },
               "explanation" : [ ]
             } ],
@@ -2060,13 +2060,13 @@
                 "name" : "A set of programming languages"
               },
               "languages" : {
-                "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
+                "elements" : [ "PYTHON", "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
               },
               "explanation" : [ ]
             } ],
-            "explanation" : [ "The score is N/A because the project uses languages that are not supported by Pylint." ],
+            "explanation" : [ ],
             "isUnknown" : false,
-            "isNotApplicable" : true,
+            "isNotApplicable" : false,
             "feature" : {
               "type" : "PylintScore",
               "name" : "How a project uses Pylint"
@@ -2103,13 +2103,13 @@
                 "name" : "A set of programming languages"
               },
               "languages" : {
-                "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
+                "elements" : [ "PYTHON", "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
               },
               "explanation" : [ ]
             } ],
-            "explanation" : [ "The score is N/A because the project uses languages that are not supported by MyPy." ],
+            "explanation" : [ ],
             "isUnknown" : false,
-            "isNotApplicable" : true,
+            "isNotApplicable" : false,
             "feature" : {
               "type" : "MyPyScore",
               "name" : "How a project uses MyPy"
@@ -2185,7 +2185,7 @@
               "name" : "A set of programming languages"
             },
             "languages" : {
-              "elements" : [ "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
+              "elements" : [ "PYTHON", "JAVASCRIPT", "TYPESCRIPT", "OTHER" ]
             },
             "explanation" : [ ]
           }, {
@@ -2727,5 +2727,5 @@
       }
     }
   },
-  "label" : [ "OssSecurityRating$SecurityLabel", "GOOD" ]
+  "label" : [ "OssSecurityRating$SecurityLabel", "MODERATE" ]
 }
