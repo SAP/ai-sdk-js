@@ -50,6 +50,91 @@ describe('stream-util', () => {
       });
     });
 
+    it('merges intermediate_failures from module fallback configs', () => {
+      const response =
+        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>();
+
+      const chunk1: CompletionPostResponseStreaming = {
+        request_id: 'test-request-123',
+        intermediate_results: {},
+        intermediate_failures: [
+          {
+            request_id: 'req-1',
+            code: 404,
+            message: 'Model not found',
+            location: 'config[0]'
+          }
+        ],
+        final_result: {
+          ...llmBase,
+          choices: [],
+          usage: { prompt_tokens: 10, completion_tokens: 5, total_tokens: 15 }
+        }
+      };
+
+      mergeStreamResponse(response, chunk1);
+
+      expect(response._data.intermediate_failures).toHaveLength(1);
+      expect(response._data.intermediate_failures![0]).toMatchObject({
+        code: 404,
+        message: 'Model not found',
+        location: 'config[0]'
+      });
+
+      // Second chunk with same failure should deduplicate
+      const chunk2: CompletionPostResponseStreaming = {
+        request_id: 'test-request-123',
+        intermediate_results: {},
+        intermediate_failures: [
+          {
+            request_id: 'req-1',
+            code: 404,
+            message: 'Model not found',
+            location: 'config[0]'
+          }
+        ],
+        final_result: {
+          ...llmBase,
+          choices: [],
+          usage: { prompt_tokens: 10, completion_tokens: 5, total_tokens: 15 }
+        }
+      };
+
+      mergeStreamResponse(response, chunk2);
+
+      // Should still be 1 after deduplication
+      expect(response._data.intermediate_failures).toHaveLength(1);
+
+      // Third chunk with different failure
+      const chunk3: CompletionPostResponseStreaming = {
+        request_id: 'test-request-123',
+        intermediate_results: {},
+        intermediate_failures: [
+          {
+            request_id: 'req-2',
+            code: 500,
+            message: 'Timeout',
+            location: 'config[1]'
+          }
+        ],
+        final_result: {
+          ...llmBase,
+          choices: [],
+          usage: { prompt_tokens: 10, completion_tokens: 5, total_tokens: 15 }
+        }
+      };
+
+      mergeStreamResponse(response, chunk3);
+
+      // Should now have 2 failures
+      expect(response._data.intermediate_failures).toHaveLength(2);
+      expect(response._data.intermediate_failures![1]).toMatchObject({
+        code: 500,
+        message: 'Timeout',
+        location: 'config[1]'
+      });
+    });
+
     it('merges module results with llm module', () => {
       const chunk: CompletionPostResponseStreaming = {
         request_id: 'test-request-123',

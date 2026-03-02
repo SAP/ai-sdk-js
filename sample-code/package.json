@@ -15,7 +15,7 @@
     "start": "node --loader ts-node/esm src/server.ts",
     "local": "node --env-file=.env --loader ts-node/esm src/server.ts",
     "agent-tutorial": "node --env-file=.env --loader ts-node/esm src/tutorials/travel-itinerary-agent.ts",
-    "compile": "tsc",
+    "compile": "tsc && cp src/product_data.parquet dist/",
     "dev": "tsc -w",
     "lint": "eslint . && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -w --log-level error"
@@ -34,7 +34,7 @@
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/prompt-registry": "workspace:^",
     "@sap-ai-sdk/rpt": "workspace:^",
-    "@sap-cloud-sdk/util": "^4.4.0",
+    "@sap-cloud-sdk/util": "^4.5.1",
     "@types/express": "^5.0.6",
     "express": "^5.2.1",
     "langchain": "^1.2.28",
