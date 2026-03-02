@@ -281,6 +281,11 @@
             "multipart/form-data": {
               "schema": {
                 "$ref": "#/components/schemas/Body_predict_parquet"
+              },
+              "encoding": {
+                "file": {
+                  "contentType": "application/vnd.apache.parquet"
+                }
               }
             }
           },

@@ -16,8 +16,8 @@ on:
         # NOTES:
         #
         # Currently the spec is adjusted manually, changes:
-        # - Removed top_k parameter, it is not yet released.
         # - Changed type of the prediction_config in parquet endpoint.
+        # - Added encoding information for the parquet endpoint
         #
         # - rpt
         default: orchestration
