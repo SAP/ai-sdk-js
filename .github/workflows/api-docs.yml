@@ -1,20 +1,34 @@
 name: api-docs
 
 on:
-  push:
-    branches:
-      - 'main'
-      - 'v*-main'
-    paths:
-      - 'knowledge-base/api-reference/**'
+  workflow_call:
+    inputs:
+      version:
+        description: 'Version to generate docs for'
+        required: true
+        type: string
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to generate docs for'
+        required: true
+        type: string
 
 jobs:
-  push-to-documentation-branch:
+  generate-and-push-docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - name: Add key
+      - uses: sap/ai-sdk-js/.github/actions/setup@main
+        with:
+          ref: main
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+      
+      - name: Generate API documentation
+        run: |
+          pnpm generate
+          pnpm doc
+      
+      - name: Setup SSH key for ai-sdk repo
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
@@ -27,18 +41,25 @@ jobs:
           HostName github.com
           IdentityFile ~/.ssh/id_rsa
           EOT
-      - name: Push generated API documentation to the SAP/ai-sdk repo
+      
+      - name: Push generated API documentation to ai-sdk repo
         env:
           USE_SSH: true
           GIT_USER: ai-sdk-js
         run: |
-          git config --global user.email "ai-sdk-js@github.com"
+          git config --global user.email "cloudsdk@sap.com"
           git config --global user.name "ai-sdk-js"
-          M_VERSION=`awk -F'"' '/"version": "[0-9\.]+"/{ print $4; exit; }' package.json | awk -F'.' '{print "v"$1; exit; }'`
+          
+          # Use the version input parameter
+          VERSION="${{ inputs.version }}"
+          
           cd ..
           git clone --depth 1 git@github.com:SAP/ai-sdk.git
-          rsync -avz ai-sdk-js/knowledge-base/api-reference/ ai-sdk/static/api/$M_VERSION/
+          
+          # Copy generated docs to versioned folder
+          rsync -avz ai-sdk-js/knowledge-base/api-reference/ ai-sdk/static/api/${VERSION}/
+          
           cd ai-sdk
           git add -A
-          git commit -a -m "Update SAP AI SDK for JavaScript API documentation" || exit 0
+          git commit -m "Update SAP AI SDK for JavaScript API documentation ${VERSION}" || exit 0
           git push
