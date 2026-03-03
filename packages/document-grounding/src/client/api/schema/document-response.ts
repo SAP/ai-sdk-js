@@ -10,7 +10,10 @@ import type { VectorDocumentKeyValueListPair } from './vector-document-key-value
  */
 export type DocumentResponse = {
   chunks: TextOnlyBaseChunk[];
-  metadata: VectorDocumentKeyValueListPair[];
+  /**
+   * Default: [].
+   */
+  metadata?: VectorDocumentKeyValueListPair[];
   /**
    * Unique identifier of a document.
    * Format: "uuid".
