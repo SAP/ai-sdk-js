@@ -33,9 +33,7 @@ describe('Azure OpenAI embedding response', () => {
   });
 
   it('should return the request ID from response headers', () => {
-    expect(embeddingResponse.getRequestId()).toBe(
-      'test-embedding-request-id'
-    );
+    expect(embeddingResponse.getRequestId()).toBe('test-embedding-request-id');
   });
 
   it('should return undefined when x-request-id header is not present', () => {

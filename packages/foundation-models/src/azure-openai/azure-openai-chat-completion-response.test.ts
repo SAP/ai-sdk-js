@@ -34,9 +34,7 @@ describe('OpenAI chat completion response', () => {
   });
 
   it('should return the request ID from response headers', () => {
-    expect(azureOpenAiChatResponse.getRequestId()).toBe(
-      'test-request-id-456'
-    );
+    expect(azureOpenAiChatResponse.getRequestId()).toBe('test-request-id-456');
   });
 
   it('should return undefined when x-request-id header is not present', () => {
