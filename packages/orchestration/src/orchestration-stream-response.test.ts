@@ -57,8 +57,8 @@ describe('OrchestrationStreamResponse', () => {
       expect(() => streamResponse.getIntermediateResults()).toThrow(
         errorMessage
       );
-      expect(() => streamResponse.getCitations()).toThrow(errorMessage);
       expect(() => streamResponse.findChoiceByIndex(0)).toThrow(errorMessage);
+      expect(() => streamResponse.getCitations()).toThrow(errorMessage);
     });
   });
 
@@ -276,6 +276,23 @@ describe('OrchestrationStreamResponse', () => {
     });
   });
 
+  describe('findChoiceByIndex', () => {
+    it('should find choice by valid index', () => {
+      closeStream();
+
+      const choice = streamResponse.findChoiceByIndex(0);
+      expect(choice).toBeDefined();
+      expect(choice?.index).toBe(0);
+      expect(choice?.finish_reason).toBe('stop');
+    });
+
+    it('should return undefined for invalid index', () => {
+      closeStream();
+
+      expect(streamResponse.findChoiceByIndex(99)).toBeUndefined();
+    });
+  });
+
   describe('getCitations', () => {
     it('should return citations when present', () => {
       closeStream({
@@ -315,23 +332,6 @@ describe('OrchestrationStreamResponse', () => {
       closeStream(mockCompleteSuccessResponse);
 
       expect(streamResponse.getCitations()).toBeUndefined();
-    });
-  });
-
-  describe('findChoiceByIndex', () => {
-    it('should find choice by valid index', () => {
-      closeStream();
-
-      const choice = streamResponse.findChoiceByIndex(0);
-      expect(choice).toBeDefined();
-      expect(choice?.index).toBe(0);
-      expect(choice?.finish_reason).toBe('stop');
-    });
-
-    it('should return undefined for invalid index', () => {
-      closeStream();
-
-      expect(streamResponse.findChoiceByIndex(99)).toBeUndefined();
     });
   });
 

@@ -175,16 +175,6 @@ export class OrchestrationStreamResponse<T> {
   }
 
   /**
-   * Gets the citations from the orchestration response.
-   * Citations are returned by models like Perplexity Sonar that provide source references.
-   * @returns The citations, or undefined if there are none.
-   */
-  getCitations(): Citation[] | undefined {
-    if (this.isStreamOpen()) {
-      return;
-    }
-    return this._data.final_result?.citations;
-  }
    * Gets the intermediate failures from the orchestration response.
    * When using module fallback, this contains errors from module configurations
    * that failed before a successful one was found.
@@ -227,6 +217,18 @@ export class OrchestrationStreamResponse<T> {
       );
     }
     return this._openStream;
+  }
+
+  /**
+   * Gets the citations from the orchestration response.
+   * Citations are returned by models like Perplexity Sonar that provide source references.
+   * @returns The citations, or undefined if there are none.
+   */
+  getCitations(): Citation[] | undefined {
+    if (this.isStreamOpen()) {
+      return;
+    }
+    return this._data.final_result?.citations;
   }
 
   /**
