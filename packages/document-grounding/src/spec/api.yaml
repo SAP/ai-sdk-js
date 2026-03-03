@@ -2,10 +2,18 @@ openapi: 3.0.0
 info:
   title: Grounding
   version: 0.1.0
-  description: Grounding is a service designed to handle data-related tasks, such as grounding and retrieval, using vector databases. It provides specialized data retrieval through these databases, grounding the retrieval process with your own external and context-relevant data. Grounding combines generative AI capabilities with the ability to use real-time, precise data to improve decision-making and business operations for specific AI-driven business solutions.
+  description:
+    Grounding is a service designed to handle data-related tasks, such
+    as grounding and retrieval, using vector databases. It provides specialized data
+    retrieval through these databases, grounding the retrieval process with your own
+    external and context-relevant data. Grounding combines generative AI capabilities
+    with the ability to use real-time, precise data to improve decision-making and
+    business operations for specific AI-driven business solutions.
   contact:
     name: SAP AI Core
-x-sap-shortText: Enhance content generation with additional capabilities for business AI scenarios.
+x-sap-shortText:
+  Enhance content generation with additional capabilities for business
+  AI scenarios.
 externalDocs:
   description: Documentation for SAP AI Core - Grounding
   url: https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding
@@ -17,7 +25,7 @@ tags:
   - name: Retrieval
     description: Tag for retrieval component
 servers:
-  - url: 'https://api.ai.{region}.ml.hana.ondemand.com/v2/lm/{service}'
+  - url: https://api.ai.{region}.ml.hana.ondemand.com/v2/lm/{service}
     description: Production endpoint for SAP AI Core
     variables:
       region:
@@ -37,7 +45,7 @@ servers:
       service:
         default: document-grounding
 paths:
-  '/pipelines':
+  /pipelines:
     post:
       tags:
         - Pipelines
@@ -93,7 +101,7 @@ paths:
                 $ref: '#/components/schemas/getPipelines'
         '400':
           $ref: '#/components/responses/BadRequest'
-  '/pipelines/{pipelineId}':
+  /pipelines/{pipelineId}:
     get:
       tags:
         - Pipelines
@@ -179,7 +187,7 @@ paths:
           description: No Content
         '400':
           $ref: '#/components/responses/BadRequest'
-  '/pipelines/{pipelineId}/status':
+  /pipelines/{pipelineId}/status:
     get:
       tags:
         - Pipelines
@@ -209,7 +217,7 @@ paths:
                 $ref: '#/components/schemas/getPipelineStatus'
         '400':
           $ref: '#/components/responses/BadRequest'
-  '/pipelines/search':
+  /pipelines/search:
     post:
       tags:
         - Pipelines
@@ -242,16 +250,15 @@ paths:
                 $ref: '#/components/schemas/searchPipelinesResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-
-  ### ###  ###  Pipeline Status API   ###  ###
-  ### ###  #########################  ###  ###
-  '/pipelines/{pipelineId}/executions':
+  /pipelines/{pipelineId}/executions:
     get:
       tags:
         - Pipelines
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_executions
       summary: Get Pipeline Executions
-      description: Retrieve all executions for a specific pipeline. Optionally, filter to get only the last execution.
+      description:
+        Retrieve all executions for a specific pipeline. Optionally, filter
+        to get only the last execution.
       x-sap-cloud-sdk-operation-name: getAllExecutionsForPipeline
       parameters:
         - in: header
@@ -282,14 +289,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/getPipelineExecutions'
-
-  '/pipelines/{pipelineId}/executions/{executionId}':
+  /pipelines/{pipelineId}/executions/{executionId}:
     get:
       tags:
         - Pipelines
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_execution_by_id
       summary: Get Pipeline Execution by ID
-      description: Retrieve details of a specific pipeline execution by its execution ID.
+      description:
+        Retrieve details of a specific pipeline execution by its execution
+        ID.
       x-sap-cloud-sdk-operation-name: getExecutionDetailsByIdForPipelineExecution
       parameters:
         - in: header
@@ -317,14 +325,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/getPipelineExecutionById'
-
-  '/pipelines/{pipelineId}/executions/{executionId}/documents':
+  /pipelines/{pipelineId}/executions/{executionId}/documents:
     get:
       tags:
         - Pipelines
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_execution_documents
       summary: Get Documents for a Pipeline Execution
-      description: Retrieve all documents associated with a specific pipeline execution. Optionally, filter the results using query parameters.
+      description:
+        Retrieve all documents associated with a specific pipeline execution.
+        Optionally, filter the results using query parameters.
       x-sap-cloud-sdk-operation-name: getDocumentsForPipelineExecution
       parameters:
         - in: header
@@ -354,15 +363,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DocumentsStatusResponse'
-
-  '/pipelines/{pipelineId}/executions/{executionId}/documents/{documentId}':
+                $ref: '#/components/schemas/getPipelineExecutionDocuments'
+  /pipelines/{pipelineId}/executions/{executionId}/documents/{documentId}:
     get:
       tags:
         - Pipelines
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_execution_document_by_id
       summary: Get Document by ID for a Pipeline Execution
-      description: Retrieve details of a specific document associated with a pipeline execution.
+      description:
+        Retrieve details of a specific document associated with a pipeline
+        execution.
       x-sap-cloud-sdk-operation-name: getDocumentByIdForPipelineExecution
       parameters:
         - in: header
@@ -395,15 +405,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PipelineDocumentResponse'
-
-  '/pipelines/{pipelineId}/documents':
+                $ref: '#/components/schemas/getPipelineExecutionDocumentById'
+  /pipelines/{pipelineId}/documents:
     get:
       tags:
         - Pipelines
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_documents
       summary: Get Documents for a Pipeline
-      description: Retrieve all documents associated with a specific pipeline. Optionally, filter the results using query parameters.
+      description:
+        Retrieve all documents associated with a specific pipeline. Optionally,
+        filter the results using query parameters.
       x-sap-cloud-sdk-operation-name: getAllDocumentsForPipeline
       parameters:
         - in: header
@@ -427,9 +438,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DocumentsStatusResponse'
-
-  '/pipelines/{pipelineId}/documents/{documentId}':
+                $ref: '#/components/schemas/getPipelineDocuments'
+  /pipelines/{pipelineId}/documents/{documentId}:
     get:
       tags:
         - Pipelines
@@ -462,9 +472,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PipelineDocumentResponse'
-
-  '/pipelines/trigger':
+                $ref: '#/components/schemas/getPipelineDocumentById'
+  /pipelines/trigger:
     post:
       tags:
         - Pipelines
@@ -496,8 +505,7 @@ paths:
                 format: uri
         '400':
           $ref: '#/components/responses/BadRequest'
-
-  '/vector/collections':
+  /vector/collections:
     get:
       parameters:
         - in: header
@@ -535,7 +543,9 @@ paths:
       tags:
         - Vector
       summary: Create collection
-      description: Creates a collection. This operation is asynchronous. Poll the collection resource and check the status field to understand creation status.
+      description:
+        Creates a collection. This operation is asynchronous. Poll the
+        collection resource and check the status field to understand creation status.
       operationId: vector.v1.vector_endpoints.create_collection
       x-sap-cloud-sdk-operation-name: createCollection
       requestBody:
@@ -553,12 +563,11 @@ paths:
               schema:
                 type: string
                 format: uri
-
         '400':
           $ref: '#/components/responses/BadRequest'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/vector/collections/{collectionId}':
+  /vector/collections/{collectionId}:
     get:
       tags:
         - Vector
@@ -598,7 +607,9 @@ paths:
       tags:
         - Vector
       summary: Delete collection by ID
-      description: Deletes a specific collection by ID. This operation is asynchronous. Poll the collection for a 404 status code.
+      description:
+        Deletes a specific collection by ID. This operation is asynchronous.
+        Poll the collection for a 404 status code.
       operationId: vector.v1.vector_endpoints.delete_collection
       x-sap-cloud-sdk-operation-name: deleteCollectionById
       parameters:
@@ -630,7 +641,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/vector/collections/{collectionId}/documents/{documentId}':
+  /vector/collections/{collectionId}/documents/{documentId}:
     get:
       tags:
         - Vector
@@ -713,7 +724,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/vector/collections/{collectionId}/documents':
+  /vector/collections/{collectionId}/documents:
     get:
       tags:
         - Vector
@@ -756,7 +767,9 @@ paths:
       tags:
         - Vector
       summary: Create documents in collection
-      description: Create and stores one or multiple documents into a collection. If omitted, 'id' will be auto-generated.
+      description:
+        Create and stores one or multiple documents into a collection.
+        If omitted, 'id' will be auto-generated.
       operationId: vector.v1.vector_endpoints.create_documents
       x-sap-cloud-sdk-operation-name: createDocuments
       parameters:
@@ -834,7 +847,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/vector/search':
+  /vector/search:
     post:
       parameters:
         - in: header
@@ -868,7 +881,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/vector/collections/{id}/creationStatus':
+  /vector/collections/{id}/creationStatus:
     get:
       tags:
         - Vector
@@ -906,7 +919,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/vector/collections/{id}/deletionStatus':
+  /vector/collections/{id}/deletionStatus:
     get:
       tags:
         - Vector
@@ -944,7 +957,143 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  '/retrieval/dataRepositories':
+  /vector/documents:
+    delete:
+      tags:
+        - Vector
+      summary: Delete list of documents across collections
+      description: Deletes list of documents across collections.
+      operationId: vector.v1.vector_endpoints.delete_all_documents
+      x-sap-cloud-sdk-operation-name: deleteAllDocuments
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentBulkDeleteRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentBulkDeleteResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /vector/collections/metadata:
+    patch:
+      tags:
+        - Vector
+      summary: Patch collections metadata
+      description: Allows to add, remove and modify the collections metadata.
+      operationId: vector.v1.vector_endpoints.update_collections_metadata
+      x-sap-cloud-sdk-operation-name: updateCollectionsMetadata
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetadataUpdates'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /vector/documents/metadata:
+    patch:
+      tags:
+        - Vector
+      summary: Patch documents metadata
+      description: Allows to add, remove and modify the documents metadata.
+      operationId: vector.v1.vector_endpoints.update_documents_metadata
+      x-sap-cloud-sdk-operation-name: updateDocumentsMetadata
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetadataUpdates'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /vector/chunks/metadata:
+    patch:
+      tags:
+        - Vector
+      summary: Patch chunks metadata
+      description: Allows to add, remove and modify the chunks metadata.
+      operationId: vector.v1.vector_endpoints.update_chunks_metadata
+      x-sap-cloud-sdk-operation-name: updateChunksMetadata
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetadataUpdates'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /retrieval/dataRepositories:
     get:
       parameters:
         - in: header
@@ -971,7 +1120,7 @@ paths:
                 $ref: '#/components/schemas/DataRepositories'
         '400':
           $ref: '#/components/responses/BadRequest'
-  '/retrieval/dataRepositories/{repositoryId}':
+  /retrieval/dataRepositories/{repositoryId}:
     get:
       tags:
         - Retrieval
@@ -994,6 +1143,15 @@ paths:
             format: uuid
             title: Repositoryid
           description: Repository ID
+        - name: remoteName
+          in: query
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            nullable: true
+            title: Remotename
+          description: Remote name if DataRepository is from remote DG.
       responses:
         '200':
           description: Successful Response
@@ -1007,7 +1165,7 @@ paths:
           $ref: '#/components/responses/UnprocessableEntity'
         '404':
           $ref: '#/components/responses/NotFound'
-  '/retrieval/search':
+  /retrieval/search:
     post:
       parameters:
         - in: header
@@ -1039,12 +1197,13 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-
 components:
   securitySchemes:
     Oauth2:
       type: oauth2
-      description: OAuth client credentials (client ID and secret) are required. These can be requested from SAP BTP cloud cockpit.
+      description:
+        OAuth client credentials (client ID and secret) are required. These
+        can be requested from SAP BTP cloud cockpit.
       flows:
         clientCredentials:
           tokenUrl: https://(subdomain_identity_zone).authentication.(host)/oauth/token
@@ -1057,6 +1216,9 @@ components:
         - $ref: '#/components/schemas/SFTPPipelineCreateRequest'
         - $ref: '#/components/schemas/SDMPipelineCreateRequest'
         - $ref: '#/components/schemas/WorkZonePipelineCreateRequest'
+        - $ref: '#/components/schemas/ServiceNowPipelineCreateRequest'
+        - $ref: '#/components/schemas/GoogleDrivePipelineCreateRequest'
+        - $ref: '#/components/schemas/MetadataConfiguration'
       discriminator:
         propertyName: type
         mapping:
@@ -1065,7 +1227,9 @@ components:
           SFTP: '#/components/schemas/SFTPPipelineCreateRequest'
           SDM: '#/components/schemas/SDMPipelineCreateRequest'
           WorkZone: '#/components/schemas/WorkZonePipelineCreateRequest'
-
+          ServiceNow: '#/components/schemas/ServiceNowPipelineCreateRequest'
+          GoogleDrive: '#/components/schemas/GoogleDrivePipelineCreateRequest'
+          metadata: '#/components/schemas/MetadataConfiguration'
     manualPipelineTrigger:
       type: object
       properties:
@@ -1074,8 +1238,7 @@ components:
           example: uuid
         metadataOnly:
           type: boolean
-          example: True
-
+          example: true
     MSSharePointPipelineCreateRequest:
       type: object
       required:
@@ -1084,13 +1247,13 @@ components:
       properties:
         type:
           type: string
-          enum: [MSSharePoint]
+          enum:
+            - MSSharePoint
         configuration:
           $ref: '#/components/schemas/MSSharePointConfiguration'
         metadata:
           $ref: '#/components/schemas/MetaData'
       additionalProperties: true
-
     S3PipelineCreateRequest:
       type: object
       required:
@@ -1099,13 +1262,13 @@ components:
       properties:
         type:
           type: string
-          enum: [S3]
+          enum:
+            - S3
         configuration:
           $ref: '#/components/schemas/S3Configuration'
         metadata:
           $ref: '#/components/schemas/MetaData'
       additionalProperties: true
-
     SFTPPipelineCreateRequest:
       type: object
       required:
@@ -1114,13 +1277,13 @@ components:
       properties:
         type:
           type: string
-          enum: [SFTP]
+          enum:
+            - SFTP
         configuration:
           $ref: '#/components/schemas/SFTPConfiguration'
         metadata:
           $ref: '#/components/schemas/MetaData'
       additionalProperties: true
-
     SDMPipelineCreateRequest:
       type: object
       required:
@@ -1129,11 +1292,11 @@ components:
       properties:
         type:
           type: string
-          enum: [SDM]
+          enum:
+            - SDM
         metadata:
           $ref: '#/components/schemas/MetaData'
       additionalProperties: true
-
     WorkZonePipelineCreateRequest:
       type: object
       required:
@@ -1142,11 +1305,237 @@ components:
       properties:
         type:
           type: string
-          enum: [WorkZone]
+          enum:
+            - WorkZone
         metadata:
           $ref: '#/components/schemas/MetaData'
       additionalProperties: true
+    ServiceNowPipelineCreateRequest:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - ServiceNow
+        metadata:
+          $ref: '#/components/schemas/MetaData'
+        configuration:
+          $ref: '#/components/schemas/ServiceNowConfigurationStruct'
+      additionalProperties: true
+    MetadataConfiguration:
+      type: object
+      required:
+        - type
+        - configuration
+      properties:
+        type:
+          type: string
+          enum:
+            - metadata
+        configuration:
+          $ref: '#/components/schemas/MetadataConfigurationStruct'
+        metadata:
+          type: object
+          properties:
+            dataRepositoryMetadata:
+              $ref: '#/components/schemas/DataRepositoryMetaDataStrict'
+          required:
+            - dataRepositoryMetadata
+      additionalProperties: true
+    MetadataConfigurationStruct:
+      type: object
+      properties:
+        metadataConfigId:
+          type: string
+          minLength: 1
+          example: uuid
+        cronExpression:
+          type: string
+          description:
+            'Optional cron expression for scheduling pipeline execution.
 
+            Must represent an interval greater than 1 hour.
+
+            '
+          example: 0 */20 * * *
+      required:
+        - metadataConfigId
+      additionalProperties: true
+    DataRepositoryMetaDataStrict:
+      type: array
+      items:
+        $ref: '#/components/schemas/MetaDataKeyValuePairStrict'
+      example:
+        - key: purpose
+          value:
+            - demonstration
+        - key: sample-key
+          value:
+            - sample-value1
+            - sample-value2
+    MetaDataKeyValuePairStrict:
+      type: object
+      properties:
+        key:
+          type: string
+          minLength: 1
+          maxLength: 1024
+          nullable: false
+        value:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 1024
+            nullable: false
+          nullable: false
+          minItems: 1
+      required:
+        - key
+        - value
+      additionalProperties: true
+    ServiceNowConfigurationStruct:
+      type: object
+      required:
+        - destination
+      properties:
+        destination:
+          type: string
+          example: destination-name
+        serviceNow:
+          $ref: '#/components/schemas/ServiceNowConfig'
+        metadataConfigId:
+          type: string
+          example: uuid
+        cronExpression:
+          type: string
+          description:
+            'Optional cron expression for scheduling pipeline execution.
+
+            Must represent an interval greater than 1 hour.
+
+            '
+          example: 0 */20 * * *
+      additionalProperties: true
+    ServiceNowConfig:
+      type: object
+      properties:
+        includePaths:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          example:
+            - active=true
+            - sys_domain_path=/health
+      additionalProperties: true
+    GoogleDrivePipelineCreateRequest:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - GoogleDrive
+        metadata:
+          $ref: '#/components/schemas/MetaData'
+        configuration:
+          $ref: '#/components/schemas/GoogleDriveConfigurationStruct'
+    GoogleDriveConfigurationStruct:
+      type: object
+      required:
+        - destination
+        - googleDrive
+      properties:
+        destination:
+          type: string
+          example: destination-name
+        googleDrive:
+          $ref: '#/components/schemas/GoogleDriveConfig'
+        cronExpression:
+          type: string
+          description:
+            'Optional cron expression for scheduling pipeline execution.
+
+            Must represent an interval greater than 1 hour.
+
+            '
+          example: 0 */20 * * *
+        metadataConfigId:
+          type: string
+          example: uuid
+      additionalProperties: true
+    GoogleDriveConfig:
+      type: object
+      required:
+        - folder
+      properties:
+        folder:
+          $ref: '#/components/schemas/GoogleDriveFolder'
+      additionalProperties: true
+    GoogleDriveFolder:
+      type: object
+      required:
+        - driverType
+      properties:
+        id:
+          type: string
+          example: 1n0SMFydu2ru3mgn7eK_BYpOlmhK5Vhij
+        driveId:
+          type: string
+          example: 0AGVUFpXcXc5Uk9PVA
+        driverType:
+          type: string
+          enum:
+            - SHARED_FOLDER
+            - SHARED_DRIVE
+          example: SHARED_FOLDER
+        includePaths:
+          $ref: '#/components/schemas/IncludePathsArray'
+      additionalProperties: true
+    GoogleDriveFolderDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 1n0SMFydu2ru3mgn7eK_BYpOlmhK5Vhij
+        driveId:
+          type: string
+          example: 0AGVUFpXcXc5Uk9PVA
+        driverType:
+          type: string
+          enum:
+            - SHARED_FOLDER
+            - SHARED_DRIVE
+          example: SHARED_FOLDER
+        includePaths:
+          $ref: '#/components/schemas/IncludePathsArray'
+      additionalProperties: true
+    ServiceNowConfigurationMinimal:
+      type: object
+      required:
+        - destination
+      properties:
+        destination:
+          type: string
+          example: destination-name
+        serviceNow:
+          type: object
+          properties:
+            includePaths:
+              $ref: '#/components/schemas/IncludePathsArray'
+      additionalProperties: false
+    GoogleDriveConfigurationMinimal:
+      type: object
+      required:
+        - googleDrive
+      properties:
+        googleDrive:
+          $ref: '#/components/schemas/GoogleDriveFolderDetail'
+      additionalProperties: false
     MSSharePointConfiguration:
       type: object
       required:
@@ -1160,9 +1549,8 @@ components:
           $ref: '#/components/schemas/SharePointConfig'
         cronExpression:
           type: string
-          example: '0 3 * * *' # Every day at 3:00 AM UTC
+          example: 0 3 * * *
       additionalProperties: true
-
     SharePointConfig:
       type: object
       required:
@@ -1171,7 +1559,6 @@ components:
         site:
           $ref: '#/components/schemas/SharePointSite'
       additionalProperties: true
-
     SharePointSite:
       type: object
       required:
@@ -1183,7 +1570,6 @@ components:
         includePaths:
           $ref: '#/components/schemas/IncludePathsArray'
       additionalProperties: true
-
     SFTPConfiguration:
       type: object
       required:
@@ -1199,9 +1585,8 @@ components:
               $ref: '#/components/schemas/IncludePathsArray'
         cronExpression:
           type: string
-          example: '0 3 * * *' # Every day at 3:00 AM UTC
+          example: 0 3 * * *
       additionalProperties: true
-
     S3Configuration:
       type: object
       required:
@@ -1217,9 +1602,8 @@ components:
               $ref: '#/components/schemas/IncludePathsArray'
         cronExpression:
           type: string
-          example: '0 3 * * *' # Every day at 3:00 AM UTC
+          example: 0 3 * * *
       additionalProperties: true
-
     MetaData:
       type: object
       properties:
@@ -1256,7 +1640,7 @@ components:
               value:
                 - sample-value1
                 - sample-value2
-
+      additionalProperties: true
     getPipelines:
       type: object
       required:
@@ -1268,7 +1652,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/getPipeline'
-
     getPipeline:
       oneOf:
         - $ref: '#/components/schemas/MSSharePointPipelineGetResponse'
@@ -1276,6 +1659,8 @@ components:
         - $ref: '#/components/schemas/SFTPPipelineGetResponse'
         - $ref: '#/components/schemas/SDMPipelineGetResponse'
         - $ref: '#/components/schemas/WorkZonePipelineGetResponse'
+        - $ref: '#/components/schemas/ServiceNowPipelineGetResponse'
+        - $ref: '#/components/schemas/GoogleDrivePipelineGetResponse'
       discriminator:
         propertyName: type
         mapping:
@@ -1284,7 +1669,8 @@ components:
           SFTP: '#/components/schemas/SFTPPipelineGetResponse'
           SDM: '#/components/schemas/SDMPipelineGetResponse'
           WorkZone: '#/components/schemas/WorkZonePipelineGetResponse'
-
+          ServiceNow: '#/components/schemas/ServiceNowPipelineGetResponse'
+          GoogleDrive: '#/components/schemas/GoogleDrivePipelineGetResponse'
     MSSharePointPipelineGetResponse:
       allOf:
         - $ref: '#/components/schemas/BasePipelineResponse'
@@ -1294,10 +1680,10 @@ components:
           properties:
             type:
               type: string
-              enum: [MSSharePoint]
+              enum:
+                - MSSharePoint
             configuration:
               $ref: '#/components/schemas/MSSharePointConfigurationGetResponse'
-
     S3PipelineGetResponse:
       allOf:
         - $ref: '#/components/schemas/BasePipelineResponse'
@@ -1307,10 +1693,10 @@ components:
           properties:
             type:
               type: string
-              enum: [S3]
+              enum:
+                - S3
             configuration:
               $ref: '#/components/schemas/S3Configuration'
-
     SFTPPipelineGetResponse:
       allOf:
         - $ref: '#/components/schemas/BasePipelineResponse'
@@ -1320,10 +1706,10 @@ components:
           properties:
             type:
               type: string
-              enum: [SFTP]
+              enum:
+                - SFTP
             configuration:
               $ref: '#/components/schemas/SFTPConfiguration'
-
     SDMPipelineGetResponse:
       allOf:
         - $ref: '#/components/schemas/BasePipelineResponse'
@@ -1333,10 +1719,10 @@ components:
           properties:
             type:
               type: string
-              enum: [SDM]
+              enum:
+                - SDM
             metadata:
               $ref: '#/components/schemas/MetaData'
-
     WorkZonePipelineGetResponse:
       allOf:
         - $ref: '#/components/schemas/BasePipelineResponse'
@@ -1346,10 +1732,36 @@ components:
           properties:
             type:
               type: string
-              enum: [WorkZone]
+              enum:
+                - WorkZone
             metadata:
               $ref: '#/components/schemas/MetaData'
-
+    ServiceNowPipelineGetResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasePipelineResponse'
+        - type: object
+          required:
+            - configuration
+          properties:
+            type:
+              type: string
+              enum:
+                - ServiceNow
+            configuration:
+              $ref: '#/components/schemas/ServiceNowConfigurationMinimal'
+    GoogleDrivePipelineGetResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasePipelineResponse'
+        - type: object
+          required:
+            - configuration
+          properties:
+            type:
+              type: string
+              enum:
+                - GoogleDrive
+            configuration:
+              $ref: '#/components/schemas/GoogleDriveConfigurationMinimal'
     BasePipelineResponse:
       type: object
       required:
@@ -1362,7 +1774,6 @@ components:
           type: string
         metadata:
           $ref: '#/components/schemas/MetaData'
-
     MSSharePointConfigurationGetResponse:
       type: object
       required:
@@ -1373,7 +1784,6 @@ components:
           type: string
         sharePoint:
           $ref: '#/components/schemas/SharePointConfigGetResponse'
-
     SharePointConfigGetResponse:
       type: object
       required:
@@ -1381,7 +1791,6 @@ components:
       properties:
         site:
           $ref: '#/components/schemas/SharePointSiteGetResponse'
-
     SharePointSiteGetResponse:
       type: object
       required:
@@ -1395,14 +1804,12 @@ components:
           type: array
           items:
             type: string
-
     pipelineId:
       type: object
       properties:
         pipelineId:
           type: string
           example: uuid
-
     PipelineExecutionData:
       type: object
       properties:
@@ -1413,35 +1820,33 @@ components:
           $ref: '#/components/schemas/PipelineExecutionStatus'
         createdAt:
           type: string
-          pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
+          pattern: ^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$
           example: '2024-02-15T12:45:00Z'
           nullable: true
         modifiedAt:
           type: string
-          pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
+          pattern: ^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$
           example: '2024-02-15T12:45:00Z'
           nullable: true
-
     getPipelineStatus:
       type: object
       properties:
         lastStarted:
           type: string
-          pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
+          pattern: ^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$
           example: '2024-02-15T12:45:00.000Z'
         createdAt:
           type: string
-          pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
+          pattern: ^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$
           example: '2024-02-15T12:45:00.000Z'
           nullable: true
         lastCompletedAt:
           type: string
-          pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
+          pattern: ^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$
           example: '2024-02-15T12:45:00.000Z'
           nullable: true
         status:
           $ref: '#/components/schemas/PipelineExecutionStatus'
-
     PipelineExecutionStatus:
       type: string
       anyOf:
@@ -1453,7 +1858,6 @@ components:
             - FINISHEDWITHERRORS
             - TIMEOUT
         - {}
-
     getPipelineExecutions:
       type: object
       properties:
@@ -1464,7 +1868,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PipelineExecutionData'
-
     getPipelineExecutionById:
       type: object
       properties:
@@ -1473,13 +1876,12 @@ components:
           example: uuid
         createdAt:
           type: string
-          example: '2024-02-15T12:45:00Z' # UTC
+          example: '2024-02-15T12:45:00Z'
         modifiedAt:
           type: string
-          example: '2024-02-15T12:45:00Z' # UTC
+          example: '2024-02-15T12:45:00Z'
         status:
           $ref: '#/components/schemas/PipelineExecutionStatus'
-
     DocumentStatus:
       type: string
       anyOf:
@@ -1492,8 +1894,7 @@ components:
             - FAILED_TO_BE_RETRIED
             - TO_BE_SCHEDULED
         - {}
-      example: 'INDEXED'
-
+      example: INDEXED
     DocumentsStatusResponse:
       type: object
       properties:
@@ -1512,11 +1913,11 @@ components:
                 $ref: '#/components/schemas/DocumentStatus'
               viewLocation:
                 type: string
-                example: 'location'
+                example: location
                 nullable: true
               downloadLocation:
                 type: string
-                example: 'location'
+                example: location
                 nullable: true
               absoluteUrl:
                 type: string
@@ -1533,7 +1934,6 @@ components:
               lastUpdatedTimestamp:
                 type: string
                 example: '2024-02-15T12:45:00Z'
-
     PipelineDocumentResponse:
       type: object
       properties:
@@ -1544,11 +1944,11 @@ components:
           $ref: '#/components/schemas/DocumentStatus'
         viewLocation:
           type: string
-          example: 'location'
+          example: location
           nullable: true
         downloadLocation:
           type: string
-          example: 'location'
+          example: location
           nullable: true
         absoluteUrl:
           type: string
@@ -1570,7 +1970,9 @@ components:
       properties:
         dataRepositoryMetadata:
           type: array
-          description: Search for metadata happens at key level. Pipelines matching the search criteria will be returned.
+          description:
+            Search for metadata happens at key level. Pipelines matching
+            the search criteria will be returned.
           items:
             type: object
             properties:
@@ -1599,7 +2001,6 @@ components:
               value:
                 - sample-value1
                 - sample-value2
-
     searchPipelinesResponse:
       type: object
       required:
@@ -1611,7 +2012,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PipelineMinimalResponse'
-
     PipelineMinimalResponse:
       oneOf:
         - $ref: '#/components/schemas/MSSharePointPipelineMinimalResponse'
@@ -1619,6 +2019,8 @@ components:
         - $ref: '#/components/schemas/SFTPPipelineMinimalResponse'
         - $ref: '#/components/schemas/SDMPipelineMinimalResponse'
         - $ref: '#/components/schemas/WorkZonePipelineMinimalResponse'
+        - $ref: '#/components/schemas/ServiceNowPipelineMinimalResponse'
+        - $ref: '#/components/schemas/GoogleDrivePipelineMinimalResponse'
       discriminator:
         propertyName: type
         mapping:
@@ -1627,7 +2029,8 @@ components:
           SFTP: '#/components/schemas/SFTPPipelineMinimalResponse'
           SDM: '#/components/schemas/SDMPipelineMinimalResponse'
           WorkZone: '#/components/schemas/WorkZonePipelineMinimalResponse'
-
+          ServiceNow: '#/components/schemas/ServiceNowPipelineMinimalResponse'
+          GoogleDrive: '#/components/schemas/GoogleDrivePipelineMinimalResponse'
     MSSharePointPipelineMinimalResponse:
       allOf:
         - $ref: '#/components/schemas/BasePipelineMinimalResponse'
@@ -1645,14 +2048,12 @@ components:
             metadata:
               type: boolean
               example: true
-
     S3PipelineMinimalResponse:
       allOf:
         - $ref: '#/components/schemas/BasePipelineMinimalResponse'
         - type: object
           required:
             - type
-            - configuration
           properties:
             type:
               type: string
@@ -1663,14 +2064,12 @@ components:
             metadata:
               type: boolean
               example: true
-
     SFTPPipelineMinimalResponse:
       allOf:
         - $ref: '#/components/schemas/BasePipelineMinimalResponse'
         - type: object
           required:
             - type
-            - configuration
           properties:
             type:
               type: string
@@ -1681,7 +2080,6 @@ components:
             metadata:
               type: boolean
               example: true
-
     SDMPipelineMinimalResponse:
       allOf:
         - $ref: '#/components/schemas/BasePipelineMinimalResponse'
@@ -1696,7 +2094,6 @@ components:
             metadata:
               type: boolean
               example: true
-
     WorkZonePipelineMinimalResponse:
       allOf:
         - $ref: '#/components/schemas/BasePipelineMinimalResponse'
@@ -1711,7 +2108,36 @@ components:
             metadata:
               type: boolean
               example: true
-
+    ServiceNowPipelineMinimalResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasePipelineMinimalResponse'
+        - type: object
+          required:
+            - type
+          properties:
+            type:
+              type: string
+              enum:
+                - ServiceNow
+            metadata:
+              type: boolean
+              example: true
+    GoogleDrivePipelineMinimalResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasePipelineMinimalResponse'
+        - type: object
+          required:
+            - type
+          properties:
+            type:
+              type: string
+              enum:
+                - GoogleDrive
+            configuration:
+              $ref: '#/components/schemas/GoogleDriveConfigurationMinimal'
+            metadata:
+              type: boolean
+              example: true
     BasePipelineMinimalResponse:
       type: object
       required:
@@ -1723,7 +2149,6 @@ components:
           example: uuid
         status:
           $ref: '#/components/schemas/PipelineExecutionStatus'
-
     MSSharePointConfigurationMinimal:
       type: object
       required:
@@ -1731,7 +2156,6 @@ components:
       properties:
         sharePoint:
           $ref: '#/components/schemas/SharePointSiteDetail'
-
     SharePointSiteDetail:
       type: object
       required:
@@ -1745,7 +2169,6 @@ components:
           example: sharepoint-site-name
         includePaths:
           $ref: '#/components/schemas/IncludePathsArray'
-
     S3ConfigurationMinimal:
       type: object
       required:
@@ -1757,7 +2180,6 @@ components:
             includePaths:
               $ref: '#/components/schemas/IncludePathsArray'
       additionalProperties: false
-
     SFTPConfigurationMinimal:
       type: object
       required:
@@ -1769,7 +2191,6 @@ components:
             includePaths:
               $ref: '#/components/schemas/IncludePathsArray'
       additionalProperties: false
-
     IncludePathsArray:
       type: array
       items:
@@ -1777,7 +2198,6 @@ components:
       example:
         - /testFolder1
         - /testFolder2
-
     patchPipeline:
       type: object
       properties:
@@ -1786,7 +2206,9 @@ components:
           properties:
             dataRepositoryMetadata:
               type: array
-              description: Patch for metadata happens at key level. Value for the specific key would be inserted/replaced.
+              description:
+                Patch for metadata happens at key level. Value for the
+                specific key would be inserted/replaced.
               items:
                 type: object
                 properties:
@@ -1820,8 +2242,7 @@ components:
           properties:
             cronExpression:
               type: string
-              example: '0 3 * * *' # Every day at 3:00 AM UTC
-
+              example: 0 3 * * *
     Chunk:
       properties:
         id:
@@ -1874,6 +2295,12 @@ components:
             $ref: '#/components/schemas/RetrievalKeyValueListPair'
           title: Metadata
           default: []
+        searchScores:
+          $ref: '#/components/schemas/SearchScores'
+          nullable: true
+        postProcessingScore:
+          $ref: '#/components/schemas/Score'
+          nullable: true
       type: object
       required:
         - id
@@ -1892,16 +2319,11 @@ components:
             maxLength: 1024
           title: Value
         matchMode:
-          type: string
-          nullable: true
           title: MatchMode
           description: Default match mode for search filters
+          $ref: '#/components/schemas/FilterMatchModeEnum'
+          nullable: true
           default: ANY
-          anyOf:
-            - enum:
-                - ANY
-                - ALL
-            - {}
       type: object
       required:
         - key
@@ -1920,16 +2342,11 @@ components:
             maxLength: 1024
           title: Value
         matchMode:
-          type: string
-          nullable: true
           title: MatchMode
           description: Default match mode for search filters
+          $ref: '#/components/schemas/FilterMatchModeEnum'
+          nullable: true
           default: ANY
-          anyOf:
-            - enum:
-                - ANY
-                - ALL
-            - {}
       type: object
       required:
         - key
@@ -1948,22 +2365,16 @@ components:
             maxLength: 1024
           title: Value
         matchMode:
-          type: string
-          nullable: true
           title: MatchMode
+          nullable: true
           description: Default match mode for search filters
+          $ref: '#/components/schemas/FilterMatchModeEnum'
           default: ANY
-          anyOf:
-            - enum:
-                - ANY
-                - ALL
-            - {}
       type: object
       required:
         - key
         - value
-      title: DocumentKeyValueListPair
-
+      title: RetrievalDocumentKeyValueListPair
     HTTPValidationError:
       properties:
         detail:
@@ -2006,6 +2417,7 @@ components:
       required:
         - key
         - value
+      description: Collection metadata during ingestion
       title: VectorKeyValueListPair
     RetrievalKeyValueListPair:
       properties:
@@ -2111,7 +2523,9 @@ components:
           maximum: 0
           exclusiveMinimum: true
           title: Maxchunkcount
-          description: Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'.
+          description:
+            Maximum number of chunks to be returned. Cannot be used with
+            'maxDocumentCount'.
         maxDocumentCount:
           nullable: true
           type: integer
@@ -2119,43 +2533,64 @@ components:
           maximum: 0
           exclusiveMinimum: true
           title: Maxdocumentcount
-          description: "[Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned."
+          description:
+            "[Only supports 'vector' dataRepositoryType] - Maximum number
+            of documents to be returned. Cannot be used with 'maxChunkCount'. If
+            maxDocumentCount is given, then only one chunk per document is returned."
       type: object
       title: SearchConfiguration
     VectorSearchConfiguration:
       properties:
         maxChunkCount:
-          nullable: true
           type: integer
-          minimum: 0
           exclusiveMinimum: true
+          minimum: 0
+          maximum: 10000000
+          nullable: true
           title: Maxchunkcount
-          description: Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'.
+          description:
+            Maximum number of chunks to be returned. Cannot be used with
+            'maxDocumentCount'.
         maxDocumentCount:
-          nullable: true
           type: integer
-          minimum: 0
           exclusiveMinimum: true
+          minimum: 0
+          maximum: 10000000
+          nullable: true
           title: Maxdocumentcount
-          description: "[Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned."
+          description:
+            "[Only supports 'vector' dataRepositoryType] - Maximum number
+            of documents to be returned. Cannot be used with 'maxChunkCount'. If
+            maxDocumentCount is given, then only one chunk per document is returned."
       type: object
       title: VectorSearchConfiguration
     RetrievalSearchConfiguration:
+      nullable: true
+      default: {}
+      minProperties: 0
+      maxProperties: 2
       properties:
         maxChunkCount:
           nullable: true
           type: integer
           minimum: 0
           exclusiveMinimum: true
+          maximum: 10000000
           title: Maxchunkcount
-          description: Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'.
+          description:
+            Maximum number of chunks to be returned. Cannot be used with
+            'maxDocumentCount'.
         maxDocumentCount:
           nullable: true
           type: integer
           minimum: 0
           exclusiveMinimum: true
+          maximum: 10000000
           title: Maxdocumentcount
-          description: "[Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned."
+          description:
+            "[Only supports 'vector' dataRepositoryType] - Maximum number
+            of documents to be returned. Cannot be used with 'maxChunkCount'. If
+            maxDocumentCount is given, then only one chunk per document is returned."
       type: object
       title: RetrievalSearchConfiguration
     SearchDocumentKeyValueListPair:
@@ -2197,6 +2632,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/VectorSearchSelectOptionEnum'
+          nullable: true
           title: Selectmode
           description: Select mode for search filters
       type: object
@@ -2220,6 +2656,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RetrievalSearchSelectOptionEnum'
+          nullable: true
           title: Selectmode
           description: Select mode for search filters
       type: object
@@ -2245,15 +2682,13 @@ components:
         results:
           type: array
           items:
-            anyOf:
-              - $ref: '#/components/schemas/VectorPerFilterSearchResult'
+            $ref: '#/components/schemas/VectorPerFilterSearchResult'
           title: Results
           description: List of returned results.
       type: object
       required:
         - results
       title: VectorSearchResults
-
     CollectionsListResponse:
       properties:
         count:
@@ -2281,10 +2716,16 @@ components:
             $ref: '#/components/schemas/VectorKeyValueListPair'
           type: array
           title: Metadata
-          description: >-
-            Metadata attached to collection. Useful to restrict search to a
-            subset of collections.
+          description:
+            Metadata attached to collection. Useful to restrict search
+            to a subset of collections.
           default: []
+        id:
+          type: string
+          format: uuid
+          nullable: true
+          title: Id
+          description: Unique identifier of a collection.
       type: object
       required:
         - embeddingConfig
@@ -2305,16 +2746,12 @@ components:
       title: CollectionCreatedResponse
     CollectionPendingResponse:
       properties:
-        Location:
+        monitorURL:
           type: string
-          title: Location
-        status:
-          type: string
-          title: Status
+          title: MonitorURL
       type: object
       required:
-        - Location
-        - status
+        - monitorURL
       title: CollectionPendingResponse
     CollectionDeletedResponse:
       properties:
@@ -2333,7 +2770,7 @@ components:
       properties:
         chunks:
           items:
-            $ref: '#/components/schemas/TextOnlyBaseChunk'
+            $ref: '#/components/schemas/TextOnlyBaseChunkCreate'
           type: array
           title: Chunks
         metadata:
@@ -2341,10 +2778,10 @@ components:
             $ref: '#/components/schemas/VectorDocumentKeyValueListPair'
           type: array
           title: Metadata
+          default: []
       type: object
       required:
         - chunks
-        - metadata
       title: BaseDocument
       description: Base class for documents, document requests and responses.
     DocumentCreateRequest:
@@ -2358,14 +2795,14 @@ components:
       required:
         - documents
       title: DocumentCreateRequest
-      description: >-
-        A create request containing one or more new documents to create and
-        store in a collection.
+      description:
+        A create request containing one or more new documents to create
+        and store in a collection.
     Document-Input:
       properties:
         chunks:
           items:
-            $ref: '#/components/schemas/TextOnlyBaseChunk'
+            $ref: '#/components/schemas/TextOnlyBaseChunkCreate'
           type: array
           title: Chunks
         metadata:
@@ -2373,6 +2810,7 @@ components:
             $ref: '#/components/schemas/VectorDocumentKeyValueListPair'
           type: array
           title: Metadata
+          default: []
         id:
           type: string
           format: uuid
@@ -2381,7 +2819,6 @@ components:
       type: object
       required:
         - chunks
-        - metadata
         - id
       title: Document
       description: A single document stored in a collection by ID.
@@ -2396,7 +2833,7 @@ components:
       required:
         - documents
       title: DocumentUpdateRequest
-      description: >-
+      description:
         An update request containing one or more documents to update existing
         documents in a collection by ID.
     DocumentWithoutChunks:
@@ -2416,9 +2853,9 @@ components:
         - metadata
         - id
       title: DocumentWithoutChunks
-      description: >-
-        A single document stored in a collection by ID without exposing its
-        chunks.
+      description:
+        A single document stored in a collection by ID without exposing
+        its chunks.
     DocumentsListResponse:
       properties:
         documents:
@@ -2429,8 +2866,8 @@ components:
       type: object
       required:
         - documents
-      title: Documents
-      description: A response containing documents created or updated, retrieved from the server.
+      title: DocumentsListResponse
+      description: A response containing documents retrieved from the server.
     Documents:
       properties:
         count:
@@ -2455,11 +2892,34 @@ components:
             $ref: '#/components/schemas/VectorKeyValueListPair'
           type: array
           title: Metadata
+          default: []
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: Unique identifier of a chuk.
       type: object
       required:
         - content
-        - metadata
+        - id
       title: TextOnlyBaseChunk
+      description: Schema for a text-only chunk.
+    TextOnlyBaseChunkCreate:
+      properties:
+        content:
+          type: string
+          title: Content
+        metadata:
+          items:
+            $ref: '#/components/schemas/VectorKeyValueListPair'
+          type: array
+          title: Metadata
+          default: []
+      type: object
+      required:
+        - content
+      title: TextOnlyBaseChunk
+      description: Schema for a text-only chunk.
     DocumentResponse:
       properties:
         chunks:
@@ -2472,6 +2932,7 @@ components:
             $ref: '#/components/schemas/VectorDocumentKeyValueListPair'
           type: array
           title: Metadata
+          default: []
         id:
           type: string
           format: uuid
@@ -2480,10 +2941,9 @@ components:
       type: object
       required:
         - chunks
-        - metadata
         - id
       title: DocumentResponse
-      description: >-
+      description:
         A response containing information about a newly created, single
         document.
     SearchSelectOptionEnum:
@@ -2496,18 +2956,13 @@ components:
       title: SearchSelectOptionEnum
     VectorSearchSelectOptionEnum:
       type: string
-      anyOf:
-        - enum:
-            - ignoreIfKeyAbsent
-        - {}
-      default: ignoreIfKeyAbsent
+      enum:
+        - ignoreIfKeyAbsent
       title: VectorSearchSelectOptionEnum
     RetrievalSearchSelectOptionEnum:
       type: string
-      anyOf:
-        - enum:
-            - ignoreIfKeyAbsent
-        - {}
+      enum:
+        - ignoreIfKeyAbsent
       title: RetrievalSearchSelectOptionEnum
     SearchFilter:
       properties:
@@ -2528,7 +2983,7 @@ components:
           type: array
           maxItems: 2000
           title: Collectionmetadata
-          description: >-
+          description:
             Restrict collections considered during search to those annotated
             with the given metadata. Useful when combined with collections=['*']
           default: []
@@ -2538,9 +2993,9 @@ components:
           type: array
           maxItems: 2000
           title: Documentmetadata
-          description: >-
-            Restrict documents considered during search to those annotated with
-            the given metadata.
+          description:
+            Restrict documents considered during search to those annotated
+            with the given metadata.
           default: []
         chunkMetadata:
           items:
@@ -2548,9 +3003,9 @@ components:
           type: array
           maxItems: 2000
           title: Chunkmetadata
-          description: >-
-            Restrict chunks considered during search to those with the given
-            metadata.
+          description:
+            Restrict chunks considered during search to those with the
+            given metadata.
           default: []
       type: object
       required:
@@ -2572,35 +3027,43 @@ components:
         configuration:
           $ref: '#/components/schemas/VectorSearchConfiguration'
         collectionMetadata:
+          type: array
           items:
             $ref: '#/components/schemas/VectorKeyValueListPair'
-          type: array
-          maxItems: 2000
+          nullable: true
           title: Collectionmetadata
-          description: >-
+          description:
             Restrict collections considered during search to those annotated
             with the given metadata. Useful when combined with collections=['*']
           default: []
         documentMetadata:
+          type: array
           items:
             $ref: '#/components/schemas/VectorSearchDocumentKeyValueListPair'
-          type: array
-          maxItems: 2000
+          nullable: true
           title: Documentmetadata
-          description: >-
-            Restrict documents considered during search to those annotated with
-            the given metadata.
+          description:
+            Restrict documents considered during search to those annotated
+            with the given metadata.
           default: []
         chunkMetadata:
           items:
             $ref: '#/components/schemas/VectorKeyValueListPair'
           type: array
-          maxItems: 2000
           title: Chunkmetadata
-          description: >-
-            Restrict chunks considered during search to those with the given
-            metadata.
+          description:
+            Restrict chunks considered during search to those with the
+            given metadata.
           default: []
+        filter:
+          title: Filter
+          description:
+            Advanced filter expression for combining metadata filters with
+            boolean logic
+          anyOf:
+            - $ref: '#/components/schemas/BinaryBooleanFilter'
+            - $ref: '#/components/schemas/ScopedKeyValueListPair'
+          nullable: true
       type: object
       required:
         - id
@@ -2613,6 +3076,7 @@ components:
           type: string
           maxLength: 2000
           minLength: 1
+          nullable: true
           title: Query
           description: Query string
         filters:
@@ -2647,9 +3111,9 @@ components:
             $ref: '#/components/schemas/VectorKeyValueListPair'
           type: array
           title: Metadata
-          description: >-
-            Metadata attached to collection. Useful to restrict search to a
-            subset of collections.
+          description:
+            Metadata attached to collection. Useful to restrict search
+            to a subset of collections.
           default: []
         id:
           type: string
@@ -2690,8 +3154,16 @@ components:
           items:
             $ref: '#/components/schemas/RetrievalKeyValueListPair'
           title: Metadata
-          description: Metadata attached to DataRepository. Useful to later limit search to a subset of DataRepositories.
+          description:
+            Metadata attached to DataRepository. Useful to later limit
+            search to a subset of DataRepositories.
           default: []
+        remoteGroundingName:
+          type: string
+          nullable: true
+        message:
+          type: string
+          nullable: true
         type:
           $ref: '#/components/schemas/DataRepositoryType'
       type: object
@@ -2710,12 +3182,12 @@ components:
         - dataRepository
       title: DataRepositorySearchResult
     DataRepositoryType:
+      description: Only include DataRepositories with the given type.
       type: string
-      anyOf:
-        - enum:
-            - vector
-            - help.sap.com
-        - {}
+      enum:
+        - vector
+        - help.sap.com
+        - remote:dg
       title: DataRepositoryType
     DataRepositoryWithDocuments:
       properties:
@@ -2732,7 +3204,18 @@ components:
           items:
             $ref: '#/components/schemas/RetrievalKeyValueListPair'
           title: Metadata
-          description: Metadata attached to DataRepository. Useful to later limit search to a subset of DataRepositories.
+          description:
+            Metadata attached to DataRepository. Useful to later limit
+            search to a subset of DataRepositories.
+          default: []
+        remoteGroundingName:
+          type: string
+          nullable: true
+          description: Friendly destination Name (grounding.name) of remote instance.
+        message:
+          type: string
+          nullable: true
+          description: Optional message.
         documents:
           type: array
           items:
@@ -2783,19 +3266,23 @@ components:
         - filterId
       title: PerFilterSearchResult
     PerFilterSearchResultError:
+      description: Error message if any.
       properties:
         message:
           type: string
           title: Message
+          default: Unknown Error Occurred
       type: object
       required:
         - message
       title: PerFilterSearchResultError
     RetrievalPerFilterSearchResultError:
+      description: Error message if any.
       properties:
         message:
           type: string
           title: Message
+          default: Unknown Error Occurred
       type: object
       required:
         - message
@@ -2807,9 +3294,6 @@ components:
           title: Filterid
         error:
           $ref: '#/components/schemas/PerFilterSearchResultError'
-          description: Error message if any.
-          default:
-            message: Unknown Error Occurred
       type: object
       required:
         - filterId
@@ -2821,68 +3305,524 @@ components:
           title: Id
           description: Identifier of this RetrievalSearchFilter - unique per request.
         searchConfiguration:
-          type: object
           nullable: true
           $ref: '#/components/schemas/RetrievalSearchConfiguration'
           default: {}
-          minProperties: 0
-          maxProperties: 2
         dataRepositories:
           type: array
           items:
             type: string
           title: Datarepositories
-          description: Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids.
+          description:
+            Specify ['*'] to search across all DataRepositories or give
+            a specific list of DataRepository ids.
           default:
             - '*'
         dataRepositoryType:
-          type: string
           $ref: '#/components/schemas/DataRepositoryType'
           description: Only include DataRepositories with the given type.
+        remoteName:
+          description: Destination Name of remote instance.
+          type: string
+          nullable: true
         dataRepositoryMetadata:
           type: array
           items:
             $ref: '#/components/schemas/RetrievalKeyValueListPair'
           title: Datarepositorymetadata
-          description: Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=['*']
+          description:
+            Restrict DataRepositories considered during search to those
+            annotated with the given metadata. Useful when combined with dataRepositories=['*']
           default: []
         documentMetadata:
           type: array
           items:
             $ref: '#/components/schemas/RetrievalSearchDocumentKeyValueListPair'
           title: Documentmetadata
-          description: Restrict documents considered during search to those annotated with the given metadata.
+          description:
+            Restrict documents considered during search to those annotated
+            with the given metadata.
           default: []
         chunkMetadata:
           type: array
           items:
             $ref: '#/components/schemas/RetrievalKeyValueListPair'
           title: Chunkmetadata
-          description: Restrict chunks considered during search to those with the given metadata.
+          description:
+            Restrict chunks considered during search to those with the
+            given metadata.
           default: []
       type: object
       required:
         - id
         - dataRepositoryType
       title: RetrievalSearchFilter
-      description: Limit scope of search to certain DataRepositories, Documents or Chunks.
+      description:
+        Limit scope of search to certain DataRepositories, Documents or
+        Chunks.
     RetrievalSearchInput:
       properties:
         query:
           type: string
           minLength: 1
+          nullable: true
           title: Query
           description: Query string
         filters:
           type: array
           items:
-            $ref: '#/components/schemas/RetrievalSearchFilter'
+            anyOf:
+              - $ref: '#/components/schemas/RetrievalSearchFilter'
+              - $ref: '#/components/schemas/RetrievalVectorSearchFilter'
           title: Filters
+        postProcessing:
+          type: array
+          items:
+            type: object
+            required:
+              - strategy
+              - inputs
+            properties:
+              id:
+                description: New ID for each PostProcessingOperation.
+                default: ae9eee48-4671-4321-a3e5-640adaaf26ae
+                type: string
+                nullable: true
+              maxChunkCount:
+                description: Maximum number of chunks to be retained in final PerSearchFilterResult.
+                type: integer
+                exclusiveMinimum: true
+                minimum: 0
+                maximum: 10000000
+                nullable: true
+                default: 5
+              strategy:
+                description: Merging and scoring strategy to derive final PerSearchFilterResult.
+                oneOf:
+                  - $ref: '#/components/schemas/MergeStrategyScoreReuse'
+                  - $ref: '#/components/schemas/MergeStrategyReranker'
+              inputs:
+                type: array
+                items:
+                  oneOf:
+                    - $ref: '#/components/schemas/PostProcessingObjectReference'
+                    - $ref: '#/components/schemas/PostProcessingOperation'
+          description: List of operations to be performed across PerFilterSearchResults.
+          default: []
       type: object
       required:
         - query
         - filters
       title: RetrievalSearchInput
+    Score:
+      type: object
+      properties:
+        value:
+          type: number
+      required:
+        - value
+      title: Score
+    SearchScores:
+      properties:
+        aggregatedScore:
+          type: object
+          properties:
+            value:
+              type: number
+        denseRetrievalScore:
+          type: object
+          properties:
+            value:
+              type: number
+      required:
+        - aggregatedScore
+        - denseRetrievalScore
+      title: SearchScores
+    RetrievalVectorSearchFilter:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Identifier of this RetrievalSearchFilter - unique per request.
+        searchConfiguration:
+          $ref: '#/components/schemas/RetrievalSearchConfiguration'
+          nullable: true
+          default: {}
+        dataRepositories:
+          type: array
+          items:
+            type: string
+          title: Datarepositories
+          description:
+            Specify ['*'] to search across all DataRepositories or give
+            a specific list of DataRepository ids.
+          default:
+            - '*'
+        dataRepositoryType:
+          $ref: '#/components/schemas/DataRepositoryType'
+          nullable: true
+          default: vector
+        remoteName:
+          description: Destination Name of remote instance.
+          type: string
+          nullable: true
+        dataRepositoryMetadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/RetrievalKeyValueListPair'
+          title: Datarepositorymetadata
+          description:
+            Restrict DataRepositories considered during search to those
+            annotated with the given metadata. Useful when combined with dataRepositories=['*']
+          default: []
+        documentMetadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/RetrievalSearchDocumentKeyValueListPair'
+          title: Documentmetadata
+          description:
+            Restrict documents considered during search to those annotated
+            with the given metadata.
+          default: []
+        chunkMetadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/RetrievalKeyValueListPair'
+          title: Chunkmetadata
+          description:
+            Restrict chunks considered during search to those with the
+            given metadata.
+          default: []
+        filter:
+          anyOf:
+            - $ref: '#/components/schemas/RetrievalBinaryBooleanFilter'
+            - $ref: '#/components/schemas/RetrievalScopedKeyValueListPair'
+          nullable: true
+          description:
+            Filter to apply on the search results. This cannot be used
+            together with 'documentMetadata'. The depth of the filter must not exceed
+            5 levels.
+        scoringConfiguration:
+          $ref: '#/components/schemas/VectorScoringConfiguration'
+          nullable: true
+          description: Scoring configuration for retrieval and ranking.
+          default:
+            denseRetrieval:
+              enabled: true
+              weight: 1
+            keywordRetrieval:
+              enabled: true
+              extractKeyWordsFromQuery: false
+              weight: 1
+            boosting:
+              enabled: true
+              metadata: []
+              scoreComputationStrategy: match_count
+              weight: 1
+            aggregationStrategy: weighted_average
+      type: object
+      required:
+        - id
+      title: RetrievalVectorSearchFilter
+    RetrievalBinaryBooleanFilter:
+      properties:
+        operator:
+          type: string
+          title: Operator
+          enum:
+            - and
+            - or
+        left:
+          title: Left
+          anyOf:
+            - $ref: '#/components/schemas/RetrievalBinaryBooleanFilter'
+            - $ref: '#/components/schemas/RetrievalScopedKeyValueListPair'
+        right:
+          title: Right
+          anyOf:
+            - $ref: '#/components/schemas/RetrievalBinaryBooleanFilter'
+            - $ref: '#/components/schemas/RetrievalScopedKeyValueListPair'
+      type: object
+      required:
+        - operator
+        - left
+        - right
+      title: RetrievalBinaryBooleanFilter
+    RetrievalScopedKeyValueListPair:
+      properties:
+        key:
+          type: string
+          maxLength: 1024
+          title: Key
+        value:
+          type: array
+          items:
+            type: string
+            maxLength: 1024
+          title: Value
+        scope:
+          type: string
+          title: Scope
+          enum:
+            - repository
+            - document
+            - chunk
+          default: document
+      type: object
+      required:
+        - key
+        - value
+      title: RetrievalScopedKeyValueListPair
+    MergeStrategyScoreReuse:
+      properties:
+        type:
+          description: The type of merge strategy.
+          $ref: '#/components/schemas/MergeStrategyType'
+          nullable: true
+          default: scoreReuse
+      type: object
+      title: MergeStrategyScoreReuse
+      description:
+        The MergeStrategyScoreReuse merges the given PerFilterSearchResult
+        instances according to the scores returned by the downstream retrieval process.
+        It is important that the scores are comparable, meaning they should come from
+        the same embedding model or reranker model.
+    MergeStrategyReranker:
+      properties:
+        type:
+          $ref: '#/components/schemas/MergeStrategyType'
+          nullable: true
+          default: reranker
+        model:
+          description: The RerankerModel to use.
+          type: string
+          enum:
+            - cohere-3.5
+          nullable: true
+          title: RerankerModel
+          default: cohere-3.5
+        boosting:
+          description:
+            Key-value pairs to be included in the ranking process, to boost
+            related chunks according to chunk content and metadata, if includeMetaData
+            is true.
+          type: array
+          items:
+            type: object
+            required:
+              - key
+              - value
+              - scope
+            properties:
+              key:
+                type: string
+                maxLength: 1024
+              value:
+                type: array
+                items:
+                  type: string
+                  maxLength: 1024
+              scope:
+                type: array
+                description: PerFilterSearchResult ID or a new ID for each PostProcessingOperation.
+                items:
+                  type: string
+          nullable: true
+        includeAllMetaData:
+          description:
+            If true, document and chunk metadata are sent to the reranker
+            LLM along with the text content of the chunk.
+          type: boolean
+          nullable: true
+          default: false
+      type: object
+      title: MergeStrategyReranker
+      description:
+        The MergeStrategyReranker will call a reranker LLM to merge the
+        given PerFilterSearchResult instances. This strategy adds latency, but yields
+        good results.
+    MergeStrategyType:
+      enum:
+        - reranker
+        - scoreReuse
+        - reciprocalRankFusion
+        - random
+      type: string
+      title: MergeStrategyType
+    PostProcessingObjectReference:
+      properties:
+        id:
+          description: PerFilterSearchResult ID or PostProcessingOperation ID.
+          type: string
+          nullable: true
+          default: 6d3eeafd-f3db-4e8e-949a-0e40e50eab64
+      type: object
+      title: PostProcessingObjectReference
+    PostProcessingOperation:
+      properties:
+        id:
+          type: string
+          nullable: true
+          description: New ID for each PostProcessingOperation.
+          default: ae9eee48-4671-4321-a3e5-640adaaf26ae
+          title: Id
+        maxChunkCount:
+          title: Maxchunkcount
+          description: Maximum number of chunks to be retained in final PerSearchFilterResult.
+          default: 5
+          type: integer
+          exclusiveMinimum: true
+          minimum: 0
+          maximum: 10000000
+          nullable: true
+        strategy:
+          title: Strategy
+          description: Merging and scoring strategy to derive final PerSearchFilterResult.
+          oneOf:
+            - $ref: '#/components/schemas/MergeStrategyScoreReuse'
+            - $ref: '#/components/schemas/MergeStrategyReranker'
+        inputs:
+          title: Inputs
+          type: array
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/PostProcessingObjectReference'
+              - $ref: '#/components/schemas/PostProcessingOperation'
+      type: object
+      required:
+        - strategy
+        - inputs
+      title: PostProcessingOperation
+    VectorScoringConfiguration:
+      properties:
+        denseRetrieval:
+          $ref: '#/components/schemas/DenseRetrievalScoringConfiguration'
+          nullable: true
+          default:
+            enabled: true
+            weight: 1
+        keywordRetrieval:
+          $ref: '#/components/schemas/KeyWordRetrievalScoringConfiguration'
+          nullable: true
+          default:
+            enabled: true
+            weight: 1
+            extractKeyWordsFromQuery: false
+        boosting:
+          $ref: '#/components/schemas/BoostingScoringConfiguration'
+          nullable: true
+          default:
+            enabled: true
+            metadata: []
+            weight: 1
+            scoreComputationStrategy: match_count
+        scoreThreshold:
+          title: Scorethreshold
+          description: Minimum chunk score threshold.
+          type: number
+          nullable: true
+        aggregationStrategy:
+          description: Methodology to calculate the final aggregate score.
+          $ref: '#/components/schemas/ScoresAggregationStrategy'
+          nullable: true
+          default: weighted_average
+      type: object
+      title: VectorScoringConfiguration
+    DenseRetrievalScoringConfiguration:
+      properties:
+        enabled:
+          type: boolean
+          nullable: true
+          description: Enable dense retrieval.
+          default: true
+        weight:
+          type: integer
+          nullable: true
+          description: Contribution to final score.
+          default: 1
+      type: object
+      title: DenseRetrievalScoringConfiguration
+    KeyWordRetrievalScoringConfiguration:
+      properties:
+        enabled:
+          type: boolean
+          nullable: true
+          default: true
+          description: Enable dense retrieval.
+        weight:
+          type: integer
+          nullable: true
+          default: 1
+          description: Contribution to final score.
+        extractKeyWordsFromQuery:
+          type: boolean
+          nullable: true
+          default: false
+          description: Extract Keywords from Query.
+      type: object
+      title: KeyWordRetrievalScoringConfiguration
+    BoostingScoringConfiguration:
+      properties:
+        enabled:
+          type: boolean
+          nullable: true
+          default: true
+          description: Enable metadata-based boosting.
+        metadata:
+          type: array
+          items:
+            type: object
+            required:
+              - key
+              - value
+              - weight
+            properties:
+              key:
+                type: string
+                maxLength: 1024
+              value:
+                type: array
+                items:
+                  type: string
+                  maxLength: 1024
+              scope:
+                type: string
+                enum:
+                  - repository
+                  - document
+                  - chunk
+                default: document
+              weight:
+                type: integer
+          nullable: true
+          default: []
+        weight:
+          type: integer
+          nullable: true
+          default: 1
+          description: Contribution to final score.
+        scoreComputationStrategy:
+          description:
+            How the similarity between document metadata and boosted key-value
+            pairs is computed.
+          $ref: '#/components/schemas/BoostingScoreComputationStrategy'
+          nullable: true
+          default: match_count
+      type: object
+      title: BoostingScoringConfiguration
+    BoostingScoreComputationStrategy:
+      enum:
+        - match_count
+        - embedding
+      type: string
+      title: BoostingScoreComputationStrategy
+    ScoresAggregationStrategy:
+      enum:
+        - weighted_average
+        - rrf
+        - weighted_rrf
+      type: string
+      title: ScoresAggregationStrategy
     RetrievalDataRepositorySearchResult:
       properties:
         dataRepository:
@@ -2903,6 +3843,12 @@ components:
           title: Results
           description: List of returned results.
           default: []
+        remoteGroundingName:
+          type: string
+          nullable: true
+          description:
+            Friendly Destination Name of remote instance (grounding.name).
+            Only present if dataRepositoryType = remote:dg.
       type: object
       required:
         - filterId
@@ -2914,9 +3860,6 @@ components:
           title: Filterid
         error:
           $ref: '#/components/schemas/RetrievalPerFilterSearchResultError'
-          description: Error message if any.
-          default:
-            message: Unknown Error Occurred
       type: object
       required:
         - filterId
@@ -2952,9 +3895,11 @@ components:
     ValidationError:
       properties:
         loc:
-          type: array
           items:
-            type: string
+            anyOf:
+              - type: string
+              - type: integer
+          type: array
           title: Location
         msg:
           type: string
@@ -2968,11 +3913,209 @@ components:
         - msg
         - type
       title: ValidationError
-
-    ### ###  ########################  ### ###
-    ### ###  ###       Error      ###  ### ###
-    ### ###  ########################  ### ###
-
+    DocumentBulkDeleteRequest:
+      properties:
+        ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          maxItems: 100
+          minItems: 1
+          title: Ids
+          description: List of document IDs to delete
+      type: object
+      required:
+        - ids
+      title: DocumentBulkDeleteRequest
+      description: A request to delete documents by their IDs.
+    DocumentBulkDeleteResponse:
+      properties:
+        deleted:
+          type: array
+          items:
+            type: string
+            format: uuid
+          title: Deleted
+          description: List of successfully deleted document IDs
+        notFound:
+          type: array
+          items:
+            type: string
+            format: uuid
+          title: NotFound
+          description: List of document IDs that were not found
+      type: object
+      required:
+        - deleted
+        - notFound
+      title: DocumentBulkDeleteResponse
+      description: Response after deleting documents in bulk.
+    BinaryBooleanFilter:
+      type: object
+      required:
+        - operator
+        - left
+        - right
+      properties:
+        operator:
+          type: string
+          title: Operator
+          description: Boolean operator for combining filter conditions
+          enum:
+            - and
+            - or
+        left:
+          title: Left
+          description: Left operand of the boolean expression
+          anyOf:
+            - $ref: '#/components/schemas/BinaryBooleanFilter'
+            - $ref: '#/components/schemas/ScopedKeyValueListPair'
+        right:
+          title: Right
+          description: Right operand of the boolean expression
+          anyOf:
+            - $ref: '#/components/schemas/BinaryBooleanFilter'
+            - $ref: '#/components/schemas/ScopedKeyValueListPair'
+      title: BinaryBooleanFilter
+    ScopedKeyValueListPair:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          type: string
+          maxLength: 1024
+          title: Key
+        value:
+          type: array
+          items:
+            type: string
+            maxLength: 1024
+          title: Value
+        scope:
+          type: string
+          title: Scope
+          description: Scope of the metadata filter (e.g., collection, document, chunk)
+          enum:
+            - collection
+            - document
+            - chunk
+          default: document
+      title: ScopedKeyValueListPair
+    MetadataUpdates:
+      properties:
+        updates:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetadataUpdateItem'
+          title: Updates
+          description: List of metadata updates.
+      type: object
+      required:
+        - updates
+      title: MetadataUpdates
+    MetadataUpdateItem:
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          title: Ids
+          description:
+            List of collection or document or chunk ids for which the metadata
+            should be updated
+        metadataUpdates:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetadataKeyUpdate'
+          title: MetadataUpdates
+          description: List of metadata updates for the given resource ids
+      type: object
+      required:
+        - ids
+        - metadataUpdates
+      title: MetadataUpdateItem
+    MetadataKeyUpdate:
+      properties:
+        key:
+          type: string
+          minLength: 1
+          title: Key
+          description: Key to update
+        operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetadataOperation'
+          nullable: true
+          title: Operations
+          description: Update operation executed for the key
+      type: object
+      required:
+        - key
+      title: MetadataKeyUpdate
+    MetadataOperation:
+      type: object
+      required:
+        - op
+      properties:
+        op:
+          $ref: '#/components/schemas/MetadataOperationEnum'
+        values:
+          type: array
+          items:
+            type: string
+          nullable: true
+          title: Values
+          description: List of values to update.
+      title: MetadataOperation
+    MetadataOperationEnum:
+      type: string
+      enum:
+        - add
+        - remove
+        - replace
+        - delete_key
+      title: MetadataOperationEnum
+    MetadataResponse:
+      type: object
+      properties:
+        current_metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetadataItem'
+          nullable: true
+          title: CurrentMetadata
+          description: List of metadata after updates.
+          default: []
+      title: MetadataResponse
+    MetadataItem:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: ID of collection
+        metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/VectorKeyValueListPair'
+          nullable: true
+          title: Metadata
+          description: List of metadata of the collections or documents or chunks
+          default: []
+      title: MetadataItem
+    FilterMatchModeEnum:
+      type: string
+      enum:
+        - ANY
+        - ALL
+      title: FilterMatchModeEnum
     ApiError:
       required:
         - code
@@ -2980,8 +4123,7 @@ components:
       type: object
       properties:
         code:
-          description: >-
-            Descriptive error code (not http status code).
+          description: Descriptive error code (not http status code).
           type: string
         message:
           description: plaintext error description
@@ -2996,7 +4138,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DetailsErrorResponse'
-
     DetailsErrorResponse:
       type: object
       properties:
@@ -3006,11 +4147,234 @@ components:
         message:
           description: Plaintext error description
           type: string
+    DataRepositoryMetaData:
+      type: array
+      items:
+        $ref: '#/components/schemas/MetaDataKeyValuePair'
+      example:
+        - key: purpose
+          value:
+            - demonstration
+        - key: sample-key
+          value:
+            - sample-value1
+            - sample-value2
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Error occurred during tenant onboarding
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Tenant onboarding request accepted
+    MetaDataKeyValuePair:
+      type: object
+      properties:
+        key:
+          type: string
+          minLength: 1
+          maxLength: 1024
+          nullable: false
+        value:
+          type: array
+          nullable: true
+          items:
+            type: string
+            minLength: 1
+            maxLength: 1024
+            nullable: false
+          minItems: 1
+      additionalProperties: false
+      required:
+        - key
+        - value
+      example:
+        key: sample-key
+        value:
+          - sample-value1
+          - sample-value2
+    getPipelineDocumentById:
+      type: object
+      properties:
+        id:
+          type: string
+          example: uuid
+        viewLocation:
+          type: string
+          example: location
+          nullable: true
+        downloadLocation:
+          type: string
+          example: location
+          nullable: true
+        status:
+          type: string
+          example: INDEXED
+        absoluteUrl:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        metadataId:
+          type: string
+          nullable: true
+        createdTimestamp:
+          type: string
+          example: '2024-02-15T12:45:00Z'
+        lastUpdatedTimestamp:
+          type: string
+          example: '2024-02-15T12:45:00Z'
+    getPipelineDocuments:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 1
+        resources:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: uuid
+              viewLocation:
+                type: string
+                example: location
+                nullable: true
+              downloadLocation:
+                type: string
+                example: location
+                nullable: true
+              status:
+                type: string
+                example: INDEXED
+              absoluteUrl:
+                type: string
+                nullable: true
+              title:
+                type: string
+                nullable: true
+              metadataId:
+                type: string
+                nullable: true
+              createdTimestamp:
+                type: string
+                example: '2024-02-15T12:45:00Z'
+              lastUpdatedTimestamp:
+                type: string
+                example: '2024-02-15T12:45:00Z'
+    getPipelineExecutionDocumentById:
+      type: object
+      properties:
+        id:
+          type: string
+          example: uuid
+        viewLocation:
+          type: string
+          example: location
+          nullable: true
+        downloadLocation:
+          type: string
+          example: location
+          nullable: true
+        status:
+          type: string
+          example: INDEXED
+        absoluteUrl:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        metadataId:
+          type: string
+          nullable: true
+        createdTimestamp:
+          type: string
+          example: '2024-02-15T12:45:00Z'
+        lastUpdatedTimestamp:
+          type: string
+          example: '2024-02-15T12:45:00Z'
+    getPipelineExecutionDocuments:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 1
+        resources:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: uuid
+              viewLocation:
+                type: string
+                example: location
+                nullable: true
+              downloadLocation:
+                type: string
+                example: location
+                nullable: true
+              status:
+                type: string
+                example: INDEXED
+              absoluteUrl:
+                type: string
+                nullable: true
+              title:
+                type: string
+                nullable: true
+              metadataId:
+                type: string
+                nullable: true
+              createdTimestamp:
+                type: string
+                example: '2024-02-15T12:45:00Z'
+              lastUpdatedTimestamp:
+                type: string
+                example: '2024-02-15T12:45:00Z'
+    search:
+      type: object
+      properties:
+        dataRepositoryMetadata:
+          $ref: '#/components/schemas/DataRepositoryMetaDataStrict'
+      required:
+        - dataRepositoryMetadata
+    updatePipeline:
+      type: object
+      properties:
+        configuration:
+          type: object
+          properties:
+            cronExpression:
+              type: string
+              description:
+                'Optional cron expression for scheduling pipeline execution.
 
-  ### ***  *****************************************************  *** ###
-  ### ***  ***              Start of responses               ***  *** ###
-  ### ***  *****************************************************  *** ###
+                Must represent an interval greater than 1 hour.
 
+                '
+              example: 0 */20 * * *
+          required:
+            - cronExpression
+          additionalProperties: false
+        metadata:
+          type: object
+          properties:
+            dataRepositoryMetadata:
+              $ref: '#/components/schemas/DataRepositoryMetaData'
+          required:
+            - dataRepositoryMetadata
+          additionalProperties: false
+      additionalProperties: false
   responses:
     BadRequest:
       content:
@@ -3021,7 +4385,6 @@ components:
               error:
                 $ref: '#/components/schemas/ApiError'
       description: The specification of the resource was incorrect
-
     NotFound:
       content:
         application/json:
@@ -3031,7 +4394,6 @@ components:
               error:
                 $ref: '#/components/schemas/ApiError'
       description: The specification of the resource was incorrect
-
     UnprocessableEntity:
       description: There are validation issues with the data.
       content:
@@ -3041,7 +4403,6 @@ components:
             properties:
               error:
                 $ref: '#/components/schemas/ApiError'
-
   parameters:
     top:
       name: $top
@@ -3052,7 +4413,6 @@ components:
         type: integer
         minimum: 0
       example: 10
-
     skip:
       name: $skip
       description: Number of results to be skipped from the ordered list of results
@@ -3062,10 +4422,14 @@ components:
         type: integer
         minimum: 0
       example: 10
-
     count:
       name: $count
-      description: When the $count field is set to false, the response contains a count of the items present in the response. When the $count field is set to true, the response contains a count of all the items present on the server, and not just the ones in the response. When the $count field is not passed, it is false by default.
+      description:
+        When the $count field is set to false, the response contains a
+        count of the items present in the response. When the $count field is set to
+        true, the response contains a count of all the items present on the server,
+        and not just the ones in the response. When the $count field is not passed,
+        it is false by default.
       in: query
       required: false
       schema:

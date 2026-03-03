@@ -15,8 +15,10 @@ import type {
   SearchPipelinesResponse,
   GetPipelineExecutions,
   GetPipelineExecutionById,
-  DocumentsStatusResponse,
-  PipelineDocumentResponse,
+  GetPipelineExecutionDocuments,
+  GetPipelineExecutionDocumentById,
+  GetPipelineDocuments,
+  GetPipelineDocumentById,
   ManualPipelineTrigger
 } from './schema/index.js';
 /**
@@ -235,7 +237,7 @@ export const PipelinesApi = {
     queryParameters: { $top?: number; $skip?: number; $count?: boolean },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<DocumentsStatusResponse>(
+    new OpenApiRequestBuilder<GetPipelineExecutionDocuments>(
       'get',
       '/pipelines/{pipelineId}/executions/{executionId}/documents',
       {
@@ -259,7 +261,7 @@ export const PipelinesApi = {
     documentId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<PipelineDocumentResponse>(
+    new OpenApiRequestBuilder<GetPipelineExecutionDocumentById>(
       'get',
       '/pipelines/{pipelineId}/executions/{executionId}/documents/{documentId}',
       {
@@ -280,7 +282,7 @@ export const PipelinesApi = {
     queryParameters: { $top?: number; $skip?: number; $count?: boolean },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<DocumentsStatusResponse>(
+    new OpenApiRequestBuilder<GetPipelineDocuments>(
       'get',
       '/pipelines/{pipelineId}/documents',
       {
@@ -302,7 +304,7 @@ export const PipelinesApi = {
     documentId: string,
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
-    new OpenApiRequestBuilder<PipelineDocumentResponse>(
+    new OpenApiRequestBuilder<GetPipelineDocumentById>(
       'get',
       '/pipelines/{pipelineId}/documents/{documentId}',
       {
