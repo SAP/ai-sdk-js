@@ -199,11 +199,30 @@ export class OrchestrationStreamResponse<T> {
     return this.getChoices().find((c: { index: number }) => c.index === index);
   }
 
+  /**
+   * Gets the citations from the orchestration response.
+   * Citations are returned by models like Perplexity Sonar that provide source references.
+   * @returns The citations, or undefined if there are none.
+   */
+  getCitations(): Citation[] | undefined {
+    if (this.isStreamOpen()) {
+      return;
+    }
+    return this._data.final_result?.citations;
+  }
+
   get stream(): OrchestrationStream<T> {
     if (!this._stream) {
       throw new Error('Response stream is undefined.');
     }
     return this._stream;
+  }
+
+  /**
+   * @internal
+   */
+  set stream(stream: OrchestrationStream<T>) {
+    this._stream = stream;
   }
 
   private getChoices() {
@@ -217,24 +236,5 @@ export class OrchestrationStreamResponse<T> {
       );
     }
     return this._openStream;
-  }
-
-  /**
-   * Gets the citations from the orchestration response.
-   * Citations are returned by models like Perplexity Sonar that provide source references.
-   * @returns The citations, or undefined if there are none.
-   */
-  getCitations(): Citation[] | undefined {
-    if (this.isStreamOpen()) {
-      return;
-    }
-    return this._data.final_result?.citations;
-  }
-
-  /**
-   * @internal
-   */
-  set stream(stream: OrchestrationStream<T>) {
-    this._stream = stream;
   }
 }
