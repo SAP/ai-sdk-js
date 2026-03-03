@@ -1,3 +1,4 @@
+import { createLogger } from '@sap-cloud-sdk/util';
 import { type ToolCallAccumulator } from './util/index.js';
 import type {
   AzureOpenAiChatCompletionMessageToolCalls,
@@ -6,6 +7,11 @@ import type {
 } from './client/inference/schema/index.js';
 import type { AzureOpenAiChatCompletionStream } from './azure-openai-chat-completion-stream.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
+
+const logger = createLogger({
+  package: 'foundation-models',
+  messageContext: 'azure-openai-chat-completion-stream-response'
+});
 
 /**
  * Azure OpenAI chat completion stream response.
@@ -29,7 +35,7 @@ export class AzureOpenAiChatCompletionStreamResponse<T> {
   private _rawResponse: HttpResponse | undefined;
 
   /**
-   * @deprecated Since v2.9.0. Provide an HttpResponse parameter when constructing AzureOpenAiChatCompletionStreamResponse.
+   * @deprecated Since v2.9.0. Provide an HttpResponse parameter when constructing AzureOpenAiChatCompletionStreamResponse. This constructor overload will be removed in v3.0.0.
    * Creates an Azure OpenAI chat completion stream response.
    */
   constructor();
@@ -42,6 +48,12 @@ export class AzureOpenAiChatCompletionStreamResponse<T> {
   constructor(rawResponse: HttpResponse);
 
   constructor(rawResponse?: HttpResponse) {
+    if (!rawResponse) {
+      logger.warn(
+        'Constructing AzureOpenAiChatCompletionStreamResponse without raw HTTP response is deprecated and can lead to runtime errors when accessing `rawResponse`.'
+      );
+      return;
+    }
     this._rawResponse = rawResponse;
   }
 

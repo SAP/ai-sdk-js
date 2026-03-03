@@ -18,7 +18,7 @@ describe('Azure OpenAI embedding response', () => {
     rawResponse = {
       data: mockedData,
       status: 200,
-      headers: {},
+      headers: { 'x-request-id': 'test-embedding-request-id' },
       request: {}
     };
     embeddingResponse = new AzureOpenAiEmbeddingResponse(rawResponse);
@@ -30,6 +30,22 @@ describe('Azure OpenAI embedding response', () => {
 
   it('should return raw response', () => {
     expect(embeddingResponse.rawResponse).toBe(rawResponse);
+  });
+
+  it('should return the request ID from response headers', () => {
+    expect(embeddingResponse.getRequestId()).toBe(
+      'test-embedding-request-id'
+    );
+  });
+
+  it('should return undefined when x-request-id header is not present', () => {
+    const responseWithoutId = new AzureOpenAiEmbeddingResponse({
+      data: mockedData,
+      status: 200,
+      headers: {},
+      request: {}
+    });
+    expect(responseWithoutId.getRequestId()).toBeUndefined();
   });
 
   it('should return the first embedding', () => {

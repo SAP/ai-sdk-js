@@ -17,7 +17,7 @@ describe('OpenAI chat completion response', () => {
     rawResponse = {
       data: mockResponse,
       status: 200,
-      headers: {},
+      headers: { 'x-request-id': 'test-request-id-456' },
       request: {}
     };
     azureOpenAiChatResponse = new AzureOpenAiChatCompletionResponse(
@@ -33,6 +33,22 @@ describe('OpenAI chat completion response', () => {
     expect(azureOpenAiChatResponse.rawResponse).toBe(rawResponse);
   });
 
+  it('should return the request ID from response headers', () => {
+    expect(azureOpenAiChatResponse.getRequestId()).toBe(
+      'test-request-id-456'
+    );
+  });
+
+  it('should return undefined when x-request-id header is not present', () => {
+    const responseWithoutId = new AzureOpenAiChatCompletionResponse({
+      data: mockResponse,
+      status: 200,
+      headers: {},
+      request: {}
+    });
+    expect(responseWithoutId.getRequestId()).toBeUndefined();
+  });
+
   it('should get token usage', () => {
     expect(azureOpenAiChatResponse.getTokenUsage()).toMatchObject({
       completion_tokens: expect.any(Number),
@@ -44,7 +60,7 @@ describe('OpenAI chat completion response', () => {
   it('should return default choice index with convenience functions', () => {
     expect(azureOpenAiChatResponse.getFinishReason()).toBe('stop');
     expect(azureOpenAiChatResponse.getContent()).toBe(
-      'Hello! I’m here and ready to help. How can I assist you today?'
+      'Hello! I\'m here and ready to help. How can I assist you today?'
     );
   });
 

@@ -21,6 +21,14 @@ export class AzureOpenAiEmbeddingResponse {
   }
 
   /**
+   * Gets the request ID from the response headers.
+   * @returns The request ID, or undefined if the header is not present.
+   */
+  getRequestId(): string | undefined {
+    return this.rawResponse.headers?.['x-request-id'];
+  }
+
+  /**
    * Parses the Azure OpenAI response and returns the embedding.
    * @param dataIndex - The index of the data to parse.
    * @returns The embedding vector.

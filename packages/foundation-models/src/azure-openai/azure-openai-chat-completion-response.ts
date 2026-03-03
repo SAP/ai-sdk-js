@@ -19,6 +19,14 @@ export class AzureOpenAiChatCompletionResponse {
   }
 
   /**
+   * Gets the request ID from the response headers.
+   * @returns The request ID, or undefined if the header is not present.
+   */
+  getRequestId(): string | undefined {
+    return this.rawResponse.headers?.['x-request-id'];
+  }
+
+  /**
    * Usage of tokens in the response.
    * @returns Token usage.
    */
