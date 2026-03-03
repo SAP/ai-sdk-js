@@ -92,6 +92,16 @@ export class SseStream<Item> implements AsyncIterable<Item> {
     const { controller: abortController } = this;
     const getIterator = () => this[Symbol.asyncIterator]();
 
+    async function cleanup() {
+      try {
+        await iter.return?.();
+      } catch {
+        // Best-effort: ignore errors during iterator teardown.
+      } finally {
+        abortController.abort();
+      }
+    }
+
     return new ReadableStream<Uint8Array>({
       async start() {
         iter = getIterator();
@@ -105,12 +115,12 @@ export class SseStream<Item> implements AsyncIterable<Item> {
           }
           controller.enqueue(encoder.encode(JSON.stringify(value) + '\n'));
         } catch (err) {
+          await cleanup();
           controller.error(err);
         }
       },
       async cancel() {
-        await iter.return?.();
-        abortController.abort();
+        await cleanup();
       }
     });
   }

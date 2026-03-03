@@ -416,4 +416,51 @@ describe('toReadableStream', () => {
 
     await expect(reader.read()).rejects.toThrow('stream failure');
   });
+
+  test('cleans up on serialization error', async () => {
+    const controller = new AbortController();
+    const circular: Record<string, unknown> = {};
+    circular.self = circular;
+
+    async function* iterator(): AsyncGenerator<Record<string, unknown>> {
+      yield { ok: true };
+      yield circular;
+    }
+
+    const sseStream = new SseStream(iterator, controller);
+    const readable = sseStream.toReadableStream();
+    const reader = readable.getReader();
+
+    const first = await reader.read();
+    expect(first.done).toBe(false);
+
+    await expect(reader.read()).rejects.toThrow();
+    expect(controller.signal.aborted).toBe(true);
+  });
+
+  test('aborts controller even if iterator.return() rejects', async () => {
+    const controller = new AbortController();
+    let returnCalled = false;
+
+    const brokenIterator: AsyncIterableIterator<{ n: number }> = {
+      next: async () => ({ value: { n: 1 }, done: false }),
+      return: async () => {
+        returnCalled = true;
+        throw new Error('return failed');
+      },
+      [Symbol.asyncIterator]() {
+        return this;
+      }
+    };
+
+    const sseStream = new SseStream(() => brokenIterator, controller);
+    const readable = sseStream.toReadableStream();
+    const reader = readable.getReader();
+
+    await reader.read();
+    await reader.cancel();
+
+    expect(returnCalled).toBe(true);
+    expect(controller.signal.aborted).toBe(true);
+  });
 });
