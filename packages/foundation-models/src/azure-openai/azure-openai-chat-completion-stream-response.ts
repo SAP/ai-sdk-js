@@ -5,6 +5,7 @@ import type {
   AzureOpenAiCreateChatCompletionStreamResponse
 } from './client/inference/schema/index.js';
 import type { AzureOpenAiChatCompletionStream } from './azure-openai-chat-completion-stream.js';
+import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 
 /**
  * Azure OpenAI chat completion stream response.
@@ -25,6 +26,45 @@ export class AzureOpenAiChatCompletionStreamResponse<T> {
   private _toolCalls: Map<number, AzureOpenAiChatCompletionMessageToolCalls> =
     new Map();
   private _stream: AzureOpenAiChatCompletionStream<T> | undefined;
+  private _rawResponse: HttpResponse | undefined;
+
+  /**
+   * Creates an Azure OpenAI chat completion stream response.
+   * @param rawResponse - The raw HTTP response. SSE data is not part of the immediate response.
+   */
+  constructor(rawResponse: HttpResponse);
+
+  /**
+   * @deprecated Since v2.9.0. Provide an HttpResponse parameter when constructing AzureOpenAiChatCompletionStreamResponse.
+   * Creates an Azure OpenAI chat completion stream response.
+   */
+  constructor();
+
+  constructor(rawResponse?: HttpResponse) {
+    this._rawResponse = rawResponse;
+  }
+
+  /**
+   * Gets the raw HTTP response. SSE data is not part of the immediate response.
+   * @returns The raw HTTP response.
+   * @throws {Error} When constructed without a raw response parameter (deprecated).
+   */
+  get rawResponse(): HttpResponse {
+    if (!this._rawResponse) {
+      throw new Error(
+        'The raw response is not available. Please provide the raw response when constructing `AzureOpenAiChatCompletionStreamResponse`.'
+      );
+    }
+    return this._rawResponse;
+  }
+
+  /**
+   * Gets the request ID from the response headers.
+   * @returns The request ID, or undefined if the header is not present.
+   */
+  getRequestId(): string | undefined {
+    return this._rawResponse?.headers?.['x-request-id'];
+  }
 
   public getTokenUsage(): AzureOpenAiCompletionUsage | undefined {
     return this._usage;

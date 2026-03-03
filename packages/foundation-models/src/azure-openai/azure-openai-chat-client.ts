@@ -61,15 +61,36 @@ export class AzureOpenAiChatClient {
         controller.abort();
       });
     }
+
+    const streamResponse = await this.executeRequest(
+      {
+        ...request,
+        stream: true,
+        stream_options: {
+          include_usage: true
+        }
+      },
+      {
+        ...requestConfig,
+        responseType: 'stream',
+        signal: controller.signal
+      }
+    );
+
     const response =
-      new AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>();
-    response.stream = (
-      await this.createStream(request, controller, requestConfig)
+      new AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>(
+        streamResponse
+      );
+
+    response.stream = AzureOpenAiChatCompletionStream._create(
+      streamResponse,
+      controller
     )
       ._pipe(AzureOpenAiChatCompletionStream._processChunk)
       ._pipe(AzureOpenAiChatCompletionStream._processToolCalls, response)
       ._pipe(AzureOpenAiChatCompletionStream._processFinishReason, response)
       ._pipe(AzureOpenAiChatCompletionStream._processTokenUsage, response);
+
     return response;
   }
 
@@ -93,27 +114,5 @@ export class AzureOpenAiChatClient {
       requestConfig,
       this.destination
     );
-  }
-
-  private async createStream(
-    request: AzureOpenAiChatCompletionParameters,
-    controller: AbortController,
-    requestConfig?: CustomRequestConfig
-  ): Promise<AzureOpenAiChatCompletionStream<any>> {
-    const response = await this.executeRequest(
-      {
-        ...request,
-        stream: true,
-        stream_options: {
-          include_usage: true
-        }
-      },
-      {
-        ...requestConfig,
-        responseType: 'stream',
-        signal: controller.signal
-      }
-    );
-    return AzureOpenAiChatCompletionStream._create(response, controller);
   }
 }
