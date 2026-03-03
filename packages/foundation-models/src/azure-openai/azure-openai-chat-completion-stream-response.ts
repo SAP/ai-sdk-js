@@ -29,16 +29,17 @@ export class AzureOpenAiChatCompletionStreamResponse<T> {
   private _rawResponse: HttpResponse | undefined;
 
   /**
-   * Creates an Azure OpenAI chat completion stream response.
-   * @param rawResponse - The raw HTTP response. SSE data is not part of the immediate response.
-   */
-  constructor(rawResponse: HttpResponse);
-
-  /**
    * @deprecated Since v2.9.0. Provide an HttpResponse parameter when constructing AzureOpenAiChatCompletionStreamResponse.
    * Creates an Azure OpenAI chat completion stream response.
    */
   constructor();
+
+  /**
+   * Creates an Azure OpenAI chat completion stream response.
+   * @param rawResponse - The raw HTTP response. SSE data is not part of the immediate response.
+   */
+  // eslint-disable-next-line @typescript-eslint/unified-signatures
+  constructor(rawResponse: HttpResponse);
 
   constructor(rawResponse?: HttpResponse) {
     this._rawResponse = rawResponse;
