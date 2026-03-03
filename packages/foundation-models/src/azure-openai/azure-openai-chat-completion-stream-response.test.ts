@@ -17,10 +17,6 @@ describe('AzureOpenAiChatCompletionStreamResponse', () => {
     streamResponse = new AzureOpenAiChatCompletionStreamResponse(rawResponse);
   });
 
-  it('should initialize with raw HTTP response', () => {
-    expect(streamResponse.rawResponse).toBe(rawResponse);
-  });
-
   describe('rawResponse', () => {
     it('should return the raw HTTP response', () => {
       expect(streamResponse.rawResponse).toBe(rawResponse);
