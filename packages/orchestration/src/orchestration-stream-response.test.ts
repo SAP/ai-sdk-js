@@ -57,6 +57,7 @@ describe('OrchestrationStreamResponse', () => {
       expect(() => streamResponse.getIntermediateResults()).toThrow(
         errorMessage
       );
+      expect(() => streamResponse.getCitations()).toThrow(errorMessage);
       expect(() => streamResponse.findChoiceByIndex(0)).toThrow(errorMessage);
     });
   });
@@ -272,6 +273,48 @@ describe('OrchestrationStreamResponse', () => {
       const intermediateResults = streamResponse.getIntermediateResults();
       expect(intermediateResults).toBeDefined();
       expect(intermediateResults?.llm).toBeDefined();
+    });
+  });
+
+  describe('getCitations', () => {
+    it('should return citations when present', () => {
+      closeStream({
+        final_result: {
+          choices: [
+            {
+              index: 0,
+              message: {
+                role: 'assistant',
+                content: 'Hello!'
+              }
+            }
+          ],
+          citations: [
+            {
+              ref_id: 1,
+              title: 'Example Citation',
+              url: 'https://example.com',
+              start_index: 0,
+              end_index: 10
+            }
+          ]
+        }
+      });
+
+      const citations = streamResponse.getCitations();
+      expect(citations).toBeDefined();
+      expect(citations).toHaveLength(1);
+      expect(citations?.[0]).toMatchObject({
+        ref_id: 1,
+        title: 'Example Citation',
+        url: 'https://example.com'
+      });
+    });
+
+    it('should return undefined when no citations present', () => {
+      closeStream(mockCompleteSuccessResponse);
+
+      expect(streamResponse.getCitations()).toBeUndefined();
     });
   });
 

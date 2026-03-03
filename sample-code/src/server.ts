@@ -343,11 +343,11 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       const content = sonarResult.getContent();
       const citations = sonarResult.getCitations();
       let response = `Response: ${content}\n\n`;
-      if (citations && citations.length > 0) {
+      if (citations?.length) {
         response += 'Citations:\n';
-        citations.forEach(citation => {
-          response += `  [${citation.ref_id ?? ''}] ${citation.title}: ${citation.url}\n`;
-        });
+        response += citations
+                  .map(citation => `  [${citation.ref_id ?? ''}] ${citation.title}: ${citation.url}`)
+                  .join('\n') + '\n';
       } else {
         response += 'No citations found in the response.\n';
       }
