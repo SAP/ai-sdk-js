@@ -16,8 +16,8 @@ on:
         # NOTES:
         #
         # Currently the spec is adjusted manually, changes:
-        # - Replaced all occurrences of `"type": "null"` with `"nullable": true`, otherwise types are incorrect. (Colleagues are informed.)
-        # - Removed top_k parameter, it is not yet released.
+        # - Changed type of the prediction_config in parquet endpoint.
+        # - Added encoding information for the parquet endpoint
         #
         # - rpt
         default: orchestration
@@ -110,7 +110,7 @@ jobs:
               FILE_PATH='packages/prompt-registry/src/spec/prompt-registry.yaml'
               ;;
             # rpt)
-            #   API_URL="repos/DL-COE/sap-rpt-1-public-content/contents/sap-rpt-1_openapi.json?ref=$REF"
+            #   API_URL="repos/DL-COE/sap-rpt-resources/contents/sap-rpt-1_openapi.json?ref=$REF"
             #   FILE_PATH='packages/rpt/src/spec/rpt.json'
             #   ;;
           esac

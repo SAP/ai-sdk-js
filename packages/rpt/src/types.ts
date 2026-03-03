@@ -1,4 +1,8 @@
 import type { Xor } from '@sap-cloud-sdk/util';
+import type {
+  CustomRequestConfig,
+  RequestCompressionMiddlewareOptions
+} from '@sap-cloud-sdk/http-client';
 import type { ColumnType, SchemaFieldConfig } from './client/rpt/index.js';
 
 /**
@@ -117,3 +121,50 @@ export type PredictionData<T extends DataSchema> = {
     columns: ColType<T>;
   }
 >;
+
+/**
+ * Compression middleware options for requests to the RPT service endpoint.
+ */
+export type RptRequestCompressionMiddlewareOptions = Omit<
+  RequestCompressionMiddlewareOptions<'gzip'>,
+  'algorithm'
+> & {
+  /**
+   * The compression mode to use for requests to the RPT service endpoint.
+   * - `always`: Compress the request body for every request.
+   * - `auto`: Compress the request body only if it exceeds a certain size threshold (e.g., 1KB). This is the default behavior.
+   * - `never`: Do not compress the request body.
+   */
+  mode: Exclude<
+    RequestCompressionMiddlewareOptions['mode'],
+    undefined | 'header-only'
+  >;
+};
+
+/**
+ * Custom options for how requests to the RPT service endpoint are performed.
+ */
+export interface RptRequestOptions extends CustomRequestConfig {
+  /**
+   * Options to configure request compression.
+   * @remarks This option does not affect responses, only requests.
+   * Prediction requests with parquet will not be compressed even if the option is set, as they are already in a compressed binary format.
+   * Compression will be disabled if custom middlewares are provided in the destination or fetch options.
+   */
+  compress?: RptRequestCompressionMiddlewareOptions;
+}
+
+/**
+ * Options for Parquet-based predictions.
+ */
+export interface PredictionOptionsParquet {
+  /**
+   * The name of the index column. If provided, the service will return this column's value in each prediction object to facilitate aligning the output predictions with the input rows on the client side. If not provided, the column will not be included in the output.
+   */
+  index_column?: string;
+  /**
+   * Whether to parse the data types of the columns. If set to true, numeric columns will be parsed to float or integer and dates in ISO format YYYY-MM-DD will be parsed.
+   * Default: true.
+   */
+  parse_data_types?: boolean;
+}

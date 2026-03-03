@@ -9,7 +9,8 @@ import type {
   MessageToolCalls,
   ModuleResults,
   TokenUsage,
-  Citation
+  Citation,
+  Error as OrchestrationError
 } from './client/api/schema/index.js';
 import type { OrchestrationStream } from './orchestration-stream.js';
 
@@ -183,6 +184,17 @@ export class OrchestrationStreamResponse<T> {
       return;
     }
     return this._data.final_result?.citations;
+  }
+   * Gets the intermediate failures from the orchestration response.
+   * When using module fallback, this contains errors from module configurations
+   * that failed before a successful one was found.
+   * @returns The intermediate failures, or undefined if there were none.
+   */
+  getIntermediateFailures(): OrchestrationError[] | undefined {
+    if (this.isStreamOpen()) {
+      return;
+    }
+    return this._data.intermediate_failures;
   }
 
   /**
