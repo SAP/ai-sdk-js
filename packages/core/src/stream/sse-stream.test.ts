@@ -1,5 +1,6 @@
 import assert from 'assert';
 import {
+  SseStream,
   _iterSseMessages,
   _decodeChunks as decodeChunks
 } from './sse-stream.js';
@@ -318,5 +319,101 @@ describe('streaming decoding', () => {
     expect(stream.next()).rejects.toThrow(
       'Invalid SSE payload: {"error":"Something went wrong"}'
     );
+  });
+});
+
+function createMockSseStream<T>(items: T[]): SseStream<T> {
+  const controller = new AbortController();
+  async function* iterator(): AsyncGenerator<T> {
+    for (const item of items) {
+      yield item;
+    }
+  }
+  return new SseStream(iterator, controller);
+}
+
+async function collectReadableStream(
+  stream: ReadableStream<Uint8Array>
+): Promise<string[]> {
+  const reader = stream.getReader();
+  const decoder = new TextDecoder();
+  const lines: string[] = [];
+
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) {
+      break;
+    }
+    const text = decoder.decode(value).trimEnd();
+    if (text) {
+      lines.push(text);
+    }
+  }
+
+  return lines;
+}
+
+describe('toReadableStream', () => {
+  test('produces NDJSON output from items', async () => {
+    const stream = createMockSseStream([
+      { foo: true },
+      { bar: 'hello' },
+      { baz: 42 }
+    ]);
+
+    const lines = await collectReadableStream(stream.toReadableStream());
+
+    expect(lines).toEqual(['{"foo":true}', '{"bar":"hello"}', '{"baz":42}']);
+  });
+
+  test('handles empty stream', async () => {
+    const stream = createMockSseStream([]);
+    const lines = await collectReadableStream(stream.toReadableStream());
+    expect(lines).toEqual([]);
+  });
+
+  test('handles single item', async () => {
+    const stream = createMockSseStream([{ only: 'one' }]);
+    const lines = await collectReadableStream(stream.toReadableStream());
+    expect(lines).toEqual(['{"only":"one"}']);
+  });
+
+  test('aborts controller on cancel', async () => {
+    const controller = new AbortController();
+    let yieldCount = 0;
+
+    async function* iterator(): AsyncGenerator<{ n: number }> {
+      while (true) {
+        yieldCount++;
+        yield { n: yieldCount };
+      }
+    }
+
+    const sseStream = new SseStream(iterator, controller);
+    const readable = sseStream.toReadableStream();
+    const reader = readable.getReader();
+
+    await reader.read();
+    expect(yieldCount).toBe(1);
+
+    await reader.cancel();
+    expect(controller.signal.aborted).toBe(true);
+  });
+
+  test('propagates iterator errors', async () => {
+    const controller = new AbortController();
+    async function* iterator(): AsyncGenerator<{ n: number }> {
+      yield { n: 1 };
+      throw new Error('stream failure');
+    }
+
+    const sseStream = new SseStream(iterator, controller);
+    const readable = sseStream.toReadableStream();
+    const reader = readable.getReader();
+
+    const first = await reader.read();
+    expect(first.done).toBe(false);
+
+    await expect(reader.read()).rejects.toThrow('stream failure');
   });
 });

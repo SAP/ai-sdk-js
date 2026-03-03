@@ -81,6 +81,39 @@ export class SseStream<Item> implements AsyncIterable<Item> {
   [Symbol.asyncIterator](): AsyncIterator<Item> {
     return this.iterator();
   }
+
+  /**
+   * Converts this stream to a newline-delimited JSON ReadableStream.
+   * @returns A ReadableStream of UTF-8 encoded NDJSON bytes.
+   */
+  toReadableStream(): ReadableStream<Uint8Array> {
+    let iter: AsyncIterator<Item>;
+    const encoder = new TextEncoder();
+    const { controller: abortController } = this;
+    const getIterator = () => this[Symbol.asyncIterator]();
+
+    return new ReadableStream<Uint8Array>({
+      async start() {
+        iter = getIterator();
+      },
+      async pull(controller) {
+        try {
+          const { value, done } = await iter.next();
+          if (done) {
+            controller.close();
+            return;
+          }
+          controller.enqueue(encoder.encode(JSON.stringify(value) + '\n'));
+        } catch (err) {
+          controller.error(err);
+        }
+      },
+      async cancel() {
+        await iter.return?.();
+        abortController.abort();
+      }
+    });
+  }
 }
 
 /**
