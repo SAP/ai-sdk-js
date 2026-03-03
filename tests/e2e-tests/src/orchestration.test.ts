@@ -264,8 +264,8 @@ describe('orchestration', () => {
     expect(response.getIntermediateFailures()).toHaveLength(1);
     expect(response.getContent()).toEqual(expect.any(String));
   });
-  
-    it('should complete a chat with Sonar model and return citations', async () => {
+
+  it('should complete a chat with Sonar model and return citations', async () => {
     const response = await orchestrationSonarWithCitations();
 
     expect(response.getContent()).toEqual(expect.any(String));

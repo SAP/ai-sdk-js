@@ -349,9 +349,13 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       let response = `Response: ${content}\n\n`;
       if (citations?.length) {
         response += 'Citations:\n';
-        response += citations
-                  .map(citation => `  [${citation.ref_id ?? ''}] ${citation.title}: ${citation.url}`)
-                  .join('\n') + '\n';
+        response +=
+          citations
+            .map(
+              citation =>
+                `  [${citation.ref_id ?? ''}] ${citation.title}: ${citation.url}`
+            )
+            .join('\n') + '\n';
       } else {
         response += 'No citations found in the response.\n';
       }
