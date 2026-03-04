@@ -98,15 +98,16 @@ describe('rpt', () => {
       .reply(200, { predictions: [{ SALESGROUP: 'test' }] });
 
     const blob = new Blob(['fake parquet data']);
-    const result = await new RptClient().predictParquet(
-      blob,
-      {
+    const result = await new RptClient().predictParquet({
+      file: blob,
+      prediction_config: {
         target_columns: [
           { name: 'SALESGROUP', prediction_placeholder: '[PREDICT]' }
         ]
       },
-      { index_column: '__row_idx__', parse_data_types: false }
-    );
+      index_column: '__row_idx__',
+      parse_data_types: false
+    });
 
     expect(requestScope.isDone()).toBe(true);
     expect(result.predictions).toEqual([{ SALESGROUP: 'test' }]);
