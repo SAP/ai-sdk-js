@@ -26,7 +26,8 @@ export {
   orchestrationTranslation,
   orchestrationEmbeddingWithMasking,
   OrchestrationConfigRef,
-  orchestrationWithFallbackConfigs
+  orchestrationWithFallbackConfigs,
+  orchestrationStreamWithFallbackConfigs
 } from './orchestration.js';
 export {
   invoke,
@@ -69,4 +70,10 @@ export {
   deletePromptTemplate
 } from './prompt-registry.js';
 
-export { predictWithSchema, predictAutomaticParsing } from './rpt.js';
+export {
+  predictWithSchema,
+  predictAutomaticParsing,
+  predictParquetFile,
+  predictParquetBlob,
+  predictWithSchemaCompressed
+} from './rpt.js';

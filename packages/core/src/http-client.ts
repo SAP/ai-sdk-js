@@ -28,9 +28,9 @@ export type CustomRequestConfig = Pick<
   | 'httpAgent'
   | 'httpsAgent'
   | 'parameterEncoder'
+  | 'signal'
 > &
-  // TODO: Move to `Pick` after updating SAP Cloud SDK dependency
-  { signal?: AbortSignal } & Record<string, any>;
+  Record<string, any>;
 
 /**
  * The options to call an endpoint.
@@ -68,7 +68,7 @@ export async function executeRequest(
 
   const mergedRequestConfig = {
     ...mergeWithDefaultRequestConfig(apiVersion, resourceGroup, requestConfig),
-    data: JSON.stringify(data)
+    data: data instanceof FormData ? data : JSON.stringify(data)
   };
 
   try {
