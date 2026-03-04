@@ -3,17 +3,16 @@ import {
   getResourceGroup
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { compress as compressMiddleware } from '@sap-cloud-sdk/http-client';
-import { type PredictionConfig, RptApi } from './internal.js';
+import { RptApi } from './internal.js';
 import type {
   DataSchema,
   PredictionData,
   RptRequestOptions,
-  PredictionOptionsParquet
+  ParquetPayload
 } from './types.js';
 import type {
   PredictRequestPayload,
-  PredictResponsePayload,
-  BodyPredictParquet
+  PredictResponsePayload
 } from './client/rpt/index.js';
 import type { SapRptModel } from '@sap-ai-sdk/core/internal.js';
 import type { ModelDeployment } from '@sap-ai-sdk/ai-api';
@@ -67,47 +66,35 @@ export class RptClient {
   /**
    * Predict based on Parquet file data.
    * Parquet is a binary tabular data format with typed columns.
-   * @param parquetData - Parquet file data as Blob. Can also be a File to forward the filename.
-   * @param predictionConfig - Configuration for the prediction.
-   * @param options - Additional options for the prediction.
-   * @param options.index_column - Name of the index column in the Parquet file.
-   * @param options.parseDataTypes - Whether to parse data types from the Parquet file.
-   * @param requestConfig - Custom request configuration. Compression options will be ignored for this method, as Parquet files are already in a compressed format.
+   * @param payload - Parquet data and prediction configuration to base prediction on.
+   * @param requestConfig - Custom request configuration.
    * @returns Prediction response.
    */
   async predictParquet(
-    parquetData: Blob | File,
-    predictionConfig: PredictionConfig,
-    options?: PredictionOptionsParquet,
+    payload: ParquetPayload,
     requestConfig: Omit<RptRequestOptions, 'compress'> = {}
   ): Promise<PredictResponsePayload> {
     // Validate that parquetData is of type Blob
     // JavaScript has a few Blob-like types for binary data (e.g., Buffer, ArrayBuffer, etc.) which
     // users might try to use here.
     // Note: This check also covers File
-    if (!(parquetData instanceof Blob)) {
+    if (!(payload.file instanceof Blob)) {
       throw new Error(
-        `parquetData must be of type Blob or File. Received: ${typeof parquetData}`
+        `file must be of type Blob or File. Received: ${typeof payload.file}`
       );
     }
 
     // Workaround: Endpoint requires a filename that ends with .parquet
     // Preserve any filename if parquetData is already a File
-    const parquetFile =
-      parquetData instanceof File
-        ? parquetData
-        : new File([parquetData], 'blob.parquet', { type: parquetData.type });
+    const file =
+      payload.file instanceof File
+        ? payload.file
+        : new File([payload.file], 'blob.parquet', { type: payload.file.type });
 
     const { resourceGroup, deploymentId } =
       await this.getResourceGroupAndDeploymentId();
 
-    const body: BodyPredictParquet = {
-      file: parquetFile,
-      prediction_config: predictionConfig,
-      ...(options || {})
-    };
-
-    return RptApi.predictParquet(body)
+    return RptApi.predictParquet({ ...payload, file })
       .setBasePath(`/inference/deployments/${deploymentId}`)
       .addCustomHeaders({
         'ai-resource-group': resourceGroup || 'default'
