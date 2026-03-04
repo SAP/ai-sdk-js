@@ -29,7 +29,7 @@ We could keep them and add another for the Responses API:
 
 ```ts
 // Responses API
-const response = await new AzureOpenAiResponsesClient('gpt-5').createResponse({
+const response = await new AzureOpenAiResponsesClient('gpt-5').create({
   input: 'Hello, my name is John'
 });
 ```
@@ -140,7 +140,7 @@ Namespaces are not recommended in modern TS as many build tools cannot handle th
 import { AzureOpenAi } from '@sap-ai-sdk/foundation-models';
 
 // Chat API
-const response = await new AzureOpenAi.ChatClient('gpt-5').createChatCompletion({
+const response = await new AzureOpenAi.ChatClient('gpt-5').create({
   messages: [...]
 });
 ```
@@ -148,7 +148,7 @@ const response = await new AzureOpenAi.ChatClient('gpt-5').createChatCompletion(
 alternative usage:
 
 ```ts
-import { Chat } from '@sap-ai-sdk/foundation-models/azure-openai';
+import { ChatClient } from '@sap-ai-sdk/foundation-models/azure-openai';
 
 // Chat API
 const response = await new ChatClient('gpt-5').createChatCompletion({
