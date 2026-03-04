@@ -200,4 +200,4 @@ Naming could also be `chatClient()`, `chatApi()` or similar.
 
 ## Outlook
 
-We should consider how OpenAI's websocket API (`Session`) plays into this.
+We should consider how OpenAI's WebSocket API (`Session`) plays into this.
