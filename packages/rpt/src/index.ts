@@ -4,6 +4,7 @@ export type {
   PredictionData,
   RowType,
   ColumnType,
+  ParquetPayload,
   RptRequestOptions,
   RptRequestCompressionMiddlewareOptions
 } from './types.js';
