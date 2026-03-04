@@ -57,7 +57,7 @@ jobs:
           git clone --depth 1 git@github.com:SAP/ai-sdk.git
           
           # Copy generated docs to versioned folder
-          rsync -avz ai-sdk-js/knowledge-base/api-reference/ ai-sdk/static/api/${VERSION}/
+          rsync -avz --delete ai-sdk-js/knowledge-base/api-reference/ ai-sdk/static/api/${VERSION}/
           
           cd ai-sdk
           git add -A
