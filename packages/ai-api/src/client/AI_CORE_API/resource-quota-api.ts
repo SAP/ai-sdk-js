@@ -29,8 +29,8 @@ export const ResourceQuotaApi = {
       'get',
       '/admin/resourceQuota/resourceGroups',
       {
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       ResourceQuotaApi._defaultBasePath
     ),
@@ -48,8 +48,8 @@ export const ResourceQuotaApi = {
       'get',
       '/admin/resourceQuota/executables',
       {
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       ResourceQuotaApi._defaultBasePath
     ),
@@ -67,8 +67,8 @@ export const ResourceQuotaApi = {
       'get',
       '/admin/resourceQuota/applications',
       {
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       ResourceQuotaApi._defaultBasePath
     ),
@@ -86,8 +86,8 @@ export const ResourceQuotaApi = {
       'get',
       '/admin/resourceQuota/repositories',
       {
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       ResourceQuotaApi._defaultBasePath
     ),
@@ -109,8 +109,8 @@ export const ResourceQuotaApi = {
       'get',
       '/admin/resourceQuota/secrets',
       {
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       ResourceQuotaApi._defaultBasePath
     ),
@@ -128,8 +128,8 @@ export const ResourceQuotaApi = {
       'get',
       '/admin/resourceQuota/dockerRegistrySecrets',
       {
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       ResourceQuotaApi._defaultBasePath
     ),
@@ -147,8 +147,8 @@ export const ResourceQuotaApi = {
       'get',
       '/admin/resourceQuota/deployments',
       {
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       ResourceQuotaApi._defaultBasePath
     )

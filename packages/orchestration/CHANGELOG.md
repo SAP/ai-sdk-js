@@ -1,5 +1,19 @@
 # @sap-ai-sdk/orchestration
 
+## 2.8.0
+
+### Minor Changes
+
+- 3d12d4c: [feat] Support streaming with orchestration prompt module fallback.
+- 5501e7c: [feat] Support orchestration prompt module fallback for non-streaming requests
+  When constructing an `OrchestrationClient` it is now possible to provide a list of module configurations to support module fallback.
+
+### Patch Changes
+
+- @sap-ai-sdk/ai-api@2.8.0
+- @sap-ai-sdk/core@2.8.0
+- @sap-ai-sdk/prompt-registry@2.8.0
+
 ## 2.7.0
 
 ### Minor Changes

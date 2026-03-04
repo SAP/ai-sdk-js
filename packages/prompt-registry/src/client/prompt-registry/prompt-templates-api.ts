@@ -42,8 +42,8 @@ export const PromptTemplatesApi = {
       'get',
       '/lm/promptTemplates',
       {
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       PromptTemplatesApi._defaultBasePath
     ),
@@ -65,7 +65,10 @@ export const PromptTemplatesApi = {
       '/lm/promptTemplates',
       {
         body,
-        headerParameters
+        headerParameters: {
+          'content-type': 'application/json',
+          ...headerParameters
+        }
       },
       PromptTemplatesApi._defaultBasePath
     ),
@@ -146,7 +149,14 @@ export const PromptTemplatesApi = {
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   importPromptTemplate: (
-    body: any | undefined,
+    body:
+      | ({
+          /**
+           * Format: "binary".
+           */
+          file?: Blob;
+        } & Record<string, any>)
+      | undefined,
     headerParameters?: {
       'AI-Resource-Group'?: string;
       'AI-Resource-Group-Scope'?: 'true' | 'True' | 'false' | 'False';
@@ -157,7 +167,19 @@ export const PromptTemplatesApi = {
       '/lm/promptTemplates/import',
       {
         body,
-        headerParameters
+        _encoding: {
+          file: {
+            contentType: 'application/octet-stream',
+            isImplicit: true,
+            parsedContentTypes: [
+              { parameters: {}, type: 'application/octet-stream' }
+            ]
+          }
+        },
+        headerParameters: {
+          'content-type': 'multipart/form-data',
+          ...headerParameters
+        }
       },
       PromptTemplatesApi._defaultBasePath
     ),
@@ -174,7 +196,7 @@ export const PromptTemplatesApi = {
       'AI-Resource-Group-Scope'?: 'true' | 'True' | 'false' | 'False';
     }
   ) =>
-    new OpenApiRequestBuilder<string>(
+    new OpenApiRequestBuilder<Blob>(
       'get',
       '/lm/promptTemplates/{promptTemplateId}/export',
       {
@@ -206,8 +228,11 @@ export const PromptTemplatesApi = {
       {
         pathParameters: { promptTemplateId },
         body,
-        queryParameters,
-        headerParameters
+        headerParameters: {
+          'content-type': 'application/json',
+          ...headerParameters
+        },
+        queryParameters
       },
       PromptTemplatesApi._defaultBasePath
     ),
@@ -238,8 +263,11 @@ export const PromptTemplatesApi = {
       {
         pathParameters: { scenario, version, name },
         body,
-        queryParameters,
-        headerParameters
+        headerParameters: {
+          'content-type': 'application/json',
+          ...headerParameters
+        },
+        queryParameters
       },
       PromptTemplatesApi._defaultBasePath
     )
