@@ -3,8 +3,10 @@ import { readFile, rename, readdir, stat } from 'node:fs/promises';
 import { resolve, basename, extname, dirname } from 'node:path';
 import { deflate, inflate } from 'node:zlib';
 import { promisify } from 'node:util';
-import { execa } from 'execa';
+import { execFile } from 'node:child_process';
 import { transformFile } from './util.js';
+
+const execFileP = promisify(execFile);
 
 const deflateP = promisify(deflate);
 const inflateP = promisify(inflate);
@@ -178,7 +180,7 @@ function validateLogs(generationLogs: string) {
 }
 
 async function generateDocs() {
-  const generationLogs = await execa('typedoc', ['--tsconfig', 'tsconfig.typedoc.json'], {
+  const generationLogs = await execFileP('typedoc', ['--tsconfig', 'tsconfig.typedoc.json'], {
     cwd: resolve()
   });
   validateLogs(generationLogs.stdout);
