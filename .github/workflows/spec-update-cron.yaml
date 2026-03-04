@@ -11,15 +11,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  prepare-branches:
+  get-orchestration-reference:
     runs-on: ubuntu-latest
     outputs:
-      orchestration-branch: ${{ steps.branches.outputs.orchestration-branch }}
+      orchestration-branch: ${{ steps.orch-version.outputs.orchestration-branch }}
     steps:
       - name: 'Get orchestration version'
         id: orch-version
         run: |
-          ORCH_VERSION=$(curl --silent --request GET \
+          ORCH_VERSION=$(curl --fail --silent --request GET \
             --url "https://github.tools.sap/api/v3/repos/MLF-prod/mlf-gitops-prod/contents/services/llm-orchestration/source/Chart.yaml?ref=aws.eu-central-1.prod-eu/current" \
             -H "Authorization: Bearer $TOKEN" \
             -H "Accept: application/vnd.github.v3.raw" | yq -r .version)
@@ -29,24 +29,28 @@ jobs:
               exit 1
           fi
           echo "Orchestration version: $ORCH_VERSION"
-          echo "ORCH_VERSION=$ORCH_VERSION" >> "$GITHUB_OUTPUT"
+          ORCH_VERSION="$(echo "$ORCH_VERSION" | sed 's/-.*//')"
+          echo "orchestration-branch=rel-$ORCH_VERSION" >> "$GITHUB_OUTPUT"
         env:
           TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
 
-      - name: 'Determine branches'
-        id: branches
-        run: |
-          # Orchestration uses dynamic version
-          if [ -n "${{ steps.orch-version.outputs.ORCH_VERSION }}" ]; then
-            # remove hotfix suffix 0.110.13-2 -> 0.110.13
-            ORCH_VERSION_CLEAN=$(echo "${{ steps.orch-version.outputs.ORCH_VERSION }}" | sed 's/-.*//')
-            echo "orchestration-branch=rel-$ORCH_VERSION_CLEAN" >> "$GITHUB_OUTPUT"
-          else
-            echo "orchestration-branch=main" >> "$GITHUB_OUTPUT"
-          fi
+  # get-rpt-reference:
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     rpt-tag: ${{ steps.rpt-tag.outputs.rpt-tag }}
+  #   steps:
+  #     - name: 'Get RPT version tag'
+  #       id: rpt-tag
+  #       run: |
+  #         TAG=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' https://github.tools.sap/DL-COE/sap-rpt-1-public-content | tail --lines=1 | cut -f 2)
+  #
+  #         if [ -z "$TAG" ]; then
+  #             echo "Failed to fetch RPT tag"
+  #             exit 1
+  #         fi
+  #         echo "rpt-tag=$TAG" >> "$GITHUB_OUTPUT"
 
   update-ai-api:
-    needs: prepare-branches
     uses: ./.github/workflows/spec-update.yaml
     with:
       file: ai-api
@@ -55,7 +59,6 @@ jobs:
     secrets: inherit
 
   update-document-grounding:
-    needs: prepare-branches
     uses: ./.github/workflows/spec-update.yaml
     with:
       file: document-grounding
@@ -64,7 +67,6 @@ jobs:
     secrets: inherit
 
   update-prompt-registry:
-    needs: prepare-branches
     uses: ./.github/workflows/spec-update.yaml
     with:
       file: prompt-registry
@@ -73,16 +75,16 @@ jobs:
     secrets: inherit
 
   update-orchestration:
-    needs: prepare-branches
+    needs: get-orchestration-reference
     uses: ./.github/workflows/spec-update.yaml
     with:
       file: orchestration
-      file-ref: ${{ needs.prepare-branches.outputs.orchestration-branch }}
+      file-ref: ${{ needs.get-orchestration-reference.outputs.orchestration-branch }}
       create-pr: true
     secrets: inherit
 
   notify-failure:
-    needs: [update-ai-api, update-document-grounding, update-prompt-registry, update-orchestration]
+    needs: [get-orchestration-reference, update-ai-api, update-document-grounding, update-prompt-registry, update-orchestration]
     if: failure()
     runs-on: ubuntu-latest
     steps:
