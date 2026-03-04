@@ -2,7 +2,9 @@ export * from './client.js';
 export type {
   DateString,
   PredictionData,
-  PredictionOptionsParquet,
+  RowType,
+  ColumnType,
+  ParquetPayload,
   RptRequestOptions,
   RptRequestCompressionMiddlewareOptions
 } from './types.js';
