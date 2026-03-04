@@ -162,7 +162,7 @@ const response = await new ChatClient('gpt-5').createChatCompletion({
 
 #### Cons
 
--
+- less context in user issues, if import path not given
 
 ## Option B.2
 
@@ -197,3 +197,7 @@ Naming could also be `chatClient()`, `chatApi()` or similar.
 #### Cons
 
 -
+
+## Outlook
+
+We should consider how OpenAI's websocket API (`Session`) plays into this.
