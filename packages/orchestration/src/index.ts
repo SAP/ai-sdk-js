@@ -44,7 +44,17 @@ export type {
   EmbeddingModelDetails,
   EmbeddingModelParams,
   EmbeddingModuleConfig,
-  EmbeddingData
+  EmbeddingData,
+  FileContentInput,
+  FileContentBase,
+  FileUrlContent,
+  FileBase64Content,
+  FileContentItem,
+  UserChatMessageContentItem,
+  UserChatMessageContent,
+  UserChatMessage,
+  ChatMessage,
+  ChatMessages
 } from './orchestration-types.js';
 export {
   isConfigReference,
@@ -73,9 +83,7 @@ export {
  * Explicitly export the wrapper also in `internal.ts`.
  */
 export type {
-  ChatMessage,
   SystemChatMessage,
-  UserChatMessage,
   AssistantChatMessage,
   ToolChatMessage,
   DeveloperChatMessage,

@@ -1,9 +1,8 @@
 import { createLogger } from '@sap-cloud-sdk/util';
+import { transformOrchestrationToSdkMessages } from './util/index.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type {
   AssistantChatMessage,
-  ChatMessage,
-  ChatMessages,
   CompletionPostResponse,
   LlmChoice,
   MessageToolCalls,
@@ -12,6 +11,7 @@ import type {
   Error as OrchestrationError
 } from './client/api/schema/index.js';
 import type { OrchestrationStream } from './orchestration-stream.js';
+import type { ChatMessages } from './orchestration-types.js';
 
 const logger = createLogger({
   package: 'orchestration',
@@ -144,8 +144,12 @@ export class OrchestrationStreamResponse<T> {
     if (this.isStreamOpen()) {
       return;
     }
-    const messages: ChatMessage[] =
-      this._data.intermediate_results?.templating ?? [];
+    const messages: ChatMessages =
+      (this._data.intermediate_results?.templating &&
+        transformOrchestrationToSdkMessages(
+          this._data.intermediate_results?.templating
+        )) ??
+      [];
     const content = this.findChoiceByIndex(choiceIndex)?.message;
     return content ? [...messages, content] : messages;
   }
