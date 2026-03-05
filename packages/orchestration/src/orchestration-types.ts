@@ -900,7 +900,7 @@ export interface FileContentItem {
  * in addition to the generated `text` and `image_url` types.
  */
 export type UserChatMessageContentItem =
-  | (Omit<GeneratedUserChatMessageContentItem, 'file'> & {
+  | (Omit<GeneratedUserChatMessageContentItem, 'type' | 'file'> & {
       type: 'text' | 'image_url';
     })
   | FileContentItem;
