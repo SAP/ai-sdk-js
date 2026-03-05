@@ -45,10 +45,7 @@ export const ResourceApi = {
       '/admin/resources/nodes',
       {
         body,
-        headerParameters: {
-          'content-type': 'application/json',
-          ...headerParameters
-        }
+        headerParameters
       },
       ResourceApi._defaultBasePath
     ),

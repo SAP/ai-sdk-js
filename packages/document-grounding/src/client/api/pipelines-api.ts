@@ -39,8 +39,8 @@ export const PipelinesApi = {
       'get',
       '/pipelines',
       {
-        headerParameters,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       PipelinesApi._defaultBasePath
     ),
@@ -59,10 +59,7 @@ export const PipelinesApi = {
       '/pipelines',
       {
         body,
-        headerParameters: {
-          'content-type': 'application/json',
-          ...headerParameters
-        }
+        headerParameters
       },
       PipelinesApi._defaultBasePath
     ),
@@ -103,10 +100,7 @@ export const PipelinesApi = {
       {
         pathParameters: { pipelineId },
         body,
-        headerParameters: {
-          'content-type': 'application/json',
-          ...headerParameters
-        }
+        headerParameters
       },
       PipelinesApi._defaultBasePath
     ),
@@ -165,11 +159,8 @@ export const PipelinesApi = {
       '/pipelines/search',
       {
         body,
-        headerParameters: {
-          'content-type': 'application/json',
-          ...headerParameters
-        },
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       PipelinesApi._defaultBasePath
     ),
@@ -195,8 +186,8 @@ export const PipelinesApi = {
       '/pipelines/{pipelineId}/executions',
       {
         pathParameters: { pipelineId },
-        headerParameters,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       PipelinesApi._defaultBasePath
     ),
@@ -240,8 +231,8 @@ export const PipelinesApi = {
       '/pipelines/{pipelineId}/executions/{executionId}/documents',
       {
         pathParameters: { pipelineId, executionId },
-        headerParameters,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       PipelinesApi._defaultBasePath
     ),
@@ -285,8 +276,8 @@ export const PipelinesApi = {
       '/pipelines/{pipelineId}/documents',
       {
         pathParameters: { pipelineId },
-        headerParameters,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       PipelinesApi._defaultBasePath
     ),
@@ -326,10 +317,7 @@ export const PipelinesApi = {
       '/pipelines/trigger',
       {
         body,
-        headerParameters: {
-          'content-type': 'application/json',
-          ...headerParameters
-        }
+        headerParameters
       },
       PipelinesApi._defaultBasePath
     )

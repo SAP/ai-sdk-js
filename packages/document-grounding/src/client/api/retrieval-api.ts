@@ -30,8 +30,8 @@ export const RetrievalApi = {
       'get',
       '/retrieval/dataRepositories',
       {
-        headerParameters,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       RetrievalApi._defaultBasePath
     ),
@@ -69,10 +69,7 @@ export const RetrievalApi = {
       '/retrieval/search',
       {
         body,
-        headerParameters: {
-          'content-type': 'application/json',
-          ...headerParameters
-        }
+        headerParameters
       },
       RetrievalApi._defaultBasePath
     )

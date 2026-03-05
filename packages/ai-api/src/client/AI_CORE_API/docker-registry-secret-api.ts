@@ -58,10 +58,7 @@ export const DockerRegistrySecretApi = {
       {
         pathParameters: { dockerRegistryName },
         body,
-        headerParameters: {
-          'content-type': 'application/merge-patch+json',
-          ...headerParameters
-        }
+        headerParameters
       },
       DockerRegistrySecretApi._defaultBasePath
     ),
@@ -99,8 +96,8 @@ export const DockerRegistrySecretApi = {
       'get',
       '/admin/dockerRegistrySecrets',
       {
-        headerParameters,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       DockerRegistrySecretApi._defaultBasePath
     ),
@@ -122,10 +119,7 @@ export const DockerRegistrySecretApi = {
       '/admin/dockerRegistrySecrets',
       {
         body,
-        headerParameters: {
-          'content-type': 'application/json',
-          ...headerParameters
-        }
+        headerParameters
       },
       DockerRegistrySecretApi._defaultBasePath
     )

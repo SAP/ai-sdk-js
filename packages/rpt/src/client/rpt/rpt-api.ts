@@ -6,8 +6,7 @@
 import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';
 import type {
   PredictRequestPayload,
-  PredictResponsePayload,
-  BodyPredictParquet
+  PredictResponsePayload
 } from './schema/index.js';
 /**
  * Representation of the 'RptApi'.
@@ -28,8 +27,7 @@ export const RptApi = {
       'post',
       '/predict',
       {
-        body,
-        headerParameters: { 'content-type': 'application/json' }
+        body
       },
       RptApi._defaultBasePath
     ),
@@ -38,37 +36,12 @@ export const RptApi = {
    * @param body - Request body.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  predictParquet: (body: BodyPredictParquet) =>
+  predictParquet: (body: any) =>
     new OpenApiRequestBuilder<PredictResponsePayload>(
       'post',
       '/predict_parquet',
       {
-        body,
-        _encoding: {
-          prediction_config: {
-            contentType: 'application/json',
-            isImplicit: true,
-            parsedContentTypes: [{ parameters: {}, type: 'application/json' }]
-          },
-          index_column: {
-            contentType: 'text/plain',
-            isImplicit: true,
-            parsedContentTypes: [{ parameters: {}, type: 'text/plain' }]
-          },
-          parse_data_types: {
-            contentType: 'text/plain',
-            isImplicit: true,
-            parsedContentTypes: [{ parameters: {}, type: 'text/plain' }]
-          },
-          file: {
-            contentType: 'application/vnd.apache.parquet',
-            isImplicit: false,
-            parsedContentTypes: [
-              { parameters: {}, type: 'application/vnd.apache.parquet' }
-            ]
-          }
-        },
-        headerParameters: { 'content-type': 'multipart/form-data' }
+        body
       },
       RptApi._defaultBasePath
     )

@@ -41,8 +41,8 @@ export const ExecutionScheduleApi = {
       'get',
       '/lm/executionSchedules',
       {
-        headerParameters,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       ExecutionScheduleApi._defaultBasePath
     ),
@@ -61,10 +61,7 @@ export const ExecutionScheduleApi = {
       '/lm/executionSchedules',
       {
         body,
-        headerParameters: {
-          'content-type': 'application/json',
-          ...headerParameters
-        }
+        headerParameters
       },
       ExecutionScheduleApi._defaultBasePath
     ),
@@ -105,10 +102,7 @@ export const ExecutionScheduleApi = {
       {
         pathParameters: { executionScheduleId },
         body,
-        headerParameters: {
-          'content-type': 'application/json',
-          ...headerParameters
-        }
+        headerParameters
       },
       ExecutionScheduleApi._defaultBasePath
     ),
@@ -150,8 +144,8 @@ export const ExecutionScheduleApi = {
       'get',
       '/lm/executionSchedules/$count',
       {
-        headerParameters,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       ExecutionScheduleApi._defaultBasePath
     )

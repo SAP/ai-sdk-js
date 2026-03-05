@@ -12,7 +12,7 @@ export type BodyPredictParquet = {
    * Parquet file containing the data
    * Format: "binary".
    */
-  file: Blob;
+  file: string;
   prediction_config: PredictionConfig;
   /**
    * Optional index column name

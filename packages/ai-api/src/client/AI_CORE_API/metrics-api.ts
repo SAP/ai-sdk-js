@@ -43,8 +43,8 @@ export const MetricsApi = {
       'get',
       '/lm/metrics',
       {
-        headerParameters,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       MetricsApi._defaultBasePath
     ),
@@ -64,10 +64,7 @@ export const MetricsApi = {
       '/lm/metrics',
       {
         body,
-        headerParameters: {
-          'content-type': 'application/merge-patch+json',
-          ...headerParameters
-        }
+        headerParameters
       },
       MetricsApi._defaultBasePath
     ),
@@ -85,8 +82,8 @@ export const MetricsApi = {
       'delete',
       '/lm/metrics',
       {
-        headerParameters,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       MetricsApi._defaultBasePath
     )

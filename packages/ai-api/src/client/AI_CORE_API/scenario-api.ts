@@ -68,8 +68,8 @@ export const ScenarioApi = {
       '/lm/scenarios/{scenarioId}/versions',
       {
         pathParameters: { scenarioId },
-        headerParameters,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       ScenarioApi._defaultBasePath
     ),

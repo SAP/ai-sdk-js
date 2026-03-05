@@ -39,8 +39,8 @@ export const VectorApi = {
       'get',
       '/vector/collections',
       {
-        headerParameters,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       VectorApi._defaultBasePath
     ),
@@ -59,10 +59,7 @@ export const VectorApi = {
       '/vector/collections',
       {
         body,
-        headerParameters: {
-          'content-type': 'application/json',
-          ...headerParameters
-        }
+        headerParameters
       },
       VectorApi._defaultBasePath
     ),
@@ -163,8 +160,8 @@ export const VectorApi = {
       '/vector/collections/{collectionId}/documents',
       {
         pathParameters: { collectionId },
-        headerParameters,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       VectorApi._defaultBasePath
     ),
@@ -186,10 +183,7 @@ export const VectorApi = {
       {
         pathParameters: { collectionId },
         body,
-        headerParameters: {
-          'content-type': 'application/json',
-          ...headerParameters
-        }
+        headerParameters
       },
       VectorApi._defaultBasePath
     ),
@@ -211,10 +205,7 @@ export const VectorApi = {
       {
         pathParameters: { collectionId },
         body,
-        headerParameters: {
-          'content-type': 'application/json',
-          ...headerParameters
-        }
+        headerParameters
       },
       VectorApi._defaultBasePath
     ),
@@ -233,10 +224,7 @@ export const VectorApi = {
       '/vector/search',
       {
         body,
-        headerParameters: {
-          'content-type': 'application/json',
-          ...headerParameters
-        }
+        headerParameters
       },
       VectorApi._defaultBasePath
     ),

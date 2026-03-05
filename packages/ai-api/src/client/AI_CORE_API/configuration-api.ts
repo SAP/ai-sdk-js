@@ -40,8 +40,8 @@ export const ConfigurationApi = {
       'get',
       '/lm/configurations',
       {
-        headerParameters,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       ConfigurationApi._defaultBasePath
     ),
@@ -62,10 +62,7 @@ export const ConfigurationApi = {
       '/lm/configurations',
       {
         body,
-        headerParameters: {
-          'content-type': 'application/json',
-          ...headerParameters
-        }
+        headerParameters
       },
       ConfigurationApi._defaultBasePath
     ),
@@ -86,8 +83,8 @@ export const ConfigurationApi = {
       '/lm/configurations/{configurationId}',
       {
         pathParameters: { configurationId },
-        headerParameters,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       ConfigurationApi._defaultBasePath
     ),
@@ -112,8 +109,8 @@ export const ConfigurationApi = {
       'get',
       '/lm/configurations/$count',
       {
-        headerParameters,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       ConfigurationApi._defaultBasePath
     )

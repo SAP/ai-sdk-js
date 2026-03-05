@@ -55,8 +55,8 @@ export const DeploymentApi = {
       'get',
       '/lm/deployments',
       {
-        headerParameters,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       DeploymentApi._defaultBasePath
     ),
@@ -77,10 +77,7 @@ export const DeploymentApi = {
       '/lm/deployments',
       {
         body,
-        headerParameters: {
-          'content-type': 'application/json',
-          ...headerParameters
-        }
+        headerParameters
       },
       DeploymentApi._defaultBasePath
     ),
@@ -99,10 +96,7 @@ export const DeploymentApi = {
       '/lm/deployments',
       {
         body,
-        headerParameters: {
-          'content-type': 'application/merge-patch+json',
-          ...headerParameters
-        }
+        headerParameters
       },
       DeploymentApi._defaultBasePath
     ),
@@ -123,8 +117,8 @@ export const DeploymentApi = {
       '/lm/deployments/{deploymentId}',
       {
         pathParameters: { deploymentId },
-        headerParameters,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       DeploymentApi._defaultBasePath
     ),
@@ -149,10 +143,7 @@ export const DeploymentApi = {
       {
         pathParameters: { deploymentId },
         body,
-        headerParameters: {
-          'content-type': 'application/json',
-          ...headerParameters
-        }
+        headerParameters
       },
       DeploymentApi._defaultBasePath
     ),
@@ -203,8 +194,8 @@ export const DeploymentApi = {
       'get',
       '/lm/deployments/$count',
       {
-        headerParameters,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       DeploymentApi._defaultBasePath
     ),
@@ -230,8 +221,8 @@ export const DeploymentApi = {
       '/lm/deployments/{deploymentId}/logs',
       {
         pathParameters: { deploymentId },
-        headerParameters,
-        queryParameters
+        queryParameters,
+        headerParameters
       },
       DeploymentApi._defaultBasePath
     )
