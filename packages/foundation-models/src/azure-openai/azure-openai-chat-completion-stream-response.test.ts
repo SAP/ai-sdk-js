@@ -11,7 +11,7 @@ describe('AzureOpenAiChatCompletionStreamResponse', () => {
     rawResponse = {
       data: {},
       status: 200,
-      headers: { 'x-request-id': 'test-request-id-123' },
+      headers: { 'x-aicore-request-id': 'test-request-id-123' },
       request: {}
     };
     streamResponse = new AzureOpenAiChatCompletionStreamResponse(rawResponse);

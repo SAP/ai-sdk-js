@@ -1,3 +1,4 @@
+import { pickValueIgnoreCase } from '@sap-cloud-sdk/util';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type {
   AzureOpenAiChatCompletionMessageToolCalls,

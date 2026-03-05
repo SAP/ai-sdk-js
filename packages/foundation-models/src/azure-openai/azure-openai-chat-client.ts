@@ -62,6 +62,38 @@ export class AzureOpenAiChatClient {
       });
     }
 
+    return this.createStreamResponse(request, controller, requestConfig);
+  }
+
+  private async executeRequest(
+    request: AzureOpenAiChatCompletionParameters,
+    requestConfig?: CustomRequestConfig
+  ): Promise<HttpResponse> {
+    const deploymentId = await getFoundationModelDeploymentId(
+      this.modelDeployment,
+      'azure-openai',
+      this.destination
+    );
+    const resourceGroup = getResourceGroup(this.modelDeployment);
+    return executeRequest(
+      {
+        url: `/inference/deployments/${deploymentId}/chat/completions`,
+        apiVersion,
+        resourceGroup
+      },
+      request,
+      requestConfig,
+      this.destination
+    );
+  }
+
+  private async createStreamResponse(
+    request: AzureOpenAiChatCompletionParameters,
+    controller: AbortController,
+    requestConfig?: CustomRequestConfig
+  ): Promise<
+    AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>
+  > {
     const streamResponse = await this.executeRequest(
       {
         ...request,
@@ -92,27 +124,5 @@ export class AzureOpenAiChatClient {
       ._pipe(AzureOpenAiChatCompletionStream._processTokenUsage, response);
 
     return response;
-  }
-
-  private async executeRequest(
-    request: AzureOpenAiChatCompletionParameters,
-    requestConfig?: CustomRequestConfig
-  ): Promise<HttpResponse> {
-    const deploymentId = await getFoundationModelDeploymentId(
-      this.modelDeployment,
-      'azure-openai',
-      this.destination
-    );
-    const resourceGroup = getResourceGroup(this.modelDeployment);
-    return executeRequest(
-      {
-        url: `/inference/deployments/${deploymentId}/chat/completions`,
-        apiVersion,
-        resourceGroup
-      },
-      request,
-      requestConfig,
-      this.destination
-    );
   }
 }

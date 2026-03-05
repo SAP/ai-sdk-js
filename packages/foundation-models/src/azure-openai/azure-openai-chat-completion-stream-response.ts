@@ -1,4 +1,4 @@
-import { createLogger } from '@sap-cloud-sdk/util';
+import { createLogger, pickValueIgnoreCase } from '@sap-cloud-sdk/util';
 import { type ToolCallAccumulator } from './util/index.js';
 import type {
   AzureOpenAiChatCompletionMessageToolCalls,
@@ -76,7 +76,10 @@ export class AzureOpenAiChatCompletionStreamResponse<T> {
    * @returns The request ID, or undefined if the header is not present.
    */
   getRequestId(): string | undefined {
-    return this._rawResponse?.headers?.['x-request-id'];
+    return pickValueIgnoreCase(
+      this._rawResponse?.headers,
+      'x-aicore-request-id'
+    );
   }
 
   public getTokenUsage(): AzureOpenAiCompletionUsage | undefined {
