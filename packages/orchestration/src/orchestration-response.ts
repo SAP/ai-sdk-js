@@ -1,15 +1,15 @@
+import { transformOrchestrationToSdkMessages } from './util/index.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type {
   CompletionPostResponse,
   TokenUsage,
-  ChatMessage,
-  ChatMessages,
   AssistantChatMessage,
   MessageToolCalls,
   LlmChoice,
   ModuleResults,
   Error as OrchestrationError
 } from './client/api/schema/index.js';
+import type { ChatMessages } from './orchestration-types.js';
 
 /**
  * Representation of an orchestration response.
@@ -84,8 +84,12 @@ export class OrchestrationResponse {
    * @returns A list of all messages.
    */
   getAllMessages(choiceIndex = 0): ChatMessages {
-    const messages: ChatMessage[] =
-      this._data.intermediate_results.templating ?? [];
+    const messages =
+      (this._data.intermediate_results.templating &&
+        transformOrchestrationToSdkMessages(
+          this._data.intermediate_results.templating
+        )) ??
+      [];
     const content = this.findChoiceByIndex(choiceIndex)?.message;
     return content ? [...messages, content] : messages;
   }
