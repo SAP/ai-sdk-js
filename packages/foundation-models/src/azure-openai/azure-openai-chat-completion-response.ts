@@ -23,7 +23,7 @@ export class AzureOpenAiChatCompletionResponse {
    * @returns The request ID, or undefined if the header is not present.
    */
   getRequestId(): string | undefined {
-    return this.rawResponse.headers?.['x-request-id'];
+    return pickValueIgnoreCase(this.rawResponse.headers, 'x-aicore-request-id');
   }
 
   /**
