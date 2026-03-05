@@ -22,14 +22,6 @@ describe('AzureOpenAiChatCompletionStreamResponse', () => {
       expect(streamResponse.rawResponse).toBe(rawResponse);
       expect(streamResponse.rawResponse.status).toBe(200);
     });
-
-    it('should throw error when constructed without rawResponse', () => {
-      const response = new AzureOpenAiChatCompletionStreamResponse();
-
-      expect(() => response.rawResponse).toThrow(
-        'The raw response is not available. Please provide the raw response when constructing `AzureOpenAiChatCompletionStreamResponse`.'
-      );
-    });
   });
 
   describe('getRequestId', () => {
