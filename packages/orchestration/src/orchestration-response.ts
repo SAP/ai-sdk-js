@@ -81,6 +81,7 @@ export class OrchestrationResponse {
   /**
    * Messages that can be used for subsequent prompts as message history.
    * @param choiceIndex - The index of the choice to parse.
+   * @remarks Messages with file content will always use the `url` type for files, even if the original message used `base64` encoding.
    * @returns A list of all messages.
    */
   getAllMessages(choiceIndex = 0): ChatMessages {

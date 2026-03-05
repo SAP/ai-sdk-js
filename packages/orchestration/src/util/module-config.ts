@@ -498,7 +498,6 @@ function transformSdkToOrchestrationMessages(
         ...item,
         file: transformSdkToOrchestrationFileContent(item.file)
       };
-      };
     });
 
     return {
