@@ -144,10 +144,9 @@ export class OrchestrationStreamResponse<T> {
     if (this.isStreamOpen()) {
       return;
     }
-    const messages: ChatMessages =
-        transformOrchestrationToSdkMessages(
-          this._data.intermediate_results?.templating
-        ) ?? [];
+    const messages: ChatMessages = transformOrchestrationToSdkMessages(
+      this._data.intermediate_results?.templating
+    );
     const content = this.findChoiceByIndex(choiceIndex)?.message;
     return content ? [...messages, content] : messages;
   }

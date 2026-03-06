@@ -9,3 +9,5 @@ export type {
   UserChatMessageContent,
   UserChatMessageContentItem
 } from './orchestration-types.js';
+// Re-export the generated content item type under a distinct name for testing
+export type { UserChatMessageContentItem as GeneratedUserChatMessageContentItem } from './client/api/schema/index.js';

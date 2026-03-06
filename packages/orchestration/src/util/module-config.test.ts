@@ -1080,8 +1080,8 @@ describe('transformSdkToOrchestrationFileContent', () => {
 });
 
 describe('transformOrchestrationToSdkMessages', () => {
-  it('returns undefined when input is undefined', () => {
-    expect(transformOrchestrationToSdkMessages(undefined)).toBeUndefined();
+  it('returns empty array when input is undefined', () => {
+    expect(transformOrchestrationToSdkMessages(undefined)).toEqual([]);
   });
 
   it('passes through non-user messages unchanged', () => {
