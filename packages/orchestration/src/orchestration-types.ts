@@ -899,12 +899,10 @@ export interface FileContentItem {
  * Extended user chat message content item that includes file support
  * in addition to the generated `text` and `image_url` types.
  */
-export type UserChatMessageContentItem =
-  | (Omit<GeneratedUserChatMessageContentItem, 'type' | 'file'> & {
-      type: 'text' | 'image_url';
-    })
-  | FileContentItem;
-
+export type UserChatMessageContentItem = Omit<
+  GeneratedUserChatMessageContentItem,
+  'file'
+> & { file?: FileContentInput };
 /**
  * Extended user chat message content that includes file content items.
  */

@@ -11,8 +11,9 @@ import {
   type EmbeddingModuleConfig,
   type EmbeddingRequest,
   type FileContentInput,
+  type ChatMessage,
   type ChatMessages,
-  type UserChatMessageContentItem
+  type UserChatMessageContentItem as SdkContentItem
 } from '../orchestration-types.js';
 import type {
   CompletionPostRequest,
@@ -25,12 +26,13 @@ import type {
   Template,
   PromptTemplatingModuleConfig,
   TemplateRef,
-  TemplatingChatMessage,
   EmbeddingsPostRequest,
   EmbeddingsOrchestrationConfig,
   EmbeddingsModuleConfigs,
+  ChatMessage as OrchestrationChatMessage,
   ChatMessages as OrchestrationChatMessages,
-  FileContent as OrchestrationFileContent
+  FileContent as OrchestrationFileContent,
+  UserChatMessageContentItem as OrchestrationContentItem
 } from '../client/api/schema/index.js';
 
 const logger = createLogger({
@@ -59,8 +61,9 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
   }
 
   return {
-    messages_history:
-      transformSdkToOrchestrationMessages(prompt?.messagesHistory) || [],
+    messages_history: transformSdkToOrchestrationMessages(
+      prompt?.messagesHistory
+    ),
     placeholder_values: prompt?.placeholderValues || {},
     config
   };
@@ -83,7 +86,7 @@ export function constructCompletionPostRequestFromConfigReference(
     ...(request?.placeholderValues && {
       placeholder_values: request.placeholderValues
     }),
-    ...(messagesHistory && {
+    ...(messagesHistory.length && {
       messages_history: messagesHistory
     })
   } as
@@ -381,14 +384,16 @@ export function constructCompletionPostRequest(
         )
     : { modules: moduleConfigurations };
 
-  const messagesHistory = transformSdkToOrchestrationMessages(request.messagesHistory);
-
   return {
     config: configWithStream,
     ...(request?.placeholderValues && {
       placeholder_values: request.placeholderValues
     }),
-    ...(messagesHistory && { messages_history: messagesHistory })
+    ...(request?.messagesHistory && {
+      messages_history: transformSdkToOrchestrationMessages(
+        request.messagesHistory
+      )
+    })
   } as CompletionPostRequest;
 }
 
@@ -413,8 +418,8 @@ function buildCompletionModulesConfig(
     }
     prompt.template = [
       ...(prompt.template || []),
-      ...(transformSdkToOrchestrationMessages(request?.messages) || [])
-    ] as TemplatingChatMessage;
+      ...transformSdkToOrchestrationMessages(request?.messages)
+    ];
   }
 
   return {
@@ -435,73 +440,84 @@ function buildCompletionModulesConfig(
  * @internal
  */
 export function transformOrchestrationToSdkMessages(
-  messages?: OrchestrationChatMessages
-): ChatMessages | undefined {
-  if (!messages) {
-    return undefined;
-  }
-
-  return messages.map((message): ChatMessages[number] => {
-    if (message.role !== 'user') {
-      return message;
+  messages: OrchestrationChatMessages | undefined
+): ChatMessages {
+  return (messages || []).map((message): ChatMessage => {
+    if (message.role === 'user' && Array.isArray(message.content)) {
+      return {
+        ...message,
+        content: message.content.map(transformOrchestrationToSdkContentItem)
+      } as ChatMessage;
     }
-
-    if (!Array.isArray(message.content)) {
-      return { role: message.role, content: message.content };
-    }
-
-    const content: UserChatMessageContentItem[] = message.content.map(
-      (item): UserChatMessageContentItem => {
-        if (item.type !== 'file') {
-          return item as UserChatMessageContentItem;
-        }
-
-        if (!item.file) {
-          return item as UserChatMessageContentItem;
-        }
-
-        const { file_data: url, ...rest } = item.file;
-        return {
-          type: 'file' as const,
-          file: { type: 'url' as const, url, ...rest }
-        };
-      }
-    );
-
-    return { role: message.role, content };
+    return message as ChatMessage;
   });
 }
 
 function transformSdkToOrchestrationMessages(
   messages: ChatMessages | undefined
-): OrchestrationChatMessages | undefined {
-  return [messages || []].map(message => {
-    if (message.role == 'user' && Array.isArray(message.content)) {
-         message.content = message.content.map(item => (item.type == 'file' && item.file)  ? {
-        ...item,
-        file: transformSdkToOrchestrationFileContent(item.file)
-      } : item);
+): OrchestrationChatMessages {
+  return (messages || []).map((message): OrchestrationChatMessage => {
+    if (message.role === 'user' && Array.isArray(message.content)) {
+      return {
+        ...message,
+        content: message.content.map(transformSdkToOrchestrationContentItem)
+      } as OrchestrationChatMessage;
     }
-    return message;
-  }) as OrchestrationChatMessages;
+    return message as OrchestrationChatMessage;
+  });
 }
 
 /**
+ * Transforms file content from SDK format to orchestration format.
  * @internal
+ * @param input - SDK file content input.
+ * @returns Orchestration file content.
  */
 export function transformSdkToOrchestrationFileContent(
   input: FileContentInput
 ): OrchestrationFileContent {
   if (input.type === 'url') {
-    const { type, url, ...restUrl } = input;
+    const { type: _ut, url, ...restUrl } = input;
     return { file_data: url, ...restUrl };
   }
 
-  const { type, data: rawData, mimeType, ...rest } = input;
+  const { type: _t, data: rawData, mimeType, ...rest } = input;
 
   const data = Buffer.isBuffer(rawData) ? rawData.toString('base64') : rawData;
 
   return { file_data: `data:${mimeType};base64,${data}`, ...rest };
+}
+
+/**
+ * Transforms content items from orchestration format back to SDK format.
+ * Converts file items from `{ file_data: url }` to `{ type: 'url', url }`.
+ * @internal
+ * @param item - Orchestration content item.
+ * @returns SDK content item.
+ */
+function transformOrchestrationToSdkContentItem(
+  item: OrchestrationContentItem
+): SdkContentItem {
+  if (item.file) {
+    const { file_data: url, ...rest } = item.file;
+    return {
+      ...item,
+      file: { type: 'url', url, ...rest }
+    } as SdkContentItem;
+  }
+  return item as SdkContentItem;
+}
+
+function transformSdkToOrchestrationContentItem(
+  item: SdkContentItem
+): OrchestrationContentItem {
+  if (item.file) {
+    return {
+      ...item,
+      file: transformSdkToOrchestrationFileContent(item.file)
+    } as OrchestrationContentItem;
+  }
+  return item as OrchestrationContentItem;
 }
 
 function isTemplate(

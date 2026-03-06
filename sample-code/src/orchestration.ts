@@ -581,6 +581,7 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
 
   const imageFilePath = join(
     import.meta.dirname,
+    '..',
     'src',
     'media',
     'sample-image.png'
