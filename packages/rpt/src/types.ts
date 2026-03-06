@@ -1,12 +1,20 @@
 import type { Xor } from '@sap-cloud-sdk/util';
-import type { ColumnType, SchemaFieldConfig } from './client/rpt/index.js';
+import type {
+  CustomRequestConfig,
+  RequestCompressionMiddlewareOptions
+} from '@sap-cloud-sdk/http-client';
+import type {
+  BodyPredictParquet,
+  ColumnType as ColType,
+  SchemaFieldConfig
+} from './client/rpt/index.js';
 
 /**
  * Represents a string literal type that includes all column names from the data schema.
  * If no data schema is given, the type is string.
  * @template T - Type of the data schema.
  */
-type ColNames<T extends DataSchema> = T extends readonly any[]
+type ColumnNames<T extends DataSchema> = T extends readonly any[]
   ? T[number]['name']
   : string;
 
@@ -20,7 +28,7 @@ export type DateString =
  * Maps the type from the spec ('numeric', 'string', 'date') to a TypeScript type.
  * @template T - Type of the data schema.
  */
-type TsType<T extends ColumnType> = T extends 'numeric'
+type TsType<T extends ColType> = T extends 'numeric'
   ? number
   : T extends 'date'
     ? DateString
@@ -32,7 +40,7 @@ type TsType<T extends ColumnType> = T extends 'numeric'
  * If no data schema is given, it maps string to values.
  * @template T - Type of the data schema.
  */
-type RowType<T extends DataSchema> = T extends readonly any[]
+export type RowType<T extends DataSchema> = T extends readonly any[]
   ? {
       [N in T[number]['name']]: TsType<
         Extract<T[number], { name: N }>['dtype']
@@ -46,7 +54,7 @@ type RowType<T extends DataSchema> = T extends readonly any[]
  * If no data schema is given, it maps string to a list of values.
  * @template T - Type of the data schema.
  */
-type ColType<T extends DataSchema> = {
+export type ColumnType<T extends DataSchema> = {
   [P in keyof RowType<T>]: RowType<T>[P][];
 };
 
@@ -67,7 +75,7 @@ interface PredictionConfig<T extends DataSchema> {
     /**
      * The name of the target column.
      */
-    name: ColNames<T>;
+    name: ColumnNames<T>;
     /**
      * The placeholder value in any column for which to predict a value. The model will predict a value for all table cells containing this value.
      */
@@ -97,7 +105,7 @@ export type PredictionData<T extends DataSchema> = {
   /**
    * The name of the index column. If provided, the service will return this column's value in each prediction object to facilitate aligning the output predictions with the input rows on the client side. If not provided, the column will not be included in the output.
    */
-  index_column?: ColNames<T>;
+  index_column?: ColumnNames<T>;
   /**
    * Whether to parse the data types of the columns. If set to True, numeric columns will be parsed to float or integer and dates in ISO format YYYY-MM-DD will be parsed.
    * Default: true.
@@ -114,6 +122,61 @@ export type PredictionData<T extends DataSchema> = {
     /**
      * Alternative to rows: columns of data where each key is a column name and the value is a list of all column values. Either "rows" or "columns" must be provided.
      */
-    columns: ColType<T>;
+    columns: ColumnType<T>;
   }
 >;
+
+/**
+ * Representation of the payload for Parquet-based predictions.
+ */
+export type ParquetPayload = BodyPredictParquet & {
+  /**
+   * Parquet file containing the data. Can also be a File to forward the filename.
+   */
+  file: File | Blob;
+  /**
+   * Configuration for the prediction.
+   */
+  prediction_config: PredictionConfig<any>;
+  /**
+   * Optional index column name.
+   */
+  index_column?: string;
+  /**
+   * Whether to parse data types
+   * Default: true.
+   */
+  parse_data_types?: boolean;
+};
+
+/**
+ * Compression middleware options for requests to the RPT service endpoint.
+ */
+export type RptRequestCompressionMiddlewareOptions = Omit<
+  RequestCompressionMiddlewareOptions<'gzip'>,
+  'algorithm'
+> & {
+  /**
+   * The compression mode to use for requests to the RPT service endpoint.
+   * - `always`: Compress the request body for every request.
+   * - `auto`: Compress the request body only if it exceeds a certain size threshold (e.g., 1KB). This is the default behavior.
+   * - `never`: Do not compress the request body.
+   */
+  mode: Exclude<
+    RequestCompressionMiddlewareOptions['mode'],
+    undefined | 'header-only'
+  >;
+};
+
+/**
+ * Custom options for how requests to the RPT service endpoint are performed.
+ */
+export interface RptRequestOptions extends CustomRequestConfig {
+  /**
+   * Options to configure request compression.
+   * @remarks This option does not affect responses, only requests.
+   * Prediction requests with parquet will not be compressed even if the option is set, as they are already in a compressed binary format.
+   * Compression will be disabled if custom middlewares are provided in the destination or fetch options.
+   */
+  compress?: RptRequestCompressionMiddlewareOptions;
+}

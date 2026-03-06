@@ -16,7 +16,8 @@ import {
   orchestrationTranslation,
   orchestrationEmbeddingWithMasking,
   OrchestrationConfigRef,
-  orchestrationWithFallbackConfigs
+  orchestrationWithFallbackConfigs,
+  orchestrationStreamWithFallbackConfigs
 } from '@sap-ai-sdk/sample-code';
 import {
   OrchestrationClient,
@@ -248,5 +249,17 @@ describe('orchestration', () => {
     expect(response.getIntermediateFailures()).toHaveLength(2);
 
     assertContent(response);
+  });
+
+  it('should stream with module fallback configs', async () => {
+    const response = await orchestrationStreamWithFallbackConfigs();
+
+    for await (const chunk of response.stream) {
+      expect(chunk).toBeDefined();
+    }
+    expect(response.getFinishReason()).toEqual('stop');
+    expect(response.getIntermediateFailures()).toEqual(expect.any(Array));
+    expect(response.getIntermediateFailures()).toHaveLength(1);
+    expect(response.getContent()).toEqual(expect.any(String));
   });
 });

@@ -29,8 +29,8 @@ export const ExecutableApi = {
       '/lm/scenarios/{scenarioId}/executables',
       {
         pathParameters: { scenarioId },
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       ExecutableApi._defaultBasePath
     ),

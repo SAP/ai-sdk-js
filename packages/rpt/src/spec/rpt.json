@@ -281,6 +281,11 @@
             "multipart/form-data": {
               "schema": {
                 "$ref": "#/components/schemas/Body_predict_parquet"
+              },
+              "encoding": {
+                "file": {
+                  "contentType": "application/vnd.apache.parquet"
+                }
               }
             }
           },
@@ -433,7 +438,7 @@
             "description": "Parquet file containing the data"
           },
           "prediction_config": {
-            "type": "string",
+            "$ref": "#/components/schemas/PredictionConfig",
             "title": "Prediction Config",
             "description": "JSON string for prediction_config"
           },
@@ -567,9 +572,11 @@
             "anyOf": [
               {
                 "type": "number"
+              },
+              {
+                "type": "null"
               }
             ],
-            "nullable": true,
             "title": "Confidence",
             "description": "The confidence of the prediction (currently not provided)."
           }
@@ -638,12 +645,27 @@
               {
                 "enum": ["classification", "regression"],
                 "type": "string"
+              },
+              {
+                "type": "null"
               }
             ],
-            "nullable": true,
             "default": null,
             "description": "The type of prediction task for this column. If not provided, the model will infer the task type from the data.",
             "title": "Task Type"
+          },
+          "top_k": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "How many predictions to output per classification column.If not provided, only a single prediction is returned. Only relevant for classification.",
+            "title": "Top K"
           }
         },
         "required": ["name", "prediction_placeholder"],
@@ -672,10 +694,12 @@
                   },
                   {
                     "type": "integer"
+                  },
+                  {
+                    "type": "null"
                   }
                 ]
               },
-              "nullable": true,
               "type": "object"
             },
             "title": "Rows",
@@ -695,16 +719,20 @@
                       },
                       {
                         "type": "integer"
+                      },
+                      {
+                        "type": "null"
                       }
                     ]
                   },
-                  "nullable": true,
                   "type": "array"
                 },
                 "type": "object"
+              },
+              {
+                "type": "null"
               }
             ],
-            "nullable": true,
             "default": null,
             "description": "Alternative to rows: columns of data where each key is a column name and the value is a list of all column values. Either \"rows\" or \"columns\" must be provided.",
             "title": "Columns"
@@ -713,9 +741,11 @@
             "anyOf": [
               {
                 "type": "string"
+              },
+              {
+                "type": "null"
               }
             ],
-            "nullable": true,
             "default": null,
             "description": "The name of the index column. If provided, the service will return this column's value in each prediction object to facilitate aligning the output predictions with the input rows on the client side. If not provided, the column will not be included in the output.",
             "title": "Index Column"
@@ -733,9 +763,11 @@
                   "$ref": "#/components/schemas/SchemaFieldConfig"
                 },
                 "type": "object"
+              },
+              {
+                "type": "null"
               }
             ],
-            "nullable": true,
             "default": null,
             "description": "Optional schema defining the data types of each column. If provided, this will override automatic data type parsing.",
             "title": "Data Schema"

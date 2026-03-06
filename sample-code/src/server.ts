@@ -77,7 +77,11 @@ import {
   createPromptTemplate,
   deletePromptTemplate
 } from './prompt-registry.js';
-import { predictAutomaticParsing, predictWithSchema } from './rpt.js';
+import {
+  predictAutomaticParsing,
+  predictWithSchema,
+  predictParquetBlob
+} from './rpt.js';
 import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type { AIMessageChunk } from '@langchain/core/messages';
 import type {
@@ -852,6 +856,17 @@ app.get('/rpt/predict', async (req, res) => {
 app.get('/rpt/predict-automatic', async (req, res) => {
   try {
     const data = await predictAutomaticParsing();
+    res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
+
+    res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/rpt/predict-parquet', async (_req, res) => {
+  try {
+    const data = await predictParquetBlob();
     res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
 
     res.end();
