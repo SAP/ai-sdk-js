@@ -43,7 +43,7 @@ jobs:
     uses: ./.github/workflows/api-docs.yml
     secrets: inherit
     with:
-      version: v${{ needs.bump.outputs.version }}
+      version: ${{ needs.bump.outputs.version }}
 
   prepare-release-notes:
     name: Prepare Release Notes
