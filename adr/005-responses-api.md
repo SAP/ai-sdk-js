@@ -198,6 +198,81 @@ Naming could also be `chatClient()`, `chatApi()` or similar.
 
 -
 
+## Option C
+
+Actually? Why do we have our own clients, when there are clients from OpenAI that are maintained by OpenAI?
+We could provide a helper function to retrieve a config based on destination, model deployment configuration and API version.
+
+```ts
+import { AzureOpenAI, AzureClientOptions } from 'openai/azure.js';
+import { createAzureOpenAiClientOptions } from '@sap-ai-sdk/foundation-models';
+
+// SAP Cloud SDK for AI part
+const options = await createAzureOpenAiClientOptions('gpt-5');
+
+// OpenAI part
+const client = new AzureOpenAI(options);
+
+const response = await client.responses.create({
+  model: 'gpt-5',
+  instructions: 'You are a coding assistant that talks like a pirate',
+  input: 'Are semicolons optional in JavaScript?'
+});
+```
+
+#### Pros
+
+- no maintenance, updating and documentation effort for a whole client, only it's configuration
+- users might already be used to the API, no new abstractions
+
+#### Cons
+
+- AzureOpenAI requires the `model` to be set in the payload (but apparently the value doesn't matter) => potentially forces users to pass the model twice
+
+#### Appendix
+
+Naive implementation of `createAzureOpenAiClientOptions()`:
+
+```ts
+import { ModelDeployment } from '@sap-ai-sdk/ai-api';
+import { AzureOpenAiChatModel, getAiCoreDestination } from '@sap-ai-sdk/core';
+import { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+import { buildHttpRequest } from '@sap-cloud-sdk/http-client';
+import { AzureClientOptions } from 'openai/azure.js';
+import {
+  getFoundationModelDeploymentId,
+  getResourceGroup
+} from '@sap-ai-sdk/ai-api/internal';
+
+export async function createAzureOpenAiClientOptions(
+  config: ModelDeployment<AzureOpenAiChatModel> & { apiVersion?: string },
+  destination?: HttpDestinationOrFetchOptions
+): Promise<AzureClientOptions> {
+  const deploymentId = await getFoundationModelDeploymentId(
+    config,
+    'azure-openai',
+    destination
+  );
+  const resourceGroup = getResourceGroup(config) || 'default';
+  const aiCoreDestination = await getAiCoreDestination(destination);
+  const { baseURL, params } = await buildHttpRequest(aiCoreDestination);
+
+  return {
+    apiVersion: config.apiVersion || '2025-08-07',
+    azureADTokenProvider: async () =>
+      (await buildHttpRequest(aiCoreDestination)).headers.authorization.split(
+        ' '
+      )[1],
+    defaultHeaders: {
+      'ai-resource-group': resourceGroup
+    },
+    defaultQuery: params,
+    baseURL: `${baseURL}/v2/inference/deployments/${deploymentId}`
+  };
+}
+```
+
 ## Outlook
 
 We should consider how OpenAI's WebSocket API (`Session`) plays into this.
+Option C is likely already future proof in this sense.
