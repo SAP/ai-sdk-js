@@ -86,11 +86,9 @@ export class OrchestrationResponse {
    */
   getAllMessages(choiceIndex = 0): ChatMessages {
     const messages =
-      (this._data.intermediate_results.templating &&
         transformOrchestrationToSdkMessages(
           this._data.intermediate_results.templating
-        )) ??
-      [];
+        ) ?? [];
     const content = this.findChoiceByIndex(choiceIndex)?.message;
     return content ? [...messages, content] : messages;
   }

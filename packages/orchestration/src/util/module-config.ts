@@ -381,9 +381,7 @@ export function constructCompletionPostRequest(
         )
     : { modules: moduleConfigurations };
 
-  const messagesHistory = request?.messagesHistory
-    ? transformSdkToOrchestrationMessages(request.messagesHistory)
-    : undefined;
+  const messagesHistory = transformSdkToOrchestrationMessages(request.messagesHistory);
 
   return {
     config: configWithStream,
@@ -475,35 +473,16 @@ export function transformOrchestrationToSdkMessages(
 }
 
 function transformSdkToOrchestrationMessages(
-  messages?: ChatMessages
+  messages: ChatMessages | undefined
 ): OrchestrationChatMessages | undefined {
-  if (!messages) {
-    return messages;
-  }
-
-  return messages.map(message => {
-    if (message.role !== 'user' || !Array.isArray(message.content)) {
-      return message;
-    }
-
-    const resolvedContent = message.content.map(item => {
-      if (item.type !== 'file') {
-        return item;
-      }
-
-      if (!item.file) {
-        return item;
-      }
-      return {
+  return [messages || []].map(message => {
+    if (message.role == 'user' && Array.isArray(message.content)) {
+         message.content = message.content.map(item => (item.type == 'file' && item.file)  ? {
         ...item,
         file: transformSdkToOrchestrationFileContent(item.file)
-      };
-    });
-
-    return {
-      ...message,
-      content: resolvedContent
-    };
+      } : item);
+    }
+    return message;
   }) as OrchestrationChatMessages;
 }
 
@@ -514,11 +493,11 @@ export function transformSdkToOrchestrationFileContent(
   input: FileContentInput
 ): OrchestrationFileContent {
   if (input.type === 'url') {
-    const { type: _typeUrl, url, ...restUrl } = input;
+    const { type, url, ...restUrl } = input;
     return { file_data: url, ...restUrl };
   }
 
-  const { type: _type, data: rawData, mimeType, ...rest } = input;
+  const { type, data: rawData, mimeType, ...rest } = input;
 
   const data = Buffer.isBuffer(rawData) ? rawData.toString('base64') : rawData;
 
