@@ -1,3 +1,4 @@
+import { Buffer } from 'node:buffer';
 import { createLogger } from '@sap-cloud-sdk/util';
 import {
   type ChatCompletionRequest,
@@ -8,7 +9,11 @@ import {
   type OrchestrationModuleConfig,
   type OrchestrationModuleConfigList,
   type EmbeddingModuleConfig,
-  type EmbeddingRequest
+  type EmbeddingRequest,
+  type FileContentInput,
+  type ChatMessage,
+  type ChatMessages,
+  type UserChatMessageContentItem as SdkContentItem
 } from '../orchestration-types.js';
 import type {
   CompletionPostRequest,
@@ -23,7 +28,11 @@ import type {
   TemplateRef,
   EmbeddingsPostRequest,
   EmbeddingsOrchestrationConfig,
-  EmbeddingsModuleConfigs
+  EmbeddingsModuleConfigs,
+  ChatMessage as OrchestrationChatMessage,
+  ChatMessages as OrchestrationChatMessages,
+  FileContent as OrchestrationFileContent,
+  UserChatMessageContentItem as OrchestrationContentItem
 } from '../client/api/schema/index.js';
 
 const logger = createLogger({
@@ -52,7 +61,9 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
   }
 
   return {
-    messages_history: prompt?.messagesHistory || [],
+    messages_history: transformSdkToOrchestrationMessages(
+      prompt?.messagesHistory
+    ),
     placeholder_values: prompt?.placeholderValues || {},
     config
   };
@@ -67,13 +78,16 @@ export function constructCompletionPostRequestFromConfigReference(
 ):
   | CompletionRequestConfigurationReferenceById
   | CompletionRequestConfigurationReferenceByNameScenarioVersion {
+  const messagesHistory = transformSdkToOrchestrationMessages(
+    request?.messagesHistory
+  );
   return {
     config_ref: configRef,
     ...(request?.placeholderValues && {
       placeholder_values: request.placeholderValues
     }),
-    ...(request?.messagesHistory && {
-      messages_history: request.messagesHistory
+    ...(messagesHistory.length && {
+      messages_history: messagesHistory
     })
   } as
     | CompletionRequestConfigurationReferenceById
@@ -376,9 +390,11 @@ export function constructCompletionPostRequest(
       placeholder_values: request.placeholderValues
     }),
     ...(request?.messagesHistory && {
-      messages_history: request.messagesHistory
+      messages_history: transformSdkToOrchestrationMessages(
+        request.messagesHistory
+      )
     })
-  };
+  } as CompletionPostRequest;
 }
 
 function buildCompletionModulesConfig(
@@ -402,7 +418,7 @@ function buildCompletionModulesConfig(
     }
     prompt.template = [
       ...(prompt.template || []),
-      ...(request?.messages || [])
+      ...transformSdkToOrchestrationMessages(request?.messages)
     ];
   }
 
@@ -416,6 +432,92 @@ function buildCompletionModulesConfig(
     ...(grounding && Object.keys(grounding).length && { grounding }),
     ...(translation && Object.keys(translation).length && { translation })
   };
+}
+
+/**
+ * Transforms messages from the orchestration response format back to SDK format.
+ * Converts file items from `{ file_data: url }` back to `{ type: 'url', url }`.
+ * @internal
+ */
+export function transformOrchestrationToSdkMessages(
+  messages: OrchestrationChatMessages | undefined
+): ChatMessages {
+  return (messages || []).map((message): ChatMessage => {
+    if (message.role === 'user' && Array.isArray(message.content)) {
+      return {
+        ...message,
+        content: message.content.map(transformOrchestrationToSdkContentItem)
+      } as ChatMessage;
+    }
+    return message as ChatMessage;
+  });
+}
+
+function transformSdkToOrchestrationMessages(
+  messages: ChatMessages | undefined
+): OrchestrationChatMessages {
+  return (messages || []).map((message): OrchestrationChatMessage => {
+    if (message.role === 'user' && Array.isArray(message.content)) {
+      return {
+        ...message,
+        content: message.content.map(transformSdkToOrchestrationContentItem)
+      } as OrchestrationChatMessage;
+    }
+    return message as OrchestrationChatMessage;
+  });
+}
+
+/**
+ * Transforms file content from SDK format to orchestration format.
+ * @internal
+ * @param input - SDK file content input.
+ * @returns Orchestration file content.
+ */
+export function transformSdkToOrchestrationFileContent(
+  input: FileContentInput
+): OrchestrationFileContent {
+  if (input.type === 'url') {
+    const { type: _ut, url, ...restUrl } = input;
+    return { file_data: url, ...restUrl };
+  }
+
+  const { type: _t, data: rawData, mimeType, ...rest } = input;
+
+  const data = Buffer.isBuffer(rawData) ? rawData.toString('base64') : rawData;
+
+  return { file_data: `data:${mimeType};base64,${data}`, ...rest };
+}
+
+/**
+ * Transforms content items from orchestration format back to SDK format.
+ * Converts file items from `{ file_data: url }` to `{ type: 'url', url }`.
+ * @internal
+ * @param item - Orchestration content item.
+ * @returns SDK content item.
+ */
+function transformOrchestrationToSdkContentItem(
+  item: OrchestrationContentItem
+): SdkContentItem {
+  if (item.file) {
+    const { file_data: url, ...rest } = item.file;
+    return {
+      ...item,
+      file: { type: 'url', url, ...rest }
+    } as SdkContentItem;
+  }
+  return item as SdkContentItem;
+}
+
+function transformSdkToOrchestrationContentItem(
+  item: SdkContentItem
+): OrchestrationContentItem {
+  if (item.file) {
+    return {
+      ...item,
+      file: transformSdkToOrchestrationFileContent(item.file)
+    } as OrchestrationContentItem;
+  }
+  return item as OrchestrationContentItem;
 }
 
 function isTemplate(

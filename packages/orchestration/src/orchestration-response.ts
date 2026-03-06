@@ -1,15 +1,15 @@
+import { transformOrchestrationToSdkMessages } from './util/index.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type {
   CompletionPostResponse,
   TokenUsage,
-  ChatMessage,
-  ChatMessages,
   AssistantChatMessage,
   MessageToolCalls,
   LlmChoice,
   ModuleResults,
   Error as OrchestrationError
 } from './client/api/schema/index.js';
+import type { ChatMessages } from './orchestration-types.js';
 
 /**
  * Representation of an orchestration response.
@@ -81,11 +81,13 @@ export class OrchestrationResponse {
   /**
    * Messages that can be used for subsequent prompts as message history.
    * @param choiceIndex - The index of the choice to parse.
+   * @remarks Messages with file content will always use the `url` type for files, even if the original message used `base64` encoding.
    * @returns A list of all messages.
    */
   getAllMessages(choiceIndex = 0): ChatMessages {
-    const messages: ChatMessage[] =
-      this._data.intermediate_results.templating ?? [];
+    const messages = transformOrchestrationToSdkMessages(
+      this._data.intermediate_results.templating
+    );
     const content = this.findChoiceByIndex(choiceIndex)?.message;
     return content ? [...messages, content] : messages;
   }

@@ -88,7 +88,12 @@ export async function predictAutomaticParsing(): Promise<PredictResponsePayload>
   return client.predictWithoutSchema(data);
 }
 
-const parquetFilePath = join(import.meta.dirname, 'product_data.parquet');
+const parquetFilePath = join(
+  import.meta.dirname,
+  '..',
+  'resources',
+  'product_data.parquet'
+);
 
 /**
  * Predict the sales group of products by passing a Parquet file with filename (`File`).
