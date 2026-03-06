@@ -27,6 +27,8 @@ export {
   orchestrationEmbeddingWithMasking,
   OrchestrationConfigRef,
   orchestrationWithFallbackConfigs,
+  orchestrationSonarWithCitations,
+  orchestrationSonarStreamWithCitations,
   orchestrationStreamWithFallbackConfigs
 } from './orchestration.js';
 export {

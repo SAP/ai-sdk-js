@@ -81,5 +81,6 @@ export type {
   DeveloperChatMessage,
   ChatCompletionTool,
   FunctionObject,
-  Error as OrchestrationError
+  Error as OrchestrationError,
+  Citation
 } from './client/api/schema/index.js';
