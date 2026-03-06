@@ -50,8 +50,10 @@ jobs:
           git config --global user.email "cloudsdk@sap.com"
           git config --global user.name "ai-sdk-js"
           
-          # Use the version input parameter
-          VERSION="${{ inputs.version }}"
+          # Extract major version from full version (e.g., "2.8.0" -> "v2")
+          FULL_VERSION="${{ inputs.version }}"
+          MAJOR_VERSION=$(echo "$FULL_VERSION" | cut -d. -f1)
+          VERSION="v${MAJOR_VERSION}"
           
           cd ..
           git clone --depth 1 git@github.com:SAP/ai-sdk.git
