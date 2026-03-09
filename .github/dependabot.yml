@@ -8,8 +8,6 @@ updates:
       time: '01:00'
       timezone: 'Europe/Berlin'
     open-pull-requests-limit: 10
-    pull-request-branch-name:
-      separator: '-'
     cooldown:
       days: 4
     ignore:
@@ -29,8 +27,6 @@ updates:
       time: '01:00'
       timezone: 'Europe/Berlin'
     open-pull-requests-limit: 10
-    pull-request-branch-name:
-      separator: '-'
     cooldown:
       days: 4
     ignore:
@@ -51,8 +47,6 @@ updates:
       interval: 'weekly'
       time: '01:00'
       timezone: 'Europe/Berlin'
-    pull-request-branch-name:
-      separator: '-'
     cooldown:
       days: 4
     ignore:
