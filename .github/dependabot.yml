@@ -11,7 +11,7 @@ updates:
     cooldown:
       days: 4
     ignore:
-      # We only want to do major node updates on purpose, so don't create dependabot PRs for major versions
+      # We only want to do major node updates manually, so don't create dependabot PRs for major versions
       - dependency-name: '@types/node'
         update-types: ['version-update:semver-major']
     groups:
@@ -30,7 +30,7 @@ updates:
     cooldown:
       days: 4
     ignore:
-      # We only want to do major node updates on purpose, so don't create dependabot PRs for major versions
+      # We only want to do major node updates manually, so don't create dependabot PRs for major versions
       - dependency-name: '@types/node'
         update-types: ['version-update:semver-major']
       # Avoid langchain-v1 release for sdk v1-main
