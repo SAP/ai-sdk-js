@@ -64,3 +64,6 @@ build/Release
 
 # macOS
 .DS_Store
+
+# Generated API documentation
+knowledge-base/api-reference/
