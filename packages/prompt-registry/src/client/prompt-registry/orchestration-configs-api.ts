@@ -18,7 +18,7 @@ import type {
 export const OrchestrationConfigsApi = {
   _defaultBasePath: undefined,
   /**
-   * List orchestration configs
+   * List imperatively and declaratively managed orchestration config
    * @param queryParameters - Object containing the following keys: scenario, name, version, retrieve, include_spec, resolve_template_ref.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
@@ -44,7 +44,7 @@ export const OrchestrationConfigsApi = {
       OrchestrationConfigsApi._defaultBasePath
     ),
   /**
-   * Create or update an orchestration config
+   * Create or update an imperatively managed orchestration config
    * @param body - Request body.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
@@ -66,10 +66,10 @@ export const OrchestrationConfigsApi = {
       OrchestrationConfigsApi._defaultBasePath
     ),
   /**
-   * List orchestration config history
-   * @param scenario - Path parameter.
-   * @param version - Path parameter.
-   * @param name - Path parameter.
+   * Obtain the history of edits of a particular imperatively managed orchestration config
+   * @param scenario - Scenario field of the resource.
+   * @param version - Version field of the resource.
+   * @param name - Name field of the resource.
    * @param queryParameters - Object containing the following keys: include_spec, resolve_template_ref.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
@@ -95,8 +95,8 @@ export const OrchestrationConfigsApi = {
       OrchestrationConfigsApi._defaultBasePath
     ),
   /**
-   * Get orchestration config by UUID
-   * @param orchestrationConfigId - Path parameter.
+   * Retrieve a orchestration config by its UUID
+   * @param orchestrationConfigId - UUID of the resource.
    * @param queryParameters - Object containing the following keys: resolve_template_ref.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
@@ -117,8 +117,8 @@ export const OrchestrationConfigsApi = {
       OrchestrationConfigsApi._defaultBasePath
     ),
   /**
-   * Delete orchestration config
-   * @param orchestrationConfigId - Path parameter.
+   * Delete an imperatively managed orchestration config
+   * @param orchestrationConfigId - UUID of the resource.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -136,7 +136,7 @@ export const OrchestrationConfigsApi = {
       OrchestrationConfigsApi._defaultBasePath
     ),
   /**
-   * Import orchestration config
+   * Create an imperatively managed orchestration config from a file
    * @param body - Request body.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
@@ -174,8 +174,8 @@ export const OrchestrationConfigsApi = {
       OrchestrationConfigsApi._defaultBasePath
     ),
   /**
-   * Export orchestration config
-   * @param orchestrationConfigId - Path parameter.
+   * Download an orchestration config as a file
+   * @param orchestrationConfigId - UUID of the resource.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
