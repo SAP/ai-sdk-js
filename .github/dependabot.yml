@@ -8,8 +8,10 @@ updates:
       time: '01:00'
       timezone: 'Europe/Berlin'
     open-pull-requests-limit: 10
+    cooldown:
+      default-days: 4
     ignore:
-      # We only want to do major node updates on purpose, so don't create dependabot PRs for major versions
+      # We only want to do major node updates manually, so don't create dependabot PRs for major versions
       - dependency-name: '@types/node'
         update-types: ['version-update:semver-major']
     groups:
@@ -25,8 +27,10 @@ updates:
       time: '01:00'
       timezone: 'Europe/Berlin'
     open-pull-requests-limit: 10
+    cooldown:
+      default-days: 4
     ignore:
-      # We only want to do major node updates on purpose, so don't create dependabot PRs for major versions
+      # We only want to do major node updates manually, so don't create dependabot PRs for major versions
       - dependency-name: '@types/node'
         update-types: ['version-update:semver-major']
       # Avoid langchain-v1 release for sdk v1-main
@@ -43,6 +47,8 @@ updates:
       interval: 'weekly'
       time: '01:00'
       timezone: 'Europe/Berlin'
+    cooldown:
+      default-days: 4
     ignore:
     - dependency-name: 'SAP/ai-sdk-js'
       update-types: ['version-update:semver-major', 'version-update:semver-minor', 'version-update:semver-patch']
