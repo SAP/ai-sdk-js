@@ -356,7 +356,7 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
         role: 'user',
         // Should be filtered by the Azure content filter
         content:
-          'Reparaphrase the sentence in 30 ways with strong feelings: "I hate you!"'
+          'Rephrase the sentence in 30 ways with strong feelings: "I hate you!"'
       }
     ]
   });
@@ -721,7 +721,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
   const addTwoNumbers = (first: number, second: number): string =>
     `The sum of ${first} and ${second} is ${first + second}.`;
 
-  // Routing tool calls to their corresponsing implementation
+  // Routing tool calls to their corresponding implementation
   const callFunction = (name: string, args: any): string => {
     switch (name) {
       case 'add':
@@ -1037,12 +1037,7 @@ export async function orchestrationChatCompletionFile(
     model?: string;
   } = { model: defaultModel }
 ): Promise<OrchestrationResponse> {
-  const {
-    filename,
-    mimeType,
-    model,
-    instruction
-  } = fileTypeConfig[fileType];
+  const { filename, mimeType, model, instruction } = fileTypeConfig[fileType];
 
   const orchestrationClient = new OrchestrationClient({
     promptTemplating: {
