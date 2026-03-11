@@ -1,19 +1,39 @@
 openapi: 3.0.0
 info:
-  version: 0.0.1
-  title: Prompt Registry API
-  description: Prompt Storage service for Design time & Runtime prompt templates.
+  title: Prompt Registry
+  description: The Prompt Registry simplifies the lifecycle management of prompt templates across design and runtime environments. It comes with an imperative and declarative interface. This API specification describes the imperative API for managing prompt templates and also allows the retrieval of declarative managed prompt templates. A prompt template consists of chat messages where placeholders can be defined together with default values. Additional information such as metadata tags can be added to the resource as well.
+  version: 0.3.26
+servers:
+  - url: https://api.ai.{region}.ml.hana.ondemand.com/v2
+    description: Production endpoint for SAP AI Core
+    variables:
+      region:
+        enum:
+          - prod.eu-central-1.aws
+          - prodeuonly.eu-central-1.aws
+          - prod.us-east-1.aws
+          - prod.ap-northeast-1.aws
+          - prod.ap-southeast-2.aws
+          - prod-eu20.westeurope.azure
+          - prod-us21.eastus.azure
+          - prod-eu30.europe-west3.gcp
+          - prod-us30.us-central1.gcp
+        default: prod.eu-central-1.aws
+security:
+  - Oauth2: []
 tags:
-  - name: prompt templates
-    description: Tag for prompt templates operations
-  - name: orchestration configs
-    description: Tag for orchestration configs operations
+  - name: Prompt Template
+    description: Lifecycle management of prompt templates
+externalDocs:
+  description: Documentation for SAP AI Core - Prompt Registry
+  url: https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry?version=CLOUD
 paths:
   /lm/promptTemplates:
     post:
       operationId: registry.controller.prompt_controller.create_update_prompt_template
       x-sap-cloud-sdk-operation-name: createUpdatePromptTemplate
       description: Create or update a prompt template
+      summary: Prompt template create
       tags:
         - prompt templates
       parameters:
@@ -42,6 +62,7 @@ paths:
       operationId: registry.controller.prompt_controller.list_prompt_templates
       x-sap-cloud-sdk-operation-name: listPromptTemplates
       description: List prompt templates
+      summary: Prompt template list
       tags:
         - prompt templates
       parameters:
@@ -49,23 +70,28 @@ paths:
         - $ref: '#/components/parameters/ai-resource-group-scope'
         - name: scenario
           in: query
+          description: Scenario field of the resource.
           schema:
             type: string
         - name: name
           in: query
+          description: Name field of the resource.
           schema:
             type: string
         - name: version
           in: query
+          description: Version field of the resource.
           schema:
             type: string
         - name: retrieve
           in: query
+          description: Whether to retrieve 'imperative', 'declarative', or 'both'.
           schema:
             type: string
             default: both
         - name: includeSpec
           in: query
+          description: Whether include the spec section or not.
           schema:
             type: boolean
             default: false
@@ -87,6 +113,7 @@ paths:
       operationId: registry.controller.prompt_controller.list_prompt_template_history
       x-sap-cloud-sdk-operation-name: listPromptTemplateHistory
       description: List prompt template history
+      summary: Prompt template history
       tags:
         - prompt templates
       parameters:
@@ -94,16 +121,19 @@ paths:
         - $ref: '#/components/parameters/ai-resource-group-scope'
         - name: scenario
           in: path
+          description: Scenario field of the resource.
           required: true
           schema:
             type: string
         - name: version
           in: path
+          description: Version field of the resource.
           required: true
           schema:
             type: string
         - name: name
           in: path
+          description: Name field of the resource.
           required: true
           schema:
             type: string
@@ -125,6 +155,7 @@ paths:
       operationId: registry.controller.prompt_controller.get_prompt_template_by_uuid
       x-sap-cloud-sdk-operation-name: getPromptTemplateByUuid
       description: Get prompt template by UUID
+      summary: Prompt template get
       tags:
         - prompt templates
       parameters:
@@ -133,6 +164,7 @@ paths:
         - name: promptTemplateId
           in: path
           required: true
+          description: UUID of the prompt template.
           schema:
             type: string
             format: uuid
@@ -152,7 +184,8 @@ paths:
     delete:
       operationId: registry.controller.prompt_controller.delete_prompt_template
       x-sap-cloud-sdk-operation-name: deletePromptTemplate
-      description: Delete prompt template
+      description: Delete an imperatively managed prompt template
+      summary: Prompt template delete
       tags:
         - prompt templates
       parameters:
@@ -160,6 +193,7 @@ paths:
         - $ref: '#/components/parameters/ai-resource-group-scope'
         - name: promptTemplateId
           in: path
+          description: UUID of the prompt template.
           required: true
           schema:
             type: string
@@ -181,7 +215,8 @@ paths:
     post:
       operationId: registry.controller.prompt_controller.import_prompt_template
       x-sap-cloud-sdk-operation-name: importPromptTemplate
-      description: Import prompt template
+      summary: Prompt template create
+      description: Create an imperatively managed prompt template from a file
       tags:
         - prompt templates
       parameters:
@@ -211,7 +246,8 @@ paths:
     get:
       operationId: registry.controller.prompt_controller.export_prompt_template
       x-sap-cloud-sdk-operation-name: exportPromptTemplate
-      description: Export prompt template
+      summary: Prompt template export
+      description: Download a prompt template as a file
       tags:
         - prompt templates
       parameters:
@@ -220,6 +256,7 @@ paths:
         - name: promptTemplateId
           in: path
           required: true
+          description: UUID of the prompt template.
           schema:
             type: string
             format: uuid
@@ -239,7 +276,8 @@ paths:
     post:
       operationId: registry.controller.prompt_controller.parse_prompt_template_by_id
       x-sap-cloud-sdk-operation-name: parsePromptTemplateById
-      description: Parse prompt template by ID
+      summary: Prompt template fill
+      description: Fill the placeholders of a prompt template that is identified by its UUID
       tags:
         - prompt templates
       parameters:
@@ -248,10 +286,12 @@ paths:
         - name: promptTemplateId
           in: path
           required: true
+          description: UUID of the prompt template.
           schema:
             type: string
             format: uuid
         - name: metadata
+          description: Whether to not include metadata in the response.
           in: query
           schema:
             type: boolean
@@ -278,7 +318,8 @@ paths:
     post:
       operationId: registry.controller.prompt_controller.parse_prompt_template_by_name_version
       x-sap-cloud-sdk-operation-name: parsePromptTemplateByNameVersion
-      description: Parse prompt template by name and version
+      summary: Prompt template fill
+      description: Fill the placeholders of a prompt template that is identified by its scenario, name and version
       tags:
         - prompt templates
       parameters:
@@ -287,20 +328,24 @@ paths:
         - name: scenario
           in: path
           required: true
+          description: Scenario field of the resource.
           schema:
             type: string
         - name: version
           in: path
           required: true
+          description: Version field of the resource.
           schema:
             type: string
         - name: name
           in: path
           required: true
+          description: Name field of the resource.
           schema:
             type: string
         - name: metadata
           in: query
+          description: Whether to not include metadata in the response.
           schema:
             type: boolean
             default: false
@@ -326,7 +371,8 @@ paths:
     post:
       operationId: registry.controller.orchestration_config_controller.create_update_orchestration_config
       x-sap-cloud-sdk-operation-name: createUpdateOrchestrationConfig
-      description: Create or update an orchestration config
+      description: Create or update an imperatively managed orchestration config
+      summary: Orchestration config create
       tags:
         - orchestration configs
       parameters:
@@ -353,25 +399,30 @@ paths:
     get:
       operationId: registry.controller.orchestration_config_controller.list_orchestration_configs
       x-sap-cloud-sdk-operation-name: listOrchestrationConfigs
-      description: List orchestration configs
+      description: List imperatively and declaratively managed orchestration config
+      summary: Orchestration config list
       tags:
         - orchestration configs
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - name: scenario
           in: query
+          description: Scenario field of the resource.
           schema:
             type: string
         - name: name
           in: query
+          description: Name field of the resource.
           schema:
             type: string
         - name: version
           in: query
+          description: Version field of the resource.
           schema:
             type: string
         - name: retrieve
           in: query
+          description: Whether to retrieve 'imperative', 'declarative', or 'both'.
           schema:
             type: string
             default: both
@@ -381,11 +432,13 @@ paths:
               - declarative
         - name: include_spec
           in: query
+          description: Whether include the spec section or not.
           schema:
             type: boolean
             default: false
         - name: resolve_template_ref
           in: query
+          description: Whether any template reference should be resolved.
           schema:
             type: boolean
             default: false
@@ -406,7 +459,8 @@ paths:
     get:
       operationId: registry.controller.orchestration_config_controller.list_orchestration_config_history
       x-sap-cloud-sdk-operation-name: listOrchestrationConfigHistory
-      description: List orchestration config history
+      summary: Orchestration config history
+      description: Obtain the history of edits of a particular imperatively managed orchestration config
       tags:
         - orchestration configs
       parameters:
@@ -414,25 +468,30 @@ paths:
         - name: scenario
           in: path
           required: true
+          description: Scenario field of the resource.
           schema:
             type: string
         - name: version
           in: path
           required: true
+          description: Version field of the resource.
           schema:
             type: string
         - name: name
           in: path
           required: true
+          description: Name field of the resource.
           schema:
             type: string
         - name: include_spec
           in: query
+          description: Whether include the spec section or not.
           schema:
             type: boolean
             default: false
         - name: resolve_template_ref
           in: query
+          description: Whether any template reference should be resolved.
           schema:
             type: boolean
             default: false
@@ -453,7 +512,8 @@ paths:
     get:
       operationId: registry.controller.orchestration_config_controller.get_orchestration_config_by_uuid
       x-sap-cloud-sdk-operation-name: getOrchestrationConfigByUuid
-      description: Get orchestration config by UUID
+      summary: Orchestration config get
+      description: Retrieve a orchestration config by its UUID
       tags:
         - orchestration configs
       parameters:
@@ -461,11 +521,13 @@ paths:
         - name: orchestrationConfigId
           in: path
           required: true
+          description: UUID of the resource.
           schema:
             type: string
             format: uuid
         - name: resolve_template_ref
           in: query
+          description: Whether any template reference should be resolved.
           schema:
             type: boolean
             default: false
@@ -485,7 +547,8 @@ paths:
     delete:
       operationId: registry.controller.orchestration_config_controller.delete_orchestration_config
       x-sap-cloud-sdk-operation-name: deleteOrchestrationConfig
-      description: Delete orchestration config
+      summary: Orchestration config delete
+      description: Delete an imperatively managed orchestration config
       tags:
         - orchestration configs
       parameters:
@@ -493,6 +556,7 @@ paths:
         - name: orchestrationConfigId
           in: path
           required: true
+          description: UUID of the resource.
           schema:
             type: string
             format: uuid
@@ -513,7 +577,8 @@ paths:
     post:
       operationId: registry.controller.orchestration_config_controller.import_orchestration_config
       x-sap-cloud-sdk-operation-name: importOrchestrationConfig
-      description: Import orchestration config
+      summary: Orchestration config create
+      description: Create an imperatively managed orchestration config from a file
       tags:
         - orchestration configs
       parameters:
@@ -542,7 +607,8 @@ paths:
     get:
       operationId: registry.controller.orchestration_config_controller.export_orchestration_config
       x-sap-cloud-sdk-operation-name: exportOrchestrationConfig
-      description: Export orchestration config
+      summary: Orchestration config export
+      description: Download an orchestration config as a file
       tags:
         - orchestration configs
       parameters:
@@ -550,6 +616,7 @@ paths:
         - name: orchestrationConfigId
           in: path
           required: true
+          description: UUID of the resource.
           schema:
             type: string
             format: uuid
@@ -566,6 +633,14 @@ paths:
         default:
           $ref: '#/components/responses/CommonError'
 components:
+  securitySchemes:
+    Oauth2:
+      type: oauth2
+      description: OAuth client credentials (client ID and secret) are required. These can be requested from SAP BTP cloud cockpit.
+      flows:
+        clientCredentials:
+          tokenUrl: https://(subdomain_identity_zone).authentication.(host)/oauth/token
+          scopes: {}
   schemas:
     PromptTemplate:
       oneOf:
@@ -867,6 +942,8 @@ components:
           $ref: '#/components/schemas/PromptTemplateSpec'
     PromptTemplateSubstitutionRequest:
       type: object
+      required:
+        - inputParams
       properties:
         inputParams:
           type: object
@@ -1045,6 +1122,18 @@ components:
         detail:
           type: string
           default: auto
+    FileContent:
+      type: object
+      required:
+        - file_data
+      additionalProperties: false
+      properties:
+        file_data:
+          type: string
+          description: Base64 encoded file content or file URL
+        filename:
+          type: string
+          description: Name of the file
     UserChatMessageContentItem:
       type: object
       additionalProperties: false
@@ -1054,10 +1143,13 @@ components:
           enum:
             - text
             - image_url
+            - file
         text:
           type: string
         image_url:
           $ref: '#/components/schemas/ImageContentUrl'
+        file:
+          $ref: '#/components/schemas/FileContent'
       required:
         - type
     UserChatMessageContent:
@@ -1283,7 +1375,7 @@ components:
           description: Additional parameters for the model. Default values are used for mandatory parameters.
           additionalProperties: true
           example:
-            max_tokens: 300
+            max_completion_tokens: 300
             temperature: 0.1
             frequency_penalty: 0
             presence_penalty: 0
@@ -1623,6 +1715,12 @@ components:
               type: boolean
               default: false
               description: controls whether the input to the grounding module will be masked with the configuration supplied in the masking module
+        mask_file_input_method:
+          description: Type of masking method to be used for file inputs. Required if file inputs are provided.
+          type: string
+          enum:
+            - anonymization
+            - skip
     MaskingProviderConfig:
       oneOf:
         - $ref: '#/components/schemas/DPIConfig'
@@ -1942,6 +2040,13 @@ components:
           $ref: '#/components/schemas/GroundingModuleConfig'
         translation:
           $ref: '#/components/schemas/TranslationModuleConfig'
+    ModuleConfigsList:
+      type: array
+      items:
+        $ref: '#/components/schemas/ModuleConfigs'
+      minItems: 1
+      description: |
+        A list of module configurations. The first configuration in the list that succeeds will be used.
     GlobalStreamOptions:
       description: Options for streaming. Will be ignored if enabled is false.
       type: object
@@ -1976,7 +2081,9 @@ components:
       additionalProperties: false
       properties:
         modules:
-          $ref: '#/components/schemas/ModuleConfigs'
+          oneOf:
+            - $ref: '#/components/schemas/ModuleConfigs'
+            - $ref: '#/components/schemas/ModuleConfigsList'
         stream:
           $ref: '#/components/schemas/GlobalStreamOptions'
   responses:
@@ -2024,3 +2131,4 @@ components:
           - 'True'
           - 'false'
           - 'False'
+x-sap-shortText: Simplify the lifecycle management of prompt templates of your business AI scenarios.
