@@ -1035,15 +1035,14 @@ export async function orchestrationChatCompletionFile(
   fileType: FileType = 'pdf',
   options: {
     model?: string;
-  } = {}
+  } = { model: defaultModel }
 ): Promise<OrchestrationResponse> {
   const {
     filename,
     mimeType,
-    model: defaultModel,
+    model,
     instruction
   } = fileTypeConfig[fileType];
-  const model = options.model ?? defaultModel;
 
   const orchestrationClient = new OrchestrationClient({
     promptTemplating: {
