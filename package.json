@@ -36,7 +36,7 @@
     "orval": "^8.5.3",
     "zod": "^3.25.76",
     "@changesets/cli": "^2.30.0",
-    "@jest/globals": "^30.2.0",
+    "@jest/globals": "^30.3.0",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
