@@ -34,6 +34,7 @@
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/prompt-registry": "workspace:^",
     "@sap-ai-sdk/rpt": "workspace:^",
+    "@sap-cloud-sdk/resilience": "^4.5.1",
     "@sap-cloud-sdk/util": "^4.5.1",
     "@types/express": "^5.0.6",
     "express": "^5.2.1",
