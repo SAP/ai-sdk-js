@@ -1,6 +1,7 @@
 // exported for e2e tests
 export {
   chatCompletion,
+  chatCompletionResilient,
   computeEmbedding,
   chatCompletionWithDestination,
   chatCompletionWithFunctionCall
@@ -8,6 +9,7 @@ export {
 } from './foundation-models/azure-openai.js';
 export {
   orchestrationChatCompletion,
+  orchestrationChatCompletionResilient,
   orchestrationTemplating,
   orchestrationPromptRegistry,
   orchestrationCompletionPromptRegistryScoped,
@@ -75,5 +77,6 @@ export {
   predictAutomaticParsing,
   predictParquetFile,
   predictParquetBlob,
-  predictWithSchemaCompressed
+  predictWithSchemaCompressed,
+  predictWithSchemaResilient
 } from './rpt.js';
