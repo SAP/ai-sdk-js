@@ -47,12 +47,14 @@ Response for unsupported MIME type (claude).
 
 ```json5
 {
-  "error": {
-    "request_id": "6226262a-80a9-9072-b9aa-3040fa54db4c",
-    "code": 400,
-    "message": "400 - LLM Module: Model 'anthropic--claude-4.5-haiku' only supports PDF documents. Please provide a valid PDF file.",
-    "location": "LLM Module",
-    "intermediate_results": { /*...*/ }
+  error: {
+    request_id: '6226262a-80a9-9072-b9aa-3040fa54db4c',
+    code: 400,
+    message: "400 - LLM Module: Model 'anthropic--claude-4.5-haiku' only supports PDF documents. Please provide a valid PDF file.",
+    location: 'LLM Module',
+    intermediate_results: {
+      /*...*/
+    }
   }
 }
 ```
@@ -61,12 +63,14 @@ Response for unsupported MIME type (gemini).
 
 ```json5
 {
-  "error": {
-    "request_id": "7a4a3f19-643a-94dd-8b72-f83b1bcb5544",
-    "code": 400,
-    "message": "400 - LLM Module: Unable to submit request because it has a mimeType parameter with value xx, which is not supported. Update the mimeType and try again. Learn more: https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/gemini",
-    "location": "LLM Module",
-    "intermediate_results": { /*...*/ }
+  error: {
+    request_id: '7a4a3f19-643a-94dd-8b72-f83b1bcb5544',
+    code: 400,
+    message: '400 - LLM Module: Unable to submit request because it has a mimeType parameter with value xx, which is not supported. Update the mimeType and try again. Learn more: https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/gemini',
+    location: 'LLM Module',
+    intermediate_results: {
+      /*...*/
+    }
   }
 }
 ```
@@ -149,7 +153,7 @@ Helpful links:
 - [MDN Web Docs - MIME types](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)
 <!-- vale on -->
 
-## Proposed Decision
+## Decision
 
 Based on Option D, accept a discriminated union of either a base64 string or `Buffer` with an explicit MIME type, or a URL (either a data URI or a public HTTPS URL).
 The SDK will handle assembling the data URI for base64 inputs, and require users to make a conscious choice about whether to provide a URL or base64 content with a MIME type.
@@ -162,13 +166,11 @@ interface FileContentBase {
 }
 
 interface FileUrlContent extends FileContentBase {
-  type: 'url';
   url: string; // RFC 2397 data URI or public HTTPS URL
   mimeType?: never; // explicitly disallow MIME type for URLs, since it's not required or supported by the service
 }
 
 interface FileBase64Content extends FileContentBase {
-  type: 'base64';
   data: string | Buffer; // Either a base64 string or raw binary data (e.g. Buffer in Node.js). The SDK will handle encoding to base64 and assembling the data URI.
   mimeType: string; // required for base64 content
 }
@@ -197,7 +199,6 @@ import { readFile } from 'node:fs/promises';
 
 // Raw readFile with base64 FileContentInput
 const fileContent: FileContentInput = {
-  type: 'base64',
   data: await readFile('./document.pdf'),
   mimeType: 'application/pdf',
   filename: 'document.pdf'
@@ -205,7 +206,6 @@ const fileContent: FileContentInput = {
 
 // Provide base64 string directly, SDK handles data URI assembly
 const fileContentBase64: FileContentInput = {
-  type: 'base64',
   data: await readFile('./document.pdf', 'base64'),
   mimeType: 'application/pdf',
   filename: 'document.pdf'
@@ -213,14 +213,12 @@ const fileContentBase64: FileContentInput = {
 
 // URL input
 const fileContentUrl: FileContentInput = {
-  type: 'url',
   url: 'https://example.com/document.pdf',
   filename: 'document.pdf'
 };
 
 // Or manual data URI if users want to construct it themselves
 const fileContentDataUri: FileContentInput = {
-  type: 'url',
   url: 'data:application/pdf;base64,BASE64_ENCODED_DATA_HERE',
 };
 

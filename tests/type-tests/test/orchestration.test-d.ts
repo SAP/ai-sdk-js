@@ -22,7 +22,9 @@ import type {
   OrchestrationStreamChunkResponse,
   OrchestrationModuleConfigList,
   StreamOptions,
-  ModuleStreamOptions
+  ModuleStreamOptions,
+  UserChatMessageContentItem,
+  ChatMessage
 } from '@sap-ai-sdk/orchestration';
 import type {
   CompletionPostResponse,
@@ -30,7 +32,8 @@ import type {
   ChatMessages,
   DpiConfig,
   MessageToolCalls,
-  OrchestrationError
+  OrchestrationError,
+  GeneratedUserChatMessageContentItem
 } from '@sap-ai-sdk/orchestration/internal.js';
 
 /**
@@ -669,7 +672,7 @@ expectType<
 );
 
 /**
- * isConfigReference function should be importable as a value (not just a type).
+ * IsConfigReference function should be importable as a value (not just a type).
  */
 expectType<boolean>(
   isConfigReference({
@@ -915,3 +918,60 @@ expectType<OrchestrationError[] | undefined>(
     ]).chatCompletion()
   ).getIntermediateFailures()
 );
+
+/**
+ * UserChatMessageContentItem: file property accepts FileContentInput (URL variant).
+ */
+expectAssignable<UserChatMessageContentItem>({
+  type: 'file',
+  file: { url: 'https://example.com/file.pdf' }
+});
+
+/**
+ * UserChatMessageContentItem: file property accepts FileContentInput (base64 variant).
+ */
+expectAssignable<UserChatMessageContentItem>({
+  type: 'file',
+  file: { data: 'SGVsbG8=', mimeType: 'application/pdf' }
+});
+
+/**
+ * UserChatMessageContentItem: file property must not accept FileContent (URL variant) with `base64`-only properties.
+ */
+expectError<UserChatMessageContentItem>({
+  type: 'file',
+  file: { url: 'SGVsbG8=', mimeType: 'application/pdf' }
+});
+
+/**
+ * UserChatMessageContentItem: file property must not accept raw orchestration FileContent (file_data).
+ */
+expectError<UserChatMessageContentItem>({
+  type: 'file',
+  file: { file_data: 'https://example.com/file.pdf' }
+});
+
+/**
+ * ChatMessage with user role and file content items should be assignable.
+ */
+expectAssignable<ChatMessage>({
+  role: 'user',
+  content: [
+    {
+      type: 'file',
+      file: { url: 'https://example.com/file.pdf' }
+    }
+  ]
+});
+
+/**
+ * SDK and generated UserChatMessageContentItem are structurally equivalent
+ * when the `file` property is stripped. Only the `file` property differs
+ * (FileContentInput vs FileContent).
+ */
+declare const sdkWithoutFile: Omit<UserChatMessageContentItem, 'file'>;
+declare const genWithoutFile: Omit<GeneratedUserChatMessageContentItem, 'file'>;
+expectAssignable<Omit<GeneratedUserChatMessageContentItem, 'file'>>(
+  sdkWithoutFile
+);
+expectAssignable<Omit<UserChatMessageContentItem, 'file'>>(genWithoutFile);

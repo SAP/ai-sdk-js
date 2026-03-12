@@ -1,8 +1,8 @@
+import type { Buffer } from 'node:buffer';
 import type { Xor } from '@sap-cloud-sdk/util';
 import type { CustomRequestConfig } from '@sap-cloud-sdk/http-client';
 import type { ChatModel, EmbeddingModel } from './model-types.js';
 import type {
-  ChatMessages,
   DataRepositoryType,
   DocumentGroundingFilter,
   DpiConfig,
@@ -26,7 +26,13 @@ import type {
   EmbeddingsModelDetails as OriginalEmbeddingsModelDetails,
   EmbeddingsModelParams as OriginalEmbeddingsModelParams,
   SAPDocumentTranslationInput,
-  SAPDocumentTranslationOutput
+  SAPDocumentTranslationOutput,
+  SystemChatMessage,
+  UserChatMessage as GeneratedUserChatMessage,
+  UserChatMessageContentItem as GeneratedUserChatMessageContentItem,
+  AssistantChatMessage,
+  ToolChatMessage,
+  DeveloperChatMessage
 } from './client/api/schema/index.js';
 
 /**
@@ -836,3 +842,97 @@ export interface EmbeddingData {
    */
   index: number;
 }
+/**
+ * Shared base interface file content input properties.
+ */
+export interface FileContentBase {
+  /**
+   * Optional filename for the file content.
+   * If the backend service requires a filename, the orchestration service will generate one if not provided.
+   */
+  filename?: string;
+}
+
+/**
+ * File content input using a URL (RFC 2397 data URI or public HTTPS URL).
+ * MIME type is inferred from the URL; explicitly setting it is not supported.
+ */
+export interface FileUrlContent extends FileContentBase {
+  /** RFC 2397 data URI (e.g. `data:application/pdf;base64,...`) or a public HTTPS URL. */
+  url: string;
+  /** MIME type is not applicable for URL content and is not allowed. */
+  mimeType?: never;
+}
+
+/**
+ * File content input using raw data.
+ * The SDK will assemble the RFC 2397 data URI.
+ */
+export interface FileDataContent extends FileContentBase {
+  /** Base64-encoded string or a Node.js Buffer of the raw file bytes. */
+  data: string | Buffer;
+  /** MIME type of the file, e.g. `'application/pdf'`. */
+  mimeType: string;
+}
+
+/**
+ * File content input for multi-modal orchestration messages.
+ */
+export type FileContentInput = FileUrlContent | FileDataContent;
+
+/**
+ * Type guard to check whether the input is of type `FileUrlContent`.
+ * @param input - The file content input to check.
+ * @returns Whether the input is of type `FileUrlContent`.
+ * @internal
+ */
+export function isFileUrlContent(
+  input: FileContentInput
+): input is FileUrlContent {
+  return 'url' in input;
+}
+
+/**
+ * A content item representing a file in a user message.
+ */
+export interface FileContentItem {
+  /** The type of content item, which is always 'file' for this interface. */
+  type: 'file';
+  /** The file content input, which can be either a URL or base64-encoded data. */
+  file: FileContentInput;
+}
+
+/**
+ * Extended user chat message content item that includes file support
+ * in addition to the generated `text` and `image_url` types.
+ */
+export type UserChatMessageContentItem = Omit<
+  GeneratedUserChatMessageContentItem,
+  'file'
+> & { file?: FileContentInput };
+/**
+ * Extended user chat message content that includes file content items.
+ */
+export type UserChatMessageContent = string | UserChatMessageContentItem[];
+
+/**
+ * Extended user chat message with file content support.
+ */
+export type UserChatMessage = Omit<GeneratedUserChatMessage, 'content'> & {
+  content: UserChatMessageContent;
+};
+
+/**
+ * Union type representing all possible chat message types in the orchestration schema.
+ */
+export type ChatMessage =
+  | SystemChatMessage
+  | UserChatMessage
+  | AssistantChatMessage
+  | ToolChatMessage
+  | DeveloperChatMessage;
+
+/**
+ * Type alias for an array of chat messages.
+ */
+export type ChatMessages = ChatMessage[];

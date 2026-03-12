@@ -11,6 +11,12 @@
     "dist/**/*.d.ts",
     "dist/**/*.d.ts.map"
   ],
+  "scripts": {
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "cleanup-deployments": "node --loader ts-node/esm ./src/utils/cleanup-deployments.ts",
+    "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
+    "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
+  },
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
@@ -18,12 +24,6 @@
     "@sap-ai-sdk/rpt": "workspace:^",
     "@sap-ai-sdk/sample-code": "workspace:^",
     "@sap-cloud-sdk/util": "^4.5.1"
-  },
-  "scripts": {
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "cleanup-deployments": "node --loader ts-node/esm ./src/utils/cleanup-deployments.ts",
-    "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
-    "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "devDependencies": {
     "@types/async-retry": "^1.4.9",

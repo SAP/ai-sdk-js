@@ -6,7 +6,9 @@ import {
   addStreamOptionsToOutputFilteringConfig,
   addStreamOptionsToPromptTemplatingModuleConfig,
   constructCompletionPostRequest,
-  constructCompletionPostRequestFromConfigReference
+  constructCompletionPostRequestFromConfigReference,
+  transformSdkToOrchestrationFileContent,
+  transformOrchestrationToSdkMessages
 } from './module-config.js';
 import { buildAzureContentSafetyFilter } from './filtering.js';
 import type {
@@ -162,7 +164,7 @@ describe('stream util tests', () => {
     expect(warnSpy).toHaveBeenCalledWith(
       'Output filter stream options are not applied because no module configuration has output filtering enabled.'
     );
-    expect(config.modules.filtering).toBeUndefined();
+    expect((config.modules as ModuleConfigs).filtering).toBeUndefined();
   });
 });
 
@@ -1013,5 +1015,305 @@ describe('warnAboutUnusedOverrides', () => {
     expect(debugSpy).not.toHaveBeenCalledWith(
       expect.stringContaining('Override array has')
     );
+  });
+});
+
+describe('transformSdkToOrchestrationFileContent', () => {
+  it('resolves a file URL as-is', () => {
+    const result = transformSdkToOrchestrationFileContent({
+      url: 'https://example.com/file.pdf'
+    });
+
+    expect(result).toMatchObject({
+      file_data: 'https://example.com/file.pdf'
+    });
+  });
+
+  it('passes through data URIs for URL input', () => {
+    const result = transformSdkToOrchestrationFileContent({
+      url: 'data:application/pdf;base64,SGVsbG8='
+    });
+
+    expect(result).toMatchObject({
+      file_data: 'data:application/pdf;base64,SGVsbG8='
+    });
+  });
+
+  it('builds a data URI from base64 string input', () => {
+    const result = transformSdkToOrchestrationFileContent({
+      data: 'SGVsbG8=',
+      mimeType: 'application/pdf'
+    });
+
+    expect(result).toMatchObject({
+      file_data: 'data:application/pdf;base64,SGVsbG8='
+    });
+  });
+
+  it('builds a data URI from a Buffer input', () => {
+    const result = transformSdkToOrchestrationFileContent({
+      data: Buffer.from('Hello'),
+      mimeType: 'text/plain'
+    });
+
+    expect(result).toMatchObject({
+      file_data: 'data:text/plain;base64,SGVsbG8='
+    });
+  });
+
+  it('preserves filename when converting URL input', () => {
+    const result = transformSdkToOrchestrationFileContent({
+      url: 'https://example.com/file.pdf',
+      filename: 'file.pdf'
+    });
+
+    expect(result).toEqual({
+      file_data: 'https://example.com/file.pdf',
+      filename: 'file.pdf'
+    });
+  });
+});
+
+describe('transformOrchestrationToSdkMessages', () => {
+  it('returns empty array when input is undefined', () => {
+    expect(transformOrchestrationToSdkMessages(undefined)).toEqual([]);
+  });
+
+  it('passes through non-user messages unchanged', () => {
+    const messages = [
+      { role: 'system' as const, content: 'You are helpful.' },
+      { role: 'assistant' as const, content: 'Hello!' }
+    ];
+    expect(transformOrchestrationToSdkMessages(messages)).toEqual(messages);
+  });
+
+  it('passes through user messages with string content unchanged', () => {
+    const messages = [{ role: 'user' as const, content: 'Hello' }];
+    expect(transformOrchestrationToSdkMessages(messages)).toEqual(messages);
+  });
+
+  it('passes through user messages with text content items unchanged', () => {
+    const messages = [
+      {
+        role: 'user' as const,
+        content: [{ type: 'text' as const, text: 'Hello' }]
+      }
+    ];
+    expect(transformOrchestrationToSdkMessages(messages)).toEqual(messages);
+  });
+
+  it('converts file content items from orchestration format to SDK url format', () => {
+    const messages = [
+      {
+        role: 'user' as const,
+        content: [
+          {
+            type: 'file' as const,
+            file: { file_data: 'https://example.com/file.pdf' }
+          }
+        ]
+      }
+    ];
+
+    const result = transformOrchestrationToSdkMessages(messages);
+
+    expect(result).toEqual([
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'file',
+            file: { url: 'https://example.com/file.pdf' }
+          }
+        ]
+      }
+    ]);
+  });
+
+  it('preserves filename when converting file content items', () => {
+    const messages = [
+      {
+        role: 'user' as const,
+        content: [
+          {
+            type: 'file' as const,
+            file: {
+              file_data: 'data:application/pdf;base64,SGVsbG8=',
+              filename: 'doc.pdf'
+            }
+          }
+        ]
+      }
+    ];
+
+    const result = transformOrchestrationToSdkMessages(messages);
+
+    expect(result).toEqual([
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'file',
+            file: {
+              url: 'data:application/pdf;base64,SGVsbG8=',
+              filename: 'doc.pdf'
+            }
+          }
+        ]
+      }
+    ]);
+  });
+
+  it('passes through file content items without file property unchanged', () => {
+    const item = { type: 'file' as const };
+    const messages = [{ role: 'user' as const, content: [item] }];
+
+    const result = transformOrchestrationToSdkMessages(messages);
+
+    expect(result?.[0]).toEqual({ role: 'user', content: [{ type: 'file' }] });
+  });
+});
+
+describe('constructCompletionPostRequest with file messages', () => {
+  const baseConfig: OrchestrationModuleConfig = {
+    promptTemplating: {
+      prompt: {
+        template: [{ role: 'user', content: 'Describe the file.' }]
+      },
+      model: { name: 'gpt-4o' }
+    }
+  };
+
+  it('transforms a file URL message in request messages to orchestration format', () => {
+    const request: ChatCompletionRequest = {
+      messages: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'file',
+              file: { url: 'https://example.com/file.pdf' }
+            }
+          ]
+        }
+      ]
+    };
+
+    const result = constructCompletionPostRequest(baseConfig, request);
+    expect(result).toMatchObject({
+      config: {
+        modules: {
+          prompt_templating: {
+            prompt: {
+              template: expect.arrayContaining([
+                {
+                  role: 'user',
+                  content: [
+                    {
+                      type: 'file',
+                      file: { file_data: 'https://example.com/file.pdf' }
+                    }
+                  ]
+                }
+              ])
+            }
+          }
+        }
+      }
+    });
+  });
+
+  it('transforms a base64 file message in request messages to a data URI', () => {
+    const request: ChatCompletionRequest = {
+      messages: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'file',
+              file: {
+                data: 'SGVsbG8=',
+                mimeType: 'application/pdf'
+              }
+            }
+          ]
+        }
+      ]
+    };
+
+    const result = constructCompletionPostRequest(baseConfig, request);
+    expect(result).toMatchObject({
+      config: {
+        modules: {
+          prompt_templating: {
+            prompt: {
+              template: expect.arrayContaining([
+                {
+                  role: 'user',
+                  content: [
+                    {
+                      type: 'file',
+                      file: {
+                        file_data: 'data:application/pdf;base64,SGVsbG8='
+                      }
+                    }
+                  ]
+                }
+              ])
+            }
+          }
+        }
+      }
+    });
+  });
+
+  it('transforms a file URL message in messagesHistory to orchestration format', () => {
+    const request: ChatCompletionRequest = {
+      messagesHistory: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'file',
+              file: { url: 'https://example.com/prev.pdf' }
+            }
+          ]
+        }
+      ]
+    };
+
+    const result = constructCompletionPostRequest(baseConfig, request);
+
+    expect(result).toMatchObject({
+      messages_history: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'file',
+              file: { file_data: 'https://example.com/prev.pdf' }
+            }
+          ]
+        }
+      ]
+    });
+  });
+
+  it('leaves non-file messages in history untransformed', () => {
+    const request: ChatCompletionRequest = {
+      messagesHistory: [
+        { role: 'system', content: 'You are helpful.' },
+        { role: 'user', content: 'Hi' }
+      ]
+    };
+
+    const result = constructCompletionPostRequest(baseConfig, request);
+
+    expect(result).toMatchObject({
+      messages_history: [
+        { role: 'system', content: 'You are helpful.' },
+        { role: 'user', content: 'Hi' }
+      ]
+    });
   });
 });

@@ -252,6 +252,54 @@ describe('OrchestrationStreamResponse', () => {
         content: 'Hello!'
       });
     });
+
+    it('should convert file content items from orchestration to SDK format', () => {
+      closeStream({
+        intermediate_results: {
+          templating: [
+            {
+              role: 'user',
+              content: [
+                {
+                  type: 'file',
+                  file: {
+                    file_data: 'https://example.com/doc.pdf',
+                    filename: 'doc.pdf'
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        final_result: {
+          choices: [
+            {
+              index: 0,
+              message: { role: 'assistant', content: 'Summary.' }
+            }
+          ]
+        }
+      } as any);
+
+      const messages = streamResponse.getAllMessages();
+      expect(messages).toHaveLength(2);
+      expect(messages?.[0]).toEqual({
+        role: 'user',
+        content: [
+          {
+            type: 'file',
+            file: {
+              url: 'https://example.com/doc.pdf',
+              filename: 'doc.pdf'
+            }
+          }
+        ]
+      });
+      expect(messages?.[1]).toEqual({
+        role: 'assistant',
+        content: 'Summary.'
+      });
+    });
   });
 
   describe('getAssistantMessage', () => {
