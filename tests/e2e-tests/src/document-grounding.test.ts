@@ -21,7 +21,7 @@ describe('document grounding', () => {
     await deleteCollection(collectionId);
   });
 
-  it('should get the result based on grounding context from `help.sap.com` data respository via orchestration API', async () => {
+  it('should get the result based on grounding context from `help.sap.com` data repository via orchestration API', async () => {
     const result = await orchestrationGrounding(
       'Give me a short introduction of SAP AI Core.',
       'help.sap.com'
@@ -31,7 +31,7 @@ describe('document grounding', () => {
     expect(result.getIntermediateResults().grounding!.data).toBeDefined();
   });
 
-  it('should get the result based on grounding context from SharePoint data respository via orchestration API', async () => {
+  it('should get the result based on grounding context from SharePoint data repository via orchestration API', async () => {
     const result = await orchestrationGrounding(
       'What is the AI SDK e2e random string?',
       'vector',
@@ -42,7 +42,7 @@ describe('document grounding', () => {
     expect(result.getIntermediateResults().grounding!.data).toBeDefined();
   });
 
-  it('should get the result based on grounding context from S3 data respository via orchestration API', async () => {
+  it('should get the result based on grounding context from S3 data repository via orchestration API', async () => {
     const result = await orchestrationGrounding(
       "What is the Tom's favorite snack?",
       'vector',

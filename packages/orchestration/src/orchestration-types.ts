@@ -884,6 +884,7 @@ export type FileContentInput = FileUrlContent | FileDataContent;
  * Type guard to check whether the input is of type `FileUrlContent`.
  * @param input - The file content input to check.
  * @returns Whether the input is of type `FileUrlContent`.
+ * @internal
  */
 export function isFileUrlContent(
   input: FileContentInput
