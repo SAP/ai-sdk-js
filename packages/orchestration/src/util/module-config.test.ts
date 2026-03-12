@@ -1021,7 +1021,6 @@ describe('warnAboutUnusedOverrides', () => {
 describe('transformSdkToOrchestrationFileContent', () => {
   it('resolves a file URL as-is', () => {
     const result = transformSdkToOrchestrationFileContent({
-      type: 'url',
       url: 'https://example.com/file.pdf'
     });
 
@@ -1032,7 +1031,6 @@ describe('transformSdkToOrchestrationFileContent', () => {
 
   it('passes through data URIs for URL input', () => {
     const result = transformSdkToOrchestrationFileContent({
-      type: 'url',
       url: 'data:application/pdf;base64,SGVsbG8='
     });
 
@@ -1043,7 +1041,6 @@ describe('transformSdkToOrchestrationFileContent', () => {
 
   it('builds a data URI from base64 string input', () => {
     const result = transformSdkToOrchestrationFileContent({
-      type: 'base64',
       data: 'SGVsbG8=',
       mimeType: 'application/pdf'
     });
@@ -1055,7 +1052,6 @@ describe('transformSdkToOrchestrationFileContent', () => {
 
   it('builds a data URI from a Buffer input', () => {
     const result = transformSdkToOrchestrationFileContent({
-      type: 'base64',
       data: Buffer.from('Hello'),
       mimeType: 'text/plain'
     });
@@ -1067,7 +1063,6 @@ describe('transformSdkToOrchestrationFileContent', () => {
 
   it('preserves filename when converting URL input', () => {
     const result = transformSdkToOrchestrationFileContent({
-      type: 'url',
       url: 'https://example.com/file.pdf',
       filename: 'file.pdf'
     });
@@ -1128,7 +1123,7 @@ describe('transformOrchestrationToSdkMessages', () => {
         content: [
           {
             type: 'file',
-            file: { type: 'url', url: 'https://example.com/file.pdf' }
+            file: { url: 'https://example.com/file.pdf' }
           }
         ]
       }
@@ -1160,7 +1155,6 @@ describe('transformOrchestrationToSdkMessages', () => {
           {
             type: 'file',
             file: {
-              type: 'url',
               url: 'data:application/pdf;base64,SGVsbG8=',
               filename: 'doc.pdf'
             }
@@ -1198,7 +1192,7 @@ describe('constructCompletionPostRequest with file messages', () => {
           content: [
             {
               type: 'file',
-              file: { type: 'url', url: 'https://example.com/file.pdf' }
+              file: { url: 'https://example.com/file.pdf' }
             }
           ]
         }
@@ -1238,7 +1232,6 @@ describe('constructCompletionPostRequest with file messages', () => {
             {
               type: 'file',
               file: {
-                type: 'base64',
                 data: 'SGVsbG8=',
                 mimeType: 'application/pdf'
               }
@@ -1282,7 +1275,7 @@ describe('constructCompletionPostRequest with file messages', () => {
           content: [
             {
               type: 'file',
-              file: { type: 'url', url: 'https://example.com/prev.pdf' }
+              file: { url: 'https://example.com/prev.pdf' }
             }
           ]
         }

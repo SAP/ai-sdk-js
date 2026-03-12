@@ -219,7 +219,6 @@ describe('OrchestrationResponse', () => {
         {
           type: 'file',
           file: {
-            type: 'url',
             url: 'https://example.com/doc.pdf',
             filename: 'doc.pdf'
           }
