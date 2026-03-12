@@ -672,7 +672,7 @@ expectType<
 );
 
 /**
- * isConfigReference function should be importable as a value (not just a type).
+ * IsConfigReference function should be importable as a value (not just a type).
  */
 expectType<boolean>(
   isConfigReference({
@@ -924,7 +924,7 @@ expectType<OrchestrationError[] | undefined>(
  */
 expectAssignable<UserChatMessageContentItem>({
   type: 'file',
-  file: { type: 'url', url: 'https://example.com/file.pdf' }
+  file: { url: 'https://example.com/file.pdf' }
 });
 
 /**
@@ -932,7 +932,7 @@ expectAssignable<UserChatMessageContentItem>({
  */
 expectAssignable<UserChatMessageContentItem>({
   type: 'file',
-  file: { type: 'base64', data: 'SGVsbG8=', mimeType: 'application/pdf' }
+  file: { data: 'SGVsbG8=', mimeType: 'application/pdf' }
 });
 
 /**
@@ -940,7 +940,7 @@ expectAssignable<UserChatMessageContentItem>({
  */
 expectError<UserChatMessageContentItem>({
   type: 'file',
-  file: { type: 'url', url: 'SGVsbG8=', mimeType: 'application/pdf' }
+  file: { url: 'SGVsbG8=', mimeType: 'application/pdf' }
 });
 
 /**
@@ -959,7 +959,7 @@ expectAssignable<ChatMessage>({
   content: [
     {
       type: 'file',
-      file: { type: 'url', url: 'https://example.com/file.pdf' }
+      file: { url: 'https://example.com/file.pdf' }
     }
   ]
 });
