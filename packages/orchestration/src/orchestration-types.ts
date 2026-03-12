@@ -858,8 +858,6 @@ export interface FileContentBase {
  * MIME type is inferred from the URL; explicitly setting it is not supported.
  */
 export interface FileUrlContent extends FileContentBase {
-  /** The type of file content input, which is always 'url' for this interface. */
-  type: 'url';
   /** RFC 2397 data URI (e.g. `data:application/pdf;base64,...`) or a public HTTPS URL. */
   url: string;
   /** MIME type is not applicable for URL content and is not allowed. */
@@ -867,12 +865,10 @@ export interface FileUrlContent extends FileContentBase {
 }
 
 /**
- * File content input using raw base64-encoded data.
+ * File content input using raw data.
  * The SDK will assemble the RFC 2397 data URI.
  */
-export interface FileBase64Content extends FileContentBase {
-  /** The type of file content input, which is always 'base64' for this interface. */
-  type: 'base64';
+export interface FileDataContent extends FileContentBase {
   /** Base64-encoded string or a Node.js Buffer of the raw file bytes. */
   data: string | Buffer;
   /** MIME type of the file, e.g. `'application/pdf'`. */
@@ -881,9 +877,19 @@ export interface FileBase64Content extends FileContentBase {
 
 /**
  * File content input for multi-modal orchestration messages.
- * Use `type: 'base64'` to provide inline encoded data; use `type: 'url'` for a URL.
  */
-export type FileContentInput = FileUrlContent | FileBase64Content;
+export type FileContentInput = FileUrlContent | FileDataContent;
+
+/**
+ * Type guard to check whether the input is of type `FileUrlContent`.
+ * @param input - The file content input to check.
+ * @returns Whether the input is of type `FileUrlContent`.
+ */
+export function isFileUrlContent(
+  input: FileContentInput
+): input is FileUrlContent {
+  return 'url' in input;
+}
 
 /**
  * A content item representing a file in a user message.

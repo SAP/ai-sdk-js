@@ -1049,7 +1049,6 @@ export async function orchestrationChatCompletionFile(
   const filePath = join(import.meta.dirname, '..', 'resources', filename);
   const data = await readFile(filePath);
   const file: FileContentInput = {
-    type: 'base64',
     data,
     mimeType,
     filename
@@ -1111,7 +1110,6 @@ export async function orchestrationChatCompletionFileUrl(): Promise<Orchestratio
 
   const base64 = await readFile(filePath, 'base64');
   const file: FileContentInput = {
-    type: 'url',
     url: `data:${mimeType};base64,${base64}`,
     filename
   };

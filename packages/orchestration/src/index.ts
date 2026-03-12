@@ -48,7 +48,7 @@ export type {
   FileContentInput,
   FileContentBase,
   FileUrlContent,
-  FileBase64Content,
+  FileDataContent,
   FileContentItem,
   UserChatMessageContentItem,
   UserChatMessageContent,

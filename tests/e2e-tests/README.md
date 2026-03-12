@@ -18,7 +18,7 @@ End-to-end tests for the SAP Cloud SDK for AI.
    AICORE_SERVICE_KEY='SERVICE_KEY_JSON'
    ```
 
-3. Run `pnpm test` to execute the tests.
+3. Run `pnpm test:e2e` to execute the tests.
 
 ## Remote Testing
 

@@ -13,7 +13,8 @@ import {
   type FileContentInput,
   type ChatMessage,
   type ChatMessages,
-  type UserChatMessageContentItem as SdkContentItem
+  type UserChatMessageContentItem as SdkContentItem,
+  isFileUrlContent
 } from '../orchestration-types.js';
 import type {
   CompletionPostRequest,
@@ -436,7 +437,7 @@ function buildCompletionModulesConfig(
 
 /**
  * Transforms messages from the orchestration response format back to SDK format.
- * Converts file items from `{ file_data: url }` back to `{ type: 'url', url }`.
+ * Converts file items from `{ file_data: url }` back to `{ url }`.
  * @internal
  */
 export function transformOrchestrationToSdkMessages(
@@ -476,21 +477,24 @@ function transformSdkToOrchestrationMessages(
 export function transformSdkToOrchestrationFileContent(
   input: FileContentInput
 ): OrchestrationFileContent {
-  if (input.type === 'url') {
-    const { type: _ut, url, ...restUrl } = input;
-    return { file_data: url, ...restUrl };
+  if (isFileUrlContent(input)) {
+    const { url, ...inputWithoutUrl } = input;
+    return { file_data: url, ...inputWithoutUrl };
   }
 
-  const { type: _t, data: rawData, mimeType, ...rest } = input;
+  const { data, mimeType, ...inputWithoutData } = input;
+  const base64Data = Buffer.isBuffer(data) ? data.toString('base64') : data;
 
-  const data = Buffer.isBuffer(rawData) ? rawData.toString('base64') : rawData;
-
-  return { file_data: `data:${mimeType};base64,${data}`, ...rest };
+  return {
+    file_data: `data:${mimeType};base64,${base64Data}`,
+    ...inputWithoutData
+  };
 }
 
 /**
  * Transforms content items from orchestration format back to SDK format.
- * Converts file items from `{ file_data: url }` to `{ type: 'url', url }`.
+ * Converts `file` properties on items from `{ file_data: url }` to `{ url }` (`FileUrlContent`).
+ * Never creates `file` properties of type `FileDataContent`.
  * @internal
  * @param item - Orchestration content item.
  * @returns SDK content item.
@@ -498,26 +502,29 @@ export function transformSdkToOrchestrationFileContent(
 function transformOrchestrationToSdkContentItem(
   item: OrchestrationContentItem
 ): SdkContentItem {
-  if (item.file) {
-    const { file_data: url, ...rest } = item.file;
+  const { file, ...itemWithoutFile } = item;
+  if (file) {
+    const { file_data, ...fileWithoutData } = file;
     return {
-      ...item,
-      file: { type: 'url', url, ...rest }
-    } as SdkContentItem;
+      ...itemWithoutFile,
+      file: { url: file_data, ...fileWithoutData }
+    };
   }
-  return item as SdkContentItem;
+  return itemWithoutFile;
 }
 
 function transformSdkToOrchestrationContentItem(
   item: SdkContentItem
 ): OrchestrationContentItem {
-  if (item.file) {
+  const { file, ...itemWithoutFile } = item;
+
+  if (file) {
     return {
-      ...item,
-      file: transformSdkToOrchestrationFileContent(item.file)
-    } as OrchestrationContentItem;
+      ...itemWithoutFile,
+      file: transformSdkToOrchestrationFileContent(file)
+    };
   }
-  return item as OrchestrationContentItem;
+  return itemWithoutFile;
 }
 
 function isTemplate(
