@@ -910,6 +910,63 @@ export async function orchestrationSapAbapChatCompletion(): Promise<Orchestratio
 }
 
 /**
+ * Use Perplexity Sonar model to get a response with citations.
+ * The Sonar model provides real-time web search and returns citations for the sources used.
+ * @returns The orchestration service response with citations.
+ */
+export async function orchestrationSonarWithCitations(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: {
+      model: {
+        name: 'sonar',
+        version: 'latest'
+      }
+    }
+  });
+
+  const result = await orchestrationClient.chatCompletion({
+    messages: [
+      {
+        role: 'user',
+        content: 'What are the latest developments in quantum computing?'
+      }
+    ]
+  });
+
+  return result;
+}
+
+/**
+ * Use Perplexity Sonar model with streaming to get a response with citations.
+ * @param controller - The abort controller.
+ * @returns The response from the orchestration service containing the response content.
+ */
+export async function orchestrationSonarStreamWithCitations(
+  controller: AbortController
+): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: {
+      model: {
+        name: 'sonar',
+        version: 'latest'
+      }
+    }
+  });
+
+  return orchestrationClient.stream(
+    {
+      messages: [
+        {
+          role: 'user',
+          content: 'What are the latest developments in quantum computing?'
+        }
+      ]
+    },
+    controller.signal
+  );
+}
+
+/**
  * Use multiple orchestration module configurations with module fallback.
  * @returns The orchestration service response.
  */
