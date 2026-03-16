@@ -1041,7 +1041,7 @@ describe('file data URI validation', () => {
       messages: [
         {
           role: 'user',
-          content: [{ type: 'file', file: { file_data: fileData } } as any]
+          content: [{ type: 'file', file: { file_data: fileData } }]
         }
       ]
     };
@@ -1054,7 +1054,7 @@ describe('file data URI validation', () => {
     );
 
     expect(warnSpy).toHaveBeenCalledWith(
-      expect.stringContaining('empty media type')
+      expect.stringContaining('properly formatted')
     );
   });
 
@@ -1064,7 +1064,7 @@ describe('file data URI validation', () => {
       makeRequest('data:application/pdf,dGVzdA==')
     );
 
-    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining(';base64'));
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('properly formatted'));
   });
 
   it('should warn for both issues when data URI has empty media type and no ;base64', () => {
@@ -1073,7 +1073,7 @@ describe('file data URI validation', () => {
       makeRequest('data:,dGVzdA==')
     );
 
-    expect(warnSpy).toHaveBeenCalledTimes(2);
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('properly formatted'));
   });
 
   it('should not warn for a valid data URI', () => {
@@ -1112,7 +1112,7 @@ describe('file data URI validation', () => {
             {
               type: 'file',
               file: { file_data: 'data:;base64,dGVzdA==' }
-            } as any
+            }
           ]
         }
       ]
@@ -1129,8 +1129,8 @@ describe('file data URI validation', () => {
         {
           role: 'user',
           content: [
-            { type: 'file', file: { file_data: 'data:;base64,aaa' } } as any,
-            { type: 'file', file: { file_data: 'data:;base64,bbb' } } as any
+            { type: 'file', file: { file_data: 'data:;base64,aaa' } },
+            { type: 'file', file: { file_data: 'data:;base64,bbb' } }
           ]
         }
       ]

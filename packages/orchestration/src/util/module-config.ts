@@ -51,7 +51,7 @@ function warnAboutInvalidFileData(
     );
   }
 
-  const dataUriPattern = /^data:([^;]+\/[^;]+);base64,([A-Za-z0-9+/]+={0,2})$/;
+  const dataUriPattern = /^data:([^;/]+\/[^;]+);base64,([A-Za-z0-9+/]+={0,2})$/;
   const fileDataStringsWithDataUri = fileDataStrings.filter(item =>
     item.startsWith('data:')
   );
