@@ -8,38 +8,94 @@ on:
     #  2025-05-01 03:21:00
     #  2025-05-16 03:21:00
     - cron: 21 3 1/15 * *
+  workflow_dispatch:
 
 jobs:
-  spec-update-ai-api:
-    uses: SAP/ai-sdk-js/.github/workflows/spec-update.yaml@main
-    with:
-      file: ai-api
-    secrets: inherit
-  spec-update-document-grounding:
-    uses: SAP/ai-sdk-js/.github/workflows/spec-update.yaml@main
-    with:
-      file: document-grounding
-    secrets: inherit
-  spec-update-prompt-registry:
-    uses: SAP/ai-sdk-js/.github/workflows/spec-update.yaml@main
-    with:
-      file: prompt-registry
-    secrets: inherit
-  # see comments in spec-update.yaml
-  # get-rpt-tag:
+  get-orchestration-reference:
+    runs-on: ubuntu-latest
+    outputs:
+      orchestration-branch: ${{ steps.orch-version.outputs.orchestration-branch }}
+    steps:
+      - name: 'Get orchestration version'
+        id: orch-version
+        run: |
+          ORCH_VERSION=$(curl --fail --silent --request GET \
+            --url "https://github.tools.sap/api/v3/repos/MLF-prod/mlf-gitops-prod/contents/services/llm-orchestration/source/Chart.yaml?ref=aws.eu-central-1.prod-eu/current" \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Accept: application/vnd.github.v3.raw" | yq -r .version)
+
+          if [ -z "$ORCH_VERSION" ]; then
+              echo "Failed to fetch orchestration version"
+              exit 1
+          fi
+          echo "Orchestration version: $ORCH_VERSION"
+          ORCH_VERSION="$(echo "$ORCH_VERSION" | sed 's/-.*//')"
+          echo "orchestration-branch=rel-$ORCH_VERSION" >> "$GITHUB_OUTPUT"
+        env:
+          TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
+
+  # get-rpt-reference:
   #   runs-on: ubuntu-latest
   #   outputs:
-  #     tag: ${{ steps.get-tag.outputs.tag }}
+  #     rpt-tag: ${{ steps.rpt-tag.outputs.rpt-tag }}
   #   steps:
-  #     - name: Get latest tag
-  #       id: get-tag
+  #     - name: 'Get RPT version tag'
+  #       id: rpt-tag
   #       run: |
   #         TAG=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' https://github.tools.sap/DL-COE/sap-rpt-1-public-content | tail --lines=1 | cut -f 2)
-  #         echo "tag=$TAG" >> $GITHUB_OUTPUT
-  # spec-update-rpt:
-  #   needs: get-rpt-tag
-  #   uses: SAP/ai-sdk-js/.github/workflows/spec-update.yaml@main
-  #   with:
-  #     file: rpt
-  #     file-ref: ${{ needs.get-rpt-tag.outputs.tag }}
-  #   secrets: inherit
+  #
+  #         if [ -z "$TAG" ]; then
+  #             echo "Failed to fetch RPT tag"
+  #             exit 1
+  #         fi
+  #         echo "rpt-tag=$TAG" >> "$GITHUB_OUTPUT"
+
+  update-ai-api:
+    uses: ./.github/workflows/spec-update.yaml
+    with:
+      file: ai-api
+      file-ref: main
+      create-pr: true
+    secrets: inherit
+
+  update-document-grounding:
+    uses: ./.github/workflows/spec-update.yaml
+    with:
+      file: document-grounding
+      file-ref: main
+      create-pr: true
+    secrets: inherit
+
+  update-prompt-registry:
+    uses: ./.github/workflows/spec-update.yaml
+    with:
+      file: prompt-registry
+      file-ref: main
+      create-pr: true
+    secrets: inherit
+
+  update-orchestration:
+    needs: get-orchestration-reference
+    uses: ./.github/workflows/spec-update.yaml
+    with:
+      file: orchestration
+      file-ref: ${{ needs.get-orchestration-reference.outputs.orchestration-branch }}
+      create-pr: true
+    secrets: inherit
+
+  notify-failure:
+    needs: [get-orchestration-reference, update-ai-api, update-document-grounding, update-prompt-registry, update-orchestration]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Slack Notification'
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK }}
+          webhook-type: incoming-webhook
+          payload: |
+            blocks:
+              - type: 'section'
+                text:
+                  type: 'mrkdwn'
+                  text: '⚠️ Weekly spec update failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-js/actions/runs/${{ github.run_id }}|here>'
