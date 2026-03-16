@@ -1064,9 +1064,7 @@ describe('file data URI validation', () => {
       makeRequest('data:application/pdf,dGVzdA==')
     );
 
-    expect(warnSpy).toHaveBeenCalledWith(
-      expect.stringContaining(';base64')
-    );
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining(';base64'));
   });
 
   it('should warn for both issues when data URI has empty media type and no ;base64', () => {
@@ -1111,7 +1109,10 @@ describe('file data URI validation', () => {
         {
           role: 'user',
           content: [
-            { type: 'file', file: { file_data: 'data:;base64,dGVzdA==' } } as any
+            {
+              type: 'file',
+              file: { file_data: 'data:;base64,dGVzdA==' }
+            } as any
           ]
         }
       ]

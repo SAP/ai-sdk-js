@@ -101,7 +101,10 @@ export async function invokeChain(): Promise<string> {
  * @returns The answer from GPT.
  */
 export async function invokeRagChain(): Promise<string> {
-  const resourcePath = resolve(import.meta.dirname, '../resources/orchestration.md');
+  const resourcePath = resolve(
+    import.meta.dirname,
+    '../resources/orchestration.md'
+  );
 
   // Create a text loader and load the document
   const loader = new TextLoader(resourcePath);

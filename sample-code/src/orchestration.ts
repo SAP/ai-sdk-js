@@ -1,6 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { join } from 'path';
 import {
   OrchestrationClient,
   OrchestrationEmbeddingClient,
@@ -8,8 +7,7 @@ import {
   buildAzureContentSafetyFilter,
   buildLlamaGuard38BFilter,
   buildDpiMaskingProvider,
-  buildTranslationConfig,
-PromptTemplatingModule
+  buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
 import { resilience } from '@sap-cloud-sdk/resilience';
@@ -24,7 +22,8 @@ import type {
   StreamOptions,
   OrchestrationErrorResponse,
   ChatCompletionTool,
-  ToolChatMessage
+  ToolChatMessage,
+  PromptTemplatingModule
 } from '@sap-ai-sdk/orchestration';
 
 const logger = createLogger({
@@ -599,7 +598,13 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
     }
   });
 
-  const imageFilePath = join(import.meta.dirname, '..', 'src', 'media', 'sample-image.png');
+  const imageFilePath = join(
+    import.meta.dirname,
+    '..',
+    'src',
+    'media',
+    'sample-image.png'
+  );
   const mimeType = 'image/png';
   const encodedString = `data:${mimeType};base64,${await readFile(imageFilePath, 'base64')}`;
 

@@ -15,7 +15,6 @@ import type {
   CompletionPostRequest,
   CompletionRequestConfigurationReferenceById,
   CompletionRequestConfigurationReferenceByNameScenarioVersion,
-  FileContent,
   FilteringStreamOptions,
   ModuleConfigs,
   OrchestrationConfig,
@@ -40,7 +39,7 @@ function warnAboutInvalidFileData(
   const fileDataStrings = (messages || [])
     .flatMap(message => {
       const { content } = message;
-      return Array.isArray(content) ? content : [] as any[];
+      return Array.isArray(content) ? content : ([] as any[]);
     })
     .filter(item => item.type === 'file' && item.file)
     .map(item => item.file.file_data);
@@ -53,7 +52,9 @@ function warnAboutInvalidFileData(
   }
 
   const dataUriPattern = /^data:([^;]+\/[^;]+);base64,([A-Za-z0-9+/]+={0,2})$/;
-  const fileDataStringsWithDataUri = fileDataStrings.filter(item => item.startsWith('data:'));
+  const fileDataStringsWithDataUri = fileDataStrings.filter(item =>
+    item.startsWith('data:')
+  );
 
   if (fileDataStringsWithDataUri.some(item => !dataUriPattern.test(item))) {
     logger.warn(
