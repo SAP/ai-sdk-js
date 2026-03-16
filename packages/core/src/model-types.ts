@@ -32,11 +32,6 @@ export type GcpVertexAiChatModel = LiteralUnion<
 >;
 
 /**
- * GCP Vertex AI models for embedding.
- */
-export type GcpVertexAiEmbeddingModel = LiteralUnion<'gemini-embedding'>;
-
-/**
  * AWS Bedrock models for chat completion.
  */
 export type AwsBedrockChatModel = LiteralUnion<
