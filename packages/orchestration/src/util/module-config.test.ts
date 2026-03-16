@@ -1015,3 +1015,126 @@ describe('warnAboutUnusedOverrides', () => {
     );
   });
 });
+
+describe('file data URI validation', () => {
+  const logger = createLogger({
+    package: 'orchestration',
+    messageContext: 'orchestration-utils'
+  });
+
+  let warnSpy: ReturnType<typeof jest.spyOn>;
+
+  beforeEach(() => {
+    warnSpy = jest.spyOn(logger, 'warn');
+    warnSpy.mockClear();
+  });
+
+  const defaultConfig: OrchestrationModuleConfig = {
+    promptTemplating: {
+      prompt: { template: [{ role: 'user', content: 'Hi' }] },
+      model: { name: 'gpt-4o' }
+    }
+  };
+
+  function makeRequest(fileData: string): ChatCompletionRequest {
+    return {
+      messages: [
+        {
+          role: 'user',
+          content: [{ type: 'file', file: { file_data: fileData } } as any]
+        }
+      ]
+    };
+  }
+
+  it('should warn when data URI has empty media type', () => {
+    constructCompletionPostRequest(
+      defaultConfig,
+      makeRequest('data:;base64,dGVzdA==')
+    );
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('empty media type')
+    );
+  });
+
+  it('should warn when data URI is missing ;base64', () => {
+    constructCompletionPostRequest(
+      defaultConfig,
+      makeRequest('data:application/pdf,dGVzdA==')
+    );
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining(';base64')
+    );
+  });
+
+  it('should warn for both issues when data URI has empty media type and no ;base64', () => {
+    constructCompletionPostRequest(
+      defaultConfig,
+      makeRequest('data:,dGVzdA==')
+    );
+
+    expect(warnSpy).toHaveBeenCalledTimes(2);
+  });
+
+  it('should not warn for a valid data URI', () => {
+    constructCompletionPostRequest(
+      defaultConfig,
+      makeRequest('data:application/pdf;base64,dGVzdA==')
+    );
+
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not warn for an https URL', () => {
+    constructCompletionPostRequest(
+      defaultConfig,
+      makeRequest('https://example.com/document.pdf')
+    );
+
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not warn for an unknown URL scheme', () => {
+    constructCompletionPostRequest(
+      defaultConfig,
+      makeRequest('s3://bucket/document.pdf')
+    );
+
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
+
+  it('should include the field name in the warning for messagesHistory', () => {
+    constructCompletionPostRequest(defaultConfig, {
+      messagesHistory: [
+        {
+          role: 'user',
+          content: [
+            { type: 'file', file: { file_data: 'data:;base64,dGVzdA==' } } as any
+          ]
+        }
+      ]
+    });
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('messagesHistory')
+    );
+  });
+
+  it('should warn only once even when multiple messages have invalid file data', () => {
+    constructCompletionPostRequest(defaultConfig, {
+      messages: [
+        {
+          role: 'user',
+          content: [
+            { type: 'file', file: { file_data: 'data:;base64,aaa' } } as any,
+            { type: 'file', file: { file_data: 'data:;base64,bbb' } } as any
+          ]
+        }
+      ]
+    });
+
+    expect(warnSpy).toHaveBeenCalledTimes(1);
+  });
+});
