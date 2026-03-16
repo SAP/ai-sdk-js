@@ -10,8 +10,7 @@ updates:
     open-pull-requests-limit: 10
     cooldown:
       default-days: 4
-      exclude:
-        - dependency-name: '@sap-cloud-sdk/*'
+      exclude: '@sap-cloud-sdk/*'
     ignore:
       # We only want to do major node updates manually, so don't create dependabot PRs for major versions
       - dependency-name: '@types/node'
@@ -31,8 +30,7 @@ updates:
     open-pull-requests-limit: 10
     cooldown:
       default-days: 4
-      exclude:
-        - dependency-name: '@sap-cloud-sdk/*'
+      exclude: '@sap-cloud-sdk/*'
     ignore:
       # We only want to do major node updates manually, so don't create dependabot PRs for major versions
       - dependency-name: '@types/node'
@@ -53,8 +51,6 @@ updates:
       timezone: 'Europe/Berlin'
     cooldown:
       default-days: 4
-      exclude:
-        - dependency-name: 'SAP/cloud-sdk-js'
     ignore:
     - dependency-name: 'SAP/ai-sdk-js'
       update-types: ['version-update:semver-major', 'version-update:semver-minor', 'version-update:semver-patch']
