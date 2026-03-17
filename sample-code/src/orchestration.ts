@@ -1062,7 +1062,7 @@ export async function orchestrationChatCompletionFile(
         role: 'user',
         content: [
           { type: 'text', text: instruction },
-          { type: 'file', file: { file_data: fileData, filename } } as any
+          { type: 'file', file: { file_data: fileData, filename } }
         ]
       }
     ]
