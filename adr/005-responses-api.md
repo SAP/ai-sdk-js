@@ -231,49 +231,6 @@ const response = await client.responses.create({
 
 - AzureOpenAI requires the `model` to be set in the payload (but apparently the value doesn't matter) => potentially forces users to pass the model twice
 
-#### Appendix
-
-Naive implementation of `createAzureOpenAiClientOptions()`:
-
-```ts
-import { ModelDeployment } from '@sap-ai-sdk/ai-api';
-import { AzureOpenAiChatModel, getAiCoreDestination } from '@sap-ai-sdk/core';
-import { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
-import { buildHttpRequest } from '@sap-cloud-sdk/http-client';
-import { AzureClientOptions } from 'openai/azure.js';
-import {
-  getFoundationModelDeploymentId,
-  getResourceGroup
-} from '@sap-ai-sdk/ai-api/internal';
-
-export async function createAzureOpenAiClientOptions(
-  config: ModelDeployment<AzureOpenAiChatModel> & { apiVersion?: string },
-  destination?: HttpDestinationOrFetchOptions
-): Promise<AzureClientOptions> {
-  const deploymentId = await getFoundationModelDeploymentId(
-    config,
-    'azure-openai',
-    destination
-  );
-  const resourceGroup = getResourceGroup(config) || 'default';
-  const aiCoreDestination = await getAiCoreDestination(destination);
-  const { baseURL, params } = await buildHttpRequest(aiCoreDestination);
-
-  return {
-    apiVersion: config.apiVersion || '2025-08-07',
-    azureADTokenProvider: async () =>
-      (await buildHttpRequest(aiCoreDestination)).headers.authorization.split(
-        ' '
-      )[1],
-    defaultHeaders: {
-      'ai-resource-group': resourceGroup
-    },
-    defaultQuery: params,
-    baseURL: `${baseURL}/v2/inference/deployments/${deploymentId}`
-  };
-}
-```
-
 ## Outlook
 
 We should consider how OpenAI's WebSocket API (`Session`) plays into this.
