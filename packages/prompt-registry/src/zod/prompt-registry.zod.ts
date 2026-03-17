@@ -675,11 +675,16 @@ export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
 
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelVersionDefault = `latest`;export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelVersionDefault = `latest`;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutDefault = 600;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutMax = 600;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelMaxRetriesDefault = 2;
@@ -700,7 +705,8 @@ export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
 
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
 
@@ -724,11 +730,16 @@ export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
 
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutMax = 600;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault = 2;
@@ -749,7 +760,8 @@ export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
 
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
 
@@ -764,7 +776,8 @@ export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault = true;
 
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamEnabledDefault = false;export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamChunkSizeDefault = 100;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamChunkSizeDefault = 100;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamChunkSizeMax = 10000;
 
 
@@ -786,11 +799,15 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
-  "type": zod.enum(['text', 'image_url']),
+  "type": zod.enum(['text', 'image_url', 'file']),
   "text": zod.string().optional(),
   "image_url": zod.object({
   "url": zod.string(),
   "detail": zod.string().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
+}).optional(),
+  "file": zod.object({
+  "file_data": zod.string().describe('Base64 encoded file content or file URL'),
+  "filename": zod.string().optional().describe('Name of the file')
 }).optional()
 })).min(1)]),
   "role": zod.enum(['user'])
@@ -834,7 +851,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "description": zod.string().optional().describe('A description of what the response format is for, used by the model to determine how to respond in the format.'),
   "name": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "schema": zod.record(zod.string(), zod.unknown()).optional().describe('The schema for the response format, described as a JSON Schema object.'),
-  "strict": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
 })
 })]).optional().describe('Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'),
   "tools": zod.array(zod.object({
@@ -843,7 +860,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "description": zod.string().optional().describe('A description of what the function does, used by the model to choose when and how to call the function.'),
   "name": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
-  "strict": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
 })
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
@@ -952,7 +969,8 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
-}).optional()
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers')
 }),zod.object({
   "masking_providers": zod.array(zod.object({
@@ -976,7 +994,8 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
-}).optional()
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
@@ -1048,11 +1067,15 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
-  "type": zod.enum(['text', 'image_url']),
+  "type": zod.enum(['text', 'image_url', 'file']),
   "text": zod.string().optional(),
   "image_url": zod.object({
   "url": zod.string(),
   "detail": zod.string().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
+}).optional(),
+  "file": zod.object({
+  "file_data": zod.string().describe('Base64 encoded file content or file URL'),
+  "filename": zod.string().optional().describe('Name of the file')
 }).optional()
 })).min(1)]),
   "role": zod.enum(['user'])
@@ -1096,7 +1119,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "description": zod.string().optional().describe('A description of what the response format is for, used by the model to determine how to respond in the format.'),
   "name": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "schema": zod.record(zod.string(), zod.unknown()).optional().describe('The schema for the response format, described as a JSON Schema object.'),
-  "strict": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
 })
 })]).optional().describe('Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'),
   "tools": zod.array(zod.object({
@@ -1105,7 +1128,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "description": zod.string().optional().describe('A description of what the function does, used by the model to choose when and how to call the function.'),
   "name": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
-  "strict": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
 })
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
@@ -1214,7 +1237,8 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
-}).optional()
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers')
 }),zod.object({
   "masking_providers": zod.array(zod.object({
@@ -1238,7 +1262,8 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
-}).optional()
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
@@ -1320,7 +1345,9 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 /**
  * List orchestration configs
  */
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryRetrieveDefault = `both`;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryIncludeSpecDefault = false;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryResolveTemplateRefDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryRetrieveDefault = `both`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryIncludeSpecDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryResolveTemplateRefDefault = false;
 
 export const RegistryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryParams = zod.object({
   "scenario": zod.string().optional(),
@@ -1347,11 +1374,16 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
 
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelVersionDefault = `latest`;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelVersionDefault = `latest`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault = 600;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax = 600;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesDefault = 2;
@@ -1372,7 +1404,8 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
 
@@ -1396,11 +1429,16 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
 
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMax = 600;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault = 2;
@@ -1421,7 +1459,8 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
 
@@ -1436,7 +1475,8 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault = true;
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamEnabledDefault = false;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamChunkSizeDefault = 100;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamChunkSizeDefault = 100;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamChunkSizeMax = 10000;
 
 
@@ -1465,11 +1505,15 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
-  "type": zod.enum(['text', 'image_url']),
+  "type": zod.enum(['text', 'image_url', 'file']),
   "text": zod.string().optional(),
   "image_url": zod.object({
   "url": zod.string(),
   "detail": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
+}).optional(),
+  "file": zod.object({
+  "file_data": zod.string().describe('Base64 encoded file content or file URL'),
+  "filename": zod.string().optional().describe('Name of the file')
 }).optional()
 })).min(1)]),
   "role": zod.enum(['user'])
@@ -1513,7 +1557,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "description": zod.string().optional().describe('A description of what the response format is for, used by the model to determine how to respond in the format.'),
   "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "schema": zod.record(zod.string(), zod.unknown()).optional().describe('The schema for the response format, described as a JSON Schema object.'),
-  "strict": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
 })
 })]).optional().describe('Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'),
   "tools": zod.array(zod.object({
@@ -1522,7 +1566,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "description": zod.string().optional().describe('A description of what the function does, used by the model to choose when and how to call the function.'),
   "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
-  "strict": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
 })
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
@@ -1631,7 +1675,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
-}).optional()
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers')
 }),zod.object({
   "masking_providers": zod.array(zod.object({
@@ -1655,7 +1700,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
-}).optional()
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
@@ -1727,11 +1773,15 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
-  "type": zod.enum(['text', 'image_url']),
+  "type": zod.enum(['text', 'image_url', 'file']),
   "text": zod.string().optional(),
   "image_url": zod.object({
   "url": zod.string(),
   "detail": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
+}).optional(),
+  "file": zod.object({
+  "file_data": zod.string().describe('Base64 encoded file content or file URL'),
+  "filename": zod.string().optional().describe('Name of the file')
 }).optional()
 })).min(1)]),
   "role": zod.enum(['user'])
@@ -1775,7 +1825,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "description": zod.string().optional().describe('A description of what the response format is for, used by the model to determine how to respond in the format.'),
   "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "schema": zod.record(zod.string(), zod.unknown()).optional().describe('The schema for the response format, described as a JSON Schema object.'),
-  "strict": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
 })
 })]).optional().describe('Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'),
   "tools": zod.array(zod.object({
@@ -1784,7 +1834,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "description": zod.string().optional().describe('A description of what the function does, used by the model to choose when and how to call the function.'),
   "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
-  "strict": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
 })
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
@@ -1893,7 +1943,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
-}).optional()
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers')
 }),zod.object({
   "masking_providers": zod.array(zod.object({
@@ -1917,7 +1968,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
-}).optional()
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
@@ -1998,7 +2050,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "name": zod.string()
 })
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryIncludeSpecDefault = false;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryResolveTemplateRefDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryIncludeSpecDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryResolveTemplateRefDefault = false;
 
 export const RegistryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryParams = zod.object({
   "include_spec": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryIncludeSpecDefault).describe('DEPRECATED: Use includeSpec instead'),
@@ -2021,11 +2074,16 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
 
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelVersionDefault = `latest`;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelVersionDefault = `latest`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault = 600;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax = 600;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesDefault = 2;
@@ -2046,7 +2104,8 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
 
@@ -2070,11 +2129,16 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
 
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMax = 600;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault = 2;
@@ -2095,7 +2159,8 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
 
@@ -2110,7 +2175,8 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault = true;
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamEnabledDefault = false;export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamChunkSizeDefault = 100;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamChunkSizeDefault = 100;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamChunkSizeMax = 10000;
 
 
@@ -2139,11 +2205,15 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
-  "type": zod.enum(['text', 'image_url']),
+  "type": zod.enum(['text', 'image_url', 'file']),
   "text": zod.string().optional(),
   "image_url": zod.object({
   "url": zod.string(),
   "detail": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
+}).optional(),
+  "file": zod.object({
+  "file_data": zod.string().describe('Base64 encoded file content or file URL'),
+  "filename": zod.string().optional().describe('Name of the file')
 }).optional()
 })).min(1)]),
   "role": zod.enum(['user'])
@@ -2187,7 +2257,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "description": zod.string().optional().describe('A description of what the response format is for, used by the model to determine how to respond in the format.'),
   "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "schema": zod.record(zod.string(), zod.unknown()).optional().describe('The schema for the response format, described as a JSON Schema object.'),
-  "strict": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
 })
 })]).optional().describe('Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'),
   "tools": zod.array(zod.object({
@@ -2196,7 +2266,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "description": zod.string().optional().describe('A description of what the function does, used by the model to choose when and how to call the function.'),
   "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
-  "strict": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
 })
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
@@ -2305,7 +2375,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
-}).optional()
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers')
 }),zod.object({
   "masking_providers": zod.array(zod.object({
@@ -2329,7 +2400,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
-}).optional()
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
@@ -2401,11 +2473,15 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
-  "type": zod.enum(['text', 'image_url']),
+  "type": zod.enum(['text', 'image_url', 'file']),
   "text": zod.string().optional(),
   "image_url": zod.object({
   "url": zod.string(),
   "detail": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
+}).optional(),
+  "file": zod.object({
+  "file_data": zod.string().describe('Base64 encoded file content or file URL'),
+  "filename": zod.string().optional().describe('Name of the file')
 }).optional()
 })).min(1)]),
   "role": zod.enum(['user'])
@@ -2449,7 +2525,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "description": zod.string().optional().describe('A description of what the response format is for, used by the model to determine how to respond in the format.'),
   "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "schema": zod.record(zod.string(), zod.unknown()).optional().describe('The schema for the response format, described as a JSON Schema object.'),
-  "strict": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
 })
 })]).optional().describe('Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'),
   "tools": zod.array(zod.object({
@@ -2458,7 +2534,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "description": zod.string().optional().describe('A description of what the function does, used by the model to choose when and how to call the function.'),
   "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
-  "strict": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
 })
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
@@ -2567,7 +2643,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
-}).optional()
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers')
 }),zod.object({
   "masking_providers": zod.array(zod.object({
@@ -2591,7 +2668,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
-}).optional()
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
@@ -2691,11 +2769,16 @@ export const registryControllerOrchestrationConfigControllerGetOrchestrationConf
 
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
 
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelVersionDefault = `latest`;export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelVersionDefault = `latest`;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutDefault = 600;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutMax = 600;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelMaxRetriesDefault = 2;
@@ -2716,7 +2799,8 @@ export const registryControllerOrchestrationConfigControllerGetOrchestrationConf
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
 
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
 
@@ -2740,11 +2824,16 @@ export const registryControllerOrchestrationConfigControllerGetOrchestrationConf
 
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
 
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutMax = 600;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault = 2;
@@ -2765,7 +2854,8 @@ export const registryControllerOrchestrationConfigControllerGetOrchestrationConf
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
 
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
 
@@ -2780,7 +2870,8 @@ export const registryControllerOrchestrationConfigControllerGetOrchestrationConf
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault = true;
 
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamEnabledDefault = false;export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamChunkSizeDefault = 100;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamChunkSizeDefault = 100;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamChunkSizeMax = 10000;
 
 
@@ -2807,11 +2898,15 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
-  "type": zod.enum(['text', 'image_url']),
+  "type": zod.enum(['text', 'image_url', 'file']),
   "text": zod.string().optional(),
   "image_url": zod.object({
   "url": zod.string(),
   "detail": zod.string().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
+}).optional(),
+  "file": zod.object({
+  "file_data": zod.string().describe('Base64 encoded file content or file URL'),
+  "filename": zod.string().optional().describe('Name of the file')
 }).optional()
 })).min(1)]),
   "role": zod.enum(['user'])
@@ -2855,7 +2950,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "description": zod.string().optional().describe('A description of what the response format is for, used by the model to determine how to respond in the format.'),
   "name": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "schema": zod.record(zod.string(), zod.unknown()).optional().describe('The schema for the response format, described as a JSON Schema object.'),
-  "strict": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
 })
 })]).optional().describe('Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'),
   "tools": zod.array(zod.object({
@@ -2864,7 +2959,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "description": zod.string().optional().describe('A description of what the function does, used by the model to choose when and how to call the function.'),
   "name": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
-  "strict": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
 })
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
@@ -2973,7 +3068,8 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
-}).optional()
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers')
 }),zod.object({
   "masking_providers": zod.array(zod.object({
@@ -2997,7 +3093,8 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
-}).optional()
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
@@ -3069,11 +3166,15 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
-  "type": zod.enum(['text', 'image_url']),
+  "type": zod.enum(['text', 'image_url', 'file']),
   "text": zod.string().optional(),
   "image_url": zod.object({
   "url": zod.string(),
   "detail": zod.string().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
+}).optional(),
+  "file": zod.object({
+  "file_data": zod.string().describe('Base64 encoded file content or file URL'),
+  "filename": zod.string().optional().describe('Name of the file')
 }).optional()
 })).min(1)]),
   "role": zod.enum(['user'])
@@ -3117,7 +3218,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "description": zod.string().optional().describe('A description of what the response format is for, used by the model to determine how to respond in the format.'),
   "name": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "schema": zod.record(zod.string(), zod.unknown()).optional().describe('The schema for the response format, described as a JSON Schema object.'),
-  "strict": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
 })
 })]).optional().describe('Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'),
   "tools": zod.array(zod.object({
@@ -3126,7 +3227,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "description": zod.string().optional().describe('A description of what the function does, used by the model to choose when and how to call the function.'),
   "name": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
-  "strict": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
 })
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
@@ -3235,7 +3336,8 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
-}).optional()
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers')
 }),zod.object({
   "masking_providers": zod.array(zod.object({
@@ -3259,7 +3361,8 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
-}).optional()
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({

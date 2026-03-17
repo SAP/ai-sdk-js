@@ -96,8 +96,8 @@ export const PromptTemplatesApi = {
       '/lm/scenarios/{scenario}/promptTemplates/{name}/versions/{version}/history',
       {
         pathParameters: { scenario, version, name },
-        queryParameters,
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       PromptTemplatesApi._defaultBasePath
     ),

@@ -1082,6 +1082,18 @@ components:
         detail:
           type: string
           default: auto
+    FileContent:
+      type: object
+      required:
+        - file_data
+      additionalProperties: false
+      properties:
+        file_data:
+          type: string
+          description: Base64 encoded file content or file URL
+        filename:
+          type: string
+          description: Name of the file
     UserChatMessageContentItem:
       type: object
       additionalProperties: false
@@ -1091,10 +1103,13 @@ components:
           enum:
             - text
             - image_url
+            - file
         text:
           type: string
         image_url:
           $ref: '#/components/schemas/ImageContentUrl'
+        file:
+          $ref: '#/components/schemas/FileContent'
       required:
         - type
     UserChatMessageContent:
@@ -1660,6 +1675,12 @@ components:
               type: boolean
               default: false
               description: controls whether the input to the grounding module will be masked with the configuration supplied in the masking module
+        mask_file_input_method:
+          description: Type of masking method to be used for file inputs. Required if file inputs are provided.
+          type: string
+          enum:
+            - anonymization
+            - skip
     MaskingProviderConfig:
       oneOf:
         - $ref: '#/components/schemas/DPIConfig'
