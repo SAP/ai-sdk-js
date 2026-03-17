@@ -203,6 +203,8 @@ Naming could also be `chatClient()`, `chatApi()` or similar.
 Actually? Why do we have our own clients, when there are clients from OpenAI that are maintained by OpenAI?
 We could provide a helper function to retrieve a config based on destination, model deployment configuration and API version.
 
+This is a hands-on PoC: https://github.tools.sap/I824643/responses-api-poc.
+
 ```ts
 import { AzureOpenAI, AzureClientOptions } from 'openai/azure.js';
 import { createAzureOpenAiClientOptions } from '@sap-ai-sdk/foundation-models';
