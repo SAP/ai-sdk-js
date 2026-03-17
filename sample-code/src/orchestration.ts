@@ -1092,32 +1092,3 @@ export function orchestrationChatCompletionDocxFile(): Promise<OrchestrationResp
 export function orchestrationChatCompletionMp3File(): Promise<OrchestrationResponse> {
   return orchestrationChatCompletionFile('mp3');
 }
-
-/**
- * Sends a file as input via messagesHistory using a data URI.
- * @returns The orchestration service response.
- */
-export async function orchestrationChatCompletionFileUrl(): Promise<OrchestrationResponse> {
-  const { filename, mimeType, model, instruction } = fileTypeConfig.pdf;
-
-  const orchestrationClient = new OrchestrationClient({
-    promptTemplating: {
-      model: { name: model }
-    }
-  });
-
-  const filePath = join(import.meta.dirname, '..', 'resources', filename);
-  const fileData = `data:${mimeType};base64,${await readFile(filePath, 'base64')}`;
-
-  return orchestrationClient.chatCompletion({
-    messages: [{ role: 'user', content: instruction }],
-    messagesHistory: [
-      {
-        role: 'user',
-        content: [
-          { type: 'file', file: { file_data: fileData, filename } } as any
-        ]
-      }
-    ]
-  });
-}

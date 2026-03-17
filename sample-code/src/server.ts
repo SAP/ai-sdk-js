@@ -23,7 +23,6 @@ import {
   orchestrationGrounding,
   orchestrationChatCompletionImage,
   orchestrationChatCompletionFile,
-  orchestrationChatCompletionFileUrl,
   chatCompletionStreamWithJsonModuleConfig as orchestrationChatCompletionStreamWithJsonModuleConfig,
   orchestrationMaskGroundingInput,
   orchestrationPromptRegistry,
@@ -288,7 +287,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
     const model = req.query.model as string | undefined;
     try {
       const result = await orchestrationChatCompletionFile(fileType, { model });
-      res.header('Content-Type', 'text/plain').send(result);
+      res.header('Content-Type', 'text/plain').send(result.getContent());
     } catch (error: any) {
       sendError(res, error);
     }
@@ -307,7 +306,6 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       requestConfig: orchestrationRequestConfig,
       fromJson: orchestrationFromJson,
       image: orchestrationChatCompletionImage,
-      fileUrl: orchestrationChatCompletionFileUrl,
       responseFormat: orchestrationResponseFormat,
       maskGroundingInput: orchestrationMaskGroundingInput,
       translation: orchestrationTranslation,

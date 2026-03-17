@@ -10,11 +10,10 @@ import {
   orchestrationCompletionMasking,
   orchestrationMaskGroundingInput,
   orchestrationChatCompletionImage,
-  orchestrationChatCompletionFile,
   orchestrationChatCompletionCsvFile,
   orchestrationChatCompletionDocxFile,
   orchestrationChatCompletionMp3File,
-  orchestrationChatCompletionFileUrl,
+  orchestrationChatCompletionFile,
   chatCompletionStreamWithJsonModuleConfig,
   chatCompletionStream,
   orchestrationResponseFormat,
@@ -144,7 +143,7 @@ describe('orchestration', () => {
   });
 
   it('should complete a chat with a file via messagesHistory', async () => {
-    const response = await orchestrationChatCompletionFileUrl();
+    const response = await orchestrationChatCompletionFile();
     assertContent(response);
   });
 

@@ -25,7 +25,6 @@ export {
   orchestrationChatCompletionCsvFile,
   orchestrationChatCompletionDocxFile,
   orchestrationChatCompletionMp3File,
-  orchestrationChatCompletionFileUrl,
   orchestrationResponseFormat,
   chatCompletionStreamWithJsonModuleConfig,
   chatCompletionStream,
