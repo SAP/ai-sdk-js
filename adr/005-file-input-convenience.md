@@ -161,7 +161,7 @@ Options that change the API surface:
 - Does not sufficiently reduce user complexity.
 - Does not prevent issues around incorrect MIME types.
 
-To discuss:
+Regarding runtime warnings:
 
 Add basic validation that any string input starts with `data:` and contains `;base64,` and a non-empty MIME type, with helpful error messages for common formatting issues.
 
@@ -170,6 +170,8 @@ Options for validation:
 - No validation, rely on service errors and suggest improvements to error messages in the orchestration service as needed.
 - Validate for messages
 - Validate for messages and message history.
+
+Choice: **No validation** as existing error messages from the service are decent (see collapsed samples above).
 
 For support regarding help with mime types (`application/vnd.openxmlformats-officedocument.wordprocessingml.document`), create a follow-up BLI to investigate helpers (Options E/F) and consider also improving the experience of sending images.
 
