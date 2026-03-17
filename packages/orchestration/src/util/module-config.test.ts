@@ -1064,7 +1064,9 @@ describe('file data URI validation', () => {
       makeRequest('data:application/pdf,dGVzdA==')
     );
 
-    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('properly formatted'));
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('properly formatted')
+    );
   });
 
   it('should warn for both issues when data URI has empty media type and no ;base64', () => {
@@ -1073,7 +1075,9 @@ describe('file data URI validation', () => {
       makeRequest('data:,dGVzdA==')
     );
 
-    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('properly formatted'));
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('properly formatted')
+    );
   });
 
   it('should not warn for a valid data URI', () => {
