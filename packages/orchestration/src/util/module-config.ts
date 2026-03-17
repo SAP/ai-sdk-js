@@ -11,7 +11,6 @@ import {
   type EmbeddingRequest
 } from '../orchestration-types.js';
 import type {
-  ChatMessages,
   CompletionPostRequest,
   CompletionRequestConfigurationReferenceById,
   CompletionRequestConfigurationReferenceByNameScenarioVersion,
@@ -32,38 +31,6 @@ const logger = createLogger({
   messageContext: 'orchestration-utils'
 });
 
-function warnAboutInvalidFileData(
-  messages: ChatMessages | undefined,
-  field: 'messages' | 'messagesHistory'
-): void {
-  const fileDataStrings = (messages || [])
-    .flatMap(message => {
-      const { content } = message;
-      return Array.isArray(content) ? content : ([] as any[]);
-    })
-    .filter(item => item.type === 'file' && item.file)
-    .map(item => item.file.file_data);
-
-  if (fileDataStrings.some(item => !item.includes(':'))) {
-    logger.warn(
-      `A file_data data URI in ${field} has an empty media type. ` +
-        'A non-empty MIME type is required, e.g. data:application/pdf;base64,...'
-    );
-  }
-
-  const dataUriPattern = /^data:([^;/]+\/[^;]+);base64,([A-Za-z0-9+/]+={0,2})$/;
-  const fileDataStringsWithDataUri = fileDataStrings.filter(item =>
-    item.startsWith('data:')
-  );
-
-  if (fileDataStringsWithDataUri.some(item => !dataUriPattern.test(item))) {
-    logger.warn(
-      `A file_data data URI in ${field} is not properly formatted. ` +
-        'Ensure it follows the format: data:MEDIATYPE;base64,DATA'
-    );
-  }
-}
-
 /**
  * @internal
  */
@@ -72,7 +39,6 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
   prompt?: ChatCompletionRequest,
   stream?: boolean
 ): Record<string, any> {
-  warnAboutInvalidFileData(prompt?.messagesHistory, 'messagesHistory');
   if (stream) {
     config = {
       ...config,
@@ -101,7 +67,6 @@ export function constructCompletionPostRequestFromConfigReference(
 ):
   | CompletionRequestConfigurationReferenceById
   | CompletionRequestConfigurationReferenceByNameScenarioVersion {
-  warnAboutInvalidFileData(request?.messagesHistory, 'messagesHistory');
   return {
     config_ref: configRef,
     ...(request?.placeholderValues && {
@@ -382,8 +347,6 @@ export function constructCompletionPostRequest(
   stream?: boolean,
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
-  warnAboutInvalidFileData(request?.messages, 'messages');
-  warnAboutInvalidFileData(request?.messagesHistory, 'messagesHistory');
   // Preserve format: single config → ModuleConfigs, array → ModuleConfigs[]
   // The orchestration service expects the config structure to match the input:
   // - Single config (OrchestrationModuleConfig) → single ModuleConfigs object
