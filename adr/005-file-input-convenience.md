@@ -171,6 +171,34 @@ Options for validation:
 - Validate for messages
 - Validate for messages and message history.
 
+For support regarding help with mime types (`application/vnd.openxmlformats-officedocument.wordprocessingml.document`), create a follow-up BLI to investigate helpers (Options E/F) and consider also improving the experience of sending images.
+
+### Example
+
+```ts
+import { readFile } from 'node:fs/promises';
+
+const base64 = await readFile('./document.pdf', 'base64');
+const mimeType = 'application/pdf';
+// Or: https://example.com/document.pdf
+const fileData = `data:${mimeType};base64,${base64}`;
+
+client.chatCompletion({
+  messages: [
+    {
+      role: 'user',
+      content: [
+        { type: 'text', text: 'Summarise this document.' },
+        {
+          type: 'file',
+          file: { file_data: fileData, filename: 'document.pdf' }
+        }
+      ]
+    }
+  ]
+});
+```
+
 ## Discussion
 
 ## Option A: Expose as-is, but validate and document the required RFC 2397 format
