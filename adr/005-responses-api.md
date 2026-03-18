@@ -4,7 +4,7 @@
 
 <!-- What is the status, such as decided, proposed, outdated -> one sentence reason, superseded -> link to followup ADR. -->
 
-proposed
+tentatively decided - reevaluate when implementing this
 
 ## Context
 
@@ -231,6 +231,12 @@ const response = await client.responses.create({
 
 - AzureOpenAI requires the `model` to be set in the payload (but apparently the value doesn't matter) => potentially forces users to pass the model twice
 - SAP Cloud SDK features like resilience could not be offered OOB anymore.
+
+#### Open Concerns
+
+- How does OpenAI SDK handle errors?
+- How can we ensure a smooth migration path, when OpenAI SDK has a major version update with breaking changes?
+- Is it a problem that users could simply overwrite the "ai-client-type" header?
 
 ## Outlook
 
