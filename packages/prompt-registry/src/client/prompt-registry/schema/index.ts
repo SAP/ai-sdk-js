@@ -36,6 +36,7 @@ export * from './runtime-orchestration-config-file.js';
 export * from './chat-message-content.js';
 export * from './system-chat-message.js';
 export * from './image-content-url.js';
+export * from './file-content.js';
 export * from './user-chat-message-content-item.js';
 export * from './user-chat-message-content.js';
 export * from './user-chat-message.js';
