@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import { join } from 'path';
+import { join } from 'node:path';
 import {
   OrchestrationClient,
   OrchestrationEmbeddingClient,
