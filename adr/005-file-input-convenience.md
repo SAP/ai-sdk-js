@@ -149,80 +149,41 @@ Helpful links:
 - [MDN Web Docs - MIME types](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)
 <!-- vale on -->
 
-## Proposed Decision
+## Decision
 
-Based on Option D, accept a discriminated union of either a base64 string or `Buffer` with an explicit MIME type, or a URL (either a data URI or a public HTTPS URL).
-The SDK will handle assembling the data URI for base64 inputs, and require users to make a conscious choice about whether to provide a URL or base64 content with a MIME type.
+Earlier Decision (Option D) is _withdrawn_ in favor of **Option A** (expose as-is).
 
-### Type Definitions
+Options that change the API surface:
 
-```ts
-interface FileContentBase {
-  filename?: string; // optional filename for both URL and base64 inputs
-}
+- Rewriting all messages both input and output has significant additional complexity and is not bijective.
+- Deviating from the spec and other SDK providers may be confusing.
+- Not aligned with the image input API.
+- Does not sufficiently reduce user complexity.
+- Does not prevent issues around incorrect MIME types.
 
-interface FileUrlContent extends FileContentBase {
-  type: 'url';
-  url: string; // RFC 2397 data URI or public HTTPS URL
-  mimeType?: never; // explicitly disallow MIME type for URLs, since it's not required or supported by the service
-}
+Regarding runtime warnings:
 
-interface FileBase64Content extends FileContentBase {
-  type: 'base64';
-  data: string | Buffer; // Either a base64 string or raw binary data (e.g. Buffer in Node.js). The SDK will handle encoding to base64 and assembling the data URI.
-  mimeType: string; // required for base64 content
-}
+Add basic validation that any string input starts with `data:` and contains `;base64,` and a non-empty MIME type, with helpful error messages for common formatting issues.
 
-// Future:
-// interface FileS3Content extends FileContentBase {
-//   type: 's3';
-//   bucket: string;
-//   key: string;
-//   region?: string;
-//   mimeType: string;
-// }
+Options for validation:
 
-type FileContentInput = FileUrlContent | FileBase64Content;
-```
+- No validation, rely on service errors and suggest improvements to error messages in the orchestration service as needed.
+- Validate for messages
+- Validate for messages and message history.
 
-Optionally add SDK helpers as follow-ups:
+Choice: **No validation** as existing error messages from the service are decent (see collapsed samples above).
 
-- `buildFileContent(base64, mimeType, filename?)` (Option F), as a lightweight convenience wrapper around Option D.
-- `fileContentFromPath(path, options?)` (Option E) as a Node.js-only helper, isolated from the main ESM entry point.
+For support regarding help with mime types (`application/vnd.openxmlformats-officedocument.wordprocessingml.document`), create a follow-up BLI to investigate helpers (Options E/F) and consider also improving the experience of sending images.
 
-Example usage:
+### Example
 
 ```ts
 import { readFile } from 'node:fs/promises';
 
-// Raw readFile with base64 FileContentInput
-const fileContent: FileContentInput = {
-  type: 'base64',
-  data: await readFile('./document.pdf'),
-  mimeType: 'application/pdf',
-  filename: 'document.pdf'
-};
-
-// Provide base64 string directly, SDK handles data URI assembly
-const fileContentBase64: FileContentInput = {
-  type: 'base64',
-  data: await readFile('./document.pdf', 'base64'),
-  mimeType: 'application/pdf',
-  filename: 'document.pdf'
-};
-
-// URL input
-const fileContentUrl: FileContentInput = {
-  type: 'url',
-  url: 'https://example.com/document.pdf',
-  filename: 'document.pdf'
-};
-
-// Or manual data URI if users want to construct it themselves
-const fileContentDataUri: FileContentInput = {
-  type: 'url',
-  url: 'data:application/pdf;base64,BASE64_ENCODED_DATA_HERE',
-};
+const base64 = await readFile('./document.pdf', 'base64');
+const mimeType = 'application/pdf';
+// Or: https://example.com/document.pdf
+const fileData = `data:${mimeType};base64,${base64}`;
 
 client.chatCompletion({
   messages: [
@@ -230,10 +191,14 @@ client.chatCompletion({
       role: 'user',
       content: [
         { type: 'text', text: 'Summarise this document.' },
-        { type: 'file', file: fileContent }
+        {
+          type: 'file',
+          file: { file_data: fileData, filename: 'document.pdf' }
+        }
       ]
     }
   ]
+});
 ```
 
 ## Discussion
