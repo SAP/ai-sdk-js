@@ -230,6 +230,7 @@ const response = await client.responses.create({
 #### Cons
 
 - AzureOpenAI requires the `model` to be set in the payload (but apparently the value doesn't matter) => potentially forces users to pass the model twice
+- SAP Cloud SDK features like resilience could not be offered OOB anymore.
 
 ## Outlook
 
