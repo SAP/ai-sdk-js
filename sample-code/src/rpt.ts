@@ -1,5 +1,6 @@
 import { openAsBlob } from 'node:fs';
 import { join } from 'node:path';
+import { resilience } from '@sap-cloud-sdk/resilience';
 import { RptClient } from '@sap-ai-sdk/rpt';
 import type { PredictResponsePayload, PredictionData } from '@sap-ai-sdk/rpt';
 
@@ -104,7 +105,9 @@ export async function predictParquetFile(): Promise<PredictResponsePayload> {
   });
   // Send the Parquet file to the RPT service for predictions
   const client = new RptClient();
-  return client.predictParquet(parquetFile, data.prediction_config, {
+  return client.predictParquet({
+    file: parquetFile,
+    prediction_config: data.prediction_config,
     index_column: data.index_column,
     parse_data_types: false
   });
@@ -120,8 +123,22 @@ export async function predictParquetBlob(): Promise<PredictResponsePayload> {
   });
   // Send the Parquet blob to the RPT service for predictions
   const client = new RptClient();
-  return client.predictParquet(parquetFileBlob, data.prediction_config, {
+  return client.predictParquet({
+    file: parquetFileBlob,
+    prediction_config: data.prediction_config,
     index_column: data.index_column,
     parse_data_types: false
+  });
+}
+
+/**
+ * Predict the sales group of products using resilience middleware.
+ * Configures a 30-second timeout, circuit breaker, and one retry attempt.
+ * @returns The prediction results.
+ */
+export async function predictWithSchemaResilient(): Promise<PredictResponsePayload> {
+  const client = new RptClient();
+  return client.predictWithSchema(schema, data, {
+    middleware: resilience({ timeout: 30000, circuitBreaker: true, retry: 1 })
   });
 }

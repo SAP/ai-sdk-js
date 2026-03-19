@@ -1,6 +1,7 @@
 import {
   predictWithSchema,
   predictWithSchemaCompressed,
+  predictWithSchemaResilient,
   predictAutomaticParsing,
   predictParquetBlob,
   predictParquetFile
@@ -49,6 +50,12 @@ describe('rpt', () => {
 
   it('should predict sales groups with gzip compression', async () => {
     const { predictions } = await predictWithSchemaCompressed();
+
+    verifyPredictions(predictions);
+  });
+
+  it('should predict sales groups with resilience middleware', async () => {
+    const { predictions } = await predictWithSchemaResilient();
 
     verifyPredictions(predictions);
   });

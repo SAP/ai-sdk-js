@@ -11,6 +11,7 @@ import {
   buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
+import { resilience } from '@sap-cloud-sdk/resilience';
 // eslint-disable-next-line import/no-internal-modules
 import * as z from 'zod/v4';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
@@ -63,6 +64,24 @@ export async function orchestrationChatCompletion(
   logger.info(result.getContent());
 
   return result;
+}
+
+/**
+ * Ask ChatGPT through the orchestration service using resilience middleware.
+ * Configures a 30-second timeout, circuit breaker, and one retry attempt.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationChatCompletionResilient(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: { model: { name: 'gpt-4o' } }
+  });
+
+  return orchestrationClient.chatCompletion(
+    { messages: [{ role: 'user', content: 'What is the capital of France?' }] },
+    {
+      middleware: resilience({ timeout: 30000, circuitBreaker: true, retry: 1 })
+    }
+  );
 }
 
 /**

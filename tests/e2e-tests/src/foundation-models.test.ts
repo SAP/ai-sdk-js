@@ -1,4 +1,8 @@
-import { chatCompletion, computeEmbedding } from '@sap-ai-sdk/sample-code';
+import {
+  chatCompletion,
+  chatCompletionResilient,
+  computeEmbedding
+} from '@sap-ai-sdk/sample-code';
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
 import { addNumbersTool } from '../../../test-util/tools.js';
 import { loadEnv } from './utils/load-env.js';
@@ -8,6 +12,11 @@ loadEnv();
 describe('Azure OpenAI Foundation Model Access', () => {
   it('should complete a chat', async () => {
     const response = await chatCompletion();
+    expect(response.getContent()!).toContain('Paris');
+  });
+
+  it('should complete a chat with resilience middleware', async () => {
+    const response = await chatCompletionResilient();
     expect(response.getContent()!).toContain('Paris');
   });
 

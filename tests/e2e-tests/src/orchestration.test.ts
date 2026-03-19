@@ -1,5 +1,6 @@
 import {
   orchestrationChatCompletion,
+  orchestrationChatCompletionResilient,
   orchestrationTemplating,
   orchestrationPromptRegistry,
   orchestrationCompletionPromptRegistryScoped,
@@ -42,6 +43,12 @@ describe('orchestration', () => {
 
   it('should complete a chat', async () => {
     const response = await orchestrationChatCompletion();
+
+    assertContent(response);
+  });
+
+  it('should complete a chat with resilience middleware', async () => {
+    const response = await orchestrationChatCompletionResilient();
 
     assertContent(response);
   });
