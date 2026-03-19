@@ -12,3 +12,7 @@ packages:
   - tests/e2e-tests
   - tests/smoke-tests
   - tests/type-tests
+
+minimumReleaseAge: 5760
+minimumReleaseAgeExclude:
+  - '@sap-cloud-sdk/*'
