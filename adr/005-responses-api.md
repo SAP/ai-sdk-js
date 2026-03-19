@@ -206,7 +206,7 @@ We could provide a helper function to retrieve a config based on destination, mo
 This is a hands-on PoC: https://github.tools.sap/I824643/responses-api-poc.
 
 ```ts
-import { AzureOpenAI, AzureClientOptions } from 'openai/azure.js';
+import { AzureOpenAI } from 'openai/azure.js';
 import { createAzureOpenAiClientOptions } from '@sap-ai-sdk/foundation-models';
 
 // SAP Cloud SDK for AI part
@@ -230,13 +230,49 @@ const response = await client.responses.create({
 #### Cons
 
 - AzureOpenAI requires the `model` to be set in the payload (but apparently the value doesn't matter) => potentially forces users to pass the model twice
-- SAP Cloud SDK features like resilience could not be offered OOB anymore.
+- SAP Cloud SDK features like resilience could not be offered OOB anymore
 
 #### Open Concerns
 
 - How does OpenAI SDK handle errors?
 - How can we ensure a smooth migration path, when OpenAI SDK has a major version update with breaking changes?
 - Is it a problem that users could simply overwrite the "ai-client-type" header?
+
+## Outlook
+
+We should consider how OpenAI's WebSocket API (`Session`) plays into this.
+Option C is likely already future proof in this sense.
+
+## Option D
+
+Option C requires (and if it was optional: allows) users to set the model.
+However, the model is already defined through the deployment.
+In order to prevent confusion we could take back more ownership and wrap the official client.
+
+```ts
+import { AzureOpenAI } from 'openai/azure.js';
+import { createAzureOpenAiClient } from '@sap-ai-sdk/foundation-models';
+
+// SAP Cloud SDK for AI part
+const client: AzureOpenAI = await createAzureOpenAiClient('gpt-5');
+
+const response = await client.responses.create({
+  // model: 'gpt-5', // cannot be set anymore as SDK removed it from the types
+  instructions: 'You are a coding assistant that talks like a pirate',
+  input: 'Are semicolons optional in JavaScript?'
+});
+```
+
+#### Pros
+
+- less maintenance, updating and documentation effort than for a whole client
+- users might already be used to the API, no new abstractions
+- more ownership
+- SAP Cloud SDK features like resilience could be offered OOB
+
+#### Cons
+
+- tighter coupling between SDK and OpenAI amplifies: support responsibility lines more blurred
 
 ## Outlook
 
