@@ -17,6 +17,8 @@ Both APIs are still relevant for different use cases, which requires the SAP Clo
 
 <!-- What is the change that we're proposing and/or doing? Only fill this when the status is decided. What becomes easier or more difficult to do because of this change? -->
 
+We are currently leaning towards option D, possibly C.
+
 # Discussion <!-- Optional -->
 
 <!-- Details on the discussion leading to the decision.
