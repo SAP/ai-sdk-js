@@ -22,6 +22,7 @@ import {
   orchestrationFromJson,
   orchestrationGrounding,
   orchestrationChatCompletionImage,
+  orchestrationChatCompletionFile,
   chatCompletionStreamWithJsonModuleConfig as orchestrationChatCompletionStreamWithJsonModuleConfig,
   orchestrationMaskGroundingInput,
   orchestrationPromptRegistry,
@@ -281,6 +282,19 @@ app.get('/azure-openai/invoke-tool-chain', async (req, res) => {
 /* Orchestration */
 app.get('/orchestration/:sampleCase', async (req, res) => {
   const sampleCase = req.params.sampleCase;
+
+  if (sampleCase === 'file') {
+    const fileType = req.query.type as 'pdf' | 'csv' | 'docx' | 'mp3';
+    const model = req.query.model as string | undefined;
+    try {
+      const result = await orchestrationChatCompletionFile(fileType, { model });
+      res.header('Content-Type', 'text/plain').send(result.getContent());
+    } catch (error: any) {
+      sendError(res, error);
+    }
+    return;
+  }
+
   const testCase =
     {
       simple: orchestrationChatCompletion,

@@ -74,8 +74,14 @@ export {
  */
 export type {
   ChatMessage,
+  ChatMessages,
+  ChatMessageContent,
   SystemChatMessage,
   UserChatMessage,
+  UserChatMessageContent,
+  UserChatMessageContentItem,
+  ImageContentUrl,
+  FileContent,
   AssistantChatMessage,
   ToolChatMessage,
   DeveloperChatMessage,

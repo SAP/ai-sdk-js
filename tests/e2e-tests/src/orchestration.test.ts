@@ -10,6 +10,10 @@ import {
   orchestrationCompletionMasking,
   orchestrationMaskGroundingInput,
   orchestrationChatCompletionImage,
+  orchestrationChatCompletionCsvFile,
+  orchestrationChatCompletionDocxFile,
+  orchestrationChatCompletionMp3File,
+  orchestrationChatCompletionFile,
   chatCompletionStreamWithJsonModuleConfig,
   chatCompletionStream,
   orchestrationResponseFormat,
@@ -118,6 +122,31 @@ describe('orchestration', () => {
     const response = await orchestrationChatCompletionImage();
     expect(response.getContent()?.includes('SAP')).toBe(true);
     expect(response.getContent()?.includes('logo')).toBe(true);
+  });
+
+  it('should complete a chat with a PDF file', async () => {
+    const response = await orchestrationChatCompletionFile();
+    assertContent(response);
+  }, 60_000);
+
+  it('should complete a chat with a CSV file', async () => {
+    const response = await orchestrationChatCompletionCsvFile();
+    assertContent(response);
+  });
+
+  it('should complete a chat with a DOCX file', async () => {
+    const response = await orchestrationChatCompletionDocxFile();
+    assertContent(response);
+  }, 60_000);
+
+  it('should complete a chat with an MP3 audio file', async () => {
+    const response = await orchestrationChatCompletionMp3File();
+    assertContent(response);
+  });
+
+  it('should complete a chat with a file via messagesHistory', async () => {
+    const response = await orchestrationChatCompletionFile();
+    assertContent(response);
   });
 
   it('should complete a chat with a required response format', async () => {
