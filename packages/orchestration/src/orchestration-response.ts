@@ -8,7 +8,8 @@ import type {
   MessageToolCalls,
   LlmChoice,
   ModuleResults,
-  Error as OrchestrationError
+  Error as OrchestrationError,
+  Citation
 } from './client/api/schema/index.js';
 
 /**
@@ -143,6 +144,15 @@ export class OrchestrationResponse {
    */
   getRequestId(): string {
     return this._data.request_id;
+  }
+
+  /**
+   * Gets the citations from the orchestration response.
+   * Citations are returned by models like Perplexity Sonar that provide source references.
+   * @returns The citations, or undefined if there are none.
+   */
+  getCitations(): Citation[] | undefined {
+    return this._data.final_result.citations;
   }
 
   private getChoices(): LlmChoice[] {
