@@ -111,4 +111,46 @@ describe('Orchestration chat completion stream chunk response', () => {
       { index: 0, function: { arguments: '20' } }
     ]);
   });
+
+  it('should get citations from chunk response', () => {
+    const mockResponseWithCitations = JSON.parse(
+      JSON.stringify(mockResponses.tokenUsageAndFinishReasonResponse)
+    );
+    mockResponseWithCitations.final_result.citations = [
+      {
+        ref_id: 1,
+        title: 'Example Citation',
+        url: 'https://example.com',
+        start_index: 0,
+        end_index: 10
+      }
+    ];
+
+    const chunkResponse = new OrchestrationStreamChunkResponse(
+      mockResponseWithCitations
+    );
+
+    expect(chunkResponse.getCitations()).toEqual([
+      {
+        ref_id: 1,
+        title: 'Example Citation',
+        url: 'https://example.com',
+        start_index: 0,
+        end_index: 10
+      }
+    ]);
+  });
+
+  it('should return undefined when no citations are present in chunk response', () => {
+    const mockResponseNoCitations = JSON.parse(
+      JSON.stringify(mockResponses.tokenUsageAndFinishReasonResponse)
+    );
+    delete mockResponseNoCitations.final_result.citations;
+
+    const chunkResponse = new OrchestrationStreamChunkResponse(
+      mockResponseNoCitations
+    );
+
+    expect(chunkResponse.getCitations()).toBeUndefined();
+  });
 });

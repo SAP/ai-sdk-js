@@ -21,6 +21,10 @@ export {
   orchestrationFromJson,
   orchestrationGrounding,
   orchestrationChatCompletionImage,
+  orchestrationChatCompletionFile,
+  orchestrationChatCompletionCsvFile,
+  orchestrationChatCompletionDocxFile,
+  orchestrationChatCompletionMp3File,
   orchestrationResponseFormat,
   chatCompletionStreamWithJsonModuleConfig,
   chatCompletionStream,
@@ -29,6 +33,8 @@ export {
   orchestrationEmbeddingWithMasking,
   OrchestrationConfigRef,
   orchestrationWithFallbackConfigs,
+  orchestrationSonarWithCitations,
+  orchestrationSonarStreamWithCitations,
   orchestrationStreamWithFallbackConfigs
 } from './orchestration.js';
 export {
