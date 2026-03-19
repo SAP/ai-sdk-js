@@ -28,6 +28,18 @@
 
 -
 
+# 2.8.0
+## New Features
+
+- [orchestration] Support streaming with orchestration prompt module fallback. (3d12d4c)
+- [orchestration] Support orchestration prompt module fallback for non-streaming requests
+  When constructing an `OrchestrationClient` it is now possible to provide a list of module configurations to support module fallback. (5501e7c)
+- [rpt] Add generic HTTP request configuration support.
+  The `predictWithSchema()` and `predictWithoutSchema()` methods now accept an optional `customRequest` parameter of type `RptRequestOptions`, allowing configuration of custom HTTP request options such as headers, timeout, and middlewares. (e0ef84c)
+- [rpt] Add predict request compression support.
+  All requests with a body of 1024 bytes or larger will be automatically compressed with `gzip` by default, unless configured otherwise.
+  Compression configuration is available via the `requestCompression` property on the `RptClientConfig` object. (e0ef84c)
+
 # 2.7.0
 ## Compatibility Notes
 

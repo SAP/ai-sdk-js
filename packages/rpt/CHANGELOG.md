@@ -1,5 +1,20 @@
 # @sap-ai-sdk/rpt
 
+## 2.8.0
+
+### Minor Changes
+
+- e0ef84c: [feat] Add generic HTTP request configuration support.
+  The `predictWithSchema()` and `predictWithoutSchema()` methods now accept an optional `customRequest` parameter of type `RptRequestOptions`, allowing configuration of custom HTTP request options such as headers, timeout, and middlewares.
+- e0ef84c: [feat] Add predict request compression support.
+  All requests with a body of 1024 bytes or larger will be automatically compressed with `gzip` by default, unless configured otherwise.
+  Compression configuration is available via the `requestCompression` property on the `RptClientConfig` object.
+
+### Patch Changes
+
+- @sap-ai-sdk/ai-api@2.8.0
+- @sap-ai-sdk/core@2.8.0
+
 ## 2.7.0
 
 ### Patch Changes

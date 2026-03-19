@@ -68,8 +68,8 @@ export async function getAiCoreDestination(
 function getAiCoreServiceKeyFromEnv(): Service | undefined {
   const credentials = parseServiceKeyFromEnv(process.env['AICORE_SERVICE_KEY']);
   if (credentials) {
-    logger.info(
-      'Found a service key in environment variable "AICORE_SERVICE_KEY". Using a service key is recommended for local testing only. Bind the AI Core service to the application for productive usage.'
+    logger.debug(
+      'Found a service key in environment variable "AICORE_SERVICE_KEY".'
     );
     return {
       credentials,
