@@ -102,7 +102,7 @@ jobs:
               FILE_PATH='packages/document-grounding/src/spec/api.yaml'
               ;;
             orchestration)
-              API_URL="repos/I824643/ai-sdk-consumer-test/contents/src/spec/v2.yaml?ref=$REF"
+              API_URL="repos/cloudsdk/sdk-js/contents/src/spec/v2.yaml?ref=$REF"
               FILE_PATH='packages/orchestration/src/spec/api.yaml'
               ;;
             prompt-registry)
@@ -222,3 +222,9 @@ jobs:
             echo "| Branch Creation | ${{ steps.push.outcome == 'success' && '✅ [Branch Link]($DIFF_URL)' || '❌ failure' }}" >> $GITHUB_STEP_SUMMARY
             echo "| Pull Request Creation | ${{ env.CREATE_PR == 'false' && '⏩ skipped' || '' }}${{ env.CREATE_PR == 'true' && steps.push.outcome == 'success' && '✅ [PR Link]($PR_URL)' || '' }}" >> $GITHUB_STEP_SUMMARY
           fi
+
+# Notes:
+# To use this workflow as a consumer follow these steps:
+#  1. Ask an SAP Cloud SDK for AI team member to add you to the according consumer team (e.g. ai-sdk-consumer-orchestration).
+#  2. Generate a PAT with the following permissions:
+#  -
