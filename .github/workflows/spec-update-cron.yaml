@@ -1,4 +1,4 @@
-name: 'Spec File Update Workflow (Cron Job)'
+name: spec update (cron job)
 
 on:
   schedule:
@@ -84,7 +84,14 @@ jobs:
     secrets: inherit
 
   notify-failure:
-    needs: [get-orchestration-reference, update-ai-api, update-document-grounding, update-prompt-registry, update-orchestration]
+    needs:
+      [
+        get-orchestration-reference,
+        update-ai-api,
+        update-document-grounding,
+        update-prompt-registry,
+        update-orchestration
+      ]
     if: failure()
     runs-on: ubuntu-latest
     steps:

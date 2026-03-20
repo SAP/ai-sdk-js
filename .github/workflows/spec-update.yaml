@@ -1,4 +1,4 @@
-name: 'Spec File Update Workflow'
+name: spec update
 
 on:
   workflow_dispatch:
