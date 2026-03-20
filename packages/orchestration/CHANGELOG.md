@@ -1,5 +1,23 @@
 # @sap-ai-sdk/orchestration
 
+## 2.9.0
+
+### Minor Changes
+
+- 8de0013: [feat] Add `getCitations()` method to retrieve source citations from models like Perplexity Sonar.
+- b822da9: [Improvement] Support file input for user messages.
+  File inputs have a `type` of `file` and include a `file_data` field with a URL such as a HTTP URL or a data URL.
+  Local files must be provided as `data:MEDIATYPE;base64,DATA` with a non-empty media type and valid base64 content.
+  Availability of different file types depends on the capabilities of the underlying model and tools.
+  GPT-models do not support file inputs with the orchestration API at this time.
+
+### Patch Changes
+
+- Updated dependencies [cd3d8ed]
+  - @sap-ai-sdk/core@2.9.0
+  - @sap-ai-sdk/ai-api@2.9.0
+  - @sap-ai-sdk/prompt-registry@2.9.0
+
 ## 2.8.0
 
 ### Minor Changes

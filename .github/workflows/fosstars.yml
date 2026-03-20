@@ -34,6 +34,7 @@ jobs:
             --nvdApiKey ${{ secrets.NVD_API_KEY }}
             --ossIndexUsername ${{ vars.OSS_INDEX_USERNAME }}
             --ossIndexPassword ${{ secrets.OSS_INDEX_PASSWORD }}
+            --suppression .github/owasp-suppressions.xml
 
       - name: 'Upload OWASP Dependency Check Report'
         if: always() && steps.depcheck.conclusion != 'skipped'
