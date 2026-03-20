@@ -9,5 +9,13 @@ import type { EmbeddingsInputText } from './embeddings-input-text.js';
  */
 export type EmbeddingsInput = {
   text: EmbeddingsInputText;
-  type?: 'text' | 'document' | 'query';
+  type?:
+    | 'text'
+    | 'document'
+    | 'query'
+    | 'search_document'
+    | 'search_query'
+    | 'classification'
+    | 'clustering'
+    | 'image';
 };

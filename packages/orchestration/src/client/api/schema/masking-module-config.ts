@@ -17,7 +17,7 @@ export type MaskingModuleConfig =
     }
   | {
       /**
-       * List of masking service providers. **DEPRECATED**:  will be removed Sept 15, 2026. Use `providers` property instead.
+       * List of masking service providers. **DEPRECATED**:  will be removed March 20, 2027. Use `providers` property instead.
        * @deprecated
        * Min Items: 1.
        */
