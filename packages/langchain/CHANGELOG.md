@@ -1,5 +1,17 @@
 # @sap-ai-sdk/langchain
 
+## 2.9.0
+
+### Patch Changes
+
+- Updated dependencies [cd3d8ed]
+- Updated dependencies [8de0013]
+- Updated dependencies [b822da9]
+  - @sap-ai-sdk/core@2.9.0
+  - @sap-ai-sdk/orchestration@2.9.0
+  - @sap-ai-sdk/ai-api@2.9.0
+  - @sap-ai-sdk/foundation-models@2.9.0
+
 ## 2.8.0
 
 ### Patch Changes
