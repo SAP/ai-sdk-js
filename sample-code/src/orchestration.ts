@@ -69,7 +69,7 @@ export async function orchestrationChatCompletion(
  */
 export async function orchestrationChatCompletionResilient(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
-    promptTemplating: { model: { name: 'gpt-4o' } }
+    promptTemplating: { model: { name: 'gpt-5' } }
   });
 
   return orchestrationClient.chatCompletion(

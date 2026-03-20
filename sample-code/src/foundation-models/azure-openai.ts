@@ -81,7 +81,7 @@ export async function computeEmbedding(): Promise<AzureOpenAiEmbeddingResponse> 
  * @returns The response from Azure OpenAI containing the response content.
  */
 export async function chatCompletionResilient(): Promise<AzureOpenAiChatCompletionResponse> {
-  return new AzureOpenAiChatClient('gpt-4o').run(
+  return new AzureOpenAiChatClient('gpt-5').run(
     { messages: [{ role: 'user', content: 'What is the capital of France?' }] },
     {
       middleware: resilience({ timeout: 30000, circuitBreaker: true, retry: 1 })
