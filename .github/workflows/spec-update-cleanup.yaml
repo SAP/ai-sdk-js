@@ -1,0 +1,53 @@
+name: 'Spec Update Branch Cleanup'
+
+on:
+  workflow_dispatch:
+    inputs:
+      file:
+        description: 'Which spec file the branch was created for'
+        type: choice
+        required: true
+        options:
+          - ai-api
+          - document-grounding
+          - orchestration
+          - prompt-registry
+        default: orchestration
+      file-ref:
+        description: 'Branch or tag the spec branch was created from'
+        required: false
+        default: main
+        type: string
+  workflow_call:
+    inputs:
+      file:
+        description: 'Which spec file the branch was created for'
+        required: true
+        type: string
+      file-ref:
+        description: 'Branch or tag the spec branch was created from'
+        required: false
+        default: main
+        type: string
+
+jobs:
+  cleanup:
+    name: 'Delete Spec Update Branch'
+    runs-on: [ubuntu-latest]
+    permissions:
+      contents: write
+    env:
+      CHOICE: ${{ inputs.file }}
+      REF: ${{ inputs.file-ref }}
+    steps:
+      - name: 'Delete Branch'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="spec-update/$CHOICE/$REF"
+          if git ls-remote --exit-code --heads https://github.com/SAP/ai-sdk-js.git "$BRANCH" > /dev/null 2>&1; then
+            gh api repos/SAP/ai-sdk-js/git/refs/heads/$BRANCH -X DELETE
+            echo "Deleted branch: $BRANCH"
+          else
+            echo "Branch $BRANCH does not exist, nothing to delete."
+          fi
