@@ -1,5 +1,4 @@
-import { fileURLToPath } from 'url';
-import path, { resolve } from 'path';
+import { resolve } from 'path';
 import { StringOutputParser } from '@langchain/core/output_parsers';
 import { ChatPromptTemplate } from '@langchain/core/prompts';
 import { RecursiveCharacterTextSplitter } from '@langchain/textsplitters';
@@ -101,8 +100,10 @@ export async function invokeChain(): Promise<string> {
  * @returns The answer from GPT.
  */
 export async function invokeRagChain(): Promise<string> {
-  const __dirname = path.dirname(fileURLToPath(import.meta.url));
-  const resourcePath = resolve(__dirname, '../resources/orchestration.md');
+  const resourcePath = resolve(
+    import.meta.dirname,
+    '../resources/orchestration.md'
+  );
 
   // Create a text loader and load the document
   const loader = new TextLoader(resourcePath);

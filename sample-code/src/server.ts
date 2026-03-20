@@ -22,6 +22,7 @@ import {
   orchestrationFromJson,
   orchestrationGrounding,
   orchestrationChatCompletionImage,
+  orchestrationChatCompletionFile,
   chatCompletionStreamWithJsonModuleConfig as orchestrationChatCompletionStreamWithJsonModuleConfig,
   orchestrationMaskGroundingInput,
   orchestrationPromptRegistry,
@@ -31,7 +32,8 @@ import {
   orchestrationTranslation,
   orchestrationEmbeddingWithMasking,
   orchestrationSapAbapChatCompletion,
-  orchestrationWithFallbackConfigs
+  orchestrationWithFallbackConfigs,
+  orchestrationSonarWithCitations
 } from './orchestration.js';
 import {
   getDeployments,
@@ -280,6 +282,19 @@ app.get('/azure-openai/invoke-tool-chain', async (req, res) => {
 /* Orchestration */
 app.get('/orchestration/:sampleCase', async (req, res) => {
   const sampleCase = req.params.sampleCase;
+
+  if (sampleCase === 'file') {
+    const fileType = req.query.type as 'pdf' | 'csv' | 'docx' | 'mp3';
+    const model = req.query.model as string | undefined;
+    try {
+      const result = await orchestrationChatCompletionFile(fileType, { model });
+      res.header('Content-Type', 'text/plain').send(result.getContent());
+    } catch (error: any) {
+      sendError(res, error);
+    }
+    return;
+  }
+
   const testCase =
     {
       simple: orchestrationChatCompletion,
@@ -297,7 +312,8 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       translation: orchestrationTranslation,
       embeddingWithMasking: orchestrationEmbeddingWithMasking,
       sapAbap: orchestrationSapAbapChatCompletion,
-      fallbackModules: orchestrationWithFallbackConfigs
+      fallbackModules: orchestrationWithFallbackConfigs,
+      sonarWithCitations: orchestrationSonarWithCitations
     }[sampleCase] || orchestrationChatCompletion;
 
   try {
@@ -340,6 +356,24 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
         .send(
           `Fallback modules executed successfully.\nIntermediate Failures: ${JSON.stringify(intermediateFailures, null, 2)}\nFinal Content: ${content}`
         );
+    } else if (sampleCase === 'sonarWithCitations') {
+      const sonarResult = result as OrchestrationResponse;
+      const content = sonarResult.getContent();
+      const citations = sonarResult.getCitations();
+      let response = `Response: ${content}\n\n`;
+      if (citations?.length) {
+        response += 'Citations:\n';
+        response +=
+          citations
+            .map(
+              citation =>
+                `  [${citation.ref_id ?? ''}] ${citation.title}: ${citation.url}`
+            )
+            .join('\n') + '\n';
+      } else {
+        response += 'No citations found in the response.\n';
+      }
+      res.header('Content-Type', 'text/plain').send(response);
     } else {
       res
         .header('Content-Type', 'text/plain')

@@ -1,6 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { join } from 'node:path';
 import {
   OrchestrationClient,
   OrchestrationEmbeddingClient,
@@ -11,6 +10,7 @@ import {
   buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
+import { resilience } from '@sap-cloud-sdk/resilience';
 // eslint-disable-next-line import/no-internal-modules
 import * as z from 'zod/v4';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
@@ -22,17 +22,14 @@ import type {
   StreamOptions,
   OrchestrationErrorResponse,
   ChatCompletionTool,
-  ToolChatMessage
+  ToolChatMessage,
+  PromptTemplatingModule
 } from '@sap-ai-sdk/orchestration';
 
 const logger = createLogger({
   package: 'sample-code',
   messageContext: 'orchestration'
 });
-
-const __filename = fileURLToPath(import.meta.url);
-// Navigate up by one level, to access files in the `sample-code` root instead of the transpiled `dist` folder
-const __dirname = join(dirname(__filename), '..');
 
 /**
  * A simple LLM request, asking about the capital of France.
@@ -63,6 +60,24 @@ export async function orchestrationChatCompletion(
   logger.info(result.getContent());
 
   return result;
+}
+
+/**
+ * Ask ChatGPT through the orchestration service using resilience middleware.
+ * Configures a 30-second timeout, circuit breaker, and one retry attempt.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationChatCompletionResilient(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: { model: { name: 'gpt-4o' } }
+  });
+
+  return orchestrationClient.chatCompletion(
+    { messages: [{ role: 'user', content: 'What is the capital of France?' }] },
+    {
+      middleware: resilience({ timeout: 30000, circuitBreaker: true, retry: 1 })
+    }
+  );
 }
 
 /**
@@ -507,7 +522,7 @@ export async function orchestrationFromJson(): Promise<
 > {
   // You can also provide the JSON configuration as a plain string in the code directly instead.
   const jsonConfig = await readFile(
-    join(__dirname, 'src', 'model-orchestration-config.json'),
+    join(import.meta.dirname, '..', 'src', 'model-orchestration-config.json'),
     'utf-8'
   );
   const response = await new OrchestrationClient(jsonConfig).chatCompletion();
@@ -583,7 +598,13 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
     }
   });
 
-  const imageFilePath = join(__dirname, 'src', 'media', 'sample-image.png');
+  const imageFilePath = join(
+    import.meta.dirname,
+    '..',
+    'src',
+    'media',
+    'sample-image.png'
+  );
   const mimeType = 'image/png';
   const encodedString = `data:${mimeType};base64,${await readFile(imageFilePath, 'base64')}`;
 
@@ -891,6 +912,63 @@ export async function orchestrationSapAbapChatCompletion(): Promise<Orchestratio
 }
 
 /**
+ * Use Perplexity Sonar model to get a response with citations.
+ * The Sonar model provides real-time web search and returns citations for the sources used.
+ * @returns The orchestration service response with citations.
+ */
+export async function orchestrationSonarWithCitations(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: {
+      model: {
+        name: 'sonar',
+        version: 'latest'
+      }
+    }
+  });
+
+  const result = await orchestrationClient.chatCompletion({
+    messages: [
+      {
+        role: 'user',
+        content: 'What are the latest developments in quantum computing?'
+      }
+    ]
+  });
+
+  return result;
+}
+
+/**
+ * Use Perplexity Sonar model with streaming to get a response with citations.
+ * @param controller - The abort controller.
+ * @returns The response from the orchestration service containing the response content.
+ */
+export async function orchestrationSonarStreamWithCitations(
+  controller: AbortController
+): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: {
+      model: {
+        name: 'sonar',
+        version: 'latest'
+      }
+    }
+  });
+
+  return orchestrationClient.stream(
+    {
+      messages: [
+        {
+          role: 'user',
+          content: 'What are the latest developments in quantum computing?'
+        }
+      ]
+    },
+    controller.signal
+  );
+}
+
+/**
  * Use multiple orchestration module configurations with module fallback.
  * @returns The orchestration service response.
  */
@@ -966,4 +1044,108 @@ export async function orchestrationStreamWithFallbackConfigs(): Promise<
   return orchestrationClient.stream({
     messages: [{ role: 'user', content: 'Give me a short introduction.' }]
   });
+}
+
+type FileType = 'pdf' | 'csv' | 'docx' | 'mp3';
+
+const fileTypeConfig: Record<
+  FileType,
+  { filename: string; mimeType: string; model: string; instruction: string }
+> = {
+  pdf: {
+    filename: 'test.pdf',
+    mimeType: 'application/pdf',
+    model: 'anthropic--claude-4.5-haiku',
+    instruction: 'Transcribe the text content of the PDF document.'
+  },
+  csv: {
+    filename: 'test.csv',
+    mimeType: 'text/csv',
+    model: 'gemini-2.5-flash',
+    instruction:
+      'Transcribe the CSV content exactly, preserving all rows and columns.'
+  },
+  docx: {
+    filename: 'test.docx',
+    mimeType:
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    model: 'sonar',
+    instruction: 'Transcribe the full text content of the Word document.'
+  },
+  mp3: {
+    filename: 'test.mp3',
+    mimeType: 'audio/mpeg',
+    model: 'gemini-2.5-flash',
+    instruction: 'Transcribe the spoken words in the audio file.'
+  }
+};
+
+/**
+ * Send a file as input to the orchestration service and ask the model to transcribe its content.
+ * The model and instruction are chosen based on the file type.
+ * @param fileType - The type of file to send: `pdf`, `csv`, `docx`, or `mp3`.
+ * @param options - Additional options.
+ * @param options.model - Override the default model for the given file type.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationChatCompletionFile(
+  fileType: FileType = 'pdf',
+  options: { model?: string } = {}
+): Promise<OrchestrationResponse> {
+  const { filename, mimeType, model, instruction } = fileTypeConfig[fileType];
+  const modelName = options.model || model;
+
+  const promptTemplating: PromptTemplatingModule = {
+    model: {
+      name: modelName
+    }
+  };
+  if (modelName.startsWith('sonar')) {
+    promptTemplating.model.params = {
+      disable_search: true
+    };
+  }
+
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating
+  });
+
+  const filePath = join(import.meta.dirname, '..', 'resources', filename);
+  const fileData = `data:${mimeType};base64,${await readFile(filePath, 'base64')}`;
+
+  return orchestrationClient.chatCompletion({
+    messages: [
+      {
+        role: 'user',
+        content: [
+          { type: 'text', text: instruction },
+          { type: 'file', file: { file_data: fileData, filename } }
+        ]
+      }
+    ]
+  });
+}
+
+/**
+ * Calls {@link orchestrationChatCompletionFile} with the `csv` file type.
+ * @returns The orchestration service response.
+ */
+export function orchestrationChatCompletionCsvFile(): Promise<OrchestrationResponse> {
+  return orchestrationChatCompletionFile('csv');
+}
+
+/**
+ * Calls {@link orchestrationChatCompletionFile} with the `docx` file type.
+ * @returns The orchestration service response.
+ */
+export function orchestrationChatCompletionDocxFile(): Promise<OrchestrationResponse> {
+  return orchestrationChatCompletionFile('docx');
+}
+
+/**
+ * Calls {@link orchestrationChatCompletionFile} with the `mp3` file type.
+ * @returns The orchestration service response.
+ */
+export function orchestrationChatCompletionMp3File(): Promise<OrchestrationResponse> {
+  return orchestrationChatCompletionFile('mp3');
 }
