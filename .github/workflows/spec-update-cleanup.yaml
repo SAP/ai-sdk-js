@@ -1,4 +1,4 @@
-name: 'Spec Update Branch Cleanup'
+name: spec update cleanup
 
 on:
   workflow_dispatch:
