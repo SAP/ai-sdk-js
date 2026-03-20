@@ -95,8 +95,14 @@ describe('deployment cache', () => {
     };
 
     deploymentCache.setAll(opts, [
-      mockAiDeployment('deployment-id1', { name: 'gpt-5-mini', version: 'latest' }),
-      mockAiDeployment('deployment-id2', { name: 'gpt-5-mini', version: 'latest' })
+      mockAiDeployment('deployment-id1', {
+        name: 'gpt-5-mini',
+        version: 'latest'
+      }),
+      mockAiDeployment('deployment-id2', {
+        name: 'gpt-5-mini',
+        version: 'latest'
+      })
     ]);
 
     expect(

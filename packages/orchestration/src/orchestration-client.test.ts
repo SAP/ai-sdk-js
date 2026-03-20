@@ -1325,7 +1325,11 @@ describe('orchestration service client', () => {
     it('calls chatCompletion with module fallback configuration array', async () => {
       const primaryConfig: OrchestrationModuleConfig = {
         promptTemplating: {
-          model: { name: 'gpt-5-mini', timeout: 5, params: { max_tokens: 100 } },
+          model: {
+            name: 'gpt-5-mini',
+            timeout: 5,
+            params: { max_tokens: 100 }
+          },
           prompt: {
             template: [{ role: 'user', content: 'Try primary model' }]
           }
