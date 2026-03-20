@@ -224,9 +224,8 @@ jobs:
           fi
 
 # Notes:
-# To use this workflow as a consumer follow these steps:
-#  1. Ask an SAP Cloud SDK for AI team member to add you to the according consumer team (e.g. ai-sdk-consumer-orchestration).
-#  2. Generate a PAT with the following permissions:
+# To use this workflow as a service owner, ask an SAP Cloud SDK for AI team
+# member to generate an SAP Cloud SDK Bot PAT with the following permissions:
 #  - Actions: Read and write
 #  - Contents: Read and write
-#  - Metadata: Read-only
+#  - Metadata: Read-only (automatically added)
