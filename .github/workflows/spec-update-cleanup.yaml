@@ -1,9 +1,6 @@
 name: 'Spec Update Branch Cleanup'
 
 on:
-  push:
-    branches:
-      - branch-protection-test
   workflow_dispatch:
     inputs:
       file:
