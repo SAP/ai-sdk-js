@@ -227,12 +227,12 @@ export interface OrchestrationModuleConfig {
  * const fallbackConfig: OrchestrationModuleConfigList = [
  *   {
  *     promptTemplating: {
- *       model: { name: 'gpt-4o', timeout: 5 }
+ *       model: { name: 'gpt-5', timeout: 5 }
  *     }
  *   },
  *   {
  *     promptTemplating: {
- *       model: { name: 'gpt-5-mini' }
+ *       model: { name: 'gpt-5' }
  *     }
  *   }
  * ];

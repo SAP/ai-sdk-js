@@ -220,7 +220,7 @@ The most significant change is the consolidation of `llm` and `templating` modul
 ```typescript
 const config = {
   llm: {
-    model_name: 'gpt-4o',
+    model_name: 'gpt-5',
     model_params: {}
   },
   templating: {
@@ -236,7 +236,7 @@ const config = {
 const config = {
   promptTemplating: {
     model: {
-      name: 'gpt-4o',
+      name: 'gpt-5',
       params: {}
     },
     prompt: {
@@ -271,8 +271,8 @@ orchestrationClient.chatCompletion({
 **v1:**
 ```typescript
 llm: {
-  model_name: 'gpt-4o',
-  model_params: { temperature: 0.7 }
+  model_name: 'gpt-5',
+  model_params: { }
 }
 ```
 
@@ -280,8 +280,8 @@ llm: {
 ```typescript
 promptTemplating: {
   model: {
-    name: 'gpt-4o',
-    params: { temperature: 0.7 }
+    name: 'gpt-5',
+    params: { }
   }
 }
 ```
@@ -464,7 +464,7 @@ The LangChain orchestration configuration follows the same structural changes as
 ```typescript
 const config: LangChainOrchestrationModuleConfig = {
   llm: {
-    model_name: 'gpt-4o',
+    model_name: 'gpt-5',
     model_params: {}
   },
   templating: {
@@ -478,7 +478,7 @@ const config: LangChainOrchestrationModuleConfig = {
 const config: LangChainOrchestrationModuleConfig = {
   promptTemplating: {
     model: {
-      name: 'gpt-4o',
+      name: 'gpt-5',
       params: {}
     },
     prompt: {

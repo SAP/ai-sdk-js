@@ -49,8 +49,7 @@ const toolNode = new ToolNode(tools);
 
 // Create a model
 const model = new AzureOpenAiChatClient({
-  modelName: 'gpt-4o',
-  temperature: 0.7,
+  modelName: 'gpt-5',
   maxRetries: 0
 });
 

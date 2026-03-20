@@ -15,7 +15,7 @@ describe('construct completion post request', () => {
         template: [{ role: 'user', content: 'Hi' }]
       },
       model: {
-        name: 'gpt-4o',
+        name: 'gpt-5-mini',
         params: { max_tokens: 50, temperature: 0.1 }
       }
     }
@@ -40,7 +40,7 @@ describe('construct completion post request', () => {
       promptTemplating: {
         prompt: { template: [] },
         model: {
-          name: 'gpt-4o',
+          name: 'gpt-5-mini',
           params: { max_tokens: 50, temperature: 0.1 }
         }
       }
@@ -69,7 +69,7 @@ describe('construct completion post request', () => {
           ]
         },
         model: {
-          name: 'gpt-4o',
+          name: 'gpt-5-mini',
           params: { max_tokens: 50, temperature: 0.1 }
         }
       }
@@ -110,7 +110,7 @@ describe('construct completion post request', () => {
           ]
         },
         model: {
-          name: 'gpt-4o',
+          name: 'gpt-5-mini',
           params: { max_tokens: 50, temperature: 0.1 }
         }
       }
@@ -146,7 +146,7 @@ describe('construct completion post request', () => {
           template: [{ role: 'user', content: 'Hi' }]
         },
         model: {
-          name: 'gpt-4o',
+          name: 'gpt-5-mini',
           params: {}
         }
       },
@@ -171,7 +171,7 @@ describe('construct completion post request', () => {
           template: [{ role: 'user', content: "What's my name?" }]
         },
         model: {
-          name: 'gpt-4o',
+          name: 'gpt-5-mini',
           params: { max_tokens: 50, temperature: 0.1 }
         }
       }
@@ -217,7 +217,7 @@ describe('construct completion post request', () => {
           template: [{ role: 'user', content: 'Hi' }]
         },
         model: {
-          name: 'gpt-4o',
+          name: 'gpt-5-mini',
           params: { max_tokens: 50, temperature: 0.1 }
         }
       },
@@ -253,7 +253,7 @@ describe('construct completion post request', () => {
           template: [{ role: 'user', content: 'Hi' }]
         },
         model: {
-          name: 'gpt-4o',
+          name: 'gpt-5-mini',
           params: { max_tokens: 50, temperature: 0.1 }
         }
       },
@@ -278,7 +278,7 @@ describe('construct completion post request', () => {
           template: [{ role: 'user', content: 'Hi' }]
         },
         model: {
-          name: 'gpt-4o',
+          name: 'gpt-5-mini',
           params: { max_tokens: 50, temperature: 0.1 }
         }
       },

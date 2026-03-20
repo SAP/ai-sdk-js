@@ -11,20 +11,20 @@ describe('deployment cache', () => {
     const opts = {
       scenarioId: 'foundation-models',
       executableId: 'execution-id',
-      model: { name: 'gpt-4o', version: 'latest' }
+      model: { name: 'gpt-5-mini', version: 'latest' }
     };
     deploymentCache.set(opts, {
       id: 'deployment-id',
       details: {
         resources: {
-          backendDetails: { model: { name: 'gpt-4o', version: 'latest' } }
+          backendDetails: { model: { name: 'gpt-5-mini', version: 'latest' } }
         }
       }
     } as unknown as AiDeployment);
 
     expect(deploymentCache.get(opts)).toEqual({
       id: 'deployment-id',
-      model: { name: 'gpt-4o', version: 'latest' }
+      model: { name: 'gpt-5-mini', version: 'latest' }
     });
   });
 
@@ -33,15 +33,15 @@ describe('deployment cache', () => {
       deploymentCache.setAll(
         {
           scenarioId: 'foundation-models',
-          model: { name: 'gpt-4o', version: 'latest' }
+          model: { name: 'gpt-5-mini', version: 'latest' }
         },
         [
           mockAiDeployment('deployment-id1', {
-            name: 'gpt-4o',
+            name: 'gpt-5-mini',
             version: 'latest'
           }),
           mockAiDeployment('deployment-id2', {
-            name: 'gpt-4o',
+            name: 'gpt-5-mini',
             version: '123'
           })
         ]
@@ -62,7 +62,7 @@ describe('deployment cache', () => {
         deploymentCache.get({
           scenarioId: 'foundation-models',
           model: {
-            name: 'gpt-4o',
+            name: 'gpt-5-mini',
             version: '123'
           }
         })?.id
@@ -74,7 +74,7 @@ describe('deployment cache', () => {
         deploymentCache.get({
           scenarioId: 'foundation-models',
           model: {
-            name: 'gpt-4o'
+            name: 'gpt-5-mini'
           }
         })?.id
       ).toEqual('deployment-id1');
@@ -95,14 +95,14 @@ describe('deployment cache', () => {
     };
 
     deploymentCache.setAll(opts, [
-      mockAiDeployment('deployment-id1', { name: 'gpt-4o', version: 'latest' }),
-      mockAiDeployment('deployment-id2', { name: 'gpt-4o', version: 'latest' })
+      mockAiDeployment('deployment-id1', { name: 'gpt-5-mini', version: 'latest' }),
+      mockAiDeployment('deployment-id2', { name: 'gpt-5-mini', version: 'latest' })
     ]);
 
     expect(
       deploymentCache.get({
         ...opts,
-        model: { name: 'gpt-4o', version: 'latest' }
+        model: { name: 'gpt-5-mini', version: 'latest' }
       })?.id
     ).toEqual('deployment-id1');
   });
@@ -113,14 +113,14 @@ describe('deployment cache', () => {
     };
 
     deploymentCache.setAll(opts, [
-      mockAiDeployment('deployment-id1', { name: 'gpt-4o' }),
-      mockAiDeployment('deployment-id2', { name: 'gpt-4o' })
+      mockAiDeployment('deployment-id1', { name: 'gpt-5-mini' }),
+      mockAiDeployment('deployment-id2', { name: 'gpt-5-mini' })
     ]);
 
     expect(
       deploymentCache.get({
         ...opts,
-        model: { name: 'gpt-4o' }
+        model: { name: 'gpt-5-mini' }
       })?.id
     ).toEqual('deployment-id1');
   });
