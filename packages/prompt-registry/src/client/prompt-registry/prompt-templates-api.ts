@@ -49,7 +49,8 @@ export const PromptTemplatesApi = {
       'post',
       '/lm/promptTemplates',
       {
-        body
+        body,
+        headerParameters: { 'content-type': 'application/json' }
       },
       PromptTemplatesApi._defaultBasePath
     ),
@@ -106,12 +107,31 @@ export const PromptTemplatesApi = {
    * @param body - Request body.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  importPromptTemplate: (body: any | undefined) =>
+  importPromptTemplate: (
+    body:
+      | ({
+          /**
+           * Format: "binary".
+           */
+          file?: Blob;
+        } & Record<string, any>)
+      | undefined
+  ) =>
     new OpenApiRequestBuilder<PromptTemplatePostResponse>(
       'post',
       '/lm/promptTemplates/import',
       {
-        body
+        body,
+        _encoding: {
+          file: {
+            contentType: 'application/octet-stream',
+            isImplicit: true,
+            parsedContentTypes: [
+              { parameters: {}, type: 'application/octet-stream' }
+            ]
+          }
+        },
+        headerParameters: { 'content-type': 'multipart/form-data' }
       },
       PromptTemplatesApi._defaultBasePath
     ),
@@ -121,7 +141,7 @@ export const PromptTemplatesApi = {
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   exportPromptTemplate: (promptTemplateId: string) =>
-    new OpenApiRequestBuilder<string>(
+    new OpenApiRequestBuilder<Blob>(
       'get',
       '/lm/promptTemplates/{promptTemplateId}/export',
       {
@@ -147,6 +167,7 @@ export const PromptTemplatesApi = {
       {
         pathParameters: { promptTemplateId },
         body,
+        headerParameters: { 'content-type': 'application/json' },
         queryParameters
       },
       PromptTemplatesApi._defaultBasePath
@@ -173,6 +194,7 @@ export const PromptTemplatesApi = {
       {
         pathParameters: { scenario, version, name },
         body,
+        headerParameters: { 'content-type': 'application/json' },
         queryParameters
       },
       PromptTemplatesApi._defaultBasePath
