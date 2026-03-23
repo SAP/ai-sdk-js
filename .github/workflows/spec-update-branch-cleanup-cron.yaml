@@ -32,37 +32,28 @@ jobs:
 
             if [ "$(date -d "$COMMITTED_AT" +%s)" -lt "$CUTOFF_DATE" ]; then
               echo "Stale: $BRANCH (last commit: $COMMITTED_AT)"
-              STALE+=("$BRANCH")
+              # branch format: spec-update/<file>/<file-ref>
+              REMAINDER="${BRANCH#spec-update/}"
+              FILE="${REMAINDER%%/*}"
+              FILE_REF="${REMAINDER#*/}"
+              ENTRY=$(jq -n --arg branch "$BRANCH" --arg file "$FILE" --arg file_ref "$FILE_REF" \
+                '{branch: $branch, file: $file, file_ref: $file_ref}')
+              STALE+=("$ENTRY")
             fi
           done < <(gh api repos/SAP/ai-sdk-js/branches --paginate --jq '.[].name' | grep '^spec-update/')
 
           echo "Found ${#STALE[@]} stale branch(es)"
-          echo "branches=$(printf '%s\n' "${STALE[@]}" | jq -R . | jq -sc .)" >> "$GITHUB_OUTPUT"
+          echo "branches=$(printf '%s\n' "${STALE[@]}" | jq -sc .)" >> "$GITHUB_OUTPUT"
 
   cleanup-stale-branch:
-    name: 'cleanup ${{ matrix.branch }}'
+    name: 'Cleanup ${{ matrix.branch }}'
     needs: find-stale-branches
     if: ${{ needs.find-stale-branches.outputs.branches != '[]' }}
-    runs-on: ubuntu-latest
     strategy:
       matrix:
-        branch: ${{ fromJson(needs.find-stale-branches.outputs.branches) }}
-    steps:
-      - name: 'Trigger cleanup workflow'
-        # env:
-        #   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # run: |
-        #   # branch format: spec-update/<file>/<file-ref>
-        #   REMAINDER="${{ matrix.branch }}"
-        #   REMAINDER="${REMAINDER#spec-update/}"  # strip leading "spec-update/"
-        #   FILE="${REMAINDER%%/*}"                # everything before the first "/"
-        #   FILE_REF="${REMAINDER#*/}"             # everything after the first "/"
-        #   gh workflow run spec-update-cleanup.yaml \
-        #     --field "file=$FILE" \
-        #     --field "file-ref=$FILE_REF"
-
-        uses: ./.github/workflows/spec-update.yaml
-        with:
-          file: orchestration
-          file-ref: peter
-          secrets: inherit
+        include: ${{ fromJson(needs.find-stale-branches.outputs.branches) }}
+    uses: ./.github/workflows/spec-update.yaml
+    with:
+      file: orchestration
+      file-ref: peter
+    secrets: inherit
