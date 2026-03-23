@@ -44,8 +44,6 @@ jobs:
     needs: find-stale-branches
     if: ${{ needs.find-stale-branches.outputs.branches != '[]' }}
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     strategy:
       matrix:
         branch: ${{ fromJson(needs.find-stale-branches.outputs.branches) }}
