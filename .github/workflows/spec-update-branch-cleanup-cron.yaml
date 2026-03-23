@@ -52,7 +52,7 @@ jobs:
     strategy:
       matrix:
         include: ${{ fromJson(needs.find-stale-branches.outputs.branches) }}
-    uses: ./.github/workflows/spec-update.yaml
+    uses: ./.github/workflows/spec-update-cleanup.yaml
     with:
       file: orchestration
       file-ref: peter
