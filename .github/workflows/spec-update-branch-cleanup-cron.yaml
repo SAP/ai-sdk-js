@@ -53,7 +53,7 @@ jobs:
         run: echo "Skipping ${{ matrix.branch }} (only spec-update/ai-api/peter is auto-cleaned)"
 
       - name: 'Trigger cleanup workflow'
-        if: ${{ matrix.branch == 'spec-update/ai-api/peter' }}
+        if: ${{ matrix.branch == 'spec-update/orchestration/fix/lazy-load-prometheus' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
