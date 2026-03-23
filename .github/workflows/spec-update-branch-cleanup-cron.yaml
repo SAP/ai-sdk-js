@@ -1,0 +1,69 @@
+name: spec update branch cleanup (cron job)
+
+on:
+  schedule:
+    - cron: '21 2 * * 1'
+  workflow_dispatch:
+  push:
+
+jobs:
+  find-stale-branches:
+    name: 'Find stale spec-update branches'
+    runs-on: ubuntu-latest
+    outputs:
+      branches: ${{ steps.list.outputs.branches }}
+    steps:
+      - name: 'List spec-update branches older than 90 days'
+        id: list
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          CUTOFF_DATE=$(date -d "90 days ago" +%s)
+          STALE=()
+
+          while IFS= read -r BRANCH; do
+            COMMITTED_AT=$(gh api "repos/SAP/ai-sdk-js/branches/$BRANCH" \
+              --jq '.commit.commit.committer.date' 2>/dev/null)
+
+            if [ -z "$COMMITTED_AT" ]; then
+              echo "Could not fetch date for $BRANCH, skipping."
+              continue
+            fi
+
+            if [ "$(date -d "$COMMITTED_AT" +%s)" -lt "$CUTOFF_DATE" ]; then
+              echo "Stale: $BRANCH (last commit: $COMMITTED_AT)"
+              STALE+=("$BRANCH")
+            fi
+          done < <(gh api repos/SAP/ai-sdk-js/branches --paginate --jq '.[].name' | grep '^spec-update/')
+
+          echo "Found ${#STALE[@]} stale branch(es)"
+          echo "branches=$(printf '%s\n' "${STALE[@]}" | jq -R . | jq -sc .)" >> "$GITHUB_OUTPUT"
+
+  cleanup-stale-branch:
+    name: 'cleanup ${{ matrix.branch }}'
+    needs: find-stale-branches
+    if: ${{ needs.find-stale-branches.outputs.branches != '[]' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    strategy:
+      matrix:
+        branch: ${{ fromJson(needs.find-stale-branches.outputs.branches) }}
+    steps:
+      - name: 'Log skipped branch'
+        if: ${{ startsWith(matrix.branch, 'spec-update/orchestration/') || startsWith(matrix.branch, 'spec-update/document-grounding/') }}
+        run: echo "Skipping ${{ matrix.branch }} (orchestration/document-grounding branches are not auto-cleaned)"
+
+      # - name: 'Trigger cleanup workflow'
+      #   if: ${{ !startsWith(matrix.branch, 'spec-update/orchestration/') && !startsWith(matrix.branch, 'spec-update/document-grounding/') }}
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: |
+      #     # branch format: spec-update/<file>/<file-ref>
+      #     REMAINDER="${{ matrix.branch }}"
+      #     REMAINDER="${REMAINDER#spec-update/}"  # strip leading "spec-update/"
+      #     FILE="${REMAINDER%%/*}"                # everything before the first "/"
+      #     FILE_REF="${REMAINDER#*/}"             # everything after the first "/"
+      #     gh workflow run spec-update-cleanup.yaml \
+      #       --field "file=$FILE" \
+      #       --field "file-ref=$FILE_REF"
