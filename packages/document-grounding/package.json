@@ -29,7 +29,7 @@
   "scripts": {
     "compile": "tsc",
     "compile:cjs": "tsc -p tsconfig.cjs.json",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test": "vitest run",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/api.yaml -o ./src/client -s ./src/spec/options-per-service.json && pnpm update-imports && pnpm lint:fix",

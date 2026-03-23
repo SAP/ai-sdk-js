@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import {
   AIMessage,
   HumanMessage,
@@ -113,7 +114,9 @@ describe('Mapping Functions', () => {
     const client = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
     expect(() =>
       mapLangChainToAiClient(client, langchainPrompt, defaultOptions)
-    ).toThrowErrorMatchingInlineSnapshot('"Unsupported message type: remove"');
+    ).toThrowErrorMatchingInlineSnapshot(
+      '[Error: Unsupported message type: remove]'
+    );
   });
 
   describe('isToolDefinitionLike', () => {

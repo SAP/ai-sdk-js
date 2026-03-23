@@ -1,4 +1,5 @@
 import assert from 'assert';
+import { describe, test, expect } from 'vitest';
 import {
   _iterSseMessages,
   _decodeChunks as decodeChunks

@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { OrchestrationStreamResponse } from '../index.js';
 import { mergeStreamResponse } from './stream.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';

@@ -1,5 +1,5 @@
 import { createLogger } from '@sap-cloud-sdk/util';
-import { jest } from '@jest/globals';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { LineDecoder, SSEDecoder } from '@sap-ai-sdk/core';
 import { parseFileToString } from '../../../test-util/mock-http.js';
 import { OrchestrationStream } from './orchestration-stream.js';
@@ -64,7 +64,7 @@ describe('Orchestration chat completion stream', () => {
       package: 'orchestration',
       messageContext: 'stream-util'
     });
-    const debugSpy = jest.spyOn(logger, 'debug');
+    const debugSpy = vi.spyOn(logger, 'debug');
     const asyncGeneratorChunk = OrchestrationStream._processChunk(
       originalChatCompletionStream
     );
@@ -88,7 +88,7 @@ describe('Orchestration chat completion stream', () => {
       package: 'orchestration',
       messageContext: 'stream-util'
     });
-    const debugSpy = jest.spyOn(logger, 'debug');
+    const debugSpy = vi.spyOn(logger, 'debug');
     const asyncGeneratorChunk = OrchestrationStream._processChunk(
       originalChatCompletionStream
     );
@@ -127,7 +127,7 @@ describe('Orchestration chat completion stream', () => {
   });
 
   it('should not read from the stream in any way before streaming starts', async () => {
-    const mockNext = jest.fn();
+    const mockNext = vi.fn();
     async function* mockIterator(): AsyncGenerator<any> {
       mockNext();
       for (const sseChunk of sseChunks) {
