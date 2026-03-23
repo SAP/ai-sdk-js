@@ -45,6 +45,7 @@ jobs:
         env:
           USE_SSH: true
           GIT_USER: ai-sdk-js
+          GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
         run: |
           git config --global user.email "cloudsdk@sap.com"
           git config --global user.name "ai-sdk-js"
@@ -61,6 +62,30 @@ jobs:
           rsync -avz --delete ai-sdk-js/knowledge-base/api-reference/ ai-sdk/static/api/${VERSION}/
           
           cd ai-sdk
+          
+          # Check if there are any changes
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          
+          # Create a new branch for the PR
+          BRANCH_NAME="docs/api-update-${VERSION}-$(date +%Y%m%d%H%M%S)"
+          git checkout -b "$BRANCH_NAME"
+          
           git add -A
-          git commit -m "Update SAP AI SDK for JavaScript API documentation ${VERSION}" || exit 0
-          git push
+          git commit -m "Update SAP AI SDK for JavaScript API documentation ${VERSION}"
+          git push origin "$BRANCH_NAME"
+          
+          # Create a pull request using GitHub CLI
+          gh pr create \
+            --repo SAP/ai-sdk \
+            --title "Update SAP AI SDK for JavaScript API documentation ${VERSION}" \
+            --body "This PR updates the API documentation for SAP AI SDK for JavaScript ${VERSION}.
+
+          Generated automatically by the ai-sdk-js CI/CD pipeline." \
+            --base main \
+            --head "$BRANCH_NAME"
+          
+          # Enable auto-merge for the PR (requires auto-merge to be enabled in repo settings)
+          gh pr merge --auto --squash --repo SAP/ai-sdk "$BRANCH_NAME" || echo "Auto-merge not enabled or PR not mergeable yet"
