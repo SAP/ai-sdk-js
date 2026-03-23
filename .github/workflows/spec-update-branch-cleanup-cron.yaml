@@ -1,0 +1,60 @@
+name: spec update branch cleanup (cron job)
+
+on:
+  schedule:
+    - cron: '21 2 * * 1'
+  workflow_dispatch:
+  push:
+
+jobs:
+  find-stale-branches:
+    name: 'Find stale spec-update branches'
+    runs-on: ubuntu-latest
+    outputs:
+      branches: ${{ steps.list.outputs.branches }}
+    steps:
+      - name: 'List spec-update branches older than 90 days'
+        id: list
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          CUTOFF_DATE=$(date -d "90 days ago" +%s)
+          STALE=()
+
+          while IFS= read -r BRANCH; do
+            COMMITTED_AT=$(gh api "repos/SAP/ai-sdk-js/branches/$BRANCH" \
+              --jq '.commit.commit.committer.date' 2>/dev/null)
+
+            if [ -z "$COMMITTED_AT" ]; then
+              echo "Could not fetch date for $BRANCH, skipping."
+              continue
+            fi
+
+            if [ "$(date -d "$COMMITTED_AT" +%s)" -lt "$CUTOFF_DATE" ]; then
+              echo "Stale: $BRANCH (last commit: $COMMITTED_AT)"
+              # branch format: spec-update/<file>/<file-ref>
+              REMAINDER="${BRANCH#spec-update/}"
+              FILE="${REMAINDER%%/*}"
+              FILE_REF="${REMAINDER#*/}"
+              ENTRY=$(jq -n --arg branch "$BRANCH" --arg file "$FILE" --arg file_ref "$FILE_REF" \
+                '{branch: $branch, file: $file, file_ref: $file_ref}')
+              STALE+=("$ENTRY")
+            fi
+          done < <(gh api repos/SAP/ai-sdk-js/branches --paginate --jq '.[].name' | grep '^spec-update/')
+
+          echo "Found ${#STALE[@]} stale branch(es)"
+          echo "branches=$(printf '%s\n' "${STALE[@]}" | jq -sc .)" >> "$GITHUB_OUTPUT"
+
+  cleanup-stale-branch:
+    name: 'Cleanup ${{ matrix.branch }}'
+    needs: find-stale-branches
+    if: ${{ needs.find-stale-branches.outputs.branches != '[]' }}
+    strategy:
+      matrix:
+        include: ${{ fromJson(needs.find-stale-branches.outputs.branches) }}
+    uses: ./.github/workflows/spec-update-cleanup.yaml
+    with:
+      file: orchestration
+      file-ref: peter
+    secrets: inherit
+    
