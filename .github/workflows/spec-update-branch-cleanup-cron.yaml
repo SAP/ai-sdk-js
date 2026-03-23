@@ -54,8 +54,7 @@ jobs:
         include: ${{ fromJson(needs.find-stale-branches.outputs.branches) }}
     uses: ./.github/workflows/spec-update-cleanup.yaml
     with:
-      # file: ${{ matrix.file }}
-      # file-ref: ${{ matrix.file_ref }}
       file: orchestration
       file-ref: peter
     secrets: inherit
+    
