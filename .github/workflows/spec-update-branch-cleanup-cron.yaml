@@ -48,20 +48,21 @@ jobs:
       matrix:
         branch: ${{ fromJson(needs.find-stale-branches.outputs.branches) }}
     steps:
-      - name: 'Log skipped branch'
-        if: ${{ matrix.branch != 'spec-update/ai-api/peter' }}
-        run: echo "Skipping ${{ matrix.branch }} (only spec-update/ai-api/peter is auto-cleaned)"
-
       - name: 'Trigger cleanup workflow'
-        if: ${{ matrix.branch == 'spec-update/orchestration/fix/lazy-load-prometheus' }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # branch format: spec-update/<file>/<file-ref>
-          REMAINDER="${{ matrix.branch }}"
-          REMAINDER="${REMAINDER#spec-update/}"  # strip leading "spec-update/"
-          FILE="${REMAINDER%%/*}"                # everything before the first "/"
-          FILE_REF="${REMAINDER#*/}"             # everything after the first "/"
-          gh workflow run spec-update-cleanup.yaml \
-            --field "file=$FILE" \
-            --field "file-ref=$FILE_REF"
+        # env:
+        #   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # run: |
+        #   # branch format: spec-update/<file>/<file-ref>
+        #   REMAINDER="${{ matrix.branch }}"
+        #   REMAINDER="${REMAINDER#spec-update/}"  # strip leading "spec-update/"
+        #   FILE="${REMAINDER%%/*}"                # everything before the first "/"
+        #   FILE_REF="${REMAINDER#*/}"             # everything after the first "/"
+        #   gh workflow run spec-update-cleanup.yaml \
+        #     --field "file=$FILE" \
+        #     --field "file-ref=$FILE_REF"
+
+        uses: ./.github/workflows/spec-update.yaml
+        with:
+          file: orchestration
+          file-ref: peter
+          secrets: inherit
