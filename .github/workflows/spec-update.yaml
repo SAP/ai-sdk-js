@@ -224,7 +224,9 @@ jobs:
           fi
 
 # Notes:
-# To use this workflow as a service owner, ask an SAP Cloud SDK for AI team
-# member to generate an SAP Cloud SDK Bot PAT with the following permissions:
-#  - Actions: Read and write (needed to trigger workflow runs)
-#  - Metadata: Read-only (automatically added)
+# To use this workflow as a service owner:
+#   1. Ask an SAP Cloud SDK for AI team member to add you to the according
+#      service-owner team (read access is enough).
+#   2. Generate a PAT with the following permissions:
+#      - Actions: Read and write (needed to trigger workflow runs)
+#      - Metadata: Read-only (automatically added)
