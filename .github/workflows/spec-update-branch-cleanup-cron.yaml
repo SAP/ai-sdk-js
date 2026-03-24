@@ -51,7 +51,10 @@ jobs:
     if: ${{ needs.find-stale-branches.outputs.branches != '[]' }}
     strategy:
       matrix:
-        include: ['spec-update/orchestration/peter'] # ${{ fromJson(needs.find-stale-branches.outputs.branches) }}
+        include: # ${{ fromJson(needs.find-stale-branches.outputs.branches) }}
+          - branch: spec-update/orchestration/peter
+            file: orchestration
+            file_ref: peter
     uses: ./.github/workflows/spec-update-cleanup.yaml
     with:
       # file: ${{ matrix.file }}
