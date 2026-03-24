@@ -7,13 +7,30 @@ on:
   workflow_dispatch: ~
 
 jobs:
+  setup-test-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      SUPPORTED_NODE_VERSIONS: ${{ steps.set-matrix.outputs.SUPPORTED_NODE_VERSIONS }}
+      DEFAULT_NODE_VERSION: ${{ steps.set-matrix.outputs.DEFAULT_NODE_VERSION }}
+    steps:
+      - name: Set up test matrix
+        id: set-matrix
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          SUPPORTED_NODE_VERSIONS="$(gh api /repos/sap/ai-sdk-js/actions/variables/SUPPORTED_NODE_VERSIONS --jq '.value')"
+          DEFAULT_NODE_VERSION="$(gh api /repos/sap/ai-sdk-js/actions/variables/DEFAULT_NODE_VERSION --jq '.value')"
+          echo "SUPPORTED_NODE_VERSIONS=$SUPPORTED_NODE_VERSIONS" >> "$GITHUB_OUTPUT"
+          echo "DEFAULT_NODE_VERSION=$DEFAULT_NODE_VERSION" >> "$GITHUB_OUTPUT"
+
   test:
     runs-on: ubuntu-latest
+    needs: setup-test-matrix
 
     strategy:
       fail-fast: false
       matrix:
-        node-version: ${{ fromJSON(vars.SUPPORTED_NODE_VERSIONS) }}
+        node-version: ${{ fromJSON(needs.setup-test-matrix.outputs.SUPPORTED_NODE_VERSIONS) }}
 
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
@@ -24,10 +41,11 @@ jobs:
 
   checks:
     runs-on: ubuntu-latest
+    needs: setup-test-matrix
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+          node-version: ${{ needs.setup-test-matrix.outputs.DEFAULT_NODE_VERSION }}
       - name: REUSE Compliance Check
         uses: fsfe/reuse-action@v6
       - run: pnpm generate
