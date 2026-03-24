@@ -20,7 +20,7 @@ jobs:
         uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
           ref: ${{ github.head_ref }}
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+          node-version: 22
           pnpm-install-args: --lockfile-only
           token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
 

@@ -20,7 +20,7 @@ jobs:
         with:
           token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           ref: 'main'
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+          node-version: 22
       - name: bump version
         uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
         id: bump
@@ -55,7 +55,7 @@ jobs:
       - name: Checkout current repository
         uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+          node-version: 22
       - name: Checkout Docs Repo
         uses: actions/checkout@v6
         with:

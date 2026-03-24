@@ -13,7 +13,7 @@ jobs:
         uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
           token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+          node-version: 22
 
       - name: Update Transitive Dependencies
         id: update-deps
