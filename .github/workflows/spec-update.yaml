@@ -59,6 +59,7 @@ jobs:
       spec_diff: ${{ steps.spec_diff.outputs.spec_diff }}
       branch: ${{ steps.push.outputs.branch }}
       pr_url: ${{ steps.create-pr.outputs.pr_url }}
+      patch_result: ${{ steps.apply-patches.outputs.patch_result }}
       compilation_result: ${{ steps.compile.outputs.compilation_result }}
       test_result: ${{ steps.compile.outputs.test_result }}
     env:
@@ -139,6 +140,17 @@ jobs:
         run: |
           pnpm generate
 
+      - name: 'Apply patches'
+        id: apply-patches
+        if: steps.spec_diff.outputs.spec_diff == 'true'
+        continue-on-error: true
+        run: |
+          if pnpm document-grounding apply-patches ; then
+            echo "patch_result=success" >> "$GITHUB_OUTPUT"
+          else
+            echo "patch_result=failure" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: 'Compile and Test'
         id: compile
         if: steps.spec_diff.outputs.spec_diff == 'true'
@@ -186,8 +198,12 @@ jobs:
           This PR was created automatically by the [spec-update workflow](https://github.com/SAP/ai-sdk-js/actions/workflows/spec-update.yaml).
           You can commit on top of this branch, but as long as this PR is open the action can't be re-run.
 
+          - Patch application outcome: ${{ steps.apply-patches.outputs.patch_result || 'skipped' }}
           - Compilation outcome: ${{ steps.compile.outputs.compilation_result }}
           - Test run outcome: ${{ steps.compile.outputs.test_result }}
+
+          ${{ steps.apply-patches.outputs.patch_result == 'failure' && '> [!WARNING]
+          > Patch application failed. The spec may have introduced changes (e.g. new parameters) that conflict with existing patches. Please update the patch files manually before merging.' || '' }}
 
           Before merging, make sure to update tests and release notes, if necessary.
 
@@ -217,6 +233,7 @@ jobs:
 
           if ${{ steps.spec_diff.outputs.spec_diff == 'true' }}; then
             echo "| Client Generation | ${{ steps.generate.outcome == 'success' && '✅' || '❌' }} ${{ steps.generate.outcome }}" >> $GITHUB_STEP_SUMMARY
+            echo "| Patch Application | ${{ steps.apply-patches.outputs.patch_result == 'success' && '✅' || steps.apply-patches.outputs.patch_result == 'failure' && '❌ (patch needs updating)' || '⏩ skipped' }} ${{ steps.apply-patches.outputs.patch_result || 'skipped' }}" >> $GITHUB_STEP_SUMMARY
             echo "| Client Compilation | ${{ steps.compile.outputs.compilation_result == 'success' && '✅' || '❌' }} ${{ steps.compile.outputs.compilation_result }}" >> $GITHUB_STEP_SUMMARY
             echo "| Client Testing | ${{ steps.compile.outputs.test_result == 'success' && '✅' || steps.compile.outputs.test_result == 'skipped' && '⏩' || '❌' }} ${{ steps.compile.outputs.test_result }}" >> $GITHUB_STEP_SUMMARY
             echo "| Branch Creation | ${{ steps.push.outcome == 'success' && '✅ [Branch Link]($DIFF_URL)' || '❌ failure' }}" >> $GITHUB_STEP_SUMMARY
