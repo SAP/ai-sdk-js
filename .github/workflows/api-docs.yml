@@ -1,16 +1,13 @@
 name: api-docs
 
+# Note: During normal releases, API docs are generated as part of the bump workflow
+# and included in the same PR as release notes.
+
 on:
-  workflow_call:
-    inputs:
-      version:
-        description: 'Version to generate docs for'
-        required: true
-        type: string
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to generate docs for'
+        description: 'Version to generate docs for (e.g., 2.9.0). Only the major version is used for the target folder (e.g., v2).'
         required: true
         type: string
 
@@ -88,4 +85,4 @@ jobs:
             --head "$BRANCH_NAME"
           
           # Enable auto-merge for the PR (requires auto-merge to be enabled in repo settings)
-          gh pr merge --auto --squash --repo SAP/ai-sdk "$BRANCH_NAME" || echo "Auto-merge not enabled or PR not mergeable yet"
+          gh pr merge --squash --repo SAP/ai-sdk "$BRANCH_NAME" || echo "Auto-merge not enabled or PR not mergeable yet"
