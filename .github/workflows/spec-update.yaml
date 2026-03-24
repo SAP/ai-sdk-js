@@ -82,8 +82,19 @@ jobs:
           BRANCH="spec-update/$CHOICE/$REF"
           git fetch origin $BRANCH || true
           git checkout -B $BRANCH origin/$BRANCH || git checkout -b $BRANCH
-          git rebase -X theirs origin/main
-          git push --force --set-upstream origin $BRANCH
+          # Try to merge main, reset to clean base if that fails
+          git merge --no-edit -X theirs origin/main || git reset --hard origin/main
+          set +e
+          # Try to avoid `--force` push if possible
+          git push --set-upstream origin $BRANCH || git push --force --set-upstream origin $BRANCH
+          error_code=$?
+          set -e
+          # Should the force push fail, try again with a date suffix
+          if [ $error_code -ne 0 ]; then
+            BRANCH="spec-update/$CHOICE/$REF-$(date +%Y%m%d%H%M%S)"
+            git checkout -B $BRANCH
+            git push --set-upstream origin $BRANCH
+          fi
           echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
 
       - name: 'Download specification file'
