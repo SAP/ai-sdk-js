@@ -139,6 +139,7 @@ paths:
             type: string
         - name: includeSpec
           in: query
+          description: Whether include the spec section or not.
           schema:
             type: boolean
             default: false
@@ -438,23 +439,25 @@ paths:
         - name: include_spec
           in: query
           deprecated: true
-          description: 'DEPRECATED: Use includeSpec instead'
+          description: 'DEPRECATED: Use includeSpec instead.'
           schema:
             type: boolean
             default: false
         - name: includeSpec
           in: query
+          description: Whether the spec should be included in the response.
           schema:
             type: boolean
         - name: resolve_template_ref
           in: query
           deprecated: true
-          description: 'DEPRECATED: Use resolveTemplateRef instead'
+          description: 'DEPRECATED: Use resolveTemplateRef instead.'
           schema:
             type: boolean
             default: false
         - name: resolveTemplateRef
           in: query
+          description: Whether a template reference should be resolved
           schema:
             type: boolean
       responses:
@@ -501,23 +504,25 @@ paths:
         - name: include_spec
           in: query
           deprecated: true
-          description: 'DEPRECATED: Use includeSpec instead'
+          description: 'DEPRECATED: Use includeSpec instead.'
           schema:
             type: boolean
             default: false
         - name: includeSpec
           in: query
+          description: Whether include the spec section or not.
           schema:
             type: boolean
         - name: resolve_template_ref
           in: query
           deprecated: true
-          description: 'DEPRECATED: Use resolveTemplateRef instead'
+          description: 'DEPRECATED: Use resolveTemplateRef instead.'
           schema:
             type: boolean
             default: false
         - name: resolveTemplateRef
           in: query
+          description: Whether a template reference should be resolved
           schema:
             type: boolean
       responses:
@@ -553,12 +558,13 @@ paths:
         - name: resolve_template_ref
           in: query
           deprecated: true
-          description: 'DEPRECATED: Use resolveTemplateRef instead'
+          description: 'DEPRECATED: Use resolveTemplateRef instead.'
           schema:
             type: boolean
             default: false
         - name: resolveTemplateRef
           in: query
+          description: Whether a template reference should be resolved
           schema:
             type: boolean
       responses:
