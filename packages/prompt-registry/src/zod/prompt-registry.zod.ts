@@ -204,6 +204,12 @@ export const RegistryControllerPromptControllerListPromptTemplateHistoryParams =
   "name": zod.string().describe('Name field of the resource.')
 })
 
+export const registryControllerPromptControllerListPromptTemplateHistoryQueryIncludeSpecDefault = false;
+
+export const RegistryControllerPromptControllerListPromptTemplateHistoryQueryParams = zod.object({
+  "includeSpec": zod.boolean().default(registryControllerPromptControllerListPromptTemplateHistoryQueryIncludeSpecDefault)
+})
+
 export const RegistryControllerPromptControllerListPromptTemplateHistoryHeader = zod.object({
   "AI-Resource-Group": zod.string().optional().describe('Specify a resource group id to use'),
   "AI-Resource-Group-Scope": zod.enum(['true', 'True', 'false', 'False']).optional().describe('Specify whether the resource group scope is to be used')
@@ -1359,8 +1365,10 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "name": zod.string().optional().describe('Name field of the resource.'),
   "version": zod.string().optional().describe('Version field of the resource.'),
   "retrieve": zod.enum(['both', 'imperative', 'declarative']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryRetrieveDefault).describe('Whether to retrieve \'imperative\', \'declarative\', or \'both\'.'),
-  "include_spec": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryIncludeSpecDefault).describe('Whether include the spec section or not.'),
-  "resolve_template_ref": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryResolveTemplateRefDefault).describe('Whether any template reference should be resolved.')
+  "include_spec": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryIncludeSpecDefault).describe('DEPRECATED: Use includeSpec instead'),
+  "includeSpec": zod.boolean().optional(),
+  "resolve_template_ref": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryResolveTemplateRefDefault).describe('DEPRECATED: Use resolveTemplateRef instead'),
+  "resolveTemplateRef": zod.boolean().optional()
 })
 
 export const RegistryControllerOrchestrationConfigControllerListOrchestrationConfigsHeader = zod.object({
@@ -2058,8 +2066,10 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryResolveTemplateRefDefault = false;
 
 export const RegistryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryParams = zod.object({
-  "include_spec": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryIncludeSpecDefault).describe('Whether include the spec section or not.'),
-  "resolve_template_ref": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryResolveTemplateRefDefault).describe('Whether any template reference should be resolved.')
+  "include_spec": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryIncludeSpecDefault).describe('DEPRECATED: Use includeSpec instead'),
+  "includeSpec": zod.boolean().optional(),
+  "resolve_template_ref": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryResolveTemplateRefDefault).describe('DEPRECATED: Use resolveTemplateRef instead'),
+  "resolveTemplateRef": zod.boolean().optional()
 })
 
 export const RegistryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryHeader = zod.object({
@@ -2754,7 +2764,8 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidQueryResolveTemplateRefDefault = false;
 
 export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidQueryParams = zod.object({
-  "resolve_template_ref": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidQueryResolveTemplateRefDefault).describe('Whether any template reference should be resolved.')
+  "resolve_template_ref": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidQueryResolveTemplateRefDefault).describe('DEPRECATED: Use resolveTemplateRef instead'),
+  "resolveTemplateRef": zod.boolean().optional()
 })
 
 export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidHeader = zod.object({

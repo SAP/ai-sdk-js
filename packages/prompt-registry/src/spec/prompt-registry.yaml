@@ -137,6 +137,11 @@ paths:
           required: true
           schema:
             type: string
+        - name: includeSpec
+          in: query
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Successful response
@@ -432,16 +437,26 @@ paths:
               - declarative
         - name: include_spec
           in: query
-          description: Whether include the spec section or not.
+          deprecated: true
+          description: 'DEPRECATED: Use includeSpec instead'
           schema:
             type: boolean
             default: false
+        - name: includeSpec
+          in: query
+          schema:
+            type: boolean
         - name: resolve_template_ref
           in: query
-          description: Whether any template reference should be resolved.
+          deprecated: true
+          description: 'DEPRECATED: Use resolveTemplateRef instead'
           schema:
             type: boolean
             default: false
+        - name: resolveTemplateRef
+          in: query
+          schema:
+            type: boolean
       responses:
         '200':
           description: Successful response
@@ -485,16 +500,26 @@ paths:
             type: string
         - name: include_spec
           in: query
-          description: Whether include the spec section or not.
+          deprecated: true
+          description: 'DEPRECATED: Use includeSpec instead'
           schema:
             type: boolean
             default: false
+        - name: includeSpec
+          in: query
+          schema:
+            type: boolean
         - name: resolve_template_ref
           in: query
-          description: Whether any template reference should be resolved.
+          deprecated: true
+          description: 'DEPRECATED: Use resolveTemplateRef instead'
           schema:
             type: boolean
             default: false
+        - name: resolveTemplateRef
+          in: query
+          schema:
+            type: boolean
       responses:
         '200':
           description: Successful response
@@ -527,10 +552,15 @@ paths:
             format: uuid
         - name: resolve_template_ref
           in: query
-          description: Whether any template reference should be resolved.
+          deprecated: true
+          description: 'DEPRECATED: Use resolveTemplateRef instead'
           schema:
             type: boolean
             default: false
+        - name: resolveTemplateRef
+          in: query
+          schema:
+            type: boolean
       responses:
         '200':
           description: Successful response
