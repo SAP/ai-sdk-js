@@ -3,7 +3,8 @@ import type {
   LlmChoiceStreaming,
   ModuleResultsStreaming,
   TokenUsage,
-  ToolCallChunk
+  ToolCallChunk,
+  Citation
 } from './client/api/schema/index.js';
 
 /**
@@ -55,6 +56,15 @@ export class OrchestrationStreamChunkResponse {
    */
   getIntermediateResults(): ModuleResultsStreaming | undefined {
     return this._data.intermediate_results;
+  }
+
+  /**
+   * Gets the citations from the chunk response.
+   * Citations are returned by models like Perplexity Sonar that provide source references.
+   * @returns The citations, or undefined if there are none.
+   */
+  getCitations(): Citation[] | undefined {
+    return this._data.final_result?.citations;
   }
 
   /**

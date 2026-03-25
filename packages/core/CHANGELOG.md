@@ -1,5 +1,12 @@
 # @sap-ai-sdk/core
 
+## 2.9.0
+
+### Minor Changes
+
+- cd3d8ed: [Improvement] Add `gpt-5.2`, `anthropic--claude-4.5-opus`, `anthropic--claude-4.6-opus`, `anthropic--claude-4.6-sonnet` and `amazon-titan-embed-image` to the available model list.
+  Removed deprecated `gpt-4o` model.
+
 ## 2.8.0
 
 ## 2.7.0

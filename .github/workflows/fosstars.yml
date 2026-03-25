@@ -34,6 +34,7 @@ jobs:
             --nvdApiKey ${{ secrets.NVD_API_KEY }}
             --ossIndexUsername ${{ vars.OSS_INDEX_USERNAME }}
             --ossIndexPassword ${{ secrets.OSS_INDEX_PASSWORD }}
+            --suppression .github/owasp-suppressions.xml
 
       - name: 'Upload OWASP Dependency Check Report'
         if: always() && steps.depcheck.conclusion != 'skipped'
@@ -48,7 +49,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: 'Slack Notification'
         if: failure()
-        uses: slackapi/slack-github-action@v2.1.1
+        uses: slackapi/slack-github-action@v3.0.1
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook

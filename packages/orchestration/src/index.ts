@@ -74,12 +74,19 @@ export {
  */
 export type {
   ChatMessage,
+  ChatMessages,
+  ChatMessageContent,
   SystemChatMessage,
   UserChatMessage,
+  UserChatMessageContent,
+  UserChatMessageContentItem,
+  ImageContentUrl,
+  FileContent,
   AssistantChatMessage,
   ToolChatMessage,
   DeveloperChatMessage,
   ChatCompletionTool,
   FunctionObject,
-  Error as OrchestrationError
+  Error as OrchestrationError,
+  Citation
 } from './client/api/schema/index.js';
