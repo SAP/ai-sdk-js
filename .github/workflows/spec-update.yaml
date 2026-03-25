@@ -1,5 +1,14 @@
 name: spec update
 
+# Notes:
+# To use this workflow as a service owner:
+#   1. Ask an SAP Cloud SDK for AI team member to add you to the service-owner team (read access is enough).
+#   2. Generate a PAT with the following permissions:
+#      - Actions: Read and write (needed to trigger workflow runs)
+#      - Metadata: Read-only (automatically added)
+#   3. Save the PAT as a secret under `PUBLIC_GITHUB_SDKS_PAT`.
+#   4. Ask an SAP Cloud SDK for AI team member to create the sdk-integration and sdk-integration-cleanup workflows.
+
 on:
   workflow_dispatch:
     inputs:
@@ -222,11 +231,3 @@ jobs:
             echo "| Branch Creation | ${{ steps.push.outcome == 'success' && '✅ [Branch Link]($DIFF_URL)' || '❌ failure' }}" >> $GITHUB_STEP_SUMMARY
             echo "| Pull Request Creation | ${{ env.CREATE_PR == 'false' && '⏩ skipped' || '' }}${{ env.CREATE_PR == 'true' && steps.push.outcome == 'success' && '✅ [PR Link]($PR_URL)' || '' }}" >> $GITHUB_STEP_SUMMARY
           fi
-
-# Notes:
-# To use this workflow as a service owner:
-#   1. Ask an SAP Cloud SDK for AI team member to add you to the
-#      service-owner team (read access is enough).
-#   2. Generate a PAT with the following permissions:
-#      - Actions: Read and write (needed to trigger workflow runs)
-#      - Metadata: Read-only (automatically added)
