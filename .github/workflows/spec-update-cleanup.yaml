@@ -40,6 +40,7 @@ jobs:
       CHOICE: ${{ inputs.file }}
       REF: ${{ inputs.file-ref }}
     steps:
+      - uses: ./.github/actions/auth
       - name: 'Delete Branch'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

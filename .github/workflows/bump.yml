@@ -16,6 +16,7 @@ jobs:
     outputs:
       version: ${{ steps.bump.outputs.version }}
     steps:
+      - uses: ./.github/actions/auth # sap/ai-sdk-js/.github/actions/auth@main
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
           token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
