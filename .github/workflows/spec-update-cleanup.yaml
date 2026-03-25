@@ -3,8 +3,8 @@ name: spec update cleanup
 on:
   workflow_dispatch:
     inputs:
-      file:
-        description: 'Which spec file the branch was created for'
+      service:
+        description: 'Which service the branch was created for'
         type: choice
         required: true
         options:
@@ -13,19 +13,19 @@ on:
           - orchestration
           - prompt-registry
         default: orchestration
-      file-ref:
-        description: 'Branch or tag the spec branch was created from'
+      ref:
+        description: 'Original branch or tag the branch was created from'
         required: false
         default: main
         type: string
   workflow_call:
     inputs:
-      file:
-        description: 'Which spec file the branch was created for'
+      service:
+        description: 'Which service the branch was created for'
         required: true
         type: string
-      file-ref:
-        description: 'Branch or tag the spec branch was created from'
+      ref:
+        description: 'Original branch or tag the branch was created from'
         required: false
         default: main
         type: string
@@ -40,14 +40,14 @@ jobs:
     permissions:
       contents: write
     env:
-      CHOICE: ${{ inputs.file }}
-      REF: ${{ inputs.file-ref }}
+      SERVICE: ${{ inputs.service }}
+      REF: ${{ inputs.ref }}
     steps:
       - name: 'Delete Branch'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          BRANCH="spec-update/$CHOICE/$REF"
+          BRANCH="spec-update/$SERVICE/$REF"
           if git ls-remote --exit-code --heads https://github.com/SAP/ai-sdk-js.git "$BRANCH" > /dev/null 2>&1; then
             gh api repos/SAP/ai-sdk-js/git/refs/heads/$BRANCH -X DELETE
             echo "Deleted branch: $BRANCH"

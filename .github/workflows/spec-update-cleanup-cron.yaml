@@ -31,12 +31,13 @@ jobs:
 
             if [ "$(date -d "$COMMITTED_AT" +%s)" -lt "$CUTOFF_DATE" ]; then
               echo "Stale: $BRANCH (last commit: $COMMITTED_AT)"
-              # branch format: spec-update/<file>/<file-ref>
+              # branch format: spec-update/<service>/<ref>
               REMAINDER="${BRANCH#spec-update/}"
-              FILE="${REMAINDER%%/*}"
-              FILE_REF="${REMAINDER#*/}"
-              ENTRY=$(jq -n --arg branch "$BRANCH" --arg file "$FILE" --arg file_ref "$FILE_REF" \
-                '{branch: $branch, file: $file, file_ref: $file_ref}')
+              SERVICE="${REMAINDER%%/*}"
+              REF="${REMAINDER#*/}"
+              # Build a JSON object from the shell variables, jq handles proper escaping
+              ENTRY=$(jq -n --arg branch "$BRANCH" --arg service "$SERVICE" --arg ref "$REF" \
+                '{branch: $branch, service: $service, ref: $ref}')
               STALE+=("$ENTRY")
             fi
           done < <(gh api repos/SAP/ai-sdk-js/branches --paginate --jq '.[].name' | grep '^spec-update/')
@@ -53,6 +54,6 @@ jobs:
         include: ${{ fromJson(needs.find-stale-branches.outputs.branches) }}
     uses: ./.github/workflows/spec-update-cleanup.yaml
     with:
-      file: ${{ matrix.file }}
-      file-ref: ${{ matrix.file_ref }}
+      service: ${{ matrix.service }}
+      ref: ${{ matrix.ref }}
     secrets: inherit
