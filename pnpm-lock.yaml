@@ -225,8 +225,8 @@ importers:
         specifier: ^9.8.3
         version: 9.8.3(@eslint/js@9.39.4)
       '@sap/xssec':
-        specifier: ^4.12.2
-        version: 4.12.2
+        specifier: ^4.13.0
+        version: 4.13.0
       express:
         specifier: ^5.2.1
         version: 5.2.1
@@ -1505,10 +1505,6 @@ packages:
   '@sap/xsenv@6.1.0':
     resolution: {integrity: sha512-vlW4Zad3uiDqHtnYdQ0TsEIH8VIO4HmPGDowfBL5dIcHPmeKDISEQ9ibeHL5FkceqvYcXJEQAVZ5/hsHDqlXZg==}
     engines: {node: ^20.0.0  || ^22.0.0 || ^24.0.0}
-
-  '@sap/xssec@4.12.2':
-    resolution: {integrity: sha512-T4yy/lXZerAREJnb2Yte3oL4iDJOKlmWrMwMLXY5/U33tuKDVzIVO3VQqfLTGTIJABk4msE+km0YWpds+fSv3w==}
-    engines: {node: '>=18'}
 
   '@sap/xssec@4.13.0':
     resolution: {integrity: sha512-8e+bU+OyAIpAGXQanOopZa5YEK+yHKw84dhhihcCotF40MSNFbVHjQ4xM5hf4QndlqDGfXIuvXmoOMuDATa/gA==}
@@ -6687,13 +6683,6 @@ snapshots:
       debug: 4.4.3
       node-cache: 5.1.2
       verror: 1.10.1
-    transitivePeerDependencies:
-      - supports-color
-
-  '@sap/xssec@4.12.2':
-    dependencies:
-      debug: 4.4.3
-      jwt-decode: 4.0.0
     transitivePeerDependencies:
       - supports-color
 
