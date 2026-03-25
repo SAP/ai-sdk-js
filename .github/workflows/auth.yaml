@@ -2,6 +2,7 @@ name: Check Actor Permission
 
 on:
   workflow_dispatch:
+  workflow_call:
 
 jobs:
   check-permission:

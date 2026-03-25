@@ -31,8 +31,11 @@ on:
         type: string
 
 jobs:
+  auth:
+    uses: ./.github/workflows/auth.yaml
   cleanup:
     name: 'Delete Spec Update Branch'
+    needs: [auth]
     runs-on: [ubuntu-latest]
     permissions:
       contents: write
@@ -40,7 +43,6 @@ jobs:
       CHOICE: ${{ inputs.file }}
       REF: ${{ inputs.file-ref }}
     steps:
-      - uses: ./.github/workflows/auth
       - name: 'Delete Branch'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
