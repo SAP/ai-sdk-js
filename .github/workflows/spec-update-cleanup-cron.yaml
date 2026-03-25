@@ -1,4 +1,4 @@
-name: spec update branch cleanup (cron job)
+name: spec update cleanup (cron job)
 
 on:
   schedule:
