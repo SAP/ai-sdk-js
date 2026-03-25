@@ -4,7 +4,6 @@ on:
   schedule:
     - cron: '21 2 * * 1'
   workflow_dispatch:
-  push:
 
 jobs:
   find-stale-branches:
@@ -51,10 +50,7 @@ jobs:
     if: ${{ needs.find-stale-branches.outputs.branches != '[]' }}
     strategy:
       matrix:
-        include: # ${{ fromJson(needs.find-stale-branches.outputs.branches) }}
-          - branch: spec-update/orchestration/peter
-            file: orchestration
-            file_ref: peter
+        include: ${{ fromJson(needs.find-stale-branches.outputs.branches) }}
     uses: ./.github/workflows/spec-update-cleanup.yaml
     with:
       file: ${{ matrix.file }}
