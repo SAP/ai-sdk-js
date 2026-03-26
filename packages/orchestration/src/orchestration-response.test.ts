@@ -153,6 +153,46 @@ describe('OrchestrationResponse', () => {
     );
   });
 
+  it('should get citations from response', () => {
+    const localMockResponse = JSON.parse(JSON.stringify(mockResponse));
+    localMockResponse.final_result.citations = [
+      {
+        ref_id: 1,
+        title: 'Example Citation',
+        url: 'https://example.com',
+        start_index: 0,
+        end_index: 10
+      }
+    ];
+
+    const localOrchestrationResponse = new OrchestrationResponse({
+      ...rawResponse,
+      data: localMockResponse
+    });
+
+    expect(localOrchestrationResponse.getCitations()).toEqual([
+      {
+        ref_id: 1,
+        title: 'Example Citation',
+        url: 'https://example.com',
+        start_index: 0,
+        end_index: 10
+      }
+    ]);
+  });
+
+  it('should return undefined when no citations are present', () => {
+    const localMockResponse = JSON.parse(JSON.stringify(mockResponse));
+    delete localMockResponse.final_result.citations;
+
+    const localOrchestrationResponse = new OrchestrationResponse({
+      ...rawResponse,
+      data: localMockResponse
+    });
+
+    expect(localOrchestrationResponse.getCitations()).toBeUndefined();
+  });
+
   it('should throw if content that was filtered is accessed', () => {
     mockResponse.final_result.choices = [
       {

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+   <suppress>
+      <notes><![CDATA[
+         file name: express:5.2.1
+         CVE-2024-10491: res.links() header injection - not exploitable as res.links() is not used in this project.
+      ]]></notes>
+      <packageUrl regex="true">^pkg:npm/express@.*$</packageUrl>
+      <vulnerabilityName>CVE-2024-10491</vulnerabilityName>
+   </suppress>
+</suppressions>

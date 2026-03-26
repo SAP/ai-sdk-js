@@ -20,7 +20,6 @@ jobs:
         with:
           token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
           ref: 'main'
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
       - name: bump version
         uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
         id: bump
@@ -37,6 +36,14 @@ jobs:
           version: ${{ steps.bump.outputs.version }}
           user-name: sap-ai-sdk
 
+  generate-api-docs:
+    name: Generate and Push API Documentation
+    needs: [bump]
+    uses: ./.github/workflows/api-docs.yml
+    secrets: inherit
+    with:
+      version: ${{ needs.bump.outputs.version }}
+
   prepare-release-notes:
     name: Prepare Release Notes
     runs-on: ubuntu-latest
@@ -46,8 +53,6 @@ jobs:
     steps:
       - name: Checkout current repository
         uses: sap/ai-sdk-js/.github/actions/setup@main
-        with:
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
       - name: Checkout Docs Repo
         uses: actions/checkout@v6
         with:

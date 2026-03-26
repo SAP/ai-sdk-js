@@ -1,6 +1,6 @@
 {
   "name": "sap-ai-sdk",
-  "version": "2.8.0",
+  "version": "2.9.0",
   "description": "",
   "keywords": [],
   "license": "Apache-2.0",
@@ -19,6 +19,7 @@
     "lint:fix": "pnpm -r run lint:fix",
     "generate": "pnpm -r run generate",
     "apply-patches": "pnpm -r run --if-present apply-patches",
+    "doc": "node --loader ts-node/esm scripts/generate-docs.ts",
     "ai-api": "pnpm -F=@sap-ai-sdk/ai-api",
     "core": "pnpm -F=@sap-ai-sdk/core",
     "document-grounding": "pnpm -F=@sap-ai-sdk/document-grounding",
@@ -37,6 +38,7 @@
   "devDependencies": {
     "@changesets/cli": "^2.30.0",
     "@jest/globals": "^30.3.0",
+    "typedoc": "^0.28.16",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",

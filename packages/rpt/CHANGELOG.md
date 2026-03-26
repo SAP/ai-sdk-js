@@ -1,5 +1,17 @@
 # @sap-ai-sdk/rpt
 
+## 2.9.0
+
+### Minor Changes
+
+- 08c6137: [Improvement] Align parquet endpoint types with the RPT API types.
+
+### Patch Changes
+
+- Updated dependencies [cd3d8ed]
+  - @sap-ai-sdk/core@2.9.0
+  - @sap-ai-sdk/ai-api@2.9.0
+
 ## 2.8.0
 
 ### Minor Changes

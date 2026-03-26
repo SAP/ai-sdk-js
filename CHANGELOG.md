@@ -28,6 +28,22 @@
 
 -
 
+# 2.9.0
+## New Features
+
+- [orchestration] Add `getCitations()` method to retrieve source citations from models like Perplexity Sonar. (8de0013)
+
+## Improvements
+
+- [core] Add `gpt-5.2`, `anthropic--claude-4.5-opus`, `anthropic--claude-4.6-opus`, `anthropic--claude-4.6-sonnet` and `amazon-titan-embed-image` to the available model list.
+  Removed deprecated `gpt-4o` model. (cd3d8ed)
+- [orchestration] Support file input for user messages.
+  File inputs have a `type` of `file` and include a `file_data` field with a URL such as a HTTP URL or a data URL.
+  Local files must be provided as `data:MEDIATYPE;base64,DATA` with a non-empty media type and valid base64 content.
+  Availability of different file types depends on the capabilities of the underlying model and tools.
+  GPT-models do not support file inputs with the orchestration API at this time. (b822da9)
+- [rpt] Align parquet endpoint types with the RPT API types. (08c6137)
+
 # 2.8.0
 ## New Features
 

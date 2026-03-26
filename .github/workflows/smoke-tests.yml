@@ -10,8 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
-        with:
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
       - run: pnpm smoke-tests create-deployment
       - uses: vchrisb/setup-cf@f43abe0d940f27e8c59c8b29226140f3a1768496
         with:
@@ -29,7 +27,7 @@ jobs:
         run: cf stop smoke-test-app
       - name: 'Slack Notification'
         if: failure()
-        uses: slackapi/slack-github-action@v2.1.1
+        uses: slackapi/slack-github-action@v3.0.1
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook
