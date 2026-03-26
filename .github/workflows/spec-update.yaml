@@ -81,8 +81,8 @@ jobs:
           git fetch --unshallow origin main
 
           BRANCH="spec-update/$CHOICE/$REF"
-          git fetch origin $BRANCH || true
-          git checkout -B $BRANCH origin/$BRANCH || git checkout -b $BRANCH
+          git fetch origin "$BRANCH" || true
+          git checkout -B "$BRANCH" "origin/$BRANCH" || git checkout -b "$BRANCH"
           # Try to merge main, reset to clean base if that fails unless there could be an associated PR
           if ! git merge --no-edit -X theirs origin/main; then
             if [[ "$CREATE_PR" != 'true' ]]; then
@@ -90,12 +90,7 @@ jobs:
             fi
           fi
 
-          # If push fails, fall back to date-suffixed branch
-          if ! git push --force --set-upstream origin $BRANCH; then
-            BRANCH="spec-update/$CHOICE/$REF-$(date +%Y%m%d%H%M%S)"
-            git checkout -B $BRANCH
-            git push --set-upstream origin $BRANCH
-          fi
+          git push --force --set-upstream origin "$BRANCH"
           echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
 
       - name: 'Download specification file'
@@ -128,14 +123,14 @@ jobs:
           esac
 
           echo "Downloading $CHOICE specification file from $API_URL ..."
-          gh api $API_URL -H "Accept: application/vnd.github.raw" > $FILE_PATH
+          gh api $API_URL -H "Accept: application/vnd.github.raw" > "$FILE_PATH"
 
       - name: 'Exit if there are no changes'
         id: spec_diff
         # Before checking for changed files, run the linter as that also formats spec files
         run: |
           pnpm lint:fix
-          if [[ -n "$(git status --porcelain)" ]]; then
+          if [[ -n "$(git status --porcelain)" ]] || ! git diff --quiet origin/main; then
             echo "Changes detected in the specification file."
             git status
             echo "spec_diff=true" >> "$GITHUB_OUTPUT"
@@ -144,36 +139,6 @@ jobs:
             git status
             echo "spec_diff=false" >> "$GITHUB_OUTPUT"
           fi
-
-      # Refer to https://github.com/SAP/ai-sdk-java/pull/748 for rationale on this step.
-      - name: 'Fail if previous run failed'
-        if: github.event_name == 'workflow_dispatch' && steps.spec_diff.outputs.spec_diff == 'false'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          CURRENT_RUN=${{ github.run_id }}
-          RUN_NAME="Spec File Update Workflow: $CHOICE-$REF"
-          echo "Run name used for search: $RUN_NAME"
-
-          PREVIOUS_RUN=$(gh run list \
-            --workflow "${{ github.workflow }}" \
-            --branch main \
-            --json databaseId,status,conclusion,displayTitle \
-            --jq "map(select(.databaseId != ${CURRENT_RUN} and (.displayTitle | contains(\"${RUN_NAME}\")))) | .[0]")
-
-          echo "Previous run: $PREVIOUS_RUN"
-
-          if [ -n "$PREVIOUS_RUN" ] && [ "$PREVIOUS_RUN" != "null" ]; then
-            CONCLUSION=$(echo "$PREVIOUS_RUN" | jq -r '.conclusion')
-            echo "Previous run conclusion: $CONCLUSION"
-            if [ "$CONCLUSION" = "failure" ]; then
-              echo "Previous run failed and there were no spec changes since, thus failing this run as well."
-              echo "previous_run_failed=true" >> "$GITHUB_OUTPUT"
-              exit 1
-            fi
-          fi
-          echo "previous_run_failed=false" >> "$GITHUB_OUTPUT"
-          echo "No previous failed run found, current run succeeds."
 
       - name: 'Generate'
         id: generate
@@ -256,7 +221,6 @@ jobs:
           echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
           echo "| File Download | ${{ steps.download.outcome == 'success' && '✅' || '❌' }} ${{ steps.download.outcome }}" >> $GITHUB_STEP_SUMMARY
           echo "| Spec File Changes | ${{ steps.spec_diff.outputs.spec_diff == 'true' && '🔄 Changes Detected' || '⏹️ No Changes' }}" >> $GITHUB_STEP_SUMMARY
-          echo "| Previous Run Check | ${{ steps.spec_diff.outputs.previous_run_failed == 'true' && '⚠️ Failed Previous Run Detected' || '✅ No Failed Previous Run' }}" >> $GITHUB_STEP_SUMMARY
 
           if ${{ steps.spec_diff.outputs.spec_diff == 'true' }}; then
             echo "| Client Generation | ${{ steps.generate.outcome == 'success' && '✅' || '❌' }} ${{ steps.generate.outcome }}" >> $GITHUB_STEP_SUMMARY
