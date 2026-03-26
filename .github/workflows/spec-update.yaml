@@ -83,17 +83,15 @@ jobs:
           BRANCH="spec-update/$CHOICE/$REF"
           git fetch origin $BRANCH || true
           git checkout -B $BRANCH origin/$BRANCH || git checkout -b $BRANCH
-          # Try to merge main, reset to clean base if that fails
-          git merge --no-edit -X theirs origin/main || git reset --hard origin/main
-          # turn off exit on error
-          set +e
-          # Try to avoid `--force` push if possible
-          git push --set-upstream origin $BRANCH || git push --force --set-upstream origin $BRANCH
-          error_code=$?
-          # turn on exit on error
-          set -e
-          # Should the force push fail, try again with a date suffix
-          if [ $error_code -ne 0 ]; then
+          # Try to merge main, reset to clean base if that fails unless there could be an associated PR
+          if ! git merge --no-edit -X theirs origin/main; then
+            if [[ "$CREATE_PR" != 'true' ]]; then
+              git reset --hard origin/main
+            fi
+          fi
+
+          # If push fails, fall back to date-suffixed branch
+          if ! git push --force --set-upstream origin $BRANCH; then
             BRANCH="spec-update/$CHOICE/$REF-$(date +%Y%m%d%H%M%S)"
             git checkout -B $BRANCH
             git push --set-upstream origin $BRANCH
@@ -147,6 +145,7 @@ jobs:
             echo "spec_diff=false" >> "$GITHUB_OUTPUT"
           fi
 
+      # Refer to https://github.com/SAP/ai-sdk-java/pull/748 for rationale on this step.
       - name: 'Fail if previous run failed'
         if: github.event_name == 'workflow_dispatch' && steps.spec_diff.outputs.spec_diff == 'false'
         env:
