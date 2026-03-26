@@ -130,7 +130,7 @@ const response = await new AzureOpenAiChatClient('gpt-5')
 
 #### Cons
 
-- maybe atypical for JS
+- not idiomatic for JS
 
 ## Option B.1
 
