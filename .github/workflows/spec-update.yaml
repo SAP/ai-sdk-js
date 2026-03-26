@@ -145,7 +145,7 @@ jobs:
         if: steps.spec_diff.outputs.spec_diff == 'true'
         continue-on-error: true
         run: |
-          if pnpm document-grounding apply-patches ; then
+          if pnpm $CHOICE run --if-present apply-patches; then
             echo "patch_result=success" >> "$GITHUB_OUTPUT"
           else
             echo "patch_result=failure" >> "$GITHUB_OUTPUT"
