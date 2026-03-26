@@ -19,14 +19,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
-        with:
-          node-version: 22
-      
       - name: Generate API documentation
         run: |
           pnpm generate
           pnpm doc
-      
+
       - name: Setup SSH key for ai-sdk repo
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -40,7 +37,7 @@ jobs:
           HostName github.com
           IdentityFile ~/.ssh/id_rsa
           EOT
-      
+
       - name: Push generated API documentation to ai-sdk repo
         env:
           USE_SSH: true
@@ -48,18 +45,18 @@ jobs:
         run: |
           git config --global user.email "cloudsdk@sap.com"
           git config --global user.name "ai-sdk-js"
-          
+
           # Extract major version from full version (e.g., "2.8.0" -> "v2")
           FULL_VERSION="${{ inputs.version }}"
           MAJOR_VERSION=$(echo "$FULL_VERSION" | cut -d. -f1)
           VERSION="v${MAJOR_VERSION}"
-          
+
           cd ..
           git clone --depth 1 git@github.com:SAP/ai-sdk.git
-          
+
           # Copy generated docs to versioned folder
           rsync -avz --delete ai-sdk-js/knowledge-base/api-reference/ ai-sdk/static/api/${VERSION}/
-          
+
           cd ai-sdk
           git add -A
           git commit -m "Update SAP AI SDK for JavaScript API documentation ${VERSION}" || exit 0
