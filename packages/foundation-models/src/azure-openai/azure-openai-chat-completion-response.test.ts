@@ -17,7 +17,7 @@ describe('OpenAI chat completion response', () => {
     rawResponse = {
       data: mockResponse,
       status: 200,
-      headers: {},
+      headers: { 'x-aicore-request-id': 'test-request-id-456' },
       request: {}
     };
     azureOpenAiChatResponse = new AzureOpenAiChatCompletionResponse(
@@ -31,6 +31,20 @@ describe('OpenAI chat completion response', () => {
 
   it('should return raw response', () => {
     expect(azureOpenAiChatResponse.rawResponse).toBe(rawResponse);
+  });
+
+  it('should return the request ID from response headers', () => {
+    expect(azureOpenAiChatResponse.getRequestId()).toBe('test-request-id-456');
+  });
+
+  it('should return undefined when x-aicore-request-id header is not present', () => {
+    const responseWithoutId = new AzureOpenAiChatCompletionResponse({
+      data: mockResponse,
+      status: 200,
+      headers: {},
+      request: {}
+    });
+    expect(responseWithoutId.getRequestId()).toBeUndefined();
   });
 
   it('should get token usage', () => {
