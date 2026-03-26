@@ -18,6 +18,7 @@
     "lint": "pnpm -r run lint",
     "lint:fix": "pnpm -r run lint:fix",
     "generate": "pnpm -r run generate",
+    "apply-patches": "pnpm -r run --if-present apply-patches",
     "ai-api": "pnpm -F=@sap-ai-sdk/ai-api",
     "core": "pnpm -F=@sap-ai-sdk/core",
     "document-grounding": "pnpm -F=@sap-ai-sdk/document-grounding",

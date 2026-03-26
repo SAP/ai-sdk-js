@@ -77,19 +77,19 @@ export const PromptTemplatesApi = {
    * @param scenario - Path parameter.
    * @param version - Path parameter.
    * @param name - Path parameter.
-   * @param queryParameters - Object containing the following keys: includeSpec.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Resource-Group-Scope.
+   * @param queryParameters - Object containing the following keys: includeSpec.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   listPromptTemplateHistory: (
     scenario: string,
     version: string,
     name: string,
-    queryParameters?: { includeSpec?: boolean },
     headerParameters?: {
       'AI-Resource-Group'?: string;
       'AI-Resource-Group-Scope'?: 'true' | 'True' | 'false' | 'False';
-    }
+    },
+    queryParameters?: { includeSpec?: boolean }
   ) =>
     new OpenApiRequestBuilder<PromptTemplateListResponse>(
       'get',
