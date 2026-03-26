@@ -153,7 +153,7 @@ alternative usage:
 import { ChatClient } from '@sap-ai-sdk/foundation-models/azure-openai';
 
 // Chat API
-const response = await new ChatClient('gpt-5').createChatCompletion({
+const response = await new ChatClient('gpt-5').create({
   messages: [...]
 });
 ```
