@@ -40,7 +40,7 @@ jobs:
                 '{branch: $branch, service: $service, ref: $ref}')
               STALE+=("$ENTRY")
             fi
-          done < <(gh api repos/SAP/ai-sdk-js/branches --paginate --jq '.[].name' | grep '^spec-update/')
+          done < <(gh api "repos/SAP/ai-sdk-js/branches" --paginate --jq '.[].name' | grep '^spec-update/')
 
           echo "Found ${#STALE[@]} stale branch(es)"
           echo "branches=$(printf '%s\n' "${STALE[@]}" | jq -sc .)" >> "$GITHUB_OUTPUT"
