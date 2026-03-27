@@ -1,4 +1,4 @@
-import { createLogger } from '@sap-cloud-sdk/util';
+import { createLogger, pickValueIgnoreCase } from '@sap-cloud-sdk/util';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { AzureOpenAiEmbeddingOutput } from './azure-openai-embedding-types.js';
 
@@ -18,6 +18,14 @@ export class AzureOpenAiEmbeddingResponse {
 
   constructor(public readonly rawResponse: HttpResponse) {
     this._data = rawResponse.data;
+  }
+
+  /**
+   * Gets the request ID from the response headers.
+   * @returns The request ID, or undefined if the header is not present.
+   */
+  getRequestId(): string | undefined {
+    return pickValueIgnoreCase(this.rawResponse.headers, 'x-aicore-request-id');
   }
 
   /**

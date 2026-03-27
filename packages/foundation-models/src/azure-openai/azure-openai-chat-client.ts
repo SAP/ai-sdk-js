@@ -61,16 +61,8 @@ export class AzureOpenAiChatClient {
         controller.abort();
       });
     }
-    const response =
-      new AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>();
-    response.stream = (
-      await this.createStream(request, controller, requestConfig)
-    )
-      ._pipe(AzureOpenAiChatCompletionStream._processChunk)
-      ._pipe(AzureOpenAiChatCompletionStream._processToolCalls, response)
-      ._pipe(AzureOpenAiChatCompletionStream._processFinishReason, response)
-      ._pipe(AzureOpenAiChatCompletionStream._processTokenUsage, response);
-    return response;
+
+    return this.createStreamResponse(request, controller, requestConfig);
   }
 
   private async executeRequest(
@@ -95,12 +87,14 @@ export class AzureOpenAiChatClient {
     );
   }
 
-  private async createStream(
+  private async createStreamResponse(
     request: AzureOpenAiChatCompletionParameters,
     controller: AbortController,
     requestConfig?: CustomRequestConfig
-  ): Promise<AzureOpenAiChatCompletionStream<any>> {
-    const response = await this.executeRequest(
+  ): Promise<
+    AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>
+  > {
+    const streamResponse = await this.executeRequest(
       {
         ...request,
         stream: true,
@@ -114,6 +108,21 @@ export class AzureOpenAiChatClient {
         signal: controller.signal
       }
     );
-    return AzureOpenAiChatCompletionStream._create(response, controller);
+
+    const response =
+      new AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>(
+        streamResponse
+      );
+
+    response.stream = AzureOpenAiChatCompletionStream._create(
+      streamResponse,
+      controller
+    )
+      ._pipe(AzureOpenAiChatCompletionStream._processChunk)
+      ._pipe(AzureOpenAiChatCompletionStream._processToolCalls, response)
+      ._pipe(AzureOpenAiChatCompletionStream._processFinishReason, response)
+      ._pipe(AzureOpenAiChatCompletionStream._processTokenUsage, response);
+
+    return response;
   }
 }

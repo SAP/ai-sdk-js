@@ -1,20 +1,11 @@
-name: spec update
+name: 'Spec File Update Workflow'
 run-name: 'spec update: ${{ inputs.file }}-${{ inputs.file-ref }}'
-
-# Notes:
-# To use this workflow as a service owner:
-#   1. Ask an SAP Cloud SDK for AI team member to add you to the service-owner team (read access is enough).
-#   2. Generate a fine-grained PAT with:
-#     - access to the SAP/ai-sdk-js and SAP/ai-sdk-java repos
-#.    - the read and write permission for "Actions"
-#   3. Save the PAT as a secret under `PUBLIC_GITHUB_SDKS_PAT`.
-#   4. Ask an SAP Cloud SDK for AI team member to create the sdk-integration and sdk-integration-cleanup workflows.
 
 on:
   workflow_dispatch:
     inputs:
-      service:
-        description: 'Which service spec to update'
+      file:
+        description: 'Which spec file to update'
         type: choice
         required: false
         options:
@@ -31,29 +22,29 @@ on:
         #
         # - rpt
         default: orchestration
-      ref:
+      file-ref:
         description: 'Branch or tag to checkout the spec file from'
         required: false
         default: main
         type: string
       create-pr:
-        description: 'Create a pull request'
+        description: 'Create a pull request after updating the spec file'
         required: false
         default: true
         type: boolean
   workflow_call:
     inputs:
-      service:
-        description: 'Which service to update'
+      file:
+        description: 'Which spec file to update'
         required: true
         type: string
-      ref:
+      file-ref:
         description: 'Branch or tag to checkout the spec file from'
         required: false
         default: main
         type: string
       create-pr:
-        description: 'Create a pull request'
+        description: 'Create a pull request after updating the spec file'
         required: false
         default: true
         type: boolean
@@ -72,10 +63,9 @@ jobs:
       compilation_result: ${{ steps.compile.outputs.compilation_result }}
       test_result: ${{ steps.compile.outputs.test_result }}
     env:
-      SERVICE: ${{ inputs.service }}
-      REF: ${{ inputs.ref }}
+      CHOICE: ${{ inputs.file }}
+      REF: ${{ inputs.file-ref }}
       CREATE_PR: ${{ inputs.create-pr }}
-      BRANCH: spec-update/${{ inputs.service }}/${{ inputs.ref }}
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
@@ -89,6 +79,7 @@ jobs:
           git config --global user.name "SAP Cloud SDK Bot"
           git fetch --unshallow origin main
 
+          BRANCH="spec-update/$CHOICE/$REF"
           git fetch origin "$BRANCH" || true
           git checkout -B "$BRANCH" "origin/$BRANCH" || git checkout -b "$BRANCH"
           # Try to merge main, reset to clean base if that fails unless there could be an associated PR
@@ -99,6 +90,7 @@ jobs:
           fi
 
           git push --force --set-upstream origin "$BRANCH"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
 
       - name: 'Download specification file'
         id: download
@@ -106,7 +98,7 @@ jobs:
           GH_HOST: github.tools.sap
           GH_ENTERPRISE_TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
         run: |
-          case $SERVICE in
+          case $CHOICE in
             ai-api)
               API_URL="repos/cloudsdk/cloud-sdk-java-tests/contents/aicore.yaml?ref=$REF"
               FILE_PATH='packages/ai-api/src/spec/AI_CORE_API.yaml'
@@ -129,7 +121,7 @@ jobs:
             #   ;;
           esac
 
-          echo "Downloading $SERVICE specification file from $API_URL ..."
+          echo "Downloading $CHOICE specification file from $API_URL ..."
           gh api $API_URL -H "Accept: application/vnd.github.raw" > "$FILE_PATH"
 
       - name: 'Exit if there are no changes'
@@ -177,7 +169,7 @@ jobs:
         run: |
           git add --all
           git status
-          git commit -m "Update $SERVICE based on $REF"
+          git commit -m "Update $CHOICE based on $REF"
           git push --set-upstream origin ${{ steps.branch.outputs.branch }}
 
       - name: 'Create PR'
@@ -185,16 +177,17 @@ jobs:
         if: ${{ env.CREATE_PR == 'true' && steps.spec_diff.outputs.spec_diff == 'true'}}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: ${{ steps.branch.outputs.branch }}
         run: |
           if gh pr list --head $BRANCH --json number -q '.[].number' | grep -q .; then
             echo "An open PR already exists for this branch. Skipping PR creation."
             exit 0
           fi
 
-          PR_URL=$(gh pr create --base main --head $BRANCH --title "feat: Update $SERVICE specification" --body "
+          PR_URL=$(gh pr create --base main --head $BRANCH --title "feat: Update $CHOICE specification" --body "
           ## Context
 
-          Update $SERVICE specification file based on $REF.
+          Update $CHOICE specification file based on $REF.
 
           This PR was created automatically by the [spec-update workflow](https://github.com/SAP/ai-sdk-js/actions/workflows/spec-update.yaml).
           You can commit on top of this branch, but as long as this PR is open the action can't be re-run.
@@ -219,7 +212,7 @@ jobs:
           DIFF_URL="https://github.com/SAP/ai-sdk-js/compare/main...$BRANCH"
           echo "## Workflow Execution Summary" >> $GITHUB_STEP_SUMMARY
 
-          echo "**Service:** $SERVICE" >> $GITHUB_STEP_SUMMARY
+          echo "**Choice:** $CHOICE" >> $GITHUB_STEP_SUMMARY
           echo "**Ref:** $REF" >> $GITHUB_STEP_SUMMARY
 
           echo "" >> $GITHUB_STEP_SUMMARY
