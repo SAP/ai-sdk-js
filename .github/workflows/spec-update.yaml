@@ -131,7 +131,7 @@ jobs:
           esac
 
           echo "Downloading $SERVICE specification file from $API_URL ..."
-          gh api $API_URL -H "Accept: application/vnd.github.raw" > "$FILE_PATH"
+          gh api "$API_URL" -H "Accept: application/vnd.github.raw" > "$FILE_PATH"
 
       - name: 'Exit if there are no changes'
         id: spec_diff
