@@ -61,11 +61,11 @@ Therefore, we almost only need to consider the configuration part of the provide
 
 1. Automatically resolve the deployment URL based on the model name, resource group and so on, and construct URL for provider SDKs
 2. Retrieve and, if possible, refresh authorization token based on the AI Core service secret and set the authorization header
-3. Set AI SDK header for better usage tracking
+3. Add the SAP Cloud SDK for AI header for better usage tracking
 
 ### Option B.1: Provide configuration for official provider SDKs
 
-First, we consider migrating our existing Azure OpenAI client to the official OpenAI SDK, which is widely used and has good extensibility.
+First, we consider migrating our existing Azure OpenAI client to the official `OpenAI` SDK, which is widely used and has good extensibility.
 Users can create a configuration object based on the input for AI Core.
 
 ```ts
@@ -142,7 +142,7 @@ client.chat.completions.create({
 Pros:
 
 - We still have the chance to monkey patch the provider client implementation.
-- We manage the OpenAI SDK dependency so that users do not need to worry about the compatibility between the client and the SDK version.
+- We manage the `OpenAI` SDK dependency so that users do not need to worry about the compatibility between the client and the SDK version.
 - Same approach can be applied to other providers for hiding hacking details, providing a consistent user experience.
 - In case of provider SDK or service breaking changes, we can intercept at least those related to configuration such as URL construction.
 - Hide dummy values or hacky workarounds from users.
