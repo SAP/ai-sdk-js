@@ -1,4 +1,5 @@
 name: 'Spec File Update Workflow'
+run-name: 'spec update: ${{ inputs.file }}-${{ inputs.file-ref }}'
 
 on:
   workflow_dispatch:
@@ -79,10 +80,16 @@ jobs:
           git fetch --unshallow origin main
 
           BRANCH="spec-update/$CHOICE/$REF"
-          git fetch origin $BRANCH || true
-          git checkout -B $BRANCH origin/$BRANCH || git checkout -b $BRANCH
-          git rebase -X theirs origin/main
-          git push --force --set-upstream origin $BRANCH
+          git fetch origin "$BRANCH" || true
+          git checkout -B "$BRANCH" "origin/$BRANCH" || git checkout -b "$BRANCH"
+          # Try to merge main, reset to clean base if that fails unless there could be an associated PR
+          if ! git merge --no-edit -X theirs origin/main; then
+            if [[ "$CREATE_PR" != 'true' ]]; then
+              git reset --hard origin/main
+            fi
+          fi
+
+          git push --force --set-upstream origin "$BRANCH"
           echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
 
       - name: 'Download specification file'
@@ -115,14 +122,14 @@ jobs:
           esac
 
           echo "Downloading $CHOICE specification file from $API_URL ..."
-          gh api $API_URL -H "Accept: application/vnd.github.raw" > $FILE_PATH
+          gh api $API_URL -H "Accept: application/vnd.github.raw" > "$FILE_PATH"
 
       - name: 'Exit if there are no changes'
         id: spec_diff
         # Before checking for changed files, run the linter as that also formats spec files
         run: |
           pnpm lint:fix
-          if [[ -n "$(git status --porcelain)" ]]; then
+          if [[ -n "$(git status --porcelain)" ]] || ! git diff --quiet origin/main; then
             echo "Changes detected in the specification file."
             git status
             echo "spec_diff=true" >> "$GITHUB_OUTPUT"
