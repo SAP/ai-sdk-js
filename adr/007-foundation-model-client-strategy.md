@@ -163,7 +163,7 @@ Pros:
 
 - No noticeable extra effort compared to B.2 but with more flexibility for users to choose.
 - Same approach can be extended to other providers, providing a consistent user experience.
-- Allow us to have discussion with users and collect early feedbacks instead of we blindly choose one approach.
+- Allow us to have discussion with users and collect early feedback instead of we blindly choose one approach.
 
 Cons:
 
