@@ -49,7 +49,7 @@ jobs:
         run: |
           BRANCH="spec-update/$SERVICE/$REF"
           if git ls-remote --exit-code --heads https://github.com/SAP/ai-sdk-js.git "$BRANCH" > /dev/null 2>&1; then
-            gh api repos/SAP/ai-sdk-js/git/refs/heads/$BRANCH -X DELETE
+            gh api "repos/SAP/ai-sdk-js/git/refs/heads/$BRANCH" -X DELETE
             echo "Deleted branch: $BRANCH"
           else
             echo "Branch $BRANCH does not exist, nothing to delete."

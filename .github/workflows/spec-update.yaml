@@ -107,7 +107,7 @@ jobs:
           GH_HOST: github.tools.sap
           GH_ENTERPRISE_TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
         run: |
-          case $SERVICE in
+          case "$SERVICE" in
             ai-api)
               API_URL="repos/cloudsdk/cloud-sdk-java-tests/contents/aicore.yaml?ref=$REF"
               FILE_PATH='packages/ai-api/src/spec/AI_CORE_API.yaml'
@@ -179,7 +179,7 @@ jobs:
           git add --all
           git status
           git commit -m "Update $SERVICE based on $REF"
-          git push --set-upstream origin ${{ steps.branch.outputs.branch }}
+          git push --set-upstream origin "$BRANCH"
 
       - name: 'Create PR'
         id: create-pr
@@ -187,12 +187,12 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if gh pr list --head $BRANCH --json number -q '.[].number' | grep -q .; then
+          if gh pr list --head "$BRANCH" --json number -q '.[].number' | grep -q .; then
             echo "An open PR already exists for this branch. Skipping PR creation."
             exit 0
           fi
 
-          PR_URL=$(gh pr create --base main --head $BRANCH --title "feat: Update $SERVICE specification" --body "
+          PR_URL=$(gh pr create --base main --head "$BRANCH" --title "feat: Update $SERVICE specification" --body "
           ## Context
 
           Update $SERVICE specification file based on $REF.

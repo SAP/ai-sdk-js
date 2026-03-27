@@ -12,10 +12,10 @@ jobs:
       - name: 'Check permission'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ACTOR: ${{ github.actor }}
+          ACTOR: ${{ github.triggering_actor }}
           REPO: ${{ github.repository }}
         run: |
-          HAS_MAINTAIN=$(gh api repos/$REPO/collaborators/$ACTOR/permission --jq '.user.permissions.maintain')
+          HAS_MAINTAIN=$(gh api "repos/$REPO/collaborators/$ACTOR/permission" --jq '.user.permissions.maintain')
           echo "Maintain permission for $ACTOR: $HAS_MAINTAIN"
 
           if [ "$HAS_MAINTAIN" = "true" ]; then
