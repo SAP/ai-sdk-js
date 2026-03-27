@@ -12,7 +12,7 @@ At the moment of writing, we only support Azure OpenAI with chat completion.
 The current approach is to generate types based on the Azure OpenAI OpenAPI spec (prior to the v1 API), then handwrite a client.
 However the market is evolving rapidly, further features such as Responses API or Realtime API need to be supported.
 There are also demands for supporting other LLM providers.
-Thus, we need to review our current approach, if it can be extended for supportting new features and potentially new providers within a reasonable effort, or suggest alternatives.
+Thus, we need to review our current approach, if it can be extended for supporting new features and potentially new providers within a reasonable effort, or suggest alternatives.
 
 ## Decision
 
