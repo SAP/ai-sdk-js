@@ -5,8 +5,9 @@ run-name: 'spec update: ${{ inputs.file }}-${{ inputs.file-ref }}'
 # To use this workflow as a service owner:
 #   1. Ask an SAP Cloud SDK for AI team member to add you to the service-owner team (read access is enough).
 #   2. Generate a fine-grained PAT with:
-#     - access to the SAP/ai-sdk-js and SAP/ai-sdk-java repos
-#.    - the read and write permission for "Actions"
+#     - repo access: SAP/ai-sdk-js and SAP/ai-sdk-java
+#     - permissions:  Actions - read and write
+#.    - token expiration: up to you, you are responsible for rotation
 #   3. Save the PAT as a secret under `PUBLIC_GITHUB_SDKS_PAT`.
 #   4. Ask an SAP Cloud SDK for AI team member to create the sdk-integration and sdk-integration-cleanup workflows.
 
