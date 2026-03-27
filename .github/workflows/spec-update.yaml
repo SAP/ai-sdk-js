@@ -1,5 +1,5 @@
 name: 'Spec File Update Workflow'
-run-name: 'Spec File Update Workflow: ${{ inputs.file }}-${{ inputs.file-ref }}'
+run-name: 'spec update: ${{ inputs.file }}-${{ inputs.file-ref }}'
 
 on:
   workflow_dispatch:
