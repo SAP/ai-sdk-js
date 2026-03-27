@@ -85,13 +85,11 @@ jobs:
 
   notify-failure:
     needs:
-      [
-        get-orchestration-reference,
-        update-ai-api,
-        update-document-grounding,
-        update-prompt-registry,
-        update-orchestration
-      ]
+      - get-orchestration-reference
+      - update-ai-api
+      - update-document-grounding
+      - update-prompt-registry
+      - update-orchestration
     if: failure()
     runs-on: ubuntu-latest
     steps:
