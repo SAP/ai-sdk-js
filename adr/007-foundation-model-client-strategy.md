@@ -20,7 +20,7 @@ Thus, we need to review our current approach, if it can be extended for supporti
 
 > [!WARNING]
 > This is a proposal and not decided yet.
-> We will decide on the approach after collecting the user feedbacks.
+> We will decide on the approach after collecting user feedback.
 
 B.3
 
