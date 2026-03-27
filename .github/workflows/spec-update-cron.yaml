@@ -1,4 +1,4 @@
-name: 'Spec File Update Workflow (Cron Job)'
+name: spec update (cron job)
 
 on:
   schedule:
@@ -53,24 +53,24 @@ jobs:
   update-ai-api:
     uses: ./.github/workflows/spec-update.yaml
     with:
-      file: ai-api
-      file-ref: main
+      service: ai-api
+      ref: main
       create-pr: true
     secrets: inherit
 
   update-document-grounding:
     uses: ./.github/workflows/spec-update.yaml
     with:
-      file: document-grounding
-      file-ref: main
+      service: document-grounding
+      ref: main
       create-pr: true
     secrets: inherit
 
   update-prompt-registry:
     uses: ./.github/workflows/spec-update.yaml
     with:
-      file: prompt-registry
-      file-ref: main
+      service: prompt-registry
+      ref: main
       create-pr: true
     secrets: inherit
 
@@ -78,13 +78,18 @@ jobs:
     needs: get-orchestration-reference
     uses: ./.github/workflows/spec-update.yaml
     with:
-      file: orchestration
-      file-ref: ${{ needs.get-orchestration-reference.outputs.orchestration-branch }}
+      service: orchestration
+      ref: ${{ needs.get-orchestration-reference.outputs.orchestration-branch }}
       create-pr: true
     secrets: inherit
 
   notify-failure:
-    needs: [get-orchestration-reference, update-ai-api, update-document-grounding, update-prompt-registry, update-orchestration]
+    needs:
+      - get-orchestration-reference
+      - update-ai-api
+      - update-document-grounding
+      - update-prompt-registry
+      - update-orchestration
     if: failure()
     runs-on: ubuntu-latest
     steps:
