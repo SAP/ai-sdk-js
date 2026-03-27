@@ -15,15 +15,12 @@ jobs:
           ACTOR: ${{ github.actor }}
           REPO: ${{ github.repository }}
         run: |
-          PERMISSION=$(gh api repos/$REPO/collaborators/$ACTOR/permission --jq '.permission')
-          echo "Permission level for $ACTOR: $PERMISSION"
+          HAS_MAINTAIN=$(gh api repos/$REPO/collaborators/$ACTOR/permission --jq '.user.permissions.maintain')
+          echo "Maintain permission for $ACTOR: $HAS_MAINTAIN"
 
-          case "$PERMISSION" in
-            maintain|admin)
-              echo "Access granted: $ACTOR has '$PERMISSION' permission."
-              ;;
-            *)
-              echo "Access denied: $ACTOR has '$PERMISSION' permission, but 'maintain' or higher is required."
-              exit 1
-              ;;
-          esac
+          if [ "$HAS_MAINTAIN" = "true" ]; then
+            echo "Access granted: $ACTOR has maintain permission."
+          else
+            echo "Access denied: $ACTOR does not have maintain permission."
+            exit 1
+          fi
