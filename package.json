@@ -37,7 +37,7 @@
   "devDependencies": {
     "@changesets/cli": "^2.30.0",
     "@jest/globals": "^30.3.0",
-    "typedoc": "^0.28.16",
+    "typedoc": "^0.28.18",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
