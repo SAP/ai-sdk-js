@@ -1,3 +1,4 @@
+import { pickValueIgnoreCase } from '@sap-cloud-sdk/util';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type {
   AzureOpenAiChatCompletionMessageToolCalls,
@@ -16,6 +17,14 @@ export class AzureOpenAiChatCompletionResponse {
   public readonly _data: AzureOpenAiCreateChatCompletionResponse;
   constructor(public readonly rawResponse: HttpResponse) {
     this._data = rawResponse.data;
+  }
+
+  /**
+   * Gets the request ID from the response headers.
+   * @returns The request ID, or undefined if the header is not present.
+   */
+  getRequestId(): string | undefined {
+    return pickValueIgnoreCase(this.rawResponse.headers, 'x-aicore-request-id');
   }
 
   /**

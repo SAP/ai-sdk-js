@@ -14,8 +14,6 @@ jobs:
       contents: write
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
-        with:
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
       - name: 'Run OWASP Dependency Check'
         uses: dependency-check/Dependency-Check_Action@main
         id: depcheck
@@ -34,6 +32,7 @@ jobs:
             --nvdApiKey ${{ secrets.NVD_API_KEY }}
             --ossIndexUsername ${{ vars.OSS_INDEX_USERNAME }}
             --ossIndexPassword ${{ secrets.OSS_INDEX_PASSWORD }}
+            --suppression .github/owasp-suppressions.xml
 
       - name: 'Upload OWASP Dependency Check Report'
         if: always() && steps.depcheck.conclusion != 'skipped'
@@ -48,7 +47,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: 'Slack Notification'
         if: failure()
-        uses: slackapi/slack-github-action@v2.1.1
+        uses: slackapi/slack-github-action@v3.0.1
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook

@@ -21,8 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
-        with:
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
       - name: Create .env file
         env:
           AICORE_SERVICE_KEY: ${{ secrets[matrix.secret-name] }}
@@ -49,7 +47,7 @@ jobs:
         run: pnpm test:e2e
       - name: 'Slack Notification'
         if: failure()
-        uses: slackapi/slack-github-action@v2.1.1
+        uses: slackapi/slack-github-action@v3.0.1
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook
