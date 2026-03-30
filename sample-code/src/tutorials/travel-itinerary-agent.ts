@@ -49,7 +49,7 @@ const toolNode = new ToolNode(tools);
 
 // Create a model
 const model = new AzureOpenAiChatClient({
-  modelName: 'gpt-5',
+  modelName: 'gpt-5-mini',
   maxRetries: 0
 });
 

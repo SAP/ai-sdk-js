@@ -221,7 +221,7 @@ The most significant change is the consolidation of `llm` and `templating` modul
 const config = {
   llm: {
     model_name: 'gpt-5',
-    model_params: {}
+    model_params: { }
   },
   templating: {
     template: [
@@ -272,7 +272,7 @@ orchestrationClient.chatCompletion({
 ```typescript
 llm: {
   model_name: 'gpt-5',
-  model_params: { }
+  model_params: { max_completion_tokens: 300 }
 }
 ```
 
@@ -281,7 +281,7 @@ llm: {
 promptTemplating: {
   model: {
     name: 'gpt-5',
-    params: { }
+    params: { max_completion_tokens: 300 }
   }
 }
 ```
