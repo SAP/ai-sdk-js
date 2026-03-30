@@ -85,4 +85,3 @@ jobs:
             --head "$BRANCH_NAME"
           
           # Enable auto-merge for the PR (requires auto-merge to be enabled in repo settings)
-          gh pr merge --squash --repo SAP/ai-sdk "$BRANCH_NAME" || echo "Auto-merge not enabled or PR not mergeable yet"
