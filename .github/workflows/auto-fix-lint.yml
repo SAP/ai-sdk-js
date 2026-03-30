@@ -10,10 +10,16 @@ jobs:
     if: github.actor != 'dependabot[bot]' && !github.event.pull_request.head.repo.fork
     runs-on: ubuntu-latest
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.SAP_AI_SDK_BOT_APP_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
           ref: ${{ github.head_ref }}
-          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
       - run: pnpm lint:fix
       - name: Commit Changes if needed
         run: |
