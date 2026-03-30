@@ -32,7 +32,7 @@ describe('stream util tests', () => {
       },
       model: {
         name: 'gpt-5-mini',
-        params: { max_tokens: 50, temperature: 0.1 }
+        params: { max_tokens: 50 }
       }
     }
   };

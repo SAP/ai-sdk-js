@@ -232,7 +232,7 @@ export interface OrchestrationModuleConfig {
  *   },
  *   {
  *     promptTemplating: {
- *       model: { name: 'gpt-5' }
+ *       model: { name: 'gpt-5-mini' }
  *     }
  *   }
  * ];

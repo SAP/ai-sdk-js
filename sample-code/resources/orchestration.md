@@ -26,7 +26,7 @@ import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 const orchestrationClient = new OrchestrationClient({
   llm: {
     model_name: 'gpt-5',
-    model_params: { max_tokens: 50, temperature: 0.1 }
+    model_params: { max_tokens: 50 }
   },
   templating: {
     template: [
@@ -51,7 +51,7 @@ import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 const orchestrationClient = new OrchestrationClient({
   llm: {
     model_name: 'gpt-5',
-    model_params: { max_tokens: 50, temperature: 0.1 }
+    model_params: { max_tokens: 50 }
   }
 });
 

@@ -214,7 +214,7 @@ expectType<Promise<OrchestrationResponse>>(
     promptTemplating: {
       model: {
         name: 'gpt-5-mini',
-        params: { max_tokens: 50, temperature: 0.1 }
+        params: { max_tokens: 50 }
       },
       prompt: {
         template: [{ role: 'user', content: 'Hello!' }]
@@ -282,8 +282,7 @@ expectType<Promise<OrchestrationResponse>>(
       "llm_module_config": {
         "model_name": "gpt-5-mini",
         "model_params": {
-          "max_tokens": 50,
-          "temperature": 0.1
+          "max_tokens": 50
         }
       },
       "templating_module_config": {
@@ -368,7 +367,6 @@ expectError<any>(
  */
 expectAssignable<LlmModelParams>({
   max_tokens: 50,
-  temperature: 0.2,
   random_property: 'random - value'
 });
 
@@ -382,7 +380,6 @@ expectType<Promise<OrchestrationResponse>>(
         name: 'gpt-5-mini',
         params: {
           max_tokens: 50,
-          temperature: 0.1,
           random_property: 'random - value'
         }
       },

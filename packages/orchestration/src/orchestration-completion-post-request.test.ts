@@ -16,7 +16,7 @@ describe('construct completion post request', () => {
       },
       model: {
         name: 'gpt-5-mini',
-        params: { max_tokens: 50, temperature: 0.1 }
+        params: { max_tokens: 50 }
       }
     }
   };
@@ -41,7 +41,7 @@ describe('construct completion post request', () => {
         prompt: { template: [] },
         model: {
           name: 'gpt-5-mini',
-          params: { max_tokens: 50, temperature: 0.1 }
+          params: { max_tokens: 50 }
         }
       }
     };
@@ -70,7 +70,7 @@ describe('construct completion post request', () => {
         },
         model: {
           name: 'gpt-5-mini',
-          params: { max_tokens: 50, temperature: 0.1 }
+          params: { max_tokens: 50 }
         }
       }
     };
@@ -111,7 +111,7 @@ describe('construct completion post request', () => {
         },
         model: {
           name: 'gpt-5-mini',
-          params: { max_tokens: 50, temperature: 0.1 }
+          params: { max_tokens: 50 }
         }
       }
     };
@@ -172,7 +172,7 @@ describe('construct completion post request', () => {
         },
         model: {
           name: 'gpt-5-mini',
-          params: { max_tokens: 50, temperature: 0.1 }
+          params: { max_tokens: 50 }
         }
       }
     };
@@ -218,7 +218,7 @@ describe('construct completion post request', () => {
         },
         model: {
           name: 'gpt-5-mini',
-          params: { max_tokens: 50, temperature: 0.1 }
+          params: { max_tokens: 50 }
         }
       },
       filtering: {
@@ -254,7 +254,7 @@ describe('construct completion post request', () => {
         },
         model: {
           name: 'gpt-5-mini',
-          params: { max_tokens: 50, temperature: 0.1 }
+          params: { max_tokens: 50 }
         }
       },
       filtering: {}
@@ -279,7 +279,7 @@ describe('construct completion post request', () => {
         },
         model: {
           name: 'gpt-5-mini',
-          params: { max_tokens: 50, temperature: 0.1 }
+          params: { max_tokens: 50 }
         }
       },
       filtering: {

@@ -39,8 +39,7 @@ const defaultJsonConfig = `{
       "model": {
         "name": "gpt-5-mini",
         "params": {
-          "max_tokens": 50,
-          "temperature": 0.1
+          "max_tokens": 50
         }
       },
       "prompt": {
@@ -92,7 +91,7 @@ describe('orchestration service client', () => {
       promptTemplating: {
         model: {
           name: 'gpt-5-mini',
-          params: { max_tokens: 50, temperature: 0.1 }
+          params: { max_tokens: 50 }
         }
       }
     };
@@ -235,7 +234,7 @@ describe('orchestration service client', () => {
       promptTemplating: {
         model: {
           name: 'gpt-5-mini',
-          params: { max_tokens: 50, temperature: 0.1 }
+          params: { max_tokens: 50 }
         },
         prompt: {
           template: [
@@ -304,7 +303,7 @@ describe('orchestration service client', () => {
       promptTemplating: {
         model: {
           name: 'gpt-5-mini',
-          params: { max_tokens: 50, temperature: 0.1 }
+          params: { max_tokens: 50 }
         },
         prompt: {
           template: [
@@ -355,7 +354,7 @@ describe('orchestration service client', () => {
       promptTemplating: {
         model: {
           name: 'gpt-5-mini',
-          params: { max_tokens: 50, temperature: 0.1 }
+          params: { max_tokens: 50 }
         },
         prompt: {
           template: [
@@ -422,7 +421,7 @@ describe('orchestration service client', () => {
       promptTemplating: {
         model: {
           name: 'gpt-5-mini',
-          params: { max_tokens: 50, temperature: 0.1 }
+          params: { max_tokens: 50 }
         }
       }
     };
