@@ -20,7 +20,6 @@ jobs:
         uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
           ref: ${{ github.head_ref }}
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           pnpm-install-args: --lockfile-only
           token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
 
@@ -28,7 +27,7 @@ jobs:
         run: |
           if [[ -n "$(git status --porcelain)" ]]; then
             git config --global user.email "cloud-sdk-js@github.com"
-            git config --global user.name "cloud-sdk-js"  
+            git config --global user.name "cloud-sdk-js"
             git add pnpm-lock.yaml
             git commit -m "chore: update pnpm-lock.yaml"
             git push
