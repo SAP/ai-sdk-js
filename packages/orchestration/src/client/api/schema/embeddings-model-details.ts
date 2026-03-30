@@ -17,7 +17,7 @@ export type EmbeddingsModelDetails = {
   /**
    * Timeout for the Embeddings request in seconds. This parameter is currently ignored for Vertex AI models.
    * Default: 600.
-   * Maximum: 600.
+   * Maximum: 1200.
    * Minimum: 1.
    */
   timeout?: number;
