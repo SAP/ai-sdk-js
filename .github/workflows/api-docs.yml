@@ -71,7 +71,7 @@ jobs:
           git checkout -b "$BRANCH_NAME"
           
           git add -A
-          git commit -m "Update SAP AI SDK for JavaScript API documentation ${VERSION}"
+          git commit -m "Update SAP AI SDK for JavaScript API documentation ${VERSION}" || exit 0
           git push origin "$BRANCH_NAME"
           
           # Create a pull request using GitHub CLI
