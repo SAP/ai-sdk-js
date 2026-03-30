@@ -232,8 +232,8 @@ importers:
         version: 5.2.1
     devDependencies:
       '@sap/cds-dk':
-        specifier: ^9.8.1
-        version: 9.8.1(@eslint/js@9.39.4)
+        specifier: ^9.8.2
+        version: 9.8.2(@eslint/js@9.39.4)
 
   sample-code:
     dependencies:
@@ -281,7 +281,7 @@ importers:
         version: 5.2.1
       langchain:
         specifier: 0.3.37
-        version: 0.3.37(@langchain/core@0.3.80(openai@5.12.2(ws@8.20.0)(zod@3.25.76)))(axios@1.13.6)(handlebars@4.7.8)(openai@5.12.2(ws@8.20.0)(zod@3.25.76))(ws@8.20.0)
+        version: 0.3.37(@langchain/core@0.3.80(openai@5.12.2(ws@8.20.0)(zod@3.25.76)))(axios@1.14.0)(handlebars@4.7.9)(openai@5.12.2(ws@8.20.0)(zod@3.25.76))(ws@8.20.0)
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
@@ -354,7 +354,7 @@ importers:
         version: 5.2.1
       langchain:
         specifier: 0.3.37
-        version: 0.3.37(@langchain/core@0.3.80(openai@5.12.2(ws@8.20.0)(zod@3.25.76)))(axios@1.13.6)(handlebars@4.7.8)(openai@5.12.2(ws@8.20.0)(zod@3.25.76))(ws@8.20.0)
+        version: 0.3.37(@langchain/core@0.3.80(openai@5.12.2(ws@8.20.0)(zod@3.25.76)))(axios@1.14.0)(handlebars@4.7.9)(openai@5.12.2(ws@8.20.0)(zod@3.25.76))(ws@8.20.0)
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
@@ -1452,8 +1452,8 @@ packages:
     engines: {node: '>=20'}
     hasBin: true
 
-  '@sap/cds-dk@9.8.1':
-    resolution: {integrity: sha512-qeZjqekEbvLQl5sYKStOtJKXIeXbF9g6qraFhR3YDVpGCTAIA64A4NDOAwfRDTIsIw8wZQsQD7Wut7CW638cow==}
+  '@sap/cds-dk@9.8.2':
+    resolution: {integrity: sha512-PGynoQpOCD8Nsr0EEzsEHWg8szYBLVtVd6byxvaaAPYBkNAj2WA+kin6gWaDTiyG3kJa0BSGPk4PCbA2xDoE9A==}
     hasBin: true
 
   '@sap/cds-fiori@2.3.0':
@@ -1461,8 +1461,8 @@ packages:
     peerDependencies:
       '@sap/cds': '>=8'
 
-  '@sap/cds-mtxs@3.8.0':
-    resolution: {integrity: sha512-8P/CKQbdbKH/1ZmgrRWiReXFb9MjLf/TjEH/MrbiJEGWCIv/bTKL6nNb0BIcBa7HQhekVqapa/cwx241NEnAVQ==}
+  '@sap/cds-mtxs@3.8.1':
+    resolution: {integrity: sha512-FUm1of08WsZ1O3eur7OGj7ZYp9Gy3RuYEGBZK+zosSPyJ3QrBhBzKwYvbh2DJdbv3P/xuk46NGg5yz914qZxrw==}
     hasBin: true
     peerDependencies:
       '@sap/cds': ^9
@@ -2048,6 +2048,9 @@ packages:
 
   axios@1.13.6:
     resolution: {integrity: sha512-ChTCHMouEe2kn713WHbQGcuYrr6fXTBiu460OTwWrWob16g1bXn4vtz07Ope7ewMozJAnEquLk5lWQWtBig9DQ==}
+
+  axios@1.14.0:
+    resolution: {integrity: sha512-3Y8yrqLSwjuzpXuZ0oIYZ/XGgLwUIBU3uLvbcpb0pidD9ctpShJd43KSlEEkVQg6DS0G9NKyzOvBfUtDKEyHvQ==}
 
   babel-jest@30.3.0:
     resolution: {integrity: sha512-gRpauEU2KRrCox5Z296aeVHR4jQ98BCnu0IO332D/xpHNOsIH/bgSRk9k6GbKIbBw8vFeN6ctuu6tV8WOyVfYQ==}
@@ -3036,6 +3039,11 @@ packages:
 
   handlebars@4.7.8:
     resolution: {integrity: sha512-vafaFqs8MZkRrSX7sFVUdo3ap/eNiLnb4IakshzvP56X5Nr1iGKAIqdX6tMlm6HcNRIkr6AxO5jFEoJzzpT8aQ==}
+    engines: {node: '>=0.4.7'}
+    hasBin: true
+
+  handlebars@4.7.9:
+    resolution: {integrity: sha512-4E71E0rpOaQuJR2A3xDZ+GM1HyWYv1clR58tC8emQNeQe3RH7MAzSbat+V0wG78LQBo6m6bzSG/L4pBuCsgnUQ==}
     engines: {node: '>=0.4.7'}
     hasBin: true
 
@@ -4236,6 +4244,10 @@ packages:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
 
+  picomatch@2.3.2:
+    resolution: {integrity: sha512-V7+vQEJ06Z+c5tSye8S+nHUfI51xoXIXjHQ99cQtKUkQqqO1kO/KCJUfZXuB47h/YBlDhah2H3hdUGXn8ie0oA==}
+    engines: {node: '>=8.6'}
+
   picomatch@4.0.3:
     resolution: {integrity: sha512-5gTmgEY/sqK6gFXLIsQNH19lWb4ebPDLA4SdLP7dsWkIXHWlG66oPuVvXSGFPppYZz8ZDZq0dYYrbHfBCVUb1Q==}
     engines: {node: '>=12'}
@@ -4325,6 +4337,10 @@ packages:
 
   proxy-from-env@1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
+
+  proxy-from-env@2.1.0:
+    resolution: {integrity: sha512-cJ+oHTW1VAEa8cJslgmUZrc+sjRKgAKl3Zyse6+PV38hZe/V6Z14TbCuXcan9F9ghlz4QrFr2c92TNF82UkYHA==}
+    engines: {node: '>=10'}
 
   pump@3.0.4:
     resolution: {integrity: sha512-VS7sjc6KR7e1ukRFhQSY5LM2uBWAUPiOPa/A3mkKmiMwSmRFUITt0xuj+/lesgnCv+dPIEYlkzrcyXgquIHMcA==}
@@ -6604,14 +6620,14 @@ snapshots:
 
   '@sap/cds-compiler@6.8.0': {}
 
-  '@sap/cds-dk@9.8.1(@eslint/js@9.39.4)':
+  '@sap/cds-dk@9.8.2(@eslint/js@9.39.4)':
     dependencies:
       '@cap-js/asyncapi': 1.0.3(@sap/cds@9.8.3(@eslint/js@9.39.4))
       '@cap-js/openapi': 1.4.0(@sap/cds@9.8.3(@eslint/js@9.39.4))
       '@sap/cds': 9.8.3(@eslint/js@9.39.4)
-      '@sap/cds-mtxs': 3.8.0(@sap/cds@9.8.3(@eslint/js@9.39.4))(hdb@2.27.1)
+      '@sap/cds-mtxs': 3.8.1(@sap/cds@9.8.3(@eslint/js@9.39.4))(hdb@2.27.1)
       '@sap/hdi-deploy': 5.6.1(hdb@2.27.1)
-      axios: 1.13.6
+      axios: 1.14.0
       express: 5.2.1
       hdb: 2.27.1
       livereload-js: 4.0.2
@@ -6635,7 +6651,7 @@ snapshots:
     dependencies:
       '@sap/cds': 9.8.3(@eslint/js@9.39.4)
 
-  '@sap/cds-mtxs@3.8.0(@sap/cds@9.8.3(@eslint/js@9.39.4))(hdb@2.27.1)':
+  '@sap/cds-mtxs@3.8.1(@sap/cds@9.8.3(@eslint/js@9.39.4))(hdb@2.27.1)':
     dependencies:
       '@sap/cds': 9.8.3(@eslint/js@9.39.4)
       '@sap/hdi-deploy': 5.6.1(hdb@2.27.1)
@@ -6660,7 +6676,7 @@ snapshots:
       '@sap/xsenv': 6.1.0
       async: 3.2.6
       dotenv: 16.6.1
-      handlebars: 4.7.8
+      handlebars: 4.7.9
       micromatch: 4.0.8
     optionalDependencies:
       hdb: 2.27.1
@@ -7174,7 +7190,7 @@ snapshots:
   anymatch@3.1.3:
     dependencies:
       normalize-path: 3.0.0
-      picomatch: 2.3.1
+      picomatch: 2.3.2
 
   are-docs-informative@0.0.2: {}
 
@@ -7269,6 +7285,14 @@ snapshots:
       follow-redirects: 1.15.11
       form-data: 4.0.5
       proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+
+  axios@1.14.0:
+    dependencies:
+      follow-redirects: 1.15.11
+      form-data: 4.0.5
+      proxy-from-env: 2.1.0
     transitivePeerDependencies:
       - debug
 
@@ -8498,6 +8522,15 @@ snapshots:
     optionalDependencies:
       uglify-js: 3.19.3
 
+  handlebars@4.7.9:
+    dependencies:
+      minimist: 1.2.8
+      neo-async: 2.6.2
+      source-map: 0.6.1
+      wordwrap: 1.0.0
+    optionalDependencies:
+      uglify-js: 3.19.3
+
   hard-rejection@2.1.0: {}
 
   has-bigints@1.1.0: {}
@@ -9249,7 +9282,7 @@ snapshots:
 
   kuler@2.0.0: {}
 
-  langchain@0.3.37(@langchain/core@0.3.80(openai@5.12.2(ws@8.20.0)(zod@3.25.76)))(axios@1.13.6)(handlebars@4.7.8)(openai@5.12.2(ws@8.20.0)(zod@3.25.76))(ws@8.20.0):
+  langchain@0.3.37(@langchain/core@0.3.80(openai@5.12.2(ws@8.20.0)(zod@3.25.76)))(axios@1.14.0)(handlebars@4.7.9)(openai@5.12.2(ws@8.20.0)(zod@3.25.76))(ws@8.20.0):
     dependencies:
       '@langchain/core': 0.3.80(openai@5.12.2(ws@8.20.0)(zod@3.25.76))
       '@langchain/openai': 0.6.17(@langchain/core@0.3.80(openai@5.12.2(ws@8.20.0)(zod@3.25.76)))(ws@8.20.0)
@@ -9264,8 +9297,8 @@ snapshots:
       yaml: 2.8.3
       zod: 3.25.76
     optionalDependencies:
-      axios: 1.13.6
-      handlebars: 4.7.8
+      axios: 1.14.0
+      handlebars: 4.7.9
     transitivePeerDependencies:
       - '@opentelemetry/api'
       - '@opentelemetry/exporter-trace-otlp-proto'
@@ -9423,7 +9456,7 @@ snapshots:
   micromatch@4.0.8:
     dependencies:
       braces: 3.0.3
-      picomatch: 2.3.1
+      picomatch: 2.3.2
 
   mime-db@1.52.0: {}
 
@@ -9829,6 +9862,8 @@ snapshots:
 
   picomatch@2.3.1: {}
 
+  picomatch@2.3.2: {}
+
   picomatch@4.0.3: {}
 
   pify@4.0.1: {}
@@ -9915,6 +9950,8 @@ snapshots:
       ipaddr.js: 1.9.1
 
   proxy-from-env@1.1.0: {}
+
+  proxy-from-env@2.1.0: {}
 
   pump@3.0.4:
     dependencies:
