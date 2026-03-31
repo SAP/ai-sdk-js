@@ -178,7 +178,7 @@ jobs:
         run: |
           git add --all
           git status
-          git commit -m "Update $SERVICE based on $REF"
+          git commit -m "Update $SERVICE based on $REF" || true
           git push --set-upstream origin "$BRANCH"
 
       - name: 'Create PR'
