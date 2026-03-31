@@ -19,6 +19,8 @@ jobs:
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
           owner: SAP
           repositories: ai-sdk
+          permission-contents: read
+          permission-pull-requests: read
       - uses: sap/ai-sdk-js/.github/actions/setup@main
       - name: Determine Docs PR Branch Name
         id: determine-branch-name
@@ -30,6 +32,8 @@ jobs:
 
       - name: Check PR Status (Exists, Merged)
         id: check_pr_status
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           BRANCH_NAME="${{ steps.determine-branch-name.outputs.release_notes_branch }}"
           echo "Checking status for PR associated with branch: $BRANCH_NAME"
@@ -40,8 +44,6 @@ jobs:
           # This part only runs if the above command succeeded
           echo "PR found. Is Merged: $MERGED_OUTPUT"
           echo "merged=$MERGED_OUTPUT" >> "$GITHUB_OUTPUT"
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
 
       - name: 'Check Whether Release Notes PR Can Be Merged'
         if: steps.check_pr_status.outputs.merged == 'false'
@@ -83,9 +85,11 @@ jobs:
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
           owner: SAP
           repositories: ai-sdk
+          permission-contents: write
+          permission-pull-requests: write
       - name: 'Merge Release Notes PR'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           echo "Attempting to merge PR for branch: ${{ needs.check-release-notes-pr.outputs.release_notes_branch }}"
           gh pr merge --squash "${{ needs.check-release-notes-pr.outputs.release_notes_branch }}" --delete-branch --repo "${{ env.DOCS_REPO }}"
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}

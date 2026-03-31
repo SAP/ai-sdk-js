@@ -15,6 +15,8 @@ jobs:
         with:
           app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
       - name: Setup Environment
         uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
