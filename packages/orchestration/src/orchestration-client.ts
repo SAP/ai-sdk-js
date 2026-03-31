@@ -32,7 +32,8 @@ import type {
   ChatCompletionRequest,
   RequestOptions,
   StreamOptions,
-  BaseStreamOptions
+  BaseStreamOptions,
+  OrchestrationRequestHeaders
 } from './orchestration-types.js';
 import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
@@ -74,9 +75,16 @@ export class OrchestrationClient {
     }
   }
 
+  /**
+   * Send a chat completion request to the orchestration service.
+   * @param request - Request containing messages, placeholder values, and message history.
+   * @param requestConfig - Additional request configuration. Use `requestConfig.headers` to pass service-specific headers:
+   * - `AI-Object-Store-Secret-Name`: Name of the object store secret used by the feedback service.
+   * @returns The orchestration service response.
+   */
   async chatCompletion(
     request?: ChatCompletionRequest,
-    requestConfig?: CustomRequestConfig
+    requestConfig?: CustomRequestConfig & { headers?: OrchestrationRequestHeaders }
   ): Promise<OrchestrationResponse> {
     requestConfig?.signal?.throwIfAborted();
     if (isConfigReference(this.config) && request?.messages?.length) {
@@ -92,11 +100,20 @@ export class OrchestrationClient {
     return new OrchestrationResponse(response);
   }
 
+  /**
+   * Create a streaming chat completion request to the orchestration service.
+   * @param request - Request containing messages, placeholder values, and message history.
+   * @param signal - An abort signal to cancel the request.
+   * @param options - Streaming options, e.g., for input/output filtering.
+   * @param requestConfig - Additional request configuration. Use `requestConfig.headers` to pass service-specific headers:
+   * - `AI-Object-Store-Secret-Name`: Name of the object store secret used by the feedback service.
+   * @returns The orchestration stream response.
+   */
   async stream(
     request?: ChatCompletionRequest,
     signal?: AbortSignal,
     options?: StreamOptions,
-    requestConfig?: CustomRequestConfig
+    requestConfig?: CustomRequestConfig & { headers?: OrchestrationRequestHeaders }
   ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
     const controller = new AbortController();
     if (signal) {

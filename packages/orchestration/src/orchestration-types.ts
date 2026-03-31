@@ -355,6 +355,19 @@ export function isOrchestrationModuleConfigList(
 }
 
 /**
+ * Service-specific headers for orchestration requests.
+ * @remarks
+ * `AI-Resource-Group` is configured via the `deploymentConfig` constructor parameter, not here.
+ */
+export interface OrchestrationRequestHeaders {
+  /**
+   * Name of the object store secret used by the feedback service.
+   */
+  'AI-Object-Store-Secret-Name'?: string;
+  [key: string]: string | undefined;
+}
+
+/**
  * Request options for orchestration.
  */
 export interface RequestOptions {

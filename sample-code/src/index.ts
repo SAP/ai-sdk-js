@@ -16,7 +16,6 @@ export {
   orchestrationInputFiltering,
   orchestrationOutputFiltering,
   orchestrationRequestConfig,
-  orchestrationWithObjectStoreSecretName,
   orchestrationCompletionMasking,
   orchestrationMaskGroundingInput,
   orchestrationFromJson,
