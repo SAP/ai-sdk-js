@@ -29,8 +29,8 @@ jobs:
           pnpm audit --audit-level high
 
           if [[ -n "$(git status --porcelain)" ]]; then
-            git config --global user.email "cloud-sdk-js@github.com"
-            git config --global user.name "cloud-sdk-js"
+            git config --global user.email "${{ vars.SAP_AI_SDK_BOT_EMAIL }}"
+            git config --global user.name "${{ vars.SAP_AI_SDK_BOT_NAME }}"
             BRANCH_NAME="bot/monthly-transitive-dependency-update-$(date -u +%Y%m%d-%H%M%S)"
             git checkout -b "$BRANCH_NAME"
             git add .

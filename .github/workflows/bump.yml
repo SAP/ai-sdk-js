@@ -42,7 +42,7 @@ jobs:
         name: Commit and tag
         with:
           version: ${{ steps.bump.outputs.version }}
-          user-name: sap-ai-sdk
+          user-name: ${{ vars.SAP_AI_SDK_BOT_NAME }}
 
   generate-api-docs:
     name: Generate and push API documentation
