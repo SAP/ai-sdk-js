@@ -178,12 +178,18 @@ jobs:
         run: |
           git add --all
           git status
-          git commit -m "Update $SERVICE based on $REF"
-          git push --set-upstream origin "$BRANCH"
+          if git diff --cached --quiet; then
+            echo "No changes to commit after generation (spec change had no effect on generated client)."
+            echo "client_diff=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "Update $SERVICE based on $REF"
+            git push --set-upstream origin "$BRANCH"
+            echo "client_diff=true" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: 'Create PR'
         id: create-pr
-        if: ${{ env.CREATE_PR == 'true' && steps.spec_diff.outputs.spec_diff == 'true'}}
+        if: ${{ env.CREATE_PR == 'true' && steps.push.outputs.client_diff == 'true'}}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -231,6 +237,7 @@ jobs:
 
           if ${{ steps.spec_diff.outputs.spec_diff == 'true' }}; then
             echo "| Client Generation | ${{ steps.generate.outcome == 'success' && '✅' || '❌' }} ${{ steps.generate.outcome }}" >> $GITHUB_STEP_SUMMARY
+            echo "| Client Changes | ${{ steps.push.outputs.client_diff == 'true' && '🔄 Changes Detected' || '⏹️ No Changes (spec change had no effect on client)' }}" >> $GITHUB_STEP_SUMMARY
             echo "| Client Compilation | ${{ steps.compile.outputs.compilation_result == 'success' && '✅' || '❌' }} ${{ steps.compile.outputs.compilation_result }}" >> $GITHUB_STEP_SUMMARY
             echo "| Client Testing | ${{ steps.compile.outputs.test_result == 'success' && '✅' || steps.compile.outputs.test_result == 'skipped' && '⏩' || '❌' }} ${{ steps.compile.outputs.test_result }}" >> $GITHUB_STEP_SUMMARY
             echo "| Branch Creation | ${{ steps.push.outcome == 'success' && '✅ [Branch Link]($DIFF_URL)' || '❌ failure' }}" >> $GITHUB_STEP_SUMMARY
