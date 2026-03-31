@@ -1,6 +1,5 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { ObjectStoreSecretApi } from '@sap-ai-sdk/ai-api';
 import {
   OrchestrationClient,
   OrchestrationEmbeddingClient,

@@ -84,7 +84,9 @@ export class OrchestrationClient {
    */
   async chatCompletion(
     request?: ChatCompletionRequest,
-    requestConfig?: CustomRequestConfig & { headers?: OrchestrationRequestHeaders }
+    requestConfig?: CustomRequestConfig & {
+      headers?: OrchestrationRequestHeaders;
+    }
   ): Promise<OrchestrationResponse> {
     requestConfig?.signal?.throwIfAborted();
     if (isConfigReference(this.config) && request?.messages?.length) {
@@ -113,7 +115,9 @@ export class OrchestrationClient {
     request?: ChatCompletionRequest,
     signal?: AbortSignal,
     options?: StreamOptions,
-    requestConfig?: CustomRequestConfig & { headers?: OrchestrationRequestHeaders }
+    requestConfig?: CustomRequestConfig & {
+      headers?: OrchestrationRequestHeaders;
+    }
   ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
     const controller = new AbortController();
     if (signal) {
