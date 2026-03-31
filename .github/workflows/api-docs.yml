@@ -24,27 +24,19 @@ jobs:
           pnpm generate
           pnpm doc
 
-      - name: Setup SSH key for ai-sdk repo
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          echo "${{ secrets.GH_AI_SDK_WRITE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          cat <<EOT >> ~/.ssh/config
-          Host github.com
-          HostName github.com
-          IdentityFile ~/.ssh/id_rsa
-          EOT
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.SAP_AI_SDK_BOT_APP_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          owner: SAP
+          repositories: ai-sdk
 
       - name: Push generated API documentation to ai-sdk repo
-        env:
-          USE_SSH: true
-          GIT_USER: ai-sdk-js
         run: |
-          git config --global user.email "cloudsdk@sap.com"
-          git config --global user.name "ai-sdk-js"
+          git config --global user.email "${{ vars.SAP_AI_SDK_BOT_EMAIL }}"
+          git config --global user.name "${{ vars.SAP_AI_SDK_BOT_NAME }}"
 
           # Extract major version from full version (e.g., "2.8.0" -> "v2")
           FULL_VERSION="${{ inputs.version }}"
@@ -52,7 +44,7 @@ jobs:
           VERSION="v${MAJOR_VERSION}"
 
           cd ..
-          git clone --depth 1 git@github.com:SAP/ai-sdk.git
+          git clone --depth 1 https://x-access-token:${{ steps.app-token.outputs.token }}@github.com/SAP/ai-sdk.git
 
           # Copy generated docs to versioned folder
           rsync -avz --delete ai-sdk-js/knowledge-base/api-reference/ ai-sdk/static/api/${VERSION}/
