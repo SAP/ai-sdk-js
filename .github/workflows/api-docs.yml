@@ -35,17 +35,21 @@ jobs:
           permission-contents: write
 
       - name: Push generated API documentation to ai-sdk repo
+        env:
+          BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
+          BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          INPUT_VERSION: ${{ inputs.version }}
         run: |
-          git config --global user.email "${{ vars.SAP_AI_SDK_BOT_EMAIL }}"
-          git config --global user.name "${{ vars.SAP_AI_SDK_BOT_NAME }}"
+          git config --global user.email "$BOT_EMAIL"
+          git config --global user.name "$BOT_NAME"
 
           # Extract major version from full version (e.g., "2.8.0" -> "v2")
-          FULL_VERSION="${{ inputs.version }}"
-          MAJOR_VERSION=$(echo "$FULL_VERSION" | cut -d. -f1)
+          MAJOR_VERSION=$(echo "$INPUT_VERSION" | cut -d. -f1)
           VERSION="v${MAJOR_VERSION}"
 
           cd ..
-          git clone --depth 1 https://x-access-token:${{ steps.app-token.outputs.token }}@github.com/SAP/ai-sdk.git
+          git clone --depth 1 https://x-access-token:${GH_TOKEN}@github.com/SAP/ai-sdk.git
 
           # Copy generated docs to versioned folder
           rsync -avz --delete ai-sdk-js/knowledge-base/api-reference/ ai-sdk/static/api/${VERSION}/

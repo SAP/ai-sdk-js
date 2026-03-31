@@ -24,13 +24,16 @@ jobs:
 
       - name: Update Transitive Dependencies
         id: update-deps
+        env:
+          BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
+          BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
         run: |
           pnpm --no-save update --recursive
           pnpm audit --audit-level high
 
           if [[ -n "$(git status --porcelain)" ]]; then
-            git config --global user.email "${{ vars.SAP_AI_SDK_BOT_EMAIL }}"
-            git config --global user.name "${{ vars.SAP_AI_SDK_BOT_NAME }}"
+            git config --global user.email "$BOT_EMAIL"
+            git config --global user.name "$BOT_NAME"
             BRANCH_NAME="bot/monthly-transitive-dependency-update-$(date -u +%Y%m%d-%H%M%S)"
             git checkout -b "$BRANCH_NAME"
             git add .

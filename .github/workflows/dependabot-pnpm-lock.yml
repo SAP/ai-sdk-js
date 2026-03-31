@@ -31,10 +31,13 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
 
       - name: Commit and push if changed
+        env:
+          BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
+          BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
         run: |
           if [[ -n "$(git status --porcelain)" ]]; then
-            git config --global user.email "${{ vars.SAP_AI_SDK_BOT_EMAIL }}"
-            git config --global user.name "${{ vars.SAP_AI_SDK_BOT_NAME }}"
+            git config --global user.email "$BOT_EMAIL"
+            git config --global user.name "$BOT_NAME"
             git add pnpm-lock.yaml
             git commit -m "chore: update pnpm-lock.yaml"
             git push

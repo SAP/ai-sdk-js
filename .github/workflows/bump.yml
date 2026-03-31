@@ -86,9 +86,11 @@ jobs:
         working-directory: ./ai-sdk-docs
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
+          BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
         run: |
-          git config --local user.email "${{ vars.SAP_AI_SDK_BOT_EMAIL }}"
-          git config --local user.name "${{ vars.SAP_AI_SDK_BOT_NAME }}"
+          git config --local user.email "$BOT_EMAIL"
+          git config --local user.name "$BOT_NAME"
           BRANCH_NAME="update-release-notes-js-${{ needs.bump.outputs.version }}"
           git checkout -b "${BRANCH_NAME}"
           git add docs-js/release-notes.mdx
