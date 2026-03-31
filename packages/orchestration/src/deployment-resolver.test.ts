@@ -6,7 +6,7 @@ import { jest } from '@jest/globals';
 
 describe('OrchestrationClient deploymentId behavior', () => {
   it('does not call resolveDeployment when deploymentId is provided', async () => {
-    const deploymentConfig = {deploymentId: 'test-deployment-id' };
+    const deploymentConfig = {deploymentId: 'test-deployment-id'};
 
     // Spy on the resolveDeployment function
     const spy = jest.spyOn({ resolveDeploymentId }, 'resolveDeploymentId');
