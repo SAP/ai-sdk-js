@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { ObjectStoreSecretApi } from '@sap-ai-sdk/ai-api';
 import {
   OrchestrationClient,
   OrchestrationEmbeddingClient,
@@ -509,6 +510,56 @@ export async function orchestrationRequestConfig(): Promise<OrchestrationRespons
     // add a custom header to the request
     {
       headers: { 'x-custom-header': 'custom-value' }
+    }
+  );
+}
+
+/**
+ * Create an S3 object store secret and use it for a chat completion request via the AI-Object-Store-Secret-Name header.
+ * @param secretName - Name of the object store secret to create.
+ * @param awsAccessKeyId - AWS access key ID.
+ * @param awsSecretAccessKey - AWS secret access key.
+ * @param bucketName - S3 bucket name.
+ * @param region - AWS region.
+ * @param pathPrefix - Path prefix within the bucket.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationWithObjectStoreSecretName(
+  secretName: string,
+  awsAccessKeyId: string,
+  awsSecretAccessKey: string,
+  bucketName: string,
+  region: string,
+  pathPrefix: string
+): Promise<OrchestrationResponse> {
+  // create the object store secret using the AI API SDK client
+  await ObjectStoreSecretApi.kubesubmitV4ObjectStoreSecretsCreate({
+    name: secretName,
+    type: 'S3',
+    bucket: bucketName,
+    region,
+    pathPrefix,
+    data: {
+      AWS_ACCESS_KEY_ID: awsAccessKeyId,
+      AWS_SECRET_ACCESS_KEY: awsSecretAccessKey
+    }
+  }).execute();
+
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: {
+      model: {
+        name: 'gpt-5-mini'
+      }
+    }
+  });
+
+  return orchestrationClient.chatCompletion(
+    {
+      messages: [{ role: 'user', content: 'What is the capital of France?' }]
+    },
+    // pass the object store secret name used by the feedback service
+    {
+      headers: { 'AI-Object-Store-Secret-Name': secretName }
     }
   );
 }
