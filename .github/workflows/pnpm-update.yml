@@ -9,10 +9,18 @@ jobs:
   update-dependencies:
     runs-on: ubuntu-latest
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.SAP_AI_SDK_BOT_APP_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          owner: SAP
+          repositories: ai-sdk-js
       - name: Setup Environment
         uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
-          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Update Transitive Dependencies
         id: update-deps
@@ -39,7 +47,7 @@ jobs:
         if: steps.update-deps.outputs.branch-created == 'true'
         uses: actions/github-script@v8
         with:
-          github-token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const { repo, owner } = context.repo;
             const branch = '${{ steps.update-deps.outputs.branch-name }}';
@@ -61,7 +69,7 @@ jobs:
         if: steps.update-deps.outputs.branch-created == 'true' && success()
         uses: actions/github-script@v8
         with:
-          github-token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const { setTimeout } = require('node:timers/promises');
             const retry = require('async-retry');
