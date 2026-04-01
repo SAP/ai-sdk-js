@@ -27,7 +27,7 @@ runs:
       with:
         ref: ${{ inputs.ref }}
         token: ${{ inputs.token }}
-    - uses: pnpm/action-setup@v4
+    - uses: pnpm/action-setup@v6
       with:
         version: ${{ inputs.pnpm-version }}
     - uses: actions/setup-node@v6
