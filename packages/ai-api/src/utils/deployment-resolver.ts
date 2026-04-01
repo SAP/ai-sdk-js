@@ -47,7 +47,7 @@ export interface ResourceGroupConfig {
 }
 
 /**
- * The configuration of a model deployment.
+ * The configuration of a model deployment test.
  * @template ModelNameT - String literal type representing the name of the model.
  */
 export type ModelDeployment<ModelNameT = string> =
