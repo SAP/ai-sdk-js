@@ -20,6 +20,7 @@ jobs:
     name: 'Build and Test'
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
       - name: Create .env file
         env:
@@ -46,7 +47,7 @@ jobs:
       - name: 'Execute E2E Tests'
         run: pnpm test:e2e
       - name: 'Slack Notification'
-        if: failure()
+        if: failure() && github.ref == 'refs/heads/main'
         uses: slackapi/slack-github-action@v3.0.1
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
