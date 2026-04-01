@@ -66,12 +66,6 @@ jobs:
     permissions:
       pull-requests: write
       contents: write
-    outputs:
-      spec_diff: ${{ steps.spec_diff.outputs.spec_diff }}
-      branch: ${{ steps.push.outputs.branch }}
-      pr_url: ${{ steps.create-pr.outputs.pr_url }}
-      compilation_result: ${{ steps.compile.outputs.compilation_result }}
-      test_result: ${{ steps.compile.outputs.test_result }}
     env:
       SERVICE: ${{ inputs.service }}
       REF: ${{ inputs.ref }}
@@ -101,62 +95,57 @@ jobs:
 
           git push --force --set-upstream origin "$BRANCH"
 
+      - name: 'Resolve specification file paths'
+        id: resolve
+        run: |
+          declare -A SERVICES=(
+            [ai-api.url]="repos/cloudsdk/cloud-sdk-java-tests/contents/aicore.yaml"
+            [ai-api.path]="packages/ai-api/src/spec/AI_CORE_API.yaml"
+
+            [document-grounding.url]="repos/AI/rage-proxy-inference/contents/docs/public/business_api_hub/api_hub_merged_spec.yaml"
+            [document-grounding.path]="packages/document-grounding/src/spec/api.yaml"
+
+            [orchestration.url]="repos/AI/llm-orchestration/contents/src/spec/v2.yaml"
+            [orchestration.path]="packages/orchestration/src/spec/api.yaml"
+
+            [prompt-registry.url]="repos/AI/prompt-registry/contents/src/spec/generated/prompt-registry-combined.yaml"
+            [prompt-registry.path]="packages/prompt-registry/src/spec/prompt-registry.yaml"
+
+            # [rpt.url]="repos/DL-COE/sap-rpt-resources/contents/sap-rpt-1_openapi.json"
+            # [rpt.path]="packages/rpt/src/spec/rpt.json"
+          )
+          echo "api_url=${SERVICES[$SERVICE.url]}?ref=$REF" >> "$GITHUB_OUTPUT"
+          echo "file_path=${SERVICES[$SERVICE.path]}" >> "$GITHUB_OUTPUT"
+
       - name: 'Download specification file'
         id: download
         env:
           GH_HOST: github.tools.sap
           GH_ENTERPRISE_TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
         run: |
-          case "$SERVICE" in
-            ai-api)
-              API_URL="repos/cloudsdk/cloud-sdk-java-tests/contents/aicore.yaml?ref=$REF"
-              FILE_PATH='packages/ai-api/src/spec/AI_CORE_API.yaml'
-              ;;
-            document-grounding)
-              API_URL="repos/AI/rage-proxy-inference/contents/docs/public/business_api_hub/api_hub_merged_spec.yaml?ref=$REF"
-              FILE_PATH='packages/document-grounding/src/spec/api.yaml'
-              ;;
-            orchestration)
-              API_URL="repos/AI/llm-orchestration/contents/src/spec/v2.yaml?ref=$REF"
-              FILE_PATH='packages/orchestration/src/spec/api.yaml'
-              ;;
-            prompt-registry)
-              API_URL="repos/AI/prompt-registry/contents/src/spec/generated/prompt-registry-combined.yaml?ref=$REF"
-              FILE_PATH='packages/prompt-registry/src/spec/prompt-registry.yaml'
-              ;;
-            # rpt)
-            #   API_URL="repos/DL-COE/sap-rpt-resources/contents/sap-rpt-1_openapi.json?ref=$REF"
-            #   FILE_PATH='packages/rpt/src/spec/rpt.json'
-            #   ;;
-          esac
+          echo "Downloading $SERVICE specification file from ${{ steps.resolve.outputs.api_url }} ..."
+          gh api "${{ steps.resolve.outputs.api_url }}" -H "Accept: application/vnd.github.raw" > "${{ steps.resolve.outputs.file_path }}"
 
-          echo "Downloading $SERVICE specification file from $API_URL ..."
-          gh api "$API_URL" -H "Accept: application/vnd.github.raw" > "$FILE_PATH"
+      - name: 'Lint'
+        run: pnpm lint:fix
 
-      - name: 'Exit if there are no changes'
-        id: spec_diff
-        # Before checking for changed files, run the linter as that also formats spec files
-        run: |
-          pnpm lint:fix
-          if [[ -n "$(git status --porcelain)" ]] || ! git diff --quiet origin/main; then
-            echo "Changes detected in the specification file."
-            git status
-            echo "spec_diff=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "No changes detected in the specification file, skipping rest of the job."
-            git status
-            echo "spec_diff=false" >> "$GITHUB_OUTPUT"
-          fi
+      - name: Check for spec changes
+        id: check-spec-changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            spec:
+              - ${{ steps.resolve.outputs.file_path }}
 
       - name: 'Generate'
         id: generate
-        if: steps.spec_diff.outputs.spec_diff == 'true'
+        if: steps.check-spec-changes.outputs.spec == 'true'
         run: |
           pnpm generate
 
       - name: 'Compile and Test'
         id: compile
-        if: steps.spec_diff.outputs.spec_diff == 'true'
+        if: steps.check-spec-changes.outputs.spec == 'true'
         # Compilation can easily fail e.g. from re-namings and has to be fixed manually.
         # Thus, this action raises the PR anyway and only reports success or failure of compilation and testing.
         run: |
@@ -172,9 +161,17 @@ jobs:
             echo "test_result=skipped" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Check for changes after generation
+        id: check-generated-changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            all:
+              - 'packages/**/src/**/*'
+
       - name: 'Push changes'
         id: push
-        if: steps.spec_diff.outputs.spec_diff == 'true'
+        if: steps.check-generated-changes.outputs.all == 'true'
         run: |
           git add --all
           git status
@@ -183,7 +180,7 @@ jobs:
 
       - name: 'Create PR'
         id: create-pr
-        if: ${{ env.CREATE_PR == 'true' && steps.spec_diff.outputs.spec_diff == 'true'}}
+        if: ${{ env.CREATE_PR == 'true' && steps.check-spec-changes.outputs.spec == 'true'}}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -227,9 +224,9 @@ jobs:
           echo "| Step | Status |" >> $GITHUB_STEP_SUMMARY
           echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
           echo "| File Download | ${{ steps.download.outcome == 'success' && '✅' || '❌' }} ${{ steps.download.outcome }}" >> $GITHUB_STEP_SUMMARY
-          echo "| Spec File Changes | ${{ steps.spec_diff.outputs.spec_diff == 'true' && '🔄 Changes Detected' || '⏹️ No Changes' }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Spec File Changes | ${{ steps.check-spec-changes.outputs.spec == 'true' && '🔄 Changes Detected' || '⏹️ No Changes' }}" >> $GITHUB_STEP_SUMMARY
 
-          if ${{ steps.spec_diff.outputs.spec_diff == 'true' }}; then
+          if ${{ steps.check-spec-changes.outputs.spec == 'true' }}; then
             echo "| Client Generation | ${{ steps.generate.outcome == 'success' && '✅' || '❌' }} ${{ steps.generate.outcome }}" >> $GITHUB_STEP_SUMMARY
             echo "| Client Compilation | ${{ steps.compile.outputs.compilation_result == 'success' && '✅' || '❌' }} ${{ steps.compile.outputs.compilation_result }}" >> $GITHUB_STEP_SUMMARY
             echo "| Client Testing | ${{ steps.compile.outputs.test_result == 'success' && '✅' || steps.compile.outputs.test_result == 'skipped' && '⏩' || '❌' }} ${{ steps.compile.outputs.test_result }}" >> $GITHUB_STEP_SUMMARY
