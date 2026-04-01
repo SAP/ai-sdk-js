@@ -137,12 +137,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: includeSpec
-          in: query
-          description: Whether include the spec section or not.
-          schema:
-            type: boolean
-            default: false
       responses:
         '200':
           description: Successful response
