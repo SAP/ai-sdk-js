@@ -16,3 +16,7 @@ packages:
 minimumReleaseAge: 5760
 minimumReleaseAgeExclude:
   - '@sap-cloud-sdk/*'
+  # TODO: remove after minimum release age has passed
+  - path-to-regexp@8.4.0
+  - handlebars@4.7.9
+  - brace-expansion@1.1.13

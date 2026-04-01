@@ -1,13 +1,9 @@
-name: spec update
-run-name: 'spec update: ${{ inputs.file }}-${{ inputs.file-ref }}'
+name: spec update (should be removed)
 
 # Notes:
 # To use this workflow as a service owner:
 #   1. Ask an SAP Cloud SDK for AI team member to add you to the service-owner team (read access is enough).
-#   2. Generate a fine-grained PAT with:
-#     - repo access: SAP/ai-sdk-js and SAP/ai-sdk-java (you have to select SAP as the resource owner to see these repos)
-#     - permissions:  Actions - read and write
-#.    - token expiration: up to you, you are responsible for rotation
+#   2. Generate a classic PAT with the `workflow` scope. It is important that it is a classic token.
 #   3. Save the PAT as a secret under `PUBLIC_GITHUB_SDKS_PAT`.
 #   4. Ask an SAP Cloud SDK for AI team member to create the sdk-integration and sdk-integration-cleanup workflows.
 
@@ -80,6 +76,7 @@ jobs:
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
+          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'Checkout or Create Branch'
@@ -90,16 +87,10 @@ jobs:
           git config --global user.name "SAP Cloud SDK Bot"
           git fetch --unshallow origin main
 
-          git fetch origin "$BRANCH" || true
-          git checkout -B "$BRANCH" "origin/$BRANCH" || git checkout -b "$BRANCH"
-          # Try to merge main, reset to clean base if that fails unless there could be an associated PR
-          if ! git merge --no-edit -X theirs origin/main; then
-            if [[ "$CREATE_PR" != 'true' ]]; then
-              git reset --hard origin/main
-            fi
-          fi
-
-          git push --force --set-upstream origin "$BRANCH"
+          git fetch origin $BRANCH || true
+          git checkout -B $BRANCH origin/$BRANCH || git checkout -b $BRANCH
+          git rebase -X theirs origin/main
+          git push --force --set-upstream origin $BRANCH
 
       - name: 'Download specification file'
         id: download
@@ -107,7 +98,7 @@ jobs:
           GH_HOST: github.tools.sap
           GH_ENTERPRISE_TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
         run: |
-          case "$SERVICE" in
+          case $SERVICE in
             ai-api)
               API_URL="repos/cloudsdk/cloud-sdk-java-tests/contents/aicore.yaml?ref=$REF"
               FILE_PATH='packages/ai-api/src/spec/AI_CORE_API.yaml'
@@ -117,7 +108,7 @@ jobs:
               FILE_PATH='packages/document-grounding/src/spec/api.yaml'
               ;;
             orchestration)
-              API_URL="repos/AI/llm-orchestration/contents/src/spec/v2.yaml?ref=$REF"
+              API_URL="repos/cloudsdk/sdk-js/contents/src/spec/v2.yaml?ref=$REF"
               FILE_PATH='packages/orchestration/src/spec/api.yaml'
               ;;
             prompt-registry)
@@ -131,14 +122,14 @@ jobs:
           esac
 
           echo "Downloading $SERVICE specification file from $API_URL ..."
-          gh api "$API_URL" -H "Accept: application/vnd.github.raw" > "$FILE_PATH"
+          gh api $API_URL -H "Accept: application/vnd.github.raw" > $FILE_PATH
 
       - name: 'Exit if there are no changes'
         id: spec_diff
         # Before checking for changed files, run the linter as that also formats spec files
         run: |
           pnpm lint:fix
-          if [[ -n "$(git status --porcelain)" ]] || ! git diff --quiet origin/main; then
+          if [[ -n "$(git status --porcelain)" ]]; then
             echo "Changes detected in the specification file."
             git status
             echo "spec_diff=true" >> "$GITHUB_OUTPUT"
@@ -178,27 +169,21 @@ jobs:
         run: |
           git add --all
           git status
-          if git diff --cached --quiet; then
-            echo "No changes to commit after generation (spec change had no effect on generated client)."
-            echo "client_diff=false" >> "$GITHUB_OUTPUT"
-          else
-            git commit -m "Update $SERVICE based on $REF"
-            git push --set-upstream origin "$BRANCH"
-            echo "client_diff=true" >> "$GITHUB_OUTPUT"
-          fi
+          git commit -m "Update $SERVICE based on $REF"
+          git push --set-upstream origin ${{ steps.branch.outputs.branch }}
 
       - name: 'Create PR'
         id: create-pr
-        if: ${{ env.CREATE_PR == 'true' && (steps.spec_diff.outputs.spec_diff == 'true' || steps.push.outputs.client_diff == 'true')}}
+        if: ${{ env.CREATE_PR == 'true' && steps.spec_diff.outputs.spec_diff == 'true'}}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if gh pr list --head "$BRANCH" --json number -q '.[].number' | grep -q .; then
+          if gh pr list --head $BRANCH --json number -q '.[].number' | grep -q .; then
             echo "An open PR already exists for this branch. Skipping PR creation."
             exit 0
           fi
 
-          PR_URL=$(gh pr create --base main --head "$BRANCH" --title "feat: Update $SERVICE specification" --body "
+          PR_URL=$(gh pr create --base main --head $BRANCH --title "feat: Update $SERVICE specification" --body "
           ## Context
 
           Update $SERVICE specification file based on $REF.
@@ -237,7 +222,6 @@ jobs:
 
           if ${{ steps.spec_diff.outputs.spec_diff == 'true' }}; then
             echo "| Client Generation | ${{ steps.generate.outcome == 'success' && '✅' || '❌' }} ${{ steps.generate.outcome }}" >> $GITHUB_STEP_SUMMARY
-            echo "| Client Changes | ${{ steps.push.outputs.client_diff == 'true' && '🔄 Changes Detected' || '⏹️ No Changes (spec change had no effect on client)' }}" >> $GITHUB_STEP_SUMMARY
             echo "| Client Compilation | ${{ steps.compile.outputs.compilation_result == 'success' && '✅' || '❌' }} ${{ steps.compile.outputs.compilation_result }}" >> $GITHUB_STEP_SUMMARY
             echo "| Client Testing | ${{ steps.compile.outputs.test_result == 'success' && '✅' || steps.compile.outputs.test_result == 'skipped' && '⏩' || '❌' }} ${{ steps.compile.outputs.test_result }}" >> $GITHUB_STEP_SUMMARY
             echo "| Branch Creation | ${{ steps.push.outcome == 'success' && '✅ [Branch Link]($DIFF_URL)' || '❌ failure' }}" >> $GITHUB_STEP_SUMMARY
