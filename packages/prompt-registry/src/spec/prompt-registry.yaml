@@ -22,8 +22,10 @@ servers:
 security:
   - Oauth2: []
 tags:
-  - name: Prompt Template
+  - name: Prompt Templates
     description: Lifecycle management of prompt templates
+  - name: Orchestration Configs
+    description: Lifecycle management of orchestration configs
 externalDocs:
   description: Documentation for SAP AI Core - Prompt Registry
   url: https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry?version=CLOUD
@@ -35,7 +37,7 @@ paths:
       description: Create or update a prompt template
       summary: Prompt template create
       tags:
-        - prompt templates
+        - Prompt Templates
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - $ref: '#/components/parameters/ai-resource-group-scope'
@@ -64,7 +66,7 @@ paths:
       description: List prompt templates
       summary: Prompt template list
       tags:
-        - prompt templates
+        - Prompt Templates
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - $ref: '#/components/parameters/ai-resource-group-scope'
@@ -115,7 +117,7 @@ paths:
       description: List prompt template history
       summary: Prompt template history
       tags:
-        - prompt templates
+        - Prompt Templates
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - $ref: '#/components/parameters/ai-resource-group-scope'
@@ -157,7 +159,7 @@ paths:
       description: Get prompt template by UUID
       summary: Prompt template get
       tags:
-        - prompt templates
+        - Prompt Templates
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - $ref: '#/components/parameters/ai-resource-group-scope'
@@ -187,7 +189,7 @@ paths:
       description: Delete an imperatively managed prompt template
       summary: Prompt template delete
       tags:
-        - prompt templates
+        - Prompt Templates
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - $ref: '#/components/parameters/ai-resource-group-scope'
@@ -218,7 +220,7 @@ paths:
       summary: Prompt template create
       description: Create an imperatively managed prompt template from a file
       tags:
-        - prompt templates
+        - Prompt Templates
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - $ref: '#/components/parameters/ai-resource-group-scope'
@@ -249,7 +251,7 @@ paths:
       summary: Prompt template export
       description: Download a prompt template as a file
       tags:
-        - prompt templates
+        - Prompt Templates
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - $ref: '#/components/parameters/ai-resource-group-scope'
@@ -279,7 +281,7 @@ paths:
       summary: Prompt template fill
       description: Fill the placeholders of a prompt template that is identified by its UUID
       tags:
-        - prompt templates
+        - Prompt Templates
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - $ref: '#/components/parameters/ai-resource-group-scope'
@@ -321,7 +323,7 @@ paths:
       summary: Prompt template fill
       description: Fill the placeholders of a prompt template that is identified by its scenario, name and version
       tags:
-        - prompt templates
+        - Prompt Templates
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - $ref: '#/components/parameters/ai-resource-group-scope'
@@ -374,7 +376,7 @@ paths:
       description: Create or update an imperatively managed orchestration config
       summary: Orchestration config create
       tags:
-        - orchestration configs
+        - Orchestration Configs
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
       requestBody:
@@ -402,7 +404,7 @@ paths:
       description: List imperatively and declaratively managed orchestration config
       summary: Orchestration config list
       tags:
-        - orchestration configs
+        - Orchestration Configs
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - name: scenario
@@ -474,7 +476,7 @@ paths:
       summary: Orchestration config history
       description: Obtain the history of edits of a particular imperatively managed orchestration config
       tags:
-        - orchestration configs
+        - Orchestration Configs
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - name: scenario
@@ -539,7 +541,7 @@ paths:
       summary: Orchestration config get
       description: Retrieve a orchestration config by its UUID
       tags:
-        - orchestration configs
+        - Orchestration Configs
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - name: orchestrationConfigId
@@ -580,7 +582,7 @@ paths:
       summary: Orchestration config delete
       description: Delete an imperatively managed orchestration config
       tags:
-        - orchestration configs
+        - Orchestration Configs
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - name: orchestrationConfigId
@@ -610,7 +612,7 @@ paths:
       summary: Orchestration config create
       description: Create an imperatively managed orchestration config from a file
       tags:
-        - orchestration configs
+        - Orchestration Configs
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
       requestBody:
@@ -640,7 +642,7 @@ paths:
       summary: Orchestration config export
       description: Download an orchestration config as a file
       tags:
-        - orchestration configs
+        - Orchestration Configs
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - name: orchestrationConfigId
