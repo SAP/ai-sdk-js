@@ -189,7 +189,7 @@ jobs:
 
       - name: 'Create PR'
         id: create-pr
-        if: ${{ env.CREATE_PR == 'true' && steps.push.outputs.client_diff == 'true'}}
+        if: ${{ env.CREATE_PR == 'true' && (steps.spec_diff.outputs.spec_diff == 'true' || steps.push.outputs.client_diff == 'true')}}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
