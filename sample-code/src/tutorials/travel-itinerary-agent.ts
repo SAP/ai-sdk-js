@@ -106,9 +106,10 @@ const config = { configurable: { thread_id: 'conv-1' } };
 // Initial system prompt and user message
 const initMessages = [
   new SystemMessage(
-    `You are a helpful travel assistant.  
+    `You are a helpful travel assistant.
         You will generate a 3-item itinerary based on a provided city. You should use weather forecast and restaurant recommendations when creating the itinerary.
-        After presenting the itinerary, ask the user if they are satisfied with it or if they want to make changes.`
+        After presenting the itinerary, ask the user if they are satisfied with it or if they want to make changes.
+        When the user expresses satisfaction, respond ONLY with a short farewell wishing them happy travels. Do not ask any follow-up questions.`
   ),
   new HumanMessage(
     "I'm traveling to Paris. Can you help me prepare an itinerary?"
@@ -134,6 +135,7 @@ try {
     config
   );
   console.log('Assistant:', response.messages.at(-1)?.content);
+  console.log('next: ', (await app.getState(config)).next);
 } catch (error) {
   console.error('Error:', error);
 }
