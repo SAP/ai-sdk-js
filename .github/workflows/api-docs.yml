@@ -34,27 +34,22 @@ jobs:
           repositories: ai-sdk
           permission-contents: write
 
-      - name: Push generated API documentation to ai-sdk repo
-        env:
-          BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
-          BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          INPUT_VERSION: ${{ inputs.version }}
+      - uses: actions/checkout@v6
+        with:
+          repository: SAP/ai-sdk
+          path: ai-sdk
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Copy generated docs
+        id: copy
         run: |
-          git config --global user.email "$BOT_EMAIL"
-          git config --global user.name "$BOT_NAME"
+          MAJOR_VERSION=$(echo "${{ inputs.version }}" | cut -d. -f1)
+          echo "major_version=$MAJOR_VERSION" >> "$GITHUB_OUTPUT"
+          rsync -avz --delete knowledge-base/api-reference/ ai-sdk/static/api/v${MAJOR_VERSION}/
 
-          # Extract major version from full version (e.g., "2.8.0" -> "v2")
-          MAJOR_VERSION=$(echo "$INPUT_VERSION" | cut -d. -f1)
-          VERSION="v${MAJOR_VERSION}"
-
-          cd ..
-          git clone --depth 1 https://x-access-token:${GH_TOKEN}@github.com/SAP/ai-sdk.git
-
-          # Copy generated docs to versioned folder
-          rsync -avz --delete ai-sdk-js/knowledge-base/api-reference/ ai-sdk/static/api/${VERSION}/
-
-          cd ai-sdk
-          git add -A
-          git commit -m "Update SAP AI SDK for JavaScript API documentation ${VERSION}" || exit 0
-          git push
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Update SAP AI SDK for JavaScript API documentation v${{ steps.copy.outputs.major_version }}'
+          repository: ai-sdk
+          commit_user_email: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
+          commit_user_name: ${{ vars.SAP_AI_SDK_BOT_NAME }}
