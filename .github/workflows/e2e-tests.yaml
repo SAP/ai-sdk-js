@@ -46,7 +46,7 @@ jobs:
       - name: 'Execute E2E Tests'
         run: pnpm test:e2e
       - name: 'Slack Notification'
-        if: failure() && github.ref == 'refs/heads/main'
+        if: failure() && github.event_name == 'schedule'
         uses: slackapi/slack-github-action@v3.0.1
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
