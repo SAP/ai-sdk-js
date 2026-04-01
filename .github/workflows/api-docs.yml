@@ -47,7 +47,7 @@ jobs:
           echo "major_version=$MAJOR_VERSION" >> "$GITHUB_OUTPUT"
           rsync -avz --delete knowledge-base/api-reference/ ai-sdk/static/api/v${MAJOR_VERSION}/
 
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: 'Update SAP AI SDK for JavaScript API documentation v${{ steps.copy.outputs.major_version }}'
           repository: ai-sdk
