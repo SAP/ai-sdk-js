@@ -228,6 +228,7 @@ jobs:
 
           if ${{ steps.check-spec-changes.outputs.spec == 'true' }}; then
             echo "| Client Generation | ${{ steps.generate.outcome == 'success' && '✅' || '❌' }} ${{ steps.generate.outcome }}" >> $GITHUB_STEP_SUMMARY
+            echo "| Client Changes | ${{ steps.check-generated-changes.outputs.all == 'true' && '🔄 Changes Detected' || '⏹️ No Changes (spec change had no effect on client)' }}" >> $GITHUB_STEP_SUMMARY
             echo "| Client Compilation | ${{ steps.compile.outputs.compilation_result == 'success' && '✅' || '❌' }} ${{ steps.compile.outputs.compilation_result }}" >> $GITHUB_STEP_SUMMARY
             echo "| Client Testing | ${{ steps.compile.outputs.test_result == 'success' && '✅' || steps.compile.outputs.test_result == 'skipped' && '⏩' || '❌' }} ${{ steps.compile.outputs.test_result }}" >> $GITHUB_STEP_SUMMARY
             echo "| Branch Creation | ${{ steps.push.outcome == 'success' && '✅ [Branch Link]($DIFF_URL)' || steps.push.outcome == 'skipped' && '⏩ skipped' || '❌ failure' }}" >> $GITHUB_STEP_SUMMARY
