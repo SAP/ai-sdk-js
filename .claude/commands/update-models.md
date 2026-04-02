@@ -75,9 +75,8 @@ Syncs `packages/core/src/model-types.ts` with the current model table on SAP Not
 ## Prerequisites
 
 - **Google Chrome (or Chromium) must be installed.**
-  The `chrome-devtools-mcp` plugin connects to Chrome via the DevTools Protocol — it cannot run without a live Chrome process.
   See step 1 for the launch command on your OS.
-- `chrome-devtools-mcp` plugin must be installed and connected in Claude Code
+- `chrome-devtools-mcp` must be registered as an MCP server in Claude Code — see [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp) for setup instructions
 - `gh` CLI must be authenticated: run `gh auth login` if not already done
 - **First run:** me.sap.com credentials required for manual login in Chrome (cookies are saved to `~/.sap-chrome-profile` for future runs)
 - Node.js 20.19.0+ required for `chrome-devtools-mcp` (check with `node --version`)
