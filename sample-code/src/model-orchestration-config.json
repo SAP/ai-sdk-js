@@ -2,7 +2,7 @@
   "modules": {
     "prompt_templating": {
       "model": {
-        "name": "gpt-4o",
+        "name": "gpt-5",
         "params": {},
         "version": "latest"
       },

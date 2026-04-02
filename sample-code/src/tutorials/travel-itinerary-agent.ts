@@ -11,7 +11,7 @@ import {
   Command
 } from '@langchain/langgraph';
 import { ToolNode } from '@langchain/langgraph/prebuilt';
-import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { tool } from '@langchain/core/tools';
 import * as z from 'zod/v4';
@@ -48,10 +48,15 @@ const tools = [...(await mcpClient.getTools()), getRestaurantsTool];
 const toolNode = new ToolNode(tools);
 
 // Create a model
-const model = new AzureOpenAiChatClient({
-  modelName: 'gpt-4o',
-  temperature: 0.7,
-  maxRetries: 0
+const model = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'anthropic--claude-4.5-haiku',
+      params: {
+        temperature: 0.7
+      }
+    }
+  }
 });
 
 // create a model with access to the tools
@@ -107,9 +112,10 @@ const config = { configurable: { thread_id: 'conv-1' } };
 // Initial system prompt and user message
 const initMessages = [
   new SystemMessage(
-    `You are a helpful travel assistant.  
+    `You are a helpful travel assistant.
         You will generate a 3-item itinerary based on a provided city. You should use weather forecast and restaurant recommendations when creating the itinerary.
-        After presenting the itinerary, ask the user if they are satisfied with it or if they want to make changes.`
+        After presenting the itinerary, ask the user if they are satisfied with it or if they want to make changes.
+        When the user expresses satisfaction, respond ONLY with a short farewell wishing them happy travels. Do not ask any follow-up questions.`
   ),
   new HumanMessage(
     "I'm traveling to Paris. Can you help me prepare an itinerary?"
@@ -135,6 +141,7 @@ try {
     config
   );
   console.log('Assistant:', response.messages.at(-1)?.content);
+  console.log('next: ', (await app.getState(config)).next);
 } catch (error) {
   console.error('Error:', error);
 }
