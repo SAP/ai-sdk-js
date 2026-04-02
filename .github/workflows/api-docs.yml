@@ -1,16 +1,13 @@
 name: api-docs
 
+# Note: During normal releases, API docs are generated as part of the bump workflow
+# and included in the same PR as release notes.
+
 on:
-  workflow_call:
-    inputs:
-      version:
-        description: 'Version to generate docs for'
-        required: true
-        type: string
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to generate docs for'
+        description: 'Version to generate docs for (e.g., 2.9.0). Only the major version is used for the target folder (e.g., v2).'
         required: true
         type: string
 
@@ -24,32 +21,64 @@ jobs:
           pnpm generate
           pnpm doc
 
-      - name: Generate GitHub App token
-        id: app-token
-        uses: actions/create-github-app-token@v3
-        with:
-          app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
-          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
-          owner: SAP
-          repositories: ai-sdk
-          permission-contents: write
-
-      - uses: actions/checkout@v6
-        with:
-          repository: SAP/ai-sdk
-          path: ai-sdk
-          token: ${{ steps.app-token.outputs.token }}
-
-      - name: Copy generated docs
-        id: copy
+      - name: Setup SSH key for ai-sdk repo
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          MAJOR_VERSION=$(echo "${{ inputs.version }}" | cut -d. -f1)
-          echo "major_version=$MAJOR_VERSION" >> "$GITHUB_OUTPUT"
-          rsync -avz --delete knowledge-base/api-reference/ ai-sdk/static/api/v${MAJOR_VERSION}/
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          echo "${{ secrets.GH_AI_SDK_WRITE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          cat <<EOT >> ~/.ssh/config
+          Host github.com
+          HostName github.com
+          IdentityFile ~/.ssh/id_rsa
+          EOT
 
-      - uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          commit_message: 'Update SAP AI SDK for JavaScript API documentation v${{ steps.copy.outputs.major_version }}'
-          repository: ai-sdk
-          commit_user_email: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
-          commit_user_name: ${{ vars.SAP_AI_SDK_BOT_NAME }}
+      - name: Push generated API documentation to ai-sdk repo
+        env:
+          USE_SSH: true
+          GIT_USER: ai-sdk-js
+          GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+        run: |
+          git config --global user.email "cloudsdk@sap.com"
+          git config --global user.name "ai-sdk-js"
+
+          # Extract major version from full version (e.g., "2.8.0" -> "v2")
+          FULL_VERSION="${{ inputs.version }}"
+          MAJOR_VERSION=$(echo "$FULL_VERSION" | cut -d. -f1)
+          VERSION="v${MAJOR_VERSION}"
+
+          cd ..
+          git clone --depth 1 git@github.com:SAP/ai-sdk.git
+
+          # Copy generated docs to versioned folder
+          rsync -avz --delete ai-sdk-js/knowledge-base/api-reference/ ai-sdk/static/api/${VERSION}/
+
+          cd ai-sdk
+          
+          # Check if there are any changes
+          if test -z "$(git status --porcelain)"; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          
+          # Create a new branch for the PR
+          BRANCH_NAME="docs/api-update-${VERSION}-$(date +%Y%m%d%H%M%S)"
+          git checkout -b "$BRANCH_NAME"
+          
+          git add -A
+          git commit -m "Update SAP AI SDK for JavaScript API documentation ${VERSION}" || exit 0
+          git push origin "$BRANCH_NAME"
+          
+          # Create a pull request using GitHub CLI
+          gh pr create \
+            --repo SAP/ai-sdk \
+            --title "Update SAP AI SDK for JavaScript API documentation ${VERSION}" \
+            --body "This PR updates the API documentation for SAP AI SDK for JavaScript ${VERSION}.
+
+          Generated automatically by the ai-sdk-js CI/CD pipeline." \
+            --base main \
+            --head "$BRANCH_NAME"
+          
+          # Enable auto-merge for the PR (requires auto-merge to be enabled in repo settings)
