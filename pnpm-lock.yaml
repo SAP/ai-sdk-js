@@ -435,6 +435,9 @@ importers:
       '@sap-ai-sdk/foundation-models':
         specifier: workspace:^
         version: link:../../packages/foundation-models
+      '@sap-ai-sdk/langchain':
+        specifier: workspace:^
+        version: link:../../packages/langchain
       '@sap-ai-sdk/orchestration':
         specifier: workspace:^
         version: link:../../packages/orchestration

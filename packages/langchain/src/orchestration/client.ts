@@ -43,6 +43,11 @@ import type {
   ChatOrchestrationToolType
 } from './types.js';
 
+type LangChainOrchestrationModuleConfigList = [
+  LangChainOrchestrationModuleConfig,
+  ...LangChainOrchestrationModuleConfig[]
+];
+
 function isInputFilteringError(error: any): boolean {
   return (
     error.cause?.status === 400 &&
@@ -60,7 +65,9 @@ export class OrchestrationClient extends BaseChatModel<
   streaming: boolean = false;
 
   constructor(
-    public orchestrationConfig: LangChainOrchestrationModuleConfig,
+    public orchestrationConfig:
+      | LangChainOrchestrationModuleConfig
+      | LangChainOrchestrationModuleConfigList,
     public langchainOptions: LangChainOrchestrationChatModelParams = {},
     public deploymentConfig?: ResourceGroupConfig,
     public destination?: HttpDestinationOrFetchOptions
@@ -137,7 +144,7 @@ export class OrchestrationClient extends BaseChatModel<
 
     const { placeholderValues, customRequestConfig } = options;
     const allMessages = mapLangChainMessagesToOrchestrationMessages(messages);
-    const mergedOrchestrationConfig = this.mergeOrchestrationConfig(options);
+    const mergedOrchestrationConfig = this.mergeOrchestrationConfigs(options);
 
     const res = await this.caller.callWithOptions(
       {
@@ -351,7 +358,7 @@ export class OrchestrationClient extends BaseChatModel<
       mapLangChainMessagesToOrchestrationMessages(messages);
 
     const { placeholderValues, customRequestConfig } = options;
-    const mergedOrchestrationConfig = this.mergeOrchestrationConfig(options);
+    const mergedOrchestrationConfig = this.mergeOrchestrationConfigs(options);
 
     const orchestrationClient = new OrchestrationClientBase(
       mergedOrchestrationConfig,
@@ -434,21 +441,22 @@ export class OrchestrationClient extends BaseChatModel<
   }
 
   private mergeOrchestrationConfig(
+    orchestrationConfig: LangChainOrchestrationModuleConfig,
     options: typeof this.ParsedCallOptions
   ): LangChainOrchestrationModuleConfig {
     const { tools = [], stop = [], responseFormat } = options;
     const config: LangChainOrchestrationModuleConfig = {
-      ...this.orchestrationConfig,
+      ...orchestrationConfig,
       promptTemplating: {
-        ...this.orchestrationConfig.promptTemplating,
+        ...orchestrationConfig.promptTemplating,
         model: {
-          ...this.orchestrationConfig.promptTemplating.model,
+          ...orchestrationConfig.promptTemplating.model,
           params: {
-            ...this.orchestrationConfig.promptTemplating.model.params,
+            ...orchestrationConfig.promptTemplating.model.params,
             ...(stop.length && {
               stop: [
-                ...(this.orchestrationConfig.promptTemplating.model.params
-                  ?.stop || []),
+                ...(orchestrationConfig.promptTemplating.model.params?.stop ||
+                  []),
                 ...stop
               ]
             })
@@ -499,5 +507,25 @@ export class OrchestrationClient extends BaseChatModel<
     }
 
     return config;
+  }
+
+  private mergeOrchestrationConfigs(
+    options: typeof this.ParsedCallOptions
+  ):
+    | LangChainOrchestrationModuleConfig
+    | LangChainOrchestrationModuleConfigList {
+    if (!Array.isArray(this.orchestrationConfig)) {
+      return this.mergeOrchestrationConfig(this.orchestrationConfig, options);
+    }
+
+    if (!this.orchestrationConfig.length) {
+      throw new Error(
+        'Orchestration config list must not be empty for module fallback.'
+      );
+    }
+
+    return this.orchestrationConfig.map(config =>
+      this.mergeOrchestrationConfig(config, options)
+    ) as LangChainOrchestrationModuleConfigList;
   }
 }

@@ -52,6 +52,41 @@ export async function invokeChain(): Promise<string> {
 }
 
 /**
+ * Ask GPT about SAP Cloud SDK using module fallback configurations.
+ * @returns The answer from ChatGPT.
+ */
+export async function invokeChainWithFallbackConfigs(): Promise<string> {
+  const orchestrationConfigs: [
+    LangChainOrchestrationModuleConfig,
+    ...LangChainOrchestrationModuleConfig[]
+  ] = [
+    {
+      promptTemplating: {
+        model: {
+          name: 'gpt-5'
+        }
+      }
+    },
+    {
+      promptTemplating: {
+        model: {
+          name: 'gpt-5-mini'
+        }
+      }
+    }
+  ];
+
+  return new OrchestrationClient(orchestrationConfigs)
+    .pipe(new StringOutputParser())
+    .invoke([
+      {
+        role: 'user',
+        content: 'Tell me about SAP Cloud SDK'
+      }
+    ]);
+}
+
+/**
  * Trigger input content filter.
  * @returns The answer from ChatGPT.
  */
@@ -251,6 +286,56 @@ export async function streamChain(
       signal: controller.signal
     }
   );
+}
+
+/**
+ * Stream responses using LangChain Orchestration client with module fallback configurations.
+ * @param controller - The abort controller to cancel the request if needed.
+ * @returns The streamed answer aggregated as a string.
+ */
+export async function streamChainWithFallbackConfigs(
+  controller = new AbortController()
+): Promise<string> {
+  const orchestrationConfigs: [
+    LangChainOrchestrationModuleConfig,
+    ...LangChainOrchestrationModuleConfig[]
+  ] = [
+    {
+      promptTemplating: {
+        model: {
+          name: 'gpt-5'
+        }
+      }
+    },
+    {
+      promptTemplating: {
+        model: {
+          name: 'gpt-5-mini'
+        }
+      }
+    }
+  ];
+
+  const client = new OrchestrationClient(orchestrationConfigs);
+  const stream = await client.stream(
+    [
+      {
+        role: 'user',
+        content:
+          'Write a 100 word explanation about SAP Cloud SDK and its capabilities'
+      }
+    ],
+    {
+      signal: controller.signal
+    }
+  );
+
+  let finalOutput: AIMessageChunk | undefined;
+  for await (const chunk of stream) {
+    finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
+  }
+
+  return String(finalOutput?.content ?? '');
 }
 
 /**
