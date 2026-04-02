@@ -46,13 +46,15 @@ Syncs `packages/core/src/model-types.ts` with the current model table on SAP Not
    - Read `scripts/extract-model-table.js` and pass its contents as the function body to `evaluate_script`.
    - The script returns either a JSON array of model rows (success) or `{ error: '...' }` (failure).
    - If the result is an error or empty array, the session has expired — tell the user to log in to me.sap.com in the Chrome window and wait for their confirmation, then retry `navigate_page` + `evaluate_script`.
-   - On success, **merge** the extracted rows into `scripts/sap-models.json`: read the existing file first, then update existing entries (matched by `model` field) and append any new ones. Do NOT replace the whole file — use the Edit tool to apply targeted changes or add new entries.
+   - On success, **merge** the extracted rows into `scripts/sap-models.json`: read the existing file first, then update existing entries (matched by `model` field) and append any new ones.
+     Do NOT replace the whole file — use the Edit tool to apply targeted changes or add new entries.
 
 4. **Patch model-types.ts** by running the sync script:
    ```bash
    pnpm tsx scripts/sync-model-types.ts
    ```
-   If the output ends with a `⚠ Skipped N model(s)` warning, show the user the listed model names and their `executableId` values and ask whether they want to add a mapping. If yes, add the appropriate entry to `EXECUTABLE_ID_TO_TYPE` in `scripts/sync-model-types.ts` and re-run the script before proceeding.
+   If the output ends with a `⚠ Skipped N model(s)` warning, show the user the listed model names and their `executableId` values and ask whether they want to add a mapping.
+   If yes, add the appropriate entry to `EXECUTABLE_ID_TO_TYPE` in `scripts/sync-model-types.ts` and re-run the script before proceeding.
 
 5. **Show the diff** to the user:
    ```bash
@@ -72,7 +74,9 @@ Syncs `packages/core/src/model-types.ts` with the current model table on SAP Not
 
 ## Prerequisites
 
-- **Google Chrome (or Chromium) must be installed.** The `chrome-devtools-mcp` plugin connects to Chrome via the DevTools Protocol — it cannot run without a live Chrome process. See step 1 for the launch command on your OS.
+- **Google Chrome (or Chromium) must be installed.**
+  The `chrome-devtools-mcp` plugin connects to Chrome via the DevTools Protocol — it cannot run without a live Chrome process.
+  See step 1 for the launch command on your OS.
 - `chrome-devtools-mcp` plugin must be installed and connected in Claude Code
 - `gh` CLI must be authenticated: run `gh auth login` if not already done
 - **First run:** me.sap.com credentials required for manual login in Chrome (cookies are saved to `~/.sap-chrome-profile` for future runs)
