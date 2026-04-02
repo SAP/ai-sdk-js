@@ -11,7 +11,7 @@ import {
   Command
 } from '@langchain/langgraph';
 import { ToolNode } from '@langchain/langgraph/prebuilt';
-import { AzureOpenAiChatClient } from '@sap-ai-sdk/langchain';
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { tool } from '@langchain/core/tools';
 import * as z from 'zod/v4';
@@ -48,9 +48,15 @@ const tools = [...(await mcpClient.getTools()), getRestaurantsTool];
 const toolNode = new ToolNode(tools);
 
 // Create a model
-const model = new AzureOpenAiChatClient({
-  modelName: 'gpt-5-mini',
-  maxRetries: 0
+const model = new OrchestrationClient({
+  promptTemplating: {
+    model: {
+      name: 'anthropic--claude-4.5-haiku',
+      params: {
+        temperature: 0.7
+      }
+    }
+  }
 });
 
 // create a model with access to the tools
