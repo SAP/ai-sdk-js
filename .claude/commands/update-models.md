@@ -4,67 +4,34 @@ Syncs `packages/core/src/model-types.ts` with the current model table on SAP Not
 
 ## Steps
 
-1. **Launch Chrome with a persistent SAP profile** by running the appropriate command for your OS:
+1. **Navigate to the SAP Notes page** using the Playwright MCP tool:
+   - Use `browser_navigate` to go to `https://me.sap.com/notes/3437766`
+   - Use `browser_wait_for` to wait for `Availability of Generative AI Models`
+   - If the page shows a login screen, tell the user to log in to me.sap.com in the Playwright browser window and wait for their confirmation, then retry.
 
-   **macOS:**
-   ```bash
-   /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
-     --remote-debugging-port=9222 \
-     --user-data-dir=$HOME/.sap-chrome-profile \
-     --no-first-run \
-     --no-default-browser-check &
-   sleep 2
-   ```
-
-   **Linux:**
-   ```bash
-   google-chrome \
-     --remote-debugging-port=9222 \
-     --user-data-dir=$HOME/.sap-chrome-profile \
-     --no-first-run \
-     --no-default-browser-check &
-   sleep 2
-   ```
-   (Use `chromium-browser` instead of `google-chrome` if that is what is installed.)
-
-   **Windows** (run in PowerShell):
-   ```powershell
-   Start-Process "C:\Program Files\Google\Chrome\Application\chrome.exe" `
-     --remote-debugging-port=9222 `
-     --user-data-dir="$env:USERPROFILE\.sap-chrome-profile" `
-     --no-first-run `
-     --no-default-browser-check
-   Start-Sleep 2
-   ```
-
-   The `--user-data-dir` flag saves the SAP login session so you only need to log in manually on the first run.
-
-2. **Navigate to the SAP Notes page** using the chrome-devtools MCP tool:
-   - Use `navigate_page` to go to `https://me.sap.com/notes/3437766`
-
-3. **Extract the model table**:
-   - Read `scripts/extract-model-table.js` and pass its contents as the function body to `evaluate_script`.
+2. **Extract the model table**:
+   - Read `scripts/extract-model-table.js` and pass its contents as the function body to `browser_evaluate`.
    - The script returns either a JSON array of model rows (success) or `{ error: '...' }` (failure).
-   - If the result is an error or empty array, the session has expired — tell the user to log in to me.sap.com in the Chrome window and wait for their confirmation, then retry `navigate_page` + `evaluate_script`.
+   - If the result is an error or empty array, the session has expired — tell the user to log in to me.sap.com in the Playwright browser window and wait for their confirmation, then retry.
    - On success, **merge** the extracted rows into `scripts/sap-models.json`: read the existing file first, then update existing entries (matched by `model` field) and append any new ones.
      Do NOT replace the whole file — use the Edit tool to apply targeted changes or add new entries.
 
-4. **Patch model-types.ts** by running the sync script:
+3. **Patch model-types.ts** by running the sync script:
    ```bash
    pnpm tsx scripts/sync-model-types.ts
    ```
    If the output ends with a `⚠ Skipped N model(s)` warning, show the user the listed model names and their `executableId` values and ask whether they want to add a mapping.
    If yes, add the appropriate entry to `EXECUTABLE_ID_TO_TYPE` in `scripts/sync-model-types.ts` and re-run the script before proceeding.
 
-5. **Show the diff** to the user:
+4. **Show the diff** to the user:
    ```bash
    git diff packages/core/src/model-types.ts
    ```
    If there is no diff, tell the user the file is already up to date and stop.
 
-6. **Ask the user** if they want to open a PR with these changes.
+5. **Ask the user** if they want to open a PR with these changes.
 
-7. If yes, **create a branch and open a PR**:
+6. If yes, **create a branch and open a PR**:
    ```bash
    git checkout -b model-types-update/$(date +%Y-%m-%d)
    git add scripts/sap-models.json packages/core/src/model-types.ts
@@ -74,9 +41,6 @@ Syncs `packages/core/src/model-types.ts` with the current model table on SAP Not
 
 ## Prerequisites
 
-- **Google Chrome (or Chromium) must be installed.**
-  See step 1 for the launch command on your OS.
-- `chrome-devtools-mcp` must be enabled as a Claude Code plugin — install it from the Claude Code plugin marketplace (`chrome-devtools-mcp@claude-plugins-official`) or see [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp) for manual MCP server setup
+- `playwright@claude-plugins-official` must be enabled as a Claude Code plugin — install it via `/plugin` in Claude Code
 - `gh` CLI must be authenticated: run `gh auth login` if not already done
-- **First run:** me.sap.com credentials required for manual login in Chrome (cookies are saved to `~/.sap-chrome-profile` for future runs)
-- Node.js 20.19.0+ required for `chrome-devtools-mcp` (check with `node --version`)
+- **First run:** me.sap.com credentials required for manual login in the Playwright browser window (the session is saved automatically for future runs)
