@@ -76,13 +76,6 @@ function resolveTypeName(row: ModelRow): string | null {
 
   return null;
 }
-
-function hasConcreteRetirementDate(retirementDate: string): boolean {
-  // Only treat as retired if the value is a concrete date (YYYY-MM-DD).
-  // "not earlier than ...", "No current plans for retirement", "-", etc. are NOT concrete.
-  return /^\d{4}-\d{2}-\d{2}$/.test(retirementDate.trim());
-}
-
 function isRetiredSoon(retirementDate: string): boolean {
   const normalized = retirementDate.trim().toLowerCase();
   if (!normalized || normalized.startsWith('no ') || normalized === '-') {
