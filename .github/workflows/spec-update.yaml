@@ -131,11 +131,14 @@ jobs:
 
       - name: Check for spec changes
         id: check-spec-changes
-        uses: dorny/paths-filter@v3
-        with:
-          filters: |
-            spec:
-              - ${{ steps.resolve.outputs.file_path }}
+        env:
+          FILE_PATH: ${{ steps.resolve.outputs.file_path }}
+        run: |
+          if test -z "$(git status --porcelain -- "$FILE_PATH")"; then
+            echo "spec=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "spec=true" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: 'Generate'
         id: generate
@@ -163,11 +166,12 @@ jobs:
 
       - name: Check for changes after generation
         id: check-generated-changes
-        uses: dorny/paths-filter@v3
-        with:
-          filters: |
-            all:
-              - 'packages/**/src/**/*'
+        run: |
+          if test -z "$(git status --porcelain -- 'packages/')"; then
+            echo "all=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "all=true" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: 'Push changes'
         id: push
