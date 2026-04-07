@@ -187,7 +187,7 @@ describe('orchestration', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-4o',
+          name: 'gpt-5-mini',
           params: {}
         }
       }
@@ -220,7 +220,7 @@ describe('orchestration', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-4o',
+          name: 'gpt-5-mini',
           params: {}
         },
         prompt: {
