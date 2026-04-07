@@ -4,7 +4,7 @@
 
 <!-- What is the status, such as decided, proposed, outdated -> one sentence reason, superseded -> link to followup ADR. -->
 
-tentatively decided - reevaluate when implementing this
+superseded by ADR [007](https://github.com/SAP/ai-sdk-js/blob/main/adr/007-foundation-model-client-strategy.md)
 
 ## Context
 
