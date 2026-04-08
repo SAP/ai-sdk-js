@@ -28,6 +28,15 @@ jobs:
         run: |
           pnpm generate
           pnpm doc
+          
+      - name: Prepare
+        id: prepare
+        env:
+          FULL_VERSION: ${{ github.event.inputs.version || inputs.version }}
+        run: |
+          MAJOR_VERSION=$(echo "$FULL_VERSION" | cut -d. -f1)
+          echo "major-version=$MAJOR_VERSION" >> "$GITHUB_OUTPUT"
+          echo "branch-name=docs/api-update-v${MAJOR_VERSION}-$(date +%Y%m%d%H%M%S)" >> "$GITHUB_OUTPUT"
 
       - name: Checkout docs repository
         uses: actions/checkout@v6
@@ -39,36 +48,18 @@ jobs:
 
       - name: Copy generated API docs into docs repo
         run: |
-          # FULL version e.g. 2.9.0 (provided by input)
-          if [ -n "${{ github.event.inputs.version }}" ]; then
-            FULL_VERSION="${{ github.event.inputs.version }}"
-          else
-            # when called via workflow_call, inputs are available at ${{ inputs.version }}
-            FULL_VERSION="${{ inputs.version }}"
-          fi
-
-          MAJOR_VERSION=$(echo "$FULL_VERSION" | cut -d. -f1)
-          VERSION="v${MAJOR_VERSION}"
-
-          rsync -avz --delete knowledge-base/api-reference/ ./ai-sdk-docs/static/api/${VERSION}/
+          rsync -avz --delete knowledge-base/api-reference/ ./ai-sdk-docs/static/api/v${{ steps.prepare.outputs.major-version }}/
 
       - name: Create branch and open PR in docs repo
         working-directory: ./ai-sdk-docs
         env:
           GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          FULL_VERSION: ${{ github.event.inputs.version || inputs.version }}
         run: |
           git config --local user.email "cloudsdk@sap.com"
           git config --local user.name "SAP Cloud SDK Bot"
 
-          # Determine FULL_VERSION (same logic as above)
-          if [ -n "${{ github.event.inputs.version }}" ]; then
-            FULL_VERSION="${{ github.event.inputs.version }}"
-          else
-            FULL_VERSION="${{ inputs.version }}"
-          fi
-
-          BRANCH_NAME="update-api-docs-js-${FULL_VERSION}"
-          git checkout -b "$BRANCH_NAME" || git checkout "$BRANCH_NAME" || true
+          git checkout -b "${{ steps.prepare.outputs.branch-name }}" || git checkout "${{ steps.prepare.outputs.branch-name }}" || true
 
           # Stage changes
           git add static/api/
@@ -79,11 +70,11 @@ jobs:
             exit 0
           fi
 
-          git commit -m "Update SAP AI SDK for JavaScript API documentation ${FULL_VERSION}" || exit 0
-          git push -u origin "$BRANCH_NAME"
+          git commit -m "Update SAP AI SDK for JavaScript API documentation v${{ steps.prepare.outputs.major-version }} (${FULL_VERSION})" || exit 0
+          git push -u origin "${{ steps.prepare.outputs.branch-name }}"
 
           # Create a one-line PR body safely (avoid YAML parser issues with multiline literals)
           PR_BODY=$'This PR updates the API documentation for SAP AI SDK for JavaScript '"${FULL_VERSION}"$'\n\nGenerated automatically by the ai-sdk-js CI/CD pipeline.'
           PR_TITLE="Update API Docs for ${FULL_VERSION}"
 
-          gh pr create --repo SAP/ai-sdk --head "$BRANCH_NAME" --base main --title "$PR_TITLE" --body "$PR_BODY"
+          gh pr create --repo SAP/ai-sdk --head "${{ steps.prepare.outputs.branch-name }}" --base main --title "$PR_TITLE" --body "$PR_BODY"
