@@ -16,18 +16,28 @@ jobs:
     if: ${{ github.actor == 'dependabot[bot]' }}
 
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          permission-contents: write
       - name: Setup Environment
         uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
           ref: ${{ github.head_ref }}
           pnpm-install-args: --lockfile-only
-          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Commit and push if changed
+        env:
+          BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
+          BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
         run: |
           if [[ -n "$(git status --porcelain)" ]]; then
-            git config --global user.email "cloud-sdk-js@github.com"
-            git config --global user.name "cloud-sdk-js"
+            git config --global user.email "$BOT_EMAIL"
+            git config --global user.name "$BOT_NAME"
             git add pnpm-lock.yaml
             git commit -m "chore: update pnpm-lock.yaml"
             git push

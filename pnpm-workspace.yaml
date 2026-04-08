@@ -13,6 +13,8 @@ packages:
   - tests/smoke-tests
   - tests/type-tests
 
+blockExoticSubdeps: true
+trustPolicy: no-downgrade
 minimumReleaseAge: 5760
 minimumReleaseAgeExclude:
   - '@sap-cloud-sdk/*'
