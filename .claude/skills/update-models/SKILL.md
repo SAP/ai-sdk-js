@@ -1,3 +1,10 @@
+---
+name: update-models
+description: Sync model types from SAP Notes 3437766. Use when model-types.ts needs updating from the latest SAP AI model availability table.
+disable-model-invocation: true
+argument-hint: "[no arguments needed]"
+---
+
 # Update Model Types from SAP Notes
 
 Syncs `packages/core/src/model-types.ts` with the current model table on SAP Notes (me.sap.com/notes/3437766).
