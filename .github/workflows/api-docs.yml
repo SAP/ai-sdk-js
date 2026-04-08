@@ -21,6 +21,16 @@ jobs:
           pnpm generate
           pnpm doc
 
+      - name: Prepare
+        id: prepare
+        env:
+          FULL_VERSION: ${{ inputs.version }}
+        run: |
+          MAJOR_VERSION=$(echo "$FULL_VERSION" | cut -d. -f1)
+          echo "major-version=$MAJOR_VERSION" >> "$GITHUB_OUTPUT"
+          echo "branch-name=docs/api-update-v${MAJOR_VERSION}-$(date +%Y%m%d%H%M%S)" >> "$GITHUB_OUTPUT"
+            
+      
       - name: Generate GitHub App token
         id: app-token
         uses: actions/create-github-app-token@v3
@@ -32,20 +42,13 @@ jobs:
           permission-contents: write
           permission-pull-requests: write
 
+
       - uses: actions/checkout@v6
         with:
           repository: SAP/ai-sdk
           path: ai-sdk
+          ref: ${{ steps.prepare.outputs.branch-name }}
           token: ${{ steps.app-token.outputs.token }}
-
-      - name: Prepare
-        id: prepare
-        env:
-          FULL_VERSION: ${{ inputs.version }}
-        run: |
-          MAJOR_VERSION=$(echo "$FULL_VERSION" | cut -d. -f1)
-          echo "major-version=$MAJOR_VERSION" >> "$GITHUB_OUTPUT"
-          echo "branch-name=docs/api-update-v${MAJOR_VERSION}-$(date +%Y%m%d%H%M%S)" >> "$GITHUB_OUTPUT"
 
       - name: Copy API docs
         env:
@@ -63,16 +66,21 @@ jobs:
             echo "docs=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Commit changes
+      - name: Commit and push changes
         if: steps.check-changes.outputs.docs == 'true'
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          commit_message: 'Update SAP AI SDK for JavaScript API documentation v${{ steps.prepare.outputs.major-version }}'
-          repository: ai-sdk
-          branch: ${{ steps.prepare.outputs.branch-name }}
-          create_branch: true
-          commit_user_email: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
-          commit_user_name: ${{ vars.SAP_AI_SDK_BOT_NAME }}
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          BOT_EMAIL: ${{ vars.SAP_CLOUD_SDK_BOT_EMAIL }}
+          BOT_NAME: ${{ vars.SAP_CLOUD_SDK_BOT_NAME }}
+        run: |
+          gh auth setup-git
+          git config user.email "$BOT_EMAIL"
+          git config user.name "$BOT_NAME"
+
+          cd ai-sdk
+          git add -A
+          git commit -m 'Update SAP AI SDK for JavaScript API documentation v${{ steps.prepare.outputs.major-version }}' || exit 0
+          git push
 
       - name: Create pull request
         if: steps.check-changes.outputs.docs == 'true'
