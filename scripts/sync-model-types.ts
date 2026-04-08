@@ -145,12 +145,12 @@ function buildReleaseNote(
 ): string {
   const parts: string[] = [];
 
-  if (added.length > 0) {
+  if (added.length) {
     const names = added.map(m => `\`${m}\``).join(', ');
     parts.push(`Added ${names} to the available model list.`);
   }
 
-  if (removed.length > 0) {
+  if (removed.length) {
     const descriptions = removed.map(r => {
       let desc = `\`${r.model}\``;
       if (r.retirementDate) {
@@ -162,7 +162,7 @@ function buildReleaseNote(
       return desc;
     });
     const last = descriptions.pop();
-    const joined = descriptions.length > 0 ? `${descriptions.join(', ')} and ${last}` : last;
+    const joined = descriptions.length ? `${descriptions.join(', ')} and ${last}` : last;
     parts.push(`Remove deprecated model${removed.length > 1 ? 's' : ''} ${joined}.`);
   }
 
@@ -290,7 +290,7 @@ async function syncModelTypes(): Promise<void> {
     await writeChangeset(releaseNote);
   }
 
-  if (skippedRows.length > 0) {
+  if (skippedRows.length) {
     console.error(
       `\n⚠ Skipped ${skippedRows.length} model${skippedRows.length > 1 ? 's' : ''} — update EXECUTABLE_ID_TO_TYPE in sync-model-types.ts to include ${skippedRows.length > 1 ? 'them' : 'it'}:`
     );
