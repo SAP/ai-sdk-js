@@ -73,7 +73,7 @@ jobs:
           BRANCH_NAME="update-release-notes-js-${{ needs.bump.outputs.version }}"
           git checkout -b "${BRANCH_NAME}"
           
-          # Stage release notes only
+          # Stage release notes
           git add docs-js/release-notes.mdx
           
           if git diff --staged --quiet; then
