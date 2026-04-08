@@ -30,15 +30,20 @@ Syncs `packages/core/src/model-types.ts` with the current model table on SAP Not
    If the output ends with a `⚠ Skipped N model(s)` warning, show the user the listed model names and their `executableId` values and ask whether they want to add a mapping.
    If yes, add the appropriate entry to `EXECUTABLE_ID_TO_TYPE` in `scripts/sync-model-types.ts` and re-run the script before proceeding.
 
-4. **Show the diff** to the user:
+4. **Check for deprecated model usage** in the codebase:
+   - From `scripts/sap-models.json`, collect the names of all models where `deprecated` is `"yes"` or the retirement date is set.
+   - Grep the repository for any of those model names (exclude `scripts/sap-models.json` itself and `packages/core/src/model-types.ts`).
+   - If matches are found, report them to the user so they can decide whether to update or remove those usages.
+
+5. **Show the diff** to the user:
    ```bash
    git diff packages/core/src/model-types.ts
    ```
    If there is no diff, tell the user the file is already up to date and stop.
 
-5. **Ask the user** if they want to open a PR with these changes.
+6. **Ask the user** if they want to open a PR with these changes.
 
-6. If yes, **create a branch and open a PR**:
+7. If yes, **create a branch and open a PR**:
    ```bash
    git checkout -b model-types-update/$(date +%Y-%m-%d)
    git add scripts/sap-models.json packages/core/src/model-types.ts
