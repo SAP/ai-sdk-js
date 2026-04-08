@@ -15,12 +15,13 @@ Syncs `packages/core/src/model-types.ts` with the current model table on SAP Not
    - Use `browser_wait_for` to wait for `Availability of Generative AI Models`
    - If the page shows a login screen, tell the user to log in to me.sap.com in the Playwright browser window and wait for their confirmation, then retry.
 
-2. **Extract the model table**:
+2. **Extract the model table** (then close the browser tab when done):
    - Read `scripts/extract-model-table.js` and pass its contents as the function body to `browser_evaluate`.
    - The script returns either a JSON array of model rows (success) or `{ error: '...' }` (failure).
    - If the result is an error or empty array, the session has expired — tell the user to log in to me.sap.com in the Playwright browser window and wait for their confirmation, then retry.
    - On success, **merge** the extracted rows into `scripts/sap-models.json`: read the existing file first, then update existing entries (matched by `model` field) and append any new ones.
      Do NOT replace the whole file — use the Edit tool to apply targeted changes or add new entries.
+   - **Close the browser tab** using `browser_close` to avoid stale session issues on future runs.
 
 3. **Patch model-types.ts** by running the sync script:
    ```bash
