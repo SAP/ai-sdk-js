@@ -62,6 +62,11 @@ const EMBEDDING_TYPE_MAP: Record<string, string> = {
 };
 
 function resolveTypeName(row: ModelRow): string | null {
+  // RPT models share the aicore-sap executableId with sap-abap-1 — distinguish by name.
+  if (row.model.toLowerCase().startsWith('sap-rpt-')) {
+    return 'SapRptModel';
+  }
+
   const execId = row.executableId.toLowerCase().split('(')[0].trim();
 
   for (const [prefix, typeName] of Object.entries(EXECUTABLE_ID_TO_TYPE)) {
@@ -196,8 +201,9 @@ async function syncModelTypes(): Promise<void> {
 
     const isOrchestration = row.availableInOrchestration.toLowerCase().includes('yes');
     const isAzureOpenAi = row.executableId.toLowerCase().startsWith('azure-openai');
+    const isSapRpt = typeName === 'SapRptModel';
 
-    if (!isOrchestration && !isAzureOpenAi) {
+    if (!isOrchestration && !isAzureOpenAi && !isSapRpt) {
       continue;
     }
 
@@ -216,7 +222,7 @@ async function syncModelTypes(): Promise<void> {
 
   // Compute added/removed per type for release notes
   const allAdded: string[] = [];
-  const allRemoved: Array<{ model: string; replacement: string; retirementDate: string }> = [];
+  const allRemoved: { model: string; replacement: string; retirementDate: string }[] = [];
 
   for (const [typeName, activeModels] of Object.entries(typeToActiveModels)) {
     const current = extractCurrentModels(currentContent, typeName);
