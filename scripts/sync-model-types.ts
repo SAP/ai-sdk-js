@@ -81,6 +81,7 @@ function resolveTypeName(row: ModelRow): string | null {
 
   return null;
 }
+
 function isRetiredSoon(retirementDate: string): boolean {
   const normalized = retirementDate.trim().toLowerCase();
   if (!normalized || normalized.startsWith('no ') || normalized === '-') {
