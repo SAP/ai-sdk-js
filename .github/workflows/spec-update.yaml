@@ -135,7 +135,7 @@ jobs:
         env:
           FILE_PATH: ${{ steps.resolve.outputs.file_path }}
         run: |
-          if test -z "$(git status --porcelain -- "$FILE_PATH")"; then
+          if git diff --quiet origin/main -- "$FILE_PATH"; then
             echo "spec=false" >> "$GITHUB_OUTPUT"
           else
             echo "spec=true" >> "$GITHUB_OUTPUT"
@@ -167,6 +167,7 @@ jobs:
 
       - name: Check for changes after generation
         id: check-generated-changes
+        if: steps.check-spec-changes.outputs.spec == 'true'
         run: |
           if test -z "$(git status --porcelain -- 'packages/')"; then
             echo "all=false" >> "$GITHUB_OUTPUT"
