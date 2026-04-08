@@ -4,7 +4,7 @@
 
 <!-- What is the status, such as decided, proposed, outdated -> one sentence reason, superseded -> link to followup ADR. -->
 
-tentatively decided - reevaluate when implementing this
+superseded by ADR [007](https://github.com/SAP/ai-sdk-js/blob/main/adr/007-foundation-model-client-strategy.md)
 
 ## Context
 
@@ -236,8 +236,8 @@ const response = await client.responses.create({
 
 #### Open Concerns
 
-- How does OpenAI SDK handle errors?
-- How can we ensure a smooth migration path, when OpenAI SDK has a major version update with breaking changes?
+- How does the OpenAI SDK handle errors?
+- How can we ensure a smooth migration path, when the OpenAI SDK has a major version update with breaking changes?
 - Is it a problem that users could simply overwrite the "ai-client-type" header?
 
 ## Outlook
