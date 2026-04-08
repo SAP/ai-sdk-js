@@ -161,7 +161,9 @@ function buildReleaseNote(
       }
       return desc;
     });
-    parts.push(`Removed deprecated model${removed.length > 1 ? 's' : ''} ${descriptions.join(', ')}.`);
+    const last = descriptions.pop();
+    const joined = descriptions.length > 0 ? `${descriptions.join(', ')} and ${last}` : last;
+    parts.push(`Remove deprecated model${removed.length > 1 ? 's' : ''} ${joined}.`);
   }
 
   return parts.join(' ');
@@ -183,7 +185,7 @@ async function syncModelTypes(): Promise<void> {
   // Track retirement info for removed models (for release notes)
   const retiredInfo: Record<string, { replacement: string; retirementDate: string }> = {};
   // Track rows with no executableId mapping
-  const skippedRows: Array<{ model: string; executableId: string }> = [];
+  const skippedRows: { model: string; executableId: string }[] = [];
 
   for (const row of rows) {
     if (isRetired(row)) {
