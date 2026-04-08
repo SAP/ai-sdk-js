@@ -1,7 +1,5 @@
 name: api-docs
 
-# Reusable workflow to generate API docs and open a PR in SAP/ai-sdk.
-# Reusable workflow to generate API docs and open a PR in SAP/ai-sdk.
 # Can be triggered via workflow_call (from bump.yml) or manually via workflow_dispatch.
 
 on:
