@@ -5,6 +5,7 @@
  */
 /* eslint-disable no-console */
 
+import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { transformFile } from './util.js';
 
@@ -141,7 +142,7 @@ function extractCurrentModels(content: string, typeName: string): Set<string> {
 
 function buildReleaseNote(
   added: string[],
-  removed: Array<{ model: string; replacement: string; retirementDate: string }>
+  removed: { model: string; replacement: string; retirementDate: string }[]
 ): string {
   const parts: string[] = [];
 
@@ -170,7 +171,6 @@ function buildReleaseNote(
 }
 
 async function syncModelTypes(): Promise<void> {
-  const { readFile } = await import('node:fs/promises');
   let rows: ModelRow[];
   try {
     const raw = await readFile(SAP_MODELS_PATH, 'utf8');
@@ -219,31 +219,24 @@ async function syncModelTypes(): Promise<void> {
     typeToActiveModels[typeName].add(row.model);
   }
 
-  const currentContent = await import('node:fs/promises').then(fs =>
-    fs.readFile(MODEL_TYPES_PATH, 'utf8')
-  );
+  const currentContent = await readFile(MODEL_TYPES_PATH, 'utf8');
 
   // Compute added/removed per type for release notes
-  const allAdded: string[] = [];
-  const allRemoved: { model: string; replacement: string; retirementDate: string }[] = [];
-
-  for (const [typeName, activeModels] of Object.entries(typeToActiveModels)) {
+  const allAdded = Object.entries(typeToActiveModels).flatMap(([typeName, activeModels]) => {
     const current = extractCurrentModels(currentContent, typeName);
-    for (const m of activeModels) {
-      if (!current.has(m)) {
-        allAdded.push(m);
-      }
-    }
-    for (const m of current) {
-      if (!activeModels.has(m)) {
-        allRemoved.push({
-          model: m,
-          replacement: retiredInfo[m]?.replacement ?? '',
-          retirementDate: retiredInfo[m]?.retirementDate ?? ''
-        });
-      }
-    }
-  }
+    return [...activeModels].filter(m => !current.has(m));
+  });
+
+  const allRemoved = Object.entries(typeToActiveModels).flatMap(([typeName, activeModels]) => {
+    const current = extractCurrentModels(currentContent, typeName);
+    return [...current]
+      .filter(m => !activeModels.has(m))
+      .map(m => ({
+        model: m,
+        replacement: retiredInfo[m]?.replacement ?? '',
+        retirementDate: retiredInfo[m]?.retirementDate ?? ''
+      }));
+  });
 
   let changed = false;
 
@@ -301,7 +294,6 @@ async function syncModelTypes(): Promise<void> {
 }
 
 async function writeChangeset(releaseNote: string): Promise<void> {
-  const { writeFile } = await import('node:fs/promises');
   const changesetDir = resolve(import.meta.dirname, '../.changeset');
   const date = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
   const filename = `model-types-sync-${date}.md`;
