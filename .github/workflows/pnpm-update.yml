@@ -9,20 +9,31 @@ jobs:
   update-dependencies:
     runs-on: ubuntu-latest
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
       - name: Setup Environment
         uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
-          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Update Transitive Dependencies
         id: update-deps
+        env:
+          BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
+          BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
         run: |
           pnpm --no-save update --recursive
           pnpm audit --audit-level high
 
           if [[ -n "$(git status --porcelain)" ]]; then
-            git config --global user.email "cloud-sdk-js@github.com"
-            git config --global user.name "cloud-sdk-js"
+            git config --global user.email "$BOT_EMAIL"
+            git config --global user.name "$BOT_NAME"
             BRANCH_NAME="bot/monthly-transitive-dependency-update-$(date -u +%Y%m%d-%H%M%S)"
             git checkout -b "$BRANCH_NAME"
             git add .
@@ -39,7 +50,7 @@ jobs:
         if: steps.update-deps.outputs.branch-created == 'true'
         uses: actions/github-script@v8
         with:
-          github-token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const { repo, owner } = context.repo;
             const branch = '${{ steps.update-deps.outputs.branch-name }}';
@@ -61,7 +72,7 @@ jobs:
         if: steps.update-deps.outputs.branch-created == 'true' && success()
         uses: actions/github-script@v8
         with:
-          github-token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const { setTimeout } = require('node:timers/promises');
             const retry = require('async-retry');
