@@ -43,7 +43,7 @@ export async function orchestrationChatCompletion(
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5-mini'
       }
     }
   });
@@ -69,7 +69,7 @@ export async function orchestrationChatCompletion(
  */
 export async function orchestrationChatCompletionResilient(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
-    promptTemplating: { model: { name: 'gpt-4o' } }
+    promptTemplating: { model: { name: 'gpt-5-mini' } }
   });
 
   return orchestrationClient.chatCompletion(
@@ -94,7 +94,7 @@ export async function chatCompletionStream(
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5-mini'
       }
     }
   });
@@ -128,7 +128,7 @@ export async function orchestrationTemplating(): Promise<OrchestrationResponse> 
         ]
       },
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5-mini'
       }
     }
   });
@@ -151,7 +151,7 @@ export async function chatCompletionStreamWithJsonModuleConfig(
     "modules": {
       "prompt_templating": {
         "model": {
-          "name": "gpt-4o",
+          "name": "gpt-5-mini",
           "params": {
             "stream_options": {
               "include_usage": true
@@ -182,7 +182,7 @@ export async function orchestrationMessageHistory(): Promise<OrchestrationRespon
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5-mini'
       }
     }
   });
@@ -216,7 +216,7 @@ export async function orchestrationPromptRegistry(): Promise<OrchestrationRespon
         }
       },
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5-mini'
       }
     }
   });
@@ -265,7 +265,7 @@ export async function orchestrationCompletionPromptRegistryScoped(): Promise<Orc
         },
         // define the language model to be used
         model: {
-          name: 'gpt-4o'
+          name: 'gpt-5-mini'
         }
       }
     },
@@ -287,7 +287,7 @@ export async function orchestrationInputFiltering(): Promise<OrchestrationErrorR
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5-mini'
       }
     },
     filtering: {
@@ -332,7 +332,7 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5-mini'
       }
     },
     filtering: {
@@ -389,7 +389,7 @@ export async function orchestrationCompletionMasking(): Promise<
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5-mini'
       }
     },
     masking: {
@@ -451,7 +451,7 @@ export async function orchestrationMaskGroundingInput(): Promise<OrchestrationRe
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5-mini'
       }
     },
     grounding: buildDocumentGroundingConfig({
@@ -497,7 +497,7 @@ export async function orchestrationRequestConfig(): Promise<OrchestrationRespons
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5-mini'
       }
     }
   });
@@ -548,7 +548,7 @@ export async function orchestrationGrounding(
       // define the language model to be used
       promptTemplating: {
         model: {
-          name: 'gpt-4o'
+          name: 'gpt-5-mini'
         }
       },
       grounding: buildDocumentGroundingConfig({
@@ -593,7 +593,7 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5-mini'
       }
     }
   });
@@ -674,7 +674,7 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
         }
       },
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5-mini'
       }
     }
   });
@@ -738,7 +738,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
         tools: [addNumbersTool]
       },
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5-mini'
       }
     }
   });
@@ -783,7 +783,7 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
   const orchestrationClient = new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5-mini'
       }
     },
     translation: {
@@ -836,7 +836,7 @@ export async function chatCompletionStreamWithTools(
         tools: [addNumbersTool]
       },
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5-mini'
       }
     }
   });
@@ -986,7 +986,7 @@ export async function orchestrationWithFallbackConfigs(): Promise<OrchestrationR
       // Second configuration with a slow model with a short timeout to trigger fallback
       promptTemplating: {
         model: {
-          name: 'gpt-5',
+          name: 'gpt-5-mini',
           timeout: 1, // 1 s timeout to trigger timeout error
           params: {
             reasoning_effort: 'high'
@@ -998,7 +998,7 @@ export async function orchestrationWithFallbackConfigs(): Promise<OrchestrationR
       // Third configuration with a valid model that will succeed
       promptTemplating: {
         model: {
-          name: 'gpt-4o'
+          name: 'gpt-5-mini'
         }
       }
     }

@@ -57,8 +57,8 @@ export async function addCurrentChangelog(): Promise<void> {
   const changelog = await getChangelogWithVersion();
   const releaseNotesFilePath = await getReleaseNotesFilePath();
   const releaseNotes = await readFile(releaseNotesFilePath, {
-      encoding: 'utf8'
-    });
+    encoding: 'utf8'
+  });
 
   const releaseNotesArray = releaseNotes.split(
     '<!-- This line is used for our release notes automation -->\n'
