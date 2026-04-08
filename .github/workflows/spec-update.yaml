@@ -97,6 +97,7 @@ jobs:
 
       - name: 'Resolve specification file paths'
         id: resolve
+        shell: bash
         run: |
           declare -A SERVICES=(
             [ai-api.url]="repos/cloudsdk/cloud-sdk-java-tests/contents/aicore.yaml"
