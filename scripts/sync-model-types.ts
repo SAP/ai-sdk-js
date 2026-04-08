@@ -183,16 +183,16 @@ async function syncModelTypes(): Promise<void> {
   // Build active model set per type (non-retired, in-scope rows only)
   const typeToActiveModels: Record<string, Set<string>> = {};
   // Track retirement info for removed models (for release notes)
-  const retiredInfo: Record<string, { replacement: string; retirementDate: string }> = {};
+  const retiredInfo = Object.fromEntries(
+    rows
+      .filter(isRetired)
+      .map(r => [r.model, { replacement: r.suggestedReplacement, retirementDate: r.retirementDate }])
+  );
   // Track rows with no executableId mapping
   const skippedRows: { model: string; executableId: string }[] = [];
 
   for (const row of rows) {
     if (isRetired(row)) {
-      retiredInfo[row.model] ??= {
-        replacement: row.suggestedReplacement,
-        retirementDate: row.retirementDate
-      };
       continue;
     }
 
