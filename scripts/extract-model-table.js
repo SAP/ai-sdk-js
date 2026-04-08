@@ -1,6 +1,6 @@
 /**
  * Browser-side extraction script for the SAP Notes model table.
- * Run via chrome-devtools-mcp evaluate_script on https://me.sap.com/notes/3437766.
+ * Run via playwright-mcp evaluate_script on https://me.sap.com/notes/3437766.
  * Returns a JSON-serializable array of model rows.
  */
 (() => {
