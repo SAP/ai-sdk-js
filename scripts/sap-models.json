@@ -396,7 +396,7 @@
     "model": "gemini-2.5-flash",
     "availableInOrchestration": "yes",
     "deprecated": "",
-    "retirementDate": "2026-06-17",
+    "retirementDate": "2026-10-16",
     "suggestedReplacement": ""
   },
   {
@@ -412,7 +412,7 @@
     "model": "gemini-2.5-pro",
     "availableInOrchestration": "yes",
     "deprecated": "",
-    "retirementDate": "2026-06-17",
+    "retirementDate": "2026-10-16",
     "suggestedReplacement": ""
   },
   {
