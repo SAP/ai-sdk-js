@@ -4,7 +4,7 @@ export default class OrchestrationService {
   async chatCompletion(req: any) {
     const { template, placeholderValues } = req.data;
     const model = {
-      name: 'gpt-4o'
+      name: 'gpt-5'
     };
     const prompt = { template };
 

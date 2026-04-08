@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
       - name: REUSE Compliance Check
-        uses: fsfe/reuse-action@v6
+        uses: fsfe/reuse-action@676e2d560c9a403aa252096d99fcab3e1132b0f5 # v6.0.0
       - run: pnpm generate
       - name: Enforce generated code is up to date
         run: |
@@ -64,7 +64,7 @@ jobs:
     steps:
       - name: Dependabot metadata
         id: metadata
-        uses: dependabot/fetch-metadata@v2.5.0
+        uses: dependabot/fetch-metadata@ffa630c65fa7e0ecfa0625b5ceda64399aea1b36 # v3.0.0
         with:
           github-token: '${{ secrets.GITHUB_TOKEN }}'
       - name: Approve a PR
