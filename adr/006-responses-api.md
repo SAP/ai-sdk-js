@@ -236,8 +236,8 @@ const response = await client.responses.create({
 
 #### Open Concerns
 
-- How does OpenAI SDK handle errors?
-- How can we ensure a smooth migration path, when OpenAI SDK has a major version update with breaking changes?
+- How does `OpenAI` SDK handle errors?
+- How can we ensure a smooth migration path, when `OpenAI` SDK has a major version update with breaking changes?
 - Is it a problem that users could simply overwrite the "ai-client-type" header?
 
 ## Outlook
