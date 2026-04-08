@@ -170,25 +170,19 @@ function buildReleaseNote(
   return parts.join(' ');
 }
 
-async function syncModelTypes(): Promise<void> {
-  let rows: ModelRow[];
-  try {
-    const raw = await readFile(SAP_MODELS_PATH, 'utf8');
-    rows = JSON.parse(raw) as ModelRow[];
-  } catch {
-    console.error(`Error: could not read or parse ${SAP_MODELS_PATH}.`);
-    process.exit(1);
-  }
+interface ActiveModelMap {
+  typeToActiveModels: Record<string, Set<string>>;
+  retiredInfo: Record<string, { replacement: string; retirementDate: string }>;
+  skippedRows: { model: string; executableId: string }[];
+}
 
-  // Build active model set per type (non-retired, in-scope rows only)
+function buildActiveModelMap(rows: ModelRow[]): ActiveModelMap {
   const typeToActiveModels: Record<string, Set<string>> = {};
-  // Track retirement info for removed models (for release notes)
   const retiredInfo = Object.fromEntries(
     rows
       .filter(isRetired)
       .map(r => [r.model, { replacement: r.suggestedReplacement, retirementDate: r.retirementDate }])
   );
-  // Track rows with no executableId mapping
   const skippedRows: { model: string; executableId: string }[] = [];
 
   for (const row of rows) {
@@ -219,25 +213,12 @@ async function syncModelTypes(): Promise<void> {
     typeToActiveModels[typeName].add(row.model);
   }
 
-  const currentContent = await readFile(MODEL_TYPES_PATH, 'utf8');
+  return { typeToActiveModels, retiredInfo, skippedRows };
+}
 
-  // Compute added/removed per type for release notes
-  const allAdded = Object.entries(typeToActiveModels).flatMap(([typeName, activeModels]) => {
-    const current = extractCurrentModels(currentContent, typeName);
-    return [...activeModels].filter(m => !current.has(m));
-  });
-
-  const allRemoved = Object.entries(typeToActiveModels).flatMap(([typeName, activeModels]) => {
-    const current = extractCurrentModels(currentContent, typeName);
-    return [...current]
-      .filter(m => !activeModels.has(m))
-      .map(m => ({
-        model: m,
-        replacement: retiredInfo[m]?.replacement ?? '',
-        retirementDate: retiredInfo[m]?.retirementDate ?? ''
-      }));
-  });
-
+async function patchModelTypes(
+  typeToActiveModels: Record<string, Set<string>>
+): Promise<boolean> {
   let changed = false;
 
   await transformFile(MODEL_TYPES_PATH, content => {
@@ -267,6 +248,40 @@ async function syncModelTypes(): Promise<void> {
 
     return updated;
   });
+
+  return changed;
+}
+
+async function syncModelTypes(): Promise<void> {
+  let rows: ModelRow[];
+  try {
+    const raw = await readFile(SAP_MODELS_PATH, 'utf8');
+    rows = JSON.parse(raw) as ModelRow[];
+  } catch {
+    console.error(`Error: could not read or parse ${SAP_MODELS_PATH}.`);
+    process.exit(1);
+  }
+
+  const { typeToActiveModels, retiredInfo, skippedRows } = buildActiveModelMap(rows);
+  const currentContent = await readFile(MODEL_TYPES_PATH, 'utf8');
+
+  const allAdded = Object.entries(typeToActiveModels).flatMap(([typeName, activeModels]) => {
+    const current = extractCurrentModels(currentContent, typeName);
+    return [...activeModels].filter(m => !current.has(m));
+  });
+
+  const allRemoved = Object.entries(typeToActiveModels).flatMap(([typeName, activeModels]) => {
+    const current = extractCurrentModels(currentContent, typeName);
+    return [...current]
+      .filter(m => !activeModels.has(m))
+      .map(m => ({
+        model: m,
+        replacement: retiredInfo[m]?.replacement ?? '',
+        retirementDate: retiredInfo[m]?.retirementDate ?? ''
+      }));
+  });
+
+  const changed = await patchModelTypes(typeToActiveModels);
 
   if (!changed) {
     console.error('\nNo changes — model-types.ts is already up to date.');
