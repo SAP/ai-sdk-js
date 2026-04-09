@@ -13,10 +13,10 @@ packages:
   - tests/smoke-tests
   - tests/type-tests
 
+blockExoticSubdeps: true
+trustPolicy: no-downgrade
 minimumReleaseAge: 5760
 minimumReleaseAgeExclude:
   - '@sap-cloud-sdk/*'
-  # TODO: remove after minimum release age has passed
-  - path-to-regexp@8.4.0
-  - handlebars@4.7.9
-  - brace-expansion@1.1.13
+  # Add minimum age exceptions for audit issues here
+  # - sample-package@0.1.0

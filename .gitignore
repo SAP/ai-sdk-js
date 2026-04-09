@@ -67,3 +67,4 @@ build/Release
 
 # Generated API documentation
 knowledge-base/api-reference/
+/.claude
