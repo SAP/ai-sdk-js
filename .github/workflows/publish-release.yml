@@ -87,10 +87,9 @@ jobs:
           repositories: ai-sdk
           permission-contents: write
           permission-pull-requests: write
-      - name: 'Merge Release Notes PR'
+      - name: 'Merge Docs PR'
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-      - name: 'Merge Docs PR'
         run: |
           echo "Attempting to merge PR for branch: ${{ needs.check-docs-pr.outputs.docs_branch }}"
           gh pr merge --squash "${{ needs.check-docs-pr.outputs.docs_branch }}" --delete-branch --repo "${{ env.DOCS_REPO }}"
