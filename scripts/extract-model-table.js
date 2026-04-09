@@ -52,7 +52,7 @@
         availableInOrchestration: clean(cells[cols.orchestrationCol]),
         deprecated: clean(cells[cols.deprecatedCol]),
         retirementDate: clean(cells[cols.retirementCol]),
-        suggestedReplacement: clean(cells[cols.replacementCol])
+        suggestedReplacement: clean(cells[cols.replacementCol]).split('\n').map(clean).filter(Boolean).join(', ')
       });
       return rows;
     }, []);
