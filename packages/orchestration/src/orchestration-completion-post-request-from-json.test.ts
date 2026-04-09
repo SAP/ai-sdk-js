@@ -6,10 +6,9 @@ describe('construct completion post request from JSON', () => {
       "modules": {
         "prompt_templating": {
           "model": {
-            "name": "gpt-4o",
+            "name": "gpt-5-mini",
             "params": {
-              "max_tokens": 50,
-              "temperature": 0.1
+              "max_tokens": 50
             }
           },
           "prompt": {
@@ -40,10 +39,9 @@ describe('construct completion post request from JSON', () => {
       "modules": {
         "prompt_templating": {
           "model": {
-            "name": "gpt-4o",
+            "name": "gpt-5-mini",
             "params": {
-              "max_tokens": 50,
-              "temperature": 0.1
+              "max_tokens": 50
             }
           },
           "prompt": {
