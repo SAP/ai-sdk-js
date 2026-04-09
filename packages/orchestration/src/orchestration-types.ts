@@ -365,11 +365,11 @@ export interface OrchestrationRequestHeaders {
    */
   'AI-Object-Store-Secret-Name'?: string;
   [key: string]: any;
- /**
+  /**
    * Use the `deploymentConfig` constructor parameter to set the resource group instead.
    */
   'AI-Resource-Group'?: never;
-  }
+}
 
 /**
  * Request options for orchestration.
