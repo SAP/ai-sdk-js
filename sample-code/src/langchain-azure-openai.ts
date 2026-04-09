@@ -28,9 +28,8 @@ import type { AIMessageChunk, BaseMessage } from '@langchain/core/messages';
 export async function invoke(): Promise<string> {
   // initialize client with options
   const client = new AzureOpenAiChatClient({
-    modelName: 'gpt-4o',
-    max_tokens: 1000,
-    temperature: 0.7
+    modelName: 'gpt-5',
+    max_tokens: 1000
   });
 
   // invoke a prompt
@@ -50,7 +49,7 @@ export async function invoke(): Promise<string> {
 export async function invokeReasoningWithMaxTokens(): Promise<string> {
   // initialize client with options
   const client = new AzureOpenAiChatClient({
-    modelName: 'gpt-5-mini',
+    modelName: 'gpt-5',
     max_tokens: 1000
   });
 
@@ -76,7 +75,7 @@ export async function invokeReasoningWithMaxTokens(): Promise<string> {
  */
 export async function invokeChain(): Promise<string> {
   // initialize the client
-  const client = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
+  const client = new AzureOpenAiChatClient({ modelName: 'gpt-5' });
 
   // create a prompt template
   const promptTemplate = ChatPromptTemplate.fromMessages([
@@ -149,9 +148,8 @@ export async function invokeRagChain(): Promise<string> {
 
   // Initialize the chat client
   const chatClient = new AzureOpenAiChatClient({
-    modelName: 'gpt-4o',
-    max_tokens: 1000,
-    temperature: 0.7
+    modelName: 'gpt-5',
+    max_tokens: 1000
   });
 
   // Create a system prompt
@@ -183,9 +181,8 @@ export async function invokeRagChain(): Promise<string> {
 export async function invokeToolChain(): Promise<string> {
   // initialize client with options
   const client = new AzureOpenAiChatClient({
-    modelName: 'gpt-4o',
-    max_tokens: 1000,
-    temperature: 0.7
+    modelName: 'gpt-5',
+    max_tokens: 1000
   });
 
   // create a function to increase the shareholder value
@@ -253,7 +250,7 @@ export async function streamChain(
   controller = new AbortController()
 ): Promise<AsyncIterable<AIMessageChunk>> {
   const client = new AzureOpenAiChatClient({
-    modelName: 'gpt-4o'
+    modelName: 'gpt-5'
   });
   return client.stream(
     [
@@ -280,7 +277,7 @@ export async function invokeWithStructuredOutputJsonSchema(): Promise<{
 }> {
   // initialize client with options
   const llm = new AzureOpenAiChatClient({
-    modelName: 'gpt-4o'
+    modelName: 'gpt-5'
   });
 
   const joke = z.object({
@@ -320,7 +317,7 @@ export async function invokeWithStructuredOutputJsonSchema(): Promise<{
 export async function invokeWithStructuredOutputToolCalling(): Promise<string> {
   // initialize client with options
   const llm = new AzureOpenAiChatClient({
-    modelName: 'gpt-4o'
+    modelName: 'gpt-5'
   });
 
   const joke = z.object({

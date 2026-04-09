@@ -3,17 +3,24 @@ name: publish
 on:
   workflow_call:
 
-env:
-  DOCS_REPO: SAP/ai-sdk
-
 jobs:
-  check-release-notes-pr:
-    name: Check Release Notes PR Status
+  check-docs-pr:
+    name: Check Docs PR Status (Release Notes + API Docs)
     runs-on: ubuntu-latest
     outputs:
-      release_notes_branch: ${{ steps.determine-branch-name.outputs.release_notes_branch }}
+      docs_branch: ${{ steps.determine-branch-name.outputs.docs_branch }}
       is_merged: ${{ steps.check_pr_status.outputs.merged }}
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          owner: SAP
+          repositories: ai-sdk
+          permission-contents: read
+          permission-pull-requests: read
       - uses: sap/ai-sdk-js/.github/actions/setup@main
       - name: Determine Docs PR Branch Name
         id: determine-branch-name
@@ -21,30 +28,30 @@ jobs:
           VERSION=$(pnpm node -p "require('./package.json').version")
           echo "Using version: $VERSION"
           BRANCH_NAME="update-release-notes-js-$VERSION"
-          echo "release_notes_branch=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
+          echo "docs_branch=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
 
       - name: Check PR Status (Exists, Merged)
         id: check_pr_status
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          BRANCH_NAME="${{ steps.determine-branch-name.outputs.release_notes_branch }}"
+          BRANCH_NAME="${{ steps.determine-branch-name.outputs.docs_branch }}"
           echo "Checking status for PR associated with branch: $BRANCH_NAME"
 
           # Get merged status. If gh pr view fails (e.g., PR not found), the step will fail.
-          MERGED_OUTPUT=$(gh pr view "$BRANCH_NAME" --repo "${{ env.DOCS_REPO }}" --json state --jq '.state == "MERGED" | tostring')
+          MERGED_OUTPUT=$(gh pr view "$BRANCH_NAME" --repo "SAP/ai-sdk" --json state --jq '.state == "MERGED" | tostring')
 
           # This part only runs if the above command succeeded
           echo "PR found. Is Merged: $MERGED_OUTPUT"
           echo "merged=$MERGED_OUTPUT" >> "$GITHUB_OUTPUT"
-        env:
-          GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
 
-      - name: 'Check Whether Release Notes PR Can Be Merged'
+      - name: 'Check Whether Docs PR Can Be Merged'
         if: steps.check_pr_status.outputs.merged == 'false'
         uses: ./.github/actions/pr-is-mergeable
         with:
-          pr-ref: ${{ steps.determine-branch-name.outputs.release_notes_branch }}
-          repo: ${{ env.DOCS_REPO }}
-          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          pr-ref: ${{ steps.determine-branch-name.outputs.docs_branch }}
+          repo: SAP/ai-sdk
+          token: ${{ steps.app-token.outputs.token }}
           excluded-check-runs: |
             {
               \"Build Cloud SDK Documentation\": [\"dependabot\"]
@@ -53,7 +60,7 @@ jobs:
   publish-npm:
     name: Publish to NPM
     runs-on: ubuntu-latest
-    needs: [check-release-notes-pr]
+    needs: [check-docs-pr]
     permissions:
       id-token: write
     steps:
@@ -64,15 +71,26 @@ jobs:
         run: |
           pnpm changeset publish
 
-  merge-release-notes-pr:
-    name: Merge Release Notes PR (if needed)
+  merge-docs-pr:
+    name: Merge Docs PR (if needed)
     runs-on: ubuntu-latest
-    needs: [check-release-notes-pr, publish-npm]
-    if: needs.check-release-notes-pr.outputs.is_merged == 'false'
+    needs: [check-docs-pr, publish-npm]
+    if: needs.check-docs-pr.outputs.is_merged == 'false'
     steps:
-      - name: 'Merge Release Notes PR'
-        run: |
-          echo "Attempting to merge PR for branch: ${{ needs.check-release-notes-pr.outputs.release_notes_branch }}"
-          gh pr merge --squash "${{ needs.check-release-notes-pr.outputs.release_notes_branch }}" --delete-branch --repo "${{ env.DOCS_REPO }}"
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          owner: SAP
+          repositories: ai-sdk
+          permission-contents: write
+          permission-pull-requests: write
+      - name: 'Merge Docs PR'
         env:
-          GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          echo "Attempting to merge PR for branch: ${{ needs.check-docs-pr.outputs.docs_branch }}"
+          gh pr merge --squash "${{ needs.check-docs-pr.outputs.docs_branch }}" --delete-branch --repo "${{ env.DOCS_REPO }}"
+    

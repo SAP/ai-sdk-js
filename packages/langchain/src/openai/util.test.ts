@@ -89,7 +89,7 @@ describe('Mapping Functions', () => {
       tool_choice: 'auto',
       functions: [{ name: 'random' }, { name: 'test' }]
     };
-    const client = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
+    const client = new AzureOpenAiChatClient({ modelName: 'gpt-5-mini' });
     const options: AzureOpenAiChatCallOptions = {
       tools: [myTool],
       tool_choice: 'auto',
@@ -110,7 +110,7 @@ describe('Mapping Functions', () => {
     const langchainPrompt: BaseMessage[] = [
       new RemoveMessage({ id: 'test-id' })
     ];
-    const client = new AzureOpenAiChatClient({ modelName: 'gpt-4o' });
+    const client = new AzureOpenAiChatClient({ modelName: 'gpt-5-mini' });
     expect(() =>
       mapLangChainToAiClient(client, langchainPrompt, defaultOptions)
     ).toThrowErrorMatchingInlineSnapshot('"Unsupported message type: remove"');
