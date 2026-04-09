@@ -32,7 +32,7 @@ Syncs `packages/core/src/model-types.ts` with the current model table on SAP Not
 
 4. **Check for deprecated model usage** in the codebase:
    - From `scripts/sap-models.json`, collect the names of all models where `deprecated` is `"yes"` or the retirement date is set.
-   - Grep the repository for any of those model names (exclude `scripts/sap-models.json` itself and `packages/core/src/model-types.ts`).
+   - Grep the repository for any of those model names (exclude `scripts/sap-models.json` itself, `packages/core/src/model-types.ts`, OpenAPI specs and generated files like `packages/*/src/client/**/*.ts`).
    - If matches are found, report them to the user so they can decide whether to update or remove those usages.
 
 5. **Show the diff** to the user:
