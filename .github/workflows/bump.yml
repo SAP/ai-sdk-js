@@ -111,8 +111,6 @@ jobs:
               echo "pr_url=" >> "$GITHUB_OUTPUT"
             fi
           fi
-        env:
-          GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
 
   generate-api-docs:
     name: Generate and Push API Documentation
