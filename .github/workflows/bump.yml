@@ -6,9 +6,6 @@ on:
       majorVersion:
         description: Mandatory, when bumping a major version. Semver compatible version string (X.Y.Z). Must not be set for patch and minor version releases.
         required: false
-env:
-  DOCS_REPO: SAP/ai-sdk
-  DOCS_CHECKOUT_PATH: ./ai-sdk-docs
 
 jobs:
   auth:
@@ -19,16 +16,23 @@ jobs:
     outputs:
       version: ${{ steps.bump.outputs.version }}
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          permission-contents: write
       - uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
-          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
           ref: 'main'
-      - name: bump version
+      - name: Bump version
         uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
         id: bump
         with:
           majorVersion: ${{ inputs.majorVersion }}
-      - name: merge and write Changelogs
+      - name: Merge and write changelogs
         id: merge-changelogs
         uses: sap/cloud-sdk-js/.github/actions/merge-and-write-changelogs@main
         env:
@@ -37,7 +41,7 @@ jobs:
         name: Commit and tag
         with:
           version: ${{ steps.bump.outputs.version }}
-          user-name: sap-ai-sdk
+          user-name: ${{ vars.SAP_AI_SDK_BOT_NAME }}
 
   prepare-release-notes:
     name: Prepare Release Notes
@@ -46,19 +50,28 @@ jobs:
     outputs:
       pr_url: ${{ steps.open_pr.outputs.pr_url }}
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          owner: SAP
+          repositories: ai-sdk
+          permission-contents: write
+          permission-pull-requests: write
       - name: Checkout current repository
         uses: sap/ai-sdk-js/.github/actions/setup@main
         with:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
       
       - name: Checkout Docs Repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          repository: ${{ env.DOCS_REPO }}
-          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          repository: SAP/ai-sdk
+          token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
-          path: ${{ env.DOCS_CHECKOUT_PATH }}
-      
+          path: ./ai-sdk-docs
       - name: Update release notes file
         id: update-notes
         run: |
@@ -66,10 +79,14 @@ jobs:
       
       - name: Open Release notes PR
         id: open_pr
-        working-directory: ${{ env.DOCS_CHECKOUT_PATH }}
+        working-directory: ./ai-sdk-docs
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
+          BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
         run: |
-          git config --local user.email "cloudsdk@sap.com"
-          git config --local user.name "SAP Cloud SDK Bot"
+          git config --local user.email "$BOT_EMAIL"
+          git config --local user.name "$BOT_NAME"
           BRANCH_NAME="update-release-notes-js-${{ needs.bump.outputs.version }}"
           git checkout -b "${BRANCH_NAME}"
           
