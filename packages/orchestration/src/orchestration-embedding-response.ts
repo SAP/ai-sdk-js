@@ -22,7 +22,6 @@ export class OrchestrationEmbeddingResponse {
    * @returns Array of embedding data objects containing both vectors, indices, and object types.
    */
   getEmbeddings(): EmbeddingData[] {
-    // TODO: Remove non-null assertion when final_result is made mandatory in the schema
     return this._data.final_result.data.map((result: EmbeddingResult) => ({
       embedding: result.embedding,
       index: result.index,
