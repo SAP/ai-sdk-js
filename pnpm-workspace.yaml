@@ -22,4 +22,5 @@ minimumReleaseAgeExclude:
   - axios@1.15.0
   - hono@4.12.12
   - '@hono/node-server@1.19.13'
-trustPolicy: no-downgrade
+# TODO: This is failing too often, wait for pnpm-updates
+# trustPolicy: no-downgrade
