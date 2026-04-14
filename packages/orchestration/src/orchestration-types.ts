@@ -812,7 +812,10 @@ export type EmbeddingModelDetails = Omit<
 /**
  * Embedding model parameters.
  */
-export type EmbeddingModelParams = Omit<OriginalEmbeddingsModelParams, 'encoding_format'> & {
+export type EmbeddingModelParams = Omit<
+  OriginalEmbeddingsModelParams,
+  'encoding_format'
+> & {
   encoding_format?: EncodingFormat;
 };
 
