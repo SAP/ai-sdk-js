@@ -139,7 +139,7 @@ describe('Azure OpenAI chat client', () => {
         resourceGroup: 'custom-resource-group',
         executableId: 'azure-openai'
       },
-      { id: '1234', model: { name: 'gpt-4o', version: 'latest' } }
+      { id: '1234', model: { name: 'gpt-5-mini', version: 'latest' } }
     );
 
     mockInference(
@@ -154,7 +154,7 @@ describe('Azure OpenAI chat client', () => {
     );
 
     const clientWithResourceGroup = new AzureOpenAiChatClient({
-      modelName: 'gpt-4o',
+      modelName: 'gpt-5-mini',
       resourceGroup: 'custom-resource-group'
     });
 

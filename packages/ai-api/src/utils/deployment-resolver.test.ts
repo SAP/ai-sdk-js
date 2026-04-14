@@ -40,7 +40,7 @@ describe('deployment resolver', () => {
     it('should return the first deployment with the correct model name', async () => {
       const id = await resolveDeploymentId({
         scenarioId: 'foundation-models',
-        model: { name: 'gpt-4o' }
+        model: { name: 'gpt-5-mini' }
       });
       expect(id).toEqual('1');
     });
@@ -48,7 +48,7 @@ describe('deployment resolver', () => {
     it('should return the deployment with the correct model name and version', async () => {
       const id = await resolveDeploymentId({
         scenarioId: 'foundation-models',
-        model: { name: 'gpt-4o', version: '0613' }
+        model: { name: 'gpt-5-mini', version: '0613' }
       });
       expect(id).toEqual('2');
     });
@@ -56,7 +56,7 @@ describe('deployment resolver', () => {
     it('should retrieve deployment from cache if available', async () => {
       const opts = {
         scenarioId: 'foundation-models',
-        model: { name: 'gpt-4o', version: '0613' }
+        model: { name: 'gpt-5-mini', version: '0613' }
       };
       deploymentCache.set(opts, { id: '1' } as AiDeployment);
       const id = await resolveDeploymentId(opts);
@@ -77,7 +77,7 @@ describe('deployment resolver', () => {
       await expect(
         resolveDeploymentId({
           scenarioId: 'foundation-models',
-          model: { name: 'gpt-4o', version: 'not existing' }
+          model: { name: 'gpt-5-mini', version: 'not existing' }
         })
       ).rejects.toThrow('No deployment matched the given criteria');
     });
@@ -99,7 +99,7 @@ describe('deployment resolver', () => {
     await expect(
       resolveDeploymentId({
         scenarioId: 'foundation-models',
-        model: { name: 'gpt-4o', version: '0613' }
+        model: { name: 'gpt-5-mini', version: '0613' }
       })
     ).rejects.toThrow('No deployment matched the given criteria');
   });
@@ -107,12 +107,12 @@ describe('deployment resolver', () => {
   it('should consider custom resource group', async () => {
     mockDeploymentsList(
       { scenarioId: 'foundation-models', resourceGroup: 'otherId' },
-      { id: '5', model: { name: 'gpt-4o', version: 'latest' } }
+      { id: '5', model: { name: 'gpt-5-mini', version: 'latest' } }
     );
 
     const id = await resolveDeploymentId({
       scenarioId: 'foundation-models',
-      model: { name: 'gpt-4o' },
+      model: { name: 'gpt-5-mini' },
       resourceGroup: 'otherId'
     });
 
@@ -129,7 +129,7 @@ describe('deployment resolver', () => {
             resources: {
               backendDetails: {
                 model: {
-                  name: 'gpt-4o',
+                  name: 'gpt-5-mini',
                   version: 'latest'
                 }
               }
@@ -142,7 +142,7 @@ describe('deployment resolver', () => {
             resources: {
               backendDetails: {
                 model: {
-                  name: 'gpt-4o',
+                  name: 'gpt-5-mini',
                   version: '0613'
                 }
               }
@@ -161,7 +161,7 @@ describe('deployment resolver', () => {
 function mockResponse() {
   mockDeploymentsList(
     { scenarioId: 'foundation-models' },
-    { id: '1', model: { name: 'gpt-4o', version: 'latest' } },
-    { id: '2', model: { name: 'gpt-4o', version: '0613' } }
+    { id: '1', model: { name: 'gpt-5-mini', version: 'latest' } },
+    { id: '2', model: { name: 'gpt-5-mini', version: '0613' } }
   );
 }

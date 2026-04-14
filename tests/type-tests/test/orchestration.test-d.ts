@@ -40,7 +40,7 @@ expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5-mini'
       }
     }
   }).chatCompletion()
@@ -54,7 +54,7 @@ expectType<Promise<OrchestrationResponse>>(
     {
       promptTemplating: {
         model: {
-          name: 'gpt-4o'
+          name: 'gpt-5-mini'
         }
       }
     },
@@ -67,7 +67,7 @@ expectType<CompletionPostResponse>(
     await new OrchestrationClient({
       promptTemplating: {
         model: {
-          name: 'gpt-4o'
+          name: 'gpt-5-mini'
         },
         prompt: {
           defaults: { name: 'Bob' }
@@ -84,7 +84,7 @@ expectType<string | undefined>(
     await new OrchestrationClient({
       promptTemplating: {
         model: {
-          name: 'gpt-4o'
+          name: 'gpt-5-mini'
         },
         prompt: {
           template: [{ role: 'user', content: 'Hello!' }]
@@ -99,7 +99,7 @@ expectType<string | undefined>(
     await new OrchestrationClient({
       promptTemplating: {
         model: {
-          name: 'gpt-4o'
+          name: 'gpt-5-mini'
         },
         prompt: {
           template: [{ role: 'user', content: 'Hello!' }]
@@ -189,7 +189,7 @@ expectType<Promise<OrchestrationResponse>>(
     {
       promptTemplating: {
         model: {
-          name: 'gpt-4o'
+          name: 'gpt-5-mini'
         },
         prompt: {
           template: [{ role: 'user', content: 'Hello!' }]
@@ -213,8 +213,8 @@ expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-4o',
-        params: { max_tokens: 50, temperature: 0.1 }
+        name: 'gpt-5-mini',
+        params: { max_tokens: 50 }
       },
       prompt: {
         template: [{ role: 'user', content: 'Hello!' }]
@@ -280,10 +280,9 @@ expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient(`{
     "module_configurations": {
       "llm_module_config": {
-        "model_name": "gpt-4o",
+        "model_name": "gpt-5-mini",
         "model_params": {
-          "max_tokens": 50,
-          "temperature": 0.1
+          "max_tokens": 50
         }
       },
       "templating_module_config": {
@@ -305,7 +304,7 @@ expectError<any>(
   new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5-mini'
       },
       prompt: {
         template: [{ role: 'user', content: 'Hello!' }],
@@ -338,7 +337,7 @@ expectError<any>(
   new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5-mini'
       },
       prompt: {
         template: [{ role: 'not-exist', content: 'Hello!' }]
@@ -354,7 +353,7 @@ expectError<any>(
   new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5-mini'
       },
       prompt: {
         template: [{ role: 'tool', content: 'Hello!' }]
@@ -368,7 +367,6 @@ expectError<any>(
  */
 expectAssignable<LlmModelParams>({
   max_tokens: 50,
-  temperature: 0.2,
   random_property: 'random - value'
 });
 
@@ -379,10 +377,9 @@ expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-4o',
+        name: 'gpt-5-mini',
         params: {
           max_tokens: 50,
-          temperature: 0.1,
           random_property: 'random - value'
         }
       },
@@ -689,7 +686,7 @@ expectType<boolean>(
   isConfigReference({
     promptTemplating: {
       model: {
-        name: 'gpt-4o'
+        name: 'gpt-5-mini'
       }
     }
   })
@@ -701,7 +698,7 @@ expectType<boolean>(
 expectAssignable<OrchestrationModuleConfigList>([
   {
     promptTemplating: {
-      model: { name: 'gpt-4o', timeout: 5 },
+      model: { name: 'gpt-5-mini', timeout: 5 },
       prompt: { template: [{ role: 'user', content: 'Hello' }] }
     }
   },
@@ -722,7 +719,7 @@ expectError<OrchestrationModuleConfigList>([]);
  * Module fallback config array elements must be valid OrchestrationModuleConfig objects.
  */
 expectError<OrchestrationModuleConfigList>([
-  { promptTemplating: { model: { name: 'gpt-4o' } } },
+  { promptTemplating: { model: { name: 'gpt-5-mini' } } },
   { invalidProperty: 'not-a-valid-config' }
 ]);
 
@@ -733,7 +730,7 @@ expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient([
     {
       promptTemplating: {
-        model: { name: 'gpt-4o', timeout: 5 },
+        model: { name: 'gpt-5-mini', timeout: 5 },
         prompt: { template: [{ role: 'user', content: 'Try primary model' }] }
       }
     },
@@ -755,7 +752,7 @@ expectType<
   new OrchestrationClient([
     {
       promptTemplating: {
-        model: { name: 'gpt-4o' },
+        model: { name: 'gpt-5-mini' },
         prompt: { template: [{ role: 'user', content: 'Primary' }] }
       }
     },
@@ -835,7 +832,7 @@ expectType<
 >(
   new OrchestrationClient({
     promptTemplating: {
-      model: { name: 'gpt-4o' },
+      model: { name: 'gpt-5-mini' },
       prompt: { template: [{ role: 'user', content: 'Hello' }] }
     }
   }).stream({}, undefined, {
@@ -853,7 +850,7 @@ expectType<
   new OrchestrationClient([
     {
       promptTemplating: {
-        model: { name: 'gpt-4o' },
+        model: { name: 'gpt-5-mini' },
         prompt: { template: [{ role: 'user', content: 'Primary' }] }
       }
     },
@@ -881,7 +878,7 @@ expectType<
   new OrchestrationClient([
     {
       promptTemplating: {
-        model: { name: 'gpt-4o' },
+        model: { name: 'gpt-5-mini' },
         prompt: { template: [{ role: 'user', content: 'Primary' }] }
       }
     },
@@ -908,7 +905,7 @@ expectType<OrchestrationError[] | undefined>(
     await new OrchestrationClient([
       {
         promptTemplating: {
-          model: { name: 'gpt-4o' },
+          model: { name: 'gpt-5-mini' },
           prompt: { template: [{ role: 'user', content: 'Test' }] }
         }
       }

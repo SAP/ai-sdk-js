@@ -9,7 +9,7 @@ const llmBase = {
   id: 'orchestration-id-1',
   object: 'chat.completion.chunk',
   created: 1752575616,
-  model: 'gpt-4o-2024-08-06',
+  model: 'gpt-5-mini',
   system_fingerprint: 'fp_ee1d74bde0',
   usage: { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0 }
 };

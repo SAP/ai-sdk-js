@@ -27,7 +27,7 @@ describe('Azure OpenAI Foundation Model Access', () => {
   });
 
   it('should return multiple tool calls in a single stream response', async () => {
-    const response = await new AzureOpenAiChatClient('gpt-4o').stream({
+    const response = await new AzureOpenAiChatClient('gpt-5-mini').stream({
       messages: [
         {
           role: 'user',

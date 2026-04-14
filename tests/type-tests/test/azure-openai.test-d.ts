@@ -161,7 +161,7 @@ expectType<Promise<AzureOpenAiEmbeddingResponse>>(
 );
 
 expectAssignable<AzureOpenAiChatModel>('custom-model');
-expectAssignable<AzureOpenAiChatModel>('gpt-4o');
+expectAssignable<AzureOpenAiChatModel>('gpt-5-mini');
 
 /**
  * Streaming.

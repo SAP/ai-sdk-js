@@ -13,6 +13,13 @@ packages:
   - tests/smoke-tests
   - tests/type-tests
 
+blockExoticSubdeps: true
 minimumReleaseAge: 5760
 minimumReleaseAgeExclude:
   - '@sap-cloud-sdk/*'
+  # Add minimum age exceptions for audit issues here
+  # - sample-package@0.1.0
+  - axios@1.15.0
+  - hono@4.12.12
+  - '@hono/node-server@1.19.13'
+trustPolicy: no-downgrade

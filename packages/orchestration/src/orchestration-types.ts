@@ -26,7 +26,8 @@ import type {
   EmbeddingsModelDetails as OriginalEmbeddingsModelDetails,
   EmbeddingsModelParams as OriginalEmbeddingsModelParams,
   SAPDocumentTranslationInput,
-  SAPDocumentTranslationOutput
+  SAPDocumentTranslationOutput,
+  Embedding
 } from './client/api/schema/index.js';
 
 /**
@@ -227,7 +228,7 @@ export interface OrchestrationModuleConfig {
  * const fallbackConfig: OrchestrationModuleConfigList = [
  *   {
  *     promptTemplating: {
- *       model: { name: 'gpt-4o', timeout: 5 }
+ *       model: { name: 'gpt-5', timeout: 5 }
  *     }
  *   },
  *   {
@@ -351,6 +352,23 @@ export function isOrchestrationModuleConfigList(
   } catch {
     return false;
   }
+}
+
+/**
+ * Service-specific headers for orchestration requests.
+ * @remarks
+ * `AI-Resource-Group` is configured via the `deploymentConfig` constructor parameter, not here.
+ */
+export interface OrchestrationRequestHeaders {
+  /**
+   * Name of the object store secret used by the feedback service.
+   */
+  'AI-Object-Store-Secret-Name'?: string;
+  [key: string]: any;
+  /**
+   * Use the `deploymentConfig` constructor parameter to set the resource group instead.
+   */
+  'AI-Resource-Group'?: never;
 }
 
 /**
@@ -828,9 +846,9 @@ export interface EmbeddingData {
    */
   object: 'embedding';
   /**
-   * The embedding vector, either as a number array or base64-encoded string.
+   * The embedding vector, either as a number array, a base64-encoded string, or multiple formats in case multiple output formats were requested.
    */
-  embedding: number[] | string;
+  embedding: Embedding;
   /**
    * The index of the embedding in the list of embeddings.
    */
