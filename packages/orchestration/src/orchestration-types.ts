@@ -27,7 +27,8 @@ import type {
   EmbeddingsModelParams as OriginalEmbeddingsModelParams,
   SAPDocumentTranslationInput,
   SAPDocumentTranslationOutput,
-  Embedding
+  Embedding,
+  EmbeddingMultiFormat
 } from './client/api/schema/index.js';
 
 /**
@@ -848,7 +849,7 @@ export interface EmbeddingData {
   /**
    * The embedding vector, either as a number array, a base64-encoded string, or multiple formats in case multiple output formats were requested.
    */
-  embedding: Embedding;
+  embedding: Exclude<Embedding, EmbeddingMultiFormat>;
   /**
    * The index of the embedding in the list of embeddings.
    */
