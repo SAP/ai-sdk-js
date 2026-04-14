@@ -28,7 +28,8 @@ import type {
   SAPDocumentTranslationInput,
   SAPDocumentTranslationOutput,
   Embedding,
-  EmbeddingMultiFormat
+  EmbeddingMultiFormat,
+  EncodingFormat
 } from './client/api/schema/index.js';
 
 /**
@@ -811,7 +812,9 @@ export type EmbeddingModelDetails = Omit<
 /**
  * Embedding model parameters.
  */
-export type EmbeddingModelParams = OriginalEmbeddingsModelParams;
+export type EmbeddingModelParams = Omit<OriginalEmbeddingsModelParams, 'encoding_format'> & {
+  encoding_format?: EncodingFormat;
+};
 
 /**
  * Embedding model configuration.
