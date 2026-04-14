@@ -20,6 +20,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: pnpm test:unit
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v6
+        with:
+          fail_ci_if_error: false
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       - run: pnpm test:type
 
   checks:
