@@ -5,8 +5,11 @@
  */
 
 /**
- * Representation of the 'PerFilterSearchResultError' schema.
+ * Error message if any.
  */
 export type PerFilterSearchResultError = {
+  /**
+   * Default: "Unknown Error Occurred".
+   */
   message: string;
 } & Record<string, any>;
