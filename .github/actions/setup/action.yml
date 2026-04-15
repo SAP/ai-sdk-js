@@ -13,6 +13,9 @@ inputs:
   pnpm-install-args:
     description: 'Arguments to pass to pnpm install'
     default: '--frozen-lockfile'
+  package-manager-cache:
+    description: 'Whether to enable caching for pnpm. Set to false to disable caching.'
+    default: 'true'
   ref:
     description: 'The GitHub ref to checkout'
     default: ${{ github.ref }}
@@ -35,5 +38,6 @@ runs:
         node-version: ${{ inputs.node-version }}
         registry-url: ${{ inputs.registry-url }}
         cache: 'pnpm'
+        package-manager-cache: ${{ inputs.package-manager-cache }}
     - run: pnpm install ${{ inputs.pnpm-install-args }}
       shell: bash
