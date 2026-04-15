@@ -180,7 +180,12 @@ function validateLogs(generationLogs: string) {
 }
 
 async function generateDocs() {
-  const generationLogs = await execFileP('typedoc', ['--tsconfig', 'tsconfig.typedoc.json'], {
+  const args = ['--tsconfig', 'tsconfig.typedoc.json'];
+  if (process.env.DOC_VERSION) {
+    args.push('--packageVersion', process.env.DOC_VERSION);
+  }
+
+  const generationLogs = await execFileP('typedoc', args, {
     cwd: resolve()
   });
   validateLogs(generationLogs.stdout);
