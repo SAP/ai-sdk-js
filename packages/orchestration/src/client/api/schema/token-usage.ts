@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-
+import type { CacheCreationTokenDetails } from './cache-creation-token-details.js';
 /**
  * Usage of tokens in the response
  */
@@ -32,6 +32,12 @@ export type TokenUsage = {
      * Cached tokens present in the prompt.
      */
     cached_tokens?: number;
+    /**
+     * Number of tokens written to the cache (Anthropic only).
+     *
+     */
+    cache_creation_tokens?: number;
+    cache_creation_token_details?: CacheCreationTokenDetails;
   } & Record<string, any>;
   /**
    * Breakdown of tokens used in a completion.
