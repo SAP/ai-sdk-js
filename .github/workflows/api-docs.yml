@@ -75,8 +75,8 @@ jobs:
         if: steps.check-changes.outputs.docs == 'true'
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          BOT_EMAIL: ${{ vars.SAP_CLOUD_SDK_BOT_EMAIL }}
-          BOT_NAME: ${{ vars.SAP_CLOUD_SDK_BOT_NAME }}
+          BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
+          BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
           BRANCH_NAME: ${{ steps.prepare.outputs.branch-name }}
         run: |
           gh auth setup-git
