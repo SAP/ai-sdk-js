@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: sap/ai-sdk-js/.github/actions/setup@main
+        with:
+          node-version: '24'
       - run: pnpm smoke-tests create-deployment
       - uses: vchrisb/setup-cf@f43abe0d940f27e8c59c8b29226140f3a1768496 # v3.0.1
         with:
@@ -20,13 +22,15 @@ jobs:
           space: ${{ vars.CF_SPACE }}
       - run: cf push
         working-directory: tests/smoke-tests
+        env:
+          NPM_TOKEN_ARTIFACTORY: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: smoke test
         run: pnpm test:smoke
       - name: shutdown
         if: always()
         run: cf stop smoke-test-app
       - name: 'Slack Notification'
-        if: failure()
+        if: failure() && github.event_name == 'schedule'
         uses: slackapi/slack-github-action@af78098f536edbc4de71162a307590698245be95 # v3.0.1
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
