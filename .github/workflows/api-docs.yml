@@ -51,6 +51,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           repository: SAP/ai-sdk
+          path: ai-sdk
           token: ${{ steps.app-token.outputs.token }}
 
       - name: Copy API docs
