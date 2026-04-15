@@ -259,7 +259,7 @@ export class OrchestrationClient {
     try {
       JSON.parse(config);
     } catch (error) {
-      throw new Error(`Could not parse JSON: ${error}`);
+      throw new Error(`Could not parse JSON: ${error}`, { cause: error });
     }
   }
 
@@ -282,7 +282,7 @@ export class OrchestrationClient {
     try {
       parsedObject = yaml.parse(config.promptTemplating.prompt as string);
     } catch (error) {
-      throw new Error(`Error parsing YAML: ${error}`);
+      throw new Error(`Error parsing YAML: ${error}`, { cause: error });
     }
 
     const result =
