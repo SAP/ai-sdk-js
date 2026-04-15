@@ -1,0 +1,434 @@
+[
+  {
+    "executableId": "aicore-mistralai(SAP-hosted)",
+    "model": "mistralai--mistral-large-instruct",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "not earlier than 2026-06-30",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aicore-mistralai (SAP-hosted)",
+    "model": "mistralai--mistral-small-instruct",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "not earlier than 2026-06-30",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aicore-mistralai (SAP-hosted)",
+    "model": "mistralai--mistral-medium-instruct",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "not earlier than 2026-06-30",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aicore-nvidia (SAP-managed)",
+    "model": "nvidia--llama-3.2-nv-embedqa-1b",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "not earlier than 2026-06-30",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aicore-cohere (SAP-hosted)",
+    "model": "cohere--command-a-reasoning",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "not earlier than 2026-06-30",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aicore-cohere (SAP-managed)",
+    "model": "cohere-reranker",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "not earlier than 2026-06-30",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aicore-sap (SAP-hosted)",
+    "model": "sap-rpt-1-small",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "not earlier than 2026-06-30",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aicore-sap (SAP-hosted)",
+    "model": "sap-rpt-1-large",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "not earlier than 2026-06-30",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aicore-sap (SAP-hosted)",
+    "model": "sap-abap-1",
+    "availableInOrchestration": "yes(orchestration-only)",
+    "deprecated": "",
+    "retirementDate": "not earlier than 2026-06-30",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "perplexity-ai",
+    "model": "sonar",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "perplexity-ai",
+    "model": "sonar-pro",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aws-bedrock(AWS)",
+    "model": "amazon--titan-embed-text",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aws-bedrock (AWS)",
+    "model": "amazon--titan-embed-text",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aws-bedrock(AWS)",
+    "model": "amazon--titan-embed-image",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aws-bedrock(AWS)",
+    "model": "amazon--nova-pro",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aws-bedrock(AWS)",
+    "model": "amazon--nova-lite",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aws-bedrock(AWS)",
+    "model": "amazon--nova-micro",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aws-bedrock (AWS)",
+    "model": "amazon--nova-premier",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aws-bedrock(AWS)",
+    "model": "anthropic--claude-3-haiku",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aws-bedrock(AWS)",
+    "model": "anthropic--claude-3.5-sonnet",
+    "availableInOrchestration": "yes",
+    "deprecated": "yes",
+    "retirementDate": "2026-03-01",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aws-bedrock(AWS)",
+    "model": "anthropic--claude-3.5-sonnet",
+    "availableInOrchestration": "yes",
+    "deprecated": "yes",
+    "retirementDate": "2026-03-01",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aws-bedrock(AWS)",
+    "model": "anthropic--claude-3.7-sonnet",
+    "availableInOrchestration": "yes",
+    "deprecated": "yes",
+    "retirementDate": "2026-04-28",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aws-bedrock (AWS)",
+    "model": "anthropic--claude-4-sonnet",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aws-bedrock (AWS)",
+    "model": "anthropic--claude-4-opus",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aws-bedrock (AWS)",
+    "model": "anthropic--claude-4.5-haiku",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aws-bedrock(AWS)",
+    "model": "anthropic--claude-4.5-sonnet",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aws-bedrock (AWS)",
+    "model": "anthropic--claude-4.5-opus",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aws-bedrock (AWS)",
+    "model": "anthropic--claude-4.6-opus",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aws-bedrock (AWS)",
+    "model": "anthropic--claude-4.6-sonnet",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "azure-openai(Azure)",
+    "model": "text-embedding-3-large",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "not earlier than 2026-04-30",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "azure-openai(Azure)",
+    "model": "text-embedding-3-small",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "not earlier than2026-04-30",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "azure-openai(Azure)",
+    "model": "text-embedding-ada-002",
+    "availableInOrchestration": "yes",
+    "deprecated": "yes",
+    "retirementDate": "not earlier than 2026-04-30",
+    "suggestedReplacement": "text-embedding-3-small\ntext-embedding-3-large"
+  },
+  {
+    "executableId": "azure-openai(Azure)",
+    "model": "gpt-4o",
+    "availableInOrchestration": "yes",
+    "deprecated": "yes",
+    "retirementDate": "2026-10-01",
+    "suggestedReplacement": "gpt-5"
+  },
+  {
+    "executableId": "azure-openai(Azure)",
+    "model": "gpt-4o",
+    "availableInOrchestration": "yes",
+    "deprecated": "yes",
+    "retirementDate": "2026-10-01",
+    "suggestedReplacement": "gpt-5"
+  },
+  {
+    "executableId": "azure-openai(Azure)",
+    "model": "gpt-4o",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "2026-10-01",
+    "suggestedReplacement": "gpt-5"
+  },
+  {
+    "executableId": "azure-openai(Azure)",
+    "model": "gpt-4o-mini",
+    "availableInOrchestration": "yes",
+    "deprecated": "yes",
+    "retirementDate": "2026-10-01",
+    "suggestedReplacement": "gpt-5-mini"
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-4.1",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "2026-10-14",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "azure-openai(Azure)",
+    "model": "gpt-4.1-mini",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "2026-10-14",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-4.1-nano",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "2026-10-14",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-5",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-5-mini",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-5-nano",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-5.2",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "azure-openai(Azure)",
+    "model": "o1",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "2026-06-18",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "azure-openai(Azure)",
+    "model": "o3-mini",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "2026-08-02",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "o3",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "2026-10-16",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "o4-mini",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "2026-10-16",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "gcp-vertexai(Google)",
+    "model": "gemini-2.0-flash",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "2026-06-01",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "gcp-vertexai(Google)",
+    "model": "gemini-2.0-flash-lite",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "2026-06-01",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "gcp-vertexai (Google)",
+    "model": "gemini-2.5-flash",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "2026-10-16",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "gcp-vertexai (Google)",
+    "model": "gemini-2.5-flash-lite",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "gcp-vertexai (Google)",
+    "model": "gemini-2.5-pro",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "2026-10-16",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "gcp-vertexai (Google)",
+    "model": "gemini-embedding",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aicore-opensource (SAP-hosted)",
+    "model": "deepseek-ai--deepseek-r1",
+    "availableInOrchestration": "yes(orchestration-only)",
+    "deprecated": "yes",
+    "retirementDate": "2026-03-31",
+    "suggestedReplacement": ""
+  }
+]
