@@ -1,5 +1,5 @@
 import { createLogger } from '@sap-cloud-sdk/util';
-import { jest } from '@jest/globals';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { LineDecoder, SSEDecoder } from '@sap-ai-sdk/core';
 import { parseFileToString } from '../../../../test-util/mock-http.js';
 import { AzureOpenAiChatCompletionStream } from './azure-openai-chat-completion-stream.js';
@@ -53,8 +53,8 @@ describe('OpenAI chat completion stream', () => {
       package: 'foundation-models',
       messageContext: 'azure-openai-chat-completion-stream'
     });
-    const debugSpy = jest.spyOn(logger, 'debug');
-    const errorSpy = jest.spyOn(logger, 'error');
+    const debugSpy = vi.spyOn(logger, 'debug');
+    const errorSpy = vi.spyOn(logger, 'error');
     const asyncGeneratorChunk = AzureOpenAiChatCompletionStream._processChunk(
       originalChatCompletionStream
     );
@@ -78,7 +78,7 @@ describe('OpenAI chat completion stream', () => {
       package: 'foundation-models',
       messageContext: 'azure-openai-chat-completion-stream'
     });
-    const debugSpy = jest.spyOn(logger, 'debug');
+    const debugSpy = vi.spyOn(logger, 'debug');
     const asyncGeneratorChunk = AzureOpenAiChatCompletionStream._processChunk(
       originalChatCompletionStream
     );

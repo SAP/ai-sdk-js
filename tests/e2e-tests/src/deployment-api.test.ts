@@ -1,3 +1,4 @@
+import { describe, it, expect, afterAll } from 'vitest';
 import { DeploymentApi } from '@sap-ai-sdk/ai-api';
 import { getDeployments, createDeployment } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';

@@ -1,3 +1,4 @@
+import { describe, it, expect, afterAll } from 'vitest';
 import nock from 'nock';
 import { mockClientCredentialsGrantCall } from '../../../test-util/mock-http.js';
 import { getAiCoreDestination } from './context.js';

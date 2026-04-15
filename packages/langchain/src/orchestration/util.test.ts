@@ -7,7 +7,7 @@ import {
   ToolMessage
 } from '@langchain/core/messages';
 import { OrchestrationStreamChunkResponse } from '@sap-ai-sdk/orchestration';
-import { jest } from '@jest/globals';
+import { describe, it, expect, vi } from 'vitest';
 import {
   addNumbersSchema,
   addNumbersSchemaV3
@@ -387,8 +387,8 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
     };
 
     const mockChunk = new OrchestrationStreamChunkResponse(mockData);
-    jest.spyOn(mockChunk, 'getDeltaContent').mockReturnValue(content);
-    jest.spyOn(mockChunk, 'getDeltaToolCalls').mockReturnValue(toolCallChunks);
+    vi.spyOn(mockChunk, 'getDeltaContent').mockReturnValue(content);
+    vi.spyOn(mockChunk, 'getDeltaToolCalls').mockReturnValue(toolCallChunks);
 
     return mockChunk;
   }

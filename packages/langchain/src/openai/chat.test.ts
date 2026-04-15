@@ -2,7 +2,7 @@ import nock from 'nock';
 import { apiVersion } from '@sap-ai-sdk/foundation-models/internal.js';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import { getSchemaDescription } from '@langchain/core/utils/types';
-import { jest } from '@jest/globals';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import {
   START,
   END,
@@ -194,7 +194,7 @@ describe('Chat client', () => {
 
   describe('withStructuredOutput', () => {
     it('should use `jsonSchema` method by default', async () => {
-      const spy = jest.spyOn(client, 'withConfig');
+      const spy = vi.spyOn(client, 'withConfig');
       client.withStructuredOutput(joke, {
         name: 'joke',
         strict: true
@@ -216,7 +216,7 @@ describe('Chat client', () => {
     });
 
     it('should use `jsonMode` method if specified', async () => {
-      const spy = jest.spyOn(client, 'withConfig');
+      const spy = vi.spyOn(client, 'withConfig');
       client.withStructuredOutput(joke, { method: 'jsonMode' });
 
       expect(spy).toHaveBeenCalledWith(
@@ -240,7 +240,7 @@ describe('Chat client', () => {
       );
     });
     it('should use `functionCalling` method if specified', async () => {
-      const spy = jest.spyOn(client, 'withConfig');
+      const spy = vi.spyOn(client, 'withConfig');
       client.withStructuredOutput(joke, { method: 'functionCalling' });
       const asJsonSchema = toJsonSchema(joke);
       expect(spy).toHaveBeenCalledWith(
@@ -280,7 +280,7 @@ describe('Chat client', () => {
         }
       };
 
-      const spy = jest.spyOn(client, 'withConfig');
+      const spy = vi.spyOn(client, 'withConfig');
       client.withStructuredOutput(openAiFunctionJsonSchema, {
         name: 'joke',
         method: 'functionCalling'
@@ -360,7 +360,7 @@ describe('Chat client', () => {
         },
         endpoint
       );
-      jest.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
+      vi.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
 
       client.streaming = true;
       expect(client.streaming).toBe(true);
@@ -399,7 +399,7 @@ describe('Chat client', () => {
         },
         endpoint
       );
-      jest.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
+      vi.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
 
       client.streaming = false;
       client.disableStreaming = true;
@@ -438,7 +438,7 @@ describe('Chat client', () => {
         },
         endpoint
       );
-      jest.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
+      vi.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
 
       client.disableStreaming = true;
       client.streaming = false;
@@ -525,7 +525,7 @@ describe('Chat client', () => {
           controller.abort();
         }
       };
-      await expect(streamFunction()).rejects.toThrow('Aborted');
+      await expect(streamFunction()).rejects.toThrow('aborted');
     });
 
     it('supports streaming responses with tool calls', async () => {
@@ -589,7 +589,7 @@ describe('Chat client', () => {
         },
         endpoint
       );
-      jest.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
+      vi.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
       // Simulate a minimal streaming langgraph-like workflow
       const llm = new AzureOpenAiChatClient({ modelName: 'gpt-5-mini' });
 

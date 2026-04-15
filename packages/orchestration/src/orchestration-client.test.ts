@@ -1,5 +1,5 @@
 import nock from 'nock';
-import { jest } from '@jest/globals';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { createLogger } from '@sap-cloud-sdk/util';
 import {
   resolveDeploymentId,
@@ -578,7 +578,7 @@ describe('orchestration service client', () => {
         placeholderValues: { topic: 'Generative AI Hub' }
       })
     ).toThrowErrorMatchingInlineSnapshot(
-      '"Templating YAML string must be non-empty."'
+      '[Error: Templating YAML string must be non-empty.]'
     );
   });
 
@@ -600,16 +600,16 @@ describe('orchestration service client', () => {
     expect(() =>
       new OrchestrationClient(invalidConfigWithYaml).chatCompletion()
     ).toThrowErrorMatchingInlineSnapshot(`
-     "Prompt Template YAML does not conform to the defined type. Validation errors: [
-       {
-         "expected": "object",
-         "code": "invalid_type",
-         "path": [
-           "spec"
-         ],
-         "message": "Invalid input: expected object, received undefined"
-       }
-     ]"
+      [Error: Prompt Template YAML does not conform to the defined type. Validation errors: [
+        {
+          "expected": "object",
+          "code": "invalid_type",
+          "path": [
+            "spec"
+          ],
+          "message": "Invalid input: expected object, received undefined"
+        }
+      ]]
     `);
   });
 
@@ -858,7 +858,7 @@ describe('orchestration service client', () => {
       messageContext: 'orchestration-client'
     });
 
-    const warnSpy = jest.spyOn(logger, 'warn');
+    const warnSpy = vi.spyOn(logger, 'warn');
 
     const response = await new OrchestrationClient(defaultJsonConfig).stream();
 
@@ -883,7 +883,7 @@ describe('orchestration service client', () => {
       messageContext: 'orchestration-client'
     });
 
-    const warnSpy = jest.spyOn(logger, 'warn');
+    const warnSpy = vi.spyOn(logger, 'warn');
 
     const response = await new OrchestrationClient(defaultJsonConfig).stream(
       undefined,
@@ -1228,7 +1228,7 @@ describe('orchestration service client', () => {
         messageContext: 'orchestration-client'
       });
 
-      const warnSpy = jest.spyOn(logger, 'warn');
+      const warnSpy = vi.spyOn(logger, 'warn');
 
       const configRef: OrchestrationConfigRef = {
         id: 'test-config-id'
@@ -1269,7 +1269,7 @@ describe('orchestration service client', () => {
         messageContext: 'orchestration-client'
       });
 
-      const warnSpy = jest.spyOn(logger, 'warn');
+      const warnSpy = vi.spyOn(logger, 'warn');
 
       const configRef: OrchestrationConfigRef = {
         id: 'test-config-id'
@@ -1348,7 +1348,7 @@ describe('orchestration service client', () => {
       const deploymentConfig = { deploymentId: 'test-deployment-id' };
 
       // Spy on the resolveDeployment function
-      const spy = jest.spyOn({ resolveDeploymentId }, 'resolveDeploymentId');
+      const spy = vi.spyOn({ resolveDeploymentId }, 'resolveDeploymentId');
 
       // Call getOrchestrationDeploymentId
       const result = await getOrchestrationDeploymentId(deploymentConfig);
@@ -1683,7 +1683,7 @@ describe('orchestration service client', () => {
         package: 'orchestration',
         messageContext: 'orchestration-utils'
       });
-      const debugSpy = jest.spyOn(logger, 'debug');
+      const debugSpy = vi.spyOn(logger, 'debug');
 
       mockInference(
         {

@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeAll } from 'vitest';
 import { parseMockResponse } from '../../../../test-util/mock-http.js';
 import { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.js';
 import type { AzureOpenAiCreateChatCompletionStreamResponse } from './client/inference/schema/index.js';
