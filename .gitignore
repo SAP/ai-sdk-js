@@ -67,3 +67,5 @@ build/Release
 
 # Generated API documentation
 knowledge-base/api-reference/
+/.claude
+/.playwright-mcp
