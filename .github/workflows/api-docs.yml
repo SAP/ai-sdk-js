@@ -72,6 +72,7 @@ jobs:
           fi
 
       - name: Commit and push changes
+        id: commit-push
         if: steps.check-changes.outputs.docs == 'true'
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
@@ -86,11 +87,16 @@ jobs:
           cd ai-sdk
           git checkout -b "$BRANCH_NAME"
           git add -A
-          git commit -m 'Update SAP AI SDK for JavaScript API documentation v${{ steps.prepare.outputs.major-version }}' || exit 0
-          git push -u origin "$BRANCH_NAME"
+          if git commit -m 'Update SAP AI SDK for JavaScript API documentation v${{ steps.prepare.outputs.major-version }}'; then
+            git push -u origin "$BRANCH_NAME"
+            echo "pushed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No changes to commit. Skipping push."
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Create pull request
-        if: steps.check-changes.outputs.docs == 'true'
+        if: steps.check-changes.outputs.docs == 'true' && steps.commit-push.outputs.pushed == 'true'
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
