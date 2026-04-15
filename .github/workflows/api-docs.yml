@@ -24,8 +24,6 @@ jobs:
         uses: sap/ai-sdk-js/.github/actions/setup@main
 
       - name: Generate API documentation
-        env:
-          DOC_VERSION: ${{ inputs.version }}
         run: |
           pnpm generate
           pnpm doc
