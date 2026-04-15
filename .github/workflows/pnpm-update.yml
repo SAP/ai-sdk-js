@@ -13,7 +13,7 @@ jobs:
         id: app-token
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
           permission-contents: write
           permission-pull-requests: write
@@ -48,7 +48,7 @@ jobs:
 
       - name: Create Pull Request
         if: steps.update-deps.outputs.branch-created == 'true'
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
@@ -70,7 +70,7 @@ jobs:
 
       - name: Auto-merge if checks pass
         if: steps.update-deps.outputs.branch-created == 'true' && success()
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |

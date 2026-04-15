@@ -36,8 +36,7 @@ jobs:
           MAJOR_VERSION=$(echo "$FULL_VERSION" | cut -d. -f1)
           echo "major-version=$MAJOR_VERSION" >> "$GITHUB_OUTPUT"
           echo "branch-name=docs/api-update-v${MAJOR_VERSION}-$(date +%Y%m%d%H%M%S)" >> "$GITHUB_OUTPUT"
-            
-      
+
       - name: Generate GitHub App token
         id: app-token
         uses: actions/create-github-app-token@v3
@@ -48,7 +47,6 @@ jobs:
           repositories: ai-sdk
           permission-contents: write
           permission-pull-requests: write
-
 
       - uses: actions/checkout@v6
         with:

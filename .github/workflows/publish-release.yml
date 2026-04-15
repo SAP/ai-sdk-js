@@ -15,7 +15,7 @@ jobs:
         id: app-token
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
           owner: SAP
           repositories: ai-sdk
@@ -81,7 +81,7 @@ jobs:
         id: app-token
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
           owner: SAP
           repositories: ai-sdk
