@@ -52,8 +52,8 @@ jobs:
         with:
           repository: SAP/ai-sdk
           path: ai-sdk
-          ref: ${{ steps.prepare.outputs.branch-name }}
           token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 0
 
       - name: Copy API docs
         env:
@@ -77,15 +77,17 @@ jobs:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           BOT_EMAIL: ${{ vars.SAP_CLOUD_SDK_BOT_EMAIL }}
           BOT_NAME: ${{ vars.SAP_CLOUD_SDK_BOT_NAME }}
+          BRANCH_NAME: ${{ steps.prepare.outputs.branch-name }}
         run: |
           gh auth setup-git
           git config user.email "$BOT_EMAIL"
           git config user.name "$BOT_NAME"
 
           cd ai-sdk
+          git checkout -b "$BRANCH_NAME"
           git add -A
           git commit -m 'Update SAP AI SDK for JavaScript API documentation v${{ steps.prepare.outputs.major-version }}' || exit 0
-          git push
+          git push -u origin "$BRANCH_NAME"
 
       - name: Create pull request
         if: steps.check-changes.outputs.docs == 'true'
