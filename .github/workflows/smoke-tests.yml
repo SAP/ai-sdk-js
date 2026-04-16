@@ -9,10 +9,28 @@ jobs:
   smoke-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      - uses: sap/ai-sdk-js/.github/actions/setup@davidkna-sap_npmrc-cf
         with:
           node-version: '24'
+          pnpm-registry-mirror-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+      - name: Prefer npmjs for smoke test canaries
+        run: |
+          pnpm config set --location=user @sap-ai-sdk:registry https://registry.npmjs.org/
+          pnpm --filter @sap-ai-sdk/smoke-tests update '@sap-ai-sdk/*' --no-save
       - run: pnpm smoke-tests create-deployment
+      - run: pnpm smoke-tests deploy
+      - name: Configure deployment registry mirror
+        working-directory: tests/smoke-tests/deployment
+        env:
+          PNPM_REGISTRY_MIRROR_URL: https://common.repositories.cloud.sap/artifactory/api/npm/build.releases.npm/
+          PNPM_REGISTRY_MIRROR_TOKEN: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+        run: |
+          registry_host="${PNPM_REGISTRY_MIRROR_URL#https://}"
+          registry_host="${registry_host#http://}"
+
+          pnpm config set --location=project registry "$PNPM_REGISTRY_MIRROR_URL"
+          pnpm config set --location=project @sap-ai-sdk:registry https://registry.npmjs.org/
+          pnpm config set --location=project "//$registry_host:_authToken" "$PNPM_REGISTRY_MIRROR_TOKEN"
       - uses: vchrisb/setup-cf@f43abe0d940f27e8c59c8b29226140f3a1768496 # v3.0.1
         with:
           api: ${{ vars.CF_API_URL }}
@@ -22,8 +40,6 @@ jobs:
           space: ${{ vars.CF_SPACE }}
       - run: cf push
         working-directory: tests/smoke-tests
-        env:
-          NPM_TOKEN_ARTIFACTORY: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: smoke test
         run: pnpm test:smoke
       - name: shutdown

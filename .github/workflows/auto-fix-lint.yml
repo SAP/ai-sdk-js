@@ -17,9 +17,10 @@ jobs:
           client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
           permission-contents: write
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      - uses: sap/ai-sdk-js/.github/actions/setup@davidkna-sap_npmrc-cf
         with:
           ref: ${{ github.head_ref }}
+          pnpm-registry-mirror-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
           token: ${{ steps.app-token.outputs.token }}
       - run: pnpm lint:fix
       - name: Commit Changes if needed

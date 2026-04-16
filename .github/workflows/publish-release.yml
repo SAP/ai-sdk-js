@@ -21,7 +21,9 @@ jobs:
           repositories: ai-sdk
           permission-contents: read
           permission-pull-requests: read
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      - uses: sap/ai-sdk-js/.github/actions/setup@davidkna-sap_npmrc-cf
+        with:
+          use-pnpm-registry-mirror: 'false'
       - name: Determine Docs PR Branch Name
         id: determine-branch-name
         run: |
@@ -64,9 +66,10 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      - uses: sap/ai-sdk-js/.github/actions/setup@davidkna-sap_npmrc-cf
         with:
           node-version: 24 # Will install npm 11 needed for trusted publishing
+          use-pnpm-registry-mirror: 'false'
       - name: publish
         run: |
           pnpm changeset publish

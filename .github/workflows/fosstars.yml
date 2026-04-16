@@ -13,7 +13,9 @@ jobs:
       checks: write
       contents: write
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      - uses: sap/ai-sdk-js/.github/actions/setup@davidkna-sap_npmrc-cf
+        with:
+          pnpm-registry-mirror-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: 'Run OWASP Dependency Check'
         uses: dependency-check/Dependency-Check_Action@1e54355a8b4c8abaa8cc7d0b70aa655a3bb15a6c # main
         id: depcheck

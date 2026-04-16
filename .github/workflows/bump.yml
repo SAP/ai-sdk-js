@@ -23,10 +23,11 @@ jobs:
           client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
           permission-contents: write
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      - uses: sap/ai-sdk-js/.github/actions/setup@davidkna-sap_npmrc-cf
         with:
           token: ${{ steps.app-token.outputs.token }}
           ref: 'main'
+          use-pnpm-registry-mirror: 'false'
       - name: Bump version
         uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
         id: bump
@@ -61,9 +62,10 @@ jobs:
           permission-contents: write
           permission-pull-requests: write
       - name: Checkout current repository
-        uses: sap/ai-sdk-js/.github/actions/setup@main
+        uses: sap/ai-sdk-js/.github/actions/setup@davidkna-sap_npmrc-cf
         with:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+          use-pnpm-registry-mirror: 'false'
 
       - name: Generate API documentation
         run: |

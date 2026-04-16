@@ -7,6 +7,15 @@ inputs:
   registry-url:
     description: 'The registry URL to use for npm packages'
     default: 'https://registry.npmjs.org'
+  use-pnpm-registry-mirror:
+    description: 'Whether to configure pnpm to use the SAP Artifactory npm mirror'
+    default: 'true'
+  pnpm-registry-mirror-url:
+    description: 'The registry URL to use for pnpm installs when the SAP Artifactory mirror is enabled'
+    default: 'https://common.repositories.cloud.sap/artifactory/api/npm/build.releases.npm/'
+  pnpm-registry-mirror-token:
+    description: 'The auth token for the SAP Artifactory npm mirror'
+    default: ''
   pnpm-version:
     description: 'PNPM version'
     default: '10'
@@ -35,5 +44,16 @@ runs:
         node-version: ${{ inputs.node-version }}
         registry-url: ${{ inputs.registry-url }}
         cache: 'pnpm'
+    - if: ${{ inputs.use-pnpm-registry-mirror == 'true' && inputs.pnpm-registry-mirror-token != '' }}
+      shell: bash
+      env:
+        PNPM_REGISTRY_MIRROR_URL: ${{ inputs.pnpm-registry-mirror-url }}
+        PNPM_REGISTRY_MIRROR_TOKEN: ${{ inputs.pnpm-registry-mirror-token }}
+      run: |
+        registry_host="${PNPM_REGISTRY_MIRROR_URL#https://}"
+        registry_host="${registry_host#http://}"
+
+        pnpm config set --location=user registry "$PNPM_REGISTRY_MIRROR_URL"
+        pnpm config set --location=user "//$registry_host:_authToken" "$PNPM_REGISTRY_MIRROR_TOKEN"
     - run: pnpm install ${{ inputs.pnpm-install-args }}
       shell: bash
