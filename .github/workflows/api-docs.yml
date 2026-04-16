@@ -1,6 +1,5 @@
 name: api-docs
 
-# Can be triggered via workflow_call (from bump.yml) or manually via workflow_dispatch.
 
 on:
   workflow_call:
