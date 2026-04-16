@@ -5,12 +5,11 @@
  */
 
 /**
- * Representation of the 'ValidationError' schema.
+ * Representation of the 'GenericError' schema.
  */
-export type ValidationError = {
-  loc: (string | number)[];
-  msg: string;
-  type: string;
-  input?: any;
-  ctx?: Record<string, any>;
+export type GenericError = {
+  /**
+   * Human-readable error message
+   */
+  error: string;
 } & Record<string, any>;
