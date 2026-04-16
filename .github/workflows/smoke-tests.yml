@@ -19,6 +19,22 @@ jobs:
           pnpm --filter @sap-ai-sdk/smoke-tests update '@sap-ai-sdk/*' --no-save
       - run: pnpm smoke-tests create-deployment
       - run: pnpm smoke-tests deploy
+      - name: Configure deployment npm registries
+        working-directory: tests/smoke-tests/deployment
+        env:
+          NPM_REGISTRY_MIRROR_URL: https://common.repositories.cloud.sap/artifactory/api/npm/build.releases.npm/
+          NPM_REGISTRY_MIRROR_TOKEN: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+        run: |
+          registry_host="${NPM_REGISTRY_MIRROR_URL#https://}"
+          registry_host="${registry_host#http://}"
+
+          npm config set registry "$NPM_REGISTRY_MIRROR_URL"
+          npm config set @sap-ai-sdk:registry https://registry.npmjs.org/
+          npm config set "//$registry_host:_authToken" "$NPM_REGISTRY_MIRROR_TOKEN"
+
+      - name: Generate deployment package-lock.json
+        working-directory: tests/smoke-tests/deployment
+        run: npm install --package-lock-only --ignore-scripts --workspaces=false
       - uses: vchrisb/setup-cf@f43abe0d940f27e8c59c8b29226140f3a1768496 # v3.0.1
         with:
           api: ${{ vars.CF_API_URL }}
