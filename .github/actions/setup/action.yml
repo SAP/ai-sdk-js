@@ -44,7 +44,7 @@ runs:
         node-version: ${{ inputs.node-version }}
         registry-url: ${{ inputs.registry-url }}
         cache: 'pnpm'
-    - if: ${{ inputs.use-pnpm-registry-mirror == 'true' && inputs.pnpm-registry-mirror-token != '' }}
+    - if: ${{ inputs.use-pnpm-registry-mirror == 'true' && inputs.pnpm-registry-mirror-token != '' && github.repository == 'SAP/ai-sdk-js' }}
       shell: bash
       env:
         PNPM_REGISTRY_MIRROR_URL: ${{ inputs.pnpm-registry-mirror-url }}
