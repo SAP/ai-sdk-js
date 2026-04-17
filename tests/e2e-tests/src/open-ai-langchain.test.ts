@@ -22,7 +22,7 @@ describe('LangChain OpenAI Access', () => {
   it('executes an invoke based on an embedding vector from our orchestration readme', async () => {
     const result = await invokeRagChain();
     expect(result).toContain('OrchestrationClient');
-  });
+  },90000);
 
   it('executes invoke with structured output', async () => {
     const result = await invokeWithStructuredOutputJsonSchema();
