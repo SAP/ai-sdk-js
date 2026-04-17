@@ -34,7 +34,10 @@ jobs:
 
       - name: Generate deployment package-lock.json
         working-directory: tests/smoke-tests/deployment
-        run: npm install --package-lock-only --ignore-scripts --workspaces=false
+        run: |
+          npm shrinkwrap
+          mv npm-shrinkwrap.json package-lock.json
+          npm config set ignore-scripts true
       - uses: vchrisb/setup-cf@f43abe0d940f27e8c59c8b29226140f3a1768496 # v3.0.1
         with:
           api: ${{ vars.CF_API_URL }}
