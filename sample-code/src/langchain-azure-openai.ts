@@ -171,7 +171,10 @@ export async function invokeRagChain(): Promise<string> {
 
   const agentInputs = { messages: [{ role: 'user', content: inputMessage }] };
   const result = await agent.invoke(agentInputs);
-  return result.messages.at(-1)!.content as string;
+  const lastMessage = [...result.messages]
+    .reverse()
+    .find(msg => typeof msg.content === 'string' && msg.content.length);
+  return (lastMessage?.content as string) ?? '';
 }
 
 /**
@@ -181,7 +184,7 @@ export async function invokeRagChain(): Promise<string> {
 export async function invokeToolChain(): Promise<string> {
   // initialize client with options
   const client = new AzureOpenAiChatClient({
-    modelName: 'gpt-5',
+    modelName: 'gpt-5-mini',
     max_tokens: 1000
   });
 

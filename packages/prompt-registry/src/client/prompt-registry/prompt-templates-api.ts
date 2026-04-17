@@ -78,7 +78,6 @@ export const PromptTemplatesApi = {
    * @param version - Path parameter.
    * @param name - Path parameter.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Resource-Group-Scope.
-   * @param queryParameters - Object containing the following keys: includeSpec.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   listPromptTemplateHistory: (
@@ -88,16 +87,14 @@ export const PromptTemplatesApi = {
     headerParameters?: {
       'AI-Resource-Group'?: string;
       'AI-Resource-Group-Scope'?: 'true' | 'True' | 'false' | 'False';
-    },
-    queryParameters?: { includeSpec?: boolean }
+    }
   ) =>
     new OpenApiRequestBuilder<PromptTemplateListResponse>(
       'get',
       '/lm/scenarios/{scenario}/promptTemplates/{name}/versions/{version}/history',
       {
         pathParameters: { scenario, version, name },
-        headerParameters,
-        queryParameters
+        headerParameters
       },
       PromptTemplatesApi._defaultBasePath
     ),
