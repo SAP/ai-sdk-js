@@ -72,9 +72,10 @@ jobs:
       CREATE_PR: ${{ inputs.create-pr }}
       BRANCH: spec-update/${{ inputs.service }}/${{ inputs.ref }}
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@davidkna-sap_npmrc-cf
+      - uses: sap/cloud-sdk-js/.github/actions/setup@pnpm-setup
         with:
-          pnpm-registry-mirror-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+          persist-credentials: 'true'
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'Checkout or Create Branch'

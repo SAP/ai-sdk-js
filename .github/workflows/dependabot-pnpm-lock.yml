@@ -24,11 +24,12 @@ jobs:
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
           permission-contents: write
       - name: Setup Environment
-        uses: sap/ai-sdk-js/.github/actions/setup@davidkna-sap_npmrc-cf
+        uses: sap/cloud-sdk-js/.github/actions/setup@pnpm-setup
         with:
           ref: ${{ github.head_ref }}
           pnpm-install-args: --lockfile-only
-          pnpm-registry-mirror-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+          persist-credentials: 'true'
           token: ${{ steps.app-token.outputs.token }}
 
       - name: Commit and push if changed
