@@ -1,5 +1,23 @@
 # @sap-ai-sdk/orchestration
 
+## 2.10.0
+
+### Minor Changes
+
+- cf767a9: [feat] Update orchestration specification to 0.115.19.
+  Multiple embedding output formats are not yet supported in the orchestration embedding client.
+
+### Patch Changes
+
+- Updated dependencies [dce18df]
+- Updated dependencies [8cb466a]
+- Updated dependencies [cc9e80c]
+- Updated dependencies [cc9e80c]
+- Updated dependencies [cc9e80c]
+  - @sap-ai-sdk/prompt-registry@2.10.0
+  - @sap-ai-sdk/core@2.10.0
+  - @sap-ai-sdk/ai-api@2.10.0
+
 ## 2.9.0
 
 ### Minor Changes
