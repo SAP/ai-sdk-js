@@ -5,20 +5,16 @@
  */
 import type { IncludePathsArray } from './include-paths-array.js';
 /**
- * Representation of the 'GoogleDriveFolder' schema.
+ * Representation of the 'GoogleDriveResourceDetail' schema.
  */
-export type GoogleDriveFolder = {
+export type GoogleDriveResourceDetail = {
   /**
-   * @example "1n0SMFydu2ru3mgn7eK_BYpOlmhK5Vhij"
+   * @example "SHARED_DRIVE"
    */
-  id?: string;
+  resourceType?: 'SHARED_FOLDER' | 'SHARED_DRIVE';
   /**
    * @example "0AGVUFpXcXc5Uk9PVA"
    */
-  driveId?: string;
-  /**
-   * @example "SHARED_FOLDER"
-   */
-  driverType: 'SHARED_FOLDER' | 'SHARED_DRIVE';
+  resourceId?: string;
   includePaths?: IncludePathsArray;
 } & Record<string, any>;
