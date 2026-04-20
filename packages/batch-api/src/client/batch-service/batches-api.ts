@@ -24,7 +24,7 @@ export const BatchesApi = {
    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Main-Tenant.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  listBatches: (headerParameters: {
+  batchServiceControllerBatchControllerListBatches: (headerParameters: {
     'AI-Resource-Group': string;
     'AI-Main-Tenant'?: string;
   }) =>
@@ -42,7 +42,7 @@ export const BatchesApi = {
    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Main-Tenant.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  createBatch: (
+  batchServiceControllerBatchControllerCreateBatch: (
     body: BatchCreateRequest,
     headerParameters: { 'AI-Resource-Group': string; 'AI-Main-Tenant'?: string }
   ) =>
@@ -64,7 +64,7 @@ export const BatchesApi = {
    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Main-Tenant.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  getBatchById: (
+  batchServiceControllerBatchControllerGetBatchById: (
     batchId: string,
     headerParameters: { 'AI-Resource-Group': string; 'AI-Main-Tenant'?: string }
   ) =>
@@ -83,7 +83,7 @@ export const BatchesApi = {
    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Main-Tenant.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  deleteBatch: (
+  batchServiceControllerBatchControllerDeleteBatch: (
     batchId: string,
     headerParameters: { 'AI-Resource-Group': string; 'AI-Main-Tenant'?: string }
   ) =>
@@ -102,7 +102,7 @@ export const BatchesApi = {
    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Main-Tenant.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  getBatchStatus: (
+  batchServiceControllerBatchControllerGetBatchStatus: (
     batchId: string,
     headerParameters: { 'AI-Resource-Group': string; 'AI-Main-Tenant'?: string }
   ) =>
@@ -121,7 +121,7 @@ export const BatchesApi = {
    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Main-Tenant.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  cancelBatch: (
+  batchServiceControllerBatchControllerCancelBatch: (
     batchId: string,
     headerParameters: { 'AI-Resource-Group': string; 'AI-Main-Tenant'?: string }
   ) =>
