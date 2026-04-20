@@ -29,13 +29,15 @@ describe('batches api', () => {
     };
 
     nock(aiCoreDestination.url)
-      .get('/v2/batches')
+      .get('/v2/llm-batch-service/v1/batches')
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'
       });
 
-    const result: BatchListResponse =
-      await BatchesApi.listBatches().execute();
+    const result: BatchListResponse = await BatchesApi.listBatches({
+      'AI-Resource-Group': 'ai-sdk-js-e2e',
+      'AI-Main-Tenant': 'tta-m-sap-internal'
+    }).execute();
 
     expect(result).toEqual(expectedResponse);
   });

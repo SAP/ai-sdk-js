@@ -20,84 +20,117 @@ import type {
 export const BatchesApi = {
   _defaultBasePath: undefined,
   /**
-   * Create a request builder for execution of get requests to the '/batches' endpoint.
+   * Create a request builder for execution of get requests to the '/llm-batch-service/v1/batches' endpoint.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Main-Tenant.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  listBatches: () =>
+  listBatches: (headerParameters: {
+    'AI-Resource-Group': string;
+    'AI-Main-Tenant'?: string;
+  }) =>
     new OpenApiRequestBuilder<BatchListResponse>(
       'get',
-      '/batches',
-      {},
+      '/llm-batch-service/v1/batches',
+      {
+        headerParameters
+      },
       BatchesApi._defaultBasePath
     ),
   /**
-   * Create a request builder for execution of post requests to the '/batches' endpoint.
+   * Create a request builder for execution of post requests to the '/llm-batch-service/v1/batches' endpoint.
    * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Main-Tenant.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  createBatch: (body: BatchCreateRequest) =>
+  createBatch: (
+    body: BatchCreateRequest,
+    headerParameters: { 'AI-Resource-Group': string; 'AI-Main-Tenant'?: string }
+  ) =>
     new OpenApiRequestBuilder<BatchCreateResponse>(
       'post',
-      '/batches',
+      '/llm-batch-service/v1/batches',
       {
         body,
-        headerParameters: { 'content-type': 'application/json' }
+        headerParameters: {
+          'content-type': 'application/json',
+          ...headerParameters
+        }
       },
       BatchesApi._defaultBasePath
     ),
   /**
-   * Create a request builder for execution of get requests to the '/batches/{batchId}' endpoint.
+   * Create a request builder for execution of get requests to the '/llm-batch-service/v1/batches/{batchId}' endpoint.
    * @param batchId - Path parameter.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Main-Tenant.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  getBatchById: (batchId: string) =>
+  getBatchById: (
+    batchId: string,
+    headerParameters: { 'AI-Resource-Group': string; 'AI-Main-Tenant'?: string }
+  ) =>
     new OpenApiRequestBuilder<BatchDetailResponse>(
       'get',
-      '/batches/{batchId}',
+      '/llm-batch-service/v1/batches/{batchId}',
       {
-        pathParameters: { batchId }
+        pathParameters: { batchId },
+        headerParameters
       },
       BatchesApi._defaultBasePath
     ),
   /**
-   * Create a request builder for execution of delete requests to the '/batches/{batchId}' endpoint.
+   * Create a request builder for execution of delete requests to the '/llm-batch-service/v1/batches/{batchId}' endpoint.
    * @param batchId - Path parameter.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Main-Tenant.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  deleteBatch: (batchId: string) =>
+  deleteBatch: (
+    batchId: string,
+    headerParameters: { 'AI-Resource-Group': string; 'AI-Main-Tenant'?: string }
+  ) =>
     new OpenApiRequestBuilder<BatchDeleteResponse>(
       'delete',
-      '/batches/{batchId}',
+      '/llm-batch-service/v1/batches/{batchId}',
       {
-        pathParameters: { batchId }
+        pathParameters: { batchId },
+        headerParameters
       },
       BatchesApi._defaultBasePath
     ),
   /**
-   * Create a request builder for execution of get requests to the '/batches/{batchId}/status' endpoint.
+   * Create a request builder for execution of get requests to the '/llm-batch-service/v1/batches/{batchId}/status' endpoint.
    * @param batchId - Path parameter.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Main-Tenant.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  getBatchStatus: (batchId: string) =>
+  getBatchStatus: (
+    batchId: string,
+    headerParameters: { 'AI-Resource-Group': string; 'AI-Main-Tenant'?: string }
+  ) =>
     new OpenApiRequestBuilder<BatchStatusResponse>(
       'get',
-      '/batches/{batchId}/status',
+      '/llm-batch-service/v1/batches/{batchId}/status',
       {
-        pathParameters: { batchId }
+        pathParameters: { batchId },
+        headerParameters
       },
       BatchesApi._defaultBasePath
     ),
   /**
-   * Create a request builder for execution of patch requests to the '/batches/{batchId}/cancel' endpoint.
+   * Create a request builder for execution of patch requests to the '/llm-batch-service/v1/batches/{batchId}/cancel' endpoint.
    * @param batchId - Path parameter.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Main-Tenant.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  cancelBatch: (batchId: string) =>
+  cancelBatch: (
+    batchId: string,
+    headerParameters: { 'AI-Resource-Group': string; 'AI-Main-Tenant'?: string }
+  ) =>
     new OpenApiRequestBuilder<BatchCancelResponse>(
       'patch',
-      '/batches/{batchId}/cancel',
+      '/llm-batch-service/v1/batches/{batchId}/cancel',
       {
-        pathParameters: { batchId }
+        pathParameters: { batchId },
+        headerParameters
       },
       BatchesApi._defaultBasePath
     )
