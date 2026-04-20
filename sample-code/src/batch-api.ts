@@ -18,20 +18,22 @@ const defaultHeaders = {
  * @returns Batch list response.
  */
 export async function listBatches(): Promise<BatchListResponse> {
-  return BatchesApi.listBatches(defaultHeaders).execute();
+  return BatchesApi.batchServiceControllerBatchControllerListBatches(
+    defaultHeaders
+  ).execute();
 }
 
 /**
  * Create a new batch job.
- * @param inputUri - Object store URI of the input .jsonl file (e.g. ai://my-azure/input-file.jsonl).
- * @param outputUri - Object store URI of the output directory (e.g. ai://my-azure/).
+ * @param inputUri - Object store URI of the input .jsonl file (e.g. ai://s3secret/input-batch.jsonl).
+ * @param outputUri - Object store URI of the output directory (e.g. ai://s3secret/).
  * @returns Batch create response.
  */
 export async function createBatch(
   inputUri: string,
   outputUri: string
 ): Promise<BatchCreateResponse> {
-  return BatchesApi.createBatch(
+  return BatchesApi.batchServiceControllerBatchControllerCreateBatch(
     {
       type: 'llm-native',
       input: { uri: inputUri },
@@ -50,7 +52,10 @@ export async function createBatch(
 export async function getBatchById(
   batchId: string
 ): Promise<BatchDetailResponse> {
-  return BatchesApi.getBatchById(batchId, defaultHeaders).execute();
+  return BatchesApi.batchServiceControllerBatchControllerGetBatchById(
+    batchId,
+    defaultHeaders
+  ).execute();
 }
 
 /**
@@ -61,7 +66,10 @@ export async function getBatchById(
 export async function getBatchStatus(
   batchId: string
 ): Promise<BatchStatusResponse> {
-  return BatchesApi.getBatchStatus(batchId, defaultHeaders).execute();
+  return BatchesApi.batchServiceControllerBatchControllerGetBatchStatus(
+    batchId,
+    defaultHeaders
+  ).execute();
 }
 
 /**
@@ -72,7 +80,10 @@ export async function getBatchStatus(
 export async function cancelBatch(
   batchId: string
 ): Promise<BatchCancelResponse> {
-  return BatchesApi.cancelBatch(batchId, defaultHeaders).execute();
+  return BatchesApi.batchServiceControllerBatchControllerCancelBatch(
+    batchId,
+    defaultHeaders
+  ).execute();
 }
 
 /**
@@ -83,5 +94,8 @@ export async function cancelBatch(
 export async function deleteBatch(
   batchId: string
 ): Promise<BatchDeleteResponse> {
-  return BatchesApi.deleteBatch(batchId, defaultHeaders).execute();
+  return BatchesApi.batchServiceControllerBatchControllerDeleteBatch(
+    batchId,
+    defaultHeaders
+  ).execute();
 }
