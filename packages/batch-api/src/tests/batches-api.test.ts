@@ -29,7 +29,7 @@ describe('batches api', () => {
     };
 
     nock(aiCoreDestination.url)
-      .get('/v2/lm/batch-service/batches')
+      .get('/v2/batches')
       .reply(200, expectedResponse, {
         'Content-Type': 'application/json'
       });

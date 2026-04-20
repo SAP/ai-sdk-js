@@ -1,5 +1,5 @@
-// import config from '../../jest.config.mjs';
-// export default {
-//   ...config,
-//   displayName: 'prompt-registry',
-// };
+import config from '../../jest.config.mjs';
+export default {
+  ...config,
+  displayName: 'batch-api',
+};
