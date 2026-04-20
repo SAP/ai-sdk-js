@@ -23,7 +23,7 @@ export const BatchesApi = {
    * Create a request builder for execution of get requests to the '/batches' endpoint.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  batchServiceControllerBatchControllerListBatches: () =>
+  listBatches: () =>
     new OpenApiRequestBuilder<BatchListResponse>(
       'get',
       '/batches',
@@ -35,9 +35,7 @@ export const BatchesApi = {
    * @param body - Request body.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  batchServiceControllerBatchControllerCreateBatch: (
-    body: BatchCreateRequest
-  ) =>
+  createBatch: (body: BatchCreateRequest) =>
     new OpenApiRequestBuilder<BatchCreateResponse>(
       'post',
       '/batches',
@@ -52,7 +50,7 @@ export const BatchesApi = {
    * @param batchId - Path parameter.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  batchServiceControllerBatchControllerGetBatchById: (batchId: string) =>
+  getBatchById: (batchId: string) =>
     new OpenApiRequestBuilder<BatchDetailResponse>(
       'get',
       '/batches/{batchId}',
@@ -66,7 +64,7 @@ export const BatchesApi = {
    * @param batchId - Path parameter.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  batchServiceControllerBatchControllerDeleteBatch: (batchId: string) =>
+  deleteBatch: (batchId: string) =>
     new OpenApiRequestBuilder<BatchDeleteResponse>(
       'delete',
       '/batches/{batchId}',
@@ -80,7 +78,7 @@ export const BatchesApi = {
    * @param batchId - Path parameter.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  batchServiceControllerBatchControllerGetBatchStatus: (batchId: string) =>
+  getBatchStatus: (batchId: string) =>
     new OpenApiRequestBuilder<BatchStatusResponse>(
       'get',
       '/batches/{batchId}/status',
@@ -94,7 +92,7 @@ export const BatchesApi = {
    * @param batchId - Path parameter.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  batchServiceControllerBatchControllerCancelBatch: (batchId: string) =>
+  cancelBatch: (batchId: string) =>
     new OpenApiRequestBuilder<BatchCancelResponse>(
       'patch',
       '/batches/{batchId}/cancel',

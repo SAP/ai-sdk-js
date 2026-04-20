@@ -35,7 +35,7 @@ describe('batches api', () => {
       });
 
     const result: BatchListResponse =
-      await BatchesApi.batchServiceControllerBatchControllerListBatches().execute();
+      await BatchesApi.listBatches().execute();
 
     expect(result).toEqual(expectedResponse);
   });

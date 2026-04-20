@@ -9,6 +9,7 @@ paths:
     post:
       summary: Create a new batch job
       operationId: batch_service.controller.batch_controller.create_batch
+      x-sap-cloud-sdk-operation-name: createBatch
       tags:
         - Batches
       requestBody:
@@ -34,6 +35,7 @@ paths:
     get:
       summary: List all batches
       operationId: batch_service.controller.batch_controller.list_batches
+      x-sap-cloud-sdk-operation-name: listBatches
       tags:
         - Batches
       responses:
@@ -52,6 +54,7 @@ paths:
     get:
       summary: Get Batch job details
       operationId: batch_service.controller.batch_controller.get_batch_by_id
+      x-sap-cloud-sdk-operation-name: getBatchById
       tags:
         - Batches
       parameters:
@@ -78,6 +81,7 @@ paths:
     delete:
       summary: Delete a Batch job (only for cancelled, completed, or failed batches)
       operationId: batch_service.controller.batch_controller.delete_batch
+      x-sap-cloud-sdk-operation-name: deleteBatch
       tags:
         - Batches
       parameters:
@@ -107,6 +111,7 @@ paths:
     get:
       summary: Get Batch job status
       operationId: batch_service.controller.batch_controller.get_batch_status
+      x-sap-cloud-sdk-operation-name: getBatchStatus
       tags:
         - Batches
       parameters:
@@ -134,6 +139,7 @@ paths:
     patch:
       summary: Cancel a batch
       operationId: batch_service.controller.batch_controller.cancel_batch
+      x-sap-cloud-sdk-operation-name: cancelBatch
       tags:
         - Batches
       parameters:
