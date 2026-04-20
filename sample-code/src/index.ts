@@ -86,3 +86,12 @@ export {
   predictWithSchemaCompressed,
   predictWithSchemaResilient
 } from './rpt.js';
+
+export {
+  listBatches,
+  createBatch,
+  getBatchById,
+  getBatchStatus,
+  cancelBatch,
+  deleteBatch
+} from './batch-api.js';

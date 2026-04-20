@@ -116,6 +116,12 @@ importers:
         specifier: ^4.6.0
         version: 4.6.0
 
+  packages/batch-api:
+    dependencies:
+      '@sap-ai-sdk/core':
+        specifier: workspace:^
+        version: link:../core
+
   packages/core:
     dependencies:
       '@sap-cloud-sdk/connectivity':
@@ -289,6 +295,9 @@ importers:
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../packages/ai-api
+      '@sap-ai-sdk/batch-api':
+        specifier: workspace:^
+        version: link:../packages/batch-api
       '@sap-ai-sdk/document-grounding':
         specifier: workspace:^
         version: link:../packages/document-grounding
