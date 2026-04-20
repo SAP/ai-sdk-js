@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/document-grounding",
-  "version": "2.9.0",
+  "version": "2.10.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
@@ -33,7 +33,8 @@
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/api.yaml -o ./src/client -s ./src/spec/options-per-service.json && pnpm update-imports && pnpm lint:fix",
-    "update-imports": "node --no-warnings --loader ts-node/esm ../../scripts/update-imports.ts ./src/client/api"
+    "update-imports": "node --no-warnings --loader ts-node/esm ../../scripts/update-imports.ts ./src/client/api",
+    "apply-patches": "git apply ./patches/backward-compat-getDataRepositoryById-order.patch"
   },
   "dependencies": {
     "@sap-ai-sdk/core": "workspace:^"
